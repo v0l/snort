@@ -1,0 +1,16 @@
+.send-note {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.send-note > input[type="text"] {
+    flex-grow: 1;
+}
+
+.send-note > .btn {
+    margin: 0 5px;
+}
+
+.login {
+    margin-bottom: 10px;
+}

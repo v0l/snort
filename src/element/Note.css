@@ -1,0 +1,39 @@
+.note {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.note > .header {
+    display: flex;
+    align-items: center;
+}
+
+.note > .header > img {
+    width: 40px;
+    height: 40px;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+
+.note > .header > .name {
+    flex-grow: 1;
+}
+
+.note > .header > .name > .reply {
+    font-size: small;
+}
+
+.note > .header > .info {
+    font-size: small;
+}
+
+.note > .body {
+    padding: 10px 5px;
+    white-space: pre-wrap;
+    overflow: hidden;
+    word-break: normal;
+}
+
+.note > .header > img:hover, .note > .header > .name > .reply:hover, .note > .body:hover {
+    cursor: pointer;
+}
