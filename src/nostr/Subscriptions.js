@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+import Connection from "./Connection";
 
 export class Subscriptions {
     constructor() {
@@ -51,6 +52,12 @@ export class Subscriptions {
          * Handler function for this event
          */
         this.OnEvent = (e) => { console.warn(`No event handler was set on subscription: ${this.Id}`) };
+
+        /**
+         * End of data event
+         * @param {Connection} c 
+         */
+        this.OnEnd = (c) => {};
 
         /**
          * Collection of OR sub scriptions linked to this

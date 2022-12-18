@@ -11,8 +11,6 @@ export default function useUsersStore() {
     const system = useContext(NostrContext);
     const pKeys = useSelector(s => s.users.pubKeys);
 
-
-
     useEffect(() => {
         if (pKeys.length > 0) {
             const sub = new Subscriptions();
@@ -34,5 +32,4 @@ export default function useUsersStore() {
             }
         }
     }, [pKeys]);
-
 }

@@ -1,62 +1,70 @@
 import { useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NostrContext } from "../..";
+import Event from "../../nostr/Event";
 import { Subscriptions } from "../../nostr/Subscriptions";
+import { addNote, reset } from "../../state/Thread";
 import { addPubKey } from "../../state/Users";
 
 export default function useThreadFeed(id) {
     const dispatch = useDispatch();
     const system = useContext(NostrContext);
-    const [note, setNote] = useState(null);
-    const [notes, setNotes] = useState([]);
-    const [relatedEvents, setRelatedEvents] = useState([]);
+    const notes = useSelector(s => s.thread.notes);
 
+    // track profiles
     useEffect(() => {
-        if (note) {
-            let eFetch = [];
-            dispatch(addPubKey(note.pubkey));
-            for (let t of note.tags) {
-                if (t[0] === "p") {
+        for (let n of notes) {
+            if (n.pubkey) {
+                dispatch(addPubKey(n.pubkey));
+            }
+            for(let t of n.tags) {
+                if(t[0] === "p" && t[1]) {
                     dispatch(addPubKey(t[1]));
-                } else if (t[0] === "e") {
-                    eFetch.push(t[1]);
                 }
             }
-            if(eFetch.length > 0) {
-                setRelatedEvents(eFetch);
-            }
         }
-    }, [note]);
+    }, [notes]);
 
     useEffect(() => {
         if (system) {
             let sub = new Subscriptions();
-            sub.Ids.add(id);
-            
-            sub.OnEvent = (e) => {
-                if(e.id === id && !note) {
-                    setNote(e);
+            if (notes.length === 1) {
+                let thisNote = Event.FromObject(notes[0]);
+                let thread = thisNote.GetThread();
+                if (thread !== null) {
+                    if (thread.ReplyTo) {
+                        sub.Ids.add(thread.ReplyTo.Event);
+                    }
+                    if (thread.Root) {
+                        sub.Ids.add(thread.Root.Event);
+                    }
+                    for (let m of thread.Mentions) {
+                        sub.Ids.add(m.Event);
+                    }
                 }
+            } else if (notes.length === 0) {
+                sub.Ids.add(id);
+
+                // get replies to this event
+                let subRelated = new Subscriptions();
+                subRelated.ETags.add(id);
+                sub.AddSubscription(subRelated);
+            } else {
+                return;
+            }
+            sub.OnEvent = (e) => {
+                dispatch(addNote(e));
+            };
+            sub.OnEnd = (c) => {
+                c.RemoveSubscription(sub.Id);
             };
             system.AddSubscription(sub);
-            return () => system.RemoveSubscription(sub.Id);
         }
-    }, [system]);
+    }, [system, notes]);
 
     useEffect(() => {
-        if(system && relatedEvents.length > 0) {
-            let sub = new Subscriptions();
-            sub.ETags = new Set(relatedEvents);
-            sub.OnEvent = (e) => {
-                let temp = new Set(notes);
-                temp.add(e);
-                setNotes(Array.from(temp));
-            };
-            system.AddSubscription(sub);
-            return () => system.RemoveSubscription(sub.Id);
-        }
-    }, [system, relatedEvents])
+        dispatch(reset());
+    }, []);
 
-    return { note, notes };
-
+    return { notes };
 }

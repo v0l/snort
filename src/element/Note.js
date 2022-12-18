@@ -39,16 +39,22 @@ export default function Note(props) {
             return null;
         }
 
-        let replyId = thread.ReplyTo.Event;
+        let replyId = thread?.ReplyTo?.Event;
         return (
             <div className="reply" onClick={(e) => goToEvent(e, replyId)}>
-                ➡️ {replyId.substring(0, 8)}
+                ➡️ {replyId?.substring(0, 8)}
             </div>
         )
     }
 
-    if(!ev.IsContent()) {
-        return <pre>Event: {ev.Id}</pre>;
+    if (!ev.IsContent()) {
+        return (
+            <>
+                <pre>{ev.Id}</pre>
+                <pre>Kind: {ev.Kind}</pre>
+                <pre>Content: {ev.Content}</pre>
+            </>
+        );
     }
 
     return (

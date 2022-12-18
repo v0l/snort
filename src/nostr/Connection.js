@@ -31,7 +31,7 @@ export default class Connection {
                 break;
             }
             case "EOSE": {
-                // ignored for now
+                this._OnEnd(msg[1]);
                 break;
             }
             default: {
@@ -90,7 +90,15 @@ export default class Connection {
         if (this.Subscriptions[subId]) {
             this.Subscriptions[subId].OnEvent(ev);
         } else {
-            console.warn("No subscription for event!");
+            console.warn(`No subscription for event! ${subId}`);
+        }
+    }
+
+    _OnEnd(subId) {
+        if (this.Subscriptions[subId]) {
+            this.Subscriptions[subId].OnEnd(this);
+        } else {
+            console.warn(`No subscription for end! ${subId}`);
         }
     }
 }

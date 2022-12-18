@@ -8,7 +8,8 @@ const DefaultRelays = JSON.stringify([
     "wss://nostr.zebedee.cloud",
     "wss://relay.damus.io",
     "wss://nostr.rocks",
-    "wss://nostr.rocks"
+    "wss://nostr.rocks",
+    "wss://nostr.fmt.wiz.biz"
 ]);
 
 const LoginSlice = createSlice({

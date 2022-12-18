@@ -7,13 +7,12 @@ export default function EventPage() {
     const params = useParams();
     const id = params.id;
 
-    const { note, notes } = useThreadFeed(id);
+    const { notes } = useThreadFeed(id);
 
-    if(note) {
+    if(notes) {
         return (
             <>
                 {notes?.map(n => <Note key={n.id} data={n}/>)}
-                <Note data={note}/>
             </>
         )
     }

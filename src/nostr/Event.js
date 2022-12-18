@@ -75,7 +75,7 @@ export default class Event {
             this.PubKey,
             this.CreatedAt,
             this.Kind,
-            this.Tags.map(a => a.ToObject()),
+            this.Tags.map(a => a.ToObject()).filter(a => a !== null),
             this.Content
         ];
 
@@ -130,7 +130,7 @@ export default class Event {
             pubkey: this.PubKey,
             created_at: this.CreatedAt,
             kind: this.Kind,
-            tags: this.Tags.map(a => a.ToObject()),
+            tags: this.Tags.map(a => a.ToObject()).filter(a => a !== null),
             content: this.Content,
             sig: this.Signature
         };

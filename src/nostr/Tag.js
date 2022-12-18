@@ -5,6 +5,7 @@ export default class Tag {
         this.PubKey = null;
         this.Relay = null;
         this.Marker = null;
+        this.Other = null;
 
         switch (this.Key) {
             case "e": {
@@ -19,16 +20,23 @@ export default class Tag {
                 this.PubKey = tag[1];
                 break;
             }
+            default: {
+                this.Other = tag;
+                break;
+            }
         }
     }
 
     ToObject() {
-        switch(this.Key) {
+        switch (this.Key) {
             case "e": {
                 return ["e", this.Event, this.Relay, this.Marker].filter(a => a !== null);
-            } 
+            }
             case "p": {
                 return ["p", this.PubKey];
+            }
+            default: {
+                return this.Other;
             }
         }
         return null;
