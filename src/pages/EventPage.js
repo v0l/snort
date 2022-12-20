@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Note from "../element/Note";
+import Thread from "../element/Thread";
 import useThreadFeed from "./feed/ThreadFeed";
 
 export default function EventPage() {
@@ -11,9 +12,7 @@ export default function EventPage() {
 
     if(notes) {
         return (
-            <>
-                {notes?.map(n => <Note key={n.id} data={n}/>)}
-            </>
+            <Thread notes={notes}/>
         )
     }
     return (

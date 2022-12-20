@@ -55,10 +55,8 @@ export default function useThreadFeed(id) {
             sub.OnEvent = (e) => {
                 dispatch(addNote(e));
             };
-            sub.OnEnd = (c) => {
-                c.RemoveSubscription(sub.Id);
-            };
             system.AddSubscription(sub);
+            return () => system.RemoveSubscription(sub.Id);
         }
     }, [system, notes]);
 

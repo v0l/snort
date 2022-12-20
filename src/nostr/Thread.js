@@ -2,10 +2,16 @@ import Event from "./Event";
 
 export default class Thread {
     constructor() {
+        /** @type {Tag} */
         this.Root = null;
+        /** @type {Tag} */
         this.ReplyTo = null;
+        /** @type {Array<Tag>} */
         this.Mentions = [];
+        /** @type {Event} */
         this.Reply = null;
+        /** @type {Array<String>} */
+        this.PubKeys = [];
     }
 
     /**
@@ -34,6 +40,7 @@ export default class Thread {
             ret.Root = root;
             ret.ReplyTo = reply;
         }
+        ret.PubKeys = ev.Tags.filter(a => a.Key === "p").map(a => a.PubKey);
 
         return ret;
     }

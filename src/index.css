@@ -59,3 +59,8 @@ input[type="text"] {
 .f-grow {
   flex-grow: 1;
 }
+
+a {
+  color: inherit;
+  line-height: 1.3em;
+}
