@@ -13,6 +13,7 @@ const MentionRegex = /(#\[\d+\])/g;
 export default function Note(props) {
     const navigate = useNavigate();
     const data = props.data;
+    const reactions = props.reactions;
     const [sig, setSig] = useState(false);
     const users = useSelector(s => s.users?.users);
     const user = users[data?.pubkey];
@@ -74,23 +75,24 @@ export default function Note(props) {
                         case "png":
                         case "bmp":
                         case "webp": {
-                            return <img src={url} />;
+                            return <img key={url} src={url} />;
                         }
                         case "mp4":
                         case "mkv":
                         case "avi":
                         case "m4v": {
-                            return <video src={url} controls />
+                            return <video key={url} src={url} controls />
                         }
                     }
                 }
             } else {
                 let mentions = a.split(MentionRegex).map((match) => {
                     if (match.startsWith("#")) {
-                        let pref = pTags[match.match(/\[(\d+)\]/)[1]];
+                        let idx = parseInt(match.match(/\[(\d+)\]/)[1]) - 1;
+                        let pref = pTags[idx];
                         if (pref) {
                             let pUser = users[pref.PubKey]?.name ?? pref.PubKey.substring(0, 8);
-                            return <Link to={`/p/${pref.PubKey}`}>#{pUser}</Link>;
+                            return <Link key={pref.PubKey} to={`/p/${pref.PubKey}`}>#{pUser}</Link>;
                         } else {
                             return <pre>BROKEN REF: {match[0]}</pre>;
                         }
@@ -100,6 +102,7 @@ export default function Note(props) {
                 });
                 return mentions;
             }
+            return a;
         });
     }
 
@@ -127,6 +130,11 @@ export default function Note(props) {
             </div>
             <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
                 {transformBody()}
+            </div>
+            <div className="footer">
+                <span className="pill">
+                    👍 {(reactions?.length ?? 0)}
+                </span>
             </div>
         </div>
     )

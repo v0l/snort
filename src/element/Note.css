@@ -37,3 +37,8 @@
 .note > .header > img:hover, .note > .header > .name > .reply:hover, .note > .body:hover {
     cursor: pointer;
 }
+
+.note > .footer {
+    padding: 10px 0;
+    text-align: right;
+}

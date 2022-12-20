@@ -1,6 +1,4 @@
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Note from "../element/Note";
 import Thread from "../element/Thread";
 import useThreadFeed from "./feed/ThreadFeed";
 
@@ -10,7 +8,7 @@ export default function EventPage() {
 
     const { notes } = useThreadFeed(id);
 
-    if(notes) {
+    if(notes?.length > 0) {
         return (
             <Thread notes={notes}/>
         )

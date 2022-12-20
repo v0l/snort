@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NostrContext } from "../../index";
 import Event from "../../nostr/Event";
@@ -10,26 +10,55 @@ export default function useUsersStore() {
     const dispatch = useDispatch();
     const system = useContext(NostrContext);
     const pKeys = useSelector(s => s.users.pubKeys);
+    const users = useSelector(s => s.users.users);
+    const [loading, setLoading] = useState(false);
+
+    function isUserCached(id) {
+        let expire = new Date().getTime() - 60_000; // 60s expire
+        let u = users[id];
+        return u && (u.loaded || 0) < expire;
+    }
+
+    async function getUsers() {
+
+        let needProfiles = pKeys.filter(a => !isUserCached(a));
+        let sub = new Subscriptions();
+        sub.Authors = new Set(needProfiles);
+        sub.Kinds.add(EventKind.SetMetadata);
+
+        let events = await system.RequestSubscription(sub);
+
+        let loaded = new Date().getTime();
+        let profiles = events.map(a => {
+            let metaEvent = Event.FromObject(a);
+            let data = JSON.parse(metaEvent.Content);
+            return {
+                pubkey: metaEvent.PubKey,
+                fromEvent: a,
+                loaded,
+                ...data
+            };
+        });
+        let missing = needProfiles.filter(a => !events.some(b => b.pubkey === a));
+        let missingProfiles = missing.map(a => new{
+            pubkey: a,
+            loaded
+        });
+        dispatch(setUserData([
+            ...profiles,
+            ...missingProfiles
+        ]));
+    }
 
     useEffect(() => {
-        if (pKeys.length > 0) {
-            const sub = new Subscriptions();
-            sub.Authors = new Set(pKeys);
-            sub.Kinds.add(EventKind.SetMetadata);
-            sub.OnEvent = (ev) => {
-                let metaEvent = Event.FromObject(ev);
-                let data = JSON.parse(metaEvent.Content);
-                let userData = {
-                    pubkey: metaEvent.PubKey,
-                    ...data
-                };
-                dispatch(setUserData(userData));
-            };
+        if (system && pKeys.length > 0 && !loading) {
 
-            if (system) {
-                system.AddSubscription(sub);
-                return () => system.RemoveSubscription(sub.Id);
-            }
+            setLoading(true);
+            getUsers()
+                .catch(console.error)
+                .then(() => setLoading(false));
         }
-    }, [pKeys]);
+    }, [system, pKeys, loading]);
+
+    return { users };
 }

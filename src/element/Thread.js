@@ -1,4 +1,5 @@
 import Event from "../nostr/Event";
+import EventKind from "../nostr/EventKind";
 import Note from "./Note";
 
 export default function Thread(props) {
@@ -11,11 +12,17 @@ export default function Thread(props) {
         return null;
     }
 
-    const repliesToRoot = notes?.filter(a => a.GetThread()?.ReplyTo?.Event === root.Id);
+    function reactions(id) {
+        return notes?.filter(a => a.Kind === EventKind.Reaction && a.GetThread()?.Root?.Event === id);
+    }
+
+    const repliesToRoot = notes?.
+        filter(a => a.GetThread()?.Root?.Event === root.Id && a.Kind === EventKind.TextNote)
+        .sort((a, b) => b.CreatedAt - a.CreatedAt);
     return (
         <>
-            <Note data={root?.ToObject()}/>
-            {repliesToRoot?.map(a => <Note key={a.Id} data={a.ToObject()}/>)}
+            <Note data={root?.ToObject()} reactions={reactions(root?.Id)}/>
+            {repliesToRoot?.map(a => <Note key={a.Id} data={a.ToObject()} reactions={reactions(a.Id)}/>)}
         </>
     );
 }

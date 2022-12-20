@@ -10,25 +10,33 @@ export default function useThreadFeed(id) {
     const dispatch = useDispatch();
     const system = useContext(NostrContext);
     const notes = useSelector(s => s.thread.notes);
+    const [thisLoaded, setThisLoaded] = useState(false);
 
     // track profiles
     useEffect(() => {
+        let keys = [];
         for (let n of notes) {
             if (n.pubkey) {
-                dispatch(addPubKey(n.pubkey));
+                keys.push(n.pubkey);
             }
-            for(let t of n.tags) {
-                if(t[0] === "p" && t[1]) {
-                    dispatch(addPubKey(t[1]));
+            for (let t of n.tags) {
+                if (t[0] === "p" && t[1]) {
+                    keys.push(t[1]);
                 }
             }
         }
+
+        dispatch(addPubKey(keys));
     }, [notes]);
 
     useEffect(() => {
         if (system) {
             let sub = new Subscriptions();
-            if (notes.length === 1) {
+            let thisNote = notes.find(a => a.id === id);
+            if (thisNote && !thisLoaded) {
+                console.debug(notes);
+                setThisLoaded(true);
+                
                 let thisNote = Event.FromObject(notes[0]);
                 let thread = thisNote.GetThread();
                 if (thread !== null) {
@@ -44,23 +52,24 @@ export default function useThreadFeed(id) {
                 }
             } else if (notes.length === 0) {
                 sub.Ids.add(id);
-
-                // get replies to this event
-                let subRelated = new Subscriptions();
-                subRelated.ETags.add(id);
-                sub.AddSubscription(subRelated);
             } else {
                 return;
             }
+
+            // get replies to this event
+            let subRelated = new Subscriptions();
+            subRelated.ETags = sub.Ids;
+            sub.AddSubscription(subRelated);
+
             sub.OnEvent = (e) => {
                 dispatch(addNote(e));
             };
             system.AddSubscription(sub);
-            return () => system.RemoveSubscription(sub.Id);
         }
     }, [system, notes]);
 
     useEffect(() => {
+        console.debug("use thread stream")
         dispatch(reset());
     }, []);
 

@@ -15,30 +15,39 @@ const UsersSlice = createSlice({
     },
     reducers: {
         addPubKey: (state, action) => {
-            if (!state.pubKeys.includes(action.payload)) {
-                let temp = new Set(state.pubKeys);
-                temp.add(action.payload);
-                state.pubKeys = Array.from(temp);
+            let keys = action.payload;
+            if (!Array.isArray(keys)) {
+                keys = [keys];
             }
-            
-            // load from cache
-            let cache = window.localStorage.getItem(`user:${action.payload}`);
-            if(cache) {
-                let ud = JSON.parse(cache);
-                state.users[ud.pubkey] = ud;
+            let temp = new Set(state.pubKeys);
+            for (let k of keys) {
+                temp.add(k);
+
+                // load from cache
+                let cache = window.localStorage.getItem(`user:${k}`);
+                if (cache) {
+                    let ud = JSON.parse(cache);
+                    state.users[ud.pubkey] = ud;
+                }
             }
+            state.pubKeys = Array.from(temp);
         },
         setUserData: (state, action) => {
             let ud = action.payload;
-            let existing = state.users[ud.pubkey];
-            if (existing) {
-                ud = {
-                    ...existing,
-                    ...ud
-                };
+            if (!Array.isArray(ud)) {
+                ud = [ud];
             }
-            state.users[ud.pubkey] = ud;
-            window.localStorage.setItem(`user:${ud.pubkey}`, JSON.stringify(ud));
+            for (let x of ud) {
+                let existing = state.users[ud.pubkey];
+                if (existing) {
+                    ud = {
+                        ...existing,
+                        ...ud
+                    };
+                }
+                state.users[ud.pubkey] = ud;
+                window.localStorage.setItem(`user:${ud.pubkey}`, JSON.stringify(ud));
+            }
         }
     }
 });

@@ -8,8 +8,7 @@ export default function Layout(props) {
     const system = useContext(NostrContext);
     const navigate = useNavigate();
     const relays = useSelector(s => s.login.relays);
-
-    useUsersStore();
+    const users = useUsersStore();
 
     useEffect(() => {
         if (system && relays) {
