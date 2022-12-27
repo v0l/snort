@@ -14,44 +14,46 @@ export default function useUsersStore() {
     const [loading, setLoading] = useState(false);
 
     function isUserCached(id) {
-        let expire = new Date().getTime() - (1_000 * 60 * 5) ; // 60s expire
+        let expire = new Date().getTime() - (1_000 * 60 * 5); // 60s expire
         let u = users[id];
         return u && u.loaded > expire;
     }
 
-    async function getUsers() {
+    function mapEventToProfile(ev) {
+        let metaEvent = Event.FromObject(ev);
+        let data = JSON.parse(metaEvent.Content);
+        return {
+            pubkey: metaEvent.PubKey,
+            fromEvent: ev,
+            loaded: new Date().getTime(),
+            ...data
+        };
+    }
 
+    async function getUsers() {
         let needProfiles = pKeys.filter(a => !isUserCached(a));
-        if(needProfiles.length === 0) {
+        if (needProfiles.length === 0) {
             return;
         }
         console.debug("Need profiles: ", needProfiles);
         let sub = new Subscriptions();
         sub.Authors = new Set(needProfiles);
         sub.Kinds.add(EventKind.SetMetadata);
+        sub.OnEvent = (ev) => {
+            dispatch(setUserData(mapEventToProfile(ev)));
+        };
 
         let events = await system.RequestSubscription(sub);
-        console.debug("Got events: ", events);
-        let loaded = new Date().getTime();
-        let profiles = events.filter(a => a.kind === EventKind.SetMetadata).map(a => {
-            let metaEvent = Event.FromObject(a);
-            let data = JSON.parse(metaEvent.Content);
-            return {
-                pubkey: metaEvent.PubKey,
-                fromEvent: a,
-                loaded,
-                ...data
-            };
-        });
+        let profiles = events
+            .filter(a => a.kind === EventKind.SetMetadata)
+            .map(mapEventToProfile);
         let missing = needProfiles.filter(a => !events.some(b => b.pubkey === a));
         let missingProfiles = missing.map(a => {
             return {
                 pubkey: a,
-                loaded
+                loaded: new Date().getTime()
             }
         });
-        console.debug("Got profiles: ", profiles);
-        console.debug("Missing profiles: ", missing);
         dispatch(setUserData([
             ...profiles,
             ...missingProfiles

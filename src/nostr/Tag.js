@@ -1,11 +1,12 @@
 export default class Tag {
-    constructor(tag) {
+    constructor(tag, index) {
         this.Key = tag[0];
         this.Event = null;
         this.PubKey = null;
         this.Relay = null;
         this.Marker = null;
         this.Other = null;
+        this.Index = index;
 
         switch (this.Key) {
             case "e": {

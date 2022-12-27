@@ -53,7 +53,21 @@ export class NostrSystem {
         return new Promise((resolve, reject) => {
             let counter = 0;
             let events = [];
+
+            // force timeout returning current results
+            let timeout = setTimeout(() => {
+                for (let s of Object.values(this.Sockets)) {
+                    s.RemoveSubscription(sub.Id);
+                    counter++;
+                }
+                resolve(events);
+            }, 10_000);
+
+            let onEventPassthrough = sub.OnEvent;
             sub.OnEvent = (ev) => {
+                if (typeof onEventPassthrough === "function") {
+                    onEventPassthrough(ev);
+                }
                 if (!events.some(a => a.id === ev.id)) {
                     events.push(ev);
                 }
@@ -62,6 +76,7 @@ export class NostrSystem {
                 c.RemoveSubscription(sub.Id);
                 console.debug(counter);
                 if (counter-- <= 0) {
+                    clearInterval(timeout);
                     resolve(events);
                 }
             };
@@ -69,15 +84,6 @@ export class NostrSystem {
                 s.AddSubscription(sub);
                 counter++;
             }
-
-            // force timeout returning current results
-            setTimeout(() => {
-                for (let s of Object.values(this.Sockets)) {
-                    s.RemoveSubscription(sub.Id);
-                    counter++;
-                }
-                resolve(events);
-            }, 10_000);
         });
     }
 }

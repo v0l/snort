@@ -31,6 +31,9 @@ const UsersSlice = createSlice({
                 }
             }
             state.pubKeys = Array.from(temp);
+            state.users = {
+                ...state.users
+            };
         },
         setUserData: (state, action) => {
             let ud = action.payload;
@@ -49,9 +52,9 @@ const UsersSlice = createSlice({
                 state.users[x.pubkey] = x;
                 window.localStorage.setItem(`user:${x.pubkey}`, JSON.stringify(x));
 
-                let newUsersObj = {};
-                Object.assign(newUsersObj, state.users);
-                state.users = newUsersObj;
+                state.users = {
+                    ...state.users
+                };
             }
         }
     }

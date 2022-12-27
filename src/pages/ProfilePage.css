@@ -1,0 +1,17 @@
+.profile {
+    display: flex;
+}
+
+.profile > div:last-child {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.profile img.avatar {
+    width: 256px;
+    height: 256px;
+}
+
+.profile img.avatar:hover {
+    cursor: pointer;
+}

@@ -62,6 +62,7 @@ export default class Connection {
                 ...sub.OrSubs.map(o => o.ToObject())
             ];
         }
+        sub.Started[this.Address] = new Date().getTime();
         this._SendJson(req);
         this.Subscriptions[sub.Id] = sub;
     }
@@ -99,8 +100,10 @@ export default class Connection {
     }
 
     _OnEnd(subId) {
-        if (this.Subscriptions[subId]) {
-            this.Subscriptions[subId].OnEnd(this);
+        let sub = this.Subscriptions[subId];
+        if (sub) {
+            sub.Finished[this.Address] = new Date().getTime();
+            sub.OnEnd(this);
         } else {
             console.warn(`No subscription for end! ${subId}`);
         }

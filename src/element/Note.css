@@ -8,18 +8,11 @@
     align-items: center;
 }
 
-.note > .header > img {
-    width: 40px;
-    height: 40px;
-    margin-right: 20px;
-    border-radius: 10px;
-}
-
-.note > .header > .name {
+.note > .header > .pfp {
     flex-grow: 1;
 }
 
-.note > .header > .name > .reply {
+.note > .header .reply {
     font-size: small;
 }
 
@@ -32,6 +25,10 @@
     white-space: pre-wrap;
     overflow: hidden;
     word-break: normal;
+}
+
+.note > .body > img {
+    width: 100%;
 }
 
 .note > .header > img:hover, .note > .header > .name > .reply:hover, .note > .body:hover {

@@ -18,6 +18,7 @@ code {
   width: 720px;
   margin-left: auto;
   margin-right: auto;
+  overflow: hidden;
 }
 
 .page > .header {
@@ -44,7 +45,7 @@ code {
   background-color: #333;
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
   padding: 10px;
   border-radius: 5px;
   border: 0;
@@ -76,4 +77,24 @@ span.pill {
 
 span.pill:hover {
   cursor: pointer;
+}
+
+@media(max-width: 720px) {
+  .page {
+    width: calc(100vw - 20px);
+    margin: 0 10px;
+  }
+}
+
+div.form-group {
+  display: flex;
+  align-items: center;
+}
+
+div.form-group > div {
+  padding: 3px 5px;
+}
+
+div.form-group > div:first-child {
+  flex-grow: 1;
 }

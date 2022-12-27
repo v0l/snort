@@ -63,6 +63,16 @@ export class Subscriptions {
          * Collection of OR sub scriptions linked to this
          */
         this.OrSubs = [];
+
+        /**
+         * Start time for this subscription
+         */
+        this.Started = {};
+
+        /**
+         * End time for this subscription
+         */
+        this.Finished = {};
     }
 
     /**

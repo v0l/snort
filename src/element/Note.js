@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
-import { isFulfilled } from "@reduxjs/toolkit";
+import ProfileImage from "./ProfileImage";
 
 const UrlRegex = /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)/;
 const FileExtensionRegex = /\.([\w]+)$/;
@@ -28,11 +28,6 @@ export default function Note(props) {
     async function verifyEvent() {
         let res = await ev.Verify();
         setSig(res);
-    }
-
-    function goToProfile(e, id) {
-        e.stopPropagation();
-        navigate(`/p/${id}`);
     }
 
     function goToEvent(e, id) {
@@ -119,11 +114,7 @@ export default function Note(props) {
     return (
         <div className="note">
             <div className="header">
-                <img src={user?.picture} onClick={(e) => goToProfile(e, ev.PubKey)} />
-                <div className="name">
-                    {user?.name ?? ev.PubKey.substring(0, 8)}
-                    {replyTag()}
-                </div>
+                <ProfileImage pubKey={ev.PubKey} subHeader={replyTag()}/>
                 <div className="info">
                     {moment(ev.CreatedAt * 1000).fromNow()}
                 </div>

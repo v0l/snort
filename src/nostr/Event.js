@@ -118,7 +118,7 @@ export default class Event {
         ret.PubKey = obj.pubkey;
         ret.CreatedAt = obj.created_at;
         ret.Kind = obj.kind;
-        ret.Tags = obj.tags.map(e => new Tag(e));
+        ret.Tags = obj.tags.map((e, i) => new Tag(e, i));
         ret.Content = obj.content;
         ret.Signature = obj.sig;
         return ret;
@@ -130,7 +130,7 @@ export default class Event {
             pubkey: this.PubKey,
             created_at: this.CreatedAt,
             kind: this.Kind,
-            tags: this.Tags.map(a => a.ToObject()).filter(a => a !== null),
+            tags: this.Tags.sort((a,b) => a.Index - b.Index).map(a => a.ToObject()).filter(a => a !== null),
             content: this.Content,
             sig: this.Signature
         };
