@@ -37,16 +37,21 @@ const UsersSlice = createSlice({
             if (!Array.isArray(ud)) {
                 ud = [ud];
             }
+            console.debug("Set user profiles: ", ud);
             for (let x of ud) {
-                let existing = state.users[ud.pubkey];
+                let existing = state.users[x.pubkey];
                 if (existing) {
-                    ud = {
+                    x = {
                         ...existing,
-                        ...ud
+                        ...x
                     };
                 }
-                state.users[ud.pubkey] = ud;
-                window.localStorage.setItem(`user:${ud.pubkey}`, JSON.stringify(ud));
+                state.users[x.pubkey] = x;
+                window.localStorage.setItem(`user:${x.pubkey}`, JSON.stringify(x));
+
+                let newUsersObj = {};
+                Object.assign(newUsersObj, state.users);
+                state.users = newUsersObj;
             }
         }
     }

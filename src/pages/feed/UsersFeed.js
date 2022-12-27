@@ -14,22 +14,26 @@ export default function useUsersStore() {
     const [loading, setLoading] = useState(false);
 
     function isUserCached(id) {
-        let expire = new Date().getTime() - 60_000; // 60s expire
+        let expire = new Date().getTime() - (1_000 * 60 * 5) ; // 60s expire
         let u = users[id];
-        return u && (u.loaded || 0) < expire;
+        return u && u.loaded > expire;
     }
 
     async function getUsers() {
 
         let needProfiles = pKeys.filter(a => !isUserCached(a));
+        if(needProfiles.length === 0) {
+            return;
+        }
+        console.debug("Need profiles: ", needProfiles);
         let sub = new Subscriptions();
         sub.Authors = new Set(needProfiles);
         sub.Kinds.add(EventKind.SetMetadata);
 
         let events = await system.RequestSubscription(sub);
-
+        console.debug("Got events: ", events);
         let loaded = new Date().getTime();
-        let profiles = events.map(a => {
+        let profiles = events.filter(a => a.kind === EventKind.SetMetadata).map(a => {
             let metaEvent = Event.FromObject(a);
             let data = JSON.parse(metaEvent.Content);
             return {
@@ -40,10 +44,14 @@ export default function useUsersStore() {
             };
         });
         let missing = needProfiles.filter(a => !events.some(b => b.pubkey === a));
-        let missingProfiles = missing.map(a => new{
-            pubkey: a,
-            loaded
+        let missingProfiles = missing.map(a => {
+            return {
+                pubkey: a,
+                loaded
+            }
         });
+        console.debug("Got profiles: ", profiles);
+        console.debug("Missing profiles: ", missing);
         dispatch(setUserData([
             ...profiles,
             ...missingProfiles

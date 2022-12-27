@@ -56,7 +56,7 @@ export default class Connection {
      */
     AddSubscription(sub) {
         let req = ["REQ", sub.Id, sub.ToObject()];
-        if(sub.OrSubs.length > 0) {
+        if (sub.OrSubs.length > 0) {
             req = [
                 ...req,
                 ...sub.OrSubs.map(o => o.ToObject())
@@ -71,9 +71,13 @@ export default class Connection {
      * @param {any} subId Subscription id to remove
      */
     RemoveSubscription(subId) {
-        let req = ["CLOSE", subId];
-        this._SendJson(req);
-        delete this.Subscriptions[subId];
+        if (this.Subscriptions[subId]) {
+            let req = ["CLOSE", subId];
+            this._SendJson(req);
+            delete this.Subscriptions[subId];
+            return true;
+        }
+        return false;
     }
 
     _SendJson(obj) {

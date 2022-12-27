@@ -60,7 +60,8 @@ export class NostrSystem {
             };
             sub.OnEnd = (c) => {
                 c.RemoveSubscription(sub.Id);
-                if(--counter === 0) {
+                console.debug(counter);
+                if (counter-- <= 0) {
                     resolve(events);
                 }
             };
@@ -68,6 +69,15 @@ export class NostrSystem {
                 s.AddSubscription(sub);
                 counter++;
             }
+
+            // force timeout returning current results
+            setTimeout(() => {
+                for (let s of Object.values(this.Sockets)) {
+                    s.RemoveSubscription(sub.Id);
+                    counter++;
+                }
+                resolve(events);
+            }, 10_000);
         });
     }
 }

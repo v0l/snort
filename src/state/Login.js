@@ -3,13 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const PrivateKeyItem = "secret";
 const RelayList = "relays";
 const DefaultRelays = JSON.stringify([
-    "wss://nostr.v0l.io",
     "wss://nostr-pub.wellorder.net",
-    "wss://nostr.zebedee.cloud",
     "wss://relay.damus.io",
-    "wss://nostr.rocks",
-    "wss://nostr.rocks",
-    "wss://nostr.fmt.wiz.biz"
 ]);
 
 const LoginSlice = createSlice({
