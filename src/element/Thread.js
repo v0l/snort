@@ -4,6 +4,8 @@ import Note from "./Note";
 import NoteGhost from "./NoteGhost";
 
 export default function Thread(props) {
+    const thisEvent = props.this;
+
     /** @type {Array<Event>} */
     const notes = props.notes?.map(a => Event.FromObject(a));
 
@@ -11,18 +13,21 @@ export default function Thread(props) {
     const root = notes.find(a => a.GetThread() === null);
 
     function reactions(id) {
-        return notes?.filter(a => a.Kind === EventKind.Reaction && a.GetThread()?.Root?.Event === id);
+        return notes?.filter(a => a.Kind === EventKind.Reaction && a.Tags.find(a => a.Key === "e").Event === id);
     }
 
     const repliesToRoot = notes?.
-        filter(a => a.GetThread()?.Root?.Event === root?.Id && a.Kind === EventKind.TextNote)
-        .sort((a, b) => b.CreatedAt - a.CreatedAt);
+        filter(a => a.GetThread()?.Root !== null && a.Kind === EventKind.TextNote && a.Id !== thisEvent)
+        .sort((a, b) => a.CreatedAt - b.CreatedAt);
+    const thisNote = notes?.find(a => a.Id === thisEvent);
     return (
         <>
             {root === undefined ?
-                <NoteGhost />
-                : <Note data={root?.ToObject()} reactions={reactions(root?.Id)} />}
-            {repliesToRoot?.map(a => <Note key={a.Id} data={a.ToObject()} reactions={reactions(a.Id)} />)}
+                <NoteGhost text={`Loading... (${notes.length} events loaded)`}/>
+                : <Note data-ev={root} reactions={reactions(root?.Id)} />}
+            {thisNote ? <Note data-ev={thisNote} reactions={reactions(thisNote.Id)}/> : null}
+            <h4>Other Replies</h4>
+            {repliesToRoot?.map(a => <Note key={a.Id} data-ev={a} reactions={reactions(a.Id)} />)}
         </>
     );
 }

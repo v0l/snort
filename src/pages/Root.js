@@ -1,22 +1,20 @@
 import "./Root.css";
-import Timeline from "./Timeline";
 import { useSelector } from "react-redux";
-import { useContext, useState } from "react";
-import Event from "../nostr/Event";
-import { NostrContext } from "..";
+import {  useState } from "react";
+import Timeline from "./Timeline";
+import useEventPublisher from "./feed/EventPublisher";
 
 export default function RootPage() {
-    const system = useContext(NostrContext);
+    const publisher = useEventPublisher();
     const pubKey = useSelector(s => s.login.publicKey);
-    const privKey = useSelector(s => s.login.privateKey);
+
     const [note, setNote] = useState("");
 
     async function sendNote() {
-        let ev = Event.NewNote(pubKey, note);
-        await ev.Sign(privKey);
+        let ev = await publisher.note(note);
 
         console.debug("Sending note: ", ev);
-        system.BroadcastEvent(ev);
+        publisher.broadcast(ev);
         setNote("");
     }
 

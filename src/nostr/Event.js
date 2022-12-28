@@ -149,30 +149,4 @@ export default class Event {
         ev.PubKey = pubKey;
         return ev;
     }
-
-    /**
-     * Create new SetMetadata event
-     * @param {String} pubKey Pubkey of the creator of this event
-     * @param {any} obj Metadata content
-     * @returns {Event}
-     */
-    static SetMetadata(pubKey, obj) {
-        let ev = Event.ForPubKey(pubKey);
-        ev.Kind = EventKind.SetMetadata;
-        ev.Content = JSON.stringify(obj);
-        return ev;
-    }
-
-    /**
-     * Create a new TextNote event
-     * @param {String} pubKey 
-     * @param {String} message 
-     * @returns 
-     */
-    static NewNote(pubKey, message) {
-        let ev = Event.ForPubKey(pubKey);
-        ev.Kind = EventKind.TextNote;
-        ev.Content = message;
-        return ev;
-    }
 }

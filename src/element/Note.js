@@ -1,10 +1,11 @@
 import "./Note.css";
-import Event from "../nostr/Event";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
+import Event from "../nostr/Event";
 import ProfileImage from "./ProfileImage";
+import useEventPublisher from "../pages/feed/EventPublisher";
 
 const UrlRegex = /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)/;
 const FileExtensionRegex = /\.([\w]+)$/;
@@ -13,11 +14,12 @@ const MentionRegex = /(#\[\d+\])/g;
 export default function Note(props) {
     const navigate = useNavigate();
     const data = props.data;
+    const dataEvent = props["data-ev"];
     const reactions = props.reactions;
+    const publisher = useEventPublisher();
     const [sig, setSig] = useState(false);
     const users = useSelector(s => s.users?.users);
-    const user = users[data?.pubkey];
-    const ev = Event.FromObject(data);
+    const ev = dataEvent ?? Event.FromObject(data);
 
     useEffect(() => {
         if (sig === false) {
@@ -109,6 +111,11 @@ export default function Note(props) {
         });
     }
 
+    async function like() {
+        let evLike = await publisher.like(ev);
+        publisher.broadcast(evLike);
+    }
+
     if (!ev.IsContent()) {
         return (
             <>
@@ -131,7 +138,7 @@ export default function Note(props) {
                 {transformBody()}
             </div>
             <div className="footer">
-                <span className="pill">
+                <span className="pill" onClick={() => like()}>
                     👍 {(reactions?.length ?? 0)}
                 </span>
                 <span className="pill" onClick={() => console.debug(ev)}>

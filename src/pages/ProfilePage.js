@@ -3,19 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import useProfile from "./feed/ProfileFeed";
 import { useContext, useEffect, useState } from "react";
-import Event from "../nostr/Event";
-import { NostrContext } from "..";
 import { resetProfile } from "../state/Users";
 import Nostrich from "../nostrich.jpg";
+import useEventPublisher from "./feed/EventPublisher";
 
 export default function ProfilePage() {
-    const system = useContext(NostrContext);
     const dispatch = useDispatch();
     const params = useParams();
     const id = params.id;
     const user = useProfile(id);
+    const publisher = useEventPublisher();
     const loginPubKey = useSelector(s => s.login.publicKey);
-    const privKey = useSelector(s => s.login.privateKey);
     const isMe = loginPubKey === id;
 
     let [name, setName] = useState("");
@@ -37,7 +35,7 @@ export default function ProfilePage() {
     }, [user]);
 
     async function saveProfile() {
-        let ev = Event.SetMetadata(id, {
+        let ev = await publisher.metadata({
             name,
             about,
             picture,
@@ -45,10 +43,8 @@ export default function ProfilePage() {
             nip05,
             lud16
         });
-        await ev.Sign(privKey);
-
         console.debug(ev);
-        system.BroadcastEvent(ev);
+        publisher.broadcast(ev);
         dispatch(resetProfile(id));
     }
 

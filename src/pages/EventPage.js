@@ -7,5 +7,5 @@ export default function EventPage() {
     const id = params.id;
 
     const { notes } = useThreadFeed(id);
-    return <Thread notes={notes}/>;
+    return <Thread notes={notes} this={id}/>;
 }

@@ -1,5 +1,4 @@
 import "./Note.css";
-import moment from "moment";
 import ProfileImage from "./ProfileImage";
 
 export default function NoteGhost(props) {
@@ -7,12 +6,9 @@ export default function NoteGhost(props) {
         <div className="note">
             <div className="header">
                 <ProfileImage pubKey="" />
-                <div className="info">
-                    {moment().fromNow()}
-                </div>
             </div>
             <div className="body">
-                Loading...
+                {props.text ?? "Loading..."}
             </div>
             <div className="footer">
             </div>
