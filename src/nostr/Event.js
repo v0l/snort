@@ -162,4 +162,17 @@ export default class Event {
         ev.Content = JSON.stringify(obj);
         return ev;
     }
+
+    /**
+     * Create a new TextNote event
+     * @param {String} pubKey 
+     * @param {String} message 
+     * @returns 
+     */
+    static NewNote(pubKey, message) {
+        let ev = Event.ForPubKey(pubKey);
+        ev.Kind = EventKind.TextNote;
+        ev.Content = message;
+        return ev;
+    }
 }
