@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import Event from "../nostr/Event";
 import { NostrContext } from "..";
 import { resetProfile } from "../state/Users";
+import Nostrich from "../nostrich.jpg";
 
 export default function ProfilePage() {
     const system = useContext(NostrContext);
@@ -27,7 +28,7 @@ export default function ProfilePage() {
     useEffect(() => {
         if (user) {
             setName(user.name ?? "");
-            setPicture(user.picture ?? "");
+            setPicture(user.picture ?? Nostrich);
             setAbout(user.about ?? "");
             setWebsite(user.website ?? "");
             setNip05(user.nip05 ?? "");
