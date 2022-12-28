@@ -79,6 +79,8 @@ export default function Note(props) {
                             return <video key={url} src={url} controls />
                         }
                     }
+                } else {
+                    return <a href={url}>{url}</a>
                 }
             } else {
                 let mentions = a.split(MentionRegex).map((match) => {

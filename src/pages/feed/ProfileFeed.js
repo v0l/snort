@@ -10,7 +10,7 @@ export default function useProfile(pubKey) {
     const pubKeys = useSelector(s => s.users.pubKeys);
 
     useEffect(() => {
-        if (system && !pubKeys.includes(pubKey)) {
+        if (system && pubKey !== "" && !pubKeys.includes(pubKey)) {
             dispatch(addPubKey(pubKey));
         }
     }, [system]);

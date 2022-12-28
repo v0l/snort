@@ -49,6 +49,9 @@ export default function useThreadFeed(id) {
                     for (let m of thread.Mentions) {
                         sub.Ids.add(m.Event);
                     }
+                } else {
+                    // this event is a root note, no other notes need to be loaded
+                    return;
                 }
             } else if (notes.length === 0) {
                 sub.Ids.add(id);
@@ -69,7 +72,6 @@ export default function useThreadFeed(id) {
     }, [system, notes]);
 
     useEffect(() => {
-        console.debug("use thread stream")
         dispatch(reset());
     }, []);
 

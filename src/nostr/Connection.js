@@ -4,12 +4,18 @@ import Event from "./Event";
 export default class Connection {
     constructor(addr) {
         this.Address = addr;
-        this.Socket = new WebSocket(addr);
+        this.Socket = null;
+        this.Pending = [];
+        this.Subscriptions = {};
+        this.Connect();
+    }
+
+    Connect() {
+        this.Socket = new WebSocket(this.Address);
         this.Socket.onopen = (e) => this.OnOpen(e);
         this.Socket.onmessage = (e) => this.OnMessage(e);
         this.Socket.onerror = (e) => this.OnError(e);
-        this.Pending = [];
-        this.Subscriptions = {};
+        this.Socket.onclose = (e) => this.OnClose(e);
     }
 
     OnOpen(e) {
@@ -22,6 +28,13 @@ export default class Connection {
         }
     }
 
+    OnClose(e) {
+        console.log(`[${this.Address}] Closed: `, e);
+        setTimeout(() => {
+            this.Connect();
+        }, 500);
+    }
+
     OnMessage(e) {
         let msg = JSON.parse(e.data);
         let tag = msg[0];
@@ -32,6 +45,15 @@ export default class Connection {
             }
             case "EOSE": {
                 this._OnEnd(msg[1]);
+                break;
+            }
+            case "OK": {
+                // feedback to broadcast call
+                console.debug("OK: ", msg[1]);
+                break;
+            }
+            case "NOTICE": {
+                console.warn(`[${this.Address}] NOTICE: ${msg[1]}`);
                 break;
             }
             default: {
@@ -59,7 +81,11 @@ export default class Connection {
      * @param {Subscriptions | Array<Subscriptions>} sub Subscriptions object
      */
     AddSubscription(sub) {
-        let req = ["REQ", sub.Id, sub.ToObject()];
+        let subObj = sub.ToObject();
+        if(Object.keys(subObj).length === 0) {
+            throw "CANNOT SEND EMPTY SUB - FIX ME";
+        }
+        let req = ["REQ", sub.Id, subObj];
         if (sub.OrSubs.length > 0) {
             req = [
                 ...req,
