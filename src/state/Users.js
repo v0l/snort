@@ -56,9 +56,17 @@ const UsersSlice = createSlice({
                     ...state.users
                 };
             }
+        },
+        resetProfile: (state, action) => {
+            if(state.users[action.payload]) {
+                delete state.users[action.payload];
+                state.users = {
+                    ...state.users
+                };
+            }
         }
     }
 });
 
-export const { addPubKey, setUserData } = UsersSlice.actions;
+export const { addPubKey, setUserData, resetProfile } = UsersSlice.actions;
 export const reducer = UsersSlice.reducer;

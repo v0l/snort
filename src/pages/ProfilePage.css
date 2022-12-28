@@ -7,11 +7,23 @@
     margin-left: 10px;
 }
 
-.profile img.avatar {
+.profile .avatar {
     width: 256px;
     height: 256px;
+    background-size: contain;
+    cursor: pointer;
 }
 
-.profile img.avatar:hover {
-    cursor: pointer;
+.profile .avatar .edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background-color: black;
+}
+
+.profile .avatar .edit:hover {
+    opacity: 0.5;
 }

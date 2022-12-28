@@ -45,8 +45,12 @@ export default class Connection {
         console.log(e);
     }
 
+    /**
+     * Send event on this connection
+     * @param {Event} e 
+     */
     SendEvent(e) {
-        let req = ["EVENT", e];
+        let req = ["EVENT", e.ToObject()];
         this._SendJson(req);
     }
 

@@ -57,6 +57,9 @@ export default class Event {
         
         let sig = await secp.schnorr.sign(this.Id, key);
         this.Signature = secp.utils.bytesToHex(sig);
+        if(!await this.Verify()) {
+            throw "Signing failed";
+        }
     }
 
     /**
@@ -134,5 +137,29 @@ export default class Event {
             content: this.Content,
             sig: this.Signature
         };
+    }
+
+    /**
+     * Create a new event for a specific pubkey
+     * @param {String} pubKey 
+     */
+    static ForPubKey(pubKey) {
+        let ev = new Event();
+        ev.CreatedAt = parseInt(new Date().getTime() / 1000);
+        ev.PubKey = pubKey;
+        return ev;
+    }
+
+    /**
+     * Create new SetMetadata event
+     * @param {String} pubKey Pubkey of the creator of this event
+     * @param {any} obj Metadata content
+     * @returns {Event}
+     */
+    static SetMetadata(pubKey, obj) {
+        let ev = Event.ForPubKey(pubKey);
+        ev.Kind = EventKind.SetMetadata;
+        ev.Content = JSON.stringify(obj);
+        return ev;
     }
 }

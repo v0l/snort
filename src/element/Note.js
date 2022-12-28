@@ -83,7 +83,7 @@ export default function Note(props) {
             } else {
                 let mentions = a.split(MentionRegex).map((match) => {
                     if (match.startsWith("#")) {
-                        let idx = parseInt(match.match(/\[(\d+)\]/)[1]) - 1;
+                        let idx = parseInt(match.match(/\[(\d+)\]/)[1]);
                         let pref = pTags[idx];
                         if (pref) {
                             let pUser = users[pref.PubKey]?.name ?? pref.PubKey.substring(0, 8);

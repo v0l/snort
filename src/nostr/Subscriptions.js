@@ -83,6 +83,14 @@ export class Subscriptions {
         this.OrSubs.push(sub);
     }
 
+    /**
+     * If all relays have responded with EOSE
+     * @returns {boolean}
+     */
+    IsFinished() { 
+        return Object.keys(this.Started).length === Object.keys(this.Finished).length;
+    }
+
     static FromObject(obj) {
         let ret = new Subscriptions();
         ret.Ids = new Set(obj.ids);

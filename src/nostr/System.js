@@ -8,6 +8,7 @@ export class NostrSystem {
     constructor() {
         this.Sockets = {};
         this.Subscriptions = {};
+        this.PendingSubscriptions = [];
     }
 
     /**
@@ -38,6 +39,10 @@ export class NostrSystem {
         delete this.Subscriptions[subId];
     }
 
+    /**
+     * Send events to writable relays
+     * @param {Event} ev 
+     */
     BroadcastEvent(ev) {
         for (let s of Object.values(this.Sockets)) {
             s.SendEvent(ev);
@@ -51,15 +56,11 @@ export class NostrSystem {
      */
     RequestSubscription(sub) {
         return new Promise((resolve, reject) => {
-            let counter = 0;
             let events = [];
 
             // force timeout returning current results
             let timeout = setTimeout(() => {
-                for (let s of Object.values(this.Sockets)) {
-                    s.RemoveSubscription(sub.Id);
-                    counter++;
-                }
+                this.RemoveSubscription(sub.Id);
                 resolve(events);
             }, 10_000);
 
@@ -74,16 +75,13 @@ export class NostrSystem {
             };
             sub.OnEnd = (c) => {
                 c.RemoveSubscription(sub.Id);
-                console.debug(counter);
-                if (counter-- <= 0) {
+                if (sub.IsFinished()) {
                     clearInterval(timeout);
+                    console.debug(`[${sub.Id}] Finished`);
                     resolve(events);
                 }
             };
-            for (let s of Object.values(this.Sockets)) {
-                s.AddSubscription(sub);
-                counter++;
-            }
+            this.AddSubscription(sub);
         });
     }
 }
