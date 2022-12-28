@@ -14,9 +14,9 @@ export class NostrSystem {
      * Connect to a NOSTR relay if not already connected
      * @param {string} address 
      */
-    ConnectToRelay(address) {
+    ConnectToRelay(address, options) {
         if (typeof this.Sockets[address] === "undefined") {
-            let c = new Connection(address);
+            let c = new Connection(address, options);
             for (let s of Object.values(this.Subscriptions)) {
                 c.AddSubscription(s);
             }

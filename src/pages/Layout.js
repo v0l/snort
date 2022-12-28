@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { NostrContext } from ".."
 import ProfileImage from "../element/ProfileImage";
 import { init } from "../state/Login";
-import useUsersStore from "./feed/UsersFeed";
+import useLoginFeed from "./feed/LoginFeed";
+import useUsersCache from "./feed/UsersFeed";
 
 export default function Layout(props) {
     const dispatch = useDispatch();
@@ -12,12 +13,13 @@ export default function Layout(props) {
     const navigate = useNavigate();
     const key = useSelector(s => s.login.publicKey);
     const relays = useSelector(s => s.login.relays);
-    const users = useUsersStore();
+    useUsersCache();
+    useLoginFeed();
 
     useEffect(() => {
         if (system && relays) {
-            for (let r of relays) {
-                system.ConnectToRelay(r);
+            for (let [k, v] of Object.entries(relays)) {
+                system.ConnectToRelay(k, v);
             }
         }
     }, [relays, system]);

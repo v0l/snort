@@ -1,55 +1,38 @@
-import { useContext, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useContext, useEffect, useState } from "react";
 import { NostrContext } from "../../index";
 import EventKind from "../../nostr/EventKind";
 import { Subscriptions } from "../../nostr/Subscriptions";
-import { addNote } from "../../state/Timeline";
-import { addPubKey } from "../../state/Users";
 
-export default function useTimelineFeed(opt) {
+export default function useTimelineFeed(pubKeys) {
     const system = useContext(NostrContext);
-    const dispatch = useDispatch();
-    const follows = useSelector(s => s.timeline?.follows);
-    const notes = useSelector(s => s.timeline?.notes);
-    const pubKeys = useSelector(s => s.users.pubKeys);
-
-    const options = {
-
-        ...opt
-    };
-
-    function trackPubKeys(keys) {
-        for (let pk of keys) {
-            if (!pubKeys.includes(pk)) {
-                dispatch(addPubKey(pk));
-            }
-        }
-    }
+    const [notes, setNotes] = useState([]);
 
     useEffect(() => {
-        if (follows.length > 0) {
+        if (system && pubKeys.length > 0) {
             const sub = new Subscriptions();
-            sub.Authors = new Set(follows);
+            sub.Authors = new Set(pubKeys);
             sub.Kinds.add(EventKind.TextNote);
             sub.Limit = 10;
 
             sub.OnEvent = (e) => {
-                dispatch(addNote(e));
+                setNotes(n => {
+                    if (Array.isArray(n) && !n.some(a => a.id === e.id)) {
+                        return [
+                            ...n,
+                            e
+                        ]
+                    } else {
+                        return n;
+                    }
+                });
             };
 
-            trackPubKeys(follows);
-            if (system) {
-                system.AddSubscription(sub);
-                return () => system.RemoveSubscription(sub.Id);
-            }
+            system.AddSubscription(sub);
+            return () => {
+                system.RemoveSubscription(sub.Id);
+            };
         }
-    }, [follows]);
+    }, [system, pubKeys]);
 
-    useEffect(() => {
-        for (let n of notes) {
-
-        }
-    }, [notes]);
-
-    return { notes, follows };
+    return { notes };
 }

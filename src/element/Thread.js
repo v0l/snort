@@ -17,15 +17,16 @@ export default function Thread(props) {
     }
 
     const repliesToRoot = notes?.
-        filter(a => a.GetThread()?.Root !== null && a.Kind === EventKind.TextNote && a.Id !== thisEvent)
+        filter(a => a.GetThread()?.Root !== null && a.Kind === EventKind.TextNote && a.Id !== thisEvent && a.Id !== root?.Id)
         .sort((a, b) => a.CreatedAt - b.CreatedAt);
     const thisNote = notes?.find(a => a.Id === thisEvent);
+    const thisIsRootNote = thisNote?.Id === root?.Id;
     return (
         <>
             {root === undefined ?
                 <NoteGhost text={`Loading... (${notes.length} events loaded)`}/>
                 : <Note data-ev={root} reactions={reactions(root?.Id)} />}
-            {thisNote ? <Note data-ev={thisNote} reactions={reactions(thisNote.Id)}/> : null}
+            {thisNote && !thisIsRootNote ? <Note data-ev={thisNote} reactions={reactions(thisNote.Id)}/> : null}
             <h4>Other Replies</h4>
             {repliesToRoot?.map(a => <Note key={a.Id} data-ev={a} reactions={reactions(a.Id)} />)}
         </>

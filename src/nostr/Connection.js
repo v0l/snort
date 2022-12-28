@@ -1,26 +1,35 @@
 import { Subscriptions } from "./Subscriptions";
 import Event from "./Event";
 
+const DefaultConnectTimeout = 1000;
+
 export default class Connection {
-    constructor(addr) {
+    constructor(addr, options) {
         this.Address = addr;
         this.Socket = null;
         this.Pending = [];
         this.Subscriptions = {};
+        this.Read = options?.read || true;
+        this.Write = options?.write || true;
+        this.ConnectTimeout = DefaultConnectTimeout;
         this.Connect();
     }
 
     Connect() {
-        this.Socket = new WebSocket(this.Address);
-        this.Socket.onopen = (e) => this.OnOpen(e);
-        this.Socket.onmessage = (e) => this.OnMessage(e);
-        this.Socket.onerror = (e) => this.OnError(e);
-        this.Socket.onclose = (e) => this.OnClose(e);
+        try {
+            this.Socket = new WebSocket(this.Address);
+            this.Socket.onopen = (e) => this.OnOpen(e);
+            this.Socket.onmessage = (e) => this.OnMessage(e);
+            this.Socket.onerror = (e) => this.OnError(e);
+            this.Socket.onclose = (e) => this.OnClose(e);
+        } catch (e) {
+            console.warn(`[${this.Address}] Connect failed!`);
+        }
     }
 
     OnOpen(e) {
-        console.log(`Opened connection to: ${this.Address}`);
-        console.log(e);
+        this.ConnectTimeout = DefaultConnectTimeout;
+        console.log(`[${this.Address}] Open!`);
 
         // send pending
         for (let p of this.Pending) {
@@ -29,10 +38,11 @@ export default class Connection {
     }
 
     OnClose(e) {
-        console.log(`[${this.Address}] Closed: `, e);
+        this.ConnectTimeout = this.ConnectTimeout * 2;
+        console.log(`[${this.Address}] Closed (${e.reason}), trying again in ${(this.ConnectTimeout / 1000).toFixed(0).toLocaleString()} sec`);
         setTimeout(() => {
             this.Connect();
-        }, 500);
+        }, this.ConnectTimeout);
     }
 
     OnMessage(e) {
@@ -82,7 +92,7 @@ export default class Connection {
      */
     AddSubscription(sub) {
         let subObj = sub.ToObject();
-        if(Object.keys(subObj).length === 0) {
+        if (Object.keys(subObj).length === 0) {
             throw "CANNOT SEND EMPTY SUB - FIX ME";
         }
         let req = ["REQ", sub.Id, subObj];

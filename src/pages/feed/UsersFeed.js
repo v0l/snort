@@ -6,7 +6,7 @@ import EventKind from "../../nostr/EventKind";
 import { Subscriptions } from "../../nostr/Subscriptions";
 import { setUserData } from "../../state/Users";
 
-export default function useUsersStore() {
+export default function useUsersCache() {
     const dispatch = useDispatch();
     const system = useContext(NostrContext);
     const pKeys = useSelector(s => s.users.pubKeys);

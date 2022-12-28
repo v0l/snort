@@ -2,10 +2,12 @@ import "./ProfilePage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import useProfile from "./feed/ProfileFeed";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { resetProfile } from "../state/Users";
 import Nostrich from "../nostrich.jpg";
 import useEventPublisher from "./feed/EventPublisher";
+import useTimelineFeed from "./feed/TimelineFeed";
+import Note from "../element/Note";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -13,6 +15,7 @@ export default function ProfilePage() {
     const id = params.id;
     const user = useProfile(id);
     const publisher = useEventPublisher();
+    const { notes } = useTimelineFeed([id]);
     const loginPubKey = useSelector(s => s.login.publicKey);
     const isMe = loginPubKey === id;
 
@@ -91,19 +94,63 @@ export default function ProfilePage() {
         )
     }
 
-    return (
-        <div className="profile">
-            <div>
-                <div style={{ backgroundImage: `url(${picture})` }} className="avatar">
-                    <div className="edit">
-                        <div>Edit</div>
+    function details() {
+        return (
+            <>
+                <div className="form-group">
+                    <div>Name:</div>
+                    <div>
+                        {name}
                     </div>
                 </div>
-            </div>
-            <div>
-                {isMe ? editor() : null}
-            </div>
+                <div className="form-group">
+                    <div>About:</div>
+                    <div>
+                        {about}
+                    </div>
+                </div>
+                {website ?
+                    <div className="form-group">
+                        <div>Website:</div>
+                        <div>
+                            {website}
+                        </div>
+                    </div> : null}
+                <div className="form-group">
+                    <div>NIP-05:</div>
+                    <div>
+                        {nip05}
+                    </div>
+                </div>
+                <div className="form-group">
+                    <div>Lightning Address:</div>
+                    <div>
+                        {lud16}
+                    </div>
+                </div>
+            </>
+        )
+    }
 
-        </div>
+    return (
+        <>
+            <div className="profile">
+                <div>
+                    <div style={{ backgroundImage: `url(${picture})` }} className="avatar">
+                        {isMe ?
+                            <div className="edit">
+                                <div>Edit</div>
+                            </div>
+                            : null
+                        }
+                    </div>
+                </div>
+                <div>
+                    {isMe ? editor() : details()}
+                </div>
+            </div>
+            <h4>Notes</h4>
+            {notes?.sort((a, b) => b.created_at - a.created_at).map(a => <Note key={a.id} data={a} />)}
+        </>
     )
 }
