@@ -54,8 +54,6 @@ export default function Note(props) {
 
     function transformBody() {
         let body = ev.Content;
-        let pTags = ev.Tags.filter(a => a.Key === "p");
-
         let urlBody = body.split(UrlRegex);
 
         return urlBody.map(a => {
@@ -84,15 +82,23 @@ export default function Note(props) {
                 }
             } else {
                 let mentions = a.split(MentionRegex).map((match) => {
-                    if (match.startsWith("#")) {
-                        let idx = parseInt(match.match(/\[(\d+)\]/)[1]);
-                        let pref = pTags[idx];
-                        if (pref) {
-                            let pUser = users[pref.PubKey]?.name ?? pref.PubKey.substring(0, 8);
-                            return <Link key={pref.PubKey} to={`/p/${pref.PubKey}`}>#{pUser}</Link>;
-                        } else {
-                            return <pre>BROKEN REF: {match[0]}</pre>;
-                        }
+                    let matchTag = match.match(/#\[(\d+)\]/);
+                    if (matchTag && matchTag.length === 2) {
+                        let idx = parseInt(matchTag[1]);
+                        let ref = ev.Tags.find(a => a.Index === idx);
+                        if (ref) {
+                            switch(ref.Key) {
+                                case "p": {
+                                    let pUser = users[ref.PubKey]?.name ?? ref.PubKey.substring(0, 8);
+                                    return <Link key={ref.PubKey} to={`/p/${ref.PubKey}`}>@{pUser}</Link>;
+                                }
+                                case "e": {
+                                    let eText = ref.Event.substring(0, 8);
+                                    return <Link key={ref.Event} to={`/e/${ref.Event}`}>#{eText}</Link>;
+                                }
+                            }
+                        } 
+                        return <b style={{color: "red"}}>{matchTag[0]}?</b>;
                     } else {
                         return match;
                     }
@@ -127,6 +133,9 @@ export default function Note(props) {
             <div className="footer">
                 <span className="pill">
                     👍 {(reactions?.length ?? 0)}
+                </span>
+                <span className="pill" onClick={() => console.debug(ev)}>
+                    <i>i</i>
                 </span>
             </div>
         </div>
