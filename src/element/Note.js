@@ -80,7 +80,7 @@ export default function Note(props) {
                         }
                     }
                 } else {
-                    return <a href={url}>{url}</a>
+                    return <a href={url}>{url.toString()}</a>
                 }
             } else {
                 let mentions = a.split(MentionRegex).map((match) => {
