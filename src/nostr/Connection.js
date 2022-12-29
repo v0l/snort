@@ -93,6 +93,7 @@ export default class Connection {
     AddSubscription(sub) {
         let subObj = sub.ToObject();
         if (Object.keys(subObj).length === 0) {
+            debugger;
             throw "CANNOT SEND EMPTY SUB - FIX ME";
         }
         let req = ["REQ", sub.Id, subObj];

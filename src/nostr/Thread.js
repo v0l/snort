@@ -39,6 +39,7 @@ export default class Thread {
             let reply = eTags.find(a => a.Marker === "reply");
             ret.Root = root;
             ret.ReplyTo = reply;
+            ret.Mentions = eTags.filter(a => a.Marker === "mention");
         }
         ret.PubKeys = ev.Tags.filter(a => a.Key === "p").map(a => a.PubKey);
 
