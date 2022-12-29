@@ -24,7 +24,12 @@ const LoginSlice = createSlice({
         /**
          * A list of pubkeys this user follows
          */
-        follows: []
+        follows: [],
+
+        /**
+         * Login keys are managed by extension
+         */
+        nip07: false,
     },
     reducers: {
         init: (state) => {
@@ -47,6 +52,10 @@ const LoginSlice = createSlice({
         setPublicKey: (state, action) => {
             state.publicKey = action.payload;
         },
+        setNip07PubKey: (state, action) => {
+            state.publicKey = action.payload;
+            state.nip07 = true;
+        },
         setRelays: (state, action) => {
             state.relays = action.payload;
         },
@@ -60,5 +69,5 @@ const LoginSlice = createSlice({
     }
 });
 
-export const { init, setPrivateKey, setPublicKey, setRelays, setFollows, logout } = LoginSlice.actions;
+export const { init, setPrivateKey, setPublicKey, setNip07PubKey, setRelays, setFollows, logout } = LoginSlice.actions;
 export const reducer = LoginSlice.reducer;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPrivateKey, setPublicKey } from "../state/Login";
+import { setPrivateKey, setNip07PubKey } from "../state/Login";
 import * as secp from '@noble/secp256k1';
 import { bech32 } from "bech32";
 import { useNavigate } from "react-router-dom";
@@ -32,12 +32,11 @@ export default function LoginPage() {
 
     async function doNip07Login() {
         let pubKey = await window.nostr.getPublicKey();
-        dispatch(setPublicKey(pubKey));
+        dispatch(setNip07PubKey(pubKey));
     }
 
     function altLogins() {
         let nip07 = 'nostr' in window;
-
         if (!nip07) {
             return null;
         }

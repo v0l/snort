@@ -8,8 +8,8 @@
 }
 
 .profile .avatar {
-    width: 256px;
-    height: 256px;
+    width: 128px;
+    height: 128px;
     background-size: contain;
     cursor: pointer;
 }
@@ -26,4 +26,15 @@
 
 .profile .avatar .edit:hover {
     opacity: 0.5;
+}
+
+@media(max-width: 720px) {
+    .profile {
+        flex-direction: column;
+        align-items: center;
+    }
+    .profile > div:last-child { 
+        margin: 0;
+        width: 100%;
+    }
 }

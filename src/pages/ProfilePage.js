@@ -8,6 +8,9 @@ import Nostrich from "../nostrich.jpg";
 import useEventPublisher from "./feed/EventPublisher";
 import useTimelineFeed from "./feed/TimelineFeed";
 import Note from "../element/Note";
+import { bech32 } from "bech32";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQrcode } from "@fortawesome/free-solid-svg-icons";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -36,6 +39,23 @@ export default function ProfilePage() {
             setLud16(user.lud16 ?? "");
         }
     }, [user]);
+
+    useEffect(() => {
+        // some clients incorrectly set this to LNURL service, patch this
+        if (lud16.toLowerCase().startsWith("lnurl")) {
+            let decoded = bech32.decode(lud16, 1000);
+            let url = new TextDecoder().decode(Uint8Array.from(bech32.fromWords(decoded.words)));
+            if (url.startsWith("http")) {
+                let parsedUri = new URL(url);
+                // is lightning address
+                if (parsedUri.pathname.startsWith("/.well-known/lnurlp/")) {
+                    let pathParts = parsedUri.pathname.split('/');
+                    let username = pathParts[pathParts.length - 1];
+                    setLud16(`${username}@${parsedUri.hostname}`);
+                }
+            }
+        }
+    }, [lud16]);
 
     async function saveProfile() {
         let ev = await publisher.metadata({
@@ -79,7 +99,7 @@ export default function ProfilePage() {
                     </div>
                 </div>
                 <div className="form-group">
-                    <div>Lightning Address:</div>
+                    <div>LN Address:</div>
                     <div>
                         <input type="text" value={lud16} onChange={(e) => setLud16(e.target.value)} />
                     </div>
@@ -116,18 +136,23 @@ export default function ProfilePage() {
                             {website}
                         </div>
                     </div> : null}
-                <div className="form-group">
-                    <div>NIP-05:</div>
-                    <div>
-                        {nip05}
-                    </div>
-                </div>
-                <div className="form-group">
-                    <div>Lightning Address:</div>
-                    <div>
-                        {lud16}
-                    </div>
-                </div>
+                {nip05 ?
+                    <div className="form-group">
+                        <div>NIP-05:</div>
+                        <div>
+                            {nip05}
+                        </div>
+                    </div> : null}
+                {lud16 ?
+                    <div className="form-group">
+                        <div>LN Address:</div>
+                        <div>
+                            {lud16}&nbsp;
+                            <div className="btn btn-sm" onClick={() => { }}>
+                                <FontAwesomeIcon icon={faQrcode} size="lg" />
+                            </div>
+                        </div>
+                    </div> : null}
             </>
         )
     }
@@ -135,15 +160,13 @@ export default function ProfilePage() {
     return (
         <>
             <div className="profile">
-                <div>
-                    <div style={{ backgroundImage: `url(${picture})` }} className="avatar">
-                        {isMe ?
-                            <div className="edit">
-                                <div>Edit</div>
-                            </div>
-                            : null
-                        }
-                    </div>
+                <div style={{ backgroundImage: `url(${picture})` }} className="avatar">
+                    {isMe ?
+                        <div className="edit">
+                            <div>Edit</div>
+                        </div>
+                        : null
+                    }
                 </div>
                 <div>
                     {isMe ? editor() : details()}

@@ -9,6 +9,26 @@ export default function useEventPublisher() {
     const system = useContext(NostrContext);
     const pubKey = useSelector(s => s.login.publicKey);
     const privKey = useSelector(s => s.login.privateKey);
+    const nip07 = useSelector(s => s.login.nip07);
+    const hasNip07 = 'nostr' in window;
+
+    /**
+     * 
+     * @param {Event} ev 
+     * @param {*} privKey 
+     * @returns 
+     */
+    async function signEvent(ev, privKey) {
+        if(nip07 === true && hasNip07) {
+            ev.Id = await ev.CreateId();
+            let tmpEv = await window.nostr.signEvent(ev.ToObject());
+            console.log(tmpEv);
+            return Event.FromObject(tmpEv);
+        } else {
+            await ev.Sign(privKey);
+        }
+        return ev;
+    }
 
     return {
         broadcast: (ev) => {
@@ -19,8 +39,7 @@ export default function useEventPublisher() {
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.SetMetadata;
             ev.Content = JSON.stringify(obj);
-            await ev.Sign(privKey);
-            return ev;
+            return await signEvent(ev, privKey);
         },
         note: async (msg) => {
             if(typeof msg !== "string") {
@@ -29,8 +48,7 @@ export default function useEventPublisher() {
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.TextNote;
             ev.Content = msg;
-            await ev.Sign(privKey);
-            return ev;
+            return await signEvent(ev, privKey);
         },
         like: async (evRef) => {
             let ev = Event.ForPubKey(pubKey);
@@ -38,8 +56,7 @@ export default function useEventPublisher() {
             ev.Content = "+";
             ev.Tags.push(new Tag(["e", evRef.Id], 0));
             ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
-            await ev.Sign(privKey);
-            return ev;
+            return await signEvent(ev, privKey);
         },
         dislike: async (evRef) => {
             let ev = Event.ForPubKey(pubKey);
@@ -47,8 +64,7 @@ export default function useEventPublisher() {
             ev.Content = "-";
             ev.Tags.push(new Tag(["e", evRef.Id], 0));
             ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
-            await ev.Sign(privKey);
-            return ev;
+            return await signEvent(ev, privKey);
         }
     }
 }

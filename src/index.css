@@ -39,10 +39,15 @@ code {
   user-select: none;
   background-color: #000;
   border: 1px solid;
+  display: inline-block;
 }
 
 .btn:hover {
   background-color: #333;
+}
+
+.btn-sm {
+  padding: 5px;
 }
 
 input[type="text"], input[type="password"] {
@@ -93,6 +98,7 @@ div.form-group {
 
 div.form-group > div {
   padding: 3px 5px;
+  word-break: break-word;
 }
 
 div.form-group > div:first-child {
