@@ -34,7 +34,9 @@ const LoginSlice = createSlice({
             }
             state.relays = {
                 "wss://beta.nostr.v0l.io": { read: true, write: true },
-                "wss://nostr.v0l.io": { read: true, write: true }
+                "wss://nostr.v0l.io": { read: true, write: true },
+                "wss://relay.damus.io": { read: true, write: true },
+                "wss://nostr-pub.wellorder.net": { read: true, write: true }
             };
         },
         setPrivateKey: (state, action) => {
