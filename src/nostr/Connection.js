@@ -122,7 +122,7 @@ export default class Connection {
     }
 
     _SendJson(obj) {
-        if (this.Socket.readyState !== this.Socket.OPEN) {
+        if (this.Socket?.readyState !== WebSocket.OPEN) {
             this.Pending.push(obj);
             return;
         }
