@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import * as secp from '@noble/secp256k1';
 
 const PrivateKeyItem = "secret";
+const Nip07PublicKeyItem = "nip07:pubkey";
 
 const LoginSlice = createSlice({
     name: "Login",
@@ -35,6 +36,7 @@ const LoginSlice = createSlice({
         init: (state) => {
             state.privateKey = window.localStorage.getItem(PrivateKeyItem);
             if (state.privateKey) {
+                window.localStorage.removeItem(Nip07PublicKeyItem); // reset nip07 if using private key
                 state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(state.privateKey, true));
             }
             state.relays = {
@@ -43,6 +45,13 @@ const LoginSlice = createSlice({
                 "wss://relay.damus.io": { read: true, write: true },
                 "wss://nostr-pub.wellorder.net": { read: true, write: true }
             };
+
+            // check nip07 pub key
+            let nip07PubKey = window.localStorage.getItem(Nip07PublicKeyItem);
+            if(nip07PubKey && !state.privateKey) {
+                state.publicKey = nip07PubKey;
+                state.nip07 = true;
+            }
         },
         setPrivateKey: (state, action) => {
             state.privateKey = action.payload;
@@ -53,6 +62,7 @@ const LoginSlice = createSlice({
             state.publicKey = action.payload;
         },
         setNip07PubKey: (state, action) => {
+            window.localStorage.setItem(Nip07PublicKeyItem, action.payload);
             state.publicKey = action.payload;
             state.nip07 = true;
         },

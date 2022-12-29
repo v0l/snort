@@ -1,36 +1,31 @@
 import "./Root.css";
 import { useSelector } from "react-redux";
-import {  useState } from "react";
-import Timeline from "./Timeline";
-import useEventPublisher from "./feed/EventPublisher";
+import Note from "../element/Note";
+import useTimelineFeed from "../feed/TimelineFeed";
+import { NoteCreator } from "../element/NoteCreator";
 
 export default function RootPage() {
-    const publisher = useEventPublisher();
     const pubKey = useSelector(s => s.login.publicKey);
+    const follows = useSelector(a => a.login.follows)
+    const { notes } = useTimelineFeed(follows);
 
-    const [note, setNote] = useState("");
-
-    async function sendNote() {
-        let ev = await publisher.note(note);
-
-        console.debug("Sending note: ", ev);
-        publisher.broadcast(ev);
-        setNote("");
-    }
-
-    function noteSigner() {
-        return (
-            <div className="send-note">
-                <input type="text" placeholder="Sup?" value={note} onChange={(e) => setNote(e.target.value)}></input>
-                <div className="btn" onClick={() => sendNote()}>Send</div>
-            </div>
-        );
+    function followHints() {
+        if (follows?.length === 0 && pubKey) {
+            return (
+                <>
+                    <h3>Hmm you're not following anybody?</h3>
+                </>
+            );
+        }
     }
 
     return (
         <>
-            {pubKey ? noteSigner() : null}
-            <Timeline></Timeline>
+            {pubKey ? <NoteCreator /> : null}
+            {followHints()}
+            <div className="timeline">
+                {notes?.sort((a, b) => b.created_at - a.created_at).map(e => <Note key={e.id} data={e} />)}
+            </div>
         </>
     );
 }

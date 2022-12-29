@@ -8,10 +8,11 @@
 }
 
 .profile .avatar {
-    width: 128px;
-    height: 128px;
+    width: 256px;
+    height: 256px;
     background-size: contain;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .profile .avatar .edit {

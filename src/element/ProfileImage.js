@@ -1,6 +1,6 @@
 import "./ProfileImage.css";
 import { useNavigate } from "react-router-dom";
-import useProfile from "../pages/feed/ProfileFeed";
+import useProfile from "../feed/ProfileFeed";
 import Nostrich from "../nostrich.jpg";
 
 export default function ProfileImage(props) {

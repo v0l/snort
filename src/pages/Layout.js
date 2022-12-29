@@ -7,8 +7,8 @@ import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { NostrContext } from ".."
 import ProfileImage from "../element/ProfileImage";
 import { init } from "../state/Login";
-import useLoginFeed from "./feed/LoginFeed";
-import useUsersCache from "./feed/UsersFeed";
+import useLoginFeed from "../feed/LoginFeed";
+import useUsersCache from "../feed/UsersFeed";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Layout(props) {

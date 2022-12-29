@@ -71,6 +71,10 @@ input[type="text"], input[type="password"] {
   display: flex;
 }
 
+.f-center {
+  align-items: center;
+}
+
 .f-grow {
   flex-grow: 1;
 }
@@ -112,4 +116,29 @@ div.form-group > div {
 
 div.form-group > div:first-child {
   flex-grow: 1;
+}
+
+.modal {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.8);
+}
+
+.modal .modal-content {
+  display: flex;
+  justify-content: center;
+}
+
+.modal .modal-content > div {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #333;
+  margin-top: 5vh;
+}
+
+.ReactModal__Body--open {
+  overflow: hidden;
 }

@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NostrContext } from "../../index";
-import Event from "../../nostr/Event";
-import EventKind from "../../nostr/EventKind";
-import { Subscriptions } from "../../nostr/Subscriptions";
-import { setUserData } from "../../state/Users";
+import { NostrContext } from "..";
+import Event from "../nostr/Event";
+import EventKind from "../nostr/EventKind";
+import { Subscriptions } from "../nostr/Subscriptions";
+import { setUserData } from "../state/Users";
 
 export default function useUsersCache() {
     const dispatch = useDispatch();

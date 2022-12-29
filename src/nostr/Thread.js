@@ -42,7 +42,6 @@ export default class Thread {
             ret.Mentions = eTags.filter(a => a.Marker === "mention");
         }
         ret.PubKeys = ev.Tags.filter(a => a.Key === "p").map(a => a.PubKey);
-
         return ret;
     }
 }

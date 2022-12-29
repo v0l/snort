@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPrivateKey, setNip07PubKey } from "../state/Login";
+import { useNavigate } from "react-router-dom";
 import * as secp from '@noble/secp256k1';
 import { bech32 } from "bech32";
-import { useNavigate } from "react-router-dom";
+
+import { setPrivateKey, setNip07PubKey } from "../state/Login";
 
 export default function LoginPage() {
     const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NostrContext } from "../..";
-import { addPubKey } from "../../state/Users";
+import { NostrContext } from "..";
+import { addPubKey } from "../state/Users";
 
 export default function useProfile(pubKey) {
     const dispatch = useDispatch();

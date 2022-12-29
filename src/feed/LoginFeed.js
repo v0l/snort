@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NostrContext } from "../..";
-import Event from "../../nostr/Event";
-import EventKind from "../../nostr/EventKind";
-import { Subscriptions } from "../../nostr/Subscriptions";
-import { setFollows, setRelays } from "../../state/Login";
+import { NostrContext } from "..";
+import Event from "../nostr/Event";
+import EventKind from "../nostr/EventKind";
+import { Subscriptions } from "../nostr/Subscriptions";
+import { setFollows, setRelays } from "../state/Login";
 
 /**
  * Managed loading data for the current logged in user

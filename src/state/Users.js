@@ -40,7 +40,7 @@ const UsersSlice = createSlice({
             if (!Array.isArray(ud)) {
                 ud = [ud];
             }
-            console.debug("Set user profiles: ", ud);
+            
             for (let x of ud) {
                 let existing = state.users[x.pubkey];
                 if (existing) {

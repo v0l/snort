@@ -128,7 +128,6 @@ export default class Connection {
             return;
         }
         let json = JSON.stringify(obj);
-        console.debug(`[${this.Address}] >> ${json}`);
         this.Socket.send(json);
     }
 

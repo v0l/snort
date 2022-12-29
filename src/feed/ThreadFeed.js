@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NostrContext } from "../..";
-import Event from "../../nostr/Event";
-import { Subscriptions } from "../../nostr/Subscriptions";
-import { addNote, reset } from "../../state/Thread";
-import { addPubKey } from "../../state/Users";
+import { NostrContext } from "..";
+import Event from "../nostr/Event";
+import { Subscriptions } from "../nostr/Subscriptions";
+import { addNote, reset } from "../state/Thread";
+import { addPubKey } from "../state/Users";
 
 export default function useThreadFeed(id) {
     const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import Thread from "../element/Thread";
-import useThreadFeed from "./feed/ThreadFeed";
+import useThreadFeed from "../feed/ThreadFeed";
 
 export default function EventPage() {
     const params = useParams();

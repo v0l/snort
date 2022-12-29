@@ -29,7 +29,7 @@ root.render(
         <Router>
           <Layout>
             <Routes>
-              <Route path="/" exact element={<RootPage />} />
+              <Route path="/" exact element={<RootPage/>} />
               <Route path="/login" exact element={<LoginPage />} />
               <Route path="/e/:id" exact element={<EventPage />} />
               <Route path="/p/:id" exact element={<ProfilePage />} />

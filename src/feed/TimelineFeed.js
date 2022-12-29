@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { NostrContext } from "../../index";
-import EventKind from "../../nostr/EventKind";
-import { Subscriptions } from "../../nostr/Subscriptions";
+import { NostrContext } from "..";
+import EventKind from "../nostr/EventKind";
+import { Subscriptions } from "../nostr/Subscriptions";
 
 export default function useTimelineFeed(pubKeys) {
     const system = useContext(NostrContext);

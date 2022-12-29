@@ -8,7 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Event from "../nostr/Event";
 import ProfileImage from "./ProfileImage";
-import useEventPublisher from "../pages/feed/EventPublisher";
+import useEventPublisher from "../feed/EventPublisher";
+import { NoteCreator } from "./NoteCreator";
 
 const UrlRegex = /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)/;
 const FileExtensionRegex = /\.([\w]+)$/;
@@ -21,6 +22,7 @@ export default function Note(props) {
     const reactions = props.reactions;
     const publisher = useEventPublisher();
     const [sig, setSig] = useState(false);
+    const [showReply, setShowReply] = useState(false);
     const users = useSelector(s => s.users?.users);
     const ev = dataEvent ?? Event.FromObject(data);
 
@@ -141,7 +143,7 @@ export default function Note(props) {
                 {transformBody()}
             </div>
             <div className="footer">
-                <span className="pill" onClick={() => {}}>
+                <span className="pill" onClick={() => setShowReply(!showReply)}>
                     <FontAwesomeIcon icon={faReply} />
                 </span>
                 <span className="pill" onClick={() => like()}>
@@ -152,6 +154,7 @@ export default function Note(props) {
                     <FontAwesomeIcon icon={faInfo} />
                 </span>
             </div>
+            {showReply ? <NoteCreator replyTo={ev} onSend={() => setShowReply(false)}/> : null}
         </div>
     )
 }

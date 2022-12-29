@@ -1,16 +1,19 @@
 import "./ProfilePage.css";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import useProfile from "./feed/ProfileFeed";
-import { useEffect, useState } from "react";
-import { resetProfile } from "../state/Users";
-import Nostrich from "../nostrich.jpg";
-import useEventPublisher from "./feed/EventPublisher";
-import useTimelineFeed from "./feed/TimelineFeed";
-import Note from "../element/Note";
 import { bech32 } from "bech32";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQrcode } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
+
+import useProfile from "../feed/ProfileFeed";
+import { resetProfile } from "../state/Users";
+import Nostrich from "../nostrich.jpg";
+import useEventPublisher from "../feed/EventPublisher";
+import useTimelineFeed from "../feed/TimelineFeed";
+import Note from "../element/Note";
+import QRCodeStyling from "qr-code-styling";
+import ReactModal from "react-modal";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -21,13 +24,15 @@ export default function ProfilePage() {
     const { notes } = useTimelineFeed([id]);
     const loginPubKey = useSelector(s => s.login.publicKey);
     const isMe = loginPubKey === id;
+    const qrRef = useRef();
 
-    let [name, setName] = useState("");
-    let [picture, setPicture] = useState("");
-    let [about, setAbout] = useState("");
-    let [website, setWebsite] = useState("");
-    let [nip05, setNip05] = useState("");
-    let [lud16, setLud16] = useState("");
+    const [name, setName] = useState("");
+    const [picture, setPicture] = useState("");
+    const [about, setAbout] = useState("");
+    const [website, setWebsite] = useState("");
+    const [nip05, setNip05] = useState("");
+    const [lud16, setLud16] = useState("");
+    const [showLnQr, setShowLnQr] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -56,6 +61,17 @@ export default function ProfilePage() {
             }
         }
     }, [lud16]);
+
+    useEffect(() => {
+        if (qrRef.current && showLnQr) {
+            let qr = new QRCodeStyling({
+                data: "",
+                type: "canvas"
+            });
+            qrRef.current.innerHTML = "";
+            qr.append(qrRef.current);
+        }
+    }, [showLnQr]);
 
     async function saveProfile() {
         let ev = await publisher.metadata({
@@ -117,42 +133,19 @@ export default function ProfilePage() {
     function details() {
         return (
             <>
-                <div className="form-group">
-                    <div>Name:</div>
-                    <div>
-                        {name}
+                <h2>{name}</h2>
+                <p>{about}</p>
+                {website ? <a href={website} target="_blank" rel="noreferrer">{website}</a> : null}
+                {lud16 ? <div className="flex f-center">
+                    <div className="btn" onClick={(e) => setShowLnQr(true)}>
+                        <FontAwesomeIcon icon={faQrcode} size="xl" />
                     </div>
-                </div>
-                <div className="form-group">
-                    <div>About:</div>
-                    <div>
-                        {about}
-                    </div>
-                </div>
-                {website ?
-                    <div className="form-group">
-                        <div>Website:</div>
-                        <div>
-                            {website}
-                        </div>
-                    </div> : null}
-                {nip05 ?
-                    <div className="form-group">
-                        <div>NIP-05:</div>
-                        <div>
-                            {nip05}
-                        </div>
-                    </div> : null}
-                {lud16 ?
-                    <div className="form-group">
-                        <div>LN Address:</div>
-                        <div>
-                            {lud16}&nbsp;
-                            <div className="btn btn-sm" onClick={() => { }}>
-                                <FontAwesomeIcon icon={faQrcode} size="lg" />
-                            </div>
-                        </div>
-                    </div> : null}
+                    <div>&nbsp; ⚡️ {lud16}</div>
+                </div> : null}
+                {showLnQr === true ?
+                    <ReactModal isOpen={showLnQr} onRequestClose={() => setShowLnQr(false)} overlayClassName="modal" className="modal-content" preventScroll={true}>
+                        <div ref={qrRef}>QR</div>
+                    </ReactModal> : null}
             </>
         )
     }
@@ -160,19 +153,22 @@ export default function ProfilePage() {
     return (
         <>
             <div className="profile">
-                <div style={{ backgroundImage: `url(${picture})` }} className="avatar">
-                    {isMe ?
-                        <div className="edit">
-                            <div>Edit</div>
-                        </div>
-                        : null
-                    }
+                <div>
+                    <div style={{ backgroundImage: `url(${picture})` }} className="avatar">
+                        {isMe ?
+                            <div className="edit">
+                                <div>Edit</div>
+                            </div>
+                            : null
+                        }
+                    </div>
                 </div>
                 <div>
                     {isMe ? editor() : details()}
                 </div>
             </div>
-            <h4>Notes</h4>
+            <br />
+            <div className="btn">Notes</div>
             {notes?.sort((a, b) => b.created_at - a.created_at).map(a => <Note key={a.id} data={a} />)}
         </>
     )
