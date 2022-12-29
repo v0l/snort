@@ -44,6 +44,9 @@ const LoginSlice = createSlice({
             window.localStorage.setItem(PrivateKeyItem, action.payload);
             state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload, true));
         },
+        setPublicKey: (state, action) => {
+            state.publicKey = action.payload;
+        },
         setRelays: (state, action) => {
             state.relays = action.payload;
         },
@@ -57,5 +60,5 @@ const LoginSlice = createSlice({
     }
 });
 
-export const { init, setPrivateKey, setRelays, setFollows, logout } = LoginSlice.actions;
+export const { init, setPrivateKey, setPublicKey, setRelays, setFollows, logout } = LoginSlice.actions;
 export const reducer = LoginSlice.reducer;
