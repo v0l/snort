@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
+import { faHeart, faReply, faInfo } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import Event from "../nostr/Event";
 import ProfileImage from "./ProfileImage";
 import useEventPublisher from "../pages/feed/EventPublisher";
@@ -89,7 +92,7 @@ export default function Note(props) {
                         let idx = parseInt(matchTag[1]);
                         let ref = ev.Tags.find(a => a.Index === idx);
                         if (ref) {
-                            switch(ref.Key) {
+                            switch (ref.Key) {
                                 case "p": {
                                     let pUser = users[ref.PubKey]?.name ?? ref.PubKey.substring(0, 8);
                                     return <Link key={ref.PubKey} to={`/p/${ref.PubKey}`}>@{pUser}</Link>;
@@ -99,8 +102,8 @@ export default function Note(props) {
                                     return <Link key={ref.Event} to={`/e/${ref.Event}`}>#{eText}</Link>;
                                 }
                             }
-                        } 
-                        return <b style={{color: "red"}}>{matchTag[0]}?</b>;
+                        }
+                        return <b style={{ color: "red" }}>{matchTag[0]}?</b>;
                     } else {
                         return match;
                     }
@@ -129,7 +132,7 @@ export default function Note(props) {
     return (
         <div className="note">
             <div className="header">
-                <ProfileImage pubKey={ev.PubKey} subHeader={replyTag()}/>
+                <ProfileImage pubKey={ev.PubKey} subHeader={replyTag()} />
                 <div className="info">
                     {moment(ev.CreatedAt * 1000).fromNow()}
                 </div>
@@ -138,11 +141,15 @@ export default function Note(props) {
                 {transformBody()}
             </div>
             <div className="footer">
+                <span className="pill" onClick={() => {}}>
+                    <FontAwesomeIcon icon={faReply} />
+                </span>
                 <span className="pill" onClick={() => like()}>
-                    👍 {(reactions?.length ?? 0)}
+                    <FontAwesomeIcon icon={faHeart} /> &nbsp;
+                    {(reactions?.length ?? 0)}
                 </span>
                 <span className="pill" onClick={() => console.debug(ev)}>
-                    <i>i</i>
+                    <FontAwesomeIcon icon={faInfo} />
                 </span>
             </div>
         </div>

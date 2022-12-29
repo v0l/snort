@@ -1,11 +1,15 @@
+import "./Layout.css";
 import { useContext, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
+
 import { NostrContext } from ".."
 import ProfileImage from "../element/ProfileImage";
 import { init } from "../state/Login";
 import useLoginFeed from "./feed/LoginFeed";
 import useUsersCache from "./feed/UsersFeed";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Layout(props) {
     const dispatch = useDispatch();
@@ -28,12 +32,23 @@ export default function Layout(props) {
         dispatch(init());
     }, []);
 
+    function accountHeader() {
+        return (
+            <>
+                <div className="btn btn-rnd notifications">
+                    <FontAwesomeIcon icon={faBell} size="xl" />
+                </div>
+                <ProfileImage pubKey={key} />
+            </>
+        )
+    }
+
     return (
         <div className="page">
             <div className="header">
                 <div onClick={() => navigate("/")}>n o s t r</div>
                 <div>
-                    {key ? <ProfileImage pubKey={key} /> :
+                    {key ? accountHeader() :
                         <div className="btn" onClick={() => navigate("/login")}>Login</div>
                     }
                 </div>
