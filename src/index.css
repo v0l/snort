@@ -47,6 +47,12 @@ code {
   display: inline-block;
 }
 
+.btn.active {
+  border: 2px solid;
+  background-color: #222;
+  font-weight: bold;
+}
+
 .btn:hover {
   background-color: #333;
 }
@@ -141,4 +147,18 @@ div.form-group > div:first-child {
 
 .ReactModal__Body--open {
   overflow: hidden;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.tabs {
+  display: flex;
+  margin: 10px 0;
+  overflow-x: auto;
+}
+
+.tabs > div {
+  margin-right: 10px;
 }

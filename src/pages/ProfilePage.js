@@ -167,8 +167,13 @@ export default function ProfilePage() {
                     {isMe ? editor() : details()}
                 </div>
             </div>
-            <br />
-            <div className="btn">Notes</div>
+            <div className="tabs">
+                <div className="btn active">Notes</div>
+                <div className="btn">Reactions</div>
+                <div className="btn">Followers</div>
+                <div className="btn">Follows</div>
+                <div className="btn">Relays</div>
+            </div>
             {notes?.sort((a, b) => b.created_at - a.created_at).map(a => <Note key={a.id} data={a} />)}
         </>
     )

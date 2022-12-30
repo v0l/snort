@@ -10,7 +10,7 @@
 .profile .avatar {
     width: 256px;
     height: 256px;
-    background-size: contain;
+    background-size: cover;
     cursor: pointer;
     border-radius: 10px;
 }
