@@ -1,12 +1,10 @@
-import { useContext } from "react";
 import { useSelector } from "react-redux";
-import { NostrContext } from "..";
+import { System } from "..";
 import Event from "../nostr/Event";
 import EventKind from "../nostr/EventKind";
 import Tag from "../nostr/Tag";
 
 export default function useEventPublisher() {
-    const system = useContext(NostrContext);
     const pubKey = useSelector(s => s.login.publicKey);
     const privKey = useSelector(s => s.login.privateKey);
     const nip07 = useSelector(s => s.login.nip07);
@@ -33,7 +31,7 @@ export default function useEventPublisher() {
     return {
         broadcast: (ev) => {
             console.debug("Sending event: ", ev);
-            system.BroadcastEvent(ev);
+            System.BroadcastEvent(ev);
         },
         metadata: async (obj) => {
             let ev = Event.ForPubKey(pubKey);

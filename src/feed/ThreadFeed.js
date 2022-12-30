@@ -1,79 +1,56 @@
-import { useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { NostrContext } from "..";
-import Event from "../nostr/Event";
+import { useMemo } from "react";
+import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
-import { addNote, reset } from "../state/Thread";
-import { addPubKey } from "../state/Users";
+import useSubscription from "./Subscription";
 
 export default function useThreadFeed(id) {
-    const dispatch = useDispatch();
-    const system = useContext(NostrContext);
-    const notes = useSelector(s => s.thread.notes);
-    const [thisLoaded, setThisLoaded] = useState(false);
+    const sub = useMemo(() => {
+        const thisSub = new Subscriptions();
+        thisSub.Id = "thread";
+        thisSub.Ids.add(id);
 
-    // track profiles
-    useEffect(() => {
-        let keys = [];
-        for (let n of notes) {
-            if (n.pubkey) {
-                keys.push(n.pubkey);
+        // get replies to this event
+        const subRelated = new Subscriptions();
+        subRelated.Kinds.add(EventKind.Reaction);
+        subRelated.Kinds.add(EventKind.TextNote);
+        subRelated.ETags = thisSub.Ids;
+        thisSub.AddSubscription(subRelated);
+
+        return thisSub;
+    }, [id]);
+
+    const main = useSubscription(sub, { leaveOpen: true });
+
+    const relatedThisSub = useMemo(() => {
+        let thisNote = main.notes.find(a => a.id === id);
+
+        if (thisNote) {
+            let otherSubs = new Subscriptions();
+            otherSubs.Id = "thread-related";
+            for (let e of thisNote.tags.filter(a => a[0] === "e")) {
+                otherSubs.Ids.add(e[1]);
             }
-            for (let t of n.tags) {
-                if (t[0] === "p" && t[1]) {
-                    keys.push(t[1]);
-                }
+            // no #e skip related
+            if (otherSubs.Ids.size === 0) {
+                return null;
             }
+
+            let relatedSubs = new Subscriptions();
+            relatedSubs.Kinds.add(EventKind.Reaction);
+            relatedSubs.Kinds.add(EventKind.TextNote);
+            relatedSubs.ETags = otherSubs.Ids;
+
+            otherSubs.AddSubscription(relatedSubs);
+            return otherSubs;
         }
+    }, [main.notes]);
 
-        dispatch(addPubKey(keys));
-    }, [notes]);
+    const others = useSubscription(relatedThisSub, { leaveOpen: true });
 
-    useEffect(() => {
-        if (system) {
-            let sub = new Subscriptions();
-            let thisNote = notes.find(a => a.id === id);
-            if (thisNote && !thisLoaded) {
-                console.debug(notes);
-                setThisLoaded(true);
-                
-                let thisNote = Event.FromObject(notes[0]);
-                let thread = thisNote.GetThread();
-                if (thread !== null) {
-                    if (thread.ReplyTo) {
-                        sub.Ids.add(thread.ReplyTo.Event);
-                    }
-                    if (thread.Root) {
-                        sub.Ids.add(thread.Root.Event);
-                    }
-                    for (let m of thread.Mentions) {
-                        sub.Ids.add(m.Event);
-                    }
-                } else {
-                    // this event is a root note, no other notes need to be loaded
-                    return;
-                }
-            } else if (notes.length === 0) {
-                sub.Ids.add(id);
-            } else {
-                return;
-            }
-
-            // get replies to this event
-            let subRelated = new Subscriptions();
-            subRelated.ETags = sub.Ids;
-            sub.AddSubscription(subRelated);
-
-            sub.OnEvent = (e) => {
-                dispatch(addNote(e));
-            };
-            system.AddSubscription(sub);
-        }
-    }, [system, notes]);
-
-    useEffect(() => {
-        dispatch(reset());
-    }, []);
-
-    return { notes };
+    return {
+        notes: [
+            ...main.notes,
+            ...others.notes
+        ]
+    };
 }

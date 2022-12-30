@@ -13,7 +13,7 @@ import useEventPublisher from "../feed/EventPublisher";
 import useTimelineFeed from "../feed/TimelineFeed";
 import Note from "../element/Note";
 import QRCodeStyling from "qr-code-styling";
-import ReactModal from "react-modal";
+import Modal from "../element/Modal";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -65,7 +65,7 @@ export default function ProfilePage() {
     useEffect(() => {
         if (qrRef.current && showLnQr) {
             let qr = new QRCodeStyling({
-                data: "",
+                data: {lud16},
                 type: "canvas"
             });
             qrRef.current.innerHTML = "";
@@ -143,9 +143,10 @@ export default function ProfilePage() {
                     <div>&nbsp; ⚡️ {lud16}</div>
                 </div> : null}
                 {showLnQr === true ?
-                    <ReactModal isOpen={showLnQr} onRequestClose={() => setShowLnQr(false)} overlayClassName="modal" className="modal-content" preventScroll={true}>
-                        <div ref={qrRef}>QR</div>
-                    </ReactModal> : null}
+                    <Modal onClose={() => setShowLnQr(false)}>
+                        <h4>{lud16}</h4>
+                        <div ref={qrRef}></div>
+                    </Modal> : null}
             </>
         )
     }

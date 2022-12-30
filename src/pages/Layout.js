@@ -1,10 +1,10 @@
 import "./Layout.css";
-import { useContext, useEffect } from "react"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 
-import { NostrContext } from ".."
+import { System } from ".."
 import ProfileImage from "../element/ProfileImage";
 import { init } from "../state/Login";
 import useLoginFeed from "../feed/LoginFeed";
@@ -13,20 +13,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Layout(props) {
     const dispatch = useDispatch();
-    const system = useContext(NostrContext);
     const navigate = useNavigate();
     const key = useSelector(s => s.login.publicKey);
     const relays = useSelector(s => s.login.relays);
+    const notifications = useSelector(s => s.login.notifications);
     useUsersCache();
     useLoginFeed();
 
     useEffect(() => {
-        if (system && relays) {
+        if (relays) {
             for (let [k, v] of Object.entries(relays)) {
-                system.ConnectToRelay(k, v);
+                System.ConnectToRelay(k, v);
             }
         }
-    }, [relays, system]);
+    }, [relays]);
 
     useEffect(() => {
         dispatch(init());
@@ -35,8 +35,9 @@ export default function Layout(props) {
     function accountHeader() {
         return (
             <>
-                <div className="btn btn-rnd notifications">
+                <div className="btn btn-rnd notifications" onClick={() => navigate("/notifications")}>
                     <FontAwesomeIcon icon={faBell} size="xl" />
+                    {notifications?.length ?? 0}
                 </div>
                 <ProfileImage pubKey={key} />
             </>

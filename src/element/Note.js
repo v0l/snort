@@ -1,5 +1,5 @@
 import "./Note.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,9 +11,9 @@ import ProfileImage from "./ProfileImage";
 import useEventPublisher from "../feed/EventPublisher";
 import { NoteCreator } from "./NoteCreator";
 
-const UrlRegex = /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)/;
-const FileExtensionRegex = /\.([\w]+)$/;
-const MentionRegex = /(#\[\d+\])/g;
+const UrlRegex = /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)/i;
+const FileExtensionRegex = /\.([\w]+)$/i;
+const MentionRegex = /(#\[\d+\])/gi;
 
 export default function Note(props) {
     const navigate = useNavigate();
@@ -21,21 +21,9 @@ export default function Note(props) {
     const dataEvent = props["data-ev"];
     const reactions = props.reactions;
     const publisher = useEventPublisher();
-    const [sig, setSig] = useState(false);
     const [showReply, setShowReply] = useState(false);
     const users = useSelector(s => s.users?.users);
     const ev = dataEvent ?? Event.FromObject(data);
-
-    useEffect(() => {
-        if (sig === false) {
-            verifyEvent();
-        }
-    }, []);
-
-    async function verifyEvent() {
-        let res = await ev.Verify();
-        setSig(res);
-    }
 
     function goToEvent(e, id) {
         if (!window.location.pathname.startsWith("/e/")) {
@@ -66,7 +54,7 @@ export default function Note(props) {
         return urlBody.map(a => {
             if (a.startsWith("http")) {
                 let url = new URL(a);
-                let ext = url.pathname.match(FileExtensionRegex);
+                let ext = url.pathname.toLowerCase().match(FileExtensionRegex);
                 if (ext) {
                     switch (ext[1]) {
                         case "gif":

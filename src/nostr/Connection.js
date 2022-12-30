@@ -1,5 +1,6 @@
 import { Subscriptions } from "./Subscriptions";
 import Event from "./Event";
+import * as secp from "@noble/secp256k1";
 
 const DefaultConnectTimeout = 1000;
 
@@ -16,15 +17,11 @@ export default class Connection {
     }
 
     Connect() {
-        try {
-            this.Socket = new WebSocket(this.Address);
-            this.Socket.onopen = (e) => this.OnOpen(e);
-            this.Socket.onmessage = (e) => this.OnMessage(e);
-            this.Socket.onerror = (e) => this.OnError(e);
-            this.Socket.onclose = (e) => this.OnClose(e);
-        } catch (e) {
-            console.warn(`[${this.Address}] Connect failed!`);
-        }
+        this.Socket = new WebSocket(this.Address);
+        this.Socket.onopen = (e) => this.OnOpen(e);
+        this.Socket.onmessage = (e) => this.OnMessage(e);
+        this.Socket.onerror = (e) => this.OnError(e);
+        this.Socket.onclose = (e) => this.OnClose(e);
     }
 
     OnOpen(e) {
@@ -82,6 +79,9 @@ export default class Connection {
      * @param {Event} e 
      */
     SendEvent(e) {
+        if (!this.Write) {
+            return;
+        }
         let req = ["EVENT", e.ToObject()];
         this._SendJson(req);
     }
@@ -91,11 +91,20 @@ export default class Connection {
      * @param {Subscriptions | Array<Subscriptions>} sub Subscriptions object
      */
     AddSubscription(sub) {
+        if (!this.Read) {
+            return;
+        }
+
         let subObj = sub.ToObject();
         if (Object.keys(subObj).length === 0) {
             debugger;
             throw "CANNOT SEND EMPTY SUB - FIX ME";
         }
+
+        if (this.Subscriptions[sub.Id]) {
+            return;
+        }
+
         let req = ["REQ", sub.Id, subObj];
         if (sub.OrSubs.length > 0) {
             req = [
@@ -133,7 +142,13 @@ export default class Connection {
 
     _OnEvent(subId, ev) {
         if (this.Subscriptions[subId]) {
-            this.Subscriptions[subId].OnEvent(ev);
+            this._VerifySig(ev)
+                .then((e) => {
+                    if (this.Subscriptions[subId]) {
+                        this.Subscriptions[subId].OnEvent(e);
+                    }
+                })
+                .catch(console.error);
         } else {
             console.warn(`No subscription for event! ${subId}`);
         }
@@ -147,5 +162,24 @@ export default class Connection {
         } else {
             console.warn(`No subscription for end! ${subId}`);
         }
+    }
+
+    async _VerifySig(ev) {
+        let payload = [
+            0,
+            ev.pubkey,
+            ev.created_at,
+            ev.kind,
+            ev.tags,
+            ev.content
+        ];
+
+        let payloadData = new TextEncoder().encode(JSON.stringify(payload));
+        let data = await secp.utils.sha256(payloadData);
+        let hash = secp.utils.bytesToHex(data);
+        if (!await secp.schnorr.verify(ev.sig, hash, ev.pubkey)) {
+            throw "Sig verify failed";
+        }
+        return ev;
     }
 }

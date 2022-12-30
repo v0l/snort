@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NostrContext } from "..";
+import { System } from "..";
 import Event from "../nostr/Event";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
@@ -8,7 +8,6 @@ import { setUserData } from "../state/Users";
 
 export default function useUsersCache() {
     const dispatch = useDispatch();
-    const system = useContext(NostrContext);
     const pKeys = useSelector(s => s.users.pubKeys);
     const users = useSelector(s => s.users.users);
     const [loading, setLoading] = useState(false);
@@ -35,15 +34,16 @@ export default function useUsersCache() {
         if (needProfiles.length === 0) {
             return;
         }
-        console.debug("Need profiles: ", needProfiles);
+        
         let sub = new Subscriptions();
+        sub.Id = "profiles";
         sub.Authors = new Set(needProfiles);
         sub.Kinds.add(EventKind.SetMetadata);
         sub.OnEvent = (ev) => {
             dispatch(setUserData(mapEventToProfile(ev)));
         };
 
-        let events = await system.RequestSubscription(sub);
+        let events = await System.RequestSubscription(sub);
         let profiles = events
             .filter(a => a.kind === EventKind.SetMetadata)
             .map(mapEventToProfile);
@@ -61,14 +61,14 @@ export default function useUsersCache() {
     }
 
     useEffect(() => {
-        if (system && pKeys.length > 0 && !loading) {
+        if (pKeys.length > 0 && !loading) {
 
             setLoading(true);
             getUsers()
                 .catch(console.error)
                 .then(() => setLoading(false));
         }
-    }, [system, pKeys, loading]);
+    }, [pKeys, loading]);
 
     return { users };
 }

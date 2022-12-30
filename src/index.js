@@ -1,4 +1,3 @@
-
 import './index.css';
 
 import React from 'react';
@@ -17,26 +16,25 @@ import LoginPage from './pages/Login';
 import ProfilePage from './pages/ProfilePage';
 import RootPage from './pages/Root';
 import Store from "./state/Store";
+import NotificationsPage from './pages/Notifications';
 
-const System = new NostrSystem();
-export const NostrContext = React.createContext();
+export const System = new NostrSystem();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <NostrContext.Provider value={System}>
-      <Provider store={Store}>
-        <Router>
-          <Layout>
-            <Routes>
-              <Route path="/" exact element={<RootPage/>} />
-              <Route path="/login" exact element={<LoginPage />} />
-              <Route path="/e/:id" exact element={<EventPage />} />
-              <Route path="/p/:id" exact element={<ProfilePage />} />
-            </Routes>
-          </Layout>
-        </Router>
-      </Provider>
-    </NostrContext.Provider>
+    <Provider store={Store}>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" exact element={<RootPage />} />
+            <Route path="/login" exact element={<LoginPage />} />
+            <Route path="/e/:id" exact element={<EventPage />} />
+            <Route path="/p/:id" exact element={<ProfilePage />} />
+            <Route path="/notifications" exact element={<NotificationsPage />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </Provider>
   </React.StrictMode>
 );

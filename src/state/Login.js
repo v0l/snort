@@ -31,6 +31,11 @@ const LoginSlice = createSlice({
          * Login keys are managed by extension
          */
         nip07: false,
+
+        /**
+         * Notifications for this login session
+         */
+        notifications: []
     },
     reducers: {
         init: (state) => {
@@ -40,7 +45,6 @@ const LoginSlice = createSlice({
                 state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(state.privateKey, true));
             }
             state.relays = {
-                "wss://beta.nostr.v0l.io": { read: true, write: true },
                 "wss://nostr.v0l.io": { read: true, write: true },
                 "wss://relay.damus.io": { read: true, write: true },
                 "wss://nostr-pub.wellorder.net": { read: true, write: true }
@@ -48,7 +52,7 @@ const LoginSlice = createSlice({
 
             // check nip07 pub key
             let nip07PubKey = window.localStorage.getItem(Nip07PublicKeyItem);
-            if(nip07PubKey && !state.privateKey) {
+            if (nip07PubKey && !state.privateKey) {
                 state.publicKey = nip07PubKey;
                 state.nip07 = true;
             }
@@ -72,6 +76,21 @@ const LoginSlice = createSlice({
         setFollows: (state, action) => {
             state.follows = action.payload;
         },
+        addNotifications: (state, action) => {
+            let n = action.payload;
+            if (!Array.isArray(n)) {
+                n = [n];
+            }
+
+            for (let x in n) {
+                if (!state.notifications.some(a => a.id === x.id)) {
+                    state.notifications.push(x);
+                }
+            }
+            state.notifications = [
+                ...state.notifications
+            ];
+        },
         logout: (state) => {
             state.privateKey = null;
             window.localStorage.removeItem(PrivateKeyItem);
@@ -79,5 +98,5 @@ const LoginSlice = createSlice({
     }
 });
 
-export const { init, setPrivateKey, setPublicKey, setNip07PubKey, setRelays, setFollows, logout } = LoginSlice.actions;
+export const { init, setPrivateKey, setPublicKey, setNip07PubKey, setRelays, setFollows, addNotifications, logout } = LoginSlice.actions;
 export const reducer = LoginSlice.reducer;
