@@ -1,6 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { System } from "..";
 import { Subscriptions } from "../nostr/Subscriptions";
+
+function notesReducer(state, ev) {
+    if (state.notes.some(a => a.id === ev.id)) {
+        return state;
+    }
+
+    return {
+        notes: [
+            ...state.notes,
+            ev
+        ]
+    }
+}
 
 /**
  * 
@@ -9,7 +22,7 @@ import { Subscriptions } from "../nostr/Subscriptions";
  * @returns 
  */
 export default function useSubscription(sub, opt) {
-    const [notes, setNotes] = useState([]);
+    const [state, dispatch] = useReducer(notesReducer, { notes: [] });
 
     const options = {
         leaveOpen: false,
@@ -19,20 +32,12 @@ export default function useSubscription(sub, opt) {
     useEffect(() => {
         if (sub) {
             sub.OnEvent = (e) => {
-                setNotes(n => {
-                    if (Array.isArray(n) && !n.some(a => a.id === e.id)) {
-                        return [
-                            ...n,
-                            e
-                        ]
-                    } else {
-                        return n;
-                    }
-                });
+                dispatch(e);
             };
 
             if (!options.leaveOpen) {
                 sub.OnEnd = (c) => {
+                    sub.OnEvent = () => {};
                     c.RemoveSubscription(sub.Id);
                     if (sub.IsFinished()) {
                         System.RemoveSubscription(sub.Id);
@@ -47,9 +52,5 @@ export default function useSubscription(sub, opt) {
         }
     }, [sub]);
 
-    useEffect(() => {
-        setNotes([]);
-    }, []);
-
-    return { notes, sub };
+    return state;
 }

@@ -9,6 +9,7 @@
     "@noble/secp256k1": "^1.7.0",
     "@reduxjs/toolkit": "^1.9.1",
     "bech32": "^2.0.0",
+    "invoices": "^2.2.2",
     "moment": "^2.29.4",
     "qr-code-styling": "^1.6.0-rc.1",
     "react": "^18.2.0",

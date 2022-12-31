@@ -71,7 +71,7 @@ export default function useEventPublisher() {
                     ev.Tags.push(new Tag(["e", thread.Reply.Id, "", "reply"], ev.Tags.length));
                 }
                 ev.Tags.push(new Tag(["p", replyTo.PubKey], ev.Tags.length));
-                for (let pk in thread.PubKeys) {
+                for (let pk of thread.PubKeys) {
                     ev.Tags.push(new Tag(["p", pk], ev.Tags.length));
                 }
             } else {

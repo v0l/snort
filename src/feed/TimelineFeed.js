@@ -5,6 +5,10 @@ import useSubscription from "./Subscription";
 
 export default function useTimelineFeed(pubKeys) {
     const sub = useMemo(() => {
+        if (pubKeys.length === 0) {
+            return null;
+        }
+
         let sub = new Subscriptions();
         sub.Id = "timeline";
         sub.Authors = new Set(pubKeys);

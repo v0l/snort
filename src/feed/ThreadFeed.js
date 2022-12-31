@@ -48,9 +48,7 @@ export default function useThreadFeed(id) {
     const others = useSubscription(relatedThisSub, { leaveOpen: true });
 
     return {
-        notes: [
-            ...main.notes,
-            ...others.notes
-        ]
+        main: main.notes,
+        other: others.notes
     };
 }
