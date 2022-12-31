@@ -47,5 +47,9 @@ export default function useSubscription(sub, opt) {
         }
     }, [sub]);
 
+    useEffect(() => {
+        setNotes([]);
+    }, []);
+
     return { notes, sub };
 }

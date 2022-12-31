@@ -15,7 +15,5 @@ export default function useTimelineFeed(pubKeys) {
     }, [pubKeys]);
 
     const { notes } = useSubscription(sub, { leaveOpen: true });
-
-    
     return { notes };
 }
