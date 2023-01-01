@@ -32,7 +32,6 @@ export default function useSubscription(sub, opt) {
     useEffect(() => {
         if (sub) {
             sub.OnEvent = (e) => {
-                console.debug(e);
                 dispatch(e);
             };
 
