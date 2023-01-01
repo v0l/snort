@@ -122,7 +122,7 @@ export default function Note(props) {
     return (
         <div className="note">
             <div className="header">
-                <ProfileImage pubKey={ev.PubKey} subHeader={replyTag()} />
+                <ProfileImage pubkey={ev.PubKey} subHeader={replyTag()} />
                 <div className="info">
                     {moment(ev.CreatedAt * 1000).fromNow()}
                 </div>

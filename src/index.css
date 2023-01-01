@@ -85,6 +85,14 @@ input[type="text"], input[type="password"] {
   flex-grow: 1;
 }
 
+.f-ellipsis {
+  min-width: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0 15px;
+}
+
 a {
   color: inherit;
   line-height: 1.3em;
@@ -152,6 +160,10 @@ body.scroll-lock {
 
 .mr10 {
   margin-right: 10px;
+}
+
+.ml5 {
+  margin-left: 5px;
 }
 
 .tabs {

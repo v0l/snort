@@ -17,6 +17,7 @@ import ProfilePage from './pages/ProfilePage';
 import RootPage from './pages/Root';
 import Store from "./state/Store";
 import NotificationsPage from './pages/Notifications';
+import NewUserPage from './pages/NewUserPage';
 
 export const System = new NostrSystem();
 
@@ -32,6 +33,7 @@ root.render(
             <Route path="/e/:id" exact element={<EventPage />} />
             <Route path="/p/:id" exact element={<ProfilePage />} />
             <Route path="/notifications" exact element={<NotificationsPage />} />
+            <Route path="/new" exact element={<NewUserPage />} />
           </Routes>
         </Layout>
       </Router>

@@ -1,5 +1,5 @@
 import "./ProfilePage.css";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bech32 } from "bech32";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +14,7 @@ import useTimelineFeed from "../feed/TimelineFeed";
 import Note from "../element/Note";
 import QRCodeStyling from "qr-code-styling";
 import Modal from "../element/Modal";
+import { logout } from "../state/Login";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -37,7 +38,7 @@ export default function ProfilePage() {
     useMemo(() => {
         if (user) {
             setName(user.name ?? "");
-            setPicture(user.picture ?? Nostrich);
+            setPicture(user.picture ?? "");
             setAbout(user.about ?? "");
             setWebsite(user.website ?? "");
             setNip05(user.nip05 ?? "");
@@ -87,6 +88,23 @@ export default function ProfilePage() {
         dispatch(resetProfile(id));
     }
 
+    async function openFile() {
+        return new Promise((resolve, reject) => {
+            let elm = document.createElement("input");
+            elm.type = "file";
+            elm.onchange = (e) => {
+                resolve(e.target.files[0]);
+            };
+            elm.click();
+        });
+    }
+    
+    async function setNewAvatar() {
+        let file = await openFile();
+        console.log(file);
+
+    }
+
     function editor() {
         return (
             <>
@@ -121,7 +139,9 @@ export default function ProfilePage() {
                     </div>
                 </div>
                 <div className="form-group">
-                    <div></div>
+                    <div>
+                        <div className="btn" onClick={() => dispatch(logout())}>Logout</div>
+                    </div>
                     <div>
                         <div className="btn" onClick={() => saveProfile()}>Save</div>
                     </div>
@@ -155,9 +175,9 @@ export default function ProfilePage() {
         <>
             <div className="profile">
                 <div>
-                    <div style={{ backgroundImage: `url(${picture})` }} className="avatar">
+                    <div style={{ backgroundImage: `url(${picture.length === 0 ? Nostrich : picture})` }} className="avatar">
                         {isMe ?
-                            <div className="edit">
+                            <div className="edit" onClick={() => setNewAvatar()}>
                                 <div>Edit</div>
                             </div>
                             : null

@@ -12,6 +12,12 @@ export default function LoginPage() {
     const publicKey = useSelector(s => s.login.publicKey);
     const [key, setKey] = useState("");
 
+    useEffect(() => {
+        if (publicKey) {
+            navigate("/");
+        }
+    }, [publicKey]);
+
     function doLogin() {
         if (key.startsWith("nsec")) {
             let nKey = bech32.decode(key);
@@ -34,6 +40,7 @@ export default function LoginPage() {
     async function makeRandomKey() {
         let newKey = secp.utils.bytesToHex(secp.utils.randomPrivateKey());
         dispatch(setPrivateKey(newKey))
+        navigate("/new");
     }
 
     async function doNip07Login() {
@@ -56,12 +63,6 @@ export default function LoginPage() {
             </>
         )
     }
-
-    useEffect(() => {
-        if (publicKey) {
-            navigate("/");
-        }
-    }, [publicKey]);
 
     return (
         <>

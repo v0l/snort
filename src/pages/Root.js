@@ -3,19 +3,16 @@ import { useSelector } from "react-redux";
 import Note from "../element/Note";
 import useTimelineFeed from "../feed/TimelineFeed";
 import { NoteCreator } from "../element/NoteCreator";
+import ProfilePreview from "../element/ProfilePreview";
 
 export default function RootPage() {
     const pubKey = useSelector(s => s.login.publicKey);
-    const follows = useSelector(a => a.login.follows)
+    const follows = useSelector(a => a.login.follows);
     const { notes } = useTimelineFeed(follows);
 
     function followHints() {
         if (follows?.length === 0 && pubKey) {
-            return (
-                <>
-                    <h3>Hmm you're not following anybody?</h3>
-                </>
-            );
+            return <>Hmm nothing here..</>
         }
     }
 

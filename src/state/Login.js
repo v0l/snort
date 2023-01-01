@@ -96,8 +96,12 @@ const LoginSlice = createSlice({
             ];
         },
         logout: (state) => {
-            state.privateKey = null;
             window.localStorage.removeItem(PrivateKeyItem);
+            window.localStorage.removeItem(Nip07PublicKeyItem);
+            state.privateKey = null;
+            state.publicKey = null;
+            state.follows = [];
+            state.notifications = [];
         }
     }
 });

@@ -39,7 +39,7 @@ export default function Layout(props) {
                     <FontAwesomeIcon icon={faBell} size="xl" />
                     {notifications?.length ?? 0}
                 </div>
-                <ProfileImage pubKey={key} />
+                <ProfileImage pubkey={key} />
             </>
         )
     }

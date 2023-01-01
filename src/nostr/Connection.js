@@ -142,13 +142,8 @@ export default class Connection {
 
     _OnEvent(subId, ev) {
         if (this.Subscriptions[subId]) {
-            this._VerifySig(ev)
-                .then((e) => {
-                    if (this.Subscriptions[subId]) {
-                        this.Subscriptions[subId].OnEvent(e);
-                    }
-                })
-                .catch(console.error);
+            //this._VerifySig(ev);
+            this.Subscriptions[subId].OnEvent(ev);
         } else {
             console.warn(`No subscription for event! ${subId}`);
         }
@@ -158,13 +153,17 @@ export default class Connection {
         let sub = this.Subscriptions[subId];
         if (sub) {
             sub.Finished[this.Address] = new Date().getTime();
+            let responseTime = sub.Finished[this.Address] - sub.Started[this.Address];
+            if (responseTime > 10_000) {
+                console.warn(`[${this.Address}][${subId}] Slow response time ${(responseTime / 1000).toFixed(1)} seconds`);
+            }
             sub.OnEnd(this);
         } else {
             console.warn(`No subscription for end! ${subId}`);
         }
     }
 
-    async _VerifySig(ev) {
+    _VerifySig(ev) {
         let payload = [
             0,
             ev.pubkey,
@@ -175,9 +174,9 @@ export default class Connection {
         ];
 
         let payloadData = new TextEncoder().encode(JSON.stringify(payload));
-        let data = await secp.utils.sha256(payloadData);
+        let data = secp.utils.sha256Sync(payloadData);
         let hash = secp.utils.bytesToHex(data);
-        if (!await secp.schnorr.verify(ev.sig, hash, ev.pubkey)) {
+        if (!secp.schnorr.verifySync(ev.sig, hash, ev.pubkey)) {
             throw "Sig verify failed";
         }
         return ev;

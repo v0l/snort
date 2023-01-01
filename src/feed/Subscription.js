@@ -32,12 +32,12 @@ export default function useSubscription(sub, opt) {
     useEffect(() => {
         if (sub) {
             sub.OnEvent = (e) => {
+                console.debug(e);
                 dispatch(e);
             };
 
             if (!options.leaveOpen) {
                 sub.OnEnd = (c) => {
-                    sub.OnEvent = () => {};
                     c.RemoveSubscription(sub.Id);
                     if (sub.IsFinished()) {
                         System.RemoveSubscription(sub.Id);
@@ -48,7 +48,7 @@ export default function useSubscription(sub, opt) {
             console.debug("Adding sub: ", sub.ToObject());
             System.AddSubscription(sub);
             return () => {
-                console.debug("Adding sub: ", sub.ToObject());
+                console.debug("Removing sub: ", sub.ToObject());
                 System.RemoveSubscription(sub.Id);
             };
         }

@@ -8,6 +8,8 @@ export default function useEventPublisher() {
     const pubKey = useSelector(s => s.login.publicKey);
     const privKey = useSelector(s => s.login.privateKey);
     const nip07 = useSelector(s => s.login.nip07);
+    const follows = useSelector(s => s.login.follows);
+    const relays = useSelector(s => s.login.relays);
     const hasNip07 = 'nostr' in window;
 
     /**
@@ -94,6 +96,17 @@ export default function useEventPublisher() {
             ev.Content = "-";
             ev.Tags.push(new Tag(["e", evRef.Id], 0));
             ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
+            return await signEvent(ev, privKey);
+        },
+        addFollow: async (pubkey) => {
+            let ev = Event.ForPubKey(pubKey);
+            ev.Kind = EventKind.ContactList;
+            ev.Content = JSON.stringify(relays);
+            for(let pk of follows) {
+                ev.Tags.push(new Tag(["p", pk]));
+            }
+            ev.Tags.push(new Tag(["p", pubkey]));
+
             return await signEvent(ev, privKey);
         }
     }
