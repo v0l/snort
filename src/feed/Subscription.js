@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { System } from "..";
 import { Subscriptions } from "../nostr/Subscriptions";
 
@@ -45,8 +45,10 @@ export default function useSubscription(sub, opt) {
                 };
             }
 
+            console.debug("Adding sub: ", sub.ToObject());
             System.AddSubscription(sub);
             return () => {
+                console.debug("Adding sub: ", sub.ToObject());
                 System.RemoveSubscription(sub.Id);
             };
         }

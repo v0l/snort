@@ -31,6 +31,11 @@ export default function LoginPage() {
         }
     }
 
+    async function makeRandomKey() {
+        let newKey = secp.utils.bytesToHex(secp.utils.randomPrivateKey());
+        dispatch(setPrivateKey(newKey))
+    }
+
     async function doNip07Login() {
         let pubKey = await window.nostr.getPublicKey();
         dispatch(setNip07PubKey(pubKey));
@@ -64,7 +69,10 @@ export default function LoginPage() {
             <p>Enter your private key:</p>
             <div className="flex">
                 <input type="text" placeholder="Private key" className="f-grow" onChange={e => setKey(e.target.value)} />
+            </div>
+            <div className="tabs">
                 <div className="btn" onClick={(e) => doLogin()}>Login</div>
+                <div className="btn" onClick={() => makeRandomKey()}>Generate Key</div>
             </div>
             {altLogins()}
         </>

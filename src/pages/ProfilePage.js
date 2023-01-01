@@ -1,5 +1,5 @@
 import "./ProfilePage.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bech32 } from "bech32";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,7 +21,7 @@ export default function ProfilePage() {
     const id = params.id;
     const user = useProfile(id);
     const publisher = useEventPublisher();
-    const { notes } = useTimelineFeed([id]);
+    const { notes } = useTimelineFeed(id);
     const loginPubKey = useSelector(s => s.login.publicKey);
     const isMe = loginPubKey === id;
     const qrRef = useRef();
@@ -34,7 +34,7 @@ export default function ProfilePage() {
     const [lud16, setLud16] = useState("");
     const [showLnQr, setShowLnQr] = useState(false);
 
-    useEffect(() => {
+    useMemo(() => {
         if (user) {
             setName(user.name ?? "");
             setPicture(user.picture ?? Nostrich);
@@ -45,7 +45,7 @@ export default function ProfilePage() {
         }
     }, [user]);
 
-    useEffect(() => {
+    useMemo(() => {
         // some clients incorrectly set this to LNURL service, patch this
         if (lud16.toLowerCase().startsWith("lnurl")) {
             let decoded = bech32.decode(lud16, 1000);
@@ -62,7 +62,7 @@ export default function ProfilePage() {
         }
     }, [lud16]);
 
-    useEffect(() => {
+    useMemo(() => {
         if (qrRef.current && showLnQr) {
             let qr = new QRCodeStyling({
                 data: {lud16},

@@ -1,10 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { System } from "..";
-import Event from "../nostr/Event";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { addNotifications, setFollows, setRelays } from "../state/Login";
+import useSubscription from "./Subscription";
 
 /**
  * Managed loading data for the current logged in user
@@ -13,41 +12,41 @@ export default function useLoginFeed() {
     const dispatch = useDispatch();
     const pubKey = useSelector(s => s.login.publicKey);
 
-    useEffect(() => {
-        if (pubKey) {
-            let sub = new Subscriptions();
-            sub.Id = "login";
-            sub.Authors.add(pubKey);
-            sub.Kinds.add(EventKind.ContactList);
-
-            let notifications = new Subscriptions();
-            notifications.Kinds.add(EventKind.TextNote);
-            notifications.Kinds.add(EventKind.Reaction);
-            notifications.PTags.add(pubKey);
-            sub.AddSubscription(notifications);
-
-            sub.OnEvent = (e) => {
-                let ev = Event.FromObject(e);
-                switch (ev.Kind) {
-                    case EventKind.ContactList: {
-                        if (ev.Content !== "") {
-                            let relays = JSON.parse(ev.Content);
-                            dispatch(setRelays(relays));
-                        }
-                        let pTags = ev.Tags.filter(a => a.Key === "p").map(a => a.PubKey);
-                        dispatch(setFollows(pTags));
-                        break;
-                    }
-                    default: {
-                        dispatch(addNotifications(ev.ToObject()));
-                        break;
-                    }
-                }
-            }
-            System.AddSubscription(sub);
-            return () => System.RemoveSubscription(sub.Id);
+    const sub = useMemo(() => {
+        if(pubKey === null) {
+            return null;
         }
+
+        let sub = new Subscriptions();
+        sub.Id = `login:${sub.Id}`;
+        sub.Authors.add(pubKey);
+        sub.Kinds.add(EventKind.ContactList);
+
+        let notifications = new Subscriptions();
+        notifications.Kinds.add(EventKind.TextNote);
+        notifications.Kinds.add(EventKind.Reaction);
+        notifications.PTags.add(pubKey);
+        notifications.Limit = 100;
+        sub.AddSubscription(notifications);
+
+        return sub;
     }, [pubKey]);
 
-    return {};
+    const { notes } = useSubscription(sub, { leaveOpen: true });
+
+    useEffect(() => {
+        let metadatas = notes.filter(a => a.kind === EventKind.ContactList);
+        let others = notes.filter(a => a.kind !== EventKind.ContactList);
+
+        for(let md of metadatas) {
+            if (md.content !== "") {
+                let relays = JSON.parse(md.content);
+                dispatch(setRelays(relays));
+            }
+            let pTags = md.tags.filter(a => a[0] === "p").map(a => a[1]);
+            dispatch(setFollows(pTags));
+        }
+
+        dispatch(addNotifications(others));
+    }, [notes]);
 }

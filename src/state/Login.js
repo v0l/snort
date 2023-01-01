@@ -71,7 +71,11 @@ const LoginSlice = createSlice({
             state.nip07 = true;
         },
         setRelays: (state, action) => {
-            state.relays = action.payload;
+            // filter out non-websocket urls
+            let filtered = Object.entries(action.payload)
+                .filter(a => a[0].startsWith("ws://") || a[0].startsWith("wss://"));
+
+            state.relays = Object.fromEntries(filtered);
         },
         setFollows: (state, action) => {
             state.follows = action.payload;
