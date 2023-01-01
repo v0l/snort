@@ -10,5 +10,5 @@ export default function EventPage() {
     return <Thread notes={[
         ...main,
         ...other
-    ].filter((v, i, a) => a.indexOf(b => b.id === v.id) === -1)} this={id} />;
+    ].filter((v, i, a) => a.indexOf(v) === i)} this={id} />;
 }

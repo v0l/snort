@@ -12,9 +12,14 @@ export default function FollowButton(props) {
         publiser.broadcast(ev);
     }
 
+    async function unfollow(pubkey) {
+        let ev = await publiser.removeFollow(pubkey);
+        publiser.broadcast(ev);
+    }
+
     let isFollowing = follows?.includes(pubkey) ?? false;
     return (
-        <div className={className} onClick={() => follow(pubkey)}>
+        <div className={className} onClick={() => isFollowing ? unfollow(pubkey) : follow(pubkey)}>
             {isFollowing ? "Unfollow" : "Follow"}
         </div>
     )

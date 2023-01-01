@@ -75,10 +75,8 @@ input[type="text"], input[type="password"] {
 
 .flex {
   display: flex;
-}
-
-.f-center {
   align-items: center;
+  min-width: 0;
 }
 
 .f-grow {

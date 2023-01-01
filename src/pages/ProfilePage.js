@@ -15,6 +15,7 @@ import Note from "../element/Note";
 import QRCodeStyling from "qr-code-styling";
 import Modal from "../element/Modal";
 import { logout } from "../state/Login";
+import FollowButton from "../element/FollowButton";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -66,7 +67,7 @@ export default function ProfilePage() {
     useMemo(() => {
         if (qrRef.current && showLnQr) {
             let qr = new QRCodeStyling({
-                data: {lud16},
+                data: { lud16 },
                 type: "canvas"
             });
             qrRef.current.innerHTML = "";
@@ -98,7 +99,7 @@ export default function ProfilePage() {
             elm.click();
         });
     }
-    
+
     async function setNewAvatar() {
         let file = await openFile();
         console.log(file);
@@ -153,10 +154,16 @@ export default function ProfilePage() {
     function details() {
         return (
             <>
-                <h2>{name}</h2>
+                <div className="flex">
+                    <h2 className="f-grow">{name}</h2>
+                    <div>
+                        <FollowButton pubkey={id} />
+                    </div>
+                </div>
                 <p>{about}</p>
                 {website ? <a href={website} target="_blank" rel="noreferrer">{website}</a> : null}
-                {lud16 ? <div className="flex f-center">
+
+                {lud16 ? <div className="flex">
                     <div className="btn" onClick={(e) => setShowLnQr(true)}>
                         <FontAwesomeIcon icon={faQrcode} size="xl" />
                     </div>

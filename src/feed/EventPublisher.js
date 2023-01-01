@@ -98,14 +98,27 @@ export default function useEventPublisher() {
             ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
             return await signEvent(ev, privKey);
         },
-        addFollow: async (pubkey) => {
+        addFollow: async (pkAdd) => {
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.ContactList;
             ev.Content = JSON.stringify(relays);
             for(let pk of follows) {
                 ev.Tags.push(new Tag(["p", pk]));
             }
-            ev.Tags.push(new Tag(["p", pubkey]));
+            ev.Tags.push(new Tag(["p", pkAdd]));
+
+            return await signEvent(ev, privKey);
+        },
+        removeFollow: async (pkRemove) => {
+            let ev = Event.ForPubKey(pubKey);
+            ev.Kind = EventKind.ContactList;
+            ev.Content = JSON.stringify(relays);
+            for(let pk of follows) {
+                if(pk === pkRemove) {
+                    continue;
+                }
+                ev.Tags.push(new Tag(["p", pk]));
+            }
 
             return await signEvent(ev, privKey);
         }
