@@ -9,6 +9,11 @@ const LoginSlice = createSlice({
     name: "Login",
     initialState: {
         /**
+         * If there is no login
+         */
+        loggedOut: null,
+
+        /**
          * Current user private key
          */
         privateKey: null,
@@ -49,7 +54,11 @@ const LoginSlice = createSlice({
             if (state.privateKey) {
                 window.localStorage.removeItem(Nip07PublicKeyItem); // reset nip07 if using private key
                 state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(state.privateKey, true));
+                state.loggedOut = false;
+            } else {
+                state.loggedOut = true;
             }
+
             state.relays = {
                 "wss://nostr.v0l.io": { read: true, write: true },
                 "wss://relay.damus.io": { read: true, write: true },

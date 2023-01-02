@@ -3,13 +3,13 @@ import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import useSubscription from "./Subscription";
 
-export default function useTimelineFeed(pubKeys) {
+export default function useTimelineFeed(pubKeys, global = false) {
     const sub = useMemo(() => {
         if (!Array.isArray(pubKeys)) {
             pubKeys = [pubKeys];
         }
 
-        if (!pubKeys || pubKeys.length === 0) {
+        if (!global && (!pubKeys || pubKeys.length === 0)) {
             return null;
         }
 

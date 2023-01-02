@@ -3,11 +3,12 @@ import { useSelector } from "react-redux";
 import Note from "../element/Note";
 import useTimelineFeed from "../feed/TimelineFeed";
 import { NoteCreator } from "../element/NoteCreator";
+import { useMemo } from "react";
 
 export default function RootPage() {
-    const pubKey = useSelector(s => s.login.publicKey);
-    const follows = useSelector(a => a.login.follows);
-    const { notes } = useTimelineFeed(follows);
+    const [loggedOut, pubKey, follows] = useSelector(s => [s.login.loggedOut, s.login.publicKey, s.login.follows]);
+
+    const { notes } = useTimelineFeed(follows, loggedOut === true);
 
     function followHints() {
         if (follows?.length === 0 && pubKey) {

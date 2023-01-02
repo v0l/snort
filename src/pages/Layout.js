@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Layout(props) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const isInit = useSelector(s => s.login.loggedOut);
     const key = useSelector(s => s.login.publicKey);
     const relays = useSelector(s => s.login.relays);
     const notifications = useSelector(s => s.login.notifications);
@@ -44,6 +45,10 @@ export default function Layout(props) {
                 <ProfileImage pubkey={key} />
             </>
         )
+    }
+
+    if (typeof isInit !== "boolean") {
+        return null;
     }
 
     return (
