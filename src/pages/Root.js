@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import Note from "../element/Note";
 import useTimelineFeed from "../feed/TimelineFeed";
 import { NoteCreator } from "../element/NoteCreator";
-import ProfilePreview from "../element/ProfilePreview";
 
 export default function RootPage() {
     const pubKey = useSelector(s => s.login.publicKey);
