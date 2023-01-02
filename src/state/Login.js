@@ -70,6 +70,7 @@ const LoginSlice = createSlice({
             if (nip07PubKey && !state.privateKey) {
                 state.publicKey = nip07PubKey;
                 state.nip07 = true;
+                state.loggedOut = false;
             }
 
             // notifications

@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import Note from "../element/Note";
 import useTimelineFeed from "../feed/TimelineFeed";
 import { NoteCreator } from "../element/NoteCreator";
-import { useMemo } from "react";
 
 export default function RootPage() {
     const [loggedOut, pubKey, follows] = useSelector(s => [s.login.loggedOut, s.login.publicKey, s.login.follows]);
