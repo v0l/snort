@@ -18,12 +18,20 @@ const MentionRegex = /(#\[\d+\])/gi;
 export default function Note(props) {
     const navigate = useNavigate();
     const data = props.data;
+    const opt = props.options;
     const dataEvent = props["data-ev"];
     const reactions = props.reactions;
     const publisher = useEventPublisher();
     const [showReply, setShowReply] = useState(false);
     const users = useSelector(s => s.users?.users);
     const ev = dataEvent ?? Event.FromObject(data);
+
+    const options = {
+        showHeader: true,
+        showTime: true,
+        showFooter: true,
+        ...opt
+    };
 
     function goToEvent(e, id) {
         if (!window.location.pathname.startsWith("/e/")) {
@@ -121,28 +129,31 @@ export default function Note(props) {
 
     return (
         <div className="note">
-            <div className="header">
-                <ProfileImage pubkey={ev.PubKey} subHeader={replyTag()} />
-                <div className="info">
-                    {moment(ev.CreatedAt * 1000).fromNow()}
-                </div>
-            </div>
+            {options.showHeader ?
+                <div className="header flex">
+                    <ProfileImage pubkey={ev.PubKey} subHeader={replyTag()} />
+                    {options.showTime ?
+                        <div className="info">
+                            {moment(ev.CreatedAt * 1000).fromNow()}
+                        </div> : null}
+                </div> : null}
             <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
                 {transformBody()}
             </div>
-            <div className="footer">
-                <span className="pill" onClick={() => setShowReply(!showReply)}>
-                    <FontAwesomeIcon icon={faReply} />
-                </span>
-                <span className="pill" onClick={() => like()}>
-                    <FontAwesomeIcon icon={faHeart} /> &nbsp;
-                    {(reactions?.length ?? 0)}
-                </span>
-                <span className="pill" onClick={() => console.debug(ev)}>
-                    <FontAwesomeIcon icon={faInfo} />
-                </span>
-            </div>
-            {showReply ? <NoteCreator replyTo={ev} onSend={() => setShowReply(false)}/> : null}
+            {options.showFooter ?
+                <div className="footer">
+                    <span className="pill" onClick={() => setShowReply(!showReply)}>
+                        <FontAwesomeIcon icon={faReply} />
+                    </span>
+                    <span className="pill" onClick={() => like()}>
+                        <FontAwesomeIcon icon={faHeart} /> &nbsp;
+                        {(reactions?.length ?? 0)}
+                    </span>
+                    <span className="pill" onClick={() => console.debug(ev)}>
+                        <FontAwesomeIcon icon={faInfo} />
+                    </span>
+                </div> : null}
+            {showReply ? <NoteCreator replyTo={ev} onSend={() => setShowReply(false)} /> : null}
         </div>
     )
 }

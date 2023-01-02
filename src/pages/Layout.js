@@ -17,6 +17,7 @@ export default function Layout(props) {
     const key = useSelector(s => s.login.publicKey);
     const relays = useSelector(s => s.login.relays);
     const notifications = useSelector(s => s.login.notifications);
+    const readNotifications = useSelector(s => s.login.readNotifications);
     useUsersCache();
     useLoginFeed();
 
@@ -33,11 +34,12 @@ export default function Layout(props) {
     }, []);
 
     function accountHeader() {
+        const unreadNotifications = notifications?.filter(a => a.created_at > readNotifications).length ?? 0;
         return (
             <>
                 <div className="btn btn-rnd notifications" onClick={() => navigate("/notifications")}>
                     <FontAwesomeIcon icon={faBell} size="xl" />
-                    {notifications?.length ?? 0}
+                    {unreadNotifications}
                 </div>
                 <ProfileImage pubkey={key} />
             </>

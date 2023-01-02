@@ -3,6 +3,7 @@ import * as secp from '@noble/secp256k1';
 
 const PrivateKeyItem = "secret";
 const Nip07PublicKeyItem = "nip07:pubkey";
+const NotificationsReadItem = "notifications-read";
 
 const LoginSlice = createSlice({
     name: "Login",
@@ -35,7 +36,12 @@ const LoginSlice = createSlice({
         /**
          * Notifications for this login session
          */
-        notifications: []
+        notifications: [],
+
+        /**
+         * Timestamp of last read notification
+         */
+        readNotifications: 0,
     },
     reducers: {
         init: (state) => {
@@ -55,6 +61,12 @@ const LoginSlice = createSlice({
             if (nip07PubKey && !state.privateKey) {
                 state.publicKey = nip07PubKey;
                 state.nip07 = true;
+            }
+
+            // notifications
+            let readNotif = parseInt(window.localStorage.getItem(NotificationsReadItem));
+            if (!isNaN(readNotif)) {
+                state.readNotifications = readNotif;
             }
         },
         setPrivateKey: (state, action) => {
@@ -86,7 +98,7 @@ const LoginSlice = createSlice({
                 n = [n];
             }
 
-            for (let x in n) {
+            for (let x of n) {
                 if (!state.notifications.some(a => a.id === x.id)) {
                     state.notifications.push(x);
                 }
@@ -102,9 +114,13 @@ const LoginSlice = createSlice({
             state.publicKey = null;
             state.follows = [];
             state.notifications = [];
+        },
+        markNotificationsRead: (state) => {
+            state.readNotifications = new Date().getTime();
+            window.localStorage.setItem(NotificationsReadItem, state.readNotifications);
         }
     }
 });
 
-export const { init, setPrivateKey, setPublicKey, setNip07PubKey, setRelays, setFollows, addNotifications, logout } = LoginSlice.actions;
+export const { init, setPrivateKey, setPublicKey, setNip07PubKey, setRelays, setFollows, addNotifications, logout, markNotificationsRead } = LoginSlice.actions;
 export const reducer = LoginSlice.reducer;

@@ -6,7 +6,7 @@ import useSubscription from "./Subscription";
 export default function useThreadFeed(id) {
     const sub = useMemo(() => {
         const thisSub = new Subscriptions();
-        thisSub.Id = `thread:${thisSub.Id}`;
+        thisSub.Id = `thread:${id.substring(0, 8)}`;
         thisSub.Ids.add(id);
 
         // get replies to this event
@@ -26,7 +26,7 @@ export default function useThreadFeed(id) {
 
         if (thisNote) {
             let otherSubs = new Subscriptions();
-            otherSubs.Id = `thread-related:${otherSubs.Id}`;
+            otherSubs.Id = `thread-related:${id.substring(0, 8)}`;
             for (let e of thisNote.tags.filter(a => a[0] === "e")) {
                 otherSubs.Ids.add(e[1]);
             }
@@ -47,8 +47,10 @@ export default function useThreadFeed(id) {
 
     const others = useSubscription(relatedThisSub, { leaveOpen: true });
 
-    return {
-        main: main.notes,
-        other: others.notes
-    };
+    return useMemo(() => {
+        return {
+            main: main.notes,
+            other: others.notes,
+        };
+    }, [main, others]);
 }

@@ -3,11 +3,6 @@
     border-bottom: 1px solid #333;
 }
 
-.note > .header {
-    display: flex;
-    align-items: center;
-}
-
 .note > .header > .pfp {
     flex-grow: 1;
 }
