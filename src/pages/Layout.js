@@ -35,7 +35,7 @@ export default function Layout(props) {
     }, []);
 
     function accountHeader() {
-        const unreadNotifications = notifications?.filter(a => a.created_at > readNotifications).length ?? 0;
+        const unreadNotifications = notifications?.filter(a => (a.created_at * 1000) > readNotifications).length ?? 0;
         return (
             <>
                 <div className="btn btn-rnd notifications" onClick={() => navigate("/notifications")}>
