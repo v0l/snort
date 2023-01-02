@@ -1,5 +1,5 @@
 import "./Note.css";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,10 +10,12 @@ import Event from "../nostr/Event";
 import ProfileImage from "./ProfileImage";
 import useEventPublisher from "../feed/EventPublisher";
 import { NoteCreator } from "./NoteCreator";
+import Invoice from "./Invoice";
 
 const UrlRegex = /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)/i;
 const FileExtensionRegex = /\.([\w]+)$/i;
 const MentionRegex = /(#\[\d+\])/gi;
+const InvoiceRegex = /(lnbc\w+)/i;
 
 export default function Note(props) {
     const navigate = useNavigate();
@@ -32,6 +34,14 @@ export default function Note(props) {
         showFooter: true,
         ...opt
     };
+
+    const transformBody = useCallback(() => {
+        let body = ev?.Content ?? "";
+
+        let fragments = extractLinks([body]);
+        fragments = extractMentions(fragments);
+        return extractInvoices(fragments);
+    }, [data, dataEvent]);
 
     function goToEvent(e, id) {
         if (!window.location.pathname.startsWith("/e/")) {
@@ -55,36 +65,25 @@ export default function Note(props) {
         )
     }
 
-    function transformBody() {
-        let body = ev.Content;
-        let urlBody = body.split(UrlRegex);
-
-        return urlBody.map(a => {
-            if (a.startsWith("http")) {
-                let url = new URL(a);
-                let ext = url.pathname.toLowerCase().match(FileExtensionRegex);
-                if (ext) {
-                    switch (ext[1]) {
-                        case "gif":
-                        case "jpg":
-                        case "jpeg":
-                        case "png":
-                        case "bmp":
-                        case "webp": {
-                            return <img key={url} src={url} />;
-                        }
-                        case "mp4":
-                        case "mkv":
-                        case "avi":
-                        case "m4v": {
-                            return <video key={url} src={url} controls />
-                        }
+    function extractInvoices(fragments) {
+        return fragments.map(f => {
+            if (typeof f === "string") {
+                return f.split(InvoiceRegex).map(i => {
+                    if (i.toLowerCase().startsWith("lnbc")) {
+                        return <Invoice key={i} invoice={i}/>
+                    } else {
+                        return i;
                     }
-                } else {
-                    return <a href={url}>{url.toString()}</a>
-                }
-            } else {
-                let mentions = a.split(MentionRegex).map((match) => {
+                });
+            }
+            return f;
+        }).flat();
+    }
+
+    function extractMentions(fragments) {
+        return fragments.map(f => {
+            if (typeof f === "string") {
+                return f.split(MentionRegex).map((match) => {
                     let matchTag = match.match(/#\[(\d+)\]/);
                     if (matchTag && matchTag.length === 2) {
                         let idx = parseInt(matchTag[1]);
@@ -106,10 +105,44 @@ export default function Note(props) {
                         return match;
                     }
                 });
-                return mentions;
             }
-            return a;
-        });
+            return f;
+        }).flat();
+    }
+
+    function extractLinks(fragments) {
+        return fragments.map(f => {
+            if (typeof f === "string") {
+                return f.split(UrlRegex).map(a => {
+                    if (a.startsWith("http")) {
+                        let url = new URL(a);
+                        let ext = url.pathname.toLowerCase().match(FileExtensionRegex);
+                        if (ext) {
+                            switch (ext[1]) {
+                                case "gif":
+                                case "jpg":
+                                case "jpeg":
+                                case "png":
+                                case "bmp":
+                                case "webp": {
+                                    return <img key={url} src={url} />;
+                                }
+                                case "mp4":
+                                case "mkv":
+                                case "avi":
+                                case "m4v": {
+                                    return <video key={url} src={url} controls />
+                                }
+                            }
+                        } else {
+                            return <a href={url}>{url.toString()}</a>
+                        }
+                    }
+                    return a;
+                });
+            }
+            return f;
+        }).flat();
     }
 
     async function like() {
