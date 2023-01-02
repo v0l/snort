@@ -1,4 +1,3 @@
-import "./Root.css";
 import { useSelector } from "react-redux";
 import Note from "../element/Note";
 import useTimelineFeed from "../feed/TimelineFeed";
@@ -19,9 +18,7 @@ export default function RootPage() {
         <>
             {pubKey ? <NoteCreator /> : null}
             {followHints()}
-            <div className="timeline">
-                {notes?.sort((a, b) => b.created_at - a.created_at).map(e => <Note key={e.id} data={e} />)}
-            </div>
+            {notes?.sort((a, b) => b.created_at - a.created_at).map(e => <Note key={e.id} data={e} />)}
         </>
     );
 }

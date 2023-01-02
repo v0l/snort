@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import * as secp from '@noble/secp256k1';
 
 const PrivateKeyItem = "secret";
-const Nip07PublicKeyItem = "nip07:pubkey";
+const PublicKeyItem = "pubkey";
 const NotificationsReadItem = "notifications-read";
 
 const LoginSlice = createSlice({
@@ -34,11 +34,6 @@ const LoginSlice = createSlice({
         follows: [],
 
         /**
-         * Login keys are managed by extension
-         */
-        nip07: false,
-
-        /**
          * Notifications for this login session
          */
         notifications: [],
@@ -52,7 +47,7 @@ const LoginSlice = createSlice({
         init: (state) => {
             state.privateKey = window.localStorage.getItem(PrivateKeyItem);
             if (state.privateKey) {
-                window.localStorage.removeItem(Nip07PublicKeyItem); // reset nip07 if using private key
+                window.localStorage.removeItem(PublicKeyItem); // reset nip07 if using private key
                 state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(state.privateKey, true));
                 state.loggedOut = false;
             } else {
@@ -65,11 +60,10 @@ const LoginSlice = createSlice({
                 "wss://nostr-pub.wellorder.net": { read: true, write: true }
             };
 
-            // check nip07 pub key
-            let nip07PubKey = window.localStorage.getItem(Nip07PublicKeyItem);
-            if (nip07PubKey && !state.privateKey) {
-                state.publicKey = nip07PubKey;
-                state.nip07 = true;
+            // check pub key only
+            let pubKey = window.localStorage.getItem(PublicKeyItem);
+            if (pubKey && !state.privateKey) {
+                state.publicKey = pubKey;
                 state.loggedOut = false;
             }
 
@@ -80,17 +74,15 @@ const LoginSlice = createSlice({
             }
         },
         setPrivateKey: (state, action) => {
+            state.loggedOut = false;
             state.privateKey = action.payload;
             window.localStorage.setItem(PrivateKeyItem, action.payload);
             state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload, true));
         },
         setPublicKey: (state, action) => {
+            window.localStorage.setItem(PublicKeyItem, action.payload);
+            state.loggedOut = false;
             state.publicKey = action.payload;
-        },
-        setNip07PubKey: (state, action) => {
-            window.localStorage.setItem(Nip07PublicKeyItem, action.payload);
-            state.publicKey = action.payload;
-            state.nip07 = true;
         },
         setRelays: (state, action) => {
             // filter out non-websocket urls
@@ -119,12 +111,14 @@ const LoginSlice = createSlice({
         },
         logout: (state) => {
             window.localStorage.removeItem(PrivateKeyItem);
-            window.localStorage.removeItem(Nip07PublicKeyItem);
+            window.localStorage.removeItem(PublicKeyItem);
+            window.localStorage.removeItem(NotificationsReadItem);
             state.privateKey = null;
             state.publicKey = null;
             state.follows = [];
             state.notifications = [];
             state.loggedOut = true;
+            state.readNotifications = 0;
         },
         markNotificationsRead: (state) => {
             state.readNotifications = new Date().getTime();
@@ -133,5 +127,5 @@ const LoginSlice = createSlice({
     }
 });
 
-export const { init, setPrivateKey, setPublicKey, setNip07PubKey, setRelays, setFollows, addNotifications, logout, markNotificationsRead } = LoginSlice.actions;
+export const { init, setPrivateKey, setPublicKey, setRelays, setFollows, addNotifications, logout, markNotificationsRead } = LoginSlice.actions;
 export const reducer = LoginSlice.reducer;

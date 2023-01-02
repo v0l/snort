@@ -23,8 +23,8 @@ export function NoteCreator(props) {
     return (
         <>
             {replyTo ? <small>{`Reply to: ${replyTo.Id.substring(0, 8)}`}</small> : null}
-            <div className="send-note">
-                <input type="text" placeholder="Sup?" value={note} onChange={(e) => setNote(e.target.value)}></input>
+            <div className="flex">
+                <input type="text" placeholder="Sup?" value={note} onChange={(e) => setNote(e.target.value)} className="f-grow mr10"></input>
                 <div className="btn" onClick={() => sendNote()}>Send</div>
             </div>
         </>

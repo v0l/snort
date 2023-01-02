@@ -4,13 +4,16 @@ import { useNavigate } from "react-router-dom";
 import * as secp from '@noble/secp256k1';
 import { bech32 } from "bech32";
 
-import { setPrivateKey, setNip07PubKey } from "../state/Login";
+import { setPrivateKey, setPublicKey } from "../state/Login";
+
+const EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default function LoginPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const publicKey = useSelector(s => s.login.publicKey);
     const [key, setKey] = useState("");
+    const [error, setError] = useState("");
 
     useEffect(() => {
         if (publicKey) {
@@ -18,22 +21,51 @@ export default function LoginPage() {
         }
     }, [publicKey]);
 
-    function doLogin() {
-        if (key.startsWith("nsec")) {
-            let nKey = bech32.decode(key);
-            let buff = bech32.fromWords(nKey.words);
-            let hexKey = secp.utils.bytesToHex(Uint8Array.from(buff));
-            if (secp.utils.isValidPrivateKey(hexKey)) {
-                dispatch(setPrivateKey(hexKey));
-            } else {
-                throw "INVALID PRIVATE KEY";
+    function bech32ToHex(str) {
+        let nKey = bech32.decode(str);
+        let buff = bech32.fromWords(nKey.words);
+        return secp.utils.bytesToHex(Uint8Array.from(buff));
+    }
+
+    async function getNip05PubKey(addr) {
+        let [username, domain] = addr.split("@");
+        let rsp = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username)}`);
+        if (rsp.ok) {
+            let data = await rsp.json();
+            let pKey = data.names[username];
+            if (pKey) {
+                return pKey;
             }
-        } else {
-            if (secp.utils.isValidPrivateKey(key)) {
-                dispatch(setPrivateKey(key));
+        }
+        throw "User key not found"
+    }
+
+    async function doLogin() {
+
+        try {
+            if (key.startsWith("nsec")) {
+                let hexKey = bech32ToHex(key);
+                if (secp.utils.isValidPrivateKey(hexKey)) {
+                    dispatch(setPrivateKey(hexKey));
+                } else {
+                    throw "INVALID PRIVATE KEY";
+                }
+            } else if (key.startsWith("npub")) {
+                let hexKey = bech32ToHex(key);
+                dispatch(setPublicKey(hexKey));
+            } else if (key.match(EmailRegex)) {
+                let hexKey = await getNip05PubKey(key);
+                dispatch(setPublicKey(hexKey));
             } else {
-                throw "INVALID PRIVATE KEY";
+                if (secp.utils.isValidPrivateKey(key)) {
+                    dispatch(setPrivateKey(key));
+                } else {
+                    throw "INVALID PRIVATE KEY";
+                }
             }
+        } catch (e) {
+            setError(`Failed to load NIP-05 pub key (${e})`);
+            console.error(e);
         }
     }
 
@@ -45,7 +77,7 @@ export default function LoginPage() {
 
     async function doNip07Login() {
         let pubKey = await window.nostr.getPublicKey();
-        dispatch(setNip07PubKey(pubKey));
+        dispatch(setPublicKey(pubKey));
     }
 
     function altLogins() {
@@ -67,10 +99,10 @@ export default function LoginPage() {
     return (
         <>
             <h1>Login</h1>
-            <p>Enter your private key:</p>
             <div className="flex">
-                <input type="text" placeholder="Private key" className="f-grow" onChange={e => setKey(e.target.value)} />
+                <input type="text" placeholder="nsec / npub / nip-05 / hex private key..." className="f-grow" onChange={e => setKey(e.target.value)} />
             </div>
+            {error.length > 0 ? <b className="error">{error}</b> : null}
             <div className="tabs">
                 <div className="btn" onClick={(e) => doLogin()}>Login</div>
                 <div className="btn" onClick={() => makeRandomKey()}>Generate Key</div>

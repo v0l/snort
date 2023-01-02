@@ -22,7 +22,6 @@ export default function useEventPublisher() {
         if (nip07 === true && hasNip07) {
             ev.Id = await ev.CreateId();
             let tmpEv = await window.nostr.signEvent(ev.ToObject());
-            console.log(tmpEv);
             return Event.FromObject(tmpEv);
         } else {
             await ev.Sign(privKey);
