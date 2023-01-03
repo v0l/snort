@@ -53,8 +53,8 @@ export default function useLoginFeed() {
 
         if (Notification.permission === "granted") {
             for (let nx in notifications.filter(a => (a.created_at * 1000) > readNotifications)) {
-                let n = new Notification(`New reply!`, { body: nx.content, icon: Nostrich });
-                console.log(n);
+                //let n = new Notification(`New reply!`, { body: nx.content, icon: Nostrich });
+                //console.log(n);
             }
         }
         dispatch(addNotifications(notifications));
