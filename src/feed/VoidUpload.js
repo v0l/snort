@@ -25,7 +25,7 @@ export default async function VoidUpload(file) {
     if (req.ok) {
         let rsp = await req.json();
         if (rsp.ok) {
-            return rsp;
+            return rsp.file;
         } else {
             throw rsp.errorMessage;
         }
