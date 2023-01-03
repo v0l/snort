@@ -34,11 +34,25 @@ export default function Layout(props) {
         dispatch(init());
     }, []);
 
+    async function goToNotifications(e) {
+        e.stopPropagation();
+        // request permissions to send notifications
+        if (Notification.permission !== "granted") {
+            try {
+                let res = await Notification.requestPermission();
+                console.debug(res);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        navigate("/notifications");
+    }
+
     function accountHeader() {
         const unreadNotifications = notifications?.filter(a => (a.created_at * 1000) > readNotifications).length ?? 0;
         return (
             <>
-                <div className="btn btn-rnd notifications" onClick={() => navigate("/notifications")}>
+                <div className="btn btn-rnd notifications" onClick={(e) => goToNotifications(e)}>
                     <FontAwesomeIcon icon={faBell} size="xl" />
                     {unreadNotifications}
                 </div>

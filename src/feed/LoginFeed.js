@@ -1,3 +1,4 @@
+import Nostrich from "../nostrich.jpg";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EventKind from "../nostr/EventKind";
@@ -12,10 +13,10 @@ import { mapEventToProfile } from "./UsersFeed";
  */
 export default function useLoginFeed() {
     const dispatch = useDispatch();
-    const pubKey = useSelector(s => s.login.publicKey);
+    const [pubKey, readNotifications] = useSelector(s => [s.login.publicKey, s.login.readNotifications]);
 
     const sub = useMemo(() => {
-        if(pubKey === null) {
+        if (pubKey === null) {
             return null;
         }
 
@@ -39,9 +40,9 @@ export default function useLoginFeed() {
     useEffect(() => {
         let contactList = notes.filter(a => a.kind === EventKind.ContactList);
         let notifications = notes.filter(a => a.kind === EventKind.TextNote);
-        let metadata = notes.filter(a => a.kind === EventKind.SetMetadata).map(a => mapEventToProfile(a)); 
+        let metadata = notes.filter(a => a.kind === EventKind.SetMetadata).map(a => mapEventToProfile(a));
 
-        for(let cl of contactList) {
+        for (let cl of contactList) {
             if (cl.content !== "") {
                 let relays = JSON.parse(cl.content);
                 dispatch(setRelays(relays));
@@ -50,6 +51,12 @@ export default function useLoginFeed() {
             dispatch(setFollows(pTags));
         }
 
+        if (Notification.permission === "granted") {
+            for (let nx in notifications.filter(a => (a.created_at * 1000) > readNotifications)) {
+                let n = new Notification(`New reply!`, { body: nx.content, icon: Nostrich });
+                console.log(n);
+            }
+        }
         dispatch(addNotifications(notifications));
         dispatch(setUserData(metadata));
     }, [notes]);
