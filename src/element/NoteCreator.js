@@ -35,7 +35,7 @@ export function NoteCreator(props) {
         // extension tricks note parser to embed the content
         let url = rsp.metadata.url ?? `https://void.cat/d/${rsp.id}.${ext}`;
 
-        setNote(n => `${n}\n{url}`);
+        setNote(n => `${n}\n${url}`);
     }
 
     return (
