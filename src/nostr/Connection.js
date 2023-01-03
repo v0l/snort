@@ -43,29 +43,31 @@ export default class Connection {
     }
 
     OnMessage(e) {
-        let msg = JSON.parse(e.data);
-        let tag = msg[0];
-        switch (tag) {
-            case "EVENT": {
-                this._OnEvent(msg[1], msg[2]);
-                break;
-            }
-            case "EOSE": {
-                this._OnEnd(msg[1]);
-                break;
-            }
-            case "OK": {
-                // feedback to broadcast call
-                console.debug("OK: ", msg[1]);
-                break;
-            }
-            case "NOTICE": {
-                console.warn(`[${this.Address}] NOTICE: ${msg[1]}`);
-                break;
-            }
-            default: {
-                console.warn(`Unknown tag: ${tag}`);
-                break;
+        if (e.data.length > 0) {
+            let msg = JSON.parse(e.data);
+            let tag = msg[0];
+            switch (tag) {
+                case "EVENT": {
+                    this._OnEvent(msg[1], msg[2]);
+                    break;
+                }
+                case "EOSE": {
+                    this._OnEnd(msg[1]);
+                    break;
+                }
+                case "OK": {
+                    // feedback to broadcast call
+                    console.debug("OK: ", msg[1]);
+                    break;
+                }
+                case "NOTICE": {
+                    console.warn(`[${this.Address}] NOTICE: ${msg[1]}`);
+                    break;
+                }
+                default: {
+                    console.warn(`Unknown tag: ${tag}`);
+                    break;
+                }
             }
         }
     }

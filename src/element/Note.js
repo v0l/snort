@@ -111,27 +111,31 @@ export default function Note(props) {
             if (typeof f === "string") {
                 return f.split(UrlRegex).map(a => {
                     if (a.startsWith("http")) {
-                        let url = new URL(a);
-                        let ext = url.pathname.toLowerCase().match(FileExtensionRegex);
-                        if (ext) {
-                            switch (ext[1]) {
-                                case "gif":
-                                case "jpg":
-                                case "jpeg":
-                                case "png":
-                                case "bmp":
-                                case "webp": {
-                                    return <img key={url} src={url} />;
+                        try {
+                            let url = new URL(a);
+                            let ext = url.pathname.toLowerCase().match(FileExtensionRegex);
+                            if (ext) {
+                                switch (ext[1]) {
+                                    case "gif":
+                                    case "jpg":
+                                    case "jpeg":
+                                    case "png":
+                                    case "bmp":
+                                    case "webp": {
+                                        return <img key={url} src={url} />;
+                                    }
+                                    case "mp4":
+                                    case "mkv":
+                                    case "avi":
+                                    case "m4v": {
+                                        return <video key={url} src={url} controls />
+                                    }
                                 }
-                                case "mp4":
-                                case "mkv":
-                                case "avi":
-                                case "m4v": {
-                                    return <video key={url} src={url} controls />
-                                }
+                            } else {
+                                return <a href={url}>{url.toString()}</a>
                             }
-                        } else {
-                            return <a href={url}>{url.toString()}</a>
+                        } catch (e) {
+                            console.warn(`Not a valid url: ${a}`);
                         }
                     }
                     return a;
