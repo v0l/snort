@@ -24,7 +24,6 @@ export default function useLoginFeed() {
 
         let notifications = new Subscriptions();
         notifications.Kinds.add(EventKind.TextNote);
-        notifications.Kinds.add(EventKind.Reaction);
         notifications.PTags.add(pubKey);
         notifications.Limit = 100;
         sub.AddSubscription(notifications);

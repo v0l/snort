@@ -7,7 +7,6 @@ import Tag from "../nostr/Tag";
 export default function useEventPublisher() {
     const pubKey = useSelector(s => s.login.publicKey);
     const privKey = useSelector(s => s.login.privateKey);
-    const nip07 = useSelector(s => s.login.nip07);
     const follows = useSelector(s => s.login.follows);
     const relays = useSelector(s => s.login.relays);
     const hasNip07 = 'nostr' in window;
@@ -19,7 +18,7 @@ export default function useEventPublisher() {
      * @returns 
      */
     async function signEvent(ev, privKey) {
-        if (nip07 === true && hasNip07) {
+        if (hasNip07 && !privKey) {
             ev.Id = await ev.CreateId();
             let tmpEv = await window.nostr.signEvent(ev.ToObject());
             return Event.FromObject(tmpEv);
