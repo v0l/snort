@@ -77,14 +77,28 @@ export default function ProfilePage() {
     }, [showLnQr]);
 
     async function saveProfile() {
-        let ev = await publisher.metadata({
+        // copy user object and delete internal fields
+        let userCopy = {
+            ...user,
             name,
             about,
             picture,
             website,
             nip05,
             lud16
+        };
+        delete userCopy["loaded"];
+        delete userCopy["fromEvent"];
+
+        // trim empty string fields
+        Object.keys(userCopy).forEach(k => {
+            if(userCopy[k] === "") {
+                delete userCopy[k];
+            }
         });
+        console.debug(userCopy);
+
+        let ev = await publisher.metadata(userCopy);
         console.debug(ev);
         publisher.broadcast(ev);
         dispatch(resetProfile(id));
