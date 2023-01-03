@@ -11,11 +11,7 @@ import ProfileImage from "./ProfileImage";
 import useEventPublisher from "../feed/EventPublisher";
 import { NoteCreator } from "./NoteCreator";
 import Invoice from "./Invoice";
-
-const UrlRegex = /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)/i;
-const FileExtensionRegex = /\.([\w]+)$/i;
-const MentionRegex = /(#\[\d+\])/gi;
-const InvoiceRegex = /(lnbc\w+)/i;
+import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex } from "../Const";
 
 export default function Note(props) {
     const navigate = useNavigate();
@@ -70,7 +66,7 @@ export default function Note(props) {
             if (typeof f === "string") {
                 return f.split(InvoiceRegex).map(i => {
                     if (i.toLowerCase().startsWith("lnbc")) {
-                        return <Invoice key={i} invoice={i}/>
+                        return <Invoice key={i} invoice={i} />
                     } else {
                         return i;
                     }

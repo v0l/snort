@@ -28,13 +28,15 @@ export default function NotificationsPage() {
     const subEvents = useMemo(() => {
         let sub = new Subscriptions();
         sub.Id = `reactions:${sub.Id}`;
-        sub.Kinds.add(EventKind.TextNote);
-        sub.Ids = new Set(etagged);
+        sub.Kinds.add(EventKind.Reaction);
+        sub.ETags = new Set(notifications?.filter(b => b.kind === EventKind.TextNote).map(b => b.id));
 
-        let replyReactions = new Subscriptions();
-        replyReactions.Kinds.add(EventKind.Reaction);
-        replyReactions.ETags = new Set(notifications?.filter(b => b.kind === EventKind.TextNote).map(b => b.id));
-        sub.OrSubs.push(replyReactions);
+        if (etagged.length > 0) {
+            let reactionsTo = new Subscriptions();
+            reactionsTo.Kinds.add(EventKind.TextNote);
+            reactionsTo.Ids = new Set(etagged);
+            sub.OrSubs.push(reactionsTo);
+        }
         return sub;
     }, [etagged]);
 

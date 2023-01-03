@@ -1,8 +1,8 @@
-import { Subscriptions } from "./Subscriptions";
-import Event from "./Event";
 import * as secp from "@noble/secp256k1";
 
-const DefaultConnectTimeout = 1000;
+import { Subscriptions } from "./Subscriptions";
+import Event from "./Event";
+import { DefaultConnectTimeout } from "../Const";
 
 export default class Connection {
     constructor(addr, options) {

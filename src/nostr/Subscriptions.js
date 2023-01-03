@@ -132,4 +132,12 @@ export class Subscriptions {
         }
         return ret;
     }
+
+    /** 
+     * Split subscription by ids
+     * @param {number} n How many segments to create
+     */
+    Split(n) {
+        
+    }
 }

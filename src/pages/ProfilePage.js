@@ -16,6 +16,7 @@ import QRCodeStyling from "qr-code-styling";
 import Modal from "../element/Modal";
 import { logout } from "../state/Login";
 import FollowButton from "../element/FollowButton";
+import VoidUpload from "../feed/VoidUpload";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -103,7 +104,12 @@ export default function ProfilePage() {
     async function setNewAvatar() {
         let file = await openFile();
         console.log(file);
-
+        let rsp = await VoidUpload(file);
+        if (!rsp) {
+            throw "Upload failed, please try again later";
+        }
+        console.log(rsp);
+        setPicture(rsp.metadata.url ?? `https://void.cat/d/${rsp.id}`)
     }
 
     function editor() {

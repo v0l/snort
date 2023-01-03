@@ -3,13 +3,13 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { System } from ".."
 import ProfileImage from "../element/ProfileImage";
 import { init } from "../state/Login";
 import useLoginFeed from "../feed/LoginFeed";
 import useUsersCache from "../feed/UsersFeed";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Layout(props) {
     const dispatch = useDispatch();

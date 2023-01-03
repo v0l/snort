@@ -5,8 +5,7 @@ import * as secp from '@noble/secp256k1';
 import { bech32 } from "bech32";
 
 import { setPrivateKey, setPublicKey } from "../state/Login";
-
-const EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import { EmailRegex } from "../Const";
 
 export default function LoginPage() {
     const dispatch = useDispatch();
