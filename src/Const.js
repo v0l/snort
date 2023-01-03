@@ -36,19 +36,19 @@ export const EmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)
 /**
  * Generic URL regex
  */
-const UrlRegex = /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)/i;
+export const UrlRegex = /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)/i;
 
 /**
  * Extract file extensions regex
  */
-const FileExtensionRegex = /\.([\w]+)$/i;
+export const FileExtensionRegex = /\.([\w]+)$/i;
 
 /**
  * Extract note reactions regex
  */
-const MentionRegex = /(#\[\d+\])/gi;
+export const MentionRegex = /(#\[\d+\])/gi;
 
 /**
  * Simple lightning invoice regex
  */
-const InvoiceRegex = /(lnbc\w+)/i;
+export const InvoiceRegex = /(lnbc\w+)/i;
