@@ -1,0 +1,18 @@
+.note-creator {
+    margin-bottom: 10px;
+}
+
+.note-creator textarea {
+    min-height: 40px;
+    max-height: 300px;
+    border-radius: 10px 10px 0 0;
+    max-width: -webkit-fill-available;
+    min-width: -webkit-fill-available;
+}
+
+.note-creator .actions {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 0 0 10px 10px;
+    background-color: #222;
+}

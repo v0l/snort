@@ -1,9 +1,8 @@
 .profile {
-    display: flex;
+    align-items: flex-start;
 }
 
 .profile > div:last-child {
-    flex-grow: 1;
     margin-left: 10px;
 }
 

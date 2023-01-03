@@ -17,6 +17,7 @@ import Modal from "../element/Modal";
 import { logout } from "../state/Login";
 import FollowButton from "../element/FollowButton";
 import VoidUpload from "../feed/VoidUpload";
+import { openFile } from "../Util";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -101,7 +102,7 @@ export default function ProfilePage() {
 
         // trim empty string fields
         Object.keys(userCopy).forEach(k => {
-            if(userCopy[k] === "") {
+            if (userCopy[k] === "") {
                 delete userCopy[k];
             }
         });
@@ -110,17 +111,6 @@ export default function ProfilePage() {
         let ev = await publisher.metadata(userCopy);
         console.debug(ev);
         publisher.broadcast(ev);
-    }
-
-    async function openFile() {
-        return new Promise((resolve, reject) => {
-            let elm = document.createElement("input");
-            elm.type = "file";
-            elm.onchange = (e) => {
-                resolve(e.target.files[0]);
-            };
-            elm.click();
-        });
     }
 
     async function setNewAvatar() {
@@ -195,7 +185,7 @@ export default function ProfilePage() {
                     <div className="btn" onClick={(e) => setShowLnQr(true)}>
                         <FontAwesomeIcon icon={faQrcode} size="xl" />
                     </div>
-                    <div>&nbsp; ⚡️ {lud16}</div>
+                    <div className="f-ellipsis">&nbsp; ⚡️ {lud16.length > 20 ? lud16.substring(0, 20) : lud16}</div>
                 </div> : null}
                 {showLnQr === true ?
                     <Modal onClose={() => setShowLnQr(false)}>
@@ -208,7 +198,7 @@ export default function ProfilePage() {
 
     return (
         <>
-            <div className="profile">
+            <div className="profile flex">
                 <div>
                     <div style={{ backgroundImage: `url(${picture.length === 0 ? Nostrich : picture})` }} className="avatar">
                         {isMe ?
@@ -219,7 +209,7 @@ export default function ProfilePage() {
                         }
                     </div>
                 </div>
-                <div>
+                <div className="f-grow">
                     {isMe ? editor() : details()}
                 </div>
             </div>
