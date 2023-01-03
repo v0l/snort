@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { addNotifications, setFollows, setRelays } from "../state/Login";
+import { setUserData } from "../state/Users";
 import useSubscription from "./Subscription";
+import { mapEventToProfile } from "./UsersFeed";
 
 /**
  * Managed loading data for the current logged in user
@@ -21,6 +23,7 @@ export default function useLoginFeed() {
         sub.Id = `login:${sub.Id}`;
         sub.Authors.add(pubKey);
         sub.Kinds.add(EventKind.ContactList);
+        sub.Kinds.add(EventKind.SetMetadata);
 
         let notifications = new Subscriptions();
         notifications.Kinds.add(EventKind.TextNote);
@@ -34,18 +37,20 @@ export default function useLoginFeed() {
     const { notes } = useSubscription(sub, { leaveOpen: true });
 
     useEffect(() => {
-        let metadatas = notes.filter(a => a.kind === EventKind.ContactList);
-        let others = notes.filter(a => a.kind !== EventKind.ContactList);
+        let contactList = notes.filter(a => a.kind === EventKind.ContactList);
+        let notifications = notes.filter(a => a.kind === EventKind.TextNote);
+        let metadata = notes.filter(a => a.kind === EventKind.SetMetadata).map(a => mapEventToProfile(a)); 
 
-        for(let md of metadatas) {
-            if (md.content !== "") {
-                let relays = JSON.parse(md.content);
+        for(let cl of contactList) {
+            if (cl.content !== "") {
+                let relays = JSON.parse(cl.content);
                 dispatch(setRelays(relays));
             }
-            let pTags = md.tags.filter(a => a[0] === "p").map(a => a[1]);
+            let pTags = cl.tags.filter(a => a[0] === "p").map(a => a[1]);
             dispatch(setFollows(pTags));
         }
 
-        dispatch(addNotifications(others));
+        dispatch(addNotifications(notifications));
+        dispatch(setUserData(metadata));
     }, [notes]);
 }

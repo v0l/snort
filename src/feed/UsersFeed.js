@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ProfileCacheExpire } from "../Const";
 import Event from "../nostr/Event";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
@@ -12,20 +13,9 @@ export default function useUsersCache() {
     const users = useSelector(s => s.users.users);
 
     function isUserCached(id) {
-        let expire = new Date().getTime() - (1_000 * 60 * 5); // 5min expire
+        let expire = new Date().getTime() - ProfileCacheExpire;
         let u = users[id];
         return u && u.loaded > expire;
-    }
-
-    function mapEventToProfile(ev) {
-        let metaEvent = Event.FromObject(ev);
-        let data = JSON.parse(metaEvent.Content);
-        return {
-            pubkey: metaEvent.PubKey,
-            fromEvent: ev,
-            loaded: new Date().getTime(),
-            ...data
-        };
     }
 
     const sub = useMemo(() => {
@@ -49,4 +39,14 @@ export default function useUsersCache() {
     }, [results]);
 
     return results;
+}
+
+export function mapEventToProfile(ev) {
+    let data = JSON.parse(ev.content);
+    return {
+        pubkey: ev.pubkey,
+        fromEvent: ev,
+        loaded: new Date().getTime(),
+        ...data
+    };
 }

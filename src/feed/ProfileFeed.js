@@ -5,10 +5,9 @@ import { addPubKey } from "../state/Users";
 export default function useProfile(pubKey) {
     const dispatch = useDispatch();
     const user = useSelector(s => s.users.users[pubKey]);
-    const pubKeys = useSelector(s => s.users.pubKeys);
 
     useEffect(() => {
-        if (pubKey !== "" && !pubKeys.includes(pubKey)) {
+        if (pubKey !== "") {
             dispatch(addPubKey(pubKey));
         }
     }, [pubKey]);

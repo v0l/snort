@@ -5,6 +5,11 @@
 export const DefaultConnectTimeout = 1000;
 
 /**
+ * How long profile cache should be considered valid for
+ */
+export const ProfileCacheExpire = (1_000 * 60 * 5);
+
+/**
  * List of recommended follows for new users
  */
 export const RecommendedFollows = [

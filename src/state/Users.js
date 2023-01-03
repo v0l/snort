@@ -40,10 +40,14 @@ const UsersSlice = createSlice({
             if (!Array.isArray(ud)) {
                 ud = [ud];
             }
-            
+
             for (let x of ud) {
                 let existing = state.users[x.pubkey];
                 if (existing) {
+                    if(existing.fromEvent.created_at > x.fromEvent.created_at) {
+                        // prevent patching with older metadata 
+                        continue;
+                    }
                     x = {
                         ...existing,
                         ...x
@@ -58,7 +62,7 @@ const UsersSlice = createSlice({
             }
         },
         resetProfile: (state, action) => {
-            if(state.users[action.payload]) {
+            if (state.users[action.payload]) {
                 delete state.users[action.payload];
                 state.users = {
                     ...state.users

@@ -65,7 +65,7 @@ code {
   border-radius: 25px;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], textarea {
   padding: 10px;
   border-radius: 5px;
   border: 0;
@@ -89,6 +89,15 @@ input[type="text"], input[type="password"] {
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 0 15px;
+}
+
+.f-col {
+  flex-direction: column;
+  align-items: flex-start !important;
+}
+
+.w-max {
+  width: 100%;
 }
 
 a {

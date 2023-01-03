@@ -89,6 +89,15 @@ export default function ProfilePage() {
         };
         delete userCopy["loaded"];
         delete userCopy["fromEvent"];
+        // event top level props should not be copied into metadata (bug)
+        delete userCopy["pubkey"];
+        delete userCopy["sig"];
+        delete userCopy["pubkey"];
+        delete userCopy["tags"];
+        delete userCopy["content"];
+        delete userCopy["created_at"];
+        delete userCopy["id"];
+        delete userCopy["kind"]
 
         // trim empty string fields
         Object.keys(userCopy).forEach(k => {
@@ -101,7 +110,6 @@ export default function ProfilePage() {
         let ev = await publisher.metadata(userCopy);
         console.debug(ev);
         publisher.broadcast(ev);
-        dispatch(resetProfile(id));
     }
 
     async function openFile() {
@@ -128,17 +136,17 @@ export default function ProfilePage() {
 
     function editor() {
         return (
-            <>
+            <div className="editor">
                 <div className="form-group">
                     <div>Name:</div>
                     <div>
                         <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
                 </div>
-                <div className="form-group">
+                <div className="form-group f-col">
                     <div>About:</div>
-                    <div>
-                        <input type="text" value={about} onChange={(e) => setAbout(e.target.value)} />
+                    <div className="w-max">
+                        <textarea onChange={(e) => setAbout(e.target.value)} value={about}></textarea>
                     </div>
                 </div>
                 <div className="form-group">
@@ -167,7 +175,7 @@ export default function ProfilePage() {
                         <div className="btn" onClick={() => saveProfile()}>Save</div>
                     </div>
                 </div>
-            </>
+            </div>
         )
     }
 
