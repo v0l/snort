@@ -6,6 +6,10 @@
     margin-left: 10px;
 }
 
+.profile p {
+    white-space: pre-wrap;
+}
+
 .profile .avatar {
     width: 256px;
     height: 256px;
