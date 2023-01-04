@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
-import { faHeart, faReply, faInfo } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faReply, faInfo, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Event from "../nostr/Event";
@@ -19,10 +19,13 @@ export default function Note(props) {
     const opt = props.options;
     const dataEvent = props["data-ev"];
     const reactions = props.reactions;
+    const deletion = props.deletion;
     const publisher = useEventPublisher();
     const [showReply, setShowReply] = useState(false);
     const users = useSelector(s => s.users?.users);
+    const login = useSelector(s => s.login.publicKey);
     const ev = dataEvent ?? Event.FromObject(data);
+    const isMine = ev.PubKey === login;
 
     const options = {
         showHeader: true,
@@ -36,8 +39,16 @@ export default function Note(props) {
 
         let fragments = extractLinks([body]);
         fragments = extractMentions(fragments);
-        return extractInvoices(fragments);
-    }, [data, dataEvent]);
+        fragments = extractInvoices(fragments);
+        if (deletion?.length > 0) {
+            return (
+                <>
+                    <b className="error">Deleted</b>
+                </>
+            );
+        }
+        return fragments;
+    }, [data, dataEvent, reactions, deletion]);
 
     function goToEvent(e, id) {
         if (!window.location.pathname.startsWith("/e/")) {
@@ -150,6 +161,13 @@ export default function Note(props) {
         publisher.broadcast(evLike);
     }
 
+    async function deleteEvent() {
+        if (window.confirm(`Are you sure you want to delete ${ev.Id.substring(0, 8)}?`)) {
+            let evDelete = await publisher.delete(ev.Id);
+            publisher.broadcast(evDelete);
+        }
+    }
+
     if (!ev.IsContent()) {
         return (
             <>
@@ -175,6 +193,9 @@ export default function Note(props) {
             </div>
             {options.showFooter ?
                 <div className="footer">
+                    {isMine ? <span className="pill">
+                        <FontAwesomeIcon icon={faTrash} onClick={() => deleteEvent()} />
+                    </span> : null}
                     <span className="pill" onClick={() => setShowReply(!showReply)}>
                         <FontAwesomeIcon icon={faReply} />
                     </span>

@@ -10,14 +10,13 @@ import useProfile from "../feed/ProfileFeed";
 import { resetProfile } from "../state/Users";
 import Nostrich from "../nostrich.jpg";
 import useEventPublisher from "../feed/EventPublisher";
-import useTimelineFeed from "../feed/TimelineFeed";
-import Note from "../element/Note";
 import QRCodeStyling from "qr-code-styling";
 import Modal from "../element/Modal";
 import { logout } from "../state/Login";
 import FollowButton from "../element/FollowButton";
 import VoidUpload from "../feed/VoidUpload";
 import { openFile } from "../Util";
+import Timeline from "../element/Timeline";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -25,7 +24,6 @@ export default function ProfilePage() {
     const id = params.id;
     const user = useProfile(id);
     const publisher = useEventPublisher();
-    const { notes } = useTimelineFeed(id);
     const loginPubKey = useSelector(s => s.login.publicKey);
     const isMe = loginPubKey === id;
     const qrRef = useRef();
@@ -110,6 +108,7 @@ export default function ProfilePage() {
 
         let ev = await publisher.metadata(userCopy);
         console.debug(ev);
+        dispatch(resetProfile(id));
         publisher.broadcast(ev);
     }
 
@@ -220,7 +219,7 @@ export default function ProfilePage() {
                 <div className="btn">Follows</div>
                 <div className="btn">Relays</div>
             </div>
-            {notes?.sort((a, b) => b.created_at - a.created_at).map(a => <Note key={a.id} data={a} />)}
+            <Timeline pubkeys={id} />
         </>
     )
 }

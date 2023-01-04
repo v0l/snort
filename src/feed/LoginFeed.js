@@ -25,6 +25,7 @@ export default function useLoginFeed() {
         sub.Authors.add(pubKey);
         sub.Kinds.add(EventKind.ContactList);
         sub.Kinds.add(EventKind.SetMetadata);
+        sub.Kinds.add(EventKind.Deletion);
 
         let notifications = new Subscriptions();
         notifications.Kinds.add(EventKind.TextNote);

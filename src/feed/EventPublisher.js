@@ -17,7 +17,7 @@ export default function useEventPublisher() {
      * @param {*} privKey 
      * @returns 
      */
-    async function signEvent(ev, privKey) {
+    async function signEvent(ev) {
         if (hasNip07 && !privKey) {
             ev.Id = await ev.CreateId();
             let tmpEv = await window.nostr.signEvent(ev.ToObject());
@@ -46,7 +46,7 @@ export default function useEventPublisher() {
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.TextNote;
             ev.Content = msg;
-            return await signEvent(ev, privKey);
+            return await signEvent(ev);
         },
         /**
          * Reply to a note
@@ -78,7 +78,7 @@ export default function useEventPublisher() {
                 ev.Tags.push(new Tag(["e", replyTo.Id, "", "reply"], 0));
                 ev.Tags.push(new Tag(["p", replyTo.PubKey], 1));
             }
-            return await signEvent(ev, privKey);
+            return await signEvent(ev);
         },
         like: async (evRef) => {
             let ev = Event.ForPubKey(pubKey);
@@ -86,7 +86,7 @@ export default function useEventPublisher() {
             ev.Content = "+";
             ev.Tags.push(new Tag(["e", evRef.Id], 0));
             ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
-            return await signEvent(ev, privKey);
+            return await signEvent(ev);
         },
         dislike: async (evRef) => {
             let ev = Event.ForPubKey(pubKey);
@@ -94,31 +94,38 @@ export default function useEventPublisher() {
             ev.Content = "-";
             ev.Tags.push(new Tag(["e", evRef.Id], 0));
             ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
-            return await signEvent(ev, privKey);
+            return await signEvent(ev);
         },
         addFollow: async (pkAdd) => {
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.ContactList;
             ev.Content = JSON.stringify(relays);
-            for(let pk of follows) {
+            for (let pk of follows) {
                 ev.Tags.push(new Tag(["p", pk]));
             }
             ev.Tags.push(new Tag(["p", pkAdd]));
 
-            return await signEvent(ev, privKey);
+            return await signEvent(ev);
         },
         removeFollow: async (pkRemove) => {
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.ContactList;
             ev.Content = JSON.stringify(relays);
-            for(let pk of follows) {
-                if(pk === pkRemove) {
+            for (let pk of follows) {
+                if (pk === pkRemove) {
                     continue;
                 }
                 ev.Tags.push(new Tag(["p", pk]));
             }
 
-            return await signEvent(ev, privKey);
+            return await signEvent(ev);
+        },
+        delete: async (id) => {
+            let ev = Event.ForPubKey(pubKey);
+            ev.Kind = EventKind.Deletion;
+            ev.Content = "";
+            ev.Tags.push(new Tag(["e", id]));
+            return await signEvent(ev);
         }
     }
 }

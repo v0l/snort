@@ -1,16 +1,16 @@
 import { useSelector } from "react-redux";
-import Note from "../element/Note";
-import useTimelineFeed from "../feed/TimelineFeed";
+import { Link } from "react-router-dom";
 import { NoteCreator } from "../element/NoteCreator";
+import Timeline from "../element/Timeline";
 
 export default function RootPage() {
     const [loggedOut, pubKey, follows] = useSelector(s => [s.login.loggedOut, s.login.publicKey, s.login.follows]);
 
-    const { notes } = useTimelineFeed(follows, loggedOut === true);
-
     function followHints() {
         if (follows?.length === 0 && pubKey) {
-            return <>Hmm nothing here..</>
+            return <>
+                Hmm nothing here.. Checkout <Link to={"/new"}>New users page</Link> to follow some recommended nostrich's!
+            </>
         }
     }
 
@@ -18,7 +18,7 @@ export default function RootPage() {
         <>
             {pubKey ? <NoteCreator /> : null}
             {followHints()}
-            {notes?.sort((a, b) => b.created_at - a.created_at).map(e => <Note key={e.id} data={e} />)}
+            <Timeline pubkeys={follows} global={loggedOut === true} />
         </>
     );
 }

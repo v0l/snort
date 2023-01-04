@@ -5,6 +5,7 @@ const EventKind = {
     RecommendServer: 2,
     ContactList: 3, // NIP-02
     DirectMessage: 4, // NIP-04
+    Deletion: 5,
     Reaction: 7 // NIP-25
 };
 

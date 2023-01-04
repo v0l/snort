@@ -147,7 +147,8 @@ export default class Connection {
             //this._VerifySig(ev);
             this.Subscriptions[subId].OnEvent(ev);
         } else {
-            console.warn(`No subscription for event! ${subId}`);
+            // console.warn(`No subscription for event! ${subId}`);
+            // ignored for now, track as "dropped event" with connection stats
         }
     }
 
@@ -161,7 +162,8 @@ export default class Connection {
             }
             sub.OnEnd(this);
         } else {
-            console.warn(`No subscription for end! ${subId}`);
+            // console.warn(`No subscription for end! ${subId}`);
+            // ignored for now, track as "dropped event" with connection stats
         }
     }
 

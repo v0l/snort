@@ -22,6 +22,21 @@ export default function useTimelineFeed(pubKeys, global = false) {
         return sub;
     }, [pubKeys]);
 
-    const { notes } = useSubscription(sub, { leaveOpen: true });
-    return { notes };
+    const main = useSubscription(sub, { leaveOpen: true });
+
+    const subNext = useMemo(() => {
+        if (main.notes.length > 0) {
+            let sub = new Subscriptions();
+            sub.Id = `timeline-related:${sub.Id}`;
+            sub.Kinds.add(EventKind.Reaction);
+            sub.Kinds.add(EventKind.Deletion);
+            sub.ETags = new Set(main.notes.map(a => a.id));
+
+            return sub;
+        }
+    }, [main]);
+
+    const others = useSubscription(subNext, { leaveOpen: true });
+
+    return { main: main.notes, others: others.notes };
 }

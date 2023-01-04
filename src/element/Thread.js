@@ -12,8 +12,8 @@ export default function Thread(props) {
     // root note has no thread info
     const root = notes.find(a => a.GetThread() === null);
 
-    function reactions(id) {
-        return notes?.filter(a => a.Kind === EventKind.Reaction && a.Tags.find(a => a.Key === "e").Event === id);
+    function reactions(id, kind = EventKind.Reaction) {
+        return notes?.filter(a => a.Kind === kind && a.Tags.find(a => a.Key === "e" && a.Event === id));
     }
 
     const repliesToRoot = notes?.
@@ -26,9 +26,9 @@ export default function Thread(props) {
             {root === undefined ?
                 <NoteGhost text={`Loading... (${notes.length} events loaded)`}/>
                 : <Note data-ev={root} reactions={reactions(root?.Id)} />}
-            {thisNote && !thisIsRootNote ? <Note data-ev={thisNote} reactions={reactions(thisNote.Id)}/> : null}
+            {thisNote && !thisIsRootNote ? <Note data-ev={thisNote} reactions={reactions(thisNote.Id)} deletion={reactions(thisNote.Id, EventKind.Deletion)}/> : null}
             <h4>Other Replies</h4>
-            {repliesToRoot?.map(a => <Note key={a.Id} data-ev={a} reactions={reactions(a.Id)} />)}
+            {repliesToRoot?.map(a => <Note key={a.Id} data-ev={a} reactions={reactions(a.Id)} deletion={reactions(a.Id, EventKind.Deletion)}/>)}
         </>
     );
 }
