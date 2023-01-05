@@ -6,6 +6,11 @@ import Thread from './Thread';
 export default class Event {
     constructor() {
         /**
+         * The original event
+         */
+        this.Original = null;
+
+        /**
          * Id of the event
          * @type {string}
          */
@@ -117,11 +122,12 @@ export default class Event {
         }
 
         let ret = new Event();
+        ret.Original = obj;
         ret.Id = obj.id;
         ret.PubKey = obj.pubkey;
         ret.CreatedAt = obj.created_at;
         ret.Kind = obj.kind;
-        ret.Tags = obj.tags.map((e, i) => new Tag(e, i));
+        ret.Tags = obj.tags.map((e, i) => new Tag(e, i)).filter(a => !a.Invalid);
         ret.Content = obj.content;
         ret.Signature = obj.sig;
         return ret;

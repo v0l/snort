@@ -7,6 +7,7 @@ export default class Tag {
         this.Marker = null;
         this.Other = null;
         this.Index = index;
+        this.Invalid = false;
 
         switch (this.Key) {
             case "e": {
@@ -14,11 +15,17 @@ export default class Tag {
                 this.Event = tag[1];
                 this.Relay = tag.length > 2 ? tag[2] : null;
                 this.Marker = tag.length > 3 ? tag[3] : null;
+                if (!this.Event) {
+                    this.Invalid = true;
+                }
                 break;
             }
             case "p": {
                 // ["p", <pubkey>]
                 this.PubKey = tag[1];
+                if (!this.PubKey) {
+                    this.Invalid = true;
+                }
                 break;
             }
             default: {
