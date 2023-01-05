@@ -79,6 +79,10 @@ input[type="text"], input[type="password"], textarea {
   min-width: 0;
 }
 
+.f-1 {
+  flex: 1;
+}
+
 .f-grow {
   flex-grow: 1;
 }
@@ -175,12 +179,24 @@ body.scroll-lock {
 
 .tabs {
   display: flex;
+  align-content: center;
+  text-align: center;
   margin: 10px 0;
   overflow-x: auto;
 }
 
 .tabs > div {
   margin-right: 10px;
+  cursor: pointer;
+}
+
+.tabs > div:last-child {
+  margin: 0;
+}
+
+.tabs > div.active {
+  background-color: #222;
+  font-weight: bold;
 }
 
 .error {
