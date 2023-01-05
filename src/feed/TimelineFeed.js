@@ -15,16 +15,18 @@ export default function useTimelineFeed(pubKeys, global = false) {
 
         let sub = new Subscriptions();
         sub.Id = `timeline:${sub.Id}`;
-        sub.Authors = new Set(pubKeys);
+        sub.Authors = new Set(global ? [] : pubKeys);
         sub.Kinds.add(EventKind.TextNote);
         sub.Limit = 20;
 
         return sub;
-    }, [pubKeys]);
+    }, [pubKeys, global]);
 
     const main = useSubscription(sub, { leaveOpen: true });
 
     const subNext = useMemo(() => {
+        return null; // spamming subscriptions
+
         if (main.notes.length > 0) {
             let sub = new Subscriptions();
             sub.Id = `timeline-related:${sub.Id}`;
