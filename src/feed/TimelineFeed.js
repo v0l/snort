@@ -4,6 +4,7 @@ import { Subscriptions } from "../nostr/Subscriptions";
 import useSubscription from "./Subscription";
 
 export default function useTimelineFeed(pubKeys, global = false) {
+    const subTab = global ? "global" : "follows";
     const sub = useMemo(() => {
         if (!Array.isArray(pubKeys)) {
             pubKeys = [pubKeys];
@@ -14,7 +15,7 @@ export default function useTimelineFeed(pubKeys, global = false) {
         }
 
         let sub = new Subscriptions();
-        sub.Id = `timeline:${sub.Id}`;
+        sub.Id = `timeline:${subTab}`;
         sub.Authors = new Set(global ? [] : pubKeys);
         sub.Kinds.add(EventKind.TextNote);
         sub.Limit = 20;
@@ -25,11 +26,10 @@ export default function useTimelineFeed(pubKeys, global = false) {
     const main = useSubscription(sub, { leaveOpen: true });
 
     const subNext = useMemo(() => {
-        return null; // spamming subscriptions
-
+        return null; // TODO: spam
         if (main.notes.length > 0) {
             let sub = new Subscriptions();
-            sub.Id = `timeline-related:${sub.Id}`;
+            sub.Id = `timeline-related:${subTab}`;
             sub.Kinds.add(EventKind.Reaction);
             sub.Kinds.add(EventKind.Deletion);
             sub.ETags = new Set(main.notes.map(a => a.id));

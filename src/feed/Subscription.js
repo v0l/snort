@@ -3,12 +3,6 @@ import { System } from "..";
 import { Subscriptions } from "../nostr/Subscriptions";
 
 function notesReducer(state, ev) {
-    if (ev.reset === true) {
-        return {
-            notes: []
-        }
-    }
-
     if (state.notes.some(a => a.id === ev.id)) {
         return state;
     }
@@ -37,7 +31,6 @@ export default function useSubscription(sub, opt) {
 
     useEffect(() => {
         if (sub) {
-            dispatch({ reset: true });
             sub.OnEvent = (e) => {
                 dispatch(e);
             };

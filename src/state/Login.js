@@ -92,7 +92,19 @@ const LoginSlice = createSlice({
             state.relays = Object.fromEntries(filtered);
         },
         setFollows: (state, action) => {
-            state.follows = action.payload;
+            let existing = new Set(state.follows);
+            let update = Array.isArray(action.payload) ? action.payload : [action.payload];
+
+            let changes = false;
+            for (let pk of update) {
+                if (!existing.has(pk)) {
+                    existing.add(pk);
+                    changes = true;
+                }
+            }
+            if (changes) {
+                state.follows = Array.from(existing);
+            }
         },
         addNotifications: (state, action) => {
             let n = action.payload;
@@ -100,14 +112,18 @@ const LoginSlice = createSlice({
                 n = [n];
             }
 
+            let didChange = false;
             for (let x of n) {
                 if (!state.notifications.some(a => a.id === x.id)) {
                     state.notifications.push(x);
+                    didChange = true;
                 }
             }
-            state.notifications = [
-                ...state.notifications
-            ];
+            if (didChange) {
+                state.notifications = [
+                    ...state.notifications
+                ];
+            }
         },
         logout: (state) => {
             window.localStorage.removeItem(PrivateKeyItem);
