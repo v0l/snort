@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { ProfileCacheExpire } from '../Const';
 
 const UsersSlice = createSlice({
     name: "Users",
@@ -19,21 +20,33 @@ const UsersSlice = createSlice({
             if (!Array.isArray(keys)) {
                 keys = [keys];
             }
+            let changes = false;
+            let fromCache = false;
             let temp = new Set(state.pubKeys);
             for (let k of keys) {
-                temp.add(k);
+                if (!temp.has(k)) {
+                    changes = true;
+                    temp.add(k);
 
-                // load from cache
-                let cache = window.localStorage.getItem(`user:${k}`);
-                if (cache) {
-                    let ud = JSON.parse(cache);
-                    state.users[ud.pubkey] = ud;
+                    // load from cache
+                    let cache = window.localStorage.getItem(`user:${k}`);
+                    if (cache) {
+                        let ud = JSON.parse(cache);
+                        if (ud.loaded > new Date().getTime() - ProfileCacheExpire) {
+                            state.users[ud.pubkey] = ud;
+                            fromCache = true;
+                        }
+                    }
                 }
             }
-            state.pubKeys = Array.from(temp);
-            state.users = {
-                ...state.users
-            };
+            if (changes) {
+                state.pubKeys = Array.from(temp);
+                if (fromCache) {
+                    state.users = {
+                        ...state.users
+                    };
+                }
+            }
         },
         setUserData: (state, action) => {
             let ud = action.payload;
@@ -44,7 +57,7 @@ const UsersSlice = createSlice({
             for (let x of ud) {
                 let existing = state.users[x.pubkey];
                 if (existing) {
-                    if(existing.fromEvent.created_at > x.fromEvent.created_at) {
+                    if (existing.fromEvent.created_at > x.fromEvent.created_at) {
                         // prevent patching with older metadata 
                         continue;
                     }
