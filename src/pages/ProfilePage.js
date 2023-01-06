@@ -199,7 +199,7 @@ export default function ProfilePage() {
                     <div className="btn" onClick={(e) => setShowLnQr(true)}>
                         <FontAwesomeIcon icon={faQrcode} size="xl" />
                     </div>
-                    <div className="f-ellipsis">&nbsp; ⚡️ {lud16.length > 20 ? lud16.substring(0, 20) : lud16}</div>
+                    <div className="f-ellipsis">&nbsp; ⚡️ {lud16}</div>
                 </div> : null}
                 {showLnQr === true ?
                     <Modal onClose={() => setShowLnQr(false)}>
