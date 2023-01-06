@@ -31,12 +31,14 @@ export default class Thread {
         if (!marked) {
             ret.Root = eTags[0];
             ret.Root.Marker = "root";
+            if (eTags.length > 1) {
+                ret.ReplyTo = eTags[1];
+                ret.ReplyTo.Marker = "reply";
+            }
             if (eTags.length > 2) {
-                ret.Mentions = eTags.slice(1, -1);
+                ret.Mentions = eTags.slice(2);
                 ret.Mentions.forEach(a => a.Marker = "mention");
             }
-            ret.ReplyTo = eTags[eTags.length - 1];
-            ret.ReplyTo.Marker = "reply";
         } else {
             let root = eTags.find(a => a.Marker === "root");
             let reply = eTags.find(a => a.Marker === "reply");
