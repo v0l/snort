@@ -10,7 +10,6 @@ import Event from "../nostr/Event";
 import ProfileImage from "./ProfileImage";
 import useEventPublisher from "../feed/EventPublisher";
 import { NoteCreator } from "./NoteCreator";
-import Invoice from "./Invoice";
 import { extractLinks, extractMentions, extractInvoices } from "../Text";
 
 export default function Note(props) {

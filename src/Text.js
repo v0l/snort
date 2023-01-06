@@ -54,7 +54,7 @@ export function extractMentions(fragments, tags, users) {
                         switch (ref.Key) {
                             case "p": {
                                 let pUser = users[ref.PubKey]?.name ?? ref.PubKey.substring(0, 8);
-                                return <Link key={ref.PubKey} to={`/p/${ref.PubKey}`}>@{pUser}</Link>;
+                                return <Link key={ref.PubKey} to={`/p/${ref.PubKey}`} onClick={(ev) => ev.stopPropagation()}>@{pUser}</Link>;
                             }
                             case "e": {
                                 let eText = ref.Event.substring(0, 8);
