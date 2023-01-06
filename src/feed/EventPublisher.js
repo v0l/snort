@@ -62,12 +62,12 @@ export default function useEventPublisher() {
             ev.Kind = EventKind.TextNote;
             ev.Content = msg;
 
-            let thread = replyTo.GetThread();
+            let thread = replyTo.Thread;
             if (thread) {
                 if (thread.Root) {
                     ev.Tags.push(new Tag(["e", thread.Root.Event, "", "root"], ev.Tags.length));
                 } else {
-                    let unRootedReply = thread.Reply.GetThread();
+                    let unRootedReply = thread.Reply.Thread;
                     ev.Tags.push(new Tag(["e", unRootedReply.ReplyTo.Event, "", "root"], ev.Tags.length));
                 }
                 if (thread.Reply) {

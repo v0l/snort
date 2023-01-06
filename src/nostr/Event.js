@@ -51,6 +51,12 @@ export default class Event {
          * @type {string}
          */
         this.Signature = null;
+
+        /**
+         * Thread information for this event
+         * @type {Thread}
+         */
+        this.Thread = null;
     }
 
     /**
@@ -98,14 +104,6 @@ export default class Event {
     }
     
     /**
-     * Get thread information
-     * @returns {Thread}
-     */
-    GetThread() {
-        return Thread.ExtractThread(this);
-    }
-
-    /**
      * Does this event have content
      * @returns {boolean}
      */
@@ -130,6 +128,7 @@ export default class Event {
         ret.Tags = obj.tags.map((e, i) => new Tag(e, i)).filter(a => !a.Invalid);
         ret.Content = obj.content;
         ret.Signature = obj.sig;
+        ret.Thread = Thread.ExtractThread(ret);
         return ret;
     }
 

@@ -13,13 +13,12 @@ export default function Thread(props) {
     const notes = props.notes?.map(a => Event.FromObject(a));
 
     // root note has no thread info
-    const root = useMemo(() => notes.find(a => a.GetThread() === null), [notes]);
+    const root = useMemo(() => notes.find(a => a.Thread === null), [notes]);
 
     const chains = useMemo(() => {
         let chains = new Map();
         notes.filter(a => a.Kind === EventKind.TextNote).sort((a, b) => b.CreatedAt - a.CreatedAt).forEach((v) => {
-            let thread = v.GetThread();
-            let replyTo = thread?.ReplyTo?.Event ?? thread?.Root?.Event;
+            let replyTo = v.Thread?.ReplyTo?.Event ?? v.Thread?.Root?.Event;
             if (replyTo) {
                 if (!chains.has(replyTo)) {
                     chains.set(replyTo, [v]);
@@ -36,6 +35,10 @@ export default function Thread(props) {
 
     const brokenChains = useMemo(() => {
         return Array.from(chains?.keys()).filter(a => !notes.some(b => b.Id === a));
+    }, [chains]);
+
+    const mentionsRoot = useMemo(() => {
+        return notes.filter(a => a.Kind === EventKind.TextNote && a.Thread)
     }, [chains]);
 
     function reactions(id, kind = EventKind.Reaction) {

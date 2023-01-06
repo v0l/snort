@@ -58,13 +58,12 @@ export default function Note(props) {
     }
 
     function replyTag() {
-        let thread = ev.GetThread();
-        if (thread === null) {
+        if (ev.Thread === null) {
             return null;
         }
 
-        let replyId = thread?.ReplyTo?.Event;
-        let mentions = thread?.PubKeys?.map(a => [a, users[a]])?.map(a => a[1]?.name ?? a[0].substring(0, 8));
+        let replyId = ev.Thread?.ReplyTo?.Event;
+        let mentions = ev.Thread?.PubKeys?.map(a => [a, users[a]])?.map(a => a[1]?.name ?? a[0].substring(0, 8));
         return (
             <div className="reply" onClick={(e) => goToEvent(e, replyId)}>
                 ➡️ {mentions?.join(", ") ?? replyId?.substring(0, 8)}

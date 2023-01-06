@@ -20,8 +20,7 @@ export default function NotificationsPage() {
         return notifications?.filter(a => a.kind === EventKind.Reaction)
             .map(a => {
                 let ev = Event.FromObject(a);
-                let thread = ev.GetThread();
-                return thread?.ReplyTo?.Event ?? thread?.Root?.Event;
+                return ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
             })
     }, [notifications]);
 
@@ -54,8 +53,7 @@ export default function NotificationsPage() {
                     return <Note data={a} key={a.id} reactions={reactions} />
                 } else if (a.kind === EventKind.Reaction) {
                     let ev = Event.FromObject(a);
-                    let thread = ev.GetThread();
-                    let reactedTo = thread?.ReplyTo?.Event ?? thread?.Root?.Event;
+                    let reactedTo = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
                     let reactedNote = otherNotes?.notes?.find(c => c.id === reactedTo);
                     return <NoteReaction data={a} key={a.id} root={reactedNote} />
                 }
