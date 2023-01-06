@@ -8,7 +8,7 @@ export default function NoteGhost(props) {
                 <ProfileImage pubkey="" />
             </div>
             <div className="body">
-                {props.text ?? "Loading..."}
+                {props.children}
             </div>
             <div className="footer">
             </div>

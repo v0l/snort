@@ -1,4 +1,3 @@
-import Nostrich from "../nostrich.jpg";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EventKind from "../nostr/EventKind";

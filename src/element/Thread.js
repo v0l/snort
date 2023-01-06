@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
 import Event from "../nostr/Event";
 import EventKind from "../nostr/EventKind";
 import Note from "./Note";
@@ -24,13 +25,17 @@ export default function Thread(props) {
                 } else {
                     chains.get(replyTo).push(v);
                 }
-            } else if(v.Tags.length > 0) {
+            } else if (v.Tags.length > 0) {
                 console.log("Not replying to anything: ", v);
             }
         });
 
         return chains;
     }, [notes]);
+
+    const brokenChains = useMemo(() => {
+        return Array.from(chains?.keys()).filter(a => !notes.some(b => b.Id === a));
+    }, [chains]);
 
     function reactions(id, kind = EventKind.Reaction) {
         return notes?.filter(a => a.Kind === kind && a.Tags.find(a => a.Key === "e" && a.Event === id));
@@ -40,11 +45,13 @@ export default function Thread(props) {
         if (root) {
             return <Note data-ev={root} reactions={reactions(root.Id)} deletion={reactions(root.Id, EventKind.Deletion)} />
         } else {
-            return <NoteGhost text={`Loading thread.. ${notes.length} loaded`} />
+            return <NoteGhost>
+                Loading thread root.. ({notes.length} notes loaded)
+            </NoteGhost>
         }
     }
 
-    function renderChain(from, acc) {
+    function renderChain(from) {
         if (from && chains) {
             let replies = chains.get(from);
             if (replies) {
@@ -68,6 +75,19 @@ export default function Thread(props) {
         <>
             {renderRoot()}
             {root ? renderChain(root.Id) : null}
+            {root ? null : <>
+                <h3>Other Replies</h3>
+                {brokenChains.map(a => {
+                    return (
+                        <>
+                            <NoteGhost>
+                                Missing event <Link to={`/e/${a}`}>{a.substring(0, 8)}</Link>
+                            </NoteGhost>
+                            {renderChain(a)}
+                        </>
+                    )
+                })}
+            </>}
         </>
     );
 }

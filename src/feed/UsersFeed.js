@@ -42,11 +42,15 @@ export default function useUsersCache() {
 }
 
 export function mapEventToProfile(ev) {
-    let data = JSON.parse(ev.content);
-    return {
-        pubkey: ev.pubkey,
-        fromEvent: ev,
-        loaded: new Date().getTime(),
-        ...data
-    };
+    try {
+        let data = JSON.parse(ev.content);
+        return {
+            pubkey: ev.pubkey,
+            fromEvent: ev,
+            loaded: new Date().getTime(),
+            ...data
+        };
+    } catch (e) {
+        console.error("Failed to parse JSON", ev, e);
+    }
 }
