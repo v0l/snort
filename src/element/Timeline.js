@@ -5,10 +5,8 @@ import Note from "./Note";
 /**
  * A list of notes by pubkeys
  */
-export default function Timeline(props) {
-    const pubkeys = props.pubkeys;
-    const global = props.global;
-    const feed = useTimelineFeed(pubkeys, global ?? false);
+export default function Timeline({ global, pubkeys }) {
+    const feed = useTimelineFeed(pubkeys, global);
 
     function reaction(id, kind = EventKind.Reaction) {
         return feed?.others?.filter(a => a.kind === kind && a.tags.some(b => b[0] === "e" && b[1] === id));
