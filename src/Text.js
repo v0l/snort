@@ -10,8 +10,10 @@ export function extractLinks(fragments) {
             return f.split(UrlRegex).map(a => {
                 if (a.startsWith("http")) {
                     try {
-                        let url = new URL(a);
-                        let ext = url.pathname.toLowerCase().match(FileExtensionRegex);
+                        const url = new URL(a);
+                        const vParam = url.searchParams.get('v')
+                        const isYoutube = (url.host === "www.youtube.com" || url.host === "youtube.com" ) && vParam
+                        const ext = url.pathname.toLowerCase().match(FileExtensionRegex);
                         if (ext) {
                             switch (ext[1]) {
                                 case "gif":
@@ -30,6 +32,16 @@ export function extractLinks(fragments) {
                                     return <video key={url} src={url} controls />
                                 }
                             }
+                        } else if (isYoutube) {
+                            return (
+                              <iframe
+                                src={`https://www.youtube.com/embed/${vParam}`}
+                                title="YouTube video player"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen=""
+                              />
+                            )
                         } else {
                             return <a key={url} href={url}>{url.toString()}</a>
                         }
