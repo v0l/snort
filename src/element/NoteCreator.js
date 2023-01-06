@@ -28,28 +28,34 @@ export function NoteCreator(props) {
     }
 
     async function attachFile() {
-        let file = await openFile();
-        let rsp = await VoidUpload(file);
-        let ext = file.name.match(FileExtensionRegex)[1];
+        try {
+          let file = await openFile();
+          let rsp = await VoidUpload(file);
+          let ext = file.name.match(FileExtensionRegex)[1];
 
-        // extension tricks note parser to embed the content
-        let url = rsp.metadata.url ?? `https://void.cat/d/${rsp.id}.${ext}`;
+          // extension tricks note parser to embed the content
+          let url = rsp.metadata.url ?? `https://void.cat/d/${rsp.id}.${ext}`;
 
-        setNote(n => `${n}\n${url}`);
+          setNote(n => `${n}\n${url}`);
+        } catch (error) {
+          setError(error?.message)
+        }
     }
 
     return (
         <>
             {replyTo ? <small>{`Reply to: ${replyTo.Id.substring(0, 8)}`}</small> : null}
             <div className="flex note-creator">
-                <div className="flex f-col mr10 f-grow">
-                    <textarea placeholder="Say something!" value={note} onChange={(e) => setNote(e.target.value)} />
-                    <div className="actions">
-                        <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()}/>
-                        {error.length > 0 ? <b className="error">{error}</b> : null}
+                <div className="textarea flex f-col mr10 f-grow">
+                    <textarea className="textarea" placeholder="Say something!" value={note} onChange={(e) => setNote(e.target.value)} />
+                    <div className="actions flex f-row">
+                        <div className="attachment flex f-row">
+                            {error.length > 0 ? <b className="error">{error}</b> : null}
+                            <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()}/>
+                        </div>
+                        <div className="btn" onClick={() => sendNote()}>Send</div>
                     </div>
                 </div>
-                <div className="btn" onClick={() => sendNote()}>Send</div>
             </div>
         </>
     );

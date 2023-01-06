@@ -1,8 +1,12 @@
 .note-creator {
     margin-bottom: 10px;
+    background-color: #333;
+    border-radius: 10px;
 }
 
 .note-creator textarea {
+    resize: none;
+    outline: none;
     min-height: 40px;
     max-height: 300px;
     border-radius: 10px 10px 0 0;
@@ -11,8 +15,24 @@
 }
 
 .note-creator .actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-bottom: 5px;
+}
+
+.note-creator .attachment {
     cursor: pointer;
     padding: 5px 10px;
-    border-radius: 0 0 10px 10px;
-    background-color: #222;
+    border-radius: 10px;
+}
+
+.note-creator .attachment .error {
+    font-weight: normal;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.note-creator .btn {
+    border-radius: 20px;
+    font-weight: bold;
 }
