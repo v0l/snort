@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
-import { faHeart, faReply, faInfo, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faThumbsDown, faReply, faInfo, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Event from "../nostr/Event";
@@ -20,6 +20,8 @@ export default function Note(props) {
     const dataEvent = props["data-ev"];
     const reactions = props.reactions;
     const deletion = props.deletion;
+    const likes = reactions?.filter(({ Content }) => Content === "+").length ?? 0
+    const dislikes = reactions?.filter(({ Content }) => Content === "-").length ?? 0
     const publisher = useEventPublisher();
     const [showReply, setShowReply] = useState(false);
     const users = useSelector(s => s.users?.users);
@@ -77,6 +79,11 @@ export default function Note(props) {
         publisher.broadcast(evLike);
     }
 
+    async function dislike() {
+        let evLike = await publisher.dislike(ev);
+        publisher.broadcast(evLike);
+    }
+
     async function deleteEvent() {
         if (window.confirm(`Are you sure you want to delete ${ev.Id.substring(0, 8)}?`)) {
             let evDelete = await publisher.delete(ev.Id);
@@ -117,7 +124,11 @@ export default function Note(props) {
                     </span>
                     <span className="pill" onClick={() => like()}>
                         <FontAwesomeIcon icon={faHeart} /> &nbsp;
-                        {(reactions?.length ?? 0)}
+                        {likes}
+                    </span>
+                    <span className="pill" onClick={() => dislike()}>
+                        <FontAwesomeIcon icon={faThumbsDown} /> &nbsp;
+                        {dislikes}
                     </span>
                     <span className="pill" onClick={() => console.debug(ev)}>
                         <FontAwesomeIcon icon={faInfo} />
