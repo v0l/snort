@@ -10,6 +10,29 @@
     white-space: pre-wrap;
 }
 
+.profile .name {
+  align-items: flex-start;
+}
+
+.profile .name h2 {
+    margin: 0;
+}
+
+.profile .npub-container {
+    user-select: none;
+    cursor: pointer;
+}
+
+.profile .npub {
+    font-family: monospace;
+    font-size: 14px;
+    margin: 0;
+    width: 18em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .profile .avatar {
     width: 256px;
     height: 256px;
