@@ -3,3 +3,11 @@
     border: 1px solid #444;
     padding: 10px;
 }
+
+.invoice h2, .invoice h4, .invoice p {
+    margin: 10px 0;
+}
+
+.invoice small {
+    color: #666;
+}
