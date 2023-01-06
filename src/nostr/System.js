@@ -15,12 +15,16 @@ export class NostrSystem {
      * @param {string} address 
      */
     ConnectToRelay(address, options) {
-        if (typeof this.Sockets[address] === "undefined") {
-            let c = new Connection(address, options);
-            for (let s of Object.values(this.Subscriptions)) {
-                c.AddSubscription(s);
+        try {
+            if (typeof this.Sockets[address] === "undefined") {
+                let c = new Connection(address, options);
+                for (let s of Object.values(this.Subscriptions)) {
+                    c.AddSubscription(s);
+                }
+                this.Sockets[address] = c;
             }
-            this.Sockets[address] = c;
+        } catch (e) {
+            console.error(e);
         }
     }
 
