@@ -35,7 +35,7 @@ export default function RootPage() {
                     </div>
                 </div></> : null}
             {followHints()}
-            <Timeline pubkeys={follows} global={loggedOut === true || tab === RootTab.Global} />
+            <Timeline key={tab} pubkeys={follows} global={loggedOut || tab === RootTab.Global} />
         </>
     );
 }
