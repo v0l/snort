@@ -9,7 +9,7 @@ export default function Invoice(props) {
     const info = useMemo(() => {
         try {
             let parsed = invoiceDecode(invoice);
-            console.debug("Parsed invoice: ", parsed);
+            
             let amount = parseInt(parsed.sections.find(a => a.name === "amount")?.value);
             let timestamp = parseInt(parsed.sections.find(a => a.name === "timestamp")?.value);
             let expire = parseInt(parsed.sections.find(a => a.name === "expiry")?.value);
@@ -22,7 +22,6 @@ export default function Invoice(props) {
             if (ret.expire) {
                 ret.expired = ret.expire < (new Date().getTime() / 1000);
             }
-            console.log(ret);
             return ret;
         } catch (e) {
             console.error(e);
