@@ -23,6 +23,7 @@ export function extractLinks(fragments) {
                                     return <img key={url} src={url} />;
                                 }
                                 case "mp4":
+                                case "mov":
                                 case "mkv":
                                 case "avi":
                                 case "m4v": {
