@@ -17,6 +17,7 @@ import FollowButton from "../element/FollowButton";
 import VoidUpload from "../feed/VoidUpload";
 import { openFile } from "../Util";
 import Timeline from "../element/Timeline";
+import { extractLinks } from '../Text'
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -177,7 +178,7 @@ export default function ProfilePage() {
                         <FollowButton pubkey={id} />
                     </div>
                 </div>
-                <p>{about}</p>
+                <p>{extractLinks([about])}</p>
                 {website ? <a href={website} target="_blank" rel="noreferrer">{website}</a> : null}
 
                 {lud16 ? <div className="flex">

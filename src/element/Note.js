@@ -11,7 +11,7 @@ import ProfileImage from "./ProfileImage";
 import useEventPublisher from "../feed/EventPublisher";
 import { NoteCreator } from "./NoteCreator";
 import Invoice from "./Invoice";
-import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex } from "../Const";
+import { extractLinks, extractMentions, extractInvoices } from "../Text";
 
 export default function Note(props) {
     const navigate = useNavigate();
@@ -38,7 +38,7 @@ export default function Note(props) {
         let body = ev?.Content ?? "";
 
         let fragments = extractLinks([body]);
-        fragments = extractMentions(fragments);
+        fragments = extractMentions(fragments, ev.Tags, users);
         fragments = extractInvoices(fragments);
         if (deletion?.length > 0) {
             return (
@@ -70,90 +70,6 @@ export default function Note(props) {
                 ➡️ {mentions?.join(", ") ?? replyId?.substring(0, 8)}
             </div>
         )
-    }
-
-    function extractInvoices(fragments) {
-        return fragments.map(f => {
-            if (typeof f === "string") {
-                return f.split(InvoiceRegex).map(i => {
-                    if (i.toLowerCase().startsWith("lnbc")) {
-                        return <Invoice key={i} invoice={i} />
-                    } else {
-                        return i;
-                    }
-                });
-            }
-            return f;
-        }).flat();
-    }
-
-    function extractMentions(fragments) {
-        return fragments.map(f => {
-            if (typeof f === "string") {
-                return f.split(MentionRegex).map((match) => {
-                    let matchTag = match.match(/#\[(\d+)\]/);
-                    if (matchTag && matchTag.length === 2) {
-                        let idx = parseInt(matchTag[1]);
-                        let ref = ev.Tags.find(a => a.Index === idx);
-                        if (ref) {
-                            switch (ref.Key) {
-                                case "p": {
-                                    let pUser = users[ref.PubKey]?.name ?? ref.PubKey.substring(0, 8);
-                                    return <Link key={ref.PubKey} to={`/p/${ref.PubKey}`}>@{pUser}</Link>;
-                                }
-                                case "e": {
-                                    let eText = ref.Event.substring(0, 8);
-                                    return <Link key={ref.Event} to={`/e/${ref.Event}`}>#{eText}</Link>;
-                                }
-                            }
-                        }
-                        return <b style={{ color: "red" }}>{matchTag[0]}?</b>;
-                    } else {
-                        return match;
-                    }
-                });
-            }
-            return f;
-        }).flat();
-    }
-
-    function extractLinks(fragments) {
-        return fragments.map(f => {
-            if (typeof f === "string") {
-                return f.split(UrlRegex).map(a => {
-                    if (a.startsWith("http")) {
-                        try {
-                            let url = new URL(a);
-                            let ext = url.pathname.toLowerCase().match(FileExtensionRegex);
-                            if (ext) {
-                                switch (ext[1]) {
-                                    case "gif":
-                                    case "jpg":
-                                    case "jpeg":
-                                    case "png":
-                                    case "bmp":
-                                    case "webp": {
-                                        return <img key={url} src={url} />;
-                                    }
-                                    case "mp4":
-                                    case "mkv":
-                                    case "avi":
-                                    case "m4v": {
-                                        return <video key={url} src={url} controls />
-                                    }
-                                }
-                            } else {
-                                return <a href={url}>{url.toString()}</a>
-                            }
-                        } catch (e) {
-                            console.warn(`Not a valid url: ${a}`);
-                        }
-                    }
-                    return a;
-                });
-            }
-            return f;
-        }).flat();
     }
 
     async function like() {
