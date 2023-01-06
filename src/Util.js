@@ -14,10 +14,11 @@ export async function openFile() {
 
 /**
  * Parse bech32 ids
+ * https://github.com/nostr-protocol/nips/blob/master/19.md
  * @param {string} id bech32 id
  */
 export function parseId(id) {
-    const hrp = ["note1", "npub", "nsec"];
+    const hrp = ["note", "npub", "nsec"];
     try {
         if (hrp.some(a => id.startsWith(a))) {
             return bech32ToHex(id);
@@ -39,7 +40,7 @@ export function bech32ToHex(str) {
  */
 export function eventLink(hex) {
     let buf = secp.utils.hexToBytes(hex);
-    return `/e/${bech32.encode("note1", bech32.toWords(buf))}`;
+    return `/e/${bech32.encode("note", bech32.toWords(buf))}`;
 }
 
 /**
