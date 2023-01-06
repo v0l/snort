@@ -3,7 +3,7 @@ import { useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bech32 } from "bech32";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQrcode } from "@fortawesome/free-solid-svg-icons";
+import { faQrcode, faCopy, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 
 import useProfile from "../feed/ProfileFeed";
@@ -18,6 +18,7 @@ import VoidUpload from "../feed/VoidUpload";
 import { openFile, parseId } from "../Util";
 import Timeline from "../element/Timeline";
 import { extractLinks } from '../Text'
+import { useCopy } from '../useCopy'
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -28,6 +29,7 @@ export default function ProfilePage() {
     const loginPubKey = useSelector(s => s.login.publicKey);
     const isMe = loginPubKey === id;
     const qrRef = useRef();
+    const { copy, copied, error } = useCopy()
 
     const [name, setName] = useState("");
     const [picture, setPicture] = useState("");
@@ -172,8 +174,20 @@ export default function ProfilePage() {
     function details() {
         return (
             <>
-                <div className="flex">
-                    <h2 className="f-grow">{name}</h2>
+                <div className="flex name">
+                    <div className="f-grow">
+                        <h2>{name}</h2>
+                        <div className="flex flex-row npub-container" onClick={() => copy(params.id)}>
+                            <FontAwesomeIcon
+                              icon={copied ? faCheck : faCopy}
+                              size="xs"
+                              style={{ color: copied ? 'green' : 'currentColor', marginRight: '2px' }}
+                            />
+                            <p className="npub">
+                              {params.id}
+                            </p>
+                        </div>
+                    </div>
                     <div>
                         <FollowButton pubkey={id} />
                     </div>
