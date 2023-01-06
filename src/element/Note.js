@@ -20,7 +20,7 @@ export default function Note(props) {
     const dataEvent = props["data-ev"];
     const reactions = props.reactions;
     const deletion = props.deletion;
-    const likes = reactions?.filter(({ Content }) => Content === "+").length ?? 0
+    const likes = reactions?.filter(({ Content }) => Content === "+" || Content === "🤙").length ?? 0
     const dislikes = reactions?.filter(({ Content }) => Content === "-").length ?? 0
     const publisher = useEventPublisher();
     const [showReply, setShowReply] = useState(false);
