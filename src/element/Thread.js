@@ -80,7 +80,7 @@ export default function Thread(props) {
                 {brokenChains.map(a => {
                     return (
                         <>
-                            <NoteGhost>
+                            <NoteGhost key={a}>
                                 Missing event <Link to={`/e/${a}`}>{a.substring(0, 8)}</Link>
                             </NoteGhost>
                             {renderChain(a)}
