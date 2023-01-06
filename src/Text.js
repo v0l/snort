@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 import Invoice from "./element/Invoice";
 import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex } from "./Const";
+import { eventLink, profileLink } from "./Util";
 
 export function extractLinks(fragments) {
     return fragments.map(f => {
@@ -54,11 +55,11 @@ export function extractMentions(fragments, tags, users) {
                         switch (ref.Key) {
                             case "p": {
                                 let pUser = users[ref.PubKey]?.name ?? ref.PubKey.substring(0, 8);
-                                return <Link key={ref.PubKey} to={`/p/${ref.PubKey}`} onClick={(ev) => ev.stopPropagation()}>@{pUser}</Link>;
+                                return <Link key={ref.PubKey} to={profileLink(ref.PubKey)} onClick={(ev) => ev.stopPropagation()}>@{pUser}</Link>;
                             }
                             case "e": {
                                 let eText = ref.Event.substring(0, 8);
-                                return <Link key={ref.Event} to={`/e/${ref.Event}`}>#{eText}</Link>;
+                                return <Link key={ref.Event} to={eventLink(ref.Event)}>#{eText}</Link>;
                             }
                         }
                     }

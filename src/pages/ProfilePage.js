@@ -15,14 +15,14 @@ import Modal from "../element/Modal";
 import { logout } from "../state/Login";
 import FollowButton from "../element/FollowButton";
 import VoidUpload from "../feed/VoidUpload";
-import { openFile } from "../Util";
+import { openFile, parseId } from "../Util";
 import Timeline from "../element/Timeline";
 import { extractLinks } from '../Text'
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
     const params = useParams();
-    const id = params.id;
+    const id = parseId(params.id);
     const user = useProfile(id);
     const publisher = useEventPublisher();
     const loginPubKey = useSelector(s => s.login.publicKey);

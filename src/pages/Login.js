@@ -6,6 +6,7 @@ import { bech32 } from "bech32";
 
 import { setPrivateKey, setPublicKey } from "../state/Login";
 import { EmailRegex } from "../Const";
+import { bech32ToHex } from "../Util";
 
 export default function LoginPage() {
     const dispatch = useDispatch();
@@ -19,12 +20,6 @@ export default function LoginPage() {
             navigate("/");
         }
     }, [publicKey]);
-
-    function bech32ToHex(str) {
-        let nKey = bech32.decode(str);
-        let buff = bech32.fromWords(nKey.words);
-        return secp.utils.bytesToHex(Uint8Array.from(buff));
-    }
 
     async function getNip05PubKey(addr) {
         let [username, domain] = addr.split("@");

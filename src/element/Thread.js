@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Event from "../nostr/Event";
 import EventKind from "../nostr/EventKind";
+import { eventLink } from "../Util";
 import Note from "./Note";
 import NoteGhost from "./NoteGhost";
 
@@ -81,7 +82,7 @@ export default function Thread(props) {
                     return (
                         <>
                             <NoteGhost key={a}>
-                                Missing event <Link to={`/e/${a}`}>{a.substring(0, 8)}</Link>
+                                Missing event <Link to={eventLink(a)}>{a.substring(0, 8)}</Link>
                             </NoteGhost>
                             {renderChain(a)}
                         </>

@@ -11,6 +11,7 @@ import ProfileImage from "./ProfileImage";
 import useEventPublisher from "../feed/EventPublisher";
 import { NoteCreator } from "./NoteCreator";
 import { extractLinks, extractMentions, extractInvoices } from "../Text";
+import { eventLink } from "../Util";
 
 export default function Note(props) {
     const navigate = useNavigate();
@@ -52,7 +53,7 @@ export default function Note(props) {
     function goToEvent(e, id) {
         if (!window.location.pathname.startsWith("/e/")) {
             e.stopPropagation();
-            navigate(`/e/${id}`);
+            navigate(eventLink(id));
         }
     }
 

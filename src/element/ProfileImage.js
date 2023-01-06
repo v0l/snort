@@ -1,11 +1,10 @@
-import { useMemo } from "react";
-
-import { Link, useNavigate } from "react-router-dom";
-
-import useProfile from "../feed/ProfileFeed";
+import "./ProfileImage.css";
 import Nostrich from "../nostrich.jpg";
 
-import "./ProfileImage.css";
+import { useMemo } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useProfile from "../feed/ProfileFeed";
+import { profileLink } from "../Util";
 
 export default function ProfileImage(props) {
     const pubkey = props.pubkey;
@@ -25,9 +24,9 @@ export default function ProfileImage(props) {
     }, [user]);
     return (
         <div className="pfp">
-            <img src={hasImage ? user.picture : Nostrich} onClick={() => navigate(`/p/${pubkey}`)} />
+            <img src={hasImage ? user.picture : Nostrich} onClick={() => navigate(profileLink(pubkey))} />
             <div>
-                <Link key={pubkey} to={`/p/${pubkey}`}>{name}</Link>
+                <Link key={pubkey} to={profileLink(pubkey)}>{name}</Link>
                 {subHeader ? <div>{subHeader}</div> : null}
             </div>
         </div>
