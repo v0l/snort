@@ -28,6 +28,8 @@ export default function Note(props) {
     const login = useSelector(s => s.login.publicKey);
     const ev = dataEvent ?? Event.FromObject(data);
     const isMine = ev.PubKey === login;
+    const liked = reactions?.find(({ PubKey, Content }) => Content === "+" || Content === "🤙" && PubKey === login)
+    const disliked = reactions?.find(({ PubKey, Content }) => Content === "+" && PubKey === login)
 
     const options = {
         showHeader: true,
@@ -123,11 +125,11 @@ export default function Note(props) {
                         <FontAwesomeIcon icon={faReply} />
                     </span>
                     <span className="pill" onClick={() => like()}>
-                        <FontAwesomeIcon icon={faHeart} /> &nbsp;
+                        <FontAwesomeIcon color={liked ? "red" : "currentColor"} icon={faHeart} /> &nbsp;
                         {likes}
                     </span>
                     <span className="pill" onClick={() => dislike()}>
-                        <FontAwesomeIcon icon={faThumbsDown} /> &nbsp;
+                        <FontAwesomeIcon color={disliked ? "orange" : "currentColor"} icon={faThumbsDown} /> &nbsp;
                         {dislikes}
                     </span>
                     <span className="pill" onClick={() => console.debug(ev)}>
