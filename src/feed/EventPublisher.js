@@ -83,10 +83,10 @@ export default function useEventPublisher() {
             }
             return await signEvent(ev);
         },
-        like: async (evRef) => {
+        like: async (evRef, content = "+") => {
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.Reaction;
-            ev.Content = "+";
+            ev.Content = content;
             ev.Tags.push(new Tag(["e", evRef.Id], 0));
             ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
             return await signEvent(ev);
