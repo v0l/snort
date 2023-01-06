@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Event from "../nostr/Event";
 import EventKind from "../nostr/EventKind";
 import Note from "./Note";
@@ -10,25 +11,63 @@ export default function Thread(props) {
     const notes = props.notes?.map(a => Event.FromObject(a));
 
     // root note has no thread info
-    const root = notes.find(a => a.GetThread() === null);
+    const root = useMemo(() => notes.find(a => a.GetThread() === null), [notes]);
+
+    const chains = useMemo(() => {
+        let chains = new Map();
+        notes.filter(a => a.Kind === EventKind.TextNote).sort((a, b) => b.CreatedAt - a.CreatedAt).forEach((v) => {
+            let thread = v.GetThread();
+            let replyTo = thread?.ReplyTo?.Event ?? thread?.Root?.Event;
+            if (replyTo) {
+                if (!chains.has(replyTo)) {
+                    chains.set(replyTo, [v]);
+                } else {
+                    chains.get(replyTo).push(v);
+                }
+            } else if(v.Tags.length > 0) {
+                console.log("Not replying to anything: ", v);
+            }
+        });
+
+        return chains;
+    }, [notes]);
 
     function reactions(id, kind = EventKind.Reaction) {
         return notes?.filter(a => a.Kind === kind && a.Tags.find(a => a.Key === "e" && a.Event === id));
     }
 
-    const repliesToRoot = notes?.
-        filter(a => a.GetThread()?.Root !== null && a.Kind === EventKind.TextNote && a.Id !== thisEvent && a.Id !== root?.Id)
-        .sort((a, b) => a.CreatedAt - b.CreatedAt);
-    const thisNote = notes?.find(a => a.Id === thisEvent);
-    const thisIsRootNote = thisNote?.Id === root?.Id;
+    function renderRoot() {
+        if (root) {
+            return <Note data-ev={root} reactions={reactions(root.Id)} deletion={reactions(root.Id, EventKind.Deletion)} />
+        } else {
+            return <NoteGhost text={`Loading thread.. ${notes.length} loaded`} />
+        }
+    }
+
+    function renderChain(from, acc) {
+        if (from && chains) {
+            let replies = chains.get(from);
+            if (replies) {
+                return (
+                    <div className="indented">
+                        {replies.map(a => {
+                            return (
+                                <>
+                                    <Note data-ev={a} key={a.Id} reactions={reactions(a.Id)} deletion={reactions(a.Id, EventKind.Deletion)} hightlight={thisEvent === a.Id} />
+                                    {renderChain(a.Id)}
+                                </>
+                            )
+                        })}
+                    </div>
+                )
+            }
+        }
+    }
+
     return (
         <>
-            {root === undefined ?
-                <NoteGhost text={`Loading... (${notes.length} events loaded)`}/>
-                : <Note data-ev={root} reactions={reactions(root?.Id)} />}
-            {thisNote && !thisIsRootNote ? <Note data-ev={thisNote} reactions={reactions(thisNote.Id)} deletion={reactions(thisNote.Id, EventKind.Deletion)}/> : null}
-            <h4>Other Replies</h4>
-            {repliesToRoot?.map(a => <Note key={a.Id} data-ev={a} reactions={reactions(a.Id)} deletion={reactions(a.Id, EventKind.Deletion)}/>)}
+            {renderRoot()}
+            {root ? renderChain(root.Id) : null}
         </>
     );
 }

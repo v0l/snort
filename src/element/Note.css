@@ -35,3 +35,8 @@
     padding: 10px 0;
     text-align: right;
 }
+
+.indented {
+    border-left: 3px solid #444;
+    padding-left: 2px;
+}

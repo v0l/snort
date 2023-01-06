@@ -66,6 +66,9 @@ export default function useEventPublisher() {
             if (thread) {
                 if (thread.Root) {
                     ev.Tags.push(new Tag(["e", thread.Root.Event, "", "root"], ev.Tags.length));
+                } else {
+                    let unRootedReply = thread.Reply.GetThread();
+                    ev.Tags.push(new Tag(["e", unRootedReply.ReplyTo.Event, "", "root"], ev.Tags.length));
                 }
                 if (thread.Reply) {
                     ev.Tags.push(new Tag(["e", thread.Reply.Id, "", "reply"], ev.Tags.length));
