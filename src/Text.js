@@ -29,7 +29,7 @@ export function extractLinks(fragments) {
                                 }
                             }
                         } else {
-                            return <a href={url}>{url.toString()}</a>
+                            return <a key={url} href={url}>{url.toString()}</a>
                         }
                     } catch (e) {
                         console.warn(`Not a valid url: ${a}`);
