@@ -22,9 +22,13 @@
     word-break: normal;
 }
 
-.note > .body > img, .note > .body > video  {
+.note > .body > img, .note > .body > video, .note > .body > iframe {
     max-width: 100%;
     max-height: 500px;
+}
+
+.note > .body > iframe {
+  margin: 10px 0;
 }
 
 .note > .header > img:hover, .note > .header > .name > .reply:hover, .note > .body:hover {

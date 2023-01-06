@@ -57,3 +57,8 @@ export const MentionRegex = /(#\[\d+\])/gi;
  * Simple lightning invoice regex
  */
 export const InvoiceRegex = /(lnbc\w+)/i;
+
+/**
+ * YouTube URL regex
+ */
+export const YoutubeUrlRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as secp from '@noble/secp256k1';
-import { bech32 } from "bech32";
 
 import { setPrivateKey, setPublicKey } from "../state/Login";
 import { EmailRegex } from "../Const";
