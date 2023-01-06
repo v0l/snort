@@ -10,3 +10,11 @@
     border-radius: 10px;
     cursor: pointer;
 }
+
+.pfp a {
+    text-decoration: none;
+}
+
+.pfp a:hover {
+    text-decoration: underline;
+}
