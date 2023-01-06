@@ -37,7 +37,7 @@ export default function Layout(props) {
     async function goToNotifications(e) {
         e.stopPropagation();
         // request permissions to send notifications
-        if (Notification.permission !== "granted") {
+        if ("Notification" in window && Notification.permission !== "granted") {
             try {
                 let res = await Notification.requestPermission();
                 console.debug(res);
