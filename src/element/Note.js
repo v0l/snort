@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
-import { faHeart, faReply, faInfo, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faThumbsDown, faReply, faInfo, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Event from "../nostr/Event";
@@ -20,12 +20,21 @@ export default function Note(props) {
     const dataEvent = props["data-ev"];
     const reactions = props.reactions;
     const deletion = props.deletion;
+    const emojiReactions = reactions?.filter(({ Content }) => Content && Content !== "+" && Content !== "-" && Content !== "❤️")
+      .reduce((acc, { Content }) => {
+          const amount = acc[Content] || 0
+          return {...acc, [Content]: amount + 1 }
+      }, {})
+    const likes = reactions?.filter(({ Content }) => Content === "+" || Content === "❤️").length ?? 0
+    const dislikes = reactions?.filter(({ Content }) => Content === "-").length ?? 0
     const publisher = useEventPublisher();
     const [showReply, setShowReply] = useState(false);
     const users = useSelector(s => s.users?.users);
     const login = useSelector(s => s.login.publicKey);
     const ev = dataEvent ?? Event.FromObject(data);
     const isMine = ev.PubKey === login;
+    const liked = reactions?.find(({ PubKey, Content }) => Content === "+" && PubKey === login)
+    const disliked = reactions?.find(({ PubKey, Content }) => Content === "-" && PubKey === login)
 
     const options = {
         showHeader: true,
@@ -33,6 +42,10 @@ export default function Note(props) {
         showFooter: true,
         ...opt
     };
+
+    function hasReacted(emoji) {
+      return reactions?.find(({ PubKey, Content }) => Content === emoji && PubKey === login)
+    }
 
     const transformBody = useCallback(() => {
         let body = ev?.Content ?? "";
@@ -71,8 +84,18 @@ export default function Note(props) {
         )
     }
 
+    async function react(emoji) {
+        let evLike = await publisher.like(ev, emoji);
+        publisher.broadcast(evLike);
+    }
+
     async function like() {
         let evLike = await publisher.like(ev);
+        publisher.broadcast(evLike);
+    }
+
+    async function dislike() {
+        let evLike = await publisher.dislike(ev);
         publisher.broadcast(evLike);
     }
 
@@ -114,9 +137,24 @@ export default function Note(props) {
                     <span className="pill" onClick={() => setShowReply(!showReply)}>
                         <FontAwesomeIcon icon={faReply} />
                     </span>
+                    {Object.keys(emojiReactions).map((emoji) => {
+                      return (
+                          <span className="pill" onClick={() => react(emoji)}>
+                            <span style={{ filter: hasReacted(emoji) ? 'none' : 'grayscale(1)' }}>
+                                {emoji}
+                            </span>
+                            &nbsp;
+                            {emojiReactions[emoji]}
+                          </span>
+                      )
+                    })}
                     <span className="pill" onClick={() => like()}>
-                        <FontAwesomeIcon icon={faHeart} /> &nbsp;
-                        {(reactions?.length ?? 0)}
+                        <FontAwesomeIcon color={liked ? "red" : "currentColor"} icon={faHeart} /> &nbsp;
+                        {likes}
+                    </span>
+                    <span className="pill" onClick={() => dislike()}>
+                        <FontAwesomeIcon color={disliked ? "orange" : "currentColor"} icon={faThumbsDown} /> &nbsp;
+                        {dislikes}
                     </span>
                     <span className="pill" onClick={() => console.debug(ev)}>
                         <FontAwesomeIcon icon={faInfo} />
