@@ -32,6 +32,8 @@ export default function QrCode(props) {
                 elm.href = `lightning:${link}`;
                 elm.click();
             }
+        } else {
+            qrRef.current.innerHTML = "";
         }
     }, [link]);
 

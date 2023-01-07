@@ -65,7 +65,7 @@ code {
   border-radius: 25px;
 }
 
-input[type="text"], input[type="password"], textarea {
+input[type="text"], input[type="password"], input[type="number"], textarea {
   padding: 10px;
   border-radius: 5px;
   border: 0;
@@ -120,6 +120,7 @@ span.pill {
 
 span.pill.active {
   background-color: #444;
+  font-weight: bold;
 }
 
 span.pill:hover {

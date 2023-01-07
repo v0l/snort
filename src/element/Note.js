@@ -22,10 +22,10 @@ export default function Note(props) {
     const reactions = props.reactions;
     const deletion = props.deletion;
     const emojiReactions = reactions?.filter(({ Content }) => Content && Content !== "+" && Content !== "-" && Content !== "❤️")
-      .reduce((acc, { Content }) => {
-          const amount = acc[Content] || 0
-          return {...acc, [Content]: amount + 1 }
-      }, {})
+        .reduce((acc, { Content }) => {
+            const amount = acc[Content] || 0
+            return { ...acc, [Content]: amount + 1 }
+        }, {})
     const likes = reactions?.filter(({ Content }) => Content === "+" || Content === "❤️").length ?? 0
     const dislikes = reactions?.filter(({ Content }) => Content === "-").length ?? 0
     const publisher = useEventPublisher();
@@ -47,7 +47,7 @@ export default function Note(props) {
     };
 
     function hasReacted(emoji) {
-      return reactions?.find(({ PubKey, Content }) => Content === emoji && PubKey === login)
+        return reactions?.find(({ PubKey, Content }) => Content === emoji && PubKey === login)
     }
 
     const transformBody = useCallback(() => {
@@ -156,15 +156,15 @@ export default function Note(props) {
                         <FontAwesomeIcon icon={faReply} />
                     </span>
                     {Object.keys(emojiReactions).map((emoji) => {
-                      return (
-                          <span className="pill" onClick={() => react(emoji)}>
-                            <span style={{ filter: hasReacted(emoji) ? 'none' : 'grayscale(1)' }}>
-                                {emoji}
+                        return (
+                            <span className="pill" onClick={() => react(emoji)}>
+                                <span style={{ filter: hasReacted(emoji) ? 'none' : 'grayscale(1)' }}>
+                                    {emoji}
+                                </span>
+                                &nbsp;
+                                {emojiReactions[emoji]}
                             </span>
-                            &nbsp;
-                            {emojiReactions[emoji]}
-                          </span>
-                      )
+                        )
                     })}
                     <span className="pill" onClick={() => like()}>
                         <FontAwesomeIcon color={liked ? "red" : "currentColor"} icon={faHeart} /> &nbsp;
