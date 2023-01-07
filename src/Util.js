@@ -34,6 +34,17 @@ export function bech32ToHex(str) {
 }
 
 /**
+ * Decode bech32 to string UTF-8
+ * @param {string} str bech32 encoded string
+ * @returns 
+ */
+export function bech32ToText(str) {
+    let decoded = bech32.decode(str, 1000);
+    let buf = bech32.fromWords(decoded.words);
+    return new TextDecoder().decode(Uint8Array.from(buf));
+}
+
+/**
  * Convert hex note id to bech32 link url
  * @param {string} hex 
  * @returns 

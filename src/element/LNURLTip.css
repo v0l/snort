@@ -1,0 +1,15 @@
+.lnurl-tip {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 10px;
+    width: 50vw;
+    text-align: center;
+    min-height: 10vh;
+}
+
+@media(max-width: 720px) {
+    .lnurl-tip {
+        width: 100vw;
+        margin: 0 10px;
+    }
+}

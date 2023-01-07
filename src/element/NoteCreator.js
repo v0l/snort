@@ -10,6 +10,7 @@ import { FileExtensionRegex } from "../Const";
 export function NoteCreator(props) {
     const replyTo = props.replyTo;
     const onSend = props.onSend;
+    const show = props.show || false;
     const publisher = useEventPublisher();
     const [note, setNote] = useState("");
     const [error, setError] = useState("");
@@ -29,19 +30,20 @@ export function NoteCreator(props) {
 
     async function attachFile() {
         try {
-          let file = await openFile();
-          let rsp = await VoidUpload(file);
-          let ext = file.name.match(FileExtensionRegex)[1];
+            let file = await openFile();
+            let rsp = await VoidUpload(file);
+            let ext = file.name.match(FileExtensionRegex)[1];
 
-          // extension tricks note parser to embed the content
-          let url = rsp.metadata.url ?? `https://void.cat/d/${rsp.id}.${ext}`;
+            // extension tricks note parser to embed the content
+            let url = rsp.metadata.url ?? `https://void.cat/d/${rsp.id}.${ext}`;
 
-          setNote(n => `${n}\n${url}`);
+            setNote(n => `${n}\n${url}`);
         } catch (error) {
-          setError(error?.message)
+            setError(error?.message)
         }
     }
 
+    if (!show) return false;
     return (
         <>
             {replyTo ? <small>{`Reply to: ${replyTo.Id.substring(0, 8)}`}</small> : null}
@@ -51,7 +53,7 @@ export function NoteCreator(props) {
                     <div className="actions flex f-row">
                         <div className="attachment flex f-row">
                             {error.length > 0 ? <b className="error">{error}</b> : null}
-                            <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()}/>
+                            <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()} />
                         </div>
                         <div className="btn" onClick={() => sendNote()}>Send</div>
                     </div>

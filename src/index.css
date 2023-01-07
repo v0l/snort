@@ -118,6 +118,10 @@ span.pill {
   margin: 2px 5px;
 }
 
+span.pill.active {
+  background-color: #444;
+}
+
 span.pill:hover {
   cursor: pointer;
 }
@@ -175,6 +179,10 @@ body.scroll-lock {
 
 .ml5 {
   margin-left: 5px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
 }
 
 .tabs {

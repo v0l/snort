@@ -1,7 +1,6 @@
 import "./ProfilePage.css";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { bech32 } from "bech32";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQrcode, faCopy, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
@@ -11,14 +10,14 @@ import { resetProfile } from "../state/Users";
 import Nostrich from "../nostrich.jpg";
 import useEventPublisher from "../feed/EventPublisher";
 import QRCodeStyling from "qr-code-styling";
-import Modal from "../element/Modal";
 import { logout } from "../state/Login";
 import FollowButton from "../element/FollowButton";
 import VoidUpload from "../feed/VoidUpload";
-import { openFile, parseId } from "../Util";
+import { bech32ToText, openFile, parseId } from "../Util";
 import Timeline from "../element/Timeline";
 import { extractLinks } from '../Text'
 import { useCopy } from '../useCopy'
+import LNURLTip from "../element/LNURLTip";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -36,16 +35,18 @@ export default function ProfilePage() {
     const [about, setAbout] = useState("");
     const [website, setWebsite] = useState("");
     const [nip05, setNip05] = useState("");
+    const [lud06, setLud06] = useState("");
     const [lud16, setLud16] = useState("");
     const [showLnQr, setShowLnQr] = useState(false);
 
-    useMemo(() => {
+    useEffect(() => {
         if (user) {
             setName(user.name ?? "");
             setPicture(user.picture ?? "");
             setAbout(user.about ?? "");
             setWebsite(user.website ?? "");
             setNip05(user.nip05 ?? "");
+            setLud06(user.lud06 ?? "");
             setLud16(user.lud16 ?? "");
         }
     }, [user]);
@@ -53,8 +54,7 @@ export default function ProfilePage() {
     useMemo(() => {
         // some clients incorrectly set this to LNURL service, patch this
         if (lud16.toLowerCase().startsWith("lnurl")) {
-            let decoded = bech32.decode(lud16, 1000);
-            let url = new TextDecoder().decode(Uint8Array.from(bech32.fromWords(decoded.words)));
+            let url = bech32ToText(lud16);
             if (url.startsWith("http")) {
                 let parsedUri = new URL(url);
                 // is lightning address
@@ -172,6 +172,7 @@ export default function ProfilePage() {
     }
 
     function details() {
+        const lnurl = lud16 || lud06;
         return (
             <>
                 <div className="flex name">
@@ -195,17 +196,13 @@ export default function ProfilePage() {
                 <p>{extractLinks([about])}</p>
                 {website ? <a href={website} target="_blank" rel="noreferrer">{website}</a> : null}
 
-                {lud16 ? <div className="flex">
+                {lnurl ? <div className="flex">
                     <div className="btn" onClick={(e) => setShowLnQr(true)}>
                         <FontAwesomeIcon icon={faQrcode} size="xl" />
                     </div>
-                    <div className="f-ellipsis">&nbsp; ⚡️ {lud16}</div>
+                    <div className="f-ellipsis">&nbsp; ⚡️ {lnurl}</div>
                 </div> : null}
-                {showLnQr === true ?
-                    <Modal onClose={() => setShowLnQr(false)}>
-                        <h4>{lud16}</h4>
-                        <div ref={qrRef}></div>
-                    </Modal> : null}
+                <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)}/>
             </>
         )
     }

@@ -2,8 +2,8 @@ import "./Note.css";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
-import { Link, useNavigate } from "react-router-dom";
-import { faHeart, faThumbsDown, faReply, faInfo, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { faHeart, faReply, faThumbsDown, faTrash, faBolt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Event from "../nostr/Event";
@@ -12,6 +12,7 @@ import useEventPublisher from "../feed/EventPublisher";
 import { NoteCreator } from "./NoteCreator";
 import { extractLinks, extractMentions, extractInvoices } from "../Text";
 import { eventLink } from "../Util";
+import LNURLTip from "./LNURLTip";
 
 export default function Note(props) {
     const navigate = useNavigate();
@@ -28,13 +29,15 @@ export default function Note(props) {
     const likes = reactions?.filter(({ Content }) => Content === "+" || Content === "❤️").length ?? 0
     const dislikes = reactions?.filter(({ Content }) => Content === "-").length ?? 0
     const publisher = useEventPublisher();
-    const [showReply, setShowReply] = useState(false);
+    const [reply, setReply] = useState(false);
+    const [tip, setTip] = useState(false);
     const users = useSelector(s => s.users?.users);
     const login = useSelector(s => s.login.publicKey);
     const ev = dataEvent ?? Event.FromObject(data);
     const isMine = ev.PubKey === login;
     const liked = reactions?.find(({ PubKey, Content }) => Content === "+" && PubKey === login)
     const disliked = reactions?.find(({ PubKey, Content }) => Content === "-" && PubKey === login)
+    const author = users[ev.PubKey];
 
     const options = {
         showHeader: true,
@@ -106,6 +109,20 @@ export default function Note(props) {
         }
     }
 
+    function tipButton() {
+        let service = author?.lud16 || author?.lud06;
+        if (service) {
+            return (
+                <>
+                    <span className="pill" onClick={(e) => setTip(true)}>
+                        <FontAwesomeIcon icon={faBolt} />
+                    </span>
+                </>
+            )
+        }
+        return null;
+    }
+
     if (!ev.IsContent()) {
         return (
             <>
@@ -132,9 +149,10 @@ export default function Note(props) {
             {options.showFooter ?
                 <div className="footer">
                     {isMine ? <span className="pill">
-                        <FontAwesomeIcon icon={faTrash} onClick={() => deleteEvent()} />
+                        <FontAwesomeIcon icon={faTrash} onClick={(e) => deleteEvent()} />
                     </span> : null}
-                    <span className="pill" onClick={() => setShowReply(!showReply)}>
+                    {tipButton()}
+                    <span className="pill" onClick={(e) => setReply(s => !s)}>
                         <FontAwesomeIcon icon={faReply} />
                     </span>
                     {Object.keys(emojiReactions).map((emoji) => {
@@ -156,11 +174,9 @@ export default function Note(props) {
                         <FontAwesomeIcon color={disliked ? "orange" : "currentColor"} icon={faThumbsDown} /> &nbsp;
                         {dislikes}
                     </span>
-                    <span className="pill" onClick={() => console.debug(ev)}>
-                        <FontAwesomeIcon icon={faInfo} />
-                    </span>
                 </div> : null}
-            {showReply ? <NoteCreator replyTo={ev} onSend={() => setShowReply(false)} /> : null}
+            <NoteCreator replyTo={ev} onSend={(e) => setReply(false)} show={reply} />
+            <LNURLTip svc={author?.lud16 || author?.lud06} onClose={(e) => setTip(false)} show={tip} />
         </div>
     )
 }
