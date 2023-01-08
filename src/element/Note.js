@@ -17,6 +17,7 @@ export default function Note(props) {
     const dataEvent = props["data-ev"];
     const reactions = props.reactions;
     const deletion = props.deletion;
+    const hightlight = props.hightlight;
 
     const users = useSelector(s => s.users?.users);
     const ev = dataEvent ?? Event.FromObject(data);
@@ -76,7 +77,7 @@ export default function Note(props) {
     }
 
     return (
-        <div className="note">
+        <div className={`note ${hightlight ? "active" : ""}`}>
             {options.showHeader ?
                 <div className="header flex">
                     <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag()} />

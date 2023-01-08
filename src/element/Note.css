@@ -3,6 +3,10 @@
     border-bottom: 1px solid #333;
 }
 
+.note.active {
+    background-color: #222;
+}
+
 .note > .header > .pfp {
     flex-grow: 1;
 }
