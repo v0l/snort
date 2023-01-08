@@ -14,7 +14,45 @@ export default function LNURLTip(props) {
     const [customAmount, setCustomAmount] = useState(0);
     const [invoice, setInvoice] = useState("");
     const [comment, setComment] = useState("");
-    const [error, setError] = useState("")
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState(null);
+
+    useEffect(() => {
+        if (show) {
+            loadService()
+                .then(a => setPayService(a))
+                .catch(() => setError("Failed to load LNURL service"));
+        } else {
+            setPayService("");
+            setError("");
+            setInvoice("");
+            setAmount(0);
+            setComment("");
+            setSuccess(null);
+        }
+    }, [show, service]);
+
+    const serviceAmounts = useMemo(() => {
+        if (payService) {
+            let min = (payService.minSendable ?? 0) / 1000;
+            let max = (payService.maxSendable ?? 0) / 1000;
+            return amounts.filter(a => a >= min && a <= max);
+        }
+        return [];
+    }, [payService]);
+
+    const metadata = useMemo(() => {
+        if (payService) {
+            let meta = JSON.parse(payService.metadata);
+            let desc = meta.find(a => a[0] === "text/plain");
+            let image = meta.find(a => a[0] === "image/png;base64");
+            return {
+                description: desc ? desc[1] : null,
+                image: image ? image[1] : null
+            };
+        }
+        return null;
+    }, [payService]);
 
     const selectAmount = (a) => {
         setError("");
@@ -55,7 +93,7 @@ export default function LNURLTip(props) {
                 if (data.status === "ERROR") {
                     setError(data.reason);
                 } else {
-                    setInvoice(data.pr);
+                    setInvoice(data);
                     setError("");
                 }
             } else {
@@ -77,47 +115,33 @@ export default function LNURLTip(props) {
         );
     }
 
-    useEffect(() => {
-        if (payService && amount > 0) {
-            loadInvoice();
+    async function payWebLN() {
+        try {
+            if (!window.webln.enabled) {
+                await window.webln.enable();
+            }
+            let res = await window.webln.sendPayment(invoice.pr);
+            console.log(res);
+            setSuccess(invoice.successAction || {});
+        } catch (e) {
+            setError(e.toString());
+            console.warn(e);
         }
-    }, [payService, amount]);
+    }
 
-    useEffect(() => {
-        if (show) {
-            loadService()
-                .then(a => setPayService(a))
-                .catch(() => setError("Failed to load LNURL service"));
-        }
-    }, [show, service]);
-
-    const serviceAmounts = useMemo(() => {
-        if (payService) {
-            let min = (payService.minSendable ?? 0) / 1000;
-            let max = (payService.maxSendable ?? 0) / 1000;
-            return amounts.filter(a => a >= min && a <= max);
-        }
-        return [];
-    }, [payService]);
-
-    const metadata = useMemo(() => {
-        if (payService) {
-            let meta = JSON.parse(payService.metadata);
-            let desc = meta.find(a => a[0] === "text/plain");
-            let image = meta.find(a => a[0] === "image/png;base64");
-            return {
-                description: desc ? desc[1] : null,
-                image: image ? image[1] : null
-            };
+    function webLn() {
+        if ("webln" in window) {
+            return (
+                <div className="btn mb10" onClick={() => payWebLN()}>Pay with WebLN</div>
+            )
         }
         return null;
-    }, [payService]);
+    }
 
-    if (!show) return null;
-    return (
-        <Modal onClose={() => onClose()}>
-            <div className="lnurl-tip" onClick={(e) => e.stopPropagation()}>
-                <h2>⚡️ Send sats</h2>
+    function invoiceForm() {
+        if (invoice) return null;
+        return (
+            <>
                 <div className="f-ellipsis mb10">{metadata?.description ?? service}</div>
                 <div className="flex">
                     {payService?.commentAllowed > 0 ?
@@ -133,8 +157,51 @@ export default function LNURLTip(props) {
                         </span> : null}
                 </div>
                 {amount === -1 ? custom() : null}
+                {amount > 0 ? <div className="btn mb10" onClick={() => loadInvoice()}>Get Invoice</div> : null}
+            </>
+        )
+    }
+
+    function payInvoice() {
+        if(success) return null;
+        const pr = invoice.pr;
+        return (
+            <>
+                <div className="invoice">
+                    <div>
+                        <QrCode data={pr} link={`lightning:${pr}`} />
+                    </div>
+                    <div className="actions">
+                        {pr ? <>
+                            {webLn()}
+                            <div className="btn" onClick={() => window.open(`lightning:${pr}`)}>Open Wallet</div>
+                            <div className="btn" onClick={() => navigator.clipboard.writeText(pr)}>Copy Invoice</div>
+                        </> : null}
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+    function successAction() {
+        if(!success) return null;
+        return (
+            <>
+                <p>{success?.description ?? "Paid!"}</p>
+                {success.url ? <a href={success.url} target="_blank">{success.url}</a> : null}
+            </>
+        )
+    }
+
+    if (!show) return null;
+    return (
+        <Modal onClose={() => onClose()}>
+            <div className="lnurl-tip" onClick={(e) => e.stopPropagation()}>
+                <h2>⚡️ Send sats</h2>
+                {invoiceForm()}
                 {error ? <p className="error">{error}</p> : null}
-                <QrCode link={invoice} />
+                {payInvoice()}
+                {successAction()}
             </div>
         </Modal>
     )

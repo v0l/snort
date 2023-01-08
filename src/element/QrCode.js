@@ -1,17 +1,15 @@
 import QRCodeStyling from "qr-code-styling";
-import {useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
 
 export default function QrCode(props) {
     const qrRef = useRef();
-    const link = props.link;
-    
+
     useEffect(() => {
-        console.log("Showing QR: ", link);
-        if (link?.length > 0) {
+        if (props.data?.length > 0) {
             let qr = new QRCodeStyling({
                 width: props.width || 256,
                 height: props.height || 256,
-                data: link,
+                data: props.data,
                 margin: 5,
                 type: 'canvas',
                 image: props.avatar,
@@ -27,15 +25,17 @@ export default function QrCode(props) {
             });
             qrRef.current.innerHTML = "";
             qr.append(qrRef.current);
-            qrRef.current.onclick = function (e) {
-                let elm = document.createElement("a");
-                elm.href = `lightning:${link}`;
-                elm.click();
+            if (props.link) {
+                qrRef.current.onclick = function (e) {
+                    let elm = document.createElement("a");
+                    elm.href = props.link;
+                    elm.click();
+                }
             }
         } else {
             qrRef.current.innerHTML = "";
         }
-    }, [link]);
+    }, [props.data, props.link]);
 
     return (
         <div className="qr" ref={qrRef}></div>

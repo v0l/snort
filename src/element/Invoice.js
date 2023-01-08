@@ -45,7 +45,7 @@ export default function Invoice(props) {
 
 
     return (
-        <div className="invoice flex">
+        <div className="note-invoice flex">
             <div className="f-grow flex f-col">
                 {header()}
                 {info?.expire ? <small>{info?.expired ? "Expired" : "Expires"} {moment(info.expire * 1000).fromNow()}</small> : null}

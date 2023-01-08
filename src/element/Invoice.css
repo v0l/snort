@@ -1,13 +1,13 @@
-.invoice {
+.note-invoice {
     border-radius: 10px;
     border: 1px solid #444;
     padding: 10px;
 }
 
-.invoice h2, .invoice h4, .invoice p {
+.note-invoice h2, .note-invoice h4, .note-invoice p {
     margin: 10px 0;
 }
 
-.invoice small {
+.note-invoice small {
     color: #666;
 }

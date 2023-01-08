@@ -7,9 +7,36 @@
     min-height: 10vh;
 }
 
+.lnurl-tip .btn {
+    background-color: inherit;
+}
+
+.lnurl-tip .btn:hover {
+    background-color: #333;
+}
+
+.lnurl-tip .invoice {
+    display: flex;
+}
+
+.lnurl-tip .invoice .actions {
+    align-items: flex-start;
+    text-align: start;
+}
+
+.lnurl-tip .invoice .actions > div {
+    margin: 10px;
+}
+
 @media(max-width: 720px) {
     .lnurl-tip {
         width: 100vw;
         margin: 0 10px;
+    }
+    .lnurl-tip .invoice {
+        flex-direction: column;
+    }
+    .lnurl-tip .invoice .actions {
+        text-align: center;
     }
 }
