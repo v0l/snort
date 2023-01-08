@@ -2,6 +2,7 @@
     margin-bottom: 10px;
     background-color: #333;
     border-radius: 10px;
+    overflow: hidden;
 }
 
 .note-creator textarea {

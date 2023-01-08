@@ -20,8 +20,8 @@ export default function NoteFooter(props) {
     const isMine = ev.RootPubKey === login;
 
     const groupReactions = useMemo(() => {
-        return reactions?.reduce((acc, { content }) => {
-            let r = normalizeReaction(content ?? "");
+        return reactions?.reduce((acc, { Content }) => {
+            let r = normalizeReaction(Content ?? "");
             const amount = acc[r] || 0
             return { ...acc, [r]: amount + 1 }
         }, {

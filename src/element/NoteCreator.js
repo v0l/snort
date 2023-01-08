@@ -14,6 +14,7 @@ export function NoteCreator(props) {
     const publisher = useEventPublisher();
     const [note, setNote] = useState("");
     const [error, setError] = useState("");
+    const [active, setActive] = useState(false);
 
     async function sendNote() {
         let ev = replyTo ?
@@ -47,16 +48,16 @@ export function NoteCreator(props) {
     return (
         <>
             {replyTo ? <small>{`Reply to: ${replyTo.Id.substring(0, 8)}`}</small> : null}
-            <div className="flex note-creator">
+            <div className="flex note-creator" onClick={() => setActive(true)}>
                 <div className="textarea flex f-col mr10 f-grow">
                     <textarea className="textarea" placeholder="Say something!" value={note} onChange={(e) => setNote(e.target.value)} />
-                    <div className="actions flex f-row">
+                    {active ? <div className="actions flex f-row">
                         <div className="attachment flex f-row">
                             {error.length > 0 ? <b className="error">{error}</b> : null}
                             <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()} />
                         </div>
                         <div className="btn" onClick={() => sendNote()}>Send</div>
-                    </div>
+                    </div> : null}
                 </div>
             </div>
         </>

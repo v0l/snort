@@ -1,4 +1,5 @@
 import Event from "./Event";
+import EventKind from "./EventKind";
 
 export default class Thread {
     constructor() {
@@ -22,19 +23,22 @@ export default class Thread {
             return null;
         }
 
+        let shouldWriteMarkers = ev.Kind === EventKind.TextNote;
         let ret = new Thread();
         let eTags = ev.Tags.filter(a => a.Key === "e");
         let marked = eTags.some(a => a.Marker !== null);
         if (!marked) {
             ret.Root = eTags[0];
-            ret.Root.Marker = "root";
+            ret.Root.Marker = shouldWriteMarkers ? "root" : null;
             if (eTags.length > 1) {
                 ret.ReplyTo = eTags[1];
-                ret.ReplyTo.Marker = "reply";
+                ret.ReplyTo.Marker = shouldWriteMarkers ? "reply" : null;
             }
             if (eTags.length > 2) {
                 ret.Mentions = eTags.slice(2);
-                ret.Mentions.forEach(a => a.Marker = "mention");
+                if (shouldWriteMarkers) {
+                    ret.Mentions.forEach(a => a.Marker = "mention");
+                }
             }
         } else {
             let root = eTags.find(a => a.Marker === "root");
