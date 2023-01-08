@@ -69,9 +69,10 @@ export default function Note(props) {
     if (!ev.IsContent()) {
         return (
             <>
-                <pre>{ev.Id}</pre>
-                <pre>Kind: {ev.Kind}</pre>
-                <pre>Content: {ev.Content}</pre>
+                <h4>Unknown event kind: {ev.Kind}</h4>
+                <pre>
+                    {JSON.stringify(ev.ToObject(), undefined, '  ')}
+                </pre>
             </>
         );
     }

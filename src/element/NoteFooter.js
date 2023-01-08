@@ -65,13 +65,13 @@ export default function NoteFooter(props) {
         return null;
     }
 
-    function reactionIcon(content) {
+    function reactionIcon(content, reacted) {
         switch (content) {
             case Reaction.Positive: {
-                return <FontAwesomeIcon color={hasReacted(content) ? "red" : "currentColor"} icon={faHeart} />;
+                return <FontAwesomeIcon color={reacted ? "red" : "currentColor"} icon={faHeart} />;
             }
             case Reaction.Negative: {
-                return <FontAwesomeIcon color={hasReacted(content) ? "orange" : "currentColor"} icon={faThumbsDown} />;
+                return <FontAwesomeIcon color={reacted ? "orange" : "currentColor"} icon={faThumbsDown} />;
             }
         }
         return content;
@@ -90,10 +90,15 @@ export default function NoteFooter(props) {
                 <span className="pill" onClick={(e) => setReply(s => !s)}>
                     <FontAwesomeIcon icon={faReply} />
                 </span>
-                {Object.keys(groupReactions).map((emoji) => {
+                {Object.keys(groupReactions || {}).map((emoji) => {
+                    let didReact = hasReacted(emoji);
                     return (
-                        <span className="pill" onClick={() => react(emoji)} key={emoji}>
-                            {reactionIcon(emoji)}
+                        <span className="pill" onClick={() => {
+                            if (!didReact) {
+                                react(emoji);
+                            }
+                        }} key={emoji}>
+                            {reactionIcon(emoji, didReact)}
                             {groupReactions[emoji] ? <>&nbsp;{groupReactions[emoji]}</> : null}
                         </span>
                     )

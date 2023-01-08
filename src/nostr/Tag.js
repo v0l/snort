@@ -42,7 +42,9 @@ export default class Tag {
     ToObject() {
         switch (this.Key) {
             case "e": {
-                return ["e", this.Event, this.Relay, this.Marker];
+                let ret = ["e", this.Event, this.Relay, this.Marker];
+                let trimEnd = ret.reverse().findIndex(a => a != null);
+                return ret.reverse().slice(0, ret.length - trimEnd);
             }
             case "p": {
                 return ["p", this.PubKey];

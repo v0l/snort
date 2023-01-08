@@ -120,13 +120,18 @@ export default function useEventPublisher() {
             ev.Tags.push(new Tag(["e", id]));
             return await signEvent(ev);
         },
+        /**
+         * Respot a note
+         * @param {Event} note 
+         * @returns 
+         */
         repost: async (note) => {
             if (typeof note.Id !== "string") {
                 throw "Must be parsed note in Event class";
             }
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.Repost;
-            ev.Content = "";
+            ev.Content = JSON.stringify(note.Original);
             ev.Tags.push(new Tag(["e", note.Id]));
             ev.Tags.push(new Tag(["p", note.PubKey]));
             return await signEvent(ev);
