@@ -63,3 +63,30 @@ export function profileLink(hex) {
     let buf = secp.utils.hexToBytes(hex);
     return `/p/${bech32.encode("npub", bech32.toWords(buf))}`;
 }
+
+/**
+ * Reaction types
+ */
+export const Reaction = {
+    Positive: "+",
+    Negative: "-"
+};
+
+/**
+ * Return normalized reaction content
+ * @param {string} content 
+ * @returns 
+ */
+export function normalizeReaction(content) {
+    switch(content) {
+        case "": return Reaction.Positive;
+        case "🤙": return Reaction.Positive;
+        case "❤️": return Reaction.Positive;
+        case "👍": return Reaction.Positive;
+        case "💯": return Reaction.Positive;
+        case "+": return Reaction.Positive;
+        case "-": return Reaction.Negative;
+        case "👎": return Reaction.Negative;
+    }
+    return content;
+}

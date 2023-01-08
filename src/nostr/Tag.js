@@ -28,6 +28,10 @@ export default class Tag {
                 }
                 break;
             }
+            case "delegation": {
+                this.PubKey = tag[1];
+                break;
+            }
             default: {
                 this.Other = tag;
                 break;

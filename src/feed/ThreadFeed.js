@@ -13,6 +13,7 @@ export default function useThreadFeed(id) {
         const subRelated = new Subscriptions();
         subRelated.Kinds.add(EventKind.Reaction);
         subRelated.Kinds.add(EventKind.TextNote);
+        subRelated.Kinds.add(EventKind.Deletion);
         subRelated.ETags = thisSub.Ids;
         thisSub.AddSubscription(subRelated);
 
@@ -38,6 +39,7 @@ export default function useThreadFeed(id) {
             let relatedSubs = new Subscriptions();
             relatedSubs.Kinds.add(EventKind.Reaction);
             relatedSubs.Kinds.add(EventKind.TextNote);
+            relatedSubs.Kinds.add(EventKind.Deletion);
             relatedSubs.ETags = otherSubs.Ids;
 
             otherSubs.AddSubscription(relatedSubs);

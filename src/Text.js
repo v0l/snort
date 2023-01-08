@@ -27,22 +27,22 @@ function transformHttpLink(a) {
                 case "m4v": {
                     return <video key={url} src={url} controls />
                 }
-              default:
-                return <a key={url} href={url}>{url.toString()}</a>
+                default:
+                    return <a key={url} href={url}>{url.toString()}</a>
             }
         } else if (youtubeId) {
             return (
-              <>
-                <br />
-                <iframe
-                  src={`https://www.youtube.com/embed/${youtubeId}`}
-                  title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen=""
-                />
-                <br />
-              </>
+                <>
+                    <br />
+                    <iframe
+                        src={`https://www.youtube.com/embed/${youtubeId}`}
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen=""
+                    />
+                    <br />
+                </>
             )
         } else {
             return <a key={url} href={url}>{url.toString()}</a>
@@ -57,7 +57,7 @@ export function extractLinks(fragments) {
         if (typeof f === "string") {
             return f.split(UrlRegex).map(a => {
                 if (a.startsWith("http")) {
-                  return transformHttpLink(a)
+                    return transformHttpLink(a)
                 }
                 return a;
             });

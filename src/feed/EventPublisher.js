@@ -83,18 +83,10 @@ export default function useEventPublisher() {
             }
             return await signEvent(ev);
         },
-        like: async (evRef, content = "+") => {
+        react: async (evRef, content = "+") => {
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.Reaction;
             ev.Content = content;
-            ev.Tags.push(new Tag(["e", evRef.Id], 0));
-            ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
-            return await signEvent(ev);
-        },
-        dislike: async (evRef) => {
-            let ev = Event.ForPubKey(pubKey);
-            ev.Kind = EventKind.Reaction;
-            ev.Content = "-";
             ev.Tags.push(new Tag(["e", evRef.Id], 0));
             ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
             return await signEvent(ev);

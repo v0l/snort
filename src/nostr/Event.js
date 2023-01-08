@@ -60,15 +60,26 @@ export default class Event {
     }
 
     /**
+     * Get the pub key of the creator of this event NIP-26
+     */
+    get RootPubKey() {
+        let delegation = this.Tags.find(a => a.Key === "delegation");
+        if (delegation) {
+            return delegation.PubKey;
+        }
+        return this.PubKey;
+    }
+
+    /**
      * Sign this message with a private key
      * @param {string} key Key to sign message with
      */
     async Sign(key) {
         this.Id = await this.CreateId();
-        
+
         let sig = await secp.schnorr.sign(this.Id, key);
         this.Signature = secp.utils.bytesToHex(sig);
-        if(!await this.Verify()) {
+        if (!await this.Verify()) {
             throw "Signing failed";
         }
     }
@@ -96,13 +107,13 @@ export default class Event {
         let payloadData = new TextEncoder().encode(JSON.stringify(payload));
         let data = await secp.utils.sha256(payloadData);
         let hash = secp.utils.bytesToHex(data);
-        if(this.Id !== null && hash !== this.Id) {
+        if (this.Id !== null && hash !== this.Id) {
             console.debug(payload);
             throw "ID doesnt match!";
         }
         return hash;
     }
-    
+
     /**
      * Does this event have content
      * @returns {boolean}
@@ -115,7 +126,7 @@ export default class Event {
     }
 
     static FromObject(obj) {
-        if(typeof obj !== "object") {
+        if (typeof obj !== "object") {
             return null;
         }
 
@@ -138,7 +149,7 @@ export default class Event {
             pubkey: this.PubKey,
             created_at: this.CreatedAt,
             kind: this.Kind,
-            tags: this.Tags.sort((a,b) => a.Index - b.Index).map(a => a.ToObject()).filter(a => a !== null),
+            tags: this.Tags.sort((a, b) => a.Index - b.Index).map(a => a.ToObject()).filter(a => a !== null),
             content: this.Content,
             sig: this.Signature
         };
