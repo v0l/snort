@@ -65,6 +65,10 @@ code {
   border-radius: 25px;
 }
 
+textarea {
+  font: inherit;
+}
+
 input[type="text"], input[type="password"], input[type="number"], textarea {
   padding: 10px;
   border-radius: 5px;

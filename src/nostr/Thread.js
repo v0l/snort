@@ -8,8 +8,6 @@ export default class Thread {
         this.ReplyTo = null;
         /** @type {Array<Tag>} */
         this.Mentions = [];
-        /** @type {Event} */
-        this.Reply = null;
         /** @type {Array<String>} */
         this.PubKeys = [];
     }
@@ -25,7 +23,6 @@ export default class Thread {
         }
 
         let ret = new Thread();
-        ret.Reply = ev;
         let eTags = ev.Tags.filter(a => a.Key === "e");
         let marked = eTags.some(a => a.Marker !== null);
         if (!marked) {

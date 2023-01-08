@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { faHeart, faReply, faThumbsDown, faTrash, faBolt } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import useEventPublisher from "../feed/EventPublisher";
@@ -46,6 +46,11 @@ export default function NoteFooter(props) {
         }
     }
 
+    async function repost() {
+        let evRepost = await publisher.repost(ev);
+        publisher.broadcast(evRepost);
+    }
+
     function tipButton() {
         let service = author?.lud16 || author?.lud06;
         if (service) {
@@ -79,6 +84,9 @@ export default function NoteFooter(props) {
                     <FontAwesomeIcon icon={faTrash} onClick={(e) => deleteEvent()} />
                 </span> : null}
                 {tipButton()}
+                <span className="pill" onClick={() => repost()}>
+                    <FontAwesomeIcon icon={faRepeat} />
+                </span>
                 <span className="pill" onClick={(e) => setReply(s => !s)}>
                     <FontAwesomeIcon icon={faReply} />
                 </span>

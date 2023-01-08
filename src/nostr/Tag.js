@@ -42,7 +42,7 @@ export default class Tag {
     ToObject() {
         switch (this.Key) {
             case "e": {
-                return ["e", this.Event, this.Relay, this.Marker].filter(a => a !== null);
+                return ["e", this.Event, this.Relay, this.Marker];
             }
             case "p": {
                 return ["p", this.PubKey];

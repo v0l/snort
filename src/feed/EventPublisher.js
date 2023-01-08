@@ -64,15 +64,13 @@ export default function useEventPublisher() {
 
             let thread = replyTo.Thread;
             if (thread) {
+                console.debug(replyTo);
                 if (thread.Root) {
                     ev.Tags.push(new Tag(["e", thread.Root.Event, "", "root"], ev.Tags.length));
                 } else {
-                    let unRootedReply = thread.Reply.Thread;
-                    ev.Tags.push(new Tag(["e", unRootedReply.ReplyTo.Event, "", "root"], ev.Tags.length));
+                    ev.Tags.push(new Tag(["e", thread.ReplyTo.Event, "", "root"], ev.Tags.length));
                 }
-                if (thread.Reply) {
-                    ev.Tags.push(new Tag(["e", thread.Reply.Id, "", "reply"], ev.Tags.length));
-                }
+                ev.Tags.push(new Tag(["e", replyTo.Id, "", "reply"], ev.Tags.length));
                 ev.Tags.push(new Tag(["p", replyTo.PubKey], ev.Tags.length));
                 for (let pk of thread.PubKeys) {
                     ev.Tags.push(new Tag(["p", pk], ev.Tags.length));
@@ -120,6 +118,17 @@ export default function useEventPublisher() {
             ev.Kind = EventKind.Deletion;
             ev.Content = "";
             ev.Tags.push(new Tag(["e", id]));
+            return await signEvent(ev);
+        },
+        repost: async (note) => {
+            if (typeof note.Id !== "string") {
+                throw "Must be parsed note in Event class";
+            }
+            let ev = Event.ForPubKey(pubKey);
+            ev.Kind = EventKind.Repost;
+            ev.Content = "";
+            ev.Tags.push(new Tag(["e", note.Id]));
+            ev.Tags.push(new Tag(["p", note.PubKey]));
             return await signEvent(ev);
         }
     }
