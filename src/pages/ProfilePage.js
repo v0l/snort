@@ -55,7 +55,7 @@ export default function ProfilePage() {
         <>
             <div className="profile flex">
                 <div>
-                    <div style={{ backgroundImage: `url(${user?.picture.length === 0 ? Nostrich : user?.picture})` }} className="avatar">
+                    <div style={{ backgroundImage: `url(${(user?.picture?.length ?? 0) === 0 ? Nostrich : user?.picture})` }} className="avatar">
                     </div>
                 </div>
                 <div className="f-grow">
