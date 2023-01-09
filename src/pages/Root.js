@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { NoteCreator } from "../element/NoteCreator";
 import Timeline from "../element/Timeline";
 import { useState } from "react";
+import useScroll from "../useScroll";
 
 const RootTab = {
     Follows: 0,
@@ -13,6 +14,7 @@ const RootTab = {
 export default function RootPage() {
     const [loggedOut, pubKey, follows] = useSelector(s => [s.login.loggedOut, s.login.publicKey, s.login.follows]);
     const [tab, setTab] = useState(RootTab.Follows);
+    const [eop] = useScroll();
 
     function followHints() {
         if (follows?.length === 0 && pubKey) {
