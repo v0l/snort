@@ -28,6 +28,14 @@ export class NostrSystem {
         }
     }
 
+    DisconnectRelay(address) {
+        let c = this.Sockets[address];
+        delete this.Sockets[address];
+        if (c) {
+            c.Close();
+        }
+    }
+
     AddSubscription(sub) {
         for (let s of Object.values(this.Sockets)) {
             s.AddSubscription(sub);

@@ -1,4 +1,5 @@
 import * as secp from "@noble/secp256k1";
+import { v4 as uuid } from "uuid";
 
 import { Subscriptions } from "./Subscriptions";
 import Event from "./Event";
@@ -24,15 +25,34 @@ export default class Connection {
         this.Write = options?.write || true;
         this.ConnectTimeout = DefaultConnectTimeout;
         this.Stats = new ConnectionStats();
+        this.StateHooks = {};
+        this.HasStateChange = true;
+        this.CurrentState = {
+            connected: false
+        };
+        this.LastState = Object.freeze({ ...this.CurrentState });
+        this.IsClosed = false;
+        this.ReconnectTimer = null;
         this.Connect();
     }
 
     Connect() {
+        this.IsClosed = false;
         this.Socket = new WebSocket(this.Address);
         this.Socket.onopen = (e) => this.OnOpen(e);
         this.Socket.onmessage = (e) => this.OnMessage(e);
         this.Socket.onerror = (e) => this.OnError(e);
         this.Socket.onclose = (e) => this.OnClose(e);
+    }
+
+    Close() {
+        this.IsClosed = true;
+        if(this.ReconnectTimer !== null) {
+            clearTimeout(this.ReconnectTimer);
+            this.ReconnectTimer = null;
+        }
+        this.Socket.close();
+        this._UpdateState();
     }
 
     OnOpen(e) {
@@ -43,14 +63,22 @@ export default class Connection {
         for (let p of this.Pending) {
             this._SendJson(p);
         }
+
+        this._UpdateState();
     }
 
     OnClose(e) {
-        this.ConnectTimeout = this.ConnectTimeout * 2;
-        console.log(`[${this.Address}] Closed (${e.reason}), trying again in ${(this.ConnectTimeout / 1000).toFixed(0).toLocaleString()} sec`);
-        setTimeout(() => {
-            this.Connect();
-        }, this.ConnectTimeout);
+        if (!this.IsClosed) {
+            this.ConnectTimeout = this.ConnectTimeout * 2;
+            console.log(`[${this.Address}] Closed (${e.reason}), trying again in ${(this.ConnectTimeout / 1000).toFixed(0).toLocaleString()} sec`);
+            this.ReconnectTimer = setTimeout(() => {
+                this.Connect();
+            }, this.ConnectTimeout);
+        } else {
+            console.log(`[${this.Address}] Closed!`);
+            this.ReconnectTimer = null;
+        }
+        this._UpdateState();
     }
 
     OnMessage(e) {
@@ -84,7 +112,8 @@ export default class Connection {
     }
 
     OnError(e) {
-        console.log(e);
+        console.error(e);
+        this._UpdateState();
     }
 
     /**
@@ -142,6 +171,43 @@ export default class Connection {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Hook status for connection
+     * @param {function} fnHook Subscription hook
+     */
+    StatusHook(fnHook) {
+        let id = uuid();
+        this.StateHooks[id] = fnHook;
+        return () => {
+            delete this.StateHooks[id];
+        };
+    }
+
+    /**
+     * Returns the current state of this connection
+     * @returns {any}
+     */
+    GetState() {
+        if (this.HasStateChange) {
+            this.LastState = Object.freeze({ ...this.CurrentState });
+            this.HasStateChange = false;
+        }
+        return this.LastState;
+    }
+
+    _UpdateState() {
+        this.CurrentState.connected = this.Socket?.readyState === WebSocket.OPEN;
+        this.HasStateChange = true;
+        this._NotifyState();
+    }
+
+    _NotifyState() {
+        let state = this.GetState();
+        for (let h of Object.values(this.StateHooks)) {
+            h(state);
+        }
     }
 
     _SendJson(obj) {

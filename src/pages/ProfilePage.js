@@ -67,7 +67,6 @@ export default function ProfilePage() {
                 <div className="btn">Reactions</div>
                 <div className="btn">Followers</div>
                 <div className="btn">Follows</div>
-                <div className="btn">Relays</div>
             </div>
             <Timeline pubkeys={id} />
         </>

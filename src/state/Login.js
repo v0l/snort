@@ -86,10 +86,14 @@ const LoginSlice = createSlice({
         },
         setRelays: (state, action) => {
             // filter out non-websocket urls
-            let filtered = Object.entries(action.payload)
+            let filtered = Object.entries({ ...state.relays, ...action.payload })
                 .filter(a => a[0].startsWith("ws://") || a[0].startsWith("wss://"));
 
             state.relays = Object.fromEntries(filtered);
+        },
+        removeRelay: (state, action) => {
+            delete state.relays[action.payload];
+            state.relays = { ...state.relays };
         },
         setFollows: (state, action) => {
             let existing = new Set(state.follows);
@@ -143,5 +147,5 @@ const LoginSlice = createSlice({
     }
 });
 
-export const { init, setPrivateKey, setPublicKey, setRelays, setFollows, addNotifications, logout, markNotificationsRead } = LoginSlice.actions;
+export const { init, setPrivateKey, setPublicKey, setRelays, removeRelay, setFollows, addNotifications, logout, markNotificationsRead } = LoginSlice.actions;
 export const reducer = LoginSlice.reducer;

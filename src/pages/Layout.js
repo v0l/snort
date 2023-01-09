@@ -27,6 +27,11 @@ export default function Layout(props) {
             for (let [k, v] of Object.entries(relays)) {
                 System.ConnectToRelay(k, v);
             }
+            for (let [k, v] of Object.entries(System.Sockets)) {
+                if (!relays[k]) {
+                    System.DisconnectRelay(k);
+                }
+            }
         }
     }, [relays]);
 

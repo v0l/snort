@@ -1,0 +1,10 @@
+.relay {
+    margin-bottom: 10px;
+    background-color: #222;
+    border-radius: 5px;
+    text-align: start;
+}
+
+.relay > div {
+    padding: 5px;
+}

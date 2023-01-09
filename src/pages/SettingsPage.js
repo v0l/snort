@@ -7,12 +7,14 @@ import { useDispatch, useSelector } from "react-redux";
 import useEventPublisher from "../feed/EventPublisher";
 import useProfile from "../feed/ProfileFeed";
 import VoidUpload from "../feed/VoidUpload";
-import { logout } from "../state/Login";
+import { logout, setRelays } from "../state/Login";
 import { resetProfile } from "../state/Users";
 import { openFile } from "../Util";
+import Relay from "../element/Relay";
 
 export default function SettingsPage(props) {
     const id = useSelector(s => s.login.publicKey);
+    const relays = useSelector(s => s.login.relays);
     const dispatch = useDispatch();
     const user = useProfile(id);
     const publisher = useEventPublisher();
@@ -24,6 +26,7 @@ export default function SettingsPage(props) {
     const [nip05, setNip05] = useState("");
     const [lud06, setLud06] = useState("");
     const [lud16, setLud16] = useState("");
+    const [newRelay, setNewRelay] = useState("");
 
     useEffect(() => {
         if (user) {
@@ -85,6 +88,11 @@ export default function SettingsPage(props) {
         setPicture(rsp.metadata.url ?? `https://void.cat/d/${rsp.id}`)
     }
 
+    async function saveRelays() {
+        let ev = await publisher.saveRelays();
+        publisher.broadcast(ev);
+    }
+
     function editor() {
         return (
             <div className="editor">
@@ -130,16 +138,36 @@ export default function SettingsPage(props) {
         )
     }
 
+    function addRelay() {
+        return (
+            <>
+                <h4>Add Relays</h4>
+                <div className="flex mb10">
+                    <input type="text" className="f-grow" placeholder="wss://my-relay.com" value={newRelay} onChange={(e) => setNewRelay(e.target.value)} />
+                </div>
+                <div className="btn mb10" onClick={() => dispatch(setRelays({ [newRelay]: { read: false, write: false } }))}>Add</div>
+            </>
+        )
+    }
+
     return (
         <div className="settings">
             <h1>Settings</h1>
             <div className="flex f-center">
                 <div style={{ backgroundImage: `url(${picture.length === 0 ? Nostrich : picture})` }} className="avatar">
-                    <div className="edit">Edit</div>
+                    <div className="edit" onClick={() => setNewAvatar()}>Edit</div>
                 </div>
             </div>
-
             {editor()}
+            <h4>Relays</h4>
+            <div className="flex f-col">
+                {Object.keys(relays || {}).map(a => <Relay addr={a} key={a} />)}
+            </div>
+            <div className="flex">
+                <div className="f-grow"></div>
+                <div className="btn" onClick={() => saveRelays()}>Save</div>
+            </div>
+            {addRelay()}
         </div>
     );
 }

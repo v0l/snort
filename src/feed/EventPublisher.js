@@ -89,6 +89,16 @@ export default function useEventPublisher() {
             ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
             return await signEvent(ev);
         },
+        saveRelays: async () => {
+            let ev = Event.ForPubKey(pubKey);
+            ev.Kind = EventKind.ContactList;
+            ev.Content = JSON.stringify(relays);
+            for (let pk of follows) {
+                ev.Tags.push(new Tag(["p", pk]));
+            }
+
+            return await signEvent(ev);
+        },
         addFollow: async (pkAdd) => {
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.ContactList;
