@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ProfileCacheExpire } from "../Const";
-import Event from "../nostr/Event";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { setUserData } from "../state/Users";

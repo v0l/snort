@@ -4,6 +4,16 @@ import { Subscriptions } from "./Subscriptions";
 import Event from "./Event";
 import { DefaultConnectTimeout } from "../Const";
 
+export class ConnectionStats {
+    constructor() {
+        this.Latency = [];
+        this.Subs = 0;
+        this.SubsTimeout = 0;
+        this.EventsReceived = 0;
+        this.EventsSent = 0;
+    }
+}
+
 export default class Connection {
     constructor(addr, options) {
         this.Address = addr;
@@ -13,6 +23,7 @@ export default class Connection {
         this.Read = options?.read || true;
         this.Write = options?.write || true;
         this.ConnectTimeout = DefaultConnectTimeout;
+        this.Stats = new ConnectionStats();
         this.Connect();
     }
 
@@ -145,6 +156,7 @@ export default class Connection {
     _OnEvent(subId, ev) {
         if (this.Subscriptions[subId]) {
             //this._VerifySig(ev);
+            ev.relay = this.Address; // tag event with relay
             this.Subscriptions[subId].OnEvent(ev);
         } else {
             // console.warn(`No subscription for event! ${subId}`);

@@ -78,7 +78,7 @@ export const Reaction = {
  * @returns 
  */
 export function normalizeReaction(content) {
-    switch(content) {
+    switch (content) {
         case "": return Reaction.Positive;
         case "🤙": return Reaction.Positive;
         case "❤️": return Reaction.Positive;
@@ -89,4 +89,26 @@ export function normalizeReaction(content) {
         case "👎": return Reaction.Negative;
     }
     return content;
+}
+
+/**
+ * Converts LNURL service to LN Address
+ * @param {string} lnurl 
+ * @returns 
+ */
+export function extractLnAddress(lnurl) {
+    // some clients incorrectly set this to LNURL service, patch this
+    if (lnurl.toLowerCase().startsWith("lnurl")) {
+        let url = bech32ToText(lnurl);
+        if (url.startsWith("http")) {
+            let parsedUri = new URL(url);
+            // is lightning address
+            if (parsedUri.pathname.startsWith("/.well-known/lnurlp/")) {
+                let pathParts = parsedUri.pathname.split('/');
+                let username = pathParts[pathParts.length - 1];
+                return `${username}@${parsedUri.hostname}`;
+            }
+        }
+    }
+    return lnurl;
 }

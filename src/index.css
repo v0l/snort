@@ -83,6 +83,10 @@ input[type="text"], input[type="password"], input[type="number"], textarea {
   min-width: 0;
 }
 
+.f-center {
+  justify-content: center;
+}
+
 .f-1 {
   flex: 1;
 }
@@ -106,6 +110,9 @@ input[type="text"], input[type="password"], input[type="number"], textarea {
 
 .w-max {
   width: 100%;
+  width: -moz-available;
+  width: -webkit-fill-available;
+  width: fill-available;
 }
 
 a {
@@ -148,7 +155,17 @@ div.form-group > div {
   word-break: break-word;
 }
 
-div.form-group > div:first-child {
+div.form-group > div:nth-child(1) {
+  min-width: 100px;
+}
+
+div.form-group > div:nth-child(2) {
+  display: flex;
+  flex-grow: 1;
+  justify-content: end;
+}
+
+div.form-group > div:nth-child(2) input {
   flex-grow: 1;
 }
 

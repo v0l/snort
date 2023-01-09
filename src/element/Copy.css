@@ -1,0 +1,14 @@
+.copy {
+    user-select: none;
+    cursor: pointer;
+}
+
+.copy .body {
+    font-family: monospace;
+    font-size: 14px;
+    margin: 0;
+    width: 18em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

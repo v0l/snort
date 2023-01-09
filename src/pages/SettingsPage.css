@@ -1,0 +1,28 @@
+
+.settings .avatar {
+    width: 256px;
+    height: 256px;
+    background-size: cover;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.settings .avatar .edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background-color: black;
+}
+
+.settings .avatar .edit:hover {
+    opacity: 0.5;
+}
+
+.settings .editor textarea {
+    resize: vertical;
+    max-height: 300px;
+    min-height: 40px;
+}
