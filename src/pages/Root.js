@@ -35,6 +35,9 @@ export default function RootPage() {
                     <div className={`f-1 ${tab === RootTab.Global ? "active" : ""}`} onClick={() => setTab(RootTab.Global)}>
                         Global
                     </div>
+                    <div className="f-1">
+                        Messages
+                    </div>
                 </div></> : null}
             {followHints()}
             <Timeline key={tab} pubkeys={follows} global={loggedOut || tab === RootTab.Global} />
