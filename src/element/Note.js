@@ -58,13 +58,13 @@ export default function Note(props) {
         }
 
         const maxMentions = 2;
-        let replyId = ev.Thread?.ReplyTo?.Event;
-        let mentions = ev.Thread?.PubKeys?.map(a => [a, users[a]])?.map(a => a[1]?.name ?? hexToBech32("npub", a[0]).substring(0, 12))
+        let replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
+        let mentions = ev.Thread?.PubKeys?.map(a => [a, users[a]])?.map(a => (a[1]?.name?.length ?? 0) > 0 ? a[1].name : hexToBech32("npub", a[0]).substring(0, 12))
             .sort((a, b) => a.startsWith("npub") ? 1 : -1);
         let pubMentions = mentions.length > maxMentions ? `${mentions?.slice(0, maxMentions).join(", ")} & ${mentions.length - maxMentions} others` : mentions?.join(", ");
         return (
             <div className="reply">
-                ➡️ {pubMentions ?? hexToBech32("note", replyId).substring(0, 12)}
+                ➡️ {(pubMentions?.length ?? 0) > 0 ? pubMentions : hexToBech32("note", replyId).substring(0, 12)}
             </div>
         )
     }
