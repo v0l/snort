@@ -50,8 +50,16 @@ export function bech32ToText(str) {
  * @returns 
  */
 export function eventLink(hex) {
+    return `/e/${hexToBech32("note", hex)}`;
+}
+
+/**
+ * Convert hex to bech32
+ * @param {string} hex
+ */
+export function hexToBech32(hrp, hex) {
     let buf = secp.utils.hexToBytes(hex);
-    return `/e/${bech32.encode("note", bech32.toWords(buf))}`;
+    return bech32.encode(hrp, bech32.toWords(buf));
 }
 
 /**
@@ -60,8 +68,7 @@ export function eventLink(hex) {
  * @returns 
  */
 export function profileLink(hex) {
-    let buf = secp.utils.hexToBytes(hex);
-    return `/p/${bech32.encode("npub", bech32.toWords(buf))}`;
+    return `/p/${hexToBech32("npub", hex)}`;
 }
 
 /**

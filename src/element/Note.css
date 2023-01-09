@@ -13,10 +13,13 @@
 
 .note > .header .reply {
     font-size: small;
+    color: #999;
 }
 
 .note > .header > .info {
     font-size: small;
+    white-space: nowrap;
+    color: #999;
 }
 
 .note > .body {

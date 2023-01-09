@@ -2,14 +2,13 @@ import { Link } from "react-router-dom";
 
 import Invoice from "./element/Invoice";
 import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex } from "./Const";
-import { eventLink, profileLink } from "./Util";
+import { eventLink, hexToBech32, profileLink } from "./Util";
 
 function transformHttpLink(a) {
     try {
         const url = new URL(a);
-        const vParam = url.searchParams.get('v')
-        const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1
-        const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1
+        const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
+        const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
         if (extension) {
             switch (extension) {
                 case "gif":
@@ -28,7 +27,7 @@ function transformHttpLink(a) {
                     return <video key={url} src={url} controls />
                 }
                 default:
-                    return <a key={url} href={url}>{url.toString()}</a>
+                    return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
             }
         } else if (youtubeId) {
             return (
@@ -37,7 +36,7 @@ function transformHttpLink(a) {
                     <iframe
                         src={`https://www.youtube.com/embed/${youtubeId}`}
                         title="YouTube video player"
-                        frameborder="0"
+                        frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen=""
                     />
@@ -45,7 +44,7 @@ function transformHttpLink(a) {
                 </>
             )
         } else {
-            return <a key={url} href={url}>{url.toString()}</a>
+            return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
         }
     } catch (e) {
         console.warn(`Not a valid url: ${a}`);
@@ -77,12 +76,12 @@ export function extractMentions(fragments, tags, users) {
                     if (ref) {
                         switch (ref.Key) {
                             case "p": {
-                                let pUser = users[ref.PubKey]?.name ?? ref.PubKey.substring(0, 8);
-                                return <Link key={ref.PubKey} to={profileLink(ref.PubKey)} onClick={(ev) => ev.stopPropagation()}>@{pUser}</Link>;
+                                let pUser = users[ref.PubKey]?.name ?? hexToBech32("npub", ref.PubKey).substring(0, 12);
+                                return <Link key={ref.PubKey} to={profileLink(ref.PubKey)} onClick={(e) => e.stopPropagation()}>@{pUser}</Link>;
                             }
                             case "e": {
-                                let eText = ref.Event.substring(0, 8);
-                                return <Link key={ref.Event} to={eventLink(ref.Event)}>#{eText}</Link>;
+                                let eText = hexToBech32("note", ref.Event).substring(0, 12);
+                                return <Link key={ref.Event} to={eventLink(ref.Event)} onClick={(e) => e.stopPropagation()}>#{eText}</Link>;
                             }
                         }
                     }

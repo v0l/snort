@@ -1,12 +1,12 @@
 import "./NoteReaction.css";
-import moment from "moment";
 import EventKind from "../nostr/EventKind";
 import Note from "./Note";
 import ProfileImage from "./ProfileImage";
 import Event from "../nostr/Event";
-import { eventLink } from "../Util";
+import { eventLink, hexToBech32 } from "../Util";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
+import NoteTime from "./NoteTime";
 
 export default function NoteReaction(props) {
     const ev = props["data-ev"] || Event.FromObject(props.data);
@@ -68,12 +68,12 @@ export default function NoteReaction(props) {
             <div className="header flex">
                 <ProfileImage pubkey={ev.RootPubKey} subHeader={tagLine()} />
                 <div className="info">
-                    {moment(ev.CreatedAt * 1000).fromNow()}
+                    <NoteTime from={ev.CreatedAt * 1000} />
                 </div>
             </div>
 
             {root ? <Note data={root} options={opt} /> : null}
-            {!root && refEvent ? <p><Link to={eventLink(refEvent)}>#{refEvent.substring(0, 8)}</Link></p> : null}
+            {!root && refEvent ? <p><Link to={eventLink(refEvent)}>#{hexToBech32("note", refEvent).substring(0, 12)}</Link></p> : null}
         </div>
     );
 }

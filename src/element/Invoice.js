@@ -1,7 +1,7 @@
 import "./Invoice.css";
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { useMemo } from "react";
-import moment from "moment";
+import NoteTime from "./NoteTime";
 
 export default function Invoice(props) {
     const invoice = props.invoice;
@@ -48,7 +48,7 @@ export default function Invoice(props) {
         <div className="note-invoice flex">
             <div className="f-grow flex f-col">
                 {header()}
-                {info?.expire ? <small>{info?.expired ? "Expired" : "Expires"} {moment(info.expire * 1000).fromNow()}</small> : null}
+                {info?.expire ? <small>{info?.expired ? "Expired" : "Expires"} <NoteTime from={info.expire * 1000} /></small> : null}
             </div>
 
             {info?.expired ? <div className="btn">Expired</div> :

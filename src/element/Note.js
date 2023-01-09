@@ -1,14 +1,14 @@
 import "./Note.css";
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
-import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
 import Event from "../nostr/Event";
 import ProfileImage from "./ProfileImage";
 import { extractLinks, extractMentions, extractInvoices } from "../Text";
-import { eventLink } from "../Util";
+import { eventLink, hexToBech32 } from "../Util";
 import NoteFooter from "./NoteFooter";
+import NoteTime from "./NoteTime";
 
 export default function Note(props) {
     const navigate = useNavigate();
@@ -57,11 +57,14 @@ export default function Note(props) {
             return null;
         }
 
+        const maxMentions = 2;
         let replyId = ev.Thread?.ReplyTo?.Event;
-        let mentions = ev.Thread?.PubKeys?.map(a => [a, users[a]])?.map(a => a[1]?.name ?? a[0].substring(0, 8));
+        let mentions = ev.Thread?.PubKeys?.map(a => [a, users[a]])?.map(a => a[1]?.name ?? hexToBech32("npub", a[0]).substring(0, 12))
+            .sort((a, b) => a.startsWith("npub") ? 1 : -1);
+        let pubMentions = mentions.length > maxMentions ? `${mentions?.slice(0, maxMentions).join(", ")} & ${mentions.length - maxMentions} others` : mentions?.join(", ");
         return (
-            <div className="reply" onClick={(e) => goToEvent(e, replyId)}>
-                ➡️ {mentions?.join(", ") ?? replyId?.substring(0, 8)}
+            <div className="reply">
+                ➡️ {pubMentions ?? hexToBech32("note", replyId).substring(0, 12)}
             </div>
         )
     }
@@ -84,7 +87,7 @@ export default function Note(props) {
                     <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag()} />
                     {options.showTime ?
                         <div className="info">
-                            {moment(ev.CreatedAt * 1000).fromNow()}
+                            <NoteTime from={ev.CreatedAt * 1000} />
                         </div> : null}
                 </div> : null}
             <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
