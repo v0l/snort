@@ -19,5 +19,6 @@
 }
 
 .reaction > .header > .info {
+    color: #999;
     font-size: small;
 }
