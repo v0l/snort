@@ -12,7 +12,12 @@
     max-height: 300px;
     border-radius: 10px 10px 0 0;
     max-width: -webkit-fill-available;
+    max-width: -moz-available;
+    max-width: fill-available;
+    min-width: 100%;
     min-width: -webkit-fill-available;
+    min-width: -moz-available;
+    min-width: fill-available;
 }
 
 .note-creator .actions {
