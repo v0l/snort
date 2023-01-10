@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 
 import Invoice from "./element/Invoice";
-import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex } from "./Const";
+import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, HashtagRegex } from "./Const";
 import { eventLink, hexToBech32, profileLink } from "./Util";
 import LazyImage from "./element/LazyImage";
+import Hashtag from "./element/Hashtag";
 
 function transformHttpLink(a) {
     try {
@@ -103,6 +104,21 @@ export function extractInvoices(fragments) {
             return f.split(InvoiceRegex).map(i => {
                 if (i.toLowerCase().startsWith("lnbc")) {
                     return <Invoice key={i} invoice={i} />
+                } else {
+                    return i;
+                }
+            });
+        }
+        return f;
+    }).flat();
+}
+
+export function extractHashtags(fragments) {
+    return fragments.map(f => {
+        if (typeof f === "string") {
+            return f.split(HashtagRegex).map(i => {
+                if (i.toLowerCase().startsWith("#")) {
+                    return <Hashtag>{i}</Hashtag>
                 } else {
                     return i;
                 }

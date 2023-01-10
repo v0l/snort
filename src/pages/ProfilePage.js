@@ -11,7 +11,7 @@ import useProfile from "../feed/ProfileFeed";
 import FollowButton from "../element/FollowButton";
 import { extractLnAddress, parseId } from "../Util";
 import Timeline from "../element/Timeline";
-import { extractLinks } from '../Text'
+import { extractLinks, extractHashtags } from '../Text'
 import LNURLTip from "../element/LNURLTip";
 import Nip05 from "../element/Nip05";
 import Copy from "../element/Copy";
@@ -36,6 +36,7 @@ export default function ProfilePage() {
     const isMe = loginPubKey === id;
     const [showLnQr, setShowLnQr] = useState(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
+    const about = extractHashtags(extractLinks([user?.about]))
 
     useEffect(() => {
         setTab(ProfileTab.Notes);
@@ -60,7 +61,7 @@ export default function ProfilePage() {
                         }
                     </div>
                 </div>
-                <p>{extractLinks([user?.about])}</p>
+                <p>{about}</p>
 
                 {user?.website && (
                     <div className="website f-ellipsis">

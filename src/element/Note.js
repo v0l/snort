@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import Event from "../nostr/Event";
 import ProfileImage from "./ProfileImage";
-import { extractLinks, extractMentions, extractInvoices } from "../Text";
+import { extractLinks, extractMentions, extractInvoices, extractHashtags } from "../Text";
 import { eventLink, hexToBech32 } from "../Util";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
@@ -32,6 +32,7 @@ export default function Note(props) {
         let fragments = extractLinks([body]);
         fragments = extractMentions(fragments, ev.Tags, users);
         fragments = extractInvoices(fragments);
+        fragments = extractHashtags(fragments);
         if (deletion?.length > 0) {
             return (
                 <>
