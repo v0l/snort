@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux";
 import useEventPublisher from "../feed/EventPublisher";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserMinus, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function FollowButton(props) {
     const pubkey = props.pubkey;
@@ -21,7 +23,7 @@ export default function FollowButton(props) {
 
     return (
         <div className={className} onClick={() => isFollowing ? unfollow(pubkey) : follow(pubkey)}>
-            {isFollowing ? "Unfollow" : "Follow"}
+          <FontAwesomeIcon icon={isFollowing ? faUserMinus : faUserPlus} size="lg" />
         </div>
     )
 }

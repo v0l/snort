@@ -38,7 +38,7 @@ export default function ProfilePage() {
                     <div>
                         {isMe ? (
                             <div className="btn btn-icon" onClick={() => navigate("/settings")}>
-                              <FontAwesomeIcon icon={faGear} size="sm" />
+                              <FontAwesomeIcon icon={faGear} size="lg" />
                             </div>
                           ) : <FollowButton pubkey={id} />
                         }
@@ -55,7 +55,7 @@ export default function ProfilePage() {
                 {lnurl ? <div className="lnurl f-ellipsis">
                     {lnurl}
                     <div className="btn btn-icon" onClick={(e) => setShowLnQr(true)}>
-                      <FontAwesomeIcon icon={faQrcode} size="sm" />
+                      <FontAwesomeIcon icon={faQrcode} size="lg" />
                     </div>
                 </div> : null}
                 <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
