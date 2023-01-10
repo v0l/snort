@@ -1,0 +1,23 @@
+.nip05 {
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 14px;
+    margin: .2em 0;
+}
+
+.nip05 .nick {
+    color: #999;
+}
+
+.nip05 .domain {
+    color: #DDD;
+}
+
+.nip05 .badge {
+     margin-left: .2em;
+}
+
+.nip05 .error {
+     margin-top: .2em;
+     margin-left: .2em;
+}

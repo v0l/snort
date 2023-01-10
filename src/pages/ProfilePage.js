@@ -13,6 +13,7 @@ import { extractLnAddress, parseId } from "../Util";
 import Timeline from "../element/Timeline";
 import { extractLinks } from '../Text'
 import LNURLTip from "../element/LNURLTip";
+import Nip05 from "../element/Nip05";
 import Copy from "../element/Copy";
 
 export default function ProfilePage() {
@@ -30,13 +31,14 @@ export default function ProfilePage() {
             <>
                 <div className="flex name">
                     <div className="f-grow">
-                        <h2>{user?.name}</h2>
+                        <h2>{user?.display_name || user?.name}</h2>
                         <Copy text={params.id} />
                     </div>
                     <div>
                         {isMe ? <div className="btn" onClick={() => navigate("/settings")}>Settings</div> : <FollowButton pubkey={id} />}
                     </div>
                 </div>
+                {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
                 <p>{extractLinks([user?.about])}</p>
                 {user?.website ? <a href={user?.website} target="_blank" rel="noreferrer">{user?.website}</a> : null}
 
