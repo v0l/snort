@@ -40,7 +40,12 @@ export default function ProfilePage() {
                 </div>
                 {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
                 <p>{extractLinks([user?.about])}</p>
-                {user?.website ? <a href={user?.website} target="_blank" rel="noreferrer">{user?.website}</a> : null}
+
+                {user?.website && (
+                  <div className="website">
+                    <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
+                  </div>
+                )}
 
                 {lnurl ? <div className="flex">
                     <div className="btn" onClick={(e) => setShowLnQr(true)}>
@@ -56,12 +61,12 @@ export default function ProfilePage() {
     return (
         <>
             <div className="profile flex">
-                <div>
+                <div className="avatar-wrapper">
                     <div style={{ backgroundImage: `url(${(user?.picture?.length ?? 0) === 0 ? Nostrich : user?.picture})` }} className="avatar">
                     </div>
                 </div>
-                <div className="f-grow">
-                    {details()}
+                <div className="f-grow details">
+                  {details()}
                 </div>
             </div>
             <div className="tabs">

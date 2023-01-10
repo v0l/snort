@@ -54,14 +54,18 @@ export default function Layout(props) {
     }
 
     function accountHeader() {
-        const unreadNotifications = notifications?.filter(a => (a.created_at * 1000) > readNotifications).length ?? 0;
+        const unreadNotifications = notifications?.filter(a => (a.created_at * 1000) > readNotifications).length;
         return (
             <>
                 <div className="btn btn-rnd notifications" onClick={(e) => goToNotifications(e)}>
                     <FontAwesomeIcon icon={faBell} size="xl" />
-                    {unreadNotifications}
+                    {unreadNotifications !== 0 && (
+                      <span className="unread-count">
+                        {unreadNotifications}
+                      </span>
+                    )}
                 </div>
-                <ProfileImage pubkey={key} />
+                <ProfileImage pubkey={key} showUsername={false} />
             </>
         )
     }

@@ -1,3 +1,7 @@
 .notifications {
     margin-right: 10px;
 }
+
+.unread-count {
+  margin-left: .2em;
+}

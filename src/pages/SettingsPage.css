@@ -3,8 +3,9 @@
     width: 256px;
     height: 256px;
     background-size: cover;
-    border-radius: 10px;
+    border-radius: 100%;
     cursor: pointer;
+    margin-bottom: 20px;
 }
 
 .settings .avatar .edit {

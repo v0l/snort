@@ -18,11 +18,29 @@
     margin: 0;
 }
 
+.profile .avatar-wrapper {
+  margin: 10px;
+}
+
 .profile .avatar {
     width: 256px;
     height: 256px;
     background-size: cover;
     border-radius: 100%;
+}
+
+.profile .details {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.profile .website {
+    margin-bottom: 10px;
+}
+
+.profile .website::before {
+    content: '🔗 ';
+    font-size: 10px;
 }
 
 @media(max-width: 720px) {
