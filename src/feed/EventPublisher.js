@@ -103,10 +103,15 @@ export default function useEventPublisher() {
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.ContactList;
             ev.Content = JSON.stringify(relays);
-            for (let pk of follows) {
+            let temp = new Set(follows);
+            if (Array.isArray(pkAdd)) {
+                pkAdd.forEach(a => temp.add(a));
+            } else {
+                temp.add(pkAdd);
+            }
+            for (let pk of temp) {
                 ev.Tags.push(new Tag(["p", pk]));
             }
-            ev.Tags.push(new Tag(["p", pkAdd]));
 
             return await signEvent(ev);
         },

@@ -17,10 +17,11 @@ import Nip05 from "../element/Nip05";
 import Copy from "../element/Copy";
 import ProfilePreview from "../element/ProfilePreview";
 import FollowersList from "../element/FollowersList";
+import FollowsList from "../element/FollowsList";
 
 const ProfileTab = {
     Notes: 0,
-    Reactions: 1,
+    //Reactions: 1,
     Followers: 2,
     Follows: 3
 };
@@ -84,6 +85,8 @@ export default function ProfilePage() {
             case ProfileTab.Follows: {
                 if (isMe) {
                     return follows.map(a => <ProfilePreview key={a} pubkey={a.toLowerCase()} options={{ about: false }} />)
+                } else {
+                    return <FollowsList pubkey={id} />;
                 }
             }
             case ProfileTab.Followers: {
