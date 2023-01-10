@@ -20,6 +20,7 @@ export default function SettingsPage(props) {
     const publisher = useEventPublisher();
 
     const [name, setName] = useState("");
+    const [displayName, setDisplayName] = useState("");
     const [picture, setPicture] = useState("");
     const [about, setAbout] = useState("");
     const [website, setWebsite] = useState("");
@@ -31,6 +32,7 @@ export default function SettingsPage(props) {
     useEffect(() => {
         if (user) {
             setName(user.name ?? "");
+            setDisplayName(user.display_name ?? "")
             setPicture(user.picture ?? "");
             setAbout(user.about ?? "");
             setWebsite(user.website ?? "");
@@ -45,6 +47,7 @@ export default function SettingsPage(props) {
         let userCopy = {
             ...user,
             name,
+            display_name: displayName,
             about,
             picture,
             website,
@@ -100,6 +103,12 @@ export default function SettingsPage(props) {
                     <div>Name:</div>
                     <div>
                         <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                    </div>
+                </div>
+                <div className="form-group">
+                    <div>Display name:</div>
+                    <div>
+                        <input type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
                     </div>
                 </div>
                 <div className="form-group f-col">
