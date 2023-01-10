@@ -7,11 +7,6 @@
     border-bottom: none;
 }
 
-.note.active {
-    background-color: var(--gray-secondary);
-    border-left: 3px solid var(--highlight);
-}
-
 .note > .header > .pfp {
     flex-grow: 1;
 }
@@ -56,9 +51,16 @@
     border-left: 3px solid var(--gray-tertiary);
     padding-left: 2px;
 }
+
+.indented .active {
+    margin-left: -3px;
+    border-left: 3px solid var(--highlight);
+}
+
+
 .indented .note {
     border-bottom: none;
-    padding: 0 4px;
+    padding: 4px;
 }
 
 .note .body a {
