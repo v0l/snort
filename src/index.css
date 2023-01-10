@@ -267,21 +267,11 @@ body.scroll-lock {
   margin: 0;
 }
 
-.tabs > div.active {
-  font-weight: bold;
-}
-
 .error {
   color: var(--error);
 }
 
 .root-tabs {
-    position: fixed;
-    bottom: -16px;
-    left: 0;
-    background-color: var(--modal-bg-color);
-    height: 44px;
-    width: 100vw;
     padding: 0 2px;
     align-items: center;
     justify-content: flex-start;
@@ -292,13 +282,4 @@ body.scroll-lock {
 }
 .root-tab.active {
     border-bottom: 3px solid var(--highlight);
-}
-
-@media(min-width: 720px) {
-  .root-tabs {
-      position: initial;
-      width: 100%;
-      padding: 0;
-      background-color: transparent;
-  }
 }
