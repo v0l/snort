@@ -11,5 +11,5 @@ export default function FollowersList({ pubkey }) {
         return [...new Set(contactLists?.map(a => a.pubkey))];
     }, [feed]);
 
-    return <FollowListBase pubkeys={pubkeys} />
+    return <FollowListBase pubkeys={pubkeys} title={`${pubkeys?.length} followers`}/>
 }

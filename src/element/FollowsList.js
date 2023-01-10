@@ -12,5 +12,5 @@ export default function FollowsList({ pubkey }) {
         return [...new Set(pTags?.flat())];
     }, [feed]);
 
-    return <FollowListBase pubkeys={pubkeys} />
+    return <FollowListBase pubkeys={pubkeys} title={`Following ${pubkeys?.length}`}/>
 }

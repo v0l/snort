@@ -54,24 +54,24 @@ export default function ProfilePage() {
                     <div>
                         {isMe ? (
                             <div className="btn btn-icon" onClick={() => navigate("/settings")}>
-                              <FontAwesomeIcon icon={faGear} size="lg" />
+                                <FontAwesomeIcon icon={faGear} size="lg" />
                             </div>
-                          ) : <FollowButton pubkey={id} />
+                        ) : <FollowButton pubkey={id} />
                         }
                     </div>
                 </div>
                 <p>{extractLinks([user?.about])}</p>
 
                 {user?.website && (
-                  <div className="website f-ellipsis">
-                    <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
-                  </div>
+                    <div className="website f-ellipsis">
+                        <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
+                    </div>
                 )}
 
                 {lnurl ? <div className="lnurl f-ellipsis">
                     {lnurl}
                     <div className="btn btn-icon" onClick={(e) => setShowLnQr(true)}>
-                      <FontAwesomeIcon icon={faQrcode} size="lg" />
+                        <FontAwesomeIcon icon={faQrcode} size="lg" />
                     </div>
                 </div> : null}
                 <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
@@ -84,7 +84,12 @@ export default function ProfilePage() {
             case ProfileTab.Notes: return <Timeline pubkeys={id} />;
             case ProfileTab.Follows: {
                 if (isMe) {
-                    return follows.map(a => <ProfilePreview key={a} pubkey={a.toLowerCase()} options={{ about: false }} />)
+                    return (
+                        <>
+                            <h4>Following {follows.length}</h4>
+                            {follows.map(a => <ProfilePreview key={a} pubkey={a.toLowerCase()} options={{ about: false }} />)}
+                        </>
+                    );
                 } else {
                     return <FollowsList pubkey={id} />;
                 }
@@ -104,7 +109,7 @@ export default function ProfilePage() {
                     </div>
                 </div>
                 <div className="f-grow details">
-                  {details()}
+                    {details()}
                 </div>
             </div>
             <div className="tabs">
