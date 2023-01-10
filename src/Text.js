@@ -35,6 +35,7 @@ function transformHttpLink(a) {
                 <>
                     <br />
                     <iframe
+                        className="w-max"
                         src={`https://www.youtube.com/embed/${youtubeId}`}
                         title="YouTube video player"
                         frameBorder="0"
