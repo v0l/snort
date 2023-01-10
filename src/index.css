@@ -1,12 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
+:root {
+    --font-color: #fff;
+    --bg-color: #000;
+    --modal-bg-color: rgba(0,0,0, 0.8);
+    --gray-superlight: #eee;
+    --gray-light: #999;
+    --gray-medium: #666;
+    --gray: #333;
+    --gray-secondary: #222;
+    --gray-tertiary: #444;
+    --highlight: #bada55;
+    --error: red;
+    --success: green;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+     --font-color: #000;
+     --bg-color: #fff;
+     --highlight: #ff9900;
+     --gray: #ccc;
+     --gray-secondary: #ddd;
+     --gray-tertiary: #eee;
+  }
+}
+
 body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--bg-color);
+  color: var(--font-color);
 }
 
 code {
@@ -42,19 +68,20 @@ code {
   border-radius: 5px;
   cursor: pointer;
   user-select: none;
-  background-color: #000;
+  background-color: var(--bg-color);
   border: 1px solid;
   display: inline-block;
 }
 
 .btn.active {
   border: 2px solid;
-  background-color: #222;
+  background-color: var(--gray-secondary);
+  color:  var(--font-color);
   font-weight: bold;
 }
 
 .btn:hover {
-  background-color: #333;
+  background-color: var(--gray);
 }
 
 .btn-sm {
@@ -73,8 +100,12 @@ input[type="text"], input[type="password"], input[type="number"], textarea {
   padding: 10px;
   border-radius: 5px;
   border: 0;
-  background-color: #333;
-  color: #eee;
+  background-color: var(--gray);
+  color: var(--font-color);
+}
+
+textarea:placeholder {
+  color: var(--gray-superlight);
 }
 
 .flex {
@@ -122,7 +153,7 @@ a {
 
 span.pill {
   display: inline-block;
-  background-color: #333;
+  background-color: var(--gray);
   padding: 2px 10px;
   border-radius: 10px;
   user-select: none;
@@ -130,7 +161,8 @@ span.pill {
 }
 
 span.pill.active {
-  background-color: #444;
+  background-color: var(--gray-tertiary);
+  color:  var(--font-color);
   font-weight: bold;
 }
 
@@ -186,7 +218,7 @@ div.form-group > div:nth-child(2) input {
 .modal .modal-content > div {
   padding: 10px;
   border-radius: 10px;
-  background-color: #333;
+  background-color: var(--gray);
   margin-top: 5vh;
 }
 
@@ -225,10 +257,9 @@ body.scroll-lock {
 }
 
 .tabs > div.active {
-  background-color: #222;
   font-weight: bold;
 }
 
 .error {
-  color: red;
+  color: var(--error);
 }

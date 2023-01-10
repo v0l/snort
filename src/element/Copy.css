@@ -1,14 +1,15 @@
 .copy {
     user-select: none;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .copy .body {
     font-family: monospace;
     font-size: 14px;
-    margin: 0;
-    width: 18em;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    background: var(--gray-secondary);
+    color: var(--font-color);
+    padding: 2px 4px;
+    border-radius: 10px;
+    margin: 0 4px 0 0;
 }

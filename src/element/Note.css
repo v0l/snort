@@ -1,10 +1,15 @@
 .note {
     margin-bottom: 10px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--gray);
+}
+
+.note.thread {
+    border-bottom: none;
 }
 
 .note.active {
-    background-color: #222;
+    background-color: var(--gray-secondary);
+    border-left: 3px solid var(--highlight);
 }
 
 .note > .header > .pfp {
@@ -13,13 +18,13 @@
 
 .note > .header .reply {
     font-size: small;
-    color: #999;
+    color: var(--gray-light);
 }
 
 .note > .header > .info {
     font-size: small;
     white-space: nowrap;
-    color: #999;
+    color: var(--gray-light);
 }
 
 .note > .body {
@@ -48,6 +53,14 @@
 }
 
 .indented {
-    border-left: 3px solid #444;
+    border-left: 3px solid var(--gray-tertiary);
     padding-left: 2px;
+}
+.indented .note {
+    border-bottom: none;
+    padding: 0 4px;
+}
+
+.note .body a {
+    color: var(--highlight);
 }

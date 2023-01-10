@@ -85,7 +85,7 @@ export function extractMentions(fragments, tags, users) {
                             }
                         }
                     }
-                    return <b style={{ color: "red" }}>{matchTag[0]}?</b>;
+                    return <b style={{ color: "var(--error)" }}>{matchTag[0]}?</b>;
                 } else {
                     return match;
                 }

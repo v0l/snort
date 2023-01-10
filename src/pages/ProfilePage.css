@@ -19,7 +19,7 @@
 }
 
 .profile .avatar-wrapper {
-  margin: 10px;
+    margin: auto 10px;
 }
 
 .profile .avatar {
@@ -32,10 +32,12 @@
 .profile .details {
     margin-top: auto;
     margin-bottom: auto;
+    overflow: hidden;
 }
 
 .profile .website {
     margin-bottom: 10px;
+    color: var(--highlight);
 }
 
 .profile .website::before {
@@ -52,4 +54,11 @@
         margin: 0;
         width: 100%;
     }
+}
+
+@media(max-width: 420px) {
+      .profile .name { flex-direction: column; }
+      .profile .name .btn {
+          margin-top: 5px;
+      }
 }

@@ -24,7 +24,7 @@ export default function Relay(props) {
         <>
             <div className="flex relay w-max">
                 <div>
-                    <FontAwesomeIcon icon={faPlug} color={state?.connected ? "green" : "red"} />
+                    <FontAwesomeIcon icon={faPlug} color={state?.connected ? "var(--success)" : "var(--error)"} />
                 </div>
                 <div className="f-grow f-col">
                     <b>{name}</b>

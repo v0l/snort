@@ -1,5 +1,5 @@
 .root-tabs > div {
   padding: 5px 0;
-  background-color: #333;
+  background-color: var(--gray);
   border-radius: 10px;
 }
