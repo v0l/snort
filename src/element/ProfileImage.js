@@ -4,7 +4,8 @@ import Nostrich from "../nostrich.jpg";
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useProfile from "../feed/ProfileFeed";
-import { profileLink } from "../Util";
+import { hexToBech32, profileLink } from "../Util";
+import LazyImage from "./LazyImage";
 
 export default function ProfileImage({ pubkey, subHeader, showUsername = true }) {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true })
 
     const hasImage = (user?.picture?.length ?? 0) > 0;
     const name = useMemo(() => {
-        let name = pubkey.substring(0, 8);
+        let name = hexToBech32("npub", pubkey).substring(0, 12);
         if (user?.display_name?.length > 0) {
             name = user.display_name;
         } else if (user?.name?.length > 0) {
@@ -20,11 +21,11 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true })
         }
         return name;
     }, [user]);
+
     return (
         <div className="pfp">
-            <img src={hasImage ? user.picture : Nostrich} onClick={() => navigate(profileLink(pubkey))} />
-            {showUsername && (
-              <div>
+            <LazyImage src={hasImage ? user.picture : Nostrich} onClick={() => navigate(profileLink(pubkey))} />
+            {showUsername && (<div>
                 <Link key={pubkey} to={profileLink(pubkey)}>{name}</Link>
                 {subHeader ? <div>{subHeader}</div> : null}
               </div>
