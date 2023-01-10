@@ -50,7 +50,7 @@ export function NoteCreator(props) {
             {replyTo ? <small>{`Reply to: ${replyTo.Id.substring(0, 8)}`}</small> : null}
             <div className="flex note-creator" onClick={() => setActive(true)}>
                 <div className="textarea flex f-col mr10 f-grow">
-                    <textarea className="textarea" placeholder="Say something!" value={note} onChange={(e) => setNote(e.target.value)} />
+                    <textarea className="textarea w-max" placeholder="Say something!" value={note} onChange={(e) => setNote(e.target.value)} />
                     {active ? <div className="actions flex f-row">
                         <div className="attachment flex f-row">
                             {error.length > 0 ? <b className="error">{error}</b> : null}
