@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Invoice from "./element/Invoice";
 import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex } from "./Const";
 import { eventLink, hexToBech32, profileLink } from "./Util";
+import LazyImage from "./element/LazyImage";
 
 function transformHttpLink(a) {
     try {
@@ -17,7 +18,7 @@ function transformHttpLink(a) {
                 case "png":
                 case "bmp":
                 case "webp": {
-                    return <img key={url} src={url} />;
+                    return <LazyImage key={url} src={url} />;
                 }
                 case "mp4":
                 case "mov":

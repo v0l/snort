@@ -1,19 +1,23 @@
 import "./ProfilePreview.css";
 import ProfileImage from "./ProfileImage";
-import { useSelector } from "react-redux";
 import FollowButton from "./FollowButton";
+import useProfile from "../feed/ProfileFeed";
 
 export default function ProfilePreview(props) {
     const pubkey = props.pubkey;
-    const user = useSelector(s => s.users.users[pubkey]);
+    const user = useProfile(pubkey);
+    const options = {
+        about: true,
+        ...props.options
+    };
 
     return (
         <div className="profile-preview">
-            <ProfileImage pubkey={pubkey}/>
-            <div className="f-ellipsis">
+            <ProfileImage pubkey={pubkey} />
+            {options.about ? <div className="f-ellipsis">
                 {user?.about}
-            </div>
-            <FollowButton pubkey={pubkey} className="ml5"/>
+            </div> : null}
+            <FollowButton pubkey={pubkey} className="ml5" />
         </div>
     )
 }

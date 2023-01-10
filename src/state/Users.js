@@ -12,7 +12,7 @@ const UsersSlice = createSlice({
         /**
          * User objects for known pubKeys, populated async
          */
-        users: {}
+        users: {},
     },
     reducers: {
         addPubKey: (state, action) => {

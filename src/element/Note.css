@@ -29,7 +29,7 @@
     word-break: normal;
 }
 
-.note > .body > img, .note > .body > video, .note > .body > iframe {
+.note > .body img, .note > .body video, .note > .body iframe {
     max-width: 100%;
     max-height: 500px;
     margin: 10px;
@@ -38,7 +38,7 @@
     display: block;
 }
 
-.note > .header > img:hover, .note > .header > .name > .reply:hover, .note > .body:hover {
+.note > .header img:hover, .note > .header .name > .reply:hover, .note .body:hover {
     cursor: pointer;
 }
 
