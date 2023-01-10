@@ -33,12 +33,12 @@ export default function ProfilePage() {
                     <div className="f-grow">
                         <h2>{user?.display_name || user?.name}</h2>
                         <Copy text={params.id} />
+                        {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
                     </div>
                     <div>
                         {isMe ? <div className="btn" onClick={() => navigate("/settings")}>Settings</div> : <FollowButton pubkey={id} />}
                     </div>
                 </div>
-                {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
                 <p>{extractLinks([user?.about])}</p>
 
                 {user?.website && (

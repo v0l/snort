@@ -53,7 +53,8 @@
 }
 
 .indented .active {
-    margin-left: -3px;
+    background-color: var(--gray-tertiary);
+    margin-left: -5px;
     border-left: 3px solid var(--highlight);
 }
 

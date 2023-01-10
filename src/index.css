@@ -23,6 +23,8 @@
      --gray: #ccc;
      --gray-secondary: #ddd;
      --gray-tertiary: #eee;
+     --gray-superlight: #333;
+     --gray-light: #555;
   }
 }
 

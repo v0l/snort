@@ -37,7 +37,7 @@ const Nip05 = ({ nip05, pubkey }) => {
          {isVerified && (
            <span className="badge">
              <FontAwesomeIcon
-               color={"green"}
+               color={"var(--success)"}
                icon={faCheck}
                size="xs"
              />
@@ -46,7 +46,7 @@ const Nip05 = ({ nip05, pubkey }) => {
          {couldNotVerify && (
            <span className="error">
              <FontAwesomeIcon
-               color={"red"}
+               color={"var(--error)"}
                icon={faTriangleExclamation}
                size="xs"
              />
