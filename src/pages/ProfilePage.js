@@ -4,7 +4,7 @@ import Nostrich from "../nostrich.jpg";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQrcode } from "@fortawesome/free-solid-svg-icons";
+import { faQrcode, faGear } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 
 import useProfile from "../feed/ProfileFeed";
@@ -36,22 +36,27 @@ export default function ProfilePage() {
                         {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
                     </div>
                     <div>
-                        {isMe ? <div className="btn" onClick={() => navigate("/settings")}>Settings</div> : <FollowButton pubkey={id} />}
+                        {isMe ? (
+                            <div className="btn btn-icon" onClick={() => navigate("/settings")}>
+                              <FontAwesomeIcon icon={faGear} size="sm" />
+                            </div>
+                          ) : <FollowButton pubkey={id} />
+                        }
                     </div>
                 </div>
                 <p>{extractLinks([user?.about])}</p>
 
                 {user?.website && (
-                  <div className="website">
+                  <div className="website f-ellipsis">
                     <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
                   </div>
                 )}
 
-                {lnurl ? <div className="flex">
-                    <div className="btn" onClick={(e) => setShowLnQr(true)}>
-                        <FontAwesomeIcon icon={faQrcode} size="xl" />
+                {lnurl ? <div className="lnurl f-ellipsis">
+                    {lnurl}
+                    <div className="btn btn-icon" onClick={(e) => setShowLnQr(true)}>
+                      <FontAwesomeIcon icon={faQrcode} size="sm" />
                     </div>
-                    <div className="f-ellipsis">&nbsp; ⚡️ {lnurl}</div>
                 </div> : null}
                 <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
             </>
@@ -70,10 +75,10 @@ export default function ProfilePage() {
                 </div>
             </div>
             <div className="tabs">
-                <div className="btn active">Notes</div>
-                <div className="btn">Reactions</div>
-                <div className="btn">Followers</div>
-                <div className="btn">Follows</div>
+                <div className="tab f-1 active">Notes</div>
+                <div className="tab f-1">Reactions</div>
+                <div className="tab f-1">Followers</div>
+                <div className="tab f-1">Follows</div>
             </div>
             <Timeline pubkeys={id} />
         </>

@@ -1,28 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 :root {
-    --font-color: #fff;
+    --font-color: #FFF;
     --bg-color: #000;
     --modal-bg-color: rgba(0,0,0, 0.8);
-    --gray-superlight: #eee;
+    --gray-superlight: #EEE;
     --gray-light: #999;
     --gray-medium: #666;
     --gray: #333;
     --gray-secondary: #222;
     --gray-tertiary: #444;
-    --highlight: #bada55;
-    --error: red;
-    --success: green;
+    --highlight: #A9E000;
+    --error: #FF6053;
+    --success: #2AD544;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
      --font-color: #000;
-     --bg-color: #fff;
-     --highlight: #ff9900;
-     --gray: #ccc;
-     --gray-secondary: #ddd;
-     --gray-tertiary: #eee;
+     --bg-color: #FFF;
+     --highlight: #FF9B00;
+     --modal-bg-color: rgba(240, 240, 240, 0.8);
+     --gray: #CCC;
+     --gray-secondary: #DDD;
+     --gray-tertiary: #EEE;
      --gray-superlight: #333;
      --gray-light: #555;
   }
@@ -73,6 +74,14 @@ code {
   background-color: var(--bg-color);
   border: 1px solid;
   display: inline-block;
+}
+
+.btn-warn {
+  border-color: var(--error);
+}
+
+.btn-success {
+  border-color: var(--success);
 }
 
 .btn.active {
@@ -264,4 +273,32 @@ body.scroll-lock {
 
 .error {
   color: var(--error);
+}
+
+.root-tabs {
+    position: fixed;
+    bottom: -16px;
+    left: 0;
+    background-color: var(--modal-bg-color);
+    height: 44px;
+    width: 100vw;
+    padding: 0 2px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.root-tab {
+    border-bottom: 3px solid var(--gray-secondary);
+}
+.root-tab.active {
+    border-bottom: 3px solid var(--highlight);
+}
+
+@media(min-width: 720px) {
+  .root-tabs {
+      position: initial;
+      width: 100%;
+      padding: 0;
+      background-color: transparent;
+  }
 }

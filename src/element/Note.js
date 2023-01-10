@@ -78,7 +78,7 @@ export default function Note(props) {
     }
 
     return (
-        <div className={`note ${hightlight && "active"} ${isThread && "thread"}`}>
+        <div className={`note ${hightlight ? "active" : ""} ${isThread ? "thread" : ""}`}>
             {options.showHeader ?
                 <div className="header flex">
                     <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag()} />
