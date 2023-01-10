@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 import './Nip05.css'
 
@@ -28,30 +28,35 @@ const Nip05 = ({ nip05, pubkey }) => {
     }, [nip05, name, domain])
 
     return (
-       <div className="flex nip05">
+       <div className="flex nip05" onClick={(ev) => ev.stopPropagation()}>
          {!isDefaultUser && <div className="nick">{name}</div>}
          <div className="domain">
              {!isDefaultUser && '@'}
              {domain}
          </div>
-         {isVerified && (
-           <span className="badge">
+         <span className="badge">
+           {!isVerified && !couldNotVerify && (
+               <FontAwesomeIcon
+                 color={"var(--fg-color)"}
+                 icon={faSpinner}
+                 size="xs"
+               />
+           )}
+           {isVerified && (
+               <FontAwesomeIcon
+                 color={"var(--success)"}
+                 icon={faCheck}
+                 size="xs"
+               />
+           )}
+           {couldNotVerify && (
              <FontAwesomeIcon
-               color={"green"}
-               icon={faCheck}
-               size="xs"
-             />
-           </span>
-         )}
-         {couldNotVerify && (
-           <span className="error">
-             <FontAwesomeIcon
-               color={"red"}
+               color={"var(--error)"}
                icon={faTriangleExclamation}
                size="xs"
              />
-           </span>
-         )}
+           )}
+         </span>
        </div>
     )
 }

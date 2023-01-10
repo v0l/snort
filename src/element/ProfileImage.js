@@ -6,9 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useProfile from "../feed/ProfileFeed";
 import { profileLink } from "../Util";
 
-export default function ProfileImage(props) {
-    const pubkey = props.pubkey;
-    const subHeader = props.subHeader;
+export default function ProfileImage({ pubkey, subHeader, showUsername = true }) {
     const navigate = useNavigate();
     const user = useProfile(pubkey);
 
@@ -25,10 +23,12 @@ export default function ProfileImage(props) {
     return (
         <div className="pfp">
             <img src={hasImage ? user.picture : Nostrich} onClick={() => navigate(profileLink(pubkey))} />
-            <div>
+            {showUsername && (
+              <div>
                 <Link key={pubkey} to={profileLink(pubkey)}>{name}</Link>
                 {subHeader ? <div>{subHeader}</div> : null}
-            </div>
+              </div>
+            )}
         </div>
     )
 }

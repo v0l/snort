@@ -47,7 +47,7 @@ export default function Thread(props) {
 
     function renderRoot() {
         if (root) {
-            return <Note data-ev={root} reactions={reactions(root.Id)} deletion={reactions(root.Id, EventKind.Deletion)} />
+            return <Note data-ev={root} reactions={reactions(root.Id)} deletion={reactions(root.Id, EventKind.Deletion)} isThread />
         } else {
             return <NoteGhost>
                 Loading thread root.. ({notes.length} notes loaded)

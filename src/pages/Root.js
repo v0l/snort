@@ -29,10 +29,10 @@ export default function RootPage() {
             {pubKey ? <>
                 <NoteCreator show={true}/>
                 <div className="tabs root-tabs">
-                    <div className={`f-1 ${tab === RootTab.Follows ? "active" : ""}`} onClick={() => setTab(RootTab.Follows)}>
+                    <div className={`root-tab f-1 ${tab === RootTab.Follows ? "active" : ""}`} onClick={() => setTab(RootTab.Follows)}>
                         Follows
                     </div>
-                    <div className={`f-1 ${tab === RootTab.Global ? "active" : ""}`} onClick={() => setTab(RootTab.Global)}>
+                    <div className={`root-tab f-1 ${tab === RootTab.Global ? "active" : ""}`} onClick={() => setTab(RootTab.Global)}>
                         Global
                     </div>
                 </div></> : null}

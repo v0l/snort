@@ -38,7 +38,7 @@ function transformHttpLink(a) {
                         title="YouTube video player"
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen=""
+                        allowFullScreen=""
                     />
                     <br />
                 </>
@@ -85,7 +85,7 @@ export function extractMentions(fragments, tags, users) {
                             }
                         }
                     }
-                    return <b style={{ color: "red" }}>{matchTag[0]}?</b>;
+                    return <b style={{ color: "var(--error)" }}>{matchTag[0]}?</b>;
                 } else {
                     return match;
                 }

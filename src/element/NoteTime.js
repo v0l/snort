@@ -16,9 +16,12 @@ export default function NoteTime(props) {
             return fromDate.toLocaleDateString(undefined, { year: "2-digit", month: "short", day: "2-digit", weekday: "short" });
         } else if (absAgo > HourInMs) {
             return `${fromDate.getHours().toString().padStart(2, '0')}:${fromDate.getMinutes().toString().padStart(2, '0')}`;
+        } else if (absAgo < MinuteInMs) {
+          return 'Just now'
         } else {
             let mins = parseInt(absAgo / MinuteInMs);
-            return `${mins} mins ago`;
+            let minutes = mins === 1 ? 'min' : 'mins'
+            return `${mins} ${minutes} ago`;
         }
     }
 

@@ -12,12 +12,9 @@ import NoteTime from "./NoteTime";
 
 export default function Note(props) {
     const navigate = useNavigate();
-    const data = props.data;
     const opt = props.options;
     const dataEvent = props["data-ev"];
-    const reactions = props.reactions;
-    const deletion = props.deletion;
-    const hightlight = props.hightlight;
+    const { data, isThread, reactions, deletion, hightlight } = props
 
     const users = useSelector(s => s.users?.users);
     const ev = dataEvent ?? Event.FromObject(data);
@@ -81,7 +78,7 @@ export default function Note(props) {
     }
 
     return (
-        <div className={`note ${hightlight ? "active" : ""}`}>
+        <div className={`note ${hightlight ? "active" : ""} ${isThread ? "thread" : ""}`}>
             {options.showHeader ?
                 <div className="header flex">
                     <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag()} />

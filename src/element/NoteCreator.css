@@ -1,6 +1,6 @@
 .note-creator {
     margin-bottom: 10px;
-    background-color: #333;
+    background-color: var(--gray);
     border-radius: 10px;
     overflow: hidden;
 }

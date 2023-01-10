@@ -4,7 +4,7 @@ import Nostrich from "../nostrich.jpg";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQrcode } from "@fortawesome/free-solid-svg-icons";
+import { faQrcode, faGear } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 
 import useProfile from "../feed/ProfileFeed";
@@ -33,20 +33,30 @@ export default function ProfilePage() {
                     <div className="f-grow">
                         <h2>{user?.display_name || user?.name}</h2>
                         <Copy text={params.id} />
+                        {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
                     </div>
                     <div>
-                        {isMe ? <div className="btn" onClick={() => navigate("/settings")}>Settings</div> : <FollowButton pubkey={id} />}
+                        {isMe ? (
+                            <div className="btn btn-icon" onClick={() => navigate("/settings")}>
+                              <FontAwesomeIcon icon={faGear} size="lg" />
+                            </div>
+                          ) : <FollowButton pubkey={id} />
+                        }
                     </div>
                 </div>
-                {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
                 <p>{extractLinks([user?.about])}</p>
-                {user?.website ? <a href={user?.website} target="_blank" rel="noreferrer">{user?.website}</a> : null}
 
-                {lnurl ? <div className="flex">
-                    <div className="btn" onClick={(e) => setShowLnQr(true)}>
-                        <FontAwesomeIcon icon={faQrcode} size="xl" />
+                {user?.website && (
+                  <div className="website f-ellipsis">
+                    <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
+                  </div>
+                )}
+
+                {lnurl ? <div className="lnurl f-ellipsis">
+                    {lnurl}
+                    <div className="btn btn-icon" onClick={(e) => setShowLnQr(true)}>
+                      <FontAwesomeIcon icon={faQrcode} size="lg" />
                     </div>
-                    <div className="f-ellipsis">&nbsp; ⚡️ {lnurl}</div>
                 </div> : null}
                 <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
             </>
@@ -56,19 +66,19 @@ export default function ProfilePage() {
     return (
         <>
             <div className="profile flex">
-                <div>
+                <div className="avatar-wrapper">
                     <div style={{ backgroundImage: `url(${(user?.picture?.length ?? 0) === 0 ? Nostrich : user?.picture})` }} className="avatar">
                     </div>
                 </div>
-                <div className="f-grow">
-                    {details()}
+                <div className="f-grow details">
+                  {details()}
                 </div>
             </div>
             <div className="tabs">
-                <div className="btn active">Notes</div>
-                <div className="btn">Reactions</div>
-                <div className="btn">Followers</div>
-                <div className="btn">Follows</div>
+                <div className="tab f-1 active">Notes</div>
+                <div className="tab f-1">Reactions</div>
+                <div className="tab f-1">Followers</div>
+                <div className="tab f-1">Follows</div>
             </div>
             <Timeline pubkeys={id} />
         </>

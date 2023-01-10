@@ -1,6 +1,7 @@
 .note-invoice {
+    background: var(--bg-color);
     border-radius: 10px;
-    border: 1px solid #444;
+    border: 1px solid var(--gray-tertiary);
     padding: 10px;
 }
 
@@ -9,5 +10,5 @@
 }
 
 .note-invoice small {
-    color: #666;
+    color: var(--gray-medium);
 }

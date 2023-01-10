@@ -1,10 +1,10 @@
 .note {
     margin-bottom: 10px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--gray);
 }
 
-.note.active {
-    background-color: #222;
+.note.thread {
+    border-bottom: none;
 }
 
 .note > .header > .pfp {
@@ -13,13 +13,13 @@
 
 .note > .header .reply {
     font-size: small;
-    color: #999;
+    color: var(--gray-light);
 }
 
 .note > .header > .info {
     font-size: small;
     white-space: nowrap;
-    color: #999;
+    color: var(--gray-light);
 }
 
 .note > .body {
@@ -32,10 +32,10 @@
 .note > .body > img, .note > .body > video, .note > .body > iframe {
     max-width: 100%;
     max-height: 500px;
-}
-
-.note > .body > iframe {
-  margin: 10px 0;
+    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 .note > .header > img:hover, .note > .header > .name > .reply:hover, .note > .body:hover {
@@ -48,6 +48,22 @@
 }
 
 .indented {
-    border-left: 3px solid #444;
+    border-left: 3px solid var(--gray-tertiary);
     padding-left: 2px;
+}
+
+.indented .active {
+    background-color: var(--gray-tertiary);
+    margin-left: -5px;
+    border-left: 3px solid var(--highlight);
+}
+
+
+.indented .note {
+    border-bottom: none;
+    padding: 4px;
+}
+
+.note .body a {
+    color: var(--highlight);
 }
