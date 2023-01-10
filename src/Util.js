@@ -59,7 +59,7 @@ export function eventLink(hex) {
  */
 export function hexToBech32(hrp, hex) {
     if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 != 0) {
-        return null;
+        return "";
     }
 
     let buf = secp.utils.hexToBytes(hex);
