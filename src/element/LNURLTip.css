@@ -17,6 +17,11 @@
     background-color: var(--gray);
 }
 
+.lnurl-tip .pill.active {
+    color: var(--bg-color);
+    background-color: var(--font-color);
+}
+
 .lnurl-tip .invoice {
     display: flex;
     flex-direction: column;
