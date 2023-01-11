@@ -1,9 +1,9 @@
 import "./Relay.css"
 
-import { faPlug, faTrash, faSquareCheck, faSquareXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlug, faTrash, faSquareCheck, faSquareXmark, faWifi, faUpload, faDownload, faPlugCircleXmark, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import useRelayState from "../feed/RelayState";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeRelay, setRelays } from "../state/Login";
 
@@ -13,6 +13,7 @@ export default function Relay(props) {
     const relaySettings = useSelector(s => s.login.relays[props.addr]);
     const state = useRelayState(props.addr);
     const name = useMemo(() => new URL(props.addr).host, [props.addr]);
+    const [showExtra, setShowExtra] = useState(false);
 
     function configure(o) {
         dispatch(setRelays({
@@ -20,31 +21,59 @@ export default function Relay(props) {
         }));
     }
 
+
+    let latency = parseInt(state?.avgLatency ?? 0);
     return (
         <>
-            <div className="flex relay w-max">
-                <div>
-                    <FontAwesomeIcon icon={faPlug} color={state?.connected ? "var(--success)" : "var(--error)"} />
+            <div className={`relay w-max`}>
+                <div className={`flex ${state?.connected ? "bg-success" : "bg-error"}`}>
+                    <FontAwesomeIcon icon={faPlug} />
                 </div>
                 <div className="f-grow f-col">
-                    <b>{name}</b>
-                    <div>
-                        Write
-                        <span className="pill" onClick={() => configure({ write: !relaySettings.write, read: relaySettings.read })}>
-                            <FontAwesomeIcon icon={relaySettings.write ? faSquareCheck : faSquareXmark} />
-                        </span>
-                        Read
-                        <span className="pill" onClick={() => configure({ write: relaySettings.write, read: !relaySettings.read })}>
-                            <FontAwesomeIcon icon={relaySettings.read ? faSquareCheck : faSquareXmark} />
-                        </span>
+                    <div className="flex mb10">
+                        <b className="f-2">{name}</b>
+                        <div className="f-1">
+                            Write
+                            <span className="pill" onClick={() => configure({ write: !relaySettings.write, read: relaySettings.read })}>
+                                <FontAwesomeIcon icon={relaySettings.write ? faSquareCheck : faSquareXmark} />
+                            </span>
+                        </div>
+                        <div className="f-1">
+                            Read
+                            <span className="pill" onClick={() => configure({ write: relaySettings.write, read: !relaySettings.read })}>
+                                <FontAwesomeIcon icon={relaySettings.read ? faSquareCheck : faSquareXmark} />
+                            </span>
+                        </div>
+                    </div>
+                    <div className="flex">
+                        <div className="f-grow">
+                            <FontAwesomeIcon icon={faWifi} /> {latency > 2000 ? `${(latency / 1000).toFixed(0)} secs` : `${latency.toLocaleString()} ms`}
+                            &nbsp;
+                            <FontAwesomeIcon icon={faPlugCircleXmark} /> {state?.disconnects}
+                        </div>
+                        <div>
+                            <span className="pill" onClick={() => setShowExtra(s => !s)}>
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <span className="pill">
-                        <FontAwesomeIcon icon={faTrash} onClick={() => dispatch(removeRelay(props.addr))} />
+            </div>
+            {showExtra ? <div className="flex relay-extra w-max">
+                <div className="f-1">
+                    <FontAwesomeIcon icon={faUpload} /> {state?.events.send}
+                </div>
+                <div className="f-1">
+                    <FontAwesomeIcon icon={faDownload} /> {state?.events.received}
+                </div>
+
+                <div className="f-1">
+                    Delete
+                    <span className="pill" onClick={() => dispatch(removeRelay(props.addr))}>
+                        <FontAwesomeIcon icon={faTrash} />
                     </span>
                 </div>
-            </div>
+            </div> : null}
         </>
     )
 }

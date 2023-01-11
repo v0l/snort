@@ -12,6 +12,7 @@ export class ConnectionStats {
         this.SubsTimeout = 0;
         this.EventsReceived = 0;
         this.EventsSent = 0;
+        this.Disconnects = 0;
     }
 }
 
@@ -28,7 +29,13 @@ export default class Connection {
         this.StateHooks = {};
         this.HasStateChange = true;
         this.CurrentState = {
-            connected: false
+            connected: false,
+            disconnects: 0,
+            avgLatency: 0,
+            events: {
+                received: 0,
+                send: 0
+            }
         };
         this.LastState = Object.freeze({ ...this.CurrentState });
         this.IsClosed = false;
@@ -47,7 +54,7 @@ export default class Connection {
 
     Close() {
         this.IsClosed = true;
-        if(this.ReconnectTimer !== null) {
+        if (this.ReconnectTimer !== null) {
             clearTimeout(this.ReconnectTimer);
             this.ReconnectTimer = null;
         }
@@ -74,6 +81,7 @@ export default class Connection {
             this.ReconnectTimer = setTimeout(() => {
                 this.Connect();
             }, this.ConnectTimeout);
+            this.Stats.Disconnects++;
         } else {
             console.log(`[${this.Address}] Closed!`);
             this.ReconnectTimer = null;
@@ -88,6 +96,8 @@ export default class Connection {
             switch (tag) {
                 case "EVENT": {
                     this._OnEvent(msg[1], msg[2]);
+                    this.Stats.EventsReceived++;
+                    this._UpdateState();
                     break;
                 }
                 case "EOSE": {
@@ -96,7 +106,7 @@ export default class Connection {
                 }
                 case "OK": {
                     // feedback to broadcast call
-                    console.debug("OK: ", msg[1]);
+                    console.debug("OK: ", msg);
                     break;
                 }
                 case "NOTICE": {
@@ -126,6 +136,8 @@ export default class Connection {
         }
         let req = ["EVENT", e.ToObject()];
         this._SendJson(req);
+        this.Stats.EventsSent++;
+        this._UpdateState();
     }
 
     /**
@@ -199,6 +211,11 @@ export default class Connection {
 
     _UpdateState() {
         this.CurrentState.connected = this.Socket?.readyState === WebSocket.OPEN;
+        this.CurrentState.events.received = this.Stats.EventsReceived;
+        this.CurrentState.events.send = this.Stats.EventsSent;
+        this.CurrentState.avgLatency = this.Stats.Latency.length > 0 ? (this.Stats.Latency.reduce((acc, v) => acc + v, 0) / this.Stats.Latency.length) : 0;
+        this.CurrentState.disconnects = this.Stats.Disconnects;
+        this.Stats.Latency = this.Stats.Latency.slice(this.Stats.Latency.length - 20); // trim
         this.HasStateChange = true;
         this._NotifyState();
     }
@@ -239,9 +256,10 @@ export default class Connection {
                 console.warn(`[${this.Address}][${subId}] Slow response time ${(responseTime / 1000).toFixed(1)} seconds`);
             }
             sub.OnEnd(this);
+            this.Stats.Latency.push(responseTime);
+            this._UpdateState();
         } else {
-            // console.warn(`No subscription for end! ${subId}`);
-            // ignored for now, track as "dropped event" with connection stats
+            console.warn(`No subscription for end! ${subId}`);
         }
     }
 

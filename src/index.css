@@ -133,6 +133,10 @@ textarea:placeholder {
   flex: 1;
 }
 
+.f-2 {
+  flex: 2;
+}
+
 .f-grow {
   flex-grow: 1;
 }
@@ -269,6 +273,14 @@ body.scroll-lock {
 
 .error {
   color: var(--error);
+}
+
+.bg-error {
+  background-color: var(--error);
+}
+
+.bg-success {
+  background-color: var(--success);
 }
 
 .root-tabs {

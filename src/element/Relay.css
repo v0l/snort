@@ -1,10 +1,24 @@
 .relay {
-    margin-bottom: 10px;
+    margin-top: 10px;
     background-color: var(--gray-secondary);
     border-radius: 5px;
     text-align: start;
+    display: grid;
+    grid-template-columns: min-content auto;
+    overflow: hidden;
 }
 
 .relay > div {
     padding: 5px;
+}
+
+.relay > div:first-child {
+}
+
+.relay-extra {
+    padding: 5px;
+    margin: 0 5px;
+    background-color: var(--gray-tertiary);
+    border-radius: 0 0 5px 5px;
+    white-space: nowrap;
 }
