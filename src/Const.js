@@ -66,4 +66,4 @@ export const YoutubeUrlRegex = /^(?:https?:\/\/)?(?:www|m\.)?(?:youtu\.be\/|yout
 /**
  * Hashtag regex
  */
-export const HashtagRegex = /(#[a-z\d-]+)/ig
+export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/
