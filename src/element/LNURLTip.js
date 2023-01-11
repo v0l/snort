@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { bech32ToText } from "../Util";
 import Modal from "./Modal";
 import QrCode from "./QrCode";
+import Copy from "./Copy";
 
 export default function LNURLTip(props) {
     const onClose = props.onClose || (() => { });
@@ -132,7 +133,7 @@ export default function LNURLTip(props) {
     function webLn() {
         if ("webln" in window) {
             return (
-                <div className="btn mb10" onClick={() => payWebLN()}>Pay with WebLN</div>
+                <div className="btn" onClick={() => payWebLN()}>Pay with WebLN</div>
             )
         }
         return null;
@@ -168,15 +169,21 @@ export default function LNURLTip(props) {
         return (
             <>
                 <div className="invoice">
-                    <div>
-                        <QrCode data={pr} link={`lightning:${pr}`} />
-                    </div>
+                    <QrCode data={pr} link={`lightning:${pr}`} />
                     <div className="actions">
-                        {pr ? <>
-                            {webLn()}
-                            <div className="btn" onClick={() => window.open(`lightning:${pr}`)}>Open Wallet</div>
-                            <div className="btn" onClick={() => navigator.clipboard.writeText(pr)}>Copy Invoice</div>
-                        </> : null}
+                        {pr && (
+                          <>
+                            <div className="copy-action">
+                                <Copy text={pr} maxSize={26} />
+                            </div>
+                            <div className="pay-actions">
+                                <div className="btn" onClick={() => window.open(`lightning:${pr}`)}>
+                                    Open Wallet
+                                </div>
+                                <div>{webLn()}</div>
+                            </div>
+                          </>
+                        )}
                     </div>
                 </div>
             </>
