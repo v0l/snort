@@ -267,6 +267,10 @@ body.scroll-lock {
   margin: 0;
 }
 
+.tabs .active {
+  font-weight: bold;
+}
+
 .error {
   color: var(--error);
 }
