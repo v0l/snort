@@ -55,6 +55,10 @@
     font-size: 10px;
 }
 
+.profile a {
+    color: var(--highlight);
+}
+
 .profile .lnurl::before {
     content: '⚡️ ';
     font-size: 10px;
@@ -91,7 +95,7 @@
 
 .tab {
     margin: 0;
-    padding: 4px;
+    padding: 8px 0;
     border-bottom: 3px solid var(--gray-secondary);
 }
 .tab.active {
