@@ -211,7 +211,7 @@ export default class Connection {
         this.CurrentState.events.send = this.Stats.EventsSent;
         this.CurrentState.avgLatency = this.Stats.Latency.length > 0 ? (this.Stats.Latency.reduce((acc, v) => acc + v, 0) / this.Stats.Latency.length) : 0;
         this.CurrentState.disconnects = this.Stats.Disconnects;
-        this.Stats.Latency = this.Stats.Latency.slice(this.Stats.Latency.length - 20); // trim
+        this.Stats.Latency = this.Stats.Latency.slice(-20); // trim
         this.HasStateChange = true;
         this._NotifyState();
     }

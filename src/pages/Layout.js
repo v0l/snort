@@ -59,12 +59,10 @@ export default function Layout(props) {
             <>
                 <div className="btn btn-rnd notifications" onClick={(e) => goToNotifications(e)}>
                     <FontAwesomeIcon icon={faBell} size="xl" />
-                    {unreadNotifications !== 0 && (
-                      <span className="unread-count">
-                        {unreadNotifications}
-                      </span>
-                    )}
                 </div>
+                <span className="unread-count">
+                    {unreadNotifications > 1000 ? "..." : unreadNotifications}
+                </span>
                 <ProfileImage pubkey={key} showUsername={false} />
             </>
         )
