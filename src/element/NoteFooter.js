@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import useEventPublisher from "../feed/EventPublisher";
+import { addReaction } from "../state/Reactions"
 import { normalizeReaction, Reaction } from "../Util";
 import { NoteCreator } from "./NoteCreator";
 import LNURLTip from "./LNURLTip";
@@ -12,6 +13,7 @@ export default function NoteFooter(props) {
     const reactions = props.reactions;
     const ev = props.ev;
 
+    const dispatch = useDispatch()
     const login = useSelector(s => s.login.publicKey);
     const author = useSelector(s => s.users.users[ev.RootPubKey]);
     const publisher = useEventPublisher();
@@ -37,6 +39,7 @@ export default function NoteFooter(props) {
     async function react(content) {
         let evLike = await publisher.react(ev, content);
         publisher.broadcast(evLike);
+        dispatch(addReaction(evLike.ToObject()))
     }
 
     async function deleteEvent() {
