@@ -64,7 +64,6 @@ export default function useEventPublisher() {
 
             let thread = replyTo.Thread;
             if (thread) {
-                console.debug(replyTo);
                 if (thread.Root) {
                     ev.Tags.push(new Tag(["e", thread.Root.Event, "", "root"], ev.Tags.length));
                 } else {
@@ -73,6 +72,9 @@ export default function useEventPublisher() {
                 ev.Tags.push(new Tag(["e", replyTo.Id, "", "reply"], ev.Tags.length));
                 ev.Tags.push(new Tag(["p", replyTo.PubKey], ev.Tags.length));
                 for (let pk of thread.PubKeys) {
+                    if(pk === pubKey) {
+                        continue; // dont tag self in replies
+                    }
                     ev.Tags.push(new Tag(["p", pk], ev.Tags.length));
                 }
             } else {
