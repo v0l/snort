@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import { TwitterTweetEmbed } from "react-twitter-embed";
 
 import Invoice from "./element/Invoice";
-import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, HashtagRegex } from "./Const";
+import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex } from "./Const";
 import { eventLink, hexToBech32, profileLink } from "./Util";
 import LazyImage from "./element/LazyImage";
 import Hashtag from "./element/Hashtag";
@@ -10,6 +11,7 @@ function transformHttpLink(a) {
     try {
         const url = new URL(a);
         const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
+        const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
         const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
         if (extension) {
             switch (extension) {
@@ -31,6 +33,12 @@ function transformHttpLink(a) {
                 default:
                     return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
             }
+        } else if (tweetId) {
+          return (
+            <div className="tweet">
+              <TwitterTweetEmbed tweetId={tweetId} />
+            </div>
+          )
         } else if (youtubeId) {
             return (
                 <>

@@ -64,6 +64,11 @@ export const InvoiceRegex = /(lnbc\w+)/i;
 export const YoutubeUrlRegex = /(?:https?:\/\/)?(?:www|m\.)?(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/;
 
 /**
+ * Tweet Regex
+ */
+export const TweetUrlRegex = /https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+)/
+
+/**
  * Hashtag regex
  */
 export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/;
