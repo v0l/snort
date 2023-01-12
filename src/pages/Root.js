@@ -17,7 +17,7 @@ export default function RootPage() {
     const [eop] = useScroll();
 
     function followHints() {
-        if (follows?.length === 0 && pubKey) {
+        if (follows?.length === 0 && pubKey && tab !== RootTab.Global) {
             return <>
                 Hmm nothing here.. Checkout <Link to={"/new"}>New users page</Link> to follow some recommended nostrich's!
             </>

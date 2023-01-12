@@ -1,7 +1,7 @@
 import "./Layout.css";
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -85,7 +85,7 @@ export default function Layout(props) {
                 </div>
             </div>
 
-            {props.children}
+            <Outlet/>
         </div>
     )
 }

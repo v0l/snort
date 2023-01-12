@@ -139,6 +139,11 @@ textarea:placeholder {
 
 .f-grow {
   flex-grow: 1;
+  min-width: 0;
+}
+
+.f-shrink {
+  flex-shrink: 1;
 }
 
 .f-ellipsis {
@@ -146,7 +151,6 @@ textarea:placeholder {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  padding: 0 15px;
 }
 
 .f-col {
@@ -159,6 +163,13 @@ textarea:placeholder {
   width: -moz-available;
   width: -webkit-fill-available;
   width: fill-available;
+}
+
+.w-max-w {
+  max-width: 100%;
+  max-width: -moz-available;
+  max-width: -webkit-fill-available;
+  max-width: fill-available;
 }
 
 a {

@@ -8,3 +8,8 @@
     flex-grow: 1;
     min-width: 200px;
 }
+
+.profile-preview .about {
+    font-size: small;
+    color: var(--gray-light);
+}

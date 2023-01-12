@@ -15,7 +15,7 @@ export default function useLoginFeed() {
     const [pubKey, readNotifications] = useSelector(s => [s.login.publicKey, s.login.readNotifications]);
 
     const sub = useMemo(() => {
-        if (pubKey === null) {
+        if (!pubKey) {
             return null;
         }
 

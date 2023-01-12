@@ -15,7 +15,7 @@ export default function FollowListBase({ pubkeys, title}) {
                 <div className="f-grow">{title}</div>
                 <div className="btn" onClick={() => followAll()}>Follow All</div>
             </div>
-            {pubkeys?.map(a => <ProfilePreview pubkey={a} key={a} options={{ about: false }} />)}
+            {pubkeys?.map(a => <ProfilePreview pubkey={a} key={a} />)}
         </>
     )
 }

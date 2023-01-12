@@ -2,12 +2,21 @@
 /**
  * Websocket re-connect timeout
  */
-export const DefaultConnectTimeout = 1000;
+export const DefaultConnectTimeout = 2000;
 
 /**
  * How long profile cache should be considered valid for
  */
 export const ProfileCacheExpire = (1_000 * 60 * 5);
+
+/**
+ * Default bootstrap relays
+ */
+export const DefaultRelays = {
+    "wss://relay.snort.social": { read: true, write: true },
+    "wss://relay.damus.io": { read: true, write: true },
+    "wss://nostr-pub.wellorder.net": { read: true, write: true }
+};
 
 /**
  * List of recommended follows for new users
@@ -17,7 +26,7 @@ export const RecommendedFollows = [
     "3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d", // fiatjaf
     "020f2d21ae09bf35fcdfb65decf1478b846f5f728ab30c5eaabcd6d081a81c3e", // adam3us
     "6e468422dfb74a5738702a8823b9b28168abab8655faacb6853cd0ee15deee93", // gigi
-    "217e3d8b61c087b10422427e114737a4a4a4b1e15f22301fb4b07e1f33204d7c", // Kieran
+    "63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed", // Kieran
     "32e1827635450ebb3c5a7d12c1f8e7b2b514439ac10a67eef3d9fd9c5c68e245", // jb55
     "e33fe65f1fde44c6dc17eeb38fdad0fceaf1cae8722084332ed1e32496291d42", // wiz
     "00000000827ffaa94bfea288c3dfce4422c794fbb96625b6b31e9049f729d700", // cameri
@@ -31,6 +40,7 @@ export const RecommendedFollows = [
     "472F440F29EF996E92A186B8D320FF180C855903882E59D50DE1B8BD5669301E", // MartyBent
     "1577e4599dd10c863498fe3c20bd82aafaf829a595ce83c5cf8ac3463531b09b", // yegorpetrov
     "04c915daefee38317fa734444acee390a8269fe5810b2241e5e6dd343dfbecc9", // ODELL
+    "7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194", // verbiricha
 ];
 
 /**

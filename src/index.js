@@ -4,9 +4,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux'
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
+  createBrowserRouter,
+  RouterProvider,
 } from "react-router-dom";
 
 import { NostrSystem } from './nostr/System';
@@ -19,28 +18,55 @@ import Store from "./state/Store";
 import NotificationsPage from './pages/Notifications';
 import NewUserPage from './pages/NewUserPage';
 import SettingsPage from './pages/SettingsPage';
+import ErrorPage from './pages/ErrorPage.tsx';
 
+/**
+ * Nostr websocket managment system
+ */
 export const System = new NostrSystem();
+
+const router = createBrowserRouter([
+  {
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/",
+        element: <RootPage />
+      },
+      {
+        path: "/login",
+        element: <LoginPage />
+      },
+      {
+        path: "/e/:id",
+        element: <EventPage />
+      },
+      {
+        path: "/p/:id",
+        element: <ProfilePage />
+      },
+      {
+        path: "/notifications",
+        element: <NotificationsPage />
+      },
+      {
+        path: "/new",
+        element: <NewUserPage />
+      },
+      {
+        path: "/settings",
+        element: <SettingsPage />
+      }
+    ]
+  }
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={Store}>
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" exact element={<RootPage />} />
-            <Route path="/login" exact element={<LoginPage />} />
-            <Route path="/e/:id" exact element={<EventPage />} />
-            <Route path="/p/:id" exact element={<ProfilePage />} />
-            <Route path="/notifications" exact element={<NotificationsPage />} />
-            <Route path="/new" exact element={<NewUserPage />} />
-            <Route path="/settings" exact element={<SettingsPage />}>
-              <Route path="/settings/relays" exact element={<h2>Relays</h2>} />
-            </Route>
-          </Routes>
-        </Layout>
-      </Router>
+      <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
 );

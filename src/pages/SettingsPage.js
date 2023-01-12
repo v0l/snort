@@ -3,6 +3,7 @@ import Nostrich from "../nostrich.jpg";
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import useEventPublisher from "../feed/EventPublisher";
 import useProfile from "../feed/ProfileFeed";
@@ -13,6 +14,7 @@ import { openFile } from "../Util";
 import Relay from "../element/Relay";
 
 export default function SettingsPage(props) {
+    const navigate = useNavigate();
     const id = useSelector(s => s.login.publicKey);
     const relays = useSelector(s => s.login.relays);
     const dispatch = useDispatch();
@@ -137,7 +139,7 @@ export default function SettingsPage(props) {
                 </div>
                 <div className="form-group">
                     <div>
-                        <div className="btn" onClick={() => dispatch(logout())}>Logout</div>
+                        <div className="btn" onClick={() => { dispatch(logout()); navigate("/"); }}>Logout</div>
                     </div>
                     <div>
                         <div className="btn" onClick={() => saveProfile()}>Save</div>
@@ -159,15 +161,24 @@ export default function SettingsPage(props) {
         )
     }
 
+    function settings() {
+        if (!id) return null;
+        return (
+            <>
+                <h1>Settings</h1>
+                <div className="flex f-center">
+                    <div style={{ backgroundImage: `url(${picture.length === 0 ? Nostrich : picture})` }} className="avatar">
+                        <div className="edit" onClick={() => setNewAvatar()}>Edit</div>
+                    </div>
+                </div>
+                {editor()}
+            </>
+        )
+    }
+
     return (
         <div className="settings">
-            <h1>Settings</h1>
-            <div className="flex f-center">
-                <div style={{ backgroundImage: `url(${picture.length === 0 ? Nostrich : picture})` }} className="avatar">
-                    <div className="edit" onClick={() => setNewAvatar()}>Edit</div>
-                </div>
-            </div>
-            {editor()}
+            {settings()}
             <h4>Relays</h4>
             <div className="flex f-col">
                 {Object.keys(relays || {}).map(a => <Relay addr={a} key={a} />)}

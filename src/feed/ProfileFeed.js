@@ -7,7 +7,7 @@ export default function useProfile(pubKey) {
     const user = useSelector(s => s.users.users[pubKey]);
 
     useEffect(() => {
-        if (pubKey !== "") {
+        if (pubKey) {
             dispatch(addPubKey(pubKey));
         }
     }, [pubKey]);

@@ -13,10 +13,10 @@ export default function ProfilePreview(props) {
 
     return (
         <div className="profile-preview">
-            <ProfileImage pubkey={pubkey} />
-            {options.about ? <div className="f-ellipsis">
-                {user?.about}
-            </div> : null}
+            <ProfileImage pubkey={pubkey} subHeader=
+                {options.about ? <div className="f-ellipsis about">
+                    {user?.about}
+                </div> : null} />
             <FollowButton pubkey={pubkey} className="ml5" />
         </div>
     )

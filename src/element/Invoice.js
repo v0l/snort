@@ -20,7 +20,8 @@ export default function Invoice(props) {
             let ret = {
                 amount: !isNaN(amount) ? (amount / 1000) : 0,
                 expire: !isNaN(timestamp) && !isNaN(expire) ? timestamp + expire : null,
-                description
+                description,
+                expired: false
             };
             if (ret.expire) {
                 ret.expired = ret.expire < (new Date().getTime() / 1000);

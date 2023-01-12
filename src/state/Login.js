@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import * as secp from '@noble/secp256k1';
+import { DefaultRelays } from '../Const';
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
@@ -54,11 +55,7 @@ const LoginSlice = createSlice({
                 state.loggedOut = true;
             }
 
-            state.relays = {
-                "wss://nostr.v0l.io": { read: true, write: true },
-                "wss://relay.damus.io": { read: true, write: true },
-                "wss://nostr-pub.wellorder.net": { read: true, write: true }
-            };
+            state.relays = DefaultRelays;
 
             // check pub key only
             let pubKey = window.localStorage.getItem(PublicKeyItem);
