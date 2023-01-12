@@ -10,12 +10,14 @@ import useProfile from "../feed/ProfileFeed";
 import VoidUpload from "../feed/VoidUpload";
 import { logout, setRelays } from "../state/Login";
 import { resetProfile } from "../state/Users";
-import { openFile } from "../Util";
+import { hexToBech32, openFile } from "../Util";
 import Relay from "../element/Relay";
+import Copy from "../element/Copy";
 
 export default function SettingsPage(props) {
     const navigate = useNavigate();
     const id = useSelector(s => s.login.publicKey);
+    const privKey = useSelector(s => s.login.privateKey);
     const relays = useSelector(s => s.login.relays);
     const dispatch = useDispatch();
     const user = useProfile(id);
@@ -179,6 +181,14 @@ export default function SettingsPage(props) {
     return (
         <div className="settings">
             {settings()}
+            {privKey && (<div className="flex f-col bg-grey">
+                <div>
+                    <h4>Private Key:</h4>
+                </div>
+                <div>
+                    <Copy text={hexToBech32("nsec", privKey)} />
+                </div>
+            </div>)}
             <h4>Relays</h4>
             <div className="flex f-col">
                 {Object.keys(relays || {}).map(a => <Relay addr={a} key={a} />)}
