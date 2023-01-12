@@ -107,12 +107,17 @@ textarea {
   font: inherit;
 }
 
-input[type="text"], input[type="password"], input[type="number"], textarea {
+input[type="text"], input[type="password"], input[type="number"], textarea, select {
   padding: 10px;
   border-radius: 5px;
   border: 0;
   background-color: var(--gray);
   color: var(--font-color);
+}
+
+input:disabled {
+  color: var(--gray-medium);
+  cursor:not-allowed;
 }
 
 textarea:placeholder {

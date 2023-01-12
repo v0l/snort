@@ -1,15 +1,14 @@
-import React, { FC } from "react";
 import { useRouteError } from "react-router-dom";
 
-const ErrorPage: FC = () => {
+const ErrorPage = () => {
     const error = useRouteError();
 
     console.error(error);
     return (
         <>
-            <h4>{error?.message ?? "Uknown error"}</h4>
+            <h4>An error has occured!</h4>
             <pre>
-                {JSON.stringify(error)}
+                {JSON.stringify(error, undefined, '  ')}
             </pre>
         </>
     );

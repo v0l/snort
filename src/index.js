@@ -18,7 +18,8 @@ import Store from "./state/Store";
 import NotificationsPage from './pages/Notifications';
 import NewUserPage from './pages/NewUserPage';
 import SettingsPage from './pages/SettingsPage';
-import ErrorPage from './pages/ErrorPage.tsx';
+import ErrorPage from './pages/ErrorPage';
+import VerificationPage from './pages/Verification';
 
 /**
  * Nostr websocket managment system
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: "/settings",
         element: <SettingsPage />
+      },
+      {
+        path: "/verification",
+        element: <VerificationPage />
       }
     ]
   }
