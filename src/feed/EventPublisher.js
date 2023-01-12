@@ -20,7 +20,7 @@ export default function useEventPublisher() {
     async function signEvent(ev) {
         if (hasNip07 && !privKey) {
             ev.Id = await ev.CreateId();
-            let tmpEv = await window.nostr.signEvent(ev.ToObject());
+            let tmpEv = await barierNip07(() => window.nostr.signEvent(ev.ToObject()));
             return Event.FromObject(tmpEv);
         } else {
             await ev.Sign(privKey);
@@ -72,7 +72,7 @@ export default function useEventPublisher() {
                 ev.Tags.push(new Tag(["e", replyTo.Id, "", "reply"], ev.Tags.length));
                 ev.Tags.push(new Tag(["p", replyTo.PubKey], ev.Tags.length));
                 for (let pk of thread.PubKeys) {
-                    if(pk === pubKey) {
+                    if (pk === pubKey) {
                         continue; // dont tag self in replies
                     }
                     ev.Tags.push(new Tag(["p", pk], ev.Tags.length));
@@ -152,6 +152,62 @@ export default function useEventPublisher() {
             ev.Tags.push(new Tag(["e", note.Id]));
             ev.Tags.push(new Tag(["p", note.PubKey]));
             return await signEvent(ev);
+        },
+        decryptDm: async (note) => {
+            if (note.PubKey !== pubKey && !note.Tags.some(a => a.PubKey === pubKey)) {
+                return "<CANT DECRYPT>";
+            }
+            try {
+                let otherPubKey = note.PubKey === pubKey ? note.Tags.filter(a => a.Key === "p")[0].PubKey : note.PubKey;
+                if (hasNip07 && !privKey) {
+                    return await barierNip07(() => window.nostr.nip04.decrypt(otherPubKey, note.Content));
+                } else if(privKey) {
+                    await note.DecryptDm(privKey, otherPubKey);
+                    return note.Content;
+                }
+            } catch (e) {
+                console.error("Decyrption failed", e);
+                return "<DECRYPTION FAILED>";
+            }
+            return "test";
+        },
+        sendDm: async (content, to) => {
+            let ev = Event.ForPubKey(pubKey);
+            ev.Kind = EventKind.DirectMessage;
+            ev.Content = content;
+            ev.Tags.push(new Tag(["p", to]));
+
+            try {
+                if (hasNip07 && !privKey) {
+                    let ev = await barierNip07(() => window.nostr.nip04.encrypt(to, content));
+                    return await signEvent(ev);
+                } else if(privKey) {
+                    await ev.EncryptDmForPubkey(to, privKey);
+                    return await signEvent(ev);
+                }
+            } catch (e) {
+                console.error("Encryption failed", e);
+            }
         }
     }
 }
+
+let isNip07Busy = false;
+
+const delay = (t) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, t);
+    });
+}
+
+const barierNip07 = async (then) => {
+    while (isNip07Busy) {
+        await delay(10);
+    }
+    isNip07Busy = true;
+    try {
+        return await then();
+    } finally {
+        isNip07Busy = false;
+    }
+};

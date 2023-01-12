@@ -43,6 +43,11 @@ const LoginSlice = createSlice({
          * Timestamp of last read notification
          */
         readNotifications: 0,
+
+        /**
+         * Encrypted DM's
+         */
+        dms: []
     },
     reducers: {
         init: (state) => {
@@ -126,6 +131,25 @@ const LoginSlice = createSlice({
                 ];
             }
         },
+        addDirectMessage: (state, action) => {
+            let n = action.payload;
+            if (!Array.isArray(n)) {
+                n = [n];
+            }
+
+            let didChange = false;
+            for (let x of n) {
+                if (!state.dms.some(a => a.id === x.id)) {
+                    state.dms.push(x);
+                    didChange = true;
+                }
+            }
+            if (didChange) {
+                state.dms = [
+                    ...state.dms
+                ];
+            }
+        },
         logout: (state) => {
             window.localStorage.removeItem(PrivateKeyItem);
             window.localStorage.removeItem(PublicKeyItem);
@@ -144,5 +168,5 @@ const LoginSlice = createSlice({
     }
 });
 
-export const { init, setPrivateKey, setPublicKey, setRelays, removeRelay, setFollows, addNotifications, logout, markNotificationsRead } = LoginSlice.actions;
+export const { init, setPrivateKey, setPublicKey, setRelays, removeRelay, setFollows, addNotifications, addDirectMessage, logout, markNotificationsRead } = LoginSlice.actions;
 export const reducer = LoginSlice.reducer;

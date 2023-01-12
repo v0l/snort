@@ -2,7 +2,7 @@ import "./Layout.css";
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { System } from ".."
@@ -57,12 +57,15 @@ export default function Layout(props) {
         const unreadNotifications = notifications?.filter(a => (a.created_at * 1000) > readNotifications).length;
         return (
             <>
-                <div className="btn btn-rnd notifications" onClick={(e) => goToNotifications(e)}>
+                <div className="btn btn-rnd mr10" onClick={(e) => navigate("/messages")}>
+                    <FontAwesomeIcon icon={faMessage} size="xl" />
+                </div>
+                <div className={`btn btn-rnd${unreadNotifications === 0 ? " mr10" : ""}`} onClick={(e) => goToNotifications(e)}>
                     <FontAwesomeIcon icon={faBell} size="xl" />
                 </div>
-                <span className="unread-count">
-                    {unreadNotifications > 1000 ? "..." : unreadNotifications}
-                </span>
+                {unreadNotifications > 0 && (<span className="unread-count">
+                    {unreadNotifications > 100 ? ">99" : unreadNotifications}
+                </span>)}
                 <ProfileImage pubkey={key} showUsername={false} />
             </>
         )

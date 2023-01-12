@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
-import { addNotifications, setFollows, setRelays } from "../state/Login";
+import { addDirectMessage, addNotifications, setFollows, setRelays } from "../state/Login";
 import { setUserData } from "../state/Users";
 import useSubscription from "./Subscription";
 import { mapEventToProfile } from "./UsersFeed";
@@ -24,9 +24,11 @@ export default function useLoginFeed() {
         sub.Authors.add(pubKey);
         sub.Kinds.add(EventKind.ContactList);
         sub.Kinds.add(EventKind.SetMetadata);
+        sub.Kinds.add(EventKind.DirectMessage);
 
         let notifications = new Subscriptions();
         notifications.Kinds.add(EventKind.TextNote);
+        notifications.Kinds.add(EventKind.DirectMessage);
         notifications.PTags.add(pubKey);
         notifications.Limit = 100;
         sub.AddSubscription(notifications);
@@ -40,6 +42,7 @@ export default function useLoginFeed() {
         let contactList = notes.filter(a => a.kind === EventKind.ContactList);
         let notifications = notes.filter(a => a.kind === EventKind.TextNote);
         let metadata = notes.filter(a => a.kind === EventKind.SetMetadata).map(a => mapEventToProfile(a));
+        let dms = notes.filter(a => a.kind === EventKind.DirectMessage);
 
         for (let cl of contactList) {
             if (cl.content !== "") {
@@ -58,5 +61,6 @@ export default function useLoginFeed() {
         }
         dispatch(addNotifications(notifications));
         dispatch(setUserData(metadata));
+        dispatch(addDirectMessage(dms));
     }, [notes]);
 }

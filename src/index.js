@@ -20,6 +20,8 @@ import NewUserPage from './pages/NewUserPage';
 import SettingsPage from './pages/SettingsPage';
 import ErrorPage from './pages/ErrorPage';
 import VerificationPage from './pages/Verification';
+import MessagesPage from './pages/MessagesPage';
+import ChatPage from './pages/ChatPage';
 
 /**
  * Nostr websocket managment system
@@ -62,6 +64,14 @@ const router = createBrowserRouter([
       {
         path: "/verification",
         element: <VerificationPage />
+      },
+      {
+        path: "/messages",
+        element: <MessagesPage />
+      },
+      {
+        path: "/messages/:id",
+        element: <ChatPage />
       }
     ]
   }

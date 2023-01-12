@@ -6,6 +6,7 @@ import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlReg
 import { eventLink, hexToBech32, profileLink } from "./Util";
 import LazyImage from "./element/LazyImage";
 import Hashtag from "./element/Hashtag";
+import { useMemo } from "react";
 
 function transformHttpLink(a) {
     try {
@@ -134,4 +135,20 @@ export function extractHashtags(fragments) {
         }
         return f;
     }).flat();
+}
+
+export default function Text({ content, transforms }) {
+    const transformed = useMemo(() => {
+        let fragments = [content];
+        transforms?.forEach(a => {
+            fragments = a(fragments);
+        });
+        fragments = extractLinks(fragments);
+        fragments = extractInvoices(fragments);
+        fragments = extractHashtags(fragments);
+
+        return fragments;
+    }, [content]);
+
+    return transformed;
 }
