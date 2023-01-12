@@ -9,6 +9,7 @@ export default function LNURLTip(props) {
     const onClose = props.onClose || (() => { });
     const service = props.svc;
     const show = props.show || false;
+    const lnInvoice = props.lnInvoice
     const amounts = [50, 100, 500, 1_000, 5_000, 10_000];
     const [payService, setPayService] = useState("");
     const [amount, setAmount] = useState(0);
@@ -19,7 +20,7 @@ export default function LNURLTip(props) {
     const [success, setSuccess] = useState(null);
 
     useEffect(() => {
-        if (show) {
+        if (show && !lnInvoice) {
             loadService()
                 .then(a => setPayService(a))
                 .catch(() => setError("Failed to load LNURL service"));
@@ -165,7 +166,7 @@ export default function LNURLTip(props) {
 
     function payInvoice() {
         if(success) return null;
-        const pr = invoice.pr;
+        const pr = lnInvoice ? lnInvoice : invoice.pr;
         return (
             <>
                 <div className="invoice">
