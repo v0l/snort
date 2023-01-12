@@ -77,15 +77,18 @@ export default function Nip5Service(props: Nip05ServiceProps) {
                 setAvailabilityResponse({ available: false, why: "REGEX" });
                 return;
             }
-            svc.CheckAvailable(handle, domain)
-                .then(a => {
-                    if ('error' in a) {
-                        setError(a as ServiceError);
-                    } else {
-                        setAvailabilityResponse(a as HandleAvailability);
-                    }
-                })
-                .catch(console.error);
+            let t = setTimeout(() => {
+                svc.CheckAvailable(handle, domain)
+                    .then(a => {
+                        if ('error' in a) {
+                            setError(a as ServiceError);
+                        } else {
+                            setAvailabilityResponse(a as HandleAvailability);
+                        }
+                    })
+                    .catch(console.error);
+            }, 500);
+            return () => clearTimeout(t);
         }
     }, [handle, domain]);
 

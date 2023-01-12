@@ -61,11 +61,11 @@ export class ServiceProvider {
     }
 
     async RegisterHandle(handle: string, domain: string, pubkey: string): Promise<HandleRegisterResponse | ServiceError> {
-        return await this._GetJson("/registration/register", "PUT", { 
-            name: handle, 
-            domain, 
-            pk: pubkey, 
-            ref: "snort" 
+        return await this._GetJson("/registration/register", "PUT", {
+            name: handle,
+            domain,
+            pk: pubkey,
+            ref: "snort"
         });
     }
 
@@ -86,13 +86,11 @@ export class ServiceProvider {
                 }
             });
 
-            if (rsp.ok) {
-                let obj = await rsp.json();
-                if ('error' in obj) {
-                    return <ServiceError>obj;
-                }
-                return obj;
+            let obj = await rsp.json();
+            if ('error' in obj) {
+                return <ServiceError>obj;
             }
+            return obj;
         } catch (e) {
             console.warn(e);
         }
