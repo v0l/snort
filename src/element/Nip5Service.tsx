@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
     ServiceProvider,
     ServiceConfig,
@@ -20,7 +21,8 @@ import useProfile from "../feed/ProfileFeed";
 import useEventPublisher from "../feed/EventPublisher";
 // @ts-ignore
 import { resetProfile } from "../state/Users";
-import { useNavigate } from "react-router-dom";
+// @ts-ignore
+import { hexToBech32 } from "../Util";
 
 type Nip05ServiceProps = {
     name: string,
@@ -169,7 +171,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
                     {availabilityResponse.quote?.price.toLocaleString()} sats<br />
                     <small>{availabilityResponse.quote?.data.type}</small>
                 </div>
-                <input type="text" className="f-grow mr10" placeholder="pubkey" value={pubkey} disabled={pubkey ? true : false} />
+                <input type="text" className="f-grow mr10" placeholder="pubkey" value={hexToBech32("npub", pubkey)} disabled />
                 <AsyncButton onClick={() => startBuy(handle, domain)}>Buy Now</AsyncButton>
             </div>}
             {availabilityResponse?.available === false && !registerStatus && <div className="flex">
