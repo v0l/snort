@@ -61,7 +61,7 @@ export class ServiceProvider {
     }
 
     async RegisterHandle(handle: string, domain: string, pubkey: string): Promise<HandleRegisterResponse | ServiceError> {
-        return await this._GetJson("/registration/register", "PUT", { name: handle, domain, pk: pubkey });
+        return await this._GetJson("/registration/register", "PUT", { name: handle, domain, pk: pubkey, ref: "snort" });
     }
 
     async CheckRegistration(token: string): Promise<CheckRegisterResponse | ServiceError> {
