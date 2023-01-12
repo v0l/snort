@@ -3,11 +3,11 @@ import { useState } from "react";
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { useMemo } from "react";
 import NoteTime from "./NoteTime";
-import QrCode from "./QrCode";
+import LNURLTip from "./LNURLTip";
 
 export default function Invoice(props) {
     const invoice = props.invoice;
-    const [showLnQr, setShowLnQr] = useState(false);
+    const [showInvoice, setShowInvoice] = useState(false);
 
     const info = useMemo(() => {
         try {
@@ -37,37 +37,30 @@ export default function Invoice(props) {
                 <>
                     <h4>⚡️ Invoice for {info?.amount?.toLocaleString()} sats</h4>
                     <p>{info?.description}</p>
-                    { showLnQr ? <p><QrCode data={invoice} link={"lightning:${invoice}"} /></p> : null }
+                    {showInvoice && <LNURLTip lnInvoice={invoice} show={true} /> }
                 </>
             )
         } else {
             return (
                 <>
                 <h4>⚡️ Invoice for {info?.amount?.toLocaleString()} sats</h4>
-                { showLnQr ? <p><QrCode data={invoice} link={"lightning:${invoice}"} /></p> : null }
+                {showInvoice && <LNURLTip lnInvoice={invoice} show={true} /> }
                 </>
             )
         }
     }
 
-    function pay(){
-        return (
-            <>
-            { showLnQr ? <div className="btn" onClick={() => window.open(`lightning:${invoice}`)}>Pay</div> :
-            <div className="btn" onClick={(e) => setShowLnQr(true)}>Pay</div> }
-            </>
-        )
-    }
-
-
     return (
+        <>
         <div className="note-invoice flex">
             <div className="f-grow flex f-col">
                 {header()}
                 {info?.expire ? <small>{info?.expired ? "Expired" : "Expires"} <NoteTime from={info.expire * 1000} /></small> : null}
             </div>
 
-            {info?.expired ? <div className="btn">Expired</div>  : pay() }
+            {info?.expired ? <div className="btn">Expired</div>  : <div className="btn" onClick={(e) => setShowInvoice(true)}>Pay</div> }
         </div>
+
+        </>
     )
 }
