@@ -299,3 +299,21 @@ body.scroll-lock {
 .root-tab.active {
     border-bottom: 3px solid var(--highlight);
 }
+
+.tweet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tweet div {
+    width: 100%;
+}
+
+.tweet div .twitter-tweet {
+    margin: 0 auto;
+}
+
+.tweet div .twitter-tweet > iframe {
+    max-height: unset;
+}
