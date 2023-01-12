@@ -9,25 +9,24 @@ export default function LNURLTip(props) {
     const onClose = props.onClose || (() => { });
     const service = props.svc;
     const show = props.show || false;
-    const lnInvoice = props.lnInvoice
     const amounts = [50, 100, 500, 1_000, 5_000, 10_000];
     const [payService, setPayService] = useState("");
     const [amount, setAmount] = useState(0);
     const [customAmount, setCustomAmount] = useState(0);
-    const [invoice, setInvoice] = useState("");
+    const [invoice, setInvoice] = useState(null);
     const [comment, setComment] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(null);
 
     useEffect(() => {
-        if (show && !lnInvoice) {
+        if (show && invoice === null) {
             loadService()
                 .then(a => setPayService(a))
                 .catch(() => setError("Failed to load LNURL service"));
         } else {
             setPayService("");
             setError("");
-            setInvoice("");
+            setInvoice(props.invoice ? { pr: props.invoice } : null);
             setAmount(0);
             setComment("");
             setSuccess(null);
@@ -58,7 +57,7 @@ export default function LNURLTip(props) {
 
     const selectAmount = (a) => {
         setError("");
-        setInvoice("");
+        setInvoice(null);
         setAmount(a);
     };
 
@@ -165,25 +164,25 @@ export default function LNURLTip(props) {
     }
 
     function payInvoice() {
-        if(success) return null;
-        const pr = lnInvoice ? lnInvoice : invoice.pr;
+        if (success) return null;
+        const pr = invoice?.pr;
         return (
             <>
                 <div className="invoice">
                     <QrCode data={pr} link={`lightning:${pr}`} />
                     <div className="actions">
                         {pr && (
-                          <>
-                            <div className="copy-action">
-                                <Copy text={pr} maxSize={26} />
-                            </div>
-                            <div className="pay-actions">
-                                <div className="btn" onClick={() => window.open(`lightning:${pr}`)}>
-                                    Open Wallet
+                            <>
+                                <div className="copy-action">
+                                    <Copy text={pr} maxSize={26} />
                                 </div>
-                                <div>{webLn()}</div>
-                            </div>
-                          </>
+                                <div className="pay-actions">
+                                    <div className="btn" onClick={() => window.open(`lightning:${pr}`)}>
+                                        Open Wallet
+                                    </div>
+                                    <div>{webLn()}</div>
+                                </div>
+                            </>
                         )}
                     </div>
                 </div>
@@ -192,7 +191,7 @@ export default function LNURLTip(props) {
     }
 
     function successAction() {
-        if(!success) return null;
+        if (!success) return null;
         return (
             <>
                 <p>{success?.description ?? "Paid!"}</p>

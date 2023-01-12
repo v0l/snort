@@ -37,14 +37,14 @@ export default function Invoice(props) {
                 <>
                     <h4>⚡️ Invoice for {info?.amount?.toLocaleString()} sats</h4>
                     <p>{info?.description}</p>
-                    {showInvoice && <LNURLTip lnInvoice={invoice} show={true} /> }
+                    <LNURLTip invoice={invoice} show={showInvoice} onClose={() => setShowInvoice(false)} />
                 </>
             )
         } else {
             return (
                 <>
-                <h4>⚡️ Invoice for {info?.amount?.toLocaleString()} sats</h4>
-                {showInvoice && <LNURLTip lnInvoice={invoice} show={true} /> }
+                    <h4>⚡️ Invoice for {info?.amount?.toLocaleString()} sats</h4>
+                    <LNURLTip invoice={invoice} show={showInvoice} onClose={() => setShowInvoice(false)} />
                 </>
             )
         }
@@ -52,14 +52,14 @@ export default function Invoice(props) {
 
     return (
         <>
-        <div className="note-invoice flex">
-            <div className="f-grow flex f-col">
-                {header()}
-                {info?.expire ? <small>{info?.expired ? "Expired" : "Expires"} <NoteTime from={info.expire * 1000} /></small> : null}
-            </div>
+            <div className="note-invoice flex">
+                <div className="f-grow flex f-col">
+                    {header()}
+                    {info?.expire ? <small>{info?.expired ? "Expired" : "Expires"} <NoteTime from={info.expire * 1000} /></small> : null}
+                </div>
 
-            {info?.expired ? <div className="btn">Expired</div>  : <div className="btn" onClick={(e) => setShowInvoice(true)}>Pay</div> }
-        </div>
+                {info?.expired ? <div className="btn">Expired</div> : <div className="btn" onClick={(e) => { e.stopPropagation(); setShowInvoice(true); }}>Pay</div>}
+            </div>
 
         </>
     )
