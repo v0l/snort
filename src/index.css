@@ -91,6 +91,10 @@ code {
   font-weight: bold;
 }
 
+.btn.disabled {
+  color: var(--gray-light);
+}
+
 .btn:hover {
   background-color: var(--gray);
 }

@@ -25,7 +25,11 @@ export type HandleAvailability = {
 
 export type HandleQuote = {
     price: number,
-    data: any
+    data: HandleData
+}
+
+export type HandleData = {
+    type: string | "premium" | "short"
 }
 
 export type HandleRegisterResponse = {
@@ -33,6 +37,12 @@ export type HandleRegisterResponse = {
     paymentHash: string,
     invoice: string,
     token: string
+}
+
+export type CheckRegisterResponse = {
+    available: boolean,
+    paid: boolean,
+    password: string
 }
 
 export class ServiceProvider {
@@ -54,7 +64,7 @@ export class ServiceProvider {
         return await this._GetJson("/registration/register", "PUT", { name: handle, domain, pk: pubkey });
     }
 
-    async CheckRegistration(token: string): Promise<any> {
+    async CheckRegistration(token: string): Promise<CheckRegisterResponse | ServiceError> {
         return await this._GetJson("/registration/register/check", "POST", undefined, {
             authorization: token
         });

@@ -12,6 +12,7 @@ export default function VerificationPage() {
             name: "Nostr Plebs",
             service: "https://nostrplebs.com/api/v1",
             link: "https://nostrplebs.com/",
+            supportLink: "https://nostrplebs.com/manage",
             about: <>
                 <p>Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices</p>
             </>
