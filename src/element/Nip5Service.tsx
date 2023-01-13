@@ -146,7 +146,6 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             ...user,
             nip05: `${handle}@${domain}`
         };
-        debugger;
         delete newProfile["loaded"];
         delete newProfile["fromEvent"];
         delete newProfile["pubkey"];
