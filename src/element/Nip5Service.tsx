@@ -183,9 +183,9 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             <LNURLTip invoice={registerResponse?.invoice} show={showInvoice} onClose={() => setShowInvoice(false)} title={`Buying ${handle}@${domain}`} />
             {registerStatus?.paid && <div className="flex f-col">
                 <h4>Order Paid!</h4>
-                Your new NIP-05 handle is: <code>{handle}@{domain}</code>
+                <p>Your new NIP-05 handle is: <code>{handle}@{domain}</code></p>
                 <h3>Account Support</h3>
-                Please make sure to save the following password in order to manage your handle in the future
+                <p>Please make sure to save the following password in order to manage your handle in the future</p>
                 <Copy text={registerStatus.password} />
                 <p>Go to <a href={props.supportLink} target="_blank" rel="noreferrer">account page</a></p>
                 <h4>Activate Now</h4>

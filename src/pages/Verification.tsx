@@ -1,5 +1,7 @@
 import Nip5Service from "../element/Nip5Service";
 
+import './Verification.css'
+
 export default function VerificationPage() {
     const services = [
         /*{
@@ -20,7 +22,7 @@ export default function VerificationPage() {
     ];
 
     return (
-        <>
+        <div className="verification">
             <h2>Get Verified</h2>
             <p>
                 NIP-05 is a DNS based verification spec which helps to validate you as a real user.
@@ -33,6 +35,6 @@ export default function VerificationPage() {
             </ul>
 
             {services.map(a => <Nip5Service key={a.name} {...a} />)}
-        </>
+        </div>
     )
 }
