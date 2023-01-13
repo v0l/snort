@@ -17,7 +17,7 @@ export function useIsVerified(nip05, pubkey) {
       setCouldNotVerify(false)
       setIsVerified(false)
 
-      fetch(`https://${domain}/.well-known/nostr.json?name=${name}`)
+      fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`)
         .then((res) => res.json())
         .then(({ names }) => {
           if (names && names[name]) {
