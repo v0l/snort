@@ -23,10 +23,23 @@
 }
 
 .profile .avatar {
-    width: 256px;
+    border-radius: 50%;
     height: 256px;
+    width: 256px;
+    background-image: var(--img-url), var(--gray-gradient);
+    border: 4px solid transparent;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
     background-size: cover;
-    border-radius: 100%;
+    box-sizing: border-box;
+}
+
+.profile .avatar[data-domain="snort.social"] {
+    background-image: var(--img-url), var(--snort-gradient);
+}
+
+.profile .avatar[data-domain="nostrplebs.com"] {
+    background-image: var(--img-url), var(--nostrplebs-gradient);
 }
 
 .profile .details {

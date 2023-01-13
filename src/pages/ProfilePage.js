@@ -13,7 +13,7 @@ import { extractLnAddress, parseId } from "../Util";
 import Timeline from "../element/Timeline";
 import { extractLinks, extractHashtags } from '../Text'
 import LNURLTip from "../element/LNURLTip";
-import Nip05 from "../element/Nip05";
+import Nip05, { useIsVerified } from "../element/Nip05";
 import Copy from "../element/Copy";
 import ProfilePreview from "../element/ProfilePreview";
 import FollowersList from "../element/FollowersList";
@@ -37,6 +37,9 @@ export default function ProfilePage() {
     const [showLnQr, setShowLnQr] = useState(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
     const about = extractHashtags(extractLinks([user?.about]))
+    const { name, domain, isVerified, couldNotVerify } = useIsVerified(user?.nip05, user?.pubkey)
+    const avatarUrl = (user?.picture?.length ?? 0) === 0 ? Nostrich : user?.picture
+    const backgroundImage = `url(${avatarUrl})`
 
     useEffect(() => {
         setTab(ProfileTab.Notes);
@@ -50,7 +53,7 @@ export default function ProfilePage() {
                     <div className="f-grow">
                         <h2>{user?.display_name || user?.name}</h2>
                         <Copy text={params.id} />
-                        {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+                        {user?.nip05 && <Nip05 name={name} domain={domain} isVerified={isVerified} couldNotVerify={couldNotVerify} />}
                     </div>
                     <div>
                         {isMe ? (
@@ -106,7 +109,7 @@ export default function ProfilePage() {
         <>
             <div className="profile flex">
                 <div className="avatar-wrapper">
-                    <div style={{ backgroundImage: `url(${(user?.picture?.length ?? 0) === 0 ? Nostrich : user?.picture})` }} className="avatar">
+                    <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={isVerified ? domain : ''}>
                     </div>
                 </div>
                 <div className="f-grow details">
