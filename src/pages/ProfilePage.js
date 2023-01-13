@@ -26,6 +26,15 @@ const ProfileTab = {
     Follows: 3
 };
 
+const gradients = {
+  "snort.social": "linear-gradient(to bottom right, var(--highlight-light), var(--highlight), var(--success))",
+  "nostrplebs.com": "linear-gradient(to bottom right, #ff3cac, #562b7c, #2b86c5)",
+  "nostrpurple.com": "linear-gradient(to bottom right, #ff3cac, #562b7c, #2b86c5)",
+  "nostr.fan": "linear-gradient(to bottom right, #ff3cac, #562b7c, #2b86c5)",
+  "nostrich.zone": "linear-gradient(to bottom right, #ff3cac, #562b7c, #2b86c5)",
+  "nostriches.net": "linear-gradient(to bottom right, #ff3cac, #562b7c, #2b86c5)",
+}
+
 export default function ProfilePage() {
     const params = useParams();
     const navigate = useNavigate();
@@ -37,6 +46,10 @@ export default function ProfilePage() {
     const [showLnQr, setShowLnQr] = useState(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
     const about = extractHashtags(extractLinks([user?.about]))
+    const nip05domain = user?.nip05 && user?.nip05.split('@').slice(-1)
+    const gradient = nip05domain && gradients[nip05domain]
+    const avatarUrl = `url(${(user?.picture?.length ?? 0) === 0 ? Nostrich : user?.picture})`
+    const backgroundImage = gradient ? `${avatarUrl}, ${gradient}` :  avatarUrl
 
     useEffect(() => {
         setTab(ProfileTab.Notes);
@@ -106,7 +119,7 @@ export default function ProfilePage() {
         <>
             <div className="profile flex">
                 <div className="avatar-wrapper">
-                    <div style={{ backgroundImage: `url(${(user?.picture?.length ?? 0) === 0 ? Nostrich : user?.picture})` }} className="avatar">
+                    <div style={{ backgroundImage }} className="avatar" data-domain={nip05domain}>
                     </div>
                 </div>
                 <div className="f-grow details">

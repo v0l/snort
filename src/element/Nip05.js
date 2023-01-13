@@ -30,8 +30,7 @@ const Nip05 = ({ nip05, pubkey }) => {
     return (
        <div className="flex nip05" onClick={(ev) => ev.stopPropagation()}>
          {!isDefaultUser && <div className="nick">{name}</div>}
-         <div className="domain">
-             {!isDefaultUser && '@'}
+         <div className="domain" data-domain={domain}>
              {domain}
          </div>
          <span className="badge">

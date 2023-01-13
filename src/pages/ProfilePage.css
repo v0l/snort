@@ -23,10 +23,14 @@
 }
 
 .profile .avatar {
-    width: 256px;
+    border-radius: 50%;
     height: 256px;
+    width: 256px;
+    border: 4px solid transparent;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
     background-size: cover;
-    border-radius: 100%;
+    box-sizing: border-box;
 }
 
 .profile .details {

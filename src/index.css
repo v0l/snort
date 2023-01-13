@@ -10,7 +10,8 @@
     --gray: #333;
     --gray-secondary: #222;
     --gray-tertiary: #444;
-    --highlight: #A9E000;
+    --highlight-light: #E8FF52;
+    --highlight: #CCFF00;
     --error: #FF6053;
     --success: #2AD544;
 }
@@ -19,6 +20,7 @@
   :root {
      --font-color: #000;
      --bg-color: #FFF;
+     --highlight-light: #FFC852;
      --highlight: #FF9B00;
      --modal-bg-color: rgba(240, 240, 240, 0.8);
      --gray: #CCC;
