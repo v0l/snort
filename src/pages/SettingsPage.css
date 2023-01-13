@@ -20,7 +20,7 @@
     justify-content: center;
 }
 
-.settings .avatar .edit {
+.settings .avatar .edit, .settings .banner .edit {
     display: flex;
     align-items: center;
     justify-content: center;
