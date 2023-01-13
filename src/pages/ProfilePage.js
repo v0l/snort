@@ -103,7 +103,7 @@ export default function ProfilePage() {
     return (
         <>
             <div className="profile flex">
-                <img className="banner" src={user?.banner ? user.banner : avatarUrl} />
+                <img alt="banner" className="banner" src={user?.banner ? user.banner : avatarUrl} />
                 <div className="avatar-wrapper">
                     <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={isVerified ? domain : ''}>
                     </div>
