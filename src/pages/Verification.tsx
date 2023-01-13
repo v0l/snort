@@ -30,7 +30,7 @@ export default function VerificationPage() {
             </p>
             <p>Getting NIP-05 verified can help:</p>
             <ul>
-                <li>Prevent fake accounts from immitating you</li>
+                <li>Prevent fake accounts from imitating you</li>
                 <li>Make your profile easier to find and share</li>
                 <li>Fund developers and platforms providing NIP-05 verification services</li>
             </ul>
