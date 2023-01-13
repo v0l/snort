@@ -4,12 +4,13 @@ import './Verification.css'
 
 export default function VerificationPage() {
     const services = [
-        /*{
+        {
             name: "Snort",
             service: "https://api.snort.social/api/v1/n5sp",
             link: "https://snort.social/",
+            supportLink: "https://snort.social/help",
             about: <>Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!</>
-        },*/
+        },
         {
             name: "Nostr Plebs",
             service: "https://nostrplebs.com/api/v1",
