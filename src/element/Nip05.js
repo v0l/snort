@@ -30,7 +30,7 @@ export function useIsVerified(nip05, pubkey) {
         })
   }, [nip05, pubkey])
 
-  return { name, domain, isVerified, couldNotVerify }
+  return { name, domain: domain?.toLowerCase(), isVerified, couldNotVerify }
 }
 
 const Nip05 = ({ name, domain, isVerified, couldNotVerify }) => {
