@@ -68,10 +68,17 @@ export default function Nip5Service(props: Nip05ServiceProps) {
     }, [props]);
 
     useEffect(() => {
-        if (handle.length === 0) {
-            setAvailabilityResponse(undefined);
-        }
+        setError(undefined);
+        setAvailabilityResponse(undefined);
         if (handle && domain) {
+            if(handle.length < (domainConfig?.length[0] ?? 2)) {
+                setAvailabilityResponse({ available: false, why: "TOO_SHORT" });
+                return;
+            }
+            if(handle.length > (domainConfig?.length[1] ?? 20)) {
+                setAvailabilityResponse({ available: false, why: "TOO_LONG" });
+                return;
+            }
             let rx = new RegExp(domainConfig?.regex[0] ?? "", domainConfig?.regex[1] ?? "");
             if (!rx.test(handle)) {
                 setAvailabilityResponse({ available: false, why: "REGEX" });
