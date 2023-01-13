@@ -12,8 +12,12 @@
     --gray-tertiary: #444;
     --highlight-light: #E8FF52;
     --highlight: #CCFF00;
+    --highlight-dark: #709900;
     --error: #FF6053;
     --success: #2AD544;
+    --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
+    --snort-gradient: linear-gradient(to bottom right, var(--highlight-light), var(--highlight), var(--highlight-dark));
+    --nostrplebs-gradient: linear-gradient(to bottom right, #ff3cac, #2b86c5);
 }
 
 @media (prefers-color-scheme: light) {
@@ -22,6 +26,7 @@
      --bg-color: #FFF;
      --highlight-light: #FFC852;
      --highlight: #FF9B00;
+     --highlight-dark: #944F05;
      --modal-bg-color: rgba(240, 240, 240, 0.8);
      --gray: #CCC;
      --gray-secondary: #DDD;

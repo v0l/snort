@@ -17,7 +17,7 @@
 }
 
 .nip05 .domain[data-domain="snort.social"] {
-    background: linear-gradient(to bottom right, var(--highlight-light), var(--highlight), var(--success));
+    background: var(--snort-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -25,7 +25,7 @@
 }
 
 .nip05 .domain[data-domain="nostrplebs.com"] {
-    background: linear-gradient(to bottom right, #ff3cac, #562b7c, #2b86c5);
+    background: var(--nostrplebs-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -33,7 +33,7 @@
 }
 
 .nip05 .domain[data-domain="nostrpurple.com"] {
-    background: linear-gradient(to bottom right, #ff3cac, #562b7c, #2b86c5);
+    background: var(--nostrplebs-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -41,7 +41,7 @@
 }
 
 .nip05 .domain[data-domain="nostr.fan"] {
-    background: linear-gradient(to bottom right, #ff3cac, #562b7c, #2b86c5);
+    background: var(--nostrplebs-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -49,7 +49,7 @@
 }
 
 .nip05 .domain[data-domain="nostrich.zone"] {
-    background: linear-gradient(to bottom right, #ff3cac, #562b7c, #2b86c5);
+    background: var(--nostrplebs-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -57,7 +57,7 @@
 }
 
 .nip05 .domain[data-domain="nostriches.net"] {
-    background: linear-gradient(to bottom right, #ff3cac, #562b7c, #2b86c5);
+    background: var(--nostrplebs-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

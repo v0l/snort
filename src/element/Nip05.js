@@ -5,32 +5,41 @@ import { faCheck, faSpinner, faTriangleExclamation } from "@fortawesome/free-sol
 
 import './Nip05.css'
 
-const Nip05 = ({ nip05, pubkey }) => {
-    const [nip05pubkey, setNip05pubkey] = useState()
-    const [couldNotVerify, setCouldNotVerify] = useState(false)
-    const isVerified = nip05pubkey === pubkey
-    const [name, domain] = nip05.split('@')
-    const isDefaultUser = name === '_'
+export function useIsVerified(nip05, pubkey) {
+  const [isVerified, setIsVerified] = useState(false)
+  const [couldNotVerify, setCouldNotVerify] = useState(false)
+  const [name, domain] = nip05 ? nip05.split('@') : []
 
-    useEffect(() => {
-        setCouldNotVerify(false)
-        fetch(`https://${domain}/.well-known/nostr.json?name=${name}`)
-          .then((res) => res.json())
-          .then(({ names }) => {
-            if (names && names[name]) {
-              setNip05pubkey(names[name])
-            }
-          })
-          .catch((err) => {
-            setCouldNotVerify(true)
-            console.error("Couldn't verifiy nip05")
-          })
-    }, [nip05, name, domain])
+  useEffect(() => {
+      if (!nip05 || !pubkey) {
+        return
+      }
+      setCouldNotVerify(false)
+      setIsVerified(false)
+
+      fetch(`https://${domain}/.well-known/nostr.json?name=${name}`)
+        .then((res) => res.json())
+        .then(({ names }) => {
+          if (names && names[name]) {
+            setIsVerified(names[name] === pubkey)
+          }
+        })
+        .catch((err) => {
+          setCouldNotVerify(true)
+          console.error("Couldn't verifiy nip05")
+        })
+  }, [nip05, pubkey])
+
+  return { name, domain, isVerified, couldNotVerify }
+}
+
+const Nip05 = ({ name, domain, isVerified, couldNotVerify }) => {
+    const isDefaultUser = name === '_'
 
     return (
        <div className="flex nip05" onClick={(ev) => ev.stopPropagation()}>
          {!isDefaultUser && <div className="nick">{name}</div>}
-         <div className="domain" data-domain={domain}>
+         <div className="domain" data-domain={isVerified ? domain : ''}>
              {domain}
          </div>
          <span className="badge">
