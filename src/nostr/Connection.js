@@ -70,7 +70,11 @@ export default class Connection {
         for (let p of this.Pending) {
             this._SendJson(p);
         }
+        this.Pending = [];
 
+        for (let s of Object.values(this.Subscriptions)) {
+            this._SendSubscription(s, s.ToObject());
+        }
         this._UpdateState();
     }
 
@@ -159,15 +163,7 @@ export default class Connection {
             return;
         }
 
-        let req = ["REQ", sub.Id, subObj];
-        if (sub.OrSubs.length > 0) {
-            req = [
-                ...req,
-                ...sub.OrSubs.map(o => o.ToObject())
-            ];
-        }
-        sub.Started[this.Address] = new Date().getTime();
-        this._SendJson(req);
+        this._SendSubscription(sub, subObj);
         this.Subscriptions[sub.Id] = sub;
     }
 
@@ -225,6 +221,18 @@ export default class Connection {
         for (let h of Object.values(this.StateHooks)) {
             h(state);
         }
+    }
+
+    _SendSubscription(sub, subObj) {
+        let req = ["REQ", sub.Id, subObj];
+        if (sub.OrSubs.length > 0) {
+            req = [
+                ...req,
+                ...sub.OrSubs.map(o => o.ToObject())
+            ];
+        }
+        sub.Started[this.Address] = new Date().getTime();
+        this._SendJson(req);
     }
 
     _SendJson(obj) {

@@ -19,7 +19,7 @@ export default function LNURLTip(props) {
     const [success, setSuccess] = useState(null);
 
     useEffect(() => {
-        if (show && invoice === null) {
+        if (show && !props.invoice) {
             loadService()
                 .then(a => setPayService(a))
                 .catch(() => setError("Failed to load LNURL service"));
@@ -204,7 +204,7 @@ export default function LNURLTip(props) {
     return (
         <Modal onClose={() => onClose()}>
             <div className="lnurl-tip" onClick={(e) => e.stopPropagation()}>
-                <h2>⚡️ Send sats</h2>
+                <h2>{props.title || "⚡️ Send sats"}</h2>
                 {invoiceForm()}
                 {error ? <p className="error">{error}</p> : null}
                 {payInvoice()}

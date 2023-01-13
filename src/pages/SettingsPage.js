@@ -4,6 +4,8 @@ import Nostrich from "../nostrich.jpg";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShop } from "@fortawesome/free-solid-svg-icons";
 
 import useEventPublisher from "../feed/EventPublisher";
 import useProfile from "../feed/ProfileFeed";
@@ -130,7 +132,12 @@ export default function SettingsPage(props) {
                 <div className="form-group">
                     <div>NIP-05:</div>
                     <div>
-                        <input type="text" value={nip05} onChange={(e) => setNip05(e.target.value)} />
+                        <input type="text" className="mr10" value={nip05} onChange={(e) => setNip05(e.target.value)} />
+                        <div className="btn" onClick={() => navigate("/verification")}>
+                            <FontAwesomeIcon icon={faShop} />
+                            &nbsp;
+                            Buy
+                        </div>
                     </div>
                 </div>
                 <div className="form-group">
