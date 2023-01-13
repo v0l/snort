@@ -16,52 +16,36 @@
     font-weight: bold;
 }
 
-.nip05 .domain[data-domain="snort.social"] {
-    background: var(--snort-gradient);
+.nip05 .text-gradient {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-fill-color: transparent;
+    background-color: var(--gray-superlight);
+}
+
+.nip05 .domain[data-domain="snort.social"] {
+    background-image: var(--snort-gradient);
 }
 
 .nip05 .domain[data-domain="nostrplebs.com"] {
-    background: var(--nostrplebs-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
+    background-image: var(--nostrplebs-gradient);
 }
 
 .nip05 .domain[data-domain="nostrpurple.com"] {
-    background: var(--nostrplebs-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
+    background-image: var(--nostrplebs-gradient);
 }
 
 .nip05 .domain[data-domain="nostr.fan"] {
-    background: var(--nostrplebs-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
+    background-image: var(--nostrplebs-gradient);
 }
 
 .nip05 .domain[data-domain="nostrich.zone"] {
-    background: var(--nostrplebs-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
+    background-image: var(--nostrplebs-gradient);
 }
 
 .nip05 .domain[data-domain="nostriches.net"] {
-    background: var(--nostrplebs-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
+    background-image: var(--nostrplebs-gradient);
 }
 
 .nip05 .badge {

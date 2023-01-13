@@ -39,7 +39,7 @@ const Nip05 = ({ name, domain, isVerified, couldNotVerify }) => {
     return (
        <div className="flex nip05" onClick={(ev) => ev.stopPropagation()}>
          {!isDefaultUser && <div className="nick">{name}</div>}
-         <div className="domain" data-domain={isVerified ? domain : ''}>
+         <div className={`domain ${isVerified ? 'text-gradient' : ''}`} data-domain={isVerified ? domain : ''}>
              {domain}
          </div>
          <span className="badge">
