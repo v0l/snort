@@ -45,35 +45,20 @@ export default function ProfilePage() {
         setTab(ProfileTab.Notes);
     }, [params]);
 
+    function username() {
+      return (
+          <div className="name">
+               <h2>{user?.display_name || user?.name}</h2>
+               <Copy text={params.id} />
+               {user?.nip05 && <Nip05 name={name} domain={domain} isVerified={isVerified} couldNotVerify={couldNotVerify} />}
+          </div>
+      )
+    }
+
     function details() {
         const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
         return (
-            <>
-                <div className="flex name">
-                    <div className="f-grow f-ellipsis">
-                        <h2>{user?.display_name || user?.name}</h2></div>
-                    <div className="flex">
-                        {isMe ? (
-                            <div className="btn btn-icon" onClick={() => navigate("/settings")}>
-                                <FontAwesomeIcon icon={faGear} size="lg" />
-                            </div>
-                        ) : <>
-                            <div className="btn mr5" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
-                                <FontAwesomeIcon icon={faEnvelope} size="lg" />
-                            </div>
-                            <FollowButton pubkey={id} />
-                        </>
-                        }
-                    </div>
-                </div>
-                <div className="flex">
-                    <div className="f-grow">
-
-                        <Copy text={params.id} />
-                        {user?.nip05 && <Nip05 name={name} domain={domain} isVerified={isVerified} couldNotVerify={couldNotVerify} />}
-                    </div>
-
-                </div>
+            <div className="details">
                 <p>{about}</p>
 
                 {user?.website && (
@@ -89,7 +74,7 @@ export default function ProfilePage() {
                     </div>
                 </div> : null}
                 <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
-            </>
+            </div>
         )
     }
 
@@ -118,11 +103,24 @@ export default function ProfilePage() {
     return (
         <>
             <div className="profile flex">
+                <img className="banner" src={user?.banner ? user.banner : avatarUrl} />
                 <div className="avatar-wrapper">
                     <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={isVerified ? domain : ''}>
                     </div>
                 </div>
-                <div className="f-grow details">
+                <div className="details-wrapper">
+                    {username()}
+                    {isMe ? (
+                        <div className="btn btn-icon follow-button" onClick={() => navigate("/settings")}>
+                            <FontAwesomeIcon icon={faGear} size="lg" />
+                        </div>
+                    ) : <>
+                            <div className="btn mr5" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
+                                <FontAwesomeIcon icon={faEnvelope} size="lg" />
+                            </div>
+                            <FollowButton pubkey={id} />
+                        </>
+                    }
                     {details()}
                 </div>
             </div>
