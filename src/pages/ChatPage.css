@@ -8,6 +8,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
+    scroll-padding-bottom: 40px;
 }
 
 .write-dm {

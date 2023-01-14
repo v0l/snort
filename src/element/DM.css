@@ -7,6 +7,8 @@
     min-width: 100px;
     max-width: 90%;
     overflow: hidden;
+    min-height: 40px;
+    white-space: pre-wrap;
 }
 
 .dm > div:first-child {

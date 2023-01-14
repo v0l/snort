@@ -160,6 +160,7 @@ const LoginSlice = createSlice({
             state.notifications = [];
             state.loggedOut = true;
             state.readNotifications = 0;
+            state.dms = [];
         },
         markNotificationsRead: (state) => {
             state.readNotifications = new Date().getTime();
