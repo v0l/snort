@@ -1,0 +1,53 @@
+.text a {
+    color: var(--highlight);
+}
+
+.text h1 {
+    margin: 0;
+}
+.text h2 {
+    margin: 0;
+}
+.text h3 {
+    margin: 0;
+}
+.text h4 {
+    margin: 0;
+}
+.text h5 {
+    margin: 0;
+}
+.text h6 {
+    margin: 0;
+}
+
+.text p {
+    margin: 0;
+}
+
+.text pre {
+    margin: 0;
+}
+
+.text ul, .text ol {
+    margin: 0;
+}
+
+.text hr {
+    border: 0;
+    height: 1px;
+    background-image: var(--gray-gradient);
+    margin: 20px;
+}
+
+.text img, .text video, .text iframe {
+    max-width: 100%;
+    max-height: 500px;
+    margin: 10px auto;
+    display: block;
+}
+
+.text iframe, .text video {
+    width: -webkit-fill-available;
+    aspect-ratio: 16 / 9;
+}

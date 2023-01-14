@@ -29,6 +29,14 @@
     margin: 0;
 }
 
+@media (min-width: 720px) {
+  .profile .banner {
+      width: 100%;
+      max-width: 720px;
+      height: 300px;
+      margin-bottom: -120px;
+  }
+}
 
 .profile .avatar-wrapper {
     align-self: flex-start;

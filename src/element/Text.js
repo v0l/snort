@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
-import Invoice from "./element/Invoice";
-import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex } from "./Const";
-import { eventLink, hexToBech32, profileLink } from "./Util";
-import LazyImage from "./element/LazyImage";
-import Hashtag from "./element/Hashtag";
-import { useMemo } from "react";
+import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex } from "../Const";
+import { eventLink, hexToBech32, profileLink } from "../Util";
+import Invoice from "./Invoice";
+import LazyImage from "./LazyImage";
+import Hashtag from "./Hashtag";
+
+import './Text.css'
 
 function transformHttpLink(a) {
     try {
@@ -36,7 +38,7 @@ function transformHttpLink(a) {
             }
         } else if (tweetId) {
           return (
-            <div className="tweet">
+            <div className="tweet" key={tweetId}>
               <TwitterTweetEmbed tweetId={tweetId} />
             </div>
           )
@@ -48,6 +50,7 @@ function transformHttpLink(a) {
                         className="w-max"
                         src={`https://www.youtube.com/embed/${youtubeId}`}
                         title="YouTube video player"
+                        key={youtubeId}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen=""
@@ -56,14 +59,14 @@ function transformHttpLink(a) {
                 </>
             )
         } else {
-            return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
+            return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
         }
-    } catch (e) {
-        console.warn(`Not a valid url: ${a}`);
+    } catch (error) {
     }
+    return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
 }
 
-export function extractLinks(fragments) {
+function extractLinks(fragments) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(UrlRegex).map(a => {
@@ -84,7 +87,7 @@ export function extractMentions(fragments, tags, users) {
                 let matchTag = match.match(/#\[(\d+)\]/);
                 if (matchTag && matchTag.length === 2) {
                     let idx = parseInt(matchTag[1]);
-                    let ref = tags.find(a => a.Index === idx);
+                    let ref = tags?.find(a => a.Index === idx);
                     if (ref) {
                         switch (ref.Key) {
                             case "p": {
@@ -107,7 +110,7 @@ export function extractMentions(fragments, tags, users) {
     }).flat();
 }
 
-export function extractInvoices(fragments) {
+function extractInvoices(fragments) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(InvoiceRegex).map(i => {
@@ -122,7 +125,7 @@ export function extractInvoices(fragments) {
     }).flat();
 }
 
-export function extractHashtags(fragments) {
+function extractHashtags(fragments) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(HashtagRegex).map(i => {
@@ -137,18 +140,33 @@ export function extractHashtags(fragments) {
     }).flat();
 }
 
-export default function Text({ content, transforms }) {
-    const transformed = useMemo(() => {
-        let fragments = [content];
-        transforms?.forEach(a => {
-            fragments = a(fragments);
-        });
-        fragments = extractLinks(fragments);
-        fragments = extractInvoices(fragments);
-        fragments = extractHashtags(fragments);
-
-        return fragments;
-    }, [content]);
-
-    return transformed;
+function transformLi({ body, tags, users }) {
+  let fragments = transformText({ body, tags, users })
+  return <li>{fragments}</li>
 }
+
+function transformParagraph({ body, tags, users }) {
+  const fragments = transformText({ body, tags, users })
+  if (fragments.every(f => typeof f === 'string')) {
+    return <p>{fragments}</p>
+  }
+  return <>{fragments}</>
+}
+
+function transformText({ body, tags, users }) {
+    let fragments = extractMentions(body, tags, users);
+    fragments = extractLinks(fragments);
+    fragments = extractInvoices(fragments);
+    fragments = extractHashtags(fragments);
+    return fragments;
+}
+
+export default function Text({ content, tags, users }) {
+    const components = {
+      p: (props) => transformParagraph({ body: props.children, tags, users }),
+      a: (props) => transformHttpLink(props.href),
+      li: (props) => transformLi({ body: props.children, tags, users }),
+    }
+    return <ReactMarkdown className="text" components={components}>{content}</ReactMarkdown>
+}
+

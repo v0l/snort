@@ -10,7 +10,7 @@ import Event from "../nostr/Event";
 // @ts-ignore
 import NoteTime from "./NoteTime";
 // @ts-ignore
-import Text from "../Text";
+import Text from "./Text";
 
 export type DMProps = {
     data: any
