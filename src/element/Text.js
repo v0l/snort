@@ -12,57 +12,53 @@ import './Text.css'
 import { useMemo } from "react";
 
 function transformHttpLink(a) {
-    try {
-        const url = new URL(a);
-        const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
-        const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
-        const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
-        if (extension) {
-            switch (extension) {
-                case "gif":
-                case "jpg":
-                case "jpeg":
-                case "png":
-                case "bmp":
-                case "webp": {
-                    return <LazyImage key={url} src={url} />;
-                }
-                case "mp4":
-                case "mov":
-                case "mkv":
-                case "avi":
-                case "m4v": {
-                    return <video key={url} src={url} controls />
-                }
-                default:
-                    return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
+    const url = new URL(a);
+    const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
+    const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
+    const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
+    if (extension) {
+        switch (extension) {
+            case "gif":
+            case "jpg":
+            case "jpeg":
+            case "png":
+            case "bmp":
+            case "webp": {
+                return <LazyImage key={url} src={url} />;
             }
-        } else if (tweetId) {
-            return (
-                <div className="tweet" key={tweetId}>
-                    <TwitterTweetEmbed tweetId={tweetId} />
-                </div>
-            )
-        } else if (youtubeId) {
-            return (
-                <>
-                    <br />
-                    <iframe
-                        className="w-max"
-                        src={`https://www.youtube.com/embed/${youtubeId}`}
-                        title="YouTube video player"
-                        key={youtubeId}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen=""
-                    />
-                    <br />
-                </>
-            )
-        } else {
-            return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
+            case "mp4":
+            case "mov":
+            case "mkv":
+            case "avi":
+            case "m4v": {
+                return <video key={url} src={url} controls />
+            }
+            default:
+                return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
         }
-    } catch (error) {
+    } else if (tweetId) {
+      return (
+        <div className="tweet">
+          <TwitterTweetEmbed tweetId={tweetId} />
+        </div>
+      )
+    } else if (youtubeId) {
+        return (
+            <>
+                <br />
+                <iframe
+                    className="w-max"
+                    src={`https://www.youtube.com/embed/${youtubeId}`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen=""
+                />
+                <br />
+            </>
+        )
+    } else {
+        return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
     }
     return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
 }
@@ -81,7 +77,7 @@ function extractLinks(fragments) {
     }).flat();
 }
 
-export function extractMentions(fragments, tags, users) {
+function extractMentions(fragments, tags, users) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(MentionRegex).map((match) => {
@@ -172,4 +168,3 @@ export default function Text({ content, tags, users }) {
     }, [content]);
     return <ReactMarkdown className="text" components={components}>{content}</ReactMarkdown>
 }
-
