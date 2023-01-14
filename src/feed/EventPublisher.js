@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
+
 import { System } from "..";
 import Event from "../nostr/Event";
 import EventKind from "../nostr/EventKind";
 import Tag from "../nostr/Tag";
+import { bech32ToHex } from "../Util"
 
 export default function useEventPublisher() {
     const pubKey = useSelector(s => s.login.publicKey);
@@ -28,6 +30,25 @@ export default function useEventPublisher() {
         return ev;
     }
 
+
+    function processMentions(ev, msg) {
+        const replaceHexKey = (match) => {
+            const idx = ev.Tags.length;
+            ev.Tags.push(new Tag(["p", match.slice(1)], idx));
+            return `#[${idx}]`
+        }
+        const replaceNpub = (match) => {
+            const npub = match.slice(1);
+            const hex = bech32ToHex(npub);
+            const idx = ev.Tags.length;
+            ev.Tags.push(new Tag(["p", hex], idx));
+            return `#[${idx}]`
+        }
+        let content = msg.replace(/@[0-9A-Fa-f]{64}/g, replaceHexKey)
+                         .replace(/@npub[a-z0-9]+/g, replaceNpub)
+        ev.Content = content;
+    }
+
     return {
         broadcast: (ev) => {
             console.debug("Sending event: ", ev);
@@ -45,7 +66,7 @@ export default function useEventPublisher() {
             }
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.TextNote;
-            ev.Content = msg;
+            processMentions(ev, msg);
             return await signEvent(ev);
         },
         /**
@@ -60,7 +81,6 @@ export default function useEventPublisher() {
             }
             let ev = Event.ForPubKey(pubKey);
             ev.Kind = EventKind.TextNote;
-            ev.Content = msg;
 
             let thread = replyTo.Thread;
             if (thread) {
@@ -81,6 +101,7 @@ export default function useEventPublisher() {
                 ev.Tags.push(new Tag(["e", replyTo.Id, "", "reply"], 0));
                 ev.Tags.push(new Tag(["p", replyTo.PubKey], 1));
             }
+            processMentions(ev, msg);
             return await signEvent(ev);
         },
         react: async (evRef, content = "+") => {

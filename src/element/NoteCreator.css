@@ -6,10 +6,8 @@
 }
 
 .note-creator textarea {
-    resize: none;
     outline: none;
     min-height: 40px;
-    max-height: 300px;
     border-radius: 10px 10px 0 0;
     max-width: -webkit-fill-available;
     max-width: -moz-available;
