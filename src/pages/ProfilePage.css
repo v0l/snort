@@ -10,10 +10,6 @@
     white-space: pre-wrap;
 }
 
-.profile .name {
-  align-items: flex-start;
-}
-
 .profile .name h2 {
     margin: 0;
 }

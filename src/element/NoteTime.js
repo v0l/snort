@@ -4,8 +4,7 @@ const MinuteInMs = 1_000 * 60;
 const HourInMs = MinuteInMs * 60;
 const DayInMs = HourInMs * 24;
 
-export default function NoteTime(props) {
-    const from = props.from;
+export default function NoteTime({ from }) {
     const [time, setTime] = useState("");
 
     function calcTime() {

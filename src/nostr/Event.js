@@ -1,4 +1,5 @@
 import * as secp from '@noble/secp256k1';
+import base64 from "@protobufjs/base64"
 import EventKind from "./EventKind";
 import Tag from './Tag';
 import Thread from './Thread';
@@ -164,5 +165,49 @@ export default class Event {
         ev.CreatedAt = parseInt(new Date().getTime() / 1000);
         ev.PubKey = pubKey;
         return ev;
+    }
+
+    /**
+     * Encrypt the message content in place
+     * @param {string} pubkey 
+     * @param {string} privkey 
+     */
+    async EncryptDmForPubkey(pubkey, privkey) {
+        let key = await this._GetDmSharedKey(pubkey, privkey);
+        let iv = window.crypto.getRandomValues(new Uint8Array(16));
+        let data = new TextEncoder().encode(this.Content);
+        let result = await window.crypto.subtle.encrypt({
+            name: "AES-CBC",
+            iv: iv
+        }, key, data);
+        let uData = new Uint8Array(result);
+        this.Content = `${base64.encode(uData, 0, result.byteLength)}?iv=${base64.encode(iv, 0, 16)}`;
+    }
+
+    /**
+     * Decrypt the content of this message in place
+     * @param {string} privkey 
+     * @param {string} pubkey 
+     */
+    async DecryptDm(privkey, pubkey) {
+        let key = await this._GetDmSharedKey(pubkey, privkey);
+        let cSplit = this.Content.split("?iv=");
+        let data = new Uint8Array(base64.length(cSplit[0]));
+        base64.decode(cSplit[0], data, 0);
+
+        let iv = new Uint8Array(base64.length(cSplit[1]));
+        base64.decode(cSplit[1], iv, 0);
+
+        let result = await window.crypto.subtle.decrypt({
+            name: "AES-CBC",
+            iv: iv
+        }, key, data);
+        this.Content = new TextDecoder().decode(result);
+    }
+
+    async _GetDmSharedKey(pubkey, privkey) {
+        let sharedPoint = secp.getSharedSecret(privkey, '02' + pubkey);
+        let sharedX = sharedPoint.slice(1, 33);
+        return await window.crypto.subtle.importKey("raw", sharedX, { name: "AES-CBC" }, false, ["encrypt", "decrypt"])
     }
 }

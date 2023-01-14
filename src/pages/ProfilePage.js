@@ -4,12 +4,12 @@ import Nostrich from "../nostrich.jpg";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQrcode, faGear } from "@fortawesome/free-solid-svg-icons";
+import { faQrcode, faGear, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 
 import useProfile from "../feed/ProfileFeed";
 import FollowButton from "../element/FollowButton";
-import { extractLnAddress, parseId } from "../Util";
+import { extractLnAddress, parseId, hexToBech32 } from "../Util";
 import Timeline from "../element/Timeline";
 import { extractLinks, extractHashtags } from '../Text'
 import LNURLTip from "../element/LNURLTip";
@@ -50,19 +50,29 @@ export default function ProfilePage() {
         return (
             <>
                 <div className="flex name">
-                    <div className="f-grow">
-                        <h2>{user?.display_name || user?.name}</h2>
-                        <Copy text={params.id} />
-                        {user?.nip05 && <Nip05 name={name} domain={domain} isVerified={isVerified} couldNotVerify={couldNotVerify} />}
-                    </div>
-                    <div>
+                    <div className="f-grow f-ellipsis">
+                        <h2>{user?.display_name || user?.name}</h2></div>
+                    <div className="flex">
                         {isMe ? (
                             <div className="btn btn-icon" onClick={() => navigate("/settings")}>
                                 <FontAwesomeIcon icon={faGear} size="lg" />
                             </div>
-                        ) : <FollowButton pubkey={id} />
+                        ) : <>
+                            <div className="btn mr5" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
+                                <FontAwesomeIcon icon={faEnvelope} size="lg" />
+                            </div>
+                            <FollowButton pubkey={id} />
+                        </>
                         }
                     </div>
+                </div>
+                <div className="flex">
+                    <div className="f-grow">
+
+                        <Copy text={params.id} />
+                        {user?.nip05 && <Nip05 name={name} domain={domain} isVerified={isVerified} couldNotVerify={couldNotVerify} />}
+                    </div>
+
                 </div>
                 <p>{about}</p>
 

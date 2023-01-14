@@ -1,7 +1,15 @@
-.notifications {
-    margin-right: 10px;
-}
-
 .unread-count {
-  margin-left: .2em;
+  width: 20px;
+  height: 20px;
+  border: 1px solid;
+  border-radius: 100%;
+  position: relative;
+  padding: 3px;
+  line-height: 1.5em;
+  top: -10px;
+  left: -10px;
+  font-size: small;
+  background-color: var(--error);
+  font-weight: bold;
+  text-align: center;
 }

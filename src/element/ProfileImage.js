@@ -7,7 +7,7 @@ import useProfile from "../feed/ProfileFeed";
 import { hexToBech32, profileLink } from "../Util";
 import LazyImage from "./LazyImage";
 
-export default function ProfileImage({ pubkey, subHeader, showUsername = true, className }) {
+export default function ProfileImage({ pubkey, subHeader, showUsername = true, className, link }) {
     const navigate = useNavigate();
     const user = useProfile(pubkey);
 
@@ -23,12 +23,12 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true, c
     }, [user]);
 
     return (
-        <div className={`pfp ${className ?? ""}`}>
-            <LazyImage src={hasImage ? user.picture : Nostrich} onClick={() => navigate(profileLink(pubkey))} />
+        <div className={`pfp ${className}`}>
+            <LazyImage src={hasImage ? user.picture : Nostrich} onClick={() => navigate(link ?? profileLink(pubkey))} />
             {showUsername && (<div className="f-grow">
-                <Link key={pubkey} to={profileLink(pubkey)}>{name}</Link>
+                <Link key={pubkey} to={link ?? profileLink(pubkey)}>{name}</Link>
                 {subHeader ? <>{subHeader}</> : null}
-              </div>
+            </div>
             )}
         </div>
     )

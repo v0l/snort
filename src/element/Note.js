@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import Event from "../nostr/Event";
 import ProfileImage from "./ProfileImage";
-import { extractLinks, extractMentions, extractInvoices, extractHashtags } from "../Text";
+import Text, { extractMentions } from "../Text";
 import { eventLink, hexToBech32 } from "../Util";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
@@ -28,19 +28,13 @@ export default function Note(props) {
 
     const transformBody = useCallback(() => {
         let body = ev?.Content ?? "";
-
-        let fragments = extractLinks([body]);
-        fragments = extractMentions(fragments, ev.Tags, users);
-        fragments = extractInvoices(fragments);
-        fragments = extractHashtags(fragments);
         if (deletion?.length > 0) {
-            return (
-                <>
-                    <b className="error">Deleted</b>
-                </>
-            );
+            return (<b className="error">Deleted</b>);
         }
-        return fragments;
+        const mentions = (fragments) => {
+            return extractMentions(fragments, ev.Tags, users);
+        }
+        return <Text content={body} transforms={[mentions]} />;
     }, [data, dataEvent, reactions, deletion]);
 
     function goToEvent(e, id) {
