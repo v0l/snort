@@ -24,12 +24,12 @@ export function NoteCreator(props) {
     async function sendNote() {
         let ev = replyTo ? await publisher.reply(replyTo, note) : await publisher.note(note);
         console.debug("Sending note: ", ev);
-        publisher.broadcast(ev)
+        publisher.broadcast(ev);
         setNote("");
+        setActive(false);
         if (typeof onSend === "function") {
             onSend();
         }
-        setActive(false)
     }
 
     async function attachFile() {
