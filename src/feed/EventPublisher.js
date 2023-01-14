@@ -32,20 +32,18 @@ export default function useEventPublisher() {
 
 
     function processMentions(ev, msg) {
-        const replaceHexKey = (match) => {
-            const idx = ev.Tags.length;
-            ev.Tags.push(new Tag(["p", match.slice(1)], idx));
-            return `#[${idx}]`
-        }
         const replaceNpub = (match) => {
             const npub = match.slice(1);
-            const hex = bech32ToHex(npub);
-            const idx = ev.Tags.length;
-            ev.Tags.push(new Tag(["p", hex], idx));
-            return `#[${idx}]`
+            try {
+              const hex = bech32ToHex(npub);
+              const idx = ev.Tags.length;
+              ev.Tags.push(new Tag(["p", hex], idx));
+              return `#[${idx}]`
+            } catch (error) {
+              return match
+            }
         }
-        let content = msg.replace(/@[0-9A-Fa-f]{64}/g, replaceHexKey)
-                         .replace(/@npub[a-z0-9]+/g, replaceNpub)
+        let content = msg.replace(/@npub[a-z0-9]+/g, replaceNpub)
         ev.Content = content;
     }
 

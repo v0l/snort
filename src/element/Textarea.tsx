@@ -2,19 +2,27 @@ import { Component } from "react";
 
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 
+// @ts-expect-error
 import Nip05, { useIsVerified } from "./Nip05";
 import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
+// @ts-expect-error
 import Nostrich from "../nostrich.jpg";
+// @ts-expect-error
+import { hexToBech32 } from "../Util";
+import type { User } from "../nostr/types";
 
-function searchUsers(query, users) {
+function searchUsers(query: string, users: Record<string, User>) {
   const q = query.toLowerCase()
-  return Object.values(users).filter(({ name, display_name, about }) => {
-    return name.toLowerCase().includes(q) || display_name?.includes(q) || about?.includes(q)
+  return Object.values(users).filter(({ name, display_name, about, nip05 }) => {
+    return name?.toLowerCase().includes(q)
+      || display_name?.toLowerCase().includes(q)
+      || about?.toLowerCase().includes(q)
+      || nip05?.toLowerCase().includes(q)
   }).slice(0, 3)
 }
 
-const UserItem = ({ pubkey, display_name, picture, nip05, ...rest }) => {
+const UserItem = ({ pubkey, display_name, picture, nip05, ...rest }: User) => {
   const { isVerified, couldNotVerify, name, domain } = useIsVerified(nip05, pubkey)
   return (
     <div key={pubkey} className="user-item">
@@ -31,6 +39,7 @@ const UserItem = ({ pubkey, display_name, picture, nip05, ...rest }) => {
 
 export default class Textarea extends Component {
   render() {
+    // @ts-expect-error
     const { users, onChange, ...rest } = this.props
     return (
         <ReactTextareaAutocomplete
@@ -38,6 +47,7 @@ export default class Textarea extends Component {
           loadingComponent={() => <span>Loading....</span>}
           placeholder="Say something!"
           ref={rta => {
+            // @ts-expect-error
             this.rta = rta;
           }}
           onChange={onChange}
@@ -45,8 +55,8 @@ export default class Textarea extends Component {
              "@": {
                afterWhitespace: true,
                dataProvider: token => searchUsers(token, users),
-               component: ({ entity }) => <UserItem {...entity} />,
-               output: (item, trigger) => `@${item.pubkey}`
+               component: (props: any) => <UserItem {...props.entity} />,
+               output: (item: any) => `@${hexToBech32("npub", item.pubkey)}`
              }
            }}
         />

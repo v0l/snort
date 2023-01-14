@@ -2,7 +2,6 @@
     margin-bottom: 10px;
     background-color: var(--gray);
     border-radius: 10px;
-    overflow: hidden;
 }
 
 .note-creator textarea {
@@ -20,7 +19,7 @@
 }
 
 .note-creator .textarea--focused {
-    min-height: 150px;
+    min-height: 120px;
 }
 
 .note-creator .actions {
