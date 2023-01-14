@@ -47,6 +47,16 @@ export function NoteCreator(props) {
         }
     }
 
+    function onChange(ev) {
+        const { value } = ev.target
+        if (value) {
+          setNote(value)
+          setActive(true)
+        } else {
+          setActive(false)
+        }
+    }
+
     if (!show) return false;
     return (
         <>
@@ -56,7 +66,7 @@ export function NoteCreator(props) {
                     <Textarea
                       className={`textarea ${active ? "textarea--focused" : ""}`}
                       users={users}
-                      onChange={(ev) => setNote(ev.target.value)}
+                      onChange={onChange}
                       onFocus={() => setActive(true)}
                     />
                     <div className="actions flex f-row">

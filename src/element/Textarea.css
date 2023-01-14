@@ -1,10 +1,5 @@
-.rta {
-  overflow: visible;
-}
-
 .rta__entity {
   background: var(--gray);
-  padding: 4px 8px;
 }
 
 .rta__entity--selected {
