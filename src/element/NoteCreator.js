@@ -29,6 +29,7 @@ export function NoteCreator(props) {
         if (typeof onSend === "function") {
             onSend();
         }
+        setActive(false)
     }
 
     async function attachFile() {
@@ -50,16 +51,21 @@ export function NoteCreator(props) {
     return (
         <>
             {replyTo ? <small>{`Reply to: ${replyTo.Id.substring(0, 8)}`}</small> : null}
-            <div className="flex note-creator" onClick={() => setActive(true)}>
+            <div className="flex note-creator">
                 <div className="flex f-col mr10 f-grow">
-                    <Textarea className="textarea" users={users} onChange={(ev) => setNote(ev.target.value)} />
-                    {active ? <div className="actions flex f-row">
+                    <Textarea
+                      className={`textarea ${active ? "textarea--focused" : ""}`}
+                      users={users}
+                      onChange={(ev) => setNote(ev.target.value)}
+                      onFocus={() => setActive(true)}
+                    />
+                    <div className="actions flex f-row">
                         <div className="attachment flex f-row">
                             {error.length > 0 ? <b className="error">{error}</b> : null}
                             <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()} />
                         </div>
                         <div className="btn" onClick={() => sendNote()}>Send</div>
-                    </div> : null}
+                    </div>
                 </div>
             </div>
         </>

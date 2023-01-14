@@ -16,6 +16,11 @@
     min-width: -webkit-fill-available;
     min-width: -moz-available;
     min-width: fill-available;
+    transition: min-height .5s;
+}
+
+.note-creator .textarea--focused {
+    min-height: 150px;
 }
 
 .note-creator .actions {
