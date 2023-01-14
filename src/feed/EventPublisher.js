@@ -179,8 +179,8 @@ export default function useEventPublisher() {
 
             try {
                 if (hasNip07 && !privKey) {
-                    let content = await barierNip07(() => window.nostr.nip04.encrypt(to, content));
-                    ev.Content = content;
+                    let cx = await barierNip07(() => window.nostr.nip04.encrypt(to, content));
+                    ev.Content = cx;
                     return await signEvent(ev);
                 } else if(privKey) {
                     await ev.EncryptDmForPubkey(to, privKey);
