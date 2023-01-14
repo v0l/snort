@@ -12,9 +12,11 @@ export default function NoteReaction(props) {
     const ev = props["data-ev"] || Event.FromObject(props.data);
 
     const refEvent = useMemo(() => {
-        if(ev) {
+        if (ev) {
             let eTags = ev.Tags.filter(a => a.Key === "e");
-            return eTags[0].Event;
+            if (eTags.length > 0) {
+                return eTags[0].Event;
+            }
         }
         return null;
     }, [ev]);
