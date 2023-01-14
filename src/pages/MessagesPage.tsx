@@ -13,7 +13,7 @@ export default function MessagesPage() {
     const dms = useSelector<any, RawEvent[]>(s => s.login.dms);
 
     const pubKeys = useMemo(() => {
-        return Array.from(new Set<string>(dms.map(a => a.pubkey)));
+        return Array.from(new Set<string>(dms.map(a => [a.pubkey, ...a.tags.filter(b => b[0] === "p").map(b => b[1])]).flat()));
     }, [dms]);
 
     function person(pubkey: string) {
