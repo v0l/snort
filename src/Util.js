@@ -61,7 +61,7 @@ export function hexToBech32(hrp, hex) {
     if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 != 0) {
         return "";
     }
-
+    
     try {
         let buf = secp.utils.hexToBytes(hex);
         return bech32.encode(hrp, bech32.toWords(buf));

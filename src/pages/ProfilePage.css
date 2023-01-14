@@ -208,5 +208,6 @@
   .profile .no-banner .details-wrapper {
       margin-left: 10px;
       margin-top: 21px;
+      max-width: 420px;
   }
 }
