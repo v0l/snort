@@ -1,9 +1,24 @@
 .profile {
-    align-items: flex-start;
+  flex-direction: column;
 }
 
-.profile > div:last-child {
-    margin-left: 10px;
+.profile .banner {
+    width: 100%;
+    height: 210px;
+    margin-bottom: -80px;
+    object-fit: cover;
+    mask-image: linear-gradient(to bottom, var(--bg-color), rgba(0,0,0,0));
+    -webkit-mask-image: linear-gradient(to bottom, var(--bg-color), rgba(0,0,0,0));
+    z-index: 0;
+}
+
+@media (min-width: 720px) {
+  .profile .banner {
+      width: 100%;
+      max-width: 720px;
+      height: 300px;
+      margin-bottom: -120px;
+  }
 }
 
 .profile p {
@@ -14,14 +29,17 @@
     margin: 0;
 }
 
+
 .profile .avatar-wrapper {
-    margin: auto 10px;
+    align-self: flex-start;
+    z-index: 1;
+    margin-left: 4px;
 }
 
 .profile .avatar {
     border-radius: 50%;
-    height: 256px;
-    width: 256px;
+    height: 210px;
+    width: 210px;
     background-image: var(--img-url), var(--gray-gradient);
     border: 4px solid transparent;
     background-origin: border-box;
@@ -38,25 +56,42 @@
     background-image: var(--img-url), var(--nostrplebs-gradient);
 }
 
+.profile .name {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.profile .name h2 {
+    margin: 0;
+}
+
 .profile .details {
-    margin-top: auto;
-    margin-bottom: auto;
-    overflow: hidden;
+    max-width: 680px;
+    width: 100%;
+}
+
+.profile .details p {
+    word-break: break-word;
+}
+
+.profile .details a {
+    color: var(--highlight);
 }
 
 .profile .website {
-    padding-left: 0;
     color: var(--highlight);
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .profile .lnurl {
-    padding-left: 0;
+    color: var(--highlight);
 }
 
 .profile .btn-icon {
-  padding: 6px;
-  margin-left: 4px;
+    color: var(--font-color);
+    padding: 6px;
+    margin-left: 4px;
 }
 
 .profile .website::before {
@@ -64,8 +99,9 @@
     font-size: 10px;
 }
 
-.profile a {
-    color: var(--highlight);
+.profile .lnurl {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .profile .lnurl::before {
@@ -73,29 +109,51 @@
     font-size: 10px;
 }
 
-@media(max-width: 720px) {
-    .profile {
-        flex-direction: column;
-        align-items: center;
-    }
-    .profile > div:last-child { 
-        margin: 5px 0;
-        width: 100%;
-    }
+.profile .details-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    margin-left: 4px;
 }
 
-@media(max-width: 360px) {
-      .profile .name { flex-direction: column; }
-      .profile .name .btn {
-          margin-top: 5px;
-      }
+.profile .copy .body { font-size: 12px }
+
+@media (min-width: 360px) {
+  .profile .copy .body { font-size: 14px }
+  .profile .details-wrapper, .profile .avatar-wrapper { margin-left: 21px; }
+}
+
+@media (min-width: 720px) {
+  .profile .details-wrapper, .profile .avatar-wrapper { margin-left: 30px; }
+}
+
+.profile .follow-button {
+    position: absolute;
+    top: -30px;
+    right: 20px;
+}
+
+.profile .message-button {
+    position: absolute;
+    top: -30px;
+    right: 74px;
+}
+
+.profile .no-banner .follow-button {
+  right: 0px;
+}
+.profile .no-banner .message-button {
+  right: 54px;
 }
 
 .tabs {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  margin: 10px 0;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin: 10px 0;
 }
 
 .tabs > div {
@@ -109,4 +167,38 @@
 }
 .tab.active {
     border-bottom: 3px solid var(--highlight);
+}
+
+.profile .no-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.profile .no-banner .avatar {
+    height: 256px;
+    width: 256px;
+    margin-bottom: 30px;
+}
+
+.profile .no-banner .avatar-wrapper, .profile .no-banner .details-wrapper {
+  margin: 0 auto;
+}
+
+@media (min-width: 720px) {
+  .profile .no-banner {
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-around;
+      margin-top: 21px;
+  }
+  .profile .no-banner .avatar-wrapper {
+      margin: auto 10px;
+  }
+  .profile .no-banner .details-wrapper {
+      margin-left: 10px;
+      margin-top: 21px;
+  }
 }

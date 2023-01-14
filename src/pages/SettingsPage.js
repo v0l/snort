@@ -28,6 +28,7 @@ export default function SettingsPage(props) {
     const [name, setName] = useState("");
     const [displayName, setDisplayName] = useState("");
     const [picture, setPicture] = useState("");
+    const [banner, setBanner] = useState("");
     const [about, setAbout] = useState("");
     const [website, setWebsite] = useState("");
     const [nip05, setNip05] = useState("");
@@ -35,11 +36,14 @@ export default function SettingsPage(props) {
     const [lud16, setLud16] = useState("");
     const [newRelay, setNewRelay] = useState("");
 
+    const avatarPicture = picture.length === 0 ? Nostrich : picture
+
     useEffect(() => {
         if (user) {
             setName(user.name ?? "");
             setDisplayName(user.display_name ?? "")
             setPicture(user.picture ?? "");
+            setBanner(user.banner ?? "");
             setAbout(user.about ?? "");
             setWebsite(user.website ?? "");
             setNip05(user.nip05 ?? "");
@@ -56,6 +60,7 @@ export default function SettingsPage(props) {
             display_name: displayName,
             about,
             picture,
+            banner,
             website,
             nip05,
             lud16
@@ -86,15 +91,24 @@ export default function SettingsPage(props) {
         publisher.broadcast(ev);
     }
 
-    async function setNewAvatar() {
+    async function uploadFile() {
         let file = await openFile();
         console.log(file);
         let rsp = await VoidUpload(file);
         if (!rsp) {
             throw "Upload failed, please try again later";
         }
-        console.log(rsp);
+        return rsp
+    }
+
+    async function setNewAvatar() {
+        const rsp = await uploadFile()
         setPicture(rsp.metadata.url ?? `https://void.cat/d/${rsp.id}`)
+    }
+
+    async function setNewBanner() {
+        const rsp = await uploadFile()
+        setBanner(rsp.metadata.url ?? `https://void.cat/d/${rsp.id}`)
     }
 
     async function saveRelays() {
@@ -175,10 +189,19 @@ export default function SettingsPage(props) {
         return (
             <>
                 <h1>Settings</h1>
-                <div className="flex f-center">
-                    <div style={{ backgroundImage: `url(${picture.length === 0 ? Nostrich : picture})` }} className="avatar">
+                <div className="flex f-center image-settings">
+                  <div>
+                    <h2>Avatar</h2>
+                    <div style={{ backgroundImage: `url(${avatarPicture})` }} className="avatar">
                         <div className="edit" onClick={() => setNewAvatar()}>Edit</div>
                     </div>
+                  </div>
+                  <div>
+                    <h2>Header</h2>
+                    <div style={{ backgroundImage: `url(${banner.length === 0 ? avatarPicture : banner})` }} className="banner">
+                        <div className="edit" onClick={() => setNewBanner()}>Edit</div>
+                    </div>
+                   </div>
                 </div>
                 {editor()}
             </>
