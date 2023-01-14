@@ -78,14 +78,14 @@ function extractLinks(fragments) {
     }).flat();
 }
 
-export function extractMentions(fragments, tags = [], users = {}) {
+export function extractMentions(fragments, tags, users) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(MentionRegex).map((match) => {
                 let matchTag = match.match(/#\[(\d+)\]/);
                 if (matchTag && matchTag.length === 2) {
                     let idx = parseInt(matchTag[1]);
-                    let ref = tags.find(a => a.Index === idx);
+                    let ref = tags?.find(a => a.Index === idx);
                     if (ref) {
                         switch (ref.Key) {
                             case "p": {
@@ -152,7 +152,7 @@ function transformParagraph({ body, tags, users }) {
 }
 
 function transformText({ body, tags, users }) {
-    let fragments = extractMentions(body);
+    let fragments = extractMentions(body, tags, users);
     fragments = extractLinks(fragments);
     fragments = extractInvoices(fragments);
     fragments = extractHashtags(fragments);
