@@ -30,6 +30,11 @@ const LoginSlice = createSlice({
         relays: {},
 
         /**
+         * Newest relay list timestamp
+         */
+        latestRelays: null,
+
+        /**
          * A list of pubkeys this user follows
          */
         follows: [],
@@ -87,11 +92,18 @@ const LoginSlice = createSlice({
             state.publicKey = action.payload;
         },
         setRelays: (state, action) => {
+            let relays = action.payload.relays;
+            let createdAt = action.payload.createdAt;
+            if(state.latestRelays > createdAt) {
+                return;
+            }
+
             // filter out non-websocket urls
-            let filtered = Object.entries({ ...state.relays, ...action.payload })
+            let filtered = Object.entries(relays)
                 .filter(a => a[0].startsWith("ws://") || a[0].startsWith("wss://"));
 
             state.relays = Object.fromEntries(filtered);
+            state.latestRelays = createdAt;
         },
         removeRelay: (state, action) => {
             delete state.relays[action.payload];

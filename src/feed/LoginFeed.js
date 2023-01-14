@@ -47,7 +47,7 @@ export default function useLoginFeed() {
         for (let cl of contactList) {
             if (cl.content !== "") {
                 let relays = JSON.parse(cl.content);
-                dispatch(setRelays(relays));
+                dispatch(setRelays({ relays, createdAt: cl.created_at }));
             }
             let pTags = cl.tags.filter(a => a[0] === "p").map(a => a[1]);
             dispatch(setFollows(pTags));
