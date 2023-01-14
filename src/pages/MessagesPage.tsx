@@ -18,7 +18,7 @@ export default function MessagesPage() {
 
     function person(pubkey: string) {
         return (
-            <div className="flex" key={pubkey}>
+            <div className="flex mb10" key={pubkey}>
                 <ProfileImage pubkey={pubkey} className="f-grow" link={`/messages/${hexToBech32("npub", pubkey)}`} />
                 <span className="pill">
                     {dms?.filter(a => a.pubkey === pubkey && a.pubkey !== pubKey).length}
