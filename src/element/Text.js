@@ -12,53 +12,57 @@ import './Text.css'
 import { useMemo } from "react";
 
 function transformHttpLink(a) {
-    const url = new URL(a);
-    const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
-    const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
-    const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
-    if (extension) {
-        switch (extension) {
-            case "gif":
-            case "jpg":
-            case "jpeg":
-            case "png":
-            case "bmp":
-            case "webp": {
-                return <LazyImage key={url} src={url} />;
+    try {
+        const url = new URL(a);
+        const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
+        const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
+        const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
+        if (extension) {
+            switch (extension) {
+                case "gif":
+                case "jpg":
+                case "jpeg":
+                case "png":
+                case "bmp":
+                case "webp": {
+                    return <LazyImage key={url} src={url} />;
+                }
+                case "mp4":
+                case "mov":
+                case "mkv":
+                case "avi":
+                case "m4v": {
+                    return <video key={url} src={url} controls />
+                }
+                default:
+                    return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
             }
-            case "mp4":
-            case "mov":
-            case "mkv":
-            case "avi":
-            case "m4v": {
-                return <video key={url} src={url} controls />
-            }
-            default:
-                return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
+        } else if (tweetId) {
+          return (
+            <div className="tweet" key={tweetId}>
+              <TwitterTweetEmbed tweetId={tweetId} />
+            </div>
+          )
+        } else if (youtubeId) {
+            return (
+                <>
+                    <br />
+                    <iframe
+                        className="w-max"
+                        src={`https://www.youtube.com/embed/${youtubeId}`}
+                        title="YouTube video player"
+                        key={youtubeId}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen=""
+                    />
+                    <br />
+                </>
+            )
+        } else {
+            return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
         }
-    } else if (tweetId) {
-      return (
-        <div className="tweet">
-          <TwitterTweetEmbed tweetId={tweetId} />
-        </div>
-      )
-    } else if (youtubeId) {
-        return (
-            <>
-                <br />
-                <iframe
-                    className="w-max"
-                    src={`https://www.youtube.com/embed/${youtubeId}`}
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen=""
-                />
-                <br />
-            </>
-        )
-    } else {
-        return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
+    } catch (error) {
     }
     return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
 }
