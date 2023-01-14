@@ -62,8 +62,13 @@ export function hexToBech32(hrp, hex) {
         return "";
     }
 
-    let buf = secp.utils.hexToBytes(hex);
-    return bech32.encode(hrp, bech32.toWords(buf));
+    try {
+        let buf = secp.utils.hexToBytes(hex);
+        return bech32.encode(hrp, bech32.toWords(buf));
+    } catch (e) {
+        console.warn("Invalid hex", hex, e);
+        return "";
+    }
 }
 
 /**
