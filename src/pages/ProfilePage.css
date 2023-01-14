@@ -136,6 +136,19 @@
     right: 20px;
 }
 
+.profile .message-button {
+    position: absolute;
+    top: -30px;
+    right: 80px;
+}
+
+.profile .no-banner .follow-button {
+  right: 0px;
+}
+.profile .no-banner .message-button {
+  right: 60px;
+}
+
 .tabs {
     display: flex;
     justify-content: flex-start;
@@ -154,4 +167,38 @@
 }
 .tab.active {
     border-bottom: 3px solid var(--highlight);
+}
+
+.profile .no-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.profile .no-banner .avatar {
+    height: 256px;
+    width: 256px;
+    margin-bottom: 30px;
+}
+
+.profile .no-banner .avatar-wrapper, .profile .no-banner .details-wrapper {
+  margin: 0 auto;
+}
+
+@media (min-width: 720px) {
+  .profile .no-banner {
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-around;
+      margin-top: 21px;
+  }
+  .profile .no-banner .avatar-wrapper {
+      margin: auto 10px;
+  }
+  .profile .no-banner .details-wrapper {
+      margin-left: 10px;
+      margin-top: 21px;
+  }
 }

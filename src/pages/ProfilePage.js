@@ -48,14 +48,14 @@ export default function ProfilePage() {
     function username() {
       return (
           <div className="name">
-               <h2>{user?.display_name || user?.name}</h2>
+               <h2>{user?.display_name || user?.name || 'Nostrich'}</h2>
                <Copy text={params.id} />
                {user?.nip05 && <Nip05 name={name} domain={domain} isVerified={isVerified} couldNotVerify={couldNotVerify} />}
           </div>
       )
     }
 
-    function details() {
+    function bio() {
         const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
         return (
             <div className="details">
@@ -100,29 +100,50 @@ export default function ProfilePage() {
         return null;
     }
 
+    function avatar() {
+      return (
+         <div className="avatar-wrapper">
+             <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={isVerified ? domain : ''}>
+             </div>
+         </div>
+      )
+    }
+
+    function userDetails() {
+      return (
+         <div className="details-wrapper">
+             {username()}
+             {isMe ? (
+                 <div className="btn btn-icon follow-button" onClick={() => navigate("/settings")}>
+                     <FontAwesomeIcon icon={faGear} size="lg" />
+                 </div>
+             ) : <>
+                     <div className="btn message-button" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
+                         <FontAwesomeIcon icon={faEnvelope} size="lg" />
+                     </div>
+                     <FollowButton pubkey={id} />
+                 </>
+             }
+             {bio()}
+         </div>
+      )
+    }
+
     return (
         <>
             <div className="profile flex">
-                <img alt="banner" className="banner" src={user?.banner ? user.banner : avatarUrl} />
-                <div className="avatar-wrapper">
-                    <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={isVerified ? domain : ''}>
-                    </div>
-                </div>
-                <div className="details-wrapper">
-                    {username()}
-                    {isMe ? (
-                        <div className="btn btn-icon follow-button" onClick={() => navigate("/settings")}>
-                            <FontAwesomeIcon icon={faGear} size="lg" />
-                        </div>
-                    ) : <>
-                            <div className="btn mr5" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
-                                <FontAwesomeIcon icon={faEnvelope} size="lg" />
-                            </div>
-                            <FollowButton pubkey={id} />
-                        </>
-                    }
-                    {details()}
-                </div>
+                {user?.banner && <img alt="banner" className="banner" src={user.banner} /> }
+                {user?.banner ? (
+                  <>
+                     {avatar()}
+                     {userDetails()}
+                  </>
+                ) : (
+                  <div className="no-banner">
+                     {avatar()}
+                     {userDetails()}
+                  </div>
+                )}
             </div>
             <div className="tabs">
                 {
