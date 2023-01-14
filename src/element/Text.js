@@ -9,6 +9,7 @@ import LazyImage from "./LazyImage";
 import Hashtag from "./Hashtag";
 
 import './Text.css'
+import { useMemo } from "react";
 
 function transformHttpLink(a) {
     try {
@@ -37,11 +38,11 @@ function transformHttpLink(a) {
                     return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
             }
         } else if (tweetId) {
-          return (
-            <div className="tweet" key={tweetId}>
-              <TwitterTweetEmbed tweetId={tweetId} />
-            </div>
-          )
+            return (
+                <div className="tweet" key={tweetId}>
+                    <TwitterTweetEmbed tweetId={tweetId} />
+                </div>
+            )
         } else if (youtubeId) {
             return (
                 <>
@@ -141,16 +142,16 @@ function extractHashtags(fragments) {
 }
 
 function transformLi({ body, tags, users }) {
-  let fragments = transformText({ body, tags, users })
-  return <li>{fragments}</li>
+    let fragments = transformText({ body, tags, users })
+    return <li>{fragments}</li>
 }
 
 function transformParagraph({ body, tags, users }) {
-  const fragments = transformText({ body, tags, users })
-  if (fragments.every(f => typeof f === 'string')) {
-    return <p>{fragments}</p>
-  }
-  return <>{fragments}</>
+    const fragments = transformText({ body, tags, users })
+    if (fragments.every(f => typeof f === 'string')) {
+        return <p>{fragments}</p>
+    }
+    return <>{fragments}</>
 }
 
 function transformText({ body, tags, users }) {
@@ -162,11 +163,13 @@ function transformText({ body, tags, users }) {
 }
 
 export default function Text({ content, tags, users }) {
-    const components = {
-      p: (props) => transformParagraph({ body: props.children, tags, users }),
-      a: (props) => transformHttpLink(props.href),
-      li: (props) => transformLi({ body: props.children, tags, users }),
-    }
+    const components = useMemo(() => {
+        return {
+            p: (props) => transformParagraph({ body: props.children, tags, users }),
+            a: (props) => transformHttpLink(props.href),
+            li: (props) => transformLi({ body: props.children, tags, users }),
+        };
+    }, [content]);
     return <ReactMarkdown className="text" components={components}>{content}</ReactMarkdown>
 }
 
