@@ -21,8 +21,3 @@
     align-self: flex-end;
     background-color: var(--gray-secondary);
 }
-
-.dm img, .dm video, .dm iframe {
-    max-width: 100%;
-    max-height: 500px;
-}
