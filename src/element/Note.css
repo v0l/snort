@@ -29,6 +29,36 @@
     word-break: normal;
 }
 
+.note > .body h1 {
+    margin: 0;
+}
+.note > .body h2 {
+    margin: 0;
+}
+.note > .body h3 {
+    margin: 0;
+}
+.note > .body h4 {
+    margin: 0;
+}
+.note > .body h5 {
+    margin: 0;
+}
+.note > .body h6 {
+    margin: 0;
+}
+
+.note > .body > p {
+    margin: 0;
+}
+
+.note > .body > pre {
+}
+
+.note > .body > ul, .note > .body > ol {
+    margin: 0;
+}
+
 .note > .body img, .note > .body video, .note > .body iframe {
     max-width: 100%;
     max-height: 500px;

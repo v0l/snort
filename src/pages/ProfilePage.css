@@ -27,7 +27,6 @@
 
 .profile .name h2 {
     margin: 0;
-=======
 }
 
 @media (min-width: 720px) {
@@ -37,9 +36,7 @@
       height: 300px;
       margin-bottom: -120px;
   }
->>>>>>> c68c73a (feat: display banner in profile)
 }
-
 
 .profile .avatar-wrapper {
     align-self: flex-start;

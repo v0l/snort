@@ -1,4 +1,7 @@
+import { useMemo } from "react";
+
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
 import Invoice from "./element/Invoice";
@@ -6,64 +9,59 @@ import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlReg
 import { eventLink, hexToBech32, profileLink } from "./Util";
 import LazyImage from "./element/LazyImage";
 import Hashtag from "./element/Hashtag";
-import { useMemo } from "react";
 
 function transformHttpLink(a) {
-    try {
-        const url = new URL(a);
-        const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
-        const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
-        const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
-        if (extension) {
-            switch (extension) {
-                case "gif":
-                case "jpg":
-                case "jpeg":
-                case "png":
-                case "bmp":
-                case "webp": {
-                    return <LazyImage key={url} src={url} />;
-                }
-                case "mp4":
-                case "mov":
-                case "mkv":
-                case "avi":
-                case "m4v": {
-                    return <video key={url} src={url} controls />
-                }
-                default:
-                    return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
+    const url = new URL(a);
+    const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
+    const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
+    const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
+    if (extension) {
+        switch (extension) {
+            case "gif":
+            case "jpg":
+            case "jpeg":
+            case "png":
+            case "bmp":
+            case "webp": {
+                return <LazyImage key={url} src={url} />;
             }
-        } else if (tweetId) {
-          return (
-            <div className="tweet">
-              <TwitterTweetEmbed tweetId={tweetId} />
-            </div>
-          )
-        } else if (youtubeId) {
-            return (
-                <>
-                    <br />
-                    <iframe
-                        className="w-max"
-                        src={`https://www.youtube.com/embed/${youtubeId}`}
-                        title="YouTube video player"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen=""
-                    />
-                    <br />
-                </>
-            )
-        } else {
-            return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
+            case "mp4":
+            case "mov":
+            case "mkv":
+            case "avi":
+            case "m4v": {
+                return <video key={url} src={url} controls />
+            }
+            default:
+                return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
         }
-    } catch (e) {
-        console.warn(`Not a valid url: ${a}`);
+    } else if (tweetId) {
+      return (
+        <div className="tweet">
+          <TwitterTweetEmbed tweetId={tweetId} />
+        </div>
+      )
+    } else if (youtubeId) {
+        return (
+            <>
+                <br />
+                <iframe
+                    className="w-max"
+                    src={`https://www.youtube.com/embed/${youtubeId}`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen=""
+                />
+                <br />
+            </>
+        )
+    } else {
+        return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
     }
 }
 
-export function extractLinks(fragments) {
+function extractLinks(fragments) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(UrlRegex).map(a => {
@@ -107,7 +105,7 @@ export function extractMentions(fragments, tags, users) {
     }).flat();
 }
 
-export function extractInvoices(fragments) {
+function extractInvoices(fragments) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(InvoiceRegex).map(i => {
@@ -122,7 +120,7 @@ export function extractInvoices(fragments) {
     }).flat();
 }
 
-export function extractHashtags(fragments) {
+function extractHashtags(fragments) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(HashtagRegex).map(i => {
@@ -137,18 +135,37 @@ export function extractHashtags(fragments) {
     }).flat();
 }
 
-export default function Text({ content, transforms }) {
-    const transformed = useMemo(() => {
-        let fragments = [content];
-        transforms?.forEach(a => {
-            fragments = a(fragments);
-        });
-        fragments = extractLinks(fragments);
-        fragments = extractInvoices(fragments);
-        fragments = extractHashtags(fragments);
-
-        return fragments;
-    }, [content]);
-
-    return transformed;
+function transformLi({ body, transforms }) {
+  let fragments = transformText({ body, transforms })
+  return <li>{fragments}</li>
 }
+
+function transformParagraph({ body, transforms }) {
+  const fragments = transformText({ body, transforms })
+  if (fragments.every(f => typeof f === 'string')) {
+    return <p>{fragments}</p>
+  }
+  return <>{fragments}</>
+}
+
+function transformText({ body, transforms }) {
+    let fragments = [body];
+    transforms?.forEach(a => {
+        fragments = a(fragments);
+    });
+    fragments = extractLinks(fragments);
+    fragments = extractInvoices(fragments);
+    fragments = extractHashtags(fragments);
+
+    return fragments;
+}
+
+export default function Text({ content, transforms }) {
+    const components = {
+      p: (props) => transformParagraph({ body: props.children, transforms }),
+      a: (props) => transformHttpLink(props.href),
+      li: (props) => transformLi({ body: props.children, transforms }),
+    }
+    return <ReactMarkdown components={components}>{content}</ReactMarkdown>
+}
+
