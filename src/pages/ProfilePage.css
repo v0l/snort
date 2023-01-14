@@ -139,14 +139,14 @@
 .profile .message-button {
     position: absolute;
     top: -30px;
-    right: 80px;
+    right: 74px;
 }
 
 .profile .no-banner .follow-button {
   right: 0px;
 }
 .profile .no-banner .message-button {
-  right: 60px;
+  right: 54px;
 }
 
 .tabs {
