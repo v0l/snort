@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
-import Invoice from "./element/Invoice";
-import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex } from "./Const";
-import { eventLink, hexToBech32, profileLink } from "./Util";
-import LazyImage from "./element/LazyImage";
-import Hashtag from "./element/Hashtag";
+import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex } from "../Const";
+import { eventLink, hexToBech32, profileLink } from "../Util";
+import Invoice from "./Invoice";
+import LazyImage from "./LazyImage";
+import Hashtag from "./Hashtag";
+
+import './Text.css'
 
 function transformHttpLink(a) {
     try {
@@ -165,6 +167,6 @@ export default function Text({ content, tags, users }) {
       a: (props) => transformHttpLink(props.href),
       li: (props) => transformLi({ body: props.children, tags, users }),
     }
-    return <ReactMarkdown components={components}>{content}</ReactMarkdown>
+    return <ReactMarkdown className="text" components={components}>{content}</ReactMarkdown>
 }
 

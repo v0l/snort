@@ -11,7 +11,7 @@ import useProfile from "../feed/ProfileFeed";
 import FollowButton from "../element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "../Util";
 import Timeline from "../element/Timeline";
-import Text from '../Text'
+import Text from '../element/Text'
 import LNURLTip from "../element/LNURLTip";
 import Nip05, { useIsVerified } from "../element/Nip05";
 import Copy from "../element/Copy";

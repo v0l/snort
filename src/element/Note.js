@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import Event from "../nostr/Event";
 import ProfileImage from "./ProfileImage";
-import Text from "../Text";
+import Text from "./Text";
 import { eventLink, hexToBech32 } from "../Util";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";

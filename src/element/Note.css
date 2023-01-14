@@ -29,55 +29,6 @@
     word-break: normal;
 }
 
-.note > .body h1 {
-    margin: 0;
-}
-.note > .body h2 {
-    margin: 0;
-}
-.note > .body h3 {
-    margin: 0;
-}
-.note > .body h4 {
-    margin: 0;
-}
-.note > .body h5 {
-    margin: 0;
-}
-.note > .body h6 {
-    margin: 0;
-}
-
-.note > .body > p {
-    margin: 0;
-}
-
-.note > .body > pre {
-}
-
-.note > .body > ul, .note > .body > ol {
-    margin: 0;
-}
-
-.note > .body > hr {
-    border: 0;
-    height: 1px;
-    background-image: var(--gray-gradient);
-    margin: 20px;
-}
-
-.note > .body img, .note > .body video, .note > .body iframe {
-    max-width: 100%;
-    max-height: 500px;
-    margin: 10px auto;
-    display: block;
-}
-
-.note > .body iframe, note > .body video {
-    width: -webkit-fill-available;
-    aspect-ratio: 16 / 9;
-}
-
 .note > .header img:hover, .note > .header .name > .reply:hover, .note .body:hover {
     cursor: pointer;
 }
@@ -98,12 +49,7 @@
     border-left: 3px solid var(--highlight);
 }
 
-
 .indented .note {
     border-bottom: none;
     padding: 4px;
-}
-
-.note .body a {
-    color: var(--highlight);
 }
