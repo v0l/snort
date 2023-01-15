@@ -63,12 +63,12 @@ export default function NoteReaction(props) {
     const root = extractRoot();
     const opt = {
         showHeader: ev?.Kind === EventKind.Repost,
-        showFooter: ev?.Kind === EventKind.Repost
+        showFooter: false,
     };
     return (
         <div className="reaction">
             <div className="header flex">
-                <ProfileImage pubkey={ev.RootPubKey} subHeader={tagLine()} />
+                <ProfileImage pubkey={ev.RootPubKey} />
                 <div className="info">
                     <NoteTime from={ev.CreatedAt * 1000} />
                 </div>
