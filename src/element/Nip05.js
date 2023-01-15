@@ -49,7 +49,7 @@ const Nip05 = ({ nip05, pubkey, defaultUsername = '' }) => {
          <div className="nick">
             {isDefaultUser ? defaultUsername : name}
           </div>
-         <div className={`domain text-gradient`} data-domain={domain.toLowerCase()}>
+         <div className={`domain text-gradient`} data-domain={domain?.toLowerCase()}>
              {domain}
          </div>
          <span className="badge">
