@@ -102,20 +102,10 @@
 
 .profile .details a {
     color: var(--highlight);
+    text-decoration: none;
 }
 
-.profile .website {
-    color: var(--highlight);
-    margin: 6px 0;
-}
-
-.profile .lnurl {
-    color: var(--highlight);
-    margin: 6px 0;
-    cursor: pointer;
-}
-
-.profile .lnurl:hover {
+.profile .details a:hover {
     text-decoration: underline;
 }
 
@@ -123,16 +113,6 @@
     color: var(--font-color);
     padding: 6px;
     margin-left: 4px;
-}
-
-.profile .website::before {
-    content: '🔗 ';
-    font-size: 10px;
-}
-
-.profile .lnurl {
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .profile .details-wrapper {
@@ -230,4 +210,40 @@
       margin-top: 21px;
       max-width: 420px;
   }
+}
+
+.profile .links {
+    margin: 8px 12px;
+}
+
+.profile .website {
+    color: var(--highlight);
+    margin: 6px 0;
+}
+
+.profile .website a {
+    text-decoration: none;
+}
+
+.profile .website::before {
+    content: '🔗 ';
+}
+
+.profile .lnurl {
+    color: var(--highlight);
+    margin: 6px 0;
+    cursor: pointer;
+}
+
+.profile .lnurl:hover {
+    text-decoration: underline;
+}
+
+.profile .lnurl {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile .zap {
+    margin-right: .3em;
 }
