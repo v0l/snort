@@ -7,8 +7,8 @@
     height: 210px;
     margin-bottom: -80px;
     object-fit: cover;
-    mask-image: linear-gradient(to bottom, var(--bg-color), rgba(0,0,0,0));
-    -webkit-mask-image: linear-gradient(to bottom, var(--bg-color), rgba(0,0,0,0));
+    mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0,0,0,0));
+    -webkit-mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0,0,0,0));
     z-index: 0;
 }
 
