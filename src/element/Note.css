@@ -19,6 +19,10 @@
 .note > .header > .info {
     font-size: small;
     white-space: nowrap;
+    color: var(--gray-tertiary);
+    align-self: flex-start;
+}
+.note.active > .header > .info {
     color: var(--gray-light);
 }
 
