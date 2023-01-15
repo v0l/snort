@@ -38,11 +38,11 @@ function transformHttpLink(a) {
                     return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
             }
         } else if (tweetId) {
-            return (
-                <div className="tweet" key={tweetId}>
-                    <TwitterTweetEmbed tweetId={tweetId} />
-                </div>
-            )
+          return (
+            <div className="tweet" key={tweetId}>
+              <TwitterTweetEmbed tweetId={tweetId} />
+            </div>
+          )
         } else if (youtubeId) {
             return (
                 <>
@@ -81,7 +81,7 @@ function extractLinks(fragments) {
     }).flat();
 }
 
-export function extractMentions(fragments, tags, users) {
+function extractMentions(fragments, tags, users) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(MentionRegex).map((match) => {
@@ -172,4 +172,3 @@ export default function Text({ content, tags, users }) {
     }, [content]);
     return <ReactMarkdown className="text" components={components}>{content}</ReactMarkdown>
 }
-

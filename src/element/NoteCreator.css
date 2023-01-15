@@ -2,14 +2,11 @@
     margin-bottom: 10px;
     background-color: var(--gray);
     border-radius: 10px;
-    overflow: hidden;
 }
 
 .note-creator textarea {
-    resize: none;
     outline: none;
     min-height: 40px;
-    max-height: 300px;
     border-radius: 10px 10px 0 0;
     max-width: -webkit-fill-available;
     max-width: -moz-available;
@@ -18,6 +15,11 @@
     min-width: -webkit-fill-available;
     min-width: -moz-available;
     min-width: fill-available;
+    transition: min-height .5s;
+}
+
+.note-creator .textarea--focused {
+    min-height: 120px;
 }
 
 .note-creator .actions {
