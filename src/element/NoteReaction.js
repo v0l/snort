@@ -40,8 +40,8 @@ export default function NoteReaction(props) {
 
     function tagLine() {
         switch (ev.Kind) {
-            case EventKind.Reaction: return <small>Reacted with {mapReaction(ev.Content)}</small>;
-            case EventKind.Repost: return <small> Reposted</small>
+            case EventKind.Reaction: return <small className="reaction-text">reacted with {mapReaction(ev.Content)}</small>;
+            case EventKind.Repost: return <small className="reaction-text">reposted</small>
         }
     }
 
