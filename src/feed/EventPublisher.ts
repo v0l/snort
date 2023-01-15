@@ -58,9 +58,11 @@ export default function useEventPublisher() {
     }
 
     return {
-        broadcast: (ev: NEvent) => {
-            console.debug("Sending event: ", ev);
-            System.BroadcastEvent(ev);
+        broadcast: (ev: NEvent | undefined) => {
+            if (ev) {
+                console.debug("Sending event: ", ev);
+                System.BroadcastEvent(ev);
+            }
         },
         metadata: async (obj: UserMetadata) => {
             if (pubKey) {

@@ -41,11 +41,10 @@ export default function useLoginFeed() {
     useEffect(() => {
         let contactList = main.notes.filter(a => a.kind === EventKind.ContactList);
         let notifications = main.notes.filter(a => a.kind === EventKind.TextNote);
-        let metadata = main.notes.filter(a => a.kind === EventKind.SetMetadata)
-            .map(a => mapEventToProfile(a))
+        let metadata = main.notes.filter(a => a.kind === EventKind.SetMetadata);
+        let profiles = metadata.map(a => mapEventToProfile(a))
             .filter(a => a !== undefined)
             .map(a => a!);
-        let profiles = metadata.map(a => mapEventToProfile(a));
         let dms = main.notes.filter(a => a.kind === EventKind.DirectMessage);
 
         for (let cl of contactList) {
@@ -65,10 +64,7 @@ export default function useLoginFeed() {
         }
         dispatch(addNotifications(notifications));
         dispatch(setUserData(profiles));
-        const userMetadata = metadata.map(ev => {
-          return {...JSON.parse(ev.content), pubkey: ev.pubkey }
-        })
-        db.users.bulkPut(metadata);
+        db.users.bulkPut(profiles);
         dispatch(addDirectMessage(dms));
     }, [main]);
 }

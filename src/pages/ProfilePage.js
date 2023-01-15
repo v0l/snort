@@ -107,7 +107,7 @@ export default function ProfilePage() {
     function avatar() {
         return (
             <div className="avatar-wrapper">
-                <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={isVerified ? domain : ''}>
+                <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={domain?.toLowerCase()}>
                 </div>
             </div>
         )

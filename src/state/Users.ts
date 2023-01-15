@@ -84,14 +84,7 @@ const UsersSlice = createSlice({
                     };
                 }
                 state.users[x.pubkey] = x;
-                db.users.put({
-                  pubkey: x.pubkey,
-                  name: x.name,
-                  display_name: x.display_name,
-                  nip05: x.nip05,
-                  picture: x.picture,
-                })
-                window.localStorage.setItem(`user:${x.pubkey}`, JSON.stringify(x));
+                db.users.put(x)
 
                 state.users = {
                     ...state.users

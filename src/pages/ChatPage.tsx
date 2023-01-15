@@ -21,7 +21,7 @@ type RouterParams = {
 export default function ChatPage() {
     const params = useParams<RouterParams>();
     const publisher = useEventPublisher();
-    const id = bech32ToHex(params.id);
+    const id = bech32ToHex(params.id ?? "");
     const dms = useSelector<any, RawEvent[]>(s => filterDms(s.login.dms, s.login.publicKey));
     const [content, setContent] = useState<string>();
     const { ref, inView, entry } = useInView();
@@ -49,15 +49,17 @@ export default function ChatPage() {
     }, [inView, dmListRef, sortedDms]);
 
     async function sendDm() {
-        let ev = await publisher.sendDm(content, id);
-        console.debug(ev);
-        publisher.broadcast(ev);
-        setContent("");
+        if (content) {
+            let ev = await publisher.sendDm(content, id);
+            console.debug(ev);
+            publisher.broadcast(ev);
+            setContent(undefined);
+        }
     }
 
     async function onEnter(e: KeyboardEvent) {
         let isEnter = e.code === "Enter";
-        if(isEnter && !e.shiftKey) {
+        if (isEnter && !e.shiftKey) {
             await sendDm();
         }
     }
