@@ -17,14 +17,18 @@
 
 .pfp a:hover {
     text-decoration: underline;
+    text-decoration-color: var(--gray-superlight);
+}
+
+.pfp .profile-name {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  margin-bottom: .2em;
 }
 
 .pfp .nip05 {
   font-size: 16px;
   margin: 0;
-}
-
-.pfp .profile-name {
-  display: flex;
-  flex-direction: row;
+  margin-top: -.2em;
 }

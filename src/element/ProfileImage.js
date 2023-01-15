@@ -27,17 +27,18 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true, c
         <div className={`pfp ${className}`}>
             <LazyImage src={hasImage ? user.picture : Nostrich} onClick={() => navigate(link ?? profileLink(pubkey))} />
             {showUsername && (<div className="f-grow">
-                <div className="profile-name">
-                  <Link key={pubkey} to={link ?? profileLink(pubkey)}>
-                    {user?.nip05 ? (
+                <Link key={pubkey} to={link ?? profileLink(pubkey)}>
+                  <div className="profile-name">
+                    <div>{name}</div>
+                    {user?.nip05 && (
                         <Nip05
                           nip05={user.nip05}
                           pubkey={user.pubkey}
                           defaultUsername={user.display_name || user.name}
                         />
-                      ): name}
-                  </Link>
-                </div>
+                      )}
+                  </div>
+                </Link>
                 {subHeader ? <>{subHeader}</> : null}
             </div>
             )}
