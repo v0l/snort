@@ -16,7 +16,7 @@ export default function NoteTime({ from }) {
         } else if (absAgo > HourInMs) {
             return `${fromDate.getHours().toString().padStart(2, '0')}:${fromDate.getMinutes().toString().padStart(2, '0')}`;
         } else if (absAgo < MinuteInMs) {
-          return 'Just now'
+          return ''
         } else {
             let mins = parseInt(absAgo / MinuteInMs);
             let minutes = mins === 1 ? 'min' : 'mins'
