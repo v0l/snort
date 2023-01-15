@@ -1,4 +1,5 @@
-import { Component } from "react";
+import { useSelector } from "react-redux";
+import { useLiveQuery } from "dexie-react-hooks";
 
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 
@@ -11,10 +12,11 @@ import Nostrich from "../nostrich.jpg";
 // @ts-expect-error
 import { hexToBech32 } from "../Util";
 import type { User } from "../nostr/types";
+import { db } from "../db";
 
-function searchUsers(query: string, users: Record<string, User>) {
+function searchUsers(query: string, users: User[]) {
   const q = query.toLowerCase()
-  return Object.values(users).filter(({ name, display_name, about, nip05 }) => {
+  return users.filter(({ name, display_name, about, nip05 }: User) => {
     return name?.toLowerCase().includes(q)
       || display_name?.toLowerCase().includes(q)
       || about?.toLowerCase().includes(q)
@@ -37,29 +39,39 @@ const UserItem = ({ pubkey, display_name, picture, nip05, ...rest }: User) => {
   )
 }
 
-export default class Textarea extends Component {
-  render() {
+function normalizeUser({ pubkey, about, nip05, name, display_name }: User) {
+  return { pubkey, about, nip05, name, display_name }
+}
+
+const Textarea = ({ onChange, ...rest }: any) => {
     // @ts-expect-error
-    const { users, onChange, ...rest } = this.props
+    const { users } = useSelector(s => s.users)
+    const dbUsers = useLiveQuery(
+      () => db.users.toArray().then(usrs => {
+        return usrs.reduce((acc, usr) => {
+          return { ...acc, [usr.pubkey]: normalizeUser(usr)}
+        }, {})
+      })
+    )
+    const cachedUsers = dbUsers ? dbUsers : {}
+    const allUsers: User[] = Object.values({...cachedUsers, ...users})
+
     return (
         <ReactTextareaAutocomplete
           {...rest}
           loadingComponent={() => <span>Loading....</span>}
           placeholder="Say something!"
-          ref={rta => {
-            // @ts-expect-error
-            this.rta = rta;
-          }}
           onChange={onChange}
           trigger={{
              "@": {
                afterWhitespace: true,
-               dataProvider: token => searchUsers(token, users),
+               dataProvider: token => dbUsers ? searchUsers(token, allUsers) : [],
                component: (props: any) => <UserItem {...props.entity} />,
                output: (item: any) => `@${hexToBech32("npub", item.pubkey)}`
              }
            }}
         />
     )
-  }
 }
+
+export default Textarea
