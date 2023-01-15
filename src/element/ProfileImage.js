@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useProfile from "../feed/ProfileFeed";
 import { hexToBech32, profileLink } from "../Util";
 import LazyImage from "./LazyImage";
+import Nip05 from "./Nip05";
 
 export default function ProfileImage({ pubkey, subHeader, showUsername = true, className, link }) {
     const navigate = useNavigate();
@@ -26,7 +27,17 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true, c
         <div className={`pfp ${className}`}>
             <LazyImage src={hasImage ? user.picture : Nostrich} onClick={() => navigate(link ?? profileLink(pubkey))} />
             {showUsername && (<div className="f-grow">
-                <Link key={pubkey} to={link ?? profileLink(pubkey)}>{name}</Link>
+                <div className="profile-name">
+                  <Link key={pubkey} to={link ?? profileLink(pubkey)}>
+                    {user?.nip05 ? (
+                        <Nip05
+                          nip05={user.nip05}
+                          pubkey={user.pubkey}
+                          defaultUsername={user.display_name || user.name}
+                        />
+                      ): name}
+                  </Link>
+                </div>
                 {subHeader ? <>{subHeader}</> : null}
             </div>
             )}

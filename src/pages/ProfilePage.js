@@ -13,7 +13,7 @@ import { extractLnAddress, parseId, hexToBech32 } from "../Util";
 import Timeline from "../element/Timeline";
 import Text from '../element/Text'
 import LNURLTip from "../element/LNURLTip";
-import Nip05, { useIsVerified } from "../element/Nip05";
+import Nip05 from "../element/Nip05";
 import Copy from "../element/Copy";
 import ProfilePreview from "../element/ProfilePreview";
 import FollowersList from "../element/FollowersList";
@@ -37,9 +37,9 @@ export default function ProfilePage() {
     const [showLnQr, setShowLnQr] = useState(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
     const about = Text({ content: user?.about })
-    const { name, domain, isVerified, couldNotVerify } = useIsVerified(user?.nip05, user?.pubkey)
     const avatarUrl = (user?.picture?.length ?? 0) === 0 ? Nostrich : user?.picture
     const backgroundImage = `url(${avatarUrl})`
+    const domain = user?.nip05 && user.nip05.split('@')[1]
 
     useEffect(() => {
         setTab(ProfileTab.Notes);
@@ -50,7 +50,7 @@ export default function ProfilePage() {
           <div className="name">
                <h2>{user?.display_name || user?.name || 'Nostrich'}</h2>
                <Copy text={params.id} />
-               {user?.nip05 && <Nip05 name={name} domain={domain} isVerified={isVerified} couldNotVerify={couldNotVerify} />}
+               {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
           </div>
       )
     }
@@ -103,7 +103,7 @@ export default function ProfilePage() {
     function avatar() {
       return (
          <div className="avatar-wrapper">
-             <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={isVerified ? domain : ''}>
+             <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={domain?.toLowerCase()}>
              </div>
          </div>
       )

@@ -18,3 +18,13 @@
 .pfp a:hover {
     text-decoration: underline;
 }
+
+.pfp .nip05 {
+  font-size: 14px;
+  margin: 0;
+}
+
+.pfp .profile-name {
+  display: flex;
+  flex-direction: row;
+}

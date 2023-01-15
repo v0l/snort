@@ -4,7 +4,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 
 // @ts-expect-error
-import Nip05, { useIsVerified } from "./Nip05";
+import Nip05 from "./Nip05";
 import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
 // @ts-expect-error
@@ -25,7 +25,6 @@ function searchUsers(query: string, users: User[]) {
 }
 
 const UserItem = ({ pubkey, display_name, picture, nip05, ...rest }: User) => {
-  const { isVerified, couldNotVerify, name, domain } = useIsVerified(nip05, pubkey)
   return (
     <div key={pubkey} className="user-item">
       <div className="user-picture">
@@ -33,7 +32,7 @@ const UserItem = ({ pubkey, display_name, picture, nip05, ...rest }: User) => {
       </div>
       <div className="user-details">
         <strong>{display_name || rest.name}</strong>
-        <Nip05 name={name} domain={domain} isVerified={isVerified} couldNotVerify={couldNotVerify} />
+        <Nip05 nip05={nip05} pubkey={pubkey} />
       </div>
     </div>
   )
