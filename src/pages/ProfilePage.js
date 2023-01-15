@@ -59,7 +59,7 @@ export default function ProfilePage() {
         const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
         return (
             <div className="details">
-                <p>{about}</p>
+                <div>{about}</div>
 
                 {user?.website && (
                     <div className="website f-ellipsis">

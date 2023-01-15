@@ -1,36 +1,41 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "react-query";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 import './Nip05.css'
 
-export function useIsVerified(nip05, pubkey) {
-  const [isVerified, setIsVerified] = useState(false)
-  const [couldNotVerify, setCouldNotVerify] = useState(false)
-  const [name, domain] = nip05 ? nip05.split('@') : []
-
-  useEffect(() => {
-      if (!nip05 || !pubkey) {
-        return
-      }
-      setCouldNotVerify(false)
-      setIsVerified(false)
-
-      fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`)
+function fetchNip05Pubkey(name, domain) {
+  if (!name || !domain) {
+    return Promise.resolve(null)
+  }
+  return fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`)
         .then((res) => res.json())
         .then(({ names }) => {
           if (names && names[name]) {
-            setIsVerified(names[name] === pubkey)
+            return names[name]
           }
         })
-        .catch((err) => {
-          setCouldNotVerify(true)
-          console.error("Couldn't verifiy nip05")
-        })
-  }, [nip05, pubkey])
+}
 
-  return { name, domain: domain?.toLowerCase(), isVerified, couldNotVerify }
+const VERIFICATION_CACHE_TIME = 24 * 60 * 60 * 1000
+const VERIFICATION_STALE_TIMEOUT = 10 * 60 * 1000
+
+export function useIsVerified(nip05, pubkey) {
+  const [name, domain] = nip05 ? nip05.split('@') : []
+  const address = domain && `${name}@${domain.toLowerCase()}`
+  const { isLoading, isError, isSuccess, isIdle, data } = useQuery(
+    ['nip05', nip05],
+    () => fetchNip05Pubkey(name, domain),
+    {
+      retry: false,
+      cacheTime: VERIFICATION_CACHE_TIME,
+      staleTime: VERIFICATION_STALE_TIMEOUT
+    },
+  )
+  const isVerified = isSuccess && data === pubkey
+  const cantVerify = isSuccess && data !== pubkey
+  return { name, domain: domain?.toLowerCase(), isVerified, couldNotVerify: isError || cantVerify }
 }
 
 const Nip05 = ({ name, domain, isVerified, couldNotVerify }) => {

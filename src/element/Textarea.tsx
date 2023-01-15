@@ -43,9 +43,10 @@ function normalizeUser({ pubkey, about, nip05, name, display_name }: User) {
   return { pubkey, about, nip05, name, display_name }
 }
 
-const Textarea = ({ onChange, ...rest }: any) => {
-    // @ts-expect-error
-    const { users } = useSelector(s => s.users)
+const Textarea = ({ users, onChange, ...rest }: any) => {
+    const normalizedUsers = Object.keys(users).reduce((acc, pk) => {
+      return {...acc, [pk]: normalizeUser(users[pk]) }
+    }, {})
     const dbUsers = useLiveQuery(
       () => db.users.toArray().then(usrs => {
         return usrs.reduce((acc, usr) => {
@@ -53,8 +54,7 @@ const Textarea = ({ onChange, ...rest }: any) => {
         }, {})
       })
     )
-    const cachedUsers = dbUsers ? dbUsers : {}
-    const allUsers: User[] = Object.values({...cachedUsers, ...users})
+    const allUsers: User[] = Object.values({...normalizedUsers, ...dbUsers})
 
     return (
         <ReactTextareaAutocomplete

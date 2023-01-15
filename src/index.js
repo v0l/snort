@@ -1,6 +1,7 @@
 import './index.css';
 
 import React from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux'
 import {
@@ -27,6 +28,11 @@ import ChatPage from './pages/ChatPage';
  * Nostr websocket managment system
  */
 export const System = new NostrSystem();
+
+/**
+ * HTTP query provider
+ */
+const HTTP = new QueryClient()
 
 const router = createBrowserRouter([
   {
@@ -81,7 +87,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={Store}>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={HTTP}>
+         <RouterProvider router={router} />
+      </QueryClientProvider>
     </Provider>
   </React.StrictMode>
 );
