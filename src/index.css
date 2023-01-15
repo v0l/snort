@@ -199,6 +199,7 @@ span.pill {
   padding: 2px 10px;
   border-radius: 10px;
   user-select: none;
+  color: var(--font-color);
   margin: 2px 5px;
 }
 

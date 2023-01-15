@@ -4,8 +4,13 @@
     border-radius: 10px;
 }
 
+.note-reply {
+    margin: 10px;
+}
+
 .note-creator textarea {
     outline: none;
+    resize: none;
     min-height: 40px;
     border-radius: 10px 10px 0 0;
     max-width: -webkit-fill-available;
@@ -15,11 +20,6 @@
     min-width: -webkit-fill-available;
     min-width: -moz-available;
     min-width: fill-available;
-    transition: min-height .5s;
-}
-
-.note-creator .textarea--focused {
-    min-height: 120px;
 }
 
 .note-creator .actions {
@@ -43,4 +43,7 @@
 .note-creator .btn {
     border-radius: 20px;
     font-weight: bold;
+    background-color: var(--gray-secondary);
+    color: var(--gray-superlight);
+    border-color: var(--gray-superlight);
 }
