@@ -93,6 +93,7 @@
 .profile .details {
     max-width: 680px;
     width: 100%;
+    margin-top: 12px;
 }
 
 .profile .details p {
@@ -149,10 +150,12 @@
 @media (min-width: 360px) {
   .profile .copy .body { font-size: 14px }
   .profile .details-wrapper, .profile .avatar-wrapper { margin-left: 21px; }
+  .profile .details { width: calc(100% - 21px); }
 }
 
 @media (min-width: 720px) {
   .profile .details-wrapper, .profile .avatar-wrapper { margin-left: 30px; }
+  .profile .details { width: calc(100% - 30px); }
 }
 
 .profile .follow-button {
