@@ -39,7 +39,7 @@ export function useIsVerified(nip05, pubkey) {
   return { isVerified, couldNotVerify: isError || cantVerify }
 }
 
-const Nip05 = ({ nip05, pubkey, defaultUsername = '' }) => {
+const Nip05 = ({ nip05, pubkey }) => {
     const [name, domain] = nip05 ? nip05.split('@') : []
     const isDefaultUser = name === '_'
     const { isVerified, couldNotVerify } = useIsVerified(nip05, pubkey)
@@ -47,7 +47,7 @@ const Nip05 = ({ nip05, pubkey, defaultUsername = '' }) => {
     return (
        <div className="flex nip05" onClick={(ev) => ev.stopPropagation()}>
          <div className="nick">
-            {isDefaultUser ? defaultUsername : name}
+            {!isDefaultUser && name}
           </div>
          <div className={`domain text-gradient`} data-domain={domain?.toLowerCase()}>
              {domain}

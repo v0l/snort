@@ -30,13 +30,7 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true, c
                 <Link key={pubkey} to={link ?? profileLink(pubkey)}>
                   <div className="profile-name">
                     <div>{name}</div>
-                    {user?.nip05 && (
-                        <Nip05
-                          nip05={user.nip05}
-                          pubkey={user.pubkey}
-                          defaultUsername={user.display_name || user.name}
-                        />
-                      )}
+                    {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
                   </div>
                 </Link>
                 {subHeader ? <>{subHeader}</> : null}
