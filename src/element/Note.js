@@ -9,7 +9,6 @@ import Text from "./Text";
 import { eventLink, hexToBech32 } from "../Util";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
-import Nip05 from "./Nip05";
 
 export default function Note(props) {
     const navigate = useNavigate();

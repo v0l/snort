@@ -75,6 +75,7 @@ const UsersSlice = createSlice({
                   nip05: x.nip05,
                   picture: x.picture,
                 })
+                window.localStorage.setItem(`user:${x.pubkey}`, JSON.stringify(x));
 
                 state.users = {
                     ...state.users
