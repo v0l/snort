@@ -74,7 +74,6 @@ const UsersSlice = createSlice({
                   display_name: x.display_name,
                   nip05: x.nip05,
                   picture: x.picture,
-                  about: x.about,
                 })
 
                 state.users = {

@@ -38,8 +38,8 @@ const UserItem = ({ pubkey, display_name, picture, nip05, ...rest }: User) => {
   )
 }
 
-function normalizeUser({ pubkey, about, nip05, name, display_name }: User) {
-  return { pubkey, about, nip05, name, display_name }
+function normalizeUser({ pubkey, picture, nip05, name, display_name }: User) {
+  return { pubkey, nip05, name, picture, display_name }
 }
 
 const Textarea = ({ users, onChange, ...rest }: any) => {

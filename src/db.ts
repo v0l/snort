@@ -8,7 +8,7 @@ export class SnortDB extends Dexie {
   constructor() {
     super('snortDB');
     this.version(1).stores({
-      users: '++pubkey, name, display_name, about, nip05' // Primary key and indexed props
+      users: '++pubkey, name, display_name, picture, nip05' // Primary key and indexed props
     });
   }
 }
