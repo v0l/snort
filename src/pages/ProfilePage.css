@@ -64,6 +64,22 @@
     background-image: var(--img-url), var(--nostrplebs-gradient);
 }
 
+.profile .avatar[data-domain="nostrpurple.com"] {
+    background-image: var(--img-url), var(--nostrplebs-gradient);
+}
+
+.profile .avatar[data-domain="nostr.fan"] {
+    background-image: var(--img-url), var(--nostrplebs-gradient);
+}
+
+.profile .avatar[data-domain="nostrich.zone"] {
+    background-image: var(--img-url), var(--nostrplebs-gradient);
+}
+
+.profile .avatar[data-domain="nostriches.net"] {
+    background-image: var(--img-url), var(--nostrplebs-gradient);
+}
+
 .profile .name {
     display: flex;
     flex-direction: column;
