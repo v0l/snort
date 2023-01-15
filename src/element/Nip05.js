@@ -12,9 +12,10 @@ function fetchNip05Pubkey(name, domain) {
   return fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`)
         .then((res) => res.json())
         .then(({ names }) => {
-          if (names && names[name]) {
-            return names[name]
-          }
+          const match = Object.keys(names).find(n => {
+            return n.toLowerCase() === name.toLowerCase()
+          })
+          return names[match]
         })
 }
 
