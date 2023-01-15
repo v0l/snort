@@ -1,19 +1,18 @@
 import { useMemo } from "react";
+import { u256 } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import useSubscription from "./Subscription";
 
-export default function useThreadFeed(id) {
+export default function useThreadFeed(id: u256) {
     const sub = useMemo(() => {
         const thisSub = new Subscriptions();
         thisSub.Id = `thread:${id.substring(0, 8)}`;
-        thisSub.Ids.add(id);
+        thisSub.Ids = new Set([id]);
 
         // get replies to this event
         const subRelated = new Subscriptions();
-        subRelated.Kinds.add(EventKind.Reaction);
-        subRelated.Kinds.add(EventKind.TextNote);
-        subRelated.Kinds.add(EventKind.Deletion);
+        subRelated.Kinds = new Set([EventKind.Reaction, EventKind.TextNote, EventKind.Deletion]);
         subRelated.ETags = thisSub.Ids;
         thisSub.AddSubscription(subRelated);
 
@@ -28,6 +27,7 @@ export default function useThreadFeed(id) {
         if (thisNote) {
             let otherSubs = new Subscriptions();
             otherSubs.Id = `thread-related:${id.substring(0, 8)}`;
+            otherSubs.Ids = new Set();
             for (let e of thisNote.tags.filter(a => a[0] === "e")) {
                 otherSubs.Ids.add(e[1]);
             }
@@ -37,15 +37,14 @@ export default function useThreadFeed(id) {
             }
 
             let relatedSubs = new Subscriptions();
-            relatedSubs.Kinds.add(EventKind.Reaction);
-            relatedSubs.Kinds.add(EventKind.TextNote);
-            relatedSubs.Kinds.add(EventKind.Deletion);
+            relatedSubs.Kinds = new Set([EventKind.Reaction, EventKind.TextNote, EventKind.Deletion]);
             relatedSubs.ETags = otherSubs.Ids;
 
             otherSubs.AddSubscription(relatedSubs);
             return otherSubs;
         }
-    }, [main.notes]);
+        return null;
+    }, [main]);
 
     const others = useSubscription(relatedThisSub, { leaveOpen: true });
 

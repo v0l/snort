@@ -1,71 +1,87 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as secp from '@noble/secp256k1';
 import { DefaultRelays } from '../Const';
+import { HexKey, RawEvent, TaggedRawEvent } from '../nostr';
+import { RelaySettings } from '../nostr/Connection';
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
 const NotificationsReadItem = "notifications-read";
 
+interface LoginStore {
+    /**
+     * If there is no login
+     */
+    loggedOut?: boolean,
+
+    /**
+     * Current user private key
+     */
+    privateKey?: HexKey,
+
+    /**
+     * Current users public key
+     */
+    publicKey?: HexKey,
+
+    /**
+     * All the logged in users relays
+     */
+    relays: any,
+
+    /**
+     * Newest relay list timestamp
+     */
+    latestRelays: number,
+
+    /**
+     * A list of pubkeys this user follows
+     */
+    follows: HexKey[],
+
+    /**
+     * Notifications for this login session
+     */
+    notifications: TaggedRawEvent[],
+
+    /**
+    * Timestamp of last read notification
+    */
+    readNotifications: number,
+
+    /**
+     * Encrypted DM's
+     */
+    dms: TaggedRawEvent[]
+};
+
+export interface SetRelaysPayload {
+    relays: any,
+    createdAt: number
+};
+
 const LoginSlice = createSlice({
     name: "Login",
-    initialState: {
-        /**
-         * If there is no login
-         */
-        loggedOut: null,
-
-        /**
-         * Current user private key
-         */
-        privateKey: null,
-
-        /**
-         * Current users public key
-         */
-        publicKey: null,
-
-        /** 
-         * Configured relays for this user
-         */
+    initialState: <LoginStore>{
         relays: {},
-
-        /**
-         * Newest relay list timestamp
-         */
-        latestRelays: null,
-
-        /**
-         * A list of pubkeys this user follows
-         */
+        latestRelays: 0,
         follows: [],
-
-        /**
-         * Notifications for this login session
-         */
         notifications: [],
-
-        /**
-         * Timestamp of last read notification
-         */
         readNotifications: 0,
-
-        /**
-         * Encrypted DM's
-         */
         dms: []
     },
     reducers: {
         init: (state) => {
-            state.privateKey = window.localStorage.getItem(PrivateKeyItem);
+            state.privateKey = window.localStorage.getItem(PrivateKeyItem) ?? undefined;
             if (state.privateKey) {
                 window.localStorage.removeItem(PublicKeyItem); // reset nip07 if using private key
-                state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(state.privateKey, true));
+                state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(state.privateKey));
                 state.loggedOut = false;
             } else {
                 state.loggedOut = true;
             }
 
-            state.relays = DefaultRelays;
+            state.relays = Object.fromEntries(DefaultRelays.entries());
 
             // check pub key only
             let pubKey = window.localStorage.getItem(PublicKeyItem);
@@ -75,41 +91,45 @@ const LoginSlice = createSlice({
             }
 
             // notifications
-            let readNotif = parseInt(window.localStorage.getItem(NotificationsReadItem));
+            let readNotif = parseInt(window.localStorage.getItem(NotificationsReadItem) ?? "0");
             if (!isNaN(readNotif)) {
                 state.readNotifications = readNotif;
             }
         },
-        setPrivateKey: (state, action) => {
+        setPrivateKey: (state, action: PayloadAction<HexKey>) => {
             state.loggedOut = false;
             state.privateKey = action.payload;
             window.localStorage.setItem(PrivateKeyItem, action.payload);
-            state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload, true));
+            state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload));
         },
-        setPublicKey: (state, action) => {
+        setPublicKey: (state, action: PayloadAction<HexKey>) => {
             window.localStorage.setItem(PublicKeyItem, action.payload);
             state.loggedOut = false;
             state.publicKey = action.payload;
         },
-        setRelays: (state, action) => {
+        setRelays: (state, action: PayloadAction<SetRelaysPayload>) => {
             let relays = action.payload.relays;
             let createdAt = action.payload.createdAt;
-            if(state.latestRelays > createdAt) {
+            if (state.latestRelays > createdAt) {
                 return;
             }
 
             // filter out non-websocket urls
-            let filtered = Object.entries(relays)
-                .filter(a => a[0].startsWith("ws://") || a[0].startsWith("wss://"));
+            let filtered = new Map<string, RelaySettings>();
+            for (let [k, v] of Object.entries(relays)) {
+                if (k.startsWith("wss://") || k.startsWith("ws://")) {
+                    filtered.set(k, <RelaySettings>v);
+                }
+            }
 
-            state.relays = Object.fromEntries(filtered);
+            state.relays = Object.fromEntries(filtered.entries());
             state.latestRelays = createdAt;
         },
-        removeRelay: (state, action) => {
+        removeRelay: (state, action: PayloadAction<string>) => {
             delete state.relays[action.payload];
             state.relays = { ...state.relays };
         },
-        setFollows: (state, action) => {
+        setFollows: (state, action: PayloadAction<string | string[]>) => {
             let existing = new Set(state.follows);
             let update = Array.isArray(action.payload) ? action.payload : [action.payload];
 
@@ -124,7 +144,7 @@ const LoginSlice = createSlice({
                 state.follows = Array.from(existing);
             }
         },
-        addNotifications: (state, action) => {
+        addNotifications: (state, action: PayloadAction<TaggedRawEvent | TaggedRawEvent[]>) => {
             let n = action.payload;
             if (!Array.isArray(n)) {
                 n = [n];
@@ -143,7 +163,7 @@ const LoginSlice = createSlice({
                 ];
             }
         },
-        addDirectMessage: (state, action) => {
+        addDirectMessage: (state, action: PayloadAction<TaggedRawEvent | Array<TaggedRawEvent>>) => {
             let n = action.payload;
             if (!Array.isArray(n)) {
                 n = [n];
@@ -166,8 +186,8 @@ const LoginSlice = createSlice({
             window.localStorage.removeItem(PrivateKeyItem);
             window.localStorage.removeItem(PublicKeyItem);
             window.localStorage.removeItem(NotificationsReadItem);
-            state.privateKey = null;
-            state.publicKey = null;
+            state.privateKey = undefined;
+            state.publicKey = undefined;
             state.follows = [];
             state.notifications = [];
             state.loggedOut = true;
@@ -176,10 +196,21 @@ const LoginSlice = createSlice({
         },
         markNotificationsRead: (state) => {
             state.readNotifications = new Date().getTime();
-            window.localStorage.setItem(NotificationsReadItem, state.readNotifications);
+            window.localStorage.setItem(NotificationsReadItem, state.readNotifications.toString());
         }
     }
 });
 
-export const { init, setPrivateKey, setPublicKey, setRelays, removeRelay, setFollows, addNotifications, addDirectMessage, logout, markNotificationsRead } = LoginSlice.actions;
+export const {
+    init,
+    setPrivateKey,
+    setPublicKey,
+    setRelays,
+    removeRelay,
+    setFollows,
+    addNotifications,
+    addDirectMessage,
+    logout,
+    markNotificationsRead
+} = LoginSlice.actions;
 export const reducer = LoginSlice.reducer;

@@ -1,8 +1,17 @@
 import { useEffect, useReducer } from "react";
-import { System } from "..";
+import { System } from "../nostr/System";
+import { TaggedRawEvent } from "../nostr";
 import { Subscriptions } from "../nostr/Subscriptions";
 
-function notesReducer(state, ev) {
+export type NoteStore = {
+    notes: Array<TaggedRawEvent>
+};
+
+export type UseSubscriptionOptions = {
+    leaveOpen: boolean
+}
+
+function notesReducer(state: NoteStore, ev: TaggedRawEvent) {
     if (state.notes.some(a => a.id === ev.id)) {
         return state;
     }
@@ -21,13 +30,8 @@ function notesReducer(state, ev) {
  * @param {any} opt 
  * @returns 
  */
-export default function useSubscription(sub, opt) {
-    const [state, dispatch] = useReducer(notesReducer, { notes: [] });
-
-    const options = {
-        leaveOpen: false,
-        ...opt
-    };
+export default function useSubscription(sub: Subscriptions | null, options?: UseSubscriptionOptions) {
+    const [state, dispatch] = useReducer(notesReducer, <NoteStore>{ notes: [] });
 
     useEffect(() => {
         if (sub) {
@@ -35,7 +39,7 @@ export default function useSubscription(sub, opt) {
                 dispatch(e);
             };
 
-            if (!options.leaveOpen) {
+            if (!(options?.leaveOpen ?? false)) {
                 sub.OnEnd = (c) => {
                     c.RemoveSubscription(sub.Id);
                     if (sub.IsFinished()) {

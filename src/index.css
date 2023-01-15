@@ -43,6 +43,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-color);
   color: var(--font-color);
+  font-size: 14px;
 }
 
 code {
@@ -213,13 +214,6 @@ span.pill:hover {
   cursor: pointer;
 }
 
-@media(max-width: 720px) {
-  .page {
-    width: calc(100vw - 20px);
-    margin: 0 10px;
-  }
-}
-
 div.form-group {
   display: flex;
   align-items: center;
@@ -348,4 +342,15 @@ body.scroll-lock {
 
 .tweet div .twitter-tweet > iframe {
     max-height: unset;
+}
+
+@media(max-width: 720px) {
+  .page {
+    width: calc(100vw - 20px);
+    margin: 0 10px;
+  }
+  div.form-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

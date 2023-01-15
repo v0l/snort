@@ -1,22 +1,38 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProfileCacheExpire } from '../Const';
 import { db } from '../db';
+import { HexKey, UserMetadata } from '../nostr';
+
+export interface MetadataCache extends UserMetadata {
+    /**
+     * When the object was saved in cache
+     */
+    loaded: number,
+
+    /**
+     * When the source metadata event was created
+     */
+    created: number,
+
+    /**
+     * The pubkey of the owner of this metadata
+     */
+    pubkey: HexKey
+};
+
+export interface UsersStore {
+    pubKeys: HexKey[],
+    users: any
+};
 
 const UsersSlice = createSlice({
     name: "Users",
-    initialState: {
-        /**
-         * Set of known pubkeys
-         */
+    initialState: <UsersStore>{
         pubKeys: [],
-
-        /**
-         * User objects for known pubKeys, populated async
-         */
         users: {},
     },
     reducers: {
-        addPubKey: (state, action) => {
+        addPubKey: (state, action: PayloadAction<string | Array<string>>) => {
             let keys = action.payload;
             if (!Array.isArray(keys)) {
                 keys = [keys];
@@ -32,7 +48,7 @@ const UsersSlice = createSlice({
                     // load from cache
                     let cache = window.localStorage.getItem(`user:${k}`);
                     if (cache) {
-                        let ud = JSON.parse(cache);
+                        let ud: MetadataCache = JSON.parse(cache);
                         if (ud.loaded > new Date().getTime() - ProfileCacheExpire) {
                             state.users[ud.pubkey] = ud;
                             fromCache = true;
@@ -49,7 +65,7 @@ const UsersSlice = createSlice({
                 }
             }
         },
-        setUserData: (state, action) => {
+        setUserData: (state, action: PayloadAction<MetadataCache | Array<MetadataCache>>) => {
             let ud = action.payload;
             if (!Array.isArray(ud)) {
                 ud = [ud];
@@ -58,7 +74,7 @@ const UsersSlice = createSlice({
             for (let x of ud) {
                 let existing = state.users[x.pubkey];
                 if (existing) {
-                    if (existing.fromEvent.created_at > x.fromEvent.created_at) {
+                    if (existing.created > x.created) {
                         // prevent patching with older metadata 
                         continue;
                     }
@@ -82,8 +98,8 @@ const UsersSlice = createSlice({
                 };
             }
         },
-        resetProfile: (state, action) => {
-            if (state.users[action.payload]) {
+        resetProfile: (state, action: PayloadAction<HexKey>) => {
+            if (action.payload in state.users) {
                 delete state.users[action.payload];
                 state.users = {
                     ...state.users

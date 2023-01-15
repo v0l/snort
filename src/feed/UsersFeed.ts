@@ -1,21 +1,23 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ProfileCacheExpire } from "../Const";
+import { HexKey, TaggedRawEvent, UserMetadata } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import { db } from "../db";
 import { Subscriptions } from "../nostr/Subscriptions";
-import { setUserData } from "../state/Users";
+import { RootState } from "../state/Store";
+import { MetadataCache, setUserData } from "../state/Users";
 import useSubscription from "./Subscription";
 
 export default function useUsersCache() {
     const dispatch = useDispatch();
-    const pKeys = useSelector(s => s.users.pubKeys);
-    const users = useSelector(s => s.users.users);
+    const pKeys = useSelector<RootState, HexKey[]>(s => s.users.pubKeys);
+    const users = useSelector<RootState, any>(s => s.users.users);
 
-    function isUserCached(id) {
+    function isUserCached(id: HexKey) {
         let expire = new Date().getTime() - ProfileCacheExpire;
         let u = users[id];
-        return u && u.loaded > expire;
+        return u !== undefined && u.loaded > expire;
     }
 
     const sub = useMemo(() => {
@@ -27,7 +29,7 @@ export default function useUsersCache() {
         let sub = new Subscriptions();
         sub.Id = `profiles:${sub.Id}`;
         sub.Authors = new Set(needProfiles.slice(0, 20));
-        sub.Kinds.add(EventKind.SetMetadata);
+        sub.Kinds = new Set([EventKind.SetMetadata]);
 
         return sub;
     }, [pKeys]);
@@ -35,23 +37,26 @@ export default function useUsersCache() {
     const results = useSubscription(sub);
 
     useEffect(() => {
-        const userData = results.notes.map(a => mapEventToProfile(a));
-        dispatch(setUserData(userData));
-        const profiles = results.notes.map(ev => {
-          return {...JSON.parse(ev.content), pubkey: ev.pubkey }
+        let profiles: MetadataCache[] = results.notes
+            .map(a => mapEventToProfile(a))
+            .filter(a => a !== undefined)
+            .map(a => a!);
+        dispatch(setUserData(profiles));
+        const dbProfiles = results.notes.map(ev => {
+            return { ...JSON.parse(ev.content), pubkey: ev.pubkey }
         });
-        db.users.bulkPut(profiles);
+        db.users.bulkPut(dbProfiles);
     }, [results]);
 
     return results;
 }
 
-export function mapEventToProfile(ev) {
+export function mapEventToProfile(ev: TaggedRawEvent): MetadataCache | undefined {
     try {
-        let data = JSON.parse(ev.content);
+        let data: UserMetadata = JSON.parse(ev.content);
         return {
             pubkey: ev.pubkey,
-            fromEvent: ev,
+            created: ev.created_at,
             loaded: new Date().getTime(),
             ...data
         };

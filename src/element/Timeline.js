@@ -25,7 +25,7 @@ export default function Timeline({ global, pubkeys }) {
             }
             case EventKind.Reaction:
             case EventKind.Repost: {
-                return <NoteReaction data={e} key={e.id}/>
+                return <NoteReaction data={e} key={e.id} />
             }
         }
     }

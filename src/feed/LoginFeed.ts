@@ -1,8 +1,10 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { HexKey } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { addDirectMessage, addNotifications, setFollows, setRelays } from "../state/Login";
+import { RootState } from "../state/Store";
 import { setUserData } from "../state/Users";
 import { db } from "../db";
 import useSubscription from "./Subscription";
@@ -13,7 +15,7 @@ import { mapEventToProfile } from "./UsersFeed";
  */
 export default function useLoginFeed() {
     const dispatch = useDispatch();
-    const [pubKey, readNotifications] = useSelector(s => [s.login.publicKey, s.login.readNotifications]);
+    const [pubKey, readNotifications] = useSelector<RootState, [HexKey | undefined, number]>(s => [s.login.publicKey, s.login.readNotifications]);
 
     const sub = useMemo(() => {
         if (!pubKey) {
@@ -22,29 +24,29 @@ export default function useLoginFeed() {
 
         let sub = new Subscriptions();
         sub.Id = `login:${sub.Id}`;
-        sub.Authors.add(pubKey);
-        sub.Kinds.add(EventKind.ContactList);
-        sub.Kinds.add(EventKind.SetMetadata);
-        sub.Kinds.add(EventKind.DirectMessage);
+        sub.Authors = new Set([pubKey]);
+        sub.Kinds = new Set([EventKind.ContactList, EventKind.SetMetadata, EventKind.DirectMessage]);
 
         let notifications = new Subscriptions();
-        notifications.Kinds.add(EventKind.TextNote);
-        notifications.Kinds.add(EventKind.DirectMessage);
-        notifications.PTags.add(pubKey);
+        notifications.Kinds = new Set([EventKind.TextNote, EventKind.DirectMessage]);
+        notifications.PTags = new Set([pubKey]);
         notifications.Limit = 100;
         sub.AddSubscription(notifications);
 
         return sub;
     }, [pubKey]);
 
-    const { notes } = useSubscription(sub, { leaveOpen: true });
+    const main = useSubscription(sub, { leaveOpen: true });
 
     useEffect(() => {
-        let contactList = notes.filter(a => a.kind === EventKind.ContactList);
-        let notifications = notes.filter(a => a.kind === EventKind.TextNote);
-        let metadata = notes.filter(a => a.kind === EventKind.SetMetadata)
+        let contactList = main.notes.filter(a => a.kind === EventKind.ContactList);
+        let notifications = main.notes.filter(a => a.kind === EventKind.TextNote);
+        let metadata = main.notes.filter(a => a.kind === EventKind.SetMetadata)
+            .map(a => mapEventToProfile(a))
+            .filter(a => a !== undefined)
+            .map(a => a!);
         let profiles = metadata.map(a => mapEventToProfile(a));
-        let dms = notes.filter(a => a.kind === EventKind.DirectMessage);
+        let dms = main.notes.filter(a => a.kind === EventKind.DirectMessage);
 
         for (let cl of contactList) {
             if (cl.content !== "") {
@@ -68,5 +70,5 @@ export default function useLoginFeed() {
         })
         db.users.bulkPut(metadata);
         dispatch(addDirectMessage(dms));
-    }, [notes]);
+    }, [main]);
 }

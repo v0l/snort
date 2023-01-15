@@ -5,7 +5,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { System } from ".."
+import { System } from "../nostr/System"
 import ProfileImage from "../element/ProfileImage";
 import { init } from "../state/Login";
 import useLoginFeed from "../feed/LoginFeed";

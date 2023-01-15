@@ -1,9 +1,10 @@
 import { useMemo } from "react";
+import { HexKey } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import useSubscription from "./Subscription";
 
-export default function useTimelineFeed(pubKeys, global = false) {
+export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global: boolean = false) {
     const subTab = global ? "global" : "follows";
     const sub = useMemo(() => {
         if (!Array.isArray(pubKeys)) {
@@ -17,8 +18,7 @@ export default function useTimelineFeed(pubKeys, global = false) {
         let sub = new Subscriptions();
         sub.Id = `timeline:${subTab}`;
         sub.Authors = new Set(global ? [] : pubKeys);
-        sub.Kinds.add(EventKind.TextNote);
-        sub.Kinds.add(EventKind.Repost);
+        sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
         sub.Limit = 20;
 
         return sub;
@@ -31,8 +31,7 @@ export default function useTimelineFeed(pubKeys, global = false) {
         if (main.notes.length > 0) {
             let sub = new Subscriptions();
             sub.Id = `timeline-related:${subTab}`;
-            sub.Kinds.add(EventKind.Reaction);
-            sub.Kinds.add(EventKind.Deletion);
+            sub.Kinds = new Set([EventKind.Reaction, EventKind.Deletion]);
             sub.ETags = new Set(main.notes.map(a => a.id));
 
             return sub;

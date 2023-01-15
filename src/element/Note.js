@@ -9,6 +9,7 @@ import Text from "./Text";
 import { eventLink, hexToBech32 } from "../Util";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
+import EventKind from "../nostr/EventKind";
 
 export default function Note(props) {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function Note(props) {
     const { data, isThread, reactions, deletion, hightlight } = props
 
     const users = useSelector(s => s.users?.users);
-    const ev = dataEvent ?? Event.FromObject(data);
+    const ev = dataEvent ?? new Event(data);
 
     const options = {
         showHeader: true,
@@ -59,7 +60,7 @@ export default function Note(props) {
         )
     }
 
-    if (!ev.IsContent()) {
+    if (ev.Kind !== EventKind.TextNote) {
         return (
             <>
                 <h4>Unknown event kind: {ev.Kind}</h4>
