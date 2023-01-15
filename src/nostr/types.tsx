@@ -1,4 +1,4 @@
-export type User = {
+export interface User {
   name?: string
   about?: string
   display_name?: string

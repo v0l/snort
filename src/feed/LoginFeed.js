@@ -4,6 +4,7 @@ import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { addDirectMessage, addNotifications, setFollows, setRelays } from "../state/Login";
 import { setUserData } from "../state/Users";
+import { db } from "../db";
 import useSubscription from "./Subscription";
 import { mapEventToProfile } from "./UsersFeed";
 
@@ -41,7 +42,8 @@ export default function useLoginFeed() {
     useEffect(() => {
         let contactList = notes.filter(a => a.kind === EventKind.ContactList);
         let notifications = notes.filter(a => a.kind === EventKind.TextNote);
-        let metadata = notes.filter(a => a.kind === EventKind.SetMetadata).map(a => mapEventToProfile(a));
+        let metadata = notes.filter(a => a.kind === EventKind.SetMetadata)
+        let profiles = metadata.map(a => mapEventToProfile(a));
         let dms = notes.filter(a => a.kind === EventKind.DirectMessage);
 
         for (let cl of contactList) {
@@ -60,7 +62,11 @@ export default function useLoginFeed() {
             }
         }
         dispatch(addNotifications(notifications));
-        dispatch(setUserData(metadata));
+        dispatch(setUserData(profiles));
+        const userMetadata = metadata.map(ev => {
+          return {...JSON.parse(ev.content), pubkey: ev.pubkey }
+        })
+        db.users.bulkPut(metadata);
         dispatch(addDirectMessage(dms));
     }, [notes]);
 }

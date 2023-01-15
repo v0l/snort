@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { ProfileCacheExpire } from '../Const';
+import { db } from '../db';
 
 const UsersSlice = createSlice({
     name: "Users",
@@ -67,7 +68,13 @@ const UsersSlice = createSlice({
                     };
                 }
                 state.users[x.pubkey] = x;
-                window.localStorage.setItem(`user:${x.pubkey}`, JSON.stringify(x));
+                db.users.put({
+                  pubkey: x.pubkey,
+                  name: x.name,
+                  display_name: x.display_name,
+                  nip05: x.nip05,
+                  picture: x.picture,
+                })
 
                 state.users = {
                     ...state.users

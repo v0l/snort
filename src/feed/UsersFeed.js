@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ProfileCacheExpire } from "../Const";
 import EventKind from "../nostr/EventKind";
+import { db } from "../db";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { setUserData } from "../state/Users";
 import useSubscription from "./Subscription";
@@ -34,7 +35,12 @@ export default function useUsersCache() {
     const results = useSubscription(sub);
 
     useEffect(() => {
-        dispatch(setUserData(results.notes.map(a => mapEventToProfile(a))));
+        const userData = results.notes.map(a => mapEventToProfile(a));
+        dispatch(setUserData(userData));
+        const profiles = results.notes.map(ev => {
+          return {...JSON.parse(ev.content), pubkey: ev.pubkey }
+        });
+        db.users.bulkPut(profiles);
     }, [results]);
 
     return results;
