@@ -2,7 +2,7 @@ import Dexie, { Table } from 'dexie';
 
 import type { User } from './nostr/types';
 
-export class MySubClassedDexie extends Dexie {
+export class SnortDB extends Dexie {
   users!: Table<User>;
 
   constructor() {
@@ -13,4 +13,4 @@ export class MySubClassedDexie extends Dexie {
   }
 }
 
-export const db = new MySubClassedDexie();
+export const db = new SnortDB();
