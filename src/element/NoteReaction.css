@@ -3,10 +3,10 @@
 }
 
 .reaction > .note {
-    margin: 5px;
+    margin: 10px 20px;
     border: 1px solid var(--gray);
     border-radius: 10px;
-    padding: 5px;
+    padding: 10px;
 }
 
 .reaction > .header > .pfp {
@@ -20,4 +20,9 @@
 .reaction > .header > .info {
     color: #999;
     font-size: small;
+}
+
+.reaction .reaction-text {
+    margin-left: .2em;
+    color: var(--gray-light);
 }
