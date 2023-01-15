@@ -105,11 +105,17 @@
 
 .profile .website {
     color: var(--highlight);
-    margin-bottom: 4px;
+    margin: 6px 0;
 }
 
 .profile .lnurl {
     color: var(--highlight);
+    margin: 6px 0;
+    cursor: pointer;
+}
+
+.profile .lnurl:hover {
+    text-decoration: underline;
 }
 
 .profile .btn-icon {
@@ -126,11 +132,6 @@
 .profile .lnurl {
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.profile .lnurl::before {
-    content: '⚡️ ';
-    font-size: 10px;
 }
 
 .profile .details-wrapper {

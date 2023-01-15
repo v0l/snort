@@ -67,12 +67,14 @@ export default function ProfilePage() {
                     </div>
                 )}
 
-                {lnurl ? <div className="lnurl f-ellipsis">
-                    {lnurl}
-                    <div className="btn btn-icon" onClick={(e) => setShowLnQr(true)}>
-                        <FontAwesomeIcon icon={faQrcode} size="lg" />
-                    </div>
-                </div> : null}
+                {lnurl && (
+                  <>
+                    ⚡️
+                    <span className="lnurl f-ellipsis" onClick={(e) => setShowLnQr(true)}>
+                      {lnurl}
+                    </span>
+                  </>
+                )}
                 <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
             </div>
         )
