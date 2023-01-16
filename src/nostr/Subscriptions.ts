@@ -15,42 +15,42 @@ export class Subscriptions {
     /** 
      * a list of event ids or prefixes
      */
-    Ids: Set<u256> | null
+    Ids?: Set<u256>
 
     /**
      * a list of pubkeys or prefixes, the pubkey of an event must be one of these
      */
-    Authors: Set<u256> | null;
+    Authors?: Set<u256>;
 
     /**
      * a list of a kind numbers
      */
-    Kinds: Set<EventKind> | null;
+    Kinds?: Set<EventKind>;
 
     /**
      * a list of event ids that are referenced in an "e" tag
      */
-    ETags: Set<u256> | null;
+    ETags?: Set<u256>;
 
     /**
      * a list of pubkeys that are referenced in a "p" tag
      */
-    PTags: Set<u256> | null;
+    PTags?: Set<u256>;
 
     /** 
      * a timestamp, events must be newer than this to pass
      */
-    Since: number | null;
+    Since?: number;
 
     /** 
      * a timestamp, events must be older than this to pass
      */
-    Until: number | null;
+    Until?: number;
 
     /**
      * maximum number of events to be returned in the initial query
      */
-    Limit: number | null;
+    Limit?: number;
 
     /**
      * Handler function for this event
@@ -79,14 +79,14 @@ export class Subscriptions {
 
     constructor(sub?: RawReqFilter) {
         this.Id = uuid();
-        this.Ids = sub?.ids ? new Set(sub.ids) : null;
-        this.Authors = sub?.authors ? new Set(sub.authors) : null;
-        this.Kinds = sub?.kinds ? new Set(sub.kinds) : null;
-        this.ETags = sub?.["#e"] ? new Set(sub["#e"]) : null;
-        this.PTags = sub?.["#p"] ? new Set(sub["#p"]) : null;
-        this.Since = sub?.since ?? null;
-        this.Until = sub?.until ?? null;
-        this.Limit = sub?.limit ?? null;
+        this.Ids = sub?.ids ? new Set(sub.ids) : undefined;
+        this.Authors = sub?.authors ? new Set(sub.authors) : undefined;
+        this.Kinds = sub?.kinds ? new Set(sub.kinds) : undefined;
+        this.ETags = sub?.["#e"] ? new Set(sub["#e"]) : undefined;
+        this.PTags = sub?.["#p"] ? new Set(sub["#p"]) : undefined;
+        this.Since = sub?.since ?? undefined;
+        this.Until = sub?.until ?? undefined;
+        this.Limit = sub?.limit ?? undefined;
         this.OnEvent = (e) => { console.warn(`No event handler was set on subscription: ${this.Id}`) };
         this.OnEnd = (c) => { };
         this.OrSubs = [];

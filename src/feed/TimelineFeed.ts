@@ -17,7 +17,7 @@ export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global:
 
         let sub = new Subscriptions();
         sub.Id = `timeline:${subTab}`;
-        sub.Authors = new Set(global ? [] : pubKeys);
+        sub.Authors = global ? undefined : new Set(pubKeys);
         sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
         sub.Limit = 20;
 
