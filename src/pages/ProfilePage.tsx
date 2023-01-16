@@ -1,10 +1,11 @@
 import "./ProfilePage.css";
+// @ts-ignore
 import Nostrich from "../nostrich.jpg";
 
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQrcode, faGear, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faGear, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 
 import useProfile from "../feed/ProfileFeed";
@@ -18,25 +19,27 @@ import Copy from "../element/Copy";
 import ProfilePreview from "../element/ProfilePreview";
 import FollowersList from "../element/FollowersList";
 import FollowsList from "../element/FollowsList";
+import { RootState } from "../state/Store";
+import { HexKey } from "../nostr";
 
-const ProfileTab = {
-    Notes: 0,
-    //Reactions: 1,
-    Followers: 2,
-    Follows: 3
+enum ProfileTab {
+    Notes = "Notes",
+    Reactions = "Reactions",
+    Followers = "Followers",
+    Follows = "Follows"
 };
 
 export default function ProfilePage() {
     const params = useParams();
     const navigate = useNavigate();
-    const id = useMemo(() => parseId(params.id), [params]);
-    const user = useProfile(id);
-    const loginPubKey = useSelector(s => s.login.publicKey);
-    const follows = useSelector(s => s.login.follows);
+    const id = useMemo(() => parseId(params.id!), [params]);
+    const user = useProfile(id)?.get(id);
+    const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+    const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
     const isMe = loginPubKey === id;
-    const [showLnQr, setShowLnQr] = useState(false);
+    const [showLnQr, setShowLnQr] = useState<boolean>(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
-    const about = Text({ content: user?.about })
+    const about = Text({ content: user?.about ?? "", users: new Map(), tags: [] })
     const avatarUrl = (user?.picture?.length ?? 0) === 0 ? Nostrich : user?.picture
     const backgroundImage = `url(${avatarUrl})`
     const domain = user?.nip05 && user.nip05.split('@')[1]
@@ -46,13 +49,13 @@ export default function ProfilePage() {
     }, [params]);
 
     function username() {
-      return (
-          <div className="name">
-               <h2>{user?.display_name || user?.name || 'Nostrich'}</h2>
-               <Copy text={params.id} />
-               {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
-          </div>
-      )
+        return (
+            <div className="name">
+                <h2>{user?.display_name || user?.name || 'Nostrich'}</h2>
+                <Copy text={params.id || ""} />
+                {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+            </div>
+        )
     }
 
     function bio() {
@@ -62,20 +65,20 @@ export default function ProfilePage() {
                 <div>{about}</div>
 
                 <div className="links">
-                  {user?.website && (
-                      <div className="website f-ellipsis">
-                          <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
-                      </div>
-                  )}
+                    {user?.website && (
+                        <div className="website f-ellipsis">
+                            <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
+                        </div>
+                    )}
 
-                  {lnurl && (
-                    <div className="f-ellipsis" onClick={(e) => setShowLnQr(true)}>
-                      <span className="zap">⚡️</span>
-                      <span className="lnurl" >
-                        {lnurl}
-                      </span>
-                    </div>
-                  )}
+                    {lnurl && (
+                        <div className="f-ellipsis" onClick={(e) => setShowLnQr(true)}>
+                            <span className="zap">⚡️</span>
+                            <span className="lnurl" >
+                                {lnurl}
+                            </span>
+                        </div>
+                    )}
                 </div>
                 <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
             </div>
@@ -84,7 +87,7 @@ export default function ProfilePage() {
 
     function tabContent() {
         switch (tab) {
-            case ProfileTab.Notes: return <Timeline pubkeys={id} />;
+            case ProfileTab.Notes: return <Timeline pubkeys={[id]} global={false} />;
             case ProfileTab.Follows: {
                 if (isMe) {
                     return (
@@ -101,13 +104,12 @@ export default function ProfilePage() {
                 return <FollowersList pubkey={id} />
             }
         }
-        return null;
     }
 
     function avatar() {
         return (
             <div className="avatar-wrapper">
-                <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={domain?.toLowerCase()}>
+                <div style={{ ['--img-url' as any]: backgroundImage }} className="avatar" data-domain={domain?.toLowerCase()}>
                 </div>
             </div>
         )
@@ -150,8 +152,8 @@ export default function ProfilePage() {
                 )}
             </div>
             <div className="tabs">
-                {Object.entries(ProfileTab).map(([k, v]) => {
-                    return <div className={`tab f-1${tab === v ? " active" : ""}`} key={k} onClick={() => setTab(v)}>{k}</div>
+                {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows].map(v => {
+                    return <div className={`tab f-1${tab === v ? " active" : ""}`} key={v} onClick={() => setTab(v)}>{v}</div>
                 })}
             </div>
             {tabContent()}

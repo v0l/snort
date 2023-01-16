@@ -1,7 +1,7 @@
 import "./Note.css";
 import ProfileImage from "./ProfileImage";
 
-export default function NoteGhost(props) {
+export default function NoteGhost(props: any) {
     return (
         <div className="note">
             <div className="header">

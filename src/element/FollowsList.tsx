@@ -1,9 +1,14 @@
 import { useMemo } from "react";
 import useFollowsFeed from "../feed/FollowsFeed";
+import { HexKey } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import FollowListBase from "./FollowListBase";
 
-export default function FollowsList({ pubkey }) {
+export interface FollowsListProps {
+    pubkey: HexKey
+}
+
+export default function FollowsList({ pubkey }: FollowsListProps) {
     const feed = useFollowsFeed(pubkey);
 
     const pubkeys = useMemo(() => {
@@ -12,5 +17,5 @@ export default function FollowsList({ pubkey }) {
         return [...new Set(pTags?.flat())];
     }, [feed]);
 
-    return <FollowListBase pubkeys={pubkeys} title={`Following ${pubkeys?.length}`}/>
+    return <FollowListBase pubkeys={pubkeys} title={`Following ${pubkeys?.length}`} />
 }

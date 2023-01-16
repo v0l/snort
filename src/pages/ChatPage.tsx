@@ -4,11 +4,8 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useInView } from 'react-intersection-observer';
 
-// @ts-ignore
 import ProfileImage from "../element/ProfileImage";
-// @ts-ignore
 import { bech32ToHex } from "../Util";
-// @ts-ignore
 import useEventPublisher from "../feed/EventPublisher";
 
 import DM from "../element/DM";

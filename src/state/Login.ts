@@ -27,7 +27,7 @@ interface LoginStore {
     /**
      * All the logged in users relays
      */
-    relays: any,
+    relays: Record<string, RelaySettings>,
 
     /**
      * Newest relay list timestamp
@@ -56,7 +56,7 @@ interface LoginStore {
 };
 
 export interface SetRelaysPayload {
-    relays: any,
+    relays: Record<string, RelaySettings>,
     createdAt: number
 };
 

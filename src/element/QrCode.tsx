@@ -1,11 +1,19 @@
 import QRCodeStyling from "qr-code-styling";
 import { useEffect, useRef } from "react";
 
-export default function QrCode(props) {
-    const qrRef = useRef();
+export interface QrCodeProps {
+    data?: string,
+    link?: string,
+    avatar?: string,
+    height?: number,
+    width?: number
+}
+
+export default function QrCode(props: QrCodeProps) {
+    const qrRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (props.data?.length > 0) {
+        if ((props.data?.length ?? 0) > 0 && qrRef.current) {
             let qr = new QRCodeStyling({
                 width: props.width || 256,
                 height: props.height || 256,
@@ -28,11 +36,11 @@ export default function QrCode(props) {
             if (props.link) {
                 qrRef.current.onclick = function (e) {
                     let elm = document.createElement("a");
-                    elm.href = props.link;
+                    elm.href = props.link!;
                     elm.click();
                 }
             }
-        } else {
+        } else if (qrRef.current) {
             qrRef.current.innerHTML = "";
         }
     }, [props.data, props.link]);

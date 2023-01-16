@@ -10,8 +10,10 @@ import Hashtag from "./Hashtag";
 
 import './Text.css'
 import { useMemo } from "react";
+import Tag from "../nostr/Tag";
+import { MetadataCache } from "../db/User";
 
-function transformHttpLink(a) {
+function transformHttpLink(a: string) {
     try {
         const url = new URL(a);
         const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
@@ -32,10 +34,10 @@ function transformHttpLink(a) {
                 case "mkv":
                 case "avi":
                 case "m4v": {
-                    return <video key={url} src={url} controls />
+                    return <video key={url.toString()} src={url.toString()} controls />
                 }
                 default:
-                    return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
+                    return <a key={url.toString()} href={url.toString()} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
             }
         } else if (tweetId) {
             return (
@@ -54,7 +56,7 @@ function transformHttpLink(a) {
                         key={youtubeId}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen=""
+                        allowFullScreen={true}
                     />
                     <br />
                 </>
@@ -67,7 +69,7 @@ function transformHttpLink(a) {
     return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
 }
 
-function extractLinks(fragments) {
+function extractLinks(fragments: Fragment[]) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(UrlRegex).map(a => {
@@ -81,7 +83,7 @@ function extractLinks(fragments) {
     }).flat();
 }
 
-function extractMentions(fragments, tags, users) {
+function extractMentions(fragments: Fragment[], tags: Tag[], users: Map<string, MetadataCache>) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(MentionRegex).map((match) => {
@@ -92,12 +94,12 @@ function extractMentions(fragments, tags, users) {
                     if (ref) {
                         switch (ref.Key) {
                             case "p": {
-                                let pUser = users[ref.PubKey]?.name ?? hexToBech32("npub", ref.PubKey).substring(0, 12);
-                                return <Link key={ref.PubKey} to={profileLink(ref.PubKey)} onClick={(e) => e.stopPropagation()}>@{pUser}</Link>;
+                                let pUser = users.get(ref.PubKey!)?.name ?? hexToBech32("npub", ref.PubKey!).substring(0, 12);
+                                return <Link key={ref.PubKey} to={profileLink(ref.PubKey!)} onClick={(e) => e.stopPropagation()}>@{pUser}</Link>;
                             }
                             case "e": {
-                                let eText = hexToBech32("note", ref.Event).substring(0, 12);
-                                return <Link key={ref.Event} to={eventLink(ref.Event)} onClick={(e) => e.stopPropagation()}>#{eText}</Link>;
+                                let eText = hexToBech32("note", ref.Event!).substring(0, 12);
+                                return <Link key={ref.Event} to={eventLink(ref.Event!)} onClick={(e) => e.stopPropagation()}>#{eText}</Link>;
                             }
                         }
                     }
@@ -111,7 +113,7 @@ function extractMentions(fragments, tags, users) {
     }).flat();
 }
 
-function extractInvoices(fragments) {
+function extractInvoices(fragments: Fragment[]) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(InvoiceRegex).map(i => {
@@ -126,7 +128,7 @@ function extractInvoices(fragments) {
     }).flat();
 }
 
-function extractHashtags(fragments) {
+function extractHashtags(fragments: Fragment[]) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(HashtagRegex).map(i => {
@@ -141,12 +143,12 @@ function extractHashtags(fragments) {
     }).flat();
 }
 
-function transformLi({ body, tags, users }) {
+function transformLi({ body, tags, users }: TextFragment) {
     let fragments = transformText({ body, tags, users })
     return <li>{fragments}</li>
 }
 
-function transformParagraph({ body, tags, users }) {
+function transformParagraph({ body, tags, users }: TextFragment) {
     const fragments = transformText({ body, tags, users })
     if (fragments.every(f => typeof f === 'string')) {
         return <p>{fragments}</p>
@@ -154,7 +156,7 @@ function transformParagraph({ body, tags, users }) {
     return <>{fragments}</>
 }
 
-function transformText({ body, tags, users }) {
+function transformText({ body, tags, users }: TextFragment) {
     let fragments = extractMentions(body, tags, users);
     fragments = extractLinks(fragments);
     fragments = extractInvoices(fragments);
@@ -162,12 +164,26 @@ function transformText({ body, tags, users }) {
     return fragments;
 }
 
-export default function Text({ content, tags, users }) {
+export type Fragment = string | JSX.Element;
+
+export interface TextFragment {
+    body: Fragment[],
+    tags: Tag[],
+    users: Map<string, MetadataCache>
+}
+
+export interface TextProps {
+    content: string,
+    tags: Tag[],
+    users: Map<string, MetadataCache>
+}
+
+export default function Text({ content, tags, users }: TextProps) {
     const components = useMemo(() => {
         return {
-            p: (props) => transformParagraph({ body: props.children, tags, users }),
-            a: (props) => transformHttpLink(props.href),
-            li: (props) => transformLi({ body: props.children, tags, users }),
+            p: (x: any) => transformParagraph({ body: x.children, tags, users }),
+            a: (x: any) => transformHttpLink(x.href),
+            li: (x: any) => transformLi({ body: x.children, tags, users }),
         };
     }, [content]);
     return <ReactMarkdown className="text" components={components}>{content}</ReactMarkdown>

@@ -3,7 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useCopy } from "../useCopy";
 
-export default function Copy({ text, maxSize = 32 }) {
+export interface CopyProps {
+    text: string,
+    maxSize?: number
+}
+export default function Copy({ text, maxSize = 32 }: CopyProps) {
     const { copy, copied, error } = useCopy();
     const sliceLength = maxSize / 2
     const trimmed = text.length > maxSize ? `${text.slice(0, sliceLength)}:${text.slice(-sliceLength)}` : text

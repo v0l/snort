@@ -1,7 +1,13 @@
 import "./Modal.css";
 import { useEffect } from "react"
+import * as React from "react";
 
-export default function Modal(props) {
+export interface ModalProps {
+    onClose?: () => void,
+    children: React.ReactNode
+}
+
+export default function Modal(props: ModalProps) {
     const onClose = props.onClose || (() => { });
 
     useEffect(() => {
@@ -10,7 +16,7 @@ export default function Modal(props) {
     }, []);
 
     return (
-        <div className="modal" onClick={(e) => { e.stopPropagation(); onClose(e); }}>
+        <div className="modal" onClick={(e) => { e.stopPropagation(); onClose(); }}>
             {props.children}
         </div>
     )

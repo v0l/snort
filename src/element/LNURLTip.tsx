@@ -5,31 +5,67 @@ import Modal from "./Modal";
 import QrCode from "./QrCode";
 import Copy from "./Copy";
 
-export default function LNURLTip(props) {
+declare global {
+    interface Window {
+        webln?: {
+            enabled: boolean,
+            enable: () => Promise<void>,
+            sendPayment: (pr: string) => Promise<any>
+        }
+    }
+}
+
+interface LNURLService {
+    minSendable?: number,
+    maxSendable?: number,
+    metadata: string,
+    callback: string,
+    commentAllowed?: number
+}
+
+interface LNURLInvoice {
+    pr: string,
+    successAction?: LNURLSuccessAction
+}
+
+interface LNURLSuccessAction {
+    description?: string,
+    url?: string
+}
+
+export interface LNURLTipProps {
+    onClose?: () => void,
+    svc?: string,
+    show?: boolean,
+    invoice?: string, // shortcut to invoice qr tab
+    title?: string
+}
+
+export default function LNURLTip(props: LNURLTipProps) {
     const onClose = props.onClose || (() => { });
     const service = props.svc;
     const show = props.show || false;
-    const amounts = [50, 100, 500, 1_000, 5_000, 10_000];
-    const [payService, setPayService] = useState("");
-    const [amount, setAmount] = useState(0);
-    const [customAmount, setCustomAmount] = useState(0);
-    const [invoice, setInvoice] = useState(null);
-    const [comment, setComment] = useState("");
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState(null);
+    const amounts = [50, 100, 500, 1_000, 5_000, 10_000, 50_000];
+    const [payService, setPayService] = useState<LNURLService>();
+    const [amount, setAmount] = useState<number>();
+    const [customAmount, setCustomAmount] = useState<number>();
+    const [invoice, setInvoice] = useState<LNURLInvoice>();
+    const [comment, setComment] = useState<string>();
+    const [error, setError] = useState<string>();
+    const [success, setSuccess] = useState<LNURLSuccessAction>();
 
     useEffect(() => {
         if (show && !props.invoice) {
             loadService()
-                .then(a => setPayService(a))
+                .then(a => setPayService(a!))
                 .catch(() => setError("Failed to load LNURL service"));
         } else {
-            setPayService("");
-            setError("");
-            setInvoice(props.invoice ? { pr: props.invoice } : null);
-            setAmount(0);
-            setComment("");
-            setSuccess(null);
+            setPayService(undefined);
+            setError(undefined);
+            setInvoice(props.invoice ? { pr: props.invoice } : undefined);
+            setAmount(undefined);
+            setComment(undefined);
+            setSuccess(undefined);
         }
     }, [show, service]);
 
@@ -44,7 +80,7 @@ export default function LNURLTip(props) {
 
     const metadata = useMemo(() => {
         if (payService) {
-            let meta = JSON.parse(payService.metadata);
+            let meta: string[][] = JSON.parse(payService.metadata);
             let desc = meta.find(a => a[0] === "text/plain");
             let image = meta.find(a => a[0] === "image/png;base64");
             return {
@@ -55,37 +91,40 @@ export default function LNURLTip(props) {
         return null;
     }, [payService]);
 
-    const selectAmount = (a) => {
-        setError("");
-        setInvoice(null);
+    const selectAmount = (a: number) => {
+        setError(undefined);
+        setInvoice(undefined);
         setAmount(a);
     };
 
-    async function fetchJson(url) {
+    async function fetchJson<T>(url: string) {
         let rsp = await fetch(url);
         if (rsp.ok) {
-            let data = await rsp.json();
+            let data: T = await rsp.json();
             console.log(data);
-            setError("");
+            setError(undefined);
             return data;
         }
         return null;
     }
 
-    async function loadService() {
-        let isServiceUrl = service.toLowerCase().startsWith("lnurl");
-        if (isServiceUrl) {
-            let serviceUrl = bech32ToText(service);
-            return await fetchJson(serviceUrl);
-        } else {
-            let ns = service.split("@");
-            return await fetchJson(`https://${ns[1]}/.well-known/lnurlp/${ns[0]}`);
+    async function loadService(): Promise<LNURLService | null> {
+        if (service) {
+            let isServiceUrl = service.toLowerCase().startsWith("lnurl");
+            if (isServiceUrl) {
+                let serviceUrl = bech32ToText(service);
+                return await fetchJson(serviceUrl);
+            } else {
+                let ns = service.split("@");
+                return await fetchJson(`https://${ns[1]}/.well-known/lnurlp/${ns[0]}`);
+            }
         }
+        return null;
     }
 
     async function loadInvoice() {
-        if (amount === 0) return null;
-        const url = `${payService.callback}?amount=${parseInt(amount * 1000)}&comment=${encodeURIComponent(comment)}`;
+        if (!amount || !payService) return null;
+        const url = `${payService.callback}?amount=${Math.floor(amount * 1000)}${comment ? `&comment=${encodeURIComponent(comment)}` : ""}`;
         try {
             let rsp = await fetch(url);
             if (rsp.ok) {
@@ -110,21 +149,21 @@ export default function LNURLTip(props) {
         let max = (payService?.maxSendable ?? 21_000_000_000) / 1000;
         return (
             <div className="flex mb10">
-                <input type="number" min={min} max={max} className="f-grow mr10" value={customAmount} onChange={(e) => setCustomAmount(e.target.value)} />
-                <div className="btn" onClick={() => selectAmount(customAmount)}>Confirm</div>
+                <input type="number" min={min} max={max} className="f-grow mr10" value={customAmount} onChange={(e) => setCustomAmount(parseInt(e.target.value))} />
+                <div className="btn" onClick={() => selectAmount(customAmount!)}>Confirm</div>
             </div>
         );
     }
 
     async function payWebLN() {
         try {
-            if (!window.webln.enabled) {
-                await window.webln.enable();
+            if (!window.webln!.enabled) {
+                await window.webln!.enable();
             }
-            let res = await window.webln.sendPayment(invoice.pr);
+            let res = await window.webln!.sendPayment(invoice!.pr);
             console.log(res);
-            setSuccess(invoice.successAction || {});
-        } catch (e) {
+            setSuccess(invoice!.successAction || {});
+        } catch (e: any) {
             setError(e.toString());
             console.warn(e);
         }
@@ -145,7 +184,7 @@ export default function LNURLTip(props) {
             <>
                 <div className="f-ellipsis mb10">{metadata?.description ?? service}</div>
                 <div className="flex">
-                    {payService?.commentAllowed > 0 ?
+                    {(payService?.commentAllowed ?? 0) > 0 ?
                         <input type="text" placeholder="Comment" className="mb10 f-grow" maxLength={payService?.commentAllowed} onChange={(e) => setComment(e.target.value)} /> : null}
                 </div>
                 <div className="mb10">
@@ -158,7 +197,7 @@ export default function LNURLTip(props) {
                         </span> : null}
                 </div>
                 {amount === -1 ? custom() : null}
-                {amount > 0 ? <div className="btn mb10" onClick={() => loadInvoice()}>Get Invoice</div> : null}
+                {(amount ?? 0) > 0 ? <div className="btn mb10" onClick={() => loadInvoice()}>Get Invoice</div> : null}
             </>
         )
     }

@@ -1,14 +1,13 @@
-import { useLiveQuery } from "dexie-react-hooks";
-
-import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
-import TextareaAutosize from "react-textarea-autosize";
-
-// @ts-expect-error
-import Nip05 from "./Nip05";
-import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
 // @ts-expect-error
 import Nostrich from "../nostrich.jpg";
+
+import { useLiveQuery } from "dexie-react-hooks";
+import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
+import TextareaAutosize from "react-textarea-autosize";
+import "@webscopeio/react-textarea-autocomplete/style.css";
+
+import Nip05 from "./Nip05";
 import { hexToBech32 } from "../Util";
 import { db } from "../db";
 import { MetadataCache } from "../db/User";

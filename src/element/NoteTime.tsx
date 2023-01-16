@@ -4,8 +4,14 @@ const MinuteInMs = 1_000 * 60;
 const HourInMs = MinuteInMs * 60;
 const DayInMs = HourInMs * 24;
 
-export default function NoteTime({ from, fallback = '' }) {
-    const [time, setTime] = useState("");
+export interface NoteTimeProps {
+    from: number,
+    fallback?: string
+}
+
+export default function NoteTime(props: NoteTimeProps) {
+    const [time, setTime] = useState<string>();
+    const { from, fallback } = props;
 
     function calcTime() {
         let fromDate = new Date(from);
@@ -16,9 +22,9 @@ export default function NoteTime({ from, fallback = '' }) {
         } else if (absAgo > HourInMs) {
             return `${fromDate.getHours().toString().padStart(2, '0')}:${fromDate.getMinutes().toString().padStart(2, '0')}`;
         } else if (absAgo < MinuteInMs) {
-          return fallback
+            return fallback
         } else {
-            let mins = parseInt(absAgo / MinuteInMs);
+            let mins = Math.floor(absAgo / MinuteInMs);
             let minutes = mins === 1 ? 'min' : 'mins'
             return `${mins} ${minutes} ago`;
         }

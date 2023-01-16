@@ -1,7 +1,12 @@
 import useEventPublisher from "../feed/EventPublisher";
+import { HexKey } from "../nostr";
 import ProfilePreview from "./ProfilePreview";
 
-export default function FollowListBase({ pubkeys, title}) {
+export interface FollowListBaseProps {
+    pubkeys: HexKey[],
+    title?: string
+}
+export default function FollowListBase({ pubkeys, title }: FollowListBaseProps) {
     const publisher = useEventPublisher();
 
     async function followAll() {

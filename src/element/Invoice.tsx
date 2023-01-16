@@ -1,11 +1,15 @@
 import "./Invoice.css";
 import { useState } from "react";
+// @ts-expect-error
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { useMemo } from "react";
 import NoteTime from "./NoteTime";
 import LNURLTip from "./LNURLTip";
 
-export default function Invoice(props) {
+export interface InvoiceProps {
+    invoice: string
+}
+export default function Invoice(props: InvoiceProps) {
     const invoice = props.invoice;
     const [showInvoice, setShowInvoice] = useState(false);
 
@@ -13,10 +17,10 @@ export default function Invoice(props) {
         try {
             let parsed = invoiceDecode(invoice);
 
-            let amount = parseInt(parsed.sections.find(a => a.name === "amount")?.value);
-            let timestamp = parseInt(parsed.sections.find(a => a.name === "timestamp")?.value);
-            let expire = parseInt(parsed.sections.find(a => a.name === "expiry")?.value);
-            let description = parsed.sections.find(a => a.name === "description")?.value;
+            let amount = parseInt(parsed.sections.find((a: any) => a.name === "amount")?.value);
+            let timestamp = parseInt(parsed.sections.find((a: any) => a.name === "timestamp")?.value);
+            let expire = parseInt(parsed.sections.find((a: any) => a.name === "expiry")?.value);
+            let description = parsed.sections.find((a: any) => a.name === "description")?.value;
             let ret = {
                 amount: !isNaN(amount) ? (amount / 1000) : 0,
                 expire: !isNaN(timestamp) && !isNaN(expire) ? timestamp + expire : null,

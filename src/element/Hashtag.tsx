@@ -1,6 +1,6 @@
 import './Hashtag.css'
 
-const Hashtag = ({ children }) => {
+const Hashtag = ({ children }: any) => {
   return (
     <span className="hashtag">
       {children}

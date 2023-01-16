@@ -8,21 +8,29 @@ import { normalizeReaction, Reaction } from "../Util";
 import { NoteCreator } from "./NoteCreator";
 import LNURLTip from "./LNURLTip";
 import useProfile from "../feed/ProfileFeed";
+import { default as NEvent } from "../nostr/Event";
+import { RootState } from "../state/Store";
+import { TaggedRawEvent } from "../nostr";
 
-export default function NoteFooter(props) {
+export interface NoteFooterProps {
+    reactions: TaggedRawEvent[],
+    ev: NEvent
+}
+
+export default function NoteFooter(props: NoteFooterProps) {
     const reactions = props.reactions;
     const ev = props.ev;
 
-    const login = useSelector(s => s.login.publicKey);
-    const author = useProfile(ev.RootPubKey);
+    const login = useSelector<RootState, string | undefined>(s => s.login.publicKey);
+    const author = useProfile(ev.RootPubKey)?.get(ev.RootPubKey);
     const publisher = useEventPublisher();
     const [reply, setReply] = useState(false);
     const [tip, setTip] = useState(false);
     const isMine = ev.RootPubKey === login;
 
     const groupReactions = useMemo(() => {
-        return reactions?.reduce((acc, { Content }) => {
-            let r = normalizeReaction(Content ?? "");
+        return reactions?.reduce((acc, { content }) => {
+            let r = normalizeReaction(content ?? "");
             const amount = acc[r] || 0
             return { ...acc, [r]: amount + 1 }
         }, {
@@ -31,11 +39,11 @@ export default function NoteFooter(props) {
         });
     }, [reactions]);
 
-    function hasReacted(emoji) {
-        return reactions?.find(({ PubKey, Content }) => Content === emoji && PubKey === login)
+    function hasReacted(emoji: string) {
+        return reactions?.some(({ pubkey, content }) => content === emoji && pubkey === login)
     }
 
-    async function react(content) {
+    async function react(content: string) {
         let evLike = await publisher.react(ev, content);
         publisher.broadcast(evLike);
     }
@@ -66,7 +74,7 @@ export default function NoteFooter(props) {
         return null;
     }
 
-    function reactionIcon(content, reacted) {
+    function reactionIcon(content: string, reacted: boolean) {
         switch (content) {
             case Reaction.Positive: {
                 return <FontAwesomeIcon color={reacted ? "red" : "currentColor"} icon={faHeart} />;
@@ -108,10 +116,10 @@ export default function NoteFooter(props) {
             <NoteCreator
                 autoFocus={true}
                 replyTo={ev}
-                onSend={(e) => setReply(false)}
+                onSend={() => setReply(false)}
                 show={reply}
             />
-            <LNURLTip svc={author?.lud16 || author?.lud06} onClose={(e) => setTip(false)} show={tip} />
+            <LNURLTip svc={author?.lud16 || author?.lud06 || ""} onClose={() => setTip(false)} show={tip} />
         </>
     )
 }

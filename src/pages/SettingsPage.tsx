@@ -1,4 +1,5 @@
 import "./SettingsPage.css";
+// @ts-ignore
 import Nostrich from "../nostrich.jpg";
 
 import { useEffect, useState } from "react";
@@ -14,40 +15,44 @@ import { logout, setRelays } from "../state/Login";
 import { hexToBech32, openFile } from "../Util";
 import Relay from "../element/Relay";
 import Copy from "../element/Copy";
+import { RootState } from "../state/Store";
+import { HexKey, UserMetadata } from "../nostr";
+import { RelaySettings } from "../nostr/Connection";
+import { MetadataCache } from "../db/User";
 
-export default function SettingsPage(props) {
+export default function SettingsPage() {
     const navigate = useNavigate();
-    const id = useSelector(s => s.login.publicKey);
-    const privKey = useSelector(s => s.login.privateKey);
-    const relays = useSelector(s => s.login.relays);
+    const id = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+    const privKey = useSelector<RootState, HexKey | undefined>(s => s.login.privateKey);
+    const relays = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
     const dispatch = useDispatch();
-    const user = useProfile(id);
+    const user = useProfile(id)?.get(id || "");
     const publisher = useEventPublisher();
 
-    const [name, setName] = useState("");
-    const [displayName, setDisplayName] = useState("");
-    const [picture, setPicture] = useState("");
-    const [banner, setBanner] = useState("");
-    const [about, setAbout] = useState("");
-    const [website, setWebsite] = useState("");
-    const [nip05, setNip05] = useState("");
-    const [lud06, setLud06] = useState("");
-    const [lud16, setLud16] = useState("");
-    const [newRelay, setNewRelay] = useState("");
+    const [name, setName] = useState<string>();
+    const [displayName, setDisplayName] = useState<string>();
+    const [picture, setPicture] = useState<string>();
+    const [banner, setBanner] = useState<string>();
+    const [about, setAbout] = useState<string>();
+    const [website, setWebsite] = useState<string>();
+    const [nip05, setNip05] = useState<string>();
+    const [lud06, setLud06] = useState<string>();
+    const [lud16, setLud16] = useState<string>();
+    const [newRelay, setNewRelay] = useState<string>();
 
-    const avatarPicture = picture.length === 0 ? Nostrich : picture
+    const avatarPicture = (picture?.length ?? 0) === 0 ? Nostrich : picture
 
     useEffect(() => {
         if (user) {
-            setName(user.name ?? "");
-            setDisplayName(user.display_name ?? "")
-            setPicture(user.picture ?? "");
-            setBanner(user.banner ?? "");
-            setAbout(user.about ?? "");
-            setWebsite(user.website ?? "");
-            setNip05(user.nip05 ?? "");
-            setLud06(user.lud06 ?? "");
-            setLud16(user.lud16 ?? "");
+            setName(user.name);
+            setDisplayName(user.display_name)
+            setPicture(user.picture);
+            setBanner(user.banner);
+            setAbout(user.about);
+            setWebsite(user.website);
+            setNip05(user.nip05);
+            setLud06(user.lud06);
+            setLud16(user.lud16);
         }
     }, [user]);
 
@@ -65,23 +70,8 @@ export default function SettingsPage(props) {
             lud16
         };
         delete userCopy["loaded"];
-        delete userCopy["fromEvent"];
-        // event top level props should not be copied into metadata (bug)
+        delete userCopy["created"];
         delete userCopy["pubkey"];
-        delete userCopy["sig"];
-        delete userCopy["pubkey"];
-        delete userCopy["tags"];
-        delete userCopy["content"];
-        delete userCopy["created_at"];
-        delete userCopy["id"];
-        delete userCopy["kind"]
-
-        // trim empty string fields
-        Object.keys(userCopy).forEach(k => {
-            if (userCopy[k] === "") {
-                delete userCopy[k];
-            }
-        });
         console.debug(userCopy);
 
         let ev = await publisher.metadata(userCopy);
@@ -91,22 +81,28 @@ export default function SettingsPage(props) {
 
     async function uploadFile() {
         let file = await openFile();
-        console.log(file);
-        let rsp = await VoidUpload(file);
-        if (!rsp) {
-            throw "Upload failed, please try again later";
+        if (file) {
+            console.log(file);
+            let rsp = await VoidUpload(file, file.name);
+            if (!rsp?.ok) {
+                throw "Upload failed, please try again later";
+            }
+            return rsp.file;
         }
-        return rsp
     }
 
     async function setNewAvatar() {
-        const rsp = await uploadFile()
-        setPicture(rsp.metadata.url ?? `https://void.cat/d/${rsp.id}`)
+        const rsp = await uploadFile();
+        if (rsp) {
+            setPicture(rsp.meta?.url ?? `https://void.cat/d/${rsp.id}`);
+        }
     }
 
     async function setNewBanner() {
-        const rsp = await uploadFile()
-        setBanner(rsp.metadata.url ?? `https://void.cat/d/${rsp.id}`)
+        const rsp = await uploadFile();
+        if (rsp) {
+            setBanner(rsp.meta?.url ?? `https://void.cat/d/${rsp.id}`);
+        }
     }
 
     async function saveRelays() {
@@ -171,15 +167,19 @@ export default function SettingsPage(props) {
     }
 
     function addRelay() {
-        return (
-            <>
-                <h4>Add Relays</h4>
-                <div className="flex mb10">
-                    <input type="text" className="f-grow" placeholder="wss://my-relay.com" value={newRelay} onChange={(e) => setNewRelay(e.target.value)} />
-                </div>
-                <div className="btn mb10" onClick={() => dispatch(setRelays({ [newRelay]: { read: false, write: false } }))}>Add</div>
-            </>
-        )
+        if ((newRelay?.length ?? 0) > 0) {
+            const parsed = new URL(newRelay!);
+            const payload = { relays: { [parsed.toString()]: { read: false, write: false } }, createdAt: Math.floor(new Date().getTime() / 1000) };
+            return (
+                <>
+                    <h4>Add Relays</h4>
+                    <div className="flex mb10">
+                        <input type="text" className="f-grow" placeholder="wss://my-relay.com" value={newRelay} onChange={(e) => setNewRelay(e.target.value)} />
+                    </div>
+                    <div className="btn mb10" onClick={() => dispatch(setRelays(payload))}>Add</div>
+                </>
+            )
+        }
     }
 
     function settings() {
@@ -188,18 +188,18 @@ export default function SettingsPage(props) {
             <>
                 <h1>Settings</h1>
                 <div className="flex f-center image-settings">
-                  <div>
-                    <h2>Avatar</h2>
-                    <div style={{ backgroundImage: `url(${avatarPicture})` }} className="avatar">
-                        <div className="edit" onClick={() => setNewAvatar()}>Edit</div>
+                    <div>
+                        <h2>Avatar</h2>
+                        <div style={{ backgroundImage: `url(${avatarPicture})` }} className="avatar">
+                            <div className="edit" onClick={() => setNewAvatar()}>Edit</div>
+                        </div>
                     </div>
-                  </div>
-                  <div>
-                    <h2>Header</h2>
-                    <div style={{ backgroundImage: `url(${banner.length === 0 ? avatarPicture : banner})` }} className="banner">
-                        <div className="edit" onClick={() => setNewBanner()}>Edit</div>
+                    <div>
+                        <h2>Header</h2>
+                        <div style={{ backgroundImage: `url(${(banner?.length ?? 0) === 0 ? avatarPicture : banner})` }} className="banner">
+                            <div className="edit" onClick={() => setNewBanner()}>Edit</div>
+                        </div>
                     </div>
-                   </div>
                 </div>
                 {editor()}
             </>

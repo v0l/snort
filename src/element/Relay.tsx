@@ -6,23 +6,33 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeRelay, setRelays } from "../state/Login";
+import { RootState } from "../state/Store";
+import { RelaySettings } from "../nostr/Connection";
 
+export interface RelayProps {
+    addr: string
+}
 
-export default function Relay(props) {
+export default function Relay(props: RelayProps) {
     const dispatch = useDispatch();
-    const relaySettings = useSelector(s => s.login.relays[props.addr]);
+    const allRelaySettings = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
+    const relaySettings = allRelaySettings[props.addr];
     const state = useRelayState(props.addr);
     const name = useMemo(() => new URL(props.addr).host, [props.addr]);
     const [showExtra, setShowExtra] = useState(false);
 
-    function configure(o) {
+    function configure(o: RelaySettings) {
         dispatch(setRelays({
-            [props.addr]: o
+            relays: {
+                ...allRelaySettings,
+                [props.addr]: o
+            },
+            createdAt: Math.floor(new Date().getTime() / 1000)
         }));
     }
 
 
-    let latency = parseInt(state?.avgLatency ?? 0);
+    let latency = Math.floor(state?.avgLatency ?? 0);
     return (
         <>
             <div className={`relay w-max`}>

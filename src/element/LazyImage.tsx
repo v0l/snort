@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-export default function LazyImage(props) {
+export default function LazyImage(props: any) {
     const { ref, inView, entry } = useInView();
     const [shown, setShown] = useState(false);
 

@@ -2,7 +2,7 @@ import "./Note.css";
 import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Event from "../nostr/Event";
+import { default as NEvent } from "../nostr/Event";
 import ProfileImage from "./ProfileImage";
 import Text from "./Text";
 import { eventLink, hexToBech32 } from "../Util";
@@ -10,11 +10,26 @@ import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
 import EventKind from "../nostr/EventKind";
 import useProfile from "../feed/ProfileFeed";
+import { TaggedRawEvent, u256 } from "../nostr";
 
-export default function Note(props) {
+export interface NoteProps {
+    data?: TaggedRawEvent,
+    isThread?: boolean,
+    reactions: TaggedRawEvent[],
+    deletion: TaggedRawEvent[],
+    highlight?: boolean,
+    options?: {
+        showHeader?: boolean,
+        showTime?: boolean,
+        showFooter?: boolean
+    },
+    ["data-ev"]?: NEvent
+}
+
+export default function Note(props: NoteProps) {
     const navigate = useNavigate();
-    const { data, isThread, reactions, deletion, hightlight, options: opt, ["data-ev"]: parsedEvent } = props
-    const ev = useMemo(() => parsedEvent ?? new Event(data), [data]);
+    const { data, isThread, reactions, deletion, highlight, options: opt, ["data-ev"]: parsedEvent } = props
+    const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
 
     const users = useProfile(pubKeys);
@@ -31,10 +46,10 @@ export default function Note(props) {
         if (deletion?.length > 0) {
             return (<b className="error">Deleted</b>);
         }
-        return <Text content={body} tags={ev.Tags} users={users || []} />;
+        return <Text content={body} tags={ev.Tags} users={users || new Map()} />;
     }, [props]);
 
-    function goToEvent(e, id) {
+    function goToEvent(e: any, id: u256) {
         if (!window.location.pathname.startsWith("/e/")) {
             e.stopPropagation();
             navigate(eventLink(id));
@@ -48,13 +63,21 @@ export default function Note(props) {
 
         const maxMentions = 2;
         let replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
-        let mentions = ev.Thread?.PubKeys?.map(a => [a, users ? users[a] : null])?.map(a => (a[1]?.name?.length ?? 0) > 0 ? a[1].name : hexToBech32("npub", a[0]).substring(0, 12))
-            .sort((a, b) => a.startsWith("npub") ? 1 : -1);
+        let mentions: string[] = [];
+        for (let pk of ev.Thread?.PubKeys) {
+            let u = users?.get(pk);
+            if (u) {
+                mentions.push(u.name ?? hexToBech32("npub", pk).substring(0, 12));
+            } else {
+                mentions.push(hexToBech32("npub", pk).substring(0, 12));
+            }
+        }
+        mentions.sort((a, b) => a.startsWith("npub") ? 1 : -1);
         let othersLength = mentions.length - maxMentions
         let pubMentions = mentions.length > maxMentions ? `${mentions?.slice(0, maxMentions).join(", ")} & ${othersLength} other${othersLength > 1 ? 's' : ''}` : mentions?.join(", ");
         return (
             <div className="reply">
-                ➡️ {(pubMentions?.length ?? 0) > 0 ? pubMentions : hexToBech32("note", replyId)?.substring(0, 12)}
+                ➡️ {(pubMentions?.length ?? 0) > 0 ? pubMentions : replyId ? hexToBech32("note", replyId)?.substring(0, 12) : ""}
             </div>
         )
     }
@@ -71,10 +94,10 @@ export default function Note(props) {
     }
 
     return (
-        <div className={`note ${hightlight ? "active" : ""} ${isThread ? "thread" : ""}`}>
+        <div className={`note ${highlight ? "active" : ""} ${isThread ? "thread" : ""}`}>
             {options.showHeader ?
                 <div className="header flex">
-                    <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag()} />
+                    <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
                     {options.showTime ?
                         <div className="info">
                             <NoteTime from={ev.CreatedAt * 1000} />

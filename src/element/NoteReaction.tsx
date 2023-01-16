@@ -2,14 +2,20 @@ import "./NoteReaction.css";
 import EventKind from "../nostr/EventKind";
 import Note from "./Note";
 import ProfileImage from "./ProfileImage";
-import Event from "../nostr/Event";
+import { default as NEvent } from "../nostr/Event";
 import { eventLink, hexToBech32 } from "../Util";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import NoteTime from "./NoteTime";
+import { RawEvent, TaggedRawEvent } from "../nostr";
 
-export default function NoteReaction(props) {
-    const ev = props["data-ev"] || new Event(props.data);
+export interface NoteReactionProps {
+    data?: TaggedRawEvent,
+    ["data-ev"]?: NEvent,
+    root?: TaggedRawEvent
+}
+export default function NoteReaction(props: NoteReactionProps) {
+    const ev = props["data-ev"] || new NEvent(props.data);
 
     const refEvent = useMemo(() => {
         if (ev) {
@@ -25,7 +31,7 @@ export default function NoteReaction(props) {
         return null;
     }
 
-    function mapReaction(c) {
+    function mapReaction(c: string) {
         switch (c) {
             case "+": return "❤️";
             case "-": return "👎";
@@ -51,8 +57,8 @@ export default function NoteReaction(props) {
     function extractRoot() {
         if (ev?.Kind === EventKind.Repost && ev.Content.length > 0) {
             try {
-                let r = JSON.parse(ev.Content);
-                return r;
+                let r: RawEvent = JSON.parse(ev.Content);
+                return r as TaggedRawEvent;
             } catch (e) {
                 console.error("Could not load reposted content", e);
             }
@@ -74,7 +80,7 @@ export default function NoteReaction(props) {
                 </div>
             </div>
 
-            {root ? <Note data={root} options={opt} /> : null}
+            {root ? <Note data={root} options={opt} reactions={[]} deletion={[]} /> : null}
             {!root && refEvent ? <p><Link to={eventLink(refEvent)}>#{hexToBech32("note", refEvent).substring(0, 12)}</Link></p> : null}
         </div>
     );

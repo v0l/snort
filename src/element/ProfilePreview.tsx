@@ -2,10 +2,17 @@ import "./ProfilePreview.css";
 import ProfileImage from "./ProfileImage";
 import FollowButton from "./FollowButton";
 import useProfile from "../feed/ProfileFeed";
+import { HexKey } from "../nostr";
 
-export default function ProfilePreview(props) {
+export interface ProfilePreviewProps {
+    pubkey: HexKey,
+    options?: {
+        about?: boolean
+    }
+}
+export default function ProfilePreview(props: ProfilePreviewProps) {
     const pubkey = props.pubkey;
-    const user = useProfile(pubkey);
+    const user = useProfile(pubkey)?.get(pubkey);
     const options = {
         about: true,
         ...props.options
@@ -16,7 +23,7 @@ export default function ProfilePreview(props) {
             <ProfileImage pubkey={pubkey} subHeader=
                 {options.about ? <div className="f-ellipsis about">
                     {user?.about}
-                </div> : null} />
+                </div> : undefined} />
             <FollowButton pubkey={pubkey} className="ml5" />
         </div>
     )
