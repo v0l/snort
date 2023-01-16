@@ -40,7 +40,7 @@ export default function DM(props: DMProps) {
         <div className={`flex dm f-col${props.data.pubkey === pubKey ? " me" : ""}`} ref={ref}>
             <div><NoteTime from={props.data.created_at * 1000} fallback={'Just now'} /></div>
             <div className="w-max">
-                <Text content={content} />
+                <Text content={content} tags={[]} users={new Map()} />
             </div>
         </div>
     )

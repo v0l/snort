@@ -139,7 +139,7 @@ export default function useEventPublisher() {
                 return await signEvent(ev);
             }
         },
-        addFollow: async (pkAdd: HexKey) => {
+        addFollow: async (pkAdd: HexKey | HexKey[]) => {
             if (pubKey) {
                 let ev = NEvent.ForPubKey(pubKey);
                 ev.Kind = EventKind.ContactList;

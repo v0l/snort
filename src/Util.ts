@@ -2,7 +2,7 @@ import * as secp from "@noble/secp256k1";
 import { bech32 } from "bech32";
 import { HexKey, u256 } from "./nostr";
 
-export async function openFile() {
+export async function openFile(): Promise<File | undefined> {
     return new Promise((resolve, reject) => {
         let elm = document.createElement("input");
         elm.type = "file";
@@ -10,6 +10,8 @@ export async function openFile() {
             let elm = e.target as HTMLInputElement;
             if (elm.files) {
                 resolve(elm.files[0]);
+            } else {
+                resolve(undefined);
             }
         };
         elm.click();

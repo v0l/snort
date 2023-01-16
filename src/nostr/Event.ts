@@ -68,7 +68,7 @@ export default class Event {
      */
     get RootPubKey() {
         let delegation = this.Tags.find(a => a.Key === "delegation");
-        if (delegation) {
+        if (delegation?.PubKey) {
             return delegation.PubKey;
         }
         return this.PubKey;
