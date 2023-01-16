@@ -150,7 +150,7 @@ function transformLi({ body, tags, users }: TextFragment) {
 
 function transformParagraph({ body, tags, users }: TextFragment) {
     const fragments = transformText({ body, tags, users })
-    if (fragments.every(f => typeof f === 'string') && fragments.length > 1) {
+    if (fragments.every(f => typeof f === 'string')) {
         return <p>{fragments}</p>
     }
     return <>{fragments}</>

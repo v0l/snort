@@ -38,7 +38,7 @@ export default function ProfilePage() {
     const isMe = loginPubKey === id;
     const [showLnQr, setShowLnQr] = useState<boolean>(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
-    const about = Text({ content: user?.about })
+    const about = Text({ content: user?.about || '', tags: [], users: new Map() })
 
     useEffect(() => {
         setTab(ProfileTab.Notes);
