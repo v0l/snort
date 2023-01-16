@@ -9,15 +9,18 @@ import { System } from "../nostr/System"
 import ProfileImage from "../element/ProfileImage";
 import { init } from "../state/Login";
 import useLoginFeed from "../feed/LoginFeed";
+import { RootState } from "../state/Store";
+import { HexKey, TaggedRawEvent } from "../nostr";
+import { RelaySettings } from "../nostr/Connection";
 
-export default function Layout(props) {
+export default function Layout() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const isInit = useSelector(s => s.login.loggedOut);
-    const key = useSelector(s => s.login.publicKey);
-    const relays = useSelector(s => s.login.relays);
-    const notifications = useSelector(s => s.login.notifications);
-    const readNotifications = useSelector(s => s.login.readNotifications);
+    const isInit = useSelector<RootState, boolean | undefined>(s => s.login.loggedOut);
+    const key = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+    const relays = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
+    const notifications = useSelector<RootState, TaggedRawEvent[]>(s => s.login.notifications);
+    const readNotifications = useSelector<RootState, number>(s => s.login.readNotifications);
     useLoginFeed();
 
     useEffect(() => {
@@ -37,7 +40,7 @@ export default function Layout(props) {
         dispatch(init());
     }, []);
 
-    async function goToNotifications(e) {
+    async function goToNotifications(e: any) {
         e.stopPropagation();
         // request permissions to send notifications
         if ("Notification" in window && Notification.permission !== "granted") {
@@ -64,7 +67,7 @@ export default function Layout(props) {
                 {unreadNotifications > 0 && (<span className="unread-count">
                     {unreadNotifications > 100 ? ">99" : unreadNotifications}
                 </span>)}
-                <ProfileImage pubkey={key} showUsername={false} />
+                <ProfileImage pubkey={key || ""} showUsername={false} />
             </>
         )
     }
@@ -84,7 +87,7 @@ export default function Layout(props) {
                 </div>
             </div>
 
-            <Outlet/>
+            <Outlet />
         </div>
     )
 }

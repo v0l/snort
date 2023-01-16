@@ -6,11 +6,13 @@ import * as secp from '@noble/secp256k1';
 import { setPrivateKey, setPublicKey } from "../state/Login";
 import { EmailRegex } from "../Const";
 import { bech32ToHex } from "../Util";
+import { RootState } from "../state/Store";
+import { HexKey } from "../nostr";
 
 export default function LoginPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const publicKey = useSelector(s => s.login.publicKey);
+    const publicKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const [key, setKey] = useState("");
     const [error, setError] = useState("");
 
@@ -20,7 +22,7 @@ export default function LoginPage() {
         }
     }, [publicKey]);
 
-    async function getNip05PubKey(addr) {
+    async function getNip05PubKey(addr: string) {
         let [username, domain] = addr.split("@");
         let rsp = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username)}`);
         if (rsp.ok) {

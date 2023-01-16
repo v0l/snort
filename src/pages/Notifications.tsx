@@ -3,14 +3,16 @@ import { useDispatch, useSelector } from "react-redux"
 import Note from "../element/Note";
 import NoteReaction from "../element/NoteReaction";
 import useSubscription from "../feed/Subscription";
+import { TaggedRawEvent } from "../nostr";
 import Event from "../nostr/Event";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { markNotificationsRead } from "../state/Login";
+import { RootState } from "../state/Store";
 
 export default function NotificationsPage() {
     const dispatch = useDispatch();
-    const notifications = useSelector(s => s.login.notifications);
+    const notifications = useSelector<RootState, TaggedRawEvent[]>(s => s.login.notifications);
 
     useEffect(() => {
         dispatch(markNotificationsRead());
@@ -21,7 +23,7 @@ export default function NotificationsPage() {
             .map(a => {
                 let ev = new Event(a);
                 return ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
-            })
+            }).filter(a => a !== undefined).map(a => a!);
     }, [notifications]);
 
     const subEvents = useMemo(() => {
@@ -50,7 +52,7 @@ export default function NotificationsPage() {
             {sorted?.map(a => {
                 if (a.kind === EventKind.TextNote) {
                     let reactions = otherNotes?.notes?.filter(c => c.tags.find(b => b[0] === "e" && b[1] === a.id));
-                    return <Note data={a} key={a.id} reactions={reactions} />
+                    return <Note data={a} key={a.id} reactions={reactions} deletion={[]}/>
                 } else if (a.kind === EventKind.Reaction) {
                     let ev = new Event(a);
                     let reactedTo = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;

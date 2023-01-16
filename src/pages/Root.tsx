@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { NoteCreator } from "../element/NoteCreator";
 import Timeline from "../element/Timeline";
 import { useState } from "react";
-import useScroll from "../useScroll";
+import { RootState } from "../state/Store";
+import { HexKey } from "../nostr";
 
 const RootTab = {
     Follows: 0,
@@ -12,9 +13,8 @@ const RootTab = {
 };
 
 export default function RootPage() {
-    const [loggedOut, pubKey, follows] = useSelector(s => [s.login.loggedOut, s.login.publicKey, s.login.follows]);
+    const [loggedOut, pubKey, follows] = useSelector<RootState, [boolean | undefined, HexKey | undefined, HexKey[]]>(s => [s.login.loggedOut, s.login.publicKey, s.login.follows]);
     const [tab, setTab] = useState(RootTab.Follows);
-    const [eop] = useScroll();
 
     function followHints() {
         if (follows?.length === 0 && pubKey && tab !== RootTab.Global) {
@@ -27,7 +27,7 @@ export default function RootPage() {
     return (
         <>
             {pubKey ? <>
-                <NoteCreator show={true}/>
+                <NoteCreator show={true} autoFocus={false} />
                 <div className="tabs root-tabs">
                     <div className={`root-tab f-1 ${tab === RootTab.Follows ? "active" : ""}`} onClick={() => setTab(RootTab.Follows)}>
                         Follows

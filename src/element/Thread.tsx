@@ -1,29 +1,32 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import Event from "../nostr/Event";
+import { TaggedRawEvent, u256 } from "../nostr";
+import { default as NEvent } from "../nostr/Event";
 import EventKind from "../nostr/EventKind";
 import { eventLink } from "../Util";
 import Note from "./Note";
 import NoteGhost from "./NoteGhost";
 
-export default function Thread(props) {
+export interface ThreadProps {
+    this?: u256,
+    notes?: TaggedRawEvent[]
+}
+export default function Thread(props: ThreadProps) {
     const thisEvent = props.this;
-
-    /** @type {Array<Event>} */
-    const notes = props.notes?.map(a => new Event(a));
+    const notes = props.notes?.map(a => new NEvent(a));
 
     // root note has no thread info
-    const root = useMemo(() => notes.find(a => a.Thread === null), [notes]);
+    const root = useMemo(() => notes?.find(a => a.Thread === null), [notes]);
 
     const chains = useMemo(() => {
-        let chains = new Map();
-        notes.filter(a => a.Kind === EventKind.TextNote).sort((a, b) => b.CreatedAt - a.CreatedAt).forEach((v) => {
+        let chains = new Map<u256, NEvent[]>();
+        notes?.filter(a => a.Kind === EventKind.TextNote).sort((a, b) => b.CreatedAt - a.CreatedAt).forEach((v) => {
             let replyTo = v.Thread?.ReplyTo?.Event ?? v.Thread?.Root?.Event;
             if (replyTo) {
                 if (!chains.has(replyTo)) {
                     chains.set(replyTo, [v]);
                 } else {
-                    chains.get(replyTo).push(v);
+                    chains.get(replyTo)!.push(v);
                 }
             } else if (v.Tags.length > 0) {
                 console.log("Not replying to anything: ", v);
@@ -34,15 +37,15 @@ export default function Thread(props) {
     }, [notes]);
 
     const brokenChains = useMemo(() => {
-        return Array.from(chains?.keys()).filter(a => !notes.some(b => b.Id === a));
+        return Array.from(chains?.keys()).filter(a => !notes?.some(b => b.Id === a));
     }, [chains]);
 
     const mentionsRoot = useMemo(() => {
-        return notes.filter(a => a.Kind === EventKind.TextNote && a.Thread)
+        return notes?.filter(a => a.Kind === EventKind.TextNote && a.Thread)
     }, [chains]);
 
-    function reactions(id, kind = EventKind.Reaction) {
-        return notes?.filter(a => a.Kind === kind && a.Tags.find(a => a.Key === "e" && a.Event === id));
+    function reactions(id: u256, kind = EventKind.Reaction) {
+        return (notes?.filter(a => a.Kind === kind && a.Tags.find(a => a.Key === "e" && a.Event === id)) || []).map(a => a.Original!);
     }
 
     function renderRoot() {
@@ -50,12 +53,12 @@ export default function Thread(props) {
             return <Note data-ev={root} reactions={reactions(root.Id)} deletion={reactions(root.Id, EventKind.Deletion)} isThread />
         } else {
             return <NoteGhost>
-                Loading thread root.. ({notes.length} notes loaded)
+                Loading thread root.. ({notes?.length} notes loaded)
             </NoteGhost>
         }
     }
 
-    function renderChain(from) {
+    function renderChain(from: u256) {
         if (from && chains) {
             let replies = chains.get(from);
             if (replies) {
@@ -64,7 +67,11 @@ export default function Thread(props) {
                         {replies.map(a => {
                             return (
                                 <>
-                                    <Note data-ev={a} key={a.Id} reactions={reactions(a.Id)} deletion={reactions(a.Id, EventKind.Deletion)} hightlight={thisEvent === a.Id} />
+                                    <Note data-ev={a}
+                                        key={a.Id}
+                                        reactions={reactions(a.Id)}
+                                        deletion={reactions(a.Id, EventKind.Deletion)}
+                                        highlight={thisEvent === a.Id} />
                                     {renderChain(a.Id)}
                                 </>
                             )

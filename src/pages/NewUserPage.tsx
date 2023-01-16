@@ -1,8 +1,7 @@
-import { Outlet } from "react-router-dom";
 import { RecommendedFollows } from "../Const";
 import ProfilePreview from "../element/ProfilePreview";
 
-export default function NewUserPage(props) {
+export default function NewUserPage() {
 
     function followSomebody() {
         return (
