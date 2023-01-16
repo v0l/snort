@@ -2127,6 +2127,10 @@
   integrity sha512-e1DZGD+eH19BnllTWCGXAdrMa2kI53wEMuhn/d+wUmnu8//ZI6BiuK/EPdw07fI4+tlyo5qdPZdXdpkoXHJVOw==
   dependencies:
     "@types/react" "*"
+"@types/uuid@^9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-9.0.0.tgz#53ef263e5239728b56096b0a869595135b7952d2"
+  integrity sha512-kr90f+ERiQtKWMz5rP32ltJ/BtULDI5RVO0uavn1HQUOwjx0R1h0rnDYNL0CepF1zL5bSY6FISAfd9tOdDhU5Q==
 
 "@types/ws@^8.5.1":
   version "8.5.4"

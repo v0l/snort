@@ -10,7 +10,7 @@ export default function Thread(props) {
     const thisEvent = props.this;
 
     /** @type {Array<Event>} */
-    const notes = props.notes?.map(a => Event.FromObject(a));
+    const notes = props.notes?.map(a => new Event(a));
 
     // root note has no thread info
     const root = useMemo(() => notes.find(a => a.Thread === null), [notes]);

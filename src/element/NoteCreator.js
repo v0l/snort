@@ -1,5 +1,4 @@
-import { useState, Component } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 
@@ -20,7 +19,6 @@ export function NoteCreator(props) {
     const [note, setNote] = useState("");
     const [error, setError] = useState("");
     const [active, setActive] = useState(false);
-    const users = useSelector((state) => state.users.users)
 
     async function sendNote() {
         let ev = replyTo ? await publisher.reply(replyTo, note) : await publisher.note(note);
@@ -71,7 +69,6 @@ export function NoteCreator(props) {
                     <Textarea
                       autoFocus={autoFocus}
                       className={`textarea ${active ? "textarea--focused" : ""}`}
-                      users={users}
                       onChange={onChange}
                       value={note}
                       onFocus={() => setActive(true)}

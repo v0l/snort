@@ -19,7 +19,7 @@ export default function NotificationsPage() {
     const etagged = useMemo(() => {
         return notifications?.filter(a => a.kind === EventKind.Reaction)
             .map(a => {
-                let ev = Event.FromObject(a);
+                let ev = new Event(a);
                 return ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
             })
     }, [notifications]);
@@ -27,12 +27,12 @@ export default function NotificationsPage() {
     const subEvents = useMemo(() => {
         let sub = new Subscriptions();
         sub.Id = `reactions:${sub.Id}`;
-        sub.Kinds.add(EventKind.Reaction);
+        sub.Kinds = new Set([EventKind.Reaction]);
         sub.ETags = new Set(notifications?.filter(b => b.kind === EventKind.TextNote).map(b => b.id));
 
         if (etagged.length > 0) {
             let reactionsTo = new Subscriptions();
-            reactionsTo.Kinds.add(EventKind.TextNote);
+            reactionsTo.Kinds = new Set([EventKind.TextNote]);
             reactionsTo.Ids = new Set(etagged);
             sub.OrSubs.push(reactionsTo);
         }
@@ -52,7 +52,7 @@ export default function NotificationsPage() {
                     let reactions = otherNotes?.notes?.filter(c => c.tags.find(b => b[0] === "e" && b[1] === a.id));
                     return <Note data={a} key={a.id} reactions={reactions} />
                 } else if (a.kind === EventKind.Reaction) {
-                    let ev = Event.FromObject(a);
+                    let ev = new Event(a);
                     let reactedTo = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
                     let reactedNote = otherNotes?.notes?.find(c => c.id === reactedTo);
                     return <NoteReaction data={a} key={a.id} root={reactedNote} />

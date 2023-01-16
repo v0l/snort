@@ -9,7 +9,7 @@ import { useMemo } from "react";
 import NoteTime from "./NoteTime";
 
 export default function NoteReaction(props) {
-    const ev = props["data-ev"] || Event.FromObject(props.data);
+    const ev = props["data-ev"] || new Event(props.data);
 
     const refEvent = useMemo(() => {
         if (ev) {

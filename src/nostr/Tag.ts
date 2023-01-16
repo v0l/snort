@@ -1,11 +1,18 @@
+import { HexKey, RawReqFilter, u256 } from ".";
+
 export default class Tag {
-    constructor(tag, index) {
+    Original: string[];
+    Key: string;
+    Event?: u256;
+    PubKey?: HexKey;
+    Relay?: string;
+    Marker?: string;
+    Index: number;
+    Invalid: boolean;
+
+    constructor(tag: string[], index: number) {
+        this.Original = tag;
         this.Key = tag[0];
-        this.Event = null;
-        this.PubKey = null;
-        this.Relay = null;
-        this.Marker = null;
-        this.Other = null;
         this.Index = index;
         this.Invalid = false;
 
@@ -13,8 +20,8 @@ export default class Tag {
             case "e": {
                 // ["e", <event-id>, <relay-url>, <marker>]
                 this.Event = tag[1];
-                this.Relay = tag.length > 2 ? tag[2] : null;
-                this.Marker = tag.length > 3 ? tag[3] : null;
+                this.Relay = tag.length > 2 ? tag[2] : undefined;
+                this.Marker = tag.length > 3 ? tag[3] : undefined;
                 if (!this.Event) {
                     this.Invalid = true;
                 }
@@ -32,27 +39,23 @@ export default class Tag {
                 this.PubKey = tag[1];
                 break;
             }
-            default: {
-                this.Other = tag;
-                break;
-            }
         }
     }
 
-    ToObject() {
+    ToObject(): string[] | null {
         switch (this.Key) {
             case "e": {
                 let ret = ["e", this.Event, this.Relay, this.Marker];
-                let trimEnd = ret.reverse().findIndex(a => a != null);
-                return ret.reverse().slice(0, ret.length - trimEnd);
+                let trimEnd = ret.reverse().findIndex(a => a !== undefined);
+                ret = ret.reverse().slice(0, ret.length - trimEnd);
+                return <string[]>ret;
             }
             case "p": {
-                return ["p", this.PubKey];
+                return this.PubKey ? ["p", this.PubKey] : null;
             }
             default: {
-                return this.Other;
+                return this.Original;
             }
         }
-        return null;
     }
 }

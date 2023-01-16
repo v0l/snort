@@ -1,63 +1,66 @@
 import * as secp from '@noble/secp256k1';
-import base64 from "@protobufjs/base64"
+import * as base64 from "@protobufjs/base64"
+import { HexKey, RawEvent, TaggedRawEvent } from '.';
 import EventKind from "./EventKind";
 import Tag from './Tag';
 import Thread from './Thread';
 
 export default class Event {
-    constructor() {
-        /**
-         * The original event
-         */
-        this.Original = null;
+    /**
+     * The original event
+     */
+    Original: TaggedRawEvent | null;
 
-        /**
-         * Id of the event
-         * @type {string}
-         */
-        this.Id = null;
+    /**
+     * Id of the event
+     */
+    Id: string
 
-        /**
-         * Pub key of the creator
-         * @type {string}
-         */
-        this.PubKey = null;
+    /**
+     * Pub key of the creator
+     */
+    PubKey: string;
 
-        /**
-         * Timestamp when the event was created
-         * @type {number}
-         */
-        this.CreatedAt = null;
+    /**
+     * Timestamp when the event was created
+     */
+    CreatedAt: number;
 
-        /**
-         * The type of event
-         * @type {EventKind}
-         */
-        this.Kind = null;
+    /**
+     * The type of event
+     */
+    Kind: EventKind;
 
-        /**
-         * A list of metadata tags
-         * @type {Array<Tag>}
-         */
-        this.Tags = [];
+    /**
+     * A list of metadata tags
+     */
+    Tags: Array<Tag>;
 
-        /**
-         * Content of the event
-         * @type {string}
-         */
-        this.Content = null;
+    /**
+     * Content of the event
+     */
+    Content: string;
 
-        /**
-         * Signature of this event from the creator
-         * @type {string}
-         */
-        this.Signature = null;
+    /**
+     * Signature of this event from the creator
+     */
+    Signature: string;
 
-        /**
-         * Thread information for this event
-         * @type {Thread}
-         */
-        this.Thread = null;
+    /**
+     * Thread information for this event
+     */
+    Thread: Thread | null;
+
+    constructor(e?: TaggedRawEvent) {
+        this.Original = e ?? null;
+        this.Id = e?.id ?? "";
+        this.PubKey = e?.pubkey ?? "";
+        this.CreatedAt = e?.created_at ?? Math.floor(new Date().getTime() / 1000);
+        this.Kind = e?.kind ?? EventKind.Unknown;
+        this.Tags = e?.tags.map((a, i) => new Tag(a, i)) ?? [];
+        this.Content = e?.content ?? "";
+        this.Signature = e?.sig ?? "";
+        this.Thread = Thread.ExtractThread(this);
     }
 
     /**
@@ -73,9 +76,8 @@ export default class Event {
 
     /**
      * Sign this message with a private key
-     * @param {string} key Key to sign message with
      */
-    async Sign(key) {
+    async Sign(key: HexKey) {
         this.Id = await this.CreateId();
 
         let sig = await secp.schnorr.sign(this.Id, key);
@@ -108,49 +110,20 @@ export default class Event {
         let payloadData = new TextEncoder().encode(JSON.stringify(payload));
         let data = await secp.utils.sha256(payloadData);
         let hash = secp.utils.bytesToHex(data);
-        if (this.Id !== null && hash !== this.Id) {
+        if (this.Id !== "" && hash !== this.Id) {
             console.debug(payload);
             throw "ID doesnt match!";
         }
         return hash;
     }
 
-    /**
-     * Does this event have content
-     * @returns {boolean}
-     */
-    IsContent() {
-        const ContentKinds = [
-            EventKind.TextNote
-        ];
-        return ContentKinds.includes(this.Kind);
-    }
-
-    static FromObject(obj) {
-        if (typeof obj !== "object") {
-            return null;
-        }
-
-        let ret = new Event();
-        ret.Original = obj;
-        ret.Id = obj.id;
-        ret.PubKey = obj.pubkey;
-        ret.CreatedAt = obj.created_at;
-        ret.Kind = obj.kind;
-        ret.Tags = obj.tags.map((e, i) => new Tag(e, i)).filter(a => !a.Invalid);
-        ret.Content = obj.content;
-        ret.Signature = obj.sig;
-        ret.Thread = Thread.ExtractThread(ret);
-        return ret;
-    }
-
-    ToObject() {
+    ToObject(): RawEvent {
         return {
             id: this.Id,
             pubkey: this.PubKey,
             created_at: this.CreatedAt,
             kind: this.Kind,
-            tags: this.Tags.sort((a, b) => a.Index - b.Index).map(a => a.ToObject()).filter(a => a !== null),
+            tags: <string[][]>this.Tags.sort((a, b) => a.Index - b.Index).map(a => a.ToObject()).filter(a => a !== null),
             content: this.Content,
             sig: this.Signature
         };
@@ -158,21 +131,17 @@ export default class Event {
 
     /**
      * Create a new event for a specific pubkey
-     * @param {String} pubKey 
      */
-    static ForPubKey(pubKey) {
+    static ForPubKey(pubKey: HexKey) {
         let ev = new Event();
-        ev.CreatedAt = parseInt(new Date().getTime() / 1000);
         ev.PubKey = pubKey;
         return ev;
     }
 
     /**
      * Encrypt the message content in place
-     * @param {string} pubkey 
-     * @param {string} privkey 
      */
-    async EncryptDmForPubkey(pubkey, privkey) {
+    async EncryptDmForPubkey(pubkey: HexKey, privkey: HexKey) {
         let key = await this._GetDmSharedKey(pubkey, privkey);
         let iv = window.crypto.getRandomValues(new Uint8Array(16));
         let data = new TextEncoder().encode(this.Content);
@@ -186,10 +155,8 @@ export default class Event {
 
     /**
      * Decrypt the content of this message in place
-     * @param {string} privkey 
-     * @param {string} pubkey 
      */
-    async DecryptDm(privkey, pubkey) {
+    async DecryptDm(privkey: HexKey, pubkey: HexKey) {
         let key = await this._GetDmSharedKey(pubkey, privkey);
         let cSplit = this.Content.split("?iv=");
         let data = new Uint8Array(base64.length(cSplit[0]));
@@ -205,7 +172,7 @@ export default class Event {
         this.Content = new TextDecoder().decode(result);
     }
 
-    async _GetDmSharedKey(pubkey, privkey) {
+    async _GetDmSharedKey(pubkey: HexKey, privkey: HexKey) {
         let sharedPoint = secp.getSharedSecret(privkey, '02' + pubkey);
         let sharedX = sharedPoint.slice(1, 33);
         return await window.crypto.subtle.importKey("raw", sharedX, { name: "AES-CBC" }, false, ["encrypt", "decrypt"])

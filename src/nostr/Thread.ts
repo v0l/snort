@@ -1,23 +1,24 @@
-import Event from "./Event";
+import { u256 } from ".";
+import { default as NEvent } from "./Event";
 import EventKind from "./EventKind";
+import Tag from "./Tag";
 
 export default class Thread {
+    Root?: Tag;
+    ReplyTo?: Tag;
+    Mentions: Array<Tag>;
+    PubKeys: Array<u256>;
+
     constructor() {
-        /** @type {Tag} */
-        this.Root = null;
-        /** @type {Tag} */
-        this.ReplyTo = null;
-        /** @type {Array<Tag>} */
         this.Mentions = [];
-        /** @type {Array<String>} */
         this.PubKeys = [];
     }
 
     /**
      * Extract thread information from an Event
-     * @param {Event} ev Event to extract thread from
+     * @param ev Event to extract thread from
      */
-    static ExtractThread(ev) {
+    static ExtractThread(ev: NEvent) {
         let isThread = ev.Tags.some(a => a.Key === "e");
         if (!isThread) {
             return null;
@@ -26,13 +27,13 @@ export default class Thread {
         let shouldWriteMarkers = ev.Kind === EventKind.TextNote;
         let ret = new Thread();
         let eTags = ev.Tags.filter(a => a.Key === "e");
-        let marked = eTags.some(a => a.Marker !== null);
+        let marked = eTags.some(a => a.Marker !== undefined);
         if (!marked) {
             ret.Root = eTags[0];
-            ret.Root.Marker = shouldWriteMarkers ? "root" : null;
+            ret.Root.Marker = shouldWriteMarkers ? "root" : undefined;
             if (eTags.length > 1) {
                 ret.ReplyTo = eTags[1];
-                ret.ReplyTo.Marker = shouldWriteMarkers ? "reply" : null;
+                ret.ReplyTo.Marker = shouldWriteMarkers ? "reply" : undefined;
             }
             if (eTags.length > 2) {
                 ret.Mentions = eTags.slice(2);
@@ -47,7 +48,7 @@ export default class Thread {
             ret.ReplyTo = reply;
             ret.Mentions = eTags.filter(a => a.Marker === "mention");
         }
-        ret.PubKeys = [...new Set(ev.Tags.filter(a => a.Key === "p").map(a => a.PubKey))]
+        ret.PubKeys = Array.from(new Set(ev.Tags.filter(a => a.Key === "p").map(a => <u256>a.PubKey)));
         return ret;
     }
 }

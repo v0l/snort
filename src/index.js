@@ -25,11 +25,6 @@ import MessagesPage from './pages/MessagesPage';
 import ChatPage from './pages/ChatPage';
 
 /**
- * Nostr websocket managment system
- */
-export const System = new NostrSystem();
-
-/**
  * HTTP query provider
  */
 const HTTP = new QueryClient()

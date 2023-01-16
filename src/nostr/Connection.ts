@@ -2,33 +2,60 @@ import * as secp from "@noble/secp256k1";
 import { v4 as uuid } from "uuid";
 
 import { Subscriptions } from "./Subscriptions";
-import Event from "./Event";
+import { default as NEvent } from "./Event";
 import { DefaultConnectTimeout } from "../Const";
+import { ConnectionStats } from "./ConnectionStats";
+import { RawEvent, TaggedRawEvent } from ".";
 
-export class ConnectionStats {
-    constructor() {
-        this.Latency = [];
-        this.Subs = 0;
-        this.SubsTimeout = 0;
-        this.EventsReceived = 0;
-        this.EventsSent = 0;
-        this.Disconnects = 0;
+export type CustomHook = (state: Readonly<StateSnapshot>) => void;
+
+/**
+ * Relay settings
+ */
+export type RelaySettings = {
+    read: boolean,
+    write: boolean
+};
+
+/**
+ * Snapshot of connection stats
+ */
+export type StateSnapshot = {
+    connected: boolean,
+    disconnects: number,
+    avgLatency: number,
+    events: {
+        received: number,
+        send: number
     }
-}
+};
 
 export default class Connection {
-    constructor(addr, options) {
+    Address: string;
+    Socket: WebSocket | null;
+    Pending: Subscriptions[];
+    Subscriptions: Map<string, Subscriptions>;
+    Settings: RelaySettings;
+    ConnectTimeout: number;
+    Stats: ConnectionStats;
+    StateHooks: Map<string, CustomHook>;
+    HasStateChange: boolean;
+    CurrentState: StateSnapshot;
+    LastState: Readonly<StateSnapshot>;
+    IsClosed: boolean;
+    ReconnectTimer: ReturnType<typeof setTimeout> | null;
+
+    constructor(addr: string, options: RelaySettings) {
         this.Address = addr;
         this.Socket = null;
         this.Pending = [];
-        this.Subscriptions = {};
-        this.Read = options?.read || true;
-        this.Write = options?.write || true;
+        this.Subscriptions = new Map();
+        this.Settings = options;
         this.ConnectTimeout = DefaultConnectTimeout;
         this.Stats = new ConnectionStats();
-        this.StateHooks = {};
+        this.StateHooks = new Map();
         this.HasStateChange = true;
-        this.CurrentState = {
+        this.CurrentState = <StateSnapshot>{
             connected: false,
             disconnects: 0,
             avgLatency: 0,
@@ -58,11 +85,11 @@ export default class Connection {
             clearTimeout(this.ReconnectTimer);
             this.ReconnectTimer = null;
         }
-        this.Socket.close();
+        this.Socket?.close();
         this._UpdateState();
     }
 
-    OnOpen(e) {
+    OnOpen(e: Event) {
         this.ConnectTimeout = DefaultConnectTimeout;
         console.log(`[${this.Address}] Open!`);
 
@@ -72,13 +99,13 @@ export default class Connection {
         }
         this.Pending = [];
 
-        for (let s of Object.values(this.Subscriptions)) {
-            this._SendSubscription(s, s.ToObject());
+        for (let [_, s] of this.Subscriptions) {
+            this._SendSubscription(s);
         }
         this._UpdateState();
     }
 
-    OnClose(e) {
+    OnClose(e: CloseEvent) {
         if (!this.IsClosed) {
             this.ConnectTimeout = this.ConnectTimeout * 2;
             console.log(`[${this.Address}] Closed (${e.reason}), trying again in ${(this.ConnectTimeout / 1000).toFixed(0).toLocaleString()} sec`);
@@ -93,7 +120,7 @@ export default class Connection {
         this._UpdateState();
     }
 
-    OnMessage(e) {
+    OnMessage(e: MessageEvent<any>) {
         if (e.data.length > 0) {
             let msg = JSON.parse(e.data);
             let tag = msg[0];
@@ -125,17 +152,16 @@ export default class Connection {
         }
     }
 
-    OnError(e) {
+    OnError(e: Event) {
         console.error(e);
         this._UpdateState();
     }
 
     /**
      * Send event on this connection
-     * @param {Event} e 
      */
-    SendEvent(e) {
-        if (!this.Write) {
+    SendEvent(e: NEvent) {
+        if (!this.Settings.write) {
             return;
         }
         let req = ["EVENT", e.ToObject()];
@@ -146,36 +172,28 @@ export default class Connection {
 
     /**
      * Subscribe to data from this connection
-     * @param {Subscriptions | Array<Subscriptions>} sub Subscriptions object
      */
-    AddSubscription(sub) {
-        if (!this.Read) {
+    AddSubscription(sub: Subscriptions) {
+        if (!this.Settings.read) {
             return;
         }
 
-        let subObj = sub.ToObject();
-        if (Object.keys(subObj).length === 0) {
-            debugger;
-            throw "CANNOT SEND EMPTY SUB - FIX ME";
-        }
-
-        if (this.Subscriptions[sub.Id]) {
+        if (this.Subscriptions.has(sub.Id)) {
             return;
         }
 
-        this._SendSubscription(sub, subObj);
-        this.Subscriptions[sub.Id] = sub;
+        this._SendSubscription(sub);
+        this.Subscriptions.set(sub.Id, sub);
     }
 
     /**
      * Remove a subscription
-     * @param {any} subId Subscription id to remove
      */
-    RemoveSubscription(subId) {
-        if (this.Subscriptions[subId]) {
+    RemoveSubscription(subId: string) {
+        if (this.Subscriptions.has(subId)) {
             let req = ["CLOSE", subId];
             this._SendJson(req);
-            delete this.Subscriptions[subId];
+            this.Subscriptions.delete(subId);
             return true;
         }
         return false;
@@ -183,19 +201,17 @@ export default class Connection {
 
     /**
      * Hook status for connection
-     * @param {function} fnHook Subscription hook
      */
-    StatusHook(fnHook) {
+    StatusHook(fnHook: CustomHook) {
         let id = uuid();
-        this.StateHooks[id] = fnHook;
+        this.StateHooks.set(id, fnHook);
         return () => {
-            delete this.StateHooks[id];
+            this.StateHooks.delete(id);
         };
     }
 
     /**
      * Returns the current state of this connection
-     * @returns {any}
      */
     GetState() {
         if (this.HasStateChange) {
@@ -218,24 +234,24 @@ export default class Connection {
 
     _NotifyState() {
         let state = this.GetState();
-        for (let h of Object.values(this.StateHooks)) {
+        for (let [_, h] of this.StateHooks) {
             h(state);
         }
     }
 
-    _SendSubscription(sub, subObj) {
-        let req = ["REQ", sub.Id, subObj];
+    _SendSubscription(sub: Subscriptions) {
+        let req = ["REQ", sub.Id, sub.ToObject()];
         if (sub.OrSubs.length > 0) {
             req = [
                 ...req,
                 ...sub.OrSubs.map(o => o.ToObject())
             ];
         }
-        sub.Started[this.Address] = new Date().getTime();
+        sub.Started.set(this.Address, new Date().getTime());
         this._SendJson(req);
     }
 
-    _SendJson(obj) {
+    _SendJson(obj: any) {
         if (this.Socket?.readyState !== WebSocket.OPEN) {
             this.Pending.push(obj);
             return;
@@ -244,34 +260,43 @@ export default class Connection {
         this.Socket.send(json);
     }
 
-    _OnEvent(subId, ev) {
-        if (this.Subscriptions[subId]) {
+    _OnEvent(subId: string, ev: RawEvent) {
+        if (this.Subscriptions.has(subId)) {
             //this._VerifySig(ev);
-            ev.relay = this.Address; // tag event with relay
-            this.Subscriptions[subId].OnEvent(ev);
+            let tagged: TaggedRawEvent = {
+                ...ev,
+                relays: [this.Address]
+            };
+            this.Subscriptions.get(subId)?.OnEvent(tagged);
         } else {
             // console.warn(`No subscription for event! ${subId}`);
             // ignored for now, track as "dropped event" with connection stats
         }
     }
 
-    _OnEnd(subId) {
-        let sub = this.Subscriptions[subId];
+    _OnEnd(subId: string) {
+        let sub = this.Subscriptions.get(subId);
         if (sub) {
-            sub.Finished[this.Address] = new Date().getTime();
-            let responseTime = sub.Finished[this.Address] - sub.Started[this.Address];
-            if (responseTime > 10_000) {
-                console.warn(`[${this.Address}][${subId}] Slow response time ${(responseTime / 1000).toFixed(1)} seconds`);
+            let now = new Date().getTime();
+            let started = sub.Started.get(this.Address);
+            sub.Finished.set(this.Address, now);
+            if (started) {
+                let responseTime = now - started;
+                if (responseTime > 10_000) {
+                    console.warn(`[${this.Address}][${subId}] Slow response time ${(responseTime / 1000).toFixed(1)} seconds`);
+                }
+                this.Stats.Latency.push(responseTime);
+            } else {
+                console.warn("No started timestamp!");
             }
             sub.OnEnd(this);
-            this.Stats.Latency.push(responseTime);
             this._UpdateState();
         } else {
             console.warn(`No subscription for end! ${subId}`);
         }
     }
 
-    _VerifySig(ev) {
+    _VerifySig(ev: RawEvent) {
         let payload = [
             0,
             ev.pubkey,
@@ -282,6 +307,9 @@ export default class Connection {
         ];
 
         let payloadData = new TextEncoder().encode(JSON.stringify(payload));
+        if (secp.utils.sha256Sync === undefined) {
+            throw "Cannot verify event, no sync sha256 method";
+        }
         let data = secp.utils.sha256Sync(payloadData);
         let hash = secp.utils.bytesToHex(data);
         if (!secp.schnorr.verifySync(ev.sig, hash, ev.pubkey)) {

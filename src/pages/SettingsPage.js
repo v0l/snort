@@ -11,7 +11,6 @@ import useEventPublisher from "../feed/EventPublisher";
 import useProfile from "../feed/ProfileFeed";
 import VoidUpload from "../feed/VoidUpload";
 import { logout, setRelays } from "../state/Login";
-import { resetProfile } from "../state/Users";
 import { hexToBech32, openFile } from "../Util";
 import Relay from "../element/Relay";
 import Copy from "../element/Copy";
@@ -87,7 +86,6 @@ export default function SettingsPage(props) {
 
         let ev = await publisher.metadata(userCopy);
         console.debug(ev);
-        dispatch(resetProfile(id));
         publisher.broadcast(ev);
     }
 

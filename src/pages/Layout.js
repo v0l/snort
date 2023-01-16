@@ -5,11 +5,10 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { System } from ".."
+import { System } from "../nostr/System"
 import ProfileImage from "../element/ProfileImage";
 import { init } from "../state/Login";
 import useLoginFeed from "../feed/LoginFeed";
-import useUsersCache from "../feed/UsersFeed";
 
 export default function Layout(props) {
     const dispatch = useDispatch();
@@ -19,7 +18,6 @@ export default function Layout(props) {
     const relays = useSelector(s => s.login.relays);
     const notifications = useSelector(s => s.login.notifications);
     const readNotifications = useSelector(s => s.login.readNotifications);
-    useUsersCache();
     useLoginFeed();
 
     useEffect(() => {
@@ -27,7 +25,7 @@ export default function Layout(props) {
             for (let [k, v] of Object.entries(relays)) {
                 System.ConnectToRelay(k, v);
             }
-            for (let [k, v] of Object.entries(System.Sockets)) {
+            for (let [k, v] of System.Sockets) {
                 if (!relays[k]) {
                     System.DisconnectRelay(k);
                 }

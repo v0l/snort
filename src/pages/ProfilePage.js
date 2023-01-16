@@ -105,57 +105,54 @@ export default function ProfilePage() {
     }
 
     function avatar() {
-      return (
-         <div className="avatar-wrapper">
-             <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={domain?.toLowerCase()}>
-             </div>
-         </div>
-      )
+        return (
+            <div className="avatar-wrapper">
+                <div style={{ '--img-url': backgroundImage }} className="avatar" data-domain={domain?.toLowerCase()}>
+                </div>
+            </div>
+        )
     }
 
     function userDetails() {
-      return (
-         <div className="details-wrapper">
-             {username()}
-             {isMe ? (
-                 <div className="btn btn-icon follow-button" onClick={() => navigate("/settings")}>
-                     <FontAwesomeIcon icon={faGear} size="lg" />
-                 </div>
-             ) : <>
-                     <div className="btn message-button" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
-                         <FontAwesomeIcon icon={faEnvelope} size="lg" />
-                     </div>
-                     <FollowButton pubkey={id} />
-                 </>
-             }
-             {bio()}
-         </div>
-      )
+        return (
+            <div className="details-wrapper">
+                {username()}
+                {isMe ? (
+                    <div className="btn btn-icon follow-button" onClick={() => navigate("/settings")}>
+                        <FontAwesomeIcon icon={faGear} size="lg" />
+                    </div>
+                ) : <>
+                    <div className="btn message-button" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
+                        <FontAwesomeIcon icon={faEnvelope} size="lg" />
+                    </div>
+                    <FollowButton pubkey={id} />
+                </>
+                }
+                {bio()}
+            </div>
+        )
     }
 
     return (
         <>
             <div className="profile flex">
-                {user?.banner && <img alt="banner" className="banner" src={user.banner} /> }
+                {user?.banner && <img alt="banner" className="banner" src={user.banner} />}
                 {user?.banner ? (
-                  <>
-                     {avatar()}
-                     {userDetails()}
-                  </>
+                    <>
+                        {avatar()}
+                        {userDetails()}
+                    </>
                 ) : (
-                  <div className="no-banner">
-                     {avatar()}
-                     {userDetails()}
-                  </div>
+                    <div className="no-banner">
+                        {avatar()}
+                        {userDetails()}
+                    </div>
                 )}
             </div>
             <div className="tabs">
-                {
-                    Object.entries(ProfileTab).map(([k, v]) => {
-                        return <div className={`tab f-1${tab === v ? " active" : ""}`} key={k} onClick={() => setTab(v)}>{k}</div>
-                    }
-                    )
-                }
+                {Object.entries(ProfileTab).map(([k, v]) => {
+                    return <div className={`tab f-1${tab === v ? " active" : ""}`} key={k} onClick={() => setTab(v)}>{k}</div>
+                })}
             </div>
             {tabContent()}
         </>

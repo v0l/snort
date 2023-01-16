@@ -24,9 +24,9 @@ export default function DM(props: DMProps) {
     const { ref, inView, entry } = useInView();
 
     async function decrypt() {
-        let e = Event.FromObject(props.data);
+        let e = new Event(props.data);
         let decrypted = await publisher.decryptDm(e);
-        setContent(decrypted);
+        setContent(decrypted || "<ERROR>");
     }
 
     useEffect(() => {

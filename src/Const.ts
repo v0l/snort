@@ -1,3 +1,4 @@
+import { RelaySettings } from "./nostr/Connection";
 
 /**
  * Websocket re-connect timeout
@@ -12,11 +13,11 @@ export const ProfileCacheExpire = (1_000 * 60 * 5);
 /**
  * Default bootstrap relays
  */
-export const DefaultRelays = {
-    "wss://relay.snort.social": { read: true, write: true },
-    "wss://relay.damus.io": { read: true, write: true },
-    "wss://nostr-pub.wellorder.net": { read: true, write: true }
-};
+export const DefaultRelays = new Map<string, RelaySettings>([
+    ["wss://relay.snort.social", { read: true, write: true }],
+    ["wss://relay.damus.io", { read: true, write: true }],
+    ["wss://nostr-pub.wellorder.net", { read: true, write: true }],
+]);
 
 /**
  * List of recommended follows for new users

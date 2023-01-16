@@ -1,14 +1,15 @@
 import { useMemo } from "react";
+import { HexKey } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import useSubscription from "./Subscription";
 
-export default function useFollowsFeed(pubkey) {
+export default function useFollowersFeed(pubkey: HexKey) {
     const sub = useMemo(() => {
         let x = new Subscriptions();
-        x.Id = "follows";
-        x.Kinds.add(EventKind.ContactList);
-        x.Authors.add(pubkey);
+        x.Id = "followers";
+        x.Kinds = new Set([EventKind.ContactList]);
+        x.PTags = new Set([pubkey]);
 
         return x;
     }, [pubkey]);
