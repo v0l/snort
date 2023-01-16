@@ -27,7 +27,7 @@ export default function RootPage() {
     return (
         <>
             {pubKey ? <>
-                <NoteCreator show={true} autoFocus={false} />
+                <NoteCreator show={true} autoFocus={true} />
                 <div className="tabs root-tabs">
                     <div className={`root-tab f-1 ${tab === RootTab.Follows ? "active" : ""}`} onClick={() => setTab(RootTab.Follows)}>
                         Follows
