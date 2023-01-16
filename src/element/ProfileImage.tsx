@@ -19,8 +19,7 @@ export interface ProfileImageProps {
 export default function ProfileImage({ pubkey, subHeader, showUsername = true, className, link }: ProfileImageProps) {
     const navigate = useNavigate();
     const user = useProfile(pubkey)?.get(pubkey);
-    
-    const hasImage = (user?.picture?.length ?? 0) > 0;
+
     const name = useMemo(() => {
         let name = hexToBech32("npub", pubkey).substring(0, 12);
         if ((user?.display_name?.length ?? 0) > 0) {
@@ -34,7 +33,7 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true, c
     return (
         <div className={`pfp${className ? ` ${className}` : ""}`}>
             <div className="avatar-wrapper">
-               <Avatar user={user} onClick={() => navigate(link ?? profileLink(pubkey))} />
+                <Avatar user={user} onClick={() => navigate(link ?? profileLink(pubkey))} />
             </div>
             {showUsername && (<div className="f-grow">
                 <Link key={pubkey} to={link ?? profileLink(pubkey)}>

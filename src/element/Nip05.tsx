@@ -53,7 +53,7 @@ const Nip05 = (props: Nip05Params) => {
   const { isVerified, couldNotVerify } = useIsVerified(props.pubkey, props.nip05)
 
   return (
-    <div className="flex nip05" onClick={(ev) => ev.stopPropagation()}>
+    <div className={`flex nip05${couldNotVerify ? " failed" : ""}`} onClick={(ev) => ev.stopPropagation()}>
       <div className="nick">
         {!isDefaultUser && name}
       </div>
@@ -65,13 +65,6 @@ const Nip05 = (props: Nip05Params) => {
           <FontAwesomeIcon
             color={"var(--fg-color)"}
             icon={faSpinner}
-            size="xs"
-          />
-        )}
-        {isVerified && (
-          <FontAwesomeIcon
-            color={"var(--success)"}
-            icon={faCheck}
             size="xs"
           />
         )}

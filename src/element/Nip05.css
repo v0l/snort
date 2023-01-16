@@ -5,6 +5,10 @@
     margin: .2em;
 }
 
+.nip05.failed {
+    text-decoration: line-through;
+}
+
 .nip05 .nick {
     color: var(--gray-light);
     font-weight: bold;

@@ -12,6 +12,7 @@ import './Text.css'
 import { useMemo } from "react";
 import Tag from "../nostr/Tag";
 import { MetadataCache } from "../db/User";
+import Mention from "./Mention";
 
 function transformHttpLink(a: string) {
     try {
@@ -94,8 +95,7 @@ function extractMentions(fragments: Fragment[], tags: Tag[], users: Map<string, 
                     if (ref) {
                         switch (ref.Key) {
                             case "p": {
-                                let pUser = users.get(ref.PubKey!)?.name ?? hexToBech32("npub", ref.PubKey!).substring(0, 12);
-                                return <Link key={ref.PubKey} to={profileLink(ref.PubKey!)} onClick={(e) => e.stopPropagation()}>@{pUser}</Link>;
+                                return <Mention pubkey={ref.PubKey!} />
                             }
                             case "e": {
                                 let eText = hexToBech32("note", ref.Event!).substring(0, 12);
