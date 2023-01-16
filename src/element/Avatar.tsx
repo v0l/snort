@@ -1,5 +1,4 @@
 import "./Avatar.css";
-// @ts-expect-error
 import Nostrich from "../nostrich.jpg";
 
 import { CSSProperties } from "react";

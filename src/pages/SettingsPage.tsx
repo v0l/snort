@@ -1,5 +1,4 @@
 import "./SettingsPage.css";
-// @ts-ignore
 import Nostrich from "../nostrich.jpg";
 
 import { useEffect, useState } from "react";
@@ -196,7 +195,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                         <h2>Header</h2>
-                        <div style={{ backgroundImage: `url(${(banner?.length ?? 0) === 0 ? avatarPicture : banner})` }} className="banner">
+                        <div style={{ backgroundImage: `url(${(banner?.length ?? 0) === 0 ? Nostrich : banner})` }} className="banner">
                             <div className="edit" onClick={() => setNewBanner()}>Edit</div>
                         </div>
                     </div>

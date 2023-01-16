@@ -1,5 +1,4 @@
 import "./Textarea.css";
-// @ts-expect-error
 import Nostrich from "../nostrich.jpg";
 
 import { useLiveQuery } from "dexie-react-hooks";
