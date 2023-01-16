@@ -1,0 +1,35 @@
+.avatar {
+    border-radius: 50%;
+    height: 210px;
+    width: 210px;
+    background-image: var(--img-url), var(--gray-gradient);
+    border: 2px solid transparent;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    background-size: cover;
+    box-sizing: border-box;
+}
+
+.avatar[data-domain="snort.social"] {
+    background-image: var(--img-url), var(--snort-gradient);
+}
+
+.avatar[data-domain="nostrplebs.com"] {
+    background-image: var(--img-url), var(--nostrplebs-gradient);
+}
+
+.avatar[data-domain="nostrpurple.com"] {
+    background-image: var(--img-url), var(--nostrplebs-gradient);
+}
+
+.avatar[data-domain="nostr.fan"] {
+    background-image: var(--img-url), var(--nostrplebs-gradient);
+}
+
+.avatar[data-domain="nostrich.zone"] {
+    background-image: var(--img-url), var(--nostrplebs-gradient);
+}
+
+.avatar[data-domain="nostriches.net"] {
+    background-image: var(--img-url), var(--nostrplebs-gradient);
+}

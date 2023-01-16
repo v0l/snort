@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useProfile from "../feed/ProfileFeed";
 import { hexToBech32, profileLink } from "../Util";
-import LazyImage from "./LazyImage";
+import Avatar from "./Avatar"
 import Nip05 from "./Nip05";
 import { HexKey } from "../nostr";
 
@@ -35,7 +35,9 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true, c
 
     return (
         <div className={`pfp${className ? ` ${className}` : ""}`}>
-            <LazyImage src={hasImage ? user!.picture : Nostrich} onClick={() => navigate(link ?? profileLink(pubkey))} />
+            <div className="avatar-wrapper">
+               <Avatar user={user} onClick={() => navigate(link ?? profileLink(pubkey))} />
+            </div>
             {showUsername && (<div className="f-grow">
                 <Link key={pubkey} to={link ?? profileLink(pubkey)}>
                     <div className="profile-name">
