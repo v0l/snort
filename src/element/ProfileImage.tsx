@@ -1,6 +1,4 @@
 import "./ProfileImage.css";
-// @ts-ignore
-import Nostrich from "../nostrich.jpg";
 
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
