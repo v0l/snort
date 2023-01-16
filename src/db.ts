@@ -1,9 +1,8 @@
 import Dexie, { Table } from 'dexie';
-
-import type { User } from './nostr/types';
+import { MetadataCache } from './state/Users';
 
 export class SnortDB extends Dexie {
-  users!: Table<User>;
+  users!: Table<MetadataCache>;
 
   constructor() {
     super('snortDB');

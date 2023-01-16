@@ -42,16 +42,13 @@ export default function useUsersCache() {
             .filter(a => a !== undefined)
             .map(a => a!);
         dispatch(setUserData(profiles));
-        const dbProfiles = results.notes.map(ev => {
-            return { ...JSON.parse(ev.content), pubkey: ev.pubkey }
-        });
-        db.users.bulkPut(dbProfiles);
+        db.users.bulkPut(profiles);
     }, [results]);
 
     return results;
 }
 
-export function mapEventToProfile(ev: TaggedRawEvent): MetadataCache | undefined {
+export function mapEventToProfile(ev: TaggedRawEvent) {
     try {
         let data: UserMetadata = JSON.parse(ev.content);
         return {
@@ -59,7 +56,7 @@ export function mapEventToProfile(ev: TaggedRawEvent): MetadataCache | undefined
             created: ev.created_at,
             loaded: new Date().getTime(),
             ...data
-        };
+        } as MetadataCache;
     } catch (e) {
         console.error("Failed to parse JSON", ev, e);
     }

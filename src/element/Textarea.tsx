@@ -11,12 +11,12 @@ import "./Textarea.css";
 // @ts-expect-error
 import Nostrich from "../nostrich.jpg";
 import { hexToBech32 } from "../Util";
-import type { User } from "../nostr/types";
 import { db } from "../db";
+import { MetadataCache } from "../state/Users";
 
-function searchUsers(query: string, users: User[]) {
+function searchUsers(query: string, users: MetadataCache[]) {
   const q = query.toLowerCase()
-  return users.filter(({ name, display_name, about, nip05 }: User) => {
+  return users.filter(({ name, display_name, about, nip05 }: MetadataCache) => {
     return name?.toLowerCase().includes(q)
       || display_name?.toLowerCase().includes(q)
       || about?.toLowerCase().includes(q)
@@ -24,7 +24,7 @@ function searchUsers(query: string, users: User[]) {
   }).slice(0, 3)
 }
 
-const UserItem = ({ pubkey, display_name, picture, nip05, ...rest }: User) => {
+const UserItem = ({ pubkey, display_name, picture, nip05, ...rest }: MetadataCache) => {
   return (
     <div key={pubkey} className="user-item">
       <div className="user-picture">
@@ -38,22 +38,22 @@ const UserItem = ({ pubkey, display_name, picture, nip05, ...rest }: User) => {
   )
 }
 
-function normalizeUser({ pubkey, picture, nip05, name, display_name }: User) {
+function normalizeUser({ pubkey, picture, nip05, name, display_name }: MetadataCache) {
   return { pubkey, nip05, name, picture, display_name }
 }
 
 const Textarea = ({ users, onChange, ...rest }: any) => {
-    const normalizedUsers = Object.keys(users).reduce((acc, pk) => {
-      return {...acc, [pk]: normalizeUser(users[pk]) }
-    }, {})
-    const dbUsers = useLiveQuery(
-      () => db.users.toArray().then(usrs => {
-        return usrs.reduce((acc, usr) => {
-          return { ...acc, [usr.pubkey]: normalizeUser(usr)}
-        }, {})
-      })
-    )
-    const allUsers: User[] = Object.values({...normalizedUsers, ...dbUsers})
+  const normalizedUsers = Object.keys(users).reduce((acc, pk) => {
+    return { ...acc, [pk]: normalizeUser(users[pk]) }
+  }, {})
+  const dbUsers = useLiveQuery(
+    () => db.users.toArray().then(usrs => {
+      return usrs.reduce((acc, usr) => {
+        return { ...acc, [usr.pubkey]: normalizeUser(usr) }
+      }, {})
+    })
+  )
+  const allUsers: MetadataCache[] = Object.values({ ...normalizedUsers, ...dbUsers })
 
     return (
         <ReactTextareaAutocomplete

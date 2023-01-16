@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ProfileCacheExpire } from '../Const';
-import { db } from '../db';
 import { HexKey, UserMetadata } from '../nostr';
 
 export interface MetadataCache extends UserMetadata {
@@ -27,10 +25,10 @@ export interface UsersStore {
 
 const UsersSlice = createSlice({
     name: "Users",
-    initialState: <UsersStore>{
+    initialState: {
         pubKeys: [],
         users: {},
-    },
+    } as UsersStore,
     reducers: {
         addPubKey: (state, action: PayloadAction<string | Array<string>>) => {
             let keys = action.payload;
@@ -38,31 +36,15 @@ const UsersSlice = createSlice({
                 keys = [keys];
             }
             let changes = false;
-            let fromCache = false;
             let temp = new Set(state.pubKeys);
             for (let k of keys) {
                 if (!temp.has(k)) {
                     changes = true;
                     temp.add(k);
-
-                    // load from cache
-                    let cache = window.localStorage.getItem(`user:${k}`);
-                    if (cache) {
-                        let ud: MetadataCache = JSON.parse(cache);
-                        if (ud.loaded > new Date().getTime() - ProfileCacheExpire) {
-                            state.users[ud.pubkey] = ud;
-                            fromCache = true;
-                        }
-                    }
                 }
             }
             if (changes) {
                 state.pubKeys = Array.from(temp);
-                if (fromCache) {
-                    state.users = {
-                        ...state.users
-                    };
-                }
             }
         },
         setUserData: (state, action: PayloadAction<MetadataCache | Array<MetadataCache>>) => {
@@ -84,8 +66,6 @@ const UsersSlice = createSlice({
                     };
                 }
                 state.users[x.pubkey] = x;
-                db.users.put(x)
-
                 state.users = {
                     ...state.users
                 };

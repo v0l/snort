@@ -1,17 +1,16 @@
+import { useLiveQuery } from "dexie-react-hooks";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { db } from "../db";
 import { HexKey } from "../nostr";
-import { RootState } from "../state/Store";
-import { addPubKey, MetadataCache } from "../state/Users";
+import { System } from "../nostr/System";
 
 export default function useProfile(pubKey: HexKey) {
-    const dispatch = useDispatch();
-    const user = useSelector<RootState, MetadataCache>(s => s.users.users[pubKey]);
+    const user = useLiveQuery(async () => {
+        return await db.users.get(pubKey);
+    }, [pubKey]);
 
     useEffect(() => {
-        if (pubKey) {
-            dispatch(addPubKey(pubKey));
-        }
+        System.GetMetadata(pubKey);
     }, [pubKey]);
 
     return user;

@@ -1,6 +1,10 @@
-import { TaggedRawEvent } from ".";
+import { HexKey, TaggedRawEvent } from ".";
+import { ProfileCacheExpire } from "../Const";
+import { db } from "../db";
+import { mapEventToProfile } from "../feed/UsersFeed";
 import Connection, { RelaySettings } from "./Connection";
 import Event from "./Event";
+import EventKind from "./EventKind";
 import { Subscriptions } from "./Subscriptions";
 
 /**
@@ -22,10 +26,17 @@ export class NostrSystem {
      */
     PendingSubscriptions: Subscriptions[];
 
+    /**
+     * List of pubkeys to fetch metadata for
+     */
+    WantsMetadata: Set<HexKey>;
+
     constructor() {
         this.Sockets = new Map();
         this.Subscriptions = new Map();
         this.PendingSubscriptions = [];
+        this.WantsMetadata = new Set();
+        this._FetchMetadata()
     }
 
     /**
@@ -79,11 +90,17 @@ export class NostrSystem {
         }
     }
 
+    GetMetadata(pk: HexKey) {
+        if (pk.length > 0) {
+            this.WantsMetadata.add(pk);
+        }
+    }
+
     /**
      * Request/Response pattern
      */
     RequestSubscription(sub: Subscriptions) {
-        return new Promise((resolve, reject) => {
+        return new Promise<TaggedRawEvent[]>((resolve, reject) => {
             let events: TaggedRawEvent[] = [];
 
             // force timeout returning current results
@@ -118,6 +135,37 @@ export class NostrSystem {
             };
             this.AddSubscription(sub);
         });
+    }
+
+    async _FetchMetadata() {
+        let missing = new Set<HexKey>();
+        for (let pk of this.WantsMetadata) {
+            let meta = await db.users.get(pk);
+            let now = new Date().getTime();
+            if (!meta || meta.loaded < now - ProfileCacheExpire) {
+                missing.add(pk);
+            } else {
+                this.WantsMetadata.delete(pk);
+            }
+        }
+
+        if (missing.size > 0) {
+            console.debug("Wants: ", missing);
+    
+            let sub = new Subscriptions();
+            sub.Id = `profiles:${sub.Id}`;
+            sub.Kinds = new Set([EventKind.SetMetadata]);
+            sub.Authors = missing;
+            sub.OnEvent = (e) => {
+                let profile = mapEventToProfile(e);
+                if (profile) {
+                    db.users.put(profile);
+                }
+            }
+            await this.RequestSubscription(sub);
+        }
+
+        setTimeout(() => this._FetchMetadata(), 500);
     }
 }
 
