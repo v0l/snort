@@ -54,9 +54,11 @@ const Nip05 = (props: Nip05Params) => {
 
   return (
     <div className={`flex nip05${couldNotVerify ? " failed" : ""}`} onClick={(ev) => ev.stopPropagation()}>
-      <div className="nick">
-        {!isDefaultUser && name}
-      </div>
+      {!isDefaultUser && (
+        <div className="nick">
+          {name}
+        </div>
+      )}
       <div className={`domain text-gradient`} data-domain={domain?.toLowerCase()}>
         {domain}
       </div>
