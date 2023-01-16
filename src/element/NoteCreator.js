@@ -80,7 +80,7 @@ export function NoteCreator(props) {
                               {error.length > 0 ? <b className="error">{error}</b> : null}
                               <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()} />
                           </div>
-                          <div disabled={note} className="btn" onClick={() => sendNote()}>Send</div>
+                          <div className="btn" onClick={() => sendNote()}>Send</div>
                       </div>
                     )}
                 </div>
