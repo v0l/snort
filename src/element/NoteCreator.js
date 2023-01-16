@@ -27,10 +27,10 @@ export function NoteCreator(props) {
         console.debug("Sending note: ", ev);
         publisher.broadcast(ev);
         setNote("");
-        setActive(false);
         if (typeof onSend === "function") {
             onSend();
         }
+        setActive(false);
     }
 
     async function attachFile() {
@@ -58,20 +58,22 @@ export function NoteCreator(props) {
         }
     }
 
+    function onSubmit(ev) {
+        ev.stopPropagation();
+        sendNote()
+    }
+
     if (!show) return false;
     return (
         <>
-            <div
-              key={replyTo ? `note-reply-${replyTo.Id}` : `note-creator`}
-              className={`flex note-creator ${replyTo ? 'note-reply' : ''}`}
-              >
+            <div className={`flex note-creator ${replyTo ? 'note-reply' : ''}`}>
                 <div className="flex f-col mr10 f-grow">
                     <Textarea
                       autoFocus={autoFocus}
                       className={`textarea ${active ? "textarea--focused" : ""}`}
                       users={users}
                       onChange={onChange}
-                      onBlur={() => setActive(false)}
+                      value={note}
                       onFocus={() => setActive(true)}
                     />
                     {active && note && (
@@ -80,7 +82,9 @@ export function NoteCreator(props) {
                               {error.length > 0 ? <b className="error">{error}</b> : null}
                               <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()} />
                           </div>
-                          <div className="btn" onClick={() => sendNote()}>Send</div>
+                          <button type="button" className="btn" onClick={onSubmit}>
+                            {replyTo ? 'Reply' : 'Send'}
+                          </button>
                       </div>
                     )}
                 </div>
