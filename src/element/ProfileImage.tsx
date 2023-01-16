@@ -28,7 +28,7 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true, c
             name = user!.name!;
         }
         return name;
-    }, [user]);
+    }, [user, pubkey]);
 
     return (
         <div className={`pfp${className ? ` ${className}` : ""}`}>

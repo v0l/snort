@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 import './Nip05.css'
 import { HexKey } from "../nostr";
