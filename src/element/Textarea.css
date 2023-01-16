@@ -1,26 +1,14 @@
-.rta__entity {
-  background: var(--gray);
-}
-
-.rta__entity--selected {
-  color: var(--font-color);
-  background: var(--gray-secondary);
-}
-
-.rta__list {
-  border: 1px solid var(--gray-tertiary);
-}
-
-.rta__item:not(:last-child) {
-  border-bottom: 1px solid var(--gray-tertiary);
-}
-
 .user-item {
+  background: var(--gray);
   display: flex;
   flex-direction: row;
   align-items: center;
   font-size: 16px;
   padding: 10px;
+}
+
+.user-item:hover {
+  background: var(--gray-tertiary);
 }
 
 .user-item .picture {

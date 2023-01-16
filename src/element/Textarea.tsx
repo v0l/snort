@@ -1,10 +1,10 @@
+import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
 import Nostrich from "../nostrich.jpg";
 
 import { useLiveQuery } from "dexie-react-hooks";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import TextareaAutosize from "react-textarea-autosize";
-import "@webscopeio/react-textarea-autocomplete/style.css";
 
 import Nip05 from "./Nip05";
 import { hexToBech32 } from "../Util";
