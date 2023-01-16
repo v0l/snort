@@ -30,6 +30,7 @@ export function useIsVerified(nip05, pubkey) {
     () => fetchNip05Pubkey(name, domain),
     {
       retry: false,
+      retryOnMount: false,
       cacheTime: VERIFICATION_CACHE_TIME,
       staleTime: VERIFICATION_STALE_TIMEOUT
     },
