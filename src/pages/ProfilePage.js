@@ -61,18 +61,22 @@ export default function ProfilePage() {
             <div className="details">
                 <div>{about}</div>
 
-                {user?.website && (
-                    <div className="website f-ellipsis">
-                        <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
-                    </div>
-                )}
+                <div className="links">
+                  {user?.website && (
+                      <div className="website f-ellipsis">
+                          <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
+                      </div>
+                  )}
 
-                {lnurl ? <div className="lnurl f-ellipsis">
-                    {lnurl}
-                    <div className="btn btn-icon" onClick={(e) => setShowLnQr(true)}>
-                        <FontAwesomeIcon icon={faQrcode} size="lg" />
+                  {lnurl && (
+                    <div className="f-ellipsis" onClick={(e) => setShowLnQr(true)}>
+                      <span className="zap">⚡️</span>
+                      <span className="lnurl" >
+                        {lnurl}
+                      </span>
                     </div>
-                </div> : null}
+                  )}
+                </div>
                 <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
             </div>
         )

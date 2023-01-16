@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { useLiveQuery } from "dexie-react-hooks";
 
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
+import TextareaAutosize from "react-textarea-autosize";
 
 // @ts-expect-error
 import Nip05 from "./Nip05";
@@ -61,6 +62,7 @@ const Textarea = ({ users, onChange, ...rest }: any) => {
           loadingComponent={() => <span>Loading....</span>}
           placeholder="Say something!"
           onChange={onChange}
+          textAreaComponent={TextareaAutosize}
           trigger={{
              "@": {
                afterWhitespace: true,

@@ -104,7 +104,12 @@ export default function NoteFooter(props) {
                     )
                 })}
             </div>
-            <NoteCreator replyTo={ev} onSend={(e) => setReply(false)} show={reply} />
+            <NoteCreator
+              autoFocus={true}
+              replyTo={ev}
+              onSend={(e) => setReply(false)}
+              show={reply}
+            />
             <LNURLTip svc={author?.lud16 || author?.lud06} onClose={(e) => setTip(false)} show={tip} />
         </>
     )

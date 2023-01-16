@@ -20,6 +20,7 @@
     font-size: small;
     white-space: nowrap;
     color: var(--gray-light);
+    align-self: flex-start;
 }
 
 .note > .body {

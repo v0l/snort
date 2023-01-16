@@ -18,8 +18,9 @@
 }
 
 .reaction > .header > .info {
-    color: #999;
+    color: var(--gray-light);
     font-size: small;
+    align-self: flex-start;
 }
 
 .reaction .reaction-text {

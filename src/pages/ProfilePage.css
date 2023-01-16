@@ -7,8 +7,8 @@
     height: 210px;
     margin-bottom: -80px;
     object-fit: cover;
-    mask-image: linear-gradient(to bottom, var(--bg-color), rgba(0,0,0,0));
-    -webkit-mask-image: linear-gradient(to bottom, var(--bg-color), rgba(0,0,0,0));
+    mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0,0,0,0));
+    -webkit-mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0,0,0,0));
     z-index: 0;
 }
 
@@ -93,6 +93,7 @@
 .profile .details {
     max-width: 680px;
     width: 100%;
+    margin-top: 12px;
 }
 
 .profile .details p {
@@ -101,36 +102,17 @@
 
 .profile .details a {
     color: var(--highlight);
+    text-decoration: none;
 }
 
-.profile .website {
-    color: var(--highlight);
-    margin-bottom: 4px;
-}
-
-.profile .lnurl {
-    color: var(--highlight);
+.profile .details a:hover {
+    text-decoration: underline;
 }
 
 .profile .btn-icon {
     color: var(--font-color);
     padding: 6px;
     margin-left: 4px;
-}
-
-.profile .website::before {
-    content: '🔗 ';
-    font-size: 10px;
-}
-
-.profile .lnurl {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.profile .lnurl::before {
-    content: '⚡️ ';
-    font-size: 10px;
 }
 
 .profile .details-wrapper {
@@ -148,10 +130,12 @@
 @media (min-width: 360px) {
   .profile .copy .body { font-size: 14px }
   .profile .details-wrapper, .profile .avatar-wrapper { margin-left: 21px; }
+  .profile .details { width: calc(100% - 21px); }
 }
 
 @media (min-width: 720px) {
   .profile .details-wrapper, .profile .avatar-wrapper { margin-left: 30px; }
+  .profile .details { width: calc(100% - 30px); }
 }
 
 .profile .follow-button {
@@ -226,4 +210,40 @@
       margin-top: 21px;
       max-width: 420px;
   }
+}
+
+.profile .links {
+    margin: 8px 12px;
+}
+
+.profile .website {
+    color: var(--highlight);
+    margin: 6px 0;
+}
+
+.profile .website a {
+    text-decoration: none;
+}
+
+.profile .website::before {
+    content: '🔗 ';
+}
+
+.profile .lnurl {
+    color: var(--highlight);
+    margin: 6px 0;
+    cursor: pointer;
+}
+
+.profile .lnurl:hover {
+    text-decoration: underline;
+}
+
+.profile .lnurl {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile .zap {
+    margin-right: .3em;
 }
