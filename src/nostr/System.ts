@@ -142,16 +142,19 @@ export class NostrSystem {
         for (let pk of this.WantsMetadata) {
             let meta = await db.users.get(pk);
             let now = new Date().getTime();
-            if (!meta || meta.loaded < now - ProfileCacheExpire) {
+            this.WantsMetadata.delete(pk); // always remove from wants list
+            if (!meta || meta.loaded < (now - ProfileCacheExpire)) {
                 missing.add(pk);
-            } else {
-                this.WantsMetadata.delete(pk);
+                // cap 100 missing profiles
+                if (missing.size >= 100) {
+                    break;
+                }
             }
         }
 
         if (missing.size > 0) {
             console.debug("Wants: ", missing);
-    
+
             let sub = new Subscriptions();
             sub.Id = `profiles:${sub.Id}`;
             sub.Kinds = new Set([EventKind.SetMetadata]);
