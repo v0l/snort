@@ -12,12 +12,12 @@
 }
 
 .note > .header .reply {
-    font-size: small;
+    font-size: 12px;
     color: var(--gray-light);
 }
 
 .note > .header > .info {
-    font-size: small;
+    font-size: 10px;
     white-space: nowrap;
     color: var(--gray-light);
     align-self: flex-start;

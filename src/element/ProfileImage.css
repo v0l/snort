@@ -3,11 +3,14 @@
     align-items: center;
 }
 
-.pfp img {
+.pfp .avatar-wrapper {
+  margin-right: 8px;
+}
+
+.pfp .avatar {
+    border-width: 1px;
     width: 40px;
     height: 40px;
-    margin-right: 10px;
-    border-radius: 100%;
     cursor: pointer;
 }
 

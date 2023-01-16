@@ -33,6 +33,13 @@
     margin: 0;
 }
 
+.text li {
+    margin-top: -1em;
+}
+.text li:last-child {
+    margin-bottom: -2em;
+}
+
 .text hr {
     border: 0;
     height: 1px;

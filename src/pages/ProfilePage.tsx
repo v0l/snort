@@ -1,6 +1,4 @@
 import "./ProfilePage.css";
-// @ts-ignore
-import Nostrich from "../nostrich.jpg";
 
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -11,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useProfile from "../feed/ProfileFeed";
 import FollowButton from "../element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "../Util";
+import Avatar from "../element/Avatar";
 import Timeline from "../element/Timeline";
 import Text from '../element/Text'
 import LNURLTip from "../element/LNURLTip";
@@ -39,10 +38,7 @@ export default function ProfilePage() {
     const isMe = loginPubKey === id;
     const [showLnQr, setShowLnQr] = useState<boolean>(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
-    const about = Text({ content: user?.about ?? "", users: new Map(), tags: [] })
-    const avatarUrl = (user?.picture?.length ?? 0) === 0 ? Nostrich : user?.picture
-    const backgroundImage = `url(${avatarUrl})`
-    const domain = user?.nip05 && user.nip05.split('@')[1]
+    const about = Text({ content: user?.about || '', tags: [], users: new Map() })
 
     useEffect(() => {
         setTab(ProfileTab.Notes);
@@ -109,8 +105,7 @@ export default function ProfilePage() {
     function avatar() {
         return (
             <div className="avatar-wrapper">
-                <div style={{ ['--img-url' as any]: backgroundImage }} className="avatar" data-domain={domain?.toLowerCase()}>
-                </div>
+              <Avatar user={user} />
             </div>
         )
     }
