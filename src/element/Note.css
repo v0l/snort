@@ -17,7 +17,7 @@
 }
 
 .note > .header > .info {
-    font-size: small;
+    font-size: 10px;
     white-space: nowrap;
     color: var(--gray-light);
     align-self: flex-start;
