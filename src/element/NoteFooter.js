@@ -7,13 +7,14 @@ import useEventPublisher from "../feed/EventPublisher";
 import { normalizeReaction, Reaction } from "../Util";
 import { NoteCreator } from "./NoteCreator";
 import LNURLTip from "./LNURLTip";
+import useProfile from "../feed/ProfileFeed";
 
 export default function NoteFooter(props) {
     const reactions = props.reactions;
     const ev = props.ev;
 
     const login = useSelector(s => s.login.publicKey);
-    const author = useSelector(s => s.users.users[ev.RootPubKey]);
+    const author = useProfile(ev.RootPubKey);
     const publisher = useEventPublisher();
     const [reply, setReply] = useState(false);
     const [tip, setTip] = useState(false);
@@ -105,10 +106,10 @@ export default function NoteFooter(props) {
                 })}
             </div>
             <NoteCreator
-              autoFocus={true}
-              replyTo={ev}
-              onSend={(e) => setReply(false)}
-              show={reply}
+                autoFocus={true}
+                replyTo={ev}
+                onSend={(e) => setReply(false)}
+                show={reply}
             />
             <LNURLTip svc={author?.lud16 || author?.lud06} onClose={(e) => setTip(false)} show={tip} />
         </>

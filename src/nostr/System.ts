@@ -1,7 +1,7 @@
 import { HexKey, TaggedRawEvent } from ".";
 import { ProfileCacheExpire } from "../Const";
 import { db } from "../db";
-import { mapEventToProfile } from "../feed/UsersFeed";
+import { mapEventToProfile, MetadataCache } from "../db/User";
 import Connection, { RelaySettings } from "./Connection";
 import Event from "./Event";
 import EventKind from "./EventKind";
@@ -90,9 +90,25 @@ export class NostrSystem {
         }
     }
 
-    GetMetadata(pk: HexKey) {
-        if (pk.length > 0) {
-            this.WantsMetadata.add(pk);
+    /**
+     * Request profile metadata for a set of pubkeys
+     */
+    TrackMetadata(pk: HexKey | Array<HexKey>) {
+        for (let p of Array.isArray(pk) ? pk : [pk]) {
+            if (p.length > 0) {
+                this.WantsMetadata.add(p);
+            }
+        }
+    }
+
+    /**
+     * Stop tracking metadata for a set of pubkeys
+     */
+    UntrackMetadata(pk: HexKey | Array<HexKey>) {
+        for (let p of Array.isArray(pk) ? pk : [pk]) {
+            if (p.length > 0) {
+                this.WantsMetadata.delete(p);
+            }
         }
     }
 
@@ -139,11 +155,11 @@ export class NostrSystem {
 
     async _FetchMetadata() {
         let missing = new Set<HexKey>();
+        let meta = await db.users.bulkGet(Array.from(this.WantsMetadata));
+        let now = new Date().getTime();
         for (let pk of this.WantsMetadata) {
-            let meta = await db.users.get(pk);
-            let now = new Date().getTime();
-            this.WantsMetadata.delete(pk); // always remove from wants list
-            if (!meta || meta.loaded < (now - ProfileCacheExpire)) {
+            let m = meta.find(a => a?.pubkey === pk);
+            if (!m || m.loaded < (now - ProfileCacheExpire)) {
                 missing.add(pk);
                 // cap 100 missing profiles
                 if (missing.size >= 100) {
@@ -153,19 +169,27 @@ export class NostrSystem {
         }
 
         if (missing.size > 0) {
-            console.debug("Wants: ", missing);
+            console.debug("Wants profiles: ", missing);
 
             let sub = new Subscriptions();
             sub.Id = `profiles:${sub.Id}`;
             sub.Kinds = new Set([EventKind.SetMetadata]);
             sub.Authors = missing;
-            sub.OnEvent = (e) => {
+            sub.OnEvent = async (e) => {
                 let profile = mapEventToProfile(e);
                 if (profile) {
-                    db.users.put(profile);
+                    await db.users.put(profile);
                 }
             }
-            await this.RequestSubscription(sub);
+            let results = await this.RequestSubscription(sub);
+            let couldNotFetch = Array.from(missing).filter(a => !results.some(b => b.pubkey === a));
+            console.debug("No profiles: ", couldNotFetch);
+            await db.users.bulkPut(couldNotFetch.map(a => {
+                return {
+                    pubkey: a,
+                    loaded: new Date().getTime()
+                } as MetadataCache;
+            }));
         }
 
         setTimeout(() => this._FetchMetadata(), 500);

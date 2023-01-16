@@ -38,11 +38,11 @@ function transformHttpLink(a) {
                     return <a key={url} href={url} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
             }
         } else if (tweetId) {
-          return (
-            <div className="tweet" key={tweetId}>
-              <TwitterTweetEmbed tweetId={tweetId} />
-            </div>
-          )
+            return (
+                <div className="tweet" key={tweetId}>
+                    <TwitterTweetEmbed tweetId={tweetId} />
+                </div>
+            )
         } else if (youtubeId) {
             return (
                 <>

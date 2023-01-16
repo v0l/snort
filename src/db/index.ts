@@ -1,5 +1,6 @@
 import Dexie, { Table } from 'dexie';
-import { MetadataCache } from './state/Users';
+import { MetadataCache } from './User';
+
 
 export class SnortDB extends Dexie {
   users!: Table<MetadataCache>;

@@ -5,10 +5,9 @@ import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { addDirectMessage, addNotifications, setFollows, setRelays } from "../state/Login";
 import { RootState } from "../state/Store";
-import { setUserData } from "../state/Users";
 import { db } from "../db";
 import useSubscription from "./Subscription";
-import { mapEventToProfile } from "./UsersFeed";
+import { mapEventToProfile } from "../db/User";
 
 /**
  * Managed loading data for the current logged in user
@@ -63,7 +62,6 @@ export default function useLoginFeed() {
             }
         }
         dispatch(addNotifications(notifications));
-        dispatch(setUserData(profiles));
         db.users.bulkPut(profiles);
         dispatch(addDirectMessage(dms));
     }, [main]);

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
     ServiceProvider,
@@ -15,14 +15,10 @@ import AsyncButton from "./AsyncButton";
 import LNURLTip from "./LNURLTip";
 // @ts-ignore
 import Copy from "./Copy";
-// @ts-ignore
 import useProfile from "../feed/ProfileFeed";
-// @ts-ignore
 import useEventPublisher from "../feed/EventPublisher";
-// @ts-ignore
-import { resetProfile } from "../state/Users";
-// @ts-ignore
 import { hexToBech32 } from "../Util";
+import { UserMetadata } from "../nostr";
 
 type Nip05ServiceProps = {
     name: string,
@@ -35,10 +31,9 @@ type Nip05ServiceProps = {
 type ReduxStore = any;
 
 export default function Nip5Service(props: Nip05ServiceProps) {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const pubkey = useSelector<ReduxStore, string>(s => s.login.publicKey);
-    const user: any = useProfile(pubkey);
+    const user = useProfile(pubkey);
     const publisher = useEventPublisher();
     const svc = new ServiceProvider(props.service);
     const [serviceConfig, setServiceConfig] = useState<ServiceConfig>();
@@ -71,11 +66,11 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         setError(undefined);
         setAvailabilityResponse(undefined);
         if (handle && domain) {
-            if(handle.length < (domainConfig?.length[0] ?? 2)) {
+            if (handle.length < (domainConfig?.length[0] ?? 2)) {
                 setAvailabilityResponse({ available: false, why: "TOO_SHORT" });
                 return;
             }
-            if(handle.length > (domainConfig?.length[1] ?? 20)) {
+            if (handle.length > (domainConfig?.length[1] ?? 20)) {
                 setAvailabilityResponse({ available: false, why: "TOO_LONG" });
                 return;
             }
@@ -149,17 +144,15 @@ export default function Nip5Service(props: Nip05ServiceProps) {
     }
 
     async function updateProfile(handle: string, domain: string) {
-        let newProfile = {
-            ...user,
-            nip05: `${handle}@${domain}`
-        };
-        delete newProfile["loaded"];
-        delete newProfile["fromEvent"];
-        delete newProfile["pubkey"];
-        let ev = await publisher.metadata(newProfile);
-        dispatch(resetProfile(pubkey));
-        publisher.broadcast(ev);
-        navigate("/settings");
+        if (user) {
+            let newProfile = {
+                ...user,
+                nip05: `${handle}@${domain}`
+            } as UserMetadata;
+            let ev = await publisher.metadata(newProfile);
+            publisher.broadcast(ev);
+            navigate("/settings");
+        }
     }
 
     return (
