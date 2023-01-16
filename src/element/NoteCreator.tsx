@@ -20,19 +20,21 @@ export interface NoteCreatorProps {
 
 export function NoteCreator(props: NoteCreatorProps) {
     const publisher = useEventPublisher();
-    const [note, setNote] = useState("");
-    const [error, setError] = useState("");
-    const [active, setActive] = useState(false);
+    const [note, setNote] = useState<string>();
+    const [error, setError] = useState<string>();
+    const [active, setActive] = useState<boolean>(false);
 
     async function sendNote() {
-        let ev = props.replyTo ? await publisher.reply(props.replyTo, note) : await publisher.note(note);
-        console.debug("Sending note: ", ev);
-        publisher.broadcast(ev);
-        setNote("");
-        if (typeof props.onSend === "function") {
-            props.onSend();
+        if (note) {
+            let ev = props.replyTo ? await publisher.reply(props.replyTo, note) : await publisher.note(note);
+            console.debug("Sending note: ", ev);
+            publisher.broadcast(ev);
+            setNote("");
+            if (typeof props.onSend === "function") {
+                props.onSend();
+            }
+            setActive(false);
         }
-        setActive(false);
     }
 
     async function attachFile() {
@@ -86,7 +88,7 @@ export function NoteCreator(props: NoteCreatorProps) {
                     {active && note && (
                         <div className="actions flex f-row">
                             <div className="attachment flex f-row">
-                                {error.length > 0 ? <b className="error">{error}</b> : null}
+                                {(error?.length ?? 0) > 0 ? <b className="error">{error}</b> : null}
                                 <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()} />
                             </div>
                             <button type="button" className="btn" onClick={onSubmit}>
