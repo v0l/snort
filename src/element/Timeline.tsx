@@ -14,15 +14,15 @@ export interface TimelineProps {
  * A list of notes by pubkeys
  */
 export default function Timeline({ global, pubkeys }: TimelineProps) {
-    const feed = useTimelineFeed(pubkeys, global);
+    const { main, others } = useTimelineFeed(pubkeys, global);
 
     function reaction(id: u256, kind = EventKind.Reaction) {
-        return feed?.others?.filter(a => a.kind === kind && a.tags.some(b => b[0] === "e" && b[1] === id));
+        return others?.filter(a => a.kind === kind && a.tags.some(b => b[0] === "e" && b[1] === id));
     }
 
     const mainFeed = useMemo(() => {
-        return feed.main?.sort((a, b) => b.created_at - a.created_at);
-    }, [feed]);
+        return main?.sort((a, b) => b.created_at - a.created_at);
+    }, [main]);
 
     function eventElement(e: TaggedRawEvent) {
         switch (e.kind) {
