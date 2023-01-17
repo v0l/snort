@@ -49,10 +49,6 @@ function getZapper(zap: TaggedRawEvent) {
   }
 }
 
-interface ZapProps {
-  zap: TaggedRawEvent
-}
-
 export function parseZap(zap: TaggedRawEvent) {
   const { amount, description, hash } = getInvoice(zap)
   const preimage = findTag(zap, 'preimage')
@@ -61,6 +57,10 @@ export function parseZap(zap: TaggedRawEvent) {
   const e = findTag(zap, 'e')
   const p = findTag(zap, 'p')
   return { e, p, amount: Number(amount) / 1000, zapper, description, valid: isValidPreimage }
+}
+
+interface ZapProps {
+  zap: TaggedRawEvent
 }
 
 const Zap = ({ zap }: ZapProps) => {
