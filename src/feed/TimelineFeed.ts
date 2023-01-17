@@ -5,8 +5,7 @@ import { Subscriptions } from "../nostr/Subscriptions";
 import useSubscription from "./Subscription";
 
 export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global: boolean = false) {
-    const TimeRange = 60 * 60; // 1 hr
-    const [since, setSince] = useState<number>(Math.floor(new Date().getTime() / 1000) - TimeRange);
+    const [until, setUntil] = useState<number>();
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
 
     const subTab = global ? "global" : "follows";
@@ -23,11 +22,11 @@ export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global:
         sub.Id = `timeline:${subTab}`;
         sub.Authors = global ? undefined : new Set(pubKeys);
         sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
-        sub.Since = since;
-        sub.Until = since + TimeRange;
+        sub.Limit = 20;
+        sub.Until = until;
 
         return sub;
-    }, [pubKeys, global, since]);
+    }, [pubKeys, global, until]);
 
     const main = useSubscription(sub, { leaveOpen: true });
 
@@ -62,7 +61,10 @@ export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global:
         main: main.notes,
         others: others.notes,
         loadMore: () => {
-            setSince(s => s - TimeRange);
-        }
+            let now = Math.floor(new Date().getTime() / 1000);
+            let oldest = main.notes.reduce((acc, v) => acc = v.created_at < acc ? v.created_at : acc, now);
+            setUntil(oldest);
+        },
+        until
     };
 }
