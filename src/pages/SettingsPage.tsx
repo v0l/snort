@@ -165,20 +165,30 @@ export default function SettingsPage() {
         )
     }
 
-    function addRelay() {
+    function addNewRelay() {
         if ((newRelay?.length ?? 0) > 0) {
             const parsed = new URL(newRelay!);
-            const payload = { relays: { [parsed.toString()]: { read: false, write: false } }, createdAt: Math.floor(new Date().getTime() / 1000) };
-            return (
-                <>
-                    <h4>Add Relays</h4>
-                    <div className="flex mb10">
-                        <input type="text" className="f-grow" placeholder="wss://my-relay.com" value={newRelay} onChange={(e) => setNewRelay(e.target.value)} />
-                    </div>
-                    <div className="btn mb10" onClick={() => dispatch(setRelays(payload))}>Add</div>
-                </>
-            )
+            const payload = {
+                relays: {
+                    ...relays,
+                    [parsed.toString()]: { read: false, write: false }
+                },
+                createdAt: Math.floor(new Date().getTime() / 1000)
+            };
+            dispatch(setRelays(payload))
         }
+    }
+
+    function addRelay() {
+        return (
+            <>
+                <h4>Add Relays</h4>
+                <div className="flex mb10">
+                    <input type="text" className="f-grow" placeholder="wss://my-relay.com" value={newRelay} onChange={(e) => setNewRelay(e.target.value)} />
+                </div>
+                <div className="btn mb10" onClick={() => addNewRelay()}>Add</div>
+            </>
+        )
     }
 
     function settings() {
