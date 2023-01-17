@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
 import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex } from "../Const";
-import { eventLink, hexToBech32, profileLink } from "../Util";
+import { eventLink, hexToBech32 } from "../Util";
 import Invoice from "./Invoice";
 import LazyImage from "./LazyImage";
 import Hashtag from "./Hashtag";

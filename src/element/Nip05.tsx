@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 import './Nip05.css'
 import { HexKey } from "../nostr";
@@ -14,12 +14,16 @@ async function fetchNip05Pubkey(name: string, domain: string) {
   if (!name || !domain) {
     return undefined;
   }
-  const res = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`);
-  const data: NostrJson = await res.json();
-  const match = Object.keys(data.names).find(n => {
-    return n.toLowerCase() === name.toLowerCase();
-  });
-  return match ? data.names[match] : undefined;
+  try {
+    const res = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`);
+    const data: NostrJson = await res.json();
+    const match = Object.keys(data.names).find(n => {
+      return n.toLowerCase() === name.toLowerCase();
+    });
+    return match ? data.names[match] : undefined;
+  } catch (error) {
+    return undefined
+  }
 }
 
 const VERIFICATION_CACHE_TIME = 24 * 60 * 60 * 1000
