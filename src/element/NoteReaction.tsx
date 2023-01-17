@@ -15,7 +15,7 @@ export interface NoteReactionProps {
     root?: TaggedRawEvent
 }
 export default function NoteReaction(props: NoteReactionProps) {
-    const ev = props["data-ev"] || new NEvent(props.data);
+    const ev = useMemo(() => props["data-ev"] || new NEvent(props.data), [props.data, props["data-ev"]])
 
     const refEvent = useMemo(() => {
         if (ev) {
@@ -71,6 +71,7 @@ export default function NoteReaction(props: NoteReactionProps) {
         showHeader: ev?.Kind === EventKind.Repost,
         showFooter: ev?.Kind === EventKind.Repost,
     };
+
     return (
         <div className="reaction">
             <div className="header flex">
