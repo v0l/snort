@@ -10,8 +10,9 @@ import ProfileImage from "../element/ProfileImage";
 import { init } from "../state/Login";
 import useLoginFeed from "../feed/LoginFeed";
 import { RootState } from "../state/Store";
-import { HexKey, TaggedRawEvent } from "../nostr";
+import { HexKey, RawEvent, TaggedRawEvent } from "../nostr";
 import { RelaySettings } from "../nostr/Connection";
+import { totalUnread } from "./MessagesPage";
 
 export default function Layout() {
     const dispatch = useDispatch();
@@ -21,6 +22,7 @@ export default function Layout() {
     const relays = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
     const notifications = useSelector<RootState, TaggedRawEvent[]>(s => s.login.notifications);
     const readNotifications = useSelector<RootState, number>(s => s.login.readNotifications);
+    const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
     useLoginFeed();
 
     useEffect(() => {
@@ -56,11 +58,15 @@ export default function Layout() {
 
     function accountHeader() {
         const unreadNotifications = notifications?.filter(a => (a.created_at * 1000) > readNotifications).length;
+        const unreadDms = key ? totalUnread(dms, key) : 0;
         return (
             <>
-                <div className="btn btn-rnd mr10" onClick={(e) => navigate("/messages")}>
+                <div className={`btn btn-rnd${unreadDms === 0 ? " mr10" : ""}`} onClick={(e) => navigate("/messages")}>
                     <FontAwesomeIcon icon={faMessage} size="xl" />
                 </div>
+                {unreadDms > 0 && (<span className="unread-count">
+                    {unreadDms > 100 ? ">99" : unreadDms}
+                </span>)}
                 <div className={`btn btn-rnd${unreadNotifications === 0 ? " mr10" : ""}`} onClick={(e) => goToNotifications(e)}>
                     <FontAwesomeIcon icon={faBell} size="xl" />
                 </div>

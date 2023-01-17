@@ -11,9 +11,7 @@ import {
     CheckRegisterResponse
 } from "../nip05/ServiceProvider";
 import AsyncButton from "./AsyncButton";
-// @ts-ignore
 import LNURLTip from "./LNURLTip";
-// @ts-ignore
 import Copy from "./Copy";
 import useProfile from "../feed/ProfileFeed";
 import useEventPublisher from "../feed/EventPublisher";
