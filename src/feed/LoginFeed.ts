@@ -27,7 +27,11 @@ export default function useLoginFeed() {
         sub.Kinds = new Set([EventKind.ContactList, EventKind.SetMetadata, EventKind.DirectMessage]);
 
         let notifications = new Subscriptions();
-        notifications.Kinds = new Set([EventKind.TextNote, EventKind.DirectMessage]);
+        notifications.Kinds = new Set([
+          EventKind.TextNote,
+          EventKind.DirectMessage,
+          EventKind.Zap
+        ]);
         notifications.PTags = new Set([pubKey]);
         notifications.Limit = 100;
         sub.AddSubscription(notifications);
@@ -39,7 +43,7 @@ export default function useLoginFeed() {
 
     useEffect(() => {
         let contactList = main.notes.filter(a => a.kind === EventKind.ContactList);
-        let notifications = main.notes.filter(a => a.kind === EventKind.TextNote);
+        let notifications = main.notes.filter(a => a.kind === EventKind.TextNote || a.kind === EventKind.Zap);
         let metadata = main.notes.filter(a => a.kind === EventKind.SetMetadata);
         let profiles = metadata.map(a => mapEventToProfile(a))
             .filter(a => a !== undefined)

@@ -34,7 +34,7 @@ export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global:
         if (trackingEvents.length > 0) {
             let sub = new Subscriptions();
             sub.Id = `timeline-related:${subTab}`;
-            sub.Kinds = new Set([EventKind.Reaction, EventKind.Deletion, EventKind.Repost]);
+            sub.Kinds = new Set([EventKind.Reaction, EventKind.Deletion, EventKind.Repost, EventKind.Zap]);
             sub.ETags = new Set(trackingEvents);
             return sub;
         }

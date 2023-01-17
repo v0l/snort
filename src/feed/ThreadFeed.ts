@@ -21,7 +21,7 @@ export default function useThreadFeed(id: u256) {
 
         // get replies to this event
         const subRelated = new Subscriptions();
-        subRelated.Kinds = new Set([EventKind.Reaction, EventKind.TextNote, EventKind.Deletion, EventKind.Repost]);
+        subRelated.Kinds = new Set([EventKind.Reaction, EventKind.Zap, EventKind.TextNote, EventKind.Deletion, EventKind.Repost]);
         subRelated.ETags = thisSub.Ids;
         thisSub.AddSubscription(subRelated);
 

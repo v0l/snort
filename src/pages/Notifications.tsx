@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import Note from "../element/Note";
 import NoteReaction from "../element/NoteReaction";
+import Zap from "../element/Zap";
 import useSubscription from "../feed/Subscription";
 import { TaggedRawEvent } from "../nostr";
 import Event from "../nostr/Event";
@@ -53,6 +54,8 @@ export default function NotificationsPage() {
             {sorted?.map(a => {
                 if (a.kind === EventKind.TextNote) {
                     return <Note data={a} key={a.id} related={otherNotes?.notes ?? []} />
+                } else if (a.kind === EventKind.Zap) {
+                    return <Zap zap={a} />
                 } else if (a.kind === EventKind.Reaction) {
                     let ev = new Event(a);
                     let reactedTo = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;

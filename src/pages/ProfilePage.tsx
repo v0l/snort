@@ -69,7 +69,7 @@ export default function ProfilePage() {
 
                     {lnurl && (
                         <div className="f-ellipsis" onClick={(e) => setShowLnQr(true)}>
-                            <span className="zap">⚡️</span>
+                            <span className="lightning">⚡️</span>
                             <span className="lnurl" >
                                 {lnurl}
                             </span>

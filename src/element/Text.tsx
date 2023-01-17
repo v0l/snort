@@ -173,11 +173,11 @@ export interface TextFragment {
 
 export interface TextProps {
     content: string,
-    tags: Tag[],
-    users: Map<string, MetadataCache>
+    tags?: Tag[],
+    users?: Map<string, MetadataCache>
 }
 
-export default function Text({ content, tags, users }: TextProps) {
+export default function Text({ content, tags = [], users = new Map()}: TextProps) {
     const components = useMemo(() => {
         return {
             p: (x: any) => transformParagraph({ body: x.children, tags, users }),

@@ -1,0 +1,32 @@
+.zap {
+  width: 100%;
+  margin: 10px 0;
+  border-bottom: 1px solid var(--gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.zap .summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.zap .body {
+  margin: 10px 0;
+}
+
+.zap .body a {
+  color: var(--highlight);
+}
+
+.amount {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.amount:before {
+  content: '⚡️ ';
+}
