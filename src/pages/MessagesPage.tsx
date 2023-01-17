@@ -7,7 +7,6 @@ import { hexToBech32 } from "../Util";
 
 type DmChat = {
     pubkey: HexKey,
-    lastRead: number,
     unreadMessages: number,
     newestMessage: number
 }
@@ -55,17 +54,26 @@ export function setLastReadDm(pk: HexKey) {
     window.localStorage.setItem(k, now.toString());
 }
 
+export function isToSelf(e: RawEvent, pk: HexKey) {
+    return e.pubkey === pk && e.tags.some(a => a[0] === "p" && a[1] === pk);
+}
+
+export function dmsInChat(dms: RawEvent[], pk: HexKey) {
+    return dms.filter(a => a.pubkey === pk || a.tags.some(b => b[0] === "p" && b[1] === pk));
+}
+
 export function totalUnread(dms: RawEvent[], myPubKey: HexKey) {
     return extractChats(dms, myPubKey).reduce((acc, v) => acc += v.unreadMessages, 0);
 }
 
 function unreadDms(dms: RawEvent[], myPubKey: HexKey, pk: HexKey) {
+    if (pk === myPubKey) return 0;
     let lastRead = lastReadDm(pk);
-    return dms?.filter(a => a.pubkey === pk && a.pubkey !== myPubKey && a.created_at >= lastRead).length;
+    return dmsInChat(dms, pk).filter(a => a.created_at >= lastRead && a.pubkey !== myPubKey).length;
 }
 
 function newestMessage(dms: RawEvent[], myPubKey: HexKey, pk: HexKey) {
-    return dms.filter(a => a.pubkey === pk && a.pubkey !== myPubKey).reduce((acc, v) => acc = v.created_at > acc ? v.created_at : acc, 0);
+    return dmsInChat(dms, pk).reduce((acc, v) => acc = v.created_at > acc ? v.created_at : acc, 0);
 }
 
 
@@ -75,7 +83,6 @@ export function extractChats(dms: RawEvent[], myPubKey: HexKey) {
     return filteredKeys.map(a => {
         return {
             pubkey: a,
-            lastRead: lastReadDm(a),
             unreadMessages: unreadDms(dms, myPubKey, a),
             newestMessage: newestMessage(dms, myPubKey, a)
         } as DmChat;
