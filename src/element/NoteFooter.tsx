@@ -62,8 +62,10 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
 
     async function repost() {
-        let evRepost = await publisher.repost(ev);
-        publisher.broadcast(evRepost);
+        if (!hasReposted()) {
+            let evRepost = await publisher.repost(ev);
+            publisher.broadcast(evRepost);
+        }
     }
 
     function tipButton() {
