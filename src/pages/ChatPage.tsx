@@ -50,7 +50,7 @@ export default function ChatPage() {
             let ev = await publisher.sendDm(content, id);
             console.debug(ev);
             publisher.broadcast(ev);
-            setContent(undefined);
+            setContent("");
         }
     }
 
