@@ -9,14 +9,18 @@ import NoteReaction from "./NoteReaction";
 export interface TimelineProps {
     global: boolean,
     postsOnly: boolean,
-    pubkeys: HexKey[]
+    pubkeys: HexKey[],
+    method: "TIME_RANGE" | "LIMIT_UNTIL"
 }
 
 /**
  * A list of notes by pubkeys
  */
-export default function Timeline({ global, pubkeys, postsOnly = false }: TimelineProps) {
-    const { main, others, loadMore, until } = useTimelineFeed(pubkeys, global);
+export default function Timeline({ global, pubkeys, postsOnly = false, method }: TimelineProps) {
+    const { main, others, loadMore } = useTimelineFeed(pubkeys, {
+        global,
+        method
+    });
 
     const mainFeed = useMemo(() => {
         return main?.sort((a, b) => b.created_at - a.created_at)?.filter(a => postsOnly ? !a.tags.some(b => b[0] === "e") : true);
@@ -37,7 +41,7 @@ export default function Timeline({ global, pubkeys, postsOnly = false }: Timelin
     return (
         <>
             {mainFeed.map(eventElement)}
-            {mainFeed.length > 0 ? <LoadMore key={until} onLoadMore={loadMore} /> : null}
+            {mainFeed.length > 0 ? <LoadMore onLoadMore={loadMore} /> : null}
         </>
     );
 }

@@ -41,7 +41,7 @@ export default function RootPage() {
                     </div>
                 </div></> : null}
             {followHints()}
-            <Timeline key={tab} pubkeys={follows} global={loggedOut || tab === RootTab.Global} postsOnly={tab === RootTab.Posts} />
+            <Timeline key={tab} pubkeys={follows} global={loggedOut || tab === RootTab.Global} postsOnly={tab === RootTab.Posts} method={"TIME_RANGE"} />
         </>
     );
 }

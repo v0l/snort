@@ -4,15 +4,29 @@ import { TaggedRawEvent } from "../nostr";
 import { Subscriptions } from "../nostr/Subscriptions";
 
 export type NoteStore = {
-    notes: Array<TaggedRawEvent>
+    notes: Array<TaggedRawEvent>,
+    end: boolean
 };
 
 export type UseSubscriptionOptions = {
     leaveOpen: boolean
 }
 
-function notesReducer(state: NoteStore, ev: TaggedRawEvent) {
+interface ReducerArg {
+    type: "END" | "EVENT"
+    ev?: TaggedRawEvent,
+    end?: boolean
+}
+
+function notesReducer(state: NoteStore, arg: ReducerArg) {
+    if (arg.type === "END") {
+        state.end = arg.end!;
+        return state;
+    }
+
+    let ev = arg.ev!;
     if (state.notes.some(a => a.id === ev.id)) {
+        //state.notes.find(a => a.id == ev.id)?.relays?.push(ev.relays[0]);
         return state;
     }
 
@@ -21,8 +35,13 @@ function notesReducer(state: NoteStore, ev: TaggedRawEvent) {
             ...state.notes,
             ev
         ]
-    }
+    } as NoteStore;
 }
+
+const initStore: NoteStore = {
+    notes: [],
+    end: false
+};
 
 /**
  * 
@@ -31,23 +50,30 @@ function notesReducer(state: NoteStore, ev: TaggedRawEvent) {
  * @returns 
  */
 export default function useSubscription(sub: Subscriptions | null, options?: UseSubscriptionOptions) {
-    const [state, dispatch] = useReducer(notesReducer, <NoteStore>{ notes: [] });
+    const [state, dispatch] = useReducer(notesReducer, initStore);
     const [debounce, setDebounce] = useState<number>(0);
 
     useEffect(() => {
         if (sub) {
             sub.OnEvent = (e) => {
-                dispatch(e);
+                dispatch({
+                    type: "EVENT",
+                    ev: e
+                });
             };
 
-            if (!(options?.leaveOpen ?? false)) {
-                sub.OnEnd = (c) => {
+            sub.OnEnd = (c) => {
+                if (!(options?.leaveOpen ?? false)) {
                     c.RemoveSubscription(sub.Id);
                     if (sub.IsFinished()) {
                         System.RemoveSubscription(sub.Id);
                     }
-                };
-            }
+                }
+                dispatch({
+                    type: "END",
+                    end: true
+                });
+            };
 
             console.debug("Adding sub: ", sub.ToObject());
             System.AddSubscription(sub);

@@ -2,31 +2,48 @@ import { useEffect, useMemo, useState } from "react";
 import { HexKey, u256 } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
+import { unixNow } from "../Util";
 import useSubscription from "./Subscription";
 
-export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global: boolean = false) {
-    const [until, setUntil] = useState<number>();
+export interface TimelineFeedOptions {
+    global: boolean,
+    method: "TIME_RANGE" | "LIMIT_UNTIL"
+}
+
+export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, options: TimelineFeedOptions) {
+    const now = unixNow();
+    const [window, setWindow] = useState<number>(60 * 60);
+    const [until, setUntil] = useState<number>(now);
+    const [since, setSince] = useState<number>(now - window);
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
 
-    const subTab = global ? "global" : "follows";
+    const subTab = options.global ? "global" : "follows";
     const sub = useMemo(() => {
         if (!Array.isArray(pubKeys)) {
             pubKeys = [pubKeys];
         }
 
-        if (!global && (!pubKeys || pubKeys.length === 0)) {
+        if (!options.global && (!pubKeys || pubKeys.length === 0)) {
             return null;
         }
 
         let sub = new Subscriptions();
         sub.Id = `timeline:${subTab}`;
-        sub.Authors = global ? undefined : new Set(pubKeys);
+        sub.Authors = options.global ? undefined : new Set(pubKeys);
         sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
-        sub.Limit = 20;
-        sub.Until = until;
+        if (options.method === "LIMIT_UNTIL") {
+            sub.Until = until;
+            sub.Limit = 10;
+        } else {
+            sub.Since = since;
+            sub.Until = until;
+            if (since === undefined) {
+                sub.Limit = 50;
+            }
+        }
 
         return sub;
-    }, [pubKeys, global, until]);
+    }, [pubKeys, until, since, window]);
 
     const main = useSubscription(sub, { leaveOpen: true });
 
@@ -45,15 +62,11 @@ export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global:
 
     useEffect(() => {
         if (main.notes.length > 0) {
-            // debounce
-            let t = setTimeout(() => {
-                setTrackingEvent(s => {
-                    let ids = main.notes.map(a => a.id);
-                    let temp = new Set([...s, ...ids]);
-                    return Array.from(temp);
-                });
-            }, 200);
-            return () => clearTimeout(t);
+            setTrackingEvent(s => {
+                let ids = main.notes.map(a => a.id);
+                let temp = new Set([...s, ...ids]);
+                return Array.from(temp);
+            });
         }
     }, [main.notes]);
 
@@ -61,10 +74,13 @@ export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global:
         main: main.notes,
         others: others.notes,
         loadMore: () => {
-            let now = Math.floor(new Date().getTime() / 1000);
-            let oldest = main.notes.reduce((acc, v) => acc = v.created_at < acc ? v.created_at : acc, now);
-            setUntil(oldest);
-        },
-        until
+            if (options.method === "LIMIT_UNTIL") {
+                let oldest = main.notes.reduce((acc, v) => acc = v.created_at < acc ? v.created_at : acc, unixNow());
+                setUntil(oldest);
+            } else {
+                setUntil(s => s - window);
+                setSince(s => s - window);
+            }
+        }
     };
 }

@@ -142,3 +142,7 @@ export function extractLnAddress(lnurl: string) {
     }
     return lnurl;
 }
+
+export function unixNow() {
+    return Math.floor(new Date().getTime() / 1000);
+} 
