@@ -65,10 +65,9 @@ interface ZapProps {
 
 const Zap = ({ zap }: ZapProps) => {
   const { content, pubkey } = zap
-  const { e, amount, zapper, description }  = parseZap(zap) ?? {}
-  const isValid = amount && zapper
+  const { e, amount, zapper, description, valid }  = parseZap(zap) ?? {}
 
-  return isValid ? (
+  return valid ? (
     <div className="zap">
       <div className="summary">
          <ProfileImage pubkey={zapper} />
