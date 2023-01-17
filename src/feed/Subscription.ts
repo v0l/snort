@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import { System } from "../nostr/System";
 import { TaggedRawEvent } from "../nostr";
 import { Subscriptions } from "../nostr/Subscriptions";
@@ -32,6 +32,7 @@ function notesReducer(state: NoteStore, ev: TaggedRawEvent) {
  */
 export default function useSubscription(sub: Subscriptions | null, options?: UseSubscriptionOptions) {
     const [state, dispatch] = useReducer(notesReducer, <NoteStore>{ notes: [] });
+    const [debounce, setDebounce] = useState<number>(0);
 
     useEffect(() => {
         if (sub) {
@@ -57,5 +58,12 @@ export default function useSubscription(sub: Subscriptions | null, options?: Use
         }
     }, [sub]);
 
-    return state;
+    useEffect(() => {
+        let t = setTimeout(() => {
+            setDebounce(s => s += 1);
+        }, 100);
+        return () => clearTimeout(t);
+    }, [state]);
+
+    return useMemo(() => state, [debounce]);
 }
