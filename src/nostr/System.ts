@@ -178,7 +178,10 @@ export class NostrSystem {
             sub.OnEvent = async (e) => {
                 let profile = mapEventToProfile(e);
                 if (profile) {
-                    await db.users.put(profile);
+                    let existing = await db.users.get(profile.pubkey);
+                    if((existing?.created ?? 0) < profile.created) {
+                        await db.users.put(profile);
+                    }
                 }
             }
             let results = await this.RequestSubscription(sub);
