@@ -1,5 +1,5 @@
 import "./Note.css";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { default as NEvent } from "../nostr/Event";
@@ -11,6 +11,7 @@ import NoteTime from "./NoteTime";
 import EventKind from "../nostr/EventKind";
 import useProfile from "../feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "../nostr";
+import { useInView } from "react-intersection-observer";
 
 export interface NoteProps {
     data?: TaggedRawEvent,
@@ -32,6 +33,8 @@ export default function Note(props: NoteProps) {
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
     const users = useProfile(pubKeys);
     const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
+    const { ref, inView } = useInView();
+    const [visible, setVisible] = useState(false);
 
     const options = {
         showHeader: true,
@@ -46,7 +49,13 @@ export default function Note(props: NoteProps) {
             return (<b className="error">Deleted</b>);
         }
         return <Text content={body} tags={ev.Tags} users={users || new Map()} />;
-    }, [props]);
+    }, [ev]);
+
+    useEffect(() => {
+        if (inView && !visible) {
+            setVisible(true);
+        }
+    }, [inView]);
 
     function goToEvent(e: any, id: u256) {
         if (!window.location.pathname.startsWith("/e/")) {
@@ -92,20 +101,29 @@ export default function Note(props: NoteProps) {
         );
     }
 
+    function content() {
+        if (!visible) return null;
+        return (
+            <>
+                {options.showHeader ?
+                    <div className="header flex">
+                        <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
+                        {options.showTime ?
+                            <div className="info">
+                                <NoteTime from={ev.CreatedAt * 1000} />
+                            </div> : null}
+                    </div> : null}
+                <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
+                    {transformBody()}
+                </div>
+                {options.showFooter ? <NoteFooter ev={ev} related={related} /> : null}
+            </>
+        )
+    }
+
     return (
-        <div className={`note ${highlight ? "active" : ""} ${isThread ? "thread" : ""}`}>
-            {options.showHeader ?
-                <div className="header flex">
-                    <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
-                    {options.showTime ?
-                        <div className="info">
-                            <NoteTime from={ev.CreatedAt * 1000} />
-                        </div> : null}
-                </div> : null}
-            <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
-                {transformBody()}
-            </div>
-            {options.showFooter ? <NoteFooter ev={ev} related={related} /> : null}
+        <div className={`note${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
+            {content()}
         </div>
     )
 }

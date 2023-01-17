@@ -1,6 +1,7 @@
 .note {
     margin-bottom: 10px;
     border-bottom: 1px solid var(--gray);
+    min-height: 140px;
 }
 
 .note.thread {

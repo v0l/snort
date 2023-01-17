@@ -5,7 +5,6 @@ import { TwitterTweetEmbed } from "react-twitter-embed";
 import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex } from "../Const";
 import { eventLink, hexToBech32 } from "../Util";
 import Invoice from "./Invoice";
-import LazyImage from "./LazyImage";
 import Hashtag from "./Hashtag";
 
 import './Text.css'
@@ -28,7 +27,7 @@ function transformHttpLink(a: string) {
                 case "png":
                 case "bmp":
                 case "webp": {
-                    return <LazyImage key={url} src={url} />;
+                    return <img key={url.toString()} src={url.toString()} />;
                 }
                 case "mp4":
                 case "mov":
