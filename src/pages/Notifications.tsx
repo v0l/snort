@@ -9,6 +9,7 @@ import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { markNotificationsRead } from "../state/Login";
 import { RootState } from "../state/Store";
+import { getReactions } from "../Util";
 
 export default function NotificationsPage() {
     const dispatch = useDispatch();
@@ -51,8 +52,7 @@ export default function NotificationsPage() {
         <>
             {sorted?.map(a => {
                 if (a.kind === EventKind.TextNote) {
-                    let reactions = otherNotes?.notes?.filter(c => c.tags.find(b => b[0] === "e" && b[1] === a.id));
-                    return <Note data={a} key={a.id} reactions={reactions} deletion={[]}/>
+                    return <Note data={a} key={a.id} related={otherNotes?.notes ?? []} />
                 } else if (a.kind === EventKind.Reaction) {
                     let ev = new Event(a);
                     let reactedTo = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;

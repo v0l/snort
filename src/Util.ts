@@ -1,6 +1,7 @@
 import * as secp from "@noble/secp256k1";
 import { bech32 } from "bech32";
-import { HexKey, u256 } from "./nostr";
+import { HexKey, RawEvent, TaggedRawEvent, u256 } from "./nostr";
+import EventKind from "./nostr/EventKind";
 
 export async function openFile(): Promise<File | undefined> {
     return new Promise((resolve, reject) => {
@@ -111,6 +112,13 @@ export function normalizeReaction(content: string) {
         case "👎": return Reaction.Negative;
     }
     return content;
+}
+
+/**
+ * Get reactions to a specific event (#e + kind filter)
+ */
+export function getReactions(notes: TaggedRawEvent[], id: u256, kind = EventKind.Reaction) {
+    return notes?.filter(a => a.kind === kind && a.tags.some(a => a[0] === "e" && a[1] === id)) || [];
 }
 
 /**

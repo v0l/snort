@@ -1,10 +1,12 @@
-import { useMemo } from "react";
-import { HexKey } from "../nostr";
+import { useEffect, useMemo, useState } from "react";
+import { HexKey, u256 } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import useSubscription from "./Subscription";
 
 export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global: boolean = false) {
+    const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
+
     const subTab = global ? "global" : "follows";
     const sub = useMemo(() => {
         if (!Array.isArray(pubKeys)) {
@@ -27,18 +29,30 @@ export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global:
     const main = useSubscription(sub, { leaveOpen: true });
 
     const subNext = useMemo(() => {
-        return null; // TODO: spam
-        if (main.notes.length > 0) {
+        if (trackingEvents.length > 0) {
             let sub = new Subscriptions();
             sub.Id = `timeline-related:${subTab}`;
-            sub.Kinds = new Set([EventKind.Reaction, EventKind.Deletion]);
-            sub.ETags = new Set(main.notes.map(a => a.id));
-
+            sub.Kinds = new Set([EventKind.Reaction, EventKind.Deletion, EventKind.Repost]);
+            sub.ETags = new Set(trackingEvents);
             return sub;
         }
-    }, [main]);
+        return null;
+    }, [trackingEvents]);
 
     const others = useSubscription(subNext, { leaveOpen: true });
 
+    useEffect(() => {
+        if (main.notes.length > 0) {
+            // debounce
+            let t = setTimeout(() => {
+                setTrackingEvent(s => {
+                    let ids = main.notes.map(a => a.id);
+                    let temp = new Set([...s, ...ids]);
+                    return Array.from(temp);
+                });
+            }, 200);
+            return () => clearTimeout(t);
+        }
+    }, [main.notes]);
     return { main: main.notes, others: others.notes };
 }

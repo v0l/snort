@@ -81,7 +81,7 @@ export default function NoteReaction(props: NoteReactionProps) {
                 </div>
             </div>
 
-            {root ? <Note data={root} options={opt} reactions={[]} deletion={[]} /> : null}
+            {root ? <Note data={root} options={opt} related={[]}/> : null}
             {!root && refEvent ? <p><Link to={eventLink(refEvent)}>#{hexToBech32("note", refEvent).substring(0, 12)}</Link></p> : null}
         </div>
     );

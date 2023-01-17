@@ -4,33 +4,35 @@ import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat } from "@fort
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import useEventPublisher from "../feed/EventPublisher";
-import { normalizeReaction, Reaction } from "../Util";
+import { getReactions, normalizeReaction, Reaction } from "../Util";
 import { NoteCreator } from "./NoteCreator";
 import LNURLTip from "./LNURLTip";
 import useProfile from "../feed/ProfileFeed";
 import { default as NEvent } from "../nostr/Event";
 import { RootState } from "../state/Store";
-import { TaggedRawEvent } from "../nostr";
+import { HexKey, TaggedRawEvent } from "../nostr";
+import EventKind from "../nostr/EventKind";
 
 export interface NoteFooterProps {
-    reactions: TaggedRawEvent[],
+    related: TaggedRawEvent[],
     ev: NEvent
 }
 
 export default function NoteFooter(props: NoteFooterProps) {
-    const reactions = props.reactions;
-    const ev = props.ev;
+    const { related, ev } = props;
 
-    const login = useSelector<RootState, string | undefined>(s => s.login.publicKey);
+    const login = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const author = useProfile(ev.RootPubKey)?.get(ev.RootPubKey);
     const publisher = useEventPublisher();
     const [reply, setReply] = useState(false);
     const [tip, setTip] = useState(false);
     const isMine = ev.RootPubKey === login;
+    const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related]);
+    const reposts = useMemo(() => getReactions(related, ev.Id, EventKind.Repost), [related]);
 
     const groupReactions = useMemo(() => {
         return reactions?.reduce((acc, { content }) => {
-            let r = normalizeReaction(content ?? "");
+            let r = normalizeReaction(content);
             const amount = acc[r] || 0
             return { ...acc, [r]: amount + 1 }
         }, {
@@ -40,7 +42,11 @@ export default function NoteFooter(props: NoteFooterProps) {
     }, [reactions]);
 
     function hasReacted(emoji: string) {
-        return reactions?.some(({ pubkey, content }) => content === emoji && pubkey === login)
+        return reactions?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === login)
+    }
+
+    function hasReposted() {
+        return reposts.some(a => a.pubkey === login);
     }
 
     async function react(content: string) {
@@ -94,7 +100,8 @@ export default function NoteFooter(props: NoteFooterProps) {
                 </span> : null}
                 {tipButton()}
                 <span className="pill" onClick={() => repost()}>
-                    <FontAwesomeIcon icon={faRepeat} />
+                    <FontAwesomeIcon icon={faRepeat} color={hasReposted() ? "green" : "currenColor"} />
+                    {reposts.length > 0 ? <>&nbsp;{reposts.length}</> : null}
                 </span>
                 <span className="pill" onClick={(e) => setReply(s => !s)}>
                     <FontAwesomeIcon icon={faReply} />
@@ -119,7 +126,7 @@ export default function NoteFooter(props: NoteFooterProps) {
                 onSend={() => setReply(false)}
                 show={reply}
             />
-            <LNURLTip svc={author?.lud16 || author?.lud06 || ""} onClose={() => setTip(false)} show={tip} />
+            <LNURLTip svc={author?.lud16 || author?.lud06} onClose={() => setTip(false)} show={tip} />
         </>
     )
 }

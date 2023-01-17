@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { default as NEvent } from "../nostr/Event";
 import ProfileImage from "./ProfileImage";
 import Text from "./Text";
-import { eventLink, hexToBech32 } from "../Util";
+import { eventLink, getReactions, hexToBech32 } from "../Util";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
 import EventKind from "../nostr/EventKind";
@@ -15,8 +15,7 @@ import { TaggedRawEvent, u256 } from "../nostr";
 export interface NoteProps {
     data?: TaggedRawEvent,
     isThread?: boolean,
-    reactions: TaggedRawEvent[],
-    deletion: TaggedRawEvent[],
+    related: TaggedRawEvent[],
     highlight?: boolean,
     options?: {
         showHeader?: boolean,
@@ -28,11 +27,11 @@ export interface NoteProps {
 
 export default function Note(props: NoteProps) {
     const navigate = useNavigate();
-    const { data, isThread, reactions, deletion, highlight, options: opt, ["data-ev"]: parsedEvent } = props
+    const { data, isThread, related, highlight, options: opt, ["data-ev"]: parsedEvent } = props
     const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
-
     const users = useProfile(pubKeys);
+    const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
 
     const options = {
         showHeader: true,
@@ -43,7 +42,7 @@ export default function Note(props: NoteProps) {
 
     const transformBody = useCallback(() => {
         let body = ev?.Content ?? "";
-        if (deletion?.length > 0) {
+        if (deletions?.length > 0) {
             return (<b className="error">Deleted</b>);
         }
         return <Text content={body} tags={ev.Tags} users={users || new Map()} />;
@@ -106,7 +105,7 @@ export default function Note(props: NoteProps) {
             <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
                 {transformBody()}
             </div>
-            {options.showFooter ? <NoteFooter ev={ev} reactions={reactions} /> : null}
+            {options.showFooter ? <NoteFooter ev={ev} related={related} /> : null}
         </div>
     )
 }

@@ -16,10 +16,6 @@ export interface TimelineProps {
 export default function Timeline({ global, pubkeys }: TimelineProps) {
     const { main, others } = useTimelineFeed(pubkeys, global);
 
-    function reaction(id: u256, kind = EventKind.Reaction) {
-        return others?.filter(a => a.kind === kind && a.tags.some(b => b[0] === "e" && b[1] === id));
-    }
-
     const mainFeed = useMemo(() => {
         return main?.sort((a, b) => b.created_at - a.created_at);
     }, [main]);
@@ -27,7 +23,7 @@ export default function Timeline({ global, pubkeys }: TimelineProps) {
     function eventElement(e: TaggedRawEvent) {
         switch (e.kind) {
             case EventKind.TextNote: {
-                return <Note key={e.id} data={e} reactions={reaction(e.id)} deletion={reaction(e.id, EventKind.Deletion)} />
+                return <Note key={e.id} data={e} related={others} />
             }
             case EventKind.Reaction:
             case EventKind.Repost: {
