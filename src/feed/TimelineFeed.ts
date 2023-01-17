@@ -5,6 +5,8 @@ import { Subscriptions } from "../nostr/Subscriptions";
 import useSubscription from "./Subscription";
 
 export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global: boolean = false) {
+    const TimeRange = 60 * 60; // 1 hr
+    const [since, setSince] = useState<number>(Math.floor(new Date().getTime() / 1000) - TimeRange);
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
 
     const subTab = global ? "global" : "follows";
@@ -21,10 +23,11 @@ export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global:
         sub.Id = `timeline:${subTab}`;
         sub.Authors = global ? undefined : new Set(pubKeys);
         sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
-        sub.Limit = 20;
+        sub.Since = since;
+        sub.Until = since + TimeRange;
 
         return sub;
-    }, [pubKeys, global]);
+    }, [pubKeys, global, since]);
 
     const main = useSubscription(sub, { leaveOpen: true });
 
@@ -54,5 +57,12 @@ export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, global:
             return () => clearTimeout(t);
         }
     }, [main.notes]);
-    return { main: main.notes, others: others.notes };
+
+    return {
+        main: main.notes,
+        others: others.notes,
+        loadMore: () => {
+            setSince(s => s - TimeRange);
+        }
+    };
 }

@@ -1,5 +1,5 @@
 import "./Note.css";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { default as NEvent } from "../nostr/Event";
@@ -33,8 +33,7 @@ export default function Note(props: NoteProps) {
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
     const users = useProfile(pubKeys);
     const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
-    const { ref, inView } = useInView();
-    const [visible, setVisible] = useState(false);
+    const { ref, inView } = useInView({triggerOnce: true});
 
     const options = {
         showHeader: true,
@@ -50,12 +49,6 @@ export default function Note(props: NoteProps) {
         }
         return <Text content={body} tags={ev.Tags} users={users || new Map()} />;
     }, [ev]);
-
-    useEffect(() => {
-        if (inView && !visible) {
-            setVisible(true);
-        }
-    }, [inView]);
 
     function goToEvent(e: any, id: u256) {
         if (!window.location.pathname.startsWith("/e/")) {
@@ -102,7 +95,7 @@ export default function Note(props: NoteProps) {
     }
 
     function content() {
-        if (!visible) return null;
+        if (!inView) return null;
         return (
             <>
                 {options.showHeader ?
