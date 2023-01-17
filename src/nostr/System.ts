@@ -156,10 +156,10 @@ export class NostrSystem {
     async _FetchMetadata() {
         let missing = new Set<HexKey>();
         let meta = await db.users.bulkGet(Array.from(this.WantsMetadata));
-        let now = new Date().getTime();
+        let expire = new Date().getTime() - ProfileCacheExpire;
         for (let pk of this.WantsMetadata) {
             let m = meta.find(a => a?.pubkey === pk);
-            if (!m || m.loaded < (now - ProfileCacheExpire)) {
+            if (!m || m.loaded < expire) {
                 missing.add(pk);
                 // cap 100 missing profiles
                 if (missing.size >= 100) {
@@ -181,6 +181,8 @@ export class NostrSystem {
                     let existing = await db.users.get(profile.pubkey);
                     if((existing?.created ?? 0) < profile.created) {
                         await db.users.put(profile);
+                    } else if(existing) {
+                        await db.users.update(profile.pubkey, { loaded: new Date().getTime() });
                     }
                 }
             }
