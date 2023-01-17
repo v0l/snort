@@ -84,7 +84,7 @@ export default function ProfilePage() {
     function tabContent() {
         switch (tab) {
             case ProfileTab.Notes:
-              return <Timeline key={id} pubkeys={[id]} global={false} />;
+              return <Timeline key={id} pubkeys={[id]} global={false} postsOnly={false} />;
             case ProfileTab.Follows: {
                 if (isMe) {
                     return (

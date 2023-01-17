@@ -7,17 +7,18 @@ import NoteReaction from "./NoteReaction";
 
 export interface TimelineProps {
     global: boolean,
+    postsOnly: boolean,
     pubkeys: HexKey[]
 }
 
 /**
  * A list of notes by pubkeys
  */
-export default function Timeline({ global, pubkeys }: TimelineProps) {
+export default function Timeline({ global, pubkeys, postsOnly = false }: TimelineProps) {
     const { main, others } = useTimelineFeed(pubkeys, global);
 
     const mainFeed = useMemo(() => {
-        return main?.sort((a, b) => b.created_at - a.created_at);
+        return main?.sort((a, b) => b.created_at - a.created_at)?.filter(a => postsOnly ? !a.tags.some(b => b[0] === "e") : true);
     }, [main]);
 
     function eventElement(e: TaggedRawEvent) {
