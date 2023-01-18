@@ -48,6 +48,10 @@
   margin: 0;
 }
 
+.top-zap .pfp {
+  margin-right: .3em;
+}
+
 .top-zap .summary {
   display: flex;
   flex-direction: row;

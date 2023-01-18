@@ -37,8 +37,8 @@ export default function ProfilePage() {
     const id = useMemo(() => parseId(params.id!), [params.id]);
     const zapFeed = useZapsFeed(id)
     const zaps = useMemo(() => {
-      return zapFeed.notes.map(parseZap).filter(z => z.valid && !z.e)
-    }, [zapFeed.notes])
+      return zapFeed.notes.map(parseZap).filter(z => z.valid && !z.e && z.p === id)
+    }, [zapFeed.notes, id])
     const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
     const user = useProfile(id)?.get(id);
     const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
