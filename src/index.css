@@ -4,6 +4,7 @@
     --font-color: #FFF;
     --bg-color: #000;
     --modal-bg-color: rgba(0,0,0, 0.8);
+    --note-bg: #111;
     --gray-superlight: #EEE;
     --gray-light: #999;
     --gray-medium: #666;
@@ -28,6 +29,7 @@
      --highlight: #FF9B00;
      --highlight-dark: #944F05;
      --modal-bg-color: rgba(240, 240, 240, 0.8);
+     --note-bg: #eee;
      --gray: #CCC;
      --gray-secondary: #DDD;
      --gray-tertiary: #EEE;
