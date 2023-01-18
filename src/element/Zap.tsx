@@ -1,6 +1,6 @@
 import "./Zap.css";
 import * as secp from "@noble/secp256k1";
-import { sha256 } from "../Hash";
+import { sha256 } from "../Util";
 // @ts-expect-error
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 
