@@ -37,7 +37,7 @@
 .zaps-summary {
   margin-bottom: 6px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
 }
@@ -82,4 +82,8 @@
 
 .rest-zaps {
   font-size: 12px;
+}
+
+.rest-zaps:before {
+  content: ", ";
 }
