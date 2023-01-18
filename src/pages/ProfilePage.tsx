@@ -20,6 +20,7 @@ import FollowersList from "../element/FollowersList";
 import FollowsList from "../element/FollowsList";
 import { RootState } from "../state/Store";
 import { HexKey } from "../nostr";
+import FollowsYou  from "../element/FollowsYou"
 
 enum ProfileTab {
     Notes = "Notes",
@@ -50,6 +51,14 @@ export default function ProfilePage() {
                 <h2>{user?.display_name || user?.name || 'Nostrich'}</h2>
                 <Copy text={params.id || ""} />
                 {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+                { followsYou() }
+            </div>
+        )
+    }
+    function followsYou(){
+        return (
+            <div className="flex">
+                <div className="f-grow">{ <FollowsYou pubkey={id}/> }</div>
             </div>
         )
     }
