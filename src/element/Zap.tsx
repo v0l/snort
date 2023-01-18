@@ -7,6 +7,7 @@ import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { sha256 } from "../Util";
 import { formatShort } from "../Number";
 import { HexKey, TaggedRawEvent } from "../nostr";
+import Event from "../nostr/Event";
 import Text from "./Text";
 import ProfileImage from "./ProfileImage";
 
@@ -43,7 +44,12 @@ function getZapper(zap: TaggedRawEvent) {
   if (rawDescription) {
     const description = JSON.parse(rawDescription)
     const nostr = description?.find((c: string[]) => c[0] === 'application/nostr')
-    return nostr && nostr[1]?.pubkey
+    if (!nostr) {
+      return
+    }
+    // todo: verify event
+    const ev = new Event(nostr[1])
+    return ev.PubKey
   }
 }
 
@@ -53,7 +59,7 @@ interface ParsedZap {
   p: HexKey
   amount: number
   content: string
-  zapper: HexKey // todo: anon
+  zapper?: HexKey
   description?: string
   valid: boolean
 }
@@ -87,7 +93,7 @@ const Zap = ({ zap }: ZapProps) => {
   return valid ? (
     <div className="zap">
       <div className="summary">
-         <ProfileImage pubkey={zapper} />
+        {zapper && <ProfileImage pubkey={zapper} />}
          <div className="amount">
            <span className="amount-number">{formatShort(amount)}</span> sats
          </div>
