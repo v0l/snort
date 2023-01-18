@@ -21,7 +21,7 @@ export default function FollowsYou({ pubkey }: FollowsYouProps ) {
 
     return (
         <>
-            { followsMe ? <div className="copy"><span className="body">follows you</span></div> : null }
+            { followsMe ? <span className="pill">follows you</span> : null }
         </>
     )
 }
