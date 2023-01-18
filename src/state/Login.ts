@@ -52,8 +52,26 @@ interface LoginStore {
     /**
      * Encrypted DM's
      */
-    dms: TaggedRawEvent[]
+    dms: TaggedRawEvent[],
+
+    /**
+     * Counter to trigger refresh of unread dms
+     */
+    dmInteraction: 0
 };
+
+const InitState = {
+    loggedOut: undefined,
+    publicKey: undefined,
+    privateKey: undefined,
+    relays: {},
+    latestRelays: 0,
+    follows: [],
+    notifications: [],
+    readNotifications: 0,
+    dms: [],
+    dmInteraction: 0
+} as LoginStore;
 
 export interface SetRelaysPayload {
     relays: Record<string, RelaySettings>,
@@ -62,14 +80,7 @@ export interface SetRelaysPayload {
 
 const LoginSlice = createSlice({
     name: "Login",
-    initialState: <LoginStore>{
-        relays: {},
-        latestRelays: 0,
-        follows: [],
-        notifications: [],
-        readNotifications: 0,
-        dms: []
-    },
+    initialState: InitState,
     reducers: {
         init: (state) => {
             state.privateKey = window.localStorage.getItem(PrivateKeyItem) ?? undefined;
@@ -182,17 +193,14 @@ const LoginSlice = createSlice({
                 ];
             }
         },
+        incDmInteraction: (state) => {
+            state.dmInteraction += 1;
+        },
         logout: (state) => {
-            window.localStorage.removeItem(PrivateKeyItem);
-            window.localStorage.removeItem(PublicKeyItem);
-            window.localStorage.removeItem(NotificationsReadItem);
-            state.privateKey = undefined;
-            state.publicKey = undefined;
-            state.follows = [];
-            state.notifications = [];
+            window.localStorage.clear();
+            Object.assign(state, InitState);
             state.loggedOut = true;
-            state.readNotifications = 0;
-            state.dms = [];
+            state.relays = Object.fromEntries(DefaultRelays.entries());
         },
         markNotificationsRead: (state) => {
             state.readNotifications = new Date().getTime();
@@ -210,6 +218,7 @@ export const {
     setFollows,
     addNotifications,
     addDirectMessage,
+    incDmInteraction,
     logout,
     markNotificationsRead
 } = LoginSlice.actions;

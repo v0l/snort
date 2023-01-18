@@ -1,33 +1,38 @@
 import "./DM.css";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useInView } from 'react-intersection-observer';
 
 import useEventPublisher from "../feed/EventPublisher";
 import Event from "../nostr/Event";
 import NoteTime from "./NoteTime";
 import Text from "./Text";
-import { lastReadDm, setLastReadDm } from "../pages/MessagesPage";
+import { setLastReadDm } from "../pages/MessagesPage";
+import { RootState } from "../state/Store";
+import { HexKey, TaggedRawEvent } from "../nostr";
+import { incDmInteraction } from "../state/Login";
 
 export type DMProps = {
-    data: any
+    data: TaggedRawEvent
 }
 
 export default function DM(props: DMProps) {
-    const pubKey = useSelector<any>(s => s.login.publicKey);
+    const dispatch = useDispatch();
+    const pubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const publisher = useEventPublisher();
     const [content, setContent] = useState("Loading...");
     const [decrypted, setDecrypted] = useState(false);
-    const { ref, inView, entry } = useInView();
+    const { ref, inView } = useInView();
     const isMe = props.data.pubkey === pubKey;
 
     async function decrypt() {
         let e = new Event(props.data);
-        if (!isMe) {
-            setLastReadDm(e.PubKey);
-        }
         let decrypted = await publisher.decryptDm(e);
         setContent(decrypted || "<ERROR>");
+        if (!isMe) {
+            setLastReadDm(e.PubKey);
+            dispatch(incDmInteraction());
+        }
     }
 
     useEffect(() => {

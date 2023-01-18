@@ -1,9 +1,11 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import { HexKey, RawEvent } from "../nostr";
 import ProfileImage from "../element/ProfileImage";
 import { hexToBech32 } from "../Util";
+import { incDmInteraction } from "../state/Login";
+import { RootState } from "../state/Store";
 
 type DmChat = {
     pubkey: HexKey,
@@ -12,12 +14,14 @@ type DmChat = {
 }
 
 export default function MessagesPage() {
-    const myPubKey = useSelector<any, string>(s => s.login.publicKey);
-    const dms = useSelector<any, RawEvent[]>(s => s.login.dms);
+    const dispatch = useDispatch();
+    const myPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+    const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
+    const dmInteraction = useSelector<RootState, number>(s => s.login.dmInteraction);
 
     const chats = useMemo(() => {
-        return extractChats(dms, myPubKey);
-    }, [dms]);
+        return extractChats(dms, myPubKey!);
+    }, [dms, myPubKey, dmInteraction]);
 
     function person(chat: DmChat) {
         return (
@@ -30,9 +34,19 @@ export default function MessagesPage() {
         )
     }
 
+    function markAllRead() {
+        for (let c of chats) {
+            setLastReadDm(c.pubkey);
+        }
+        dispatch(incDmInteraction());
+    }
+
     return (
         <>
-            <h3>Messages</h3>
+            <div className="flex">
+                <h3 className="f-grow">Messages</h3>
+                <div className="btn" onClick={() => markAllRead()}>Mark All Read</div>
+            </div>
             {chats.sort((a, b) => b.newestMessage - a.newestMessage).map(person)}
         </>
     )
@@ -80,7 +94,6 @@ function unreadDms(dms: RawEvent[], myPubKey: HexKey, pk: HexKey) {
 function newestMessage(dms: RawEvent[], myPubKey: HexKey, pk: HexKey) {
     return dmsInChat(dms, pk).reduce((acc, v) => acc = v.created_at > acc ? v.created_at : acc, 0);
 }
-
 
 export function extractChats(dms: RawEvent[], myPubKey: HexKey) {
     const keys = dms.map(a => [a.pubkey, dmTo(a)]).flat();
