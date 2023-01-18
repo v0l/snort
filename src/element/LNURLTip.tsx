@@ -17,6 +17,20 @@ declare global {
     }
 }
 
+const useWebln = (enable = true) => {
+  const maybeWebln = "webln" in window ? window.webln : null
+  useEffect(() => {
+    if (maybeWebln && !maybeWebln.enabled && enable) {
+      try {
+        maybeWebln.enable()
+      } catch (error) {
+        console.debug("Can't enable WebLN")
+      }
+    }
+  }, [enable])
+  return maybeWebln
+}
+
 interface LNURLService {
     allowsNostr?: boolean
     nostrPubkey?: HexKey
@@ -61,6 +75,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     const [error, setError] = useState<string>();
     const [success, setSuccess] = useState<LNURLSuccessAction>();
     const publisher = useEventPublisher()
+    const webln = useWebln(show)
 
     useEffect(() => {
         if (show && !props.invoice) {
@@ -153,6 +168,7 @@ export default function LNURLTip(props: LNURLTipProps) {
                 } else {
                     setInvoice(data);
                     setError("");
+                    payWebLNIfEnabled(data);
                 }
             } else {
                 setError("Failed to load invoice");
@@ -173,27 +189,17 @@ export default function LNURLTip(props: LNURLTipProps) {
         );
     }
 
-    async function payWebLN() {
+    async function payWebLNIfEnabled(invoice: LNURLInvoice) {
         try {
-            if (!window.webln!.enabled) {
-                await window.webln!.enable();
-            }
-            let res = await window.webln!.sendPayment(invoice!.pr);
+          if (webln?.enabled) {
+            let res = await webln.sendPayment(invoice.pr);
             console.log(res);
-            setSuccess(invoice!.successAction || {});
+            setSuccess(invoice.successAction || {});
+          }
         } catch (e: any) {
             setError(e.toString());
             console.warn(e);
         }
-    }
-
-    function webLn() {
-        if ("webln" in window) {
-            return (
-                <div className="btn" onClick={() => payWebLN()}>Pay with WebLN</div>
-            )
-        }
-        return null;
     }
 
     function invoiceForm() {
@@ -237,7 +243,6 @@ export default function LNURLTip(props: LNURLTipProps) {
                                     <div className="btn" onClick={() => window.open(`lightning:${pr}`)}>
                                         Open Wallet
                                     </div>
-                                    <div>{webLn()}</div>
                                 </div>
                             </>
                         )}
