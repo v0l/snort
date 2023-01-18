@@ -75,7 +75,7 @@ export default function useEventPublisher() {
         zap: async (author: HexKey, note?: HexKey, msg?: string) => {
             if (pubKey) {
                 let ev = NEvent.ForPubKey(pubKey);
-                ev.Kind = EventKind.Zap;
+                ev.Kind = EventKind.ZapRequest;
                 if (note) {
                   // @ts-ignore
                   ev.Tags.push(new Tag(["e", note]))

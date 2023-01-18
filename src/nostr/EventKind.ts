@@ -8,7 +8,8 @@ const enum EventKind {
     Deletion = 5, // NIP-09
     Repost = 6, // NIP-18
     Reaction = 7, // NIP-25
-    Zap = 9735 // NIP tba
+    ZapRequest = 9734, // NIP tba
+    Zap = 9735
 };
 
 export default EventKind;
