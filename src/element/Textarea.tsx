@@ -32,7 +32,8 @@ const Textarea = ({ users, onChange, ...rest }: any) => {
 
   const allUsers = useLiveQuery(
     () => db.users
-          .where("name").startsWithIgnoreCase(query)
+          .where("npub").startsWithIgnoreCase(query)
+          .or("name").startsWithIgnoreCase(query)
           .or("display_name").startsWithIgnoreCase(query)
           .or("nip05").startsWithIgnoreCase(query)
           .limit(5)

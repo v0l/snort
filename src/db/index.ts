@@ -1,5 +1,6 @@
-import Dexie, { Table } from 'dexie';
-import { MetadataCache } from './User';
+import Dexie, { Table } from "dexie";
+import { MetadataCache } from "./User";
+import { hexToBech32 } from "../Util";
 
 
 export class SnortDB extends Dexie {
@@ -7,8 +8,12 @@ export class SnortDB extends Dexie {
 
   constructor() {
     super('snortDB');
-    this.version(1).stores({
-      users: '++pubkey, name, display_name, picture, nip05' // Primary key and indexed props
+    this.version(2).stores({
+      users: '++pubkey, name, display_name, picture, nip05, npub'
+    }).upgrade(tx => {
+      return tx.table("users").toCollection().modify(user => {
+        user.npub = hexToBech32("npub", user.pubkey)
+      })
     });
   }
 }
