@@ -52,8 +52,3 @@
     margin-left: -5px;
     border-left: 3px solid var(--highlight);
 }
-
-.indented .note {
-    border-bottom: none;
-    padding: 4px;
-}
