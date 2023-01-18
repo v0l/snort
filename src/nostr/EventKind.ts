@@ -9,7 +9,7 @@ const enum EventKind {
     Repost = 6, // NIP-18
     Reaction = 7, // NIP-25
     ZapRequest = 9734, // NIP tba
-    Zap = 9735
+    ZapReceipt = 9735 // NIP tba
 };
 
 export default EventKind;

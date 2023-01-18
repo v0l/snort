@@ -31,7 +31,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     const isMine = ev.RootPubKey === login;
     const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related]);
     const reposts = useMemo(() => getReactions(related, ev.Id, EventKind.Repost), [related]);
-    const zaps = useMemo(() => getReactions(related, ev.Id, EventKind.Zap).map(parseZap).filter(z => z.valid), [related]);
+    const zaps = useMemo(() => getReactions(related, ev.Id, EventKind.ZapReceipt).map(parseZap).filter(z => z.valid), [related]);
     const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
 
     const groupReactions = useMemo(() => {

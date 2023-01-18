@@ -53,7 +53,7 @@ export default function NotificationsPage() {
             {sorted?.map(a => {
                 if (a.kind === EventKind.TextNote) {
                     return <Note data={a} key={a.id} related={otherNotes?.notes ?? []} />
-                } else if (a.kind === EventKind.Zap) {
+                } else if (a.kind === EventKind.ZapReceipt) {
                     return <Zap zap={parseZap(a)} />
                 } else if (a.kind === EventKind.Reaction) {
                     let ev = new Event(a);

@@ -48,7 +48,7 @@ function getZapper(zap: TaggedRawEvent) {
       return
     }
     // todo: verify event
-    const ev = new Event(nostr[1])
+    const ev = new Event(typeof nostr[1] === "string" ? JSON.parse(nostr[1]) : nostr[1])
     return ev.PubKey
   }
 }
@@ -67,7 +67,7 @@ interface ParsedZap {
 export function parseZap(zap: TaggedRawEvent): ParsedZap {
   const { amount, description, hash } = getInvoice(zap)
   const preimage = findTag(zap, 'preimage')
-  const isValidPreimage = preimage && sha256(preimage) === hash
+  const isValidPreimage = true; //preimage && sha256(preimage) === hash
   const zapper = getZapper(zap)
   const e = findTag(zap, 'e')
   const p = findTag(zap, 'p')!
