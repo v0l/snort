@@ -1,4 +1,5 @@
 import { HexKey, TaggedRawEvent, UserMetadata } from "../nostr";
+import { hexToBech32 } from "../Util";
 
 export interface MetadataCache extends UserMetadata {
     /**
@@ -22,6 +23,7 @@ export function mapEventToProfile(ev: TaggedRawEvent) {
         let data: UserMetadata = JSON.parse(ev.content);
         return {
             pubkey: ev.pubkey,
+            npub: hexToBech32("npub", ev.pubkey),
             created: ev.created_at,
             loaded: new Date().getTime(),
             ...data

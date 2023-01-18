@@ -1,4 +1,4 @@
-.user-item {
+.user-item, .emoji-item {
   background: var(--gray);
   display: flex;
   flex-direction: row;
@@ -7,7 +7,7 @@
   padding: 10px;
 }
 
-.user-item:hover {
+.user-item:hover, .emoji-item:hover {
   background: var(--gray-tertiary);
 }
 
@@ -38,4 +38,17 @@
 
 .nip05 {
   font-size: 12px;
+}
+
+.emoji-item {
+  font-size: 12px;
+}
+
+.emoji-item .emoji {
+   margin-right: .2em;
+   min-width: 20px;
+}
+
+.emoji-item .emoji-name {
+  font-weight: bold;
 }
