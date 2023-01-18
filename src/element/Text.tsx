@@ -142,11 +142,6 @@ function extractHashtags(fragments: Fragment[]) {
     }).flat();
 }
 
-function transformLi({ body, tags, users }: TextFragment) {
-    let fragments = transformText({ body, tags, users })
-    return <li>{fragments}</li>
-}
-
 function transformParagraph({ body, tags, users }: TextFragment) {
     const fragments = transformText({ body, tags, users })
     if (fragments.every(f => typeof f === 'string')) {
@@ -182,7 +177,6 @@ export default function Text({ content, tags, users }: TextProps) {
         return {
             p: (x: any) => transformParagraph({ body: x.children, tags, users }),
             a: (x: any) => transformHttpLink(x.href),
-            li: (x: any) => transformLi({ body: x.children, tags, users }),
         };
     }, [content]);
     return <ReactMarkdown className="text" components={components}>{content}</ReactMarkdown>
