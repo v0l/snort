@@ -37,7 +37,11 @@ function transformHttpLink(a: string) {
                     return <video key={url.toString()} src={url.toString()} controls />
                 }
                 default:
-                    return <a key={url.toString()} href={url.toString()} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
+                    return (
+                      <div className="truncate">
+                        <a key={url.toString()} href={url.toString()} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
+                      </div>
+                    )
             }
         } else if (tweetId) {
             return (
@@ -62,11 +66,19 @@ function transformHttpLink(a: string) {
                 </>
             )
         } else {
-            return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
+            return (
+              <div className="truncate">
+                <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
+              </div>
+            )
         }
     } catch (error) {
     }
-    return <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
+    return (
+      <div className="truncate">
+        <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
+      </div>
+    )
 }
 
 function extractLinks(fragments: Fragment[]) {

@@ -48,10 +48,12 @@ export default function ProfilePage() {
     function username() {
         return (
             <div className="name">
-                <h2>{user?.display_name || user?.name || 'Nostrich'}</h2>
+                <h2>
+                  {user?.display_name || user?.name || 'Nostrich'}
+                  <FollowsYou pubkey={id} />
+                </h2>
                 <Copy text={params.id || ""} />
                 {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
-                <FollowsYou pubkey={id} />
             </div>
         )
     }

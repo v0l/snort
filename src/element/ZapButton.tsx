@@ -14,9 +14,9 @@ const ZapButton = ({ pubkey }: { pubkey: HexKey }) => {
 
     return (
         <>
-            <span className="pill" onClick={(e) => setZap(true)}>
+            <div className="pill" onClick={(e) => setZap(true)}>
                 <FontAwesomeIcon icon={faBolt} />
-            </span>
+            </div>
             <LNURLTip svc={svc} show={zap} onClose={() => setZap(false)} />
         </>
     )

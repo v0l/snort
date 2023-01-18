@@ -25,11 +25,10 @@ export default function NoteTime(props: NoteTimeProps) {
             return fallback
         } else {
             let mins = Math.floor(absAgo / MinuteInMs);
-            let minutes = mins === 1 ? 'min' : 'mins'
             if(ago < 0) {
-                return `in ${mins} ${minutes}`; 
+                return `in ${mins}m`; 
             }
-            return `${mins} ${minutes} ago`;
+            return `${mins}m`;
         }
     }
 

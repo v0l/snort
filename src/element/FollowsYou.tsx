@@ -1,3 +1,4 @@
+import "./FollowsYou.css";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { HexKey } from "../nostr";
@@ -21,7 +22,7 @@ export default function FollowsYou({ pubkey }: FollowsYouProps ) {
 
     return (
         <>
-            { followsMe ? <span className="pill">follows you</span> : null }
+            { followsMe ? <span className="follows-you">follows you</span> : null }
         </>
     )
 }

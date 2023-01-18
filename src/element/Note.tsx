@@ -78,7 +78,7 @@ export default function Note(props: NoteProps) {
         let pubMentions = mentions.length > maxMentions ? `${mentions?.slice(0, maxMentions).join(", ")} & ${othersLength} other${othersLength > 1 ? 's' : ''}` : mentions?.join(", ");
         return (
             <div className="reply">
-                ➡️ {(pubMentions?.length ?? 0) > 0 ? pubMentions : replyId ? hexToBech32("note", replyId)?.substring(0, 12) : ""}
+             {(pubMentions?.length ?? 0) > 0 ? pubMentions : replyId ? hexToBech32("note", replyId)?.substring(0, 12) : ""}
             </div>
         )
     }
