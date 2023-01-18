@@ -37,7 +37,7 @@ export default function ProfilePage() {
     const id = useMemo(() => parseId(params.id!), [params.id]);
     const zapFeed = useZapsFeed(id)
     const zaps = useMemo(() => {
-      return zapFeed.notes.map(parseZap).filter(z => z.valid)
+      return zapFeed.notes.map(parseZap).filter(z => z.valid && !z.e)
     }, [zapFeed.notes])
     const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
     const user = useProfile(id)?.get(id);
