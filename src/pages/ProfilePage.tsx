@@ -3,10 +3,13 @@ import "./ProfilePage.css";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faBolt, faGear, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { formatShort } from "../Number";
 import useProfile from "../feed/ProfileFeed";
+import useZapsFeed from "../feed/ZapsFeed";
+import { parseZap } from "../element/Zap";
 import FollowButton from "../element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "../Util";
 import Avatar from "../element/Avatar";
@@ -31,7 +34,12 @@ enum ProfileTab {
 export default function ProfilePage() {
     const params = useParams();
     const navigate = useNavigate();
-    const id = useMemo(() => parseId(params.id!), [params]);
+    const id = useMemo(() => parseId(params.id!), [params.id]);
+    const zapFeed = useZapsFeed(id)
+    const zaps = useMemo(() => {
+      return zapFeed.notes.map(parseZap).filter(z => z.valid)
+    }, [zapFeed.notes])
+    const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
     const user = useProfile(id)?.get(id);
     const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
@@ -68,11 +76,16 @@ export default function ProfilePage() {
                     )}
 
                     {lnurl && (
-                        <div className="f-ellipsis" onClick={(e) => setShowLnQr(true)}>
-                            <span className="lightning">⚡️</span>
+                        <div className="f-ellipsis lnurl-wrapper" onClick={(e) => setShowLnQr(true)}>
+                            <FontAwesomeIcon color="var(--yellow)" icon={faBolt} size="lg" />
                             <span className="lnurl" >
                                 {lnurl}
                             </span>
+                            {zapsTotal > 0 && (
+                              <div className="zaps-total">
+                                {formatShort(zapsTotal)} sats
+                              </div>
+                            )}
                         </div>
                     )}
                 </div>

@@ -206,8 +206,20 @@
 .profile .lnurl {
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-left: .5em;
 }
 
-.profile .lightning {
-    margin-right: .3em;
+.profile .lnurl-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.profile .zaps-total {
+  margin-left: .5em;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 30px;
+  color: var(--font-color);
+  background: var(--gray-secondary);
 }
