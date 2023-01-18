@@ -27,11 +27,7 @@ export default function useLoginFeed() {
         sub.Kinds = new Set([EventKind.ContactList, EventKind.SetMetadata, EventKind.DirectMessage]);
 
         let notifications = new Subscriptions();
-        notifications.Kinds = new Set([
-          EventKind.TextNote,
-          EventKind.DirectMessage,
-          EventKind.Zap
-        ]);
+        notifications.Kinds = new Set([EventKind.TextNote, EventKind.DirectMessage, EventKind.Zap]);
         notifications.PTags = new Set([pubKey]);
         notifications.Limit = 100;
         sub.AddSubscription(notifications);

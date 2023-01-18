@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import Note from "../element/Note";
 import NoteReaction from "../element/NoteReaction";
-import Zap from "../element/Zap";
+import Zap, { parseZap } from "../element/Zap";
 import useSubscription from "../feed/Subscription";
 import { TaggedRawEvent } from "../nostr";
 import Event from "../nostr/Event";
@@ -10,7 +10,6 @@ import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { markNotificationsRead } from "../state/Login";
 import { RootState } from "../state/Store";
-import { getReactions } from "../Util";
 
 export default function NotificationsPage() {
     const dispatch = useDispatch();
@@ -55,7 +54,7 @@ export default function NotificationsPage() {
                 if (a.kind === EventKind.TextNote) {
                     return <Note data={a} key={a.id} related={otherNotes?.notes ?? []} />
                 } else if (a.kind === EventKind.Zap) {
-                    return <Zap zap={a} />
+                    return <Zap zap={parseZap(a)} />
                 } else if (a.kind === EventKind.Reaction) {
                     let ev = new Event(a);
                     let reactedTo = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;

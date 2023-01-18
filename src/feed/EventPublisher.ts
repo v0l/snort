@@ -72,6 +72,24 @@ export default function useEventPublisher() {
                 return await signEvent(ev);
             }
         },
+        zap: async (author: HexKey, note?: HexKey, msg?: string) => {
+            if (pubKey) {
+                let ev = NEvent.ForPubKey(pubKey);
+                ev.Kind = EventKind.Zap;
+                if (note) {
+                  // @ts-ignore
+                  ev.Tags.push(new Tag(["e", note]))
+                }
+                // @ts-ignore
+                ev.Tags.push(new Tag(["p", author]))
+                // @ts-ignore
+                const relayTag = ['relays', ...Object.keys(relays)]
+                // @ts-ignore
+                ev.Tags.push(new Tag(relayTag))
+                processMentions(ev, msg || '');
+                return await signEvent(ev);
+            }
+       },
         note: async (msg: string) => {
             if (pubKey) {
                 let ev = NEvent.ForPubKey(pubKey);

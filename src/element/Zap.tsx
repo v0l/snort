@@ -1,10 +1,12 @@
 import "./Zap.css";
 import * as secp from "@noble/secp256k1";
-import { sha256 } from "../Util";
+import { useMemo } from "react";
 // @ts-expect-error
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 
-import { TaggedRawEvent } from "../nostr";
+import { sha256 } from "../Util";
+import { formatShort } from "../Number";
+import { HexKey, TaggedRawEvent } from "../nostr";
 import Text from "./Text";
 import ProfileImage from "./ProfileImage";
 
@@ -45,30 +47,49 @@ function getZapper(zap: TaggedRawEvent) {
   }
 }
 
-export function parseZap(zap: TaggedRawEvent) {
+interface ParsedZap {
+  id: HexKey
+  e?: HexKey
+  p: HexKey
+  amount: number
+  content: string
+  zapper: HexKey // todo: anon
+  description?: string
+  valid: boolean
+}
+
+export function parseZap(zap: TaggedRawEvent): ParsedZap {
   const { amount, description, hash } = getInvoice(zap)
   const preimage = findTag(zap, 'preimage')
   const isValidPreimage = preimage && sha256(preimage) === hash
   const zapper = getZapper(zap)
   const e = findTag(zap, 'e')
-  const p = findTag(zap, 'p')
-  return { e, p, amount: Number(amount) / 1000, zapper, description, valid: isValidPreimage }
+  const p = findTag(zap, 'p')!
+  return {
+    id: zap.id,
+    e,
+    p,
+    amount: Number(amount) / 1000,
+    zapper,
+    description,
+    content: zap.content,
+    valid: Boolean(isValidPreimage),
+  }
 }
 
 interface ZapProps {
-  zap: TaggedRawEvent
+  zap: ParsedZap
 }
 
 const Zap = ({ zap }: ZapProps) => {
-  const { content, pubkey } = zap
-  const { e, amount, zapper, description, valid }  = parseZap(zap) ?? {}
+  const { amount, content, zapper, valid }  = zap
 
   return valid ? (
     <div className="zap">
       <div className="summary">
          <ProfileImage pubkey={zapper} />
          <div className="amount">
-           {amount} sats
+           <span className="amount-number">{formatShort(amount)}</span> sats
          </div>
        </div>
       <div className="body">
@@ -76,6 +97,48 @@ const Zap = ({ zap }: ZapProps) => {
       </div>
     </div>
   ) : null
+}
+
+interface ZapsSummaryProps { zaps: ParsedZap[] }
+
+export const ZapsSummary = ({ zaps } : ZapsSummaryProps) => {
+    const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
+
+    const topZap = zaps.length > 0 && zaps.reduce((acc, z) => {
+      return z.amount > acc.amount ? z : acc
+    })
+    const restZaps = zaps.filter(z => topZap && z.id !== topZap.id)
+    const restZapsTotal = restZaps.reduce((acc, z) => acc + z.amount, 0)
+    const sortedZaps = useMemo(() => {
+      const s = [...restZaps]
+      s.sort((a, b) => b.amount - a.amount)
+      return s
+    }, [restZaps])
+    const { zapper, amount, content, valid } = topZap || {}
+
+    return (
+      <div className="zaps-summary">
+        {amount && valid && zapper && (
+          <div className={`top-zap`}>
+            <div className="summary">
+               <ProfileImage pubkey={zapper} />
+               <div className="amount">
+                 zapped <span className="amount-number">{formatShort(amount)}</span> sats
+               </div>
+             </div>
+            <div className="body">
+              {content && <Text content={content} />}
+            </div>
+          </div>
+        )}
+        {restZapsTotal > 0 && (
+          <div className="rest-zaps">
+            {restZaps.length} other{restZaps.length > 1 ? 's' : ''} zapped&nbsp;
+             <span className="amount-number">{formatShort(restZapsTotal)}</span> sats
+          </div>
+        )}
+      </div>
+    )
 }
 
 export default Zap

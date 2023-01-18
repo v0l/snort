@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { parseZap } from "./Zap";
+import { ZapsSummary, parseZap } from "./Zap";
+import { formatShort } from "../Number";
 import useEventPublisher from "../feed/EventPublisher";
 import { getReactions, normalizeReaction, Reaction } from "../Util";
 import { NoteCreator } from "./NoteCreator";
@@ -13,16 +14,6 @@ import { default as NEvent } from "../nostr/Event";
 import { RootState } from "../state/Store";
 import { HexKey, TaggedRawEvent } from "../nostr";
 import EventKind from "../nostr/EventKind";
-
-function formatShortAmount(n: number) {
-  if (n < 999) {
-    return n
-  } else if (n < 1e8) {
-    return `${n / 1e3}K`
-  } else {
-    return `${n / 1e6}M`
-  }
-}
 
 export interface NoteFooterProps {
     related: TaggedRawEvent[],
@@ -40,10 +31,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     const isMine = ev.RootPubKey === login;
     const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related]);
     const reposts = useMemo(() => getReactions(related, ev.Id, EventKind.Repost), [related]);
-    const zaps = useMemo(() =>
-      getReactions(related, ev.Id, EventKind.Zap).map(parseZap).filter(z => z.valid),
-      [related]
-    );
+    const zaps = useMemo(() => getReactions(related, ev.Id, EventKind.Zap).map(parseZap).filter(z => z.valid), [related]);
     const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
 
     const groupReactions = useMemo(() => {
@@ -91,7 +79,7 @@ export default function NoteFooter(props: NoteFooterProps) {
                 <>
                     <span className="pill" onClick={(e) => setTip(true)}>
                         <FontAwesomeIcon color={zapTotal ? "var(--yellow)" : "var(--font-color)"} icon={faBolt} />
-                        {zapTotal > 0 && ` ${formatShortAmount(zapTotal)}`}
+                        {zapTotal > 0 && ` ${formatShort(zapTotal)}`}
                     </span>
                 </>
             )
@@ -139,13 +127,20 @@ export default function NoteFooter(props: NoteFooterProps) {
                     )
                 })}
             </div>
+            <ZapsSummary zaps={zaps} />
             <NoteCreator
                 autoFocus={true}
                 replyTo={ev}
                 onSend={() => setReply(false)}
                 show={reply}
             />
-            <LNURLTip svc={author?.lud16 || author?.lud06} onClose={() => setTip(false)} show={tip} />
+            <LNURLTip
+              svc={author?.lud16 || author?.lud06}
+              onClose={() => setTip(false)}
+              show={tip}
+              note={ev.Id}
+              author={ev.PubKey}
+            />
         </>
     )
 }

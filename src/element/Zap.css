@@ -24,9 +24,58 @@
 
 .amount {
   font-size: 18px;
-  font-weight: bold;
 }
 
 .amount:before {
   content: '⚡️ ';
+}
+
+.top-zap .amount:before {
+  content: '';
+}
+
+.zaps-summary {
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-zap {
+  font-size: 12px;
+  border: none;
+  margin: 0;
+}
+
+.top-zap .summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-zap .avatar {
+  width: 21px;
+  height: 21px;
+}
+
+.top-zap .profile-name {
+  font-size: 12px;
+}
+
+.top-zap .nip05 {
+  display: none;
+}
+
+.top-zap .amount {
+  font-size: 12px;
+}
+
+.amount-number {
+  font-weight: bold;
+}
+
+.rest-zaps {
+  font-size: 12px;
 }
