@@ -33,7 +33,7 @@ export default function Note(props: NoteProps) {
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
     const users = useProfile(pubKeys);
     const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
-    const { ref, inView } = useInView({triggerOnce: true});
+    const { ref, inView } = useInView({ triggerOnce: true });
 
     const options = {
         showHeader: true,

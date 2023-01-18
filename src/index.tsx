@@ -1,15 +1,14 @@
 import './index.css';
 
-import React from 'react';
+import { StrictMode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import ReactDOM from 'react-dom/client';
+import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux'
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 
-import { NostrSystem } from './nostr/System';
 import EventPage from './pages/EventPage';
 import Layout from './pages/Layout';
 import LoginPage from './pages/Login';
@@ -78,13 +77,13 @@ const router = createBrowserRouter([
   }
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <Provider store={Store}>
       <QueryClientProvider client={HTTP}>
-         <RouterProvider router={router} />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </Provider>
-  </React.StrictMode>
+  </StrictMode>
 );
