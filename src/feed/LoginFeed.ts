@@ -27,10 +27,15 @@ export default function useLoginFeed() {
         sub.Kinds = new Set([EventKind.ContactList, EventKind.SetMetadata, EventKind.DirectMessage]);
 
         let notifications = new Subscriptions();
-        notifications.Kinds = new Set([EventKind.TextNote, EventKind.DirectMessage]);
+        notifications.Kinds = new Set([EventKind.TextNote]);
         notifications.PTags = new Set([pubKey]);
         notifications.Limit = 100;
         sub.AddSubscription(notifications);
+
+        let dms = new Subscriptions();
+        dms.Kinds = new Set([EventKind.DirectMessage]);
+        dms.PTags = new Set([pubKey]);
+        sub.AddSubscription(dms);
 
         return sub;
     }, [pubKey]);

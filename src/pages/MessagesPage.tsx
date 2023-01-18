@@ -54,12 +54,17 @@ export function setLastReadDm(pk: HexKey) {
     window.localStorage.setItem(k, now.toString());
 }
 
+export function dmTo(e: RawEvent) {
+    let firstP = e.tags.find(b => b[0] === "p");
+    return firstP ? firstP[1] : "";
+}
+
 export function isToSelf(e: RawEvent, pk: HexKey) {
-    return e.pubkey === pk && e.tags.some(a => a[0] === "p" && a[1] === pk);
+    return e.pubkey === pk && dmTo(e) === pk;
 }
 
 export function dmsInChat(dms: RawEvent[], pk: HexKey) {
-    return dms.filter(a => a.pubkey === pk || a.tags.some(b => b[0] === "p" && b[1] === pk));
+    return dms.filter(a => a.pubkey === pk || dmTo(a) == pk);
 }
 
 export function totalUnread(dms: RawEvent[], myPubKey: HexKey) {
@@ -78,7 +83,7 @@ function newestMessage(dms: RawEvent[], myPubKey: HexKey, pk: HexKey) {
 
 
 export function extractChats(dms: RawEvent[], myPubKey: HexKey) {
-    const keys = dms.map(a => [a.pubkey, ...a.tags.filter(b => b[0] === "p").map(b => b[1])]).flat();
+    const keys = dms.map(a => [a.pubkey, dmTo(a)]).flat();
     const filteredKeys = Array.from(new Set<string>(keys));
     return filteredKeys.map(a => {
         return {
