@@ -156,6 +156,10 @@ function transformParagraph({ body, tags, users }: TextFragment) {
 }
 
 function transformText({ body, tags, users }: TextFragment) {
+    if(body === undefined)
+    {
+        debugger;
+    }
     let fragments = extractMentions(body, tags, users);
     fragments = extractLinks(fragments);
     fragments = extractInvoices(fragments);
@@ -180,9 +184,9 @@ export interface TextProps {
 export default function Text({ content, tags, users }: TextProps) {
     const components = useMemo(() => {
         return {
-            p: (x: any) => transformParagraph({ body: x.children, tags, users }),
+            p: (x: any) => transformParagraph({ body: x.children ?? [], tags, users }),
             a: (x: any) => transformHttpLink(x.href),
-            li: (x: any) => transformLi({ body: x.children, tags, users }),
+            li: (x: any) => transformLi({ body: x.children ?? [], tags, users }),
         };
     }, [content]);
     return <ReactMarkdown className="text" components={components}>{content}</ReactMarkdown>
