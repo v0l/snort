@@ -3,7 +3,7 @@
     border-radius: 10px;
     background-color: var(--note-bg);
     padding: 20px;
-    min-height: 180px;
+    min-height: 140px;
 }
 
 .note.thread {
