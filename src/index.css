@@ -11,14 +11,15 @@
     --gray: #333;
     --gray-secondary: #222;
     --gray-tertiary: #444;
-    --highlight-light: #E8FF52;
-    --highlight: #CCFF00;
-    --highlight-dark: #709900;
+    --highlight-light: #ffd342;
+    --highlight: #ffc400;
+    --highlight-dark: #dba800;
     --error: #FF6053;
     --success: #2AD544;
     --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
     --snort-gradient: linear-gradient(to bottom right, var(--highlight-light), var(--highlight), var(--highlight-dark));
     --nostrplebs-gradient: linear-gradient(to bottom right, #ff3cac, #2b86c5);
+    --strike-army-gradient: linear-gradient(to bottom right, #CCFF00, #a1c900);
 }
 
 @media (prefers-color-scheme: light) {

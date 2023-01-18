@@ -33,3 +33,7 @@
 .avatar[data-domain="nostriches.net"] {
     background-image: var(--img-url), var(--nostrplebs-gradient);
 }
+
+.avatar[data-domain="strike.army"] { 
+    background-image: var(--img-url), var(--strike-army-gradient);
+}
