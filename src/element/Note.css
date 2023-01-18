@@ -2,8 +2,8 @@
     margin-bottom: 10px;
     border-radius: 10px;
     background-color: var(--note-bg);
-    padding: 20px;
-    min-height: 120px;
+    padding: 10px 10px 8px 10px;
+    min-height: 110px;
 }
 
 .note.thread {

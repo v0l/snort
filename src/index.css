@@ -349,8 +349,7 @@ body.scroll-lock {
 
 @media(max-width: 720px) {
   .page {
-    width: calc(100vw - 20px);
-    margin: 0 10px;
+    width: calc(100vw - 8px);
   }
   div.form-group {
     flex-direction: column;
