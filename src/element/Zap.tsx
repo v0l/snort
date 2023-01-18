@@ -1,14 +1,10 @@
-import * as secp from "@noble/secp256k1";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react"
-
-import { sha256 } from "../Hash";
 import "./Zap.css";
+import * as secp from "@noble/secp256k1";
+import { sha256 } from "../Hash";
 // @ts-expect-error
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 
 import { TaggedRawEvent } from "../nostr";
-import { eventLink } from "../Util";
 import Text from "./Text";
 import ProfileImage from "./ProfileImage";
 
@@ -77,13 +73,6 @@ const Zap = ({ zap }: ZapProps) => {
        </div>
       <div className="body">
         <Text content={content} />
-        {e && (
-          <Link
-            key={e}
-            to={eventLink(e)}
-            onClick={(e) => e.stopPropagation()}
-          >#{e}</Link>
-        )}
       </div>
     </div>
   ) : null
