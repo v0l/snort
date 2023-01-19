@@ -1,7 +1,7 @@
 import Nostrich from "../nostrich.jpg";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { HexKey } from "../nostr";
+import { HexKey, TaggedRawEvent } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { addDirectMessage, addNotifications, setFollows, setRelays } from "../state/Login";
@@ -9,6 +9,8 @@ import { RootState } from "../state/Store";
 import { db } from "../db";
 import useSubscription from "./Subscription";
 import { mapEventToProfile, MetadataCache } from "../db/User";
+import { hexToBech32 } from "../Util";
+import { getDisplayName } from "../element/ProfileImage";
 
 /**
  * Managed loading data for the current logged in user
@@ -63,18 +65,8 @@ export default function useLoginFeed() {
 
         if ("Notification" in window && Notification.permission === "granted") {
             for (let nx of notifications.filter(a => (a.created_at * 1000) > readNotifications)) {
-                if (Notification.permission === "granted") {
-                    let body = nx.content.substring(0, 50);
-                    let title = "Snort"
-                    navigator.serviceWorker.ready.then(worker => {
-                        worker.showNotification(title, {
-                            body: body,
-                            icon: Nostrich,
-                            tag: "notification",
-                        });
-
-                    })
-                }
+                sendNotification(nx)
+                    .catch(console.warn);
             }
         }
         dispatch(addNotifications(notifications));
@@ -95,4 +87,32 @@ export default function useLoginFeed() {
             }
         })().catch(console.warn);
     }, [main]);
+}
+
+async function makeNotification(ev: TaggedRawEvent) {
+    switch (ev.kind) {
+        case EventKind.TextNote: {
+            let from = await db.users.get(ev.pubkey);
+            let name = getDisplayName(from, ev.pubkey);
+            return {
+                title: `Reply from ${name}`,
+                body: ev.content.substring(0, 50)
+            }
+        }
+    }
+    return null;
+}
+
+async function sendNotification(ev: TaggedRawEvent) {
+    let n = await makeNotification(ev);
+    if (n != null && Notification.permission === "granted") {
+        let worker = await navigator.serviceWorker.ready;
+        worker.showNotification(n.title, {
+            body: n.body,
+            icon: Nostrich,
+            tag: "notification",
+            timestamp: ev.created_at * 1000,
+            vibrate: [500]
+        });
+    }
 }
