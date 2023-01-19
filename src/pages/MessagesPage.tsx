@@ -92,6 +92,10 @@ function unreadDms(dms: RawEvent[], myPubKey: HexKey, pk: HexKey) {
 }
 
 function newestMessage(dms: RawEvent[], myPubKey: HexKey, pk: HexKey) {
+    if(pk === myPubKey) {
+        return dmsInChat(dms.filter(d => isToSelf(d, myPubKey)), pk).reduce((acc, v) => acc = v.created_at > acc ? v.created_at : acc, 0);
+    }
+
     return dmsInChat(dms, pk).reduce((acc, v) => acc = v.created_at > acc ? v.created_at : acc, 0);
 }
 

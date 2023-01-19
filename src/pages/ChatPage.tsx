@@ -10,7 +10,7 @@ import useEventPublisher from "../feed/EventPublisher";
 
 import DM from "../element/DM";
 import { RawEvent } from "../nostr";
-import { dmsInChat } from "./MessagesPage";
+import { dmsInChat, isToSelf } from "./MessagesPage";
 
 type RouterParams = {
     id: string
@@ -20,13 +20,14 @@ export default function ChatPage() {
     const params = useParams<RouterParams>();
     const publisher = useEventPublisher();
     const id = bech32ToHex(params.id ?? "");
+    const pubKey = useSelector<any>(s => s.login.publicKey);
     const dms = useSelector<any, RawEvent[]>(s => filterDms(s.login.dms));
     const [content, setContent] = useState<string>();
     const { ref, inView, entry } = useInView();
     const dmListRef = useRef<HTMLDivElement>(null);
 
     function filterDms(dms: RawEvent[]) {
-        return dmsInChat(dms, id);
+        return dmsInChat(id === pubKey ? dms.filter(d => isToSelf(d, pubKey)) : dms, id);
     }
 
     const sortedDms = useMemo<any[]>(() => {
