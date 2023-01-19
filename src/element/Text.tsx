@@ -100,6 +100,9 @@ function extractMentions(fragments: Fragment[], tags: Tag[], users: Map<string, 
                                 let eText = hexToBech32("note", ref.Event!).substring(0, 12);
                                 return <Link key={ref.Event} to={eventLink(ref.Event!)} onClick={(e) => e.stopPropagation()}>#{eText}</Link>;
                             }
+                            case "t": {
+                                return <Hashtag tag={ref.Hashtag!} />
+                            }
                         }
                     }
                     return <b style={{ color: "var(--error)" }}>{matchTag[0]}?</b>;
@@ -132,7 +135,7 @@ function extractHashtags(fragments: Fragment[]) {
         if (typeof f === "string") {
             return f.split(HashtagRegex).map(i => {
                 if (i.toLowerCase().startsWith("#")) {
-                    return <Hashtag>{i}</Hashtag>
+                    return <Hashtag tag={i.substring(1)} />
                 } else {
                     return i;
                 }

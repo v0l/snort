@@ -49,15 +49,15 @@ export default function ProfilePage() {
         return (
             <div className="name">
                 <h2>
-                  {user?.display_name || user?.name || 'Nostrich'}
-                  <FollowsYou pubkey={id} />
+                    {user?.display_name || user?.name || 'Nostrich'}
+                    <FollowsYou pubkey={id} />
                 </h2>
                 <Copy text={params.id || ""} />
                 {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
             </div>
         )
     }
-    
+
     function bio() {
         const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
         return (
@@ -88,7 +88,7 @@ export default function ProfilePage() {
     function tabContent() {
         switch (tab) {
             case ProfileTab.Notes:
-                return <Timeline key={id} pubkeys={[id]} global={false} postsOnly={false} method={"LIMIT_UNTIL"} />;
+                return <Timeline key={id} subject={{ type: "pubkey", items: [id] }} postsOnly={false} method={"LIMIT_UNTIL"} />;
             case ProfileTab.Follows: {
                 if (isMe) {
                     return (

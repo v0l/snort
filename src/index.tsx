@@ -25,6 +25,7 @@ import VerificationPage from './pages/Verification';
 import MessagesPage from './pages/MessagesPage';
 import ChatPage from './pages/ChatPage';
 import DonatePage from './pages/DonatePage';
+import HashTagsPage from './pages/HashTagsPage';
 
 /**
  * HTTP query provider
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
       {
         path: "/donate",
         element: <DonatePage />
+      },
+      {
+        path: "/t/:tag",
+        element: <HashTagsPage />
       }
     ]
   }

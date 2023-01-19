@@ -1,36 +1,44 @@
 import { useEffect, useMemo, useState } from "react";
-import { HexKey, u256 } from "../nostr";
+import { u256 } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { unixNow } from "../Util";
 import useSubscription from "./Subscription";
 
 export interface TimelineFeedOptions {
-    global: boolean,
     method: "TIME_RANGE" | "LIMIT_UNTIL"
 }
 
-export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, options: TimelineFeedOptions) {
+export interface TimelineSubject {
+    type: "pubkey" | "hashtag" | "global",
+    items: string[]
+}
+
+export default function useTimelineFeed(subject: TimelineSubject, options: TimelineFeedOptions) {
     const now = unixNow();
     const [window, setWindow] = useState<number>(60 * 60);
     const [until, setUntil] = useState<number>(now);
     const [since, setSince] = useState<number>(now - window);
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
 
-    const subTab = options.global ? "global" : "follows";
     const sub = useMemo(() => {
-        if (!Array.isArray(pubKeys)) {
-            pubKeys = [pubKeys];
-        }
-
-        if (!options.global && (!pubKeys || pubKeys.length === 0)) {
+        if (subject.type !== "global" && subject.items.length == 0) {
             return null;
         }
 
         let sub = new Subscriptions();
-        sub.Id = `timeline:${subTab}`;
-        sub.Authors = options.global ? undefined : new Set(pubKeys);
+        sub.Id = `timeline:${subject.type}`;
         sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
+        switch (subject.type) {
+            case "pubkey": {
+                sub.Authors = new Set(subject.items);
+                break;
+            }
+            case "hashtag": {
+                sub.HashTags = new Set(subject.items);
+                break;
+            }
+        }
         if (options.method === "LIMIT_UNTIL") {
             sub.Until = until;
             sub.Limit = 10;
@@ -43,14 +51,14 @@ export default function useTimelineFeed(pubKeys: HexKey | Array<HexKey>, options
         }
 
         return sub;
-    }, [pubKeys, until, since, window]);
+    }, [subject, until, since, window]);
 
     const main = useSubscription(sub, { leaveOpen: true });
 
     const subNext = useMemo(() => {
         if (trackingEvents.length > 0) {
             let sub = new Subscriptions();
-            sub.Id = `timeline-related:${subTab}`;
+            sub.Id = `timeline-related:${subject.type}`;
             sub.Kinds = new Set([EventKind.Reaction, EventKind.Deletion, EventKind.Repost]);
             sub.ETags = new Set(trackingEvents);
             return sub;
