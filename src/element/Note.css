@@ -32,7 +32,6 @@
 
 .note > .body {
     margin-top: 12px;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: pre-wrap;
     word-break: normal;
