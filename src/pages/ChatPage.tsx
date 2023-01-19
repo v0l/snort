@@ -11,6 +11,7 @@ import useEventPublisher from "../feed/EventPublisher";
 import DM from "../element/DM";
 import { RawEvent } from "../nostr";
 import { dmsInChat, isToSelf } from "./MessagesPage";
+import NoteToSelf from "../element/NoteToSelf";
 
 type RouterParams = {
     id: string
@@ -58,7 +59,11 @@ export default function ChatPage() {
 
     return (
         <>
-            <ProfileImage pubkey={id} className="f-grow mb10" />
+            {id === pubKey && (
+                <NoteToSelf className="f-grow mb-10" pubkey={id} />
+            ) || (
+                <ProfileImage pubkey={id} className="f-grow mb10" />
+            )}
             <div className="dm-list" ref={dmListRef}>
                 <div>
                     {sortedDms.map(a => <DM data={a} key={a.id} />)}
