@@ -266,6 +266,14 @@ body.scroll-lock {
   height: 100vh;
 }
 
+.m5 {
+  margin: 5px;
+}
+
+.m10 {
+  margin: 10px;
+}
+
 .mr10 {
   margin-right: 10px;
 }

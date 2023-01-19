@@ -22,6 +22,7 @@ import ErrorPage from './pages/ErrorPage';
 import VerificationPage from './pages/Verification';
 import MessagesPage from './pages/MessagesPage';
 import ChatPage from './pages/ChatPage';
+import DonatePage from './pages/DonatePage';
 
 /**
  * HTTP query provider
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "/messages/:id",
         element: <ChatPage />
+      },
+      {
+        path: "/donate",
+        element: <DonatePage />
       }
     ]
   }

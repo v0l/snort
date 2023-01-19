@@ -1,4 +1,6 @@
 import "./ProfilePreview.css";
+import { ReactNode } from "react";
+
 import ProfileImage from "./ProfileImage";
 import FollowButton from "./FollowButton";
 import useProfile from "../feed/ProfileFeed";
@@ -8,7 +10,8 @@ export interface ProfilePreviewProps {
     pubkey: HexKey,
     options?: {
         about?: boolean
-    }
+    },
+    actions?: ReactNode
 }
 export default function ProfilePreview(props: ProfilePreviewProps) {
     const pubkey = props.pubkey;
@@ -24,7 +27,7 @@ export default function ProfilePreview(props: ProfilePreviewProps) {
                 {options.about ? <div className="f-ellipsis about">
                     {user?.about}
                 </div> : undefined} />
-            <FollowButton pubkey={pubkey} className="ml5" />
+            {props.actions ?? <FollowButton pubkey={pubkey} className="ml5" />}
         </div>
     )
 }
