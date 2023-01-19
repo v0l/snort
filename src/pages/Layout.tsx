@@ -51,15 +51,6 @@ export default function Layout() {
                     let res = await Notification.requestPermission();
                     console.debug(res);
                 }
-                if (Notification.permission === "granted") {
-                    let worker = await navigator.serviceWorker.ready;
-                    worker.showNotification("Vibration Sample", {
-                        body: "Buzz! Buzz!",
-                        icon: "../images/touch/chrome-touch-icon-192x192.png",
-                        vibrate: [200, 100, 200, 100, 200, 100, 200],
-                        tag: "vibration-sample",
-                    });
-                }
             } catch (e) {
                 console.error(e);
             }

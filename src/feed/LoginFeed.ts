@@ -1,3 +1,4 @@
+import Nostrich from "./nostrich.jpg";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HexKey } from "../nostr";
@@ -61,9 +62,19 @@ export default function useLoginFeed() {
         }
 
         if ("Notification" in window && Notification.permission === "granted") {
-            for (let nx in notifications.filter(a => (a.created_at * 1000) > readNotifications)) {
-                //let n = new Notification(`New reply!`, { body: nx.content, icon: Nostrich });
-                //console.log(n);
+            for (let nx of notifications.filter(a => (a.created_at * 1000) > readNotifications)) {
+                if (Notification.permission === "granted") {
+                    let body = nx.content.substring(0, 50);
+                    let title = "Snort"
+                    navigator.serviceWorker.ready.then(worker => {
+                        worker.showNotification(title, {
+                            body: body,
+                            icon: Nostrich,
+                            tag: "notification",
+                        });
+
+                    })
+                }
             }
         }
         dispatch(addNotifications(notifications));
