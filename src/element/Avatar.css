@@ -37,7 +37,3 @@
 .avatar[data-domain="strike.army"] { 
     background-image: var(--img-url), var(--strike-army-gradient);
 }
-
-.avatar[data-domain="nostr.13x.sh"] {
-    background-image: var(--img-url), var(--nostrplebs-gradient);
-}

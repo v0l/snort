@@ -56,10 +56,6 @@
     background-image: var(--strike-army-gradient);
 }
 
-.nip05 .domain[data-domain="nostr.13x.sh"] {
-    background-image: var(--nostrplebs-gradient);
-}
-
 .nip05 .badge {
      margin: .1em .2em;
 }
