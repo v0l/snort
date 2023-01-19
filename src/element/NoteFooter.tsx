@@ -108,7 +108,7 @@ export default function NoteFooter(props: NoteFooterProps) {
                     </div>
                   </div>
                 )}
-                <div className="reaction-pill" onClick={(e) => setReply(s => !s)}>
+                <div className={`reaction-pill ${reply ? 'reacted' : ''}`} onClick={(e) => setReply(s => !s)}>
                   <div className="reaction-pill-icon">
                     <FontAwesomeIcon icon={faReply} />
                   </div>
