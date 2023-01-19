@@ -1,12 +1,12 @@
 .note {
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     border-radius: 16px;
     background-color: var(--note-bg);
     padding: 12px;
     min-height: 110px;
 }
 @media (min-width: 720px) {
-  .note { padding: 24px; }
+  .note { margin-bottom: 24px; padding: 24px; }
 }
 
 .note.thread {
@@ -45,12 +45,18 @@
 .note > .footer {
   display: flex;
   flex-direction: row-reverse;
-  margin-top: 24px;
+  margin-top: 12px;
 }
 
 .note > .note-creator {
-  margin-top: 24px;
+  margin-top: 12px;
 }
+
+@media (min-width: 720px) {
+  .note > .footer { margin-top: 24px; }
+  .note > .note-creator { margin-top: 24px; }
+}
+
 
 .thread.note {
   border-bottom-left-radius: 0;
