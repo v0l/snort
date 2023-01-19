@@ -9,6 +9,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+// @ts-expect-error
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import EventPage from './pages/EventPage';
 import Layout from './pages/Layout';
 import LoginPage from './pages/Login';
@@ -28,6 +30,8 @@ import DonatePage from './pages/DonatePage';
  * HTTP query provider
  */
 const HTTP = new QueryClient()
+
+serviceWorkerRegistration.register();
 
 const router = createBrowserRouter([
   {

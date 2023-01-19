@@ -45,10 +45,12 @@ export default function Layout() {
     async function goToNotifications(e: any) {
         e.stopPropagation();
         // request permissions to send notifications
-        if ("Notification" in window && Notification.permission !== "granted") {
+        if ("Notification" in window) {
             try {
-                let res = await Notification.requestPermission();
-                console.debug(res);
+                if (Notification.permission !== "granted") {
+                    let res = await Notification.requestPermission();
+                    console.debug(res);
+                }
             } catch (e) {
                 console.error(e);
             }

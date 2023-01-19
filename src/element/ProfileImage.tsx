@@ -7,6 +7,7 @@ import { hexToBech32, profileLink } from "../Util";
 import Avatar from "./Avatar"
 import Nip05 from "./Nip05";
 import { HexKey } from "../nostr";
+import { MetadataCache } from "../db/User";
 
 export interface ProfileImageProps {
     pubkey: HexKey,
@@ -21,13 +22,7 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true, c
     const user = useProfile(pubkey)?.get(pubkey);
 
     const name = useMemo(() => {
-        let name = hexToBech32("npub", pubkey).substring(0, 12);
-        if ((user?.display_name?.length ?? 0) > 0) {
-            name = user!.display_name!;
-        } else if ((user?.name?.length ?? 0) > 0) {
-            name = user!.name!;
-        }
-        return name;
+        return getDisplayName(user, pubkey);
     }, [user, pubkey]);
 
     return (
@@ -47,4 +42,14 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true, c
             )}
         </div>
     )
+}
+
+export function getDisplayName(user: MetadataCache | undefined, pubkey: HexKey) {
+    let name = hexToBech32("npub", pubkey).substring(0, 12);
+    if ((user?.display_name?.length ?? 0) > 0) {
+        name = user!.display_name!;
+    } else if ((user?.name?.length ?? 0) > 0) {
+        name = user!.name!;
+    }
+    return name;
 }

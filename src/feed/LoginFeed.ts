@@ -1,6 +1,7 @@
+import Nostrich from "../nostrich.jpg";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { HexKey } from "../nostr";
+import { HexKey, TaggedRawEvent } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { addDirectMessage, addNotifications, setFollows, setRelays } from "../state/Login";
@@ -8,6 +9,8 @@ import { RootState } from "../state/Store";
 import { db } from "../db";
 import useSubscription from "./Subscription";
 import { mapEventToProfile, MetadataCache } from "../db/User";
+import { getDisplayName } from "../element/ProfileImage";
+import { MentionRegex } from "../Const";
 
 /**
  * Managed loading data for the current logged in user
@@ -61,9 +64,9 @@ export default function useLoginFeed() {
         }
 
         if ("Notification" in window && Notification.permission === "granted") {
-            for (let nx in notifications.filter(a => (a.created_at * 1000) > readNotifications)) {
-                //let n = new Notification(`New reply!`, { body: nx.content, icon: Nostrich });
-                //console.log(n);
+            for (let nx of notifications.filter(a => (a.created_at * 1000) > readNotifications)) {
+                sendNotification(nx)
+                    .catch(console.warn);
             }
         }
         dispatch(addNotifications(notifications));
@@ -84,4 +87,51 @@ export default function useLoginFeed() {
             }
         })().catch(console.warn);
     }, [main]);
+}
+
+async function makeNotification(ev: TaggedRawEvent) {
+    switch (ev.kind) {
+        case EventKind.TextNote: {
+            const pubkeys = new Set([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1]!)]);
+            const users = (await db.users.bulkGet(Array.from(pubkeys))).filter(a => a !== undefined).map(a => a!);
+            const fromUser = users.find(a => a?.pubkey === ev.pubkey);
+            const name = getDisplayName(fromUser, ev.pubkey);
+            const avatarUrl = (fromUser?.picture?.length ?? 0) === 0 ? Nostrich : fromUser?.picture;
+            return {
+                title: `Reply from ${name}`,
+                body: replaceTagsWithUser(ev, users).substring(0, 50),
+                icon: avatarUrl
+            }
+        }
+    }
+    return null;
+}
+
+function replaceTagsWithUser(ev: TaggedRawEvent, users: MetadataCache[]) {
+    return ev.content.split(MentionRegex).map(match => {
+        let matchTag = match.match(/#\[(\d+)\]/);
+        if (matchTag && matchTag.length === 2) {
+            let idx = parseInt(matchTag[1]);
+            let ref = ev.tags[idx];
+            if (ref && ref[0] === "p" && ref.length > 1) {
+                let u = users.find(a => a.pubkey === ref[1]);
+                return `@${getDisplayName(u, ref[1])}`;
+            }
+        }
+        return match;
+    }).join();
+}
+
+async function sendNotification(ev: TaggedRawEvent) {
+    let n = await makeNotification(ev);
+    if (n != null && Notification.permission === "granted") {
+        let worker = await navigator.serviceWorker.ready;
+        worker.showNotification(n.title, {
+            body: n.body,
+            icon: n.icon,
+            tag: "notification",
+            timestamp: ev.created_at * 1000,
+            vibrate: [500]
+        });
+    }
 }

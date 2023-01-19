@@ -68,7 +68,7 @@ const InitState = {
     latestRelays: 0,
     follows: [],
     notifications: [],
-    readNotifications: 0,
+    readNotifications: new Date().getTime(),
     dms: [],
     dmInteraction: 0
 } as LoginStore;

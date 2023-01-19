@@ -9,7 +9,6 @@ import EventKind from "../nostr/EventKind";
 import { Subscriptions } from "../nostr/Subscriptions";
 import { markNotificationsRead } from "../state/Login";
 import { RootState } from "../state/Store";
-import { getReactions } from "../Util";
 
 export default function NotificationsPage() {
     const dispatch = useDispatch();
