@@ -2,8 +2,11 @@
     margin-bottom: 24px;
     border-radius: 16px;
     background-color: var(--note-bg);
-    padding: 24px;
+    padding: 12px;
     min-height: 110px;
+}
+@media (min-width: 720px) {
+  .note { padding: 24px; }
 }
 
 .note.thread {
