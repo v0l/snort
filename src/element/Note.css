@@ -105,6 +105,12 @@
   padding: 0px 10px;
   user-select: none;
   color: var(--font-secondary-color);
+  font-feature-settings: "tnum";
+}
+
+.trash-icon {
+  color: var(--error);
+  margin-right: auto;
 }
 
 .reaction-pill .reaction-pill-number {

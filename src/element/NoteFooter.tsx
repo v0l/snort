@@ -98,30 +98,27 @@ export default function NoteFooter(props: NoteFooterProps) {
         return content;
     }
 
+    function repostIcon() {
+      return (
+          <div className={`reaction-pill ${hasReposted() ? 'reacted' : ''}`} onClick={() => repost()}>
+            <div className="reaction-pill-icon">
+              <FontAwesomeIcon icon={faRepeat} />
+            </div>
+            <div className="reaction-pill-number">
+              {formatShort(reposts.length)}
+            </div>
+          </div>
+      )
+    }
+
+
     return (
         <>
             <div className="footer">
-                {isMine && (
-                  <div className="reaction-pill">
-                    <div className="reaction-pill-icon">
-                      <FontAwesomeIcon icon={faTrash} onClick={(e) => deleteEvent()} />
-                    </div>
-                  </div>
-                )}
                 <div className={`reaction-pill ${reply ? 'reacted' : ''}`} onClick={(e) => setReply(s => !s)}>
                   <div className="reaction-pill-icon">
                     <FontAwesomeIcon icon={faReply} />
                   </div>
-                </div>
-                <div className={`reaction-pill ${hasReposted() ? 'reacted' : ''}`} onClick={() => repost()}>
-                  <div className="reaction-pill-icon">
-                    <FontAwesomeIcon icon={faRepeat} />
-                  </div>
-                  {reposts.length > 0 && (
-                    <div className="reaction-pill-number">
-                      {formatShort(reposts.length)}
-                    </div>
-                  )}
                 </div>
                 <div className={`reaction-pill ${hasReacted('+') ? 'reacted' : ''} `} onClick={(e) => react("+")}>
                   <div className="reaction-pill-icon">
@@ -139,7 +136,15 @@ export default function NoteFooter(props: NoteFooterProps) {
                     {formatShort(groupReactions[Reaction.Negative])}
                   </div>
                 </div>
+                {repostIcon()}
                 {tipButton()}
+                {isMine && (
+                  <div className="reaction-pill trash-icon">
+                    <div className="reaction-pill-icon">
+                      <FontAwesomeIcon icon={faTrash} onClick={(e) => deleteEvent()} />
+                    </div>
+                  </div>
+                )}
             </div>
             <NoteCreator
                 autoFocus={true}
