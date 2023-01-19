@@ -37,11 +37,7 @@ function transformHttpLink(a: string) {
                     return <video key={url.toString()} src={url.toString()} controls />
                 }
                 default:
-                    return (
-                      <div className="truncate">
-                        <a key={url.toString()} href={url.toString()} onClick={(e) => e.stopPropagation()}>{url.toString()}</a>
-                      </div>
-                    )
+                    return <a key={url.toString()} href={url.toString()} onClick={(e) => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">{url.toString()}</a>
             }
         } else if (tweetId) {
             return (
@@ -66,19 +62,11 @@ function transformHttpLink(a: string) {
                 </>
             )
         } else {
-            return (
-              <div className="truncate">
-                <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
-              </div>
-            )
+            return <a href={a} onClick={(e) => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">{a}</a>
         }
     } catch (error) {
     }
-    return (
-      <div className="truncate">
-        <a href={a} onClick={(e) => e.stopPropagation()}>{a}</a>
-      </div>
-    )
+    return <a href={a} onClick={(e) => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">{a}</a>
 }
 
 function extractLinks(fragments: Fragment[]) {
@@ -168,8 +156,7 @@ function transformParagraph({ body, tags, users }: TextFragment) {
 }
 
 function transformText({ body, tags, users }: TextFragment) {
-    if(body === undefined)
-    {
+    if (body === undefined) {
         debugger;
     }
     let fragments = extractMentions(body, tags, users);

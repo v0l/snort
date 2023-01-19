@@ -35,6 +35,8 @@
     text-overflow: ellipsis;
     white-space: pre-wrap;
     word-break: normal;
+    overflow-x: hidden;
+    overflow-y: visible;
 }
 
 .note > .header img:hover, .note > .header .name > .reply:hover, .note .body:hover {

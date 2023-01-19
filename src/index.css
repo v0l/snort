@@ -204,6 +204,11 @@ a {
   line-height: 1.3em;
 }
 
+a.ext {
+  word-break: break-all;
+  white-space: initial;
+}
+
 div.form-group {
   display: flex;
   align-items: center;
