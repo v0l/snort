@@ -84,3 +84,8 @@ export const TweetUrlRegex = /https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:
  * Hashtag regex
  */
 export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/;
+
+/**
+ * Tidal share link regex
+ */
+export const TidalRegex = /tidal\.com\/browse\/(\w+)\/([a-z0-9-]+)/i;
