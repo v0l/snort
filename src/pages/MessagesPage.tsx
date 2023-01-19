@@ -7,6 +7,7 @@ import ProfileImage from "../element/ProfileImage";
 import { hexToBech32 } from "../Util";
 import { incDmInteraction } from "../state/Login";
 import { RootState } from "../state/Store";
+import NoteToSelf from "../element/NoteToSelf";
 
 type DmChat = {
     pubkey: HexKey,
@@ -24,7 +25,16 @@ export default function MessagesPage() {
         return extractChats(dms, myPubKey!);
     }, [dms, myPubKey, dmInteraction]);
 
+    function noteToSelf(chat: DmChat) {
+        return (
+            <div className="flex mb10" key={chat.pubkey}>
+                <NoteToSelf clickable={true} className="f-grow" link={`/messages/${hexToBech32("npub", chat.pubkey)}`} pubkey={chat.pubkey} />
+            </div>
+        )
+    }
+
     function person(chat: DmChat) {
+        if(chat.pubkey === myPubKey) return noteToSelf(chat)
         return (
             <div className="flex mb10" key={chat.pubkey}>
                 <ProfileImage pubkey={chat.pubkey} className="f-grow" link={`/messages/${hexToBech32("npub", chat.pubkey)}`} />
@@ -46,7 +56,10 @@ export default function MessagesPage() {
                 <h3 className="f-grow">Messages</h3>
                 <div className="btn" onClick={() => markAllRead()}>Mark All Read</div>
             </div>
-            {chats.sort((a, b) => b.newestMessage - a.newestMessage).map(person)}
+            {chats.sort((a, b) => {
+                if(b.pubkey === myPubKey) return 1
+                return b.newestMessage - a.newestMessage
+            }).map(person)}
         </>
     )
 }
