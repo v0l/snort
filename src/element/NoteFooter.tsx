@@ -104,9 +104,11 @@ export default function NoteFooter(props: NoteFooterProps) {
             <div className="reaction-pill-icon">
               <FontAwesomeIcon icon={faRepeat} />
             </div>
-            <div className="reaction-pill-number">
-              {formatShort(reposts.length)}
-            </div>
+            {reposts.length > 0 && (
+              <div className="reaction-pill-number">
+                {formatShort(reposts.length)}
+              </div>
+            )}
           </div>
       )
     }
