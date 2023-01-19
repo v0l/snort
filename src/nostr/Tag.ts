@@ -7,6 +7,7 @@ export default class Tag {
     PubKey?: HexKey;
     Relay?: string;
     Marker?: string;
+    Hashtag?: string;
     Index: number;
     Invalid: boolean;
 
@@ -35,6 +36,10 @@ export default class Tag {
                 }
                 break;
             }
+            case "t": {
+                this.Hashtag = tag[1];
+                break;
+            }
             case "delegation": {
                 this.PubKey = tag[1];
                 break;
@@ -52,6 +57,9 @@ export default class Tag {
             }
             case "p": {
                 return this.PubKey ? ["p", this.PubKey] : null;
+            }
+            case "t": {
+                return ["t", this.Hashtag!];
             }
             default: {
                 return this.Original;

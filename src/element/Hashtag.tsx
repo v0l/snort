@@ -1,9 +1,10 @@
+import { Link } from 'react-router-dom'
 import './Hashtag.css'
 
-const Hashtag = ({ children }: any) => {
+const Hashtag = ({ tag }: { tag: string }) => {
   return (
     <span className="hashtag">
-      {children}
+      <Link to={`/t/${tag}`} onClick={(e) => e.stopPropagation()}>#{tag}</Link>
     </span>
   )
 }

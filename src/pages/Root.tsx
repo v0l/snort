@@ -6,6 +6,7 @@ import Timeline from "../element/Timeline";
 import { useState } from "react";
 import { RootState } from "../state/Store";
 import { HexKey } from "../nostr";
+import { TimelineSubject } from "../feed/TimelineFeed";
 
 const RootTab = {
     Posts: 0,
@@ -25,6 +26,8 @@ export default function RootPage() {
         }
     }
 
+    const isGlobal = loggedOut || tab === RootTab.Global;
+    const timelineSubect: TimelineSubject = isGlobal ? { type: "global", items: [] } : { type: "pubkey", items: follows };
     return (
         <>
             {pubKey ? <>
@@ -41,7 +44,7 @@ export default function RootPage() {
                     </div>
                 </div></> : null}
             {followHints()}
-            <Timeline key={tab} pubkeys={follows} global={loggedOut || tab === RootTab.Global} postsOnly={tab === RootTab.Posts} method={"TIME_RANGE"} />
+            <Timeline key={tab} subject={timelineSubect} postsOnly={tab === RootTab.Posts} method={"TIME_RANGE"} />
         </>
     );
 }

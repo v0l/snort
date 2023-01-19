@@ -37,6 +37,11 @@ export class Subscriptions {
      */
     PTags?: Set<u256>;
 
+    /**
+     * A list of "t" tags to search 
+     */
+    HashTags?: Set<string>;
+
     /** 
      * a timestamp, events must be newer than this to pass
      */
@@ -124,6 +129,9 @@ export class Subscriptions {
         }
         if (this.PTags) {
             ret["#p"] = Array.from(this.PTags);
+        }
+        if(this.HashTags) {
+            ret["#t"] = Array.from(this.HashTags);
         }
         if (this.Since !== null) {
             ret.since = this.Since;

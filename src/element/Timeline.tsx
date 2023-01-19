@@ -1,24 +1,22 @@
 import { useMemo } from "react";
-import useTimelineFeed from "../feed/TimelineFeed";
-import { HexKey, TaggedRawEvent, u256 } from "../nostr";
+import useTimelineFeed, { TimelineSubject } from "../feed/TimelineFeed";
+import { TaggedRawEvent } from "../nostr";
 import EventKind from "../nostr/EventKind";
 import LoadMore from "./LoadMore";
 import Note from "./Note";
 import NoteReaction from "./NoteReaction";
 
 export interface TimelineProps {
-    global: boolean,
     postsOnly: boolean,
-    pubkeys: HexKey[],
+    subject: TimelineSubject,
     method: "TIME_RANGE" | "LIMIT_UNTIL"
 }
 
 /**
  * A list of notes by pubkeys
  */
-export default function Timeline({ global, pubkeys, postsOnly = false, method }: TimelineProps) {
-    const { main, others, loadMore } = useTimelineFeed(pubkeys, {
-        global,
+export default function Timeline({ subject, postsOnly = false, method }: TimelineProps) {
+    const { main, others, loadMore } = useTimelineFeed(subject, {
         method
     });
 

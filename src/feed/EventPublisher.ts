@@ -6,6 +6,7 @@ import Tag from "../nostr/Tag";
 import { RootState } from "../state/Store";
 import { HexKey, RawEvent, u256, UserMetadata } from "../nostr";
 import { bech32ToHex } from "../Util"
+import { HashtagRegex } from "../Const";
 
 declare global {
     interface Window {
@@ -41,7 +42,7 @@ export default function useEventPublisher() {
         return ev;
     }
 
-    function processMentions(ev: NEvent, msg: string) {
+    function processContent(ev: NEvent, msg: string) {
         const replaceNpub = (match: string) => {
             const npub = match.slice(1);
             try {
@@ -53,7 +54,14 @@ export default function useEventPublisher() {
                 return match
             }
         }
-        let content = msg.replace(/@npub[a-z0-9]+/g, replaceNpub)
+        const replaceHashtag = (match: string) => {
+            const tag = match.slice(1);
+            const idx = ev.Tags.length;
+            ev.Tags.push(new Tag(["t", tag.toLowerCase()], idx));
+            return `#[${idx}]`;
+        }
+        let content = msg.replace(/@npub[a-z0-9]+/g, replaceNpub);
+        content = content.replace(HashtagRegex, replaceHashtag);
         ev.Content = content;
     }
 
@@ -76,7 +84,7 @@ export default function useEventPublisher() {
             if (pubKey) {
                 let ev = NEvent.ForPubKey(pubKey);
                 ev.Kind = EventKind.TextNote;
-                processMentions(ev, msg);
+                processContent(ev, msg);
                 return await signEvent(ev);
             }
         },
@@ -113,7 +121,7 @@ export default function useEventPublisher() {
                         ev.Tags.push(new Tag(["p", replyTo.PubKey], ev.Tags.length));
                     }
                 }
-                processMentions(ev, msg);
+                processContent(ev, msg);
                 return await signEvent(ev);
             }
         },
