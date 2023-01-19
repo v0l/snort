@@ -51,7 +51,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         }
 
         return sub;
-    }, [subject, until, since, window]);
+    }, [subject.type, subject.items, until, since, window]);
 
     const main = useSubscription(sub, { leaveOpen: true });
 

@@ -8,7 +8,7 @@ const HashTagsPage = () => {
     return (
         <>
             <h2>#{tag}</h2>
-            <Timeline subject={{ type: "hashtag", items: [tag] }} postsOnly={false} method={"TIME_RANGE"} />
+            <Timeline key={tag} subject={{ type: "hashtag", items: [tag] }} postsOnly={false} method={"TIME_RANGE"} />
         </>
     )
 }
