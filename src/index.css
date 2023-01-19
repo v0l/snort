@@ -351,3 +351,5 @@ body.scroll-lock {
     align-items: flex-start;
   }
 }
+
+.highlight { color: var(--highlight); }

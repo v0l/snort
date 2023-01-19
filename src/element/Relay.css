@@ -6,6 +6,7 @@
     display: grid;
     grid-template-columns: min-content auto;
     overflow: hidden;
+    font-size: var(--font-size-small);
 }
 
 .relay > div {
@@ -18,4 +19,24 @@
     background-color: var(--gray-tertiary);
     border-radius: 0 0 5px 5px;
     white-space: nowrap;
+    font-size: var(--font-size-small);
+}
+
+.icon-btn {
+  padding: 2px 10px;
+  border-radius: 10px;
+  background-color: var(--gray);
+  user-select: none;
+  color: var(--font-color);
+}
+
+.icon-btn:hover {
+  cursor: pointer;
+}
+
+.checkmark {
+  margin-left: .5em;
+  padding: 2px 10px;
+  background-color: var(--gray);
+  border-radius: 10px;
 }
