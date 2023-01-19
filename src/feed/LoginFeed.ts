@@ -7,7 +7,7 @@ import { addDirectMessage, addNotifications, setFollows, setRelays } from "../st
 import { RootState } from "../state/Store";
 import { db } from "../db";
 import useSubscription from "./Subscription";
-import { mapEventToProfile } from "../db/User";
+import { mapEventToProfile, MetadataCache } from "../db/User";
 
 /**
  * Managed loading data for the current logged in user
@@ -67,7 +67,21 @@ export default function useLoginFeed() {
             }
         }
         dispatch(addNotifications(notifications));
-        db.users.bulkPut(profiles);
         dispatch(addDirectMessage(dms));
+        (async () => {
+            let maxProfile = profiles.reduce((acc, v) => {
+                if (v.created > acc.created) {
+                    acc.profile = v;
+                    acc.created = v.created;
+                }
+                return acc;
+            }, { created: 0, profile: <MetadataCache | null>null });
+            if (maxProfile.profile) {
+                let existing = await db.users.get(maxProfile.profile.pubkey);
+                if ((existing?.created ?? 0) < maxProfile.created) {
+                    await db.users.put(maxProfile.profile);
+                }
+            }
+        })().catch(console.warn);
     }, [main]);
 }
