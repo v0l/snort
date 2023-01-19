@@ -1,29 +1,24 @@
 .reaction {
-    margin-bottom: 10px;
+    margin-bottom: 24px;
 }
 
 .reaction > .note {
     margin: 10px 20px;
-    border: 1px solid var(--gray);
-    border-radius: 10px;
-    padding: 10px;
 }
 
-.reaction > .header > .pfp {
-    flex-grow: 1;
+.reaction > .header {
+   display: flex; 
+   flex-direction: row;
+   justify-content: space-between;
 }
 
 .reaction > .header .reply {
-    font-size: small;
+    font-size: var(--font-size-small);
 }
 
 .reaction > .header > .info {
-    color: var(--gray-light);
-    font-size: 10px;
-    align-self: flex-start;
-}
-
-.reaction .reaction-text {
-    margin-left: .2em;
-    color: var(--gray-light);
+    font-size: var(--font-size);
+    white-space: nowrap;
+    color: var(--font-secondary-color);
+    margin-right: 24px;
 }

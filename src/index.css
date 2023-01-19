@@ -1,21 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 :root {
-    --font-color: #FFF;
     --bg-color: #000;
+    --font-color: #FFF;
+    --font-secondary-color: #555;
+    --font-tertiary-color: #999;
+    --font-size: 16px;
+    --font-size-small: 14px;
+    --font-size-tiny: 12px;
     --modal-bg-color: rgba(0,0,0, 0.8);
     --note-bg: #111;
+    --highlight-light: #ffd342;
+    --highlight: #ffc400;
+    --highlight-dark: #dba800;
+    --error: #FF6053;
+    --success: #2AD544;
+
     --gray-superlight: #EEE;
     --gray-light: #999;
     --gray-medium: #666;
     --gray: #333;
     --gray-secondary: #222;
     --gray-tertiary: #444;
-    --highlight-light: #ffd342;
-    --highlight: #ffc400;
-    --highlight-dark: #dba800;
-    --error: #FF6053;
-    --success: #2AD544;
     --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
     --snort-gradient: linear-gradient(to bottom right, var(--highlight-light), var(--highlight), var(--highlight-dark));
     --nostrplebs-gradient: linear-gradient(to bottom right, #ff3cac, #2b86c5);
@@ -24,13 +30,16 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-     --font-color: #000;
      --bg-color: #FFF;
+     --font-color: #000;
+     --font-secondary-color: #444;
+      --font-tertiary-color: #666;
      --highlight-light: #FFC852;
      --highlight: #FF9B00;
      --highlight-dark: #944F05;
      --modal-bg-color: rgba(240, 240, 240, 0.8);
-     --note-bg: #eee;
+     --note-bg: #EEE;
+
      --gray: #CCC;
      --gray-secondary: #DDD;
      --gray-tertiary: #EEE;
@@ -46,12 +55,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-color);
   color: var(--font-color);
-  font-size: 14px;
+  font-size: var(--font-size);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .page {
@@ -194,26 +202,6 @@ textarea:placeholder {
 a {
   color: inherit;
   line-height: 1.3em;
-}
-
-span.pill {
-  display: inline-block;
-  background-color: var(--gray);
-  padding: 2px 10px;
-  border-radius: 10px;
-  user-select: none;
-  color: var(--font-color);
-  margin: 2px 5px;
-}
-
-span.pill.active {
-  background-color: var(--gray-tertiary);
-  color:  var(--font-color);
-  font-weight: bold;
-}
-
-span.pill:hover {
-  cursor: pointer;
 }
 
 div.form-group {
@@ -363,3 +351,5 @@ body.scroll-lock {
     align-items: flex-start;
   }
 }
+
+.highlight { color: var(--highlight); }

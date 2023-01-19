@@ -23,6 +23,7 @@
 
 .text p {
     margin: 0;
+    margin-bottom: 4px;
 }
 
 .text pre {
@@ -52,9 +53,44 @@
     max-height: 500px;
     margin: 10px auto;
     display: block;
+    border-radius: 12px;
 }
 
 .text iframe, .text video {
     width: -webkit-fill-available;
     aspect-ratio: 16 / 9;
+}
+
+.text .truncate {
+    display: inline-block;
+    margin: 0;
+    max-width: 260px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--highlight);
+    height: var(--font-size);
+}
+
+@media (min-width: 420px) {
+  .text .truncate {
+    max-width: 300px;
+  }
+}
+
+@media (min-width: 520px) {
+  .text .truncate {
+    max-width: 360px;
+  }
+}
+
+@media (min-width: 720px) {
+  .text .truncate {
+    max-width: 420px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text .truncate {
+    max-width: 600px;
+  }
 }

@@ -230,7 +230,7 @@ export default function SettingsPage() {
             <div className="flex f-col">
                 {Object.keys(relays || {}).map(a => <Relay addr={a} key={a} />)}
             </div>
-            <div className="flex">
+            <div className="flex actions">
                 <div className="f-grow"></div>
                 <div className="btn" onClick={() => saveRelays()}>Save</div>
             </div>

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { formatShort } from "../Number";
 import useEventPublisher from "../feed/EventPublisher";
 import { getReactions, normalizeReaction, Reaction } from "../Util";
 import { NoteCreator } from "./NoteCreator";
@@ -29,7 +30,6 @@ export default function NoteFooter(props: NoteFooterProps) {
     const isMine = ev.RootPubKey === login;
     const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related]);
     const reposts = useMemo(() => getReactions(related, ev.Id, EventKind.Repost), [related]);
-
     const groupReactions = useMemo(() => {
         return reactions?.reduce((acc, { content }) => {
             let r = normalizeReaction(content);
@@ -50,8 +50,10 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
 
     async function react(content: string) {
+      if (!hasReacted(content)) {
         let evLike = await publisher.react(ev, content);
         publisher.broadcast(evLike);
+      }
     }
 
     async function deleteEvent() {
@@ -73,9 +75,11 @@ export default function NoteFooter(props: NoteFooterProps) {
         if (service) {
             return (
                 <>
-                    <span className="pill" onClick={(e) => setTip(true)}>
-                        <FontAwesomeIcon icon={faBolt} />
-                    </span>
+                    <div className="reaction-pill" onClick={(e) => setTip(true)}>
+                        <div className="reaction-pill-icon">
+                          <FontAwesomeIcon icon={faBolt} />
+                        </div>
+                    </div>
                 </>
             )
         }
@@ -85,10 +89,10 @@ export default function NoteFooter(props: NoteFooterProps) {
     function reactionIcon(content: string, reacted: boolean) {
         switch (content) {
             case Reaction.Positive: {
-                return <FontAwesomeIcon color={reacted ? "red" : "currentColor"} icon={faHeart} />;
+                return <FontAwesomeIcon icon={faHeart} />;
             }
             case Reaction.Negative: {
-                return <FontAwesomeIcon color={reacted ? "orange" : "currentColor"} icon={faThumbsDown} />;
+                return <FontAwesomeIcon icon={faThumbsDown} />;
             }
         }
         return content;
@@ -97,30 +101,45 @@ export default function NoteFooter(props: NoteFooterProps) {
     return (
         <>
             <div className="footer">
-                {isMine ? <span className="pill">
-                    <FontAwesomeIcon icon={faTrash} onClick={(e) => deleteEvent()} />
-                </span> : null}
-                {tipButton()}
-                <span className="pill" onClick={() => repost()}>
-                    <FontAwesomeIcon icon={faRepeat} color={hasReposted() ? "green" : "currenColor"} />
-                    {reposts.length > 0 ? <>&nbsp;{reposts.length}</> : null}
-                </span>
-                <span className="pill" onClick={(e) => setReply(s => !s)}>
+                {isMine && (
+                  <div className="reaction-pill">
+                    <div className="reaction-pill-icon">
+                      <FontAwesomeIcon icon={faTrash} onClick={(e) => deleteEvent()} />
+                    </div>
+                  </div>
+                )}
+                <div className={`reaction-pill ${reply ? 'reacted' : ''}`} onClick={(e) => setReply(s => !s)}>
+                  <div className="reaction-pill-icon">
                     <FontAwesomeIcon icon={faReply} />
-                </span>
-                {Object.keys(groupReactions || {}).map((emoji) => {
-                    let didReact = hasReacted(emoji);
-                    return (
-                        <span className="pill" onClick={() => {
-                            if (!didReact) {
-                                react(emoji);
-                            }
-                        }} key={emoji}>
-                            {reactionIcon(emoji, didReact)}
-                            {groupReactions[emoji] ? <>&nbsp;{groupReactions[emoji]}</> : null}
-                        </span>
-                    )
-                })}
+                  </div>
+                </div>
+                <div className={`reaction-pill ${hasReposted() ? 'reacted' : ''}`} onClick={() => repost()}>
+                  <div className="reaction-pill-icon">
+                    <FontAwesomeIcon icon={faRepeat} />
+                  </div>
+                  {reposts.length > 0 && (
+                    <div className="reaction-pill-number">
+                      {formatShort(reposts.length)}
+                    </div>
+                  )}
+                </div>
+                <div className={`reaction-pill ${hasReacted('+') ? 'reacted' : ''} `} onClick={(e) => react("+")}>
+                  <div className="reaction-pill-icon">
+                    <FontAwesomeIcon icon={faHeart} />
+                  </div>
+                  <div className="reaction-pill-number">
+                    {formatShort(groupReactions[Reaction.Positive])}
+                  </div>
+                </div>
+                <div className={`reaction-pill ${hasReacted('-') ? 'reacted' : ''}`} onClick={(e) => react("-")}>
+                  <div className="reaction-pill-icon">
+                    <FontAwesomeIcon icon={faThumbsDown} />
+                  </div>
+                  <div className="reaction-pill-number">
+                    {formatShort(groupReactions[Reaction.Negative])}
+                  </div>
+                </div>
+                {tipButton()}
             </div>
             <NoteCreator
                 autoFocus={true}

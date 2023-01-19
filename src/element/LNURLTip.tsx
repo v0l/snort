@@ -188,11 +188,11 @@ export default function LNURLTip(props: LNURLTipProps) {
                         <input type="text" placeholder="Comment" className="mb10 f-grow" maxLength={payService?.commentAllowed} onChange={(e) => setComment(e.target.value)} /> : null}
                 </div>
                 <div className="mb10">
-                    {serviceAmounts.map(a => <span className={`pill ${amount === a ? "active" : ""}`} key={a} onClick={() => selectAmount(a)}>
+                    {serviceAmounts.map(a => <span className={`sat-amount ${amount === a ? "active" : ""}`} key={a} onClick={() => selectAmount(a)}>
                         {a.toLocaleString()}
                     </span>)}
                     {payService ?
-                        <span className={`pill ${amount === -1 ? "active" : ""}`} onClick={() => selectAmount(-1)}>
+                        <span className={`sat-amount ${amount === -1 ? "active" : ""}`} onClick={() => selectAmount(-1)}>
                             Custom
                         </span> : null}
                 </div>

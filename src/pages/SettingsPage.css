@@ -39,3 +39,7 @@
     max-height: 300px;
     min-height: 40px;
 }
+
+.settings .actions {
+  margin-top: 16px;
+}

@@ -18,7 +18,7 @@ const DonatePage = () => {
                 Your donations are greatly appreciated
             </p>
             <p>
-                Check out the code here: <a href="https://github.com/v0l/snort" rel="noreferrer" target="_blank">https://github.com/v0l/snort</a>
+                Check out the code here: <a className="highlight" href="https://github.com/v0l/snort" rel="noreferrer" target="_blank">https://github.com/v0l/snort</a>
             </p>
             <h3>Developers</h3>
             {Developers.map(a => <ProfilePreview pubkey={a} key={a} actions={<ZapButton pubkey={a} />} />)}

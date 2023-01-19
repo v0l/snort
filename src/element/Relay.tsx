@@ -44,13 +44,13 @@ export default function Relay(props: RelayProps) {
                         <b className="f-2">{name}</b>
                         <div className="f-1">
                             Write
-                            <span className="pill" onClick={() => configure({ write: !relaySettings.write, read: relaySettings.read })}>
+                            <span className="checkmark" onClick={() => configure({ write: !relaySettings.write, read: relaySettings.read })}>
                                 <FontAwesomeIcon icon={relaySettings.write ? faSquareCheck : faSquareXmark} />
                             </span>
                         </div>
                         <div className="f-1">
                             Read
-                            <span className="pill" onClick={() => configure({ write: relaySettings.write, read: !relaySettings.read })}>
+                            <span className="checkmark" onClick={() => configure({ write: relaySettings.write, read: !relaySettings.read })}>
                                 <FontAwesomeIcon icon={relaySettings.read ? faSquareCheck : faSquareXmark} />
                             </span>
                         </div>
@@ -62,7 +62,7 @@ export default function Relay(props: RelayProps) {
                             <FontAwesomeIcon icon={faPlugCircleXmark} /> {state?.disconnects}
                         </div>
                         <div>
-                            <span className="pill" onClick={() => setShowExtra(s => !s)}>
+                            <span className="icon-btn" onClick={() => setShowExtra(s => !s)}>
                                 <FontAwesomeIcon icon={faEllipsisVertical} />
                             </span>
                         </div>
@@ -79,7 +79,7 @@ export default function Relay(props: RelayProps) {
 
                 <div className="f-1">
                     Delete
-                    <span className="pill" onClick={() => dispatch(removeRelay(props.addr))}>
+                    <span className="icon-btn" onClick={() => dispatch(removeRelay(props.addr))}>
                         <FontAwesomeIcon icon={faTrash} />
                     </span>
                 </div>

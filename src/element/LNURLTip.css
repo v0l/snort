@@ -17,9 +17,24 @@
     background-color: var(--gray);
 }
 
-.lnurl-tip .pill.active {
-    color: var(--bg-color);
-    background-color: var(--font-color);
+.sat-amount {
+  display: inline-block;
+  background-color: var(--gray-secondary);
+  color: var(--font-color);
+  padding: 2px 10px;
+  border-radius: 10px;
+  user-select: none;
+  margin: 2px 5px;
+}
+
+.sat-amount:hover {
+  cursor: pointer;
+}
+
+.sat-amount.active {
+  font-weight: bold;
+  color: var(--note-bg);
+  background-color: var(--font-color);
 }
 
 .lnurl-tip .invoice {
