@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux"
 
 import { HexKey, RawEvent } from "../nostr";
+import UnreadCount from "../element/UnreadCount";
 import ProfileImage from "../element/ProfileImage";
 import { hexToBech32 } from "../Util";
 import { incDmInteraction } from "../state/Login";
@@ -27,9 +28,7 @@ export default function MessagesPage() {
         return (
             <div className="flex mb10" key={chat.pubkey}>
                 <ProfileImage pubkey={chat.pubkey} className="f-grow" link={`/messages/${hexToBech32("npub", chat.pubkey)}`} />
-                <span className="pill">
-                    {chat.unreadMessages}
-                </span>
+                <UnreadCount unread={chat.unreadMessages} />
             </div>
         )
     }

@@ -72,6 +72,11 @@
   margin-bottom: 24px;
 }
 
+.indented .note.active:last-child {
+  border-bottom-right-radius: 16px;
+  margin-bottom: 24px;
+}
+
 .indented > .indented .note:last-child {
   border-bottom-right-radius: 0px;
   margin-bottom: 0;
