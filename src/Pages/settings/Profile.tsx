@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShop } from "@fortawesome/free-solid-svg-icons";
 
 import useEventPublisher from "Feed/EventPublisher";
-import useProfile from "Feed/ProfileFeed";
+import { useUserProfile } from "Feed/ProfileFeed";
 import VoidUpload from "Feed/VoidUpload";
 import { logout } from "State/Login";
 import { hexToBech32, openFile } from "Util";
@@ -21,7 +21,7 @@ export default function ProfileSettings() {
     const id = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const privKey = useSelector<RootState, HexKey | undefined>(s => s.login.privateKey);
     const dispatch = useDispatch();
-    const user = useProfile(id)?.get(id || "");
+    const user = useUserProfile(id!);
     const publisher = useEventPublisher();
 
     const [name, setName] = useState<string>();

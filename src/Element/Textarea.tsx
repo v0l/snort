@@ -2,7 +2,6 @@ import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
 
 import { useState } from "react";
-import { useLiveQuery } from "dexie-react-hooks";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import emoji from "@jukben/emoji-search";
 import TextareaAutosize from "react-textarea-autosize";
@@ -11,7 +10,7 @@ import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
 import { hexToBech32 } from "Util";
 import { db } from "Db";
-import { MetadataCache } from "Db/User";
+import { useQuery, MetadataCache } from "State/Users";
 
 interface EmojiItemProps {
   name: string
@@ -45,16 +44,7 @@ const UserItem = (metadata: MetadataCache) => {
 const Textarea = ({ users, onChange, ...rest }: any) => {
   const [query, setQuery] = useState('')
 
-  const allUsers = useLiveQuery(
-    () => db.users
-          .where("npub").startsWithIgnoreCase(query)
-          .or("name").startsWithIgnoreCase(query)
-          .or("display_name").startsWithIgnoreCase(query)
-          .or("nip05").startsWithIgnoreCase(query)
-          .limit(5)
-          .toArray(),
-    [query],
-  );
+  const allUsers = useQuery(query)
 
   const userDataProvider = (token: string) => {
     setQuery(token)

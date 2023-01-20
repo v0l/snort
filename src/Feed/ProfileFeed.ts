@@ -1,27 +1,13 @@
 import { useLiveQuery } from "dexie-react-hooks";
+import { useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
-import { db } from "Db";
-import { MetadataCache } from "Db/User";
+import { RootState } from "State/Store";
+import { MetadataCache, find, bulkGet, useQuery, useKey, useKeys } from "State/Users";
 import { HexKey } from "Nostr";
 import { System } from "Nostr/System";
 
-export default function useProfile(pubKey: HexKey | Array<HexKey> | undefined): Map<HexKey, MetadataCache> | undefined {
-    const user = useLiveQuery(async () => {
-        let userList = new Map<HexKey, MetadataCache>();
-        if (pubKey) {
-            if (Array.isArray(pubKey)) {
-                let ret = await db.users.bulkGet(pubKey);
-                let filtered = ret.filter(a => a !== undefined).map(a => a!);
-                return new Map(filtered.map(a => [a.pubkey, a]))
-            } else {
-                let ret = await db.users.get(pubKey);
-                if (ret) {
-                    userList.set(ret.pubkey, ret);
-                }
-            }
-        }
-        return userList;
-    }, [pubKey]);
+export function useUserProfile(pubKey: HexKey): MetadataCache | undefined {
+    const users = useKey(pubKey);
 
     useEffect(() => {
         if (pubKey) {
@@ -30,5 +16,19 @@ export default function useProfile(pubKey: HexKey | Array<HexKey> | undefined): 
         }
     }, [pubKey]);
 
-    return user;
+    return users;
+}
+
+
+export function useUserProfiles(pubKeys: Array<HexKey>): Map<HexKey, MetadataCache> | undefined {
+    const users = useKeys(pubKeys);
+
+    useEffect(() => {
+        if (pubKeys) {
+            System.TrackMetadata(pubKeys);
+            return () => System.UntrackMetadata(pubKeys);
+        }
+    }, [pubKeys]);
+
+    return users;
 }

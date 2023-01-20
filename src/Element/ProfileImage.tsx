@@ -2,12 +2,12 @@ import "./ProfileImage.css";
 
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useProfile from "Feed/ProfileFeed";
+import { useUserProfile } from "Feed/ProfileFeed";
 import { hexToBech32, profileLink } from "Util";
 import Avatar from "Element/Avatar"
 import Nip05 from "Element/Nip05";
 import { HexKey } from "Nostr";
-import { MetadataCache } from "Db/User";
+import { MetadataCache } from "State/Users";
 
 export interface ProfileImageProps {
     pubkey: HexKey,
@@ -19,7 +19,7 @@ export interface ProfileImageProps {
 
 export default function ProfileImage({ pubkey, subHeader, showUsername = true, className, link }: ProfileImageProps) {
     const navigate = useNavigate();
-    const user = useProfile(pubkey)?.get(pubkey);
+    const user = useUserProfile(pubkey);
 
     const name = useMemo(() => {
         return getDisplayName(user, pubkey);
