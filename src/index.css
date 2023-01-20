@@ -320,6 +320,10 @@ body.scroll-lock {
   margin-bottom: 10px;
 }
 
+.mr-auto {
+  margin-right: auto;
+}
+
 .tabs {
   display: flex;
   align-content: center;

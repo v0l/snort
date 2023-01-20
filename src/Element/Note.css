@@ -1,43 +1,55 @@
 .note.thread {
-    border-bottom: none;
+  border-bottom: none;
 }
 
-.note > .header .reply {
-    font-size: var(--font-size-tiny);
-    color: var(--font-secondary-color);
+.note>.header .reply {
+  font-size: var(--font-size-tiny);
+  color: var(--font-secondary-color);
 }
 
-.note > .header > .info {
-    font-size: var(--font-size);
-    white-space: nowrap;
-    color: var(--font-secondary-color);
+.note>.header>.info {
+  font-size: var(--font-size);
+  white-space: nowrap;
+  color: var(--font-secondary-color);
 }
 
-.note > .body {
-    margin-top: 12px;
-    padding-left: 56px;
-    text-overflow: ellipsis;
-    white-space: pre-wrap;
-    word-break: normal;
-    overflow-x: hidden;
-    overflow-y: visible;
+.note>.body {
+  margin-top: 12px;
+  padding-left: 56px;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  word-break: normal;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
-.note > .footer {
-    padding-left: 46px;
+.note>.footer {
+  padding-left: 46px;
 }
 
-.note > .header img:hover, .note > .header .name > .reply:hover, .note .body:hover {
-    cursor: pointer;
+.note>.footer .ctx-menu {
+  background-color: var(--note-bg);
+  color: var(--font-secondary-color);
+  border: 1px solid var(--font-secondary-color);
+  border-radius: 16px;
 }
 
-.note > .note-creator {
+.note>.header img:hover, .note>.header .name>.reply:hover, .note .body:hover {
+  cursor: pointer;
+}
+
+.note>.note-creator {
   margin-top: 12px;
 }
 
 @media (min-width: 720px) {
-  .note > .footer { margin-top: 24px; }
-  .note > .note-creator { margin-top: 24px; }
+  .note>.footer {
+    margin-top: 24px;
+  }
+
+  .note>.note-creator {
+    margin-top: 24px;
+  }
 }
 
 
@@ -55,8 +67,8 @@
 }
 
 .indented {
-    border-left: 3px solid var(--gray-tertiary);
-    padding-left: 2px;
+  border-left: 3px solid var(--gray-tertiary);
+  padding-left: 2px;
 }
 
 .note:last-child {
@@ -69,16 +81,16 @@
   margin-bottom: 24px;
 }
 
-.indented > .indented .note:last-child {
+.indented>.indented .note:last-child {
   border-bottom-right-radius: 0px;
   margin-bottom: 0;
 }
 
 .indented .active {
-    background-color: var(--gray-tertiary);
-    margin-left: -5px;
-    border-left: 3px solid var(--highlight);
-    border-radius: 0;
+  background-color: var(--gray-tertiary);
+  margin-left: -5px;
+  border-left: 3px solid var(--highlight);
+  border-radius: 0;
 }
 
 .reaction-pill {
@@ -95,7 +107,7 @@
 }
 
 .reaction-pill.reacted {
-  color:  var(--highlight);
+  color: var(--highlight);
 }
 
 .reaction-pill:hover {
@@ -107,33 +119,36 @@
   margin-right: auto;
 }
 
-.note.active > .header .reply {
+.note.active>.header .reply {
   color: var(--font-tertiary-color);
 }
 
-.note.active > .header > .info {
+.note.active>.header>.info {
   color: var(--font-tertiary-color);
 }
 
-.note.active > .footer > .reaction-pill {
+.note.active>.footer>.reaction-pill {
   color: var(--font-tertiary-color);
 }
 
-.note.active > .footer > .reaction-pill.reacted {
+.note.active>.footer>.reaction-pill.reacted {
   color: var(--highlight);
 }
 
 @media (prefers-color-scheme: light) {
   .indented .active {
-      background-color: var(--gray-secondary);
+    background-color: var(--gray-secondary);
   }
-  .note.active > .header .reply {
+
+  .note.active>.header .reply {
     color: var(--font-secondary-color);
   }
-  .note.active > .header > .info {
+
+  .note.active>.header>.info {
     color: var(--font-secondary-color);
   }
-  .note.active > .footer > .reaction-pill {
+
+  .note.active>.footer>.reaction-pill {
     color: var(--font-secondary-color);
   }
 }

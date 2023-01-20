@@ -10,6 +10,7 @@
     "@noble/secp256k1": "^1.7.0",
     "@protobufjs/base64": "^1.1.2",
     "@reduxjs/toolkit": "^1.9.1",
+    "@szhsin/react-menu": "^3.3.1",
     "@types/jest": "^29.2.5",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",

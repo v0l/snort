@@ -1,4 +1,5 @@
 import './index.css';
+import '@szhsin/react-menu/dist/index.css';
 
 import { StrictMode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
