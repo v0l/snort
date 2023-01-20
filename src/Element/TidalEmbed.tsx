@@ -20,7 +20,7 @@ const TidalEmbed = ({ link }: { link: string }) => {
         document.head.appendChild(sTag);
     }, []);
 
-    if (!data) return null;
+    if (!data) return <a href={link} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="ext">{link}</a>;
     return <div className="tidal-embed" data-type={data.type} data-id={data.id}></div>;
 }
 
