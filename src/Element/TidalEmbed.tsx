@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { TidalRegex } from "../Const";
+import { TidalRegex } from "Const";
 
 const TidalEmbed = ({ link }: { link: string }) => {
     const data = useMemo(() => {
