@@ -1,4 +1,4 @@
-import "./SettingsPage.css";
+import "./Profile.css";
 import Nostrich from "nostrich.jpg";
 
 import { useEffect, useState } from "react";
@@ -10,20 +10,16 @@ import { faShop } from "@fortawesome/free-solid-svg-icons";
 import useEventPublisher from "Feed/EventPublisher";
 import useProfile from "Feed/ProfileFeed";
 import VoidUpload from "Feed/VoidUpload";
-import { logout, setRelays } from "State/Login";
+import { logout } from "State/Login";
 import { hexToBech32, openFile } from "Util";
-import Relay from "Element/Relay";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
-import { HexKey, UserMetadata } from "Nostr";
-import { RelaySettings } from "Nostr/Connection";
-import { MetadataCache } from "Db/User";
+import { HexKey } from "Nostr";
 
-export default function SettingsPage() {
+export default function ProfileSettings() {
     const navigate = useNavigate();
     const id = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const privKey = useSelector<RootState, HexKey | undefined>(s => s.login.privateKey);
-    const relays = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
     const dispatch = useDispatch();
     const user = useProfile(id)?.get(id || "");
     const publisher = useEventPublisher();
@@ -37,7 +33,6 @@ export default function SettingsPage() {
     const [nip05, setNip05] = useState<string>();
     const [lud06, setLud06] = useState<string>();
     const [lud16, setLud16] = useState<string>();
-    const [newRelay, setNewRelay] = useState<string>();
 
     const avatarPicture = (picture?.length ?? 0) === 0 ? Nostrich : picture
 
@@ -104,11 +99,6 @@ export default function SettingsPage() {
         }
     }
 
-    async function saveRelays() {
-        let ev = await publisher.saveRelays();
-        publisher.broadcast(ev);
-    }
-
     function editor() {
         return (
             <div className="editor">
@@ -165,37 +155,10 @@ export default function SettingsPage() {
         )
     }
 
-    function addNewRelay() {
-        if ((newRelay?.length ?? 0) > 0) {
-            const parsed = new URL(newRelay!);
-            const payload = {
-                relays: {
-                    ...relays,
-                    [parsed.toString()]: { read: false, write: false }
-                },
-                createdAt: Math.floor(new Date().getTime() / 1000)
-            };
-            dispatch(setRelays(payload))
-        }
-    }
-
-    function addRelay() {
-        return (
-            <>
-                <h4>Add Relays</h4>
-                <div className="flex mb10">
-                    <input type="text" className="f-grow" placeholder="wss://my-relay.com" value={newRelay} onChange={(e) => setNewRelay(e.target.value)} />
-                </div>
-                <div className="btn mb10" onClick={() => addNewRelay()}>Add</div>
-            </>
-        )
-    }
-
     function settings() {
         if (!id) return null;
         return (
             <>
-                <h1>Settings</h1>
                 <div className="flex f-center image-settings">
                     <div>
                         <h2>Avatar</h2>
@@ -217,6 +180,7 @@ export default function SettingsPage() {
 
     return (
         <div className="settings">
+            <h3>Profile</h3>
             {settings()}
             {privKey && (<div className="flex f-col bg-grey">
                 <div>
@@ -226,15 +190,6 @@ export default function SettingsPage() {
                     <Copy text={hexToBech32("nsec", privKey)} />
                 </div>
             </div>)}
-            <h4>Relays</h4>
-            <div className="flex f-col">
-                {Object.keys(relays || {}).map(a => <Relay addr={a} key={a} />)}
-            </div>
-            <div className="flex actions">
-                <div className="f-grow"></div>
-                <div className="btn" onClick={() => saveRelays()}>Save</div>
-            </div>
-            {addRelay()}
         </div>
     );
 }

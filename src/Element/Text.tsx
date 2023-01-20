@@ -13,9 +13,15 @@ import Tag from "Nostr/Tag";
 import { MetadataCache } from "Db/User";
 import Mention from "Element/Mention";
 import TidalEmbed from "Element/TidalEmbed";
+import { useSelector } from 'react-redux';
+import { RootState } from 'State/Store';
+import { UserPreferences } from 'State/Login';
 
-function transformHttpLink(a: string) {
+function transformHttpLink(a: string, pref: UserPreferences) {
     try {
+        if (!pref.autoLoadMedia) {
+            return <a href={a} onClick={(e) => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">{a}</a>
+        }
         const url = new URL(a);
         const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
         const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
@@ -73,12 +79,12 @@ function transformHttpLink(a: string) {
     return <a href={a} onClick={(e) => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">{a}</a>
 }
 
-function extractLinks(fragments: Fragment[]) {
+function extractLinks(fragments: Fragment[], pref: UserPreferences) {
     return fragments.map(f => {
         if (typeof f === "string") {
             return f.split(UrlRegex).map(a => {
                 if (a.startsWith("http")) {
-                    return transformHttpLink(a)
+                    return transformHttpLink(a, pref)
                 }
                 return a;
             });
@@ -87,14 +93,14 @@ function extractLinks(fragments: Fragment[]) {
     }).flat();
 }
 
-function extractMentions(fragments: Fragment[], tags: Tag[], users: Map<string, MetadataCache>) {
-    return fragments.map(f => {
+function extractMentions(frag: TextFragment) {
+    return frag.body.map(f => {
         if (typeof f === "string") {
             return f.split(MentionRegex).map((match) => {
                 let matchTag = match.match(/#\[(\d+)\]/);
                 if (matchTag && matchTag.length === 2) {
                     let idx = parseInt(matchTag[1]);
-                    let ref = tags?.find(a => a.Index === idx);
+                    let ref = frag.tags?.find(a => a.Index === idx);
                     if (ref) {
                         switch (ref.Key) {
                             case "p": {
@@ -149,25 +155,25 @@ function extractHashtags(fragments: Fragment[]) {
     }).flat();
 }
 
-function transformLi({ body, tags, users }: TextFragment) {
-    let fragments = transformText({ body, tags, users })
+function transformLi(frag: TextFragment) {
+    let fragments = transformText(frag)
     return <li>{fragments}</li>
 }
 
-function transformParagraph({ body, tags, users }: TextFragment) {
-    const fragments = transformText({ body, tags, users })
+function transformParagraph(frag: TextFragment) {
+    const fragments = transformText(frag)
     if (fragments.every(f => typeof f === 'string')) {
         return <p>{fragments}</p>
     }
     return <>{fragments}</>
 }
 
-function transformText({ body, tags, users }: TextFragment) {
-    if (body === undefined) {
+function transformText(frag: TextFragment) {
+    if (frag.body === undefined) {
         debugger;
     }
-    let fragments = extractMentions(body, tags, users);
-    fragments = extractLinks(fragments);
+    let fragments = extractMentions(frag);
+    fragments = extractLinks(fragments, frag.pref);
     fragments = extractInvoices(fragments);
     fragments = extractHashtags(fragments);
     return fragments;
@@ -178,7 +184,8 @@ export type Fragment = string | JSX.Element;
 export interface TextFragment {
     body: Fragment[],
     tags: Tag[],
-    users: Map<string, MetadataCache>
+    users: Map<string, MetadataCache>,
+    pref: UserPreferences
 }
 
 export interface TextProps {
@@ -188,11 +195,12 @@ export interface TextProps {
 }
 
 export default function Text({ content, tags, users }: TextProps) {
+    const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
     const components = useMemo(() => {
         return {
-            p: (x: any) => transformParagraph({ body: x.children ?? [], tags, users }),
-            a: (x: any) => transformHttpLink(x.href),
-            li: (x: any) => transformLi({ body: x.children ?? [], tags, users }),
+            p: (x: any) => transformParagraph({ body: x.children ?? [], tags, users, pref }),
+            a: (x: any) => transformHttpLink(x.href, pref),
+            li: (x: any) => transformLi({ body: x.children ?? [], tags, users, pref }),
         };
     }, [content]);
     return <ReactMarkdown className="text" components={components}>{content}</ReactMarkdown>

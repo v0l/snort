@@ -6,7 +6,7 @@ import { faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { RootState } from "State/Store";
-import { init } from "State/Login";
+import { init, UserPreferences } from "State/Login";
 import { HexKey, RawEvent, TaggedRawEvent } from "Nostr";
 import { RelaySettings } from "Nostr/Connection";
 import { System } from "Nostr/System"
@@ -23,6 +23,7 @@ export default function Layout() {
     const notifications = useSelector<RootState, TaggedRawEvent[]>(s => s.login.notifications);
     const readNotifications = useSelector<RootState, number>(s => s.login.readNotifications);
     const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
+    const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
     useLoginFeed();
 
     useEffect(() => {
@@ -37,6 +38,15 @@ export default function Layout() {
             }
         }
     }, [relays]);
+
+    useEffect(() => {
+        const elm = document.documentElement;
+        if (prefs.theme === "light") {
+            elm.classList.add("light");
+        } else {
+            elm.classList.remove("light");
+        }
+    }, [prefs]);
 
     useEffect(() => {
         dispatch(init());
