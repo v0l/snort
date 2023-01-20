@@ -144,12 +144,13 @@
   .note.active > .header .reply {
     color: var(--font-secondary-color);
   }
-
   .note.active > .header > .info {
     color: var(--font-secondary-color);
   }
-
   .note.active > .footer > .reaction-pill {
-    color: var(--font-seco666ndary-color);
+    color: var(--font-secondary-color);
+  }
+  .note.active > .footer > .reaction-pill.reacted {
+    color: var(--highlight);
   }
 }
