@@ -24,7 +24,7 @@ export interface UserPreferences {
     /**
      * Select between light/dark theme
      */
-    theme: "light" | "dark",
+    theme: "system" | "light" | "dark",
 
     /**
      * Ask for confirmation when reposting notes
@@ -103,7 +103,7 @@ const InitState = {
     preferences: {
         enableReactions: true,
         autoLoadMedia: true,
-        theme: "dark",
+        theme: "system",
         confirmReposts: false
     }
 } as LoginStore;
@@ -146,10 +146,6 @@ const LoginSlice = createSlice({
             let pref = window.localStorage.getItem(UserPreferencesKey);
             if (pref) {
                 state.preferences = JSON.parse(pref);
-            } else {
-                // get os defaults
-                const osTheme = window.matchMedia("(prefers-color-scheme: light)");
-                state.preferences.theme = osTheme.matches ? "light" : "dark";
             }
         },
         setPrivateKey: (state, action: PayloadAction<HexKey>) => {

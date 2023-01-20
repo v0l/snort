@@ -6,7 +6,7 @@ import { faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { RootState } from "State/Store";
-import { init, UserPreferences } from "State/Login";
+import { init, setPreferences, UserPreferences } from "State/Login";
 import { HexKey, RawEvent, TaggedRawEvent } from "Nostr";
 import { RelaySettings } from "Nostr/Connection";
 import { System } from "Nostr/System"
@@ -39,14 +39,26 @@ export default function Layout() {
         }
     }, [relays]);
 
-    useEffect(() => {
+    function setTheme(theme: "light" | "dark") {
         const elm = document.documentElement;
-        if (prefs.theme === "light") {
+        if (theme === "light" && !elm.classList.contains("light")) {
             elm.classList.add("light");
-        } else {
+        } else if (theme === "dark" && elm.classList.contains("light")) {
             elm.classList.remove("light");
         }
-    }, [prefs]);
+    }
+
+    useEffect(() => {
+        let osTheme = window.matchMedia("(prefers-color-scheme: light)");
+        setTheme(prefs.theme === "system" && osTheme.matches ? "light" : prefs.theme === "light" ? "light" : "dark");
+
+        osTheme.onchange = (e) => {
+            if (prefs.theme === "system") {
+                setTheme(e.matches ? "light" : "dark");
+            }
+        }
+        return () => { osTheme.onchange = null; }
+    }, [prefs.theme]);
 
     useEffect(() => {
         dispatch(init());

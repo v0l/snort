@@ -8,10 +8,10 @@ export default function SettingsPage() {
     const navigate = useNavigate();
 
     return (
-        <div className="settings-page">
-            <h2 onClick={() => navigate("/settings")}>Settings</h2>
+        <>
+            <h2 onClick={() => navigate("/settings")} className="pointer">Settings</h2>
             <Outlet />
-        </div>
+        </>
     );
 }
 

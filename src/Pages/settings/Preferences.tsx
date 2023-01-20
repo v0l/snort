@@ -16,7 +16,8 @@ const PreferencesPage = () => {
                     <div>Theme</div>
                 </div>
                 <div>
-                    <select value={perf.theme} onChange={e => dispatch(setPreferences({ ...perf, theme: "light" === e.target.value ? "light" : "dark" }))}>
+                    <select value={perf.theme} onChange={e => dispatch(setPreferences({ ...perf, theme: e.target.value} as UserPreferences))}>
+                        <option value="system">System (Default)</option>
                         <option value="light">Light</option>
                         <option value="dark">Dark</option>
                     </select>
