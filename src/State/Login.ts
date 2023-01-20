@@ -3,12 +3,36 @@ import * as secp from '@noble/secp256k1';
 import { DefaultRelays } from 'Const';
 import { HexKey, RawEvent, TaggedRawEvent } from 'Nostr';
 import { RelaySettings } from 'Nostr/Connection';
+import { useDispatch } from 'react-redux';
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
 const NotificationsReadItem = "notifications-read";
+const UserPreferencesKey = "preferences";
 
-interface LoginStore {
+export interface UserPreferences {
+    /**
+     * Enable reactions / reposts / zaps
+     */
+    enableReactions: boolean,
+
+    /**
+     * Automatically load media (show link only) (bandwidth/privacy)
+     */
+    autoLoadMedia: boolean,
+
+    /**
+     * Select between light/dark theme
+     */
+    theme: "system" | "light" | "dark",
+
+    /**
+     * Ask for confirmation when reposting notes
+     */
+    confirmReposts: boolean
+}
+
+export interface LoginStore {
     /**
      * If there is no login
      */
@@ -57,7 +81,12 @@ interface LoginStore {
     /**
      * Counter to trigger refresh of unread dms
      */
-    dmInteraction: 0
+    dmInteraction: 0,
+
+    /**
+     * Users cusom preferences
+     */
+    preferences: UserPreferences
 };
 
 const InitState = {
@@ -70,7 +99,13 @@ const InitState = {
     notifications: [],
     readNotifications: new Date().getTime(),
     dms: [],
-    dmInteraction: 0
+    dmInteraction: 0,
+    preferences: {
+        enableReactions: true,
+        autoLoadMedia: true,
+        theme: "system",
+        confirmReposts: false
+    }
 } as LoginStore;
 
 export interface SetRelaysPayload {
@@ -105,6 +140,12 @@ const LoginSlice = createSlice({
             let readNotif = parseInt(window.localStorage.getItem(NotificationsReadItem) ?? "0");
             if (!isNaN(readNotif)) {
                 state.readNotifications = readNotif;
+            }
+
+            // preferences
+            let pref = window.localStorage.getItem(UserPreferencesKey);
+            if (pref) {
+                state.preferences = JSON.parse(pref);
             }
         },
         setPrivateKey: (state, action: PayloadAction<HexKey>) => {
@@ -205,6 +246,10 @@ const LoginSlice = createSlice({
         markNotificationsRead: (state) => {
             state.readNotifications = new Date().getTime();
             window.localStorage.setItem(NotificationsReadItem, state.readNotifications.toString());
+        },
+        setPreferences: (state, action: PayloadAction<UserPreferences>) => {
+            state.preferences = action.payload;
+            window.localStorage.setItem(UserPreferencesKey, JSON.stringify(state.preferences));
         }
     }
 });
@@ -220,6 +265,7 @@ export const {
     addDirectMessage,
     incDmInteraction,
     logout,
-    markNotificationsRead
+    markNotificationsRead,
+    setPreferences
 } = LoginSlice.actions;
 export const reducer = LoginSlice.reducer;

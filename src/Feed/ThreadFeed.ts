@@ -3,9 +3,13 @@ import { u256 } from "Nostr";
 import EventKind from "Nostr/EventKind";
 import { Subscriptions } from "Nostr/Subscriptions";
 import useSubscription from "Feed/Subscription";
+import { useSelector } from "react-redux";
+import { RootState } from "State/Store";
+import { UserPreferences } from "State/Login";
 
 export default function useThreadFeed(id: u256) {
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([id]);
+    const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
 
     function addId(id: u256[]) {
         setTrackingEvent((s) => {
@@ -21,7 +25,7 @@ export default function useThreadFeed(id: u256) {
 
         // get replies to this event
         const subRelated = new Subscriptions();
-        subRelated.Kinds = new Set([EventKind.Reaction, EventKind.TextNote, EventKind.Deletion, EventKind.Repost]);
+        subRelated.Kinds = new Set(pref.enableReactions ? [EventKind.Reaction, EventKind.TextNote, EventKind.Deletion, EventKind.Repost] : [EventKind.TextNote]);
         subRelated.ETags = thisSub.Ids;
         thisSub.AddSubscription(subRelated);
 

@@ -4,6 +4,9 @@ import EventKind from "Nostr/EventKind";
 import { Subscriptions } from "Nostr/Subscriptions";
 import { unixNow } from "Util";
 import useSubscription from "Feed/Subscription";
+import { useSelector } from "react-redux";
+import { RootState } from "State/Store";
+import { UserPreferences } from "State/Login";
 
 export interface TimelineFeedOptions {
     method: "TIME_RANGE" | "LIMIT_UNTIL"
@@ -20,6 +23,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     const [until, setUntil] = useState<number>(now);
     const [since, setSince] = useState<number>(now - window);
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
+    const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
 
     const sub = useMemo(() => {
         if (subject.type !== "global" && subject.items.length == 0) {
@@ -56,7 +60,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     const main = useSubscription(sub, { leaveOpen: true });
 
     const subNext = useMemo(() => {
-        if (trackingEvents.length > 0) {
+        if (trackingEvents.length > 0 && pref.enableReactions) {
             let sub = new Subscriptions();
             sub.Id = `timeline-related:${subject.type}`;
             sub.Kinds = new Set([EventKind.Reaction, EventKind.Deletion, EventKind.Repost]);

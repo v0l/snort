@@ -19,7 +19,7 @@ import ProfilePage from 'Pages/ProfilePage';
 import RootPage from 'Pages/Root';
 import NotificationsPage from 'Pages/Notifications';
 import NewUserPage from 'Pages/NewUserPage';
-import SettingsPage from 'Pages/SettingsPage';
+import SettingsPage, { SettingsRoutes } from 'Pages/SettingsPage';
 import ErrorPage from 'Pages/ErrorPage';
 import VerificationPage from 'Pages/Verification';
 import MessagesPage from 'Pages/MessagesPage';
@@ -65,7 +65,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/settings",
-        element: <SettingsPage />
+        element: <SettingsPage />,
+        children: SettingsRoutes
       },
       {
         path: "/verification",

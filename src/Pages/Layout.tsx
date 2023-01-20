@@ -6,7 +6,7 @@ import { faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { RootState } from "State/Store";
-import { init } from "State/Login";
+import { init, setPreferences, UserPreferences } from "State/Login";
 import { HexKey, RawEvent, TaggedRawEvent } from "Nostr";
 import { RelaySettings } from "Nostr/Connection";
 import { System } from "Nostr/System"
@@ -23,6 +23,7 @@ export default function Layout() {
     const notifications = useSelector<RootState, TaggedRawEvent[]>(s => s.login.notifications);
     const readNotifications = useSelector<RootState, number>(s => s.login.readNotifications);
     const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
+    const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
     useLoginFeed();
 
     useEffect(() => {
@@ -37,6 +38,27 @@ export default function Layout() {
             }
         }
     }, [relays]);
+
+    function setTheme(theme: "light" | "dark") {
+        const elm = document.documentElement;
+        if (theme === "light" && !elm.classList.contains("light")) {
+            elm.classList.add("light");
+        } else if (theme === "dark" && elm.classList.contains("light")) {
+            elm.classList.remove("light");
+        }
+    }
+
+    useEffect(() => {
+        let osTheme = window.matchMedia("(prefers-color-scheme: light)");
+        setTheme(prefs.theme === "system" && osTheme.matches ? "light" : prefs.theme === "light" ? "light" : "dark");
+
+        osTheme.onchange = (e) => {
+            if (prefs.theme === "system") {
+                setTheme(e.matches ? "light" : "dark");
+            }
+        }
+        return () => { osTheme.onchange = null; }
+    }, [prefs.theme]);
 
     useEffect(() => {
         dispatch(init());
