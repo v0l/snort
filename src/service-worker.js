@@ -2,22 +2,12 @@
 
 import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
-import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
+import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
 
 clientsClaim();
 precacheAndRoute(self.__WB_MANIFEST);
-
-const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
-registerRoute(({ request, url }) => {
-  if (request.mode !== 'navigate' || url.pathname.startsWith('/_') || url.pathname.match(fileExtensionRegexp)) {
-    return false;
-  }
-  return true;
-},
-  createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
-);
 
 const staticTypes = ["image", "video", "audio"]
 registerRoute(({ request, url }) => url.origin === self.location.origin && staticTypes.includes(request.destination),
@@ -41,5 +31,3 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
 });
-
-// Any other custom service worker logic can go here.
