@@ -4,7 +4,7 @@
     --bg-color: #000;
     --font-color: #FFF;
     --font-secondary-color: #555;
-    --font-tertiary-color: #999;
+    --font-tertiary-color: #666;
     --font-size: 16px;
     --font-size-small: 14px;
     --font-size-tiny: 12px;
@@ -88,10 +88,15 @@ code {
   margin-bottom: 12px;
   border-radius: 16px;
   background-color: var(--note-bg);
-  padding: 12px;
+  padding: 6px 12px;
 }
 @media (min-width: 720px) {
-  .card { margin-bottom: 24px; padding: 24px; }
+  .card { margin-bottom: 24px; padding: 12px 24px; }
+}
+@media (prefers-color-scheme: light) {
+  .card {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  }
 }
 
 .card .header {
@@ -112,6 +117,7 @@ code {
   cursor: pointer;
   user-select: none;
   background-color: var(--bg-color);
+  color: var(--font-color);
   border: 1px solid;
   display: inline-block;
 }
