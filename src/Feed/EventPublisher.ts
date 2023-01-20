@@ -58,7 +58,7 @@ export default function useEventPublisher() {
             const tag = match.slice(1);
             const idx = ev.Tags.length;
             ev.Tags.push(new Tag(["t", tag.toLowerCase()], idx));
-            return `#[${idx}]`;
+            return match;
         }
         let content = msg.replace(/@npub[a-z0-9]+/g, replaceNpub);
         content = content.replace(HashtagRegex, replaceHashtag);
