@@ -115,7 +115,7 @@ export default function Note(props: NoteProps) {
     }
 
     return (
-        <div className={`note${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
+        <div className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
             {content()}
         </div>
     )

@@ -3,7 +3,7 @@ import ProfileImage from "Element/ProfileImage";
 
 export default function NoteGhost(props: any) {
     return (
-        <div className="note">
+        <div className="note card">
             <div className="header">
                 <ProfileImage pubkey="" />
             </div>

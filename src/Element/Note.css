@@ -1,23 +1,7 @@
-.note {
-    margin-bottom: 12px;
-    border-radius: 16px;
-    background-color: var(--note-bg);
-    padding: 12px;
-    min-height: 110px;
-}
-@media (min-width: 720px) {
-  .note { margin-bottom: 24px; padding: 24px; }
-}
-
 .note.thread {
     border-bottom: none;
 }
 
-.note .header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
 
 .note > .header .reply {
     font-size: var(--font-size-tiny);
@@ -41,12 +25,6 @@
 
 .note > .header img:hover, .note > .header .name > .reply:hover, .note .body:hover {
     cursor: pointer;
-}
-
-.note > .footer {
-  display: flex;
-  flex-direction: row-reverse;
-  margin-top: 12px;
 }
 
 .note > .note-creator {

@@ -84,6 +84,28 @@ code {
   align-items: center;
 }
 
+.card {
+  margin-bottom: 12px;
+  border-radius: 16px;
+  background-color: var(--note-bg);
+  padding: 12px;
+}
+@media (min-width: 720px) {
+  .card { margin-bottom: 24px; padding: 24px; }
+}
+
+.card .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.card > .footer {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 12px;
+}
+
 .btn { 
   padding: 10px;
   border-radius: 5px;
