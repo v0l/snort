@@ -1,5 +1,9 @@
 .text a {
     color: var(--highlight);
+    text-decoration: none;
+}
+.text a:hover {
+    text-decoration: underline;
 }
 
 .text h1 {
@@ -24,6 +28,10 @@
 .text p {
     margin: 0;
     margin-bottom: 4px;
+}
+
+.text p:last-child {
+    margin-bottom: 0;
 }
 
 .text pre {

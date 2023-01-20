@@ -7,7 +7,7 @@
 .copy .body {
     font-family: monospace;
     font-size: 14px;
-    background: var(--gray-secondary);
+    background: var(--note-bg);
     color: var(--font-color);
     padding: 2px 4px;
     border-radius: 10px;

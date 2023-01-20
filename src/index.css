@@ -4,7 +4,7 @@
     --bg-color: #000;
     --font-color: #FFF;
     --font-secondary-color: #555;
-    --font-tertiary-color: #999;
+    --font-tertiary-color: #666;
     --font-size: 16px;
     --font-size-small: 14px;
     --font-size-tiny: 12px;
@@ -30,15 +30,17 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-     --bg-color: #FFF;
-     --font-color: #000;
-     --font-secondary-color: #444;
-      --font-tertiary-color: #666;
-     --highlight-light: #FFC852;
-     --highlight: #FF9B00;
-     --highlight-dark: #944F05;
+     --bg-color: #F1F1F1;
+     --font-color: #57534E;
+     --font-secondary-color: #B9B9B9;
+     --font-tertiary-color: #F3F3F3;
+
+     --highlight-light: #16AAC1;
+     --highlight: #0284C7;
+     --highlight-dark: #0A52B5;
      --modal-bg-color: rgba(240, 240, 240, 0.8);
-     --note-bg: #EEE;
+
+     --note-bg: white;
 
      --gray: #CCC;
      --gray-secondary: #DDD;
@@ -88,10 +90,15 @@ code {
   margin-bottom: 12px;
   border-radius: 16px;
   background-color: var(--note-bg);
-  padding: 12px;
+  padding: 6px 12px;
 }
 @media (min-width: 720px) {
-  .card { margin-bottom: 24px; padding: 24px; }
+  .card { margin-bottom: 24px; padding: 12px 24px; }
+}
+@media (prefers-color-scheme: light) {
+  .card {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  }
 }
 
 .card .header {
@@ -112,6 +119,7 @@ code {
   cursor: pointer;
   user-select: none;
   background-color: var(--bg-color);
+  color: var(--font-color);
   border: 1px solid;
   display: inline-block;
 }

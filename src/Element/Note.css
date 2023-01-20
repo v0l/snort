@@ -2,7 +2,6 @@
     border-bottom: none;
 }
 
-
 .note > .header .reply {
     font-size: var(--font-size-tiny);
     color: var(--font-secondary-color);
@@ -16,11 +15,16 @@
 
 .note > .body {
     margin-top: 12px;
+    padding-left: 56px;
     text-overflow: ellipsis;
     white-space: pre-wrap;
     word-break: normal;
     overflow-x: hidden;
     overflow-y: visible;
+}
+
+.note > .footer {
+    padding-left: 46px;
 }
 
 .note > .header img:hover, .note > .header .name > .reply:hover, .note .body:hover {
@@ -86,11 +90,6 @@
   font-feature-settings: "tnum";
 }
 
-.trash-icon {
-  color: var(--error);
-  margin-right: auto;
-}
-
 .reaction-pill .reaction-pill-number {
   margin-left: 8px;
 }
@@ -101,6 +100,11 @@
 
 .reaction-pill:hover {
   cursor: pointer;
+}
+
+.trash-icon {
+  color: var(--error);
+  margin-right: auto;
 }
 
 .note.active > .header .reply {
@@ -115,6 +119,10 @@
   color: var(--font-tertiary-color);
 }
 
+.note.active > .footer > .reaction-pill.reacted {
+  color: var(--highlight);
+}
+
 @media (prefers-color-scheme: light) {
   .indented .active {
       background-color: var(--gray-secondary);
@@ -127,8 +135,5 @@
   }
   .note.active > .footer > .reaction-pill {
     color: var(--font-secondary-color);
-  }
-  .note.active > .footer > .reaction-pill.reacted {
-    color: var(--highlight);
   }
 }
