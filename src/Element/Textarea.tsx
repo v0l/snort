@@ -63,7 +63,7 @@ const Textarea = ({ users, onChange, ...rest }: any) => {
 
   const emojiDataProvider = (token: string) => {
     return emoji(token)
-      .slice(0, 10)
+      .slice(0, 5)
       .map(({ name, char }) => ({ name, char }));
   }
 

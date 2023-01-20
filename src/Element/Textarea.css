@@ -1,5 +1,17 @@
+.rta__list {
+  border: none;
+}
+.rta__item:not(:last-child) {
+  border: none;
+}
+.rta__entity--selected .user-item, .rta__entity--selected .emoji-item {
+  text-decoration: none;
+  background: var(--gray-secondary);
+}
+
 .user-item, .emoji-item {
-  background: var(--gray);
+  color: var(--font-color);
+  background: var(--note-bg);
   display: flex;
   flex-direction: row;
   align-items: center;
