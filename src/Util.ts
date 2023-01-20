@@ -1,7 +1,7 @@
 import * as secp from "@noble/secp256k1";
 import { bech32 } from "bech32";
-import { HexKey, RawEvent, TaggedRawEvent, u256 } from "./nostr";
-import EventKind from "./nostr/EventKind";
+import { HexKey, RawEvent, TaggedRawEvent, u256 } from "Nostr";
+import EventKind from "Nostr/EventKind";
 
 export async function openFile(): Promise<File | undefined> {
     return new Promise((resolve, reject) => {

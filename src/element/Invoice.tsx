@@ -3,8 +3,8 @@ import { useState } from "react";
 // @ts-expect-error
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { useMemo } from "react";
-import NoteTime from "./NoteTime";
-import LNURLTip from "./LNURLTip";
+import NoteTime from "Element/NoteTime";
+import LNURLTip from "Element/LNURLTip";
 
 export interface InvoiceProps {
     invoice: string

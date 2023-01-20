@@ -1,12 +1,13 @@
 import "./Root.css";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { NoteCreator } from "../element/NoteCreator";
-import Timeline from "../element/Timeline";
-import { useState } from "react";
-import { RootState } from "../state/Store";
-import { HexKey } from "../nostr";
-import { TimelineSubject } from "../feed/TimelineFeed";
+
+import { RootState } from "State/Store";
+import { NoteCreator } from "Element/NoteCreator";
+import Timeline from "Element/Timeline";
+import { HexKey } from "Nostr";
+import { TimelineSubject } from "Feed/TimelineFeed";
 
 const RootTab = {
     Posts: 0,

@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import { HexKey } from "../nostr";
-import EventKind from "../nostr/EventKind";
-import { Subscriptions } from "../nostr/Subscriptions";
-import useSubscription from "./Subscription";
+import { HexKey } from "Nostr";
+import EventKind from "Nostr/EventKind";
+import { Subscriptions } from "Nostr/Subscriptions";
+import useSubscription from "Feed/Subscription";
 
 export default function useFollowersFeed(pubkey: HexKey) {
     const sub = useMemo(() => {

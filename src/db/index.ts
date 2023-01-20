@@ -1,6 +1,6 @@
 import Dexie, { Table } from "dexie";
-import { MetadataCache } from "./User";
-import { hexToBech32 } from "../Util";
+import { MetadataCache } from "Db/User";
+import { hexToBech32 } from "Util";
 
 
 export class SnortDB extends Dexie {

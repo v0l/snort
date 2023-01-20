@@ -2,15 +2,15 @@ import "./Note.css";
 import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { default as NEvent } from "../nostr/Event";
-import ProfileImage from "./ProfileImage";
-import Text from "./Text";
-import { eventLink, getReactions, hexToBech32 } from "../Util";
-import NoteFooter from "./NoteFooter";
-import NoteTime from "./NoteTime";
-import EventKind from "../nostr/EventKind";
-import useProfile from "../feed/ProfileFeed";
-import { TaggedRawEvent, u256 } from "../nostr";
+import { default as NEvent } from "Nostr/Event";
+import ProfileImage from "Element/ProfileImage";
+import Text from "Element/Text";
+import { eventLink, getReactions, hexToBech32 } from "Util";
+import NoteFooter from "Element/NoteFooter";
+import NoteTime from "Element/NoteTime";
+import EventKind from "Nostr/EventKind";
+import useProfile from "Feed/ProfileFeed";
+import { TaggedRawEvent, u256 } from "Nostr";
 import { useInView } from "react-intersection-observer";
 
 export interface NoteProps {

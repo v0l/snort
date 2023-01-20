@@ -9,14 +9,14 @@ import {
     ServiceErrorCode,
     HandleRegisterResponse,
     CheckRegisterResponse
-} from "../nip05/ServiceProvider";
-import AsyncButton from "./AsyncButton";
-import LNURLTip from "./LNURLTip";
-import Copy from "./Copy";
-import useProfile from "../feed/ProfileFeed";
-import useEventPublisher from "../feed/EventPublisher";
-import { hexToBech32 } from "../Util";
-import { UserMetadata } from "../nostr";
+} from "Nip05/ServiceProvider";
+import AsyncButton from "Element/AsyncButton";
+import LNURLTip from "Element/LNURLTip";
+import Copy from "Element/Copy";
+import useProfile from "Feed/ProfileFeed";
+import useEventPublisher from "Feed/EventPublisher";
+import { hexToBech32 } from "Util";
+import { UserMetadata } from "Nostr";
 
 type Nip05ServiceProps = {
     name: string,

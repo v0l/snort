@@ -1,10 +1,10 @@
 import "./ProfilePreview.css";
 import { ReactNode } from "react";
 
-import ProfileImage from "./ProfileImage";
-import FollowButton from "./FollowButton";
-import useProfile from "../feed/ProfileFeed";
-import { HexKey } from "../nostr";
+import ProfileImage from "Element/ProfileImage";
+import FollowButton from "Element/FollowButton";
+import useProfile from "Feed/ProfileFeed";
+import { HexKey } from "Nostr";
 import { useInView } from "react-intersection-observer";
 
 export interface ProfilePreviewProps {

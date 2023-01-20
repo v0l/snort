@@ -1,9 +1,9 @@
 import * as secp from '@noble/secp256k1';
 import * as base64 from "@protobufjs/base64"
-import { HexKey, RawEvent, TaggedRawEvent } from '.';
-import EventKind from "./EventKind";
-import Tag from './Tag';
-import Thread from './Thread';
+import { HexKey, RawEvent, TaggedRawEvent } from 'Nostr';
+import EventKind from "Nostr/EventKind";
+import Tag from 'Nostr/Tag';
+import Thread from 'Nostr/Thread';
 
 export default class Event {
     /**

@@ -1,14 +1,14 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import Note from "../element/Note";
-import NoteReaction from "../element/NoteReaction";
-import useSubscription from "../feed/Subscription";
-import { TaggedRawEvent } from "../nostr";
-import Event from "../nostr/Event";
-import EventKind from "../nostr/EventKind";
-import { Subscriptions } from "../nostr/Subscriptions";
-import { markNotificationsRead } from "../state/Login";
-import { RootState } from "../state/Store";
+import Note from "Element/Note";
+import NoteReaction from "Element/NoteReaction";
+import useSubscription from "Feed/Subscription";
+import { TaggedRawEvent } from "Nostr";
+import Event from "Nostr/Event";
+import EventKind from "Nostr/EventKind";
+import { Subscriptions } from "Nostr/Subscriptions";
+import { markNotificationsRead } from "State/Login";
+import { RootState } from "State/Store";
 
 export default function NotificationsPage() {
     const dispatch = useDispatch();

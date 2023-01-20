@@ -1,16 +1,17 @@
-import Nostrich from "../nostrich.jpg";
+import Nostrich from "nostrich.jpg";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { HexKey, TaggedRawEvent } from "../nostr";
-import EventKind from "../nostr/EventKind";
-import { Subscriptions } from "../nostr/Subscriptions";
-import { addDirectMessage, addNotifications, setFollows, setRelays } from "../state/Login";
-import { RootState } from "../state/Store";
-import { db } from "../db";
-import useSubscription from "./Subscription";
-import { mapEventToProfile, MetadataCache } from "../db/User";
-import { getDisplayName } from "../element/ProfileImage";
-import { MentionRegex } from "../Const";
+
+import { HexKey, TaggedRawEvent } from "Nostr";
+import EventKind from "Nostr/EventKind";
+import { Subscriptions } from "Nostr/Subscriptions";
+import { addDirectMessage, addNotifications, setFollows, setRelays } from "State/Login";
+import { RootState } from "State/Store";
+import { db } from "Db";
+import useSubscription from "Feed/Subscription";
+import { mapEventToProfile, MetadataCache } from "Db/User";
+import { getDisplayName } from "Element/ProfileImage";
+import { MentionRegex } from "Const";
 
 /**
  * Managed loading data for the current logged in user

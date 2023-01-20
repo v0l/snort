@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux"
 
-import { HexKey, RawEvent } from "../nostr";
-import UnreadCount from "../element/UnreadCount";
-import ProfileImage from "../element/ProfileImage";
+import { HexKey, RawEvent } from "Nostr";
+import UnreadCount from "Element/UnreadCount";
+import ProfileImage from "Element/ProfileImage";
 import { hexToBech32 } from "../Util";
-import { incDmInteraction } from "../state/Login";
-import { RootState } from "../state/Store";
-import NoteToSelf from "../element/NoteToSelf";
+import { incDmInteraction } from "State/Login";
+import { RootState } from "State/Store";
+import NoteToSelf from "Element/NoteToSelf";
 
 type DmChat = {
     pubkey: HexKey,

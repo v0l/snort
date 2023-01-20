@@ -1,9 +1,7 @@
 import "./Avatar.css";
 import Nostrich from "../nostrich.jpg";
-
 import { CSSProperties } from "react";
-
-import type { UserMetadata } from "../nostr";
+import type { UserMetadata } from "Nostr";
 
 
 const Avatar = ({ user, ...rest }: { user?: UserMetadata, onClick?: () => void}) => {

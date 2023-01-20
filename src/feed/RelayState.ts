@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
-import { System } from "../nostr/System";
-import { CustomHook, StateSnapshot } from "../nostr/Connection";
+import { System } from "Nostr/System";
+import { CustomHook, StateSnapshot } from "Nostr/Connection";
 
 const noop = (f: CustomHook) => { return () => { }; };
 const noopState = (): StateSnapshot | undefined => {

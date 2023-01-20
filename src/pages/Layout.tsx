@@ -5,14 +5,14 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { System } from "../nostr/System"
-import ProfileImage from "../element/ProfileImage";
-import { init } from "../state/Login";
-import useLoginFeed from "../feed/LoginFeed";
-import { RootState } from "../state/Store";
-import { HexKey, RawEvent, TaggedRawEvent } from "../nostr";
-import { RelaySettings } from "../nostr/Connection";
-import { totalUnread } from "./MessagesPage";
+import { RootState } from "State/Store";
+import { init } from "State/Login";
+import { HexKey, RawEvent, TaggedRawEvent } from "Nostr";
+import { RelaySettings } from "Nostr/Connection";
+import { System } from "Nostr/System"
+import ProfileImage from "Element/ProfileImage";
+import useLoginFeed from "Feed/LoginFeed";
+import { totalUnread } from "Pages/MessagesPage";
 
 export default function Layout() {
     const dispatch = useDispatch();

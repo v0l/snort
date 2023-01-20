@@ -1,17 +1,17 @@
+import './Text.css'
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
-import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex } from "../Const";
-import { eventLink, hexToBech32 } from "../Util";
-import Invoice from "./Invoice";
-import Hashtag from "./Hashtag";
+import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex } from "Const";
+import { eventLink, hexToBech32 } from "Util";
+import Invoice from "Element/Invoice";
+import Hashtag from "Element/Hashtag";
 
-import './Text.css'
-import { useMemo } from "react";
-import Tag from "../nostr/Tag";
-import { MetadataCache } from "../db/User";
-import Mention from "./Mention";
+import Tag from "Nostr/Tag";
+import { MetadataCache } from "Db/User";
+import Mention from "Element/Mention";
 
 function transformHttpLink(a: string) {
     try {

@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as secp from '@noble/secp256k1';
 
-import { setPrivateKey, setPublicKey } from "../state/Login";
-import { EmailRegex } from "../Const";
-import { bech32ToHex } from "../Util";
-import { RootState } from "../state/Store";
-import { HexKey } from "../nostr";
+import { RootState } from "State/Store";
+import { setPrivateKey, setPublicKey } from "State/Login";
+import { EmailRegex } from "Const";
+import { bech32ToHex } from "Util";
+import { HexKey } from "Nostr";
 
 export default function LoginPage() {
     const dispatch = useDispatch();

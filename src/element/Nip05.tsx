@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 import './Nip05.css'
-import { HexKey } from "../nostr";
+import { HexKey } from "Nostr";
 
 interface NostrJson {
   names: Record<string, string>

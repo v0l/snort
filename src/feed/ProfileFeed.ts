@@ -1,9 +1,9 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { useEffect, useMemo } from "react";
-import { db } from "../db";
-import { MetadataCache } from "../db/User";
-import { HexKey } from "../nostr";
-import { System } from "../nostr/System";
+import { db } from "Db";
+import { MetadataCache } from "Db/User";
+import { HexKey } from "Nostr";
+import { System } from "Nostr/System";
 
 export default function useProfile(pubKey: HexKey | Array<HexKey> | undefined): Map<HexKey, MetadataCache> | undefined {
     const user = useLiveQuery(async () => {

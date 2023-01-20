@@ -1,10 +1,10 @@
 import "./FollowsYou.css";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { HexKey } from "../nostr";
-import { RootState } from "../state/Store";
-import  useFollowsFeed from "../feed/FollowsFeed";
-import { getFollowers } from "../feed/FollowsFeed";
+import { HexKey } from "Nostr";
+import { RootState } from "State/Store";
+import  useFollowsFeed from "Feed/FollowsFeed";
+import { getFollowers } from "Feed/FollowsFeed";
 
 export interface FollowsYouProps {
     pubkey: HexKey

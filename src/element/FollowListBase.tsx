@@ -1,6 +1,6 @@
-import useEventPublisher from "../feed/EventPublisher";
-import { HexKey } from "../nostr";
-import ProfilePreview from "./ProfilePreview";
+import useEventPublisher from "Feed/EventPublisher";
+import { HexKey } from "Nostr";
+import ProfilePreview from "Element/ProfilePreview";
 
 export interface FollowListBaseProps {
     pubkeys: HexKey[],

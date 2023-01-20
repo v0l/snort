@@ -1,13 +1,14 @@
 import "./NoteReaction.css";
-import EventKind from "../nostr/EventKind";
-import Note from "./Note";
-import ProfileImage from "./ProfileImage";
-import { default as NEvent } from "../nostr/Event";
-import { eventLink, hexToBech32 } from "../Util";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import NoteTime from "./NoteTime";
-import { RawEvent, TaggedRawEvent } from "../nostr";
+
+import EventKind from "Nostr/EventKind";
+import Note from "Element/Note";
+import ProfileImage from "Element/ProfileImage";
+import { default as NEvent } from "Nostr/Event";
+import { eventLink, hexToBech32 } from "Util";
+import NoteTime from "Element/NoteTime";
+import { RawEvent, TaggedRawEvent } from "Nostr";
 
 export interface NoteReactionProps {
     data?: TaggedRawEvent,

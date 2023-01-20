@@ -1,4 +1,4 @@
-import { HexKey, RawReqFilter, u256 } from ".";
+import { HexKey, u256 } from "Nostr";
 
 export default class Tag {
     Original: string[];

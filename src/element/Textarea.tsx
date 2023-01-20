@@ -7,11 +7,11 @@ import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import emoji from "@jukben/emoji-search";
 import TextareaAutosize from "react-textarea-autosize";
 
-import Avatar from "./Avatar";
-import Nip05 from "./Nip05";
-import { hexToBech32 } from "../Util";
-import { db } from "../db";
-import { MetadataCache } from "../db/User";
+import Avatar from "Element/Avatar";
+import Nip05 from "Element/Nip05";
+import { hexToBech32 } from "Util";
+import { db } from "Db";
+import { MetadataCache } from "Db/User";
 
 interface EmojiItemProps {
   name: string

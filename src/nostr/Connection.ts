@@ -1,11 +1,11 @@
 import * as secp from "@noble/secp256k1";
 import { v4 as uuid } from "uuid";
 
-import { Subscriptions } from "./Subscriptions";
-import { default as NEvent } from "./Event";
-import { DefaultConnectTimeout } from "../Const";
-import { ConnectionStats } from "./ConnectionStats";
-import { RawEvent, TaggedRawEvent } from ".";
+import { Subscriptions } from "Nostr/Subscriptions";
+import { default as NEvent } from "Nostr/Event";
+import { DefaultConnectTimeout } from "Const";
+import { ConnectionStats } from "Nostr/ConnectionStats";
+import { RawEvent, TaggedRawEvent } from "Nostr";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
 

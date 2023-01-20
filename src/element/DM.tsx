@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useInView } from 'react-intersection-observer';
 
-import useEventPublisher from "../feed/EventPublisher";
-import Event from "../nostr/Event";
-import NoteTime from "./NoteTime";
-import Text from "./Text";
-import { setLastReadDm } from "../pages/MessagesPage";
-import { RootState } from "../state/Store";
-import { HexKey, TaggedRawEvent } from "../nostr";
-import { incDmInteraction } from "../state/Login";
+import useEventPublisher from "Feed/EventPublisher";
+import Event from "Nostr/Event";
+import NoteTime from "Element/NoteTime";
+import Text from "Element/Text";
+import { setLastReadDm } from "Pages/MessagesPage";
+import { RootState } from "State/Store";
+import { HexKey, TaggedRawEvent } from "Nostr";
+import { incDmInteraction } from "State/Login";
 
 export type DMProps = {
     data: TaggedRawEvent

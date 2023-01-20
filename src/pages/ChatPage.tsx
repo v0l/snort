@@ -4,14 +4,14 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useInView } from 'react-intersection-observer';
 
-import ProfileImage from "../element/ProfileImage";
-import { bech32ToHex } from "../Util";
-import useEventPublisher from "../feed/EventPublisher";
+import ProfileImage from "Element/ProfileImage";
+import { bech32ToHex } from "Util";
+import useEventPublisher from "Feed/EventPublisher";
 
-import DM from "../element/DM";
-import { RawEvent } from "../nostr";
-import { dmsInChat, isToSelf } from "./MessagesPage";
-import NoteToSelf from "../element/NoteToSelf";
+import DM from "Element/DM";
+import { RawEvent } from "Nostr";
+import { dmsInChat, isToSelf } from "Pages/MessagesPage";
+import NoteToSelf from "Element/NoteToSelf";
 
 type RouterParams = {
     id: string

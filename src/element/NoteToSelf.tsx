@@ -3,9 +3,9 @@ import "./NoteToSelf.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faCertificate } from "@fortawesome/free-solid-svg-icons"
-import useProfile from "../feed/ProfileFeed";
-import Nip05 from "./Nip05";
-import { profileLink } from "../Util";
+import useProfile from "Feed/ProfileFeed";
+import Nip05 from "Element/Nip05";
+import { profileLink } from "Util";
 
 export interface NoteToSelfProps {
     pubkey: string,

@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { TaggedRawEvent, u256 } from "../nostr";
-import { default as NEvent } from "../nostr/Event";
-import EventKind from "../nostr/EventKind";
-import { eventLink } from "../Util";
-import Note from "./Note";
-import NoteGhost from "./NoteGhost";
+import { TaggedRawEvent, u256 } from "Nostr";
+import { default as NEvent } from "Nostr/Event";
+import EventKind from "Nostr/EventKind";
+import { eventLink } from "Util";
+import Note from "Element/Note";
+import NoteGhost from "Element/NoteGhost";
 
 export interface ThreadProps {
     this?: u256,

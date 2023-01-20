@@ -1,5 +1,5 @@
-import { RecommendedFollows } from "../Const";
-import ProfilePreview from "../element/ProfilePreview";
+import { RecommendedFollows } from "Const";
+import ProfilePreview from "Element/ProfilePreview";
 
 export default function NewUserPage() {
 

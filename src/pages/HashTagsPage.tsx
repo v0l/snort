@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import Timeline from "../element/Timeline";
+import Timeline from "Element/Timeline";
 
 const HashTagsPage = () => {
     const params = useParams();

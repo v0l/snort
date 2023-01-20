@@ -3,16 +3,16 @@ import { useSelector } from "react-redux";
 import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { formatShort } from "../Number";
-import useEventPublisher from "../feed/EventPublisher";
-import { getReactions, normalizeReaction, Reaction } from "../Util";
-import { NoteCreator } from "./NoteCreator";
-import LNURLTip from "./LNURLTip";
-import useProfile from "../feed/ProfileFeed";
-import { default as NEvent } from "../nostr/Event";
-import { RootState } from "../state/Store";
-import { HexKey, TaggedRawEvent } from "../nostr";
-import EventKind from "../nostr/EventKind";
+import { formatShort } from "Number";
+import useEventPublisher from "Feed/EventPublisher";
+import { getReactions, normalizeReaction, Reaction } from "Util";
+import { NoteCreator } from "Element/NoteCreator";
+import LNURLTip from "Element/LNURLTip";
+import useProfile from "Feed/ProfileFeed";
+import { default as NEvent } from "Nostr/Event";
+import { RootState } from "State/Store";
+import { HexKey, TaggedRawEvent } from "Nostr";
+import EventKind from "Nostr/EventKind";
 
 export interface NoteFooterProps {
     related: TaggedRawEvent[],

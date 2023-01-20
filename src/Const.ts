@@ -1,4 +1,4 @@
-import { RelaySettings } from "./nostr/Connection";
+import { RelaySettings } from "Nostr/Connection";
 
 /**
  * Websocket re-connect timeout

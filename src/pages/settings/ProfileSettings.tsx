@@ -7,14 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShop } from "@fortawesome/free-solid-svg-icons";
 
-import { RootState } from "State/Store";
-import { logout, setRelays } from "State/Login";
 import useEventPublisher from "Feed/EventPublisher";
 import useProfile from "Feed/ProfileFeed";
 import VoidUpload from "Feed/VoidUpload";
+import { logout, setRelays } from "State/Login";
 import { hexToBech32, openFile } from "Util";
 import Relay from "Element/Relay";
 import Copy from "Element/Copy";
+import { RootState } from "State/Store";
 import { HexKey, UserMetadata } from "Nostr";
 import { RelaySettings } from "Nostr/Connection";
 import { MetadataCache } from "Db/User";

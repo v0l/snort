@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as secp from '@noble/secp256k1';
-import { DefaultRelays } from '../Const';
-import { HexKey, RawEvent, TaggedRawEvent } from '../nostr';
-import { RelaySettings } from '../nostr/Connection';
+import { DefaultRelays } from 'Const';
+import { HexKey, RawEvent, TaggedRawEvent } from 'Nostr';
+import { RelaySettings } from 'Nostr/Connection';
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";

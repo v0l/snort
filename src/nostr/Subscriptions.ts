@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
-import { TaggedRawEvent, RawReqFilter, u256 } from ".";
-import Connection from "./Connection";
-import EventKind from "./EventKind";
+import { TaggedRawEvent, RawReqFilter, u256 } from "Nostr";
+import Connection from "Nostr/Connection";
+import EventKind from "Nostr/EventKind";
 
 export type NEventHandler = (e: TaggedRawEvent) => void;
 export type OnEndHandler = (c: Connection) => void;

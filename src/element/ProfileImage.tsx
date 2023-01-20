@@ -2,12 +2,12 @@ import "./ProfileImage.css";
 
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useProfile from "../feed/ProfileFeed";
-import { hexToBech32, profileLink } from "../Util";
-import Avatar from "./Avatar"
-import Nip05 from "./Nip05";
-import { HexKey } from "../nostr";
-import { MetadataCache } from "../db/User";
+import useProfile from "Feed/ProfileFeed";
+import { hexToBech32, profileLink } from "Util";
+import Avatar from "Element/Avatar"
+import Nip05 from "Element/Nip05";
+import { HexKey } from "Nostr";
+import { MetadataCache } from "Db/User";
 
 export interface ProfileImageProps {
     pubkey: HexKey,

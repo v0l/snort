@@ -1,9 +1,9 @@
 import "./LNURLTip.css";
 import { useEffect, useMemo, useState } from "react";
-import { bech32ToText } from "../Util";
-import Modal from "./Modal";
-import QrCode from "./QrCode";
-import Copy from "./Copy";
+import { bech32ToText } from "Util";
+import Modal from "Element/Modal";
+import QrCode from "Element/QrCode";
+import Copy from "Element/Copy";
 
 declare global {
     interface Window {

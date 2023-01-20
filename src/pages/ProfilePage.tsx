@@ -6,21 +6,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 
-import useProfile from "../feed/ProfileFeed";
-import FollowButton from "../element/FollowButton";
-import { extractLnAddress, parseId, hexToBech32 } from "../Util";
-import Avatar from "../element/Avatar";
-import Timeline from "../element/Timeline";
-import Text from '../element/Text'
-import LNURLTip from "../element/LNURLTip";
-import Nip05 from "../element/Nip05";
-import Copy from "../element/Copy";
-import ProfilePreview from "../element/ProfilePreview";
-import FollowersList from "../element/FollowersList";
-import FollowsList from "../element/FollowsList";
-import { RootState } from "../state/Store";
-import { HexKey } from "../nostr";
-import FollowsYou from "../element/FollowsYou"
+import useProfile from "Feed/ProfileFeed";
+import FollowButton from "Element/FollowButton";
+import { extractLnAddress, parseId, hexToBech32 } from "Util";
+import Avatar from "Element/Avatar";
+import Timeline from "Element/Timeline";
+import Text from 'Element/Text'
+import LNURLTip from "Element/LNURLTip";
+import Nip05 from "Element/Nip05";
+import Copy from "Element/Copy";
+import ProfilePreview from "Element/ProfilePreview";
+import FollowersList from "Element/FollowersList";
+import FollowsList from "Element/FollowsList";
+import { RootState } from "State/Store";
+import { HexKey } from "Nostr";
+import FollowsYou from "Element/FollowsYou"
 
 enum ProfileTab {
     Notes = "Notes",

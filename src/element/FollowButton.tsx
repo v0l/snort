@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
-import useEventPublisher from "../feed/EventPublisher";
+import useEventPublisher from "Feed/EventPublisher";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserMinus, faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import { HexKey } from "../nostr";
-import { RootState } from "../state/Store";
+import { HexKey } from "Nostr";
+import { RootState } from "State/Store";
 
 export interface FollowButtonProps {
     pubkey: HexKey,

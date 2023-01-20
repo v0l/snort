@@ -2,9 +2,9 @@ import "./ZapButton.css";
 import { faBolt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import useProfile from "../feed/ProfileFeed";
-import { HexKey } from "../nostr";
-import LNURLTip from "./LNURLTip";
+import useProfile from "Feed/ProfileFeed";
+import { HexKey } from "Nostr";
+import LNURLTip from "Element/LNURLTip";
 
 const ZapButton = ({ pubkey }: { pubkey: HexKey }) => {
     const profile = useProfile(pubkey)?.get(pubkey);

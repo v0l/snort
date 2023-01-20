@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useReducer, useState } from "react";
-import { System } from "../nostr/System";
-import { TaggedRawEvent } from "../nostr";
-import { Subscriptions } from "../nostr/Subscriptions";
+import { System } from "Nostr/System";
+import { TaggedRawEvent } from "Nostr";
+import { Subscriptions } from "Nostr/Subscriptions";
 
 export type NoteStore = {
     notes: Array<TaggedRawEvent>,

@@ -1,7 +1,7 @@
-import { u256 } from ".";
-import { default as NEvent } from "./Event";
-import EventKind from "./EventKind";
-import Tag from "./Tag";
+import { u256 } from "Nostr";
+import { default as NEvent } from "Nostr/Event";
+import EventKind from "Nostr/EventKind";
+import Tag from "Nostr/Tag";
 
 export default class Thread {
     Root?: Tag;

@@ -1,4 +1,4 @@
-import { HexKey, TaggedRawEvent, UserMetadata } from "../nostr";
+import { HexKey, TaggedRawEvent, UserMetadata } from "Nostr";
 import { hexToBech32 } from "../Util";
 
 export interface MetadataCache extends UserMetadata {

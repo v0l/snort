@@ -4,12 +4,12 @@ import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 
 import "./NoteCreator.css";
 
-import useEventPublisher from "../feed/EventPublisher";
-import { openFile } from "../Util";
-import VoidUpload from "../feed/VoidUpload";
-import { FileExtensionRegex } from "../Const";
-import Textarea from "../element/Textarea";
-import Event, { default as NEvent } from "../nostr/Event";
+import useEventPublisher from "Feed/EventPublisher";
+import { openFile } from "Util";
+import VoidUpload from "Feed/VoidUpload";
+import { FileExtensionRegex } from "Const";
+import Textarea from "Element/Textarea";
+import Event, { default as NEvent } from "Nostr/Event";
 
 export interface NoteCreatorProps {
     replyTo?: NEvent,

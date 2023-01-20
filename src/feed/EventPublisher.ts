@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
-import { System } from "../nostr/System";
-import { default as NEvent } from "../nostr/Event";
-import EventKind from "../nostr/EventKind";
-import Tag from "../nostr/Tag";
-import { RootState } from "../state/Store";
-import { HexKey, RawEvent, u256, UserMetadata } from "../nostr";
-import { bech32ToHex } from "../Util"
-import { HashtagRegex } from "../Const";
+import { System } from "Nostr/System";
+import { default as NEvent } from "Nostr/Event";
+import EventKind from "Nostr/EventKind";
+import Tag from "Nostr/Tag";
+import { RootState } from "State/Store";
+import { HexKey, RawEvent, u256, UserMetadata } from "Nostr";
+import { bech32ToHex } from "Util"
+import { HashtagRegex } from "Const";
 
 declare global {
     interface Window {

@@ -1,11 +1,11 @@
-import { HexKey, TaggedRawEvent } from ".";
-import { ProfileCacheExpire } from "../Const";
-import { db } from "../db";
-import { mapEventToProfile, MetadataCache } from "../db/User";
-import Connection, { RelaySettings } from "./Connection";
-import Event from "./Event";
-import EventKind from "./EventKind";
-import { Subscriptions } from "./Subscriptions";
+import { HexKey, TaggedRawEvent } from "Nostr";
+import { ProfileCacheExpire } from "Const";
+import { db } from "Db";
+import { mapEventToProfile, MetadataCache } from "Db/User";
+import Connection, { RelaySettings } from "Nostr/Connection";
+import Event from "Nostr/Event";
+import EventKind from "Nostr/EventKind";
+import { Subscriptions } from "Nostr/Subscriptions";
 
 /**
  * Manages nostr content retrival system

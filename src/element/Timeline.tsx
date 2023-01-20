@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import useTimelineFeed, { TimelineSubject } from "../feed/TimelineFeed";
-import { TaggedRawEvent } from "../nostr";
-import EventKind from "../nostr/EventKind";
-import LoadMore from "./LoadMore";
-import Note from "./Note";
-import NoteReaction from "./NoteReaction";
+import useTimelineFeed, { TimelineSubject } from "Feed/TimelineFeed";
+import { TaggedRawEvent } from "Nostr";
+import EventKind from "Nostr/EventKind";
+import LoadMore from "Element/LoadMore";
+import Note from "Element/Note";
+import NoteReaction from "Element/NoteReaction";
 
 export interface TimelineProps {
     postsOnly: boolean,

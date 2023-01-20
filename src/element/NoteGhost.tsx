@@ -1,5 +1,5 @@
 import "./Note.css";
-import ProfileImage from "./ProfileImage";
+import ProfileImage from "Element/ProfileImage";
 
 export default function NoteGhost(props: any) {
     return (

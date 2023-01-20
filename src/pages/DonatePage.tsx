@@ -1,6 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ProfilePreview from "../element/ProfilePreview";
-import ZapButton from "../element/ZapButton";
+import ProfilePreview from "Element/ProfilePreview";
+import ZapButton from "Element/ZapButton";
 
 const Developers = [
     "63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed", // kieran

@@ -1,4 +1,4 @@
-import Nip5Service from "../element/Nip5Service";
+import Nip5Service from "Element/Nip5Service";
 
 import './Verification.css'
 

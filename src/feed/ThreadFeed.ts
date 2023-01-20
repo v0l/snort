@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { u256 } from "../nostr";
-import EventKind from "../nostr/EventKind";
-import { Subscriptions } from "../nostr/Subscriptions";
-import useSubscription from "./Subscription";
+import { u256 } from "Nostr";
+import EventKind from "Nostr/EventKind";
+import { Subscriptions } from "Nostr/Subscriptions";
+import useSubscription from "Feed/Subscription";
 
 export default function useThreadFeed(id: u256) {
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([id]);

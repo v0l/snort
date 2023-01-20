@@ -10,22 +10,22 @@ import {
 } from "react-router-dom";
 
 // @ts-expect-error
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import EventPage from './pages/EventPage';
-import Layout from './pages/Layout';
-import LoginPage from './pages/Login';
-import ProfilePage from './pages/ProfilePage';
-import RootPage from './pages/Root';
-import Store from "./state/Store";
-import NotificationsPage from './pages/Notifications';
-import NewUserPage from './pages/NewUserPage';
-import SettingsPage from './pages/SettingsPage';
-import ErrorPage from './pages/ErrorPage';
-import VerificationPage from './pages/Verification';
-import MessagesPage from './pages/MessagesPage';
-import ChatPage from './pages/ChatPage';
-import DonatePage from './pages/DonatePage';
-import HashTagsPage from './pages/HashTagsPage';
+import * as serviceWorkerRegistration from 'serviceWorkerRegistration';
+import Store from "State/Store";
+import EventPage from 'Pages/EventPage';
+import Layout from 'Pages/Layout';
+import LoginPage from 'Pages/Login';
+import ProfilePage from 'Pages/ProfilePage';
+import RootPage from 'Pages/Root';
+import NotificationsPage from 'Pages/Notifications';
+import NewUserPage from 'Pages/NewUserPage';
+import SettingsPage from 'Pages/SettingsPage';
+import ErrorPage from 'Pages/ErrorPage';
+import VerificationPage from 'Pages/Verification';
+import MessagesPage from 'Pages/MessagesPage';
+import ChatPage from 'Pages/ChatPage';
+import DonatePage from 'Pages/DonatePage';
+import HashTagsPage from 'Pages/HashTagsPage';
 
 /**
  * HTTP query provider

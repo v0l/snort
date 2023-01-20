@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import useFollowersFeed from "../feed/FollowersFeed";
-import { HexKey } from "../nostr";
-import EventKind from "../nostr/EventKind";
-import FollowListBase from "./FollowListBase";
+import useFollowersFeed from "Feed/FollowersFeed";
+import { HexKey } from "Nostr";
+import EventKind from "Nostr/EventKind";
+import FollowListBase from "Element/FollowListBase";
 
 export interface FollowersListProps {
     pubkey: HexKey
