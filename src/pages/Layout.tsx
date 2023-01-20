@@ -87,7 +87,7 @@ export default function Layout() {
     return (
         <div className="page">
             <div className="header">
-                <div onClick={() => navigate("/")}>snort</div>
+                <div className="logo" onClick={() => navigate("/")}>snort</div>
                 <div>
                     {key ? accountHeader() :
                         <div className="btn" onClick={() => navigate("/login")}>Login</div>
