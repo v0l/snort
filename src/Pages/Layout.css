@@ -12,8 +12,9 @@
   line-height: 1.5em;
   top: -10px;
   left: -10px;
-  font-size: small;
+  font-size: var(--font-size-small);
   background-color: var(--error);
+  color: var(--note-bg);
   font-weight: bold;
   text-align: center;
 }

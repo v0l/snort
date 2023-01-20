@@ -30,15 +30,17 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-     --bg-color: #FFF;
-     --font-color: #000;
-     --font-secondary-color: #444;
-      --font-tertiary-color: #666;
-     --highlight-light: #FFC852;
-     --highlight: #FF9B00;
-     --highlight-dark: #944F05;
+     --bg-color: #F1F1F1;
+     --font-color: #57534E;
+     --font-secondary-color: #B9B9B9;
+     --font-tertiary-color: #F3F3F3;
+
+     --highlight-light: #16AAC1;
+     --highlight: #0284C7;
+     --highlight-dark: #0A52B5;
      --modal-bg-color: rgba(240, 240, 240, 0.8);
-     --note-bg: #EEE;
+
+     --note-bg: white;
 
      --gray: #CCC;
      --gray-secondary: #DDD;
