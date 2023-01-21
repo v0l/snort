@@ -32,7 +32,7 @@ export default function Timeline({ subject, postsOnly = false, method }: Timelin
     }, [main]);
 
     const latestFeed = useMemo(() => {
-        return filterPosts(latest.notes);
+        return filterPosts(latest.notes).filter(a => !mainFeed.some(b => b.id === a.id));
     }, [latest]);
 
     function eventElement(e: TaggedRawEvent) {
@@ -52,7 +52,7 @@ export default function Timeline({ subject, postsOnly = false, method }: Timelin
             {latestFeed.length > 1 && (<div className="card latest-notes pointer" onClick={() => showLatest()}>
                 <FontAwesomeIcon icon={faForward}  size="xl"/>
                 &nbsp;
-                Show latest {latestFeed.length} notes
+                Show latest {latestFeed.length - 1} notes
             </div>)}
             {mainFeed.map(eventElement)}
             {mainFeed.length > 0 ? <LoadMore onLoadMore={loadMore} /> : null}
