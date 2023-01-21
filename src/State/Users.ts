@@ -1,6 +1,4 @@
-import { useMemo } from "react";
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { useLiveQuery } from "dexie-react-hooks";
 import { HexKey, TaggedRawEvent, UserMetadata } from "Nostr";
 import { hexToBech32 } from "../Util";
 import { db } from "Db";
@@ -66,11 +64,6 @@ const { setUsers } = UsersSlice.actions
 
 function groupByPubkey(acc: Record<HexKey, MetadataCache>, user: MetadataCache) {
   return { ...acc, [user.pubkey]: user }
-}
-
-function groupByPubkeyMap(acc: Map<HexKey, MetadataCache>, user: MetadataCache) {
-  acc.set(user.pubkey, user)
-  return acc
 }
 
 export const add = async (user: MetadataCache) => {
@@ -148,78 +141,6 @@ export const bulkPut = async (newUsers: MetadataCache[]) => {
     const newProfiles = newUsers.reduce(groupByPubkey, {})
     store.dispatch(setUsers({ ...users, ...newProfiles }))
   }
-}
-
-export function useQuery(query: string, limit: number = 5) {
-  const state = store.getState()
-  const { users } = state.users
-
-  const inMemoryUsers = useMemo(() => {
-    return Object.values(users).filter((user) => {
-      return user.name?.includes(query)
-        || user.npub?.includes(query)
-        || user.display_name?.includes(query)
-        || user.nip05?.includes(query)
-    })
-  }, [users, query])
-
-  const allUsers = useLiveQuery(
-    () => db.users
-          .where("npub").startsWithIgnoreCase(query)
-          .or("name").startsWithIgnoreCase(query)
-          .or("display_name").startsWithIgnoreCase(query)
-          .or("nip05").startsWithIgnoreCase(query)
-          .limit(5)
-          .toArray()
-          .catch((err) => {
-            return inMemoryUsers
-          }),
-    [query],
-  )
-
-  return allUsers
-}
-
-export function useKey(pubKey: HexKey) {
-  const state = store.getState()
-  const { users } = state.users
-
-  const inMemoryUser = useMemo(() => {
-    return users[pubKey]
-  }, [users, pubKey])
-
-  const user = useLiveQuery(async () => {
-      if (pubKey) {
-          return await find(pubKey);
-      }
-  }, [pubKey]);
-
-  return user ?? inMemoryUser
-}
-
-export function useKeys(pubKeys: HexKey[]): Map<HexKey, MetadataCache> {
-  const state = store.getState()
-  const { users } = state.users
-
-  const inMemoryUsers = useMemo(() => {
-    const res = new Map()
-    Object.values(users).forEach(u => {
-      if (pubKeys.includes(u.pubkey)) {
-        res.set(u.pubkey, u)
-      }
-    })
-    return res
-  }, [users, pubKeys])
-
-  const dbUsers = useLiveQuery(async () => {
-      if (pubKeys) {
-        const ret = await bulkGet(pubKeys);
-        return new Map(ret.map(a => [a.pubkey, a]))
-      }
-      return new Map()
-  }, [pubKeys]);
-
-  return dbUsers || inMemoryUsers
 }
 
 export const reducer = UsersSlice.reducer;

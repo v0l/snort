@@ -9,8 +9,8 @@ import TextareaAutosize from "react-textarea-autosize";
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
 import { hexToBech32 } from "Util";
-import { db } from "Db";
-import { useQuery, MetadataCache } from "State/Users";
+import { MetadataCache } from "State/Users";
+import { useQuery } from "State/Users/Hooks";
 
 interface EmojiItemProps {
   name: string
