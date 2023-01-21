@@ -146,20 +146,23 @@
   color: var(--highlight);
 }
 
-@media (prefers-color-scheme: light) {
-  .indented .active {
-    background-color: var(--gray-secondary);
-  }
 
-  .note.active>.header .reply {
-    color: var(--font-secondary-color);
-  }
+.light .indented .active {
+  background-color: var(--gray-secondary);
+}
 
-  .note.active>.header>.info {
-    color: var(--font-secondary-color);
-  }
+.light .note.active>.header .reply {
+  color: var(--font-secondary-color);
+}
 
-  .note.active>.footer>.reaction-pill {
-    color: var(--font-secondary-color);
-  }
+.light .note.active>.header>.info {
+  color: var(--font-secondary-color);
+}
+
+.light .note.active>.footer>.reaction-pill {
+  color: var(--note-bg);
+}
+
+.light .note.active>.footer>.reaction-pill.reacted {
+  color: var(--highlight);
 }
