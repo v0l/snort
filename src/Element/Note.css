@@ -32,6 +32,16 @@
   color: var(--font-secondary-color);
   border: 1px solid var(--font-secondary-color);
   border-radius: 16px;
+  min-width: 0;
+}
+
+.note>.footer .ctx-menu li {
+  display: grid;
+  grid-template-columns: 2rem auto;
+}
+
+.ctx-menu .red {
+  color: var(--error);
 }
 
 .note>.header img:hover, .note>.header .name>.reply:hover, .note .body:hover {
@@ -40,6 +50,7 @@
 
 .note>.note-creator {
   margin-top: 12px;
+  margin-left: 56px;
 }
 
 @media (min-width: 720px) {

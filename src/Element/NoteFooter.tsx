@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat, faEllipsisVertical, faShareNodes } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat, faEllipsisVertical, faShareNodes, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Menu, MenuItem } from '@szhsin/react-menu';
 
@@ -126,7 +126,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function share() {
-    const url = `${window.location.protocol}//${window.location.host}/e/${hexToBech32("npub", ev.Id)}`;
+    const url = `${window.location.protocol}//${window.location.host}/e/${hexToBech32("note", ev.Id)}`;
     if ("share" in window.navigator) {
       await window.navigator.share({
         title: "Snort",
@@ -137,40 +137,40 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }
 
+  async function copyId() {
+    await navigator.clipboard.writeText(hexToBech32("note", ev.Id));
+  }
+
   function menuItems() {
     return (
       <>
         <MenuItem onClick={() => react("-")}>
-          <div className={`reaction-pill ${hasReacted('-') ? 'reacted' : ''}`}>
-            <div className="reaction-pill-icon">
-              <FontAwesomeIcon icon={faThumbsDown} />
-            </div>
-            <div className="reaction-pill-number">
-              {formatShort(groupReactions[Reaction.Negative])}
-            </div>
+          <div>
+            <FontAwesomeIcon icon={faThumbsDown} className={hasReacted('-') ? 'reacted' : ''} />
+            &nbsp;
+            {formatShort(groupReactions[Reaction.Negative])}
           </div>
           Dislike
         </MenuItem>
         <MenuItem onClick={() => share()}>
-          <div className="reaction-pill mr-auto">
-            <div className="reaction-pill-icon">
-              <FontAwesomeIcon icon={faShareNodes} />
-            </div>
-          </div>
+          <FontAwesomeIcon icon={faShareNodes} />
           Share
+        </MenuItem>
+        <MenuItem onClick={() => copyId()}>
+          <FontAwesomeIcon icon={faCopy} />
+          Copy ID
         </MenuItem>
 
         {isMine && (
           <MenuItem onClick={() => deleteEvent()}>
-            <div className="reaction-pill trash-icon">
-              <FontAwesomeIcon icon={faTrash} />
-            </div>
+            <FontAwesomeIcon icon={faTrash} className="red" />
             Delete
           </MenuItem>
         )}
       </>
     )
   }
+
   return (
     <>
       <div className="footer">
