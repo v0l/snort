@@ -88,4 +88,4 @@ export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/;
 /**
  * Tidal share link regex
  */
-export const TidalRegex = /tidal\.com\/browse\/(\w+)\/([a-z0-9-]+)/i;
+export const TidalRegex = /tidal\.com\/(?:browse\/)?(\w+)\/([a-z0-9-]+)/i;
