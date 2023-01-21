@@ -49,7 +49,7 @@ export default function Timeline({ subject, postsOnly = false, method }: Timelin
 
     return (
         <>
-            {latestFeed.length > 0 && (<div className="card latest-notes pointer" onClick={() => showLatest()}>
+            {latestFeed.length > 1 && (<div className="card latest-notes pointer" onClick={() => showLatest()}>
                 <FontAwesomeIcon icon={faForward}  size="xl"/>
                 &nbsp;
                 Show latest {latestFeed.length} notes

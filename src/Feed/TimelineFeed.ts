@@ -66,7 +66,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 let latestSub = new Subscriptions();
                 latestSub.Ids = sub.Ids;
                 latestSub.Kinds = sub.Kinds;
-                latestSub.Limit = 0;
+                latestSub.Limit = 1;
                 sub.AddSubscription(latestSub);
             }
         }
@@ -79,7 +79,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         let subLatest = createSub();
         if (subLatest && !pref.autoShowLatest) {
             subLatest.Id = `${subLatest.Id}:latest`;
-            subLatest.Limit = 0;
+            subLatest.Limit = 1;
         }
         return subLatest;
     }, [subject.type, subject.items]);
