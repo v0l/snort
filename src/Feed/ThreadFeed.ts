@@ -14,8 +14,9 @@ export default function useThreadFeed(id: u256) {
     function addId(id: u256[]) {
         setTrackingEvent((s) => {
             let orig = new Set(s);
-            if (!id.some(a => orig.has(a))) {
-                let tmp = new Set([...s, ...id]);
+            let idsMissing = id.filter(a => !orig.has(a));
+            if (idsMissing.length > 0) {
+                let tmp = new Set([...s, ...idsMissing]);
                 return Array.from(tmp);
             } else {
                 return s;
