@@ -1,11 +1,11 @@
 .pill {
+  color: var(--font-color);
   font-size: var(--font-size-small);
   display: inline-block;
-  background-color: var(--gray-tertiary);
+  background-color: var(--gray-secondary);
   padding: 2px 10px;
   border-radius: 10px;
   user-select: none;
-  color: var(--font-color);
   margin: 2px 5px;
 }
 
