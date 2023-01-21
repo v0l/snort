@@ -6,7 +6,7 @@ import Tag from "Nostr/Tag";
 import { RootState } from "State/Store";
 import { HexKey, RawEvent, u256, UserMetadata } from "Nostr";
 import { bech32ToHex } from "Util"
-import { HashtagRegex } from "Const";
+import { DefaultRelays, HashtagRegex } from "Const";
 
 declare global {
     interface Window {
@@ -70,6 +70,18 @@ export default function useEventPublisher() {
             if (ev) {
                 console.debug("Sending event: ", ev);
                 System.BroadcastEvent(ev);
+            }
+        },
+        /**
+         * Write event to DefaultRelays, this is important for profiles / relay lists to prevent bugs
+         * If a user removes all the DefaultRelays from their relay list and saves that relay list, 
+         * When they open the site again we wont see that updated relay list and so it will appear to reset back to the previous state
+         */
+        broadcastForBootstrap: (ev: NEvent | undefined) => {
+            if(ev) {
+                for(let [k, _] of DefaultRelays) {
+                    System.WriteOnceToRelay(k, ev);
+                }
             }
         },
         metadata: async (obj: UserMetadata) => {

@@ -5,7 +5,7 @@ import { Subscriptions } from "Nostr/Subscriptions";
 import { default as NEvent } from "Nostr/Event";
 import { DefaultConnectTimeout } from "Const";
 import { ConnectionStats } from "Nostr/ConnectionStats";
-import { RawEvent, TaggedRawEvent } from "Nostr";
+import { RawEvent, TaggedRawEvent, u256 } from "Nostr";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
 
@@ -44,6 +44,7 @@ export default class Connection {
     LastState: Readonly<StateSnapshot>;
     IsClosed: boolean;
     ReconnectTimer: ReturnType<typeof setTimeout> | null;
+    EventsCallback: Map<u256, () => void>;
 
     constructor(addr: string, options: RelaySettings) {
         this.Address = addr;
@@ -67,6 +68,7 @@ export default class Connection {
         this.LastState = Object.freeze({ ...this.CurrentState });
         this.IsClosed = false;
         this.ReconnectTimer = null;
+        this.EventsCallback = new Map();
         this.Connect();
     }
 
@@ -138,6 +140,12 @@ export default class Connection {
                 case "OK": {
                     // feedback to broadcast call
                     console.debug("OK: ", msg);
+                    const id = msg[1];
+                    if (this.EventsCallback.has(id)) {
+                        let cb = this.EventsCallback.get(id)!;
+                        this.EventsCallback.delete(id);
+                        cb();
+                    }
                     break;
                 }
                 case "NOTICE": {
@@ -168,6 +176,30 @@ export default class Connection {
         this._SendJson(req);
         this.Stats.EventsSent++;
         this._UpdateState();
+    }
+
+    /**
+     * Send event on this connection and wait for OK response
+     */
+    async SendAsync(e: NEvent, timeout: number = 5000) {
+        return new Promise<void>((resolve, reject) => {
+            if (!this.Settings.write) {
+                resolve();
+                return;
+            }
+            let t = setTimeout(() => {
+                resolve();
+            }, timeout);
+            this.EventsCallback.set(e.Id, () => {
+                clearTimeout(t);
+                resolve();
+            });
+
+            let req = ["EVENT", e.ToObject()];
+            this._SendJson(req);
+            this.Stats.EventsSent++;
+            this._UpdateState();
+        });
     }
 
     /**

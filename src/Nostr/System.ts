@@ -50,6 +50,9 @@ export class NostrSystem {
                 for (let [_, s] of this.Subscriptions) {
                     c.AddSubscription(s);
                 }
+            } else {
+                // update settings if already connected
+                this.Sockets.get(address)!.Settings = options;
             }
         } catch (e) {
             console.error(e);
@@ -88,6 +91,15 @@ export class NostrSystem {
         for (let [_, s] of this.Sockets) {
             s.SendEvent(ev);
         }
+    }
+
+    /**
+     * Write an event to a relay then disconnect
+     */
+    async WriteOnceToRelay(address: string, ev: Event) {
+        let c = new Connection(address, { write: true, read: false });
+        await c.SendAsync(ev);
+        c.Close();
     }
 
     /**
@@ -179,9 +191,9 @@ export class NostrSystem {
                 let profile = mapEventToProfile(e);
                 if (profile) {
                     let existing = await db.users.get(profile.pubkey);
-                    if((existing?.created ?? 0) < profile.created) {
+                    if ((existing?.created ?? 0) < profile.created) {
                         await db.users.put(profile);
-                    } else if(existing) {
+                    } else if (existing) {
                         await db.users.update(profile.pubkey, { loaded: new Date().getTime() });
                     }
                 }
