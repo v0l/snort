@@ -47,13 +47,13 @@ export default function useLoginFeed() {
     const main = useSubscription(sub, { leaveOpen: true });
 
     useEffect(() => {
-        let contactList = main.notes.filter(a => a.kind === EventKind.ContactList);
-        let notifications = main.notes.filter(a => a.kind === EventKind.TextNote);
-        let metadata = main.notes.filter(a => a.kind === EventKind.SetMetadata);
+        let contactList = main.store.notes.filter(a => a.kind === EventKind.ContactList);
+        let notifications = main.store.notes.filter(a => a.kind === EventKind.TextNote);
+        let metadata = main.store.notes.filter(a => a.kind === EventKind.SetMetadata);
         let profiles = metadata.map(a => mapEventToProfile(a))
             .filter(a => a !== undefined)
             .map(a => a!);
-        let dms = main.notes.filter(a => a.kind === EventKind.DirectMessage);
+        let dms = main.store.notes.filter(a => a.kind === EventKind.DirectMessage);
 
         for (let cl of contactList) {
             if (cl.content !== "") {
@@ -87,7 +87,7 @@ export default function useLoginFeed() {
                 }
             }
         })().catch(console.warn);
-    }, [main]);
+    }, [main.store]);
 }
 
 async function makeNotification(ev: TaggedRawEvent) {

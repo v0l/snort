@@ -32,9 +32,14 @@ export interface UserPreferences {
     confirmReposts: boolean,
 
     /**
+     * Automatically show the latests notes 
+     */
+    autoShowLatest: boolean,
+
+    /**
      * Show debugging menus to help diagnose issues
      */
-    showDebugMenus: boolean
+     showDebugMenus: boolean
 }
 
 export interface LoginStore {
@@ -110,7 +115,8 @@ const InitState = {
         autoLoadMedia: true,
         theme: "system",
         confirmReposts: false,
-        showDebugMenus: false
+        showDebugMenus: false,
+        autoShowLatest: false
     }
 } as LoginStore;
 
