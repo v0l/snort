@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat, faEllipsisVertical, faShareNodes, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Menu, MenuItem } from '@szhsin/react-menu';
 
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { getReactions, normalizeReaction, Reaction } from "Util";
+import { getReactions, hexToBech32, normalizeReaction, Reaction } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import LNURLTip from "Element/LNURLTip";
 import useProfile from "Feed/ProfileFeed";
@@ -79,7 +80,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (service) {
       return (
         <>
-          <div className="reaction-pill" onClick={(e) => setTip(true)}>
+          <div className="reaction-pill" onClick={() => setTip(true)}>
             <div className="reaction-pill-icon">
               <FontAwesomeIcon icon={faBolt} />
             </div>
@@ -111,7 +112,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
     return (
       <>
-        <div className={`reaction-pill ${hasReacted('+') ? 'reacted' : ''} `} onClick={(e) => react("+")}>
+        <div className={`reaction-pill ${hasReacted('+') ? 'reacted' : ''} `} onClick={() => react("+")}>
           <div className="reaction-pill-icon">
             <FontAwesomeIcon icon={faHeart} />
           </div>
@@ -119,15 +120,53 @@ export default function NoteFooter(props: NoteFooterProps) {
             {formatShort(groupReactions[Reaction.Positive])}
           </div>
         </div>
-        <div className={`reaction-pill ${hasReacted('-') ? 'reacted' : ''}`} onClick={(e) => react("-")}>
-          <div className="reaction-pill-icon">
-            <FontAwesomeIcon icon={faThumbsDown} />
-          </div>
-          <div className="reaction-pill-number">
+        {repostIcon()}
+      </>
+    )
+  }
+
+  async function share() {
+    const url = `${window.location.protocol}//${window.location.host}/e/${hexToBech32("note", ev.Id)}`;
+    if ("share" in window.navigator) {
+      await window.navigator.share({
+        title: "Snort",
+        url: url
+      });
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
+  }
+
+  async function copyId() {
+    await navigator.clipboard.writeText(hexToBech32("note", ev.Id));
+  }
+
+  function menuItems() {
+    return (
+      <>
+        <MenuItem onClick={() => react("-")}>
+          <div>
+            <FontAwesomeIcon icon={faThumbsDown} className={hasReacted('-') ? 'reacted' : ''} />
+            &nbsp;
             {formatShort(groupReactions[Reaction.Negative])}
           </div>
-        </div>
-        {repostIcon()}
+          Dislike
+        </MenuItem>
+        <MenuItem onClick={() => share()}>
+          <FontAwesomeIcon icon={faShareNodes} />
+          Share
+        </MenuItem>
+        <MenuItem onClick={() => copyId()}>
+          <FontAwesomeIcon icon={faCopy} />
+          Copy ID
+        </MenuItem>
+
+        {isMine && (
+          <MenuItem onClick={() => deleteEvent()}>
+            <FontAwesomeIcon icon={faTrash} className="red" />
+            Delete
+          </MenuItem>
+        )}
       </>
     )
   }
@@ -140,15 +179,16 @@ export default function NoteFooter(props: NoteFooterProps) {
             <FontAwesomeIcon icon={faReply} />
           </div>
         </div>
+        <Menu menuButton={<div className="reaction-pill">
+          <div className="reaction-pill-icon">
+            <FontAwesomeIcon icon={faEllipsisVertical} />
+          </div>
+        </div>} menuClassName="ctx-menu">
+          {menuItems()}
+        </Menu>
+
         {reactionIcons()}
         {tipButton()}
-        {isMine && (
-          <div className="reaction-pill trash-icon">
-            <div className="reaction-pill-icon">
-              <FontAwesomeIcon icon={faTrash} onClick={(e) => deleteEvent()} />
-            </div>
-          </div>
-        )}
       </div>
       <NoteCreator
         autoFocus={true}

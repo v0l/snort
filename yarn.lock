@@ -1804,6 +1804,14 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
+"@szhsin/react-menu@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@szhsin/react-menu/-/react-menu-3.3.1.tgz#c974c887bfcf94aca4c4cc07688a3c20d4e952bd"
+  integrity sha512-e8vK+N1YWwTdYXElvRRf5GIImtcDecqTCzpAa0DkGAknKwfQwtQtUnBn+DECodwsWi5H5ONKTU+kn0qJ70hEYQ==
+  dependencies:
+    prop-types "^15.7.2"
+    react-transition-state "^1.1.5"
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
@@ -6035,6 +6043,11 @@ js-sha3@0.8.0:
   resolved "https://registry.yarnpkg.com/js-sha3/-/js-sha3-0.8.0.tgz#b9b7a5da73afad7dedd0f8c463954cbde6818840"
   integrity sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q==
 
+js-stylesheet@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/js-stylesheet/-/js-stylesheet-0.0.1.tgz#12cc1451220e454184b46de3b098c0d154762c38"
+  integrity sha512-jSPbDIaHlK8IFXEbE6MZkeAQshRHHxxOcQ+LCZejm3KpW+POpi2TE3GXWoFsOOG2+AhCTWHjD7AXRFt3FDm8Zw==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -7790,7 +7803,7 @@ prompts@^2.0.1, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.0.0, prop-types@^15.8.1:
+prop-types@^15.0.0, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -7986,6 +7999,13 @@ react-markdown@^8.0.4:
     unist-util-visit "^4.0.0"
     vfile "^5.0.0"
 
+react-menu@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/react-menu/-/react-menu-0.0.10.tgz#c2b338cdd88e4c436325969239089e0752a142bc"
+  integrity sha512-SGl/OZljPUB1ITWBG2wt1p7hyE3Y449O9FUezxkKzu+JM5HWkPjrU/JRmG4ZguyegLAnZx3qyjhdFYqB44sqJw==
+  dependencies:
+    js-stylesheet "0.0.1"
+
 react-query@^3.39.2:
   version "3.39.2"
   resolved "https://registry.yarnpkg.com/react-query/-/react-query-3.39.2.tgz#9224140f0296f01e9664b78ed6e4f69a0cc9216f"
@@ -8090,6 +8110,11 @@ react-textarea-autosize@^8.4.0:
     "@babel/runtime" "^7.10.2"
     use-composed-ref "^1.3.0"
     use-latest "^1.2.1"
+
+react-transition-state@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-transition-state/-/react-transition-state-1.1.5.tgz#22accee21d0011b1d0245be24b6262ae67f494c3"
+  integrity sha512-ITY2mZqc2dWG2eitJkYNdcSFW8aKeOlkL2A/vowRrLL8GH3J6Re/SpD/BLvQzrVOTqjsP0b5S9N10vgNNzwMUQ==
 
 react-twitter-embed@^4.0.4:
   version "4.0.4"
