@@ -64,7 +64,8 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 // copy properties of main sub but with limit 0
                 // this will put latest directly into main feed
                 let latestSub = new Subscriptions();
-                latestSub.Ids = sub.Ids;
+                latestSub.Authors = sub.Authors;
+                latestSub.HashTags = sub.HashTags;
                 latestSub.Kinds = sub.Kinds;
                 latestSub.Limit = 1;
                 sub.AddSubscription(latestSub);
