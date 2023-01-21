@@ -15,7 +15,7 @@ export default function FollowsYou({ pubkey }: FollowsYouProps ) {
     const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
 
     const pubkeys = useMemo(() => {
-        return getFollowers(feed, pubkey);
+        return getFollowers(feed.store, pubkey);
     }, [feed]);
 
     const followsMe = pubkeys.includes(loginPubKey!) ?? false ;

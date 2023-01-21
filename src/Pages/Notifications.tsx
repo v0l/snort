@@ -51,11 +51,11 @@ export default function NotificationsPage() {
         <>
             {sorted?.map(a => {
                 if (a.kind === EventKind.TextNote) {
-                    return <Note data={a} key={a.id} related={otherNotes?.notes ?? []} />
+                    return <Note data={a} key={a.id} related={otherNotes?.store.notes ?? []} />
                 } else if (a.kind === EventKind.Reaction) {
                     let ev = new Event(a);
                     let reactedTo = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
-                    let reactedNote = otherNotes?.notes?.find(c => c.id === reactedTo);
+                    let reactedNote = otherNotes?.store.notes?.find(c => c.id === reactedTo);
                     return <NoteReaction data={a} key={a.id} root={reactedNote} />
                 }
                 return null;

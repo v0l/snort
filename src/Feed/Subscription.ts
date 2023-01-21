@@ -13,27 +13,38 @@ export type UseSubscriptionOptions = {
 }
 
 interface ReducerArg {
-    type: "END" | "EVENT"
-    ev?: TaggedRawEvent,
+    type: "END" | "EVENT" | "CLEAR",
+    ev?: TaggedRawEvent | Array<TaggedRawEvent>,
     end?: boolean
 }
 
 function notesReducer(state: NoteStore, arg: ReducerArg) {
     if (arg.type === "END") {
-        state.end = arg.end!;
-        return state;
+        return {
+            notes: state.notes,
+            end: arg.end!
+        } as NoteStore;
     }
 
-    let ev = arg.ev!;
-    if (state.notes.some(a => a.id === ev.id)) {
-        //state.notes.find(a => a.id == ev.id)?.relays?.push(ev.relays[0]);
-        return state;
+    if (arg.type === "CLEAR") {
+        return {
+            notes: [],
+            end: state.end,
+        } as NoteStore;
     }
 
+    let evs = arg.ev!;
+    if (!Array.isArray(evs)) {
+        evs = [evs];
+    }
+    evs = evs.filter(a => !state.notes.some(b => b.id === a.id));
+    if (evs.length === 0) {
+        return state;
+    }
     return {
         notes: [
             ...state.notes,
-            ev
+            ...evs
         ]
     } as NoteStore;
 }
@@ -43,13 +54,19 @@ const initStore: NoteStore = {
     end: false
 };
 
+export interface UseSubscriptionState {
+    store: NoteStore,
+    clear: () => void,
+    append: (notes: TaggedRawEvent[]) => void
+}
+
 /**
  * 
  * @param {Subscriptions} sub 
  * @param {any} opt 
  * @returns 
  */
-export default function useSubscription(sub: Subscriptions | null, options?: UseSubscriptionOptions) {
+export default function useSubscription(sub: Subscriptions | null, options?: UseSubscriptionOptions): UseSubscriptionState {
     const [state, dispatch] = useReducer(notesReducer, initStore);
     const [debounce, setDebounce] = useState<number>(0);
 
@@ -91,5 +108,17 @@ export default function useSubscription(sub: Subscriptions | null, options?: Use
         return () => clearTimeout(t);
     }, [state]);
 
-    return useMemo(() => state, [debounce]);
+    const stateDebounced = useMemo(() => state, [debounce]);
+    return {
+        store: stateDebounced,
+        clear: () => {
+            dispatch({ type: "CLEAR" });
+        },
+        append: (n: TaggedRawEvent[]) => {
+            dispatch({
+                type: "EVENT",
+                ev: n
+            });
+        }
+    }
 }

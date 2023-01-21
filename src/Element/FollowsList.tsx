@@ -12,7 +12,7 @@ export default function FollowsList({ pubkey }: FollowsListProps) {
     const feed = useFollowsFeed(pubkey);
 
     const pubkeys = useMemo(() => {
-        return getFollowers(feed, pubkey);
+        return getFollowers(feed.store, pubkey);
     }, [feed]);
 
     return <FollowListBase pubkeys={pubkeys} title={`Following ${pubkeys?.length}`} />

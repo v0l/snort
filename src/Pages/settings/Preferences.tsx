@@ -52,6 +52,15 @@ const PreferencesPage = () => {
             </div>
             <div className="card flex">
                 <div className="flex f-col f-grow">
+                    <div>Automatically show latest notes</div>
+                    <small>Notes will stream in real time into global and posts tab</small>
+                </div>
+                <div>
+                    <input type="checkbox" checked={perf.autoShowLatest} onChange={e => dispatch(setPreferences({ ...perf, autoShowLatest: e.target.checked }))} />
+                </div>
+            </div>
+            <div className="card flex">
+                <div className="flex f-col f-grow">
                     <div>Debug Menus</div>
                     <small>Shows extra options to help with debugging data</small>
                 </div>

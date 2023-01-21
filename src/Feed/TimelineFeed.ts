@@ -19,13 +19,13 @@ export interface TimelineSubject {
 
 export default function useTimelineFeed(subject: TimelineSubject, options: TimelineFeedOptions) {
     const now = unixNow();
-    const [window, setWindow] = useState<number>(60 * 60);
+    const [window, setWindow] = useState<number>(60 * 10);
     const [until, setUntil] = useState<number>(now);
     const [since, setSince] = useState<number>(now - window);
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
     const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
 
-    const sub = useMemo(() => {
+    function createSub() {
         if (subject.type !== "global" && subject.items.length == 0) {
             return null;
         }
@@ -43,21 +43,48 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 break;
             }
         }
-        if (options.method === "LIMIT_UNTIL") {
-            sub.Until = until;
-            sub.Limit = 10;
-        } else {
-            sub.Since = since;
-            sub.Until = until;
-            if (since === undefined) {
-                sub.Limit = 50;
+        return sub;
+    }
+
+    const sub = useMemo(() => {
+        let sub = createSub();
+        if (sub) {
+            if (options.method === "LIMIT_UNTIL") {
+                sub.Until = until;
+                sub.Limit = 10;
+            } else {
+                sub.Since = since;
+                sub.Until = until;
+                if (since === undefined) {
+                    sub.Limit = 50;
+                }
+            }
+
+            if (pref.autoShowLatest) {
+                // copy properties of main sub but with limit 0
+                // this will put latest directly into main feed
+                let latestSub = new Subscriptions();
+                latestSub.Ids = sub.Ids;
+                latestSub.Kinds = sub.Kinds;
+                latestSub.Limit = 0;
+                sub.AddSubscription(latestSub);
             }
         }
-
         return sub;
     }, [subject.type, subject.items, until, since, window]);
 
     const main = useSubscription(sub, { leaveOpen: true });
+
+    const subRealtime = useMemo(() => {
+        let subLatest = createSub();
+        if (subLatest && !pref.autoShowLatest) {
+            subLatest.Id = `${subLatest.Id}:latest`;
+            subLatest.Limit = 0;
+        }
+        return subLatest;
+    }, [subject.type, subject.items]);
+
+    const latest = useSubscription(subRealtime, { leaveOpen: true });
 
     const subNext = useMemo(() => {
         if (trackingEvents.length > 0 && pref.enableReactions) {
@@ -73,26 +100,32 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     const others = useSubscription(subNext, { leaveOpen: true });
 
     useEffect(() => {
-        if (main.notes.length > 0) {
+        if (main.store.notes.length > 0) {
             setTrackingEvent(s => {
-                let ids = main.notes.map(a => a.id);
+                let ids = main.store.notes.map(a => a.id);
                 let temp = new Set([...s, ...ids]);
                 return Array.from(temp);
             });
         }
-    }, [main.notes]);
+    }, [main.store]);
 
     return {
-        main: main.notes,
-        others: others.notes,
+        main: main.store,
+        related: others.store,
+        latest: latest.store,
         loadMore: () => {
+            console.debug("Timeline load more!")
             if (options.method === "LIMIT_UNTIL") {
-                let oldest = main.notes.reduce((acc, v) => acc = v.created_at < acc ? v.created_at : acc, unixNow());
+                let oldest = main.store.notes.reduce((acc, v) => acc = v.created_at < acc ? v.created_at : acc, unixNow());
                 setUntil(oldest);
             } else {
                 setUntil(s => s - window);
                 setSince(s => s - window);
             }
+        },
+        showLatest: () => {
+            main.append(latest.store.notes);
+            latest.clear();
         }
     };
 }

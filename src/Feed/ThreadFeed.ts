@@ -37,13 +37,13 @@ export default function useThreadFeed(id: u256) {
     useEffect(() => {
         // debounce
         let t = setTimeout(() => {
-            let eTags = main.notes.map(a => a.tags.filter(b => b[0] === "e").map(b => b[1])).flat();
-            let ids = main.notes.map(a => a.id);
+            let eTags = main.store.notes.map(a => a.tags.filter(b => b[0] === "e").map(b => b[1])).flat();
+            let ids = main.store.notes.map(a => a.id);
             let allEvents = new Set([...eTags, ...ids]);
             addId(Array.from(allEvents));
         }, 200);
         return () => clearTimeout(t);
-    }, [main.notes]);
+    }, [main.store]);
 
     return main;
 }
