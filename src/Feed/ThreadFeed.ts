@@ -13,8 +13,13 @@ export default function useThreadFeed(id: u256) {
 
     function addId(id: u256[]) {
         setTrackingEvent((s) => {
-            let tmp = new Set([...s, ...id]);
-            return Array.from(tmp);
+            let orig = new Set(s);
+            if (!id.some(a => orig.has(a))) {
+                let tmp = new Set([...s, ...id]);
+                return Array.from(tmp);
+            } else {
+                return s;
+            }
         })
     }
 
@@ -45,5 +50,5 @@ export default function useThreadFeed(id: u256) {
         return () => clearTimeout(t);
     }, [main.store]);
 
-    return main;
+    return main.store;
 }
