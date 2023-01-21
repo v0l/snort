@@ -50,6 +50,15 @@ const PreferencesPage = () => {
                     <input type="checkbox" checked={perf.confirmReposts} onChange={e => dispatch(setPreferences({ ...perf, confirmReposts: e.target.checked }))} />
                 </div>
             </div>
+            <div className="card flex">
+                <div className="flex f-col f-grow">
+                    <div>Debug Menus</div>
+                    <small>Shows extra options to help with debugging data</small>
+                </div>
+                <div>
+                    <input type="checkbox" checked={perf.showDebugMenus} onChange={e => dispatch(setPreferences({ ...perf, showDebugMenus: e.target.checked }))} />
+                </div>
+            </div>
         </div>
     )
 }

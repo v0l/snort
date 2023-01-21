@@ -141,6 +141,10 @@ export default function NoteFooter(props: NoteFooterProps) {
     await navigator.clipboard.writeText(hexToBech32("note", ev.Id));
   }
 
+  async function copyEvent() {
+    await navigator.clipboard.writeText(JSON.stringify(ev.Original, undefined, '  '));
+  }
+
   function menuItems() {
     return (
       <>
@@ -160,7 +164,12 @@ export default function NoteFooter(props: NoteFooterProps) {
           <FontAwesomeIcon icon={faCopy} />
           Copy ID
         </MenuItem>
-
+        {prefs.showDebugMenus && (
+          <MenuItem onClick={() => copyEvent()}>
+            <FontAwesomeIcon icon={faCopy} />
+            Copy Event JSON
+          </MenuItem>
+        )}
         {isMine && (
           <MenuItem onClick={() => deleteEvent()}>
             <FontAwesomeIcon icon={faTrash} className="red" />

@@ -29,7 +29,12 @@ export interface UserPreferences {
     /**
      * Ask for confirmation when reposting notes
      */
-    confirmReposts: boolean
+    confirmReposts: boolean,
+
+    /**
+     * Show debugging menus to help diagnose issues
+     */
+    showDebugMenus: boolean
 }
 
 export interface LoginStore {
@@ -104,7 +109,8 @@ const InitState = {
         enableReactions: true,
         autoLoadMedia: true,
         theme: "system",
-        confirmReposts: false
+        confirmReposts: false,
+        showDebugMenus: false
     }
 } as LoginStore;
 
