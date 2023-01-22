@@ -7,7 +7,7 @@ import LoadMore from "Element/LoadMore";
 import Note from "Element/Note";
 import NoteReaction from "Element/NoteReaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFastForward, faForward } from "@fortawesome/free-solid-svg-icons";
+import { faForward } from "@fortawesome/free-solid-svg-icons";
 
 export interface TimelineProps {
     postsOnly: boolean,
@@ -55,7 +55,7 @@ export default function Timeline({ subject, postsOnly = false, method }: Timelin
                 Show latest {latestFeed.length - 1} notes
             </div>)}
             {mainFeed.map(eventElement)}
-            {mainFeed.length > 0 ? <LoadMore onLoadMore={loadMore} /> : null}
+            <LoadMore onLoadMore={loadMore} shouldLoadMore={main.end}/>
         </>
     );
 }

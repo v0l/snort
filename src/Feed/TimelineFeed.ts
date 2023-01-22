@@ -13,13 +13,13 @@ export interface TimelineFeedOptions {
 }
 
 export interface TimelineSubject {
-    type: "pubkey" | "hashtag" | "global",
+    type: "pubkey" | "hashtag" | "global" | "ptag",
     items: string[]
 }
 
 export default function useTimelineFeed(subject: TimelineSubject, options: TimelineFeedOptions) {
     const now = unixNow();
-    const [window, setWindow] = useState<number>(60 * 10);
+    const [window, setWindow] = useState<number>(60 * 60);
     const [until, setUntil] = useState<number>(now);
     const [since, setSince] = useState<number>(now - window);
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
@@ -40,6 +40,10 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
             }
             case "hashtag": {
                 sub.HashTags = new Set(subject.items);
+                break;
+            }
+            case "ptag": {
+                sub.PTags = new Set(subject.items);
                 break;
             }
         }
@@ -68,6 +72,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 latestSub.HashTags = sub.HashTags;
                 latestSub.Kinds = sub.Kinds;
                 latestSub.Limit = 1;
+                latestSub.Since = Math.floor(new Date().getTime() / 1000);
                 sub.AddSubscription(latestSub);
             }
         }
@@ -81,6 +86,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         if (subLatest && !pref.autoShowLatest) {
             subLatest.Id = `${subLatest.Id}:latest`;
             subLatest.Limit = 1;
+            subLatest.Since = Math.floor(new Date().getTime() / 1000);
         }
         return subLatest;
     }, [subject.type, subject.items]);

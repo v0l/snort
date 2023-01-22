@@ -20,40 +20,54 @@ export default function useLoginFeed() {
     const dispatch = useDispatch();
     const [pubKey, readNotifications] = useSelector<RootState, [HexKey | undefined, number]>(s => [s.login.publicKey, s.login.readNotifications]);
 
-    const sub = useMemo(() => {
-        if (!pubKey) {
-            return null;
-        }
+    const subMetadata = useMemo(() => {
+        if (!pubKey) return null;
 
         let sub = new Subscriptions();
-        sub.Id = `login:${sub.Id}`;
+        sub.Id = `login:meta`;
         sub.Authors = new Set([pubKey]);
-        sub.Kinds = new Set([EventKind.ContactList, EventKind.SetMetadata, EventKind.DirectMessage]);
-
-        let notifications = new Subscriptions();
-        notifications.Kinds = new Set([EventKind.TextNote]);
-        notifications.PTags = new Set([pubKey]);
-        notifications.Limit = 100;
-        sub.AddSubscription(notifications);
-
-        let dms = new Subscriptions();
-        dms.Kinds = new Set([EventKind.DirectMessage]);
-        dms.PTags = new Set([pubKey]);
-        sub.AddSubscription(dms);
+        sub.Kinds = new Set([EventKind.ContactList, EventKind.SetMetadata]);
 
         return sub;
     }, [pubKey]);
 
-    const main = useSubscription(sub, { leaveOpen: true });
+    const subNotification = useMemo(() => {
+        if (!pubKey) return null;
+
+        let sub = new Subscriptions();
+        sub.Id = "login:notifications";
+        sub.Kinds = new Set([EventKind.TextNote]);
+        sub.PTags = new Set([pubKey]);
+        sub.Limit = 1;
+        return sub;
+    }, [pubKey]);
+
+    const subDms = useMemo(() => {
+        if (!pubKey) return null;
+
+        let dms = new Subscriptions();
+        dms.Id = "login:dms";
+        dms.Kinds = new Set([EventKind.DirectMessage]);
+        dms.PTags = new Set([pubKey]);
+
+        let dmsFromME = new Subscriptions();
+        dmsFromME.Authors = new Set([pubKey]);
+        dmsFromME.Kinds = new Set([EventKind.DirectMessage]);
+        dms.AddSubscription(dmsFromME);
+
+        return dms;
+    }, [pubKey]);
+
+    const metadataFeed = useSubscription(subMetadata, { leaveOpen: true });
+    const notificationFeed = useSubscription(subNotification, { leaveOpen: true });
+    const dmsFeed = useSubscription(subDms, { leaveOpen: true });
 
     useEffect(() => {
-        let contactList = main.store.notes.filter(a => a.kind === EventKind.ContactList);
-        let notifications = main.store.notes.filter(a => a.kind === EventKind.TextNote);
-        let metadata = main.store.notes.filter(a => a.kind === EventKind.SetMetadata);
+        let contactList = metadataFeed.store.notes.filter(a => a.kind === EventKind.ContactList);
+        let metadata = metadataFeed.store.notes.filter(a => a.kind === EventKind.SetMetadata);
         let profiles = metadata.map(a => mapEventToProfile(a))
             .filter(a => a !== undefined)
             .map(a => a!);
-        let dms = main.store.notes.filter(a => a.kind === EventKind.DirectMessage);
 
         for (let cl of contactList) {
             if (cl.content !== "") {
@@ -64,14 +78,6 @@ export default function useLoginFeed() {
             dispatch(setFollows(pTags));
         }
 
-        if ("Notification" in window && Notification.permission === "granted") {
-            for (let nx of notifications.filter(a => (a.created_at * 1000) > readNotifications)) {
-                sendNotification(nx)
-                    .catch(console.warn);
-            }
-        }
-        dispatch(addNotifications(notifications));
-        dispatch(addDirectMessage(dms));
         (async () => {
             let maxProfile = profiles.reduce((acc, v) => {
                 if (v.created > acc.created) {
@@ -87,7 +93,25 @@ export default function useLoginFeed() {
                 }
             }
         })().catch(console.warn);
-    }, [main.store]);
+    }, [metadataFeed.store]);
+
+    useEffect(() => {
+        let notifications = notificationFeed.store.notes.filter(a => a.kind === EventKind.TextNote);
+
+        if ("Notification" in window && Notification.permission === "granted") {
+            for (let nx of notifications.filter(a => (a.created_at * 1000) > readNotifications)) {
+                sendNotification(nx)
+                    .catch(console.warn);
+            }
+        }
+
+        dispatch(addNotifications(notifications));
+    }, [notificationFeed.store]);
+
+    useEffect(() => {
+        let dms = dmsFeed.store.notes.filter(a => a.kind === EventKind.DirectMessage);
+        dispatch(addDirectMessage(dms));
+    }, [dmsFeed.store]);
 }
 
 async function makeNotification(ev: TaggedRawEvent) {
