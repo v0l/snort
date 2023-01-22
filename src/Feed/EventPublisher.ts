@@ -7,6 +7,8 @@ import { RootState } from "State/Store";
 import { HexKey, RawEvent, u256, UserMetadata } from "Nostr";
 import { bech32ToHex } from "Util"
 import { DefaultRelays, HashtagRegex } from "Const";
+import { useEffect } from "react";
+import { NIP42AuthChallenge, NIP42AuthResponse } from "Nostr/Auth";
 
 declare global {
     interface Window {
@@ -75,6 +77,33 @@ export default function useEventPublisher() {
           .replace(HashtagRegex, replaceHashtag);
         ev.Content = content;
     }
+
+    const nip42Auth = async (challenge: string, relay:string): Promise<NEvent> => {
+        if(pubKey) {
+            const ev = NEvent.ForPubKey(pubKey);
+            ev.Kind = EventKind.Auth;
+            ev.Content = "";
+            ev.Tags.push(new Tag(["relay", relay], 0));
+            ev.Tags.push(new Tag(["challenge", challenge], 1));
+            return await signEvent(ev);
+        }
+        return Promise.reject();
+    }
+
+    useEffect(() =>{
+        const nip42AuthEvent = async (event: NIP42AuthChallenge) => {
+            if(event.challenge && event.relay) {
+                const signedEvent = await nip42Auth(event.challenge, event.relay);
+                const response = new NIP42AuthResponse(event.challenge, signedEvent);
+                window.dispatchEvent(response);
+            }
+        }
+        window.addEventListener("nip42auth", nip42AuthEvent)
+
+        return () => {
+            window.removeEventListener("nip42auth", nip42AuthEvent)
+        }
+    }, [])
 
     return {
         broadcast: (ev: NEvent | undefined) => {

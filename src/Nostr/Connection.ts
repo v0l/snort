@@ -48,6 +48,8 @@ export default class Connection {
     IsClosed: boolean;
     ReconnectTimer: ReturnType<typeof setTimeout> | null;
     EventsCallback: Map<u256, () => void>;
+    Authed: boolean;
+    AwaitingAuth: boolean;
 
     constructor(addr: string, options: RelaySettings) {
         this.Address = addr;
@@ -72,6 +74,8 @@ export default class Connection {
         this.IsClosed = false;
         this.ReconnectTimer = null;
         this.EventsCallback = new Map();
+        this.Authed = false;
+        this.AwaitingAuth = false;
         this.Connect();
     }
 
@@ -119,17 +123,12 @@ export default class Connection {
     OnOpen(e: Event) {
         this.ConnectTimeout = DefaultConnectTimeout;
         console.log(`[${this.Address}] Open!`);
-
-        // send pending
-        for (let p of this.Pending) {
-            this._SendJson(p);
-        }
-        this.Pending = [];
-
-        for (let [_, s] of this.Subscriptions) {
-            this._SendSubscription(s);
-        }
-        this._UpdateState();
+        setTimeout(() => {
+            if(this.AwaitingAuth) {
+                return
+            }
+            this._InitSubscriptions();
+        }, 500)
     }
 
     OnClose(e: CloseEvent) {
@@ -152,6 +151,12 @@ export default class Connection {
             let msg = JSON.parse(e.data);
             let tag = msg[0];
             switch (tag) {
+                case "AUTH": {
+                    this._OnAuth(msg[1])
+                    this.Stats.EventsReceived++;
+                    this._UpdateState();
+                    break;
+                }
                 case "EVENT": {
                     this._OnEvent(msg[1], msg[2]);
                     this.Stats.EventsReceived++;
@@ -297,6 +302,19 @@ export default class Connection {
         }
     }
 
+    _InitSubscriptions() {
+        // send pending
+        for (let p of this.Pending) {
+            this._SendJson(p);
+        }
+        this.Pending = [];
+
+        for (let [_, s] of this.Subscriptions) {
+            this._SendSubscription(s);
+        }
+        this._UpdateState();
+    }
+
     _SendSubscription(sub: Subscriptions) {
         let req = ["REQ", sub.Id, sub.ToObject()];
         if (sub.OrSubs.length > 0) {
@@ -330,6 +348,40 @@ export default class Connection {
             // console.warn(`No subscription for event! ${subId}`);
             // ignored for now, track as "dropped event" with connection stats
         }
+    }
+
+    async _OnAuth(challenge: string, timeout: number = 5000):Promise<void> {
+        const challengeEvent = new NIP42AuthChallenge(challenge, this.Address)
+
+        const authCallback = (e:NIP42AuthResponse):Promise<void> => {
+            return new Promise((resolve,reject) => {
+                if(!e.event) {
+                    return Promise.reject('no event');
+                }
+
+                let t = setTimeout(() => {
+                    window.removeEventListener(`nip42response:${challenge}`, authCallback);
+                    this.AwaitingAuth = false;
+                    reject('timeout');
+                }, timeout);
+
+                this.EventsCallback.set(e.event.Id, () => {
+                    clearTimeout(t);
+                    this.AwaitingAuth = false;
+                    window.removeEventListener(`nip42response:${challenge}`, authCallback)
+                    resolve();
+                });
+
+                let req = ["AUTH", e.event.ToObject()];
+                this._SendJson(req);
+                this.Stats.EventsSent++;
+                this._UpdateState();
+            })
+        }
+
+        this.AwaitingAuth = true;
+        window.addEventListener(`nip42response:${challenge}`, authCallback)
+        window.dispatchEvent(challengeEvent)
     }
 
     _OnEnd(subId: string) {
