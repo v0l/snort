@@ -70,7 +70,7 @@ export default function useLoginFeed() {
             .map(a => a!);
 
         for (let cl of contactList) {
-            if (cl.content !== "") {
+            if (cl.content !== "" && cl.content !== "{}") {
                 let relays = JSON.parse(cl.content);
                 dispatch(setRelays({ relays, createdAt: cl.created_at }));
             }
