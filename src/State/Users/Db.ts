@@ -6,12 +6,18 @@ import store from "State/Store";
 
 class IndexedDb implements UsersDb {
   isAvailable() {
-    try {
-      const req = "indexedDB" in window && window.indexedDB.open('test', 1)
-      return Boolean(req)
-    } catch (error) {
-      return false
+    if ("indexedDB" in window) {
+      return new Promise<boolean>((resolve) => {
+        const req = window.indexedDB.open("test", 1)
+        req.onsuccess = (ev) => {
+          resolve(true)
+        }
+        req.onerror = (ev) => {
+          resolve(false)
+        }
+      })
     }
+    return Promise.resolve(false)
   }
 
   find(key: HexKey) {
@@ -58,7 +64,7 @@ function groupByPubkey(acc: Record<HexKey, MetadataCache>, user: MetadataCache) 
 }
 
 class ReduxUsersDb implements UsersDb {
-  isAvailable() { return true }
+  async isAvailable() { return true }
 
   async query(q: string) {
     const state = store.getState()
@@ -128,13 +134,14 @@ class ReduxUsersDb implements UsersDb {
 const indexedDb = new IndexedDb()
 export const inMemoryDb = new ReduxUsersDb()
 
-const isIndexedDbAvailable = indexedDb.isAvailable()
-const db: UsersDb = isIndexedDbAvailable ? indexedDb : inMemoryDb;
-
-if (isIndexedDbAvailable) {
-  console.debug('Using Indexed DB')
-} else {
-  console.debug('Using in-memory DB')
-}
+let db: UsersDb = inMemoryDb
+const isIndexedDbAvailable = indexedDb.isAvailable().then((available) => {
+  if (available) {
+    console.debug('Using Indexed DB')
+    db = indexedDb;
+  } else {
+    console.debug('Using in-memory DB')
+  }
+})
 
 export default db
