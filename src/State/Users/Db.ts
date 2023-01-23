@@ -135,7 +135,7 @@ const indexedDb = new IndexedDb()
 export const inMemoryDb = new ReduxUsersDb()
 
 let db: UsersDb = inMemoryDb
-const isIndexedDbAvailable = indexedDb.isAvailable().then((available) => {
+indexedDb.isAvailable().then((available) => {
   if (available) {
     console.debug('Using Indexed DB')
     db = indexedDb;
