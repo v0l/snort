@@ -1,8 +1,6 @@
-import { useSelector } from "react-redux"
 import { useLiveQuery } from "dexie-react-hooks";
 import { MetadataCache } from "State/Users";
 import db, { inMemoryDb } from "State/Users/Db";
-import type { RootState } from "State/Store"
 import { HexKey } from "Nostr";
 
 export function useQuery(query: string, limit: number = 5) {
@@ -20,8 +18,10 @@ export function useQuery(query: string, limit: number = 5) {
 }
 
 export function useKey(pubKey: HexKey) {
-  const { users } = useSelector((state: RootState) => state.users)
-  const defaultUser = users[pubKey]
+  const defaultUser = useLiveQuery(
+    () => inMemoryDb.find(pubKey),
+    [pubKey]
+  )
 
   const user = useLiveQuery(async () => {
       if (pubKey) {

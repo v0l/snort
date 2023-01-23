@@ -1,14 +1,13 @@
 import { HexKey } from "Nostr";
-import { db as idb } from "Db";
+import { db as idb, NAME, VERSION } from "Db";
 
-import { UsersDb, MetadataCache, setUsers } from "State/Users";
-import store from "State/Store";
+import { UsersDb, MetadataCache } from "State/Users";
 
 class IndexedDb implements UsersDb {
   isAvailable() {
     if ("indexedDB" in window) {
       return new Promise<boolean>((resolve) => {
-        const req = window.indexedDB.open("test", 1)
+        const req = window.indexedDB.open(NAME, VERSION)
         req.onsuccess = (ev) => {
           resolve(true)
         }
@@ -63,13 +62,17 @@ function groupByPubkey(acc: Record<HexKey, MetadataCache>, user: MetadataCache) 
   return { ...acc, [user.pubkey]: user }
 }
 
-class ReduxUsersDb implements UsersDb {
+class InMemoryDb implements UsersDb {
+  users: Map<HexKey, MetadataCache>
+
+  constructor() {
+    this.users = {} as Map<HexKey, MetadataCache>
+  }
+
   async isAvailable() { return true }
 
   async query(q: string) {
-    const state = store.getState()
-    const { users } = state.users
-    return Object.values(users).filter(user => {
+    return Object.values(this.users).filter(user => {
       const profile = user as MetadataCache
       return profile.name?.includes(q)
         || profile.npub?.includes(q)
@@ -79,60 +82,47 @@ class ReduxUsersDb implements UsersDb {
   }
 
   async find(key: HexKey) {
-    const state = store.getState()
-    const { users } = state.users
-    return users[key]
+    // @ts-ignore
+    return this.users[key]
   }
 
 
   async add(user: MetadataCache) {
-    const state = store.getState()
-    const { users } = state.users
-    store.dispatch(setUsers({...users, [user.pubkey]: user }))
+    this.users = {...this.users, [user.pubkey]: user }
   }
 
 
   async put(user: MetadataCache) {
-    const state = store.getState()
-    const { users } = state.users
-    store.dispatch(setUsers({...users, [user.pubkey]: user }))
+    this.users = {...this.users, [user.pubkey]: user }
   }
 
   async bulkAdd(newUserProfiles: MetadataCache[]) {
-    const state = store.getState()
-    const { users } = state.users
     const newUsers = newUserProfiles.reduce(groupByPubkey, {})
-    store.dispatch(setUsers({...users, ...newUsers }))
+    this.users = {...this.users, ...newUsers }
   }
 
   async bulkGet(keys: HexKey[]) {
-    const state = store.getState()
-    const { users } = state.users
     const ids = new Set([...keys])
-    return Object.values(users).filter(user => {
+    return Object.values(this.users).filter(user => {
       return ids.has(user.pubkey)
     })
   }
 
   async update(key: HexKey, fields: Record<string, any>) {
-    const state = store.getState()
-    const { users } = state.users
-    const current = users[key]
+    const current = await this.find(key)
     const updated = {...current, ...fields }
-    store.dispatch(setUsers({...users, [key]: updated }))
+    this.users = {...this.users, [key]: updated }
   }
 
   async bulkPut(newUsers: MetadataCache[]) {
-    const state = store.getState()
-    const { users } = state.users
     const newProfiles = newUsers.reduce(groupByPubkey, {})
-    store.dispatch(setUsers({ ...users, ...newProfiles }))
+    this.users = { ...this.users, ...newProfiles }
   }
 }
 
 
 const indexedDb = new IndexedDb()
-export const inMemoryDb = new ReduxUsersDb()
+export const inMemoryDb = new InMemoryDb()
 
 let db: UsersDb = inMemoryDb
 indexedDb.isAvailable().then((available) => {
