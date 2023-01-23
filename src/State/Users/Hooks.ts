@@ -18,11 +18,8 @@ export function useQuery(query: string, limit: number = 5) {
 }
 
 export function useKey(pubKey: HexKey) {
-  const defaultUser = useLiveQuery(
-    () => inMemoryDb.find(pubKey),
-    [pubKey]
-  )
-
+  // @ts-ignore
+  const defaultUser = inMemoryDb.users[pubKey]
   const user = useLiveQuery(async () => {
       if (pubKey) {
         try {
