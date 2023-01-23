@@ -7,7 +7,7 @@ import store from "State/Store";
 class IndexedDb implements UsersDb {
   isAvailable() {
     try {
-      const req = "indexedDb" in window && window.indexedDB.open('test', 1)
+      const req = "indexedDB" in window && window.indexedDB.open('test', 1)
       return Boolean(req)
     } catch (error) {
       return false
