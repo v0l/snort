@@ -10,7 +10,7 @@ Snort supports the following NIP's
 - [x] NIP-05: Mapping Nostr keys to DNS-based internet identifiers
 - [ ] NIP-06: Basic key derivation from mnemonic seed phrase
 - [x] NIP-07: `window.nostr` capability for web browsers
-- [ ] NIP-08: Handling Mentions
+- [x] NIP-08: Handling Mentions
 - [x] NIP-09: Event Deletion
 - [x] NIP-10: Conventions for clients' use of `e` and `p` tags in text events
 - [ ] NIP-11: Relay Information Document
