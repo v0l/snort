@@ -5,7 +5,7 @@ import { UsersDb, MetadataCache, setUsers } from "State/Users";
 import store from "State/Store";
 
 class IndexedDb implements UsersDb {
-  async isAvailable() {
+  isAvailable() {
     try {
       const req = "indexedDb" in window && window.indexedDB.open('test', 1)
       return Boolean(req)
@@ -58,7 +58,7 @@ function groupByPubkey(acc: Record<HexKey, MetadataCache>, user: MetadataCache) 
 }
 
 class ReduxUsersDb implements UsersDb {
-  async isAvailable() { return true }
+  isAvailable() { return true }
 
   async query(q: string) {
     const state = store.getState()
@@ -128,10 +128,13 @@ class ReduxUsersDb implements UsersDb {
 export const indexedDb = new IndexedDb()
 export const inMemoryDb = new ReduxUsersDb()
 
-let db: UsersDb = inMemoryDb
-indexedDb.isAvailable().then(() => {
-  console.debug('IndexedDB available')
-  db = indexedDb
-})
+const isIndexedDbAvailable = indexedDb.isAvailable()
+const db: UsersDb = isIndexedDbAvailable ? indexedDb : inMemoryDb;
+
+if (isIndexedDbAvailable) {
+  console.debug('Using Indexed DB')
+} else {
+  console.debug('Using in-memory DB')
+}
 
 export default db

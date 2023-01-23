@@ -40,7 +40,7 @@ export function mapEventToProfile(ev: TaggedRawEvent) {
 }
 
 export interface UsersDb {
-  isAvailable(): Promise<boolean>
+  isAvailable(): boolean
   query(str: string): Promise<MetadataCache[]>
   find(key: HexKey): Promise<MetadataCache | undefined>
   add(user: MetadataCache): Promise<any>
