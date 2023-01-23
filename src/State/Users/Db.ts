@@ -125,7 +125,7 @@ class ReduxUsersDb implements UsersDb {
 }
 
 
-export const indexedDb = new IndexedDb()
+const indexedDb = new IndexedDb()
 export const inMemoryDb = new ReduxUsersDb()
 
 const isIndexedDbAvailable = indexedDb.isAvailable()
