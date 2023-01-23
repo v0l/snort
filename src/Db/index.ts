@@ -5,7 +5,7 @@ import { hexToBech32 } from "Util";
 export const NAME = 'snortDB'
 export const VERSION = 2
 
-const STORES =  {
+const STORES = {
   users: '++pubkey, name, display_name, picture, nip05, npub'
 }
 

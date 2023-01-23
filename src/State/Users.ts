@@ -1,3 +1,4 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { HexKey, TaggedRawEvent, UserMetadata } from "Nostr";
 import { hexToBech32 } from "../Util";
 
@@ -49,3 +50,26 @@ export interface UsersDb {
   bulkPut(users: MetadataCache[]): Promise<any>
   update(key: HexKey, fields: Record<string, any>): Promise<any>
 }
+
+export interface UsersStore {
+    /**
+     * A list of seen users
+     */
+    users: Record<HexKey, MetadataCache>,
+};
+
+const InitState = { users: {} } as UsersStore;
+
+const UsersSlice = createSlice({
+    name: "Users",
+    initialState: InitState,
+    reducers: {
+        setUsers(state, action: PayloadAction<Record<HexKey, MetadataCache>>) {
+          state.users = action.payload
+        }
+    }
+});
+
+export const { setUsers } = UsersSlice.actions
+
+export const reducer = UsersSlice.reducer;
