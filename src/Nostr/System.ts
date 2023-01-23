@@ -1,6 +1,7 @@
 import { HexKey, TaggedRawEvent } from "Nostr";
 import { ProfileCacheExpire } from "Const";
-import { mapEventToProfile, MetadataCache, add, bulkAdd, bulkGet, find, put, update, bulkPut } from "State/Users";
+import { mapEventToProfile, MetadataCache, } from "State/Users";
+import db from "State/Users/Db";
 import Connection, { RelaySettings } from "Nostr/Connection";
 import Event from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
@@ -166,7 +167,7 @@ export class NostrSystem {
 
     async _FetchMetadata() {
         let missing = new Set<HexKey>();
-        let meta = await bulkGet(Array.from(this.WantsMetadata));
+        let meta = await db.bulkGet(Array.from(this.WantsMetadata));
         let expire = new Date().getTime() - ProfileCacheExpire;
         for (let pk of this.WantsMetadata) {
             let m = meta.find(a => a?.pubkey === pk);
@@ -189,18 +190,18 @@ export class NostrSystem {
             sub.OnEvent = async (e) => {
                 let profile = mapEventToProfile(e);
                 if (profile) {
-                    let existing = await find(profile.pubkey);
+                    let existing = await db.find(profile.pubkey);
                     if((existing?.created ?? 0) < profile.created) {
-                        await put(profile);
+                        await db.put(profile);
                     } else if(existing) {
-                        await update(profile.pubkey, { loaded: new Date().getTime() });
+                        await db.update(profile.pubkey, { loaded: new Date().getTime() });
                     }
                 }
             }
             let results = await this.RequestSubscription(sub);
             let couldNotFetch = Array.from(missing).filter(a => !results.some(b => b.pubkey === a));
             console.debug("No profiles: ", couldNotFetch);
-            await bulkPut(couldNotFetch.map(a => {
+            await db.bulkPut(couldNotFetch.map(a => {
                 return {
                     pubkey: a,
                     loaded: new Date().getTime()

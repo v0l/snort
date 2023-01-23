@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { HexKey, TaggedRawEvent, UserMetadata } from "Nostr";
 import { hexToBech32 } from "../Util";
-import { db } from "Db";
-import store from "State/Store";
 
 export interface MetadataCache extends UserMetadata {
     /**
@@ -41,6 +39,18 @@ export function mapEventToProfile(ev: TaggedRawEvent) {
     }
 }
 
+export interface UsersDb {
+  isAvailable(): Promise<boolean>
+  query(str: string): Promise<MetadataCache[]>
+  find(key: HexKey): Promise<MetadataCache | undefined>
+  add(user: MetadataCache): Promise<any>
+  put(user: MetadataCache): Promise<any>
+  bulkAdd(users: MetadataCache[]): Promise<any>
+  bulkGet(keys: HexKey[]): Promise<MetadataCache[]>
+  bulkPut(users: MetadataCache[]): Promise<any>
+  update(key: HexKey, fields: Record<string, any>): Promise<any>
+}
+
 export interface UsersStore {
     /**
      * A list of seen users
@@ -60,87 +70,6 @@ const UsersSlice = createSlice({
     }
 });
 
-const { setUsers } = UsersSlice.actions
-
-function groupByPubkey(acc: Record<HexKey, MetadataCache>, user: MetadataCache) {
-  return { ...acc, [user.pubkey]: user }
-}
-
-export const add = async (user: MetadataCache) => {
-  try {
-    return await db.users.add(user)
-  } catch (error) {
-    const state = store.getState()
-    const { users } = state.users
-    store.dispatch(setUsers({...users, [user.pubkey]: user }))
-  }
-}
-
-export const bulkAdd = async (newUserProfiles: MetadataCache[]) => {
-  try {
-    return await db.users.bulkAdd(newUserProfiles)
-  } catch (error) {
-    const state = store.getState()
-    const { users } = state.users
-    const newUsers = newUserProfiles.reduce(groupByPubkey, {})
-    store.dispatch(setUsers({...users, ...newUsers }))
-  }
-}
-
-export const bulkGet = async (pubKeys: HexKey[]) => {
-  try {
-    const ret = await db.users.bulkGet(pubKeys);
-    return ret.filter(a => a !== undefined).map(a => a!);
-  } catch (error) {
-    const state = store.getState()
-    const { users } = state.users
-    const ids = new Set([...pubKeys])
-    return Object.values(users).filter(user => {
-      return ids.has(user.pubkey)
-    })
-  }
-}
-
-export const find = async (pubKey: HexKey) => {
-  try {
-    const user = await db.users.get(pubKey);
-    return user
-  } catch (error) {
-    const { users } = store.getState()
-    return users.users[pubKey]
-  }
-}
-
-export const put = async (user: MetadataCache) => {
-  try {
-    await db.users.put(user)
-  } catch (error) {
-    const state = store.getState()
-    const { users } = state.users
-    store.dispatch(setUsers({...users, [user.pubkey]: user }))
-  }
-}
-
-export const update = async (pubKey: HexKey, fields: Record<string, any>) => {
-  try {
-    await db.users.update(pubKey, fields)
-  } catch (error) {
-    const state = store.getState()
-    const { users } = state.users
-    const current = users[pubKey]
-    store.dispatch(setUsers({...users, [pubKey]: {...current, ...fields }}))
-  }
-}
-
-export const bulkPut = async (newUsers: MetadataCache[]) => {
-  try {
-    await db.users.bulkPut(newUsers)
-  } catch (error) {
-    const state = store.getState()
-    const { users } = state.users
-    const newProfiles = newUsers.reduce(groupByPubkey, {})
-    store.dispatch(setUsers({ ...users, ...newProfiles }))
-  }
-}
+export const { setUsers } = UsersSlice.actions
 
 export const reducer = UsersSlice.reducer;

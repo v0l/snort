@@ -7,7 +7,8 @@ import EventKind from "Nostr/EventKind";
 import { Subscriptions } from "Nostr/Subscriptions";
 import { addDirectMessage, addNotifications, setFollows, setRelays } from "State/Login";
 import { RootState } from "State/Store";
-import { mapEventToProfile, MetadataCache,  find, put, bulkGet } from "State/Users";
+import { mapEventToProfile, MetadataCache  } from "State/Users";
+import db from "State/Users/Db";
 import useSubscription from "Feed/Subscription";
 import { getDisplayName } from "Element/ProfileImage";
 import { MentionRegex } from "Const";
@@ -80,9 +81,9 @@ export default function useLoginFeed() {
                 return acc;
             }, { created: 0, profile: <MetadataCache | null>null });
             if (maxProfile.profile) {
-                let existing = await find(maxProfile.profile.pubkey);
+                let existing = await db.find(maxProfile.profile.pubkey);
                 if ((existing?.created ?? 0) < maxProfile.created) {
-                    await put(maxProfile.profile);
+                    await db.put(maxProfile.profile);
                 }
             }
         })().catch(console.warn);
@@ -93,7 +94,7 @@ async function makeNotification(ev: TaggedRawEvent) {
     switch (ev.kind) {
         case EventKind.TextNote: {
             const pubkeys = new Set([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1]!)]);
-            const users = await bulkGet(Array.from(pubkeys))
+            const users = await db.bulkGet(Array.from(pubkeys))
             // @ts-ignore
             const fromUser = users.find(a => a?.pubkey === ev.pubkey);
             const name = getDisplayName(fromUser, ev.pubkey);
