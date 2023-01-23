@@ -58,7 +58,7 @@ export default function useEventPublisher() {
             try {
                 const hex = bech32ToHex(match);
                 const idx = ev.Tags.length;
-                ev.Tags.push(new Tag(["e", hex], idx));
+                ev.Tags.push(new Tag(["e", hex, "mention"], idx));
                 return `#[${idx}]`
             } catch (error) {
                 return match
