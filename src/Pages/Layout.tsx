@@ -1,12 +1,12 @@
 import "./Layout.css";
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { faBell, faMessage, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { RootState } from "State/Store";
-import { init, setPreferences, UserPreferences } from "State/Login";
+import { init, UserPreferences } from "State/Login";
 import { HexKey, RawEvent, TaggedRawEvent } from "Nostr";
 import { RelaySettings } from "Nostr/Connection";
 import { System } from "Nostr/System"
@@ -14,6 +14,8 @@ import ProfileImage from "Element/ProfileImage";
 import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
 import { SearchRelays } from 'Const';
+import useEventPublisher from "Feed/EventPublisher";
+import { NIP42AuthChallenge, NIP42AuthResponse } from "Nostr/Auth";
 
 export default function Layout() {
     const dispatch = useDispatch();
@@ -25,13 +27,20 @@ export default function Layout() {
     const readNotifications = useSelector<RootState, number>(s => s.login.readNotifications);
     const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
     const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
-
-    const [keyword, setKeyword] = useState<string>('');
-
+    const pub = useEventPublisher();
     useLoginFeed();
 
     useEffect(() => {
         if (relays) {
+            const nip42AuthEvent = async (event: NIP42AuthChallenge) => {
+                if(event.challenge && event.relay) {
+                    const signedEvent = await pub.nip42Auth(event.challenge, event.relay);
+                    const response = new NIP42AuthResponse(event.challenge, signedEvent);
+                    window.dispatchEvent(response);
+                }
+            }
+            window.addEventListener("nip42auth", nip42AuthEvent)
+
             for (let [k, v] of Object.entries(relays)) {
                 System.ConnectToRelay(k, v);
             }
@@ -39,6 +48,10 @@ export default function Layout() {
                 if (!relays[k] && !SearchRelays.has(k)) {
                     System.DisconnectRelay(k);
                 }
+            }
+
+            return () => {
+                window.removeEventListener("nip42auth", nip42AuthEvent)
             }
         }
     }, [relays]);
