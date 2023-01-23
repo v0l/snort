@@ -177,7 +177,12 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             {availabilityResponse?.available === false && !registerStatus && <div className="flex">
                 <b className="error">Not available: {mapError(availabilityResponse.why!, availabilityResponse.reasonTag || null)}</b>
             </div>}
-            <LNURLTip invoice={registerResponse?.invoice} show={showInvoice} onClose={() => setShowInvoice(false)} title={`Buying ${handle}@${domain}`} />
+            <LNURLTip 
+                invoice={registerResponse?.invoice} 
+                show={showInvoice} 
+                onClose={() => setShowInvoice(false)} 
+                title={`Buying ${handle}@${domain}`} 
+                notice="DO NOT CLOSE THIS POPUP OR YOUR ORDER WILL GET STUCK"/>
             {registerStatus?.paid && <div className="flex f-col">
                 <h4>Order Paid!</h4>
                 <p>Your new NIP-05 handle is: <code>{handle}@{domain}</code></p>
