@@ -47,9 +47,9 @@ export default class Connection {
     LastState: Readonly<StateSnapshot>;
     IsClosed: boolean;
     ReconnectTimer: ReturnType<typeof setTimeout> | null;
-    EventsCallback: Map<u256, () => void>;
+    EventsCallback: Map<u256, (msg?:any) => void>;
+    AwaitingAuth: Map<string, boolean>;
     Authed: boolean;
-    AwaitingAuth: boolean;
 
     constructor(addr: string, options: RelaySettings) {
         this.Address = addr;
@@ -74,8 +74,8 @@ export default class Connection {
         this.IsClosed = false;
         this.ReconnectTimer = null;
         this.EventsCallback = new Map();
+        this.AwaitingAuth = new Map();
         this.Authed = false;
-        this.AwaitingAuth = false;
         this.Connect();
     }
 
@@ -124,11 +124,10 @@ export default class Connection {
         this.ConnectTimeout = DefaultConnectTimeout;
         console.log(`[${this.Address}] Open!`);
         setTimeout(() => {
-            if(this.AwaitingAuth) {
-                return
+            if(this.Authed || this.AwaitingAuth.size === 0) {
+                this._InitSubscriptions();
             }
-            this._InitSubscriptions();
-        }, 500)
+        }, 150)
     }
 
     OnClose(e: CloseEvent) {
@@ -152,7 +151,7 @@ export default class Connection {
             let tag = msg[0];
             switch (tag) {
                 case "AUTH": {
-                    this._OnAuth(msg[1])
+                    this._OnAuthAsync(msg[1])
                     this.Stats.EventsReceived++;
                     this._UpdateState();
                     break;
@@ -174,7 +173,7 @@ export default class Connection {
                     if (this.EventsCallback.has(id)) {
                         let cb = this.EventsCallback.get(id)!;
                         this.EventsCallback.delete(id);
-                        cb();
+                        cb(msg);
                     }
                     break;
                 }
@@ -316,6 +315,11 @@ export default class Connection {
     }
 
     _SendSubscription(sub: Subscriptions) {
+        if(!this.Authed && this.AwaitingAuth.size > 0) {
+            this.Pending.push(sub);
+            return;
+        }
+
         let req = ["REQ", sub.Id, sub.ToObject()];
         if (sub.OrSubs.length > 0) {
             req = [
@@ -350,25 +354,33 @@ export default class Connection {
         }
     }
 
-    async _OnAuth(challenge: string, timeout: number = 5000):Promise<void> {
+    async _OnAuthAsync(challenge: string) {
         const challengeEvent = new NIP42AuthChallenge(challenge, this.Address)
 
+        const authCleanup = () => {
+            this.AwaitingAuth.delete(challenge)
+        }
+
         const authCallback = (e:NIP42AuthResponse):Promise<void> => {
-            return new Promise((resolve,reject) => {
+            window.removeEventListener(`nip42response:${challenge}`, authCallback)
+            return new Promise((resolve,_) => {
                 if(!e.event) {
+                    authCleanup();
                     return Promise.reject('no event');
                 }
 
                 let t = setTimeout(() => {
-                    window.removeEventListener(`nip42response:${challenge}`, authCallback);
-                    this.AwaitingAuth = false;
-                    reject('timeout');
-                }, timeout);
+                    authCleanup();
+                    resolve();
+                }, 10_000);
 
-                this.EventsCallback.set(e.event.Id, () => {
+                this.EventsCallback.set(e.event.Id, (msg:any[]) => {
                     clearTimeout(t);
-                    this.AwaitingAuth = false;
-                    window.removeEventListener(`nip42response:${challenge}`, authCallback)
+                    authCleanup();
+                    if(msg.length > 3 && msg[2] === true) {
+                        this.Authed = true;
+                        this._InitSubscriptions();
+                    }
                     resolve();
                 });
 
@@ -379,7 +391,7 @@ export default class Connection {
             })
         }
 
-        this.AwaitingAuth = true;
+        this.AwaitingAuth.set(challenge, true)
         window.addEventListener(`nip42response:${challenge}`, authCallback)
         window.dispatchEvent(challengeEvent)
     }

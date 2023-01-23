@@ -90,22 +90,8 @@ export default function useEventPublisher() {
         return Promise.reject();
     }
 
-    useEffect(() =>{
-        const nip42AuthEvent = async (event: NIP42AuthChallenge) => {
-            if(event.challenge && event.relay) {
-                const signedEvent = await nip42Auth(event.challenge, event.relay);
-                const response = new NIP42AuthResponse(event.challenge, signedEvent);
-                window.dispatchEvent(response);
-            }
-        }
-        window.addEventListener("nip42auth", nip42AuthEvent)
-
-        return () => {
-            window.removeEventListener("nip42auth", nip42AuthEvent)
-        }
-    }, [])
-
     return {
+        nip42Auth: nip42Auth,
         broadcast: (ev: NEvent | undefined) => {
             if (ev) {
                 console.debug("Sending event: ", ev);
