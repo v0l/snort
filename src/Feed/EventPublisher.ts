@@ -54,14 +54,25 @@ export default function useEventPublisher() {
                 return match
             }
         }
+        const replaceNoteId = (match: string) => {
+            try {
+                const hex = bech32ToHex(match);
+                const idx = ev.Tags.length;
+                ev.Tags.push(new Tag(["e", hex, "", "mention"], idx));
+                return `#[${idx}]`
+            } catch (error) {
+                return match
+            }
+        }
         const replaceHashtag = (match: string) => {
             const tag = match.slice(1);
             const idx = ev.Tags.length;
             ev.Tags.push(new Tag(["t", tag.toLowerCase()], idx));
             return match;
         }
-        let content = msg.replace(/@npub[a-z0-9]+/g, replaceNpub);
-        content = content.replace(HashtagRegex, replaceHashtag);
+        const content = msg.replace(/@npub[a-z0-9]+/g, replaceNpub)
+          .replace(/note[a-z0-9]+/g, replaceNoteId)
+          .replace(HashtagRegex, replaceHashtag);
         ev.Content = content;
     }
 
