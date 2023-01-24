@@ -51,7 +51,7 @@ export default function MessagesPage() {
     }
 
     return (
-        <>
+        <div className="timeline">
             <div className="flex">
                 <h3 className="f-grow">Messages</h3>
                 <button type="button" onClick={() => markAllRead()}>Mark All Read</button>
@@ -60,7 +60,7 @@ export default function MessagesPage() {
                 if(b.pubkey === myPubKey) return 1
                 return b.newestMessage - a.newestMessage
             }).map(person)}
-        </>
+        </div>
     )
 }
 
