@@ -63,7 +63,7 @@ export default function NoteReaction(props: NoteReactionProps) {
     const root = extractRoot();
     const opt = {
         showHeader: ev?.Kind === EventKind.Repost,
-        showFooter: ev?.Kind === EventKind.Repost,
+        showFooter: false,
     };
 
     return (

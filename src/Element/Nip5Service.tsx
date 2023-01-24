@@ -15,7 +15,7 @@ import LNURLTip from "Element/LNURLTip";
 import Copy from "Element/Copy";
 import useProfile from "Feed/ProfileFeed";
 import useEventPublisher from "Feed/EventPublisher";
-import { hexToBech32 } from "Util";
+import { debounce, hexToBech32 } from "Util";
 import { UserMetadata } from "Nostr";
 
 type Nip05ServiceProps = {
@@ -77,7 +77,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
                 setAvailabilityResponse({ available: false, why: "REGEX" });
                 return;
             }
-            let t = setTimeout(() => {
+            return debounce(500, () => {
                 svc.CheckAvailable(handle, domain)
                     .then(a => {
                         if ('error' in a) {
@@ -87,8 +87,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
                         }
                     })
                     .catch(console.error);
-            }, 500);
-            return () => clearTimeout(t);
+            });
         }
     }, [handle, domain]);
 
@@ -177,12 +176,12 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             {availabilityResponse?.available === false && !registerStatus && <div className="flex">
                 <b className="error">Not available: {mapError(availabilityResponse.why!, availabilityResponse.reasonTag || null)}</b>
             </div>}
-            <LNURLTip 
-                invoice={registerResponse?.invoice} 
-                show={showInvoice} 
-                onClose={() => setShowInvoice(false)} 
-                title={`Buying ${handle}@${domain}`} 
-                notice="DO NOT CLOSE THIS POPUP OR YOUR ORDER WILL GET STUCK"/>
+            <LNURLTip
+                invoice={registerResponse?.invoice}
+                show={showInvoice}
+                onClose={() => setShowInvoice(false)}
+                title={`Buying ${handle}@${domain}`}
+                notice="DO NOT CLOSE THIS POPUP OR YOUR ORDER WILL GET STUCK" />
             {registerStatus?.paid && <div className="flex f-col">
                 <h4>Order Paid!</h4>
                 <p>Your new NIP-05 handle is: <code>{handle}@{domain}</code></p>

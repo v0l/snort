@@ -23,6 +23,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     const [until, setUntil] = useState<number>(now);
     const [since, setSince] = useState<number>(now - window);
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
+    const [trackingParentEvents, setTrackingParentEvents] = useState<u256[]>([]);
     const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
 
     function createSub() {
@@ -94,17 +95,29 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     const latest = useSubscription(subRealtime, { leaveOpen: true });
 
     const subNext = useMemo(() => {
+        let sub: Subscriptions | undefined;
         if (trackingEvents.length > 0 && pref.enableReactions) {
-            let sub = new Subscriptions();
+            sub = new Subscriptions();
             sub.Id = `timeline-related:${subject.type}`;
-            sub.Kinds = new Set([EventKind.Reaction, EventKind.Deletion, EventKind.Repost]);
+            sub.Kinds = new Set([EventKind.Reaction, EventKind.Deletion]);
             sub.ETags = new Set(trackingEvents);
-            return sub;
         }
-        return null;
+        return sub ?? null;
     }, [trackingEvents]);
 
     const others = useSubscription(subNext, { leaveOpen: true });
+
+    const subParents = useMemo(() => {
+        if (trackingParentEvents.length > 0) {
+            let parents = new Subscriptions();
+            parents.Id = `timeline-parent:${subject.type}`;
+            parents.Ids = new Set(trackingParentEvents);
+            return parents;
+        }
+        return null;
+    }, [trackingParentEvents]);
+
+    const parent = useSubscription(subParents);
 
     useEffect(() => {
         if (main.store.notes.length > 0) {
@@ -113,6 +126,20 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 let temp = new Set([...s, ...ids]);
                 return Array.from(temp);
             });
+            let reposts = main.store.notes
+                .filter(a => a.kind === EventKind.Repost && a.content === "")
+                .map(a => a.tags.find(b => b[0] === "e"))
+                .filter(a => a)
+                .map(a => a![1]);
+            if (reposts.length > 0) {
+                setTrackingParentEvents(s => {
+                    if (reposts.some(a => !s.includes(a))) {
+                        let temp = new Set([...s, ...reposts]);
+                        return Array.from(temp);
+                    }
+                    return s;
+                })
+            }
         }
     }, [main.store]);
 
@@ -120,6 +147,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         main: main.store,
         related: others.store,
         latest: latest.store,
+        parent: parent.store,
         loadMore: () => {
             console.debug("Timeline load more!")
             if (options.method === "LIMIT_UNTIL") {

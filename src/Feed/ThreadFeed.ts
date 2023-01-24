@@ -6,6 +6,7 @@ import useSubscription from "Feed/Subscription";
 import { useSelector } from "react-redux";
 import { RootState } from "State/Store";
 import { UserPreferences } from "State/Login";
+import { debounce } from "Util";
 
 export default function useThreadFeed(id: u256) {
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([id]);
@@ -14,9 +15,8 @@ export default function useThreadFeed(id: u256) {
     function addId(id: u256[]) {
         setTrackingEvent((s) => {
             let orig = new Set(s);
-            let idsMissing = id.filter(a => !orig.has(a));
-            if (idsMissing.length > 0) {
-                let tmp = new Set([...s, ...idsMissing]);
+            if (id.some(a => !orig.has(a))) {
+                let tmp = new Set([...s, ...id]);
                 return Array.from(tmp);
             } else {
                 return s;
@@ -41,14 +41,18 @@ export default function useThreadFeed(id: u256) {
     const main = useSubscription(sub, { leaveOpen: true });
 
     useEffect(() => {
-        // debounce
-        let t = setTimeout(() => {
-            let eTags = main.store.notes.map(a => a.tags.filter(b => b[0] === "e").map(b => b[1])).flat();
-            let ids = main.store.notes.map(a => a.id);
-            let allEvents = new Set([...eTags, ...ids]);
-            addId(Array.from(allEvents));
-        }, 200);
-        return () => clearTimeout(t);
+        if (main.store) {
+            return debounce(200, () => {
+                let mainNotes = main.store.notes.filter(a => a.kind === EventKind.TextNote);
+
+                let eTags = mainNotes
+                    .filter(a => a.kind === EventKind.TextNote)
+                    .map(a => a.tags.filter(b => b[0] === "e").map(b => b[1])).flat();
+                let ids = mainNotes.map(a => a.id);
+                let allEvents = new Set([...eTags, ...ids]);
+                addId(Array.from(allEvents));
+            })
+        }
     }, [main.store]);
 
     return main.store;
