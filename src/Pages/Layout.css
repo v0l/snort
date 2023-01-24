@@ -1,20 +1,37 @@
 .logo {
   cursor: pointer;
+  font-weight: bold;
+  font-size: 29px;
 }
 
-.unread-count {
-  width: 20px;
-  height: 20px;
-  border: 1px solid;
-  border-radius: 100%;
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  padding: 0 12px;
+}
+
+header .pfp .avatar-wrapper {
+  margin-right: 0;
+}
+
+.header-actions {
+  display: flex;
+  flex-direction: row;
+}
+
+.header-actions .btn-rnd {
   position: relative;
-  padding: 3px;
-  line-height: 1.5em;
-  top: -10px;
-  left: -10px;
-  font-size: var(--font-size-small);
-  background-color: var(--error);
-  color: var(--note-bg);
-  font-weight: bold;
-  text-align: center;
+}
+
+.header-actions .btn-rnd .has-unread {
+  background: var(--highlight);
+  border-radius: 100%;
+  width: 9px;
+  height: 9px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }

@@ -16,6 +16,7 @@ const RootTab = {
 };
 
 export default function RootPage() {
+    const [show, setShow] = useState(false)
     const [loggedOut, pubKey, follows] = useSelector<RootState, [boolean | undefined, HexKey | undefined, HexKey[]]>(s => [s.login.loggedOut, s.login.publicKey, s.login.follows]);
     const [tab, setTab] = useState(RootTab.Posts);
 
@@ -32,20 +33,20 @@ export default function RootPage() {
     return (
         <>
             {pubKey ? <>
-                <NoteCreator show={true} autoFocus={false} />
-                <div className="tabs root-tabs">
-                    <div className={`root-tab f-1 ${tab === RootTab.Posts ? "active" : ""}`} onClick={() => setTab(RootTab.Posts)}>
+                <div className="tabs">
+                    <div className={`tab f-1 ${tab === RootTab.Posts ? "active" : ""}`} onClick={() => setTab(RootTab.Posts)}>
                         Posts
                     </div>
-                    <div className={`root-tab f-1 ${tab === RootTab.PostsAndReplies ? "active" : ""}`} onClick={() => setTab(RootTab.PostsAndReplies)}>
-                        Posts &amp; Replies
+                    <div className={`tab f-1 ${tab === RootTab.PostsAndReplies ? "active" : ""}`} onClick={() => setTab(RootTab.PostsAndReplies)}>
+                        Conversations
                     </div>
-                    <div className={`root-tab f-1 ${tab === RootTab.Global ? "active" : ""}`} onClick={() => setTab(RootTab.Global)}>
+                    <div className={`tab f-1 ${tab === RootTab.Global ? "active" : ""}`} onClick={() => setTab(RootTab.Global)}>
                         Global
                     </div>
                 </div></> : null}
             {followHints()}
             <Timeline key={tab} subject={timelineSubect} postsOnly={tab === RootTab.Posts} method={"TIME_RANGE"} />
+            <NoteCreator autoFocus={false} show={show} setShow={setShow} />
         </>
     );
 }

@@ -10,7 +10,7 @@ export interface CopyProps {
 export default function Copy({ text, maxSize = 32 }: CopyProps) {
     const { copy, copied, error } = useCopy();
     const sliceLength = maxSize / 2
-    const trimmed = text.length > maxSize ? `${text.slice(0, sliceLength)}:${text.slice(-sliceLength)}` : text
+    const trimmed = text.length > maxSize ? `${text.slice(0, sliceLength)}...${text.slice(-sliceLength)}` : text
 
     return (
         <div className="flex flex-row copy" onClick={() => copy(text)}>
@@ -20,7 +20,7 @@ export default function Copy({ text, maxSize = 32 }: CopyProps) {
             <FontAwesomeIcon
                 icon={copied ? faCheck : faCopy}
                 size="xs"
-                style={{ color: copied ? 'var(--success)' : 'currentColor', marginRight: '2px' }}
+                style={{ color: copied ? 'var(--success)' : 'var(--highlight)', marginRight: '2px' }}
             />
         </div>
     )

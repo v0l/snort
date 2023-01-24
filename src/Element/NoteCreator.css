@@ -13,7 +13,7 @@
 .note-creator textarea {
     outline: none;
     resize: none;
-    min-height: 40px;
+    min-height: 320px;
     background-color: var(--note-bg);
     border-radius: 10px 10px 0 0;
     max-width: -webkit-fill-available;
@@ -25,16 +25,22 @@
     min-width: fill-available;
 }
 
-.note-creator .actions {
+.note-creator-actions {
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: flex-end;
     margin-bottom: 5px;
 }
 
 .note-creator .attachment {
     cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 10px;
+    margin-left: auto;
+}
+
+.note-creator-actions button:not(:last-child) {
+    margin-right: 4px;
 }
 
 .note-creator .attachment .error {
@@ -49,4 +55,27 @@
     background-color: var(--bg-color);
     color: var(--font-color);
     font-size: var(--font-size);
+}
+
+.note-create-button {
+  width: 48px;
+  height: 48px;
+  background-color: var(--highlight);
+  border: none;
+  border-radius: 100%;
+  position: fixed;
+  bottom: 50px;
+  right: 16px;
+}
+
+@media (min-width: 520px) {
+  .note-create-button {
+    right: 10vw;
+  }
+}
+
+@media (min-width: 1020px) {
+  .note-create-button {
+    right: 25vw;
+  }
 }

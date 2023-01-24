@@ -1,5 +1,5 @@
 .follows-you {
-  color: var(--font-color);
+  color: var(--gray-light);
   font-size: var(--font-size-tiny);
   margin-left: .2em;
   font-weight: normal

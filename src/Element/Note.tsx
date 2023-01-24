@@ -1,6 +1,6 @@
 import "./Note.css";
-import { useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useMemo, ReactNode } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 import { default as NEvent } from "Nostr/Event";
 import ProfileImage from "Element/ProfileImage";
@@ -64,21 +64,57 @@ export default function Note(props: NoteProps) {
 
         const maxMentions = 2;
         let replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
-        let mentions: string[] = [];
+        let mentions: {pk: string, name: string, link: ReactNode}[] = [];
         for (let pk of ev.Thread?.PubKeys) {
-            let u = users?.get(pk);
+            const u = users?.get(pk);
+            const npub = hexToBech32("npub", pk)
+            const shortNpub = npub.substring(0, 12);
             if (u) {
-                mentions.push(u.name ?? hexToBech32("npub", pk).substring(0, 12));
+                mentions.push({
+                  pk,
+                  name: u.name ?? shortNpub,
+                  link: (
+                    <Link to={`/p/${npub}`}>
+                      {u.name ? `@${u.name}` : shortNpub}
+                    </Link>
+                  )
+                });
             } else {
-                mentions.push(hexToBech32("npub", pk).substring(0, 12));
+                mentions.push({
+                  pk,
+                  name: shortNpub,
+                  link: (
+                    <Link to={`/p/${npub}`}>
+                      {shortNpub}
+                    </Link>
+                  )
+                });
             }
         }
-        mentions.sort((a, b) => a.startsWith("npub") ? 1 : -1);
+        mentions.sort((a, b) => a.name.startsWith("npub") ? 1 : -1);
         let othersLength = mentions.length - maxMentions
-        let pubMentions = mentions.length > maxMentions ? `${mentions?.slice(0, maxMentions).join(", ")} & ${othersLength} other${othersLength > 1 ? 's' : ''}` : mentions?.join(", ");
+        const renderMention = (m: any, idx: number) => {
+          return (
+            <>
+              {idx > 0 && ", "}
+              {m.link}
+            </>
+          )
+        }
+        const pubMentions = mentions.length > maxMentions ?  (
+          mentions?.slice(0, maxMentions).map(renderMention)
+        ) : mentions?.map(renderMention);
+        const others = mentions.length > maxMentions ? ` & ${othersLength} other${othersLength > 1 ? 's' : ''}` : ''
         return (
             <div className="reply">
-             {(pubMentions?.length ?? 0) > 0 ? pubMentions : replyId ? hexToBech32("note", replyId)?.substring(0, 12) : ""}
+             {(mentions?.length ?? 0) > 0 ? (
+               <>
+                 {pubMentions}
+                 {others}
+               </>
+             ) : replyId ? (
+                hexToBech32("note", replyId)?.substring(0, 12) // todo: link
+             ) : ""}
             </div>
         )
     }

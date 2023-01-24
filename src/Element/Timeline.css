@@ -1,3 +1,13 @@
+.timeline {
+  padding: 0 12px;
+}
+
+@media (min-width: 720px) {
+  .timeline {
+    padding: 0;
+  }
+}
+
 .latest-notes {
     cursor: pointer;
     font-weight: bold;

@@ -1,9 +1,14 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat, faEllipsisVertical, faShareNodes, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faRepeat, faShareNodes, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Menu, MenuItem } from '@szhsin/react-menu';
 
+import Dislike from "Icons/Dislike";
+import Heart from "Icons/Heart";
+import Dots from "Icons/Dots";
+import Zap from "Icons/Zap";
+import Reply from "Icons/Reply";
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
 import { getReactions, hexToBech32, normalizeReaction, Reaction } from "Util";
@@ -82,7 +87,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         <>
           <div className="reaction-pill" onClick={() => setTip(true)}>
             <div className="reaction-pill-icon">
-              <FontAwesomeIcon icon={faBolt} />
+              <Zap />
             </div>
           </div>
         </>
@@ -114,7 +119,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       <>
         <div className={`reaction-pill ${hasReacted('+') ? 'reacted' : ''} `} onClick={() => react("+")}>
           <div className="reaction-pill-icon">
-            <FontAwesomeIcon icon={faHeart} />
+            <Heart />
           </div>
           <div className="reaction-pill-number">
             {formatShort(groupReactions[Reaction.Positive])}
@@ -148,14 +153,14 @@ export default function NoteFooter(props: NoteFooterProps) {
   function menuItems() {
     return (
       <>
-        {prefs.enableReactions && (<MenuItem onClick={() => react("-")}>
-          <div>
-            <FontAwesomeIcon icon={faThumbsDown} className={hasReacted('-') ? 'reacted' : ''} />
-            &nbsp;
+        {prefs.enableReactions && (
+          <MenuItem onClick={() => react("-")}>
+            <Dislike />
             {formatShort(groupReactions[Reaction.Negative])}
-          </div>
-          Dislike
-        </MenuItem>)}
+            &nbsp;
+            Dislike
+          </MenuItem>
+        )}
         <MenuItem onClick={() => share()}>
           <FontAwesomeIcon icon={faShareNodes} />
           Share
@@ -183,18 +188,18 @@ export default function NoteFooter(props: NoteFooterProps) {
   return (
     <>
       <div className="footer">
-        <div className={`reaction-pill ${reply ? 'reacted' : ''}`} onClick={(e) => setReply(s => !s)}>
-          <div className="reaction-pill-icon">
-            <FontAwesomeIcon icon={faReply} />
-          </div>
-        </div>
         <Menu menuButton={<div className="reaction-pill">
           <div className="reaction-pill-icon">
-            <FontAwesomeIcon icon={faEllipsisVertical} />
+            <Dots />
           </div>
         </div>} menuClassName="ctx-menu">
           {menuItems()}
         </Menu>
+        <div className={`reaction-pill ${reply ? 'reacted' : ''}`} onClick={(e) => setReply(s => !s)}>
+          <div className="reaction-pill-icon">
+            <Reply />
+          </div>
+        </div>
 
         {reactionIcons()}
         {tipButton()}
@@ -204,6 +209,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         replyTo={ev}
         onSend={() => setReply(false)}
         show={reply}
+        setShow={setReply}
       />
       <LNURLTip svc={author?.lud16 || author?.lud06} onClose={() => setTip(false)} show={tip} />
     </>

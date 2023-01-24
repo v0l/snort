@@ -2,10 +2,10 @@ import "./ProfilePage.css";
 
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 
+import Link from "Icons/Link";
+import Zap from "Icons/Zap";
 import useProfile from "Feed/ProfileFeed";
 import FollowButton from "Element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "Util";
@@ -40,6 +40,7 @@ export default function ProfilePage() {
     const [showLnQr, setShowLnQr] = useState<boolean>(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
     const about = Text({ content: user?.about || '', tags: [], users: new Map() })
+    const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
 
     useEffect(() => {
         setTab(ProfileTab.Notes);
@@ -52,36 +53,48 @@ export default function ProfilePage() {
                     {user?.display_name || user?.name || 'Nostrich'}
                     <FollowsYou pubkey={id} />
                 </h2>
-                <Copy text={params.id || ""} />
                 {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+                <Copy text={params.id || ""} />
+                {links()}
             </div>
         )
     }
 
+    function links() {
+      return (
+         <div className="links">
+             {user?.website && (
+                 <div className="website f-ellipsis">
+                     <span className="link-icon">
+                       <Link />
+                     </span>
+                     <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
+                 </div>
+             )}
+
+             {lnurl && (
+                 <div className="ln-address" onClick={(e) => setShowLnQr(true)}>
+                     <span className="link-icon">
+                       <Zap />
+                     </span>
+                     <span className="lnurl f-ellipsis" >
+                         {lnurl}
+                     </span>
+                 </div>
+             )}
+            <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
+         </div>
+      )
+    }
+
     function bio() {
-        const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
         return (
-            <div className="details">
-                <div>{about}</div>
-
-                <div className="links">
-                    {user?.website && (
-                        <div className="website f-ellipsis">
-                            <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
-                        </div>
-                    )}
-
-                    {lnurl && (
-                        <div className="f-ellipsis" onClick={(e) => setShowLnQr(true)}>
-                            <span className="zap">⚡️</span>
-                            <span className="lnurl" >
-                                {lnurl}
-                            </span>
-                        </div>
-                    )}
-                </div>
-                <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
-            </div>
+            <>
+              <h3>Bio</h3>
+              <div className="details">
+                {about}
+              </div>
+            </>
         )
     }
 
@@ -119,17 +132,20 @@ export default function ProfilePage() {
         return (
             <div className="details-wrapper">
                 {username()}
-                {isMe ? (
-                    <div className="btn btn-icon follow-button" onClick={() => navigate("/settings")}>
-                        <FontAwesomeIcon icon={faGear} size="lg" />
-                    </div>
-                ) : <>
-                    <div className="btn message-button" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
-                        <FontAwesomeIcon icon={faEnvelope} size="lg" />
-                    </div>
-                    <FollowButton pubkey={id} />
-                </>
-                }
+                <div className="profile-actions">
+                  {isMe ? (
+                      <button type="button" onClick={() => navigate("/settings")}>
+                        Settings
+                      </button>
+                  ) : (
+                    <>
+                      <button type="button" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
+                         Message
+                      </button>
+                      <FollowButton pubkey={id} />
+                    </>
+                  )}
+                </div>
                 {bio()}
             </div>
         )
@@ -138,18 +154,11 @@ export default function ProfilePage() {
     return (
         <>
             <div className="profile flex">
-                {user?.banner && <img alt="banner" className="banner" src={user.banner} />}
-                {user?.banner ? (
-                    <>
-                        {avatar()}
-                        {userDetails()}
-                    </>
-                ) : (
-                    <div className="no-banner">
-                        {avatar()}
-                        {userDetails()}
-                    </div>
-                )}
+              {user?.banner && <img alt="banner" className="banner" src={user.banner} />}
+              <div className="profile-wrapper flex">
+                {avatar()}
+                {userDetails()}
+               </div>
             </div>
             <div className="tabs">
                 {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows].map(v => {

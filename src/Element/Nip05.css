@@ -1,7 +1,6 @@
 .nip05 {
     justify-content: flex-start;
     align-items: center;
-    font-size: 14px;
     margin: .2em;
 }
 
@@ -10,50 +9,8 @@
 }
 
 .nip05 .nick {
-    color: var(--gray-light);
+    color: var(--font-secondary-color);
     font-weight: bold;
-    margin-right: .2em;
-}
-
-.nip05 .domain {
-    color: var(--gray-superlight);
-    font-weight: bold;
-}
-
-.nip05 .text-gradient {
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
-    background-color: var(--gray-superlight);
-}
-
-.nip05 .domain[data-domain="snort.social"] {
-    background-image: var(--snort-gradient);
-}
-
-.nip05 .domain[data-domain="nostrplebs.com"] {
-    background-image: var(--nostrplebs-gradient);
-}
-
-.nip05 .domain[data-domain="nostrpurple.com"] {
-    background-image: var(--nostrplebs-gradient);
-}
-
-.nip05 .domain[data-domain="nostr.fan"] {
-    background-image: var(--nostrplebs-gradient);
-}
-
-.nip05 .domain[data-domain="nostrich.zone"] {
-    background-image: var(--nostrplebs-gradient);
-}
-
-.nip05 .domain[data-domain="nostriches.net"] {
-    background-image: var(--nostrplebs-gradient);
-}
-
-.nip05 .domain[data-domain="strike.army"] {
-    background-image: var(--strike-army-gradient);
 }
 
 .nip05 .badge {
