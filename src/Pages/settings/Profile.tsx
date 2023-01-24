@@ -103,7 +103,7 @@ export default function ProfileSettings() {
         return (
             <div className="editor">
                 <div className="form-group">
-                    <div>Name:</div>
+                    <div>Username:</div>
                     <div>
                         <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
@@ -133,7 +133,7 @@ export default function ProfileSettings() {
                         <div className="btn" onClick={() => navigate("/verification")}>
                             <FontAwesomeIcon icon={faShop} />
                             &nbsp;
-                            Buy
+                            Buy NIP-05
                         </div>
                     </div>
                 </div>
