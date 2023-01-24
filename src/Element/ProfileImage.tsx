@@ -1,7 +1,7 @@
 import "./ProfileImage.css";
 
 import { useMemo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useProfile from "Feed/ProfileFeed";
 import { hexToBech32, profileLink } from "Util";
 import Avatar from "Element/Avatar"
@@ -30,13 +30,11 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true, c
             <div className="avatar-wrapper">
                 <Avatar user={user} onClick={() => navigate(link ?? profileLink(pubkey))} />
             </div>
-            {showUsername && (<div className="f-grow">
-                <Link key={pubkey} to={link ?? profileLink(pubkey)}>
-                    <div className="profile-name">
-                        <div>{name}</div>
-                        {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
-                    </div>
-                </Link>
+            {showUsername && (<div className="f-grow pointer" onClick={e => { e.stopPropagation(); navigate(link ?? profileLink(pubkey)) }}>
+                <div className="profile-name">
+                    <div>{name}</div>
+                    {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+                </div>
                 {subHeader ? <>{subHeader}</> : null}
             </div>
             )}
