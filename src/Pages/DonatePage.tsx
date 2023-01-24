@@ -1,4 +1,5 @@
 import ProfilePreview from "Element/ProfilePreview";
+import ZapButton from "Element/ZapButton";
 import { HexKey } from "Nostr";
 import { useEffect, useState } from "react";
 import { bech32ToHex } from "Util";
@@ -56,6 +57,10 @@ const DonatePage = () => {
             <p>
                 Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below
             </p>
+            <div className="flex">
+                <div className="mr10">Lightning Donation: </div>
+                <ZapButton svc={"donate@snort.social"} />
+            </div>
             <h3>Primary Developers</h3>
             {Developers.map(a => <ProfilePreview pubkey={a} key={a} actions={actions(a)} />)}
             <h4>Contributors</h4>

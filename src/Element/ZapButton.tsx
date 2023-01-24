@@ -6,19 +6,19 @@ import useProfile from "Feed/ProfileFeed";
 import { HexKey } from "Nostr";
 import LNURLTip from "Element/LNURLTip";
 
-const ZapButton = ({ pubkey }: { pubkey: HexKey }) => {
-    const profile = useProfile(pubkey)?.get(pubkey);
+const ZapButton = ({ pubkey, svc }: { pubkey?: HexKey, svc?: string }) => {
+    const profile = useProfile(pubkey)?.get(pubkey ?? "");
     const [zap, setZap] = useState(false);
-    const svc = profile?.lud16 || profile?.lud06;
+    const service = svc ?? (profile?.lud16 || profile?.lud06);
 
-    if (!svc) return null;
+    if (!service) return null;
 
     return (
         <>
             <div className="zap-button" onClick={(e) => setZap(true)}>
                 <FontAwesomeIcon icon={faBolt} />
             </div>
-            <LNURLTip svc={svc} show={zap} onClose={() => setZap(false)} />
+            <LNURLTip svc={service} show={zap} onClose={() => setZap(false)} />
         </>
     )
 }

@@ -5,7 +5,7 @@ import { MetadataCache } from "Db/User";
 import { HexKey } from "Nostr";
 import { System } from "Nostr/System";
 
-export default function useProfile(pubKey: HexKey | Array<HexKey> | undefined): Map<HexKey, MetadataCache> | undefined {
+export default function useProfile(pubKey?: HexKey | Array<HexKey> | undefined): Map<HexKey, MetadataCache> | undefined {
     const user = useLiveQuery(async () => {
         let userList = new Map<HexKey, MetadataCache>();
         if (pubKey) {
