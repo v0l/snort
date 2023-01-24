@@ -17,7 +17,7 @@ const PreferencesPage = () => {
                 </div>
                 <div>
                     <select value={perf.theme} onChange={e => dispatch(setPreferences({ ...perf, theme: e.target.value} as UserPreferences))}>
-                        <option value="system">System (Default)</option>
+                        <option value="system">System</option>
                         <option value="light">Light</option>
                         <option value="dark">Dark</option>
                     </select>
@@ -34,8 +34,8 @@ const PreferencesPage = () => {
             </div>
             <div className="card flex">
                 <div className="flex f-col f-grow">
-                    <div>Enable reactions</div>
-                    <small>Reactions will be shown on every page, if disabled no reactions will be shown</small>
+                    <div>Reaction visibility</div>
+                    <small>When the box is checked, you can like and repost, but when it's unchecked, you can't</small>
                 </div>
                 <div>
                     <input type="checkbox" checked={perf.enableReactions} onChange={e => dispatch(setPreferences({ ...perf, enableReactions: e.target.checked }))} />
