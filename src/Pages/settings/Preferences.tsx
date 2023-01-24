@@ -62,7 +62,7 @@ const PreferencesPage = () => {
             <div className="card flex">
                 <div className="flex f-col f-grow">
                     <div>Debug Menus</div>
-                    <small>Shows extra options to help with debugging data</small>
+                    <small>Shows "Copy ID" and "Copy Event JSON" in the context menu on each message</small>
                 </div>
                 <div>
                     <input type="checkbox" checked={perf.showDebugMenus} onChange={e => dispatch(setPreferences({ ...perf, showDebugMenus: e.target.checked }))} />
