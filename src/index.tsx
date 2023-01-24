@@ -27,6 +27,7 @@ import MessagesPage from 'Pages/MessagesPage';
 import ChatPage from 'Pages/ChatPage';
 import DonatePage from 'Pages/DonatePage';
 import HashTagsPage from 'Pages/HashTagsPage';
+import SearchPage from 'Pages/SearchPage';
 
 /**
  * HTTP query provider
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
       {
         path: "/t/:tag",
         element: <HashTagsPage />
+      },
+      {
+        path: "/search/:keyword",
+        element: <SearchPage />
       }
     ]
   }

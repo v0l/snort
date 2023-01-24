@@ -13,7 +13,7 @@ export interface TimelineFeedOptions {
 }
 
 export interface TimelineSubject {
-    type: "pubkey" | "hashtag" | "global" | "ptag",
+    type: "pubkey" | "hashtag" | "global" | "ptag" | "keyword",
     items: string[]
 }
 
@@ -47,6 +47,10 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 sub.PTags = new Set(subject.items);
                 break;
             }
+            case "keyword": {
+                sub.Keywords = new Set(subject.items);
+                break;
+            }
         }
         return sub;
     }, [subject.type, subject.items]);
@@ -72,6 +76,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 latestSub.Authors = sub.Authors;
                 latestSub.HashTags = sub.HashTags;
                 latestSub.Kinds = sub.Kinds;
+                latestSub.Keywords = sub.Keywords;
                 latestSub.Limit = 1;
                 latestSub.Since = Math.floor(new Date().getTime() / 1000);
                 sub.AddSubscription(latestSub);
