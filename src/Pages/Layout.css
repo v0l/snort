@@ -2,6 +2,18 @@
   cursor: pointer;
 }
 
+.search {
+  margin: 0 10px 0 10px;
+}
+
+.search input {
+  margin: 0 5px 0 5px;
+}
+
+.search .btn {
+  display: none;
+}
+
 .unread-count {
   width: 20px;
   height: 20px;

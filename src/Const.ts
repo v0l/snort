@@ -20,6 +20,13 @@ export const DefaultRelays = new Map<string, RelaySettings>([
 ]);
 
 /**
+ * Default search relays
+ */
+export const SearchRelays = new Map<string, RelaySettings>([
+    ["wss://relay.nostr.band", { read: true, write: false }],
+]);
+
+/**
  * List of recommended follows for new users
  */
 export const RecommendedFollows = [

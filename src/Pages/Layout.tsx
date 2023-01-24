@@ -1,5 +1,5 @@
 import "./Layout.css";
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
@@ -13,6 +13,7 @@ import { System } from "Nostr/System"
 import ProfileImage from "Element/ProfileImage";
 import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
+import { SearchRelays } from 'Const';
 
 export default function Layout() {
     const dispatch = useDispatch();
@@ -24,6 +25,9 @@ export default function Layout() {
     const readNotifications = useSelector<RootState, number>(s => s.login.readNotifications);
     const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
     const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
+
+    const [keyword, setKeyword] = useState<string>('');
+
     useLoginFeed();
 
     useEffect(() => {
@@ -32,9 +36,14 @@ export default function Layout() {
                 System.ConnectToRelay(k, v);
             }
             for (let [k, v] of System.Sockets) {
-                if (!relays[k]) {
+                if (!relays[k] && !SearchRelays.has(k)) {
                     System.DisconnectRelay(k);
                 }
+            }
+        }
+	for (let [k, v] of SearchRelays) {
+            if (!System.Sockets.has(k)) {
+                System.ConnectToRelay(k, v);
             }
         }
     }, [relays]);
@@ -106,10 +115,19 @@ export default function Layout() {
         return null;
     }
 
+    async function search() {
+        if (keyword)
+            navigate(`/search/${encodeURIComponent(keyword)}/`);
+    }
+
     return (
         <div className="page">
             <div className="header">
                 <div className="logo" onClick={() => navigate("/")}>snort</div>
+		<div className="search">
+                        <input type="text" placeholder="Search..." value={keyword} onChange={(e) => setKeyword(e.target.value)} onKeyPress={(e) => { if (e.key === 'Enter') search() } }/>
+			<div className="btn" onClick={() => search()}>&#128269;</div>
+		</div>
                 <div>
                     {key ? accountHeader() :
                         <div className="btn" onClick={() => navigate("/login")}>Login</div>
