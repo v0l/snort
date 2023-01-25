@@ -52,7 +52,7 @@ const RelaySettingsPage = () => {
             <div className="flex f-col">
                 {Object.keys(relays || {}).map(a => <Relay addr={a} key={a} />)}
             </div>
-            <div className="flex actions">
+            <div className="flex mt10">
                 <div className="f-grow"></div>
                 <div className="btn" onClick={() => saveRelays()}>Save</div>
             </div>
