@@ -39,6 +39,7 @@ export default function ProfilePage() {
     const isMe = loginPubKey === id;
     const [showLnQr, setShowLnQr] = useState<boolean>(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
+    const aboutText = user?.about || ''
     const about = Text({ content: user?.about || '', tags: [], users: new Map() })
     const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
 
@@ -88,7 +89,7 @@ export default function ProfilePage() {
     }
 
     function bio() {
-        return (
+        return aboutText.length > 0 && (
             <>
               <h3>Bio</h3>
               <div className="details">
