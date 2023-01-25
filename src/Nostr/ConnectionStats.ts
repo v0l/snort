@@ -1,4 +1,3 @@
-
 /**
  * Stats class for tracking metrics per connection
  */

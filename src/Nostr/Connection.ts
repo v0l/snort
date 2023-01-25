@@ -6,6 +6,7 @@ import { default as NEvent } from "Nostr/Event";
 import { DefaultConnectTimeout } from "Const";
 import { ConnectionStats } from "Nostr/ConnectionStats";
 import { RawEvent, TaggedRawEvent, u256 } from "Nostr";
+import { RelayInfo } from "./RelayInfo";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
 
@@ -27,7 +28,8 @@ export type StateSnapshot = {
     events: {
         received: number,
         send: number
-    }
+    },
+    info?: RelayInfo
 };
 
 export default class Connection {
@@ -36,6 +38,7 @@ export default class Connection {
     Pending: Subscriptions[];
     Subscriptions: Map<string, Subscriptions>;
     Settings: RelaySettings;
+    Info?: RelayInfo;
     ConnectTimeout: number;
     Stats: ConnectionStats;
     StateHooks: Map<string, CustomHook>;
@@ -72,7 +75,29 @@ export default class Connection {
         this.Connect();
     }
 
-    Connect() {
+    async Connect() {
+        try {
+            if (this.Info === undefined) {
+                let u = new URL(this.Address);
+                let rsp = await fetch(`https://${u.host}`, {
+                    headers: {
+                        "accept": "application/nostr+json"
+                    }
+                });
+                if (rsp.ok) {
+                    let data = await rsp.json();
+                    for (let [k, v] of Object.entries(data)) {
+                        if (v === "unset" || v === "") {
+                            data[k] = undefined;
+                        }
+                    }
+                    this.Info = data;
+                }
+            }
+        } catch (e) {
+            console.warn("Could not load relay information", e);
+        }
+
         this.IsClosed = false;
         this.Socket = new WebSocket(this.Address);
         this.Socket.onopen = (e) => this.OnOpen(e);
@@ -259,6 +284,7 @@ export default class Connection {
         this.CurrentState.events.send = this.Stats.EventsSent;
         this.CurrentState.avgLatency = this.Stats.Latency.length > 0 ? (this.Stats.Latency.reduce((acc, v) => acc + v, 0) / this.Stats.Latency.length) : 0;
         this.CurrentState.disconnects = this.Stats.Disconnects;
+        this.CurrentState.info = this.Info;
         this.Stats.Latency = this.Stats.Latency.slice(-20); // trim
         this.HasStateChange = true;
         this._NotifyState();

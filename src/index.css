@@ -222,6 +222,10 @@ textarea:placeholder {
   align-items: flex-start !important;
 }
 
+.f-end {
+  justify-content: flex-end;
+}
+
 .w-max {
   width: 100%;
   width: -moz-available;
