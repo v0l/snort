@@ -38,7 +38,8 @@ export interface LNURLTipProps {
     svc?: string,
     show?: boolean,
     invoice?: string, // shortcut to invoice qr tab
-    title?: string
+    title?: string,
+    notice?: string
 }
 
 export default function LNURLTip(props: LNURLTipProps) {
@@ -208,6 +209,7 @@ export default function LNURLTip(props: LNURLTipProps) {
         return (
             <>
                 <div className="invoice">
+                    {props.notice && <b className="error">{props.notice}</b>}
                     <QrCode data={pr} link={`lightning:${pr}`} />
                     <div className="actions">
                         {pr && (

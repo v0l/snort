@@ -184,7 +184,7 @@ export default function ProfileSettings() {
             {settings()}
             {privKey && (<div className="flex f-col bg-grey">
                 <div>
-                    <h4>Private Key:</h4>
+                    <h4>Your Private Key Is (do not share this with anyone):</h4>
                 </div>
                 <div>
                     <Copy text={hexToBech32("nsec", privKey)} />

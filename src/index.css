@@ -296,6 +296,10 @@ body.scroll-lock {
   height: 100vh;
 }
 
+.pointer { 
+  cursor: pointer;
+}
+
 .m5 {
   margin: 5px;
 }
@@ -310,6 +314,10 @@ body.scroll-lock {
 
 .mr5 {
   margin-right: 5px;
+}
+
+.mt10 {
+  margin-top: 10px;
 }
 
 .ml5 {

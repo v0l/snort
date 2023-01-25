@@ -146,3 +146,14 @@ export function extractLnAddress(lnurl: string) {
 export function unixNow() {
     return Math.floor(new Date().getTime() / 1000);
 } 
+
+/**
+ * Simple debounce
+ * @param timeout Time until falling edge
+ * @param fn Callack to run on falling edge
+ * @returns Cancel timeout function
+ */
+export function debounce(timeout: number, fn: () => void) {
+    let t = setTimeout(fn, timeout);
+    return () => clearTimeout(t);
+}

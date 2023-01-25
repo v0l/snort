@@ -2,6 +2,7 @@ import { useEffect, useMemo, useReducer, useState } from "react";
 import { System } from "Nostr/System";
 import { TaggedRawEvent } from "Nostr";
 import { Subscriptions } from "Nostr/Subscriptions";
+import { debounce } from "Util";
 
 export type NoteStore = {
     notes: Array<TaggedRawEvent>,
@@ -61,6 +62,11 @@ export interface UseSubscriptionState {
 }
 
 /**
+ * Wait time before returning changed state
+ */
+const DebounceMs = 200;
+
+/**
  * 
  * @param {Subscriptions} sub 
  * @param {any} opt 
@@ -68,7 +74,16 @@ export interface UseSubscriptionState {
  */
 export default function useSubscription(sub: Subscriptions | null, options?: UseSubscriptionOptions): UseSubscriptionState {
     const [state, dispatch] = useReducer(notesReducer, initStore);
-    const [debounce, setDebounce] = useState<number>(0);
+    const [debounceOutput, setDebounceOutput] = useState<number>(0);
+    const [subDebounce, setSubDebounced] = useState<Subscriptions>();
+
+    useEffect(() => {
+        if (sub) {
+            return debounce(DebounceMs, () => {
+                setSubDebounced(sub);
+            });
+        }
+    }, [sub]);
 
     useEffect(() => {
         if (sub) {
@@ -99,16 +114,14 @@ export default function useSubscription(sub: Subscriptions | null, options?: Use
                 System.RemoveSubscription(sub.Id);
             };
         }
-    }, [sub]);
-
+    }, [subDebounce]);
     useEffect(() => {
-        let t = setTimeout(() => {
-            setDebounce(s => s += 1);
-        }, 100);
-        return () => clearTimeout(t);
+        return debounce(DebounceMs, () => {
+            setDebounceOutput(s => s += 1);
+        });
     }, [state]);
 
-    const stateDebounced = useMemo(() => state, [debounce]);
+    const stateDebounced = useMemo(() => state, [debounceOutput]);
     return {
         store: stateDebounced,
         clear: () => {

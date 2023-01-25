@@ -148,14 +148,14 @@ export default function NoteFooter(props: NoteFooterProps) {
   function menuItems() {
     return (
       <>
-        <MenuItem onClick={() => react("-")}>
+        {prefs.enableReactions && (<MenuItem onClick={() => react("-")}>
           <div>
             <FontAwesomeIcon icon={faThumbsDown} className={hasReacted('-') ? 'reacted' : ''} />
             &nbsp;
             {formatShort(groupReactions[Reaction.Negative])}
           </div>
           Dislike
-        </MenuItem>
+        </MenuItem>)}
         <MenuItem onClick={() => share()}>
           <FontAwesomeIcon icon={faShareNodes} />
           Share

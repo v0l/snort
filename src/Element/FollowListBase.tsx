@@ -16,7 +16,7 @@ export default function FollowListBase({ pubkeys, title }: FollowListBaseProps) 
 
     return (
         <>
-            <div className="flex">
+            <div className="flex mt10">
                 <div className="f-grow">{title}</div>
                 <div className="btn" onClick={() => followAll()}>Follow All</div>
             </div>

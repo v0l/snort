@@ -7,7 +7,7 @@ import LoadMore from "Element/LoadMore";
 import Note from "Element/Note";
 import NoteReaction from "Element/NoteReaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFastForward, faForward } from "@fortawesome/free-solid-svg-icons";
+import { faForward } from "@fortawesome/free-solid-svg-icons";
 
 export interface TimelineProps {
     postsOnly: boolean,
@@ -19,7 +19,7 @@ export interface TimelineProps {
  * A list of notes by pubkeys
  */
 export default function Timeline({ subject, postsOnly = false, method }: TimelineProps) {
-    const { main, related, latest, loadMore, showLatest } = useTimelineFeed(subject, {
+    const { main, related, latest, parent, loadMore, showLatest } = useTimelineFeed(subject, {
         method
     });
 
@@ -42,7 +42,8 @@ export default function Timeline({ subject, postsOnly = false, method }: Timelin
             }
             case EventKind.Reaction:
             case EventKind.Repost: {
-                return <NoteReaction data={e} key={e.id} />
+                let eRef = e.tags.find(a => a[0] === "e")?.at(1);
+                return <NoteReaction data={e} key={e.id} root={parent.notes.find(a => a.id === eRef)}/>
             }
         }
     }
@@ -55,7 +56,7 @@ export default function Timeline({ subject, postsOnly = false, method }: Timelin
                 Show latest {latestFeed.length - 1} notes
             </div>)}
             {mainFeed.map(eventElement)}
-            {mainFeed.length > 0 ? <LoadMore onLoadMore={loadMore} /> : null}
+            <LoadMore onLoadMore={loadMore} shouldLoadMore={main.end}/>
         </>
     );
 }
