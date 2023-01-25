@@ -9,6 +9,8 @@
   height: 160px;
   object-fit: cover;
   margin-bottom: -60px;
+  mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0,0,0,0));
+  -webkit-mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0,0,0,0));
   z-index: 0;
 }
 
