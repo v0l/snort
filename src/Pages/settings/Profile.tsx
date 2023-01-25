@@ -128,11 +128,11 @@ export default function ProfileSettings() {
                     <div>NIP-05:</div>
                     <div>
                         <input type="text" className="mr10" value={nip05} onChange={(e) => setNip05(e.target.value)} />
-                        <div className="btn" onClick={() => navigate("/verification")}>
+                        <button type="button" onClick={() => navigate("/verification")}>
                             <FontAwesomeIcon icon={faShop} />
                             &nbsp;
                             Buy
-                        </div>
+                        </button>
                     </div>
                 </div>
                 <div className="form-group">
@@ -143,10 +143,10 @@ export default function ProfileSettings() {
                 </div>
                 <div className="form-group">
                     <div>
-                        <div className="btn" onClick={() => { dispatch(logout()); navigate("/"); }}>Logout</div>
+                        <button className="secondary" type="button" onClick={() => { dispatch(logout()); navigate("/"); }}>Logout</button>
                     </div>
                     <div>
-                        <div className="btn" onClick={() => saveProfile()}>Save</div>
+                        <button type="button" onClick={() => saveProfile()}>Save</button>
                     </div>
                 </div>
             </div>

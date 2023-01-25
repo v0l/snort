@@ -17,7 +17,9 @@ export default function Modal(props: ModalProps) {
 
     return (
         <div className="modal" onClick={(e) => { e.stopPropagation(); onClose(); }}>
+          <div className="modal-body">
             {props.children}
+          </div>
         </div>
     )
 }

@@ -48,12 +48,12 @@
   align-items: flex-start;
 }
 
-.nip05 {
-  font-size: 12px;
+.user-item .nip05 {
+  font-size: var(--font-size-tiny);
 }
 
 .emoji-item {
-  font-size: 12px;
+  font-size: var(--font-size-tiny);
 }
 
 .emoji-item .emoji {

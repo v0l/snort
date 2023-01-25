@@ -73,7 +73,7 @@ export default function ChatPage() {
             <div className="write-dm">
                 <div className="inner">
                     <textarea className="f-grow mr10" value={content} onChange={(e) => setContent(e.target.value)} onKeyDown={(e) => onEnter(e)}></textarea>
-                    <div className="btn" onClick={() => sendDm()}>Send</div>
+                    <button type="button" onClick={() => sendDm()}>Send</button>
                 </div>
             </div>
         </>

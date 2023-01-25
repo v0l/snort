@@ -51,17 +51,17 @@ export default function MessagesPage() {
     }
 
     return (
-        <>
+        <div className="main-content">
             <div className="flex">
                 <h3 className="f-grow">Messages</h3>
-                <div className="btn" onClick={() => markAllRead()}>Mark All Read</div>
+                <button type="button" onClick={() => markAllRead()}>Mark All Read</button>
             </div>
             {chats.sort((a, b) => {
                 return a.pubkey === myPubKey ? -1 : 
                     b.pubkey === myPubKey ? 1 :
                     b.newestMessage - a.newestMessage
             }).map(person)}
-        </>
+        </div>
     )
 }
 

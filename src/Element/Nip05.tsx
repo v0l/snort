@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck, faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 import './Nip05.css'
 import { HexKey } from "Nostr";
@@ -57,16 +57,20 @@ const Nip05 = (props: Nip05Params) => {
   const { isVerified, couldNotVerify } = useIsVerified(props.pubkey, props.nip05)
 
   return (
-    <div className={`flex nip05${couldNotVerify ? " failed" : ""}`}>
-      {!isDefaultUser && (
-        <div className="nick">
-          {name}
-        </div>
-      )}
-      <div className={`domain text-gradient`} data-domain={domain?.toLowerCase()}>
-        {domain}
+    <div className={`flex nip05${couldNotVerify ? " failed" : ""}`} onClick={(ev) => ev.stopPropagation()}>
+      <div className="nick">
+        {isDefaultUser ? (
+          `${domain}`
+        ) : `@${name}`}
       </div>
       <span className="badge">
+        {isVerified && (
+          <FontAwesomeIcon
+            color={"var(--highlight)"}
+            icon={faCircleCheck}
+            size="xs"
+          />
+        )}
         {!isVerified && !couldNotVerify && (
           <FontAwesomeIcon
             color={"var(--fg-color)"}
