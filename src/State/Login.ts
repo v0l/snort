@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as secp from '@noble/secp256k1';
 import { DefaultRelays } from 'Const';
-import { HexKey, RawEvent, TaggedRawEvent } from 'Nostr';
+import { HexKey, TaggedRawEvent } from 'Nostr';
 import { RelaySettings } from 'Nostr/Connection';
-import { useDispatch } from 'react-redux';
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
@@ -182,7 +181,7 @@ const LoginSlice = createSlice({
             let filtered = new Map<string, RelaySettings>();
             for (let [k, v] of Object.entries(relays)) {
                 if (k.startsWith("wss://") || k.startsWith("ws://")) {
-                    filtered.set(k, <RelaySettings>v);
+                    filtered.set(k, v as RelaySettings);
                 }
             }
 

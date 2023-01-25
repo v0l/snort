@@ -33,7 +33,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
     const pubkey = useSelector<ReduxStore, string>(s => s.login.publicKey);
     const user = useProfile(pubkey);
     const publisher = useEventPublisher();
-    const svc = new ServiceProvider(props.service);
+    const svc = useMemo(() => new ServiceProvider(props.service), [props.service]);
     const [serviceConfig, setServiceConfig] = useState<ServiceConfig>();
     const [error, setError] = useState<ServiceError>();
     const [handle, setHandle] = useState<string>("");
@@ -43,7 +43,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
     const [showInvoice, setShowInvoice] = useState<boolean>(false);
     const [registerStatus, setRegisterStatus] = useState<CheckRegisterResponse>();
 
-    const domainConfig = useMemo(() => serviceConfig?.domains.find(a => a.name === domain), [domain]);
+    const domainConfig = useMemo(() => serviceConfig?.domains.find(a => a.name === domain), [domain, serviceConfig]);
 
     useEffect(() => {
         svc.GetConfig()
@@ -58,7 +58,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
                 }
             })
             .catch(console.error)
-    }, [props]);
+    }, [props, svc]);
 
     useEffect(() => {
         setError(undefined);
@@ -89,7 +89,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
                     .catch(console.error);
             });
         }
-    }, [handle, domain]);
+    }, [handle, domain, domainConfig, svc]);
 
     useEffect(() => {
         if (registerResponse && showInvoice) {
@@ -111,7 +111,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             }, 2_000);
             return () => clearInterval(t);
         }
-    }, [registerResponse, showInvoice])
+    }, [registerResponse, showInvoice, svc])
 
     function mapError(e: ServiceErrorCode, t: string | null): string | undefined {
         let whyMap = new Map([

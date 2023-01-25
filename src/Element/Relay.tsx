@@ -1,11 +1,11 @@
 import "./Relay.css"
 
-import { faPlug, faTrash, faSquareCheck, faSquareXmark, faWifi, faPlugCircleXmark, faGear } from "@fortawesome/free-solid-svg-icons";
+import { faPlug, faSquareCheck, faSquareXmark, faWifi, faPlugCircleXmark, faGear } from "@fortawesome/free-solid-svg-icons";
 import useRelayState from "Feed/RelayState";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeRelay, setRelays } from "State/Login";
+import { setRelays } from "State/Login";
 import { RootState } from "State/Store";
 import { RelaySettings } from "Nostr/Connection";
 import { useNavigate } from "react-router-dom";

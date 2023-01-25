@@ -59,7 +59,7 @@ export default class Connection {
         this.Stats = new ConnectionStats();
         this.StateHooks = new Map();
         this.HasStateChange = true;
-        this.CurrentState = <StateSnapshot>{
+        this.CurrentState = {
             connected: false,
             disconnects: 0,
             avgLatency: 0,
@@ -67,7 +67,7 @@ export default class Connection {
                 received: 0,
                 send: 0
             }
-        };
+        } as StateSnapshot;
         this.LastState = Object.freeze({ ...this.CurrentState });
         this.IsClosed = false;
         this.ReconnectTimer = null;

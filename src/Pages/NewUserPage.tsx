@@ -24,7 +24,7 @@ export default function NewUserPage() {
     const sortedTwitterFollows = useMemo(() => {
         return follows.map(a => bech32ToHex(a))
             .sort((a, b) => currentFollows.includes(a) ? 1 : -1);
-    }, [follows]);
+    }, [follows, currentFollows]);
 
     async function loadFollows() {
         setFollows([]);
