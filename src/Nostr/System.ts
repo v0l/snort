@@ -212,6 +212,10 @@ export class NostrSystem {
 
         setTimeout(() => this._FetchMetadata(), 500);
     }
+
+    async nip42Auth(challenge: string, relay:string): Promise<Event|undefined> {
+        return
+    }
 }
 
 export const System = new NostrSystem();

@@ -7,8 +7,6 @@ import { RootState } from "State/Store";
 import { HexKey, RawEvent, u256, UserMetadata } from "Nostr";
 import { bech32ToHex } from "Util"
 import { DefaultRelays, HashtagRegex } from "Const";
-import { useEffect } from "react";
-import { NIP42AuthChallenge, NIP42AuthResponse } from "Nostr/Auth";
 
 declare global {
     interface Window {
@@ -79,7 +77,7 @@ export default function useEventPublisher() {
     }
 
     return {
-        nip42Auth: async (challenge: string, relay:string): Promise<NEvent> => {
+        nip42Auth: async (challenge: string, relay:string) => {
             if(pubKey) {
                 const ev = NEvent.ForPubKey(pubKey);
                 ev.Kind = EventKind.Auth;
@@ -88,7 +86,6 @@ export default function useEventPublisher() {
                 ev.Tags.push(new Tag(["challenge", challenge], 1));
                 return await signEvent(ev);
             }
-            return Promise.reject();
         },
         broadcast: (ev: NEvent | undefined) => {
             if (ev) {

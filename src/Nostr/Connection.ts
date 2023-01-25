@@ -8,6 +8,7 @@ import { ConnectionStats } from "Nostr/ConnectionStats";
 import { RawEvent, TaggedRawEvent, u256 } from "Nostr";
 import { RelayInfo } from "./RelayInfo";
 import Nips from "./Nips";
+import { System } from "./System";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
 
@@ -367,46 +368,38 @@ export default class Connection {
         }
     }
 
-    async _OnAuthAsync(challenge: string) {
-        const challengeEvent = new NIP42AuthChallenge(challenge, this.Address)
-
+    async _OnAuthAsync(challenge: string): Promise<void> {
         const authCleanup = () => {
             this.AwaitingAuth.delete(challenge)
         }
-
-        const authCallback = (e:NIP42AuthResponse):Promise<void> => {
-            window.removeEventListener(`nip42response:${challenge}`, authCallback)
-            return new Promise((resolve,_) => {
-                if(!e.event) {
-                    authCleanup();
-                    return Promise.reject('no event');
-                }
-
-                let t = setTimeout(() => {
-                    authCleanup();
-                    resolve();
-                }, 10_000);
-
-                this.EventsCallback.set(e.event.Id, (msg:any[]) => {
-                    clearTimeout(t);
-                    authCleanup();
-                    if(msg.length > 3 && msg[2] === true) {
-                        this.Authed = true;
-                        this._InitSubscriptions();
-                    }
-                    resolve();
-                });
-
-                let req = ["AUTH", e.event.ToObject()];
-                this._SendJson(req);
-                this.Stats.EventsSent++;
-                this._UpdateState();
-            })
-        }
-
         this.AwaitingAuth.set(challenge, true)
-        window.addEventListener(`nip42response:${challenge}`, authCallback)
-        window.dispatchEvent(challengeEvent)
+        const authEvent = await System.nip42Auth(challenge, this.Address)
+        return new Promise((resolve,_) => {
+            if(!authEvent) {
+                authCleanup();
+                return Promise.reject('no event');
+            }
+
+            let t = setTimeout(() => {
+                authCleanup();
+                resolve();
+            }, 10_000);
+
+            this.EventsCallback.set(authEvent.Id, (msg:any[]) => {
+                clearTimeout(t);
+                authCleanup();
+                if(msg.length > 3 && msg[2] === true) {
+                    this.Authed = true;
+                    this._InitSubscriptions();
+                }
+                resolve();
+            });
+
+            let req = ["AUTH", authEvent.ToObject()];
+            this._SendJson(req);
+            this.Stats.EventsSent++;
+            this._UpdateState();
+        })
     }
 
     _OnEnd(subId: string) {
