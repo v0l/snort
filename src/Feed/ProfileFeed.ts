@@ -1,5 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { db } from "Db";
 import { MetadataCache } from "Db/User";
 import { HexKey } from "Nostr";

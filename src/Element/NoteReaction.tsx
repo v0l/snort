@@ -16,7 +16,8 @@ export interface NoteReactionProps {
     root?: TaggedRawEvent
 }
 export default function NoteReaction(props: NoteReactionProps) {
-    const ev = useMemo(() => props["data-ev"] || new NEvent(props.data), [props.data, props["data-ev"]])
+    const { ["data-ev"]: dataEv, data } = props;
+    const ev = useMemo(() => dataEv || new NEvent(data), [data, dataEv])
 
     const refEvent = useMemo(() => {
         if (ev) {
@@ -30,19 +31,6 @@ export default function NoteReaction(props: NoteReactionProps) {
 
     if (ev.Kind !== EventKind.Reaction && ev.Kind !== EventKind.Repost) {
         return null;
-    }
-
-    function mapReaction(c: string) {
-        switch (c) {
-            case "+": return "❤️";
-            case "-": return "👎";
-            default: {
-                if (c.length === 0) {
-                    return "❤️";
-                }
-                return c;
-            }
-        }
     }
 
     /**

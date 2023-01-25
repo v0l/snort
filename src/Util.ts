@@ -1,6 +1,6 @@
 import * as secp from "@noble/secp256k1";
 import { bech32 } from "bech32";
-import { HexKey, RawEvent, TaggedRawEvent, u256 } from "Nostr";
+import { HexKey, TaggedRawEvent, u256 } from "Nostr";
 import EventKind from "Nostr/EventKind";
 
 export async function openFile(): Promise<File | undefined> {
@@ -65,7 +65,7 @@ export function eventLink(hex: u256) {
  * @param {string} hex
  */
 export function hexToBech32(hrp: string, hex: string) {
-    if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 != 0) {
+    if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0) {
         return "";
     }
 

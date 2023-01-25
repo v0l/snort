@@ -38,7 +38,8 @@ function notesReducer(state: NoteStore, arg: ReducerArg) {
     if (!Array.isArray(evs)) {
         evs = [evs];
     }
-    evs = evs.filter(a => !state.notes.some(b => b.id === a.id));
+    let existingIds = new Set(state.notes.map(a => a.id));
+    evs = evs.filter(a => !existingIds.has(a.id));
     if (evs.length === 0) {
         return state;
     }
@@ -83,7 +84,7 @@ export default function useSubscription(sub: Subscriptions | null, options?: Use
                 setSubDebounced(sub);
             });
         }
-    }, [sub]);
+    }, [sub, options]);
 
     useEffect(() => {
         if (sub) {
@@ -115,6 +116,7 @@ export default function useSubscription(sub: Subscriptions | null, options?: Use
             };
         }
     }, [subDebounce]);
+
     useEffect(() => {
         return debounce(DebounceMs, () => {
             setDebounceOutput(s => s += 1);

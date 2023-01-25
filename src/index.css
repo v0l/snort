@@ -228,16 +228,12 @@ textarea:placeholder {
 
 .w-max {
   width: 100%;
-  width: -moz-available;
-  width: -webkit-fill-available;
-  width: fill-available;
+  width: stretch;
 }
 
 .w-max-w {
   max-width: 100%;
-  max-width: -moz-available;
-  max-width: -webkit-fill-available;
-  max-width: fill-available;
+  max-width: stretch;
 }
 
 a {
@@ -267,7 +263,7 @@ div.form-group>div:nth-child(1) {
 div.form-group>div:nth-child(2) {
   display: flex;
   flex-grow: 1;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 div.form-group>div:nth-child(2) input {
