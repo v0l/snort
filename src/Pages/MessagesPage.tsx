@@ -51,7 +51,7 @@ export default function MessagesPage() {
     }
 
     return (
-        <div className="timeline">
+        <div className="main-content">
             <div className="flex">
                 <h3 className="f-grow">Messages</h3>
                 <button type="button" onClick={() => markAllRead()}>Mark All Read</button>

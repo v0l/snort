@@ -67,9 +67,9 @@ export default function NewUserPage() {
     }
 
     return (
-        <>
+        <div className="main-content">
             {importTwitterFollows()}
             {followSomebody()}
-        </>
+        </div>
     );
 }

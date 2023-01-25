@@ -13,7 +13,6 @@
 .note-creator textarea {
     outline: none;
     resize: none;
-    min-height: 320px;
     background-color: var(--note-bg);
     border-radius: 10px 10px 0 0;
     max-width: stretch;
