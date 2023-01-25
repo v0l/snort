@@ -77,6 +77,16 @@ export default function useEventPublisher() {
     }
 
     return {
+        nip42Auth: async (challenge: string, relay:string) => {
+            if(pubKey) {
+                const ev = NEvent.ForPubKey(pubKey);
+                ev.Kind = EventKind.Auth;
+                ev.Content = "";
+                ev.Tags.push(new Tag(["relay", relay], 0));
+                ev.Tags.push(new Tag(["challenge", challenge], 1));
+                return await signEvent(ev);
+            }
+        },
         broadcast: (ev: NEvent | undefined) => {
             if (ev) {
                 console.debug("Sending event: ", ev);
