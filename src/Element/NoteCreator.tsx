@@ -35,6 +35,7 @@ export function NoteCreator(props: NoteCreatorProps) {
             console.debug("Sending note: ", ev);
             publisher.broadcast(ev);
             setNote("");
+            setShow(false);
             if (typeof props.onSend === "function") {
                 props.onSend();
             }
