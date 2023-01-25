@@ -8,7 +8,7 @@ import LNURLTip from "Element/LNURLTip";
 
 
 const ZapButton = ({ pubkey, svc }: { pubkey?: HexKey, svc?: string }) => {
-    const profile = useProfile(pubkey)?.get(pubkey ?? "");
+    const profile = useUserProfile(pubkey!)
     const [zap, setZap] = useState(false);
     const service = svc ?? (profile?.lud16 || profile?.lud06);
 
