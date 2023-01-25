@@ -159,7 +159,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             <p>Find out more info about {props.name} at <a href={props.link} target="_blank" rel="noreferrer">{props.link}</a></p>
             {error && <b className="error">{error.error}</b>}
             {!registerStatus && <div className="flex mb10">
-                <input type="text" placeholder="Handle" value={handle} onChange={(e) => setHandle(e.target.value)} />
+                <input type="text" placeholder="Handle" value={handle} onChange={(e) => setHandle(e.target.value.toLowerCase())} />
                 &nbsp;@&nbsp;
                 <select value={domain} onChange={(e) => setDomain(e.target.value)}>
                     {serviceConfig?.domains.map(a => <option key={a.name}>{a.name}</option>)}
