@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { u256 } from "Nostr";
 import EventKind from "Nostr/EventKind";
 import { Subscriptions } from "Nostr/Subscriptions";
@@ -19,15 +19,15 @@ export interface TimelineSubject {
 
 export default function useTimelineFeed(subject: TimelineSubject, options: TimelineFeedOptions) {
     const now = unixNow();
-    const [window, setWindow] = useState<number>(60 * 60);
+    const [window] = useState<number>(60 * 60);
     const [until, setUntil] = useState<number>(now);
     const [since, setSince] = useState<number>(now - window);
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
     const [trackingParentEvents, setTrackingParentEvents] = useState<u256[]>([]);
     const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
 
-    function createSub() {
-        if (subject.type !== "global" && subject.items.length == 0) {
+    const createSub = useCallback(() => {
+        if (subject.type !== "global" && subject.items.length === 0) {
             return null;
         }
 
@@ -49,7 +49,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
             }
         }
         return sub;
-    }
+    }, [subject.type, subject.items]);
 
     const sub = useMemo(() => {
         let sub = createSub();
@@ -78,7 +78,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
             }
         }
         return sub;
-    }, [subject.type, subject.items, until, since, window]);
+    }, [until, since, options.method, pref, createSub]);
 
     const main = useSubscription(sub, { leaveOpen: true });
 
@@ -90,7 +90,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
             subLatest.Since = Math.floor(new Date().getTime() / 1000);
         }
         return subLatest;
-    }, [subject.type, subject.items]);
+    }, [pref, createSub]);
 
     const latest = useSubscription(subRealtime, { leaveOpen: true });
 
@@ -103,7 +103,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
             sub.ETags = new Set(trackingEvents);
         }
         return sub ?? null;
-    }, [trackingEvents]);
+    }, [trackingEvents, pref, subject.type]);
 
     const others = useSubscription(subNext, { leaveOpen: true });
 
@@ -115,7 +115,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
             return parents;
         }
         return null;
-    }, [trackingParentEvents]);
+    }, [trackingParentEvents, subject.type]);
 
     const parent = useSubscription(subParents);
 
@@ -123,8 +123,10 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         if (main.store.notes.length > 0) {
             setTrackingEvent(s => {
                 let ids = main.store.notes.map(a => a.id);
-                let temp = new Set([...s, ...ids]);
-                return Array.from(temp);
+                if(ids.some(a => !s.includes(a))) {
+                    return Array.from(new Set([...s, ...ids]));
+                }
+                return s;
             });
             let reposts = main.store.notes
                 .filter(a => a.kind === EventKind.Repost && a.content === "")

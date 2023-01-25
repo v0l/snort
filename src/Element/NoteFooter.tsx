@@ -31,8 +31,8 @@ export default function NoteFooter(props: NoteFooterProps) {
   const [reply, setReply] = useState(false);
   const [tip, setTip] = useState(false);
   const isMine = ev.RootPubKey === login;
-  const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related]);
-  const reposts = useMemo(() => getReactions(related, ev.Id, EventKind.Repost), [related]);
+  const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related, ev]);
+  const reposts = useMemo(() => getReactions(related, ev.Id, EventKind.Repost), [related, ev]);
   const groupReactions = useMemo(() => {
     return reactions?.reduce((acc, { content }) => {
       let r = normalizeReaction(content);

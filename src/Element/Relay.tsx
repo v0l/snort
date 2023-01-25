@@ -1,13 +1,14 @@
 import "./Relay.css"
 
-import { faPlug, faTrash, faSquareCheck, faSquareXmark, faWifi, faUpload, faDownload, faPlugCircleXmark, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { faPlug, faSquareCheck, faSquareXmark, faWifi, faPlugCircleXmark, faGear } from "@fortawesome/free-solid-svg-icons";
 import useRelayState from "Feed/RelayState";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeRelay, setRelays } from "State/Login";
+import { setRelays } from "State/Login";
 import { RootState } from "State/Store";
 import { RelaySettings } from "Nostr/Connection";
+import { useNavigate } from "react-router-dom";
 
 export interface RelayProps {
     addr: string
@@ -15,11 +16,11 @@ export interface RelayProps {
 
 export default function Relay(props: RelayProps) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const allRelaySettings = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
     const relaySettings = allRelaySettings[props.addr];
     const state = useRelayState(props.addr);
     const name = useMemo(() => new URL(props.addr).host, [props.addr]);
-    const [showExtra, setShowExtra] = useState(false);
 
     function configure(o: RelaySettings) {
         dispatch(setRelays({
@@ -62,28 +63,13 @@ export default function Relay(props: RelayProps) {
                             <FontAwesomeIcon icon={faPlugCircleXmark} /> {state?.disconnects}
                         </div>
                         <div>
-                            <span className="icon-btn" onClick={() => setShowExtra(s => !s)}>
-                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            <span className="icon-btn" onClick={() => navigate(name)}>
+                                <FontAwesomeIcon icon={faGear} />
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
-            {showExtra ? <div className="flex relay-extra w-max">
-                <div className="f-1">
-                    <FontAwesomeIcon icon={faUpload} /> {state?.events.send}
-                </div>
-                <div className="f-1">
-                    <FontAwesomeIcon icon={faDownload} /> {state?.events.received}
-                </div>
-
-                <div className="f-1">
-                    Delete
-                    <span className="icon-btn" onClick={() => dispatch(removeRelay(props.addr))}>
-                        <FontAwesomeIcon icon={faTrash} />
-                    </span>
-                </div>
-            </div> : null}
         </>
     )
 }

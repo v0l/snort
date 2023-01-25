@@ -1,4 +1,4 @@
-## Snort
+## Snort
 
 Snort is a nostr UI built with React, Snort intends to be fast and effecient
 
@@ -13,7 +13,7 @@ Snort supports the following NIP's
 - [x] NIP-08: Handling Mentions
 - [x] NIP-09: Event Deletion
 - [x] NIP-10: Conventions for clients' use of `e` and `p` tags in text events
-- [ ] NIP-11: Relay Information Document
+- [x] NIP-11: Relay Information Document
 - [x] NIP-12: Generic Tag Queries
 - [ ] NIP-13: Proof of Work
 - [ ] NIP-14: Subject tag in text events

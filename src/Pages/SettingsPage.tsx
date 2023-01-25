@@ -3,6 +3,7 @@ import SettingsIndex from "Pages/settings/Index";
 import Profile from "Pages/settings/Profile";
 import Relay from "Pages/settings/Relays";
 import Preferences from "Pages/settings/Preferences";
+import RelayInfo from "Pages/settings/RelayInfo";
 
 export default function SettingsPage() {
     const navigate = useNavigate();
@@ -26,7 +27,11 @@ export const SettingsRoutes: RouteObject[] = [
     },
     {
         path: "relays",
-        element: <Relay />
+        element: <Relay />,
+    },
+    {
+        path: "relays/:addr",
+        element: <RelayInfo />
     },
     {
         path: "preferences",

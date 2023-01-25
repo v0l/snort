@@ -31,7 +31,6 @@ export default function ProfileSettings() {
     const [about, setAbout] = useState<string>();
     const [website, setWebsite] = useState<string>();
     const [nip05, setNip05] = useState<string>();
-    const [lud06, setLud06] = useState<string>();
     const [lud16, setLud16] = useState<string>();
 
     const avatarPicture = (picture?.length ?? 0) === 0 ? Nostrich : picture
@@ -45,7 +44,6 @@ export default function ProfileSettings() {
             setAbout(user.about);
             setWebsite(user.website);
             setNip05(user.nip05);
-            setLud06(user.lud06);
             setLud16(user.lud16);
         }
     }, [user]);

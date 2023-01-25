@@ -36,7 +36,7 @@ export default function useThreadFeed(id: u256) {
         thisSub.AddSubscription(subRelated);
 
         return thisSub;
-    }, [trackingEvents]);
+    }, [trackingEvents, pref, id]);
 
     const main = useSubscription(sub, { leaveOpen: true });
 

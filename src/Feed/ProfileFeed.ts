@@ -1,5 +1,4 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { RootState } from "State/Store";
 import { MetadataCache } from "State/Users";

@@ -1,4 +1,4 @@
-import { RecommendedFollows } from "Const";
+import { ApiHost, RecommendedFollows } from "Const";
 import AsyncButton from "Element/AsyncButton";
 import FollowListBase from "Element/FollowListBase";
 import ProfilePreview from "Element/ProfilePreview";
@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "State/Store";
 import { bech32ToHex } from "Util";
 
-const TwitterFollowsApi = "https://api.snort.social/api/v1/twitter/follows-for-nostr";
+const TwitterFollowsApi = `${ApiHost}/api/v1/twitter/follows-for-nostr`;
 
 export default function NewUserPage() {
     const [twitterUsername, setTwitterUsername] = useState<string>("");
@@ -24,7 +24,7 @@ export default function NewUserPage() {
     const sortedTwitterFollows = useMemo(() => {
         return follows.map(a => bech32ToHex(a))
             .sort((a, b) => currentFollows.includes(a) ? 1 : -1);
-    }, [follows]);
+    }, [follows, currentFollows]);
 
     async function loadFollows() {
         setFollows([]);

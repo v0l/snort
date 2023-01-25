@@ -1,5 +1,5 @@
 import "./Timeline.css";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import useTimelineFeed, { TimelineSubject } from "Feed/TimelineFeed";
 import { TaggedRawEvent } from "Nostr";
 import EventKind from "Nostr/EventKind";
@@ -23,17 +23,17 @@ export default function Timeline({ subject, postsOnly = false, method }: Timelin
         method
     });
 
-    const filterPosts = (notes: TaggedRawEvent[]) => {
-        return [...notes].sort((a, b) => b.created_at - a.created_at)?.filter(a => postsOnly ? !a.tags.some(b => b[0] === "e") : true);
-    }
+    const filterPosts = useCallback((nts: TaggedRawEvent[]) => {
+        return [...nts].sort((a, b) => b.created_at - a.created_at)?.filter(a => postsOnly ? !a.tags.some(b => b[0] === "e") : true);
+    }, [postsOnly]);
 
     const mainFeed = useMemo(() => {
         return filterPosts(main.notes);
-    }, [main]);
+    }, [main, filterPosts]);
 
     const latestFeed = useMemo(() => {
         return filterPosts(latest.notes).filter(a => !mainFeed.some(b => b.id === a.id));
-    }, [latest]);
+    }, [latest, mainFeed, filterPosts]);
 
     function eventElement(e: TaggedRawEvent) {
         switch (e.kind) {
