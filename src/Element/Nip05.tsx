@@ -60,10 +60,10 @@ const Nip05 = (props: Nip05Params) => {
     <div className={`flex nip05${couldNotVerify ? " failed" : ""}`} onClick={(ev) => ev.stopPropagation()}>
       {!isDefaultUser && (
         <div className="nick">
-          `@${name}`}
+          {`@${name}`}
         </div>
       )}
-      <span className="domain">
+      <span className="domain" data-domain={domain?.toLowerCase()}>
         {domain}
       </span>
       <span className="badge">

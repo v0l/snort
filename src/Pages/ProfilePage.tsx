@@ -106,10 +106,10 @@ export default function ProfilePage() {
             case ProfileTab.Follows: {
                 if (isMe) {
                     return (
-                        <>
+                        <div className="main-content">
                             <h4>Following {follows.length}</h4>
                             {follows.map(a => <ProfilePreview key={a} pubkey={a.toLowerCase()} options={{ about: false }} />)}
-                        </>
+                        </div>
                     );
                 } else {
                     return <FollowsList pubkey={id} />;

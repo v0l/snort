@@ -25,6 +25,7 @@
   --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
   --snort-gradient: linear-gradient(180deg, #FFC7B7 0%, #4F1B73 100%);
   --nostrplebs-gradient: linear-gradient(to bottom right, #ff3cac, #2b86c5);
+  --snort-text-gradient: linear-gradient(to bottom right, #8B5CF6, #0284C7);
   --strike-army-gradient: linear-gradient(to bottom right, #CCFF00, #a1c900);
 }
 

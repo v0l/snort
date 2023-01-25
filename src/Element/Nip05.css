@@ -1,18 +1,44 @@
 .nip05 {
-    justify-content: flex-start;
-    align-items: center;
-    margin: .2em;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .nip05.failed {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }
 
 .nip05 .nick {
-    color: var(--font-secondary-color);
-    font-weight: bold;
+  color: var(--font-secondary-color);
+  font-weight: bold;
+}
+
+.nip05 .domain {
+  color: var(--gray-light);
+  font-weight: bold;
+  margin-left: .2em;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  background-color: var(--gray-light);
+}
+
+.nip05 .domain[data-domain="snort.social"] {
+  background-image: var(--nostrplebs-gradient);
+}
+
+.nip05 .domain[data-domain="nostrplebs.com"] {
+  background-image: var(--nostrplebs-gradient);
+}
+
+.nip05 .domain[data-domain="nostrpurple.com"] {
+  background-image: var(--nostrplebs-gradient);
+}
+
+.nip05 .domain[data-domain="nostr.fan"] {
+  background-image: var(--nostrplebs-gradient);
 }
 
 .nip05 .badge {
-     margin: .1em .2em;
+   margin: .1em .2em;
 }
