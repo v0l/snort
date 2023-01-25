@@ -1,5 +1,5 @@
 import { HexKey } from "Nostr";
-import { db as idb, NAME, VERSION } from "Db";
+import { db as idb } from "Db";
 
 import { UsersDb, MetadataCache, setUsers } from "State/Users";
 import store from "State/Store";
@@ -8,7 +8,7 @@ class IndexedDb implements UsersDb {
   isAvailable() {
     if ("indexedDB" in window) {
       return new Promise<boolean>((resolve) => {
-        const req = window.indexedDB.open(NAME, VERSION)
+        const req = window.indexedDB.open("dummy", 1)
         req.onsuccess = (ev) => {
           resolve(true)
         }
