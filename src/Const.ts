@@ -1,6 +1,11 @@
 import { RelaySettings } from "Nostr/Connection";
 
 /**
+ * Add-on api for snort features
+ */
+export const ApiHost = "https://api.snort.social";
+
+/**
  * Websocket re-connect timeout
  */
 export const DefaultConnectTimeout = 2000;
@@ -93,5 +98,4 @@ export const TidalRegex = /tidal\.com\/(?:browse\/)?(\w+)\/([a-z0-9-]+)/i;
 /**
  * SoundCloud regex
  */
-
 export const SoundCloudRegex = /soundcloud\.com\/(?!live)([a-zA-Z0-9]+)\/([a-zA-Z0-9-]+)/

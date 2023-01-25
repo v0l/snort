@@ -1,3 +1,4 @@
+import { ApiHost } from "Const";
 import ProfilePreview from "Element/ProfilePreview";
 import ZapButton from "Element/ZapButton";
 import { HexKey } from "Nostr";
@@ -24,7 +25,7 @@ const DonatePage = () => {
     const [splits, setSplits] = useState<Splits[]>([]);
 
     async function loadSplits() {
-        let rsp = await fetch("https://api.snort.social/api/v1/revenue/splits");
+        let rsp = await fetch(`${ApiHost}/api/v1/revenue/splits`);
         if(rsp.ok) {
             setSplits(await rsp.json());
         }
