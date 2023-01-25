@@ -58,11 +58,14 @@ const Nip05 = (props: Nip05Params) => {
 
   return (
     <div className={`flex nip05${couldNotVerify ? " failed" : ""}`} onClick={(ev) => ev.stopPropagation()}>
-      <div className="nick">
-        {isDefaultUser ? (
-          `${domain}`
-        ) : `@${name}`}
-      </div>
+      {!isDefaultUser && (
+        <div className="nick">
+          `@${name}`}
+        </div>
+      )}
+      <span className="domain">
+        {domain}
+      </span>
       <span className="badge">
         {isVerified && (
           <FontAwesomeIcon
