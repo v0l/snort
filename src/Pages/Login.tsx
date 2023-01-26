@@ -72,12 +72,15 @@ export default function LoginPage() {
 
     async function doNip07Login() {
         let pubKey = await window.nostr.getPublicKey();
-        let relays = await window.nostr.getRelays();
         dispatch(setPublicKey(pubKey));
-        dispatch(setRelays({
-            relays: relays,
-            createdAt: 1
-        }));
+
+        if ("getRelays" in window.nostr) {
+            let relays = await window.nostr.getRelays();
+            dispatch(setRelays({
+                relays: relays,
+                createdAt: 1
+            }));
+        }
     }
 
     function altLogins() {
