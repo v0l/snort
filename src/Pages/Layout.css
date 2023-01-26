@@ -1,7 +1,8 @@
 .logo {
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 700;
   font-size: 29px;
+  line-height: 23px;
 }
 
 header {

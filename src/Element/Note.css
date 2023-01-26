@@ -148,6 +148,7 @@
 
 .note.active>.header>.info {
   color: var(--font-tertiary-color);
+  font-weight: 500;
 }
 
 .note.active>.footer>.reaction-pill {

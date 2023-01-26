@@ -1,6 +1,7 @@
 .nip05 {
   justify-content: flex-start;
   align-items: center;
+  font-weight: normal;
 }
 
 .nip05.failed {
@@ -9,12 +10,10 @@
 
 .nip05 .nick {
   color: var(--font-secondary-color);
-  font-weight: bold;
 }
 
 .nip05 .domain {
   color: var(--gray-light);
-  font-weight: bold;
   margin-left: .2em;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

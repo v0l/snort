@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Bietnam+Pro:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Bietnam+Pro:wght@400;500;600;700&display=swap');
 
 :root {
   --bg-color: #000;
@@ -113,7 +113,7 @@ html.light .card {
 button {
   cursor: pointer;
   padding: 6px 12px;
-  font-weight: bold;
+  font-weight: 700;
   color: white;
   font-size: var(--font-size);
   background-color: var(--highlight);
@@ -165,7 +165,7 @@ button.secondary:hover {
   border: 2px solid;
   background-color: var(--gray-secondary);
   color: var(--font-color);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .btn.disabled {
@@ -388,7 +388,7 @@ body.scroll-lock {
 }
 
 .tabs .active {
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .error {
@@ -412,7 +412,8 @@ body.scroll-lock {
 
 .tab {
   border-bottom: 1px solid var(--gray-secondary);
-  font-weight: bold;
+  font-weight: 700;
+  line-height: 19px;
   color: var(--font-secondary-color);
   padding: 8px 0;
 }
