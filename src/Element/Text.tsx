@@ -41,6 +41,11 @@ function transformHttpLink(a: string, pref: UserPreferences) {
                 case "webp": {
                     return <img key={url.toString()} src={url.toString()} />;
                 }
+                case "wav":
+                case "mp3":
+                case "ogg": {
+                    return <audio key={url.toString()} src={url.toString()} controls />
+                }
                 case "mp4":
                 case "mov":
                 case "mkv":
