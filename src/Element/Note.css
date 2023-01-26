@@ -40,6 +40,18 @@
   padding-left: 46px;
 }
 
+.note .footer .footer-reactions {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+}
+
+@media (min-width: 720px) {
+  .note .footer .footer-reactions {
+    margin-left: 0;
+  }
+}
+
 .note>.footer .ctx-menu {
   background-color: var(--note-bg);
   color: var(--font-secondary-color);

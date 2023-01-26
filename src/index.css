@@ -106,8 +106,7 @@ html.light .card {
 
 .card>.footer {
   display: flex;
-  flex-direction: row-reverse;
-  margin-top: 12px;
+  flex-direction: row;
 }
 
 button {

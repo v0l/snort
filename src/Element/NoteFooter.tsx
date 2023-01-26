@@ -186,23 +186,24 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   return (
-    <>
-      <div className="footer">
-        <Menu menuButton={<div className="reaction-pill">
-          <div className="reaction-pill-icon">
-            <Dots />
-          </div>
-        </div>} menuClassName="ctx-menu">
-          {menuItems()}
-        </Menu>
+    <div className="footer">
+      <div className="footer-reactions">
+        {tipButton()}
+        {reactionIcons()}
         <div className={`reaction-pill ${reply ? 'reacted' : ''}`} onClick={(e) => setReply(s => !s)}>
           <div className="reaction-pill-icon">
             <Reply />
           </div>
         </div>
-
-        {reactionIcons()}
-        {tipButton()}
+        <Menu menuButton={<div className="reaction-pill">
+            <div className="reaction-pill-icon">
+              <Dots />
+            </div>
+          </div>}
+          menuClassName="ctx-menu"
+        >
+          {menuItems()}
+        </Menu>
       </div>
       <NoteCreator
         autoFocus={true}
@@ -212,6 +213,6 @@ export default function NoteFooter(props: NoteFooterProps) {
         setShow={setReply}
       />
       <LNURLTip svc={author?.lud16 || author?.lud06} onClose={() => setTip(false)} show={tip} />
-    </>
+    </div>
   )
 }
