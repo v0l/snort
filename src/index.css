@@ -120,6 +120,7 @@ button {
   border-radius: 16px;
   outline: none;
 }
+
 button:hover {
   background-color: var(--font-color);
   color: var(--bg-color);
@@ -129,13 +130,27 @@ button.secondary {
   color: var(--font-color);
   background-color: var(--gray-dark);
 }
+
+button.transparent {
+  background-color: transparent;
+  border: 1px solid var(--gray-superdark);
+}
+
 .light button.secondary {
   background-color: var(--gray);
 }
+
 button.secondary:hover {
+  border: none;
   color: var(--font-color);
   background-color: var(--gray-superdark);
 }
+
+button.transparent:hover {
+  color: var(--bg-color);
+  background-color: var(--font-color);
+}
+
 .light button.secondary:hover {
   background-color: var(--gray-secondary);
 }

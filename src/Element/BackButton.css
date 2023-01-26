@@ -1,0 +1,21 @@
+.back-button {
+  background: none;
+  padding: 0;
+  color: var(--highlight);
+  font-weight: 400;
+  font-size: var(--font-size);
+}
+
+.back-button svg {
+  margin-right: .5em;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
+
+.back-button:hover {
+  background: none;
+  color: var(--font-color);
+  text-decoration: underline;
+}
