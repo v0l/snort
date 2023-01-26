@@ -73,6 +73,16 @@ export interface LoginStore {
     follows: HexKey[],
 
     /**
+     * A list of pubkeys this user has muted
+     */
+    muted: HexKey[],
+
+    /**
+     * Last seen mute list event timestamp
+     */
+    lastMutedSeenAt: number,
+
+    /**
      * Notifications for this login session
      */
     notifications: TaggedRawEvent[],
@@ -105,6 +115,8 @@ const InitState = {
     relays: {},
     latestRelays: 0,
     follows: [],
+    lastMutedSeenAt: 0,
+    muted: [],
     notifications: [],
     readNotifications: new Date().getTime(),
     dms: [],
@@ -207,6 +219,14 @@ const LoginSlice = createSlice({
                 state.follows = Array.from(existing);
             }
         },
+        setMuted(state, action: PayloadAction<{at: number, keys: HexKey[]}>) {
+          const { at, keys } = action.payload
+          if (at > state.lastMutedSeenAt) {
+            const muted = new Set([...keys])
+            state.muted = Array.from(muted)
+            state.lastMutedSeenAt = at
+          }
+        },
         addNotifications: (state, action: PayloadAction<TaggedRawEvent | TaggedRawEvent[]>) => {
             let n = action.payload;
             if (!Array.isArray(n)) {
@@ -273,10 +293,11 @@ export const {
     removeRelay,
     setFollows,
     addNotifications,
+    setMuted,
     addDirectMessage,
     incDmInteraction,
     logout,
     markNotificationsRead,
-    setPreferences
+    setPreferences,
 } = LoginSlice.actions;
 export const reducer = LoginSlice.reducer;

@@ -7,7 +7,8 @@ const enum EventKind {
     DirectMessage = 4, // NIP-04
     Deletion = 5, // NIP-09
     Repost = 6, // NIP-18
-    Reaction = 7 // NIP-25
+    Reaction = 7, // NIP-25
+    Lists = 30000, // NIP-51
 };
 
 export default EventKind;

@@ -8,6 +8,7 @@ import { hexToBech32 } from "../Util";
 import { incDmInteraction } from "State/Login";
 import { RootState } from "State/Store";
 import NoteToSelf from "Element/NoteToSelf";
+import useModeration from "Hooks/useModeration";
 
 type DmChat = {
     pubkey: HexKey,
@@ -20,10 +21,11 @@ export default function MessagesPage() {
     const myPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
     const dmInteraction = useSelector<RootState, number>(s => s.login.dmInteraction);
+    const { muted, isMuted } = useModeration();
 
     const chats = useMemo(() => {
-        return extractChats(dms, myPubKey!);
-    }, [dms, myPubKey, dmInteraction]);
+        return extractChats(dms.filter(a => !isMuted(a.pubkey)), myPubKey!);
+    }, [dms, myPubKey, dmInteraction, muted]);
 
     function noteToSelf(chat: DmChat) {
         return (

@@ -79,9 +79,9 @@ export default function Invoice(props: InvoiceProps) {
                 </div>
 
                 {info?.expired ? <div className="btn">Expired</div> : (
-                  <div className="btn" onClick={payInvoice}>
+                  <button type="button" onClick={payInvoice}>
                     Pay
-                  </div>
+                  </button>
                 )}
             </div>
 

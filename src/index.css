@@ -124,10 +124,6 @@ button:disabled {
   cursor: not-allowed;
   color: var(--gray);
 }
-.light button:disabled {
-  color: var(--font-color);
-}
-
 
 button:hover {
   background-color: var(--font-color);
@@ -486,4 +482,8 @@ body.scroll-lock {
 
 .bold {
   font-weight: 700;
+}
+
+.blurred {
+  filter: blur(5px);
 }

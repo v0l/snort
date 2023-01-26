@@ -10,6 +10,7 @@ import useProfile from "Feed/ProfileFeed";
 import FollowButton from "Element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
+import LogoutButton from "Element/LogoutButton";
 import Timeline from "Element/Timeline";
 import Text from 'Element/Text'
 import LNURLTip from "Element/LNURLTip";
@@ -17,6 +18,7 @@ import Nip05 from "Element/Nip05";
 import Copy from "Element/Copy";
 import ProfilePreview from "Element/ProfilePreview";
 import FollowersList from "Element/FollowersList";
+import MutedList from "Element/MutedList";
 import FollowsList from "Element/FollowsList";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
@@ -26,7 +28,8 @@ enum ProfileTab {
     Notes = "Notes",
     Reactions = "Reactions",
     Followers = "Followers",
-    Follows = "Follows"
+    Follows = "Follows",
+    Muted = "Muted"
 };
 
 export default function ProfilePage() {
@@ -35,6 +38,8 @@ export default function ProfilePage() {
     const id = useMemo(() => parseId(params.id!), [params]);
     const user = useProfile(id)?.get(id);
     const loggedOut = useSelector<RootState, boolean | undefined>(s => s.login.loggedOut);
+    const muted = useSelector<RootState, HexKey[]>(s => s.login.muted);
+    const isMuted = useMemo(() => muted.includes(id), [muted, id])
     const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
     const isMe = loginPubKey === id;
@@ -119,6 +124,9 @@ export default function ProfilePage() {
             case ProfileTab.Followers: {
                 return <FollowersList pubkey={id} />
             }
+            case ProfileTab.Muted: {
+                return <MutedList pubkey={id} />
+            }
         }
     }
 
@@ -136,9 +144,12 @@ export default function ProfilePage() {
                 {username()}
                 <div className="profile-actions">
                   {isMe ? (
+                    <>
+                      <LogoutButton />
                       <button type="button" onClick={() => navigate("/settings")}>
                         Settings
                       </button>
+                    </>
                   ) : (
                     !loggedOut && (
                       <>
@@ -165,7 +176,7 @@ export default function ProfilePage() {
                </div>
             </div>
             <div className="tabs">
-                {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows].map(v => {
+                {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Muted].map(v => {
                     return <div className={`tab f-1${tab === v ? " active" : ""}`} key={v} onClick={() => setTab(v)}>{v}</div>
                 })}
             </div>

@@ -42,6 +42,11 @@ export class Subscriptions {
      */
     HashTags?: Set<string>;
 
+    /**
+     * A list of "d" tags to search 
+     */
+    DTags?: Set<string>;
+
     /** 
      * a timestamp, events must be newer than this to pass
      */
@@ -89,6 +94,7 @@ export class Subscriptions {
         this.Kinds = sub?.kinds ? new Set(sub.kinds) : undefined;
         this.ETags = sub?.["#e"] ? new Set(sub["#e"]) : undefined;
         this.PTags = sub?.["#p"] ? new Set(sub["#p"]) : undefined;
+        this.DTags = sub?.["#d"] ? new Set(sub["#d"]) : undefined;
         this.Since = sub?.since ?? undefined;
         this.Until = sub?.until ?? undefined;
         this.Limit = sub?.limit ?? undefined;
@@ -130,8 +136,11 @@ export class Subscriptions {
         if (this.PTags) {
             ret["#p"] = Array.from(this.PTags);
         }
-        if(this.HashTags) {
+        if (this.HashTags) {
             ret["#t"] = Array.from(this.HashTags);
+        }
+        if (this.DTags) {
+            ret["#d"] = Array.from(this.DTags);
         }
         if (this.Since !== null) {
             ret.since = this.Since;

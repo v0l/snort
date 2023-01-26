@@ -12,6 +12,7 @@ import EventKind from "Nostr/EventKind";
 import useProfile from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "Nostr";
 import { useInView } from "react-intersection-observer";
+import useModeration from "Hooks/useModeration";
 
 export interface NoteProps {
     data?: TaggedRawEvent,
@@ -33,6 +34,8 @@ export default function Note(props: NoteProps) {
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
     const users = useProfile(pubKeys);
     const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
+    const { isMuted } = useModeration()
+    const muted = isMuted(ev.PubKey)
     const { ref, inView } = useInView({ triggerOnce: true });
 
     const options = {
@@ -150,7 +153,7 @@ export default function Note(props: NoteProps) {
         )
     }
 
-    return (
+    return muted ? null : (
         <div className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
             {content()}
         </div>

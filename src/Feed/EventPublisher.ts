@@ -95,6 +95,19 @@ export default function useEventPublisher() {
                 }
             }
         },
+        muted: async (keys: HexKey[]) => {
+            if (pubKey) {
+                let ev = NEvent.ForPubKey(pubKey);
+                ev.Kind = EventKind.Lists;
+                ev.Tags.push(new Tag(["d", "mute"], ev.Tags.length))
+                keys.forEach(p => {
+                  ev.Tags.push(new Tag(["p", p], ev.Tags.length))
+                })
+                // todo: public/private block
+                ev.Content = "";
+                return await signEvent(ev);
+            }
+        },
         metadata: async (obj: UserMetadata) => {
             if (pubKey) {
                 let ev = NEvent.ForPubKey(pubKey);
