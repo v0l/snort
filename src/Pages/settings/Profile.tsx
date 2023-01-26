@@ -87,7 +87,7 @@ export default function ProfileSettings() {
     async function setNewAvatar() {
         const rsp = await uploadFile();
         if (rsp) {
-            setPicture(rsp.meta?.url ?? `${VoidCatHost}d/${rsp.id}`);
+            setPicture(rsp.meta?.url ?? `${VoidCatHost}/d/${rsp.id}`);
         }
     }
 
