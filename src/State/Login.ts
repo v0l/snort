@@ -150,7 +150,7 @@ const LoginSlice = createSlice({
             let lastRelayList = window.localStorage.getItem(RelayListKey);
             if (lastRelayList) {
                 state.relays = JSON.parse(lastRelayList);
-            } else if (state.loggedOut === true) {
+            } else {
                 state.relays = Object.fromEntries(DefaultRelays.entries());
             }
 
