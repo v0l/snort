@@ -88,7 +88,7 @@ code {
 
 @media (min-width: 720px) {
   .card {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     padding: 12px 24px;
   }
 }

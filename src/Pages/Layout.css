@@ -14,6 +14,12 @@ header {
   padding: 0 12px;
 }
 
+@media (min-width: 720px) {
+  header {
+    padding: 0;
+  }
+}
+
 header .pfp .avatar-wrapper {
   margin-right: 0;
 }
