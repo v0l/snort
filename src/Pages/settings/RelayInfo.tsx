@@ -10,16 +10,16 @@ const RelayInfo = () => {
     const params = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const addr: string = `wss://${params.addr}`;
 
-    const con = System.Sockets.get(addr) ?? System.Sockets.get(`${addr}/`);
-    const stats = useRelayState(con?.Address ?? addr);
+    const conn = Array.from(System.Sockets.values()).find(a => a.Id === params.id);
+    console.debug(conn);
+    const stats = useRelayState(conn?.Address ?? "");
 
     return (
         <>
             <h3 className="pointer" onClick={() => navigate("/settings/relays")}>Relays</h3>
             <div className="card">
-                <h3>{stats?.info?.name ?? addr}</h3>
+                <h3>{stats?.info?.name}</h3>
                 <p>{stats?.info?.description}</p>
 
                 {stats?.info?.pubkey && (<>
@@ -45,7 +45,7 @@ const RelayInfo = () => {
                 </>)}
                 <div className="flex mt10 f-end">
                     <div className="btn error" onClick={() => {
-                        dispatch(removeRelay(con!.Address));
+                        dispatch(removeRelay(conn!.Address));
                         navigate("/settings/relays")
                     }}>Remove</div>
                 </div>

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as secp from '@noble/secp256k1';
 
 import { RootState } from "State/Store";
-import { setPrivateKey, setPublicKey } from "State/Login";
+import { setPrivateKey, setPublicKey, setRelays } from "State/Login";
 import { EmailRegex } from "Const";
 import { bech32ToHex } from "Util";
 import { HexKey } from "Nostr";
@@ -72,7 +72,12 @@ export default function LoginPage() {
 
     async function doNip07Login() {
         let pubKey = await window.nostr.getPublicKey();
+        let relays = await window.nostr.getRelays();
         dispatch(setPublicKey(pubKey));
+        dispatch(setRelays({
+            relays: relays,
+            createdAt: 1
+        }));
     }
 
     function altLogins() {

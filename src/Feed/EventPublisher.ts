@@ -13,7 +13,7 @@ declare global {
         nostr: {
             getPublicKey: () => Promise<HexKey>,
             signEvent: (event: RawEvent) => Promise<RawEvent>,
-            getRelays: () => Promise<[[string, { read: boolean, write: boolean }]]>,
+            getRelays: () => Promise<Record<string, { read: boolean, write: boolean }>>,
             nip04: {
                 encrypt: (pubkey: HexKey, content: string) => Promise<string>,
                 decrypt: (pubkey: HexKey, content: string) => Promise<string>
