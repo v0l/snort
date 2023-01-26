@@ -352,6 +352,10 @@ export default class Connection {
     }
 
     async _OnAuthAsync(challenge: string): Promise<void> {
+        if(!this.Settings.read) {
+            return;
+        }
+
         const authCleanup = () => {
             this.AwaitingAuth.delete(challenge)
         }
