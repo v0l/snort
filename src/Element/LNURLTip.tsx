@@ -4,30 +4,7 @@ import { bech32ToText } from "Util";
 import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
-
-const useWebLn = (enable = true) => {
-  const maybeWebLn = "webln" in window ? window.webln : null
-
-  useEffect(() => {
-    if (maybeWebLn && !maybeWebLn.enabled && enable) {
-      maybeWebLn.enable().catch((error) => {
-        console.debug("Couldn't enable WebLN")
-      })
-    }
-  }, [maybeWebLn, enable])
-
-  return maybeWebLn
-}
-
-declare global {
-    interface Window {
-        webln?: {
-            enabled: boolean,
-            enable: () => Promise<void>,
-            sendPayment: (pr: string) => Promise<any>
-        }
-    }
-}
+import useWebln from "Hooks/useWebln";
 
 interface LNURLService {
     minSendable?: number,
@@ -68,7 +45,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     const [comment, setComment] = useState<string>();
     const [error, setError] = useState<string>();
     const [success, setSuccess] = useState<LNURLSuccessAction>();
-    const webln = useWebLn(show);
+    const webln = useWebln(show);
 
     useEffect(() => {
         if (show && !props.invoice) {
