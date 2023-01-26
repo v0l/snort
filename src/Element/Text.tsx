@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
-import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex, TidalRegex, SoundCloudRegex } from "Const";
+import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex, TidalRegex, SoundCloudRegex, MixCloudRegex } from "Const";
 import { eventLink, hexToBech32 } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
@@ -17,6 +17,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'State/Store';
 import { UserPreferences } from 'State/Login';
 import  SoundCloudEmbed from 'Element/SoundCloudEmded'
+import MixCloudEmbed from './MixCloudEmbed';
 
 function transformHttpLink(a: string, pref: UserPreferences) {
     try {
@@ -28,6 +29,7 @@ function transformHttpLink(a: string, pref: UserPreferences) {
         const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
         const tidalId = TidalRegex.test(a) && RegExp.$1;
         const soundcloundId = SoundCloudRegex.test(a) && RegExp.$1;
+        const mixcloudId = MixCloudRegex.test(a) && RegExp.$1;
         const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
         if (extension) {
             switch (extension) {
@@ -75,6 +77,8 @@ function transformHttpLink(a: string, pref: UserPreferences) {
             return <TidalEmbed link={a} />
         } else if (soundcloundId){
             return <SoundCloudEmbed link={a} />
+        } else if (mixcloudId){
+            return <MixCloudEmbed link={a} />
         } else {
             return <a href={a} onClick={(e) => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">{a}</a>
         }
