@@ -91,7 +91,7 @@ export default function Layout() {
                 </div>
                 <div className={`btn btn-rnd${unreadNotifications === 0 ? " mr10" : ""}`} onClick={(e) => goToNotifications(e)}>
                     <Bell />
-                    {unreadNotifications > 0 && (<span className="has-unreads"></span>)}
+                    {unreadNotifications > 0 && (<span className="has-unread"></span>)}
                 </div>
                 <ProfileImage pubkey={key || ""} showUsername={false} />
             </div>
