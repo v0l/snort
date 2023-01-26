@@ -26,6 +26,10 @@
   background-image: var(--nostrplebs-gradient);
 }
 
+.nip05 .domain[data-domain="strike.army"] {
+  background-image: var(--strike-army-gradient);
+}
+
 .nip05 .domain[data-domain="nostrplebs.com"] {
   background-image: var(--nostrplebs-gradient);
 }
