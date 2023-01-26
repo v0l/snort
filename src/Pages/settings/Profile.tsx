@@ -15,6 +15,7 @@ import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
+import { VoidCatHost } from "Const";
 
 export default function ProfileSettings() {
     const navigate = useNavigate();
@@ -86,14 +87,14 @@ export default function ProfileSettings() {
     async function setNewAvatar() {
         const rsp = await uploadFile();
         if (rsp) {
-            setPicture(rsp.meta?.url ?? `https://void.cat/d/${rsp.id}`);
+            setPicture(rsp.meta?.url ?? `${VoidCatHost}d/${rsp.id}`);
         }
     }
 
     async function setNewBanner() {
         const rsp = await uploadFile();
         if (rsp) {
-            setBanner(rsp.meta?.url ?? `https://void.cat/d/${rsp.id}`);
+            setBanner(rsp.meta?.url ?? `${VoidCatHost}/d/${rsp.id}`);
         }
     }
 

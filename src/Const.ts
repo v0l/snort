@@ -6,6 +6,11 @@ import { RelaySettings } from "Nostr/Connection";
 export const ApiHost = "https://api.snort.social";
 
 /**
+ * Void.cat file upload service url
+ */
+export const VoidCatHost = "https://void.cat";
+
+/**
  * Websocket re-connect timeout
  */
 export const DefaultConnectTimeout = 2000;
