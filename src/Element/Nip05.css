@@ -10,11 +10,11 @@
 
 .nip05 .nick {
   color: var(--font-secondary-color);
+  margin-right: .2em;
 }
 
 .nip05 .domain {
   color: var(--gray-light);
-  margin-left: .2em;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
