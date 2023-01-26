@@ -52,7 +52,7 @@
     margin: 20px;
 }
 
-.text img, .text video, .text iframe {
+.text img, .text video, .text iframe, .text audio {
     max-width: 100%;
     max-height: 500px;
     margin: 10px auto;
