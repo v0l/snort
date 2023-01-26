@@ -17,7 +17,7 @@ export default function FollowListBase({ pubkeys, title }: FollowListBaseProps) 
     return (
         <div className="main-content">
             <div className="flex mt10">
-                <div className="f-grow">{title}</div>
+                <div className="f-grow bold">{title}</div>
                 <button type="button" onClick={() => followAll()}>Follow All</button>
             </div>
             {pubkeys?.map(a => <ProfilePreview pubkey={a} key={a} />)}

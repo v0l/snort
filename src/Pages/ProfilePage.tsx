@@ -34,6 +34,7 @@ export default function ProfilePage() {
     const navigate = useNavigate();
     const id = useMemo(() => parseId(params.id!), [params]);
     const user = useProfile(id)?.get(id);
+    const loggedOut = useSelector<RootState, boolean | undefined>(s => s.login.loggedOut);
     const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
     const isMe = loginPubKey === id;
@@ -139,12 +140,14 @@ export default function ProfilePage() {
                         Settings
                       </button>
                   ) : (
-                    <>
-                      <button type="button" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
-                         Message
-                      </button>
-                      <FollowButton pubkey={id} />
-                    </>
+                    !loggedOut && (
+                      <>
+                        <button type="button" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
+                           Message
+                        </button>
+                        <FollowButton pubkey={id} />
+                      </>
+                    )
                   )}
                 </div>
                 {bio()}

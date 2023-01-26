@@ -29,17 +29,25 @@
 }
 
 .profile .name h2 {
-    margin: 0;
+  margin: 12px 0 0 0;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 23px;
 }
 
 .profile .nip05 {
   display: flex;
-  margin: 4px 0 12px 0;
+  font-size: 16px;
+  margin: 0 0 12px 0;
 }
 
 .profile .nip05 .nick {
   font-weight: normal;
   color: var(--gray-light);
+}
+
+.profile .name .copy {
+  margin-bottom: 4px;
 }
 
 .profile .avatar-wrapper {
@@ -61,8 +69,9 @@
     margin-top: 12px;
     background-color: var(--note-bg);
     padding: 12px 16px;
-    margin: 0 auto;
     border-radius: 16px;
+    margin: 0 auto;
+    margin-bottom: 12px;
 }
 
 .profile .details p {
@@ -90,6 +99,10 @@
     width: calc(100% - 32px);
 }
 
+.profile .details .text {
+  font-size: 14px;
+}
+
 .tabs > div {
   margin-right: 0;
 }
@@ -97,6 +110,7 @@
 .profile .links {
   margin-top: 4px;
   margin-left: 2px;
+  margin-bottom: 12px;
 }
 
 .profile h3 {
@@ -106,7 +120,7 @@
   font-weight: 600;
   line-height: 12px;
   text-transform: uppercase;
-  margin-left: 16px;
+  margin-left: 12px;
 }
 
 .profile .website {
@@ -179,10 +193,6 @@
     max-width: 720px;
     height: 300px;
     margin-bottom: -100px;
-  }
-  .profile .avatar-wrapper .avatar {
-    width: 210px;
-    height: 210px;
   }
 }
 
