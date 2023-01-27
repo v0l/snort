@@ -183,11 +183,13 @@ export default function NoteFooter(props: NoteFooterProps) {
   return (
     <>
       <div className="footer">
+        { login ?
         <div className={`reaction-pill ${reply ? 'reacted' : ''}`} onClick={(e) => setReply(s => !s)}>
           <div className="reaction-pill-icon">
             <FontAwesomeIcon icon={faReply} />
           </div>
         </div>
+        : "" }
         <Menu menuButton={<div className="reaction-pill">
           <div className="reaction-pill-icon">
             <FontAwesomeIcon icon={faEllipsisVertical} />
