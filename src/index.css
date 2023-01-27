@@ -120,6 +120,15 @@ button {
   outline: none;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  color: var(--gray);
+}
+.light button:disabled {
+  color: var(--font-color);
+}
+
+
 button:hover {
   background-color: var(--font-color);
   color: var(--bg-color);
