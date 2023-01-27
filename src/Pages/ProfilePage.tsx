@@ -38,8 +38,6 @@ export default function ProfilePage() {
     const id = useMemo(() => parseId(params.id!), [params]);
     const user = useProfile(id)?.get(id);
     const loggedOut = useSelector<RootState, boolean | undefined>(s => s.login.loggedOut);
-    const muted = useSelector<RootState, HexKey[]>(s => s.login.muted);
-    const isMuted = useMemo(() => muted.includes(id), [muted, id])
     const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
     const isMe = loginPubKey === id;
