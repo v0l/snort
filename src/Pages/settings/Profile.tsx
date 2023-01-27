@@ -17,6 +17,8 @@ import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
 import { VoidCatHost } from "Const";
 
+// import React, {Component} from "react"
+
 export default function ProfileSettings() {
     const navigate = useNavigate();
     const id = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
@@ -102,31 +104,31 @@ export default function ProfileSettings() {
         return (
             <div className="editor">
                 <div className="form-group">
-                    <div>Name:</div>
+                    <div className="infoHeadings">Name:</div>
                     <div>
                         <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
                 </div>
                 <div className="form-group">
-                    <div>Display name:</div>
+                    <div className="infoHeadings">Display name:</div>
                     <div>
                         <input type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
                     </div>
                 </div>
                 <div className="form-group f-col">
-                    <div>About:</div>
+                    <div className="infoHeadings">About:</div>
                     <div className="w-max">
                         <textarea className="w-max" onChange={(e) => setAbout(e.target.value)} value={about}></textarea>
                     </div>
                 </div>
                 <div className="form-group">
-                    <div>Website:</div>
+                    <div className="infoHeadings">Website:</div>
                     <div>
                         <input type="text" value={website} onChange={(e) => setWebsite(e.target.value)} />
                     </div>
                 </div>
                 <div className="form-group">
-                    <div>NIP-05:</div>
+                    <div className="infoHeadings">NIP-05:</div>
                     <div>
                         <input type="text" className="mr10" value={nip05} onChange={(e) => setNip05(e.target.value)} />
                         <div className="btn" onClick={() => navigate("/verification")}>
@@ -137,7 +139,7 @@ export default function ProfileSettings() {
                     </div>
                 </div>
                 <div className="form-group">
-                    <div>LN Address:</div>
+                    <div className="infoHeadings">LN Address:</div>
                     <div>
                         <input type="text" value={lud16} onChange={(e) => setLud16(e.target.value)} />
                     </div>
@@ -185,7 +187,7 @@ export default function ProfileSettings() {
                 <div>
                     <h4>Your Private Key Is (do not share this with anyone):</h4>
                 </div>
-                <div>
+                <div className="privateKey">
                     <Copy text={hexToBech32("nsec", privKey)} />
                 </div>
             </div>)}

@@ -1,3 +1,11 @@
+
+.form-group {
+    padding: 1em;
+}
+.bg-grey {
+    padding: 0em 1em 2em 1.25em;
+}
+
 .settings .avatar {
     width: 256px;
     height: 256px;
@@ -12,6 +20,7 @@
     height: 150px;
     background-size: cover;
     margin-bottom: 20px;
+
 }
 
 .settings .image-settings {
@@ -28,9 +37,14 @@
     height: 100%;
     opacity: 0;
     background-color: var(--bg-color);
+    
 }
 
 .settings .avatar .edit:hover {
+    opacity: 0.5;
+}
+
+.settings .banner .edit:hover {
     opacity: 0.5;
 }
 
@@ -42,4 +56,11 @@
 
 .settings .actions {
   margin-top: 16px;
+}
+.infoHeadings{
+    font-weight: 500;
+    
+}
+.privateKey {
+
 }

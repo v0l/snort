@@ -58,15 +58,22 @@ body {
   font-size: var(--font-size);
 }
 
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .page {
-  width: 720px;
   margin-left: auto;
   margin-right: auto;
 }
+
+@media (min-width: 720px) {
+  .page {
+    width: 720px;
+  }
+}
+
 
 .page>.header {
   display: flex;
@@ -89,6 +96,12 @@ code {
   border-radius: 16px;
   background-color: var(--note-bg);
   padding: 6px 12px;
+
+  
+  width: 93%;
+  margin-left: auto;
+  margin-right: auto;
+
 }
 
 @media (min-width: 720px) {
@@ -96,6 +109,7 @@ code {
     margin-bottom: 24px;
     padding: 12px 24px;
   }
+  
 }
 
 html.light .card {
