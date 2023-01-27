@@ -18,8 +18,7 @@ export default function useMutedFeed(pubkey: HexKey) {
         sub.Id = `muted:${pubkey}`;
         sub.Kinds = new Set([EventKind.Lists]);
         sub.Authors = new Set([pubkey]);
-        // TODO: not sure relay support this atm, don't seem to return results
-        //sub.DTags = new Set([MUTE_LIST_TAG])
+        sub.DTags = new Set([MUTE_LIST_TAG])
         sub.Limit = 1;
 
         return sub;

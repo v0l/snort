@@ -124,6 +124,10 @@ button:disabled {
   cursor: not-allowed;
   color: var(--gray);
 }
+.light button:disabled {
+  color: var(--font-secondary-color);
+  border-color: var(--font-secondary-color);
+}
 
 button:hover {
   background-color: var(--font-color);

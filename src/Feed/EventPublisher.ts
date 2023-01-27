@@ -1,10 +1,12 @@
 import { useSelector } from "react-redux";
+
 import { System } from "Nostr/System";
 import { default as NEvent } from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
 import Tag from "Nostr/Tag";
 import { RootState } from "State/Store";
 import { HexKey, RawEvent, u256, UserMetadata } from "Nostr";
+import { MUTE_LIST_TAG } from "Feed/MuteList";
 import { bech32ToHex } from "Util"
 import { DefaultRelays, HashtagRegex } from "Const";
 
@@ -99,7 +101,7 @@ export default function useEventPublisher() {
             if (pubKey) {
                 let ev = NEvent.ForPubKey(pubKey);
                 ev.Kind = EventKind.Lists;
-                ev.Tags.push(new Tag(["d", "mute"], ev.Tags.length))
+                ev.Tags.push(new Tag(["d", MUTE_LIST_TAG], ev.Tags.length))
                 keys.forEach(p => {
                   ev.Tags.push(new Tag(["p", p], ev.Tags.length))
                 })

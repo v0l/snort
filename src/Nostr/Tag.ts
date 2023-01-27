@@ -8,6 +8,7 @@ export default class Tag {
     Relay?: string;
     Marker?: string;
     Hashtag?: string;
+    DTag?: string;
     Index: number;
     Invalid: boolean;
 
@@ -36,6 +37,10 @@ export default class Tag {
                 }
                 break;
             }
+            case "d": {
+              this.DTag = tag[1];
+              break;
+            }
             case "t": {
                 this.Hashtag = tag[1];
                 break;
@@ -60,6 +65,9 @@ export default class Tag {
             }
             case "t": {
                 return ["t", this.Hashtag!];
+            }
+            case "d": {
+                return ["t", this.DTag!];
             }
             default: {
                 return this.Original;
