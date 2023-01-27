@@ -206,21 +206,29 @@ const LoginSlice = createSlice({
             state.relays = { ...state.relays };
             window.localStorage.setItem(RelayListKey, JSON.stringify(state.relays));
         },
-        setFollows: (state, action: PayloadAction<string | string[]>) => {
+        setFollows: (state, action: PayloadAction<HexKey | HexKey[]>) => {
             let existing = new Set(state.follows);
             let update = Array.isArray(action.payload) ? action.payload : [action.payload];
 
             let changes = false;
-            for (let pk of update) {
+            for (let pk of update.filter(a => a.length === 64)) {
                 if (!existing.has(pk)) {
                     existing.add(pk);
                     changes = true;
                 }
             }
+            for (let pk of existing) {
+                if (!update.includes(pk)) {
+                    existing.delete(pk);
+                    changes = true;
+                }
+            }
+
             if (changes) {
                 state.follows = Array.from(existing);
-                window.localStorage.setItem(FollowList, JSON.stringify(state.follows));
             }
+
+            window.localStorage.setItem(FollowList, JSON.stringify(state.follows));
         },
         addNotifications: (state, action: PayloadAction<TaggedRawEvent | TaggedRawEvent[]>) => {
             let n = action.payload;
