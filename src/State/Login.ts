@@ -73,6 +73,11 @@ export interface LoginStore {
     follows: HexKey[],
 
     /**
+     * Newest relay list timestamp
+     */
+    latestFollows: number,
+
+    /**
      * A list of pubkeys this user has muted
      */
     muted: HexKey[],
@@ -80,7 +85,7 @@ export interface LoginStore {
     /**
      * Last seen mute list event timestamp
      */
-    lastMutedSeenAt: number,
+    latestMuted: number,
 
     /**
      * Notifications for this login session
@@ -115,8 +120,9 @@ const InitState = {
     relays: {},
     latestRelays: 0,
     follows: [],
-    lastMutedSeenAt: 0,
+    latestFollows: 0,
     muted: [],
+    latestMuted: 0,
     notifications: [],
     readNotifications: new Date().getTime(),
     dms: [],
@@ -133,6 +139,11 @@ const InitState = {
 
 export interface SetRelaysPayload {
     relays: Record<string, RelaySettings>,
+    createdAt: number
+};
+
+export interface SetFollowsPayload {
+    keys: HexKey[]
     createdAt: number
 };
 
@@ -204,9 +215,14 @@ const LoginSlice = createSlice({
             delete state.relays[action.payload];
             state.relays = { ...state.relays };
         },
-        setFollows: (state, action: PayloadAction<string | string[]>) => {
+        setFollows: (state, action: PayloadAction<SetFollowsPayload>) => {
+            const { keys, createdAt } = action.payload
+            if (state.latestFollows > createdAt) {
+                return;
+            }
+
             let existing = new Set(state.follows);
-            let update = Array.isArray(action.payload) ? action.payload : [action.payload];
+            let update = Array.isArray(keys) ? keys : [keys];
 
             let changes = false;
             for (let pk of update) {
@@ -217,14 +233,15 @@ const LoginSlice = createSlice({
             }
             if (changes) {
                 state.follows = Array.from(existing);
+                state.latestFollows = createdAt;
             }
         },
-        setMuted(state, action: PayloadAction<{at: number, keys: HexKey[]}>) {
-          const { at, keys } = action.payload
-          if (at > state.lastMutedSeenAt) {
+        setMuted(state, action: PayloadAction<{createdAt: number, keys: HexKey[]}>) {
+          const { createdAt, keys } = action.payload
+          if (createdAt > state.latestMuted) {
             const muted = new Set([...keys])
             state.muted = Array.from(muted)
-            state.lastMutedSeenAt = at
+            state.latestMuted = createdAt
           }
         },
         addNotifications: (state, action: PayloadAction<TaggedRawEvent | TaggedRawEvent[]>) => {

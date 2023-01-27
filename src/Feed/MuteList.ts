@@ -27,7 +27,7 @@ export default function useMutedFeed(pubkey: HexKey) {
     return useSubscription(sub);
 }
 
-export function getMutedKeys(rawNotes: TaggedRawEvent[]): { at: number, keys: HexKey[] } {
+export function getMutedKeys(rawNotes: TaggedRawEvent[]): { createdAt: number, keys: HexKey[] } {
     const notes = [...rawNotes]
     notes.sort((a, b) => a.created_at - b.created_at)
     const newest = notes && notes[0]
@@ -36,12 +36,12 @@ export function getMutedKeys(rawNotes: TaggedRawEvent[]): { at: number, keys: He
         const mutedIndex = tags.findIndex(t => t[0] === "d" && t[1] === MUTE_LIST_TAG)
         if (mutedIndex !== -1) {
              return {
-               at: newest.created_at,
+               createdAt: newest.created_at,
                keys: tags.slice(mutedIndex).filter(t => t[0] === "p").map(t => t[1])
              }
         }
     }
-    return { at: 0, keys: [] }
+    return { createdAt: 0, keys: [] }
 }
 
 export function getMuted(feed: NoteStore, pubkey: HexKey): HexKey[] {

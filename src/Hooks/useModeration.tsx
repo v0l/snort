@@ -28,7 +28,7 @@ export default function useModeration() {
   function unmute(id: HexKey) {
     const newMuted = muted.filter(p => p !== id)
     dispatch(setMuted({
-      at: new Date().getTime(),
+      createdAt: new Date().getTime(),
       keys: newMuted
     }))
     setMutedList(newMuted)
@@ -38,7 +38,7 @@ export default function useModeration() {
     const newMuted = muted.concat([id])
     setMutedList(newMuted)
     dispatch(setMuted({
-      at: new Date().getTime(),
+      createdAt: new Date().getTime(),
       keys: newMuted
     }))
   }
@@ -47,7 +47,7 @@ export default function useModeration() {
     const newMuted = Array.from(new Set(muted.concat(ids)))
     setMutedList(newMuted)
     dispatch(setMuted({
-      at: new Date().getTime(),
+      createdAt: new Date().getTime(),
       keys: newMuted
     }))
   }

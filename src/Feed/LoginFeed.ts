@@ -30,6 +30,7 @@ export default function useLoginFeed() {
         sub.Id = `login:meta`;
         sub.Authors = new Set([pubKey]);
         sub.Kinds = new Set([EventKind.ContactList, EventKind.SetMetadata]);
+        sub.Limit = 2
 
         return sub;
     }, [pubKey]);
@@ -92,7 +93,7 @@ export default function useLoginFeed() {
                 dispatch(setRelays({ relays, createdAt: cl.created_at }));
             }
             let pTags = cl.tags.filter(a => a[0] === "p").map(a => a[1]);
-            dispatch(setFollows(pTags));
+            dispatch(setFollows({ keys: pTags, createdAt: cl.created_at }));
         }
 
         (async () => {
