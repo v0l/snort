@@ -112,7 +112,7 @@ const InitState = {
     dms: [],
     dmInteraction: 0,
     preferences: {
-        enableReactions: false,
+        enableReactions: true,
         autoLoadMedia: true,
         theme: "system",
         confirmReposts: false,
