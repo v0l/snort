@@ -15,7 +15,12 @@ export interface MetadataCache extends UserMetadata {
     /**
      * The pubkey of the owner of this metadata
      */
-    pubkey: HexKey
+    pubkey: HexKey,
+
+    /**
+     * bech32 encoded pub key
+     */
+    npub: string
 };
 
 export function mapEventToProfile(ev: TaggedRawEvent) {

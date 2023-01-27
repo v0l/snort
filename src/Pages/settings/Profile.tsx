@@ -65,6 +65,7 @@ export default function ProfileSettings() {
         delete userCopy["loaded"];
         delete userCopy["created"];
         delete userCopy["pubkey"];
+        delete userCopy["npub"];
         console.debug(userCopy);
 
         let ev = await publisher.metadata(userCopy);
