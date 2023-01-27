@@ -7,7 +7,7 @@ import { Subscriptions } from "Nostr/Subscriptions";
 import type { RootState } from "State/Store";
 import useSubscription, { NoteStore } from "Feed/Subscription";
 
-export const MUTE_LIST_TAG = "mute"
+export const MUTE_LIST_TAG = "p:mute"
 
 export default function useMutedFeed(pubkey: HexKey) {
     const loginPubkey = useSelector((s: RootState) => s.login.publicKey)
