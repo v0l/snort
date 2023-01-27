@@ -57,8 +57,9 @@ export default function MessagesPage() {
                 <div className="btn" onClick={() => markAllRead()}>Mark All Read</div>
             </div>
             {chats.sort((a, b) => {
-                if(b.pubkey === myPubKey) return 1
-                return b.newestMessage - a.newestMessage
+                return a.pubkey === myPubKey ? -1 : 
+                    b.pubkey === myPubKey ? 1 :
+                    b.newestMessage - a.newestMessage
             }).map(person)}
         </>
     )

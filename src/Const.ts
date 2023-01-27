@@ -6,6 +6,11 @@ import { RelaySettings } from "Nostr/Connection";
 export const ApiHost = "https://api.snort.social";
 
 /**
+ * Void.cat file upload service url
+ */
+export const VoidCatHost = "https://void.cat";
+
+/**
  * Websocket re-connect timeout
  */
 export const DefaultConnectTimeout = 2000;
@@ -19,9 +24,7 @@ export const ProfileCacheExpire = (1_000 * 60 * 5);
  * Default bootstrap relays
  */
 export const DefaultRelays = new Map<string, RelaySettings>([
-    ["wss://relay.snort.social", { read: true, write: true }],
-    ["wss://relay.damus.io", { read: true, write: true }],
-    ["wss://nostr-pub.wellorder.net", { read: true, write: true }],
+    ["wss://relay.snort.social", { read: true, write: true }]
 ]);
 
 /**
@@ -99,3 +102,9 @@ export const TidalRegex = /tidal\.com\/(?:browse\/)?(\w+)\/([a-z0-9-]+)/i;
  * SoundCloud regex
  */
 export const SoundCloudRegex = /soundcloud\.com\/(?!live)([a-zA-Z0-9]+)\/([a-zA-Z0-9-]+)/
+
+/**
+ * Mixcloud regex
+ */
+
+export const MixCloudRegex = /mixcloud\.com\/(?!live)([a-zA-Z0-9]+)\/([a-zA-Z0-9-]+)/

@@ -4,13 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserMinus, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { HexKey } from "Nostr";
 import { RootState } from "State/Store";
+import { parseId } from "Util";
 
 export interface FollowButtonProps {
     pubkey: HexKey,
     className?: string,
 }
 export default function FollowButton(props: FollowButtonProps) {
-    const pubkey = props.pubkey;
+    const pubkey = parseId(props.pubkey);
     const publiser = useEventPublisher();
     const isFollowing = useSelector<RootState, boolean>(s => s.login.follows?.includes(pubkey) ?? false);
     const baseClassName = isFollowing ? `btn btn-warn follow-button` : `btn btn-success follow-button`

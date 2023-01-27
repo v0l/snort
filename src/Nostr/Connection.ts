@@ -29,10 +29,12 @@ export type StateSnapshot = {
         received: number,
         send: number
     },
-    info?: RelayInfo
+    info?: RelayInfo,
+    id: string
 };
 
 export default class Connection {
+    Id: string;
     Address: string;
     Socket: WebSocket | null;
     Pending: Subscriptions[];
@@ -50,6 +52,7 @@ export default class Connection {
     EventsCallback: Map<u256, () => void>;
 
     constructor(addr: string, options: RelaySettings) {
+        this.Id = uuid();
         this.Address = addr;
         this.Socket = null;
         this.Pending = [];
@@ -285,6 +288,7 @@ export default class Connection {
         this.CurrentState.avgLatency = this.Stats.Latency.length > 0 ? (this.Stats.Latency.reduce((acc, v) => acc + v, 0) / this.Stats.Latency.length) : 0;
         this.CurrentState.disconnects = this.Stats.Disconnects;
         this.CurrentState.info = this.Info;
+        this.CurrentState.id = this.Id;
         this.Stats.Latency = this.Stats.Latency.slice(-20); // trim
         this.HasStateChange = true;
         this._NotifyState();
