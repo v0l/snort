@@ -12,6 +12,7 @@ import useSubscription from "Feed/Subscription";
 import { MUTE_LIST_TAG, getMutedKeys } from "Feed/MuteList";
 import { mapEventToProfile, MetadataCache } from "Db/User";
 import { getDisplayName } from "Element/ProfileImage";
+import useModeration from "Hooks/useModeration";
 import { MentionRegex } from "Const";
 
 /**
@@ -19,7 +20,8 @@ import { MentionRegex } from "Const";
  */
 export default function useLoginFeed() {
     const dispatch = useDispatch();
-    const [pubKey, readNotifications, muted] = useSelector<RootState, [HexKey | undefined, number, HexKey[]]>(s => [s.login.publicKey, s.login.readNotifications, s.login.muted]);
+    const { isMuted } =  useModeration();
+    const [pubKey, readNotifications] = useSelector<RootState, [HexKey | undefined, number]>(s => [s.login.publicKey, s.login.readNotifications]);
 
     const subMetadata = useMemo(() => {
         if (!pubKey) return null;
@@ -112,7 +114,7 @@ export default function useLoginFeed() {
     }, [metadataFeed.store]);
 
     useEffect(() => {
-        let notifications = notificationFeed.store.notes.filter(a => a.kind === EventKind.TextNote && !muted.includes(a.pubkey))
+        let notifications = notificationFeed.store.notes.filter(a => a.kind === EventKind.TextNote && !isMuted(a.pubkey))
 
         if ("Notification" in window && Notification.permission === "granted") {
             for (let nx of notifications.filter(a => (a.created_at * 1000) > readNotifications)) {
