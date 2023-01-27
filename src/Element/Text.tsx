@@ -229,7 +229,7 @@ export default function Text({ content, tags, users }: TextProps) {
                   node.type === 'definition')
             ) {
                   node.type = 'text';
-                  node.value = content.slice(node.position.start.offset, node.position.end.offset);
+                  node.value = content.slice(node.position.start.offset, node.position.end.offset).replace(/\)$/, ' )');
                   return SKIP;
             }
         })
