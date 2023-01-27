@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 
-import useProfile from "Feed/ProfileFeed";
+import { useUserProfile } from "Feed/ProfileFeed";
 import FollowButton from "Element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
@@ -33,7 +33,7 @@ export default function ProfilePage() {
     const params = useParams();
     const navigate = useNavigate();
     const id = useMemo(() => parseId(params.id!), [params]);
-    const user = useProfile(id)?.get(id);
+    const user = useUserProfile(id);
     const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
     const isMe = loginPubKey === id;

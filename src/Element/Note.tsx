@@ -9,7 +9,7 @@ import { eventLink, getReactions, hexToBech32 } from "Util";
 import NoteFooter from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import EventKind from "Nostr/EventKind";
-import useProfile from "Feed/ProfileFeed";
+import { useUserProfiles } from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "Nostr";
 import { useInView } from "react-intersection-observer";
 
@@ -31,7 +31,7 @@ export default function Note(props: NoteProps) {
     const { data, isThread, related, highlight, options: opt, ["data-ev"]: parsedEvent } = props
     const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
-    const users = useProfile(pubKeys);
+    const users = useUserProfiles(pubKeys);
     const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
     const { ref, inView } = useInView({ triggerOnce: true });
 

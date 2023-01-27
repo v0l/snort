@@ -10,7 +10,7 @@ import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 
 import Tag from "Nostr/Tag";
-import { MetadataCache } from "Db/User";
+import { MetadataCache } from "State/Users";
 import Mention from "Element/Mention";
 import TidalEmbed from "Element/TidalEmbed";
 import { useSelector } from 'react-redux';

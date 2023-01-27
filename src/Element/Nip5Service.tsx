@@ -13,7 +13,7 @@ import {
 import AsyncButton from "Element/AsyncButton";
 import LNURLTip from "Element/LNURLTip";
 import Copy from "Element/Copy";
-import useProfile from "Feed/ProfileFeed";
+import { useUserProfile }from "Feed/ProfileFeed";
 import useEventPublisher from "Feed/EventPublisher";
 import { debounce, hexToBech32 } from "Util";
 import { UserMetadata } from "Nostr";
@@ -31,7 +31,7 @@ type ReduxStore = any;
 export default function Nip5Service(props: Nip05ServiceProps) {
     const navigate = useNavigate();
     const pubkey = useSelector<ReduxStore, string>(s => s.login.publicKey);
-    const user = useProfile(pubkey);
+    const user = useUserProfile(pubkey);
     const publisher = useEventPublisher();
     const svc = useMemo(() => new ServiceProvider(props.service), [props.service]);
     const [serviceConfig, setServiceConfig] = useState<ServiceConfig>();

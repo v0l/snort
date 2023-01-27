@@ -1,7 +1,7 @@
 import { HexKey, TaggedRawEvent } from "Nostr";
 import { ProfileCacheExpire } from "Const";
-import { db } from "Db";
-import { mapEventToProfile, MetadataCache } from "Db/User";
+import { mapEventToProfile, MetadataCache, } from "State/Users";
+import { getDb } from "State/Users/Db";
 import Connection, { RelaySettings } from "Nostr/Connection";
 import Event from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
@@ -167,7 +167,8 @@ export class NostrSystem {
 
     async _FetchMetadata() {
         let missing = new Set<HexKey>();
-        let meta = await db.users.bulkGet(Array.from(this.WantsMetadata));
+        const db = getDb()
+        let meta = await db.bulkGet(Array.from(this.WantsMetadata));
         let expire = new Date().getTime() - ProfileCacheExpire;
         for (let pk of this.WantsMetadata) {
             let m = meta.find(a => a?.pubkey === pk);
@@ -190,18 +191,18 @@ export class NostrSystem {
             sub.OnEvent = async (e) => {
                 let profile = mapEventToProfile(e);
                 if (profile) {
-                    let existing = await db.users.get(profile.pubkey);
-                    if ((existing?.created ?? 0) < profile.created) {
-                        await db.users.put(profile);
-                    } else if (existing) {
-                        await db.users.update(profile.pubkey, { loaded: new Date().getTime() });
+                    let existing = await db.find(profile.pubkey);
+                    if((existing?.created ?? 0) < profile.created) {
+                        await db.put(profile);
+                    } else if(existing) {
+                        await db.update(profile.pubkey, { loaded: new Date().getTime() });
                     }
                 }
             }
             let results = await this.RequestSubscription(sub);
             let couldNotFetch = Array.from(missing).filter(a => !results.some(b => b.pubkey === a));
             console.debug("No profiles: ", couldNotFetch);
-            await db.users.bulkPut(couldNotFetch.map(a => {
+            await db.bulkPut(couldNotFetch.map(a => {
                 return {
                     pubkey: a,
                     loaded: new Date().getTime()
