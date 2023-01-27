@@ -1,7 +1,8 @@
 import './Text.css'
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import { visit, SKIP } from "unist-util-visit";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
 import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex, TidalRegex, SoundCloudRegex, MixCloudRegex } from "Const";
@@ -216,5 +217,26 @@ export default function Text({ content, tags, users }: TextProps) {
             li: (x: any) => transformLi({ body: x.children ?? [], tags, users, pref }),
         };
     }, [content]);
-    return <ReactMarkdown className="text" components={components}>{content}</ReactMarkdown>
+    const disableMarkdownLinks = useCallback(() => (tree: any) => {
+        visit(tree, (node, index, parent) => {
+            if (
+                parent &&
+                typeof index === 'number' &&
+                (node.type === 'link' ||
+                  node.type === 'linkReference' ||
+                  node.type === 'image' ||
+                  node.type === 'imageReference' ||
+                  node.type === 'definition')
+            ) {
+                  node.type = 'text';
+                  node.value = content.slice(node.position.start.offset, node.position.end.offset);
+                  return SKIP;
+            }
+        })
+    }, [content]);
+    return <ReactMarkdown
+        className="text"
+        components={components}
+        remarkPlugins={[disableMarkdownLinks]}
+    >{content}</ReactMarkdown>
 }
