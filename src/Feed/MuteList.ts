@@ -1,45 +1,41 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
 
-import { HexKey, TaggedRawEvent } from "Nostr";
+import { HexKey, TaggedRawEvent, Lists } from "Nostr";
 import EventKind from "Nostr/EventKind";
 import { Subscriptions } from "Nostr/Subscriptions";
-import type { RootState } from "State/Store";
 import useSubscription, { NoteStore } from "Feed/Subscription";
 
-export const MUTE_LIST_TAG = "p:mute"
-
 export default function useMutedFeed(pubkey: HexKey) {
-    const loginPubkey = useSelector((s: RootState) => s.login.publicKey)
     const sub = useMemo(() => {
-        if (pubkey === loginPubkey) return null
-
         let sub = new Subscriptions();
         sub.Id = `muted:${pubkey}`;
         sub.Kinds = new Set([EventKind.Lists]);
         sub.Authors = new Set([pubkey]);
-        sub.DTags = new Set([MUTE_LIST_TAG])
+        sub.DTag = Lists.Muted;
         sub.Limit = 1;
-
         return sub;
     }, [pubkey]);
 
     return useSubscription(sub);
 }
 
-export function getMutedKeys(rawNotes: TaggedRawEvent[]): { createdAt: number, keys: HexKey[] } {
+export function getNewest(rawNotes: TaggedRawEvent[]){
     const notes = [...rawNotes]
     notes.sort((a, b) => a.created_at - b.created_at)
-    const newest = notes && notes[0]
+    if (notes.length > 0) {
+      return notes[0]
+    }
+}
+
+export function getMutedKeys(rawNotes: TaggedRawEvent[]): { createdAt: number, keys: HexKey[] } {
+    const newest = getNewest(rawNotes)
     if (newest) {
-        const { tags } = newest
-        const mutedIndex = tags.findIndex(t => t[0] === "d" && t[1] === MUTE_LIST_TAG)
-        if (mutedIndex !== -1) {
-             return {
-               createdAt: newest.created_at,
-               keys: tags.slice(mutedIndex).filter(t => t[0] === "p").map(t => t[1])
-             }
-        }
+        const { created_at, tags } = newest
+        const keys = tags.filter(t => t[0] === "p").map(t => t[1])
+         return {
+           keys,
+           createdAt: created_at,
+         }
     }
     return { createdAt: 0, keys: [] }
 }

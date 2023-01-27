@@ -20,6 +20,8 @@ export default function NoteReaction(props: NoteReactionProps) {
     const { ["data-ev"]: dataEv, data } = props;
     const ev = useMemo(() => dataEv || new NEvent(data), [data, dataEv])
     const { isMuted } = useModeration();
+    const pRef = data?.tags.find((a: any) => a[0] === "p")?.at(1);
+    const isRefMuted = pRef && isMuted(pRef)
 
     const refEvent = useMemo(() => {
         if (ev) {
@@ -57,7 +59,7 @@ export default function NoteReaction(props: NoteReactionProps) {
     };
     const isOpMuted = root && isMuted(root.pubkey)
 
-    return isOpMuted ? null : (
+    return isOpMuted || isRefMuted ? null : (
         <div className="reaction">
             <div className="header flex">
                 <ProfileImage pubkey={ev.RootPubKey} />

@@ -2,7 +2,6 @@ import "./Timeline.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForward } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useMemo } from "react";
-import { useSelector } from "react-redux";
 
 import useTimelineFeed, { TimelineSubject } from "Feed/TimelineFeed";
 import { TaggedRawEvent } from "Nostr";
@@ -10,7 +9,6 @@ import EventKind from "Nostr/EventKind";
 import LoadMore from "Element/LoadMore";
 import Note from "Element/Note";
 import NoteReaction from "Element/NoteReaction";
-import type { RootState } from "State/Store";
 import useModeration from "Hooks/useModeration";
 
 export interface TimelineProps {
@@ -48,10 +46,7 @@ export default function Timeline({ subject, postsOnly = false, method }: Timelin
             case EventKind.Reaction:
             case EventKind.Repost: {
                 let eRef = e.tags.find(a => a[0] === "e")?.at(1);
-                let pRef = e.tags.find(a => a[0] === "p")?.at(1);
-                return !muted.includes(pRef || '') ? (
-                  <NoteReaction data={e} key={e.id} root={parent.notes.find(a => a.id === eRef)}/>
-                ) : null
+                return <NoteReaction data={e} key={e.id} root={parent.notes.find(a => a.id === eRef)}/>
             }
         }
     }

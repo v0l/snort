@@ -20,7 +20,7 @@ export default function LoginPage() {
         if (publicKey) {
             navigate("/");
         }
-    }, [publicKey]);
+    }, [publicKey, navigate]);
 
     async function getNip05PubKey(addr: string) {
         let [username, domain] = addr.split("@");
@@ -32,7 +32,7 @@ export default function LoginPage() {
                 return pKey;
             }
         }
-        throw "User key not found"
+        throw new Error("User key not found")
     }
 
     async function doLogin() {
@@ -43,7 +43,7 @@ export default function LoginPage() {
                 if (secp.utils.isValidPrivateKey(hexKey)) {
                     dispatch(setPrivateKey(hexKey));
                 } else {
-                    throw "INVALID PRIVATE KEY";
+                    throw new Error("INVALID PRIVATE KEY");
                 }
             } else if (key.startsWith("npub")) {
                 let hexKey = bech32ToHex(key);
@@ -55,7 +55,7 @@ export default function LoginPage() {
                 if (secp.utils.isValidPrivateKey(key)) {
                     dispatch(setPrivateKey(key));
                 } else {
-                    throw "INVALID PRIVATE KEY";
+                    throw new Error("INVALID PRIVATE KEY");
                 }
             }
         } catch (e) {

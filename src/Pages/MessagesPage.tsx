@@ -21,11 +21,11 @@ export default function MessagesPage() {
     const myPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
     const dmInteraction = useSelector<RootState, number>(s => s.login.dmInteraction);
-    const { muted, isMuted } = useModeration();
+    const { isMuted } = useModeration();
 
     const chats = useMemo(() => {
-        return extractChats(dms.filter(a => !isMuted(a.pubkey)), myPubKey!);
-    }, [dms, myPubKey, dmInteraction, muted]);
+        return extractChats(dms.filter(a => !isMuted(a.pubkey)), myPubKey!)
+    }, [dms, myPubKey, dmInteraction]);
 
     function noteToSelf(chat: DmChat) {
         return (
@@ -93,7 +93,7 @@ export function isToSelf(e: RawEvent, pk: HexKey) {
 }
 
 export function dmsInChat(dms: RawEvent[], pk: HexKey) {
-    return dms.filter(a => a.pubkey === pk || dmTo(a) == pk);
+    return dms.filter(a => a.pubkey === pk || dmTo(a) === pk);
 }
 
 export function totalUnread(dms: RawEvent[], myPubKey: HexKey) {

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { faTrash, faRepeat, faShareNodes, faCopy, faCommentSlash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faRepeat, faShareNodes, faCopy, faCommentSlash, faBan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Menu, MenuItem } from '@szhsin/react-menu';
 
@@ -31,7 +31,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { related, ev } = props;
 
   const login = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
-  const { mute } = useModeration();
+  const { mute, block } = useModeration();
   const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
   const author = useProfile(ev.RootPubKey)?.get(ev.RootPubKey);
   const publisher = useEventPublisher();
@@ -173,7 +173,11 @@ export default function NoteFooter(props: NoteFooterProps) {
         </MenuItem>
         <MenuItem onClick={() => mute(ev.PubKey)}>
           <FontAwesomeIcon icon={faCommentSlash} />
-          Mute author
+          Mute
+        </MenuItem>
+        <MenuItem onClick={() => block(ev.PubKey)}>
+          <FontAwesomeIcon icon={faBan} />
+          Block
         </MenuItem>
         {prefs.showDebugMenus && (
           <MenuItem onClick={() => copyEvent()}>

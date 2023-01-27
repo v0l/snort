@@ -18,6 +18,7 @@ import Nip05 from "Element/Nip05";
 import Copy from "Element/Copy";
 import ProfilePreview from "Element/ProfilePreview";
 import FollowersList from "Element/FollowersList";
+import BlockList from "Element/BlockList";
 import MutedList from "Element/MutedList";
 import FollowsList from "Element/FollowsList";
 import { RootState } from "State/Store";
@@ -123,7 +124,7 @@ export default function ProfilePage() {
                 return <FollowersList pubkey={id} />
             }
             case ProfileTab.Muted: {
-                return <MutedList pubkey={id} />
+                return isMe ? <BlockList /> : <MutedList pubkey={id} />
             }
         }
     }

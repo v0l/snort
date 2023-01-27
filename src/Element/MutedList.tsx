@@ -12,11 +12,10 @@ export interface MutedListProps {
 }
 
 export default function MutedList({ pubkey }: MutedListProps) {
-    const { publicKey } = useSelector((s: RootState) => s.login)
     const { muted, isMuted, mute, unmute, muteAll } = useModeration();
     const feed = useMutedFeed(pubkey)
     const pubkeys = useMemo(() => {
-      return publicKey === pubkey ? muted : getMuted(feed.store, pubkey);
+      return getMuted(feed.store, pubkey);
     }, [feed, pubkey]);
     const hasAllMuted = pubkeys.every(isMuted)
 

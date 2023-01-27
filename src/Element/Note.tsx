@@ -1,5 +1,5 @@
 import "./Note.css";
-import { useCallback, useMemo, ReactNode } from "react";
+import { useCallback, useMemo, useState, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import { default as NEvent } from "Nostr/Event";
@@ -27,6 +27,23 @@ export interface NoteProps {
     ["data-ev"]?: NEvent
 }
 
+const HiddenNote = ({ children }: any) => {
+  const [show, setShow] = useState(false)
+  return show ? children : (
+    <div className="card">
+      <div className="header">
+        <p>
+          This note was hidden because of your moderation settings
+        </p>
+        <button onClick={() => setShow(true)}>
+          Show
+        </button>
+      </div>
+    </div>
+  )
+}
+
+
 export default function Note(props: NoteProps) {
     const navigate = useNavigate();
     const { data, isThread, related, highlight, options: opt, ["data-ev"]: parsedEvent } = props
@@ -35,7 +52,7 @@ export default function Note(props: NoteProps) {
     const users = useProfile(pubKeys);
     const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
     const { isMuted } = useModeration()
-    const muted = isMuted(ev.PubKey)
+    const isOpMuted = isMuted(ev.PubKey)
     const { ref, inView } = useInView({ triggerOnce: true });
 
     const options = {
@@ -153,9 +170,11 @@ export default function Note(props: NoteProps) {
         )
     }
 
-    return muted ? null : (
-        <div className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
-            {content()}
-        </div>
+    const note =  (
+      <div className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
+          {content()}
+      </div>
     )
+
+    return isOpMuted ? <HiddenNote>{note}</HiddenNote> : note
 }

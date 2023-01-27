@@ -67,7 +67,7 @@ export default class Tag {
                 return ["t", this.Hashtag!];
             }
             case "d": {
-                return ["t", this.DTag!];
+                return ["d", this.DTag!];
             }
             default: {
                 return this.Original;

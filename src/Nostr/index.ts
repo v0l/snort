@@ -35,7 +35,7 @@ export type RawReqFilter = {
     "#e"?: u256[],
     "#p"?: u256[],
     "#t"?: string[],
-    "#d"?: string[],
+    "#d"?: string,
     since?: number,
     until?: number,
     limit?: number
@@ -54,4 +54,11 @@ export type UserMetadata = {
     nip05?: string,
     lud06?: string,
     lud16?: string
+}
+
+/**
+ * NIP-51 list types
+ */
+export enum Lists {
+  Muted = "mute"
 }
