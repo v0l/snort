@@ -144,4 +144,6 @@ indexedDb.isAvailable().then((available) => {
   }
 })
 
-export default db
+export function getDb() {
+  return db
+}

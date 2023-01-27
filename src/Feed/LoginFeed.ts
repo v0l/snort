@@ -8,7 +8,7 @@ import { Subscriptions } from "Nostr/Subscriptions";
 import { addDirectMessage, addNotifications, setFollows, setRelays } from "State/Login";
 import { RootState } from "State/Store";
 import { mapEventToProfile, MetadataCache  } from "State/Users";
-import db from "State/Users/Db";
+import { getDb } from "State/Users/Db";
 import useSubscription from "Feed/Subscription";
 import { getDisplayName } from "Element/ProfileImage";
 import { MentionRegex } from "Const";
@@ -87,6 +87,7 @@ export default function useLoginFeed() {
                 return acc;
             }, { created: 0, profile: <MetadataCache | null>null });
             if (maxProfile.profile) {
+                const db = getDb()
                 let existing = await db.find(maxProfile.profile.pubkey);
                 if ((existing?.created ?? 0) < maxProfile.created) {
                     await db.put(maxProfile.profile);
@@ -115,6 +116,7 @@ export default function useLoginFeed() {
 }
 
 async function makeNotification(ev: TaggedRawEvent) {
+    const db = getDb()
     switch (ev.kind) {
         case EventKind.TextNote: {
             const pubkeys = new Set([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1]!)]);

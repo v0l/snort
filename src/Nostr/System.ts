@@ -1,7 +1,7 @@
 import { HexKey, TaggedRawEvent } from "Nostr";
 import { ProfileCacheExpire } from "Const";
 import { mapEventToProfile, MetadataCache, } from "State/Users";
-import db from "State/Users/Db";
+import { getDb } from "State/Users/Db";
 import Connection, { RelaySettings } from "Nostr/Connection";
 import Event from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
@@ -167,6 +167,7 @@ export class NostrSystem {
 
     async _FetchMetadata() {
         let missing = new Set<HexKey>();
+        const db = getDb()
         let meta = await db.bulkGet(Array.from(this.WantsMetadata));
         let expire = new Date().getTime() - ProfileCacheExpire;
         for (let pk of this.WantsMetadata) {
