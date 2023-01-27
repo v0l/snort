@@ -12,7 +12,6 @@ export function useQuery(query: string, limit: number = 5) {
     () => db.query(query)
           .catch((err) => {
             console.error(err)
-          }).then(() => {
             return inMemoryDb.query(query)
           }),
     [query],
