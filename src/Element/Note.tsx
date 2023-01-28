@@ -12,7 +12,6 @@ import EventKind from "Nostr/EventKind";
 import { useUserProfiles } from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "Nostr";
 import { useInView } from "react-intersection-observer";
-import { useState } from "react";
 
 export interface NoteProps {
     data?: TaggedRawEvent,
