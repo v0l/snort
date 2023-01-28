@@ -15,19 +15,20 @@ export interface TimelineProps {
     postsOnly: boolean,
     subject: TimelineSubject,
     method: "TIME_RANGE" | "LIMIT_UNTIL"
+    ignoreModeration?: boolean
 }
 
 /**
  * A list of notes by pubkeys
  */
-export default function Timeline({ subject, postsOnly = false, method }: TimelineProps) {
+export default function Timeline({ subject, postsOnly = false, method, ignoreModeration = false }: TimelineProps) {
     const { muted, isMuted } = useModeration();
     const { main, related, latest, parent, loadMore, showLatest } = useTimelineFeed(subject, {
         method
     });
 
     const filterPosts = useCallback((nts: TaggedRawEvent[]) => {
-        return [...nts].sort((a, b) => b.created_at - a.created_at)?.filter(a => postsOnly ? !a.tags.some(b => b[0] === "e") : true).filter(a => !isMuted(a.pubkey));
+        return [...nts].sort((a, b) => b.created_at - a.created_at)?.filter(a => postsOnly ? !a.tags.some(b => b[0] === "e") : true).filter(a => ignoreModeration || !isMuted(a.pubkey));
     }, [postsOnly, muted]);
 
     const mainFeed = useMemo(() => {
@@ -41,7 +42,7 @@ export default function Timeline({ subject, postsOnly = false, method }: Timelin
     function eventElement(e: TaggedRawEvent) {
         switch (e.kind) {
             case EventKind.TextNote: {
-                return <Note key={e.id} data={e} related={related.notes} />
+                return <Note key={e.id} data={e} related={related.notes} ignoreModeration={ignoreModeration} />
             }
             case EventKind.Reaction:
             case EventKind.Repost: {

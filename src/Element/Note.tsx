@@ -19,6 +19,7 @@ export interface NoteProps {
     isThread?: boolean,
     related: TaggedRawEvent[],
     highlight?: boolean,
+    ignoreModeration?: boolean,
     options?: {
         showHeader?: boolean,
         showTime?: boolean,
@@ -46,7 +47,7 @@ const HiddenNote = ({ children }: any) => {
 
 export default function Note(props: NoteProps) {
     const navigate = useNavigate();
-    const { data, isThread, related, highlight, options: opt, ["data-ev"]: parsedEvent } = props
+    const { data, isThread, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false} = props
     const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
     const users = useProfile(pubKeys);
@@ -176,5 +177,5 @@ export default function Note(props: NoteProps) {
       </div>
     )
 
-    return isOpMuted ? <HiddenNote>{note}</HiddenNote> : note
+    return !ignoreModeration && isOpMuted ? <HiddenNote>{note}</HiddenNote> : note
 }

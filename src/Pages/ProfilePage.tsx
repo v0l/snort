@@ -108,7 +108,7 @@ export default function ProfilePage() {
     function tabContent() {
         switch (tab) {
             case ProfileTab.Notes:
-                return <Timeline key={id} subject={{ type: "pubkey", items: [id] }} postsOnly={false} method={"LIMIT_UNTIL"} />;
+                return <Timeline key={id} subject={{ type: "pubkey", items: [id] }} postsOnly={false} method={"LIMIT_UNTIL"} ignoreModeration={true} />;
             case ProfileTab.Follows: {
                 if (isMe) {
                     return (
