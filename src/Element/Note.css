@@ -2,10 +2,6 @@
   min-height: 110px;
 }
 
-.note.thread {
-  border-bottom: none;
-}
-
 .note>.header .reply {
   font-size: var(--font-size-tiny);
   color: var(--font-secondary-color);
@@ -78,46 +74,6 @@
   margin-left: 56px;
 }
 
-.thread.note {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.thread.note, .indented .note {
-  margin-bottom: 0;
-}
-
-.indented .note {
-  border-radius: 0;
-}
-
-.indented {
-  border-left: 3px solid var(--gray-tertiary);
-  padding-left: 2px;
-}
-
-.note:last-child {
-  border-bottom-right-radius: 16px;
-  margin-bottom: 24px;
-}
-
-.indented .note.active:last-child {
-  border-bottom-right-radius: 16px;
-  margin-bottom: 24px;
-}
-
-.indented>.indented .note:last-child {
-  border-bottom-right-radius: 0px;
-  margin-bottom: 0;
-}
-
-.indented .active {
-  background-color: var(--gray-tertiary);
-  margin-left: -5px;
-  border-left: 3px solid var(--highlight);
-  border-radius: 0;
-}
-
 .reaction-pill {
   display: flex;
   flex-direction: row;
@@ -161,26 +117,6 @@
   color: var(--highlight);
 }
 
-
-.light .indented .active {
-  background-color: var(--gray-secondary);
-}
-
-.light .note.active>.header .reply {
-  color: var(--font-secondary-color);
-}
-
-.light .note.active>.header>.info {
-  color: var(--font-secondary-color);
-}
-
-.light .note.active>.footer>.reaction-pill {
-  color: var(--note-bg);
-}
-
-.light .note.active>.footer>.reaction-pill.reacted {
-  color: var(--highlight);
-}
 .note-expand .body {
   max-height: 300px;
   overflow-y: hidden;

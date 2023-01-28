@@ -5,6 +5,7 @@
 
 .pfp .avatar-wrapper {
   margin-right: 8px;
+  z-index: 42;
 }
 
 .pfp .avatar {

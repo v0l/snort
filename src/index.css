@@ -21,7 +21,7 @@
   --gray-secondary: #222;
   --gray-tertiary: #444;
   --gray-dark: #2B2B2B;
-  --gray-superdark: #171717;
+  --gray-superdark: #1A1A1A;
   --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
   --snort-gradient: linear-gradient(180deg, #FFC7B7 0%, #4F1B73 100%);
   --nostrplebs-gradient: linear-gradient(to bottom right, #ff3cac, #2b86c5);
@@ -47,7 +47,7 @@ html.light {
   --gray-superlight: #333;
   --gray-light: #555;
   --gray-dark: #2B2B2B;
-  --gray-superdark: #171717;
+  --gray-superdark: #CCC;
 }
 
 body {

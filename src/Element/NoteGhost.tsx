@@ -2,8 +2,9 @@ import "./Note.css";
 import ProfileImage from "Element/ProfileImage";
 
 export default function NoteGhost(props: any) {
+    const className = `note card ${props.className ? props.className : ''}`
     return (
-        <div className="note card">
+        <div className={className}>
             <div className="header">
                 <ProfileImage pubkey="" />
             </div>

@@ -9,6 +9,7 @@ import Text from "Element/Text";
 import { eventLink, getReactions, hexToBech32 } from "Util";
 import NoteFooter from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
+import ShowMore from "Element/ShowMore";
 import EventKind from "Nostr/EventKind";
 import { useUserProfiles } from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "Nostr";
@@ -17,6 +18,7 @@ import useModeration from "Hooks/useModeration";
 
 export interface NoteProps {
     data?: TaggedRawEvent,
+    className?: string
     isThread?: boolean,
     related: TaggedRawEvent[],
     highlight?: boolean,
@@ -58,6 +60,7 @@ export default function Note(props: NoteProps) {
     const { ref, inView, entry } = useInView({ triggerOnce: true });
     const [extendable, setExtendable] = useState<boolean>(false);
     const [showMore, setShowMore] = useState<boolean>(false);
+    const baseClassname = `note card ${props.className ? props.className : ''}`
 
     const options = {
         showHeader: true,
@@ -140,6 +143,7 @@ export default function Note(props: NoteProps) {
         const others = mentions.length > maxMentions ? ` & ${othersLength} other${othersLength > 1 ? 's' : ''}` : ''
         return (
             <div className="reply">
+              re:&nbsp;
               {(mentions?.length ?? 0) > 0 ? (
                 <>
                   {pubMentions}
@@ -179,7 +183,7 @@ export default function Note(props: NoteProps) {
                     {transformBody()}
                 </div>
                 {extendable && !showMore && (<div className="flex f-center">
-                    <button className="show-more" onClick={() => setShowMore(true)}>Show more</button>
+                    <ShowMore className="mt10" onClick={() => setShowMore(true)} />
                 </div>)}
                 {options.showFooter ? <NoteFooter ev={ev} related={related} /> : null}
             </>
@@ -187,7 +191,7 @@ export default function Note(props: NoteProps) {
     }
 
     const note =  (
-      <div className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}${extendable && !showMore ? " note-expand" : ""}`} ref={ref}>
+      <div className={`${baseClassname}${highlight ? " active" : ""}${isThread ? " thread-root" : ""}${extendable && !showMore ? " note-expand" : ""}`} ref={ref}>
           {content()}
       </div>
     )

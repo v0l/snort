@@ -1,3 +1,123 @@
 .thread-container {
   margin: 12px 0 150px 0;
 }
+
+.thread-container .hidden-note {
+  margin: 0;
+  border-radius: 0;
+}
+
+.thread-root.note {
+  box-shadow: none;
+}
+
+.thread-root.note > .body {
+  margin-top: 8px;
+  padding-left: 8px;
+}
+
+.thread-root.note > .body .text {
+  font-size: 19px;
+}
+
+.thread-root.note > .footer {
+  padding-left: 0;
+}
+
+.thread-root.note {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: 0;
+}
+
+.thread-note.note {
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
+.light .thread-note.note.card {
+  box-shadow: none;
+}
+
+.thread-container .hidden-note {
+  margin: 0;
+  border-radius: 0;
+}
+
+.thread-container .show-more {
+  background: var(--note-bg);
+  padding-left: 76px;
+  width: 100%;
+  text-align: left;
+  border-radius: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.thread-container .show-more:hover {
+  background: var(--note-bg);
+}
+
+.thread-container .show-more:last-child {
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+
+.subthread-container {
+  position: relative;
+}
+
+.line-container {
+  background: var(--note-bg);
+}
+
+.subthread-container.subthread-multi .line-container:before {
+  content: '';
+  position: absolute;
+  left: 48px;
+  top: 48px;
+  border-left: 1px solid var(--font-secondary-color);
+  height: 100%;
+}
+
+.subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
+  content: '';
+  position: absolute;
+  left: 48px;
+  top: 48px;
+  border-left: 1px solid var(--font-secondary-color);
+  height: 100%;
+}
+
+.subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
+  content: '';
+  position: absolute;
+  border-left: 1px solid var(--font-secondary-color);
+  left: 48px;
+  top: 0;
+  height: 48px;
+}
+
+.subthread-container.subthread-last .line-container:before {
+  content: '';
+  position: absolute;
+  border-left: 1px solid var(--font-secondary-color);
+  left: 48px;
+  top: 0;
+  height: 48px;
+}
+
+.divider-container {
+  background: var(--note-bg);
+}
+
+.divider {
+  height: 1px;
+  background: var(--font-secondary-color);
+  margin-left: 28px;
+  margin-right: 22px;
+}
+
+.divider.divider-small {
+  margin-left: 80px;
+}
