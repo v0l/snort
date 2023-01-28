@@ -8,7 +8,7 @@ import useSubscription, { NoteStore } from "Feed/Subscription";
 export default function useMutedFeed(pubkey: HexKey) {
     const sub = useMemo(() => {
         let sub = new Subscriptions();
-        sub.Id = `muted:${pubkey}`;
+        sub.Id = `muted:${pubkey.slice(0, 12)}`;
         sub.Kinds = new Set([EventKind.Lists]);
         sub.Authors = new Set([pubkey]);
         sub.DTag = Lists.Muted;
