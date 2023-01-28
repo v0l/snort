@@ -8,6 +8,7 @@ import { ConnectionStats } from "Nostr/ConnectionStats";
 import { RawEvent, TaggedRawEvent, u256 } from "Nostr";
 import { RelayInfo } from "./RelayInfo";
 import Nips from "./Nips";
+import { System } from "./System";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
 
@@ -50,7 +51,9 @@ export default class Connection {
     LastState: Readonly<StateSnapshot>;
     IsClosed: boolean;
     ReconnectTimer: ReturnType<typeof setTimeout> | null;
-    EventsCallback: Map<u256, () => void>;
+    EventsCallback: Map<u256, (msg?:any) => void>;
+    AwaitingAuth: Map<string, boolean>;
+    Authed: boolean;
 
     constructor(addr: string, options: RelaySettings) {
         this.Id = uuid();
@@ -76,6 +79,8 @@ export default class Connection {
         this.IsClosed = false;
         this.ReconnectTimer = null;
         this.EventsCallback = new Map();
+        this.AwaitingAuth = new Map();
+        this.Authed = false;
         this.Connect();
     }
 
@@ -122,18 +127,8 @@ export default class Connection {
 
     OnOpen(e: Event) {
         this.ConnectTimeout = DefaultConnectTimeout;
+        this._InitSubscriptions();
         console.log(`[${this.Address}] Open!`);
-
-        // send pending
-        for (let p of this.Pending) {
-            this._SendJson(p);
-        }
-        this.Pending = [];
-
-        for (let [_, s] of this.Subscriptions) {
-            this._SendSubscription(s);
-        }
-        this._UpdateState();
     }
 
     OnClose(e: CloseEvent) {
@@ -156,6 +151,12 @@ export default class Connection {
             let msg = JSON.parse(e.data);
             let tag = msg[0];
             switch (tag) {
+                case "AUTH": {
+                    this._OnAuthAsync(msg[1])
+                    this.Stats.EventsReceived++;
+                    this._UpdateState();
+                    break;
+                }
                 case "EVENT": {
                     this._OnEvent(msg[1], msg[2]);
                     this.Stats.EventsReceived++;
@@ -173,7 +174,7 @@ export default class Connection {
                     if (this.EventsCallback.has(id)) {
                         let cb = this.EventsCallback.get(id)!;
                         this.EventsCallback.delete(id);
-                        cb();
+                        cb(msg);
                     }
                     break;
                 }
@@ -314,7 +315,25 @@ export default class Connection {
         }
     }
 
+    _InitSubscriptions() {
+        // send pending
+        for (let p of this.Pending) {
+            this._SendJson(p);
+        }
+        this.Pending = [];
+
+        for (let [_, s] of this.Subscriptions) {
+            this._SendSubscription(s);
+        }
+        this._UpdateState();
+    }
+
     _SendSubscription(sub: Subscriptions) {
+        if(!this.Authed && this.AwaitingAuth.size > 0) {
+            this.Pending.push(sub);
+            return;
+        }
+
         let req = ["REQ", sub.Id, sub.ToObject()];
         if (sub.OrSubs.length > 0) {
             req = [
@@ -347,6 +366,40 @@ export default class Connection {
             // console.warn(`No subscription for event! ${subId}`);
             // ignored for now, track as "dropped event" with connection stats
         }
+    }
+
+    async _OnAuthAsync(challenge: string): Promise<void> {
+        const authCleanup = () => {
+            this.AwaitingAuth.delete(challenge)
+        }
+        this.AwaitingAuth.set(challenge, true)
+        const authEvent = await System.nip42Auth(challenge, this.Address)
+        return new Promise((resolve,_) => {
+            if(!authEvent) {
+                authCleanup();
+                return Promise.reject('no event');
+            }
+
+            let t = setTimeout(() => {
+                authCleanup();
+                resolve();
+            }, 10_000);
+
+            this.EventsCallback.set(authEvent.Id, (msg:any[]) => {
+                clearTimeout(t);
+                authCleanup();
+                if(msg.length > 3 && msg[2] === true) {
+                    this.Authed = true;
+                    this._InitSubscriptions();
+                }
+                resolve();
+            });
+
+            let req = ["AUTH", authEvent.ToObject()];
+            this._SendJson(req);
+            this.Stats.EventsSent++;
+            this._UpdateState();
+        })
     }
 
     _OnEnd(subId: string) {
