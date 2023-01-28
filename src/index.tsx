@@ -36,7 +36,7 @@ const HTTP = new QueryClient()
 
 serviceWorkerRegistration.register();
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     element: <Layout />,
     errorElement: <ErrorPage />,
@@ -91,7 +91,7 @@ const router = createBrowserRouter([
         element: <HashTagsPage />
       },
       {
-        path: "/search/:keyword",
+        path: "/search/:keyword?",
         element: <SearchPage />
       }
     ]

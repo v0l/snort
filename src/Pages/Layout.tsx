@@ -2,7 +2,7 @@ import "./Layout.css";
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
-import { faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faMessage, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { RootState } from "State/Store";
@@ -39,11 +39,6 @@ export default function Layout() {
                 if (!relays[k] && !SearchRelays.has(k)) {
                     System.DisconnectRelay(k);
                 }
-            }
-        }
-	for (let [k, v] of SearchRelays) {
-            if (!System.Sockets.has(k)) {
-                System.ConnectToRelay(k, v);
             }
         }
     }, [relays]);
@@ -114,21 +109,14 @@ export default function Layout() {
     if (typeof isInit !== "boolean") {
         return null;
     }
-
-    async function search() {
-        if (keyword)
-            navigate(`/search/${encodeURIComponent(keyword)}/`);
-    }
-
     return (
         <div className="page">
             <div className="header">
                 <div className="logo" onClick={() => navigate("/")}>snort</div>
-		<div className="search">
-                        <input type="text" placeholder="Search..." value={keyword} onChange={(e) => setKeyword(e.target.value)} onKeyPress={(e) => { if (e.key === 'Enter') search() } }/>
-			<div className="btn" onClick={() => search()}>&#128269;</div>
-		</div>
                 <div>
+                    <div className={`btn btn-rnd mr10`} onClick={(e) => navigate("/search")}>
+                        <FontAwesomeIcon icon={faSearch} size="xl" />
+                    </div>
                     {key ? accountHeader() :
                         <div className="btn" onClick={() => navigate("/login")}>Login</div>
                     }

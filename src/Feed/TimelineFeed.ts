@@ -48,7 +48,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 break;
             }
             case "keyword": {
-                sub.Keywords = new Set(subject.items);
+                sub.Search = subject.items[0];
                 break;
             }
         }
@@ -76,7 +76,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 latestSub.Authors = sub.Authors;
                 latestSub.HashTags = sub.HashTags;
                 latestSub.Kinds = sub.Kinds;
-                latestSub.Keywords = sub.Keywords;
+                latestSub.Search = sub.Search;
                 latestSub.Limit = 1;
                 latestSub.Since = Math.floor(new Date().getTime() / 1000);
                 sub.AddSubscription(latestSub);
@@ -128,7 +128,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         if (main.store.notes.length > 0) {
             setTrackingEvent(s => {
                 let ids = main.store.notes.map(a => a.id);
-                if(ids.some(a => !s.includes(a))) {
+                if (ids.some(a => !s.includes(a))) {
                     return Array.from(new Set([...s, ...ids]));
                 }
                 return s;

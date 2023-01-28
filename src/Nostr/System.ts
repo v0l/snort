@@ -1,7 +1,7 @@
 import { HexKey, TaggedRawEvent } from "Nostr";
 import { getDb } from "State/Users/Db";
-import { ProfileCacheExpire, SearchRelays } from "Const";
-import { mapEventToProfile, MetadataCache } from "Db/User";
+import { ProfileCacheExpire } from "Const";
+import { mapEventToProfile, MetadataCache } from "State/Users";
 import Connection, { RelaySettings } from "Nostr/Connection";
 import Event from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
@@ -48,8 +48,7 @@ export class NostrSystem {
                 let c = new Connection(address, options);
                 this.Sockets.set(address, c);
                 for (let [_, s] of this.Subscriptions) {
-                    if (!s.Keywords || SearchRelays.has(address))
-                        c.AddSubscription(s);
+                    c.AddSubscription(s);
                 }
             } else {
                 // update settings if already connected
@@ -73,16 +72,14 @@ export class NostrSystem {
 
     AddSubscription(sub: Subscriptions) {
         for (let [a, s] of this.Sockets) {
-            if (!sub.Keywords || SearchRelays.has(a))
-                s.AddSubscription(sub);
+            s.AddSubscription(sub);
         }
         this.Subscriptions.set(sub.Id, sub);
     }
 
     RemoveSubscription(subId: string) {
         for (let [a, s] of this.Sockets) {
-            if (!this.Subscriptions.get(subId)?.Keywords || SearchRelays.has(a))
-                s.RemoveSubscription(subId);
+            s.RemoveSubscription(subId);
         }
         this.Subscriptions.delete(subId);
     }
