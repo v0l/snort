@@ -1,5 +1,5 @@
 import "./Note.css";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { default as NEvent } from "Nostr/Event";
@@ -12,6 +12,7 @@ import EventKind from "Nostr/EventKind";
 import { useUserProfiles } from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "Nostr";
 import { useInView } from "react-intersection-observer";
+import { useState } from "react";
 
 export interface NoteProps {
     data?: TaggedRawEvent,
@@ -34,6 +35,12 @@ export default function Note(props: NoteProps) {
     const users = useUserProfiles(pubKeys);
     const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
     const { ref, inView } = useInView({ triggerOnce: true });
+
+    const [scrolled, setScrolled] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (highlight) scrollToNote();
+    })
 
     const options = {
         showHeader: true,
@@ -59,8 +66,9 @@ export default function Note(props: NoteProps) {
 
     const scrollToNote= () => {
         const element = document.getElementById(ev.Id);
-        if (element) {
-          element.scrollIntoView();
+        if (element && !scrolled) {
+            setScrolled(true);
+            element.scrollIntoView();
         }
       };
 
@@ -120,8 +128,6 @@ export default function Note(props: NoteProps) {
             </>
         )
     }
-
-    if (highlight) scrollToNote();
 
     return (
         <div id={ev.Id} className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
