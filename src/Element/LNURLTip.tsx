@@ -225,7 +225,7 @@ export default function LNURLTip(props: LNURLTipProps) {
 
     if (!show) return null;
     return (
-        <Modal onClose={() => onClose()}>
+        <Modal onClose={onClose}>
             <div className="lnurl-tip" onClick={(e) => e.stopPropagation()}>
                 <h2>{props.title || "⚡️ Send sats"}</h2>
                 {invoiceForm()}

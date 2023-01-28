@@ -18,7 +18,6 @@ export interface NoteCreatorProps {
     setShow: (s: boolean) => void
     replyTo?: NEvent,
     onSend?: Function,
-    onClose?(): void
     autoFocus: boolean
 }
 
@@ -90,7 +89,10 @@ export function NoteCreator(props: NoteCreatorProps) {
           <Plus />
         </button>
         {show && (
-          <Modal className="note-creator-modal" onClose={props.onClose}>
+          <Modal
+            className="note-creator-modal"
+            onClose={() => setShow(false)}
+          >
             <div className={`flex note-creator ${props.replyTo ? 'note-reply' : ''}`}>
                 <div className="flex f-col mr10 f-grow">
                     <Textarea
