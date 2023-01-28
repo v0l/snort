@@ -76,3 +76,12 @@
     right: 25vw;
   }
 }
+
+@media (max-width: 720px) {
+  .note-creator-modal {
+    align-items: flex-start;
+  }
+  .note-creator-modal .modal-body {
+    margin-top: 20vh;
+  }
+}

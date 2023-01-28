@@ -90,7 +90,7 @@ export function NoteCreator(props: NoteCreatorProps) {
           <Plus />
         </button>
         {show && (
-          <Modal onClose={props.onClose}>
+          <Modal className="note-creator-modal" onClose={props.onClose}>
             <div className={`flex note-creator ${props.replyTo ? 'note-reply' : ''}`}>
                 <div className="flex f-col mr10 f-grow">
                     <Textarea
