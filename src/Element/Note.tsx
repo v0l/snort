@@ -30,7 +30,7 @@ export interface NoteProps {
 const HiddenNote = ({ children }: any) => {
   const [show, setShow] = useState(false)
   return show ? children : (
-    <div className="card">
+    <div className="card note hidden-note">
       <div className="header">
         <p>
           This note was hidden because of your moderation settings
