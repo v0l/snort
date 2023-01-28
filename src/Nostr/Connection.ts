@@ -7,6 +7,7 @@ import { DefaultConnectTimeout } from "Const";
 import { ConnectionStats } from "Nostr/ConnectionStats";
 import { RawEvent, TaggedRawEvent, u256 } from "Nostr";
 import { RelayInfo } from "./RelayInfo";
+import Nips from "./Nips";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
 
@@ -238,6 +239,11 @@ export default class Connection {
             return;
         }
 
+        // check relay supports search
+        if (sub.Search && !this.SupportsNip(Nips.Search)) {
+            return;
+        }
+
         if (this.Subscriptions.has(sub.Id)) {
             return;
         }
@@ -279,6 +285,13 @@ export default class Connection {
             this.HasStateChange = false;
         }
         return this.LastState;
+    }
+
+    /**
+     * Using relay document to determine if this relay supports a feature
+     */
+    SupportsNip(n: number) {
+        return this.Info?.supported_nips?.some(a => a === n) ?? false;
     }
 
     _UpdateState() {
