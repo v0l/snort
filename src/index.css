@@ -328,6 +328,10 @@ body.scroll-lock {
   margin-bottom: 10px;
 }
 
+.mb20 {
+  margin-bottom: 20px;
+}
+
 .mr-auto {
   margin-right: auto;
 }

@@ -1,5 +1,5 @@
 import "./Note.css";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { default as NEvent } from "Nostr/Event";
@@ -34,7 +34,9 @@ export default function Note(props: NoteProps) {
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
     const users = useUserProfiles(pubKeys);
     const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
-    const { ref, inView } = useInView({ triggerOnce: true });
+    const { ref, inView, entry } = useInView({ triggerOnce: true });
+    const [extendable, setExtendable] = useState<boolean>(false);
+    const [showMore, setShowMore] = useState<boolean>(false);
 
     const [scrolled, setScrolled] = useState<boolean>(false);
 
@@ -56,6 +58,15 @@ export default function Note(props: NoteProps) {
         }
         return <Text content={body} tags={ev.Tags} users={users || new Map()} />;
     }, [ev]);
+
+    useLayoutEffect(() => {
+        if (entry && inView && extendable === false) {
+            let h = entry?.target.clientHeight ?? 0;
+            if (h > 650) {
+                setExtendable(true);
+            }
+        }
+    }, [inView, entry, extendable]);
 
     function goToEvent(e: any, id: u256) {
         if (!window.location.pathname.startsWith("/e/")) {
@@ -93,7 +104,7 @@ export default function Note(props: NoteProps) {
         let pubMentions = mentions.length > maxMentions ? `${mentions?.slice(0, maxMentions).join(", ")} & ${othersLength} other${othersLength > 1 ? 's' : ''}` : mentions?.join(", ");
         return (
             <div className="reply">
-             {(pubMentions?.length ?? 0) > 0 ? pubMentions : replyId ? hexToBech32("note", replyId)?.substring(0, 12) : ""}
+                {(pubMentions?.length ?? 0) > 0 ? pubMentions : replyId ? hexToBech32("note", replyId)?.substring(0, 12) : ""}
             </div>
         )
     }
@@ -124,13 +135,17 @@ export default function Note(props: NoteProps) {
                 <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
                     {transformBody()}
                 </div>
+                {extendable && !showMore && (<div className="flex f-center">
+                    <button className="btn mt10" onClick={() => setShowMore(true)}>Show more</button>
+                </div>)}
                 {options.showFooter ? <NoteFooter ev={ev} related={related} /> : null}
             </>
         )
     }
 
     return (
-        <div id={ev.Id} className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
+        <div id={ev.Id} className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}${extendable && !showMore ? " note-expand" : ""}`}
+            ref={ref} >
             {content()}
         </div>
     )

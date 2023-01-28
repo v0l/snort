@@ -42,6 +42,11 @@ export class Subscriptions {
      */
     HashTags?: Set<string>;
 
+    /**
+     * A list of search terms
+     */
+    Search?: string;
+
     /** 
      * a timestamp, events must be newer than this to pass
      */
@@ -89,6 +94,7 @@ export class Subscriptions {
         this.Kinds = sub?.kinds ? new Set(sub.kinds) : undefined;
         this.ETags = sub?.["#e"] ? new Set(sub["#e"]) : undefined;
         this.PTags = sub?.["#p"] ? new Set(sub["#p"]) : undefined;
+        this.Search = sub?.search ?? undefined;
         this.Since = sub?.since ?? undefined;
         this.Until = sub?.until ?? undefined;
         this.Limit = sub?.limit ?? undefined;
@@ -132,6 +138,9 @@ export class Subscriptions {
         }
         if(this.HashTags) {
             ret["#t"] = Array.from(this.HashTags);
+        }
+        if (this.Search) {
+            ret.search = this.Search;
         }
         if (this.Since !== null) {
             ret.since = this.Since;
