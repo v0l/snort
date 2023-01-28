@@ -9,6 +9,7 @@ import { default as NEvent } from "Nostr/Event";
 import { eventLink, hexToBech32 } from "Util";
 import NoteTime from "Element/NoteTime";
 import { RawEvent, TaggedRawEvent } from "Nostr";
+import useModeration from "Hooks/useModeration";
 
 export interface NoteReactionProps {
     data?: TaggedRawEvent,
@@ -18,6 +19,7 @@ export interface NoteReactionProps {
 export default function NoteReaction(props: NoteReactionProps) {
     const { ["data-ev"]: dataEv, data } = props;
     const ev = useMemo(() => dataEv || new NEvent(data), [data, dataEv])
+    const { isMuted } = useModeration();
 
     const refEvent = useMemo(() => {
         if (ev) {
@@ -49,12 +51,13 @@ export default function NoteReaction(props: NoteReactionProps) {
     }
 
     const root = extractRoot();
+    const isOpMuted = root && isMuted(root.pubkey)
     const opt = {
         showHeader: ev?.Kind === EventKind.Repost,
         showFooter: false,
     };
 
-    return (
+    return isOpMuted ? null : (
         <div className="reaction">
             <div className="header flex">
                 <ProfileImage pubkey={ev.RootPubKey} />

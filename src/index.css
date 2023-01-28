@@ -124,10 +124,15 @@ button:disabled {
   cursor: not-allowed;
   color: var(--gray);
 }
-.light button:disabled {
+
+.light button.transparent {
   color: var(--font-color);
 }
 
+.light button:disabled {
+  color: var(--font-secondary-color);
+  border-color: var(--font-secondary-color);
+}
 
 button:hover {
   background-color: var(--font-color);
@@ -392,27 +397,6 @@ body.scroll-lock {
   margin-right: auto;
 }
 
-.tabs {
-  display: flex;
-  align-content: center;
-  text-align: center;
-  margin: 10px 0;
-  overflow-x: auto;
-}
-
-.tabs>div {
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.tabs>div:last-child {
-  margin: 0;
-}
-
-.tabs .active {
-  font-weight: 700;
-}
-
 .error {
   color: var(--error);
 }
@@ -426,10 +410,25 @@ body.scroll-lock {
 }
 
 .tabs {
-  padding: 0;
-  align-items: center;
-  justify-content: flex-start;
+  display: flex;
+  align-content: center;
+  text-align: center;
+  margin-top: 10px;
+  overflow-x: auto;
   margin-bottom: 16px;
+}
+
+.tabs > * {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.tabs > *:last-child {
+  margin: 0;
+}
+
+.tabs .active {
+  font-weight: 700;
 }
 
 .tab {

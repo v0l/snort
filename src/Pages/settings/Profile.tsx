@@ -2,7 +2,7 @@ import "./Profile.css";
 import Nostrich from "nostrich.jpg";
 
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShop } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +10,7 @@ import { faShop } from "@fortawesome/free-solid-svg-icons";
 import useEventPublisher from "Feed/EventPublisher";
 import useProfile from "Feed/ProfileFeed";
 import VoidUpload from "Feed/VoidUpload";
-import { logout } from "State/Login";
+import LogoutButton from "Element/LogoutButton";
 import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
@@ -20,7 +20,6 @@ export default function ProfileSettings() {
     const navigate = useNavigate();
     const id = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const privKey = useSelector<RootState, HexKey | undefined>(s => s.login.privateKey);
-    const dispatch = useDispatch();
     const user = useProfile(id)?.get(id || "");
     const publisher = useEventPublisher();
 
@@ -143,7 +142,7 @@ export default function ProfileSettings() {
                 </div>
                 <div className="form-group">
                     <div>
-                        <button className="secondary" type="button" onClick={() => { dispatch(logout()); navigate("/"); }}>Logout</button>
+                        <LogoutButton />
                     </div>
                     <div>
                         <button type="button" onClick={() => saveProfile()}>Save</button>

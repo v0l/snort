@@ -1,5 +1,5 @@
 import "./Note.css";
-import { useCallback, useMemo, ReactNode } from "react";
+import { useCallback, useMemo, useState, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import { default as NEvent } from "Nostr/Event";
@@ -12,12 +12,14 @@ import EventKind from "Nostr/EventKind";
 import useProfile from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "Nostr";
 import { useInView } from "react-intersection-observer";
+import useModeration from "Hooks/useModeration";
 
 export interface NoteProps {
     data?: TaggedRawEvent,
     isThread?: boolean,
     related: TaggedRawEvent[],
     highlight?: boolean,
+    ignoreModeration?: boolean,
     options?: {
         showHeader?: boolean,
         showTime?: boolean,
@@ -26,13 +28,32 @@ export interface NoteProps {
     ["data-ev"]?: NEvent
 }
 
+const HiddenNote = ({ children }: any) => {
+  const [show, setShow] = useState(false)
+  return show ? children : (
+    <div className="card note hidden-note">
+      <div className="header">
+        <p>
+          This note was hidden because of your moderation settings
+        </p>
+        <button onClick={() => setShow(true)}>
+          Show
+        </button>
+      </div>
+    </div>
+  )
+}
+
+
 export default function Note(props: NoteProps) {
     const navigate = useNavigate();
-    const { data, isThread, related, highlight, options: opt, ["data-ev"]: parsedEvent } = props
+    const { data, isThread, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false} = props
     const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
     const users = useProfile(pubKeys);
     const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
+    const { isMuted } = useModeration()
+    const isOpMuted = isMuted(ev.PubKey)
     const { ref, inView } = useInView({ triggerOnce: true });
 
     const options = {
@@ -150,9 +171,11 @@ export default function Note(props: NoteProps) {
         )
     }
 
-    return (
-        <div className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
-            {content()}
-        </div>
+    const note =  (
+      <div className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
+          {content()}
+      </div>
     )
+
+    return !ignoreModeration && isOpMuted ? <HiddenNote>{note}</HiddenNote> : note
 }

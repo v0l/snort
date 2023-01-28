@@ -10,6 +10,7 @@ import useProfile from "Feed/ProfileFeed";
 import FollowButton from "Element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
+import LogoutButton from "Element/LogoutButton";
 import Timeline from "Element/Timeline";
 import Text from 'Element/Text'
 import LNURLTip from "Element/LNURLTip";
@@ -17,6 +18,8 @@ import Nip05 from "Element/Nip05";
 import Copy from "Element/Copy";
 import ProfilePreview from "Element/ProfilePreview";
 import FollowersList from "Element/FollowersList";
+import BlockList from "Element/BlockList";
+import MutedList from "Element/MutedList";
 import FollowsList from "Element/FollowsList";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
@@ -26,7 +29,9 @@ enum ProfileTab {
     Notes = "Notes",
     Reactions = "Reactions",
     Followers = "Followers",
-    Follows = "Follows"
+    Follows = "Follows",
+    Muted = "Muted",
+    Blocked = "Blocked"
 };
 
 export default function ProfilePage() {
@@ -103,7 +108,7 @@ export default function ProfilePage() {
     function tabContent() {
         switch (tab) {
             case ProfileTab.Notes:
-                return <Timeline key={id} subject={{ type: "pubkey", items: [id] }} postsOnly={false} method={"LIMIT_UNTIL"} />;
+                return <Timeline key={id} subject={{ type: "pubkey", items: [id] }} postsOnly={false} method={"LIMIT_UNTIL"} ignoreModeration={true} />;
             case ProfileTab.Follows: {
                 if (isMe) {
                     return (
@@ -118,6 +123,12 @@ export default function ProfilePage() {
             }
             case ProfileTab.Followers: {
                 return <FollowersList pubkey={id} />
+            }
+            case ProfileTab.Muted: {
+                return isMe ? <BlockList variant="muted" /> : <MutedList pubkey={id} />
+            }
+            case ProfileTab.Blocked: {
+                return isMe ? <BlockList variant="blocked" /> : null
             }
         }
     }
@@ -136,9 +147,12 @@ export default function ProfilePage() {
                 {username()}
                 <div className="profile-actions">
                   {isMe ? (
+                    <>
+                      <LogoutButton />
                       <button type="button" onClick={() => navigate("/settings")}>
                         Settings
                       </button>
+                    </>
                   ) : (
                     !loggedOut && (
                       <>
@@ -155,6 +169,10 @@ export default function ProfilePage() {
         )
     }
 
+    function renderTab(v: ProfileTab) {
+      return <div className={`tab f-1${tab === v ? " active" : ""}`} key={v} onClick={() => setTab(v)}>{v}</div>
+    }
+
     return (
         <>
             <div className="profile flex">
@@ -165,9 +183,8 @@ export default function ProfilePage() {
                </div>
             </div>
             <div className="tabs">
-                {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows].map(v => {
-                    return <div className={`tab f-1${tab === v ? " active" : ""}`} key={v} onClick={() => setTab(v)}>{v}</div>
-                })}
+                {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Muted].map(renderTab)}
+                {isMe && renderTab(ProfileTab.Blocked)}
             </div>
             {tabContent()}
         </>

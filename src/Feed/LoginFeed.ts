@@ -1,24 +1,27 @@
-import Nostrich from "nostrich.jpg";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { HexKey, TaggedRawEvent } from "Nostr";
+import { makeNotification } from "Notifications";
+import { TaggedRawEvent, HexKey, Lists } from "Nostr";
 import EventKind from "Nostr/EventKind";
+import Event from "Nostr/Event";
 import { Subscriptions } from "Nostr/Subscriptions";
-import { addDirectMessage, addNotifications, setFollows, setRelays } from "State/Login";
-import { RootState } from "State/Store";
+import { addDirectMessage, setFollows, setRelays, setMuted, setBlocked, sendNotification } from "State/Login";
+import type { RootState } from "State/Store";
 import { db } from "Db";
+import { barierNip07 } from "Feed/EventPublisher";
 import useSubscription from "Feed/Subscription";
+import { getMutedKeys, getNewest } from "Feed/MuteList";
 import { mapEventToProfile, MetadataCache } from "Db/User";
-import { getDisplayName } from "Element/ProfileImage";
-import { MentionRegex } from "Const";
+import useModeration from "Hooks/useModeration";
 
 /**
  * Managed loading data for the current logged in user
  */
 export default function useLoginFeed() {
     const dispatch = useDispatch();
-    const [pubKey, readNotifications] = useSelector<RootState, [HexKey | undefined, number]>(s => [s.login.publicKey, s.login.readNotifications]);
+    const { publicKey: pubKey, privateKey: privKey } = useSelector((s: RootState) => s.login);
+    const { isMuted } = useModeration();
 
     const subMetadata = useMemo(() => {
         if (!pubKey) return null;
@@ -27,6 +30,7 @@ export default function useLoginFeed() {
         sub.Id = `login:meta`;
         sub.Authors = new Set([pubKey]);
         sub.Kinds = new Set([EventKind.ContactList, EventKind.SetMetadata]);
+        sub.Limit = 2
 
         return sub;
     }, [pubKey]);
@@ -39,6 +43,19 @@ export default function useLoginFeed() {
         sub.Kinds = new Set([EventKind.TextNote]);
         sub.PTags = new Set([pubKey]);
         sub.Limit = 1;
+        return sub;
+    }, [pubKey]);
+
+    const subMuted = useMemo(() => {
+        if (!pubKey) return null;
+
+        let sub = new Subscriptions();
+        sub.Id = "login:muted";
+        sub.Kinds = new Set([EventKind.Lists]);
+        sub.Authors = new Set([pubKey]);
+        sub.DTag = Lists.Muted;
+        sub.Limit = 1;
+
         return sub;
     }, [pubKey]);
 
@@ -61,6 +78,7 @@ export default function useLoginFeed() {
     const metadataFeed = useSubscription(subMetadata, { leaveOpen: true });
     const notificationFeed = useSubscription(subNotification, { leaveOpen: true });
     const dmsFeed = useSubscription(subDms, { leaveOpen: true });
+    const mutedFeed = useSubscription(subMuted, { leaveOpen: true });
 
     useEffect(() => {
         let contactList = metadataFeed.store.notes.filter(a => a.kind === EventKind.ContactList);
@@ -75,7 +93,7 @@ export default function useLoginFeed() {
                 dispatch(setRelays({ relays, createdAt: cl.created_at }));
             }
             let pTags = cl.tags.filter(a => a[0] === "p").map(a => a[1]);
-            dispatch(setFollows(pTags));
+            dispatch(setFollows({ keys: pTags, createdAt: cl.created_at }));
         }
 
         (async () => {
@@ -85,7 +103,7 @@ export default function useLoginFeed() {
                     acc.created = v.created;
                 }
                 return acc;
-            }, { created: 0, profile: <MetadataCache | null>null });
+            }, { created: 0, profile: null as MetadataCache | null });
             if (maxProfile.profile) {
                 let existing = await db.users.get(maxProfile.profile.pubkey);
                 if ((existing?.created ?? 0) < maxProfile.created) {
@@ -93,70 +111,52 @@ export default function useLoginFeed() {
                 }
             }
         })().catch(console.warn);
-    }, [metadataFeed.store]);
+    }, [dispatch, metadataFeed.store]);
 
     useEffect(() => {
-        let notifications = notificationFeed.store.notes.filter(a => a.kind === EventKind.TextNote);
-
-        if ("Notification" in window && Notification.permission === "granted") {
-            for (let nx of notifications.filter(a => (a.created_at * 1000) > readNotifications)) {
-                sendNotification(nx)
-                    .catch(console.warn);
+        const replies = notificationFeed.store.notes.filter(a => a.kind === EventKind.TextNote && !isMuted(a.pubkey))
+        replies.forEach(nx => {
+          makeNotification(nx).then(notification => {
+            if (notification) {
+              // @ts-ignore
+              dispatch(sendNotification(notification))
             }
-        }
+          })
+        })
+    }, [dispatch, notificationFeed.store]);
 
-        dispatch(addNotifications(notifications));
-    }, [notificationFeed.store]);
+    useEffect(() => {
+      const muted = getMutedKeys(mutedFeed.store.notes)
+      dispatch(setMuted(muted))
+
+      const newest = getNewest(mutedFeed.store.notes)
+      if (newest && newest.content.length > 0 && pubKey) {
+        decryptBlocked(newest, pubKey, privKey).then((plaintext) => {
+          try {
+            const blocked = JSON.parse(plaintext)
+            const keys = blocked.filter((p:any) => p && p.length === 2 && p[0] === "p").map((p: any) => p[1])
+            dispatch(setBlocked({
+              keys,
+              createdAt: newest.created_at,
+            }))
+          } catch(error) {
+            console.debug("Couldn't parse JSON")
+          }
+        }).catch((error) => console.warn(error))
+      }
+    }, [dispatch, mutedFeed.store])
 
     useEffect(() => {
         let dms = dmsFeed.store.notes.filter(a => a.kind === EventKind.DirectMessage);
         dispatch(addDirectMessage(dms));
-    }, [dmsFeed.store]);
+    }, [dispatch, dmsFeed.store]);
 }
 
-async function makeNotification(ev: TaggedRawEvent) {
-    switch (ev.kind) {
-        case EventKind.TextNote: {
-            const pubkeys = new Set([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1]!)]);
-            const users = (await db.users.bulkGet(Array.from(pubkeys))).filter(a => a !== undefined).map(a => a!);
-            const fromUser = users.find(a => a?.pubkey === ev.pubkey);
-            const name = getDisplayName(fromUser, ev.pubkey);
-            const avatarUrl = (fromUser?.picture?.length ?? 0) === 0 ? Nostrich : fromUser?.picture;
-            return {
-                title: `Reply from ${name}`,
-                body: replaceTagsWithUser(ev, users).substring(0, 50),
-                icon: avatarUrl
-            }
-        }
-    }
-    return null;
-}
-
-function replaceTagsWithUser(ev: TaggedRawEvent, users: MetadataCache[]) {
-    return ev.content.split(MentionRegex).map(match => {
-        let matchTag = match.match(/#\[(\d+)\]/);
-        if (matchTag && matchTag.length === 2) {
-            let idx = parseInt(matchTag[1]);
-            let ref = ev.tags[idx];
-            if (ref && ref[0] === "p" && ref.length > 1) {
-                let u = users.find(a => a.pubkey === ref[1]);
-                return `@${getDisplayName(u, ref[1])}`;
-            }
-        }
-        return match;
-    }).join();
-}
-
-async function sendNotification(ev: TaggedRawEvent) {
-    let n = await makeNotification(ev);
-    if (n != null && Notification.permission === "granted") {
-        let worker = await navigator.serviceWorker.ready;
-        worker.showNotification(n.title, {
-            body: n.body,
-            icon: n.icon,
-            tag: "notification",
-            timestamp: ev.created_at * 1000,
-            vibrate: [500]
-        });
-    }
+async function decryptBlocked(raw: TaggedRawEvent, pubKey: HexKey, privKey?: HexKey) {
+  const ev = new Event(raw)
+  if (pubKey && privKey) {
+    return await ev.DecryptData(raw.content, privKey, pubKey)
+  } else {
+    return await barierNip07(() => window.nostr.nip04.decrypt(pubKey, raw.content));
+  }
 }

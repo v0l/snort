@@ -181,3 +181,16 @@
 .light .note.active>.footer>.reaction-pill.reacted {
   color: var(--highlight);
 }
+
+.hidden-note .header {
+  display: flex;
+  align-items: center;
+}
+
+.card.note.hidden-note {
+  min-height: unset;
+}
+
+.hidden-note button {
+   max-height: 30px;
+}

@@ -69,3 +69,10 @@
     width: -webkit-fill-available;
     aspect-ratio: 16 / 9;
 }
+
+.text blockquote {
+  margin: 0;
+  color: var(--font-secondary-color);
+  border-left: 2px solid var(--font-secondary-color);
+  padding-left: 12px;
+}
