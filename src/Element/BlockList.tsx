@@ -8,20 +8,32 @@ import ProfilePreview from "Element/ProfilePreview";
 import useMutedFeed, { getMuted } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 
-export default function BlockList() {
+interface BlockListProps {
+  variant: "muted" | "blocked"
+}
+
+export default function BlockList({ variant }: BlockListProps) {
     const { publicKey } = useSelector((s: RootState) => s.login)
     const { blocked, muted } = useModeration();
 
     return (
         <div className="main-content">
-          <h3>Muted ({muted.length})</h3>
-          {muted.map(a => {
-            return <ProfilePreview actions={<MuteButton pubkey={a} />} pubkey={a} options={{ about: false }} key={a} />
-          })}
-          <h3>Blocked ({blocked.length})</h3>
-          {blocked.map(a => {
-            return <ProfilePreview actions={<BlockButton pubkey={a} />} pubkey={a} options={{ about: false }} key={a} />
-          })}
+          {variant === "muted"  && (
+            <>
+              <h4>{muted.length} muted</h4>
+              {muted.map(a => {
+                return <ProfilePreview actions={<MuteButton pubkey={a} />} pubkey={a} options={{ about: false }} key={a} />
+              })}
+            </>
+          )}
+          {variant === "blocked" && (
+            <>
+              <h4>{blocked.length} blocked</h4>
+              {blocked.map(a => {
+                return <ProfilePreview actions={<BlockButton pubkey={a} />} pubkey={a} options={{ about: false }} key={a} />
+              })}
+            </>
+          )}
         </div>
     )
 }

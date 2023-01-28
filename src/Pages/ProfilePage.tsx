@@ -30,7 +30,8 @@ enum ProfileTab {
     Reactions = "Reactions",
     Followers = "Followers",
     Follows = "Follows",
-    Muted = "Muted"
+    Muted = "Muted",
+    Blocked = "Blocked"
 };
 
 export default function ProfilePage() {
@@ -124,7 +125,10 @@ export default function ProfilePage() {
                 return <FollowersList pubkey={id} />
             }
             case ProfileTab.Muted: {
-                return isMe ? <BlockList /> : <MutedList pubkey={id} />
+                return isMe ? <BlockList variant="muted" /> : <MutedList pubkey={id} />
+            }
+            case ProfileTab.Blocked: {
+                return isMe ? <BlockList variant="blocked" /> : null
             }
         }
     }
@@ -165,6 +169,10 @@ export default function ProfilePage() {
         )
     }
 
+    function renderTab(v: ProfileTab) {
+      return <div className={`tab f-1${tab === v ? " active" : ""}`} key={v} onClick={() => setTab(v)}>{v}</div>
+    }
+
     return (
         <>
             <div className="profile flex">
@@ -175,9 +183,8 @@ export default function ProfilePage() {
                </div>
             </div>
             <div className="tabs">
-                {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Muted].map(v => {
-                    return <div className={`tab f-1${tab === v ? " active" : ""}`} key={v} onClick={() => setTab(v)}>{v}</div>
-                })}
+                {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Muted].map(renderTab)}
+                {isMe && renderTab(ProfileTab.Blocked)}
             </div>
             {tabContent()}
         </>
