@@ -29,7 +29,7 @@ export default function Layout() {
     const pub = useEventPublisher();
     useLoginFeed();
 
-    useMemo(() => {
+    useEffect(() => {
         System.nip42Auth = pub.nip42Auth
     },[pub])
 
