@@ -57,6 +57,13 @@ export default function Note(props: NoteProps) {
         }
     }
 
+    const scrollToNote= () => {
+        const element = document.getElementById(ev.Id);
+        if (element) {
+          element.scrollIntoView();
+        }
+      };
+
     function replyTag() {
         if (ev.Thread === null) {
             return null;
@@ -114,8 +121,10 @@ export default function Note(props: NoteProps) {
         )
     }
 
+    if (highlight) scrollToNote();
+
     return (
-        <div className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
+        <div id={ev.Id} className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
             {content()}
         </div>
     )
