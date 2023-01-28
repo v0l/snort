@@ -14,7 +14,7 @@ declare global {
         nostr: {
             getPublicKey: () => Promise<HexKey>,
             signEvent: (event: RawEvent) => Promise<RawEvent>,
-            getRelays: () => Promise<[[string, { read: boolean, write: boolean }]]>,
+            getRelays: () => Promise<Record<string, { read: boolean, write: boolean }>>,
             nip04: {
                 encrypt: (pubkey: HexKey, content: string) => Promise<string>,
                 decrypt: (pubkey: HexKey, content: string) => Promise<string>
@@ -72,12 +72,22 @@ export default function useEventPublisher() {
             return match;
         }
         const content = msg.replace(/@npub[a-z0-9]+/g, replaceNpub)
-          .replace(/note[a-z0-9]+/g, replaceNoteId)
-          .replace(HashtagRegex, replaceHashtag);
+            .replace(/note[a-z0-9]+/g, replaceNoteId)
+            .replace(HashtagRegex, replaceHashtag);
         ev.Content = content;
     }
 
     return {
+        nip42Auth: async (challenge: string, relay:string) => {
+            if(pubKey) {
+                const ev = NEvent.ForPubKey(pubKey);
+                ev.Kind = EventKind.Auth;
+                ev.Content = "";
+                ev.Tags.push(new Tag(["relay", relay], 0));
+                ev.Tags.push(new Tag(["challenge", challenge], 1));
+                return await signEvent(ev);
+            }
+        },
         broadcast: (ev: NEvent | undefined) => {
             if (ev) {
                 console.debug("Sending event: ", ev);
@@ -90,8 +100,8 @@ export default function useEventPublisher() {
          * When they open the site again we wont see that updated relay list and so it will appear to reset back to the previous state
          */
         broadcastForBootstrap: (ev: NEvent | undefined) => {
-            if(ev) {
-                for(let [k, _] of DefaultRelays) {
+            if (ev) {
+                for (let [k, _] of DefaultRelays) {
                     System.WriteOnceToRelay(k, ev);
                 }
             }
@@ -205,6 +215,9 @@ export default function useEventPublisher() {
                     temp.add(pkAdd);
                 }
                 for (let pk of temp) {
+                    if (pk.length !== 64) {
+                        continue;
+                    }
                     ev.Tags.push(new Tag(["p", pk], ev.Tags.length));
                 }
 
@@ -217,7 +230,7 @@ export default function useEventPublisher() {
                 ev.Kind = EventKind.ContactList;
                 ev.Content = JSON.stringify(relays);
                 for (let pk of follows) {
-                    if (pk === pkRemove) {
+                    if (pk === pkRemove || pk.length !== 64) {
                         continue;
                     }
                     ev.Tags.push(new Tag(["p", pk], ev.Tags.length));

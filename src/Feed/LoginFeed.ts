@@ -7,12 +7,14 @@ import EventKind from "Nostr/EventKind";
 import Event from "Nostr/Event";
 import { Subscriptions } from "Nostr/Subscriptions";
 import { addDirectMessage, setFollows, setRelays, setMuted, setBlocked, sendNotification } from "State/Login";
-import type { RootState } from "State/Store";
-import { db } from "Db";
-import { barierNip07 } from "Feed/EventPublisher";
+import { RootState } from "State/Store";
+import { mapEventToProfile, MetadataCache  } from "State/Users";
+import { getDb } from "State/Users/Db";
 import useSubscription from "Feed/Subscription";
+import { getDisplayName } from "Element/ProfileImage";
+import { barierNip07 } from "Feed/EventPublisher";
 import { getMutedKeys, getNewest } from "Feed/MuteList";
-import { mapEventToProfile, MetadataCache } from "Db/User";
+import { MentionRegex } from "Const";
 import useModeration from "Hooks/useModeration";
 
 /**
@@ -105,9 +107,10 @@ export default function useLoginFeed() {
                 return acc;
             }, { created: 0, profile: null as MetadataCache | null });
             if (maxProfile.profile) {
-                let existing = await db.users.get(maxProfile.profile.pubkey);
+                const db = getDb()
+                let existing = await db.find(maxProfile.profile.pubkey);
                 if ((existing?.created ?? 0) < maxProfile.created) {
-                    await db.users.put(maxProfile.profile);
+                    await db.put(maxProfile.profile);
                 }
             }
         })().catch(console.warn);
@@ -151,6 +154,7 @@ export default function useLoginFeed() {
         dispatch(addDirectMessage(dms));
     }, [dispatch, dmsFeed.store]);
 }
+
 
 async function decryptBlocked(raw: TaggedRawEvent, pubKey: HexKey, privKey?: HexKey) {
   const ev = new Event(raw)

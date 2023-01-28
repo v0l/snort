@@ -130,8 +130,7 @@ button:disabled {
 }
 
 .light button:disabled {
-  color: var(--font-secondary-color);
-  border-color: var(--font-secondary-color);
+  color: var(--font-color);
 }
 
 button:hover {
@@ -166,6 +165,17 @@ button.transparent:hover {
 
 .light button.secondary:hover {
   background-color: var(--gray-secondary);
+}
+
+button.icon {
+  border: none;
+  background: none;
+  color: var(--font-color);
+}
+
+button.icon:hover {
+  color: white;
+  background: var(--highlight);
 }
 
 .btn {
@@ -393,8 +403,33 @@ body.scroll-lock {
   margin-bottom: 10px;
 }
 
+.mb20 {
+  margin-bottom: 20px;
+}
+
 .mr-auto {
   margin-right: auto;
+}
+
+.tabs {
+  display: flex;
+  align-content: center;
+  text-align: center;
+  margin: 10px 0;
+  overflow-x: auto;
+}
+
+.tabs>div {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.tabs>div:last-child {
+  margin: 0;
+}
+
+.tabs .active {
+  font-weight: 700;
 }
 
 .error {
@@ -410,25 +445,10 @@ body.scroll-lock {
 }
 
 .tabs {
-  display: flex;
-  align-content: center;
-  text-align: center;
-  margin-top: 10px;
-  overflow-x: auto;
+  padding: 0;
+  align-items: center;
+  justify-content: flex-start;
   margin-bottom: 16px;
-}
-
-.tabs > * {
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.tabs > *:last-child {
-  margin: 0;
-}
-
-.tabs .active {
-  font-weight: 700;
 }
 
 .tab {

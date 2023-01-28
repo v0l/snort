@@ -63,7 +63,7 @@ export default function Relay(props: RelayProps) {
                             <FontAwesomeIcon icon={faPlugCircleXmark} /> {state?.disconnects}
                         </div>
                         <div>
-                            <span className="icon-btn" onClick={() => navigate(name)}>
+                            <span className="icon-btn" onClick={() => navigate(state!.id)}>
                                 <FontAwesomeIcon icon={faGear} />
                             </span>
                         </div>

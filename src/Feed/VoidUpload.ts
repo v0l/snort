@@ -1,4 +1,5 @@
 import * as secp from "@noble/secp256k1";
+import { VoidCatHost } from "Const";
 
 /**
  * Upload file to void.cat
@@ -8,7 +9,7 @@ export default async function VoidUpload(file: File | Blob, filename: string) {
     const buf = await file.arrayBuffer();
     const digest = await crypto.subtle.digest("SHA-256", buf);
 
-    let req = await fetch(`https://void.cat/upload`, {
+    let req = await fetch(`${VoidCatHost}/upload`, {
         mode: "cors",
         method: "POST",
         body: buf,
@@ -17,7 +18,8 @@ export default async function VoidUpload(file: File | Blob, filename: string) {
             "V-Content-Type": file.type,
             "V-Filename": filename,
             "V-Full-Digest": secp.utils.bytesToHex(new Uint8Array(digest)),
-            "V-Description": "Upload from https://snort.social"
+            "V-Description": "Upload from https://snort.social",
+            "V-Strip-Metadata": "true"
         }
     });
 

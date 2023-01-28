@@ -181,6 +181,12 @@
 .light .note.active>.footer>.reaction-pill.reacted {
   color: var(--highlight);
 }
+.note-expand .body {
+  max-height: 300px;
+  overflow-y: hidden;
+  mask-image: linear-gradient(to bottom, var(--note-bg) 60%, rgba(0,0,0,0));
+  -webkit-mask-image: linear-gradient(to bottom, var(--note-bg) 60%, rgba(0,0,0,0));
+}
 
 .hidden-note .header {
   display: flex;

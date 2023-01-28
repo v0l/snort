@@ -14,6 +14,7 @@ const Developers = [
 const Contributors = [
     bech32ToHex("npub10djxr5pvdu97rjkde7tgcsjxzpdzmdguwacfjwlchvj7t88dl7nsdl54nf"), // ivan
     bech32ToHex("npub148jmlutaa49y5wl5mcll003ftj59v79vf7wuv3apcwpf75hx22vs7kk9ay"), // liran cohen
+    bech32ToHex("npub1xdtducdnjerex88gkg2qk2atsdlqsyxqaag4h05jmcpyspqt30wscmntxy"), // artur
 ];
 
 interface Splits {
@@ -21,18 +22,28 @@ interface Splits {
     split: number
 }
 
+interface TotalToday {
+    donations: number,
+    nip5: number
+}
+
 const DonatePage = () => {
     const [splits, setSplits] = useState<Splits[]>([]);
+    const [today, setSumToday] = useState<TotalToday>();
 
-    async function loadSplits() {
+    async function loadData() {
         let rsp = await fetch(`${ApiHost}/api/v1/revenue/splits`);
         if(rsp.ok) {
             setSplits(await rsp.json());
         }
+        let rsp2 = await fetch(`${ApiHost}/api/v1/revenue/today`);
+        if(rsp2.ok) {
+            setSumToday(await rsp2.json());
+        }
     }
 
     useEffect(() => {
-        loadSplits().catch(console.warn);
+        loadData().catch(console.warn);
     }, []);
 
     function actions(pk: HexKey) {
@@ -62,6 +73,7 @@ const DonatePage = () => {
                 <div className="mr10">Lightning Donation: </div>
                 <ZapButton svc={"donate@snort.social"} />
             </div>
+            {today && (<small>Total today (UTC): {today.donations.toLocaleString()} sats</small>)}
             <h3>Primary Developers</h3>
             {Developers.map(a => <ProfilePreview pubkey={a} key={a} actions={actions(a)} />)}
             <h4>Contributors</h4>

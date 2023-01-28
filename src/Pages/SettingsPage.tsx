@@ -30,7 +30,7 @@ export const SettingsRoutes: RouteObject[] = [
         element: <Relay />,
     },
     {
-        path: "relays/:addr",
+        path: "relays/:id",
         element: <RelayInfo />
     },
     {

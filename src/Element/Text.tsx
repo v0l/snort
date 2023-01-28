@@ -1,22 +1,24 @@
 import './Text.css'
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import { visit, SKIP } from "unist-util-visit";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
-import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex, TidalRegex, SoundCloudRegex } from "Const";
+import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex, TidalRegex, SoundCloudRegex, MixCloudRegex } from "Const";
 import { eventLink, hexToBech32 } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 
 import Tag from "Nostr/Tag";
-import { MetadataCache } from "Db/User";
+import { MetadataCache } from "State/Users";
 import Mention from "Element/Mention";
 import TidalEmbed from "Element/TidalEmbed";
 import { useSelector } from 'react-redux';
 import { RootState } from 'State/Store';
 import { UserPreferences } from 'State/Login';
 import  SoundCloudEmbed from 'Element/SoundCloudEmded'
+import MixCloudEmbed from './MixCloudEmbed';
 
 function transformHttpLink(a: string, pref: UserPreferences) {
     try {
@@ -28,6 +30,7 @@ function transformHttpLink(a: string, pref: UserPreferences) {
         const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
         const tidalId = TidalRegex.test(a) && RegExp.$1;
         const soundcloundId = SoundCloudRegex.test(a) && RegExp.$1;
+        const mixcloudId = MixCloudRegex.test(a) && RegExp.$1;
         const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
         if (extension) {
             switch (extension) {
@@ -38,6 +41,11 @@ function transformHttpLink(a: string, pref: UserPreferences) {
                 case "bmp":
                 case "webp": {
                     return <img key={url.toString()} src={url.toString()} />;
+                }
+                case "wav":
+                case "mp3":
+                case "ogg": {
+                    return <audio key={url.toString()} src={url.toString()} controls />
                 }
                 case "mp4":
                 case "mov":
@@ -75,6 +83,8 @@ function transformHttpLink(a: string, pref: UserPreferences) {
             return <TidalEmbed link={a} />
         } else if (soundcloundId){
             return <SoundCloudEmbed link={a} />
+        } else if (mixcloudId){
+            return <MixCloudEmbed link={a} />
         } else {
             return <a href={a} onClick={(e) => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">{a}</a>
         }
@@ -207,5 +217,26 @@ export default function Text({ content, tags, users }: TextProps) {
             li: (x: any) => transformLi({ body: x.children ?? [], tags, users, pref }),
         };
     }, [content]);
-    return <ReactMarkdown className="text" components={components}>{content}</ReactMarkdown>
+    const disableMarkdownLinks = useCallback(() => (tree: any) => {
+        visit(tree, (node, index, parent) => {
+            if (
+                parent &&
+                typeof index === 'number' &&
+                (node.type === 'link' ||
+                  node.type === 'linkReference' ||
+                  node.type === 'image' ||
+                  node.type === 'imageReference' ||
+                  node.type === 'definition')
+            ) {
+                  node.type = 'text';
+                  node.value = content.slice(node.position.start.offset, node.position.end.offset).replace(/\)$/, ' )');
+                  return SKIP;
+            }
+        })
+    }, [content]);
+    return <ReactMarkdown
+        className="text"
+        components={components}
+        remarkPlugins={[disableMarkdownLinks]}
+    >{content}</ReactMarkdown>
 }

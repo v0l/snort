@@ -31,14 +31,21 @@ export default function NewUserPage() {
         setError("");
         try {
             let rsp = await fetch(`${TwitterFollowsApi}?username=${twitterUsername}`);
+            let data = await rsp.json();
             if (rsp.ok) {
-                setFollows(await rsp.json());
+                if (Array.isArray(data) && data.length === 0) {
+                    setError(`No nostr users found for "${twitterUsername}"`);
+                } else {
+                    setFollows(data);
+                }
+            } else if ("error" in data) {
+                setError(data.error);
             } else {
-                setError("Failed to load follows, is your profile public?");
+                setError("Failed to load follows, please try again later");
             }
         } catch (e) {
             console.warn(e);
-            setError("Failed to load follows, is your profile public?");
+            setError("Failed to load follows, please try again later");
         }
     }
 

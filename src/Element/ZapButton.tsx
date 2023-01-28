@@ -2,12 +2,13 @@ import "./ZapButton.css";
 import { faBolt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import useProfile from "Feed/ProfileFeed";
+import { useUserProfile } from "Feed/ProfileFeed";
 import { HexKey } from "Nostr";
 import LNURLTip from "Element/LNURLTip";
 
+
 const ZapButton = ({ pubkey, svc }: { pubkey?: HexKey, svc?: string }) => {
-    const profile = useProfile(pubkey)?.get(pubkey ?? "");
+    const profile = useUserProfile(pubkey!)
     const [zap, setZap] = useState(false);
     const service = svc ?? (profile?.lud16 || profile?.lud06);
 

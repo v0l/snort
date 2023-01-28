@@ -6,7 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import Link from "Icons/Link";
 import Zap from "Icons/Zap";
-import useProfile from "Feed/ProfileFeed";
+import Envelope from "Icons/Envelope";
+import { useUserProfile } from "Feed/ProfileFeed";
 import FollowButton from "Element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
@@ -38,7 +39,7 @@ export default function ProfilePage() {
     const params = useParams();
     const navigate = useNavigate();
     const id = useMemo(() => parseId(params.id!), [params]);
-    const user = useProfile(id)?.get(id);
+    const user = useUserProfile(id);
     const loggedOut = useSelector<RootState, boolean | undefined>(s => s.login.loggedOut);
     const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
@@ -79,16 +80,6 @@ export default function ProfilePage() {
                  </div>
              )}
 
-             {lnurl && (
-                 <div className="ln-address" onClick={(e) => setShowLnQr(true)}>
-                     <span className="link-icon">
-                       <Zap />
-                     </span>
-                     <span className="lnurl f-ellipsis" >
-                         {lnurl}
-                     </span>
-                 </div>
-             )}
             <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
          </div>
       )
@@ -154,14 +145,27 @@ export default function ProfilePage() {
                       </button>
                     </>
                   ) : (
-                    !loggedOut && (
-                      <>
-                        <button type="button" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
-                           Message
-                        </button>
-                        <FollowButton pubkey={id} />
-                      </>
-                    )
+                    <>
+                      <button
+                        className="icon"
+                        type="button"
+                        onClick={() => setShowLnQr(true)}
+                      >
+                         <Zap width={14} height={16} />
+                      </button>
+                      {!loggedOut && (
+                        <>
+                          <button
+                            className="icon"
+                            type="button"
+                            onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}
+                          >
+                             <Envelope width={16} height={13} />
+                          </button>
+                          <FollowButton pubkey={id} />
+                        </>
+                      )}
+                    </>
                   )}
                 </div>
                 {bio()}

@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import useProfile from "Feed/ProfileFeed";
+import { useUserProfile } from "Feed/ProfileFeed";
 import { HexKey } from "Nostr";
 import { hexToBech32, profileLink } from "Util";
 
 export default function Mention({ pubkey }: { pubkey: HexKey }) {
-    const user = useProfile(pubkey)?.get(pubkey);
+    const user = useUserProfile(pubkey)
 
     const name = useMemo(() => {
         let name = hexToBech32("npub", pubkey).substring(0, 12);

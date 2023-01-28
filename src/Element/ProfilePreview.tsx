@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 import ProfileImage from "Element/ProfileImage";
 import FollowButton from "Element/FollowButton";
-import useProfile from "Feed/ProfileFeed";
+import { useUserProfile } from "Feed/ProfileFeed";
 import { HexKey } from "Nostr";
 import { useInView } from "react-intersection-observer";
 
@@ -12,11 +12,12 @@ export interface ProfilePreviewProps {
     options?: {
         about?: boolean
     },
-    actions?: ReactNode
+    actions?: ReactNode,
+    className?: string
 }
 export default function ProfilePreview(props: ProfilePreviewProps) {
     const pubkey = props.pubkey;
-    const user = useProfile(pubkey)?.get(pubkey);
+    const user = useUserProfile(pubkey);
     const { ref, inView } = useInView({ triggerOnce: true });
     const options = {
         about: true,
@@ -24,7 +25,7 @@ export default function ProfilePreview(props: ProfilePreviewProps) {
     };
 
     return (
-        <div className="profile-preview" ref={ref}>
+        <div className={`profile-preview${props.className ? ` ${props.className}` : ""}`} ref={ref}>
             {inView && <>
                 <ProfileImage pubkey={pubkey} subHeader=
                     {options.about ? <div className="f-ellipsis about">

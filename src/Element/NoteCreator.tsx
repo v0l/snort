@@ -8,7 +8,7 @@ import Plus from "Icons/Plus";
 import useEventPublisher from "Feed/EventPublisher";
 import { openFile } from "Util";
 import VoidUpload from "Feed/VoidUpload";
-import { FileExtensionRegex } from "Const";
+import { FileExtensionRegex, VoidCatHost } from "Const";
 import Textarea from "Element/Textarea";
 import Modal from "Element/Modal";
 import { default as NEvent } from "Nostr/Event";
@@ -52,7 +52,7 @@ export function NoteCreator(props: NoteCreatorProps) {
                     let ext = file.name.match(FileExtensionRegex);
 
                     // extension tricks note parser to embed the content
-                    let url = rx.file.meta?.url ?? `https://void.cat/d/${rx.file.id}${ext ? `.${ext[1]}` : ""}`;
+                    let url = rx.file.meta?.url ?? `${VoidCatHost}/d/${rx.file.id}${ext ? `.${ext[1]}` : ""}`;
 
                     setNote(n => `${n}\n${url}`);
                 } else if (rx?.errorMessage) {

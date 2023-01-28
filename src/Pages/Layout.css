@@ -42,3 +42,15 @@ header .pfp .avatar-wrapper {
   top: 0;
   right: 0;
 }
+
+.search {
+  margin: 0 10px 0 10px;
+}
+
+.search input {
+  margin: 0 5px 0 5px;
+}
+
+.search .btn {
+  display: none;
+}

@@ -13,7 +13,7 @@ export interface TimelineFeedOptions {
 }
 
 export interface TimelineSubject {
-    type: "pubkey" | "hashtag" | "global" | "ptag",
+    type: "pubkey" | "hashtag" | "global" | "ptag" | "keyword",
     items: string[]
 }
 
@@ -47,6 +47,11 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 sub.PTags = new Set(subject.items);
                 break;
             }
+            case "keyword": {
+                sub.Kinds.add(EventKind.SetMetadata);
+                sub.Search = subject.items[0];
+                break;
+            }
         }
         return sub;
     }, [subject.type, subject.items]);
@@ -72,6 +77,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 latestSub.Authors = sub.Authors;
                 latestSub.HashTags = sub.HashTags;
                 latestSub.Kinds = sub.Kinds;
+                latestSub.Search = sub.Search;
                 latestSub.Limit = 1;
                 latestSub.Since = Math.floor(new Date().getTime() / 1000);
                 sub.AddSubscription(latestSub);
@@ -123,7 +129,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         if (main.store.notes.length > 0) {
             setTrackingEvent(s => {
                 let ids = main.store.notes.map(a => a.id);
-                if(ids.some(a => !s.includes(a))) {
+                if (ids.some(a => !s.includes(a))) {
                     return Array.from(new Set([...s, ...ids]));
                 }
                 return s;

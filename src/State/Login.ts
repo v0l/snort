@@ -9,6 +9,8 @@ const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
 const NotificationsReadItem = "notifications-read";
 const UserPreferencesKey = "preferences";
+const RelayListKey = "last-relays";
+const FollowList = "last-follows";
 
 export interface NotificationRequest {
   title: string
@@ -46,7 +48,7 @@ export interface UserPreferences {
     /**
      * Show debugging menus to help diagnose issues
      */
-     showDebugMenus: boolean
+    showDebugMenus: boolean
 }
 
 export interface LoginStore {
@@ -142,7 +144,7 @@ const InitState = {
     dms: [],
     dmInteraction: 0,
     preferences: {
-        enableReactions: false,
+        enableReactions: true,
         autoLoadMedia: true,
         theme: "system",
         confirmReposts: false,
@@ -175,13 +177,23 @@ const LoginSlice = createSlice({
                 state.loggedOut = true;
             }
 
-            state.relays = Object.fromEntries(DefaultRelays.entries());
-
             // check pub key only
             let pubKey = window.localStorage.getItem(PublicKeyItem);
             if (pubKey && !state.privateKey) {
                 state.publicKey = pubKey;
                 state.loggedOut = false;
+            }
+
+            let lastRelayList = window.localStorage.getItem(RelayListKey);
+            if (lastRelayList) {
+                state.relays = JSON.parse(lastRelayList);
+            } else {
+                state.relays = Object.fromEntries(DefaultRelays.entries());
+            }
+
+            let lastFollows = window.localStorage.getItem(FollowList);
+            if (lastFollows) {
+                state.follows = JSON.parse(lastFollows);
             }
 
             // notifications
@@ -224,10 +236,12 @@ const LoginSlice = createSlice({
 
             state.relays = Object.fromEntries(filtered.entries());
             state.latestRelays = createdAt;
+            window.localStorage.setItem(RelayListKey, JSON.stringify(state.relays));
         },
         removeRelay: (state, action: PayloadAction<string>) => {
             delete state.relays[action.payload];
             state.relays = { ...state.relays };
+            window.localStorage.setItem(RelayListKey, JSON.stringify(state.relays));
         },
         setFollows: (state, action: PayloadAction<SetFollowsPayload>) => {
             const { keys, createdAt } = action.payload
@@ -239,16 +253,25 @@ const LoginSlice = createSlice({
             let update = Array.isArray(keys) ? keys : [keys];
 
             let changes = false;
-            for (let pk of update) {
+            for (let pk of update.filter(a => a.length === 64)) {
                 if (!existing.has(pk)) {
                     existing.add(pk);
                     changes = true;
                 }
             }
+            for (let pk of existing) {
+                if (!update.includes(pk)) {
+                    existing.delete(pk);
+                    changes = true;
+                }
+            }
+
             if (changes) {
                 state.follows = Array.from(existing);
                 state.latestFollows = createdAt;
             }
+
+            window.localStorage.setItem(FollowList, JSON.stringify(state.follows));
         },
         setMuted(state, action: PayloadAction<{createdAt: number, keys: HexKey[]}>) {
           const { createdAt, keys } = action.payload
@@ -290,10 +313,10 @@ const LoginSlice = createSlice({
             state.dmInteraction += 1;
         },
         logout: (state) => {
-            window.localStorage.clear();
             Object.assign(state, InitState);
             state.loggedOut = true;
             state.relays = Object.fromEntries(DefaultRelays.entries());
+            window.localStorage.clear();
         },
         markNotificationsRead: (state) => {
             state.readNotifications = new Date().getTime();

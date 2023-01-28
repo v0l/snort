@@ -47,6 +47,11 @@ export class Subscriptions {
      */
     DTag?: string;
 
+    /**
+     * A list of search terms
+     */
+    Search?: string;
+
     /** 
      * a timestamp, events must be newer than this to pass
      */
@@ -95,6 +100,7 @@ export class Subscriptions {
         this.ETags = sub?.["#e"] ? new Set(sub["#e"]) : undefined;
         this.PTags = sub?.["#p"] ? new Set(sub["#p"]) : undefined;
         this.DTag = sub?.["#d"] ? sub["#d"] : undefined;
+        this.Search = sub?.search ?? undefined;
         this.Since = sub?.since ?? undefined;
         this.Until = sub?.until ?? undefined;
         this.Limit = sub?.limit ?? undefined;
@@ -141,6 +147,9 @@ export class Subscriptions {
         }
         if (this.DTag) {
             ret["#d"] = this.DTag;
+        }
+        if (this.Search) {
+            ret.search = this.Search;
         }
         if (this.Since !== null) {
             ret.since = this.Since;

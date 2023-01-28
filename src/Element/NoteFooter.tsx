@@ -14,7 +14,7 @@ import useEventPublisher from "Feed/EventPublisher";
 import { getReactions, hexToBech32, normalizeReaction, Reaction } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import LNURLTip from "Element/LNURLTip";
-import useProfile from "Feed/ProfileFeed";
+import { useUserProfile } from "Feed/ProfileFeed";
 import { default as NEvent } from "Nostr/Event";
 import { RootState } from "State/Store";
 import { HexKey, TaggedRawEvent } from "Nostr";
@@ -33,7 +33,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const login = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
   const { mute, block } = useModeration();
   const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
-  const author = useProfile(ev.RootPubKey)?.get(ev.RootPubKey);
+  const author = useUserProfile(ev.RootPubKey);
   const publisher = useEventPublisher();
   const [reply, setReply] = useState(false);
   const [tip, setTip] = useState(false);

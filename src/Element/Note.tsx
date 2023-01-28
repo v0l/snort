@@ -1,15 +1,16 @@
 import "./Note.css";
-import { useCallback, useMemo, useState, ReactNode } from "react";
+import { useCallback, useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import { default as NEvent } from "Nostr/Event";
 import ProfileImage from "Element/ProfileImage";
 import Text from "Element/Text";
+
 import { eventLink, getReactions, hexToBech32 } from "Util";
 import NoteFooter from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import EventKind from "Nostr/EventKind";
-import useProfile from "Feed/ProfileFeed";
+import { useUserProfiles } from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "Nostr";
 import { useInView } from "react-intersection-observer";
 import useModeration from "Hooks/useModeration";
@@ -50,11 +51,13 @@ export default function Note(props: NoteProps) {
     const { data, isThread, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false} = props
     const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
-    const users = useProfile(pubKeys);
+    const users = useUserProfiles(pubKeys);
     const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
     const { isMuted } = useModeration()
     const isOpMuted = isMuted(ev.PubKey)
-    const { ref, inView } = useInView({ triggerOnce: true });
+    const { ref, inView, entry } = useInView({ triggerOnce: true });
+    const [extendable, setExtendable] = useState<boolean>(false);
+    const [showMore, setShowMore] = useState<boolean>(false);
 
     const options = {
         showHeader: true,
@@ -70,6 +73,15 @@ export default function Note(props: NoteProps) {
         }
         return <Text content={body} tags={ev.Tags} users={users || new Map()} />;
     }, [ev]);
+
+    useLayoutEffect(() => {
+        if (entry && inView && extendable === false) {
+            let h = entry?.target.clientHeight ?? 0;
+            if (h > 650) {
+                setExtendable(true);
+            }
+        }
+    }, [inView, entry, extendable]);
 
     function goToEvent(e: any, id: u256) {
         if (!window.location.pathname.startsWith("/e/")) {
@@ -128,14 +140,14 @@ export default function Note(props: NoteProps) {
         const others = mentions.length > maxMentions ? ` & ${othersLength} other${othersLength > 1 ? 's' : ''}` : ''
         return (
             <div className="reply">
-             {(mentions?.length ?? 0) > 0 ? (
-               <>
-                 {pubMentions}
-                 {others}
-               </>
-             ) : replyId ? (
-                hexToBech32("note", replyId)?.substring(0, 12) // todo: link
-             ) : ""}
+              {(mentions?.length ?? 0) > 0 ? (
+                <>
+                  {pubMentions}
+                  {others}
+                </>
+              ) : replyId ? (
+                 hexToBech32("note", replyId)?.substring(0, 12) // todo: link
+              ) : ""}
             </div>
         )
     }
@@ -166,13 +178,16 @@ export default function Note(props: NoteProps) {
                 <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
                     {transformBody()}
                 </div>
+                {extendable && !showMore && (<div className="flex f-center">
+                    <button className="btn mt10" onClick={() => setShowMore(true)}>Show more</button>
+                </div>)}
                 {options.showFooter ? <NoteFooter ev={ev} related={related} /> : null}
             </>
         )
     }
 
     const note =  (
-      <div className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}`} ref={ref}>
+      <div className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}${extendable && !showMore ? " note-expand" : ""}`} ref={ref}>
           {content()}
       </div>
     )

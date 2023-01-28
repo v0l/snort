@@ -8,19 +8,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShop } from "@fortawesome/free-solid-svg-icons";
 
 import useEventPublisher from "Feed/EventPublisher";
-import useProfile from "Feed/ProfileFeed";
+import { useUserProfile } from "Feed/ProfileFeed";
 import VoidUpload from "Feed/VoidUpload";
 import LogoutButton from "Element/LogoutButton";
 import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
+import { VoidCatHost } from "Const";
 
 export default function ProfileSettings() {
     const navigate = useNavigate();
     const id = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const privKey = useSelector<RootState, HexKey | undefined>(s => s.login.privateKey);
-    const user = useProfile(id)?.get(id || "");
+    const user = useUserProfile(id!);
     const publisher = useEventPublisher();
 
     const [name, setName] = useState<string>();
@@ -63,6 +64,7 @@ export default function ProfileSettings() {
         delete userCopy["loaded"];
         delete userCopy["created"];
         delete userCopy["pubkey"];
+        delete userCopy["npub"];
         console.debug(userCopy);
 
         let ev = await publisher.metadata(userCopy);
@@ -85,14 +87,14 @@ export default function ProfileSettings() {
     async function setNewAvatar() {
         const rsp = await uploadFile();
         if (rsp) {
-            setPicture(rsp.meta?.url ?? `https://void.cat/d/${rsp.id}`);
+            setPicture(rsp.meta?.url ?? `${VoidCatHost}/d/${rsp.id}`);
         }
     }
 
     async function setNewBanner() {
         const rsp = await uploadFile();
         if (rsp) {
-            setBanner(rsp.meta?.url ?? `https://void.cat/d/${rsp.id}`);
+            setBanner(rsp.meta?.url ?? `${VoidCatHost}/d/${rsp.id}`);
         }
     }
 

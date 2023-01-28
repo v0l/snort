@@ -10,6 +10,7 @@ import LoadMore from "Element/LoadMore";
 import Note from "Element/Note";
 import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
+import ProfilePreview from "./ProfilePreview";
 
 export interface TimelineProps {
     postsOnly: boolean,
@@ -41,6 +42,9 @@ export default function Timeline({ subject, postsOnly = false, method, ignoreMod
 
     function eventElement(e: TaggedRawEvent) {
         switch (e.kind) {
+            case EventKind.SetMetadata: {
+                return <ProfilePreview pubkey={e.pubkey} className="card"/>
+            }
             case EventKind.TextNote: {
                 return <Note key={e.id} data={e} related={related.notes} ignoreModeration={ignoreModeration} />
             }

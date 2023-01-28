@@ -36,6 +36,7 @@ export type RawReqFilter = {
     "#p"?: u256[],
     "#t"?: string[],
     "#d"?: string,
+    search?: string,
     since?: number,
     until?: number,
     limit?: number
