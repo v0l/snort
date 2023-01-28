@@ -271,7 +271,20 @@ const LoginSlice = createSlice({
             if (!Array.isArray(n)) {
                 n = [n];
             }
-            state.dms = n;
+
+            let didChange = false;
+            for (let x of n) {
+                if (!state.dms.some(a => a.id === x.id)) {
+                    state.dms.push(x);
+                    didChange = true;
+                }
+            }
+
+            if (didChange) {
+                state.dms = [
+                    ...state.dms
+                ];
+            }
         },
         incDmInteraction: (state) => {
             state.dmInteraction += 1;
