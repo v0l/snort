@@ -48,6 +48,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 break;
             }
             case "keyword": {
+                sub.Kinds.add(EventKind.SetMetadata);
                 sub.Search = subject.items[0];
                 break;
             }

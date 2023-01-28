@@ -12,7 +12,8 @@ export interface ProfilePreviewProps {
     options?: {
         about?: boolean
     },
-    actions?: ReactNode
+    actions?: ReactNode,
+    className?: string
 }
 export default function ProfilePreview(props: ProfilePreviewProps) {
     const pubkey = props.pubkey;
@@ -24,7 +25,7 @@ export default function ProfilePreview(props: ProfilePreviewProps) {
     };
 
     return (
-        <div className="profile-preview" ref={ref}>
+        <div className={`profile-preview${props.className ? ` ${props.className}` : ""}`} ref={ref}>
             {inView && <>
                 <ProfileImage pubkey={pubkey} subHeader=
                     {options.about ? <div className="f-ellipsis about">

@@ -8,6 +8,7 @@ import Note from "Element/Note";
 import NoteReaction from "Element/NoteReaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForward } from "@fortawesome/free-solid-svg-icons";
+import ProfilePreview from "./ProfilePreview";
 
 export interface TimelineProps {
     postsOnly: boolean,
@@ -37,6 +38,9 @@ export default function Timeline({ subject, postsOnly = false, method }: Timelin
 
     function eventElement(e: TaggedRawEvent) {
         switch (e.kind) {
+            case EventKind.SetMetadata: {
+                return <ProfilePreview pubkey={e.pubkey} className="card"/>
+            }
             case EventKind.TextNote: {
                 return <Note key={e.id} data={e} related={related.notes} />
             }
