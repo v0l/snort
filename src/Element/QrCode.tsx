@@ -27,6 +27,9 @@ export default function QrCode(props: QrCodeProps) {
                 },
                 cornersSquareOptions: {
                     type: 'extra-rounded'
+                },
+                imageOptions: {
+                    crossOrigin: "anonymous"
                 }
             });
             qrRef.current.innerHTML = "";
