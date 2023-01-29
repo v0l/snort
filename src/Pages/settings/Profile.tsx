@@ -2,14 +2,15 @@ import "./Profile.css";
 import Nostrich from "nostrich.jpg";
 
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShop } from "@fortawesome/free-solid-svg-icons";
 
 import useEventPublisher from "Feed/EventPublisher";
 import { useUserProfile } from "Feed/ProfileFeed";
-import { logout } from "State/Login";
+import VoidUpload from "Feed/VoidUpload";
+import LogoutButton from "Element/LogoutButton";
 import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
@@ -20,7 +21,6 @@ export default function ProfileSettings() {
     const navigate = useNavigate();
     const id = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const privKey = useSelector<RootState, HexKey | undefined>(s => s.login.privateKey);
-    const dispatch = useDispatch();
     const user = useUserProfile(id!);
     const publisher = useEventPublisher();
     const uploader = useFileUpload();
@@ -130,11 +130,11 @@ export default function ProfileSettings() {
                     <div>NIP-05:</div>
                     <div>
                         <input type="text" className="mr10" value={nip05} onChange={(e) => setNip05(e.target.value)} />
-                        <div className="btn" onClick={() => navigate("/verification")}>
+                        <button type="button" onClick={() => navigate("/verification")}>
                             <FontAwesomeIcon icon={faShop} />
                             &nbsp;
                             Buy
-                        </div>
+                        </button>
                     </div>
                 </div>
                 <div className="form-group">
@@ -145,10 +145,10 @@ export default function ProfileSettings() {
                 </div>
                 <div className="form-group">
                     <div>
-                        <div className="btn" onClick={() => { dispatch(logout()); navigate("/"); }}>Logout</div>
+                        <LogoutButton />
                     </div>
                     <div>
-                        <div className="btn" onClick={() => saveProfile()}>Save</div>
+                        <button type="button" onClick={() => saveProfile()}>Save</button>
                     </div>
                 </div>
             </div>

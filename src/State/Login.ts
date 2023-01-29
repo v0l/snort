@@ -3,6 +3,7 @@ import * as secp from '@noble/secp256k1';
 import { DefaultRelays } from 'Const';
 import { HexKey, TaggedRawEvent } from 'Nostr';
 import { RelaySettings } from 'Nostr/Connection';
+import type { AppDispatch, RootState } from "State/Store";
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
@@ -10,6 +11,13 @@ const NotificationsReadItem = "notifications-read";
 const UserPreferencesKey = "preferences";
 const RelayListKey = "last-relays";
 const FollowList = "last-follows";
+
+export interface NotificationRequest {
+  title: string
+  body: string
+  icon: string
+  timestamp: number
+}
 
 export interface UserPreferences {
     /**
@@ -80,6 +88,26 @@ export interface LoginStore {
     follows: HexKey[],
 
     /**
+     * Newest relay list timestamp
+     */
+    latestFollows: number,
+
+    /**
+     * A list of pubkeys this user has muted
+     */
+    muted: HexKey[],
+
+    /**
+     * Last seen mute list event timestamp
+     */
+    latestMuted: number,
+
+    /**
+     * A list of pubkeys this user has muted privately
+     */
+    blocked: HexKey[],
+
+    /**
      * Notifications for this login session
      */
     notifications: TaggedRawEvent[],
@@ -112,6 +140,10 @@ const InitState = {
     relays: {},
     latestRelays: 0,
     follows: [],
+    latestFollows: 0,
+    muted: [],
+    blocked: [],
+    latestMuted: 0,
     notifications: [],
     readNotifications: new Date().getTime(),
     dms: [],
@@ -129,6 +161,11 @@ const InitState = {
 
 export interface SetRelaysPayload {
     relays: Record<string, RelaySettings>,
+    createdAt: number
+};
+
+export interface SetFollowsPayload {
+    keys: HexKey[]
     createdAt: number
 };
 
@@ -212,9 +249,14 @@ const LoginSlice = createSlice({
             state.relays = { ...state.relays };
             window.localStorage.setItem(RelayListKey, JSON.stringify(state.relays));
         },
-        setFollows: (state, action: PayloadAction<HexKey | HexKey[]>) => {
+        setFollows: (state, action: PayloadAction<SetFollowsPayload>) => {
+            const { keys, createdAt } = action.payload
+            if (state.latestFollows > createdAt) {
+                return;
+            }
+
             let existing = new Set(state.follows);
-            let update = Array.isArray(action.payload) ? action.payload : [action.payload];
+            let update = Array.isArray(keys) ? keys : [keys];
 
             let changes = false;
             for (let pk of update.filter(a => a.length === 64)) {
@@ -232,28 +274,26 @@ const LoginSlice = createSlice({
 
             if (changes) {
                 state.follows = Array.from(existing);
+                state.latestFollows = createdAt;
             }
 
             window.localStorage.setItem(FollowList, JSON.stringify(state.follows));
         },
-        addNotifications: (state, action: PayloadAction<TaggedRawEvent | TaggedRawEvent[]>) => {
-            let n = action.payload;
-            if (!Array.isArray(n)) {
-                n = [n];
-            }
-
-            let didChange = false;
-            for (let x of n) {
-                if (!state.notifications.some(a => a.id === x.id)) {
-                    state.notifications.push(x);
-                    didChange = true;
-                }
-            }
-            if (didChange) {
-                state.notifications = [
-                    ...state.notifications
-                ];
-            }
+        setMuted(state, action: PayloadAction<{createdAt: number, keys: HexKey[]}>) {
+          const { createdAt, keys } = action.payload
+          if (createdAt >= state.latestMuted) {
+            const muted = new Set([...keys])
+            state.muted = Array.from(muted)
+            state.latestMuted = createdAt
+          }
+        },
+        setBlocked(state, action: PayloadAction<{createdAt: number, keys: HexKey[]}>) {
+          const { createdAt, keys } = action.payload
+          if (createdAt >= state.latestMuted) {
+            const blocked = new Set([...keys])
+            state.blocked = Array.from(blocked)
+            state.latestMuted = createdAt
+          }
         },
         addDirectMessage: (state, action: PayloadAction<TaggedRawEvent | Array<TaggedRawEvent>>) => {
             let n = action.payload;
@@ -268,6 +308,7 @@ const LoginSlice = createSlice({
                     didChange = true;
                 }
             }
+
             if (didChange) {
                 state.dms = [
                     ...state.dms
@@ -301,11 +342,36 @@ export const {
     setRelays,
     removeRelay,
     setFollows,
-    addNotifications,
+    setMuted,
+    setBlocked,
     addDirectMessage,
     incDmInteraction,
     logout,
     markNotificationsRead,
-    setPreferences
+    setPreferences,
 } = LoginSlice.actions;
+
+export function sendNotification({ title, body, icon, timestamp }: NotificationRequest) {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const state = getState()
+    const { readNotifications } = state.login
+    const hasPermission = "Notification" in window && Notification.permission === "granted" 
+    const shouldShowNotification = hasPermission && timestamp > readNotifications
+    if (shouldShowNotification) {
+      try {
+        let worker = await navigator.serviceWorker.ready;
+        worker.showNotification(title, {
+            tag: "notification",
+            vibrate: [500],
+            body,
+            icon,
+            timestamp,
+        });
+      } catch (error) {
+        console.warn(error)
+      }
+    }
+  }
+}
+
 export const reducer = LoginSlice.reducer;

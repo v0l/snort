@@ -5,12 +5,14 @@ import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { useMemo } from "react";
 import NoteTime from "Element/NoteTime";
 import LNURLTip from "Element/LNURLTip";
+import useWebln from "Hooks/useWebln";
 
 export interface InvoiceProps {
     invoice: string
 }
 export default function Invoice(props: InvoiceProps) {
     const invoice = props.invoice;
+    const webln = useWebln();
     const [showInvoice, setShowInvoice] = useState(false);
 
     const info = useMemo(() => {
@@ -55,6 +57,19 @@ export default function Invoice(props: InvoiceProps) {
         }
     }
 
+    function payInvoice(e: any) {
+      e.stopPropagation();
+      if (webln?.enabled) {
+        try {
+          webln.sendPayment(invoice);
+        } catch (error) {
+          setShowInvoice(true);
+        }
+      } else {
+        setShowInvoice(true);
+      }
+    }
+
     return (
         <>
             <div className="note-invoice flex">
@@ -63,7 +78,11 @@ export default function Invoice(props: InvoiceProps) {
                     {info?.expire ? <small>{info?.expired ? "Expired" : "Expires"} <NoteTime from={info.expire * 1000} /></small> : null}
                 </div>
 
-                {info?.expired ? <div className="btn">Expired</div> : <div className="btn" onClick={(e) => { e.stopPropagation(); setShowInvoice(true); }}>Pay</div>}
+                {info?.expired ? <div className="btn">Expired</div> : (
+                  <button type="button" onClick={payInvoice}>
+                    Pay
+                  </button>
+                )}
             </div>
 
         </>

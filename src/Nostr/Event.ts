@@ -139,26 +139,33 @@ export default class Event {
     }
 
     /**
-     * Encrypt the message content in place
+     * Encrypt the given message content
      */
-    async EncryptDmForPubkey(pubkey: HexKey, privkey: HexKey) {
+    async EncryptData(content: string, pubkey: HexKey, privkey: HexKey) {
         let key = await this._GetDmSharedKey(pubkey, privkey);
         let iv = window.crypto.getRandomValues(new Uint8Array(16));
-        let data = new TextEncoder().encode(this.Content);
+        let data = new TextEncoder().encode(content);
         let result = await window.crypto.subtle.encrypt({
             name: "AES-CBC",
             iv: iv
         }, key, data);
         let uData = new Uint8Array(result);
-        this.Content = `${base64.encode(uData, 0, result.byteLength)}?iv=${base64.encode(iv, 0, 16)}`;
+        return `${base64.encode(uData, 0, result.byteLength)}?iv=${base64.encode(iv, 0, 16)}`;
     }
 
     /**
-     * Decrypt the content of this message in place
+     * Encrypt the message content in place
      */
-    async DecryptDm(privkey: HexKey, pubkey: HexKey) {
+    async EncryptDmForPubkey(pubkey: HexKey, privkey: HexKey) {
+        this.Content = await this.EncryptData(this.Content, pubkey, privkey);
+    }
+
+    /**
+     * Decrypt the content of the message
+     */
+    async DecryptData(cyphertext: string, privkey: HexKey, pubkey: HexKey) {
         let key = await this._GetDmSharedKey(pubkey, privkey);
-        let cSplit = this.Content.split("?iv=");
+        let cSplit = cyphertext.split("?iv=");
         let data = new Uint8Array(base64.length(cSplit[0]));
         base64.decode(cSplit[0], data, 0);
 
@@ -169,7 +176,14 @@ export default class Event {
             name: "AES-CBC",
             iv: iv
         }, key, data);
-        this.Content = new TextDecoder().decode(result);
+        return new TextDecoder().decode(result);
+    }
+
+    /**
+     * Decrypt the content of this message in place
+     */
+    async DecryptDm(privkey: HexKey, pubkey: HexKey) {
+        this.Content = await this.DecryptData(this.Content, privkey, pubkey)
     }
 
     async _GetDmSharedKey(pubkey: HexKey, privkey: HexKey) {

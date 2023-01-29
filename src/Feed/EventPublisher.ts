@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
+
 import { System } from "Nostr/System";
 import { default as NEvent } from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
 import Tag from "Nostr/Tag";
 import { RootState } from "State/Store";
-import { HexKey, RawEvent, u256, UserMetadata } from "Nostr";
+import { HexKey, RawEvent, u256, UserMetadata, Lists } from "Nostr";
 import { bech32ToHex } from "Util"
 import { DefaultRelays, HashtagRegex } from "Const";
 
@@ -103,6 +104,28 @@ export default function useEventPublisher() {
                 for (let [k, _] of DefaultRelays) {
                     System.WriteOnceToRelay(k, ev);
                 }
+            }
+        },
+        muted: async (keys: HexKey[], priv: HexKey[]) => {
+            if (pubKey) {
+                let ev = NEvent.ForPubKey(pubKey);
+                ev.Kind = EventKind.Lists;
+                ev.Tags.push(new Tag(["d", Lists.Muted], ev.Tags.length))
+                keys.forEach(p => {
+                  ev.Tags.push(new Tag(["p", p], ev.Tags.length))
+                })
+                let content = ""
+                if (priv.length > 0) {
+                  const ps = priv.map(p => ["p", p])
+                  const plaintext = JSON.stringify(ps)
+                  if (hasNip07 && !privKey) {
+                      content = await barierNip07(() => window.nostr.nip04.encrypt(pubKey, plaintext));
+                  } else if (privKey) {
+                      content = await ev.EncryptData(plaintext, pubKey, privKey)
+                  }
+                }
+                ev.Content = content;
+                return await signEvent(ev);
             }
         },
         metadata: async (obj: UserMetadata) => {
@@ -292,7 +315,7 @@ const delay = (t: number) => {
     });
 }
 
-const barierNip07 = async (then: () => Promise<any>) => {
+export const barierNip07 = async (then: () => Promise<any>) => {
     while (isNip07Busy) {
         await delay(10);
     }

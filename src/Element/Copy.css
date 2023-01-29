@@ -1,15 +1,9 @@
 .copy {
-    user-select: none;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 
 .copy .body {
-    font-family: monospace;
-    font-size: 14px;
-    background: var(--note-bg);
+    font-size: var(--font-size-small);
     color: var(--font-color);
-    padding: 2px 4px;
-    border-radius: 10px;
-    margin: 0 4px 0 0;
+    margin-right: 8px;
 }

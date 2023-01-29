@@ -4,20 +4,24 @@ import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 
 import "./NoteCreator.css";
 
+import Plus from "Icons/Plus";
 import useEventPublisher from "Feed/EventPublisher";
 import { openFile } from "Util";
 import Textarea from "Element/Textarea";
+import Modal from "Element/Modal";
 import { default as NEvent } from "Nostr/Event";
 import useFileUpload from "Feed/FileUpload";
 
 export interface NoteCreatorProps {
+    show: boolean
+    setShow: (s: boolean) => void
     replyTo?: NEvent,
     onSend?: Function,
-    show: boolean,
     autoFocus: boolean
 }
 
 export function NoteCreator(props: NoteCreatorProps) {
+    const { show, setShow } = props
     const publisher = useEventPublisher();
     const [note, setNote] = useState<string>();
     const [error, setError] = useState<string>();
@@ -30,6 +34,7 @@ export function NoteCreator(props: NoteCreatorProps) {
             console.debug("Sending note: ", ev);
             publisher.broadcast(ev);
             setNote("");
+            setShow(false);
             if (typeof props.onSend === "function") {
                 props.onSend();
             }
@@ -63,14 +68,26 @@ export function NoteCreator(props: NoteCreatorProps) {
         }
     }
 
+    function cancel(ev: any) {
+      setShow(false)
+      setNote("")
+    }
+
     function onSubmit(ev: React.MouseEvent<HTMLButtonElement>) {
         ev.stopPropagation();
         sendNote().catch(console.warn);
     }
 
-    if (!props.show) return null;
     return (
         <>
+        <button className="note-create-button" type="button" onClick={() => setShow(!show)}>
+          <Plus />
+        </button>
+        {show && (
+          <Modal
+            className="note-creator-modal"
+            onClose={() => setShow(false)}
+          >
             <div className={`flex note-creator ${props.replyTo ? 'note-reply' : ''}`}>
                 <div className="flex f-col mr10 f-grow">
                     <Textarea
@@ -80,19 +97,22 @@ export function NoteCreator(props: NoteCreatorProps) {
                         value={note}
                         onFocus={() => setActive(true)}
                     />
-                    {active && note && (
-                        <div className="actions flex f-row">
-                            <div className="attachment flex f-row">
-                                {(error?.length ?? 0) > 0 ? <b className="error">{error}</b> : null}
-                                <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()} />
-                            </div>
-                            <button type="button" className="btn" onClick={onSubmit}>
-                                {props.replyTo ? 'Reply' : 'Send'}
-                            </button>
-                        </div>
-                    )}
+                <div className="attachment">
+                    {(error?.length ?? 0) > 0 ? <b className="error">{error}</b> : null}
+                    <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()} />
+                </div>
                 </div>
             </div>
+            <div className="note-creator-actions">
+                <button className="secondary" type="button" onClick={cancel}>
+                  Cancel
+                </button>
+                <button type="button" onClick={onSubmit}>
+                    {props.replyTo ? 'Reply' : 'Send'}
+                </button>
+            </div>
+          </Modal>
+        )}
         </>
     );
 }

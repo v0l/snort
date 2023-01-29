@@ -1,9 +1,14 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { faHeart, faReply, faThumbsDown, faTrash, faBolt, faRepeat, faEllipsisVertical, faShareNodes, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faRepeat, faShareNodes, faCopy, faCommentSlash, faBan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Menu, MenuItem } from '@szhsin/react-menu';
 
+import Dislike from "Icons/Dislike";
+import Heart from "Icons/Heart";
+import Dots from "Icons/Dots";
+import Zap from "Icons/Zap";
+import Reply from "Icons/Reply";
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
 import { getReactions, hexToBech32, normalizeReaction, Reaction } from "Util";
@@ -15,6 +20,7 @@ import { RootState } from "State/Store";
 import { HexKey, TaggedRawEvent } from "Nostr";
 import EventKind from "Nostr/EventKind";
 import { UserPreferences } from "State/Login";
+import useModeration from "Hooks/useModeration";
 
 export interface NoteFooterProps {
   related: TaggedRawEvent[],
@@ -25,6 +31,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { related, ev } = props;
 
   const login = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+  const { mute, block } = useModeration();
   const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
   const author = useUserProfile(ev.RootPubKey);
   const publisher = useEventPublisher();
@@ -82,7 +89,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         <>
           <div className="reaction-pill" onClick={() => setTip(true)}>
             <div className="reaction-pill-icon">
-              <FontAwesomeIcon icon={faBolt} />
+              <Zap />
             </div>
           </div>
         </>
@@ -114,7 +121,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       <>
         <div className={`reaction-pill ${hasReacted('+') ? 'reacted' : ''} `} onClick={() => react("+")}>
           <div className="reaction-pill-icon">
-            <FontAwesomeIcon icon={faHeart} />
+            <Heart />
           </div>
           <div className="reaction-pill-number">
             {formatShort(groupReactions[Reaction.Positive])}
@@ -148,14 +155,14 @@ export default function NoteFooter(props: NoteFooterProps) {
   function menuItems() {
     return (
       <>
-        {prefs.enableReactions && (<MenuItem onClick={() => react("-")}>
-          <div>
-            <FontAwesomeIcon icon={faThumbsDown} className={hasReacted('-') ? 'reacted' : ''} />
-            &nbsp;
+        {prefs.enableReactions && (
+          <MenuItem onClick={() => react("-")}>
+            <Dislike />
             {formatShort(groupReactions[Reaction.Negative])}
-          </div>
-          Dislike
-        </MenuItem>)}
+            &nbsp;
+            Dislike
+          </MenuItem>
+        )}
         <MenuItem onClick={() => share()}>
           <FontAwesomeIcon icon={faShareNodes} />
           Share
@@ -163,6 +170,14 @@ export default function NoteFooter(props: NoteFooterProps) {
         <MenuItem onClick={() => copyId()}>
           <FontAwesomeIcon icon={faCopy} />
           Copy ID
+        </MenuItem>
+        <MenuItem onClick={() => mute(ev.PubKey)}>
+          <FontAwesomeIcon icon={faCommentSlash} />
+          Mute
+        </MenuItem>
+        <MenuItem onClick={() => block(ev.PubKey)}>
+          <FontAwesomeIcon icon={faBan} />
+          Block
         </MenuItem>
         {prefs.showDebugMenus && (
           <MenuItem onClick={() => copyEvent()}>
@@ -181,33 +196,33 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   return (
-    <>
-      <div className="footer">
-        { login && (
-          <div className={`reaction-pill ${reply ? 'reacted' : ''}`} onClick={(e) => setReply(s => !s)}>
-            <div className="reaction-pill-icon">
-              <FontAwesomeIcon icon={faReply} />
-            </div>
-          </div>
-        )}
-        <Menu menuButton={<div className="reaction-pill">
+    <div className="footer">
+      <div className="footer-reactions">
+        {tipButton()}
+        {reactionIcons()}
+        <div className={`reaction-pill ${reply ? 'reacted' : ''}`} onClick={(e) => setReply(s => !s)}>
           <div className="reaction-pill-icon">
-            <FontAwesomeIcon icon={faEllipsisVertical} />
+            <Reply />
           </div>
-        </div>} menuClassName="ctx-menu">
+        </div>
+        <Menu menuButton={<div className="reaction-pill">
+            <div className="reaction-pill-icon">
+              <Dots />
+            </div>
+          </div>}
+          menuClassName="ctx-menu"
+        >
           {menuItems()}
         </Menu>
-
-        {reactionIcons()}
-        {tipButton()}
       </div>
       <NoteCreator
         autoFocus={true}
         replyTo={ev}
         onSend={() => setReply(false)}
         show={reply}
+        setShow={setReply}
       />
       <LNURLTip svc={author?.lud16 || author?.lud06} onClose={() => setTip(false)} show={tip} />
-    </>
+    </div>
   )
 }

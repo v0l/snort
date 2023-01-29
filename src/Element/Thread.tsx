@@ -1,9 +1,12 @@
+import "./Thread.css";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
+
 import { TaggedRawEvent, u256 } from "Nostr";
 import { default as NEvent } from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
 import { eventLink } from "Util";
+import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";
 
@@ -82,7 +85,9 @@ export default function Thread(props: ThreadProps) {
     }
 
     return (
-        <>
+      <>
+        <BackButton />
+        <div className="thread-container">
             {renderRoot()}
             {root ? renderChain(root.Id) : null}
             {root ? null : <>
@@ -98,6 +103,7 @@ export default function Thread(props: ThreadProps) {
                     )
                 })}
             </>}
-        </>
+        </div>
+      </>
     );
 }

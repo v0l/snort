@@ -20,7 +20,7 @@ export default function LoginPage() {
         if (publicKey) {
             navigate("/");
         }
-    }, [publicKey]);
+    }, [publicKey, navigate]);
 
     async function getNip05PubKey(addr: string) {
         let [username, domain] = addr.split("@");
@@ -32,7 +32,7 @@ export default function LoginPage() {
                 return pKey;
             }
         }
-        throw "User key not found"
+        throw new Error("User key not found")
     }
 
     async function doLogin() {
@@ -43,7 +43,7 @@ export default function LoginPage() {
                 if (secp.utils.isValidPrivateKey(hexKey)) {
                     dispatch(setPrivateKey(hexKey));
                 } else {
-                    throw "INVALID PRIVATE KEY";
+                    throw new Error("INVALID PRIVATE KEY");
                 }
             } else if (key.startsWith("npub")) {
                 let hexKey = bech32ToHex(key);
@@ -55,7 +55,7 @@ export default function LoginPage() {
                 if (secp.utils.isValidPrivateKey(key)) {
                     dispatch(setPrivateKey(key));
                 } else {
-                    throw "INVALID PRIVATE KEY";
+                    throw new Error("INVALID PRIVATE KEY");
                 }
             }
         } catch (e) {
@@ -93,24 +93,24 @@ export default function LoginPage() {
             <>
                 <h2>Other Login Methods</h2>
                 <div className="flex">
-                    <div className="btn" onClick={(e) => doNip07Login()}>Login with Extension (NIP-07)</div>
+                    <button type="button" onClick={(e) => doNip07Login()}>Login with Extension (NIP-07)</button>
                 </div>
             </>
         )
     }
 
     return (
-        <>
+        <div className="main-content">
             <h1>Login</h1>
             <div className="flex">
                 <input type="text" placeholder="nsec / npub / nip-05 / hex private key..." className="f-grow" onChange={e => setKey(e.target.value)} />
             </div>
             {error.length > 0 ? <b className="error">{error}</b> : null}
             <div className="tabs">
-                <div className="btn" onClick={(e) => doLogin()}>Login</div>
-                <div className="btn" onClick={() => makeRandomKey()}>Generate Key</div>
+                <button type="button" onClick={(e) => doLogin()}>Login</button>
+                <button type="button" onClick={() => makeRandomKey()}>Generate Key</button>
             </div>
             {altLogins()}
-        </>
+        </div>
     );
 }

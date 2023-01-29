@@ -4,16 +4,7 @@ import { bech32ToText } from "Util";
 import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
-
-declare global {
-    interface Window {
-        webln?: {
-            enabled: boolean,
-            enable: () => Promise<void>,
-            sendPayment: (pr: string) => Promise<any>
-        }
-    }
-}
+import useWebln from "Hooks/useWebln";
 
 interface LNURLService {
     minSendable?: number,
@@ -54,6 +45,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     const [comment, setComment] = useState<string>();
     const [error, setError] = useState<string>();
     const [success, setSuccess] = useState<LNURLSuccessAction>();
+    const webln = useWebln(show);
 
     useEffect(() => {
         if (show && !props.invoice) {
@@ -136,6 +128,7 @@ export default function LNURLTip(props: LNURLTipProps) {
                 } else {
                     setInvoice(data);
                     setError("");
+                    payWebLNIfEnabled(data);
                 }
             } else {
                 setError("Failed to load invoice");
@@ -156,27 +149,17 @@ export default function LNURLTip(props: LNURLTipProps) {
         );
     }
 
-    async function payWebLN() {
+    async function payWebLNIfEnabled(invoice: LNURLInvoice) {
         try {
-            if (!window.webln!.enabled) {
-                await window.webln!.enable();
+            if (webln?.enabled) {
+                let res = await webln.sendPayment(invoice!.pr);
+                console.log(res);
+                setSuccess(invoice!.successAction || {});
             }
-            let res = await window.webln!.sendPayment(invoice!.pr);
-            console.log(res);
-            setSuccess(invoice!.successAction || {});
         } catch (e: any) {
             setError(e.toString());
             console.warn(e);
         }
-    }
-
-    function webLn() {
-        if ("webln" in window) {
-            return (
-                <div className="btn" onClick={() => payWebLN()}>Pay with WebLN</div>
-            )
-        }
-        return null;
     }
 
     function invoiceForm() {
@@ -198,7 +181,7 @@ export default function LNURLTip(props: LNURLTipProps) {
                         </span> : null}
                 </div>
                 {amount === -1 ? custom() : null}
-                {(amount ?? 0) > 0 ? <div className="btn mb10" onClick={() => loadInvoice()}>Get Invoice</div> : null}
+                {(amount ?? 0) > 0 && <button type="button" className="mb10" onClick={() => loadInvoice()}>Get Invoice</button>}
             </>
         )
     }
@@ -218,10 +201,9 @@ export default function LNURLTip(props: LNURLTipProps) {
                                     <Copy text={pr} maxSize={26} />
                                 </div>
                                 <div className="pay-actions">
-                                    <div className="btn" onClick={() => window.open(`lightning:${pr}`)}>
+                                    <button type="button" onClick={() => window.open(`lightning:${pr}`)}>
                                         Open Wallet
-                                    </div>
-                                    <div>{webLn()}</div>
+                                    </button>
                                 </div>
                             </>
                         )}
@@ -236,14 +218,14 @@ export default function LNURLTip(props: LNURLTipProps) {
         return (
             <>
                 <p>{success?.description ?? "Paid!"}</p>
-                {success.url ? <a href={success.url} target="_blank">{success.url}</a> : null}
+                {success.url ? <a href={success.url} rel="noreferrer" target="_blank">{success.url}</a> : null}
             </>
         )
     }
 
     if (!show) return null;
     return (
-        <Modal onClose={() => onClose()}>
+        <Modal onClose={onClose}>
             <div className="lnurl-tip" onClick={(e) => e.stopPropagation()}>
                 <h2>{props.title || "⚡️ Send sats"}</h2>
                 {invoiceForm()}

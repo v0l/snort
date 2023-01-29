@@ -11,6 +11,14 @@
   color: var(--font-secondary-color);
 }
 
+.note>.header .reply a {
+  color: var(--highlight);
+}
+
+.note>.header .reply a:hover {
+  text-decoration-color: var(--highlight);
+}
+
 .note>.header>.info {
   font-size: var(--font-size);
   white-space: nowrap;
@@ -18,7 +26,8 @@
 }
 
 .note>.body {
-  margin-top: 12px;
+  margin-top: 4px;
+  margin-bottom: 24px;
   padding-left: 56px;
   text-overflow: ellipsis;
   white-space: pre-wrap;
@@ -29,6 +38,18 @@
 
 .note>.footer {
   padding-left: 46px;
+}
+
+.note .footer .footer-reactions {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+}
+
+@media (min-width: 720px) {
+  .note .footer .footer-reactions {
+    margin-left: 0;
+  }
 }
 
 .note>.footer .ctx-menu {
@@ -56,17 +77,6 @@
   margin-top: 12px;
   margin-left: 56px;
 }
-
-@media (min-width: 720px) {
-  .note>.footer {
-    margin-top: 24px;
-  }
-
-  .note>.note-creator {
-    margin-top: 24px;
-  }
-}
-
 
 .thread.note {
   border-bottom-left-radius: 0;
@@ -140,6 +150,7 @@
 
 .note.active>.header>.info {
   color: var(--font-tertiary-color);
+  font-weight: 500;
 }
 
 .note.active>.footer>.reaction-pill {
@@ -170,10 +181,35 @@
 .light .note.active>.footer>.reaction-pill.reacted {
   color: var(--highlight);
 }
-
 .note-expand .body {
   max-height: 300px;
   overflow-y: hidden;
   mask-image: linear-gradient(to bottom, var(--note-bg) 60%, rgba(0,0,0,0));
   -webkit-mask-image: linear-gradient(to bottom, var(--note-bg) 60%, rgba(0,0,0,0));
+}
+
+.hidden-note .header {
+  display: flex;
+  align-items: center;
+}
+
+.card.note.hidden-note {
+  min-height: unset;
+}
+
+.hidden-note button {
+   max-height: 30px;
+}
+
+.show-more {
+  background: none;
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+  color: var(--highlight);
+}
+
+.show-more:hover {
+  background: none;
+  color: var(--highlight);
 }

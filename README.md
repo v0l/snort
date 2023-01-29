@@ -2,7 +2,8 @@
 
 Snort is a nostr UI built with React, Snort intends to be fast and effecient
 
-Snort supports the following NIP's
+Snort supports the following NIP's:
+
 - [x] NIP-01: Basic protocol flow description
 - [x] NIP-02: Contact List and Petnames (No petname support)
 - [ ] NIP-03: OpenTimestamps Attestations for Events
@@ -27,3 +28,4 @@ Snort supports the following NIP's
 - [ ] NIP-40: Expiration Timestamp
 - [ ] NIP-42: Authentication of clients to relays
 - [x] NIP-50: Search
+- [x] NIP-51: Lists

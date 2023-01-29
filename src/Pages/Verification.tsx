@@ -24,7 +24,7 @@ export default function VerificationPage() {
     ];
 
     return (
-        <div className="verification">
+        <div className="main-content verification">
             <h2>Get Verified</h2>
             <p>
                 NIP-05 is a DNS based verification spec which helps to validate you as a real user.

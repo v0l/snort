@@ -1,63 +1,73 @@
 .profile {
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .profile .banner {
-    width: 100%;
-    height: 210px;
-    margin-bottom: -80px;
-    object-fit: cover;
-    mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0, 0, 0, 0));
-    -webkit-mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0, 0, 0, 0));
-    z-index: 0;
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  margin-bottom: -60px;
+  mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0,0,0,0));
+  -webkit-mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0,0,0,0));
+  z-index: 0;
 }
 
-@media (min-width: 720px) {
-    .profile .banner {
-        width: 100%;
-        max-width: 720px;
-        height: 300px;
-        margin-bottom: -120px;
-    }
+.profile .profile-wrapper {
+  margin: 0 16px;
+  width: calc(100% - 32px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
 }
+
 
 .profile p {
     white-space: pre-wrap;
 }
 
 .profile .name h2 {
-    margin: 0;
+  margin: 12px 0 0 0;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 23px;
 }
 
-@media (min-width: 720px) {
-    .profile .banner {
-        width: 100%;
-        max-width: 720px;
-        height: 300px;
-        margin-bottom: -120px;
-    }
+.profile .nip05 {
+  display: flex;
+  font-size: 16px;
+  margin: 0 0 12px 0;
+}
+
+.profile .nip05 .nick {
+  font-weight: normal;
+  color: var(--gray-light);
 }
 
 .profile .avatar-wrapper {
-    align-self: flex-start;
-    z-index: 1;
-    margin-left: 4px;
+  z-index: 1;
+}
+
+.profile .avatar-wrapper .avatar {
+  width: 120px;
+  height: 120px;
 }
 
 .profile .name {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.profile .name h2 {
-    margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .profile .details {
-    max-width: 680px;
     width: 100%;
     margin-top: 12px;
+    background-color: var(--note-bg);
+    padding: 12px 16px;
+    border-radius: 16px;
+    margin: 0 auto;
+    margin-bottom: 12px;
 }
 
 .profile .details p {
@@ -76,144 +86,62 @@
 .profile .btn-icon {
     color: var(--font-color);
     padding: 6px;
-    margin-left: 4px;
 }
 
 .profile .details-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     justify-content: space-between;
-    position: relative;
-    width: 100%;
-    margin-left: 4px;
+    width: calc(100% - 32px);
 }
 
-.profile .copy .body {
-    font-size: 12px
-}
-
-@media (min-width: 360px) {
-    .profile .copy .body {
-        font-size: 14px
-    }
-
-    .profile .details-wrapper, .profile .avatar-wrapper {
-        margin-left: 21px;
-    }
-
-    .profile .details {
-        width: calc(100% - 21px);
-    }
-}
-
-@media (min-width: 720px) {
-    .profile .details-wrapper, .profile .avatar-wrapper {
-        margin-left: 30px;
-    }
-
-    .profile .details {
-        width: calc(100% - 30px);
-    }
-}
-
-.profile .p-buttons {
-    position: absolute;
-    top: -30px;
-    right: 20px;
-}
-
-.profile .p-buttons>div {
-    margin-right: 10px;
-}
-
-.profile .no-banner .follow-button {
-    right: 0px;
-}
-
-.profile .no-banner .message-button {
-    right: 54px;
-}
-
-.tabs {
-    display: flex;
-    justify-content: flex-start;
-    width: 100%;
-    margin: 10px 0;
-}
-
-.tabs>div {
-    margin-right: 0;
-}
-
-.tab {
-    margin: 0;
-    padding: 8px 0;
-    border-bottom: 3px solid var(--gray-secondary);
-}
-
-.tab.active {
-    border-bottom: 3px solid var(--highlight);
-}
-
-.profile .no-banner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.profile .no-banner .avatar {
-    height: 256px;
-    width: 256px;
-    margin-bottom: 30px;
-}
-
-.profile .no-banner .avatar-wrapper, .profile .no-banner .details-wrapper {
-    margin: 0 auto;
-}
-
-@media (min-width: 720px) {
-    .profile .no-banner {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-around;
-        margin-top: 21px;
-    }
-
-    .profile .no-banner .avatar-wrapper {
-        margin: auto 10px;
-    }
-
-    .profile .no-banner .details-wrapper {
-        margin-left: 10px;
-        margin-top: 21px;
-        max-width: 420px;
-    }
+.profile .details .text {
+  font-size: 14px;
 }
 
 .profile .links {
-    margin: 8px 12px;
+  margin-top: 4px;
+  margin-left: 2px;
+  margin-bottom: 12px;
+}
+
+.profile h3 {
+  color: var(--font-secondary-color);
+  font-size: 10px;
+  letter-spacing: .11em;
+  font-weight: 600;
+  line-height: 12px;
+  text-transform: uppercase;
+  margin-left: 12px;
 }
 
 .profile .website {
-    color: var(--highlight);
-    margin: 6px 0;
+  margin: 4px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.profile .website a {
+  color: var(--font-color);
 }
 
 .profile .website a {
     text-decoration: none;
 }
 
-.profile .website::before {
-    content: '🔗 ';
+.profile .website a:hover {
+  text-decoration: underline;
 }
 
 .profile .lnurl {
-    color: var(--highlight);
-    margin: 6px 0;
     cursor: pointer;
+}
+
+.profile .ln-address {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .profile .lnurl:hover {
@@ -225,6 +153,63 @@
     text-overflow: ellipsis;
 }
 
-.profile .zap {
-    margin-right: .3em;
+.profile .link-icon {
+  color: var(--highlight);
+  margin-right: 8px;
+}
+
+.profile .link-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.profile .profile-actions {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.profile .icon-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+@media (min-width: 520px) {
+  .profile .profile-actions {
+    top: 120px;
+  }
+}
+
+.profile .profile-actions button:not(:last-child) {
+  margin-right: 8px;
+}
+
+.profile .profile-actions button.icon:not(:last-child) {
+  margin-right: 0;
+}
+
+@media (min-width: 520px) {
+  .profile .banner {
+    width: 100%;
+    max-width: 720px;
+    height: 300px;
+    margin-bottom: -100px;
+  }
+  .profile .profile-actions button.icon:not(:last-child) {
+    margin-right: 2px;
+  }
+}
+
+.profile .npub {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.qr-modal .modal-body {
+  width: unset;
 }

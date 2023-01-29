@@ -2,8 +2,9 @@ import "./Layout.css";
 import { useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
-import { faBell, faMessage, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Envelope from "Icons/Envelope";
+import Bell from "Icons/Bell";
+import Search from "Icons/Search";
 
 import { RootState } from "State/Store";
 import { init, UserPreferences } from "State/Login";
@@ -15,6 +16,8 @@ import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
 import { SearchRelays } from 'Const';
 import useEventPublisher from "Feed/EventPublisher";
+import useModeration from "Hooks/useModeration";
+
 
 export default function Layout() {
     const dispatch = useDispatch();
@@ -25,6 +28,8 @@ export default function Layout() {
     const notifications = useSelector<RootState, TaggedRawEvent[]>(s => s.login.notifications);
     const readNotifications = useSelector<RootState, number>(s => s.login.readNotifications);
     const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
+    const { isMuted } = useModeration();
+    const filteredDms = dms.filter(a => !isMuted(a.pubkey))
     const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
     const pub = useEventPublisher();
     useLoginFeed();
@@ -89,23 +94,22 @@ export default function Layout() {
 
     function accountHeader() {
         const unreadNotifications = notifications?.filter(a => (a.created_at * 1000) > readNotifications).length;
-        const unreadDms = key ? totalUnread(dms, key) : 0;
+        const unreadDms = key ? totalUnread(filteredDms, key) : 0;
         return (
-            <>
-                <div className={`btn btn-rnd${unreadDms === 0 ? " mr10" : ""}`} onClick={(e) => navigate("/messages")}>
-                    <FontAwesomeIcon icon={faMessage} size="xl" />
+            <div className="header-actions">
+                <div className="btn btn-rnd" onClick={(e) => navigate("/search")}>
+                    <Search />
                 </div>
-                {unreadDms > 0 && (<span className="unread-count">
-                    {unreadDms > 100 ? ">99" : unreadDms}
-                </span>)}
-                <div className={`btn btn-rnd${unreadNotifications === 0 ? " mr10" : ""}`} onClick={(e) => goToNotifications(e)}>
-                    <FontAwesomeIcon icon={faBell} size="xl" />
+                <div className="btn btn-rnd" onClick={(e) => navigate("/messages")}>
+                    <Envelope />
+                    {unreadDms > 0 && (<span className="has-unread"></span>)}
                 </div>
-                {unreadNotifications > 0 && (<span className="unread-count">
-                    {unreadNotifications > 100 ? ">99" : unreadNotifications}
-                </span>)}
+                <div className="btn btn-rnd" onClick={(e) => goToNotifications(e)}>
+                    <Bell />
+                    {unreadNotifications > 0 && (<span className="has-unread"></span>)}
+                </div>
                 <ProfileImage pubkey={key || ""} showUsername={false} />
-            </>
+            </div>
         )
     }
 
@@ -114,17 +118,14 @@ export default function Layout() {
     }
     return (
         <div className="page">
-            <div className="header">
-                <div className="logo" onClick={() => navigate("/")}>snort</div>
+            <header>
+                <div className="logo" onClick={() => navigate("/")}>Snort</div>
                 <div>
-                    <div className={`btn btn-rnd mr10`} onClick={(e) => navigate("/search")}>
-                        <FontAwesomeIcon icon={faSearch} size="xl" />
-                    </div>
                     {key ? accountHeader() :
-                        <div className="btn" onClick={() => navigate("/login")}>Login</div>
+                        <button type="button" onClick={() => navigate("/login")}>Login</button>
                     }
                 </div>
-            </div>
+            </header>
 
             <Outlet />
         </div>

@@ -1,61 +1,46 @@
 .nip05 {
-    justify-content: flex-start;
-    align-items: center;
-    font-size: 14px;
-    margin: .2em;
+  justify-content: flex-start;
+  align-items: center;
+  font-weight: normal;
 }
 
 .nip05.failed {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }
 
 .nip05 .nick {
-    color: var(--gray-light);
-    font-weight: bold;
-    margin-right: .2em;
+  color: var(--font-secondary-color);
 }
 
 .nip05 .domain {
-    color: var(--gray-superlight);
-    font-weight: bold;
-}
-
-.nip05 .text-gradient {
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
-    background-color: var(--gray-superlight);
+  color: var(--gray-light);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  background-color: var(--gray-light);
 }
 
 .nip05 .domain[data-domain="snort.social"] {
-    background-image: var(--snort-gradient);
-}
-
-.nip05 .domain[data-domain="nostrplebs.com"] {
-    background-image: var(--nostrplebs-gradient);
-}
-
-.nip05 .domain[data-domain="nostrpurple.com"] {
-    background-image: var(--nostrplebs-gradient);
-}
-
-.nip05 .domain[data-domain="nostr.fan"] {
-    background-image: var(--nostrplebs-gradient);
-}
-
-.nip05 .domain[data-domain="nostrich.zone"] {
-    background-image: var(--nostrplebs-gradient);
-}
-
-.nip05 .domain[data-domain="nostriches.net"] {
-    background-image: var(--nostrplebs-gradient);
+  background-image: var(--nostrplebs-gradient);
 }
 
 .nip05 .domain[data-domain="strike.army"] {
-    background-image: var(--strike-army-gradient);
+  background-image: var(--strike-army-gradient);
+}
+
+.nip05 .domain[data-domain="nostrplebs.com"] {
+  background-image: var(--nostrplebs-gradient);
+}
+
+.nip05 .domain[data-domain="nostrpurple.com"] {
+  background-image: var(--nostrplebs-gradient);
+}
+
+.nip05 .domain[data-domain="nostr.fan"] {
+  background-image: var(--nostrplebs-gradient);
 }
 
 .nip05 .badge {
-     margin: .1em .2em;
+   margin: .1em .2em;
 }

@@ -1,9 +1,8 @@
 .reaction {
-    margin-bottom: 24px;
 }
 
 .reaction > .note {
-    margin: 10px 20px;
+    margin: 10px 0;
 }
 
 .reaction > .header {

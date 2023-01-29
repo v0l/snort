@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Bietnam+Pro:wght@400;500;600;700&display=swap');
 
 :root {
   --bg-color: #000;
@@ -9,10 +9,8 @@
   --font-size-small: 14px;
   --font-size-tiny: 12px;
   --modal-bg-color: rgba(0, 0, 0, 0.8);
-  --note-bg: #111;
-  --highlight-light: #ffd342;
-  --highlight: #ffc400;
-  --highlight-dark: #dba800;
+  --note-bg: #0C0C0C;
+  --highlight: #8B5CF6;
   --error: #FF6053;
   --success: #2AD544;
 
@@ -22,8 +20,10 @@
   --gray: #333;
   --gray-secondary: #222;
   --gray-tertiary: #444;
+  --gray-dark: #2B2B2B;
+  --gray-superdark: #171717;
   --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
-  --snort-gradient: linear-gradient(to bottom right, var(--highlight-light), var(--highlight), var(--highlight-dark));
+  --snort-gradient: linear-gradient(180deg, #FFC7B7 0%, #4F1B73 100%);
   --nostrplebs-gradient: linear-gradient(to bottom right, #ff3cac, #2b86c5);
   --strike-army-gradient: linear-gradient(to bottom right, #CCFF00, #a1c900);
 }
@@ -46,11 +46,13 @@ html.light {
   --gray-tertiary: #EEE;
   --gray-superlight: #333;
   --gray-light: #555;
+  --gray-dark: #2B2B2B;
+  --gray-superdark: #171717;
 }
 
 body {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-color);
@@ -63,25 +65,17 @@ code {
 }
 
 .page {
-  width: 720px;
+  width: 100vw;
   margin-left: auto;
   margin-right: auto;
 }
 
-.page>.header {
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
-}
-
-.page>.header>div:nth-child(1) {
-  font-size: x-large;
-  flex-grow: 1;
-}
-
-.page>.header>div:nth-child(2) {
-  display: flex;
-  align-items: center;
+@media (min-width: 720px) {
+  .page {
+    width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .card {
@@ -93,7 +87,7 @@ code {
 
 @media (min-width: 720px) {
   .card {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     padding: 12px 24px;
   }
 }
@@ -111,14 +105,90 @@ html.light .card {
 
 .card>.footer {
   display: flex;
-  flex-direction: row-reverse;
-  margin-top: 12px;
+  flex-direction: row;
+}
+
+button {
+  cursor: pointer;
+  padding: 6px 12px;
+  font-weight: 700;
+  color: white;
+  font-size: var(--font-size);
+  background-color: var(--highlight);
+  border: none;
+  border-radius: 16px;
+  outline: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  color: var(--gray);
+}
+
+.light button.transparent {
+  color: var(--font-color);
+}
+
+.light button:disabled {
+  color: var(--font-color);
+}
+
+button:hover {
+  background-color: var(--font-color);
+  color: var(--bg-color);
+}
+
+button.secondary {
+  color: var(--font-color);
+  background-color: var(--gray-dark);
+}
+
+button.transparent {
+  background-color: transparent;
+  border: 1px solid var(--gray-superdark);
+}
+
+.light button.secondary {
+  background-color: var(--gray);
+}
+
+button.secondary:hover {
+  border: none;
+  color: var(--font-color);
+  background-color: var(--gray-superdark);
+}
+
+button.transparent:hover {
+  color: var(--bg-color);
+  background-color: var(--font-color);
+}
+
+.light button.secondary:hover {
+  background-color: var(--gray-secondary);
+}
+
+button.icon {
+  border: none;
+  background: none;
+  color: var(--font-color);
+  min-height: 28px;
+}
+
+button.icon .icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button.icon:hover {
+  color: var(--highlight);
 }
 
 .btn {
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
+  color: var(--font-color);
   user-select: none;
   background-color: var(--bg-color);
   color: var(--font-color);
@@ -138,7 +208,7 @@ html.light .card {
   border: 2px solid;
   background-color: var(--gray-secondary);
   color: var(--font-color);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .btn.disabled {
@@ -155,6 +225,17 @@ html.light .card {
 
 .btn-rnd {
   border-radius: 100%;
+  border-color: var(--gray-superdark);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+.light .btn-rnd {
+  border-color: var(--gray);
 }
 
 textarea {
@@ -345,16 +426,12 @@ body.scroll-lock {
 }
 
 .tabs>div {
-  margin-right: 10px;
   cursor: pointer;
-}
-
-.tabs>div:last-child {
   margin: 0;
 }
 
 .tabs .active {
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .error {
@@ -369,18 +446,24 @@ body.scroll-lock {
   background-color: var(--success);
 }
 
-.root-tabs {
+.tabs {
   padding: 0;
   align-items: center;
   justify-content: flex-start;
+  margin-bottom: 16px;
 }
 
-.root-tab {
-  border-bottom: 3px solid var(--gray-secondary);
+.tab {
+  border-bottom: 1px solid var(--gray-secondary);
+  font-weight: 700;
+  line-height: 19px;
+  color: var(--font-secondary-color);
+  padding: 8px 0;
 }
 
-.root-tab.active {
-  border-bottom: 3px solid var(--highlight);
+.tab.active {
+  border-bottom: 1px solid var(--highlight);
+  color: var(--font-color);
 }
 
 .tweet {
@@ -402,10 +485,6 @@ body.scroll-lock {
 }
 
 @media(max-width: 720px) {
-  .page {
-    width: calc(100vw - 8px);
-  }
-
   div.form-group {
     flex-direction: column;
     align-items: flex-start;
@@ -414,4 +493,18 @@ body.scroll-lock {
 
 .highlight {
   color: var(--highlight);
+}
+
+.main-content {
+  padding: 0 12px;
+}
+
+@media (min-width: 720px) {
+  .main-content {
+    padding: 0;
+  }
+}
+
+.bold {
+  font-weight: 700;
 }

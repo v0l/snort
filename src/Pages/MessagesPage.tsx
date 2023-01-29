@@ -8,6 +8,7 @@ import { hexToBech32 } from "../Util";
 import { incDmInteraction } from "State/Login";
 import { RootState } from "State/Store";
 import NoteToSelf from "Element/NoteToSelf";
+import useModeration from "Hooks/useModeration";
 
 type DmChat = {
     pubkey: HexKey,
@@ -20,9 +21,10 @@ export default function MessagesPage() {
     const myPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
     const dmInteraction = useSelector<RootState, number>(s => s.login.dmInteraction);
+    const { isMuted } = useModeration();
 
     const chats = useMemo(() => {
-        return extractChats(dms, myPubKey!);
+        return extractChats(dms.filter(a => !isMuted(a.pubkey)), myPubKey!)
     }, [dms, myPubKey, dmInteraction]);
 
     function noteToSelf(chat: DmChat) {
@@ -51,17 +53,17 @@ export default function MessagesPage() {
     }
 
     return (
-        <>
+        <div className="main-content">
             <div className="flex">
                 <h3 className="f-grow">Messages</h3>
-                <div className="btn" onClick={() => markAllRead()}>Mark All Read</div>
+                <button type="button" onClick={() => markAllRead()}>Mark All Read</button>
             </div>
             {chats.sort((a, b) => {
                 return a.pubkey === myPubKey ? -1 : 
                     b.pubkey === myPubKey ? 1 :
                     b.newestMessage - a.newestMessage
             }).map(person)}
-        </>
+        </div>
     )
 }
 
@@ -91,7 +93,7 @@ export function isToSelf(e: RawEvent, pk: HexKey) {
 }
 
 export function dmsInChat(dms: RawEvent[], pk: HexKey) {
-    return dms.filter(a => a.pubkey === pk || dmTo(a) == pk);
+    return dms.filter(a => a.pubkey === pk || dmTo(a) === pk);
 }
 
 export function totalUnread(dms: RawEvent[], myPubKey: HexKey) {

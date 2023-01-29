@@ -27,7 +27,7 @@ const RelaySettingsPage = () => {
                 <div className="flex mb10">
                     <input type="text" className="f-grow" placeholder="wss://my-relay.com" value={newRelay} onChange={(e) => setNewRelay(e.target.value)} />
                 </div>
-                <div className="btn mb10" onClick={() => addNewRelay()}>Add</div>
+                <button className="secondary mb10" onClick={() => addNewRelay()}>Add</button>
             </>
         )
     }
@@ -49,12 +49,12 @@ const RelaySettingsPage = () => {
     return (
         <>
             <h3>Relays</h3>
-            <div className="flex f-col">
+            <div className="flex f-col mb10">
                 {Object.keys(relays || {}).map(a => <Relay addr={a} key={a} />)}
             </div>
             <div className="flex mt10">
                 <div className="f-grow"></div>
-                <div className="btn" onClick={() => saveRelays()}>Save</div>
+                <button type="button" onClick={() => saveRelays()}>Save</button>
             </div>
             {addRelay()}
         </>

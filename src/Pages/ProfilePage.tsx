@@ -2,14 +2,17 @@ import "./ProfilePage.css";
 
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faEnvelope, faQrcode } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 
+import Link from "Icons/Link";
+import Qr from "Icons/Qr";
+import Zap from "Icons/Zap";
+import Envelope from "Icons/Envelope";
 import { useUserProfile } from "Feed/ProfileFeed";
 import FollowButton from "Element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
+import LogoutButton from "Element/LogoutButton";
 import Timeline from "Element/Timeline";
 import Text from 'Element/Text'
 import LNURLTip from "Element/LNURLTip";
@@ -17,7 +20,10 @@ import Nip05 from "Element/Nip05";
 import Copy from "Element/Copy";
 import ProfilePreview from "Element/ProfilePreview";
 import FollowersList from "Element/FollowersList";
+import BlockList from "Element/BlockList";
+import MutedList from "Element/MutedList";
 import FollowsList from "Element/FollowsList";
+import IconButton from "Element/IconButton";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
 import FollowsYou from "Element/FollowsYou"
@@ -28,7 +34,9 @@ enum ProfileTab {
     Notes = "Notes",
     Reactions = "Reactions",
     Followers = "Followers",
-    Follows = "Follows"
+    Follows = "Follows",
+    Muted = "Muted",
+    Blocked = "Blocked"
 };
 
 export default function ProfilePage() {
@@ -36,13 +44,16 @@ export default function ProfilePage() {
     const navigate = useNavigate();
     const id = useMemo(() => parseId(params.id!), [params]);
     const user = useUserProfile(id);
+    const loggedOut = useSelector<RootState, boolean | undefined>(s => s.login.loggedOut);
     const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
     const isMe = loginPubKey === id;
     const [showLnQr, setShowLnQr] = useState<boolean>(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
     const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
-    const about = Text({ content: user?.about || '', tags: [], users: new Map() })
+    const aboutText = user?.about || ''
+    const about = Text({ content: aboutText, tags: [], users: new Map() })
+    const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
 
     useEffect(() => {
         setTab(ProfileTab.Notes);
@@ -55,50 +66,52 @@ export default function ProfilePage() {
                     {user?.display_name || user?.name || 'Nostrich'}
                     <FollowsYou pubkey={id} />
                 </h2>
-                <Copy text={params.id || ""} />
                 {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+                <Copy text={params.id || ""} />
+                {links()}
             </div>
         )
     }
 
+    function links() {
+      return (
+         <div className="links">
+             {user?.website && (
+                 <div className="website f-ellipsis">
+                     <span className="link-icon">
+                       <Link />
+                     </span>
+                     <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
+                 </div>
+             )}
+
+            <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
+         </div>
+      )
+    }
+
     function bio() {
-        const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
-        return (
-            <div className="details">
-                <div>{about}</div>
-
-                <div className="links">
-                    {user?.website && (
-                        <div className="website f-ellipsis">
-                            <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
-                        </div>
-                    )}
-
-                    {lnurl && (
-                        <div className="f-ellipsis" onClick={(e) => setShowLnQr(true)}>
-                            <span className="zap">⚡️</span>
-                            <span className="lnurl" >
-                                {lnurl}
-                            </span>
-                        </div>
-                    )}
-                </div>
-                <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
-            </div>
+        return aboutText.length > 0 && (
+            <>
+              <h3>Bio</h3>
+              <div className="details">
+                {about}
+              </div>
+            </>
         )
     }
 
     function tabContent() {
         switch (tab) {
             case ProfileTab.Notes:
-                return <Timeline key={id} subject={{ type: "pubkey", items: [id] }} postsOnly={false} method={"LIMIT_UNTIL"} />;
+                return <Timeline key={id} subject={{ type: "pubkey", items: [id] }} postsOnly={false} method={"LIMIT_UNTIL"} ignoreModeration={true} />;
             case ProfileTab.Follows: {
                 if (isMe) {
                     return (
-                        <>
+                        <div className="main-content">
                             <h4>Following {follows.length}</h4>
                             {follows.map(a => <ProfilePreview key={a} pubkey={a.toLowerCase()} options={{ about: false }} />)}
-                        </>
+                        </div>
                     );
                 } else {
                     return <FollowsList pubkey={id} />;
@@ -106,6 +119,12 @@ export default function ProfilePage() {
             }
             case ProfileTab.Followers: {
                 return <FollowersList pubkey={id} />
+            }
+            case ProfileTab.Muted: {
+                return isMe ? <BlockList variant="muted" /> : <MutedList pubkey={id} />
+            }
+            case ProfileTab.Blocked: {
+                return isMe ? <BlockList variant="blocked" /> : null
             }
         }
     }
@@ -118,58 +137,71 @@ export default function ProfilePage() {
         )
     }
 
+  function renderIcons() {
+    return (
+      <div className="icon-actions">
+        <IconButton onClick={() => setShowProfileQr(true)}>
+          <Qr width={14} height={16} />
+        </IconButton>
+        {showProfileQr && (
+          <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
+            <QrCode data={`nostr:${hexToBech32("npub", id)}`} link={undefined} className="m10"/>
+          </Modal>
+        )}
+        {isMe ? (
+          <>
+            <LogoutButton />
+            <button type="button" onClick={() => navigate("/settings")}>
+              Settings
+            </button>
+          </>
+        ) : (
+          <>
+            <IconButton onClick={() => setShowLnQr(true)}>
+              <Zap width={14} height={16} />
+            </IconButton>
+            {!loggedOut && (
+              <>
+                <IconButton onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
+                   <Envelope width={16} height={13} />
+                </IconButton>
+              </>
+            )}
+          </>
+        )}
+      </div>
+    )
+  }
+
     function userDetails() {
         return (
             <div className="details-wrapper">
                 {username()}
-
-                <div className="p-buttons">
-                    <div className="btn" onClick={() => setShowProfileQr(true)}>
-                        <FontAwesomeIcon icon={faQrcode} size="lg" />
-                    </div>
-                    {showProfileQr && (<Modal onClose={() => setShowProfileQr(false)}>
-                        <div className="card">
-                            <QrCode data={`nostr:${hexToBech32("npub", id)}`} link={undefined} className="m10"/>
-                        </div>
-                    </Modal>)}
-                    {isMe ? (
-                        <div className="btn" onClick={() => navigate("/settings")}>
-                            <FontAwesomeIcon icon={faGear} size="lg" />
-                        </div>
-                    ) : <>
-                        <div className="btn" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
-                            <FontAwesomeIcon icon={faEnvelope} size="lg" />
-                        </div>
-                        <FollowButton pubkey={id} />
-                    </>
-                    }
+                <div className="profile-actions">
+                  {renderIcons()}
+                  {!isMe && <FollowButton pubkey={id} />}
                 </div>
-
                 {bio()}
             </div>
         )
     }
 
+    function renderTab(v: ProfileTab) {
+      return <div className={`tab f-1${tab === v ? " active" : ""}`} key={v} onClick={() => setTab(v)}>{v}</div>
+    }
+
     return (
         <>
             <div className="profile flex">
-                {user?.banner && <img alt="banner" className="banner" src={user.banner} />}
-                {user?.banner ? (
-                    <>
-                        {avatar()}
-                        {userDetails()}
-                    </>
-                ) : (
-                    <div className="no-banner">
-                        {avatar()}
-                        {userDetails()}
-                    </div>
-                )}
+              {user?.banner && <img alt="banner" className="banner" src={user.banner} />}
+              <div className="profile-wrapper flex">
+                {avatar()}
+                {userDetails()}
+               </div>
             </div>
             <div className="tabs">
-                {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows].map(v => {
-                    return <div className={`tab f-1${tab === v ? " active" : ""}`} key={v} onClick={() => setTab(v)}>{v}</div>
-                })}
+                {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Muted].map(renderTab)}
+                {isMe && renderTab(ProfileTab.Blocked)}
             </div>
             {tabContent()}
         </>

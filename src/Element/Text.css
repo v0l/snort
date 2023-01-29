@@ -1,3 +1,8 @@
+.text {
+  font-size: var(--font-size);
+  line-height: 24px;
+}
+
 .text a {
     color: var(--highlight);
     text-decoration: none;
@@ -63,4 +68,11 @@
 .text iframe, .text video {
     width: -webkit-fill-available;
     aspect-ratio: 16 / 9;
+}
+
+.text blockquote {
+  margin: 0;
+  color: var(--font-secondary-color);
+  border-left: 2px solid var(--font-secondary-color);
+  padding-left: 12px;
 }
