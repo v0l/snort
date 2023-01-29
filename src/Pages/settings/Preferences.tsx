@@ -61,6 +61,18 @@ const PreferencesPage = () => {
             </div>
             <div className="card flex">
                 <div className="flex f-col f-grow">
+                    <div>File upload service</div>
+                    <small>Pick which upload service you want to upload attachments to</small>
+                </div>
+                <div>
+                <select value={perf.fileUploader} onChange={e => dispatch(setPreferences({ ...perf, fileUploader: e.target.value} as UserPreferences))}>
+                        <option value="void.cat">void.cat (Default)</option>
+                        <option value="nostr.build">nostr.build</option>
+                    </select>
+                </div>
+            </div>
+            <div className="card flex">
+                <div className="flex f-col f-grow">
                     <div>Debug Menus</div>
                     <small>Shows "Copy ID" and "Copy Event JSON" in the context menu on each message</small>
                 </div>

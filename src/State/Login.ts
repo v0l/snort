@@ -48,7 +48,12 @@ export interface UserPreferences {
     /**
      * Show debugging menus to help diagnose issues
      */
-    showDebugMenus: boolean
+    showDebugMenus: boolean,
+
+     /**
+      * File uploading service to upload attachments to
+      */
+     fileUploader: "void.cat" | "nostr.build"
 }
 
 export interface LoginStore {
@@ -149,7 +154,8 @@ const InitState = {
         theme: "system",
         confirmReposts: false,
         showDebugMenus: false,
-        autoShowLatest: false
+        autoShowLatest: false,
+        fileUploader: "void.cat"
     }
 } as LoginStore;
 

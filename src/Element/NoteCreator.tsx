@@ -7,11 +7,10 @@ import "./NoteCreator.css";
 import Plus from "Icons/Plus";
 import useEventPublisher from "Feed/EventPublisher";
 import { openFile } from "Util";
-import VoidUpload from "Feed/VoidUpload";
-import { FileExtensionRegex, VoidCatHost } from "Const";
 import Textarea from "Element/Textarea";
 import Modal from "Element/Modal";
 import { default as NEvent } from "Nostr/Event";
+import useFileUpload from "Feed/FileUpload";
 
 export interface NoteCreatorProps {
     show: boolean
@@ -27,6 +26,7 @@ export function NoteCreator(props: NoteCreatorProps) {
     const [note, setNote] = useState<string>();
     const [error, setError] = useState<string>();
     const [active, setActive] = useState<boolean>(false);
+    const uploader = useFileUpload();
 
     async function sendNote() {
         if (note) {
@@ -46,16 +46,11 @@ export function NoteCreator(props: NoteCreatorProps) {
         try {
             let file = await openFile();
             if (file) {
-                let rx = await VoidUpload(file, file.name);
-                if (rx?.ok && rx?.file) {
-                    let ext = file.name.match(FileExtensionRegex);
-
-                    // extension tricks note parser to embed the content
-                    let url = rx.file.meta?.url ?? `${VoidCatHost}/d/${rx.file.id}${ext ? `.${ext[1]}` : ""}`;
-
-                    setNote(n => `${n}\n${url}`);
-                } else if (rx?.errorMessage) {
-                    setError(rx.errorMessage);
+                let rx = await uploader.upload(file, file.name);
+                if (rx.url) {
+                    setNote(n => `${n}\n${rx.url}`);
+                } else if (rx?.error) {
+                    setError(rx.error);
                 }
             }
         } catch (error: any) {
