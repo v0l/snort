@@ -3,7 +3,7 @@ import "./ProfilePage.css";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faGear, faEnvelope, faQrcode } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useUserProfile } from "Feed/ProfileFeed";
@@ -21,6 +21,8 @@ import FollowsList from "Element/FollowsList";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
 import FollowsYou from "Element/FollowsYou"
+import QrCode from "Element/QrCode";
+import Modal from "Element/Modal";
 
 enum ProfileTab {
     Notes = "Notes",
@@ -39,6 +41,7 @@ export default function ProfilePage() {
     const isMe = loginPubKey === id;
     const [showLnQr, setShowLnQr] = useState<boolean>(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
+    const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
     const about = Text({ content: user?.about || '', tags: [], users: new Map() })
 
     useEffect(() => {
@@ -119,17 +122,30 @@ export default function ProfilePage() {
         return (
             <div className="details-wrapper">
                 {username()}
-                {isMe ? (
-                    <div className="btn btn-icon follow-button" onClick={() => navigate("/settings")}>
-                        <FontAwesomeIcon icon={faGear} size="lg" />
+
+                <div className="p-buttons">
+                    <div className="btn" onClick={() => setShowProfileQr(true)}>
+                        <FontAwesomeIcon icon={faQrcode} size="lg" />
                     </div>
-                ) : <>
-                    <div className="btn message-button" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
-                        <FontAwesomeIcon icon={faEnvelope} size="lg" />
-                    </div>
-                    <FollowButton pubkey={id} />
-                </>
-                }
+                    {showProfileQr && (<Modal onClose={() => setShowProfileQr(false)}>
+                        <div className="card">
+                            <QrCode data={`nostr:${hexToBech32("npub", id)}`} link={undefined} className="m10"
+                                avatar={user?.picture}/>
+                        </div>
+                    </Modal>)}
+                    {isMe ? (
+                        <div className="btn" onClick={() => navigate("/settings")}>
+                            <FontAwesomeIcon icon={faGear} size="lg" />
+                        </div>
+                    ) : <>
+                        <div className="btn" onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
+                            <FontAwesomeIcon icon={faEnvelope} size="lg" />
+                        </div>
+                        <FollowButton pubkey={id} />
+                    </>
+                    }
+                </div>
+
                 {bio()}
             </div>
         )

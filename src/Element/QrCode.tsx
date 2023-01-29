@@ -6,7 +6,8 @@ export interface QrCodeProps {
     link?: string,
     avatar?: string,
     height?: number,
-    width?: number
+    width?: number,
+    className?: string
 }
 
 export default function QrCode(props: QrCodeProps) {
@@ -26,9 +27,6 @@ export default function QrCode(props: QrCodeProps) {
                 },
                 cornersSquareOptions: {
                     type: 'extra-rounded'
-                },
-                imageOptions: {
-                    crossOrigin: "anonymous"
                 }
             });
             qrRef.current.innerHTML = "";
@@ -46,6 +44,6 @@ export default function QrCode(props: QrCodeProps) {
     }, [props.data, props.link]);
 
     return (
-        <div className="qr" ref={qrRef}></div>
+        <div className={`qr${props.className ? ` ${props.className}` : ""}`} ref={qrRef}></div>
     );
 }
