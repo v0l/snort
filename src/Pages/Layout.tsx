@@ -65,9 +65,9 @@ export default function Layout() {
     () =>
       publicKey
         ? totalUnread(
-            dms.filter(a => !isMuted(a.pubkey)),
-            publicKey
-          )
+          dms.filter(a => !isMuted(a.pubkey)),
+          publicKey
+        )
         : 0,
     [dms, publicKey]
   );
@@ -138,6 +138,15 @@ export default function Layout() {
 
       console.debug(`Using db: ${dbType}`);
       dispatch(init(dbType));
+
+      try {
+        if ("registerProtocolHandler" in window.navigator) {
+          window.navigator.registerProtocolHandler("web+nostr", `${window.location.protocol}//${window.location.host}/handler/%s`);
+          console.info("Registered protocol handler for \"nostr\"");
+        }
+      } catch (e) {
+        console.error("Failed to register protocol handler", e);
+      }
     });
   }, []);
 

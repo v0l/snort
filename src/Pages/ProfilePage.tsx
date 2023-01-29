@@ -42,7 +42,7 @@ import QrCode from "Element/QrCode";
 import Modal from "Element/Modal";
 import { ProxyImg } from "Element/ProxyImg";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
-
+import { NostrPrefix } from "Nostr/Links";
 import messages from "./messages";
 
 const NOTES = 0;
@@ -262,7 +262,7 @@ export default function ProfilePage() {
         {showProfileQr && (
           <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id} />
-            <QrCode data={`nostr:${hexToBech32("npub", id)}`} link={undefined} className="m10" />
+            <QrCode data={`nostr:${hexToBech32(NostrPrefix.PublicKey, id)}`} link={undefined} className="m10" />
           </Modal>
         )}
         {isMe ? (
@@ -280,7 +280,7 @@ export default function ProfilePage() {
             )}
             {!loggedOut && (
               <>
-                <IconButton onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
+                <IconButton onClick={() => navigate(`/messages/${hexToBech32(NostrPrefix.PublicKey, id)}`)}>
                   <Envelope width={16} height={13} />
                 </IconButton>
               </>
