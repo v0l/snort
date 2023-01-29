@@ -129,8 +129,7 @@ export default function ProfilePage() {
                     </div>
                     {showProfileQr && (<Modal onClose={() => setShowProfileQr(false)}>
                         <div className="card">
-                            <QrCode data={`nostr:${hexToBech32("npub", id)}`} link={undefined} className="m10"
-                                avatar={user?.picture}/>
+                            <QrCode data={`nostr:${hexToBech32("npub", id)}`} link={undefined} className="m10"/>
                         </div>
                     </Modal>)}
                     {isMe ? (
