@@ -12,6 +12,8 @@ export interface NoteTimeProps {
 export default function NoteTime(props: NoteTimeProps) {
     const [time, setTime] = useState<string>();
     const { from, fallback } = props;
+    const absoluteTime = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'long'}).format(from);
+    const isoDate = new Date(from).toISOString();
 
     function calcTime() {
         let fromDate = new Date(from);
@@ -46,5 +48,5 @@ export default function NoteTime(props: NoteTimeProps) {
         return () => clearInterval(t);
     }, [from]);
 
-    return <>{time}</>
+    return <time dateTime={isoDate} title={absoluteTime}>{time}</time>
 }
