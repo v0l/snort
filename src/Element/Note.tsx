@@ -179,7 +179,7 @@ export default function Note(props: NoteProps) {
                     {transformBody()}
                 </div>
                 {extendable && !showMore && (<div className="flex f-center">
-                    <button className="btn mt10" onClick={() => setShowMore(true)}>Show more</button>
+                    <button className="show-more" onClick={() => setShowMore(true)}>Show more</button>
                 </div>)}
                 {options.showFooter ? <NoteFooter ev={ev} related={related} /> : null}
             </>
