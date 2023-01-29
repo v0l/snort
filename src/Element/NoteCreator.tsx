@@ -48,7 +48,7 @@ export function NoteCreator(props: NoteCreatorProps) {
             if (file) {
                 let rx = await uploader.upload(file, file.name);
                 if (rx.url) {
-                    setNote(n => `${n}\n${rx.url}`);
+                    setNote(n => `${n ? `${n}\n` : ""}${rx.url}`);
                 } else if (rx?.error) {
                     setError(rx.error);
                 }
