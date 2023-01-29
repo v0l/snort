@@ -1,3 +1,4 @@
+import "./FollowButton.css";
 import { useSelector } from "react-redux";
 import useEventPublisher from "Feed/EventPublisher";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +15,7 @@ export default function FollowButton(props: FollowButtonProps) {
     const pubkey = parseId(props.pubkey);
     const publiser = useEventPublisher();
     const isFollowing = useSelector<RootState, boolean>(s => s.login.follows?.includes(pubkey) ?? false);
+    const baseClassname = `${props.className} follow-button`
 
     async function follow(pubkey: HexKey) {
         let ev = await publiser.addFollow(pubkey);
@@ -26,7 +28,11 @@ export default function FollowButton(props: FollowButtonProps) {
     }
 
     return (
-        <button type="button" className={isFollowing ? `${props.className ?? ''} secondary` : props.className} onClick={() => isFollowing ? unfollow(pubkey) : follow(pubkey)}>
+        <button
+          type="button"
+          className={isFollowing ? `${baseClassname} secondary` : baseClassname}
+          onClick={() => isFollowing ? unfollow(pubkey) : follow(pubkey)}
+          >
           {isFollowing ? 'Unfollow' : 'Follow'}
         </button>
     )
