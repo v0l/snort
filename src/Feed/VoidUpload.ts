@@ -1,11 +1,12 @@
 import * as secp from "@noble/secp256k1";
-import { VoidCatHost } from "Const";
+import { FileExtensionRegex, VoidCatHost } from "Const";
+import { UploadResult } from "./FileUpload";
 
 /**
  * Upload file to void.cat
  * https://void.cat/swagger/index.html
  */
-export default async function VoidUpload(file: File | Blob, filename: string) {
+export default async function VoidUpload(file: File | Blob, filename: string): Promise<UploadResult> {
     const buf = await file.arrayBuffer();
     const digest = await crypto.subtle.digest("SHA-256", buf);
 
@@ -25,9 +26,20 @@ export default async function VoidUpload(file: File | Blob, filename: string) {
 
     if (req.ok) {
         let rsp: VoidUploadResponse = await req.json();
-        return rsp;
+        if (rsp.ok) {
+            let ext = filename.match(FileExtensionRegex);
+            return {
+                url: rsp.file?.meta?.url ?? `${VoidCatHost}/d/${rsp.file?.id}${ext ? `.${ext[1]}` : ""}`
+            }
+        } else {
+            return {
+                error: rsp.errorMessage
+            }
+        }
     }
-    return null;
+    return {
+        error: "Upload failed"
+    };
 }
 
 export type VoidUploadResponse = {

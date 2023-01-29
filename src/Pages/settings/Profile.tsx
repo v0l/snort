@@ -9,13 +9,12 @@ import { faShop } from "@fortawesome/free-solid-svg-icons";
 
 import useEventPublisher from "Feed/EventPublisher";
 import { useUserProfile } from "Feed/ProfileFeed";
-import VoidUpload from "Feed/VoidUpload";
 import { logout } from "State/Login";
 import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
-import { VoidCatHost } from "Const";
+import useFileUpload from "Feed/FileUpload";
 
 export default function ProfileSettings() {
     const navigate = useNavigate();
@@ -24,6 +23,7 @@ export default function ProfileSettings() {
     const dispatch = useDispatch();
     const user = useUserProfile(id!);
     const publisher = useEventPublisher();
+    const uploader = useFileUpload();
 
     const [name, setName] = useState<string>();
     const [displayName, setDisplayName] = useState<string>();
@@ -77,25 +77,25 @@ export default function ProfileSettings() {
         let file = await openFile();
         if (file) {
             console.log(file);
-            let rsp = await VoidUpload(file, file.name);
-            if (!rsp?.ok) {
-                throw "Upload failed, please try again later";
+            let rsp = await uploader.upload(file, file.name);
+            if (!rsp?.error) {
+                throw new Error("Upload failed, please try again later");
             }
-            return rsp.file;
+            return rsp.url;
         }
     }
 
     async function setNewAvatar() {
         const rsp = await uploadFile();
         if (rsp) {
-            setPicture(rsp.meta?.url ?? `${VoidCatHost}/d/${rsp.id}`);
+            setPicture(rsp);
         }
     }
 
     async function setNewBanner() {
         const rsp = await uploadFile();
         if (rsp) {
-            setBanner(rsp.meta?.url ?? `${VoidCatHost}/d/${rsp.id}`);
+            setBanner(rsp);
         }
     }
 
