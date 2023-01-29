@@ -171,11 +171,17 @@ button.icon {
   border: none;
   background: none;
   color: var(--font-color);
+  min-height: 28px;
+}
+
+button.icon .icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button.icon:hover {
-  color: white;
-  background: var(--highlight);
+  color: var(--highlight);
 }
 
 .btn {
@@ -420,11 +426,7 @@ body.scroll-lock {
 }
 
 .tabs>div {
-  margin-right: 10px;
   cursor: pointer;
-}
-
-.tabs>div:last-child {
   margin: 0;
 }
 

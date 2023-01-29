@@ -46,10 +46,6 @@
   color: var(--gray-light);
 }
 
-.profile .name .copy {
-  margin-bottom: 8px;
-}
-
 .profile .avatar-wrapper {
   z-index: 1;
 }
@@ -101,10 +97,6 @@
 
 .profile .details .text {
   font-size: 14px;
-}
-
-.tabs > div {
-  margin-right: 0;
 }
 
 .profile .links {
@@ -175,6 +167,15 @@
   position: absolute;
   top: 80px;
   right: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.profile .icon-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 @media (min-width: 520px) {
@@ -187,6 +188,10 @@
   margin-right: 8px;
 }
 
+.profile .profile-actions button.icon:not(:last-child) {
+  margin-right: 0;
+}
+
 @media (min-width: 520px) {
   .profile .banner {
     width: 100%;
@@ -194,5 +199,17 @@
     height: 300px;
     margin-bottom: -100px;
   }
+  .profile .profile-actions button.icon:not(:last-child) {
+    margin-right: 2px;
+  }
 }
 
+.profile .npub {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.qr-modal .modal-body {
+  width: unset;
+}

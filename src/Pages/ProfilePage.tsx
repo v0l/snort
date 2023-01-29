@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Link from "Icons/Link";
+import Qr from "Icons/Qr";
 import Zap from "Icons/Zap";
 import Envelope from "Icons/Envelope";
 import { useUserProfile } from "Feed/ProfileFeed";
@@ -22,9 +23,12 @@ import FollowersList from "Element/FollowersList";
 import BlockList from "Element/BlockList";
 import MutedList from "Element/MutedList";
 import FollowsList from "Element/FollowsList";
+import IconButton from "Element/IconButton";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
 import FollowsYou from "Element/FollowsYou"
+import QrCode from "Element/QrCode";
+import Modal from "Element/Modal";
 
 enum ProfileTab {
     Notes = "Notes",
@@ -46,8 +50,9 @@ export default function ProfilePage() {
     const isMe = loginPubKey === id;
     const [showLnQr, setShowLnQr] = useState<boolean>(false);
     const [tab, setTab] = useState(ProfileTab.Notes);
+    const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
     const aboutText = user?.about || ''
-    const about = Text({ content: user?.about || '', tags: [], users: new Map() })
+    const about = Text({ content: aboutText, tags: [], users: new Map() })
     const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
 
     useEffect(() => {
@@ -132,41 +137,49 @@ export default function ProfilePage() {
         )
     }
 
+  function renderIcons() {
+    return (
+      <div className="icon-actions">
+        <IconButton onClick={() => setShowProfileQr(true)}>
+          <Qr width={14} height={16} />
+        </IconButton>
+        {showProfileQr && (
+          <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
+            <QrCode data={`nostr:${hexToBech32("npub", id)}`} link={undefined} className="m10"/>
+          </Modal>
+        )}
+        {isMe ? (
+          <>
+            <LogoutButton />
+            <button type="button" onClick={() => navigate("/settings")}>
+              Settings
+            </button>
+          </>
+        ) : (
+          <>
+            <IconButton onClick={() => setShowLnQr(true)}>
+              <Zap width={14} height={16} />
+            </IconButton>
+            {!loggedOut && (
+              <>
+                <IconButton onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
+                   <Envelope width={16} height={13} />
+                </IconButton>
+              </>
+            )}
+          </>
+        )}
+      </div>
+    )
+  }
+
     function userDetails() {
         return (
             <div className="details-wrapper">
                 {username()}
                 <div className="profile-actions">
-                  {isMe ? (
-                    <>
-                      <LogoutButton />
-                      <button type="button" onClick={() => navigate("/settings")}>
-                        Settings
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        className="icon"
-                        type="button"
-                        onClick={() => setShowLnQr(true)}
-                      >
-                         <Zap width={14} height={16} />
-                      </button>
-                      {!loggedOut && (
-                        <>
-                          <button
-                            className="icon"
-                            type="button"
-                            onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}
-                          >
-                             <Envelope width={16} height={13} />
-                          </button>
-                          <FollowButton pubkey={id} />
-                        </>
-                      )}
-                    </>
-                  )}
+                  {renderIcons()}
+                  {!isMe && <FollowButton pubkey={id} />}
                 </div>
                 {bio()}
             </div>
