@@ -10,7 +10,6 @@ import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";
 import Collapsed from "Element/Collapsed";
-import ShowMore from "Element/ShowMore";
 
 interface DividerProps {
   variant?: "regular" | "small"
@@ -28,6 +27,7 @@ const Divider = ({ variant = "regular" }: DividerProps) => {
 
 interface SubthreadProps {
     tier: number
+    isLastSubthread?: boolean
     from: u256
     notes: NEvent[]
     related: TaggedRawEvent[]
@@ -36,14 +36,15 @@ interface SubthreadProps {
 }
 
 const Subthread = ({ tier, from, notes, related, chains, onNavigate }: SubthreadProps) => {
-  const renderSubthread = (a: NEvent) => {
+  const renderSubthread = (a: NEvent, idx: number) => {
+     const isLastSubthread = idx === notes.length - 1
      const replies = getReplies(a.Id, chains)
      return (
        <>
          <div className={`subthread-container ${replies.length > 0 ? 'subthread-multi' : ''}`}>
            <Divider />
            <Note
-             className={`thread-note tier-one`}
+             className={`thread-note ${isLastSubthread && replies.length === 0 ? 'is-last-note' : ''}`}
              data-ev={a}
              key={a.Id}
              related={related}
@@ -52,7 +53,15 @@ const Subthread = ({ tier, from, notes, related, chains, onNavigate }: Subthread
            </div>
          </div>
          {replies.length > 0 && (
-           <TierTwo tier={2} from={a.Id} notes={replies} related={related} chains={chains} onNavigate={onNavigate} />
+           <TierTwo
+            tier={2}
+            isLastSubthread={isLastSubthread}
+            from={a.Id}
+            notes={replies}
+            related={related}
+            chains={chains}
+            onNavigate={onNavigate}
+           />
          )}
        </>
      )
@@ -65,17 +74,18 @@ const Subthread = ({ tier, from, notes, related, chains, onNavigate }: Subthread
   )
 }
 
-const TierTwo = ({ tier, from, notes, related, chains, onNavigate }: SubthreadProps) => {
+const TierTwo = ({ tier, isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
   const [first, ...rest] = notes
+  const [collapsed, setCollapsed] = useState(true)
   const replies = getReplies(first.Id, chains) 
   const isLast = replies.length === 0
-  const className = `subthread-container ${isLast ? 'subthread-last' : 'subthread-multi'} subthread-mid`
+  const className = `subthread-container ${isLast ? 'subthread-last' : 'subthread-mid'} ${isLast || !collapsed ? 'subthread-multi' : ''}`
   return (
     <>
       <div className={className}>
         <Divider variant="small" />
         <Note
-          className={`thread-note tier-two`}
+          className={`thread-note ${isLastSubthread && isLast ? 'is-last-note' : ''}`}
           data-ev={first}
           key={first.Id}
           related={related}
@@ -85,23 +95,33 @@ const TierTwo = ({ tier, from, notes, related, chains, onNavigate }: SubthreadPr
       </div>
 
       {replies.length > 0 && (
-        <Collapsed text="Show replies">
-          <TierThree tier={3} from={from} notes={replies} related={related} chains={chains} onNavigate={onNavigate} />
+        <Collapsed text="Show replies" collapsed={collapsed} setCollapsed={setCollapsed}>
+          <TierThree
+           tier={3}
+           collapsed={collapsed}
+           isLastSubthread={isLastSubthread}
+           from={from}
+           notes={replies}
+           related={related}
+           chains={chains}
+            onNavigate={onNavigate}
+        />
         </Collapsed>
       )}
     </>
   )
 }
 
-const TierThree = ({ tier, from, notes, related, chains, onNavigate }: any) => {
+const TierThree = ({ tier, isLastSubthread, from, notes, related, chains, onNavigate }: any) => {
   const [first, ...rest] = notes
   const replies = getReplies(first.Id, chains)
   const isLast = replies.length === 0
   return (
-    <div className={`subthread-container subthread-multi ${isLast ? 'subthread-last' : 'subthread-mid'}`}> 
+    <div
+      className={`subthread-container ${isLast ? 'subthread-multi' : ''} ${isLast ? 'subthread-last' : 'subthread-mid'}`}> 
       <Divider variant="small" />
       <Note
-        className={`thread-note tier-three`}
+        className={`thread-note ${isLastSubthread && isLast ? 'is-last-note' : ''}`}
         data-ev={first}
         key={first.Id}
         related={related}

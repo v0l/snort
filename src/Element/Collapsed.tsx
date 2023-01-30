@@ -5,18 +5,19 @@ import ShowMore from "Element/ShowMore";
 interface CollapsedProps {
   text?: string
   children: ReactNode
+  collapsed: boolean
+  setCollapsed(b: boolean): void
 }
 
-const Collapsed = ({ text, children }: CollapsedProps) => {
-  const [shown, setShown] = useState(false)
-  return shown ? (
-      <div className="uncollapsed">
-        {children}
-      </div> 
-    ) : (
-      <div className="collapsed">
-        <ShowMore text={text} onClick={() => setShown(true)} />
-      </div>
+const Collapsed = ({ text, children, collapsed, setCollapsed }: CollapsedProps) => {
+  return collapsed ? (
+    <div className="collapsed">
+      <ShowMore text={text} onClick={() => setCollapsed(false)} />
+    </div>
+  ) : (
+    <div className="uncollapsed">
+      {children}
+    </div>
   )
 }
 

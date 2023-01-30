@@ -54,15 +54,6 @@
   padding-bottom: 10px;
 }
 
-.thread-container .show-more:hover {
-  background: var(--note-bg);
-}
-
-.thread-container .show-more:last-child {
-  border-bottom-right-radius: 16px;
-  border-bottom-left-radius: 16px;
-}
-
 .subthread-container {
   position: relative;
 }
@@ -74,37 +65,61 @@
 .subthread-container.subthread-multi .line-container:before {
   content: '';
   position: absolute;
-  left: 48px;
+  left: 36px;
   top: 48px;
   border-left: 1px solid var(--font-secondary-color);
   height: 100%;
 }
 
+@media (min-width: 720px) {
+  .subthread-container.subthread-multi .line-container:before {
+    left: 48px;
+  }
+}
+
 .subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
   content: '';
   position: absolute;
-  left: 48px;
+  left: 36px;
   top: 48px;
   border-left: 1px solid var(--font-secondary-color);
   height: 100%;
+}
+
+@media (min-width: 720px) {
+  .subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
+    left: 48px;
+  }
 }
 
 .subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
   content: '';
   position: absolute;
   border-left: 1px solid var(--font-secondary-color);
-  left: 48px;
+  left: 36px;
   top: 0;
   height: 48px;
+}
+
+@media (min-width: 720px) {
+  .subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
+    left: 48px;
+  }
 }
 
 .subthread-container.subthread-last .line-container:before {
   content: '';
   position: absolute;
   border-left: 1px solid var(--font-secondary-color);
-  left: 48px;
+  left: 36px;
   top: 0;
   height: 48px;
+}
+
+@media (min-width: 720px) {
+  .subthread-container.subthread-last .line-container:before {
+    left: 48px;
+  }
 }
 
 .divider-container {
@@ -122,6 +137,19 @@
   margin-left: 80px;
 }
 
-.collapsed, .show-more-container {
+.thread-container .collapsed, .thread-container .show-more-container {
   background: var(--note-bg);
+}
+
+.thread-note.is-last-note {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.threa-container  .collapsed {
+  background-color: var(--note-bg);
+}
+
+.thread-container .hidden-note {
+  padding-left: 48px;
 }

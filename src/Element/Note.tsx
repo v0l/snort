@@ -37,7 +37,7 @@ const HiddenNote = ({ children }: any) => {
     <div className="card note hidden-note">
       <div className="header">
         <p>
-          This note was hidden because of your moderation settings
+          This author has been muted 
         </p>
         <button onClick={() => setShow(true)}>
           Show
