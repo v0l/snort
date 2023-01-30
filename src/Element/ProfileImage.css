@@ -15,12 +15,7 @@
 }
 
 .pfp a {
-    text-decoration: none;
-}
-
-.pfp a:hover {
-    text-decoration: underline;
-    text-decoration-color: var(--gray-superlight);
+  text-decoration: none;
 }
 
 .pfp .username {

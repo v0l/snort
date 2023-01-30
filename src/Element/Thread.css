@@ -67,7 +67,7 @@
   position: absolute;
   left: 36px;
   top: 48px;
-  border-left: 1px solid var(--font-secondary-color);
+  border-left: 1px solid var(--gray-superdark);
   height: 100%;
 }
 
@@ -82,7 +82,7 @@
   position: absolute;
   left: 36px;
   top: 48px;
-  border-left: 1px solid var(--font-secondary-color);
+  border-left: 1px solid var(--gray-superdark);
   height: 100%;
 }
 
@@ -95,7 +95,7 @@
 .subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
   content: '';
   position: absolute;
-  border-left: 1px solid var(--font-secondary-color);
+  border-left: 1px solid var(--gray-superdark);
   left: 36px;
   top: 0;
   height: 48px;
@@ -110,7 +110,7 @@
 .subthread-container.subthread-last .line-container:before {
   content: '';
   position: absolute;
-  border-left: 1px solid var(--font-secondary-color);
+  border-left: 1px solid var(--gray-superdark);
   left: 36px;
   top: 0;
   height: 48px;
@@ -128,7 +128,7 @@
 
 .divider {
   height: 1px;
-  background: var(--font-secondary-color);
+  background: var(--gray-superdark);
   margin-left: 28px;
   margin-right: 22px;
 }
@@ -146,10 +146,20 @@
   border-bottom-right-radius: 16px;
 }
 
-.threa-container  .collapsed {
+.thread-container  .collapsed {
   background-color: var(--note-bg);
 }
 
 .thread-container .hidden-note {
   padding-left: 48px;
+}
+
+.thread-root.thread-root-single.note {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.thread-note.note.ghost-root {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }

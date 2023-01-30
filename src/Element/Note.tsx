@@ -19,7 +19,6 @@ import useModeration from "Hooks/useModeration";
 export interface NoteProps {
     data?: TaggedRawEvent,
     className?: string
-    isThread?: boolean,
     related: TaggedRawEvent[],
     highlight?: boolean,
     ignoreModeration?: boolean,
@@ -50,7 +49,7 @@ const HiddenNote = ({ children }: any) => {
 
 export default function Note(props: NoteProps) {
     const navigate = useNavigate();
-    const { data, isThread, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false} = props
+    const { data, className, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false} = props
     const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
     const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
     const users = useUserProfiles(pubKeys);
@@ -182,16 +181,18 @@ export default function Note(props: NoteProps) {
                 <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
                     {transformBody()}
                 </div>
-                {extendable && !showMore && (<div className="flex f-center">
-                    <ShowMore className="mt10" onClick={() => setShowMore(true)} />
-                </div>)}
+                {extendable && !showMore && (
+                  <span className="expand-note mt10 flex f-center" onClick={() => setShowMore(true)}>
+                    Show more
+                  </span>
+                )}
                 {options.showFooter ? <NoteFooter ev={ev} related={related} /> : null}
             </>
         )
     }
 
     const note =  (
-      <div className={`${baseClassname}${highlight ? " active" : ""}${isThread ? " thread-root" : ""}${extendable && !showMore ? " note-expand" : ""}`} ref={ref}>
+      <div className={`${baseClassname}${highlight ? " active" : ""}${extendable && !showMore ? " note-expand" : ""}`} ref={ref}>
           {content()}
       </div>
     )

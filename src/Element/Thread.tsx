@@ -154,6 +154,7 @@ export default function Thread(props: ThreadProps) {
     const currentId = path.length > 0 && path[path.length - 1]
     const currentRoot = useMemo(() => parsedNotes.find(a => a.Id === currentId), [notes, currentId]);
     const navigate = useNavigate()
+    const isSingleNote = parsedNotes.filter(a => a.Kind === EventKind.TextNote).length === 1
 
     useEffect(() => {
       if (root) {
@@ -184,11 +185,12 @@ export default function Thread(props: ThreadProps) {
     }, [chains]);
 
     function renderRoot(note: NEvent) {
+        const className = `thread-root ${isSingleNote ? 'thread-root-single' : ''}`
         if (note) {
-          return <Note key={note.Id} data-ev={note} related={notes} isThread />
+          return <Note className={className} key={note.Id} data-ev={note} related={notes} />
         } else {
             return (
-              <NoteGhost className="thread-root">
+              <NoteGhost className={className}>
                 Loading thread root.. ({notes?.length} notes loaded)
               </NoteGhost>
            )
@@ -210,8 +212,9 @@ export default function Thread(props: ThreadProps) {
     }
 
     function goBack() {
+      const newPath = path.slice(0, path.length - 1)
       if (path.length > 1) {
-        setPath(path.slice(0, path.length - 1))
+        setPath(newPath)
       } else {
         navigate(-1)
       }
@@ -228,7 +231,7 @@ export default function Thread(props: ThreadProps) {
                 {brokenChains.map(a => {
                   return (
                     <>
-                      <NoteGhost className="thread-note" key={a}>
+                      <NoteGhost className={`thread-note ${currentRoot ? '' : 'thread-root ghost-root'}`} key={a}>
                           Missing event <Link to={eventLink(a)}>{a.substring(0, 8)}</Link>
                       </NoteGhost>
                       {renderChain(a)}

@@ -365,7 +365,6 @@ export function sendNotification({ title, body, icon, timestamp }: NotificationR
             vibrate: [500],
             body,
             icon,
-            timestamp,
         });
       } catch (error) {
         console.warn(error)

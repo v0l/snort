@@ -3,7 +3,7 @@
 }
 
 .note>.header .reply {
-  font-size: var(--font-size-tiny);
+  font-size: 13px;
   color: var(--font-secondary-color);
 }
 
@@ -137,15 +137,8 @@
    max-height: 30px;
 }
 
-.show-more {
-  background: none;
-  margin: 0;
-  padding: 0;
+.expand-note {
   font-weight: 400;
   color: var(--highlight);
-}
-
-.show-more:hover {
-  background: none;
-  color: var(--highlight);
+  cursor: pointer;
 }

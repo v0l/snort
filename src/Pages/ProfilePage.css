@@ -41,11 +41,6 @@
   margin: 0 0 12px 0;
 }
 
-.profile .nip05 .nick {
-  font-weight: normal;
-  color: var(--gray-light);
-}
-
 .profile .avatar-wrapper {
   z-index: 1;
 }

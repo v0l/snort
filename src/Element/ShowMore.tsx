@@ -7,7 +7,7 @@ interface ShowMoreProps {
 }
 
 const ShowMore = ({ text = "Show more", onClick, className = "" }: ShowMoreProps) => {
-  const classNames = className ? `button show-more {className}` : "button show-more"
+  const classNames = className ? `show-more ${className}` : "show-more"
   return (
     <button className={classNames} onClick={onClick}>
       {text}

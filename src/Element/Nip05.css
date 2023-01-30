@@ -1,4 +1,5 @@
 .nip05 {
+  color: var(--font-secondary-color);
   justify-content: flex-start;
   align-items: center;
   font-weight: normal;
@@ -8,21 +9,17 @@
   text-decoration: line-through;
 }
 
-.nip05 .nick {
-  color: var(--font-secondary-color);
-}
-
 .nip05 .domain {
-  color: var(--gray-light);
+  color: var(--font-secondary-color);
+  background-color: var(--font-secondary-color);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
-  background-color: var(--gray-light);
 }
 
 .nip05 .domain[data-domain="snort.social"] {
-  background-image: var(--nostrplebs-gradient);
+  background-image: var(--snort-gradient);
 }
 
 .nip05 .domain[data-domain="strike.army"] {
