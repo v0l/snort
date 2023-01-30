@@ -11,10 +11,8 @@ import { RootState } from "State/Store";
 import { mapEventToProfile, MetadataCache  } from "State/Users";
 import { getDb } from "State/Users/Db";
 import useSubscription from "Feed/Subscription";
-import { getDisplayName } from "Element/ProfileImage";
 import { barierNip07 } from "Feed/EventPublisher";
 import { getMutedKeys, getNewest } from "Feed/MuteList";
-import { MentionRegex } from "Const";
 import useModeration from "Hooks/useModeration";
 
 /**

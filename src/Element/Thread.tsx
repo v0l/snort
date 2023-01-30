@@ -26,7 +26,6 @@ const Divider = ({ variant = "regular" }: DividerProps) => {
 }
 
 interface SubthreadProps {
-    tier: number
     isLastSubthread?: boolean
     from: u256
     notes: NEvent[]
@@ -35,7 +34,7 @@ interface SubthreadProps {
     onNavigate: (e: u256) => void
 }
 
-const Subthread = ({ tier, from, notes, related, chains, onNavigate }: SubthreadProps) => {
+const Subthread = ({ from, notes, related, chains, onNavigate }: SubthreadProps) => {
   const renderSubthread = (a: NEvent, idx: number) => {
      const isLastSubthread = idx === notes.length - 1
      const replies = getReplies(a.Id, chains)
@@ -54,7 +53,6 @@ const Subthread = ({ tier, from, notes, related, chains, onNavigate }: Subthread
          </div>
          {replies.length > 0 && (
            <TierTwo
-            tier={2}
             isLastSubthread={isLastSubthread}
             from={a.Id}
             notes={replies}
@@ -74,7 +72,7 @@ const Subthread = ({ tier, from, notes, related, chains, onNavigate }: Subthread
   )
 }
 
-const TierTwo = ({ tier, isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
+const TierTwo = ({ isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
   const [first, ...rest] = notes
   const [collapsed, setCollapsed] = useState(true)
   const replies = getReplies(first.Id, chains) 
@@ -97,7 +95,6 @@ const TierTwo = ({ tier, isLastSubthread, from, notes, related, chains, onNaviga
       {replies.length > 0 && (
         <Collapsed text="Show replies" collapsed={collapsed} setCollapsed={setCollapsed}>
           <TierThree
-           tier={3}
            collapsed={collapsed}
            isLastSubthread={isLastSubthread}
            from={from}
@@ -112,7 +109,7 @@ const TierTwo = ({ tier, isLastSubthread, from, notes, related, chains, onNaviga
   )
 }
 
-const TierThree = ({ tier, isLastSubthread, from, notes, related, chains, onNavigate }: any) => {
+const TierThree = ({ isLastSubthread, from, notes, related, chains, onNavigate }: any) => {
   const [first, ...rest] = notes
   const replies = getReplies(first.Id, chains)
   const isLast = replies.length === 0
@@ -207,7 +204,7 @@ export default function Thread(props: ThreadProps) {
         }
         let replies = chains.get(from);
         if (replies) {
-          return <Subthread tier={1} from={from} notes={replies} related={notes} chains={chains} onNavigate={onNavigate} />
+          return <Subthread from={from} notes={replies} related={notes} chains={chains} onNavigate={onNavigate} />
         }
     }
 
