@@ -28,8 +28,11 @@ export default async function VoidUpload(file: File | Blob, filename: string): P
         let rsp: VoidUploadResponse = await req.json();
         if (rsp.ok) {
             let ext = filename.match(FileExtensionRegex);
+            if(rsp.file?.metadata?.mimeType === "image/webp") {
+                ext = ["", "webp"];
+            }
             return {
-                url: rsp.file?.meta?.url ?? `${VoidCatHost}/d/${rsp.file?.id}${ext ? `.${ext[1]}` : ""}`
+                url: rsp.file?.metadata?.url ?? `${VoidCatHost}/d/${rsp.file?.id}${ext ? `.${ext[1]}` : ""}`
             }
         } else {
             return {
@@ -50,7 +53,7 @@ export type VoidUploadResponse = {
 
 export type VoidFile = {
     id: string,
-    meta?: VoidFileMeta
+    metadata?: VoidFileMeta
 }
 
 export type VoidFileMeta = {
