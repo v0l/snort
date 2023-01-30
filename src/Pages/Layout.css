@@ -27,10 +27,18 @@ header .pfp .avatar-wrapper {
 .header-actions {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .header-actions .btn-rnd {
   position: relative;
+  margin-right: 8px;
+}
+
+@media (min-width: 520px) {
+  .header-actions .btn-rnd {
+    margin-right: 16px;
+  }
 }
 
 .header-actions .btn-rnd .has-unread {

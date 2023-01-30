@@ -225,12 +225,16 @@ button.icon:hover {
 .btn-rnd {
   border-radius: 100%;
   border-color: var(--gray-secondary);
-  width: 32px;
-  height: 32px;
+  width: 21px;
+  height: 21px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 16px;
+}
+
+@media (min-width: 520px) {
+  .btn-rnd { width: 32px; height: 32px }
 }
 
 textarea {
