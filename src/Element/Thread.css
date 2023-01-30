@@ -121,3 +121,7 @@
 .divider.divider-small {
   margin-left: 80px;
 }
+
+.collapsed, .show-more-container {
+  background: var(--note-bg);
+}
