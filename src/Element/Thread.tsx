@@ -85,25 +85,25 @@ export default function Thread(props: ThreadProps) {
     }
 
     return (
-      <>
-        <BackButton />
-        <div className="thread-container">
-            {renderRoot()}
-            {root ? renderChain(root.Id) : null}
-            {root ? null : <>
-                <h3>Other Replies</h3>
-                {brokenChains.map(a => {
-                    return (
-                        <>
-                            <NoteGhost key={a}>
-                                Missing event <Link to={eventLink(a)}>{a.substring(0, 8)}</Link>
-                            </NoteGhost>
-                            {renderChain(a)}
-                        </>
-                    )
-                })}
-            </>}
-        </div>
-      </>
+        <>
+            <BackButton />
+            <div className="thread-container">
+                {renderRoot()}
+                {root ? renderChain(root.Id) : null}
+                {root ? null : <>
+                    <h3>Other Replies</h3>
+                    {brokenChains.map(a => {
+                        return (
+                            <>
+                                <NoteGhost key={a}>
+                                    Missing event <Link to={eventLink(a)}>{a.substring(0, 8)}</Link>
+                                </NoteGhost>
+                                {renderChain(a)}
+                            </>
+                        )
+                    })}
+                </>}
+            </div>
+        </>
     );
 }
