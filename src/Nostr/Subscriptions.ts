@@ -43,9 +43,9 @@ export class Subscriptions {
     HashTags?: Set<string>;
 
     /**
-     * A "d" tag to search
+     * A litst of "d" tags to search
      */
-    DTag?: string;
+    DTags?: Set<string>;
 
     /**
      * A list of search terms
@@ -99,7 +99,7 @@ export class Subscriptions {
         this.Kinds = sub?.kinds ? new Set(sub.kinds) : undefined;
         this.ETags = sub?.["#e"] ? new Set(sub["#e"]) : undefined;
         this.PTags = sub?.["#p"] ? new Set(sub["#p"]) : undefined;
-        this.DTag = sub?.["#d"] ? sub["#d"] : undefined;
+        this.DTags = sub?.["#d"] ? new Set(["#d"]) : undefined;
         this.Search = sub?.search ?? undefined;
         this.Since = sub?.since ?? undefined;
         this.Until = sub?.until ?? undefined;
@@ -145,8 +145,8 @@ export class Subscriptions {
         if (this.HashTags) {
             ret["#t"] = Array.from(this.HashTags);
         }
-        if (this.DTag) {
-            ret["#d"] = this.DTag;
+        if (this.DTags) {
+            ret["#d"] = Array.from(this.DTags);
         }
         if (this.Search) {
             ret.search = this.Search;
