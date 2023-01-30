@@ -78,8 +78,9 @@ export default function ProfileSettings() {
         if (file) {
             console.log(file);
             let rsp = await uploader.upload(file, file.name);
-            if (!rsp?.error) {
-                throw new Error("Upload failed, please try again later");
+            console.log(rsp);
+            if (typeof rsp?.error === "string") {
+                throw new Error(`Upload failed ${rsp.error}`);
             }
             return rsp.url;
         }
