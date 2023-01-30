@@ -17,17 +17,17 @@ import { useInView } from "react-intersection-observer";
 import useModeration from "Hooks/useModeration";
 
 export interface NoteProps {
-    data?: TaggedRawEvent,
-    className?: string
-    related: TaggedRawEvent[],
-    highlight?: boolean,
-    ignoreModeration?: boolean,
-    options?: {
-        showHeader?: boolean,
-        showTime?: boolean,
-        showFooter?: boolean
-    },
-    ["data-ev"]?: NEvent
+  data?: TaggedRawEvent,
+  className?: string
+  related: TaggedRawEvent[],
+  highlight?: boolean,
+  ignoreModeration?: boolean,
+  options?: {
+      showHeader?: boolean,
+      showTime?: boolean,
+      showFooter?: boolean
+  },
+  ["data-ev"]?: NEvent
 }
 
 const HiddenNote = ({ children }: any) => {
@@ -48,25 +48,25 @@ const HiddenNote = ({ children }: any) => {
 
 
 export default function Note(props: NoteProps) {
-    const navigate = useNavigate();
-    const { data, className, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false} = props
-    const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
-    const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
-    const users = useUserProfiles(pubKeys);
-    const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
-    const { isMuted } = useModeration()
-    const isOpMuted = isMuted(ev.PubKey)
-    const { ref, inView, entry } = useInView({ triggerOnce: true });
-    const [extendable, setExtendable] = useState<boolean>(false);
-    const [showMore, setShowMore] = useState<boolean>(false);
-    const baseClassname = `note card ${props.className ? props.className : ''}`
+  const navigate = useNavigate();
+  const { data, className, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false} = props
+  const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
+  const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
+  const users = useUserProfiles(pubKeys);
+  const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
+  const { isMuted } = useModeration()
+  const isOpMuted = isMuted(ev.PubKey)
+  const { ref, inView, entry } = useInView({ triggerOnce: true });
+  const [extendable, setExtendable] = useState<boolean>(false);
+  const [showMore, setShowMore] = useState<boolean>(false);
+  const baseClassname = `note card ${props.className ? props.className : ''}`
 
-    const options = {
-        showHeader: true,
-        showTime: true,
-        showFooter: true,
-        ...opt
-    };
+  const options = {
+      showHeader: true,
+      showTime: true,
+      showFooter: true,
+      ...opt
+  };
 
     const transformBody = useCallback(() => {
         let body = ev?.Content ?? "";

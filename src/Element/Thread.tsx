@@ -1,5 +1,5 @@
 import "./Thread.css";
-import { useMemo, useCallback, useState, useEffect, ReactNode } from "react";
+import { useMemo, useState, useEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import { TaggedRawEvent, u256, HexKey } from "Nostr";
@@ -73,7 +73,7 @@ const Subthread = ({ from, notes, related, chains, onNavigate }: SubthreadProps)
 }
 
 const TierTwo = ({ isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
-  const [first, ...rest] = notes
+  const [first] = notes
   const [collapsed, setCollapsed] = useState(true)
   const replies = getReplies(first.Id, chains) 
   const isLast = replies.length === 0
@@ -110,7 +110,7 @@ const TierTwo = ({ isLastSubthread, from, notes, related, chains, onNavigate }: 
 }
 
 const TierThree = ({ isLastSubthread, from, notes, related, chains, onNavigate }: any) => {
-  const [first, ...rest] = notes
+  const [first] = notes
   const replies = getReplies(first.Id, chains)
   const isLast = replies.length === 0
   return (
