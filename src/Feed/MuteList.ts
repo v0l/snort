@@ -11,7 +11,7 @@ export default function useMutedFeed(pubkey: HexKey) {
         sub.Id = `muted:${pubkey.slice(0, 12)}`;
         sub.Kinds = new Set([EventKind.Lists]);
         sub.Authors = new Set([pubkey]);
-        sub.DTag = Lists.Muted;
+        sub.DTags = new Set([Lists.Muted]);
         sub.Limit = 1;
         return sub;
     }, [pubkey]);
