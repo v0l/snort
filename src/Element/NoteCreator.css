@@ -52,17 +52,43 @@
 }
 
 .note-create-button {
-  width: 48px;
-  height: 48px;
-  background-color: var(--highlight);
-  border: none;
-  border-radius: 100%;
   position: fixed;
   bottom: 50px;
   right: 16px;
+  background: transparent;
+  border: none;
+  border-radius: none;
+  color: inherit;
+  display: inline-block;
+  font: inherit;
+  height: auto;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.note-create-button:hover {
+  background: transparent;
+  border: none;
+  border-radius: none;
+}
+
+.note-create-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--highlight);
+  border-radius: 99em;
+  color: #fff;
+  display: flex;
+  font-weight: 600;
+  height: 48px;
+  width: 48px;
+}
+
+.note-create-container:hover {
+  color: var(--highlight);
+  background: #fff;
 }
 
 @media (min-width: 520px) {
@@ -73,7 +99,7 @@
 
 @media (min-width: 1020px) {
   .note-create-button {
-    right: 25vw;
+    right: calc(50% - 360px);
   }
 }
 

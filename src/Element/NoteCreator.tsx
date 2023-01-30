@@ -81,7 +81,9 @@ export function NoteCreator(props: NoteCreatorProps) {
     return (
         <>
         <button className="note-create-button" type="button" onClick={() => setShow(!show)}>
-          <Plus />
+          <span className="note-create-container">
+           <Plus />
+          </span>
         </button>
         {show && (
           <Modal
