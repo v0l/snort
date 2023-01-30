@@ -73,6 +73,15 @@ const PreferencesPage = () => {
             </div>
             <div className="card flex">
                 <div className="flex f-col f-grow">
+                    <div>Image proxy</div>
+                    <small>Use the caching image proxy to load avatars</small>
+                </div>
+                <div>
+                    <input type="checkbox" checked={perf.useImageProxy} onChange={e => dispatch(setPreferences({ ...perf, useImageProxy: e.target.checked }))} />
+                </div>
+            </div>
+            <div className="card flex">
+                <div className="flex f-col f-grow">
                     <div>Debug Menus</div>
                     <small>Shows "Copy ID" and "Copy Event JSON" in the context menu on each message</small>
                 </div>
