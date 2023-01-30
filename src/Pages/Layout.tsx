@@ -1,5 +1,5 @@
 import "./Layout.css";
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import Envelope from "Icons/Envelope";
@@ -36,14 +36,14 @@ export default function Layout() {
 
     useEffect(() => {
         System.nip42Auth = pub.nip42Auth
-    },[pub])
+    }, [pub])
 
     useEffect(() => {
         if (relays) {
             for (let [k, v] of Object.entries(relays)) {
                 System.ConnectToRelay(k, v);
             }
-            for (let [k, v] of System.Sockets) {
+            for (let [k] of System.Sockets) {
                 if (!relays[k] && !SearchRelays.has(k)) {
                     System.DisconnectRelay(k);
                 }
@@ -73,8 +73,8 @@ export default function Layout() {
     }, [prefs.theme]);
 
     useEffect(() => {
-        dispatch(init());
-    }, []);
+      dispatch(init());
+    }, [dispatch]);
 
     async function goToNotifications(e: any) {
         e.stopPropagation();

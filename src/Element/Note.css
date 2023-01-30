@@ -138,6 +138,7 @@
 }
 
 .expand-note {
+  padding: 0 0 16px 0;
   font-weight: 400;
   color: var(--highlight);
   cursor: pointer;

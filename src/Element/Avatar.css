@@ -14,26 +14,6 @@
     background-image: var(--img-url), var(--snort-gradient);
 }
 
-.avatar[data-domain="nostrplebs.com"] {
-    background-image: var(--img-url), var(--nostrplebs-gradient);
-}
-
-.avatar[data-domain="nostrpurple.com"] {
-    background-image: var(--img-url), var(--nostrplebs-gradient);
-}
-
-.avatar[data-domain="nostr.fan"] {
-    background-image: var(--img-url), var(--nostrplebs-gradient);
-}
-
-.avatar[data-domain="nostrich.zone"] {
-    background-image: var(--img-url), var(--nostrplebs-gradient);
-}
-
-.avatar[data-domain="nostriches.net"] {
-    background-image: var(--img-url), var(--nostrplebs-gradient);
-}
-
 .avatar[data-domain="strike.army"] { 
     background-image: var(--img-url), var(--strike-army-gradient);
 }

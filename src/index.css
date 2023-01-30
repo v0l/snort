@@ -24,7 +24,6 @@
   --gray-superdark: #1A1A1A;
   --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
   --snort-gradient: linear-gradient(90deg, #A178FF 0%, #FF6BAF 108.33%);
-  --nostrplebs-gradient: var(--highlight);
   --strike-army-gradient: linear-gradient(to bottom right, #CCFF00, #a1c900);
 }
 
