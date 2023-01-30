@@ -108,11 +108,13 @@ const TierThree = ({ tier, from, notes, related, chains, onNavigate }: any) => {
       />
       <div className="line-container">
       </div>
-      <div className="show-more-container">
-        <button className="show-more" type="button" onClick={() => onNavigate(from)}>
-          Show replies
-        </button>
-      </div>
+      {replies.length > 0 && (
+        <div className="show-more-container">
+          <button className="show-more" type="button" onClick={() => onNavigate(from)}>
+            Show replies
+          </button>
+        </div>
+      )}
     </div>
   )
 }
