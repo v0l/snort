@@ -1,5 +1,5 @@
 import "./Avatar.css";
-import Nostrich from "../nostrich.jpg";
+import Nostrich from "nostrich.webp";
 import { CSSProperties } from "react";
 import type { UserMetadata } from "Nostr";
 import { useSelector } from "react-redux";

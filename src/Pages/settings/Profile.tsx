@@ -1,5 +1,5 @@
 import "./Profile.css";
-import Nostrich from "nostrich.jpg";
+import Nostrich from "nostrich.webp";
 
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
