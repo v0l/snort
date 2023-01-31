@@ -17,8 +17,9 @@ import TidalEmbed from "Element/TidalEmbed";
 import { useSelector } from 'react-redux';
 import { RootState } from 'State/Store';
 import { UserPreferences } from 'State/Login';
-import  SoundCloudEmbed from 'Element/SoundCloudEmded'
-import MixCloudEmbed from './MixCloudEmbed';
+import SoundCloudEmbed from 'Element/SoundCloudEmded'
+import MixCloudEmbed from 'Element/MixCloudEmbed';
+import { ProxyImg } from 'Element/ProxyImg';
 
 function transformHttpLink(a: string, pref: UserPreferences) {
     try {
@@ -40,7 +41,7 @@ function transformHttpLink(a: string, pref: UserPreferences) {
                 case "png":
                 case "bmp":
                 case "webp": {
-                    return <img key={url.toString()} src={url.toString()} />;
+                    return <ProxyImg key={url.toString()} src={url.toString()} />;
                 }
                 case "wav":
                 case "mp3":
@@ -81,9 +82,9 @@ function transformHttpLink(a: string, pref: UserPreferences) {
             )
         } else if (tidalId) {
             return <TidalEmbed link={a} />
-        } else if (soundcloundId){
+        } else if (soundcloundId) {
             return <SoundCloudEmbed link={a} />
-        } else if (mixcloudId){
+        } else if (mixcloudId) {
             return <MixCloudEmbed link={a} />
         } else {
             return <a href={a} onClick={(e) => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">{a}</a>
@@ -223,14 +224,14 @@ export default function Text({ content, tags, users }: TextProps) {
                 parent &&
                 typeof index === 'number' &&
                 (node.type === 'link' ||
-                  node.type === 'linkReference' ||
-                  node.type === 'image' ||
-                  node.type === 'imageReference' ||
-                  node.type === 'definition')
+                    node.type === 'linkReference' ||
+                    node.type === 'image' ||
+                    node.type === 'imageReference' ||
+                    node.type === 'definition')
             ) {
-                  node.type = 'text';
-                  node.value = content.slice(node.position.start.offset, node.position.end.offset).replace(/\)$/, ' )');
-                  return SKIP;
+                node.type = 'text';
+                node.value = content.slice(node.position.start.offset, node.position.end.offset).replace(/\)$/, ' )');
+                return SKIP;
             }
         })
     }, [content]);

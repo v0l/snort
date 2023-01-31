@@ -1,19 +1,24 @@
 import "./Avatar.css";
 import Nostrich from "nostrich.webp";
-import { CSSProperties } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import type { UserMetadata } from "Nostr";
-import { useSelector } from "react-redux";
-import { RootState } from "State/Store";
-import { ApiHost } from "Const";
+import useImgProxy from "Feed/ImgProxy";
 
 const Avatar = ({ user, ...rest }: { user?: UserMetadata, onClick?: () => void }) => {
-  const useImageProxy = useSelector((s: RootState) => s.login.preferences.useImageProxy);
+  const [url, setUrl] = useState<string>(Nostrich);
+  const { proxy } = useImgProxy();
 
-  const avatarUrl = (user?.picture?.length ?? 0) === 0 ? Nostrich : 
-    (useImageProxy ? `${ApiHost}/api/v1/imgproxy/${window.btoa(user!.picture!)}` : user?.picture)
-  const backgroundImage = `url(${avatarUrl})`
-  const domain = user?.nip05 && user.nip05.split('@')[1]
+  useEffect(() => {
+    if (user?.picture) {
+      proxy(user.picture)
+        .then(a => setUrl(a))
+        .catch(console.warn);
+    }
+  }, [user]);
+
+  const backgroundImage = `url(${url})`
   const style = { '--img-url': backgroundImage } as CSSProperties
+  const domain = user?.nip05 && user.nip05.split('@')[1]
   return (
     <div
       {...rest}

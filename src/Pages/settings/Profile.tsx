@@ -101,7 +101,7 @@ export default function ProfileSettings() {
 
     function editor() {
         return (
-            <div className="editor">
+            <div className="editor form">
                 <div className="form-group">
                     <div>Name:</div>
                     <div>
@@ -114,7 +114,7 @@ export default function ProfileSettings() {
                         <input type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
                     </div>
                 </div>
-                <div className="form-group f-col">
+                <div className="form-group form-col">
                     <div>About:</div>
                     <div className="w-max">
                         <textarea className="w-max" onChange={(e) => setAbout(e.target.value)} value={about}></textarea>
