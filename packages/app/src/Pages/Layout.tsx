@@ -23,6 +23,7 @@ import Plus from "Icons/Plus";
 import { RelaySettings } from "@snort/nostr";
 import { FormattedMessage } from "react-intl";
 import messages from "./messages";
+import Bitcoin from "Icons/Bitcoin";
 
 export default function Layout() {
   const location = useLocation();
@@ -44,6 +45,9 @@ export default function Layout() {
   const [pageClass, setPageClass] = useState("page");
   const pub = useEventPublisher();
   useLoginFeed();
+  useEffect(() => {
+    System.nip42Auth = pub.nip42Auth;
+  }, [pub]);
 
   const shouldHideNoteCreator = useMemo(() => {
     const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/"];
@@ -197,6 +201,9 @@ export default function Layout() {
   function accountHeader() {
     return (
       <div className="header-actions">
+        <div className="btn btn-rnd" onClick={() => navigate("/wallet")}>
+          <Bitcoin />
+        </div>
         <div className="btn btn-rnd" onClick={() => navigate("/search")}>
           <Search />
         </div>

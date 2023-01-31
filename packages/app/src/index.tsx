@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
+import { IntlProvider } from "IntlProvider";
 import Store from "State/Store";
 import EventPage from "Pages/EventPage";
 import Layout from "Pages/Layout";
@@ -28,6 +29,7 @@ import { NewUserRoutes } from "Pages/new";
 import NostrLinkHandler from "Pages/NostrLinkHandler";
 import { IntlProvider } from "./IntlProvider";
 import { unwrap } from "Util";
+import { WalletRoutes } from "Pages/WalletPage";
 
 /**
  * HTTP query provider
@@ -99,6 +101,7 @@ export const router = createBrowserRouter([
         element: <NostrLinkHandler />,
       },
       ...NewUserRoutes,
+      ...WalletRoutes,
     ],
   },
 ]);
