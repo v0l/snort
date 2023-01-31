@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setPreferences, UserPreferences } from "State/Login";
+import { InitState, setPreferences, UserPreferences } from "State/Login";
 import { RootState } from "State/Store";
 import "./Preferences.css";
 
@@ -16,7 +16,7 @@ const PreferencesPage = () => {
                     <div>Theme</div>
                 </div>
                 <div>
-                    <select value={perf.theme} onChange={e => dispatch(setPreferences({ ...perf, theme: e.target.value} as UserPreferences))}>
+                    <select value={perf.theme} onChange={e => dispatch(setPreferences({ ...perf, theme: e.target.value } as UserPreferences))}>
                         <option value="system">System (Default)</option>
                         <option value="light">Light</option>
                         <option value="dark">Dark</option>
@@ -31,6 +31,43 @@ const PreferencesPage = () => {
                 <div>
                     <input type="checkbox" checked={perf.autoLoadMedia} onChange={e => dispatch(setPreferences({ ...perf, autoLoadMedia: e.target.checked }))} />
                 </div>
+            </div>
+            <div className="card flex f-col">
+                <div className="flex w-max">
+                    <div className="flex f-col f-grow">
+                        <div>Image proxy service</div>
+                        <small>Use imgproxy to compress images</small>
+                    </div>
+                    <div>
+                        <input type="checkbox" checked={perf.imgProxyConfig !== null} onChange={e => dispatch(setPreferences({ ...perf, imgProxyConfig: e.target.checked ? InitState.preferences.imgProxyConfig : null }))} />
+                    </div>
+                </div>
+                {perf.imgProxyConfig && (<div className="w-max mt10 form">
+                    <div className="form-group">
+                        <div>
+                            Service Url
+                        </div>
+                        <div className="w-max">
+                            <input type="text" value={perf.imgProxyConfig?.url} placeholder="Url.." onChange={e => dispatch(setPreferences({ ...perf, imgProxyConfig: { ...perf.imgProxyConfig!, url: e.target.value } }))} />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <div>
+                            Service Key
+                        </div>
+                        <div className="w-max">
+                            <input type="password" value={perf.imgProxyConfig?.key} placeholder="Hex key.." onChange={e => dispatch(setPreferences({ ...perf, imgProxyConfig: { ...perf.imgProxyConfig!, key: e.target.value } }))} />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <div>
+                            Service Salt
+                        </div>
+                        <div className="w-max">
+                            <input type="password" value={perf.imgProxyConfig?.salt} placeholder="Hex salt.." onChange={e => dispatch(setPreferences({ ...perf, imgProxyConfig: { ...perf.imgProxyConfig!, salt: e.target.value } }))} />
+                        </div>
+                    </div>
+                </div>)}
             </div>
             <div className="card flex">
                 <div className="flex f-col f-grow">
@@ -65,19 +102,10 @@ const PreferencesPage = () => {
                     <small>Pick which upload service you want to upload attachments to</small>
                 </div>
                 <div>
-                <select value={perf.fileUploader} onChange={e => dispatch(setPreferences({ ...perf, fileUploader: e.target.value} as UserPreferences))}>
+                    <select value={perf.fileUploader} onChange={e => dispatch(setPreferences({ ...perf, fileUploader: e.target.value } as UserPreferences))}>
                         <option value="void.cat">void.cat (Default)</option>
                         <option value="nostr.build">nostr.build</option>
                     </select>
-                </div>
-            </div>
-            <div className="card flex">
-                <div className="flex f-col f-grow">
-                    <div>Image proxy</div>
-                    <small>Use the caching image proxy to load avatars</small>
-                </div>
-                <div>
-                    <input type="checkbox" checked={perf.useImageProxy} onChange={e => dispatch(setPreferences({ ...perf, useImageProxy: e.target.checked }))} />
                 </div>
             </div>
             <div className="card flex">
