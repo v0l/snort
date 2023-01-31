@@ -6,6 +6,11 @@ import { RelaySettings } from "Nostr/Connection";
 export const ApiHost = "https://api.snort.social";
 
 /**
+ * LibreTranslate endpoint
+ */
+export const TranslateHost = "https://translate.snort.social";
+
+/**
  * Void.cat file upload service url
  */
 export const VoidCatHost = "https://void.cat";

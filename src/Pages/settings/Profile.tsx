@@ -9,7 +9,6 @@ import { faShop } from "@fortawesome/free-solid-svg-icons";
 
 import useEventPublisher from "Feed/EventPublisher";
 import { useUserProfile } from "Feed/ProfileFeed";
-import VoidUpload from "Feed/VoidUpload";
 import LogoutButton from "Element/LogoutButton";
 import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
