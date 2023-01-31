@@ -10,7 +10,7 @@ import { openFile } from "Util";
 import Textarea from "Element/Textarea";
 import Modal from "Element/Modal";
 import { default as NEvent } from "Nostr/Event";
-import useFileUpload from "Feed/FileUpload";
+import useFileUpload from "Upload";
 
 export interface NoteCreatorProps {
     show: boolean

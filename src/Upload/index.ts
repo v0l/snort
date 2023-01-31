@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
 import { RootState } from "State/Store";
-import NostrBuildUpload from "./NostrBuildUpload";
-import VoidUpload from "./VoidUpload";
+import NostrBuild from "Upload/NostrBuild";
+import VoidCat from "Upload/VoidCat";
+import NostrImg from "./NostrImg";
 
 export interface UploadResult {
     url?: string,
@@ -18,12 +19,17 @@ export default function useFileUpload(): Uploader {
     switch (fileUploader) {
         case "nostr.build": {
             return {
-                upload: NostrBuildUpload
+                upload: NostrBuild
+            } as Uploader;
+        }
+        case "nostrimg.com": {
+            return {
+                upload: NostrImg
             } as Uploader;
         }
         default: {
             return {
-                upload: VoidUpload
+                upload: VoidCat
             } as Uploader;
         }
     }

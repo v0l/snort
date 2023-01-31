@@ -105,6 +105,7 @@ const PreferencesPage = () => {
                     <select value={perf.fileUploader} onChange={e => dispatch(setPreferences({ ...perf, fileUploader: e.target.value } as UserPreferences))}>
                         <option value="void.cat">void.cat (Default)</option>
                         <option value="nostr.build">nostr.build</option>
+                        <option value="nostrimg.com">nostrimg.com</option>
                     </select>
                 </div>
             </div>
