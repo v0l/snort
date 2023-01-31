@@ -13,10 +13,10 @@ const RelayListKey = "last-relays";
 const FollowList = "last-follows";
 
 export interface NotificationRequest {
-  title: string
-  body: string
-  icon: string
-  timestamp: number
+    title: string
+    body: string
+    icon: string
+    timestamp: number
 }
 
 export interface UserPreferences {
@@ -50,10 +50,15 @@ export interface UserPreferences {
      */
     showDebugMenus: boolean,
 
-     /**
-      * File uploading service to upload attachments to
-      */
-     fileUploader: "void.cat" | "nostr.build"
+    /**
+     * File uploading service to upload attachments to
+     */
+    fileUploader: "void.cat" | "nostr.build",
+
+    /**
+     * Use image proxy service to compress avatars
+     */
+    useImageProxy: boolean,
 }
 
 export interface LoginStore {
@@ -155,7 +160,8 @@ const InitState = {
         confirmReposts: false,
         showDebugMenus: false,
         autoShowLatest: false,
-        fileUploader: "void.cat"
+        fileUploader: "void.cat",
+        useImageProxy: true
     }
 } as LoginStore;
 
@@ -279,21 +285,21 @@ const LoginSlice = createSlice({
 
             window.localStorage.setItem(FollowList, JSON.stringify(state.follows));
         },
-        setMuted(state, action: PayloadAction<{createdAt: number, keys: HexKey[]}>) {
-          const { createdAt, keys } = action.payload
-          if (createdAt >= state.latestMuted) {
-            const muted = new Set([...keys])
-            state.muted = Array.from(muted)
-            state.latestMuted = createdAt
-          }
+        setMuted(state, action: PayloadAction<{ createdAt: number, keys: HexKey[] }>) {
+            const { createdAt, keys } = action.payload
+            if (createdAt >= state.latestMuted) {
+                const muted = new Set([...keys])
+                state.muted = Array.from(muted)
+                state.latestMuted = createdAt
+            }
         },
-        setBlocked(state, action: PayloadAction<{createdAt: number, keys: HexKey[]}>) {
-          const { createdAt, keys } = action.payload
-          if (createdAt >= state.latestMuted) {
-            const blocked = new Set([...keys])
-            state.blocked = Array.from(blocked)
-            state.latestMuted = createdAt
-          }
+        setBlocked(state, action: PayloadAction<{ createdAt: number, keys: HexKey[] }>) {
+            const { createdAt, keys } = action.payload
+            if (createdAt >= state.latestMuted) {
+                const blocked = new Set([...keys])
+                state.blocked = Array.from(blocked)
+                state.latestMuted = createdAt
+            }
         },
         addDirectMessage: (state, action: PayloadAction<TaggedRawEvent | Array<TaggedRawEvent>>) => {
             let n = action.payload;
@@ -352,26 +358,26 @@ export const {
 } = LoginSlice.actions;
 
 export function sendNotification({ title, body, icon, timestamp }: NotificationRequest) {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const state = getState()
-    const { readNotifications } = state.login
-    const hasPermission = "Notification" in window && Notification.permission === "granted" 
-    const shouldShowNotification = hasPermission && timestamp > readNotifications
-    if (shouldShowNotification) {
-      try {
-        let worker = await navigator.serviceWorker.ready;
-        worker.showNotification(title, {
-            tag: "notification",
-            vibrate: [500],
-            body,
-            icon,
-            timestamp,
-        });
-      } catch (error) {
-        console.warn(error)
-      }
+    return async (dispatch: AppDispatch, getState: () => RootState) => {
+        const state = getState()
+        const { readNotifications } = state.login
+        const hasPermission = "Notification" in window && Notification.permission === "granted"
+        const shouldShowNotification = hasPermission && timestamp > readNotifications
+        if (shouldShowNotification) {
+            try {
+                let worker = await navigator.serviceWorker.ready;
+                worker.showNotification(title, {
+                    tag: "notification",
+                    vibrate: [500],
+                    body,
+                    icon,
+                    timestamp,
+                });
+            } catch (error) {
+                console.warn(error)
+            }
+        }
     }
-  }
 }
 
 export const reducer = LoginSlice.reducer;
