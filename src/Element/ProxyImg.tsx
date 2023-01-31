@@ -1,7 +1,8 @@
 import useImgProxy from "Feed/ImgProxy";
 import { useEffect, useState } from "react";
 
-export const ProxyImg = ({ src, ...rest }: { src?: string }) => {
+export const ProxyImg = (props: any) => {
+    const { src, ...rest } = props;
     const [url, setUrl] = useState<string>();
     const { proxy } = useImgProxy();
 

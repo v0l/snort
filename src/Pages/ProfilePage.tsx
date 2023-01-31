@@ -29,6 +29,7 @@ import { HexKey } from "Nostr";
 import FollowsYou from "Element/FollowsYou"
 import QrCode from "Element/QrCode";
 import Modal from "Element/Modal";
+import { ProxyImg } from "Element/ProxyImg"
 
 enum ProfileTab {
     Notes = "Notes",
@@ -193,7 +194,7 @@ export default function ProfilePage() {
     return (
         <>
             <div className="profile flex">
-              {user?.banner && <img alt="banner" className="banner" src={user.banner} />}
+              {user?.banner && <ProxyImg alt="banner" className="banner" src={user.banner} />}
               <div className="profile-wrapper flex">
                 {avatar()}
                 {userDetails()}
