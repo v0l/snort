@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { faTrash, faRepeat, faShareNodes, faCopy, faCommentSlash, faBan } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faRepeat, faShareNodes, faCopy, faCommentSlash, faBan, faLanguage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Menu, MenuItem } from '@szhsin/react-menu';
 
@@ -21,10 +21,18 @@ import { HexKey, TaggedRawEvent } from "Nostr";
 import EventKind from "Nostr/EventKind";
 import { UserPreferences } from "State/Login";
 import useModeration from "Hooks/useModeration";
+import { TranslateHost } from "Const";
+
+export interface Translation {
+  text: string,
+  fromLanguage: string,
+  confidence: number
+}
 
 export interface NoteFooterProps {
   related: TaggedRawEvent[],
-  ev: NEvent
+  ev: NEvent,
+  onTranslated?: (content: Translation) => void
 }
 
 export default function NoteFooter(props: NoteFooterProps) {
@@ -38,6 +46,8 @@ export default function NoteFooter(props: NoteFooterProps) {
   const [reply, setReply] = useState(false);
   const [tip, setTip] = useState(false);
   const isMine = ev.RootPubKey === login;
+  const lang = window.navigator.language;
+  const langNames = new Intl.DisplayNames([...window.navigator.languages], { type: "language" });
   const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related, ev]);
   const reposts = useMemo(() => getReactions(related, ev.Id, EventKind.Repost), [related, ev]);
   const groupReactions = useMemo(() => {
@@ -144,6 +154,29 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }
 
+  async function translate() {
+    const res = await fetch(`${TranslateHost}/translate`, {
+      method: "POST",
+      body: JSON.stringify({
+        q: ev.Content,
+        source: "auto",
+        target: "en"
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+
+    if (res.ok) {
+      let result = await res.json();
+      if (typeof props.onTranslated === "function" && result) {
+        props.onTranslated({
+          text: result.translatedText,
+          fromLanguage: langNames.of(result.detectedLanguage.language),
+          confidence: result.detectedLanguage.confidence
+        } as Translation);
+      }
+    }
+  }
+
   async function copyId() {
     await navigator.clipboard.writeText(hexToBech32("note", ev.Id));
   }
@@ -179,6 +212,10 @@ export default function NoteFooter(props: NoteFooterProps) {
           <FontAwesomeIcon icon={faBan} />
           Block
         </MenuItem>
+        <MenuItem onClick={() => translate()}>
+          <FontAwesomeIcon icon={faLanguage} />
+          Translate to {langNames.of(lang.split("-")[0])}
+        </MenuItem>
         {prefs.showDebugMenus && (
           <MenuItem onClick={() => copyEvent()}>
             <FontAwesomeIcon icon={faCopy} />
@@ -206,10 +243,10 @@ export default function NoteFooter(props: NoteFooterProps) {
           </div>
         </div>
         <Menu menuButton={<div className="reaction-pill">
-            <div className="reaction-pill-icon">
-              <Dots />
-            </div>
-          </div>}
+          <div className="reaction-pill-icon">
+            <Dots />
+          </div>
+        </div>}
           menuClassName="ctx-menu"
         >
           {menuItems()}
