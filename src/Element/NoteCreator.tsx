@@ -1,16 +1,32 @@
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
-
 import "./NoteCreator.css";
 
+import { useState } from "react";
+
+import Attachment from "Icons/Attachment";
 import Plus from "Icons/Plus";
 import useEventPublisher from "Feed/EventPublisher";
 import { openFile } from "Util";
 import Textarea from "Element/Textarea";
 import Modal from "Element/Modal";
+import ProfileImage from "Element/ProfileImage";
 import { default as NEvent } from "Nostr/Event";
 import useFileUpload from "Upload";
+
+interface NotePreviewProps {
+  note: NEvent
+}
+
+function NotePreview({ note }: NotePreviewProps) {
+  return (
+    <div className="note-preview">
+      <ProfileImage pubkey={note.PubKey} />
+      <div className="note-preview-body">
+        {note.Content.slice(0, 136)}
+        {note.Content.length > 140 && '...'}
+      </div>
+    </div>
+  )
+}
 
 export interface NoteCreatorProps {
     show: boolean
@@ -27,6 +43,7 @@ export function NoteCreator(props: NoteCreatorProps) {
     const [error, setError] = useState<string>();
     const [active, setActive] = useState<boolean>(false);
     const uploader = useFileUpload();
+    const hasErrors = (error?.length ?? 0) > 0
 
     async function sendNote() {
         if (note) {
@@ -88,6 +105,9 @@ export function NoteCreator(props: NoteCreatorProps) {
             className="note-creator-modal"
             onClose={() => setShow(false)}
           >
+            {replyTo &&  (
+              <NotePreview note={replyTo} />
+            )}
             <div className={`flex note-creator ${replyTo ? 'note-reply' : ''}`}>
                 <div className="flex f-col mr10 f-grow">
                     <Textarea
@@ -97,11 +117,11 @@ export function NoteCreator(props: NoteCreatorProps) {
                         value={note}
                         onFocus={() => setActive(true)}
                     />
-                <div className="attachment">
-                    {(error?.length ?? 0) > 0 ? <b className="error">{error}</b> : null}
-                    <FontAwesomeIcon icon={faPaperclip} size="xl" onClick={(e) => attachFile()} />
+                <button type="button" className="attachment" onClick={(e) => attachFile()}>
+                  <Attachment />
+                </button>
                 </div>
-                </div>
+                {hasErrors && <span className="error">{error}</span>}
             </div>
             <div className="note-creator-actions">
                 <button className="secondary" type="button" onClick={cancel}>
