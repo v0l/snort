@@ -194,13 +194,14 @@ export default function Note(props: NoteProps) {
                 </div> : null}
             <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
                 {transformBody()}
+                {translation()}
             </div>
             {extendable && !showMore && (
               <span className="expand-note mt10 flex f-center" onClick={() => setShowMore(true)}>
                 Show more
               </span>
             )}
-            {options.showFooter ? <NoteFooter ev={ev} related={related} /> : null}
+            {options.showFooter && <NoteFooter ev={ev} related={related}  onTranslated={(t) => setTranslated(t)} />}
         </>
     )
   }
