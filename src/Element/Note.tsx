@@ -181,28 +181,28 @@ export default function Note(props: NoteProps) {
   }
 
   function content() {
-      if (!inView) return null;
-      return (
-          <>
-              {options.showHeader ?
-                  <div className="header flex">
-                      <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
-                      {options.showTime ?
-                          <div className="info">
-                              <NoteTime from={ev.CreatedAt * 1000} />
-                          </div> : null}
-                  </div> : null}
-              <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
-                  {transformBody()}
-              </div>
-              {extendable && !showMore && (
-                <span className="expand-note mt10 flex f-center" onClick={() => setShowMore(true)}>
-                  Show more
-                </span>
-              )}
-              {options.showFooter ? <NoteFooter ev={ev} related={related} /> : null}
-          </>
-      )
+    if (!inView) return null;
+    return (
+        <>
+            {options.showHeader ?
+                <div className="header flex">
+                    <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
+                    {options.showTime ?
+                        <div className="info">
+                            <NoteTime from={ev.CreatedAt * 1000} />
+                        </div> : null}
+                </div> : null}
+            <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
+                {transformBody()}
+            </div>
+            {extendable && !showMore && (
+              <span className="expand-note mt10 flex f-center" onClick={() => setShowMore(true)}>
+                Show more
+              </span>
+            )}
+            {options.showFooter ? <NoteFooter ev={ev} related={related} /> : null}
+        </>
+    )
   }
 
   const note = (
