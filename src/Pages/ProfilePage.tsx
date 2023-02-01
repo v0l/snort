@@ -105,7 +105,7 @@ export default function ProfilePage() {
   function tabContent() {
     switch (tab) {
       case ProfileTab.Notes:
-        return <Timeline key={id} subject={{ type: "pubkey", items: [id] }} postsOnly={false} method={"LIMIT_UNTIL"} ignoreModeration={true} />;
+        return <Timeline key={id} subject={{ type: "pubkey", items: [id], discriminator: id.slice(0, 12) }} postsOnly={false} method={"LIMIT_UNTIL"} ignoreModeration={true} />;
       case ProfileTab.Follows: {
         if (isMe) {
           return (
@@ -195,7 +195,7 @@ export default function ProfilePage() {
   return (
     <>
       <div className="profile flex">
-        {user?.banner && <ProxyImg alt="banner" className="banner" src={user.banner} size={w}/>}
+        {user?.banner && <ProxyImg alt="banner" className="banner" src={user.banner} size={w} />}
         <div className="profile-wrapper flex">
           {avatar()}
           {userDetails()}

@@ -77,10 +77,10 @@ export default function useLoginFeed() {
         return dms;
     }, [pubKey]);
 
-    const metadataFeed = useSubscription(subMetadata, { leaveOpen: true });
-    const notificationFeed = useSubscription(subNotification, { leaveOpen: true });
-    const dmsFeed = useSubscription(subDms, { leaveOpen: true });
-    const mutedFeed = useSubscription(subMuted, { leaveOpen: true });
+    const metadataFeed = useSubscription(subMetadata, { leaveOpen: true, cache: true });
+    const notificationFeed = useSubscription(subNotification, { leaveOpen: true, cache: true });
+    const dmsFeed = useSubscription(subDms, { leaveOpen: true, cache: true });
+    const mutedFeed = useSubscription(subMuted, { leaveOpen: true, cache: true });
 
     useEffect(() => {
         let contactList = metadataFeed.store.notes.filter(a => a.kind === EventKind.ContactList);

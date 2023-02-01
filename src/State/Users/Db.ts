@@ -5,6 +5,8 @@ import { UsersDb, MetadataCache, setUsers } from "State/Users";
 import store from "State/Store";
 
 class IndexedDb implements UsersDb {
+  ready: boolean = false;
+
   isAvailable() {
     if ("indexedDB" in window) {
       return new Promise<boolean>((resolve) => {
@@ -26,12 +28,12 @@ class IndexedDb implements UsersDb {
 
   query(q: string) {
     return idb.users
-            .where("npub").startsWithIgnoreCase(q)
-            .or("name").startsWithIgnoreCase(q)
-            .or("display_name").startsWithIgnoreCase(q)
-            .or("nip05").startsWithIgnoreCase(q)
-            .limit(5)
-            .toArray()
+      .where("npub").startsWithIgnoreCase(q)
+      .or("name").startsWithIgnoreCase(q)
+      .or("display_name").startsWithIgnoreCase(q)
+      .or("nip05").startsWithIgnoreCase(q)
+      .limit(5)
+      .toArray()
   }
 
   bulkGet(keys: HexKey[]) {
@@ -41,7 +43,7 @@ class IndexedDb implements UsersDb {
   add(user: MetadataCache) {
     return idb.users.add(user)
   }
-  
+
   put(user: MetadataCache) {
     return idb.users.put(user)
   }
@@ -88,21 +90,21 @@ class ReduxUsersDb implements UsersDb {
   async add(user: MetadataCache) {
     const state = store.getState()
     const { users } = state.users
-    store.dispatch(setUsers({...users, [user.pubkey]: user }))
+    store.dispatch(setUsers({ ...users, [user.pubkey]: user }))
   }
 
 
   async put(user: MetadataCache) {
     const state = store.getState()
     const { users } = state.users
-    store.dispatch(setUsers({...users, [user.pubkey]: user }))
+    store.dispatch(setUsers({ ...users, [user.pubkey]: user }))
   }
 
   async bulkAdd(newUserProfiles: MetadataCache[]) {
     const state = store.getState()
     const { users } = state.users
     const newUsers = newUserProfiles.reduce(groupByPubkey, {})
-    store.dispatch(setUsers({...users, ...newUsers }))
+    store.dispatch(setUsers({ ...users, ...newUsers }))
   }
 
   async bulkGet(keys: HexKey[]) {
@@ -118,8 +120,8 @@ class ReduxUsersDb implements UsersDb {
     const state = store.getState()
     const { users } = state.users
     const current = users[key]
-    const updated = {...current, ...fields }
-    store.dispatch(setUsers({...users, [key]: updated }))
+    const updated = { ...current, ...fields }
+    store.dispatch(setUsers({ ...users, [key]: updated }))
   }
 
   async bulkPut(newUsers: MetadataCache[]) {
@@ -138,6 +140,7 @@ let db: UsersDb = inMemoryDb
 indexedDb.isAvailable().then((available) => {
   if (available) {
     console.debug('Using Indexed DB')
+    indexedDb.ready = true;
     db = indexedDb;
   } else {
     console.debug('Using in-memory DB')

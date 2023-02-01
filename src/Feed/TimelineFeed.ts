@@ -14,6 +14,7 @@ export interface TimelineFeedOptions {
 
 export interface TimelineSubject {
     type: "pubkey" | "hashtag" | "global" | "ptag" | "keyword",
+    discriminator: string,
     items: string[]
 }
 
@@ -32,7 +33,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         }
 
         let sub = new Subscriptions();
-        sub.Id = `timeline:${subject.type}`;
+        sub.Id = `timeline:${subject.type}:${subject.discriminator}`;
         sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
         switch (subject.type) {
             case "pubkey": {
@@ -54,7 +55,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
             }
         }
         return sub;
-    }, [subject.type, subject.items]);
+    }, [subject.type, subject.items, subject.discriminator]);
 
     const sub = useMemo(() => {
         let sub = createSub();
@@ -86,7 +87,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         return sub;
     }, [until, since, options.method, pref, createSub]);
 
-    const main = useSubscription(sub, { leaveOpen: true });
+    const main = useSubscription(sub, { leaveOpen: true, cache: true });
 
     const subRealtime = useMemo(() => {
         let subLatest = createSub();
@@ -98,7 +99,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         return subLatest;
     }, [pref, createSub]);
 
-    const latest = useSubscription(subRealtime, { leaveOpen: true });
+    const latest = useSubscription(subRealtime, { leaveOpen: true, cache: false });
 
     const subNext = useMemo(() => {
         let sub: Subscriptions | undefined;
@@ -111,7 +112,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         return sub ?? null;
     }, [trackingEvents, pref, subject.type]);
 
-    const others = useSubscription(subNext, { leaveOpen: true });
+    const others = useSubscription(subNext, { leaveOpen: true, cache: true });
 
     const subParents = useMemo(() => {
         if (trackingParentEvents.length > 0) {
