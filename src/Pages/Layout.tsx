@@ -17,6 +17,7 @@ import { totalUnread } from "Pages/MessagesPage";
 import { SearchRelays } from 'Const';
 import useEventPublisher from "Feed/EventPublisher";
 import useModeration from "Hooks/useModeration";
+import { IndexedUDB, useDb } from "State/Users/Db";
 
 
 export default function Layout() {
@@ -31,12 +32,17 @@ export default function Layout() {
     const { isMuted } = useModeration();
     const filteredDms = dms.filter(a => !isMuted(a.pubkey))
     const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
+    const usingDb = useDb();
     const pub = useEventPublisher();
     useLoginFeed();
 
     useEffect(() => {
         System.nip42Auth = pub.nip42Auth
-    },[pub])
+    }, [pub])
+
+    useEffect(() => {
+        System.UserDb = usingDb;
+    }, [usingDb])
 
     useEffect(() => {
         if (relays) {
@@ -73,7 +79,14 @@ export default function Layout() {
     }, [prefs.theme]);
 
     useEffect(() => {
-        dispatch(init());
+        // check DB support then init
+        IndexedUDB.isAvailable()
+            .then(a => {
+                const db = a ? "indexdDb" : "redux";
+                console.debug(`Using db: ${db}`);
+                dispatch(init(db));
+            })
+
     }, []);
 
     async function goToNotifications(e: any) {

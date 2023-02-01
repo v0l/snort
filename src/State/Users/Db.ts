@@ -2,9 +2,10 @@ import { HexKey } from "Nostr";
 import { db as idb } from "Db";
 
 import { UsersDb, MetadataCache, setUsers } from "State/Users";
-import store from "State/Store";
+import store, { RootState } from "State/Store";
+import { useSelector } from "react-redux";
 
-class IndexedDb implements UsersDb {
+class IndexedUsersDb implements UsersDb {
   ready: boolean = false;
 
   isAvailable() {
@@ -132,21 +133,13 @@ class ReduxUsersDb implements UsersDb {
   }
 }
 
+export const IndexedUDB = new IndexedUsersDb();
+export const ReduxUDB = new ReduxUsersDb();
 
-const indexedDb = new IndexedDb()
-export const inMemoryDb = new ReduxUsersDb()
-
-let db: UsersDb = inMemoryDb
-indexedDb.isAvailable().then((available) => {
-  if (available) {
-    console.debug('Using Indexed DB')
-    indexedDb.ready = true;
-    db = indexedDb;
-  } else {
-    console.debug('Using in-memory DB')
+export function useDb(): UsersDb {
+  const db = useSelector((s: RootState) => s.login.useDb);
+  switch (db) {
+    case "indexdDb": return IndexedUDB
+    default: return ReduxUDB
   }
-})
-
-export function getDb() {
-  return db
 }

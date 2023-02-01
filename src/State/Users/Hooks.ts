@@ -1,27 +1,17 @@
 import { useSelector } from "react-redux"
 import { useLiveQuery } from "dexie-react-hooks";
 import { MetadataCache } from "State/Users";
-import { getDb, inMemoryDb } from "State/Users/Db";
 import type { RootState } from "State/Store"
 import { HexKey } from "Nostr";
+import { useDb } from "./Db";
 
 export function useQuery(query: string, limit: number = 5) {
-  const db = getDb()
-
-  const allUsers = useLiveQuery(
-    () => db.query(query)
-      .catch((err) => {
-        console.error(err)
-        return inMemoryDb.query(query)
-      }),
-    [query],
-  )
-
-  return allUsers
+  const db = useDb()
+  return useLiveQuery(async () => db.query(query), [query],)
 }
 
 export function useKey(pubKey: HexKey) {
-  const db = getDb()
+  const db = useDb()
   const { users } = useSelector((state: RootState) => state.users)
   const defaultUser = users[pubKey]
 
@@ -40,7 +30,9 @@ export function useKey(pubKey: HexKey) {
 }
 
 export function useKeys(pubKeys: HexKey[]): Map<HexKey, MetadataCache> {
-  const db = getDb()
+  const db = useDb()
+  const { users } = useSelector((state: RootState) => state.users)
+
   const dbUsers = useLiveQuery(async () => {
     if (pubKeys) {
       try {
@@ -48,12 +40,11 @@ export function useKeys(pubKeys: HexKey[]): Map<HexKey, MetadataCache> {
         return new Map(ret.map(a => [a.pubkey, a]))
       } catch (error) {
         console.error(error)
-        const ret = await inMemoryDb.bulkGet(pubKeys);
-        return new Map(ret.map(a => [a.pubkey, a]))
+        return new Map(pubKeys.map(a => [a, users[a]]))
       }
     }
     return new Map()
-  }, [pubKeys]);
+  }, [pubKeys, users]);
 
   return dbUsers!
 }
