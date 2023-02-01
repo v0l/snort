@@ -143,15 +143,17 @@ export default function Note(props: NoteProps) {
     const others = mentions.length > maxMentions ? ` & ${othersLength} other${othersLength > 1 ? 's' : ''}` : ''
     return (
       <div className="reply">
-        re:
+        re:&nbsp;
         {(mentions?.length ?? 0) > 0 ? (
           <>
             {pubMentions}
             {others}
           </>
-        ) : replyId ? (
-          hexToBech32("note", replyId)?.substring(0, 12) // todo: link
-        ) : ""}
+        ) : replyId && (
+          <Link to={`/e/${hexToBech32("note", replyId)}`}>
+            {hexToBech32("note", replyId)?.substring(0, 12)}
+          </Link>
+        )}
       </div>
     )
   }
