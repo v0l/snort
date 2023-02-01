@@ -1,6 +1,6 @@
-import { UploadResult } from "./FileUpload";
+import { UploadResult } from "Upload";
 
-export default async function NostrBuildUpload(file: File | Blob): Promise<UploadResult> {
+export default async function NostrBuild(file: File | Blob): Promise<UploadResult> {
     let fd = new FormData();
     fd.append("fileToUpload", file);
     fd.append("submit", "Upload Image");

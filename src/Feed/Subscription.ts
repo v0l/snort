@@ -81,6 +81,10 @@ export default function useSubscription(sub: Subscriptions | null, options?: Use
     useEffect(() => {
         if (sub) {
             return debounce(DebounceMs, () => {
+                dispatch({
+                    type: "END",
+                    end: false
+                });
                 setSubDebounced(sub);
             });
         }
