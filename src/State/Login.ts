@@ -4,6 +4,7 @@ import { DefaultRelays } from 'Const';
 import { HexKey, TaggedRawEvent } from 'Nostr';
 import { RelaySettings } from 'Nostr/Connection';
 import type { AppDispatch, RootState } from "State/Store";
+import { ImgProxySettings } from 'Feed/ImgProxy';
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
@@ -13,10 +14,10 @@ const RelayListKey = "last-relays";
 const FollowList = "last-follows";
 
 export interface NotificationRequest {
-  title: string
-  body: string
-  icon: string
-  timestamp: number
+    title: string
+    body: string
+    icon: string
+    timestamp: number
 }
 
 export interface UserPreferences {
@@ -50,10 +51,15 @@ export interface UserPreferences {
      */
     showDebugMenus: boolean,
 
-     /**
-      * File uploading service to upload attachments to
-      */
-     fileUploader: "void.cat" | "nostr.build"
+    /**
+     * File uploading service to upload attachments to
+     */
+    fileUploader: "void.cat" | "nostr.build",
+
+    /**
+     * Use imgproxy to optimize images
+     */
+    imgProxyConfig: ImgProxySettings | null
 }
 
 export interface LoginStore {
@@ -133,7 +139,7 @@ export interface LoginStore {
     preferences: UserPreferences
 };
 
-const InitState = {
+export const InitState = {
     loggedOut: undefined,
     publicKey: undefined,
     privateKey: undefined,
@@ -155,7 +161,12 @@ const InitState = {
         confirmReposts: false,
         showDebugMenus: false,
         autoShowLatest: false,
-        fileUploader: "void.cat"
+        fileUploader: "void.cat",
+        imgProxyConfig: {
+            url: "https://imgproxy.snort.social",
+            key: "a82fcf26aa0ccb55dfc6b4bd6a1c90744d3be0f38429f21a8828b43449ce7cebe6bdc2b09a827311bef37b18ce35cb1e6b1c60387a254541afa9e5b4264ae942",
+            salt: "a897770d9abf163de055e9617891214e75a9016d748f8ef865e6ffbcb9ed932295659549773a22a019a5f06d0b440c320be411e3fddfe784e199e4f03d74bd9b"
+        }
     }
 } as LoginStore;
 
@@ -279,21 +290,21 @@ const LoginSlice = createSlice({
 
             window.localStorage.setItem(FollowList, JSON.stringify(state.follows));
         },
-        setMuted(state, action: PayloadAction<{createdAt: number, keys: HexKey[]}>) {
-          const { createdAt, keys } = action.payload
-          if (createdAt >= state.latestMuted) {
-            const muted = new Set([...keys])
-            state.muted = Array.from(muted)
-            state.latestMuted = createdAt
-          }
+        setMuted(state, action: PayloadAction<{ createdAt: number, keys: HexKey[] }>) {
+            const { createdAt, keys } = action.payload
+            if (createdAt >= state.latestMuted) {
+                const muted = new Set([...keys])
+                state.muted = Array.from(muted)
+                state.latestMuted = createdAt
+            }
         },
-        setBlocked(state, action: PayloadAction<{createdAt: number, keys: HexKey[]}>) {
-          const { createdAt, keys } = action.payload
-          if (createdAt >= state.latestMuted) {
-            const blocked = new Set([...keys])
-            state.blocked = Array.from(blocked)
-            state.latestMuted = createdAt
-          }
+        setBlocked(state, action: PayloadAction<{ createdAt: number, keys: HexKey[] }>) {
+            const { createdAt, keys } = action.payload
+            if (createdAt >= state.latestMuted) {
+                const blocked = new Set([...keys])
+                state.blocked = Array.from(blocked)
+                state.latestMuted = createdAt
+            }
         },
         addDirectMessage: (state, action: PayloadAction<TaggedRawEvent | Array<TaggedRawEvent>>) => {
             let n = action.payload;
@@ -352,25 +363,26 @@ export const {
 } = LoginSlice.actions;
 
 export function sendNotification({ title, body, icon, timestamp }: NotificationRequest) {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const state = getState()
-    const { readNotifications } = state.login
-    const hasPermission = "Notification" in window && Notification.permission === "granted" 
-    const shouldShowNotification = hasPermission && timestamp > readNotifications
-    if (shouldShowNotification) {
-      try {
-        let worker = await navigator.serviceWorker.ready;
-        worker.showNotification(title, {
-            tag: "notification",
-            vibrate: [500],
-            body,
-            icon,
-        });
-      } catch (error) {
-        console.warn(error)
-      }
+    return async (dispatch: AppDispatch, getState: () => RootState) => {
+        const state = getState()
+        const { readNotifications } = state.login
+        const hasPermission = "Notification" in window && Notification.permission === "granted"
+        const shouldShowNotification = hasPermission && timestamp > readNotifications
+        if (shouldShowNotification) {
+            try {
+                let worker = await navigator.serviceWorker.ready;
+                worker.showNotification(title, {
+                    tag: "notification",
+                    vibrate: [500],
+                    body,
+                    icon,
+                    timestamp,
+                });
+            } catch (error) {
+                console.warn(error)
+            }
+        }
     }
-  }
 }
 
 export const reducer = LoginSlice.reducer;

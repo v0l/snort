@@ -326,18 +326,24 @@ a.ext {
   white-space: initial;
 }
 
+div.form {
+  display: grid;
+  grid-auto-flow: row;
+}
+
 div.form-group {
-  display: flex;
+  display: grid;
   align-items: center;
+  grid-template-columns: 1fr 2fr;
 }
 
 div.form-group>div {
   padding: 3px 5px;
-  word-break: break-word;
 }
 
 div.form-group>div:nth-child(1) {
-  min-width: 100px;
+  display: flex;
+  align-self: center;
 }
 
 div.form-group>div:nth-child(2) {
@@ -348,6 +354,11 @@ div.form-group>div:nth-child(2) {
 
 div.form-group>div:nth-child(2) input {
   flex-grow: 1;
+}
+
+div.form-col {
+  grid-auto-flow: row;
+  grid-template-columns: auto;
 }
 
 .modal {
@@ -376,7 +387,7 @@ body.scroll-lock {
   height: 100vh;
 }
 
-.pointer { 
+.pointer {
   cursor: pointer;
 }
 
@@ -484,6 +495,10 @@ body.scroll-lock {
 }
 
 @media(max-width: 720px) {
+  div.form {
+    grid-auto-flow: dense;
+  }
+
   div.form-group {
     flex-direction: column;
     align-items: flex-start;

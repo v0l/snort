@@ -53,7 +53,7 @@ export default function useLoginFeed() {
         sub.Id = "login:muted";
         sub.Kinds = new Set([EventKind.Lists]);
         sub.Authors = new Set([pubKey]);
-        sub.DTag = Lists.Muted;
+        sub.DTags = new Set([Lists.Muted]);
         sub.Limit = 1;
 
         return sub;

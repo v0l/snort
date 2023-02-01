@@ -21,7 +21,7 @@ export interface NoteCreatorProps {
 }
 
 export function NoteCreator(props: NoteCreatorProps) {
-    const { show, setShow } = props
+    const { show, setShow, replyTo, onSend, autoFocus } = props
     const publisher = useEventPublisher();
     const [note, setNote] = useState<string>();
     const [error, setError] = useState<string>();
@@ -30,13 +30,13 @@ export function NoteCreator(props: NoteCreatorProps) {
 
     async function sendNote() {
         if (note) {
-            let ev = props.replyTo ? await publisher.reply(props.replyTo, note) : await publisher.note(note);
+            let ev = replyTo ? await publisher.reply(replyTo, note) : await publisher.note(note);
             console.debug("Sending note: ", ev);
             publisher.broadcast(ev);
             setNote("");
             setShow(false);
-            if (typeof props.onSend === "function") {
-                props.onSend();
+            if (typeof onSend === "function") {
+                onSend();
             }
             setActive(false);
         }
@@ -90,10 +90,10 @@ export function NoteCreator(props: NoteCreatorProps) {
             className="note-creator-modal"
             onClose={() => setShow(false)}
           >
-            <div className={`flex note-creator ${props.replyTo ? 'note-reply' : ''}`}>
+            <div className={`flex note-creator ${replyTo ? 'note-reply' : ''}`}>
                 <div className="flex f-col mr10 f-grow">
                     <Textarea
-                        autoFocus={props.autoFocus}
+                        autoFocus={autoFocus}
                         className={`textarea ${active ? "textarea--focused" : ""}`}
                         onChange={onChange}
                         value={note}
@@ -110,7 +110,7 @@ export function NoteCreator(props: NoteCreatorProps) {
                   Cancel
                 </button>
                 <button type="button" onClick={onSubmit}>
-                    {props.replyTo ? 'Reply' : 'Send'}
+                    {replyTo ? 'Reply' : 'Send'}
                 </button>
             </div>
           </Modal>

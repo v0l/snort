@@ -39,7 +39,7 @@ export default function NoteReaction(props: NoteReactionProps) {
      * Some clients embed the reposted note in the content
      */
     function extractRoot() {
-        if (ev?.Kind === EventKind.Repost && ev.Content.length > 0) {
+        if (ev?.Kind === EventKind.Repost && ev.Content.length > 0 && ev.Content !== "#[0]") {
             try {
                 let r: RawEvent = JSON.parse(ev.Content);
                 return r as TaggedRawEvent;

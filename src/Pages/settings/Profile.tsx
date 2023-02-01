@@ -1,5 +1,5 @@
 import "./Profile.css";
-import Nostrich from "nostrich.jpg";
+import Nostrich from "nostrich.webp";
 
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -9,7 +9,6 @@ import { faShop } from "@fortawesome/free-solid-svg-icons";
 
 import useEventPublisher from "Feed/EventPublisher";
 import { useUserProfile } from "Feed/ProfileFeed";
-import VoidUpload from "Feed/VoidUpload";
 import LogoutButton from "Element/LogoutButton";
 import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
@@ -78,8 +77,9 @@ export default function ProfileSettings() {
         if (file) {
             console.log(file);
             let rsp = await uploader.upload(file, file.name);
-            if (!rsp?.error) {
-                throw new Error("Upload failed, please try again later");
+            console.log(rsp);
+            if (typeof rsp?.error === "string") {
+                throw new Error(`Upload failed ${rsp.error}`);
             }
             return rsp.url;
         }
@@ -101,7 +101,7 @@ export default function ProfileSettings() {
 
     function editor() {
         return (
-            <div className="editor">
+            <div className="editor form">
                 <div className="form-group">
                     <div>Name:</div>
                     <div>
@@ -114,7 +114,7 @@ export default function ProfileSettings() {
                         <input type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
                     </div>
                 </div>
-                <div className="form-group f-col">
+                <div className="form-group form-col">
                     <div>About:</div>
                     <div className="w-max">
                         <textarea className="w-max" onChange={(e) => setAbout(e.target.value)} value={about}></textarea>

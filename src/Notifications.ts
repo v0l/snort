@@ -1,4 +1,4 @@
-import Nostrich from "nostrich.jpg";
+import Nostrich from "nostrich.webp";
 
 import { TaggedRawEvent } from "Nostr";
 import EventKind from "Nostr/EventKind";
