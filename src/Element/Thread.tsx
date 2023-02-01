@@ -1,5 +1,6 @@
 import "./Thread.css";
 import { useMemo, useState, useEffect, ReactNode } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
 import { TaggedRawEvent, u256, HexKey } from "Nostr";
@@ -10,6 +11,7 @@ import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";
 import Collapsed from "Element/Collapsed";
+import type { RootState } from "State/Store";
 
 interface DividerProps {
   variant?: "regular" | "small"
@@ -74,10 +76,14 @@ const Subthread = ({ from, notes, related, chains, onNavigate }: SubthreadProps)
 
 const TierTwo = ({ isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
   const [first] = notes
+  const pubKey = useSelector((s: RootState) => s.login.publicKey)
   const [collapsed, setCollapsed] = useState(true)
   const replies = getReplies(first.Id, chains) 
-  const isLast = replies.length === 0
-  const className = `subthread-container ${isLast ? 'subthread-last' : 'subthread-mid'} ${isLast || !collapsed ? 'subthread-multi' : ''}`
+  const ourReplies = replies.filter(a => a.PubKey === pubKey)
+  const hasOurReplies = ourReplies.length > 0
+  const isLast = replies.length === 0 && ourReplies.length === 0
+  const hasMultipleNotes = isLast || !collapsed || hasOurReplies
+  const className = `subthread-container ${isLast ? 'subthread-last' : 'subthread-mid'} ${hasMultipleNotes ? 'subthread-multi' : ''}`
   return (
     <>
       <div className={className}>
@@ -92,16 +98,34 @@ const TierTwo = ({ isLastSubthread, from, notes, related, chains, onNavigate }: 
         </div>
       </div>
 
+      {collapsed && (
+        ourReplies.map((r, idx) => {
+          const lastReply = idx === ourReplies.length - 1
+          return (
+            <div className={`subthread-container subthread-multi ${lastReply ? 'subthread-last' : 'subthread-mid'}`}>
+              <Divider variant="small" />
+              <Note
+                className={`thread-note`}
+                data-ev={r}
+                key={r.Id}
+                related={related}
+              />
+              <div className="line-container">
+              </div>
+            </div>
+          )
+        })
+      )}
+
       {replies.length > 0 && (
         <Collapsed text="Show replies" collapsed={collapsed} setCollapsed={setCollapsed}>
           <TierThree
-           collapsed={collapsed}
            isLastSubthread={isLastSubthread}
            from={from}
            notes={replies}
            related={related}
            chains={chains}
-            onNavigate={onNavigate}
+           onNavigate={onNavigate}
         />
         </Collapsed>
       )}
@@ -111,11 +135,12 @@ const TierTwo = ({ isLastSubthread, from, notes, related, chains, onNavigate }: 
 
 const TierThree = ({ isLastSubthread, from, notes, related, chains, onNavigate }: any) => {
   const [first] = notes
-  const replies = getReplies(first.Id, chains)
-  const isLast = replies.length === 0
+  const pubKey = useSelector((s: RootState) => s.login.publicKey)
+  const replies = getReplies(first.Id, chains).filter(a => a.PubKey !== pubKey)
+  const ourReplies = replies.filter(a => a.PubKey === pubKey)
+  const isLast = replies.length === 0 && ourReplies.length === 0
   return (
-    <div
-      className={`subthread-container ${isLast ? 'subthread-multi' : ''} ${isLast ? 'subthread-last' : 'subthread-mid'}`}> 
+    <div className={`subthread-container ${isLast ? '' : 'subthread-multi'} ${isLast ? 'subthread-last' : 'subthread-mid'}`}>
       <Divider variant="small" />
       <Note
         className={`thread-note ${isLastSubthread && isLast ? 'is-last-note' : ''}`}
@@ -125,6 +150,26 @@ const TierThree = ({ isLastSubthread, from, notes, related, chains, onNavigate }
       />
       <div className="line-container">
       </div>
+
+      {ourReplies.map((r, idx) => {
+        const lastReply = idx === ourReplies.length - 1
+        const lastNote = isLastSubthread && lastReply && replies.length === ourReplies.length
+        return (
+          <div className={`subthread-container subthread-multi ${lastReply ? 'subthread-last' : 'subthread-mid'}`}>
+            <Divider variant="small" />
+            <Note
+              className={`thread-note ${lastNote ? 'is-last-note' : ''}`}
+              data-ev={r}
+              key={r.Id}
+              related={related}
+            />
+            <div className="line-container">
+            </div>
+          </div>
+        )
+        })
+      }
+
       {replies.length > 0 && (
         <div className="show-more-container">
           <button className="show-more" type="button" onClick={() => onNavigate(from)}>

@@ -137,6 +137,23 @@ export default function Note(props: NoteProps) {
         </>
       )
     }
+    const pubMentions = mentions.length > maxMentions ? (
+      mentions?.slice(0, maxMentions).map(renderMention)
+    ) : mentions?.map(renderMention);
+    const others = mentions.length > maxMentions ? ` & ${othersLength} other${othersLength > 1 ? 's' : ''}` : ''
+    return (
+      <div className="reply">
+        re:
+        {(mentions?.length ?? 0) > 0 ? (
+          <>
+            {pubMentions}
+            {others}
+          </>
+        ) : replyId ? (
+          hexToBech32("note", replyId)?.substring(0, 12) // todo: link
+        ) : ""}
+      </div>
+    )
   }
 
   if (ev.Kind !== EventKind.TextNote) {
