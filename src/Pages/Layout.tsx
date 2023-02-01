@@ -18,6 +18,7 @@ import { SearchRelays } from 'Const';
 import useEventPublisher from "Feed/EventPublisher";
 import useModeration from "Hooks/useModeration";
 import { IndexedUDB, useDb } from "State/Users/Db";
+import { db } from "Db";
 
 
 export default function Layout() {
@@ -81,10 +82,24 @@ export default function Layout() {
     useEffect(() => {
         // check DB support then init
         IndexedUDB.isAvailable()
-            .then(a => {
-                const db = a ? "indexdDb" : "redux";
-                console.debug(`Using db: ${db}`);
-                dispatch(init(db));
+            .then(async a => {
+                const dbType = a ? "indexdDb" : "redux";
+
+                // cleanup on load
+                if (dbType === "indexdDb") {
+                    await db.feeds.clear();
+                    const now = Math.floor(new Date().getTime() / 1000);
+
+                    const cleanupEvents = await db.events
+                        .where("created_at")
+                        .above(now - (60 * 60))
+                        .primaryKeys();
+                    console.debug(`Cleanup ${cleanupEvents.length} events`);
+                    await db.events.bulkDelete(cleanupEvents)
+                }
+
+                console.debug(`Using db: ${dbType}`);
+                dispatch(init(dbType));
             })
 
     }, []);
