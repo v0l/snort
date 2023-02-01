@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import { visit, SKIP } from "unist-util-visit";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
-import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex, TidalRegex, SoundCloudRegex, MixCloudRegex } from "Const";
+import { UrlRegex, FileExtensionRegex, MentionRegex, InvoiceRegex, YoutubeUrlRegex, TweetUrlRegex, HashtagRegex, TidalRegex, SoundCloudRegex, MixCloudRegex, SpotifyRegex } from "Const";
 import { eventLink, hexToBech32 } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
@@ -19,6 +19,7 @@ import { RootState } from 'State/Store';
 import { UserPreferences } from 'State/Login';
 import SoundCloudEmbed from 'Element/SoundCloudEmded'
 import MixCloudEmbed from 'Element/MixCloudEmbed';
+import SpotifyEmbed from "./SpotifyEmbed";
 import { ProxyImg } from 'Element/ProxyImg';
 
 function transformHttpLink(a: string, pref: UserPreferences) {
@@ -32,6 +33,7 @@ function transformHttpLink(a: string, pref: UserPreferences) {
         const tidalId = TidalRegex.test(a) && RegExp.$1;
         const soundcloundId = SoundCloudRegex.test(a) && RegExp.$1;
         const mixcloudId = MixCloudRegex.test(a) && RegExp.$1;
+        const spotifyId = SpotifyRegex.test(a);
         const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
         if (extension) {
             switch (extension) {
@@ -86,6 +88,8 @@ function transformHttpLink(a: string, pref: UserPreferences) {
             return <SoundCloudEmbed link={a} />
         } else if (mixcloudId) {
             return <MixCloudEmbed link={a} />
+        } else if (spotifyId) {
+            return <SpotifyEmbed link={a} />
         } else {
             return <a href={a} onClick={(e) => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">{a}</a>
         }
