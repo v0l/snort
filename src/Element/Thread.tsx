@@ -140,7 +140,7 @@ const TierThree = ({ isLastSubthread, from, notes, related, chains, onNavigate }
   const ourReplies = replies.filter(a => a.PubKey === pubKey)
   const isLast = replies.length === 0 && ourReplies.length === 0
   return (
-    <div className={`subthread-container ${isLast ? '' : 'subthread-multi'} ${isLast ? 'subthread-last' : 'subthread-mid'}`}>
+    <div className={`subthread-container ${isLast ? 'subthread-last' : 'subthread-mid'}`}>
       <Divider variant="small" />
       <Note
         className={`thread-note ${isLastSubthread && isLast ? 'is-last-note' : ''}`}
@@ -270,14 +270,15 @@ export default function Thread(props: ThreadProps) {
             {currentRoot && renderChain(currentRoot.Id)}
             {currentRoot === root && (
               <>
+                {brokenChains.length > 0 && <h3>Other replies</h3>}
                 {brokenChains.map(a => {
                   return (
-                    <>
-                      <NoteGhost className={`thread-note ${currentRoot ? '' : 'thread-root ghost-root'}`} key={a}>
+                    <div className="mb10">
+                      <NoteGhost className={`thread-note thread-root ghost-root`} key={a}>
                           Missing event <Link to={eventLink(a)}>{a.substring(0, 8)}</Link>
                       </NoteGhost>
                       {renderChain(a)}
-                    </>
+                    </div>
                   )
                 })}
               </>
