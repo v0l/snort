@@ -1,12 +1,12 @@
 import * as secp from "@noble/secp256k1";
 import { FileExtensionRegex, VoidCatHost } from "Const";
-import { UploadResult } from "./FileUpload";
+import { UploadResult } from "Upload";
 
 /**
  * Upload file to void.cat
  * https://void.cat/swagger/index.html
  */
-export default async function VoidUpload(file: File | Blob, filename: string): Promise<UploadResult> {
+export default async function VoidCat(file: File | Blob, filename: string): Promise<UploadResult> {
     const buf = await file.arrayBuffer();
     const digest = await crypto.subtle.digest("SHA-256", buf);
 

@@ -14,7 +14,7 @@ import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
-import useFileUpload from "Feed/FileUpload";
+import useFileUpload from "Upload";
 
 export default function ProfileSettings() {
     const navigate = useNavigate();
