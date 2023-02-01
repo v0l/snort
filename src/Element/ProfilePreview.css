@@ -1,6 +1,5 @@
 .profile-preview {
     display: flex;
-    padding: 5px 0;
     align-items: center;
     min-height: 40px;
 }

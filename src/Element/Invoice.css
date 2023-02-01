@@ -10,10 +10,13 @@
 
 .note-invoice.expired {
   background: var(--expired-invoice-gradient);
+  color: var(--font-secondary-color);
+  cursor: not-allowed;
 }
 
 .note-invoice.paid {
   background: var(--paid-invoice-gradient);
+  cursor: not-allowed;
 }
 
 .invoice-header h4 {
