@@ -5,7 +5,7 @@ import * as secp from '@noble/secp256k1';
 
 import { RootState } from "State/Store";
 import { setPrivateKey, setPublicKey, setRelays } from "State/Login";
-import { EmailRegex } from "Const";
+import { DefaultRelays, EmailRegex } from "Const";
 import { bech32ToHex } from "Util";
 import { HexKey } from "Nostr";
 
@@ -77,7 +77,10 @@ export default function LoginPage() {
         if ("getRelays" in window.nostr) {
             let relays = await window.nostr.getRelays();
             dispatch(setRelays({
-                relays: relays,
+                relays: {
+                    ...relays,
+                    ...Object.fromEntries(DefaultRelays.entries())
+                },
                 createdAt: 1
             }));
         }
