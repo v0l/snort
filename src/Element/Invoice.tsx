@@ -5,6 +5,7 @@ import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { useMemo } from "react";
 import NoteTime from "Element/NoteTime";
 import LNURLTip from "Element/LNURLTip";
+import ZapCircle from "Icons/ZapCircle";
 import useWebln from "Hooks/useWebln";
 
 export interface InvoiceProps {
@@ -38,30 +39,27 @@ export default function Invoice(props: InvoiceProps) {
         }
     }, [invoice]);
 
+    const [isPaid, setIsPaid] = useState(false);
+    const isExpired = info?.expired
+    const amount = info?.amount ?? 0
+    const description = info?.description
+
     function header() {
-        if (info?.description?.length > 0) {
-            return (
-                <>
-                    <h4>⚡️ Invoice for {info?.amount?.toLocaleString()} sats</h4>
-                    <p>{info?.description}</p>
-                    <LNURLTip invoice={invoice} show={showInvoice} onClose={() => setShowInvoice(false)} />
-                </>
-            )
-        } else {
-            return (
-                <>
-                    <h4>⚡️ Invoice for {info?.amount?.toLocaleString()} sats</h4>
-                    <LNURLTip invoice={invoice} show={showInvoice} onClose={() => setShowInvoice(false)} />
-                </>
-            )
-        }
+      return (
+          <>
+              <h4>Lightning Invoice</h4>
+              <ZapCircle className="zap-circle" />
+              <LNURLTip invoice={invoice} show={showInvoice} onClose={() => setShowInvoice(false)} />
+          </>
+      )
     }
 
-    function payInvoice(e: any) {
+    async function payInvoice(e: any) {
       e.stopPropagation();
       if (webln?.enabled) {
         try {
-          webln.sendPayment(invoice);
+          await webln.sendPayment(invoice);
+          setIsPaid(true)
         } catch (error) {
           setShowInvoice(true);
         }
@@ -72,17 +70,32 @@ export default function Invoice(props: InvoiceProps) {
 
     return (
         <>
-            <div className="note-invoice flex">
-                <div className="f-grow flex f-col">
-                    {header()}
-                    {info?.expire ? <small>{info?.expired ? "Expired" : "Expires"} <NoteTime from={info.expire * 1000} /></small> : null}
-                </div>
+          <div className={`note-invoice flex ${isExpired ? 'expired' : ''} ${isPaid ? 'paid' : ''}`}>
+            <div className="invoice-header">
+              {header()}
+            </div>
 
-                {info?.expired ? <div className="btn">Expired</div> : (
-                  <button type="button" onClick={payInvoice}>
-                    Pay
-                  </button>
-                )}
+            <p className="invoice-amount">
+              {amount > 0 && (
+                <>
+                 {amount.toLocaleString()} <span className="sats">sat{amount === 1 ? '' : 's'}</span>
+                </>
+              )}
+            </p>
+
+            <div className="invoice-body">
+              {description && <p>{description}</p>}
+              {isPaid ? (
+                <div className="paid">
+                  Paid
+                </div>
+              ) : (
+                <button disabled={isExpired} type="button" onClick={payInvoice}>
+                  {isExpired ? "Expired" : "Pay"}
+                </button>
+              )}
+            </div>
+
             </div>
 
         </>

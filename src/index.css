@@ -23,8 +23,11 @@
   --gray-dark: #2B2B2B;
   --gray-superdark: #171717;
   --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
-  --snort-gradient: linear-gradient(180deg, #FFC7B7 0%, #4F1B73 100%);
+  --snort-gradient: linear-gradient(90deg, #A178FF 0%, #FF6BAF 108.33%);
   --nostrplebs-gradient: linear-gradient(to bottom right, #ff3cac, #2b86c5);
+  --invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgba(161, 120, 255, 0.2), rgba(255, 107, 175, .2) 108.33%);
+  --paid-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgba(161, 120, 255, .6), rgba(255, 107, 175, .6) 108.33%);
+  --expired-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, var(--gray), var(--gray-superdark));
   --strike-army-gradient: linear-gradient(to bottom right, #CCFF00, #a1c900);
 }
 
@@ -122,7 +125,17 @@ button {
 
 button:disabled {
   cursor: not-allowed;
-  color: var(--gray);
+  color: var(--font-color);
+  background-color: transparent;
+  border: 1px solid var(--font-secondary-color);
+}
+
+button:disabled:hover {
+  cursor: not-allowed;
+  color: var(--font-color);
+  background-color: transparent;
+  background-color: var(--gray-superdark);
+  border: 1px solid var(--font-secondary-color);
 }
 
 .light button.transparent {
