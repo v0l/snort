@@ -50,7 +50,10 @@ html.light {
   --gray-superlight: #333;
   --gray-light: #555;
   --gray-dark: #2B2B2B;
-  --gray-superdark: #171717;
+  --gray-superdark: #EEE;
+
+  --invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgb(247, 183, 51, 0.2), rgb(252, 74, 26, 0.2));
+  --paid-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgb(247, 183, 51, 0.6), rgb(252, 74, 26, 0.6));
 }
 
 body {
