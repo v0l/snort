@@ -107,6 +107,11 @@ export default class Connection {
             console.warn("Could not load relay information", e);
         }
 
+        if (this.IsClosed) {
+            this._UpdateState();
+            return;
+        }
+
         this.IsClosed = false;
         this.Socket = new WebSocket(this.Address);
         this.Socket.onopen = (e) => this.OnOpen(e);
