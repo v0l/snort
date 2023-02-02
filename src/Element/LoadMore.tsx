@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-export default function LoadMore({ onLoadMore, shouldLoadMore }: { onLoadMore: () => void, shouldLoadMore: boolean }) {
+export default function LoadMore({ onLoadMore, shouldLoadMore, children }: { onLoadMore: () => void, shouldLoadMore: boolean, children?: React.ReactNode }) {
     const { ref, inView } = useInView();
     const [tick, setTick] = useState<number>(0);
 
@@ -18,5 +18,5 @@ export default function LoadMore({ onLoadMore, shouldLoadMore }: { onLoadMore: (
         return () => clearInterval(t);
     }, []);
 
-    return <div ref={ref} className="mb10">Loading...</div>;
+    return <div ref={ref} className="mb10">{children ?? 'Loading...'}</div>;
 }
