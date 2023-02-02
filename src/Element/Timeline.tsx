@@ -11,6 +11,7 @@ import Note from "Element/Note";
 import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
 import ProfilePreview from "./ProfilePreview";
+import Skeleton from "Element/Skeleton";
 
 export interface TimelineProps {
     postsOnly: boolean,
@@ -64,7 +65,11 @@ export default function Timeline({ subject, postsOnly = false, method, ignoreMod
                 Show latest {latestFeed.length - 1} notes
             </div>)}
             {mainFeed.map(eventElement)}
-            <LoadMore onLoadMore={loadMore} shouldLoadMore={main.end}/>
+            <LoadMore onLoadMore={loadMore} shouldLoadMore={main.end}>
+                <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
+                <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
+                <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
+            </LoadMore>
         </div>
     );
 }
