@@ -1,6 +1,4 @@
-import { useLiveQuery } from "dexie-react-hooks";
-import { useEffect, useMemo } from "react";
-import { RootState } from "State/Store";
+import { useEffect } from "react";
 import { MetadataCache } from "State/Users";
 import { useKey, useKeys } from "State/Users/Hooks";
 import { HexKey } from "Nostr";

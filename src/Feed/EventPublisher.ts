@@ -78,8 +78,8 @@ export default function useEventPublisher() {
     }
 
     return {
-        nip42Auth: async (challenge: string, relay:string) => {
-            if(pubKey) {
+        nip42Auth: async (challenge: string, relay: string) => {
+            if (pubKey) {
                 const ev = NEvent.ForPubKey(pubKey);
                 ev.Kind = EventKind.Auth;
                 ev.Content = "";
@@ -112,17 +112,17 @@ export default function useEventPublisher() {
                 ev.Kind = EventKind.Lists;
                 ev.Tags.push(new Tag(["d", Lists.Muted], ev.Tags.length))
                 keys.forEach(p => {
-                  ev.Tags.push(new Tag(["p", p], ev.Tags.length))
+                    ev.Tags.push(new Tag(["p", p], ev.Tags.length))
                 })
                 let content = ""
                 if (priv.length > 0) {
-                  const ps = priv.map(p => ["p", p])
-                  const plaintext = JSON.stringify(ps)
-                  if (hasNip07 && !privKey) {
-                      content = await barierNip07(() => window.nostr.nip04.encrypt(pubKey, plaintext));
-                  } else if (privKey) {
-                      content = await ev.EncryptData(plaintext, pubKey, privKey)
-                  }
+                    const ps = priv.map(p => ["p", p])
+                    const plaintext = JSON.stringify(ps)
+                    if (hasNip07 && !privKey) {
+                        content = await barierNip07(() => window.nostr.nip04.encrypt(pubKey, plaintext));
+                    } else if (privKey) {
+                        content = await ev.EncryptData(plaintext, pubKey, privKey)
+                    }
                 }
                 ev.Content = content;
                 return await signEvent(ev);

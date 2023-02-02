@@ -7,7 +7,7 @@ import useSubscription, { NoteStore } from "Feed/Subscription";
 export default function useFollowsFeed(pubkey: HexKey) {
     const sub = useMemo(() => {
         let x = new Subscriptions();
-        x.Id = "follows";
+        x.Id = `follows:${pubkey.slice(0, 12)}`;
         x.Kinds = new Set([EventKind.ContactList]);
         x.Authors = new Set([pubkey]);
 
