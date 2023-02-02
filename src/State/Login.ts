@@ -340,10 +340,12 @@ const LoginSlice = createSlice({
             state.dmInteraction += 1;
         },
         logout: (state) => {
+            let relays = { ...state.relays };
             Object.assign(state, InitState);
             state.loggedOut = true;
-            state.relays = Object.fromEntries(DefaultRelays.entries());
             window.localStorage.clear();
+            state.relays = relays;
+            window.localStorage.setItem(RelayListKey, JSON.stringify(relays));
         },
         markNotificationsRead: (state) => {
             state.readNotifications = new Date().getTime();
