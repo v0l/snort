@@ -1,22 +1,11 @@
 .zap {
-  background-color: var(--note-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 10px;
-  border-radius: 16px;
-  margin-bottom: 12px;
+  min-height: unset;
 }
 
 .zap .summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.zap .body a {
-  color: var(--highlight);
 }
 
 .zap .amount {
@@ -71,4 +60,12 @@
 
 .rest-zaps:before {
   content: ", ";
+}
+
+.note.zap > .header {
+  align-items: center;
+}
+
+.note.zap > .body {
+  margin-bottom: 0;
 }

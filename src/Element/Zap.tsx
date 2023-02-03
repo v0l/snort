@@ -79,12 +79,13 @@ export function parseZap(zap: TaggedRawEvent): ParsedZap {
 }
 
 const Zap = ({ zap }: { zap: ParsedZap }) => {
-  const { amount, content, zapper, valid } = zap
+  const { amount, content, zapper, valid, p } = zap
 
   return valid ? (
-    <div className="zap">
-      <div className="summary">
+    <div className="zap note card">
+      <div className="header">
         {zapper && <ProfileImage pubkey={zapper} />}
+        <ProfileImage pubkey={p} />
         <div className="amount">
           <span className="amount-number">{formatShort(amount)}</span> sats
         </div>
