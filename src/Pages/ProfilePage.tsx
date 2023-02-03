@@ -55,6 +55,9 @@ export default function ProfilePage() {
   const aboutText = user?.about || ''
   const about = Text({ content: aboutText, tags: [], users: new Map() })
   const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
+  const website_url = (user?.website && !user.website.startsWith("http"))
+  ? "https://" + user.website
+  : user?.website || "";
 
   useEffect(() => {
     setTab(ProfileTab.Notes);
@@ -82,7 +85,7 @@ export default function ProfilePage() {
             <span className="link-icon">
               <Link />
             </span>
-            <a href={user.website} target="_blank" rel="noreferrer">{user.website}</a>
+            <a href={website_url} target="_blank" rel="noreferrer">{user.website}</a>
           </div>
         )}
 
