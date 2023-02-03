@@ -16,6 +16,11 @@ export const TranslateHost = "https://translate.snort.social";
 export const VoidCatHost = "https://void.cat";
 
 /**
+ * Kierans pubkey
+ */
+export const KieranPubKey = "npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49";
+
+/**
  * Websocket re-connect timeout
  */
 export const DefaultConnectTimeout = 2000;
