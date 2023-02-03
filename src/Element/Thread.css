@@ -139,6 +139,7 @@
 
 .thread-container .collapsed, .thread-container .show-more-container {
   background: var(--note-bg);
+  min-height: 48px;
 }
 
 .thread-note.is-last-note {

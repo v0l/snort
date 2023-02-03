@@ -1,6 +1,7 @@
 .pfp {
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
 .pfp .avatar-wrapper {

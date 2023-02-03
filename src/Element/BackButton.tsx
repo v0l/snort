@@ -1,7 +1,5 @@
 import "./BackButton.css"
 
-import { useNavigate } from "react-router-dom";
-
 import ArrowBack from "Icons/ArrowBack";
 
 interface BackButtonProps {
@@ -9,12 +7,9 @@ interface BackButtonProps {
 }
 
 const BackButton = ({ onClick }: BackButtonProps) => {
-  const navigate = useNavigate()
   const onClickHandler = () => {
     if (onClick) {
       onClick()
-    } else {
-      navigate(-1)
     }
   }
 

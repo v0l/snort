@@ -17,6 +17,7 @@
 
 .note>.header>.info {
   font-size: var(--font-size);
+  margin-left: 4px;
   white-space: nowrap;
   color: var(--font-secondary-color);
 }
