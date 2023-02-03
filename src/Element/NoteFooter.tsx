@@ -238,6 +238,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   return (
+    <>
     <div className="footer">
       <div className="footer-reactions">
         {tipButton()}
@@ -266,5 +267,9 @@ export default function NoteFooter(props: NoteFooterProps) {
       />
       <LNURLTip svc={author?.lud16 || author?.lud06} onClose={() => setTip(false)} show={tip} author={author?.pubkey} note={ev.Id} />
     </div>
+    <div className="zaps-container">
+     <ZapsSummary zaps={zaps} />
+    </div>
+    </>
   )
 }

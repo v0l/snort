@@ -19,11 +19,11 @@
   color: var(--highlight);
 }
 
-.amount {
+.zap .amount {
   font-size: 18px;
 }
 
-.amount:before {
+.zap .amount:before {
   content: '⚡️ ';
 }
 
@@ -40,7 +40,7 @@
 }
 
 .top-zap {
-  font-size: 12px;
+  font-size: 14px;
   border: none;
   margin: 0;
 }
@@ -61,24 +61,12 @@
   height: 21px;
 }
 
-.top-zap .profile-name {
-  font-size: 12px;
-}
-
 .top-zap .nip05 {
   display: none;
 }
 
-.top-zap .amount {
-  font-size: 12px;
-}
-
 .amount-number {
   font-weight: bold;
-}
-
-.rest-zaps {
-  font-size: 12px;
 }
 
 .rest-zaps:before {
