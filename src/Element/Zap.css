@@ -2,6 +2,19 @@
   min-height: unset;
 }
 
+@media (max-width: 520px) {
+  .zap .header {
+    flex-direction: column;
+  }
+  .zap .header .pfp {
+    width: 100%;
+    padding: 4px;
+  }
+  .zap .header .amount {
+    font-size: 32px;
+  }
+}
+
 .zap .summary {
   display: flex;
   align-items: center;
