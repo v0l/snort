@@ -1,27 +1,50 @@
-import { useEffect, useMemo } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { TidalRegex } from "Const";
 
+// Re-use dom parser across instances of TidalEmbed
+const domParser = new DOMParser();
+
+async function oembedLookup (link: string) {
+    // Regex + re-construct to handle both tidal.com/type/id and tidal.com/browse/type/id links.
+    const regexResult = TidalRegex.exec(link);
+
+    if (!regexResult) {
+        return Promise.reject('Not a TIDAL link.');
+    }
+
+    const [, productType, productId] = regexResult;
+    const oembedApi = `https://oembed.tidal.com/?url=https://tidal.com/browse/${productType}/${productId}`;
+
+    const apiResponse = await fetch(oembedApi);
+    const json = await apiResponse.json();
+
+    const doc = domParser.parseFromString(json.html, 'text/html');
+    const iframe = doc.querySelector('iframe');
+
+    if (!iframe) {
+        return Promise.reject('No iframe delivered.');
+    }
+
+    return {
+        source: iframe.getAttribute('src'),
+        height: json.height
+    };
+}
+
 const TidalEmbed = ({ link }: { link: string }) => {
-    const data = useMemo(() => {
-        const match = link.match(TidalRegex);
-        if (match?.length != 3) {
-            return null;
-        }
-        let type = match[1][0];
-        let id = match[2];
-        return { type, id };
+    const [source, setSource] = useState<string>();
+    const [height, setHeight] = useState<number>();
+    const extraStyles = link.includes('video') ? { aspectRatio: "16 / 9"  } : { height };
+
+    useEffect(() => {
+        oembedLookup(link).then(data => {
+            setSource(data.source || undefined);
+            setHeight(data.height);
+        }).catch(console.error);
     }, [link]);
 
-    const ScriptSrc = "https://embed.tidal.com/tidal-embed.js";
-    useEffect(() => {
-        let sTag = document.createElement("script");
-        sTag.src = ScriptSrc;
-        sTag.async = true;
-        document.head.appendChild(sTag);
-    }, []);
-
-    if (!data) return <a href={link} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="ext">{link}</a>;
-    return <div className="tidal-embed" data-type={data.type} data-id={data.id}></div>;
+    if (!source) return <a href={link} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="ext">{link}</a>;
+    return <iframe src={source} style={extraStyles} width="100%" title="TIDAL Embed" frameBorder={0} />;
 }
 
 export default TidalEmbed;
