@@ -1,6 +1,7 @@
 import "./Note.css";
 import { useCallback, useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
 
 import { default as NEvent } from "Nostr/Event";
 import ProfileImage from "Element/ProfileImage";
@@ -13,7 +14,6 @@ import ShowMore from "Element/ShowMore";
 import EventKind from "Nostr/EventKind";
 import { useUserProfiles } from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "Nostr";
-import { useInView } from "react-intersection-observer";
 import useModeration from "Hooks/useModeration";
 
 export interface NoteProps {
@@ -150,7 +150,7 @@ export default function Note(props: NoteProps) {
             {others}
           </>
         ) : replyId && (
-          <Link to={`/e/${hexToBech32("note", replyId)}`}>
+          <Link to={eventLink(replyId)}>
             {hexToBech32("note", replyId)?.substring(0, 12)}
           </Link>
         )}
