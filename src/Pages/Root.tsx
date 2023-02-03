@@ -45,7 +45,7 @@ export default function RootPage() {
                     </div>
                 </div></> : null}
             {followHints()}
-            <Timeline key={tab} subject={timelineSubect} postsOnly={tab === RootTab.Posts} method={"TIME_RANGE"} />
+            <Timeline key={tab} subject={timelineSubect} postsOnly={tab === RootTab.Posts} method={"TIME_RANGE"} window={tab === RootTab.Global ? 60 : undefined}/>
             <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
         </>
     );

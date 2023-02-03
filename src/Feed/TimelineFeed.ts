@@ -9,7 +9,8 @@ import { RootState } from "State/Store";
 import { UserPreferences } from "State/Login";
 
 export interface TimelineFeedOptions {
-    method: "TIME_RANGE" | "LIMIT_UNTIL"
+    method: "TIME_RANGE" | "LIMIT_UNTIL",
+    window?: number
 }
 
 export interface TimelineSubject {
@@ -20,7 +21,7 @@ export interface TimelineSubject {
 
 export default function useTimelineFeed(subject: TimelineSubject, options: TimelineFeedOptions) {
     const now = unixNow();
-    const [window] = useState<number>(60 * 60);
+    const [window] = useState<number>(options.window ?? 60 * 60);
     const [until, setUntil] = useState<number>(now);
     const [since, setSince] = useState<number>(now - window);
     const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);

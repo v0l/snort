@@ -16,16 +16,18 @@ export interface TimelineProps {
     postsOnly: boolean,
     subject: TimelineSubject,
     method: "TIME_RANGE" | "LIMIT_UNTIL"
-    ignoreModeration?: boolean
+    ignoreModeration?: boolean,
+    window?: number
 }
 
 /**
  * A list of notes by pubkeys
  */
-export default function Timeline({ subject, postsOnly = false, method, ignoreModeration = false }: TimelineProps) {
+export default function Timeline({ subject, postsOnly = false, method, ignoreModeration = false, window }: TimelineProps) {
     const { muted, isMuted } = useModeration();
     const { main, related, latest, parent, loadMore, showLatest } = useTimelineFeed(subject, {
-        method
+        method,
+        window: window
     });
 
     const filterPosts = useCallback((nts: TaggedRawEvent[]) => {
