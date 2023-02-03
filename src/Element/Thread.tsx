@@ -76,46 +76,25 @@ const Subthread = ({ path, from, notes, related, chains, onNavigate }: Subthread
   )
 }
 
-const TierTwo = ({ path, isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
-  const [first, ...rest] = notes
-  const pubKey = useSelector((s: RootState) => s.login.publicKey)
+const ThreadNote = ({ note, isLast, path, isLastSubthread, from, related, chains, onNavigate }: any) => {
   const [collapsed, setCollapsed] = useState(true)
-  const replies = notes.map((ev: NEvent) => getReplies(ev.Id, chains)).flat()
-  const isLast = rest.length === 0 && replies.length === 0
-  const hasMultipleNotes = rest.length > 0 || replies.length > 0
-  const className = `subthread-container ${hasMultipleNotes ? 'subthread-multi' : ''} ${!collapsed ? 'subthread-multi' : ''} ${isLast ? 'subthread-last' : 'subthread-mid'}`
+  const replies = getReplies(note.Id, chains)
+  const hasMultipleNotes = replies.length > 0
+  const isLastVisibleNote = isLastSubthread && isLast && !hasMultipleNotes 
+  const className = `subthread-container ${isLast && collapsed ? 'subthread-last' : 'subthread-multi subthread-mid'}`
   return (
     <>
       <div className={className}>
         <Divider variant="small" />
         <Note
-          className={`thread-note ${isLastSubthread && isLast ? 'is-last-note' : ''}`}
-          data-ev={first}
-          key={first.Id}
+          className={`thread-note ${isLastVisibleNote ? 'is-last-note' : ''}`}
+          data-ev={note}
+          key={note.Id}
           related={related}
         />
         <div className="line-container">
         </div>
       </div>
-
-      {rest.map((r: NEvent, idx: number) => {
-          const lastReply = idx === rest.length - 1
-          return (
-            <div className={`subthread-container subthread-multi ${lastReply && collapsed ? 'subthread-last' : 'subthread-mid'}`}>
-              <Divider variant="small" />
-              <Note
-                className={`thread-note ${isLastSubthread && lastReply ? 'is-last-note' : ''}`}
-                data-ev={r}
-                key={r.Id}
-                related={related}
-              />
-              <div className="line-container">
-              </div>
-            </div>
-          )
-        })
-      }
-
       {replies.length > 0 && (
         <Collapsed text="Show replies" collapsed={collapsed} setCollapsed={setCollapsed}>
           <TierThree
@@ -126,17 +105,53 @@ const TierTwo = ({ path, isLastSubthread, from, notes, related, chains, onNaviga
            related={related}
            chains={chains}
            onNavigate={onNavigate}
-        />
+          />
         </Collapsed>
       )}
     </>
   )
 }
 
+const TierTwo = ({ path, isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
+  const [first, ...rest] = notes
+
+  return (
+    <>
+      <ThreadNote
+        path={path}
+        from={from}
+        onNavigate={onNavigate}
+        note={first}
+        chains={chains}
+        related={related}
+        isLastSubthread={isLastSubthread}
+        isLast={rest.length === 0}
+      />
+
+      {rest.map((r: NEvent, idx: number) => {
+        const lastReply = idx === rest.length - 1
+        return (
+          <ThreadNote 
+            path={path}
+            from={from}
+            onNavigate={onNavigate}
+            note={r}
+            chains={chains}
+            related={related}
+            isLastSubthread={isLastSubthread}
+            isLast={lastReply}
+          />
+          )
+        })
+      }
+
+    </>
+  )
+}
+
 const TierThree = ({ path, isLastSubthread, from, notes, related, chains, onNavigate }: any) => {
   const [first, ...rest] = notes
-  const pubKey = useSelector((s: RootState) => s.login.publicKey)
-  const replies = notes.map((ev: NEvent) => getReplies(ev.Id, chains)).flat()
+  const replies = getReplies(first.Id, chains)
   const hasMultipleNotes = rest.length > 0 || replies.length > 0
   const isLast = replies.length === 0 && rest.length === 0
   return (
@@ -152,25 +167,6 @@ const TierThree = ({ path, isLastSubthread, from, notes, related, chains, onNavi
         <div className="line-container">
         </div>
       </div>
-
-      {rest.map((r: NEvent, idx: number) => {
-        const lastReply = idx === rest.length - 1
-        const lastNote = isLastSubthread && lastReply
-        return (
-          <div key={r.Id} className={`subthread-container ${lastReply ? '' : 'subthread-multi'} ${lastReply ? 'subthread-last' : 'subthread-mid'}`}>
-            <Divider variant="small" />
-            <Note
-              className={`thread-note ${lastNote ? 'is-last-note' : ''}`}
-              data-ev={r}
-              key={r.Id}
-              related={related}
-            />
-            <div className="line-container">
-            </div>
-          </div>
-        )
-        })
-      }
 
       {path.length <= 1 ? (
         replies.length > 0 && (
@@ -193,6 +189,27 @@ const TierThree = ({ path, isLastSubthread, from, notes, related, chains, onNavi
         />
         )
       )}
+
+      {rest.map((r: NEvent, idx: number) => {
+        const lastReply = idx === rest.length - 1
+        const lastNote = isLastSubthread && lastReply
+        const noteReplies = getReplies(r.Id, chains)
+        return (
+          <div key={r.Id} className={`subthread-container ${lastReply ? '' : 'subthread-multi'} ${lastReply ? 'subthread-last' : 'subthread-mid'}`}>
+            <Divider variant="small" />
+            <Note
+              className={`thread-note ${lastNote ? 'is-last-note' : ''}`}
+              data-ev={r}
+              key={r.Id}
+              related={related}
+            />
+            <div className="line-container">
+            </div>
+          </div>
+        )
+        })
+      }
+
     </>
   )
 }
