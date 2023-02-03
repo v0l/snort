@@ -1,7 +1,6 @@
 import { HexKey, TaggedRawEvent } from "Nostr";
-import { getDb } from "State/Users/Db";
 import { ProfileCacheExpire } from "Const";
-import { mapEventToProfile, MetadataCache } from "State/Users";
+import { mapEventToProfile, MetadataCache, UsersDb } from "State/Users";
 import Connection, { RelaySettings } from "Nostr/Connection";
 import Event from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
@@ -30,6 +29,11 @@ export class NostrSystem {
      * List of pubkeys to fetch metadata for
      */
     WantsMetadata: Set<HexKey>;
+
+    /**
+     * User db store
+     */
+    UserDb?: UsersDb;
 
     constructor() {
         this.Sockets = new Map();
@@ -166,54 +170,54 @@ export class NostrSystem {
     }
 
     async _FetchMetadata() {
-        let missing = new Set<HexKey>();
-        const db = getDb()
-        let meta = await db.bulkGet(Array.from(this.WantsMetadata));
-        let expire = new Date().getTime() - ProfileCacheExpire;
-        for (let pk of this.WantsMetadata) {
-            let m = meta.find(a => a?.pubkey === pk);
-            if (!m || m.loaded < expire) {
-                missing.add(pk);
-                // cap 100 missing profiles
-                if (missing.size >= 100) {
-                    break;
-                }
-            }
-        }
-
-        if (missing.size > 0) {
-            console.debug("Wants profiles: ", missing);
-
-            let sub = new Subscriptions();
-            sub.Id = `profiles:${sub.Id}`;
-            sub.Kinds = new Set([EventKind.SetMetadata]);
-            sub.Authors = missing;
-            sub.OnEvent = async (e) => {
-                let profile = mapEventToProfile(e);
-                if (profile) {
-                    let existing = await db.find(profile.pubkey);
-                    if ((existing?.created ?? 0) < profile.created) {
-                        await db.put(profile);
-                    } else if (existing) {
-                        await db.update(profile.pubkey, { loaded: new Date().getTime() });
+        if (this.UserDb) {
+            let missing = new Set<HexKey>();
+            let meta = await this.UserDb.bulkGet(Array.from(this.WantsMetadata));
+            let expire = new Date().getTime() - ProfileCacheExpire;
+            for (let pk of this.WantsMetadata) {
+                let m = meta.find(a => a?.pubkey === pk);
+                if (!m || m.loaded < expire) {
+                    missing.add(pk);
+                    // cap 100 missing profiles
+                    if (missing.size >= 100) {
+                        break;
                     }
                 }
             }
-            let results = await this.RequestSubscription(sub);
-            let couldNotFetch = Array.from(missing).filter(a => !results.some(b => b.pubkey === a));
-            console.debug("No profiles: ", couldNotFetch);
-            await db.bulkPut(couldNotFetch.map(a => {
-                return {
-                    pubkey: a,
-                    loaded: new Date().getTime()
-                } as MetadataCache;
-            }));
-        }
 
+            if (missing.size > 0) {
+                console.debug("Wants profiles: ", missing);
+
+                let sub = new Subscriptions();
+                sub.Id = `profiles:${sub.Id}`;
+                sub.Kinds = new Set([EventKind.SetMetadata]);
+                sub.Authors = missing;
+                sub.OnEvent = async (e) => {
+                    let profile = mapEventToProfile(e);
+                    if (profile) {
+                        let existing = await this.UserDb!.find(profile.pubkey);
+                        if ((existing?.created ?? 0) < profile.created) {
+                            await this.UserDb!.put(profile);
+                        } else if (existing) {
+                            await this.UserDb!.update(profile.pubkey, { loaded: new Date().getTime() });
+                        }
+                    }
+                }
+                let results = await this.RequestSubscription(sub);
+                let couldNotFetch = Array.from(missing).filter(a => !results.some(b => b.pubkey === a));
+                console.debug("No profiles: ", couldNotFetch);
+                await this.UserDb!.bulkPut(couldNotFetch.map(a => {
+                    return {
+                        pubkey: a,
+                        loaded: new Date().getTime()
+                    } as MetadataCache;
+                }));
+            }
+        }
         setTimeout(() => this._FetchMetadata(), 500);
     }
 
-    async nip42Auth(challenge: string, relay:string): Promise<Event|undefined> {
+    async nip42Auth(challenge: string, relay: string): Promise<Event | undefined> {
         return
     }
 }

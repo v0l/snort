@@ -17,6 +17,8 @@ import { totalUnread } from "Pages/MessagesPage";
 import { SearchRelays } from 'Const';
 import useEventPublisher from "Feed/EventPublisher";
 import useModeration from "Hooks/useModeration";
+import { IndexedUDB, useDb } from "State/Users/Db";
+import { db } from "Db";
 
 
 export default function Layout() {
@@ -31,12 +33,18 @@ export default function Layout() {
     const { isMuted } = useModeration();
     const filteredDms = dms.filter(a => !isMuted(a.pubkey))
     const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
+    const usingDb = useDb();
     const pub = useEventPublisher();
     useLoginFeed();
 
     useEffect(() => {
         System.nip42Auth = pub.nip42Auth
     }, [pub])
+
+
+    useEffect(() => {
+        System.UserDb = usingDb;
+    }, [usingDb])
 
     useEffect(() => {
         if (relays) {
@@ -73,8 +81,29 @@ export default function Layout() {
     }, [prefs.theme]);
 
     useEffect(() => {
-      dispatch(init());
-    }, [dispatch]);
+        // check DB support then init
+        IndexedUDB.isAvailable()
+            .then(async a => {
+                const dbType = a ? "indexdDb" : "redux";
+
+                // cleanup on load
+                if (dbType === "indexdDb") {
+                    await db.feeds.clear();
+                    const now = Math.floor(new Date().getTime() / 1000);
+
+                    const cleanupEvents = await db.events
+                        .where("created_at")
+                        .above(now - (60 * 60))
+                        .primaryKeys();
+                    console.debug(`Cleanup ${cleanupEvents.length} events`);
+                    await db.events.bulkDelete(cleanupEvents)
+                }
+
+                console.debug(`Using db: ${dbType}`);
+                dispatch(init(dbType));
+            })
+
+    }, []);
 
     async function goToNotifications(e: any) {
         e.stopPropagation();

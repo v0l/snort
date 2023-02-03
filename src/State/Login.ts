@@ -61,8 +61,14 @@ export interface UserPreferences {
      */
     imgProxyConfig: ImgProxySettings | null
 }
+export type DbType = "indexdDb" | "redux";
 
 export interface LoginStore {
+    /**
+     * Which db we will use to cache data
+     */
+    useDb: DbType,
+
     /**
      * If there is no login
      */
@@ -146,6 +152,7 @@ const DefaultImgProxy = {
 };
 
 export const InitState = {
+    useDb: "redux",
     loggedOut: undefined,
     publicKey: undefined,
     privateKey: undefined,
@@ -186,7 +193,8 @@ const LoginSlice = createSlice({
     name: "Login",
     initialState: InitState,
     reducers: {
-        init: (state) => {
+        init: (state, action: PayloadAction<DbType>) => {
+            state.useDb = action.payload;
             state.privateKey = window.localStorage.getItem(PrivateKeyItem) ?? undefined;
             if (state.privateKey) {
                 window.localStorage.removeItem(PublicKeyItem); // reset nip07 if using private key
@@ -332,10 +340,12 @@ const LoginSlice = createSlice({
             state.dmInteraction += 1;
         },
         logout: (state) => {
+            let relays = { ...state.relays };
             Object.assign(state, InitState);
             state.loggedOut = true;
-            state.relays = Object.fromEntries(DefaultRelays.entries());
             window.localStorage.clear();
+            state.relays = relays;
+            window.localStorage.setItem(RelayListKey, JSON.stringify(relays));
         },
         markNotificationsRead: (state) => {
             state.readNotifications = new Date().getTime();

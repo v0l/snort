@@ -29,7 +29,7 @@ export default function RootPage() {
     }
 
     const isGlobal = loggedOut || tab === RootTab.Global;
-    const timelineSubect: TimelineSubject = isGlobal ? { type: "global", items: [] } : { type: "pubkey", items: follows };
+    const timelineSubect: TimelineSubject = isGlobal ? { type: "global", items: [], discriminator: "all" } : { type: "pubkey", items: follows, discriminator: "follows" };
     return (
         <>
             {pubKey ? <>

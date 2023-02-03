@@ -3,6 +3,7 @@ import { System } from "Nostr/System";
 import { TaggedRawEvent } from "Nostr";
 import { Subscriptions } from "Nostr/Subscriptions";
 import { debounce } from "Util";
+import { db } from "Db";
 
 export type NoteStore = {
     notes: Array<TaggedRawEvent>,
@@ -10,7 +11,8 @@ export type NoteStore = {
 };
 
 export type UseSubscriptionOptions = {
-    leaveOpen: boolean
+    leaveOpen: boolean,
+    cache: boolean
 }
 
 interface ReducerArg {
@@ -77,33 +79,49 @@ export default function useSubscription(sub: Subscriptions | null, options?: Use
     const [state, dispatch] = useReducer(notesReducer, initStore);
     const [debounceOutput, setDebounceOutput] = useState<number>(0);
     const [subDebounce, setSubDebounced] = useState<Subscriptions>();
+    const useCache = useMemo(() => options?.cache === true, [options]);
 
     useEffect(() => {
         if (sub) {
             return debounce(DebounceMs, () => {
-                dispatch({
-                    type: "END",
-                    end: false
-                });
                 setSubDebounced(sub);
             });
         }
     }, [sub, options]);
 
     useEffect(() => {
-        if (sub) {
-            sub.OnEvent = (e) => {
+        if (subDebounce) {
+            dispatch({
+                type: "END",
+                end: false
+            });
+
+            if (useCache) {
+                // preload notes from db
+                PreloadNotes(subDebounce.Id)
+                    .then(ev => {
+                        dispatch({
+                            type: "EVENT",
+                            ev: ev
+                        });
+                    })
+                    .catch(console.warn);
+            }
+            subDebounce.OnEvent = (e) => {
                 dispatch({
                     type: "EVENT",
                     ev: e
                 });
+                if (useCache) {
+                    db.events.put(e);
+                }
             };
 
-            sub.OnEnd = (c) => {
+            subDebounce.OnEnd = (c) => {
                 if (!(options?.leaveOpen ?? false)) {
-                    c.RemoveSubscription(sub.Id);
-                    if (sub.IsFinished()) {
-                        System.RemoveSubscription(sub.Id);
+                    c.RemoveSubscription(subDebounce.Id);
+                    if (subDebounce.IsFinished()) {
+                        System.RemoveSubscription(subDebounce.Id);
                     }
                 }
                 dispatch({
@@ -112,14 +130,23 @@ export default function useSubscription(sub: Subscriptions | null, options?: Use
                 });
             };
 
-            console.debug("Adding sub: ", sub.ToObject());
-            System.AddSubscription(sub);
+            console.debug("Adding sub: ", subDebounce.ToObject());
+            System.AddSubscription(subDebounce);
             return () => {
-                console.debug("Removing sub: ", sub.ToObject());
-                System.RemoveSubscription(sub.Id);
+                console.debug("Removing sub: ", subDebounce.ToObject());
+                System.RemoveSubscription(subDebounce.Id);
             };
         }
-    }, [subDebounce]);
+    }, [subDebounce, useCache]);
+
+    useEffect(() => {
+        if (subDebounce && useCache) {
+            return debounce(500, () => {
+                TrackNotesInFeed(subDebounce.Id, state.notes)
+                    .catch(console.warn);
+            });
+        }
+    }, [state, useCache]);
 
     useEffect(() => {
         return debounce(DebounceMs, () => {
@@ -140,4 +167,24 @@ export default function useSubscription(sub: Subscriptions | null, options?: Use
             });
         }
     }
+}
+
+/**
+ * Lookup cached copy of feed
+ */
+const PreloadNotes = async (id: string): Promise<TaggedRawEvent[]> => {
+    const feed = await db.feeds.get(id);
+    if (feed) {
+        const events = await db.events.bulkGet(feed.ids);
+        return events.filter(a => a !== undefined).map(a => a!);
+    }
+    return [];
+}
+
+const TrackNotesInFeed = async (id: string, notes: TaggedRawEvent[]) => {
+    const existing = await db.feeds.get(id);
+    const ids = Array.from(new Set([...(existing?.ids || []), ...notes.map(a => a.id)]));
+    const since = notes.reduce((acc, v) => acc > v.created_at ? v.created_at : acc, +Infinity);
+    const until = notes.reduce((acc, v) => acc < v.created_at ? v.created_at : acc, -Infinity);
+    await db.feeds.put({ id, ids, since, until });
 }

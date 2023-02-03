@@ -38,7 +38,7 @@ export default function useThreadFeed(id: u256) {
         return thisSub;
     }, [trackingEvents, pref, id]);
 
-    const main = useSubscription(sub, { leaveOpen: true });
+    const main = useSubscription(sub, { leaveOpen: true, cache: true });
 
     useEffect(() => {
         if (main.store) {

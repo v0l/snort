@@ -35,20 +35,20 @@ export function mapEventToProfile(ev: TaggedRawEvent) {
             ...data
         } as MetadataCache;
     } catch (e) {
-      console.error("Failed to parse JSON", ev, e);
+        console.error("Failed to parse JSON", ev, e);
     }
 }
 
 export interface UsersDb {
-  isAvailable(): Promise<boolean>
-  query(str: string): Promise<MetadataCache[]>
-  find(key: HexKey): Promise<MetadataCache | undefined>
-  add(user: MetadataCache): Promise<any>
-  put(user: MetadataCache): Promise<any>
-  bulkAdd(users: MetadataCache[]): Promise<any>
-  bulkGet(keys: HexKey[]): Promise<MetadataCache[]>
-  bulkPut(users: MetadataCache[]): Promise<any>
-  update(key: HexKey, fields: Record<string, any>): Promise<any>
+    isAvailable(): Promise<boolean>
+    query(str: string): Promise<MetadataCache[]>
+    find(key: HexKey): Promise<MetadataCache | undefined>
+    add(user: MetadataCache): Promise<any>
+    put(user: MetadataCache): Promise<any>
+    bulkAdd(users: MetadataCache[]): Promise<any>
+    bulkGet(keys: HexKey[]): Promise<MetadataCache[]>
+    bulkPut(users: MetadataCache[]): Promise<any>
+    update(key: HexKey, fields: Record<string, any>): Promise<any>
 }
 
 export interface UsersStore {
@@ -65,7 +65,7 @@ const UsersSlice = createSlice({
     initialState: InitState,
     reducers: {
         setUsers(state, action: PayloadAction<Record<HexKey, MetadataCache>>) {
-          state.users = action.payload
+            state.users = action.payload
         }
     }
 });
