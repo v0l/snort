@@ -4,11 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { formatShort } from "Number";
 import Link from "Icons/Link";
 import Qr from "Icons/Qr";
 import Zap from "Icons/Zap";
 import Envelope from "Icons/Envelope";
 import { useUserProfile } from "Feed/ProfileFeed";
+import useZapsFeed from "Feed/ZapsFeed";
+import { parseZap } from "Element/Zap";
 import FollowButton from "Element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
@@ -58,6 +61,11 @@ export default function ProfilePage() {
   const website_url = (user?.website && !user.website.startsWith("http"))
   ? "https://" + user.website
   : user?.website || "";
+  const zapFeed = useZapsFeed(id)
+  const zaps = useMemo(() => {
+    return zapFeed.store.notes.map(parseZap).filter(z => z.valid && !z.e && z.p === id)
+  }, [zapFeed.store.notes, id])
+  const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
 
   useEffect(() => {
     setTab(ProfileTab.Notes);
@@ -89,7 +97,7 @@ export default function ProfilePage() {
           </div>
         )}
 
-        <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
+        <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} author={id} />
       </div>
     )
   }
@@ -163,6 +171,9 @@ export default function ProfilePage() {
           <>
             <IconButton onClick={() => setShowLnQr(true)}>
               <Zap width={14} height={16} />
+              <span className="zap-amount">
+                {zapsTotal > 0 && formatShort(zapsTotal)}
+               </span>
             </IconButton>
             {!loggedOut && (
               <>

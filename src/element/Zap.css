@@ -1,0 +1,86 @@
+.zap {
+  background-color: var(--note-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+}
+
+.zap .summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.zap .body a {
+  color: var(--highlight);
+}
+
+.amount {
+  font-size: 18px;
+}
+
+.amount:before {
+  content: '⚡️ ';
+}
+
+.top-zap .amount:before {
+  content: '';
+}
+
+.zaps-summary {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-zap {
+  font-size: 12px;
+  border: none;
+  margin: 0;
+}
+
+.top-zap .pfp {
+  margin-right: .3em;
+}
+
+.top-zap .summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-zap .avatar {
+  width: 21px;
+  height: 21px;
+}
+
+.top-zap .profile-name {
+  font-size: 12px;
+}
+
+.top-zap .nip05 {
+  display: none;
+}
+
+.top-zap .amount {
+  font-size: 12px;
+}
+
+.amount-number {
+  font-weight: bold;
+}
+
+.rest-zaps {
+  font-size: 12px;
+}
+
+.rest-zaps:before {
+  content: ", ";
+}

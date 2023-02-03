@@ -107,7 +107,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         if (trackingEvents.length > 0 && pref.enableReactions) {
             sub = new Subscriptions();
             sub.Id = `timeline-related:${subject.type}`;
-            sub.Kinds = new Set([EventKind.Reaction, EventKind.Deletion]);
+            sub.Kinds = new Set([EventKind.Reaction, EventKind.Deletion, EventKind.ZapReceipt]);
             sub.ETags = new Set(trackingEvents);
         }
         return sub ?? null;

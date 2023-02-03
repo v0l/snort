@@ -7,6 +7,7 @@ import useTimelineFeed, { TimelineSubject } from "Feed/TimelineFeed";
 import { TaggedRawEvent } from "Nostr";
 import EventKind from "Nostr/EventKind";
 import LoadMore from "Element/LoadMore";
+import Zap, { parseZap } from "Element/Zap";
 import Note from "Element/Note";
 import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
@@ -49,6 +50,9 @@ export default function Timeline({ subject, postsOnly = false, method, ignoreMod
             }
             case EventKind.TextNote: {
                 return <Note key={e.id} data={e} related={related.notes} ignoreModeration={ignoreModeration} />
+            }
+            case EventKind.ZapReceipt:  {
+              return <Zap zap={parseZap(e)} />
             }
             case EventKind.Reaction:
             case EventKind.Repost: {
