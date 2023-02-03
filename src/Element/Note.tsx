@@ -61,6 +61,7 @@ export default function Note(props: NoteProps) {
   const [showMore, setShowMore] = useState<boolean>(false);
   const baseClassname = `note card ${props.className ? props.className : ''}`
   const [translated, setTranslated] = useState<Translation>();
+  const replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
 
   const options = {
     showHeader: true,
@@ -207,7 +208,7 @@ export default function Note(props: NoteProps) {
   }
 
   const note = (
-    <div className={`note card${highlight ? " active" : ""}${baseClassname}${extendable && !showMore ? " note-expand" : ""}`} ref={ref}>
+    <div className={`${baseClassname}${highlight ? " active " : " "}${extendable && !showMore ? " note-expand" : ""}`} ref={ref}>
       {content()}
     </div>
   )

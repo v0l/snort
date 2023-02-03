@@ -144,3 +144,27 @@
   color: var(--highlight);
   cursor: pointer;
 }
+
+.note.active {
+  background-color: var(--gray-tertiary);
+}
+
+.light .note.active {
+  background-color: var(--gray-secondary);
+}
+
+.light .note.active>.header .reply {
+  color: var(--font-secondary-color);
+}
+
+.light .note.active>.header>.info {
+  color: var(--font-secondary-color);
+}
+
+.light .note.active>.footer>.reaction-pill {
+  color: var(--note-bg);
+}
+
+.light .note.active>.footer>.reaction-pill.reacted {
+  color: var(--highlight);
+}
