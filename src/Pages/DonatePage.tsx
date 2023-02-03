@@ -71,7 +71,10 @@ const DonatePage = () => {
             </p>
             <div className="flex">
                 <div className="mr10">Lightning Donation: </div>
-                <ZapButton svc={"donate@snort.social"} />
+                <ZapButton
+                  pubkey={"84de35e2584d2b144aae823c9ed0b0f3deda09648530b93d1a2a146d1dea9864"}
+                  svc={"donate@snort.social"}
+                />
             </div>
             {today && (<small>Total today (UTC): {today.donations.toLocaleString()} sats</small>)}
             <h3>Primary Developers</h3>
