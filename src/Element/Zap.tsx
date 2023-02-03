@@ -1,5 +1,6 @@
 import "./Zap.css";
 import { useMemo } from "react";
+import { useSelector } from "react-redux";
 // @ts-expect-error
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bytesToHex } from "@noble/hashes/utils";
@@ -10,6 +11,7 @@ import { HexKey, TaggedRawEvent } from "Nostr";
 import Event from "Nostr/Event";
 import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
+import { RootState } from "State/Store";
 
 function findTag(e: TaggedRawEvent, tag: string) {
   const maybeTag = e.tags.find((evTag) => {
@@ -80,12 +82,13 @@ export function parseZap(zap: TaggedRawEvent): ParsedZap {
 
 const Zap = ({ zap }: { zap: ParsedZap }) => {
   const { amount, content, zapper, valid, p } = zap
+  const pubKey = useSelector((s: RootState) => s.login.publicKey)
 
   return valid ? (
     <div className="zap note card">
       <div className="header">
         {zapper && <ProfileImage pubkey={zapper} />}
-        <ProfileImage pubkey={p} />
+        {p !== pubKey && <ProfileImage pubkey={p} />}
         <div className="amount">
           <span className="amount-number">{formatShort(amount)}</span> sats
         </div>
