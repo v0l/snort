@@ -1,32 +1,49 @@
 import { useEffect, useState } from "react";
 import { TidalRegex } from "Const";
 
+// Re-use dom parser across instances of TidalEmbed
+const domParser = new DOMParser();
+
 async function oembedLookup (link: string) {
     // Regex + re-construct to handle both tidal.com/type/id and tidal.com/browse/type/id links.
     const regexResult = TidalRegex.exec(link);
 
     if (!regexResult) {
-        return undefined;
+        return Promise.reject('Not a TIDAL link.');
     }
 
     const [, productType, productId] = regexResult;
-    const oembedApi = `https://oembed.stage.tidal.com/?url=https://tidal.com/browse/${productType}/${productId}`;
+    const oembedApi = `https://oembed.tidal.com/?url=https://tidal.com/browse/${productType}/${productId}`;
 
     const apiResponse = await fetch(oembedApi);
     const json = await apiResponse.json();
 
-    return json.html;
+    const doc = domParser.parseFromString(json.html, 'text/html');
+    const iframe = doc.querySelector('iframe');
+
+    if (!iframe) {
+        return Promise.reject('No iframe delivered.');
+    }
+
+    return {
+        source: iframe.getAttribute('src'),
+        height: json.height
+    };
 }
 
 const TidalEmbed = ({ link }: { link: string }) => {
-    const [embed, setEmbed] = useState();
+    const [source, setSource] = useState<string>();
+    const [height, setHeight] = useState<number>();
 
     useEffect(() => {
-        oembedLookup(link).then(setEmbed);
+        oembedLookup(link).then(data => {
+            setSource(data.source || undefined);
+            setHeight(data.height);
+        }).catch(console.error);
     }, [link]);
 
-    if (!embed) return <a href={link} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="ext">{link}</a>;
-    return <div dangerouslySetInnerHTML={{__html: embed}}></div>;
+    if (!source) return <a href={link} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="ext">{link}</a>;
+    return <iframe src={source} height={height} width="100%" title="TIDAL Embed" frameBorder={0} />;
 }
 
 export default TidalEmbed;
