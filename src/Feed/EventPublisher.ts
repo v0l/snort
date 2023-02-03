@@ -155,7 +155,7 @@ export default function useEventPublisher() {
                 // @ts-ignore
                 ev.Tags.push(new Tag(["p", author]))
                 // @ts-ignore
-                const relayTag = ['relays', ...Object.keys(relays)]
+                const relayTag = ['relays', ...Object.keys(relays).slice(0, 10)]
                 // @ts-ignore
                 ev.Tags.push(new Tag(relayTag))
                 processContent(ev, msg || '');
