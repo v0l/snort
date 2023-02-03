@@ -29,7 +29,7 @@ export interface UserPreferences {
     /**
      * Automatically load media (show link only) (bandwidth/privacy)
      */
-    autoLoadMedia: boolean,
+    autoLoadMedia: "none" | "follows-only" | "all",
 
     /**
      * Select between light/dark theme
@@ -61,6 +61,7 @@ export interface UserPreferences {
      */
     imgProxyConfig: ImgProxySettings | null
 }
+
 export type DbType = "indexdDb" | "redux";
 
 export interface LoginStore {
@@ -169,7 +170,7 @@ export const InitState = {
     dmInteraction: 0,
     preferences: {
         enableReactions: false,
-        autoLoadMedia: true,
+        autoLoadMedia: "follows-only",
         theme: "system",
         confirmReposts: false,
         showDebugMenus: false,

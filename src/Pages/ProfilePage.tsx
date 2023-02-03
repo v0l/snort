@@ -53,7 +53,7 @@ export default function ProfilePage() {
   const [tab, setTab] = useState(ProfileTab.Notes);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
   const aboutText = user?.about || ''
-  const about = Text({ content: aboutText, tags: [], users: new Map() })
+  const about = Text({ content: aboutText, tags: [], users: new Map(), creator: "" })
   const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
   const website_url = (user?.website && !user.website.startsWith("http"))
   ? "https://" + user.website
