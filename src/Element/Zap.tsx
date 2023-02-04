@@ -46,11 +46,14 @@ function getZapper(zap: TaggedRawEvent, dhash: string) {
     const rawEvent: TaggedRawEvent = JSON.parse(zapRequest);
     if (Array.isArray(rawEvent)) {
       // old format, ignored
-      return;
+      const rawDescriptionTag = rawEvent.find(a => a[0] === 'application/nostr')
+      const rawDescription = rawDescriptionTag && rawDescriptionTag[1]
+      const request = typeof rawDescription === 'string' ? JSON.parse(rawDescription) : rawDescription
+      return request?.pubkey
     }
-    const metaHash = sha256(zapRequest);
+    //const metaHash = sha256(zapRequest);
     const ev = new Event(rawEvent)
-    return { pubkey: ev.PubKey, valid: metaHash == dhash };
+    return ev.PubKey
   }
 }
 
@@ -66,7 +69,7 @@ interface ParsedZap {
 
 export function parseZap(zap: TaggedRawEvent): ParsedZap {
   const { amount, hash } = getInvoice(zap)
-  const zapper = hash ? getZapper(zap, hash) : { valid: false, pubkey: undefined };
+  const zapper = hash && getZapper(zap, hash)
   const e = findTag(zap, 'e')
   const p = findTag(zap, 'p')!
   return {
@@ -74,9 +77,9 @@ export function parseZap(zap: TaggedRawEvent): ParsedZap {
     e,
     p,
     amount: Number(amount) / 1000,
-    zapper: zapper?.pubkey,
+    zapper,
     content: zap.content,
-    valid: zapper?.valid ?? false,
+    valid: true,
   }
 }
 

@@ -63,7 +63,7 @@ export default function ProfilePage() {
   : user?.website || "";
   const zapFeed = useZapsFeed(id)
   const zaps = useMemo(() => {
-    return zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id)
+    return zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e)
   }, [zapFeed.store.notes, id])
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
 
