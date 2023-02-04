@@ -64,7 +64,7 @@ export default function ProfilePage() {
   : user?.website || "";
   const zapFeed = useZapsFeed(id)
   const zaps = useMemo(() => {
-    const profileZaps = zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e)
+    const profileZaps = zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e && z.zapper !== id)
     profileZaps.sort((a, b) => b.amount - a.amount)
     return profileZaps
   }, [zapFeed.store.notes, id])
