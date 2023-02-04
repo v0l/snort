@@ -52,7 +52,8 @@ export default function Timeline({ subject, postsOnly = false, method, ignoreMod
                 return <Note key={e.id} data={e} related={related.notes} ignoreModeration={ignoreModeration} />
             }
             case EventKind.ZapReceipt:  {
-              return <Zap zap={parseZap(e)} />
+              const zap = parseZap(e)
+              return zap.e ? null : <Zap zap={zap} />
             }
             case EventKind.Reaction:
             case EventKind.Repost: {
