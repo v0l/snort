@@ -67,7 +67,7 @@ export default function ProfilePage() {
     const profileZaps = zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e && z.zapper !== id)
     profileZaps.sort((a, b) => b.amount - a.amount)
     return profileZaps
-  }, [zapFeed.store.notes, id])
+  }, [zapFeed.store, id])
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
 
   useEffect(() => {

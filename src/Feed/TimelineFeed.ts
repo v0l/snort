@@ -35,7 +35,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
         let sub = new Subscriptions();
         sub.Id = `timeline:${subject.type}:${subject.discriminator}`;
-        sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost, EventKind.ZapReceipt]);
+        sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
         switch (subject.type) {
             case "pubkey": {
                 sub.Authors = new Set(subject.items);

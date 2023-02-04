@@ -7,7 +7,7 @@ import useSubscription from "./Subscription";
 export default function useZapsFeed(pubkey: HexKey) {
     const sub = useMemo(() => {
         let x = new Subscriptions();
-        x.Id = `zaps:${pubkey}`;
+        x.Id = `zaps:${pubkey.slice(0, 12)}`;
         x.Kinds = new Set([EventKind.ZapReceipt]);
         x.PTags = new Set([pubkey]);
         return x;
