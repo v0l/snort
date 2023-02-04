@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { InitState, setPreferences, UserPreferences } from "State/Login";
+import { DefaultImgProxy, setPreferences, UserPreferences } from "State/Login";
 import { RootState } from "State/Store";
 import "./Preferences.css";
 
@@ -43,7 +43,7 @@ const PreferencesPage = () => {
                         <small>Use imgproxy to compress images</small>
                     </div>
                     <div>
-                        <input type="checkbox" checked={perf.imgProxyConfig !== null} onChange={e => dispatch(setPreferences({ ...perf, imgProxyConfig: e.target.checked ? InitState.preferences.imgProxyConfig : null }))} />
+                        <input type="checkbox" checked={perf.imgProxyConfig !== null} onChange={e => dispatch(setPreferences({ ...perf, imgProxyConfig: e.target.checked ? DefaultImgProxy : null }))} />
                     </div>
                 </div>
                 {perf.imgProxyConfig && (<div className="w-max mt10 form">
