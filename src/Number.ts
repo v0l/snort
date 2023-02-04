@@ -4,7 +4,7 @@ const intl = new Intl.NumberFormat("en", {
 });
 
 export function formatShort(n: number) {
-  if (n < 1e5) {
+  if (n < 2e3) {
     return n
   } else if (n < 1e8) {
     return `${intl.format(n / 1e3)}K`

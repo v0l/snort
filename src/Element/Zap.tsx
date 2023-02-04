@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 // @ts-expect-error
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bytesToHex } from "@noble/hashes/utils";
+import { sha256 } from "Util";
 
 //import { sha256 } from "Util";
 import { formatShort } from "Number";
@@ -30,21 +31,24 @@ function getInvoice(zap: TaggedRawEvent) {
   return { amount, hash: hash ? bytesToHex(hash) : undefined };
 }
 
-function getZapper(zap: TaggedRawEvent, dhash: string) {
+interface Zapper {
+  pubkey?: HexKey,
+  isValid: boolean
+}
+
+function getZapper(zap: TaggedRawEvent, dhash: string): Zapper {
   const zapRequest = findTag(zap, 'description')
   if (zapRequest) {
     const rawEvent: TaggedRawEvent = JSON.parse(zapRequest);
     if (Array.isArray(rawEvent)) {
       // old format, ignored
-      const rawDescriptionTag = rawEvent.find(a => a[0] === 'application/nostr')
-      const rawDescription = rawDescriptionTag && rawDescriptionTag[1]
-      const request = typeof rawDescription === 'string' ? JSON.parse(rawDescription) : rawDescription
-      return request?.pubkey
+      return { isValid: false };
     }
-    //const metaHash = sha256(zapRequest);
+    const metaHash = sha256(zapRequest);
     const ev = new Event(rawEvent)
-    return ev.PubKey
+    return { pubkey: ev.PubKey, isValid: dhash === metaHash };
   }
+  return { isValid: false }
 }
 
 interface ParsedZap {
@@ -59,7 +63,7 @@ interface ParsedZap {
 
 export function parseZap(zap: TaggedRawEvent): ParsedZap {
   const { amount, hash } = getInvoice(zap)
-  const zapper = hash && getZapper(zap, hash)
+  const zapper = hash ? getZapper(zap, hash) : { isValid: false };
   const e = findTag(zap, 'e')
   const p = findTag(zap, 'p')!
   return {
@@ -67,9 +71,9 @@ export function parseZap(zap: TaggedRawEvent): ParsedZap {
     e,
     p,
     amount: Number(amount) / 1000,
-    zapper,
+    zapper: zapper.pubkey,
     content: zap.content,
-    valid: true,
+    valid: zapper.isValid,
   }
 }
 
@@ -87,12 +91,12 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap, showZapped?: boolean 
         </div>
       </div>
       <div className="body">
-         <Text 
-           creator={zapper || ""}
-           content={content}
-           tags={[]}
-           users={new Map()}
-         />
+        <Text
+          creator={zapper || ""}
+          content={content}
+          tags={[]}
+          users={new Map()}
+        />
       </div>
     </div>
   ) : null
@@ -102,8 +106,8 @@ interface ZapsSummaryProps { zaps: ParsedZap[] }
 
 export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
   const sortedZaps = useMemo(() => {
-    const pub =  [...zaps.filter(z => z.zapper)]
-    const priv =  [...zaps.filter(z => !z.zapper)]
+    const pub = [...zaps.filter(z => z.zapper)]
+    const priv = [...zaps.filter(z => !z.zapper)]
     pub.sort((a, b) => b.amount - a.amount)
     return pub.concat(priv)
   }, [zaps])
@@ -127,8 +131,8 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
             </div>
           </div>
           <div className="body">
-            {content &&  (
-              <Text 
+            {content && (
+              <Text
                 creator={zapper || ""}
                 content={content}
                 tags={[]}

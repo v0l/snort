@@ -46,19 +46,19 @@ export default function Timeline({ subject, postsOnly = false, method, ignoreMod
     function eventElement(e: TaggedRawEvent) {
         switch (e.kind) {
             case EventKind.SetMetadata: {
-                return <ProfilePreview pubkey={e.pubkey} className="card"/>
+                return <ProfilePreview pubkey={e.pubkey} className="card" />
             }
             case EventKind.TextNote: {
                 return <Note key={e.id} data={e} related={related.notes} ignoreModeration={ignoreModeration} />
             }
-            case EventKind.ZapReceipt:  {
-              const zap = parseZap(e)
-              return zap.e ? null : <Zap zap={zap} />
+            case EventKind.ZapReceipt: {
+                const zap = parseZap(e)
+                return zap.e ? null : <Zap zap={zap} key={e.id} />
             }
             case EventKind.Reaction:
             case EventKind.Repost: {
                 let eRef = e.tags.find(a => a[0] === "e")?.at(1);
-                return <NoteReaction data={e} key={e.id} root={parent.notes.find(a => a.id === eRef)}/>
+                return <NoteReaction data={e} key={e.id} root={parent.notes.find(a => a.id === eRef)} />
             }
         }
     }
@@ -66,12 +66,12 @@ export default function Timeline({ subject, postsOnly = false, method, ignoreMod
     return (
         <div className="main-content">
             {latestFeed.length > 1 && (<div className="card latest-notes pointer" onClick={() => showLatest()}>
-                <FontAwesomeIcon icon={faForward}  size="xl"/>
+                <FontAwesomeIcon icon={faForward} size="xl" />
                 &nbsp;
                 Show latest {latestFeed.length - 1} notes
             </div>)}
             {mainFeed.map(eventElement)}
-            <LoadMore onLoadMore={loadMore} shouldLoadMore={main.end}/>
+            <LoadMore onLoadMore={loadMore} shouldLoadMore={main.end} />
         </div>
     );
 }
