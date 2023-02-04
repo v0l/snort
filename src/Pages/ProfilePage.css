@@ -213,3 +213,8 @@
 .qr-modal .modal-body {
   width: unset;
 }
+
+.profile .zap-amount {
+  font-weight: normal;
+  margin-left: 4px;
+}

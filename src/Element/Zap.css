@@ -1,0 +1,84 @@
+.zap {
+  min-height: unset;
+}
+
+@media (max-width: 520px) {
+  .zap .header {
+    flex-direction: column;
+  }
+  .zap .header .pfp {
+    width: 100%;
+    padding: 4px;
+  }
+  .zap .header .amount {
+    font-size: 32px;
+  }
+}
+
+.zap .summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.zap .amount {
+  font-size: 18px;
+}
+
+.zap .amount:before {
+  content: '⚡️ ';
+}
+
+.top-zap .amount:before {
+  content: '';
+}
+
+.zaps-summary {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-zap {
+  font-size: 14px;
+  border: none;
+  margin: 0;
+}
+
+.top-zap .pfp {
+  margin-right: .3em;
+}
+
+.top-zap .summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-zap .avatar {
+  width: 21px;
+  height: 21px;
+}
+
+.top-zap .nip05 {
+  display: none;
+}
+
+.amount-number {
+  font-weight: bold;
+}
+
+.rest-zaps:before {
+  content: ", ";
+}
+
+.note.zap > .header {
+  align-items: center;
+}
+
+.note.zap > .body {
+  margin-bottom: 0;
+}

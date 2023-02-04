@@ -1,7 +1,12 @@
 import * as secp from "@noble/secp256k1";
+import { sha256 as hash } from '@noble/hashes/sha256';
 import { bech32 } from "bech32";
-import { HexKey, TaggedRawEvent, u256 } from "Nostr";
+import { HexKey, RawEvent, TaggedRawEvent, u256 } from "Nostr";
 import EventKind from "Nostr/EventKind";
+
+export const sha256 = (str: string) => {
+  return secp.utils.bytesToHex(hash(str))
+}
 
 export async function openFile(): Promise<File | undefined> {
     return new Promise((resolve, reject) => {

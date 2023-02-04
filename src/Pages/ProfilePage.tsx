@@ -4,11 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { formatShort } from "Number";
 import Link from "Icons/Link";
 import Qr from "Icons/Qr";
 import Zap from "Icons/Zap";
 import Envelope from "Icons/Envelope";
 import { useUserProfile } from "Feed/ProfileFeed";
+import useZapsFeed from "Feed/ZapsFeed";
+import { default as ZapElement, parseZap } from "Element/Zap";
 import FollowButton from "Element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
@@ -36,6 +39,7 @@ enum ProfileTab {
   Reactions = "Reactions",
   Followers = "Followers",
   Follows = "Follows",
+  Zaps = "Zaps",
   Muted = "Muted",
   Blocked = "Blocked"
 };
@@ -58,6 +62,13 @@ export default function ProfilePage() {
   const website_url = (user?.website && !user.website.startsWith("http"))
   ? "https://" + user.website
   : user?.website || "";
+  const zapFeed = useZapsFeed(id)
+  const zaps = useMemo(() => {
+    const profileZaps = zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e && z.zapper !== id)
+    profileZaps.sort((a, b) => b.amount - a.amount)
+    return profileZaps
+  }, [zapFeed.store.notes, id])
+  const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
 
   useEffect(() => {
     setTab(ProfileTab.Notes);
@@ -89,7 +100,7 @@ export default function ProfilePage() {
           </div>
         )}
 
-        <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} />
+        <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} author={id} />
       </div>
     )
   }
@@ -109,6 +120,14 @@ export default function ProfilePage() {
     switch (tab) {
       case ProfileTab.Notes:
         return <Timeline key={id} subject={{ type: "pubkey", items: [id], discriminator: id.slice(0, 12) }} postsOnly={false} method={"LIMIT_UNTIL"} ignoreModeration={true} />;
+      case ProfileTab.Zaps: {
+        return (
+          <div className="main-content">
+            {zaps.map(z => <ZapElement showZapped={false} zap={z} />)}
+          </div>
+        )
+      }
+
       case ProfileTab.Follows: {
         if (isMe) {
           return (
@@ -163,6 +182,9 @@ export default function ProfilePage() {
           <>
             <IconButton onClick={() => setShowLnQr(true)}>
               <Zap width={14} height={16} />
+              <span className="zap-amount">
+                {zapsTotal > 0 && formatShort(zapsTotal)}
+               </span>
             </IconButton>
             {!loggedOut && (
               <>
@@ -205,7 +227,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="tabs">
-        {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Muted].map(renderTab)}
+        {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Zaps, ProfileTab.Muted].map(renderTab)}
         {isMe && renderTab(ProfileTab.Blocked)}
       </div>
       {tabContent()}

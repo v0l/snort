@@ -41,6 +41,7 @@ export default function useLoginFeed() {
 
     let sub = new Subscriptions();
     sub.Id = "login:notifications";
+    // todo: add zaps
     sub.Kinds = new Set([EventKind.TextNote]);
     sub.PTags = new Set([pubKey]);
     sub.Limit = 1;

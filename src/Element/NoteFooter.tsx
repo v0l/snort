@@ -14,6 +14,7 @@ import useEventPublisher from "Feed/EventPublisher";
 import { getReactions, hexToBech32, normalizeReaction, Reaction } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import LNURLTip from "Element/LNURLTip";
+import { parseZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Feed/ProfileFeed";
 import { default as NEvent } from "Nostr/Event";
 import { RootState } from "State/Store";
@@ -50,6 +51,9 @@ export default function NoteFooter(props: NoteFooterProps) {
   const langNames = new Intl.DisplayNames([...window.navigator.languages], { type: "language" });
   const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related, ev]);
   const reposts = useMemo(() => getReactions(related, ev.Id, EventKind.Repost), [related, ev]);
+  const zaps = useMemo(() => getReactions(related, ev.Id, EventKind.ZapReceipt).map(parseZap).filter(z => z.valid), [related]);
+  const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
+  const didZap = zaps.some(a => a.zapper === login);
   const groupReactions = useMemo(() => {
     return reactions?.reduce((acc, { content }) => {
       let r = normalizeReaction(content);
@@ -97,10 +101,11 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (service) {
       return (
         <>
-          <div className="reaction-pill" onClick={() => setTip(true)}>
+          <div className={`reaction-pill ${didZap ? 'reacted' : ''}`} onClick={() => setTip(true)}>
             <div className="reaction-pill-icon">
               <Zap />
             </div>
+            {zapTotal > 0 && (<div className="reaction-pill-number">{formatShort(zapTotal)}</div>)}
           </div>
         </>
       )
@@ -233,6 +238,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   return (
+    <>
     <div className="footer">
       <div className="footer-reactions">
         {tipButton()}
@@ -259,7 +265,11 @@ export default function NoteFooter(props: NoteFooterProps) {
         show={reply}
         setShow={setReply}
       />
-      <LNURLTip svc={author?.lud16 || author?.lud06} onClose={() => setTip(false)} show={tip} />
+      <LNURLTip svc={author?.lud16 || author?.lud06} onClose={() => setTip(false)} show={tip} author={author?.pubkey} note={ev.Id} />
     </div>
+    <div className="zaps-container">
+     <ZapsSummary zaps={zaps} />
+    </div>
+    </>
   )
 }
