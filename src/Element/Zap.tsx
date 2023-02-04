@@ -1,4 +1,5 @@
 import "./Zap.css";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 // @ts-expect-error
 import { decode as invoiceDecode } from "light-bolt11-decoder";
@@ -79,7 +80,7 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap, showZapped?: boolean 
   return valid ? (
     <div className="zap note card">
       <div className="header">
-        {zapper && <ProfileImage pubkey={zapper} />}
+        {zapper ? <ProfileImage pubkey={zapper} /> : <div>Anon&nbsp;</div>}
         {p !== pubKey && showZapped && <ProfileImage pubkey={p} />}
         <div className="amount">
           <span className="amount-number">{formatShort(amount)}</span> sats
@@ -87,7 +88,7 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap, showZapped?: boolean 
       </div>
       <div className="body">
          <Text 
-           creator={zapper!}
+           creator={zapper || ""}
            content={content}
            tags={[]}
            users={new Map()}
@@ -100,19 +101,27 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap, showZapped?: boolean 
 interface ZapsSummaryProps { zaps: ParsedZap[] }
 
 export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
-  const topZap = zaps.length > 0 && zaps.reduce((acc, z) => {
-    return z.amount > acc.amount ? z : acc
-  })
-  const restZaps = zaps.filter(z => topZap && z.id !== topZap.id)
+  const sortedZaps = useMemo(() => {
+    const pub =  [...zaps.filter(z => z.zapper)]
+    const priv =  [...zaps.filter(z => !z.zapper)]
+    pub.sort((a, b) => b.amount - a.amount)
+    return pub.concat(priv)
+  }, [zaps])
+
+  if (zaps.length === 0) {
+    return null
+  }
+
+  const [topZap, ...restZaps] = sortedZaps
   const restZapsTotal = restZaps.reduce((acc, z) => acc + z.amount, 0)
-  const { zapper, amount, content, valid } = topZap || {}
+  const { zapper, amount, content, valid } = topZap
 
   return (
     <div className="zaps-summary">
-      {amount && valid && zapper && (
+      {amount && (
         <div className={`top-zap`}>
           <div className="summary">
-            <ProfileImage pubkey={zapper} />
+            {zapper ? <ProfileImage pubkey={zapper} /> : <div>Anon&nbsp;</div>}
             <div className="amount">
               zapped <span className="amount-number">{formatShort(amount)}</span> sats
             </div>
@@ -120,7 +129,7 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
           <div className="body">
             {content &&  (
               <Text 
-                creator={zapper}
+                creator={zapper || ""}
                 content={content}
                 tags={[]}
                 users={new Map()}
