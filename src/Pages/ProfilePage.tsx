@@ -11,7 +11,7 @@ import Zap from "Icons/Zap";
 import Envelope from "Icons/Envelope";
 import { useUserProfile } from "Feed/ProfileFeed";
 import useZapsFeed from "Feed/ZapsFeed";
-import { parseZap } from "Element/Zap";
+import { default as ZapElement, parseZap } from "Element/Zap";
 import FollowButton from "Element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
@@ -39,6 +39,7 @@ enum ProfileTab {
   Reactions = "Reactions",
   Followers = "Followers",
   Follows = "Follows",
+  Zaps = "Zaps",
   Muted = "Muted",
   Blocked = "Blocked"
 };
@@ -63,7 +64,9 @@ export default function ProfilePage() {
   : user?.website || "";
   const zapFeed = useZapsFeed(id)
   const zaps = useMemo(() => {
-    return zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e)
+    const profileZaps = zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e)
+    profileZaps.sort((a, b) => b.amount - a.amount)
+    return profileZaps
   }, [zapFeed.store.notes, id])
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
 
@@ -117,6 +120,14 @@ export default function ProfilePage() {
     switch (tab) {
       case ProfileTab.Notes:
         return <Timeline key={id} subject={{ type: "pubkey", items: [id], discriminator: id.slice(0, 12) }} postsOnly={false} method={"LIMIT_UNTIL"} ignoreModeration={true} />;
+      case ProfileTab.Zaps: {
+        return (
+          <div className="main-content">
+            {zaps.map(z => <ZapElement showZapped={false} zap={z} />)}
+          </div>
+        )
+      }
+
       case ProfileTab.Follows: {
         if (isMe) {
           return (
@@ -216,7 +227,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="tabs">
-        {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Muted].map(renderTab)}
+        {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Zaps, ProfileTab.Muted].map(renderTab)}
         {isMe && renderTab(ProfileTab.Blocked)}
       </div>
       {tabContent()}

@@ -1,11 +1,10 @@
 import "./Zap.css";
-import { useMemo } from "react";
 import { useSelector } from "react-redux";
 // @ts-expect-error
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bytesToHex } from "@noble/hashes/utils";
 
-import { sha256 } from "Util";
+//import { sha256 } from "Util";
 import { formatShort } from "Number";
 import { HexKey, TaggedRawEvent } from "Nostr";
 import Event from "Nostr/Event";
@@ -18,16 +17,6 @@ function findTag(e: TaggedRawEvent, tag: string) {
     return evTag[0] === tag
   })
   return maybeTag && maybeTag[1]
-}
-
-type Section = {
-  name: string
-  value?: any
-  letters?: string
-}
-
-function getSection(sections: Section[], name: string) {
-  return sections.find((s) => s.name === name)
 }
 
 function getInvoice(zap: TaggedRawEvent) {
@@ -83,7 +72,7 @@ export function parseZap(zap: TaggedRawEvent): ParsedZap {
   }
 }
 
-const Zap = ({ zap }: { zap: ParsedZap }) => {
+const Zap = ({ zap, showZapped = true }: { zap: ParsedZap, showZapped?: boolean }) => {
   const { amount, content, zapper, valid, p } = zap
   const pubKey = useSelector((s: RootState) => s.login.publicKey)
 
@@ -91,7 +80,7 @@ const Zap = ({ zap }: { zap: ParsedZap }) => {
     <div className="zap note card">
       <div className="header">
         {zapper && <ProfileImage pubkey={zapper} />}
-        {p !== pubKey && <ProfileImage pubkey={p} />}
+        {p !== pubKey && showZapped && <ProfileImage pubkey={p} />}
         <div className="amount">
           <span className="amount-number">{formatShort(amount)}</span> sats
         </div>
@@ -111,18 +100,11 @@ const Zap = ({ zap }: { zap: ParsedZap }) => {
 interface ZapsSummaryProps { zaps: ParsedZap[] }
 
 export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
-  const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
-
   const topZap = zaps.length > 0 && zaps.reduce((acc, z) => {
     return z.amount > acc.amount ? z : acc
   })
   const restZaps = zaps.filter(z => topZap && z.id !== topZap.id)
   const restZapsTotal = restZaps.reduce((acc, z) => acc + z.amount, 0)
-  const sortedZaps = useMemo(() => {
-    const s = [...restZaps]
-    s.sort((a, b) => b.amount - a.amount)
-    return s
-  }, [restZaps])
   const { zapper, amount, content, valid } = topZap || {}
 
   return (
