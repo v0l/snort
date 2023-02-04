@@ -240,11 +240,12 @@ export default function LNURLTip(props: LNURLTipProps) {
         )
     }
 
+    const defaultTitle = payService?.allowsNostr === true ? "⚡️ Send Zap!" : "⚡️ Send sats";
     if (!show) return null;
     return (
         <Modal onClose={onClose}>
             <div className="lnurl-tip" onClick={(e) => e.stopPropagation()}>
-                <h2>{props.title || "⚡️ Send sats"}</h2>
+                <h2>{props.title || defaultTitle}</h2>
                 {invoiceForm()}
                 {error ? <p className="error">{error}</p> : null}
                 {payInvoice()}
