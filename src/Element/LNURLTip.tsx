@@ -9,7 +9,6 @@ import Copy from "Element/Copy";
 import useWebln from "Hooks/useWebln";
 
 interface LNURLService {
-    allowsNostr?: boolean
     nostrPubkey?: HexKey
     minSendable?: number,
     maxSendable?: number,
@@ -128,7 +127,7 @@ export default function LNURLTip(props: LNURLTipProps) {
         let url = ''
         const amountParam = `amount=${Math.floor(amount * 1000)}`
         const commentParam = comment ? `&comment=${encodeURIComponent(comment)}` : ""
-        if (payService.allowsNostr && payService.nostrPubkey && author) {
+        if (payService.nostrPubkey && author) {
             const ev = await publisher.zap(author, note, comment)
             const nostrParam = ev && `&nostr=${encodeURIComponent(JSON.stringify(ev.ToObject()))}`
             url = `${payService.callback}?${amountParam}${commentParam}${nostrParam}`;
@@ -240,7 +239,7 @@ export default function LNURLTip(props: LNURLTipProps) {
         )
     }
 
-    const defaultTitle = payService?.allowsNostr === true ? "⚡️ Send Zap!" : "⚡️ Send sats";
+    const defaultTitle = payService?.nostrPubkey ? "⚡️ Send Zap!" : "⚡️ Send sats";
     if (!show) return null;
     return (
         <Modal onClose={onClose}>
