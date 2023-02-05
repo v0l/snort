@@ -20,6 +20,7 @@ import { db } from "Db";
 import { bech32ToHex } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import Plus from "Icons/Plus";
+import { RelaySettings } from "Nostr/Connection";
 
 
 export default function Layout() {
@@ -101,6 +102,8 @@ export default function Layout() {
     }, []);
 
     async function handleNewUser() {
+        let newRelays: Record<string, RelaySettings> | undefined;
+
         try {
             let rsp = await fetch("https://api.nostr.watch/v1/online");
             if (rsp.ok) {
@@ -108,8 +111,9 @@ export default function Layout() {
                 let pickRandom = online.sort((a, b) => Math.random() >= 0.5 ? 1 : -1).slice(0, 4); // pick 4 random relays
 
                 let relayObjects = pickRandom.map(a => [a, { read: true, write: true }]);
+                newRelays = Object.fromEntries(relayObjects);
                 dispatch(setRelays({
-                    relays: Object.fromEntries(relayObjects),
+                    relays: newRelays!,
                     createdAt: 1
                 }));
             }
@@ -117,7 +121,7 @@ export default function Layout() {
             console.warn(e);
         }
 
-        const ev = await pub.addFollow(bech32ToHex(SnortPubKey));
+        const ev = await pub.addFollow(bech32ToHex(SnortPubKey), newRelays);
         pub.broadcast(ev);
     }
 

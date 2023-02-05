@@ -19,7 +19,6 @@ import LoginPage from 'Pages/Login';
 import ProfilePage from 'Pages/ProfilePage';
 import RootPage from 'Pages/Root';
 import NotificationsPage from 'Pages/Notifications';
-import NewUserPage from 'Pages/NewUserPage';
 import SettingsPage, { SettingsRoutes } from 'Pages/SettingsPage';
 import ErrorPage from 'Pages/ErrorPage';
 import VerificationPage from 'Pages/Verification';
@@ -29,6 +28,7 @@ import DonatePage from 'Pages/DonatePage';
 import HashTagsPage from 'Pages/HashTagsPage';
 import SearchPage from 'Pages/SearchPage';
 import HelpPage from 'Pages/HelpPage';
+import { NewUserRoutes } from 'Pages/new';
 
 /**
  * HTTP query provider
@@ -67,10 +67,6 @@ export const router = createBrowserRouter([
         element: <NotificationsPage />
       },
       {
-        path: "/new",
-        element: <NewUserPage />
-      },
-      {
         path: "/settings",
         element: <SettingsPage />,
         children: SettingsRoutes
@@ -98,7 +94,8 @@ export const router = createBrowserRouter([
       {
         path: "/search/:keyword?",
         element: <SearchPage />
-      }
+      },
+      ...NewUserRoutes
     ]
   }
 ]);

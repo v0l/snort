@@ -8,6 +8,7 @@ import { RootState } from "State/Store";
 import { HexKey, RawEvent, u256, UserMetadata, Lists } from "Nostr";
 import { bech32ToHex } from "Util"
 import { DefaultRelays, HashtagRegex } from "Const";
+import { RelaySettings } from "Nostr/Connection";
 
 declare global {
     interface Window {
@@ -27,7 +28,7 @@ export default function useEventPublisher() {
     const pubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const privKey = useSelector<RootState, HexKey | undefined>(s => s.login.privateKey);
     const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
-    const relays = useSelector<RootState>(s => s.login.relays);
+    const relays = useSelector((s: RootState) => s.login.relays);
     const hasNip07 = 'nostr' in window;
 
     async function signEvent(ev: NEvent): Promise<NEvent> {
@@ -221,11 +222,11 @@ export default function useEventPublisher() {
                 return await signEvent(ev);
             }
         },
-        addFollow: async (pkAdd: HexKey | HexKey[]) => {
+        addFollow: async (pkAdd: HexKey | HexKey[], newRelays?: Record<string, RelaySettings>) => {
             if (pubKey) {
                 let ev = NEvent.ForPubKey(pubKey);
                 ev.Kind = EventKind.ContactList;
-                ev.Content = JSON.stringify(relays);
+                ev.Content = JSON.stringify(newRelays ?? relays);
                 let temp = new Set(follows);
                 if (Array.isArray(pkAdd)) {
                     pkAdd.forEach(a => temp.add(a));

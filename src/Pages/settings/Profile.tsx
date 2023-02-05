@@ -9,14 +9,19 @@ import { faShop } from "@fortawesome/free-solid-svg-icons";
 
 import useEventPublisher from "Feed/EventPublisher";
 import { useUserProfile } from "Feed/ProfileFeed";
-import LogoutButton from "Element/LogoutButton";
 import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
 import useFileUpload from "Upload";
 
-export default function ProfileSettings() {
+export interface ProfileSettingsProps {
+    avatar?: boolean,
+    banner?: boolean,
+    privateKey?: boolean
+}
+
+export default function ProfileSettings(props: ProfileSettingsProps) {
     const navigate = useNavigate();
     const id = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
     const privKey = useSelector<RootState, HexKey | undefined>(s => s.login.privateKey);
@@ -145,7 +150,6 @@ export default function ProfileSettings() {
                 </div>
                 <div className="form-group">
                     <div>
-                        <LogoutButton />
                     </div>
                     <div>
                         <button type="button" onClick={() => saveProfile()}>Save</button>
@@ -160,18 +164,18 @@ export default function ProfileSettings() {
         return (
             <>
                 <div className="flex f-center image-settings">
-                    <div>
+                    {(props.avatar ?? true) && (<div>
                         <h2>Avatar</h2>
                         <div style={{ backgroundImage: `url(${avatarPicture})` }} className="avatar">
                             <div className="edit" onClick={() => setNewAvatar()}>Edit</div>
                         </div>
-                    </div>
-                    <div>
+                    </div>)}
+                    {(props.banner ?? true) && (<div>
                         <h2>Header</h2>
                         <div style={{ backgroundImage: `url(${(banner?.length ?? 0) === 0 ? Nostrich : banner})` }} className="banner">
                             <div className="edit" onClick={() => setNewBanner()}>Edit</div>
                         </div>
-                    </div>
+                    </div>)}
                 </div>
                 {editor()}
             </>
@@ -180,9 +184,9 @@ export default function ProfileSettings() {
 
     return (
         <div className="settings">
-            <h3>Profile</h3>
+            <h3>Edit Profile</h3>
             {settings()}
-            {privKey && (<div className="flex f-col bg-grey">
+            {privKey && (props.privateKey ?? true) && (<div className="flex f-col bg-grey">
                 <div>
                     <h4>Your Private Key Is (do not share this with anyone):</h4>
                 </div>
