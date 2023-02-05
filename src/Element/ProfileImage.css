@@ -1,6 +1,7 @@
 .pfp {
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
 .pfp .avatar-wrapper {
@@ -15,11 +16,6 @@
 
 .pfp a {
     text-decoration: none;
-}
-
-.pfp a:hover {
-    text-decoration: underline;
-    text-decoration-color: var(--gray-superlight);
 }
 
 .pfp .username {

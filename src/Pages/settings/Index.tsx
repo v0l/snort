@@ -4,6 +4,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { faRightFromBracket, faCircleDollarToSlot, faGear, faPlug, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ArrowFront from "Icons/ArrowFront";
+import Gear from "Icons/Gear";
+import Profile from "Icons/Profile";
+import Relay from "Icons/Relay";
+import Heart from "Icons/Heart";
+import Logout from "Icons/Logout";
 
 import { logout } from "State/Login";
 
@@ -19,25 +25,52 @@ const SettingsIndex = () => {
     return (
       <>
         <div className="settings-nav">
-            <div className="card" onClick={() => navigate("profile")}>
-                <FontAwesomeIcon icon={faUser} size="xl" className="mr10" />
+            <div className="settings-row" onClick={() => navigate("profile")}>
+              <div className="mr10">
+               <Profile />
+              </div>
+              <span>
                 Profile
+              </span>
+              <div className="align-end">
+                <ArrowFront />
+              </div>
             </div>
-            <div className="card" onClick={() => navigate("relays")}>
-                <FontAwesomeIcon icon={faPlug} size="xl" className="mr10" />
-                Relays
+            <div className="settings-row" onClick={() => navigate("relays")}>
+              <div className="mr10">
+                <Relay />
+              </div>
+              Relays
+              <div className="align-end">
+                <ArrowFront />
+              </div>
             </div>
-            <div className="card" onClick={() => navigate("preferences")}>
-                <FontAwesomeIcon icon={faGear} size="xl" className="mr10" />
-                Preferences
+            <div className="settings-row" onClick={() => navigate("preferences")}>
+              <div className="mr10">
+               <Gear />
+              </div>
+              Preferences
+              <div className="align-end">
+                <ArrowFront />
+              </div>
             </div>
-            <div className="card" onClick={() => navigate("/donate")}>
-                <FontAwesomeIcon icon={faCircleDollarToSlot} size="xl" className="mr10" />
-                Donate
+            <div className="settings-row" onClick={() => navigate("/donate")}>
+              <div className="mr10">
+               <Heart />
+              </div>
+              Donate
+              <div className="align-end">
+                <ArrowFront />
+              </div>
             </div>
-            <div className="card" onClick={handleLogout}>
-                <FontAwesomeIcon icon={faRightFromBracket} size="xl" className="mr10" />
-                Log Out
+            <div className="settings-row" onClick={handleLogout}>
+              <div className="mr10">
+                <Logout />
+              </div>
+              Log Out
+              <div className="align-end">
+                <ArrowFront />
+              </div>
             </div>
         </div>
       </>

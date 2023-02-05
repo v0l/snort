@@ -539,6 +539,12 @@ body.scroll-lock {
   font-weight: 700;
 }
 
+.main-content h2 {
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 39px;
+}
+
 .main-content .h4 {
   margin-bottom: 25px;
 }
