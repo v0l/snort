@@ -108,7 +108,6 @@ export default function ProfilePage() {
   function bio() {
     return aboutText.length > 0 && (
       <>
-        <h3>Bio</h3>
         <div className="details">
           {about}
         </div>

@@ -161,7 +161,6 @@
   color: var(--highlight);
 }
 
-
 .light .indented .active {
   background-color: var(--gray-secondary);
 }
@@ -181,6 +180,7 @@
 .light .note.active>.footer>.reaction-pill.reacted {
   color: var(--highlight);
 }
+
 .note-expand .body {
   max-height: 300px;
   overflow-y: hidden;

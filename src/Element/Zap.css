@@ -2,16 +2,23 @@
   min-height: unset;
 }
 
+.zap .header {
+  align-items: center;
+  flex-direction: row;
+}
+
 .zap .header .pfp {
   overflow: hidden;
 }
 
-.zap .header {
-  flex-direction: row;
-}
-
 .zap .header .amount {
   font-size: 32px;
+}
+
+@media (max-width: 520px) {
+  .zap .header .amount {
+    font-size: 21px;
+  }
 }
 
 .zap .header .pfp {
@@ -31,10 +38,6 @@
 
 .zap .amount {
   font-size: 18px;
-}
-
-.zap .amount:before {
-  content: '⚡️ ';
 }
 
 .top-zap .amount:before {
@@ -79,10 +82,6 @@
 
 .amount-number {
   font-weight: bold;
-}
-
-.rest-zaps:before {
-  content: ", ";
 }
 
 .note.zap > .body {
