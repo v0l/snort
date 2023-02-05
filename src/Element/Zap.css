@@ -17,8 +17,7 @@
 
 .zap .summary {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: row;
 }
 
 .zap .amount {
@@ -33,12 +32,15 @@
   content: '';
 }
 
+.top-zap .summary {
+  color: var(--font-secondary-color);
+}
+
 .zaps-summary {
   margin-top: 8px;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  margin-left: 52px;
 }
 
 .top-zap {
@@ -51,13 +53,6 @@
   margin-right: .3em;
 }
 
-.top-zap .summary {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
 .top-zap .avatar {
   width: 21px;
   height: 21px;
@@ -65,6 +60,12 @@
 
 .top-zap .nip05 {
   display: none;
+}
+
+.top-zap .summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .amount-number {

@@ -125,10 +125,11 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
       {amount && (
         <div className={`top-zap`}>
           <div className="summary">
-            {zapper ? <ProfileImage pubkey={zapper} /> : <div>Anon&nbsp;</div>}
-            <div className="amount">
-              zapped <span className="amount-number">{formatShort(amount)}</span> sats
-            </div>
+            {zapper && <ProfileImage pubkey={zapper} />}
+            {restZaps.length > 0 && (
+              <span>and {restZaps.length} other{restZaps.length > 1 ? 's' : ''}</span>
+            )}
+            <span>&nbsp;zapped</span>
           </div>
           <div className="body">
             {content && (
@@ -140,12 +141,6 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
               />
             )}
           </div>
-        </div>
-      )}
-      {restZapsTotal > 0 && (
-        <div className="rest-zaps">
-          {restZaps.length} other{restZaps.length > 1 ? 's' : ''} zapped&nbsp;
-          <span className="amount-number">{formatShort(restZapsTotal)}</span> sats
         </div>
       )}
     </div>
