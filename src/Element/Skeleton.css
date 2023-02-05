@@ -4,6 +4,7 @@
   position: relative;
   overflow: hidden;
   background-color: #dddbdd;
+  border-radius: 16px;
 }
 
 .skeleton::after {
