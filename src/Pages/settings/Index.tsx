@@ -2,8 +2,6 @@ import "./Index.css";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { faRightFromBracket, faCircleDollarToSlot, faGear, faPlug, faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ArrowFront from "Icons/ArrowFront";
 import Gear from "Icons/Gear";
 import Profile from "Icons/Profile";
