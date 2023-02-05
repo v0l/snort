@@ -31,7 +31,11 @@ export default function ProfilePreview(props: ProfilePreviewProps) {
                     {options.about ? <div className="f-ellipsis about">
                         {user?.about}
                     </div> : undefined} />
-                {props.actions ?? <FollowButton pubkey={pubkey} className="ml5" />}
+                {props.actions ?? (
+                  <div className="follow-button-container">
+                    <FollowButton pubkey={pubkey} />
+                  </div>
+                )}
             </>}
         </div>
     )
