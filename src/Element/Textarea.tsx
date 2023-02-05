@@ -61,7 +61,7 @@ const Textarea = ({ users, onChange, ...rest }: any) => {
     <ReactTextareaAutocomplete
       {...rest}
       loadingComponent={() => <span>Loading....</span>}
-      placeholder="Say something!"
+      placeholder="What's on your mind?"
       onChange={onChange}
       textAreaComponent={TextareaAutosize}
       trigger={{
