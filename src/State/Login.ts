@@ -86,6 +86,11 @@ export interface LoginStore {
     publicKey?: HexKey,
 
     /**
+     * If user generated key on snort
+     */
+    newUserKey: boolean,
+
+    /**
      * All the logged in users relays
      */
     relays: Record<string, RelaySettings>,
@@ -157,6 +162,7 @@ export const InitState = {
     loggedOut: undefined,
     publicKey: undefined,
     privateKey: undefined,
+    newUserKey: false,
     relays: {},
     latestRelays: 0,
     follows: [],
@@ -238,6 +244,13 @@ const LoginSlice = createSlice({
         },
         setPrivateKey: (state, action: PayloadAction<HexKey>) => {
             state.loggedOut = false;
+            state.privateKey = action.payload;
+            window.localStorage.setItem(PrivateKeyItem, action.payload);
+            state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload));
+        },
+        setGeneratedPrivateKey: (state, action: PayloadAction<HexKey>) => {
+            state.loggedOut = false;
+            state.newUserKey = true;
             state.privateKey = action.payload;
             window.localStorage.setItem(PrivateKeyItem, action.payload);
             state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload));
@@ -362,6 +375,7 @@ const LoginSlice = createSlice({
 export const {
     init,
     setPrivateKey,
+    setGeneratedPrivateKey,
     setPublicKey,
     setRelays,
     removeRelay,

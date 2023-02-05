@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as secp from '@noble/secp256k1';
 
 import { RootState } from "State/Store";
-import { setPrivateKey, setPublicKey, setRelays } from "State/Login";
+import { setPrivateKey, setPublicKey, setRelays, setGeneratedPrivateKey } from "State/Login";
 import { DefaultRelays, EmailRegex } from "Const";
 import { bech32ToHex } from "Util";
 import { HexKey } from "Nostr";
@@ -66,23 +66,7 @@ export default function LoginPage() {
 
     async function makeRandomKey() {
         let newKey = secp.utils.bytesToHex(secp.utils.randomPrivateKey());
-        dispatch(setPrivateKey(newKey));
-
-        try {
-            let rsp = await fetch("https://api.nostr.watch/v1/online");
-            if (rsp.ok) {
-                let online: string[] = await rsp.json();
-                let pickRandom = online.sort((a, b) => Math.random() >= 0.5 ? 1 : -1).slice(0, 4); // pick 4 random relays
-
-                let relayObjects = pickRandom.map(a => [a, { read: true, write: true }]);
-                dispatch(setRelays({
-                    relays: Object.fromEntries(relayObjects),
-                    createdAt: 1
-                }));
-            }
-        } catch (e) {
-            console.warn(e);
-        }
+        dispatch(setGeneratedPrivateKey(newKey));
         navigate("/new");
     }
 

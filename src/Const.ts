@@ -21,6 +21,11 @@ export const VoidCatHost = "https://void.cat";
 export const KieranPubKey = "npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49";
 
 /**
+ * Official snort account
+ */
+export const SnortPubKey = "npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x6802npjqhjjtws";
+
+/**
  * Websocket re-connect timeout
  */
 export const DefaultConnectTimeout = 2000;

@@ -1,4 +1,4 @@
-import { ApiHost, KieranPubKey } from "Const";
+import { ApiHost, KieranPubKey, SnortPubKey } from "Const";
 import ProfilePreview from "Element/ProfilePreview";
 import ZapButton from "Element/ZapButton";
 import { HexKey } from "Nostr";
@@ -72,7 +72,7 @@ const DonatePage = () => {
             <div className="flex">
                 <div className="mr10">Lightning Donation: </div>
                 <ZapButton
-                  pubkey={"84de35e2584d2b144aae823c9ed0b0f3deda09648530b93d1a2a146d1dea9864"}
+                  pubkey={bech32ToHex(SnortPubKey)}
                   svc={"donate@snort.social"}
                 />
             </div>
