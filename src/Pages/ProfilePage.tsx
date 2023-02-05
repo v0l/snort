@@ -123,6 +123,7 @@ export default function ProfilePage() {
       case ProfileTab.Zaps: {
         return (
           <div className="main-content">
+            <h4 className="zaps-total">{formatShort(zapsTotal)} sats</h4>
             {zaps.map(z => <ZapElement showZapped={false} zap={z} />)}
           </div>
         )
@@ -180,12 +181,11 @@ export default function ProfilePage() {
           </>
         ) : (
           <>
-            <IconButton onClick={() => setShowLnQr(true)}>
-              <Zap width={14} height={16} />
-              <span className="zap-amount">
-                {zapsTotal > 0 && formatShort(zapsTotal)}
-               </span>
-            </IconButton>
+            {lnurl && (
+              <IconButton onClick={() => setShowLnQr(true)}>
+                <Zap width={14} height={16} />
+              </IconButton>
+            )}
             {!loggedOut && (
               <>
                 <IconButton onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>

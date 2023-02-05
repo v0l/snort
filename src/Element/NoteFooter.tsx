@@ -51,7 +51,10 @@ export default function NoteFooter(props: NoteFooterProps) {
   const langNames = new Intl.DisplayNames([...window.navigator.languages], { type: "language" });
   const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related, ev]);
   const reposts = useMemo(() => getReactions(related, ev.Id, EventKind.Repost), [related, ev]);
-  const zaps = useMemo(() => getReactions(related, ev.Id, EventKind.ZapReceipt).map(parseZap).filter(z => z.valid), [related]);
+  const zaps = useMemo(() =>
+    getReactions(related, ev.Id, EventKind.ZapReceipt).map(parseZap).filter(z => z.valid && z.zapper !== ev.PubKey),
+    [related]
+  );
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
   const didZap = zaps.some(a => a.zapper === login);
   const groupReactions = useMemo(() => {
