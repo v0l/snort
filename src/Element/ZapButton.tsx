@@ -19,7 +19,7 @@ const ZapButton = ({ pubkey, svc }: { pubkey?: HexKey, svc?: string }) => {
             <div className="zap-button" onClick={(e) => setZap(true)}>
                 <FontAwesomeIcon icon={faBolt} />
             </div>
-            <LNURLTip svc={service} show={zap} onClose={() => setZap(false)} />
+            <LNURLTip svc={service} show={zap} onClose={() => setZap(false)} author={pubkey} />
         </>
     )
 }

@@ -3,13 +3,11 @@ import Nostrich from "nostrich.webp";
 import { TaggedRawEvent } from "Nostr";
 import EventKind from "Nostr/EventKind";
 import type { NotificationRequest } from "State/Login";
-import { MetadataCache } from "State/Users";
-import { getDb } from "State/Users/Db";
+import { MetadataCache, UsersDb } from "State/Users";
 import { getDisplayName } from "Element/ProfileImage";
 import { MentionRegex } from "Const";
 
-export async function makeNotification(ev: TaggedRawEvent): Promise<NotificationRequest | null> {
-    const db = getDb()
+export async function makeNotification(db: UsersDb, ev: TaggedRawEvent): Promise<NotificationRequest | null> {
     switch (ev.kind) {
         case EventKind.TextNote: {
             const pubkeys = new Set([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1]!)]);

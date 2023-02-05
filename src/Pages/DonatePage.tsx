@@ -1,4 +1,4 @@
-import { ApiHost } from "Const";
+import { ApiHost, KieranPubKey, SnortPubKey } from "Const";
 import ProfilePreview from "Element/ProfilePreview";
 import ZapButton from "Element/ZapButton";
 import { HexKey } from "Nostr";
@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { bech32ToHex } from "Util";
 
 const Developers = [
-    bech32ToHex("npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49"), // kieran
+    bech32ToHex(KieranPubKey), // kieran
     bech32ToHex("npub107jk7htfv243u0x5ynn43scq9wrxtaasmrwwa8lfu2ydwag6cx2quqncxg"), // verbiricha
     bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"), // Karnage
 ];
@@ -71,7 +71,10 @@ const DonatePage = () => {
             </p>
             <div className="flex">
                 <div className="mr10">Lightning Donation: </div>
-                <ZapButton svc={"donate@snort.social"} />
+                <ZapButton
+                  pubkey={bech32ToHex(SnortPubKey)}
+                  svc={"donate@snort.social"}
+                />
             </div>
             {today && (<small>Total today (UTC): {today.donations.toLocaleString()} sats</small>)}
             <h3>Primary Developers</h3>

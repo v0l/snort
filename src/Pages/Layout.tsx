@@ -1,5 +1,5 @@
 import "./Layout.css";
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import Envelope from "Icons/Envelope";
@@ -7,36 +7,39 @@ import Bell from "Icons/Bell";
 import Search from "Icons/Search";
 
 import { RootState } from "State/Store";
-import { init, UserPreferences } from "State/Login";
-import { HexKey, RawEvent, TaggedRawEvent } from "Nostr";
-import { RelaySettings } from "Nostr/Connection";
+import { init, setRelays } from "State/Login";
 import { System } from "Nostr/System"
 import ProfileImage from "Element/ProfileImage";
 import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
-import { SearchRelays } from 'Const';
+import { SearchRelays, SnortPubKey } from 'Const';
 import useEventPublisher from "Feed/EventPublisher";
 import useModeration from "Hooks/useModeration";
+import { IndexedUDB, useDb } from "State/Users/Db";
+import { db } from "Db";
+import { bech32ToHex } from "Util";
+import { NoteCreator } from "Element/NoteCreator";
+import Plus from "Icons/Plus";
 
 
 export default function Layout() {
+    const [show, setShow] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const isInit = useSelector<RootState, boolean | undefined>(s => s.login.loggedOut);
-    const key = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
-    const relays = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
-    const notifications = useSelector<RootState, TaggedRawEvent[]>(s => s.login.notifications);
-    const readNotifications = useSelector<RootState, number>(s => s.login.readNotifications);
-    const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
+    const { loggedOut, publicKey, relays, notifications, readNotifications, dms, preferences, newUserKey } = useSelector((s: RootState) => s.login);
     const { isMuted } = useModeration();
     const filteredDms = dms.filter(a => !isMuted(a.pubkey))
-    const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
+    const usingDb = useDb();
     const pub = useEventPublisher();
     useLoginFeed();
 
     useEffect(() => {
         System.nip42Auth = pub.nip42Auth
-    },[pub])
+    }, [pub])
+
+    useEffect(() => {
+        System.UserDb = usingDb;
+    }, [usingDb])
 
     useEffect(() => {
         if (relays) {
@@ -62,19 +65,67 @@ export default function Layout() {
 
     useEffect(() => {
         let osTheme = window.matchMedia("(prefers-color-scheme: light)");
-        setTheme(prefs.theme === "system" && osTheme.matches ? "light" : prefs.theme === "light" ? "light" : "dark");
+        setTheme(preferences.theme === "system" && osTheme.matches ? "light" : preferences.theme === "light" ? "light" : "dark");
 
         osTheme.onchange = (e) => {
-            if (prefs.theme === "system") {
+            if (preferences.theme === "system") {
                 setTheme(e.matches ? "light" : "dark");
             }
         }
         return () => { osTheme.onchange = null; }
-    }, [prefs.theme]);
+    }, [preferences.theme]);
 
     useEffect(() => {
-        dispatch(init());
+        // check DB support then init
+        IndexedUDB.isAvailable()
+            .then(async a => {
+                const dbType = a ? "indexdDb" : "redux";
+
+                // cleanup on load
+                if (dbType === "indexdDb") {
+                    await db.feeds.clear();
+                    const now = Math.floor(new Date().getTime() / 1000);
+
+                    const cleanupEvents = await db.events
+                        .where("created_at")
+                        .above(now - (60 * 60))
+                        .primaryKeys();
+                    console.debug(`Cleanup ${cleanupEvents.length} events`);
+                    await db.events.bulkDelete(cleanupEvents)
+                }
+
+                console.debug(`Using db: ${dbType}`);
+                dispatch(init(dbType));
+            })
+
     }, []);
+
+    async function handleNewUser() {
+        try {
+            let rsp = await fetch("https://api.nostr.watch/v1/online");
+            if (rsp.ok) {
+                let online: string[] = await rsp.json();
+                let pickRandom = online.sort((a, b) => Math.random() >= 0.5 ? 1 : -1).slice(0, 4); // pick 4 random relays
+
+                let relayObjects = pickRandom.map(a => [a, { read: true, write: true }]);
+                dispatch(setRelays({
+                    relays: Object.fromEntries(relayObjects),
+                    createdAt: 1
+                }));
+            }
+        } catch (e) {
+            console.warn(e);
+        }
+
+        const ev = await pub.addFollow(bech32ToHex(SnortPubKey));
+        pub.broadcast(ev);
+    }
+
+    useEffect(() => {
+        if (newUserKey === true) {
+            handleNewUser().catch(console.warn);
+        }
+    }, [newUserKey]);
 
     async function goToNotifications(e: any) {
         e.stopPropagation();
@@ -94,7 +145,7 @@ export default function Layout() {
 
     function accountHeader() {
         const unreadNotifications = notifications?.filter(a => (a.created_at * 1000) > readNotifications).length;
-        const unreadDms = key ? totalUnread(filteredDms, key) : 0;
+        const unreadDms = publicKey ? totalUnread(filteredDms, publicKey) : 0;
         return (
             <div className="header-actions">
                 <div className="btn btn-rnd" onClick={(e) => navigate("/search")}>
@@ -108,12 +159,12 @@ export default function Layout() {
                     <Bell />
                     {unreadNotifications > 0 && (<span className="has-unread"></span>)}
                 </div>
-                <ProfileImage pubkey={key || ""} showUsername={false} />
+                <ProfileImage pubkey={publicKey || ""} showUsername={false} />
             </div>
         )
     }
 
-    if (typeof isInit !== "boolean") {
+    if (typeof loggedOut !== "boolean") {
         return null;
     }
     return (
@@ -121,13 +172,17 @@ export default function Layout() {
             <header>
                 <div className="logo" onClick={() => navigate("/")}>Snort</div>
                 <div>
-                    {key ? accountHeader() :
+                    {publicKey ? accountHeader() :
                         <button type="button" onClick={() => navigate("/login")}>Login</button>
                     }
                 </div>
             </header>
-
             <Outlet />
+
+            <button className="note-create-button" type="button" onClick={() => setShow(!show)}>
+                <Plus />
+            </button>
+            <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
         </div>
     )
 }

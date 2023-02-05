@@ -28,6 +28,7 @@ import ChatPage from 'Pages/ChatPage';
 import DonatePage from 'Pages/DonatePage';
 import HashTagsPage from 'Pages/HashTagsPage';
 import SearchPage from 'Pages/SearchPage';
+import HelpPage from 'Pages/HelpPage';
 
 /**
  * HTTP query provider
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage />
+      },
+      {
+        path: "/help",
+        element: <HelpPage />
       },
       {
         path: "/e/:id",

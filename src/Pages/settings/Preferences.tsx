@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { InitState, setPreferences, UserPreferences } from "State/Login";
+import { DefaultImgProxy, setPreferences, UserPreferences } from "State/Login";
 import { RootState } from "State/Store";
 import "./Preferences.css";
 
@@ -26,10 +26,14 @@ const PreferencesPage = () => {
             <div className="card flex">
                 <div className="flex f-col f-grow">
                     <div>Automatically load media</div>
-                    <small>Media in posts will automatically be shown, if disabled only the link will show</small>
+                    <small>Media in posts will automatically be shown for selected people, otherwise only the link will show</small>
                 </div>
                 <div>
-                    <input type="checkbox" checked={perf.autoLoadMedia} onChange={e => dispatch(setPreferences({ ...perf, autoLoadMedia: e.target.checked }))} />
+                    <select value={perf.autoLoadMedia} onChange={e => dispatch(setPreferences({ ...perf, autoLoadMedia: e.target.value } as UserPreferences))}>
+                        <option value="none">None</option>
+                        <option value="follows-only">Follows only</option>
+                        <option value="all">All</option>
+                    </select>
                 </div>
             </div>
             <div className="card flex f-col">
@@ -39,7 +43,7 @@ const PreferencesPage = () => {
                         <small>Use imgproxy to compress images</small>
                     </div>
                     <div>
-                        <input type="checkbox" checked={perf.imgProxyConfig !== null} onChange={e => dispatch(setPreferences({ ...perf, imgProxyConfig: e.target.checked ? InitState.preferences.imgProxyConfig : null }))} />
+                        <input type="checkbox" checked={perf.imgProxyConfig !== null} onChange={e => dispatch(setPreferences({ ...perf, imgProxyConfig: e.target.checked ? DefaultImgProxy : null }))} />
                     </div>
                 </div>
                 {perf.imgProxyConfig && (<div className="w-max mt10 form">

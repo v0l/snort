@@ -31,14 +31,14 @@ export default function useThreadFeed(id: u256) {
 
         // get replies to this event
         const subRelated = new Subscriptions();
-        subRelated.Kinds = new Set(pref.enableReactions ? [EventKind.Reaction, EventKind.TextNote, EventKind.Deletion, EventKind.Repost] : [EventKind.TextNote]);
+        subRelated.Kinds = new Set(pref.enableReactions ? [EventKind.Reaction, EventKind.TextNote, EventKind.Deletion, EventKind.Repost, EventKind.ZapReceipt] : [EventKind.TextNote]);
         subRelated.ETags = thisSub.Ids;
         thisSub.AddSubscription(subRelated);
 
         return thisSub;
     }, [trackingEvents, pref, id]);
 
-    const main = useSubscription(sub, { leaveOpen: true });
+    const main = useSubscription(sub, { leaveOpen: true, cache: true });
 
     useEffect(() => {
         if (main.store) {

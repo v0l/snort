@@ -539,3 +539,11 @@ body.scroll-lock {
 .bold {
   font-weight: 700;
 }
+
+.main-content .h4 {
+  margin-bottom: 25px;
+}
+
+.main-content .profile-preview {
+  margin-bottom: 16px;
+}

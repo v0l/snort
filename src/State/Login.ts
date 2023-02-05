@@ -29,7 +29,7 @@ export interface UserPreferences {
     /**
      * Automatically load media (show link only) (bandwidth/privacy)
      */
-    autoLoadMedia: boolean,
+    autoLoadMedia: "none" | "follows-only" | "all",
 
     /**
      * Select between light/dark theme
@@ -62,7 +62,14 @@ export interface UserPreferences {
     imgProxyConfig: ImgProxySettings | null
 }
 
+export type DbType = "indexdDb" | "redux";
+
 export interface LoginStore {
+    /**
+     * Which db we will use to cache data
+     */
+    useDb: DbType,
+
     /**
      * If there is no login
      */
@@ -77,6 +84,11 @@ export interface LoginStore {
      * Current users public key
      */
     publicKey?: HexKey,
+
+    /**
+     * If user generated key on snort
+     */
+    newUserKey: boolean,
 
     /**
      * All the logged in users relays
@@ -139,16 +151,18 @@ export interface LoginStore {
     preferences: UserPreferences
 };
 
-const DefaultImgProxy = {
+export const DefaultImgProxy = {
     url: "https://imgproxy.snort.social",
     key: "a82fcf26aa0ccb55dfc6b4bd6a1c90744d3be0f38429f21a8828b43449ce7cebe6bdc2b09a827311bef37b18ce35cb1e6b1c60387a254541afa9e5b4264ae942",
     salt: "a897770d9abf163de055e9617891214e75a9016d748f8ef865e6ffbcb9ed932295659549773a22a019a5f06d0b440c320be411e3fddfe784e199e4f03d74bd9b"
 };
 
 export const InitState = {
+    useDb: "redux",
     loggedOut: undefined,
     publicKey: undefined,
     privateKey: undefined,
+    newUserKey: false,
     relays: {},
     latestRelays: 0,
     follows: [],
@@ -162,13 +176,13 @@ export const InitState = {
     dmInteraction: 0,
     preferences: {
         enableReactions: false,
-        autoLoadMedia: true,
+        autoLoadMedia: "follows-only",
         theme: "system",
         confirmReposts: false,
         showDebugMenus: false,
         autoShowLatest: false,
         fileUploader: "void.cat",
-        imgProxyConfig: null
+        imgProxyConfig: DefaultImgProxy
     }
 } as LoginStore;
 
@@ -186,7 +200,8 @@ const LoginSlice = createSlice({
     name: "Login",
     initialState: InitState,
     reducers: {
-        init: (state) => {
+        init: (state, action: PayloadAction<DbType>) => {
+            state.useDb = action.payload;
             state.privateKey = window.localStorage.getItem(PrivateKeyItem) ?? undefined;
             if (state.privateKey) {
                 window.localStorage.removeItem(PublicKeyItem); // reset nip07 if using private key
@@ -229,6 +244,13 @@ const LoginSlice = createSlice({
         },
         setPrivateKey: (state, action: PayloadAction<HexKey>) => {
             state.loggedOut = false;
+            state.privateKey = action.payload;
+            window.localStorage.setItem(PrivateKeyItem, action.payload);
+            state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload));
+        },
+        setGeneratedPrivateKey: (state, action: PayloadAction<HexKey>) => {
+            state.loggedOut = false;
+            state.newUserKey = true;
             state.privateKey = action.payload;
             window.localStorage.setItem(PrivateKeyItem, action.payload);
             state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload));
@@ -332,10 +354,12 @@ const LoginSlice = createSlice({
             state.dmInteraction += 1;
         },
         logout: (state) => {
+            let relays = { ...state.relays };
             Object.assign(state, InitState);
             state.loggedOut = true;
-            state.relays = Object.fromEntries(DefaultRelays.entries());
             window.localStorage.clear();
+            state.relays = relays;
+            window.localStorage.setItem(RelayListKey, JSON.stringify(relays));
         },
         markNotificationsRead: (state) => {
             state.readNotifications = new Date().getTime();
@@ -351,6 +375,7 @@ const LoginSlice = createSlice({
 export const {
     init,
     setPrivateKey,
+    setGeneratedPrivateKey,
     setPublicKey,
     setRelays,
     removeRelay,
