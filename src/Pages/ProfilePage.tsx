@@ -181,9 +181,11 @@ export default function ProfilePage() {
           </>
         ) : (
           <>
-            <IconButton onClick={() => setShowLnQr(true)}>
-              <Zap width={14} height={16} />
-            </IconButton>
+            {lnurl && (
+              <IconButton onClick={() => setShowLnQr(true)}>
+                <Zap width={14} height={16} />
+              </IconButton>
+            )}
             {!loggedOut && (
               <>
                 <IconButton onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
