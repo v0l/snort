@@ -2,12 +2,13 @@
   min-height: unset;
 }
 
-.zap .header .pfp {
-  overflow: hidden;
+.zap .header {
+  align-items: center;
+  flex-direction: row;
 }
 
-.zap .header {
-  flex-direction: row;
+.zap .header .pfp {
+  overflow: hidden;
 }
 
 .zap .header .amount {
@@ -31,10 +32,6 @@
 
 .zap .amount {
   font-size: 18px;
-}
-
-.zap .amount:before {
-  content: '⚡️ ';
 }
 
 .top-zap .amount:before {
@@ -79,10 +76,6 @@
 
 .amount-number {
   font-weight: bold;
-}
-
-.rest-zaps:before {
-  content: ", ";
 }
 
 .note.zap > .body {
