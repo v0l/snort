@@ -2,16 +2,25 @@
   min-height: unset;
 }
 
+.zap .header .pfp {
+  overflow: hidden;
+}
+
+.zap .header {
+  flex-direction: row;
+}
+
+.zap .header .amount {
+  font-size: 32px;
+}
+
+.zap .header .pfp {
+  max-width: 72%;
+}
+
 @media (max-width: 520px) {
-  .zap .header {
-    flex-direction: column;
-  }
   .zap .header .pfp {
-    width: 100%;
     padding: 4px;
-  }
-  .zap .header .amount {
-    font-size: 32px;
   }
 }
 
@@ -74,10 +83,6 @@
 
 .rest-zaps:before {
   content: ", ";
-}
-
-.note.zap > .header {
-  align-items: center;
 }
 
 .note.zap > .body {

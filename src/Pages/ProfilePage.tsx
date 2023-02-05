@@ -123,7 +123,7 @@ export default function ProfilePage() {
       case ProfileTab.Zaps: {
         return (
           <div className="main-content">
-            <h4>{formatShort(zapsTotal)} sats</h4>
+            <h4 className="zaps-total">{formatShort(zapsTotal)} sats</h4>
             {zaps.map(z => <ZapElement showZapped={false} zap={z} />)}
           </div>
         )
