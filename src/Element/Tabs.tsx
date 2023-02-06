@@ -14,8 +14,8 @@ interface TabElementProps extends Omit<TabsProps, 'tabs'> {
   t: Tab
 }
 
-export const TabElement = ({ t, tab, setTab }: TabElementProps) =>  {
-  return  (
+export const TabElement = ({ t, tab, setTab }: TabElementProps) => {
+  return (
     <div className={`tab ${tab.value === t.value ? "active" : ""}`} onClick={() => setTab(t)}>
       {t.text}
     </div>
@@ -25,13 +25,13 @@ export const TabElement = ({ t, tab, setTab }: TabElementProps) =>  {
 const Tabs = ({ tabs, tab, setTab }: TabsProps) => {
   return (
     <div className="tabs">
-    {tabs.map((t) => {
-      return (
-        <div className={`tab ${tab.value === t.value ? "active" : ""}`} onClick={() => setTab(t)}>
-          {t.text}
-        </div>
-      )
-    })}
+      {tabs.map((t) => {
+        return (
+          <div key={t.value} className={`tab ${tab.value === t.value ? "active" : ""}`} onClick={() => setTab(t)}>
+            {t.text}
+          </div>
+        )
+      })}
     </div>
   )
 }

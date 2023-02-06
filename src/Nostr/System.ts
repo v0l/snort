@@ -189,7 +189,7 @@ export class NostrSystem {
                 console.debug("Wants profiles: ", missing);
 
                 let sub = new Subscriptions();
-                sub.Id = `profiles:${sub.Id}`;
+                sub.Id = `profiles:${sub.Id.slice(0, 8)}`;
                 sub.Kinds = new Set([EventKind.SetMetadata]);
                 sub.Authors = missing;
                 sub.OnEvent = async (e) => {
@@ -199,19 +199,21 @@ export class NostrSystem {
                         if ((existing?.created ?? 0) < profile.created) {
                             await this.UserDb!.put(profile);
                         } else if (existing) {
-                            await this.UserDb!.update(profile.pubkey, { loaded: new Date().getTime() });
+                            await this.UserDb!.update(profile.pubkey, { loaded: profile.loaded });
                         }
                     }
                 }
                 let results = await this.RequestSubscription(sub);
                 let couldNotFetch = Array.from(missing).filter(a => !results.some(b => b.pubkey === a));
                 console.debug("No profiles: ", couldNotFetch);
-                await this.UserDb!.bulkPut(couldNotFetch.map(a => {
-                    return {
-                        pubkey: a,
-                        loaded: new Date().getTime()
-                    } as MetadataCache;
-                }));
+                if (couldNotFetch.length > 0) {
+                    await this.UserDb!.bulkPut(couldNotFetch.map(a => {
+                        return {
+                            pubkey: a,
+                            loaded: new Date().getTime()
+                        } as MetadataCache;
+                    }));
+                }
             }
         }
         setTimeout(() => this._FetchMetadata(), 500);
