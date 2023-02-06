@@ -59,8 +59,8 @@ const Subthread = ({ active, path, from, notes, related, chains, onNavigate }: S
          {replies.length > 0 && (
            <TierTwo
             active={active}
-            path={path}
             isLastSubthread={isLastSubthread}
+            path={path}
             from={a.Id}
             notes={replies}
             related={related}
@@ -124,7 +124,7 @@ const ThreadNote = ({ active, note, isLast, path, isLastSubthread, from, related
   )
 }
 
-const TierTwo = ({ active, path, isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
+const TierTwo = ({ active, isLastSubthread, path, from, notes, related, chains, onNavigate }: SubthreadProps) => {
   const [first, ...rest] = notes
 
   return (
@@ -166,7 +166,7 @@ const TierTwo = ({ active, path, isLastSubthread, from, notes, related, chains, 
 const TierThree = ({ active, path, isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
   const [first, ...rest] = notes
   const replies = getReplies(first.Id, chains)
-  const activeInReplies = notes.map(r => r.Id).includes(active)
+  const activeInReplies = notes.map(r => r.Id).includes(active) || replies.map(r => r.Id).includes(active)
   const hasMultipleNotes = rest.length > 0 || replies.length > 0
   const isLast = replies.length === 0 && rest.length === 0
   return (
@@ -260,7 +260,7 @@ export default function Thread(props: ThreadProps) {
                 if (!chains.has(replyTo)) {
                     chains.set(replyTo, [v]);
                 } else {
-                    chains.get(replyTo)!.unshift(v);
+                    chains.get(replyTo)!.push(v);
                 }
             } else if (v.Tags.length > 0) {
                 console.log("Not replying to anything: ", v);
@@ -282,12 +282,12 @@ export default function Thread(props: ThreadProps) {
 
       let subthreadRoot = []
       for (let [k, vs] of chains.entries()) {
-        const fs = vs.map(a => a.PubKey)
+        const fs = vs.map(a => a.Id)
         if (k === urlNoteHex) {
           subthreadRoot.push(urlNoteHex)
         }
         if (fs.includes(urlNoteHex)) {
-          subthreadRoot.push(fs[0])
+          subthreadRoot.push(k)
         }
       }
 
