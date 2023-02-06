@@ -62,8 +62,8 @@ export default function ProfilePage() {
   const about = Text({ content: aboutText, tags: [], users: new Map(), creator: "" })
   const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
   const website_url = (user?.website && !user.website.startsWith("http"))
-  ? "https://" + user.website
-  : user?.website || "";
+    ? "https://" + user.website
+    : user?.website || "";
   const zapFeed = useZapsFeed(id)
   const zaps = useMemo(() => {
     const profileZaps = zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e && z.zapper !== id)
@@ -129,7 +129,12 @@ export default function ProfilePage() {
   function tabContent() {
     switch (tab) {
       case ProfileTab.Notes:
-        return <Timeline key={id} subject={{ type: "pubkey", items: [id], discriminator: id.slice(0, 12) }} postsOnly={false} method={"LIMIT_UNTIL"} ignoreModeration={true} />;
+        return <Timeline
+          key={id}
+          subject={{ type: "pubkey", items: [id], discriminator: id.slice(0, 12) }}
+          postsOnly={false}
+          method={"TIME_RANGE"}
+          ignoreModeration={true} />;
       case ProfileTab.Zaps: {
         return (
           <div className="main-content">
