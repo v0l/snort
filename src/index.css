@@ -116,7 +116,7 @@ html.light .card {
 button {
   cursor: pointer;
   padding: 6px 12px;
-  font-weight: 700;
+  font-weight: 600;
   color: white;
   font-size: var(--font-size);
   background-color: var(--highlight);
@@ -457,7 +457,7 @@ body.scroll-lock {
 }
 
 .tabs .active {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .error {
@@ -481,7 +481,7 @@ body.scroll-lock {
 
 .tab {
   border-bottom: 1px solid var(--gray-secondary);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 19px;
   color: var(--font-secondary-color);
   padding: 8px 0;

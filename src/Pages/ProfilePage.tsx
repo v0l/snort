@@ -22,6 +22,7 @@ import LNURLTip from "Element/LNURLTip";
 import Nip05 from "Element/Nip05";
 import Copy from "Element/Copy";
 import ProfilePreview from "Element/ProfilePreview";
+import ProfileImage from "Element/ProfileImage";
 import FollowersList from "Element/FollowersList";
 import BlockList from "Element/BlockList";
 import MutedList from "Element/MutedList";
@@ -177,6 +178,7 @@ export default function ProfilePage() {
         </IconButton>
         {showProfileQr && (
           <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
+            <ProfileImage pubkey={id} />
             <QrCode data={`nostr:${hexToBech32("npub", id)}`} link={undefined} className="m10" />
           </Modal>
         )}
