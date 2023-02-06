@@ -78,6 +78,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
                 let latestSub = new Subscriptions();
                 latestSub.Authors = sub.Authors;
                 latestSub.HashTags = sub.HashTags;
+                latestSub.PTags = sub.PTags;
                 latestSub.Kinds = sub.Kinds;
                 latestSub.Search = sub.Search;
                 latestSub.Limit = 1;
