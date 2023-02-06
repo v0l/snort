@@ -28,6 +28,7 @@
   --paid-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgba(161, 120, 255, .6), rgba(255, 107, 175, .6) 108.33%);
   --expired-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, var(--gray), var(--gray-superdark));
   --strike-army-gradient: linear-gradient(to bottom right, #CCFF00, #a1c900);
+  --nostrplebs-gradient: linear-gradient(to bottom right, #ff3cac, #2b86c5);
 }
 
 html.light {

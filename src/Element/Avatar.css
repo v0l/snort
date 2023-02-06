@@ -14,6 +14,12 @@
     background-image: var(--img-url), var(--snort-gradient);
 }
 
+.avatar[data-domain="nostrplebs.com"], .avatar[data-domain="nostriches.net"],
+.avatar[data-domain="nostrpurple.com"], .avatar[data-domain="nostr.fan"],
+.avatar[data-domain="nostrich.zone"] {
+    background-image: var(--img-url), var(--nostrplebs-gradient);
+}
+
 .avatar[data-domain="strike.army"] { 
     background-image: var(--img-url), var(--strike-army-gradient);
 }
