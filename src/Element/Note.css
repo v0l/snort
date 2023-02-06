@@ -2,12 +2,8 @@
   min-height: 110px;
 }
 
-.note.thread {
-  border-bottom: none;
-}
-
 .note>.header .reply {
-  font-size: var(--font-size-tiny);
+  font-size: 13px;
   color: var(--font-secondary-color);
 }
 
@@ -21,6 +17,7 @@
 
 .note>.header>.info {
   font-size: var(--font-size);
+  margin-left: 4px;
   white-space: nowrap;
   color: var(--font-secondary-color);
 }
@@ -78,50 +75,10 @@
   margin-left: 56px;
 }
 
-.thread.note {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.thread.note, .indented .note {
-  margin-bottom: 0;
-}
-
-.indented .note {
-  border-radius: 0;
-}
-
-.indented {
-  border-left: 3px solid var(--gray-tertiary);
-  padding-left: 2px;
-}
-
-.note:last-child {
-  border-bottom-right-radius: 16px;
-  margin-bottom: 24px;
-}
-
-.indented .note.active:last-child {
-  border-bottom-right-radius: 16px;
-  margin-bottom: 24px;
-}
-
-.indented>.indented .note:last-child {
-  border-bottom-right-radius: 0px;
-  margin-bottom: 0;
-}
-
-.indented .active {
-  background-color: var(--gray-tertiary);
-  margin-left: -5px;
-  border-left: 3px solid var(--highlight);
-  border-radius: 0;
-}
-
 .reaction-pill {
   display: flex;
   flex-direction: row;
-  padding: 0px 10px;
+  margin: 0px 14px;
   user-select: none;
   color: var(--font-secondary-color);
   font-feature-settings: "tnum";
@@ -144,48 +101,9 @@
   margin-right: auto;
 }
 
-.note.active>.header .reply {
-  color: var(--font-tertiary-color);
-}
-
-.note.active>.header>.info {
-  color: var(--font-tertiary-color);
-  font-weight: 500;
-}
-
-.note.active>.footer>.reaction-pill {
-  color: var(--font-tertiary-color);
-}
-
-.note.active>.footer>.reaction-pill.reacted {
-  color: var(--highlight);
-}
-
-.light .indented .active {
-  background-color: var(--gray-secondary);
-}
-
-.light .note.active>.header .reply {
-  color: var(--font-secondary-color);
-}
-
-.light .note.active>.header>.info {
-  color: var(--font-secondary-color);
-}
-
-.light .note.active>.footer>.reaction-pill {
-  color: var(--note-bg);
-}
-
-.light .note.active>.footer>.reaction-pill.reacted {
-  color: var(--highlight);
-}
-
 .note-expand .body {
   max-height: 300px;
   overflow-y: hidden;
-  mask-image: linear-gradient(to bottom, var(--note-bg) 60%, rgba(0,0,0,0));
-  -webkit-mask-image: linear-gradient(to bottom, var(--note-bg) 60%, rgba(0,0,0,0));
 }
 
 .hidden-note .header {
@@ -201,15 +119,15 @@
    max-height: 30px;
 }
 
-.show-more {
-  background: none;
-  margin: 0;
-  padding: 0;
+.expand-note {
+  padding: 0 0 16px 0;
   font-weight: 400;
   color: var(--highlight);
+  cursor: pointer;
 }
 
-.show-more:hover {
-  background: none;
-  color: var(--highlight);
+.note.active {
+  border-left: 1px solid var(--highlight);
+  border-bottom-left-radius: 0;
+  margin-left: -1px;
 }

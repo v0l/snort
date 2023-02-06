@@ -12,7 +12,7 @@ const MuteButton = ({ pubkey }: MuteButtonProps) => {
        Unmute
     </button>
   ) : (
-    <button className="secondary" type="button" onClick={() => mute(pubkey)}>
+    <button type="button" onClick={() => mute(pubkey)}>
        Mute
     </button>
   )

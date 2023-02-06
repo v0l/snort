@@ -55,6 +55,10 @@
   margin-left: 52px;
 }
 
+.note.thread-root .zaps-summary {
+  margin-left: 14px;
+}
+
 .top-zap {
   font-size: 14px;
   border: none;
@@ -82,8 +86,4 @@
 
 .amount-number {
   font-weight: bold;
-}
-
-.note.zap > .body {
-  margin-bottom: 0;
 }

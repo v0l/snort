@@ -38,6 +38,7 @@ export default function Layout() {
         System.nip42Auth = pub.nip42Auth
     }, [pub])
 
+
     useEffect(() => {
         System.UserDb = usingDb;
     }, [usingDb])
@@ -47,7 +48,7 @@ export default function Layout() {
             for (let [k, v] of Object.entries(relays)) {
                 System.ConnectToRelay(k, v);
             }
-            for (let [k, v] of System.Sockets) {
+            for (let [k] of System.Sockets) {
                 if (!relays[k] && !SearchRelays.has(k)) {
                     System.DisconnectRelay(k);
                 }

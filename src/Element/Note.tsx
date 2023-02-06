@@ -1,6 +1,7 @@
 import "./Note.css";
 import { useCallback, useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
 
 import { default as NEvent } from "Nostr/Event";
 import ProfileImage from "Element/ProfileImage";
@@ -9,15 +10,15 @@ import Text from "Element/Text";
 import { eventLink, getReactions, hexToBech32 } from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
+import ShowMore from "Element/ShowMore";
 import EventKind from "Nostr/EventKind";
 import { useUserProfiles } from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "Nostr";
-import { useInView } from "react-intersection-observer";
 import useModeration from "Hooks/useModeration";
 
 export interface NoteProps {
   data?: TaggedRawEvent,
-  isThread?: boolean,
+  className?: string
   related: TaggedRawEvent[],
   highlight?: boolean,
   ignoreModeration?: boolean,
@@ -35,7 +36,7 @@ const HiddenNote = ({ children }: any) => {
     <div className="card note hidden-note">
       <div className="header">
         <p>
-          This note was hidden because of your moderation settings
+          This author has been muted 
         </p>
         <button onClick={() => setShow(true)}>
           Show
@@ -48,7 +49,7 @@ const HiddenNote = ({ children }: any) => {
 
 export default function Note(props: NoteProps) {
   const navigate = useNavigate();
-  const { data, isThread, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false } = props
+  const { data, className, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false} = props
   const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
   const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
   const users = useUserProfiles(pubKeys);
@@ -58,7 +59,9 @@ export default function Note(props: NoteProps) {
   const { ref, inView, entry } = useInView({ triggerOnce: true });
   const [extendable, setExtendable] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
+  const baseClassname = `note card ${props.className ? props.className : ''}`
   const [translated, setTranslated] = useState<Translation>();
+  const replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
 
   const options = {
     showHeader: true,
@@ -85,10 +88,8 @@ export default function Note(props: NoteProps) {
   }, [inView, entry, extendable]);
 
   function goToEvent(e: any, id: u256) {
-    if (!window.location.pathname.startsWith("/e/")) {
-      e.stopPropagation();
-      navigate(eventLink(id));
-    }
+    e.stopPropagation();
+    navigate(eventLink(id));
   }
 
   function replyTag() {
@@ -141,14 +142,17 @@ export default function Note(props: NoteProps) {
     const others = mentions.length > maxMentions ? ` & ${othersLength} other${othersLength > 1 ? 's' : ''}` : ''
     return (
       <div className="reply">
+        re:&nbsp;
         {(mentions?.length ?? 0) > 0 ? (
           <>
             {pubMentions}
             {others}
           </>
-        ) : replyId ? (
-          hexToBech32("note", replyId)?.substring(0, 12) // todo: link
-        ) : ""}
+        ) : replyId && (
+          <Link to={eventLink(replyId)}>
+            {hexToBech32("note", replyId)?.substring(0, 12)}
+          </Link>
+        )}
       </div>
     )
   }
@@ -178,29 +182,31 @@ export default function Note(props: NoteProps) {
   function content() {
     if (!inView) return null;
     return (
-      <>
-        {options.showHeader ?
-          <div className="header flex">
-            <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
-            {options.showTime ?
-              <div className="info">
-                <NoteTime from={ev.CreatedAt * 1000} />
-              </div> : null}
-          </div> : null}
-        <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
-          {transformBody()}
-          {translation()}
-        </div>
-        {extendable && !showMore && (<div className="flex f-center">
-          <button className="show-more" onClick={() => setShowMore(true)}>Show more</button>
-        </div>)}
-        {options.showFooter ? <NoteFooter ev={ev} related={related} onTranslated={(t) => setTranslated(t)} /> : null}
-      </>
+        <>
+            {options.showHeader ?
+                <div className="header flex">
+                    <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
+                    {options.showTime ?
+                        <div className="info">
+                            <NoteTime from={ev.CreatedAt * 1000} />
+                        </div> : null}
+                </div> : null}
+            <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
+                {transformBody()}
+                {translation()}
+            </div>
+            {extendable && !showMore && (
+              <span className="expand-note mt10 flex f-center" onClick={() => setShowMore(true)}>
+                Show more
+              </span>
+            )}
+            {options.showFooter && <NoteFooter ev={ev} related={related}  onTranslated={(t) => setTranslated(t)} />}
+        </>
     )
   }
 
   const note = (
-    <div className={`note card${highlight ? " active" : ""}${isThread ? " thread" : ""}${extendable && !showMore ? " note-expand" : ""}`} ref={ref}>
+    <div className={`${baseClassname}${highlight ? " active " : " "}${extendable && !showMore ? " note-expand" : ""}`} ref={ref}>
       {content()}
     </div>
   )

@@ -1,15 +1,22 @@
 import "./BackButton.css"
 
-import { useNavigate } from "react-router-dom";
-
 import ArrowBack from "Icons/ArrowBack";
 
-const BackButton = () => {
-  const navigate = useNavigate()
+interface BackButtonProps {
+  text?: string
+  onClick?(): void
+}
+
+const BackButton = ({ text = "Back", onClick }: BackButtonProps) => {
+  const onClickHandler = () => {
+    if (onClick) {
+      onClick()
+    }
+  }
 
   return (
-    <button className="back-button" type="button" onClick={() => navigate(-1)}>
-      <ArrowBack />Back
+    <button className="back-button" type="button" onClick={onClickHandler}>
+      <ArrowBack />{text}
     </button>
   )
 }

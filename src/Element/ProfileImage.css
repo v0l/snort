@@ -6,6 +6,7 @@
 
 .pfp .avatar-wrapper {
   margin-right: 8px;
+  z-index: 2;
 }
 
 .pfp .avatar {
@@ -15,7 +16,7 @@
 }
 
 .pfp a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .pfp .username {

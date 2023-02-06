@@ -131,16 +131,6 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
             )}
             <span>&nbsp;zapped</span>
           </div>
-          <div className="body">
-            {content && (
-              <Text
-                creator={zapper || ""}
-                content={content}
-                tags={[]}
-                users={new Map()}
-              />
-            )}
-          </div>
         </div>
       )}
     </div>

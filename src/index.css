@@ -116,7 +116,7 @@ html.light .card {
 button {
   cursor: pointer;
   padding: 6px 12px;
-  font-weight: 700;
+  font-weight: 600;
   color: white;
   font-size: var(--font-size);
   background-color: var(--highlight);
@@ -443,23 +443,6 @@ body.scroll-lock {
   margin-right: auto;
 }
 
-.tabs {
-  display: flex;
-  align-content: center;
-  text-align: center;
-  margin: 10px 0;
-  overflow-x: auto;
-}
-
-.tabs>div {
-  cursor: pointer;
-  margin: 0;
-}
-
-.tabs .active {
-  font-weight: 700;
-}
-
 .error {
   color: var(--error);
 }
@@ -470,26 +453,6 @@ body.scroll-lock {
 
 .bg-success {
   background-color: var(--success);
-}
-
-.tabs {
-  padding: 0;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 16px;
-}
-
-.tab {
-  border-bottom: 1px solid var(--gray-secondary);
-  font-weight: 700;
-  line-height: 19px;
-  color: var(--font-secondary-color);
-  padding: 8px 0;
-}
-
-.tab.active {
-  border-bottom: 1px solid var(--highlight);
-  color: var(--font-color);
 }
 
 .tweet {

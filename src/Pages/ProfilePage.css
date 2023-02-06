@@ -14,7 +14,7 @@
 
 .profile .profile-actions {
   position: absolute;
-  top: 80px;
+  top: 72px;
   right: 0;
   display: flex;
   flex-direction: row;
@@ -25,12 +25,6 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-}
-
-@media (min-width: 520px) {
-  .profile .profile-actions {
-    top: 120px;
-  }
 }
 
 .profile .profile-actions button:not(:last-child) {
@@ -46,7 +40,7 @@
   .profile .banner {
     width: 100%;
     max-width: 720px;
-    height: 300px;
+    height: 280px;
   }
   .profile .profile-actions button.icon:not(:last-child) {
     margin-right: 2px;
@@ -60,6 +54,7 @@
   flex-direction: column;
   align-items: flex-start;
   position: relative;
+  overflow: hidden;
 }
 
 
@@ -80,11 +75,6 @@
   margin: 0 0 12px 0;
 }
 
-.profile .nip05 .nick {
-  font-weight: normal;
-  color: var(--gray-light);
-}
-
 .profile .avatar-wrapper {
   z-index: 1;
 }
@@ -92,6 +82,8 @@
 .profile .avatar-wrapper .avatar {
   width: 120px;
   height: 120px;
+  background-image: var(--img-url);
+  border: 3px solid var(--bg-color);
 }
 
 .profile .name {
@@ -138,6 +130,7 @@
 }
 
 .profile .links {
+  font-size: 14px;
   margin-top: 4px;
   margin-left: 2px;
   margin-bottom: 12px;
@@ -148,6 +141,12 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+@media (max-width: 720px) {
+  .profile .lnurl {
+    display: none;
+  }
 }
 
 .profile .website a {
@@ -199,6 +198,34 @@
 
 .qr-modal .modal-body {
   width: unset;
+  margin-top: -120px;
+}
+
+.qr-modal .pfp {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-modal .pfp .avatar {
+  width: 48px;
+  height: 48px;
+}
+
+.qr-modal .pfp .avatar-wrapper {
+  margin: 0 0 8px 0;
+}
+
+.qr-modal .pfp .avatar-wrapper .avatar {
+  border: none;
+}
+
+.qr-modal .pfp .username {
+  text-align: center;
+}
+
+.qr-modal canvas {
+  border-radius: 10px;
 }
 
 .profile .zap-amount {

@@ -116,7 +116,7 @@
 
 @media (min-width: 1020px) {
   .note-create-button {
-    right: 25vw;
+    right: calc(50% - 360px);
   }
 }
 
