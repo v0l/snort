@@ -3,10 +3,11 @@ import "./BackButton.css"
 import ArrowBack from "Icons/ArrowBack";
 
 interface BackButtonProps {
+  text?: string
   onClick?(): void
 }
 
-const BackButton = ({ onClick }: BackButtonProps) => {
+const BackButton = ({ text = "Back", onClick }: BackButtonProps) => {
   const onClickHandler = () => {
     if (onClick) {
       onClick()
@@ -15,7 +16,7 @@ const BackButton = ({ onClick }: BackButtonProps) => {
 
   return (
     <button className="back-button" type="button" onClick={onClickHandler}>
-      <ArrowBack />Back
+      <ArrowBack />{text}
     </button>
   )
 }

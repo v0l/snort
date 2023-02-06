@@ -127,6 +127,7 @@
 }
 
 .note.active {
-  border-left: 2px solid var(--highlight);
+  border-left: 1px solid var(--highlight);
   border-bottom-left-radius: 0;
+  margin-left: -1px;
 }

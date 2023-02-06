@@ -13,6 +13,15 @@ import NoteGhost from "Element/NoteGhost";
 import Collapsed from "Element/Collapsed";
 import type { RootState } from "State/Store";
 
+function getParent(ev: HexKey, chains: Map<HexKey, NEvent[]>): HexKey | undefined {
+  for (let [k, vs] of chains.entries()) {
+    const fs = vs.map(a => a.Id)
+    if (fs.includes(ev)) {
+      return k
+    }
+  }
+}
+
 interface DividerProps {
   variant?: "regular" | "small"
 }
@@ -86,9 +95,8 @@ interface ThreadNoteProps extends Omit<SubthreadProps, 'notes'> {
 
 const ThreadNote = ({ active, note, isLast, path, isLastSubthread, from, related, chains, onNavigate }: ThreadNoteProps) => {
   const replies = getReplies(note.Id, chains)
-  const [collapsed, setCollapsed] = useState(() => {
-    return !replies.map(r => r.Id).includes(active)
-  })
+  const activeInReplies = replies.map(r => r.Id).includes(active)
+  const [collapsed, setCollapsed] = useState(!activeInReplies)
   const hasMultipleNotes = replies.length > 0
   const isLastVisibleNote = isLastSubthread && isLast && !hasMultipleNotes 
   const className = `subthread-container ${isLast && collapsed ? 'subthread-last' : 'subthread-multi subthread-mid'}`
@@ -107,7 +115,7 @@ const ThreadNote = ({ active, note, isLast, path, isLastSubthread, from, related
         </div>
       </div>
       {replies.length > 0 && (
-        <Collapsed text="Show replies" collapsed={collapsed} setCollapsed={setCollapsed}>
+        activeInReplies ? (
           <TierThree
            active={active}
            path={path}
@@ -118,7 +126,20 @@ const ThreadNote = ({ active, note, isLast, path, isLastSubthread, from, related
            chains={chains}
            onNavigate={onNavigate}
           />
-        </Collapsed>
+        ) : (
+          <Collapsed text="Show replies" collapsed={collapsed} setCollapsed={setCollapsed}>
+            <TierThree
+             active={active}
+             path={path}
+             isLastSubthread={isLastSubthread}
+             from={from}
+             notes={replies}
+             related={related}
+             chains={chains}
+             onNavigate={onNavigate}
+            />
+          </Collapsed>
+        )
       )}
     </>
   )
@@ -184,7 +205,7 @@ const TierThree = ({ active, path, isLastSubthread, from, notes, related, chains
         </div>
       </div>
 
-      {path.length <= 1 && !activeInReplies ? (
+      {path.length <= 1 || !activeInReplies ? (
         replies.length > 0 && (
           <div className="show-more-container">
             <button className="show-more" type="button" onClick={() => onNavigate(from)}>
@@ -245,6 +266,7 @@ export default function Thread(props: ThreadProps) {
     const [path, setPath] = useState<HexKey[]>([])
     const currentId = path.length > 0 && path[path.length - 1]
     const currentRoot = useMemo(() => parsedNotes.find(a => a.Id === currentId), [notes, currentId]);
+    const [navigated, setNavigated] = useState(false)
     const navigate = useNavigate()
     const isSingleNote = parsedNotes.filter(a => a.Kind === EventKind.TextNote).length === 1
     const location = useLocation()
@@ -275,24 +297,25 @@ export default function Thread(props: ThreadProps) {
         return
       }
 
-      if (root.Id === urlNoteHex) {
-        setPath([root.Id])
+      if (navigated) {
         return
       }
 
-      let subthreadRoot = []
-      for (let [k, vs] of chains.entries()) {
-        const fs = vs.map(a => a.Id)
-        if (k === urlNoteHex) {
-          subthreadRoot.push(urlNoteHex)
-        }
-        if (fs.includes(urlNoteHex)) {
-          subthreadRoot.push(k)
-        }
+      if (root.Id === urlNoteHex) {
+        setPath([root.Id])
+        setNavigated(true)
+        return
       }
 
-      setPath([root.Id, ...subthreadRoot])
-    }, [root, urlNoteHex, chains])
+      let subthreadPath = []
+      let parent = getParent(urlNoteHex, chains)
+      while (parent) {
+        subthreadPath.unshift(parent)
+        parent = getParent(parent, chains)
+      }
+      setPath(subthreadPath)
+      setNavigated(true)
+    }, [root, navigated, urlNoteHex, chains])
 
     const brokenChains = useMemo(() => {
         return Array.from(chains?.keys()).filter(a => !parsedNotes?.some(b => b.Id === a));
@@ -336,7 +359,7 @@ export default function Thread(props: ThreadProps) {
 
     return (
       <div className="main-content mt10">
-        <BackButton onClick={goBack} />
+        <BackButton onClick={goBack} text={path?.length > 1 ? "Parent" : "Back"} />
         <div className="thread-container">
             {currentRoot && renderRoot(currentRoot)}
             {currentRoot && renderChain(currentRoot.Id)}

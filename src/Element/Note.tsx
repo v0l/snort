@@ -88,10 +88,8 @@ export default function Note(props: NoteProps) {
   }, [inView, entry, extendable]);
 
   function goToEvent(e: any, id: u256) {
-    if (!window.location.pathname.startsWith("/e/")) {
-      e.stopPropagation();
-      navigate(eventLink(id));
-    }
+    e.stopPropagation();
+    navigate(eventLink(id));
   }
 
   function replyTag() {
