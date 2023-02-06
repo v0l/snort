@@ -38,13 +38,13 @@ const SearchPage = () => {
     }, []);
 
     return (
-        <>
+        <div className="main-content">
             <h2>Search</h2>
             <div className="flex mb10">
                 <input type="text" className="f-grow mr10" placeholder="Search.." value={search} onChange={e => setSearch(e.target.value)} />
             </div>
             {keyword && <Timeline key={keyword} subject={{ type: "keyword", items: [keyword], discriminator: keyword }} postsOnly={false} method={"LIMIT_UNTIL"} />}
-        </>
+        </div>
     )
 }
 

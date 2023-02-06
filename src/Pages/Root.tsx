@@ -3,20 +3,21 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import Tabs, { Tab } from "Element/Tabs";
 import { RootState } from "State/Store";
 import Timeline from "Element/Timeline";
 import { HexKey } from "Nostr";
 import { TimelineSubject } from "Feed/TimelineFeed";
 
-const RootTab = {
-    Posts: 0,
-    PostsAndReplies: 1,
-    Global: 2
+const RootTab: Record<string, Tab> = {
+  Posts: { text: 'Posts', value: 0, },
+  PostsAndReplies: { text: 'Conversations', value: 1, },
+  Global: { text: 'Global', value: 2 },
 };
 
 export default function RootPage() {
     const [loggedOut, pubKey, follows] = useSelector<RootState, [boolean | undefined, HexKey | undefined, HexKey[]]>(s => [s.login.loggedOut, s.login.publicKey, s.login.follows]);
-    const [tab, setTab] = useState(RootTab.Posts);
+    const [tab, setTab] = useState<Tab>(RootTab.Posts);
 
     function followHints() {
         if (follows?.length === 0 && pubKey && tab !== RootTab.Global) {
@@ -26,24 +27,19 @@ export default function RootPage() {
         }
     }
 
-    const isGlobal = loggedOut || tab === RootTab.Global;
+    const isGlobal = loggedOut || tab.value === RootTab.Global.value;
     const timelineSubect: TimelineSubject = isGlobal ? { type: "global", items: [], discriminator: "all" } : { type: "pubkey", items: follows, discriminator: "follows" };
     return (
         <>
-            {pubKey ? <>
-                <div className="tabs">
-                    <div className={`tab f-1 ${tab === RootTab.Posts ? "active" : ""}`} onClick={() => setTab(RootTab.Posts)}>
-                        Posts
-                    </div>
-                    <div className={`tab f-1 ${tab === RootTab.PostsAndReplies ? "active" : ""}`} onClick={() => setTab(RootTab.PostsAndReplies)}>
-                        Conversations
-                    </div>
-                    <div className={`tab f-1 ${tab === RootTab.Global ? "active" : ""}`} onClick={() => setTab(RootTab.Global)}>
-                        Global
-                    </div>
-                </div></> : null}
+            {pubKey && <Tabs tabs={[RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global]} tab={tab} setTab={setTab} />}
             {followHints()}
-            <Timeline key={tab} subject={timelineSubect} postsOnly={tab === RootTab.Posts} method={"TIME_RANGE"} window={tab === RootTab.Global ? 60 : undefined} />
+            <Timeline
+              key={tab.value}
+              subject={timelineSubect}
+              postsOnly={tab.value === RootTab.Posts.value}
+              method={"TIME_RANGE"}
+              window={tab.value === RootTab.Global.value ? 60 : undefined}
+            />
         </>
     );
 }

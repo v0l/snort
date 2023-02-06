@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { formatShort } from "Number";
+import { Tab, TabElement } from "Element/Tabs";
 import Link from "Icons/Link";
 import Qr from "Icons/Qr";
 import Zap from "Icons/Zap";
@@ -35,15 +36,15 @@ import QrCode from "Element/QrCode";
 import Modal from "Element/Modal";
 import { ProxyImg } from "Element/ProxyImg"
 
-enum ProfileTab {
-  Notes = "Notes",
-  Reactions = "Reactions",
-  Followers = "Followers",
-  Follows = "Follows",
-  Zaps = "Zaps",
-  Muted = "Muted",
-  Blocked = "Blocked"
-};
+const ProfileTab = {
+  Notes: { text: "Notes", value: 0 },
+  Reactions: { text: "Reactions", value: 1 },
+  Followers: { text: "Followers", value: 2 },
+  Follows: { text: "Follows", value: 3 },
+  Zaps: { text: "Zaps", value: 4 },
+  Muted: { text: "Muted", value: 5 },
+  Blocked: { text: "Blocked", value: 6 },
+}
 
 export default function ProfilePage() {
   const params = useParams();
@@ -55,7 +56,7 @@ export default function ProfilePage() {
   const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
-  const [tab, setTab] = useState(ProfileTab.Notes);
+  const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
   const aboutText = user?.about || ''
   const about = Text({ content: aboutText, tags: [], users: new Map(), creator: "" })
@@ -222,8 +223,8 @@ export default function ProfilePage() {
     )
   }
 
-  function renderTab(v: ProfileTab) {
-    return <div className={`tab f-1${tab === v ? " active" : ""}`} key={v} onClick={() => setTab(v)}>{v}</div>
+  function renderTab(v: Tab) {
+    return <TabElement t={v} tab={tab} setTab={setTab} />
   }
 
   const w = window.document.querySelector(".page")?.clientWidth;
@@ -236,7 +237,7 @@ export default function ProfilePage() {
           {userDetails()}
         </div>
       </div>
-      <div className="tabs">
+      <div className="tabs main-content">
         {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Zaps, ProfileTab.Muted].map(renderTab)}
         {isMe && renderTab(ProfileTab.Blocked)}
       </div>
