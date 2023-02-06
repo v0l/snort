@@ -16,9 +16,13 @@ export default function NotificationsPage() {
 
     return (
         <>
-            {pubkey ?
-                <Timeline subject={{ type: "ptag", items: [pubkey!], discriminator: pubkey!.slice(0, 12) }} postsOnly={false} method={"TIME_RANGE"} />
-                : null}
+            {pubkey && (
+              <Timeline
+                subject={{ type: "ptag", items: [pubkey!], discriminator: pubkey!.slice(0, 12) }}
+                postsOnly={false}
+                method={"TIME_RANGE"}
+              />
+            )}
         </>
     )
 }
