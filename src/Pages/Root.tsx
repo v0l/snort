@@ -31,7 +31,9 @@ export default function RootPage() {
     const timelineSubect: TimelineSubject = isGlobal ? { type: "global", items: [], discriminator: "all" } : { type: "pubkey", items: follows, discriminator: "follows" };
     return (
         <>
-            {pubKey && <Tabs tabs={[RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global]} tab={tab} setTab={setTab} />}
+           <div className="main-content">
+             {pubKey && <Tabs tabs={[RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global]} tab={tab} setTab={setTab} />}
+            </div>
             {followHints()}
             <Timeline
               key={tab.value}
