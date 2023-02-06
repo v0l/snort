@@ -100,6 +100,15 @@ export default function ProfilePage() {
           </div>
         )}
 
+        {lnurl && (
+          <div className="lnurl f-ellipsis" onClick={() => setShowLnQr(true)}>
+            <span className="link-icon">
+              <Zap />
+            </span>
+            {lnurl}
+          </div>
+        )}
+
         <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} author={id} />
       </div>
     )
