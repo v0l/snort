@@ -1,7 +1,7 @@
 import "./Layout.css";
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Envelope from "Icons/Envelope";
 import Bell from "Icons/Bell";
 import Search from "Icons/Search";
@@ -22,8 +22,8 @@ import { NoteCreator } from "Element/NoteCreator";
 import Plus from "Icons/Plus";
 import { RelaySettings } from "Nostr/Connection";
 
-
 export default function Layout() {
+    const location = useLocation();
     const [show, setShow] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -34,10 +34,14 @@ export default function Layout() {
     const pub = useEventPublisher();
     useLoginFeed();
 
+    const shouldHideNoteCreator = useMemo(() => {
+        const hideNoteCreator = ["/settings"]
+        return hideNoteCreator.some(a => location.pathname.startsWith(a));
+    }, [location]);
+
     useEffect(() => {
         System.nip42Auth = pub.nip42Auth
     }, [pub])
-
 
     useEffect(() => {
         System.UserDb = usingDb;
@@ -184,10 +188,12 @@ export default function Layout() {
             </header>
             <Outlet />
 
-            <button className="note-create-button" type="button" onClick={() => setShow(!show)}>
-                <Plus />
-            </button>
-            <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
+            {!shouldHideNoteCreator && (<>
+                <button className="note-create-button" type="button" onClick={() => setShow(!show)}>
+                    <Plus />
+                </button>
+                <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
+            </>)}
         </div>
     )
 }
