@@ -252,31 +252,6 @@ export default function Thread(props: ThreadProps) {
     const urlNoteHex = urlNoteId && bech32ToHex(urlNoteId)
     const rootNoteId = root && hexToBech32('note', root.Id)
 
-    useEffect(() => {
-      if (!root) {
-        return
-      }
-
-      if (root.Id === urlNoteHex) {
-        setPath([root.Id])
-        return
-      }
-
-      let subthreadRoot = null;
-      for (let [k, vs] of chains.entries()) {
-        const fs = vs.map(a => a.PubKey)
-        if (fs.includes(urlNoteHex)) {
-          subthreadRoot = k;
-        }
-      }
-
-      if (subthreadRoot) {
-        setPath([root.Id, subthreadRoot])
-      } else {
-        setPath([root.Id])
-      }
-    }, [root, urlNoteHex])
-
     const chains = useMemo(() => {
         let chains = new Map<u256, NEvent[]>();
         parsedNotes?.filter(a => a.Kind === EventKind.TextNote).sort((a, b) => b.CreatedAt - a.CreatedAt).forEach((v) => {
@@ -294,6 +269,30 @@ export default function Thread(props: ThreadProps) {
 
         return chains;
     }, [notes]);
+
+    useEffect(() => {
+      if (!root) {
+        return
+      }
+
+      if (root.Id === urlNoteHex) {
+        setPath([root.Id])
+        return
+      }
+
+      let subthreadRoot = []
+      for (let [k, vs] of chains.entries()) {
+        const fs = vs.map(a => a.PubKey)
+        if (k === urlNoteHex) {
+          subthreadRoot.push(urlNoteHex)
+        }
+        if (fs.includes(urlNoteHex)) {
+          subthreadRoot.push(fs[0])
+        }
+      }
+
+      setPath([root.Id, ...subthreadRoot])
+    }, [root, urlNoteHex, chains])
 
     const brokenChains = useMemo(() => {
         return Array.from(chains?.keys()).filter(a => !parsedNotes?.some(b => b.Id === a));
