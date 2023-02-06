@@ -3,7 +3,12 @@
   align-items: center;
   flex-direction: row;
   overflow-x: auto;
+  scrollbar-width: none;  /* Firefox */
   margin-bottom: 18px;
+}
+
+.tabs::-webkit-scrollbar{
+  display: none;
 }
 
 .tab {
