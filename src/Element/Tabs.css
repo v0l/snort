@@ -3,7 +3,6 @@
   align-items: center;
   flex-direction: row;
   overflow-x: auto;
-  overflow-y: scroll;
   margin-bottom: 18px;
 }
 
