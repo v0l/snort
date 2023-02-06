@@ -168,7 +168,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       body: JSON.stringify({
         q: ev.Content,
         source: "auto",
-        target: lang,
+        target: lang.split("-")[0],
       }),
       headers: { "Content-Type": "application/json" }
     });
