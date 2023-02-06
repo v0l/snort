@@ -20,7 +20,7 @@ import useModeration from "Hooks/useModeration";
  */
 export default function useLoginFeed() {
   const dispatch = useDispatch();
-  const { publicKey: pubKey, privateKey: privKey } = useSelector((s: RootState) => s.login);
+  const { publicKey: pubKey, privateKey: privKey, latestMuted } = useSelector((s: RootState) => s.login);
   const { isMuted } = useModeration();
   const db = useDb();
 
@@ -41,6 +41,7 @@ export default function useLoginFeed() {
 
     let sub = new Subscriptions();
     sub.Id = "login:notifications";
+    // todo: add zaps
     sub.Kinds = new Set([EventKind.TextNote]);
     sub.PTags = new Set([pubKey]);
     sub.Limit = 1;
@@ -131,7 +132,7 @@ export default function useLoginFeed() {
     dispatch(setMuted(muted))
 
     const newest = getNewest(mutedFeed.store.notes)
-    if (newest && newest.content.length > 0 && pubKey) {
+    if (newest && newest.content.length > 0 && pubKey && newest.created_at > latestMuted) {
       decryptBlocked(newest, pubKey, privKey).then((plaintext) => {
         try {
           const blocked = JSON.parse(plaintext)

@@ -24,6 +24,7 @@ export default function DM(props: DMProps) {
     const [decrypted, setDecrypted] = useState(false);
     const { ref, inView } = useInView();
     const isMe = props.data.pubkey === pubKey;
+    const otherPubkey = isMe ? pubKey : props.data.tags.find(a => a[0] === "p")![1];
 
     async function decrypt() {
         let e = new Event(props.data);
@@ -46,7 +47,7 @@ export default function DM(props: DMProps) {
         <div className={`flex dm f-col${isMe ? " me" : ""}`} ref={ref}>
             <div><NoteTime from={props.data.created_at * 1000} fallback={'Just now'} /></div>
             <div className="w-max">
-                <Text content={content} tags={[]} users={new Map()} />
+                <Text content={content} tags={[]} users={new Map()} creator={otherPubkey} />
             </div>
         </div>
     )

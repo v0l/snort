@@ -1,3 +1,25 @@
 .settings-nav .card {
     cursor: pointer;
 }
+
+.settings-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  padding: 12px  16px;
+  background: var(--note-bg);
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.settings-row:hover {
+  color: var(--highlight);
+}
+
+.align-end {
+  margin-left: auto;
+}

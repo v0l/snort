@@ -75,7 +75,7 @@ export default function Note(props: NoteProps) {
     if (deletions?.length > 0) {
       return (<b className="error">Deleted</b>);
     }
-    return <Text content={body} tags={ev.Tags} users={users || new Map()} />;
+    return <Text content={body} tags={ev.Tags} users={users || new Map()} creator={ev.PubKey}/>;
   }, [ev]);
 
   useLayoutEffect(() => {

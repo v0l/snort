@@ -16,6 +16,16 @@ export const TranslateHost = "https://translate.snort.social";
 export const VoidCatHost = "https://void.cat";
 
 /**
+ * Kierans pubkey
+ */
+export const KieranPubKey = "npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49";
+
+/**
+ * Official snort account
+ */
+export const SnortPubKey = "npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x6802npjqhjjtws";
+
+/**
  * Websocket re-connect timeout
  */
 export const DefaultConnectTimeout = 2000;
@@ -31,7 +41,7 @@ export const ProfileCacheExpire = (1_000 * 60 * 5);
 export const DefaultRelays = new Map<string, RelaySettings>([
     ["wss://relay.snort.social", { read: true, write: true }],
     ["wss://eden.nostr.land", { read: true, write: true }],
-    ["wss://nostr-pub.semisol.dev", { read: true, write: true }]
+    ["wss://atlas.nostr.land", { read: true, write: true }]
 ]);
 
 /**

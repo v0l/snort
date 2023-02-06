@@ -9,9 +9,48 @@
   height: 160px;
   object-fit: cover;
   margin-bottom: -60px;
-  mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0,0,0,0));
-  -webkit-mask-image: linear-gradient(to bottom, var(--bg-color) 60%, rgba(0,0,0,0));
   z-index: 0;
+}
+
+.profile .profile-actions {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.profile .icon-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+@media (min-width: 520px) {
+  .profile .profile-actions {
+    top: 120px;
+  }
+}
+
+.profile .profile-actions button:not(:last-child) {
+  margin-right: 8px;
+}
+
+.profile .profile-actions button.icon:not(:last-child) {
+  margin-right: 0;
+}
+
+
+@media (min-width: 520px) {
+  .profile .banner {
+    width: 100%;
+    max-width: 720px;
+    height: 300px;
+  }
+  .profile .profile-actions button.icon:not(:last-child) {
+    margin-right: 2px;
+  }
 }
 
 .profile .profile-wrapper {
@@ -57,13 +96,12 @@
 }
 
 .profile .details {
-    width: 100%;
-    margin-top: 12px;
-    background-color: var(--note-bg);
-    padding: 12px 16px;
-    border-radius: 16px;
-    margin: 0 auto;
-    margin-bottom: 12px;
+  width: 100%;
+  color: var(--font-secondary-color);
+  margin-bottom: 12px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
 }
 
 .profile .details p {
@@ -99,16 +137,6 @@
   margin-top: 4px;
   margin-left: 2px;
   margin-bottom: 12px;
-}
-
-.profile h3 {
-  color: var(--font-secondary-color);
-  font-size: 10px;
-  letter-spacing: .11em;
-  font-weight: 600;
-  line-height: 12px;
-  text-transform: uppercase;
-  margin-left: 12px;
 }
 
 .profile .website {
@@ -159,47 +187,6 @@
   height: 12px;
 }
 
-.profile .profile-actions {
-  position: absolute;
-  top: 80px;
-  right: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.profile .icon-actions {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-@media (min-width: 520px) {
-  .profile .profile-actions {
-    top: 120px;
-  }
-}
-
-.profile .profile-actions button:not(:last-child) {
-  margin-right: 8px;
-}
-
-.profile .profile-actions button.icon:not(:last-child) {
-  margin-right: 0;
-}
-
-@media (min-width: 520px) {
-  .profile .banner {
-    width: 100%;
-    max-width: 720px;
-    height: 300px;
-    margin-bottom: -100px;
-  }
-  .profile .profile-actions button.icon:not(:last-child) {
-    margin-right: 2px;
-  }
-}
-
 .profile .npub {
   display: flex;
   flex-direction: row;
@@ -208,4 +195,9 @@
 
 .qr-modal .modal-body {
   width: unset;
+}
+
+.profile .zap-amount {
+  font-weight: normal;
+  margin-left: 4px;
 }

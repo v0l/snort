@@ -1,12 +1,15 @@
 import "./LNURLTip.css";
 import { useEffect, useMemo, useState } from "react";
 import { bech32ToText } from "Util";
+import { HexKey } from "Nostr";
+import useEventPublisher from "Feed/EventPublisher";
 import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import useWebln from "Hooks/useWebln";
 
 interface LNURLService {
+    nostrPubkey?: HexKey
     minSendable?: number,
     maxSendable?: number,
     metadata: string,
@@ -31,12 +34,15 @@ export interface LNURLTipProps {
     invoice?: string, // shortcut to invoice qr tab
     title?: string,
     notice?: string
+    note?: HexKey
+    author?: HexKey
 }
 
 export default function LNURLTip(props: LNURLTipProps) {
     const onClose = props.onClose || (() => { });
     const service = props.svc;
     const show = props.show || false;
+    const { note, author } = props
     const amounts = [50, 100, 500, 1_000, 5_000, 10_000, 50_000];
     const [payService, setPayService] = useState<LNURLService>();
     const [amount, setAmount] = useState<number>();
@@ -46,6 +52,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     const [error, setError] = useState<string>();
     const [success, setSuccess] = useState<LNURLSuccessAction>();
     const webln = useWebln(show);
+    const publisher = useEventPublisher();
 
     useEffect(() => {
         if (show && !props.invoice) {
@@ -117,7 +124,16 @@ export default function LNURLTip(props: LNURLTipProps) {
 
     async function loadInvoice() {
         if (!amount || !payService) return null;
-        const url = `${payService.callback}?amount=${Math.floor(amount * 1000)}${comment ? `&comment=${encodeURIComponent(comment)}` : ""}`;
+        let url = ''
+        const amountParam = `amount=${Math.floor(amount * 1000)}`
+        const commentParam = comment ? `&comment=${encodeURIComponent(comment)}` : ""
+        if (payService.nostrPubkey && author) {
+            const ev = await publisher.zap(author, note, comment)
+            const nostrParam = ev && `&nostr=${encodeURIComponent(JSON.stringify(ev.ToObject()))}`
+            url = `${payService.callback}?${amountParam}${commentParam}${nostrParam}`;
+        } else {
+            url = `${payService.callback}?${amountParam}${commentParam}`;
+        }
         try {
             let rsp = await fetch(url);
             if (rsp.ok) {
@@ -223,11 +239,12 @@ export default function LNURLTip(props: LNURLTipProps) {
         )
     }
 
+    const defaultTitle = payService?.nostrPubkey ? "⚡️ Send Zap!" : "⚡️ Send sats";
     if (!show) return null;
     return (
         <Modal onClose={onClose}>
             <div className="lnurl-tip" onClick={(e) => e.stopPropagation()}>
-                <h2>{props.title || "⚡️ Send sats"}</h2>
+                <h2>{props.title || defaultTitle}</h2>
                 {invoiceForm()}
                 {error ? <p className="error">{error}</p> : null}
                 {payInvoice()}

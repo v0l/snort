@@ -1,9 +1,10 @@
 .note-creator {
     margin-bottom: 10px;
     background-color: var(--note-bg);
-    border: 1px solid var(--gray);
+    border: none;
     border-radius: 10px;
     padding: 6px;
+    position: relative;
 }
 
 .note-reply {
@@ -15,8 +16,23 @@
     resize: none;
     background-color: var(--note-bg);
     border-radius: 10px 10px 0 0;
+    min-height: 120px;
     max-width: stretch;
     min-width: stretch;
+}
+
+.note-creator textarea::placeholder {
+  color: var(--font-secondary-color);
+  font-size: var(--font-size);
+  line-height: 24px;
+}
+
+@media (min-width: 520px) {
+  .note-creator textarea { min-height: 210px; }
+}
+
+@media (min-width: 720px) {
+  .note-creator textarea { min-height: 321px; }
 }
 
 .note-creator-actions {
@@ -29,18 +45,45 @@
 }
 
 .note-creator .attachment {
-    cursor: pointer;
-    margin-left: auto;
+  cursor: pointer;
+  position: absolute;
+  right: 16px;
+  bottom: 12px;
+  width: 48px;
+  height: 36px;
+  background: var(--gray-dark);
+  color: white;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-creator .attachment:hover {
+  background: var(--font-color);
+  color: var(--gray-dark);
+}
+
+.light .note-creator .attachment {
+  background: var(--gray-light);
+}
+
+.light .note-creator .attachment:hover {
+  background: var(--gray-dark);
+  color: white;
 }
 
 .note-creator-actions button:not(:last-child) {
     margin-right: 4px;
 }
 
-.note-creator .attachment .error {
-    font-weight: normal;
-    margin-right: 5px;
-    font-size: 14px;
+.note-creator .error {
+    position: absolute;
+    left: 16px;
+    bottom: 12px;
+    font-color: var(--error);
+    margin-right: 12px;
+    font-size: 16px;
 }
 
 .note-creator .btn {
@@ -103,6 +146,10 @@
   }
 }
 
+.note-creator-modal .modal-body {
+  background: var(--modal-bg-color);
+}
+
 @media (max-width: 720px) {
   .note-creator-modal {
     align-items: flex-start;
@@ -110,4 +157,14 @@
   .note-creator-modal .modal-body {
     margin-top: 20vh;
   }
+}
+
+.note-preview {
+  word-break: break-all;
+}
+
+.note-preview-body {
+  text-overflow: ellipsis;
+  padding: 4px 4px 0 56px;
+  font-size: 14px;
 }
