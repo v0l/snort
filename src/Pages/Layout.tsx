@@ -18,13 +18,9 @@ import useModeration from "Hooks/useModeration";
 import { IndexedUDB, useDb } from "State/Users/Db";
 import { db } from "Db";
 import { bech32ToHex } from "Util";
-import { NoteCreator } from "Element/NoteCreator";
-import Plus from "Icons/Plus";
 import { RelaySettings } from "Nostr/Connection";
 
-
 export default function Layout() {
-    const [show, setShow] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loggedOut, publicKey, relays, notifications, readNotifications, dms, preferences, newUserKey } = useSelector((s: RootState) => s.login);
@@ -183,11 +179,6 @@ export default function Layout() {
                 </div>
             </header>
             <Outlet />
-
-            <button className="note-create-button" type="button" onClick={() => setShow(!show)}>
-                <Plus />
-            </button>
-            <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
         </div>
     )
 }

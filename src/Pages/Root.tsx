@@ -3,9 +3,11 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import Plus from "Icons/Plus";
 import Tabs, { Tab } from "Element/Tabs";
 import { RootState } from "State/Store";
 import Timeline from "Element/Timeline";
+import { NoteCreator } from "Element/NoteCreator";
 import { HexKey } from "Nostr";
 import { TimelineSubject } from "Feed/TimelineFeed";
 
@@ -16,6 +18,7 @@ const RootTab: Record<string, Tab> = {
 };
 
 export default function RootPage() {
+    const [show, setShow] = useState(false)
     const [loggedOut, pubKey, follows] = useSelector<RootState, [boolean | undefined, HexKey | undefined, HexKey[]]>(s => [s.login.loggedOut, s.login.publicKey, s.login.follows]);
     const [tab, setTab] = useState<Tab>(RootTab.Posts);
 
@@ -42,6 +45,10 @@ export default function RootPage() {
               method={"TIME_RANGE"}
               window={tab.value === RootTab.Global.value ? 60 : undefined}
             />
+            <button className="note-create-button" type="button" onClick={() => setShow(!show)}>
+                <Plus />
+            </button>
+            <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
         </>
     );
 }
