@@ -2,22 +2,22 @@
 }
 
 .reaction > .note {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 
 .reaction > .header {
-   display: flex; 
-   flex-direction: row;
-   justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .reaction > .header .reply {
-    font-size: var(--font-size-small);
+  font-size: var(--font-size-small);
 }
 
 .reaction > .header > .info {
-    font-size: var(--font-size);
-    white-space: nowrap;
-    color: var(--font-secondary-color);
-    margin-right: 24px;
+  font-size: var(--font-size);
+  white-space: nowrap;
+  color: var(--font-secondary-color);
+  margin-right: 24px;
 }

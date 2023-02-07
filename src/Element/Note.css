@@ -2,27 +2,27 @@
   min-height: 110px;
 }
 
-.note>.header .reply {
+.note > .header .reply {
   font-size: 13px;
   color: var(--font-secondary-color);
 }
 
-.note>.header .reply a {
+.note > .header .reply a {
   color: var(--highlight);
 }
 
-.note>.header .reply a:hover {
+.note > .header .reply a:hover {
   text-decoration-color: var(--highlight);
 }
 
-.note>.header>.info {
+.note > .header > .info {
   font-size: var(--font-size);
   margin-left: 4px;
   white-space: nowrap;
   color: var(--font-secondary-color);
 }
 
-.note>.body {
+.note > .body {
   margin-top: 4px;
   margin-bottom: 24px;
   padding-left: 56px;
@@ -33,7 +33,7 @@
   overflow-y: visible;
 }
 
-.note>.footer {
+.note > .footer {
   padding-left: 46px;
 }
 
@@ -49,7 +49,7 @@
   }
 }
 
-.note>.footer .ctx-menu {
+.note > .footer .ctx-menu {
   background-color: var(--note-bg);
   color: var(--font-secondary-color);
   border: 1px solid var(--font-secondary-color);
@@ -57,7 +57,7 @@
   min-width: 0;
 }
 
-.note>.footer .ctx-menu li {
+.note > .footer .ctx-menu li {
   display: grid;
   grid-template-columns: 2rem auto;
 }
@@ -66,11 +66,13 @@
   color: var(--error);
 }
 
-.note>.header img:hover, .note>.header .name>.reply:hover, .note .body:hover {
+.note > .header img:hover,
+.note > .header .name > .reply:hover,
+.note .body:hover {
   cursor: pointer;
 }
 
-.note>.note-creator {
+.note > .note-creator {
   margin-top: 12px;
   margin-left: 56px;
 }
@@ -116,7 +118,7 @@
 }
 
 .hidden-note button {
-   max-height: 30px;
+  max-height: 30px;
 }
 
 .expand-note {

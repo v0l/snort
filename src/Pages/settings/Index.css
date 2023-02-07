@@ -1,5 +1,5 @@
 .settings-nav .card {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .settings-row {
@@ -9,7 +9,7 @@
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
-  padding: 12px  16px;
+  padding: 12px 16px;
   background: var(--note-bg);
   border-radius: 10px;
   cursor: pointer;

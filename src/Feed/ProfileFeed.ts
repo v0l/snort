@@ -5,28 +5,29 @@ import { HexKey } from "Nostr";
 import { System } from "Nostr/System";
 
 export function useUserProfile(pubKey: HexKey): MetadataCache | undefined {
-    const users = useKey(pubKey);
+  const users = useKey(pubKey);
 
-    useEffect(() => {
-        if (pubKey) {
-            System.TrackMetadata(pubKey);
-            return () => System.UntrackMetadata(pubKey);
-        }
-    }, [pubKey]);
+  useEffect(() => {
+    if (pubKey) {
+      System.TrackMetadata(pubKey);
+      return () => System.UntrackMetadata(pubKey);
+    }
+  }, [pubKey]);
 
-    return users;
+  return users;
 }
 
+export function useUserProfiles(
+  pubKeys: Array<HexKey>
+): Map<HexKey, MetadataCache> | undefined {
+  const users = useKeys(pubKeys);
 
-export function useUserProfiles(pubKeys: Array<HexKey>): Map<HexKey, MetadataCache> | undefined {
-    const users = useKeys(pubKeys);
+  useEffect(() => {
+    if (pubKeys) {
+      System.TrackMetadata(pubKeys);
+      return () => System.UntrackMetadata(pubKeys);
+    }
+  }, [pubKeys]);
 
-    useEffect(() => {
-        if (pubKeys) {
-            System.TrackMetadata(pubKeys);
-            return () => System.UntrackMetadata(pubKeys);
-        }
-    }, [pubKeys]);
-
-    return users;
+  return users;
 }

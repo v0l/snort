@@ -4,12 +4,14 @@
 .rta__item:not(:last-child) {
   border: none;
 }
-.rta__entity--selected .user-item, .rta__entity--selected .emoji-item {
+.rta__entity--selected .user-item,
+.rta__entity--selected .emoji-item {
   text-decoration: none;
   background: var(--gray-secondary);
 }
 
-.user-item, .emoji-item {
+.user-item,
+.emoji-item {
   color: var(--font-color);
   background: var(--note-bg);
   display: flex;
@@ -19,7 +21,8 @@
   padding: 10px;
 }
 
-.user-item:hover, .emoji-item:hover {
+.user-item:hover,
+.emoji-item:hover {
   background: var(--gray-tertiary);
 }
 
@@ -37,9 +40,9 @@
 }
 
 .user-picture .avatar {
-    border-width: 1px;
-    width: 40px;
-    height: 40px;
+  border-width: 1px;
+  width: 40px;
+  height: 40px;
 }
 
 .user-details {
@@ -57,8 +60,8 @@
 }
 
 .emoji-item .emoji {
-   margin-right: .2em;
-   min-width: 20px;
+  margin-right: 0.2em;
+  min-width: 20px;
 }
 
 .emoji-item .emoji-name {

@@ -1,6 +1,6 @@
 .nts {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .note-to-self {
@@ -13,20 +13,20 @@
 }
 
 .nts .avatar {
-    border-width: 1px;
-    width: 40px;
-    height: 40px;
+  border-width: 1px;
+  width: 40px;
+  height: 40px;
 }
 .nts .avatar.clickable {
   cursor: pointer;
 }
 
 .nts a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .nts .name {
-  margin-top: -.2em;
+  margin-top: -0.2em;
   display: flex;
   flex-direction: column;
   font-weight: bold;
@@ -34,5 +34,5 @@
 
 .nts .nip05 {
   margin: 0;
-  margin-top: -.2em;
+  margin-top: -0.2em;
 }

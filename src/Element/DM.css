@@ -1,23 +1,23 @@
 .dm {
-    padding: 8px;
-    background-color: var(--gray);
-    margin-bottom: 5px;
-    border-radius: 5px;
-    width: fit-content;
-    min-width: 100px;
-    max-width: 90%;
-    overflow: hidden;
-    min-height: 40px;
-    white-space: pre-wrap;
+  padding: 8px;
+  background-color: var(--gray);
+  margin-bottom: 5px;
+  border-radius: 5px;
+  width: fit-content;
+  min-width: 100px;
+  max-width: 90%;
+  overflow: hidden;
+  min-height: 40px;
+  white-space: pre-wrap;
 }
 
 .dm > div:first-child {
-    color: var(--gray-light);
-    font-size: small;
-    margin-bottom: 3px;
+  color: var(--gray-light);
+  font-size: small;
+  margin-bottom: 3px;
 }
 
 .dm.me {
-    align-self: flex-end;
-    background-color: var(--gray-secondary);
+  align-self: flex-end;
+  background-color: var(--gray-secondary);
 }

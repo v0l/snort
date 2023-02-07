@@ -5,16 +5,22 @@ import EventKind from "Nostr/EventKind";
 import FollowListBase from "Element/FollowListBase";
 
 export interface FollowersListProps {
-    pubkey: HexKey
+  pubkey: HexKey;
 }
 
 export default function FollowersList({ pubkey }: FollowersListProps) {
-    const feed = useFollowersFeed(pubkey);
+  const feed = useFollowersFeed(pubkey);
 
-    const pubkeys = useMemo(() => {
-        let contactLists = feed?.store.notes.filter(a => a.kind === EventKind.ContactList && a.tags.some(b => b[0] === "p" && b[1] === pubkey));
-        return [...new Set(contactLists?.map(a => a.pubkey))];
-    }, [feed]);
+  const pubkeys = useMemo(() => {
+    let contactLists = feed?.store.notes.filter(
+      (a) =>
+        a.kind === EventKind.ContactList &&
+        a.tags.some((b) => b[0] === "p" && b[1] === pubkey)
+    );
+    return [...new Set(contactLists?.map((a) => a.pubkey))];
+  }, [feed]);
 
-    return <FollowListBase pubkeys={pubkeys} title={`${pubkeys?.length} followers`} />
+  return (
+    <FollowListBase pubkeys={pubkeys} title={`${pubkeys?.length} followers`} />
+  );
 }

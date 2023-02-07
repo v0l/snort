@@ -1,33 +1,33 @@
 .dm-list {
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: calc(100vh - 66px - 50px - 70px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 66px - 50px - 70px);
 }
 
 .dm-list > div {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-    scroll-padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  scroll-padding-bottom: 40px;
 }
 
 .write-dm {
-    position: fixed;
-    bottom: 0;
-    background-color: var(--gray-light);
-    width: inherit;
-    border-radius: 5px 5px 0 0;
+  position: fixed;
+  bottom: 0;
+  background-color: var(--gray-light);
+  width: inherit;
+  border-radius: 5px 5px 0 0;
 }
 
 .write-dm .inner {
-    display: flex;
-    align-items: center;
-    padding: 10px 5px;
+  display: flex;
+  align-items: center;
+  padding: 10px 5px;
 }
 .write-dm textarea {
-    resize: none;
+  resize: none;
 }
 
 .write-dm-spacer {
-    margin-bottom: 80px;
+  margin-bottom: 80px;
 }

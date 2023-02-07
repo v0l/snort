@@ -4,9 +4,9 @@
 }
 
 .copy .body {
-    font-size: var(--font-size-small);
-    color: var(--font-color);
-    margin-right: 6px;
+  font-size: var(--font-size-small);
+  color: var(--font-color);
+  margin-right: 6px;
 }
 
 .copy .icon {

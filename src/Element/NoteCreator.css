@@ -1,25 +1,25 @@
 .note-creator {
-    margin-bottom: 10px;
-    background-color: var(--note-bg);
-    border: none;
-    border-radius: 10px;
-    padding: 6px;
-    position: relative;
+  margin-bottom: 10px;
+  background-color: var(--note-bg);
+  border: none;
+  border-radius: 10px;
+  padding: 6px;
+  position: relative;
 }
 
 .note-reply {
-    margin: 10px;
+  margin: 10px;
 }
 
 .note-creator textarea {
-    border: none;
-    outline: none;
-    resize: none;
-    background-color: var(--note-bg);
-    border-radius: 10px 10px 0 0;
-    min-height: 120px;
-    max-width: stretch;
-    min-width: stretch;
+  border: none;
+  outline: none;
+  resize: none;
+  background-color: var(--note-bg);
+  border-radius: 10px 10px 0 0;
+  min-height: 120px;
+  max-width: stretch;
+  min-width: stretch;
 }
 
 .note-creator textarea::placeholder {
@@ -29,20 +29,24 @@
 }
 
 @media (min-width: 520px) {
-  .note-creator textarea { min-height: 210px; }
+  .note-creator textarea {
+    min-height: 210px;
+  }
 }
 
 @media (min-width: 720px) {
-  .note-creator textarea { min-height: 321px; }
+  .note-creator textarea {
+    min-height: 321px;
+  }
 }
 
 .note-creator-actions {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 5px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 5px;
 }
 
 .note-creator .attachment {
@@ -75,24 +79,24 @@
 }
 
 .note-creator-actions button:not(:last-child) {
-    margin-right: 4px;
+  margin-right: 4px;
 }
 
 .note-creator .error {
-    position: absolute;
-    left: 16px;
-    bottom: 12px;
-    font-color: var(--error);
-    margin-right: 12px;
-    font-size: 16px;
+  position: absolute;
+  left: 16px;
+  bottom: 12px;
+  font-color: var(--error);
+  margin-right: 12px;
+  font-size: 16px;
 }
 
 .note-creator .btn {
-    border-radius: 20px;
-    font-weight: bold;
-    background-color: var(--bg-color);
-    color: var(--font-color);
-    font-size: var(--font-size);
+  border-radius: 20px;
+  font-weight: bold;
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  font-size: var(--font-size);
 }
 
 .note-create-button {

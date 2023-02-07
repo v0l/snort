@@ -4,11 +4,11 @@
   flex-direction: row;
   overflow-x: scroll;
   -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none;  /* Firefox */
+  scrollbar-width: none; /* Firefox */
   margin-bottom: 18px;
 }
 
-.tabs::-webkit-scrollbar{
+.tabs::-webkit-scrollbar {
   display: none;
 }
 
@@ -31,7 +31,6 @@
   color: var(--font-color);
 }
 
-
-.tabs>div {
+.tabs > div {
   cursor: pointer;
 }

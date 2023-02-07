@@ -16,7 +16,7 @@ function useHorizontalScroll() {
       return () => el.removeEventListener("wheel", onWheel);
     }
   }, []);
-  return elRef as LegacyRef<HTMLDivElement> | undefined
+  return elRef as LegacyRef<HTMLDivElement> | undefined;
 }
 
 export default useHorizontalScroll;

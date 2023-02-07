@@ -1,24 +1,25 @@
-import "./BackButton.css"
+import "./BackButton.css";
 
 import ArrowBack from "Icons/ArrowBack";
 
 interface BackButtonProps {
-  text?: string
-  onClick?(): void
+  text?: string;
+  onClick?(): void;
 }
 
 const BackButton = ({ text = "Back", onClick }: BackButtonProps) => {
   const onClickHandler = () => {
     if (onClick) {
-      onClick()
+      onClick();
     }
-  }
+  };
 
   return (
     <button className="back-button" type="button" onClick={onClickHandler}>
-      <ArrowBack />{text}
+      <ArrowBack />
+      {text}
     </button>
-  )
-}
+  );
+};
 
-export default BackButton
+export default BackButton;
