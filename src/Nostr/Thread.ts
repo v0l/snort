@@ -19,15 +19,15 @@ export default class Thread {
    * @param ev Event to extract thread from
    */
   static ExtractThread(ev: NEvent) {
-    let isThread = ev.Tags.some((a) => a.Key === "e");
+    const isThread = ev.Tags.some((a) => a.Key === "e");
     if (!isThread) {
       return null;
     }
 
-    let shouldWriteMarkers = ev.Kind === EventKind.TextNote;
-    let ret = new Thread();
-    let eTags = ev.Tags.filter((a) => a.Key === "e");
-    let marked = eTags.some((a) => a.Marker !== undefined);
+    const shouldWriteMarkers = ev.Kind === EventKind.TextNote;
+    const ret = new Thread();
+    const eTags = ev.Tags.filter((a) => a.Key === "e");
+    const marked = eTags.some((a) => a.Marker !== undefined);
     if (!marked) {
       ret.Root = eTags[0];
       ret.Root.Marker = shouldWriteMarkers ? "root" : undefined;
@@ -42,8 +42,8 @@ export default class Thread {
         }
       }
     } else {
-      let root = eTags.find((a) => a.Marker === "root");
-      let reply = eTags.find((a) => a.Marker === "reply");
+      const root = eTags.find((a) => a.Marker === "root");
+      const reply = eTags.find((a) => a.Marker === "reply");
       ret.Root = root;
       ret.ReplyTo = reply;
       ret.Mentions = eTags.filter((a) => a.Marker === "mention");

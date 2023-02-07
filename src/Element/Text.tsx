@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import { visit, SKIP } from "unist-util-visit";
 
 import { UrlRegex, MentionRegex, InvoiceRegex, HashtagRegex } from "Const";
-import { eventLink, hexToBech32 } from "Util";
+import { eventLink, hexToBech32, unwrap } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 
@@ -14,11 +14,12 @@ import { MetadataCache } from "State/Users";
 import Mention from "Element/Mention";
 import HyperText from "Element/HyperText";
 import { HexKey } from "Nostr";
+import * as unist from "unist";
 
-export type Fragment = string | JSX.Element;
+export type Fragment = string | React.ReactNode;
 
 export interface TextFragment {
-  body: Fragment[];
+  body: React.ReactNode[];
   tags: Tag[];
   users: Map<string, MetadataCache>;
 }
@@ -52,24 +53,24 @@ export default function Text({ content, tags, creator, users }: TextProps) {
       .map((f) => {
         if (typeof f === "string") {
           return f.split(MentionRegex).map((match) => {
-            let matchTag = match.match(/#\[(\d+)\]/);
+            const matchTag = match.match(/#\[(\d+)\]/);
             if (matchTag && matchTag.length === 2) {
-              let idx = parseInt(matchTag[1]);
-              let ref = frag.tags?.find((a) => a.Index === idx);
+              const idx = parseInt(matchTag[1]);
+              const ref = frag.tags?.find((a) => a.Index === idx);
               if (ref) {
                 switch (ref.Key) {
                   case "p": {
-                    return <Mention pubkey={ref.PubKey!} />;
+                    return <Mention pubkey={ref.PubKey ?? ""} />;
                   }
                   case "e": {
-                    let eText = hexToBech32("note", ref.Event!).substring(
-                      0,
-                      12
-                    );
+                    const eText = hexToBech32(
+                      "note",
+                      ref.Event ?? ""
+                    ).substring(0, 12);
                     return (
                       <Link
                         key={ref.Event}
-                        to={eventLink(ref.Event!)}
+                        to={eventLink(ref.Event ?? "")}
                         onClick={(e) => e.stopPropagation()}
                       >
                         #{eText}
@@ -77,7 +78,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
                     );
                   }
                   case "t": {
-                    return <Hashtag tag={ref.Hashtag!} />;
+                    return <Hashtag tag={ref.Hashtag ?? ""} />;
                   }
                 }
               }
@@ -127,7 +128,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
   }
 
   function transformLi(frag: TextFragment) {
-    let fragments = transformText(frag);
+    const fragments = transformText(frag);
     return <li>{fragments}</li>;
   }
 
@@ -140,9 +141,6 @@ export default function Text({ content, tags, creator, users }: TextProps) {
   }
 
   function transformText(frag: TextFragment) {
-    if (frag.body === undefined) {
-      debugger;
-    }
     let fragments = extractMentions(frag);
     fragments = extractLinks(fragments);
     fragments = extractInvoices(fragments);
@@ -152,15 +150,22 @@ export default function Text({ content, tags, creator, users }: TextProps) {
 
   const components = useMemo(() => {
     return {
-      p: (x: any) =>
+      p: (x: { children?: React.ReactNode[] }) =>
         transformParagraph({ body: x.children ?? [], tags, users }),
-      a: (x: any) => <HyperText link={x.href} creator={creator} />,
-      li: (x: any) => transformLi({ body: x.children ?? [], tags, users }),
+      a: (x: { href?: string }) => (
+        <HyperText link={x.href ?? ""} creator={creator} />
+      ),
+      li: (x: { children?: Fragment[] }) =>
+        transformLi({ body: x.children ?? [], tags, users }),
     };
   }, [content]);
 
+  interface Node extends unist.Node<unist.Data> {
+    value: string;
+  }
+
   const disableMarkdownLinks = useCallback(
-    () => (tree: any) => {
+    () => (tree: Node) => {
       visit(tree, (node, index, parent) => {
         if (
           parent &&
@@ -172,8 +177,9 @@ export default function Text({ content, tags, creator, users }: TextProps) {
             node.type === "definition")
         ) {
           node.type = "text";
+          const position = unwrap(node.position);
           node.value = content
-            .slice(node.position.start.offset, node.position.end.offset)
+            .slice(position.start.offset, position.end.offset)
             .replace(/\)$/, " )");
           return SKIP;
         }

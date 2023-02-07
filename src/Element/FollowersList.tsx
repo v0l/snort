@@ -17,7 +17,7 @@ export default function FollowersList({ pubkey }: FollowersListProps) {
   const feed = useFollowersFeed(pubkey);
 
   const pubkeys = useMemo(() => {
-    let contactLists = feed?.store.notes.filter(
+    const contactLists = feed?.store.notes.filter(
       (a) =>
         a.kind === EventKind.ContactList &&
         a.tags.some((b) => b[0] === "p" && b[1] === pubkey)

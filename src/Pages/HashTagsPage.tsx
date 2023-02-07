@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
 import Timeline from "Element/Timeline";
+import { unwrap } from "Util";
 
 const HashTagsPage = () => {
   const params = useParams();
-  const tag = params.tag!.toLowerCase();
+  const tag = unwrap(params.tag).toLowerCase();
 
   return (
     <>

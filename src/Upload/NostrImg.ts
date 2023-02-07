@@ -3,10 +3,10 @@ import { UploadResult } from "Upload";
 export default async function NostrImg(
   file: File | Blob
 ): Promise<UploadResult> {
-  let fd = new FormData();
+  const fd = new FormData();
   fd.append("image", file);
 
-  let rsp = await fetch("https://nostrimg.com/api/upload", {
+  const rsp = await fetch("https://nostrimg.com/api/upload", {
     body: fd,
     method: "POST",
     headers: {
@@ -14,7 +14,7 @@ export default async function NostrImg(
     },
   });
   if (rsp.ok) {
-    let data: UploadResponse = await rsp.json();
+    const data: UploadResponse = await rsp.json();
     if (typeof data?.imageUrl === "string" && data.success) {
       return {
         url: new URL(data.imageUrl).toString(),

@@ -45,11 +45,11 @@ const DonatePage = () => {
   const [today, setSumToday] = useState<TotalToday>();
 
   async function loadData() {
-    let rsp = await fetch(`${ApiHost}/api/v1/revenue/splits`);
+    const rsp = await fetch(`${ApiHost}/api/v1/revenue/splits`);
     if (rsp.ok) {
       setSplits(await rsp.json());
     }
-    let rsp2 = await fetch(`${ApiHost}/api/v1/revenue/today`);
+    const rsp2 = await fetch(`${ApiHost}/api/v1/revenue/today`);
     if (rsp2.ok) {
       setSumToday(await rsp2.json());
     }
@@ -60,7 +60,7 @@ const DonatePage = () => {
   }, []);
 
   function actions(pk: HexKey) {
-    let split = splits.find((a) => bech32ToHex(a.pubKey) === pk);
+    const split = splits.find((a) => bech32ToHex(a.pubKey) === pk);
     if (split) {
       return <>{(100 * split.split).toLocaleString()}%</>;
     }

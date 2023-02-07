@@ -23,7 +23,7 @@ export default function NoteReaction(props: NoteReactionProps) {
 
   const refEvent = useMemo(() => {
     if (ev) {
-      let eTags = ev.Tags.filter((a) => a.Key === "e");
+      const eTags = ev.Tags.filter((a) => a.Key === "e");
       if (eTags.length > 0) {
         return eTags[0].Event;
       }
@@ -45,7 +45,7 @@ export default function NoteReaction(props: NoteReactionProps) {
       ev.Content !== "#[0]"
     ) {
       try {
-        let r: RawEvent = JSON.parse(ev.Content);
+        const r: RawEvent = JSON.parse(ev.Content);
         return r as TaggedRawEvent;
       } catch (e) {
         console.error("Could not load reposted content", e);

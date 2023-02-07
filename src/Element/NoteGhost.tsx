@@ -1,8 +1,13 @@
 import "./Note.css";
 import ProfileImage from "Element/ProfileImage";
 
-export default function NoteGhost(props: any) {
-  const className = `note card ${props.className ? props.className : ""}`;
+interface NoteGhostProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
+export default function NoteGhost(props: NoteGhostProps) {
+  const className = `note card ${props.className ?? ""}`;
   return (
     <div className={className}>
       <div className="header">

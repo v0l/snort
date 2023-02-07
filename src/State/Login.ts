@@ -215,26 +215,26 @@ const LoginSlice = createSlice({
       }
 
       // check pub key only
-      let pubKey = window.localStorage.getItem(PublicKeyItem);
+      const pubKey = window.localStorage.getItem(PublicKeyItem);
       if (pubKey && !state.privateKey) {
         state.publicKey = pubKey;
         state.loggedOut = false;
       }
 
-      let lastRelayList = window.localStorage.getItem(RelayListKey);
+      const lastRelayList = window.localStorage.getItem(RelayListKey);
       if (lastRelayList) {
         state.relays = JSON.parse(lastRelayList);
       } else {
         state.relays = Object.fromEntries(DefaultRelays.entries());
       }
 
-      let lastFollows = window.localStorage.getItem(FollowList);
+      const lastFollows = window.localStorage.getItem(FollowList);
       if (lastFollows) {
         state.follows = JSON.parse(lastFollows);
       }
 
       // notifications
-      let readNotif = parseInt(
+      const readNotif = parseInt(
         window.localStorage.getItem(NotificationsReadItem) ?? "0"
       );
       if (!isNaN(readNotif)) {
@@ -242,7 +242,7 @@ const LoginSlice = createSlice({
       }
 
       // preferences
-      let pref = window.localStorage.getItem(UserPreferencesKey);
+      const pref = window.localStorage.getItem(UserPreferencesKey);
       if (pref) {
         state.preferences = JSON.parse(pref);
       }
@@ -270,15 +270,15 @@ const LoginSlice = createSlice({
       state.publicKey = action.payload;
     },
     setRelays: (state, action: PayloadAction<SetRelaysPayload>) => {
-      let relays = action.payload.relays;
-      let createdAt = action.payload.createdAt;
+      const relays = action.payload.relays;
+      const createdAt = action.payload.createdAt;
       if (state.latestRelays > createdAt) {
         return;
       }
 
       // filter out non-websocket urls
-      let filtered = new Map<string, RelaySettings>();
-      for (let [k, v] of Object.entries(relays)) {
+      const filtered = new Map<string, RelaySettings>();
+      for (const [k, v] of Object.entries(relays)) {
         if (k.startsWith("wss://") || k.startsWith("ws://")) {
           filtered.set(k, v as RelaySettings);
         }
@@ -299,17 +299,17 @@ const LoginSlice = createSlice({
         return;
       }
 
-      let existing = new Set(state.follows);
-      let update = Array.isArray(keys) ? keys : [keys];
+      const existing = new Set(state.follows);
+      const update = Array.isArray(keys) ? keys : [keys];
 
       let changes = false;
-      for (let pk of update.filter((a) => a.length === 64)) {
+      for (const pk of update.filter((a) => a.length === 64)) {
         if (!existing.has(pk)) {
           existing.add(pk);
           changes = true;
         }
       }
-      for (let pk of existing) {
+      for (const pk of existing) {
         if (!update.includes(pk)) {
           existing.delete(pk);
           changes = true;
@@ -355,7 +355,7 @@ const LoginSlice = createSlice({
       }
 
       let didChange = false;
-      for (let x of n) {
+      for (const x of n) {
         if (!state.dms.some((a) => a.id === x.id)) {
           state.dms.push(x);
           didChange = true;
@@ -370,7 +370,7 @@ const LoginSlice = createSlice({
       state.dmInteraction += 1;
     },
     logout: (state) => {
-      let relays = { ...state.relays };
+      const relays = { ...state.relays };
       Object.assign(state, InitState);
       state.loggedOut = true;
       window.localStorage.clear();
@@ -430,7 +430,7 @@ export function sendNotification({
       hasPermission && timestamp > readNotifications;
     if (shouldShowNotification) {
       try {
-        let worker = await navigator.serviceWorker.ready;
+        const worker = await navigator.serviceWorker.ready;
         worker.showNotification(title, {
           tag: "notification",
           vibrate: [500],

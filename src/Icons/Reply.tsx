@@ -1,5 +1,3 @@
-import IconProps from "./IconProps";
-
 const Reply = () => {
   return (
     <svg

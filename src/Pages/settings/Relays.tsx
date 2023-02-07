@@ -19,7 +19,7 @@ const RelaySettingsPage = () => {
   const [newRelay, setNewRelay] = useState<string>();
 
   async function saveRelays() {
-    let ev = await publisher.saveRelays();
+    const ev = await publisher.saveRelays();
     publisher.broadcast(ev);
     publisher.broadcastForBootstrap(ev);
   }
@@ -48,7 +48,7 @@ const RelaySettingsPage = () => {
 
   function addNewRelay() {
     if ((newRelay?.length ?? 0) > 0) {
-      const parsed = new URL(newRelay!);
+      const parsed = new URL(newRelay ?? "");
       const payload = {
         relays: {
           ...relays,

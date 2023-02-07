@@ -7,6 +7,8 @@ import { DefaultImgProxy, setPreferences, UserPreferences } from "State/Login";
 import { RootState } from "State/Store";
 
 import messages from "./messages";
+import { unwrap } from "Util";
+import "./Preferences.css";
 
 const PreferencesPage = () => {
   const dispatch = useDispatch();
@@ -124,7 +126,7 @@ const PreferencesPage = () => {
                       setPreferences({
                         ...perf,
                         imgProxyConfig: {
-                          ...perf.imgProxyConfig!,
+                          ...unwrap(perf.imgProxyConfig),
                           url: e.target.value,
                         },
                       })
@@ -147,7 +149,7 @@ const PreferencesPage = () => {
                       setPreferences({
                         ...perf,
                         imgProxyConfig: {
-                          ...perf.imgProxyConfig!,
+                          ...unwrap(perf.imgProxyConfig),
                           key: e.target.value,
                         },
                       })
@@ -170,7 +172,7 @@ const PreferencesPage = () => {
                       setPreferences({
                         ...perf,
                         imgProxyConfig: {
-                          ...perf.imgProxyConfig!,
+                          ...unwrap(perf.imgProxyConfig),
                           salt: e.target.value,
                         },
                       })

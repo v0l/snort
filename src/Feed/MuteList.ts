@@ -7,7 +7,7 @@ import useSubscription, { NoteStore } from "Feed/Subscription";
 
 export default function useMutedFeed(pubkey: HexKey) {
   const sub = useMemo(() => {
-    let sub = new Subscriptions();
+    const sub = new Subscriptions();
     sub.Id = `muted:${pubkey.slice(0, 12)}`;
     sub.Kinds = new Set([EventKind.Lists]);
     sub.Authors = new Set([pubkey]);
@@ -44,7 +44,7 @@ export function getMutedKeys(rawNotes: TaggedRawEvent[]): {
 }
 
 export function getMuted(feed: NoteStore, pubkey: HexKey): HexKey[] {
-  let lists = feed?.notes.filter(
+  const lists = feed?.notes.filter(
     (a) => a.kind === EventKind.Lists && a.pubkey === pubkey
   );
   return getMutedKeys(lists).keys;

@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TidalRegex } from "Const";
 
 // Re-use dom parser across instances of TidalEmbed

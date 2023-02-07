@@ -23,7 +23,7 @@ export default function LoadMore({
   }, [inView, shouldLoadMore, tick]);
 
   useEffect(() => {
-    let t = setInterval(() => {
+    const t = setInterval(() => {
       setTick((x) => (x += 1));
     }, 500);
     return () => clearInterval(t);

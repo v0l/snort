@@ -6,19 +6,18 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { TaggedRawEvent, u256, HexKey } from "Nostr";
 import { default as NEvent } from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
-import { eventLink, hexToBech32, bech32ToHex } from "Util";
+import { eventLink, bech32ToHex, unwrap } from "Util";
 import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";
 import Collapsed from "Element/Collapsed";
-
 import messages from "./messages";
 
 function getParent(
   ev: HexKey,
   chains: Map<HexKey, NEvent[]>
 ): HexKey | undefined {
-  for (let [k, vs] of chains.entries()) {
+  for (const [k, vs] of chains.entries()) {
     const fs = vs.map((a) => a.Id);
     if (fs.includes(ev)) {
       return k;
@@ -53,7 +52,6 @@ interface SubthreadProps {
 const Subthread = ({
   active,
   path,
-  from,
   notes,
   related,
   chains,
@@ -332,20 +330,19 @@ export default function Thread(props: ThreadProps) {
   const location = useLocation();
   const urlNoteId = location?.pathname.slice(3);
   const urlNoteHex = urlNoteId && bech32ToHex(urlNoteId);
-  const rootNoteId = root && hexToBech32("note", root.Id);
 
   const chains = useMemo(() => {
-    let chains = new Map<u256, NEvent[]>();
+    const chains = new Map<u256, NEvent[]>();
     parsedNotes
       ?.filter((a) => a.Kind === EventKind.TextNote)
       .sort((a, b) => b.CreatedAt - a.CreatedAt)
       .forEach((v) => {
-        let replyTo = v.Thread?.ReplyTo?.Event ?? v.Thread?.Root?.Event;
+        const replyTo = v.Thread?.ReplyTo?.Event ?? v.Thread?.Root?.Event;
         if (replyTo) {
           if (!chains.has(replyTo)) {
             chains.set(replyTo, [v]);
           } else {
-            chains.get(replyTo)!.push(v);
+            unwrap(chains.get(replyTo)).push(v);
           }
         } else if (v.Tags.length > 0) {
           console.log("Not replying to anything: ", v);
@@ -370,7 +367,7 @@ export default function Thread(props: ThreadProps) {
       return;
     }
 
-    let subthreadPath = [];
+    const subthreadPath = [];
     let parent = getParent(urlNoteHex, chains);
     while (parent) {
       subthreadPath.unshift(parent);
@@ -414,7 +411,7 @@ export default function Thread(props: ThreadProps) {
     if (!from || !chains) {
       return;
     }
-    let replies = chains.get(from);
+    const replies = chains.get(from);
     if (replies) {
       return (
         <Subthread
@@ -476,6 +473,6 @@ function getReplies(from: u256, chains?: Map<u256, NEvent[]>): NEvent[] {
   if (!from || !chains) {
     return [];
   }
-  let replies = chains.get(from);
+  const replies = chains.get(from);
   return replies ? replies : [];
 }

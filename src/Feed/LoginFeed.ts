@@ -19,9 +19,10 @@ import { RootState } from "State/Store";
 import { mapEventToProfile, MetadataCache } from "State/Users";
 import { useDb } from "State/Users/Db";
 import useSubscription from "Feed/Subscription";
-import { barierNip07 } from "Feed/EventPublisher";
+import { barrierNip07 } from "Feed/EventPublisher";
 import { getMutedKeys, getNewest } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
+import { unwrap } from "Util";
 
 /**
  * Managed loading data for the current logged in user
@@ -40,7 +41,7 @@ export default function useLoginFeed() {
   const subMetadata = useMemo(() => {
     if (!pubKey) return null;
 
-    let sub = new Subscriptions();
+    const sub = new Subscriptions();
     sub.Id = `login:meta`;
     sub.Authors = new Set([pubKey]);
     sub.Kinds = new Set([EventKind.ContactList, EventKind.SetMetadata]);
@@ -52,7 +53,7 @@ export default function useLoginFeed() {
   const subNotification = useMemo(() => {
     if (!pubKey) return null;
 
-    let sub = new Subscriptions();
+    const sub = new Subscriptions();
     sub.Id = "login:notifications";
     // todo: add zaps
     sub.Kinds = new Set([EventKind.TextNote]);
@@ -64,7 +65,7 @@ export default function useLoginFeed() {
   const subMuted = useMemo(() => {
     if (!pubKey) return null;
 
-    let sub = new Subscriptions();
+    const sub = new Subscriptions();
     sub.Id = "login:muted";
     sub.Kinds = new Set([EventKind.Lists]);
     sub.Authors = new Set([pubKey]);
@@ -77,12 +78,12 @@ export default function useLoginFeed() {
   const subDms = useMemo(() => {
     if (!pubKey) return null;
 
-    let dms = new Subscriptions();
+    const dms = new Subscriptions();
     dms.Id = "login:dms";
     dms.Kinds = new Set([EventKind.DirectMessage]);
     dms.PTags = new Set([pubKey]);
 
-    let dmsFromME = new Subscriptions();
+    const dmsFromME = new Subscriptions();
     dmsFromME.Authors = new Set([pubKey]);
     dmsFromME.Kinds = new Set([EventKind.DirectMessage]);
     dms.AddSubscription(dmsFromME);
@@ -102,28 +103,28 @@ export default function useLoginFeed() {
   const mutedFeed = useSubscription(subMuted, { leaveOpen: true, cache: true });
 
   useEffect(() => {
-    let contactList = metadataFeed.store.notes.filter(
+    const contactList = metadataFeed.store.notes.filter(
       (a) => a.kind === EventKind.ContactList
     );
-    let metadata = metadataFeed.store.notes.filter(
+    const metadata = metadataFeed.store.notes.filter(
       (a) => a.kind === EventKind.SetMetadata
     );
-    let profiles = metadata
+    const profiles = metadata
       .map((a) => mapEventToProfile(a))
       .filter((a) => a !== undefined)
-      .map((a) => a!);
+      .map((a) => unwrap(a));
 
-    for (let cl of contactList) {
+    for (const cl of contactList) {
       if (cl.content !== "" && cl.content !== "{}") {
-        let relays = JSON.parse(cl.content);
+        const relays = JSON.parse(cl.content);
         dispatch(setRelays({ relays, createdAt: cl.created_at }));
       }
-      let pTags = cl.tags.filter((a) => a[0] === "p").map((a) => a[1]);
+      const pTags = cl.tags.filter((a) => a[0] === "p").map((a) => a[1]);
       dispatch(setFollows({ keys: pTags, createdAt: cl.created_at }));
     }
 
     (async () => {
-      let maxProfile = profiles.reduce(
+      const maxProfile = profiles.reduce(
         (acc, v) => {
           if (v.created > acc.created) {
             acc.profile = v;
@@ -134,7 +135,7 @@ export default function useLoginFeed() {
         { created: 0, profile: null as MetadataCache | null }
       );
       if (maxProfile.profile) {
-        let existing = await db.find(maxProfile.profile.pubkey);
+        const existing = await db.find(maxProfile.profile.pubkey);
         if ((existing?.created ?? 0) < maxProfile.created) {
           await db.put(maxProfile.profile);
         }
@@ -153,7 +154,7 @@ export default function useLoginFeed() {
       dispatch(setLatestNotifications(nx.created_at));
       makeNotification(db, nx).then((notification) => {
         if (notification) {
-          // @ts-ignore
+          // @ts-expect-error This is typed wrong, but I don't have the time to fix it right now
           dispatch(sendNotification(notification));
         }
       });
@@ -176,8 +177,8 @@ export default function useLoginFeed() {
           try {
             const blocked = JSON.parse(plaintext);
             const keys = blocked
-              .filter((p: any) => p && p.length === 2 && p[0] === "p")
-              .map((p: any) => p[1]);
+              .filter((p: string) => p && p.length === 2 && p[0] === "p")
+              .map((p: string) => p[1]);
             dispatch(
               setBlocked({
                 keys,
@@ -193,7 +194,7 @@ export default function useLoginFeed() {
   }, [dispatch, mutedFeed.store]);
 
   useEffect(() => {
-    let dms = dmsFeed.store.notes.filter(
+    const dms = dmsFeed.store.notes.filter(
       (a) => a.kind === EventKind.DirectMessage
     );
     dispatch(addDirectMessage(dms));
@@ -209,7 +210,7 @@ async function decryptBlocked(
   if (pubKey && privKey) {
     return await ev.DecryptData(raw.content, privKey, pubKey);
   } else {
-    return await barierNip07(() =>
+    return await barrierNip07(() =>
       window.nostr.nip04.decrypt(pubKey, raw.content)
     );
   }

@@ -12,6 +12,7 @@ import { setLastReadDm } from "Pages/MessagesPage";
 import { RootState } from "State/Store";
 import { HexKey, TaggedRawEvent } from "Nostr";
 import { incDmInteraction } from "State/Login";
+import { unwrap } from "Util";
 
 import messages from "./messages";
 
@@ -32,11 +33,11 @@ export default function DM(props: DMProps) {
   const isMe = props.data.pubkey === pubKey;
   const otherPubkey = isMe
     ? pubKey
-    : props.data.tags.find((a) => a[0] === "p")![1];
+    : unwrap(props.data.tags.find((a) => a[0] === "p")?.[1]);
 
   async function decrypt() {
-    let e = new Event(props.data);
-    let decrypted = await publisher.decryptDm(e);
+    const e = new Event(props.data);
+    const decrypted = await publisher.decryptDm(e);
     setContent(decrypted || "<ERROR>");
     if (!isMe) {
       setLastReadDm(e.PubKey);

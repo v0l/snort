@@ -5,7 +5,7 @@ import { System } from "Nostr/System";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { removeRelay } from "State/Login";
-import { parseId } from "Util";
+import { parseId, unwrap } from "Util";
 
 import messages from "./messages";
 
@@ -100,7 +100,7 @@ const RelayInfo = () => {
           <div
             className="btn error"
             onClick={() => {
-              dispatch(removeRelay(conn!.Address));
+              dispatch(removeRelay(unwrap(conn).Address));
               navigate("/settings/relays");
             }}
           >

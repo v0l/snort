@@ -56,7 +56,7 @@ export default class Tag {
     switch (this.Key) {
       case "e": {
         let ret = ["e", this.Event, this.Relay, this.Marker];
-        let trimEnd = ret.reverse().findIndex((a) => a !== undefined);
+        const trimEnd = ret.reverse().findIndex((a) => a !== undefined);
         ret = ret.reverse().slice(0, ret.length - trimEnd);
         return <string[]>ret;
       }
@@ -64,10 +64,10 @@ export default class Tag {
         return this.PubKey ? ["p", this.PubKey] : null;
       }
       case "t": {
-        return ["t", this.Hashtag!];
+        return ["t", this.Hashtag ?? ""];
       }
       case "d": {
-        return ["d", this.DTag!];
+        return ["d", this.DTag ?? ""];
       }
       default: {
         return this.Original;

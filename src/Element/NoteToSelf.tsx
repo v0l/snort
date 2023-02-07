@@ -16,7 +16,7 @@ export interface NoteToSelfProps {
   link?: string;
 }
 
-function NoteLabel({ pubkey, link }: NoteToSelfProps) {
+function NoteLabel({ pubkey }: NoteToSelfProps) {
   const user = useUserProfile(pubkey);
   return (
     <div>

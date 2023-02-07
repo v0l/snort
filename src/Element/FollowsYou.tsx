@@ -25,7 +25,7 @@ export default function FollowsYou({ pubkey }: FollowsYouProps) {
     return getFollowers(feed.store, pubkey);
   }, [feed, pubkey]);
 
-  const followsMe = pubkeys.includes(loginPubKey!) ?? false;
+  const followsMe = loginPubKey ? pubkeys.includes(loginPubKey) : false;
 
   return followsMe ? (
     <span className="follows-you">{formatMessage(messages.FollowsYou)}</span>

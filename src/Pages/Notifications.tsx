@@ -21,8 +21,8 @@ export default function NotificationsPage() {
         <Timeline
           subject={{
             type: "ptag",
-            items: [pubkey!],
-            discriminator: pubkey!.slice(0, 12),
+            items: [pubkey],
+            discriminator: pubkey.slice(0, 12),
           }}
           postsOnly={false}
           method={"TIME_RANGE"}

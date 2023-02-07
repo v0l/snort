@@ -51,7 +51,7 @@ export default function ProfilePage() {
   const { formatMessage } = useIntl();
   const params = useParams();
   const navigate = useNavigate();
-  const id = useMemo(() => parseId(params.id!), [params]);
+  const id = useMemo(() => parseId(params.id ?? ""), [params]);
   const user = useUserProfile(id);
   const loggedOut = useSelector<RootState, boolean | undefined>(
     (s) => s.login.loggedOut

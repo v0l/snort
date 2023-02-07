@@ -33,7 +33,7 @@ export default function MessagesPage() {
   const chats = useMemo(() => {
     return extractChats(
       dms.filter((a) => !isMuted(a.pubkey)),
-      myPubKey!
+      myPubKey ?? ""
     );
   }, [dms, myPubKey, dmInteraction]);
 
@@ -65,7 +65,7 @@ export default function MessagesPage() {
   }
 
   function markAllRead() {
-    for (let c of chats) {
+    for (const c of chats) {
       setLastReadDm(c.pubkey);
     }
     dispatch(incDmInteraction());
@@ -95,23 +95,23 @@ export default function MessagesPage() {
 }
 
 export function lastReadDm(pk: HexKey) {
-  let k = `dm:seen:${pk}`;
+  const k = `dm:seen:${pk}`;
   return parseInt(window.localStorage.getItem(k) ?? "0");
 }
 
 export function setLastReadDm(pk: HexKey) {
   const now = Math.floor(new Date().getTime() / 1000);
-  let current = lastReadDm(pk);
+  const current = lastReadDm(pk);
   if (current >= now) {
     return;
   }
 
-  let k = `dm:seen:${pk}`;
+  const k = `dm:seen:${pk}`;
   window.localStorage.setItem(k, now.toString());
 }
 
 export function dmTo(e: RawEvent) {
-  let firstP = e.tags.find((b) => b[0] === "p");
+  const firstP = e.tags.find((b) => b[0] === "p");
   return firstP ? firstP[1] : "";
 }
 
@@ -132,7 +132,7 @@ export function totalUnread(dms: RawEvent[], myPubKey: HexKey) {
 
 function unreadDms(dms: RawEvent[], myPubKey: HexKey, pk: HexKey) {
   if (pk === myPubKey) return 0;
-  let lastRead = lastReadDm(pk);
+  const lastRead = lastReadDm(pk);
   return dmsInChat(dms, pk).filter(
     (a) => a.created_at >= lastRead && a.pubkey !== myPubKey
   ).length;

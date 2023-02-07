@@ -2,7 +2,7 @@ import { useEffect, useMemo, useReducer, useState } from "react";
 import { System } from "Nostr/System";
 import { TaggedRawEvent } from "Nostr";
 import { Subscriptions } from "Nostr/Subscriptions";
-import { debounce } from "Util";
+import { debounce, unwrap } from "Util";
 import { db } from "Db";
 
 export type NoteStore = {
@@ -17,7 +17,7 @@ export type UseSubscriptionOptions = {
 
 interface ReducerArg {
   type: "END" | "EVENT" | "CLEAR";
-  ev?: TaggedRawEvent | Array<TaggedRawEvent>;
+  ev?: TaggedRawEvent | TaggedRawEvent[];
   end?: boolean;
 }
 
@@ -25,7 +25,7 @@ function notesReducer(state: NoteStore, arg: ReducerArg) {
   if (arg.type === "END") {
     return {
       notes: state.notes,
-      end: arg.end!,
+      end: arg.end ?? false,
     } as NoteStore;
   }
 
@@ -36,11 +36,11 @@ function notesReducer(state: NoteStore, arg: ReducerArg) {
     } as NoteStore;
   }
 
-  let evs = arg.ev!;
-  if (!Array.isArray(evs)) {
-    evs = [evs];
+  let evs = arg.ev;
+  if (!(evs instanceof Array)) {
+    evs = evs === undefined ? [] : [evs];
   }
-  let existingIds = new Set(state.notes.map((a) => a.id));
+  const existingIds = new Set(state.notes.map((a) => a.id));
   evs = evs.filter((a) => !existingIds.has(a.id));
   if (evs.length === 0) {
     return state;
@@ -175,7 +175,7 @@ const PreloadNotes = async (id: string): Promise<TaggedRawEvent[]> => {
   const feed = await db.feeds.get(id);
   if (feed) {
     const events = await db.events.bulkGet(feed.ids);
-    return events.filter((a) => a !== undefined).map((a) => a!);
+    return events.filter((a) => a !== undefined).map((a) => unwrap(a));
   }
   return [];
 };

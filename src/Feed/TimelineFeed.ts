@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { u256 } from "Nostr";
 import EventKind from "Nostr/EventKind";
 import { Subscriptions } from "Nostr/Subscriptions";
-import { unixNow } from "Util";
+import { unixNow, unwrap } from "Util";
 import useSubscription from "Feed/Subscription";
 import { useSelector } from "react-redux";
 import { RootState } from "State/Store";
@@ -38,7 +38,7 @@ export default function useTimelineFeed(
       return null;
     }
 
-    let sub = new Subscriptions();
+    const sub = new Subscriptions();
     sub.Id = `timeline:${subject.type}:${subject.discriminator}`;
     sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
     switch (subject.type) {
@@ -64,7 +64,7 @@ export default function useTimelineFeed(
   }, [subject.type, subject.items, subject.discriminator]);
 
   const sub = useMemo(() => {
-    let sub = createSub();
+    const sub = createSub();
     if (sub) {
       if (options.method === "LIMIT_UNTIL") {
         sub.Until = until;
@@ -80,7 +80,7 @@ export default function useTimelineFeed(
       if (pref.autoShowLatest) {
         // copy properties of main sub but with limit 0
         // this will put latest directly into main feed
-        let latestSub = new Subscriptions();
+        const latestSub = new Subscriptions();
         latestSub.Authors = sub.Authors;
         latestSub.HashTags = sub.HashTags;
         latestSub.PTags = sub.PTags;
@@ -97,7 +97,7 @@ export default function useTimelineFeed(
   const main = useSubscription(sub, { leaveOpen: true, cache: true });
 
   const subRealtime = useMemo(() => {
-    let subLatest = createSub();
+    const subLatest = createSub();
     if (subLatest && !pref.autoShowLatest) {
       subLatest.Id = `${subLatest.Id}:latest`;
       subLatest.Limit = 1;
@@ -131,7 +131,7 @@ export default function useTimelineFeed(
 
   const subParents = useMemo(() => {
     if (trackingParentEvents.length > 0) {
-      let parents = new Subscriptions();
+      const parents = new Subscriptions();
       parents.Id = `timeline-parent:${subject.type}`;
       parents.Ids = new Set(trackingParentEvents);
       return parents;
@@ -144,21 +144,21 @@ export default function useTimelineFeed(
   useEffect(() => {
     if (main.store.notes.length > 0) {
       setTrackingEvent((s) => {
-        let ids = main.store.notes.map((a) => a.id);
+        const ids = main.store.notes.map((a) => a.id);
         if (ids.some((a) => !s.includes(a))) {
           return Array.from(new Set([...s, ...ids]));
         }
         return s;
       });
-      let reposts = main.store.notes
+      const reposts = main.store.notes
         .filter((a) => a.kind === EventKind.Repost && a.content === "")
         .map((a) => a.tags.find((b) => b[0] === "e"))
         .filter((a) => a)
-        .map((a) => a![1]);
+        .map((a) => unwrap(a)[1]);
       if (reposts.length > 0) {
         setTrackingParentEvents((s) => {
           if (reposts.some((a) => !s.includes(a))) {
-            let temp = new Set([...s, ...reposts]);
+            const temp = new Set([...s, ...reposts]);
             return Array.from(temp);
           }
           return s;
@@ -175,7 +175,7 @@ export default function useTimelineFeed(
     loadMore: () => {
       console.debug("Timeline load more!");
       if (options.method === "LIMIT_UNTIL") {
-        let oldest = main.store.notes.reduce(
+        const oldest = main.store.notes.reduce(
           (acc, v) => (acc = v.created_at < acc ? v.created_at : acc),
           unixNow()
         );

@@ -135,7 +135,9 @@ export default function HyperText({
           </a>
         );
       }
-    } catch (error) {}
+    } catch (error) {
+      // Ignore the error.
+    }
     return (
       <a
         href={a}
