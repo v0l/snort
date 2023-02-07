@@ -1,7 +1,7 @@
 import "./Reactions.css";
 
 import { useState, useMemo, useEffect } from "react";
-import { TaggedRawEvent } from "Nostr";
+import { HexKey, TaggedRawEvent } from "Nostr";
 
 import { formatShort } from "Number";
 import Dislike from "Icons/Dislike";
@@ -23,6 +23,22 @@ interface ReactionsProps {
   zaps: ParsedZap[];
 }
 
+function dedupeByPubkey(events: TaggedRawEvent[]) {
+  const deduped = events.reduce(
+    ({ list, seen }: { list: TaggedRawEvent[]; seen: HexKey[] }, ev) => {
+      if (seen.includes(ev.pubkey)) {
+        return { list, seen };
+      }
+      return {
+        list: [...list, ev],
+        seen: [...seen, ev.pubkey],
+      };
+    },
+    { list: [], seen: [] }
+  );
+  return deduped.list as TaggedRawEvent[];
+}
+
 const Reactions = ({
   show,
   setShow,
@@ -36,35 +52,14 @@ const Reactions = ({
     positive.sort((a, b) => b.created_at - a.created_at);
     return positive;
   }, [reactions]);
-  const dedupedLikes = useMemo(() => {
-    const deduped = likes.reduce(({ list, seen }: any, ev) => {
-      if (seen.includes(ev.pubkey)) {
-        return { list, seen }
-      }
-      return {
-        list: [...list, ev],
-        seen: [...seen, ev.pubkey],
-      }
-    }, {list: [], seen: [] })
-    return deduped.list as TaggedRawEvent[]
-  }, [likes])
+  const dedupedLikes = useMemo(() => dedupeByPubkey(likes), [likes]);
   const dislikes = useMemo(() => {
     const positive = reactions.filter((r) => r.content === "-");
     positive.sort((a, b) => b.created_at - a.created_at);
     return positive;
   }, [reactions]);
-  const dedupedDislikes= useMemo(() => {
-    const deduped = dislikes.reduce(({ list, seen }: any, ev) => {
-      if (seen.includes(ev.pubkey)) {
-        return { list, seen }
-      }
-      return {
-        list: [...list, ev],
-        seen: [...seen, ev.pubkey],
-      }
-    }, {list: [], seen: [] })
-    return deduped.list as TaggedRawEvent[]
-  }, [dislikes])
+  const dedupedDislikes = useMemo(() => dedupeByPubkey(dislikes), [dislikes]);
+  const dedupedReposts = useMemo(() => dedupeByPubkey(reposts), [reposts]);
   const total = reactions.length + zaps.length + reposts.length;
   const sortedZaps = useMemo(() => {
     const sorted = [...zaps];
@@ -145,7 +140,7 @@ const Reactions = ({
               );
             })}
           {tab.value === 2 &&
-            reposts.map((ev) => {
+            dedupedReposts.map((ev) => {
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">

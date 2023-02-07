@@ -235,15 +235,16 @@ export default function LNURLTip(props: LNURLTipProps) {
         </div>
         {payService && custom()}
         <div className="flex">
-          {(payService?.commentAllowed ?? 0) > 0 || payService?.nostrPubkey && (
-            <input
-              type="text"
-              placeholder="Comment"
-              className="f-grow"
-              maxLength={payService?.commentAllowed || 120}
-              onChange={(e) => setComment(e.target.value)}
-            />
-          )}
+          {(payService?.commentAllowed ?? 0) > 0 ||
+            (payService?.nostrPubkey && (
+              <input
+                type="text"
+                placeholder="Comment"
+                className="f-grow"
+                maxLength={payService?.commentAllowed || 120}
+                onChange={(e) => setComment(e.target.value)}
+              />
+            ))}
         </div>
         {(amount ?? 0) > 0 && (
           <button
