@@ -13,7 +13,7 @@ import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
 import { getReactions, hexToBech32, normalizeReaction, Reaction } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
-import LNURLTip from "Element/LNURLTip";
+import SendSats from "Element/SendSats";
 import { parseZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Feed/ProfileFeed";
 import { default as NEvent } from "Nostr/Event";
@@ -268,7 +268,14 @@ export default function NoteFooter(props: NoteFooterProps) {
         show={reply}
         setShow={setReply}
       />
-      <LNURLTip svc={author?.lud16 || author?.lud06} onClose={() => setTip(false)} show={tip} author={author?.pubkey} note={ev.Id} />
+      <SendSats
+        svc={author?.lud16 || author?.lud06}
+        onClose={() => setTip(false)}
+        show={tip}
+        author={author?.pubkey}
+        target={author?.display_name || author?.name}
+        note={ev.Id}
+      />
     </div>
     <div className="zaps-container">
      <ZapsSummary zaps={zaps} />

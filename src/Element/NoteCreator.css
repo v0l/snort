@@ -12,6 +12,7 @@
 }
 
 .note-creator textarea {
+    border: none;
     outline: none;
     resize: none;
     background-color: var(--note-bg);

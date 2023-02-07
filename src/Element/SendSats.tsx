@@ -1,12 +1,19 @@
-import "./LNURLTip.css";
+import "./SendSats.css";
 import { useEffect, useMemo, useState } from "react";
+
+import { formatShort } from "Number";
 import { bech32ToText } from "Util";
 import { HexKey } from "Nostr";
+import Check from "Icons/Check";
+import Zap from "Icons/Zap";
+import Close from "Icons/Close";
 import useEventPublisher from "Feed/EventPublisher";
+import ProfileImage from "Element/ProfileImage";
 import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import useWebln from "Hooks/useWebln";
+import useHorizontalScroll from "Hooks/useHorizontalScroll";
 
 interface LNURLService {
     nostrPubkey?: HexKey
@@ -34,6 +41,7 @@ export interface LNURLTipProps {
     invoice?: string, // shortcut to invoice qr tab
     title?: string,
     notice?: string
+    target?: string
     note?: HexKey
     author?: HexKey
 }
@@ -42,10 +50,19 @@ export default function LNURLTip(props: LNURLTipProps) {
     const onClose = props.onClose || (() => { });
     const service = props.svc;
     const show = props.show || false;
-    const { note, author } = props
-    const amounts = [50, 100, 500, 1_000, 5_000, 10_000, 50_000];
+    const { note, author, target } = props
+    const amounts = [500, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000];
+    const emojis: Record<number, string> = {
+      1_000: "👍",
+      5_000: "💜",
+      10_000: "😍",
+      20_000: "🤩",
+      50_000: "🔥",
+      100_000: "🚀",
+      1_000_000: "🤯",
+    }
     const [payService, setPayService] = useState<LNURLService>();
-    const [amount, setAmount] = useState<number>();
+    const [amount, setAmount] = useState<number>(500);
     const [customAmount, setCustomAmount] = useState<number>();
     const [invoice, setInvoice] = useState<LNURLInvoice>();
     const [comment, setComment] = useState<string>();
@@ -53,6 +70,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     const [success, setSuccess] = useState<LNURLSuccessAction>();
     const webln = useWebln(show);
     const publisher = useEventPublisher();
+    const horizontalScroll = useHorizontalScroll();
 
     useEffect(() => {
         if (show && !props.invoice) {
@@ -63,7 +81,7 @@ export default function LNURLTip(props: LNURLTipProps) {
             setPayService(undefined);
             setError(undefined);
             setInvoice(props.invoice ? { pr: props.invoice } : undefined);
-            setAmount(undefined);
+            setAmount(500);
             setComment(undefined);
             setSuccess(undefined);
         }
@@ -155,12 +173,27 @@ export default function LNURLTip(props: LNURLTipProps) {
     };
 
     function custom() {
-        let min = (payService?.minSendable ?? 0) / 1000;
+        let min = (payService?.minSendable ?? 1000) / 1000;
         let max = (payService?.maxSendable ?? 21_000_000_000) / 1000;
         return (
-            <div className="flex mb10">
-                <input type="number" min={min} max={max} className="f-grow mr10" value={customAmount} onChange={(e) => setCustomAmount(parseInt(e.target.value))} />
-                <div className="btn" onClick={() => selectAmount(customAmount!)}>Confirm</div>
+            <div className="custom-amount flex">
+                <input
+                  type="number"
+                  min={min}
+                  max={max}
+                  className="f-grow mr10"
+                  placeholder="Custom"
+                  value={customAmount}
+                  onChange={(e) => setCustomAmount(parseInt(e.target.value))}
+                />
+                <button
+                  className="secondary"
+                  type="button"
+                  disabled={!Boolean(customAmount)}
+                  onClick={() => selectAmount(customAmount!)}
+                >
+                  Confirm
+                </button>
             </div>
         );
     }
@@ -182,22 +215,36 @@ export default function LNURLTip(props: LNURLTipProps) {
         if (invoice) return null;
         return (
             <>
-                <div className="f-ellipsis mb10">{metadata?.description ?? service}</div>
+                <h3>Zap amount in sats</h3>
+                <div className="amounts" ref={horizontalScroll}>
+                  {serviceAmounts.map(a => 
+                    <span className={`sat-amount ${amount === a ? "active" : ""}`} key={a} onClick={() => selectAmount(a)}>
+                      {emojis[a] && <>{emojis[a]}&nbsp;</> }
+                      {formatShort(a)}
+                    </span>
+                  )}
+                </div>
+                {payService && custom()}
                 <div className="flex">
-                    {(payService?.commentAllowed ?? 0) > 0 ?
-                        <input type="text" placeholder="Comment" className="mb10 f-grow" maxLength={payService?.commentAllowed} onChange={(e) => setComment(e.target.value)} /> : null}
+                    {(payService?.commentAllowed ?? 0) > 0 &&
+                        <input
+                          type="text" 
+                          placeholder="Comment"
+                          className="f-grow"
+                          maxLength={payService?.commentAllowed}
+                          onChange={(e) => setComment(e.target.value)}
+                        />
+                    }
                 </div>
-                <div className="mb10">
-                    {serviceAmounts.map(a => <span className={`sat-amount ${amount === a ? "active" : ""}`} key={a} onClick={() => selectAmount(a)}>
-                        {a.toLocaleString()}
-                    </span>)}
-                    {payService ?
-                        <span className={`sat-amount ${amount === -1 ? "active" : ""}`} onClick={() => selectAmount(-1)}>
-                            Custom
-                        </span> : null}
-                </div>
-                {amount === -1 ? custom() : null}
-                {(amount ?? 0) > 0 && <button type="button" className="mb10" onClick={() => loadInvoice()}>Get Invoice</button>}
+                {(amount ?? 0) > 0 && (
+                  <button type="button" className="zap-action" onClick={() => loadInvoice()}>
+                    <div className="zap-action-container">
+                     <Zap /> Zap
+                      {target && ` ${target} `}
+                      {formatShort(amount)} sats
+                    </div>
+                  </button>
+                )}
             </>
         )
     }
@@ -208,22 +255,20 @@ export default function LNURLTip(props: LNURLTipProps) {
         return (
             <>
                 <div className="invoice">
-                    {props.notice && <b className="error">{props.notice}</b>}
-                    <QrCode data={pr} link={`lightning:${pr}`} />
-                    <div className="actions">
-                        {pr && (
-                            <>
-                                <div className="copy-action">
-                                    <Copy text={pr} maxSize={26} />
-                                </div>
-                                <div className="pay-actions">
-                                    <button type="button" onClick={() => window.open(`lightning:${pr}`)}>
-                                        Open Wallet
-                                    </button>
-                                </div>
-                            </>
-                        )}
-                    </div>
+                  {props.notice && <b className="error">{props.notice}</b>}
+                  <QrCode data={pr} link={`lightning:${pr}`} />
+                  <div className="actions">
+                      {pr && (
+                          <>
+                            <div className="copy-action">
+                                <Copy text={pr} maxSize={26} />
+                            </div>
+                            <button className="wallet-action" type="button" onClick={() => window.open(`lightning:${pr}`)}>
+                                Open Wallet
+                            </button>
+                        </>
+                      )}
+                  </div>
                 </div>
             </>
         )
@@ -232,24 +277,46 @@ export default function LNURLTip(props: LNURLTipProps) {
     function successAction() {
         if (!success) return null;
         return (
-            <>
-                <p>{success?.description ?? "Paid!"}</p>
-                {success.url ? <a href={success.url} rel="noreferrer" target="_blank">{success.url}</a> : null}
-            </>
+            <div className="success-action">
+                <p className="paid">
+                  <Check className="success mr10" />
+                  {success?.description ?? "Paid!"}
+                </p>
+                {success.url && 
+                  <p>
+                    <a 
+                      href={success.url}
+                      rel="noreferrer"
+                      target="_blank"
+                      >
+                      {success.url}
+                    </a>
+                  </p>
+                }
+            </div>
         )
     }
 
-    const defaultTitle = payService?.nostrPubkey ? "⚡️ Send Zap!" : "⚡️ Send sats";
+    const defaultTitle = payService?.nostrPubkey ? "Send zap" : "Send sats";
+    const title = target ? `${defaultTitle} to ${target}` : defaultTitle
     if (!show) return null;
     return (
-        <Modal onClose={onClose}>
-            <div className="lnurl-tip" onClick={(e) => e.stopPropagation()}>
-                <h2>{props.title || defaultTitle}</h2>
-                {invoiceForm()}
-                {error ? <p className="error">{error}</p> : null}
-                {payInvoice()}
-                {successAction()}
-            </div>
+        <Modal className="lnurl-modal" onClose={onClose}>
+          <div className="lnurl-tip" onClick={(e) => e.stopPropagation()}>
+              <div className="close" onClick={onClose}>
+                <Close />
+              </div>
+              <div className="lnurl-header">
+                {author && <ProfileImage pubkey={author} showUsername={false} />}
+                <h2>
+                  {props.title || title}
+                </h2>
+              </div>
+              {invoiceForm()}
+              {error && <p className="error">{error}</p>}
+              {payInvoice()}
+              {successAction()}
+          </div>
         </Modal>
     )
 }

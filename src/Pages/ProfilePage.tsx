@@ -19,7 +19,7 @@ import Avatar from "Element/Avatar";
 import LogoutButton from "Element/LogoutButton";
 import Timeline from "Element/Timeline";
 import Text from 'Element/Text'
-import LNURLTip from "Element/LNURLTip";
+import SendSats from "Element/SendSats";
 import Nip05 from "Element/Nip05";
 import Copy from "Element/Copy";
 import ProfilePreview from "Element/ProfilePreview";
@@ -35,6 +35,7 @@ import FollowsYou from "Element/FollowsYou"
 import QrCode from "Element/QrCode";
 import Modal from "Element/Modal";
 import { ProxyImg } from "Element/ProxyImg"
+import useHorizontalScroll from "Hooks/useHorizontalScroll";
 
 const ProfileTab = {
   Notes: { text: "Notes", value: 0 },
@@ -71,6 +72,7 @@ export default function ProfilePage() {
     return profileZaps
   }, [zapFeed.store, id])
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
+  const horizontalScroll = useHorizontalScroll()
 
   useEffect(() => {
     setTab(ProfileTab.Notes);
@@ -111,7 +113,13 @@ export default function ProfilePage() {
           </div>
         )}
 
-        <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} author={id} />
+        <SendSats
+          svc={lnurl}
+          show={showLnQr}
+          onClose={() => setShowLnQr(false)}
+          author={id}
+          target={user?.display_name || user?.name}
+        />
       </div>
     )
   }
@@ -242,7 +250,7 @@ export default function ProfilePage() {
           {userDetails()}
         </div>
       </div>
-      <div className="tabs main-content">
+      <div className="tabs main-content" ref={horizontalScroll}>
         {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Zaps, ProfileTab.Muted].map(renderTab)}
         {isMe && renderTab(ProfileTab.Blocked)}
       </div>

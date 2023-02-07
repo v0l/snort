@@ -11,7 +11,7 @@ import {
     CheckRegisterResponse
 } from "Nip05/ServiceProvider";
 import AsyncButton from "Element/AsyncButton";
-import LNURLTip from "Element/LNURLTip";
+import SendSats from "Element/SendSats";
 import Copy from "Element/Copy";
 import { useUserProfile }from "Feed/ProfileFeed";
 import useEventPublisher from "Feed/EventPublisher";
@@ -176,7 +176,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             {availabilityResponse?.available === false && !registerStatus && <div className="flex">
                 <b className="error">Not available: {mapError(availabilityResponse.why!, availabilityResponse.reasonTag || null)}</b>
             </div>}
-            <LNURLTip
+            <SendSats
                 invoice={registerResponse?.invoice}
                 show={showInvoice}
                 onClose={() => setShowInvoice(false)}
