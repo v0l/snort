@@ -19,7 +19,7 @@ import Avatar from "Element/Avatar";
 import LogoutButton from "Element/LogoutButton";
 import Timeline from "Element/Timeline";
 import Text from 'Element/Text'
-import LNURLTip from "Element/LNURLTip";
+import SendSats from "Element/SendSats";
 import Nip05 from "Element/Nip05";
 import Copy from "Element/Copy";
 import ProfilePreview from "Element/ProfilePreview";
@@ -111,7 +111,7 @@ export default function ProfilePage() {
           </div>
         )}
 
-        <LNURLTip
+        <SendSats
           svc={lnurl}
           show={showLnQr}
           onClose={() => setShowLnQr(false)}

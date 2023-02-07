@@ -4,7 +4,7 @@ import { useState } from "react";
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { useMemo } from "react";
 import NoteTime from "Element/NoteTime";
-import LNURLTip from "Element/LNURLTip";
+import SendSats from "Element/SendSats";
 import ZapCircle from "Icons/ZapCircle";
 import useWebln from "Hooks/useWebln";
 
@@ -49,7 +49,7 @@ export default function Invoice(props: InvoiceProps) {
           <>
               <h4>Lightning Invoice</h4>
               <ZapCircle className="zap-circle" />
-              <LNURLTip title="Pay Invoice" invoice={invoice} show={showInvoice} onClose={() => setShowInvoice(false)} />
+              <SendSats title="Pay Invoice" invoice={invoice} show={showInvoice} onClose={() => setShowInvoice(false)} />
           </>
       )
     }

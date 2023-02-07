@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useUserProfile } from "Feed/ProfileFeed";
 import { HexKey } from "Nostr";
-import LNURLTip from "Element/LNURLTip";
+import SendSats from "Element/SendSats";
 
 
 const ZapButton = ({ pubkey, svc }: { pubkey?: HexKey, svc?: string }) => {
@@ -19,7 +19,7 @@ const ZapButton = ({ pubkey, svc }: { pubkey?: HexKey, svc?: string }) => {
             <div className="zap-button" onClick={(e) => setZap(true)}>
                 <FontAwesomeIcon icon={faBolt} />
             </div>
-            <LNURLTip target={profile?.display_name || profile?.name} svc={service} show={zap} onClose={() => setZap(false)} author={pubkey} />
+            <SendSats target={profile?.display_name || profile?.name} svc={service} show={zap} onClose={() => setZap(false)} author={pubkey} />
         </>
     )
 }

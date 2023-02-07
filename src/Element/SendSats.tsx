@@ -1,4 +1,4 @@
-import "./LNURLTip.css";
+import "./SendSats.css";
 import { useEffect, useMemo, useState } from "react";
 
 import { formatShort } from "Number";
@@ -50,12 +50,14 @@ export default function LNURLTip(props: LNURLTipProps) {
     const service = props.svc;
     const show = props.show || false;
     const { note, author, target } = props
-    const amounts = [500, 1_000, 5_000, 10_000, 20_000];
+    const amounts = [500, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000];
     const emojis: Record<number, string> = {
       1_000: "👍",
       5_000: "💜",
       10_000: "😍",
-      20_000: "🤩"
+      20_000: "🤩",
+      50_000: "🔥",
+      100_000: "🚀",
     }
     const [payService, setPayService] = useState<LNURLService>();
     const [amount, setAmount] = useState<number>(500);
@@ -168,7 +170,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     };
 
     function custom() {
-        let min = (payService?.minSendable ?? 0) / 1000;
+        let min = (payService?.minSendable ?? 1000) / 1000;
         let max = (payService?.maxSendable ?? 21_000_000_000) / 1000;
         return (
             <div className="custom-amount flex">
@@ -284,7 +286,7 @@ export default function LNURLTip(props: LNURLTipProps) {
                       rel="noreferrer"
                       target="_blank"
                       >
-                      yo{success.url}
+                      {success.url}
                     </a>
                   </p>
                 }
@@ -301,7 +303,7 @@ export default function LNURLTip(props: LNURLTipProps) {
               <div className="close" onClick={onClose}>
                 <Close />
               </div>
-              <div className="header">
+              <div className="lnurl-header">
                 {author && <ProfileImage pubkey={author} showUsername={false} />}
                 <h2>
                   {props.title || title}

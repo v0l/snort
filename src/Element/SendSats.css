@@ -1,11 +1,11 @@
-.lnurl-modal .lnurl-tip .pfp .avatar {
-  width: 48px;
-  height: 48px;
-}
-
 .lnurl-modal .modal-body {
   padding: 0;
   max-width: 470px;
+}
+
+.lnurl-modal .lnurl-tip .pfp .avatar {
+  width: 48px;
+  height: 48px;
 }
 
 .lnurl-tip {
@@ -13,6 +13,12 @@
   background-color: #1B1B1B;
   border-radius: 16px;
   position: relative;
+}
+
+@media (max-width: 720px) {
+  .lnurl-tip {
+    padding: 12px 16px;
+  }
 }
 
 .light .lnurl-tip {
@@ -40,14 +46,14 @@
   color: var(--font-tertiary-color);
 }
 
-.lnurl-tip .header {
+.lnurl-tip .lnurl-header {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-bottom: 32px;
 }
 
-.lnurl-tip .header h2 {
+.lnurl-tip .lnurl-header h2 {
   margin: 0;
   flex-grow: 1;
   font-weight: 600;

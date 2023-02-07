@@ -62,7 +62,7 @@
     white-space: pre-wrap;
 }
 
-.profile .name h2 {
+.details-wrapper > .name > h2 {
   margin: 12px 0 0 0;
   font-weight: 600;
   font-size: 19px;
@@ -75,11 +75,11 @@
   margin: 0 0 12px 0;
 }
 
-.profile .avatar-wrapper {
+.profile-wrapper > .avatar-wrapper {
   z-index: 1;
 }
 
-.profile .avatar-wrapper .avatar {
+.profile-wrapper > .avatar-wrapper .avatar {
   width: 120px;
   height: 120px;
   background-image: var(--img-url);
