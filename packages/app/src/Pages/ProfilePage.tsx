@@ -18,6 +18,7 @@ import usePinnedFeed from "Feed/PinnedFeed";
 import useBookmarkFeed from "Feed/BookmarkFeed";
 import useFollowersFeed from "Feed/FollowersFeed";
 import useFollowsFeed from "Feed/FollowsFeed";
+import useProfileBadges from "Feed/BadgesFeed";
 import { useUserProfile } from "Hooks/useUserProfile";
 import useModeration from "Hooks/useModeration";
 import useZapsFeed from "Feed/ZapsFeed";
@@ -39,6 +40,7 @@ import { RootState } from "State/Store";
 import FollowsYou from "Element/FollowsYou";
 import QrCode from "Element/QrCode";
 import Modal from "Element/Modal";
+import BadgeList from "Element/BadgeList";
 import { ProxyImg } from "Element/ProxyImg";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
 import messages from "./messages";
@@ -77,6 +79,7 @@ export default function ProfilePage() {
   const website_url =
     user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
   // feeds
+  const badges = useProfileBadges(id);
   const { blocked } = useModeration();
   const { notes: pinned, related: pinRelated } = usePinnedFeed(id);
   const { notes: bookmarks, related: bookmarkRelated } = useBookmarkFeed(id);
@@ -126,6 +129,7 @@ export default function ProfilePage() {
           <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
         </h2>
         {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+        <BadgeList badges={badges} />
         <Copy text={npub} />
         {links()}
       </div>
@@ -256,6 +260,7 @@ export default function ProfilePage() {
         {showProfileQr && (
           <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id ?? ""} />
+
             <QrCode
               data={`nostr:${hexToBech32(NostrPrefix.PublicKey, id)}`}
               link={undefined}

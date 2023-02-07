@@ -78,6 +78,7 @@ export enum Lists {
   Pinned = "pin",
   Bookmarked = "bookmark",
   Followed = "follow",
+  Badges = "profile_badges",
 }
 
 export interface FullRelaySettings {

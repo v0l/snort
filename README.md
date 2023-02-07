@@ -30,6 +30,7 @@ Snort supports the following NIP's:
 - [ ] NIP-42: Authentication of clients to relays
 - [x] NIP-50: Search
 - [x] NIP-51: Lists
+- [x] NIP-58: Badges
 - [x] NIP-65: Relay List Metadata
 
 ### Running

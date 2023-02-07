@@ -1,0 +1,29 @@
+.badge-list {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.badge-item {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.badge-item:not(:last-child) {
+  margin-right: 4px;
+}
+
+.badge-info {
+  margin-left: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.badge-info p {
+  margin: 0;
+}
+
+.badge-info h3 {
+  margin: 0;
+}
