@@ -126,9 +126,9 @@ export interface LoginStore {
     blocked: HexKey[],
 
     /**
-     * Notifications for this login session
+     * Latest notification
      */
-    notifications: TaggedRawEvent[],
+    latestNotification: number,
 
     /**
     * Timestamp of last read notification
@@ -170,7 +170,7 @@ export const InitState = {
     muted: [],
     blocked: [],
     latestMuted: 0,
-    notifications: [],
+    latestNotification: 0,
     readNotifications: new Date().getTime(),
     dms: [],
     dmInteraction: 0,
@@ -362,8 +362,11 @@ const LoginSlice = createSlice({
             window.localStorage.setItem(RelayListKey, JSON.stringify(relays));
         },
         markNotificationsRead: (state) => {
-            state.readNotifications = new Date().getTime();
+            state.readNotifications = Math.ceil(new Date().getTime() / 1000);
             window.localStorage.setItem(NotificationsReadItem, state.readNotifications.toString());
+        },
+        setLatestNotifications: (state, action: PayloadAction<number>) => {
+            state.latestNotification = action.payload;
         },
         setPreferences: (state, action: PayloadAction<UserPreferences>) => {
             state.preferences = action.payload;
@@ -386,6 +389,7 @@ export const {
     incDmInteraction,
     logout,
     markNotificationsRead,
+    setLatestNotifications,
     setPreferences,
 } = LoginSlice.actions;
 

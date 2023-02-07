@@ -6,7 +6,7 @@ import { TaggedRawEvent, HexKey, Lists } from "Nostr";
 import EventKind from "Nostr/EventKind";
 import Event from "Nostr/Event";
 import { Subscriptions } from "Nostr/Subscriptions";
-import { addDirectMessage, setFollows, setRelays, setMuted, setBlocked, sendNotification } from "State/Login";
+import { addDirectMessage, setFollows, setRelays, setMuted, setBlocked, sendNotification, setLatestNotifications } from "State/Login";
 import { RootState } from "State/Store";
 import { mapEventToProfile, MetadataCache } from "State/Users";
 import { useDb } from "State/Users/Db";
@@ -20,7 +20,7 @@ import useModeration from "Hooks/useModeration";
  */
 export default function useLoginFeed() {
   const dispatch = useDispatch();
-  const { publicKey: pubKey, privateKey: privKey, latestMuted } = useSelector((s: RootState) => s.login);
+  const { publicKey: pubKey, privateKey: privKey, latestMuted, readNotifications } = useSelector((s: RootState) => s.login);
   const { isMuted } = useModeration();
   const db = useDb();
 
@@ -116,8 +116,10 @@ export default function useLoginFeed() {
   }, [dispatch, metadataFeed.store, db]);
 
   useEffect(() => {
-    const replies = notificationFeed.store.notes.filter(a => a.kind === EventKind.TextNote && !isMuted(a.pubkey))
+    const replies = notificationFeed.store.notes.
+      filter(a => a.kind === EventKind.TextNote && !isMuted(a.pubkey) && a.created_at > readNotifications)
     replies.forEach(nx => {
+      dispatch(setLatestNotifications(nx.created_at));
       makeNotification(db, nx).then(notification => {
         if (notification) {
           // @ts-ignore
@@ -125,7 +127,7 @@ export default function useLoginFeed() {
         }
       })
     })
-  }, [dispatch, notificationFeed.store, db]);
+  }, [dispatch, notificationFeed.store, db, readNotifications]);
 
   useEffect(() => {
     const muted = getMutedKeys(mutedFeed.store.notes)

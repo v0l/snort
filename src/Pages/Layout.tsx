@@ -27,9 +27,9 @@ export default function Layout() {
     const [show, setShow] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { loggedOut, publicKey, relays, notifications, readNotifications, dms, preferences, newUserKey } = useSelector((s: RootState) => s.login);
+    const { loggedOut, publicKey, relays, latestNotification, readNotifications, dms, preferences, newUserKey } = useSelector((s: RootState) => s.login);
     const { isMuted } = useModeration();
-    const filteredDms = dms.filter(a => !isMuted(a.pubkey))
+
     const usingDb = useDb();
     const pub = useEventPublisher();
     useLoginFeed();
@@ -38,6 +38,9 @@ export default function Layout() {
         const hideNoteCreator = ["/settings", "/messages", "/new"]
         return hideNoteCreator.some(a => location.pathname.startsWith(a));
     }, [location]);
+
+    const hasNotifications = useMemo(() => latestNotification > readNotifications, [latestNotification, readNotifications]);
+    const unreadDms = useMemo(() => publicKey ? totalUnread(dms.filter(a => !isMuted(a.pubkey)), publicKey) : 0, [dms, publicKey]);
 
     useEffect(() => {
         System.nip42Auth = pub.nip42Auth
@@ -153,8 +156,6 @@ export default function Layout() {
     }
 
     function accountHeader() {
-        const unreadNotifications = notifications?.filter(a => (a.created_at * 1000) > readNotifications).length;
-        const unreadDms = publicKey ? totalUnread(filteredDms, publicKey) : 0;
         return (
             <div className="header-actions">
                 <div className="btn btn-rnd" onClick={(e) => navigate("/search")}>
@@ -166,7 +167,7 @@ export default function Layout() {
                 </div>
                 <div className="btn btn-rnd" onClick={(e) => goToNotifications(e)}>
                     <Bell />
-                    {unreadNotifications > 0 && (<span className="has-unread"></span>)}
+                    {hasNotifications && (<span className="has-unread"></span>)}
                 </div>
                 <ProfileImage pubkey={publicKey || ""} showUsername={false} />
             </div>
