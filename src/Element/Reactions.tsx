@@ -36,11 +36,35 @@ const Reactions = ({
     positive.sort((a, b) => b.created_at - a.created_at);
     return positive;
   }, [reactions]);
+  const dedupedLikes = useMemo(() => {
+    const deduped = likes.reduce(({ list, seen }: any, ev) => {
+      if (seen.includes(ev.pubkey)) {
+        return { list, seen }
+      }
+      return {
+        list: [...list, ev],
+        seen: [...seen, ev.pubkey],
+      }
+    }, {list: [], seen: [] })
+    return deduped.list as TaggedRawEvent[]
+  }, [likes])
   const dislikes = useMemo(() => {
     const positive = reactions.filter((r) => r.content === "-");
     positive.sort((a, b) => b.created_at - a.created_at);
     return positive;
   }, [reactions]);
+  const dedupedDislikes= useMemo(() => {
+    const deduped = dislikes.reduce(({ list, seen }: any, ev) => {
+      if (seen.includes(ev.pubkey)) {
+        return { list, seen }
+      }
+      return {
+        list: [...list, ev],
+        seen: [...seen, ev.pubkey],
+      }
+    }, {list: [], seen: [] })
+    return deduped.list as TaggedRawEvent[]
+  }, [dislikes])
   const total = reactions.length + zaps.length + reposts.length;
   const sortedZaps = useMemo(() => {
     const sorted = [...zaps];
@@ -89,7 +113,7 @@ const Reactions = ({
         <Tabs tabs={tabs} tab={tab} setTab={setTab} />
         <div className="body" key={tab.value}>
           {tab.value === 0 &&
-            likes.map((ev) => {
+            dedupedLikes.map((ev) => {
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">
@@ -133,7 +157,7 @@ const Reactions = ({
               );
             })}
           {tab.value === 3 &&
-            dislikes.map((ev) => {
+            dedupedDislikes.map((ev) => {
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">
