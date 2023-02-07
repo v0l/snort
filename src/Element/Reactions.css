@@ -13,6 +13,7 @@
 @media (max-width: 720px) {
   .reactions-view {
     padding: 12px 16px;
+    margin-top: -160px;
   }
 }
 
@@ -106,5 +107,12 @@
   }
   .reactions-item button {
     font-size: 14px;
+  }
+  .reactions-item .zap-reaction-icon svg {
+    width: 12px;
+    height: l2px;
+  }
+  .reactions-item .zap-amount {
+    font-size: 12px;
   }
 }
