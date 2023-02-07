@@ -2,7 +2,8 @@
   display: flex;
   align-items: center;
   flex-direction: row;
-  overflow-x: auto;
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
   scrollbar-width: none;  /* Firefox */
   margin-bottom: 18px;
 }

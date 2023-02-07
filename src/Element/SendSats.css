@@ -73,12 +73,13 @@
 .amounts {
   display: flex;
   width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;  /* Firefox */
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
   margin-bottom: 16px;
 }
 
-.amounts::--webkit-scrollbar {
+.amounts::-webkit-scrollbar {
   display: none;
 }
 
