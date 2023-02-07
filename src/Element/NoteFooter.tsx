@@ -268,7 +268,14 @@ export default function NoteFooter(props: NoteFooterProps) {
         show={reply}
         setShow={setReply}
       />
-      <LNURLTip svc={author?.lud16 || author?.lud06} onClose={() => setTip(false)} show={tip} author={author?.pubkey} note={ev.Id} />
+      <LNURLTip
+        svc={author?.lud16 || author?.lud06}
+        onClose={() => setTip(false)}
+        show={tip}
+        author={author?.pubkey}
+        target={author?.display_name || author?.name}
+        note={ev.Id}
+      />
     </div>
     <div className="zaps-container">
      <ZapsSummary zaps={zaps} />

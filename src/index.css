@@ -3,8 +3,8 @@
 :root {
   --bg-color: #000;
   --font-color: #FFF;
-  --font-secondary-color: #7B7B7B;
-  --font-tertiary-color: #666;
+  --font-secondary-color: #A7A7A7;
+  --font-tertiary-color:  #A3A3A3;
   --font-size: 16px;
   --font-size-small: 14px;
   --font-size-tiny: 12px;
@@ -34,7 +34,7 @@ html.light {
   --bg-color: #F1F1F1;
   --font-color: #57534E;
   --font-secondary-color: #7B7B7B;
-  --font-tertiary-color: #F3F3F3;
+  --font-tertiary-color:  #A7A7A7;
 
   --highlight-light: #16AAC1;
   --highlight: #0284C7;
@@ -126,18 +126,19 @@ button {
 }
 
 button:disabled {
+  opacity: 0.3;
   cursor: not-allowed;
-  color: var(--font-color);
-  background-color: transparent;
-  border: 1px solid var(--font-secondary-color);
+}
+
+button.secondary:disabled {
+  color: var(--font-secondary-color);
+  cursor: not-allowed;
 }
 
 button:disabled:hover {
   cursor: not-allowed;
   color: var(--font-color);
-  background-color: transparent;
-  background-color: var(--gray-superdark);
-  border: 1px solid var(--font-secondary-color);
+  border-color: var(--gray-superdark);
 }
 
 .light button.transparent {
@@ -239,14 +240,12 @@ button.icon:hover {
 }
 
 .btn-rnd {
-  border-radius: 100%;
-  border-color: var(--gray-secondary);
+  border: none;
   width: 21px;
   height: 21px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 16px;
 }
 
 @media (min-width: 520px) {
@@ -257,12 +256,21 @@ textarea {
   font: inherit;
 }
 
-input[type="text"], input[type="password"], input[type="number"], textarea, select {
-  padding: 10px;
-  border-radius: 5px;
-  border: 0;
-  background-color: var(--gray);
+input[type="text"], input[type="password"], input[type="number"], select, textarea {
+  padding: 12px;
   color: var(--font-color);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  outline: none;
+}
+
+.light input[type="text"], .light input[type="password"], .light input[type="number"], .light select, .light textarea {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+input:placeholder, textarea:placeholder {
+  color: var(--font-tertiary-color);
 }
 
 input[type="checkbox"] {
@@ -273,10 +281,6 @@ input[type="checkbox"] {
 input:disabled {
   color: var(--gray-medium);
   cursor: not-allowed;
-}
-
-textarea:placeholder {
-  color: var(--gray-superlight);
 }
 
 .flex {
@@ -449,6 +453,10 @@ body.scroll-lock {
 
 .bg-error {
   background-color: var(--error);
+}
+
+.success {
+  color: var(--success);
 }
 
 .bg-success {

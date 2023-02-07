@@ -49,7 +49,7 @@ export default function Invoice(props: InvoiceProps) {
           <>
               <h4>Lightning Invoice</h4>
               <ZapCircle className="zap-circle" />
-              <LNURLTip invoice={invoice} show={showInvoice} onClose={() => setShowInvoice(false)} />
+              <LNURLTip title="Pay Invoice" invoice={invoice} show={showInvoice} onClose={() => setShowInvoice(false)} />
           </>
       )
     }

@@ -20,8 +20,8 @@ export default function AsyncButton(props: any) {
     }
 
     return (
-        <div {...props} className={`btn ${props.className}${loading ? " disabled" : ""}`} onClick={(e) => handle(e)}>
-            {props.children}
-        </div>
+        <button type="button" disabled={loading} {...props} onClick={(e) => handle(e)}>
+          {props.children}
+        </button>
     )
 }

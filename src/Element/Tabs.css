@@ -12,7 +12,8 @@
 }
 
 .tab {
-  border: 1px solid var(--gray-secondary);
+  color: var(--font-tertiary-color);
+  border: 1px solid var(--font-tertiary-color);
   border-radius: 16px;
   text-align: center;
   font-weight: 600;
@@ -21,7 +22,6 @@
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
-  color: #A3A3A3;
   margin-right: 12px;
 }
 

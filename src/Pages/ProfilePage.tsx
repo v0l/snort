@@ -111,7 +111,13 @@ export default function ProfilePage() {
           </div>
         )}
 
-        <LNURLTip svc={lnurl} show={showLnQr} onClose={() => setShowLnQr(false)} author={id} />
+        <LNURLTip
+          svc={lnurl}
+          show={showLnQr}
+          onClose={() => setShowLnQr(false)}
+          author={id}
+          target={user?.display_name || user?.name}
+        />
       </div>
     )
   }

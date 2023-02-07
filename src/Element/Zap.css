@@ -52,7 +52,7 @@
   margin-top: 8px;
   display: flex;
   flex-direction: row;
-  margin-left: 52px;
+  margin-left: 56px;
 }
 
 .note.thread-root .zaps-summary {
@@ -70,8 +70,8 @@
 }
 
 .top-zap .avatar {
-  width: 21px;
-  height: 21px;
+  width: 18px;
+  height: 18px;
 }
 
 .top-zap .nip05 {
