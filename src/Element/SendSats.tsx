@@ -13,6 +13,7 @@ import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import useWebln from "Hooks/useWebln";
+import useHorizontalScroll from "Hooks/useHorizontalScroll";
 
 interface LNURLService {
     nostrPubkey?: HexKey
@@ -69,6 +70,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     const [success, setSuccess] = useState<LNURLSuccessAction>();
     const webln = useWebln(show);
     const publisher = useEventPublisher();
+    const horizontalScroll = useHorizontalScroll();
 
     useEffect(() => {
         if (show && !props.invoice) {
@@ -214,7 +216,7 @@ export default function LNURLTip(props: LNURLTipProps) {
         return (
             <>
                 <h3>Zap amount in sats</h3>
-                <div className="amounts">
+                <div className="amounts" ref={horizontalScroll}>
                   {serviceAmounts.map(a => 
                     <span className={`sat-amount ${amount === a ? "active" : ""}`} key={a} onClick={() => selectAmount(a)}>
                       {emojis[a] && <>{emojis[a]}&nbsp;</> }

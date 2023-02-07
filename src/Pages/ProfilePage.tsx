@@ -35,6 +35,7 @@ import FollowsYou from "Element/FollowsYou"
 import QrCode from "Element/QrCode";
 import Modal from "Element/Modal";
 import { ProxyImg } from "Element/ProxyImg"
+import useHorizontalScroll from "Hooks/useHorizontalScroll";
 
 const ProfileTab = {
   Notes: { text: "Notes", value: 0 },
@@ -71,6 +72,7 @@ export default function ProfilePage() {
     return profileZaps
   }, [zapFeed.store, id])
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
+  const horizontalScroll = useHorizontalScroll()
 
   useEffect(() => {
     setTab(ProfileTab.Notes);
@@ -248,7 +250,7 @@ export default function ProfilePage() {
           {userDetails()}
         </div>
       </div>
-      <div className="tabs main-content">
+      <div className="tabs main-content" ref={horizontalScroll}>
         {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Zaps, ProfileTab.Muted].map(renderTab)}
         {isMe && renderTab(ProfileTab.Blocked)}
       </div>
