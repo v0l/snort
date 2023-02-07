@@ -31,7 +31,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   const privKey = useSelector<RootState, HexKey | undefined>(
     (s) => s.login.privateKey
   );
-  const user = useUserProfile(id!);
+  const user = useUserProfile(id ?? "");
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
 
@@ -61,7 +61,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
   async function saveProfile() {
     // copy user object and delete internal fields
-    let userCopy = {
+    const userCopy = {
       ...user,
       name,
       display_name: displayName,
@@ -78,16 +78,16 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     delete userCopy["npub"];
     console.debug(userCopy);
 
-    let ev = await publisher.metadata(userCopy);
+    const ev = await publisher.metadata(userCopy);
     console.debug(ev);
     publisher.broadcast(ev);
   }
 
   async function uploadFile() {
-    let file = await openFile();
+    const file = await openFile();
     if (file) {
       console.log(file);
-      let rsp = await uploader.upload(file, file.name);
+      const rsp = await uploader.upload(file, file.name);
       console.log(rsp);
       if (typeof rsp?.error === "string") {
         throw new Error(`Upload failed ${rsp.error}`);

@@ -47,7 +47,7 @@ export default function Relay(props: RelayProps) {
     );
   }
 
-  let latency = Math.floor(state?.avgLatency ?? 0);
+  const latency = Math.floor(state?.avgLatency ?? 0);
   return (
     <>
       <div className={`relay w-max`}>
@@ -104,7 +104,10 @@ export default function Relay(props: RelayProps) {
               <FontAwesomeIcon icon={faPlugCircleXmark} /> {state?.disconnects}
             </div>
             <div>
-              <span className="icon-btn" onClick={() => navigate(state!.id)}>
+              <span
+                className="icon-btn"
+                onClick={() => navigate(state?.id ?? "")}
+              >
                 <FontAwesomeIcon icon={faGear} />
               </span>
             </div>

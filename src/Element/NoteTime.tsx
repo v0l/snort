@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { FormattedRelativeTime } from "react-intl";
 
 const MinuteInMs = 1_000 * 60;
 const HourInMs = MinuteInMs * 60;
@@ -19,10 +18,11 @@ export default function NoteTime(props: NoteTimeProps) {
   }).format(from);
   const fromDate = new Date(from);
   const isoDate = fromDate.toISOString();
-  const ago = new Date().getTime() - from;
-  const absAgo = Math.abs(ago);
 
   function calcTime() {
+    const fromDate = new Date(from);
+    const ago = new Date().getTime() - from;
+    const absAgo = Math.abs(ago);
     if (absAgo > DayInMs) {
       return fromDate.toLocaleDateString(undefined, {
         year: "2-digit",
@@ -38,7 +38,7 @@ export default function NoteTime(props: NoteTimeProps) {
     } else if (absAgo < MinuteInMs) {
       return fallback;
     } else {
-      let mins = Math.floor(absAgo / MinuteInMs);
+      const mins = Math.floor(absAgo / MinuteInMs);
       if (ago < 0) {
         return `in ${mins}m`;
       }
@@ -48,9 +48,9 @@ export default function NoteTime(props: NoteTimeProps) {
 
   useEffect(() => {
     setTime(calcTime());
-    let t = setInterval(() => {
+    const t = setInterval(() => {
       setTime((s) => {
-        let newTime = calcTime();
+        const newTime = calcTime();
         if (newTime !== s) {
           return newTime;
         }

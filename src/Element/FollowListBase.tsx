@@ -17,7 +17,7 @@ export default function FollowListBase({
   const publisher = useEventPublisher();
 
   async function followAll() {
-    let ev = await publisher.addFollow(pubkeys);
+    const ev = await publisher.addFollow(pubkeys);
     publisher.broadcast(ev);
   }
 

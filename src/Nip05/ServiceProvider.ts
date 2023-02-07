@@ -107,11 +107,11 @@ export class ServiceProvider {
   async _GetJson<T>(
     path: string,
     method?: "GET" | string,
-    body?: any,
-    headers?: any
+    body?: { [key: string]: string },
+    headers?: { [key: string]: string }
   ): Promise<T | ServiceError> {
     try {
-      let rsp = await fetch(`${this.url}${path}`, {
+      const rsp = await fetch(`${this.url}${path}`, {
         method: method,
         body: body ? JSON.stringify(body) : undefined,
         headers: {
@@ -121,7 +121,7 @@ export class ServiceProvider {
         },
       });
 
-      let obj = await rsp.json();
+      const obj = await rsp.json();
       if ("error" in obj) {
         return <ServiceError>obj;
       }

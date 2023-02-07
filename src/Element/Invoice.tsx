@@ -1,7 +1,7 @@
 import "./Invoice.css";
 import { useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-// @ts-expect-error
+// @ts-expect-error No types available
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { useMemo } from "react";
 import SendSats from "Element/SendSats";
@@ -13,6 +13,11 @@ import messages from "./messages";
 export interface InvoiceProps {
   invoice: string;
 }
+
+interface Section {
+  name: string;
+}
+
 export default function Invoice(props: InvoiceProps) {
   const invoice = props.invoice;
   const webln = useWebln();
@@ -21,21 +26,21 @@ export default function Invoice(props: InvoiceProps) {
 
   const info = useMemo(() => {
     try {
-      let parsed = invoiceDecode(invoice);
+      const parsed = invoiceDecode(invoice);
 
-      let amount = parseInt(
-        parsed.sections.find((a: any) => a.name === "amount")?.value
+      const amount = parseInt(
+        parsed.sections.find((a: Section) => a.name === "amount")?.value
       );
-      let timestamp = parseInt(
-        parsed.sections.find((a: any) => a.name === "timestamp")?.value
+      const timestamp = parseInt(
+        parsed.sections.find((a: Section) => a.name === "timestamp")?.value
       );
-      let expire = parseInt(
-        parsed.sections.find((a: any) => a.name === "expiry")?.value
+      const expire = parseInt(
+        parsed.sections.find((a: Section) => a.name === "expiry")?.value
       );
-      let description = parsed.sections.find(
-        (a: any) => a.name === "description"
+      const description = parsed.sections.find(
+        (a: Section) => a.name === "description"
       )?.value;
-      let ret = {
+      const ret = {
         amount: !isNaN(amount) ? amount / 1000 : 0,
         expire: !isNaN(timestamp) && !isNaN(expire) ? timestamp + expire : null,
         description,
@@ -72,7 +77,7 @@ export default function Invoice(props: InvoiceProps) {
     );
   }
 
-  async function payInvoice(e: any) {
+  async function payInvoice(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
     if (webln?.enabled) {
       try {

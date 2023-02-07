@@ -67,7 +67,7 @@ export default class Event {
    * Get the pub key of the creator of this event NIP-26
    */
   get RootPubKey() {
-    let delegation = this.Tags.find((a) => a.Key === "delegation");
+    const delegation = this.Tags.find((a) => a.Key === "delegation");
     if (delegation?.PubKey) {
       return delegation.PubKey;
     }
@@ -80,7 +80,7 @@ export default class Event {
   async Sign(key: HexKey) {
     this.Id = await this.CreateId();
 
-    let sig = await secp.schnorr.sign(this.Id, key);
+    const sig = await secp.schnorr.sign(this.Id, key);
     this.Signature = secp.utils.bytesToHex(sig);
     if (!(await this.Verify())) {
       throw "Signing failed";
@@ -92,13 +92,13 @@ export default class Event {
    * @returns True if valid signature
    */
   async Verify() {
-    let id = await this.CreateId();
-    let result = await secp.schnorr.verify(this.Signature, id, this.PubKey);
+    const id = await this.CreateId();
+    const result = await secp.schnorr.verify(this.Signature, id, this.PubKey);
     return result;
   }
 
   async CreateId() {
-    let payload = [
+    const payload = [
       0,
       this.PubKey,
       this.CreatedAt,
@@ -107,9 +107,9 @@ export default class Event {
       this.Content,
     ];
 
-    let payloadData = new TextEncoder().encode(JSON.stringify(payload));
-    let data = await secp.utils.sha256(payloadData);
-    let hash = secp.utils.bytesToHex(data);
+    const payloadData = new TextEncoder().encode(JSON.stringify(payload));
+    const data = await secp.utils.sha256(payloadData);
+    const hash = secp.utils.bytesToHex(data);
     if (this.Id !== "" && hash !== this.Id) {
       console.debug(payload);
       throw "ID doesnt match!";
@@ -135,7 +135,7 @@ export default class Event {
    * Create a new event for a specific pubkey
    */
   static ForPubKey(pubKey: HexKey) {
-    let ev = new Event();
+    const ev = new Event();
     ev.PubKey = pubKey;
     return ev;
   }
@@ -144,10 +144,10 @@ export default class Event {
    * Encrypt the given message content
    */
   async EncryptData(content: string, pubkey: HexKey, privkey: HexKey) {
-    let key = await this._GetDmSharedKey(pubkey, privkey);
-    let iv = window.crypto.getRandomValues(new Uint8Array(16));
-    let data = new TextEncoder().encode(content);
-    let result = await window.crypto.subtle.encrypt(
+    const key = await this._GetDmSharedKey(pubkey, privkey);
+    const iv = window.crypto.getRandomValues(new Uint8Array(16));
+    const data = new TextEncoder().encode(content);
+    const result = await window.crypto.subtle.encrypt(
       {
         name: "AES-CBC",
         iv: iv,
@@ -155,7 +155,7 @@ export default class Event {
       key,
       data
     );
-    let uData = new Uint8Array(result);
+    const uData = new Uint8Array(result);
     return `${base64.encode(uData, 0, result.byteLength)}?iv=${base64.encode(
       iv,
       0,
@@ -174,15 +174,15 @@ export default class Event {
    * Decrypt the content of the message
    */
   async DecryptData(cyphertext: string, privkey: HexKey, pubkey: HexKey) {
-    let key = await this._GetDmSharedKey(pubkey, privkey);
-    let cSplit = cyphertext.split("?iv=");
-    let data = new Uint8Array(base64.length(cSplit[0]));
+    const key = await this._GetDmSharedKey(pubkey, privkey);
+    const cSplit = cyphertext.split("?iv=");
+    const data = new Uint8Array(base64.length(cSplit[0]));
     base64.decode(cSplit[0], data, 0);
 
-    let iv = new Uint8Array(base64.length(cSplit[1]));
+    const iv = new Uint8Array(base64.length(cSplit[1]));
     base64.decode(cSplit[1], iv, 0);
 
-    let result = await window.crypto.subtle.decrypt(
+    const result = await window.crypto.subtle.decrypt(
       {
         name: "AES-CBC",
         iv: iv,
@@ -201,8 +201,8 @@ export default class Event {
   }
 
   async _GetDmSharedKey(pubkey: HexKey, privkey: HexKey) {
-    let sharedPoint = secp.getSharedSecret(privkey, "02" + pubkey);
-    let sharedX = sharedPoint.slice(1, 33);
+    const sharedPoint = secp.getSharedSecret(privkey, "02" + pubkey);
+    const sharedX = sharedPoint.slice(1, 33);
     return await window.crypto.subtle.importKey(
       "raw",
       sharedX,

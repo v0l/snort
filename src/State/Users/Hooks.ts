@@ -4,8 +4,9 @@ import { MetadataCache } from "State/Users";
 import type { RootState } from "State/Store";
 import { HexKey } from "Nostr";
 import { useDb } from "./Db";
+import { unwrap } from "Util";
 
-export function useQuery(query: string, limit: number = 5) {
+export function useQuery(query: string) {
   const db = useDb();
   return useLiveQuery(async () => db.query(query), [query]);
 }
@@ -46,5 +47,5 @@ export function useKeys(pubKeys: HexKey[]): Map<HexKey, MetadataCache> {
     return new Map();
   }, [pubKeys, users]);
 
-  return dbUsers!;
+  return dbUsers ?? new Map();
 }

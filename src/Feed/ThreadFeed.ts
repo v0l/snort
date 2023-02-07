@@ -16,9 +16,9 @@ export default function useThreadFeed(id: u256) {
 
   function addId(id: u256[]) {
     setTrackingEvent((s) => {
-      let orig = new Set(s);
+      const orig = new Set(s);
       if (id.some((a) => !orig.has(a))) {
-        let tmp = new Set([...s, ...id]);
+        const tmp = new Set([...s, ...id]);
         return Array.from(tmp);
       } else {
         return s;
@@ -55,16 +55,16 @@ export default function useThreadFeed(id: u256) {
   useEffect(() => {
     if (main.store) {
       return debounce(200, () => {
-        let mainNotes = main.store.notes.filter(
+        const mainNotes = main.store.notes.filter(
           (a) => a.kind === EventKind.TextNote
         );
 
-        let eTags = mainNotes
+        const eTags = mainNotes
           .filter((a) => a.kind === EventKind.TextNote)
           .map((a) => a.tags.filter((b) => b[0] === "e").map((b) => b[1]))
           .flat();
-        let ids = mainNotes.map((a) => a.id);
-        let allEvents = new Set([...eTags, ...ids]);
+        const ids = mainNotes.map((a) => a.id);
+        const allEvents = new Set([...eTags, ...ids]);
         addId(Array.from(allEvents));
       });
     }

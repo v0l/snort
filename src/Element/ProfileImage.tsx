@@ -63,10 +63,10 @@ export function getDisplayName(
   pubkey: HexKey
 ) {
   let name = hexToBech32("npub", pubkey).substring(0, 12);
-  if ((user?.display_name?.length ?? 0) > 0) {
-    name = user!.display_name!;
-  } else if ((user?.name?.length ?? 0) > 0) {
-    name = user!.name!;
+  if (user?.display_name !== undefined && user.display_name.length > 0) {
+    name = user.display_name;
+  } else if (user?.name !== undefined && user.name.length > 0) {
+    name = user.name;
   }
   return name;
 }

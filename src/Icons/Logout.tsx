@@ -1,6 +1,4 @@
-import IconProps from "./IconProps";
-
-const Logout = (props: IconProps) => {
+const Logout = () => {
   return (
     <svg
       width="22"

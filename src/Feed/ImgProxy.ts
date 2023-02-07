@@ -2,6 +2,7 @@ import * as secp from "@noble/secp256k1";
 import * as base64 from "@protobufjs/base64";
 import { useSelector } from "react-redux";
 import { RootState } from "State/Store";
+import { unwrap } from "Util";
 
 export interface ImgProxySettings {
   url: string;
@@ -21,8 +22,8 @@ export default function useImgProxy() {
 
   async function signUrl(u: string) {
     const result = await secp.utils.hmacSha256(
-      secp.utils.hexToBytes(settings!.key),
-      secp.utils.hexToBytes(settings!.salt),
+      secp.utils.hexToBytes(unwrap(settings).key),
+      secp.utils.hexToBytes(unwrap(settings).salt),
       te.encode(u)
     );
     return urlSafe(base64.encode(result, 0, result.byteLength));

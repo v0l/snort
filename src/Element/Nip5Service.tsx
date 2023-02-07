@@ -29,7 +29,9 @@ type Nip05ServiceProps = {
   supportLink: string;
 };
 
-type ReduxStore = any;
+interface ReduxStore {
+  login: { publicKey: string };
+}
 
 export default function Nip5Service(props: Nip05ServiceProps) {
   const navigate = useNavigate();
@@ -64,9 +66,9 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         if ("error" in a) {
           setError(a as ServiceError);
         } else {
-          let svc = a as ServiceConfig;
+          const svc = a as ServiceConfig;
           setServiceConfig(svc);
-          let defaultDomain =
+          const defaultDomain =
             svc.domains.find((a) => a.default)?.name || svc.domains[0].name;
           setDomain(defaultDomain);
         }
@@ -86,7 +88,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         setAvailabilityResponse({ available: false, why: "TOO_LONG" });
         return;
       }
-      let rx = new RegExp(
+      const rx = new RegExp(
         domainConfig?.regex[0] ?? "",
         domainConfig?.regex[1] ?? ""
       );
@@ -111,14 +113,14 @@ export default function Nip5Service(props: Nip05ServiceProps) {
 
   useEffect(() => {
     if (registerResponse && showInvoice) {
-      let t = setInterval(async () => {
-        let status = await svc.CheckRegistration(registerResponse.token);
+      const t = setInterval(async () => {
+        const status = await svc.CheckRegistration(registerResponse.token);
         if ("error" in status) {
           setError(status);
           setRegisterResponse(undefined);
           setShowInvoice(false);
         } else {
-          let result: CheckRegisterResponse = status;
+          const result: CheckRegisterResponse = status;
           if (result.available && result.paid) {
             setShowInvoice(false);
             setRegisterStatus(status);
@@ -131,8 +133,14 @@ export default function Nip5Service(props: Nip05ServiceProps) {
     }
   }, [registerResponse, showInvoice, svc]);
 
-  function mapError(e: ServiceErrorCode, t: string | null): string | undefined {
-    let whyMap = new Map([
+  function mapError(
+    e: ServiceErrorCode | undefined,
+    t: string | null
+  ): string | undefined {
+    if (e === undefined) {
+      return undefined;
+    }
+    const whyMap = new Map([
       ["TOO_SHORT", formatMessage(messages.TooShort)],
       ["TOO_LONG", formatMessage(messages.TooLong)],
       ["REGEX", formatMessage(messages.Regex)],
@@ -149,7 +157,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       return;
     }
 
-    let rsp = await svc.RegisterHandle(handle, domain, pubkey);
+    const rsp = await svc.RegisterHandle(handle, domain, pubkey);
     if ("error" in rsp) {
       setError(rsp);
     } else {
@@ -160,11 +168,11 @@ export default function Nip5Service(props: Nip05ServiceProps) {
 
   async function updateProfile(handle: string, domain: string) {
     if (user) {
-      let newProfile = {
+      const newProfile = {
         ...user,
         nip05: `${handle}@${domain}`,
       } as UserMetadata;
-      let ev = await publisher.metadata(newProfile);
+      const ev = await publisher.metadata(newProfile);
       publisher.broadcast(ev);
       navigate("/settings");
     }
@@ -231,7 +239,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
           <b className="error">
             <FormattedMessage {...messages.NotAvailable} />{" "}
             {mapError(
-              availabilityResponse.why!,
+              availabilityResponse.why,
               availabilityResponse.reasonTag || null
             )}
           </b>

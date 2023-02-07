@@ -95,7 +95,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const groupReactions = useMemo(() => {
     const result = reactions?.reduce(
       (acc, reaction) => {
-        let kind = normalizeReaction(reaction.content);
+        const kind = normalizeReaction(reaction.content);
         const rs = acc[kind] || [];
         if (rs.map((e) => e.pubkey).includes(reaction.pubkey)) {
           return acc;
@@ -128,7 +128,7 @@ export default function NoteFooter(props: NoteFooterProps) {
 
   async function react(content: string) {
     if (!hasReacted(content)) {
-      let evLike = await publisher.react(ev, content);
+      const evLike = await publisher.react(ev, content);
       publisher.broadcast(evLike);
     }
   }
@@ -139,7 +139,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         formatMessage(messages.ConfirmDeletion, { id: ev.Id.substring(0, 8) })
       )
     ) {
-      let evDelete = await publisher.delete(ev.Id);
+      const evDelete = await publisher.delete(ev.Id);
       publisher.broadcast(evDelete);
     }
   }
@@ -150,14 +150,14 @@ export default function NoteFooter(props: NoteFooterProps) {
         !prefs.confirmReposts ||
         window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.Id }))
       ) {
-        let evRepost = await publisher.repost(ev);
+        const evRepost = await publisher.repost(ev);
         publisher.broadcast(evRepost);
       }
     }
   }
 
   function tipButton() {
-    let service = author?.lud16 || author?.lud06;
+    const service = author?.lud16 || author?.lud06;
     if (service) {
       return (
         <>
@@ -246,7 +246,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     });
 
     if (res.ok) {
-      let result = await res.json();
+      const result = await res.json();
       if (typeof props.onTranslated === "function" && result) {
         props.onTranslated({
           text: result.translatedText,
@@ -332,7 +332,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           {reactionIcons()}
           <div
             className={`reaction-pill ${reply ? "reacted" : ""}`}
-            onClick={(e) => setReply((s) => !s)}
+            onClick={() => setReply((s) => !s)}
           >
             <div className="reaction-pill-icon">
               <Reply />

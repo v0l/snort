@@ -1,6 +1,4 @@
-import IconProps from "./IconProps";
-
-const Attachment = (props: IconProps) => {
+const Attachment = () => {
   return (
     <svg
       width="21"

@@ -33,14 +33,14 @@ export interface NoteCreatorProps {
   show: boolean;
   setShow: (s: boolean) => void;
   replyTo?: NEvent;
-  onSend?: Function;
+  onSend?: () => void;
   autoFocus: boolean;
 }
 
 export function NoteCreator(props: NoteCreatorProps) {
   const { show, setShow, replyTo, onSend, autoFocus } = props;
   const publisher = useEventPublisher();
-  const [note, setNote] = useState<string>();
+  const [note, setNote] = useState<string>("");
   const [error, setError] = useState<string>();
   const [active, setActive] = useState<boolean>(false);
   const uploader = useFileUpload();
@@ -48,7 +48,7 @@ export function NoteCreator(props: NoteCreatorProps) {
 
   async function sendNote() {
     if (note) {
-      let ev = replyTo
+      const ev = replyTo
         ? await publisher.reply(replyTo, note)
         : await publisher.note(note);
       console.debug("Sending note: ", ev);
@@ -64,21 +64,23 @@ export function NoteCreator(props: NoteCreatorProps) {
 
   async function attachFile() {
     try {
-      let file = await openFile();
+      const file = await openFile();
       if (file) {
-        let rx = await uploader.upload(file, file.name);
+        const rx = await uploader.upload(file, file.name);
         if (rx.url) {
           setNote((n) => `${n ? `${n}\n` : ""}${rx.url}`);
         } else if (rx?.error) {
           setError(rx.error);
         }
       }
-    } catch (error: any) {
-      setError(error?.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error?.message);
+      }
     }
   }
 
-  function onChange(ev: any) {
+  function onChange(ev: React.ChangeEvent<HTMLTextAreaElement>) {
     const { value } = ev.target;
     setNote(value);
     if (value) {
@@ -88,7 +90,7 @@ export function NoteCreator(props: NoteCreatorProps) {
     }
   }
 
-  function cancel(ev: any) {
+  function cancel() {
     setShow(false);
     setNote("");
   }
@@ -112,11 +114,7 @@ export function NoteCreator(props: NoteCreatorProps) {
                 value={note}
                 onFocus={() => setActive(true)}
               />
-              <button
-                type="button"
-                className="attachment"
-                onClick={(e) => attachFile()}
-              >
+              <button type="button" className="attachment" onClick={attachFile}>
                 <Attachment />
               </button>
             </div>

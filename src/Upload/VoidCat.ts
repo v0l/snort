@@ -13,7 +13,7 @@ export default async function VoidCat(
   const buf = await file.arrayBuffer();
   const digest = await crypto.subtle.digest("SHA-256", buf);
 
-  let req = await fetch(`${VoidCatHost}/upload`, {
+  const req = await fetch(`${VoidCatHost}/upload`, {
     mode: "cors",
     method: "POST",
     body: buf,
@@ -28,7 +28,7 @@ export default async function VoidCat(
   });
 
   if (req.ok) {
-    let rsp: VoidUploadResponse = await req.json();
+    const rsp: VoidUploadResponse = await req.json();
     if (rsp.ok) {
       let ext = filename.match(FileExtensionRegex);
       if (rsp.file?.metadata?.mimeType === "image/webp") {

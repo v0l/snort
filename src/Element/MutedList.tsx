@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
-
 import { HexKey } from "Nostr";
 import MuteButton from "Element/MuteButton";
 import ProfilePreview from "Element/ProfilePreview";

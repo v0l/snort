@@ -83,7 +83,7 @@ export default function Timeline({
       }
       case EventKind.Reaction:
       case EventKind.Repost: {
-        let eRef = e.tags.find((a) => a[0] === "e")?.at(1);
+        const eRef = e.tags.find((a) => a[0] === "e")?.at(1);
         return (
           <NoteReaction
             data={e}

@@ -20,15 +20,17 @@ export default function ImportFollows() {
   const sortedTwitterFollows = useMemo(() => {
     return follows
       .map((a) => bech32ToHex(a))
-      .sort((a, b) => (currentFollows.includes(a) ? 1 : -1));
+      .sort((a) => (currentFollows.includes(a) ? 1 : -1));
   }, [follows, currentFollows]);
 
   async function loadFollows() {
     setFollows([]);
     setError("");
     try {
-      let rsp = await fetch(`${TwitterFollowsApi}?username=${twitterUsername}`);
-      let data = await rsp.json();
+      const rsp = await fetch(
+        `${TwitterFollowsApi}?username=${twitterUsername}`
+      );
+      const data = await rsp.json();
       if (rsp.ok) {
         if (Array.isArray(data) && data.length === 0) {
           setError(`No nostr users found for "${twitterUsername}"`);

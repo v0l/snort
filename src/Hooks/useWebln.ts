@@ -5,7 +5,7 @@ declare global {
     webln?: {
       enabled: boolean;
       enable: () => Promise<void>;
-      sendPayment: (pr: string) => Promise<any>;
+      sendPayment: (pr: string) => Promise<unknown>;
     };
   }
 }
@@ -15,7 +15,7 @@ export default function useWebln(enable = true) {
 
   useEffect(() => {
     if (maybeWebLn && !maybeWebLn.enabled && enable) {
-      maybeWebLn.enable().catch((error) => {
+      maybeWebLn.enable().catch(() => {
         console.debug("Couldn't enable WebLN");
       });
     }

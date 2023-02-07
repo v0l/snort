@@ -1,13 +1,7 @@
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
-
-import { HexKey } from "Nostr";
-import type { RootState } from "State/Store";
 import MuteButton from "Element/MuteButton";
 import BlockButton from "Element/BlockButton";
 import ProfilePreview from "Element/ProfilePreview";
-import useMutedFeed, { getMuted } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 
 import messages from "./messages";
@@ -17,7 +11,6 @@ interface BlockListProps {
 }
 
 export default function BlockList({ variant }: BlockListProps) {
-  const { publicKey } = useSelector((s: RootState) => s.login);
   const { blocked, muted } = useModeration();
 
   return (

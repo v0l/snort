@@ -17,7 +17,6 @@ import Text from "Element/Text";
 import { eventLink, getReactions, hexToBech32 } from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
-import ShowMore from "Element/ShowMore";
 import EventKind from "Nostr/EventKind";
 import { useUserProfiles } from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "Nostr";
@@ -39,10 +38,10 @@ export interface NoteProps {
   ["data-ev"]?: NEvent;
 }
 
-const HiddenNote = ({ children }: any) => {
+const HiddenNote = ({ children }: { children: React.ReactNode }) => {
   const [show, setShow] = useState(false);
   return show ? (
-    children
+    <>{children}</>
   ) : (
     <div className="card note hidden-note">
       <div className="header">
@@ -61,7 +60,6 @@ export default function Note(props: NoteProps) {
   const navigate = useNavigate();
   const {
     data,
-    className,
     related,
     highlight,
     options: opt,
@@ -80,9 +78,9 @@ export default function Note(props: NoteProps) {
   const { ref, inView, entry } = useInView({ triggerOnce: true });
   const [extendable, setExtendable] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
-  const baseClassname = `note card ${props.className ? props.className : ""}`;
+  const baseClassName = `note card ${props.className ? props.className : ""}`;
   const [translated, setTranslated] = useState<Translation>();
-  const replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
+  // TODO Why was this unused? Was this a mistake?
   const { formatMessage } = useIntl();
 
   const options = {
@@ -93,7 +91,7 @@ export default function Note(props: NoteProps) {
   };
 
   const transformBody = useCallback(() => {
-    let body = ev?.Content ?? "";
+    const body = ev?.Content ?? "";
     if (deletions?.length > 0) {
       return (
         <b className="error">
@@ -113,14 +111,14 @@ export default function Note(props: NoteProps) {
 
   useLayoutEffect(() => {
     if (entry && inView && extendable === false) {
-      let h = entry?.target.clientHeight ?? 0;
+      const h = entry?.target.clientHeight ?? 0;
       if (h > 650) {
         setExtendable(true);
       }
     }
   }, [inView, entry, extendable]);
 
-  function goToEvent(e: any, id: u256) {
+  function goToEvent(e: React.MouseEvent, id: u256) {
     e.stopPropagation();
     navigate(eventLink(id));
   }
@@ -131,9 +129,9 @@ export default function Note(props: NoteProps) {
     }
 
     const maxMentions = 2;
-    let replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
-    let mentions: { pk: string; name: string; link: ReactNode }[] = [];
-    for (let pk of ev.Thread?.PubKeys) {
+    const replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
+    const mentions: { pk: string; name: string; link: ReactNode }[] = [];
+    for (const pk of ev.Thread?.PubKeys ?? []) {
       const u = users?.get(pk);
       const npub = hexToBech32("npub", pk);
       const shortNpub = npub.substring(0, 12);
@@ -153,9 +151,9 @@ export default function Note(props: NoteProps) {
         });
       }
     }
-    mentions.sort((a, b) => (a.name.startsWith("npub") ? 1 : -1));
-    let othersLength = mentions.length - maxMentions;
-    const renderMention = (m: any, idx: number) => {
+    mentions.sort((a) => (a.name.startsWith("npub") ? 1 : -1));
+    const othersLength = mentions.length - maxMentions;
+    const renderMention = (m: { link: React.ReactNode }, idx: number) => {
       return (
         <>
           {idx > 0 && ", "}
@@ -268,7 +266,7 @@ export default function Note(props: NoteProps) {
 
   const note = (
     <div
-      className={`${baseClassname}${highlight ? " active " : " "}${
+      className={`${baseClassName}${highlight ? " active " : " "}${
         extendable && !showMore ? " note-expand" : ""
       }`}
       ref={ref}

@@ -2,10 +2,10 @@ import "./Zap.css";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
-// @ts-expect-error
+// @ts-expect-error No types available
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bytesToHex } from "@noble/hashes/utils";
-import { sha256 } from "Util";
+import { sha256, unwrap } from "Util";
 
 //import { sha256 } from "Util";
 import { formatShort } from "Number";
@@ -24,15 +24,19 @@ function findTag(e: TaggedRawEvent, tag: string) {
   return maybeTag && maybeTag[1];
 }
 
+interface Section {
+  name: string;
+}
+
 function getInvoice(zap: TaggedRawEvent) {
   const bolt11 = findTag(zap, "bolt11");
   const decoded = invoiceDecode(bolt11);
 
   const amount = decoded.sections.find(
-    (section: any) => section.name === "amount"
+    (section: Section) => section.name === "amount"
   )?.value;
   const hash = decoded.sections.find(
-    (section: any) => section.name === "description_hash"
+    (section: Section) => section.name === "description_hash"
   )?.value;
 
   return { amount, hash: hash ? bytesToHex(hash) : undefined };
@@ -72,7 +76,7 @@ export function parseZap(zap: TaggedRawEvent): ParsedZap {
   const { amount, hash } = getInvoice(zap);
   const zapper = hash ? getZapper(zap, hash) : { isValid: false };
   const e = findTag(zap, "e");
-  const p = findTag(zap, "p")!;
+  const p = unwrap(findTag(zap, "p"));
   return {
     id: zap.id,
     e,

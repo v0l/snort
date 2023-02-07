@@ -1,7 +1,7 @@
 import * as secp from "@noble/secp256k1";
 import { sha256 as hash } from "@noble/hashes/sha256";
 import { bech32 } from "bech32";
-import { HexKey, RawEvent, TaggedRawEvent, u256 } from "Nostr";
+import { HexKey, TaggedRawEvent, u256 } from "Nostr";
 import EventKind from "Nostr/EventKind";
 import { MessageDescriptor } from "react-intl";
 
@@ -10,11 +10,11 @@ export const sha256 = (str: string) => {
 };
 
 export async function openFile(): Promise<File | undefined> {
-  return new Promise((resolve, reject) => {
-    let elm = document.createElement("input");
+  return new Promise((resolve) => {
+    const elm = document.createElement("input");
     elm.type = "file";
     elm.onchange = (e: Event) => {
-      let elm = e.target as HTMLInputElement;
+      const elm = e.target as HTMLInputElement;
       if (elm.files) {
         resolve(elm.files[0]);
       } else {
@@ -36,13 +36,15 @@ export function parseId(id: string) {
     if (hrp.some((a) => id.startsWith(a))) {
       return bech32ToHex(id);
     }
-  } catch (e) {}
+  } catch (e) {
+    // Ignore the error.
+  }
   return id;
 }
 
 export function bech32ToHex(str: string) {
-  let nKey = bech32.decode(str);
-  let buff = bech32.fromWords(nKey.words);
+  const nKey = bech32.decode(str);
+  const buff = bech32.fromWords(nKey.words);
   return secp.utils.bytesToHex(Uint8Array.from(buff));
 }
 
@@ -52,8 +54,8 @@ export function bech32ToHex(str: string) {
  * @returns
  */
 export function bech32ToText(str: string) {
-  let decoded = bech32.decode(str, 1000);
-  let buf = bech32.fromWords(decoded.words);
+  const decoded = bech32.decode(str, 1000);
+  const buf = bech32.fromWords(decoded.words);
   return new TextDecoder().decode(Uint8Array.from(buf));
 }
 
@@ -76,7 +78,7 @@ export function hexToBech32(hrp: string, hex: string) {
   }
 
   try {
-    let buf = secp.utils.hexToBytes(hex);
+    const buf = secp.utils.hexToBytes(hex);
     return bech32.encode(hrp, bech32.toWords(buf));
   } catch (e) {
     console.warn("Invalid hex", hex, e);
@@ -140,13 +142,13 @@ export function getReactions(
 export function extractLnAddress(lnurl: string) {
   // some clients incorrectly set this to LNURL service, patch this
   if (lnurl.toLowerCase().startsWith("lnurl")) {
-    let url = bech32ToText(lnurl);
+    const url = bech32ToText(lnurl);
     if (url.startsWith("http")) {
-      let parsedUri = new URL(url);
+      const parsedUri = new URL(url);
       // is lightning address
       if (parsedUri.pathname.startsWith("/.well-known/lnurlp/")) {
-        let pathParts = parsedUri.pathname.split("/");
-        let username = pathParts[pathParts.length - 1];
+        const pathParts = parsedUri.pathname.split("/");
+        const username = pathParts[pathParts.length - 1];
         return `${username}@${parsedUri.hostname}`;
       }
     }
@@ -165,7 +167,7 @@ export function unixNow() {
  * @returns Cancel timeout function
  */
 export function debounce(timeout: number, fn: () => void) {
-  let t = setTimeout(fn, timeout);
+  const t = setTimeout(fn, timeout);
   return () => clearTimeout(t);
 }
 
@@ -200,4 +202,11 @@ export function dedupeByPubkey(events: TaggedRawEvent[]) {
     { list: [], seen: new Set([]) }
   );
   return deduped.list as TaggedRawEvent[];
+}
+
+export function unwrap<T>(v: T | undefined | null): T {
+  if (v === undefined || v === null) {
+    throw new Error("missing value");
+  }
+  return v;
 }

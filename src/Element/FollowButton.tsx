@@ -21,12 +21,12 @@ export default function FollowButton(props: FollowButtonProps) {
   const baseClassname = `${props.className} follow-button`;
 
   async function follow(pubkey: HexKey) {
-    let ev = await publiser.addFollow(pubkey);
+    const ev = await publiser.addFollow(pubkey);
     publiser.broadcast(ev);
   }
 
   async function unfollow(pubkey: HexKey) {
-    let ev = await publiser.removeFollow(pubkey);
+    const ev = await publiser.removeFollow(pubkey);
     publiser.broadcast(ev);
   }
 

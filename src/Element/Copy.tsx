@@ -8,7 +8,7 @@ export interface CopyProps {
   maxSize?: number;
 }
 export default function Copy({ text, maxSize = 32 }: CopyProps) {
-  const { copy, copied, error } = useCopy();
+  const { copy, copied } = useCopy();
   const sliceLength = maxSize / 2;
   const trimmed =
     text.length > maxSize
