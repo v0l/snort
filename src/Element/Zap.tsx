@@ -55,7 +55,7 @@ function getZapper(zap: TaggedRawEvent, dhash: string): Zapper {
   return { isValid: false };
 }
 
-interface ParsedZap {
+export interface ParsedZap {
   id: HexKey;
   e?: HexKey;
   p: HexKey;

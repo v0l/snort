@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   faTrash,
+  faHeart,
   faRepeat,
   faShareNodes,
   faCopy,
@@ -21,6 +22,7 @@ import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
 import { getReactions, hexToBech32, normalizeReaction, Reaction } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
+import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
 import { parseZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Feed/ProfileFeed";
@@ -57,6 +59,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const author = useUserProfile(ev.RootPubKey);
   const publisher = useEventPublisher();
   const [reply, setReply] = useState(false);
+  const [showReactions, setShowReactions] = useState(false);
   const [tip, setTip] = useState(false);
   const isMine = ev.RootPubKey === login;
   const lang = window.navigator.language;
@@ -250,10 +253,9 @@ export default function NoteFooter(props: NoteFooterProps) {
     return (
       <>
         {prefs.enableReactions && (
-          <MenuItem onClick={() => react("-")}>
-            <Dislike />
-            {formatShort(groupReactions[Reaction.Negative])}
-            &nbsp; Dislike
+          <MenuItem onClick={() => setShowReactions(true)}>
+            <FontAwesomeIcon icon={faHeart} />
+            Reactions
           </MenuItem>
         )}
         <MenuItem onClick={() => share()}>
@@ -268,6 +270,13 @@ export default function NoteFooter(props: NoteFooterProps) {
           <FontAwesomeIcon icon={faCommentSlash} />
           Mute
         </MenuItem>
+        {prefs.enableReactions && (
+          <MenuItem onClick={() => react("-")}>
+            <Dislike />
+            {formatShort(groupReactions[Reaction.Negative])}
+            &nbsp; Dislike
+          </MenuItem>
+        )}
         <MenuItem onClick={() => block(ev.PubKey)}>
           <FontAwesomeIcon icon={faBan} />
           Block
@@ -325,6 +334,13 @@ export default function NoteFooter(props: NoteFooterProps) {
           onSend={() => setReply(false)}
           show={reply}
           setShow={setReply}
+        />
+        <Reactions
+          show={showReactions}
+          setShow={setShowReactions}
+          reactions={reactions}
+          reposts={reposts}
+          zaps={zaps}
         />
         <SendSats
           svc={author?.lud16 || author?.lud06}

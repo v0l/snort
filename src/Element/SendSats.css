@@ -61,15 +61,6 @@
   line-height: 19px;
 }
 
-.lnurl-tip .btn {
-  background-color: inherit;
-  width: 210px;
-  margin: 0 0 10px 0;
-}
-
-.lnurl-tip .btn:hover {
-}
-
 .amounts {
   display: flex;
   width: 100%;
