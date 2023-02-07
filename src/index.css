@@ -271,6 +271,7 @@ button.icon:hover {
 
 .btn-rnd {
   border: none;
+  border-radius: 100%;
   width: 21px;
   height: 21px;
   display: flex;
