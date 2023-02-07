@@ -35,7 +35,6 @@
   margin-right: 0;
 }
 
-
 @media (min-width: 520px) {
   .profile .banner {
     width: 100%;
@@ -57,9 +56,8 @@
   overflow: hidden;
 }
 
-
 .profile p {
-    white-space: pre-wrap;
+  white-space: pre-wrap;
 }
 
 .details-wrapper > .name > h2 {
@@ -101,28 +99,28 @@
 }
 
 .profile .details p {
-    word-break: break-word;
+  word-break: break-word;
 }
 
 .profile .details a {
-    color: var(--highlight);
-    text-decoration: none;
+  color: var(--highlight);
+  text-decoration: none;
 }
 
 .profile .details a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .profile .btn-icon {
-    color: var(--font-color);
-    padding: 6px;
+  color: var(--font-color);
+  padding: 6px;
 }
 
 .profile .details-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: calc(100% - 32px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: calc(100% - 32px);
 }
 
 .profile .details .text {
@@ -154,7 +152,7 @@
 }
 
 .profile .website a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .profile .website a:hover {
@@ -162,7 +160,7 @@
 }
 
 .profile .lnurl {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .profile .ln-address {
@@ -172,12 +170,12 @@
 }
 
 .profile .lnurl:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .profile .lnurl {
-    overflow: hidden;
-    text-overflow: ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .profile .link-icon {

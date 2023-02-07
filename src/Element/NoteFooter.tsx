@@ -1,8 +1,16 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { faTrash, faRepeat, faShareNodes, faCopy, faCommentSlash, faBan, faLanguage } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrash,
+  faRepeat,
+  faShareNodes,
+  faCopy,
+  faCommentSlash,
+  faBan,
+  faLanguage,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Menu, MenuItem } from '@szhsin/react-menu';
+import { Menu, MenuItem } from "@szhsin/react-menu";
 
 import Dislike from "Icons/Dislike";
 import Heart from "Icons/Heart";
@@ -25,55 +33,76 @@ import useModeration from "Hooks/useModeration";
 import { TranslateHost } from "Const";
 
 export interface Translation {
-  text: string,
-  fromLanguage: string,
-  confidence: number
+  text: string;
+  fromLanguage: string;
+  confidence: number;
 }
 
 export interface NoteFooterProps {
-  related: TaggedRawEvent[],
-  ev: NEvent,
-  onTranslated?: (content: Translation) => void
+  related: TaggedRawEvent[];
+  ev: NEvent;
+  onTranslated?: (content: Translation) => void;
 }
 
 export default function NoteFooter(props: NoteFooterProps) {
   const { related, ev } = props;
 
-  const login = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+  const login = useSelector<RootState, HexKey | undefined>(
+    (s) => s.login.publicKey
+  );
   const { mute, block } = useModeration();
-  const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
+  const prefs = useSelector<RootState, UserPreferences>(
+    (s) => s.login.preferences
+  );
   const author = useUserProfile(ev.RootPubKey);
   const publisher = useEventPublisher();
   const [reply, setReply] = useState(false);
   const [tip, setTip] = useState(false);
   const isMine = ev.RootPubKey === login;
   const lang = window.navigator.language;
-  const langNames = new Intl.DisplayNames([...window.navigator.languages], { type: "language" });
-  const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related, ev]);
-  const reposts = useMemo(() => getReactions(related, ev.Id, EventKind.Repost), [related, ev]);
-  const zaps = useMemo(() =>
-    getReactions(related, ev.Id, EventKind.ZapReceipt).map(parseZap).filter(z => z.valid && z.zapper !== ev.PubKey),
+  const langNames = new Intl.DisplayNames([...window.navigator.languages], {
+    type: "language",
+  });
+  const reactions = useMemo(
+    () => getReactions(related, ev.Id, EventKind.Reaction),
+    [related, ev]
+  );
+  const reposts = useMemo(
+    () => getReactions(related, ev.Id, EventKind.Repost),
+    [related, ev]
+  );
+  const zaps = useMemo(
+    () =>
+      getReactions(related, ev.Id, EventKind.ZapReceipt)
+        .map(parseZap)
+        .filter((z) => z.valid && z.zapper !== ev.PubKey),
     [related]
   );
-  const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
-  const didZap = zaps.some(a => a.zapper === login);
+  const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
+  const didZap = zaps.some((a) => a.zapper === login);
   const groupReactions = useMemo(() => {
-    return reactions?.reduce((acc, { content }) => {
-      let r = normalizeReaction(content);
-      const amount = acc[r] || 0
-      return { ...acc, [r]: amount + 1 }
-    }, {
-      [Reaction.Positive]: 0,
-      [Reaction.Negative]: 0
-    });
+    return reactions?.reduce(
+      (acc, { content }) => {
+        let r = normalizeReaction(content);
+        const amount = acc[r] || 0;
+        return { ...acc, [r]: amount + 1 };
+      },
+      {
+        [Reaction.Positive]: 0,
+        [Reaction.Negative]: 0,
+      }
+    );
   }, [reactions]);
 
   function hasReacted(emoji: string) {
-    return reactions?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === login)
+    return reactions?.some(
+      ({ pubkey, content }) =>
+        normalizeReaction(content) === emoji && pubkey === login
+    );
   }
 
   function hasReposted() {
-    return reposts.some(a => a.pubkey === login);
+    return reposts.some((a) => a.pubkey === login);
   }
 
   async function react(content: string) {
@@ -84,7 +113,11 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function deleteEvent() {
-    if (window.confirm(`Are you sure you want to delete ${ev.Id.substring(0, 8)}?`)) {
+    if (
+      window.confirm(
+        `Are you sure you want to delete ${ev.Id.substring(0, 8)}?`
+      )
+    ) {
       let evDelete = await publisher.delete(ev.Id);
       publisher.broadcast(evDelete);
     }
@@ -92,7 +125,10 @@ export default function NoteFooter(props: NoteFooterProps) {
 
   async function repost() {
     if (!hasReposted()) {
-      if (!prefs.confirmReposts || window.confirm(`Are you sure you want to repost: ${ev.Id}`)) {
+      if (
+        !prefs.confirmReposts ||
+        window.confirm(`Are you sure you want to repost: ${ev.Id}`)
+      ) {
         let evRepost = await publisher.repost(ev);
         publisher.broadcast(evRepost);
       }
@@ -104,21 +140,31 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (service) {
       return (
         <>
-          <div className={`reaction-pill ${didZap ? 'reacted' : ''}`} onClick={() => setTip(true)}>
+          <div
+            className={`reaction-pill ${didZap ? "reacted" : ""}`}
+            onClick={() => setTip(true)}
+          >
             <div className="reaction-pill-icon">
               <Zap />
             </div>
-            {zapTotal > 0 && (<div className="reaction-pill-number">{formatShort(zapTotal)}</div>)}
+            {zapTotal > 0 && (
+              <div className="reaction-pill-number">
+                {formatShort(zapTotal)}
+              </div>
+            )}
           </div>
         </>
-      )
+      );
     }
     return null;
   }
 
   function repostIcon() {
     return (
-      <div className={`reaction-pill ${hasReposted() ? 'reacted' : ''}`} onClick={() => repost()}>
+      <div
+        className={`reaction-pill ${hasReposted() ? "reacted" : ""}`}
+        onClick={() => repost()}
+      >
         <div className="reaction-pill-icon">
           <FontAwesomeIcon icon={faRepeat} />
         </div>
@@ -128,7 +174,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           </div>
         )}
       </div>
-    )
+    );
   }
 
   function reactionIcons() {
@@ -137,7 +183,10 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
     return (
       <>
-        <div className={`reaction-pill ${hasReacted('+') ? 'reacted' : ''} `} onClick={() => react("+")}>
+        <div
+          className={`reaction-pill ${hasReacted("+") ? "reacted" : ""} `}
+          onClick={() => react("+")}
+        >
           <div className="reaction-pill-icon">
             <Heart />
           </div>
@@ -147,15 +196,17 @@ export default function NoteFooter(props: NoteFooterProps) {
         </div>
         {repostIcon()}
       </>
-    )
+    );
   }
 
   async function share() {
-    const url = `${window.location.protocol}//${window.location.host}/e/${hexToBech32("note", ev.Id)}`;
+    const url = `${window.location.protocol}//${
+      window.location.host
+    }/e/${hexToBech32("note", ev.Id)}`;
     if ("share" in window.navigator) {
       await window.navigator.share({
         title: "Snort",
-        url: url
+        url: url,
       });
     } else {
       await navigator.clipboard.writeText(url);
@@ -170,7 +221,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         source: "auto",
         target: lang.split("-")[0],
       }),
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     });
 
     if (res.ok) {
@@ -179,7 +230,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         props.onTranslated({
           text: result.translatedText,
           fromLanguage: langNames.of(result.detectedLanguage.language),
-          confidence: result.detectedLanguage.confidence
+          confidence: result.detectedLanguage.confidence,
         } as Translation);
       }
     }
@@ -190,7 +241,9 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function copyEvent() {
-    await navigator.clipboard.writeText(JSON.stringify(ev.Original, undefined, '  '));
+    await navigator.clipboard.writeText(
+      JSON.stringify(ev.Original, undefined, "  ")
+    );
   }
 
   function menuItems() {
@@ -200,8 +253,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           <MenuItem onClick={() => react("-")}>
             <Dislike />
             {formatShort(groupReactions[Reaction.Negative])}
-            &nbsp;
-            Dislike
+            &nbsp; Dislike
           </MenuItem>
         )}
         <MenuItem onClick={() => share()}>
@@ -237,49 +289,55 @@ export default function NoteFooter(props: NoteFooterProps) {
           </MenuItem>
         )}
       </>
-    )
+    );
   }
 
   return (
     <>
-    <div className="footer">
-      <div className="footer-reactions">
-        {tipButton()}
-        {reactionIcons()}
-        <div className={`reaction-pill ${reply ? 'reacted' : ''}`} onClick={(e) => setReply(s => !s)}>
-          <div className="reaction-pill-icon">
-            <Reply />
+      <div className="footer">
+        <div className="footer-reactions">
+          {tipButton()}
+          {reactionIcons()}
+          <div
+            className={`reaction-pill ${reply ? "reacted" : ""}`}
+            onClick={(e) => setReply((s) => !s)}
+          >
+            <div className="reaction-pill-icon">
+              <Reply />
+            </div>
           </div>
+          <Menu
+            menuButton={
+              <div className="reaction-pill">
+                <div className="reaction-pill-icon">
+                  <Dots />
+                </div>
+              </div>
+            }
+            menuClassName="ctx-menu"
+          >
+            {menuItems()}
+          </Menu>
         </div>
-        <Menu menuButton={<div className="reaction-pill">
-          <div className="reaction-pill-icon">
-            <Dots />
-          </div>
-        </div>}
-          menuClassName="ctx-menu"
-        >
-          {menuItems()}
-        </Menu>
+        <NoteCreator
+          autoFocus={true}
+          replyTo={ev}
+          onSend={() => setReply(false)}
+          show={reply}
+          setShow={setReply}
+        />
+        <SendSats
+          svc={author?.lud16 || author?.lud06}
+          onClose={() => setTip(false)}
+          show={tip}
+          author={author?.pubkey}
+          target={author?.display_name || author?.name}
+          note={ev.Id}
+        />
       </div>
-      <NoteCreator
-        autoFocus={true}
-        replyTo={ev}
-        onSend={() => setReply(false)}
-        show={reply}
-        setShow={setReply}
-      />
-      <SendSats
-        svc={author?.lud16 || author?.lud06}
-        onClose={() => setTip(false)}
-        show={tip}
-        author={author?.pubkey}
-        target={author?.display_name || author?.name}
-        note={ev.Id}
-      />
-    </div>
-    <div className="zaps-container">
-     <ZapsSummary zaps={zaps} />
-    </div>
+      <div className="zaps-container">
+        <ZapsSummary zaps={zaps} />
+      </div>
     </>
-  )
+  );
 }

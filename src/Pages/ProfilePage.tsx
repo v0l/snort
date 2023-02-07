@@ -18,7 +18,7 @@ import { extractLnAddress, parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
 import LogoutButton from "Element/LogoutButton";
 import Timeline from "Element/Timeline";
-import Text from 'Element/Text'
+import Text from "Element/Text";
 import SendSats from "Element/SendSats";
 import Nip05 from "Element/Nip05";
 import Copy from "Element/Copy";
@@ -31,10 +31,10 @@ import FollowsList from "Element/FollowsList";
 import IconButton from "Element/IconButton";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
-import FollowsYou from "Element/FollowsYou"
+import FollowsYou from "Element/FollowsYou";
 import QrCode from "Element/QrCode";
 import Modal from "Element/Modal";
-import { ProxyImg } from "Element/ProxyImg"
+import { ProxyImg } from "Element/ProxyImg";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
 
 const ProfileTab = {
@@ -45,34 +45,46 @@ const ProfileTab = {
   Zaps: { text: "Zaps", value: 4 },
   Muted: { text: "Muted", value: 5 },
   Blocked: { text: "Blocked", value: 6 },
-}
+};
 
 export default function ProfilePage() {
   const params = useParams();
   const navigate = useNavigate();
   const id = useMemo(() => parseId(params.id!), [params]);
   const user = useUserProfile(id);
-  const loggedOut = useSelector<RootState, boolean | undefined>(s => s.login.loggedOut);
-  const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
-  const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
+  const loggedOut = useSelector<RootState, boolean | undefined>(
+    (s) => s.login.loggedOut
+  );
+  const loginPubKey = useSelector<RootState, HexKey | undefined>(
+    (s) => s.login.publicKey
+  );
+  const follows = useSelector<RootState, HexKey[]>((s) => s.login.follows);
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
-  const aboutText = user?.about || ''
-  const about = Text({ content: aboutText, tags: [], users: new Map(), creator: "" })
+  const aboutText = user?.about || "";
+  const about = Text({
+    content: aboutText,
+    tags: [],
+    users: new Map(),
+    creator: "",
+  });
   const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
-  const website_url = (user?.website && !user.website.startsWith("http"))
-    ? "https://" + user.website
-    : user?.website || "";
-  const zapFeed = useZapsFeed(id)
+  const website_url =
+    user?.website && !user.website.startsWith("http")
+      ? "https://" + user.website
+      : user?.website || "";
+  const zapFeed = useZapsFeed(id);
   const zaps = useMemo(() => {
-    const profileZaps = zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e && z.zapper !== id)
-    profileZaps.sort((a, b) => b.amount - a.amount)
-    return profileZaps
-  }, [zapFeed.store, id])
-  const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0)
-  const horizontalScroll = useHorizontalScroll()
+    const profileZaps = zapFeed.store.notes
+      .map(parseZap)
+      .filter((z) => z.valid && z.p === id && !z.e && z.zapper !== id);
+    profileZaps.sort((a, b) => b.amount - a.amount);
+    return profileZaps;
+  }, [zapFeed.store, id]);
+  const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
+  const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
     setTab(ProfileTab.Notes);
@@ -82,14 +94,14 @@ export default function ProfilePage() {
     return (
       <div className="name">
         <h2>
-          {user?.display_name || user?.name || 'Nostrich'}
+          {user?.display_name || user?.name || "Nostrich"}
           <FollowsYou pubkey={id} />
         </h2>
         {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
         <Copy text={params.id || ""} />
         {links()}
       </div>
-    )
+    );
   }
 
   function links() {
@@ -100,7 +112,9 @@ export default function ProfilePage() {
             <span className="link-icon">
               <Link />
             </span>
-            <a href={website_url} target="_blank" rel="noreferrer">{user.website}</a>
+            <a href={website_url} target="_blank" rel="noreferrer">
+              {user.website}
+            </a>
           </div>
         )}
 
@@ -121,35 +135,44 @@ export default function ProfilePage() {
           target={user?.display_name || user?.name}
         />
       </div>
-    )
+    );
   }
 
   function bio() {
-    return aboutText.length > 0 && (
-      <>
-        <div className="details">
-          {about}
-        </div>
-      </>
-    )
+    return (
+      aboutText.length > 0 && (
+        <>
+          <div className="details">{about}</div>
+        </>
+      )
+    );
   }
 
   function tabContent() {
     switch (tab) {
       case ProfileTab.Notes:
-        return <Timeline
-          key={id}
-          subject={{ type: "pubkey", items: [id], discriminator: id.slice(0, 12) }}
-          postsOnly={false}
-          method={"TIME_RANGE"}
-          ignoreModeration={true} />;
+        return (
+          <Timeline
+            key={id}
+            subject={{
+              type: "pubkey",
+              items: [id],
+              discriminator: id.slice(0, 12),
+            }}
+            postsOnly={false}
+            method={"TIME_RANGE"}
+            ignoreModeration={true}
+          />
+        );
       case ProfileTab.Zaps: {
         return (
           <div className="main-content">
             <h4 className="zaps-total">{formatShort(zapsTotal)} sats</h4>
-            {zaps.map(z => <ZapElement showZapped={false} zap={z} />)}
+            {zaps.map((z) => (
+              <ZapElement showZapped={false} zap={z} />
+            ))}
           </div>
-        )
+        );
       }
 
       case ProfileTab.Follows: {
@@ -157,7 +180,13 @@ export default function ProfilePage() {
           return (
             <div className="main-content">
               <h4>Following {follows.length}</h4>
-              {follows.map(a => <ProfilePreview key={a} pubkey={a.toLowerCase()} options={{ about: false }} />)}
+              {follows.map((a) => (
+                <ProfilePreview
+                  key={a}
+                  pubkey={a.toLowerCase()}
+                  options={{ about: false }}
+                />
+              ))}
             </div>
           );
         } else {
@@ -165,13 +194,13 @@ export default function ProfilePage() {
         }
       }
       case ProfileTab.Followers: {
-        return <FollowersList pubkey={id} />
+        return <FollowersList pubkey={id} />;
       }
       case ProfileTab.Muted: {
-        return isMe ? <BlockList variant="muted" /> : <MutedList pubkey={id} />
+        return isMe ? <BlockList variant="muted" /> : <MutedList pubkey={id} />;
       }
       case ProfileTab.Blocked: {
-        return isMe ? <BlockList variant="blocked" /> : null
+        return isMe ? <BlockList variant="blocked" /> : null;
       }
     }
   }
@@ -181,7 +210,7 @@ export default function ProfilePage() {
       <div className="avatar-wrapper">
         <Avatar user={user} />
       </div>
-    )
+    );
   }
 
   function renderIcons() {
@@ -193,7 +222,11 @@ export default function ProfilePage() {
         {showProfileQr && (
           <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id} />
-            <QrCode data={`nostr:${hexToBech32("npub", id)}`} link={undefined} className="m10" />
+            <QrCode
+              data={`nostr:${hexToBech32("npub", id)}`}
+              link={undefined}
+              className="m10"
+            />
           </Modal>
         )}
         {isMe ? (
@@ -212,7 +245,11 @@ export default function ProfilePage() {
             )}
             {!loggedOut && (
               <>
-                <IconButton onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
+                <IconButton
+                  onClick={() =>
+                    navigate(`/messages/${hexToBech32("npub", id)}`)
+                  }
+                >
                   <Envelope width={16} height={13} />
                 </IconButton>
               </>
@@ -220,7 +257,7 @@ export default function ProfilePage() {
           </>
         )}
       </div>
-    )
+    );
   }
 
   function userDetails() {
@@ -233,28 +270,41 @@ export default function ProfilePage() {
         </div>
         {bio()}
       </div>
-    )
+    );
   }
 
   function renderTab(v: Tab) {
-    return <TabElement t={v} tab={tab} setTab={setTab} />
+    return <TabElement t={v} tab={tab} setTab={setTab} />;
   }
 
   const w = window.document.querySelector(".page")?.clientWidth;
   return (
     <>
       <div className="profile flex">
-        {user?.banner && <ProxyImg alt="banner" className="banner" src={user.banner} size={w} />}
+        {user?.banner && (
+          <ProxyImg
+            alt="banner"
+            className="banner"
+            src={user.banner}
+            size={w}
+          />
+        )}
         <div className="profile-wrapper flex">
           {avatar()}
           {userDetails()}
         </div>
       </div>
       <div className="tabs main-content" ref={horizontalScroll}>
-        {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Zaps, ProfileTab.Muted].map(renderTab)}
+        {[
+          ProfileTab.Notes,
+          ProfileTab.Followers,
+          ProfileTab.Follows,
+          ProfileTab.Zaps,
+          ProfileTab.Muted,
+        ].map(renderTab)}
         {isMe && renderTab(ProfileTab.Blocked)}
       </div>
       {tabContent()}
     </>
-  )
+  );
 }

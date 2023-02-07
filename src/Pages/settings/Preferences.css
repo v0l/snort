@@ -1,8 +1,8 @@
 .preferences small {
-    margin-top: 0.5em;
-    color: var(--font-secondary-color);
+  margin-top: 0.5em;
+  color: var(--font-secondary-color);
 }
 
 .preferences select {
-    min-width: 100px;
+  min-width: 100px;
 }

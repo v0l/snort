@@ -2,20 +2,20 @@ import { HexKey } from "Nostr";
 import useModeration from "Hooks/useModeration";
 
 interface BlockButtonProps {
-  pubkey: HexKey
+  pubkey: HexKey;
 }
 
 const BlockButton = ({ pubkey }: BlockButtonProps) => {
-  const { block, unblock, isBlocked } = useModeration()
+  const { block, unblock, isBlocked } = useModeration();
   return isBlocked(pubkey) ? (
     <button className="secondary" type="button" onClick={() => unblock(pubkey)}>
-       Unblock
+      Unblock
     </button>
   ) : (
     <button className="secondary" type="button" onClick={() => block(pubkey)}>
-       Block
+      Block
     </button>
-  )
-}
+  );
+};
 
-export default BlockButton
+export default BlockButton;

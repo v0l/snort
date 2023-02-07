@@ -1,25 +1,25 @@
 .relay {
-    margin-top: 10px;
-    background-color: var(--gray-secondary);
-    border-radius: 5px;
-    text-align: start;
-    display: grid;
-    grid-template-columns: min-content auto;
-    overflow: hidden;
-    font-size: var(--font-size-small);
+  margin-top: 10px;
+  background-color: var(--gray-secondary);
+  border-radius: 5px;
+  text-align: start;
+  display: grid;
+  grid-template-columns: min-content auto;
+  overflow: hidden;
+  font-size: var(--font-size-small);
 }
 
 .relay > div {
-    padding: 5px;
+  padding: 5px;
 }
 
 .relay-extra {
-    padding: 5px;
-    margin: 0 5px;
-    background-color: var(--gray-tertiary);
-    border-radius: 0 0 5px 5px;
-    white-space: nowrap;
-    font-size: var(--font-size-small);
+  padding: 5px;
+  margin: 0 5px;
+  background-color: var(--gray-tertiary);
+  border-radius: 0 0 5px 5px;
+  white-space: nowrap;
+  font-size: var(--font-size-small);
 }
 
 .icon-btn {
@@ -35,7 +35,7 @@
 }
 
 .checkmark {
-  margin-left: .5em;
+  margin-left: 0.5em;
   padding: 2px 10px;
   background-color: var(--gray);
   border-radius: 10px;

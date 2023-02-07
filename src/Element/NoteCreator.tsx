@@ -11,7 +11,7 @@ import { default as NEvent } from "Nostr/Event";
 import useFileUpload from "Upload";
 
 interface NotePreviewProps {
-  note: NEvent
+  note: NEvent;
 }
 
 function NotePreview({ note }: NotePreviewProps) {
@@ -20,32 +20,34 @@ function NotePreview({ note }: NotePreviewProps) {
       <ProfileImage pubkey={note.PubKey} />
       <div className="note-preview-body">
         {note.Content.slice(0, 136)}
-        {note.Content.length > 140 && '...'}
+        {note.Content.length > 140 && "..."}
       </div>
     </div>
-  )
+  );
 }
 
 export interface NoteCreatorProps {
-  show: boolean
-  setShow: (s: boolean) => void
-  replyTo?: NEvent,
-  onSend?: Function,
-  autoFocus: boolean
+  show: boolean;
+  setShow: (s: boolean) => void;
+  replyTo?: NEvent;
+  onSend?: Function;
+  autoFocus: boolean;
 }
 
 export function NoteCreator(props: NoteCreatorProps) {
-  const { show, setShow, replyTo, onSend, autoFocus } = props
+  const { show, setShow, replyTo, onSend, autoFocus } = props;
   const publisher = useEventPublisher();
   const [note, setNote] = useState<string>();
   const [error, setError] = useState<string>();
   const [active, setActive] = useState<boolean>(false);
   const uploader = useFileUpload();
-  const hasErrors = (error?.length ?? 0) > 0
+  const hasErrors = (error?.length ?? 0) > 0;
 
   async function sendNote() {
     if (note) {
-      let ev = replyTo ? await publisher.reply(replyTo, note) : await publisher.note(note);
+      let ev = replyTo
+        ? await publisher.reply(replyTo, note)
+        : await publisher.note(note);
       console.debug("Sending note: ", ev);
       publisher.broadcast(ev);
       setNote("");
@@ -63,29 +65,29 @@ export function NoteCreator(props: NoteCreatorProps) {
       if (file) {
         let rx = await uploader.upload(file, file.name);
         if (rx.url) {
-          setNote(n => `${n ? `${n}\n` : ""}${rx.url}`);
+          setNote((n) => `${n ? `${n}\n` : ""}${rx.url}`);
         } else if (rx?.error) {
           setError(rx.error);
         }
       }
     } catch (error: any) {
-      setError(error?.message)
+      setError(error?.message);
     }
   }
 
   function onChange(ev: any) {
-    const { value } = ev.target
-    setNote(value)
+    const { value } = ev.target;
+    setNote(value);
     if (value) {
-      setActive(true)
+      setActive(true);
     } else {
-      setActive(false)
+      setActive(false);
     }
   }
 
   function cancel(ev: any) {
-    setShow(false)
-    setNote("")
+    setShow(false);
+    setNote("");
   }
 
   function onSubmit(ev: React.MouseEvent<HTMLButtonElement>) {
@@ -96,14 +98,9 @@ export function NoteCreator(props: NoteCreatorProps) {
   return (
     <>
       {show && (
-        <Modal
-          className="note-creator-modal"
-          onClose={() => setShow(false)}
-        >
-          {replyTo && (
-            <NotePreview note={replyTo} />
-          )}
-          <div className={`flex note-creator ${replyTo ? 'note-reply' : ''}`}>
+        <Modal className="note-creator-modal" onClose={() => setShow(false)}>
+          {replyTo && <NotePreview note={replyTo} />}
+          <div className={`flex note-creator ${replyTo ? "note-reply" : ""}`}>
             <div className="flex f-col mr10 f-grow">
               <Textarea
                 autoFocus={autoFocus}
@@ -112,7 +109,11 @@ export function NoteCreator(props: NoteCreatorProps) {
                 value={note}
                 onFocus={() => setActive(true)}
               />
-              <button type="button" className="attachment" onClick={(e) => attachFile()}>
+              <button
+                type="button"
+                className="attachment"
+                onClick={(e) => attachFile()}
+              >
                 <Attachment />
               </button>
             </div>
@@ -123,7 +124,7 @@ export function NoteCreator(props: NoteCreatorProps) {
               Cancel
             </button>
             <button type="button" onClick={onSubmit}>
-              {replyTo ? 'Reply' : 'Send'}
+              {replyTo ? "Reply" : "Send"}
             </button>
           </div>
         </Modal>

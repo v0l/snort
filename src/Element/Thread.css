@@ -63,7 +63,7 @@
 }
 
 .subthread-container.subthread-multi .line-container:before {
-  content: '';
+  content: "";
   position: absolute;
   left: 36px;
   top: 48px;
@@ -78,7 +78,7 @@
 }
 
 .subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
-  content: '';
+  content: "";
   position: absolute;
   left: 36px;
   top: 48px;
@@ -87,13 +87,14 @@
 }
 
 @media (min-width: 720px) {
-  .subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
+  .subthread-container.subthread-mid:not(.subthread-last)
+    .line-container:after {
     left: 48px;
   }
 }
 
 .subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
-  content: '';
+  content: "";
   position: absolute;
   border-left: 1px solid var(--gray-superdark);
   left: 36px;
@@ -102,13 +103,14 @@
 }
 
 @media (min-width: 720px) {
-  .subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
+  .subthread-container.subthread-mid:not(.subthread-last)
+    .line-container:after {
     left: 48px;
   }
 }
 
 .subthread-container.subthread-last .line-container:before {
-  content: '';
+  content: "";
   position: absolute;
   border-left: 1px solid var(--gray-superdark);
   left: 36px;
@@ -137,7 +139,8 @@
   margin-left: 80px;
 }
 
-.thread-container .collapsed, .thread-container .show-more-container {
+.thread-container .collapsed,
+.thread-container .show-more-container {
   background: var(--note-bg);
   min-height: 48px;
 }
@@ -147,7 +150,7 @@
   border-bottom-right-radius: 16px;
 }
 
-.thread-container  .collapsed {
+.thread-container .collapsed {
   background-color: var(--note-bg);
 }
 

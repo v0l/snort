@@ -1,39 +1,36 @@
-import './index.css';
-import '@szhsin/react-menu/dist/index.css';
+import "./index.css";
+import "@szhsin/react-menu/dist/index.css";
 
-import { StrictMode } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import * as ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { StrictMode } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import * as ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // @ts-expect-error
-import * as serviceWorkerRegistration from 'serviceWorkerRegistration';
+import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import Store from "State/Store";
-import EventPage from 'Pages/EventPage';
-import Layout from 'Pages/Layout';
-import LoginPage from 'Pages/Login';
-import ProfilePage from 'Pages/ProfilePage';
-import RootPage from 'Pages/Root';
-import NotificationsPage from 'Pages/Notifications';
-import SettingsPage, { SettingsRoutes } from 'Pages/SettingsPage';
-import ErrorPage from 'Pages/ErrorPage';
-import VerificationPage from 'Pages/Verification';
-import MessagesPage from 'Pages/MessagesPage';
-import ChatPage from 'Pages/ChatPage';
-import DonatePage from 'Pages/DonatePage';
-import HashTagsPage from 'Pages/HashTagsPage';
-import SearchPage from 'Pages/SearchPage';
-import HelpPage from 'Pages/HelpPage';
-import { NewUserRoutes } from 'Pages/new';
+import EventPage from "Pages/EventPage";
+import Layout from "Pages/Layout";
+import LoginPage from "Pages/Login";
+import ProfilePage from "Pages/ProfilePage";
+import RootPage from "Pages/Root";
+import NotificationsPage from "Pages/Notifications";
+import SettingsPage, { SettingsRoutes } from "Pages/SettingsPage";
+import ErrorPage from "Pages/ErrorPage";
+import VerificationPage from "Pages/Verification";
+import MessagesPage from "Pages/MessagesPage";
+import ChatPage from "Pages/ChatPage";
+import DonatePage from "Pages/DonatePage";
+import HashTagsPage from "Pages/HashTagsPage";
+import SearchPage from "Pages/SearchPage";
+import HelpPage from "Pages/HelpPage";
+import { NewUserRoutes } from "Pages/new";
 
 /**
  * HTTP query provider
  */
-const HTTP = new QueryClient()
+const HTTP = new QueryClient();
 
 serviceWorkerRegistration.register();
 
@@ -44,63 +41,63 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <RootPage />
+        element: <RootPage />,
       },
       {
         path: "/login",
-        element: <LoginPage />
+        element: <LoginPage />,
       },
       {
         path: "/help",
-        element: <HelpPage />
+        element: <HelpPage />,
       },
       {
         path: "/e/:id",
-        element: <EventPage />
+        element: <EventPage />,
       },
       {
         path: "/p/:id",
-        element: <ProfilePage />
+        element: <ProfilePage />,
       },
       {
         path: "/notifications",
-        element: <NotificationsPage />
+        element: <NotificationsPage />,
       },
       {
         path: "/settings",
         element: <SettingsPage />,
-        children: SettingsRoutes
+        children: SettingsRoutes,
       },
       {
         path: "/verification",
-        element: <VerificationPage />
+        element: <VerificationPage />,
       },
       {
         path: "/messages",
-        element: <MessagesPage />
+        element: <MessagesPage />,
       },
       {
         path: "/messages/:id",
-        element: <ChatPage />
+        element: <ChatPage />,
       },
       {
         path: "/donate",
-        element: <DonatePage />
+        element: <DonatePage />,
       },
       {
         path: "/t/:tag",
-        element: <HashTagsPage />
+        element: <HashTagsPage />,
       },
       {
         path: "/search/:keyword?",
-        element: <SearchPage />
+        element: <SearchPage />,
       },
-      ...NewUserRoutes
-    ]
-  }
+      ...NewUserRoutes,
+    ],
+  },
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById('root')!);
+const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <StrictMode>
     <Provider store={Store}>

@@ -13,8 +13,8 @@ import { MetadataCache } from "State/Users";
 import { useQuery } from "State/Users/Hooks";
 
 interface EmojiItemProps {
-  name: string
-  char: string
+  name: string;
+  char: string;
 }
 
 const EmojiItem = ({ entity: { name, char } }: { entity: EmojiItemProps }) => {
@@ -23,11 +23,11 @@ const EmojiItem = ({ entity: { name, char } }: { entity: EmojiItemProps }) => {
       <div className="emoji">{char}</div>
       <div className="emoji-name">{name}</div>
     </div>
-  )
-}
+  );
+};
 
 const UserItem = (metadata: MetadataCache) => {
-  const { pubkey, display_name, picture, nip05, ...rest } = metadata
+  const { pubkey, display_name, picture, nip05, ...rest } = metadata;
   return (
     <div key={pubkey} className="user-item">
       <div className="user-picture">
@@ -38,24 +38,24 @@ const UserItem = (metadata: MetadataCache) => {
         <Nip05 nip05={nip05} pubkey={pubkey} />
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Textarea = ({ users, onChange, ...rest }: any) => {
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState("");
 
-  const allUsers = useQuery(query)
+  const allUsers = useQuery(query);
 
   const userDataProvider = (token: string) => {
-    setQuery(token)
-    return allUsers
-  }
+    setQuery(token);
+    return allUsers;
+  };
 
   const emojiDataProvider = (token: string) => {
     return emoji(token)
       .slice(0, 5)
       .map(({ name, char }) => ({ name, char }));
-  }
+  };
 
   return (
     <ReactTextareaAutocomplete
@@ -68,17 +68,17 @@ const Textarea = ({ users, onChange, ...rest }: any) => {
         ":": {
           dataProvider: emojiDataProvider,
           component: EmojiItem,
-          output: (item: EmojiItemProps, trigger) => item.char
+          output: (item: EmojiItemProps, trigger) => item.char,
         },
         "@": {
           afterWhitespace: true,
           dataProvider: userDataProvider,
           component: (props: any) => <UserItem {...props.entity} />,
-          output: (item: any) => `@${hexToBech32("npub", item.pubkey)}`
-        }
+          output: (item: any) => `@${hexToBech32("npub", item.pubkey)}`,
+        },
       }}
     />
-  )
-}
+  );
+};
 
-export default Textarea
+export default Textarea;

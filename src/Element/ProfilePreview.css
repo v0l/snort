@@ -1,15 +1,15 @@
 .profile-preview {
-    display: flex;
-    align-items: center;
-    min-height: 40px;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
 }
 
 .profile-preview .pfp {
-    flex-grow: 1;
-    min-width: 200px;
+  flex-grow: 1;
+  min-width: 200px;
 }
 
 .profile-preview .about {
-    font-size: small;
-    color: var(--gray-light);
+  font-size: small;
+  color: var(--gray-light);
 }

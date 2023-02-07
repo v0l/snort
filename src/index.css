@@ -1,63 +1,93 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Bietnam+Pro:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Be+Bietnam+Pro:wght@400;500;600;700&display=swap");
 
 :root {
   --bg-color: #000;
-  --font-color: #FFF;
-  --font-secondary-color: #A7A7A7;
-  --font-tertiary-color:  #A3A3A3;
+  --font-color: #fff;
+  --font-secondary-color: #a7a7a7;
+  --font-tertiary-color: #a3a3a3;
   --font-size: 16px;
   --font-size-small: 14px;
   --font-size-tiny: 12px;
   --modal-bg-color: rgba(0, 0, 0, 0.8);
-  --note-bg: #0C0C0C;
-  --highlight: #8B5CF6;
-  --error: #FF6053;
-  --success: #2AD544;
+  --note-bg: #0c0c0c;
+  --highlight: #8b5cf6;
+  --error: #ff6053;
+  --success: #2ad544;
 
-  --gray-superlight: #EEE;
+  --gray-superlight: #eee;
   --gray-light: #999;
-  --gray-medium: #7B7B7B;
+  --gray-medium: #7b7b7b;
   --gray: #333;
   --gray-secondary: #222;
   --gray-tertiary: #444;
-  --gray-dark: #2B2B2B;
-  --gray-superdark: #1A1A1A;
-  --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
-  --snort-gradient: linear-gradient(90deg, #A178FF 0%, #FF6BAF 108.33%);
-  --invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgba(161, 120, 255, 0.2), rgba(255, 107, 175, .2) 108.33%);
-  --paid-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgba(161, 120, 255, .6), rgba(255, 107, 175, .6) 108.33%);
-  --expired-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, var(--gray), var(--gray-superdark));
-  --strike-army-gradient: linear-gradient(to bottom right, #CCFF00, #a1c900);
+  --gray-dark: #2b2b2b;
+  --gray-superdark: #1a1a1a;
+  --gray-gradient: linear-gradient(
+    to bottom right,
+    var(--gray-superlight),
+    var(--gray),
+    var(--gray-light)
+  );
+  --snort-gradient: linear-gradient(90deg, #a178ff 0%, #ff6baf 108.33%);
+  --invoice-gradient: linear-gradient(
+    45deg,
+    var(--note-bg) 50%,
+    rgba(161, 120, 255, 0.2),
+    rgba(255, 107, 175, 0.2) 108.33%
+  );
+  --paid-invoice-gradient: linear-gradient(
+    45deg,
+    var(--note-bg) 50%,
+    rgba(161, 120, 255, 0.6),
+    rgba(255, 107, 175, 0.6) 108.33%
+  );
+  --expired-invoice-gradient: linear-gradient(
+    45deg,
+    var(--note-bg) 50%,
+    var(--gray),
+    var(--gray-superdark)
+  );
+  --strike-army-gradient: linear-gradient(to bottom right, #ccff00, #a1c900);
 }
 
 html.light {
-  --bg-color: #F1F1F1;
-  --font-color: #57534E;
-  --font-secondary-color: #7B7B7B;
-  --font-tertiary-color:  #A7A7A7;
+  --bg-color: #f1f1f1;
+  --font-color: #57534e;
+  --font-secondary-color: #7b7b7b;
+  --font-tertiary-color: #a7a7a7;
 
-  --highlight-light: #16AAC1;
-  --highlight: #0284C7;
-  --highlight-dark: #0A52B5;
+  --highlight-light: #16aac1;
+  --highlight: #0284c7;
+  --highlight-dark: #0a52b5;
   --modal-bg-color: rgba(240, 240, 240, 0.8);
 
   --note-bg: white;
 
-  --gray: #CCC;
-  --gray-secondary: #DDD;
-  --gray-tertiary: #EEE;
+  --gray: #ccc;
+  --gray-secondary: #ddd;
+  --gray-tertiary: #eee;
   --gray-superlight: #333;
   --gray-light: #555;
-  --gray-dark: #2B2B2B;
-  --gray-superdark: #EEE;
+  --gray-dark: #2b2b2b;
+  --gray-superdark: #eee;
 
-  --invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgb(247, 183, 51, 0.2), rgb(252, 74, 26, 0.2));
-  --paid-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgb(247, 183, 51, 0.6), rgb(252, 74, 26, 0.6));
+  --invoice-gradient: linear-gradient(
+    45deg,
+    var(--note-bg) 50%,
+    rgb(247, 183, 51, 0.2),
+    rgb(252, 74, 26, 0.2)
+  );
+  --paid-invoice-gradient: linear-gradient(
+    45deg,
+    var(--note-bg) 50%,
+    rgb(247, 183, 51, 0.6),
+    rgb(252, 74, 26, 0.6)
+  );
 }
 
 body {
   margin: 0;
-  font-family: 'Be Vietnam Pro', sans-serif;
+  font-family: "Be Vietnam Pro", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-color);
@@ -66,7 +96,8 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 .page {
@@ -101,14 +132,13 @@ html.light .card {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-
 .card .header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.card>.footer {
+.card > .footer {
   display: flex;
   flex-direction: row;
 }
@@ -249,14 +279,21 @@ button.icon:hover {
 }
 
 @media (min-width: 520px) {
-  .btn-rnd { width: 32px; height: 32px }
+  .btn-rnd {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 textarea {
   font: inherit;
 }
 
-input[type="text"], input[type="password"], input[type="number"], select, textarea {
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
   padding: 12px;
   color: var(--font-color);
   background: transparent;
@@ -265,11 +302,16 @@ input[type="text"], input[type="password"], input[type="number"], select, textar
   outline: none;
 }
 
-.light input[type="text"], .light input[type="password"], .light input[type="number"], .light select, .light textarea {
+.light input[type="text"],
+.light input[type="password"],
+.light input[type="number"],
+.light select,
+.light textarea {
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-input:placeholder, textarea:placeholder {
+input:placeholder,
+textarea:placeholder {
   color: var(--font-tertiary-color);
 }
 
@@ -357,22 +399,22 @@ div.form-group {
   grid-template-columns: 1fr 2fr;
 }
 
-div.form-group>div {
+div.form-group > div {
   padding: 3px 5px;
 }
 
-div.form-group>div:nth-child(1) {
+div.form-group > div:nth-child(1) {
   display: flex;
   align-self: center;
 }
 
-div.form-group>div:nth-child(2) {
+div.form-group > div:nth-child(2) {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
 }
 
-div.form-group>div:nth-child(2) input {
+div.form-group > div:nth-child(2) input {
   flex-grow: 1;
 }
 
@@ -395,7 +437,7 @@ div.form-col {
   justify-content: center;
 }
 
-.modal .modal-content>div {
+.modal .modal-content > div {
   padding: 10px;
   border-radius: 10px;
   background-color: var(--gray);
@@ -477,11 +519,11 @@ body.scroll-lock {
   margin: 0 auto;
 }
 
-.tweet div .twitter-tweet>iframe {
+.tweet div .twitter-tweet > iframe {
   max-height: unset;
 }
 
-@media(max-width: 720px) {
+@media (max-width: 720px) {
   div.form {
     grid-auto-flow: dense;
   }
