@@ -50,7 +50,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     const service = props.svc;
     const show = props.show || false;
     const { note, author, target } = props
-    const amounts = [500, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000];
+    const amounts = [500, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000];
     const emojis: Record<number, string> = {
       1_000: "👍",
       5_000: "💜",
@@ -58,6 +58,7 @@ export default function LNURLTip(props: LNURLTipProps) {
       20_000: "🤩",
       50_000: "🔥",
       100_000: "🚀",
+      1_000_000: "🤯",
     }
     const [payService, setPayService] = useState<LNURLService>();
     const [amount, setAmount] = useState<number>(500);
