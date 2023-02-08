@@ -1,6 +1,6 @@
 import { HexKey, TaggedRawEvent } from "Nostr";
 import { ProfileCacheExpire } from "Const";
-import { mapEventToProfile, MetadataCache, UsersDb } from "State/Users";
+import { mapEventToProfile, UsersDb } from "State/Users";
 import Connection, { RelaySettings } from "Nostr/Connection";
 import Event from "Nostr/Event";
 import EventKind from "Nostr/EventKind";

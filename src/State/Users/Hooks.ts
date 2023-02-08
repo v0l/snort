@@ -4,7 +4,6 @@ import { MetadataCache } from "State/Users";
 import type { RootState } from "State/Store";
 import { HexKey } from "Nostr";
 import { useDb } from "./Db";
-import { unwrap } from "Util";
 
 export function useQuery(query: string) {
   const db = useDb();
