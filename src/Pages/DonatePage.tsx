@@ -25,6 +25,9 @@ const Contributors = [
   bech32ToHex(
     "npub1xdtducdnjerex88gkg2qk2atsdlqsyxqaag4h05jmcpyspqt30wscmntxy"
   ), // artur
+  bech32ToHex(
+    "npub1vp8fdcyejd4pqjyrjk9sgz68vuhq7pyvnzk8j0ehlljvwgp8n6eqsrnpsw"
+  ), // samsamskies
 ];
 
 interface Splits {
