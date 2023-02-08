@@ -20,10 +20,6 @@ const getMessages = (locale: string) => {
 
 export const IntlProvider = ({ children }: { children: ReactNode }) => {
     const getLocale = () => {
-        if (typeof navigator === 'undefined') {
-            return DEFAULT_LOCALE
-        }
-
         return (
             (navigator.languages && navigator.languages[0]) ||
             navigator.language ||
