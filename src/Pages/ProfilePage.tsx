@@ -95,7 +95,6 @@ export default function ProfilePage() {
     Blocked: { text: formatMessage(messages.Blocked), value: BLOCKED },
   };
   const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
-  console.log("tab", tab);
 
   useEffect(() => {
     setTab(ProfileTab.Notes);
