@@ -26,6 +26,7 @@ import HashTagsPage from "Pages/HashTagsPage";
 import SearchPage from "Pages/SearchPage";
 import HelpPage from "Pages/HelpPage";
 import { NewUserRoutes } from "Pages/new";
+import { IntlProvider } from "./IntlProvider";
 
 /**
  * HTTP query provider
@@ -102,7 +103,9 @@ root.render(
   <StrictMode>
     <Provider store={Store}>
       <QueryClientProvider client={HTTP}>
-        <RouterProvider router={router} />
+        <IntlProvider>
+          <RouterProvider router={router} />
+        </IntlProvider>
       </QueryClientProvider>
     </Provider>
   </StrictMode>
