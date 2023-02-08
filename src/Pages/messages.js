@@ -2,7 +2,7 @@ import { defineMessages } from "react-intl";
 import { addIdAndDefaultMessageToMessages } from "Util";
 
 const messages = defineMessages({
-  login: "Login",
+  Login: "Login",
 });
 
 export default addIdAndDefaultMessageToMessages(messages, 'Pages');
