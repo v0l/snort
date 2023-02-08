@@ -41,6 +41,7 @@ export type RawReqFilter = {
   "#p"?: u256[];
   "#t"?: string[];
   "#d"?: string[];
+  "#r"?: string[];
   search?: string;
   since?: number;
   until?: number;
