@@ -52,9 +52,9 @@
     "workbox-streams": "^6.4.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "generate-messages": "extract-messages -l=en,es,zh,ja,fr -o src/translations -d en --flat true **/messages.js",
     "format": "prettier --write .",
@@ -79,7 +79,9 @@
   },
   "devDependencies": {
     "babel-plugin-react-intl-auto": "^3.3.0",
+    "customize-cra": "^1.0.0",
     "extract-react-intl-messages": "^4.1.1",
-    "prettier": "2.8.3"
+    "prettier": "2.8.3",
+    "react-app-rewired": "^2.2.1"
   }
 }

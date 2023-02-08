@@ -1,7 +1,6 @@
 import { defineMessages } from "react-intl";
-import { addIdAndDefaultMessageToMessages } from "Util";
 
-const messages = defineMessages({
+export default defineMessages({
   Cancel: "Cancel",
   Reply: "Reply",
   Send: "Send",
@@ -91,5 +90,3 @@ const messages = defineMessages({
   FindMore: "Find out more info about {service} at {link}",
   SavePassword: "Please make sure to save the following password in order to manage your handle in the future",
 });
-
-export default addIdAndDefaultMessageToMessages(messages, "Element");

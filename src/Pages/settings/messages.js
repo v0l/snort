@@ -1,7 +1,6 @@
 import { defineMessages } from "react-intl";
-import { addIdAndDefaultMessageToMessages } from "Util";
 
-const messages = defineMessages({
+export default defineMessages({
   Profile: "Profile",
   Relays: "Relays",
   Owner: "Owner",
@@ -54,5 +53,3 @@ const messages = defineMessages({
   Buy: "Buy",
   Nip05: "NIP-05",
 });
-
-export default addIdAndDefaultMessageToMessages(messages, "Pages.settings");
