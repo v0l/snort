@@ -57,4 +57,4 @@ const messages = defineMessages({
   Nip05: "NIP-05",
 });
 
-export default addIdAndDefaultMessageToMessages(messages, "Settings");
+export default addIdAndDefaultMessageToMessages(messages, "Pages.settings");
