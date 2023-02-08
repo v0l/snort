@@ -7,7 +7,6 @@ import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-// @ts-expect-error
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import Store from "State/Store";
 import EventPage from "Pages/EventPage";

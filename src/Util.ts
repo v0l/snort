@@ -3,6 +3,7 @@ import { sha256 as hash } from "@noble/hashes/sha256";
 import { bech32 } from "bech32";
 import { HexKey, RawEvent, TaggedRawEvent, u256 } from "Nostr";
 import EventKind from "Nostr/EventKind";
+import { MessageDescriptor } from "react-intl";
 
 export const sha256 = (str: string) => {
   return secp.utils.bytesToHex(hash(str));
@@ -177,4 +178,20 @@ export function unixNow() {
 export function debounce(timeout: number, fn: () => void) {
   let t = setTimeout(fn, timeout);
   return () => clearTimeout(t);
+}
+
+export function addIdAndDefaultMessageToMessages(
+  messages: Record<string, string>,
+  messageIdPrefix: string
+) {
+  const result: Record<string, MessageDescriptor> = {};
+
+  for (const key in messages) {
+    result[key] = {
+      id: `${messageIdPrefix}.${key}`,
+      defaultMessage: messages[key],
+    };
+  }
+
+  return result;
 }

@@ -1,14 +1,9 @@
 import { type ReactNode } from 'react'
 import { IntlProvider as ReactIntlProvider } from 'react-intl'
+import enMessages from 'translations/en.json'
+import esMessages from 'translations/es.json'
 
 const DEFAULT_LOCALE = 'en-US'
-const enMessages = {
-    hello: 'hello',
-}
-
-const esMessages = {
-    hello: 'hola',
-}
 
 const getMessages = (locale: string) => {
     const truncatedLocale = locale.toLowerCase().split(/[_-]+/)[0]
