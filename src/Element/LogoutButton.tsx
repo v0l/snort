@@ -1,7 +1,10 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
 
 import { logout } from "State/Login";
+
+import messages from "./messages";
 
 export default function LogoutButton() {
   const dispatch = useDispatch();
@@ -15,7 +18,7 @@ export default function LogoutButton() {
         navigate("/");
       }}
     >
-      Logout
+      <FormattedMessage {...messages.Logout} />
     </button>
   );
 }

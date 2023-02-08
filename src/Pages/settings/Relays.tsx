@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
 
 import Relay from "Element/Relay";
@@ -6,6 +7,8 @@ import useEventPublisher from "Feed/EventPublisher";
 import { RootState } from "State/Store";
 import { RelaySettings } from "Nostr/Connection";
 import { setRelays } from "State/Login";
+
+import messages from "./messages";
 
 const RelaySettingsPage = () => {
   const dispatch = useDispatch();
@@ -24,7 +27,9 @@ const RelaySettingsPage = () => {
   function addRelay() {
     return (
       <>
-        <h4>Add Relays</h4>
+        <h4>
+          <FormattedMessage {...messages.AddRelays} />
+        </h4>
         <div className="flex mb10">
           <input
             type="text"
@@ -35,7 +40,7 @@ const RelaySettingsPage = () => {
           />
         </div>
         <button className="secondary mb10" onClick={() => addNewRelay()}>
-          Add
+          <FormattedMessage {...messages.Add} />
         </button>
       </>
     );
@@ -66,7 +71,7 @@ const RelaySettingsPage = () => {
       <div className="flex mt10">
         <div className="f-grow"></div>
         <button type="button" onClick={() => saveRelays()}>
-          Save
+          <FormattedMessage {...messages.Save} />
         </button>
       </div>
       {addRelay()}

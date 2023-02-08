@@ -1,6 +1,7 @@
 import "./NoteCreator.css";
-
 import { useState } from "react";
+import { FormattedMessage } from "react-intl";
+
 import Attachment from "Icons/Attachment";
 import useEventPublisher from "Feed/EventPublisher";
 import { openFile } from "Util";
@@ -9,6 +10,8 @@ import Modal from "Element/Modal";
 import ProfileImage from "Element/ProfileImage";
 import { default as NEvent } from "Nostr/Event";
 import useFileUpload from "Upload";
+
+import messages from "./messages";
 
 interface NotePreviewProps {
   note: NEvent;
@@ -121,10 +124,14 @@ export function NoteCreator(props: NoteCreatorProps) {
           </div>
           <div className="note-creator-actions">
             <button className="secondary" type="button" onClick={cancel}>
-              Cancel
+              <FormattedMessage {...messages.Cancel} />
             </button>
             <button type="button" onClick={onSubmit}>
-              {replyTo ? "Reply" : "Send"}
+              {replyTo ? (
+                <FormattedMessage {...messages.Reply} />
+              ) : (
+                <FormattedMessage {...messages.Send} />
+              )}
             </button>
           </div>
         </Modal>

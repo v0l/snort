@@ -1,12 +1,14 @@
 import "./Invoice.css";
 import { useState } from "react";
+import { useIntl, FormattedMessage } from "react-intl";
 // @ts-expect-error
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { useMemo } from "react";
-import NoteTime from "Element/NoteTime";
 import SendSats from "Element/SendSats";
 import ZapCircle from "Icons/ZapCircle";
 import useWebln from "Hooks/useWebln";
+
+import messages from "./messages";
 
 export interface InvoiceProps {
   invoice: string;
@@ -15,6 +17,7 @@ export default function Invoice(props: InvoiceProps) {
   const invoice = props.invoice;
   const webln = useWebln();
   const [showInvoice, setShowInvoice] = useState(false);
+  const { formatMessage } = useIntl();
 
   const info = useMemo(() => {
     try {
@@ -55,10 +58,12 @@ export default function Invoice(props: InvoiceProps) {
   function header() {
     return (
       <>
-        <h4>Lightning Invoice</h4>
+        <h4>
+          <FormattedMessage {...messages.Invoice} />
+        </h4>
         <ZapCircle className="zap-circle" />
         <SendSats
-          title="Pay Invoice"
+          title={formatMessage(messages.PayInvoice)}
           invoice={invoice}
           show={showInvoice}
           onClose={() => setShowInvoice(false)}
@@ -102,10 +107,16 @@ export default function Invoice(props: InvoiceProps) {
         <div className="invoice-body">
           {description && <p>{description}</p>}
           {isPaid ? (
-            <div className="paid">Paid</div>
+            <div className="paid">
+              <FormattedMessage {...messages.Paid} />
+            </div>
           ) : (
             <button disabled={isExpired} type="button" onClick={payInvoice}>
-              {isExpired ? "Expired" : "Pay"}
+              {isExpired ? (
+                <FormattedMessage {...messages.Expired} />
+              ) : (
+                <FormattedMessage {...messages.Pay} />
+              )}
             </button>
           )}
         </div>

@@ -1,6 +1,6 @@
 import "./Thread.css";
 import { useMemo, useState, useEffect, ReactNode } from "react";
-import { useSelector } from "react-redux";
+import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import { TaggedRawEvent, u256, HexKey } from "Nostr";
@@ -11,7 +11,8 @@ import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";
 import Collapsed from "Element/Collapsed";
-import type { RootState } from "State/Store";
+
+import messages from "./messages";
 
 function getParent(
   ev: HexKey,
@@ -115,6 +116,7 @@ const ThreadNote = ({
   chains,
   onNavigate,
 }: ThreadNoteProps) => {
+  const { formatMessage } = useIntl();
   const replies = getReplies(note.Id, chains);
   const activeInReplies = replies.map((r) => r.Id).includes(active);
   const [collapsed, setCollapsed] = useState(!activeInReplies);
@@ -150,7 +152,7 @@ const ThreadNote = ({
           />
         ) : (
           <Collapsed
-            text="Show replies"
+            text={formatMessage(messages.ShowReplies)}
             collapsed={collapsed}
             setCollapsed={setCollapsed}
           >
@@ -261,7 +263,7 @@ const TierThree = ({
                 type="button"
                 onClick={() => onNavigate(from)}
               >
-                Show replies
+                <FormattedMessage {...messages.ShowReplies} />
               </button>
             </div>
           )

@@ -8,6 +8,7 @@ import {
 } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
+import { useIntl, FormattedMessage } from "react-intl";
 
 import { default as NEvent } from "Nostr/Event";
 import ProfileImage from "Element/ProfileImage";
@@ -21,6 +22,8 @@ import EventKind from "Nostr/EventKind";
 import { useUserProfiles } from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256 } from "Nostr";
 import useModeration from "Hooks/useModeration";
+
+import messages from "./messages";
 
 export interface NoteProps {
   data?: TaggedRawEvent;
@@ -43,8 +46,12 @@ const HiddenNote = ({ children }: any) => {
   ) : (
     <div className="card note hidden-note">
       <div className="header">
-        <p>This author has been muted</p>
-        <button onClick={() => setShow(true)}>Show</button>
+        <p>
+          <FormattedMessage {...messages.MutedAuthor} />
+        </p>
+        <button onClick={() => setShow(true)}>
+          <FormattedMessage {...messages.Show} />
+        </button>
       </div>
     </div>
   );
@@ -76,6 +83,7 @@ export default function Note(props: NoteProps) {
   const baseClassname = `note card ${props.className ? props.className : ""}`;
   const [translated, setTranslated] = useState<Translation>();
   const replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
+  const { formatMessage } = useIntl();
 
   const options = {
     showHeader: true,
@@ -87,7 +95,11 @@ export default function Note(props: NoteProps) {
   const transformBody = useCallback(() => {
     let body = ev?.Content ?? "";
     if (deletions?.length > 0) {
-      return <b className="error">Deleted</b>;
+      return (
+        <b className="error">
+          <FormattedMessage {...messages.Deleted} />
+        </b>
+      );
     }
     return (
       <Text
@@ -157,7 +169,7 @@ export default function Note(props: NoteProps) {
         : mentions?.map(renderMention);
     const others =
       mentions.length > maxMentions
-        ? ` & ${othersLength} other${othersLength > 1 ? "s" : ""}`
+        ? formatMessage(messages.Others, { n: othersLength })
         : "";
     return (
       <div className="reply">
@@ -181,7 +193,12 @@ export default function Note(props: NoteProps) {
   if (ev.Kind !== EventKind.TextNote) {
     return (
       <>
-        <h4>Unknown event kind: {ev.Kind}</h4>
+        <h4>
+          <FormattedMessage
+            {...messages.UnknownEventKind}
+            values={{ kind: ev.Kind }}
+          />
+        </h4>
         <pre>{JSON.stringify(ev.ToObject(), undefined, "  ")}</pre>
       </>
     );
@@ -192,13 +209,20 @@ export default function Note(props: NoteProps) {
       return (
         <>
           <p className="highlight">
-            Translated from {translated.fromLanguage}:
+            <FormattedMessage
+              {...messages.TranslatedFrom}
+              values={{ lang: translated.fromLanguage }}
+            />
           </p>
           {translated.text}
         </>
       );
     } else if (translated) {
-      return <p className="highlight">Translation failed</p>;
+      return (
+        <p className="highlight">
+          <FormattedMessage {...messages.TranslationFailed} />
+        </p>
+      );
     }
   }
 
@@ -206,19 +230,19 @@ export default function Note(props: NoteProps) {
     if (!inView) return null;
     return (
       <>
-        {options.showHeader ? (
+        {options.showHeader && (
           <div className="header flex">
             <ProfileImage
               pubkey={ev.RootPubKey}
               subHeader={replyTag() ?? undefined}
             />
-            {options.showTime ? (
+            {options.showTime && (
               <div className="info">
                 <NoteTime from={ev.CreatedAt * 1000} />
               </div>
-            ) : null}
+            )}
           </div>
-        ) : null}
+        )}
         <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
           {transformBody()}
           {translation()}
@@ -228,7 +252,7 @@ export default function Note(props: NoteProps) {
             className="expand-note mt10 flex f-center"
             onClick={() => setShowMore(true)}
           >
-            Show more
+            <FormattedMessage {...messages.ShowMore} />
           </span>
         )}
         {options.showFooter && (

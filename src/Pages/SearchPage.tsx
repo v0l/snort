@@ -1,3 +1,4 @@
+import { useIntl, FormattedMessage } from "react-intl";
 import { useParams } from "react-router-dom";
 import Timeline from "Element/Timeline";
 import { useEffect, useState } from "react";
@@ -6,8 +7,11 @@ import { router } from "index";
 import { SearchRelays } from "Const";
 import { System } from "Nostr/System";
 
+import messages from "./messages";
+
 const SearchPage = () => {
   const params: any = useParams();
+  const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string>();
   const [keyword, setKeyword] = useState<string | undefined>(params.keyword);
 
@@ -39,12 +43,14 @@ const SearchPage = () => {
 
   return (
     <div className="main-content">
-      <h2>Search</h2>
+      <h2>
+        <FormattedMessage {...messages.Search} />
+      </h2>
       <div className="flex mb10">
         <input
           type="text"
           className="f-grow mr10"
-          placeholder="Search.."
+          placeholder={formatMessage(messages.SearchPlaceholder)}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />

@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl";
 import ProfilePreview from "Element/ProfilePreview";
 import useRelayState from "Feed/RelayState";
 import { System } from "Nostr/System";
@@ -5,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { removeRelay } from "State/Login";
 import { parseId } from "Util";
+
+import messages from "./messages";
 
 const RelayInfo = () => {
   const params = useParams();
@@ -20,7 +23,7 @@ const RelayInfo = () => {
   return (
     <>
       <h3 className="pointer" onClick={() => navigate("/settings/relays")}>
-        Relays
+        <FormattedMessage {...messages.Relays} />
       </h3>
       <div className="card">
         <h3>{stats?.info?.name}</h3>
@@ -28,13 +31,17 @@ const RelayInfo = () => {
 
         {stats?.info?.pubkey && (
           <>
-            <h4>Owner</h4>
+            <h4>
+              <FormattedMessage {...messages.Owner} />
+            </h4>
             <ProfilePreview pubkey={parseId(stats.info.pubkey)} />
           </>
         )}
         {stats?.info?.software && (
           <div className="flex">
-            <h4 className="f-grow">Software</h4>
+            <h4 className="f-grow">
+              <FormattedMessage {...messages.Software} />
+            </h4>
             <div className="flex f-col">
               {stats.info.software.startsWith("http") ? (
                 <a href={stats.info.software} target="_blank" rel="noreferrer">
@@ -52,7 +59,9 @@ const RelayInfo = () => {
         )}
         {stats?.info?.contact && (
           <div className="flex">
-            <h4 className="f-grow">Contact</h4>
+            <h4 className="f-grow">
+              <FormattedMessage {...messages.Contact} />
+            </h4>
             <a
               href={`${
                 stats.info.contact.startsWith("mailto:") ? "" : "mailto:"
@@ -66,7 +75,9 @@ const RelayInfo = () => {
         )}
         {stats?.info?.supported_nips && (
           <>
-            <h4>Supports</h4>
+            <h4>
+              <FormattedMessage {...messages.Supports} />
+            </h4>
             <div className="f-grow">
               {stats.info.supported_nips.map((a) => (
                 <span
@@ -93,7 +104,7 @@ const RelayInfo = () => {
               navigate("/settings/relays");
             }}
           >
-            Remove
+            <FormattedMessage {...messages.Remove} />
           </div>
         </div>
       </div>

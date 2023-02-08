@@ -1,6 +1,6 @@
 import "./ProfilePage.css";
-
 import { useEffect, useMemo, useState } from "react";
+import { useIntl, FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -37,17 +37,18 @@ import Modal from "Element/Modal";
 import { ProxyImg } from "Element/ProxyImg";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
 
-const ProfileTab = {
-  Notes: { text: "Notes", value: 0 },
-  Reactions: { text: "Reactions", value: 1 },
-  Followers: { text: "Followers", value: 2 },
-  Follows: { text: "Follows", value: 3 },
-  Zaps: { text: "Zaps", value: 4 },
-  Muted: { text: "Muted", value: 5 },
-  Blocked: { text: "Blocked", value: 6 },
-};
+import messages from "./messages";
+
+const NOTES = 0;
+const REACTIONS = 1;
+const FOLLOWERS = 2;
+const FOLLOWS = 3;
+const ZAPS = 4;
+const MUTED = 5;
+const BLOCKED = 6;
 
 export default function ProfilePage() {
+  const { formatMessage } = useIntl();
   const params = useParams();
   const navigate = useNavigate();
   const id = useMemo(() => parseId(params.id!), [params]);
@@ -61,7 +62,6 @@ export default function ProfilePage() {
   const follows = useSelector<RootState, HexKey[]>((s) => s.login.follows);
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
-  const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
   const aboutText = user?.about || "";
   const about = Text({
@@ -85,6 +85,16 @@ export default function ProfilePage() {
   }, [zapFeed.store, id]);
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   const horizontalScroll = useHorizontalScroll();
+  const ProfileTab = {
+    Notes: { text: formatMessage(messages.Notes), value: NOTES },
+    Reactions: { text: formatMessage(messages.Reactions), value: REACTIONS },
+    Followers: { text: formatMessage(messages.Followers), value: FOLLOWERS },
+    Follows: { text: formatMessage(messages.Follows), value: FOLLOWS },
+    Zaps: { text: formatMessage(messages.Zaps), value: ZAPS },
+    Muted: { text: formatMessage(messages.Muted), value: MUTED },
+    Blocked: { text: formatMessage(messages.Blocked), value: BLOCKED },
+  };
+  const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
 
   useEffect(() => {
     setTab(ProfileTab.Notes);
@@ -149,8 +159,8 @@ export default function ProfilePage() {
   }
 
   function tabContent() {
-    switch (tab) {
-      case ProfileTab.Notes:
+    switch (tab.value) {
+      case NOTES:
         return (
           <Timeline
             key={id}
@@ -164,10 +174,15 @@ export default function ProfilePage() {
             ignoreModeration={true}
           />
         );
-      case ProfileTab.Zaps: {
+      case ZAPS: {
         return (
           <div className="main-content">
-            <h4 className="zaps-total">{formatShort(zapsTotal)} sats</h4>
+            <h4 className="zaps-total">
+              <FormattedMessage
+                {...messages.Sats}
+                values={{ n: formatShort(zapsTotal) }}
+              />
+            </h4>
             {zaps.map((z) => (
               <ZapElement showZapped={false} zap={z} />
             ))}
@@ -175,11 +190,16 @@ export default function ProfilePage() {
         );
       }
 
-      case ProfileTab.Follows: {
+      case FOLLOWS: {
         if (isMe) {
           return (
             <div className="main-content">
-              <h4>Following {follows.length}</h4>
+              <h4>
+                <FormattedMessage
+                  {...messages.Following}
+                  values={{ n: follows.length }}
+                />
+              </h4>
               {follows.map((a) => (
                 <ProfilePreview
                   key={a}
@@ -193,13 +213,13 @@ export default function ProfilePage() {
           return <FollowsList pubkey={id} />;
         }
       }
-      case ProfileTab.Followers: {
+      case FOLLOWERS: {
         return <FollowersList pubkey={id} />;
       }
-      case ProfileTab.Muted: {
+      case MUTED: {
         return isMe ? <BlockList variant="muted" /> : <MutedList pubkey={id} />;
       }
-      case ProfileTab.Blocked: {
+      case BLOCKED: {
         return isMe ? <BlockList variant="blocked" /> : null;
       }
     }
@@ -233,7 +253,7 @@ export default function ProfilePage() {
           <>
             <LogoutButton />
             <button type="button" onClick={() => navigate("/settings")}>
-              Settings
+              <FormattedMessage {...messages.Settings} />
             </button>
           </>
         ) : (

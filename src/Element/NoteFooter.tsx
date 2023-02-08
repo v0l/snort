@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { useIntl, FormattedMessage } from "react-intl";
 import {
   faTrash,
   faHeart,
@@ -40,6 +41,8 @@ import { UserPreferences } from "State/Login";
 import useModeration from "Hooks/useModeration";
 import { TranslateHost } from "Const";
 
+import messages from "./messages";
+
 export interface Translation {
   text: string;
   fromLanguage: string;
@@ -54,7 +57,7 @@ export interface NoteFooterProps {
 
 export default function NoteFooter(props: NoteFooterProps) {
   const { related, ev } = props;
-
+  const { formatMessage } = useIntl();
   const login = useSelector<RootState, HexKey | undefined>(
     (s) => s.login.publicKey
   );
@@ -133,7 +136,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   async function deleteEvent() {
     if (
       window.confirm(
-        `Are you sure you want to delete ${ev.Id.substring(0, 8)}?`
+        formatMessage(messages.ConfirmDeletion, { id: ev.Id.substring(0, 8) })
       )
     ) {
       let evDelete = await publisher.delete(ev.Id);
@@ -145,7 +148,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (!hasReposted()) {
       if (
         !prefs.confirmReposts ||
-        window.confirm(`Are you sure you want to repost: ${ev.Id}`)
+        window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.Id }))
       ) {
         let evRepost = await publisher.repost(ev);
         publisher.broadcast(evRepost);
@@ -270,46 +273,51 @@ export default function NoteFooter(props: NoteFooterProps) {
         {prefs.enableReactions && (
           <MenuItem onClick={() => setShowReactions(true)}>
             <FontAwesomeIcon icon={faHeart} />
-            Reactions
+            <FormattedMessage {...messages.Reactions} />
           </MenuItem>
         )}
         <MenuItem onClick={() => share()}>
           <FontAwesomeIcon icon={faShareNodes} />
-          Share
+          <FormattedMessage {...messages.Share} />
         </MenuItem>
         <MenuItem onClick={() => copyId()}>
           <FontAwesomeIcon icon={faCopy} />
-          Copy ID
+          <FormattedMessage {...messages.CopyID} />
         </MenuItem>
         <MenuItem onClick={() => mute(ev.PubKey)}>
           <FontAwesomeIcon icon={faCommentSlash} />
-          Mute
+          <FormattedMessage {...messages.Mute} />
         </MenuItem>
         {prefs.enableReactions && (
           <MenuItem onClick={() => react("-")}>
             <Dislike />
-            {formatShort(negative.length)}
-            &nbsp; Dislike
+            <FormattedMessage
+              {...messages.Dislike}
+              values={{ n: negative.length }}
+            />
           </MenuItem>
         )}
         <MenuItem onClick={() => block(ev.PubKey)}>
           <FontAwesomeIcon icon={faBan} />
-          Block
+          <FormattedMessage {...messages.Block} />
         </MenuItem>
         <MenuItem onClick={() => translate()}>
           <FontAwesomeIcon icon={faLanguage} />
-          Translate to {langNames.of(lang.split("-")[0])}
+          <FormattedMessage
+            {...messages.TranslateTo}
+            values={{ lang: langNames.of(lang.split("-")[0]) }}
+          />
         </MenuItem>
         {prefs.showDebugMenus && (
           <MenuItem onClick={() => copyEvent()}>
             <FontAwesomeIcon icon={faCopy} />
-            Copy Event JSON
+            <FormattedMessage {...messages.CopyJSON} />
           </MenuItem>
         )}
         {isMine && (
           <MenuItem onClick={() => deleteEvent()}>
             <FontAwesomeIcon icon={faTrash} className="red" />
-            Delete
+            <FormattedMessage {...messages.Delete} />
           </MenuItem>
         )}
       </>

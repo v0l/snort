@@ -1,7 +1,7 @@
 import "./Profile.css";
 import Nostrich from "nostrich.webp";
-
 import { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +14,8 @@ import Copy from "Element/Copy";
 import { RootState } from "State/Store";
 import { HexKey } from "Nostr";
 import useFileUpload from "Upload";
+
+import messages from "./messages";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -112,7 +114,9 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     return (
       <div className="editor form">
         <div className="form-group">
-          <div>Name:</div>
+          <div>
+            <FormattedMessage {...messages.Name} />:
+          </div>
           <div>
             <input
               type="text"
@@ -122,7 +126,9 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </div>
         </div>
         <div className="form-group">
-          <div>Display name:</div>
+          <div>
+            <FormattedMessage {...messages.DisplayName} />:
+          </div>
           <div>
             <input
               type="text"
@@ -132,7 +138,9 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </div>
         </div>
         <div className="form-group form-col">
-          <div>About:</div>
+          <div>
+            <FormattedMessage {...messages.About} />:
+          </div>
           <div className="w-max">
             <textarea
               className="w-max"
@@ -142,7 +150,9 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </div>
         </div>
         <div className="form-group">
-          <div>Website:</div>
+          <div>
+            <FormattedMessage {...messages.Website} />:
+          </div>
           <div>
             <input
               type="text"
@@ -152,7 +162,9 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </div>
         </div>
         <div className="form-group">
-          <div>NIP-05:</div>
+          <div>
+            <FormattedMessage {...messages.Nip05} />:
+          </div>
           <div>
             <input
               type="text"
@@ -162,12 +174,14 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             />
             <button type="button" onClick={() => navigate("/verification")}>
               <FontAwesomeIcon icon={faShop} />
-              &nbsp; Buy
+              &nbsp; <FormattedMessage {...messages.Buy} />
             </button>
           </div>
         </div>
         <div className="form-group">
-          <div>LN Address:</div>
+          <div>
+            <FormattedMessage {...messages.LnAddress} />:
+          </div>
           <div>
             <input
               type="text"
@@ -180,7 +194,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           <div></div>
           <div>
             <button type="button" onClick={() => saveProfile()}>
-              Save
+              <FormattedMessage {...messages.Save} />
             </button>
           </div>
         </div>
@@ -195,20 +209,24 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         <div className="flex f-center image-settings">
           {(props.avatar ?? true) && (
             <div>
-              <h2>Avatar</h2>
+              <h2>
+                <FormattedMessage {...messages.Avatar} />
+              </h2>
               <div
                 style={{ backgroundImage: `url(${avatarPicture})` }}
                 className="avatar"
               >
                 <div className="edit" onClick={() => setNewAvatar()}>
-                  Edit
+                  <FormattedMessage {...messages.Edit} />
                 </div>
               </div>
             </div>
           )}
           {(props.banner ?? true) && (
             <div>
-              <h2>Header</h2>
+              <h2>
+                <FormattedMessage {...messages.Banner} />
+              </h2>
               <div
                 style={{
                   backgroundImage: `url(${
@@ -218,7 +236,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
                 className="banner"
               >
                 <div className="edit" onClick={() => setNewBanner()}>
-                  Edit
+                  <FormattedMessage {...messages.Edit} />
                 </div>
               </div>
             </div>
@@ -231,12 +249,16 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
   return (
     <div className="settings">
-      <h3>Edit Profile</h3>
+      <h3>
+        <FormattedMessage {...messages.EditProfile} />
+      </h3>
       {settings()}
       {privKey && (props.privateKey ?? true) && (
         <div className="flex f-col bg-grey">
           <div>
-            <h4>Your Private Key Is (do not share this with anyone):</h4>
+            <h4>
+              <FormattedMessage {...messages.PrivateKey} />:
+            </h4>
           </div>
           <div>
             <Copy text={hexToBech32("nsec", privKey)} />

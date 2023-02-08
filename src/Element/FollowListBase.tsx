@@ -1,6 +1,10 @@
+import { FormattedMessage } from "react-intl";
+
 import useEventPublisher from "Feed/EventPublisher";
 import { HexKey } from "Nostr";
 import ProfilePreview from "Element/ProfilePreview";
+
+import messages from "./messages";
 
 export interface FollowListBaseProps {
   pubkeys: HexKey[];
@@ -26,7 +30,7 @@ export default function FollowListBase({
           type="button"
           onClick={() => followAll()}
         >
-          Follow All
+          <FormattedMessage {...messages.FollowAll} />
         </button>
       </div>
       {pubkeys?.map((a) => (
