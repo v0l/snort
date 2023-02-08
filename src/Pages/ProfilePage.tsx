@@ -4,12 +4,15 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { unwrap } from "Util";
 import { formatShort } from "Number";
+import Relays from "Element/Relays";
 import { Tab, TabElement } from "Element/Tabs";
 import Link from "Icons/Link";
 import Qr from "Icons/Qr";
 import Zap from "Icons/Zap";
 import Envelope from "Icons/Envelope";
+import useRelaysFeed from "Feed/RelaysFeed";
 import { useUserProfile } from "Feed/ProfileFeed";
 import useZapsFeed from "Feed/ZapsFeed";
 import { default as ZapElement, parseZap } from "Element/Zap";
@@ -46,6 +49,7 @@ const FOLLOWS = 3;
 const ZAPS = 4;
 const MUTED = 5;
 const BLOCKED = 6;
+const RELAYS = 7;
 
 export default function ProfilePage() {
   const { formatMessage } = useIntl();
@@ -69,6 +73,7 @@ export default function ProfilePage() {
   const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
   const website_url =
     user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
+  const relays = useRelaysFeed(id);
   const zapFeed = useZapsFeed(id);
   const zaps = useMemo(() => {
     const profileZaps = zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e && z.zapper !== id);
@@ -85,8 +90,12 @@ export default function ProfilePage() {
     Zaps: { text: formatMessage(messages.Zaps), value: ZAPS },
     Muted: { text: formatMessage(messages.Muted), value: MUTED },
     Blocked: { text: formatMessage(messages.Blocked), value: BLOCKED },
+    Relays: { text: formatMessage(messages.Relays), value: RELAYS },
   };
   const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
+  const optionalTabs = [zapsTotal > 0 && ProfileTab.Zaps, relays.length > 0 && ProfileTab.Relays].filter(a =>
+    unwrap(a)
+  ) as Tab[];
 
   useEffect(() => {
     setTab(ProfileTab.Notes);
@@ -204,6 +213,9 @@ export default function ProfilePage() {
       case BLOCKED: {
         return isMe ? <BlockList variant="blocked" /> : null;
       }
+      case RELAYS: {
+        return <Relays relays={relays} />;
+      }
     }
   }
 
@@ -282,7 +294,8 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="tabs main-content" ref={horizontalScroll}>
-        {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Zaps, ProfileTab.Muted].map(renderTab)}
+        {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Muted].map(renderTab)}
+        {optionalTabs.map(renderTab)}
         {isMe && renderTab(ProfileTab.Blocked)}
       </div>
       {tabContent()}

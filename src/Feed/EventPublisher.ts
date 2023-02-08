@@ -220,6 +220,24 @@ export default function useEventPublisher() {
         return await signEvent(ev);
       }
     },
+    saveRelaysSettings: async () => {
+      if (pubKey) {
+        let ev = NEvent.ForPubKey(pubKey);
+        ev.Kind = EventKind.Relays;
+        ev.Content = "";
+        for (let [url, settings] of Object.entries(relays)) {
+          let rTag = ["r", url];
+          if (settings.read) {
+            rTag.push("read");
+          }
+          if (settings.write) {
+            rTag.push("write");
+          }
+          ev.Tags.push(new Tag(rTag, ev.Tags.length));
+        }
+        return await signEvent(ev);
+      }
+    },
     addFollow: async (pkAdd: HexKey | HexKey[], newRelays?: Record<string, RelaySettings>) => {
       if (pubKey) {
         const ev = NEvent.ForPubKey(pubKey);

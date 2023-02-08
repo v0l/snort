@@ -1,0 +1,26 @@
+.favicon {
+  width: 21px;
+  height: 21px;
+  border-radius: 100%;
+  margin-right: 12px;
+}
+
+.relay-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.relay-settings {
+  margin-left: auto;
+}
+
+.relay-settings svg:not(:last-child) {
+  margin-right: 12px;
+}
+.relay-settings svg.enabled {
+  color: var(--highlight);
+}
+.relay-settings svg.disabled {
+  opacity: 0.3;
+}
