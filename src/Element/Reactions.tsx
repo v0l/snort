@@ -126,10 +126,10 @@ const Reactions = ({
                     <span className="zap-amount">{formatShort(z.amount)}</span>
                   </div>
                   <ProfileImage
-                    pubkey={z.zapper!}
+                    pubkey={z.zapper ?? ""}
                     subHeader={<>{z.content}</>}
                   />
-                  <FollowButton pubkey={z.zapper!} />
+                  <FollowButton pubkey={z.zapper ?? ""} />
                 </div>
               );
             })}

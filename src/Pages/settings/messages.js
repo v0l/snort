@@ -49,7 +49,6 @@ const messages = defineMessages({
   Add: "Add",
   AddRelays: "Add Relays",
   Name: "Name",
-  Profile: "Profile",
   Website: "Website",
   Save: "Save",
   DisplayName: "Display name",

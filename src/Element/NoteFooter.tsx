@@ -31,7 +31,7 @@ import {
 import { NoteCreator } from "Element/NoteCreator";
 import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
-import { parseZap, ParsedZap, ZapsSummary } from "Element/Zap";
+import { parseZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Feed/ProfileFeed";
 import { default as NEvent } from "Nostr/Event";
 import { RootState } from "State/Store";
