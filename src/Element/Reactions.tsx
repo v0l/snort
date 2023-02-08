@@ -18,54 +18,33 @@ import Modal from "Element/Modal";
 interface ReactionsProps {
   show: boolean;
   setShow(b: boolean): void;
-  reactions: TaggedRawEvent[];
+  positive: TaggedRawEvent[];
+  negative: TaggedRawEvent[];
   reposts: TaggedRawEvent[];
   zaps: ParsedZap[];
-}
-
-function dedupeByPubkey(events: TaggedRawEvent[]) {
-  const deduped = events.reduce(
-    ({ list, seen }: { list: TaggedRawEvent[]; seen: HexKey[] }, ev) => {
-      if (seen.includes(ev.pubkey)) {
-        return { list, seen };
-      }
-      return {
-        list: [...list, ev],
-        seen: [...seen, ev.pubkey],
-      };
-    },
-    { list: [], seen: [] }
-  );
-  return deduped.list as TaggedRawEvent[];
 }
 
 const Reactions = ({
   show,
   setShow,
-  reactions,
+  positive,
+  negative,
   reposts,
   zaps,
 }: ReactionsProps) => {
   const onClose = () => setShow(false);
   const likes = useMemo(() => {
-    const positive = reactions.filter((r) => r.content !== "-");
-    positive.sort((a, b) => b.created_at - a.created_at);
-    return positive;
-  }, [reactions]);
-  const dedupedLikes = useMemo(() => dedupeByPubkey(likes), [likes]);
-  const dislikes = useMemo(() => {
-    const positive = reactions.filter((r) => r.content === "-");
-    positive.sort((a, b) => b.created_at - a.created_at);
-    return positive;
-  }, [reactions]);
-  const dedupedDislikes = useMemo(() => dedupeByPubkey(dislikes), [dislikes]);
-  const dedupedReposts = useMemo(() => dedupeByPubkey(reposts), [reposts]);
-  const total = reactions.length + zaps.length + reposts.length;
-  const sortedZaps = useMemo(() => {
-    const sorted = [...zaps];
-    sorted.sort((a, b) => b.amount - a.amount);
+    const sorted = [...positive];
+    sorted.sort((a, b) => b.created_at - a.created_at);
     return sorted;
-  }, [zaps]);
+  }, [positive]);
+  const dislikes = useMemo(() => {
+    const sorted = [...negative];
+    sorted.sort((a, b) => b.created_at - a.created_at);
+    return sorted;
+  }, [negative]);
+  const total =
+    positive.length + negative.length + zaps.length + reposts.length;
   const defaultTabs: Tab[] = [
     {
       text: `Likes (${likes.length})`,
@@ -108,7 +87,7 @@ const Reactions = ({
         <Tabs tabs={tabs} tab={tab} setTab={setTab} />
         <div className="body" key={tab.value}>
           {tab.value === 0 &&
-            dedupedLikes.map((ev) => {
+            likes.map((ev) => {
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">
@@ -124,7 +103,7 @@ const Reactions = ({
               );
             })}
           {tab.value === 1 &&
-            sortedZaps.map((z) => {
+            zaps.map((z) => {
               return (
                 <div key={z.id} className="reactions-item">
                   <div className="zap-reaction-icon">
@@ -140,7 +119,7 @@ const Reactions = ({
               );
             })}
           {tab.value === 2 &&
-            dedupedReposts.map((ev) => {
+            reposts.map((ev) => {
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">
@@ -152,7 +131,7 @@ const Reactions = ({
               );
             })}
           {tab.value === 3 &&
-            dedupedDislikes.map((ev) => {
+            dislikes.map((ev) => {
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">

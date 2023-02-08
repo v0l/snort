@@ -20,11 +20,17 @@ import Zap from "Icons/Zap";
 import Reply from "Icons/Reply";
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { getReactions, hexToBech32, normalizeReaction, Reaction } from "Util";
+import {
+  getReactions,
+  dedupeByPubkey,
+  hexToBech32,
+  normalizeReaction,
+  Reaction,
+} from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
-import { parseZap, ZapsSummary } from "Element/Zap";
+import { parseZap, ParsedZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Feed/ProfileFeed";
 import { default as NEvent } from "Nostr/Event";
 import { RootState } from "State/Store";
@@ -71,31 +77,40 @@ export default function NoteFooter(props: NoteFooterProps) {
     [related, ev]
   );
   const reposts = useMemo(
-    () => getReactions(related, ev.Id, EventKind.Repost),
+    () => dedupeByPubkey(getReactions(related, ev.Id, EventKind.Repost)),
     [related, ev]
   );
-  const zaps = useMemo(
-    () =>
-      getReactions(related, ev.Id, EventKind.ZapReceipt)
-        .map(parseZap)
-        .filter((z) => z.valid && z.zapper !== ev.PubKey),
-    [related]
-  );
+  const zaps = useMemo(() => {
+    const sortedZaps = getReactions(related, ev.Id, EventKind.ZapReceipt)
+      .map(parseZap)
+      .filter((z) => z.valid && z.zapper !== ev.PubKey);
+    sortedZaps.sort((a, b) => b.amount - a.amount);
+    return sortedZaps;
+  }, [related]);
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   const didZap = zaps.some((a) => a.zapper === login);
   const groupReactions = useMemo(() => {
-    return reactions?.reduce(
-      (acc, { content }) => {
-        let r = normalizeReaction(content);
-        const amount = acc[r] || 0;
-        return { ...acc, [r]: amount + 1 };
+    const result = reactions?.reduce(
+      (acc, reaction) => {
+        let kind = normalizeReaction(reaction.content);
+        const rs = acc[kind] || [];
+        if (rs.map((e) => e.pubkey).includes(reaction.pubkey)) {
+          return acc;
+        }
+        return { ...acc, [kind]: [...rs, reaction] };
       },
       {
-        [Reaction.Positive]: 0,
-        [Reaction.Negative]: 0,
+        [Reaction.Positive]: [] as TaggedRawEvent[],
+        [Reaction.Negative]: [] as TaggedRawEvent[],
       }
     );
+    return {
+      [Reaction.Positive]: dedupeByPubkey(result[Reaction.Positive]),
+      [Reaction.Negative]: dedupeByPubkey(result[Reaction.Negative]),
+    };
   }, [reactions]);
+  const positive = groupReactions[Reaction.Positive];
+  const negative = groupReactions[Reaction.Negative];
 
   function hasReacted(emoji: string) {
     return reactions?.some(
@@ -194,7 +209,7 @@ export default function NoteFooter(props: NoteFooterProps) {
             <Heart />
           </div>
           <div className="reaction-pill-number">
-            {formatShort(groupReactions[Reaction.Positive])}
+            {formatShort(positive.length)}
           </div>
         </div>
         {repostIcon()}
@@ -273,7 +288,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         {prefs.enableReactions && (
           <MenuItem onClick={() => react("-")}>
             <Dislike />
-            {formatShort(groupReactions[Reaction.Negative])}
+            {formatShort(negative.length)}
             &nbsp; Dislike
           </MenuItem>
         )}
@@ -338,7 +353,8 @@ export default function NoteFooter(props: NoteFooterProps) {
         <Reactions
           show={showReactions}
           setShow={setShowReactions}
-          reactions={reactions}
+          positive={positive}
+          negative={negative}
           reposts={reposts}
           zaps={zaps}
         />
