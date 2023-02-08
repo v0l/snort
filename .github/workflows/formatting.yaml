@@ -1,0 +1,23 @@
+name: pull request
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  formatting:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+
+      - name: Install Dependencies
+        run: npm i
+
+      - name: Check Formatting
+        run: npx prettier --check .
