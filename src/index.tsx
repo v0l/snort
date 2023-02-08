@@ -7,7 +7,6 @@ import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-// @ts-expect-error
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import Store from "State/Store";
 import EventPage from "Pages/EventPage";
@@ -26,6 +25,7 @@ import HashTagsPage from "Pages/HashTagsPage";
 import SearchPage from "Pages/SearchPage";
 import HelpPage from "Pages/HelpPage";
 import { NewUserRoutes } from "Pages/new";
+import { IntlProvider } from "./IntlProvider";
 
 /**
  * HTTP query provider
@@ -102,7 +102,9 @@ root.render(
   <StrictMode>
     <Provider store={Store}>
       <QueryClientProvider client={HTTP}>
-        <RouterProvider router={router} />
+        <IntlProvider>
+          <RouterProvider router={router} />
+        </IntlProvider>
       </QueryClientProvider>
     </Provider>
   </StrictMode>

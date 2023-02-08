@@ -27,6 +27,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.4.1",
+    "react-intl": "^6.2.8",
     "react-markdown": "^8.0.4",
     "react-query": "^3.39.2",
     "react-redux": "^8.0.5",
@@ -54,7 +55,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate-messages": "extract-messages -l=en,es -o src/translations -d en --flat true **/messages.js"
   },
   "eslintConfig": {
     "extends": [
@@ -74,6 +76,8 @@
     ]
   },
   "devDependencies": {
+    "babel-plugin-react-intl-auto": "^3.3.0",
+    "extract-react-intl-messages": "^4.1.1",
     "prettier": "2.8.3"
   }
 }

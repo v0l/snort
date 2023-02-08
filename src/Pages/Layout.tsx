@@ -21,6 +21,8 @@ import { bech32ToHex } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import Plus from "Icons/Plus";
 import { RelaySettings } from "Nostr/Connection";
+import { FormattedMessage } from "react-intl";
+import messages from './messages'
 
 export default function Layout() {
   const location = useLocation();
@@ -222,7 +224,7 @@ export default function Layout() {
             accountHeader()
           ) : (
             <button type="button" onClick={() => navigate("/login")}>
-              Login
+              <FormattedMessage {...messages.Login} />
             </button>
           )}
         </div>
