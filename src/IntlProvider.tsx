@@ -2,6 +2,8 @@ import { type ReactNode } from 'react'
 import { IntlProvider as ReactIntlProvider } from 'react-intl'
 import enMessages from 'translations/en.json'
 import esMessages from 'translations/es.json'
+import zhMessages from 'translations/zh.json'
+import jaMessages from 'translations/ja.json'
 
 const DEFAULT_LOCALE = 'en-US'
 
@@ -13,6 +15,10 @@ const getMessages = (locale: string) => {
             return enMessages
         case 'es':
             return esMessages
+        case 'zh':
+            return zhMessages
+        case 'ja':
+            return jaMessages
         default:
             return enMessages
     }
