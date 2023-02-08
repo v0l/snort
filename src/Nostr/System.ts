@@ -211,14 +211,13 @@ export class NostrSystem {
         );
         console.debug("No profiles: ", couldNotFetch);
         if (couldNotFetch.length > 0) {
-          await this.UserDb!.bulkPut(
-            couldNotFetch.map((a) => {
-              return {
-                pubkey: a,
-                loaded: new Date().getTime(),
-              } as MetadataCache;
-            })
-          );
+          let updates = couldNotFetch.map((a) => {
+            return {
+              pubkey: a,
+              loaded: new Date().getTime(),
+            };
+          }).map(a => this.UserDb!.update(a.pubkey, a));
+          await Promise.all(updates);
         }
       }
     }
