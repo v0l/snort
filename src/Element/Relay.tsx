@@ -1,5 +1,6 @@
 import "./Relay.css";
-
+import { useIntl, FormattedMessage } from "react-intl";
+import { useNavigate } from "react-router-dom";
 import {
   faPlug,
   faSquareCheck,
@@ -15,7 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRelays } from "State/Login";
 import { RootState } from "State/Store";
 import { RelaySettings } from "Nostr/Connection";
-import { useNavigate } from "react-router-dom";
+
+import messages from "./messages";
 
 export interface RelayProps {
   addr: string;
@@ -23,6 +25,7 @@ export interface RelayProps {
 
 export default function Relay(props: RelayProps) {
   const dispatch = useDispatch();
+  const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const allRelaySettings = useSelector<
     RootState,
@@ -55,7 +58,7 @@ export default function Relay(props: RelayProps) {
           <div className="flex mb10">
             <b className="f-2">{name}</b>
             <div className="f-1">
-              Write
+              <FormattedMessage {...messages.Write} />
               <span
                 className="checkmark"
                 onClick={() =>
@@ -71,7 +74,7 @@ export default function Relay(props: RelayProps) {
               </span>
             </div>
             <div className="f-1">
-              Read
+              <FormattedMessage {...messages.Read} />
               <span
                 className="checkmark"
                 onClick={() =>
@@ -91,8 +94,12 @@ export default function Relay(props: RelayProps) {
             <div className="f-grow">
               <FontAwesomeIcon icon={faWifi} />{" "}
               {latency > 2000
-                ? `${(latency / 1000).toFixed(0)} secs`
-                : `${latency.toLocaleString()} ms`}
+                ? formatMessage(messages.Seconds, {
+                    n: (latency / 1000).toFixed(0),
+                  })
+                : formatMessage(messages.Milliseconds, {
+                    n: latency.toLocaleString(),
+                  })}
               &nbsp;
               <FontAwesomeIcon icon={faPlugCircleXmark} /> {state?.disconnects}
             </div>

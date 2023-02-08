@@ -2,6 +2,7 @@ import "./Root.css";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
 
 import Tabs, { Tab } from "Element/Tabs";
 import { RootState } from "State/Store";
@@ -9,10 +10,21 @@ import Timeline from "Element/Timeline";
 import { HexKey } from "Nostr";
 import { TimelineSubject } from "Feed/TimelineFeed";
 
+import messages from "./messages";
+
 const RootTab: Record<string, Tab> = {
-  Posts: { text: "Posts", value: 0 },
-  PostsAndReplies: { text: "Conversations", value: 1 },
-  Global: { text: "Global", value: 2 },
+  Posts: {
+    text: <FormattedMessage {...messages.Posts} />,
+    value: 0,
+  },
+  PostsAndReplies: {
+    text: <FormattedMessage {...messages.Conversations} />,
+    value: 1,
+  },
+  Global: {
+    text: <FormattedMessage {...messages.Global} />,
+    value: 2,
+  },
 };
 
 export default function RootPage() {
@@ -25,10 +37,16 @@ export default function RootPage() {
   function followHints() {
     if (follows?.length === 0 && pubKey && tab !== RootTab.Global) {
       return (
-        <>
-          Hmm nothing here.. Checkout <Link to={"/new"}>New users page</Link> to
-          follow some recommended nostrich's!
-        </>
+        <FormattedMessage
+          {...messages.NoFollows}
+          values={{
+            newUsersPage: (
+              <Link to={"/new"}>
+                <FormattedMessage {...messages.NewUsers} />
+              </Link>
+            ),
+          }}
+        />
       );
     }
   }

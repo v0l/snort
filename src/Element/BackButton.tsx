@@ -1,13 +1,17 @@
 import "./BackButton.css";
+import { useIntl } from "react-intl";
 
 import ArrowBack from "Icons/ArrowBack";
+
+import messages from "./messages";
 
 interface BackButtonProps {
   text?: string;
   onClick?(): void;
 }
 
-const BackButton = ({ text = "Back", onClick }: BackButtonProps) => {
+const BackButton = ({ text, onClick }: BackButtonProps) => {
+  const { formatMessage } = useIntl();
   const onClickHandler = () => {
     if (onClick) {
       onClick();
@@ -17,7 +21,7 @@ const BackButton = ({ text = "Back", onClick }: BackButtonProps) => {
   return (
     <button className="back-button" type="button" onClick={onClickHandler}>
       <ArrowBack />
-      {text}
+      {text || formatMessage(messages.Back)}
     </button>
   );
 };

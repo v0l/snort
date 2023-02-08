@@ -1,5 +1,6 @@
 import "./Zap.css";
 import { useMemo } from "react";
+import { FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 // @ts-expect-error
 import { decode as invoiceDecode } from "light-bolt11-decoder";
@@ -13,6 +14,8 @@ import Event from "Nostr/Event";
 import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
 import { RootState } from "State/Store";
+
+import messages from "./messages";
 
 function findTag(e: TaggedRawEvent, tag: string) {
   const maybeTag = e.tags.find((evTag) => {
@@ -91,23 +94,30 @@ const Zap = ({
   const { amount, content, zapper, valid, p } = zap;
   const pubKey = useSelector((s: RootState) => s.login.publicKey);
 
-  return valid ? (
+  return valid && zapper ? (
     <div className="zap note card">
       <div className="header">
-        {zapper ? <ProfileImage pubkey={zapper} /> : <div>Anon&nbsp;</div>}
+        <ProfileImage pubkey={zapper} />
         {p !== pubKey && showZapped && <ProfileImage pubkey={p} />}
         <div className="amount">
-          <span className="amount-number">{formatShort(amount)}</span> sats
+          <span className="amount-number">
+            <FormattedMessage
+              {...messages.Sats}
+              values={{ n: formatShort(amount) }}
+            />
+          </span>
         </div>
       </div>
-      <div className="body">
-        <Text
-          creator={zapper || ""}
-          content={content}
-          tags={[]}
-          users={new Map()}
-        />
-      </div>
+      {content.length > 0 && zapper && (
+        <div className="body">
+          <Text
+            creator={zapper}
+            content={content}
+            tags={[]}
+            users={new Map()}
+          />
+        </div>
+      )}
     </div>
   ) : null;
 };
@@ -118,8 +128,8 @@ interface ZapsSummaryProps {
 
 export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
   const sortedZaps = useMemo(() => {
-    const pub = [...zaps.filter((z) => z.zapper)];
-    const priv = [...zaps.filter((z) => !z.zapper)];
+    const pub = [...zaps.filter((z) => z.zapper && z.valid)];
+    const priv = [...zaps.filter((z) => !z.zapper && z.valid)];
     pub.sort((a, b) => b.amount - a.amount);
     return pub.concat(priv);
   }, [zaps]);
@@ -129,8 +139,7 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
   }
 
   const [topZap, ...restZaps] = sortedZaps;
-  const restZapsTotal = restZaps.reduce((acc, z) => acc + z.amount, 0);
-  const { zapper, amount, content, valid } = topZap;
+  const { zapper, amount } = topZap;
 
   return (
     <div className="zaps-summary">
@@ -139,11 +148,15 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
           <div className="summary">
             {zapper && <ProfileImage pubkey={zapper} />}
             {restZaps.length > 0 && (
-              <span>
-                and {restZaps.length} other{restZaps.length > 1 ? "s" : ""}
-              </span>
-            )}
-            <span>&nbsp;zapped</span>
+              <FormattedMessage
+                {...messages.Others}
+                values={{ n: restZaps.length }}
+              />
+            )}{" "}
+            <FormattedMessage
+              {...messages.OthersZapped}
+              values={{ n: restZaps.length }}
+            />
           </div>
         </div>
       )}

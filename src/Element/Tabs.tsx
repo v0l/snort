@@ -1,7 +1,8 @@
 import "./Tabs.css";
+import { ReactElement } from "react";
 
 export interface Tab {
-  text: string;
+  text: ReactElement | string;
   value: number;
   disabled?: boolean;
 }

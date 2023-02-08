@@ -1,7 +1,12 @@
+import "./Preferences.css";
+
 import { useDispatch, useSelector } from "react-redux";
+import { FormattedMessage } from "react-intl";
+
 import { DefaultImgProxy, setPreferences, UserPreferences } from "State/Login";
 import { RootState } from "State/Store";
-import "./Preferences.css";
+
+import messages from "./messages";
 
 const PreferencesPage = () => {
   const dispatch = useDispatch();
@@ -11,11 +16,15 @@ const PreferencesPage = () => {
 
   return (
     <div className="preferences">
-      <h3>Preferences</h3>
+      <h3>
+        <FormattedMessage {...messages.Preferences} />
+      </h3>
 
       <div className="card flex">
         <div className="flex f-col f-grow">
-          <div>Theme</div>
+          <div>
+            <FormattedMessage {...messages.Theme} />
+          </div>
         </div>
         <div>
           <select
@@ -29,18 +38,25 @@ const PreferencesPage = () => {
               )
             }
           >
-            <option value="system">System (Default)</option>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
+            <option value="system">
+              <FormattedMessage {...messages.System} />
+            </option>
+            <option value="light">
+              <FormattedMessage {...messages.Light} />
+            </option>
+            <option value="dark">
+              <FormattedMessage {...messages.Dark} />
+            </option>
           </select>
         </div>
       </div>
       <div className="card flex">
         <div className="flex f-col f-grow">
-          <div>Automatically load media</div>
+          <div>
+            <FormattedMessage {...messages.AutoloadMedia} />
+          </div>
           <small>
-            Media in posts will automatically be shown for selected people,
-            otherwise only the link will show
+            <FormattedMessage {...messages.AutoloadMediaHelp} />
           </small>
         </div>
         <div>
@@ -55,17 +71,27 @@ const PreferencesPage = () => {
               )
             }
           >
-            <option value="none">None</option>
-            <option value="follows-only">Follows only</option>
-            <option value="all">All</option>
+            <option value="none">
+              <FormattedMessage {...messages.None} />
+            </option>
+            <option value="follows-only">
+              <FormattedMessage {...messages.FollowsOnly} />
+            </option>
+            <option value="all">
+              <FormattedMessage {...messages.All} />
+            </option>
           </select>
         </div>
       </div>
       <div className="card flex f-col">
         <div className="flex w-max">
           <div className="flex f-col f-grow">
-            <div>Image proxy service</div>
-            <small>Use imgproxy to compress images</small>
+            <div>
+              <FormattedMessage {...messages.ImgProxy} />
+            </div>
+            <small>
+              <FormattedMessage {...messages.ImgProxyHelp} />
+            </small>
           </div>
           <div>
             <input
@@ -85,12 +111,14 @@ const PreferencesPage = () => {
         {perf.imgProxyConfig && (
           <div className="w-max mt10 form">
             <div className="form-group">
-              <div>Service Url</div>
+              <div>
+                <FormattedMessage {...messages.ServiceUrl} />
+              </div>
               <div className="w-max">
                 <input
                   type="text"
                   value={perf.imgProxyConfig?.url}
-                  placeholder="Url.."
+                  placeholder="URL.."
                   onChange={(e) =>
                     dispatch(
                       setPreferences({
@@ -106,7 +134,9 @@ const PreferencesPage = () => {
               </div>
             </div>
             <div className="form-group">
-              <div>Service Key</div>
+              <div>
+                <FormattedMessage {...messages.ServiceKey} />
+              </div>
               <div className="w-max">
                 <input
                   type="password"
@@ -127,7 +157,9 @@ const PreferencesPage = () => {
               </div>
             </div>
             <div className="form-group">
-              <div>Service Salt</div>
+              <div>
+                <FormattedMessage {...messages.ServiceSalt} />
+              </div>
               <div className="w-max">
                 <input
                   type="password"
@@ -152,10 +184,11 @@ const PreferencesPage = () => {
       </div>
       <div className="card flex">
         <div className="flex f-col f-grow">
-          <div>Enable reactions</div>
+          <div>
+            <FormattedMessage {...messages.EnableReactions} />
+          </div>
           <small>
-            Reactions will be shown on every page, if disabled no reactions will
-            be shown
+            <FormattedMessage {...messages.EnableReactionsHelp} />
           </small>
         </div>
         <div>
@@ -172,8 +205,12 @@ const PreferencesPage = () => {
       </div>
       <div className="card flex">
         <div className="flex f-col f-grow">
-          <div>Confirm reposts</div>
-          <small>Reposts need to be manually confirmed</small>
+          <div>
+            <FormattedMessage {...messages.ConfirmReposts} />
+          </div>
+          <small>
+            <FormattedMessage {...messages.ConfirmRepostsHelp} />
+          </small>
         </div>
         <div>
           <input
@@ -189,9 +226,11 @@ const PreferencesPage = () => {
       </div>
       <div className="card flex">
         <div className="flex f-col f-grow">
-          <div>Automatically show latest notes</div>
+          <div>
+            <FormattedMessage {...messages.ShowLatest} />
+          </div>
           <small>
-            Notes will stream in real time into global and posts tab
+            <FormattedMessage {...messages.ShowLatestHelp} />
           </small>
         </div>
         <div>
@@ -208,9 +247,11 @@ const PreferencesPage = () => {
       </div>
       <div className="card flex">
         <div className="flex f-col f-grow">
-          <div>File upload service</div>
+          <div>
+            <FormattedMessage {...messages.FileUpload} />
+          </div>
           <small>
-            Pick which upload service you want to upload attachments to
+            <FormattedMessage {...messages.FileUploadHelp} />
           </small>
         </div>
         <div>
@@ -225,7 +266,9 @@ const PreferencesPage = () => {
               )
             }
           >
-            <option value="void.cat">void.cat (Default)</option>
+            <option value="void.cat">
+              void.cat <FormattedMessage {...messages.Default} />
+            </option>
             <option value="nostr.build">nostr.build</option>
             <option value="nostrimg.com">nostrimg.com</option>
           </select>
@@ -233,10 +276,11 @@ const PreferencesPage = () => {
       </div>
       <div className="card flex">
         <div className="flex f-col f-grow">
-          <div>Debug Menus</div>
+          <div>
+            <FormattedMessage {...messages.DebugMenus} />
+          </div>
           <small>
-            Shows "Copy ID" and "Copy Event JSON" in the context menu on each
-            message
+            <FormattedMessage {...messages.DebugMenusHelp} />
           </small>
         </div>
         <div>

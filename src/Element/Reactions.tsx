@@ -1,7 +1,9 @@
 import "./Reactions.css";
 
 import { useState, useMemo, useEffect } from "react";
-import { HexKey, TaggedRawEvent } from "Nostr";
+import { useIntl, FormattedMessage } from "react-intl";
+
+import { TaggedRawEvent } from "Nostr";
 
 import { formatShort } from "Number";
 import Dislike from "Icons/Dislike";
@@ -14,6 +16,8 @@ import FollowButton from "Element/FollowButton";
 import Tabs from "Element/Tabs";
 import Close from "Icons/Close";
 import Modal from "Element/Modal";
+
+import messages from "./messages";
 
 interface ReactionsProps {
   show: boolean;
@@ -32,6 +36,7 @@ const Reactions = ({
   reposts,
   zaps,
 }: ReactionsProps) => {
+  const { formatMessage } = useIntl();
   const onClose = () => setShow(false);
   const likes = useMemo(() => {
     const sorted = [...positive];
@@ -47,23 +52,28 @@ const Reactions = ({
     positive.length + negative.length + zaps.length + reposts.length;
   const defaultTabs: Tab[] = [
     {
-      text: `Likes (${likes.length})`,
+      text: formatMessage(messages.Likes, { n: likes.length }),
       value: 0,
     },
     {
-      text: `Zaps (${zaps.length})`,
+      text: formatMessage(messages.Zaps, { n: zaps.length }),
       value: 1,
       disabled: zaps.length === 0,
     },
     {
-      text: `Reposts (${reposts.length})`,
+      text: formatMessage(messages.Reposts, { n: reposts.length }),
       value: 2,
       disabled: reposts.length === 0,
     },
   ];
   const tabs = defaultTabs.concat(
     dislikes.length !== 0
-      ? [{ text: `Dislikes (${dislikes.length})`, value: 3 }]
+      ? [
+          {
+            text: formatMessage(messages.Dislikes, { n: dislikes.length }),
+            value: 3,
+          },
+        ]
       : []
   );
 
@@ -82,7 +92,12 @@ const Reactions = ({
           <Close />
         </div>
         <div className="reactions-header">
-          <h2>Reactions ({total})</h2>
+          <h2>
+            <FormattedMessage
+              {...messages.ReactionsCount}
+              values={{ n: total }}
+            />
+          </h2>
         </div>
         <Tabs tabs={tabs} tab={tab} setTab={setTab} />
         <div className="body" key={tab.value}>

@@ -1,11 +1,12 @@
 import "./FollowButton.css";
 import { useSelector } from "react-redux";
+import { FormattedMessage } from "react-intl";
 import useEventPublisher from "Feed/EventPublisher";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserMinus, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { HexKey } from "Nostr";
 import { RootState } from "State/Store";
 import { parseId } from "Util";
+
+import messages from "./messages";
 
 export interface FollowButtonProps {
   pubkey: HexKey;
@@ -35,7 +36,11 @@ export default function FollowButton(props: FollowButtonProps) {
       className={isFollowing ? `${baseClassname} secondary` : baseClassname}
       onClick={() => (isFollowing ? unfollow(pubkey) : follow(pubkey))}
     >
-      {isFollowing ? "Unfollow" : "Follow"}
+      {isFollowing ? (
+        <FormattedMessage {...messages.Unfollow} />
+      ) : (
+        <FormattedMessage {...messages.Follow} />
+      )}
     </button>
   );
 }

@@ -1,6 +1,7 @@
 import "./DM.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useIntl } from "react-intl";
 import { useInView } from "react-intersection-observer";
 
 import useEventPublisher from "Feed/EventPublisher";
@@ -11,6 +12,8 @@ import { setLastReadDm } from "Pages/MessagesPage";
 import { RootState } from "State/Store";
 import { HexKey, TaggedRawEvent } from "Nostr";
 import { incDmInteraction } from "State/Login";
+
+import messages from "./messages";
 
 export type DMProps = {
   data: TaggedRawEvent;
@@ -25,6 +28,7 @@ export default function DM(props: DMProps) {
   const [content, setContent] = useState("Loading...");
   const [decrypted, setDecrypted] = useState(false);
   const { ref, inView } = useInView();
+  const { formatMessage } = useIntl();
   const isMe = props.data.pubkey === pubKey;
   const otherPubkey = isMe
     ? pubKey
@@ -50,7 +54,10 @@ export default function DM(props: DMProps) {
   return (
     <div className={`flex dm f-col${isMe ? " me" : ""}`} ref={ref}>
       <div>
-        <NoteTime from={props.data.created_at * 1000} fallback={"Just now"} />
+        <NoteTime
+          from={props.data.created_at * 1000}
+          fallback={formatMessage(messages.JustNow)}
+        />
       </div>
       <div className="w-max">
         <Text

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { FormattedMessage } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
 
 import { HexKey, RawEvent } from "Nostr";
@@ -9,6 +10,8 @@ import { incDmInteraction } from "State/Login";
 import { RootState } from "State/Store";
 import NoteToSelf from "Element/NoteToSelf";
 import useModeration from "Hooks/useModeration";
+
+import messages from "./messages";
 
 type DmChat = {
   pubkey: HexKey;
@@ -71,9 +74,11 @@ export default function MessagesPage() {
   return (
     <div className="main-content">
       <div className="flex">
-        <h3 className="f-grow">Messages</h3>
+        <h3 className="f-grow">
+          <FormattedMessage {...messages.Messages} />
+        </h3>
         <button type="button" onClick={() => markAllRead()}>
-          Mark All Read
+          <FormattedMessage {...messages.MarkAllRead} />
         </button>
       </div>
       {chats

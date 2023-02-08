@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl";
 import { Outlet, RouteObject, useNavigate } from "react-router-dom";
 import SettingsIndex from "Pages/settings/Index";
 import Profile from "Pages/settings/Profile";
@@ -5,13 +6,15 @@ import Relay from "Pages/settings/Relays";
 import Preferences from "Pages/settings/Preferences";
 import RelayInfo from "Pages/settings/RelayInfo";
 
+import messages from "./messages";
+
 export default function SettingsPage() {
   const navigate = useNavigate();
 
   return (
     <div className="main-content">
       <h2 onClick={() => navigate("/settings")} className="pointer">
-        Settings
+        <FormattedMessage {...messages.Settings} />
       </h2>
       <Outlet />
     </div>

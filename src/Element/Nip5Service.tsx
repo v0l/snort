@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useIntl, FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -18,6 +19,8 @@ import useEventPublisher from "Feed/EventPublisher";
 import { debounce, hexToBech32 } from "Util";
 import { UserMetadata } from "Nostr";
 
+import messages from "./messages";
+
 type Nip05ServiceProps = {
   name: string;
   service: URL | string;
@@ -30,6 +33,7 @@ type ReduxStore = any;
 
 export default function Nip5Service(props: Nip05ServiceProps) {
   const navigate = useNavigate();
+  const { formatMessage } = useIntl();
   const pubkey = useSelector<ReduxStore, string>((s) => s.login.publicKey);
   const user = useUserProfile(pubkey);
   const publisher = useEventPublisher();
@@ -129,12 +133,12 @@ export default function Nip5Service(props: Nip05ServiceProps) {
 
   function mapError(e: ServiceErrorCode, t: string | null): string | undefined {
     let whyMap = new Map([
-      ["TOO_SHORT", "name too short"],
-      ["TOO_LONG", "name too long"],
-      ["REGEX", "name has disallowed characters"],
-      ["REGISTERED", "name is registered"],
-      ["DISALLOWED_null", "name is blocked"],
-      ["DISALLOWED_later", "name will be available later"],
+      ["TOO_SHORT", formatMessage(messages.TooShort)],
+      ["TOO_LONG", formatMessage(messages.TooLong)],
+      ["REGEX", formatMessage(messages.Regex)],
+      ["REGISTERED", formatMessage(messages.Registered)],
+      ["DISALLOWED_null", formatMessage(messages.Disallowed)],
+      ["DISALLOWED_later", formatMessage(messages.DisalledLater)],
     ]);
     return whyMap.get(e === "DISALLOWED" ? `${e}_${t}` : e);
   }
@@ -171,10 +175,17 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       <h3>{props.name}</h3>
       {props.about}
       <p>
-        Find out more info about {props.name} at{" "}
-        <a href={props.link} target="_blank" rel="noreferrer">
-          {props.link}
-        </a>
+        <FormattedMessage
+          {...messages.FindMore}
+          values={{
+            service: props.name,
+            link: (
+              <a href={props.link} target="_blank" rel="noreferrer">
+                {props.link}
+              </a>
+            ),
+          }}
+        />
       </p>
       {error && <b className="error">{error.error}</b>}
       {!registerStatus && (
@@ -196,7 +207,10 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       {availabilityResponse?.available && !registerStatus && (
         <div className="flex">
           <div className="mr10">
-            {availabilityResponse.quote?.price.toLocaleString()} sats
+            <FormattedMessage
+              {...messages.Sats}
+              values={{ n: availabilityResponse.quote?.price }}
+            />
             <br />
             <small>{availabilityResponse.quote?.data.type}</small>
           </div>
@@ -208,14 +222,14 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             disabled
           />
           <AsyncButton onClick={() => startBuy(handle, domain)}>
-            Buy Now
+            <FormattedMessage {...messages.BuyNow} />
           </AsyncButton>
         </div>
       )}
       {availabilityResponse?.available === false && !registerStatus && (
         <div className="flex">
           <b className="error">
-            Not available:{" "}
+            <FormattedMessage {...messages.NotAvailable} />{" "}
             {mapError(
               availabilityResponse.why!,
               availabilityResponse.reasonTag || null
@@ -227,32 +241,37 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         invoice={registerResponse?.invoice}
         show={showInvoice}
         onClose={() => setShowInvoice(false)}
-        title={`Buying ${handle}@${domain}`}
+        title={formatMessage(messages.Buying, { item: `${handle}@${domain}` })}
       />
       {registerStatus?.paid && (
         <div className="flex f-col">
-          <h4>Order Paid!</h4>
+          <h4>
+            <FormattedMessage {...messages.OrderPaid} />
+          </h4>
           <p>
-            Your new NIP-05 handle is:{" "}
+            <FormattedMessage {...messages.NewNip} />{" "}
             <code>
               {handle}@{domain}
             </code>
           </p>
-          <h3>Account Support</h3>
+          <h3>
+            <FormattedMessage {...messages.AccountSupport} />
+          </h3>
           <p>
-            Please make sure to save the following password in order to manage
-            your handle in the future
+            <FormattedMessage {...messages.SavePassword} />
           </p>
           <Copy text={registerStatus.password} />
           <p>
-            Go to{" "}
+            <FormattedMessage {...messages.GoTo} />{" "}
             <a href={props.supportLink} target="_blank" rel="noreferrer">
-              account page
+              <FormattedMessage {...messages.AccountPage} />
             </a>
           </p>
-          <h4>Activate Now</h4>
+          <h4>
+            <FormattedMessage {...messages.ActivateNow} />
+          </h4>
           <AsyncButton onClick={() => updateProfile(handle, domain)}>
-            Add to Profile
+            <FormattedMessage {...messages.AddToProfile} />
           </AsyncButton>
         </div>
       )}

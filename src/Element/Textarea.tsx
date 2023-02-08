@@ -2,6 +2,7 @@ import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
 
 import { useState } from "react";
+import { useIntl, FormattedMessage } from "react-intl";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import emoji from "@jukben/emoji-search";
 import TextareaAutosize from "react-textarea-autosize";
@@ -11,6 +12,8 @@ import Nip05 from "Element/Nip05";
 import { hexToBech32 } from "Util";
 import { MetadataCache } from "State/Users";
 import { useQuery } from "State/Users/Hooks";
+
+import messages from "./messages";
 
 interface EmojiItemProps {
   name: string;
@@ -43,6 +46,7 @@ const UserItem = (metadata: MetadataCache) => {
 
 const Textarea = ({ users, onChange, ...rest }: any) => {
   const [query, setQuery] = useState("");
+  const { formatMessage } = useIntl();
 
   const allUsers = useQuery(query);
 
@@ -61,7 +65,7 @@ const Textarea = ({ users, onChange, ...rest }: any) => {
     <ReactTextareaAutocomplete
       {...rest}
       loadingComponent={() => <span>Loading....</span>}
-      placeholder="What's on your mind?"
+      placeholder={formatMessage(messages.NotePlaceholder)}
       onChange={onChange}
       textAreaComponent={TextareaAutosize}
       trigger={{
