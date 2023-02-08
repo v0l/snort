@@ -1,5 +1,6 @@
 import "./SendSats.css";
 import { useEffect, useMemo, useState } from "react";
+import { useIntl, FormattedMessage } from "react-intl";
 
 import { formatShort } from "Number";
 import { bech32ToText } from "Util";
@@ -14,6 +15,8 @@ import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import useWebln from "Hooks/useWebln";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
+
+import messages from "./messages";
 
 interface LNURLService {
   nostrPubkey?: HexKey;
@@ -71,6 +74,7 @@ export default function LNURLTip(props: LNURLTipProps) {
   const [error, setError] = useState<string>();
   const [success, setSuccess] = useState<LNURLSuccessAction>();
   const webln = useWebln(show);
+  const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const horizontalScroll = useHorizontalScroll();
 
@@ -78,7 +82,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     if (show && !props.invoice) {
       loadService()
         .then((a) => setPayService(a!))
-        .catch(() => setError("Failed to load LNURL service"));
+        .catch(() => setError(formatMessage(messages.LNURLFail)));
     } else {
       setPayService(undefined);
       setError(undefined);
@@ -170,10 +174,10 @@ export default function LNURLTip(props: LNURLTipProps) {
           payWebLNIfEnabled(data);
         }
       } else {
-        setError("Failed to load invoice");
+        setError(formatMessage(messages.InvoiceFail));
       }
     } catch (e) {
-      setError("Failed to load invoice");
+      setError(formatMessage(messages.InvoiceFail));
     }
   }
 
@@ -187,7 +191,7 @@ export default function LNURLTip(props: LNURLTipProps) {
           min={min}
           max={max}
           className="f-grow mr10"
-          placeholder="Custom"
+          placeholder={formatMessage(messages.Custom)}
           value={customAmount}
           onChange={(e) => setCustomAmount(parseInt(e.target.value))}
         />
@@ -197,7 +201,7 @@ export default function LNURLTip(props: LNURLTipProps) {
           disabled={!Boolean(customAmount)}
           onClick={() => selectAmount(customAmount!)}
         >
-          Confirm
+          <FormattedMessage {...messages.Confirm} />
         </button>
       </div>
     );
@@ -220,7 +224,9 @@ export default function LNURLTip(props: LNURLTipProps) {
     if (invoice) return null;
     return (
       <>
-        <h3>Zap amount in sats</h3>
+        <h3>
+          <FormattedMessage {...messages.ZapAmount} />
+        </h3>
         <div className="amounts" ref={horizontalScroll}>
           {serviceAmounts.map((a) => (
             <span
@@ -235,15 +241,16 @@ export default function LNURLTip(props: LNURLTipProps) {
         </div>
         {payService && custom()}
         <div className="flex">
-          {(payService?.commentAllowed ?? 0) > 0 && (
-            <input
-              type="text"
-              placeholder="Comment"
-              className="f-grow"
-              maxLength={payService?.commentAllowed}
-              onChange={(e) => setComment(e.target.value)}
-            />
-          )}
+          {(payService?.commentAllowed ?? 0) > 0 ||
+            (payService?.nostrPubkey && (
+              <input
+                type="text"
+                placeholder={formatMessage(messages.Comment)}
+                className="f-grow"
+                maxLength={payService?.commentAllowed || 120}
+                onChange={(e) => setComment(e.target.value)}
+              />
+            ))}
         </div>
         {(amount ?? 0) > 0 && (
           <button
@@ -252,9 +259,18 @@ export default function LNURLTip(props: LNURLTipProps) {
             onClick={() => loadInvoice()}
           >
             <div className="zap-action-container">
-              <Zap /> Zap
-              {target && ` ${target} `}
-              {formatShort(amount)} sats
+              <Zap />
+              {target ? (
+                <FormattedMessage
+                  {...messages.ZapTarget}
+                  values={{ target, n: formatShort(amount) }}
+                />
+              ) : (
+                <FormattedMessage
+                  {...messages.ZapSats}
+                  values={{ n: formatShort(amount) }}
+                />
+              )}
             </div>
           </button>
         )}
@@ -281,7 +297,7 @@ export default function LNURLTip(props: LNURLTipProps) {
                   type="button"
                   onClick={() => window.open(`lightning:${pr}`)}
                 >
-                  Open Wallet
+                  <FormattedMessage {...messages.OpenWallet} />
                 </button>
               </>
             )}
@@ -297,7 +313,7 @@ export default function LNURLTip(props: LNURLTipProps) {
       <div className="success-action">
         <p className="paid">
           <Check className="success mr10" />
-          {success?.description ?? "Paid!"}
+          {success?.description ?? <FormattedMessage {...messages.Paid} />}
         </p>
         {success.url && (
           <p>
@@ -310,8 +326,15 @@ export default function LNURLTip(props: LNURLTipProps) {
     );
   }
 
-  const defaultTitle = payService?.nostrPubkey ? "Send zap" : "Send sats";
-  const title = target ? `${defaultTitle} to ${target}` : defaultTitle;
+  const defaultTitle = payService?.nostrPubkey
+    ? formatMessage(messages.SendZap)
+    : formatMessage(messages.SendSats);
+  const title = target
+    ? formatMessage(messages.ToTarget, {
+        action: defaultTitle,
+        target,
+      })
+    : defaultTitle;
   if (!show) return null;
   return (
     <Modal className="lnurl-modal" onClose={onClose}>

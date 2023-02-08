@@ -34,3 +34,9 @@
 .tabs > div {
   cursor: pointer;
 }
+
+.tab.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}

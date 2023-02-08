@@ -87,3 +87,7 @@
 .amount-number {
   font-weight: bold;
 }
+
+.zap.note .body {
+  margin-bottom: 0;
+}

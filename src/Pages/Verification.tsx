@@ -1,5 +1,9 @@
+import { FormattedMessage } from "react-intl";
+
 import { ApiHost } from "Const";
 import Nip5Service from "Element/Nip5Service";
+
+import messages from "./messages";
 
 import "./Verification.css";
 
@@ -10,42 +14,37 @@ export default function VerificationPage() {
       service: `${ApiHost}/api/v1/n5sp`,
       link: "https://snort.social/",
       supportLink: "https://snort.social/help",
-      about: (
-        <>
-          Our very own NIP-05 verification service, help support the development
-          of this site and get a shiny special badge on our site!
-        </>
-      ),
+      about: <FormattedMessage {...messages.SnortSocialNip} />,
     },
     {
       name: "Nostr Plebs",
       service: "https://nostrplebs.com/api/v1",
       link: "https://nostrplebs.com/",
       supportLink: "https://nostrplebs.com/manage",
-      about: (
-        <>
-          <p>
-            Nostr Plebs is one of the first NIP-05 providers in the space and
-            offers a good collection of domains at reasonable prices
-          </p>
-        </>
-      ),
+      about: <FormattedMessage {...messages.NostrPlebsNip} />,
     },
   ];
 
   return (
     <div className="main-content verification">
-      <h2>Get Verified</h2>
+      <h2>
+        <FormattedMessage {...messages.GetVerified} />
+      </h2>
       <p>
-        NIP-05 is a DNS based verification spec which helps to validate you as a
-        real user.
+        <FormattedMessage {...messages.Nip05} />
       </p>
-      <p>Getting NIP-05 verified can help:</p>
+      <p>
+        <FormattedMessage {...messages.Nip05Pros} />
+      </p>
       <ul>
-        <li>Prevent fake accounts from imitating you</li>
-        <li>Make your profile easier to find and share</li>
         <li>
-          Fund developers and platforms providing NIP-05 verification services
+          <FormattedMessage {...messages.AvoidImpersonators} />
+        </li>
+        <li>
+          <FormattedMessage {...messages.EasierToFind} />
+        </li>
+        <li>
+          <FormattedMessage {...messages.Funding} />
         </li>
       </ul>
 

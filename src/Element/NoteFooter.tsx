@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { useIntl, FormattedMessage } from "react-intl";
 import {
   faTrash,
+  faHeart,
   faRepeat,
   faShareNodes,
   faCopy,
@@ -19,10 +21,17 @@ import Zap from "Icons/Zap";
 import Reply from "Icons/Reply";
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { getReactions, hexToBech32, normalizeReaction, Reaction } from "Util";
+import {
+  getReactions,
+  dedupeByPubkey,
+  hexToBech32,
+  normalizeReaction,
+  Reaction,
+} from "Util";
 import { NoteCreator } from "Element/NoteCreator";
+import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
-import { parseZap, ZapsSummary } from "Element/Zap";
+import { parseZap, ParsedZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Feed/ProfileFeed";
 import { default as NEvent } from "Nostr/Event";
 import { RootState } from "State/Store";
@@ -31,6 +40,8 @@ import EventKind from "Nostr/EventKind";
 import { UserPreferences } from "State/Login";
 import useModeration from "Hooks/useModeration";
 import { TranslateHost } from "Const";
+
+import messages from "./messages";
 
 export interface Translation {
   text: string;
@@ -46,7 +57,7 @@ export interface NoteFooterProps {
 
 export default function NoteFooter(props: NoteFooterProps) {
   const { related, ev } = props;
-
+  const { formatMessage } = useIntl();
   const login = useSelector<RootState, HexKey | undefined>(
     (s) => s.login.publicKey
   );
@@ -57,6 +68,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const author = useUserProfile(ev.RootPubKey);
   const publisher = useEventPublisher();
   const [reply, setReply] = useState(false);
+  const [showReactions, setShowReactions] = useState(false);
   const [tip, setTip] = useState(false);
   const isMine = ev.RootPubKey === login;
   const lang = window.navigator.language;
@@ -68,31 +80,40 @@ export default function NoteFooter(props: NoteFooterProps) {
     [related, ev]
   );
   const reposts = useMemo(
-    () => getReactions(related, ev.Id, EventKind.Repost),
+    () => dedupeByPubkey(getReactions(related, ev.Id, EventKind.Repost)),
     [related, ev]
   );
-  const zaps = useMemo(
-    () =>
-      getReactions(related, ev.Id, EventKind.ZapReceipt)
-        .map(parseZap)
-        .filter((z) => z.valid && z.zapper !== ev.PubKey),
-    [related]
-  );
+  const zaps = useMemo(() => {
+    const sortedZaps = getReactions(related, ev.Id, EventKind.ZapReceipt)
+      .map(parseZap)
+      .filter((z) => z.valid && z.zapper !== ev.PubKey);
+    sortedZaps.sort((a, b) => b.amount - a.amount);
+    return sortedZaps;
+  }, [related]);
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   const didZap = zaps.some((a) => a.zapper === login);
   const groupReactions = useMemo(() => {
-    return reactions?.reduce(
-      (acc, { content }) => {
-        let r = normalizeReaction(content);
-        const amount = acc[r] || 0;
-        return { ...acc, [r]: amount + 1 };
+    const result = reactions?.reduce(
+      (acc, reaction) => {
+        let kind = normalizeReaction(reaction.content);
+        const rs = acc[kind] || [];
+        if (rs.map((e) => e.pubkey).includes(reaction.pubkey)) {
+          return acc;
+        }
+        return { ...acc, [kind]: [...rs, reaction] };
       },
       {
-        [Reaction.Positive]: 0,
-        [Reaction.Negative]: 0,
+        [Reaction.Positive]: [] as TaggedRawEvent[],
+        [Reaction.Negative]: [] as TaggedRawEvent[],
       }
     );
+    return {
+      [Reaction.Positive]: dedupeByPubkey(result[Reaction.Positive]),
+      [Reaction.Negative]: dedupeByPubkey(result[Reaction.Negative]),
+    };
   }, [reactions]);
+  const positive = groupReactions[Reaction.Positive];
+  const negative = groupReactions[Reaction.Negative];
 
   function hasReacted(emoji: string) {
     return reactions?.some(
@@ -115,7 +136,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   async function deleteEvent() {
     if (
       window.confirm(
-        `Are you sure you want to delete ${ev.Id.substring(0, 8)}?`
+        formatMessage(messages.ConfirmDeletion, { id: ev.Id.substring(0, 8) })
       )
     ) {
       let evDelete = await publisher.delete(ev.Id);
@@ -127,7 +148,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (!hasReposted()) {
       if (
         !prefs.confirmReposts ||
-        window.confirm(`Are you sure you want to repost: ${ev.Id}`)
+        window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.Id }))
       ) {
         let evRepost = await publisher.repost(ev);
         publisher.broadcast(evRepost);
@@ -191,7 +212,7 @@ export default function NoteFooter(props: NoteFooterProps) {
             <Heart />
           </div>
           <div className="reaction-pill-number">
-            {formatShort(groupReactions[Reaction.Positive])}
+            {formatShort(positive.length)}
           </div>
         </div>
         {repostIcon()}
@@ -250,42 +271,53 @@ export default function NoteFooter(props: NoteFooterProps) {
     return (
       <>
         {prefs.enableReactions && (
-          <MenuItem onClick={() => react("-")}>
-            <Dislike />
-            {formatShort(groupReactions[Reaction.Negative])}
-            &nbsp; Dislike
+          <MenuItem onClick={() => setShowReactions(true)}>
+            <FontAwesomeIcon icon={faHeart} />
+            <FormattedMessage {...messages.Reactions} />
           </MenuItem>
         )}
         <MenuItem onClick={() => share()}>
           <FontAwesomeIcon icon={faShareNodes} />
-          Share
+          <FormattedMessage {...messages.Share} />
         </MenuItem>
         <MenuItem onClick={() => copyId()}>
           <FontAwesomeIcon icon={faCopy} />
-          Copy ID
+          <FormattedMessage {...messages.CopyID} />
         </MenuItem>
         <MenuItem onClick={() => mute(ev.PubKey)}>
           <FontAwesomeIcon icon={faCommentSlash} />
-          Mute
+          <FormattedMessage {...messages.Mute} />
         </MenuItem>
+        {prefs.enableReactions && (
+          <MenuItem onClick={() => react("-")}>
+            <Dislike />
+            <FormattedMessage
+              {...messages.Dislike}
+              values={{ n: negative.length }}
+            />
+          </MenuItem>
+        )}
         <MenuItem onClick={() => block(ev.PubKey)}>
           <FontAwesomeIcon icon={faBan} />
-          Block
+          <FormattedMessage {...messages.Block} />
         </MenuItem>
         <MenuItem onClick={() => translate()}>
           <FontAwesomeIcon icon={faLanguage} />
-          Translate to {langNames.of(lang.split("-")[0])}
+          <FormattedMessage
+            {...messages.TranslateTo}
+            values={{ lang: langNames.of(lang.split("-")[0]) }}
+          />
         </MenuItem>
         {prefs.showDebugMenus && (
           <MenuItem onClick={() => copyEvent()}>
             <FontAwesomeIcon icon={faCopy} />
-            Copy Event JSON
+            <FormattedMessage {...messages.CopyJSON} />
           </MenuItem>
         )}
         {isMine && (
           <MenuItem onClick={() => deleteEvent()}>
             <FontAwesomeIcon icon={faTrash} className="red" />
-            Delete
+            <FormattedMessage {...messages.Delete} />
           </MenuItem>
         )}
       </>
@@ -325,6 +357,14 @@ export default function NoteFooter(props: NoteFooterProps) {
           onSend={() => setReply(false)}
           show={reply}
           setShow={setReply}
+        />
+        <Reactions
+          show={showReactions}
+          setShow={setShowReactions}
+          positive={positive}
+          negative={negative}
+          reposts={reposts}
+          zaps={zaps}
         />
         <SendSats
           svc={author?.lud16 || author?.lud06}

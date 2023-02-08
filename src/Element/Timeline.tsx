@@ -1,4 +1,5 @@
 import "./Timeline.css";
+import { FormattedMessage } from "react-intl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForward } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useMemo } from "react";
@@ -13,6 +14,8 @@ import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
 import ProfilePreview from "./ProfilePreview";
 import Skeleton from "Element/Skeleton";
+
+import messages from "./messages";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -96,8 +99,11 @@ export default function Timeline({
     <div className="main-content">
       {latestFeed.length > 1 && (
         <div className="card latest-notes pointer" onClick={() => showLatest()}>
-          <FontAwesomeIcon icon={faForward} size="xl" />
-          &nbsp; Show latest {latestFeed.length - 1} notes
+          <FontAwesomeIcon icon={faForward} size="xl" />{" "}
+          <FormattedMessage
+            {...messages.ShowLatest}
+            values={{ n: latestFeed.length - 1 }}
+          />
         </div>
       )}
       {mainFeed.map(eventElement)}

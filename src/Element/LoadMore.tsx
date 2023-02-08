@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { useInView } from "react-intersection-observer";
+
+import messages from "./messages";
 
 export default function LoadMore({
   onLoadMore,
@@ -28,7 +31,7 @@ export default function LoadMore({
 
   return (
     <div ref={ref} className="mb10">
-      {children ?? "Loading..."}
+      {children ?? <FormattedMessage {...messages.Loading} />}
     </div>
   );
 }

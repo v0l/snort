@@ -118,6 +118,7 @@ export default function useTimelineFeed(
       sub.Id = `timeline-related:${subject.type}`;
       sub.Kinds = new Set([
         EventKind.Reaction,
+        EventKind.Repost,
         EventKind.Deletion,
         EventKind.ZapReceipt,
       ]);

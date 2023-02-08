@@ -195,3 +195,20 @@ export function addIdAndDefaultMessageToMessages(
 
   return result;
 }
+
+export function dedupeByPubkey(events: TaggedRawEvent[]) {
+  const deduped = events.reduce(
+    ({ list, seen }: { list: TaggedRawEvent[]; seen: Set<HexKey> }, ev) => {
+      if (seen.has(ev.pubkey)) {
+        return { list, seen };
+      }
+      seen.add(ev.pubkey);
+      return {
+        seen,
+        list: [...list, ev],
+      };
+    },
+    { list: [], seen: new Set([]) }
+  );
+  return deduped.list as TaggedRawEvent[];
+}

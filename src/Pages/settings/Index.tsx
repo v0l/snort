@@ -1,5 +1,5 @@
 import "./Index.css";
-
+import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ArrowFront from "Icons/ArrowFront";
@@ -8,8 +8,9 @@ import Profile from "Icons/Profile";
 import Relay from "Icons/Relay";
 import Heart from "Icons/Heart";
 import Logout from "Icons/Logout";
-
 import { logout } from "State/Login";
+
+import messages from "./messages";
 
 const SettingsIndex = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,9 @@ const SettingsIndex = () => {
           <div className="mr10">
             <Profile />
           </div>
-          <span>Profile</span>
+          <span>
+            <FormattedMessage {...messages.Profile} />
+          </span>
           <div className="align-end">
             <ArrowFront />
           </div>
@@ -36,7 +39,7 @@ const SettingsIndex = () => {
           <div className="mr10">
             <Relay />
           </div>
-          Relays
+          <FormattedMessage {...messages.Relays} />
           <div className="align-end">
             <ArrowFront />
           </div>
@@ -45,7 +48,7 @@ const SettingsIndex = () => {
           <div className="mr10">
             <Gear />
           </div>
-          Preferences
+          <FormattedMessage {...messages.Preferences} />
           <div className="align-end">
             <ArrowFront />
           </div>
@@ -63,7 +66,7 @@ const SettingsIndex = () => {
           <div className="mr10">
             <Logout />
           </div>
-          Log Out
+          <FormattedMessage {...messages.LogOut} />
           <div className="align-end">
             <ArrowFront />
           </div>
