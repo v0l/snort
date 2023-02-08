@@ -1,7 +1,6 @@
 git:
   filters:
-  - filter_type: file
+  - filter_type: dir
     file_format: KEYVALUEJSON
-    source_language: en
-    source_file: 'src/translations/en.json'
+    source_file_dir: 'src/translations'
     translation_files_expression: 'src/translations/<lang>.json'
