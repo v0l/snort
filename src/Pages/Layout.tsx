@@ -224,7 +224,7 @@ export default function Layout() {
             accountHeader()
           ) : (
             <button type="button" onClick={() => navigate("/login")}>
-              <FormattedMessage {...messages.Login} />
+              <FormattedMessage {...messages.login} />
             </button>
           )}
         </div>
