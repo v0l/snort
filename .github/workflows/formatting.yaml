@@ -20,4 +20,4 @@ jobs:
         run: npm i
 
       - name: Check Formatting
-        run: npx prettier --check .
+        run: npm run format
