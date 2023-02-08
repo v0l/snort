@@ -3,5 +3,5 @@ git:
   - filter_type: file
     file_format: KEYVALUEJSON
     source_language: en
-    source_file_dir: 'src/translations/en.json'
+    source_file: 'src/translations/en.json'
     translation_files_expression: 'src/translations/<lang>.json'
