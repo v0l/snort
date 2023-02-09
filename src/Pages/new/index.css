@@ -97,6 +97,11 @@
 .new-user > .copy .body {
   font-size: 16px;
 }
+@media (max-width: 520px) {
+  .new-user > .copy .body {
+    font-size: 12px;
+  }
+}
 
 .new-user > .copy .icon {
   margin-left: auto;
@@ -133,6 +138,12 @@
   max-width: 568px;
   background: #222;
   border: none;
+}
+
+@media (max-width: 720px) {
+  .new-user input {
+    width: calc(100vw - 40px);
+  }
 }
 
 .light .new-user input {
