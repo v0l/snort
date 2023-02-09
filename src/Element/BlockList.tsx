@@ -18,39 +18,21 @@ export default function BlockList({ variant }: BlockListProps) {
       {variant === "muted" && (
         <>
           <h4>
-            <FormattedMessage
-              {...messages.MuteCount}
-              values={{ n: muted.length }}
-            />
+            <FormattedMessage {...messages.MuteCount} values={{ n: muted.length }} />
           </h4>
-          {muted.map((a) => {
-            return (
-              <ProfilePreview
-                actions={<MuteButton pubkey={a} />}
-                pubkey={a}
-                options={{ about: false }}
-                key={a}
-              />
-            );
+          {muted.map(a => {
+            return <ProfilePreview actions={<MuteButton pubkey={a} />} pubkey={a} options={{ about: false }} key={a} />;
           })}
         </>
       )}
       {variant === "blocked" && (
         <>
           <h4>
-            <FormattedMessage
-              {...messages.BlockCount}
-              values={{ n: blocked.length }}
-            />
+            <FormattedMessage {...messages.BlockCount} values={{ n: blocked.length }} />
           </h4>
-          {blocked.map((a) => {
+          {blocked.map(a => {
             return (
-              <ProfilePreview
-                actions={<BlockButton pubkey={a} />}
-                pubkey={a}
-                options={{ about: false }}
-                key={a}
-              />
+              <ProfilePreview actions={<BlockButton pubkey={a} />} pubkey={a} options={{ about: false }} key={a} />
             );
           })}
         </>

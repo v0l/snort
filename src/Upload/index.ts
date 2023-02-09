@@ -14,9 +14,7 @@ export interface Uploader {
 }
 
 export default function useFileUpload(): Uploader {
-  const fileUploader = useSelector(
-    (s: RootState) => s.login.preferences.fileUploader
-  );
+  const fileUploader = useSelector((s: RootState) => s.login.preferences.fileUploader);
 
   switch (fileUploader) {
     case "nostr.build": {

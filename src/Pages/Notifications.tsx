@@ -7,9 +7,7 @@ import Timeline from "Element/Timeline";
 
 export default function NotificationsPage() {
   const dispatch = useDispatch();
-  const pubkey = useSelector<RootState, HexKey | undefined>(
-    (s) => s.login.publicKey
-  );
+  const pubkey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
 
   useEffect(() => {
     dispatch(markNotificationsRead());

@@ -28,10 +28,9 @@ const RootTab: Record<string, Tab> = {
 };
 
 export default function RootPage() {
-  const [loggedOut, pubKey, follows] = useSelector<
-    RootState,
-    [boolean | undefined, HexKey | undefined, HexKey[]]
-  >((s) => [s.login.loggedOut, s.login.publicKey, s.login.follows]);
+  const [loggedOut, pubKey, follows] = useSelector<RootState, [boolean | undefined, HexKey | undefined, HexKey[]]>(
+    s => [s.login.loggedOut, s.login.publicKey, s.login.follows]
+  );
   const [tab, setTab] = useState<Tab>(RootTab.Posts);
 
   function followHints() {
@@ -58,13 +57,7 @@ export default function RootPage() {
   return (
     <>
       <div className="main-content">
-        {pubKey && (
-          <Tabs
-            tabs={[RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global]}
-            tab={tab}
-            setTab={setTab}
-          />
-        )}
+        {pubKey && <Tabs tabs={[RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global]} tab={tab} setTab={setTab} />}
       </div>
       {followHints()}
       <Timeline

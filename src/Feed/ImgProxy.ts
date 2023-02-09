@@ -11,9 +11,7 @@ export interface ImgProxySettings {
 }
 
 export default function useImgProxy() {
-  const settings = useSelector(
-    (s: RootState) => s.login.preferences.imgProxyConfig
-  );
+  const settings = useSelector((s: RootState) => s.login.preferences.imgProxyConfig);
   const te = new TextEncoder();
 
   function urlSafe(s: string) {
@@ -34,9 +32,7 @@ export default function useImgProxy() {
       if (!settings) return url;
       const opt = resize ? `rs:fit:${resize}:${resize}` : "";
       const urlBytes = te.encode(url);
-      const urlEncoded = urlSafe(
-        base64.encode(urlBytes, 0, urlBytes.byteLength)
-      );
+      const urlEncoded = urlSafe(base64.encode(urlBytes, 0, urlBytes.byteLength));
       const path = `/${opt}/${urlEncoded}`;
       const sig = await signUrl(path);
       return `${new URL(settings.url).toString()}${sig}${path}`;

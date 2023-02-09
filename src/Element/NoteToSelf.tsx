@@ -20,19 +20,13 @@ function NoteLabel({ pubkey }: NoteToSelfProps) {
   const user = useUserProfile(pubkey);
   return (
     <div>
-      <FormattedMessage {...messages.NoteToSelf} />{" "}
-      <FontAwesomeIcon icon={faCertificate} size="xs" />
+      <FormattedMessage {...messages.NoteToSelf} /> <FontAwesomeIcon icon={faCertificate} size="xs" />
       {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
     </div>
   );
 }
 
-export default function NoteToSelf({
-  pubkey,
-  clickable,
-  className,
-  link,
-}: NoteToSelfProps) {
+export default function NoteToSelf({ pubkey, clickable, className, link }: NoteToSelfProps) {
   const navigate = useNavigate();
 
   const clickLink = () => {
@@ -45,12 +39,7 @@ export default function NoteToSelf({
     <div className={`nts${className ? ` ${className}` : ""}`}>
       <div className="avatar-wrapper">
         <div className={`avatar${clickable ? " clickable" : ""}`}>
-          <FontAwesomeIcon
-            onClick={clickLink}
-            className="note-to-self"
-            icon={faBook}
-            size="2xl"
-          />
+          <FontAwesomeIcon onClick={clickLink} className="note-to-self" icon={faBook} size="2xl" />
         </div>
       </div>
       <div className="f-grow">

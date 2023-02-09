@@ -19,19 +19,14 @@ export interface TimelineSubject {
   items: string[];
 }
 
-export default function useTimelineFeed(
-  subject: TimelineSubject,
-  options: TimelineFeedOptions
-) {
+export default function useTimelineFeed(subject: TimelineSubject, options: TimelineFeedOptions) {
   const now = unixNow();
   const [window] = useState<number>(options.window ?? 60 * 60);
   const [until, setUntil] = useState<number>(now);
   const [since, setSince] = useState<number>(now - window);
   const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
   const [trackingParentEvents, setTrackingParentEvents] = useState<u256[]>([]);
-  const pref = useSelector<RootState, UserPreferences>(
-    (s) => s.login.preferences
-  );
+  const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
 
   const createSub = useCallback(() => {
     if (subject.type !== "global" && subject.items.length === 0) {
@@ -116,12 +111,7 @@ export default function useTimelineFeed(
     if (trackingEvents.length > 0 && pref.enableReactions) {
       sub = new Subscriptions();
       sub.Id = `timeline-related:${subject.type}`;
-      sub.Kinds = new Set([
-        EventKind.Reaction,
-        EventKind.Repost,
-        EventKind.Deletion,
-        EventKind.ZapReceipt,
-      ]);
+      sub.Kinds = new Set([EventKind.Reaction, EventKind.Repost, EventKind.Deletion, EventKind.ZapReceipt]);
       sub.ETags = new Set(trackingEvents);
     }
     return sub ?? null;
@@ -143,21 +133,21 @@ export default function useTimelineFeed(
 
   useEffect(() => {
     if (main.store.notes.length > 0) {
-      setTrackingEvent((s) => {
-        const ids = main.store.notes.map((a) => a.id);
-        if (ids.some((a) => !s.includes(a))) {
+      setTrackingEvent(s => {
+        const ids = main.store.notes.map(a => a.id);
+        if (ids.some(a => !s.includes(a))) {
           return Array.from(new Set([...s, ...ids]));
         }
         return s;
       });
       const reposts = main.store.notes
-        .filter((a) => a.kind === EventKind.Repost && a.content === "")
-        .map((a) => a.tags.find((b) => b[0] === "e"))
-        .filter((a) => a)
-        .map((a) => unwrap(a)[1]);
+        .filter(a => a.kind === EventKind.Repost && a.content === "")
+        .map(a => a.tags.find(b => b[0] === "e"))
+        .filter(a => a)
+        .map(a => unwrap(a)[1]);
       if (reposts.length > 0) {
-        setTrackingParentEvents((s) => {
-          if (reposts.some((a) => !s.includes(a))) {
+        setTrackingParentEvents(s => {
+          if (reposts.some(a => !s.includes(a))) {
             const temp = new Set([...s, ...reposts]);
             return Array.from(temp);
           }
@@ -175,14 +165,11 @@ export default function useTimelineFeed(
     loadMore: () => {
       console.debug("Timeline load more!");
       if (options.method === "LIMIT_UNTIL") {
-        const oldest = main.store.notes.reduce(
-          (acc, v) => (acc = v.created_at < acc ? v.created_at : acc),
-          unixNow()
-        );
+        const oldest = main.store.notes.reduce((acc, v) => (acc = v.created_at < acc ? v.created_at : acc), unixNow());
         setUntil(oldest);
       } else {
-        setUntil((s) => s - window);
-        setSince((s) => s - window);
+        setUntil(s => s - window);
+        setSince(s => s - window);
       }
     },
     showLatest: () => {

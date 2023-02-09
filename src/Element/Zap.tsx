@@ -2,12 +2,9 @@ import "./Zap.css";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
-// @ts-expect-error No types available
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bytesToHex } from "@noble/hashes/utils";
 import { sha256, unwrap } from "Util";
-
-//import { sha256 } from "Util";
 import { formatShort } from "Number";
 import { HexKey, TaggedRawEvent } from "Nostr";
 import Event from "Nostr/Event";
@@ -18,28 +15,20 @@ import { RootState } from "State/Store";
 import messages from "./messages";
 
 function findTag(e: TaggedRawEvent, tag: string) {
-  const maybeTag = e.tags.find((evTag) => {
+  const maybeTag = e.tags.find(evTag => {
     return evTag[0] === tag;
   });
   return maybeTag && maybeTag[1];
-}
-
-interface Section {
-  name: string;
 }
 
 function getInvoice(zap: TaggedRawEvent) {
   const bolt11 = findTag(zap, "bolt11");
   const decoded = invoiceDecode(bolt11);
 
-  const amount = decoded.sections.find(
-    (section: Section) => section.name === "amount"
-  )?.value;
-  const hash = decoded.sections.find(
-    (section: Section) => section.name === "description_hash"
-  )?.value;
+  const amount = decoded.sections.find(section => section.name === "amount")?.value;
+  const hash = decoded.sections.find(section => section.name === "description_hash")?.value;
 
-  return { amount, hash: hash ? bytesToHex(hash) : undefined };
+  return { amount, hash: hash ? bytesToHex(hash as Uint8Array) : undefined };
 }
 
 interface Zapper {
@@ -88,13 +77,7 @@ export function parseZap(zap: TaggedRawEvent): ParsedZap {
   };
 }
 
-const Zap = ({
-  zap,
-  showZapped = true,
-}: {
-  zap: ParsedZap;
-  showZapped?: boolean;
-}) => {
+const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean }) => {
   const { amount, content, zapper, valid, p } = zap;
   const pubKey = useSelector((s: RootState) => s.login.publicKey);
 
@@ -105,21 +88,13 @@ const Zap = ({
         {p !== pubKey && showZapped && <ProfileImage pubkey={p} />}
         <div className="amount">
           <span className="amount-number">
-            <FormattedMessage
-              {...messages.Sats}
-              values={{ n: formatShort(amount) }}
-            />
+            <FormattedMessage {...messages.Sats} values={{ n: formatShort(amount) }} />
           </span>
         </div>
       </div>
       {content.length > 0 && zapper && (
         <div className="body">
-          <Text
-            creator={zapper}
-            content={content}
-            tags={[]}
-            users={new Map()}
-          />
+          <Text creator={zapper} content={content} tags={[]} users={new Map()} />
         </div>
       )}
     </div>
@@ -132,8 +107,8 @@ interface ZapsSummaryProps {
 
 export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
   const sortedZaps = useMemo(() => {
-    const pub = [...zaps.filter((z) => z.zapper && z.valid)];
-    const priv = [...zaps.filter((z) => !z.zapper && z.valid)];
+    const pub = [...zaps.filter(z => z.zapper && z.valid)];
+    const priv = [...zaps.filter(z => !z.zapper && z.valid)];
     pub.sort((a, b) => b.amount - a.amount);
     return pub.concat(priv);
   }, [zaps]);
@@ -151,16 +126,8 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
         <div className={`top-zap`}>
           <div className="summary">
             {zapper && <ProfileImage pubkey={zapper} />}
-            {restZaps.length > 0 && (
-              <FormattedMessage
-                {...messages.Others}
-                values={{ n: restZaps.length }}
-              />
-            )}{" "}
-            <FormattedMessage
-              {...messages.OthersZapped}
-              values={{ n: restZaps.length }}
-            />
+            {restZaps.length > 0 && <FormattedMessage {...messages.Others} values={{ n: restZaps.length }} />}{" "}
+            <FormattedMessage {...messages.OthersZapped} values={{ n: restZaps.length }} />
           </div>
         </div>
       )}

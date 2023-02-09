@@ -18,11 +18,7 @@ export default function useFollowsFeed(pubkey: HexKey) {
 }
 
 export function getFollowers(feed: NoteStore, pubkey: HexKey) {
-  const contactLists = feed?.notes.filter(
-    (a) => a.kind === EventKind.ContactList && a.pubkey === pubkey
-  );
-  const pTags = contactLists?.map((a) =>
-    a.tags.filter((b) => b[0] === "p").map((c) => c[1])
-  );
+  const contactLists = feed?.notes.filter(a => a.kind === EventKind.ContactList && a.pubkey === pubkey);
+  const pTags = contactLists?.map(a => a.tags.filter(b => b[0] === "p").map(c => c[1]));
   return [...new Set(pTags?.flat())];
 }

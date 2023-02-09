@@ -6,8 +6,7 @@ export default function HelpPage() {
     <>
       <h2>NIP-05</h2>
       <p>
-        If you have an enquiry about your NIP-05 order please DM{" "}
-        <Link to={`/messages/${KieranPubKey}`}>Kieran</Link>
+        If you have an enquiry about your NIP-05 order please DM <Link to={`/messages/${KieranPubKey}`}>Kieran</Link>
       </p>
     </>
   );

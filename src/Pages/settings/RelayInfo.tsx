@@ -14,9 +14,7 @@ const RelayInfo = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const conn = Array.from(System.Sockets.values()).find(
-    (a) => a.Id === params.id
-  );
+  const conn = Array.from(System.Sockets.values()).find(a => a.Id === params.id);
   console.debug(conn);
   const stats = useRelayState(conn?.Address ?? "");
 
@@ -63,12 +61,9 @@ const RelayInfo = () => {
               <FormattedMessage {...messages.Contact} />
             </h4>
             <a
-              href={`${
-                stats.info.contact.startsWith("mailto:") ? "" : "mailto:"
-              }${stats.info.contact}`}
+              href={`${stats.info.contact.startsWith("mailto:") ? "" : "mailto:"}${stats.info.contact}`}
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               {stats.info.contact}
             </a>
           </div>
@@ -79,17 +74,12 @@ const RelayInfo = () => {
               <FormattedMessage {...messages.Supports} />
             </h4>
             <div className="f-grow">
-              {stats.info.supported_nips.map((a) => (
+              {stats.info.supported_nips.map(a => (
                 <span
                   className="pill"
                   onClick={() =>
-                    navigate(
-                      `https://github.com/nostr-protocol/nips/blob/master/${a
-                        .toString()
-                        .padStart(2, "0")}.md`
-                    )
-                  }
-                >
+                    navigate(`https://github.com/nostr-protocol/nips/blob/master/${a.toString().padStart(2, "0")}.md`)
+                  }>
                   NIP-{a.toString().padStart(2, "0")}
                 </span>
               ))}
@@ -102,8 +92,7 @@ const RelayInfo = () => {
             onClick={() => {
               dispatch(removeRelay(unwrap(conn).Address));
               navigate("/settings/relays");
-            }}
-          >
+            }}>
             <FormattedMessage {...messages.Remove} />
           </div>
         </div>

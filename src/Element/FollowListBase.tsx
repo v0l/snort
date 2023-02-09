@@ -10,10 +10,7 @@ export interface FollowListBaseProps {
   pubkeys: HexKey[];
   title?: string;
 }
-export default function FollowListBase({
-  pubkeys,
-  title,
-}: FollowListBaseProps) {
+export default function FollowListBase({ pubkeys, title }: FollowListBaseProps) {
   const publisher = useEventPublisher();
 
   async function followAll() {
@@ -25,15 +22,11 @@ export default function FollowListBase({
     <div className="main-content">
       <div className="flex mt10 mb10">
         <div className="f-grow bold">{title}</div>
-        <button
-          className="transparent"
-          type="button"
-          onClick={() => followAll()}
-        >
+        <button className="transparent" type="button" onClick={() => followAll()}>
           <FormattedMessage {...messages.FollowAll} />
         </button>
       </div>
-      {pubkeys?.map((a) => (
+      {pubkeys?.map(a => (
         <ProfilePreview pubkey={a} key={a} />
       ))}
     </div>

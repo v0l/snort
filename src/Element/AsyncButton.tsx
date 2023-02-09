@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-interface AsyncButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface AsyncButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   onClick(e: React.MouseEvent): Promise<void> | void;
   children?: React.ReactNode;
 }

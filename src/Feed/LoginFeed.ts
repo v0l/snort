@@ -23,6 +23,7 @@ import { barrierNip07 } from "Feed/EventPublisher";
 import { getMutedKeys, getNewest } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 import { unwrap } from "Util";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 /**
  * Managed loading data for the current logged in user
@@ -103,23 +104,19 @@ export default function useLoginFeed() {
   const mutedFeed = useSubscription(subMuted, { leaveOpen: true, cache: true });
 
   useEffect(() => {
-    const contactList = metadataFeed.store.notes.filter(
-      (a) => a.kind === EventKind.ContactList
-    );
-    const metadata = metadataFeed.store.notes.filter(
-      (a) => a.kind === EventKind.SetMetadata
-    );
+    const contactList = metadataFeed.store.notes.filter(a => a.kind === EventKind.ContactList);
+    const metadata = metadataFeed.store.notes.filter(a => a.kind === EventKind.SetMetadata);
     const profiles = metadata
-      .map((a) => mapEventToProfile(a))
-      .filter((a) => a !== undefined)
-      .map((a) => unwrap(a));
+      .map(a => mapEventToProfile(a))
+      .filter(a => a !== undefined)
+      .map(a => unwrap(a));
 
     for (const cl of contactList) {
       if (cl.content !== "" && cl.content !== "{}") {
         const relays = JSON.parse(cl.content);
         dispatch(setRelays({ relays, createdAt: cl.created_at }));
       }
-      const pTags = cl.tags.filter((a) => a[0] === "p").map((a) => a[1]);
+      const pTags = cl.tags.filter(a => a[0] === "p").map(a => a[1]);
       dispatch(setFollows({ keys: pTags, createdAt: cl.created_at }));
     }
 
@@ -145,17 +142,13 @@ export default function useLoginFeed() {
 
   useEffect(() => {
     const replies = notificationFeed.store.notes.filter(
-      (a) =>
-        a.kind === EventKind.TextNote &&
-        !isMuted(a.pubkey) &&
-        a.created_at > readNotifications
+      a => a.kind === EventKind.TextNote && !isMuted(a.pubkey) && a.created_at > readNotifications
     );
-    replies.forEach((nx) => {
+    replies.forEach(nx => {
       dispatch(setLatestNotifications(nx.created_at));
-      makeNotification(db, nx).then((notification) => {
+      makeNotification(db, nx).then(notification => {
         if (notification) {
-          // @ts-expect-error This is typed wrong, but I don't have the time to fix it right now
-          dispatch(sendNotification(notification));
+          (dispatch as ThunkDispatch<RootState, undefined, AnyAction>)(sendNotification(notification));
         }
       });
     });
@@ -166,19 +159,12 @@ export default function useLoginFeed() {
     dispatch(setMuted(muted));
 
     const newest = getNewest(mutedFeed.store.notes);
-    if (
-      newest &&
-      newest.content.length > 0 &&
-      pubKey &&
-      newest.created_at > latestMuted
-    ) {
+    if (newest && newest.content.length > 0 && pubKey && newest.created_at > latestMuted) {
       decryptBlocked(newest, pubKey, privKey)
-        .then((plaintext) => {
+        .then(plaintext => {
           try {
             const blocked = JSON.parse(plaintext);
-            const keys = blocked
-              .filter((p: string) => p && p.length === 2 && p[0] === "p")
-              .map((p: string) => p[1]);
+            const keys = blocked.filter((p: string) => p && p.length === 2 && p[0] === "p").map((p: string) => p[1]);
             dispatch(
               setBlocked({
                 keys,
@@ -189,29 +175,21 @@ export default function useLoginFeed() {
             console.debug("Couldn't parse JSON");
           }
         })
-        .catch((error) => console.warn(error));
+        .catch(error => console.warn(error));
     }
   }, [dispatch, mutedFeed.store]);
 
   useEffect(() => {
-    const dms = dmsFeed.store.notes.filter(
-      (a) => a.kind === EventKind.DirectMessage
-    );
+    const dms = dmsFeed.store.notes.filter(a => a.kind === EventKind.DirectMessage);
     dispatch(addDirectMessage(dms));
   }, [dispatch, dmsFeed.store]);
 }
 
-async function decryptBlocked(
-  raw: TaggedRawEvent,
-  pubKey: HexKey,
-  privKey?: HexKey
-) {
+async function decryptBlocked(raw: TaggedRawEvent, pubKey: HexKey, privKey?: HexKey) {
   const ev = new Event(raw);
   if (pubKey && privKey) {
     return await ev.DecryptData(raw.content, privKey, pubKey);
   } else {
-    return await barrierNip07(() =>
-      window.nostr.nip04.decrypt(pubKey, raw.content)
-    );
+    return await barrierNip07(() => window.nostr.nip04.decrypt(pubKey, raw.content));
   }
 }

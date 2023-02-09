@@ -13,9 +13,7 @@ import messages from "./messages";
 const RelaySettingsPage = () => {
   const dispatch = useDispatch();
   const publisher = useEventPublisher();
-  const relays = useSelector<RootState, Record<string, RelaySettings>>(
-    (s) => s.login.relays
-  );
+  const relays = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
   const [newRelay, setNewRelay] = useState<string>();
 
   async function saveRelays() {
@@ -36,7 +34,7 @@ const RelaySettingsPage = () => {
             className="f-grow"
             placeholder="wss://my-relay.com"
             value={newRelay}
-            onChange={(e) => setNewRelay(e.target.value)}
+            onChange={e => setNewRelay(e.target.value)}
           />
         </div>
         <button className="secondary mb10" onClick={() => addNewRelay()}>
@@ -64,7 +62,7 @@ const RelaySettingsPage = () => {
     <>
       <h3>Relays</h3>
       <div className="flex f-col mb10">
-        {Object.keys(relays || {}).map((a) => (
+        {Object.keys(relays || {}).map(a => (
           <Relay addr={a} key={a} />
         ))}
       </div>

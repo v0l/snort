@@ -26,11 +26,7 @@ const getMessages = (locale: string) => {
 
 export const IntlProvider = ({ children }: { children: ReactNode }) => {
   const getLocale = () => {
-    return (
-      (navigator.languages && navigator.languages[0]) ||
-      navigator.language ||
-      DEFAULT_LOCALE
-    );
+    return (navigator.languages && navigator.languages[0]) || navigator.language || DEFAULT_LOCALE;
   };
   const locale = getLocale();
 

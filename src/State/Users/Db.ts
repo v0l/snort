@@ -11,7 +11,7 @@ class IndexedUsersDb implements UsersDb {
 
   isAvailable() {
     if ("indexedDB" in window) {
-      return new Promise<boolean>((resolve) => {
+      return new Promise<boolean>(resolve => {
         const req = window.indexedDB.open("dummy", 1);
         req.onsuccess = () => {
           resolve(true);
@@ -44,7 +44,7 @@ class IndexedUsersDb implements UsersDb {
 
   async bulkGet(keys: HexKey[]) {
     const ret = await idb.users.bulkGet(keys);
-    return ret.filter((a) => a !== undefined).map((a_1) => unwrap(a_1));
+    return ret.filter(a => a !== undefined).map(a_1 => unwrap(a_1));
   }
 
   async add(user: MetadataCache) {
@@ -68,10 +68,7 @@ class IndexedUsersDb implements UsersDb {
   }
 }
 
-function groupByPubkey(
-  acc: Record<HexKey, MetadataCache>,
-  user: MetadataCache
-) {
+function groupByPubkey(acc: Record<HexKey, MetadataCache>, user: MetadataCache) {
   return { ...acc, [user.pubkey]: user };
 }
 
@@ -83,7 +80,7 @@ class ReduxUsersDb implements UsersDb {
   async query(q: string) {
     const state = store.getState();
     const { users } = state.users;
-    return Object.values(users).filter((user) => {
+    return Object.values(users).filter(user => {
       const profile = user as MetadataCache;
       return (
         profile.name?.includes(q) ||
@@ -123,7 +120,7 @@ class ReduxUsersDb implements UsersDb {
     const state = store.getState();
     const { users } = state.users;
     const ids = new Set([...keys]);
-    return Object.values(users).filter((user) => {
+    return Object.values(users).filter(user => {
       return ids.has(user.pubkey);
     });
   }

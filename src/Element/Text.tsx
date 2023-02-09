@@ -34,9 +34,9 @@ export interface TextProps {
 export default function Text({ content, tags, creator, users }: TextProps) {
   function extractLinks(fragments: Fragment[]) {
     return fragments
-      .map((f) => {
+      .map(f => {
         if (typeof f === "string") {
-          return f.split(UrlRegex).map((a) => {
+          return f.split(UrlRegex).map(a => {
             if (a.startsWith("http")) {
               return <HyperText link={a} creator={creator} />;
             }
@@ -50,29 +50,22 @@ export default function Text({ content, tags, creator, users }: TextProps) {
 
   function extractMentions(frag: TextFragment) {
     return frag.body
-      .map((f) => {
+      .map(f => {
         if (typeof f === "string") {
-          return f.split(MentionRegex).map((match) => {
+          return f.split(MentionRegex).map(match => {
             const matchTag = match.match(/#\[(\d+)\]/);
             if (matchTag && matchTag.length === 2) {
               const idx = parseInt(matchTag[1]);
-              const ref = frag.tags?.find((a) => a.Index === idx);
+              const ref = frag.tags?.find(a => a.Index === idx);
               if (ref) {
                 switch (ref.Key) {
                   case "p": {
                     return <Mention pubkey={ref.PubKey ?? ""} />;
                   }
                   case "e": {
-                    const eText = hexToBech32(
-                      "note",
-                      ref.Event ?? ""
-                    ).substring(0, 12);
+                    const eText = hexToBech32("note", ref.Event).substring(0, 12);
                     return (
-                      <Link
-                        key={ref.Event}
-                        to={eventLink(ref.Event ?? "")}
-                        onClick={(e) => e.stopPropagation()}
-                      >
+                      <Link key={ref.Event} to={eventLink(ref.Event ?? "")} onClick={e => e.stopPropagation()}>
                         #{eText}
                       </Link>
                     );
@@ -95,9 +88,9 @@ export default function Text({ content, tags, creator, users }: TextProps) {
 
   function extractInvoices(fragments: Fragment[]) {
     return fragments
-      .map((f) => {
+      .map(f => {
         if (typeof f === "string") {
-          return f.split(InvoiceRegex).map((i) => {
+          return f.split(InvoiceRegex).map(i => {
             if (i.toLowerCase().startsWith("lnbc")) {
               return <Invoice key={i} invoice={i} />;
             } else {
@@ -112,9 +105,9 @@ export default function Text({ content, tags, creator, users }: TextProps) {
 
   function extractHashtags(fragments: Fragment[]) {
     return fragments
-      .map((f) => {
+      .map(f => {
         if (typeof f === "string") {
-          return f.split(HashtagRegex).map((i) => {
+          return f.split(HashtagRegex).map(i => {
             if (i.toLowerCase().startsWith("#")) {
               return <Hashtag tag={i.substring(1)} />;
             } else {
@@ -134,7 +127,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
 
   function transformParagraph(frag: TextFragment) {
     const fragments = transformText(frag);
-    if (fragments.every((f) => typeof f === "string")) {
+    if (fragments.every(f => typeof f === "string")) {
       return <p>{fragments}</p>;
     }
     return <>{fragments}</>;
@@ -150,13 +143,9 @@ export default function Text({ content, tags, creator, users }: TextProps) {
 
   const components = useMemo(() => {
     return {
-      p: (x: { children?: React.ReactNode[] }) =>
-        transformParagraph({ body: x.children ?? [], tags, users }),
-      a: (x: { href?: string }) => (
-        <HyperText link={x.href ?? ""} creator={creator} />
-      ),
-      li: (x: { children?: Fragment[] }) =>
-        transformLi({ body: x.children ?? [], tags, users }),
+      p: (x: { children?: React.ReactNode[] }) => transformParagraph({ body: x.children ?? [], tags, users }),
+      a: (x: { href?: string }) => <HyperText link={x.href ?? ""} creator={creator} />,
+      li: (x: { children?: Fragment[] }) => transformLi({ body: x.children ?? [], tags, users }),
     };
   }, [content]);
 
@@ -178,9 +167,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
         ) {
           node.type = "text";
           const position = unwrap(node.position);
-          node.value = content
-            .slice(position.start.offset, position.end.offset)
-            .replace(/\)$/, " )");
+          node.value = content.slice(position.start.offset, position.end.offset).replace(/\)$/, " )");
           return SKIP;
         }
       });
@@ -188,11 +175,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
     [content]
   );
   return (
-    <ReactMarkdown
-      className="text"
-      components={components}
-      remarkPlugins={[disableMarkdownLinks]}
-    >
+    <ReactMarkdown className="text" components={components} remarkPlugins={[disableMarkdownLinks]}>
       {content}
     </ReactMarkdown>
   );

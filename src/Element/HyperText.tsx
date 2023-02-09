@@ -19,30 +19,17 @@ import TidalEmbed from "Element/TidalEmbed";
 import { ProxyImg } from "Element/ProxyImg";
 import { HexKey } from "Nostr";
 
-export default function HyperText({
-  link,
-  creator,
-}: {
-  link: string;
-  creator: HexKey;
-}) {
+export default function HyperText({ link, creator }: { link: string; creator: HexKey }) {
   const pref = useSelector((s: RootState) => s.login.preferences);
   const follows = useSelector((s: RootState) => s.login.follows);
 
   const render = useCallback(() => {
     const a = link;
     try {
-      const hideNonFollows =
-        pref.autoLoadMedia === "follows-only" && !follows.includes(creator);
+      const hideNonFollows = pref.autoLoadMedia === "follows-only" && !follows.includes(creator);
       if (pref.autoLoadMedia === "none" || hideNonFollows) {
         return (
-          <a
-            href={a}
-            onClick={(e) => e.stopPropagation()}
-            target="_blank"
-            rel="noreferrer"
-            className="ext"
-          >
+          <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
             {a}
           </a>
         );
@@ -54,8 +41,7 @@ export default function HyperText({
       const soundcloundId = SoundCloudRegex.test(a) && RegExp.$1;
       const mixcloudId = MixCloudRegex.test(a) && RegExp.$1;
       const spotifyId = SpotifyRegex.test(a);
-      const extension =
-        FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
+      const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
       if (extension) {
         switch (extension) {
           case "gif":
@@ -83,11 +69,10 @@ export default function HyperText({
               <a
                 key={url.toString()}
                 href={url.toString()}
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
                 target="_blank"
                 rel="noreferrer"
-                className="ext"
-              >
+                className="ext">
                 {url.toString()}
               </a>
             );
@@ -124,13 +109,7 @@ export default function HyperText({
         return <SpotifyEmbed link={a} />;
       } else {
         return (
-          <a
-            href={a}
-            onClick={(e) => e.stopPropagation()}
-            target="_blank"
-            rel="noreferrer"
-            className="ext"
-          >
+          <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
             {a}
           </a>
         );
@@ -139,13 +118,7 @@ export default function HyperText({
       // Ignore the error.
     }
     return (
-      <a
-        href={a}
-        onClick={(e) => e.stopPropagation()}
-        target="_blank"
-        rel="noreferrer"
-        className="ext"
-      >
+      <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
         {a}
       </a>
     );

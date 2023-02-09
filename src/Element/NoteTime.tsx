@@ -31,10 +31,7 @@ export default function NoteTime(props: NoteTimeProps) {
         weekday: "short",
       });
     } else if (absAgo > HourInMs) {
-      return `${fromDate.getHours().toString().padStart(2, "0")}:${fromDate
-        .getMinutes()
-        .toString()
-        .padStart(2, "0")}`;
+      return `${fromDate.getHours().toString().padStart(2, "0")}:${fromDate.getMinutes().toString().padStart(2, "0")}`;
     } else if (absAgo < MinuteInMs) {
       return fallback;
     } else {
@@ -49,7 +46,7 @@ export default function NoteTime(props: NoteTimeProps) {
   useEffect(() => {
     setTime(calcTime());
     const t = setInterval(() => {
-      setTime((s) => {
+      setTime(s => {
         const newTime = calcTime();
         if (newTime !== s) {
           return newTime;

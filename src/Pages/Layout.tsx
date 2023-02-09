@@ -29,16 +29,8 @@ export default function Layout() {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {
-    loggedOut,
-    publicKey,
-    relays,
-    latestNotification,
-    readNotifications,
-    dms,
-    preferences,
-    newUserKey,
-  } = useSelector((s: RootState) => s.login);
+  const { loggedOut, publicKey, relays, latestNotification, readNotifications, dms, preferences, newUserKey } =
+    useSelector((s: RootState) => s.login);
   const { isMuted } = useModeration();
 
   const usingDb = useDb();
@@ -47,7 +39,7 @@ export default function Layout() {
 
   const shouldHideNoteCreator = useMemo(() => {
     const hideNoteCreator = ["/settings", "/messages", "/new"];
-    return hideNoteCreator.some((a) => location.pathname.startsWith(a));
+    return hideNoteCreator.some(a => location.pathname.startsWith(a));
   }, [location]);
 
   const hasNotifications = useMemo(
@@ -58,7 +50,7 @@ export default function Layout() {
     () =>
       publicKey
         ? totalUnread(
-            dms.filter((a) => !isMuted(a.pubkey)),
+            dms.filter(a => !isMuted(a.pubkey)),
             publicKey
           )
         : 0,
@@ -98,14 +90,10 @@ export default function Layout() {
   useEffect(() => {
     const osTheme = window.matchMedia("(prefers-color-scheme: light)");
     setTheme(
-      preferences.theme === "system" && osTheme.matches
-        ? "light"
-        : preferences.theme === "light"
-        ? "light"
-        : "dark"
+      preferences.theme === "system" && osTheme.matches ? "light" : preferences.theme === "light" ? "light" : "dark"
     );
 
-    osTheme.onchange = (e) => {
+    osTheme.onchange = e => {
       if (preferences.theme === "system") {
         setTheme(e.matches ? "light" : "dark");
       }
@@ -117,7 +105,7 @@ export default function Layout() {
 
   useEffect(() => {
     // check DB support then init
-    IndexedUDB.isAvailable().then(async (a) => {
+    IndexedUDB.isAvailable().then(async a => {
       const dbType = a ? "indexdDb" : "redux";
 
       // cleanup on load
@@ -145,14 +133,9 @@ export default function Layout() {
       const rsp = await fetch("https://api.nostr.watch/v1/online");
       if (rsp.ok) {
         const online: string[] = await rsp.json();
-        const pickRandom = online
-          .sort(() => (Math.random() >= 0.5 ? 1 : -1))
-          .slice(0, 4); // pick 4 random relays
+        const pickRandom = online.sort(() => (Math.random() >= 0.5 ? 1 : -1)).slice(0, 4); // pick 4 random relays
 
-        const relayObjects = pickRandom.map((a) => [
-          a,
-          { read: true, write: true },
-        ]);
+        const relayObjects = pickRandom.map(a => [a, { read: true, write: true }]);
         newRelays = Object.fromEntries(relayObjects);
         dispatch(
           setRelays({
@@ -233,19 +216,10 @@ export default function Layout() {
 
       {!shouldHideNoteCreator && (
         <>
-          <button
-            className="note-create-button"
-            type="button"
-            onClick={() => setShow(!show)}
-          >
+          <button className="note-create-button" type="button" onClick={() => setShow(!show)}>
             <Plus />
           </button>
-          <NoteCreator
-            replyTo={undefined}
-            autoFocus={true}
-            show={show}
-            setShow={setShow}
-          />
+          <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
         </>
       )}
     </div>

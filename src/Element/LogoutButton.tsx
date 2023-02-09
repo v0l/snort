@@ -16,8 +16,7 @@ export default function LogoutButton() {
       onClick={() => {
         dispatch(logout());
         navigate("/");
-      }}
-    >
+      }}>
       <FormattedMessage {...messages.Logout} />
     </button>
   );

@@ -37,12 +37,6 @@
   }
 
   .skeleton::after {
-    background-image: linear-gradient(
-      90deg,
-      #50535a 0%,
-      #656871 20%,
-      #50535a 40%,
-      #50535a 100%
-    );
+    background-image: linear-gradient(90deg, #50535a 0%, #656871 20%, #50535a 40%, #50535a 100%);
   }
 }

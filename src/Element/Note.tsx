@@ -1,11 +1,5 @@
 import "./Note.css";
-import {
-  useCallback,
-  useMemo,
-  useState,
-  useLayoutEffect,
-  ReactNode,
-} from "react";
+import { useCallback, useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
@@ -58,21 +52,11 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
 
 export default function Note(props: NoteProps) {
   const navigate = useNavigate();
-  const {
-    data,
-    related,
-    highlight,
-    options: opt,
-    ["data-ev"]: parsedEvent,
-    ignoreModeration = false,
-  } = props;
+  const { data, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false } = props;
   const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
   const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
   const users = useUserProfiles(pubKeys);
-  const deletions = useMemo(
-    () => getReactions(related, ev.Id, EventKind.Deletion),
-    [related]
-  );
+  const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
   const { isMuted } = useModeration();
   const isOpMuted = isMuted(ev.PubKey);
   const { ref, inView, entry } = useInView({ triggerOnce: true });
@@ -99,14 +83,7 @@ export default function Note(props: NoteProps) {
         </b>
       );
     }
-    return (
-      <Text
-        content={body}
-        tags={ev.Tags}
-        users={users || new Map()}
-        creator={ev.PubKey}
-      />
-    );
+    return <Text content={body} tags={ev.Tags} users={users || new Map()} creator={ev.PubKey} />;
   }, [ev]);
 
   useLayoutEffect(() => {
@@ -139,9 +116,7 @@ export default function Note(props: NoteProps) {
         mentions.push({
           pk,
           name: u.name ?? shortNpub,
-          link: (
-            <Link to={`/p/${npub}`}>{u.name ? `@${u.name}` : shortNpub}</Link>
-          ),
+          link: <Link to={`/p/${npub}`}>{u.name ? `@${u.name}` : shortNpub}</Link>,
         });
       } else {
         mentions.push({
@@ -151,7 +126,7 @@ export default function Note(props: NoteProps) {
         });
       }
     }
-    mentions.sort((a) => (a.name.startsWith("npub") ? 1 : -1));
+    mentions.sort(a => (a.name.startsWith("npub") ? 1 : -1));
     const othersLength = mentions.length - maxMentions;
     const renderMention = (m: { link: React.ReactNode }, idx: number) => {
       return (
@@ -162,13 +137,8 @@ export default function Note(props: NoteProps) {
       );
     };
     const pubMentions =
-      mentions.length > maxMentions
-        ? mentions?.slice(0, maxMentions).map(renderMention)
-        : mentions?.map(renderMention);
-    const others =
-      mentions.length > maxMentions
-        ? formatMessage(messages.Others, { n: othersLength })
-        : "";
+      mentions.length > maxMentions ? mentions?.slice(0, maxMentions).map(renderMention) : mentions?.map(renderMention);
+    const others = mentions.length > maxMentions ? formatMessage(messages.Others, { n: othersLength }) : "";
     return (
       <div className="reply">
         re:&nbsp;
@@ -178,11 +148,7 @@ export default function Note(props: NoteProps) {
             {others}
           </>
         ) : (
-          replyId && (
-            <Link to={eventLink(replyId)}>
-              {hexToBech32("note", replyId)?.substring(0, 12)}
-            </Link>
-          )
+          replyId && <Link to={eventLink(replyId)}>{hexToBech32("note", replyId)?.substring(0, 12)}</Link>
         )}
       </div>
     );
@@ -192,10 +158,7 @@ export default function Note(props: NoteProps) {
     return (
       <>
         <h4>
-          <FormattedMessage
-            {...messages.UnknownEventKind}
-            values={{ kind: ev.Kind }}
-          />
+          <FormattedMessage {...messages.UnknownEventKind} values={{ kind: ev.Kind }} />
         </h4>
         <pre>{JSON.stringify(ev.ToObject(), undefined, "  ")}</pre>
       </>
@@ -207,10 +170,7 @@ export default function Note(props: NoteProps) {
       return (
         <>
           <p className="highlight">
-            <FormattedMessage
-              {...messages.TranslatedFrom}
-              values={{ lang: translated.fromLanguage }}
-            />
+            <FormattedMessage {...messages.TranslatedFrom} values={{ lang: translated.fromLanguage }} />
           </p>
           {translated.text}
         </>
@@ -230,10 +190,7 @@ export default function Note(props: NoteProps) {
       <>
         {options.showHeader && (
           <div className="header flex">
-            <ProfileImage
-              pubkey={ev.RootPubKey}
-              subHeader={replyTag() ?? undefined}
-            />
+            <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
             {options.showTime && (
               <div className="info">
                 <NoteTime from={ev.CreatedAt * 1000} />
@@ -241,43 +198,27 @@ export default function Note(props: NoteProps) {
             )}
           </div>
         )}
-        <div className="body" onClick={(e) => goToEvent(e, ev.Id)}>
+        <div className="body" onClick={e => goToEvent(e, ev.Id)}>
           {transformBody()}
           {translation()}
         </div>
         {extendable && !showMore && (
-          <span
-            className="expand-note mt10 flex f-center"
-            onClick={() => setShowMore(true)}
-          >
+          <span className="expand-note mt10 flex f-center" onClick={() => setShowMore(true)}>
             <FormattedMessage {...messages.ShowMore} />
           </span>
         )}
-        {options.showFooter && (
-          <NoteFooter
-            ev={ev}
-            related={related}
-            onTranslated={(t) => setTranslated(t)}
-          />
-        )}
+        {options.showFooter && <NoteFooter ev={ev} related={related} onTranslated={t => setTranslated(t)} />}
       </>
     );
   }
 
   const note = (
     <div
-      className={`${baseClassName}${highlight ? " active " : " "}${
-        extendable && !showMore ? " note-expand" : ""
-      }`}
-      ref={ref}
-    >
+      className={`${baseClassName}${highlight ? " active " : " "}${extendable && !showMore ? " note-expand" : ""}`}
+      ref={ref}>
       {content()}
     </div>
   );
 
-  return !ignoreModeration && isOpMuted ? (
-    <HiddenNote>{note}</HiddenNote>
-  ) : (
-    note
-  );
+  return !ignoreModeration && isOpMuted ? <HiddenNote>{note}</HiddenNote> : note;
 }

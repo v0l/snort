@@ -5,7 +5,7 @@ import { Subscriptions } from "Nostr/Subscriptions";
 import { default as NEvent } from "Nostr/Event";
 import { DefaultConnectTimeout } from "Const";
 import { ConnectionStats } from "Nostr/ConnectionStats";
-import { RawEvent, TaggedRawEvent, u256 } from "Nostr";
+import { RawEvent, RawReqFilter, TaggedRawEvent, u256 } from "Nostr";
 import { RelayInfo } from "./RelayInfo";
 import Nips from "./Nips";
 import { System } from "./System";
@@ -40,7 +40,7 @@ export default class Connection {
   Id: string;
   Address: string;
   Socket: WebSocket | null;
-  Pending: Subscriptions[];
+  Pending: Array<RawReqFilter>;
   Subscriptions: Map<string, Subscriptions>;
   Settings: RelaySettings;
   Info?: RelayInfo;
@@ -116,9 +116,9 @@ export default class Connection {
     this.IsClosed = false;
     this.Socket = new WebSocket(this.Address);
     this.Socket.onopen = () => this.OnOpen();
-    this.Socket.onmessage = (e) => this.OnMessage(e);
-    this.Socket.onerror = (e) => this.OnError(e);
-    this.Socket.onclose = (e) => this.OnClose(e);
+    this.Socket.onmessage = e => this.OnMessage(e);
+    this.Socket.onerror = e => this.OnError(e);
+    this.Socket.onclose = e => this.OnClose(e);
   }
 
   Close() {
@@ -141,9 +141,7 @@ export default class Connection {
     if (!this.IsClosed) {
       this.ConnectTimeout = this.ConnectTimeout * 2;
       console.log(
-        `[${this.Address}] Closed (${e.reason}), trying again in ${(
-          this.ConnectTimeout / 1000
-        )
+        `[${this.Address}] Closed (${e.reason}), trying again in ${(this.ConnectTimeout / 1000)
           .toFixed(0)
           .toLocaleString()} sec`
       );
@@ -224,7 +222,7 @@ export default class Connection {
    * Send event on this connection and wait for OK response
    */
   async SendAsync(e: NEvent, timeout = 5000) {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(resolve => {
       if (!this.Settings.write) {
         resolve();
         return;
@@ -304,7 +302,7 @@ export default class Connection {
    * Using relay document to determine if this relay supports a feature
    */
   SupportsNip(n: number) {
-    return this.Info?.supported_nips?.some((a) => a === n) ?? false;
+    return this.Info?.supported_nips?.some(a => a === n) ?? false;
   }
 
   _UpdateState() {
@@ -312,10 +310,7 @@ export default class Connection {
     this.CurrentState.events.received = this.Stats.EventsReceived;
     this.CurrentState.events.send = this.Stats.EventsSent;
     this.CurrentState.avgLatency =
-      this.Stats.Latency.length > 0
-        ? this.Stats.Latency.reduce((acc, v) => acc + v, 0) /
-          this.Stats.Latency.length
-        : 0;
+      this.Stats.Latency.length > 0 ? this.Stats.Latency.reduce((acc, v) => acc + v, 0) / this.Stats.Latency.length : 0;
     this.CurrentState.disconnects = this.Stats.Disconnects;
     this.CurrentState.info = this.Info;
     this.CurrentState.id = this.Id;
@@ -346,21 +341,20 @@ export default class Connection {
 
   _SendSubscription(sub: Subscriptions) {
     if (!this.Authed && this.AwaitingAuth.size > 0) {
-      this.Pending.push(sub);
+      this.Pending.push(sub.ToObject());
       return;
     }
 
     let req = ["REQ", sub.Id, sub.ToObject()];
     if (sub.OrSubs.length > 0) {
-      req = [...req, ...sub.OrSubs.map((o) => o.ToObject())];
+      req = [...req, ...sub.OrSubs.map(o => o.ToObject())];
     }
     sub.Started.set(this.Address, new Date().getTime());
     this._SendJson(req);
   }
 
-  _SendJson(obj: Subscriptions | object) {
+  _SendJson(obj: object) {
     if (this.Socket?.readyState !== WebSocket.OPEN) {
-      // @ts-expect-error TODO @v0l please figure this out... what the hell is going on
       this.Pending.push(obj);
       return;
     }
@@ -388,7 +382,7 @@ export default class Connection {
     };
     this.AwaitingAuth.set(challenge, true);
     const authEvent = await System.nip42Auth(challenge, this.Address);
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       if (!authEvent) {
         authCleanup();
         return Promise.reject("no event");
@@ -425,11 +419,7 @@ export default class Connection {
       if (started) {
         const responseTime = now - started;
         if (responseTime > 10_000) {
-          console.warn(
-            `[${this.Address}][${subId}] Slow response time ${(
-              responseTime / 1000
-            ).toFixed(1)} seconds`
-          );
+          console.warn(`[${this.Address}][${subId}] Slow response time ${(responseTime / 1000).toFixed(1)} seconds`);
         }
         this.Stats.Latency.push(responseTime);
       } else {

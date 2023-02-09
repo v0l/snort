@@ -4,12 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as secp from "@noble/secp256k1";
 
 import { RootState } from "State/Store";
-import {
-  setPrivateKey,
-  setPublicKey,
-  setRelays,
-  setGeneratedPrivateKey,
-} from "State/Login";
+import { setPrivateKey, setPublicKey, setRelays, setGeneratedPrivateKey } from "State/Login";
 import { DefaultRelays, EmailRegex } from "Const";
 import { bech32ToHex } from "Util";
 import { HexKey } from "Nostr";
@@ -17,9 +12,7 @@ import { HexKey } from "Nostr";
 export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const publicKey = useSelector<RootState, HexKey | undefined>(
-    (s) => s.login.publicKey
-  );
+  const publicKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
   const [key, setKey] = useState("");
   const [error, setError] = useState("");
 
@@ -31,11 +24,7 @@ export default function LoginPage() {
 
   async function getNip05PubKey(addr: string) {
     const [username, domain] = addr.split("@");
-    const rsp = await fetch(
-      `https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(
-        username
-      )}`
-    );
+    const rsp = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username)}`);
     if (rsp.ok) {
       const data = await rsp.json();
       const pKey = data.names[username];
@@ -124,7 +113,7 @@ export default function LoginPage() {
           type="text"
           placeholder="nsec / npub / nip-05 / hex private key..."
           className="f-grow"
-          onChange={(e) => setKey(e.target.value)}
+          onChange={e => setKey(e.target.value)}
         />
       </div>
       {error.length > 0 ? <b className="error">{error}</b> : null}

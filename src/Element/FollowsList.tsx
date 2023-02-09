@@ -20,10 +20,5 @@ export default function FollowsList({ pubkey }: FollowsListProps) {
     return getFollowers(feed.store, pubkey);
   }, [feed, pubkey]);
 
-  return (
-    <FollowListBase
-      pubkeys={pubkeys}
-      title={formatMessage(messages.FollowingCount, { n: pubkeys?.length })}
-    />
-  );
+  return <FollowListBase pubkeys={pubkeys} title={formatMessage(messages.FollowingCount, { n: pubkeys?.length })} />;
 }

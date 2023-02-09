@@ -85,11 +85,8 @@ const Textarea = (props: TextareaProps) => {
         "@": {
           afterWhitespace: true,
           dataProvider: userDataProvider,
-          component: (props: { entity: MetadataCache }) => (
-            <UserItem {...props.entity} />
-          ),
-          output: (item: { pubkey: string }) =>
-            `@${hexToBech32("npub", item.pubkey)}`,
+          component: (props: { entity: MetadataCache }) => <UserItem {...props.entity} />,
+          output: (item: { pubkey: string }) => `@${hexToBech32("npub", item.pubkey)}`,
         },
       }}
     />

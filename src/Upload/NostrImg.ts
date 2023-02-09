@@ -1,8 +1,6 @@
 import { UploadResult } from "Upload";
 
-export default async function NostrImg(
-  file: File | Blob
-): Promise<UploadResult> {
+export default async function NostrImg(file: File | Blob): Promise<UploadResult> {
   const fd = new FormData();
   fd.append("image", file);
 

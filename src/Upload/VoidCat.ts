@@ -6,10 +6,7 @@ import { UploadResult } from "Upload";
  * Upload file to void.cat
  * https://void.cat/swagger/index.html
  */
-export default async function VoidCat(
-  file: File | Blob,
-  filename: string
-): Promise<UploadResult> {
+export default async function VoidCat(file: File | Blob, filename: string): Promise<UploadResult> {
   const buf = await file.arrayBuffer();
   const digest = await crypto.subtle.digest("SHA-256", buf);
 
@@ -35,9 +32,7 @@ export default async function VoidCat(
         ext = ["", "webp"];
       }
       return {
-        url:
-          rsp.file?.metadata?.url ??
-          `${VoidCatHost}/d/${rsp.file?.id}${ext ? `.${ext[1]}` : ""}`,
+        url: rsp.file?.metadata?.url ?? `${VoidCatHost}/d/${rsp.file?.id}${ext ? `.${ext[1]}` : ""}`,
       };
     } else {
       return {

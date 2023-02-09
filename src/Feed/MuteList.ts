@@ -34,7 +34,7 @@ export function getMutedKeys(rawNotes: TaggedRawEvent[]): {
   const newest = getNewest(rawNotes);
   if (newest) {
     const { created_at, tags } = newest;
-    const keys = tags.filter((t) => t[0] === "p").map((t) => t[1]);
+    const keys = tags.filter(t => t[0] === "p").map(t => t[1]);
     return {
       keys,
       createdAt: created_at,
@@ -44,8 +44,6 @@ export function getMutedKeys(rawNotes: TaggedRawEvent[]): {
 }
 
 export function getMuted(feed: NoteStore, pubkey: HexKey): HexKey[] {
-  const lists = feed?.notes.filter(
-    (a) => a.kind === EventKind.Lists && a.pubkey === pubkey
-  );
+  const lists = feed?.notes.filter(a => a.kind === EventKind.Lists && a.pubkey === pubkey);
   return getMutedKeys(lists).keys;
 }

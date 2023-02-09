@@ -69,21 +69,14 @@ export class ServiceProvider {
     return await this._GetJson("/config.json");
   }
 
-  async CheckAvailable(
-    handle: string,
-    domain: string
-  ): Promise<HandleAvailability | ServiceError> {
+  async CheckAvailable(handle: string, domain: string): Promise<HandleAvailability | ServiceError> {
     return await this._GetJson("/registration/availability", "POST", {
       name: handle,
       domain,
     });
   }
 
-  async RegisterHandle(
-    handle: string,
-    domain: string,
-    pubkey: string
-  ): Promise<HandleRegisterResponse | ServiceError> {
+  async RegisterHandle(handle: string, domain: string, pubkey: string): Promise<HandleRegisterResponse | ServiceError> {
     return await this._GetJson("/registration/register", "PUT", {
       name: handle,
       domain,
@@ -92,17 +85,10 @@ export class ServiceProvider {
     });
   }
 
-  async CheckRegistration(
-    token: string
-  ): Promise<CheckRegisterResponse | ServiceError> {
-    return await this._GetJson(
-      "/registration/register/check",
-      "POST",
-      undefined,
-      {
-        authorization: token,
-      }
-    );
+  async CheckRegistration(token: string): Promise<CheckRegisterResponse | ServiceError> {
+    return await this._GetJson("/registration/register/check", "POST", undefined, {
+      authorization: token,
+    });
   }
   async _GetJson<T>(
     path: string,

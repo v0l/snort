@@ -9,40 +9,30 @@ import { bech32ToHex } from "Util";
 import useEventPublisher from "Feed/EventPublisher";
 
 import DM from "Element/DM";
-import { RawEvent, TaggedRawEvent } from "Nostr";
+import { TaggedRawEvent } from "Nostr";
 import { dmsInChat, isToSelf } from "Pages/MessagesPage";
 import NoteToSelf from "Element/NoteToSelf";
+import { RootState } from "State/Store";
 
 type RouterParams = {
   id: string;
 };
 
-interface State {
-  login: {
-    dms: TaggedRawEvent[];
-  };
-}
-
 export default function ChatPage() {
   const params = useParams<RouterParams>();
   const publisher = useEventPublisher();
   const id = bech32ToHex(params.id ?? "");
-  const pubKey = useSelector<{ login: { publicKey: string } }>(
-    (s) => s.login.publicKey
-  );
-  const dms = useSelector<State, RawEvent[]>((s) => filterDms(s.login.dms));
+  const pubKey = useSelector((s: RootState) => s.login.publicKey);
+  const dms = useSelector((s: RootState) => filterDms(s.login.dms));
   const [content, setContent] = useState<string>();
   const { ref, inView } = useInView();
   const dmListRef = useRef<HTMLDivElement>(null);
 
   function filterDms(dms: TaggedRawEvent[]) {
-    return dmsInChat(
-      id === pubKey ? dms.filter((d) => isToSelf(d, pubKey)) : dms,
-      id
-    );
+    return dmsInChat(id === pubKey ? dms.filter(d => isToSelf(d, pubKey)) : dms, id);
   }
 
-  const sortedDms = useMemo<RawEvent[]>(() => {
+  const sortedDms = useMemo(() => {
     return [...dms].sort((a, b) => a.created_at - b.created_at);
   }, [dms]);
 
@@ -70,13 +60,12 @@ export default function ChatPage() {
 
   return (
     <>
-      {(id === pubKey && (
-        <NoteToSelf className="f-grow mb-10" pubkey={id} />
-      )) || <ProfileImage pubkey={id} className="f-grow mb10" />}
+      {(id === pubKey && <NoteToSelf className="f-grow mb-10" pubkey={id} />) || (
+        <ProfileImage pubkey={id} className="f-grow mb10" />
+      )}
       <div className="dm-list" ref={dmListRef}>
         <div>
-          {/* TODO I need to look into this again, something's being bricked with the RawEvent and TaggedRawEvent */}
-          {sortedDms.map((a) => (
+          {sortedDms.map(a => (
             <DM data={a as TaggedRawEvent} key={a.id} />
           ))}
           <div ref={ref} className="mb10"></div>
@@ -87,9 +76,8 @@ export default function ChatPage() {
           <textarea
             className="f-grow mr10"
             value={content}
-            onChange={(e) => setContent(e.target.value)}
-            onKeyDown={(e) => onEnter(e)}
-          ></textarea>
+            onChange={e => setContent(e.target.value)}
+            onKeyDown={e => onEnter(e)}></textarea>
           <button type="button" onClick={() => sendDm()}>
             Send
           </button>

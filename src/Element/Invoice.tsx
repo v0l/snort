@@ -1,7 +1,6 @@
 import "./Invoice.css";
 import { useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-// @ts-expect-error No types available
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { useMemo } from "react";
 import SendSats from "Element/SendSats";
@@ -14,10 +13,6 @@ export interface InvoiceProps {
   invoice: string;
 }
 
-interface Section {
-  name: string;
-}
-
 export default function Invoice(props: InvoiceProps) {
   const invoice = props.invoice;
   const webln = useWebln();
@@ -28,22 +23,19 @@ export default function Invoice(props: InvoiceProps) {
     try {
       const parsed = invoiceDecode(invoice);
 
-      const amount = parseInt(
-        parsed.sections.find((a: Section) => a.name === "amount")?.value
-      );
-      const timestamp = parseInt(
-        parsed.sections.find((a: Section) => a.name === "timestamp")?.value
-      );
-      const expire = parseInt(
-        parsed.sections.find((a: Section) => a.name === "expiry")?.value
-      );
-      const description = parsed.sections.find(
-        (a: Section) => a.name === "description"
-      )?.value;
+      const amountSection = parsed.sections.find(a => a.name === "amount");
+      const amount = amountSection ? (amountSection.value as number) : NaN;
+
+      const timestampSection = parsed.sections.find(a => a.name === "timestamp");
+      const timestamp = timestampSection ? (timestampSection.value as number) : NaN;
+
+      const expirySection = parsed.sections.find(a => a.name === "expiry");
+      const expire = expirySection ? (expirySection.value as number) : NaN;
+      const descriptionSection = parsed.sections.find(a => a.name === "description")?.value;
       const ret = {
         amount: !isNaN(amount) ? amount / 1000 : 0,
         expire: !isNaN(timestamp) && !isNaN(expire) ? timestamp + expire : null,
-        description,
+        description: descriptionSection as string | undefined,
         expired: false,
       };
       if (ret.expire) {
@@ -93,18 +85,13 @@ export default function Invoice(props: InvoiceProps) {
 
   return (
     <>
-      <div
-        className={`note-invoice flex ${isExpired ? "expired" : ""} ${
-          isPaid ? "paid" : ""
-        }`}
-      >
+      <div className={`note-invoice flex ${isExpired ? "expired" : ""} ${isPaid ? "paid" : ""}`}>
         <div className="invoice-header">{header()}</div>
 
         <p className="invoice-amount">
           {amount > 0 && (
             <>
-              {amount.toLocaleString()}{" "}
-              <span className="sats">sat{amount === 1 ? "" : "s"}</span>
+              {amount.toLocaleString()} <span className="sats">sat{amount === 1 ? "" : "s"}</span>
             </>
           )}
         </p>
@@ -117,11 +104,7 @@ export default function Invoice(props: InvoiceProps) {
             </div>
           ) : (
             <button disabled={isExpired} type="button" onClick={payInvoice}>
-              {isExpired ? (
-                <FormattedMessage {...messages.Expired} />
-              ) : (
-                <FormattedMessage {...messages.Pay} />
-              )}
+              {isExpired ? <FormattedMessage {...messages.Expired} /> : <FormattedMessage {...messages.Pay} />}
             </button>
           )}
         </div>

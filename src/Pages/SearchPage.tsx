@@ -52,7 +52,7 @@ const SearchPage = () => {
           className="f-grow mr10"
           placeholder={formatMessage(messages.SearchPlaceholder)}
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={e => setSearch(e.target.value)}
         />
       </div>
       {keyword && (

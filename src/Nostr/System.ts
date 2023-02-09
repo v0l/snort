@@ -133,7 +133,7 @@ export class NostrSystem {
    * Request/Response pattern
    */
   RequestSubscription(sub: Subscriptions) {
-    return new Promise<TaggedRawEvent[]>((resolve) => {
+    return new Promise<TaggedRawEvent[]>(resolve => {
       const events: TaggedRawEvent[] = [];
 
       // force timeout returning current results
@@ -143,14 +143,14 @@ export class NostrSystem {
       }, 10_000);
 
       const onEventPassthrough = sub.OnEvent;
-      sub.OnEvent = (ev) => {
+      sub.OnEvent = ev => {
         if (typeof onEventPassthrough === "function") {
           onEventPassthrough(ev);
         }
-        if (!events.some((a) => a.id === ev.id)) {
+        if (!events.some(a => a.id === ev.id)) {
           events.push(ev);
         } else {
-          const existing = events.find((a) => a.id === ev.id);
+          const existing = events.find(a => a.id === ev.id);
           if (existing) {
             for (const v of ev.relays) {
               existing.relays.push(v);
@@ -158,7 +158,7 @@ export class NostrSystem {
           }
         }
       };
-      sub.OnEnd = (c) => {
+      sub.OnEnd = c => {
         c.RemoveSubscription(sub.Id);
         if (sub.IsFinished()) {
           clearInterval(timeout);
@@ -176,7 +176,7 @@ export class NostrSystem {
       const meta = await this.UserDb.bulkGet(Array.from(this.WantsMetadata));
       const expire = new Date().getTime() - ProfileCacheExpire;
       for (const pk of this.WantsMetadata) {
-        const m = meta.find((a) => a?.pubkey === pk);
+        const m = meta.find(a => a?.pubkey === pk);
         if (!m || m.loaded < expire) {
           missing.add(pk);
           // cap 100 missing profiles
@@ -193,7 +193,7 @@ export class NostrSystem {
         sub.Id = `profiles:${sub.Id.slice(0, 8)}`;
         sub.Kinds = new Set([EventKind.SetMetadata]);
         sub.Authors = missing;
-        sub.OnEvent = async (e) => {
+        sub.OnEvent = async e => {
           const profile = mapEventToProfile(e);
           const userDb = unwrap(this.UserDb);
           if (profile) {
@@ -208,19 +208,17 @@ export class NostrSystem {
           }
         };
         const results = await this.RequestSubscription(sub);
-        const couldNotFetch = Array.from(missing).filter(
-          (a) => !results.some((b) => b.pubkey === a)
-        );
+        const couldNotFetch = Array.from(missing).filter(a => !results.some(b => b.pubkey === a));
         console.debug("No profiles: ", couldNotFetch);
         if (couldNotFetch.length > 0) {
           const updates = couldNotFetch
-            .map((a) => {
+            .map(a => {
               return {
                 pubkey: a,
                 loaded: new Date().getTime(),
               };
             })
-            .map((a) => unwrap(this.UserDb).update(a.pubkey, a));
+            .map(a => unwrap(this.UserDb).update(a.pubkey, a));
           await Promise.all(updates);
         }
       }
@@ -228,8 +226,7 @@ export class NostrSystem {
     setTimeout(() => this._FetchMetadata(), 500);
   }
 
-  nip42Auth: (challenge: string, relay: string) => Promise<Event | undefined> =
-    async () => undefined;
+  nip42Auth: (challenge: string, relay: string) => Promise<Event | undefined> = async () => undefined;
 }
 
 export const System = new NostrSystem();

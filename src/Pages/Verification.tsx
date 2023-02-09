@@ -48,7 +48,7 @@ export default function VerificationPage() {
         </li>
       </ul>
 
-      {services.map((a) => (
+      {services.map(a => (
         <Nip5Service key={a.name} {...a} />
       ))}
     </div>

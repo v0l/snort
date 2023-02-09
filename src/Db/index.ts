@@ -28,11 +28,11 @@ export class SnortDB extends Dexie {
     super(NAME);
     this.version(VERSION)
       .stores(STORES)
-      .upgrade(async (tx) => {
+      .upgrade(async tx => {
         await tx
           .table("users")
           .toCollection()
-          .modify((user) => {
+          .modify(user => {
             user.npub = hexToBech32("npub", user.pubkey);
           });
       });

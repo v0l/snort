@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnyAction, createSlice, PayloadAction, ThunkAction } from "@reduxjs/toolkit";
 import * as secp from "@noble/secp256k1";
 import { DefaultRelays } from "Const";
 import { HexKey, TaggedRawEvent } from "Nostr";
@@ -202,13 +202,10 @@ const LoginSlice = createSlice({
   reducers: {
     init: (state, action: PayloadAction<DbType>) => {
       state.useDb = action.payload;
-      state.privateKey =
-        window.localStorage.getItem(PrivateKeyItem) ?? undefined;
+      state.privateKey = window.localStorage.getItem(PrivateKeyItem) ?? undefined;
       if (state.privateKey) {
         window.localStorage.removeItem(PublicKeyItem); // reset nip07 if using private key
-        state.publicKey = secp.utils.bytesToHex(
-          secp.schnorr.getPublicKey(state.privateKey)
-        );
+        state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(state.privateKey));
         state.loggedOut = false;
       } else {
         state.loggedOut = true;
@@ -234,9 +231,7 @@ const LoginSlice = createSlice({
       }
 
       // notifications
-      const readNotif = parseInt(
-        window.localStorage.getItem(NotificationsReadItem) ?? "0"
-      );
+      const readNotif = parseInt(window.localStorage.getItem(NotificationsReadItem) ?? "0");
       if (!isNaN(readNotif)) {
         state.readNotifications = readNotif;
       }
@@ -251,18 +246,14 @@ const LoginSlice = createSlice({
       state.loggedOut = false;
       state.privateKey = action.payload;
       window.localStorage.setItem(PrivateKeyItem, action.payload);
-      state.publicKey = secp.utils.bytesToHex(
-        secp.schnorr.getPublicKey(action.payload)
-      );
+      state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload));
     },
     setGeneratedPrivateKey: (state, action: PayloadAction<HexKey>) => {
       state.loggedOut = false;
       state.newUserKey = true;
       state.privateKey = action.payload;
       window.localStorage.setItem(PrivateKeyItem, action.payload);
-      state.publicKey = secp.utils.bytesToHex(
-        secp.schnorr.getPublicKey(action.payload)
-      );
+      state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload));
     },
     setPublicKey: (state, action: PayloadAction<HexKey>) => {
       window.localStorage.setItem(PublicKeyItem, action.payload);
@@ -303,7 +294,7 @@ const LoginSlice = createSlice({
       const update = Array.isArray(keys) ? keys : [keys];
 
       let changes = false;
-      for (const pk of update.filter((a) => a.length === 64)) {
+      for (const pk of update.filter(a => a.length === 64)) {
         if (!existing.has(pk)) {
           existing.add(pk);
           changes = true;
@@ -323,10 +314,7 @@ const LoginSlice = createSlice({
 
       window.localStorage.setItem(FollowList, JSON.stringify(state.follows));
     },
-    setMuted(
-      state,
-      action: PayloadAction<{ createdAt: number; keys: HexKey[] }>
-    ) {
+    setMuted(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
       const { createdAt, keys } = action.payload;
       if (createdAt >= state.latestMuted) {
         const muted = new Set([...keys]);
@@ -334,10 +322,7 @@ const LoginSlice = createSlice({
         state.latestMuted = createdAt;
       }
     },
-    setBlocked(
-      state,
-      action: PayloadAction<{ createdAt: number; keys: HexKey[] }>
-    ) {
+    setBlocked(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
       const { createdAt, keys } = action.payload;
       if (createdAt >= state.latestMuted) {
         const blocked = new Set([...keys]);
@@ -345,10 +330,7 @@ const LoginSlice = createSlice({
         state.latestMuted = createdAt;
       }
     },
-    addDirectMessage: (
-      state,
-      action: PayloadAction<TaggedRawEvent | Array<TaggedRawEvent>>
-    ) => {
+    addDirectMessage: (state, action: PayloadAction<TaggedRawEvent | Array<TaggedRawEvent>>) => {
       let n = action.payload;
       if (!Array.isArray(n)) {
         n = [n];
@@ -356,7 +338,7 @@ const LoginSlice = createSlice({
 
       let didChange = false;
       for (const x of n) {
-        if (!state.dms.some((a) => a.id === x.id)) {
+        if (!state.dms.some(a => a.id === x.id)) {
           state.dms.push(x);
           didChange = true;
         }
@@ -366,10 +348,10 @@ const LoginSlice = createSlice({
         state.dms = [...state.dms];
       }
     },
-    incDmInteraction: (state) => {
+    incDmInteraction: state => {
       state.dmInteraction += 1;
     },
-    logout: (state) => {
+    logout: state => {
       const relays = { ...state.relays };
       Object.assign(state, InitState);
       state.loggedOut = true;
@@ -377,22 +359,16 @@ const LoginSlice = createSlice({
       state.relays = relays;
       window.localStorage.setItem(RelayListKey, JSON.stringify(relays));
     },
-    markNotificationsRead: (state) => {
+    markNotificationsRead: state => {
       state.readNotifications = Math.ceil(new Date().getTime() / 1000);
-      window.localStorage.setItem(
-        NotificationsReadItem,
-        state.readNotifications.toString()
-      );
+      window.localStorage.setItem(NotificationsReadItem, state.readNotifications.toString());
     },
     setLatestNotifications: (state, action: PayloadAction<number>) => {
       state.latestNotification = action.payload;
     },
     setPreferences: (state, action: PayloadAction<UserPreferences>) => {
       state.preferences = action.payload;
-      window.localStorage.setItem(
-        UserPreferencesKey,
-        JSON.stringify(state.preferences)
-      );
+      window.localStorage.setItem(UserPreferencesKey, JSON.stringify(state.preferences));
     },
   },
 });
@@ -420,14 +396,12 @@ export function sendNotification({
   body,
   icon,
   timestamp,
-}: NotificationRequest) {
+}: NotificationRequest): ThunkAction<void, RootState, undefined, AnyAction> {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const { readNotifications } = state.login;
-    const hasPermission =
-      "Notification" in window && Notification.permission === "granted";
-    const shouldShowNotification =
-      hasPermission && timestamp > readNotifications;
+    const hasPermission = "Notification" in window && Notification.permission === "granted";
+    const shouldShowNotification = hasPermission && timestamp > readNotifications;
     if (shouldShowNotification) {
       try {
         const worker = await navigator.serviceWorker.ready;

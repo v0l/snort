@@ -21,6 +21,11 @@ export interface TaggedRawEvent extends RawEvent {
 export type HexKey = string;
 
 /**
+ * Optinally undefined HexKey
+ */
+export type MaybeHexKey = HexKey | undefined;
+
+/**
  * A 256bit hex id
  */
 export type u256 = string;

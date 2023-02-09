@@ -28,14 +28,7 @@ interface ReactionsProps {
   zaps: ParsedZap[];
 }
 
-const Reactions = ({
-  show,
-  setShow,
-  positive,
-  negative,
-  reposts,
-  zaps,
-}: ReactionsProps) => {
+const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: ReactionsProps) => {
   const { formatMessage } = useIntl();
   const onClose = () => setShow(false);
   const likes = useMemo(() => {
@@ -48,8 +41,7 @@ const Reactions = ({
     sorted.sort((a, b) => b.created_at - a.created_at);
     return sorted;
   }, [negative]);
-  const total =
-    positive.length + negative.length + zaps.length + reposts.length;
+  const total = positive.length + negative.length + zaps.length + reposts.length;
   const defaultTabs: Tab[] = [
     {
       text: formatMessage(messages.Likes, { n: likes.length }),
@@ -93,24 +85,17 @@ const Reactions = ({
         </div>
         <div className="reactions-header">
           <h2>
-            <FormattedMessage
-              {...messages.ReactionsCount}
-              values={{ n: total }}
-            />
+            <FormattedMessage {...messages.ReactionsCount} values={{ n: total }} />
           </h2>
         </div>
         <Tabs tabs={tabs} tab={tab} setTab={setTab} />
         <div className="body" key={tab.value}>
           {tab.value === 0 &&
-            likes.map((ev) => {
+            likes.map(ev => {
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">
-                    {ev.content === "+" ? (
-                      <Heart width={20} height={18} />
-                    ) : (
-                      ev.content
-                    )}
+                    {ev.content === "+" ? <Heart width={20} height={18} /> : ev.content}
                   </div>
                   <ProfileImage pubkey={ev.pubkey} />
                   <FollowButton pubkey={ev.pubkey} />
@@ -118,23 +103,22 @@ const Reactions = ({
               );
             })}
           {tab.value === 1 &&
-            zaps.map((z) => {
+            zaps.map(z => {
               return (
-                <div key={z.id} className="reactions-item">
-                  <div className="zap-reaction-icon">
-                    <ZapIcon width={17} height={20} />
-                    <span className="zap-amount">{formatShort(z.amount)}</span>
+                z.zapper && (
+                  <div key={z.id} className="reactions-item">
+                    <div className="zap-reaction-icon">
+                      <ZapIcon width={17} height={20} />
+                      <span className="zap-amount">{formatShort(z.amount)}</span>
+                    </div>
+                    <ProfileImage pubkey={z.zapper} subHeader={<>{z.content}</>} />
+                    <FollowButton pubkey={z.zapper} />
                   </div>
-                  <ProfileImage
-                    pubkey={z.zapper ?? ""}
-                    subHeader={<>{z.content}</>}
-                  />
-                  <FollowButton pubkey={z.zapper ?? ""} />
-                </div>
+                )
               );
             })}
           {tab.value === 2 &&
-            reposts.map((ev) => {
+            reposts.map(ev => {
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">
@@ -146,7 +130,7 @@ const Reactions = ({
               );
             })}
           {tab.value === 3 &&
-            dislikes.map((ev) => {
+            dislikes.map(ev => {
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">

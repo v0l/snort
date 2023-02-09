@@ -18,18 +18,14 @@ export default function ImportFollows() {
   const [error, setError] = useState<string>("");
 
   const sortedTwitterFollows = useMemo(() => {
-    return follows
-      .map((a) => bech32ToHex(a))
-      .sort((a) => (currentFollows.includes(a) ? 1 : -1));
+    return follows.map(a => bech32ToHex(a)).sort(a => (currentFollows.includes(a) ? 1 : -1));
   }, [follows, currentFollows]);
 
   async function loadFollows() {
     setFollows([]);
     setError("");
     try {
-      const rsp = await fetch(
-        `${TwitterFollowsApi}?username=${twitterUsername}`
-      );
+      const rsp = await fetch(`${TwitterFollowsApi}?username=${twitterUsername}`);
       const data = await rsp.json();
       if (rsp.ok) {
         if (Array.isArray(data) && data.length === 0) {
@@ -64,14 +60,12 @@ export default function ImportFollows() {
           placeholder="Twitter username.."
           className="f-grow mr10"
           value={twitterUsername}
-          onChange={(e) => setTwitterUsername(e.target.value)}
+          onChange={e => setTwitterUsername(e.target.value)}
         />
         <AsyncButton onClick={loadFollows}>Check</AsyncButton>
       </div>
       {error.length > 0 && <b className="error">{error}</b>}
-      {sortedTwitterFollows.length > 0 && (
-        <FollowListBase pubkeys={sortedTwitterFollows} />
-      )}
+      {sortedTwitterFollows.length > 0 && <FollowListBase pubkeys={sortedTwitterFollows} />}
 
       <button onClick={() => navigate("/new/discover")}>Next</button>
     </>

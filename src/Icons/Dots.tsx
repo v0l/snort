@@ -1,12 +1,6 @@
 const Dots = () => {
   return (
-    <svg
-      width="4"
-      height="16"
-      viewBox="0 0 4 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="4" height="16" viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M1.99996 8.86865C2.4602 8.86865 2.83329 8.49556 2.83329 8.03532C2.83329 7.57508 2.4602 7.20199 1.99996 7.20199C1.53972 7.20199 1.16663 7.57508 1.16663 8.03532C1.16663 8.49556 1.53972 8.86865 1.99996 8.86865Z"
         stroke="currentColor"

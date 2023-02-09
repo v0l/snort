@@ -67,7 +67,7 @@ export default class Event {
    * Get the pub key of the creator of this event NIP-26
    */
   get RootPubKey() {
-    const delegation = this.Tags.find((a) => a.Key === "delegation");
+    const delegation = this.Tags.find(a => a.Key === "delegation");
     if (delegation?.PubKey) {
       return delegation.PubKey;
     }
@@ -103,7 +103,7 @@ export default class Event {
       this.PubKey,
       this.CreatedAt,
       this.Kind,
-      this.Tags.map((a) => a.ToObject()).filter((a) => a !== null),
+      this.Tags.map(a => a.ToObject()).filter(a => a !== null),
       this.Content,
     ];
 
@@ -124,8 +124,8 @@ export default class Event {
       created_at: this.CreatedAt,
       kind: this.Kind,
       tags: <string[][]>this.Tags.sort((a, b) => a.Index - b.Index)
-        .map((a) => a.ToObject())
-        .filter((a) => a !== null),
+        .map(a => a.ToObject())
+        .filter(a => a !== null),
       content: this.Content,
       sig: this.Signature,
     };
@@ -156,11 +156,7 @@ export default class Event {
       data
     );
     const uData = new Uint8Array(result);
-    return `${base64.encode(uData, 0, result.byteLength)}?iv=${base64.encode(
-      iv,
-      0,
-      16
-    )}`;
+    return `${base64.encode(uData, 0, result.byteLength)}?iv=${base64.encode(iv, 0, 16)}`;
   }
 
   /**
@@ -203,12 +199,6 @@ export default class Event {
   async _GetDmSharedKey(pubkey: HexKey, privkey: HexKey) {
     const sharedPoint = secp.getSharedSecret(privkey, "02" + pubkey);
     const sharedX = sharedPoint.slice(1, 33);
-    return await window.crypto.subtle.importKey(
-      "raw",
-      sharedX,
-      { name: "AES-CBC" },
-      false,
-      ["encrypt", "decrypt"]
-    );
+    return await window.crypto.subtle.importKey("raw", sharedX, { name: "AES-CBC" }, false, ["encrypt", "decrypt"]);
   }
 }

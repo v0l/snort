@@ -54,9 +54,7 @@ export default function LNURLTip(props: LNURLTipProps) {
   const service = props.svc;
   const show = props.show || false;
   const { note, author, target } = props;
-  const amounts = [
-    500, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000,
-  ];
+  const amounts = [500, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000];
   const emojis: Record<number, string> = {
     1_000: "👍",
     5_000: "💜",
@@ -77,13 +75,12 @@ export default function LNURLTip(props: LNURLTipProps) {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const horizontalScroll = useHorizontalScroll();
-  const canComment =
-    (payService?.commentAllowed ?? 0) > 0 || payService?.nostrPubkey;
+  const canComment = (payService?.commentAllowed ?? 0) > 0 || payService?.nostrPubkey;
 
   useEffect(() => {
     if (show && !props.invoice) {
       loadService()
-        .then((a) => setPayService(a ?? undefined))
+        .then(a => setPayService(a ?? undefined))
         .catch(() => setError(formatMessage(messages.LNURLFail)));
     } else {
       setPayService(undefined);
@@ -99,12 +96,10 @@ export default function LNURLTip(props: LNURLTipProps) {
     if (payService) {
       const min = (payService.minSendable ?? 0) / 1000;
       const max = (payService.maxSendable ?? 0) / 1000;
-      return amounts.filter((a) => a >= min && a <= max);
+      return amounts.filter(a => a >= min && a <= max);
     }
     return [];
   }, [payService]);
-
-  // TODO Why was this never used? I think this might be a bug, or was it just an oversight?
 
   const selectAmount = (a: number) => {
     setError(undefined);
@@ -141,14 +136,10 @@ export default function LNURLTip(props: LNURLTipProps) {
     if (!amount || !payService) return null;
     let url = "";
     const amountParam = `amount=${Math.floor(amount * 1000)}`;
-    const commentParam =
-      comment && payService?.commentAllowed
-        ? `&comment=${encodeURIComponent(comment)}`
-        : "";
+    const commentParam = comment && payService?.commentAllowed ? `&comment=${encodeURIComponent(comment)}` : "";
     if (payService.nostrPubkey && author) {
       const ev = await publisher.zap(author, note, comment);
-      const nostrParam =
-        ev && `&nostr=${encodeURIComponent(JSON.stringify(ev.ToObject()))}`;
+      const nostrParam = ev && `&nostr=${encodeURIComponent(JSON.stringify(ev.ToObject()))}`;
       url = `${payService.callback}?${amountParam}${commentParam}${nostrParam}`;
     } else {
       url = `${payService.callback}?${amountParam}${commentParam}`;
@@ -185,14 +176,13 @@ export default function LNURLTip(props: LNURLTipProps) {
           className="f-grow mr10"
           placeholder={formatMessage(messages.Custom)}
           value={customAmount}
-          onChange={(e) => setCustomAmount(parseInt(e.target.value))}
+          onChange={e => setCustomAmount(parseInt(e.target.value))}
         />
         <button
           className="secondary"
           type="button"
           disabled={!customAmount}
-          onClick={() => selectAmount(customAmount ?? 0)}
-        >
+          onClick={() => selectAmount(customAmount ?? 0)}>
           <FormattedMessage {...messages.Confirm} />
         </button>
       </div>
@@ -222,12 +212,8 @@ export default function LNURLTip(props: LNURLTipProps) {
           <FormattedMessage {...messages.ZapAmount} />
         </h3>
         <div className="amounts" ref={horizontalScroll}>
-          {serviceAmounts.map((a) => (
-            <span
-              className={`sat-amount ${amount === a ? "active" : ""}`}
-              key={a}
-              onClick={() => selectAmount(a)}
-            >
+          {serviceAmounts.map(a => (
+            <span className={`sat-amount ${amount === a ? "active" : ""}`} key={a} onClick={() => selectAmount(a)}>
               {emojis[a] && <>{emojis[a]}&nbsp;</>}
               {formatShort(a)}
             </span>
@@ -241,28 +227,18 @@ export default function LNURLTip(props: LNURLTipProps) {
               placeholder={formatMessage(messages.Comment)}
               className="f-grow"
               maxLength={payService?.commentAllowed || 120}
-              onChange={(e) => setComment(e.target.value)}
+              onChange={e => setComment(e.target.value)}
             />
           )}
         </div>
         {(amount ?? 0) > 0 && (
-          <button
-            type="button"
-            className="zap-action"
-            onClick={() => loadInvoice()}
-          >
+          <button type="button" className="zap-action" onClick={() => loadInvoice()}>
             <div className="zap-action-container">
               <Zap />
               {target ? (
-                <FormattedMessage
-                  {...messages.ZapTarget}
-                  values={{ target, n: formatShort(amount) }}
-                />
+                <FormattedMessage {...messages.ZapTarget} values={{ target, n: formatShort(amount) }} />
               ) : (
-                <FormattedMessage
-                  {...messages.ZapSats}
-                  values={{ n: formatShort(amount) }}
-                />
+                <FormattedMessage {...messages.ZapSats} values={{ n: formatShort(amount) }} />
               )}
             </div>
           </button>
@@ -285,11 +261,7 @@ export default function LNURLTip(props: LNURLTipProps) {
                 <div className="copy-action">
                   <Copy text={pr} maxSize={26} />
                 </div>
-                <button
-                  className="wallet-action"
-                  type="button"
-                  onClick={() => window.open(`lightning:${pr}`)}
-                >
+                <button className="wallet-action" type="button" onClick={() => window.open(`lightning:${pr}`)}>
                   <FormattedMessage {...messages.OpenWallet} />
                 </button>
               </>
@@ -319,9 +291,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     );
   }
 
-  const defaultTitle = payService?.nostrPubkey
-    ? formatMessage(messages.SendZap)
-    : formatMessage(messages.SendSats);
+  const defaultTitle = payService?.nostrPubkey ? formatMessage(messages.SendZap) : formatMessage(messages.SendSats);
   const title = target
     ? formatMessage(messages.ToTarget, {
         action: defaultTitle,
@@ -331,7 +301,7 @@ export default function LNURLTip(props: LNURLTipProps) {
   if (!show) return null;
   return (
     <Modal className="lnurl-modal" onClose={onClose}>
-      <div className="lnurl-tip" onClick={(e) => e.stopPropagation()}>
+      <div className="lnurl-tip" onClick={e => e.stopPropagation()}>
         <div className="close" onClick={onClose}>
           <Close />
         </div>

@@ -28,8 +28,7 @@ const messages = defineMessages({
   ServiceKey: "Service Key",
   ServiceSalt: "Service Salt",
   EnableReactions: "Enable reactions",
-  EnableReactionsHelp:
-    "Reactions will be shown on every page, if disabled no reactions will be shown",
+  EnableReactionsHelp: "Reactions will be shown on every page, if disabled no reactions will be shown",
   ConfirmReposts: "Confirm Reposts",
   ConfirmRepostsHelp: "Reposts need to be manually confirmed",
   ShowLatest: "Automatically show latest notes",

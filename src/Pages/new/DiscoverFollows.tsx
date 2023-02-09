@@ -14,9 +14,7 @@ export default function DiscoverFollows() {
     <>
       <h2>Follow some popular accounts</h2>
       <button onClick={() => navigate("/")}>Skip</button>
-      {sortedRecommends.length > 0 && (
-        <FollowListBase pubkeys={sortedRecommends} />
-      )}
+      {sortedRecommends.length > 0 && <FollowListBase pubkeys={sortedRecommends} />}
       <button onClick={() => navigate("/")}>Done!</button>
     </>
   );

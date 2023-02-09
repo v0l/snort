@@ -10,7 +10,7 @@ export const sha256 = (str: string) => {
 };
 
 export async function openFile(): Promise<File | undefined> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const elm = document.createElement("input");
     elm.type = "file";
     elm.onchange = (e: Event) => {
@@ -33,7 +33,7 @@ export async function openFile(): Promise<File | undefined> {
 export function parseId(id: string) {
   const hrp = ["note", "npub", "nsec"];
   try {
-    if (hrp.some((a) => id.startsWith(a))) {
+    if (hrp.some(a => id.startsWith(a))) {
       return bech32ToHex(id);
     }
   } catch (e) {
@@ -72,7 +72,7 @@ export function eventLink(hex: u256) {
  * Convert hex to bech32
  * @param {string} hex
  */
-export function hexToBech32(hrp: string, hex: string) {
+export function hexToBech32(hrp: string, hex?: string) {
   if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0) {
     return "";
   }
@@ -122,16 +122,8 @@ export function normalizeReaction(content: string) {
 /**
  * Get reactions to a specific event (#e + kind filter)
  */
-export function getReactions(
-  notes: TaggedRawEvent[],
-  id: u256,
-  kind = EventKind.Reaction
-) {
-  return (
-    notes?.filter(
-      (a) => a.kind === kind && a.tags.some((a) => a[0] === "e" && a[1] === id)
-    ) || []
-  );
+export function getReactions(notes: TaggedRawEvent[], id: u256, kind = EventKind.Reaction) {
+  return notes?.filter(a => a.kind === kind && a.tags.some(a => a[0] === "e" && a[1] === id)) || [];
 }
 
 /**
@@ -171,10 +163,7 @@ export function debounce(timeout: number, fn: () => void) {
   return () => clearTimeout(t);
 }
 
-export function addIdAndDefaultMessageToMessages(
-  messages: Record<string, string>,
-  messageIdPrefix: string
-) {
+export function addIdAndDefaultMessageToMessages(messages: Record<string, string>, messageIdPrefix: string) {
   const result: Record<string, MessageDescriptor> = {};
 
   for (const key in messages) {

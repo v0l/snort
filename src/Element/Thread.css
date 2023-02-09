@@ -87,8 +87,7 @@
 }
 
 @media (min-width: 720px) {
-  .subthread-container.subthread-mid:not(.subthread-last)
-    .line-container:after {
+  .subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
     left: 48px;
   }
 }
@@ -103,8 +102,7 @@
 }
 
 @media (min-width: 720px) {
-  .subthread-container.subthread-mid:not(.subthread-last)
-    .line-container:after {
+  .subthread-container.subthread-mid:not(.subthread-last) .line-container:after {
     left: 48px;
   }
 }

@@ -53,13 +53,9 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const id = useMemo(() => parseId(params.id ?? ""), [params]);
   const user = useUserProfile(id);
-  const loggedOut = useSelector<RootState, boolean | undefined>(
-    (s) => s.login.loggedOut
-  );
-  const loginPubKey = useSelector<RootState, HexKey | undefined>(
-    (s) => s.login.publicKey
-  );
-  const follows = useSelector<RootState, HexKey[]>((s) => s.login.follows);
+  const loggedOut = useSelector<RootState, boolean | undefined>(s => s.login.loggedOut);
+  const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+  const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
@@ -72,14 +68,10 @@ export default function ProfilePage() {
   });
   const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
   const website_url =
-    user?.website && !user.website.startsWith("http")
-      ? "https://" + user.website
-      : user?.website || "";
+    user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
   const zapFeed = useZapsFeed(id);
   const zaps = useMemo(() => {
-    const profileZaps = zapFeed.store.notes
-      .map(parseZap)
-      .filter((z) => z.valid && z.p === id && !z.e && z.zapper !== id);
+    const profileZaps = zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e && z.zapper !== id);
     profileZaps.sort((a, b) => b.amount - a.amount);
     return profileZaps;
   }, [zapFeed.store, id]);
@@ -178,12 +170,9 @@ export default function ProfilePage() {
         return (
           <div className="main-content">
             <h4 className="zaps-total">
-              <FormattedMessage
-                {...messages.Sats}
-                values={{ n: formatShort(zapsTotal) }}
-              />
+              <FormattedMessage {...messages.Sats} values={{ n: formatShort(zapsTotal) }} />
             </h4>
-            {zaps.map((z) => (
+            {zaps.map(z => (
               <ZapElement showZapped={false} zap={z} />
             ))}
           </div>
@@ -195,17 +184,10 @@ export default function ProfilePage() {
           return (
             <div className="main-content">
               <h4>
-                <FormattedMessage
-                  {...messages.Following}
-                  values={{ n: follows.length }}
-                />
+                <FormattedMessage {...messages.Following} values={{ n: follows.length }} />
               </h4>
-              {follows.map((a) => (
-                <ProfilePreview
-                  key={a}
-                  pubkey={a.toLowerCase()}
-                  options={{ about: false }}
-                />
+              {follows.map(a => (
+                <ProfilePreview key={a} pubkey={a.toLowerCase()} options={{ about: false }} />
               ))}
             </div>
           );
@@ -242,11 +224,7 @@ export default function ProfilePage() {
         {showProfileQr && (
           <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id} />
-            <QrCode
-              data={`nostr:${hexToBech32("npub", id)}`}
-              link={undefined}
-              className="m10"
-            />
+            <QrCode data={`nostr:${hexToBech32("npub", id)}`} link={undefined} className="m10" />
           </Modal>
         )}
         {isMe ? (
@@ -265,11 +243,7 @@ export default function ProfilePage() {
             )}
             {!loggedOut && (
               <>
-                <IconButton
-                  onClick={() =>
-                    navigate(`/messages/${hexToBech32("npub", id)}`)
-                  }
-                >
+                <IconButton onClick={() => navigate(`/messages/${hexToBech32("npub", id)}`)}>
                   <Envelope width={16} height={13} />
                 </IconButton>
               </>
@@ -301,27 +275,14 @@ export default function ProfilePage() {
   return (
     <>
       <div className="profile flex">
-        {user?.banner && (
-          <ProxyImg
-            alt="banner"
-            className="banner"
-            src={user.banner}
-            size={w}
-          />
-        )}
+        {user?.banner && <ProxyImg alt="banner" className="banner" src={user.banner} size={w} />}
         <div className="profile-wrapper flex">
           {avatar()}
           {userDetails()}
         </div>
       </div>
       <div className="tabs main-content" ref={horizontalScroll}>
-        {[
-          ProfileTab.Notes,
-          ProfileTab.Followers,
-          ProfileTab.Follows,
-          ProfileTab.Zaps,
-          ProfileTab.Muted,
-        ].map(renderTab)}
+        {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Zaps, ProfileTab.Muted].map(renderTab)}
         {isMe && renderTab(ProfileTab.Blocked)}
       </div>
       {tabContent()}

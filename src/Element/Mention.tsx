@@ -18,7 +18,7 @@ export default function Mention({ pubkey }: { pubkey: HexKey }) {
   }, [user, pubkey]);
 
   return (
-    <Link to={profileLink(pubkey)} onClick={(e) => e.stopPropagation()}>
+    <Link to={profileLink(pubkey)} onClick={e => e.stopPropagation()}>
       @{name}
     </Link>
   );

@@ -48,9 +48,7 @@ export function NoteCreator(props: NoteCreatorProps) {
 
   async function sendNote() {
     if (note) {
-      const ev = replyTo
-        ? await publisher.reply(replyTo, note)
-        : await publisher.note(note);
+      const ev = replyTo ? await publisher.reply(replyTo, note) : await publisher.note(note);
       console.debug("Sending note: ", ev);
       publisher.broadcast(ev);
       setNote("");
@@ -68,7 +66,7 @@ export function NoteCreator(props: NoteCreatorProps) {
       if (file) {
         const rx = await uploader.upload(file, file.name);
         if (rx.url) {
-          setNote((n) => `${n ? `${n}\n` : ""}${rx.url}`);
+          setNote(n => `${n ? `${n}\n` : ""}${rx.url}`);
         } else if (rx?.error) {
           setError(rx.error);
         }
@@ -125,11 +123,7 @@ export function NoteCreator(props: NoteCreatorProps) {
               <FormattedMessage {...messages.Cancel} />
             </button>
             <button type="button" onClick={onSubmit}>
-              {replyTo ? (
-                <FormattedMessage {...messages.Reply} />
-              ) : (
-                <FormattedMessage {...messages.Send} />
-              )}
+              {replyTo ? <FormattedMessage {...messages.Reply} /> : <FormattedMessage {...messages.Send} />}
             </button>
           </div>
         </Modal>

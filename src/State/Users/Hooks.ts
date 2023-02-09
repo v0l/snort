@@ -10,10 +10,10 @@ export function useQuery(query: string) {
   return useLiveQuery(async () => db.query(query), [query]);
 }
 
-export function useKey(pubKey: HexKey) {
+export function useKey(pubKey?: HexKey) {
   const db = useDb();
   const { users } = useSelector((state: RootState) => state.users);
-  const defaultUser = users[pubKey];
+  const defaultUser = pubKey ? users[pubKey] : undefined;
 
   const user = useLiveQuery(async () => {
     if (pubKey) {
@@ -29,7 +29,7 @@ export function useKey(pubKey: HexKey) {
   return user;
 }
 
-export function useKeys(pubKeys: HexKey[]): Map<HexKey, MetadataCache> {
+export function useKeys(pubKeys?: HexKey[]): Map<HexKey, MetadataCache> {
   const db = useDb();
   const { users } = useSelector((state: RootState) => state.users);
 
@@ -37,10 +37,10 @@ export function useKeys(pubKeys: HexKey[]): Map<HexKey, MetadataCache> {
     if (pubKeys) {
       try {
         const ret = await db.bulkGet(pubKeys);
-        return new Map(ret.map((a) => [a.pubkey, a]));
+        return new Map(ret.map(a => [a.pubkey, a]));
       } catch (error) {
         console.error(error);
-        return new Map(pubKeys.map((a) => [a, users[a]]));
+        return new Map(pubKeys.map(a => [a, users[a]]));
       }
     }
     return new Map();

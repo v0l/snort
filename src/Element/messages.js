@@ -89,8 +89,7 @@ const messages = defineMessages({
   AccountSupport: "Account Support",
   GoTo: "Go to",
   FindMore: "Find out more info about {service} at {link}",
-  SavePassword:
-    "Please make sure to save the following password in order to manage your handle in the future",
+  SavePassword: "Please make sure to save the following password in order to manage your handle in the future",
 });
 
 export default addIdAndDefaultMessageToMessages(messages, "Element");

@@ -4,7 +4,7 @@ import { useKey, useKeys } from "State/Users/Hooks";
 import { HexKey } from "Nostr";
 import { System } from "Nostr/System";
 
-export function useUserProfile(pubKey: HexKey): MetadataCache | undefined {
+export function useUserProfile(pubKey?: HexKey): MetadataCache | undefined {
   const users = useKey(pubKey);
 
   useEffect(() => {
@@ -17,9 +17,7 @@ export function useUserProfile(pubKey: HexKey): MetadataCache | undefined {
   return users;
 }
 
-export function useUserProfiles(
-  pubKeys: Array<HexKey>
-): Map<HexKey, MetadataCache> | undefined {
+export function useUserProfiles(pubKeys?: Array<HexKey>): Map<HexKey, MetadataCache> | undefined {
   const users = useKeys(pubKeys);
 
   useEffect(() => {

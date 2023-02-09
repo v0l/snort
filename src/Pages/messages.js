@@ -7,8 +7,7 @@ const messages = defineMessages({
   Conversations: "Conversations",
   Global: "Global",
   NewUsers: "New users page",
-  NoFollows:
-    "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!",
+  NoFollows: "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!",
   Notes: "Notes",
   Reactions: "Reactions",
   Followers: "Followers",
@@ -28,8 +27,7 @@ const messages = defineMessages({
   Nip05Pros: `Getting NIP-05 verified can help:`,
   AvoidImpersonators: "Prevent fake accounts from imitating you",
   EasierToFind: "Make your profile easier to find and share",
-  Funding:
-    "Fund developers and platforms providing NIP-05 verification services",
+  Funding: "Fund developers and platforms providing NIP-05 verification services",
   SnortSocialNip: `Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!`,
   NostrPlebsNip: `Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices`,
 });
