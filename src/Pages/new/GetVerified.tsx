@@ -15,7 +15,7 @@ export default function GetVerified() {
   const navigate = useNavigate();
   const { publicKey } = useSelector((s: RootState) => s.login);
   const user = useUserProfile(publicKey);
-  const [isVerified, setIsVerified] = useState(true);
+  const [isVerified, setIsVerified] = useState(false);
   const [nip05, setNip05] = useState(`${user?.name || "nostrich"}@snort.social`);
 
   const onNext = async () => {
