@@ -3,3 +3,5 @@ node_modules/
 .vscode/
 build/
 yarn-error.log
+.husky/
+.git/
