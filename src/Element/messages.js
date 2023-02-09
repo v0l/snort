@@ -45,6 +45,7 @@ export default defineMessages({
   CopyID: "Copy ID",
   CopyJSON: "Copy Event JSON",
   Dislike: "{n} Dislike",
+  DislikeAction: "Dislike",
   Sats: `{n} {n, plural, =1 {sat} other {sats}}`,
   Zapped: "zapped",
   OthersZapped: `{n, plural, =0 {} =1 {zapped} other {zapped}}`,
@@ -89,4 +90,5 @@ export default defineMessages({
   GoTo: "Go to",
   FindMore: "Find out more info about {service} at {link}",
   SavePassword: "Please make sure to save the following password in order to manage your handle in the future",
+  Handle: "Handle",
 });

@@ -167,6 +167,8 @@ button.secondary {
 }
 
 button.transparent {
+  font-weight: 400;
+  color: var(--font-secondary);
   background-color: transparent;
   border: 1px solid var(--gray-superdark);
 }
@@ -542,4 +544,8 @@ body.scroll-lock {
 
 .main-content .profile-preview {
   margin-bottom: 16px;
+}
+
+button.tall {
+  height: 40px;
 }

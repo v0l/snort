@@ -28,10 +28,12 @@ type Nip05ServiceProps = {
   about: JSX.Element;
   link: string;
   supportLink: string;
+  helpText?: boolean;
 };
 
 export default function Nip5Service(props: Nip05ServiceProps) {
   const navigate = useNavigate();
+  const { helpText = true } = props;
   const { formatMessage } = useIntl();
   const pubkey = useSelector((s: RootState) => s.login.publicKey);
   const user = useUserProfile(pubkey);
@@ -155,33 +157,37 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       } as UserMetadata;
       const ev = await publisher.metadata(newProfile);
       publisher.broadcast(ev);
-      navigate("/settings");
+      if (helpText) {
+        navigate("/settings");
+      }
     }
   }
 
   return (
     <>
-      <h3>{props.name}</h3>
-      {props.about}
-      <p>
-        <FormattedMessage
-          {...messages.FindMore}
-          values={{
-            service: props.name,
-            link: (
-              <a href={props.link} target="_blank" rel="noreferrer">
-                {props.link}
-              </a>
-            ),
-          }}
-        />
-      </p>
+      {helpText && <h3>{props.name}</h3>}
+      {helpText && props.about}
+      {helpText && (
+        <p>
+          <FormattedMessage
+            {...messages.FindMore}
+            values={{
+              service: props.name,
+              link: (
+                <a href={props.link} target="_blank" rel="noreferrer">
+                  {props.link}
+                </a>
+              ),
+            }}
+          />
+        </p>
+      )}
       {error && <b className="error">{error.error}</b>}
       {!registerStatus && (
         <div className="flex mb10">
           <input
             type="text"
-            placeholder="Handle"
+            placeholder={formatMessage(messages.Handle)}
             value={handle}
             onChange={e => setHandle(e.target.value.toLowerCase())}
           />

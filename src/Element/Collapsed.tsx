@@ -19,4 +19,21 @@ const Collapsed = ({ text, children, collapsed, setCollapsed }: CollapsedProps) 
   );
 };
 
+interface CollapsedIconProps {
+  icon: ReactNode;
+  children: ReactNode;
+  collapsed: boolean;
+}
+
+export const CollapsedIcon = ({ icon, children, collapsed }: CollapsedIconProps) => {
+  return collapsed ? (
+    <div className="collapsed">{icon}</div>
+  ) : (
+    <div className="uncollapsed">
+      {icon}
+      {children}
+    </div>
+  );
+};
+
 export default Collapsed;
