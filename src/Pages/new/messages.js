@@ -44,7 +44,7 @@ export default defineMessages({
   EasierToFind: "Make your profile easier to find and share",
   Funding: "Fund developers and platforms providing NIP-05 verification services",
   NameSquatting:
-    "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your verification (not your account - nobody can take that away) for violating this rule.",
+    "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule.",
   PreviewOnSnort: "Preview on snort",
   GetSnortId: "Get a Snort identifier",
   GetSnortIdHelp:

@@ -112,27 +112,6 @@
   height: 16px;
 }
 
-.new-user .faq {
-  position: relative;
-}
-
-.new-user .faq h3,
-.new-user .faq svg {
-  cursor: pointer;
-}
-
-.new-user .faq .collapse-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  transition: transform 300ms ease-in-out;
-}
-
-.new-user .faq .collapse-icon.flip {
-  transform: rotate(180deg);
-  transition: transform 300ms ease-in-out;
-}
-
 .new-user input {
   width: 100%;
   max-width: 568px;

@@ -1,37 +1,13 @@
-import { useState, ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import ChevronDown from "Icons/ChevronDown";
-import { CollapsedIcon } from "Element/Collapsed";
+import { CollapsedSection } from "Element/Collapsed";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
 import { hexToBech32 } from "Util";
 
 import messages from "./messages";
-
-interface CollapsedSectionProps {
-  title: ReactNode;
-  children: ReactNode;
-}
-
-const CollapsedSection = ({ title, children }: CollapsedSectionProps) => {
-  const [collapsed, setCollapsed] = useState(true);
-  const icon = (
-    <div className={`collapse-icon ${collapsed ? "" : "flip"}`} onClick={() => setCollapsed(!collapsed)}>
-      <ChevronDown />
-    </div>
-  );
-  return (
-    <div className="faq">
-      <h3 onClick={() => setCollapsed(!collapsed)}>{title}</h3>
-      <CollapsedIcon icon={icon} collapsed={collapsed}>
-        {children}
-      </CollapsedIcon>
-    </div>
-  );
-};
 
 const WhatIsSnort = () => {
   return (

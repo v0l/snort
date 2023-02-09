@@ -549,3 +549,24 @@ body.scroll-lock {
 button.tall {
   height: 40px;
 }
+
+.collapsable-section {
+  position: relative;
+}
+
+.collapsable-section h3,
+.collapsable-section svg {
+  cursor: pointer;
+}
+
+.collapsable-section .collapse-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: transform 300ms ease-in-out;
+}
+
+.collapsable-section .collapse-icon.flip {
+  transform: rotate(180deg);
+  transition: transform 300ms ease-in-out;
+}
