@@ -28,7 +28,7 @@ const Relays = ({ relays }: RelaysProps) => {
         return (
           <div className="card relay-card">
             <RelayFavicon url={url} />
-            <code>{url}</code>
+            <code className="relay-url">{url}</code>
             <div className="relay-settings">
               <Read className={settings.read ? "enabled" : "disabled"} />
               <Write className={settings.write ? "enabled" : "disabled"} />
