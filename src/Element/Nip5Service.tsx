@@ -233,13 +233,15 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             <br />
             <small>{availabilityResponse.quote?.data.type}</small>
           </div>
-          <input
-            type="text"
-            className="f-grow mr10"
-            placeholder="pubkey"
-            value={hexToBech32("npub", pubkey)}
-            disabled
-          />
+          {!autoUpdate && (
+            <input
+              type="text"
+              className="f-grow mr10"
+              placeholder="pubkey"
+              value={hexToBech32("npub", pubkey)}
+              disabled
+            />
+          )}
           <AsyncButton onClick={() => startBuy(handle, domain)}>
             <FormattedMessage {...messages.BuyNow} />
           </AsyncButton>
