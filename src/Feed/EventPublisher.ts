@@ -222,11 +222,11 @@ export default function useEventPublisher() {
     },
     saveRelaysSettings: async () => {
       if (pubKey) {
-        let ev = NEvent.ForPubKey(pubKey);
+        const ev = NEvent.ForPubKey(pubKey);
         ev.Kind = EventKind.Relays;
         ev.Content = "";
-        for (let [url, settings] of Object.entries(relays)) {
-          let rTag = ["r", url];
+        for (const [url, settings] of Object.entries(relays)) {
+          const rTag = ["r", url];
           if (settings.read) {
             rTag.push("read");
           }

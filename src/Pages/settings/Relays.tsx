@@ -20,7 +20,7 @@ const RelaySettingsPage = () => {
     const ev = await publisher.saveRelays();
     publisher.broadcast(ev);
     publisher.broadcastForBootstrap(ev);
-    let settingsEv = await publisher.saveRelaysSettings();
+    const settingsEv = await publisher.saveRelaysSettings();
     publisher.broadcast(settingsEv);
   }
 
