@@ -108,8 +108,6 @@ export const Reaction = {
  */
 export function normalizeReaction(content: string) {
   switch (content) {
-    case "+":
-      return Reaction.Positive;
     case "-":
       return Reaction.Negative;
     case "👎":
