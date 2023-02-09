@@ -77,6 +77,8 @@ export default function LNURLTip(props: LNURLTipProps) {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const horizontalScroll = useHorizontalScroll();
+  const canComment =
+    (payService?.commentAllowed ?? 0) > 0 || payService?.nostrPubkey;
 
   useEffect(() => {
     if (show && !props.invoice) {
@@ -150,9 +152,10 @@ export default function LNURLTip(props: LNURLTipProps) {
     if (!amount || !payService) return null;
     let url = "";
     const amountParam = `amount=${Math.floor(amount * 1000)}`;
-    const commentParam = comment
-      ? `&comment=${encodeURIComponent(comment)}`
-      : "";
+    const commentParam =
+      comment && payService?.commentAllowed
+        ? `&comment=${encodeURIComponent(comment)}`
+        : "";
     if (payService.nostrPubkey && author) {
       const ev = await publisher.zap(author, note, comment);
       const nostrParam =
@@ -241,16 +244,15 @@ export default function LNURLTip(props: LNURLTipProps) {
         </div>
         {payService && custom()}
         <div className="flex">
-          {(payService?.commentAllowed ?? 0) > 0 ||
-            (payService?.nostrPubkey && (
-              <input
-                type="text"
-                placeholder={formatMessage(messages.Comment)}
-                className="f-grow"
-                maxLength={payService?.commentAllowed || 120}
-                onChange={(e) => setComment(e.target.value)}
-              />
-            ))}
+          {canComment && (
+            <input
+              type="text"
+              placeholder={formatMessage(messages.Comment)}
+              className="f-grow"
+              maxLength={payService?.commentAllowed || 120}
+              onChange={(e) => setComment(e.target.value)}
+            />
+          )}
         </div>
         {(amount ?? 0) > 0 && (
           <button
