@@ -138,7 +138,7 @@
   "Pages.new.ImportTwitter": "Import Twitter Follows (optional)",
   "Pages.new.ImproveSecurity": "Improve login security with browser extensions",
   "Pages.new.KeysSaved": "I have saved my keys, continue",
-  "Pages.new.NameSquatting": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your verification (not your account - nobody can take that away) for violating this rule.",
+  "Pages.new.NameSquatting": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule.",
   "Pages.new.Next": "Next",
   "Pages.new.NoUsersFound": "No nostr users found for {twitterUsername}",
   "Pages.new.PickUsername": "Pick a username",
