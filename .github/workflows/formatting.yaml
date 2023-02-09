@@ -13,6 +13,6 @@ jobs:
         with:
           node-version: 16
       - name: Install Dependencies
-        run: yarn Install
+        run: yarn install
       - name: Check Formatting
         run: yarn prettier --check .
