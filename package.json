@@ -58,7 +58,8 @@
     "eject": "react-scripts eject",
     "generate-messages": "extract-messages -l=en,es,zh,ja,fr -o src/translations -d en --flat true **/messages.js",
     "format": "prettier --write .",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -81,7 +82,12 @@
     "babel-plugin-react-intl-auto": "^3.3.0",
     "customize-cra": "^1.0.0",
     "extract-react-intl-messages": "^4.1.1",
+    "husky": ">=6",
+    "lint-staged": ">=10",
     "prettier": "2.8.3",
     "react-app-rewired": "^2.2.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
   }
 }
