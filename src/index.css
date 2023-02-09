@@ -65,7 +65,7 @@ html.light {
 
 body {
   margin: 0;
-  font-family: "Be Vietnam Pro", sans-serif;
+  font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-color);
