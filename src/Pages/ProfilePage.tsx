@@ -19,7 +19,6 @@ import { default as ZapElement, parseZap } from "Element/Zap";
 import FollowButton from "Element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
-import LogoutButton from "Element/LogoutButton";
 import Timeline from "Element/Timeline";
 import Text from "Element/Text";
 import SendSats from "Element/SendSats";
@@ -241,7 +240,6 @@ export default function ProfilePage() {
         )}
         {isMe ? (
           <>
-            <LogoutButton />
             <button type="button" onClick={() => navigate("/settings")}>
               <FormattedMessage {...messages.Settings} />
             </button>
