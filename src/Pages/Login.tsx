@@ -40,8 +40,8 @@ const Artwork: Array<ArtworkEntry> = [
   {
     name: "",
     pubkey: bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"),
-    link: "https://void.cat/d/KtoX4ei6RYHY7HESg3Ve3k"
-  }
+    link: "https://void.cat/d/KtoX4ei6RYHY7HESg3Ve3k",
+  },
 ];
 
 export default function LoginPage() {
