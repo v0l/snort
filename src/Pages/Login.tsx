@@ -25,18 +25,23 @@ const Artwork: Array<ArtworkEntry> = [
   {
     name: "",
     pubkey: bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"),
-    link: "https://uploads-ssl.webflow.com/63c880de767a98b3372e30e7/63e18f17ca872f54623301c1_Pura%20Vida.png",
+    link: "https://void.cat/d/VKhPayp9ekeXYZGzAL9CxP",
   },
   {
     name: "",
     pubkey: bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"),
-    link: "https://uploads-ssl.webflow.com/63c880de767a98b3372e30e7/63c9ee726ea27a41a123f43f_NostroshiSakamoto.png",
+    link: "https://void.cat/d/3H2h8xxc3aEN6EVeobd8tw",
   },
   {
     name: "",
     pubkey: bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"),
-    link: "https://uploads-ssl.webflow.com/63c880de767a98b3372e30e7/63c9536909132a76054a4f70_In%20the%20Beginning.png",
+    link: "https://void.cat/d/7i9W9PXn3TV86C4RUefNC9",
   },
+  {
+    name: "",
+    pubkey: bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"),
+    link: "https://void.cat/d/KtoX4ei6RYHY7HESg3Ve3k"
+  }
 ];
 
 export default function LoginPage() {
