@@ -1,10 +1,6 @@
-name: pull request
-
+name: Formatting
 on:
   pull_request:
-  push:
-    branches: [main]
-
 jobs:
   formatting:
     timeout-minutes: 15
@@ -12,12 +8,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
-
+        with:
+          node-version: 16
       - name: Install Dependencies
-        run: npm i
-
+        run: yarn Install
       - name: Check Formatting
-        run: npm run format
+        run: yarn prettier --check .
