@@ -57,7 +57,7 @@ const SettingsIndex = () => {
           <div className="mr10">
             <Heart />
           </div>
-          Donate
+          <FormattedMessage {...messages.Donate} />
           <div className="align-end">
             <ArrowFront />
           </div>

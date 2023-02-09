@@ -60,7 +60,7 @@ const RelaySettingsPage = () => {
 
   return (
     <>
-      <h3>Relays</h3>
+      <h3><FormattedMessage {...messages.Relays} /></h3>
       <div className="flex f-col mb10">
         {Object.keys(relays || {}).map(a => (
           <Relay addr={a} key={a} />
