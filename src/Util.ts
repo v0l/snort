@@ -108,24 +108,15 @@ export const Reaction = {
  */
 export function normalizeReaction(content: string) {
   switch (content) {
-    case "":
-      return Reaction.Positive;
-    case "🤙":
-      return Reaction.Positive;
-    case "❤️":
-      return Reaction.Positive;
-    case "👍":
-      return Reaction.Positive;
-    case "💯":
-      return Reaction.Positive;
     case "+":
       return Reaction.Positive;
     case "-":
       return Reaction.Negative;
     case "👎":
       return Reaction.Negative;
+    default:
+      return Reaction.Positive;
   }
-  return content;
 }
 
 /**
