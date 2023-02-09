@@ -175,7 +175,7 @@ export const InitState = {
   dms: [],
   dmInteraction: 0,
   preferences: {
-    enableReactions: false,
+    enableReactions: true,
     autoLoadMedia: "follows-only",
     theme: "system",
     confirmReposts: false,
