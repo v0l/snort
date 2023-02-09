@@ -15,7 +15,7 @@ export default function useRelaysFeed(pubkey: HexKey) {
     return x;
   }, [pubkey]);
 
-  const relays = useSubscription(sub, { leaveOpen: true, cache: true });
+  const relays = useSubscription(sub, { leaveOpen: false, cache: true });
   const notes = relays.store.notes;
   const tags = notes.slice(-1)[0]?.tags || [];
   return tags.reduce((rs, tag) => {
