@@ -152,9 +152,10 @@ export default function LNURLTip(props: LNURLTipProps) {
     if (!amount || !payService) return null;
     let url = "";
     const amountParam = `amount=${Math.floor(amount * 1000)}`;
-    const commentParam = comment
-      ? `&comment=${encodeURIComponent(comment)}`
-      : "";
+    const commentParam =
+      comment && payService?.commentAllowed
+        ? `&comment=${encodeURIComponent(comment)}`
+        : "";
     if (payService.nostrPubkey && author) {
       const ev = await publisher.zap(author, note, comment);
       const nostrParam =
