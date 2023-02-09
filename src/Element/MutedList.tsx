@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
-
 import { HexKey } from "Nostr";
 import MuteButton from "Element/MuteButton";
 import ProfilePreview from "Element/ProfilePreview";
@@ -25,29 +24,18 @@ export default function MutedList({ pubkey }: MutedListProps) {
     <div className="main-content">
       <div className="flex mt10">
         <div className="f-grow bold">
-          <FormattedMessage
-            {...messages.MuteCount}
-            values={{ n: pubkeys?.length }}
-          />
+          <FormattedMessage {...messages.MuteCount} values={{ n: pubkeys?.length }} />
         </div>
         <button
           disabled={hasAllMuted || pubkeys.length === 0}
           className="transparent"
           type="button"
-          onClick={() => muteAll(pubkeys)}
-        >
+          onClick={() => muteAll(pubkeys)}>
           <FormattedMessage {...messages.MuteAll} />
         </button>
       </div>
-      {pubkeys?.map((a) => {
-        return (
-          <ProfilePreview
-            actions={<MuteButton pubkey={a} />}
-            pubkey={a}
-            options={{ about: false }}
-            key={a}
-          />
-        );
+      {pubkeys?.map(a => {
+        return <ProfilePreview actions={<MuteButton pubkey={a} />} pubkey={a} options={{ about: false }} key={a} />;
       })}
     </div>
   );

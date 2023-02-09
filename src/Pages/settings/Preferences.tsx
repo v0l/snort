@@ -7,12 +7,12 @@ import { DefaultImgProxy, setPreferences, UserPreferences } from "State/Login";
 import { RootState } from "State/Store";
 
 import messages from "./messages";
+import { unwrap } from "Util";
+import "./Preferences.css";
 
 const PreferencesPage = () => {
   const dispatch = useDispatch();
-  const perf = useSelector<RootState, UserPreferences>(
-    (s) => s.login.preferences
-  );
+  const perf = useSelector<RootState, UserPreferences>(s => s.login.preferences);
 
   return (
     <div className="preferences">
@@ -29,15 +29,14 @@ const PreferencesPage = () => {
         <div>
           <select
             value={perf.theme}
-            onChange={(e) =>
+            onChange={e =>
               dispatch(
                 setPreferences({
                   ...perf,
                   theme: e.target.value,
                 } as UserPreferences)
               )
-            }
-          >
+            }>
             <option value="system">
               <FormattedMessage {...messages.System} />
             </option>
@@ -62,15 +61,14 @@ const PreferencesPage = () => {
         <div>
           <select
             value={perf.autoLoadMedia}
-            onChange={(e) =>
+            onChange={e =>
               dispatch(
                 setPreferences({
                   ...perf,
                   autoLoadMedia: e.target.value,
                 } as UserPreferences)
               )
-            }
-          >
+            }>
             <option value="none">
               <FormattedMessage {...messages.None} />
             </option>
@@ -97,7 +95,7 @@ const PreferencesPage = () => {
             <input
               type="checkbox"
               checked={perf.imgProxyConfig !== null}
-              onChange={(e) =>
+              onChange={e =>
                 dispatch(
                   setPreferences({
                     ...perf,
@@ -119,12 +117,12 @@ const PreferencesPage = () => {
                   type="text"
                   value={perf.imgProxyConfig?.url}
                   placeholder="URL.."
-                  onChange={(e) =>
+                  onChange={e =>
                     dispatch(
                       setPreferences({
                         ...perf,
                         imgProxyConfig: {
-                          ...perf.imgProxyConfig!,
+                          ...unwrap(perf.imgProxyConfig),
                           url: e.target.value,
                         },
                       })
@@ -142,12 +140,12 @@ const PreferencesPage = () => {
                   type="password"
                   value={perf.imgProxyConfig?.key}
                   placeholder="Hex key.."
-                  onChange={(e) =>
+                  onChange={e =>
                     dispatch(
                       setPreferences({
                         ...perf,
                         imgProxyConfig: {
-                          ...perf.imgProxyConfig!,
+                          ...unwrap(perf.imgProxyConfig),
                           key: e.target.value,
                         },
                       })
@@ -165,12 +163,12 @@ const PreferencesPage = () => {
                   type="password"
                   value={perf.imgProxyConfig?.salt}
                   placeholder="Hex salt.."
-                  onChange={(e) =>
+                  onChange={e =>
                     dispatch(
                       setPreferences({
                         ...perf,
                         imgProxyConfig: {
-                          ...perf.imgProxyConfig!,
+                          ...unwrap(perf.imgProxyConfig),
                           salt: e.target.value,
                         },
                       })
@@ -195,11 +193,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.enableReactions}
-            onChange={(e) =>
-              dispatch(
-                setPreferences({ ...perf, enableReactions: e.target.checked })
-              )
-            }
+            onChange={e => dispatch(setPreferences({ ...perf, enableReactions: e.target.checked }))}
           />
         </div>
       </div>
@@ -216,11 +210,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.confirmReposts}
-            onChange={(e) =>
-              dispatch(
-                setPreferences({ ...perf, confirmReposts: e.target.checked })
-              )
-            }
+            onChange={e => dispatch(setPreferences({ ...perf, confirmReposts: e.target.checked }))}
           />
         </div>
       </div>
@@ -237,11 +227,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.autoShowLatest}
-            onChange={(e) =>
-              dispatch(
-                setPreferences({ ...perf, autoShowLatest: e.target.checked })
-              )
-            }
+            onChange={e => dispatch(setPreferences({ ...perf, autoShowLatest: e.target.checked }))}
           />
         </div>
       </div>
@@ -257,15 +243,14 @@ const PreferencesPage = () => {
         <div>
           <select
             value={perf.fileUploader}
-            onChange={(e) =>
+            onChange={e =>
               dispatch(
                 setPreferences({
                   ...perf,
                   fileUploader: e.target.value,
                 } as UserPreferences)
               )
-            }
-          >
+            }>
             <option value="void.cat">
               void.cat <FormattedMessage {...messages.Default} />
             </option>
@@ -287,11 +272,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.showDebugMenus}
-            onChange={(e) =>
-              dispatch(
-                setPreferences({ ...perf, showDebugMenus: e.target.checked })
-              )
-            }
+            onChange={e => dispatch(setPreferences({ ...perf, showDebugMenus: e.target.checked }))}
           />
         </div>
       </div>

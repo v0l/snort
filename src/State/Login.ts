@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnyAction, createSlice, PayloadAction, ThunkAction } from "@reduxjs/toolkit";
 import * as secp from "@noble/secp256k1";
 import { DefaultRelays } from "Const";
 import { HexKey, TaggedRawEvent } from "Nostr";
@@ -202,47 +202,42 @@ const LoginSlice = createSlice({
   reducers: {
     init: (state, action: PayloadAction<DbType>) => {
       state.useDb = action.payload;
-      state.privateKey =
-        window.localStorage.getItem(PrivateKeyItem) ?? undefined;
+      state.privateKey = window.localStorage.getItem(PrivateKeyItem) ?? undefined;
       if (state.privateKey) {
         window.localStorage.removeItem(PublicKeyItem); // reset nip07 if using private key
-        state.publicKey = secp.utils.bytesToHex(
-          secp.schnorr.getPublicKey(state.privateKey)
-        );
+        state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(state.privateKey));
         state.loggedOut = false;
       } else {
         state.loggedOut = true;
       }
 
       // check pub key only
-      let pubKey = window.localStorage.getItem(PublicKeyItem);
+      const pubKey = window.localStorage.getItem(PublicKeyItem);
       if (pubKey && !state.privateKey) {
         state.publicKey = pubKey;
         state.loggedOut = false;
       }
 
-      let lastRelayList = window.localStorage.getItem(RelayListKey);
+      const lastRelayList = window.localStorage.getItem(RelayListKey);
       if (lastRelayList) {
         state.relays = JSON.parse(lastRelayList);
       } else {
         state.relays = Object.fromEntries(DefaultRelays.entries());
       }
 
-      let lastFollows = window.localStorage.getItem(FollowList);
+      const lastFollows = window.localStorage.getItem(FollowList);
       if (lastFollows) {
         state.follows = JSON.parse(lastFollows);
       }
 
       // notifications
-      let readNotif = parseInt(
-        window.localStorage.getItem(NotificationsReadItem) ?? "0"
-      );
+      const readNotif = parseInt(window.localStorage.getItem(NotificationsReadItem) ?? "0");
       if (!isNaN(readNotif)) {
         state.readNotifications = readNotif;
       }
 
       // preferences
-      let pref = window.localStorage.getItem(UserPreferencesKey);
+      const pref = window.localStorage.getItem(UserPreferencesKey);
       if (pref) {
         state.preferences = JSON.parse(pref);
       }
@@ -251,18 +246,14 @@ const LoginSlice = createSlice({
       state.loggedOut = false;
       state.privateKey = action.payload;
       window.localStorage.setItem(PrivateKeyItem, action.payload);
-      state.publicKey = secp.utils.bytesToHex(
-        secp.schnorr.getPublicKey(action.payload)
-      );
+      state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload));
     },
     setGeneratedPrivateKey: (state, action: PayloadAction<HexKey>) => {
       state.loggedOut = false;
       state.newUserKey = true;
       state.privateKey = action.payload;
       window.localStorage.setItem(PrivateKeyItem, action.payload);
-      state.publicKey = secp.utils.bytesToHex(
-        secp.schnorr.getPublicKey(action.payload)
-      );
+      state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload));
     },
     setPublicKey: (state, action: PayloadAction<HexKey>) => {
       window.localStorage.setItem(PublicKeyItem, action.payload);
@@ -270,15 +261,15 @@ const LoginSlice = createSlice({
       state.publicKey = action.payload;
     },
     setRelays: (state, action: PayloadAction<SetRelaysPayload>) => {
-      let relays = action.payload.relays;
-      let createdAt = action.payload.createdAt;
+      const relays = action.payload.relays;
+      const createdAt = action.payload.createdAt;
       if (state.latestRelays > createdAt) {
         return;
       }
 
       // filter out non-websocket urls
-      let filtered = new Map<string, RelaySettings>();
-      for (let [k, v] of Object.entries(relays)) {
+      const filtered = new Map<string, RelaySettings>();
+      for (const [k, v] of Object.entries(relays)) {
         if (k.startsWith("wss://") || k.startsWith("ws://")) {
           filtered.set(k, v as RelaySettings);
         }
@@ -299,17 +290,17 @@ const LoginSlice = createSlice({
         return;
       }
 
-      let existing = new Set(state.follows);
-      let update = Array.isArray(keys) ? keys : [keys];
+      const existing = new Set(state.follows);
+      const update = Array.isArray(keys) ? keys : [keys];
 
       let changes = false;
-      for (let pk of update.filter((a) => a.length === 64)) {
+      for (const pk of update.filter(a => a.length === 64)) {
         if (!existing.has(pk)) {
           existing.add(pk);
           changes = true;
         }
       }
-      for (let pk of existing) {
+      for (const pk of existing) {
         if (!update.includes(pk)) {
           existing.delete(pk);
           changes = true;
@@ -323,10 +314,7 @@ const LoginSlice = createSlice({
 
       window.localStorage.setItem(FollowList, JSON.stringify(state.follows));
     },
-    setMuted(
-      state,
-      action: PayloadAction<{ createdAt: number; keys: HexKey[] }>
-    ) {
+    setMuted(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
       const { createdAt, keys } = action.payload;
       if (createdAt >= state.latestMuted) {
         const muted = new Set([...keys]);
@@ -334,10 +322,7 @@ const LoginSlice = createSlice({
         state.latestMuted = createdAt;
       }
     },
-    setBlocked(
-      state,
-      action: PayloadAction<{ createdAt: number; keys: HexKey[] }>
-    ) {
+    setBlocked(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
       const { createdAt, keys } = action.payload;
       if (createdAt >= state.latestMuted) {
         const blocked = new Set([...keys]);
@@ -345,18 +330,15 @@ const LoginSlice = createSlice({
         state.latestMuted = createdAt;
       }
     },
-    addDirectMessage: (
-      state,
-      action: PayloadAction<TaggedRawEvent | Array<TaggedRawEvent>>
-    ) => {
+    addDirectMessage: (state, action: PayloadAction<TaggedRawEvent | Array<TaggedRawEvent>>) => {
       let n = action.payload;
       if (!Array.isArray(n)) {
         n = [n];
       }
 
       let didChange = false;
-      for (let x of n) {
-        if (!state.dms.some((a) => a.id === x.id)) {
+      for (const x of n) {
+        if (!state.dms.some(a => a.id === x.id)) {
           state.dms.push(x);
           didChange = true;
         }
@@ -366,33 +348,27 @@ const LoginSlice = createSlice({
         state.dms = [...state.dms];
       }
     },
-    incDmInteraction: (state) => {
+    incDmInteraction: state => {
       state.dmInteraction += 1;
     },
-    logout: (state) => {
-      let relays = { ...state.relays };
+    logout: state => {
+      const relays = { ...state.relays };
       Object.assign(state, InitState);
       state.loggedOut = true;
       window.localStorage.clear();
       state.relays = relays;
       window.localStorage.setItem(RelayListKey, JSON.stringify(relays));
     },
-    markNotificationsRead: (state) => {
+    markNotificationsRead: state => {
       state.readNotifications = Math.ceil(new Date().getTime() / 1000);
-      window.localStorage.setItem(
-        NotificationsReadItem,
-        state.readNotifications.toString()
-      );
+      window.localStorage.setItem(NotificationsReadItem, state.readNotifications.toString());
     },
     setLatestNotifications: (state, action: PayloadAction<number>) => {
       state.latestNotification = action.payload;
     },
     setPreferences: (state, action: PayloadAction<UserPreferences>) => {
       state.preferences = action.payload;
-      window.localStorage.setItem(
-        UserPreferencesKey,
-        JSON.stringify(state.preferences)
-      );
+      window.localStorage.setItem(UserPreferencesKey, JSON.stringify(state.preferences));
     },
   },
 });
@@ -420,17 +396,15 @@ export function sendNotification({
   body,
   icon,
   timestamp,
-}: NotificationRequest) {
+}: NotificationRequest): ThunkAction<void, RootState, undefined, AnyAction> {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const { readNotifications } = state.login;
-    const hasPermission =
-      "Notification" in window && Notification.permission === "granted";
-    const shouldShowNotification =
-      hasPermission && timestamp > readNotifications;
+    const hasPermission = "Notification" in window && Notification.permission === "granted";
+    const shouldShowNotification = hasPermission && timestamp > readNotifications;
     if (shouldShowNotification) {
       try {
-        let worker = await navigator.serviceWorker.ready;
+        const worker = await navigator.serviceWorker.ready;
         worker.showNotification(title, {
           tag: "notification",
           vibrate: [500],

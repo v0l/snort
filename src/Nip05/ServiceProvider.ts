@@ -69,21 +69,14 @@ export class ServiceProvider {
     return await this._GetJson("/config.json");
   }
 
-  async CheckAvailable(
-    handle: string,
-    domain: string
-  ): Promise<HandleAvailability | ServiceError> {
+  async CheckAvailable(handle: string, domain: string): Promise<HandleAvailability | ServiceError> {
     return await this._GetJson("/registration/availability", "POST", {
       name: handle,
       domain,
     });
   }
 
-  async RegisterHandle(
-    handle: string,
-    domain: string,
-    pubkey: string
-  ): Promise<HandleRegisterResponse | ServiceError> {
+  async RegisterHandle(handle: string, domain: string, pubkey: string): Promise<HandleRegisterResponse | ServiceError> {
     return await this._GetJson("/registration/register", "PUT", {
       name: handle,
       domain,
@@ -92,26 +85,19 @@ export class ServiceProvider {
     });
   }
 
-  async CheckRegistration(
-    token: string
-  ): Promise<CheckRegisterResponse | ServiceError> {
-    return await this._GetJson(
-      "/registration/register/check",
-      "POST",
-      undefined,
-      {
-        authorization: token,
-      }
-    );
+  async CheckRegistration(token: string): Promise<CheckRegisterResponse | ServiceError> {
+    return await this._GetJson("/registration/register/check", "POST", undefined, {
+      authorization: token,
+    });
   }
   async _GetJson<T>(
     path: string,
     method?: "GET" | string,
-    body?: any,
-    headers?: any
+    body?: { [key: string]: string },
+    headers?: { [key: string]: string }
   ): Promise<T | ServiceError> {
     try {
-      let rsp = await fetch(`${this.url}${path}`, {
+      const rsp = await fetch(`${this.url}${path}`, {
         method: method,
         body: body ? JSON.stringify(body) : undefined,
         headers: {
@@ -121,7 +107,7 @@ export class ServiceProvider {
         },
       });
 
-      let obj = await rsp.json();
+      const obj = await rsp.json();
       if ("error" in obj) {
         return <ServiceError>obj;
       }

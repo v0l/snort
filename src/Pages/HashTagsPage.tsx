@@ -3,7 +3,7 @@ import Timeline from "Element/Timeline";
 
 const HashTagsPage = () => {
   const params = useParams();
-  const tag = params.tag!.toLowerCase();
+  const tag = (params.tag ?? "").toLowerCase();
 
   return (
     <>

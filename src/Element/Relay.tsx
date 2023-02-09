@@ -27,10 +27,7 @@ export default function Relay(props: RelayProps) {
   const dispatch = useDispatch();
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
-  const allRelaySettings = useSelector<
-    RootState,
-    Record<string, RelaySettings>
-  >((s) => s.login.relays);
+  const allRelaySettings = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
   const relaySettings = allRelaySettings[props.addr];
   const state = useRelayState(props.addr);
   const name = useMemo(() => new URL(props.addr).host, [props.addr]);
@@ -47,7 +44,7 @@ export default function Relay(props: RelayProps) {
     );
   }
 
-  let latency = Math.floor(state?.avgLatency ?? 0);
+  const latency = Math.floor(state?.avgLatency ?? 0);
   return (
     <>
       <div className={`relay w-max`}>
@@ -66,11 +63,8 @@ export default function Relay(props: RelayProps) {
                     write: !relaySettings.write,
                     read: relaySettings.read,
                   })
-                }
-              >
-                <FontAwesomeIcon
-                  icon={relaySettings.write ? faSquareCheck : faSquareXmark}
-                />
+                }>
+                <FontAwesomeIcon icon={relaySettings.write ? faSquareCheck : faSquareXmark} />
               </span>
             </div>
             <div className="f-1">
@@ -82,11 +76,8 @@ export default function Relay(props: RelayProps) {
                     write: relaySettings.write,
                     read: !relaySettings.read,
                   })
-                }
-              >
-                <FontAwesomeIcon
-                  icon={relaySettings.read ? faSquareCheck : faSquareXmark}
-                />
+                }>
+                <FontAwesomeIcon icon={relaySettings.read ? faSquareCheck : faSquareXmark} />
               </span>
             </div>
           </div>
@@ -104,7 +95,7 @@ export default function Relay(props: RelayProps) {
               <FontAwesomeIcon icon={faPlugCircleXmark} /> {state?.disconnects}
             </div>
             <div>
-              <span className="icon-btn" onClick={() => navigate(state!.id)}>
+              <span className="icon-btn" onClick={() => navigate(state?.id ?? "")}>
                 <FontAwesomeIcon icon={faGear} />
               </span>
             </div>

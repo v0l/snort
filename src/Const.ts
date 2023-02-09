@@ -18,14 +18,12 @@ export const VoidCatHost = "https://void.cat";
 /**
  * Kierans pubkey
  */
-export const KieranPubKey =
-  "npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49";
+export const KieranPubKey = "npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49";
 
 /**
  * Official snort account
  */
-export const SnortPubKey =
-  "npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x6802npjqhjjtws";
+export const SnortPubKey = "npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x6802npjqhjjtws";
 
 /**
  * Websocket re-connect timeout
@@ -49,9 +47,7 @@ export const DefaultRelays = new Map<string, RelaySettings>([
 /**
  * Default search relays
  */
-export const SearchRelays = new Map<string, RelaySettings>([
-  ["wss://relay.nostr.band", { read: true, write: false }],
-]);
+export const SearchRelays = new Map<string, RelaySettings>([["wss://relay.nostr.band", { read: true, write: false }]]);
 
 /**
  * List of recommended follows for new users
@@ -83,17 +79,20 @@ export const RecommendedFollows = [
  * Regex to match email address
  */
 export const EmailRegex =
+  // eslint-disable-next-line no-useless-escape
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 /**
  * Generic URL regex
  */
 export const UrlRegex =
+  // eslint-disable-next-line no-useless-escape
   /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)/i;
 
 /**
  * Extract file extensions regex
  */
+// eslint-disable-next-line no-useless-escape
 export const FileExtensionRegex = /\.([\w]+)$/i;
 
 /**
@@ -115,12 +114,12 @@ export const YoutubeUrlRegex =
 /**
  * Tweet Regex
  */
-export const TweetUrlRegex =
-  /https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+)/;
+export const TweetUrlRegex = /https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+)/;
 
 /**
  * Hashtag regex
  */
+// eslint-disable-next-line no-useless-escape
 export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/;
 
 /**
@@ -131,15 +130,12 @@ export const TidalRegex = /tidal\.com\/(?:browse\/)?(\w+)\/([a-z0-9-]+)/i;
 /**
  * SoundCloud regex
  */
-export const SoundCloudRegex =
-  /soundcloud\.com\/(?!live)([a-zA-Z0-9]+)\/([a-zA-Z0-9-]+)/;
+export const SoundCloudRegex = /soundcloud\.com\/(?!live)([a-zA-Z0-9]+)\/([a-zA-Z0-9-]+)/;
 
 /**
  * Mixcloud regex
  */
 
-export const MixCloudRegex =
-  /mixcloud\.com\/(?!live)([a-zA-Z0-9]+)\/([a-zA-Z0-9-]+)/;
+export const MixCloudRegex = /mixcloud\.com\/(?!live)([a-zA-Z0-9]+)\/([a-zA-Z0-9-]+)/;
 
-export const SpotifyRegex =
-  /open\.spotify\.com\/(track|album|playlist|episode)\/([a-zA-Z0-9]+)/;
+export const SpotifyRegex = /open\.spotify\.com\/(track|album|playlist|episode)\/([a-zA-Z0-9]+)/;

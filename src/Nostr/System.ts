@@ -1,13 +1,14 @@
 import { HexKey, TaggedRawEvent } from "Nostr";
 import { ProfileCacheExpire } from "Const";
-import { mapEventToProfile, MetadataCache, UsersDb } from "State/Users";
+import { mapEventToProfile, UsersDb } from "State/Users";
 import Connection, { RelaySettings } from "Nostr/Connection";
 import Event from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
 import { Subscriptions } from "Nostr/Subscriptions";
+import { unwrap } from "Util";
 
 /**
- * Manages nostr content retrival system
+ * Manages nostr content retrieval system
  */
 export class NostrSystem {
   /**
@@ -49,14 +50,14 @@ export class NostrSystem {
   ConnectToRelay(address: string, options: RelaySettings) {
     try {
       if (!this.Sockets.has(address)) {
-        let c = new Connection(address, options);
+        const c = new Connection(address, options);
         this.Sockets.set(address, c);
-        for (let [_, s] of this.Subscriptions) {
+        for (const [, s] of this.Subscriptions) {
           c.AddSubscription(s);
         }
       } else {
         // update settings if already connected
-        this.Sockets.get(address)!.Settings = options;
+        unwrap(this.Sockets.get(address)).Settings = options;
       }
     } catch (e) {
       console.error(e);
@@ -67,7 +68,7 @@ export class NostrSystem {
    * Disconnect from a relay
    */
   DisconnectRelay(address: string) {
-    let c = this.Sockets.get(address);
+    const c = this.Sockets.get(address);
     if (c) {
       this.Sockets.delete(address);
       c.Close();
@@ -75,14 +76,14 @@ export class NostrSystem {
   }
 
   AddSubscription(sub: Subscriptions) {
-    for (let [a, s] of this.Sockets) {
+    for (const [, s] of this.Sockets) {
       s.AddSubscription(sub);
     }
     this.Subscriptions.set(sub.Id, sub);
   }
 
   RemoveSubscription(subId: string) {
-    for (let [a, s] of this.Sockets) {
+    for (const [, s] of this.Sockets) {
       s.RemoveSubscription(subId);
     }
     this.Subscriptions.delete(subId);
@@ -92,7 +93,7 @@ export class NostrSystem {
    * Send events to writable relays
    */
   BroadcastEvent(ev: Event) {
-    for (let [_, s] of this.Sockets) {
+    for (const [, s] of this.Sockets) {
       s.SendEvent(ev);
     }
   }
@@ -101,7 +102,7 @@ export class NostrSystem {
    * Write an event to a relay then disconnect
    */
   async WriteOnceToRelay(address: string, ev: Event) {
-    let c = new Connection(address, { write: true, read: false });
+    const c = new Connection(address, { write: true, read: false });
     await c.SendAsync(ev);
     c.Close();
   }
@@ -110,7 +111,7 @@ export class NostrSystem {
    * Request profile metadata for a set of pubkeys
    */
   TrackMetadata(pk: HexKey | Array<HexKey>) {
-    for (let p of Array.isArray(pk) ? pk : [pk]) {
+    for (const p of Array.isArray(pk) ? pk : [pk]) {
       if (p.length > 0) {
         this.WantsMetadata.add(p);
       }
@@ -121,7 +122,7 @@ export class NostrSystem {
    * Stop tracking metadata for a set of pubkeys
    */
   UntrackMetadata(pk: HexKey | Array<HexKey>) {
-    for (let p of Array.isArray(pk) ? pk : [pk]) {
+    for (const p of Array.isArray(pk) ? pk : [pk]) {
       if (p.length > 0) {
         this.WantsMetadata.delete(p);
       }
@@ -132,32 +133,32 @@ export class NostrSystem {
    * Request/Response pattern
    */
   RequestSubscription(sub: Subscriptions) {
-    return new Promise<TaggedRawEvent[]>((resolve, reject) => {
-      let events: TaggedRawEvent[] = [];
+    return new Promise<TaggedRawEvent[]>(resolve => {
+      const events: TaggedRawEvent[] = [];
 
       // force timeout returning current results
-      let timeout = setTimeout(() => {
+      const timeout = setTimeout(() => {
         this.RemoveSubscription(sub.Id);
         resolve(events);
       }, 10_000);
 
-      let onEventPassthrough = sub.OnEvent;
-      sub.OnEvent = (ev) => {
+      const onEventPassthrough = sub.OnEvent;
+      sub.OnEvent = ev => {
         if (typeof onEventPassthrough === "function") {
           onEventPassthrough(ev);
         }
-        if (!events.some((a) => a.id === ev.id)) {
+        if (!events.some(a => a.id === ev.id)) {
           events.push(ev);
         } else {
-          let existing = events.find((a) => a.id === ev.id);
+          const existing = events.find(a => a.id === ev.id);
           if (existing) {
-            for (let v of ev.relays) {
+            for (const v of ev.relays) {
               existing.relays.push(v);
             }
           }
         }
       };
-      sub.OnEnd = (c) => {
+      sub.OnEnd = c => {
         c.RemoveSubscription(sub.Id);
         if (sub.IsFinished()) {
           clearInterval(timeout);
@@ -171,11 +172,11 @@ export class NostrSystem {
 
   async _FetchMetadata() {
     if (this.UserDb) {
-      let missing = new Set<HexKey>();
-      let meta = await this.UserDb.bulkGet(Array.from(this.WantsMetadata));
-      let expire = new Date().getTime() - ProfileCacheExpire;
-      for (let pk of this.WantsMetadata) {
-        let m = meta.find((a) => a?.pubkey === pk);
+      const missing = new Set<HexKey>();
+      const meta = await this.UserDb.bulkGet(Array.from(this.WantsMetadata));
+      const expire = new Date().getTime() - ProfileCacheExpire;
+      for (const pk of this.WantsMetadata) {
+        const m = meta.find(a => a?.pubkey === pk);
         if (!m || m.loaded < expire) {
           missing.add(pk);
           // cap 100 missing profiles
@@ -188,35 +189,36 @@ export class NostrSystem {
       if (missing.size > 0) {
         console.debug("Wants profiles: ", missing);
 
-        let sub = new Subscriptions();
+        const sub = new Subscriptions();
         sub.Id = `profiles:${sub.Id.slice(0, 8)}`;
         sub.Kinds = new Set([EventKind.SetMetadata]);
         sub.Authors = missing;
-        sub.OnEvent = async (e) => {
-          let profile = mapEventToProfile(e);
+        sub.OnEvent = async e => {
+          const profile = mapEventToProfile(e);
+          const userDb = unwrap(this.UserDb);
           if (profile) {
-            let existing = await this.UserDb!.find(profile.pubkey);
+            const existing = await userDb.find(profile.pubkey);
             if ((existing?.created ?? 0) < profile.created) {
-              await this.UserDb!.put(profile);
+              await userDb.put(profile);
             } else if (existing) {
-              await this.UserDb!.update(profile.pubkey, {
+              await userDb.update(profile.pubkey, {
                 loaded: profile.loaded,
               });
             }
           }
         };
-        let results = await this.RequestSubscription(sub);
-        let couldNotFetch = Array.from(missing).filter(
-          (a) => !results.some((b) => b.pubkey === a)
-        );
+        const results = await this.RequestSubscription(sub);
+        const couldNotFetch = Array.from(missing).filter(a => !results.some(b => b.pubkey === a));
         console.debug("No profiles: ", couldNotFetch);
         if (couldNotFetch.length > 0) {
-          let updates = couldNotFetch.map((a) => {
-            return {
-              pubkey: a,
-              loaded: new Date().getTime(),
-            };
-          }).map(a => this.UserDb!.update(a.pubkey, a));
+          const updates = couldNotFetch
+            .map(a => {
+              return {
+                pubkey: a,
+                loaded: new Date().getTime(),
+              };
+            })
+            .map(a => unwrap(this.UserDb).update(a.pubkey, a));
           await Promise.all(updates);
         }
       }
@@ -224,12 +226,7 @@ export class NostrSystem {
     setTimeout(() => this._FetchMetadata(), 500);
   }
 
-  async nip42Auth(
-    challenge: string,
-    relay: string
-  ): Promise<Event | undefined> {
-    return;
-  }
+  nip42Auth: (challenge: string, relay: string) => Promise<Event | undefined> = async () => undefined;
 }
 
 export const System = new NostrSystem();

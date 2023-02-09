@@ -26,6 +26,7 @@ import SearchPage from "Pages/SearchPage";
 import HelpPage from "Pages/HelpPage";
 import { NewUserRoutes } from "Pages/new";
 import { IntlProvider } from "./IntlProvider";
+import { unwrap } from "Util";
 
 /**
  * HTTP query provider
@@ -97,7 +98,7 @@ export const router = createBrowserRouter([
   },
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById("root")!);
+const root = ReactDOM.createRoot(unwrap(document.getElementById("root")));
 root.render(
   <StrictMode>
     <Provider store={Store}>

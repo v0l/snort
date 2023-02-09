@@ -23,7 +23,7 @@ export default function NoteReaction(props: NoteReactionProps) {
 
   const refEvent = useMemo(() => {
     if (ev) {
-      let eTags = ev.Tags.filter((a) => a.Key === "e");
+      const eTags = ev.Tags.filter(a => a.Key === "e");
       if (eTags.length > 0) {
         return eTags[0].Event;
       }
@@ -39,13 +39,9 @@ export default function NoteReaction(props: NoteReactionProps) {
    * Some clients embed the reposted note in the content
    */
   function extractRoot() {
-    if (
-      ev?.Kind === EventKind.Repost &&
-      ev.Content.length > 0 &&
-      ev.Content !== "#[0]"
-    ) {
+    if (ev?.Kind === EventKind.Repost && ev.Content.length > 0 && ev.Content !== "#[0]") {
       try {
-        let r: RawEvent = JSON.parse(ev.Content);
+        const r: RawEvent = JSON.parse(ev.Content);
         return r as TaggedRawEvent;
       } catch (e) {
         console.error("Could not load reposted content", e);
@@ -73,9 +69,7 @@ export default function NoteReaction(props: NoteReactionProps) {
       {root ? <Note data={root} options={opt} related={[]} /> : null}
       {!root && refEvent ? (
         <p>
-          <Link to={eventLink(refEvent)}>
-            #{hexToBech32("note", refEvent).substring(0, 12)}
-          </Link>
+          <Link to={eventLink(refEvent)}>#{hexToBech32("note", refEvent).substring(0, 12)}</Link>
         </p>
       ) : null}
     </div>

@@ -12,6 +12,7 @@ import { setLastReadDm } from "Pages/MessagesPage";
 import { RootState } from "State/Store";
 import { HexKey, TaggedRawEvent } from "Nostr";
 import { incDmInteraction } from "State/Login";
+import { unwrap } from "Util";
 
 import messages from "./messages";
 
@@ -21,22 +22,18 @@ export type DMProps = {
 
 export default function DM(props: DMProps) {
   const dispatch = useDispatch();
-  const pubKey = useSelector<RootState, HexKey | undefined>(
-    (s) => s.login.publicKey
-  );
+  const pubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
   const publisher = useEventPublisher();
   const [content, setContent] = useState("Loading...");
   const [decrypted, setDecrypted] = useState(false);
   const { ref, inView } = useInView();
   const { formatMessage } = useIntl();
   const isMe = props.data.pubkey === pubKey;
-  const otherPubkey = isMe
-    ? pubKey
-    : props.data.tags.find((a) => a[0] === "p")![1];
+  const otherPubkey = isMe ? pubKey : unwrap(props.data.tags.find(a => a[0] === "p")?.[1]);
 
   async function decrypt() {
-    let e = new Event(props.data);
-    let decrypted = await publisher.decryptDm(e);
+    const e = new Event(props.data);
+    const decrypted = await publisher.decryptDm(e);
     setContent(decrypted || "<ERROR>");
     if (!isMe) {
       setLastReadDm(e.PubKey);
@@ -54,18 +51,10 @@ export default function DM(props: DMProps) {
   return (
     <div className={`flex dm f-col${isMe ? " me" : ""}`} ref={ref}>
       <div>
-        <NoteTime
-          from={props.data.created_at * 1000}
-          fallback={formatMessage(messages.JustNow)}
-        />
+        <NoteTime from={props.data.created_at * 1000} fallback={formatMessage(messages.JustNow)} />
       </div>
       <div className="w-max">
-        <Text
-          content={content}
-          tags={[]}
-          users={new Map()}
-          creator={otherPubkey}
-        />
+        <Text content={content} tags={[]} users={new Map()} creator={otherPubkey} />
       </div>
     </div>
   );

@@ -7,9 +7,7 @@ import Timeline from "Element/Timeline";
 
 export default function NotificationsPage() {
   const dispatch = useDispatch();
-  const pubkey = useSelector<RootState, HexKey | undefined>(
-    (s) => s.login.publicKey
-  );
+  const pubkey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
 
   useEffect(() => {
     dispatch(markNotificationsRead());
@@ -21,8 +19,8 @@ export default function NotificationsPage() {
         <Timeline
           subject={{
             type: "ptag",
-            items: [pubkey!],
-            discriminator: pubkey!.slice(0, 12),
+            items: [pubkey],
+            discriminator: pubkey.slice(0, 12),
           }}
           postsOnly={false}
           method={"TIME_RANGE"}

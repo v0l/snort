@@ -1,13 +1,11 @@
 import { UploadResult } from "Upload";
 
-export default async function NostrBuild(
-  file: File | Blob
-): Promise<UploadResult> {
-  let fd = new FormData();
+export default async function NostrBuild(file: File | Blob): Promise<UploadResult> {
+  const fd = new FormData();
   fd.append("fileToUpload", file);
   fd.append("submit", "Upload Image");
 
-  let rsp = await fetch("https://nostr.build/api/upload/snort.php", {
+  const rsp = await fetch("https://nostr.build/api/upload/snort.php", {
     body: fd,
     method: "POST",
     headers: {
@@ -15,7 +13,7 @@ export default async function NostrBuild(
     },
   });
   if (rsp.ok) {
-    let data = await rsp.json();
+    const data = await rsp.json();
     return {
       url: new URL(data).toString(),
     };

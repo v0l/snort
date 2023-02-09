@@ -104,10 +104,10 @@ export class Subscriptions {
     this.Since = sub?.since ?? undefined;
     this.Until = sub?.until ?? undefined;
     this.Limit = sub?.limit ?? undefined;
-    this.OnEvent = (e) => {
+    this.OnEvent = () => {
       console.warn(`No event handler was set on subscription: ${this.Id}`);
     };
-    this.OnEnd = (c) => {};
+    this.OnEnd = () => undefined;
     this.OrSubs = [];
     this.Started = new Map<string, number>();
     this.Finished = new Map<string, number>();
@@ -128,7 +128,7 @@ export class Subscriptions {
   }
 
   ToObject(): RawReqFilter {
-    let ret: RawReqFilter = {};
+    const ret: RawReqFilter = {};
     if (this.Ids) {
       ret.ids = Array.from(this.Ids);
     }

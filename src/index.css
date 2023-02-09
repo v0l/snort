@@ -22,12 +22,7 @@
   --gray-tertiary: #444;
   --gray-dark: #2b2b2b;
   --gray-superdark: #1a1a1a;
-  --gray-gradient: linear-gradient(
-    to bottom right,
-    var(--gray-superlight),
-    var(--gray),
-    var(--gray-light)
-  );
+  --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
   --snort-gradient: linear-gradient(90deg, #a178ff 0%, #ff6baf 108.33%);
   --invoice-gradient: linear-gradient(
     45deg,
@@ -41,12 +36,7 @@
     rgba(161, 120, 255, 0.6),
     rgba(255, 107, 175, 0.6) 108.33%
   );
-  --expired-invoice-gradient: linear-gradient(
-    45deg,
-    var(--note-bg) 50%,
-    var(--gray),
-    var(--gray-superdark)
-  );
+  --expired-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, var(--gray), var(--gray-superdark));
   --strike-army-gradient: linear-gradient(to bottom right, #ccff00, #a1c900);
 }
 
@@ -71,18 +61,8 @@ html.light {
   --gray-dark: #2b2b2b;
   --gray-superdark: #eee;
 
-  --invoice-gradient: linear-gradient(
-    45deg,
-    var(--note-bg) 50%,
-    rgb(247, 183, 51, 0.2),
-    rgb(252, 74, 26, 0.2)
-  );
-  --paid-invoice-gradient: linear-gradient(
-    45deg,
-    var(--note-bg) 50%,
-    rgb(247, 183, 51, 0.6),
-    rgb(252, 74, 26, 0.6)
-  );
+  --invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgb(247, 183, 51, 0.2), rgb(252, 74, 26, 0.2));
+  --paid-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgb(247, 183, 51, 0.6), rgb(252, 74, 26, 0.6));
 }
 
 body {
@@ -96,8 +76,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 .page {

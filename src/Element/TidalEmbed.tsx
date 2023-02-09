@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TidalRegex } from "Const";
 
 // Re-use dom parser across instances of TidalEmbed
@@ -34,13 +34,11 @@ async function oembedLookup(link: string) {
 const TidalEmbed = ({ link }: { link: string }) => {
   const [source, setSource] = useState<string>();
   const [height, setHeight] = useState<number>();
-  const extraStyles = link.includes("video")
-    ? { aspectRatio: "16 / 9" }
-    : { height };
+  const extraStyles = link.includes("video") ? { aspectRatio: "16 / 9" } : { height };
 
   useEffect(() => {
     oembedLookup(link)
-      .then((data) => {
+      .then(data => {
         setSource(data.source || undefined);
         setHeight(data.height);
       })
@@ -49,25 +47,11 @@ const TidalEmbed = ({ link }: { link: string }) => {
 
   if (!source)
     return (
-      <a
-        href={link}
-        target="_blank"
-        rel="noreferrer"
-        onClick={(e) => e.stopPropagation()}
-        className="ext"
-      >
+      <a href={link} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="ext">
         {link}
       </a>
     );
-  return (
-    <iframe
-      src={source}
-      style={extraStyles}
-      width="100%"
-      title="TIDAL Embed"
-      frameBorder={0}
-    />
-  );
+  return <iframe src={source} style={extraStyles} width="100%" title="TIDAL Embed" frameBorder={0} />;
 };
 
 export default TidalEmbed;

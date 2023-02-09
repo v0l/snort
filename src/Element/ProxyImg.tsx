@@ -1,7 +1,11 @@
 import useImgProxy from "Feed/ImgProxy";
 import { useEffect, useState } from "react";
 
-export const ProxyImg = (props: any) => {
+interface ProxyImgProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
+  size?: number;
+}
+
+export const ProxyImg = (props: ProxyImgProps) => {
   const { src, size, ...rest } = props;
   const [url, setUrl] = useState<string>();
   const { proxy } = useImgProxy();
@@ -9,7 +13,7 @@ export const ProxyImg = (props: any) => {
   useEffect(() => {
     if (src) {
       proxy(src, size)
-        .then((a) => setUrl(a))
+        .then(a => setUrl(a))
         .catch(console.warn);
     }
   }, [src]);

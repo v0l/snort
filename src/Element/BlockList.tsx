@@ -1,13 +1,7 @@
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
-
-import { HexKey } from "Nostr";
-import type { RootState } from "State/Store";
 import MuteButton from "Element/MuteButton";
 import BlockButton from "Element/BlockButton";
 import ProfilePreview from "Element/ProfilePreview";
-import useMutedFeed, { getMuted } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 
 import messages from "./messages";
@@ -17,7 +11,6 @@ interface BlockListProps {
 }
 
 export default function BlockList({ variant }: BlockListProps) {
-  const { publicKey } = useSelector((s: RootState) => s.login);
   const { blocked, muted } = useModeration();
 
   return (
@@ -25,39 +18,21 @@ export default function BlockList({ variant }: BlockListProps) {
       {variant === "muted" && (
         <>
           <h4>
-            <FormattedMessage
-              {...messages.MuteCount}
-              values={{ n: muted.length }}
-            />
+            <FormattedMessage {...messages.MuteCount} values={{ n: muted.length }} />
           </h4>
-          {muted.map((a) => {
-            return (
-              <ProfilePreview
-                actions={<MuteButton pubkey={a} />}
-                pubkey={a}
-                options={{ about: false }}
-                key={a}
-              />
-            );
+          {muted.map(a => {
+            return <ProfilePreview actions={<MuteButton pubkey={a} />} pubkey={a} options={{ about: false }} key={a} />;
           })}
         </>
       )}
       {variant === "blocked" && (
         <>
           <h4>
-            <FormattedMessage
-              {...messages.BlockCount}
-              values={{ n: blocked.length }}
-            />
+            <FormattedMessage {...messages.BlockCount} values={{ n: blocked.length }} />
           </h4>
-          {blocked.map((a) => {
+          {blocked.map(a => {
             return (
-              <ProfilePreview
-                actions={<BlockButton pubkey={a} />}
-                pubkey={a}
-                options={{ about: false }}
-                key={a}
-              />
+              <ProfilePreview actions={<BlockButton pubkey={a} />} pubkey={a} options={{ about: false }} key={a} />
             );
           })}
         </>

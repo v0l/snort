@@ -4,18 +4,19 @@ import { db as idb } from "Db";
 import { UsersDb, MetadataCache, setUsers } from "State/Users";
 import store, { RootState } from "State/Store";
 import { useSelector } from "react-redux";
+import { unwrap } from "Util";
 
 class IndexedUsersDb implements UsersDb {
-  ready: boolean = false;
+  ready = false;
 
   isAvailable() {
     if ("indexedDB" in window) {
-      return new Promise<boolean>((resolve) => {
+      return new Promise<boolean>(resolve => {
         const req = window.indexedDB.open("dummy", 1);
-        req.onsuccess = (ev) => {
+        req.onsuccess = () => {
           resolve(true);
         };
-        req.onerror = (ev) => {
+        req.onerror = () => {
           resolve(false);
         };
       });
@@ -41,37 +42,33 @@ class IndexedUsersDb implements UsersDb {
       .toArray();
   }
 
-  bulkGet(keys: HexKey[]) {
-    return idb.users
-      .bulkGet(keys)
-      .then((ret) => ret.filter((a) => a !== undefined).map((a) => a!));
+  async bulkGet(keys: HexKey[]) {
+    const ret = await idb.users.bulkGet(keys);
+    return ret.filter(a => a !== undefined).map(a_1 => unwrap(a_1));
   }
 
-  add(user: MetadataCache) {
-    return idb.users.add(user);
+  async add(user: MetadataCache) {
+    await idb.users.add(user);
   }
 
-  put(user: MetadataCache) {
-    return idb.users.put(user);
+  async put(user: MetadataCache) {
+    await idb.users.put(user);
   }
 
-  bulkAdd(users: MetadataCache[]) {
-    return idb.users.bulkAdd(users);
+  async bulkAdd(users: MetadataCache[]) {
+    await idb.users.bulkAdd(users);
   }
 
-  bulkPut(users: MetadataCache[]) {
-    return idb.users.bulkPut(users);
+  async bulkPut(users: MetadataCache[]) {
+    await idb.users.bulkPut(users);
   }
 
-  update(key: HexKey, fields: Record<string, any>) {
-    return idb.users.update(key, fields);
+  async update(key: HexKey, fields: Record<string, string>) {
+    await idb.users.update(key, fields);
   }
 }
 
-function groupByPubkey(
-  acc: Record<HexKey, MetadataCache>,
-  user: MetadataCache
-) {
+function groupByPubkey(acc: Record<HexKey, MetadataCache>, user: MetadataCache) {
   return { ...acc, [user.pubkey]: user };
 }
 
@@ -83,7 +80,7 @@ class ReduxUsersDb implements UsersDb {
   async query(q: string) {
     const state = store.getState();
     const { users } = state.users;
-    return Object.values(users).filter((user) => {
+    return Object.values(users).filter(user => {
       const profile = user as MetadataCache;
       return (
         profile.name?.includes(q) ||
@@ -123,12 +120,12 @@ class ReduxUsersDb implements UsersDb {
     const state = store.getState();
     const { users } = state.users;
     const ids = new Set([...keys]);
-    return Object.values(users).filter((user) => {
+    return Object.values(users).filter(user => {
       return ids.has(user.pubkey);
     });
   }
 
-  async update(key: HexKey, fields: Record<string, any>) {
+  async update(key: HexKey, fields: Record<string, string>) {
     const state = store.getState();
     const { users } = state.users;
     const current = users[key];

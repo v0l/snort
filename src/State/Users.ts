@@ -26,7 +26,7 @@ export interface MetadataCache extends UserMetadata {
 
 export function mapEventToProfile(ev: TaggedRawEvent) {
   try {
-    let data: UserMetadata = JSON.parse(ev.content);
+    const data: UserMetadata = JSON.parse(ev.content);
     return {
       pubkey: ev.pubkey,
       npub: hexToBech32("npub", ev.pubkey),
@@ -43,12 +43,12 @@ export interface UsersDb {
   isAvailable(): Promise<boolean>;
   query(str: string): Promise<MetadataCache[]>;
   find(key: HexKey): Promise<MetadataCache | undefined>;
-  add(user: MetadataCache): Promise<any>;
-  put(user: MetadataCache): Promise<any>;
-  bulkAdd(users: MetadataCache[]): Promise<any>;
+  add(user: MetadataCache): Promise<void>;
+  put(user: MetadataCache): Promise<void>;
+  bulkAdd(users: MetadataCache[]): Promise<void>;
   bulkGet(keys: HexKey[]): Promise<MetadataCache[]>;
-  bulkPut(users: MetadataCache[]): Promise<any>;
-  update(key: HexKey, fields: Record<string, any>): Promise<any>;
+  bulkPut(users: MetadataCache[]): Promise<void>;
+  update(key: HexKey, fields: Record<string, string | number>): Promise<void>;
 }
 
 export interface UsersStore {

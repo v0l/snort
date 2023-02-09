@@ -20,6 +20,7 @@ import { debounce, hexToBech32 } from "Util";
 import { UserMetadata } from "Nostr";
 
 import messages from "./messages";
+import { RootState } from "State/Store";
 
 type Nip05ServiceProps = {
   name: string;
@@ -29,45 +30,34 @@ type Nip05ServiceProps = {
   supportLink: string;
 };
 
-type ReduxStore = any;
-
 export default function Nip5Service(props: Nip05ServiceProps) {
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
-  const pubkey = useSelector<ReduxStore, string>((s) => s.login.publicKey);
+  const pubkey = useSelector((s: RootState) => s.login.publicKey);
   const user = useUserProfile(pubkey);
   const publisher = useEventPublisher();
-  const svc = useMemo(
-    () => new ServiceProvider(props.service),
-    [props.service]
-  );
+  const svc = useMemo(() => new ServiceProvider(props.service), [props.service]);
   const [serviceConfig, setServiceConfig] = useState<ServiceConfig>();
   const [error, setError] = useState<ServiceError>();
   const [handle, setHandle] = useState<string>("");
   const [domain, setDomain] = useState<string>("");
-  const [availabilityResponse, setAvailabilityResponse] =
-    useState<HandleAvailability>();
-  const [registerResponse, setRegisterResponse] =
-    useState<HandleRegisterResponse>();
+  const [availabilityResponse, setAvailabilityResponse] = useState<HandleAvailability>();
+  const [registerResponse, setRegisterResponse] = useState<HandleRegisterResponse>();
   const [showInvoice, setShowInvoice] = useState<boolean>(false);
   const [registerStatus, setRegisterStatus] = useState<CheckRegisterResponse>();
 
-  const domainConfig = useMemo(
-    () => serviceConfig?.domains.find((a) => a.name === domain),
-    [domain, serviceConfig]
-  );
+  const domainConfig = useMemo(() => serviceConfig?.domains.find(a => a.name === domain), [domain, serviceConfig]);
 
   useEffect(() => {
     svc
       .GetConfig()
-      .then((a) => {
+      .then(a => {
         if ("error" in a) {
           setError(a as ServiceError);
         } else {
-          let svc = a as ServiceConfig;
+          const svc = a as ServiceConfig;
           setServiceConfig(svc);
-          let defaultDomain =
-            svc.domains.find((a) => a.default)?.name || svc.domains[0].name;
+          const defaultDomain = svc.domains.find(a => a.default)?.name || svc.domains[0].name;
           setDomain(defaultDomain);
         }
       })
@@ -86,10 +76,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         setAvailabilityResponse({ available: false, why: "TOO_LONG" });
         return;
       }
-      let rx = new RegExp(
-        domainConfig?.regex[0] ?? "",
-        domainConfig?.regex[1] ?? ""
-      );
+      const rx = new RegExp(domainConfig?.regex[0] ?? "", domainConfig?.regex[1] ?? "");
       if (!rx.test(handle)) {
         setAvailabilityResponse({ available: false, why: "REGEX" });
         return;
@@ -97,7 +84,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       return debounce(500, () => {
         svc
           .CheckAvailable(handle, domain)
-          .then((a) => {
+          .then(a => {
             if ("error" in a) {
               setError(a as ServiceError);
             } else {
@@ -111,14 +98,14 @@ export default function Nip5Service(props: Nip05ServiceProps) {
 
   useEffect(() => {
     if (registerResponse && showInvoice) {
-      let t = setInterval(async () => {
-        let status = await svc.CheckRegistration(registerResponse.token);
+      const t = setInterval(async () => {
+        const status = await svc.CheckRegistration(registerResponse.token);
         if ("error" in status) {
           setError(status);
           setRegisterResponse(undefined);
           setShowInvoice(false);
         } else {
-          let result: CheckRegisterResponse = status;
+          const result: CheckRegisterResponse = status;
           if (result.available && result.paid) {
             setShowInvoice(false);
             setRegisterStatus(status);
@@ -131,8 +118,11 @@ export default function Nip5Service(props: Nip05ServiceProps) {
     }
   }, [registerResponse, showInvoice, svc]);
 
-  function mapError(e: ServiceErrorCode, t: string | null): string | undefined {
-    let whyMap = new Map([
+  function mapError(e: ServiceErrorCode | undefined, t: string | null): string | undefined {
+    if (e === undefined) {
+      return undefined;
+    }
+    const whyMap = new Map([
       ["TOO_SHORT", formatMessage(messages.TooShort)],
       ["TOO_LONG", formatMessage(messages.TooLong)],
       ["REGEX", formatMessage(messages.Regex)],
@@ -144,12 +134,11 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   }
 
   async function startBuy(handle: string, domain: string) {
-    if (registerResponse) {
-      setShowInvoice(true);
+    if (!pubkey) {
       return;
     }
 
-    let rsp = await svc.RegisterHandle(handle, domain, pubkey);
+    const rsp = await svc.RegisterHandle(handle, domain, pubkey);
     if ("error" in rsp) {
       setError(rsp);
     } else {
@@ -160,11 +149,11 @@ export default function Nip5Service(props: Nip05ServiceProps) {
 
   async function updateProfile(handle: string, domain: string) {
     if (user) {
-      let newProfile = {
+      const newProfile = {
         ...user,
         nip05: `${handle}@${domain}`,
       } as UserMetadata;
-      let ev = await publisher.metadata(newProfile);
+      const ev = await publisher.metadata(newProfile);
       publisher.broadcast(ev);
       navigate("/settings");
     }
@@ -194,11 +183,11 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             type="text"
             placeholder="Handle"
             value={handle}
-            onChange={(e) => setHandle(e.target.value.toLowerCase())}
+            onChange={e => setHandle(e.target.value.toLowerCase())}
           />
           &nbsp;@&nbsp;
-          <select value={domain} onChange={(e) => setDomain(e.target.value)}>
-            {serviceConfig?.domains.map((a) => (
+          <select value={domain} onChange={e => setDomain(e.target.value)}>
+            {serviceConfig?.domains.map(a => (
               <option key={a.name}>{a.name}</option>
             ))}
           </select>
@@ -207,10 +196,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       {availabilityResponse?.available && !registerStatus && (
         <div className="flex">
           <div className="mr10">
-            <FormattedMessage
-              {...messages.Sats}
-              values={{ n: availabilityResponse.quote?.price }}
-            />
+            <FormattedMessage {...messages.Sats} values={{ n: availabilityResponse.quote?.price }} />
             <br />
             <small>{availabilityResponse.quote?.data.type}</small>
           </div>
@@ -230,10 +216,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         <div className="flex">
           <b className="error">
             <FormattedMessage {...messages.NotAvailable} />{" "}
-            {mapError(
-              availabilityResponse.why!,
-              availabilityResponse.reasonTag || null
-            )}
+            {mapError(availabilityResponse.why, availabilityResponse.reasonTag || null)}
           </b>
         </div>
       )}

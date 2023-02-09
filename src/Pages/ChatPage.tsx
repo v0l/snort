@@ -9,9 +9,10 @@ import { bech32ToHex } from "Util";
 import useEventPublisher from "Feed/EventPublisher";
 
 import DM from "Element/DM";
-import { RawEvent } from "Nostr";
+import { TaggedRawEvent } from "Nostr";
 import { dmsInChat, isToSelf } from "Pages/MessagesPage";
 import NoteToSelf from "Element/NoteToSelf";
+import { RootState } from "State/Store";
 
 type RouterParams = {
   id: string;
@@ -21,20 +22,17 @@ export default function ChatPage() {
   const params = useParams<RouterParams>();
   const publisher = useEventPublisher();
   const id = bech32ToHex(params.id ?? "");
-  const pubKey = useSelector<any>((s) => s.login.publicKey);
-  const dms = useSelector<any, RawEvent[]>((s) => filterDms(s.login.dms));
+  const pubKey = useSelector((s: RootState) => s.login.publicKey);
+  const dms = useSelector((s: RootState) => filterDms(s.login.dms));
   const [content, setContent] = useState<string>();
-  const { ref, inView, entry } = useInView();
+  const { ref, inView } = useInView();
   const dmListRef = useRef<HTMLDivElement>(null);
 
-  function filterDms(dms: RawEvent[]) {
-    return dmsInChat(
-      id === pubKey ? dms.filter((d) => isToSelf(d, pubKey)) : dms,
-      id
-    );
+  function filterDms(dms: TaggedRawEvent[]) {
+    return dmsInChat(id === pubKey ? dms.filter(d => isToSelf(d, pubKey)) : dms, id);
   }
 
-  const sortedDms = useMemo<any[]>(() => {
+  const sortedDms = useMemo(() => {
     return [...dms].sort((a, b) => a.created_at - b.created_at);
   }, [dms]);
 
@@ -46,7 +44,7 @@ export default function ChatPage() {
 
   async function sendDm() {
     if (content) {
-      let ev = await publisher.sendDm(content, id);
+      const ev = await publisher.sendDm(content, id);
       console.debug(ev);
       publisher.broadcast(ev);
       setContent("");
@@ -54,7 +52,7 @@ export default function ChatPage() {
   }
 
   async function onEnter(e: KeyboardEvent) {
-    let isEnter = e.code === "Enter";
+    const isEnter = e.code === "Enter";
     if (isEnter && !e.shiftKey) {
       await sendDm();
     }
@@ -62,13 +60,13 @@ export default function ChatPage() {
 
   return (
     <>
-      {(id === pubKey && (
-        <NoteToSelf className="f-grow mb-10" pubkey={id} />
-      )) || <ProfileImage pubkey={id} className="f-grow mb10" />}
+      {(id === pubKey && <NoteToSelf className="f-grow mb-10" pubkey={id} />) || (
+        <ProfileImage pubkey={id} className="f-grow mb10" />
+      )}
       <div className="dm-list" ref={dmListRef}>
         <div>
-          {sortedDms.map((a) => (
-            <DM data={a} key={a.id} />
+          {sortedDms.map(a => (
+            <DM data={a as TaggedRawEvent} key={a.id} />
           ))}
           <div ref={ref} className="mb10"></div>
         </div>
@@ -78,9 +76,8 @@ export default function ChatPage() {
           <textarea
             className="f-grow mr10"
             value={content}
-            onChange={(e) => setContent(e.target.value)}
-            onKeyDown={(e) => onEnter(e)}
-          ></textarea>
+            onChange={e => setContent(e.target.value)}
+            onKeyDown={e => onEnter(e)}></textarea>
           <button type="button" onClick={() => sendDm()}>
             Send
           </button>

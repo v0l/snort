@@ -21,19 +21,15 @@ type DmChat = {
 
 export default function MessagesPage() {
   const dispatch = useDispatch();
-  const myPubKey = useSelector<RootState, HexKey | undefined>(
-    (s) => s.login.publicKey
-  );
-  const dms = useSelector<RootState, RawEvent[]>((s) => s.login.dms);
-  const dmInteraction = useSelector<RootState, number>(
-    (s) => s.login.dmInteraction
-  );
+  const myPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+  const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
+  const dmInteraction = useSelector<RootState, number>(s => s.login.dmInteraction);
   const { isMuted } = useModeration();
 
   const chats = useMemo(() => {
     return extractChats(
-      dms.filter((a) => !isMuted(a.pubkey)),
-      myPubKey!
+      dms.filter(a => !isMuted(a.pubkey)),
+      myPubKey ?? ""
     );
   }, [dms, myPubKey, dmInteraction]);
 
@@ -54,18 +50,14 @@ export default function MessagesPage() {
     if (chat.pubkey === myPubKey) return noteToSelf(chat);
     return (
       <div className="flex mb10" key={chat.pubkey}>
-        <ProfileImage
-          pubkey={chat.pubkey}
-          className="f-grow"
-          link={`/messages/${hexToBech32("npub", chat.pubkey)}`}
-        />
+        <ProfileImage pubkey={chat.pubkey} className="f-grow" link={`/messages/${hexToBech32("npub", chat.pubkey)}`} />
         <UnreadCount unread={chat.unreadMessages} />
       </div>
     );
   }
 
   function markAllRead() {
-    for (let c of chats) {
+    for (const c of chats) {
       setLastReadDm(c.pubkey);
     }
     dispatch(incDmInteraction());
@@ -83,11 +75,7 @@ export default function MessagesPage() {
       </div>
       {chats
         .sort((a, b) => {
-          return a.pubkey === myPubKey
-            ? -1
-            : b.pubkey === myPubKey
-            ? 1
-            : b.newestMessage - a.newestMessage;
+          return a.pubkey === myPubKey ? -1 : b.pubkey === myPubKey ? 1 : b.newestMessage - a.newestMessage;
         })
         .map(person)}
     </div>
@@ -95,23 +83,23 @@ export default function MessagesPage() {
 }
 
 export function lastReadDm(pk: HexKey) {
-  let k = `dm:seen:${pk}`;
+  const k = `dm:seen:${pk}`;
   return parseInt(window.localStorage.getItem(k) ?? "0");
 }
 
 export function setLastReadDm(pk: HexKey) {
   const now = Math.floor(new Date().getTime() / 1000);
-  let current = lastReadDm(pk);
+  const current = lastReadDm(pk);
   if (current >= now) {
     return;
   }
 
-  let k = `dm:seen:${pk}`;
+  const k = `dm:seen:${pk}`;
   window.localStorage.setItem(k, now.toString());
 }
 
 export function dmTo(e: RawEvent) {
-  let firstP = e.tags.find((b) => b[0] === "p");
+  const firstP = e.tags.find(b => b[0] === "p");
   return firstP ? firstP[1] : "";
 }
 
@@ -120,42 +108,34 @@ export function isToSelf(e: RawEvent, pk: HexKey) {
 }
 
 export function dmsInChat(dms: RawEvent[], pk: HexKey) {
-  return dms.filter((a) => a.pubkey === pk || dmTo(a) === pk);
+  return dms.filter(a => a.pubkey === pk || dmTo(a) === pk);
 }
 
 export function totalUnread(dms: RawEvent[], myPubKey: HexKey) {
-  return extractChats(dms, myPubKey).reduce(
-    (acc, v) => (acc += v.unreadMessages),
-    0
-  );
+  return extractChats(dms, myPubKey).reduce((acc, v) => (acc += v.unreadMessages), 0);
 }
 
 function unreadDms(dms: RawEvent[], myPubKey: HexKey, pk: HexKey) {
   if (pk === myPubKey) return 0;
-  let lastRead = lastReadDm(pk);
-  return dmsInChat(dms, pk).filter(
-    (a) => a.created_at >= lastRead && a.pubkey !== myPubKey
-  ).length;
+  const lastRead = lastReadDm(pk);
+  return dmsInChat(dms, pk).filter(a => a.created_at >= lastRead && a.pubkey !== myPubKey).length;
 }
 
 function newestMessage(dms: RawEvent[], myPubKey: HexKey, pk: HexKey) {
   if (pk === myPubKey) {
     return dmsInChat(
-      dms.filter((d) => isToSelf(d, myPubKey)),
+      dms.filter(d => isToSelf(d, myPubKey)),
       pk
     ).reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
   }
 
-  return dmsInChat(dms, pk).reduce(
-    (acc, v) => (acc = v.created_at > acc ? v.created_at : acc),
-    0
-  );
+  return dmsInChat(dms, pk).reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
 }
 
 export function extractChats(dms: RawEvent[], myPubKey: HexKey) {
-  const keys = dms.map((a) => [a.pubkey, dmTo(a)]).flat();
+  const keys = dms.map(a => [a.pubkey, dmTo(a)]).flat();
   const filteredKeys = Array.from(new Set<string>(keys));
-  return filteredKeys.map((a) => {
+  return filteredKeys.map(a => {
     return {
       pubkey: a,
       unreadMessages: unreadDms(dms, myPubKey, a),

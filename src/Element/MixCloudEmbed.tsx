@@ -3,14 +3,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "State/Store";
 
 const MixCloudEmbed = ({ link }: { link: string }) => {
-  const feedPath =
-    (MixCloudRegex.test(link) && RegExp.$1) +
-    "%2F" +
-    (MixCloudRegex.test(link) && RegExp.$2);
+  const feedPath = (MixCloudRegex.test(link) && RegExp.$1) + "%2F" + (MixCloudRegex.test(link) && RegExp.$2);
 
-  const lightTheme = useSelector<RootState, boolean>(
-    (s) => s.login.preferences.theme === "light"
-  );
+  const lightTheme = useSelector<RootState, boolean>(s => s.login.preferences.theme === "light");
 
   const lightParams = lightTheme ? "light=1" : "light=0";
 

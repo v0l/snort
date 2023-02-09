@@ -2,14 +2,7 @@ import IconProps from "./IconProps";
 
 const Heart = (props: IconProps) => {
   return (
-    <svg
-      width="20"
-      height="18"
-      viewBox="0 0 20 18"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

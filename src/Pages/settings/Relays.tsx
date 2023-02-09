@@ -13,13 +13,11 @@ import messages from "./messages";
 const RelaySettingsPage = () => {
   const dispatch = useDispatch();
   const publisher = useEventPublisher();
-  const relays = useSelector<RootState, Record<string, RelaySettings>>(
-    (s) => s.login.relays
-  );
+  const relays = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
   const [newRelay, setNewRelay] = useState<string>();
 
   async function saveRelays() {
-    let ev = await publisher.saveRelays();
+    const ev = await publisher.saveRelays();
     publisher.broadcast(ev);
     publisher.broadcastForBootstrap(ev);
   }
@@ -36,7 +34,7 @@ const RelaySettingsPage = () => {
             className="f-grow"
             placeholder="wss://my-relay.com"
             value={newRelay}
-            onChange={(e) => setNewRelay(e.target.value)}
+            onChange={e => setNewRelay(e.target.value)}
           />
         </div>
         <button className="secondary mb10" onClick={() => addNewRelay()}>
@@ -48,7 +46,7 @@ const RelaySettingsPage = () => {
 
   function addNewRelay() {
     if ((newRelay?.length ?? 0) > 0) {
-      const parsed = new URL(newRelay!);
+      const parsed = new URL(newRelay ?? "");
       const payload = {
         relays: {
           ...relays,
@@ -64,7 +62,7 @@ const RelaySettingsPage = () => {
     <>
       <h3>Relays</h3>
       <div className="flex f-col mb10">
-        {Object.keys(relays || {}).map((a) => (
+        {Object.keys(relays || {}).map(a => (
           <Relay addr={a} key={a} />
         ))}
       </div>

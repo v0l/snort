@@ -6,20 +6,16 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { TaggedRawEvent, u256, HexKey } from "Nostr";
 import { default as NEvent } from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
-import { eventLink, hexToBech32, bech32ToHex } from "Util";
+import { eventLink, bech32ToHex, unwrap } from "Util";
 import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";
 import Collapsed from "Element/Collapsed";
-
 import messages from "./messages";
 
-function getParent(
-  ev: HexKey,
-  chains: Map<HexKey, NEvent[]>
-): HexKey | undefined {
-  for (let [k, vs] of chains.entries()) {
-    const fs = vs.map((a) => a.Id);
+function getParent(ev: HexKey, chains: Map<HexKey, NEvent[]>): HexKey | undefined {
+  for (const [k, vs] of chains.entries()) {
+    const fs = vs.map(a => a.Id);
     if (fs.includes(ev)) {
       return k;
     }
@@ -50,31 +46,17 @@ interface SubthreadProps {
   onNavigate: (e: u256) => void;
 }
 
-const Subthread = ({
-  active,
-  path,
-  from,
-  notes,
-  related,
-  chains,
-  onNavigate,
-}: SubthreadProps) => {
+const Subthread = ({ active, path, notes, related, chains, onNavigate }: SubthreadProps) => {
   const renderSubthread = (a: NEvent, idx: number) => {
     const isLastSubthread = idx === notes.length - 1;
     const replies = getReplies(a.Id, chains);
     return (
       <>
-        <div
-          className={`subthread-container ${
-            replies.length > 0 ? "subthread-multi" : ""
-          }`}
-        >
+        <div className={`subthread-container ${replies.length > 0 ? "subthread-multi" : ""}`}>
           <Divider />
           <Note
             highlight={active === a.Id}
-            className={`thread-note ${
-              isLastSubthread && replies.length === 0 ? "is-last-note" : ""
-            }`}
+            className={`thread-note ${isLastSubthread && replies.length === 0 ? "is-last-note" : ""}`}
             data-ev={a}
             key={a.Id}
             related={related}
@@ -118,13 +100,11 @@ const ThreadNote = ({
 }: ThreadNoteProps) => {
   const { formatMessage } = useIntl();
   const replies = getReplies(note.Id, chains);
-  const activeInReplies = replies.map((r) => r.Id).includes(active);
+  const activeInReplies = replies.map(r => r.Id).includes(active);
   const [collapsed, setCollapsed] = useState(!activeInReplies);
   const hasMultipleNotes = replies.length > 0;
   const isLastVisibleNote = isLastSubthread && isLast && !hasMultipleNotes;
-  const className = `subthread-container ${
-    isLast && collapsed ? "subthread-last" : "subthread-multi subthread-mid"
-  }`;
+  const className = `subthread-container ${isLast && collapsed ? "subthread-last" : "subthread-multi subthread-mid"}`;
   return (
     <>
       <div className={className}>
@@ -151,11 +131,7 @@ const ThreadNote = ({
             onNavigate={onNavigate}
           />
         ) : (
-          <Collapsed
-            text={formatMessage(messages.ShowReplies)}
-            collapsed={collapsed}
-            setCollapsed={setCollapsed}
-          >
+          <Collapsed text={formatMessage(messages.ShowReplies)} collapsed={collapsed} setCollapsed={setCollapsed}>
             <TierThree
               active={active}
               path={path}
@@ -172,16 +148,7 @@ const ThreadNote = ({
   );
 };
 
-const TierTwo = ({
-  active,
-  isLastSubthread,
-  path,
-  from,
-  notes,
-  related,
-  chains,
-  onNavigate,
-}: SubthreadProps) => {
+const TierTwo = ({ active, isLastSubthread, path, from, notes, related, chains, onNavigate }: SubthreadProps) => {
   const [first, ...rest] = notes;
 
   return (
@@ -218,36 +185,22 @@ const TierTwo = ({
   );
 };
 
-const TierThree = ({
-  active,
-  path,
-  isLastSubthread,
-  from,
-  notes,
-  related,
-  chains,
-  onNavigate,
-}: SubthreadProps) => {
+const TierThree = ({ active, path, isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
   const [first, ...rest] = notes;
   const replies = getReplies(first.Id, chains);
-  const activeInReplies =
-    notes.map((r) => r.Id).includes(active) ||
-    replies.map((r) => r.Id).includes(active);
+  const activeInReplies = notes.map(r => r.Id).includes(active) || replies.map(r => r.Id).includes(active);
   const hasMultipleNotes = rest.length > 0 || replies.length > 0;
   const isLast = replies.length === 0 && rest.length === 0;
   return (
     <>
       <div
-        className={`subthread-container ${
-          hasMultipleNotes ? "subthread-multi" : ""
-        } ${isLast ? "subthread-last" : "subthread-mid"}`}
-      >
+        className={`subthread-container ${hasMultipleNotes ? "subthread-multi" : ""} ${
+          isLast ? "subthread-last" : "subthread-mid"
+        }`}>
         <Divider variant="small" />
         <Note
           highlight={active === first.Id}
-          className={`thread-note ${
-            isLastSubthread && isLast ? "is-last-note" : ""
-          }`}
+          className={`thread-note ${isLastSubthread && isLast ? "is-last-note" : ""}`}
           data-ev={first}
           key={first.Id}
           related={related}
@@ -258,11 +211,7 @@ const TierThree = ({
       {path.length <= 1 || !activeInReplies
         ? replies.length > 0 && (
             <div className="show-more-container">
-              <button
-                className="show-more"
-                type="button"
-                onClick={() => onNavigate(from)}
-              >
+              <button className="show-more" type="button" onClick={() => onNavigate(from)}>
                 <FormattedMessage {...messages.ShowReplies} />
               </button>
             </div>
@@ -286,10 +235,9 @@ const TierThree = ({
         return (
           <div
             key={r.Id}
-            className={`subthread-container ${
-              lastReply ? "" : "subthread-multi"
-            } ${lastReply ? "subthread-last" : "subthread-mid"}`}
-          >
+            className={`subthread-container ${lastReply ? "" : "subthread-multi"} ${
+              lastReply ? "subthread-last" : "subthread-mid"
+            }`}>
             <Divider variant="small" />
             <Note
               className={`thread-note ${lastNote ? "is-last-note" : ""}`}
@@ -313,39 +261,31 @@ export interface ThreadProps {
 
 export default function Thread(props: ThreadProps) {
   const notes = props.notes ?? [];
-  const parsedNotes = notes.map((a) => new NEvent(a));
+  const parsedNotes = notes.map(a => new NEvent(a));
   // root note has no thread info
-  const root = useMemo(
-    () => parsedNotes.find((a) => a.Thread === null),
-    [notes]
-  );
+  const root = useMemo(() => parsedNotes.find(a => a.Thread === null), [notes]);
   const [path, setPath] = useState<HexKey[]>([]);
   const currentId = path.length > 0 && path[path.length - 1];
-  const currentRoot = useMemo(
-    () => parsedNotes.find((a) => a.Id === currentId),
-    [notes, currentId]
-  );
+  const currentRoot = useMemo(() => parsedNotes.find(a => a.Id === currentId), [notes, currentId]);
   const [navigated, setNavigated] = useState(false);
   const navigate = useNavigate();
-  const isSingleNote =
-    parsedNotes.filter((a) => a.Kind === EventKind.TextNote).length === 1;
+  const isSingleNote = parsedNotes.filter(a => a.Kind === EventKind.TextNote).length === 1;
   const location = useLocation();
   const urlNoteId = location?.pathname.slice(3);
   const urlNoteHex = urlNoteId && bech32ToHex(urlNoteId);
-  const rootNoteId = root && hexToBech32("note", root.Id);
 
   const chains = useMemo(() => {
-    let chains = new Map<u256, NEvent[]>();
+    const chains = new Map<u256, NEvent[]>();
     parsedNotes
-      ?.filter((a) => a.Kind === EventKind.TextNote)
+      ?.filter(a => a.Kind === EventKind.TextNote)
       .sort((a, b) => b.CreatedAt - a.CreatedAt)
-      .forEach((v) => {
-        let replyTo = v.Thread?.ReplyTo?.Event ?? v.Thread?.Root?.Event;
+      .forEach(v => {
+        const replyTo = v.Thread?.ReplyTo?.Event ?? v.Thread?.Root?.Event;
         if (replyTo) {
           if (!chains.has(replyTo)) {
             chains.set(replyTo, [v]);
           } else {
-            chains.get(replyTo)!.push(v);
+            unwrap(chains.get(replyTo)).push(v);
           }
         } else if (v.Tags.length > 0) {
           console.log("Not replying to anything: ", v);
@@ -370,7 +310,7 @@ export default function Thread(props: ThreadProps) {
       return;
     }
 
-    let subthreadPath = [];
+    const subthreadPath = [];
     let parent = getParent(urlNoteHex, chains);
     while (parent) {
       subthreadPath.unshift(parent);
@@ -381,28 +321,15 @@ export default function Thread(props: ThreadProps) {
   }, [root, navigated, urlNoteHex, chains]);
 
   const brokenChains = useMemo(() => {
-    return Array.from(chains?.keys()).filter(
-      (a) => !parsedNotes?.some((b) => b.Id === a)
-    );
+    return Array.from(chains?.keys()).filter(a => !parsedNotes?.some(b => b.Id === a));
   }, [chains]);
 
   function renderRoot(note: NEvent) {
     const className = `thread-root ${isSingleNote ? "thread-root-single" : ""}`;
     if (note) {
-      return (
-        <Note
-          className={className}
-          key={note.Id}
-          data-ev={note}
-          related={notes}
-        />
-      );
+      return <Note className={className} key={note.Id} data-ev={note} related={notes} />;
     } else {
-      return (
-        <NoteGhost className={className}>
-          Loading thread root.. ({notes?.length} notes loaded)
-        </NoteGhost>
-      );
+      return <NoteGhost className={className}>Loading thread root.. ({notes?.length} notes loaded)</NoteGhost>;
     }
   }
 
@@ -414,7 +341,7 @@ export default function Thread(props: ThreadProps) {
     if (!from || !chains) {
       return;
     }
-    let replies = chains.get(from);
+    const replies = chains.get(from);
     if (replies) {
       return (
         <Subthread
@@ -441,25 +368,18 @@ export default function Thread(props: ThreadProps) {
 
   return (
     <div className="main-content mt10">
-      <BackButton
-        onClick={goBack}
-        text={path?.length > 1 ? "Parent" : "Back"}
-      />
+      <BackButton onClick={goBack} text={path?.length > 1 ? "Parent" : "Back"} />
       <div className="thread-container">
         {currentRoot && renderRoot(currentRoot)}
         {currentRoot && renderChain(currentRoot.Id)}
         {currentRoot === root && (
           <>
             {brokenChains.length > 0 && <h3>Other replies</h3>}
-            {brokenChains.map((a) => {
+            {brokenChains.map(a => {
               return (
                 <div className="mb10">
-                  <NoteGhost
-                    className={`thread-note thread-root ghost-root`}
-                    key={a}
-                  >
-                    Missing event{" "}
-                    <Link to={eventLink(a)}>{a.substring(0, 8)}</Link>
+                  <NoteGhost className={`thread-note thread-root ghost-root`} key={a}>
+                    Missing event <Link to={eventLink(a)}>{a.substring(0, 8)}</Link>
                   </NoteGhost>
                   {renderChain(a)}
                 </div>
@@ -476,6 +396,6 @@ function getReplies(from: u256, chains?: Map<u256, NEvent[]>): NEvent[] {
   if (!from || !chains) {
     return [];
   }
-  let replies = chains.get(from);
+  const replies = chains.get(from);
   return replies ? replies : [];
 }

@@ -8,10 +8,10 @@ export interface ModalProps {
   children: React.ReactNode;
 }
 
-function useOnClickOutside(ref: any, onClickOutside: () => void) {
+function useOnClickOutside(ref: React.MutableRefObject<Element | null>, onClickOutside: () => void) {
   useEffect(() => {
-    function handleClickOutside(ev: any) {
-      if (ref && ref.current && !ref.current.contains(ev.target)) {
+    function handleClickOutside(ev: MouseEvent) {
+      if (ref && ref.current && !ref.current.contains(ev.target as Node)) {
         onClickOutside();
       }
     }
@@ -24,7 +24,7 @@ function useOnClickOutside(ref: any, onClickOutside: () => void) {
 
 export default function Modal(props: ModalProps) {
   const ref = useRef(null);
-  const onClose = props.onClose || (() => {});
+  const onClose = props.onClose || (() => undefined);
   const className = props.className || "";
   useOnClickOutside(ref, onClose);
 

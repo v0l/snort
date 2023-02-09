@@ -5,7 +5,7 @@ import { parseId } from "Util";
 
 export default function EventPage() {
   const params = useParams();
-  const id = parseId(params.id!);
+  const id = parseId(params.id ?? "");
   const thread = useThreadFeed(id);
 
   return <Thread notes={thread.notes} this={id} />;

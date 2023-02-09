@@ -15,18 +15,16 @@ export interface FollowButtonProps {
 export default function FollowButton(props: FollowButtonProps) {
   const pubkey = parseId(props.pubkey);
   const publiser = useEventPublisher();
-  const isFollowing = useSelector<RootState, boolean>(
-    (s) => s.login.follows?.includes(pubkey) ?? false
-  );
+  const isFollowing = useSelector<RootState, boolean>(s => s.login.follows?.includes(pubkey) ?? false);
   const baseClassname = `${props.className} follow-button`;
 
   async function follow(pubkey: HexKey) {
-    let ev = await publiser.addFollow(pubkey);
+    const ev = await publiser.addFollow(pubkey);
     publiser.broadcast(ev);
   }
 
   async function unfollow(pubkey: HexKey) {
-    let ev = await publiser.removeFollow(pubkey);
+    const ev = await publiser.removeFollow(pubkey);
     publiser.broadcast(ev);
   }
 
@@ -34,13 +32,8 @@ export default function FollowButton(props: FollowButtonProps) {
     <button
       type="button"
       className={isFollowing ? `${baseClassname} secondary` : baseClassname}
-      onClick={() => (isFollowing ? unfollow(pubkey) : follow(pubkey))}
-    >
-      {isFollowing ? (
-        <FormattedMessage {...messages.Unfollow} />
-      ) : (
-        <FormattedMessage {...messages.Follow} />
-      )}
+      onClick={() => (isFollowing ? unfollow(pubkey) : follow(pubkey))}>
+      {isFollowing ? <FormattedMessage {...messages.Unfollow} /> : <FormattedMessage {...messages.Follow} />}
     </button>
   );
 }

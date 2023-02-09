@@ -10,7 +10,7 @@ import { System } from "Nostr/System";
 import messages from "./messages";
 
 const SearchPage = () => {
-  const params: any = useParams();
+  const params = useParams();
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string>();
   const [keyword, setKeyword] = useState<string | undefined>(params.keyword);
@@ -27,15 +27,15 @@ const SearchPage = () => {
   }, [search]);
 
   useEffect(() => {
-    let addedRelays: string[] = [];
-    for (let [k, v] of SearchRelays) {
+    const addedRelays: string[] = [];
+    for (const [k, v] of SearchRelays) {
       if (!System.Sockets.has(k)) {
         System.ConnectToRelay(k, v);
         addedRelays.push(k);
       }
     }
     return () => {
-      for (let r of addedRelays) {
+      for (const r of addedRelays) {
         System.DisconnectRelay(r);
       }
     };
@@ -52,7 +52,7 @@ const SearchPage = () => {
           className="f-grow mr10"
           placeholder={formatMessage(messages.SearchPlaceholder)}
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={e => setSearch(e.target.value)}
         />
       </div>
       {keyword && (

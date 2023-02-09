@@ -1,14 +1,19 @@
 import { useState } from "react";
 
-export default function AsyncButton(props: any) {
+interface AsyncButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  onClick(e: React.MouseEvent): Promise<void> | void;
+  children?: React.ReactNode;
+}
+
+export default function AsyncButton(props: AsyncButtonProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
-  async function handle(e: any) {
+  async function handle(e: React.MouseEvent) {
     if (loading) return;
     setLoading(true);
     try {
       if (typeof props.onClick === "function") {
-        let f = props.onClick(e);
+        const f = props.onClick(e);
         if (f instanceof Promise) {
           await f;
         }
@@ -19,12 +24,7 @@ export default function AsyncButton(props: any) {
   }
 
   return (
-    <button
-      type="button"
-      disabled={loading}
-      {...props}
-      onClick={(e) => handle(e)}
-    >
+    <button type="button" disabled={loading} {...props} onClick={handle}>
       {props.children}
     </button>
   );

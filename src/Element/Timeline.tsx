@@ -36,18 +36,17 @@ export default function Timeline({
   window,
 }: TimelineProps) {
   const { muted, isMuted } = useModeration();
-  const { main, related, latest, parent, loadMore, showLatest } =
-    useTimelineFeed(subject, {
-      method,
-      window: window,
-    });
+  const { main, related, latest, parent, loadMore, showLatest } = useTimelineFeed(subject, {
+    method,
+    window: window,
+  });
 
   const filterPosts = useCallback(
     (nts: TaggedRawEvent[]) => {
       return [...nts]
         .sort((a, b) => b.created_at - a.created_at)
-        ?.filter((a) => (postsOnly ? !a.tags.some((b) => b[0] === "e") : true))
-        .filter((a) => ignoreModeration || !isMuted(a.pubkey));
+        ?.filter(a => (postsOnly ? !a.tags.some(b => b[0] === "e") : true))
+        .filter(a => ignoreModeration || !isMuted(a.pubkey));
     },
     [postsOnly, muted]
   );
@@ -57,9 +56,7 @@ export default function Timeline({
   }, [main, filterPosts]);
 
   const latestFeed = useMemo(() => {
-    return filterPosts(latest.notes).filter(
-      (a) => !mainFeed.some((b) => b.id === a.id)
-    );
+    return filterPosts(latest.notes).filter(a => !mainFeed.some(b => b.id === a.id));
   }, [latest, mainFeed, filterPosts]);
 
   function eventElement(e: TaggedRawEvent) {
@@ -68,14 +65,7 @@ export default function Timeline({
         return <ProfilePreview pubkey={e.pubkey} className="card" />;
       }
       case EventKind.TextNote: {
-        return (
-          <Note
-            key={e.id}
-            data={e}
-            related={related.notes}
-            ignoreModeration={ignoreModeration}
-          />
-        );
+        return <Note key={e.id} data={e} related={related.notes} ignoreModeration={ignoreModeration} />;
       }
       case EventKind.ZapReceipt: {
         const zap = parseZap(e);
@@ -83,14 +73,8 @@ export default function Timeline({
       }
       case EventKind.Reaction:
       case EventKind.Repost: {
-        let eRef = e.tags.find((a) => a[0] === "e")?.at(1);
-        return (
-          <NoteReaction
-            data={e}
-            key={e.id}
-            root={parent.notes.find((a) => a.id === eRef)}
-          />
-        );
+        const eRef = e.tags.find(a => a[0] === "e")?.at(1);
+        return <NoteReaction data={e} key={e.id} root={parent.notes.find(a => a.id === eRef)} />;
       }
     }
   }
@@ -100,10 +84,7 @@ export default function Timeline({
       {latestFeed.length > 1 && (
         <div className="card latest-notes pointer" onClick={() => showLatest()}>
           <FontAwesomeIcon icon={faForward} size="xl" />{" "}
-          <FormattedMessage
-            {...messages.ShowLatest}
-            values={{ n: latestFeed.length - 1 }}
-          />
+          <FormattedMessage {...messages.ShowLatest} values={{ n: latestFeed.length - 1 }} />
         </div>
       )}
       {mainFeed.map(eventElement)}

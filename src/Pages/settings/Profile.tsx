@@ -25,13 +25,9 @@ export interface ProfileSettingsProps {
 
 export default function ProfileSettings(props: ProfileSettingsProps) {
   const navigate = useNavigate();
-  const id = useSelector<RootState, HexKey | undefined>(
-    (s) => s.login.publicKey
-  );
-  const privKey = useSelector<RootState, HexKey | undefined>(
-    (s) => s.login.privateKey
-  );
-  const user = useUserProfile(id!);
+  const id = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+  const privKey = useSelector<RootState, HexKey | undefined>(s => s.login.privateKey);
+  const user = useUserProfile(id ?? "");
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
 
@@ -61,7 +57,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
   async function saveProfile() {
     // copy user object and delete internal fields
-    let userCopy = {
+    const userCopy = {
       ...user,
       name,
       display_name: displayName,
@@ -78,16 +74,16 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     delete userCopy["npub"];
     console.debug(userCopy);
 
-    let ev = await publisher.metadata(userCopy);
+    const ev = await publisher.metadata(userCopy);
     console.debug(ev);
     publisher.broadcast(ev);
   }
 
   async function uploadFile() {
-    let file = await openFile();
+    const file = await openFile();
     if (file) {
       console.log(file);
-      let rsp = await uploader.upload(file, file.name);
+      const rsp = await uploader.upload(file, file.name);
       console.log(rsp);
       if (typeof rsp?.error === "string") {
         throw new Error(`Upload failed ${rsp.error}`);
@@ -118,11 +114,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <FormattedMessage {...messages.Name} />:
           </div>
           <div>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <input type="text" value={name} onChange={e => setName(e.target.value)} />
           </div>
         </div>
         <div className="form-group">
@@ -130,11 +122,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <FormattedMessage {...messages.DisplayName} />:
           </div>
           <div>
-            <input
-              type="text"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-            />
+            <input type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} />
           </div>
         </div>
         <div className="form-group form-col">
@@ -142,11 +130,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <FormattedMessage {...messages.About} />:
           </div>
           <div className="w-max">
-            <textarea
-              className="w-max"
-              onChange={(e) => setAbout(e.target.value)}
-              value={about}
-            ></textarea>
+            <textarea className="w-max" onChange={e => setAbout(e.target.value)} value={about}></textarea>
           </div>
         </div>
         <div className="form-group">
@@ -154,11 +138,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <FormattedMessage {...messages.Website} />:
           </div>
           <div>
-            <input
-              type="text"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-            />
+            <input type="text" value={website} onChange={e => setWebsite(e.target.value)} />
           </div>
         </div>
         <div className="form-group">
@@ -166,12 +146,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <FormattedMessage {...messages.Nip05} />:
           </div>
           <div>
-            <input
-              type="text"
-              className="mr10"
-              value={nip05}
-              onChange={(e) => setNip05(e.target.value)}
-            />
+            <input type="text" className="mr10" value={nip05} onChange={e => setNip05(e.target.value)} />
             <button type="button" onClick={() => navigate("/verification")}>
               <FontAwesomeIcon icon={faShop} />
               &nbsp; <FormattedMessage {...messages.Buy} />
@@ -183,11 +158,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <FormattedMessage {...messages.LnAddress} />:
           </div>
           <div>
-            <input
-              type="text"
-              value={lud16}
-              onChange={(e) => setLud16(e.target.value)}
-            />
+            <input type="text" value={lud16} onChange={e => setLud16(e.target.value)} />
           </div>
         </div>
         <div className="form-group">
@@ -212,10 +183,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               <h2>
                 <FormattedMessage {...messages.Avatar} />
               </h2>
-              <div
-                style={{ backgroundImage: `url(${avatarPicture})` }}
-                className="avatar"
-              >
+              <div style={{ backgroundImage: `url(${avatarPicture})` }} className="avatar">
                 <div className="edit" onClick={() => setNewAvatar()}>
                   <FormattedMessage {...messages.Edit} />
                 </div>
@@ -229,12 +197,9 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               </h2>
               <div
                 style={{
-                  backgroundImage: `url(${
-                    (banner?.length ?? 0) === 0 ? Nostrich : banner
-                  })`,
+                  backgroundImage: `url(${(banner?.length ?? 0) === 0 ? Nostrich : banner})`,
                 }}
-                className="banner"
-              >
+                className="banner">
                 <div className="edit" onClick={() => setNewBanner()}>
                   <FormattedMessage {...messages.Edit} />
                 </div>

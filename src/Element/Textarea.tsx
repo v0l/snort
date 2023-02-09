@@ -2,7 +2,7 @@ import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
 
 import { useState } from "react";
-import { useIntl, FormattedMessage } from "react-intl";
+import { useIntl } from "react-intl";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import emoji from "@jukben/emoji-search";
 import TextareaAutosize from "react-textarea-autosize";
@@ -30,7 +30,7 @@ const EmojiItem = ({ entity: { name, char } }: { entity: EmojiItemProps }) => {
 };
 
 const UserItem = (metadata: MetadataCache) => {
-  const { pubkey, display_name, picture, nip05, ...rest } = metadata;
+  const { pubkey, display_name, nip05, ...rest } = metadata;
   return (
     <div key={pubkey} className="user-item">
       <div className="user-picture">
@@ -44,7 +44,15 @@ const UserItem = (metadata: MetadataCache) => {
   );
 };
 
-const Textarea = ({ users, onChange, ...rest }: any) => {
+interface TextareaProps {
+  autoFocus: boolean;
+  className: string;
+  onChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void;
+  value: string;
+  onFocus(): void;
+}
+
+const Textarea = (props: TextareaProps) => {
   const [query, setQuery] = useState("");
   const { formatMessage } = useIntl();
 
@@ -52,7 +60,7 @@ const Textarea = ({ users, onChange, ...rest }: any) => {
 
   const userDataProvider = (token: string) => {
     setQuery(token);
-    return allUsers;
+    return allUsers ?? [];
   };
 
   const emojiDataProvider = (token: string) => {
@@ -62,23 +70,23 @@ const Textarea = ({ users, onChange, ...rest }: any) => {
   };
 
   return (
+    // @ts-expect-error If anybody can figure out how to type this, please do
     <ReactTextareaAutocomplete
-      {...rest}
-      loadingComponent={() => <span>Loading....</span>}
+      {...props}
+      loadingComponent={() => <span>Loading...</span>}
       placeholder={formatMessage(messages.NotePlaceholder)}
-      onChange={onChange}
       textAreaComponent={TextareaAutosize}
       trigger={{
         ":": {
           dataProvider: emojiDataProvider,
           component: EmojiItem,
-          output: (item: EmojiItemProps, trigger) => item.char,
+          output: (item: EmojiItemProps) => item.char,
         },
         "@": {
           afterWhitespace: true,
           dataProvider: userDataProvider,
-          component: (props: any) => <UserItem {...props.entity} />,
-          output: (item: any) => `@${hexToBech32("npub", item.pubkey)}`,
+          component: (props: { entity: MetadataCache }) => <UserItem {...props.entity} />,
+          output: (item: { pubkey: string }) => `@${hexToBech32("npub", item.pubkey)}`,
         },
       }}
     />

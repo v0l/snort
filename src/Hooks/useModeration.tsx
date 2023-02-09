@@ -29,7 +29,7 @@ export default function useModeration() {
   }
 
   function unmute(id: HexKey) {
-    const newMuted = muted.filter((p) => p !== id);
+    const newMuted = muted.filter(p => p !== id);
     dispatch(
       setMuted({
         createdAt: new Date().getTime(),
@@ -40,7 +40,7 @@ export default function useModeration() {
   }
 
   function unblock(id: HexKey) {
-    const newBlocked = blocked.filter((p) => p !== id);
+    const newBlocked = blocked.filter(p => p !== id);
     dispatch(
       setBlocked({
         createdAt: new Date().getTime(),

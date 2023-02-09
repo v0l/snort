@@ -2,7 +2,7 @@ import { useEffect, useMemo, useReducer, useState } from "react";
 import { System } from "Nostr/System";
 import { TaggedRawEvent } from "Nostr";
 import { Subscriptions } from "Nostr/Subscriptions";
-import { debounce } from "Util";
+import { debounce, unwrap } from "Util";
 import { db } from "Db";
 
 export type NoteStore = {
@@ -17,7 +17,7 @@ export type UseSubscriptionOptions = {
 
 interface ReducerArg {
   type: "END" | "EVENT" | "CLEAR";
-  ev?: TaggedRawEvent | Array<TaggedRawEvent>;
+  ev?: TaggedRawEvent | TaggedRawEvent[];
   end?: boolean;
 }
 
@@ -25,7 +25,7 @@ function notesReducer(state: NoteStore, arg: ReducerArg) {
   if (arg.type === "END") {
     return {
       notes: state.notes,
-      end: arg.end!,
+      end: arg.end ?? true,
     } as NoteStore;
   }
 
@@ -36,12 +36,12 @@ function notesReducer(state: NoteStore, arg: ReducerArg) {
     } as NoteStore;
   }
 
-  let evs = arg.ev!;
-  if (!Array.isArray(evs)) {
-    evs = [evs];
+  let evs = arg.ev;
+  if (!(evs instanceof Array)) {
+    evs = evs === undefined ? [] : [evs];
   }
-  let existingIds = new Set(state.notes.map((a) => a.id));
-  evs = evs.filter((a) => !existingIds.has(a.id));
+  const existingIds = new Set(state.notes.map(a => a.id));
+  evs = evs.filter(a => !existingIds.has(a.id));
   if (evs.length === 0) {
     return state;
   }
@@ -99,7 +99,7 @@ export default function useSubscription(
       if (useCache) {
         // preload notes from db
         PreloadNotes(subDebounce.Id)
-          .then((ev) => {
+          .then(ev => {
             dispatch({
               type: "EVENT",
               ev: ev,
@@ -107,7 +107,7 @@ export default function useSubscription(
           })
           .catch(console.warn);
       }
-      subDebounce.OnEvent = (e) => {
+      subDebounce.OnEvent = e => {
         dispatch({
           type: "EVENT",
           ev: e,
@@ -117,7 +117,7 @@ export default function useSubscription(
         }
       };
 
-      subDebounce.OnEnd = (c) => {
+      subDebounce.OnEnd = c => {
         if (!(options?.leaveOpen ?? false)) {
           c.RemoveSubscription(subDebounce.Id);
           if (subDebounce.IsFinished()) {
@@ -149,7 +149,7 @@ export default function useSubscription(
 
   useEffect(() => {
     return debounce(DebounceMs, () => {
-      setDebounceOutput((s) => (s += 1));
+      setDebounceOutput(s => (s += 1));
     });
   }, [state]);
 
@@ -175,23 +175,15 @@ const PreloadNotes = async (id: string): Promise<TaggedRawEvent[]> => {
   const feed = await db.feeds.get(id);
   if (feed) {
     const events = await db.events.bulkGet(feed.ids);
-    return events.filter((a) => a !== undefined).map((a) => a!);
+    return events.filter(a => a !== undefined).map(a => unwrap(a));
   }
   return [];
 };
 
 const TrackNotesInFeed = async (id: string, notes: TaggedRawEvent[]) => {
   const existing = await db.feeds.get(id);
-  const ids = Array.from(
-    new Set([...(existing?.ids || []), ...notes.map((a) => a.id)])
-  );
-  const since = notes.reduce(
-    (acc, v) => (acc > v.created_at ? v.created_at : acc),
-    +Infinity
-  );
-  const until = notes.reduce(
-    (acc, v) => (acc < v.created_at ? v.created_at : acc),
-    -Infinity
-  );
+  const ids = Array.from(new Set([...(existing?.ids || []), ...notes.map(a => a.id)]));
+  const since = notes.reduce((acc, v) => (acc > v.created_at ? v.created_at : acc), +Infinity);
+  const until = notes.reduce((acc, v) => (acc < v.created_at ? v.created_at : acc), -Infinity);
   await db.feeds.put({ id, ids, since, until });
 };

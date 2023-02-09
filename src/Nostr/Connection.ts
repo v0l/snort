@@ -5,10 +5,11 @@ import { Subscriptions } from "Nostr/Subscriptions";
 import { default as NEvent } from "Nostr/Event";
 import { DefaultConnectTimeout } from "Const";
 import { ConnectionStats } from "Nostr/ConnectionStats";
-import { RawEvent, TaggedRawEvent, u256 } from "Nostr";
+import { RawEvent, RawReqFilter, TaggedRawEvent, u256 } from "Nostr";
 import { RelayInfo } from "./RelayInfo";
 import Nips from "./Nips";
 import { System } from "./System";
+import { unwrap } from "Util";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
 
@@ -39,7 +40,7 @@ export default class Connection {
   Id: string;
   Address: string;
   Socket: WebSocket | null;
-  Pending: Subscriptions[];
+  Pending: Array<RawReqFilter>;
   Subscriptions: Map<string, Subscriptions>;
   Settings: RelaySettings;
   Info?: RelayInfo;
@@ -51,7 +52,7 @@ export default class Connection {
   LastState: Readonly<StateSnapshot>;
   IsClosed: boolean;
   ReconnectTimer: ReturnType<typeof setTimeout> | null;
-  EventsCallback: Map<u256, (msg?: any) => void>;
+  EventsCallback: Map<u256, (msg: boolean[]) => void>;
   AwaitingAuth: Map<string, boolean>;
   Authed: boolean;
 
@@ -87,15 +88,15 @@ export default class Connection {
   async Connect() {
     try {
       if (this.Info === undefined) {
-        let u = new URL(this.Address);
-        let rsp = await fetch(`https://${u.host}`, {
+        const u = new URL(this.Address);
+        const rsp = await fetch(`https://${u.host}`, {
           headers: {
             accept: "application/nostr+json",
           },
         });
         if (rsp.ok) {
-          let data = await rsp.json();
-          for (let [k, v] of Object.entries(data)) {
+          const data = await rsp.json();
+          for (const [k, v] of Object.entries(data)) {
             if (v === "unset" || v === "") {
               data[k] = undefined;
             }
@@ -114,10 +115,10 @@ export default class Connection {
 
     this.IsClosed = false;
     this.Socket = new WebSocket(this.Address);
-    this.Socket.onopen = (e) => this.OnOpen(e);
-    this.Socket.onmessage = (e) => this.OnMessage(e);
-    this.Socket.onerror = (e) => this.OnError(e);
-    this.Socket.onclose = (e) => this.OnClose(e);
+    this.Socket.onopen = () => this.OnOpen();
+    this.Socket.onmessage = e => this.OnMessage(e);
+    this.Socket.onerror = e => this.OnError(e);
+    this.Socket.onclose = e => this.OnClose(e);
   }
 
   Close() {
@@ -130,7 +131,7 @@ export default class Connection {
     this._UpdateState();
   }
 
-  OnOpen(e: Event) {
+  OnOpen() {
     this.ConnectTimeout = DefaultConnectTimeout;
     this._InitSubscriptions();
     console.log(`[${this.Address}] Open!`);
@@ -140,9 +141,7 @@ export default class Connection {
     if (!this.IsClosed) {
       this.ConnectTimeout = this.ConnectTimeout * 2;
       console.log(
-        `[${this.Address}] Closed (${e.reason}), trying again in ${(
-          this.ConnectTimeout / 1000
-        )
+        `[${this.Address}] Closed (${e.reason}), trying again in ${(this.ConnectTimeout / 1000)
           .toFixed(0)
           .toLocaleString()} sec`
       );
@@ -157,10 +156,10 @@ export default class Connection {
     this._UpdateState();
   }
 
-  OnMessage(e: MessageEvent<any>) {
+  OnMessage(e: MessageEvent) {
     if (e.data.length > 0) {
-      let msg = JSON.parse(e.data);
-      let tag = msg[0];
+      const msg = JSON.parse(e.data);
+      const tag = msg[0];
       switch (tag) {
         case "AUTH": {
           this._OnAuthAsync(msg[1]);
@@ -183,7 +182,7 @@ export default class Connection {
           console.debug("OK: ", msg);
           const id = msg[1];
           if (this.EventsCallback.has(id)) {
-            let cb = this.EventsCallback.get(id)!;
+            const cb = unwrap(this.EventsCallback.get(id));
             this.EventsCallback.delete(id);
             cb(msg);
           }
@@ -213,7 +212,7 @@ export default class Connection {
     if (!this.Settings.write) {
       return;
     }
-    let req = ["EVENT", e.ToObject()];
+    const req = ["EVENT", e.ToObject()];
     this._SendJson(req);
     this.Stats.EventsSent++;
     this._UpdateState();
@@ -222,13 +221,13 @@ export default class Connection {
   /**
    * Send event on this connection and wait for OK response
    */
-  async SendAsync(e: NEvent, timeout: number = 5000) {
-    return new Promise<void>((resolve, reject) => {
+  async SendAsync(e: NEvent, timeout = 5000) {
+    return new Promise<void>(resolve => {
       if (!this.Settings.write) {
         resolve();
         return;
       }
-      let t = setTimeout(() => {
+      const t = setTimeout(() => {
         resolve();
       }, timeout);
       this.EventsCallback.set(e.Id, () => {
@@ -236,7 +235,7 @@ export default class Connection {
         resolve();
       });
 
-      let req = ["EVENT", e.ToObject()];
+      const req = ["EVENT", e.ToObject()];
       this._SendJson(req);
       this.Stats.EventsSent++;
       this._UpdateState();
@@ -269,7 +268,7 @@ export default class Connection {
    */
   RemoveSubscription(subId: string) {
     if (this.Subscriptions.has(subId)) {
-      let req = ["CLOSE", subId];
+      const req = ["CLOSE", subId];
       this._SendJson(req);
       this.Subscriptions.delete(subId);
       return true;
@@ -281,7 +280,7 @@ export default class Connection {
    * Hook status for connection
    */
   StatusHook(fnHook: CustomHook) {
-    let id = uuid();
+    const id = uuid();
     this.StateHooks.set(id, fnHook);
     return () => {
       this.StateHooks.delete(id);
@@ -303,7 +302,7 @@ export default class Connection {
    * Using relay document to determine if this relay supports a feature
    */
   SupportsNip(n: number) {
-    return this.Info?.supported_nips?.some((a) => a === n) ?? false;
+    return this.Info?.supported_nips?.some(a => a === n) ?? false;
   }
 
   _UpdateState() {
@@ -311,10 +310,7 @@ export default class Connection {
     this.CurrentState.events.received = this.Stats.EventsReceived;
     this.CurrentState.events.send = this.Stats.EventsSent;
     this.CurrentState.avgLatency =
-      this.Stats.Latency.length > 0
-        ? this.Stats.Latency.reduce((acc, v) => acc + v, 0) /
-          this.Stats.Latency.length
-        : 0;
+      this.Stats.Latency.length > 0 ? this.Stats.Latency.reduce((acc, v) => acc + v, 0) / this.Stats.Latency.length : 0;
     this.CurrentState.disconnects = this.Stats.Disconnects;
     this.CurrentState.info = this.Info;
     this.CurrentState.id = this.Id;
@@ -324,20 +320,20 @@ export default class Connection {
   }
 
   _NotifyState() {
-    let state = this.GetState();
-    for (let [_, h] of this.StateHooks) {
+    const state = this.GetState();
+    for (const [, h] of this.StateHooks) {
       h(state);
     }
   }
 
   _InitSubscriptions() {
     // send pending
-    for (let p of this.Pending) {
+    for (const p of this.Pending) {
       this._SendJson(p);
     }
     this.Pending = [];
 
-    for (let [_, s] of this.Subscriptions) {
+    for (const [, s] of this.Subscriptions) {
       this._SendSubscription(s);
     }
     this._UpdateState();
@@ -345,31 +341,31 @@ export default class Connection {
 
   _SendSubscription(sub: Subscriptions) {
     if (!this.Authed && this.AwaitingAuth.size > 0) {
-      this.Pending.push(sub);
+      this.Pending.push(sub.ToObject());
       return;
     }
 
     let req = ["REQ", sub.Id, sub.ToObject()];
     if (sub.OrSubs.length > 0) {
-      req = [...req, ...sub.OrSubs.map((o) => o.ToObject())];
+      req = [...req, ...sub.OrSubs.map(o => o.ToObject())];
     }
     sub.Started.set(this.Address, new Date().getTime());
     this._SendJson(req);
   }
 
-  _SendJson(obj: any) {
+  _SendJson(obj: object) {
     if (this.Socket?.readyState !== WebSocket.OPEN) {
       this.Pending.push(obj);
       return;
     }
-    let json = JSON.stringify(obj);
+    const json = JSON.stringify(obj);
     this.Socket.send(json);
   }
 
   _OnEvent(subId: string, ev: RawEvent) {
     if (this.Subscriptions.has(subId)) {
       //this._VerifySig(ev);
-      let tagged: TaggedRawEvent = {
+      const tagged: TaggedRawEvent = {
         ...ev,
         relays: [this.Address],
       };
@@ -386,18 +382,18 @@ export default class Connection {
     };
     this.AwaitingAuth.set(challenge, true);
     const authEvent = await System.nip42Auth(challenge, this.Address);
-    return new Promise((resolve, _) => {
+    return new Promise(resolve => {
       if (!authEvent) {
         authCleanup();
         return Promise.reject("no event");
       }
 
-      let t = setTimeout(() => {
+      const t = setTimeout(() => {
         authCleanup();
         resolve();
       }, 10_000);
 
-      this.EventsCallback.set(authEvent.Id, (msg: any[]) => {
+      this.EventsCallback.set(authEvent.Id, (msg: boolean[]) => {
         clearTimeout(t);
         authCleanup();
         if (msg.length > 3 && msg[2] === true) {
@@ -407,7 +403,7 @@ export default class Connection {
         resolve();
       });
 
-      let req = ["AUTH", authEvent.ToObject()];
+      const req = ["AUTH", authEvent.ToObject()];
       this._SendJson(req);
       this.Stats.EventsSent++;
       this._UpdateState();
@@ -415,19 +411,15 @@ export default class Connection {
   }
 
   _OnEnd(subId: string) {
-    let sub = this.Subscriptions.get(subId);
+    const sub = this.Subscriptions.get(subId);
     if (sub) {
-      let now = new Date().getTime();
-      let started = sub.Started.get(this.Address);
+      const now = new Date().getTime();
+      const started = sub.Started.get(this.Address);
       sub.Finished.set(this.Address, now);
       if (started) {
-        let responseTime = now - started;
+        const responseTime = now - started;
         if (responseTime > 10_000) {
-          console.warn(
-            `[${this.Address}][${subId}] Slow response time ${(
-              responseTime / 1000
-            ).toFixed(1)} seconds`
-          );
+          console.warn(`[${this.Address}][${subId}] Slow response time ${(responseTime / 1000).toFixed(1)} seconds`);
         }
         this.Stats.Latency.push(responseTime);
       } else {
@@ -441,14 +433,14 @@ export default class Connection {
   }
 
   _VerifySig(ev: RawEvent) {
-    let payload = [0, ev.pubkey, ev.created_at, ev.kind, ev.tags, ev.content];
+    const payload = [0, ev.pubkey, ev.created_at, ev.kind, ev.tags, ev.content];
 
-    let payloadData = new TextEncoder().encode(JSON.stringify(payload));
+    const payloadData = new TextEncoder().encode(JSON.stringify(payload));
     if (secp.utils.sha256Sync === undefined) {
       throw "Cannot verify event, no sync sha256 method";
     }
-    let data = secp.utils.sha256Sync(payloadData);
-    let hash = secp.utils.bytesToHex(data);
+    const data = secp.utils.sha256Sync(payloadData);
+    const hash = secp.utils.bytesToHex(data);
     if (!secp.schnorr.verifySync(ev.sig, hash, ev.pubkey)) {
       throw "Sig verify failed";
     }
