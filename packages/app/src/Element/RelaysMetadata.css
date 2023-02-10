@@ -13,6 +13,8 @@
 
 .relay-settings {
   margin-left: auto;
+  display: flex;
+  align-items: center;
 }
 
 .relay-settings svg:not(:last-child) {
@@ -23,6 +25,13 @@
 }
 .relay-settings svg.disabled {
   opacity: 0.3;
+}
+
+@media (max-width: 520px) {
+  .relay-settings svg {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .relay-url {

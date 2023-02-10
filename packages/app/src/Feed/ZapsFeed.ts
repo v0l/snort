@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { HexKey } from "@snort/nostr";
-import { EventKind, Subscriptions } from "@snort/nostr";
+import { HexKey, EventKind, Subscriptions } from "@snort/nostr";
+import { parseZap } from "Element/Zap";
 import useSubscription from "./Subscription";
 
 export default function useZapsFeed(pubkey: HexKey) {
@@ -12,5 +12,15 @@ export default function useZapsFeed(pubkey: HexKey) {
     return x;
   }, [pubkey]);
 
-  return useSubscription(sub, { leaveOpen: true, cache: true });
+  const zapsFeed = useSubscription(sub, { leaveOpen: false, cache: true });
+
+  const zaps = useMemo(() => {
+    const profileZaps = zapsFeed.store.notes
+      .map(parseZap)
+      .filter(z => z.valid && z.p === pubkey && z.zapper !== pubkey && !z.e);
+    profileZaps.sort((a, b) => b.amount - a.amount);
+    return profileZaps;
+  }, [zapsFeed]);
+
+  return zaps;
 }

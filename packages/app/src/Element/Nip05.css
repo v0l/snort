@@ -43,5 +43,6 @@
 }
 
 .nip05 .badge {
+  color: var(--highlight);
   margin: 0.1em 0.2em;
 }

@@ -1,9 +1,6 @@
-import { useQuery } from "react-query";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck, faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
-
 import "./Nip05.css";
+import { useQuery } from "react-query";
+import Badge from "Icons/Badge";
 import { HexKey } from "@snort/nostr";
 
 interface NostrJson {
@@ -59,15 +56,17 @@ const Nip05 = ({ nip05, pubkey, verifyNip = true }: Nip05Params) => {
 
   return (
     <div className={`flex nip05${couldNotVerify ? " failed" : ""}`} onClick={ev => ev.stopPropagation()}>
-      {!isDefaultUser && <div className="nick">{`${name}@`}</div>}
-      <span className="domain" data-domain={domain?.toLowerCase()}>
-        {domain}
-      </span>
-      <span className="badge">
-        {isVerified && <FontAwesomeIcon color={"var(--highlight)"} icon={faCircleCheck} size="xs" />}
-        {!isVerified && !couldNotVerify && <FontAwesomeIcon color={"var(--fg-color)"} icon={faSpinner} size="xs" />}
-        {couldNotVerify && <FontAwesomeIcon color={"var(--error)"} icon={faTriangleExclamation} size="xs" />}
-      </span>
+      {!isDefaultUser && isVerified && <div className="nick">{`${name}@`}</div>}
+      {isVerified && (
+        <>
+          <span className="domain" data-domain={domain?.toLowerCase()}>
+            {domain}
+          </span>
+          <span className="badge">
+            <Badge />
+          </span>
+        </>
+      )}
     </div>
   );
 };

@@ -16,7 +16,7 @@ export default function Copy({ text, maxSize = 32 }: CopyProps) {
     <div className="flex flex-row copy" onClick={() => copy(text)}>
       <span className="body">{trimmed}</span>
       <span className="icon" style={{ color: copied ? "var(--success)" : "var(--highlight)" }}>
-        {copied ? <Check width={13} height={13} /> : <CopyIcon width={13} height={13} />}
+        {copied ? <Check width={14} height={14} /> : <CopyIcon width={14} height={14} />}
       </span>
     </div>
   );

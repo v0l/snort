@@ -1,5 +1,5 @@
 import "./ProfilePage.css";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, CSSProperties } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,12 +14,16 @@ import Link from "Icons/Link";
 import Qr from "Icons/Qr";
 import Zap from "Icons/Zap";
 import Envelope from "Icons/Envelope";
+import useMutedFeed from "Feed/MuteList";
 import useRelaysFeed from "Feed/RelaysFeed";
 import usePinnedFeed from "Feed/PinnedFeed";
 import useBookmarkFeed from "Feed/BookmarkFeed";
+import useFollowersFeed from "Feed/FollowersFeed";
+import useFollowsFeed from "Feed/FollowsFeed";
 import { useUserProfile } from "Feed/ProfileFeed";
+import useModeration from "Hooks/useModeration";
 import useZapsFeed from "Feed/ZapsFeed";
-import { default as ZapElement, parseZap } from "Element/Zap";
+import { default as ZapElement } from "Element/Zap";
 import FollowButton from "Element/FollowButton";
 import { extractLnAddress, parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
@@ -30,10 +34,9 @@ import Nip05 from "Element/Nip05";
 import Copy from "Element/Copy";
 import ProfilePreview from "Element/ProfilePreview";
 import ProfileImage from "Element/ProfileImage";
-import FollowersList from "Element/FollowersList";
 import BlockList from "Element/BlockList";
 import MutedList from "Element/MutedList";
-import FollowsList from "Element/FollowsList";
+import FollowsList from "Element/FollowListBase";
 import IconButton from "Element/IconButton";
 import { RootState } from "State/Store";
 import { HexKey, NostrPrefix } from "@snort/nostr";
@@ -62,12 +65,9 @@ export default function ProfilePage() {
   const user = useUserProfile(id);
   const loggedOut = useSelector<RootState, boolean | undefined>(s => s.login.loggedOut);
   const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
-  const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
-  const { notes: pinned, related: pinRelated } = usePinnedFeed(id);
-  const { notes: bookmarks, related: bookmarkRelated } = useBookmarkFeed(id);
   const aboutText = user?.about || "";
   const about = Text({
     content: aboutText,
@@ -78,32 +78,36 @@ export default function ProfilePage() {
   const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
   const website_url =
     user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
+  // feeds
+  const { blocked } = useModeration();
+  const { notes: pinned, related: pinRelated } = usePinnedFeed(id);
+  const { notes: bookmarks, related: bookmarkRelated } = useBookmarkFeed(id);
   const relays = useRelaysFeed(id);
-  const zapFeed = useZapsFeed(id);
-  const zaps = useMemo(() => {
-    const profileZaps = zapFeed.store.notes.map(parseZap).filter(z => z.valid && z.p === id && !z.e && z.zapper !== id);
-    profileZaps.sort((a, b) => b.amount - a.amount);
-    return profileZaps;
-  }, [zapFeed.store, id]);
+  const zaps = useZapsFeed(id);
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  const horizontalScroll = useHorizontalScroll();
+  const followers = useFollowersFeed(id);
+  const follows = useFollowsFeed(id);
+  const muted = useMutedFeed(id);
+  // tabs
   const ProfileTab = {
     Notes: { text: formatMessage(messages.Notes), value: NOTES },
     Reactions: { text: formatMessage(messages.Reactions), value: REACTIONS },
-    Followers: { text: formatMessage(messages.Followers), value: FOLLOWERS },
-    Follows: { text: formatMessage(messages.Follows), value: FOLLOWS },
-    Zaps: { text: formatMessage(messages.Zaps), value: ZAPS },
-    Muted: { text: formatMessage(messages.Muted), value: MUTED },
-    Blocked: { text: formatMessage(messages.Blocked), value: BLOCKED },
-    Relays: { text: formatMessage(messages.Relays), value: RELAYS },
-    Bookmarks: { text: formatMessage(messages.Bookmarks), value: BOOKMARKS },
+    Followers: { text: formatMessage(messages.FollowersCount, { n: followers.length }), value: FOLLOWERS },
+    Follows: { text: formatMessage(messages.FollowsCount, { n: follows.length }), value: FOLLOWS },
+    Zaps: { text: formatMessage(messages.ZapsCount, { n: zaps.length }), value: ZAPS },
+    Muted: { text: formatMessage(messages.MutedCount, { n: muted.length }), value: MUTED },
+    Blocked: { text: formatMessage(messages.BlockedCount, { n: blocked.length }), value: BLOCKED },
+    Relays: { text: formatMessage(messages.RelaysCount, { n: relays.length }), value: RELAYS },
+    Bookmarks: { text: formatMessage(messages.BookmarksCount, { n: bookmarks.length }), value: BOOKMARKS },
   };
   const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
   const optionalTabs = [
     zapsTotal > 0 && ProfileTab.Zaps,
     relays.length > 0 && ProfileTab.Relays,
     bookmarks.length > 0 && ProfileTab.Bookmarks,
+    muted.length > 0 && ProfileTab.Muted,
   ].filter(a => unwrap(a)) as Tab[];
+  const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
     setTab(ProfileTab.Notes);
@@ -114,7 +118,7 @@ export default function ProfilePage() {
       <div className="name">
         <h2>
           {user?.display_name || user?.name || "Nostrich"}
-          <FollowsYou pubkey={id} />
+          <FollowsYou followsMe={follows.includes(id)} />
         </h2>
         {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
         <Copy text={params.id || ""} />
@@ -211,29 +215,22 @@ export default function ProfilePage() {
       }
 
       case FOLLOWS: {
-        if (isMe) {
-          return (
-            <div className="main-content">
-              <h4>
-                <FormattedMessage {...messages.Following} values={{ n: follows.length }} />
-              </h4>
-              {follows.map(a => (
-                <ProfilePreview key={a} pubkey={a.toLowerCase()} options={{ about: false }} />
-              ))}
-            </div>
-          );
-        } else {
-          return <FollowsList pubkey={id} />;
-        }
+        return (
+          <div className="main-content">
+            {follows.map(a => (
+              <ProfilePreview key={a} pubkey={a.toLowerCase()} options={{ about: !isMe }} />
+            ))}
+          </div>
+        );
       }
       case FOLLOWERS: {
-        return <FollowersList pubkey={id} />;
+        return <FollowsList pubkeys={followers} />;
       }
       case MUTED: {
-        return isMe ? <BlockList variant="muted" /> : <MutedList pubkey={id} />;
+        return <MutedList pubkeys={muted} />;
       }
       case BLOCKED: {
-        return isMe ? <BlockList variant="blocked" /> : null;
+        return <BlockList />;
       }
       case RELAYS: {
         return <RelaysMetadata relays={relays} />;
@@ -308,20 +305,23 @@ export default function ProfilePage() {
   }
 
   const w = window.document.querySelector(".page")?.clientWidth;
+  const bannerStyle = user?.banner ? ({ "--img-url": `url(${user.banner})` } as CSSProperties) : {};
   return (
     <>
       <div className="profile flex">
+        {user?.banner && <div className="banner-bg" style={bannerStyle} />}
         {user?.banner && <ProxyImg alt="banner" className="banner" src={user.banner} size={w} />}
         <div className="profile-wrapper flex">
           {avatar()}
           {userDetails()}
         </div>
       </div>
-      <div className="tabs main-content" ref={horizontalScroll}>
-        {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Muted].map(renderTab)}
-
-        {optionalTabs.map(renderTab)}
-        {isMe && renderTab(ProfileTab.Blocked)}
+      <div className="main-content">
+        <div className="tabs" ref={horizontalScroll}>
+          {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows].map(renderTab)}
+          {optionalTabs.map(renderTab)}
+          {isMe && blocked.length > 0 && renderTab(ProfileTab.Blocked)}
+        </div>
       </div>
       {tabContent()}
     </>

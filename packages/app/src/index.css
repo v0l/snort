@@ -3,6 +3,7 @@
   --font-color: #fff;
   --font-secondary-color: #a7a7a7;
   --font-tertiary-color: #a3a3a3;
+  --border-color: rgba(163, 163, 163, 0.3);
   --font-size: 16px;
   --font-size-small: 14px;
   --font-size-tiny: 12px;
@@ -39,10 +40,11 @@
 }
 
 html.light {
-  --bg-color: #f1f1f1;
-  --font-color: #57534e;
-  --font-secondary-color: #7b7b7b;
-  --font-tertiary-color: #a7a7a7;
+  --bg-color: #f8f8f8;
+  --font-color: #27272a;
+  --font-secondary-color: #71717a;
+  --font-tertiary-color: #71717a;
+  --border-color: rgba(167, 167, 167, 0.3);
 
   --highlight-light: #16aac1;
   --highlight: #0284c7;
@@ -215,9 +217,8 @@ button.icon:hover {
   cursor: pointer;
   color: var(--font-color);
   user-select: none;
-  background-color: var(--bg-color);
-  color: var(--font-color);
-  border: 1px solid;
+  background: none;
+  border: none;
   display: inline-block;
 }
 
@@ -230,18 +231,16 @@ button.icon:hover {
 }
 
 .btn.active {
-  border: 2px solid;
-  background-color: var(--gray-secondary);
   color: var(--font-color);
   font-weight: 700;
 }
 
 .btn.disabled {
-  color: var(--gray-light);
+  opacity: 0.3;
 }
 
 .btn:hover {
-  background-color: var(--gray);
+  color: var(--highlight);
 }
 
 .btn-sm {

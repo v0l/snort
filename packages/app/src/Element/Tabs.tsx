@@ -1,5 +1,6 @@
 import "./Tabs.css";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
+import { CSSProperties } from "react";
 
 export interface Tab {
   text: string;
@@ -18,9 +19,11 @@ interface TabElementProps extends Omit<TabsProps, "tabs"> {
 }
 
 export const TabElement = ({ t, tab, setTab }: TabElementProps) => {
+  const style = { minWidth: `${t.text.length * 0.6}em` } as CSSProperties;
   return (
     <div
       className={`tab ${tab.value === t.value ? "active" : ""} ${t.disabled ? "disabled" : ""}`}
+      style={style}
       onClick={() => !t.disabled && setTab(t)}>
       {t.text}
     </div>

@@ -115,12 +115,12 @@
   border-bottom-right-radius: 16px;
 }
 
-.light .note > .footer .ctx-menu li:hover {
+.note > .footer .ctx-menu li:hover {
   color: white;
   background: #2a2a2a;
 }
 
-.note > .footer .ctx-menu li:hover {
+.light .note > .footer .ctx-menu li:hover {
   color: white;
   background: var(--font-secondary-color);
 }
@@ -151,6 +151,7 @@
 
 .reaction-pill .reaction-pill-number {
   margin-left: 8px;
+  font-feature-settings: "tnum";
 }
 
 .reaction-pill.reacted {

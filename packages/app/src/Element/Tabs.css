@@ -14,16 +14,17 @@
 
 .tab {
   color: var(--font-tertiary-color);
-  border: 1px solid var(--font-tertiary-color);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
-  text-align: center;
-  font-weight: 600;
-  line-height: 19px;
-  padding: 8px 12px;
   font-weight: 600;
   font-size: 14px;
-  line-height: 17px;
-  margin-right: 12px;
+  padding: 6px 8px;
+  text-align: center;
+  font-feature-settings: "tnum";
+}
+
+.tab:not(:last-of-type) {
+  margin-right: 8px;
 }
 
 .tab.active {
@@ -39,4 +40,8 @@
   opacity: 0.3;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+.tab:hover {
+  border-color: var(--font-color);
 }

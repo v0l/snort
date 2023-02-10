@@ -30,13 +30,18 @@ header .pfp .avatar-wrapper {
   align-items: center;
 }
 
+.header-actions .avatar {
+  width: 40px;
+  height: 40px;
+}
+
 .header-actions .btn-rnd {
   position: relative;
   margin-right: 8px;
 }
 
 @media (min-width: 520px) {
-  .header-actions .btn-rnd {
+  .header-actions .btn-rnd:last-of-type {
     margin-right: 16px;
   }
 }

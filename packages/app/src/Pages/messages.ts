@@ -10,10 +10,15 @@ export default defineMessages({
   Notes: { defaultMessage: "Notes" },
   Reactions: { defaultMessage: "Reactions" },
   Followers: { defaultMessage: "Followers" },
-  Follows: { defaultMessage: "Follows" },
+  FollowersCount: { defaultMessage: "{n} Followers" },
+  Follows: { defaultMessage: "Following" },
+  FollowsCount: { defaultMessage: "{n} Following" },
   Zaps: { defaultMessage: "Zaps" },
+  ZapsCount: { defaultMessage: "{n} Zaps" },
   Muted: { defaultMessage: "Muted" },
+  MutedCount: { defaultMessage: "{n} Muted" },
   Blocked: { defaultMessage: "Blocked" },
+  BlockedCount: { defaultMessage: "{n} Blocked" },
   Sats: { defaultMessage: "{n} {n, plural, =1 {sat} other {sats}}" },
   Following: { defaultMessage: "Following {n}" },
   Settings: { defaultMessage: "Settings" },
@@ -36,6 +41,9 @@ export default defineMessages({
   Relays: {
     defaultMessage: "Relays",
   },
+  RelaysCount: {
+    defaultMessage: "{n} Relays",
+  },
   Bookmarks: { defaultMessage: "Bookmarks" },
-  BookmarksCount: { defaultMessage: "Bookmarks ({n})" },
+  BookmarksCount: { defaultMessage: "{n} Bookmarks" },
 });
