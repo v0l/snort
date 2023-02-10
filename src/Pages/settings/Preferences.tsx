@@ -225,7 +225,7 @@ const PreferencesPage = () => {
             {emoji("").map(({ name, char }) => {
               return (
                 <option value={char}>
-                  {char} {name}
+                  {name} {char}
                 </option>
               );
             })}
