@@ -202,6 +202,8 @@
   "Pages.settings.Preferences": "ユーザー設定",
   "Pages.settings.PrivateKey": "あなたの秘密鍵（誰とも共有しないこと）",
   "Pages.settings.Profile": "プロフィール",
+  "Pages.settings.ReactionEmoji": "",
+  "Pages.settings.ReactionEmojiHelp": "",
   "Pages.settings.Relays": "リレー",
   "Pages.settings.Remove": "削除",
   "Pages.settings.Save": "保存",

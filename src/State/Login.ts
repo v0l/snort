@@ -27,6 +27,11 @@ export interface UserPreferences {
   enableReactions: boolean;
 
   /**
+   * Reaction emoji
+   */
+  reactionEmoji: string;
+
+  /**
    * Automatically load media (show link only) (bandwidth/privacy)
    */
   autoLoadMedia: "none" | "follows-only" | "all";
@@ -176,6 +181,7 @@ export const InitState = {
   dmInteraction: 0,
   preferences: {
     enableReactions: true,
+    reactionEmoji: "+1",
     autoLoadMedia: "follows-only",
     theme: "system",
     confirmReposts: false,
