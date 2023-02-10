@@ -2,5 +2,5 @@ git:
   filters:
     - filter_type: file
       file_format: STRUCTURED_JSON
-      source_file: "src/lang.json"
-      translation_files_expression: "src/translations/<lang>.json"
+      source_file: src/lang.json
+      translation_files_expression: 'src/translations/<lang>.json'
