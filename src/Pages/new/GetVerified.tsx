@@ -16,7 +16,8 @@ export default function GetVerified() {
   const { publicKey } = useSelector((s: RootState) => s.login);
   const user = useUserProfile(publicKey);
   const [isVerified, setIsVerified] = useState(false);
-  const [nip05, setNip05] = useState(`${user?.name || "nostrich"}@snort.social`);
+  const name = user?.name || "nostrich";
+  const [nip05, setNip05] = useState(`${name}@snort.social`);
 
   const onNext = async () => {
     navigate("/new/import");
@@ -34,7 +35,7 @@ export default function GetVerified() {
         <FormattedMessage {...messages.PreviewOnSnort} />
       </h4>
       <div className="profile-preview-nip">
-        {user?.pubkey && <ProfileImage pubkey={user?.pubkey} defaultNip={nip05} verifyNip={false} />}
+        {publicKey && <ProfileImage pubkey={publicKey} defaultNip={nip05} verifyNip={false} />}
       </div>
       <p>
         <FormattedMessage {...messages.IdentifierHelp} />

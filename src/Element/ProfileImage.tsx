@@ -30,7 +30,7 @@ export default function ProfileImage({
 }: ProfileImageProps) {
   const navigate = useNavigate();
   const user = useUserProfile(pubkey);
-  const nip05 = defaultNip || user?.nip05;
+  const nip05 = defaultNip ? defaultNip : user?.nip05;
 
   const name = useMemo(() => {
     return getDisplayName(user, pubkey);
