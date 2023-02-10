@@ -12,7 +12,6 @@ import ZapIcon from "Icons/Zap";
 import { Tab } from "Element/Tabs";
 import { ParsedZap } from "Element/Zap";
 import ProfileImage from "Element/ProfileImage";
-import FollowButton from "Element/FollowButton";
 import Tabs from "Element/Tabs";
 import Close from "Icons/Close";
 import Modal from "Element/Modal";
@@ -98,7 +97,6 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                     {ev.content === "+" ? <Heart width={20} height={18} /> : ev.content}
                   </div>
                   <ProfileImage pubkey={ev.pubkey} />
-                  <FollowButton pubkey={ev.pubkey} />
                 </div>
               );
             })}
@@ -112,7 +110,6 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                       <span className="zap-amount">{formatShort(z.amount)}</span>
                     </div>
                     <ProfileImage pubkey={z.zapper} subHeader={<>{z.content}</>} />
-                    <FollowButton pubkey={z.zapper} />
                   </div>
                 )
               );
@@ -125,7 +122,6 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                     <Heart width={20} height={18} />
                   </div>
                   <ProfileImage pubkey={ev.pubkey} />
-                  <FollowButton pubkey={ev.pubkey} />
                 </div>
               );
             })}
@@ -137,7 +133,6 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                     <Dislike width={20} height={18} />
                   </div>
                   <ProfileImage pubkey={ev.pubkey} />
-                  <FollowButton pubkey={ev.pubkey} />
                 </div>
               );
             })}
