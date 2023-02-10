@@ -1,14 +1,10 @@
-import "./Relays.css";
+import "./RelaysMetadata.css";
 import Nostrich from "nostrich.webp";
 import { useState } from "react";
 
 import { RelaySettings } from "Nostr";
 import Read from "Icons/Read";
 import Write from "Icons/Write";
-
-interface RelaysProps {
-  relays: RelaySettings[];
-}
 
 const RelayFavicon = ({ url }: { url: string }) => {
   const cleanUrl = url
@@ -22,7 +18,11 @@ const RelayFavicon = ({ url }: { url: string }) => {
   return <img className="favicon" src={faviconUrl} onError={() => setFaviconUrl(Nostrich)} />;
 };
 
-const Relays = ({ relays }: RelaysProps) => {
+interface RelaysMetadataProps {
+  relays: RelaySettings[];
+}
+
+const RelaysMetadata = ({ relays }: RelaysMetadataProps) => {
   return (
     <div className="main-content">
       {relays?.map(({ url, settings }) => {
@@ -41,4 +41,4 @@ const Relays = ({ relays }: RelaysProps) => {
   );
 };
 
-export default Relays;
+export default RelaysMetadata;

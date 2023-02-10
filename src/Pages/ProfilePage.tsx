@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { unwrap } from "Util";
 import { formatShort } from "Number";
-import Relays from "Element/Relays";
+import RelaysMetadata from "Element/RelaysMetadata";
 import { Tab, TabElement } from "Element/Tabs";
 import Link from "Icons/Link";
 import Qr from "Icons/Qr";
@@ -213,7 +213,7 @@ export default function ProfilePage() {
         return isMe ? <BlockList variant="blocked" /> : null;
       }
       case RELAYS: {
-        return <Relays relays={relays} />;
+        return <RelaysMetadata relays={relays} />;
       }
     }
   }
