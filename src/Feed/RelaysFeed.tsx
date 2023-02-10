@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { HexKey } from "Nostr";
+import { HexKey, RelaySettings } from "Nostr";
 import EventKind from "Nostr/EventKind";
-import { RelaySpec } from "Element/Relays";
 import { Subscriptions } from "Nostr/Subscriptions";
 import useSubscription from "./Subscription";
 
@@ -33,5 +32,5 @@ export default function useRelaysFeed(pubkey: HexKey) {
       ];
     }
     return rs;
-  }, [] as RelaySpec[]);
+  }, [] as RelaySettings[]);
 }

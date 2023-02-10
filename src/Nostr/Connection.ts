@@ -179,7 +179,7 @@ export default class Connection {
         }
         case "OK": {
           // feedback to broadcast call
-          console.debug("OK: ", msg);
+          console.debug(`${this.Address} OK: `, msg);
           const id = msg[1];
           if (this.EventsCallback.has(id)) {
             const cb = unwrap(this.EventsCallback.get(id));

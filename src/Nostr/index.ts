@@ -69,3 +69,8 @@ export type UserMetadata = {
 export enum Lists {
   Muted = "mute",
 }
+
+export interface RelaySettings {
+  url: string;
+  settings: { read: boolean; write: boolean };
+}

@@ -2,16 +2,12 @@ import "./Relays.css";
 import Nostrich from "nostrich.webp";
 import { useState } from "react";
 
+import { RelaySettings } from "Nostr";
 import Read from "Icons/Read";
 import Write from "Icons/Write";
 
-export interface RelaySpec {
-  url: string;
-  settings: { read: boolean; write: boolean };
-}
-
 interface RelaysProps {
-  relays: RelaySpec[];
+  relays: RelaySettings[];
 }
 
 const RelayFavicon = ({ url }: { url: string }) => {
@@ -19,6 +15,7 @@ const RelayFavicon = ({ url }: { url: string }) => {
     .replace("wss://relay.", "https://")
     .replace("wss://nostr.", "https://")
     .replace("wss://", "https://")
+    .replace("ws://", "http://")
     .replace(/\/$/, "");
   const [faviconUrl, setFaviconUrl] = useState(`${cleanUrl}/favicon.ico`);
 

@@ -109,6 +109,16 @@ export default function useEventPublisher() {
         }
       }
     },
+    /**
+     * Write event to all given relays.
+     */
+    broadcastAll: (ev: NEvent | undefined, relays: string[]) => {
+      if (ev) {
+        for (const k of relays) {
+          System.WriteOnceToRelay(k, ev);
+        }
+      }
+    },
     muted: async (keys: HexKey[], priv: HexKey[]) => {
       if (pubKey) {
         const ev = NEvent.ForPubKey(pubKey);

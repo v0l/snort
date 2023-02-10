@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
 
+import { randomSample } from "Util";
 import Relay from "Element/Relay";
 import useEventPublisher from "Feed/EventPublisher";
 import { RootState } from "State/Store";
@@ -20,8 +21,14 @@ const RelaySettingsPage = () => {
     const ev = await publisher.saveRelays();
     publisher.broadcast(ev);
     publisher.broadcastForBootstrap(ev);
-    const settingsEv = await publisher.saveRelaysSettings();
-    publisher.broadcast(settingsEv);
+    try {
+      const relays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
+      const settingsEv = await publisher.saveRelaysSettings();
+      publisher.broadcast(ev);
+      publisher.broadcastAll(settingsEv, randomSample(relays, 20));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function addRelay() {
