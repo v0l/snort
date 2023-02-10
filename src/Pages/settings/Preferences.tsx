@@ -219,8 +219,8 @@ const PreferencesPage = () => {
                 } as UserPreferences)
               )
             }>
-            <option value="+1">
-              +1 <FormattedMessage {...messages.Default} />
+            <option value="+">
+              + <FormattedMessage {...messages.Default} />
             </option>
             {emoji("").map(({ name, char }) => {
               return (
