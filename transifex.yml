@@ -6,4 +6,4 @@ git:
       source_file: 'src/lang.json'
       translation_files_expression: 'src/translations/<lang>.json'
   settings:
-    pr_branch_name: 'translations/<br_unique_id>'
+    pr_branch_name: 'tfx/<br_unique_id>'
