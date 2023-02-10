@@ -36,6 +36,10 @@ export default function ProfileImage({
     return getDisplayName(user, pubkey);
   }, [user, pubkey]);
 
+  if (!pubkey && !link) {
+    link = "#";
+  }
+
   return (
     <div className={`pfp${className ? ` ${className}` : ""}`}>
       <div className="avatar-wrapper">
