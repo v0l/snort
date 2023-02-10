@@ -38,7 +38,7 @@
   "Element.LNURLFail": "Error al contactar con el servicio LNURL",
   "Element.Likes": "Me gusta ({n})",
   "Element.Loading": "Cargando...",
-  "Element.Logout": "Cerrar sesión",
+  "Element.Logout": "Salir",
   "Element.Milliseconds": "{n} ms",
   "Element.Mute": "Silenciar",
   "Element.MuteAll": "Silenciar todos",
