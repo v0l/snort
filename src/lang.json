@@ -44,9 +44,6 @@
   "2IFGap": {
     "string": "Donate"
   },
-  "2eWW0m": {
-    "string": "Service Key"
-  },
   "2k0Cv+": {
     "string": "Dislikes ({n})"
   },
@@ -173,6 +170,9 @@
   "Ebl/B2": {
     "string": "Translate to {lang}"
   },
+  "EcglP9": {
+    "string": "Key"
+  },
   "EnCOBJ": {
     "string": "Buy"
   },
@@ -190,6 +190,9 @@
   },
   "G/yZLu": {
     "string": "Remove"
+  },
+  "GFOoEE": {
+    "string": "Salt"
   },
   "GspYR7": {
     "string": "{n} Dislike"
@@ -409,9 +412,6 @@
   },
   "hK5ZDk": {
     "string": "the world"
-  },
-  "hLAvqx": {
-    "string": "Service Salt"
   },
   "hMzcSq": {
     "string": "Messages"

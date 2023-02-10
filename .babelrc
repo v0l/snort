@@ -1,10 +1,7 @@
 {
   "plugins": [
     [
-      "react-intl-auto",
-      {
-        "removePrefix": "src/"
-      }
+      "formatjs"
     ]
   ]
 }

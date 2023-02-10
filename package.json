@@ -56,7 +56,8 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "generate-messages": "formatjs extract **/messages.ts **/*.ts* --ignore='**/*.d.ts' --out-file src/lang.json --id-interpolation-pattern '[sha512:contenthash:base64:6]' --format transifex --flatten true",
+    "intl-extract": "formatjs extract **/messages.ts **/*.ts* --ignore='**/*.d.ts' --out-file src/lang.json --format transifex --flatten true",
+    "intl-compile": "formatjs compile src/lang.json --out-file src/translations/en.json --format transifex",
     "format": "prettier --write .",
     "eslint": "eslint .",
     "prepare": "husky install"
@@ -80,9 +81,8 @@
   },
   "devDependencies": {
     "@formatjs/cli": "^6.0.1",
-    "babel-plugin-react-intl-auto": "^3.3.0",
+    "babel-plugin-formatjs": "^10.3.36",
     "customize-cra": "^1.0.0",
-    "extract-react-intl-messages": "^4.1.1",
     "husky": ">=6",
     "lint-staged": ">=10",
     "prettier": "2.8.3",
