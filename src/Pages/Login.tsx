@@ -61,7 +61,9 @@ export default function LoginPage() {
 
   useEffect(() => {
     const ret = unwrap(Artwork.at(Artwork.length * Math.random()));
-    proxy(ret.link).then(a => setArt({ ...ret, link: a }));
+    // disable for now because imgproxy is ded
+    // proxy(ret.link).then(a => setArt({ ...ret, link: a }));
+    setArt(ret);
   }, []);
 
   async function getNip05PubKey(addr: string) {
