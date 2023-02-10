@@ -1,220 +1,638 @@
 {
-  "Element.AccountPage": "página de perfil",
-  "Element.AccountSupport": "Soporte de Cuenta",
-  "Element.ActivateNow": "Activar Ahora",
-  "Element.AddToProfile": "Añadir a tu perfil",
-  "Element.Back": "Atrás",
-  "Element.Block": "Bloquear",
-  "Element.BlockCount": "{n} bloqueados",
-  "Element.BuyNow": "Comprar",
-  "Element.Buying": "Comprando {item}",
-  "Element.Cancel": "Cancelar",
-  "Element.Comment": "Comentario",
-  "Element.Confirm": "Confirmar",
-  "Element.ConfirmDeletion": "¿Estás seguro de que quieres eliminar {id}?",
-  "Element.ConfirmRepost": "¿Estás seguro de que quieres republicar {id}",
-  "Element.CopyID": "Copiar ID",
-  "Element.CopyJSON": "Copiar JSON",
-  "Element.Custom": "Personalizar",
-  "Element.Delete": "Eliminar",
-  "Element.Deleted": "Eliminado",
-  "Element.DisalledLater": "el nombre estará disponible más tarde",
-  "Element.Disallowed": "el nombre no está permitido",
-  "Element.Dislike": "{n} No me gusta",
-  "Element.DislikeAction": "",
-  "Element.Dislikes": "No me gusta ({n})",
-  "Element.Expired": "Caducada",
-  "Element.FindMore": "Aprende más sobre {service} en {link}",
-  "Element.Follow": "Seguir",
-  "Element.FollowAll": "Seguir todos",
-  "Element.FollowerCount": "{n} seguidores",
-  "Element.FollowingCount": "Siguiendo a {n}",
-  "Element.FollowsYou": "te sigue",
-  "Element.GoTo": "Ir a",
-  "Element.Handle": "",
-  "Element.Invoice": "Factura Lightning",
-  "Element.InvoiceFail": "Error al cargar factura",
-  "Element.JustNow": "Justo ahora",
-  "Element.LNURLFail": "Error al contactar con el servicio LNURL",
-  "Element.Likes": "Me gusta ({n})",
-  "Element.Loading": "Cargando...",
-  "Element.Logout": "Salir",
-  "Element.Milliseconds": "{n} ms",
-  "Element.Mute": "Silenciar",
-  "Element.MuteAll": "Silenciar todos",
-  "Element.MuteCount": "{n} silenciados",
-  "Element.MutedAuthor": "Este autor ha sido silenciado",
-  "Element.NewNip": "Tu nuevo NIP-05 es:",
-  "Element.NotAvailable": "No disponible:",
-  "Element.NotePlaceholder": "¿Qué tienes en mente?",
-  "Element.NoteToSelf": "Mensajes guardados",
-  "Element.OpenWallet": "Abrir Wallet",
-  "Element.OrderPaid": "Orden pagada!",
-  "Element.Others": " y {n} {n, plural, =1 {otro} other {otros}}",
-  "Element.OthersZapped": "{n, plural, =0 {} =1 {zapeó} other {zapearon}}",
-  "Element.Paid": "Pagado",
-  "Element.Pay": "Pagar",
-  "Element.PayInvoice": "Pagar Factura",
-  "Element.Reactions": "Reacciones",
-  "Element.ReactionsCount": "Reacciones ({n})",
-  "Element.Read": "Leer",
-  "Element.Regex": "el nombre tiene caracteres inválidos",
-  "Element.Registered": "el nombre ya está registrado",
-  "Element.Reply": "Responder",
-  "Element.Reposts": "Reposts ({n})",
-  "Element.Sats": "{n} {n, plural, =1 {sat} other {sats}}",
-  "Element.SavePassword": "Asegúrate de guardar ésta contraseña para gestionar tu NIP-05 en el futuro",
-  "Element.Seconds": "{n} seg",
-  "Element.Send": "Enviar",
-  "Element.SendSats": "Enviar sats",
-  "Element.SendZap": "Enviar zap",
-  "Element.Share": "Compartir",
-  "Element.Show": "Mostrar",
-  "Element.ShowLatest": "Mostrar últimas {n} notas",
-  "Element.ShowMore": "Mostrar más",
-  "Element.ShowReplies": "Mostrar respuestas",
-  "Element.ToTarget": "{action} a {target}",
-  "Element.TooLong": "el nombre es demasiado largo",
-  "Element.TooShort": "el nombre es demasiado corto",
-  "Element.TranslateTo": "Traducir a {lang}",
-  "Element.TranslatedFrom": "Traducido de {lang}",
-  "Element.TranslationFailed": "Traducción fallida",
-  "Element.Unblock": "Desbloquear",
-  "Element.Unfollow": "No seguir",
-  "Element.UnknownEventKind": "Evento de tipo desconocido {kind}",
-  "Element.Unmute": "Desilenciar",
-  "Element.Write": "Escribir",
-  "Element.ZapAmount": "Total en sats",
-  "Element.ZapSats": "Zapear {n} sats",
-  "Element.ZapTarget": "Zapear {target} {n} sats",
-  "Element.Zapped": "zapeó",
-  "Element.Zaps": "Zaps ({n})",
-  "Pages.AvoidImpersonators": "Evita que cuentas falsas se hagan pasar por ti",
-  "Pages.Blocked": "Bloqueados",
-  "Pages.Conversations": "Conversaciones",
-  "Pages.EasierToFind": "Haz tu perfil más fácil de encontrar y compartir",
-  "Pages.Followers": "Seguidores",
-  "Pages.Following": "Siguiendo ({n})",
-  "Pages.Follows": "Siguiendo",
-  "Pages.Funding": "Apoya a las plataformas y desarrolladores que proporcionan servicios de verificación",
-  "Pages.GetVerified": "Verifica tu perfil",
-  "Pages.Global": "Global",
-  "Pages.Login": "Acceso",
-  "Pages.MarkAllRead": "Marcar todo como leído",
-  "Pages.Messages": "Mensajes",
-  "Pages.Muted": "Silenciados",
-  "Pages.NewUsers": "Página de nuevos usuarios",
-  "Pages.Nip05": "NIP-05 es un sistema de verification basado en DNS que permite verificarte como un usuario real.",
-  "Pages.Nip05Pros": "Obtener un NIP-05 ayuda a:",
-  "Pages.NoFollows": "Hmmm no hay nada que mostrarte aquí... Echa un vistazo a la {newUsersPage} para seguir a algunas cuentas recomendadas!",
-  "Pages.NostrPlebsNip": "Nostr Plbes es uno de los primeros proveedores de NIP-05 y ofrece una buena colección de dominios a precios razonables.",
-  "Pages.Notes": "Notas",
-  "Pages.Posts": "Notas",
-  "Pages.Reactions": "Reacciones",
-  "Pages.Relays": "",
-  "Pages.Sats": "{n} {n, plural, =1 {sat} other {sats}}",
-  "Pages.Search": "Búsqueda",
-  "Pages.SearchPlaceholder": "Buscar...",
-  "Pages.Settings": "Configuración",
-  "Pages.SnortSocialNip": "Nuestro servicio de verificación NIP-05, apoya el desarrollo de este proyecto y obtén una apariencia especial en nuestra web!",
-  "Pages.Zaps": "Zaps",
-  "Pages.new.Bitcoin": "",
-  "Pages.new.Check": "",
-  "Pages.new.DigitalSignatures": "",
-  "Pages.new.Done": "",
-  "Pages.new.EasierToFind": "",
-  "Pages.new.Extensions": "",
-  "Pages.new.ExtensionsNostr": "",
-  "Pages.new.FailedToLoad": "",
-  "Pages.new.FindYourFollows": "",
-  "Pages.new.FollowsOnNostr": "",
-  "Pages.new.Funding": "",
-  "Pages.new.GetPartnerId": "",
-  "Pages.new.GetPartnerIdHelp": "",
-  "Pages.new.GetSnortId": "",
-  "Pages.new.GetSnortIdHelp": "",
-  "Pages.new.HowKeysWork": "",
-  "Pages.new.Identifier": "",
-  "Pages.new.IdentifierHelp": "",
-  "Pages.new.ImportTwitter": "",
-  "Pages.new.ImproveSecurity": "",
-  "Pages.new.KeysSaved": "",
-  "Pages.new.NameSquatting": "",
-  "Pages.new.Next": "",
-  "Pages.new.NoUsersFound": "",
-  "Pages.new.PickUsername": "",
-  "Pages.new.PopularAccounts": "",
-  "Pages.new.PreventFakes": "",
-  "Pages.new.PreviewOnSnort": "",
-  "Pages.new.Ready": "",
-  "Pages.new.SaveKeys": "",
-  "Pages.new.SaveKeysHelp": "",
-  "Pages.new.SetupProfile": "",
-  "Pages.new.Share": "",
-  "Pages.new.Skip": "",
-  "Pages.new.TamperProof": "",
-  "Pages.new.TwitterPlaceholder": "",
-  "Pages.new.TwitterUsername": "",
-  "Pages.new.Username": "",
-  "Pages.new.UsernameHelp": "",
-  "Pages.new.UsernamePlaceholder": "",
-  "Pages.new.WhatIsSnort": "",
-  "Pages.new.WhatIsSnortExperience": "",
-  "Pages.new.WhatIsSnortIntro": "",
-  "Pages.new.WhatIsSnortNotes": "",
-  "Pages.new.World": "",
-  "Pages.new.YourPrivkey": "",
-  "Pages.new.YourPubkey": "",
-  "Pages.settings.About": "Bio",
-  "Pages.settings.Add": "Añadir",
-  "Pages.settings.AddRelays": "Añadir Relays",
-  "Pages.settings.All": "Todos",
-  "Pages.settings.AutoloadMedia": "Cargar medios automáticamente",
-  "Pages.settings.AutoloadMediaHelp": "Se cargarán las imágenes y vídeos automáticamente",
-  "Pages.settings.Avatar": "Avatar",
-  "Pages.settings.Banner": "Banner",
-  "Pages.settings.Buy": "Comprar",
-  "Pages.settings.ConfirmReposts": "Confirmar reposts",
-  "Pages.settings.ConfirmRepostsHelp": "Los reposts necesitarán ser confirmados",
-  "Pages.settings.Contact": "Contacto",
-  "Pages.settings.Dark": "Oscuro",
-  "Pages.settings.DebugMenus": "Menús de desarrolladores",
-  "Pages.settings.DebugMenusHelp": "Se mostrarán opciones adicionales para desarrolladores en el menú de las notas",
-  "Pages.settings.Default": "(Por defecto)",
-  "Pages.settings.DisplayName": "Nombre",
-  "Pages.settings.Donate": "Donar",
-  "Pages.settings.Edit": "Editar",
-  "Pages.settings.EditProfile": "Editar Perfil",
-  "Pages.settings.EnableReactions": "Activar reacciones",
-  "Pages.settings.EnableReactionsHelp": "Se mostrarán las reacciones a las notas",
-  "Pages.settings.FileUpload": "Subida de ficheros",
-  "Pages.settings.FileUploadHelp": "Elige qué servicio de subida de ficheros quieres utilizar",
-  "Pages.settings.FollowsOnly": "Sólo seguidos",
-  "Pages.settings.ImgProxy": "Proxy de imágines",
-  "Pages.settings.ImgProxyHelp": "Usar imgproxy para comprimir imágenes",
-  "Pages.settings.Light": "Claro",
-  "Pages.settings.LnAddress": "Dirección Lightning",
-  "Pages.settings.LogOut": "Salir",
-  "Pages.settings.Name": "Nombre",
-  "Pages.settings.Nip05": "NIP-05",
-  "Pages.settings.None": "Ninguno",
-  "Pages.settings.Owner": "Dueño",
-  "Pages.settings.Preferences": "Preferencias",
-  "Pages.settings.PrivateKey": "Tu Clave Privada (no la compartas con nadie) es",
-  "Pages.settings.Profile": "Perfil",
-  "Pages.settings.ReactionEmoji": "",
-  "Pages.settings.ReactionEmojiHelp": "",
-  "Pages.settings.Relays": "Relays",
-  "Pages.settings.Remove": "Eliminar",
-  "Pages.settings.Save": "Guardar",
-  "Pages.settings.ServiceKey": "Clave del Servicio",
-  "Pages.settings.ServiceSalt": "Salt del Servicio",
-  "Pages.settings.ServiceUrl": "URL del Servicio",
-  "Pages.settings.ShowLatest": "Mostrar notas nuevas automáticamente",
-  "Pages.settings.ShowLatestHelp": "Las notas nuevas se mostrarán automáticamente en tu línea de tiempo",
-  "Pages.settings.Software": "Software",
-  "Pages.settings.Supports": "Soporta",
-  "Pages.settings.System": "Sistema (por defecto)",
-  "Pages.settings.Theme": "Tema",
-  "Pages.settings.Website": "Web"
+  "+D82kt": {
+    "string": "¿Estás seguro de que quieres republicar {id}"
+  },
+  "+vIQlC": {
+    "string": "Asegúrate de guardar ésta contraseña para gestionar tu NIP-05 en el futuro"
+  },
+  "/4tOwT": {
+    "string": "Skip"
+  },
+  "/JE/X+": {
+    "string": "Soporte de Cuenta"
+  },
+  "/RD0e2": {
+    "string": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content."
+  },
+  "/d6vEc": {
+    "string": "Haz tu perfil más fácil de encontrar y compartir"
+  },
+  "/n5KSF": {
+    "string": "{n} ms"
+  },
+  "0BUTMv": {
+    "string": "Buscar..."
+  },
+  "0mch2Y": {
+    "string": "el nombre tiene caracteres inválidos"
+  },
+  "0yO7wF": {
+    "string": "{n} seg"
+  },
+  "1A7TZk": {
+    "string": "What is Snort and how does it work?"
+  },
+  "1udzha": {
+    "string": "Conversaciones"
+  },
+  "2/2yg+": {
+    "string": "Añadir"
+  },
+  "25V4l1": {
+    "string": "Banner"
+  },
+  "2IFGap": {
+    "string": "Donar"
+  },
+  "2k0Cv+": {
+    "string": "No me gusta ({n})"
+  },
+  "3cc4Ct": {
+    "string": "Claro"
+  },
+  "450Fty": {
+    "string": "Ninguno"
+  },
+  "47FYwb": {
+    "string": "Cancelar"
+  },
+  "4L2vUY": {
+    "string": "Tu nuevo NIP-05 es:"
+  },
+  "4OB335": {
+    "string": "No me gusta"
+  },
+  "4Vmpt4": {
+    "string": "Nostr Plbes es uno de los primeros proveedores de NIP-05 y ofrece una buena colección de dominios a precios razonables."
+  },
+  "4Z3t5i": {
+    "string": "Usar imgproxy para comprimir imágenes"
+  },
+  "4rYCjn": {
+    "string": "Mensajes guardados"
+  },
+  "5ykRmX": {
+    "string": "Enviar zap"
+  },
+  "6ewQqw": {
+    "string": "Me gusta ({n})"
+  },
+  "7+Domh": {
+    "string": "Notas"
+  },
+  "7hp70g": {
+    "string": "NIP-05"
+  },
+  "7xzTiH": {
+    "string": "{action} a {target}"
+  },
+  "8/vBbP": {
+    "string": "Reposts ({n})"
+  },
+  "89q5wc": {
+    "string": "Confirmar reposts"
+  },
+  "8E9muH": {
+    "string": "Import Twitter Follows (optional)"
+  },
+  "8QDesP": {
+    "string": "Zapear {n} sats"
+  },
+  "8g2vyB": {
+    "string": "el nombre es demasiado largo"
+  },
+  "9+Ddtu": {
+    "string": "Next"
+  },
+  "9HU8vw": {
+    "string": "Responder"
+  },
+  "9SvQep": {
+    "string": "Siguiendo a {n}"
+  },
+  "9WRlF4": {
+    "string": "Enviar"
+  },
+  "9wO4wJ": {
+    "string": "Factura Lightning"
+  },
+  "ASRK0S": {
+    "string": "Este autor ha sido silenciado"
+  },
+  "Adk34V": {
+    "string": "Setup your Profile"
+  },
+  "AyGauy": {
+    "string": "Acceso"
+  },
+  "B4C47Y": {
+    "string": "el nombre es demasiado corto"
+  },
+  "B6+XJy": {
+    "string": "zapeó"
+  },
+  "BOUMjw": {
+    "string": "No nostr users found for {twitterUsername}"
+  },
+  "BcGMo+": {
+    "string": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
+  },
+  "C81/uG": {
+    "string": "Salir"
+  },
+  "CHTbO3": {
+    "string": "Error al cargar factura"
+  },
+  "Cu/K85": {
+    "string": "Traducido de {lang}"
+  },
+  "D3idYv": {
+    "string": "Configuración"
+  },
+  "DKnriN": {
+    "string": "Enviar sats"
+  },
+  "DZzCem": {
+    "string": "Mostrar últimas {n} notas"
+  },
+  "Dt/Zd5": {
+    "string": "Se cargarán las imágenes y vídeos automáticamente"
+  },
+  "E8a4yq": {
+    "string": "Follow some popular accounts"
+  },
+  "EPYwm7": {
+    "string": "Your private key is your password. If you lose this key, you will lose access to your account! Copy it and keep it in a safe place. There is no way to reset your private key."
+  },
+  "EWyQH5": {
+    "string": "Global"
+  },
+  "Ebl/B2": {
+    "string": "Traducir a {lang}"
+  },
+  "EcglP9": {
+    "string": "Key"
+  },
+  "EnCOBJ": {
+    "string": "Comprar"
+  },
+  "Eqjl5K": {
+    "string": "Only Snort and our integration partner identifier gives you a colorful domain name, but you are welcome to use other services too."
+  },
+  "F+B3x1": {
+    "string": "We have also partnered with nostrplebs.com to give you more options"
+  },
+  "FS3b54": {
+    "string": "Done!"
+  },
+  "FmXUJg": {
+    "string": "te sigue"
+  },
+  "G/yZLu": {
+    "string": "Eliminar"
+  },
+  "GFOoEE": {
+    "string": "Salt"
+  },
+  "GspYR7": {
+    "string": "{n} No me gusta"
+  },
+  "H0JBH6": {
+    "string": "Salir"
+  },
+  "H6/kLh": {
+    "string": "Orden pagada!"
+  },
+  "HAlOn1": {
+    "string": "Nombre"
+  },
+  "HFls6j": {
+    "string": "el nombre estará disponible más tarde"
+  },
+  "HOzFdo": {
+    "string": "Silenciados"
+  },
+  "HbefNb": {
+    "string": "Abrir Wallet"
+  },
+  "IKKHqV": {
+    "string": "Siguiendo"
+  },
+  "INSqIz": {
+    "string": "Twitter username..."
+  },
+  "IUZC+0": {
+    "string": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you."
+  },
+  "JCIgkj": {
+    "string": "Username"
+  },
+  "JHEHCk": {
+    "string": "Zaps ({n})"
+  },
+  "JkLHGw": {
+    "string": "Website"
+  },
+  "K3r6DQ": {
+    "string": "Eliminar"
+  },
+  "K7AkdL": {
+    "string": "Mostrar"
+  },
+  "KQvWvD": {
+    "string": "Eliminado"
+  },
+  "KWuDfz": {
+    "string": "I have saved my keys, continue"
+  },
+  "KahimY": {
+    "string": "Evento de tipo desconocido {kind}"
+  },
+  "LgbKvU": {
+    "string": "Comentario"
+  },
+  "M3Oirc": {
+    "string": "Menús de desarrolladores"
+  },
+  "MBAYRO": {
+    "string": "Se mostrarán opciones adicionales para desarrolladores en el menú de las notas"
+  },
+  "MI2jkA": {
+    "string": "No disponible:"
+  },
+  "MRp6Ly": {
+    "string": "Twitter username"
+  },
+  "MzRYWH": {
+    "string": "Comprando {item}"
+  },
+  "N2IrpM": {
+    "string": "Confirmar"
+  },
+  "NdOYJJ": {
+    "string": "Hmmm no hay nada que mostrarte aquí... Echa un vistazo a la {newUsersPage} para seguir a algunas cuentas recomendadas!"
+  },
+  "NfNk2V": {
+    "string": "Your private key"
+  },
+  "NndBJE": {
+    "string": "Página de nuevos usuarios"
+  },
+  "OEW7yJ": {
+    "string": "Zaps"
+  },
+  "OKhRC6": {
+    "string": "Compartir"
+  },
+  "P61BTu": {
+    "string": "Copiar JSON"
+  },
+  "P7FD0F": {
+    "string": "Sistema (por defecto)"
+  },
+  "PCSt5T": {
+    "string": "Preferencias"
+  },
+  "Pe0ogR": {
+    "string": "Tema"
+  },
+  "PrsIg7": {
+    "string": "Se mostrarán las reacciones a las notas"
+  },
+  "RDZVQL": {
+    "string": "Check"
+  },
+  "RahCRH": {
+    "string": "Caducada"
+  },
+  "RhDAoS": {
+    "string": "¿Estás seguro de que quieres eliminar {id}?"
+  },
+  "RoOyAh": {
+    "string": "Relays"
+  },
+  "Sjo1P4": {
+    "string": "Personalizar"
+  },
+  "UQ3pOC": {
+    "string": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step."
+  },
+  "Up5U7K": {
+    "string": "Bloquear"
+  },
+  "VOjC1i": {
+    "string": "Elige qué servicio de subida de ficheros quieres utilizar"
+  },
+  "VlJkSk": {
+    "string": "{n} silenciados"
+  },
+  "VnXp8Z": {
+    "string": "Avatar"
+  },
+  "Vx7Zm2": {
+    "string": "How do keys work?"
+  },
+  "W9355R": {
+    "string": "Desilenciar"
+  },
+  "WONP5O": {
+    "string": "Find your twitter follows on nostr (Data provided by {provider})"
+  },
+  "WxthCV": {
+    "string": "e.g. Jack"
+  },
+  "XgWvGA": {
+    "string": "Reacciones"
+  },
+  "YDURw6": {
+    "string": "URL del Servicio"
+  },
+  "YXA3AH": {
+    "string": "Activar reacciones"
+  },
+  "ZKORll": {
+    "string": "Activar Ahora"
+  },
+  "a5UPxh": {
+    "string": "Apoya a las plataformas y desarrolladores que proporcionan servicios de verificación"
+  },
+  "aWpBzj": {
+    "string": "Mostrar más"
+  },
+  "brAXSu": {
+    "string": "Pick a username"
+  },
+  "bxv59V": {
+    "string": "Justo ahora"
+  },
+  "cWx9t8": {
+    "string": "Silenciar todos"
+  },
+  "cuV2gK": {
+    "string": "el nombre ya está registrado"
+  },
+  "cyR7Kh": {
+    "string": "Atrás"
+  },
+  "d7d0/x": {
+    "string": "Dirección Lightning"
+  },
+  "dOQCL8": {
+    "string": "Nombre"
+  },
+  "e7qqly": {
+    "string": "Marcar todo como leído"
+  },
+  "eHAneD": {
+    "string": "Reaction emoji"
+  },
+  "eJj8HD": {
+    "string": "Verifica tu perfil"
+  },
+  "eR3YIn": {
+    "string": "Notas"
+  },
+  "filwqD": {
+    "string": "Leer"
+  },
+  "flnGvv": {
+    "string": "¿Qué tienes en mente?"
+  },
+  "g5pX+a": {
+    "string": "About"
+  },
+  "gBdUXk": {
+    "string": "Save your keys!"
+  },
+  "gDZkld": {
+    "string": "Snort is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
+  },
+  "gDzDRs": {
+    "string": "Emoji to send when reactiong to a note"
+  },
+  "gjBiyj": {
+    "string": "Cargando..."
+  },
+  "hCUivF": {
+    "string": "Las notas nuevas se mostrarán automáticamente en tu línea de tiempo"
+  },
+  "hK5ZDk": {
+    "string": "the world"
+  },
+  "hMzcSq": {
+    "string": "Mensajes"
+  },
+  "hY4lzx": {
+    "string": "Soporta"
+  },
+  "hicxcO": {
+    "string": "Mostrar respuestas"
+  },
+  "iCqGww": {
+    "string": "Reacciones ({n})"
+  },
+  "iDGAbc": {
+    "string": "Get a Snort identifier"
+  },
+  "iGT1eE": {
+    "string": "Evita que cuentas falsas se hagan pasar por ti"
+  },
+  "iNWbVV": {
+    "string": "Handle"
+  },
+  "ieGrWo": {
+    "string": "Seguir"
+  },
+  "itPgxd": {
+    "string": "Perfil"
+  },
+  "izWS4J": {
+    "string": "No seguir"
+  },
+  "jA3OE/": {
+    "string": "{n} {n, plural, =1 {sat} other {sats}}"
+  },
+  "jCA7Cw": {
+    "string": "Preview on snort"
+  },
+  "juhqvW": {
+    "string": "Improve login security with browser extensions"
+  },
+  "jvo0vs": {
+    "string": "Guardar"
+  },
+  "k2veDA": {
+    "string": "Escribir"
+  },
+  "k7sKNy": {
+    "string": "Nuestro servicio de verificación NIP-05, apoya el desarrollo de este proyecto y obtén una apariencia especial en nuestra web!"
+  },
+  "lCILNz": {
+    "string": "Comprar"
+  },
+  "lD3+8a": {
+    "string": "Pagar"
+  },
+  "lgg1KN": {
+    "string": "página de perfil"
+  },
+  "ll3xBp": {
+    "string": "Proxy de imágines"
+  },
+  "lnaT9F": {
+    "string": "Siguiendo {n}"
+  },
+  "lvlPhZ": {
+    "string": "Pagar Factura"
+  },
+  "mKAr6h": {
+    "string": "Seguir todos"
+  },
+  "mKh2HS": {
+    "string": "Subida de ficheros"
+  },
+  "mKhgP9": {
+    "string": "{n, plural, =0 {} =1 {zapeó} other {zapearon}}"
+  },
+  "n1xHAH": {
+    "string": "Get an identifier (optional)"
+  },
+  "nDejmx": {
+    "string": "Desbloquear"
+  },
+  "nN9XTz": {
+    "string": "Share your thoughts with {link}"
+  },
+  "nwZXeh": {
+    "string": "{n} bloqueados"
+  },
+  "o7e+nJ": {
+    "string": "{n} seguidores"
+  },
+  "odFwjL": {
+    "string": "Sólo seguidos"
+  },
+  "osUr8O": {
+    "string": "You can also use these extensions to login to most Nostr sites."
+  },
+  "oxCa4R": {
+    "string": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app."
+  },
+  "pzTOmv": {
+    "string": "Seguidores"
+  },
+  "qUJTsT": {
+    "string": "Bloqueados"
+  },
+  "qdGuQo": {
+    "string": "Tu Clave Privada (no la compartas con nadie) es"
+  },
+  "qkvYUb": {
+    "string": "Añadir a tu perfil"
+  },
+  "qmJ8kD": {
+    "string": "Traducción fallida"
+  },
+  "r3C4x/": {
+    "string": "Software"
+  },
+  "rT14Ow": {
+    "string": "Añadir Relays"
+  },
+  "reJ6SM": {
+    "string": "It is recommended to use one of the following browser extensions if you are on a desktop computer to secure your key:"
+  },
+  "rfuMjE": {
+    "string": "(Por defecto)"
+  },
+  "rrfdTe": {
+    "string": "This is the same technology which is used by Bitcoin and has been proven to be extremely secure."
+  },
+  "rudscU": {
+    "string": "Failed to load follows, please try again later"
+  },
+  "sWnYKw": {
+    "string": "Snort is designed to have a similar experience to Twitter."
+  },
+  "svOoEH": {
+    "string": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule."
+  },
+  "tOdNiY": {
+    "string": "Oscuro"
+  },
+  "thnRpU": {
+    "string": "Obtener un NIP-05 ayuda a:"
+  },
+  "u/vOPu": {
+    "string": "Pagado"
+  },
+  "uD/N6c": {
+    "string": "Zapear {target} {n} sats"
+  },
+  "uSV4Ti": {
+    "string": "Los reposts necesitarán ser confirmados"
+  },
+  "usAvMr": {
+    "string": "Editar Perfil"
+  },
+  "ut+2Cd": {
+    "string": "Get a partner identifier"
+  },
+  "vOKedj": {
+    "string": "{n,plural,=1{& {n} other} other{& {n} others}}"
+  },
+  "vZ4quW": {
+    "string": "NIP-05 es un sistema de verification basado en DNS que permite verificarte como un usuario real."
+  },
+  "wEQDC6": {
+    "string": "Editar"
+  },
+  "wih7iJ": {
+    "string": "el nombre no está permitido"
+  },
+  "wqyN/i": {
+    "string": "Aprende más sobre {service} en {link}"
+  },
+  "wtLjP6": {
+    "string": "Copiar ID"
+  },
+  "x82IOl": {
+    "string": "Silenciar"
+  },
+  "xIoGG9": {
+    "string": "Ir a"
+  },
+  "xJ9n2N": {
+    "string": "Your public key"
+  },
+  "xKflGN": {
+    "string": "{username}''s Follows on Nostr"
+  },
+  "xbVgIm": {
+    "string": "Cargar medios automáticamente"
+  },
+  "xmcVZ0": {
+    "string": "Búsqueda"
+  },
+  "zFegDD": {
+    "string": "Contacto"
+  },
+  "zINlao": {
+    "string": "Dueño"
+  },
+  "zQvVDJ": {
+    "string": "Todos"
+  },
+  "zcaOTs": {
+    "string": "Zap amount in sats"
+  },
+  "zjJZBd": {
+    "string": "You're ready!"
+  },
+  "zonsdq": {
+    "string": "Error al contactar con el servicio LNURL"
+  },
+  "zvCDao": {
+    "string": "Mostrar notas nuevas automáticamente"
+  }
 }
