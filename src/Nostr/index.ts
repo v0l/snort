@@ -41,6 +41,7 @@ export type RawReqFilter = {
   "#p"?: u256[];
   "#t"?: string[];
   "#d"?: string[];
+  "#r"?: string[];
   search?: string;
   since?: number;
   until?: number;
@@ -67,4 +68,9 @@ export type UserMetadata = {
  */
 export enum Lists {
   Muted = "mute",
+}
+
+export interface RelaySettings {
+  url: string;
+  settings: { read: boolean; write: boolean };
 }

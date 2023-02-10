@@ -55,4 +55,6 @@ export default defineMessages({
   DisplayName: { defaultMessage: "Display name" },
   Buy: { defaultMessage: "Buy" },
   Nip05: { defaultMessage: "NIP-05" },
+  ReactionEmoji: { defaultMessage: "Reaction emoji" },
+  ReactionEmojiHelp: { defaultMessage: "Emoji to send when reactiong to a note" },
 });

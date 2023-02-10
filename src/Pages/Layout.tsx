@@ -2,10 +2,11 @@ import "./Layout.css";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+
+import { randomSample } from "Util";
 import Envelope from "Icons/Envelope";
 import Bell from "Icons/Bell";
 import Search from "Icons/Search";
-
 import { RootState } from "State/Store";
 import { init, setRelays } from "State/Login";
 import { System } from "Nostr/System";
@@ -147,8 +148,7 @@ export default function Layout() {
       const rsp = await fetch("https://api.nostr.watch/v1/online");
       if (rsp.ok) {
         const online: string[] = await rsp.json();
-        const pickRandom = online.sort(() => (Math.random() >= 0.5 ? 1 : -1)).slice(0, 4); // pick 4 random relays
-
+        const pickRandom = randomSample(online, 4);
         const relayObjects = pickRandom.map(a => [a, { read: true, write: true }]);
         newRelays = Object.fromEntries(relayObjects);
         dispatch(

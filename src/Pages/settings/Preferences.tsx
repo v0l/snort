@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl";
 
 import { DefaultImgProxy, setPreferences, UserPreferences } from "State/Login";
 import { RootState } from "State/Store";
+import emoji from "@jukben/emoji-search";
 
 import messages from "./messages";
 import { unwrap } from "Util";
@@ -195,6 +196,40 @@ const PreferencesPage = () => {
             checked={perf.enableReactions}
             onChange={e => dispatch(setPreferences({ ...perf, enableReactions: e.target.checked }))}
           />
+        </div>
+      </div>
+      <div className="card flex">
+        <div className="flex f-col f-grow">
+          <div>
+            <FormattedMessage {...messages.ReactionEmoji} />
+          </div>
+          <small>
+            <FormattedMessage {...messages.ReactionEmojiHelp} />
+          </small>
+        </div>
+        <div>
+          <select
+            className="emoji-selector"
+            value={perf.reactionEmoji}
+            onChange={e =>
+              dispatch(
+                setPreferences({
+                  ...perf,
+                  reactionEmoji: e.target.value,
+                } as UserPreferences)
+              )
+            }>
+            <option value="+">
+              + <FormattedMessage {...messages.Default} />
+            </option>
+            {emoji("").map(({ name, char }) => {
+              return (
+                <option value={char}>
+                  {name} {char}
+                </option>
+              );
+            })}
+          </select>
         </div>
       </div>
       <div className="card flex">

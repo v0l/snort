@@ -383,6 +383,9 @@
   "e7qqly": {
     "string": "Mark All Read"
   },
+  "eHAneD": {
+    "string": "Reaction emoji"
+  },
   "eJj8HD": {
     "string": "Get Verified"
   },
@@ -403,6 +406,9 @@
   },
   "gDZkld": {
     "string": "Snort is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
+  },
+  "gDzDRs": {
+    "string": "Emoji to send when reactiong to a note"
   },
   "gjBiyj": {
     "string": "Loading..."

@@ -109,6 +109,16 @@ export default function useEventPublisher() {
         }
       }
     },
+    /**
+     * Write event to all given relays.
+     */
+    broadcastAll: (ev: NEvent | undefined, relays: string[]) => {
+      if (ev) {
+        for (const k of relays) {
+          System.WriteOnceToRelay(k, ev);
+        }
+      }
+    },
     muted: async (keys: HexKey[], priv: HexKey[]) => {
       if (pubKey) {
         const ev = NEvent.ForPubKey(pubKey);
@@ -217,6 +227,24 @@ export default function useEventPublisher() {
           ev.Tags.push(new Tag(["p", pk], ev.Tags.length));
         }
 
+        return await signEvent(ev);
+      }
+    },
+    saveRelaysSettings: async () => {
+      if (pubKey) {
+        const ev = NEvent.ForPubKey(pubKey);
+        ev.Kind = EventKind.Relays;
+        ev.Content = "";
+        for (const [url, settings] of Object.entries(relays)) {
+          const rTag = ["r", url];
+          if (settings.read && !settings.write) {
+            rTag.push("read");
+          }
+          if (settings.write && !settings.read) {
+            rTag.push("write");
+          }
+          ev.Tags.push(new Tag(rTag, ev.Tags.length));
+        }
         return await signEvent(ev);
       }
     },

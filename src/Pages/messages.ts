@@ -33,4 +33,7 @@ export default defineMessages({
   NostrPlebsNip: {
     defaultMessage: `Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices`,
   },
+  Relays: {
+    defaultMessage: "Relays",
+  },
 });

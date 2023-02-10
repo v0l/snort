@@ -12,12 +12,12 @@
 }
 
 .zap .header .amount {
-  font-size: 32px;
+  font-size: 24px;
 }
 
 @media (max-width: 520px) {
   .zap .header .amount {
-    font-size: 21px;
+    font-size: 16px;
   }
 }
 

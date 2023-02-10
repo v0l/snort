@@ -185,3 +185,8 @@ export function unwrap<T>(v: T | undefined | null): T {
   }
   return v;
 }
+
+export function randomSample<T>(coll: T[], size: number) {
+  const random = [...coll];
+  return random.sort(() => (Math.random() >= 0.5 ? 1 : -1)).slice(0, size);
+}
