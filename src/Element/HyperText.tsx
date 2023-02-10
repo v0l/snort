@@ -27,15 +27,14 @@ export default function HyperText({ link, creator }: { link: string; creator: He
   const render = useCallback(() => {
     const a = link;
     try {
-      if (creator !== publicKey) {
-        const hideNonFollows = pref.autoLoadMedia === "follows-only" && !follows.includes(creator);
-        if (pref.autoLoadMedia === "none" || hideNonFollows) {
-          return (
-            <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-              {a}
-            </a>
-          );
-        }
+      const hideNonFollows = pref.autoLoadMedia === "follows-only" && !follows.includes(creator);
+      const isMine = creator === publicKey;
+      if (pref.autoLoadMedia === "none" || (!isMine && hideNonFollows)) {
+        return (
+          <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
+            {a}
+          </a>
+        );
       }
       const url = new URL(a);
       const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
