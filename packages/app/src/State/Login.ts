@@ -126,6 +126,7 @@ export interface LoginStore {
   latestTags: number;
 
   /**
+
    * A list of event ids this user has pinned
    */
   pinned: HexKey[];
