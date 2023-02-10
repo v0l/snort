@@ -137,7 +137,10 @@ export default function LoginPage() {
 
     return (
       <button type="button" onClick={doNip07Login}>
-        Login with Extension (NIP-07)
+        <FormattedMessage
+          defaultMessage="Login with Extension (NIP-07)"
+          description="Login button for NIP7 key manager extension"
+        />
       </button>
     );
   }
@@ -170,12 +173,12 @@ export default function LoginPage() {
               description="Explanation for public key only login is read-only"
             />
           </p>
-          <a href="">
+          {/* <a href="">
             <FormattedMessage
               defaultMessage="Why is there no password field?"
               description="Link to why your private key is your password"
             />
-          </a>
+          </a>*/}
           <div className="login-actions">
             <button type="button" onClick={doLogin}>
               <FormattedMessage defaultMessage="Login" description="Login button" />

@@ -49,7 +49,7 @@
 .login > div:nth-child(2) > div.artwork .zap-button {
   display: inline-block;
   color: inherit;
-  background-color: inherit;
+  background-color: unset;
 }
 
 @media (max-width: 1024px) {
