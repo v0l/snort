@@ -13,9 +13,9 @@ const Gear = (props: IconProps) => {
       <path
         d="M9.99992 14C11.6568 14 12.9999 12.6569 12.9999 11C12.9999 9.34315 11.6568 8 9.99992 8C8.34307 8 6.99992 9.34315 6.99992 11C6.99992 12.6569 8.34307 14 9.99992 14Z"
         stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
