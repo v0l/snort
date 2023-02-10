@@ -32,14 +32,28 @@ export default function Layout() {
   const { loggedOut, publicKey, relays, latestNotification, readNotifications, dms, preferences, newUserKey } =
     useSelector((s: RootState) => s.login);
   const { isMuted } = useModeration();
+  const [pageClass, setPageClass] = useState("page");
 
   const usingDb = useDb();
   const pub = useEventPublisher();
   useLoginFeed();
 
   const shouldHideNoteCreator = useMemo(() => {
-    const hideNoteCreator = ["/settings", "/messages", "/new"];
-    return hideNoteCreator.some(a => location.pathname.startsWith(a));
+    const hideOn = ["/settings", "/messages", "/new", "/login"];
+    return hideOn.some(a => location.pathname.startsWith(a));
+  }, [location]);
+
+  const shouldHideHeader = useMemo(() => {
+    const hideOn = ["/login"];
+    return hideOn.some(a => location.pathname.startsWith(a));
+  }, [location]);
+
+  useEffect(() => {
+    if (location.pathname.startsWith("/login")) {
+      setPageClass("");
+    } else {
+      setPageClass("page");
+    }
   }, [location]);
 
   const hasNotifications = useMemo(
@@ -197,21 +211,23 @@ export default function Layout() {
     return null;
   }
   return (
-    <div className="page">
-      <header>
-        <div className="logo" onClick={() => navigate("/")}>
-          Snort
-        </div>
-        <div>
-          {publicKey ? (
-            accountHeader()
-          ) : (
-            <button type="button" onClick={() => navigate("/login")}>
-              <FormattedMessage {...messages.Login} />
-            </button>
-          )}
-        </div>
-      </header>
+    <div className={pageClass}>
+      {!shouldHideHeader && (
+        <header>
+          <div className="logo" onClick={() => navigate("/")}>
+            Snort
+          </div>
+          <div>
+            {publicKey ? (
+              accountHeader()
+            ) : (
+              <button type="button" onClick={() => navigate("/login")}>
+                <FormattedMessage {...messages.Login} />
+              </button>
+            )}
+          </div>
+        </header>
+      )}
       <Outlet />
 
       {!shouldHideNoteCreator && (
