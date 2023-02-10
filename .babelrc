@@ -1,7 +1,3 @@
 {
-  "plugins": [
-    [
-      "formatjs"
-    ]
-  ]
+  "plugins": [["formatjs"]]
 }
