@@ -58,6 +58,7 @@
     "eject": "react-scripts eject",
     "intl-extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file src/lang.json --format transifex --flatten true",
     "intl-compile": "formatjs compile src/lang.json --out-file src/translations/en.json --format transifex",
+    "transifex": "formatjs compile src/translations/$LNG.json --out-file src/translations/$LNG.json --format transifex",
     "format": "prettier --write .",
     "eslint": "eslint .",
     "prepare": "husky install"
