@@ -13,6 +13,7 @@ export type NoteStore = {
 export type UseSubscriptionOptions = {
   leaveOpen: boolean;
   cache: boolean;
+  relay?: string;
 };
 
 interface ReducerArg {
@@ -130,10 +131,16 @@ export default function useSubscription(
         });
       };
 
-      console.debug("Adding sub: ", subDebounce.ToObject());
-      System.AddSubscription(subDebounce);
+      const subObj = subDebounce.ToObject();
+      console.debug("Adding sub: ", subObj);
+      if (options?.relay) {
+        System.AddSubscriptionToRelay(subDebounce, options.relay);
+      } else {
+        System.AddSubscription(subDebounce);
+      }
       return () => {
-        console.debug("Removing sub: ", subDebounce.ToObject());
+        console.debug("Removing sub: ", subObj);
+        subDebounce.OnEvent = () => undefined;
         System.RemoveSubscription(subDebounce.Id);
       };
     }

@@ -1,5 +1,5 @@
 import "./Root.css";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useIntl, FormattedMessage } from "react-intl";
@@ -10,6 +10,7 @@ import Timeline from "Element/Timeline";
 import { TimelineSubject } from "Feed/TimelineFeed";
 
 import messages from "./messages";
+import { System } from "Nostr/System";
 
 export default function RootPage() {
   const { formatMessage } = useIntl();
@@ -29,6 +30,7 @@ export default function RootPage() {
     },
   };
   const [tab, setTab] = useState<Tab>(RootTab.Posts);
+  const [relay, setRelay] = useState<string>();
   const tagTabs = tags.map((t, idx) => {
     return { text: `#${t}`, value: idx + 3 };
   });
@@ -51,6 +53,20 @@ export default function RootPage() {
     }
   }
 
+  const globalRelays = useMemo(() => {
+    const ret: string[] = [];
+    System.Sockets.forEach((v, k) => {
+      if (v.Info?.limitation?.payment_required === true) {
+        ret.push(k);
+      }
+    });
+
+    if (ret.length > 0 && !relay) {
+      setRelay(ret[0]);
+    }
+    return ret;
+  }, [relays, relay]);
+
   const isGlobal = loggedOut || tab.value === RootTab.Global.value;
   const timelineSubect: TimelineSubject = (() => {
     if (isGlobal) {
@@ -63,16 +79,38 @@ export default function RootPage() {
 
     return { type: "pubkey", items: follows, discriminator: "follows" };
   })();
+
+  if (isGlobal && globalRelays.length === 0) return null;
   return (
     <>
       <div className="main-content">{pubKey && <Tabs tabs={tabs} tab={tab} setTab={setTab} />}</div>
+      {isGlobal && (
+        <div className="flex mb10">
+          <div className="f-grow">
+            <FormattedMessage
+              defaultMessage="Read global from"
+              description="Label for reading global feed from specific relays"
+            />
+          </div>
+          <div>
+            <select onChange={e => setRelay(e.target.value)}>
+              {globalRelays.map(a => (
+                <option key={a} value={a}>
+                  {new URL(a).host}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
       {followHints()}
       <Timeline
         key={tab.value}
         subject={timelineSubect}
         postsOnly={tab.value === RootTab.Posts.value}
         method={"TIME_RANGE"}
-        window={tab.value === RootTab.Global.value ? 60 : undefined}
+        window={isGlobal ? 60 : undefined}
+        relay={isGlobal ? relay : undefined}
       />
     </>
   );

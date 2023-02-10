@@ -75,6 +75,10 @@ export class NostrSystem {
     }
   }
 
+  AddSubscriptionToRelay(sub: Subscriptions, relay: string) {
+    this.Sockets.get(relay)?.AddSubscription(sub);
+  }
+
   AddSubscription(sub: Subscriptions) {
     for (const [, s] of this.Sockets) {
       s.AddSubscription(sub);
