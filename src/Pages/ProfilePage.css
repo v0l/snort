@@ -6,6 +6,7 @@
 
 .profile .banner {
   width: 100%;
+  border-radius: 5px;
   height: 160px;
   object-fit: cover;
   margin-bottom: -60px;
@@ -38,8 +39,9 @@
 @media (min-width: 520px) {
   .profile .banner {
     width: 100%;
+    min-height: 100px;
     max-width: 720px;
-    height: 280px;
+    max-height: 280px;
   }
   .profile .profile-actions button.icon:not(:last-child) {
     margin-right: 2px;
