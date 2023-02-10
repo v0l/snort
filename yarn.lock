@@ -1224,6 +1224,11 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@formatjs/cli@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@formatjs/cli/-/cli-6.0.1.tgz#dc295e4e726c984e028376759b3a3fef5eb1d933"
+  integrity sha512-Fezqcvn6EAGOLvq1LuBJ8C1dNKb4AKqdL3Bc61uCNQjjvfJv3fsxgLYFV4pkOlLGE/xzXY+xywEkCxN3Eo7Arw==
+
 "@formatjs/ecma402-abstract@1.14.3":
   version "1.14.3"
   resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.14.3.tgz#6428f243538a11126180d121ce8d4b2f17465738"

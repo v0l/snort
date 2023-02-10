@@ -1,0 +1,632 @@
+{
+  "+D82kt": {
+    "string": "Are you sure you want to repost: {id}"
+  },
+  "+vIQlC": {
+    "string": "Please make sure to save the following password in order to manage your handle in the future"
+  },
+  "/4tOwT": {
+    "string": "Skip"
+  },
+  "/JE/X+": {
+    "string": "Account Support"
+  },
+  "/RD0e2": {
+    "string": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content."
+  },
+  "/d6vEc": {
+    "string": "Make your profile easier to find and share"
+  },
+  "/n5KSF": {
+    "string": "{n} ms"
+  },
+  "0BUTMv": {
+    "string": "Search..."
+  },
+  "0mch2Y": {
+    "string": "name has disallowed characters"
+  },
+  "0yO7wF": {
+    "string": "{n} secs"
+  },
+  "1A7TZk": {
+    "string": "What is Snort and how does it work?"
+  },
+  "1udzha": {
+    "string": "Conversations"
+  },
+  "2/2yg+": {
+    "string": "Add"
+  },
+  "25V4l1": {
+    "string": "Banner"
+  },
+  "2IFGap": {
+    "string": "Donate"
+  },
+  "2eWW0m": {
+    "string": "Service Key"
+  },
+  "2k0Cv+": {
+    "string": "Dislikes ({n})"
+  },
+  "3cc4Ct": {
+    "string": "Light"
+  },
+  "450Fty": {
+    "string": "None"
+  },
+  "47FYwb": {
+    "string": "Cancel"
+  },
+  "4L2vUY": {
+    "string": "Your new NIP-05 handle is:"
+  },
+  "4OB335": {
+    "string": "Dislike"
+  },
+  "4Vmpt4": {
+    "string": "Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices"
+  },
+  "4Z3t5i": {
+    "string": "Use imgproxy to compress images"
+  },
+  "4rYCjn": {
+    "string": "Note to Self"
+  },
+  "5ykRmX": {
+    "string": "Send zap"
+  },
+  "6ewQqw": {
+    "string": "Likes ({n})"
+  },
+  "7+Domh": {
+    "string": "Notes"
+  },
+  "7hp70g": {
+    "string": "NIP-05"
+  },
+  "7xzTiH": {
+    "string": "{action} to {target}"
+  },
+  "8/vBbP": {
+    "string": "Reposts ({n})"
+  },
+  "89q5wc": {
+    "string": "Confirm Reposts"
+  },
+  "8E9muH": {
+    "string": "Import Twitter Follows (optional)"
+  },
+  "8QDesP": {
+    "string": "Zap {n} sats"
+  },
+  "8g2vyB": {
+    "string": "name too long"
+  },
+  "9+Ddtu": {
+    "string": "Next"
+  },
+  "9HU8vw": {
+    "string": "Reply"
+  },
+  "9SvQep": {
+    "string": "Follows {n}"
+  },
+  "9WRlF4": {
+    "string": "Send"
+  },
+  "9wO4wJ": {
+    "string": "Lightning Invoice"
+  },
+  "ASRK0S": {
+    "string": "This author has been muted"
+  },
+  "Adk34V": {
+    "string": "Setup your Profile"
+  },
+  "AyGauy": {
+    "string": "Login"
+  },
+  "B4C47Y": {
+    "string": "name too short"
+  },
+  "B6+XJy": {
+    "string": "zapped"
+  },
+  "BOUMjw": {
+    "string": "No nostr users found for {twitterUsername}"
+  },
+  "BcGMo+": {
+    "string": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
+  },
+  "C81/uG": {
+    "string": "Logout"
+  },
+  "CHTbO3": {
+    "string": "Failed to load invoice"
+  },
+  "Cu/K85": {
+    "string": "Translated from {lang}"
+  },
+  "D3idYv": {
+    "string": "Settings"
+  },
+  "DKnriN": {
+    "string": "Send sats"
+  },
+  "DZzCem": {
+    "string": "Show latest {n} notes"
+  },
+  "Dt/Zd5": {
+    "string": "Media in posts will automatically be shown for selected people, otherwise only the link will show"
+  },
+  "E8a4yq": {
+    "string": "Follow some popular accounts"
+  },
+  "EPYwm7": {
+    "string": "Your private key is your password. If you lose this key, you will lose access to your account! Copy it and keep it in a safe place. There is no way to reset your private key."
+  },
+  "EWyQH5": {
+    "string": "Global"
+  },
+  "Ebl/B2": {
+    "string": "Translate to {lang}"
+  },
+  "EnCOBJ": {
+    "string": "Buy"
+  },
+  "Eqjl5K": {
+    "string": "Only Snort and our integration partner identifier gives you a colorful domain name, but you are welcome to use other services too."
+  },
+  "F+B3x1": {
+    "string": "We have also partnered with nostrplebs.com to give you more options"
+  },
+  "FS3b54": {
+    "string": "Done!"
+  },
+  "FmXUJg": {
+    "string": "follows you"
+  },
+  "G/yZLu": {
+    "string": "Remove"
+  },
+  "GspYR7": {
+    "string": "{n} Dislike"
+  },
+  "H0JBH6": {
+    "string": "Log Out"
+  },
+  "H6/kLh": {
+    "string": "Order Paid!"
+  },
+  "HAlOn1": {
+    "string": "Name"
+  },
+  "HFls6j": {
+    "string": "name will be available later"
+  },
+  "HOzFdo": {
+    "string": "Muted"
+  },
+  "HbefNb": {
+    "string": "Open Wallet"
+  },
+  "IKKHqV": {
+    "string": "Follows"
+  },
+  "INSqIz": {
+    "string": "Twitter username..."
+  },
+  "IUZC+0": {
+    "string": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you."
+  },
+  "JCIgkj": {
+    "string": "Username"
+  },
+  "JHEHCk": {
+    "string": "Zaps ({n})"
+  },
+  "JkLHGw": {
+    "string": "Website"
+  },
+  "K3r6DQ": {
+    "string": "Delete"
+  },
+  "K7AkdL": {
+    "string": "Show"
+  },
+  "KQvWvD": {
+    "string": "Deleted"
+  },
+  "KWuDfz": {
+    "string": "I have saved my keys, continue"
+  },
+  "KahimY": {
+    "string": "Unknown event kind: {kind}"
+  },
+  "LgbKvU": {
+    "string": "Comment"
+  },
+  "M3Oirc": {
+    "string": "Debug Menus"
+  },
+  "MBAYRO": {
+    "string": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message"
+  },
+  "MI2jkA": {
+    "string": "Not available:"
+  },
+  "MRp6Ly": {
+    "string": "Twitter username"
+  },
+  "MzRYWH": {
+    "string": "Buying {item}"
+  },
+  "N2IrpM": {
+    "string": "Confirm"
+  },
+  "NdOYJJ": {
+    "string": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!"
+  },
+  "NfNk2V": {
+    "string": "Your private key"
+  },
+  "NndBJE": {
+    "string": "New users page"
+  },
+  "OEW7yJ": {
+    "string": "Zaps"
+  },
+  "OKhRC6": {
+    "string": "Share"
+  },
+  "P61BTu": {
+    "string": "Copy Event JSON"
+  },
+  "P7FD0F": {
+    "string": "System (Default)"
+  },
+  "PCSt5T": {
+    "string": "Preferences"
+  },
+  "Pe0ogR": {
+    "string": "Theme"
+  },
+  "PrsIg7": {
+    "string": "Reactions will be shown on every page, if disabled no reactions will be shown"
+  },
+  "RDZVQL": {
+    "string": "Check"
+  },
+  "RahCRH": {
+    "string": "Expired"
+  },
+  "RhDAoS": {
+    "string": "Are you sure you want to delete {id}"
+  },
+  "RoOyAh": {
+    "string": "Relays"
+  },
+  "Sjo1P4": {
+    "string": "Custom"
+  },
+  "UQ3pOC": {
+    "string": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step."
+  },
+  "Up5U7K": {
+    "string": "Block"
+  },
+  "VOjC1i": {
+    "string": "Pick which upload service you want to upload attachments to"
+  },
+  "VlJkSk": {
+    "string": "{n} muted"
+  },
+  "VnXp8Z": {
+    "string": "Avatar"
+  },
+  "Vx7Zm2": {
+    "string": "How do keys work?"
+  },
+  "W9355R": {
+    "string": "Unmute"
+  },
+  "WONP5O": {
+    "string": "Find your twitter follows on nostr (Data provided by {provider})"
+  },
+  "WxthCV": {
+    "string": "e.g. Jack"
+  },
+  "XgWvGA": {
+    "string": "Reactions"
+  },
+  "YDURw6": {
+    "string": "Service URL"
+  },
+  "YXA3AH": {
+    "string": "Enable reactions"
+  },
+  "ZKORll": {
+    "string": "Activate Now"
+  },
+  "a5UPxh": {
+    "string": "Fund developers and platforms providing NIP-05 verification services"
+  },
+  "aWpBzj": {
+    "string": "Show more"
+  },
+  "brAXSu": {
+    "string": "Pick a username"
+  },
+  "bxv59V": {
+    "string": "Just now"
+  },
+  "cWx9t8": {
+    "string": "Mute all"
+  },
+  "cuV2gK": {
+    "string": "name is registered"
+  },
+  "cyR7Kh": {
+    "string": "Back"
+  },
+  "d7d0/x": {
+    "string": "LN Address"
+  },
+  "dOQCL8": {
+    "string": "Display name"
+  },
+  "e7qqly": {
+    "string": "Mark All Read"
+  },
+  "eJj8HD": {
+    "string": "Get Verified"
+  },
+  "eR3YIn": {
+    "string": "Posts"
+  },
+  "filwqD": {
+    "string": "Read"
+  },
+  "flnGvv": {
+    "string": "What's on your mind?"
+  },
+  "g5pX+a": {
+    "string": "About"
+  },
+  "gBdUXk": {
+    "string": "Save your keys!"
+  },
+  "gDZkld": {
+    "string": "Snort is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
+  },
+  "gjBiyj": {
+    "string": "Loading..."
+  },
+  "hCUivF": {
+    "string": "Notes will stream in real time into global and posts tab"
+  },
+  "hK5ZDk": {
+    "string": "the world"
+  },
+  "hLAvqx": {
+    "string": "Service Salt"
+  },
+  "hMzcSq": {
+    "string": "Messages"
+  },
+  "hY4lzx": {
+    "string": "Supports"
+  },
+  "hicxcO": {
+    "string": "Show replies"
+  },
+  "iCqGww": {
+    "string": "Reactions ({n})"
+  },
+  "iDGAbc": {
+    "string": "Get a Snort identifier"
+  },
+  "iGT1eE": {
+    "string": "Prevent fake accounts from imitating you"
+  },
+  "iNWbVV": {
+    "string": "Handle"
+  },
+  "ieGrWo": {
+    "string": "Follow"
+  },
+  "itPgxd": {
+    "string": "Profile"
+  },
+  "izWS4J": {
+    "string": "Unfollow"
+  },
+  "jA3OE/": {
+    "string": "{n,plural,=1{{n} sat} other{{n} sats}}"
+  },
+  "jCA7Cw": {
+    "string": "Preview on snort"
+  },
+  "juhqvW": {
+    "string": "Improve login security with browser extensions"
+  },
+  "jvo0vs": {
+    "string": "Save"
+  },
+  "k2veDA": {
+    "string": "Write"
+  },
+  "k7sKNy": {
+    "string": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
+  },
+  "lCILNz": {
+    "string": "Buy Now"
+  },
+  "lD3+8a": {
+    "string": "Pay"
+  },
+  "lgg1KN": {
+    "string": "account page"
+  },
+  "ll3xBp": {
+    "string": "Image proxy service"
+  },
+  "lnaT9F": {
+    "string": "Following {n}"
+  },
+  "lvlPhZ": {
+    "string": "Pay Invoice"
+  },
+  "mKAr6h": {
+    "string": "Follow all"
+  },
+  "mKh2HS": {
+    "string": "File upload service"
+  },
+  "mKhgP9": {
+    "string": "{n,plural,=0{} =1{zapped} other{zapped}}"
+  },
+  "n1xHAH": {
+    "string": "Get an identifier (optional)"
+  },
+  "nDejmx": {
+    "string": "Unblock"
+  },
+  "nN9XTz": {
+    "string": "Share your thoughts with {link}"
+  },
+  "nwZXeh": {
+    "string": "{n} blocked"
+  },
+  "o7e+nJ": {
+    "string": "{n} followers"
+  },
+  "odFwjL": {
+    "string": "Follows only"
+  },
+  "osUr8O": {
+    "string": "You can also use these extensions to login to most Nostr sites."
+  },
+  "oxCa4R": {
+    "string": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app."
+  },
+  "pzTOmv": {
+    "string": "Followers"
+  },
+  "qUJTsT": {
+    "string": "Blocked"
+  },
+  "qdGuQo": {
+    "string": "Your Private Key Is (do not share this with anyone)"
+  },
+  "qkvYUb": {
+    "string": "Add to Profile"
+  },
+  "qmJ8kD": {
+    "string": "Translation failed"
+  },
+  "r3C4x/": {
+    "string": "Software"
+  },
+  "rT14Ow": {
+    "string": "Add Relays"
+  },
+  "reJ6SM": {
+    "string": "It is recommended to use one of the following browser extensions if you are on a desktop computer to secure your key:"
+  },
+  "rfuMjE": {
+    "string": "(Default)"
+  },
+  "rrfdTe": {
+    "string": "This is the same technology which is used by Bitcoin and has been proven to be extremely secure."
+  },
+  "rudscU": {
+    "string": "Failed to load follows, please try again later"
+  },
+  "sWnYKw": {
+    "string": "Snort is designed to have a similar experience to Twitter."
+  },
+  "svOoEH": {
+    "string": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule."
+  },
+  "tOdNiY": {
+    "string": "Dark"
+  },
+  "thnRpU": {
+    "string": "Getting NIP-05 verified can help:"
+  },
+  "u/vOPu": {
+    "string": "Paid"
+  },
+  "uD/N6c": {
+    "string": "Zap {target} {n} sats"
+  },
+  "uSV4Ti": {
+    "string": "Reposts need to be manually confirmed"
+  },
+  "usAvMr": {
+    "string": "Edit Profile"
+  },
+  "ut+2Cd": {
+    "string": "Get a partner identifier"
+  },
+  "vOKedj": {
+    "string": "{n,plural,=1{& {n} other} other{& {n} others}}"
+  },
+  "vZ4quW": {
+    "string": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."
+  },
+  "wEQDC6": {
+    "string": "Edit"
+  },
+  "wih7iJ": {
+    "string": "name is blocked"
+  },
+  "wqyN/i": {
+    "string": "Find out more info about {service} at {link}"
+  },
+  "wtLjP6": {
+    "string": "Copy ID"
+  },
+  "x82IOl": {
+    "string": "Mute"
+  },
+  "xIoGG9": {
+    "string": "Go to"
+  },
+  "xJ9n2N": {
+    "string": "Your public key"
+  },
+  "xKflGN": {
+    "string": "{username}''s Follows on Nostr"
+  },
+  "xbVgIm": {
+    "string": "Automatically load media"
+  },
+  "xmcVZ0": {
+    "string": "Search"
+  },
+  "zFegDD": {
+    "string": "Contact"
+  },
+  "zINlao": {
+    "string": "Owner"
+  },
+  "zQvVDJ": {
+    "string": "All"
+  },
+  "zcaOTs": {
+    "string": "Zap amount in sats"
+  },
+  "zjJZBd": {
+    "string": "You're ready!"
+  },
+  "zonsdq": {
+    "string": "Failed to load LNURL service"
+  },
+  "zvCDao": {
+    "string": "Automatically show latest notes"
+  }
+}
