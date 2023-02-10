@@ -22,10 +22,10 @@ const RelaySettingsPage = () => {
     publisher.broadcast(ev);
     publisher.broadcastForBootstrap(ev);
     try {
-      const relays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
+      const onlineRelays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
       const settingsEv = await publisher.saveRelaysSettings();
-      publisher.broadcast(ev);
-      publisher.broadcastAll(settingsEv, randomSample(relays, 20));
+      const rs = Object.keys(relays).concat(randomSample(onlineRelays, 20));
+      publisher.broadcastAll(settingsEv, rs);
     } catch (error) {
       console.error(error);
     }
