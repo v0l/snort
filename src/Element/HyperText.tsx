@@ -22,17 +22,20 @@ import { HexKey } from "Nostr";
 export default function HyperText({ link, creator }: { link: string; creator: HexKey }) {
   const pref = useSelector((s: RootState) => s.login.preferences);
   const follows = useSelector((s: RootState) => s.login.follows);
+  const publicKey = useSelector((s: RootState) => s.login.publicKey);
 
   const render = useCallback(() => {
     const a = link;
     try {
-      const hideNonFollows = pref.autoLoadMedia === "follows-only" && !follows.includes(creator);
-      if (pref.autoLoadMedia === "none" || hideNonFollows) {
-        return (
-          <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-            {a}
-          </a>
-        );
+      if (creator !== publicKey) {
+        const hideNonFollows = pref.autoLoadMedia === "follows-only" && !follows.includes(creator);
+        if (pref.autoLoadMedia === "none" || hideNonFollows) {
+          return (
+            <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
+              {a}
+            </a>
+          );
+        }
       }
       const url = new URL(a);
       const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
