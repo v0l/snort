@@ -1,7 +1,10 @@
 .dm-list {
   overflow-y: auto;
   overflow-x: hidden;
-  height: calc(100vh - 66px - 50px - 70px);
+  --header-height: 72px;
+  --profile-container-height: 58px;
+  --write-dm-input-height: 86px;
+  height: calc(100vh - var(--header-height) - var(--profile-container-height) - var(--write-dm-input-height));
 }
 
 .dm-list > div {

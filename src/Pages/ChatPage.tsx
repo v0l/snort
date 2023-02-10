@@ -2,7 +2,6 @@ import "./ChatPage.css";
 import { KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useInView } from "react-intersection-observer";
 
 import ProfileImage from "Element/ProfileImage";
 import { bech32ToHex } from "Util";
@@ -25,7 +24,6 @@ export default function ChatPage() {
   const pubKey = useSelector((s: RootState) => s.login.publicKey);
   const dms = useSelector((s: RootState) => filterDms(s.login.dms));
   const [content, setContent] = useState<string>();
-  const { ref, inView } = useInView();
   const dmListRef = useRef<HTMLDivElement>(null);
 
   function filterDms(dms: TaggedRawEvent[]) {
@@ -37,10 +35,10 @@ export default function ChatPage() {
   }, [dms]);
 
   useEffect(() => {
-    if (inView && dmListRef.current) {
+    if (dmListRef.current) {
       dmListRef.current.scroll(0, dmListRef.current.scrollHeight);
     }
-  }, [inView, dmListRef, sortedDms]);
+  }, [dmListRef.current?.scrollHeight]);
 
   async function sendDm() {
     if (content) {
@@ -68,7 +66,6 @@ export default function ChatPage() {
           {sortedDms.map(a => (
             <DM data={a as TaggedRawEvent} key={a.id} />
           ))}
-          <div ref={ref} className="mb10"></div>
         </div>
       </div>
       <div className="write-dm">
