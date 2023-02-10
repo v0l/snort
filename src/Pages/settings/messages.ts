@@ -25,8 +25,8 @@ export default defineMessages({
   ImgProxy: { defaultMessage: "Image proxy service" },
   ImgProxyHelp: { defaultMessage: "Use imgproxy to compress images" },
   ServiceUrl: { defaultMessage: "Service URL" },
-  ServiceKey: { defaultMessage: "Service Key" },
-  ServiceSalt: { defaultMessage: "Service Salt" },
+  ServiceKey: { defaultMessage: "Key" },
+  ServiceSalt: { defaultMessage: "Salt" },
   EnableReactions: { defaultMessage: "Enable reactions" },
   EnableReactionsHelp: {
     defaultMessage: "Reactions will be shown on every page, if disabled no reactions will be shown",
