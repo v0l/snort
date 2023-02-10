@@ -26,8 +26,8 @@ export default function useRelaysFeed(pubkey: HexKey) {
         {
           url,
           settings: {
-            read: settings.includes("read"),
-            write: settings.includes("write"),
+            read: settings.length === 0 || settings.includes("read"),
+            write: settings.length === 0 || settings.includes("write"),
           },
         },
       ];

@@ -227,10 +227,10 @@ export default function useEventPublisher() {
         ev.Content = "";
         for (const [url, settings] of Object.entries(relays)) {
           const rTag = ["r", url];
-          if (settings.read) {
+          if (settings.read && !settings.write) {
             rTag.push("read");
           }
-          if (settings.write) {
+          if (settings.write && !settings.read) {
             rTag.push("write");
           }
           ev.Tags.push(new Tag(rTag, ev.Tags.length));
