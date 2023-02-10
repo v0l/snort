@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
+import { useState, ReactNode } from "react";
 
+import ChevronDown from "Icons/ChevronDown";
 import ShowMore from "Element/ShowMore";
 
 interface CollapsedProps {
@@ -16,6 +17,45 @@ const Collapsed = ({ text, children, collapsed, setCollapsed }: CollapsedProps) 
     </div>
   ) : (
     <div className="uncollapsed">{children}</div>
+  );
+};
+
+interface CollapsedIconProps {
+  icon: ReactNode;
+  children: ReactNode;
+  collapsed: boolean;
+}
+
+export const CollapsedIcon = ({ icon, children, collapsed }: CollapsedIconProps) => {
+  return collapsed ? (
+    <div className="collapsed">{icon}</div>
+  ) : (
+    <div className="uncollapsed">
+      {icon}
+      {children}
+    </div>
+  );
+};
+
+interface CollapsedSectionProps {
+  title: ReactNode;
+  children: ReactNode;
+}
+
+export const CollapsedSection = ({ title, children }: CollapsedSectionProps) => {
+  const [collapsed, setCollapsed] = useState(true);
+  const icon = (
+    <div className={`collapse-icon ${collapsed ? "" : "flip"}`} onClick={() => setCollapsed(!collapsed)}>
+      <ChevronDown />
+    </div>
+  );
+  return (
+    <div className="collapsable-section">
+      <h3 onClick={() => setCollapsed(!collapsed)}>{title}</h3>
+      <CollapsedIcon icon={icon} collapsed={collapsed}>
+        {children}
+      </CollapsedIcon>
+    </div>
   );
 };
 

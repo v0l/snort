@@ -15,11 +15,22 @@ export interface ProfileImageProps {
   showUsername?: boolean;
   className?: string;
   link?: string;
+  defaultNip?: string;
+  verifyNip?: boolean;
 }
 
-export default function ProfileImage({ pubkey, subHeader, showUsername = true, className, link }: ProfileImageProps) {
+export default function ProfileImage({
+  pubkey,
+  subHeader,
+  showUsername = true,
+  className,
+  link,
+  defaultNip,
+  verifyNip,
+}: ProfileImageProps) {
   const navigate = useNavigate();
   const user = useUserProfile(pubkey);
+  const nip05 = defaultNip ? defaultNip : user?.nip05;
 
   const name = useMemo(() => {
     return getDisplayName(user, pubkey);
@@ -35,7 +46,7 @@ export default function ProfileImage({ pubkey, subHeader, showUsername = true, c
           <div className="username">
             <Link className="display-name" key={pubkey} to={link ?? profileLink(pubkey)}>
               {name}
-              {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+              {nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
             </Link>
           </div>
           <div className="subheader">{subHeader}</div>

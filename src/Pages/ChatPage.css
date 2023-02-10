@@ -14,7 +14,7 @@
 .write-dm {
   position: fixed;
   bottom: 0;
-  background-color: var(--gray-light);
+  background-color: var(--gray);
   width: inherit;
   border-radius: 5px 5px 0 0;
 }

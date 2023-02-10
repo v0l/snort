@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { useIntl, FormattedMessage } from "react-intl";
 
 import { ApiHost } from "Const";
 import AsyncButton from "Element/AsyncButton";
@@ -8,11 +9,14 @@ import { RootState } from "State/Store";
 import { bech32ToHex } from "Util";
 import { useNavigate } from "react-router-dom";
 
+import messages from "./messages";
+
 const TwitterFollowsApi = `${ApiHost}/api/v1/twitter/follows-for-nostr`;
 
 export default function ImportFollows() {
   const navigate = useNavigate();
   const currentFollows = useSelector((s: RootState) => s.login.follows);
+  const { formatMessage } = useIntl();
   const [twitterUsername, setTwitterUsername] = useState<string>("");
   const [follows, setFollows] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
@@ -29,45 +33,76 @@ export default function ImportFollows() {
       const data = await rsp.json();
       if (rsp.ok) {
         if (Array.isArray(data) && data.length === 0) {
-          setError(`No nostr users found for "${twitterUsername}"`);
+          setError(formatMessage(messages.NoUsersFound, { twitterUsername }));
         } else {
           setFollows(data);
         }
       } else if ("error" in data) {
         setError(data.error);
       } else {
-        setError("Failed to load follows, please try again later");
+        setError(formatMessage(messages.FailedToLoad));
       }
     } catch (e) {
       console.warn(e);
-      setError("Failed to load follows, please try again later");
+      setError(formatMessage(messages.FailedToLoad));
     }
   }
 
   return (
-    <>
-      <h2>Import Twitter Follows</h2>
+    <div className="main-content new-user">
+      <div className="progress-bar">
+        <div className="progress progress-last"></div>
+      </div>
+      <h1>
+        <FormattedMessage {...messages.ImportTwitter} />
+      </h1>
       <p>
-        Find your twitter follows on nostr (Data provided by{" "}
-        <a href="https://nostr.directory" target="_blank" rel="noreferrer">
-          nostr.directory
-        </a>
-        )
+        <FormattedMessage
+          {...messages.FindYourFollows}
+          values={{
+            provider: (
+              <a href="https://nostr.directory" target="_blank" rel="noreferrer">
+                nostr.directory
+              </a>
+            ),
+          }}
+        />
       </p>
+      <h2>
+        <FormattedMessage {...messages.TwitterUsername} />
+      </h2>
       <div className="flex">
         <input
           type="text"
-          placeholder="Twitter username.."
+          placeholder={formatMessage(messages.TwitterPlaceholder)}
           className="f-grow mr10"
           value={twitterUsername}
           onChange={e => setTwitterUsername(e.target.value)}
         />
-        <AsyncButton onClick={loadFollows}>Check</AsyncButton>
+        <AsyncButton type="button" className="secondary tall" onClick={loadFollows}>
+          <FormattedMessage {...messages.Check} />
+        </AsyncButton>
       </div>
       {error.length > 0 && <b className="error">{error}</b>}
-      {sortedTwitterFollows.length > 0 && <FollowListBase pubkeys={sortedTwitterFollows} />}
+      {sortedTwitterFollows.length > 0 && (
+        <FollowListBase
+          title={
+            <h2>
+              <FormattedMessage {...messages.FollowsOnNostr} values={{ username: twitterUsername }} />
+            </h2>
+          }
+          pubkeys={sortedTwitterFollows}
+        />
+      )}
 
-      <button onClick={() => navigate("/new/discover")}>Next</button>
-    </>
+      <div className="next-actions">
+        <button className="secondary" type="button" onClick={() => navigate("/new/discover")}>
+          <FormattedMessage {...messages.Skip} />
+        </button>
+        <button type="button" onClick={() => navigate("/new/discover")}>
+          <FormattedMessage {...messages.Next} />
+        </button>
+      </div>
+    </div>
   );
 }

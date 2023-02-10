@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 
 import useEventPublisher from "Feed/EventPublisher";
@@ -8,7 +9,7 @@ import messages from "./messages";
 
 export interface FollowListBaseProps {
   pubkeys: HexKey[];
-  title?: string;
+  title?: ReactNode | string;
 }
 export default function FollowListBase({ pubkeys, title }: FollowListBaseProps) {
   const publisher = useEventPublisher();

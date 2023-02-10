@@ -1,21 +1,32 @@
+import { useIntl, FormattedMessage } from "react-intl";
+import { Link } from "react-router-dom";
 import { RecommendedFollows } from "Const";
 import FollowListBase from "Element/FollowListBase";
 import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+
+import messages from "./messages";
 
 export default function DiscoverFollows() {
-  const navigate = useNavigate();
-
-  const sortedRecommends = useMemo(() => {
+  const { formatMessage } = useIntl();
+  const sortedReccomends = useMemo(() => {
     return RecommendedFollows.sort(() => (Math.random() >= 0.5 ? -1 : 1));
   }, []);
 
   return (
-    <>
-      <h2>Follow some popular accounts</h2>
-      <button onClick={() => navigate("/")}>Skip</button>
-      {sortedRecommends.length > 0 && <FollowListBase pubkeys={sortedRecommends} />}
-      <button onClick={() => navigate("/")}>Done!</button>
-    </>
+    <div className="main-content new-user">
+      <div className="progress-bar">
+        <div className="progress"></div>
+      </div>
+      <h1>
+        <FormattedMessage {...messages.Ready} />
+      </h1>
+      <p>
+        <FormattedMessage {...messages.Share} values={{ link: <Link to="/">{formatMessage(messages.World)}</Link> }} />
+      </p>
+      <h3>
+        <FormattedMessage {...messages.PopularAccounts} />
+      </h3>
+      {sortedReccomends.length > 0 && <FollowListBase pubkeys={sortedReccomends} />}
+    </div>
   );
 }

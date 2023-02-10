@@ -1,7 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, ChangeEvent } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import { unwrap } from "Util";
+import { formatShort } from "Number";
 import {
   ServiceProvider,
   ServiceConfig,
@@ -28,10 +31,15 @@ type Nip05ServiceProps = {
   about: JSX.Element;
   link: string;
   supportLink: string;
+  helpText?: boolean;
+  autoUpdate?: boolean;
+  onChange?(h: string): void;
+  onSuccess?(h: string): void;
 };
 
 export default function Nip5Service(props: Nip05ServiceProps) {
   const navigate = useNavigate();
+  const { helpText = true, autoUpdate = true } = props;
   const { formatMessage } = useIntl();
   const pubkey = useSelector((s: RootState) => s.login.publicKey);
   const user = useUserProfile(pubkey);
@@ -45,6 +53,22 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   const [registerResponse, setRegisterResponse] = useState<HandleRegisterResponse>();
   const [showInvoice, setShowInvoice] = useState<boolean>(false);
   const [registerStatus, setRegisterStatus] = useState<CheckRegisterResponse>();
+
+  const onHandleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const h = e.target.value.toLowerCase();
+    setHandle(h);
+    if (props.onChange) {
+      props.onChange(`${h}@${domain}`);
+    }
+  };
+
+  const onDomainChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const d = e.target.value;
+    setDomain(d);
+    if (props.onChange) {
+      props.onChange(`${handle}@${d}`);
+    }
+  };
 
   const domainConfig = useMemo(() => serviceConfig?.domains.find(a => a.name === domain), [domain, serviceConfig]);
 
@@ -111,6 +135,9 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             setRegisterStatus(status);
             setRegisterResponse(undefined);
             setError(undefined);
+            if (autoUpdate) {
+              updateProfile(handle, domain);
+            }
           }
         }
       }, 2_000);
@@ -149,44 +176,47 @@ export default function Nip5Service(props: Nip05ServiceProps) {
 
   async function updateProfile(handle: string, domain: string) {
     if (user) {
+      const nip05 = `${handle}@${domain}`;
       const newProfile = {
         ...user,
-        nip05: `${handle}@${domain}`,
+        nip05,
       } as UserMetadata;
       const ev = await publisher.metadata(newProfile);
       publisher.broadcast(ev);
-      navigate("/settings");
+      if (props.onSuccess) {
+        props.onSuccess(nip05);
+      }
+      if (helpText) {
+        navigate("/settings");
+      }
     }
   }
 
   return (
     <>
-      <h3>{props.name}</h3>
-      {props.about}
-      <p>
-        <FormattedMessage
-          {...messages.FindMore}
-          values={{
-            service: props.name,
-            link: (
-              <a href={props.link} target="_blank" rel="noreferrer">
-                {props.link}
-              </a>
-            ),
-          }}
-        />
-      </p>
+      {helpText && <h3>{props.name}</h3>}
+      {helpText && props.about}
+      {helpText && (
+        <p>
+          <FormattedMessage
+            {...messages.FindMore}
+            values={{
+              service: props.name,
+              link: (
+                <a href={props.link} target="_blank" rel="noreferrer">
+                  {props.link}
+                </a>
+              ),
+            }}
+          />
+        </p>
+      )}
       {error && <b className="error">{error.error}</b>}
       {!registerStatus && (
         <div className="flex mb10">
-          <input
-            type="text"
-            placeholder="Handle"
-            value={handle}
-            onChange={e => setHandle(e.target.value.toLowerCase())}
-          />
+          <input type="text" placeholder={formatMessage(messages.Handle)} value={handle} onChange={onHandleChange} />
           &nbsp;@&nbsp;
-          <select value={domain} onChange={e => setDomain(e.target.value)}>
+          <select value={domain} onChange={onDomainChange}>
             {serviceConfig?.domains.map(a => (
               <option key={a.name}>{a.name}</option>
             ))}
@@ -196,17 +226,22 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       {availabilityResponse?.available && !registerStatus && (
         <div className="flex">
           <div className="mr10">
-            <FormattedMessage {...messages.Sats} values={{ n: availabilityResponse.quote?.price }} />
+            <FormattedMessage
+              {...messages.Sats}
+              values={{ n: formatShort(unwrap(availabilityResponse.quote?.price)) }}
+            />
             <br />
             <small>{availabilityResponse.quote?.data.type}</small>
           </div>
-          <input
-            type="text"
-            className="f-grow mr10"
-            placeholder="pubkey"
-            value={hexToBech32("npub", pubkey)}
-            disabled
-          />
+          {!autoUpdate && (
+            <input
+              type="text"
+              className="f-grow mr10"
+              placeholder="pubkey"
+              value={hexToBech32("npub", pubkey)}
+              disabled
+            />
+          )}
           <AsyncButton onClick={() => startBuy(handle, domain)}>
             <FormattedMessage {...messages.BuyNow} />
           </AsyncButton>
@@ -250,12 +285,16 @@ export default function Nip5Service(props: Nip05ServiceProps) {
               <FormattedMessage {...messages.AccountPage} />
             </a>
           </p>
-          <h4>
-            <FormattedMessage {...messages.ActivateNow} />
-          </h4>
-          <AsyncButton onClick={() => updateProfile(handle, domain)}>
-            <FormattedMessage {...messages.AddToProfile} />
-          </AsyncButton>
+          {!autoUpdate && (
+            <>
+              <h4>
+                <FormattedMessage {...messages.ActivateNow} />
+              </h4>
+              <AsyncButton onClick={() => updateProfile(handle, domain)}>
+                <FormattedMessage {...messages.AddToProfile} />
+              </AsyncButton>
+            </>
+          )}
         </div>
       )}
     </>

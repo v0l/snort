@@ -65,7 +65,7 @@ html.light {
 
 body {
   margin: 0;
-  font-family: "Be Vietnam Pro", sans-serif;
+  font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-color);
@@ -167,6 +167,8 @@ button.secondary {
 }
 
 button.transparent {
+  font-weight: 400;
+  color: var(--font-secondary);
   background-color: transparent;
   border: 1px solid var(--gray-superdark);
 }
@@ -542,4 +544,29 @@ body.scroll-lock {
 
 .main-content .profile-preview {
   margin-bottom: 16px;
+}
+
+button.tall {
+  height: 40px;
+}
+
+.collapsable-section {
+  position: relative;
+}
+
+.collapsable-section h3,
+.collapsable-section svg {
+  cursor: pointer;
+}
+
+.collapsable-section .collapse-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: transform 300ms ease-in-out;
+}
+
+.collapsable-section .collapse-icon.flip {
+  transform: rotate(180deg);
+  transition: transform 300ms ease-in-out;
 }
