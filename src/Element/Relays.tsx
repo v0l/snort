@@ -15,7 +15,11 @@ interface RelaysProps {
 }
 
 const RelayFavicon = ({ url }: { url: string }) => {
-  const cleanUrl = url.replace("wss://relay.", "https://").replace("wss://nostr.", "https://");
+  const cleanUrl = url
+    .replace("wss://relay.", "https://")
+    .replace("wss://nostr.", "https://")
+    .replace("wss://", "https://")
+    .replace(/\/$/, "");
   const [faviconUrl, setFaviconUrl] = useState(`${cleanUrl}/favicon.ico`);
 
   return <img className="favicon" src={faviconUrl} onError={() => setFaviconUrl(Nostrich)} />;
