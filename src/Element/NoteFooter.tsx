@@ -161,7 +161,9 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
     return (
       <>
-        <div className={`reaction-pill ${hasReacted("+") ? "reacted" : ""} `} onClick={() => react("+")}>
+        <div
+          className={`reaction-pill ${hasReacted("+") ? "reacted" : ""} `}
+          onClick={() => react(prefs.reactionEmoji)}>
           <div className="reaction-pill-icon">
             <Heart />
           </div>

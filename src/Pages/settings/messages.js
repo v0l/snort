@@ -52,4 +52,6 @@ export default defineMessages({
   DisplayName: "Display name",
   Buy: "Buy",
   Nip05: "NIP-05",
+  ReactionEmoji: "Reaction emoji",
+  ReactionEmojiHelp: "Emoji that will be used as reaction content",
 });

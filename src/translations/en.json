@@ -202,6 +202,8 @@
   "Pages.settings.Preferences": "Preferences",
   "Pages.settings.PrivateKey": "Your Private Key Is (do not share this with anyone)",
   "Pages.settings.Profile": "Profile",
+  "Pages.settings.ReactionEmoji": "Reaction emoji",
+  "Pages.settings.ReactionEmojiHelp": "Emoji that will be used as reaction content",
   "Pages.settings.Relays": "Relays",
   "Pages.settings.Remove": "Remove",
   "Pages.settings.Save": "Save",

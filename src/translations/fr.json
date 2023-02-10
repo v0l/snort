@@ -202,6 +202,8 @@
   "Pages.settings.Preferences": "Préférences",
   "Pages.settings.PrivateKey": "Votre Clé Privée Est (ne la partagez avec personne)",
   "Pages.settings.Profile": "Profil",
+  "Pages.settings.ReactionEmoji": "",
+  "Pages.settings.ReactionEmojiHelp": "",
   "Pages.settings.Relays": "Relais",
   "Pages.settings.Remove": "Retirer",
   "Pages.settings.Save": "Sauvegarder",
