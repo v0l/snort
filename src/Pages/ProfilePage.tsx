@@ -6,6 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { unwrap } from "Util";
 import { formatShort } from "Number";
+import Note from "Element/Note";
+import Bookmarks from "Element/Bookmarks";
 import RelaysMetadata from "Element/RelaysMetadata";
 import { Tab, TabElement } from "Element/Tabs";
 import Link from "Icons/Link";
@@ -13,6 +15,8 @@ import Qr from "Icons/Qr";
 import Zap from "Icons/Zap";
 import Envelope from "Icons/Envelope";
 import useRelaysFeed from "Feed/RelaysFeed";
+import usePinnedFeed from "Feed/PinnedFeed";
+import useBookmarkFeed from "Feed/BookmarkFeed";
 import { useUserProfile } from "Feed/ProfileFeed";
 import useZapsFeed from "Feed/ZapsFeed";
 import { default as ZapElement, parseZap } from "Element/Zap";
@@ -49,6 +53,7 @@ const ZAPS = 4;
 const MUTED = 5;
 const BLOCKED = 6;
 const RELAYS = 7;
+const BOOKMARKS = 8;
 
 export default function ProfilePage() {
   const { formatMessage } = useIntl();
@@ -62,6 +67,8 @@ export default function ProfilePage() {
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
+  const { pinned, related: pinRelated } = usePinnedFeed(id);
+  const { bookmarks, related: bookmarkRelated } = useBookmarkFeed(id);
   const aboutText = user?.about || "";
   const about = Text({
     content: aboutText,
@@ -90,11 +97,14 @@ export default function ProfilePage() {
     Muted: { text: formatMessage(messages.Muted), value: MUTED },
     Blocked: { text: formatMessage(messages.Blocked), value: BLOCKED },
     Relays: { text: formatMessage(messages.Relays), value: RELAYS },
+    Bookmarks: { text: formatMessage(messages.Bookmarks), value: BOOKMARKS },
   };
   const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
-  const optionalTabs = [zapsTotal > 0 && ProfileTab.Zaps, relays.length > 0 && ProfileTab.Relays].filter(a =>
-    unwrap(a)
-  ) as Tab[];
+  const optionalTabs = [
+    zapsTotal > 0 && ProfileTab.Zaps,
+    relays.length > 0 && ProfileTab.Relays,
+    bookmarks.length > 0 && ProfileTab.Bookmarks,
+  ].filter(a => unwrap(a)) as Tab[];
 
   useEffect(() => {
     setTab(ProfileTab.Notes);
@@ -162,17 +172,31 @@ export default function ProfilePage() {
     switch (tab.value) {
       case NOTES:
         return (
-          <Timeline
-            key={id}
-            subject={{
-              type: "pubkey",
-              items: [id],
-              discriminator: id.slice(0, 12),
-            }}
-            postsOnly={false}
-            method={"TIME_RANGE"}
-            ignoreModeration={true}
-          />
+          <>
+            <div className="main-content">
+              {pinned.map(n => {
+                return (
+                  <Note
+                    key={`pinned-${n.id}`}
+                    data={n}
+                    related={pinRelated}
+                    options={{ showTime: false, showPinned: true, canUnpin: id === loginPubKey }}
+                  />
+                );
+              })}
+            </div>
+            <Timeline
+              key={id}
+              subject={{
+                type: "pubkey",
+                items: [id],
+                discriminator: id.slice(0, 12),
+              }}
+              postsOnly={false}
+              method={"TIME_RANGE"}
+              ignoreModeration={true}
+            />
+          </>
         );
       case ZAPS: {
         return (
@@ -214,6 +238,9 @@ export default function ProfilePage() {
       }
       case RELAYS: {
         return <RelaysMetadata relays={relays} />;
+      }
+      case BOOKMARKS: {
+        return <Bookmarks pubkey={id} bookmarks={bookmarks} related={bookmarkRelated} />;
       }
     }
   }

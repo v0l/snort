@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { getNewest } from "Util";
 import { makeNotification } from "Notifications";
 import { TaggedRawEvent, HexKey, Lists } from "Nostr";
 import EventKind from "Nostr/EventKind";
@@ -11,6 +12,8 @@ import {
   setFollows,
   setRelays,
   setMuted,
+  setPinned,
+  setBookmarked,
   setBlocked,
   sendNotification,
   setLatestNotifications,
@@ -20,7 +23,7 @@ import { mapEventToProfile, MetadataCache } from "State/Users";
 import { useDb } from "State/Users/Db";
 import useSubscription from "Feed/Subscription";
 import { barrierNip07 } from "Feed/EventPublisher";
-import { getMutedKeys, getNewest } from "Feed/MuteList";
+import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 import { unwrap } from "Util";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
@@ -68,9 +71,35 @@ export default function useLoginFeed() {
 
     const sub = new Subscriptions();
     sub.Id = "login:muted";
-    sub.Kinds = new Set([EventKind.Lists]);
+    sub.Kinds = new Set([EventKind.PubkeyLists]);
     sub.Authors = new Set([pubKey]);
     sub.DTags = new Set([Lists.Muted]);
+    sub.Limit = 1;
+
+    return sub;
+  }, [pubKey]);
+
+  const subPinned = useMemo(() => {
+    if (!pubKey) return null;
+
+    const sub = new Subscriptions();
+    sub.Id = "login:pinned";
+    sub.Kinds = new Set([EventKind.NoteLists]);
+    sub.Authors = new Set([pubKey]);
+    sub.DTags = new Set([Lists.Pinned]);
+    sub.Limit = 1;
+
+    return sub;
+  }, [pubKey]);
+
+  const subBookmarks = useMemo(() => {
+    if (!pubKey) return null;
+
+    const sub = new Subscriptions();
+    sub.Id = "login:bookmarks";
+    sub.Kinds = new Set([EventKind.NoteLists]);
+    sub.Authors = new Set([pubKey]);
+    sub.DTags = new Set([Lists.Bookmarked]);
     sub.Limit = 1;
 
     return sub;
@@ -102,6 +131,8 @@ export default function useLoginFeed() {
   });
   const dmsFeed = useSubscription(subDms, { leaveOpen: true, cache: true });
   const mutedFeed = useSubscription(subMuted, { leaveOpen: true, cache: true });
+  const pinnedFeed = useSubscription(subPinned, { leaveOpen: true, cache: true });
+  const bookmarkFeed = useSubscription(subBookmarks, { leaveOpen: true, cache: true });
 
   useEffect(() => {
     const contactList = metadataFeed.store.notes.filter(a => a.kind === EventKind.ContactList);
@@ -178,6 +209,32 @@ export default function useLoginFeed() {
         .catch(error => console.warn(error));
     }
   }, [dispatch, mutedFeed.store]);
+
+  useEffect(() => {
+    const newest = getNewest(pinnedFeed.store.notes);
+    if (newest) {
+      const keys = newest.tags.filter(p => p && p.length === 2 && p[0] === "e").map(p => p[1]);
+      dispatch(
+        setPinned({
+          keys,
+          createdAt: newest.created_at,
+        })
+      );
+    }
+  }, [dispatch, pinnedFeed.store]);
+
+  useEffect(() => {
+    const newest = getNewest(bookmarkFeed.store.notes);
+    if (newest) {
+      const keys = newest.tags.filter(p => p && p.length === 2 && p[0] === "e").map(p => p[1]);
+      dispatch(
+        setBookmarked({
+          keys,
+          createdAt: newest.created_at,
+        })
+      );
+    }
+  }, [dispatch, bookmarkFeed.store]);
 
   useEffect(() => {
     const dms = dmsFeed.store.notes.filter(a => a.kind === EventKind.DirectMessage);

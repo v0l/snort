@@ -68,6 +68,9 @@ export type UserMetadata = {
  */
 export enum Lists {
   Muted = "mute",
+  Pinned = "pin",
+  Bookmarked = "bookmark",
+  Followed = "follow",
 }
 
 export interface RelaySettings {

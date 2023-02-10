@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 
+import Bookmark from "Icons/Bookmark";
+import Pin from "Icons/Pin";
 import Json from "Icons/Json";
 import Repost from "Icons/Repost";
 import Trash from "Icons/Trash";
@@ -28,7 +30,7 @@ import { default as NEvent } from "Nostr/Event";
 import { RootState } from "State/Store";
 import { HexKey, TaggedRawEvent } from "Nostr";
 import EventKind from "Nostr/EventKind";
-import { UserPreferences } from "State/Login";
+import { UserPreferences, setPinned, setBookmarked } from "State/Login";
 import useModeration from "Hooks/useModeration";
 import { TranslateHost } from "Const";
 
@@ -48,7 +50,9 @@ export interface NoteFooterProps {
 
 export default function NoteFooter(props: NoteFooterProps) {
   const { related, ev } = props;
+  const dispatch = useDispatch();
   const { formatMessage } = useIntl();
+  const { pinned, bookmarked } = useSelector((s: RootState) => s.login);
   const login = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
   const { mute, block } = useModeration();
   const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
@@ -213,6 +217,20 @@ export default function NoteFooter(props: NoteFooterProps) {
     await navigator.clipboard.writeText(hexToBech32("note", ev.Id));
   }
 
+  async function pin(id: HexKey) {
+    const es = [...pinned, id];
+    const ev = await publisher.pinned(es);
+    publisher.broadcast(ev);
+    dispatch(setPinned({ keys: es, createdAt: new Date().getTime() }));
+  }
+
+  async function bookmark(id: HexKey) {
+    const es = [...bookmarked, id];
+    const ev = await publisher.bookmarked(es);
+    publisher.broadcast(ev);
+    dispatch(setBookmarked({ keys: es, createdAt: new Date().getTime() }));
+  }
+
   async function copyEvent() {
     await navigator.clipboard.writeText(JSON.stringify(ev.Original, undefined, "  "));
   }
@@ -230,6 +248,18 @@ export default function NoteFooter(props: NoteFooterProps) {
           <Share />
           <FormattedMessage {...messages.Share} />
         </MenuItem>
+        {!pinned.includes(ev.Id) && (
+          <MenuItem onClick={() => pin(ev.Id)}>
+            <Pin />
+            <FormattedMessage {...messages.Pin} />
+          </MenuItem>
+        )}
+        {!bookmarked.includes(ev.Id) && (
+          <MenuItem onClick={() => bookmark(ev.Id)}>
+            <Bookmark width={18} height={18} />
+            <FormattedMessage {...messages.Bookmark} />
+          </MenuItem>
+        )}
         <MenuItem onClick={() => copyId()}>
           <Copy />
           <FormattedMessage {...messages.CopyID} />

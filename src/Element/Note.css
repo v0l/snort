@@ -20,6 +20,36 @@
   margin-left: 4px;
   white-space: nowrap;
   color: var(--font-secondary-color);
+  display: flex;
+  align-items: center;
+}
+
+.note > .header > .info .saved {
+  margin-right: 12px;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+.note > .header > .info .saved svg {
+  margin-right: 8px;
+}
+
+.note > .header > .pinned {
+  font-size: var(--font-size-small);
+  color: var(--font-secondary-color);
+  font-weight: 500;
+  line-height: 22px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.note > .header > .pinned svg {
+  margin-right: 8px;
 }
 
 .note > .body {

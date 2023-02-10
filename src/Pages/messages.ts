@@ -36,4 +36,6 @@ export default defineMessages({
   Relays: {
     defaultMessage: "Relays",
   },
+  Bookmarks: { defaultMessage: "Bookmarks" },
+  BookmarksCount: { defaultMessage: "Bookmarks ({n})" },
 });

@@ -1,20 +1,25 @@
 import "./Note.css";
 import { useCallback, useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
 
+import useEventPublisher from "Feed/EventPublisher";
+import Bookmark from "Icons/Bookmark";
+import Pin from "Icons/Pin";
 import { default as NEvent } from "Nostr/Event";
 import ProfileImage from "Element/ProfileImage";
 import Text from "Element/Text";
-
 import { eventLink, getReactions, hexToBech32 } from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import EventKind from "Nostr/EventKind";
 import { useUserProfiles } from "Feed/ProfileFeed";
-import { TaggedRawEvent, u256 } from "Nostr";
+import { TaggedRawEvent, u256, HexKey } from "Nostr";
 import useModeration from "Hooks/useModeration";
+import { setPinned, setBookmarked } from "State/Login";
+import type { RootState } from "State/Store";
 
 import messages from "./messages";
 
@@ -27,7 +32,11 @@ export interface NoteProps {
   options?: {
     showHeader?: boolean;
     showTime?: boolean;
+    showPinned?: boolean;
+    showBookmarked?: boolean;
     showFooter?: boolean;
+    canUnpin?: boolean;
+    canUnbookmark?: boolean;
   };
   ["data-ev"]?: NEvent;
 }
@@ -52,6 +61,7 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
 
 export default function Note(props: NoteProps) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { data, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false } = props;
   const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
   const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
@@ -63,6 +73,8 @@ export default function Note(props: NoteProps) {
   const [extendable, setExtendable] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
   const baseClassName = `note card ${props.className ? props.className : ""}`;
+  const { pinned, bookmarked } = useSelector((s: RootState) => s.login);
+  const publisher = useEventPublisher();
   const [translated, setTranslated] = useState<Translation>();
   const { formatMessage } = useIntl();
 
@@ -70,8 +82,28 @@ export default function Note(props: NoteProps) {
     showHeader: true,
     showTime: true,
     showFooter: true,
+    canUnpin: false,
+    canUnbookmark: false,
     ...opt,
   };
+
+  async function unpin(id: HexKey) {
+    if (options.canUnpin) {
+      const es = pinned.filter(e => e !== id);
+      const ev = await publisher.pinned(es);
+      publisher.broadcast(ev);
+      dispatch(setPinned({ keys: es, createdAt: new Date().getTime() }));
+    }
+  }
+
+  async function unbookmark(id: HexKey) {
+    if (options.canUnbookmark) {
+      const es = bookmarked.filter(e => e !== id);
+      const ev = await publisher.bookmarked(es);
+      publisher.broadcast(ev);
+      dispatch(setBookmarked({ keys: es, createdAt: new Date().getTime() }));
+    }
+  }
 
   const transformBody = useCallback(() => {
     const body = ev?.Content ?? "";
@@ -190,9 +222,19 @@ export default function Note(props: NoteProps) {
         {options.showHeader && (
           <div className="header flex">
             <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
-            {options.showTime && (
+            {(options.showTime || options.showBookmarked) && (
               <div className="info">
+                {options.showBookmarked && (
+                  <div className={`saved ${options.canUnbookmark ? "pointer" : ""}`} onClick={() => unbookmark(ev.Id)}>
+                    <Bookmark /> <FormattedMessage {...messages.Bookmarked} />
+                  </div>
+                )}
                 <NoteTime from={ev.CreatedAt * 1000} />
+              </div>
+            )}
+            {options.showPinned && (
+              <div className={`pinned ${options.canUnpin ? "pointer" : ""}`} onClick={() => unpin(ev.Id)}>
+                <Pin /> <FormattedMessage {...messages.Pinned} />
               </div>
             )}
           </div>

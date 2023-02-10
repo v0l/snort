@@ -116,6 +116,26 @@ export interface LoginStore {
   latestFollows: number;
 
   /**
+   * A list of event ids this user has pinned
+   */
+  pinned: HexKey[];
+
+  /**
+   * Last seen pinned list event timestamp
+   */
+  latestPinned: number;
+
+  /**
+   * A list of event ids this user has bookmarked
+   */
+  bookmarked: HexKey[];
+
+  /**
+   * Last seen bookmark list event timestamp
+   */
+  latestBookmarked: number;
+
+  /**
    * A list of pubkeys this user has muted
    */
   muted: HexKey[];
@@ -172,6 +192,10 @@ export const InitState = {
   latestRelays: 0,
   follows: [],
   latestFollows: 0,
+  pinned: [],
+  latestPinned: 0,
+  bookmarked: [],
+  latestBookmarked: 0,
   muted: [],
   blocked: [],
   latestMuted: 0,
@@ -328,6 +352,22 @@ const LoginSlice = createSlice({
         state.latestMuted = createdAt;
       }
     },
+    setPinned(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
+      const { createdAt, keys } = action.payload;
+      if (createdAt >= state.latestPinned) {
+        const pinned = new Set([...keys]);
+        state.pinned = Array.from(pinned);
+        state.latestPinned = createdAt;
+      }
+    },
+    setBookmarked(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
+      const { createdAt, keys } = action.payload;
+      if (createdAt >= state.latestBookmarked) {
+        const bookmarked = new Set([...keys]);
+        state.bookmarked = Array.from(bookmarked);
+        state.latestBookmarked = createdAt;
+      }
+    },
     setBlocked(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
       const { createdAt, keys } = action.payload;
       if (createdAt >= state.latestMuted) {
@@ -388,6 +428,8 @@ export const {
   removeRelay,
   setFollows,
   setMuted,
+  setPinned,
+  setBookmarked,
   setBlocked,
   addDirectMessage,
   incDmInteraction,

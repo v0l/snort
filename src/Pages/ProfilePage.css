@@ -230,3 +230,24 @@
   font-weight: normal;
   margin-left: 4px;
 }
+
+.icon-title {
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 23px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.icon-title svg {
+  margin-right: 8px;
+}
+
+.icon-title h3 {
+  margin: 0;
+}
+
+.icon-title select {
+  margin-left: auto;
+}
