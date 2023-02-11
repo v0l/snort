@@ -229,7 +229,7 @@ export default function Note(props: NoteProps) {
                     <Bookmark /> <FormattedMessage {...messages.Bookmarked} />
                   </div>
                 )}
-                <NoteTime from={ev.CreatedAt * 1000} />
+                {!options.showBookmarked && <NoteTime from={ev.CreatedAt * 1000} />}
               </div>
             )}
             {options.showPinned && (
