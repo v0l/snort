@@ -1,678 +1,224 @@
 {
-  "+D82kt": {
-    "string": "{id}をリポストしますか？"
-  },
-  "+vIQlC": {
-    "string": "ハンドルを管理し続けるために、必ず、以下のパスワードを保存してください"
-  },
-  "/4tOwT": {
-    "string": "スキップ"
-  },
-  "/JE/X+": {
-    "string": "アカウントサポート"
-  },
-  "/RD0e2": {
-    "string": "Nostrはデジタル署名技術を使って投稿の改竄防止を図り、安全に多数のリレーに複製できるようにしてコンテンツの冗長ストレージを提供しています。"
-  },
-  "/d6vEc": {
-    "string": "プロフィールを見つけやすく、共有しやすくなります"
-  },
-  "/n5KSF": {
-    "string": "{n}ミリ秒"
-  },
-  "0BUTMv": {
-    "string": "検索する"
-  },
-  "0mch2Y": {
-    "string": "名前に使用できない文字が含まれています"
-  },
-  "0yO7wF": {
-    "string": "{n}秒"
-  },
-  "1A7TZk": {
-    "string": "Snortって何？　どういう仕組み？"
-  },
-  "1udzha": {
-    "string": "会話"
-  },
-  "2/2yg+": {
-    "string": "追加"
-  },
-  "25V4l1": {
-    "string": "バナー"
-  },
-  "2IFGap": {
-    "string": "寄付"
-  },
-  "2k0Cv+": {
-    "string": "イヤ ({n})"
-  },
-  "3cc4Ct": {
-    "string": "ライト"
-  },
-  "3xCwbZ": {
-    "developer_comment": "Seperator text for Login / Generate Key",
-    "string": "OR"
-  },
-  "450Fty": {
-    "string": "なし"
-  },
-  "47FYwb": {
-    "string": "キャンセル"
-  },
-  "4L2vUY": {
-    "string": "新しいNIP-05ハンドル:"
-  },
-  "4OB335": {
-    "string": "イヤ"
-  },
-  "4Vmpt4": {
-    "string": "Nostr Plebsは宇宙で最初のNIP-05プロバイダのひとつで、豊富なドメインをリーズナブルな価格で提供します"
-  },
-  "4Z3t5i": {
-    "string": "imgproxyを使って画像を圧縮します"
-  },
-  "4rYCjn": {
-    "string": "自分用メモ"
-  },
-  "5ykRmX": {
-    "string": "zapを送る"
-  },
-  "6ewQqw": {
-    "string": "スキ ({n})"
-  },
-  "6tUqAb": {
-    "developer_comment": "Note about key security before generating a new key",
-    "string": "Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!"
-  },
-  "7+Domh": {
-    "string": "投稿"
-  },
-  "7hp70g": {
-    "string": "NIP-05"
-  },
-  "7xzTiH": {
-    "string": "{target}に{action}"
-  },
-  "8/vBbP": {
-    "string": "リポスト ({n})"
-  },
-  "89q5wc": {
-    "string": "リポストの確認"
-  },
-  "8E9muH": {
-    "string": "Twitterのフォローを取り込む（任意）"
-  },
-  "8QDesP": {
-    "string": "{n} satsをzapする"
-  },
-  "8g2vyB": {
-    "string": "名前が長すぎます"
-  },
-  "9+Ddtu": {
-    "string": "次へ"
-  },
-  "9HU8vw": {
-    "string": "返信"
-  },
-  "9SvQep": {
-    "string": "{n}フォロー"
-  },
-  "9WRlF4": {
-    "string": "送信"
-  },
-  "9gqH2W": {
-    "developer_comment": "Login button",
-    "string": "ログイン"
-  },
-  "9wO4wJ": {
-    "string": "Lightningインボイス"
-  },
-  "ASRK0S": {
-    "string": "投稿者はミュートされています"
-  },
-  "Adk34V": {
-    "string": "プロフィールを設定"
-  },
-  "AyGauy": {
-    "string": "ログイン"
-  },
-  "B4C47Y": {
-    "string": "名前が短すぎます"
-  },
-  "B6+XJy": {
-    "string": "zapしました"
-  },
-  "BOUMjw": {
-    "string": "{twitterUsername}に対応するnostrユーザーは見つかりませんでした"
-  },
-  "BcGMo+": {
-    "string": "投稿はテキストのコンテンツを持ち、その主な用途は「ツイートのような」メッセージを保持することです。"
-  },
-  "C81/uG": {
-    "string": "ログアウト"
-  },
-  "CHTbO3": {
-    "string": "インボイスの読み込みに失敗しました"
-  },
-  "Cu/K85": {
-    "string": "{lang}から翻訳"
-  },
-  "D3idYv": {
-    "string": "設定"
-  },
-  "DKnriN": {
-    "string": "satoshiを送る"
-  },
-  "DZzCem": {
-    "string": "最新{n}件の投稿を表示"
-  },
-  "Dt/Zd5": {
-    "string": "選択したユーザーの投稿内のメディアは自動で表示され、それ以外はリンクのみが表示されます"
-  },
-  "E8a4yq": {
-    "string": "人気のアカウントをフォロー"
-  },
-  "EPYwm7": {
-    "string": "秘密鍵はパスワードです。この鍵を失うと、アカウントにアクセスできなくなります！　コピーして安全な場所に保管してください。秘密鍵をリセットする方法はありません。"
-  },
-  "EWyQH5": {
-    "string": "グローバル"
-  },
-  "Ebl/B2": {
-    "string": "{lang}に翻訳"
-  },
-  "EcglP9": {
-    "string": "Key"
-  },
-  "EnCOBJ": {
-    "string": "購入"
-  },
-  "Eqjl5K": {
-    "string": "カラフルなドメイン名を使えるのはSnortまたはパートナーのIDだけですが、他のサービスの使用も歓迎します。"
-  },
-  "F+B3x1": {
-    "string": "私たちはより多くのオプションを提供するため nostrplebs.com とも提携しています"
-  },
-  "FS3b54": {
-    "string": "完了！"
-  },
-  "FmXUJg": {
-    "string": "あなたをフォロー"
-  },
-  "G/yZLu": {
-    "string": "削除"
-  },
-  "GFOoEE": {
-    "string": "Salt"
-  },
-  "GspYR7": {
-    "string": "{n}イヤ"
-  },
-  "H0JBH6": {
-    "string": "ログアウト"
-  },
-  "H6/kLh": {
-    "string": "支払いが完了しました"
-  },
-  "HAlOn1": {
-    "string": "名前"
-  },
-  "HFls6j": {
-    "string": "名前は後で使用できるようになります"
-  },
-  "HOzFdo": {
-    "string": "ミュート中"
-  },
-  "HbefNb": {
-    "string": "ウォレットを開く"
-  },
-  "IKKHqV": {
-    "string": "フォロー"
-  },
-  "INSqIz": {
-    "string": "Twitterユーザー名..."
-  },
-  "IUZC+0": {
-    "string": "これは、あなたの作成した投稿を誰も変更することができず、また投稿を見た誰でも作成者があなたであることを確認できる、ということを意味します。"
-  },
-  "JCIgkj": {
-    "string": "ユーザー名"
-  },
-  "JHEHCk": {
-    "string": "Zap ({n})"
-  },
-  "JkLHGw": {
-    "string": "ウェブサイト"
-  },
-  "K3r6DQ": {
-    "string": "削除"
-  },
-  "K7AkdL": {
-    "string": "表示"
-  },
-  "KQvWvD": {
-    "string": "削除済み"
-  },
-  "KWuDfz": {
-    "string": "鍵を保存したので次へ"
-  },
-  "KahimY": {
-    "string": "不明なイベント種別: {kind}"
-  },
-  "LgbKvU": {
-    "string": "コメント"
-  },
-  "LxY9tW": {
-    "developer_comment": "Button: Generate a new key",
-    "string": "Generate Key"
-  },
-  "M3Oirc": {
-    "string": "デバッグメニュー"
-  },
-  "MBAYRO": {
-    "string": "「IDをコピー」「イベントJSONをコピー」を全てのメッセージのコンテキストメニューに表示します"
-  },
-  "MI2jkA": {
-    "string": "利用不可:"
-  },
-  "MRp6Ly": {
-    "string": "Twitterユーザー名"
-  },
-  "MzRYWH": {
-    "string": "{item}の購入"
-  },
-  "N2IrpM": {
-    "string": "確認"
-  },
-  "NdOYJJ": {
-    "string": "うーん、何もない…… {newUsersPage} をチェックしておすすめのダチョウをフォローしよう！"
-  },
-  "NfNk2V": {
-    "string": "秘密鍵"
-  },
-  "NndBJE": {
-    "string": "新規ユーザーページ"
-  },
-  "OEW7yJ": {
-    "string": "Zap"
-  },
-  "OKhRC6": {
-    "string": "共有"
-  },
-  "P61BTu": {
-    "string": "イベントJSONをコピー"
-  },
-  "P7FD0F": {
-    "string": "システム（デフォルト）"
-  },
-  "PCSt5T": {
-    "string": "ユーザー設定"
-  },
-  "Pe0ogR": {
-    "string": "外観"
-  },
-  "PrsIg7": {
-    "string": "リアクションがすべてのページで表示されます。無効にするとリアクションは表示されません"
-  },
-  "QTdJfH": {
-    "developer_comment": "Heading for generate key flow",
-    "string": "Create an Account"
-  },
-  "QxCuTo": {
-    "developer_comment": "Artwork attribution label",
-    "string": "Art by {name}"
-  },
-  "RDZVQL": {
-    "string": "チェック"
-  },
-  "RahCRH": {
-    "string": "失効"
-  },
-  "RhDAoS": {
-    "string": "{id}を削除しますか？"
-  },
-  "RoOyAh": {
-    "string": "リレー"
-  },
-  "Sjo1P4": {
-    "string": "カスタム"
-  },
-  "UQ3pOC": {
-    "string": "Nostrでは、多くの人が同一のユーザー名を持ちます。ユーザー名とIDは別のものです。次のステップで固有のIDを入手できます。"
-  },
-  "Up5U7K": {
-    "string": "ブロック"
-  },
-  "VOjC1i": {
-    "string": "ファイル添付サービスを選択してください"
-  },
-  "VlJkSk": {
-    "string": "{n}ミュート"
-  },
-  "VnXp8Z": {
-    "string": "アバター"
-  },
-  "VtPV/B": {
-    "developer_comment": "Login button for NIP7 key manager extension",
-    "string": "Login with Extension (NIP-07)"
-  },
-  "Vx7Zm2": {
-    "string": "鍵の役割は？"
-  },
-  "W9355R": {
-    "string": "ミュート解除"
-  },
-  "WONP5O": {
-    "string": "twitterのフォローをnostrで見つける（データ提供：{provider}）"
-  },
-  "WxthCV": {
-    "string": "例：ジャック"
-  },
-  "XgWvGA": {
-    "string": "リアクション"
-  },
-  "YDURw6": {
-    "string": "サービスURL"
-  },
-  "YXA3AH": {
-    "string": "リアクションを有効にする"
-  },
-  "ZKORll": {
-    "string": "今すぐ有効化"
-  },
-  "a5UPxh": {
-    "string": "NIP-05認証サービスを提供するプラットフォームや開発者に資金援助する"
-  },
-  "aWpBzj": {
-    "string": "もっと見る"
-  },
-  "brAXSu": {
-    "string": "ユーザー名を決める"
-  },
-  "bxv59V": {
-    "string": "たった今"
-  },
-  "cWx9t8": {
-    "string": "全てミュート"
-  },
-  "cuV2gK": {
-    "string": "既に登録された名前です"
-  },
-  "cyR7Kh": {
-    "string": "戻る"
-  },
-  "d7d0/x": {
-    "string": "LNアドレス"
-  },
-  "dOQCL8": {
-    "string": "表示名"
-  },
-  "e7qqly": {
-    "string": "全て既読にする"
-  },
-  "eHAneD": {
-    "string": "Reaction emoji"
-  },
-  "eJj8HD": {
-    "string": "認証を得る"
-  },
-  "eR3YIn": {
-    "string": "ポスト"
-  },
-  "filwqD": {
-    "string": "リード"
-  },
-  "flnGvv": {
-    "string": "思いつくことは？"
-  },
-  "g5pX+a": {
-    "string": "自己紹介"
-  },
-  "gBdUXk": {
-    "string": "鍵を保存する！"
-  },
-  "gDZkld": {
-    "string": "SnortはNostrのUIで、nostrは「投稿」を保存・配信するための非中央集権型プロトコルです。"
-  },
-  "gDzDRs": {
-    "string": "Emoji to send when reactiong to a note"
-  },
-  "gjBiyj": {
-    "string": "読込中…"
-  },
-  "hCUivF": {
-    "string": "グローバルタブとポストタブで投稿がリアルタイムに流れるようになります"
-  },
-  "hK5ZDk": {
-    "string": "世界"
-  },
-  "hMzcSq": {
-    "string": "メッセージ"
-  },
-  "hY4lzx": {
-    "string": "対応"
-  },
-  "hicxcO": {
-    "string": "返信を見る"
-  },
-  "iCqGww": {
-    "string": "リアクション ({n})"
-  },
-  "iDGAbc": {
-    "string": "Snort IDを入手"
-  },
-  "iGT1eE": {
-    "string": "フェイクアカウントがあなたになりすますのを防ぐ"
-  },
-  "iNWbVV": {
-    "string": "ハンドル"
-  },
-  "ieGrWo": {
-    "string": "フォロー"
-  },
-  "itPgxd": {
-    "string": "プロフィール"
-  },
-  "izWS4J": {
-    "string": "フォロー解除"
-  },
-  "jA3OE/": {
-    "string": "{n,plural,=1{{n} sat} other{{n} sats}}"
-  },
-  "jCA7Cw": {
-    "string": "snortでプレビュー"
-  },
-  "juhqvW": {
-    "string": "ブラウザエクステンションでログインのセキュリティを向上"
-  },
-  "jvo0vs": {
-    "string": "保存"
-  },
-  "k2veDA": {
-    "string": "ライト"
-  },
-  "k7sKNy": {
-    "string": "私たち独自のNIP-05認証サービスです。このサイトの開発を支援し、ピカピカの特別なバッジを私たちのサイトで使えるようになります！"
-  },
-  "lCILNz": {
-    "string": "購入"
-  },
-  "lD3+8a": {
-    "string": "支払う"
-  },
-  "lgg1KN": {
-    "string": "アカウントページ"
-  },
-  "ll3xBp": {
-    "string": "画像プロキシサービス"
-  },
-  "lnaT9F": {
-    "string": "{n}フォロー中"
-  },
-  "lvlPhZ": {
-    "string": "インボイスを精算"
-  },
-  "mKAr6h": {
-    "string": "全てフォロー"
-  },
-  "mKh2HS": {
-    "string": "ファイル添付サービス"
-  },
-  "mKhgP9": {
-    "string": "{n, plural, =0 {} =1 {がzapしました} other {がzapしました}}"
-  },
-  "n1xHAH": {
-    "string": "IDを入手（任意）"
-  },
-  "nDejmx": {
-    "string": "ブロック解除"
-  },
-  "nN9XTz": {
-    "string": "{link}であなたの考えを共有する"
-  },
-  "nwZXeh": {
-    "string": "{n}ブロック"
-  },
-  "o6Uy3d": {
-    "developer_comment": "Explanation for public key only login is read-only",
-    "string": "Only the secret key can be used to publish (sign events), everything else logs you in read-only mode."
-  },
-  "o7e+nJ": {
-    "string": "{n}フォロワー"
-  },
-  "odFwjL": {
-    "string": "フォローのみ"
-  },
-  "odhABf": {
-    "developer_comment": "Login header",
-    "string": "ログイン"
-  },
-  "osUr8O": {
-    "string": "これらのエクステンションは、ほとんどのNostrサイトでログインにも使えます。"
-  },
-  "oxCa4R": {
-    "string": "IDを入手すると、あなたを知っている人があなたを確認するのに役立ちます。@jackというユーザー名の人はたくさんいても、jack@cash.appは一人だけです。"
-  },
-  "pzTOmv": {
-    "string": "フォロワー"
-  },
-  "qUJTsT": {
-    "string": "ブロック"
-  },
-  "qdGuQo": {
-    "string": "あなたの秘密鍵（誰とも共有しないこと）"
-  },
-  "qkvYUb": {
-    "string": "プロフィールに追加"
-  },
-  "qmJ8kD": {
-    "string": "翻訳できませんでした"
-  },
-  "r3C4x/": {
-    "string": "ソフトウェア"
-  },
-  "rT14Ow": {
-    "string": "リレーを追加する"
-  },
-  "reJ6SM": {
-    "string": "デスクトップパソコンを使っている場合、こちらのブラウザエクステンションのいずれかを使って鍵を保護することをおすすめします："
-  },
-  "rfuMjE": {
-    "string": "（デフォルト）"
-  },
-  "rrfdTe": {
-    "string": "これはビットコインで使われているのと同じ技術で、高度に安全であることが証明されています。"
-  },
-  "rudscU": {
-    "string": "フォローの読み込みに失敗、後でやり直してください"
-  },
-  "sWnYKw": {
-    "string": "SnortはTwitterに似た体験を得るようデザインされています。"
-  },
-  "svOoEH": {
-    "string": "サイバースクワッティング・なりすましは禁止されています。ルールに抵触した場合、Snortとパートナーはハンドルを停止する権利を保有します。（アカウントではありません。それは誰にも取り上げることはできません。）"
-  },
-  "tOdNiY": {
-    "string": "ダーク"
-  },
-  "thnRpU": {
-    "string": "NIP-05認証を得るメリット:"
-  },
-  "u/vOPu": {
-    "string": "支払済"
-  },
-  "uD/N6c": {
-    "string": "{target}に{n} satsをzapする"
-  },
-  "uSV4Ti": {
-    "string": "リポスト前に確認を表示します"
-  },
-  "usAvMr": {
-    "string": "プロフィールを編集"
-  },
-  "ut+2Cd": {
-    "string": "パートナーIDを入手"
-  },
-  "vOKedj": {
-    "string": "{n,plural,=1{& {n} other} other{& {n} others}}"
-  },
-  "vZ4quW": {
-    "string": "NIP-05はDNSベースの認証仕様で、ユーザーが本物であることを認証する手助けになります。"
-  },
-  "wEQDC6": {
-    "string": "編集"
-  },
-  "wLtRCF": {
-    "developer_comment": "Label for key input",
-    "string": "Your key"
-  },
-  "wih7iJ": {
-    "string": "名前がブロックされています"
-  },
-  "wqyN/i": {
-    "string": "{service}の詳細を{link}で見る"
-  },
-  "wtLjP6": {
-    "string": "IDをコピー"
-  },
-  "x82IOl": {
-    "string": "ミュート"
-  },
-  "xIoGG9": {
-    "string": "開く:"
-  },
-  "xJ9n2N": {
-    "string": "公開鍵"
-  },
-  "xKflGN": {
-    "string": "{username}のNostrでのフォロー"
-  },
-  "xbVgIm": {
-    "string": "メディアを自動で読み込む"
-  },
-  "xmcVZ0": {
-    "string": "検索"
-  },
-  "zFegDD": {
-    "string": "連絡先"
-  },
-  "zINlao": {
-    "string": "運営者"
-  },
-  "zQvVDJ": {
-    "string": "すべて"
-  },
-  "zcaOTs": {
-    "string": "Zap額 (satoshi)"
-  },
-  "zjJZBd": {
-    "string": "準備完了！"
-  },
-  "zonsdq": {
-    "string": "LNURLサービスの読み込みに失敗しました"
-  },
-  "zvCDao": {
-    "string": "最新の記事を自動で表示する"
-  }
+  "+D82kt": "{id}をリポストしますか？",
+  "+vIQlC": "ハンドルを管理し続けるために、必ず、以下のパスワードを保存してください",
+  "/4tOwT": "スキップ",
+  "/JE/X+": "アカウントサポート",
+  "/RD0e2": "Nostrはデジタル署名技術を使って投稿の改竄防止を図り、安全に多数のリレーに複製できるようにしてコンテンツの冗長ストレージを提供しています。",
+  "/d6vEc": "プロフィールを見つけやすく、共有しやすくなります",
+  "/n5KSF": "{n}ミリ秒",
+  "0BUTMv": "検索する",
+  "0mch2Y": "名前に使用できない文字が含まれています",
+  "0yO7wF": "{n}秒",
+  "1A7TZk": "Snortって何？　どういう仕組み？",
+  "1udzha": "会話",
+  "2/2yg+": "追加",
+  "25V4l1": "バナー",
+  "2IFGap": "寄付",
+  "2k0Cv+": "イヤ ({n})",
+  "3cc4Ct": "ライト",
+  "3xCwbZ": "OR",
+  "450Fty": "なし",
+  "47FYwb": "キャンセル",
+  "4L2vUY": "新しいNIP-05ハンドル:",
+  "4OB335": "イヤ",
+  "4Vmpt4": "Nostr Plebsは宇宙で最初のNIP-05プロバイダのひとつで、豊富なドメインをリーズナブルな価格で提供します",
+  "4Z3t5i": "imgproxyを使って画像を圧縮します",
+  "4rYCjn": "自分用メモ",
+  "5ykRmX": "zapを送る",
+  "6ewQqw": "スキ ({n})",
+  "6tUqAb": "Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!",
+  "7+Domh": "投稿",
+  "7hp70g": "NIP-05",
+  "7xzTiH": "{target}に{action}",
+  "8/vBbP": "リポスト ({n})",
+  "89q5wc": "リポストの確認",
+  "8E9muH": "Twitterのフォローを取り込む（任意）",
+  "8QDesP": "{n} satsをzapする",
+  "8g2vyB": "名前が長すぎます",
+  "9+Ddtu": "次へ",
+  "9HU8vw": "返信",
+  "9SvQep": "{n}フォロー",
+  "9WRlF4": "送信",
+  "9gqH2W": "ログイン",
+  "9wO4wJ": "Lightningインボイス",
+  "ASRK0S": "投稿者はミュートされています",
+  "Adk34V": "プロフィールを設定",
+  "AyGauy": "ログイン",
+  "B4C47Y": "名前が短すぎます",
+  "B6+XJy": "zapしました",
+  "BOUMjw": "{twitterUsername}に対応するnostrユーザーは見つかりませんでした",
+  "BcGMo+": "投稿はテキストのコンテンツを持ち、その主な用途は「ツイートのような」メッセージを保持することです。",
+  "C81/uG": "ログアウト",
+  "CHTbO3": "インボイスの読み込みに失敗しました",
+  "Cu/K85": "{lang}から翻訳",
+  "D3idYv": "設定",
+  "DKnriN": "satoshiを送る",
+  "DZzCem": "最新{n}件の投稿を表示",
+  "Dt/Zd5": "選択したユーザーの投稿内のメディアは自動で表示され、それ以外はリンクのみが表示されます",
+  "E8a4yq": "人気のアカウントをフォロー",
+  "EPYwm7": "秘密鍵はパスワードです。この鍵を失うと、アカウントにアクセスできなくなります！　コピーして安全な場所に保管してください。秘密鍵をリセットする方法はありません。",
+  "EWyQH5": "グローバル",
+  "Ebl/B2": "{lang}に翻訳",
+  "EcglP9": "Key",
+  "EnCOBJ": "購入",
+  "Eqjl5K": "カラフルなドメイン名を使えるのはSnortまたはパートナーのIDだけですが、他のサービスの使用も歓迎します。",
+  "F+B3x1": "私たちはより多くのオプションを提供するため nostrplebs.com とも提携しています",
+  "FS3b54": "完了！",
+  "FmXUJg": "あなたをフォロー",
+  "G/yZLu": "削除",
+  "GFOoEE": "Salt",
+  "GspYR7": "{n}イヤ",
+  "H0JBH6": "ログアウト",
+  "H6/kLh": "支払いが完了しました",
+  "HAlOn1": "名前",
+  "HFls6j": "名前は後で使用できるようになります",
+  "HOzFdo": "ミュート中",
+  "HbefNb": "ウォレットを開く",
+  "IKKHqV": "フォロー",
+  "INSqIz": "Twitterユーザー名...",
+  "IUZC+0": "これは、あなたの作成した投稿を誰も変更することができず、また投稿を見た誰でも作成者があなたであることを確認できる、ということを意味します。",
+  "JCIgkj": "ユーザー名",
+  "JHEHCk": "Zap ({n})",
+  "JkLHGw": "ウェブサイト",
+  "K3r6DQ": "削除",
+  "K7AkdL": "表示",
+  "KQvWvD": "削除済み",
+  "KWuDfz": "鍵を保存したので次へ",
+  "KahimY": "不明なイベント種別: {kind}",
+  "LgbKvU": "コメント",
+  "LxY9tW": "Generate Key",
+  "M3Oirc": "デバッグメニュー",
+  "MBAYRO": "「IDをコピー」「イベントJSONをコピー」を全てのメッセージのコンテキストメニューに表示します",
+  "MI2jkA": "利用不可:",
+  "MRp6Ly": "Twitterユーザー名",
+  "MzRYWH": "{item}の購入",
+  "N2IrpM": "確認",
+  "NdOYJJ": "うーん、何もない…… {newUsersPage} をチェックしておすすめのダチョウをフォローしよう！",
+  "NfNk2V": "秘密鍵",
+  "NndBJE": "新規ユーザーページ",
+  "OEW7yJ": "Zap",
+  "OKhRC6": "共有",
+  "P61BTu": "イベントJSONをコピー",
+  "P7FD0F": "システム（デフォルト）",
+  "PCSt5T": "ユーザー設定",
+  "Pe0ogR": "外観",
+  "PrsIg7": "リアクションがすべてのページで表示されます。無効にするとリアクションは表示されません",
+  "QTdJfH": "Create an Account",
+  "QxCuTo": "Art by {name}",
+  "RDZVQL": "チェック",
+  "RahCRH": "失効",
+  "RhDAoS": "{id}を削除しますか？",
+  "RoOyAh": "リレー",
+  "Sjo1P4": "カスタム",
+  "UQ3pOC": "Nostrでは、多くの人が同一のユーザー名を持ちます。ユーザー名とIDは別のものです。次のステップで固有のIDを入手できます。",
+  "Up5U7K": "ブロック",
+  "VOjC1i": "ファイル添付サービスを選択してください",
+  "VlJkSk": "{n}ミュート",
+  "VnXp8Z": "アバター",
+  "VtPV/B": "Login with Extension (NIP-07)",
+  "Vx7Zm2": "鍵の役割は？",
+  "W9355R": "ミュート解除",
+  "WONP5O": "twitterのフォローをnostrで見つける（データ提供：{provider}）",
+  "WxthCV": "例：ジャック",
+  "XgWvGA": "リアクション",
+  "YDURw6": "サービスURL",
+  "YXA3AH": "リアクションを有効にする",
+  "ZKORll": "今すぐ有効化",
+  "a5UPxh": "NIP-05認証サービスを提供するプラットフォームや開発者に資金援助する",
+  "aWpBzj": "もっと見る",
+  "brAXSu": "ユーザー名を決める",
+  "bxv59V": "たった今",
+  "cWx9t8": "全てミュート",
+  "cuV2gK": "既に登録された名前です",
+  "cyR7Kh": "戻る",
+  "d7d0/x": "LNアドレス",
+  "dOQCL8": "表示名",
+  "e7qqly": "全て既読にする",
+  "eHAneD": "Reaction emoji",
+  "eJj8HD": "認証を得る",
+  "eR3YIn": "ポスト",
+  "filwqD": "リード",
+  "flnGvv": "思いつくことは？",
+  "g5pX+a": "自己紹介",
+  "gBdUXk": "鍵を保存する！",
+  "gDZkld": "SnortはNostrのUIで、nostrは「投稿」を保存・配信するための非中央集権型プロトコルです。",
+  "gDzDRs": "Emoji to send when reactiong to a note",
+  "gjBiyj": "読込中…",
+  "hCUivF": "グローバルタブとポストタブで投稿がリアルタイムに流れるようになります",
+  "hK5ZDk": "世界",
+  "hMzcSq": "メッセージ",
+  "hY4lzx": "対応",
+  "hicxcO": "返信を見る",
+  "iCqGww": "リアクション ({n})",
+  "iDGAbc": "Snort IDを入手",
+  "iGT1eE": "フェイクアカウントがあなたになりすますのを防ぐ",
+  "iNWbVV": "ハンドル",
+  "ieGrWo": "フォロー",
+  "itPgxd": "プロフィール",
+  "izWS4J": "フォロー解除",
+  "jA3OE/": "{n,plural,=1{{n} sat} other{{n} sats}}",
+  "jCA7Cw": "snortでプレビュー",
+  "juhqvW": "ブラウザエクステンションでログインのセキュリティを向上",
+  "jvo0vs": "保存",
+  "k2veDA": "ライト",
+  "k7sKNy": "私たち独自のNIP-05認証サービスです。このサイトの開発を支援し、ピカピカの特別なバッジを私たちのサイトで使えるようになります！",
+  "lCILNz": "購入",
+  "lD3+8a": "支払う",
+  "lgg1KN": "アカウントページ",
+  "ll3xBp": "画像プロキシサービス",
+  "lnaT9F": "{n}フォロー中",
+  "lvlPhZ": "インボイスを精算",
+  "mKAr6h": "全てフォロー",
+  "mKh2HS": "ファイル添付サービス",
+  "mKhgP9": "{n, plural, =0 {} =1 {がzapしました} other {がzapしました}}",
+  "n1xHAH": "IDを入手（任意）",
+  "nDejmx": "ブロック解除",
+  "nN9XTz": "{link}であなたの考えを共有する",
+  "nwZXeh": "{n}ブロック",
+  "o6Uy3d": "Only the secret key can be used to publish (sign events), everything else logs you in read-only mode.",
+  "o7e+nJ": "{n}フォロワー",
+  "odFwjL": "フォローのみ",
+  "odhABf": "ログイン",
+  "osUr8O": "これらのエクステンションは、ほとんどのNostrサイトでログインにも使えます。",
+  "oxCa4R": "IDを入手すると、あなたを知っている人があなたを確認するのに役立ちます。@jackというユーザー名の人はたくさんいても、jack@cash.appは一人だけです。",
+  "pzTOmv": "フォロワー",
+  "qUJTsT": "ブロック",
+  "qdGuQo": "あなたの秘密鍵（誰とも共有しないこと）",
+  "qkvYUb": "プロフィールに追加",
+  "qmJ8kD": "翻訳できませんでした",
+  "r3C4x/": "ソフトウェア",
+  "rT14Ow": "リレーを追加する",
+  "reJ6SM": "デスクトップパソコンを使っている場合、こちらのブラウザエクステンションのいずれかを使って鍵を保護することをおすすめします：",
+  "rfuMjE": "（デフォルト）",
+  "rrfdTe": "これはビットコインで使われているのと同じ技術で、高度に安全であることが証明されています。",
+  "rudscU": "フォローの読み込みに失敗、後でやり直してください",
+  "sWnYKw": "SnortはTwitterに似た体験を得るようデザインされています。",
+  "svOoEH": "サイバースクワッティング・なりすましは禁止されています。ルールに抵触した場合、Snortとパートナーはハンドルを停止する権利を保有します。（アカウントではありません。それは誰にも取り上げることはできません。）",
+  "tOdNiY": "ダーク",
+  "thnRpU": "NIP-05認証を得るメリット:",
+  "u/vOPu": "支払済",
+  "uD/N6c": "{target}に{n} satsをzapする",
+  "uSV4Ti": "リポスト前に確認を表示します",
+  "usAvMr": "プロフィールを編集",
+  "ut+2Cd": "パートナーIDを入手",
+  "vOKedj": "{n,plural,=1{& {n} other} other{& {n} others}}",
+  "vZ4quW": "NIP-05はDNSベースの認証仕様で、ユーザーが本物であることを認証する手助けになります。",
+  "wEQDC6": "編集",
+  "wLtRCF": "Your key",
+  "wih7iJ": "名前がブロックされています",
+  "wqyN/i": "{service}の詳細を{link}で見る",
+  "wtLjP6": "IDをコピー",
+  "x82IOl": "ミュート",
+  "xIoGG9": "開く:",
+  "xJ9n2N": "公開鍵",
+  "xKflGN": "{username}のNostrでのフォロー",
+  "xbVgIm": "メディアを自動で読み込む",
+  "xmcVZ0": "検索",
+  "zFegDD": "連絡先",
+  "zINlao": "運営者",
+  "zQvVDJ": "すべて",
+  "zcaOTs": "Zap額 (satoshi)",
+  "zjJZBd": "準備完了！",
+  "zonsdq": "LNURLサービスの読み込みに失敗しました",
+  "zvCDao": "最新の記事を自動で表示する"
 }
