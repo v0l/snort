@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl";
 import { useRouteError } from "react-router-dom";
 
 const ErrorPage = () => {
@@ -6,7 +7,9 @@ const ErrorPage = () => {
   console.error(error);
   return (
     <>
-      <h4>An error has occured!</h4>
+      <h4>
+        <FormattedMessage defaultMessage="An error has occured!" />
+      </h4>
       <pre>{JSON.stringify(error, undefined, "  ")}</pre>
     </>
   );

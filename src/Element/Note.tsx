@@ -64,7 +64,6 @@ export default function Note(props: NoteProps) {
   const [showMore, setShowMore] = useState<boolean>(false);
   const baseClassName = `note card ${props.className ? props.className : ""}`;
   const [translated, setTranslated] = useState<Translation>();
-  // TODO Why was this unused? Was this a mistake?
   const { formatMessage } = useIntl();
 
   const options = {

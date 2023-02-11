@@ -1,18 +1,18 @@
 import "./Preferences.css";
 
 import { useDispatch, useSelector } from "react-redux";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
+import emoji from "@jukben/emoji-search";
 
 import { DefaultImgProxy, setPreferences, UserPreferences } from "State/Login";
 import { RootState } from "State/Store";
-import emoji from "@jukben/emoji-search";
+import { unwrap } from "Util";
 
 import messages from "./messages";
-import { unwrap } from "Util";
-import "./Preferences.css";
 
 const PreferencesPage = () => {
   const dispatch = useDispatch();
+  const { formatMessage } = useIntl();
   const perf = useSelector<RootState, UserPreferences>(s => s.login.preferences);
 
   return (
@@ -117,7 +117,10 @@ const PreferencesPage = () => {
                 <input
                   type="text"
                   value={perf.imgProxyConfig?.url}
-                  placeholder="URL.."
+                  placeholder={formatMessage({
+                    defaultMessage: "URL..",
+                    description: "Placeholder text for imgproxy url textbox",
+                  })}
                   onChange={e =>
                     dispatch(
                       setPreferences({
@@ -140,7 +143,10 @@ const PreferencesPage = () => {
                 <input
                   type="password"
                   value={perf.imgProxyConfig?.key}
-                  placeholder="Hex key.."
+                  placeholder={formatMessage({
+                    defaultMessage: "Hex Key..",
+                    description: "Hexidecimal 'key' input for improxy",
+                  })}
                   onChange={e =>
                     dispatch(
                       setPreferences({
@@ -163,7 +169,10 @@ const PreferencesPage = () => {
                 <input
                   type="password"
                   value={perf.imgProxyConfig?.salt}
-                  placeholder="Hex salt.."
+                  placeholder={formatMessage({
+                    defaultMessage: "Hex Salt..",
+                    description: "Hexidecimal 'salt' input for imgproxy",
+                  })}
                   onChange={e =>
                     dispatch(
                       setPreferences({

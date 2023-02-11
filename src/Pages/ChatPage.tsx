@@ -12,6 +12,7 @@ import { TaggedRawEvent } from "Nostr";
 import { dmsInChat, isToSelf } from "Pages/MessagesPage";
 import NoteToSelf from "Element/NoteToSelf";
 import { RootState } from "State/Store";
+import { FormattedMessage } from "react-intl";
 
 type RouterParams = {
   id: string;
@@ -76,7 +77,7 @@ export default function ChatPage() {
             onChange={e => setContent(e.target.value)}
             onKeyDown={e => onEnter(e)}></textarea>
           <button type="button" onClick={() => sendDm()}>
-            Send
+            <FormattedMessage defaultMessage="Send" description="Send DM button" />
           </button>
         </div>
       </div>

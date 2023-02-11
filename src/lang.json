@@ -203,6 +203,9 @@
   "FS3b54": {
     "string": "Done!"
   },
+  "FfYsOb": {
+    "string": "An error has occured!"
+  },
   "FmXUJg": {
     "string": "follows you"
   },
@@ -214,6 +217,10 @@
   },
   "GspYR7": {
     "string": "{n} Dislike"
+  },
+  "H+vHiz": {
+    "developer_comment": "Hexidecimal 'key' input for improxy",
+    "string": "Hex Key.."
   },
   "H0JBH6": {
     "string": "Log Out"
@@ -347,6 +354,10 @@
   "Sjo1P4": {
     "string": "Custom"
   },
+  "TpgeGw": {
+    "developer_comment": "Hexidecimal 'salt' input for imgproxy",
+    "string": "Hex Salt.."
+  },
   "UQ3pOC": {
     "string": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step."
   },
@@ -413,6 +424,10 @@
   },
   "c35bj2": {
     "string": "If you have an enquiry about your NIP-05 order please DM {link}"
+  },
+  "cQfLWb": {
+    "developer_comment": "Placeholder text for imgproxy url textbox",
+    "string": "URL.."
   },
   "cWx9t8": {
     "string": "Mute all"
@@ -674,6 +689,10 @@
   },
   "xJ9n2N": {
     "string": "Your public key"
+  },
+  "xKdNPm": {
+    "developer_comment": "Send DM button",
+    "string": "Send"
   },
   "xKflGN": {
     "string": "{username}''s Follows on Nostr"
