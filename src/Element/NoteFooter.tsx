@@ -301,7 +301,8 @@ export default function NoteFooter(props: NoteFooterProps) {
           zaps={zaps}
         />
         <SendSats
-          svc={author?.lud16 || author?.lud06}
+          lnurl={author?.lud16 || author?.lud06}
+          nip57={author?.nip57}
           onClose={() => setTip(false)}
           show={tip}
           author={author?.pubkey}

@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bytesToHex } from "@noble/hashes/utils";
-import { sha256, unwrap } from "Util";
+import { unwrap, sha256 } from "Util";
 import { formatShort } from "Number";
 import { HexKey, TaggedRawEvent } from "Nostr";
 import Event from "Nostr/Event";
@@ -44,9 +44,8 @@ function getZapper(zap: TaggedRawEvent, dhash: string): Zapper {
       // old format, ignored
       return { isValid: false };
     }
-    const metaHash = sha256(zapRequest);
     const ev = new Event(rawEvent);
-    return { pubkey: ev.PubKey, isValid: dhash === metaHash };
+    return { pubkey: ev.PubKey, isValid: dhash === rawEvent.id || dhash === sha256(zapRequest) };
   }
   return { isValid: false };
 }

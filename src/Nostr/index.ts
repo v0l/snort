@@ -61,6 +61,7 @@ export type UserMetadata = {
   nip05?: string;
   lud06?: string;
   lud16?: string;
+  nip57?: string;
 };
 
 /**

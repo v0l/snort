@@ -6,12 +6,11 @@ import { useUserProfile } from "Feed/ProfileFeed";
 import { HexKey } from "Nostr";
 import SendSats from "Element/SendSats";
 
-const ZapButton = ({ pubkey, svc }: { pubkey: HexKey; svc?: string }) => {
+const ZapButton = ({ pubkey, lnurl }: { pubkey: HexKey; lnurl?: string }) => {
   const profile = useUserProfile(pubkey);
   const [zap, setZap] = useState(false);
-  const service = svc ?? (profile?.lud16 || profile?.lud06);
 
-  if (!service) return null;
+  if (!(lnurl || profile?.lud16 || profile?.lud06 || profile?.nip57)) return null;
 
   return (
     <>
@@ -20,7 +19,8 @@ const ZapButton = ({ pubkey, svc }: { pubkey: HexKey; svc?: string }) => {
       </div>
       <SendSats
         target={profile?.display_name || profile?.name}
-        svc={service}
+        lnurl={lnurl || profile?.lud16 || profile?.lud06}
+        nip57={profile?.nip57}
         show={zap}
         onClose={() => setZap(false)}
         author={pubkey}

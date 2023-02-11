@@ -138,7 +138,8 @@ export default function ProfilePage() {
         )}
 
         <SendSats
-          svc={lnurl}
+          lnurl={lnurl}
+          nip57={user?.nip57}
           show={showLnQr}
           onClose={() => setShowLnQr(false)}
           author={id}

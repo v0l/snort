@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 
 import { formatShort } from "Number";
-import { bech32ToText } from "Util";
+import { unwrap, bech32ToText } from "Util";
 import { HexKey } from "Nostr";
 import Check from "Icons/Check";
 import Zap from "Icons/Zap";
@@ -19,7 +19,6 @@ import useHorizontalScroll from "Hooks/useHorizontalScroll";
 import messages from "./messages";
 
 interface LNURLService {
-  nostrPubkey?: HexKey;
   minSendable?: number;
   maxSendable?: number;
   metadata: string;
@@ -39,7 +38,8 @@ interface LNURLSuccessAction {
 
 export interface LNURLTipProps {
   onClose?: () => void;
-  svc?: string;
+  lnurl?: string;
+  nip57?: string;
   show?: boolean;
   invoice?: string; // shortcut to invoice qr tab
   title?: string;
@@ -49,9 +49,10 @@ export interface LNURLTipProps {
   author?: HexKey;
 }
 
-export default function LNURLTip(props: LNURLTipProps) {
+export default function SendSats(props: LNURLTipProps) {
   const onClose = props.onClose || (() => undefined);
-  const service = props.svc;
+  const lnurl = props.lnurl;
+  const nip57 = props.nip57;
   const show = props.show || false;
   const { note, author, target } = props;
   const amounts = [500, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000];
@@ -75,11 +76,11 @@ export default function LNURLTip(props: LNURLTipProps) {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const horizontalScroll = useHorizontalScroll();
-  const canComment = (payService?.commentAllowed ?? 0) > 0 || payService?.nostrPubkey;
+  const canComment = (payService?.commentAllowed ?? 0) > 0 || !!nip57;
 
   useEffect(() => {
     if (show && !props.invoice) {
-      loadService()
+      loadLnurlService()
         .then(a => setPayService(a ?? undefined))
         .catch(() => setError(formatMessage(messages.LNURLFail)));
     } else {
@@ -90,7 +91,7 @@ export default function LNURLTip(props: LNURLTipProps) {
       setComment(undefined);
       setSuccess(undefined);
     }
-  }, [show, service]);
+  }, [show, lnurl]);
 
   const serviceAmounts = useMemo(() => {
     if (payService) {
@@ -118,14 +119,14 @@ export default function LNURLTip(props: LNURLTipProps) {
     return null;
   }
 
-  async function loadService(): Promise<LNURLService | null> {
-    if (service) {
-      const isServiceUrl = service.toLowerCase().startsWith("lnurl");
+  async function loadLnurlService(): Promise<LNURLService | null> {
+    if (lnurl) {
+      const isServiceUrl = lnurl.toLowerCase().startsWith("lnurl");
       if (isServiceUrl) {
-        const serviceUrl = bech32ToText(service);
+        const serviceUrl = bech32ToText(lnurl);
         return await fetchJson(serviceUrl);
       } else {
-        const ns = service.split("@");
+        const ns = lnurl.split("@");
         return await fetchJson(`https://${ns[1]}/.well-known/lnurlp/${ns[0]}`);
       }
     }
@@ -133,31 +134,39 @@ export default function LNURLTip(props: LNURLTipProps) {
   }
 
   async function loadInvoice() {
-    if (!amount || !payService) return null;
-    let url = "";
-    const amountParam = `amount=${Math.floor(amount * 1000)}`;
-    const commentParam = comment && payService?.commentAllowed ? `&comment=${encodeURIComponent(comment)}` : "";
-    if (payService.nostrPubkey && author) {
-      const ev = await publisher.zap(author, note, comment);
-      const nostrParam = ev && `&nostr=${encodeURIComponent(JSON.stringify(ev.ToObject()))}`;
-      url = `${payService.callback}?${amountParam}${commentParam}${nostrParam}`;
-    } else {
-      url = `${payService.callback}?${amountParam}${commentParam}`;
-    }
+    if (!amount) return null;
+
     try {
-      const rsp = await fetch(url);
-      if (rsp.ok) {
-        const data = await rsp.json();
-        console.log(data);
-        if (data.status === "ERROR") {
-          setError(data.reason);
-        } else {
-          setInvoice(data);
+      if (nip57 && author) {
+        const ev = await publisher.zap(author, Math.floor(amount * 1000), note, comment);
+        const rsp = await fetch(nip57, { method: "POST", body: JSON.stringify(unwrap(ev).ToObject()) });
+        if (rsp.ok) {
+          const invoice = await rsp.text();
+          setInvoice({ pr: invoice });
           setError("");
-          payWebLNIfEnabled(data);
+          payWebLNIfEnabled({ pr: invoice });
+        } else {
+          setError(formatMessage(messages.InvoiceFail));
         }
-      } else {
-        setError(formatMessage(messages.InvoiceFail));
+      } else if (lnurl) {
+        if (!payService) return null;
+        const amountParam = `amount=${Math.floor(amount * 1000)}`;
+        const commentParam = comment && payService?.commentAllowed ? `&comment=${encodeURIComponent(comment)}` : "";
+        const url = `${payService.callback}?${amountParam}${commentParam}`;
+        const rsp = await fetch(url);
+        if (rsp.ok) {
+          const data = await rsp.json();
+          console.log(data);
+          if (data.status === "ERROR") {
+            setError(data.reason);
+          } else {
+            setInvoice(data);
+            setError("");
+            payWebLNIfEnabled(data);
+          }
+        } else {
+          setError(formatMessage(messages.InvoiceFail));
+        }
       }
     } catch (e) {
       setError(formatMessage(messages.InvoiceFail));
@@ -291,7 +300,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     );
   }
 
-  const defaultTitle = payService?.nostrPubkey ? formatMessage(messages.SendZap) : formatMessage(messages.SendSats);
+  const defaultTitle = nip57 ? formatMessage(messages.SendZap) : formatMessage(messages.SendSats);
   const title = target
     ? formatMessage(messages.ToTarget, {
         action: defaultTitle,

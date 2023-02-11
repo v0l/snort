@@ -157,7 +157,7 @@ export default function useEventPublisher() {
         return await signEvent(ev);
       }
     },
-    zap: async (author: HexKey, note?: HexKey, msg?: string) => {
+    zap: async (author: HexKey, amount: number, note?: HexKey, msg?: string) => {
       if (pubKey) {
         const ev = NEvent.ForPubKey(pubKey);
         ev.Kind = EventKind.ZapRequest;
@@ -165,6 +165,7 @@ export default function useEventPublisher() {
           ev.Tags.push(new Tag(["e", note], ev.Tags.length));
         }
         ev.Tags.push(new Tag(["p", author], ev.Tags.length));
+        ev.Tags.push(new Tag(["amount", amount.toString()], ev.Tags.length));
         const relayTag = ["relays", ...Object.keys(relays).slice(0, 10)];
         ev.Tags.push(new Tag(relayTag, ev.Tags.length));
         processContent(ev, msg || "");

@@ -72,7 +72,7 @@ const DonatePage = () => {
       </p>
       <div className="flex">
         <div className="mr10">Lightning Donation: </div>
-        <ZapButton pubkey={bech32ToHex(SnortPubKey)} svc={"donate@snort.social"} />
+        <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={"donate@snort.social"} />
       </div>
       {today && <small>Total today (UTC): {today.donations.toLocaleString()} sats</small>}
       <h3>Primary Developers</h3>
