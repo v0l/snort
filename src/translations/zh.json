@@ -1,678 +1,224 @@
 {
-  "+D82kt": {
-    "string": "确定要转发 {id}"
-  },
-  "+vIQlC": {
-    "string": "Please make sure to save the following password in order to manage your handle in the future"
-  },
-  "/4tOwT": {
-    "string": "Skip"
-  },
-  "/JE/X+": {
-    "string": "账户支持"
-  },
-  "/RD0e2": {
-    "string": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content."
-  },
-  "/d6vEc": {
-    "string": "Make your profile easier to find and share"
-  },
-  "/n5KSF": {
-    "string": "{n} ms"
-  },
-  "0BUTMv": {
-    "string": "搜索。。。"
-  },
-  "0mch2Y": {
-    "string": "name has disallowed characters"
-  },
-  "0yO7wF": {
-    "string": "{n} secs"
-  },
-  "1A7TZk": {
-    "string": "What is Snort and how does it work?"
-  },
-  "1udzha": {
-    "string": "聊天"
-  },
-  "2/2yg+": {
-    "string": "添加"
-  },
-  "25V4l1": {
-    "string": "横幅"
-  },
-  "2IFGap": {
-    "string": "捐赠"
-  },
-  "2k0Cv+": {
-    "string": "Dislikes ({n})"
-  },
-  "3cc4Ct": {
-    "string": "浅色"
-  },
-  "3xCwbZ": {
-    "developer_comment": "Seperator text for Login / Generate Key",
-    "string": "OR"
-  },
-  "450Fty": {
-    "string": "无"
-  },
-  "47FYwb": {
-    "string": "取消"
-  },
-  "4L2vUY": {
-    "string": "Your new NIP-05 handle is:"
-  },
-  "4OB335": {
-    "string": "Dislike"
-  },
-  "4Vmpt4": {
-    "string": "Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices"
-  },
-  "4Z3t5i": {
-    "string": "使用imgproxy压缩图片"
-  },
-  "4rYCjn": {
-    "string": "Note to Self"
-  },
-  "5ykRmX": {
-    "string": "Send zap"
-  },
-  "6ewQqw": {
-    "string": "Likes ({n})"
-  },
-  "6tUqAb": {
-    "developer_comment": "Note about key security before generating a new key",
-    "string": "Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!"
-  },
-  "7+Domh": {
-    "string": "Notes"
-  },
-  "7hp70g": {
-    "string": "NIP-05"
-  },
-  "7xzTiH": {
-    "string": "{action} to {target}"
-  },
-  "8/vBbP": {
-    "string": "Reposts ({n})"
-  },
-  "89q5wc": {
-    "string": "Confirm Reposts"
-  },
-  "8E9muH": {
-    "string": "Import Twitter Follows (optional)"
-  },
-  "8QDesP": {
-    "string": "Zap {n} sats"
-  },
-  "8g2vyB": {
-    "string": "名称过长"
-  },
-  "9+Ddtu": {
-    "string": "Next"
-  },
-  "9HU8vw": {
-    "string": "回复"
-  },
-  "9SvQep": {
-    "string": "Follows {n}"
-  },
-  "9WRlF4": {
-    "string": "发送"
-  },
-  "9gqH2W": {
-    "developer_comment": "Login button",
-    "string": "登录"
-  },
-  "9wO4wJ": {
-    "string": "闪电发票"
-  },
-  "ASRK0S": {
-    "string": "该作者已被屏蔽"
-  },
-  "Adk34V": {
-    "string": "Setup your Profile"
-  },
-  "AyGauy": {
-    "string": "登录"
-  },
-  "B4C47Y": {
-    "string": "名称过短"
-  },
-  "B6+XJy": {
-    "string": "zapped"
-  },
-  "BOUMjw": {
-    "string": "No nostr users found for {twitterUsername}"
-  },
-  "BcGMo+": {
-    "string": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
-  },
-  "C81/uG": {
-    "string": "登出"
-  },
-  "CHTbO3": {
-    "string": "Failed to load invoice"
-  },
-  "Cu/K85": {
-    "string": "Translated from {lang}"
-  },
-  "D3idYv": {
-    "string": "设置"
-  },
-  "DKnriN": {
-    "string": "发送聪"
-  },
-  "DZzCem": {
-    "string": "Show latest {n} notes"
-  },
-  "Dt/Zd5": {
-    "string": "Media in posts will automatically be shown for selected people, otherwise only the link will show"
-  },
-  "E8a4yq": {
-    "string": "Follow some popular accounts"
-  },
-  "EPYwm7": {
-    "string": "Your private key is your password. If you lose this key, you will lose access to your account! Copy it and keep it in a safe place. There is no way to reset your private key."
-  },
-  "EWyQH5": {
-    "string": "广场"
-  },
-  "Ebl/B2": {
-    "string": "Translate to {lang}"
-  },
-  "EcglP9": {
-    "string": "Key"
-  },
-  "EnCOBJ": {
-    "string": "Buy"
-  },
-  "Eqjl5K": {
-    "string": "Only Snort and our integration partner identifier gives you a colorful domain name, but you are welcome to use other services too."
-  },
-  "F+B3x1": {
-    "string": "We have also partnered with nostrplebs.com to give you more options"
-  },
-  "FS3b54": {
-    "string": "Done!"
-  },
-  "FmXUJg": {
-    "string": "关注你"
-  },
-  "G/yZLu": {
-    "string": "移除"
-  },
-  "GFOoEE": {
-    "string": "Salt"
-  },
-  "GspYR7": {
-    "string": "{n} Dislike"
-  },
-  "H0JBH6": {
-    "string": "注销"
-  },
-  "H6/kLh": {
-    "string": "订单已支付！"
-  },
-  "HAlOn1": {
-    "string": "名称"
-  },
-  "HFls6j": {
-    "string": "name will be available later"
-  },
-  "HOzFdo": {
-    "string": "已屏蔽"
-  },
-  "HbefNb": {
-    "string": "打开钱包"
-  },
-  "IKKHqV": {
-    "string": "关注"
-  },
-  "INSqIz": {
-    "string": "Twitter username..."
-  },
-  "IUZC+0": {
-    "string": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you."
-  },
-  "JCIgkj": {
-    "string": "Username"
-  },
-  "JHEHCk": {
-    "string": "Zaps ({n})"
-  },
-  "JkLHGw": {
-    "string": "网站"
-  },
-  "K3r6DQ": {
-    "string": "删除"
-  },
-  "K7AkdL": {
-    "string": "显示"
-  },
-  "KQvWvD": {
-    "string": "已删除"
-  },
-  "KWuDfz": {
-    "string": "I have saved my keys, continue"
-  },
-  "KahimY": {
-    "string": "Unknown event kind: {kind}"
-  },
-  "LgbKvU": {
-    "string": "评论"
-  },
-  "LxY9tW": {
-    "developer_comment": "Button: Generate a new key",
-    "string": "Generate Key"
-  },
-  "M3Oirc": {
-    "string": "调试菜单"
-  },
-  "MBAYRO": {
-    "string": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message"
-  },
-  "MI2jkA": {
-    "string": "Not available:"
-  },
-  "MRp6Ly": {
-    "string": "Twitter username"
-  },
-  "MzRYWH": {
-    "string": "购买{条目}"
-  },
-  "N2IrpM": {
-    "string": "确认"
-  },
-  "NdOYJJ": {
-    "string": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!"
-  },
-  "NfNk2V": {
-    "string": "Your private key"
-  },
-  "NndBJE": {
-    "string": "New users page"
-  },
-  "OEW7yJ": {
-    "string": "Zaps"
-  },
-  "OKhRC6": {
-    "string": "分享"
-  },
-  "P61BTu": {
-    "string": "复制事件 JSON"
-  },
-  "P7FD0F": {
-    "string": "系统（默认）"
-  },
-  "PCSt5T": {
-    "string": "首选项"
-  },
-  "Pe0ogR": {
-    "string": "主题"
-  },
-  "PrsIg7": {
-    "string": "Reactions will be shown on every page, if disabled no reactions will be shown"
-  },
-  "QTdJfH": {
-    "developer_comment": "Heading for generate key flow",
-    "string": "Create an Account"
-  },
-  "QxCuTo": {
-    "developer_comment": "Artwork attribution label",
-    "string": "Art by {name}"
-  },
-  "RDZVQL": {
-    "string": "Check"
-  },
-  "RahCRH": {
-    "string": "已过期"
-  },
-  "RhDAoS": {
-    "string": "确定要删除 {id}"
-  },
-  "RoOyAh": {
-    "string": "中继器"
-  },
-  "Sjo1P4": {
-    "string": "自定义"
-  },
-  "UQ3pOC": {
-    "string": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step."
-  },
-  "Up5U7K": {
-    "string": "拉黑"
-  },
-  "VOjC1i": {
-    "string": "Pick which upload service you want to upload attachments to"
-  },
-  "VlJkSk": {
-    "string": "{n} muted"
-  },
-  "VnXp8Z": {
-    "string": "头像"
-  },
-  "VtPV/B": {
-    "developer_comment": "Login button for NIP7 key manager extension",
-    "string": "Login with Extension (NIP-07)"
-  },
-  "Vx7Zm2": {
-    "string": "How do keys work?"
-  },
-  "W9355R": {
-    "string": "取消屏蔽"
-  },
-  "WONP5O": {
-    "string": "Find your twitter follows on nostr (Data provided by {provider})"
-  },
-  "WxthCV": {
-    "string": "e.g. Jack"
-  },
-  "XgWvGA": {
-    "string": "回应"
-  },
-  "YDURw6": {
-    "string": "Service URL"
-  },
-  "YXA3AH": {
-    "string": "Enable reactions"
-  },
-  "ZKORll": {
-    "string": "马上激活"
-  },
-  "a5UPxh": {
-    "string": "Fund developers and platforms providing NIP-05 verification services"
-  },
-  "aWpBzj": {
-    "string": "显示更多"
-  },
-  "brAXSu": {
-    "string": "Pick a username"
-  },
-  "bxv59V": {
-    "string": "刚刚"
-  },
-  "cWx9t8": {
-    "string": "屏蔽所有"
-  },
-  "cuV2gK": {
-    "string": "名称已被注册"
-  },
-  "cyR7Kh": {
-    "string": "返回"
-  },
-  "d7d0/x": {
-    "string": "LN 地址"
-  },
-  "dOQCL8": {
-    "string": "显示名称"
-  },
-  "e7qqly": {
-    "string": "全标已读"
-  },
-  "eHAneD": {
-    "string": "Reaction emoji"
-  },
-  "eJj8HD": {
-    "string": "Get Verified"
-  },
-  "eR3YIn": {
-    "string": "帖子"
-  },
-  "filwqD": {
-    "string": "Read"
-  },
-  "flnGvv": {
-    "string": "What's on your mind?"
-  },
-  "g5pX+a": {
-    "string": "关于"
-  },
-  "gBdUXk": {
-    "string": "Save your keys!"
-  },
-  "gDZkld": {
-    "string": "Snort is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
-  },
-  "gDzDRs": {
-    "string": "Emoji to send when reactiong to a note"
-  },
-  "gjBiyj": {
-    "string": "加载中。。。"
-  },
-  "hCUivF": {
-    "string": "Notes will stream in real time into global and posts tab"
-  },
-  "hK5ZDk": {
-    "string": "the world"
-  },
-  "hMzcSq": {
-    "string": "消息"
-  },
-  "hY4lzx": {
-    "string": "Supports"
-  },
-  "hicxcO": {
-    "string": "Show replies"
-  },
-  "iCqGww": {
-    "string": "回应（{n}）"
-  },
-  "iDGAbc": {
-    "string": "Get a Snort identifier"
-  },
-  "iGT1eE": {
-    "string": "Prevent fake accounts from imitating you"
-  },
-  "iNWbVV": {
-    "string": "Handle"
-  },
-  "ieGrWo": {
-    "string": "关注"
-  },
-  "itPgxd": {
-    "string": "个人资料"
-  },
-  "izWS4J": {
-    "string": "取消关注"
-  },
-  "jA3OE/": {
-    "string": "{n,plural,=1{{n} sat} other{{n} sats}}"
-  },
-  "jCA7Cw": {
-    "string": "Preview on snort"
-  },
-  "juhqvW": {
-    "string": "Improve login security with browser extensions"
-  },
-  "jvo0vs": {
-    "string": "保存"
-  },
-  "k2veDA": {
-    "string": "Write"
-  },
-  "k7sKNy": {
-    "string": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
-  },
-  "lCILNz": {
-    "string": "马上购买"
-  },
-  "lD3+8a": {
-    "string": "付款"
-  },
-  "lgg1KN": {
-    "string": "账户页面"
-  },
-  "ll3xBp": {
-    "string": "图片代理服务"
-  },
-  "lnaT9F": {
-    "string": "Following {n}"
-  },
-  "lvlPhZ": {
-    "string": "Pay Invoice"
-  },
-  "mKAr6h": {
-    "string": "关注所有"
-  },
-  "mKh2HS": {
-    "string": "文件上传服务"
-  },
-  "mKhgP9": {
-    "string": "{n,plural,=0{} =1{zapped} other{zapped}}"
-  },
-  "n1xHAH": {
-    "string": "Get an identifier (optional)"
-  },
-  "nDejmx": {
-    "string": "Unblock"
-  },
-  "nN9XTz": {
-    "string": "Share your thoughts with {link}"
-  },
-  "nwZXeh": {
-    "string": "{n}已拉黑"
-  },
-  "o6Uy3d": {
-    "developer_comment": "Explanation for public key only login is read-only",
-    "string": "Only the secret key can be used to publish (sign events), everything else logs you in read-only mode."
-  },
-  "o7e+nJ": {
-    "string": "{n} 的粉丝"
-  },
-  "odFwjL": {
-    "string": "仅关注"
-  },
-  "odhABf": {
-    "developer_comment": "Login header",
-    "string": "登录"
-  },
-  "osUr8O": {
-    "string": "You can also use these extensions to login to most Nostr sites."
-  },
-  "oxCa4R": {
-    "string": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app."
-  },
-  "pzTOmv": {
-    "string": "粉丝"
-  },
-  "qUJTsT": {
-    "string": "已拉黑"
-  },
-  "qdGuQo": {
-    "string": "Your Private Key Is (do not share this with anyone)"
-  },
-  "qkvYUb": {
-    "string": "添加个人资料"
-  },
-  "qmJ8kD": {
-    "string": "Translation failed"
-  },
-  "r3C4x/": {
-    "string": "软件"
-  },
-  "rT14Ow": {
-    "string": "添加中继器"
-  },
-  "reJ6SM": {
-    "string": "It is recommended to use one of the following browser extensions if you are on a desktop computer to secure your key:"
-  },
-  "rfuMjE": {
-    "string": "（默认）"
-  },
-  "rrfdTe": {
-    "string": "This is the same technology which is used by Bitcoin and has been proven to be extremely secure."
-  },
-  "rudscU": {
-    "string": "Failed to load follows, please try again later"
-  },
-  "sWnYKw": {
-    "string": "Snort is designed to have a similar experience to Twitter."
-  },
-  "svOoEH": {
-    "string": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule."
-  },
-  "tOdNiY": {
-    "string": "深色"
-  },
-  "thnRpU": {
-    "string": "Getting NIP-05 verified can help:"
-  },
-  "u/vOPu": {
-    "string": "已付款"
-  },
-  "uD/N6c": {
-    "string": "Zap {target} {n} sats"
-  },
-  "uSV4Ti": {
-    "string": "Reposts need to be manually confirmed"
-  },
-  "usAvMr": {
-    "string": "编辑个人资料"
-  },
-  "ut+2Cd": {
-    "string": "Get a partner identifier"
-  },
-  "vOKedj": {
-    "string": "{n,plural,=1{& {n} other} other{& {n} others}}"
-  },
-  "vZ4quW": {
-    "string": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."
-  },
-  "wEQDC6": {
-    "string": "编辑"
-  },
-  "wLtRCF": {
-    "developer_comment": "Label for key input",
-    "string": "Your key"
-  },
-  "wih7iJ": {
-    "string": "name is blocked"
-  },
-  "wqyN/i": {
-    "string": "Find out more info about {service} at {link}"
-  },
-  "wtLjP6": {
-    "string": "复制 ID"
-  },
-  "x82IOl": {
-    "string": "屏蔽"
-  },
-  "xIoGG9": {
-    "string": "Go to"
-  },
-  "xJ9n2N": {
-    "string": "Your public key"
-  },
-  "xKflGN": {
-    "string": "{username}''s Follows on Nostr"
-  },
-  "xbVgIm": {
-    "string": "自动加载媒体"
-  },
-  "xmcVZ0": {
-    "string": "搜索"
-  },
-  "zFegDD": {
-    "string": "联系人"
-  },
-  "zINlao": {
-    "string": "Owner"
-  },
-  "zQvVDJ": {
-    "string": "全部"
-  },
-  "zcaOTs": {
-    "string": "Zap amount in sats"
-  },
-  "zjJZBd": {
-    "string": "You're ready!"
-  },
-  "zonsdq": {
-    "string": "文件上传服务"
-  },
-  "zvCDao": {
-    "string": "Automatically show latest notes"
-  }
+  "+D82kt": "确定要转发 {id}",
+  "+vIQlC": "Please make sure to save the following password in order to manage your handle in the future",
+  "/4tOwT": "Skip",
+  "/JE/X+": "账户支持",
+  "/RD0e2": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content.",
+  "/d6vEc": "Make your profile easier to find and share",
+  "/n5KSF": "{n} ms",
+  "0BUTMv": "搜索。。。",
+  "0mch2Y": "name has disallowed characters",
+  "0yO7wF": "{n} secs",
+  "1A7TZk": "What is Snort and how does it work?",
+  "1udzha": "聊天",
+  "2/2yg+": "添加",
+  "25V4l1": "横幅",
+  "2IFGap": "捐赠",
+  "2k0Cv+": "Dislikes ({n})",
+  "3cc4Ct": "浅色",
+  "3xCwbZ": "OR",
+  "450Fty": "无",
+  "47FYwb": "取消",
+  "4L2vUY": "Your new NIP-05 handle is:",
+  "4OB335": "Dislike",
+  "4Vmpt4": "Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices",
+  "4Z3t5i": "使用imgproxy压缩图片",
+  "4rYCjn": "Note to Self",
+  "5ykRmX": "Send zap",
+  "6ewQqw": "Likes ({n})",
+  "6tUqAb": "Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!",
+  "7+Domh": "Notes",
+  "7hp70g": "NIP-05",
+  "7xzTiH": "{action} to {target}",
+  "8/vBbP": "Reposts ({n})",
+  "89q5wc": "Confirm Reposts",
+  "8E9muH": "Import Twitter Follows (optional)",
+  "8QDesP": "Zap {n} sats",
+  "8g2vyB": "名称过长",
+  "9+Ddtu": "Next",
+  "9HU8vw": "回复",
+  "9SvQep": "Follows {n}",
+  "9WRlF4": "发送",
+  "9gqH2W": "登录",
+  "9wO4wJ": "闪电发票",
+  "ASRK0S": "该作者已被屏蔽",
+  "Adk34V": "Setup your Profile",
+  "AyGauy": "登录",
+  "B4C47Y": "名称过短",
+  "B6+XJy": "zapped",
+  "BOUMjw": "No nostr users found for {twitterUsername}",
+  "BcGMo+": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages.",
+  "C81/uG": "登出",
+  "CHTbO3": "Failed to load invoice",
+  "Cu/K85": "Translated from {lang}",
+  "D3idYv": "设置",
+  "DKnriN": "发送聪",
+  "DZzCem": "Show latest {n} notes",
+  "Dt/Zd5": "Media in posts will automatically be shown for selected people, otherwise only the link will show",
+  "E8a4yq": "Follow some popular accounts",
+  "EPYwm7": "Your private key is your password. If you lose this key, you will lose access to your account! Copy it and keep it in a safe place. There is no way to reset your private key.",
+  "EWyQH5": "广场",
+  "Ebl/B2": "Translate to {lang}",
+  "EcglP9": "Key",
+  "EnCOBJ": "Buy",
+  "Eqjl5K": "Only Snort and our integration partner identifier gives you a colorful domain name, but you are welcome to use other services too.",
+  "F+B3x1": "We have also partnered with nostrplebs.com to give you more options",
+  "FS3b54": "Done!",
+  "FmXUJg": "关注你",
+  "G/yZLu": "移除",
+  "GFOoEE": "Salt",
+  "GspYR7": "{n} Dislike",
+  "H0JBH6": "注销",
+  "H6/kLh": "订单已支付！",
+  "HAlOn1": "名称",
+  "HFls6j": "name will be available later",
+  "HOzFdo": "已屏蔽",
+  "HbefNb": "打开钱包",
+  "IKKHqV": "关注",
+  "INSqIz": "Twitter username...",
+  "IUZC+0": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you.",
+  "JCIgkj": "Username",
+  "JHEHCk": "Zaps ({n})",
+  "JkLHGw": "网站",
+  "K3r6DQ": "删除",
+  "K7AkdL": "显示",
+  "KQvWvD": "已删除",
+  "KWuDfz": "I have saved my keys, continue",
+  "KahimY": "Unknown event kind: {kind}",
+  "LgbKvU": "评论",
+  "LxY9tW": "Generate Key",
+  "M3Oirc": "调试菜单",
+  "MBAYRO": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message",
+  "MI2jkA": "Not available:",
+  "MRp6Ly": "Twitter username",
+  "MzRYWH": "购买{条目}",
+  "N2IrpM": "确认",
+  "NdOYJJ": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!",
+  "NfNk2V": "Your private key",
+  "NndBJE": "New users page",
+  "OEW7yJ": "Zaps",
+  "OKhRC6": "分享",
+  "P61BTu": "复制事件 JSON",
+  "P7FD0F": "系统（默认）",
+  "PCSt5T": "首选项",
+  "Pe0ogR": "主题",
+  "PrsIg7": "Reactions will be shown on every page, if disabled no reactions will be shown",
+  "QTdJfH": "Create an Account",
+  "QxCuTo": "Art by {name}",
+  "RDZVQL": "Check",
+  "RahCRH": "已过期",
+  "RhDAoS": "确定要删除 {id}",
+  "RoOyAh": "中继器",
+  "Sjo1P4": "自定义",
+  "UQ3pOC": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step.",
+  "Up5U7K": "拉黑",
+  "VOjC1i": "Pick which upload service you want to upload attachments to",
+  "VlJkSk": "{n} muted",
+  "VnXp8Z": "头像",
+  "VtPV/B": "Login with Extension (NIP-07)",
+  "Vx7Zm2": "How do keys work?",
+  "W9355R": "取消屏蔽",
+  "WONP5O": "Find your twitter follows on nostr (Data provided by {provider})",
+  "WxthCV": "e.g. Jack",
+  "XgWvGA": "回应",
+  "YDURw6": "Service URL",
+  "YXA3AH": "Enable reactions",
+  "ZKORll": "马上激活",
+  "a5UPxh": "Fund developers and platforms providing NIP-05 verification services",
+  "aWpBzj": "显示更多",
+  "brAXSu": "Pick a username",
+  "bxv59V": "刚刚",
+  "cWx9t8": "屏蔽所有",
+  "cuV2gK": "名称已被注册",
+  "cyR7Kh": "返回",
+  "d7d0/x": "LN 地址",
+  "dOQCL8": "显示名称",
+  "e7qqly": "全标已读",
+  "eHAneD": "Reaction emoji",
+  "eJj8HD": "Get Verified",
+  "eR3YIn": "帖子",
+  "filwqD": "Read",
+  "flnGvv": "What's on your mind?",
+  "g5pX+a": "关于",
+  "gBdUXk": "Save your keys!",
+  "gDZkld": "Snort is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\".",
+  "gDzDRs": "Emoji to send when reactiong to a note",
+  "gjBiyj": "加载中。。。",
+  "hCUivF": "Notes will stream in real time into global and posts tab",
+  "hK5ZDk": "the world",
+  "hMzcSq": "消息",
+  "hY4lzx": "Supports",
+  "hicxcO": "Show replies",
+  "iCqGww": "回应（{n}）",
+  "iDGAbc": "Get a Snort identifier",
+  "iGT1eE": "Prevent fake accounts from imitating you",
+  "iNWbVV": "Handle",
+  "ieGrWo": "关注",
+  "itPgxd": "个人资料",
+  "izWS4J": "取消关注",
+  "jA3OE/": "{n,plural,=1{{n} sat} other{{n} sats}}",
+  "jCA7Cw": "Preview on snort",
+  "juhqvW": "Improve login security with browser extensions",
+  "jvo0vs": "保存",
+  "k2veDA": "Write",
+  "k7sKNy": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!",
+  "lCILNz": "马上购买",
+  "lD3+8a": "付款",
+  "lgg1KN": "账户页面",
+  "ll3xBp": "图片代理服务",
+  "lnaT9F": "Following {n}",
+  "lvlPhZ": "Pay Invoice",
+  "mKAr6h": "关注所有",
+  "mKh2HS": "文件上传服务",
+  "mKhgP9": "{n,plural,=0{} =1{zapped} other{zapped}}",
+  "n1xHAH": "Get an identifier (optional)",
+  "nDejmx": "Unblock",
+  "nN9XTz": "Share your thoughts with {link}",
+  "nwZXeh": "{n}已拉黑",
+  "o6Uy3d": "Only the secret key can be used to publish (sign events), everything else logs you in read-only mode.",
+  "o7e+nJ": "{n} 的粉丝",
+  "odFwjL": "仅关注",
+  "odhABf": "登录",
+  "osUr8O": "You can also use these extensions to login to most Nostr sites.",
+  "oxCa4R": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app.",
+  "pzTOmv": "粉丝",
+  "qUJTsT": "已拉黑",
+  "qdGuQo": "Your Private Key Is (do not share this with anyone)",
+  "qkvYUb": "添加个人资料",
+  "qmJ8kD": "Translation failed",
+  "r3C4x/": "软件",
+  "rT14Ow": "添加中继器",
+  "reJ6SM": "It is recommended to use one of the following browser extensions if you are on a desktop computer to secure your key:",
+  "rfuMjE": "（默认）",
+  "rrfdTe": "This is the same technology which is used by Bitcoin and has been proven to be extremely secure.",
+  "rudscU": "Failed to load follows, please try again later",
+  "sWnYKw": "Snort is designed to have a similar experience to Twitter.",
+  "svOoEH": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule.",
+  "tOdNiY": "深色",
+  "thnRpU": "Getting NIP-05 verified can help:",
+  "u/vOPu": "已付款",
+  "uD/N6c": "Zap {target} {n} sats",
+  "uSV4Ti": "Reposts need to be manually confirmed",
+  "usAvMr": "编辑个人资料",
+  "ut+2Cd": "Get a partner identifier",
+  "vOKedj": "{n,plural,=1{& {n} other} other{& {n} others}}",
+  "vZ4quW": "NIP-05 is a DNS based verification spec which helps to validate you as a real user.",
+  "wEQDC6": "编辑",
+  "wLtRCF": "Your key",
+  "wih7iJ": "name is blocked",
+  "wqyN/i": "Find out more info about {service} at {link}",
+  "wtLjP6": "复制 ID",
+  "x82IOl": "屏蔽",
+  "xIoGG9": "Go to",
+  "xJ9n2N": "Your public key",
+  "xKflGN": "{username}''s Follows on Nostr",
+  "xbVgIm": "自动加载媒体",
+  "xmcVZ0": "搜索",
+  "zFegDD": "联系人",
+  "zINlao": "Owner",
+  "zQvVDJ": "全部",
+  "zcaOTs": "Zap amount in sats",
+  "zjJZBd": "You're ready!",
+  "zonsdq": "文件上传服务",
+  "zvCDao": "Automatically show latest notes"
 }
