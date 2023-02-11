@@ -67,8 +67,8 @@ export default function ProfilePage() {
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
-  const { pinned, related: pinRelated } = usePinnedFeed(id);
-  const { bookmarks, related: bookmarkRelated } = useBookmarkFeed(id);
+  const { notes: pinned, related: pinRelated } = usePinnedFeed(id);
+  const { notes: bookmarks, related: bookmarkRelated } = useBookmarkFeed(id);
   const aboutText = user?.about || "";
   const about = Text({
     content: aboutText,
