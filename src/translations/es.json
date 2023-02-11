@@ -1,678 +1,224 @@
 {
-  "+D82kt": {
-    "string": "¿Estás seguro de que quieres republicar {id}"
-  },
-  "+vIQlC": {
-    "string": "Asegúrate de guardar ésta contraseña para gestionar tu NIP-05 en el futuro"
-  },
-  "/4tOwT": {
-    "string": "Saltar"
-  },
-  "/JE/X+": {
-    "string": "Soporte de Cuenta"
-  },
-  "/RD0e2": {
-    "string": "Nostr utiliza firmas digitales para proveer de notas inmutables que pueden ser replicadas a muchos relays para que tu contenido esté distribuido redundantemente."
-  },
-  "/d6vEc": {
-    "string": "Haz tu perfil más fácil de encontrar y compartir"
-  },
-  "/n5KSF": {
-    "string": "{n} ms"
-  },
-  "0BUTMv": {
-    "string": "Buscar..."
-  },
-  "0mch2Y": {
-    "string": "el nombre tiene caracteres inválidos"
-  },
-  "0yO7wF": {
-    "string": "{n} seg"
-  },
-  "1A7TZk": {
-    "string": "¿Qué es Snort y cómo funciona?"
-  },
-  "1udzha": {
-    "string": "Conversaciones"
-  },
-  "2/2yg+": {
-    "string": "Añadir"
-  },
-  "25V4l1": {
-    "string": "Banner"
-  },
-  "2IFGap": {
-    "string": "Donar"
-  },
-  "2k0Cv+": {
-    "string": "No me gusta ({n})"
-  },
-  "3cc4Ct": {
-    "string": "Claro"
-  },
-  "3xCwbZ": {
-    "developer_comment": "Seperator text for Login / Generate Key",
-    "string": "OR"
-  },
-  "450Fty": {
-    "string": "Ninguno"
-  },
-  "47FYwb": {
-    "string": "Cancelar"
-  },
-  "4L2vUY": {
-    "string": "Tu nuevo NIP-05 es:"
-  },
-  "4OB335": {
-    "string": "No me gusta"
-  },
-  "4Vmpt4": {
-    "string": "Nostr Plbes es uno de los primeros proveedores de NIP-05 y ofrece una buena colección de dominios a precios razonables."
-  },
-  "4Z3t5i": {
-    "string": "Usar imgproxy para comprimir imágenes"
-  },
-  "4rYCjn": {
-    "string": "Mensajes guardados"
-  },
-  "5ykRmX": {
-    "string": "Enviar zap"
-  },
-  "6ewQqw": {
-    "string": "Me gusta ({n})"
-  },
-  "6tUqAb": {
-    "developer_comment": "Note about key security before generating a new key",
-    "string": "Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!"
-  },
-  "7+Domh": {
-    "string": "Notas"
-  },
-  "7hp70g": {
-    "string": "NIP-05"
-  },
-  "7xzTiH": {
-    "string": "{action} a {target}"
-  },
-  "8/vBbP": {
-    "string": "Reposts ({n})"
-  },
-  "89q5wc": {
-    "string": "Confirmar reposts"
-  },
-  "8E9muH": {
-    "string": "Importar seguidos de Twitter (opcional)"
-  },
-  "8QDesP": {
-    "string": "Zapear {n} sats"
-  },
-  "8g2vyB": {
-    "string": "el nombre es demasiado largo"
-  },
-  "9+Ddtu": {
-    "string": "Siguiente"
-  },
-  "9HU8vw": {
-    "string": "Responder"
-  },
-  "9SvQep": {
-    "string": "Siguiendo a {n}"
-  },
-  "9WRlF4": {
-    "string": "Enviar"
-  },
-  "9gqH2W": {
-    "developer_comment": "Login button",
-    "string": "Acceso"
-  },
-  "9wO4wJ": {
-    "string": "Factura Lightning"
-  },
-  "ASRK0S": {
-    "string": "Este autor ha sido silenciado"
-  },
-  "Adk34V": {
-    "string": "Configura tu Perfil"
-  },
-  "AyGauy": {
-    "string": "Acceso"
-  },
-  "B4C47Y": {
-    "string": "el nombre es demasiado corto"
-  },
-  "B6+XJy": {
-    "string": "zapeó"
-  },
-  "BOUMjw": {
-    "string": "No hemos encontrado usuarios en nostr para {twitterUsername}"
-  },
-  "BcGMo+": {
-    "string": "Las notas contienen contenido textual, el uso más popular de dichas notas es almacenar mensajes parecidos a \"tweets\"."
-  },
-  "C81/uG": {
-    "string": "Salir"
-  },
-  "CHTbO3": {
-    "string": "Error al cargar factura"
-  },
-  "Cu/K85": {
-    "string": "Traducido de {lang}"
-  },
-  "D3idYv": {
-    "string": "Configuración"
-  },
-  "DKnriN": {
-    "string": "Enviar sats"
-  },
-  "DZzCem": {
-    "string": "Mostrar últimas {n} notas"
-  },
-  "Dt/Zd5": {
-    "string": "Se cargarán las imágenes y vídeos automáticamente"
-  },
-  "E8a4yq": {
-    "string": "Sigue a cuentas populares"
-  },
-  "EPYwm7": {
-    "string": "Tu clave privada es tu contraseña. Si pierdes esta clave perderás acceso a tu cuenta. Cópiala y guárdala en un lugar seguro. No hay manera de recuperar tu clave privada."
-  },
-  "EWyQH5": {
-    "string": "Global"
-  },
-  "Ebl/B2": {
-    "string": "Traducir a {lang}"
-  },
-  "EcglP9": {
-    "string": "Clave"
-  },
-  "EnCOBJ": {
-    "string": "Comprar"
-  },
-  "Eqjl5K": {
-    "string": "Sólo los identificadores de Snort y nuestros socios se mostrarán con un dominio colorido, pero todos los servicios están soportados."
-  },
-  "F+B3x1": {
-    "string": "Nos hemos asociado con nostrplebs.com para darte más opciones"
-  },
-  "FS3b54": {
-    "string": "Hecho!"
-  },
-  "FmXUJg": {
-    "string": "te sigue"
-  },
-  "G/yZLu": {
-    "string": "Eliminar"
-  },
-  "GFOoEE": {
-    "string": "Salt"
-  },
-  "GspYR7": {
-    "string": "{n} No me gusta"
-  },
-  "H0JBH6": {
-    "string": "Salir"
-  },
-  "H6/kLh": {
-    "string": "Orden pagada!"
-  },
-  "HAlOn1": {
-    "string": "Nombre"
-  },
-  "HFls6j": {
-    "string": "el nombre estará disponible más tarde"
-  },
-  "HOzFdo": {
-    "string": "Silenciados"
-  },
-  "HbefNb": {
-    "string": "Abrir Wallet"
-  },
-  "IKKHqV": {
-    "string": "Siguiendo"
-  },
-  "INSqIz": {
-    "string": "Usuario en Twitter..."
-  },
-  "IUZC+0": {
-    "string": "Esto significa que nadie puede modificar notas que tú has creado y que todo el mundo puede verificar que las notas que leen han sido escritas por ti."
-  },
-  "JCIgkj": {
-    "string": "Usuario"
-  },
-  "JHEHCk": {
-    "string": "Zaps ({n})"
-  },
-  "JkLHGw": {
-    "string": "Web"
-  },
-  "K3r6DQ": {
-    "string": "Eliminar"
-  },
-  "K7AkdL": {
-    "string": "Mostrar"
-  },
-  "KQvWvD": {
-    "string": "Eliminado"
-  },
-  "KWuDfz": {
-    "string": "He guardado mis claves, continuar"
-  },
-  "KahimY": {
-    "string": "Evento de tipo desconocido {kind}"
-  },
-  "LgbKvU": {
-    "string": "Comentario"
-  },
-  "LxY9tW": {
-    "developer_comment": "Button: Generate a new key",
-    "string": "Generate Key"
-  },
-  "M3Oirc": {
-    "string": "Menús de desarrolladores"
-  },
-  "MBAYRO": {
-    "string": "Se mostrarán opciones adicionales para desarrolladores en el menú de las notas"
-  },
-  "MI2jkA": {
-    "string": "No disponible:"
-  },
-  "MRp6Ly": {
-    "string": "Usuario en Twitter"
-  },
-  "MzRYWH": {
-    "string": "Comprando {item}"
-  },
-  "N2IrpM": {
-    "string": "Confirmar"
-  },
-  "NdOYJJ": {
-    "string": "Hmmm no hay nada que mostrarte aquí... Echa un vistazo a la {newUsersPage} para seguir a algunas cuentas recomendadas!"
-  },
-  "NfNk2V": {
-    "string": "Tu clave privada"
-  },
-  "NndBJE": {
-    "string": "Página de nuevos usuarios"
-  },
-  "OEW7yJ": {
-    "string": "Zaps"
-  },
-  "OKhRC6": {
-    "string": "Compartir"
-  },
-  "P61BTu": {
-    "string": "Copiar JSON"
-  },
-  "P7FD0F": {
-    "string": "Sistema (por defecto)"
-  },
-  "PCSt5T": {
-    "string": "Preferencias"
-  },
-  "Pe0ogR": {
-    "string": "Tema"
-  },
-  "PrsIg7": {
-    "string": "Se mostrarán las reacciones a las notas"
-  },
-  "QTdJfH": {
-    "developer_comment": "Heading for generate key flow",
-    "string": "Create an Account"
-  },
-  "QxCuTo": {
-    "developer_comment": "Artwork attribution label",
-    "string": "Art by {name}"
-  },
-  "RDZVQL": {
-    "string": "Comprobar"
-  },
-  "RahCRH": {
-    "string": "Caducada"
-  },
-  "RhDAoS": {
-    "string": "¿Estás seguro de que quieres eliminar {id}?"
-  },
-  "RoOyAh": {
-    "string": "Relays"
-  },
-  "Sjo1P4": {
-    "string": "Personalizar"
-  },
-  "UQ3pOC": {
-    "string": "En Nostr mucha gente tiene el mismo nombre de usuario. Los nombres de usuario y la identidad son cosas separadas. Puedes adquirir un identificador único en el siguiente paso."
-  },
-  "Up5U7K": {
-    "string": "Bloquear"
-  },
-  "VOjC1i": {
-    "string": "Elige qué servicio de subida de ficheros quieres utilizar"
-  },
-  "VlJkSk": {
-    "string": "{n} silenciados"
-  },
-  "VnXp8Z": {
-    "string": "Avatar"
-  },
-  "VtPV/B": {
-    "developer_comment": "Login button for NIP7 key manager extension",
-    "string": "Login with Extension (NIP-07)"
-  },
-  "Vx7Zm2": {
-    "string": "¿Cómo funcionan las claves?"
-  },
-  "W9355R": {
-    "string": "Desilenciar"
-  },
-  "WONP5O": {
-    "string": "Encuentra a tus seguidos de twitter en nostr (información facilitada por {provider})"
-  },
-  "WxthCV": {
-    "string": "p.e. Jack"
-  },
-  "XgWvGA": {
-    "string": "Reacciones"
-  },
-  "YDURw6": {
-    "string": "URL del Servicio"
-  },
-  "YXA3AH": {
-    "string": "Activar reacciones"
-  },
-  "ZKORll": {
-    "string": "Activar Ahora"
-  },
-  "a5UPxh": {
-    "string": "Apoya a las plataformas y desarrolladores que proporcionan servicios de verificación"
-  },
-  "aWpBzj": {
-    "string": "Mostrar más"
-  },
-  "brAXSu": {
-    "string": "Elige un nombre de usuario"
-  },
-  "bxv59V": {
-    "string": "Justo ahora"
-  },
-  "cWx9t8": {
-    "string": "Silenciar todos"
-  },
-  "cuV2gK": {
-    "string": "el nombre ya está registrado"
-  },
-  "cyR7Kh": {
-    "string": "Atrás"
-  },
-  "d7d0/x": {
-    "string": "Dirección Lightning"
-  },
-  "dOQCL8": {
-    "string": "Nombre"
-  },
-  "e7qqly": {
-    "string": "Marcar todo como leído"
-  },
-  "eHAneD": {
-    "string": "Emoji de reacción"
-  },
-  "eJj8HD": {
-    "string": "Verifica tu perfil"
-  },
-  "eR3YIn": {
-    "string": "Notas"
-  },
-  "filwqD": {
-    "string": "Leer"
-  },
-  "flnGvv": {
-    "string": "¿Qué tienes en mente?"
-  },
-  "g5pX+a": {
-    "string": "Sobre ti"
-  },
-  "gBdUXk": {
-    "string": "Guarda tus claves!"
-  },
-  "gDZkld": {
-    "string": "Snort es un cliente de Nostr, un protocol decentralizado para guardar y distribuir \"notas\"."
-  },
-  "gDzDRs": {
-    "string": "Emoji que se utilizará al reaccionar a una nota"
-  },
-  "gjBiyj": {
-    "string": "Cargando..."
-  },
-  "hCUivF": {
-    "string": "Las notas nuevas se mostrarán automáticamente en tu línea de tiempo"
-  },
-  "hK5ZDk": {
-    "string": "el mundo"
-  },
-  "hMzcSq": {
-    "string": "Mensajes"
-  },
-  "hY4lzx": {
-    "string": "Soporta"
-  },
-  "hicxcO": {
-    "string": "Mostrar respuestas"
-  },
-  "iCqGww": {
-    "string": "Reacciones ({n})"
-  },
-  "iDGAbc": {
-    "string": "Obtén un identificador de Snort"
-  },
-  "iGT1eE": {
-    "string": "Evita que cuentas falsas se hagan pasar por ti"
-  },
-  "iNWbVV": {
-    "string": "Usuario"
-  },
-  "ieGrWo": {
-    "string": "Seguir"
-  },
-  "itPgxd": {
-    "string": "Perfil"
-  },
-  "izWS4J": {
-    "string": "No seguir"
-  },
-  "jA3OE/": {
-    "string": "{n} {n, plural, =1 {sat} other {sats}}"
-  },
-  "jCA7Cw": {
-    "string": "Previsualización en snort"
-  },
-  "juhqvW": {
-    "string": "Mejora la seguridad con extensiones del navegador"
-  },
-  "jvo0vs": {
-    "string": "Guardar"
-  },
-  "k2veDA": {
-    "string": "Escribir"
-  },
-  "k7sKNy": {
-    "string": "Nuestro servicio de verificación NIP-05, apoya el desarrollo de este proyecto y obtén una apariencia especial en nuestra web!"
-  },
-  "lCILNz": {
-    "string": "Comprar"
-  },
-  "lD3+8a": {
-    "string": "Pagar"
-  },
-  "lgg1KN": {
-    "string": "página de perfil"
-  },
-  "ll3xBp": {
-    "string": "Proxy de imágines"
-  },
-  "lnaT9F": {
-    "string": "Siguiendo {n}"
-  },
-  "lvlPhZ": {
-    "string": "Pagar Factura"
-  },
-  "mKAr6h": {
-    "string": "Seguir todos"
-  },
-  "mKh2HS": {
-    "string": "Subida de ficheros"
-  },
-  "mKhgP9": {
-    "string": "{n, plural, =0 {} =1 {zapeó} other {zapearon}}"
-  },
-  "n1xHAH": {
-    "string": "Obtén un identificador (opcional)"
-  },
-  "nDejmx": {
-    "string": "Desbloquear"
-  },
-  "nN9XTz": {
-    "string": "Comparte tus pensamientos con {link}"
-  },
-  "nwZXeh": {
-    "string": "{n} bloqueados"
-  },
-  "o6Uy3d": {
-    "developer_comment": "Explanation for public key only login is read-only",
-    "string": "Only the secret key can be used to publish (sign events), everything else logs you in read-only mode."
-  },
-  "o7e+nJ": {
-    "string": "{n} seguidores"
-  },
-  "odFwjL": {
-    "string": "Sólo seguidos"
-  },
-  "odhABf": {
-    "developer_comment": "Login header",
-    "string": "Acceso"
-  },
-  "osUr8O": {
-    "string": "También puedes utilizar estas extensions para interactuar con la mayoría de webs sobre Nostr."
-  },
-  "oxCa4R": {
-    "string": "Un identificador ayuda a confirmar tu identidad real a la gente que te conoce. Mucha gente tiene el nombre de usuario @jack, pero sólo hay un jack@cash.app."
-  },
-  "pzTOmv": {
-    "string": "Seguidores"
-  },
-  "qUJTsT": {
-    "string": "Bloqueados"
-  },
-  "qdGuQo": {
-    "string": "Tu Clave Privada (no la compartas con nadie) es"
-  },
-  "qkvYUb": {
-    "string": "Añadir a tu perfil"
-  },
-  "qmJ8kD": {
-    "string": "Traducción fallida"
-  },
-  "r3C4x/": {
-    "string": "Software"
-  },
-  "rT14Ow": {
-    "string": "Añadir Relays"
-  },
-  "reJ6SM": {
-    "string": "Recomendamos usar una de éstas extensions para el navegador para asegurar tu clave:"
-  },
-  "rfuMjE": {
-    "string": "(Por defecto)"
-  },
-  "rrfdTe": {
-    "string": "Esta es la misma tecnología que usa Bitcoin y ha demostrado ser extremadamente segura."
-  },
-  "rudscU": {
-    "string": "Error al cargar seguidos, inténtalo más tarde"
-  },
-  "sWnYKw": {
-    "string": "Snort está diseñado para tener una experience similar a Twitter."
-  },
-  "svOoEH": {
-    "string": "Ocupar nombres y hacerse pasar por terceros no está permitido. Snort y nuestros socios se reservan el derecho de terminar tu identificador (no tu cuenta, nadie te la puede arrebatar) si violas ésta norma."
-  },
-  "tOdNiY": {
-    "string": "Oscuro"
-  },
-  "thnRpU": {
-    "string": "Obtener un NIP-05 ayuda a:"
-  },
-  "u/vOPu": {
-    "string": "Pagado"
-  },
-  "uD/N6c": {
-    "string": "Zapear {target} {n} sats"
-  },
-  "uSV4Ti": {
-    "string": "Los reposts necesitarán ser confirmados"
-  },
-  "usAvMr": {
-    "string": "Editar Perfil"
-  },
-  "ut+2Cd": {
-    "string": "Obtén un identificador de nuestros socios"
-  },
-  "vOKedj": {
-    "string": "{n,plural,=1{& {n} otro} other{& {n} otros}}"
-  },
-  "vZ4quW": {
-    "string": "NIP-05 es un sistema de verification basado en DNS que permite verificarte como un usuario real."
-  },
-  "wEQDC6": {
-    "string": "Editar"
-  },
-  "wLtRCF": {
-    "developer_comment": "Label for key input",
-    "string": "Your key"
-  },
-  "wih7iJ": {
-    "string": "el nombre no está permitido"
-  },
-  "wqyN/i": {
-    "string": "Aprende más sobre {service} en {link}"
-  },
-  "wtLjP6": {
-    "string": "Copiar ID"
-  },
-  "x82IOl": {
-    "string": "Silenciar"
-  },
-  "xIoGG9": {
-    "string": "Ir a"
-  },
-  "xJ9n2N": {
-    "string": "Tu clave pública"
-  },
-  "xKflGN": {
-    "string": "Seguidos de {username} en Nostr"
-  },
-  "xbVgIm": {
-    "string": "Cargar medios automáticamente"
-  },
-  "xmcVZ0": {
-    "string": "Búsqueda"
-  },
-  "zFegDD": {
-    "string": "Contacto"
-  },
-  "zINlao": {
-    "string": "Dueño"
-  },
-  "zQvVDJ": {
-    "string": "Todos"
-  },
-  "zcaOTs": {
-    "string": "Cantidad en sats"
-  },
-  "zjJZBd": {
-    "string": "Estás listo!"
-  },
-  "zonsdq": {
-    "string": "Error al contactar con el servicio LNURL"
-  },
-  "zvCDao": {
-    "string": "Mostrar notas nuevas automáticamente"
-  }
+  "+D82kt": "¿Estás seguro de que quieres republicar {id}",
+  "+vIQlC": "Asegúrate de guardar ésta contraseña para gestionar tu NIP-05 en el futuro",
+  "/4tOwT": "Saltar",
+  "/JE/X+": "Soporte de Cuenta",
+  "/RD0e2": "Nostr utiliza firmas digitales para proveer de notas inmutables que pueden ser replicadas a muchos relays para que tu contenido esté distribuido redundantemente.",
+  "/d6vEc": "Haz tu perfil más fácil de encontrar y compartir",
+  "/n5KSF": "{n} ms",
+  "0BUTMv": "Buscar...",
+  "0mch2Y": "el nombre tiene caracteres inválidos",
+  "0yO7wF": "{n} seg",
+  "1A7TZk": "¿Qué es Snort y cómo funciona?",
+  "1udzha": "Conversaciones",
+  "2/2yg+": "Añadir",
+  "25V4l1": "Banner",
+  "2IFGap": "Donar",
+  "2k0Cv+": "No me gusta ({n})",
+  "3cc4Ct": "Claro",
+  "3xCwbZ": "OR",
+  "450Fty": "Ninguno",
+  "47FYwb": "Cancelar",
+  "4L2vUY": "Tu nuevo NIP-05 es:",
+  "4OB335": "No me gusta",
+  "4Vmpt4": "Nostr Plbes es uno de los primeros proveedores de NIP-05 y ofrece una buena colección de dominios a precios razonables.",
+  "4Z3t5i": "Usar imgproxy para comprimir imágenes",
+  "4rYCjn": "Mensajes guardados",
+  "5ykRmX": "Enviar zap",
+  "6ewQqw": "Me gusta ({n})",
+  "6tUqAb": "Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!",
+  "7+Domh": "Notas",
+  "7hp70g": "NIP-05",
+  "7xzTiH": "{action} a {target}",
+  "8/vBbP": "Reposts ({n})",
+  "89q5wc": "Confirmar reposts",
+  "8E9muH": "Importar seguidos de Twitter (opcional)",
+  "8QDesP": "Zapear {n} sats",
+  "8g2vyB": "el nombre es demasiado largo",
+  "9+Ddtu": "Siguiente",
+  "9HU8vw": "Responder",
+  "9SvQep": "Siguiendo a {n}",
+  "9WRlF4": "Enviar",
+  "9gqH2W": "Acceso",
+  "9wO4wJ": "Factura Lightning",
+  "ASRK0S": "Este autor ha sido silenciado",
+  "Adk34V": "Configura tu Perfil",
+  "AyGauy": "Acceso",
+  "B4C47Y": "el nombre es demasiado corto",
+  "B6+XJy": "zapeó",
+  "BOUMjw": "No hemos encontrado usuarios en nostr para {twitterUsername}",
+  "BcGMo+": "Las notas contienen contenido textual, el uso más popular de dichas notas es almacenar mensajes parecidos a \"tweets\".",
+  "C81/uG": "Salir",
+  "CHTbO3": "Error al cargar factura",
+  "Cu/K85": "Traducido de {lang}",
+  "D3idYv": "Configuración",
+  "DKnriN": "Enviar sats",
+  "DZzCem": "Mostrar últimas {n} notas",
+  "Dt/Zd5": "Se cargarán las imágenes y vídeos automáticamente",
+  "E8a4yq": "Sigue a cuentas populares",
+  "EPYwm7": "Tu clave privada es tu contraseña. Si pierdes esta clave perderás acceso a tu cuenta. Cópiala y guárdala en un lugar seguro. No hay manera de recuperar tu clave privada.",
+  "EWyQH5": "Global",
+  "Ebl/B2": "Traducir a {lang}",
+  "EcglP9": "Clave",
+  "EnCOBJ": "Comprar",
+  "Eqjl5K": "Sólo los identificadores de Snort y nuestros socios se mostrarán con un dominio colorido, pero todos los servicios están soportados.",
+  "F+B3x1": "Nos hemos asociado con nostrplebs.com para darte más opciones",
+  "FS3b54": "Hecho!",
+  "FmXUJg": "te sigue",
+  "G/yZLu": "Eliminar",
+  "GFOoEE": "Salt",
+  "GspYR7": "{n} No me gusta",
+  "H0JBH6": "Salir",
+  "H6/kLh": "Orden pagada!",
+  "HAlOn1": "Nombre",
+  "HFls6j": "el nombre estará disponible más tarde",
+  "HOzFdo": "Silenciados",
+  "HbefNb": "Abrir Wallet",
+  "IKKHqV": "Siguiendo",
+  "INSqIz": "Usuario en Twitter...",
+  "IUZC+0": "Esto significa que nadie puede modificar notas que tú has creado y que todo el mundo puede verificar que las notas que leen han sido escritas por ti.",
+  "JCIgkj": "Usuario",
+  "JHEHCk": "Zaps ({n})",
+  "JkLHGw": "Web",
+  "K3r6DQ": "Eliminar",
+  "K7AkdL": "Mostrar",
+  "KQvWvD": "Eliminado",
+  "KWuDfz": "He guardado mis claves, continuar",
+  "KahimY": "Evento de tipo desconocido {kind}",
+  "LgbKvU": "Comentario",
+  "LxY9tW": "Generate Key",
+  "M3Oirc": "Menús de desarrolladores",
+  "MBAYRO": "Se mostrarán opciones adicionales para desarrolladores en el menú de las notas",
+  "MI2jkA": "No disponible:",
+  "MRp6Ly": "Usuario en Twitter",
+  "MzRYWH": "Comprando {item}",
+  "N2IrpM": "Confirmar",
+  "NdOYJJ": "Hmmm no hay nada que mostrarte aquí... Echa un vistazo a la {newUsersPage} para seguir a algunas cuentas recomendadas!",
+  "NfNk2V": "Tu clave privada",
+  "NndBJE": "Página de nuevos usuarios",
+  "OEW7yJ": "Zaps",
+  "OKhRC6": "Compartir",
+  "P61BTu": "Copiar JSON",
+  "P7FD0F": "Sistema (por defecto)",
+  "PCSt5T": "Preferencias",
+  "Pe0ogR": "Tema",
+  "PrsIg7": "Se mostrarán las reacciones a las notas",
+  "QTdJfH": "Create an Account",
+  "QxCuTo": "Art by {name}",
+  "RDZVQL": "Comprobar",
+  "RahCRH": "Caducada",
+  "RhDAoS": "¿Estás seguro de que quieres eliminar {id}?",
+  "RoOyAh": "Relays",
+  "Sjo1P4": "Personalizar",
+  "UQ3pOC": "En Nostr mucha gente tiene el mismo nombre de usuario. Los nombres de usuario y la identidad son cosas separadas. Puedes adquirir un identificador único en el siguiente paso.",
+  "Up5U7K": "Bloquear",
+  "VOjC1i": "Elige qué servicio de subida de ficheros quieres utilizar",
+  "VlJkSk": "{n} silenciados",
+  "VnXp8Z": "Avatar",
+  "VtPV/B": "Login with Extension (NIP-07)",
+  "Vx7Zm2": "¿Cómo funcionan las claves?",
+  "W9355R": "Desilenciar",
+  "WONP5O": "Encuentra a tus seguidos de twitter en nostr (información facilitada por {provider})",
+  "WxthCV": "p.e. Jack",
+  "XgWvGA": "Reacciones",
+  "YDURw6": "URL del Servicio",
+  "YXA3AH": "Activar reacciones",
+  "ZKORll": "Activar Ahora",
+  "a5UPxh": "Apoya a las plataformas y desarrolladores que proporcionan servicios de verificación",
+  "aWpBzj": "Mostrar más",
+  "brAXSu": "Elige un nombre de usuario",
+  "bxv59V": "Justo ahora",
+  "cWx9t8": "Silenciar todos",
+  "cuV2gK": "el nombre ya está registrado",
+  "cyR7Kh": "Atrás",
+  "d7d0/x": "Dirección Lightning",
+  "dOQCL8": "Nombre",
+  "e7qqly": "Marcar todo como leído",
+  "eHAneD": "Emoji de reacción",
+  "eJj8HD": "Verifica tu perfil",
+  "eR3YIn": "Notas",
+  "filwqD": "Leer",
+  "flnGvv": "¿Qué tienes en mente?",
+  "g5pX+a": "Sobre ti",
+  "gBdUXk": "Guarda tus claves!",
+  "gDZkld": "Snort es un cliente de Nostr, un protocol decentralizado para guardar y distribuir \"notas\".",
+  "gDzDRs": "Emoji que se utilizará al reaccionar a una nota",
+  "gjBiyj": "Cargando...",
+  "hCUivF": "Las notas nuevas se mostrarán automáticamente en tu línea de tiempo",
+  "hK5ZDk": "el mundo",
+  "hMzcSq": "Mensajes",
+  "hY4lzx": "Soporta",
+  "hicxcO": "Mostrar respuestas",
+  "iCqGww": "Reacciones ({n})",
+  "iDGAbc": "Obtén un identificador de Snort",
+  "iGT1eE": "Evita que cuentas falsas se hagan pasar por ti",
+  "iNWbVV": "Usuario",
+  "ieGrWo": "Seguir",
+  "itPgxd": "Perfil",
+  "izWS4J": "No seguir",
+  "jA3OE/": "{n} {n, plural, =1 {sat} other {sats}}",
+  "jCA7Cw": "Previsualización en snort",
+  "juhqvW": "Mejora la seguridad con extensiones del navegador",
+  "jvo0vs": "Guardar",
+  "k2veDA": "Escribir",
+  "k7sKNy": "Nuestro servicio de verificación NIP-05, apoya el desarrollo de este proyecto y obtén una apariencia especial en nuestra web!",
+  "lCILNz": "Comprar",
+  "lD3+8a": "Pagar",
+  "lgg1KN": "página de perfil",
+  "ll3xBp": "Proxy de imágines",
+  "lnaT9F": "Siguiendo {n}",
+  "lvlPhZ": "Pagar Factura",
+  "mKAr6h": "Seguir todos",
+  "mKh2HS": "Subida de ficheros",
+  "mKhgP9": "{n, plural, =0 {} =1 {zapeó} other {zapearon}}",
+  "n1xHAH": "Obtén un identificador (opcional)",
+  "nDejmx": "Desbloquear",
+  "nN9XTz": "Comparte tus pensamientos con {link}",
+  "nwZXeh": "{n} bloqueados",
+  "o6Uy3d": "Only the secret key can be used to publish (sign events), everything else logs you in read-only mode.",
+  "o7e+nJ": "{n} seguidores",
+  "odFwjL": "Sólo seguidos",
+  "odhABf": "Acceso",
+  "osUr8O": "También puedes utilizar estas extensions para interactuar con la mayoría de webs sobre Nostr.",
+  "oxCa4R": "Un identificador ayuda a confirmar tu identidad real a la gente que te conoce. Mucha gente tiene el nombre de usuario @jack, pero sólo hay un jack@cash.app.",
+  "pzTOmv": "Seguidores",
+  "qUJTsT": "Bloqueados",
+  "qdGuQo": "Tu Clave Privada (no la compartas con nadie) es",
+  "qkvYUb": "Añadir a tu perfil",
+  "qmJ8kD": "Traducción fallida",
+  "r3C4x/": "Software",
+  "rT14Ow": "Añadir Relays",
+  "reJ6SM": "Recomendamos usar una de éstas extensions para el navegador para asegurar tu clave:",
+  "rfuMjE": "(Por defecto)",
+  "rrfdTe": "Esta es la misma tecnología que usa Bitcoin y ha demostrado ser extremadamente segura.",
+  "rudscU": "Error al cargar seguidos, inténtalo más tarde",
+  "sWnYKw": "Snort está diseñado para tener una experience similar a Twitter.",
+  "svOoEH": "Ocupar nombres y hacerse pasar por terceros no está permitido. Snort y nuestros socios se reservan el derecho de terminar tu identificador (no tu cuenta, nadie te la puede arrebatar) si violas ésta norma.",
+  "tOdNiY": "Oscuro",
+  "thnRpU": "Obtener un NIP-05 ayuda a:",
+  "u/vOPu": "Pagado",
+  "uD/N6c": "Zapear {target} {n} sats",
+  "uSV4Ti": "Los reposts necesitarán ser confirmados",
+  "usAvMr": "Editar Perfil",
+  "ut+2Cd": "Obtén un identificador de nuestros socios",
+  "vOKedj": "{n,plural,=1{& {n} otro} other{& {n} otros}}",
+  "vZ4quW": "NIP-05 es un sistema de verification basado en DNS que permite verificarte como un usuario real.",
+  "wEQDC6": "Editar",
+  "wLtRCF": "Your key",
+  "wih7iJ": "el nombre no está permitido",
+  "wqyN/i": "Aprende más sobre {service} en {link}",
+  "wtLjP6": "Copiar ID",
+  "x82IOl": "Silenciar",
+  "xIoGG9": "Ir a",
+  "xJ9n2N": "Tu clave pública",
+  "xKflGN": "Seguidos de {username} en Nostr",
+  "xbVgIm": "Cargar medios automáticamente",
+  "xmcVZ0": "Búsqueda",
+  "zFegDD": "Contacto",
+  "zINlao": "Dueño",
+  "zQvVDJ": "Todos",
+  "zcaOTs": "Cantidad en sats",
+  "zjJZBd": "Estás listo!",
+  "zonsdq": "Error al contactar con el servicio LNURL",
+  "zvCDao": "Mostrar notas nuevas automáticamente"
 }
