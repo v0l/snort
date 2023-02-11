@@ -2,6 +2,7 @@ import { useState, useMemo, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
 
+import { dedupeByPubkey } from "Util";
 import Note from "Element/Note";
 import Bookmark from "Icons/Bookmark";
 import { HexKey, TaggedRawEvent } from "Nostr";
@@ -20,19 +21,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   const [onlyPubkey, setOnlyPubkey] = useState<HexKey | "all">("all");
   const loginPubKey = useSelector((s: RootState) => s.login.publicKey);
   const ps = useMemo(() => {
-    return bookmarks.reduce(
-      ({ ps, seen }, e) => {
-        if (seen.has(e.pubkey)) {
-          return { ps, seen };
-        }
-        seen.add(e.pubkey);
-        return {
-          seen,
-          ps: [...ps, e.pubkey],
-        };
-      },
-      { ps: [] as HexKey[], seen: new Set() }
-    ).ps;
+    return dedupeByPubkey(bookmarks).map(ev => ev.pubkey);
   }, [bookmarks]);
   const profiles = useUserProfiles(ps);
 
