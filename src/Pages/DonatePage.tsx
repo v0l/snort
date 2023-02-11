@@ -19,6 +19,21 @@ const Contributors = [
   bech32ToHex("npub1vp8fdcyejd4pqjyrjk9sgz68vuhq7pyvnzk8j0ehlljvwgp8n6eqsrnpsw"), // samsamskies
 ];
 
+const Translators = [
+  bech32ToHex("npub179rec9sw2a5ngkr2wsjpjhwp2ksygjxn6uw5py9daj2ezhw3aw5swv3s6q"), // h3y6e - JA
+  bech32ToHex("npub1s8zws5frm94esxnp9v6zf7vk60m3hum3305n78sr73t78kleus7q8zpwna"), // middlingphys - JA
+  bech32ToHex("npub1z0ykz6lp3y8rjjntenns0ee02062g2f0n55u49w44xdemw35vcpsda5jhh"), // noraglyphs - JA
+  bech32ToHex("npub13wa880se2h3l54k7x76edrkrt4p94sh4q090974mt0z6n09qtntqxp47uk"), // numpad0 - JA
+
+  bech32ToHex("npub1ww8kjxz2akn82qptdpl7glywnchhkx3x04hez3d3rye397turrhssenvtp"), // Zoltan - HU
+
+  bech32ToHex("npub107jk7htfv243u0x5ynn43scq9wrxtaasmrwwa8lfu2ydwag6cx2quqncxg"), // verbiricha - ES
+
+  bech32ToHex("npub1x8dzy9xegwmdk2vy30l8u08caspcqq2yzncxehdsa6kvnte9pr3qnt8pg4"), // solobalbo - FR
+
+  bech32ToHex("npub1xwm9svxrlymymph0hka40zw9frg98m6adxmzcq26jhtm5gwlhjrshhgzfd"), // meitsjustme - ZH
+];
+
 interface Splits {
   pubKey: string;
   split: number;
@@ -106,6 +121,12 @@ const DonatePage = () => {
         <FormattedMessage defaultMessage="Contributors" />
       </h4>
       {Contributors.map(a => (
+        <ProfilePreview pubkey={a} key={a} actions={actions(a)} />
+      ))}
+      <h4>
+        <FormattedMessage defaultMessage="Translators" />
+      </h4>
+      {Translators.map(a => (
         <ProfilePreview pubkey={a} key={a} actions={actions(a)} />
       ))}
     </div>
