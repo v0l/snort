@@ -1,0 +1,13 @@
+{
+  "name": "@snort/nostr",
+  "version": "1.0.0",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  }
+}
