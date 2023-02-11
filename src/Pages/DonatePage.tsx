@@ -3,6 +3,7 @@ import ProfilePreview from "Element/ProfilePreview";
 import ZapButton from "Element/ZapButton";
 import { HexKey } from "Nostr";
 import { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { bech32ToHex } from "Util";
 
 const Developers = [
@@ -57,29 +58,53 @@ const DonatePage = () => {
 
   return (
     <div className="main-content m5">
-      <h2>Help fund the development of Snort</h2>
-      <p>Snort is an open source project built by passionate people in their free time</p>
-      <p>Your donations are greatly appreciated</p>
+      <h2>
+        <FormattedMessage defaultMessage="Help fund the development of Snort" />
+      </h2>
       <p>
-        Check out the code here:{" "}
-        <a className="highlight" href="https://github.com/v0l/snort" rel="noreferrer" target="_blank">
-          https://github.com/v0l/snort
-        </a>
+        <FormattedMessage defaultMessage="Snort is an open source project built by passionate people in their free time" />
       </p>
       <p>
-        Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts
-        below
+        <FormattedMessage defaultMessage="Your donations are greatly appreciated" />
+      </p>
+      <p>
+        <FormattedMessage
+          defaultMessage={"Check out the code here: {link}"}
+          values={{
+            link: (
+              <a className="highlight" href="https://github.com/v0l/snort" rel="noreferrer" target="_blank">
+                https://github.com/v0l/snort
+              </a>
+            ),
+          }}
+        />
+      </p>
+      <p>
+        <FormattedMessage defaultMessage="Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below" />
       </p>
       <div className="flex">
-        <div className="mr10">Lightning Donation: </div>
+        <div className="mr10">
+          <FormattedMessage defaultMessage="Lightning Donation: " />
+        </div>
         <ZapButton pubkey={bech32ToHex(SnortPubKey)} svc={"donate@snort.social"} />
       </div>
-      {today && <small>Total today (UTC): {today.donations.toLocaleString()} sats</small>}
-      <h3>Primary Developers</h3>
+      {today && (
+        <small>
+          <FormattedMessage
+            defaultMessage="Total today (UTC): {amount} sats"
+            values={{ amount: today.donations.toLocaleString() }}
+          />
+        </small>
+      )}
+      <h3>
+        <FormattedMessage defaultMessage="Primary Developers" />
+      </h3>
       {Developers.map(a => (
         <ProfilePreview pubkey={a} key={a} actions={actions(a)} />
       ))}
-      <h4>Contributors</h4>
+      <h4>
+        <FormattedMessage defaultMessage="Contributors" />
+      </h4>
       {Contributors.map(a => (
         <ProfilePreview pubkey={a} key={a} actions={actions(a)} />
       ))}

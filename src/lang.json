@@ -60,6 +60,9 @@
   "47FYwb": {
     "string": "Cancel"
   },
+  "4IPzdn": {
+    "string": "Primary Developers"
+  },
   "4L2vUY": {
     "string": "Your new NIP-05 handle is:"
   },
@@ -145,6 +148,9 @@
   },
   "BOUMjw": {
     "string": "No nostr users found for {twitterUsername}"
+  },
+  "BOr9z/": {
+    "string": "Snort is an open source project built by passionate people in their free time"
   },
   "BcGMo+": {
     "string": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
@@ -306,6 +312,9 @@
   "P7FD0F": {
     "string": "System (Default)"
   },
+  "P7nJT9": {
+    "string": "Total today (UTC): {amount} sats"
+  },
   "PCSt5T": {
     "string": "Preferences"
   },
@@ -372,6 +381,9 @@
   "XgWvGA": {
     "string": "Reactions"
   },
+  "Y31HTH": {
+    "string": "Help fund the development of Snort"
+  },
   "YDURw6": {
     "string": "Service URL"
   },
@@ -380,6 +392,12 @@
   },
   "ZKORll": {
     "string": "Activate Now"
+  },
+  "ZLmyG9": {
+    "string": "Contributors"
+  },
+  "ZUZedV": {
+    "string": "Lightning Donation:"
   },
   "a5UPxh": {
     "string": "Fund developers and platforms providing NIP-05 verification services"
@@ -513,6 +531,9 @@
   "lvlPhZ": {
     "string": "Pay Invoice"
   },
+  "mH91FY": {
+    "string": "Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below"
+  },
   "mKAr6h": {
     "string": "Follow all"
   },
@@ -530,6 +551,9 @@
   },
   "nN9XTz": {
     "string": "Share your thoughts with {link}"
+  },
+  "nn1qb3": {
+    "string": "Your donations are greatly appreciated"
   },
   "nwZXeh": {
     "string": "{n} blocked"
@@ -601,6 +625,9 @@
   },
   "u/vOPu": {
     "string": "Paid"
+  },
+  "u4bHcR": {
+    "string": "Check out the code here: {link}"
   },
   "uD/N6c": {
     "string": "Zap {target} {n} sats"
