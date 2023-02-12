@@ -12,7 +12,7 @@ import { DefaultRelays, EmailRegex } from "Const";
 import { bech32ToHex, unwrap } from "Util";
 import { HexKey } from "Nostr";
 import ZapButton from "Element/ZapButton";
-import useImgProxy from "Feed/ImgProxy";
+// import useImgProxy from "Feed/ImgProxy";
 
 interface ArtworkEntry {
   name: string;
@@ -51,7 +51,7 @@ export default function LoginPage() {
   const [key, setKey] = useState("");
   const [error, setError] = useState("");
   const [art, setArt] = useState<ArtworkEntry>();
-  const { proxy } = useImgProxy();
+  // const { proxy } = useImgProxy();
 
   useEffect(() => {
     if (publicKey) {
