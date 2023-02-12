@@ -58,28 +58,28 @@ const PreferencesPage = () => {
           <small>
             <FormattedMessage {...messages.AutoloadMediaHelp} />
           </small>
-        </div>
-        <div>
-          <select
-            value={perf.autoLoadMedia}
-            onChange={e =>
-              dispatch(
-                setPreferences({
-                  ...perf,
-                  autoLoadMedia: e.target.value,
-                } as UserPreferences)
-              )
-            }>
-            <option value="none">
-              <FormattedMessage {...messages.None} />
-            </option>
-            <option value="follows-only">
-              <FormattedMessage {...messages.FollowsOnly} />
-            </option>
-            <option value="all">
-              <FormattedMessage {...messages.All} />
-            </option>
-          </select>
+          <div className="mt10">
+            <select
+              value={perf.autoLoadMedia}
+              onChange={e =>
+                dispatch(
+                  setPreferences({
+                    ...perf,
+                    autoLoadMedia: e.target.value,
+                  } as UserPreferences)
+                )
+              }>
+              <option value="none">
+                <FormattedMessage {...messages.None} />
+              </option>
+              <option value="follows-only">
+                <FormattedMessage {...messages.FollowsOnly} />
+              </option>
+              <option value="all">
+                <FormattedMessage {...messages.All} />
+              </option>
+            </select>
+          </div>
         </div>
       </div>
       <div className="card flex f-col">
@@ -215,30 +215,30 @@ const PreferencesPage = () => {
           <small>
             <FormattedMessage {...messages.ReactionEmojiHelp} />
           </small>
-        </div>
-        <div>
-          <select
-            className="emoji-selector"
-            value={perf.reactionEmoji}
-            onChange={e =>
-              dispatch(
-                setPreferences({
-                  ...perf,
-                  reactionEmoji: e.target.value,
-                } as UserPreferences)
-              )
-            }>
-            <option value="+">
-              + <FormattedMessage {...messages.Default} />
-            </option>
-            {emoji("").map(({ name, char }) => {
-              return (
-                <option value={char}>
-                  {name} {char}
-                </option>
-              );
-            })}
-          </select>
+          <div className="mt10">
+            <select
+              className="emoji-selector"
+              value={perf.reactionEmoji}
+              onChange={e =>
+                dispatch(
+                  setPreferences({
+                    ...perf,
+                    reactionEmoji: e.target.value,
+                  } as UserPreferences)
+                )
+              }>
+              <option value="+">
+                + <FormattedMessage {...messages.Default} />
+              </option>
+              {emoji("").map(({ name, char }) => {
+                return (
+                  <option value={char}>
+                    {name} {char}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         </div>
       </div>
       <div className="card flex">
@@ -283,24 +283,24 @@ const PreferencesPage = () => {
           <small>
             <FormattedMessage {...messages.FileUploadHelp} />
           </small>
-        </div>
-        <div>
-          <select
-            value={perf.fileUploader}
-            onChange={e =>
-              dispatch(
-                setPreferences({
-                  ...perf,
-                  fileUploader: e.target.value,
-                } as UserPreferences)
-              )
-            }>
-            <option value="void.cat">
-              void.cat <FormattedMessage {...messages.Default} />
-            </option>
-            <option value="nostr.build">nostr.build</option>
-            <option value="nostrimg.com">nostrimg.com</option>
-          </select>
+          <div className="mt10">
+            <select
+              value={perf.fileUploader}
+              onChange={e =>
+                dispatch(
+                  setPreferences({
+                    ...perf,
+                    fileUploader: e.target.value,
+                  } as UserPreferences)
+                )
+              }>
+              <option value="void.cat">
+                void.cat <FormattedMessage {...messages.Default} />
+              </option>
+              <option value="nostr.build">nostr.build</option>
+              <option value="nostrimg.com">nostrimg.com</option>
+            </select>
+          </div>
         </div>
       </div>
       <div className="card flex">
