@@ -8,14 +8,14 @@ import { useIntl, FormattedMessage } from "react-intl";
 import useEventPublisher from "Feed/EventPublisher";
 import Bookmark from "Icons/Bookmark";
 import Pin from "Icons/Pin";
-import { Event as NEvent, EventKind } from "@snort/nostr";
+import { parseZap } from "Element/Zap";
 import ProfileImage from "Element/ProfileImage";
 import Text from "Element/Text";
-import { eventLink, getReactions, hexToBech32 } from "Util";
+import { eventLink, getReactions, dedupeByPubkey, hexToBech32, normalizeReaction, Reaction } from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import { useUserProfiles } from "Feed/ProfileFeed";
-import { TaggedRawEvent, u256, HexKey } from "@snort/nostr";
+import { TaggedRawEvent, u256, HexKey, Event as NEvent, EventKind } from "@snort/nostr";
 import useModeration from "Hooks/useModeration";
 import { setPinned, setBookmarked } from "State/Login";
 import type { RootState } from "State/Store";
@@ -34,6 +34,7 @@ export interface NoteProps {
     showPinned?: boolean;
     showBookmarked?: boolean;
     showFooter?: boolean;
+    showReactionsLink?: boolean;
     canUnpin?: boolean;
     canUnbookmark?: boolean;
   };
@@ -62,6 +63,7 @@ export default function Note(props: NoteProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { data, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false } = props;
+  const [showReactions, setShowReactions] = useState(false);
   const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
   const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
   const users = useUserProfiles(pubKeys);
@@ -76,6 +78,35 @@ export default function Note(props: NoteProps) {
   const publisher = useEventPublisher();
   const [translated, setTranslated] = useState<Translation>();
   const { formatMessage } = useIntl();
+  const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related, ev]);
+  const groupReactions = useMemo(() => {
+    const result = reactions?.reduce(
+      (acc, reaction) => {
+        const kind = normalizeReaction(reaction.content);
+        const rs = acc[kind] || [];
+        return { ...acc, [kind]: [...rs, reaction] };
+      },
+      {
+        [Reaction.Positive]: [] as TaggedRawEvent[],
+        [Reaction.Negative]: [] as TaggedRawEvent[],
+      }
+    );
+    return {
+      [Reaction.Positive]: dedupeByPubkey(result[Reaction.Positive]),
+      [Reaction.Negative]: dedupeByPubkey(result[Reaction.Negative]),
+    };
+  }, [reactions]);
+  const positive = groupReactions[Reaction.Positive];
+  const negative = groupReactions[Reaction.Negative];
+  const reposts = useMemo(() => dedupeByPubkey(getReactions(related, ev.Id, EventKind.Repost)), [related, ev]);
+  const zaps = useMemo(() => {
+    const sortedZaps = getReactions(related, ev.Id, EventKind.ZapReceipt)
+      .map(parseZap)
+      .filter(z => z.valid && z.zapper !== ev.PubKey);
+    sortedZaps.sort((a, b) => b.amount - a.amount);
+    return sortedZaps;
+  }, [related]);
+  const totalReactions = positive.length + negative.length + reposts.length + zaps.length;
 
   const options = {
     showHeader: true,
@@ -245,13 +276,29 @@ export default function Note(props: NoteProps) {
         <div className="body" onClick={e => goToEvent(e, ev.Id)}>
           {transformBody()}
           {translation()}
+          {options.showReactionsLink && (
+            <div className="reactions-link" onClick={() => setShowReactions(true)}>
+              <FormattedMessage {...messages.ReactionsLink} values={{ n: totalReactions }} />
+            </div>
+          )}
         </div>
         {extendable && !showMore && (
           <span className="expand-note mt10 flex f-center" onClick={() => setShowMore(true)}>
             <FormattedMessage {...messages.ShowMore} />
           </span>
         )}
-        {options.showFooter && <NoteFooter ev={ev} related={related} onTranslated={t => setTranslated(t)} />}
+        {options.showFooter && (
+          <NoteFooter
+            ev={ev}
+            positive={positive}
+            negative={negative}
+            reposts={reposts}
+            zaps={zaps}
+            onTranslated={t => setTranslated(t)}
+            showReactions={showReactions}
+            setShowReactions={setShowReactions}
+          />
+        )}
       </>
     );
   }

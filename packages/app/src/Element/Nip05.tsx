@@ -56,10 +56,10 @@ const Nip05 = ({ nip05, pubkey, verifyNip = true }: Nip05Params) => {
 
   return (
     <div className={`flex nip05${couldNotVerify ? " failed" : ""}`} onClick={ev => ev.stopPropagation()}>
-      {!isDefaultUser && isVerified && <div className="nick">{`${name}@`}</div>}
+      {!isDefaultUser && isVerified && <span className="nick">{`${name}@`}</span>}
       {isVerified && (
         <>
-          <span className="domain" data-domain={domain?.toLowerCase()}>
+          <span className="domain f-ellipsis" data-domain={domain?.toLowerCase()}>
             {domain}
           </span>
           <span className="badge">

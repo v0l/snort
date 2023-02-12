@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
+import Logo from "Element/Logo";
 import { CollapsedSection } from "Element/Collapsed";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
@@ -72,6 +73,7 @@ export default function NewUserFlow() {
 
   return (
     <div className="main-content new-user" dir="auto">
+      <Logo />
       <div className="progress-bar">
         <div className="progress progress-first"></div>
       </div>

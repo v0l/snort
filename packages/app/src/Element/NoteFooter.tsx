@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
@@ -20,13 +20,13 @@ import Zap from "Icons/Zap";
 import Reply from "Icons/Reply";
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { getReactions, dedupeByPubkey, hexToBech32, normalizeReaction, Reaction } from "Util";
+import { hexToBech32, normalizeReaction } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
-import { parseZap, ZapsSummary } from "Element/Zap";
+import { ParsedZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Feed/ProfileFeed";
-import { Event as NEvent, EventKind, TaggedRawEvent, HexKey } from "@snort/nostr";
+import { Event as NEvent, TaggedRawEvent, HexKey } from "@snort/nostr";
 import { RootState } from "State/Store";
 import { UserPreferences, setPinned, setBookmarked } from "State/Login";
 import useModeration from "Hooks/useModeration";
@@ -41,13 +41,18 @@ export interface Translation {
 }
 
 export interface NoteFooterProps {
-  related: TaggedRawEvent[];
+  reposts: TaggedRawEvent[];
+  zaps: ParsedZap[];
+  positive: TaggedRawEvent[];
+  negative: TaggedRawEvent[];
+  showReactions: boolean;
+  setShowReactions(b: boolean): void;
   ev: NEvent;
   onTranslated?: (content: Translation) => void;
 }
 
 export default function NoteFooter(props: NoteFooterProps) {
-  const { related, ev } = props;
+  const { ev, showReactions, setShowReactions, positive, negative, reposts, zaps } = props;
   const dispatch = useDispatch();
   const { formatMessage } = useIntl();
   const { pinned, bookmarked } = useSelector((s: RootState) => s.login);
@@ -57,49 +62,17 @@ export default function NoteFooter(props: NoteFooterProps) {
   const author = useUserProfile(ev.RootPubKey);
   const publisher = useEventPublisher();
   const [reply, setReply] = useState(false);
-  const [showReactions, setShowReactions] = useState(false);
   const [tip, setTip] = useState(false);
   const isMine = ev.RootPubKey === login;
   const lang = window.navigator.language;
   const langNames = new Intl.DisplayNames([...window.navigator.languages], {
     type: "language",
   });
-  const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related, ev]);
-  const reposts = useMemo(() => dedupeByPubkey(getReactions(related, ev.Id, EventKind.Repost)), [related, ev]);
-  const zaps = useMemo(() => {
-    const sortedZaps = getReactions(related, ev.Id, EventKind.ZapReceipt)
-      .map(parseZap)
-      .filter(z => z.valid && z.zapper !== ev.PubKey);
-    sortedZaps.sort((a, b) => b.amount - a.amount);
-    return sortedZaps;
-  }, [related]);
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   const didZap = zaps.some(a => a.zapper === login);
-  const groupReactions = useMemo(() => {
-    const result = reactions?.reduce(
-      (acc, reaction) => {
-        const kind = normalizeReaction(reaction.content);
-        const rs = acc[kind] || [];
-        if (rs.map(e => e.pubkey).includes(reaction.pubkey)) {
-          return acc;
-        }
-        return { ...acc, [kind]: [...rs, reaction] };
-      },
-      {
-        [Reaction.Positive]: [] as TaggedRawEvent[],
-        [Reaction.Negative]: [] as TaggedRawEvent[],
-      }
-    );
-    return {
-      [Reaction.Positive]: dedupeByPubkey(result[Reaction.Positive]),
-      [Reaction.Negative]: dedupeByPubkey(result[Reaction.Negative]),
-    };
-  }, [reactions]);
-  const positive = groupReactions[Reaction.Positive];
-  const negative = groupReactions[Reaction.Negative];
 
   function hasReacted(emoji: string) {
-    return reactions?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === login);
+    return positive?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === login);
   }
 
   function hasReposted() {

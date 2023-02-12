@@ -8,6 +8,7 @@ import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
 import { HexKey } from "@snort/nostr";
 import { MetadataCache } from "State/Users";
+import useClientWidth from "Hooks/useClientWidth";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -31,6 +32,7 @@ export default function ProfileImage({
   const navigate = useNavigate();
   const user = useUserProfile(pubkey);
   const nip05 = defaultNip ? defaultNip : user?.nip05;
+  const { ref, width } = useClientWidth();
 
   const name = useMemo(() => {
     return getDisplayName(user, pubkey);
@@ -41,19 +43,21 @@ export default function ProfileImage({
   }
 
   return (
-    <div className={`pfp${className ? ` ${className}` : ""}`}>
+    <div className={`pfp${className ? ` ${className}` : ""}`} ref={ref}>
       <div className="avatar-wrapper">
         <Avatar user={user} onClick={() => navigate(link ?? profileLink(pubkey))} />
       </div>
       {showUsername && (
-        <div className="profile-name f-grow">
+        <div className="profile-name">
           <div className="username">
             <Link className="display-name" key={pubkey} to={link ?? profileLink(pubkey)}>
               {name}
               {nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
             </Link>
           </div>
-          <div className="subheader">{subHeader}</div>
+          <div className="subheader" style={{ width: width - 80 }}>
+            {subHeader}
+          </div>
         </div>
       )}
     </div>

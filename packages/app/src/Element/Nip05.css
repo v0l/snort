@@ -40,9 +40,25 @@
 .nip05 .domain[data-domain="nostriches.net"] {
   color: var(--highlight);
   background-color: var(--highlight);
+  text-overflow: ellipsis;
 }
 
 .nip05 .badge {
   color: var(--highlight);
-  margin: 0.1em 0.2em;
+  margin-left: 0.1em;
+}
+
+@media (max-width: 520px) {
+  .nip05 .nick {
+    display: none;
+  }
+  .nip05 .domain {
+    display: none;
+  }
+  .nip05 .badge svg {
+    width: 13px;
+    height: 13px;
+    margin-left: 0.15em;
+    margin-bottom: 1px;
+  }
 }

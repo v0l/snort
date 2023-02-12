@@ -197,3 +197,22 @@
   border-bottom-left-radius: 0;
   margin-left: -1px;
 }
+
+.note .header .nip05 .badge {
+  margin-top: -0.2em;
+  width: 13px;
+  height: 13px;
+}
+
+.note .reactions-link {
+  color: var(--font-secondary-color);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  margin-top: 4px;
+  font-feature-settings: "tnum";
+}
+
+.note .reactions-link:hover {
+  text-decoration: underline;
+}

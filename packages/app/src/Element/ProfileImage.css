@@ -1,7 +1,6 @@
 .pfp {
   display: flex;
   align-items: center;
-  overflow: hidden;
 }
 
 .pfp .avatar-wrapper {
@@ -29,4 +28,17 @@
 .pfp .profile-name {
   display: flex;
   flex-direction: column;
+}
+
+.pfp .display-name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+@media (min-width: 520px) {
+  .pfp .display-name {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }

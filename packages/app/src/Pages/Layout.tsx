@@ -40,12 +40,12 @@ export default function Layout() {
   useLoginFeed();
 
   const shouldHideNoteCreator = useMemo(() => {
-    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate"];
+    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/"];
     return hideOn.some(a => location.pathname.startsWith(a));
   }, [location]);
 
   const shouldHideHeader = useMemo(() => {
-    const hideOn = ["/login"];
+    const hideOn = ["/login", "/new"];
     return hideOn.some(a => location.pathname.startsWith(a));
   }, [location]);
 

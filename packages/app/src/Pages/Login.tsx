@@ -4,7 +4,7 @@ import { CSSProperties, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as secp from "@noble/secp256k1";
-import { FormattedMessage } from "react-intl";
+import { useIntl, FormattedMessage } from "react-intl";
 
 import { RootState } from "State/Store";
 import { setPrivateKey, setPublicKey, setRelays, setGeneratedPrivateKey } from "State/Login";
@@ -13,6 +13,8 @@ import { bech32ToHex, unwrap } from "Util";
 import { HexKey } from "@snort/nostr";
 import ZapButton from "Element/ZapButton";
 // import useImgProxy from "Feed/ImgProxy";
+
+import messages from "./messages";
 
 interface ArtworkEntry {
   name: string;
@@ -51,7 +53,8 @@ export default function LoginPage() {
   const [key, setKey] = useState("");
   const [error, setError] = useState("");
   const [art, setArt] = useState<ArtworkEntry>();
-  // const { proxy } = useImgProxy();
+  const { formatMessage } = useIntl();
+  //const { proxy } = useImgProxy();
 
   useEffect(() => {
     if (publicKey) {
@@ -160,17 +163,17 @@ export default function LoginPage() {
           <p dir="auto">
             <FormattedMessage defaultMessage="Your key" description="Label for key input" />
           </p>
-          <div dir="auto" className="flex">
+          <div className="flex">
             <input
               dir="auto"
               type="text"
-              placeholder="nsec / npub / nip-05 / hex private key..."
+              placeholder={formatMessage(messages.KeyPlaceholder)}
               className="f-grow"
               onChange={e => setKey(e.target.value)}
             />
           </div>
           {error.length > 0 ? <b className="error">{error}</b> : null}
-          <p dir="auto" className="login-note">
+          <p className="login-note">
             <FormattedMessage
               defaultMessage="Only the secret key can be used to publish (sign events), everything else logs you in read-only mode."
               description="Explanation for public key only login is read-only"
@@ -188,22 +191,20 @@ export default function LoginPage() {
             </button>
             {altLogins()}
           </div>
-          <div dir="auto" className="flex login-or">
-            <div className="login-note">
-              <FormattedMessage defaultMessage="OR" description="Seperator text for Login / Generate Key" />
-            </div>
+          <div className="flex login-or">
+            <FormattedMessage defaultMessage="OR" description="Seperator text for Login / Generate Key" />
             <div className="divider w-max"></div>
           </div>
           <h1 dir="auto">
             <FormattedMessage defaultMessage="Create an Account" description="Heading for generate key flow" />
           </h1>
-          <p dir="auto" className="login-note">
+          <p>
             <FormattedMessage
               defaultMessage="Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!"
               description="Note about key security before generating a new key"
             />
           </p>
-          <div dir="auto" className="tabs">
+          <div className="login-actions">
             <button type="button" onClick={() => makeRandomKey()}>
               <FormattedMessage defaultMessage="Generate Key" description="Button: Generate a new key" />
             </button>
@@ -211,13 +212,13 @@ export default function LoginPage() {
         </div>
       </div>
       <div>
-        <div dir="auto" className="artwork" style={{ ["--img-src"]: `url('${art?.link}')` } as CSSProperties}>
-          <div>
+        <div className="artwork" style={{ ["--img-src"]: `url('${art?.link}')` } as CSSProperties}>
+          <div className="attribution">
             <FormattedMessage
               defaultMessage="Art by {name}"
               description="Artwork attribution label"
               values={{
-                name: "Karnage",
+                name: <span className="artist">Karnage</span>,
               }}
             />
             <ZapButton pubkey={art?.pubkey ?? ""} />

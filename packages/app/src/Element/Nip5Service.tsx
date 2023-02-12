@@ -229,7 +229,13 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       {error && <b className="error">{error.error}</b>}
       {!registerStatus && (
         <div className="flex mb10">
-          <input type="text" placeholder={formatMessage(messages.Handle)} value={handle} onChange={onHandleChange} />
+          <input
+            type="text"
+            className="nip-handle"
+            placeholder={formatMessage(messages.Handle)}
+            value={handle}
+            onChange={onHandleChange}
+          />
           &nbsp;@&nbsp;
           <select value={domain} onChange={onDomainChange}>
             {serviceConfig?.domains.map(a => (

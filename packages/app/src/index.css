@@ -43,12 +43,10 @@ html.light {
   --bg-color: #f8f8f8;
   --font-color: #27272a;
   --font-secondary-color: #71717a;
-  --font-tertiary-color: #71717a;
+  --font-tertiary-color: #52525b;
   --border-color: rgba(167, 167, 167, 0.3);
 
-  --highlight-light: #16aac1;
-  --highlight: #0284c7;
-  --highlight-dark: #0a52b5;
+  --highlight: #7139f1;
   --modal-bg-color: rgba(240, 240, 240, 0.8);
 
   --note-bg: white;
@@ -127,6 +125,7 @@ button {
   padding: 6px 12px;
   font-weight: 600;
   color: white;
+  min-height: 35px;
   font-size: var(--font-size);
   background-color: var(--highlight);
   border: none;
@@ -277,7 +276,7 @@ textarea {
   color: var(--font-color);
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  border-radius: 12px;
   outline: none;
 }
 

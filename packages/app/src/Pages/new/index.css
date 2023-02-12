@@ -1,16 +1,31 @@
-.new-user p {
+.new-user {
   color: var(--font-secondary-color);
 }
-.new-user li {
-  color: var(--font-secondary-color);
+
+.new-user input {
+  font-size: 16px;
+}
+
+.new-user p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .new-user p > a {
   color: var(--highlight);
 }
 
+.new-user li {
+  line-height: 24px;
+}
+
 .new-user li > a {
   color: var(--highlight);
+}
+
+.new-user .nip-handle {
+  max-width: 120px;
 }
 
 .new-user h1 {
@@ -21,6 +36,8 @@
 }
 
 .new-user h2 {
+  margin-top: 24px;
+  margin-bottom: 16px;
   color: var(--font-color);
   font-weight: 600;
   font-size: 16px;
@@ -82,6 +99,10 @@
 
 .new-user .next-actions button:not(:last-child) {
   margin-right: 12px;
+}
+
+.new-user .next-actions.continue-actions {
+  margin-bottom: 0;
 }
 
 .new-user > .copy {
@@ -148,4 +169,11 @@
 
 .new-user .nip-container input[type="text"] {
   width: 166px;
+}
+
+.new-user .help-text {
+  margin-top: 6px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
 }
