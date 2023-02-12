@@ -139,12 +139,23 @@ export default function SendSats(props: LNURLTipProps) {
     try {
       if (nip57 && author) {
         const ev = await publisher.zap(author, Math.floor(amount * 1000), note, comment);
-        const rsp = await fetch(nip57, { method: "POST", body: JSON.stringify(unwrap(ev).ToObject()) });
+        const rsp = await fetch(nip57, {
+          method: "POST",
+          body: JSON.stringify(unwrap(ev).ToObject()),
+          headers: {
+            "content-type": "application/json",
+          },
+        });
         if (rsp.ok) {
-          const invoice = await rsp.text();
-          setInvoice({ pr: invoice });
-          setError("");
-          payWebLNIfEnabled({ pr: invoice });
+          const data = await rsp.json();
+          console.log(data);
+          if (data.status === "ERROR") {
+            setError(data.reason);
+          } else {
+            setInvoice(data);
+            setError("");
+            payWebLNIfEnabled(data);
+          }
         } else {
           setError(formatMessage(messages.InvoiceFail));
         }

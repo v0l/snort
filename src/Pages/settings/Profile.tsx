@@ -39,6 +39,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   const [website, setWebsite] = useState<string>();
   const [nip05, setNip05] = useState<string>();
   const [lud16, setLud16] = useState<string>();
+  const [nip57, setNip57] = useState<string>();
 
   const avatarPicture = (picture?.length ?? 0) === 0 ? Nostrich : picture;
 
@@ -52,6 +53,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       setWebsite(user.website);
       setNip05(user.nip05);
       setLud16(user.lud16);
+      setNip57(user.nip57);
     }
   }, [user]);
 
@@ -67,6 +69,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       website,
       nip05,
       lud16,
+      nip57,
     };
     delete userCopy["loaded"];
     delete userCopy["created"];
@@ -159,6 +162,14 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </div>
           <div>
             <input type="text" value={lud16} onChange={e => setLud16(e.target.value)} />
+          </div>
+        </div>
+        <div className="form-group">
+          <div>
+            <FormattedMessage defaultMessage="Zap Service" />:
+          </div>
+          <div>
+            <input type="text" value={nip57} onChange={e => setNip57(e.target.value)} />
           </div>
         </div>
         <div className="form-group">
