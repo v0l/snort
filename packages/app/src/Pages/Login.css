@@ -103,6 +103,13 @@
   margin-bottom: 64px;
 }
 
+@media (max-width: 520px) {
+  .login .login-or {
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+}
+
 .light .login-or {
   color: #a1a1aa;
 }
