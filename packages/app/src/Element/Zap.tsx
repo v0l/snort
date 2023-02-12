@@ -84,8 +84,8 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean 
   return valid && zapper ? (
     <div className="zap note card">
       <div className="header">
-        <ProfileImage pubkey={zapper} />
-        {p !== pubKey && showZapped && <ProfileImage pubkey={p} />}
+        <ProfileImage autoWidth={false} pubkey={zapper} />
+        {p !== pubKey && showZapped && <ProfileImage autoWidth={false} pubkey={p} />}
         <div className="amount">
           <span className="amount-number">
             <FormattedMessage {...messages.Sats} values={{ n: formatShort(amount) }} />
@@ -125,7 +125,7 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
       {amount && (
         <div className={`top-zap`}>
           <div className="summary">
-            {zapper && <ProfileImage pubkey={zapper} />}
+            {zapper && <ProfileImage autoWidth={false} pubkey={zapper} />}
             {restZaps.length > 0 && <FormattedMessage {...messages.Others} values={{ n: restZaps.length }} />}{" "}
             <FormattedMessage {...messages.OthersZapped} values={{ n: restZaps.length }} />
           </div>
