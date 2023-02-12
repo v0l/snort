@@ -1,730 +1,240 @@
 {
-  "+D82kt": {
-    "string": "确定要转发 {id}"
-  },
-  "+vIQlC": {
-    "string": "请确保将以下密码妥善保存以便将来管理您的账号"
-  },
-  "/4tOwT": {
-    "string": "跳过"
-  },
-  "/JE/X+": {
-    "string": "账户支持"
-  },
-  "/RD0e2": {
-    "string": "Nostr利用数字签名技术实现防篡改的笔记并可令其安全的复制到大量中继节点，给您的内容作为冗余存储。"
-  },
-  "/d6vEc": {
-    "string": "使您的账号可更方便的被找到及分享"
-  },
-  "/n5KSF": {
-    "string": "{n} ms"
-  },
-  "0BUTMv": {
-    "string": "搜索。。。"
-  },
-  "0mch2Y": {
-    "string": "名称中有禁用字符"
-  },
-  "0yO7wF": {
-    "string": "{n} 秒"
-  },
-  "1A7TZk": {
-    "string": "Snort是什么？它是如何工作的？"
-  },
-  "1udzha": {
-    "string": "聊天"
-  },
-  "2/2yg+": {
-    "string": "添加"
-  },
-  "25V4l1": {
-    "string": "横幅"
-  },
-  "2IFGap": {
-    "string": "捐赠"
-  },
-  "2k0Cv+": {
-    "string": "不喜欢 ({n})"
-  },
-  "3cc4Ct": {
-    "string": "浅色"
-  },
-  "3gOsZq": {
-    "string": "翻译人员"
-  },
-  "3xCwbZ": {
-    "developer_comment": "Seperator text for Login / Generate Key",
-    "string": "或者"
-  },
-  "450Fty": {
-    "string": "无"
-  },
-  "47FYwb": {
-    "string": "取消"
-  },
-  "4IPzdn": {
-    "string": "初级开发人员"
-  },
-  "4L2vUY": {
-    "string": "您的新 NIP-05 手柄是："
-  },
-  "4OB335": {
-    "string": "不喜欢"
-  },
-  "4Vmpt4": {
-    "string": "Nostr Plebs 是该领域首批 NIP-05 提供商之一，以合理的价格提供大量域名"
-  },
-  "4Z3t5i": {
-    "string": "使用imgproxy压缩图片"
-  },
-  "4rYCjn": {
-    "string": "注意自我"
-  },
-  "5ykRmX": {
-    "string": "发送放电"
-  },
-  "6ewQqw": {
-    "string": "喜欢 ({n})"
-  },
-  "6tUqAb": {
-    "developer_comment": "Note about key security before generating a new key",
-    "string": "创建一对 公钥 / 私钥。请勿跟任何人透露您的私钥，这将作为您的密码。一旦丢失，无法“重置”或找回。请务必妥善保管！"
-  },
-  "7+Domh": {
-    "string": "笔记"
-  },
-  "7hp70g": {
-    "string": "NIP-05"
-  },
-  "7xzTiH": {
-    "string": "{action} 到 {target}"
-  },
-  "8/vBbP": {
-    "string": "转发 ({n})"
-  },
-  "89q5wc": {
-    "string": "确认转发"
-  },
-  "8E9muH": {
-    "string": "导入 Twitter 关注（可选）"
-  },
-  "8QDesP": {
-    "string": "Zap {n} 坐"
-  },
-  "8g2vyB": {
-    "string": "名称过长"
-  },
-  "9+Ddtu": {
-    "string": "下一个"
-  },
-  "9HU8vw": {
-    "string": "回复"
-  },
-  "9SvQep": {
-    "string": "跟随 {n}"
-  },
-  "9WRlF4": {
-    "string": "发送"
-  },
-  "9gqH2W": {
-    "developer_comment": "Login button",
-    "string": "登录"
-  },
-  "9wO4wJ": {
-    "string": "闪电发票"
-  },
-  "ASRK0S": {
-    "string": "该作者已被屏蔽"
-  },
-  "Adk34V": {
-    "string": "设置您的个人资料"
-  },
-  "AyGauy": {
-    "string": "登录"
-  },
-  "B4C47Y": {
-    "string": "名称过短"
-  },
-  "B6+XJy": {
-    "string": "电击"
-  },
-  "BOUMjw": {
-    "string": "找不到 {twitterUsername} 的 nostr 用户"
-  },
-  "BOr9z/": {
-    "string": "Snort是热心人士利用空闲时间开发的一个开源项目"
-  },
-  "BcGMo+": {
-    "string": "笔记保存文本内容，这些笔记最流行的用法是存储“tweet like”消息。"
-  },
-  "C81/uG": {
-    "string": "登出"
-  },
-  "CHTbO3": {
-    "string": "加载发票失败"
-  },
-  "Cu/K85": {
-    "string": "翻译自 {lang}"
-  },
-  "D3idYv": {
-    "string": "设置"
-  },
-  "DKnriN": {
-    "string": "发送聪"
-  },
-  "DZzCem": {
-    "string": "显示最新的 {n} 笔记"
-  },
-  "Dt/Zd5": {
-    "string": "帖子中的媒体将自动显示给选定的人，否则只会显示链接"
-  },
-  "E8a4yq": {
-    "string": "关注一些受欢迎的帐户"
-  },
-  "EPYwm7": {
-    "string": "您的私钥就是您的密码。如果您丢失了此密钥，您将无法访问您的帐户！复制它并将其保存在安全的地方。无法重置您的私钥。"
-  },
-  "EWyQH5": {
-    "string": "广场"
-  },
-  "Ebl/B2": {
-    "string": "翻译成 {lang}"
-  },
-  "EcglP9": {
-    "string": "钥匙"
-  },
-  "EnCOBJ": {
-    "string": "买"
-  },
-  "Eqjl5K": {
-    "string": "只有 Snort 和我们的集成合作伙伴标识符为您提供丰富多彩的域名，但也欢迎您使用其他服务。"
-  },
-  "F+B3x1": {
-    "string": "我们还与 nostrplebs.com 合作，为您提供更多选择"
-  },
-  "FS3b54": {
-    "string": "完毕！"
-  },
-  "FfYsOb": {
-    "string": "发生错误！"
-  },
-  "FmXUJg": {
-    "string": "关注你"
-  },
-  "G/yZLu": {
-    "string": "移除"
-  },
-  "GFOoEE": {
-    "string": "盐"
-  },
-  "GspYR7": {
-    "string": "{n} 不喜欢"
-  },
-  "H+vHiz": {
-    "developer_comment": "Hexidecimal 'key' input for improxy",
-    "string": "六角钥匙.."
-  },
-  "H0JBH6": {
-    "string": "注销"
-  },
-  "H6/kLh": {
-    "string": "订单已支付！"
-  },
-  "HAlOn1": {
-    "string": "名称"
-  },
-  "HFls6j": {
-    "string": "名称稍后可用"
-  },
-  "HOzFdo": {
-    "string": "已屏蔽"
-  },
-  "HbefNb": {
-    "string": "打开钱包"
-  },
-  "IKKHqV": {
-    "string": "关注"
-  },
-  "INSqIz": {
-    "string": "Twitter用户名..."
-  },
-  "IUZC+0": {
-    "string": "这意味着没有人可以修改您创建的笔记，并且每个人都可以轻松验证他们正在阅读的笔记是否是由您创建的。"
-  },
-  "JCIgkj": {
-    "string": "用户名"
-  },
-  "JHEHCk": {
-    "string": "Zaps ({n})"
-  },
-  "JkLHGw": {
-    "string": "网站"
-  },
-  "K3r6DQ": {
-    "string": "删除"
-  },
-  "K7AkdL": {
-    "string": "显示"
-  },
-  "KQvWvD": {
-    "string": "已删除"
-  },
-  "KWuDfz": {
-    "string": "我已经保存了我的密钥，继续"
-  },
-  "KahimY": {
-    "string": "未知事件类型：{kind}"
-  },
-  "LgbKvU": {
-    "string": "评论"
-  },
-  "LxY9tW": {
-    "developer_comment": "Button: Generate a new key",
-    "string": "生成密钥"
-  },
-  "M3Oirc": {
-    "string": "调试菜单"
-  },
-  "MBAYRO": {
-    "string": "在每条消息的上下文菜单中显示“复制 ID”和“复制事件 JSON”"
-  },
-  "MI2jkA": {
-    "string": "无法使用："
-  },
-  "MRp6Ly": {
-    "string": "Twitter用户名"
-  },
-  "MzRYWH": {
-    "string": "购买{条目}"
-  },
-  "N2IrpM": {
-    "string": "确认"
-  },
-  "NdOYJJ": {
-    "string": "嗯这里什么都没有..结帐 {newUsersPage} 以关注一些推荐的 nostrich&#39;s！"
-  },
-  "NfNk2V": {
-    "string": "你的私钥"
-  },
-  "NndBJE": {
-    "string": "新用户页面"
-  },
-  "OEW7yJ": {
-    "string": "电击"
-  },
-  "OKhRC6": {
-    "string": "分享"
-  },
-  "P61BTu": {
-    "string": "复制事件 JSON"
-  },
-  "P7FD0F": {
-    "string": "系统（默认）"
-  },
-  "P7nJT9": {
-    "string": "今天总计 (UTC)：{amount} sats"
-  },
-  "PCSt5T": {
-    "string": "首选项"
-  },
-  "Pe0ogR": {
-    "string": "主题"
-  },
-  "PrsIg7": {
-    "string": "反应将显示在每个页面上，如果禁用则不会显示任何反应"
-  },
-  "QTdJfH": {
-    "developer_comment": "Heading for generate key flow",
-    "string": "创建一个帐户"
-  },
-  "QxCuTo": {
-    "developer_comment": "Artwork attribution label",
-    "string": "{name} 的艺术作品"
-  },
-  "RDZVQL": {
-    "string": "查看"
-  },
-  "RahCRH": {
-    "string": "已过期"
-  },
-  "RhDAoS": {
-    "string": "确定要删除 {id}"
-  },
-  "RoOyAh": {
-    "string": "中继器"
-  },
-  "Sjo1P4": {
-    "string": "自定义"
-  },
-  "TpgeGw": {
-    "developer_comment": "Hexidecimal 'salt' input for imgproxy",
-    "string": "六角盐.."
-  },
-  "UQ3pOC": {
-    "string": "在 Nostr 上，很多人都有相同的用户名。用户名和身份是不同的东西。您可以在下一步中获得唯一标识符。"
-  },
-  "Up5U7K": {
-    "string": "拉黑"
-  },
-  "VOjC1i": {
-    "string": "选择您要将附件上传到哪个上传服务"
-  },
-  "VlJkSk": {
-    "string": "{n} 静音"
-  },
-  "VnXp8Z": {
-    "string": "头像"
-  },
-  "VtPV/B": {
-    "developer_comment": "Login button for NIP7 key manager extension",
-    "string": "使用分机登录 (NIP-07)"
-  },
-  "Vx7Zm2": {
-    "string": "按键如何工作？"
-  },
-  "W9355R": {
-    "string": "取消屏蔽"
-  },
-  "WONP5O": {
-    "string": "在 nostr 上找到您的推特关注（数据由 {provider} 提供）"
-  },
-  "WxthCV": {
-    "string": "例如杰克"
-  },
-  "XgWvGA": {
-    "string": "回应"
-  },
-  "Y31HTH": {
-    "string": "帮助资助 Snort 的开发"
-  },
-  "YDURw6": {
-    "string": "服务网址"
-  },
-  "YXA3AH": {
-    "string": "启用反应"
-  },
-  "ZKORll": {
-    "string": "马上激活"
-  },
-  "ZLmyG9": {
-    "string": "贡献者"
-  },
-  "ZUZedV": {
-    "string": "闪电捐赠："
-  },
-  "a5UPxh": {
-    "string": "提供NIP-05验证服务的基金开发商和平台"
-  },
-  "aWpBzj": {
-    "string": "显示更多"
-  },
-  "brAXSu": {
-    "string": "选择一个用户名"
-  },
-  "bxv59V": {
-    "string": "刚刚"
-  },
-  "c35bj2": {
-    "string": "如果您对 NIP-05 订单有疑问，请 DM {link}"
-  },
-  "cQfLWb": {
-    "developer_comment": "Placeholder text for imgproxy url textbox",
-    "string": "网址.."
-  },
-  "cWx9t8": {
-    "string": "屏蔽所有"
-  },
-  "cuV2gK": {
-    "string": "名称已被注册"
-  },
-  "cyR7Kh": {
-    "string": "返回"
-  },
-  "d7d0/x": {
-    "string": "LN 地址"
-  },
-  "dOQCL8": {
-    "string": "显示名称"
-  },
-  "e7qqly": {
-    "string": "全标已读"
-  },
-  "eHAneD": {
-    "string": "反应表情符号"
-  },
-  "eJj8HD": {
-    "string": "获得证实"
-  },
-  "eR3YIn": {
-    "string": "帖子"
-  },
-  "filwqD": {
-    "string": "读"
-  },
-  "flnGvv": {
-    "string": "你在想什么？"
-  },
-  "g5pX+a": {
-    "string": "关于"
-  },
-  "gBdUXk": {
-    "string": "保存你的钥匙！"
-  },
-  "gDZkld": {
-    "string": "Snort 是一个 Nostr UI，nostr 是一个用于保存和分发“笔记”的去中心化协议。"
-  },
-  "gDzDRs": {
-    "string": "对笔记做出反应时发送的表情符号"
-  },
-  "gjBiyj": {
-    "string": "加载中。。。"
-  },
-  "hCUivF": {
-    "string": "笔记将实时流式传输到全局和帖子选项卡"
-  },
-  "hK5ZDk": {
-    "string": "世界"
-  },
-  "hMzcSq": {
-    "string": "消息"
-  },
-  "hY4lzx": {
-    "string": "支持"
-  },
-  "hicxcO": {
-    "string": "显示回复"
-  },
-  "iCqGww": {
-    "string": "回应（{n}）"
-  },
-  "iDGAbc": {
-    "string": "获取 Snort 标识符"
-  },
-  "iGT1eE": {
-    "string": "防止虚假账户模仿您"
-  },
-  "iNWbVV": {
-    "string": "处理"
-  },
-  "ieGrWo": {
-    "string": "关注"
-  },
-  "itPgxd": {
-    "string": "个人资料"
-  },
-  "izWS4J": {
-    "string": "取消关注"
-  },
-  "jA3OE/": {
-    "string": "{n,plural,=1{{n} 坐} other{{n} 坐}}"
-  },
-  "jCA7Cw": {
-    "string": "在 snort 上预览"
-  },
-  "juhqvW": {
-    "string": "使用浏览器扩展提高登录安全性"
-  },
-  "jvo0vs": {
-    "string": "保存"
-  },
-  "k2veDA": {
-    "string": "写"
-  },
-  "k7sKNy": {
-    "string": "我们自己的 NIP-05 验证服务，帮助支持本站的发展，并在我们的网站上获得闪亮的特殊徽章！"
-  },
-  "lCILNz": {
-    "string": "马上购买"
-  },
-  "lD3+8a": {
-    "string": "付款"
-  },
-  "lgg1KN": {
-    "string": "账户页面"
-  },
-  "ll3xBp": {
-    "string": "图片代理服务"
-  },
-  "lnaT9F": {
-    "string": "关注 {n}"
-  },
-  "lvlPhZ": {
-    "string": "支付发票"
-  },
-  "mH91FY": {
-    "string": "每个贡献者将获得所有捐赠和 NIP-05 订单的一定百分比的报酬，您可以在下面看到拆分金额"
-  },
-  "mKAr6h": {
-    "string": "关注所有"
-  },
-  "mKh2HS": {
-    "string": "文件上传服务"
-  },
-  "mKhgP9": {
-    "string": "{n,plural,=0{} =1{zapped} other{zapped}}"
-  },
-  "n1xHAH": {
-    "string": "获取标识符（可选）"
-  },
-  "nDejmx": {
-    "string": "解锁"
-  },
-  "nN9XTz": {
-    "string": "与 {link} 分享您的想法"
-  },
-  "nn1qb3": {
-    "string": "非常感谢您的捐赠"
-  },
-  "nwZXeh": {
-    "string": "{n}已拉黑"
-  },
-  "o6Uy3d": {
-    "developer_comment": "Explanation for public key only login is read-only",
-    "string": "只有密钥可用于发布（签署事件），其他一切都以只读模式记录您。"
-  },
-  "o7e+nJ": {
-    "string": "{n} 的粉丝"
-  },
-  "odFwjL": {
-    "string": "仅关注"
-  },
-  "odhABf": {
-    "developer_comment": "Login header",
-    "string": "登录"
-  },
-  "osUr8O": {
-    "string": "您还可以使用这些扩展程序登录大多数 Nostr 站点。"
-  },
-  "oxCa4R": {
-    "string": "获取标识符有助于向认识您的人确认真实的您。许多人可以有一个用户名@jack，但只有一个jack@cash.app。"
-  },
-  "pzTOmv": {
-    "string": "粉丝"
-  },
-  "qUJTsT": {
-    "string": "已拉黑"
-  },
-  "qdGuQo": {
-    "string": "您的私钥是（不要与任何人分享）"
-  },
-  "qkvYUb": {
-    "string": "添加个人资料"
-  },
-  "qmJ8kD": {
-    "string": "翻译失败"
-  },
-  "r3C4x/": {
-    "string": "软件"
-  },
-  "rT14Ow": {
-    "string": "添加中继器"
-  },
-  "reJ6SM": {
-    "string": "如果您使用台式计算机来保护您的密钥，建议使用以下浏览器扩展程序之一："
-  },
-  "rfuMjE": {
-    "string": "（默认）"
-  },
-  "rrfdTe": {
-    "string": "这与比特币使用的技术相同，并已被证明非常安全。"
-  },
-  "rudscU": {
-    "string": "加载失败，请稍后重试"
-  },
-  "sWnYKw": {
-    "string": "Snort 旨在提供与 Twitter 类似的体验。"
-  },
-  "svOoEH": {
-    "string": "不允许抢注和冒充。 Snort 和我们的合作伙伴保留因违反此规则而终止您的句柄（不是您的帐户 - 没有人可以拿走它）的权利。"
-  },
-  "tOdNiY": {
-    "string": "深色"
-  },
-  "thnRpU": {
-    "string": "验证 NIP-05 可以帮助："
-  },
-  "u/vOPu": {
-    "string": "已付款"
-  },
-  "u4bHcR": {
-    "string": "在此处查看代码：{link}"
-  },
-  "uD/N6c": {
-    "string": "Zap {target} {n} 卫星"
-  },
-  "uSV4Ti": {
-    "string": "转发需要人工确认"
-  },
-  "usAvMr": {
-    "string": "编辑个人资料"
-  },
-  "ut+2Cd": {
-    "string": "获取合作伙伴标识符"
-  },
-  "vOKedj": {
-    "string": "{n,plural,=1{&amp; {n} 其他} other{&amp; {n} 其他}}"
-  },
-  "vZ4quW": {
-    "string": "NIP-05 是一种基于 DNS 的验证规范，可帮助验证您是真实用户。"
-  },
-  "wEQDC6": {
-    "string": "编辑"
-  },
-  "wLtRCF": {
-    "developer_comment": "Label for key input",
-    "string": "你的钥匙"
-  },
-  "wih7iJ": {
-    "string": "名字被屏蔽"
-  },
-  "wqyN/i": {
-    "string": "在 {link} 了解有关 {service} 的更多信息"
-  },
-  "wtLjP6": {
-    "string": "复制 ID"
-  },
-  "x82IOl": {
-    "string": "屏蔽"
-  },
-  "xIoGG9": {
-    "string": "去"
-  },
-  "xJ9n2N": {
-    "string": "你的公钥"
-  },
-  "xKdNPm": {
-    "developer_comment": "Send DM button",
-    "string": "发送"
-  },
-  "xKflGN": {
-    "string": "{username} 在 Nostr 上的关注"
-  },
-  "xbVgIm": {
-    "string": "自动加载媒体"
-  },
-  "xmcVZ0": {
-    "string": "搜索"
-  },
-  "zFegDD": {
-    "string": "联系人"
-  },
-  "zINlao": {
-    "string": "所有者"
-  },
-  "zQvVDJ": {
-    "string": "全部"
-  },
-  "zcaOTs": {
-    "string": "以 sats 为单位的 Zap 数量"
-  },
-  "zjJZBd": {
-    "string": "你准备好了！"
-  },
-  "zonsdq": {
-    "string": "文件上传服务"
-  },
-  "zvCDao": {
-    "string": "自动显示最新笔记"
-  }
+  "+D82kt": "确定要转发 {id}",
+  "+vIQlC": "请确保将以下密码妥善保存以便将来管理您的账号",
+  "/4tOwT": "跳过",
+  "/JE/X+": "账户支持",
+  "/RD0e2": "Nostr利用数字签名技术实现防篡改的笔记并可令其安全的复制到大量中继节点，给您的内容作为冗余存储。",
+  "/d6vEc": "使您的账号可更方便的被找到及分享",
+  "/n5KSF": "{n} ms",
+  "0BUTMv": "搜索。。。",
+  "0mch2Y": "名称中有禁用字符",
+  "0yO7wF": "{n} 秒",
+  "1A7TZk": "Snort是什么？它是如何工作的？",
+  "1udzha": "聊天",
+  "2/2yg+": "添加",
+  "25V4l1": "横幅",
+  "2IFGap": "捐赠",
+  "2k0Cv+": "不喜欢 ({n})",
+  "3cc4Ct": "浅色",
+  "3gOsZq": "翻译人员",
+  "3xCwbZ": "或者",
+  "450Fty": "无",
+  "47FYwb": "取消",
+  "4IPzdn": "初级开发人员",
+  "4L2vUY": "您的新 NIP-05 手柄是：",
+  "4OB335": "不喜欢",
+  "4Vmpt4": "Nostr Plebs 是该领域首批 NIP-05 提供商之一，以合理的价格提供大量域名",
+  "4Z3t5i": "使用imgproxy压缩图片",
+  "4rYCjn": "注意自我",
+  "5ykRmX": "发送放电",
+  "6ewQqw": "喜欢 ({n})",
+  "6tUqAb": "创建一对 公钥 / 私钥。请勿跟任何人透露您的私钥，这将作为您的密码。一旦丢失，无法“重置”或找回。请务必妥善保管！",
+  "7+Domh": "笔记",
+  "7hp70g": "NIP-05",
+  "7xzTiH": "{action} 到 {target}",
+  "8/vBbP": "转发 ({n})",
+  "89q5wc": "确认转发",
+  "8E9muH": "导入 Twitter 关注（可选）",
+  "8QDesP": "Zap {n} 坐",
+  "8g2vyB": "名称过长",
+  "9+Ddtu": "下一个",
+  "9HU8vw": "回复",
+  "9SvQep": "跟随 {n}",
+  "9WRlF4": "发送",
+  "9gqH2W": "登录",
+  "9wO4wJ": "闪电发票",
+  "ASRK0S": "该作者已被屏蔽",
+  "Adk34V": "设置您的个人资料",
+  "AyGauy": "登录",
+  "B4C47Y": "名称过短",
+  "B6+XJy": "电击",
+  "BOUMjw": "找不到 {twitterUsername} 的 nostr 用户",
+  "BOr9z/": "Snort是热心人士利用空闲时间开发的一个开源项目",
+  "BcGMo+": "笔记保存文本内容，这些笔记最流行的用法是存储“tweet like”消息。",
+  "C81/uG": "登出",
+  "CHTbO3": "加载发票失败",
+  "Cu/K85": "翻译自 {lang}",
+  "D3idYv": "设置",
+  "DKnriN": "发送聪",
+  "DZzCem": "显示最新的 {n} 笔记",
+  "Dt/Zd5": "帖子中的媒体将自动显示给选定的人，否则只会显示链接",
+  "E8a4yq": "关注一些受欢迎的帐户",
+  "EPYwm7": "您的私钥就是您的密码。如果您丢失了此密钥，您将无法访问您的帐户！复制它并将其保存在安全的地方。无法重置您的私钥。",
+  "EWyQH5": "广场",
+  "Ebl/B2": "翻译成 {lang}",
+  "EcglP9": "钥匙",
+  "EnCOBJ": "买",
+  "Eqjl5K": "只有 Snort 和我们的集成合作伙伴标识符为您提供丰富多彩的域名，但也欢迎您使用其他服务。",
+  "F+B3x1": "我们还与 nostrplebs.com 合作，为您提供更多选择",
+  "FS3b54": "完毕！",
+  "FfYsOb": "发生错误！",
+  "FmXUJg": "关注你",
+  "G/yZLu": "移除",
+  "GFOoEE": "盐",
+  "GspYR7": "{n} 不喜欢",
+  "H+vHiz": "六角钥匙..",
+  "H0JBH6": "注销",
+  "H6/kLh": "订单已支付！",
+  "HAlOn1": "名称",
+  "HFls6j": "名称稍后可用",
+  "HOzFdo": "已屏蔽",
+  "HbefNb": "打开钱包",
+  "IKKHqV": "关注",
+  "INSqIz": "Twitter用户名...",
+  "IUZC+0": "这意味着没有人可以修改您创建的笔记，并且每个人都可以轻松验证他们正在阅读的笔记是否是由您创建的。",
+  "JCIgkj": "用户名",
+  "JHEHCk": "Zaps ({n})",
+  "JkLHGw": "网站",
+  "K3r6DQ": "删除",
+  "K7AkdL": "显示",
+  "KQvWvD": "已删除",
+  "KWuDfz": "我已经保存了我的密钥，继续",
+  "KahimY": "未知事件类型：{kind}",
+  "LgbKvU": "评论",
+  "LxY9tW": "生成密钥",
+  "M3Oirc": "调试菜单",
+  "MBAYRO": "在每条消息的上下文菜单中显示“复制 ID”和“复制事件 JSON”",
+  "MI2jkA": "无法使用：",
+  "MRp6Ly": "Twitter用户名",
+  "MzRYWH": "购买{条目}",
+  "N2IrpM": "确认",
+  "NdOYJJ": "嗯这里什么都没有..结帐 {newUsersPage} 以关注一些推荐的 nostrich&#39;s！",
+  "NfNk2V": "你的私钥",
+  "NndBJE": "新用户页面",
+  "OEW7yJ": "电击",
+  "OKhRC6": "分享",
+  "P61BTu": "复制事件 JSON",
+  "P7FD0F": "系统（默认）",
+  "P7nJT9": "今天总计 (UTC)：{amount} sats",
+  "PCSt5T": "首选项",
+  "Pe0ogR": "主题",
+  "PrsIg7": "反应将显示在每个页面上，如果禁用则不会显示任何反应",
+  "QTdJfH": "创建一个帐户",
+  "QxCuTo": "{name} 的艺术作品",
+  "RDZVQL": "查看",
+  "RahCRH": "已过期",
+  "RhDAoS": "确定要删除 {id}",
+  "RoOyAh": "中继器",
+  "Sjo1P4": "自定义",
+  "TpgeGw": "六角盐..",
+  "UQ3pOC": "在 Nostr 上，很多人都有相同的用户名。用户名和身份是不同的东西。您可以在下一步中获得唯一标识符。",
+  "Up5U7K": "拉黑",
+  "VOjC1i": "选择您要将附件上传到哪个上传服务",
+  "VlJkSk": "{n} 静音",
+  "VnXp8Z": "头像",
+  "VtPV/B": "使用分机登录 (NIP-07)",
+  "Vx7Zm2": "按键如何工作？",
+  "W9355R": "取消屏蔽",
+  "WONP5O": "在 nostr 上找到您的推特关注（数据由 {provider} 提供）",
+  "WxthCV": "例如杰克",
+  "XgWvGA": "回应",
+  "Y31HTH": "帮助资助 Snort 的开发",
+  "YDURw6": "服务网址",
+  "YXA3AH": "启用反应",
+  "ZKORll": "马上激活",
+  "ZLmyG9": "贡献者",
+  "ZUZedV": "闪电捐赠：",
+  "a5UPxh": "提供NIP-05验证服务的基金开发商和平台",
+  "aWpBzj": "显示更多",
+  "brAXSu": "选择一个用户名",
+  "bxv59V": "刚刚",
+  "c35bj2": "如果您对 NIP-05 订单有疑问，请 DM {link}",
+  "cQfLWb": "网址..",
+  "cWx9t8": "屏蔽所有",
+  "cuV2gK": "名称已被注册",
+  "cyR7Kh": "返回",
+  "d7d0/x": "LN 地址",
+  "dOQCL8": "显示名称",
+  "e7qqly": "全标已读",
+  "eHAneD": "反应表情符号",
+  "eJj8HD": "获得证实",
+  "eR3YIn": "帖子",
+  "filwqD": "读",
+  "flnGvv": "你在想什么？",
+  "g5pX+a": "关于",
+  "gBdUXk": "保存你的钥匙！",
+  "gDZkld": "Snort 是一个 Nostr UI，nostr 是一个用于保存和分发“笔记”的去中心化协议。",
+  "gDzDRs": "对笔记做出反应时发送的表情符号",
+  "gjBiyj": "加载中。。。",
+  "hCUivF": "笔记将实时流式传输到全局和帖子选项卡",
+  "hK5ZDk": "世界",
+  "hMzcSq": "消息",
+  "hY4lzx": "支持",
+  "hicxcO": "显示回复",
+  "iCqGww": "回应（{n}）",
+  "iDGAbc": "获取 Snort 标识符",
+  "iGT1eE": "防止虚假账户模仿您",
+  "iNWbVV": "处理",
+  "ieGrWo": "关注",
+  "itPgxd": "个人资料",
+  "izWS4J": "取消关注",
+  "jA3OE/": "{n,plural,=1{{n} 坐} other{{n} 坐}}",
+  "jCA7Cw": "在 snort 上预览",
+  "juhqvW": "使用浏览器扩展提高登录安全性",
+  "jvo0vs": "保存",
+  "k2veDA": "写",
+  "k7sKNy": "我们自己的 NIP-05 验证服务，帮助支持本站的发展，并在我们的网站上获得闪亮的特殊徽章！",
+  "lCILNz": "马上购买",
+  "lD3+8a": "付款",
+  "lgg1KN": "账户页面",
+  "ll3xBp": "图片代理服务",
+  "lnaT9F": "关注 {n}",
+  "lvlPhZ": "支付发票",
+  "mH91FY": "每个贡献者将获得所有捐赠和 NIP-05 订单的一定百分比的报酬，您可以在下面看到拆分金额",
+  "mKAr6h": "关注所有",
+  "mKh2HS": "文件上传服务",
+  "mKhgP9": "{n,plural,=0{} =1{zapped} other{zapped}}",
+  "n1xHAH": "获取标识符（可选）",
+  "nDejmx": "解锁",
+  "nN9XTz": "与 {link} 分享您的想法",
+  "nn1qb3": "非常感谢您的捐赠",
+  "nwZXeh": "{n}已拉黑",
+  "o6Uy3d": "只有密钥可用于发布（签署事件），其他一切都以只读模式记录您。",
+  "o7e+nJ": "{n} 的粉丝",
+  "odFwjL": "仅关注",
+  "odhABf": "登录",
+  "osUr8O": "您还可以使用这些扩展程序登录大多数 Nostr 站点。",
+  "oxCa4R": "获取标识符有助于向认识您的人确认真实的您。许多人可以有一个用户名@jack，但只有一个jack@cash.app。",
+  "pzTOmv": "粉丝",
+  "qUJTsT": "已拉黑",
+  "qdGuQo": "您的私钥是（不要与任何人分享）",
+  "qkvYUb": "添加个人资料",
+  "qmJ8kD": "翻译失败",
+  "r3C4x/": "软件",
+  "rT14Ow": "添加中继器",
+  "reJ6SM": "如果您使用台式计算机来保护您的密钥，建议使用以下浏览器扩展程序之一：",
+  "rfuMjE": "（默认）",
+  "rrfdTe": "这与比特币使用的技术相同，并已被证明非常安全。",
+  "rudscU": "加载失败，请稍后重试",
+  "sWnYKw": "Snort 旨在提供与 Twitter 类似的体验。",
+  "svOoEH": "不允许抢注和冒充。 Snort 和我们的合作伙伴保留因违反此规则而终止您的句柄（不是您的帐户 - 没有人可以拿走它）的权利。",
+  "tOdNiY": "深色",
+  "thnRpU": "验证 NIP-05 可以帮助：",
+  "u/vOPu": "已付款",
+  "u4bHcR": "在此处查看代码：{link}",
+  "uD/N6c": "Zap {target} {n} 卫星",
+  "uSV4Ti": "转发需要人工确认",
+  "usAvMr": "编辑个人资料",
+  "ut+2Cd": "获取合作伙伴标识符",
+  "vOKedj": "{n,plural,=1{&amp; {n} 其他} other{&amp; {n} 其他}}",
+  "vZ4quW": "NIP-05 是一种基于 DNS 的验证规范，可帮助验证您是真实用户。",
+  "wEQDC6": "编辑",
+  "wLtRCF": "你的钥匙",
+  "wih7iJ": "名字被屏蔽",
+  "wqyN/i": "在 {link} 了解有关 {service} 的更多信息",
+  "wtLjP6": "复制 ID",
+  "x82IOl": "屏蔽",
+  "xIoGG9": "去",
+  "xJ9n2N": "你的公钥",
+  "xKdNPm": "发送",
+  "xKflGN": "{username} 在 Nostr 上的关注",
+  "xbVgIm": "自动加载媒体",
+  "xmcVZ0": "搜索",
+  "zFegDD": "联系人",
+  "zINlao": "所有者",
+  "zQvVDJ": "全部",
+  "zcaOTs": "以 sats 为单位的 Zap 数量",
+  "zjJZBd": "你准备好了！",
+  "zonsdq": "文件上传服务",
+  "zvCDao": "自动显示最新笔记"
 }
