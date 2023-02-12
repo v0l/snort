@@ -254,7 +254,7 @@ export default function Note(props: NoteProps) {
       <>
         {options.showHeader && (
           <div className="header flex">
-            <ProfileImage pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
+            <ProfileImage autoWidth={false} pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
             {(options.showTime || options.showBookmarked) && (
               <div className="info">
                 {options.showBookmarked && (
