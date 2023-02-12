@@ -89,7 +89,7 @@ export default function Timeline({
       {latestFeed.length > 0 && (
         <div className="card latest-notes pointer" onClick={() => showLatest()}>
           {latestAuthors.slice(0, 3).map(p => {
-            return <ProfileImage pubkey={p} showUsername={false} />;
+            return <ProfileImage pubkey={p} showUsername={false} linkToProfile={false} />;
           })}
           <FormattedMessage
             defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"

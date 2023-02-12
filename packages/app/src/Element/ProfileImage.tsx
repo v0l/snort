@@ -18,6 +18,7 @@ export interface ProfileImageProps {
   link?: string;
   defaultNip?: string;
   verifyNip?: boolean;
+  linkToProfile?: boolean;
 }
 
 export default function ProfileImage({
@@ -28,6 +29,7 @@ export default function ProfileImage({
   link,
   defaultNip,
   verifyNip,
+  linkToProfile = true,
 }: ProfileImageProps) {
   const navigate = useNavigate();
   const user = useUserProfile(pubkey);
@@ -42,10 +44,16 @@ export default function ProfileImage({
     link = "#";
   }
 
+  const onAvatarClick = () => {
+    if (linkToProfile) {
+      navigate(link ?? profileLink(pubkey));
+    }
+  };
+
   return (
     <div className={`pfp${className ? ` ${className}` : ""}`}>
       <div className="avatar-wrapper">
-        <Avatar user={user} onClick={() => navigate(link ?? profileLink(pubkey))} />
+        <Avatar user={user} onClick={onAvatarClick} />
       </div>
       {showUsername && (
         <div className="profile-name">
