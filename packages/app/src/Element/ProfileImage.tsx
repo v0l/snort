@@ -16,6 +16,7 @@ export interface ProfileImageProps {
   showUsername?: boolean;
   className?: string;
   link?: string;
+  autoWidth?: boolean;
   defaultNip?: string;
   verifyNip?: boolean;
   linkToProfile?: boolean;
@@ -27,6 +28,7 @@ export default function ProfileImage({
   showUsername = true,
   className,
   link,
+  autoWidth = true,
   defaultNip,
   verifyNip,
   linkToProfile = true,
@@ -63,7 +65,7 @@ export default function ProfileImage({
               {nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
             </Link>
           </div>
-          <div className="subheader" style={{ width: width - 190 }}>
+          <div className="subheader" style={{ width: autoWidth ? width - 190 : "" }}>
             {subHeader}
           </div>
         </div>

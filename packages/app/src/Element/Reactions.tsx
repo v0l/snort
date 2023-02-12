@@ -96,7 +96,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                   <div className="reaction-icon">
                     {ev.content === "+" ? <Heart width={20} height={18} /> : ev.content}
                   </div>
-                  <ProfileImage pubkey={ev.pubkey} />
+                  <ProfileImage autoWidth={false} pubkey={ev.pubkey} />
                 </div>
               );
             })}
@@ -109,7 +109,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                       <ZapIcon width={17} height={20} />
                       <span className="zap-amount">{formatShort(z.amount)}</span>
                     </div>
-                    <ProfileImage pubkey={z.zapper} subHeader={<>{z.content}</>} />
+                    <ProfileImage autoWidth={false} pubkey={z.zapper} subHeader={<>{z.content}</>} />
                   </div>
                 )
               );
@@ -121,7 +121,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                   <div className="reaction-icon">
                     <Heart width={20} height={18} />
                   </div>
-                  <ProfileImage pubkey={ev.pubkey} />
+                  <ProfileImage autoWidth={false} pubkey={ev.pubkey} />
                 </div>
               );
             })}
@@ -132,7 +132,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                   <div className="reaction-icon">
                     <Dislike width={20} height={18} />
                   </div>
-                  <ProfileImage pubkey={ev.pubkey} />
+                  <ProfileImage autoWidth={false} pubkey={ev.pubkey} />
                 </div>
               );
             })}
