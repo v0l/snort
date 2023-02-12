@@ -34,7 +34,7 @@ export default function ProfileImage({
   const navigate = useNavigate();
   const user = useUserProfile(pubkey);
   const nip05 = defaultNip ? defaultNip : user?.nip05;
-  const width = useClientWidth();
+  const width = usePageWidth();
 
   const name = useMemo(() => {
     return getDisplayName(user, pubkey);
