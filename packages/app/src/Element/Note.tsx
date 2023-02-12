@@ -209,8 +209,7 @@ export default function Note(props: NoteProps) {
         re:&nbsp;
         {(mentions?.length ?? 0) > 0 ? (
           <>
-            {pubMentions}
-            {others}
+            {pubMentions} {others}
           </>
         ) : (
           replyId && <Link to={eventLink(replyId)}>{hexToBech32("note", replyId)?.substring(0, 12)}</Link>
