@@ -198,11 +198,6 @@
   margin-left: -1px;
 }
 
-.note .header .nip05 .badge {
-  width: 13px;
-  height: 13px;
-}
-
 .note .reactions-link {
   color: var(--font-secondary-color);
   font-weight: 400;

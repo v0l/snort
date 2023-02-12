@@ -62,9 +62,7 @@ const Nip05 = ({ nip05, pubkey, verifyNip = true }: Nip05Params) => {
           <span className="domain f-ellipsis" data-domain={domain?.toLowerCase()}>
             {domain}
           </span>
-          <span className="badge">
-            <Badge />
-          </span>
+          <Badge className="badge" />
         </>
       )}
     </div>

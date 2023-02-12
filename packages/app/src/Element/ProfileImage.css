@@ -38,8 +38,8 @@
 
 @media (max-width: 420px) {
   .pfp .display-name {
-    font-size: var(--font-size-small);
     flex-direction: row;
+    align-items: center;
   }
 }
 
