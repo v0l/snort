@@ -265,3 +265,10 @@
   font-weight: 500;
   font-size: 24px;
 }
+
+.profile .nip05 .nick {
+  display: unset;
+}
+.profile .nip05 .domain {
+  display: unset;
+}

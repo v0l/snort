@@ -32,13 +32,17 @@
 
 .pfp .display-name {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-@media (min-width: 520px) {
+@media (max-width: 420px) {
   .pfp .display-name {
-    align-items: flex-start;
-    flex-direction: column;
+    font-size: var(--font-size-small);
+    flex-direction: row;
   }
+}
+
+.pfp .subheader .about {
+  max-width: calc(100vw - 140px);
 }

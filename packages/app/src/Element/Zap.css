@@ -87,3 +87,9 @@
 .zap.note .body {
   margin-bottom: 0;
 }
+
+@media (max-width: 420px) {
+  .zap .nip05 .badge {
+    margin: 0 0 0 0.3em;
+  }
+}

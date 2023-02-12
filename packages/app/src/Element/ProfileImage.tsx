@@ -32,7 +32,7 @@ export default function ProfileImage({
   const navigate = useNavigate();
   const user = useUserProfile(pubkey);
   const nip05 = defaultNip ? defaultNip : user?.nip05;
-  const { ref, width } = useClientWidth();
+  const width = useClientWidth();
 
   const name = useMemo(() => {
     return getDisplayName(user, pubkey);
@@ -43,7 +43,7 @@ export default function ProfileImage({
   }
 
   return (
-    <div className={`pfp${className ? ` ${className}` : ""}`} ref={ref}>
+    <div className={`pfp${className ? ` ${className}` : ""}`}>
       <div className="avatar-wrapper">
         <Avatar user={user} onClick={() => navigate(link ?? profileLink(pubkey))} />
       </div>
@@ -51,11 +51,11 @@ export default function ProfileImage({
         <div className="profile-name">
           <div className="username">
             <Link className="display-name" key={pubkey} to={link ?? profileLink(pubkey)}>
-              {name}
+              <div>{name}</div>
               {nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
             </Link>
           </div>
-          <div className="subheader" style={{ width: width - 80 }}>
+          <div className="subheader" style={{ width: width - 190 }}>
             {subHeader}
           </div>
         </div>

@@ -1,13 +1,13 @@
 import { useRef, useState, useEffect } from "react";
 
 export default function useClientWidth() {
-  const ref = useRef<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(document.querySelector(".page"));
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
     const updateSize = () => {
       if (ref.current) {
-        setWidth(ref.current.clientWidth);
+        setWidth(ref.current.offsetWidth);
       }
     };
 
@@ -16,8 +16,5 @@ export default function useClientWidth() {
     return () => window.removeEventListener("resize", updateSize);
   }, [ref]);
 
-  return {
-    ref,
-    width,
-  };
+  return width;
 }

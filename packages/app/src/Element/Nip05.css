@@ -45,20 +45,23 @@
 
 .nip05 .badge {
   color: var(--highlight);
-  margin-left: 0.1em;
+  margin-left: 0.2em;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 720px) {
+  .nip05 {
+    font-size: var(--font-size-small);
+  }
+}
+
+@media (max-width: 420px) {
+  .zap .pfp .display-name {
+    align-items: center;
+  }
   .nip05 .nick {
     display: none;
   }
   .nip05 .domain {
     display: none;
-  }
-  .nip05 .badge svg {
-    width: 13px;
-    height: 13px;
-    margin-left: 0.15em;
-    margin-bottom: 1px;
   }
 }
