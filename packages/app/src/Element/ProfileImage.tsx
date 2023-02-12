@@ -8,7 +8,7 @@ import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
 import { HexKey } from "@snort/nostr";
 import { MetadataCache } from "State/Users";
-import useClientWidth from "Hooks/useClientWidth";
+import usePageWidth from "Hooks/usePageWidth";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
