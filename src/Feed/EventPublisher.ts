@@ -165,6 +165,18 @@ export default function useEventPublisher() {
         return await signEvent(ev);
       }
     },
+    tags: async (tags: string[]) => {
+      if (pubKey) {
+        const ev = NEvent.ForPubKey(pubKey);
+        ev.Kind = EventKind.TagLists;
+        ev.Tags.push(new Tag(["d", Lists.Followed], ev.Tags.length));
+        tags.forEach(t => {
+          ev.Tags.push(new Tag(["t", t], ev.Tags.length));
+        });
+        ev.Content = "";
+        return await signEvent(ev);
+      }
+    },
     metadata: async (obj: UserMetadata) => {
       if (pubKey) {
         const ev = NEvent.ForPubKey(pubKey);

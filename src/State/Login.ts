@@ -116,6 +116,16 @@ export interface LoginStore {
   latestFollows: number;
 
   /**
+   * A list of tags this user follows
+   */
+  tags: string[];
+
+  /**
+   * Newest tag list timestamp
+   */
+  latestTags: number;
+
+  /**
    * A list of event ids this user has pinned
    */
   pinned: HexKey[];
@@ -192,6 +202,8 @@ export const InitState = {
   latestRelays: 0,
   follows: [],
   latestFollows: 0,
+  tags: [],
+  latestTags: 0,
   pinned: [],
   latestPinned: 0,
   bookmarked: [],
@@ -344,6 +356,14 @@ const LoginSlice = createSlice({
 
       window.localStorage.setItem(FollowList, JSON.stringify(state.follows));
     },
+    setTags(state, action: PayloadAction<{ createdAt: number; tags: string[] }>) {
+      const { createdAt, tags } = action.payload;
+      if (createdAt >= state.latestTags) {
+        const newTags = new Set([...tags]);
+        state.tags = Array.from(newTags);
+        state.latestTags = createdAt;
+      }
+    },
     setMuted(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
       const { createdAt, keys } = action.payload;
       if (createdAt >= state.latestMuted) {
@@ -427,6 +447,7 @@ export const {
   setRelays,
   removeRelay,
   setFollows,
+  setTags,
   setMuted,
   setPinned,
   setBookmarked,

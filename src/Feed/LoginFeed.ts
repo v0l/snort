@@ -12,6 +12,7 @@ import {
   setFollows,
   setRelays,
   setMuted,
+  setTags,
   setPinned,
   setBookmarked,
   setBlocked,
@@ -79,6 +80,19 @@ export default function useLoginFeed() {
     return sub;
   }, [pubKey]);
 
+  const subTags = useMemo(() => {
+    if (!pubKey) return null;
+
+    const sub = new Subscriptions();
+    sub.Id = "login:tags";
+    sub.Kinds = new Set([EventKind.TagLists]);
+    sub.Authors = new Set([pubKey]);
+    sub.DTags = new Set([Lists.Followed]);
+    sub.Limit = 1;
+
+    return sub;
+  }, [pubKey]);
+
   const subPinned = useMemo(() => {
     if (!pubKey) return null;
 
@@ -132,6 +146,7 @@ export default function useLoginFeed() {
   const dmsFeed = useSubscription(subDms, { leaveOpen: true, cache: true });
   const mutedFeed = useSubscription(subMuted, { leaveOpen: true, cache: true });
   const pinnedFeed = useSubscription(subPinned, { leaveOpen: true, cache: true });
+  const tagsFeed = useSubscription(subTags, { leaveOpen: true, cache: true });
   const bookmarkFeed = useSubscription(subBookmarks, { leaveOpen: true, cache: true });
 
   useEffect(() => {
@@ -222,6 +237,19 @@ export default function useLoginFeed() {
       );
     }
   }, [dispatch, pinnedFeed.store]);
+
+  useEffect(() => {
+    const newest = getNewest(tagsFeed.store.notes);
+    if (newest) {
+      const tags = newest.tags.filter(p => p && p.length === 2 && p[0] === "t").map(p => p[1]);
+      dispatch(
+        setTags({
+          tags,
+          createdAt: newest.created_at,
+        })
+      );
+    }
+  }, [dispatch, tagsFeed.store]);
 
   useEffect(() => {
     const newest = getNewest(bookmarkFeed.store.notes);
