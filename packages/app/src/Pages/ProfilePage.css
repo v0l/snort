@@ -11,6 +11,11 @@
   margin-bottom: -60px;
   z-index: 0;
 }
+@media (min-width: 720px) {
+  .profile .banner {
+    border-radius: 12px;
+  }
+}
 
 .profile .profile-actions {
   position: absolute;
