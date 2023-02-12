@@ -1,4 +1,5 @@
 import "./Tabs.css";
+import useHorizontalScroll from "Hooks/useHorizontalScroll";
 
 export interface Tab {
   text: string;
@@ -27,8 +28,9 @@ export const TabElement = ({ t, tab, setTab }: TabElementProps) => {
 };
 
 const Tabs = ({ tabs, tab, setTab }: TabsProps) => {
+  const horizontalScroll = useHorizontalScroll();
   return (
-    <div className="tabs">
+    <div className="tabs" ref={horizontalScroll}>
       {tabs.map(t => (
         <TabElement tab={tab} setTab={setTab} t={t} />
       ))}
