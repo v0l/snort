@@ -19,7 +19,7 @@ import SendSats from "Element/SendSats";
 import Copy from "Element/Copy";
 import { useUserProfile } from "Feed/ProfileFeed";
 import useEventPublisher from "Feed/EventPublisher";
-import { debounce, hexToBech32 } from "Util";
+import { debounce } from "Util";
 import { UserMetadata } from "Nostr";
 
 import messages from "./messages";
@@ -32,14 +32,13 @@ type Nip05ServiceProps = {
   link: string;
   supportLink: string;
   helpText?: boolean;
-  autoUpdate?: boolean;
   onChange?(h: string): void;
   onSuccess?(h: string): void;
 };
 
 export default function Nip5Service(props: Nip05ServiceProps) {
   const navigate = useNavigate();
-  const { helpText = true, autoUpdate = true } = props;
+  const { helpText = true } = props;
   const { formatMessage } = useIntl();
   const pubkey = useSelector((s: RootState) => s.login.publicKey);
   const user = useUserProfile(pubkey);
@@ -49,6 +48,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   const [error, setError] = useState<ServiceError>();
   const [handle, setHandle] = useState<string>("");
   const [domain, setDomain] = useState<string>("");
+  const [checking, setChecking] = useState(false);
   const [availabilityResponse, setAvailabilityResponse] = useState<HandleAvailability>();
   const [registerResponse, setRegisterResponse] = useState<HandleRegisterResponse>();
   const [showInvoice, setShowInvoice] = useState<boolean>(false);
@@ -120,30 +120,45 @@ export default function Nip5Service(props: Nip05ServiceProps) {
     }
   }, [handle, domain, domainConfig, svc]);
 
-  useEffect(() => {
-    if (registerResponse && showInvoice) {
-      const t = setInterval(async () => {
-        const status = await svc.CheckRegistration(registerResponse.token);
-        if ("error" in status) {
-          setError(status);
-          setRegisterResponse(undefined);
-          setShowInvoice(false);
+  async function checkRegistration(rsp: HandleRegisterResponse) {
+    const status = await svc.CheckRegistration(rsp.token);
+    if ("error" in status) {
+      setError(status);
+      setRegisterResponse(undefined);
+      setShowInvoice(false);
+    } else {
+      const result: CheckRegisterResponse = status;
+      if (result.paid) {
+        if (!result.available) {
+          setError({
+            error: "REGISTERED",
+          } as ServiceError);
         } else {
-          const result: CheckRegisterResponse = status;
-          if (result.available && result.paid) {
-            setShowInvoice(false);
-            setRegisterStatus(status);
-            setRegisterResponse(undefined);
-            setError(undefined);
-            if (autoUpdate) {
-              updateProfile(handle, domain);
-            }
-          }
+          setError(undefined);
+        }
+        setShowInvoice(false);
+        setRegisterStatus(status);
+        setRegisterResponse(undefined);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (registerResponse && showInvoice && !checking) {
+      const t = setInterval(() => {
+        if (!checking) {
+          setChecking(true);
+          checkRegistration(registerResponse)
+            .then(() => setChecking(false))
+            .catch(e => {
+              console.error(e);
+              setChecking(false);
+            });
         }
       }, 2_000);
       return () => clearInterval(t);
     }
-  }, [registerResponse, showInvoice, svc]);
+  }, [registerResponse, showInvoice, svc, checking]);
 
   function mapError(e: ServiceErrorCode | undefined, t: string | null): string | undefined {
     if (e === undefined) {
@@ -233,15 +248,6 @@ export default function Nip5Service(props: Nip05ServiceProps) {
             <br />
             <small>{availabilityResponse.quote?.data.type}</small>
           </div>
-          {!autoUpdate && (
-            <input
-              type="text"
-              className="f-grow mr10"
-              placeholder="pubkey"
-              value={hexToBech32("npub", pubkey)}
-              disabled
-            />
-          )}
           <AsyncButton onClick={() => startBuy(handle, domain)}>
             <FormattedMessage {...messages.BuyNow} />
           </AsyncButton>
@@ -285,16 +291,12 @@ export default function Nip5Service(props: Nip05ServiceProps) {
               <FormattedMessage {...messages.AccountPage} />
             </a>
           </p>
-          {!autoUpdate && (
-            <>
-              <h4>
-                <FormattedMessage {...messages.ActivateNow} />
-              </h4>
-              <AsyncButton onClick={() => updateProfile(handle, domain)}>
-                <FormattedMessage {...messages.AddToProfile} />
-              </AsyncButton>
-            </>
-          )}
+          <h4>
+            <FormattedMessage {...messages.ActivateNow} />
+          </h4>
+          <AsyncButton onClick={() => updateProfile(handle, domain)}>
+            <FormattedMessage {...messages.AddToProfile} />
+          </AsyncButton>
         </div>
       )}
     </>

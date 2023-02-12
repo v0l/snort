@@ -11,7 +11,8 @@ export type ServiceErrorCode =
   | "RATE_LIMITED"
   | "NO_TOKEN"
   | "INVALID_TOKEN"
-  | "NO_SUCH_PAYMENT";
+  | "NO_SUCH_PAYMENT"
+  | "INTERNAL_PAYMENT_CHECK_ERROR";
 
 export interface ServiceError {
   error: ServiceErrorCode;
