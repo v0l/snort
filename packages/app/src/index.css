@@ -518,6 +518,7 @@ body.scroll-lock {
 
 .main-content {
   padding: 0 12px;
+  position: relative;
 }
 
 @media (min-width: 720px) {

@@ -1,9 +1,10 @@
 import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faForward } from "@fortawesome/free-solid-svg-icons";
 import { useCallback, useMemo } from "react";
 
+import ArrowUp from "Icons/ArrowUp";
+import { dedupeByPubkey } from "Util";
+import ProfileImage from "Element/ProfileImage";
 import useTimelineFeed, { TimelineSubject } from "Feed/TimelineFeed";
 import { TaggedRawEvent } from "@snort/nostr";
 import { EventKind } from "@snort/nostr";
@@ -14,8 +15,6 @@ import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
 import ProfilePreview from "./ProfilePreview";
 import Skeleton from "Element/Skeleton";
-
-import messages from "./messages";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -61,6 +60,9 @@ export default function Timeline({
   const latestFeed = useMemo(() => {
     return filterPosts(latest.notes).filter(a => !mainFeed.some(b => b.id === a.id));
   }, [latest, mainFeed, filterPosts]);
+  const latestAuthors = useMemo(() => {
+    return dedupeByPubkey(latestFeed).map(e => e.pubkey);
+  }, [latestFeed]);
 
   function eventElement(e: TaggedRawEvent) {
     switch (e.kind) {
@@ -84,10 +86,16 @@ export default function Timeline({
 
   return (
     <div className="main-content">
-      {latestFeed.length > 1 && (
+      {latestFeed.length > 0 && (
         <div className="card latest-notes pointer" onClick={() => showLatest()}>
-          <FontAwesomeIcon icon={faForward} size="xl" />{" "}
-          <FormattedMessage {...messages.ShowLatest} values={{ n: latestFeed.length - 1 }} />
+          {latestAuthors.slice(0, 3).map(p => {
+            return <ProfileImage pubkey={p} showUsername={false} />;
+          })}
+          <FormattedMessage
+            defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
+            values={{ n: latestFeed.length }}
+          />
+          <ArrowUp />
         </div>
       )}
       {mainFeed.map(eventElement)}
