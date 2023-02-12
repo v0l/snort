@@ -8,13 +8,10 @@ import Write from "Icons/Write";
 
 const RelayFavicon = ({ url }: { url: string }) => {
   const cleanUrl = url
-    .replace("wss://relay.", "https://")
-    .replace("wss://nostr.", "https://")
-    .replace("wss://", "https://")
-    .replace("ws://", "http://")
+    .replace(/^wss:\/\//, "https://")
+    .replace(/^ws:\/\//, "http://")
     .replace(/\/$/, "");
   const [faviconUrl, setFaviconUrl] = useState(`${cleanUrl}/favicon.ico`);
-
   return <img className="favicon" src={faviconUrl} onError={() => setFaviconUrl(Nostrich)} />;
 };
 
@@ -29,7 +26,7 @@ const RelaysMetadata = ({ relays }: RelaysMetadataProps) => {
         return (
           <div className="card relay-card">
             <RelayFavicon url={url} />
-            <code className="relay-url">{url}</code>
+            <code className="relay-url f-ellipsis">{url}</code>
             <div className="relay-settings">
               <Read className={settings.read ? "enabled" : "disabled"} />
               <Write className={settings.write ? "enabled" : "disabled"} />

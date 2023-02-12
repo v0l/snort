@@ -7,10 +7,6 @@
   flex-direction: row;
 }
 
-.zap .header .pfp {
-  overflow: hidden;
-}
-
 .zap .header .amount {
   font-size: 24px;
 }

@@ -204,9 +204,9 @@ export default function ProfilePage() {
       case ZAPS: {
         return (
           <div className="main-content">
-            <h4 className="zaps-total">
+            <div className="zaps-total">
               <FormattedMessage {...messages.Sats} values={{ n: formatShort(zapsTotal) }} />
-            </h4>
+            </div>
             {zaps.map(z => (
               <ZapElement showZapped={false} zap={z} />
             ))}
