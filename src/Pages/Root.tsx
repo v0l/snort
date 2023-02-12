@@ -40,7 +40,7 @@ export default function RootPage() {
           {...messages.NoFollows}
           values={{
             newUsersPage: (
-              <Link to={"/new"}>
+              <Link to={"/new/discover"}>
                 <FormattedMessage {...messages.NewUsers} />
               </Link>
             ),
