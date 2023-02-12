@@ -38,7 +38,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
         if (typeof f === "string") {
           return f.split(UrlRegex).map(a => {
             if (a.startsWith("http")) {
-              return <HyperText link={a} creator={creator} />;
+              return <HyperText key={a} link={a} creator={creator} />;
             }
             return a;
           });
@@ -60,7 +60,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
               if (ref) {
                 switch (ref.Key) {
                   case "p": {
-                    return <Mention pubkey={ref.PubKey ?? ""} />;
+                    return <Mention key={ref.PubKey} pubkey={ref.PubKey ?? ""} />;
                   }
                   case "e": {
                     const eText = hexToBech32("note", ref.Event).substring(0, 12);
@@ -71,7 +71,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
                     );
                   }
                   case "t": {
-                    return <Hashtag tag={ref.Hashtag ?? ""} />;
+                    return <Hashtag key={ref.Hashtag} tag={ref.Hashtag ?? ""} />;
                   }
                 }
               }
@@ -109,7 +109,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
         if (typeof f === "string") {
           return f.split(HashtagRegex).map(i => {
             if (i.toLowerCase().startsWith("#")) {
-              return <Hashtag tag={i.substring(1)} />;
+              return <Hashtag key={i} tag={i.substring(1)} />;
             } else {
               return i;
             }

@@ -278,7 +278,7 @@ export default function ProfilePage() {
   }
 
   function renderTab(v: Tab) {
-    return <TabElement t={v} tab={tab} setTab={setTab} />;
+    return <TabElement key={v.value} t={v} tab={tab} setTab={setTab} />;
   }
 
   const w = window.document.querySelector(".page")?.clientWidth;
@@ -293,6 +293,7 @@ export default function ProfilePage() {
       </div>
       <div className="tabs main-content" ref={horizontalScroll}>
         {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows, ProfileTab.Muted].map(renderTab)}
+
         {optionalTabs.map(renderTab)}
         {isMe && renderTab(ProfileTab.Blocked)}
       </div>

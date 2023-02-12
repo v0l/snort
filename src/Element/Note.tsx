@@ -1,5 +1,5 @@
 import "./Note.css";
-import { useCallback, useMemo, useState, useLayoutEffect, ReactNode } from "react";
+import React, { useCallback, useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
@@ -127,12 +127,12 @@ export default function Note(props: NoteProps) {
     }
     mentions.sort(a => (a.name.startsWith("npub") ? 1 : -1));
     const othersLength = mentions.length - maxMentions;
-    const renderMention = (m: { link: React.ReactNode }, idx: number) => {
+    const renderMention = (m: { link: React.ReactNode; pk: string; name: string }, idx: number) => {
       return (
-        <>
+        <React.Fragment key={m.pk}>
           {idx > 0 && ", "}
           {m.link}
-        </>
+        </React.Fragment>
       );
     };
     const pubMentions =
