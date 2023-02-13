@@ -150,7 +150,7 @@ export default function ProfilePage() {
 
   function bio() {
     return (
-      aboutText.length && (
+      aboutText.length > 0 && (
         <div dir="auto" className="details">
           {about}
         </div>
