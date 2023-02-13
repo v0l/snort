@@ -48,7 +48,7 @@ export interface LNURLTipProps {
   author?: HexKey;
 }
 
-function chunks(arr: any[], length: number) {
+function chunks<T>(arr: T[], length: number) {
   const result = [];
   let idx = 0;
   let n = arr.length / length;
