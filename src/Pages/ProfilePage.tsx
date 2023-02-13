@@ -151,11 +151,9 @@ export default function ProfilePage() {
   function bio() {
     return (
       aboutText.length && (
-        <React.Fragment>
-          <div dir="auto" className="details">
-            {about}
-          </div>
-        </React.Fragment>
+        <div dir="auto" className="details">
+          {about}
+        </div>
       )
     );
   }
