@@ -154,14 +154,15 @@ export default function LoginPage() {
           <div className="logo" onClick={() => navigate("/")}>
             Snort
           </div>
-          <h1>
+          <h1 dir="auto">
             <FormattedMessage defaultMessage="Login" description="Login header" />
           </h1>
-          <p>
+          <p dir="auto">
             <FormattedMessage defaultMessage="Your key" description="Label for key input" />
           </p>
-          <div className="flex">
+          <div dir="auto" className="flex">
             <input
+              dir="auto"
               type="text"
               placeholder="nsec / npub / nip-05 / hex private key..."
               className="f-grow"
@@ -169,7 +170,7 @@ export default function LoginPage() {
             />
           </div>
           {error.length > 0 ? <b className="error">{error}</b> : null}
-          <p className="login-note">
+          <p dir="auto" className="login-note">
             <FormattedMessage
               defaultMessage="Only the secret key can be used to publish (sign events), everything else logs you in read-only mode."
               description="Explanation for public key only login is read-only"
@@ -181,28 +182,28 @@ export default function LoginPage() {
               description="Link to why your private key is your password"
             />
           </a>*/}
-          <div className="login-actions">
+          <div dir="auto" className="login-actions">
             <button type="button" onClick={doLogin}>
               <FormattedMessage defaultMessage="Login" description="Login button" />
             </button>
             {altLogins()}
           </div>
-          <div className="flex login-or">
+          <div dir="auto" className="flex login-or">
             <div className="login-note">
               <FormattedMessage defaultMessage="OR" description="Seperator text for Login / Generate Key" />
             </div>
             <div className="divider w-max"></div>
           </div>
-          <h1>
+          <h1 dir="auto">
             <FormattedMessage defaultMessage="Create an Account" description="Heading for generate key flow" />
           </h1>
-          <p className="login-note">
+          <p dir="auto" className="login-note">
             <FormattedMessage
               defaultMessage="Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!"
               description="Note about key security before generating a new key"
             />
           </p>
-          <div className="tabs">
+          <div dir="auto" className="tabs">
             <button type="button" onClick={() => makeRandomKey()}>
               <FormattedMessage defaultMessage="Generate Key" description="Button: Generate a new key" />
             </button>
@@ -210,7 +211,7 @@ export default function LoginPage() {
         </div>
       </div>
       <div>
-        <div className="artwork" style={{ ["--img-src"]: `url('${art?.link}')` } as CSSProperties}>
+        <div dir="auto" className="artwork" style={{ ["--img-src"]: `url('${art?.link}')` } as CSSProperties}>
           <div>
             <FormattedMessage
               defaultMessage="Art by {name}"
