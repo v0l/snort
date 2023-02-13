@@ -1,5 +1,5 @@
 import "./ProfilePage.css";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -150,10 +150,12 @@ export default function ProfilePage() {
 
   function bio() {
     return (
-      aboutText.length > 0 && (
-        <>
-          <div className="details">{about}</div>
-        </>
+      aboutText.length && (
+        <React.Fragment>
+          <div dir="auto" className="details">
+            {about}
+          </div>
+        </React.Fragment>
       )
     );
   }
