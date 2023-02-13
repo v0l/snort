@@ -301,7 +301,7 @@ export default function ProfilePage() {
   }
 
   function renderTab(v: Tab) {
-    return <TabElement key={v.value} t={v} tab={tab} setTab={setTab} />;
+    return <TabElement autoWidth={true} key={v.value} t={v} tab={tab} setTab={setTab} />;
   }
 
   const w = window.document.querySelector(".page")?.clientWidth;

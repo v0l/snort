@@ -17,6 +17,7 @@ interface TabsProps {
 
 interface TabElementProps extends Omit<TabsProps, "tabs"> {
   t: Tab;
+  autoWidth?: boolean;
 }
 
 function clamp(n: number, min: number, max: number) {
@@ -29,10 +30,10 @@ function clamp(n: number, min: number, max: number) {
   return n;
 }
 
-export const TabElement = ({ t, tab, setTab }: TabElementProps) => {
+export const TabElement = ({ autoWidth, t, tab, setTab }: TabElementProps) => {
   const style = useMemo(() => {
-    return { minWidth: `${clamp(t.text.length, 3, 8) * 14}px` } as CSSProperties;
-  }, [t.text]);
+    return autoWidth ? ({ minWidth: `${clamp(t.text.length, 3, 8) * 16}px` } as CSSProperties) : {};
+  }, [t.text, autoWidth]);
   return (
     <div
       className={`tab ${tab.value === t.value ? "active" : ""} ${t.disabled ? "disabled" : ""}`}
