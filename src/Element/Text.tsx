@@ -128,7 +128,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
   function transformParagraph(frag: TextFragment) {
     const fragments = transformText(frag);
     if (fragments.every(f => typeof f === "string")) {
-      return <p dir="auto">{fragments}</p>;
+      return <p>{fragments}</p>;
     }
     return <>{fragments}</>;
   }
@@ -175,8 +175,10 @@ export default function Text({ content, tags, creator, users }: TextProps) {
     [content]
   );
   return (
-    <ReactMarkdown className="text" components={components} remarkPlugins={[disableMarkdownLinks]}>
-      {content}
-    </ReactMarkdown>
+    <div dir="auto">
+      <ReactMarkdown className="text" components={components} remarkPlugins={[disableMarkdownLinks]}>
+        {content}
+      </ReactMarkdown>
+    </div>
   );
 }
