@@ -13,7 +13,7 @@ export default function DiscoverFollows() {
   }, []);
 
   return (
-    <div className="main-content new-user">
+    <div className="main-content new-user" dir="auto">
       <div className="progress-bar">
         <div className="progress"></div>
       </div>
@@ -26,7 +26,7 @@ export default function DiscoverFollows() {
       <h3>
         <FormattedMessage {...messages.PopularAccounts} />
       </h3>
-      {sortedReccomends.length > 0 && <FollowListBase pubkeys={sortedReccomends} />}
+      <div dir="ltr">{sortedReccomends.length > 0 && <FollowListBase pubkeys={sortedReccomends} />}</div>
     </div>
   );
 }

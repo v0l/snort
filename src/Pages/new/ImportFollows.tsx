@@ -49,7 +49,7 @@ export default function ImportFollows() {
   }
 
   return (
-    <div className="main-content new-user">
+    <div className="main-content new-user" dir="auto">
       <div className="progress-bar">
         <div className="progress progress-last"></div>
       </div>
@@ -84,16 +84,18 @@ export default function ImportFollows() {
         </AsyncButton>
       </div>
       {error.length > 0 && <b className="error">{error}</b>}
-      {sortedTwitterFollows.length > 0 && (
-        <FollowListBase
-          title={
-            <h2>
-              <FormattedMessage {...messages.FollowsOnNostr} values={{ username: twitterUsername }} />
-            </h2>
-          }
-          pubkeys={sortedTwitterFollows}
-        />
-      )}
+      <div dir="ltr">
+        {sortedTwitterFollows.length > 0 && (
+          <FollowListBase
+            title={
+              <h2>
+                <FormattedMessage {...messages.FollowsOnNostr} values={{ username: twitterUsername }} />
+              </h2>
+            }
+            pubkeys={sortedTwitterFollows}
+          />
+        )}
+      </div>
 
       <div className="next-actions">
         <button className="secondary" type="button" onClick={() => navigate("/new/discover")}>

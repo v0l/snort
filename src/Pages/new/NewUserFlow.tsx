@@ -71,7 +71,7 @@ export default function NewUserFlow() {
   const navigate = useNavigate();
 
   return (
-    <div className="main-content new-user">
+    <div className="main-content new-user" dir="auto">
       <div className="progress-bar">
         <div className="progress progress-first"></div>
       </div>
