@@ -50,7 +50,7 @@ export default function ImportFollows() {
   }
 
   return (
-    <div className="main-content new-user">
+    <div className="main-content new-user" dir="auto">
       <Logo />
       <div className="progress-bar">
         <div className="progress progress-last"></div>

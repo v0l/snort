@@ -1,4 +1,3 @@
-import "./Bookmarks.css";
 import { useState, useMemo, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";

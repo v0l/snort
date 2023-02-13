@@ -30,6 +30,11 @@
     left: calc(50% - 110px);
     padding: 6px 12px;
   }
+  .latest-notes-fixed {
+    position: fixed;
+    left: calc(50% - 261px / 2 + 0.5px);
+    top: 12px;
+  }
 }
 
 .latest-notes .pfp:not(:last-of-type) {
