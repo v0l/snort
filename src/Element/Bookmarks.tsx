@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl";
 
 import { dedupeByPubkey } from "Util";
 import Note from "Element/Note";
-import Bookmark from "Icons/Bookmark";
 import { HexKey, TaggedRawEvent } from "Nostr";
 import { useUserProfiles } from "Feed/ProfileFeed";
 import { RootState } from "State/Store";

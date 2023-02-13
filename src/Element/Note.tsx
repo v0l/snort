@@ -98,10 +98,12 @@ export default function Note(props: NoteProps) {
 
   async function unbookmark(id: HexKey) {
     if (options.canUnbookmark) {
-      const es = bookmarked.filter(e => e !== id);
-      const ev = await publisher.bookmarked(es);
-      publisher.broadcast(ev);
-      dispatch(setBookmarked({ keys: es, createdAt: new Date().getTime() }));
+      if (window.confirm(formatMessage(messages.ConfirmUnbookmark))) {
+        const es = bookmarked.filter(e => e !== id);
+        const ev = await publisher.bookmarked(es);
+        publisher.broadcast(ev);
+        dispatch(setBookmarked({ keys: es, createdAt: new Date().getTime() }));
+      }
     }
   }
 
