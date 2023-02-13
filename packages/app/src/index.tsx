@@ -26,10 +26,9 @@ import HashTagsPage from "Pages/HashTagsPage";
 import SearchPage from "Pages/SearchPage";
 import HelpPage from "Pages/HelpPage";
 import { NewUserRoutes } from "Pages/new";
-import NostrLinkHandler from "Pages/NostrLinkHandler";
-import { IntlProvider } from "./IntlProvider";
-import { unwrap } from "Util";
 import { WalletRoutes } from "Pages/WalletPage";
+import NostrLinkHandler from "Pages/NostrLinkHandler";
+import { unwrap } from "Util";
 
 /**
  * HTTP query provider

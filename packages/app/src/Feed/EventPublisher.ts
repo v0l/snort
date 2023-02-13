@@ -8,6 +8,7 @@ import { HexKey, RawEvent, u256, UserMetadata, Lists } from "@snort/nostr";
 import { bech32ToHex, delay, unwrap } from "Util";
 import { DefaultRelays, HashtagRegex } from "Const";
 import { System } from "System";
+import { useMemo } from "react";
 
 declare global {
   interface Window {
@@ -22,6 +23,8 @@ declare global {
     };
   }
 }
+
+export type EventPublisher = ReturnType<typeof useEventPublisher>;
 
 export default function useEventPublisher() {
   const pubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
@@ -78,7 +81,7 @@ export default function useEventPublisher() {
     ev.Content = content;
   }
 
-  return {
+  const ret = {
     nip42Auth: async (challenge: string, relay: string) => {
       if (pubKey) {
         const ev = NEvent.ForPubKey(pubKey);
@@ -393,7 +396,17 @@ export default function useEventPublisher() {
         publicKey: pubKey,
       };
     },
+    generic: async (content: string, kind: EventKind) => {
+      if (pubKey) {
+        const ev = NEvent.ForPubKey(pubKey);
+        ev.Kind = kind;
+        ev.Content = content;
+        return await signEvent(ev);
+      }
+    },
   };
+
+  return useMemo(() => ret, [pubKey, relays, follows]);
 }
 
 let isNip07Busy = false;

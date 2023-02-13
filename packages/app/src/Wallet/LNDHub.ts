@@ -1,3 +1,5 @@
+import { EventPublisher } from "Feed/EventPublisher";
+import EventKind from "Nostr/EventKind";
 import {
   InvoiceRequest,
   LNWallet,
@@ -15,20 +17,35 @@ const defaultHeaders = {
 };
 
 export default class LNDHubWallet implements LNWallet {
+  type: "lndhub" | "snort";
   url: string;
   user: string;
   password: string;
   auth?: AuthResponse;
+  publisher?: EventPublisher;
 
-  constructor(url: string) {
-    const regex = /^lndhub:\/\/([\S-]+):([\S-]+)@(.*)$/i;
-    const parsedUrl = url.match(regex);
-    if (!parsedUrl || parsedUrl.length !== 4) {
-      throw new Error("Invalid LNDHUB config");
+  constructor(url: string, publisher?: EventPublisher) {
+    if (url.startsWith("lndhub://")) {
+      const regex = /^lndhub:\/\/([\S-]+):([\S-]+)@(.*)$/i;
+      const parsedUrl = url.match(regex);
+      console.debug(parsedUrl);
+      if (!parsedUrl || parsedUrl.length !== 4) {
+        throw new Error("Invalid LNDHUB config");
+      }
+      this.url = new URL(parsedUrl[3]).toString();
+      this.user = parsedUrl[1];
+      this.password = parsedUrl[2];
+      this.type = "lndhub";
+    } else if (url.startsWith("snort://")) {
+      const u = new URL(url);
+      this.url = `https://${u.host}${u.pathname}`;
+      this.user = "";
+      this.password = "";
+      this.type = "snort";
+      this.publisher = publisher;
+    } else {
+      throw new Error("Invalid config");
     }
-    this.url = new URL(parsedUrl[3]).toString();
-    this.user = parsedUrl[1];
-    this.password = parsedUrl[2];
   }
 
   async createAccount() {
@@ -40,6 +57,8 @@ export default class LNDHubWallet implements LNWallet {
   }
 
   async login() {
+    if (this.type === "snort") return true;
+
     const rsp = await this.getJson<AuthResponse>("POST", "/auth?type=auth", {
       login: this.user,
       password: this.password,
@@ -53,31 +72,56 @@ export default class LNDHubWallet implements LNWallet {
   }
 
   async getBalance(): Promise<Sats | WalletError> {
-    let rsp = await this.getJson<GetBalanceResponse>("GET", "/balance");
+    const rsp = await this.getJson<GetBalanceResponse>("GET", "/balance");
     if ("error" in rsp) {
       return rsp as WalletError;
     }
-    let bal = Math.floor((rsp as GetBalanceResponse).BTC.AvailableBalance);
+    const bal = Math.floor((rsp as GetBalanceResponse).BTC.AvailableBalance);
     return bal as Sats;
   }
 
   async createInvoice(req: InvoiceRequest) {
-    return Promise.resolve(UnknownWalletError);
-  }
-
-  async payInvoice(pr: string) {
-    return Promise.resolve(UnknownWalletError);
-  }
-
-  async getInvoices(): Promise<WalletInvoice[] | WalletError> {
-    let rsp = await this.getJson<GetUserInvoicesResponse[]>(
-      "GET",
-      "/getuserinvoices"
-    );
+    const rsp = await this.getJson<UserInvoicesResponse>("POST", "/addinvoice", {
+      amt: req.amount,
+      memo: req.memo,
+    });
     if ("error" in rsp) {
       return rsp as WalletError;
     }
-    return (rsp as GetUserInvoicesResponse[]).map((a) => {
+
+    const pRsp = rsp as UserInvoicesResponse;
+    return {
+      pr: pRsp.payment_request,
+      memo: req.memo,
+      amount: req.amount,
+      paymentHash: pRsp.payment_hash,
+      timestamp: pRsp.timestamp,
+    } as WalletInvoice;
+  }
+
+  async payInvoice(pr: string) {
+    const rsp = await this.getJson<PayInvoiceResponse>("POST", "/payinvoice", {
+      invoice: pr,
+    });
+
+    if ("error" in rsp) {
+      return rsp as WalletError;
+    }
+
+    const pRsp = rsp as PayInvoiceResponse;
+    return {
+      pr: pr,
+      paymentHash: pRsp.payment_hash,
+      state: pRsp.payment_error === undefined ? WalletInvoiceState.Paid : WalletInvoiceState.Pending,
+    } as WalletInvoice;
+  }
+
+  async getInvoices(): Promise<WalletInvoice[] | WalletError> {
+    const rsp = await this.getJson<UserInvoicesResponse[]>("GET", "/getuserinvoices");
+    if ("error" in rsp) {
+      return rsp as WalletError;
+    }
+    return (rsp as UserInvoicesResponse[]).map(a => {
       return {
         memo: a.description,
         amount: Math.floor(a.amt),
@@ -89,17 +133,18 @@ export default class LNDHubWallet implements LNWallet {
     });
   }
 
-  private async getJson<T>(
-    method: "GET" | "POST",
-    path: string,
-    body?: any
-  ): Promise<T | WalletError> {
+  private async getJson<T>(method: "GET" | "POST", path: string, body?: any): Promise<T | WalletError> {
+    let auth = `Bearer ${this.auth?.access_token}`;
+    if (this.type === "snort") {
+      const ev = await this.publisher?.generic(`${new URL(this.url).pathname}${path}`, EventKind.Ephemeral);
+      auth = JSON.stringify(ev?.ToObject());
+    }
     const rsp = await fetch(`${this.url}${path}`, {
       method: method,
       body: body ? JSON.stringify(body) : undefined,
       headers: {
         ...defaultHeaders,
-        Authorization: `Bearer ${this.auth?.access_token}`,
+        Authorization: auth,
       },
     });
     const json = await rsp.json();
@@ -122,7 +167,7 @@ interface GetBalanceResponse {
   };
 }
 
-interface GetUserInvoicesResponse {
+interface UserInvoicesResponse {
   amt: number;
   description: string;
   ispaid: boolean;
@@ -131,4 +176,12 @@ interface GetUserInvoicesResponse {
   pay_req: string;
   payment_hash: string;
   payment_request: string;
+  r_hash: string;
+}
+
+interface PayInvoiceResponse {
+  payment_error?: string;
+  payment_hash: string;
+  payment_preimage: string;
+  payment_route?: { total_amt: number; total_fees: number };
 }

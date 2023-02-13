@@ -1,3 +1,5 @@
+import useEventPublisher, { EventPublisher } from "Feed/EventPublisher";
+import { useEffect, useState } from "react";
 import LNDHubWallet from "./LNDHub";
 
 export enum WalletErrorCode {
@@ -74,8 +76,26 @@ export interface LNWallet {
   getInvoices: () => Promise<WalletInvoice[] | WalletError>;
 }
 
-export async function openWallet(config: string) {
-  let wallet = new LNDHubWallet(config);
+export async function openWallet(config: string, publisher?: EventPublisher) {
+  const wallet = new LNDHubWallet(config, publisher);
   await wallet.login();
+  return wallet;
+}
+
+export function useWallet() {
+  const [wallet, setWallet] = useState<LNWallet>();
+  const publisher = useEventPublisher();
+
+  useEffect(() => {
+    if (publisher) {
+      const cfg = window.localStorage.getItem("wallet-lndhub");
+      if (cfg) {
+        openWallet(cfg, publisher)
+          .then(a => setWallet(a))
+          .catch(console.error);
+      }
+    }
+  }, [publisher]);
+
   return wallet;
 }

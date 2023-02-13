@@ -19,6 +19,7 @@ import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } f
 import { debounce } from "Util";
 
 import messages from "./messages";
+import { openWallet } from "Wallet";
 
 enum ZapType {
   PublicZap = 1,
@@ -297,6 +298,16 @@ export default function SendSats(props: SendSatsProps) {
       </>
     );
   }
+  
+  async function payWithWallet(pr: string) {
+    const cfg = window.localStorage.getItem("wallet-lndhub");
+    if (cfg) {
+      const wallet = await openWallet(cfg);
+      const rsp = await wallet.payInvoice(pr);
+      console.debug(rsp);
+      setSuccess(rsp as LNURLSuccessAction);
+    }
+  }
 
   function payInvoice() {
     if (success || !invoice) return null;
@@ -320,6 +331,9 @@ export default function SendSats(props: SendSatsProps) {
                 </div>
                 <button className="wallet-action" type="button" onClick={() => window.open(`lightning:${invoice}`)}>
                   <FormattedMessage {...messages.OpenWallet} />
+                </button>
+                <button className="wallet-action" type="button" onClick={() => payWithWallet(pr)}>
+                  <FormattedMessage defaultMessage="Pay with Snort" />
                 </button>
               </>
             )}
@@ -351,9 +365,9 @@ export default function SendSats(props: SendSatsProps) {
   const defaultTitle = handler?.canZap ? formatMessage(messages.SendZap) : formatMessage(messages.SendSats);
   const title = target
     ? formatMessage(messages.ToTarget, {
-        action: defaultTitle,
-        target,
-      })
+      action: defaultTitle,
+      target,
+    })
     : defaultTitle;
   if (!(props.show ?? false)) return null;
   return (
