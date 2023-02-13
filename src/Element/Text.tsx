@@ -128,7 +128,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
   function transformParagraph(frag: TextFragment) {
     const fragments = transformText(frag);
     if (fragments.every(f => typeof f === "string")) {
-      return <p>{fragments}</p>;
+      return <p dir="auto">{fragments}</p>;
     }
     return <>{fragments}</>;
   }

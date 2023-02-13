@@ -72,6 +72,7 @@ const Textarea = (props: TextareaProps) => {
   return (
     // @ts-expect-error If anybody can figure out how to type this, please do
     <ReactTextareaAutocomplete
+      dir="auto"
       {...props}
       loadingComponent={() => <span>Loading...</span>}
       placeholder={formatMessage(messages.NotePlaceholder)}
