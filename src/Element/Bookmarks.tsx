@@ -33,10 +33,6 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   return (
     <div className="main-content">
       <div className="icon-title">
-        <Bookmark width={14} height={18} />{" "}
-        <h3>
-          <FormattedMessage {...messages.BookmarksCount} values={{ n: bookmarks.length }} />
-        </h3>
         <select
           disabled={ps.length <= 1}
           value={onlyPubkey}

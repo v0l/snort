@@ -57,7 +57,8 @@ export default function RootPage() {
       return { type: "global", items: [], discriminator: "all" };
     }
     if (tab.value >= 3) {
-      return { type: "hashtag", items: [tab.text.slice(1)], discriminator: "all" };
+      const hashtag = tab.text.slice(1);
+      return { type: "hashtag", items: [hashtag], discriminator: hashtag };
     }
 
     return { type: "pubkey", items: follows, discriminator: "follows" };
