@@ -1,4 +1,5 @@
 import "./Tabs.css";
+import { useMemo } from "react";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
 import { CSSProperties } from "react";
 
@@ -18,8 +19,20 @@ interface TabElementProps extends Omit<TabsProps, "tabs"> {
   t: Tab;
 }
 
+function clamp(n: number, min: number, max: number) {
+  if (n < min) {
+    return min;
+  }
+  if (n > max) {
+    return max;
+  }
+  return n;
+}
+
 export const TabElement = ({ t, tab, setTab }: TabElementProps) => {
-  const style = { minWidth: `${t.text.length * 0.6}em` } as CSSProperties;
+  const style = useMemo(() => {
+    return { minWidth: `${clamp(t.text.length, 2, 7)}em` } as CSSProperties;
+  }, [t.text]);
   return (
     <div
       className={`tab ${tab.value === t.value ? "active" : ""} ${t.disabled ? "disabled" : ""}`}
