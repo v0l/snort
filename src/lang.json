@@ -134,6 +134,10 @@
   "9wO4wJ": {
     "string": "Lightning Invoice"
   },
+  "ADmfQT": {
+    "developer_comment": "Link to parent note in thread",
+    "string": "Parent"
+  },
   "ASRK0S": {
     "string": "This author has been muted"
   },
@@ -521,6 +525,10 @@
   },
   "jCA7Cw": {
     "string": "Preview on snort"
+  },
+  "jfV8Wr": {
+    "developer_comment": "Navigate back button on threads view",
+    "string": "Back"
   },
   "juhqvW": {
     "string": "Improve login security with browser extensions"

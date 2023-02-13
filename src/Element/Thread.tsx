@@ -271,6 +271,7 @@ export default function Thread(props: ThreadProps) {
   const navigate = useNavigate();
   const isSingleNote = parsedNotes.filter(a => a.Kind === EventKind.TextNote).length === 1;
   const location = useLocation();
+  const { formatMessage } = useIntl();
   const urlNoteId = location?.pathname.slice(3);
   const urlNoteHex = urlNoteId && bech32ToHex(urlNoteId);
 
@@ -366,9 +367,17 @@ export default function Thread(props: ThreadProps) {
     }
   }
 
+  const parentText = formatMessage({
+    defaultMessage: "Parent",
+    description: "Link to parent note in thread",
+  });
+  const backText = formatMessage({
+    defaultMessage: "Back",
+    description: "Navigate back button on threads view",
+  });
   return (
     <div className="main-content mt10">
-      <BackButton onClick={goBack} text={path?.length > 1 ? "Parent" : "Back"} />
+      <BackButton onClick={goBack} text={path?.length > 1 ? parentText : backText} />
       <div className="thread-container">
         {currentRoot && renderRoot(currentRoot)}
         {currentRoot && renderChain(currentRoot.Id)}
