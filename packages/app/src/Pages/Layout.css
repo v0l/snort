@@ -52,8 +52,8 @@ header .pfp .avatar-wrapper {
   width: 9px;
   height: 9px;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 8px;
+  right: 8px;
 }
 
 .search {
