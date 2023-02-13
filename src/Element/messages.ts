@@ -100,5 +100,6 @@ export default defineMessages({
   BookmarksCount: { defaultMessage: "Bookmarks ({n})" },
   Bookmarked: { defaultMessage: "Saved" },
   All: { defaultMessage: "All" },
-  ConfirmUnbookmark: { defaultMessage: "Are you sure you want to unbookmark this note?" },
+  ConfirmUnbookmark: { defaultMessage: "Are you sure you want to remove this note from bookmarks?" },
+  ConfirmUnpin: { defaultMessage: "Are you sure you want to unpin this note?" },
 });

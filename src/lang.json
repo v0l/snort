@@ -29,11 +29,11 @@
   "0yO7wF": {
     "string": "{n} secs"
   },
-  "11YZdY": {
-    "string": "Are you sure you want to unbookmark this note?"
-  },
   "1A7TZk": {
     "string": "What is Snort and how does it work?"
+  },
+  "1Mo59U": {
+    "string": "Are you sure you want to remove this note from bookmarks?"
   },
   "1udzha": {
     "string": "Conversations"
@@ -248,6 +248,9 @@
   },
   "HbefNb": {
     "string": "Open Wallet"
+  },
+  "IEwZvs": {
+    "string": "Are you sure you want to unpin this note?"
   },
   "IKKHqV": {
     "string": "Follows"

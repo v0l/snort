@@ -89,10 +89,12 @@ export default function Note(props: NoteProps) {
 
   async function unpin(id: HexKey) {
     if (options.canUnpin) {
-      const es = pinned.filter(e => e !== id);
-      const ev = await publisher.pinned(es);
-      publisher.broadcast(ev);
-      dispatch(setPinned({ keys: es, createdAt: new Date().getTime() }));
+      if (window.confirm(formatMessage(messages.ConfirmUnpin))) {
+        const es = pinned.filter(e => e !== id);
+        const ev = await publisher.pinned(es);
+        publisher.broadcast(ev);
+        dispatch(setPinned({ keys: es, createdAt: new Date().getTime() }));
+      }
     }
   }
 
