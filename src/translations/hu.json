@@ -1,240 +1,738 @@
 {
-  "+D82kt": "Biztos hogy ezt meg akarod osztani: {id}",
-  "+vIQlC": "Ahhoz hogy a jövőben is hozzáférj a fiókodhoz, kérlek mindenképp győződj meg róla hogy a következő jelszót elmentetted",
-  "/4tOwT": "Kihagyás",
-  "/JE/X+": "Segítség",
-  "/RD0e2": "A Nostr digitális aláírásokat használ, amivel megmásíthatatlan bejegyzéseket lehet létrehozni. Ezeket bárhány másolatban a különböző csomópontokra szétszórhatóak, ezzel biztosítva a tartalom redundanciáját.",
-  "/d6vEc": "Legyen a fiókod könnyebben megtalálható és megosztható",
-  "/n5KSF": "{n} ms",
-  "0BUTMv": "Keresés...",
-  "0mch2Y": "név nem engedélyezett karaktereket tartalmaz",
-  "0yO7wF": "{n} másodperc",
-  "1A7TZk": "Mi a Snort és hogyan működik?",
-  "1udzha": "Beszélgetések",
-  "2/2yg+": "Hozzáad",
-  "25V4l1": "Banner",
-  "2IFGap": "Adományoz",
-  "2k0Cv+": "Nemtetszések ({n})",
-  "3cc4Ct": "Világos",
-  "3gOsZq": "Fordítók",
-  "3xCwbZ": "VAGY",
-  "450Fty": "Nincs",
-  "47FYwb": "Törlés",
-  "4IPzdn": "Elsődleges Fejlesztők",
-  "4L2vUY": "A te új NIP-05 azonosítód:",
-  "4OB335": "Nem tetszik",
-  "4Vmpt4": "A Nostr Plebs-ék az egyik legelső megfelelő feltételekkel és árakkal NIP-05 azonosítást biztosító szolgáltató",
-  "4Z3t5i": "Az imgproxy használata a képek tömörítéséhez",
-  "4rYCjn": "Jegyzet magamnak",
-  "5ykRmX": "Zap küldése",
-  "6ewQqw": "Lájkok ({n})",
-  "6tUqAb": "Egy publikus / privát kulcs generálása. A privát kulcsot senkivel se oszd meg, mivel ez a te jelszavadként funkcionál. Ha elhagyod, nem lehet visszaállítani. Tartsd biztonságban!",
-  "7+Domh": "Bejegyzések",
-  "7hp70g": "NIP-05",
-  "7xzTiH": "{action} oda {target}",
-  "8/vBbP": "Megosztva ({n})",
-  "89q5wc": "Megosztás megerősítése",
-  "8E9muH": "Twitter követők importálása (opcionális)",
-  "8QDesP": "Zap {n} sats",
-  "8g2vyB": "név túl hosszú",
-  "9+Ddtu": "Következő",
-  "9HU8vw": "Válasz",
-  "9SvQep": "{n} követek",
-  "9WRlF4": "Küldés",
-  "9gqH2W": "Bejelentkezés",
-  "9wO4wJ": "Lightning Számla",
-  "ASRK0S": "Ez a felhasználó némítva",
-  "Adk34V": "Profilod kitöltése",
-  "AyGauy": "Bejelentkezés",
-  "B4C47Y": "név túl rövid",
-  "B6+XJy": "zapp-olva",
-  "BOUMjw": "Nem találtunk {twitterUsername} nevű Nostr felhasználót",
-  "BOr9z/": "A Snort egy nyílt forráskódú projekt, amit elhivatott emberek a szabadidejükben fejlesztettek.",
-  "BcGMo+": "A bejegyzések szöveget tartalmaznak és a legnépszerűbb felhasználási módja, hogy ”Twitter féle” üzeneteket tároljanak benne.",
-  "C81/uG": "Kijelentkezés",
-  "CHTbO3": "A számla betöltése nem sikerült",
-  "Cu/K85": "Fordítás erről {lang}",
-  "D3idYv": "Beállítások",
-  "DKnriN": "Satoshi küldése",
-  "DZzCem": "A legutóbbi {n} bejegyzés mutatása",
-  "Dt/Zd5": "A bejegyzésekben található média bizonyos emberek számára automatikusan megjelenik, másoknak pedig egy link lesz helyette.",
-  "E8a4yq": "Kövess néhány népszerű felhasználót",
-  "EPYwm7": "A privát kulcsod a jelszavad. Ha elhagyod, elveszíted a hozzáférést a fiókodhoz! Mentsd le egy biztonságos helyre, mert nincs lehetőség a privát kulcsaid helyreállítására!",
-  "EWyQH5": "Globális",
-  "Ebl/B2": "Fordítás erre {lang}",
-  "EcglP9": "Kulcs",
-  "EnCOBJ": "Vásárlás",
-  "Eqjl5K": "Csak a Snort és a mi integrációs partnerünk azonosítója ad színes domain nevet, de azonosításra szabadon használhatod más szolgáltatók szolgáltatásait is.",
-  "F+B3x1": "A több lehetőség biztosítása érdekében, a nostrplebs.com partnerségre léptünk",
-  "FS3b54": "Kész!",
-  "FfYsOb": "Hiba történt!",
-  "FmXUJg": "követ téged",
-  "G/yZLu": "Eltávolítás",
-  "GFOoEE": "Salt",
-  "GspYR7": "{n} Nem tetszik",
-  "H+vHiz": "Hex kulcs..",
-  "H0JBH6": "Kijelentkezés",
-  "H6/kLh": "Rendelés fizetve!",
-  "HAlOn1": "Név",
-  "HFls6j": "név később elérhető",
-  "HOzFdo": "Némítottak",
-  "HbefNb": "Pénztárca megnyitása",
-  "IKKHqV": "Akiket követek",
-  "INSqIz": "Twitter felhasználónév...",
-  "IUZC+0": "Ez azt jelenti, hogy a te általad létrehozott bejegyzéseket senki sem tudja módosítani és bárki ellenőrizheti hogy tényleg te írtad.",
-  "JCIgkj": "Felhasználónév",
-  "JHEHCk": "Zap-ek ({n})",
-  "JkLHGw": "Weboldal",
-  "K3r6DQ": "Törlés",
-  "K7AkdL": "Mutat",
-  "KQvWvD": "Törölve",
-  "KWuDfz": "Lementettem a kulcsaimat, folytatás",
-  "KahimY": "Ismeretlen esemény: {kind}",
-  "LgbKvU": "Hozzászólás",
-  "LxY9tW": "Kulcs generálása",
-  "M3Oirc": "Hibaelhárító menü",
-  "MBAYRO": "Mutasd az \"Egyedi azonosítót\" és a \"JSON esetet\" minden üzenet szövegmezőjében",
-  "MI2jkA": "Nem elérhető:",
-  "MRp6Ly": "Twitter felhasználónév",
-  "MzRYWH": "{item} megveszem",
-  "N2IrpM": "Jóváhagy",
-  "NdOYJJ": "Hmm nincs itt semmi.. Ellenőrizd a {newUsersPage}, hogy tudj néhány javasolt Nostr felhasználót követni!",
-  "NfNk2V": "A te privát kulcsod",
-  "NndBJE": "Új felhasználók oldal",
-  "OEW7yJ": "Zap-ek",
-  "OKhRC6": "Megosztás",
-  "P61BTu": "JSON eset",
-  "P7FD0F": "Rendszer (Alapértelmezett)",
-  "P7nJT9": "Összesen ma (UTC): {amount} sat",
-  "PCSt5T": "Preferenciák",
-  "Pe0ogR": "Téma",
-  "PrsIg7": "A reakciók minden oldalon megjelennek, ha letiltod őket nem jelennek meg",
-  "QTdJfH": "Hozzon létre egy fiókot",
-  "QxCuTo": "Művészet: {name}",
-  "RDZVQL": "Ellenőrzés",
-  "RahCRH": "Lejárt",
-  "RhDAoS": "Biztos hogy törölni akarod a {id}",
-  "RoOyAh": "Csomópontok",
-  "Sjo1P4": "Egyedi",
-  "TpgeGw": "Hex só..",
-  "UQ3pOC": "A Nostr-án sok embernek ugyanaz a felhasználóneve. A felhasználónév és a személyazonosság két különböző dolog. A következő lépésben tudsz magadnak egyedi azonosítót szerezni.",
-  "Up5U7K": "Tiltás",
-  "VOjC1i": "Válaszd ki mely szolgáltatóhoz legyenek a fájlok feltöltve",
-  "VlJkSk": "{n} némított",
-  "VnXp8Z": "Avatar",
-  "VtPV/B": "Bejelentkezés kiterjesztéssel (NIP-07)",
-  "Vx7Zm2": "Hogyan működnek a kulcsok?",
-  "W9355R": "Némítás visszavonása",
-  "WONP5O": "A Twitter követők a Nostr hálózaton való megtalálása (Az adatokat a {provider} biztosította)",
-  "WxthCV": "pl. Jack",
-  "XgWvGA": "Reakciók",
-  "Y31HTH": "Segítsen finanszírozni a Snort fejlesztését",
-  "YDURw6": "Szervíz cím",
-  "YXA3AH": "Reakciók engedélyezése",
-  "ZKORll": "Aktiválás",
-  "ZLmyG9": "Közreműködők",
-  "ZUZedV": "Villám adomány:",
-  "a5UPxh": "Támogasd a fejlesztőket és a platform szolgáltatókat akik NIP-05 azonosító szolgáltatásokat biztosítanak",
-  "aWpBzj": "Mutass többet",
-  "brAXSu": "Válassz felhasználónevet",
-  "bxv59V": "Csak most",
-  "c35bj2": "Ha kérdése van a NIP-05 rendelésével kapcsolatban, kérjük, írjon DM-et {link}",
-  "cQfLWb": "URL..",
-  "cWx9t8": "Mind némítása",
-  "cuV2gK": "név már foglalt",
-  "cyR7Kh": "Vissza",
-  "d7d0/x": "LN cím",
-  "dOQCL8": "Megjelenítendő név",
-  "e7qqly": "Mind olvasottnak jelölni",
-  "eHAneD": "Reakció emoji",
-  "eJj8HD": "Légy Azonosítva",
-  "eR3YIn": "Bejegyzések",
-  "filwqD": "Olvasás",
-  "flnGvv": "Mi jár a fejedben?",
-  "g5pX+a": "Rólunk",
-  "gBdUXk": "Mentsd el a kulcsaidat!",
-  "gDZkld": "A Snort a Nostr protokollnak egyik felülete. A Nostr pedig a ”bejegyzésekˇ tárolására és megosztására létrehozott decentralizált protokoll.",
-  "gDzDRs": "Emoji küldendő, amikor reagál egy jegyzetre",
-  "gjBiyj": "Betöltés...",
-  "hCUivF": "A bejegyzések a globális és bejegyzések fül alatt valós időben jelennek meg",
-  "hK5ZDk": "a világ",
-  "hMzcSq": "Üzenetek",
-  "hY4lzx": "Támogatás",
-  "hicxcO": "Válaszok megjelenítése",
-  "iCqGww": "({n}) reakciók",
-  "iDGAbc": "Szerezz egy Snort azonosítót",
-  "iGT1eE": "Akadályozd meg hogy a kamu fiókok utánozzanak",
-  "iNWbVV": "Azonosító",
-  "ieGrWo": "Követem",
-  "itPgxd": "Profil",
-  "izWS4J": "Követés visszavonása",
-  "jA3OE/": "{n} {n, plural, =1 {sat} other {sats}}",
-  "jCA7Cw": "Előnézet a Snort-on",
-  "juhqvW": "A belépés biztonságának növelése böngésző kiegészítőkkel",
-  "jvo0vs": "Mentés",
-  "k2veDA": "Írás",
-  "k7sKNy": "A mi saját NIP-05 azonosítási szolgáltatásunk, amelynek a használatával ennek az oldalnak a fejlesztését segítheted és ezzel egy speciális kitüntetést szerezhetsz!",
-  "lCILNz": "Vásárlás",
-  "lD3+8a": "Fizetem",
-  "lgg1KN": "Felhasználói felület",
-  "ll3xBp": "Képmegosztó szolgáltató",
-  "lnaT9F": "Követek {n}",
-  "lvlPhZ": "Számla fizetése",
-  "mH91FY": "Minden közreműködő az adományok és a NIP-05 rendelések egy százalékát kapja, a megosztott összegeket alább láthatja",
-  "mKAr6h": "Követem mindet",
-  "mKh2HS": "Fájl feltöltő szolgáltatás",
-  "mKhgP9": "{n, plural, =0 {} =1 {zapp-olva} other {zapp-olva}}",
-  "n1xHAH": "Szerezz egy azonosítót (opcionális)",
-  "nDejmx": "Tiltás visszavonása",
-  "nN9XTz": "Oszd meg a gondolataidat {link}",
-  "nn1qb3": "Nagyra értékeljük adományait",
-  "nwZXeh": "{n} tiltott",
-  "o6Uy3d": "Csak a titkos kulcs használható közzétételre (események aláírására), minden más csak olvasható módban naplózza.",
-  "o7e+nJ": "{n} követők",
-  "odFwjL": "Csak a követőimnek",
-  "odhABf": "Bejelentkezés",
-  "osUr8O": "A legtöbb Nostr oldal bejelentkezéséhez, ezeket a kiegészítőket is használhatod",
-  "oxCa4R": "Egy azonosító megszerzésével segítesz másoknak a te valós fiókod könnyebb megtalálásában. Sokaknak lehet @jack felhasználóneve, de csak egy jack@cash.app létezik.",
-  "pzTOmv": "Követők",
-  "qUJTsT": "Tiltva",
-  "qdGuQo": "A te privát kulcsod (senkivel se oszd meg)",
-  "qkvYUb": "Hozzáadás a profilhoz",
-  "qmJ8kD": "Fordítás nem sikerült",
-  "r3C4x/": "Szoftver",
-  "rT14Ow": "Csomópont hozzáadása",
-  "reJ6SM": "Ahhoz hogy a privát kulcsod biztonságban legyen, javasolt a következő böngésző kiegészítők valamelyikét használni:",
-  "rfuMjE": "(Alapértelmezett)",
-  "rrfdTe": "Ez a technológia ugyanaz, mint amivel a tökéletes biztonságát a Bitcoin is sikeresen bizonyította.",
-  "rudscU": "Hiba a követők betöltésénél, kérlek próbáld később",
-  "sWnYKw": "Snort úgy lett tervezve, hogy hasonló élményt nyújtson mint a Twitter.",
-  "svOoEH": "Az engedély nélküli névfoglalás vagy megszemélyesítés nem engedélyezett. A szabályok megszegéséért, a Snort és partnerei fenntartják maguknak a jogot, hogy azonnal töröljék az azonosítót (nem a fiókot, mert azt nem lehet).",
-  "tOdNiY": "Sötét",
-  "thnRpU": "A NIP-05 azonosítás segíthet:",
-  "u/vOPu": "Fizetve",
-  "u4bHcR": "Nézze meg a kódot itt: {link}",
-  "uD/N6c": "Zap {target} {n} sats",
-  "uSV4Ti": "A megosztásokhoz manuális megerősítés szükséges",
-  "usAvMr": "Profil módosítása",
-  "ut+2Cd": "Szerezz egy partner azonosítót",
-  "vOKedj": "{n,plural,=1{& {n} other} other{& {n} others}}",
-  "vZ4quW": "A NIP-05 egy DNS alapú azonosítási specifikáció, ami segít a valós személyed bizonyításában.",
-  "wEQDC6": "Módosítás",
-  "wLtRCF": "A kulcsod",
-  "wih7iJ": "név tiltva",
-  "wqyN/i": "Több információ a {service} itt {link}",
-  "wtLjP6": "Egyedi azonosító",
-  "x82IOl": "Némítás",
-  "xIoGG9": "Menj ide",
-  "xJ9n2N": "A te publikus kulcsod",
-  "xKdNPm": "Küld",
-  "xKflGN": "{username} a Nostr-án követ",
-  "xbVgIm": "Média automatikus betöltése",
-  "xmcVZ0": "Keresés",
-  "zFegDD": "Kapcsolat",
-  "zINlao": "Tulajdonos",
-  "zQvVDJ": "Mind",
-  "zcaOTs": "Zap összeg sats-ban",
-  "zjJZBd": "Készen vagy!",
-  "zonsdq": "Az LNURL szolgáltatás betöltése nem sikerült",
-  "zvCDao": "Automatikusan a legfrissebb bejegyzéseket mutassa"
+  "+D82kt": {
+    "string": "Biztos hogy ezt meg akarod osztani: {id}"
+  },
+  "+vIQlC": {
+    "string": "Ahhoz hogy a jövőben is hozzáférj a fiókodhoz, kérlek mindenképp győződj meg róla hogy a következő jelszót elmentetted"
+  },
+  "/4tOwT": {
+    "string": "Kihagyás"
+  },
+  "/JE/X+": {
+    "string": "Segítség"
+  },
+  "/RD0e2": {
+    "string": "A Nostr digitális aláírásokat használ, amivel megmásíthatatlan bejegyzéseket lehet létrehozni. Ezeket bárhány másolatban a különböző csomópontokra szétszórhatóak, ezzel biztosítva a tartalom redundanciáját."
+  },
+  "/d6vEc": {
+    "string": "Legyen a fiókod könnyebben megtalálható és megosztható"
+  },
+  "/n5KSF": {
+    "string": "{n} ms"
+  },
+  "0BUTMv": {
+    "string": "Keresés..."
+  },
+  "0mch2Y": {
+    "string": "név nem engedélyezett karaktereket tartalmaz"
+  },
+  "0yO7wF": {
+    "string": "{n} másodperc"
+  },
+  "1A7TZk": {
+    "string": "Mi a Snort és hogyan működik?"
+  },
+  "1udzha": {
+    "string": "Beszélgetések"
+  },
+  "2/2yg+": {
+    "string": "Hozzáad"
+  },
+  "25V4l1": {
+    "string": "Banner"
+  },
+  "2IFGap": {
+    "string": "Adományoz"
+  },
+  "2k0Cv+": {
+    "string": "Nemtetszések ({n})"
+  },
+  "3cc4Ct": {
+    "string": "Világos"
+  },
+  "3gOsZq": {
+    "string": "Fordítók"
+  },
+  "3xCwbZ": {
+    "developer_comment": "Seperator text for Login / Generate Key",
+    "string": "VAGY"
+  },
+  "450Fty": {
+    "string": "Nincs"
+  },
+  "47FYwb": {
+    "string": "Törlés"
+  },
+  "4IPzdn": {
+    "string": "Elsődleges Fejlesztők"
+  },
+  "4L2vUY": {
+    "string": "A te új NIP-05 azonosítód:"
+  },
+  "4OB335": {
+    "string": "Nem tetszik"
+  },
+  "4Vmpt4": {
+    "string": "A Nostr Plebs-ék az egyik legelső megfelelő feltételekkel és árakkal NIP-05 azonosítást biztosító szolgáltató"
+  },
+  "4Z3t5i": {
+    "string": "Az imgproxy használata a képek tömörítéséhez"
+  },
+  "4rYCjn": {
+    "string": "Jegyzet magamnak"
+  },
+  "5ykRmX": {
+    "string": "Zap küldése"
+  },
+  "6ewQqw": {
+    "string": "Lájkok ({n})"
+  },
+  "6tUqAb": {
+    "developer_comment": "Note about key security before generating a new key",
+    "string": "Egy publikus / privát kulcs generálása. A privát kulcsot senkivel se oszd meg, mivel ez a te jelszavadként funkcionál. Ha elhagyod, nem lehet visszaállítani. Tartsd biztonságban!"
+  },
+  "7+Domh": {
+    "string": "Bejegyzések"
+  },
+  "7hp70g": {
+    "string": "NIP-05"
+  },
+  "7xzTiH": {
+    "string": "{action} oda {target}"
+  },
+  "8/vBbP": {
+    "string": "Megosztva ({n})"
+  },
+  "89q5wc": {
+    "string": "Megosztás megerősítése"
+  },
+  "8E9muH": {
+    "string": "Twitter követők importálása (opcionális)"
+  },
+  "8QDesP": {
+    "string": "Zap {n} sats"
+  },
+  "8g2vyB": {
+    "string": "név túl hosszú"
+  },
+  "9+Ddtu": {
+    "string": "Következő"
+  },
+  "9HU8vw": {
+    "string": "Válasz"
+  },
+  "9SvQep": {
+    "string": "{n} követek"
+  },
+  "9WRlF4": {
+    "string": "Küldés"
+  },
+  "9gqH2W": {
+    "developer_comment": "Login button",
+    "string": "Bejelentkezés"
+  },
+  "9wO4wJ": {
+    "string": "Lightning Számla"
+  },
+  "ADmfQT": {
+    "developer_comment": "Link to parent note in thread",
+    "string": "Szülő"
+  },
+  "ASRK0S": {
+    "string": "Ez a felhasználó némítva"
+  },
+  "Adk34V": {
+    "string": "Profilod kitöltése"
+  },
+  "AyGauy": {
+    "string": "Bejelentkezés"
+  },
+  "B4C47Y": {
+    "string": "név túl rövid"
+  },
+  "B6+XJy": {
+    "string": "zapp-olva"
+  },
+  "BOUMjw": {
+    "string": "Nem találtunk {twitterUsername} nevű Nostr felhasználót"
+  },
+  "BOr9z/": {
+    "string": "A Snort egy nyílt forráskódú projekt, amit elhivatott emberek a szabadidejükben fejlesztettek."
+  },
+  "BcGMo+": {
+    "string": "A bejegyzések szöveget tartalmaznak és a legnépszerűbb felhasználási módja, hogy ”Twitter féle” üzeneteket tároljanak benne."
+  },
+  "C81/uG": {
+    "string": "Kijelentkezés"
+  },
+  "CHTbO3": {
+    "string": "A számla betöltése nem sikerült"
+  },
+  "Cu/K85": {
+    "string": "Fordítás erről {lang}"
+  },
+  "D3idYv": {
+    "string": "Beállítások"
+  },
+  "DKnriN": {
+    "string": "Satoshi küldése"
+  },
+  "DZzCem": {
+    "string": "A legutóbbi {n} bejegyzés mutatása"
+  },
+  "Dt/Zd5": {
+    "string": "A bejegyzésekben található média bizonyos emberek számára automatikusan megjelenik, másoknak pedig egy link lesz helyette."
+  },
+  "E8a4yq": {
+    "string": "Kövess néhány népszerű felhasználót"
+  },
+  "EPYwm7": {
+    "string": "A privát kulcsod a jelszavad. Ha elhagyod, elveszíted a hozzáférést a fiókodhoz! Mentsd le egy biztonságos helyre, mert nincs lehetőség a privát kulcsaid helyreállítására!"
+  },
+  "EWyQH5": {
+    "string": "Globális"
+  },
+  "Ebl/B2": {
+    "string": "Fordítás erre {lang}"
+  },
+  "EcglP9": {
+    "string": "Kulcs"
+  },
+  "EnCOBJ": {
+    "string": "Vásárlás"
+  },
+  "Eqjl5K": {
+    "string": "Csak a Snort és a mi integrációs partnerünk azonosítója ad színes domain nevet, de azonosításra szabadon használhatod más szolgáltatók szolgáltatásait is."
+  },
+  "F+B3x1": {
+    "string": "A több lehetőség biztosítása érdekében, a nostrplebs.com partnerségre léptünk"
+  },
+  "FS3b54": {
+    "string": "Kész!"
+  },
+  "FfYsOb": {
+    "string": "Hiba történt!"
+  },
+  "FmXUJg": {
+    "string": "követ téged"
+  },
+  "G/yZLu": {
+    "string": "Eltávolítás"
+  },
+  "GFOoEE": {
+    "string": "Salt"
+  },
+  "GspYR7": {
+    "string": "{n} Nem tetszik"
+  },
+  "H+vHiz": {
+    "developer_comment": "Hexidecimal 'key' input for improxy",
+    "string": "Hex kulcs.."
+  },
+  "H0JBH6": {
+    "string": "Kijelentkezés"
+  },
+  "H6/kLh": {
+    "string": "Rendelés fizetve!"
+  },
+  "HAlOn1": {
+    "string": "Név"
+  },
+  "HFls6j": {
+    "string": "név később elérhető"
+  },
+  "HOzFdo": {
+    "string": "Némítottak"
+  },
+  "HbefNb": {
+    "string": "Pénztárca megnyitása"
+  },
+  "IKKHqV": {
+    "string": "Akiket követek"
+  },
+  "INSqIz": {
+    "string": "Twitter felhasználónév..."
+  },
+  "IUZC+0": {
+    "string": "Ez azt jelenti, hogy a te általad létrehozott bejegyzéseket senki sem tudja módosítani és bárki ellenőrizheti hogy tényleg te írtad."
+  },
+  "JCIgkj": {
+    "string": "Felhasználónév"
+  },
+  "JHEHCk": {
+    "string": "Zap-ek ({n})"
+  },
+  "JkLHGw": {
+    "string": "Weboldal"
+  },
+  "K3r6DQ": {
+    "string": "Törlés"
+  },
+  "K7AkdL": {
+    "string": "Mutat"
+  },
+  "KQvWvD": {
+    "string": "Törölve"
+  },
+  "KWuDfz": {
+    "string": "Lementettem a kulcsaimat, folytatás"
+  },
+  "KahimY": {
+    "string": "Ismeretlen esemény: {kind}"
+  },
+  "LgbKvU": {
+    "string": "Hozzászólás"
+  },
+  "LxY9tW": {
+    "developer_comment": "Button: Generate a new key",
+    "string": "Kulcs generálása"
+  },
+  "M3Oirc": {
+    "string": "Hibaelhárító menü"
+  },
+  "MBAYRO": {
+    "string": "Mutasd az \"Egyedi azonosítót\" és a \"JSON esetet\" minden üzenet szövegmezőjében"
+  },
+  "MI2jkA": {
+    "string": "Nem elérhető:"
+  },
+  "MRp6Ly": {
+    "string": "Twitter felhasználónév"
+  },
+  "MzRYWH": {
+    "string": "{item} megveszem"
+  },
+  "N2IrpM": {
+    "string": "Jóváhagy"
+  },
+  "NdOYJJ": {
+    "string": "Hmm nincs itt semmi.. Ellenőrizd a {newUsersPage}, hogy tudj néhány javasolt Nostr felhasználót követni!"
+  },
+  "NfNk2V": {
+    "string": "A te privát kulcsod"
+  },
+  "NndBJE": {
+    "string": "Új felhasználók oldal"
+  },
+  "OEW7yJ": {
+    "string": "Zap-ek"
+  },
+  "OKhRC6": {
+    "string": "Megosztás"
+  },
+  "P61BTu": {
+    "string": "JSON eset"
+  },
+  "P7FD0F": {
+    "string": "Rendszer (Alapértelmezett)"
+  },
+  "P7nJT9": {
+    "string": "Összesen ma (UTC): {amount} sat"
+  },
+  "PCSt5T": {
+    "string": "Preferenciák"
+  },
+  "Pe0ogR": {
+    "string": "Téma"
+  },
+  "PrsIg7": {
+    "string": "A reakciók minden oldalon megjelennek, ha letiltod őket nem jelennek meg"
+  },
+  "QTdJfH": {
+    "developer_comment": "Heading for generate key flow",
+    "string": "Hozzon létre egy fiókot"
+  },
+  "QxCuTo": {
+    "developer_comment": "Artwork attribution label",
+    "string": "Művészet: {name}"
+  },
+  "RDZVQL": {
+    "string": "Ellenőrzés"
+  },
+  "RahCRH": {
+    "string": "Lejárt"
+  },
+  "RhDAoS": {
+    "string": "Biztos hogy törölni akarod a {id}"
+  },
+  "RoOyAh": {
+    "string": "Csomópontok"
+  },
+  "Sjo1P4": {
+    "string": "Egyedi"
+  },
+  "TpgeGw": {
+    "developer_comment": "Hexidecimal 'salt' input for imgproxy",
+    "string": "Hex Salt.."
+  },
+  "UQ3pOC": {
+    "string": "A Nostr-án sok embernek ugyanaz a felhasználóneve. A felhasználónév és a személyazonosság két különböző dolog. A következő lépésben tudsz magadnak egyedi azonosítót szerezni."
+  },
+  "Up5U7K": {
+    "string": "Tiltás"
+  },
+  "VOjC1i": {
+    "string": "Válaszd ki mely szolgáltatóhoz legyenek a fájlok feltöltve"
+  },
+  "VlJkSk": {
+    "string": "{n} némított"
+  },
+  "VnXp8Z": {
+    "string": "Avatar"
+  },
+  "VtPV/B": {
+    "developer_comment": "Login button for NIP7 key manager extension",
+    "string": "Bejelentkezés kiterjesztéssel (NIP-07)"
+  },
+  "Vx7Zm2": {
+    "string": "Hogyan működnek a kulcsok?"
+  },
+  "W9355R": {
+    "string": "Némítás visszavonása"
+  },
+  "WONP5O": {
+    "string": "A Twitter követők a Nostr hálózaton való megtalálása (Az adatokat a {provider} biztosította)"
+  },
+  "WxthCV": {
+    "string": "pl. Jack"
+  },
+  "XgWvGA": {
+    "string": "Reakciók"
+  },
+  "Y31HTH": {
+    "string": "Segítsen finanszírozni a Snort fejlesztését"
+  },
+  "YDURw6": {
+    "string": "Szervíz cím"
+  },
+  "YXA3AH": {
+    "string": "Reakciók engedélyezése"
+  },
+  "ZKORll": {
+    "string": "Aktiválás"
+  },
+  "ZLmyG9": {
+    "string": "Közreműködők"
+  },
+  "ZUZedV": {
+    "string": "Lightning adomány:"
+  },
+  "a5UPxh": {
+    "string": "Támogasd a fejlesztőket és a platform szolgáltatókat akik NIP-05 azonosító szolgáltatásokat biztosítanak"
+  },
+  "aWpBzj": {
+    "string": "Mutass többet"
+  },
+  "brAXSu": {
+    "string": "Válassz felhasználónevet"
+  },
+  "bxv59V": {
+    "string": "Csak most"
+  },
+  "c35bj2": {
+    "string": "Ha kérdése van a NIP-05 azonosító rendelésével kapcsolatban, kérjük, írjon üzenetet {link}"
+  },
+  "cQfLWb": {
+    "developer_comment": "Placeholder text for imgproxy url textbox",
+    "string": "Cím.."
+  },
+  "cWx9t8": {
+    "string": "Mind némítása"
+  },
+  "cuV2gK": {
+    "string": "név már foglalt"
+  },
+  "cyR7Kh": {
+    "string": "Vissza"
+  },
+  "d7d0/x": {
+    "string": "LN cím"
+  },
+  "dOQCL8": {
+    "string": "Megjelenítendő név"
+  },
+  "e7qqly": {
+    "string": "Mind olvasottnak jelölni"
+  },
+  "eHAneD": {
+    "string": "Reakció emoji"
+  },
+  "eJj8HD": {
+    "string": "Légy Azonosítva"
+  },
+  "eR3YIn": {
+    "string": "Bejegyzések"
+  },
+  "filwqD": {
+    "string": "Olvasás"
+  },
+  "flnGvv": {
+    "string": "Mi jár a fejedben?"
+  },
+  "g5pX+a": {
+    "string": "Rólam"
+  },
+  "gBdUXk": {
+    "string": "Mentsd el a kulcsaidat!"
+  },
+  "gDZkld": {
+    "string": "A Snort a Nostr protokollnak egyik felülete. A Nostr pedig a ”bejegyzésekˇ tárolására és megosztására létrehozott decentralizált protokoll."
+  },
+  "gDzDRs": {
+    "string": "Emoji küldése, amikor egy bejegyzésre reagál"
+  },
+  "gjBiyj": {
+    "string": "Betöltés..."
+  },
+  "hCUivF": {
+    "string": "A bejegyzések a globális és bejegyzések fül alatt valós időben jelennek meg"
+  },
+  "hK5ZDk": {
+    "string": "a világ"
+  },
+  "hMzcSq": {
+    "string": "Üzenetek"
+  },
+  "hY4lzx": {
+    "string": "Támogatás"
+  },
+  "hicxcO": {
+    "string": "Válaszok megjelenítése"
+  },
+  "iCqGww": {
+    "string": "({n}) reakciók"
+  },
+  "iDGAbc": {
+    "string": "Szerezz egy Snort azonosítót"
+  },
+  "iGT1eE": {
+    "string": "Akadályozd meg hogy a kamu fiókok utánozzanak"
+  },
+  "iNWbVV": {
+    "string": "Azonosító"
+  },
+  "ieGrWo": {
+    "string": "Követem"
+  },
+  "itPgxd": {
+    "string": "Profil"
+  },
+  "izWS4J": {
+    "string": "Követés visszavonása"
+  },
+  "jA3OE/": {
+    "string": "{n,plural,=1{{n} sat} other{{n} sats}}"
+  },
+  "jCA7Cw": {
+    "string": "Előnézet a Snort-on"
+  },
+  "jfV8Wr": {
+    "developer_comment": "Navigate back button on threads view",
+    "string": "Vissza"
+  },
+  "juhqvW": {
+    "string": "A belépés biztonságának növelése böngésző kiegészítőkkel"
+  },
+  "jvo0vs": {
+    "string": "Mentés"
+  },
+  "k2veDA": {
+    "string": "Írás"
+  },
+  "k7sKNy": {
+    "string": "A mi saját NIP-05 azonosítási szolgáltatásunk, amelynek a használatával ennek az oldalnak a fejlesztését segítheted és ezzel egy speciális kitüntetést is szerezhetsz!"
+  },
+  "lCILNz": {
+    "string": "Vásárlás"
+  },
+  "lD3+8a": {
+    "string": "Fizetem"
+  },
+  "lgg1KN": {
+    "string": "Felhasználói felület"
+  },
+  "ll3xBp": {
+    "string": "Képmegosztó szolgáltató"
+  },
+  "lnaT9F": {
+    "string": "Követek {n}"
+  },
+  "lvlPhZ": {
+    "string": "Számla fizetése"
+  },
+  "mH91FY": {
+    "string": "Minden közreműködő az adományok és a NIP-05 rendelések egy bizonyos százalékát kapja. A megosztott összegeket alább láthatja"
+  },
+  "mKAr6h": {
+    "string": "Követem mindet"
+  },
+  "mKh2HS": {
+    "string": "Fájl feltöltő szolgáltatás"
+  },
+  "mKhgP9": {
+    "string": "{n, plural, =0 {} =1 {zapp-olva} other {zapp-olva}}"
+  },
+  "n1xHAH": {
+    "string": "Szerezz egy azonosítót (opcionális)"
+  },
+  "nDejmx": {
+    "string": "Tiltás visszavonása"
+  },
+  "nN9XTz": {
+    "string": "Oszd meg a gondolataidat {link}"
+  },
+  "nn1qb3": {
+    "string": "Adományait nagyra értékeljük"
+  },
+  "nwZXeh": {
+    "string": "{n} tiltott"
+  },
+  "o6Uy3d": {
+    "developer_comment": "Explanation for public key only login is read-only",
+    "string": "Csak a titkos privát kulccsal lehetséges bármely közzététel (események aláírása), minden más csak olvasható módban kerül naplózásra."
+  },
+  "o7e+nJ": {
+    "string": "{n} követők"
+  },
+  "odFwjL": {
+    "string": "Csak a követőimnek"
+  },
+  "odhABf": {
+    "developer_comment": "Login header",
+    "string": "Bejelentkezés"
+  },
+  "osUr8O": {
+    "string": "A legtöbb Nostr oldal bejelentkezéséhez, ezeket a kiegészítőket is használhatod"
+  },
+  "oxCa4R": {
+    "string": "Egy azonosító megszerzésével segítesz másoknak a te valós fiókod könnyebb megtalálásában. Sokaknak lehet @jack felhasználóneve, de csak egy jack@cash.app létezik."
+  },
+  "pzTOmv": {
+    "string": "Követők"
+  },
+  "qUJTsT": {
+    "string": "Tiltva"
+  },
+  "qdGuQo": {
+    "string": "A te privát kulcsod (senkivel se oszd meg)"
+  },
+  "qkvYUb": {
+    "string": "Hozzáadás a profilhoz"
+  },
+  "qmJ8kD": {
+    "string": "Fordítás nem sikerült"
+  },
+  "r3C4x/": {
+    "string": "Szoftver"
+  },
+  "rT14Ow": {
+    "string": "Csomópont hozzáadása"
+  },
+  "reJ6SM": {
+    "string": "Ahhoz hogy a privát kulcsod biztonságban legyen, javasolt a következő böngésző kiegészítők valamelyikét használni:"
+  },
+  "rfuMjE": {
+    "string": "(Alapértelmezett)"
+  },
+  "rrfdTe": {
+    "string": "Ez a technológia ugyanaz, mint amivel a tökéletes biztonságát a Bitcoin is sikeresen bizonyította."
+  },
+  "rudscU": {
+    "string": "Hiba a követők betöltésénél, kérlek próbáld később"
+  },
+  "sWnYKw": {
+    "string": "Snort úgy lett tervezve, hogy hasonló élményt nyújtson mint a Twitter."
+  },
+  "svOoEH": {
+    "string": "Az engedély nélküli névfoglalás vagy megszemélyesítés nem engedélyezett. A szabályok megszegéséért, a Snort és partnerei fenntartják maguknak a jogot, hogy azonnal töröljék az azonosítót (nem a fiókot, mert azt nem lehet)."
+  },
+  "tOdNiY": {
+    "string": "Sötét"
+  },
+  "thnRpU": {
+    "string": "A NIP-05 azonosítás segíthet:"
+  },
+  "u/vOPu": {
+    "string": "Fizetve"
+  },
+  "u4bHcR": {
+    "string": "Nézze meg a kódot itt: {link}"
+  },
+  "uD/N6c": {
+    "string": "Zap {target} {n} sats"
+  },
+  "uSV4Ti": {
+    "string": "A megosztásokhoz manuális megerősítés szükséges"
+  },
+  "usAvMr": {
+    "string": "Profil módosítása"
+  },
+  "ut+2Cd": {
+    "string": "Szerezz egy partner azonosítót"
+  },
+  "vOKedj": {
+    "string": "{n,plural,=1{& {n} egyéb} other{& {n} egyebek}}"
+  },
+  "vZ4quW": {
+    "string": "A NIP-05 egy DNS alapú azonosítási specifikáció, ami segít a valós személyed bizonyításában."
+  },
+  "wEQDC6": {
+    "string": "Módosítás"
+  },
+  "wLtRCF": {
+    "developer_comment": "Label for key input",
+    "string": "A kulcsod"
+  },
+  "wih7iJ": {
+    "string": "név tiltva"
+  },
+  "wqyN/i": {
+    "string": "Több információ a {service} itt {link}"
+  },
+  "wtLjP6": {
+    "string": "Egyedi azonosító"
+  },
+  "x82IOl": {
+    "string": "Némítás"
+  },
+  "xIoGG9": {
+    "string": "Menj ide"
+  },
+  "xJ9n2N": {
+    "string": "A te publikus kulcsod"
+  },
+  "xKdNPm": {
+    "developer_comment": "Send DM button",
+    "string": "Küldés"
+  },
+  "xKflGN": {
+    "string": "{username} a Nostr-án követ"
+  },
+  "xbVgIm": {
+    "string": "Média automatikus betöltése"
+  },
+  "xmcVZ0": {
+    "string": "Keresés"
+  },
+  "zFegDD": {
+    "string": "Kapcsolat"
+  },
+  "zINlao": {
+    "string": "Tulajdonos"
+  },
+  "zQvVDJ": {
+    "string": "Mind"
+  },
+  "zcaOTs": {
+    "string": "Zap összeg sats-ban"
+  },
+  "zjJZBd": {
+    "string": "Készen vagy!"
+  },
+  "zonsdq": {
+    "string": "Az LNURL szolgáltatás betöltése nem sikerült"
+  },
+  "zvCDao": {
+    "string": "Automatikusan a legfrissebb bejegyzéseket mutassa"
+  }
 }
