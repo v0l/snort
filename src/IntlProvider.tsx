@@ -7,6 +7,7 @@ import jaMessages from "translations/ja.json";
 import frMessages from "translations/fr.json";
 import huMessages from "translations/hu.json";
 import idMessages from "translations/id.json";
+import arMessages from "translations/ar.json";
 
 const DEFAULT_LOCALE = "en-US";
 
@@ -28,6 +29,8 @@ const getMessages = (locale: string) => {
       return huMessages;
     case "id":
       return idMessages;
+    case "ar":
+      return arMessages;
     default:
       return enMessages;
   }
