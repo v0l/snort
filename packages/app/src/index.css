@@ -39,6 +39,10 @@
   --strike-army-gradient: linear-gradient(to bottom right, #ccff00, #a1c900);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html.light {
   --bg-color: #f8f8f8;
   --font-color: #27272a;

@@ -14,7 +14,6 @@ import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import useWebln from "Hooks/useWebln";
-import useHorizontalScroll from "Hooks/useHorizontalScroll";
 
 import messages from "./messages";
 
@@ -49,6 +48,18 @@ export interface LNURLTipProps {
   author?: HexKey;
 }
 
+function chunks(arr: any[], length: number) {
+  const result = [];
+  let idx = 0;
+  let n = arr.length / length;
+  while (n > 0) {
+    result.push(arr.slice(idx, idx + length));
+    idx += length;
+    n -= 1;
+  }
+  return result;
+}
+
 export default function LNURLTip(props: LNURLTipProps) {
   const onClose = props.onClose || (() => undefined);
   const service = props.svc;
@@ -74,7 +85,6 @@ export default function LNURLTip(props: LNURLTipProps) {
   const webln = useWebln(show);
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
-  const horizontalScroll = useHorizontalScroll();
   const canComment = (payService?.commentAllowed ?? 0) > 0 || payService?.nostrPubkey;
 
   useEffect(() => {
@@ -100,6 +110,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     }
     return [];
   }, [payService]);
+  const amountRows = useMemo(() => chunks(serviceAmounts, 3), [serviceAmounts]);
 
   const selectAmount = (a: number) => {
     setError(undefined);
@@ -204,6 +215,19 @@ export default function LNURLTip(props: LNURLTipProps) {
     }
   }
 
+  function renderAmounts(amount: number, amounts: number[]) {
+    return (
+      <div className="amounts">
+        {amounts.map(a => (
+          <span className={`sat-amount ${amount === a ? "active" : ""}`} key={a} onClick={() => selectAmount(a)}>
+            {emojis[a] && <>{emojis[a]}&nbsp;</>}
+            {a === 1000 ? "1K" : formatShort(a)}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
   function invoiceForm() {
     if (invoice) return null;
     return (
@@ -211,14 +235,7 @@ export default function LNURLTip(props: LNURLTipProps) {
         <h3>
           <FormattedMessage {...messages.ZapAmount} />
         </h3>
-        <div className="amounts" ref={horizontalScroll}>
-          {serviceAmounts.map(a => (
-            <span className={`sat-amount ${amount === a ? "active" : ""}`} key={a} onClick={() => selectAmount(a)}>
-              {emojis[a] && <>{emojis[a]}&nbsp;</>}
-              {formatShort(a)}
-            </span>
-          ))}
-        </div>
+        {amountRows.map(amounts => renderAmounts(amount, amounts))}
         {payService && custom()}
         <div className="flex">
           {canComment && (

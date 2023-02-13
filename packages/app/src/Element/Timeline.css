@@ -15,7 +15,13 @@
   box-shadow: 0px 0px 15px rgba(78, 0, 255, 0.6);
   border-radius: 100px;
   z-index: 42;
-  opacity: 0.8;
+  opacity: 0.9;
+}
+
+.latest-notes-fixed {
+  position: fixed;
+  left: calc(50% - 261px / 2 + 0.5px);
+  top: 12px;
 }
 
 @media (max-width: 520px) {

@@ -1,6 +1,7 @@
 import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
 import { useCallback, useMemo } from "react";
+import { useInView } from "react-intersection-observer";
 
 import ArrowUp from "Icons/ArrowUp";
 import { dedupeByPubkey } from "Util";
@@ -33,15 +34,16 @@ export default function Timeline({
   postsOnly = false,
   method,
   ignoreModeration = false,
-  window,
+  window: timeWindow,
   relay,
 }: TimelineProps) {
   const { muted, isMuted } = useModeration();
   const { main, related, latest, parent, loadMore, showLatest } = useTimelineFeed(subject, {
     method,
-    window: window,
+    window: timeWindow,
     relay,
   });
+  const { ref, inView } = useInView();
 
   const filterPosts = useCallback(
     (nts: TaggedRawEvent[]) => {
@@ -84,19 +86,40 @@ export default function Timeline({
     }
   }
 
+  function onShowLatest(scrollToTop = false) {
+    showLatest();
+    if (scrollToTop) {
+      window.scrollTo(0, 0);
+    }
+  }
+
   return (
     <div className="main-content">
       {latestFeed.length > 0 && (
-        <div className="card latest-notes pointer" onClick={() => showLatest()}>
-          {latestAuthors.slice(0, 3).map(p => {
-            return <ProfileImage pubkey={p} showUsername={false} linkToProfile={false} />;
-          })}
-          <FormattedMessage
-            defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
-            values={{ n: latestFeed.length }}
-          />
-          <ArrowUp />
-        </div>
+        <>
+          <div className="card latest-notes pointer" onClick={() => onShowLatest()} ref={ref}>
+            {latestAuthors.slice(0, 3).map(p => {
+              return <ProfileImage pubkey={p} showUsername={false} linkToProfile={false} />;
+            })}
+            <FormattedMessage
+              defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
+              values={{ n: latestFeed.length }}
+            />
+            <ArrowUp />
+          </div>
+          {!inView && (
+            <div className="card latest-notes latest-notes-fixed pointer" onClick={() => onShowLatest(true)}>
+              {latestAuthors.slice(0, 3).map(p => {
+                return <ProfileImage pubkey={p} showUsername={false} linkToProfile={false} />;
+              })}
+              <FormattedMessage
+                defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
+                values={{ n: latestFeed.length }}
+              />
+              <ArrowUp />
+            </div>
+          )}
+        </>
       )}
       {mainFeed.map(eventElement)}
       <LoadMore onLoadMore={loadMore} shouldLoadMore={main.end}>

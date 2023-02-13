@@ -31,7 +31,7 @@ function clamp(n: number, min: number, max: number) {
 
 export const TabElement = ({ t, tab, setTab }: TabElementProps) => {
   const style = useMemo(() => {
-    return { minWidth: `${clamp(t.text.length, 2, 7)}em` } as CSSProperties;
+    return { minWidth: `${clamp(t.text.length, 3, 8) * 14}px` } as CSSProperties;
   }, [t.text]);
   return (
     <div
