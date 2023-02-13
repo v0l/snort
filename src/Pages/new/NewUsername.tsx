@@ -22,7 +22,7 @@ export default function NewUserName() {
   };
 
   return (
-    <div className="main-content new-user">
+    <div className="main-content new-user" dir="auto">
       <div className="progress-bar">
         <div className="progress progress-second"></div>
       </div>

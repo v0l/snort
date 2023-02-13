@@ -551,7 +551,10 @@ button.tall {
 }
 
 .collapsable-section {
-  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .collapsable-section h3,
@@ -560,9 +563,6 @@ button.tall {
 }
 
 .collapsable-section .collapse-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
   transition: transform 300ms ease-in-out;
 }
 
