@@ -32,6 +32,9 @@
   "1A7TZk": {
     "string": "What is Snort and how does it work?"
   },
+  "1Mo59U": {
+    "string": "Are you sure you want to remove this note from bookmarks?"
+  },
   "1udzha": {
     "string": "Conversations"
   },
@@ -222,6 +225,9 @@
   "GFOoEE": {
     "string": "Salt"
   },
+  "GL8aXW": {
+    "string": "Bookmarks ({n})"
+  },
   "GspYR7": {
     "string": "{n} Dislike"
   },
@@ -246,6 +252,9 @@
   },
   "HbefNb": {
     "string": "Open Wallet"
+  },
+  "IEwZvs": {
+    "string": "Are you sure you want to unpin this note?"
   },
   "IKKHqV": {
     "string": "Follows"
@@ -358,6 +367,9 @@
   "RoOyAh": {
     "string": "Relays"
   },
+  "Rs4kCE": {
+    "string": "Bookmark"
+  },
   "Sjo1P4": {
     "string": "Custom"
   },
@@ -463,11 +475,17 @@
   "eR3YIn": {
     "string": "Posts"
   },
+  "fWZYP5": {
+    "string": "Pinned"
+  },
   "filwqD": {
     "string": "Read"
   },
   "flnGvv": {
     "string": "What's on your mind?"
+  },
+  "fsB/4p": {
+    "string": "Saved"
   },
   "g5pX+a": {
     "string": "About"
@@ -578,6 +596,9 @@
   "nDejmx": {
     "string": "Unblock"
   },
+  "nGBrvw": {
+    "string": "Bookmarks"
+  },
   "nN9XTz": {
     "string": "Share your thoughts with {link}"
   },
@@ -606,6 +627,9 @@
   },
   "oxCa4R": {
     "string": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app."
+  },
+  "puLNUJ": {
+    "string": "Pin"
   },
   "pzTOmv": {
     "string": "Followers"

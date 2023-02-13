@@ -122,7 +122,7 @@ export default function useEventPublisher() {
     muted: async (keys: HexKey[], priv: HexKey[]) => {
       if (pubKey) {
         const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.Lists;
+        ev.Kind = EventKind.PubkeyLists;
         ev.Tags.push(new Tag(["d", Lists.Muted], ev.Tags.length));
         keys.forEach(p => {
           ev.Tags.push(new Tag(["p", p], ev.Tags.length));
@@ -138,6 +138,42 @@ export default function useEventPublisher() {
           }
         }
         ev.Content = content;
+        return await signEvent(ev);
+      }
+    },
+    pinned: async (notes: HexKey[]) => {
+      if (pubKey) {
+        const ev = NEvent.ForPubKey(pubKey);
+        ev.Kind = EventKind.NoteLists;
+        ev.Tags.push(new Tag(["d", Lists.Pinned], ev.Tags.length));
+        notes.forEach(n => {
+          ev.Tags.push(new Tag(["e", n], ev.Tags.length));
+        });
+        ev.Content = "";
+        return await signEvent(ev);
+      }
+    },
+    bookmarked: async (notes: HexKey[]) => {
+      if (pubKey) {
+        const ev = NEvent.ForPubKey(pubKey);
+        ev.Kind = EventKind.NoteLists;
+        ev.Tags.push(new Tag(["d", Lists.Bookmarked], ev.Tags.length));
+        notes.forEach(n => {
+          ev.Tags.push(new Tag(["e", n], ev.Tags.length));
+        });
+        ev.Content = "";
+        return await signEvent(ev);
+      }
+    },
+    tags: async (tags: string[]) => {
+      if (pubKey) {
+        const ev = NEvent.ForPubKey(pubKey);
+        ev.Kind = EventKind.TagLists;
+        ev.Tags.push(new Tag(["d", Lists.Followed], ev.Tags.length));
+        tags.forEach(t => {
+          ev.Tags.push(new Tag(["t", t], ev.Tags.length));
+        });
+        ev.Content = "";
         return await signEvent(ev);
       }
     },

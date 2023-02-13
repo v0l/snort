@@ -116,6 +116,36 @@ export interface LoginStore {
   latestFollows: number;
 
   /**
+   * A list of tags this user follows
+   */
+  tags: string[];
+
+  /**
+   * Newest tag list timestamp
+   */
+  latestTags: number;
+
+  /**
+   * A list of event ids this user has pinned
+   */
+  pinned: HexKey[];
+
+  /**
+   * Last seen pinned list event timestamp
+   */
+  latestPinned: number;
+
+  /**
+   * A list of event ids this user has bookmarked
+   */
+  bookmarked: HexKey[];
+
+  /**
+   * Last seen bookmark list event timestamp
+   */
+  latestBookmarked: number;
+
+  /**
    * A list of pubkeys this user has muted
    */
   muted: HexKey[];
@@ -172,6 +202,12 @@ export const InitState = {
   latestRelays: 0,
   follows: [],
   latestFollows: 0,
+  tags: [],
+  latestTags: 0,
+  pinned: [],
+  latestPinned: 0,
+  bookmarked: [],
+  latestBookmarked: 0,
   muted: [],
   blocked: [],
   latestMuted: 0,
@@ -320,12 +356,36 @@ const LoginSlice = createSlice({
 
       window.localStorage.setItem(FollowList, JSON.stringify(state.follows));
     },
+    setTags(state, action: PayloadAction<{ createdAt: number; tags: string[] }>) {
+      const { createdAt, tags } = action.payload;
+      if (createdAt >= state.latestTags) {
+        const newTags = new Set([...tags]);
+        state.tags = Array.from(newTags);
+        state.latestTags = createdAt;
+      }
+    },
     setMuted(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
       const { createdAt, keys } = action.payload;
       if (createdAt >= state.latestMuted) {
         const muted = new Set([...keys]);
         state.muted = Array.from(muted);
         state.latestMuted = createdAt;
+      }
+    },
+    setPinned(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
+      const { createdAt, keys } = action.payload;
+      if (createdAt >= state.latestPinned) {
+        const pinned = new Set([...keys]);
+        state.pinned = Array.from(pinned);
+        state.latestPinned = createdAt;
+      }
+    },
+    setBookmarked(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
+      const { createdAt, keys } = action.payload;
+      if (createdAt >= state.latestBookmarked) {
+        const bookmarked = new Set([...keys]);
+        state.bookmarked = Array.from(bookmarked);
+        state.latestBookmarked = createdAt;
       }
     },
     setBlocked(state, action: PayloadAction<{ createdAt: number; keys: HexKey[] }>) {
@@ -387,7 +447,10 @@ export const {
   setRelays,
   removeRelay,
   setFollows,
+  setTags,
   setMuted,
+  setPinned,
+  setBookmarked,
   setBlocked,
   addDirectMessage,
   incDmInteraction,

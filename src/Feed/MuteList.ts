@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 
+import { getNewest } from "Util";
 import { HexKey, TaggedRawEvent, Lists } from "Nostr";
 import EventKind from "Nostr/EventKind";
 import { Subscriptions } from "Nostr/Subscriptions";
@@ -9,7 +10,7 @@ export default function useMutedFeed(pubkey: HexKey) {
   const sub = useMemo(() => {
     const sub = new Subscriptions();
     sub.Id = `muted:${pubkey.slice(0, 12)}`;
-    sub.Kinds = new Set([EventKind.Lists]);
+    sub.Kinds = new Set([EventKind.PubkeyLists]);
     sub.Authors = new Set([pubkey]);
     sub.DTags = new Set([Lists.Muted]);
     sub.Limit = 1;
@@ -17,14 +18,6 @@ export default function useMutedFeed(pubkey: HexKey) {
   }, [pubkey]);
 
   return useSubscription(sub);
-}
-
-export function getNewest(rawNotes: TaggedRawEvent[]) {
-  const notes = [...rawNotes];
-  notes.sort((a, b) => a.created_at - b.created_at);
-  if (notes.length > 0) {
-    return notes[0];
-  }
 }
 
 export function getMutedKeys(rawNotes: TaggedRawEvent[]): {
@@ -44,6 +37,6 @@ export function getMutedKeys(rawNotes: TaggedRawEvent[]): {
 }
 
 export function getMuted(feed: NoteStore, pubkey: HexKey): HexKey[] {
-  const lists = feed?.notes.filter(a => a.kind === EventKind.Lists && a.pubkey === pubkey);
+  const lists = feed?.notes.filter(a => a.kind === EventKind.PubkeyLists && a.pubkey === pubkey);
   return getMutedKeys(lists).keys;
 }

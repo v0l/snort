@@ -93,4 +93,13 @@ export default defineMessages({
     defaultMessage: "Please make sure to save the following password in order to manage your handle in the future",
   },
   Handle: { defaultMessage: "Handle" },
+  Pin: { defaultMessage: "Pin" },
+  Pinned: { defaultMessage: "Pinned" },
+  Bookmark: { defaultMessage: "Bookmark" },
+  Bookmarks: { defaultMessage: "Bookmarks" },
+  BookmarksCount: { defaultMessage: "Bookmarks ({n})" },
+  Bookmarked: { defaultMessage: "Saved" },
+  All: { defaultMessage: "All" },
+  ConfirmUnbookmark: { defaultMessage: "Are you sure you want to remove this note from bookmarks?" },
+  ConfirmUnpin: { defaultMessage: "Are you sure you want to unpin this note?" },
 });

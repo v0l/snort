@@ -570,3 +570,14 @@ button.tall {
   transform: rotate(180deg);
   transition: transform 300ms ease-in-out;
 }
+
+.action-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.action-heading button {
+  width: 98px;
+}
