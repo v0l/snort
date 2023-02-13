@@ -10,6 +10,7 @@ import {
   SoundCloudRegex,
   MixCloudRegex,
   SpotifyRegex,
+  TwitchRegex,
 } from "Const";
 import { RootState } from "State/Store";
 import SoundCloudEmbed from "Element/SoundCloudEmded";
@@ -18,6 +19,7 @@ import SpotifyEmbed from "Element/SpotifyEmbed";
 import TidalEmbed from "Element/TidalEmbed";
 import { ProxyImg } from "Element/ProxyImg";
 import { HexKey } from "Nostr";
+import TwitchEmbed from "./TwitchEmbed";
 
 export default function HyperText({ link, creator }: { link: string; creator: HexKey }) {
   const pref = useSelector((s: RootState) => s.login.preferences);
@@ -43,6 +45,7 @@ export default function HyperText({ link, creator }: { link: string; creator: He
       const soundcloundId = SoundCloudRegex.test(a) && RegExp.$1;
       const mixcloudId = MixCloudRegex.test(a) && RegExp.$1;
       const spotifyId = SpotifyRegex.test(a);
+      const twitchId = TwitchRegex.test(a);
       const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
       if (extension) {
         switch (extension) {
@@ -109,6 +112,8 @@ export default function HyperText({ link, creator }: { link: string; creator: He
         return <MixCloudEmbed link={a} />;
       } else if (spotifyId) {
         return <SpotifyEmbed link={a} />;
+      } else if (twitchId) {
+        return <TwitchEmbed link={a} />;
       } else {
         return (
           <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
