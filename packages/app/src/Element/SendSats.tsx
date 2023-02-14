@@ -145,18 +145,33 @@ export default function LNURLTip(props: LNURLTipProps) {
 
   async function loadInvoice() {
     if (!amount || !payService) return null;
-    let url = "";
-    const amountParam = `amount=${Math.floor(amount * 1000)}`;
-    const commentParam = comment && payService?.commentAllowed ? `&comment=${encodeURIComponent(comment)}` : "";
+
+    const callback = new URL(payService.callback);
+    const query = new Map<string, string>();
+    if (callback.search.length > 0) {
+      callback.search
+        .slice(1)
+        .split("&")
+        .forEach(a => {
+          const pSplit = a.split("=");
+          query.set(pSplit[0], pSplit[1]);
+        });
+    }
+    query.set("amount", Math.floor(amount * 1000).toString());
+    if (comment && payService?.commentAllowed) {
+      query.set("comment", comment);
+    }
     if (payService.nostrPubkey && author) {
       const ev = await publisher.zap(author, note, comment);
-      const nostrParam = ev && `&nostr=${encodeURIComponent(JSON.stringify(ev.ToObject()))}`;
-      url = `${payService.callback}?${amountParam}${commentParam}${nostrParam}`;
-    } else {
-      url = `${payService.callback}?${amountParam}${commentParam}`;
+      if (ev) {
+        query.set("nostr", JSON.stringify(ev.ToObject()));
+      }
     }
+
+    const baseUrl = `${callback.protocol}//${callback.host}${callback.pathname}`;
+    const queryJoined = [...query.entries()].map(v => `${v[0]}=${encodeURIComponent(v[1])}`).join("&");
     try {
-      const rsp = await fetch(url);
+      const rsp = await fetch(`${baseUrl}?${queryJoined}`);
       if (rsp.ok) {
         const data = await rsp.json();
         console.log(data);
