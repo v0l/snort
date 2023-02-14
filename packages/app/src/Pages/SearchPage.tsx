@@ -1,11 +1,13 @@
 import { useIntl, FormattedMessage } from "react-intl";
 import { useParams } from "react-router-dom";
+import ProfilePreview from "Element/ProfilePreview";
 import Timeline from "Element/Timeline";
 import { useEffect, useState } from "react";
 import { debounce } from "Util";
 import { router } from "index";
 import { SearchRelays } from "Const";
 import { System } from "@snort/nostr";
+import { useQuery } from "State/Users/Hooks";
 
 import messages from "./messages";
 
@@ -14,6 +16,7 @@ const SearchPage = () => {
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string>();
   const [keyword, setKeyword] = useState<string | undefined>(params.keyword);
+  const allUsers = useQuery(keyword || "");
 
   useEffect(() => {
     if (keyword) {
@@ -55,6 +58,7 @@ const SearchPage = () => {
           onChange={e => setSearch(e.target.value)}
         />
       </div>
+      {keyword && allUsers?.slice(3).map(u => <ProfilePreview actions={<></>} pubkey={u.pubkey} />)}
       {keyword && (
         <Timeline
           key={keyword}
