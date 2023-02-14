@@ -17,10 +17,10 @@ const Contributors = [
   bech32ToHex("npub148jmlutaa49y5wl5mcll003ftj59v79vf7wuv3apcwpf75hx22vs7kk9ay"), // liran cohen
   bech32ToHex("npub1xdtducdnjerex88gkg2qk2atsdlqsyxqaag4h05jmcpyspqt30wscmntxy"), // artur
   bech32ToHex("npub1vp8fdcyejd4pqjyrjk9sgz68vuhq7pyvnzk8j0ehlljvwgp8n6eqsrnpsw"), // samsamskies
+  bech32ToHex("npub179rec9sw2a5ngkr2wsjpjhwp2ksygjxn6uw5py9daj2ezhw3aw5swv3s6q"), // h3y6e - JA
 ];
 
 const Translators = [
-  bech32ToHex("npub179rec9sw2a5ngkr2wsjpjhwp2ksygjxn6uw5py9daj2ezhw3aw5swv3s6q"), // h3y6e - JA
   bech32ToHex("npub1s8zws5frm94esxnp9v6zf7vk60m3hum3305n78sr73t78kleus7q8zpwna"), // middlingphys - JA
   bech32ToHex("npub1z0ykz6lp3y8rjjntenns0ee02062g2f0n55u49w44xdemw35vcpsda5jhh"), // noraglyphs - JA
   bech32ToHex("npub13wa880se2h3l54k7x76edrkrt4p94sh4q090974mt0z6n09qtntqxp47uk"), // numpad0 - JA
