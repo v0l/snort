@@ -11,6 +11,7 @@ import {
   MixCloudRegex,
   SpotifyRegex,
   TwitchRegex,
+  AppleMusicRegex,
 } from "Const";
 import { RootState } from "State/Store";
 import SoundCloudEmbed from "Element/SoundCloudEmded";
@@ -20,6 +21,7 @@ import TidalEmbed from "Element/TidalEmbed";
 import { ProxyImg } from "Element/ProxyImg";
 import { HexKey } from "Nostr";
 import TwitchEmbed from "./TwitchEmbed";
+import AppleMusicEmbed from "./AppleMusicEmbed";
 
 export default function HyperText({ link, creator }: { link: string; creator: HexKey }) {
   const pref = useSelector((s: RootState) => s.login.preferences);
@@ -44,10 +46,11 @@ export default function HyperText({ link, creator }: { link: string; creator: He
       const tidalId = TidalRegex.test(a) && RegExp.$1;
       const soundcloundId = SoundCloudRegex.test(a) && RegExp.$1;
       const mixcloudId = MixCloudRegex.test(a) && RegExp.$1;
-      const spotifyId = SpotifyRegex.test(a);
-      const twitchId = TwitchRegex.test(a);
+      const isSpotifyLink = SpotifyRegex.test(a);
+      const isTwitchLink = TwitchRegex.test(a);
+      const isAppleMusicLink = AppleMusicRegex.test(a);
       const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
-      if (extension) {
+      if (extension && !isAppleMusicLink) {
         switch (extension) {
           case "gif":
           case "jpg":
@@ -110,10 +113,12 @@ export default function HyperText({ link, creator }: { link: string; creator: He
         return <SoundCloudEmbed link={a} />;
       } else if (mixcloudId) {
         return <MixCloudEmbed link={a} />;
-      } else if (spotifyId) {
+      } else if (isSpotifyLink) {
         return <SpotifyEmbed link={a} />;
-      } else if (twitchId) {
+      } else if (isTwitchLink) {
         return <TwitchEmbed link={a} />;
+      } else if (isAppleMusicLink) {
+        return <AppleMusicEmbed link={a} />;
       } else {
         return (
           <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
