@@ -59,7 +59,7 @@ const Nip05 = ({ nip05, pubkey, verifyNip = true }: Nip05Params) => {
       {!isDefaultUser && isVerified && <span className="nick">{`${name}@`}</span>}
       {isVerified && (
         <>
-          <span className="domain f-ellipsis" data-domain={domain?.toLowerCase()}>
+          <span className="domain" data-domain={domain?.toLowerCase()}>
             {domain}
           </span>
           <Badge className="badge" />
