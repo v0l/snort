@@ -146,3 +146,9 @@ export const SpotifyRegex = /open\.spotify\.com\/(track|album|playlist|episode)\
  * Twitch embed regex
  */
 export const TwitchRegex = /twitch.tv\/([a-z0-9_]+$)/i;
+
+/**
+ * Apple Music embed regex
+ */
+export const AppleMusicRegex =
+  /music\.apple\.com\/([a-z]{2}\/)?(?:album|playlist)\/[\w\d-]+\/([.a-zA-Z0-9-]+)(?:\?i=\d+)?/i;
