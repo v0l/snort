@@ -283,6 +283,11 @@ const LoginSlice = createSlice({
       if (pref) {
         state.preferences = JSON.parse(pref);
       }
+
+      // disable reactions for logged out
+      if (state.loggedOut === true) {
+        state.preferences.enableReactions = false;
+      }
     },
     setPrivateKey: (state, action: PayloadAction<HexKey>) => {
       state.loggedOut = false;
