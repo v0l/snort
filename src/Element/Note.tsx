@@ -29,6 +29,7 @@ export interface NoteProps {
   related: TaggedRawEvent[];
   highlight?: boolean;
   ignoreModeration?: boolean;
+  replyCount?: number;
   options?: {
     showHeader?: boolean;
     showTime?: boolean;
@@ -252,7 +253,9 @@ export default function Note(props: NoteProps) {
             <FormattedMessage {...messages.ShowMore} />
           </span>
         )}
-        {options.showFooter && <NoteFooter ev={ev} related={related} onTranslated={t => setTranslated(t)} />}
+        {options.showFooter && (
+          <NoteFooter ev={ev} related={related} onTranslated={t => setTranslated(t)} replyCount={props.replyCount} />
+        )}
       </>
     );
   }

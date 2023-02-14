@@ -45,6 +45,7 @@ export interface Translation {
 export interface NoteFooterProps {
   related: TaggedRawEvent[];
   ev: NEvent;
+  replyCount?: number;
   onTranslated?: (content: Translation) => void;
 }
 
@@ -308,6 +309,7 @@ export default function NoteFooter(props: NoteFooterProps) {
             <div className="reaction-pill-icon">
               <Reply />
             </div>
+            {props.replyCount && <div className="reaction-pill-number">{formatShort(props.replyCount)}</div>}
           </div>
           <Menu
             menuButton={
