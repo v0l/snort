@@ -584,3 +584,8 @@ button.tall {
 .action-heading button {
   width: 98px;
 }
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
