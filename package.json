@@ -4,6 +4,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace @snort/nostr build && yarn workspace @snort/app build"
+    "build": "yarn workspace @snort/nostr build && yarn workspace @snort/app build",
+    "start": "yarn workspace @snort/nostr build && yarn workspace @snort/app start"
   }
 }
