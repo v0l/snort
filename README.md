@@ -21,6 +21,7 @@ Snort supports the following NIP's:
 - [x] NIP-15: End of Stored Events Notice
 - [x] NIP-19: bech32-encoded entities
 - [x] NIP-20: Command Results
+- [x] NIP-21: `nostr:` Protocol handler (`web+nostr`)
 - [x] NIP-25: Reactions
 - [x] NIP-26: Delegated Event Signing (Display delegated signings only)
 - [ ] NIP-28: Public Chat

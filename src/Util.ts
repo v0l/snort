@@ -79,7 +79,7 @@ export function hexToBech32(hrp: string, hex?: string) {
 
   try {
     if (hrp === NostrPrefix.Note || hrp === NostrPrefix.PrivateKey || hrp === NostrPrefix.PublicKey) {
-      let buf = secp.utils.hexToBytes(hex);
+      const buf = secp.utils.hexToBytes(hex);
       return bech32.encode(hrp, bech32.toWords(buf));
     } else {
       return encodeTLV(hex, hrp as NostrPrefix);
