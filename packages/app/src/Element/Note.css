@@ -218,3 +218,15 @@
 .note .reactions-link:hover {
   text-decoration: underline;
 }
+
+.close-menu {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: -400px;
+  left: -600px;
+}
+
+.close-menu-container {
+  position: absolute;
+}
