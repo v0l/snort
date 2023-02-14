@@ -37,16 +37,23 @@ interface Zapper {
 }
 
 function getZapper(zap: TaggedRawEvent, dhash: string): Zapper {
-  const zapRequest = findTag(zap, "description");
+  let zapRequest = findTag(zap, "description");
   if (zapRequest) {
-    const rawEvent: TaggedRawEvent = JSON.parse(zapRequest);
-    if (Array.isArray(rawEvent)) {
-      // old format, ignored
-      return { isValid: false };
+    try {
+      if (zapRequest.startsWith("%")) {
+        zapRequest = decodeURIComponent(zapRequest);
+      }
+      const rawEvent: TaggedRawEvent = JSON.parse(zapRequest);
+      if (Array.isArray(rawEvent)) {
+        // old format, ignored
+        return { isValid: false };
+      }
+      const metaHash = sha256(zapRequest);
+      const ev = new Event(rawEvent);
+      return { pubkey: ev.PubKey, isValid: dhash === metaHash };
+    } catch (e) {
+      console.warn("Invalid zap", zapRequest);
     }
-    const metaHash = sha256(zapRequest);
-    const ev = new Event(rawEvent);
-    return { pubkey: ev.PubKey, isValid: dhash === metaHash };
   }
   return { isValid: false };
 }
