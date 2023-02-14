@@ -3,6 +3,7 @@ import { sha256 as hash } from "@noble/hashes/sha256";
 import { bech32 } from "bech32";
 import { HexKey, TaggedRawEvent, u256 } from "Nostr";
 import EventKind from "Nostr/EventKind";
+import { encodeTLV, NostrPrefix } from "Nostr/Links";
 
 export const sha256 = (str: string) => {
   return secp.utils.bytesToHex(hash(str));
@@ -64,7 +65,7 @@ export function bech32ToText(str: string) {
  * @returns
  */
 export function eventLink(hex: u256) {
-  return `/e/${hexToBech32("note", hex)}`;
+  return `/e/${hexToBech32(NostrPrefix.Note, hex)}`;
 }
 
 /**
@@ -77,8 +78,12 @@ export function hexToBech32(hrp: string, hex?: string) {
   }
 
   try {
-    const buf = secp.utils.hexToBytes(hex);
-    return bech32.encode(hrp, bech32.toWords(buf));
+    if (hrp === NostrPrefix.Note || hrp === NostrPrefix.PrivateKey || hrp === NostrPrefix.PublicKey) {
+      let buf = secp.utils.hexToBytes(hex);
+      return bech32.encode(hrp, bech32.toWords(buf));
+    } else {
+      return encodeTLV(hex, hrp as NostrPrefix);
+    }
   } catch (e) {
     console.warn("Invalid hex", hex, e);
     return "";
@@ -91,7 +96,7 @@ export function hexToBech32(hrp: string, hex?: string) {
  * @returns
  */
 export function profileLink(hex: HexKey) {
-  return `/p/${hexToBech32("npub", hex)}`;
+  return `/p/${hexToBech32(NostrPrefix.PublicKey, hex)}`;
 }
 
 /**
