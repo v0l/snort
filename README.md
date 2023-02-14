@@ -1,6 +1,6 @@
 ## Snort
 
-Snort is a nostr UI built with React, Snort intends to be fast and effecient
+Snort is a nostr UI built with React aiming for speed and efficiency.
 
 Snort supports the following NIP's:
 
@@ -31,3 +31,19 @@ Snort supports the following NIP's:
 - [x] NIP-50: Search
 - [x] NIP-51: Lists
 - [x] NIP-65: Relay List Metadata
+
+### Running
+
+This repository is a yarn workspace. To install dependencies, run `yarn` from the project root.
+To run the application, use either
+
+```sh
+$ yarn workspace @snort/app start
+```
+
+or
+
+```sh
+$ cd packages/app
+$ yarn start
+```
