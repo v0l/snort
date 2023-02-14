@@ -144,14 +144,16 @@
 
 .reaction-pill {
   display: flex;
-  margin: 0px 7px;
-  padding: 2px 4px;
-  min-width: 1rem;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+  margin: 0px 14px;
+  min-width: 16px;
   user-select: none;
   color: var(--font-secondary-color);
   font-feature-settings: "tnum";
+}
+
+.reaction-pill-icon {
+  margin: auto;
 }
 
 .reaction-pill .reaction-pill-number {
