@@ -35,36 +35,8 @@ Snort supports the following NIP's:
 ### Running
 
 This repository is a yarn workspace. To install dependencies, run `yarn` from the project root.
+To run the application, use
 
-To build the `nostr` package, use either
-
-```sh
-$ yarn build
 ```
-
-or, to automatically rebuild the `nostr` package if you are working on those files
-
-```sh
-$ cd packages/nostr
-$ yarn watch 
-```
-
-To run the application, use either
-
-```sh
-$ yarn workspace @snort/app start
-```
-
-or
-
-```sh
-$ cd packages/app
 $ yarn start
-```
-
-The `nostr` package must be built (this produces a `packages/nostr/dist` folder) in order to run the main application (`packages/app`).
-
-If you encounter the below error, it indicates that the `nostr` package has not been built:
-```
-Module not found: Error: Can't resolve '@snort/nostr'
 ```
