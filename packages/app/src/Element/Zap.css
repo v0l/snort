@@ -7,10 +7,6 @@
   flex-direction: row;
 }
 
-.zap .header .pfp {
-  overflow: hidden;
-}
-
 .zap .header .amount {
   font-size: 24px;
 }
@@ -69,7 +65,7 @@
   margin-right: 0.3em;
 }
 
-.top-zap .avatar {
+.top-zap .summary .pfp .avatar-wrapper .avatar {
   width: 18px;
   height: 18px;
 }
@@ -85,9 +81,15 @@
 }
 
 .amount-number {
-  font-weight: bold;
+  font-weight: 500;
 }
 
 .zap.note .body {
   margin-bottom: 0;
+}
+
+@media (max-width: 420px) {
+  .zap .nip05 .badge {
+    margin: 0 0 0 0.3em;
+  }
 }

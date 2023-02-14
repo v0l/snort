@@ -5,11 +5,17 @@
 }
 
 .profile-preview .pfp {
-  flex-grow: 1;
-  min-width: 200px;
+  flex: 1 1 auto;
 }
 
 .profile-preview .about {
   font-size: small;
-  color: var(--gray-light);
+  color: var(--font-secondary-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-preview button {
+  min-width: 98px;
 }

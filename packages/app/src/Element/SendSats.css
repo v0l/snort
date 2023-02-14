@@ -64,17 +64,11 @@
 .amounts {
   display: flex;
   width: 100%;
-  overflow-x: scroll;
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* for Firefox */
   margin-bottom: 16px;
 }
 
-.amounts::-webkit-scrollbar {
-  display: none;
-}
-
 .sat-amount {
+  flex: 1 1 auto;
   text-align: center;
   display: inline-block;
   background-color: #2a2a2a;

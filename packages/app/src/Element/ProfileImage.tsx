@@ -8,6 +8,7 @@ import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
 import { HexKey } from "@snort/nostr";
 import { MetadataCache } from "State/Users";
+import usePageWidth from "Hooks/usePageWidth";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -15,8 +16,10 @@ export interface ProfileImageProps {
   showUsername?: boolean;
   className?: string;
   link?: string;
+  autoWidth?: boolean;
   defaultNip?: string;
   verifyNip?: boolean;
+  linkToProfile?: boolean;
 }
 
 export default function ProfileImage({
@@ -25,12 +28,15 @@ export default function ProfileImage({
   showUsername = true,
   className,
   link,
+  autoWidth = true,
   defaultNip,
   verifyNip,
+  linkToProfile = true,
 }: ProfileImageProps) {
   const navigate = useNavigate();
   const user = useUserProfile(pubkey);
   const nip05 = defaultNip ? defaultNip : user?.nip05;
+  const width = usePageWidth();
 
   const name = useMemo(() => {
     return getDisplayName(user, pubkey);
@@ -40,20 +46,28 @@ export default function ProfileImage({
     link = "#";
   }
 
+  const onAvatarClick = () => {
+    if (linkToProfile) {
+      navigate(link ?? profileLink(pubkey));
+    }
+  };
+
   return (
     <div className={`pfp${className ? ` ${className}` : ""}`}>
       <div className="avatar-wrapper">
-        <Avatar user={user} onClick={() => navigate(link ?? profileLink(pubkey))} />
+        <Avatar user={user} onClick={onAvatarClick} />
       </div>
       {showUsername && (
-        <div className="profile-name f-grow">
+        <div className="profile-name">
           <div className="username">
             <Link className="display-name" key={pubkey} to={link ?? profileLink(pubkey)}>
-              {name}
+              <div>{name}</div>
               {nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
             </Link>
           </div>
-          <div className="subheader">{subHeader}</div>
+          <div className="subheader" style={{ width: autoWidth ? width - 190 : "" }}>
+            {subHeader}
+          </div>
         </div>
       )}
     </div>

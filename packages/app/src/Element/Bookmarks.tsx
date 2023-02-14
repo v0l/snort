@@ -31,7 +31,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
 
   return (
     <div className="main-content">
-      <div className="icon-title">
+      <div className="mb10 flex-end">
         <select
           disabled={ps.length <= 1}
           value={onlyPubkey}

@@ -1,23 +1,17 @@
-import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/nostr";
 import MuteButton from "Element/MuteButton";
 import ProfilePreview from "Element/ProfilePreview";
-import useMutedFeed, { getMuted } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 
 import messages from "./messages";
 
 export interface MutedListProps {
-  pubkey: HexKey;
+  pubkeys: HexKey[];
 }
 
-export default function MutedList({ pubkey }: MutedListProps) {
+export default function MutedList({ pubkeys }: MutedListProps) {
   const { isMuted, muteAll } = useModeration();
-  const feed = useMutedFeed(pubkey);
-  const pubkeys = useMemo(() => {
-    return getMuted(feed.store, pubkey);
-  }, [feed, pubkey]);
   const hasAllMuted = pubkeys.every(isMuted);
 
   return (

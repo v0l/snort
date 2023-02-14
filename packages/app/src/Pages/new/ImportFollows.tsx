@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 
 import { ApiHost } from "Const";
+import Logo from "Element/Logo";
 import AsyncButton from "Element/AsyncButton";
 import FollowListBase from "Element/FollowListBase";
 import { RootState } from "State/Store";
@@ -50,6 +51,7 @@ export default function ImportFollows() {
 
   return (
     <div className="main-content new-user" dir="auto">
+      <Logo />
       <div className="progress-bar">
         <div className="progress progress-last"></div>
       </div>
@@ -68,6 +70,16 @@ export default function ImportFollows() {
           }}
         />
       </p>
+
+      <div className="next-actions continue-actions">
+        <button className="secondary" type="button" onClick={() => navigate("/new/discover")}>
+          <FormattedMessage {...messages.Skip} />
+        </button>
+        <button type="button" onClick={() => navigate("/new/discover")}>
+          <FormattedMessage {...messages.Next} />
+        </button>
+      </div>
+
       <h2>
         <FormattedMessage {...messages.TwitterUsername} />
       </h2>
@@ -95,15 +107,6 @@ export default function ImportFollows() {
             pubkeys={sortedTwitterFollows}
           />
         )}
-      </div>
-
-      <div className="next-actions">
-        <button className="secondary" type="button" onClick={() => navigate("/new/discover")}>
-          <FormattedMessage {...messages.Skip} />
-        </button>
-        <button type="button" onClick={() => navigate("/new/discover")}>
-          <FormattedMessage {...messages.Next} />
-        </button>
       </div>
     </div>
   );

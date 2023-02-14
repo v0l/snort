@@ -25,20 +25,22 @@ export default function ProfilePreview(props: ProfilePreviewProps) {
   };
 
   return (
-    <div className={`profile-preview${props.className ? ` ${props.className}` : ""}`} ref={ref}>
-      {inView && (
-        <>
-          <ProfileImage
-            pubkey={pubkey}
-            subHeader={options.about ? <div className="f-ellipsis about">{user?.about}</div> : undefined}
-          />
-          {props.actions ?? (
-            <div className="follow-button-container">
-              <FollowButton pubkey={pubkey} />
-            </div>
-          )}
-        </>
-      )}
-    </div>
+    <>
+      <div className={`profile-preview${props.className ? ` ${props.className}` : ""}`} ref={ref}>
+        {inView && (
+          <>
+            <ProfileImage
+              pubkey={pubkey}
+              subHeader={options.about ? <div className="about">{user?.about}</div> : undefined}
+            />
+            {props.actions ?? (
+              <div className="follow-button-container">
+                <FollowButton pubkey={pubkey} />
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </>
   );
 }

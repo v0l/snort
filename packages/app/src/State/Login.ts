@@ -4,7 +4,7 @@ import { DefaultRelays } from "Const";
 import { HexKey, TaggedRawEvent } from "@snort/nostr";
 import { RelaySettings } from "@snort/nostr";
 import type { AppDispatch, RootState } from "State/Store";
-import { ImgProxySettings } from "Feed/ImgProxy";
+import { ImgProxySettings } from "Hooks/useImgProxy";
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";

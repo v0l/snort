@@ -96,27 +96,4 @@
   .reactions-view .tab.disabled {
     display: none;
   }
-  .reactions-item .reaction-icon {
-    width: 42px;
-  }
-  .reactions-item .avatar {
-    width: 21px;
-    height: 21px;
-  }
-  .reactions-item .pfp .username {
-    font-size: 14px;
-  }
-  .reactions-item .pfp .nip05 {
-    display: none;
-  }
-  .reactions-item button {
-    font-size: 14px;
-  }
-  .reactions-item .zap-reaction-icon svg {
-    width: 12px;
-    height: l2px;
-  }
-  .reactions-item .zap-amount {
-    font-size: 12px;
-  }
 }

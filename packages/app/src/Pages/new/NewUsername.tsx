@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
+import Logo from "Element/Logo";
 import useEventPublisher from "Feed/EventPublisher";
 
 import messages from "./messages";
@@ -23,6 +24,7 @@ export default function NewUserName() {
 
   return (
     <div className="main-content new-user" dir="auto">
+      <Logo />
       <div className="progress-bar">
         <div className="progress progress-second"></div>
       </div>
@@ -42,6 +44,9 @@ export default function NewUserName() {
         value={username}
         onChange={ev => setUsername(ev.target.value)}
       />
+      <div className="help-text">
+        <FormattedMessage defaultMessage="You can change your username at any point." />
+      </div>
       <div className="next-actions">
         <button type="button" className="transparent" onClick={() => navigate("/new/verify")}>
           <FormattedMessage {...messages.Skip} />

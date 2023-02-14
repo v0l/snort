@@ -1,12 +1,18 @@
 import { useMemo } from "react";
+import { useSelector } from "react-redux";
 
 import { getNewest } from "Util";
 import { HexKey, TaggedRawEvent, Lists } from "@snort/nostr";
 import { EventKind, Subscriptions } from "@snort/nostr";
 import useSubscription, { NoteStore } from "Feed/Subscription";
+import { RootState } from "State/Store";
 
 export default function useMutedFeed(pubkey: HexKey) {
+  const { publicKey, muted } = useSelector((s: RootState) => s.login);
+  const isMe = publicKey === pubkey;
+
   const sub = useMemo(() => {
+    if (isMe) return null;
     const sub = new Subscriptions();
     sub.Id = `muted:${pubkey.slice(0, 12)}`;
     sub.Kinds = new Set([EventKind.PubkeyLists]);
@@ -16,7 +22,13 @@ export default function useMutedFeed(pubkey: HexKey) {
     return sub;
   }, [pubkey]);
 
-  return useSubscription(sub);
+  const mutedFeed = useSubscription(sub, { leaveOpen: false, cache: true });
+
+  const mutedList = useMemo(() => {
+    return getMuted(mutedFeed.store, pubkey);
+  }, [mutedFeed.store]);
+
+  return isMe ? muted : mutedList;
 }
 
 export function getMutedKeys(rawNotes: TaggedRawEvent[]): {

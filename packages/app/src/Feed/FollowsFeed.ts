@@ -1,23 +1,32 @@
 import { useMemo } from "react";
-import { HexKey } from "@snort/nostr";
-import { EventKind, Subscriptions } from "@snort/nostr";
-import useSubscription, { NoteStore } from "Feed/Subscription";
+import { useSelector } from "react-redux";
+import { HexKey, TaggedRawEvent, EventKind, Subscriptions } from "@snort/nostr";
+
+import useSubscription from "Feed/Subscription";
+import { RootState } from "State/Store";
 
 export default function useFollowsFeed(pubkey: HexKey) {
+  const { publicKey, follows } = useSelector((s: RootState) => s.login);
+  const isMe = publicKey === pubkey;
+
   const sub = useMemo(() => {
+    if (isMe) return null;
     const x = new Subscriptions();
     x.Id = `follows:${pubkey.slice(0, 12)}`;
     x.Kinds = new Set([EventKind.ContactList]);
     x.Authors = new Set([pubkey]);
-
     return x;
-  }, [pubkey]);
+  }, [isMe, pubkey]);
 
-  return useSubscription(sub);
+  const contactFeed = useSubscription(sub, { leaveOpen: false, cache: true });
+  const following = useMemo(() => {
+    return getFollowing(contactFeed.store.notes ?? [], pubkey);
+  }, [contactFeed.store.notes]);
+  return isMe ? follows : following;
 }
 
-export function getFollowers(feed: NoteStore, pubkey: HexKey) {
-  const contactLists = feed?.notes.filter(a => a.kind === EventKind.ContactList && a.pubkey === pubkey);
+export function getFollowing(notes: TaggedRawEvent[], pubkey: HexKey) {
+  const contactLists = notes.filter(a => a.kind === EventKind.ContactList && a.pubkey === pubkey);
   const pTags = contactLists?.map(a => a.tags.filter(b => b[0] === "p").map(c => c[1]));
   return [...new Set(pTags?.flat())];
 }

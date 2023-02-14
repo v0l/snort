@@ -327,7 +327,15 @@ export default function Thread(props: ThreadProps) {
   function renderRoot(note: NEvent) {
     const className = `thread-root ${isSingleNote ? "thread-root-single" : ""}`;
     if (note) {
-      return <Note className={className} key={note.Id} data-ev={note} related={notes} />;
+      return (
+        <Note
+          className={className}
+          key={note.Id}
+          data-ev={note}
+          related={notes}
+          options={{ showReactionsLink: true }}
+        />
+      );
     } else {
       return <NoteGhost className={className}>Loading thread root.. ({notes?.length} notes loaded)</NoteGhost>;
     }

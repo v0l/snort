@@ -1,4 +1,4 @@
-import useImgProxy from "Feed/ImgProxy";
+import useImgProxy from "Hooks/useImgProxy";
 import { useEffect, useState } from "react";
 
 interface ProxyImgProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {

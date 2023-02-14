@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import Logo from "Element/Logo";
 import { services } from "Pages/Verification";
 import Nip5Service from "Element/Nip5Service";
 import ProfileImage from "Element/ProfileImage";
@@ -25,6 +26,7 @@ export default function GetVerified() {
 
   return (
     <div className="main-content new-user" dir="auto">
+      <Logo />
       <div className="progress-bar">
         <div className="progress progress-third"></div>
       </div>

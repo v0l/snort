@@ -35,6 +35,9 @@
   "1Mo59U": {
     "string": "Are you sure you want to remove this note from bookmarks?"
   },
+  "1nYUGC": {
+    "string": "{n} Following"
+  },
   "1udzha": {
     "string": "Conversations"
   },
@@ -47,6 +50,9 @@
   "2IFGap": {
     "string": "Donate"
   },
+  "2a2YiP": {
+    "string": "{n} Bookmarks"
+  },
   "2k0Cv+": {
     "string": "Dislikes ({n})"
   },
@@ -55,6 +61,12 @@
   },
   "3gOsZq": {
     "string": "Translators"
+  },
+  "3t3kok": {
+    "string": "{n,plural,=1{{n} new note} other{{n} new notes}}"
+  },
+  "3tVy+Z": {
+    "string": "{n} Followers"
   },
   "3xCwbZ": {
     "developer_comment": "Seperator text for Login / Generate Key",
@@ -156,6 +168,9 @@
   "B6+XJy": {
     "string": "zapped"
   },
+  "B6H7eJ": {
+    "string": "nsec, npub, nip-05, hex"
+  },
   "BOUMjw": {
     "string": "No nostr users found for {twitterUsername}"
   },
@@ -170,6 +185,9 @@
   },
   "CHTbO3": {
     "string": "Failed to load invoice"
+  },
+  "CmZ9ls": {
+    "string": "{n} Muted"
   },
   "Cu/K85": {
     "string": "Translated from {lang}"
@@ -209,6 +227,9 @@
   },
   "F+B3x1": {
     "string": "We have also partnered with nostrplebs.com to give you more options"
+  },
+  "FDguSC": {
+    "string": "{n} Zaps"
   },
   "FS3b54": {
     "string": "Done!"
@@ -255,9 +276,6 @@
   },
   "IEwZvs": {
     "string": "Are you sure you want to unpin this note?"
-  },
-  "IKKHqV": {
-    "string": "Follows"
   },
   "INSqIz": {
     "string": "Twitter username..."
@@ -347,9 +365,15 @@
   "PrsIg7": {
     "string": "Reactions will be shown on every page, if disabled no reactions will be shown"
   },
+  "QDFTjG": {
+    "string": "{n} Relays"
+  },
   "QTdJfH": {
     "developer_comment": "Heading for generate key flow",
     "string": "Create an Account"
+  },
+  "QawghE": {
+    "string": "You can change your username at any point."
   },
   "QxCuTo": {
     "developer_comment": "Artwork attribution label",
@@ -399,6 +423,9 @@
   "Vx7Zm2": {
     "string": "How do keys work?"
   },
+  "W2PiAr": {
+    "string": "{n} Blocked"
+  },
   "W9355R": {
     "string": "Unmute"
   },
@@ -443,6 +470,9 @@
   },
   "c35bj2": {
     "string": "If you have an enquiry about your NIP-05 order please DM {link}"
+  },
+  "cPIKU2": {
+    "string": "Following"
   },
   "cQfLWb": {
     "developer_comment": "Placeholder text for imgproxy url textbox",
@@ -553,6 +583,9 @@
   },
   "jvo0vs": {
     "string": "Save"
+  },
+  "jzgQ2z": {
+    "string": "{n} Reactions"
   },
   "k2veDA": {
     "string": "Write"
@@ -737,6 +770,10 @@
   },
   "xmcVZ0": {
     "string": "Search"
+  },
+  "yCmnnm": {
+    "developer_comment": "Label for reading global feed from specific relays",
+    "string": "Read global from"
   },
   "zFegDD": {
     "string": "Contact"
