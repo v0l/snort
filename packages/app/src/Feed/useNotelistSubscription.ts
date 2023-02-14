@@ -2,9 +2,7 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 
 import { getNewest } from "Util";
-import { HexKey, Lists } from "Nostr";
-import EventKind from "Nostr/EventKind";
-import { Subscriptions } from "Nostr/Subscriptions";
+import { HexKey, Lists, EventKind, Subscriptions } from "@snort/nostr";
 import useSubscription from "Feed/Subscription";
 import { RootState } from "State/Store";
 

@@ -26,7 +26,7 @@ import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
 import { parseZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Feed/ProfileFeed";
-import { Event as NEvent, EventKind, TaggedRawEvent } from "@snort/nostr";
+import { Event as NEvent, EventKind, TaggedRawEvent, HexKey } from "@snort/nostr";
 import { RootState } from "State/Store";
 import { UserPreferences, setPinned, setBookmarked } from "State/Login";
 import useModeration from "Hooks/useModeration";

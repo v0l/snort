@@ -36,13 +36,12 @@ import MutedList from "Element/MutedList";
 import FollowsList from "Element/FollowsList";
 import IconButton from "Element/IconButton";
 import { RootState } from "State/Store";
-import { HexKey } from "@snort/nostr";
+import { HexKey, NostrPrefix } from "@snort/nostr";
 import FollowsYou from "Element/FollowsYou";
 import QrCode from "Element/QrCode";
 import Modal from "Element/Modal";
 import { ProxyImg } from "Element/ProxyImg";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
-import { NostrPrefix } from "Nostr/Links";
 import messages from "./messages";
 
 const NOTES = 0;

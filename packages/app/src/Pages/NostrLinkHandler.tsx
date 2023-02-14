@@ -1,4 +1,4 @@
-import { NostrPrefix } from "Nostr/Links";
+import { NostrPrefix } from "@snort/nostr";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 

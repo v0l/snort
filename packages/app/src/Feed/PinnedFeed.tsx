@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 import { RootState } from "State/Store";
-import { HexKey, Lists } from "Nostr";
+import { HexKey, Lists } from "@snort/nostr";
 import useNotelistSubscription from "Feed/useNotelistSubscription";
 
 export default function usePinnedFeed(pubkey: HexKey) {

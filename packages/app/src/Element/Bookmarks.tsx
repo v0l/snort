@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 
 import { dedupeByPubkey } from "Util";
 import Note from "Element/Note";
-import { HexKey, TaggedRawEvent } from "Nostr";
+import { HexKey, TaggedRawEvent } from "@snort/nostr";
 import { useUserProfiles } from "Feed/ProfileFeed";
 import { RootState } from "State/Store";
 
