@@ -53,7 +53,7 @@ export default function ProfileImage({
   };
 
   return (
-    <div className={`pfp${className ? ` ${className}` : ""}`}>
+    <div className={`pfp f-ellipsis${className ? ` ${className}` : ""}`}>
       <div className="avatar-wrapper">
         <Avatar user={user} onClick={onAvatarClick} />
       </div>
