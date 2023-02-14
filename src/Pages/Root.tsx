@@ -1,5 +1,5 @@
 import "./Root.css";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useIntl, FormattedMessage } from "react-intl";
@@ -11,10 +11,11 @@ import { TimelineSubject } from "Feed/TimelineFeed";
 
 import messages from "./messages";
 import { System } from "Nostr/System";
+import { debounce } from "Util";
 
 export default function RootPage() {
   const { formatMessage } = useIntl();
-  const { loggedOut, publicKey: pubKey, follows, tags } = useSelector((s: RootState) => s.login);
+  const { loggedOut, publicKey: pubKey, follows, tags, relays } = useSelector((s: RootState) => s.login);
   const RootTab: Record<string, Tab> = {
     Posts: {
       text: formatMessage(messages.Posts),
@@ -31,6 +32,7 @@ export default function RootPage() {
   };
   const [tab, setTab] = useState<Tab>(RootTab.Posts);
   const [relay, setRelay] = useState<string>();
+  const [globalRelays, setGlobalRelays] = useState<string[]>([]);
   const tagTabs = tags.map((t, idx) => {
     return { text: `#${t}`, value: idx + 3 };
   });
@@ -53,18 +55,20 @@ export default function RootPage() {
     }
   }
 
-  const globalRelays = useMemo(() => {
-    const ret: string[] = [];
-    System.Sockets.forEach((v, k) => {
-      if (v.Info?.limitation?.payment_required === true) {
-        ret.push(k);
-      }
-    });
+  useEffect(() => {
+    return debounce(1_000, () => {
+      const ret: string[] = [];
+      System.Sockets.forEach((v, k) => {
+        if (v.Info?.limitation?.payment_required === true) {
+          ret.push(k);
+        }
+      });
 
-    if (ret.length > 0 && !relay) {
-      setRelay(ret[0]);
-    }
-    return ret;
+      if (ret.length > 0 && !relay) {
+        setRelay(ret[0]);
+      }
+      setGlobalRelays(ret);
+    });
   }, [relays, relay]);
 
   const isGlobal = loggedOut || tab.value === RootTab.Global.value;
@@ -109,7 +113,7 @@ export default function RootPage() {
         subject={timelineSubect}
         postsOnly={tab.value === RootTab.Posts.value}
         method={"TIME_RANGE"}
-        window={isGlobal ? 60 : undefined}
+        window={undefined}
         relay={isGlobal ? relay : undefined}
       />
     </>
