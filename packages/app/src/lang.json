@@ -771,6 +771,10 @@
   "xmcVZ0": {
     "string": "Search"
   },
+  "yCmnnm": {
+    "developer_comment": "Label for reading global feed from specific relays",
+    "string": "Read global from"
+  },
   "zFegDD": {
     "string": "Contact"
   },
