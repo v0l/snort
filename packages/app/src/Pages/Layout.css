@@ -56,6 +56,13 @@ header .pfp .avatar-wrapper {
   right: 8px;
 }
 
+@media (max-width: 520px) {
+  .header-actions .btn-rnd .has-unread {
+    top: 6px;
+    right: 6px;
+  }
+}
+
 .search {
   margin: 0 10px 0 10px;
 }

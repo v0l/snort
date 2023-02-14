@@ -3,8 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faCertificate } from "@fortawesome/free-solid-svg-icons";
-import { useUserProfile } from "Feed/ProfileFeed";
-import Nip05 from "Element/Nip05";
 import { profileLink } from "Util";
 
 import messages from "./messages";
@@ -16,12 +14,10 @@ export interface NoteToSelfProps {
   link?: string;
 }
 
-function NoteLabel({ pubkey }: NoteToSelfProps) {
-  const user = useUserProfile(pubkey);
+function NoteLabel() {
   return (
     <div>
       <FormattedMessage {...messages.NoteToSelf} /> <FontAwesomeIcon icon={faCertificate} size="xs" />
-      {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
     </div>
   );
 }
@@ -46,9 +42,9 @@ export default function NoteToSelf({ pubkey, clickable, className, link }: NoteT
         <div className="name">
           {(clickable && (
             <Link to={link ?? profileLink(pubkey)}>
-              <NoteLabel pubkey={pubkey} />
+              <NoteLabel />
             </Link>
-          )) || <NoteLabel pubkey={pubkey} />}
+          )) || <NoteLabel />}
         </div>
       </div>
     </div>
