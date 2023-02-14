@@ -259,7 +259,11 @@ export default function ProfilePage() {
         {showProfileQr && (
           <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id} />
-            <QrCode data={`nostr:${hexToBech32(NostrPrefix.PublicKey, id)}`} link={undefined} className="m10" />
+            <QrCode
+              data={`nostr:${hexToBech32(NostrPrefix.PublicKey, id)}`}
+              link={undefined}
+              className=" m10 align-center"
+            />
           </Modal>
         )}
         {isMe ? (
