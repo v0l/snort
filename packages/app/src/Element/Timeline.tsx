@@ -69,7 +69,7 @@ export default function Timeline({
   function eventElement(e: TaggedRawEvent) {
     switch (e.kind) {
       case EventKind.SetMetadata: {
-        return <ProfilePreview actions={null} pubkey={e.pubkey} className="card" />;
+        return <ProfilePreview actions={<></>} pubkey={e.pubkey} className="card" />;
       }
       case EventKind.TextNote: {
         return <Note key={e.id} data={e} related={related.notes} ignoreModeration={ignoreModeration} />;
