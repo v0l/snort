@@ -11,6 +11,7 @@ import { UserPreferences } from "State/Login";
 export interface TimelineFeedOptions {
   method: "TIME_RANGE" | "LIMIT_UNTIL";
   window?: number;
+  relay?: string;
 }
 
 export interface TimelineSubject {
@@ -56,7 +57,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       }
     }
     return sub;
-  }, [subject.type, subject.items, subject.discriminator]);
+  }, [subject.type, subject.items, subject.discriminator, options.relay]);
 
   const sub = useMemo(() => {
     const sub = createSub();
@@ -89,7 +90,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return sub;
   }, [until, since, options.method, pref, createSub]);
 
-  const main = useSubscription(sub, { leaveOpen: true, cache: true });
+  const main = useSubscription(sub, { leaveOpen: true, cache: subject.type !== "global", relay: options.relay });
 
   const subRealtime = useMemo(() => {
     const subLatest = createSub();
@@ -104,7 +105,14 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
   const latest = useSubscription(subRealtime, {
     leaveOpen: true,
     cache: false,
+    relay: options.relay,
   });
+
+  useEffect(() => {
+    // clear store if chaning relays
+    main.clear();
+    latest.clear();
+  }, [options.relay]);
 
   const subNext = useMemo(() => {
     let sub: Subscriptions | undefined;
@@ -117,7 +125,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return sub ?? null;
   }, [trackingEvents, pref, subject.type]);
 
-  const others = useSubscription(subNext, { leaveOpen: true, cache: true });
+  const others = useSubscription(subNext, { leaveOpen: true, cache: subject.type !== "global", relay: options.relay });
 
   const subParents = useMemo(() => {
     if (trackingParentEvents.length > 0) {
@@ -129,7 +137,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return null;
   }, [trackingParentEvents, subject.type]);
 
-  const parent = useSubscription(subParents);
+  const parent = useSubscription(subParents, { leaveOpen: false, cache: false, relay: options.relay });
 
   useEffect(() => {
     if (main.store.notes.length > 0) {

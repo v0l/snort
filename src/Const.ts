@@ -40,8 +40,10 @@ export const ProfileCacheExpire = 1_000 * 60 * 5;
  */
 export const DefaultRelays = new Map<string, RelaySettings>([
   ["wss://relay.snort.social", { read: true, write: true }],
-  ["wss://eden.nostr.land", { read: true, write: true }],
-  ["wss://atlas.nostr.land", { read: true, write: true }],
+  ["wss://nostr.wine", { read: true, write: false }],
+  ["wss://eden.nostr.land", { read: true, write: false }],
+  ["wss://atlas.nostr.land", { read: true, write: false }],
+  ["wss://relay.orangepill.dev", { read: true, write: false }],
 ]);
 
 /**

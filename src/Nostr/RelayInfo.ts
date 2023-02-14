@@ -6,4 +6,7 @@ export interface RelayInfo {
   supported_nips?: number[];
   software?: string;
   version?: string;
+  limitation?: {
+    payment_required: boolean;
+  };
 }

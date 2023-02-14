@@ -1,5 +1,5 @@
 import "./Root.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useIntl, FormattedMessage } from "react-intl";
@@ -10,10 +10,12 @@ import Timeline from "Element/Timeline";
 import { TimelineSubject } from "Feed/TimelineFeed";
 
 import messages from "./messages";
+import { System } from "Nostr/System";
+import { debounce } from "Util";
 
 export default function RootPage() {
   const { formatMessage } = useIntl();
-  const { loggedOut, publicKey: pubKey, follows, tags } = useSelector((s: RootState) => s.login);
+  const { loggedOut, publicKey: pubKey, follows, tags, relays } = useSelector((s: RootState) => s.login);
   const RootTab: Record<string, Tab> = {
     Posts: {
       text: formatMessage(messages.Posts),
@@ -29,6 +31,8 @@ export default function RootPage() {
     },
   };
   const [tab, setTab] = useState<Tab>(RootTab.Posts);
+  const [relay, setRelay] = useState<string>();
+  const [globalRelays, setGlobalRelays] = useState<string[]>([]);
   const tagTabs = tags.map((t, idx) => {
     return { text: `#${t}`, value: idx + 3 };
   });
@@ -51,6 +55,22 @@ export default function RootPage() {
     }
   }
 
+  useEffect(() => {
+    return debounce(1_000, () => {
+      const ret: string[] = [];
+      System.Sockets.forEach((v, k) => {
+        if (v.Info?.limitation?.payment_required === true) {
+          ret.push(k);
+        }
+      });
+
+      if (ret.length > 0 && !relay) {
+        setRelay(ret[0]);
+      }
+      setGlobalRelays(ret);
+    });
+  }, [relays, relay]);
+
   const isGlobal = loggedOut || tab.value === RootTab.Global.value;
   const timelineSubect: TimelineSubject = (() => {
     if (isGlobal) {
@@ -63,16 +83,38 @@ export default function RootPage() {
 
     return { type: "pubkey", items: follows, discriminator: "follows" };
   })();
+
+  if (isGlobal && globalRelays.length === 0) return null;
   return (
     <>
       <div className="main-content">{pubKey && <Tabs tabs={tabs} tab={tab} setTab={setTab} />}</div>
+      {isGlobal && (
+        <div className="flex mb10">
+          <div className="f-grow">
+            <FormattedMessage
+              defaultMessage="Read global from"
+              description="Label for reading global feed from specific relays"
+            />
+          </div>
+          <div>
+            <select onChange={e => setRelay(e.target.value)}>
+              {globalRelays.map(a => (
+                <option key={a} value={a}>
+                  {new URL(a).host}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
       {followHints()}
       <Timeline
         key={tab.value}
         subject={timelineSubect}
         postsOnly={tab.value === RootTab.Posts.value}
         method={"TIME_RANGE"}
-        window={tab.value === RootTab.Global.value ? 60 : undefined}
+        window={undefined}
+        relay={isGlobal ? relay : undefined}
       />
     </>
   );

@@ -23,6 +23,7 @@ export interface TimelineProps {
   method: "TIME_RANGE" | "LIMIT_UNTIL";
   ignoreModeration?: boolean;
   window?: number;
+  relay?: string;
 }
 
 /**
@@ -34,11 +35,13 @@ export default function Timeline({
   method,
   ignoreModeration = false,
   window,
+  relay,
 }: TimelineProps) {
   const { muted, isMuted } = useModeration();
   const { main, related, latest, parent, loadMore, showLatest } = useTimelineFeed(subject, {
     method,
     window: window,
+    relay,
   });
 
   const filterPosts = useCallback(
