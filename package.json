@@ -2,5 +2,8 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "build": "yarn workspace @snort/nostr build && yarn workspace @snort/app build"
+  }
 }
