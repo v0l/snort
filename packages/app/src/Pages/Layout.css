@@ -58,8 +58,8 @@ header .pfp .avatar-wrapper {
 
 @media (max-width: 520px) {
   .header-actions .btn-rnd .has-unread {
-    top: 6px;
-    right: 6px;
+    top: 2px;
+    right: 2px;
   }
 }
 
