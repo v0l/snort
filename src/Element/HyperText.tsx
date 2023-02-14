@@ -46,11 +46,11 @@ export default function HyperText({ link, creator }: { link: string; creator: He
       const tidalId = TidalRegex.test(a) && RegExp.$1;
       const soundcloundId = SoundCloudRegex.test(a) && RegExp.$1;
       const mixcloudId = MixCloudRegex.test(a) && RegExp.$1;
-      const spotifyId = SpotifyRegex.test(a);
-      const twitchId = TwitchRegex.test(a);
-      const appleMusicId = AppleMusicRegex.test(a);
+      const isSpotifyLink = SpotifyRegex.test(a);
+      const isTwitchLink = TwitchRegex.test(a);
+      const isAppleMusicLink = AppleMusicRegex.test(a);
       const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
-      if (extension && !appleMusicId) {
+      if (extension && !isAppleMusicLink) {
         switch (extension) {
           case "gif":
           case "jpg":
@@ -113,11 +113,11 @@ export default function HyperText({ link, creator }: { link: string; creator: He
         return <SoundCloudEmbed link={a} />;
       } else if (mixcloudId) {
         return <MixCloudEmbed link={a} />;
-      } else if (spotifyId) {
+      } else if (isSpotifyLink) {
         return <SpotifyEmbed link={a} />;
-      } else if (twitchId) {
+      } else if (isTwitchLink) {
         return <TwitchEmbed link={a} />;
-      } else if (appleMusicId) {
+      } else if (isAppleMusicLink) {
         return <AppleMusicEmbed link={a} />;
       } else {
         return (
