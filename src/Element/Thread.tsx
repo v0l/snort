@@ -325,10 +325,10 @@ export default function Thread(props: ThreadProps) {
     return Array.from(chains?.keys()).filter(a => !parsedNotes?.some(b => b.Id === a));
   }, [chains]);
 
-  function renderRoot(note: NEvent) {
+  function renderRoot(note: NEvent, replyCount?: number) {
     const className = `thread-root ${isSingleNote ? "thread-root-single" : ""}`;
     if (note) {
-      return <Note className={className} key={note.Id} data-ev={note} related={notes} />;
+      return <Note className={className} key={note.Id} data-ev={note} related={notes} replyCount={replyCount} />;
     } else {
       return <NoteGhost className={className}>Loading thread root.. ({notes?.length} notes loaded)</NoteGhost>;
     }
@@ -375,11 +375,13 @@ export default function Thread(props: ThreadProps) {
     defaultMessage: "Back",
     description: "Navigate back button on threads view",
   });
+  // const replyCount2 = brokenChains.length
+  const replyCount = currentRoot ? chains.get(currentRoot.Id)?.length : undefined;
   return (
     <div className="main-content mt10">
       <BackButton onClick={goBack} text={path?.length > 1 ? parentText : backText} />
       <div className="thread-container">
-        {currentRoot && renderRoot(currentRoot)}
+        {currentRoot && renderRoot(currentRoot, replyCount)}
         {currentRoot && renderChain(currentRoot.Id)}
         {currentRoot === root && (
           <>
