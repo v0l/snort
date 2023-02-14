@@ -38,6 +38,7 @@
 
 .login > div:nth-child(2) > div.artwork > div {
   margin-left: 25px;
+  margin-right: 25px;
   margin-bottom: 25px;
   padding: 4px 12px;
   background-color: var(--modal-bg-color);
