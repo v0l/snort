@@ -6,6 +6,7 @@
   -ms-overflow-style: none; /* for Internet Explorer, Edge */
   scrollbar-width: none; /* Firefox */
   margin-bottom: 18px;
+  white-space: nowrap;
 }
 
 .tabs::-webkit-scrollbar {
@@ -18,7 +19,7 @@
   border-radius: 16px;
   font-weight: 600;
   font-size: 14px;
-  padding: 6px 8px;
+  padding: 6px 12px;
   text-align: center;
   font-feature-settings: "tnum";
 }
