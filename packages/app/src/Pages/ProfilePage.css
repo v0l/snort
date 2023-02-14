@@ -224,11 +224,19 @@
 }
 
 .qr-modal .pfp .username {
-  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .qr-modal canvas {
   border-radius: 10px;
+}
+
+.qr-modal .pfp .display-name {
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .profile .zap-amount {
