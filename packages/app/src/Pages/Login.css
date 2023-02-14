@@ -1,0 +1,136 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  color: #999999;
+}
+
+.light .login {
+  color: var(--font-tertiary-color);
+}
+
+.login > div {
+  flex: 1;
+  min-width: 0;
+  margin: 24px;
+}
+
+.login .logo {
+  margin-top: 16px;
+  margin-bottom: 67px;
+}
+
+.login > div:nth-child(1) {
+  display: flex;
+  justify-content: center;
+}
+
+.login > div:nth-child(1) > .login-container {
+  width: 403px;
+}
+
+.login > div:nth-child(2) > div.artwork {
+  background-image: var(--img-src);
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  background-size: cover;
+  background-position-x: center;
+  display: flex;
+  align-items: flex-end;
+}
+
+.login > div:nth-child(2) > div.artwork > .attribution {
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-bottom: 25px;
+  padding: 4px 12px;
+  background-color: var(--modal-bg-color);
+  border-radius: 100px;
+  color: var(--gray-light);
+  font-size: 14px;
+  user-select: none;
+}
+
+.artwork .artist {
+  background: var(--snort-gradient);
+  font-weight: 600;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.login > div:nth-child(2) > div.artwork .zap-button {
+  display: inline-block;
+  color: inherit;
+  background-color: unset;
+}
+
+@media (max-width: 1024px) {
+  .login > div:nth-child(2) {
+    display: none;
+  }
+}
+
+.login .login-note {
+}
+
+.login .login-actions {
+  margin-top: 32px;
+}
+
+.login .login-actions > button {
+  margin-right: 10px;
+}
+
+@media (max-width: 520px) {
+  .login .login-actions > button {
+    margin-bottom: 10px;
+  }
+}
+
+.login .login-or {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  margin-top: 56px;
+  margin-bottom: 64px;
+}
+
+@media (max-width: 520px) {
+  .login .login-or {
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+}
+
+.light .login-or {
+  color: #a1a1aa;
+}
+.login-container input[type="text"] {
+  border: none;
+  background-color: var(--gray-secondary);
+  padding: 12px 16px;
+  font-size: 16px;
+}
+
+.login-container h1 {
+  color: var(--font-color);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 39px;
+}
+
+.login-container h2 {
+  color: var(--font-color);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+}

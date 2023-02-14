@@ -1,0 +1,48 @@
+.pfp {
+  display: flex;
+  align-items: center;
+}
+
+.pfp .avatar-wrapper {
+  margin-right: 8px;
+  z-index: 2;
+}
+
+.pfp .avatar {
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+}
+
+.pfp a {
+  text-decoration: none;
+}
+
+.pfp .username {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: 600;
+}
+
+.pfp .profile-name {
+  display: flex;
+  flex-direction: column;
+}
+
+.pfp .display-name {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@media (max-width: 420px) {
+  .pfp .display-name {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.pfp .subheader .about {
+  max-width: calc(100vw - 140px);
+}

@@ -1,0 +1,61 @@
+.nip05 {
+  color: var(--font-secondary-color);
+  justify-content: flex-start;
+  align-items: center;
+  font-weight: normal;
+}
+
+.nip05 .domain {
+  color: var(--font-secondary-color);
+  background-color: var(--font-secondary-color);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.nip05 .domain[data-domain="snort.social"] {
+  background-image: var(--snort-gradient);
+}
+
+.nip05 .domain[data-domain="strike.army"] {
+  background-image: var(--strike-army-gradient);
+}
+
+.nip05 .domain[data-domain="nostrplebs.com"] {
+  color: var(--highlight);
+  background-color: var(--highlight);
+}
+
+.nip05 .domain[data-domain="nostrpurple.com"] {
+  color: var(--highlight);
+  background-color: var(--highlight);
+}
+
+.nip05 .domain[data-domain="nostr.fan"] {
+  color: var(--highlight);
+  background-color: var(--highlight);
+}
+
+.nip05 .domain[data-domain="nostriches.net"] {
+  color: var(--highlight);
+  background-color: var(--highlight);
+  text-overflow: ellipsis;
+}
+
+.nip05 .badge {
+  color: var(--highlight);
+  margin-left: 0.2em;
+}
+
+@media (max-width: 420px) {
+  .zap .pfp .display-name {
+    align-items: center;
+  }
+  .nip05 .nick {
+    display: none;
+  }
+  .nip05 .domain {
+    display: none;
+  }
+}

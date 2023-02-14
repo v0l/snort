@@ -1,0 +1,55 @@
+.latest-notes {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 24px;
+  gap: 8px;
+  position: absolute;
+  width: 261px;
+  left: calc(50% - 261px / 2 + 0.5px);
+  top: 0;
+  color: white;
+  background: var(--highlight);
+  box-shadow: 0px 0px 15px rgba(78, 0, 255, 0.6);
+  border-radius: 100px;
+  z-index: 42;
+  opacity: 0.9;
+}
+
+.latest-notes-fixed {
+  position: fixed;
+  left: calc(50% - 261px / 2 + 0.5px);
+  top: 12px;
+}
+
+@media (max-width: 520px) {
+  .latest-notes {
+    width: 200px;
+    left: calc(50% - 110px);
+    padding: 6px 12px;
+  }
+  .latest-notes-fixed {
+    width: 200px;
+    padding: 6px 12px;
+    position: fixed;
+    top: 12px;
+    left: calc(50% - 110px);
+  }
+}
+
+.latest-notes .pfp:not(:last-of-type) {
+  margin: 0;
+  margin-right: -26px;
+}
+.latest-notes .pfp:last-of-type {
+  margin-right: -8px;
+}
+
+.latest-notes .pfp .avatar-wrapper .avatar {
+  margin: 0;
+  width: 32px;
+  height: 32px;
+  border: 2px solid white;
+}
