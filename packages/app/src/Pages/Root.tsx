@@ -84,11 +84,10 @@ export default function RootPage() {
     return { type: "pubkey", items: follows, discriminator: "follows" };
   })();
 
-  if (isGlobal && globalRelays.length === 0) return null;
   return (
     <>
       <div className="main-content">{pubKey && <Tabs tabs={tabs} tab={tab} setTab={setTab} />}</div>
-      {isGlobal && (
+      {isGlobal && globalRelays.length > 0 && (
         <div className="flex mb10">
           <div className="f-grow">
             <FormattedMessage
