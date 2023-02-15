@@ -1,8 +1,5 @@
-"project_id": "snort"
-"preserve_hierarchy": true
-"files": [
-  {
-    "source": "/packages/app/src/lang.json",
-    "translation": "/packages/app/src/translations/%two_letters_code%.json"
-  }
-]
+project_id: snort
+preserve_hierarchy: 1
+files:
+  - source: /packages/app/src/lang.json
+    translation: /packages/app/src/translations/%two_letters_code%.json
