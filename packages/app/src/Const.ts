@@ -49,7 +49,11 @@ export const DefaultRelays = new Map<string, RelaySettings>([
 /**
  * Default search relays
  */
-export const SearchRelays = new Map<string, RelaySettings>([["wss://relay.nostr.band", { read: true, write: false }]]);
+export const SearchRelays = new Map<string, RelaySettings>([
+  ["wss://relay.nostr.band", { read: true, write: false }],
+  ["wss://knostr.neutrine.com", { read: true, write: false }],
+  ["wss://relay.realsearch.cc", { read: true, write: false }],
+]);
 
 /**
  * List of recommended follows for new users
