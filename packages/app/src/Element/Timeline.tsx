@@ -69,7 +69,7 @@ export default function Timeline({
   function eventElement(e: TaggedRawEvent) {
     switch (e.kind) {
       case EventKind.SetMetadata: {
-        return <ProfilePreview pubkey={e.pubkey} className="card" />;
+        return <ProfilePreview actions={<></>} pubkey={e.pubkey} className="card" />;
       }
       case EventKind.TextNote: {
         return <Note key={e.id} data={e} related={related.notes} ignoreModeration={ignoreModeration} />;
@@ -108,7 +108,7 @@ export default function Timeline({
             <ArrowUp />
           </div>
           {!inView && (
-            <div className="card latest-notes latest-notes-fixed pointer" onClick={() => onShowLatest(true)}>
+            <div className="card latest-notes latest-notes-fixed pointer fade-in" onClick={() => onShowLatest(true)}>
               {latestAuthors.slice(0, 3).map(p => {
                 return <ProfileImage pubkey={p} showUsername={false} linkToProfile={false} />;
               })}
