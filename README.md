@@ -35,8 +35,15 @@ Snort supports the following NIP's:
 ### Running
 
 This repository is a yarn workspace. To install dependencies, run `yarn` from the project root.
+
 To run the application, use
 
 ```
 $ yarn start
+```
+
+To build the application and nostr package, use
+
+```
+$ yarn build
 ```
