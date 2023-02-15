@@ -1,13 +1,13 @@
 import { type ReactNode } from "react";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
-import enMessages from "translations/en";
-import esMessages from "translations/es";
-import zhMessages from "translations/zh";
-import jaMessages from "translations/ja";
-import frMessages from "translations/fr";
-import huMessages from "translations/hu";
-import idMessages from "translations/id";
-import arMessages from "translations/ar";
+import enMessages from "translations/en.json";
+import esMessages from "translations/es.json";
+import zhMessages from "translations/zh.json";
+import jaMessages from "translations/ja.json";
+import frMessages from "translations/fr.json";
+import huMessages from "translations/hu.json";
+import idMessages from "translations/id.json";
+import arMessages from "translations/ar.json";
 
 const DEFAULT_LOCALE = "en-US";
 
