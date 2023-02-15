@@ -88,22 +88,19 @@ export default function RootPage() {
     <>
       <div className="main-content">{pubKey && <Tabs tabs={tabs} tab={tab} setTab={setTab} />}</div>
       {isGlobal && globalRelays.length > 0 && (
-        <div className="flex mb10">
-          <div className="f-grow">
-            <FormattedMessage
-              defaultMessage="Read global from"
-              description="Label for reading global feed from specific relays"
-            />
-          </div>
-          <div>
-            <select onChange={e => setRelay(e.target.value)}>
-              {globalRelays.map(a => (
-                <option key={a} value={a}>
-                  {new URL(a).host}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="flex mb10 f-end">
+          <FormattedMessage
+            defaultMessage="Read global from"
+            description="Label for reading global feed from specific relays"
+          />
+          &nbsp;
+          <select onChange={e => setRelay(e.target.value)}>
+            {globalRelays.map(a => (
+              <option key={a} value={a}>
+                {new URL(a).host}
+              </option>
+            ))}
+          </select>
         </div>
       )}
       {followHints()}
