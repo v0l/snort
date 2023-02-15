@@ -58,7 +58,7 @@ const SearchPage = () => {
           onChange={e => setSearch(e.target.value)}
         />
       </div>
-      {keyword && allUsers?.slice(3).map(u => <ProfilePreview actions={<></>} pubkey={u.pubkey} />)}
+      {keyword && allUsers?.slice(0, 3).map(u => <ProfilePreview actions={<></>} className="card" pubkey={u.pubkey} />)}
       {keyword && (
         <Timeline
           key={keyword}
