@@ -30,7 +30,12 @@ export default function NoteReaction(props: NoteReactionProps) {
     return null;
   }, [ev]);
 
-  if (ev.Kind !== EventKind.Reaction && ev.Kind !== EventKind.Repost) {
+  if (
+    ev.Kind !== EventKind.Reaction &&
+    ev.Kind !== EventKind.Repost &&
+    (ev.Kind !== EventKind.TextNote ||
+      ev.Tags.every((a, i) => a.Event !== refEvent || a.Marker !== "mention" || ev.Content !== `#[${i}]`))
+  ) {
     return null;
   }
 
@@ -52,7 +57,7 @@ export default function NoteReaction(props: NoteReactionProps) {
   const root = extractRoot();
   const isOpMuted = root && isMuted(root.pubkey);
   const opt = {
-    showHeader: ev?.Kind === EventKind.Repost,
+    showHeader: ev?.Kind === EventKind.Repost || ev?.Kind === EventKind.TextNote,
     showFooter: false,
   };
 
