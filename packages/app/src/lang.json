@@ -1,799 +1,799 @@
 {
   "+D82kt": {
-    "string": "Are you sure you want to repost: {id}"
+    "defaultMessage": "Are you sure you want to repost: {id}"
   },
   "+vIQlC": {
-    "string": "Please make sure to save the following password in order to manage your handle in the future"
+    "defaultMessage": "Please make sure to save the following password in order to manage your handle in the future"
   },
   "/4tOwT": {
-    "string": "Skip"
+    "defaultMessage": "Skip"
   },
   "/JE/X+": {
-    "string": "Account Support"
+    "defaultMessage": "Account Support"
   },
   "/RD0e2": {
-    "string": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content."
+    "defaultMessage": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content."
   },
   "/d6vEc": {
-    "string": "Make your profile easier to find and share"
+    "defaultMessage": "Make your profile easier to find and share"
   },
   "/n5KSF": {
-    "string": "{n} ms"
+    "defaultMessage": "{n} ms"
   },
   "0BUTMv": {
-    "string": "Search..."
+    "defaultMessage": "Search..."
   },
   "0mch2Y": {
-    "string": "name has disallowed characters"
+    "defaultMessage": "name has disallowed characters"
   },
   "0yO7wF": {
-    "string": "{n} secs"
+    "defaultMessage": "{n} secs"
   },
   "1A7TZk": {
-    "string": "What is Snort and how does it work?"
+    "defaultMessage": "What is Snort and how does it work?"
   },
   "1Mo59U": {
-    "string": "Are you sure you want to remove this note from bookmarks?"
+    "defaultMessage": "Are you sure you want to remove this note from bookmarks?"
   },
   "1nYUGC": {
-    "string": "{n} Following"
+    "defaultMessage": "{n} Following"
   },
   "1udzha": {
-    "string": "Conversations"
+    "defaultMessage": "Conversations"
   },
   "2/2yg+": {
-    "string": "Add"
+    "defaultMessage": "Add"
   },
   "25V4l1": {
-    "string": "Banner"
+    "defaultMessage": "Banner"
   },
   "2IFGap": {
-    "string": "Donate"
+    "defaultMessage": "Donate"
   },
   "2a2YiP": {
-    "string": "{n} Bookmarks"
+    "defaultMessage": "{n} Bookmarks"
   },
   "2k0Cv+": {
-    "string": "Dislikes ({n})"
+    "defaultMessage": "Dislikes ({n})"
   },
   "3cc4Ct": {
-    "string": "Light"
+    "defaultMessage": "Light"
   },
   "3gOsZq": {
-    "string": "Translators"
+    "defaultMessage": "Translators"
   },
   "3t3kok": {
-    "string": "{n,plural,=1{{n} new note} other{{n} new notes}}"
+    "defaultMessage": "{n,plural,=1{{n} new note} other{{n} new notes}}"
   },
   "3tVy+Z": {
-    "string": "{n} Followers"
+    "defaultMessage": "{n} Followers"
   },
   "3xCwbZ": {
-    "developer_comment": "Seperator text for Login / Generate Key",
-    "string": "OR"
+    "defaultMessage": "OR",
+    "description": "Seperator text for Login / Generate Key"
   },
   "450Fty": {
-    "string": "None"
+    "defaultMessage": "None"
   },
   "47FYwb": {
-    "string": "Cancel"
+    "defaultMessage": "Cancel"
   },
   "4IPzdn": {
-    "string": "Primary Developers"
+    "defaultMessage": "Primary Developers"
   },
   "4L2vUY": {
-    "string": "Your new NIP-05 handle is:"
+    "defaultMessage": "Your new NIP-05 handle is:"
   },
   "4OB335": {
-    "string": "Dislike"
+    "defaultMessage": "Dislike"
   },
   "4Vmpt4": {
-    "string": "Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices"
+    "defaultMessage": "Nostr Plebs is one of the first NIP-05 providers in the space and offers a good collection of domains at reasonable prices"
   },
   "4Z3t5i": {
-    "string": "Use imgproxy to compress images"
+    "defaultMessage": "Use imgproxy to compress images"
   },
   "4rYCjn": {
-    "string": "Note to Self"
+    "defaultMessage": "Note to Self"
   },
   "5ykRmX": {
-    "string": "Send zap"
+    "defaultMessage": "Send zap"
   },
   "6ewQqw": {
-    "string": "Likes ({n})"
+    "defaultMessage": "Likes ({n})"
   },
   "6tUqAb": {
-    "developer_comment": "Note about key security before generating a new key",
-    "string": "Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!"
+    "defaultMessage": "Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!",
+    "description": "Note about key security before generating a new key"
   },
   "7+Domh": {
-    "string": "Notes"
+    "defaultMessage": "Notes"
   },
   "7hp70g": {
-    "string": "NIP-05"
+    "defaultMessage": "NIP-05"
   },
   "7xzTiH": {
-    "string": "{action} to {target}"
+    "defaultMessage": "{action} to {target}"
   },
   "8/vBbP": {
-    "string": "Reposts ({n})"
+    "defaultMessage": "Reposts ({n})"
   },
   "89q5wc": {
-    "string": "Confirm Reposts"
+    "defaultMessage": "Confirm Reposts"
   },
   "8E9muH": {
-    "string": "Import Twitter Follows (optional)"
+    "defaultMessage": "Import Twitter Follows (optional)"
   },
   "8QDesP": {
-    "string": "Zap {n} sats"
+    "defaultMessage": "Zap {n} sats"
   },
   "8g2vyB": {
-    "string": "name too long"
+    "defaultMessage": "name too long"
   },
   "9+Ddtu": {
-    "string": "Next"
+    "defaultMessage": "Next"
   },
   "9HU8vw": {
-    "string": "Reply"
+    "defaultMessage": "Reply"
   },
   "9SvQep": {
-    "string": "Follows {n}"
+    "defaultMessage": "Follows {n}"
   },
   "9WRlF4": {
-    "string": "Send"
+    "defaultMessage": "Send"
   },
   "9gqH2W": {
-    "developer_comment": "Login button",
-    "string": "Login"
+    "defaultMessage": "Login",
+    "description": "Login button"
   },
   "9wO4wJ": {
-    "string": "Lightning Invoice"
+    "defaultMessage": "Lightning Invoice"
   },
   "ADmfQT": {
-    "developer_comment": "Link to parent note in thread",
-    "string": "Parent"
+    "defaultMessage": "Parent",
+    "description": "Link to parent note in thread"
   },
   "ASRK0S": {
-    "string": "This author has been muted"
+    "defaultMessage": "This author has been muted"
   },
   "Adk34V": {
-    "string": "Setup your Profile"
+    "defaultMessage": "Setup your Profile"
   },
   "AyGauy": {
-    "string": "Login"
+    "defaultMessage": "Login"
   },
   "B4C47Y": {
-    "string": "name too short"
+    "defaultMessage": "name too short"
   },
   "B6+XJy": {
-    "string": "zapped"
+    "defaultMessage": "zapped"
   },
   "B6H7eJ": {
-    "string": "nsec, npub, nip-05, hex"
+    "defaultMessage": "nsec, npub, nip-05, hex"
   },
   "BOUMjw": {
-    "string": "No nostr users found for {twitterUsername}"
+    "defaultMessage": "No nostr users found for {twitterUsername}"
   },
   "BOr9z/": {
-    "string": "Snort is an open source project built by passionate people in their free time"
+    "defaultMessage": "Snort is an open source project built by passionate people in their free time"
   },
   "BcGMo+": {
-    "string": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
+    "defaultMessage": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
   },
   "C81/uG": {
-    "string": "Logout"
+    "defaultMessage": "Logout"
   },
   "CHTbO3": {
-    "string": "Failed to load invoice"
+    "defaultMessage": "Failed to load invoice"
   },
   "CmZ9ls": {
-    "string": "{n} Muted"
+    "defaultMessage": "{n} Muted"
   },
   "Cu/K85": {
-    "string": "Translated from {lang}"
+    "defaultMessage": "Translated from {lang}"
   },
   "D3idYv": {
-    "string": "Settings"
+    "defaultMessage": "Settings"
   },
   "DKnriN": {
-    "string": "Send sats"
+    "defaultMessage": "Send sats"
   },
   "DZzCem": {
-    "string": "Show latest {n} notes"
+    "defaultMessage": "Show latest {n} notes"
   },
   "Dt/Zd5": {
-    "string": "Media in posts will automatically be shown for selected people, otherwise only the link will show"
+    "defaultMessage": "Media in posts will automatically be shown for selected people, otherwise only the link will show"
   },
   "E8a4yq": {
-    "string": "Follow some popular accounts"
+    "defaultMessage": "Follow some popular accounts"
   },
   "EPYwm7": {
-    "string": "Your private key is your password. If you lose this key, you will lose access to your account! Copy it and keep it in a safe place. There is no way to reset your private key."
+    "defaultMessage": "Your private key is your password. If you lose this key, you will lose access to your account! Copy it and keep it in a safe place. There is no way to reset your private key."
   },
   "EWyQH5": {
-    "string": "Global"
+    "defaultMessage": "Global"
   },
   "Ebl/B2": {
-    "string": "Translate to {lang}"
+    "defaultMessage": "Translate to {lang}"
   },
   "EcglP9": {
-    "string": "Key"
+    "defaultMessage": "Key"
   },
   "EnCOBJ": {
-    "string": "Buy"
+    "defaultMessage": "Buy"
   },
   "Eqjl5K": {
-    "string": "Only Snort and our integration partner identifier gives you a colorful domain name, but you are welcome to use other services too."
+    "defaultMessage": "Only Snort and our integration partner identifier gives you a colorful domain name, but you are welcome to use other services too."
   },
   "F+B3x1": {
-    "string": "We have also partnered with nostrplebs.com to give you more options"
+    "defaultMessage": "We have also partnered with nostrplebs.com to give you more options"
   },
   "FDguSC": {
-    "string": "{n} Zaps"
+    "defaultMessage": "{n} Zaps"
   },
   "FS3b54": {
-    "string": "Done!"
+    "defaultMessage": "Done!"
   },
   "FfYsOb": {
-    "string": "An error has occured!"
+    "defaultMessage": "An error has occured!"
   },
   "FmXUJg": {
-    "string": "follows you"
+    "defaultMessage": "follows you"
   },
   "G/yZLu": {
-    "string": "Remove"
+    "defaultMessage": "Remove"
   },
   "GFOoEE": {
-    "string": "Salt"
+    "defaultMessage": "Salt"
   },
   "GL8aXW": {
-    "string": "Bookmarks ({n})"
+    "defaultMessage": "Bookmarks ({n})"
   },
   "GspYR7": {
-    "string": "{n} Dislike"
+    "defaultMessage": "{n} Dislike"
   },
   "H+vHiz": {
-    "developer_comment": "Hexidecimal 'key' input for improxy",
-    "string": "Hex Key.."
+    "defaultMessage": "Hex Key..",
+    "description": "Hexidecimal 'key' input for improxy"
   },
   "H0JBH6": {
-    "string": "Log Out"
+    "defaultMessage": "Log Out"
   },
   "H6/kLh": {
-    "string": "Order Paid!"
+    "defaultMessage": "Order Paid!"
   },
   "HAlOn1": {
-    "string": "Name"
+    "defaultMessage": "Name"
   },
   "HFls6j": {
-    "string": "name will be available later"
+    "defaultMessage": "name will be available later"
   },
   "HOzFdo": {
-    "string": "Muted"
+    "defaultMessage": "Muted"
   },
   "HbefNb": {
-    "string": "Open Wallet"
+    "defaultMessage": "Open Wallet"
   },
   "IEwZvs": {
-    "string": "Are you sure you want to unpin this note?"
+    "defaultMessage": "Are you sure you want to unpin this note?"
   },
   "INSqIz": {
-    "string": "Twitter username..."
+    "defaultMessage": "Twitter username..."
   },
   "IUZC+0": {
-    "string": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you."
+    "defaultMessage": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you."
   },
   "JCIgkj": {
-    "string": "Username"
+    "defaultMessage": "Username"
   },
   "JHEHCk": {
-    "string": "Zaps ({n})"
+    "defaultMessage": "Zaps ({n})"
   },
   "JkLHGw": {
-    "string": "Website"
+    "defaultMessage": "Website"
   },
   "K3r6DQ": {
-    "string": "Delete"
+    "defaultMessage": "Delete"
   },
   "K7AkdL": {
-    "string": "Show"
+    "defaultMessage": "Show"
   },
   "KQvWvD": {
-    "string": "Deleted"
+    "defaultMessage": "Deleted"
   },
   "KWuDfz": {
-    "string": "I have saved my keys, continue"
+    "defaultMessage": "I have saved my keys, continue"
   },
   "KahimY": {
-    "string": "Unknown event kind: {kind}"
+    "defaultMessage": "Unknown event kind: {kind}"
   },
   "LgbKvU": {
-    "string": "Comment"
+    "defaultMessage": "Comment"
   },
   "LxY9tW": {
-    "developer_comment": "Button: Generate a new key",
-    "string": "Generate Key"
+    "defaultMessage": "Generate Key",
+    "description": "Button: Generate a new key"
   },
   "M3Oirc": {
-    "string": "Debug Menus"
+    "defaultMessage": "Debug Menus"
   },
   "MBAYRO": {
-    "string": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message"
+    "defaultMessage": "Shows \"Copy ID\" and \"Copy Event JSON\" in the context menu on each message"
   },
   "MI2jkA": {
-    "string": "Not available:"
+    "defaultMessage": "Not available:"
   },
   "MRp6Ly": {
-    "string": "Twitter username"
+    "defaultMessage": "Twitter username"
   },
   "MzRYWH": {
-    "string": "Buying {item}"
+    "defaultMessage": "Buying {item}"
   },
   "N2IrpM": {
-    "string": "Confirm"
+    "defaultMessage": "Confirm"
   },
   "NdOYJJ": {
-    "string": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!"
+    "defaultMessage": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!"
   },
   "NfNk2V": {
-    "string": "Your private key"
+    "defaultMessage": "Your private key"
   },
   "NndBJE": {
-    "string": "New users page"
+    "defaultMessage": "New users page"
   },
   "OEW7yJ": {
-    "string": "Zaps"
+    "defaultMessage": "Zaps"
   },
   "OKhRC6": {
-    "string": "Share"
+    "defaultMessage": "Share"
   },
   "P61BTu": {
-    "string": "Copy Event JSON"
+    "defaultMessage": "Copy Event JSON"
   },
   "P7FD0F": {
-    "string": "System (Default)"
+    "defaultMessage": "System (Default)"
   },
   "P7nJT9": {
-    "string": "Total today (UTC): {amount} sats"
+    "defaultMessage": "Total today (UTC): {amount} sats"
   },
   "PCSt5T": {
-    "string": "Preferences"
+    "defaultMessage": "Preferences"
   },
   "Pe0ogR": {
-    "string": "Theme"
+    "defaultMessage": "Theme"
   },
   "PrsIg7": {
-    "string": "Reactions will be shown on every page, if disabled no reactions will be shown"
+    "defaultMessage": "Reactions will be shown on every page, if disabled no reactions will be shown"
   },
   "QDFTjG": {
-    "string": "{n} Relays"
+    "defaultMessage": "{n} Relays"
   },
   "QTdJfH": {
-    "developer_comment": "Heading for generate key flow",
-    "string": "Create an Account"
+    "defaultMessage": "Create an Account",
+    "description": "Heading for generate key flow"
   },
   "QawghE": {
-    "string": "You can change your username at any point."
+    "defaultMessage": "You can change your username at any point."
   },
   "QxCuTo": {
-    "developer_comment": "Artwork attribution label",
-    "string": "Art by {name}"
+    "defaultMessage": "Art by {name}",
+    "description": "Artwork attribution label"
   },
   "RDZVQL": {
-    "string": "Check"
+    "defaultMessage": "Check"
   },
   "RahCRH": {
-    "string": "Expired"
+    "defaultMessage": "Expired"
   },
   "RhDAoS": {
-    "string": "Are you sure you want to delete {id}"
+    "defaultMessage": "Are you sure you want to delete {id}"
   },
   "RoOyAh": {
-    "string": "Relays"
+    "defaultMessage": "Relays"
   },
   "Rs4kCE": {
-    "string": "Bookmark"
+    "defaultMessage": "Bookmark"
   },
   "Sjo1P4": {
-    "string": "Custom"
+    "defaultMessage": "Custom"
   },
   "TpgeGw": {
-    "developer_comment": "Hexidecimal 'salt' input for imgproxy",
-    "string": "Hex Salt.."
+    "defaultMessage": "Hex Salt..",
+    "description": "Hexidecimal 'salt' input for imgproxy"
   },
   "UQ3pOC": {
-    "string": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step."
+    "defaultMessage": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step."
   },
   "Up5U7K": {
-    "string": "Block"
+    "defaultMessage": "Block"
   },
   "VOjC1i": {
-    "string": "Pick which upload service you want to upload attachments to"
+    "defaultMessage": "Pick which upload service you want to upload attachments to"
   },
   "VlJkSk": {
-    "string": "{n} muted"
+    "defaultMessage": "{n} muted"
   },
   "VnXp8Z": {
-    "string": "Avatar"
+    "defaultMessage": "Avatar"
   },
   "VtPV/B": {
-    "developer_comment": "Login button for NIP7 key manager extension",
-    "string": "Login with Extension (NIP-07)"
+    "defaultMessage": "Login with Extension (NIP-07)",
+    "description": "Login button for NIP7 key manager extension"
   },
   "Vx7Zm2": {
-    "string": "How do keys work?"
+    "defaultMessage": "How do keys work?"
   },
   "W2PiAr": {
-    "string": "{n} Blocked"
+    "defaultMessage": "{n} Blocked"
   },
   "W9355R": {
-    "string": "Unmute"
+    "defaultMessage": "Unmute"
   },
   "WONP5O": {
-    "string": "Find your twitter follows on nostr (Data provided by {provider})"
+    "defaultMessage": "Find your twitter follows on nostr (Data provided by {provider})"
   },
   "WxthCV": {
-    "string": "e.g. Jack"
+    "defaultMessage": "e.g. Jack"
   },
   "XgWvGA": {
-    "string": "Reactions"
+    "defaultMessage": "Reactions"
   },
   "Y31HTH": {
-    "string": "Help fund the development of Snort"
+    "defaultMessage": "Help fund the development of Snort"
   },
   "YDURw6": {
-    "string": "Service URL"
+    "defaultMessage": "Service URL"
   },
   "YXA3AH": {
-    "string": "Enable reactions"
+    "defaultMessage": "Enable reactions"
   },
   "ZKORll": {
-    "string": "Activate Now"
+    "defaultMessage": "Activate Now"
   },
   "ZLmyG9": {
-    "string": "Contributors"
+    "defaultMessage": "Contributors"
   },
   "ZUZedV": {
-    "string": "Lightning Donation:"
+    "defaultMessage": "Lightning Donation:"
   },
   "a5UPxh": {
-    "string": "Fund developers and platforms providing NIP-05 verification services"
+    "defaultMessage": "Fund developers and platforms providing NIP-05 verification services"
   },
   "aWpBzj": {
-    "string": "Show more"
+    "defaultMessage": "Show more"
   },
   "brAXSu": {
-    "string": "Pick a username"
+    "defaultMessage": "Pick a username"
   },
   "bxv59V": {
-    "string": "Just now"
+    "defaultMessage": "Just now"
   },
   "c35bj2": {
-    "string": "If you have an enquiry about your NIP-05 order please DM {link}"
+    "defaultMessage": "If you have an enquiry about your NIP-05 order please DM {link}"
   },
   "cPIKU2": {
-    "string": "Following"
+    "defaultMessage": "Following"
   },
   "cQfLWb": {
-    "developer_comment": "Placeholder text for imgproxy url textbox",
-    "string": "URL.."
+    "defaultMessage": "URL..",
+    "description": "Placeholder text for imgproxy url textbox"
   },
   "cWx9t8": {
-    "string": "Mute all"
+    "defaultMessage": "Mute all"
   },
   "cuV2gK": {
-    "string": "name is registered"
+    "defaultMessage": "name is registered"
   },
   "cyR7Kh": {
-    "string": "Back"
+    "defaultMessage": "Back"
   },
   "d7d0/x": {
-    "string": "LN Address"
+    "defaultMessage": "LN Address"
   },
   "dOQCL8": {
-    "string": "Display name"
+    "defaultMessage": "Display name"
   },
   "e7qqly": {
-    "string": "Mark All Read"
+    "defaultMessage": "Mark All Read"
   },
   "eHAneD": {
-    "string": "Reaction emoji"
+    "defaultMessage": "Reaction emoji"
   },
   "eJj8HD": {
-    "string": "Get Verified"
+    "defaultMessage": "Get Verified"
   },
   "eR3YIn": {
-    "string": "Posts"
+    "defaultMessage": "Posts"
   },
   "fWZYP5": {
-    "string": "Pinned"
+    "defaultMessage": "Pinned"
   },
   "filwqD": {
-    "string": "Read"
+    "defaultMessage": "Read"
   },
   "flnGvv": {
-    "string": "What's on your mind?"
+    "defaultMessage": "What's on your mind?"
   },
   "fsB/4p": {
-    "string": "Saved"
+    "defaultMessage": "Saved"
   },
   "g5pX+a": {
-    "string": "About"
+    "defaultMessage": "About"
   },
   "gBdUXk": {
-    "string": "Save your keys!"
+    "defaultMessage": "Save your keys!"
   },
   "gDZkld": {
-    "string": "Snort is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
+    "defaultMessage": "Snort is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
   },
   "gDzDRs": {
-    "string": "Emoji to send when reactiong to a note"
+    "defaultMessage": "Emoji to send when reactiong to a note"
   },
   "gjBiyj": {
-    "string": "Loading..."
+    "defaultMessage": "Loading..."
   },
   "hCUivF": {
-    "string": "Notes will stream in real time into global and posts tab"
+    "defaultMessage": "Notes will stream in real time into global and posts tab"
   },
   "hK5ZDk": {
-    "string": "the world"
+    "defaultMessage": "the world"
   },
   "hMzcSq": {
-    "string": "Messages"
+    "defaultMessage": "Messages"
   },
   "hY4lzx": {
-    "string": "Supports"
+    "defaultMessage": "Supports"
   },
   "hicxcO": {
-    "string": "Show replies"
+    "defaultMessage": "Show replies"
   },
   "iCqGww": {
-    "string": "Reactions ({n})"
+    "defaultMessage": "Reactions ({n})"
   },
   "iDGAbc": {
-    "string": "Get a Snort identifier"
+    "defaultMessage": "Get a Snort identifier"
   },
   "iGT1eE": {
-    "string": "Prevent fake accounts from imitating you"
+    "defaultMessage": "Prevent fake accounts from imitating you"
   },
   "iNWbVV": {
-    "string": "Handle"
+    "defaultMessage": "Handle"
   },
   "ieGrWo": {
-    "string": "Follow"
+    "defaultMessage": "Follow"
   },
   "itPgxd": {
-    "string": "Profile"
+    "defaultMessage": "Profile"
   },
   "izWS4J": {
-    "string": "Unfollow"
+    "defaultMessage": "Unfollow"
   },
   "jA3OE/": {
-    "string": "{n,plural,=1{{n} sat} other{{n} sats}}"
+    "defaultMessage": "{n,plural,=1{{n} sat} other{{n} sats}}"
   },
   "jCA7Cw": {
-    "string": "Preview on snort"
+    "defaultMessage": "Preview on snort"
   },
   "jfV8Wr": {
-    "developer_comment": "Navigate back button on threads view",
-    "string": "Back"
+    "defaultMessage": "Back",
+    "description": "Navigate back button on threads view"
   },
   "juhqvW": {
-    "string": "Improve login security with browser extensions"
+    "defaultMessage": "Improve login security with browser extensions"
   },
   "jvo0vs": {
-    "string": "Save"
+    "defaultMessage": "Save"
   },
   "jzgQ2z": {
-    "string": "{n} Reactions"
+    "defaultMessage": "{n} Reactions"
   },
   "k2veDA": {
-    "string": "Write"
+    "defaultMessage": "Write"
   },
   "k7sKNy": {
-    "string": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
+    "defaultMessage": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
   },
   "lCILNz": {
-    "string": "Buy Now"
+    "defaultMessage": "Buy Now"
   },
   "lD3+8a": {
-    "string": "Pay"
+    "defaultMessage": "Pay"
   },
   "lgg1KN": {
-    "string": "account page"
+    "defaultMessage": "account page"
   },
   "ll3xBp": {
-    "string": "Image proxy service"
+    "defaultMessage": "Image proxy service"
   },
   "lnaT9F": {
-    "string": "Following {n}"
+    "defaultMessage": "Following {n}"
   },
   "lvlPhZ": {
-    "string": "Pay Invoice"
+    "defaultMessage": "Pay Invoice"
   },
   "mH91FY": {
-    "string": "Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below"
+    "defaultMessage": "Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below"
   },
   "mKAr6h": {
-    "string": "Follow all"
+    "defaultMessage": "Follow all"
   },
   "mKh2HS": {
-    "string": "File upload service"
+    "defaultMessage": "File upload service"
   },
   "mKhgP9": {
-    "string": "{n,plural,=0{} =1{zapped} other{zapped}}"
+    "defaultMessage": "{n,plural,=0{} =1{zapped} other{zapped}}"
   },
   "n1xHAH": {
-    "string": "Get an identifier (optional)"
+    "defaultMessage": "Get an identifier (optional)"
   },
   "nDejmx": {
-    "string": "Unblock"
+    "defaultMessage": "Unblock"
   },
   "nGBrvw": {
-    "string": "Bookmarks"
+    "defaultMessage": "Bookmarks"
   },
   "nN9XTz": {
-    "string": "Share your thoughts with {link}"
+    "defaultMessage": "Share your thoughts with {link}"
   },
   "nn1qb3": {
-    "string": "Your donations are greatly appreciated"
+    "defaultMessage": "Your donations are greatly appreciated"
   },
   "nwZXeh": {
-    "string": "{n} blocked"
+    "defaultMessage": "{n} blocked"
   },
   "o6Uy3d": {
-    "developer_comment": "Explanation for public key only login is read-only",
-    "string": "Only the secret key can be used to publish (sign events), everything else logs you in read-only mode."
+    "defaultMessage": "Only the secret key can be used to publish (sign events), everything else logs you in read-only mode.",
+    "description": "Explanation for public key only login is read-only"
   },
   "o7e+nJ": {
-    "string": "{n} followers"
+    "defaultMessage": "{n} followers"
   },
   "odFwjL": {
-    "string": "Follows only"
+    "defaultMessage": "Follows only"
   },
   "odhABf": {
-    "developer_comment": "Login header",
-    "string": "Login"
+    "defaultMessage": "Login",
+    "description": "Login header"
   },
   "osUr8O": {
-    "string": "You can also use these extensions to login to most Nostr sites."
+    "defaultMessage": "You can also use these extensions to login to most Nostr sites."
   },
   "oxCa4R": {
-    "string": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app."
+    "defaultMessage": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app."
   },
   "puLNUJ": {
-    "string": "Pin"
+    "defaultMessage": "Pin"
   },
   "pzTOmv": {
-    "string": "Followers"
+    "defaultMessage": "Followers"
   },
   "qUJTsT": {
-    "string": "Blocked"
+    "defaultMessage": "Blocked"
   },
   "qdGuQo": {
-    "string": "Your Private Key Is (do not share this with anyone)"
+    "defaultMessage": "Your Private Key Is (do not share this with anyone)"
   },
   "qkvYUb": {
-    "string": "Add to Profile"
+    "defaultMessage": "Add to Profile"
   },
   "qmJ8kD": {
-    "string": "Translation failed"
+    "defaultMessage": "Translation failed"
   },
   "r3C4x/": {
-    "string": "Software"
+    "defaultMessage": "Software"
   },
   "rT14Ow": {
-    "string": "Add Relays"
+    "defaultMessage": "Add Relays"
   },
   "reJ6SM": {
-    "string": "It is recommended to use one of the following browser extensions if you are on a desktop computer to secure your key:"
+    "defaultMessage": "It is recommended to use one of the following browser extensions if you are on a desktop computer to secure your key:"
   },
   "rfuMjE": {
-    "string": "(Default)"
+    "defaultMessage": "(Default)"
   },
   "rrfdTe": {
-    "string": "This is the same technology which is used by Bitcoin and has been proven to be extremely secure."
+    "defaultMessage": "This is the same technology which is used by Bitcoin and has been proven to be extremely secure."
   },
   "rudscU": {
-    "string": "Failed to load follows, please try again later"
+    "defaultMessage": "Failed to load follows, please try again later"
   },
   "sWnYKw": {
-    "string": "Snort is designed to have a similar experience to Twitter."
+    "defaultMessage": "Snort is designed to have a similar experience to Twitter."
   },
   "svOoEH": {
-    "string": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule."
+    "defaultMessage": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule."
   },
   "tOdNiY": {
-    "string": "Dark"
+    "defaultMessage": "Dark"
   },
   "thnRpU": {
-    "string": "Getting NIP-05 verified can help:"
+    "defaultMessage": "Getting NIP-05 verified can help:"
   },
   "u/vOPu": {
-    "string": "Paid"
+    "defaultMessage": "Paid"
   },
   "u4bHcR": {
-    "string": "Check out the code here: {link}"
+    "defaultMessage": "Check out the code here: {link}"
   },
   "uD/N6c": {
-    "string": "Zap {target} {n} sats"
+    "defaultMessage": "Zap {target} {n} sats"
   },
   "uSV4Ti": {
-    "string": "Reposts need to be manually confirmed"
+    "defaultMessage": "Reposts need to be manually confirmed"
   },
   "usAvMr": {
-    "string": "Edit Profile"
+    "defaultMessage": "Edit Profile"
   },
   "ut+2Cd": {
-    "string": "Get a partner identifier"
+    "defaultMessage": "Get a partner identifier"
   },
   "vOKedj": {
-    "string": "{n,plural,=1{& {n} other} other{& {n} others}}"
+    "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
   },
   "vZ4quW": {
-    "string": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."
+    "defaultMessage": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."
   },
   "wEQDC6": {
-    "string": "Edit"
+    "defaultMessage": "Edit"
   },
   "wLtRCF": {
-    "developer_comment": "Label for key input",
-    "string": "Your key"
+    "defaultMessage": "Your key",
+    "description": "Label for key input"
   },
   "wih7iJ": {
-    "string": "name is blocked"
+    "defaultMessage": "name is blocked"
   },
   "wqyN/i": {
-    "string": "Find out more info about {service} at {link}"
+    "defaultMessage": "Find out more info about {service} at {link}"
   },
   "wtLjP6": {
-    "string": "Copy ID"
+    "defaultMessage": "Copy ID"
   },
   "x82IOl": {
-    "string": "Mute"
+    "defaultMessage": "Mute"
   },
   "xIoGG9": {
-    "string": "Go to"
+    "defaultMessage": "Go to"
   },
   "xJ9n2N": {
-    "string": "Your public key"
+    "defaultMessage": "Your public key"
   },
   "xKdNPm": {
-    "developer_comment": "Send DM button",
-    "string": "Send"
+    "defaultMessage": "Send",
+    "description": "Send DM button"
   },
   "xKflGN": {
-    "string": "{username}''s Follows on Nostr"
+    "defaultMessage": "{username}''s Follows on Nostr"
   },
   "xbVgIm": {
-    "string": "Automatically load media"
+    "defaultMessage": "Automatically load media"
   },
   "xmcVZ0": {
-    "string": "Search"
+    "defaultMessage": "Search"
   },
   "yCmnnm": {
-    "developer_comment": "Label for reading global feed from specific relays",
-    "string": "Read global from"
+    "defaultMessage": "Read global from",
+    "description": "Label for reading global feed from specific relays"
   },
   "zFegDD": {
-    "string": "Contact"
+    "defaultMessage": "Contact"
   },
   "zINlao": {
-    "string": "Owner"
+    "defaultMessage": "Owner"
   },
   "zQvVDJ": {
-    "string": "All"
+    "defaultMessage": "All"
   },
   "zcaOTs": {
-    "string": "Zap amount in sats"
+    "defaultMessage": "Zap amount in sats"
   },
   "zjJZBd": {
-    "string": "You're ready!"
+    "defaultMessage": "You're ready!"
   },
   "zonsdq": {
-    "string": "Failed to load LNURL service"
+    "defaultMessage": "Failed to load LNURL service"
   },
   "zvCDao": {
-    "string": "Automatically show latest notes"
+    "defaultMessage": "Automatically show latest notes"
   }
 }
