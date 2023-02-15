@@ -198,6 +198,7 @@ export default function ProfilePage() {
               postsOnly={false}
               method={"TIME_RANGE"}
               ignoreModeration={true}
+              window={60 * 60 * 6}
             />
           </>
         );
