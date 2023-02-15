@@ -144,9 +144,11 @@
 
 .reaction-pill {
   display: flex;
-  flex-direction: row;
-  margin: 0px 14px;
-  min-width: 16px;
+  margin: 0px 7px;
+  padding: 2px 4px;
+  min-width: 1rem;
+  align-items: center;
+  justify-content: center;
   user-select: none;
   color: var(--font-secondary-color);
   font-feature-settings: "tnum";
