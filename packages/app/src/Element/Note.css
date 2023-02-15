@@ -70,6 +70,8 @@
 .note .footer .footer-reactions {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   margin-left: auto;
 }
 
@@ -142,8 +144,11 @@
 
 .reaction-pill {
   display: flex;
-  flex-direction: row;
-  margin: 0px 14px;
+  margin: 0px 7px;
+  padding: 2px 4px;
+  min-width: 1rem;
+  align-items: center;
+  justify-content: center;
   user-select: none;
   color: var(--font-secondary-color);
   font-feature-settings: "tnum";
@@ -160,6 +165,7 @@
 
 .reaction-pill:hover {
   cursor: pointer;
+  color: var(--highlight);
 }
 
 .trash-icon {
