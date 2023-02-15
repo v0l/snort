@@ -2,8 +2,7 @@ FROM node:16 as build
 WORKDIR /app
 COPY . .
 RUN yarn install --network-timeout 1000000
-RUN yarn workspace @snort/nostr build
-RUN yarn workspace @snort/app build
+RUN yarn build
 
 FROM nginx:mainline-alpine
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
