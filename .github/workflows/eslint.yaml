@@ -15,4 +15,4 @@ jobs:
       - name: Install Dependencies
         run: yarn install
       - name: Check Eslint
-        run: yarn eslint
+        run: yarn workspace @snort/app eslint

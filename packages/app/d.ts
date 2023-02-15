@@ -13,6 +13,11 @@ declare module "*.webp" {
   export default value;
 }
 
+declare module "translations/*.json" {
+  const value: Record<string, string>;
+  export default value;
+}
+
 declare module "light-bolt11-decoder" {
   export function decode(pr?: string): ParsedInvoice;
 
