@@ -29,7 +29,7 @@ export function encodeTLV(hex: string, prefix: NostrPrefix, relays?: string[]) {
   const tl0 = [0, buf.length, ...buf];
   const tl1 =
     relays
-      ?.map(a => {
+      ?.map((a) => {
         const data = enc.encode(a);
         return [1, data.length, ...data];
       })
