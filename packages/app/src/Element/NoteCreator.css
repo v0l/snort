@@ -20,6 +20,7 @@
   min-height: 120px;
   max-width: stretch;
   min-width: stretch;
+  max-height: 210px;
 }
 
 .note-creator textarea::placeholder {
