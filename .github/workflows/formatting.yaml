@@ -15,4 +15,4 @@ jobs:
       - name: Install Dependencies
         run: yarn install
       - name: Check Formatting
-        run: yarn prettier --check .
+        run: yarn workspace @snort/app prettier --check .
