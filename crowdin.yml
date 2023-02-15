@@ -1,5 +1,5 @@
 project_id: snort
 preserve_hierarchy: 1
 files:
-  - source: /packages/app/src/lang.json
+  - source: /packages/app/src/translations/en.json
     translation: /packages/app/src/translations/%two_letters_code%.json
