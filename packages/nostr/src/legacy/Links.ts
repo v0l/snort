@@ -1,5 +1,6 @@
 import * as secp from "@noble/secp256k1";
 import { bech32 } from "bech32";
+import { HexKey } from ".";
 
 export enum NostrPrefix {
   PublicKey = "npub",
@@ -12,10 +13,17 @@ export enum NostrPrefix {
   Relay = "nrelay",
 }
 
+export enum TLVEntryType {
+  Special = 0,
+  Relay = 1,
+  Author = 2,
+  Kind = 3,
+}
+
 export interface TLVEntry {
-  type: number;
+  type: TLVEntryType;
   length: number;
-  value: string; // hex encoded data
+  value: string | HexKey | number;
 }
 
 export function encodeTLV(hex: string, prefix: NostrPrefix, relays?: string[]) {
@@ -39,7 +47,7 @@ export function encodeTLV(hex: string, prefix: NostrPrefix, relays?: string[]) {
 }
 
 export function decodeTLV(str: string) {
-  const decoded = bech32.decode(str);
+  const decoded = bech32.decode(str, 1_000);
   const data = bech32.fromWords(decoded.words);
 
   const entries: TLVEntry[] = [];
@@ -51,9 +59,24 @@ export function decodeTLV(str: string) {
     entries.push({
       type: t,
       length: l,
-      value: secp.utils.bytesToHex(new Uint8Array(v)),
+      value: decodeTLVEntry(t, new Uint8Array(v)),
     });
     x += 2 + l;
   }
   return entries;
+}
+
+function decodeTLVEntry(type: TLVEntryType, data: Uint8Array) {
+  switch (type) {
+    case TLVEntryType.Special:
+    case TLVEntryType.Author: {
+      return secp.utils.bytesToHex(data);
+    }
+    case TLVEntryType.Kind: {
+      return 0
+    }
+    case TLVEntryType.Relay: {
+      return new TextDecoder("ASCII").decode(data);
+    }
+  }
 }

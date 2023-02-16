@@ -41,7 +41,7 @@ export function parseId(id: string) {
 }
 
 export function bech32ToHex(str: string) {
-  const nKey = bech32.decode(str);
+  const nKey = bech32.decode(str, 1_000);
   const buff = bech32.fromWords(nKey.words);
   return secp.utils.bytesToHex(Uint8Array.from(buff));
 }
