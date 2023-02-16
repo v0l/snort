@@ -10,6 +10,10 @@ import { MentionRegex } from "Const";
 export async function makeNotification(db: UsersDb, ev: TaggedRawEvent): Promise<NotificationRequest | null> {
   switch (ev.kind) {
     case EventKind.TextNote: {
+      const isRepost = ev.tags.some((a, i) => a[0] === "e" && a[3] === "mention" && ev.content === `#[${i}]`);
+      if (isRepost) {
+        return null;
+      }
       const pubkeys = new Set([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1])]);
       const users = await db.bulkGet(Array.from(pubkeys));
       const fromUser = users.find(a => a?.pubkey === ev.pubkey);
