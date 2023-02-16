@@ -21,7 +21,6 @@ import { setPinned, setBookmarked } from "State/Login";
 import type { RootState } from "State/Store";
 
 import messages from "./messages";
-import NoteReaction from "./NoteReaction";
 
 export interface NoteProps {
   data?: TaggedRawEvent;
@@ -66,12 +65,6 @@ export default function Note(props: NoteProps) {
   const { data, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false } = props;
   const [showReactions, setShowReactions] = useState(false);
   const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
-  if (
-    ev.Kind === EventKind.TextNote &&
-    ev.Tags.some((a, i) => a.Key === "e" && a.Marker === "mention" && ev.Content === `#[${i}]`)
-  ) {
-    return <NoteReaction data={data} key={data.id} />;
-  }
   const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
   const users = useUserProfiles(pubKeys);
   const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
