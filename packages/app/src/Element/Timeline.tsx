@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
 import ArrowUp from "Icons/ArrowUp";
-import { dedupeByPubkey, isTextRepost } from "Util";
+import { dedupeByPubkey, tagFilterOfTextRepost } from "Util";
 import ProfileImage from "Element/ProfileImage";
 import useTimelineFeed, { TimelineSubject } from "Feed/TimelineFeed";
 import { TaggedRawEvent } from "@snort/nostr";
@@ -72,7 +72,7 @@ export default function Timeline({
         return <ProfilePreview actions={<></>} pubkey={e.pubkey} className="card" />;
       }
       case EventKind.TextNote: {
-        const eRef = e.tags.find(isTextRepost(e))?.at(1);
+        const eRef = e.tags.find(tagFilterOfTextRepost(e))?.at(1);
         if (eRef) {
           return <NoteReaction data={e} key={e.id} root={parent.notes.find(a => a.id === eRef)} />;
         }

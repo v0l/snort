@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { u256 } from "@snort/nostr";
 import { EventKind, Subscriptions } from "@snort/nostr";
-import { unixNow, unwrap, isTextRepost } from "Util";
+import { unixNow, unwrap, tagFilterOfTextRepost } from "Util";
 import useSubscription from "Feed/Subscription";
 import { useSelector } from "react-redux";
 import { RootState } from "State/Store";
@@ -153,8 +153,8 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         .filter(a => a)
         .map(a => unwrap(a)[1]);
       const repostsByKind1 = main.store.notes
-        .filter(a => (a.kind === EventKind.Repost || a.kind === EventKind.TextNote) && a.tags.some(isTextRepost(a)))
-        .map(a => a.tags.find(isTextRepost(a)))
+        .filter(a => (a.kind === EventKind.Repost || a.kind === EventKind.TextNote) && a.tags.some(tagFilterOfTextRepost(a)))
+        .map(a => a.tags.find(tagFilterOfTextRepost(a)))
         .filter(a => a)
         .map(a => unwrap(a)[1]);
       const reposts = [...repostsByKind6, ...repostsByKind1];
