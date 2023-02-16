@@ -72,6 +72,10 @@ export default function Timeline({
         return <ProfilePreview actions={<></>} pubkey={e.pubkey} className="card" />;
       }
       case EventKind.TextNote: {
+        const eRef = e.tags.find((a, i) => a[0] === "e" && a[3] === "mention" && e.content === `#[${i}]`)?.at(1);
+        if (eRef) {
+          return <NoteReaction data={e} key={e.id} root={parent.notes.find(a => a.id === eRef)} />;
+        }
         return <Note key={e.id} data={e} related={related.notes} ignoreModeration={ignoreModeration} />;
       }
       case EventKind.ZapReceipt: {
