@@ -23,6 +23,10 @@ function findTag(e: TaggedRawEvent, tag: string) {
 
 function getInvoice(zap: TaggedRawEvent) {
   const bolt11 = findTag(zap, "bolt11");
+  if (!bolt11) {
+    console.debug("Invalid zap: ", zap);
+    return {};
+  }
   const decoded = invoiceDecode(bolt11);
 
   const amount = decoded.sections.find(section => section.name === "amount")?.value;
@@ -66,6 +70,7 @@ export interface ParsedZap {
   content: string;
   zapper?: HexKey;
   valid: boolean;
+  zapService: HexKey;
 }
 
 export function parseZap(zap: TaggedRawEvent): ParsedZap {
@@ -81,6 +86,7 @@ export function parseZap(zap: TaggedRawEvent): ParsedZap {
     zapper: zapper.pubkey,
     content: zap.content,
     valid: zapper.isValid,
+    zapService: zap.pubkey,
   };
 }
 
