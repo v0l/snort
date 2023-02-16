@@ -15,7 +15,7 @@ import { debounce } from "Util";
 
 export default function RootPage() {
   const { formatMessage } = useIntl();
-  const { loggedOut, publicKey: pubKey, follows, tags, relays } = useSelector((s: RootState) => s.login);
+  const { loggedOut, publicKey: pubKey, follows, tags, relays, preferences } = useSelector((s: RootState) => s.login);
   const RootTab: Record<string, Tab> = {
     Posts: {
       text: formatMessage(messages.Posts),
@@ -30,7 +30,16 @@ export default function RootPage() {
       value: 2,
     },
   };
-  const [tab, setTab] = useState<Tab>(RootTab.Posts);
+  const [tab, setTab] = useState<Tab>(() => {
+    switch (preferences.defaultPage) {
+      case "posts":
+        return RootTab.Posts;
+      case "conversations":
+        return RootTab.PostsAndReplies;
+      case "global":
+        return RootTab.Global;
+    }
+  });
   const [relay, setRelay] = useState<string>();
   const [globalRelays, setGlobalRelays] = useState<string[]>([]);
   const tagTabs = tags.map((t, idx) => {

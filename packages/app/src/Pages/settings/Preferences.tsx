@@ -50,6 +50,35 @@ const PreferencesPage = () => {
           </select>
         </div>
       </div>
+        <div className="card flex">
+            <div className="flex f-col f-grow">
+                <div>
+                    <FormattedMessage {...messages.DefaultPage} />
+                </div>
+            </div>
+            <div>
+                <select
+                    value={perf.defaultPage}
+                    onChange={e =>
+                        dispatch(
+                            setPreferences({
+                                ...perf,
+                                defaultPage: e.target.value,
+                            } as UserPreferences)
+                        )
+                    }>
+                    <option value="posts">
+                        <FormattedMessage {...messages.Posts} />
+                    </option>
+                    <option value="conversations">
+                        <FormattedMessage {...messages.Conversations} />
+                    </option>
+                    <option value="global">
+                        <FormattedMessage {...messages.Global} />
+                    </option>
+                </select>
+            </div>
+        </div>
       <div className="card flex">
         <div className="flex f-col f-grow">
           <div>

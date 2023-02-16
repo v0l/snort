@@ -65,6 +65,11 @@ export interface UserPreferences {
    * Use imgproxy to optimize images
    */
   imgProxyConfig: ImgProxySettings | null;
+
+  /**
+   * Default page to select on load
+   */
+  defaultPage: "posts" | "conversations" | "global";
 }
 
 export type DbType = "indexdDb" | "redux";
@@ -225,6 +230,7 @@ export const InitState = {
     autoShowLatest: false,
     fileUploader: "void.cat",
     imgProxyConfig: DefaultImgProxy,
+    defaultPage: "posts",
   },
 } as LoginStore;
 

@@ -15,6 +15,10 @@ export default defineMessages({
   System: { defaultMessage: "System (Default)" },
   Light: { defaultMessage: "Light" },
   Dark: { defaultMessage: "Dark" },
+  DefaultPage: { defaultMessage: "Default Page" },
+  Posts: { defaultMessage: "Posts" },
+  Conversations: { defaultMessage: "Conversations" },
+  Global: { defaultMessage: "Global" },
   AutoloadMedia: { defaultMessage: "Automatically load media" },
   AutoloadMediaHelp: {
     defaultMessage: "Media in posts will automatically be shown for selected people, otherwise only the link will show",
