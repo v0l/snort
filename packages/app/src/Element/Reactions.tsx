@@ -6,6 +6,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { TaggedRawEvent } from "@snort/nostr";
 
 import { formatShort } from "Number";
+import Repost from "Icons/Repost";
 import Dislike from "Icons/Dislike";
 import Heart from "Icons/Heart";
 import ZapIcon from "Icons/Zap";
@@ -119,7 +120,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">
-                    <Heart width={20} height={18} />
+                    <Repost width={16} height={16} />
                   </div>
                   <ProfileImage autoWidth={false} pubkey={ev.pubkey} />
                 </div>
