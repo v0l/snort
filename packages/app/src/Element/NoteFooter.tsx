@@ -209,6 +209,13 @@ export default function NoteFooter(props: NoteFooterProps) {
   function menuItems() {
     return (
       <>
+        <div className="close-menu-container">
+          {/* This menu item serves as a "close menu" button;
+          it allows the user to click anywhere nearby the menu to close it. */}
+          <MenuItem>
+            <div className="close-menu" />
+          </MenuItem>
+        </div>
         {prefs.enableReactions && (
           <MenuItem onClick={() => setShowReactions(true)}>
             <Heart />
