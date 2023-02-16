@@ -191,3 +191,8 @@ export function getNewest(rawNotes: TaggedRawEvent[]) {
     return notes[0];
   }
 }
+
+export function isTextRepost(note: TaggedRawEvent, id?: u256): (tag: string[], i: number) => boolean {
+  return (tag, i) =>
+    tag[0] === "e" && tag[3] === "mention" && note.content === `#[${i}]` && (id ? tag[1] === id : true);
+}

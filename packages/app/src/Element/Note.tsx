@@ -11,7 +11,7 @@ import Pin from "Icons/Pin";
 import { parseZap } from "Element/Zap";
 import ProfileImage from "Element/ProfileImage";
 import Text from "Element/Text";
-import { eventLink, getReactions, dedupeByPubkey, hexToBech32, normalizeReaction, Reaction } from "Util";
+import { eventLink, getReactions, dedupeByPubkey, isTextRepost, hexToBech32, normalizeReaction, Reaction } from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import { useUserProfiles } from "Feed/ProfileFeed";
@@ -108,9 +108,7 @@ export default function Note(props: NoteProps) {
   const reposts = useMemo(
     () =>
       dedupeByPubkey([
-        ...getReactions(related, ev.Id, EventKind.TextNote).filter(e =>
-          e.tags.some((a, i) => a[0] === "e" && a[1] === ev.Id && a[3] === "mention" && e.content === `#[${i}]`)
-        ),
+        ...getReactions(related, ev.Id, EventKind.TextNote).filter(e => e.tags.some(isTextRepost(e, ev.Id))),
         ...getReactions(related, ev.Id, EventKind.Repost),
       ]),
     [related, ev]
