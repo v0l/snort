@@ -147,11 +147,21 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         }
         return s;
       });
-      const reposts = main.store.notes
+      const repostsByKind6 = main.store.notes
         .filter(a => a.kind === EventKind.Repost && a.content === "")
         .map(a => a.tags.find(b => b[0] === "e"))
         .filter(a => a)
         .map(a => unwrap(a)[1]);
+      const repostsByKind1 = main.store.notes
+        .filter(
+          a =>
+            (a.kind === EventKind.Repost || a.kind === EventKind.TextNote) &&
+            a.tags.some(b => b[0] === "e" && b[3] === "mention")
+        )
+        .map(a => a.tags.find((b, i) => b[0] === "e" && b[3] === "mention" && a.content === `#[${i}]`))
+        .filter(a => a)
+        .map(a => unwrap(a)[1]);
+      const reposts = [...repostsByKind6, ...repostsByKind1];
       if (reposts.length > 0) {
         setTrackingParentEvents(s => {
           if (reposts.some(a => !s.includes(a))) {
