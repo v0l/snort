@@ -75,6 +75,8 @@ export default function ProfilePage() {
     users: new Map(),
     creator: "",
   });
+  const npub = !id.startsWith("npub") ? hexToBech32("npub", id || undefined) : id;
+
   const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
   const website_url =
     user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
@@ -121,7 +123,7 @@ export default function ProfilePage() {
           <FollowsYou followsMe={follows.includes(id)} />
         </h2>
         {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
-        <Copy text={params.id || ""} />
+        <Copy text={npub} />
         {links()}
       </div>
     );
