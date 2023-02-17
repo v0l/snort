@@ -316,7 +316,6 @@ export default function ProfilePage() {
   return (
     <>
       <div className="profile flex">
-        {user?.banner && <div className="banner-bg" style={bannerStyle} />}
         {user?.banner && <ProxyImg alt="banner" className="banner" src={user.banner} size={w} />}
         <div className="profile-wrapper flex">
           {avatar()}

@@ -1,12 +1,15 @@
 .text {
   font-size: var(--font-size);
   line-height: 24px;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .text a {
   color: var(--highlight);
   text-decoration: none;
 }
+
 .text a:hover {
   text-decoration: underline;
 }
