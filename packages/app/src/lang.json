@@ -2,6 +2,9 @@
   "+D82kt": {
     "string": "Are you sure you want to repost: {id}"
   },
+  "+hqaFk": {
+    "string": "Write a relay url or use a list of urls separated by ; or , or space char ' '"
+  },
   "+vIQlC": {
     "string": "Please make sure to save the following password in order to manage your handle in the future"
   },
@@ -108,6 +111,9 @@
   },
   "7+Domh": {
     "string": "Notes"
+  },
+  "7+Wo47": {
+    "string": "Export to clipboard"
   },
   "7hp70g": {
     "string": "NIP-05"
