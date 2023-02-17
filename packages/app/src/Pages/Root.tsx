@@ -32,13 +32,12 @@ export default function RootPage() {
   };
   const [tab, setTab] = useState<Tab>(() => {
     switch (preferences.defaultRootTab) {
-      default:
-      case "posts":
-        return RootTab.Posts;
       case "conversations":
         return RootTab.PostsAndReplies;
       case "global":
         return RootTab.Global;
+      default:
+        return RootTab.Posts;
     }
   });
   const [relay, setRelay] = useState<string>();
