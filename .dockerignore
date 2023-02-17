@@ -1,7 +1,8 @@
-node_modules/
+**/node_modules/
 .github/
 .vscode/
-build/
+**/build/
 yarn-error.log
 .husky/
 .git/
+**/dist/
