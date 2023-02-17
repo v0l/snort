@@ -197,7 +197,7 @@ export default function useEventPublisher() {
           ev.Tags.push(new Tag(["e", note], ev.Tags.length));
         }
         ev.Tags.push(new Tag(["p", author], ev.Tags.length));
-        const relayTag = ["relays", ...Object.keys(relays).slice(0, 10)];
+        const relayTag = ["relays", ...Object.keys(relays)];
         ev.Tags.push(new Tag(relayTag, ev.Tags.length));
         processContent(ev, msg || "");
         return await signEvent(ev);
