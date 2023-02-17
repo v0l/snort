@@ -53,17 +53,17 @@ const PreferencesPage = () => {
         <div className="card flex">
             <div className="flex f-col f-grow">
                 <div>
-                    <FormattedMessage {...messages.DefaultPage} />
+                    <FormattedMessage {...messages.DefaultRootTab} />
                 </div>
             </div>
             <div>
                 <select
-                    value={perf.defaultPage}
+                    value={perf.defaultRootTab}
                     onChange={e =>
                         dispatch(
                             setPreferences({
                                 ...perf,
-                                defaultPage: e.target.value,
+                                defaultRootTab: e.target.value,
                             } as UserPreferences)
                         )
                     }>

@@ -15,7 +15,7 @@ export default defineMessages({
   System: { defaultMessage: "System (Default)" },
   Light: { defaultMessage: "Light" },
   Dark: { defaultMessage: "Dark" },
-  DefaultPage: { defaultMessage: "Default Page" },
+  DefaultRootTab: { defaultMessage: "Default Page" },
   Posts: { defaultMessage: "Posts" },
   Conversations: { defaultMessage: "Conversations" },
   Global: { defaultMessage: "Global" },

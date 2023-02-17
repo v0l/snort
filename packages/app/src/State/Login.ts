@@ -69,7 +69,7 @@ export interface UserPreferences {
   /**
    * Default page to select on load
    */
-  defaultPage: "posts" | "conversations" | "global";
+  defaultRootTab: "posts" | "conversations" | "global";
 }
 
 export type DbType = "indexdDb" | "redux";
@@ -230,7 +230,7 @@ export const InitState = {
     autoShowLatest: false,
     fileUploader: "void.cat",
     imgProxyConfig: DefaultImgProxy,
-    defaultPage: "posts",
+    defaultRootTab: "posts",
   },
 } as LoginStore;
 

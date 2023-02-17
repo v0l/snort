@@ -31,7 +31,8 @@ export default function RootPage() {
     },
   };
   const [tab, setTab] = useState<Tab>(() => {
-    switch (preferences.defaultPage) {
+    switch (preferences.defaultRootTab) {
+      default:
       case "posts":
         return RootTab.Posts;
       case "conversations":
