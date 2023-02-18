@@ -11,7 +11,15 @@ import Pin from "Icons/Pin";
 import { parseZap } from "Element/Zap";
 import ProfileImage from "Element/ProfileImage";
 import Text from "Element/Text";
-import { eventLink, getReactions, dedupeByPubkey, tagFilterOfTextRepost, hexToBech32, normalizeReaction, Reaction } from "Util";
+import {
+  eventLink,
+  getReactions,
+  dedupeByPubkey,
+  tagFilterOfTextRepost,
+  hexToBech32,
+  normalizeReaction,
+  Reaction,
+} from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import { useUserProfiles } from "Feed/ProfileFeed";

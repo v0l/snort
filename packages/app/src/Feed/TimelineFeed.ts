@@ -153,7 +153,9 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         .filter(a => a)
         .map(a => unwrap(a)[1]);
       const repostsByKind1 = main.store.notes
-        .filter(a => (a.kind === EventKind.Repost || a.kind === EventKind.TextNote) && a.tags.some(tagFilterOfTextRepost(a)))
+        .filter(
+          a => (a.kind === EventKind.Repost || a.kind === EventKind.TextNote) && a.tags.some(tagFilterOfTextRepost(a))
+        )
         .map(a => a.tags.find(tagFilterOfTextRepost(a)))
         .filter(a => a)
         .map(a => unwrap(a)[1]);
