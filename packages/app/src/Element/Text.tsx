@@ -60,7 +60,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
               if (ref) {
                 switch (ref.Key) {
                   case "p": {
-                    return <Mention key={ref.PubKey} pubkey={ref.PubKey ?? ""} />;
+                    return <Mention key={`ref-${ref.PubKey}-${idx}`} pubkey={ref.PubKey ?? ""} />;
                   }
                   case "e": {
                     const eText = hexToBech32("note", ref.Event).substring(0, 12);
