@@ -1,6 +1,6 @@
 import "./Zap.css";
 import { useMemo } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useSelector } from "react-redux";
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bytesToHex } from "@noble/hashes/utils";
@@ -123,6 +123,7 @@ interface ZapsSummaryProps {
 }
 
 export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
+  const { formatMessage } = useIntl();
   const sortedZaps = useMemo(() => {
     const pub = [...zaps.filter(z => z.zapper && z.valid)];
     const priv = [...zaps.filter(z => !z.zapper && z.valid)];
@@ -135,14 +136,20 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
   }
 
   const [topZap, ...restZaps] = sortedZaps;
-  const { zapper, amount } = topZap;
+  const { zapper, amount, anonZap } = topZap;
 
   return (
     <div className="zaps-summary">
       {amount && (
         <div className={`top-zap`}>
           <div className="summary">
-            {zapper && <ProfileImage autoWidth={false} pubkey={zapper} />}
+            {zapper && (
+              <ProfileImage
+                autoWidth={false}
+                pubkey={anonZap ? "" : zapper}
+                overrideUsername={anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
+              />
+            )}
             {restZaps.length > 0 && <FormattedMessage {...messages.Others} values={{ n: restZaps.length }} />}{" "}
             <FormattedMessage {...messages.OthersZapped} values={{ n: restZaps.length }} />
           </div>
