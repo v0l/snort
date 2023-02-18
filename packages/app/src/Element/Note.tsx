@@ -11,7 +11,15 @@ import Pin from "Icons/Pin";
 import { parseZap } from "Element/Zap";
 import ProfileImage from "Element/ProfileImage";
 import Text from "Element/Text";
-import { eventLink, getReactions, dedupeByPubkey, hexToBech32, normalizeReaction, Reaction } from "Util";
+import {
+  eventLink,
+  getReactions,
+  dedupeByPubkey,
+  tagFilterOfTextRepost,
+  hexToBech32,
+  normalizeReaction,
+  Reaction,
+} from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import { useUserProfiles } from "Feed/ProfileFeed";
@@ -98,7 +106,14 @@ export default function Note(props: NoteProps) {
   }, [reactions]);
   const positive = groupReactions[Reaction.Positive];
   const negative = groupReactions[Reaction.Negative];
-  const reposts = useMemo(() => dedupeByPubkey(getReactions(related, ev.Id, EventKind.Repost)), [related, ev]);
+  const reposts = useMemo(
+    () =>
+      dedupeByPubkey([
+        ...getReactions(related, ev.Id, EventKind.TextNote).filter(e => e.tags.some(tagFilterOfTextRepost(e, ev.Id))),
+        ...getReactions(related, ev.Id, EventKind.Repost),
+      ]),
+    [related, ev]
+  );
   const zaps = useMemo(() => {
     const sortedZaps = getReactions(related, ev.Id, EventKind.ZapReceipt)
       .map(parseZap)

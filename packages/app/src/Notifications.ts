@@ -6,10 +6,14 @@ import type { NotificationRequest } from "State/Login";
 import { MetadataCache, UsersDb } from "State/Users";
 import { getDisplayName } from "Element/ProfileImage";
 import { MentionRegex } from "Const";
+import { tagFilterOfTextRepost } from "Util";
 
 export async function makeNotification(db: UsersDb, ev: TaggedRawEvent): Promise<NotificationRequest | null> {
   switch (ev.kind) {
     case EventKind.TextNote: {
+      if (ev.tags.some(tagFilterOfTextRepost(ev))) {
+        return null;
+      }
       const pubkeys = new Set([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1])]);
       const users = await db.bulkGet(Array.from(pubkeys));
       const fromUser = users.find(a => a?.pubkey === ev.pubkey);
