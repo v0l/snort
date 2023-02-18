@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import * as secp from "@noble/secp256k1";
 
 import { TaggedRawEvent } from "@snort/nostr";
 import { EventKind, Tag, Event as NEvent, System, RelaySettings } from "@snort/nostr";
@@ -381,6 +382,14 @@ export default function useEventPublisher() {
           console.error("Encryption failed", e);
         }
       }
+    },
+    newKey: () => {
+      const privKey = secp.utils.bytesToHex(secp.utils.randomPrivateKey());
+      const pubKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
+      return {
+        privateKey: privKey,
+        publicKey: pubKey,
+      };
     },
   };
 }

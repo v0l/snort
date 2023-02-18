@@ -36,6 +36,13 @@ interface LNURLSuccessAction {
   url?: string;
 }
 
+enum ZapType {
+  PublicZap = 1,
+  AnonZap = 2,
+  PrivateZap = 3,
+  NonZap = 4,
+}
+
 export interface LNURLTipProps {
   onClose?: () => void;
   svc?: string;
@@ -82,6 +89,7 @@ export default function LNURLTip(props: LNURLTipProps) {
   const [comment, setComment] = useState<string>();
   const [error, setError] = useState<string>();
   const [success, setSuccess] = useState<LNURLSuccessAction>();
+  const [zapType, setZapType] = useState(ZapType.PublicZap);
   const webln = useWebln(show);
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
@@ -99,6 +107,7 @@ export default function LNURLTip(props: LNURLTipProps) {
       setAmount(500);
       setComment(undefined);
       setSuccess(undefined);
+      setZapType(ZapType.PublicZap);
     }
   }, [show, service]);
 
@@ -161,9 +170,17 @@ export default function LNURLTip(props: LNURLTipProps) {
     if (comment && payService?.commentAllowed) {
       query.set("comment", comment);
     }
-    if (payService.nostrPubkey && author) {
+    if (payService.nostrPubkey && author && zapType !== ZapType.NonZap) {
       const ev = await publisher.zap(author, note, comment);
       if (ev) {
+        // replace sig for anon-zap
+        if (zapType === ZapType.AnonZap) {
+          const randomKey = publisher.newKey();
+          console.debug("Generated new key for zap: ", randomKey);
+          ev.PubKey = randomKey.publicKey;
+          ev.Id = "";
+          await ev.Sign(randomKey.privateKey);
+        }
         query.set("nostr", JSON.stringify(ev.ToObject()));
       }
     }
@@ -263,6 +280,7 @@ export default function LNURLTip(props: LNURLTipProps) {
             />
           )}
         </div>
+        {zapTypeSelector()}
         {(amount ?? 0) > 0 && (
           <button type="button" className="zap-action" onClick={() => loadInvoice()}>
             <div className="zap-action-container">
@@ -275,6 +293,29 @@ export default function LNURLTip(props: LNURLTipProps) {
             </div>
           </button>
         )}
+      </>
+    );
+  }
+
+  function zapTypeSelector() {
+    if (!payService || !payService.nostrPubkey) return;
+
+    const makeTab = (t: ZapType, n: string) => (
+      <div className={`tab${zapType === t ? " active" : ""}`} onClick={() => setZapType(t)}>
+        {n}
+      </div>
+    );
+    return (
+      <>
+        <h3>
+          <FormattedMessage defaultMessage="Zap Type" />
+        </h3>
+        <div className="tabs mt10">
+          {makeTab(ZapType.PublicZap, "Public")}
+          {/*makeTab(ZapType.PrivateZap, "Private")*/}
+          {makeTab(ZapType.AnonZap, "Anon")}
+          {makeTab(ZapType.NonZap, "Non-Zap")}
+        </div>
       </>
     );
   }
