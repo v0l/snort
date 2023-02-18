@@ -20,6 +20,7 @@ export interface ProfileImageProps {
   defaultNip?: string;
   verifyNip?: boolean;
   linkToProfile?: boolean;
+  overrideUsername?: string;
 }
 
 export default function ProfileImage({
@@ -32,6 +33,7 @@ export default function ProfileImage({
   defaultNip,
   verifyNip,
   linkToProfile = true,
+  overrideUsername,
 }: ProfileImageProps) {
   const navigate = useNavigate();
   const user = useUserProfile(pubkey);
@@ -39,8 +41,8 @@ export default function ProfileImage({
   const width = usePageWidth();
 
   const name = useMemo(() => {
-    return getDisplayName(user, pubkey);
-  }, [user, pubkey]);
+    return overrideUsername ?? getDisplayName(user, pubkey);
+  }, [user, pubkey, overrideUsername]);
 
   if (!pubkey && !link) {
     link = "#";

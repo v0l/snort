@@ -110,7 +110,12 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                       <ZapIcon width={17} height={20} />
                       <span className="zap-amount">{formatShort(z.amount)}</span>
                     </div>
-                    <ProfileImage autoWidth={false} pubkey={z.zapper} subHeader={<>{z.content}</>} />
+                    <ProfileImage
+                      autoWidth={false}
+                      pubkey={z.anonZap ? "" : z.zapper}
+                      subHeader={<>{z.content}</>}
+                      overrideUsername={z.anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
+                    />
                   </div>
                 )
               );

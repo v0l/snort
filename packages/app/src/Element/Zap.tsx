@@ -38,6 +38,7 @@ function getInvoice(zap: TaggedRawEvent) {
 interface Zapper {
   pubkey?: HexKey;
   isValid: boolean;
+  isAnon: boolean;
 }
 
 function getZapper(zap: TaggedRawEvent, dhash: string): Zapper {
@@ -50,16 +51,17 @@ function getZapper(zap: TaggedRawEvent, dhash: string): Zapper {
       const rawEvent: TaggedRawEvent = JSON.parse(zapRequest);
       if (Array.isArray(rawEvent)) {
         // old format, ignored
-        return { isValid: false };
+        return { isValid: false, isAnon: false };
       }
+      const anonZap = rawEvent.tags.some(a => a[0] === "anon");
       const metaHash = sha256(zapRequest);
       const ev = new Event(rawEvent);
-      return { pubkey: ev.PubKey, isValid: dhash === metaHash };
+      return { pubkey: ev.PubKey, isValid: dhash === metaHash, isAnon: anonZap };
     } catch (e) {
       console.warn("Invalid zap", zapRequest);
     }
   }
-  return { isValid: false };
+  return { isValid: false, isAnon: false };
 }
 
 export interface ParsedZap {
@@ -71,11 +73,12 @@ export interface ParsedZap {
   zapper?: HexKey;
   valid: boolean;
   zapService: HexKey;
+  anonZap: boolean;
 }
 
 export function parseZap(zap: TaggedRawEvent): ParsedZap {
   const { amount, hash } = getInvoice(zap);
-  const zapper = hash ? getZapper(zap, hash) : { isValid: false };
+  const zapper = hash ? getZapper(zap, hash) : ({ isValid: false } as Zapper);
   const e = findTag(zap, "e");
   const p = unwrap(findTag(zap, "p"));
   return {
@@ -87,6 +90,7 @@ export function parseZap(zap: TaggedRawEvent): ParsedZap {
     content: zap.content,
     valid: zapper.isValid,
     zapService: zap.pubkey,
+    anonZap: zapper.isAnon,
   };
 }
 

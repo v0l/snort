@@ -4,7 +4,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 
 import { formatShort } from "Number";
 import { bech32ToText } from "Util";
-import { HexKey } from "@snort/nostr";
+import { HexKey, Tag } from "@snort/nostr";
 import Check from "Icons/Check";
 import Zap from "Icons/Zap";
 import Close from "Icons/Close";
@@ -179,6 +179,7 @@ export default function LNURLTip(props: LNURLTipProps) {
           console.debug("Generated new key for zap: ", randomKey);
           ev.PubKey = randomKey.publicKey;
           ev.Id = "";
+          ev.Tags.push(new Tag(["anon"], ev.Tags.length));
           await ev.Sign(randomKey.privateKey);
         }
         query.set("nostr", JSON.stringify(ev.ToObject()));
