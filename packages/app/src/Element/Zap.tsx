@@ -27,12 +27,17 @@ function getInvoice(zap: TaggedRawEvent) {
     console.debug("Invalid zap: ", zap);
     return {};
   }
-  const decoded = invoiceDecode(bolt11);
+  try {
+    const decoded = invoiceDecode(bolt11);
 
-  const amount = decoded.sections.find(section => section.name === "amount")?.value;
-  const hash = decoded.sections.find(section => section.name === "description_hash")?.value;
+    const amount = decoded.sections.find(section => section.name === "amount")?.value;
+    const hash = decoded.sections.find(section => section.name === "description_hash")?.value;
 
-  return { amount, hash: hash ? bytesToHex(hash as Uint8Array) : undefined };
+    return { amount, hash: hash ? bytesToHex(hash as Uint8Array) : undefined };
+  } catch {
+    // ignore
+  }
+  return {};
 }
 
 interface Zapper {
