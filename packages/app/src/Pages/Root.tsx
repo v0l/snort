@@ -13,6 +13,11 @@ import { TimelineSubject } from "Feed/TimelineFeed";
 import messages from "./messages";
 import { debounce } from "Util";
 
+interface RelayOption {
+  url: string;
+  paid: boolean;
+}
+
 export default function RootPage() {
   const { formatMessage } = useIntl();
   const { loggedOut, publicKey: pubKey, follows, tags, relays, preferences } = useSelector((s: RootState) => s.login);
@@ -40,8 +45,8 @@ export default function RootPage() {
         return RootTab.Posts;
     }
   });
-  const [relay, setRelay] = useState<string>();
-  const [globalRelays, setGlobalRelays] = useState<string[]>([]);
+  const [relay, setRelay] = useState<RelayOption>();
+  const [globalRelays, setGlobalRelays] = useState<RelayOption[]>([]);
   const tagTabs = tags.map((t, idx) => {
     return { text: `#${t}`, value: idx + 3 };
   });
@@ -66,12 +71,14 @@ export default function RootPage() {
 
   useEffect(() => {
     return debounce(1_000, () => {
-      const ret: string[] = [];
+      const ret: RelayOption[] = [];
       System.Sockets.forEach((v, k) => {
-        if (v.Info?.limitation?.payment_required === true) {
-          ret.push(k);
-        }
+        ret.push({
+          url: k,
+          paid: v.Info?.limitation?.payment_required ?? false,
+        });
       });
+      ret.sort(a => (a.paid ? 1 : -1));
 
       if (ret.length > 0 && !relay) {
         setRelay(ret[0]);
@@ -93,6 +100,8 @@ export default function RootPage() {
     return { type: "pubkey", items: follows, discriminator: "follows" };
   })();
 
+  const paidRelays = globalRelays.filter(a => a.paid);
+  const publicRelays = globalRelays.filter(a => !a.paid);
   return (
     <>
       <div className="main-content">
@@ -104,12 +113,23 @@ export default function RootPage() {
               description="Label for reading global feed from specific relays"
             />
             &nbsp;
-            <select onChange={e => setRelay(e.target.value)}>
-              {globalRelays.map(a => (
-                <option key={a} value={a}>
-                  {new URL(a).host}
-                </option>
-              ))}
+            <select onChange={e => setRelay(globalRelays.find(a => a.url === e.target.value))}>
+              {paidRelays.length > 0 && (
+                <optgroup label="Paid Relays">
+                  {paidRelays.map(a => (
+                    <option key={a.url} value={a.url}>
+                      {new URL(a.url).host}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
+              <optgroup label="Public Relays">
+                {publicRelays.map(a => (
+                  <option key={a.url} value={a.url}>
+                    {new URL(a.url).host}
+                  </option>
+                ))}
+              </optgroup>
             </select>
           </div>
         )}
@@ -121,7 +141,7 @@ export default function RootPage() {
         postsOnly={tab.value === RootTab.Posts.value}
         method={"TIME_RANGE"}
         window={undefined}
-        relay={isGlobal ? relay : undefined}
+        relay={isGlobal ? relay?.url : undefined}
       />
     </>
   );
