@@ -31,7 +31,6 @@
     "react-intersection-observer": "^9.4.1",
     "react-intl": "^6.2.8",
     "react-markdown": "^8.0.4",
-    "react-qr-code": "^2.0.11",
     "react-query": "^3.39.2",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.5.0",
