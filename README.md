@@ -47,3 +47,15 @@ To build the application and nostr package, use
 ```
 $ yarn build
 ```
+
+### Translations
+
+Translations are managed on [Crowdin](https://crowdin.com/project/snort)
+
+To extract translations run:
+```bash
+yarn workspace @snort/app intl-extract
+yarn workspace @snort/app intl-compile
+```
+
+This will create the source file `packages/app/src/translations/en.json`

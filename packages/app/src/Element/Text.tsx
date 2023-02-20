@@ -60,18 +60,18 @@ export default function Text({ content, tags, creator, users }: TextProps) {
               if (ref) {
                 switch (ref.Key) {
                   case "p": {
-                    return <Mention key={`ref-${ref.PubKey}-${idx}`} pubkey={ref.PubKey ?? ""} />;
+                    return <Mention pubkey={ref.PubKey ?? ""} />;
                   }
                   case "e": {
                     const eText = hexToBech32("note", ref.Event).substring(0, 12);
                     return (
-                      <Link key={ref.Event} to={eventLink(ref.Event ?? "")} onClick={e => e.stopPropagation()}>
+                      <Link to={eventLink(ref.Event ?? "")} onClick={e => e.stopPropagation()}>
                         #{eText}
                       </Link>
                     );
                   }
                   case "t": {
-                    return <Hashtag key={ref.Hashtag} tag={ref.Hashtag ?? ""} />;
+                    return <Hashtag tag={ref.Hashtag ?? ""} />;
                   }
                 }
               }
@@ -92,7 +92,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
         if (typeof f === "string") {
           return f.split(InvoiceRegex).map(i => {
             if (i.toLowerCase().startsWith("lnbc")) {
-              return <Invoice key={i} invoice={i} />;
+              return <Invoice invoice={i} />;
             } else {
               return i;
             }
@@ -109,7 +109,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
         if (typeof f === "string") {
           return f.split(HashtagRegex).map(i => {
             if (i.toLowerCase().startsWith("#")) {
-              return <Hashtag key={i} tag={i.substring(1)} />;
+              return <Hashtag tag={i.substring(1)} />;
             } else {
               return i;
             }

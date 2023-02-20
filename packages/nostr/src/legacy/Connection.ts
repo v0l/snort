@@ -82,7 +82,6 @@ export default class Connection {
     this.EventsCallback = new Map();
     this.AwaitingAuth = new Map();
     this.Authed = false;
-    this.Connect();
   }
 
   async Connect() {

@@ -82,10 +82,11 @@ export class NostrSystem {
   /**
    * Connect to a NOSTR relay if not already connected
    */
-  ConnectToRelay(address: string, options: RelaySettings) {
+  async ConnectToRelay(address: string, options: RelaySettings) {
     try {
       if (!this.Sockets.has(address)) {
         const c = new Connection(address, options);
+        await c.Connect();
         this.Sockets.set(address, c);
         for (const [, s] of this.Subscriptions) {
           c.AddSubscription(s);
