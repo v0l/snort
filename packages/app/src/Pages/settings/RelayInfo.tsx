@@ -1,11 +1,11 @@
 import { FormattedMessage } from "react-intl";
 import ProfilePreview from "Element/ProfilePreview";
 import useRelayState from "Feed/RelayState";
-import { System } from "@snort/nostr";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { removeRelay } from "State/Login";
 import { parseId, unwrap } from "Util";
+import { System } from "System";
 
 import messages from "./messages";
 

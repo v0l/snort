@@ -2,9 +2,8 @@ import { HexKey } from "@snort/nostr";
 import { db as idb } from "Db";
 
 import { UsersDb, MetadataCache, setUsers } from "State/Users";
-import store, { RootState } from "State/Store";
-import { useSelector } from "react-redux";
-import { unwrap } from "Util";
+import store from "State/Store";
+import { groupByPubkey, unixNowMs, unwrap } from "Util";
 
 class IndexedUsersDb implements UsersDb {
   ready = false;
@@ -63,14 +62,12 @@ class IndexedUsersDb implements UsersDb {
     await idb.users.bulkPut(users);
   }
 
-  async update(key: HexKey, fields: Record<string, string>) {
+  async update(key: HexKey, fields: Record<string, string | number>) {
     await idb.users.update(key, fields);
   }
 }
 
-function groupByPubkey(acc: Record<HexKey, MetadataCache>, user: MetadataCache) {
-  return { ...acc, [user.pubkey]: user };
-}
+export const IndexedUDB = new IndexedUsersDb();
 
 class ReduxUsersDb implements UsersDb {
   async isAvailable() {
@@ -91,22 +88,49 @@ class ReduxUsersDb implements UsersDb {
     });
   }
 
+  querySync(q: string) {
+    const state = store.getState();
+    const { users } = state.users;
+    return Object.values(users).filter(user => {
+      const profile = user as MetadataCache;
+      return (
+        profile.name?.includes(q) ||
+        profile.npub?.includes(q) ||
+        profile.display_name?.includes(q) ||
+        profile.nip05?.includes(q)
+      );
+    });
+  }
+
   async find(key: HexKey) {
     const state = store.getState();
     const { users } = state.users;
-    return users[key];
+    let ret: MetadataCache | undefined = users[key];
+    if (IndexedUDB.ready && ret === undefined) {
+      ret = await IndexedUDB.find(key);
+      if (ret) {
+        await this.put(ret);
+      }
+    }
+    return ret;
   }
 
   async add(user: MetadataCache) {
     const state = store.getState();
     const { users } = state.users;
     store.dispatch(setUsers({ ...users, [user.pubkey]: user }));
+    if (IndexedUDB.ready) {
+      await IndexedUDB.add(user);
+    }
   }
 
   async put(user: MetadataCache) {
     const state = store.getState();
     const { users } = state.users;
     store.dispatch(setUsers({ ...users, [user.pubkey]: user }));
+    if (IndexedUDB.ready) {
+      await IndexedUDB.put(user);
+    }
   }
 
   async bulkAdd(newUserProfiles: MetadataCache[]) {
@@ -114,23 +138,43 @@ class ReduxUsersDb implements UsersDb {
     const { users } = state.users;
     const newUsers = newUserProfiles.reduce(groupByPubkey, {});
     store.dispatch(setUsers({ ...users, ...newUsers }));
+    if (IndexedUDB.ready) {
+      await IndexedUDB.bulkAdd(newUserProfiles);
+    }
   }
 
   async bulkGet(keys: HexKey[]) {
     const state = store.getState();
     const { users } = state.users;
     const ids = new Set([...keys]);
-    return Object.values(users).filter(user => {
+    let ret = Object.values(users).filter(user => {
       return ids.has(user.pubkey);
     });
+    if (IndexedUDB.ready && ret.length !== ids.size) {
+      const startLoad = unixNowMs();
+      const hasKeys = new Set(Object.keys(users));
+      const missing = [...ids].filter(a => !hasKeys.has(a));
+      const missingFromCache = await IndexedUDB.bulkGet(missing);
+      store.dispatch(setUsers({ ...users, ...missingFromCache.reduce(groupByPubkey, {}) }));
+      console.debug(
+        `Loaded ${missingFromCache.length}/${missing.length} profiles from cache in ${(unixNowMs() - startLoad).toFixed(
+          1
+        )} ms`
+      );
+      ret = [...ret, ...missingFromCache];
+    }
+    return ret;
   }
 
-  async update(key: HexKey, fields: Record<string, string>) {
+  async update(key: HexKey, fields: Record<string, string | number>) {
     const state = store.getState();
     const { users } = state.users;
     const current = users[key];
     const updated = { ...current, ...fields };
     store.dispatch(setUsers({ ...users, [key]: updated }));
+    if (IndexedUDB.ready) {
+      await IndexedUDB.update(key, fields);
+    }
   }
 
   async bulkPut(newUsers: MetadataCache[]) {
@@ -138,18 +182,10 @@ class ReduxUsersDb implements UsersDb {
     const { users } = state.users;
     const newProfiles = newUsers.reduce(groupByPubkey, {});
     store.dispatch(setUsers({ ...users, ...newProfiles }));
+    if (IndexedUDB.ready) {
+      await IndexedUDB.bulkPut(newUsers);
+    }
   }
 }
 
-export const IndexedUDB = new IndexedUsersDb();
 export const ReduxUDB = new ReduxUsersDb();
-
-export function useDb(): UsersDb {
-  const db = useSelector((s: RootState) => s.login.useDb);
-  switch (db) {
-    case "indexdDb":
-      return IndexedUDB;
-    default:
-      return ReduxUDB;
-  }
-}

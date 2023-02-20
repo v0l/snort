@@ -8,10 +8,10 @@ import { ConnectionStats } from "./ConnectionStats";
 import { RawEvent, RawReqFilter, TaggedRawEvent, u256 } from "./index";
 import { RelayInfo } from "./RelayInfo";
 import Nips from "./Nips";
-import { System } from "./System";
 import { unwrap } from "./Util";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
+export type AuthHandler = (challenge: string, relay: string) => Promise<NEvent | undefined>;
 
 /**
  * Relay settings
@@ -36,7 +36,7 @@ export type StateSnapshot = {
   id: string;
 };
 
-export default class Connection {
+export class Connection {
   Id: string;
   Address: string;
   Socket: WebSocket | null;
@@ -53,10 +53,11 @@ export default class Connection {
   IsClosed: boolean;
   ReconnectTimer: ReturnType<typeof setTimeout> | null;
   EventsCallback: Map<u256, (msg: boolean[]) => void>;
+  Auth?: AuthHandler;
   AwaitingAuth: Map<string, boolean>;
   Authed: boolean;
 
-  constructor(addr: string, options: RelaySettings) {
+  constructor(addr: string, options: RelaySettings, auth: AuthHandler = undefined) {
     this.Id = uuid();
     this.Address = addr;
     this.Socket = null;
@@ -82,6 +83,7 @@ export default class Connection {
     this.EventsCallback = new Map();
     this.AwaitingAuth = new Map();
     this.Authed = false;
+    this.Auth = auth;
   }
 
   async Connect() {
@@ -384,8 +386,11 @@ export default class Connection {
     const authCleanup = () => {
       this.AwaitingAuth.delete(challenge);
     };
+    if(!this.Auth) {
+      throw new Error("Auth hook not registered");
+    }
     this.AwaitingAuth.set(challenge, true);
-    const authEvent = await System.nip42Auth(challenge, this.Address);
+    const authEvent = await this.Auth(challenge, this.Address);
     return new Promise((resolve) => {
       if (!authEvent) {
         authCleanup();

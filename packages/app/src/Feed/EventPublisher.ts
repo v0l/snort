@@ -2,11 +2,12 @@ import { useSelector } from "react-redux";
 import * as secp from "@noble/secp256k1";
 
 import { TaggedRawEvent } from "@snort/nostr";
-import { EventKind, Tag, Event as NEvent, System, RelaySettings } from "@snort/nostr";
+import { EventKind, Tag, Event as NEvent, RelaySettings } from "@snort/nostr";
 import { RootState } from "State/Store";
 import { HexKey, RawEvent, u256, UserMetadata, Lists } from "@snort/nostr";
 import { bech32ToHex, unwrap } from "Util";
 import { DefaultRelays, HashtagRegex } from "Const";
+import { System } from "System";
 
 declare global {
   interface Window {

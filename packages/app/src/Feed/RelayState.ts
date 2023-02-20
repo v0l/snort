@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
-import { System, StateSnapshot } from "@snort/nostr";
+import { StateSnapshot } from "@snort/nostr";
+import { System } from "System";
 
 const noop = () => {
   return () => undefined;

@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { MetadataCache } from "State/Users";
 import { useKey, useKeys } from "State/Users/Hooks";
-import { System, HexKey } from "@snort/nostr";
+import { HexKey } from "@snort/nostr";
+import { System } from "System";
 
 export function useUserProfile(pubKey?: HexKey): MetadataCache | undefined {
   const users = useKey(pubKey);

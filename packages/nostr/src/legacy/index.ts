@@ -1,4 +1,3 @@
-export * from "./System";
 export * from "./Connection";
 export { default as EventKind } from "./EventKind";
 export { Subscriptions } from "./Subscriptions";

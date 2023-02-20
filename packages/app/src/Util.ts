@@ -2,6 +2,7 @@ import * as secp from "@noble/secp256k1";
 import { sha256 as hash } from "@noble/hashes/sha256";
 import { bech32 } from "bech32";
 import { HexKey, TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix } from "@snort/nostr";
+import { MetadataCache } from "State/Users";
 
 export const sha256 = (str: string) => {
   return secp.utils.bytesToHex(hash(str));
@@ -144,7 +145,11 @@ export function extractLnAddress(lnurl: string) {
 }
 
 export function unixNow() {
-  return Math.floor(new Date().getTime() / 1000);
+  return Math.floor(unixNowMs() / 1000);
+}
+
+export function unixNowMs() {
+  return new Date().getTime();
 }
 
 /**
@@ -195,4 +200,8 @@ export function getNewest(rawNotes: TaggedRawEvent[]) {
 export function tagFilterOfTextRepost(note: TaggedRawEvent, id?: u256): (tag: string[], i: number) => boolean {
   return (tag, i) =>
     tag[0] === "e" && tag[3] === "mention" && note.content === `#[${i}]` && (id ? tag[1] === id : true);
+}
+
+export function groupByPubkey(acc: Record<HexKey, MetadataCache>, user: MetadataCache) {
+  return { ...acc, [user.pubkey]: user };
 }

@@ -33,7 +33,7 @@ export const DefaultConnectTimeout = 2000;
 /**
  * How long profile cache should be considered valid for
  */
-export const ProfileCacheExpire = 1_000 * 60 * 5;
+export const ProfileCacheExpire = 1_000 * 60 * 30;
 
 /**
  * Default bootstrap relays

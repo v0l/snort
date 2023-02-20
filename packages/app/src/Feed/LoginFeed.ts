@@ -19,13 +19,13 @@ import {
 } from "State/Login";
 import { RootState } from "State/Store";
 import { mapEventToProfile, MetadataCache } from "State/Users";
-import { useDb } from "State/Users/Db";
 import useSubscription from "Feed/Subscription";
 import { barrierNip07 } from "Feed/EventPublisher";
 import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 import { unwrap } from "Util";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { ReduxUDB } from "State/Users/Db";
 
 /**
  * Managed loading data for the current logged in user
@@ -39,7 +39,6 @@ export default function useLoginFeed() {
     readNotifications,
   } = useSelector((s: RootState) => s.login);
   const { isMuted } = useModeration();
-  const db = useDb();
 
   const subMetadata = useMemo(() => {
     if (!pubKey) return null;
@@ -176,13 +175,13 @@ export default function useLoginFeed() {
         { created: 0, profile: null as MetadataCache | null }
       );
       if (maxProfile.profile) {
-        const existing = await db.find(maxProfile.profile.pubkey);
+        const existing = await ReduxUDB.find(maxProfile.profile.pubkey);
         if ((existing?.created ?? 0) < maxProfile.created) {
-          await db.put(maxProfile.profile);
+          await ReduxUDB.put(maxProfile.profile);
         }
       }
     })().catch(console.warn);
-  }, [dispatch, metadataFeed.store, db]);
+  }, [dispatch, metadataFeed.store, ReduxUDB]);
 
   useEffect(() => {
     const replies = notificationFeed.store.notes.filter(
@@ -190,13 +189,13 @@ export default function useLoginFeed() {
     );
     replies.forEach(nx => {
       dispatch(setLatestNotifications(nx.created_at));
-      makeNotification(db, nx).then(notification => {
+      makeNotification(ReduxUDB, nx).then(notification => {
         if (notification) {
           (dispatch as ThunkDispatch<RootState, undefined, AnyAction>)(sendNotification(notification));
         }
       });
     });
-  }, [dispatch, notificationFeed.store, db, readNotifications]);
+  }, [dispatch, notificationFeed.store, ReduxUDB, readNotifications]);
 
   useEffect(() => {
     const muted = getMutedKeys(mutedFeed.store.notes);

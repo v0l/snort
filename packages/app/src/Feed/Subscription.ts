@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useReducer, useState } from "react";
 import { TaggedRawEvent } from "@snort/nostr";
-import { System, Subscriptions } from "@snort/nostr";
+import { Subscriptions } from "@snort/nostr";
+import { System } from "System";
 import { debounce, unwrap } from "Util";
 import { db } from "Db";
 

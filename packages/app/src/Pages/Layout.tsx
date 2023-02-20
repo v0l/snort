@@ -9,14 +9,14 @@ import Bell from "Icons/Bell";
 import Search from "Icons/Search";
 import { RootState } from "State/Store";
 import { init, setRelays } from "State/Login";
-import { System } from "@snort/nostr";
+import { System } from "System";
 import ProfileImage from "Element/ProfileImage";
 import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
 import { SearchRelays, SnortPubKey } from "Const";
 import useEventPublisher from "Feed/EventPublisher";
 import useModeration from "Hooks/useModeration";
-import { IndexedUDB, useDb } from "State/Users/Db";
+import { IndexedUDB } from "State/Users/Db";
 import { db } from "Db";
 import { bech32ToHex } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
@@ -34,8 +34,6 @@ export default function Layout() {
     useSelector((s: RootState) => s.login);
   const { isMuted } = useModeration();
   const [pageClass, setPageClass] = useState("page");
-
-  const usingDb = useDb();
   const pub = useEventPublisher();
   useLoginFeed();
 
@@ -73,12 +71,8 @@ export default function Layout() {
   );
 
   useEffect(() => {
-    System.nip42Auth = pub.nip42Auth;
+    System.HandleAuth = pub.nip42Auth;
   }, [pub]);
-
-  useEffect(() => {
-    System.UserDb = usingDb;
-  }, [usingDb]);
 
   useEffect(() => {
     if (relays) {
@@ -125,6 +119,7 @@ export default function Layout() {
 
       // cleanup on load
       if (dbType === "indexdDb") {
+        IndexedUDB.ready = true;
         await db.feeds.clear();
         const now = Math.floor(new Date().getTime() / 1000);
 

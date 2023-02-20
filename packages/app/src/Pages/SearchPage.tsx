@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { debounce } from "Util";
 import { router } from "index";
 import { SearchRelays } from "Const";
-import { System } from "@snort/nostr";
+import { System } from "System";
 import { useQuery } from "State/Users/Hooks";
 
 import messages from "./messages";

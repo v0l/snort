@@ -7,7 +7,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import Tabs, { Tab } from "Element/Tabs";
 import { RootState } from "State/Store";
 import Timeline from "Element/Timeline";
-import { System } from "@snort/nostr";
+import { System } from "System";
 import { TimelineSubject } from "Feed/TimelineFeed";
 
 import messages from "./messages";
