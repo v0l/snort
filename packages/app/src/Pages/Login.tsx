@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import * as secp from "@noble/secp256k1";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Connect, ConnectURI } from "@nostr-connect/connect";
-import { generatePrivateKey } from "nostr-tools";
+import { generatePrivateKey, getPublicKey } from "nostr-tools";
 
 import { RootState } from "State/Store";
 import { setPrivateKey, setPublicKey, setRelays, setGeneratedPrivateKey } from "State/Login";
@@ -19,6 +19,7 @@ import ZapButton from "Element/ZapButton";
 import messages from "./messages";
 import QRCode from "react-qr-code";
 import Modal from "Element/Modal";
+import Copy from "Element/Copy";
 
 interface ArtworkEntry {
   name: string;
@@ -66,11 +67,24 @@ export default function LoginPage() {
     if (publicKey) {
       navigate("/");
     }
+  }, [publicKey, navigate]);
 
+  useEffect(() => {
+    const ret = unwrap(Artwork.at(Artwork.length * Math.random()));
+    // disable for now because imgproxy is ded
+    // proxy(ret.link).then(a => setArt({ ...ret, link: a }));
+    setArt(ret);
+  }, []);
+
+  useEffect(() => {
     (async () => {
       // Connect to Nostr
       if (connectKey) {
-        const connect = new Connect({ secretKey: connectKey, relay: "wss://nostr.vulpem.com" });
+        const connect = new Connect({
+          secretKey: connectKey,
+          target: publicKey,
+          relay: "wss://nostr.vulpem.com",
+        });
         connect.events.on("connect", (pub: string) => {
           console.log("connected with wallet: " + pub);
           dispatch(setPublicKey(pub));
@@ -81,14 +95,7 @@ export default function LoginPage() {
         await connect.init();
       }
     })();
-  }, [publicKey, navigate, connectKey]);
-
-  useEffect(() => {
-    const ret = unwrap(Artwork.at(Artwork.length * Math.random()));
-    // disable for now because imgproxy is ded
-    // proxy(ret.link).then(a => setArt({ ...ret, link: a }));
-    setArt(ret);
-  }, []);
+  }, [connectKey, dispatch]);
 
   async function getNip05PubKey(addr: string) {
     const [username, domain] = addr.split("@");
@@ -163,7 +170,7 @@ export default function LoginPage() {
     }
 
     const connectURI = new ConnectURI({
-      target: sk,
+      target: getPublicKey(sk),
       relay: "wss://nostr.vulpem.com",
       metadata: {
         name: "Snort.Social",
@@ -173,8 +180,6 @@ export default function LoginPage() {
       },
     });
     const uri = connectURI.toString();
-
-    console.log(uri);
     setConnectURI(uri);
   }
 
@@ -240,18 +245,28 @@ export default function LoginPage() {
             </button>
 
             {connectURI && !publicKey ? (
-              <Modal className="note-creator-modal" onClose={closeSession}>
-                <>
+              <Modal className="qr-modal" onClose={closeSession}>
+                <div>
                   <p dir="auto">
                     <FormattedMessage
                       defaultMessage="Scan with a Nostr Connect app"
                       description="Scan with a Nostr Connect app"
                     />
                   </p>
-                  <div className="flex" style={{ padding: "2px", backgroundColor: "white" }}>
-                    <QRCode value={connectURI} />
-                  </div>
-                </>
+                  <QRCode
+                    size={256}
+                    style={{
+                      height: "auto",
+                      width: "auto",
+                      backgroundColor: "white",
+                      borderRadius: "4px",
+                      padding: "4px",
+                    }}
+                    value={connectURI}
+                    viewBox={`0 0 256 256`}
+                  />
+                  <Copy text={connectURI} />
+                </div>
               </Modal>
             ) : (
               <button type="button" onClick={doNip46Connect}>
