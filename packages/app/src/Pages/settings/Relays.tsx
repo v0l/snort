@@ -18,16 +18,32 @@ const RelaySettingsPage = () => {
   const [newRelay, setNewRelay] = useState<string>();
 
   async function saveRelays() {
-    const ev = await publisher.saveRelays();
-    publisher.broadcast(ev);
-    publisher.broadcastForBootstrap(ev);
+    const updatedRelaysEvent = await publisher.saveRelaysSettings();
+    let wasBlastrBrodcastSuccessful: boolean;
+
     try {
-      const onlineRelays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
-      const settingsEv = await publisher.saveRelaysSettings();
-      const rs = Object.keys(relays).concat(randomSample(onlineRelays, 20));
-      publisher.broadcastAll(settingsEv, rs);
+      publisher.broadcast(updatedRelaysEvent);
+      publisher.broadcastForBootstrap(updatedRelaysEvent);
     } catch (error) {
       console.error(error);
+    }
+
+    try {
+      publisher.broadcastWithBlastr(updatedRelaysEvent);
+      wasBlastrBrodcastSuccessful = true;
+    } catch (error) {
+      console.error(error);
+      wasBlastrBrodcastSuccessful = false;
+    }
+
+    if (!wasBlastrBrodcastSuccessful) {
+      try {
+        const onlineRelays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
+        const rs = Object.keys(relays).concat(randomSample(onlineRelays, 20));
+        publisher.broadcastAll(updatedRelaysEvent, rs);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 

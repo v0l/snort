@@ -116,6 +116,15 @@ export default function useEventPublisher() {
         }
       }
     },
+    /**
+     * Write to every online relay using Blastr.
+     * https://github.com/MutinyWallet/blastr
+     */
+    broadcastWithBlastr: (ev: NEvent | undefined) => {
+      if (ev) {
+        System.WriteOnceToRelay("wss://nostr.mutinywallet.com", ev);
+      }
+    },
     muted: async (keys: HexKey[], priv: HexKey[]) => {
       if (pubKey) {
         const ev = NEvent.ForPubKey(pubKey);
@@ -248,18 +257,6 @@ export default function useEventPublisher() {
         ev.Content = content;
         ev.Tags.push(new Tag(["e", evRef.Id], 0));
         ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
-        return await signEvent(ev);
-      }
-    },
-    saveRelays: async () => {
-      if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.ContactList;
-        ev.Content = JSON.stringify(relays);
-        for (const pk of follows) {
-          ev.Tags.push(new Tag(["p", pk], ev.Tags.length));
-        }
-
         return await signEvent(ev);
       }
     },
