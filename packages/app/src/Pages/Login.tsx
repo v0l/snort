@@ -14,12 +14,12 @@ import { DefaultRelays, EmailRegex } from "Const";
 import { bech32ToHex, unwrap } from "Util";
 import { HexKey } from "@snort/nostr";
 import ZapButton from "Element/ZapButton";
+import QrCode from "Element/QrCode";
+import Modal from "Element/Modal";
+import Copy from "Element/Copy";
 // import useImgProxy from "Feed/ImgProxy";
 
 import messages from "./messages";
-import QRCode from "react-qr-code";
-import Modal from "Element/Modal";
-import Copy from "Element/Copy";
 
 interface ArtworkEntry {
   name: string;
@@ -253,18 +253,7 @@ export default function LoginPage() {
                       description="Scan with a Nostr Connect app"
                     />
                   </p>
-                  <QRCode
-                    size={256}
-                    style={{
-                      height: "auto",
-                      width: "auto",
-                      backgroundColor: "white",
-                      borderRadius: "4px",
-                      padding: "4px",
-                    }}
-                    value={connectURI}
-                    viewBox={`0 0 256 256`}
-                  />
+                  <QrCode data={connectURI} link={connectURI} />
                   <Copy text={connectURI} />
                 </div>
               </Modal>
