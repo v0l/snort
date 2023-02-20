@@ -9,8 +9,10 @@
     "@jukben/emoji-search": "^2.0.1",
     "@noble/hashes": "^1.2.0",
     "@noble/secp256k1": "^1.7.0",
+    "@nostr-connect/connect": "^0.2.3",
     "@protobufjs/base64": "^1.1.2",
     "@reduxjs/toolkit": "^1.9.1",
+    "@snort/nostr": "^1.0.0",
     "@szhsin/react-menu": "^3.3.1",
     "@types/jest": "^29.2.5",
     "@types/node": "^18.11.18",
@@ -29,6 +31,7 @@
     "react-intersection-observer": "^9.4.1",
     "react-intl": "^6.2.8",
     "react-markdown": "^8.0.4",
+    "react-qr-code": "^2.0.11",
     "react-query": "^3.39.2",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.5.0",
@@ -49,8 +52,7 @@
     "workbox-range-requests": "^6.4.2",
     "workbox-routing": "^6.4.2",
     "workbox-strategies": "^6.4.2",
-    "workbox-streams": "^6.4.2",
-    "@snort/nostr": "^1.0.0"
+    "workbox-streams": "^6.4.2"
   },
   "scripts": {
     "start": "react-app-rewired start",

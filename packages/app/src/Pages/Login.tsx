@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as secp from "@noble/secp256k1";
 import { useIntl, FormattedMessage } from "react-intl";
+import { Connect, ConnectURI } from "@nostr-connect/connect";
+import { generatePrivateKey } from "nostr-tools";
 
 import { RootState } from "State/Store";
 import { setPrivateKey, setPublicKey, setRelays, setGeneratedPrivateKey } from "State/Login";
@@ -15,6 +17,8 @@ import ZapButton from "Element/ZapButton";
 // import useImgProxy from "Feed/ImgProxy";
 
 import messages from "./messages";
+import QRCode from "react-qr-code";
+import Modal from "Element/Modal";
 
 interface ArtworkEntry {
   name: string;
@@ -55,12 +59,29 @@ export default function LoginPage() {
   const [art, setArt] = useState<ArtworkEntry>();
   const { formatMessage } = useIntl();
   //const { proxy } = useImgProxy();
+  const [connectKey, setConnectKey] = useState<string | null>("");
+  const [connectURI, setConnectURI] = useState<string | null>("");
 
   useEffect(() => {
     if (publicKey) {
       navigate("/");
     }
-  }, [publicKey, navigate]);
+
+    (async () => {
+      // Connect to Nostr
+      if (connectKey) {
+        const connect = new Connect({ secretKey: connectKey, relay: "wss://nostr.vulpem.com" });
+        connect.events.on("connect", (pub: string) => {
+          console.log("connected with wallet: " + pub);
+          dispatch(setPublicKey(pub));
+        });
+        connect.events.on("disconnect", () => {
+          setConnectKey(null);
+        });
+        await connect.init();
+      }
+    })();
+  }, [publicKey, navigate, connectKey]);
 
   useEffect(() => {
     const ret = unwrap(Artwork.at(Artwork.length * Math.random()));
@@ -134,6 +155,34 @@ export default function LoginPage() {
     }
   }
 
+  async function doNip46Connect() {
+    let sk = connectKey;
+    if (!sk) {
+      sk = generatePrivateKey();
+      setConnectKey(sk);
+    }
+
+    const connectURI = new ConnectURI({
+      target: sk,
+      relay: "wss://nostr.vulpem.com",
+      metadata: {
+        name: "Snort.Social",
+        description: "Fast nostr web ui.",
+        url: "https://snort.social",
+        icons: ["https://snort.social/nostrich_512.png"],
+      },
+    });
+    const uri = connectURI.toString();
+
+    console.log(uri);
+    setConnectURI(uri);
+  }
+
+  async function closeSession() {
+    setConnectURI(null);
+    setConnectKey(null);
+  }
+
   function altLogins() {
     const nip07 = "nostr" in window;
     if (!nip07) {
@@ -189,6 +238,26 @@ export default function LoginPage() {
             <button type="button" onClick={doLogin}>
               <FormattedMessage defaultMessage="Login" description="Login button" />
             </button>
+
+            {connectURI && !publicKey ? (
+              <Modal className="note-creator-modal" onClose={closeSession}>
+                <>
+                  <p dir="auto">
+                    <FormattedMessage
+                      defaultMessage="Scan with a Nostr Connect app"
+                      description="Scan with a Nostr Connect app"
+                    />
+                  </p>
+                  <div className="flex" style={{ padding: "2px", backgroundColor: "white" }}>
+                    <QRCode value={connectURI} />
+                  </div>
+                </>
+              </Modal>
+            ) : (
+              <button type="button" onClick={doNip46Connect}>
+                <FormattedMessage defaultMessage="Nostr Connect" description="Nostr Connect button" />
+              </button>
+            )}
             {altLogins()}
           </div>
           <div className="flex login-or">
