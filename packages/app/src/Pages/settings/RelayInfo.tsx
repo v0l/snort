@@ -76,6 +76,7 @@ const RelayInfo = () => {
             <div className="f-grow">
               {stats.info.supported_nips.map(a => (
                 <span
+                  key={a}
                   className="pill"
                   onClick={() =>
                     navigate(`https://github.com/nostr-protocol/nips/blob/master/${a.toString().padStart(2, "0")}.md`)
