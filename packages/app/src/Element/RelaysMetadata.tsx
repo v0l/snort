@@ -12,7 +12,9 @@ const RelayFavicon = ({ url }: { url: string }) => {
     .replace(/^ws:\/\//, "http://")
     .replace(/\/$/, "");
   const [faviconUrl, setFaviconUrl] = useState(`${cleanUrl}/favicon.ico`);
-  return <img className="favicon" src={faviconUrl} onError={() => setFaviconUrl(Nostrich)} />;
+  return (
+    <img className="favicon" src={faviconUrl} onError={() => setFaviconUrl(Nostrich)} alt={`favicon for ${url}`} />
+  );
 };
 
 interface RelaysMetadataProps {
