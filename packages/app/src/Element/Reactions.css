@@ -92,6 +92,10 @@
   line-height: 17px;
 }
 
+.reactions-item .zap-comment {
+  width: 332px;
+}
+
 @media (max-width: 520px) {
   .reactions-view .tab.disabled {
     display: none;
