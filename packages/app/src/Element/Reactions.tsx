@@ -113,7 +113,11 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                     <ProfileImage
                       autoWidth={false}
                       pubkey={z.anonZap ? "" : z.zapper}
-                      subHeader={<>{z.content}</>}
+                      subHeader={
+                        <div className="f-ellipsis zap-comment" title={z.content}>
+                          {z.content}
+                        </div>
+                      }
                       overrideUsername={z.anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
                     />
                   </div>
