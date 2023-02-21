@@ -17,7 +17,6 @@ import { SearchRelays, SnortPubKey } from "Const";
 import useEventPublisher from "Feed/EventPublisher";
 import useModeration from "Hooks/useModeration";
 import { IndexedUDB } from "State/Users/Db";
-import { db } from "Db";
 import { bech32ToHex } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import Plus from "Icons/Plus";
@@ -120,15 +119,6 @@ export default function Layout() {
       // cleanup on load
       if (dbType === "indexdDb") {
         IndexedUDB.ready = true;
-        await db.feeds.clear();
-        const now = Math.floor(new Date().getTime() / 1000);
-
-        const cleanupEvents = await db.events
-          .where("created_at")
-          .above(now - 60 * 60)
-          .primaryKeys();
-        console.debug(`Cleanup ${cleanupEvents.length} events`);
-        await db.events.bulkDelete(cleanupEvents);
       }
 
       console.debug(`Using db: ${dbType}`);

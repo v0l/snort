@@ -2,8 +2,7 @@ import { useEffect, useMemo, useReducer, useState } from "react";
 import { TaggedRawEvent } from "@snort/nostr";
 import { Subscriptions } from "@snort/nostr";
 import { System } from "System";
-import { debounce, unwrap } from "Util";
-import { db } from "Db";
+import { debounce } from "Util";
 
 export type NoteStore = {
   notes: Array<TaggedRawEvent>;
@@ -80,7 +79,6 @@ export default function useSubscription(
   const [state, dispatch] = useReducer(notesReducer, initStore);
   const [debounceOutput, setDebounceOutput] = useState<number>(0);
   const [subDebounce, setSubDebounced] = useState<Subscriptions>();
-  const useCache = useMemo(() => options?.cache === true, [options]);
 
   useEffect(() => {
     if (sub) {
@@ -97,25 +95,11 @@ export default function useSubscription(
         end: false,
       });
 
-      if (useCache) {
-        // preload notes from db
-        PreloadNotes(subDebounce.Id)
-          .then(ev => {
-            dispatch({
-              type: "EVENT",
-              ev: ev,
-            });
-          })
-          .catch(console.warn);
-      }
       subDebounce.OnEvent = e => {
         dispatch({
           type: "EVENT",
           ev: e,
         });
-        if (useCache) {
-          db.events.put(e);
-        }
       };
 
       subDebounce.OnEnd = c => {
@@ -144,15 +128,7 @@ export default function useSubscription(
         System.RemoveSubscription(subDebounce.Id);
       };
     }
-  }, [subDebounce, useCache]);
-
-  useEffect(() => {
-    if (subDebounce && useCache) {
-      return debounce(500, () => {
-        TrackNotesInFeed(subDebounce.Id, state.notes).catch(console.warn);
-      });
-    }
-  }, [state, useCache]);
+  }, [subDebounce]);
 
   useEffect(() => {
     return debounce(DebounceMs, () => {
@@ -174,23 +150,3 @@ export default function useSubscription(
     },
   };
 }
-
-/**
- * Lookup cached copy of feed
- */
-const PreloadNotes = async (id: string): Promise<TaggedRawEvent[]> => {
-  const feed = await db.feeds.get(id);
-  if (feed) {
-    const events = await db.events.bulkGet(feed.ids);
-    return events.filter(a => a !== undefined).map(a => unwrap(a));
-  }
-  return [];
-};
-
-const TrackNotesInFeed = async (id: string, notes: TaggedRawEvent[]) => {
-  const existing = await db.feeds.get(id);
-  const ids = Array.from(new Set([...(existing?.ids || []), ...notes.map(a => a.id)]));
-  const since = notes.reduce((acc, v) => (acc > v.created_at ? v.created_at : acc), +Infinity);
-  const until = notes.reduce((acc, v) => (acc < v.created_at ? v.created_at : acc), -Infinity);
-  await db.feeds.put({ id, ids, since, until });
-};
