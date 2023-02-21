@@ -137,7 +137,7 @@ async function checkSignature(
   }
 }
 
-async function serializeId(raw: RawEvent): Promise<EventId> {
+export async function serializeId(raw: RawEvent): Promise<EventId> {
   // It's not defined whether JSON.stringify produces a string with whitespace stripped.
   // Building the JSON string manually this way ensures that there's no whitespace.
   // In hindsight using JSON as a data format for hashing and signing is not the best
