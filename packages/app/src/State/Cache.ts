@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TaggedRawEvent, u256 } from "@snort/nostr";
+import { TaggedRawEvent } from "@snort/nostr";
 
 export interface TimelineCache {
   key: string;
