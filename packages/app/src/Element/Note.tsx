@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
 
+import { ProxyImg } from "Element/ProxyImg";
 import useEventPublisher from "Feed/EventPublisher";
 import Bookmark from "Icons/Bookmark";
 import Pin from "Icons/Pin";
@@ -23,7 +24,7 @@ import {
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import { useUserProfiles } from "Feed/ProfileFeed";
-import { TaggedRawEvent, u256, HexKey, Event as NEvent, EventKind } from "@snort/nostr";
+import { TaggedRawEvent, u256, HexKey, Event as NEvent, EventKind, encodeTLV, NostrPrefix } from "@snort/nostr";
 import useModeration from "Hooks/useModeration";
 import { setPinned, setBookmarked } from "State/Login";
 import type { RootState } from "State/Store";
@@ -175,6 +176,16 @@ export default function Note(props: NoteProps) {
     }
   }, [inView, entry, extendable]);
 
+  function goToReplaceableEvent(e: React.MouseEvent, ev: NEvent) {
+    e.stopPropagation();
+    const d = ev.Tags.find(t => t.Key === "d")?.Original[1];
+    if (d) {
+      const href = encodeTLV(d, NostrPrefix.Address, [], ev.PubKey, ev.Kind);
+      window.open(`nostr:${href}`);
+      //window.open(`https://habla.news/a/${href}`);
+    }
+  }
+
   function goToEvent(e: React.MouseEvent, id: u256) {
     e.stopPropagation();
     navigate(eventLink(id));
@@ -229,6 +240,34 @@ export default function Note(props: NoteProps) {
         ) : (
           replyId && <Link to={eventLink(replyId)}>{hexToBech32("note", replyId)?.substring(0, 12)}</Link>
         )}
+      </div>
+    );
+  }
+
+  if (ev.Kind === EventKind.LongFormNote) {
+    const title = ev.Tags.find(t => t.Key === "title")?.Original[1];
+    const summary = ev.Tags.find(t => t.Key === "summary")?.Original[1];
+    const image = ev.Tags.find(t => t.Key === "image")?.Original[1];
+    const publishedAt = ev.Tags.find(t => t.Key === "published_at")?.Original[1];
+    return (
+      <div className={`${baseClassName}${highlight ? " active " : " "}`}>
+        <div className="header">
+          <ProfileImage autoWidth={false} pubkey={ev.PubKey} />
+          <div className="info">
+            {publishedAt ? (
+              <NoteTime from={Number(publishedAt) * 1000} />
+            ) : (
+              <NoteTime from={Number(ev.CreatedAt) * 1000} />
+            )}
+          </div>
+        </div>
+        <div className="body" onClick={e => goToReplaceableEvent(e, ev)}>
+          <div className="text" dir="auto">
+            <h2>{title}</h2>
+            {image && <ProxyImg alt={title} key={image} src={image} />}
+            <p>{summary}</p>
+          </div>
+        </div>
       </div>
     );
   }

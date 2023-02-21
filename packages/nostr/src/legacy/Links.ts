@@ -1,6 +1,9 @@
 import * as secp from "@noble/secp256k1";
 import { bech32 } from "bech32";
 import { HexKey } from ".";
+import { Buffer } from "buffer";
+
+const BECH32_MAX_BYTES = 1000;
 
 export enum NostrPrefix {
   PublicKey = "npub",
@@ -11,6 +14,7 @@ export enum NostrPrefix {
   Profile = "nprofile",
   Event = "nevent",
   Relay = "nrelay",
+  Address = "naddr",
 }
 
 export enum TLVEntryType {
@@ -26,13 +30,15 @@ export interface TLVEntry {
   value: string | HexKey | number;
 }
 
-export function encodeTLV(hex: string, prefix: NostrPrefix, relays?: string[]) {
-  if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0) {
-    return "";
-  }
-
+export function encodeTLV(
+  hex: string,
+  prefix: NostrPrefix,
+  relays?: string[],
+  author?: string,
+  kind?: number
+) {
   const enc = new TextEncoder();
-  const buf = secp.utils.hexToBytes(hex);
+  const buf = enc.encode(hex);
 
   const tl0 = [0, buf.length, ...buf];
   const tl1 =
@@ -43,11 +49,28 @@ export function encodeTLV(hex: string, prefix: NostrPrefix, relays?: string[]) {
       })
       .flat() ?? [];
 
-  return bech32.encode(prefix, bech32.toWords([...tl0, ...tl1]));
+  let tl2 = [];
+  if (author) {
+    const authorBuff = secp.utils.hexToBytes(author);
+    tl2 = [2, authorBuff.length, ...authorBuff];
+  }
+
+  let tl3 = [];
+  if (kind) {
+    const kindBuff = new Buffer(4);
+    kindBuff.writeUInt32BE(kind);
+    tl3 = [3, kindBuff.length, ...kindBuff];
+  }
+
+  return bech32.encode(
+    prefix,
+    bech32.toWords([...tl0, ...tl1, ...tl2, ...tl3]),
+    BECH32_MAX_BYTES
+  );
 }
 
 export function decodeTLV(str: string) {
-  const decoded = bech32.decode(str, 1_000);
+  const decoded = bech32.decode(str, BECH32_MAX_BYTES);
   const data = bech32.fromWords(decoded.words);
 
   const entries: TLVEntry[] = [];
@@ -73,7 +96,7 @@ function decodeTLVEntry(type: TLVEntryType, data: Uint8Array) {
       return secp.utils.bytesToHex(data);
     }
     case TLVEntryType.Kind: {
-      return 0
+      return Buffer.from(data).readUInt32BE();
     }
     case TLVEntryType.Relay: {
       return new TextDecoder("ASCII").decode(data);

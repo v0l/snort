@@ -12,6 +12,7 @@ enum EventKind {
   Auth = 22242, // NIP-42
   PubkeyLists = 30000, // NIP-51a
   NoteLists = 30001, // NIP-51b
+  LongFormNote = 30023, // NIP 23
   TagLists = 30002, // NIP-51c
   ZapRequest = 9734, // NIP 57
   ZapReceipt = 9735, // NIP 57

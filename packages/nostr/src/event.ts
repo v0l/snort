@@ -19,6 +19,7 @@ export enum EventKind {
   Relays = 10002, // NIP-65
   Auth = 22242, // NIP-42
   PubkeyLists = 30000, // NIP-51a
+  LongFormNote = 30023, // NIP 23
   NoteLists = 30001, // NIP-51b
   TagLists = 30002, // NIP-51c
   ZapRequest = 9734, // NIP 57
