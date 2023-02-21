@@ -1,10 +1,10 @@
 import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
 import ArrowUp from "Icons/ArrowUp";
-import { dedupeByPubkey, tagFilterOfTextRepost } from "Util";
+import { dedupeById, dedupeByPubkey, tagFilterOfTextRepost } from "Util";
 import ProfileImage from "Element/ProfileImage";
 import useTimelineFeed, { TimelineSubject } from "Feed/TimelineFeed";
 import { TaggedRawEvent } from "@snort/nostr";
@@ -16,6 +16,9 @@ import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
 import ProfilePreview from "./ProfilePreview";
 import Skeleton from "Element/Skeleton";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "State/Store";
+import { setTimeline } from "State/Cache";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -38,7 +41,9 @@ export default function Timeline({
   relay,
 }: TimelineProps) {
   const { muted, isMuted } = useModeration();
-  const { main, related, latest, parent, loadMore, showLatest } = useTimelineFeed(subject, {
+  const dispatch = useDispatch();
+  const cache = useSelector((s: RootState) => s.cache.timeline);
+  const feed = useTimelineFeed(subject, {
     method,
     window: timeWindow,
     relay,
@@ -52,19 +57,33 @@ export default function Timeline({
         ?.filter(a => (postsOnly ? !a.tags.some(b => b[0] === "e") : true))
         .filter(a => ignoreModeration || !isMuted(a.pubkey));
     },
-    [postsOnly, muted]
+    [postsOnly, muted, ignoreModeration]
   );
 
   const mainFeed = useMemo(() => {
-    return filterPosts(main.notes);
-  }, [main, filterPosts]);
+    return filterPosts(cache.main);
+  }, [cache, filterPosts]);
 
   const latestFeed = useMemo(() => {
-    return filterPosts(latest.notes).filter(a => !mainFeed.some(b => b.id === a.id));
-  }, [latest, mainFeed, filterPosts]);
+    return filterPosts(cache.latest).filter(a => !mainFeed.some(b => b.id === a.id));
+  }, [cache, filterPosts]);
   const latestAuthors = useMemo(() => {
     return dedupeByPubkey(latestFeed).map(e => e.pubkey);
   }, [latestFeed]);
+
+  useEffect(() => {
+    const key = `${subject.type}-${subject.discriminator}`;
+    const newFeed = key !== cache.key;
+    dispatch(
+      setTimeline({
+        key: key,
+        main: dedupeById([...(newFeed ? [] : cache.main), ...feed.main.notes]),
+        latest: [...feed.latest.notes],
+        related: dedupeById([...(newFeed ? [] : cache.related), ...feed.related.notes]),
+        parent: dedupeById([...(newFeed ? [] : cache.parent), ...feed.parent.notes]),
+      })
+    );
+  }, [feed.main, feed.latest, feed.related, feed.parent]);
 
   function eventElement(e: TaggedRawEvent) {
     switch (e.kind) {
@@ -74,9 +93,9 @@ export default function Timeline({
       case EventKind.TextNote: {
         const eRef = e.tags.find(tagFilterOfTextRepost(e))?.at(1);
         if (eRef) {
-          return <NoteReaction data={e} key={e.id} root={parent.notes.find(a => a.id === eRef)} />;
+          return <NoteReaction data={e} key={e.id} root={cache.parent.find(a => a.id === eRef)} />;
         }
-        return <Note key={e.id} data={e} related={related.notes} ignoreModeration={ignoreModeration} />;
+        return <Note key={e.id} data={e} related={cache.related} ignoreModeration={ignoreModeration} />;
       }
       case EventKind.ZapReceipt: {
         const zap = parseZap(e);
@@ -85,18 +104,17 @@ export default function Timeline({
       case EventKind.Reaction:
       case EventKind.Repost: {
         const eRef = e.tags.find(a => a[0] === "e")?.at(1);
-        return <NoteReaction data={e} key={e.id} root={parent.notes.find(a => a.id === eRef)} />;
+        return <NoteReaction data={e} key={e.id} root={cache.parent.find(a => a.id === eRef)} />;
       }
     }
   }
 
   function onShowLatest(scrollToTop = false) {
-    showLatest();
+    feed.showLatest();
     if (scrollToTop) {
       window.scrollTo(0, 0);
     }
   }
-
   return (
     <div className="main-content">
       {latestFeed.length > 0 && (
@@ -126,7 +144,7 @@ export default function Timeline({
         </>
       )}
       {mainFeed.map(eventElement)}
-      <LoadMore onLoadMore={loadMore} shouldLoadMore={main.end}>
+      <LoadMore onLoadMore={feed.loadMore} shouldLoadMore={feed.main.end}>
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />

@@ -177,6 +177,23 @@ export function dedupeByPubkey(events: TaggedRawEvent[]) {
   return deduped.list as TaggedRawEvent[];
 }
 
+export function dedupeById(events: TaggedRawEvent[]) {
+  const deduped = events.reduce(
+    ({ list, seen }: { list: TaggedRawEvent[]; seen: Set<HexKey> }, ev) => {
+      if (seen.has(ev.id)) {
+        return { list, seen };
+      }
+      seen.add(ev.id);
+      return {
+        seen,
+        list: [...list, ev],
+      };
+    },
+    { list: [], seen: new Set([]) }
+  );
+  return deduped.list as TaggedRawEvent[];
+}
+
 export function unwrap<T>(v: T | undefined | null): T {
   if (v === undefined || v === null) {
     throw new Error("missing value");
