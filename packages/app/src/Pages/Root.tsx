@@ -11,7 +11,7 @@ import { System } from "System";
 import { TimelineSubject } from "Feed/TimelineFeed";
 
 import messages from "./messages";
-import { debounce } from "Util";
+import { debounce, unwrap } from "Util";
 
 interface RelayOption {
   url: string;
@@ -46,11 +46,12 @@ export default function RootPage() {
     }
   });
   const [relay, setRelay] = useState<RelayOption>();
-  const [globalRelays, setGlobalRelays] = useState<RelayOption[]>([]);
+  const [allRelays, setAllRelays] = useState<RelayOption[]>();
   const tagTabs = tags.map((t, idx) => {
     return { text: `#${t}`, value: idx + 3 };
   });
   const tabs = [RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global, ...tagTabs];
+  const isGlobal = loggedOut || tab.value === RootTab.Global.value;
 
   function followHints() {
     if (follows?.length === 0 && pubKey && tab !== RootTab.Global) {
@@ -69,28 +70,63 @@ export default function RootPage() {
     }
   }
 
+  function globalRelaySelector() {
+    if (!isGlobal || !allRelays || allRelays.length === 0) return null;
+
+    const paidRelays = allRelays.filter(a => a.paid);
+    const publicRelays = allRelays.filter(a => !a.paid);
+    return (
+      <div className="flex mb10 f-end">
+        <FormattedMessage
+          defaultMessage="Read global from"
+          description="Label for reading global feed from specific relays"
+        />
+        &nbsp;
+        <select onChange={e => setRelay(allRelays.find(a => a.url === e.target.value))} value={relay?.url}>
+          {paidRelays.length > 0 && (
+            <optgroup label="Paid Relays">
+              {paidRelays.map(a => (
+                <option key={a.url} value={a.url}>
+                  {new URL(a.url).host}
+                </option>
+              ))}
+            </optgroup>
+          )}
+          <optgroup label="Public Relays">
+            {publicRelays.map(a => (
+              <option key={a.url} value={a.url}>
+                {new URL(a.url).host}
+              </option>
+            ))}
+          </optgroup>
+        </select>
+      </div>
+    );
+  }
+
   useEffect(() => {
-    return debounce(1_000, () => {
-      const ret: RelayOption[] = [];
-      System.Sockets.forEach((v, k) => {
-        ret.push({
-          url: k,
-          paid: v.Info?.limitation?.payment_required ?? false,
+    if (isGlobal) {
+      return debounce(500, () => {
+        const ret: RelayOption[] = [];
+        System.Sockets.forEach((v, k) => {
+          ret.push({
+            url: k,
+            paid: v.Info?.limitation?.payment_required ?? false,
+          });
         });
+        ret.sort(a => (a.paid ? -1 : 1));
+
+        if (ret.length > 0 && !relay) {
+          setRelay(ret[0]);
+        }
+        setAllRelays(ret);
       });
-      ret.sort(a => (a.paid ? 1 : -1));
+    }
+  }, [relays, relay, tab]);
 
-      if (ret.length > 0 && !relay) {
-        setRelay(ret[0]);
-      }
-      setGlobalRelays(ret);
-    });
-  }, [relays, relay]);
-
-  const isGlobal = loggedOut || tab.value === RootTab.Global.value;
   const timelineSubect: TimelineSubject = (() => {
     if (isGlobal) {
-      return { type: "global", items: [], discriminator: "all" };
+      return { type: "global", items: [], discriminator: `all-${relay?.url}` };
     }
     if (tab.value >= 3) {
       const hashtag = tab.text.slice(1);
@@ -100,49 +136,29 @@ export default function RootPage() {
     return { type: "pubkey", items: follows, discriminator: "follows" };
   })();
 
-  const paidRelays = globalRelays.filter(a => a.paid);
-  const publicRelays = globalRelays.filter(a => !a.paid);
-  return (
-    <>
-      <div className="main-content">
-        {pubKey && <Tabs tabs={tabs} tab={tab} setTab={setTab} />}
-        {isGlobal && globalRelays.length > 0 && (
-          <div className="flex mb10 f-end">
-            <FormattedMessage
-              defaultMessage="Read global from"
-              description="Label for reading global feed from specific relays"
-            />
-            &nbsp;
-            <select onChange={e => setRelay(globalRelays.find(a => a.url === e.target.value))}>
-              {paidRelays.length > 0 && (
-                <optgroup label="Paid Relays">
-                  {paidRelays.map(a => (
-                    <option key={a.url} value={a.url}>
-                      {new URL(a.url).host}
-                    </option>
-                  ))}
-                </optgroup>
-              )}
-              <optgroup label="Public Relays">
-                {publicRelays.map(a => (
-                  <option key={a.url} value={a.url}>
-                    {new URL(a.url).host}
-                  </option>
-                ))}
-              </optgroup>
-            </select>
-          </div>
-        )}
-      </div>
-      {followHints()}
+  function renderTimeline() {
+    if (isGlobal && !relay) return null;
+
+    return (
       <Timeline
         key={tab.value}
         subject={timelineSubect}
         postsOnly={tab.value === RootTab.Posts.value}
         method={"TIME_RANGE"}
         window={undefined}
-        relay={isGlobal ? relay?.url : undefined}
+        relay={isGlobal ? unwrap(relay).url : undefined}
       />
+    );
+  }
+
+  return (
+    <>
+      <div className="main-content">
+        {pubKey && <Tabs tabs={tabs} tab={tab} setTab={setTab} />}
+        {globalRelaySelector()}
+      </div>
+      {followHints()}
+      {renderTimeline()}
     </>
   );
 }

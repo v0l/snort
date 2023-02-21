@@ -168,7 +168,7 @@ export default function Note(props: NoteProps) {
 
   useLayoutEffect(() => {
     if (entry && inView && extendable === false) {
-      const h = entry?.target.clientHeight ?? 0;
+      const h = (entry?.target as HTMLDivElement)?.offsetHeight ?? 0;
       if (h > 650) {
         setExtendable(true);
       }
