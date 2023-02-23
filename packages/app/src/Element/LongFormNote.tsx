@@ -4,7 +4,9 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { ZapsSummary } from "Element/Zap";
+import Reply from "Icons/Reply";
 import Zap from "Icons/Zap";
+import { NoteCreator } from "Element/NoteCreator";
 import { ProxyImg } from "Element/ProxyImg";
 import ProfileImage from "Element/ProfileImage";
 import { Subthread } from "Element/Thread";
@@ -30,6 +32,7 @@ export interface LongFormNoteProps {
 export default function LongFormNote(props: LongFormNoteProps) {
   const { data, d, pubkey } = props;
   const navigate = useNavigate();
+  const [reply, setReply] = useState(false);
   const [show, setShow] = useState(false);
   const [tip, setTip] = useState(false);
   const ev = useMemo(() => new NEvent(data), [data]);
@@ -112,6 +115,11 @@ export default function LongFormNote(props: LongFormNoteProps) {
             </div>
             <Reactions show={show} setShow={setShow} positive={[]} negative={[]} reposts={[]} zaps={zaps} />
           </div>
+          <div className={`reaction-pill ${reply ? "reacted" : ""}`} onClick={() => setReply(s => !s)}>
+            <div className="reaction-pill-icon">
+              <Reply />
+            </div>
+          </div>
         </div>
         <div className="zaps-container">
           <ZapsSummary zaps={zaps} />
@@ -126,6 +134,7 @@ export default function LongFormNote(props: LongFormNoteProps) {
         chains={chains}
         notes={parsedReplies}
       />
+      <NoteCreator autoFocus={true} replyTo={ev} onSend={() => setReply(false)} show={reply} setShow={setReply} />
       <SendSats
         svc={service}
         onClose={() => setTip(false)}

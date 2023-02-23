@@ -241,6 +241,10 @@ export default function useEventPublisher() {
             ev.Tags.push(new Tag(["p", replyTo.PubKey], ev.Tags.length));
           }
         }
+        if (replyTo.Kind === EventKind.LongFormNote) {
+          const d = replyTo.Tags.find(t => t.Key === "d")?.Original[1];
+          ev.Tags.push(new Tag(["a", `${replyTo.Kind}:${replyTo.PubKey}:${d}`, ""], ev.Tags.length));
+        }
         processContent(ev, msg);
         return await signEvent(ev);
       }
