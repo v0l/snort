@@ -14,31 +14,7 @@
   text-decoration: underline;
 }
 
-.text h1 {
-  margin: 0;
-}
-.text h2 {
-  margin: 0;
-}
-.text h3 {
-  margin: 0;
-}
-.text h4 {
-  margin: 0;
-}
-.text h5 {
-  margin: 0;
-}
-.text h6 {
-  margin: 0;
-}
-
 .text p {
-  margin: 0;
-  margin-bottom: 4px;
-}
-
-.text p:last-child {
   margin-bottom: 0;
 }
 
@@ -78,7 +54,6 @@
 }
 
 .text blockquote {
-  margin: 0;
   color: var(--font-secondary-color);
   border-left: 2px solid var(--font-secondary-color);
   padding-left: 12px;

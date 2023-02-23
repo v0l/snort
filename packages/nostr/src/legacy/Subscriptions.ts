@@ -48,6 +48,11 @@ export class Subscriptions {
   DTags?: Set<string>;
 
   /**
+   * A litst of "a" tags to search
+   */
+  ATags?: Set<string>;
+
+  /**
    * A litst of "r" tags to search
    */
   RTags?: Set<string>;
@@ -105,6 +110,7 @@ export class Subscriptions {
     this.ETags = sub?.["#e"] ? new Set(sub["#e"]) : undefined;
     this.PTags = sub?.["#p"] ? new Set(sub["#p"]) : undefined;
     this.DTags = sub?.["#d"] ? new Set(["#d"]) : undefined;
+    this.ATags = sub?.["#a"] ? new Set(["#a"]) : undefined;
     this.RTags = sub?.["#r"] ? new Set(["#r"]) : undefined;
     this.Search = sub?.search ?? undefined;
     this.Since = sub?.since ?? undefined;
@@ -155,6 +161,9 @@ export class Subscriptions {
     }
     if (this.DTags) {
       ret["#d"] = Array.from(this.DTags);
+    }
+    if (this.ATags) {
+      ret["#a"] = Array.from(this.ATags);
     }
     if (this.RTags) {
       ret["#r"] = Array.from(this.RTags);

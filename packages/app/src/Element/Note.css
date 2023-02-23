@@ -232,3 +232,26 @@
 .close-menu-container {
   position: absolute;
 }
+
+.long-form-note {
+  max-width: 768px;
+}
+
+.long-form-note .summary {
+  margin-top: 6px;
+}
+
+.long-form-note .info svg {
+  margin-right: 12px;
+}
+
+.long-form-note .heading {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.long-form-note .heading h1 {
+  line-height: 32px;
+}

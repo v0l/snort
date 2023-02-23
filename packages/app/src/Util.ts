@@ -1,7 +1,7 @@
 import * as secp from "@noble/secp256k1";
 import { sha256 as hash } from "@noble/hashes/sha256";
 import { bech32 } from "bech32";
-import { HexKey, TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix } from "@snort/nostr";
+import { HexKey, TaggedRawEvent, u256, EventKind, decodeTLV, encodeTLV, NostrPrefix } from "@snort/nostr";
 import { MetadataCache } from "State/Users";
 
 export const sha256 = (str: string) => {
@@ -39,6 +39,26 @@ export function parseId(id: string) {
     // Ignore the error.
   }
   return id;
+}
+
+/**
+ * Parse bech32 addresses
+ * https://github.com/nostr-protocol/nips/blob/master/19.md
+ * @param id bech32 address
+ */
+export function parseAddress(id: string): [string, HexKey, EventKind] | undefined {
+  try {
+    if (id.startsWith("naddr")) {
+      const [rawD, p, k] = decodeTLV(id);
+      return [
+        new TextDecoder("utf-8").decode(secp.utils.hexToBytes(rawD.value as string)),
+        p.value as HexKey,
+        k.value as EventKind,
+      ];
+    }
+  } catch (e) {
+    // Ignore the error.
+  }
 }
 
 export function bech32ToHex(str: string) {
@@ -208,7 +228,7 @@ export function randomSample<T>(coll: T[], size: number) {
 
 export function getNewest(rawNotes: TaggedRawEvent[]) {
   const notes = [...rawNotes];
-  notes.sort((a, b) => a.created_at - b.created_at);
+  notes.sort((a, b) => b.created_at - a.created_at);
   if (notes.length > 0) {
     return notes[0];
   }

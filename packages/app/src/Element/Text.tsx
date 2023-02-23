@@ -2,12 +2,14 @@ import "./Text.css";
 import { useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { visit, SKIP } from "unist-util-visit";
 
 import { UrlRegex, MentionRegex, InvoiceRegex, HashtagRegex } from "Const";
 import { eventLink, hexToBech32, unwrap } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
+import AddressLink from "Element/AddressLink";
 
 import { Tag } from "@snort/nostr";
 import { MetadataCache } from "State/Users";
@@ -29,9 +31,10 @@ export interface TextProps {
   creator: HexKey;
   tags: Tag[];
   users: Map<string, MetadataCache>;
+  longForm?: boolean;
 }
 
-export default function Text({ content, tags, creator, users }: TextProps) {
+export default function Text({ content, tags, creator, users, longForm = false }: TextProps) {
   function extractLinks(fragments: Fragment[]) {
     return fragments
       .map(f => {
@@ -69,6 +72,9 @@ export default function Text({ content, tags, creator, users }: TextProps) {
                         #{eText}
                       </Link>
                     );
+                  }
+                  case "a": {
+                    return <AddressLink address={ref.Original[1]} />;
                   }
                   case "t": {
                     return <Hashtag tag={ref.Hashtag ?? ""} />;
@@ -144,7 +150,10 @@ export default function Text({ content, tags, creator, users }: TextProps) {
   const components = useMemo(() => {
     return {
       p: (x: { children?: React.ReactNode[] }) => transformParagraph({ body: x.children ?? [], tags, users }),
-      a: (x: { href?: string }) => <HyperText link={x.href ?? ""} creator={creator} />,
+      a: (x: { href?: string }) => {
+        const [content] = extractMentions({ body: [x.href], tags, users });
+        return <HyperText link={content as string} creator={creator} />;
+      },
       li: (x: { children?: Fragment[] }) => transformLi({ body: x.children ?? [], tags, users }),
     };
   }, [content]);
@@ -152,6 +161,19 @@ export default function Text({ content, tags, creator, users }: TextProps) {
   interface Node extends unist.Node<unist.Data> {
     value: string;
   }
+
+  const replaceMarkdownRefs = useCallback(
+    () => (tree: Node) => {
+      visit(tree, (node, index, parent) => {
+        if (parent && typeof index === "number" && (node.type === "link" || node.type === "linkReference")) {
+          // @ts-expect-error: Property 'url'
+          node.url = extractMentions({ body: [node.url], tags, users }).at(0);
+          return SKIP;
+        }
+      });
+    },
+    [content]
+  );
 
   const disableMarkdownLinks = useCallback(
     () => (tree: Node) => {
@@ -176,7 +198,10 @@ export default function Text({ content, tags, creator, users }: TextProps) {
   );
   return (
     <div dir="auto">
-      <ReactMarkdown className="text" components={components} remarkPlugins={[disableMarkdownLinks]}>
+      <ReactMarkdown
+        className="text"
+        components={components}
+        remarkPlugins={longForm ? [replaceMarkdownRefs, remarkGfm] : [disableMarkdownLinks]}>
         {content}
       </ReactMarkdown>
     </div>

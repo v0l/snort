@@ -45,7 +45,7 @@ interface SubthreadProps {
   onNavigate: (e: u256) => void;
 }
 
-const Subthread = ({ active, path, notes, related, chains, onNavigate }: SubthreadProps) => {
+export const Subthread = ({ active, path, notes, related, chains, onNavigate }: SubthreadProps) => {
   const renderSubthread = (a: NEvent, idx: number) => {
     const isLastSubthread = idx === notes.length - 1;
     const replies = getReplies(a.Id, chains);
@@ -256,10 +256,11 @@ const TierThree = ({ active, path, isLastSubthread, from, notes, related, chains
 export interface ThreadProps {
   this?: u256;
   notes?: TaggedRawEvent[];
+  showRoot?: boolean;
 }
 
 export default function Thread(props: ThreadProps) {
-  const notes = props.notes ?? [];
+  const { notes = [], showRoot = true } = props;
   const parsedNotes = notes.map(a => new NEvent(a));
   // root note has no thread info
   const root = useMemo(() => parsedNotes.find(a => a.Thread === null), [notes]);

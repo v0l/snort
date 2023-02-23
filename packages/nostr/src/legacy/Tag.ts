@@ -10,6 +10,7 @@ export default class Tag {
   Marker?: string;
   Hashtag?: string;
   DTag?: string;
+  Coordinates?: string;
   Index: number;
   Invalid: boolean;
 
@@ -46,6 +47,12 @@ export default class Tag {
         this.Hashtag = tag[1];
         break;
       }
+      case "a": {
+        // ["a", <event-coordinates>, <relay-url>]
+        this.Coordinates = tag[1];
+        this.Relay = tag.length === 3 ? tag[2] : undefined;
+        break;
+      }
       case "delegation": {
         this.PubKey = tag[1];
         break;
@@ -69,6 +76,9 @@ export default class Tag {
       }
       case "d": {
         return ["d", unwrap(this.DTag)];
+      }
+      case "a": {
+        return ["a", unwrap(this.Coordinates), this.Relay];
       }
       default: {
         return this.Original;

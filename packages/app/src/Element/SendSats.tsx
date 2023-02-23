@@ -53,6 +53,7 @@ export interface LNURLTipProps {
   target?: string;
   note?: HexKey;
   author?: HexKey;
+  coordinates?: string;
 }
 
 function chunks<T>(arr: T[], length: number) {
@@ -71,7 +72,7 @@ export default function LNURLTip(props: LNURLTipProps) {
   const onClose = props.onClose || (() => undefined);
   const service = props.svc;
   const show = props.show || false;
-  const { note, author, target } = props;
+  const { note, author, target, coordinates } = props;
   const amounts = [500, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000];
   const emojis: Record<number, string> = {
     1_000: "👍",
@@ -171,7 +172,7 @@ export default function LNURLTip(props: LNURLTipProps) {
       query.set("comment", comment);
     }
     if (payService.nostrPubkey && author && zapType !== ZapType.NonZap) {
-      const ev = await publisher.zap(author, note, comment);
+      const ev = await publisher.zap(author, note, comment, coordinates);
       if (ev) {
         // replace sig for anon-zap
         if (zapType === ZapType.AnonZap) {

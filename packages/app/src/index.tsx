@@ -10,6 +10,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import Store from "State/Store";
 import EventPage from "Pages/EventPage";
+import AddressPage from "Pages/AddressPage";
 import Layout from "Pages/Layout";
 import LoginPage from "Pages/Login";
 import ProfilePage from "Pages/ProfilePage";
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: "/e/:id",
         element: <EventPage />,
+      },
+      {
+        path: "/a/:address",
+        element: <AddressPage />,
       },
       {
         path: "/p/:id",
