@@ -32,9 +32,12 @@ export default function LongFormNote(props: LongFormNoteProps) {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [tip, setTip] = useState(false);
-  const baseClassName = `note long-form-note thread-root card ${props.className ? props.className : ""}`;
   const ev = useMemo(() => new NEvent(data), [data]);
   const { notes, replies, zaps } = useLongFormThreadFeed(d, pubkey);
+  const isSingleNote = replies.length === 0;
+  const baseClassName = `note long-form-note thread-root card ${props.className ? props.className : ""}${
+    isSingleNote ? "thread-root-single" : ""
+  }`;
   const parsedNotes: NEvent[] = useMemo(() => notes.map((n: TaggedRawEvent) => new NEvent(n)), [notes]);
   const parsedReplies = useMemo(() => replies.map((n: TaggedRawEvent) => new NEvent(n)), [replies]);
   const author = useUserProfile(ev.RootPubKey);

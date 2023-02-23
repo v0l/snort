@@ -150,10 +150,7 @@ export default function Text({ content, tags, creator, users, longForm = false }
   const components = useMemo(() => {
     return {
       p: (x: { children?: React.ReactNode[] }) => transformParagraph({ body: x.children ?? [], tags, users }),
-      a: (x: { href?: string }) => {
-        const [content] = extractMentions({ body: [x.href], tags, users });
-        return <HyperText link={content as string} creator={creator} />;
-      },
+      a: (x: { href?: string }) => <HyperText link={x.href || ""} creator={creator} />,
       li: (x: { children?: Fragment[] }) => transformLi({ body: x.children ?? [], tags, users }),
     };
   }, [content]);

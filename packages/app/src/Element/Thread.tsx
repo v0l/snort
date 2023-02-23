@@ -256,11 +256,10 @@ const TierThree = ({ active, path, isLastSubthread, from, notes, related, chains
 export interface ThreadProps {
   this?: u256;
   notes?: TaggedRawEvent[];
-  showRoot?: boolean;
 }
 
 export default function Thread(props: ThreadProps) {
-  const { notes = [], showRoot = true } = props;
+  const { notes = [] } = props;
   const parsedNotes = notes.map(a => new NEvent(a));
   // root note has no thread info
   const root = useMemo(() => parsedNotes.find(a => a.Thread === null), [notes]);
