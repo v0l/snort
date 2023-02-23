@@ -89,7 +89,7 @@ export const EmailRegex =
  */
 export const UrlRegex =
   // eslint-disable-next-line no-useless-escape
-  /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)/i;
+  /((?:http|ftp|https):\/\/(?:[\w+?\.\w+])+(?:[a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*(?<!\)))\b\/?)/i;
 
 /**
  * Extract file extensions regex
