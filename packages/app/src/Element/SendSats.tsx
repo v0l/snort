@@ -1,10 +1,12 @@
 import "./SendSats.css";
 import { useEffect, useMemo, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
+import { useSelector } from "react-redux";
 
 import { formatShort } from "Number";
 import { bech32ToText } from "Util";
 import { HexKey, Tag } from "@snort/nostr";
+import { RootState } from "State/Store";
 import Check from "Icons/Check";
 import Zap from "Icons/Zap";
 import Close from "Icons/Close";
@@ -72,7 +74,8 @@ export default function LNURLTip(props: LNURLTipProps) {
   const service = props.svc;
   const show = props.show || false;
   const { note, author, target } = props;
-  const amounts = [500, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000];
+  const defaultZapAmount = useSelector((s: RootState) => s.login.preferences.defaultZapAmount);
+  const amounts = [defaultZapAmount, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000];
   const emojis: Record<number, string> = {
     1_000: "👍",
     5_000: "💜",
@@ -83,7 +86,7 @@ export default function LNURLTip(props: LNURLTipProps) {
     1_000_000: "🤯",
   };
   const [payService, setPayService] = useState<LNURLService>();
-  const [amount, setAmount] = useState<number>(500);
+  const [amount, setAmount] = useState<number>(defaultZapAmount);
   const [customAmount, setCustomAmount] = useState<number>();
   const [invoice, setInvoice] = useState<LNURLInvoice>();
   const [comment, setComment] = useState<string>();
@@ -104,7 +107,7 @@ export default function LNURLTip(props: LNURLTipProps) {
       setPayService(undefined);
       setError(undefined);
       setInvoice(props.invoice ? { pr: props.invoice } : undefined);
-      setAmount(500);
+      setAmount(defaultZapAmount);
       setComment(undefined);
       setSuccess(undefined);
       setZapType(ZapType.PublicZap);

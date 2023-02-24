@@ -70,6 +70,11 @@ export interface UserPreferences {
    * Default page to select on load
    */
   defaultRootTab: "posts" | "conversations" | "global";
+
+  /**
+   * Default zap amount
+   */
+  defaultZapAmount: number;
 }
 
 export type DbType = "indexdDb" | "redux";
@@ -231,6 +236,7 @@ export const InitState = {
     fileUploader: "void.cat",
     imgProxyConfig: DefaultImgProxy,
     defaultRootTab: "posts",
+    defaultZapAmount: 500,
   },
 } as LoginStore;
 

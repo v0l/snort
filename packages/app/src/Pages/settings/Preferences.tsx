@@ -111,6 +111,21 @@ const PreferencesPage = () => {
           </div>
         </div>
       </div>
+      <div className="card flex">
+        <div className="flex f-col f-grow">
+          <div>
+            <FormattedMessage defaultMessage="Default Zap amount" />
+          </div>
+        </div>
+        <div>
+          <input
+            type="number"
+            value={perf.defaultZapAmount}
+            min={1}
+            onChange={e => dispatch(setPreferences({ ...perf, defaultZapAmount: parseInt(e.target.value) }))}
+          />
+        </div>
+      </div>
       <div className="card flex f-col">
         <div className="flex w-max">
           <div className="flex f-col f-grow">
