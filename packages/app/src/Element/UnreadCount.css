@@ -10,7 +10,7 @@
 }
 
 .pill.unread {
-  background-color: var(--gray);
+  background-color: var(--highlight);
   color: var(--font-color);
 }
 
