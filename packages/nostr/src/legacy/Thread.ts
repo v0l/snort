@@ -19,7 +19,7 @@ export default class Thread {
    * @param ev Event to extract thread from
    */
   static ExtractThread(ev: NEvent) {
-    const isThread = ev.Tags.some((a) => a.Key === "e");
+    const isThread = ev.Tags.some((a) => a.Key === "e" && a.Marker !== "mention");
     if (!isThread) {
       return null;
     }
