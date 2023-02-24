@@ -1,7 +1,3 @@
-import useEventPublisher, { EventPublisher } from "Feed/EventPublisher";
-import { useEffect, useState } from "react";
-import LNDHubWallet from "./LNDHub";
-
 export enum WalletErrorCode {
   BadAuth = 1,
   NotEnoughBalance = 2,
@@ -70,32 +66,13 @@ export interface LNWallet {
   createAccount: () => Promise<Login | WalletError>;
   getInfo: () => Promise<WalletInfo | WalletError>;
   login: () => Promise<boolean | WalletError>;
+  close: () => Promise<boolean | WalletError>;
   getBalance: () => Promise<Sats | WalletError>;
   createInvoice: (req: InvoiceRequest) => Promise<WalletInvoice | WalletError>;
   payInvoice: (pr: string) => Promise<WalletInvoice | WalletError>;
   getInvoices: () => Promise<WalletInvoice[] | WalletError>;
 }
 
-export async function openWallet(config: string, publisher?: EventPublisher) {
-  const wallet = new LNDHubWallet(config, publisher);
-  await wallet.login();
-  return wallet;
-}
-
-export function useWallet() {
-  const [wallet, setWallet] = useState<LNWallet>();
-  const publisher = useEventPublisher();
-
-  useEffect(() => {
-    if (publisher) {
-      const cfg = window.localStorage.getItem("wallet-lndhub");
-      if (cfg) {
-        openWallet(cfg, publisher)
-          .then(a => setWallet(a))
-          .catch(console.error);
-      }
-    }
-  }, [publisher]);
-
-  return wallet;
+export function useWallet(): LNWallet | undefined {
+  return undefined;
 }

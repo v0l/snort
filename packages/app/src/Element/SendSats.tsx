@@ -19,7 +19,7 @@ import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } f
 import { debounce } from "Util";
 
 import messages from "./messages";
-import { openWallet } from "Wallet";
+import { useWallet } from "Wallet";
 
 enum ZapType {
   PublicZap = 1,
@@ -81,6 +81,7 @@ export default function SendSats(props: SendSatsProps) {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const canComment = handler ? (handler.canZap && zapType !== ZapType.NonZap) || handler.maxCommentLength > 0 : false;
+  const wallet = useWallet();
 
   useEffect(() => {
     if (props.show) {
@@ -298,11 +299,9 @@ export default function SendSats(props: SendSatsProps) {
       </>
     );
   }
-  
+
   async function payWithWallet(pr: string) {
-    const cfg = window.localStorage.getItem("wallet-lndhub");
-    if (cfg) {
-      const wallet = await openWallet(cfg);
+    if (wallet) {
       const rsp = await wallet.payInvoice(pr);
       console.debug(rsp);
       setSuccess(rsp as LNURLSuccessAction);
@@ -332,9 +331,11 @@ export default function SendSats(props: SendSatsProps) {
                 <button className="wallet-action" type="button" onClick={() => window.open(`lightning:${invoice}`)}>
                   <FormattedMessage {...messages.OpenWallet} />
                 </button>
-                <button className="wallet-action" type="button" onClick={() => payWithWallet(pr)}>
-                  <FormattedMessage defaultMessage="Pay with Snort" />
-                </button>
+                {wallet && (
+                  <button className="wallet-action" type="button" onClick={() => payWithWallet(invoice)}>
+                    <FormattedMessage defaultMessage="Pay with Wallet" />
+                  </button>
+                )}
               </>
             )}
           </div>
@@ -365,9 +366,9 @@ export default function SendSats(props: SendSatsProps) {
   const defaultTitle = handler?.canZap ? formatMessage(messages.SendZap) : formatMessage(messages.SendSats);
   const title = target
     ? formatMessage(messages.ToTarget, {
-      action: defaultTitle,
-      target,
-    })
+        action: defaultTitle,
+        target,
+      })
     : defaultTitle;
   if (!(props.show ?? false)) return null;
   return (

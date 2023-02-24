@@ -45,9 +45,6 @@ export default function Layout() {
   const [pageClass, setPageClass] = useState("page");
   const pub = useEventPublisher();
   useLoginFeed();
-  useEffect(() => {
-    System.nip42Auth = pub.nip42Auth;
-  }, [pub]);
 
   const shouldHideNoteCreator = useMemo(() => {
     const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/"];

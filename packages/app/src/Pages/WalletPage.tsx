@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faClock, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import NoteTime from "Element/NoteTime";
-import { openWallet, WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet } from "Wallet";
+import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet } from "Wallet";
 
 export const WalletRoutes: RouteObject[] = [
   {
@@ -51,9 +51,7 @@ export default function WalletPage() {
   }
 
   async function createInvoice() {
-    const cfg = window.localStorage.getItem("wallet-lndhub");
-    if (cfg) {
-      const wallet = await openWallet(cfg);
+    if (wallet) {
       const rsp = await wallet.createInvoice({
         memo: "test",
         amount: 100,

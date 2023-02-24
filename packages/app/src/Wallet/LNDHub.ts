@@ -1,5 +1,4 @@
 import { EventPublisher } from "Feed/EventPublisher";
-import EventKind from "Nostr/EventKind";
 import {
   InvoiceRequest,
   LNWallet,
@@ -46,6 +45,10 @@ export default class LNDHubWallet implements LNWallet {
     } else {
       throw new Error("Invalid config");
     }
+  }
+
+  close(): Promise<boolean | WalletError> {
+    throw new Error("Not implemented");
   }
 
   async createAccount() {
@@ -136,7 +139,7 @@ export default class LNDHubWallet implements LNWallet {
   private async getJson<T>(method: "GET" | "POST", path: string, body?: any): Promise<T | WalletError> {
     let auth = `Bearer ${this.auth?.access_token}`;
     if (this.type === "snort") {
-      const ev = await this.publisher?.generic(`${new URL(this.url).pathname}${path}`, EventKind.Ephemeral);
+      const ev = await this.publisher?.generic(`${new URL(this.url).pathname}${path}`, 30_000);
       auth = JSON.stringify(ev?.ToObject());
     }
     const rsp = await fetch(`${this.url}${path}`, {
