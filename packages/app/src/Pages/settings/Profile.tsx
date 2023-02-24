@@ -147,10 +147,12 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </div>
           <div>
             <input type="text" className="mr10" value={nip05} onChange={e => setNip05(e.target.value)} />
-            <button type="button" onClick={() => navigate("/verification")}>
-              <FontAwesomeIcon icon={faShop} />
-              &nbsp; <FormattedMessage {...messages.Buy} />
-            </button>
+            {(nip05 === "") && (
+              <button type="button" onClick={() => navigate("/verification")}>
+                <FontAwesomeIcon icon={faShop} />
+                &nbsp; <FormattedMessage {...messages.Buy} />
+              </button>
+            )}
           </div>
         </div>
         <div className="form-group card">
