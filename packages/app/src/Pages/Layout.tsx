@@ -29,8 +29,17 @@ export default function Layout() {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loggedOut, publicKey, relays, latestNotification, readNotifications, dms, preferences, newUserKey } =
-    useSelector((s: RootState) => s.login);
+  const {
+    loggedOut,
+    publicKey,
+    relays,
+    latestNotification,
+    readNotifications,
+    dms,
+    preferences,
+    newUserKey,
+    dmInteraction,
+  } = useSelector((s: RootState) => s.login);
   const { isMuted } = useModeration();
   const [pageClass, setPageClass] = useState("page");
   const pub = useEventPublisher();
@@ -66,7 +75,7 @@ export default function Layout() {
             publicKey
           )
         : 0,
-    [dms, publicKey]
+    [dms, publicKey, dmInteraction]
   );
 
   useEffect(() => {
