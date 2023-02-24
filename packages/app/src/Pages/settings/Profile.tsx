@@ -109,7 +109,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   function editor() {
     return (
       <div className="editor form">
-        <div className="form-group">
+        <div className="form-group card">
           <div>
             <FormattedMessage {...messages.Name} />:
           </div>
@@ -117,7 +117,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <input type="text" value={name} onChange={e => setName(e.target.value)} />
           </div>
         </div>
-        <div className="form-group">
+        <div className="form-group card">
           <div>
             <FormattedMessage {...messages.DisplayName} />:
           </div>
@@ -125,7 +125,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <input type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} />
           </div>
         </div>
-        <div className="form-group form-col">
+        <div className="form-group card">
           <div>
             <FormattedMessage {...messages.About} />:
           </div>
@@ -133,7 +133,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <textarea className="w-max" onChange={e => setAbout(e.target.value)} value={about}></textarea>
           </div>
         </div>
-        <div className="form-group">
+        <div className="form-group card">
           <div>
             <FormattedMessage {...messages.Website} />:
           </div>
@@ -141,19 +141,21 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <input type="text" value={website} onChange={e => setWebsite(e.target.value)} />
           </div>
         </div>
-        <div className="form-group">
+        <div className="form-group card">
           <div>
             <FormattedMessage {...messages.Nip05} />:
           </div>
           <div>
             <input type="text" className="mr10" value={nip05} onChange={e => setNip05(e.target.value)} />
-            <button type="button" onClick={() => navigate("/verification")}>
-              <FontAwesomeIcon icon={faShop} />
-              &nbsp; <FormattedMessage {...messages.Buy} />
-            </button>
+            {nip05 === "" && (
+              <button type="button" onClick={() => navigate("/verification")}>
+                <FontAwesomeIcon icon={faShop} />
+                &nbsp; <FormattedMessage {...messages.Buy} />
+              </button>
+            )}
           </div>
         </div>
-        <div className="form-group">
+        <div className="form-group card">
           <div>
             <FormattedMessage {...messages.LnAddress} />:
           </div>
@@ -161,7 +163,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             <input type="text" value={lud16} onChange={e => setLud16(e.target.value)} />
           </div>
         </div>
-        <div className="form-group">
+        <div className="form-group card">
           <div></div>
           <div>
             <button type="button" onClick={() => saveProfile()}>
@@ -179,10 +181,10 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       <>
         <div className="flex f-center image-settings">
           {(props.avatar ?? true) && (
-            <div>
-              <h2>
-                <FormattedMessage {...messages.Avatar} />
-              </h2>
+            <div className="image-setting card">
+              <div>
+                <FormattedMessage {...messages.Avatar} />:
+              </div>
               <div style={{ backgroundImage: `url(${avatarPicture})` }} className="avatar">
                 <div className="edit" onClick={() => setNewAvatar()}>
                   <FormattedMessage {...messages.Edit} />
@@ -191,10 +193,10 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             </div>
           )}
           {(props.banner ?? true) && (
-            <div>
-              <h2>
-                <FormattedMessage {...messages.Banner} />
-              </h2>
+            <div className="image-setting card">
+              <div>
+                <FormattedMessage {...messages.Banner} />:
+              </div>
               <div
                 style={{
                   backgroundImage: `url(${(banner?.length ?? 0) === 0 ? Nostrich : banner})`,

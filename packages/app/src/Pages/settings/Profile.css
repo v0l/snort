@@ -15,9 +15,22 @@
 }
 
 .settings .image-settings {
-  flex-direction: column;
+  display: block;
   align-items: center;
   justify-content: center;
+}
+
+.settings .image-setting {
+  display: flex;
+}
+
+.settings .image-setting > div:first-child {
+  align-self: center;
+}
+
+.settings .avatar,
+.settings .banner {
+  margin-left: auto;
 }
 
 .settings .avatar .edit,
