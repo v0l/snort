@@ -120,7 +120,7 @@ export default function ProfilePage() {
       <div className="name">
         <h2>
           {user?.display_name || user?.name || "Nostrich"}
-          <FollowsYou followsMe={follows.includes(id)} />
+          <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
         </h2>
         {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
         <Copy text={npub} />

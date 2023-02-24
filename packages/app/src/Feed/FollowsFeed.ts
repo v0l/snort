@@ -19,10 +19,12 @@ export default function useFollowsFeed(pubkey: HexKey) {
   }, [isMe, pubkey]);
 
   const contactFeed = useSubscription(sub, { leaveOpen: false, cache: true });
-  const following = useMemo(() => {
+  return useMemo(() => {
+    if (isMe) {
+      return follows;
+    }
     return getFollowing(contactFeed.store.notes ?? [], pubkey);
-  }, [contactFeed.store.notes]);
-  return isMe ? follows : following;
+  }, [contactFeed.store, follows]);
 }
 
 export function getFollowing(notes: TaggedRawEvent[], pubkey: HexKey) {
