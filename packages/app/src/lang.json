@@ -608,6 +608,9 @@
   "lD3+8a": {
     "defaultMessage": "Pay"
   },
+  "lSpQet": {
+    "defaultMessage": "Paying with WebLN"
+  },
   "lgg1KN": {
     "defaultMessage": "account page"
   },
@@ -675,6 +678,9 @@
   },
   "pzTOmv": {
     "defaultMessage": "Followers"
+  },
+  "qMx1sA": {
+    "defaultMessage": "Default Zap amount"
   },
   "qUJTsT": {
     "defaultMessage": "Blocked"

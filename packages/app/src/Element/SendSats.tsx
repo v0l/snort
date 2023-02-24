@@ -93,6 +93,7 @@ export default function LNURLTip(props: LNURLTipProps) {
   const [error, setError] = useState<string>();
   const [success, setSuccess] = useState<LNURLSuccessAction>();
   const [zapType, setZapType] = useState(ZapType.PublicZap);
+  const [paying, setPaying] = useState<boolean>(false);
   const webln = useWebln(show);
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
@@ -239,6 +240,7 @@ export default function LNURLTip(props: LNURLTipProps) {
   async function payWebLNIfEnabled(invoice: LNURLInvoice) {
     try {
       if (webln?.enabled) {
+        setPaying(true);
         const res = await webln.sendPayment(invoice?.pr ?? "");
         console.log(res);
         setSuccess(invoice?.successAction ?? {});
@@ -248,6 +250,8 @@ export default function LNURLTip(props: LNURLTipProps) {
       if (e instanceof Error) {
         setError(e.toString());
       }
+    } finally {
+      setPaying(false);
     }
   }
 
@@ -331,7 +335,14 @@ export default function LNURLTip(props: LNURLTipProps) {
       <>
         <div className="invoice">
           {props.notice && <b className="error">{props.notice}</b>}
-          <QrCode data={pr} link={`lightning:${pr}`} />
+          {paying ? (
+            <h4>
+              <FormattedMessage defaultMessage="Paying with WebLN" />
+              ...
+            </h4>
+          ) : (
+            <QrCode data={pr} link={`lightning:${pr}`} />
+          )}
           <div className="actions">
             {pr && (
               <>
