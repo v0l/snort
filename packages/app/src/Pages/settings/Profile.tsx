@@ -147,7 +147,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </div>
           <div>
             <input type="text" className="mr10" value={nip05} onChange={e => setNip05(e.target.value)} />
-            {(nip05 === "") && (
+            {nip05 === "" && (
               <button type="button" onClick={() => navigate("/verification")}>
                 <FontAwesomeIcon icon={faShop} />
                 &nbsp; <FormattedMessage {...messages.Buy} />
@@ -181,10 +181,10 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       <>
         <div className="flex f-center image-settings">
           {(props.avatar ?? true) && (
-            <div>
-              <h2>
-                <FormattedMessage {...messages.Avatar} />
-              </h2>
+            <div className="image-setting card">
+              <div>
+                <FormattedMessage {...messages.Avatar} />:
+              </div>
               <div style={{ backgroundImage: `url(${avatarPicture})` }} className="avatar">
                 <div className="edit" onClick={() => setNewAvatar()}>
                   <FormattedMessage {...messages.Edit} />
@@ -193,10 +193,10 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             </div>
           )}
           {(props.banner ?? true) && (
-            <div>
-              <h2>
-                <FormattedMessage {...messages.Banner} />
-              </h2>
+            <div className="image-setting card">
+              <div>
+                <FormattedMessage {...messages.Banner} />:
+              </div>
               <div
                 style={{
                   backgroundImage: `url(${(banner?.length ?? 0) === 0 ? Nostrich : banner})`,
