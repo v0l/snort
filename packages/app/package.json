@@ -9,8 +9,10 @@
     "@jukben/emoji-search": "^2.0.1",
     "@noble/hashes": "^1.2.0",
     "@noble/secp256k1": "^1.7.0",
+    "@nostr-connect/connect": "^0.2.3",
     "@protobufjs/base64": "^1.1.2",
     "@reduxjs/toolkit": "^1.9.1",
+    "@snort/nostr": "^1.0.0",
     "@szhsin/react-menu": "^3.3.1",
     "@types/jest": "^29.2.5",
     "@types/node": "^18.11.18",
@@ -49,8 +51,7 @@
     "workbox-range-requests": "^6.4.2",
     "workbox-routing": "^6.4.2",
     "workbox-strategies": "^6.4.2",
-    "workbox-streams": "^6.4.2",
-    "@snort/nostr": "^1.0.0"
+    "workbox-streams": "^6.4.2"
   },
   "scripts": {
     "start": "react-app-rewired start",
