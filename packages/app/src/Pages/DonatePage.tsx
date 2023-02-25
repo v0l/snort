@@ -100,7 +100,7 @@ const DonatePage = () => {
         <div className="mr10">
           <FormattedMessage defaultMessage="Lightning Donation: " />
         </div>
-        <ZapButton pubkey={bech32ToHex(SnortPubKey)} svc={"donate@snort.social"} />
+        <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={"donate@snort.social"} />
       </div>
       {today && (
         <small>

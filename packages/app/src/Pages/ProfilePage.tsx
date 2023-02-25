@@ -160,7 +160,7 @@ export default function ProfilePage() {
         )}
 
         <SendSats
-          svc={lnurl}
+          lnurl={lnurl}
           show={showLnQr}
           onClose={() => setShowLnQr(false)}
           author={id}

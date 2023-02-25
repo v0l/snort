@@ -1,7 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
+import { useLongPress } from "use-long-press";
 
 import Bookmark from "Icons/Bookmark";
 import Pin from "Icons/Pin";
@@ -31,6 +32,10 @@ import { RootState } from "State/Store";
 import { UserPreferences, setPinned, setBookmarked } from "State/Login";
 import useModeration from "Hooks/useModeration";
 import { TranslateHost } from "Const";
+import useWebln from "Hooks/useWebln";
+import { LNURL } from "LNURL";
+import Spinner from "Icons/Spinner";
+import ZapFast from "Icons/ZapFast";
 
 import messages from "./messages";
 
@@ -63,6 +68,8 @@ export default function NoteFooter(props: NoteFooterProps) {
   const publisher = useEventPublisher();
   const [reply, setReply] = useState(false);
   const [tip, setTip] = useState(false);
+  const [zapping, setZapping] = useState(false);
+  const webln = useWebln();
   const isMine = ev.RootPubKey === login;
   const lang = window.navigator.language;
   const langNames = new Intl.DisplayNames([...window.navigator.languages], {
@@ -70,6 +77,15 @@ export default function NoteFooter(props: NoteFooterProps) {
   });
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   const didZap = zaps.some(a => a.zapper === login);
+  const longPress = useLongPress(
+    e => {
+      e.stopPropagation();
+      setTip(true);
+    },
+    {
+      captureEvent: true,
+    }
+  );
 
   function hasReacted(emoji: string) {
     return positive?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === login);
@@ -102,15 +118,39 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }
 
+  async function zapClick(e: React.MouseEvent) {
+    if (zapping || e.isPropagationStopped()) return;
+
+    const lnurl = author?.lud16 || author?.lud06;
+    if (webln?.enabled && lnurl) {
+      setZapping(true);
+      try {
+        const handler = new LNURL(lnurl);
+        await handler.load();
+
+        const zap = await publisher.zap(prefs.defaultZapAmount * 1000, ev.PubKey, ev.Id);
+        const invoice = await handler.getInvoice(prefs.defaultZapAmount, undefined, zap);
+        if (invoice.pr) {
+          await webln.sendPayment(invoice.pr);
+        }
+      } catch (e) {
+        console.warn("Instant zap failed", e);
+        setTip(true);
+      } finally {
+        setZapping(false);
+      }
+    } else {
+      setTip(true);
+    }
+  }
+
   function tipButton() {
     const service = author?.lud16 || author?.lud06;
     if (service) {
       return (
         <>
-          <div className={`reaction-pill ${didZap ? "reacted" : ""}`} onClick={() => setTip(true)}>
-            <div className="reaction-pill-icon">
-              <Zap />
-            </div>
+          <div className={`reaction-pill ${didZap ? "reacted" : ""}`} {...longPress()} onClick={e => zapClick(e)}>
+            <div className="reaction-pill-icon">{zapping ? <Spinner /> : webln?.enabled ? <ZapFast /> : <Zap />}</div>
             {zapTotal > 0 && <div className="reaction-pill-number">{formatShort(zapTotal)}</div>}
           </div>
         </>
@@ -309,7 +349,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           zaps={zaps}
         />
         <SendSats
-          svc={author?.lud16 || author?.lud06}
+          lnurl={author?.lud16 || author?.lud06}
           onClose={() => setTip(false)}
           show={tip}
           author={author?.pubkey}

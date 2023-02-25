@@ -14,6 +14,10 @@
   "/JE/X+": {
     "defaultMessage": "Account Support"
   },
+  "/PCavi": {
+    "defaultMessage": "Public",
+    "description": "Public Zap"
+  },
   "/RD0e2": {
     "defaultMessage": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content."
   },
@@ -161,6 +165,10 @@
   },
   "Adk34V": {
     "defaultMessage": "Setup your Profile"
+  },
+  "AnLrRC": {
+    "defaultMessage": "Non-Zap",
+    "description": "Non-Zap, Regular LN payment"
   },
   "AyGauy": {
     "defaultMessage": "Login"
@@ -754,6 +762,10 @@
   "wLtRCF": {
     "defaultMessage": "Your key",
     "description": "Label for key input"
+  },
+  "wWLwvh": {
+    "defaultMessage": "Anon",
+    "description": "Anonymous Zap"
   },
   "wih7iJ": {
     "defaultMessage": "name is blocked"
