@@ -218,16 +218,10 @@ export default function ProfilePage() {
       }
 
       case FOLLOWS: {
-        return (
-          <div className="main-content">
-            {follows.map(a => (
-              <ProfilePreview key={a} pubkey={a.toLowerCase()} options={{ about: !isMe }} />
-            ))}
-          </div>
-        );
+        return <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={!isMe} />;
       }
       case FOLLOWERS: {
-        return <FollowsList pubkeys={followers} />;
+        return <FollowsList pubkeys={followers} showAbout={true} />;
       }
       case MUTED: {
         return <MutedList pubkeys={muted} />;

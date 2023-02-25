@@ -10,8 +10,10 @@ import messages from "./messages";
 export interface FollowListBaseProps {
   pubkeys: HexKey[];
   title?: ReactNode | string;
+  showFollowAll?: boolean;
+  showAbout?: boolean;
 }
-export default function FollowListBase({ pubkeys, title }: FollowListBaseProps) {
+export default function FollowListBase({ pubkeys, title, showFollowAll, showAbout }: FollowListBaseProps) {
   const publisher = useEventPublisher();
 
   async function followAll() {
@@ -21,14 +23,16 @@ export default function FollowListBase({ pubkeys, title }: FollowListBaseProps) 
 
   return (
     <div className="main-content">
-      <div className="flex mt10 mb10">
-        <div className="f-grow bold">{title}</div>
-        <button className="transparent" type="button" onClick={() => followAll()}>
-          <FormattedMessage {...messages.FollowAll} />
-        </button>
-      </div>
+      {(showFollowAll ?? true) && (
+        <div className="flex mt10 mb10">
+          <div className="f-grow bold">{title}</div>
+          <button className="transparent" type="button" onClick={() => followAll()}>
+            <FormattedMessage {...messages.FollowAll} />
+          </button>
+        </div>
+      )}
       {pubkeys?.map(a => (
-        <ProfilePreview pubkey={a} key={a} />
+        <ProfilePreview pubkey={a} key={a} options={{ about: showAbout }} />
       ))}
     </div>
   );
