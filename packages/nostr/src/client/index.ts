@@ -1,14 +1,8 @@
 import { ProtocolError } from "../error"
-import {
-  EventId,
-  Event,
-  serializeId as serializeEventId,
-  EventKind,
-} from "../event"
-import { PublicKey } from "../keypair"
+import { EventId, Event, EventKind, SignedEvent, RawEvent } from "../event"
+import { PrivateKey, PublicKey } from "../keypair"
 import { Conn, IncomingKind, OutgoingKind } from "./conn"
 import * as secp from "@noble/secp256k1"
-import { RawEvent } from "../raw"
 
 /**
  * A nostr client.
@@ -35,36 +29,44 @@ export class Nostr {
        */
       write: boolean
     }
-  >
+  > = new Map()
 
   /**
    * Mapping of subscription IDs to corresponding filters.
    */
-  readonly #subscriptions: Map<string, Filters[]> = new Map()
+  readonly #subscriptions: Map<string, Filters> = new Map()
 
-  readonly #eventCallbacks: EventCallback[] = []
-  readonly #noticeCallbacks: NoticeCallback[] = []
-  readonly #errorCallbacks: ErrorCallback[] = []
+  #eventCallback?: EventCallback
+  #noticeCallback?: NoticeCallback
+  #errorCallback?: ErrorCallback
 
   /**
    * Add a new callback for received events.
    */
-  onEvent(cb: EventCallback): void {
-    this.#eventCallbacks.push(cb)
-  }
-
+  on(on: "event", cb: EventCallback | undefined | null): void
   /**
    * Add a new callback for received notices.
    */
-  onNotice(cb: NoticeCallback): void {
-    this.#noticeCallbacks.push(cb)
-  }
-
+  on(on: "notice", cb: NoticeCallback | undefined | null): void
   /**
    * Add a new callback for errors.
    */
-  onError(cb: ErrorCallback): void {
-    this.#errorCallbacks.push(cb)
+  on(on: "error", cb: ErrorCallback | undefined | null): void
+  // TODO Also add on: ("subscribed", subscriptionId) which checks "OK"/"NOTICE" and makes a callback?
+  // TODO Also add on: ("sent", eventId) which checks "OK"/"NOTICE" and makes a callback?
+  on(
+    on: "event" | "notice" | "error",
+    cb: EventCallback | NoticeCallback | ErrorCallback | undefined | null
+  ) {
+    if (on === "event") {
+      this.#eventCallback = (cb as EventCallback) ?? undefined
+    } else if (on === "notice") {
+      this.#noticeCallback = (cb as NoticeCallback) ?? undefined
+    } else if (on === "error") {
+      this.#errorCallback = (cb as ErrorCallback) ?? undefined
+    } else {
+      throw new Error(`unexpected input: ${on}`)
+    }
   }
 
   /**
@@ -73,7 +75,7 @@ export class Nostr {
    * this method will only update it with the new options, and an exception will be thrown
    * if no options are specified.
    */
-  connect(url: URL | string, opts?: { read?: boolean; write?: boolean }): void {
+  open(url: URL | string, opts?: { read?: boolean; write?: boolean }): void {
     // If the connection already exists, update the options.
     const existingConn = this.#conns.get(url.toString())
     if (existingConn !== undefined) {
@@ -95,36 +97,27 @@ export class Nostr {
     const conn = new Conn(url)
 
     // Handle messages on this connection.
-    conn.onMessage(async (msg) => {
+    conn.on("message", async (msg) => {
       if (msg.kind === IncomingKind.Event) {
-        for (const cb of this.#eventCallbacks) {
-          cb(
-            {
-              event: msg.event,
-              eventId: await serializeEventId(msg.raw),
-              subscriptionId: msg.subscriptionId,
-              raw: msg.raw,
-            },
-            this
-          )
-        }
+        this.#eventCallback?.(
+          {
+            signed: msg.signed,
+            subscriptionId: msg.subscriptionId,
+            raw: msg.raw,
+          },
+          this
+        )
       } else if (msg.kind === IncomingKind.Notice) {
-        for (const cb of this.#noticeCallbacks) {
-          cb(msg.notice, this)
-        }
+        this.#noticeCallback?.(msg.notice, this)
       } else {
         const err = new ProtocolError(`invalid message ${msg}`)
-        for (const cb of this.#errorCallbacks) {
-          cb(err, this)
-        }
+        this.#errorCallback?.(err, this)
       }
     })
 
     // Forward connection errors to the error callbacks.
-    conn.onError((err) => {
-      for (const cb of this.#errorCallbacks) {
-        cb(err, this)
-      }
+    conn.on("error", (err) => {
+      this.#errorCallback?.(err, this)
     })
 
     // Resend existing subscriptions to this connection.
@@ -146,12 +139,23 @@ export class Nostr {
   }
 
   /**
-   * Disconnect from a relay. If there is no open connection to this relay, an exception is thrown.
+   * Disconnect from relays.
+   *
+   * @param url If specified, only close the connection to this relay. If the connection does
+   * not exist, an exception will be thrown. If this parameter is not specified, all connections
+   * will be closed.
    *
    * TODO There needs to be a way to check connection state. isOpen(), isReady(), isClosing() maybe?
    * Because of how WebSocket states work this isn't as simple as it seems.
    */
-  disconnect(url: URL | string): void {
+  close(url?: URL | string): void {
+    if (url === undefined) {
+      for (const { conn } of this.#conns.values()) {
+        conn.close()
+      }
+      this.#conns.clear()
+      return
+    }
     const c = this.#conns.get(url.toString())
     if (c === undefined) {
       throw new Error(`connection to ${url} doesn't exist`)
@@ -175,10 +179,9 @@ export class Nostr {
    * @returns The subscription ID.
    */
   subscribe(
-    filters: Filters[],
-    subscriptionId?: SubscriptionId
+    filters: Filters = {},
+    subscriptionId: SubscriptionId = SubscriptionId.random()
   ): SubscriptionId {
-    subscriptionId ??= SubscriptionId.random()
     this.#subscriptions.set(subscriptionId.toString(), filters)
     for (const { conn, read } of this.#conns.values()) {
       if (!read) {
@@ -216,14 +219,18 @@ export class Nostr {
   /**
    * Publish an event.
    */
-  async publish(event: Event): Promise<void> {
+  async publish(event: Event, key: PrivateKey): Promise<void> {
+    if (event.pubkey.toString() !== key.pubkey.toString()) {
+      throw new Error("invalid private key")
+    }
     for (const { conn, write } of this.#conns.values()) {
       if (!write) {
         continue
       }
+      const signed = await SignedEvent.sign(event, key)
       conn.send({
         kind: OutgoingKind.Event,
-        event,
+        signed: signed,
       })
     }
   }
@@ -240,7 +247,7 @@ export class SubscriptionId {
   }
 
   static random(): SubscriptionId {
-    return new SubscriptionId(secp.utils.randomBytes(32).toString())
+    return new SubscriptionId(secp.utils.bytesToHex(secp.utils.randomBytes(32)))
   }
 
   toString() {
@@ -290,8 +297,7 @@ export type NoticeCallback = (notice: string, nostr: Nostr) => unknown
 export type ErrorCallback = (error: ProtocolError, nostr: Nostr) => unknown
 
 export interface EventParams {
-  event: Event
-  eventId: EventId
+  signed: SignedEvent
   subscriptionId: SubscriptionId
   raw: RawEvent
 }

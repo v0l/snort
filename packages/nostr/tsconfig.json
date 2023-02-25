@@ -6,7 +6,9 @@
     "sourceMap": true,
     "composite": true,
     "outDir": "dist",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": ["src"]
 }

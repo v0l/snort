@@ -1,0 +1,6 @@
+version: "3.1"
+services:
+  relay:
+    image: scsibug/nostr-rs-relay
+    ports:
+      - 12648:8080

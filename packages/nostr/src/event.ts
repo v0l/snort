@@ -1,8 +1,6 @@
 import { ProtocolError } from "./error"
-import { RawEvent } from "./raw"
 import * as secp from "@noble/secp256k1"
-import { PublicKey } from "./keypair"
-import { parseHex } from "./util"
+import { PublicKey, PrivateKey } from "./keypair"
 
 // TODO This file is missing proper documentation
 // TODO Add remaining event types
@@ -52,22 +50,146 @@ export interface UnknownEvent extends EventCommon {
   kind: Exclude<EventKind, EventKind.SetMetadata | EventKind.TextNote>
 }
 
-export async function createEvent(raw: RawEvent): Promise<Event> {
+// TODO Doc comment
+export class EventId {
+  #hex: string
+
+  static async create(event: Event | RawEvent): Promise<EventId> {
+    // It's not defined whether JSON.stringify produces a string with whitespace stripped.
+    // Building the JSON string manually as follows ensures that there's no whitespace.
+    // In hindsight using JSON as a data format for hashing and signing is not the best
+    // design decision.
+    if ("id" in event) {
+      // Raw event.
+      const serializedTags = `[${event.tags
+        .map((tag) => `[${tag.map((v) => `"${v}"`).join(",")}]`)
+        .join(",")}]`
+      const serialized = `[0,"${event.pubkey}",${event.created_at},${event.kind},${serializedTags},"${event.content}"]`
+      const hash = await secp.utils.sha256(
+        Uint8Array.from(charCodes(serialized))
+      )
+      return new EventId(secp.utils.bytesToHex(hash).toLowerCase())
+    } else {
+      // Not a raw event.
+      const tags = serializeEventTags(event)
+      const content = serializeEventContent(event)
+      const serializedTags = `[${tags
+        .map((tag) => `[${tag.map((v) => `"${v}"`).join(",")}]`)
+        .join(",")}]`
+      const serialized = `[0,"${event.pubkey}",${Math.floor(
+        event.createdAt.getTime() / 1000
+      )},${event.kind},${serializedTags},"${content}"]`
+      const hash = await secp.utils.sha256(
+        Uint8Array.from(charCodes(serialized))
+      )
+      return new EventId(secp.utils.bytesToHex(hash).toLowerCase())
+    }
+  }
+
+  private constructor(hex: string) {
+    this.#hex = hex
+  }
+
+  toString(): string {
+    return this.#hex
+  }
+}
+
+// TODO Document
+export class SignedEvent {
+  #event: Readonly<Event>
+  #eventId: EventId
+  #signature: string
+
+  static async sign(event: Event, key: PrivateKey): Promise<SignedEvent> {
+    const id = await EventId.create(event)
+    const sig = secp.utils
+      .bytesToHex(await secp.schnorr.sign(id.toString(), key.leak()))
+      .toLowerCase()
+    return new SignedEvent(event, id, sig)
+  }
+
+  static async verify(raw: RawEvent): Promise<SignedEvent> {
+    const id = await EventId.create(raw)
+    if (id.toString() !== raw.id) {
+      throw new ProtocolError(`invalid event id: ${raw.id}, expected ${id}`)
+    }
+    if (!(await secp.schnorr.verify(raw.sig, id.toString(), raw.pubkey))) {
+      throw new ProtocolError(`invalid signature: ${raw.sig}`)
+    }
+    return new SignedEvent(parseEvent(raw), id, raw.sig)
+  }
+
+  private constructor(event: Event, eventId: EventId, signature: string) {
+    // TODO Copy the event data and document that it's being copied
+    this.#event = event
+    this.#eventId = eventId
+    this.#signature = signature
+  }
+
+  // TODO Document this
+  get eventId(): EventId {
+    return this.#eventId
+  }
+
+  // TODO Document this
+  get event(): Event {
+    // TODO Copy the event data and document that it's being copied
+    return this.#event
+  }
+
+  // TODO Document this
+  get signature(): string {
+    return this.#signature
+  }
+
+  /**
+   * Serialize the event into its raw format.
+   */
+  serialize(): RawEvent {
+    const { event, eventId: id, signature } = this
+    const tags = serializeEventTags(event)
+    const content = serializeEventContent(event)
+    return {
+      id: id.toString(),
+      pubkey: event.pubkey.toString(),
+      created_at: Math.floor(event.createdAt.getTime() / 1000),
+      kind: event.kind,
+      tags,
+      content,
+      sig: signature,
+    }
+  }
+}
+
+export interface RawEvent {
+  id: string
+  pubkey: string
+  created_at: number
+  kind: number
+  tags: string[][]
+  content: string
+  sig: string
+}
+
+/**
+ * Parse an event from its raw format.
+ */
+function parseEvent(raw: RawEvent): Event {
   const pubkey = new PublicKey(raw.pubkey)
   const createdAt = new Date(raw.created_at * 1000)
   const event = {
     pubkey,
     createdAt,
   }
-  await checkSignature(raw, event)
   return (
-    createSetMetadataEvent(raw, event) ??
-    createTextNodeEvent(raw, event) ??
-    createUnknownEvent(raw, event)
+    parseSetMetadataEvent(raw, event) ??
+    parseTextNodeEvent(raw, event) ??
+    parseUnknownEvent(raw, event)
   )
 }
 
-function createSetMetadataEvent(
+function parseSetMetadataEvent(
   raw: RawEvent,
   event: EventCommon
 ): SetMetadataEvent | undefined {
@@ -89,7 +211,7 @@ function createSetMetadataEvent(
   }
 }
 
-function createTextNodeEvent(
+function parseTextNodeEvent(
   raw: RawEvent,
   event: EventCommon
 ): TextNoteEvent | undefined {
@@ -103,51 +225,28 @@ function createTextNodeEvent(
   }
 }
 
-function createUnknownEvent(raw: RawEvent, event: EventCommon): UnknownEvent {
+function parseUnknownEvent(raw: RawEvent, event: EventCommon): UnknownEvent {
   return {
     ...event,
     kind: raw.kind,
   }
 }
 
-export class EventId {
-  #hex: string
-
-  constructor(hex: string | Uint8Array) {
-    this.#hex = parseHex(hex)
-    if (this.#hex.length !== 128) {
-      throw new ProtocolError(`invalid event id: ${this.#hex}`)
-    }
-  }
-
-  toString(): string {
-    return this.#hex
-  }
+function serializeEventTags(_event: Event): string[][] {
+  // TODO As I add different event kinds, this will change
+  return []
 }
 
-async function checkSignature(
-  raw: RawEvent,
-  event: EventCommon
-): Promise<void> {
-  const id = serializeId(raw)
-  const bytes = await secp.schnorr.sign(id.toString(), event.pubkey.toString())
-  const hex = secp.utils.bytesToHex(bytes).toLowerCase()
-  if (hex.toString() !== raw.sig) {
-    throw new ProtocolError("invalid signature: ${hex}")
+function serializeEventContent(event: Event): string {
+  if (event.kind === EventKind.SetMetadata) {
+    // TODO Maybe rename userMetadata to content?
+    return JSON.stringify(event.userMetadata)
+  } else if (event.kind === EventKind.TextNote) {
+    // TODO Maybe rename note to content?
+    return event.note
+  } else {
+    return ""
   }
-}
-
-export async function serializeId(raw: RawEvent): Promise<EventId> {
-  // It's not defined whether JSON.stringify produces a string with whitespace stripped.
-  // Building the JSON string manually this way ensures that there's no whitespace.
-  // In hindsight using JSON as a data format for hashing and signing is not the best
-  // design decision.
-  const serializedTags = `[${raw.tags
-    .map((tag) => `[${tag.map((v) => `"${v}"`).join(",")}]`)
-    .join(",")}]`
-  const serialized = `[0,"${raw.pubkey}",${raw.created_at},${raw.kind},${serializedTags},"${raw.content}"]`
-  const hash = await secp.utils.sha256(Uint8Array.from(charCodes(serialized)))
-  return new EventId(secp.utils.bytesToHex(hash).toLowerCase())
 }
 
 function parseJson(data: string) {
@@ -159,16 +258,7 @@ function parseJson(data: string) {
 }
 
 function* charCodes(data: string): Iterable<number> {
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < data.length; i++) {
     yield data.charCodeAt(i)
-  }
-}
-
-// TODO This is an example of how this API can be used, remove this later
-function isItNice(e: Event): void {
-  if (e.kind === EventKind.SetMetadata) {
-    console.log(e.userMetadata)
-  } else if (e.kind === EventKind.TextNote) {
-    console.log(e.note)
   }
 }
