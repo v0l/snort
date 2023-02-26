@@ -3,7 +3,7 @@
  */
 
 import { ProtocolError } from "./error"
-import { IncomingMessage, OutgoingMessage } from "./nostr"
+import { IncomingMessage, OutgoingMessage } from "./client/conn"
 
 export interface RawEvent {
   id: string
