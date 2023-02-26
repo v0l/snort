@@ -1,7 +1,7 @@
 .login {
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
   display: flex;
   font-weight: 400;
   font-size: 14px;
