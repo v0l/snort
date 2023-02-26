@@ -49,7 +49,9 @@ export class Conn {
         if (err instanceof ProtocolError) {
           this.#errorCallback?.(err)
         } else {
-          // TODO Not sure if this is the case?
+          // TODO Not sure if this is the best idea.
+          // Investigate what WebSocket does if the callback throws?
+          // Either way it seems like the best idea is to have `onError` called on all types of errors
           throw err
         }
       }

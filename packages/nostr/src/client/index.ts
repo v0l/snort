@@ -226,7 +226,7 @@ interface ConnState {
    */
   auth: boolean
   /**
-   * Should this connection be used for receiving messages?
+   * Should this connection be used for receiving events?
    */
   read: boolean
   /**
