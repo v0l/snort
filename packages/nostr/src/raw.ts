@@ -1,8 +1,10 @@
-import { ProtocolError } from "./error"
-
 /**
- * Raw event to be transferred over the wire.
+ * Types defining data in the format sent over the wire.
  */
+
+import { ProtocolError } from "./error"
+import { IncomingMessage, OutgoingMessage } from "./client/conn"
+
 export interface RawEvent {
   id: string
   pubkey: string
@@ -13,7 +15,33 @@ export interface RawEvent {
   sig: string
 }
 
-export function parseRawEvent(data: string): RawEvent {
+interface RawFilters {
+  ids: string[]
+  authors: string[]
+  kinds: number[]
+  ["#e"]: string[]
+  ["#p"]: string[]
+  since: number
+  until: number
+  limit: number
+}
+
+type RawIncomingMessage = ["EVENT", string, RawEvent] | ["NOTICE", string]
+
+type RawOutgoingMessage =
+  | ["EVENT", RawEvent]
+  | ["REQ", string, RawFilters]
+  | ["CLOSE", string]
+
+export function parseIncomingMessage(msg: string): IncomingMessage {
+  throw new Error("todo")
+}
+
+export function formatOutgoingMessage(msg: OutgoingMessage): string {
+  throw new Error("todo")
+}
+
+function parseRawEvent(data: string): RawEvent {
   const json = parseJson(data)
   if (
     typeof json["id"] !== "string" ||

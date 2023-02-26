@@ -12,5 +12,9 @@
   },
   "prettier": {
     "semi": false
+  },
+  "dependencies": {
+    "isomorphic-ws": "^5.0.0",
+    "ws": "^8.12.1"
   }
 }
