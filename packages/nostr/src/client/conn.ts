@@ -122,8 +122,8 @@ export interface IncomingNotice {
  */
 export type OutgoingMessage =
   | OutgoingEvent
-  | OutgoingSubscription
-  | OutgoingUnsubscription
+  | OutgoingOpenSubscription
+  | OutgoingCloseSubscription
 
 export const enum OutgoingKind {
   Event,
@@ -140,18 +140,18 @@ export interface OutgoingEvent {
 }
 
 /**
- * Outgoing "REQ" message, representing a subscription.
+ * Outgoing "REQ" message, which opens a subscription.
  */
-export interface OutgoingSubscription {
+export interface OutgoingOpenSubscription {
   kind: OutgoingKind.Subscription
   id: SubscriptionId
   filters: Filters
 }
 
 /**
- * Outgoing "CLOSE" message, representing an unsubscription.
+ * Outgoing "CLOSE" message, which closes a subscription.
  */
-export interface OutgoingUnsubscription {
+export interface OutgoingCloseSubscription {
   kind: OutgoingKind.Unsubscription
   id: SubscriptionId
 }

@@ -12,24 +12,7 @@ export class Nostr {
   /**
    * Open connections to relays.
    */
-  readonly #conns: Map<
-    string,
-    {
-      conn: Conn
-      /**
-       * Has this connection been authenticated via NIP-44 AUTH?
-       */
-      auth: boolean
-      /**
-       * Should this connection be used for receiving messages?
-       */
-      read: boolean
-      /**
-       * Should this connection be used for publishing events?
-       */
-      write: boolean
-    }
-  > = new Map()
+  readonly #conns: Map<string, ConnState> = new Map()
 
   /**
    * Mapping of subscription IDs to corresponding filters.
@@ -234,6 +217,22 @@ export class Nostr {
       })
     }
   }
+}
+
+interface ConnState {
+  conn: Conn
+  /**
+   * Has this connection been authenticated via NIP-44 AUTH?
+   */
+  auth: boolean
+  /**
+   * Should this connection be used for receiving messages?
+   */
+  read: boolean
+  /**
+   * Should this connection be used for publishing events?
+   */
+  write: boolean
 }
 
 /**
