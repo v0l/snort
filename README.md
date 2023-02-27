@@ -50,6 +50,8 @@ $ yarn build
 
 ### Translations
 
+[![Crowdin](https://badges.crowdin.net/snort/localized.svg)](https://crowdin.com/project/snort)
+
 Translations are managed on [Crowdin](https://crowdin.com/project/snort)
 
 To extract translations run:
