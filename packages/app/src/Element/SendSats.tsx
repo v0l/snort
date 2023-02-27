@@ -15,9 +15,10 @@ import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import useWebln from "Hooks/useWebln";
+import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "LNURL";
+import { debounce } from "Util";
 
 import messages from "./messages";
-import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "LNURL";
 
 enum ZapType {
   PublicZap = 1,
@@ -90,6 +91,15 @@ export default function SendSats(props: SendSatsProps) {
       setSuccess(undefined);
     }
   }, [props.show]);
+
+  useEffect(() => {
+    if (success && !success.url) {
+      // Fire onClose when success is set with no URL action
+      return debounce(1_000, () => {
+        onClose();
+      });
+    }
+  }, [success]);
 
   useEffect(() => {
     if (props.lnurl && props.show) {
