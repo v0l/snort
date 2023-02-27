@@ -16,6 +16,7 @@ import { HexKey } from "@snort/nostr";
 import useFileUpload from "Upload";
 
 import messages from "./messages";
+import AsyncButton from '../../Element/AsyncButton';
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -166,9 +167,9 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         <div className="form-group card">
           <div></div>
           <div>
-            <button type="button" onClick={() => saveProfile()}>
+            <AsyncButton onClick={() => saveProfile()}>
               <FormattedMessage {...messages.Save} />
-            </button>
+            </AsyncButton>
           </div>
         </div>
       </div>
