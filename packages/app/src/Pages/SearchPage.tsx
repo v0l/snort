@@ -56,7 +56,7 @@ const SearchPage = () => {
           placeholder={formatMessage(messages.SearchPlaceholder)}
           value={search}
           onChange={e => setSearch(e.target.value)}
-          autofocus
+          autoFocus={true}
         />
       </div>
       {keyword && allUsers?.slice(0, 3).map(u => <ProfilePreview actions={<></>} className="card" pubkey={u.pubkey} />)}
