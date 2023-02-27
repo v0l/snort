@@ -16,7 +16,7 @@ import { HexKey } from "@snort/nostr";
 import useFileUpload from "Upload";
 
 import messages from "./messages";
-import AsyncButton from '../../Element/AsyncButton';
+import AsyncButton from "../../Element/AsyncButton";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
