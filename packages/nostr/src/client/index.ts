@@ -53,7 +53,7 @@ export class Nostr {
   }
 
   /**
-   * Connect and start communicating with a relay. This method recreates all existing
+   * Open a connection and start communicating with a relay. This method recreates all existing
    * subscriptions on the new relay as well. If there is already an existing connection,
    * this method will only update it with the new options, and an exception will be thrown
    * if no options are specified.
@@ -122,7 +122,7 @@ export class Nostr {
   }
 
   /**
-   * Disconnect from relays.
+   * Close connections to relays.
    *
    * @param url If specified, only close the connection to this relay. If the connection does
    * not exist, an exception will be thrown. If this parameter is not specified, all connections

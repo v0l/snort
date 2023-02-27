@@ -96,20 +96,30 @@ export class EventId {
   }
 }
 
-// TODO Document
+/**
+ * A signed event. Provides access to the event data, ID, and signature.
+ */
 export class SignedEvent {
   #event: Readonly<Event>
   #eventId: EventId
   #signature: string
 
+  /**
+   * Sign an event using the specified private key. The private key must match the
+   * public key from the event.
+   */
   static async sign(event: Event, key: PrivateKey): Promise<SignedEvent> {
     const id = await EventId.create(event)
     const sig = secp.utils
-      .bytesToHex(await secp.schnorr.sign(id.toString(), key.leak()))
+      .bytesToHex(await secp.schnorr.sign(id.toString(), key.hexDangerous()))
       .toLowerCase()
     return new SignedEvent(event, id, sig)
   }
 
+  /**
+   * Verify the signature of a raw event. Throw a `ProtocolError` if the signature
+   * is invalid.
+   */
   static async verify(raw: RawEvent): Promise<SignedEvent> {
     const id = await EventId.create(raw)
     if (id.toString() !== raw.id) {
@@ -122,24 +132,28 @@ export class SignedEvent {
   }
 
   private constructor(event: Event, eventId: EventId, signature: string) {
-    // TODO Copy the event data and document that it's being copied
-    this.#event = event
+    this.#event = cloneEvent(event)
     this.#eventId = eventId
     this.#signature = signature
   }
 
-  // TODO Document this
+  /**
+   * Event ID.
+   */
   get eventId(): EventId {
     return this.#eventId
   }
 
-  // TODO Document this
+  /**
+   * Event data.
+   */
   get event(): Event {
-    // TODO Copy the event data and document that it's being copied
-    return this.#event
+    return cloneEvent(this.#event)
   }
 
-  // TODO Document this
+  /**
+   * Event signature.
+   */
   get signature(): string {
     return this.#signature
   }
@@ -247,6 +261,35 @@ function serializeEventContent(event: Event): string {
     return event.note
   } else {
     return ""
+  }
+}
+
+function cloneEvent(event: Event): Event {
+  const common = {
+    createdAt: structuredClone(event.createdAt),
+    pubkey: new PublicKey(event.pubkey.toString()),
+  }
+  if (event.kind === EventKind.SetMetadata) {
+    return {
+      kind: EventKind.SetMetadata,
+      userMetadata: {
+        about: event.userMetadata.about,
+        name: event.userMetadata.name,
+        picture: event.userMetadata.picture,
+      },
+      ...common,
+    }
+  } else if (event.kind === EventKind.TextNote) {
+    return {
+      kind: EventKind.TextNote,
+      note: event.note,
+      ...common,
+    }
+  } else {
+    return {
+      kind: event.kind,
+      ...common,
+    }
   }
 }
 

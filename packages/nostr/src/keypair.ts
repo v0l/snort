@@ -43,8 +43,10 @@ export class PrivateKey {
     return new PublicKey(secp.schnorr.getPublicKey(this.#hex))
   }
 
-  // TODO Document this
-  leak(): string {
+  /**
+   * The hex representation of the private key. Use with caution!
+   */
+  hexDangerous(): string {
     return this.#hex
   }
 }
