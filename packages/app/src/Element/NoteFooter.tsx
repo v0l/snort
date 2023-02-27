@@ -21,7 +21,7 @@ import Zap from "Icons/Zap";
 import Reply from "Icons/Reply";
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { hexToBech32, normalizeReaction } from "Util";
+import { hexToBech32, normalizeReaction, unwrap } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
@@ -127,15 +127,14 @@ export default function NoteFooter(props: NoteFooterProps) {
       try {
         const handler = new LNURL(lnurl);
         await handler.load();
-
-        const zap = await publisher.zap(prefs.defaultZapAmount * 1000, ev.PubKey, ev.Id);
+        const zap = handler.canZap ? await publisher.zap(prefs.defaultZapAmount * 1000, ev.PubKey, ev.Id) : undefined;
         const invoice = await handler.getInvoice(prefs.defaultZapAmount, undefined, zap);
-        if (invoice.pr) {
-          await webln.sendPayment(invoice.pr);
-        }
+        await await webln.sendPayment(unwrap(invoice.pr));
       } catch (e) {
-        console.warn("Instant zap failed", e);
-        setTip(true);
+        console.warn("Fast zap failed", e);
+        if (!(e instanceof Error) || e.message !== "User rejected") {
+          setTip(true);
+        }
       } finally {
         setZapping(false);
       }
