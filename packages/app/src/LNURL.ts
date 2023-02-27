@@ -9,16 +9,17 @@ export class LNURL {
   #service?: LNURLService;
 
   constructor(lnurl: string) {
-    if (lnurl.toLowerCase().startsWith("lnurl")) {
+    lnurl = lnurl.toLowerCase().trim();
+    if (lnurl.startsWith("lnurl")) {
       const decoded = bech32ToText(lnurl);
       if (!decoded.startsWith("http")) {
         throw new Error("Invalid LNURL: not a url");
       }
       this.#url = new URL(decoded);
     } else if (lnurl.match(EmailRegex)) {
-      const [handle, domain] = lnurl.toLowerCase().split("@");
+      const [handle, domain] = lnurl.split("@");
       this.#url = new URL(`https://${domain}/.well-known/lnurlp/${handle}`);
-    } else if (lnurl.toLowerCase().startsWith("http")) {
+    } else if (lnurl.startsWith("http")) {
       this.#url = new URL(lnurl);
     } else {
       throw new Error("Invalid LNURL: could not determine service url");
