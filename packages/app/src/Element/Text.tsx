@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { visit, SKIP } from "unist-util-visit";
 
-import { UrlRegex, MentionRegex, InvoiceRegex, HashtagRegex } from "Const";
-import { eventLink, hexToBech32, unwrap } from "Util";
+import { MentionRegex, InvoiceRegex, HashtagRegex } from "Const";
+import { eventLink, hexToBech32, splitByUrl, unwrap } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 
@@ -36,7 +36,7 @@ export default function Text({ content, tags, creator, users }: TextProps) {
     return fragments
       .map(f => {
         if (typeof f === "string") {
-          return f.split(UrlRegex).map(a => {
+          return splitByUrl(f).map(a => {
             if (a.startsWith("http")) {
               return <HyperText key={a} link={a} creator={creator} />;
             }
