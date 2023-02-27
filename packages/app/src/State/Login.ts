@@ -24,7 +24,7 @@ export interface UserPreferences {
   /**
    * User selected language
    */
-  language?: "en" | "ja" | "es" | "hu" | "zh" | "fr" | "ar";
+  language?: "en" | "ja" | "es" | "hu" | "zh" | "fr" | "ar" | "it";
 
   /**
    * Enable reactions / reposts / zaps
