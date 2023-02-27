@@ -60,6 +60,7 @@ export default defineMessages({
   Milliseconds: { defaultMessage: "{n} ms" },
   ShowLatest: { defaultMessage: "Show latest {n} notes" },
   LNURLFail: { defaultMessage: "Failed to load LNURL service" },
+  InvalidLNURL: { defaultMessage: "Invalid LNURL" },
   InvoiceFail: { defaultMessage: "Failed to load invoice" },
   Custom: { defaultMessage: "Custom" },
   Confirm: { defaultMessage: "Confirm" },

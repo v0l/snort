@@ -17,7 +17,7 @@ import Copy from "Element/Copy";
 import useWebln from "Hooks/useWebln";
 
 import messages from "./messages";
-import { LNURL, LNURLInvoice, LNURLSuccessAction } from "LNURL";
+import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "LNURL";
 
 enum ZapType {
   PublicZap = 1,
@@ -96,7 +96,7 @@ export default function SendSats(props: SendSatsProps) {
       try {
         const h = new LNURL(props.lnurl);
         setHandler(h);
-        h.load().catch(e => setError((e as Error).message));
+        h.load().catch(e => handleLNURLError(e, formatMessage(messages.InvoiceFail)));
       } catch (e) {
         if (e instanceof Error) {
           setError(e.message);
@@ -147,8 +147,24 @@ export default function SendSats(props: SendSatsProps) {
         await payWebLNIfEnabled(rsp);
       }
     } catch (e) {
-      setError(formatMessage(messages.InvoiceFail));
+      handleLNURLError(e, formatMessage(messages.InvoiceFail));
     }
+  }
+
+  function handleLNURLError(e: unknown, fallback: string) {
+    if (e instanceof LNURLError) {
+      switch (e.code) {
+        case LNURLErrorCode.ServiceUnavailable: {
+          setError(formatMessage(messages.LNURLFail));
+          return;
+        }
+        case LNURLErrorCode.InvalidLNURL: {
+          setError(formatMessage(messages.InvalidLNURL));
+          return;
+        }
+      }
+    }
+    setError(fallback);
   }
 
   function custom() {

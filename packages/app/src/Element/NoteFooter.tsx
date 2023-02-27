@@ -118,7 +118,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }
 
-  async function zapClick(e: React.MouseEvent) {
+  async function fastZap(e: React.MouseEvent) {
     if (zapping || e.isPropagationStopped()) return;
 
     const lnurl = author?.lud16 || author?.lud06;
@@ -149,7 +149,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (service) {
       return (
         <>
-          <div className={`reaction-pill ${didZap ? "reacted" : ""}`} {...longPress()} onClick={e => zapClick(e)}>
+          <div className={`reaction-pill ${didZap ? "reacted" : ""}`} {...longPress()} onClick={e => fastZap(e)}>
             <div className="reaction-pill-icon">{zapping ? <Spinner /> : webln?.enabled ? <ZapFast /> : <Zap />}</div>
             {zapTotal > 0 && <div className="reaction-pill-number">{formatShort(zapTotal)}</div>}
           </div>

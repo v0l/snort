@@ -4,25 +4,47 @@ import { bech32ToText, unwrap } from "Util";
 
 const PayServiceTag = "payRequest";
 
+export enum LNURLErrorCode {
+  ServiceUnavailable = 1,
+  InvalidLNURL = 2,
+}
+
+export class LNURLError extends Error {
+  code: LNURLErrorCode;
+
+  constructor(code: LNURLErrorCode, msg: string) {
+    super(msg);
+    this.code = code;
+  }
+}
+
 export class LNURL {
   #url: URL;
   #service?: LNURLService;
 
+  /**
+   * Setup LNURL service
+   * @param lnurl bech32 lnurl / lightning address / https url
+   */
   constructor(lnurl: string) {
     lnurl = lnurl.toLowerCase().trim();
     if (lnurl.startsWith("lnurl")) {
       const decoded = bech32ToText(lnurl);
       if (!decoded.startsWith("http")) {
-        throw new Error("Invalid LNURL: not a url");
+        throw new LNURLError(LNURLErrorCode.InvalidLNURL, "Not a url");
       }
       this.#url = new URL(decoded);
     } else if (lnurl.match(EmailRegex)) {
       const [handle, domain] = lnurl.split("@");
       this.#url = new URL(`https://${domain}/.well-known/lnurlp/${handle}`);
-    } else if (lnurl.startsWith("http")) {
+    } else if (lnurl.startsWith("https:")) {
       this.#url = new URL(lnurl);
+    } else if (lnurl.startsWith("lnurlp:")) {
+      const tmp = new URL(lnurl);
+      tmp.protocol = "https:";
+      this.#url = tmp;
     } else {
-      throw new Error("Invalid LNURL: could not determine service url");
+      throw new LNURLError(LNURLErrorCode.InvalidLNURL, "Could not determine service url");
     }
   }
 
@@ -75,10 +97,10 @@ export class LNURL {
           return data;
         }
       } else {
-        throw new Error(`Failed to fetch invoice (${rsp.statusText})`);
+        throw new LNURLError(LNURLErrorCode.ServiceUnavailable, `Failed to fetch invoice (${rsp.statusText})`);
       }
     } catch (e) {
-      throw new Error("Failed to load callback");
+      throw new LNURLError(LNURLErrorCode.ServiceUnavailable, "Failed to load callback");
     }
   }
 
@@ -112,10 +134,10 @@ export class LNURL {
 
   #validateService() {
     if (this.#service?.tag !== PayServiceTag) {
-      throw new Error("Invalid service: only lnurlp is supported");
+      throw new LNURLError(LNURLErrorCode.InvalidLNURL, "Only LNURLp is supported");
     }
     if (!this.#service?.callback) {
-      throw new Error("Invalid service: no callback url");
+      throw new LNURLError(LNURLErrorCode.InvalidLNURL, "No callback url");
     }
   }
 }
