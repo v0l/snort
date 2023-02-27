@@ -37,7 +37,20 @@ export function encodeTLV(
   author?: string,
   kind?: number
 ) {
+  if (
+    prefix !=== NostrPrefix.Address || typeof hex !== "string"  ||
+    hex.length === 0 ||
+    hex.length % 2 !== 0
+  ) {
+    return "";
+  }
   const enc = new TextEncoder();
+  let buf;
+  if (prefix === NostrPrefix.Address) {
+    buf = enc.encode(hex);
+  } else {
+    buf = secp.utils.hexToBytes(hex);
+  }
   const buf = enc.encode(hex);
 
   const tl0 = [0, buf.length, ...buf];
