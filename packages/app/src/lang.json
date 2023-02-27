@@ -786,6 +786,9 @@
   "xmcVZ0": {
     "defaultMessage": "Search"
   },
+  "y1Z3or": {
+    "defaultMessage": "Language"
+  },
   "yCmnnm": {
     "defaultMessage": "Read global from",
     "description": "Label for reading global feed from specific relays"

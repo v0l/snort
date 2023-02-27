@@ -1,5 +1,9 @@
 import { type ReactNode } from "react";
+import { useSelector } from "react-redux";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
+
+import { RootState } from "State/Store";
+
 import enMessages from "translations/en.json";
 import esMessages from "translations/es.json";
 import zhMessages from "translations/zh.json";
@@ -37,14 +41,16 @@ const getMessages = (locale: string) => {
 };
 
 export const IntlProvider = ({ children }: { children: ReactNode }) => {
-  const getLocale = () => {
-    return (navigator.languages && navigator.languages[0]) || navigator.language || DEFAULT_LOCALE;
-  };
-  const locale = getLocale();
+  const lang = useSelector((s: RootState) => s.login.preferences.language);
+  const locale = lang ?? getLocale();
 
   return (
     <ReactIntlProvider locale={locale} messages={getMessages(locale)}>
       {children}
     </ReactIntlProvider>
   );
+};
+
+export const getLocale = () => {
+  return (navigator.languages && navigator.languages[0]) || navigator.language || DEFAULT_LOCALE;
 };

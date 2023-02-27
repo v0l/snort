@@ -22,6 +22,11 @@ export interface NotificationRequest {
 
 export interface UserPreferences {
   /**
+   * User selected language
+   */
+  language?: "en" | "ja" | "es" | "hu" | "zh" | "fr" | "ar";
+
+  /**
    * Enable reactions / reposts / zaps
    */
   enableReactions: boolean;

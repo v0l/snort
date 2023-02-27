@@ -24,6 +24,34 @@ const PreferencesPage = () => {
       <div className="card flex">
         <div className="flex f-col f-grow">
           <div>
+            <FormattedMessage defaultMessage="Language" />
+          </div>
+        </div>
+        <div>
+          <select
+            value={perf.language}
+            onChange={e =>
+              dispatch(
+                setPreferences({
+                  ...perf,
+                  language: e.target.value,
+                } as UserPreferences)
+              )
+            }
+            style={{ textTransform: "capitalize" }}>
+            {["en", "ja", "es", "hu", "zh", "fr", "ar"].sort().map(a => (
+              <option value={a}>
+                {new Intl.DisplayNames([a], {
+                  type: "language",
+                }).of(a)}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div className="card flex">
+        <div className="flex f-col f-grow">
+          <div>
             <FormattedMessage {...messages.Theme} />
           </div>
         </div>
