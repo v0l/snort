@@ -1,11 +1,19 @@
 import { useEffect } from "react";
 
+interface WebLNPaymentResponse {
+  paymentHash: string;
+  preimage: string;
+  route: {
+    total_amt: number;
+    total_fees: number;
+  };
+}
 declare global {
   interface Window {
     webln?: {
       enabled: boolean;
       enable: () => Promise<void>;
-      sendPayment: (pr: string) => Promise<unknown>;
+      sendPayment: (pr: string) => Promise<WebLNPaymentResponse>;
     };
   }
 }

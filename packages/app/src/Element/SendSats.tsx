@@ -1,11 +1,10 @@
 import "./SendSats.css";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 
 import { formatShort } from "Number";
-import { bech32ToText } from "Util";
-import { HexKey, Tag } from "@snort/nostr";
+import { Event, HexKey, Tag } from "@snort/nostr";
 import { RootState } from "State/Store";
 import Check from "Icons/Check";
 import Zap from "Icons/Zap";
@@ -16,27 +15,10 @@ import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import useWebln from "Hooks/useWebln";
+import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "LNURL";
+import { debounce } from "Util";
 
 import messages from "./messages";
-
-interface LNURLService {
-  nostrPubkey?: HexKey;
-  minSendable?: number;
-  maxSendable?: number;
-  metadata: string;
-  callback: string;
-  commentAllowed?: number;
-}
-
-interface LNURLInvoice {
-  pr: string;
-  successAction?: LNURLSuccessAction;
-}
-
-interface LNURLSuccessAction {
-  description?: string;
-  url?: string;
-}
 
 enum ZapType {
   PublicZap = 1,
@@ -45,9 +27,9 @@ enum ZapType {
   NonZap = 4,
 }
 
-export interface LNURLTipProps {
+export interface SendSatsProps {
   onClose?: () => void;
-  svc?: string;
+  lnurl?: string;
   show?: boolean;
   invoice?: string; // shortcut to invoice qr tab
   title?: string;
@@ -69,10 +51,8 @@ function chunks<T>(arr: T[], length: number) {
   return result;
 }
 
-export default function LNURLTip(props: LNURLTipProps) {
+export default function SendSats(props: SendSatsProps) {
   const onClose = props.onClose || (() => undefined);
-  const service = props.svc;
-  const show = props.show || false;
   const { note, author, target } = props;
   const defaultZapAmount = useSelector((s: RootState) => s.login.preferences.defaultZapAmount);
   const amounts = [defaultZapAmount, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000];
@@ -85,97 +65,77 @@ export default function LNURLTip(props: LNURLTipProps) {
     100_000: "🚀",
     1_000_000: "🤯",
   };
-  const [payService, setPayService] = useState<LNURLService>();
+
+  const [handler, setHandler] = useState<LNURL>();
+  const [invoice, setInvoice] = useState(props.invoice);
   const [amount, setAmount] = useState<number>(defaultZapAmount);
   const [customAmount, setCustomAmount] = useState<number>();
-  const [invoice, setInvoice] = useState<LNURLInvoice>();
   const [comment, setComment] = useState<string>();
-  const [error, setError] = useState<string>();
   const [success, setSuccess] = useState<LNURLSuccessAction>();
+  const [error, setError] = useState<string>();
   const [zapType, setZapType] = useState(ZapType.PublicZap);
   const [paying, setPaying] = useState<boolean>(false);
-  const webln = useWebln(show);
+
+  const webln = useWebln(props.show);
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
-  const canComment = (payService?.commentAllowed ?? 0) > 0 || payService?.nostrPubkey;
+  const canComment = handler ? (handler.canZap && zapType !== ZapType.NonZap) || handler.maxCommentLength > 0 : false;
 
   useEffect(() => {
-    if (show && !props.invoice) {
-      loadService()
-        .then(a => setPayService(a ?? undefined))
-        .catch(() => setError(formatMessage(messages.LNURLFail)));
-    } else {
-      setPayService(undefined);
+    if (props.show) {
       setError(undefined);
-      setInvoice(props.invoice ? { pr: props.invoice } : undefined);
       setAmount(defaultZapAmount);
       setComment(undefined);
-      setSuccess(undefined);
       setZapType(ZapType.PublicZap);
+      setInvoice(undefined);
+      setSuccess(undefined);
     }
-  }, [show, service]);
+  }, [props.show]);
+
+  useEffect(() => {
+    if (success && !success.url) {
+      // Fire onClose when success is set with no URL action
+      return debounce(1_000, () => {
+        onClose();
+      });
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (props.lnurl && props.show) {
+      try {
+        const h = new LNURL(props.lnurl);
+        setHandler(h);
+        h.load().catch(e => handleLNURLError(e, formatMessage(messages.InvoiceFail)));
+      } catch (e) {
+        if (e instanceof Error) {
+          setError(e.message);
+        }
+      }
+    }
+  }, [props.lnurl, props.show]);
 
   const serviceAmounts = useMemo(() => {
-    if (payService) {
-      const min = (payService.minSendable ?? 0) / 1000;
-      const max = (payService.maxSendable ?? 0) / 1000;
+    if (handler) {
+      const min = handler.min / 1000;
+      const max = handler.max / 1000;
       return amounts.filter(a => a >= min && a <= max);
     }
     return [];
-  }, [payService]);
+  }, [handler]);
   const amountRows = useMemo(() => chunks(serviceAmounts, 3), [serviceAmounts]);
 
   const selectAmount = (a: number) => {
     setError(undefined);
-    setInvoice(undefined);
     setAmount(a);
   };
 
-  async function fetchJson<T>(url: string) {
-    const rsp = await fetch(url);
-    if (rsp.ok) {
-      const data: T = await rsp.json();
-      console.log(data);
-      setError(undefined);
-      return data;
-    }
-    return null;
-  }
-
-  async function loadService(): Promise<LNURLService | null> {
-    if (service) {
-      const isServiceUrl = service.toLowerCase().startsWith("lnurl");
-      if (isServiceUrl) {
-        const serviceUrl = bech32ToText(service);
-        return await fetchJson(serviceUrl);
-      } else {
-        const ns = service.split("@");
-        return await fetchJson(`https://${ns[1]}/.well-known/lnurlp/${ns[0]}`);
-      }
-    }
-    return null;
-  }
-
   async function loadInvoice() {
-    if (!amount || !payService) return null;
+    if (!amount || !handler) return null;
 
-    const callback = new URL(payService.callback);
-    const query = new Map<string, string>();
-    if (callback.search.length > 0) {
-      callback.search
-        .slice(1)
-        .split("&")
-        .forEach(a => {
-          const pSplit = a.split("=");
-          query.set(pSplit[0], pSplit[1]);
-        });
-    }
-    query.set("amount", Math.floor(amount * 1000).toString());
-    if (comment && payService?.commentAllowed) {
-      query.set("comment", comment);
-    }
-    if (payService.nostrPubkey && author && zapType !== ZapType.NonZap) {
-      const ev = await publisher.zap(author, note, comment);
+    let zap: Event | undefined;
+    if (author && zapType !== ZapType.NonZap) {
+      const ev = await publisher.zap(amount * 1000, author, note, comment);
       if (ev) {
         // replace sig for anon-zap
         if (zapType === ZapType.AnonZap) {
@@ -186,35 +146,42 @@ export default function LNURLTip(props: LNURLTipProps) {
           ev.Tags.push(new Tag(["anon"], ev.Tags.length));
           await ev.Sign(randomKey.privateKey);
         }
-        query.set("nostr", JSON.stringify(ev.ToObject()));
+        zap = ev;
       }
     }
 
-    const baseUrl = `${callback.protocol}//${callback.host}${callback.pathname}`;
-    const queryJoined = [...query.entries()].map(v => `${v[0]}=${encodeURIComponent(v[1])}`).join("&");
     try {
-      const rsp = await fetch(`${baseUrl}?${queryJoined}`);
-      if (rsp.ok) {
-        const data = await rsp.json();
-        console.log(data);
-        if (data.status === "ERROR") {
-          setError(data.reason);
-        } else {
-          setInvoice(data);
-          setError("");
-          payWebLNIfEnabled(data);
-        }
-      } else {
-        setError(formatMessage(messages.InvoiceFail));
+      const rsp = await handler.getInvoice(amount, comment, zap);
+      if (rsp.pr) {
+        setInvoice(rsp.pr);
+        await payWebLNIfEnabled(rsp);
       }
     } catch (e) {
-      setError(formatMessage(messages.InvoiceFail));
+      handleLNURLError(e, formatMessage(messages.InvoiceFail));
     }
   }
 
+  function handleLNURLError(e: unknown, fallback: string) {
+    if (e instanceof LNURLError) {
+      switch (e.code) {
+        case LNURLErrorCode.ServiceUnavailable: {
+          setError(formatMessage(messages.LNURLFail));
+          return;
+        }
+        case LNURLErrorCode.InvalidLNURL: {
+          setError(formatMessage(messages.InvalidLNURL));
+          return;
+        }
+      }
+    }
+    setError(fallback);
+  }
+
   function custom() {
-    const min = (payService?.minSendable ?? 1000) / 1000;
-    const max = (payService?.maxSendable ?? 21_000_000_000) / 1000;
+    if (!handler) return null;
+    const min = handler.min / 1000;
+    const max = handler.max / 1000;
+
     return (
       <div className="custom-amount flex">
         <input
@@ -269,21 +236,21 @@ export default function LNURLTip(props: LNURLTipProps) {
   }
 
   function invoiceForm() {
-    if (invoice) return null;
+    if (!handler || invoice) return null;
     return (
       <>
         <h3>
           <FormattedMessage {...messages.ZapAmount} />
         </h3>
         {amountRows.map(amounts => renderAmounts(amount, amounts))}
-        {payService && custom()}
+        {custom()}
         <div className="flex">
           {canComment && (
             <input
               type="text"
               placeholder={formatMessage(messages.Comment)}
               className="f-grow"
-              maxLength={payService?.commentAllowed || 120}
+              maxLength={handler.canZap && zapType !== ZapType.NonZap ? 250 : handler.maxCommentLength}
               onChange={e => setComment(e.target.value)}
             />
           )}
@@ -306,9 +273,9 @@ export default function LNURLTip(props: LNURLTipProps) {
   }
 
   function zapTypeSelector() {
-    if (!payService || !payService.nostrPubkey) return;
+    if (!handler || !handler.canZap) return;
 
-    const makeTab = (t: ZapType, n: string) => (
+    const makeTab = (t: ZapType, n: React.ReactNode) => (
       <div className={`tab${zapType === t ? " active" : ""}`} onClick={() => setZapType(t)}>
         {n}
       </div>
@@ -319,18 +286,20 @@ export default function LNURLTip(props: LNURLTipProps) {
           <FormattedMessage defaultMessage="Zap Type" />
         </h3>
         <div className="tabs mt10">
-          {makeTab(ZapType.PublicZap, "Public")}
+          {makeTab(ZapType.PublicZap, <FormattedMessage defaultMessage="Public" description="Public Zap" />)}
           {/*makeTab(ZapType.PrivateZap, "Private")*/}
-          {makeTab(ZapType.AnonZap, "Anon")}
-          {makeTab(ZapType.NonZap, "Non-Zap")}
+          {makeTab(ZapType.AnonZap, <FormattedMessage defaultMessage="Anon" description="Anonymous Zap" />)}
+          {makeTab(
+            ZapType.NonZap,
+            <FormattedMessage defaultMessage="Non-Zap" description="Non-Zap, Regular LN payment" />
+          )}
         </div>
       </>
     );
   }
 
   function payInvoice() {
-    if (success) return null;
-    const pr = invoice?.pr;
+    if (success || !invoice) return null;
     return (
       <>
         <div className="invoice">
@@ -341,15 +310,15 @@ export default function LNURLTip(props: LNURLTipProps) {
               ...
             </h4>
           ) : (
-            <QrCode data={pr} link={`lightning:${pr}`} />
+            <QrCode data={invoice} link={`lightning:${invoice}`} />
           )}
           <div className="actions">
-            {pr && (
+            {invoice && (
               <>
                 <div className="copy-action">
-                  <Copy text={pr} maxSize={26} />
+                  <Copy text={invoice} maxSize={26} />
                 </div>
-                <button className="wallet-action" type="button" onClick={() => window.open(`lightning:${pr}`)}>
+                <button className="wallet-action" type="button" onClick={() => window.open(`lightning:${invoice}`)}>
                   <FormattedMessage {...messages.OpenWallet} />
                 </button>
               </>
@@ -379,14 +348,14 @@ export default function LNURLTip(props: LNURLTipProps) {
     );
   }
 
-  const defaultTitle = payService?.nostrPubkey ? formatMessage(messages.SendZap) : formatMessage(messages.SendSats);
+  const defaultTitle = handler?.canZap ? formatMessage(messages.SendZap) : formatMessage(messages.SendSats);
   const title = target
     ? formatMessage(messages.ToTarget, {
         action: defaultTitle,
         target,
       })
     : defaultTitle;
-  if (!show) return null;
+  if (!(props.show ?? false)) return null;
   return (
     <Modal className="lnurl-modal" onClose={onClose}>
       <div className="lnurl-tip" onClick={e => e.stopPropagation()}>
