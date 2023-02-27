@@ -2,6 +2,7 @@ import { ProtocolError } from "../error"
 import { Filters, SubscriptionId } from "."
 import { RawEvent, SignedEvent } from "../event"
 import WebSocket from "ws"
+import { unixTimestamp } from "../util"
 
 /**
  * The connection to a relay. This is the lowest layer of the nostr protocol.
@@ -241,15 +242,10 @@ function serializeFilters(filters: Filters): RawFilters {
     kinds: filters.kinds?.map((kind) => kind),
     ["#e"]: filters.eventTags?.map((e) => e.toString()),
     ["#p"]: filters.pubkeyTags?.map((p) => p.toString()),
-    // TODO The Math.floor has been repeated too many times at this point, have a unix timestamp function in event.ts
     since:
-      filters.since !== undefined
-        ? Math.floor(filters.since.getTime() / 1000)
-        : undefined,
+      filters.since !== undefined ? unixTimestamp(filters.since) : undefined,
     until:
-      filters.until !== undefined
-        ? Math.floor(filters.until.getTime() / 1000)
-        : undefined,
+      filters.until !== undefined ? unixTimestamp(filters.until) : undefined,
     limit: filters.limit,
   }
 }

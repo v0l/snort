@@ -1,6 +1,7 @@
 import { ProtocolError } from "./error"
 import * as secp from "@noble/secp256k1"
 import { PublicKey, PrivateKey } from "./keypair"
+import { unixTimestamp } from "./util"
 
 // TODO This file is missing proper documentation
 // TODO Add remaining event types
@@ -76,8 +77,8 @@ export class EventId {
       const serializedTags = `[${tags
         .map((tag) => `[${tag.map((v) => `"${v}"`).join(",")}]`)
         .join(",")}]`
-      const serialized = `[0,"${event.pubkey}",${Math.floor(
-        event.createdAt.getTime() / 1000
+      const serialized = `[0,"${event.pubkey}",${unixTimestamp(
+        event.createdAt
       )},${event.kind},${serializedTags},"${content}"]`
       const hash = await secp.utils.sha256(
         Uint8Array.from(charCodes(serialized))
@@ -153,7 +154,7 @@ export class SignedEvent {
     return {
       id: id.toString(),
       pubkey: event.pubkey.toString(),
-      created_at: Math.floor(event.createdAt.getTime() / 1000),
+      created_at: unixTimestamp(event.createdAt),
       kind: event.kind,
       tags,
       content,
