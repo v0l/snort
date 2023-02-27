@@ -6,12 +6,12 @@ import { HexKey, Lists, EventKind, Subscriptions } from "@snort/nostr";
 import useSubscription from "Feed/Subscription";
 import { RootState } from "State/Store";
 
-export default function useNotelistSubscription(pubkey: HexKey, l: Lists, defaultIds: HexKey[]) {
+export default function useNotelistSubscription(pubkey: HexKey | undefined, l: Lists, defaultIds: HexKey[]) {
   const { preferences, publicKey } = useSelector((s: RootState) => s.login);
   const isMe = publicKey === pubkey;
 
   const sub = useMemo(() => {
-    if (isMe) return null;
+    if (isMe || !pubkey) return null;
     const sub = new Subscriptions();
     sub.Id = `note-list-${l}:${pubkey.slice(0, 12)}`;
     sub.Kinds = new Set([EventKind.NoteLists]);
@@ -33,12 +33,13 @@ export default function useNotelistSubscription(pubkey: HexKey, l: Lists, defaul
   }, [store.notes, isMe, defaultIds]);
 
   const esub = useMemo(() => {
+    if (!pubkey) return null;
     const s = new Subscriptions();
     s.Id = `${l}-notes:${pubkey.slice(0, 12)}`;
     s.Kinds = new Set([EventKind.TextNote]);
     s.Ids = new Set(etags);
     return s;
-  }, [etags]);
+  }, [etags, pubkey]);
 
   const subRelated = useMemo(() => {
     let sub: Subscriptions | undefined;

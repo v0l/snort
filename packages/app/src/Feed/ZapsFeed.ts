@@ -3,8 +3,9 @@ import { HexKey, EventKind, Subscriptions } from "@snort/nostr";
 import { parseZap } from "Element/Zap";
 import useSubscription from "./Subscription";
 
-export default function useZapsFeed(pubkey: HexKey) {
+export default function useZapsFeed(pubkey?: HexKey) {
   const sub = useMemo(() => {
+    if (!pubkey) return null;
     const x = new Subscriptions();
     x.Id = `zaps:${pubkey.slice(0, 12)}`;
     x.Kinds = new Set([EventKind.ZapReceipt]);

@@ -46,6 +46,19 @@ const Artwork: Array<ArtworkEntry> = [
   },
 ];
 
+export async function getNip05PubKey(addr: string): Promise<string> {
+  const [username, domain] = addr.split("@");
+  const rsp = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username)}`);
+  if (rsp.ok) {
+    const data = await rsp.json();
+    const pKey = data.names[username];
+    if (pKey) {
+      return pKey;
+    }
+  }
+  throw new Error("User key not found");
+}
+
 export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -68,19 +81,6 @@ export default function LoginPage() {
     // proxy(ret.link).then(a => setArt({ ...ret, link: a }));
     setArt(ret);
   }, []);
-
-  async function getNip05PubKey(addr: string) {
-    const [username, domain] = addr.split("@");
-    const rsp = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username)}`);
-    if (rsp.ok) {
-      const data = await rsp.json();
-      const pKey = data.names[username];
-      if (pKey) {
-        return pKey;
-      }
-    }
-    throw new Error("User key not found");
-  }
 
   async function doLogin() {
     try {

@@ -1,8 +1,9 @@
 import "./ProfilePage.css";
-import { useEffect, useMemo, useState, CSSProperties } from "react";
+import { useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { NostrPrefix } from "@snort/nostr";
 
 import { unwrap } from "Util";
 import { formatShort } from "Number";
@@ -32,20 +33,20 @@ import Text from "Element/Text";
 import SendSats from "Element/SendSats";
 import Nip05 from "Element/Nip05";
 import Copy from "Element/Copy";
-import ProfilePreview from "Element/ProfilePreview";
 import ProfileImage from "Element/ProfileImage";
 import BlockList from "Element/BlockList";
 import MutedList from "Element/MutedList";
 import FollowsList from "Element/FollowListBase";
 import IconButton from "Element/IconButton";
 import { RootState } from "State/Store";
-import { HexKey, NostrPrefix } from "@snort/nostr";
 import FollowsYou from "Element/FollowsYou";
 import QrCode from "Element/QrCode";
 import Modal from "Element/Modal";
 import { ProxyImg } from "Element/ProxyImg";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
 import messages from "./messages";
+import { EmailRegex } from "Const";
+import { getNip05PubKey } from "./Login";
 
 const NOTES = 0;
 const REACTIONS = 1;
@@ -61,10 +62,9 @@ export default function ProfilePage() {
   const { formatMessage } = useIntl();
   const params = useParams();
   const navigate = useNavigate();
-  const id = useMemo(() => parseId(params.id ?? ""), [params]);
+  const [id, setId] = useState<string>();
   const user = useUserProfile(id);
-  const loggedOut = useSelector<RootState, boolean | undefined>(s => s.login.loggedOut);
-  const loginPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+  const loginPubKey = useSelector((s: RootState) => s.login.publicKey);
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
@@ -75,7 +75,7 @@ export default function ProfilePage() {
     users: new Map(),
     creator: "",
   });
-  const npub = !id.startsWith("npub") ? hexToBech32("npub", id || undefined) : id;
+  const npub = !id?.startsWith("npub") ? hexToBech32("npub", id || undefined) : id;
 
   const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
   const website_url =
@@ -112,6 +112,13 @@ export default function ProfilePage() {
   const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
+    if (params.id?.match(EmailRegex)) {
+      getNip05PubKey(params.id).then(a => {
+        setId(a);
+      });
+    } else {
+      setId(parseId(params.id ?? ""));
+    }
     setTab(ProfileTab.Notes);
   }, [params]);
 
@@ -174,6 +181,8 @@ export default function ProfilePage() {
   }
 
   function tabContent() {
+    if (!id) return null;
+
     switch (tab.value) {
       case NOTES:
         return (
@@ -254,7 +263,7 @@ export default function ProfilePage() {
         </IconButton>
         {showProfileQr && (
           <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
-            <ProfileImage pubkey={id} />
+            <ProfileImage pubkey={id ?? ""} />
             <QrCode
               data={`nostr:${hexToBech32(NostrPrefix.PublicKey, id)}`}
               link={undefined}
@@ -275,7 +284,7 @@ export default function ProfilePage() {
                 <Zap width={14} height={16} />
               </IconButton>
             )}
-            {!loggedOut && (
+            {loginPubKey && (
               <>
                 <IconButton onClick={() => navigate(`/messages/${hexToBech32(NostrPrefix.PublicKey, id)}`)}>
                   <Envelope width={16} height={13} />
@@ -294,7 +303,7 @@ export default function ProfilePage() {
         {username()}
         <div className="profile-actions">
           {renderIcons()}
-          {!isMe && <FollowButton pubkey={id} />}
+          {!isMe && <FollowButton pubkey={id ?? ""} />}
         </div>
         {bio()}
       </div>
@@ -306,7 +315,6 @@ export default function ProfilePage() {
   }
 
   const w = window.document.querySelector(".page")?.clientWidth;
-  const bannerStyle = user?.banner ? ({ "--img-url": `url(${user.banner})` } as CSSProperties) : {};
   return (
     <>
       <div className="profile flex">

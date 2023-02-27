@@ -7,12 +7,12 @@ import { EventKind, Subscriptions } from "@snort/nostr";
 import useSubscription, { NoteStore } from "Feed/Subscription";
 import { RootState } from "State/Store";
 
-export default function useMutedFeed(pubkey: HexKey) {
+export default function useMutedFeed(pubkey?: HexKey) {
   const { publicKey, muted } = useSelector((s: RootState) => s.login);
   const isMe = publicKey === pubkey;
 
   const sub = useMemo(() => {
-    if (isMe) return null;
+    if (isMe || !pubkey) return null;
     const sub = new Subscriptions();
     sub.Id = `muted:${pubkey.slice(0, 12)}`;
     sub.Kinds = new Set([EventKind.PubkeyLists]);
@@ -25,8 +25,11 @@ export default function useMutedFeed(pubkey: HexKey) {
   const mutedFeed = useSubscription(sub, { leaveOpen: false, cache: true });
 
   const mutedList = useMemo(() => {
-    return getMuted(mutedFeed.store, pubkey);
-  }, [mutedFeed.store]);
+    if (pubkey) {
+      return getMuted(mutedFeed.store, pubkey);
+    }
+    return [];
+  }, [mutedFeed.store, pubkey]);
 
   return isMe ? muted : mutedList;
 }
