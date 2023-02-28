@@ -115,10 +115,12 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
   const subNext = useMemo(() => {
     let sub: Subscriptions | undefined;
-    if (trackingEvents.length > 0 && pref.enableReactions) {
+    if (trackingEvents.length > 0) {
       sub = new Subscriptions();
       sub.Id = `timeline-related:${subject.type}`;
-      sub.Kinds = new Set([EventKind.Reaction, EventKind.Repost, EventKind.Deletion, EventKind.ZapReceipt]);
+      sub.Kinds = new Set(
+        pref.enableReactions ? [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt] : [EventKind.ZapReceipt]
+      );
       sub.ETags = new Set(trackingEvents);
     }
     return sub ?? null;

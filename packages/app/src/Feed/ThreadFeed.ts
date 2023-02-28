@@ -32,8 +32,8 @@ export default function useThreadFeed(id: u256) {
     const subRelated = new Subscriptions();
     subRelated.Kinds = new Set(
       pref.enableReactions
-        ? [EventKind.Reaction, EventKind.TextNote, EventKind.Deletion, EventKind.Repost, EventKind.ZapReceipt]
-        : [EventKind.TextNote]
+        ? [EventKind.Reaction, EventKind.TextNote, EventKind.Repost, EventKind.ZapReceipt]
+        : [EventKind.TextNote, EventKind.ZapReceipt]
     );
     subRelated.ETags = thisSub.Ids;
     thisSub.AddSubscription(subRelated);
