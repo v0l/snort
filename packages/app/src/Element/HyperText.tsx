@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 
@@ -27,19 +27,36 @@ export default function HyperText({ link, creator }: { link: string; creator: He
   const pref = useSelector((s: RootState) => s.login.preferences);
   const follows = useSelector((s: RootState) => s.login.follows);
   const publicKey = useSelector((s: RootState) => s.login.publicKey);
+  const [reveal, setReveal] = useState(false);
+
+  const wrapReveal = useCallback(
+    (e: JSX.Element, a: string): JSX.Element => {
+      const hideNonFollows = pref.autoLoadMedia === "follows-only" && !follows.includes(creator);
+      const isMine = creator === publicKey;
+      const hideMedia = pref.autoLoadMedia === "none" || (!isMine && hideNonFollows);
+      const hostname = new URL(a).host;
+
+      if (hideMedia && !reveal) {
+        return (
+          <div
+            onClick={e => {
+              e.stopPropagation();
+              setReveal(true);
+            }}
+            className="note-invoice">
+            Click to load content from {hostname}
+          </div>
+        );
+      } else {
+        return e;
+      }
+    },
+    [reveal, pref, follows, publicKey]
+  );
 
   const render = useCallback(() => {
     const a = link;
     try {
-      const hideNonFollows = pref.autoLoadMedia === "follows-only" && !follows.includes(creator);
-      const isMine = creator === publicKey;
-      if (pref.autoLoadMedia === "none" || (!isMine && hideNonFollows)) {
-        return (
-          <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-            {a}
-          </a>
-        );
-      }
       const url = new URL(a);
       const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
       const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
@@ -93,19 +110,15 @@ export default function HyperText({ link, creator }: { link: string; creator: He
         );
       } else if (youtubeId) {
         return (
-          <>
-            <br />
-            <iframe
-              className="w-max"
-              src={`https://www.youtube.com/embed/${youtubeId}`}
-              title="YouTube video player"
-              key={youtubeId}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen={true}
-            />
-            <br />
-          </>
+          <iframe
+            className="w-max"
+            src={`https://www.youtube.com/embed/${youtubeId}`}
+            title="YouTube video player"
+            key={youtubeId}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen={true}
+          />
         );
       } else if (tidalId) {
         return <TidalEmbed link={a} />;
@@ -134,7 +147,11 @@ export default function HyperText({ link, creator }: { link: string; creator: He
         {a}
       </a>
     );
-  }, [link]);
+  }, [link, reveal]);
 
-  return render();
+  const elm = render();
+  if (elm.type !== "a") {
+    return wrapReveal(elm, link);
+  }
+  return elm;
 }
