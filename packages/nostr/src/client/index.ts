@@ -81,19 +81,27 @@ export class Nostr {
 
     // Handle messages on this connection.
     conn.on("message", async (msg) => {
-      if (msg.kind === IncomingKind.Event) {
-        this.#eventCallback?.(
-          {
-            signed: msg.signed,
-            subscriptionId: msg.subscriptionId,
-            raw: msg.raw,
-          },
-          this
-        )
-      } else if (msg.kind === IncomingKind.Notice) {
-        this.#noticeCallback?.(msg.notice, this)
-      } else {
-        const err = new ProtocolError(`invalid message ${msg}`)
+      try {
+        if (msg.kind === IncomingKind.Event) {
+          this.#eventCallback?.(
+            {
+              signed: msg.signed,
+              subscriptionId: msg.subscriptionId,
+              raw: msg.raw,
+            },
+            this
+          )
+        } else if (msg.kind === IncomingKind.Notice) {
+          this.#noticeCallback?.(msg.notice, this)
+        } else {
+          const err = new ProtocolError(`invalid message ${msg}`)
+          try {
+            this.#errorCallback?.(err, this)
+          } catch (err) {
+            // Don't propagate errors from the error callback.
+          }
+        }
+      } catch (err) {
         this.#errorCallback?.(err, this)
       }
     })
@@ -317,7 +325,7 @@ export interface Filters {
 
 export type EventCallback = (params: EventParams, nostr: Nostr) => unknown
 export type NoticeCallback = (notice: string, nostr: Nostr) => unknown
-export type ErrorCallback = (error: ProtocolError, nostr: Nostr) => unknown
+export type ErrorCallback = (error: unknown, nostr: Nostr) => unknown
 
 export interface EventParams {
   signed: SignedEvent

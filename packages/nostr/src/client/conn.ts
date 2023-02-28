@@ -47,14 +47,7 @@ export class Conn {
         const msg = await parseIncomingMessage(value)
         this.#msgCallback?.(msg)
       } catch (err) {
-        if (err instanceof ProtocolError) {
-          this.#errorCallback?.(err)
-        } else {
-          // TODO Not sure if this is the best idea.
-          // Investigate what WebSocket does if the callback throws?
-          // Either way it seems like the best idea is to have `onError` called on all types of errors
-          throw err
-        }
+        this.#errorCallback?.(err)
       }
     })
 
@@ -64,6 +57,10 @@ export class Conn {
         this.send(msg)
       }
       this.#pending = []
+    })
+
+    this.#socket.addEventListener("error", (err) => {
+      this.#errorCallback?.(err)
     })
   }
 
@@ -84,11 +81,23 @@ export class Conn {
       this.#pending.push(msg)
       return
     }
-    this.#socket.send(serializeOutgoingMessage(msg))
+    try {
+      this.#socket.send(serializeOutgoingMessage(msg), (err) => {
+        if (err !== undefined && err !== null) {
+          this.#errorCallback?.(err)
+        }
+      })
+    } catch (err) {
+      this.#errorCallback?.(err)
+    }
   }
 
   close(): void {
-    this.#socket.close()
+    try {
+      this.#socket.close()
+    } catch (err) {
+      this.#errorCallback?.(err)
+    }
   }
 }
 
@@ -160,7 +169,7 @@ export interface OutgoingCloseSubscription {
 }
 
 type IncomingMessageCallback = (message: IncomingMessage) => unknown
-type ErrorCallback = (error: ProtocolError) => unknown
+type ErrorCallback = (error: unknown) => unknown
 
 interface RawFilters {
   ids?: string[]
