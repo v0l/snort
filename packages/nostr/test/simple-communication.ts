@@ -25,7 +25,7 @@ describe("single event communication", function () {
       assert.equal(event.pubkey.toString(), pubkey.toString())
       assert.equal(event.createdAt.toString(), timestamp.toString())
       if (event.kind === EventKind.TextNote) {
-        assert.equal(event.note, note)
+        assert.equal(event.content, note)
       }
 
       // There is a bug with the nostr relay used for testing where if the publish and
@@ -46,7 +46,7 @@ describe("single event communication", function () {
       {
         kind: EventKind.TextNote,
         createdAt: timestamp,
-        note,
+        content: note,
         pubkey,
       },
       secret

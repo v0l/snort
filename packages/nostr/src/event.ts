@@ -33,7 +33,7 @@ interface EventCommon {
 
 export interface SetMetadataEvent extends EventCommon {
   kind: EventKind.SetMetadata
-  userMetadata: UserMetadata
+  content: UserMetadata
 }
 
 export interface UserMetadata {
@@ -44,7 +44,7 @@ export interface UserMetadata {
 
 export interface TextNoteEvent extends EventCommon {
   kind: EventKind.TextNote
-  note: string
+  content: string
 }
 
 export interface UnknownEvent extends EventCommon {
@@ -210,7 +210,7 @@ function parseEvent(raw: RawEvent): Event {
     return {
       ...event,
       kind: EventKind.SetMetadata,
-      userMetadata,
+      content: userMetadata,
     }
   }
 
@@ -218,7 +218,7 @@ function parseEvent(raw: RawEvent): Event {
     return {
       ...event,
       kind: EventKind.TextNote,
-      note: raw.content,
+      content: raw.content,
     }
   }
 
@@ -235,11 +235,9 @@ function serializeEventTags(_event: Event): string[][] {
 
 function serializeEventContent(event: Event): string {
   if (event.kind === EventKind.SetMetadata) {
-    // TODO Maybe rename userMetadata to content?
-    return JSON.stringify(event.userMetadata)
+    return JSON.stringify(event.content)
   } else if (event.kind === EventKind.TextNote) {
-    // TODO Maybe rename note to content?
-    return event.note
+    return event.content
   } else {
     return ""
   }
@@ -253,17 +251,17 @@ function cloneEvent(event: Event): Event {
   if (event.kind === EventKind.SetMetadata) {
     return {
       kind: EventKind.SetMetadata,
-      userMetadata: {
-        about: event.userMetadata.about,
-        name: event.userMetadata.name,
-        picture: event.userMetadata.picture,
+      content: {
+        about: event.content.about,
+        name: event.content.name,
+        picture: event.content.picture,
       },
       ...common,
     }
   } else if (event.kind === EventKind.TextNote) {
     return {
       kind: EventKind.TextNote,
-      note: event.note,
+      content: event.content,
       ...common,
     }
   } else {
