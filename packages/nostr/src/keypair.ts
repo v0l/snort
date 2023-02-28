@@ -9,7 +9,7 @@ export class PublicKey {
   #hex: string
 
   /**
-   * Expects the key encoded as an npub1-prefixed bech32 string, hex string, or byte buffer.
+   * Expects the key encoded as an npub-prefixed bech32 string, hex string, or byte buffer.
    */
   constructor(key: string | Uint8Array) {
     this.#hex = parseKey(key, "npub1")
@@ -30,7 +30,7 @@ export class PrivateKey {
   #hex: string
 
   /**
-   * Expects the key encoded as an nsec1-prefixed bech32 string, hex string, or byte buffer.
+   * Expects the key encoded as an nsec-prefixed bech32 string, hex string, or byte buffer.
    */
   constructor(key: string | Uint8Array) {
     this.#hex = parseKey(key, "nsec1")
