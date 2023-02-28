@@ -255,12 +255,10 @@ export default function NoteFooter(props: NoteFooterProps) {
             <div className="close-menu" />
           </MenuItem>
         </div>
-        {prefs.enableReactions && (
-          <MenuItem onClick={() => setShowReactions(true)}>
-            <Heart />
-            <FormattedMessage {...messages.Reactions} />
-          </MenuItem>
-        )}
+        <MenuItem onClick={() => setShowReactions(true)}>
+          <Heart />
+          <FormattedMessage {...messages.Reactions} />
+        </MenuItem>
         <MenuItem onClick={() => share()}>
           <Share />
           <FormattedMessage {...messages.Share} />
