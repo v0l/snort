@@ -229,3 +229,9 @@ export function splitByUrl(str: string) {
 
   return str.split(urlRegex);
 }
+
+export const delay = (t: number) => {
+  return new Promise(resolve => {
+    setTimeout(resolve, t);
+  });
+};

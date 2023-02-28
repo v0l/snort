@@ -5,7 +5,7 @@ import { TaggedRawEvent } from "@snort/nostr";
 import { EventKind, Tag, Event as NEvent, RelaySettings } from "@snort/nostr";
 import { RootState } from "State/Store";
 import { HexKey, RawEvent, u256, UserMetadata, Lists } from "@snort/nostr";
-import { bech32ToHex, unwrap } from "Util";
+import { bech32ToHex, delay, unwrap } from "Util";
 import { DefaultRelays, HashtagRegex } from "Const";
 import { System } from "System";
 
@@ -397,12 +397,6 @@ export default function useEventPublisher() {
 }
 
 let isNip07Busy = false;
-
-const delay = (t: number) => {
-  return new Promise(resolve => {
-    setTimeout(resolve, t);
-  });
-};
 
 export const barrierNip07 = async <T>(then: () => Promise<T>): Promise<T> => {
   while (isNip07Busy) {
