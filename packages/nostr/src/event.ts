@@ -197,50 +197,31 @@ function parseEvent(raw: RawEvent): Event {
     pubkey,
     createdAt,
   }
-  return (
-    parseSetMetadataEvent(raw, event) ??
-    parseTextNodeEvent(raw, event) ??
-    parseUnknownEvent(raw, event)
-  )
-}
 
-function parseSetMetadataEvent(
-  raw: RawEvent,
-  event: EventCommon
-): SetMetadataEvent | undefined {
-  if (raw.kind !== EventKind.SetMetadata) {
-    return undefined
+  if (raw.kind === EventKind.SetMetadata) {
+    const userMetadata = parseJson(raw.content)
+    if (
+      typeof userMetadata["name"] !== "string" ||
+      typeof userMetadata["about"] !== "string" ||
+      typeof userMetadata["picture"] !== "string"
+    ) {
+      throw new ProtocolError(`invalid user metadata: ${userMetadata}`)
+    }
+    return {
+      ...event,
+      kind: EventKind.SetMetadata,
+      userMetadata,
+    }
   }
-  const userMetadata = parseJson(raw.content)
-  if (
-    typeof userMetadata["name"] !== "string" ||
-    typeof userMetadata["about"] !== "string" ||
-    typeof userMetadata["picture"] !== "string"
-  ) {
-    throw new ProtocolError(`invalid user metadata: ${userMetadata}`)
-  }
-  return {
-    ...event,
-    kind: EventKind.SetMetadata,
-    userMetadata,
-  }
-}
 
-function parseTextNodeEvent(
-  raw: RawEvent,
-  event: EventCommon
-): TextNoteEvent | undefined {
-  if (raw.kind !== EventKind.TextNote) {
-    return undefined
+  if (raw.kind === EventKind.TextNote) {
+    return {
+      ...event,
+      kind: EventKind.TextNote,
+      note: raw.content,
+    }
   }
-  return {
-    ...event,
-    kind: EventKind.TextNote,
-    note: raw.content,
-  }
-}
 
-function parseUnknownEvent(raw: RawEvent, event: EventCommon): UnknownEvent {
   return {
     ...event,
     kind: raw.kind,
