@@ -18,8 +18,6 @@ const getMessages = (locale: string) => {
   const truncatedLocale = locale.toLowerCase().split(/[_-]+/)[0];
 
   switch (truncatedLocale) {
-    case "en":
-      return enMessages;
     case "es":
       return esMessages;
     case "zh":
