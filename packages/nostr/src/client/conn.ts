@@ -178,10 +178,10 @@ async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
   if (!(json instanceof Array)) {
     throw new ProtocolError(`incoming message is not an array: ${data}`)
   }
-  if (json.length === 3) {
-    if (json[0] !== "EVENT") {
-      throw new ProtocolError(`expected "EVENT" message, but got: ${data}`)
-    }
+  if (json.length === 0) {
+    throw new ProtocolError(`incoming message is an empty array: ${data}`)
+  }
+  if (json[0] === "EVENT") {
     if (typeof json[1] !== "string") {
       throw new ProtocolError(
         `second element of "EVENT" should be a string, but wasn't: ${data}`
@@ -199,10 +199,8 @@ async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
       signed: await SignedEvent.verify(raw),
       raw,
     }
-  } else if (json.length === 2) {
-    if (json[0] !== "NOTICE") {
-      throw new ProtocolError(`expected "NOTICE" message, but got: ${data}`)
-    }
+  }
+  if (json[0] === "NOTICE") {
     if (typeof json[1] !== "string") {
       throw new ProtocolError(
         `second element of "NOTICE" should be a string, but wasn't: ${data}`
@@ -212,11 +210,8 @@ async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
       kind: IncomingKind.Notice,
       notice: json[1],
     }
-  } else {
-    throw new ProtocolError(
-      `incoming message has unexpected number of elements: ${data}`
-    )
   }
+  throw new ProtocolError(`unknown incoming message: ${data}`)
 }
 
 function serializeOutgoingMessage(msg: OutgoingMessage): string {
