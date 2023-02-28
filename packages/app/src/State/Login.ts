@@ -255,6 +255,14 @@ export interface SetFollowsPayload {
   createdAt: number;
 }
 
+export const ReadPreferences = () => {
+  const pref = window.localStorage.getItem(UserPreferencesKey);
+  if (pref) {
+    return JSON.parse(pref) as UserPreferences;
+  }
+  return InitState.preferences;
+};
+
 const LoginSlice = createSlice({
   name: "Login",
   initialState: InitState,
@@ -296,10 +304,8 @@ const LoginSlice = createSlice({
       }
 
       // preferences
-      const pref = window.localStorage.getItem(UserPreferencesKey);
-      if (pref) {
-        state.preferences = JSON.parse(pref);
-      }
+      const pref = ReadPreferences();
+      state.preferences = pref;
 
       // disable reactions for logged out
       if (state.loggedOut === true) {

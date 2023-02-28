@@ -1,9 +1,7 @@
 import { type ReactNode } from "react";
-import { useSelector } from "react-redux";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
 
-import { RootState } from "State/Store";
-
+import { ReadPreferences } from "State/Login";
 import enMessages from "translations/en.json";
 import esMessages from "translations/es.json";
 import zhMessages from "translations/zh.json";
@@ -44,8 +42,8 @@ const getMessages = (locale: string) => {
 };
 
 export const IntlProvider = ({ children }: { children: ReactNode }) => {
-  const lang = useSelector((s: RootState) => s.login.preferences.language);
-  const locale = lang ?? getLocale();
+  const { language } = ReadPreferences();
+  const locale = language ?? getLocale();
 
   return (
     <ReactIntlProvider locale={locale} messages={getMessages(locale)}>
