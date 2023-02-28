@@ -202,18 +202,42 @@ export class Nostr {
   /**
    * Publish an event.
    */
-  async publish(event: Event, key: PrivateKey): Promise<void> {
-    if (event.pubkey.toString() !== key.pubkey.toString()) {
-      throw new Error("invalid private key")
+  async publish(event: SignedEvent): Promise<void>
+  async publish(event: RawEvent): Promise<void>
+  // TODO This will need to change when I add NIP-44 AUTH support - the key should be optional
+  async publish(event: Event, key: PrivateKey): Promise<void>
+  async publish(
+    event: SignedEvent | RawEvent | Event,
+    key?: PrivateKey
+  ): Promise<void> {
+    // Validate the parameters.
+    if (event instanceof SignedEvent || "sig" in event) {
+      if (key !== undefined) {
+        throw new Error(
+          "when calling publish with a SignedEvent, private key should not be specified"
+        )
+      }
+    } else {
+      if (key === undefined) {
+        throw new Error(
+          "publish called with an unsigned Event, private key must be specified"
+        )
+      }
+      if (event.pubkey.toString() !== key.pubkey.toString()) {
+        throw new Error("invalid private key")
+      }
     }
+
     for (const { conn, write } of this.#conns.values()) {
       if (!write) {
         continue
       }
-      const signed = await SignedEvent.sign(event, key)
+      if (!(event instanceof SignedEvent) && !("sig" in event)) {
+        event = await SignedEvent.sign(event, key)
+      }
       conn.send({
         kind: OutgoingKind.Event,
-        signed: signed,
+        event,
       })
     }
   }

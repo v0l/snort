@@ -139,7 +139,7 @@ export const enum OutgoingKind {
  */
 export interface OutgoingEvent {
   kind: OutgoingKind.Event
-  signed: SignedEvent
+  event: SignedEvent | RawEvent
 }
 
 /**
@@ -221,7 +221,9 @@ async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
 
 function serializeOutgoingMessage(msg: OutgoingMessage): string {
   if (msg.kind === OutgoingKind.Event) {
-    return JSON.stringify(["EVENT", msg.signed.serialize()])
+    const raw =
+      msg.event instanceof SignedEvent ? msg.event.serialize() : msg.event
+    return JSON.stringify(["EVENT", raw])
   } else if (msg.kind === OutgoingKind.Subscription) {
     return JSON.stringify([
       "REQ",
