@@ -33,6 +33,8 @@ export default function MessagesPage() {
     );
   }, [dms, myPubKey, dmInteraction]);
 
+  const unreadCount = useMemo(() => chats.reduce((p, c) => p + c.unreadMessages, 0), [chats]);
+
   function noteToSelf(chat: DmChat) {
     return (
       <div className="flex mb10" key={chat.pubkey}>
@@ -69,7 +71,7 @@ export default function MessagesPage() {
         <h3 className="f-grow">
           <FormattedMessage {...messages.Messages} />
         </h3>
-        <button type="button" onClick={() => markAllRead()}>
+        <button disabled={unreadCount <= 0} type="button" onClick={() => markAllRead()}>
           <FormattedMessage {...messages.MarkAllRead} />
         </button>
       </div>
