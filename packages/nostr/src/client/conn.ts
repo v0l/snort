@@ -130,8 +130,8 @@ export type OutgoingMessage =
 
 export const enum OutgoingKind {
   Event,
-  Subscription,
-  Unsubscription,
+  OpenSubscription,
+  CloseSubscription,
 }
 
 /**
@@ -146,7 +146,7 @@ export interface OutgoingEvent {
  * Outgoing "REQ" message, which opens a subscription.
  */
 export interface OutgoingOpenSubscription {
-  kind: OutgoingKind.Subscription
+  kind: OutgoingKind.OpenSubscription
   id: SubscriptionId
   filters: Filters[]
 }
@@ -155,7 +155,7 @@ export interface OutgoingOpenSubscription {
  * Outgoing "CLOSE" message, which closes a subscription.
  */
 export interface OutgoingCloseSubscription {
-  kind: OutgoingKind.Unsubscription
+  kind: OutgoingKind.CloseSubscription
   id: SubscriptionId
 }
 
@@ -219,13 +219,13 @@ function serializeOutgoingMessage(msg: OutgoingMessage): string {
     const raw =
       msg.event instanceof SignedEvent ? msg.event.serialize() : msg.event
     return JSON.stringify(["EVENT", raw])
-  } else if (msg.kind === OutgoingKind.Subscription) {
+  } else if (msg.kind === OutgoingKind.OpenSubscription) {
     return JSON.stringify([
       "REQ",
       msg.id.toString(),
       ...serializeFilters(msg.filters),
     ])
-  } else if (msg.kind === OutgoingKind.Unsubscription) {
+  } else if (msg.kind === OutgoingKind.CloseSubscription) {
     return JSON.stringify(["CLOSE", msg.id.toString()])
   } else {
     throw new Error(`invalid message: ${JSON.stringify(msg)}`)

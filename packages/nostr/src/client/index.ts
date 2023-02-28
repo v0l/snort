@@ -107,7 +107,7 @@ export class Nostr {
     for (const [key, filters] of this.#subscriptions.entries()) {
       const subscriptionId = new SubscriptionId(key)
       conn.send({
-        kind: OutgoingKind.Subscription,
+        kind: OutgoingKind.OpenSubscription,
         id: subscriptionId,
         filters,
       })
@@ -171,7 +171,7 @@ export class Nostr {
         continue
       }
       conn.send({
-        kind: OutgoingKind.Subscription,
+        kind: OutgoingKind.OpenSubscription,
         id: subscriptionId,
         filters,
       })
@@ -193,7 +193,7 @@ export class Nostr {
         continue
       }
       conn.send({
-        kind: OutgoingKind.Unsubscription,
+        kind: OutgoingKind.CloseSubscription,
         id: subscriptionId,
       })
     }
