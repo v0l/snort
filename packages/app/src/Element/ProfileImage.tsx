@@ -63,7 +63,7 @@ export default function ProfileImage({
         <div className="profile-name">
           <div className="username">
             <Link className="display-name" key={pubkey} to={link ?? profileLink(pubkey)}>
-              <div>{name}</div>
+              <div>{name.trim()}</div>
               {nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
             </Link>
           </div>
