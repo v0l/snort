@@ -17,7 +17,7 @@ export class Nostr {
   /**
    * Mapping of subscription IDs to corresponding filters.
    */
-  readonly #subscriptions: Map<string, Filters> = new Map()
+  readonly #subscriptions: Map<string, Filters[]> = new Map()
 
   #eventCallback?: EventCallback
   #noticeCallback?: NoticeCallback
@@ -162,7 +162,7 @@ export class Nostr {
    * @returns The subscription ID.
    */
   subscribe(
-    filters: Filters = {},
+    filters: Filters[],
     subscriptionId: SubscriptionId = SubscriptionId.random()
   ): SubscriptionId {
     this.#subscriptions.set(subscriptionId.toString(), filters)

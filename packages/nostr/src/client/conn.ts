@@ -148,7 +148,7 @@ export interface OutgoingEvent {
 export interface OutgoingOpenSubscription {
   kind: OutgoingKind.Subscription
   id: SubscriptionId
-  filters: Filters
+  filters: Filters[]
 }
 
 /**
@@ -226,7 +226,7 @@ function serializeOutgoingMessage(msg: OutgoingMessage): string {
     return JSON.stringify([
       "REQ",
       msg.id.toString(),
-      serializeFilters(msg.filters),
+      ...serializeFilters(msg.filters),
     ])
   } else if (msg.kind === OutgoingKind.Unsubscription) {
     return JSON.stringify(["CLOSE", msg.id.toString()])
@@ -235,19 +235,20 @@ function serializeOutgoingMessage(msg: OutgoingMessage): string {
   }
 }
 
-function serializeFilters(filters: Filters): RawFilters {
-  return {
-    ids: filters.ids?.map((id) => id.toString()),
-    authors: filters.authors?.map((author) => author.toString()),
-    kinds: filters.kinds?.map((kind) => kind),
-    ["#e"]: filters.eventTags?.map((e) => e.toString()),
-    ["#p"]: filters.pubkeyTags?.map((p) => p.toString()),
-    since:
-      filters.since !== undefined ? unixTimestamp(filters.since) : undefined,
-    until:
-      filters.until !== undefined ? unixTimestamp(filters.until) : undefined,
-    limit: filters.limit,
+function serializeFilters(filters: Filters[]): RawFilters[] {
+  if (filters.length === 0) {
+    return [{}]
   }
+  return filters.map((filter) => ({
+    ids: filter.ids?.map((id) => id.toString()),
+    authors: filter.authors?.map((author) => author.toString()),
+    kinds: filter.kinds?.map((kind) => kind),
+    ["#e"]: filter.eventTags?.map((e) => e.toString()),
+    ["#p"]: filter.pubkeyTags?.map((p) => p.toString()),
+    since: filter.since !== undefined ? unixTimestamp(filter.since) : undefined,
+    until: filter.until !== undefined ? unixTimestamp(filter.until) : undefined,
+    limit: filter.limit,
+  }))
 }
 
 function parseEventData(json: object): RawEvent {

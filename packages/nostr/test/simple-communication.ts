@@ -40,7 +40,7 @@ describe("single event communication", function () {
       done()
     })
 
-    subscriber.subscribe()
+    subscriber.subscribe([])
 
     publisher.publish(
       {
