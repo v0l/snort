@@ -447,7 +447,7 @@ const LoginSlice = createSlice({
     },
     logout: state => {
       const relays = { ...state.relays };
-      Object.assign(state, InitState);
+      state = Object.assign(state, InitState);
       state.loggedOut = true;
       window.localStorage.clear();
       state.relays = relays;

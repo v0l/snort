@@ -18,7 +18,7 @@ const SettingsIndex = () => {
 
   function handleLogout() {
     dispatch(logout());
-    navigate("/");
+    window.location.href = "/";
   }
 
   return (
