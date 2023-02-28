@@ -25,6 +25,7 @@ const Translators = [
   bech32ToHex("npub1s8zws5frm94esxnp9v6zf7vk60m3hum3305n78sr73t78kleus7q8zpwna"), // middlingphys - JA
   bech32ToHex("npub1z0ykz6lp3y8rjjntenns0ee02062g2f0n55u49w44xdemw35vcpsda5jhh"), // noraglyphs - JA
   bech32ToHex("npub13wa880se2h3l54k7x76edrkrt4p94sh4q090974mt0z6n09qtntqxp47uk"), // numpad0 - JA
+  bech32ToHex("npub147ccm75um0zkn0lr9fg9wrag2g6yxfw234fpmhdwuvaqjyegrhgs46t2td"), // ROBO358 - JA
 
   bech32ToHex("npub1ww8kjxz2akn82qptdpl7glywnchhkx3x04hez3d3rye397turrhssenvtp"), // Zoltan - HU
 
@@ -33,6 +34,8 @@ const Translators = [
   bech32ToHex("npub1xwm9svxrlymymph0hka40zw9frg98m6adxmzcq26jhtm5gwlhjrshhgzfd"), // meitsjustme - ZH
 
   bech32ToHex("npub13tkge7eqeem5cz8gk7gdju76nytvvf064hm5mzmv3x26k2uvaxfqczet2j"), // Mendace - IT
+
+  bech32ToHex("npub10529hxckjm5t5mchss5lnpsqrmavulglxhrmu5quuu4hs6yuyh3qc9gxd5"), // aadbitcoin - ID
 ];
 
 interface Splits {
