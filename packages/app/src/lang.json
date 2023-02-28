@@ -631,6 +631,9 @@
   "lnaT9F": {
     "defaultMessage": "Following {n}"
   },
+  "lsNFM1": {
+    "defaultMessage": "Click to load content from {link}"
+  },
   "lvlPhZ": {
     "defaultMessage": "Pay Invoice"
   },

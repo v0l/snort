@@ -1,7 +1,9 @@
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { TwitterTweetEmbed } from "react-twitter-embed";
+import { FormattedMessage } from "react-intl";
 
+import { HexKey } from "@snort/nostr";
 import {
   FileExtensionRegex,
   YoutubeUrlRegex,
@@ -19,9 +21,8 @@ import MixCloudEmbed from "Element/MixCloudEmbed";
 import SpotifyEmbed from "Element/SpotifyEmbed";
 import TidalEmbed from "Element/TidalEmbed";
 import { ProxyImg } from "Element/ProxyImg";
-import { HexKey } from "@snort/nostr";
-import TwitchEmbed from "./TwitchEmbed";
-import AppleMusicEmbed from "./AppleMusicEmbed";
+import TwitchEmbed from "Element/TwitchEmbed";
+import AppleMusicEmbed from "Element/AppleMusicEmbed";
 
 export default function HyperText({ link, creator }: { link: string; creator: HexKey }) {
   const pref = useSelector((s: RootState) => s.login.preferences);
@@ -44,7 +45,7 @@ export default function HyperText({ link, creator }: { link: string; creator: He
               setReveal(true);
             }}
             className="note-invoice">
-            Click to load content from {hostname}
+            <FormattedMessage defaultMessage="Click to load content from {link}" values={{ link: hostname }} />
           </div>
         );
       } else {
