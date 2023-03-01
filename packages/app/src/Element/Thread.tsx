@@ -261,8 +261,6 @@ export interface ThreadProps {
 export default function Thread(props: ThreadProps) {
   const notes = props.notes ?? [];
   const parsedNotes = notes.map(a => new NEvent(a));
-  // root note has no thread info
-  const root = useMemo(() => parsedNotes.find(a => a.Thread === null), [notes]);
   const [path, setPath] = useState<HexKey[]>([]);
   const currentId = path.length > 0 && path[path.length - 1];
   const currentRoot = useMemo(() => parsedNotes.find(a => a.Id === currentId), [notes, currentId]);
@@ -273,6 +271,13 @@ export default function Thread(props: ThreadProps) {
   const { formatMessage } = useIntl();
   const urlNoteId = location?.pathname.slice(3);
   const urlNoteHex = urlNoteId && bech32ToHex(urlNoteId);
+  const root = useMemo(() => {
+    const currentNote = parsedNotes.find(a => a.Id === urlNoteHex);
+    const rootEventId = currentNote?.Thread?.Root?.Event;
+
+    // If it has no root event, then the current note is the root
+    return rootEventId ? parsedNotes.find(a => a.Id === rootEventId) : currentNote;
+  }, [notes, urlNoteHex]);
 
   const chains = useMemo(() => {
     const chains = new Map<u256, NEvent[]>();
@@ -370,7 +375,7 @@ export default function Thread(props: ThreadProps) {
       const newPath = path.slice(0, path.length - 1);
       setPath(newPath);
     } else {
-      navigate("/");
+      navigate(location.state?.from ?? "/");
     }
   }
 

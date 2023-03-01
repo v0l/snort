@@ -1,6 +1,6 @@
 import "./Text.css";
 import { useMemo, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { visit, SKIP } from "unist-util-visit";
 
@@ -29,6 +29,8 @@ export interface TextProps {
 }
 
 export default function Text({ content, tags, creator }: TextProps) {
+  const location = useLocation();
+
   function extractLinks(fragments: Fragment[]) {
     return fragments
       .map(f => {
@@ -62,7 +64,10 @@ export default function Text({ content, tags, creator }: TextProps) {
                   case "e": {
                     const eText = hexToBech32("note", ref.Event).substring(0, 12);
                     return (
-                      <Link to={eventLink(ref.Event ?? "")} onClick={e => e.stopPropagation()}>
+                      <Link
+                        to={eventLink(ref.Event ?? "")}
+                        onClick={e => e.stopPropagation()}
+                        state={{ from: location.pathname }}>
                         #{eText}
                       </Link>
                     );
