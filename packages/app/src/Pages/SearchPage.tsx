@@ -53,7 +53,6 @@ const SearchPage = () => {
     };
   }, []);
 
-
   function tabContent() {
     if (!keyword) return null;
     const pf = tab.value == PROFILES;

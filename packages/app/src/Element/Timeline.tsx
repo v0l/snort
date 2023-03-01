@@ -56,7 +56,8 @@ export default function Timeline({
     (nts: TaggedRawEvent[]) => {
       const a = [...nts];
       noSort || a.sort((a, b) => b.created_at - a.created_at);
-      return a?.filter(a => (postsOnly ? !a.tags.some(b => b[0] === "e") : true))
+      return a
+        ?.filter(a => (postsOnly ? !a.tags.some(b => b[0] === "e") : true))
         .filter(a => ignoreModeration || !isMuted(a.pubkey));
     },
     [postsOnly, noSort, muted, ignoreModeration]
