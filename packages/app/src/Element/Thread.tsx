@@ -274,7 +274,7 @@ export default function Thread(props: ThreadProps) {
     const currentNote = parsedNotes.find(a => a.Id === urlNoteHex);
     const rootEventId = currentNote?.Thread?.Root?.Event;
 
-    // If it has no root event, then the current note is the root
+    // If the current note has no root event, then the current note is the root event
     return rootEventId ? parsedNotes.find(a => a.Id === rootEventId) : currentNote;
   }, [notes, urlNoteHex]);
 
