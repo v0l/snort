@@ -25,6 +25,7 @@ export interface TimelineProps {
   relay?: string;
   now?: number;
   loadMore?: boolean;
+  noSort?: boolean;
 }
 
 /**
@@ -46,8 +47,9 @@ const Timeline = (props: TimelineProps) => {
 
   const filterPosts = useCallback(
     (nts: readonly TaggedRawEvent[]) => {
-      return [...nts]
-        .sort((a, b) => b.created_at - a.created_at)
+      const a = [...nts];
+      props.noSort || a.sort((a, b) => b.created_at - a.created_at);
+      return a
         ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
         .filter(a => props.ignoreModeration || !isMuted(a.pubkey));
     },

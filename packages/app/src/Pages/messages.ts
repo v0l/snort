@@ -46,4 +46,6 @@ export default defineMessages({
   },
   Bookmarks: { defaultMessage: "Bookmarks" },
   BookmarksCount: { defaultMessage: "{n} Bookmarks" },
+  KeyPlaceholder: { defaultMessage: "nsec, npub, nip-05, hex" },
+  People: { defaultMessage: "People" },
 });

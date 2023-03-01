@@ -15,7 +15,7 @@ export interface TimelineFeedOptions {
 }
 
 export interface TimelineSubject {
-  type: "pubkey" | "hashtag" | "global" | "ptag" | "keyword";
+  type: "pubkey" | "hashtag" | "global" | "ptag" | "post_keyword" | "profile_keyword";
   discriminator: string;
   items: string[];
 }
@@ -37,7 +37,13 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     }
 
     const b = new RequestBuilder(`timeline:${subject.type}:${subject.discriminator}`);
-    const f = b.withFilter().kinds([EventKind.TextNote, EventKind.Repost, EventKind.Polls]);
+    const f = b
+      .withFilter()
+      .kinds(
+        subject.type === "profile_keyword"
+          ? [EventKind.SetMetadata]
+          : [EventKind.TextNote, EventKind.Repost, EventKind.Polls]
+      );
 
     if (options.relay) {
       b.withOptions({
@@ -58,7 +64,11 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         f.tag("p", subject.items);
         break;
       }
-      case "keyword": {
+      case "profile_keyword": {
+        f.search(subject.items[0] + " sort:popular");
+        break;
+      }
+      case "post_keyword": {
         f.search(subject.items[0]);
         break;
       }
@@ -105,7 +115,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
   const subRealtime = useMemo(() => {
     const rb = createBuilder();
-    if (rb && !pref.autoShowLatest) {
+    if (rb && !pref.autoShowLatest && options.method !== "LIMIT_UNTIL") {
       rb.builder.withOptions({
         leaveOpen: true,
       });
