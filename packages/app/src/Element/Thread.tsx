@@ -254,7 +254,6 @@ const TierThree = ({ active, path, isLastSubthread, from, notes, related, chains
 };
 
 export interface ThreadProps {
-  this?: u256;
   notes?: TaggedRawEvent[];
 }
 

@@ -8,5 +8,5 @@ export default function EventPage() {
   const id = parseId(params.id ?? "");
   const thread = useThreadFeed(id);
 
-  return <Thread key={id} notes={thread.notes} this={id} />;
+  return <Thread key={id} notes={thread.notes} />;
 }
