@@ -14,7 +14,7 @@ export interface TimelineFeedOptions {
 }
 
 export interface TimelineSubject {
-  type: "pubkey" | "hashtag" | "global" | "ptag" | "keyword";
+  type: "pubkey" | "hashtag" | "global" | "ptag" | "post_keyword" | "profile_keyword";
   discriminator: string;
   items: string[];
 }
@@ -35,7 +35,10 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
     const sub = new Subscriptions();
     sub.Id = `timeline:${subject.type}:${subject.discriminator}`;
-    sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
+    if (subject.type === "profile_keyword")
+      sub.Kinds = new Set([EventKind.SetMetadata]);
+    else
+      sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
     switch (subject.type) {
       case "pubkey": {
         sub.Authors = new Set(subject.items);
@@ -49,8 +52,11 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         sub.PTags = new Set(subject.items);
         break;
       }
-      case "keyword": {
-        sub.Kinds.add(EventKind.SetMetadata);
+      case "profile_keyword": {
+        sub.Search = subject.items[0] + " sort:popular";
+        break;
+      }
+      case "post_keyword": {
         sub.Search = subject.items[0];
         break;
       }
@@ -63,7 +69,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     if (sub) {
       if (options.method === "LIMIT_UNTIL") {
         sub.Until = until;
-        sub.Limit = 10;
+        sub.Limit = subject.type === "profile_keyword" ? 100 : 10;
       } else {
         sub.Since = since;
         sub.Until = until;
@@ -87,19 +93,19 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       }
     }
     return sub;
-  }, [until, since, options.method, pref, createSub]);
+  }, [until, since, options.method, pref, createSub, subject.type]);
 
   const main = useSubscription(sub, { leaveOpen: true, cache: subject.type !== "global", relay: options.relay });
 
   const subRealtime = useMemo(() => {
     const subLatest = createSub();
-    if (subLatest && !pref.autoShowLatest) {
+    if (subLatest && !pref.autoShowLatest && subject.type != "profile_keyword") {
       subLatest.Id = `${subLatest.Id}:latest`;
       subLatest.Limit = 1;
       subLatest.Since = Math.floor(new Date().getTime() / 1000);
     }
     return subLatest;
-  }, [pref, createSub]);
+  }, [pref, createSub, subject.type]);
 
   const latest = useSubscription(subRealtime, {
     leaveOpen: true,

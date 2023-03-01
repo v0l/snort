@@ -1,22 +1,31 @@
 import { useIntl, FormattedMessage } from "react-intl";
 import { useParams } from "react-router-dom";
-import ProfilePreview from "Element/ProfilePreview";
 import Timeline from "Element/Timeline";
+import { Tab, TabElement } from "Element/Tabs";
 import { useEffect, useState } from "react";
 import { debounce } from "Util";
 import { router } from "index";
 import { SearchRelays } from "Const";
 import { System } from "System";
-import { useQuery } from "State/Users/Hooks";
 
 import messages from "./messages";
+import useHorizontalScroll from "Hooks/useHorizontalScroll";
+
+const POSTS = 0;
+const PROFILES = 1;
 
 const SearchPage = () => {
   const params = useParams();
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string>();
   const [keyword, setKeyword] = useState<string | undefined>(params.keyword);
-  const allUsers = useQuery(keyword || "");
+  // tabs
+  const SearchTab = {
+    Posts: { text: formatMessage(messages.Posts), value: POSTS },
+    Profiles: { text: formatMessage(messages.People), value: PROFILES },
+  };
+  const [tab, setTab] = useState<Tab>(SearchTab.Posts);
+  const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
     if (keyword) {
@@ -44,6 +53,31 @@ const SearchPage = () => {
     };
   }, []);
 
+
+  function tabContent() {
+    if (!keyword) return null;
+    const pf = tab.value == PROFILES;
+    return (
+      <>
+        <Timeline
+          key={keyword + (pf ? "_p" : "")}
+          subject={{
+            type: pf ? "profile_keyword" : "post_keyword",
+            items: [keyword],
+            discriminator: keyword,
+          }}
+          postsOnly={false}
+          noSort={pf}
+          method={"LIMIT_UNTIL"}
+        />
+      </>
+    );
+  }
+
+  function renderTab(v: Tab) {
+    return <TabElement key={v.value} t={v} tab={tab} setTab={setTab} />;
+  }
+
   return (
     <div className="main-content">
       <h2>
@@ -59,19 +93,10 @@ const SearchPage = () => {
           autoFocus={true}
         />
       </div>
-      {keyword && allUsers?.slice(0, 3).map(u => <ProfilePreview actions={<></>} className="card" pubkey={u.pubkey} />)}
-      {keyword && (
-        <Timeline
-          key={keyword}
-          subject={{
-            type: "keyword",
-            items: [keyword],
-            discriminator: keyword,
-          }}
-          postsOnly={false}
-          method={"TIME_RANGE"}
-        />
-      )}
+      <div className="tabs" ref={horizontalScroll}>
+        {[SearchTab.Posts, SearchTab.Profiles].map(renderTab)}
+      </div>
+      {tabContent()}
     </div>
   );
 };

@@ -27,6 +27,7 @@ export interface TimelineProps {
   ignoreModeration?: boolean;
   window?: number;
   relay?: string;
+  noSort?: boolean;
 }
 
 /**
@@ -39,6 +40,7 @@ export default function Timeline({
   ignoreModeration = false,
   window: timeWindow,
   relay,
+  noSort = false,
 }: TimelineProps) {
   const { muted, isMuted } = useModeration();
   const dispatch = useDispatch();
@@ -52,12 +54,12 @@ export default function Timeline({
 
   const filterPosts = useCallback(
     (nts: TaggedRawEvent[]) => {
-      return [...nts]
-        .sort((a, b) => b.created_at - a.created_at)
-        ?.filter(a => (postsOnly ? !a.tags.some(b => b[0] === "e") : true))
+      const a = [...nts];
+      noSort || a.sort((a, b) => b.created_at - a.created_at);
+      return a?.filter(a => (postsOnly ? !a.tags.some(b => b[0] === "e") : true))
         .filter(a => ignoreModeration || !isMuted(a.pubkey));
     },
-    [postsOnly, muted, ignoreModeration]
+    [postsOnly, noSort, muted, ignoreModeration]
   );
 
   const mainFeed = useMemo(() => {
