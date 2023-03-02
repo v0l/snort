@@ -304,7 +304,7 @@ export default function Thread(props: ThreadProps) {
 
     // sometimes the root event ID is missing, and we can only take the happy path if the root event ID exists
     if (rootEventId) {
-      parsedNotes.find(a => a.Id === rootEventId);
+      return parsedNotes.find(a => a.Id === rootEventId);
     }
 
     // worst case we need to search for the root ID in the chains Map
