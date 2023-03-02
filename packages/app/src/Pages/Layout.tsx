@@ -236,7 +236,7 @@ export default function Layout() {
       {!shouldHideNoteCreator && (
         <>
           <button className="note-create-button" type="button" onClick={() => setShow(!show)}>
-            <Icon name="plus" />
+            <Icon name="plus" size={16} />
           </button>
           <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
         </>
