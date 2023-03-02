@@ -535,6 +535,10 @@ body.scroll-lock {
   font-weight: 700;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .main-content h2 {
   font-weight: 600;
   font-size: 32px;

@@ -131,14 +131,18 @@ export class LNCWallet implements LNWallet {
       reversed: true,
     });
 
+    console.debug(invoices);
     return invoices.payments.map(a => {
       const parsedInvoice = prToWalletInvoice(a.paymentRequest);
+      if (!parsedInvoice) {
+        throw new WalletError(WalletErrorCode.InvalidInvoice, `Could not parse ${a.paymentRequest}`);
+      }
       return {
         ...parsedInvoice,
         state: (() => {
           switch (a.status) {
             case Payment_PaymentStatus.SUCCEEDED:
-              return;
+              return WalletInvoiceState.Paid;
             case Payment_PaymentStatus.FAILED:
               return WalletInvoiceState.Failed;
             default:

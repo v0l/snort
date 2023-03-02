@@ -18,7 +18,7 @@ const defaultHeaders = {
 
 export default class LNDHubWallet implements LNWallet {
   type: "lndhub" | "snort";
-  url: string;
+  url: URL;
   user: string;
   password: string;
   auth?: AuthResponse;
@@ -32,13 +32,13 @@ export default class LNDHubWallet implements LNWallet {
       if (!parsedUrl || parsedUrl.length !== 4) {
         throw new Error("Invalid LNDHUB config");
       }
-      this.url = new URL(parsedUrl[3]).toString();
+      this.url = new URL(parsedUrl[3]);
       this.user = parsedUrl[1];
       this.password = parsedUrl[2];
       this.type = "lndhub";
     } else if (url.startsWith("snort://")) {
       const u = new URL(url);
-      this.url = `https://${u.host}${u.pathname}`;
+      this.url = new URL(`https://${u.host}${u.pathname}`);
       this.user = "";
       this.password = "";
       this.type = "snort";
@@ -125,10 +125,11 @@ export default class LNDHubWallet implements LNWallet {
   private async getJson<T>(method: "GET" | "POST", path: string, body?: unknown): Promise<T> {
     let auth = `Bearer ${this.auth?.access_token}`;
     if (this.type === "snort") {
-      const ev = await this.publisher?.generic(`${new URL(this.url).pathname}${path}`, 30_000);
+      const ev = await this.publisher?.generic(`${this.url.pathname}${path}`, 30_000);
       auth = JSON.stringify(ev?.ToObject());
     }
-    const rsp = await fetch(`${this.url}${path}`, {
+    const url = `${this.url.pathname === "/" ? this.url.toString().slice(0, -1) : this.url.toString()}${path}`;
+    const rsp = await fetch(url, {
       method: method,
       body: body ? JSON.stringify(body) : undefined,
       headers: {

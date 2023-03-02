@@ -146,7 +146,7 @@ export default function WalletPage() {
               <div>{(a.memo ?? "").length === 0 ? <>&nbsp;</> : a.memo}</div>
             </div>
             <div
-              className={(() => {
+              className={`nowrap ${(() => {
                 switch (a.state) {
                   case WalletInvoiceState.Paid:
                     return "success";
@@ -157,7 +157,7 @@ export default function WalletPage() {
                   default:
                     return "pending";
                 }
-              })()}>
+              })()}`}>
               {stateIcon(a.state)}
               <FormattedMessage
                 defaultMessage="{amount} sats"
@@ -175,14 +175,14 @@ export default function WalletPage() {
   function walletBalance() {
     if (wallet instanceof WebLNWallet) return null;
     return (
-      <b>
+      <small>
         <FormattedMessage
           defaultMessage="Balance: {amount} sats"
           values={{
             amount: <FormattedNumber value={balance ?? 0} />,
           }}
         />
-      </b>
+      </small>
     );
   }
 
@@ -190,17 +190,16 @@ export default function WalletPage() {
     if (!wallet?.isReady()) return null;
     return (
       <>
-        <h3>{info?.alias}</h3>
-        {walletBalance()}
+        <div className="card">
+          <h3>{info?.alias}</h3>
+          {walletBalance()}
+        </div>
         {/*<div className="flex wallet-buttons">
           <AsyncButton onClick={createInvoice}>
             <FormattedMessage defaultMessage="Receive" description="Receive sats by generating LN invoice" />
           </AsyncButton>
         </div>*/}
         {walletHistory()}
-        <button onClick={() => Wallets.remove(unwrap(walletState.config).id)}>
-          <FormattedMessage defaultMessage="Delete Account" />
-        </button>
       </>
     );
   }
@@ -211,6 +210,10 @@ export default function WalletPage() {
       {walletList()}
       {unlockWallet()}
       {walletInfo()}
+
+      <button onClick={() => Wallets.remove(unwrap(walletState.config).id)}>
+        <FormattedMessage defaultMessage="Delete Account" />
+      </button>
     </div>
   );
 }
