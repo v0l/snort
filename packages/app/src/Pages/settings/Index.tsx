@@ -20,41 +20,29 @@ const SettingsIndex = () => {
     <>
       <div className="settings-nav">
         <div className="settings-row" onClick={() => navigate("profile")}>
-          <Icon name="profile" className="mr10" />
-          <span>
-            <FormattedMessage {...messages.Profile} />
-          </span>
-          <div className="align-end">
-            <Icon name="arrowFront" />
-          </div>
+          <Icon name="profile" />
+          <FormattedMessage {...messages.Profile} />
+          <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={() => navigate("relays")}>
-          <Icon name="relay" className="mr10" />
+          <Icon name="relay" />
           <FormattedMessage {...messages.Relays} />
-          <div className="align-end">
-            <Icon name="arrowFront" />
-          </div>
+          <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={() => navigate("preferences")}>
-          <Icon name="gear" className="mr10" />
+          <Icon name="gear" />
           <FormattedMessage {...messages.Preferences} />
-          <div className="align-end">
-            <Icon name="arrowFront" />
-          </div>
+          <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={() => navigate("/donate")}>
-          <Icon name="heart" className="mr10" />
+          <Icon name="heart" />
           <FormattedMessage {...messages.Donate} />
-          <div className="align-end">
-            <Icon name="arrowFront" />
-          </div>
+          <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={handleLogout}>
-          <Icon name="logout" className="mr10" />
+          <Icon name="logout" />
           <FormattedMessage {...messages.LogOut} />
-          <div className="align-end">
-            <Icon name="arrowFront" />
-          </div>
+          <Icon name="arrowFront" />
         </div>
       </div>
     </>
