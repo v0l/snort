@@ -1,6 +1,5 @@
 import Base from "events"
-import { Nostr, SubscriptionId } from "."
-import { RawEvent, SignedEvent } from "../event"
+import { EventParams, Nostr } from "."
 
 /**
  * Overrides providing better types for EventEmitter methods.
@@ -144,9 +143,3 @@ type Listener =
   | EventListener
   | NoticeListener
   | ErrorListener
-
-interface EventParams {
-  signed: SignedEvent
-  subscriptionId: SubscriptionId
-  raw: RawEvent
-}

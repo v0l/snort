@@ -295,3 +295,10 @@ export interface Filters {
   until?: Date
   limit?: number
 }
+
+// TODO Document this
+export interface EventParams {
+  signed: SignedEvent
+  subscriptionId: SubscriptionId
+  raw: RawEvent
+}

@@ -1,4 +1,4 @@
-import { Nostr } from "../src/client"
+import { EventParams, Nostr } from "../src/client"
 import { EventKind } from "../src/event"
 import { PrivateKey } from "../src/keypair"
 import assert from "assert"
@@ -20,7 +20,7 @@ describe("single event communication", function () {
     const subscriber = new Nostr()
     subscriber.open("ws://localhost:12648")
 
-    subscriber.on("event", ({ signed: { event } }) => {
+    function listener({ signed: { event } }: EventParams) {
       assert.equal(event.kind, EventKind.TextNote)
       assert.equal(event.pubkey.toString(), pubkey.toString())
       assert.equal(event.createdAt.toString(), timestamp.toString())
@@ -32,13 +32,15 @@ describe("single event communication", function () {
       // subscribe happen at the same time, the same event might end up being broadcast twice.
       // To prevent reacting to the same event and calling done() twice, remove the callback
       // for future events.
-      subscriber.on("event", null)
+      subscriber.off("event", listener)
 
       publisher.close()
       subscriber.close()
 
       done()
-    })
+    }
+
+    subscriber.on("event", listener)
 
     subscriber.subscribe([])
 
