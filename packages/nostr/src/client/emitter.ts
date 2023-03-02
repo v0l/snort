@@ -1,5 +1,6 @@
 import Base from "events"
-import { EventParams, Nostr } from "."
+import { Nostr, SubscriptionId } from "."
+import { EventId, RawEvent, SignedEvent } from "../event"
 
 /**
  * Overrides providing better types for EventEmitter methods.
@@ -11,6 +12,7 @@ export class EventEmitter extends Base {
     listener: RemoveListener
   ): this
   override addListener(eventName: "notice", listener: NoticeListener): this
+  override addListener(eventName: "ok", listener: OkListener): this
   override addListener(eventName: "error", listener: ErrorListener): this
   override addListener(eventName: "newListener", listener: ErrorListener): this
   override addListener(eventName: EventName, listener: Listener): this {
@@ -21,6 +23,7 @@ export class EventEmitter extends Base {
   override emit(eventName: "removeListener", listener: RemoveListener): boolean
   override emit(eventName: "event", params: EventParams, nostr: Nostr): boolean
   override emit(eventName: "notice", notice: string, nostr: Nostr): boolean
+  override emit(eventName: "ok", params: OkParams, nostr: Nostr): boolean
   override emit(eventName: "error", err: unknown, nostr: Nostr): boolean
   override emit(eventName: EventName, ...args: unknown[]): boolean {
     return super.emit(eventName, ...args)
@@ -34,6 +37,7 @@ export class EventEmitter extends Base {
   override listeners(eventName: "removeListener"): EventListener[]
   override listeners(eventName: "event"): EventListener[]
   override listeners(eventName: "notice"): NoticeListener[]
+  override listeners(eventName: "ok"): OkListener[]
   override listeners(eventName: "error"): ErrorListener[]
   override listeners(eventName: EventName): Listener[] {
     return super.listeners(eventName) as Listener[]
@@ -43,6 +47,7 @@ export class EventEmitter extends Base {
   override off(eventName: "removeListener", listener: RemoveListener): this
   override off(eventName: "event", listener: EventListener): this
   override off(eventName: "notice", listener: NoticeListener): this
+  override off(eventName: "ok", listener: OkListener): this
   override off(eventName: "error", listener: ErrorListener): this
   override off(eventName: EventName, listener: Listener): this {
     return super.off(eventName, listener)
@@ -52,6 +57,7 @@ export class EventEmitter extends Base {
   override on(eventName: "removeListener", listener: RemoveListener): this
   override on(eventName: "event", listener: EventListener): this
   override on(eventName: "notice", listener: NoticeListener): this
+  override on(eventName: "ok", listener: OkListener): this
   override on(eventName: "error", listener: ErrorListener): this
   override on(eventName: EventName, listener: Listener): this {
     return super.on(eventName, listener)
@@ -61,6 +67,7 @@ export class EventEmitter extends Base {
   override once(eventName: "removeListener", listener: RemoveListener): this
   override once(eventName: "event", listener: EventListener): this
   override once(eventName: "notice", listener: NoticeListener): this
+  override once(eventName: "ok", listener: OkListener): this
   override once(eventName: "error", listener: ErrorListener): this
   override once(eventName: EventName, listener: Listener): this {
     return super.once(eventName, listener)
@@ -76,6 +83,7 @@ export class EventEmitter extends Base {
   ): this
   override prependListener(eventName: "event", listener: EventListener): this
   override prependListener(eventName: "notice", listener: NoticeListener): this
+  override prependListener(eventName: "ok", listener: OkListener): this
   override prependListener(eventName: "error", listener: ErrorListener): this
   override prependListener(eventName: EventName, listener: Listener): this {
     return super.prependListener(eventName, listener)
@@ -97,6 +105,7 @@ export class EventEmitter extends Base {
     eventName: "notice",
     listener: NoticeListener
   ): this
+  override prependOnceListener(eventName: "ok", listener: OkListener): this
   override prependOnceListener(
     eventName: "error",
     listener: ErrorListener
@@ -116,6 +125,7 @@ export class EventEmitter extends Base {
   ): this
   override removeListener(eventName: "event", listener: EventListener): this
   override removeListener(eventName: "notice", listener: NoticeListener): this
+  override removeListener(eventName: "ok", listener: OkListener): this
   override removeListener(eventName: "error", listener: ErrorListener): this
   override removeListener(eventName: EventName, listener: Listener): this {
     return super.removeListener(eventName, listener)
@@ -131,15 +141,40 @@ export class EventEmitter extends Base {
 
 // TODO Also add on: ("subscribed", subscriptionId) which checks "OK"/"NOTICE" and makes a callback?
 // TODO Also add on: ("ok", boolean, eventId) which checks "OK"/"NOTICE" and makes a callback?
-type EventName = "newListener" | "removeListener" | "event" | "notice" | "error"
+type EventName =
+  | "newListener"
+  | "removeListener"
+  | "event"
+  | "notice"
+  | "ok"
+  | "error"
+
 type NewListener = (eventName: EventName, listener: Listener) => void
 type RemoveListener = (eventName: EventName, listener: Listener) => void
 type EventListener = (params: EventParams, nostr: Nostr) => void
+type OkListener = (params: OkParams, nostr: Nostr) => void
 type NoticeListener = (notice: string, nostr: Nostr) => void
 type ErrorListener = (error: unknown, nostr: Nostr) => void
+
 type Listener =
   | NewListener
   | RemoveListener
   | EventListener
   | NoticeListener
+  | OkListener
   | ErrorListener
+
+// TODO Document this
+export interface EventParams {
+  signed: SignedEvent
+  subscriptionId: SubscriptionId
+  raw: RawEvent
+}
+
+// TODO Document this
+export interface OkParams {
+  eventId: EventId
+  relay: URL
+  ok: boolean
+  message: string
+}

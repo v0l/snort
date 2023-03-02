@@ -32,16 +32,16 @@ export class Conn {
   }
 
   constructor({
-    endpoint,
+    url,
     onMessage,
     onError,
   }: {
-    endpoint: string | URL
+    url: URL
     onMessage: (msg: IncomingMessage) => void
     onError: (err: unknown) => void
   }) {
     this.#onError = onError
-    this.#socket = new WebSocket(endpoint)
+    this.#socket = new WebSocket(url)
 
     // Handle incoming messages.
     this.#socket.addEventListener("message", async (msgData) => {

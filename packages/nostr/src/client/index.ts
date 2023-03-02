@@ -46,9 +46,11 @@ export class Nostr extends EventEmitter {
       return
     }
 
+    const connUrl = new URL(url)
+
     // If there is no existing connection, open a new one.
     const conn = new Conn({
-      endpoint: url,
+      url: connUrl,
       // Handle messages on this connection.
       onMessage: (msg) => {
         try {
@@ -64,6 +66,17 @@ export class Nostr extends EventEmitter {
             )
           } else if (msg.kind === "notice") {
             this.emit("notice", msg.notice, this)
+          } else if (msg.kind === "ok") {
+            this.emit(
+              "ok",
+              {
+                eventId: msg.eventId,
+                relay: connUrl,
+                ok: msg.ok,
+                message: msg.message,
+              },
+              this
+            )
           } else {
             throw new ProtocolError(`invalid message ${msg}`)
           }
@@ -286,11 +299,4 @@ export interface Filters {
   since?: Date
   until?: Date
   limit?: number
-}
-
-// TODO Document this
-export interface EventParams {
-  signed: SignedEvent
-  subscriptionId: SubscriptionId
-  raw: RawEvent
 }
