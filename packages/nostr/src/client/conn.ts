@@ -106,16 +106,13 @@ export class Conn {
  */
 export type IncomingMessage = IncomingEvent | IncomingNotice
 
-export const enum IncomingKind {
-  Event,
-  Notice,
-}
+export type IncomingKind = "event" | "notice"
 
 /**
  * Incoming "EVENT" message.
  */
 export interface IncomingEvent {
-  kind: IncomingKind.Event
+  kind: "event"
   subscriptionId: SubscriptionId
   signed: SignedEvent
   raw: RawEvent
@@ -125,7 +122,7 @@ export interface IncomingEvent {
  * Incoming "NOTICE" message.
  */
 export interface IncomingNotice {
-  kind: IncomingKind.Notice
+  kind: "notice"
   notice: string
 }
 
@@ -137,17 +134,13 @@ export type OutgoingMessage =
   | OutgoingOpenSubscription
   | OutgoingCloseSubscription
 
-export const enum OutgoingKind {
-  Event,
-  OpenSubscription,
-  CloseSubscription,
-}
+export type OutgoingKind = "event" | "openSubscription" | "closeSubscription"
 
 /**
  * Outgoing "EVENT" message.
  */
 export interface OutgoingEvent {
-  kind: OutgoingKind.Event
+  kind: "event"
   event: SignedEvent | RawEvent
 }
 
@@ -155,7 +148,7 @@ export interface OutgoingEvent {
  * Outgoing "REQ" message, which opens a subscription.
  */
 export interface OutgoingOpenSubscription {
-  kind: OutgoingKind.OpenSubscription
+  kind: "openSubscription"
   id: SubscriptionId
   filters: Filters[]
 }
@@ -164,7 +157,7 @@ export interface OutgoingOpenSubscription {
  * Outgoing "CLOSE" message, which closes a subscription.
  */
 export interface OutgoingCloseSubscription {
-  kind: OutgoingKind.CloseSubscription
+  kind: "closeSubscription"
   id: SubscriptionId
 }
 
@@ -203,7 +196,7 @@ async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
     }
     const raw = parseEventData(json[2])
     return {
-      kind: IncomingKind.Event,
+      kind: "event",
       subscriptionId: new SubscriptionId(json[1]),
       signed: await SignedEvent.verify(raw),
       raw,
@@ -216,7 +209,7 @@ async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
       )
     }
     return {
-      kind: IncomingKind.Notice,
+      kind: "notice",
       notice: json[1],
     }
   }
@@ -224,17 +217,17 @@ async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
 }
 
 function serializeOutgoingMessage(msg: OutgoingMessage): string {
-  if (msg.kind === OutgoingKind.Event) {
+  if (msg.kind === "event") {
     const raw =
       msg.event instanceof SignedEvent ? msg.event.serialize() : msg.event
     return JSON.stringify(["EVENT", raw])
-  } else if (msg.kind === OutgoingKind.OpenSubscription) {
+  } else if (msg.kind === "openSubscription") {
     return JSON.stringify([
       "REQ",
       msg.id.toString(),
       ...serializeFilters(msg.filters),
     ])
-  } else if (msg.kind === OutgoingKind.CloseSubscription) {
+  } else if (msg.kind === "closeSubscription") {
     return JSON.stringify(["CLOSE", msg.id.toString()])
   } else {
     throw new Error(`invalid message: ${JSON.stringify(msg)}`)

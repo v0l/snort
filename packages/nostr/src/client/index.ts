@@ -1,7 +1,7 @@
 import { ProtocolError } from "../error"
 import { EventId, Event, EventKind, SignedEvent, RawEvent } from "../event"
 import { PrivateKey, PublicKey } from "../keypair"
-import { Conn, IncomingKind, OutgoingKind } from "./conn"
+import { Conn } from "./conn"
 import * as secp from "@noble/secp256k1"
 import { EventEmitter } from "./emitter"
 
@@ -52,7 +52,7 @@ export class Nostr extends EventEmitter {
     // Handle messages on this connection.
     conn.on("message", async (msg) => {
       try {
-        if (msg.kind === IncomingKind.Event) {
+        if (msg.kind === "event") {
           this.emit(
             "event",
             {
@@ -62,7 +62,7 @@ export class Nostr extends EventEmitter {
             },
             this
           )
-        } else if (msg.kind === IncomingKind.Notice) {
+        } else if (msg.kind === "notice") {
           this.emit("notice", msg.notice, this)
         } else {
           throw new ProtocolError(`invalid message ${msg}`)
@@ -81,7 +81,7 @@ export class Nostr extends EventEmitter {
     for (const [key, filters] of this.#subscriptions.entries()) {
       const subscriptionId = new SubscriptionId(key)
       conn.send({
-        kind: OutgoingKind.OpenSubscription,
+        kind: "openSubscription",
         id: subscriptionId,
         filters,
       })
@@ -145,7 +145,7 @@ export class Nostr extends EventEmitter {
         continue
       }
       conn.send({
-        kind: OutgoingKind.OpenSubscription,
+        kind: "openSubscription",
         id: subscriptionId,
         filters,
       })
@@ -167,7 +167,7 @@ export class Nostr extends EventEmitter {
         continue
       }
       conn.send({
-        kind: OutgoingKind.CloseSubscription,
+        kind: "closeSubscription",
         id: subscriptionId,
       })
     }
@@ -210,7 +210,7 @@ export class Nostr extends EventEmitter {
         event = await SignedEvent.sign(event, key)
       }
       conn.send({
-        kind: OutgoingKind.Event,
+        kind: "event",
         event,
       })
     }

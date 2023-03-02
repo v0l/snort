@@ -44,7 +44,7 @@ export class EventEmitter extends Base {
   override off(eventName: "event", listener: EventListener): this
   override off(eventName: "notice", listener: NoticeListener): this
   override off(eventName: "error", listener: ErrorListener): this
-  override off(eventName: string, listener: Listener): this {
+  override off(eventName: EventName, listener: Listener): this {
     return super.off(eventName, listener)
   }
 
