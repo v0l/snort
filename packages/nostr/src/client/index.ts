@@ -47,34 +47,32 @@ export class Nostr extends EventEmitter {
     }
 
     // If there is no existing connection, open a new one.
-    const conn = new Conn(url)
-
-    // Handle messages on this connection.
-    conn.on("message", async (msg) => {
-      try {
-        if (msg.kind === "event") {
-          this.emit(
-            "event",
-            {
-              signed: msg.signed,
-              subscriptionId: msg.subscriptionId,
-              raw: msg.raw,
-            },
-            this
-          )
-        } else if (msg.kind === "notice") {
-          this.emit("notice", msg.notice, this)
-        } else {
-          throw new ProtocolError(`invalid message ${msg}`)
+    const conn = new Conn({
+      endpoint: url,
+      // Handle messages on this connection.
+      onMessage: (msg) => {
+        try {
+          if (msg.kind === "event") {
+            this.emit(
+              "event",
+              {
+                signed: msg.signed,
+                subscriptionId: msg.subscriptionId,
+                raw: msg.raw,
+              },
+              this
+            )
+          } else if (msg.kind === "notice") {
+            this.emit("notice", msg.notice, this)
+          } else {
+            throw new ProtocolError(`invalid message ${msg}`)
+          }
+        } catch (err) {
+          this.emit("error", err, this)
         }
-      } catch (err) {
-        this.emit("error", err, this)
-      }
-    })
-
-    // Forward connection errors to the error callbacks.
-    conn.on("error", (err) => {
-      this.emit("error", err, this)
+      },
+      // Forward errors on this connection.
+      onError: (err) => this.emit("error", err, this),
     })
 
     // Resend existing subscriptions to this connection.

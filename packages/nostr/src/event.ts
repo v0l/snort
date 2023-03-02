@@ -87,7 +87,8 @@ export class EventId {
     }
   }
 
-  private constructor(hex: string) {
+  constructor(hex: string) {
+    // TODO Validate that this is 32-byte hex
     this.#hex = hex
   }
 

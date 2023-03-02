@@ -1,6 +1,6 @@
 import { ProtocolError } from "../error"
 import { Filters, SubscriptionId } from "."
-import { RawEvent, SignedEvent } from "../event"
+import { EventId, RawEvent, SignedEvent } from "../event"
 import WebSocket from "ws"
 import { unixTimestamp } from "../util"
 
@@ -14,7 +14,6 @@ import { unixTimestamp } from "../util"
  */
 export class Conn {
   readonly #socket: WebSocket
-
   /**
    * Messages which were requested to be sent before the websocket was ready.
    * Once the websocket becomes ready, these messages will be sent and cleared.
@@ -23,15 +22,25 @@ export class Conn {
   // before NIP-44 auth. The legacy code reuses the same array for these two but I think they should be
   // different, and the NIP-44 stuff should be handled by Nostr.
   #pending: OutgoingMessage[] = []
-
-  #msgCallback?: IncomingMessageCallback
-  #errorCallback?: ErrorCallback
+  /**
+   * Callback for errors.
+   */
+  readonly #onError: (err: unknown) => void
 
   get url(): string {
     return this.#socket.url
   }
 
-  constructor(endpoint: string | URL) {
+  constructor({
+    endpoint,
+    onMessage,
+    onError,
+  }: {
+    endpoint: string | URL
+    onMessage: (msg: IncomingMessage) => void
+    onError: (err: unknown) => void
+  }) {
+    this.#onError = onError
     this.#socket = new WebSocket(endpoint)
 
     // Handle incoming messages.
@@ -40,14 +49,14 @@ export class Conn {
       // Validate and parse the message.
       if (typeof value !== "string") {
         const err = new ProtocolError(`invalid message data: ${value}`)
-        this.#errorCallback?.(err)
+        onError(err)
         return
       }
       try {
-        const msg = await parseIncomingMessage(value)
-        this.#msgCallback?.(msg)
+        const msg = await Conn.#parseIncomingMessage(value)
+        onMessage(msg)
       } catch (err) {
-        this.#errorCallback?.(err)
+        onError(err)
       }
     })
 
@@ -60,20 +69,8 @@ export class Conn {
     })
 
     this.#socket.addEventListener("error", (err) => {
-      this.#errorCallback?.(err)
+      onError(err)
     })
-  }
-
-  on(on: "message", cb: IncomingMessageCallback): void
-  on(on: "error", cb: ErrorCallback): void
-  on(on: "message" | "error", cb: IncomingMessageCallback | ErrorCallback) {
-    if (on === "message") {
-      this.#msgCallback = cb as IncomingMessageCallback
-    } else if (on === "error") {
-      this.#errorCallback = cb as ErrorCallback
-    } else {
-      throw new Error(`unexpected input: ${on}`)
-    }
   }
 
   send(msg: OutgoingMessage): void {
@@ -84,11 +81,11 @@ export class Conn {
     try {
       this.#socket.send(serializeOutgoingMessage(msg), (err) => {
         if (err !== undefined && err !== null) {
-          this.#errorCallback?.(err)
+          this.#onError?.(err)
         }
       })
     } catch (err) {
-      this.#errorCallback?.(err)
+      this.#onError?.(err)
     }
   }
 
@@ -96,17 +93,81 @@ export class Conn {
     try {
       this.#socket.close()
     } catch (err) {
-      this.#errorCallback?.(err)
+      this.#onError?.(err)
     }
+  }
+
+  static async #parseIncomingMessage(data: string): Promise<IncomingMessage> {
+    const json = parseJson(data)
+    if (!(json instanceof Array)) {
+      throw new ProtocolError(`incoming message is not an array: ${data}`)
+    }
+    if (json.length === 0) {
+      throw new ProtocolError(`incoming message is an empty array: ${data}`)
+    }
+    if (json[0] === "EVENT") {
+      if (typeof json[1] !== "string") {
+        throw new ProtocolError(
+          `second element of "EVENT" should be a string, but wasn't: ${data}`
+        )
+      }
+      if (typeof json[2] !== "object") {
+        throw new ProtocolError(
+          `second element of "EVENT" should be an object, but wasn't: ${data}`
+        )
+      }
+      const raw = parseEventData(json[2])
+      return {
+        kind: "event",
+        subscriptionId: new SubscriptionId(json[1]),
+        signed: await SignedEvent.verify(raw),
+        raw,
+      }
+    }
+    if (json[0] === "NOTICE") {
+      if (typeof json[1] !== "string") {
+        throw new ProtocolError(
+          `second element of "NOTICE" should be a string, but wasn't: ${data}`
+        )
+      }
+      return {
+        kind: "notice",
+        notice: json[1],
+      }
+    }
+    if (json[0] === "OK") {
+      if (typeof json[1] !== "string") {
+        throw new ProtocolError(
+          `second element of "OK" should be a string, but wasn't: ${data}`
+        )
+      }
+      if (typeof json[2] !== "boolean") {
+        throw new ProtocolError(
+          `third element of "OK" should be a boolean, but wasn't: ${data}`
+        )
+      }
+      if (typeof json[3] !== "string") {
+        throw new ProtocolError(
+          `fourth element of "OK" should be a string, but wasn't: ${data}`
+        )
+      }
+      return {
+        kind: "ok",
+        eventId: new EventId(json[1]),
+        ok: json[2],
+        message: json[3],
+      }
+    }
+    throw new ProtocolError(`unknown incoming message: ${data}`)
   }
 }
 
 /**
  * A message sent from a relay to the client.
  */
-export type IncomingMessage = IncomingEvent | IncomingNotice
+export type IncomingMessage = IncomingEvent | IncomingNotice | IncomingOk
 
-export type IncomingKind = "event" | "notice"
+export type IncomingKind = "event" | "notice" | "ok"
 
 /**
  * Incoming "EVENT" message.
@@ -124,6 +185,16 @@ export interface IncomingEvent {
 export interface IncomingNotice {
   kind: "notice"
   notice: string
+}
+
+/**
+ * Incoming "OK" message.
+ */
+export interface IncomingOk {
+  kind: "ok"
+  eventId: EventId
+  ok: boolean
+  message: string
 }
 
 /**
@@ -161,9 +232,6 @@ export interface OutgoingCloseSubscription {
   id: SubscriptionId
 }
 
-type IncomingMessageCallback = (message: IncomingMessage) => unknown
-type ErrorCallback = (error: unknown) => unknown
-
 interface RawFilters {
   ids?: string[]
   authors?: string[]
@@ -173,47 +241,6 @@ interface RawFilters {
   since?: number
   until?: number
   limit?: number
-}
-
-async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
-  const json = parseJson(data)
-  if (!(json instanceof Array)) {
-    throw new ProtocolError(`incoming message is not an array: ${data}`)
-  }
-  if (json.length === 0) {
-    throw new ProtocolError(`incoming message is an empty array: ${data}`)
-  }
-  if (json[0] === "EVENT") {
-    if (typeof json[1] !== "string") {
-      throw new ProtocolError(
-        `second element of "EVENT" should be a string, but wasn't: ${data}`
-      )
-    }
-    if (typeof json[2] !== "object") {
-      throw new ProtocolError(
-        `second element of "EVENT" should be an object, but wasn't: ${data}`
-      )
-    }
-    const raw = parseEventData(json[2])
-    return {
-      kind: "event",
-      subscriptionId: new SubscriptionId(json[1]),
-      signed: await SignedEvent.verify(raw),
-      raw,
-    }
-  }
-  if (json[0] === "NOTICE") {
-    if (typeof json[1] !== "string") {
-      throw new ProtocolError(
-        `second element of "NOTICE" should be a string, but wasn't: ${data}`
-      )
-    }
-    return {
-      kind: "notice",
-      notice: json[1],
-    }
-  }
-  throw new ProtocolError(`unknown incoming message: ${data}`)
 }
 
 function serializeOutgoingMessage(msg: OutgoingMessage): string {

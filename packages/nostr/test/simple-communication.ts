@@ -34,6 +34,9 @@ describe("single event communication", function () {
       // for future events.
       subscriber.off("event", listener)
 
+      subscriber.on("error", done)
+      publisher.on("error", done)
+
       publisher.close()
       subscriber.close()
 
