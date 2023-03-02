@@ -2,11 +2,11 @@ type Props = {
   name: string;
   size?: number;
   className?: string;
-}
+};
 
 const Icon = (props: Props) => {
   const size = props.size || 20;
-  const href = '/icons.svg#' + props.name;
+  const href = "/icons.svg#" + props.name;
 
   return (
     <svg width={size} height={size} className={props.className}>

@@ -90,9 +90,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
             likes.map(ev => {
               return (
                 <div key={ev.id} className="reactions-item">
-                  <div className="reaction-icon">
-                    {ev.content === "+" ? <Icon name="heart" /> : ev.content}
-                  </div>
+                  <div className="reaction-icon">{ev.content === "+" ? <Icon name="heart" /> : ev.content}</div>
                   <ProfileImage autoWidth={false} pubkey={ev.pubkey} />
                 </div>
               );
