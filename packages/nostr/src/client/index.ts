@@ -9,7 +9,6 @@ import { EventEmitter } from "./emitter"
  * A nostr client.
  *
  * TODO Document the events here
- * TODO Move all this to that file and add the newListener and removeListener events there as well
  */
 export class Nostr extends EventEmitter {
   // TODO NIP-44 AUTH, leave this for later
@@ -66,12 +65,7 @@ export class Nostr extends EventEmitter {
         } else if (msg.kind === IncomingKind.Notice) {
           this.emit("notice", msg.notice, this)
         } else {
-          const err = new ProtocolError(`invalid message ${msg}`)
-          try {
-            this.emit("error", err, this)
-          } catch (err) {
-            // Don't propagate errors from the error callback.
-          }
+          throw new ProtocolError(`invalid message ${msg}`)
         }
       } catch (err) {
         this.emit("error", err, this)
