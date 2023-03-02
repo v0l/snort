@@ -8,6 +8,9 @@
   "+vIQlC": {
     "defaultMessage": "Please make sure to save the following password in order to manage your handle in the future"
   },
+  "+vVZ/G": {
+    "defaultMessage": "Connect"
+  },
   "/4tOwT": {
     "defaultMessage": "Skip"
   },
@@ -45,6 +48,9 @@
   "1Mo59U": {
     "defaultMessage": "Are you sure you want to remove this note from bookmarks?"
   },
+  "1c4YST": {
+    "defaultMessage": "Connected to: {node} 🎉"
+  },
   "1nYUGC": {
     "defaultMessage": "{n} Following"
   },
@@ -59,6 +65,9 @@
   },
   "2IFGap": {
     "defaultMessage": "Donate"
+  },
+  "2LbrkB": {
+    "defaultMessage": "Enter password"
   },
   "2a2YiP": {
     "defaultMessage": "{n} Bookmarks"
@@ -81,6 +90,9 @@
   "3xCwbZ": {
     "defaultMessage": "OR",
     "description": "Seperator text for Login / Generate Key"
+  },
+  "3yk8fB": {
+    "defaultMessage": "Wallet"
   },
   "450Fty": {
     "defaultMessage": "None"
@@ -139,6 +151,9 @@
   },
   "8g2vyB": {
     "defaultMessage": "name too long"
+  },
+  "8v1NN+": {
+    "defaultMessage": "Pairing phrase"
   },
   "9+Ddtu": {
     "defaultMessage": "Next"
@@ -257,6 +272,9 @@
   "G/yZLu": {
     "defaultMessage": "Remove"
   },
+  "G1BGCg": {
+    "defaultMessage": "Select Wallet"
+  },
   "GFOoEE": {
     "defaultMessage": "Salt"
   },
@@ -312,6 +330,9 @@
   "K7AkdL": {
     "defaultMessage": "Show"
   },
+  "KAhAcM": {
+    "defaultMessage": "Enter LNDHub config"
+  },
   "KQvWvD": {
     "defaultMessage": "Deleted"
   },
@@ -339,6 +360,10 @@
   },
   "MI2jkA": {
     "defaultMessage": "Not available:"
+  },
+  "MP54GY": {
+    "defaultMessage": "Wallet password",
+    "description": "Wallet password input placeholder"
   },
   "MRp6Ly": {
     "defaultMessage": "Twitter username"
@@ -399,6 +424,9 @@
     "defaultMessage": "Art by {name}",
     "description": "Artwork attribution label"
   },
+  "R2OqnW": {
+    "defaultMessage": "Delete Account"
+  },
   "RDZVQL": {
     "defaultMessage": "Check"
   },
@@ -426,6 +454,9 @@
   },
   "Up5U7K": {
     "defaultMessage": "Block"
+  },
+  "VN0+Fz": {
+    "defaultMessage": "Balance: {amount} sats"
   },
   "VOjC1i": {
     "defaultMessage": "Pick which upload service you want to upload attachments to"
@@ -467,6 +498,9 @@
   "YXA3AH": {
     "defaultMessage": "Enable reactions"
   },
+  "Z4BMCZ": {
+    "defaultMessage": "Enter pairing phrase"
+  },
   "ZKORll": {
     "defaultMessage": "Activate Now"
   },
@@ -501,11 +535,18 @@
   "cWx9t8": {
     "defaultMessage": "Mute all"
   },
+  "cg1VJ2": {
+    "defaultMessage": "Connect Wallet"
+  },
   "cuV2gK": {
     "defaultMessage": "name is registered"
   },
   "cyR7Kh": {
     "defaultMessage": "Back"
+  },
+  "d6CyG5": {
+    "defaultMessage": "History",
+    "description": "Wallet transation history"
   },
   "d7d0/x": {
     "defaultMessage": "LN Address"
@@ -613,14 +654,17 @@
   "k7sKNy": {
     "defaultMessage": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
   },
+  "kaaf1E": {
+    "defaultMessage": "now"
+  },
   "lCILNz": {
     "defaultMessage": "Buy Now"
   },
   "lD3+8a": {
     "defaultMessage": "Pay"
   },
-  "lSpQet": {
-    "defaultMessage": "Paying with WebLN"
+  "lTbT3s": {
+    "defaultMessage": "Wallet password"
   },
   "lgg1KN": {
     "defaultMessage": "account page"
@@ -693,6 +737,9 @@
   "pzTOmv": {
     "defaultMessage": "Followers"
   },
+  "qDwvZ4": {
+    "defaultMessage": "Unknown error"
+  },
   "qMx1sA": {
     "defaultMessage": "Default Zap amount"
   },
@@ -710,6 +757,9 @@
   },
   "r3C4x/": {
     "defaultMessage": "Software"
+  },
+  "r5srDR": {
+    "defaultMessage": "Enter wallet password"
   },
   "rT14Ow": {
     "defaultMessage": "Add Relays"
@@ -759,8 +809,14 @@
   "vOKedj": {
     "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
   },
+  "vU71Ez": {
+    "defaultMessage": "Paying with {wallet}"
+  },
   "vZ4quW": {
     "defaultMessage": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."
+  },
+  "vrTOHJ": {
+    "defaultMessage": "{amount} sats"
   },
   "wEQDC6": {
     "defaultMessage": "Edit"
@@ -797,6 +853,10 @@
   },
   "xKflGN": {
     "defaultMessage": "{username}''s Follows on Nostr"
+  },
+  "xQtL3v": {
+    "defaultMessage": "Unlock",
+    "description": "Unlock wallet"
   },
   "xbVgIm": {
     "defaultMessage": "Automatically load media"

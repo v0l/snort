@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
+import { Event as NEvent, TaggedRawEvent, HexKey } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
+import Spinner from "Icons/Spinner";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
@@ -14,14 +16,13 @@ import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
 import { ParsedZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Feed/ProfileFeed";
-import { Event as NEvent, TaggedRawEvent, HexKey } from "@snort/nostr";
 import { RootState } from "State/Store";
 import { UserPreferences, setPinned, setBookmarked } from "State/Login";
 import useModeration from "Hooks/useModeration";
 import { TranslateHost } from "Const";
-import useWebln from "Hooks/useWebln";
 import { LNURL } from "LNURL";
-import Spinner from "Icons/Spinner";
+
+import { useWallet } from "Wallet";
 
 import messages from "./messages";
 
@@ -55,7 +56,9 @@ export default function NoteFooter(props: NoteFooterProps) {
   const [reply, setReply] = useState(false);
   const [tip, setTip] = useState(false);
   const [zapping, setZapping] = useState(false);
-  const webln = useWebln();
+  const walletState = useWallet();
+  const wallet = walletState.wallet;
+
   const isMine = ev.RootPubKey === login;
   const lang = window.navigator.language;
   const langNames = new Intl.DisplayNames([...window.navigator.languages], {
@@ -108,14 +111,14 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (zapping || e.isPropagationStopped()) return;
 
     const lnurl = author?.lud16 || author?.lud06;
-    if (webln?.enabled && lnurl) {
+    if (wallet?.isReady() && lnurl) {
       setZapping(true);
       try {
         const handler = new LNURL(lnurl);
         await handler.load();
         const zap = handler.canZap ? await publisher.zap(prefs.defaultZapAmount * 1000, ev.PubKey, ev.Id) : undefined;
         const invoice = await handler.getInvoice(prefs.defaultZapAmount, undefined, zap);
-        await await webln.sendPayment(unwrap(invoice.pr));
+        await wallet.payInvoice(unwrap(invoice.pr));
       } catch (e) {
         console.warn("Fast zap failed", e);
         if (!(e instanceof Error) || e.message !== "User rejected") {
@@ -135,7 +138,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       return (
         <>
           <div className={`reaction-pill ${didZap ? "reacted" : ""}`} {...longPress()} onClick={e => fastZap(e)}>
-            {zapping ? <Spinner /> : webln?.enabled ? <Icon name="zapFast" /> : <Icon name="zap" />}
+            {zapping ? <Spinner /> : wallet?.isReady ? <Icon name="zapFast" /> : <Icon name="zap" />}
             {zapTotal > 0 && <div className="reaction-pill-number">{formatShort(zapTotal)}</div>}
           </div>
         </>

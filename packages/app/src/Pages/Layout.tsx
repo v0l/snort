@@ -20,6 +20,7 @@ import { NoteCreator } from "Element/NoteCreator";
 import { RelaySettings } from "@snort/nostr";
 import { FormattedMessage } from "react-intl";
 import messages from "./messages";
+import Bitcoin from "Icons/Bitcoin";
 
 export default function Layout() {
   const location = useLocation();
@@ -194,6 +195,9 @@ export default function Layout() {
   function accountHeader() {
     return (
       <div className="header-actions">
+        <div className="btn btn-rnd" onClick={() => navigate("/wallet")}>
+          <Bitcoin />
+        </div>
         <div className="btn btn-rnd" onClick={() => navigate("/search")}>
           <Icon name="search" size={20} />
         </div>

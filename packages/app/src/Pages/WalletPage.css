@@ -1,0 +1,16 @@
+.wallet-history-item {
+}
+
+.wallet-history-item time {
+  font-size: small;
+  color: var(--font-tertiary-color);
+  line-height: 1.5em;
+}
+
+.pending {
+  color: var(--font-tertiary-color);
+}
+
+.wallet-buttons > button {
+  margin: 10px;
+}

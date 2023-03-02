@@ -34,6 +34,11 @@ const SettingsIndex = () => {
           <FormattedMessage {...messages.Preferences} />
           <Icon name="arrowFront" />
         </div>
+        <div className="settings-row" onClick={() => navigate("wallet")}>
+          <Icon name="bitcoin" />
+          <FormattedMessage defaultMessage="Wallet" />
+          <Icon name="arrowFront" />
+        </div>
         <div className="settings-row" onClick={() => navigate("/donate")}>
           <Icon name="heart" />
           <FormattedMessage {...messages.Donate} />
