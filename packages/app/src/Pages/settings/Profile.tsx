@@ -68,11 +68,12 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       website,
       nip05,
       lud16,
-    };
+    } as Record<string, string | number | undefined>;
     delete userCopy["loaded"];
     delete userCopy["created"];
     delete userCopy["pubkey"];
     delete userCopy["npub"];
+    delete userCopy["deleted"];
     console.debug(userCopy);
 
     const ev = await publisher.metadata(userCopy);
