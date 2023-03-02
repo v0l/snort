@@ -23,3 +23,13 @@
 .align-end {
   margin-left: auto;
 }
+
+.settings-row > svg {
+  width: 22px;
+  height: 22px;
+}
+
+.settings-row div:last-child svg {
+  width: 8px;
+  height: 14px;
+}
