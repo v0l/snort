@@ -1681,6 +1681,19 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
+"@lightninglabs/lnc-core@0.2.3-alpha":
+  version "0.2.3-alpha"
+  resolved "https://registry.yarnpkg.com/@lightninglabs/lnc-core/-/lnc-core-0.2.3-alpha.tgz#e1b92a9071d1dfb92e2d565710b56f28f57cbbd4"
+  integrity sha512-93D/uU64ayAaJv5kv4Pqwvkt+uT7yCtmHD08aUzvql+lbWm6U7m5loZLxz7tACFLXVPOQ8OHJL25W+3QMEYthg==
+
+"@lightninglabs/lnc-web@^0.2.3-alpha":
+  version "0.2.3-alpha"
+  resolved "https://registry.yarnpkg.com/@lightninglabs/lnc-web/-/lnc-web-0.2.3-alpha.tgz#d41184d815034c15fc9966da390222babc4eb19c"
+  integrity sha512-Pr02Ti9a0YzEIP2FTJT+IuoE02xgXqhMKoo8lK+Y6kSf3xk8/wJXJssFMA96iWV5Phf1Ra9ynmLVIQjD176BxA==
+  dependencies:
+    "@lightninglabs/lnc-core" "0.2.3-alpha"
+    crypto-js "4.1.1"
+
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
   resolved "https://registry.yarnpkg.com/@nicolo-ribaudo/eslint-scope-5-internals/-/eslint-scope-5-internals-5.1.1-v1.tgz#dbf733a965ca47b1973177dc0bb6c889edcfb129"
@@ -3715,6 +3728,11 @@ cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+crypto-js@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
+  integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==
 
 crypto-random-string@^2.0.0:
   version "2.0.0"

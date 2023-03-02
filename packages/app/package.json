@@ -7,6 +7,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@jukben/emoji-search": "^2.0.1",
+    "@lightninglabs/lnc-web": "^0.2.3-alpha",
     "@noble/hashes": "^1.2.0",
     "@noble/secp256k1": "^1.7.0",
     "@protobufjs/base64": "^1.1.2",

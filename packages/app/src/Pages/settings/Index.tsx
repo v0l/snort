@@ -8,6 +8,7 @@ import Profile from "Icons/Profile";
 import Relay from "Icons/Relay";
 import Heart from "Icons/Heart";
 import Logout from "Icons/Logout";
+import Bitcoin from "Icons/Bitcoin";
 import { logout } from "State/Login";
 
 import messages from "./messages";
@@ -49,6 +50,15 @@ const SettingsIndex = () => {
             <Gear />
           </div>
           <FormattedMessage {...messages.Preferences} />
+          <div className="align-end">
+            <ArrowFront />
+          </div>
+        </div>
+        <div className="settings-row" onClick={() => navigate("wallet")}>
+          <div className="mr10">
+            <Bitcoin />
+          </div>
+          <FormattedMessage defaultMessage="Wallet" />
           <div className="align-end">
             <ArrowFront />
           </div>
