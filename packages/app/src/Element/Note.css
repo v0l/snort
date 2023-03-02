@@ -73,6 +73,8 @@
   align-items: center;
   justify-content: center;
   margin-left: auto;
+  gap: 1em;
+  padding-left: 0.8em;
 }
 
 @media (min-width: 720px) {
@@ -144,18 +146,12 @@
 
 .reaction-pill {
   display: flex;
-  margin: 0px 7px;
-  padding: 2px 4px;
   min-width: 1rem;
   align-items: center;
   justify-content: center;
   user-select: none;
   color: var(--font-secondary-color);
   font-feature-settings: "tnum";
-}
-
-.reaction-pill-icon {
-  margin: auto;
 }
 
 .reaction-pill .reaction-pill-number {

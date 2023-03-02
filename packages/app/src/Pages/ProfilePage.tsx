@@ -138,9 +138,7 @@ export default function ProfilePage() {
       <div className="links">
         {user?.website && (
           <div className="website f-ellipsis">
-            <span className="link-icon">
-              <Icon name="link" />
-            </span>
+            <Icon name="link" />
             <a href={website_url} target="_blank" rel="noreferrer">
               {user.website}
             </a>
@@ -149,9 +147,7 @@ export default function ProfilePage() {
 
         {lnurl && (
           <div className="lnurl f-ellipsis" onClick={() => setShowLnQr(true)}>
-            <span className="link-icon">
-              <Icon name="zap" />
-            </span>
+            <Icon name="zap" />
             {lnurl}
           </div>
         )}

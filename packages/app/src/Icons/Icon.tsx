@@ -5,8 +5,8 @@ type Props = {
 }
 
 const Icon = (props: Props) => {
-  const size = props.size || 16;
-  const href = 'icons.svg#' + props.name;
+  const size = props.size || 20;
+  const href = '/icons.svg#' + props.name;
 
   return (
     <svg width={size} height={size} className={props.className}>

@@ -62,7 +62,7 @@ const Nip05 = ({ nip05, pubkey, verifyNip = true }: Nip05Params) => {
           <span className="domain" data-domain={domain?.toLowerCase()}>
             {domain}
           </span>
-          <Icon name="badge" className="badge" />
+          <Icon name="badge" className="badge" size={16} />
         </>
       )}
     </div>

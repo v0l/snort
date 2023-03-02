@@ -135,7 +135,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       return (
         <>
           <div className={`reaction-pill ${didZap ? "reacted" : ""}`} {...longPress()} onClick={e => fastZap(e)}>
-            <div className="reaction-pill-icon">{zapping ? <Spinner /> : webln?.enabled ? <Icon name="zapFast" /> : <Icon name="zap" />}</div>
+            {zapping ? <Spinner /> : webln?.enabled ? <Icon name="zapFast" /> : <Icon name="zap" />}
             {zapTotal > 0 && <div className="reaction-pill-number">{formatShort(zapTotal)}</div>}
           </div>
         </>
@@ -147,9 +147,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   function repostIcon() {
     return (
       <div className={`reaction-pill ${hasReposted() ? "reacted" : ""}`} onClick={() => repost()}>
-        <div className="reaction-pill-icon">
-          <Icon name="repost" size={18} />
-        </div>
+        <Icon name="repost" size={17} />
         {reposts.length > 0 && <div className="reaction-pill-number">{formatShort(reposts.length)}</div>}
       </div>
     );
@@ -164,9 +162,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         <div
           className={`reaction-pill ${hasReacted("+") ? "reacted" : ""} `}
           onClick={() => react(prefs.reactionEmoji)}>
-          <div className="reaction-pill-icon">
-            <Icon name="heart" />
-          </div>
+          <Icon name="heart" />
           <div className="reaction-pill-number">{formatShort(positive.length)}</div>
         </div>
         {repostIcon()}
@@ -257,7 +253,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         )}
         {!bookmarked.includes(ev.Id) && (
           <MenuItem onClick={() => bookmark(ev.Id)}>
-            <Icon name="bookmark" size={18} />
+            <Icon name="bookmark" />
             <FormattedMessage {...messages.Bookmark} />
           </MenuItem>
         )}
@@ -306,16 +302,12 @@ export default function NoteFooter(props: NoteFooterProps) {
           {tipButton()}
           {reactionIcons()}
           <div className={`reaction-pill ${reply ? "reacted" : ""}`} onClick={() => setReply(s => !s)}>
-            <div className="reaction-pill-icon">
-              <Icon name="reply" />
-            </div>
+            <Icon name="reply" size={17} />
           </div>
           <Menu
             menuButton={
               <div className="reaction-pill">
-                <div className="reaction-pill-icon">
-                  <Icon name="dots" />
-                </div>
+                <Icon name="dots" size={15} />
               </div>
             }
             menuClassName="ctx-menu">
