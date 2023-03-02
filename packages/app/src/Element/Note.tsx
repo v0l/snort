@@ -6,8 +6,7 @@ import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
 
 import useEventPublisher from "Feed/EventPublisher";
-import Bookmark from "Icons/Bookmark";
-import Pin from "Icons/Pin";
+import Icon from "Icons/Icon";
 import { parseZap } from "Element/Zap";
 import ProfileImage from "Element/ProfileImage";
 import Text from "Element/Text";
@@ -274,7 +273,7 @@ export default function Note(props: NoteProps) {
               <div className="info">
                 {options.showBookmarked && (
                   <div className={`saved ${options.canUnbookmark ? "pointer" : ""}`} onClick={() => unbookmark(ev.Id)}>
-                    <Bookmark /> <FormattedMessage {...messages.Bookmarked} />
+                    <Icon name="bookmark" /> <FormattedMessage {...messages.Bookmarked} />
                   </div>
                 )}
                 {!options.showBookmarked && <NoteTime from={ev.CreatedAt * 1000} />}
@@ -282,7 +281,7 @@ export default function Note(props: NoteProps) {
             )}
             {options.showPinned && (
               <div className={`pinned ${options.canUnpin ? "pointer" : ""}`} onClick={() => unpin(ev.Id)}>
-                <Pin /> <FormattedMessage {...messages.Pinned} />
+                <Icon name="pin" /> <FormattedMessage {...messages.Pinned} />
               </div>
             )}
           </div>

@@ -6,9 +6,7 @@ import { useSelector } from "react-redux";
 import { formatShort } from "Number";
 import { Event, HexKey, Tag } from "@snort/nostr";
 import { RootState } from "State/Store";
-import Check from "Icons/Check";
-import Zap from "Icons/Zap";
-import Close from "Icons/Close";
+import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
 import ProfileImage from "Element/ProfileImage";
 import Modal from "Element/Modal";
@@ -259,7 +257,7 @@ export default function SendSats(props: SendSatsProps) {
         {(amount ?? 0) > 0 && (
           <button type="button" className="zap-action" onClick={() => loadInvoice()}>
             <div className="zap-action-container">
-              <Zap />
+              <Icon name="zap" />
               {target ? (
                 <FormattedMessage {...messages.ZapTarget} values={{ target, n: formatShort(amount) }} />
               ) : (
@@ -334,7 +332,7 @@ export default function SendSats(props: SendSatsProps) {
     return (
       <div className="success-action">
         <p className="paid">
-          <Check className="success mr10" />
+          <Icon name="check" className="success mr10" />
           {success?.description ?? <FormattedMessage {...messages.Paid} />}
         </p>
         {success.url && (
@@ -360,7 +358,7 @@ export default function SendSats(props: SendSatsProps) {
     <Modal className="lnurl-modal" onClose={onClose}>
       <div className="lnurl-tip" onClick={e => e.stopPropagation()}>
         <div className="close" onClick={onClose}>
-          <Close />
+          <Icon name="close" />
         </div>
         <div className="lnurl-header">
           {author && <ProfileImage pubkey={author} showUsername={false} />}

@@ -1,7 +1,7 @@
 import "./BackButton.css";
 import { useIntl } from "react-intl";
 
-import ArrowBack from "Icons/ArrowBack";
+import Icon from "Icons/Icon";
 
 import messages from "./messages";
 
@@ -20,7 +20,7 @@ const BackButton = ({ text, onClick }: BackButtonProps) => {
 
   return (
     <button className="back-button" type="button" onClick={onClickHandler}>
-      <ArrowBack />
+      <Icon name="arrowBack" />
       {text || formatMessage(messages.Back)}
     </button>
   );

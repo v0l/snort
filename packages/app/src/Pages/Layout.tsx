@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { randomSample } from "Util";
-import Envelope from "Icons/Envelope";
-import Bell from "Icons/Bell";
-import Search from "Icons/Search";
+import Icon from "Icons/Icon";
 import { RootState } from "State/Store";
 import { init, setRelays } from "State/Login";
 import { System } from "System";
@@ -19,7 +17,6 @@ import useModeration from "Hooks/useModeration";
 import { IndexedUDB } from "State/Users/Db";
 import { bech32ToHex } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
-import Plus from "Icons/Plus";
 import { RelaySettings } from "@snort/nostr";
 import { FormattedMessage } from "react-intl";
 import messages from "./messages";
@@ -198,14 +195,14 @@ export default function Layout() {
     return (
       <div className="header-actions">
         <div className="btn btn-rnd" onClick={() => navigate("/search")}>
-          <Search />
+          <Icon name="search" size={20} />
         </div>
         <div className="btn btn-rnd" onClick={() => navigate("/messages")}>
-          <Envelope />
+          <Icon name="envelope" size={20} />
           {unreadDms > 0 && <span className="has-unread"></span>}
         </div>
         <div className="btn btn-rnd" onClick={goToNotifications}>
-          <Bell />
+          <Icon name="bell" size={20} />
           {hasNotifications && <span className="has-unread"></span>}
         </div>
         <ProfileImage pubkey={publicKey || ""} showUsername={false} />
@@ -239,7 +236,7 @@ export default function Layout() {
       {!shouldHideNoteCreator && (
         <>
           <button className="note-create-button" type="button" onClick={() => setShow(!show)}>
-            <Plus />
+            <Icon name="plus" />
           </button>
           <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
         </>

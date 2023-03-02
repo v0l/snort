@@ -4,7 +4,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { useMemo } from "react";
 import SendSats from "Element/SendSats";
-import ZapCircle from "Icons/ZapCircle";
+import Icon from "Icons/Icon";
 import useWebln from "Hooks/useWebln";
 
 import messages from "./messages";
@@ -58,7 +58,7 @@ export default function Invoice(props: InvoiceProps) {
         <h4>
           <FormattedMessage {...messages.Invoice} />
         </h4>
-        <ZapCircle className="zap-circle" />
+        <Icon name="zapCircle" className="zap-circle" />
         <SendSats
           title={formatMessage(messages.PayInvoice)}
           invoice={invoice}

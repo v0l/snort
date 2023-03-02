@@ -4,21 +4,8 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
 
-import Bookmark from "Icons/Bookmark";
-import Pin from "Icons/Pin";
-import Json from "Icons/Json";
-import Repost from "Icons/Repost";
-import Trash from "Icons/Trash";
-import Translate from "Icons/Translate";
-import Block from "Icons/Block";
-import Mute from "Icons/Mute";
-import Share from "Icons/Share";
-import Copy from "Icons/Copy";
-import Dislike from "Icons/Dislike";
-import Heart from "Icons/Heart";
-import Dots from "Icons/Dots";
-import Zap from "Icons/Zap";
-import Reply from "Icons/Reply";
+import Icon from "Icons/Icon";
+
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
 import { hexToBech32, normalizeReaction, unwrap } from "Util";
@@ -35,7 +22,6 @@ import { TranslateHost } from "Const";
 import useWebln from "Hooks/useWebln";
 import { LNURL } from "LNURL";
 import Spinner from "Icons/Spinner";
-import ZapFast from "Icons/ZapFast";
 
 import messages from "./messages";
 
@@ -149,7 +135,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       return (
         <>
           <div className={`reaction-pill ${didZap ? "reacted" : ""}`} {...longPress()} onClick={e => fastZap(e)}>
-            <div className="reaction-pill-icon">{zapping ? <Spinner /> : webln?.enabled ? <ZapFast /> : <Zap />}</div>
+            <div className="reaction-pill-icon">{zapping ? <Spinner /> : webln?.enabled ? <Icon name="zapFast" /> : <Icon name="zap" />}</div>
             {zapTotal > 0 && <div className="reaction-pill-number">{formatShort(zapTotal)}</div>}
           </div>
         </>
@@ -162,7 +148,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     return (
       <div className={`reaction-pill ${hasReposted() ? "reacted" : ""}`} onClick={() => repost()}>
         <div className="reaction-pill-icon">
-          <Repost width={18} height={16} />
+          <Icon name="repost" size={18} />
         </div>
         {reposts.length > 0 && <div className="reaction-pill-number">{formatShort(reposts.length)}</div>}
       </div>
@@ -179,7 +165,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           className={`reaction-pill ${hasReacted("+") ? "reacted" : ""} `}
           onClick={() => react(prefs.reactionEmoji)}>
           <div className="reaction-pill-icon">
-            <Heart />
+            <Icon name="heart" />
           </div>
           <div className="reaction-pill-number">{formatShort(positive.length)}</div>
         </div>
@@ -256,56 +242,56 @@ export default function NoteFooter(props: NoteFooterProps) {
           </MenuItem>
         </div>
         <MenuItem onClick={() => setShowReactions(true)}>
-          <Heart />
+          <Icon name="heart" />
           <FormattedMessage {...messages.Reactions} />
         </MenuItem>
         <MenuItem onClick={() => share()}>
-          <Share />
+          <Icon name="share" />
           <FormattedMessage {...messages.Share} />
         </MenuItem>
         {!pinned.includes(ev.Id) && (
           <MenuItem onClick={() => pin(ev.Id)}>
-            <Pin />
+            <Icon name="pin" />
             <FormattedMessage {...messages.Pin} />
           </MenuItem>
         )}
         {!bookmarked.includes(ev.Id) && (
           <MenuItem onClick={() => bookmark(ev.Id)}>
-            <Bookmark width={18} height={18} />
+            <Icon name="bookmark" size={18} />
             <FormattedMessage {...messages.Bookmark} />
           </MenuItem>
         )}
         <MenuItem onClick={() => copyId()}>
-          <Copy />
+          <Icon name="dislike" />
           <FormattedMessage {...messages.CopyID} />
         </MenuItem>
         <MenuItem onClick={() => mute(ev.PubKey)}>
-          <Mute />
+          <Icon name="mute" />
           <FormattedMessage {...messages.Mute} />
         </MenuItem>
         {prefs.enableReactions && (
           <MenuItem onClick={() => react("-")}>
-            <Dislike />
+            <Icon name="copy" />
             <FormattedMessage {...messages.DislikeAction} />
           </MenuItem>
         )}
         <MenuItem onClick={() => block(ev.PubKey)}>
-          <Block />
+          <Icon name="block" />
           <FormattedMessage {...messages.Block} />
         </MenuItem>
         <MenuItem onClick={() => translate()}>
-          <Translate />
+          <Icon name="translate" />
           <FormattedMessage {...messages.TranslateTo} values={{ lang: langNames.of(lang.split("-")[0]) }} />
         </MenuItem>
         {prefs.showDebugMenus && (
           <MenuItem onClick={() => copyEvent()}>
-            <Json />
+            <Icon name="json" />
             <FormattedMessage {...messages.CopyJSON} />
           </MenuItem>
         )}
         {isMine && (
           <MenuItem onClick={() => deleteEvent()}>
-            <Trash className="red" />
+            <Icon name="trash" className="red" />
             <FormattedMessage {...messages.Delete} />
           </MenuItem>
         )}
@@ -321,14 +307,14 @@ export default function NoteFooter(props: NoteFooterProps) {
           {reactionIcons()}
           <div className={`reaction-pill ${reply ? "reacted" : ""}`} onClick={() => setReply(s => !s)}>
             <div className="reaction-pill-icon">
-              <Reply />
+              <Icon name="reply" />
             </div>
           </div>
           <Menu
             menuButton={
               <div className="reaction-pill">
                 <div className="reaction-pill-icon">
-                  <Dots />
+                  <Icon name="dots" />
                 </div>
               </div>
             }
