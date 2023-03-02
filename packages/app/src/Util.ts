@@ -1,7 +1,10 @@
 import * as secp from "@noble/secp256k1";
 import { sha256 as hash } from "@noble/hashes/sha256";
+import { bytesToHex } from "@noble/hashes/utils";
+import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bech32 } from "bech32";
 import { HexKey, TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix } from "@snort/nostr";
+
 import { MetadataCache } from "State/Users";
 
 export const sha256 = (str: string) => {
@@ -235,3 +238,36 @@ export const delay = (t: number) => {
     setTimeout(resolve, t);
   });
 };
+
+export function decodeInvoice(pr: string) {
+  try {
+    const parsed = invoiceDecode(pr);
+
+    const amountSection = parsed.sections.find(a => a.name === "amount");
+    const amount = amountSection ? (amountSection.value as number) : NaN;
+
+    const timestampSection = parsed.sections.find(a => a.name === "timestamp");
+    const timestamp = timestampSection ? (timestampSection.value as number) : NaN;
+
+    const expirySection = parsed.sections.find(a => a.name === "expiry");
+    const expire = expirySection ? (expirySection.value as number) : NaN;
+    const descriptionSection = parsed.sections.find(a => a.name === "description")?.value;
+    const descriptionHashSection = parsed.sections.find(a => a.name === "description_hash")?.value;
+    const paymentHashSection = parsed.sections.find(a => a.name === "payment_hash")?.value;
+    const ret = {
+      amount: !isNaN(amount) ? amount : undefined,
+      expire: !isNaN(timestamp) && !isNaN(expire) ? timestamp + expire : undefined,
+      timestamp: !isNaN(timestamp) ? timestamp : undefined,
+      description: descriptionSection as string | undefined,
+      descriptionHash: descriptionHashSection ? bytesToHex(descriptionHashSection as Uint8Array) : undefined,
+      paymentHash: paymentHashSection ? bytesToHex(paymentHashSection as Uint8Array) : undefined,
+      expired: false,
+    };
+    if (ret.expire) {
+      ret.expired = ret.expire < new Date().getTime() / 1000;
+    }
+    return ret;
+  } catch (e) {
+    console.error(e);
+  }
+}

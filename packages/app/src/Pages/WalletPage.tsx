@@ -1,12 +1,16 @@
 import "./WalletPage.css";
 
 import { useEffect, useState } from "react";
-import { RouteObject } from "react-router-dom";
+import { RouteObject, useNavigate } from "react-router-dom";
+import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faClock, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import NoteTime from "Element/NoteTime";
-import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet } from "Wallet";
+import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets, WalletKind } from "Wallet";
+import AsyncButton from "Element/AsyncButton";
+import { unwrap } from "Util";
+import { WebLNWallet } from "Wallet/WebLN";
 
 export const WalletRoutes: RouteObject[] = [
   {
@@ -16,26 +20,43 @@ export const WalletRoutes: RouteObject[] = [
 ];
 
 export default function WalletPage() {
+  const navigate = useNavigate();
+  const { formatMessage } = useIntl();
   const [info, setInfo] = useState<WalletInfo>();
   const [balance, setBalance] = useState<Sats>();
   const [history, setHistory] = useState<WalletInvoice[]>();
-  const wallet = useWallet();
+  const [walletPassword, setWalletPassword] = useState<string>();
+  const [error, setError] = useState<string>();
+  const walletState = useWallet();
+  const wallet = walletState.wallet;
 
   async function loadWallet(wallet: LNWallet) {
-    const i = await wallet.getInfo();
-    if ("error" in i) {
-      return;
+    try {
+      const i = await wallet.getInfo();
+      setInfo(i);
+      const b = await wallet.getBalance();
+      setBalance(b as Sats);
+      const h = await wallet.getInvoices();
+      setHistory((h as WalletInvoice[]).sort((a, b) => b.timestamp - a.timestamp));
+    } catch (e) {
+      if (e instanceof Error) {
+        setError((e as Error).message);
+      } else {
+        setError(formatMessage({ defaultMessage: "Unknown error" }));
+      }
     }
-    setInfo(i as WalletInfo);
-    const b = await wallet.getBalance();
-    setBalance(b as Sats);
-    const h = await wallet.getInvoices();
-    setHistory((h as WalletInvoice[]).sort((a, b) => b.timestamp - a.timestamp));
   }
 
   useEffect(() => {
     if (wallet) {
-      loadWallet(wallet).catch(console.warn);
+      if (wallet.isReady()) {
+        loadWallet(wallet).catch(console.warn);
+      } else if (walletState.config?.kind !== WalletKind.LNC) {
+        wallet
+          .login()
+          .then(async () => await loadWallet(wallet))
+          .catch(console.warn);
+      }
     }
   }, [wallet]);
 
@@ -50,37 +71,146 @@ export default function WalletPage() {
     }
   }
 
-  async function createInvoice() {
+  async function loginWallet(pw: string) {
     if (wallet) {
-      const rsp = await wallet.createInvoice({
-        memo: "test",
-        amount: 100,
-      });
-      console.debug(rsp);
+      await wallet.login(pw);
+      await loadWallet(wallet);
+      setWalletPassword(undefined);
     }
   }
 
-  return (
-    <>
-      <h3>{info?.alias}</h3>
-      <b>Balance: {(balance ?? 0).toLocaleString()} sats</b>
-      <div className="flex wallet-buttons">
-        <button>Send</button>
-        <button onClick={() => createInvoice()}>Receive</button>
-      </div>
-      <h3>History</h3>
-      {history?.map(a => (
-        <div className="card flex wallet-history-item" key={a.timestamp}>
-          <div className="f-grow f-col">
-            <NoteTime from={a.timestamp * 1000} />
-            <div>{(a.memo ?? "").length === 0 ? <>&nbsp;</> : a.memo}</div>
+  function unlockWallet() {
+    if (!wallet || wallet.isReady()) return null;
+    return (
+      <>
+        <h3>
+          <FormattedMessage defaultMessage="Enter wallet password" />
+        </h3>
+        <div className="flex w-max">
+          <div className="f-grow mr10">
+            <input
+              type="password"
+              placeholder={formatMessage({
+                defaultMessage: "Wallet password",
+                description: "Wallet password input placeholder",
+              })}
+              className="w-max"
+              value={walletPassword}
+              onChange={e => setWalletPassword(e.target.value)}
+            />
           </div>
-          <div className={`${a.state === WalletInvoiceState.Paid ? "success" : "pending"}`}>
-            {stateIcon(a.state)}
-            {a.amount.toLocaleString()} sats
-          </div>
+          <AsyncButton onClick={() => loginWallet(unwrap(walletPassword))} disabled={(walletPassword?.length ?? 0) < 8}>
+            <FormattedMessage defaultMessage="Unlock" description="Unlock wallet" />
+          </AsyncButton>
         </div>
-      ))}
-    </>
+      </>
+    );
+  }
+
+  function walletList() {
+    if (walletState.configs.length === 0) {
+      return (
+        <button onClick={() => navigate("/settings/wallet")}>
+          <FormattedMessage defaultMessage="Connect Wallet" />
+        </button>
+      );
+    }
+    return (
+      <div className="flex w-max">
+        <h4 className="f-1">
+          <FormattedMessage defaultMessage="Select Wallet" />
+        </h4>
+        <div className="f-1">
+          <select className="w-max" onChange={e => Wallets.switch(e.target.value)} value={walletState.config?.id}>
+            {Wallets.list().map(a => {
+              return <option value={a.id}>{a.info.alias}</option>;
+            })}
+          </select>
+        </div>
+      </div>
+    );
+  }
+
+  function walletHistory() {
+    if (wallet instanceof WebLNWallet) return null;
+
+    return (
+      <>
+        <h3>
+          <FormattedMessage defaultMessage="History" description="Wallet transation history" />
+        </h3>
+        {history?.map(a => (
+          <div className="card flex wallet-history-item" key={a.timestamp}>
+            <div className="f-grow f-col">
+              <NoteTime from={a.timestamp * 1000} fallback={formatMessage({ defaultMessage: "now" })} />
+              <div>{(a.memo ?? "").length === 0 ? <>&nbsp;</> : a.memo}</div>
+            </div>
+            <div
+              className={(() => {
+                switch (a.state) {
+                  case WalletInvoiceState.Paid:
+                    return "success";
+                  case WalletInvoiceState.Expired:
+                    return "expired";
+                  case WalletInvoiceState.Failed:
+                    return "failed";
+                  default:
+                    return "pending";
+                }
+              })()}>
+              {stateIcon(a.state)}
+              <FormattedMessage
+                defaultMessage="{amount} sats"
+                values={{
+                  amount: <FormattedNumber value={a.amount / 1e3} />,
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </>
+    );
+  }
+
+  function walletBalance() {
+    if (wallet instanceof WebLNWallet) return null;
+    return (
+      <b>
+        <FormattedMessage
+          defaultMessage="Balance: {amount} sats"
+          values={{
+            amount: <FormattedNumber value={balance ?? 0} />,
+          }}
+        />
+      </b>
+    );
+  }
+
+  function walletInfo() {
+    if (!wallet?.isReady()) return null;
+    return (
+      <>
+        <h3>{info?.alias}</h3>
+        {walletBalance()}
+        {/*<div className="flex wallet-buttons">
+          <AsyncButton onClick={createInvoice}>
+            <FormattedMessage defaultMessage="Receive" description="Receive sats by generating LN invoice" />
+          </AsyncButton>
+        </div>*/}
+        {walletHistory()}
+        <button onClick={() => Wallets.remove(unwrap(walletState.config).id)}>
+          <FormattedMessage defaultMessage="Delete Account" />
+        </button>
+      </>
+    );
+  }
+
+  return (
+    <div className="main-content">
+      {error && <b className="error">{error}</b>}
+      {walletList()}
+      {unlockWallet()}
+      {walletInfo()}
+    </div>
   );
 }

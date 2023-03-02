@@ -14,7 +14,6 @@ import ProfileImage from "Element/ProfileImage";
 import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
-import useWebln from "Hooks/useWebln";
 import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "LNURL";
 import { debounce } from "Util";
 
@@ -77,11 +76,11 @@ export default function SendSats(props: SendSatsProps) {
   const [zapType, setZapType] = useState(ZapType.PublicZap);
   const [paying, setPaying] = useState<boolean>(false);
 
-  const webln = useWebln(props.show);
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const canComment = handler ? (handler.canZap && zapType !== ZapType.NonZap) || handler.maxCommentLength > 0 : false;
-  const wallet = useWallet();
+  const walletState = useWallet();
+  const wallet = walletState.wallet;
 
   useEffect(() => {
     if (props.show) {
@@ -156,7 +155,7 @@ export default function SendSats(props: SendSatsProps) {
       const rsp = await handler.getInvoice(amount, comment, zap);
       if (rsp.pr) {
         setInvoice(rsp.pr);
-        await payWebLNIfEnabled(rsp);
+        await payWithWallet(rsp);
       }
     } catch (e) {
       handleLNURLError(e, formatMessage(messages.InvoiceFail));
@@ -206,11 +205,11 @@ export default function SendSats(props: SendSatsProps) {
     );
   }
 
-  async function payWebLNIfEnabled(invoice: LNURLInvoice) {
+  async function payWithWallet(invoice: LNURLInvoice) {
     try {
-      if (webln?.enabled) {
+      if (wallet?.isReady) {
         setPaying(true);
-        const res = await webln.sendPayment(invoice?.pr ?? "");
+        const res = await wallet.payInvoice(invoice?.pr ?? "");
         console.log(res);
         setSuccess(invoice?.successAction ?? {});
       }
@@ -300,14 +299,6 @@ export default function SendSats(props: SendSatsProps) {
     );
   }
 
-  async function payWithWallet(pr: string) {
-    if (wallet) {
-      const rsp = await wallet.payInvoice(pr);
-      console.debug(rsp);
-      setSuccess(rsp as LNURLSuccessAction);
-    }
-  }
-
   function payInvoice() {
     if (success || !invoice) return null;
     return (
@@ -316,7 +307,12 @@ export default function SendSats(props: SendSatsProps) {
           {props.notice && <b className="error">{props.notice}</b>}
           {paying ? (
             <h4>
-              <FormattedMessage defaultMessage="Paying with WebLN" />
+              <FormattedMessage
+                defaultMessage="Paying with {wallet}"
+                values={{
+                  wallet: walletState.config?.info.alias,
+                }}
+              />
               ...
             </h4>
           ) : (
@@ -331,11 +327,6 @@ export default function SendSats(props: SendSatsProps) {
                 <button className="wallet-action" type="button" onClick={() => window.open(`lightning:${invoice}`)}>
                   <FormattedMessage {...messages.OpenWallet} />
                 </button>
-                {wallet && (
-                  <button className="wallet-action" type="button" onClick={() => payWithWallet(invoice)}>
-                    <FormattedMessage defaultMessage="Pay with Wallet" />
-                  </button>
-                )}
               </>
             )}
           </div>

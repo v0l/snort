@@ -2,12 +2,10 @@ import "./Zap.css";
 import { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useSelector } from "react-redux";
-import { decode as invoiceDecode } from "light-bolt11-decoder";
-import { bytesToHex } from "@noble/hashes/utils";
-import { sha256, unwrap } from "Util";
+import { Event, HexKey, TaggedRawEvent } from "@snort/nostr";
+
+import { decodeInvoice, sha256, unwrap } from "Util";
 import { formatShort } from "Number";
-import { HexKey, TaggedRawEvent } from "@snort/nostr";
-import { Event } from "@snort/nostr";
 import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
 import { RootState } from "State/Store";
@@ -27,15 +25,9 @@ function getInvoice(zap: TaggedRawEvent) {
     console.debug("Invalid zap: ", zap);
     return {};
   }
-  try {
-    const decoded = invoiceDecode(bolt11);
-
-    const amount = decoded.sections.find(section => section.name === "amount")?.value;
-    const hash = decoded.sections.find(section => section.name === "description_hash")?.value;
-
-    return { amount, hash: hash ? bytesToHex(hash as Uint8Array) : undefined };
-  } catch {
-    // ignore
+  const decoded = decodeInvoice(bolt11);
+  if (decoded) {
+    return { amount: decoded?.amount, hash: decoded?.descriptionHash };
   }
   return {};
 }

@@ -2,9 +2,10 @@ import { EventPublisher } from "Feed/EventPublisher";
 import {
   InvoiceRequest,
   LNWallet,
+  prToWalletInvoice,
   Sats,
-  UnknownWalletError,
   WalletError,
+  WalletErrorCode,
   WalletInfo,
   WalletInvoice,
   WalletInvoiceState,
@@ -47,12 +48,12 @@ export default class LNDHubWallet implements LNWallet {
     }
   }
 
-  close(): Promise<boolean | WalletError> {
-    throw new Error("Not implemented");
+  isReady(): boolean {
+    return this.auth !== undefined;
   }
 
-  async createAccount() {
-    return Promise.resolve(UnknownWalletError);
+  close(): Promise<boolean> {
+    return Promise.resolve(true);
   }
 
   async getInfo() {
@@ -66,19 +67,12 @@ export default class LNDHubWallet implements LNWallet {
       login: this.user,
       password: this.password,
     });
-
-    if ("error" in rsp) {
-      return rsp as WalletError;
-    }
     this.auth = rsp as AuthResponse;
     return true;
   }
 
-  async getBalance(): Promise<Sats | WalletError> {
+  async getBalance(): Promise<Sats> {
     const rsp = await this.getJson<GetBalanceResponse>("GET", "/balance");
-    if ("error" in rsp) {
-      return rsp as WalletError;
-    }
     const bal = Math.floor((rsp as GetBalanceResponse).BTC.AvailableBalance);
     return bal as Sats;
   }
@@ -88,9 +82,6 @@ export default class LNDHubWallet implements LNWallet {
       amt: req.amount,
       memo: req.memo,
     });
-    if ("error" in rsp) {
-      return rsp as WalletError;
-    }
 
     const pRsp = rsp as UserInvoicesResponse;
     return {
@@ -107,10 +98,6 @@ export default class LNDHubWallet implements LNWallet {
       invoice: pr,
     });
 
-    if ("error" in rsp) {
-      return rsp as WalletError;
-    }
-
     const pRsp = rsp as PayInvoiceResponse;
     return {
       pr: pr,
@@ -119,24 +106,23 @@ export default class LNDHubWallet implements LNWallet {
     } as WalletInvoice;
   }
 
-  async getInvoices(): Promise<WalletInvoice[] | WalletError> {
+  async getInvoices(): Promise<WalletInvoice[]> {
     const rsp = await this.getJson<UserInvoicesResponse[]>("GET", "/getuserinvoices");
-    if ("error" in rsp) {
-      return rsp as WalletError;
-    }
     return (rsp as UserInvoicesResponse[]).map(a => {
+      const decodedInvoice = prToWalletInvoice(a.payment_request);
+      if (!decodedInvoice) {
+        throw new WalletError(WalletErrorCode.InvalidInvoice, "Failed to parse invoice");
+      }
       return {
-        memo: a.description,
-        amount: Math.floor(a.amt),
-        timestamp: a.timestamp,
-        state: a.ispaid ? WalletInvoiceState.Paid : WalletInvoiceState.Pending,
-        pr: a.payment_request,
+        ...decodedInvoice,
+        state: a.ispaid ? WalletInvoiceState.Paid : decodedInvoice.state,
         paymentHash: a.payment_hash,
+        memo: a.description,
       } as WalletInvoice;
     });
   }
 
-  private async getJson<T>(method: "GET" | "POST", path: string, body?: any): Promise<T | WalletError> {
+  private async getJson<T>(method: "GET" | "POST", path: string, body?: unknown): Promise<T> {
     let auth = `Bearer ${this.auth?.access_token}`;
     if (this.type === "snort") {
       const ev = await this.publisher?.generic(`${new URL(this.url).pathname}${path}`, 30_000);
@@ -152,7 +138,8 @@ export default class LNDHubWallet implements LNWallet {
     });
     const json = await rsp.json();
     if ("error" in json) {
-      return json as WalletError;
+      const err = json as ErrorResponse;
+      throw new WalletError(err.code, err.message);
     }
     return json as T;
   }
@@ -187,4 +174,9 @@ interface PayInvoiceResponse {
   payment_hash: string;
   payment_preimage: string;
   payment_route?: { total_amt: number; total_fees: number };
+}
+
+interface ErrorResponse {
+  code: number;
+  message: string;
 }
