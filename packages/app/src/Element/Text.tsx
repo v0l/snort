@@ -12,7 +12,7 @@ import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 import Mention from "Element/Mention";
 import HyperText from "Element/HyperText";
-import MagnetLink from "Element/Magnet";
+import MagnetLink from "Element/MagnetLink";
 
 export type Fragment = string | React.ReactNode;
 
