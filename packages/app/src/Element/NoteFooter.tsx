@@ -154,7 +154,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       return (
         <>
           <div className={`reaction-pill ${didZap ? "reacted" : ""}`} {...longPress()} onClick={e => fastZap(e)}>
-            {zapping ? <Spinner /> : wallet?.isReady ? <Icon name="zapFast" /> : <Icon name="zap" />}
+            {zapping ? <Spinner /> : wallet?.isReady() ? <Icon name="zapFast" /> : <Icon name="zap" />}
             {zapTotal > 0 && <div className="reaction-pill-number">{formatShort(zapTotal)}</div>}
           </div>
         </>
