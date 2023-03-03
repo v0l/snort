@@ -82,14 +82,7 @@ export interface UserPreferences {
   defaultZapAmount: number;
 }
 
-export type DbType = "indexdDb" | "redux";
-
 export interface LoginStore {
-  /**
-   * Which db we will use to cache data
-   */
-  useDb: DbType;
-
   /**
    * If there is no login
    */
@@ -208,7 +201,6 @@ export const DefaultImgProxy = {
 };
 
 export const InitState = {
-  useDb: "redux",
   loggedOut: undefined,
   publicKey: undefined,
   privateKey: undefined,
@@ -267,8 +259,7 @@ const LoginSlice = createSlice({
   name: "Login",
   initialState: InitState,
   reducers: {
-    init: (state, action: PayloadAction<DbType>) => {
-      state.useDb = action.payload;
+    init: state => {
       state.privateKey = window.localStorage.getItem(PrivateKeyItem) ?? undefined;
       if (state.privateKey) {
         window.localStorage.removeItem(PublicKeyItem); // reset nip07 if using private key

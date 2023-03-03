@@ -18,14 +18,11 @@ import {
   setLatestNotifications,
 } from "State/Login";
 import { RootState } from "State/Store";
-import { mapEventToProfile, MetadataCache } from "State/Users";
 import useSubscription from "Feed/Subscription";
 import { barrierNip07 } from "Feed/EventPublisher";
 import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
-import { unwrap } from "Util";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
-import { ReduxUDB } from "State/Users/Db";
 
 /**
  * Managed loading data for the current logged in user
@@ -46,7 +43,7 @@ export default function useLoginFeed() {
     const sub = new Subscriptions();
     sub.Id = `login:meta`;
     sub.Authors = new Set([pubKey]);
-    sub.Kinds = new Set([EventKind.ContactList, EventKind.SetMetadata]);
+    sub.Kinds = new Set([EventKind.ContactList]);
     sub.Limit = 2;
 
     return sub;
@@ -148,12 +145,6 @@ export default function useLoginFeed() {
 
   useEffect(() => {
     const contactList = metadataFeed.store.notes.filter(a => a.kind === EventKind.ContactList);
-    const metadata = metadataFeed.store.notes.filter(a => a.kind === EventKind.SetMetadata);
-    const profiles = metadata
-      .map(a => mapEventToProfile(a))
-      .filter(a => a !== undefined)
-      .map(a => unwrap(a));
-
     for (const cl of contactList) {
       if (cl.content !== "" && cl.content !== "{}") {
         const relays = JSON.parse(cl.content);
@@ -162,26 +153,7 @@ export default function useLoginFeed() {
       const pTags = cl.tags.filter(a => a[0] === "p").map(a => a[1]);
       dispatch(setFollows({ keys: pTags, createdAt: cl.created_at }));
     }
-
-    (async () => {
-      const maxProfile = profiles.reduce(
-        (acc, v) => {
-          if (v.created > acc.created) {
-            acc.profile = v;
-            acc.created = v.created;
-          }
-          return acc;
-        },
-        { created: 0, profile: null as MetadataCache | null }
-      );
-      if (maxProfile.profile) {
-        const existing = await ReduxUDB.find(maxProfile.profile.pubkey);
-        if ((existing?.created ?? 0) < maxProfile.created) {
-          await ReduxUDB.put(maxProfile.profile);
-        }
-      }
-    })().catch(console.warn);
-  }, [dispatch, metadataFeed.store, ReduxUDB]);
+  }, [dispatch, metadataFeed.store]);
 
   useEffect(() => {
     const replies = notificationFeed.store.notes.filter(
@@ -189,13 +161,13 @@ export default function useLoginFeed() {
     );
     replies.forEach(nx => {
       dispatch(setLatestNotifications(nx.created_at));
-      makeNotification(ReduxUDB, nx).then(notification => {
+      makeNotification(nx).then(notification => {
         if (notification) {
           (dispatch as ThunkDispatch<RootState, undefined, AnyAction>)(sendNotification(notification));
         }
       });
     });
-  }, [dispatch, notificationFeed.store, ReduxUDB, readNotifications]);
+  }, [dispatch, notificationFeed.store, readNotifications]);
 
   useEffect(() => {
     const muted = getMutedKeys(mutedFeed.store.notes);

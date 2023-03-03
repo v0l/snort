@@ -10,7 +10,6 @@ import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 
 import { Tag } from "@snort/nostr";
-import { MetadataCache } from "State/Users";
 import Mention from "Element/Mention";
 import HyperText from "Element/HyperText";
 import { HexKey } from "@snort/nostr";
@@ -21,17 +20,15 @@ export type Fragment = string | React.ReactNode;
 export interface TextFragment {
   body: React.ReactNode[];
   tags: Tag[];
-  users: Map<string, MetadataCache>;
 }
 
 export interface TextProps {
   content: string;
   creator: HexKey;
   tags: Tag[];
-  users: Map<string, MetadataCache>;
 }
 
-export default function Text({ content, tags, creator, users }: TextProps) {
+export default function Text({ content, tags, creator }: TextProps) {
   function extractLinks(fragments: Fragment[]) {
     return fragments
       .map(f => {
@@ -143,9 +140,9 @@ export default function Text({ content, tags, creator, users }: TextProps) {
 
   const components = useMemo(() => {
     return {
-      p: (x: { children?: React.ReactNode[] }) => transformParagraph({ body: x.children ?? [], tags, users }),
+      p: (x: { children?: React.ReactNode[] }) => transformParagraph({ body: x.children ?? [], tags }),
       a: (x: { href?: string }) => <HyperText link={x.href ?? ""} creator={creator} />,
-      li: (x: { children?: Fragment[] }) => transformLi({ body: x.children ?? [], tags, users }),
+      li: (x: { children?: Fragment[] }) => transformLi({ body: x.children ?? [], tags }),
     };
   }, [content]);
 

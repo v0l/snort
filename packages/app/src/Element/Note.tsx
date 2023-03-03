@@ -18,14 +18,15 @@ import {
   hexToBech32,
   normalizeReaction,
   Reaction,
+  profileLink,
 } from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
-import { useUserProfiles } from "Feed/ProfileFeed";
 import { TaggedRawEvent, u256, HexKey, Event as NEvent, EventKind } from "@snort/nostr";
 import useModeration from "Hooks/useModeration";
 import { setPinned, setBookmarked } from "State/Login";
 import type { RootState } from "State/Store";
+import { UserCache } from "State/Users/UserCache";
 
 import messages from "./messages";
 
@@ -72,8 +73,6 @@ export default function Note(props: NoteProps) {
   const { data, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false } = props;
   const [showReactions, setShowReactions] = useState(false);
   const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
-  const pubKeys = useMemo(() => ev.Thread?.PubKeys || [], [ev]);
-  const users = useUserProfiles(pubKeys);
   const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
   const { isMuted } = useModeration();
   const isOpMuted = isMuted(ev.PubKey);
@@ -162,7 +161,7 @@ export default function Note(props: NoteProps) {
         </b>
       );
     }
-    return <Text content={body} tags={ev.Tags} users={users || new Map()} creator={ev.PubKey} />;
+    return <Text content={body} tags={ev.Tags} creator={ev.PubKey} />;
   }, [ev]);
 
   useLayoutEffect(() => {
@@ -188,22 +187,14 @@ export default function Note(props: NoteProps) {
     const replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
     const mentions: { pk: string; name: string; link: ReactNode }[] = [];
     for (const pk of ev.Thread?.PubKeys ?? []) {
-      const u = users?.get(pk);
+      const u = UserCache.get(pk);
       const npub = hexToBech32("npub", pk);
       const shortNpub = npub.substring(0, 12);
-      if (u) {
-        mentions.push({
-          pk,
-          name: u.name ?? shortNpub,
-          link: <Link to={`/p/${npub}`}>{u.name ? `@${u.name}` : shortNpub}</Link>,
-        });
-      } else {
-        mentions.push({
-          pk,
-          name: shortNpub,
-          link: <Link to={`/p/${npub}`}>{shortNpub}</Link>,
-        });
-      }
+      mentions.push({
+        pk,
+        name: u?.name ?? shortNpub,
+        link: <Link to={profileLink(pk)}>{u?.name ? `@${u.name}` : shortNpub}</Link>,
+      });
     }
     mentions.sort(a => (a.name.startsWith("npub") ? 1 : -1));
     const othersLength = mentions.length - maxMentions;

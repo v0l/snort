@@ -2,7 +2,7 @@ import "./ProfileImage.css";
 
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useUserProfile } from "Feed/ProfileFeed";
+import { useUserProfile } from "Hooks/useUserProfile";
 import { hexToBech32, profileLink } from "Util";
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";

@@ -14,12 +14,13 @@ import { totalUnread } from "Pages/MessagesPage";
 import { SearchRelays, SnortPubKey } from "Const";
 import useEventPublisher from "Feed/EventPublisher";
 import useModeration from "Hooks/useModeration";
-import { IndexedUDB } from "State/Users/Db";
 import { bech32ToHex } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import { RelaySettings } from "@snort/nostr";
 import { FormattedMessage } from "react-intl";
 import messages from "./messages";
+import { db } from "Db";
+import { UserCache } from "State/Users/UserCache";
 
 export default function Layout() {
   const location = useLocation();
@@ -119,16 +120,13 @@ export default function Layout() {
 
   useEffect(() => {
     // check DB support then init
-    IndexedUDB.isAvailable().then(async a => {
-      const dbType = a ? "indexdDb" : "redux";
-
-      // cleanup on load
-      if (dbType === "indexdDb") {
-        IndexedUDB.ready = true;
+    db.isAvailable().then(async a => {
+      db.ready = a;
+      if (a) {
+        await UserCache.preload();
       }
-
-      console.debug(`Using db: ${dbType}`);
-      dispatch(init(dbType));
+      console.debug(`Using db: ${a ? "IndexedDB" : "In-Memory"}`);
+      dispatch(init());
 
       try {
         if ("registerProtocolHandler" in window.navigator) {

@@ -7,7 +7,8 @@ import { debounce } from "Util";
 import { router } from "index";
 import { SearchRelays } from "Const";
 import { System } from "System";
-import { useQuery } from "State/Users/Hooks";
+import { MetadataCache } from "State/Users";
+import { UserCache } from "State/Users/UserCache";
 
 import messages from "./messages";
 
@@ -16,12 +17,13 @@ const SearchPage = () => {
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string>();
   const [keyword, setKeyword] = useState<string | undefined>(params.keyword);
-  const allUsers = useQuery(keyword || "");
+  const [allUsers, setAllUsers] = useState<MetadataCache[]>();
 
   useEffect(() => {
     if (keyword) {
       // "navigate" changing only url
       router.navigate(`/search/${encodeURIComponent(keyword)}`);
+      UserCache.search(keyword).then(v => setAllUsers(v));
     }
   }, [keyword]);
 

@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 import ProfileImage from "Element/ProfileImage";
 import FollowButton from "Element/FollowButton";
-import { useUserProfile } from "Feed/ProfileFeed";
+import { useUserProfile } from "Hooks/useUserProfile";
 import { HexKey } from "@snort/nostr";
 import { useInView } from "react-intersection-observer";
 

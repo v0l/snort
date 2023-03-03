@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { HexKey } from "@snort/nostr";
 
-import { useUserProfile } from "Feed/ProfileFeed";
+import { useUserProfile } from "Hooks/useUserProfile";
 import SendSats from "Element/SendSats";
 
 const ZapButton = ({ pubkey, lnurl }: { pubkey: HexKey; lnurl?: string }) => {

@@ -17,7 +17,7 @@ import {
 import AsyncButton from "Element/AsyncButton";
 import SendSats from "Element/SendSats";
 import Copy from "Element/Copy";
-import { useUserProfile } from "Feed/ProfileFeed";
+import { useUserProfile } from "Hooks/useUserProfile";
 import useEventPublisher from "Feed/EventPublisher";
 import { debounce } from "Util";
 import { UserMetadata } from "@snort/nostr";

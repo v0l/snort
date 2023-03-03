@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShop } from "@fortawesome/free-solid-svg-icons";
 
 import useEventPublisher from "Feed/EventPublisher";
-import { useUserProfile } from "Feed/ProfileFeed";
+import { useUserProfile } from "Hooks/useUserProfile";
 import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";

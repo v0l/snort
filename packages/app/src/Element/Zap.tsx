@@ -109,7 +109,7 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean 
       </div>
       {content.length > 0 && zapper && (
         <div className="body">
-          <Text creator={zapper} content={content} tags={[]} users={new Map()} />
+          <Text creator={zapper} content={content} tags={[]} />
         </div>
       )}
     </div>

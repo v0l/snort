@@ -5,8 +5,8 @@ import { FormattedMessage } from "react-intl";
 import { dedupeByPubkey } from "Util";
 import Note from "Element/Note";
 import { HexKey, TaggedRawEvent } from "@snort/nostr";
-import { useUserProfiles } from "Feed/ProfileFeed";
 import { RootState } from "State/Store";
+import { UserCache } from "State/Users/UserCache";
 
 import messages from "./messages";
 
@@ -22,10 +22,9 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   const ps = useMemo(() => {
     return dedupeByPubkey(bookmarks).map(ev => ev.pubkey);
   }, [bookmarks]);
-  const profiles = useUserProfiles(ps);
 
   function renderOption(p: HexKey) {
-    const profile = profiles?.get(p);
+    const profile = UserCache.get(p);
     return profile ? <option value={p}>{profile?.display_name || profile?.name}</option> : null;
   }
 

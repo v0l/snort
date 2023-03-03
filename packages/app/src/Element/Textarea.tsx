@@ -1,7 +1,6 @@
 import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
 
-import { useState } from "react";
 import { useIntl } from "react-intl";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import emoji from "@jukben/emoji-search";
@@ -11,7 +10,7 @@ import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
 import { hexToBech32 } from "Util";
 import { MetadataCache } from "State/Users";
-import { useQuery } from "State/Users/Hooks";
+import { UserCache } from "State/Users/UserCache";
 
 import messages from "./messages";
 
@@ -53,14 +52,10 @@ interface TextareaProps {
 }
 
 const Textarea = (props: TextareaProps) => {
-  const [query, setQuery] = useState("");
   const { formatMessage } = useIntl();
 
-  const allUsers = useQuery(query);
-
-  const userDataProvider = (token: string) => {
-    setQuery(token);
-    return allUsers ?? [];
+  const userDataProvider = async (token: string) => {
+    return await UserCache.search(token);
   };
 
   const emojiDataProvider = (token: string) => {

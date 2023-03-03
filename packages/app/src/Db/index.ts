@@ -17,11 +17,27 @@ const STORES = {
 };
 
 export class SnortDB extends Dexie {
+  ready = false;
   users!: Table<MetadataCache>;
 
   constructor() {
     super(NAME);
     this.version(VERSION).stores(STORES);
+  }
+
+  isAvailable() {
+    if ("indexedDB" in window) {
+      return new Promise<boolean>(resolve => {
+        const req = window.indexedDB.open("dummy", 1);
+        req.onsuccess = () => {
+          resolve(true);
+        };
+        req.onerror = () => {
+          resolve(false);
+        };
+      });
+    }
+    return Promise.resolve(false);
   }
 }
 

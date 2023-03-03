@@ -18,7 +18,7 @@ import usePinnedFeed from "Feed/PinnedFeed";
 import useBookmarkFeed from "Feed/BookmarkFeed";
 import useFollowersFeed from "Feed/FollowersFeed";
 import useFollowsFeed from "Feed/FollowsFeed";
-import { useUserProfile } from "Feed/ProfileFeed";
+import { useUserProfile } from "Hooks/useUserProfile";
 import useModeration from "Hooks/useModeration";
 import useZapsFeed from "Feed/ZapsFeed";
 import { default as ZapElement } from "Element/Zap";
@@ -69,7 +69,6 @@ export default function ProfilePage() {
   const about = Text({
     content: aboutText,
     tags: [],
-    users: new Map(),
     creator: "",
   });
   const npub = !id?.startsWith("npub") ? hexToBech32("npub", id || undefined) : id;

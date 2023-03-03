@@ -1,10 +1,18 @@
-import { AuthHandler, HexKey, TaggedRawEvent } from "@snort/nostr";
+import {
+  AuthHandler,
+  HexKey,
+  TaggedRawEvent,
+  Event as NEvent,
+  EventKind,
+  RelaySettings,
+  Connection,
+  Subscriptions,
+} from "@snort/nostr";
 
-import { Event as NEvent, EventKind, RelaySettings, Connection, Subscriptions } from "@snort/nostr";
 import { ProfileCacheExpire } from "Const";
-import { mapEventToProfile } from "State/Users";
-import { ReduxUDB } from "State/Users/Db";
-import { unwrap } from "Util";
+import { mapEventToProfile, MetadataCache } from "State/Users";
+import { UserCache } from "State/Users/UserCache";
+import { unixNowMs, unwrap } from "Util";
 
 /**
  * Manages nostr content retrieval system
@@ -137,15 +145,15 @@ export class NostrSystem {
   /**
    * Request/Response pattern
    */
-  RequestSubscription(sub: Subscriptions) {
+  RequestSubscription(sub: Subscriptions, timeout?: number) {
     return new Promise<TaggedRawEvent[]>(resolve => {
       const events: TaggedRawEvent[] = [];
 
       // force timeout returning current results
-      const timeout = setTimeout(() => {
+      const t = setTimeout(() => {
         this.RemoveSubscription(sub.Id);
         resolve(events);
-      }, 10_000);
+      }, timeout ?? 10_000);
 
       const onEventPassthrough = sub.OnEvent;
       sub.OnEvent = ev => {
@@ -166,7 +174,7 @@ export class NostrSystem {
       sub.OnEnd = c => {
         c.RemoveSubscription(sub.Id);
         if (sub.IsFinished()) {
-          clearInterval(timeout);
+          clearInterval(t);
           console.debug(`[${sub.Id}] Finished`);
           resolve(events);
         }
@@ -176,24 +184,15 @@ export class NostrSystem {
   }
 
   async _FetchMetadata() {
-    const userDb = ReduxUDB;
+    const missingFromCache = await UserCache.buffer([...this.WantsMetadata]);
 
-    const missing = new Set<HexKey>();
-    const meta = await userDb.bulkGet(Array.from(this.WantsMetadata));
-    const expire = new Date().getTime() - ProfileCacheExpire;
-    for (const pk of this.WantsMetadata) {
-      const m = meta.find(a => a.pubkey === pk);
-      if ((m?.loaded ?? 0) < expire) {
-        missing.add(pk);
-        // cap 100 missing profiles
-        if (missing.size >= 100) {
-          break;
-        }
-      }
-    }
-
+    const expire = unixNowMs() - ProfileCacheExpire;
+    const expired = [...this.WantsMetadata]
+      .filter(a => !missingFromCache.includes(a))
+      .filter(a => (UserCache.get(a)?.loaded ?? 0) < expire);
+    const missing = new Set([...missingFromCache, ...expired]);
     if (missing.size > 0) {
-      console.debug("Wants profiles: ", missing);
+      console.debug(`Wants profiles: ${missingFromCache.length} missing, ${expired.length} expired`);
 
       const sub = new Subscriptions();
       sub.Id = `profiles:${sub.Id.slice(0, 8)}`;
@@ -202,29 +201,21 @@ export class NostrSystem {
       sub.OnEvent = async e => {
         const profile = mapEventToProfile(e);
         if (profile) {
-          const existing = await userDb.find(profile.pubkey);
-          if ((existing?.created ?? 0) < profile.created) {
-            await userDb.put(profile);
-          } else if (existing) {
-            await userDb.update(profile.pubkey, {
-              loaded: profile.loaded,
-            });
-          }
+          await UserCache.update(profile);
         }
       };
-      const results = await this.RequestSubscription(sub);
-      const couldNotFetch = Array.from(missing).filter(a => !results.some(b => b.pubkey === a));
-      console.debug("No profiles: ", couldNotFetch);
+      const results = await this.RequestSubscription(sub, 5_000);
+      const couldNotFetch = [...missing].filter(a => !results.some(b => b.pubkey === a));
       if (couldNotFetch.length > 0) {
-        const updates = couldNotFetch
-          .map(a => {
-            return {
-              pubkey: a,
-              loaded: new Date().getTime(),
-            };
-          })
-          .map(a => userDb.update(a.pubkey, a));
-        await Promise.all(updates);
+        console.debug("No profiles: ", couldNotFetch);
+        const empty = couldNotFetch.map(a =>
+          UserCache.update({
+            pubkey: a,
+            loaded: unixNowMs(),
+            created: 69,
+          } as MetadataCache)
+        );
+        await Promise.all(empty);
       }
     }
 

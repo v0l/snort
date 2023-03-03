@@ -8,7 +8,7 @@ import { services } from "Pages/Verification";
 import Nip5Service from "Element/Nip5Service";
 import ProfileImage from "Element/ProfileImage";
 import type { RootState } from "State/Store";
-import { useUserProfile } from "Feed/ProfileFeed";
+import { useUserProfile } from "Hooks/useUserProfile";
 
 import messages from "./messages";
 

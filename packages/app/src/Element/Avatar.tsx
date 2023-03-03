@@ -1,7 +1,9 @@
 import "./Avatar.css";
 import Nostrich from "nostrich.webp";
+
 import { CSSProperties, useEffect, useState } from "react";
 import type { UserMetadata } from "@snort/nostr";
+
 import useImgProxy from "Hooks/useImgProxy";
 
 const Avatar = ({ user, ...rest }: { user?: UserMetadata; onClick?: () => void }) => {

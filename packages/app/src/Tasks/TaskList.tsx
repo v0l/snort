@@ -1,4 +1,4 @@
-import { useUserProfile } from "Feed/ProfileFeed";
+import { useUserProfile } from "Hooks/useUserProfile";
 import Icon from "Icons/Icon";
 import { useState } from "react";
 import { useSelector } from "react-redux";

@@ -54,7 +54,7 @@ export default function DM(props: DMProps) {
         <NoteTime from={props.data.created_at * 1000} fallback={formatMessage(messages.JustNow)} />
       </div>
       <div className="w-max">
-        <Text content={content} tags={[]} users={new Map()} creator={otherPubkey} />
+        <Text content={content} tags={[]} creator={otherPubkey} />
       </div>
     </div>
   );
