@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
-import { Event as NEvent, TaggedRawEvent, HexKey } from "@snort/nostr";
+import { Event as NEvent, TaggedRawEvent, HexKey, u256 } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { hexToBech32, normalizeReaction, unwrap } from "Util";
+import { bech32ToHex, hexToBech32, normalizeReaction, unwrap } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
@@ -19,7 +19,7 @@ import { useUserProfile } from "Hooks/useUserProfile";
 import { RootState } from "State/Store";
 import { UserPreferences, setPinned, setBookmarked } from "State/Login";
 import useModeration from "Hooks/useModeration";
-import { TranslateHost } from "Const";
+import { SnortPubKey, TranslateHost } from "Const";
 import { LNURL } from "LNURL";
 import { DonateLNURL } from "Pages/DonatePage";
 import { useWallet } from "Wallet";
@@ -119,12 +119,12 @@ export default function NoteFooter(props: NoteFooterProps) {
           const donateAmount = Math.floor(prefs.defaultZapAmount * prefs.fastZapDonate);
           if (donateAmount > 0) {
             console.debug(`Donating ${donateAmount} sats to ${DonateLNURL}`);
-            fastZapInner(DonateLNURL, donateAmount)
+            fastZapInner(DonateLNURL, donateAmount, bech32ToHex(SnortPubKey))
               .then(() => console.debug("Donation sent! Thank You!"))
               .catch(() => console.debug("Failed to donate"));
           }
         }
-        await fastZapInner(lnurl, prefs.defaultZapAmount);
+        await fastZapInner(lnurl, prefs.defaultZapAmount, ev.PubKey, ev.Id);
       } catch (e) {
         console.warn("Fast zap failed", e);
         if (!(e instanceof Error) || e.message !== "User rejected") {
@@ -138,11 +138,11 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }
 
-  async function fastZapInner(lnurl: string, amount: number) {
+  async function fastZapInner(lnurl: string, amount: number, key: HexKey, id?: u256) {
     if (wallet?.isReady() && lnurl) {
       const handler = new LNURL(lnurl);
       await handler.load();
-      const zap = handler.canZap ? await publisher.zap(amount * 1000, ev.PubKey, ev.Id) : undefined;
+      const zap = handler.canZap ? await publisher.zap(amount * 1000, key, id) : undefined;
       const invoice = await handler.getInvoice(amount, undefined, zap);
       await wallet.payInvoice(unwrap(invoice.pr));
     }
