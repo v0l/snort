@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, Children } from "react";
 import { useSelector } from "react-redux";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 import { FormattedMessage } from "react-intl";
@@ -137,14 +137,12 @@ export default function HyperText({ link, creator }: { link: string; creator: He
       } else if (isAppleMusicLink) {
         return <AppleMusicEmbed link={a} />;
       } else if (isNostrNestsLink) {
-        return (
-          <>
-            <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-              {a}
-            </a>
-            <NostrNestsEmbed link={a} />
-          </>
-        );
+        return [
+          <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
+            {a}
+          </a>,
+          <NostrNestsEmbed link={a} />,
+        ];
       } else {
         return (
           <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
@@ -162,9 +160,6 @@ export default function HyperText({ link, creator }: { link: string; creator: He
     );
   }, [link, reveal]);
 
-  const elm = render();
-  if (elm.type !== "a") {
-    return wrapReveal(elm, link);
-  }
-  return elm;
+  const children = render();
+  return <>{Children.map(children, elm => (elm.type === "a" ? elm : wrapReveal(elm, link)))}</>;
 }
