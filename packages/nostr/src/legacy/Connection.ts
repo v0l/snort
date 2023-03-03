@@ -262,6 +262,7 @@ export class Connection {
       return;
     }
 
+    sub.Started.set(this.Address, new Date().getTime());
     this._SendSubscription(sub);
     this.Subscriptions.set(sub.Id, sub);
   }

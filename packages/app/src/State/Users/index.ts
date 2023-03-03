@@ -1,5 +1,5 @@
 import { HexKey, TaggedRawEvent, UserMetadata } from "@snort/nostr";
-import { hexToBech32 } from "Util";
+import { hexToBech32, unixNowMs } from "Util";
 
 export interface MetadataCache extends UserMetadata {
   /**
@@ -30,8 +30,8 @@ export function mapEventToProfile(ev: TaggedRawEvent) {
       pubkey: ev.pubkey,
       npub: hexToBech32("npub", ev.pubkey),
       created: ev.created_at,
-      loaded: new Date().getTime(),
       ...data,
+      loaded: unixNowMs(),
     } as MetadataCache;
   } catch (e) {
     console.error("Failed to parse JSON", ev, e);
