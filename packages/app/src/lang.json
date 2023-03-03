@@ -315,6 +315,9 @@
   "IUZC+0": {
     "defaultMessage": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you."
   },
+  "Iwm6o2": {
+    "defaultMessage": "NIP-05 Shop"
+  },
   "JCIgkj": {
     "defaultMessage": "Username"
   },
@@ -837,6 +840,9 @@
   },
   "wtLjP6": {
     "defaultMessage": "Copy ID"
+  },
+  "wvFw6Y": {
+    "defaultMessage": "Hey, it looks like you dont have a NIP-05 handle yet, you should get one! Check out {link}"
   },
   "x82IOl": {
     "defaultMessage": "Mute"
