@@ -183,12 +183,9 @@
   text-overflow: ellipsis;
 }
 
-.profile .link-icon {
+.profile .links svg {
   color: var(--highlight);
   margin-right: 8px;
-}
-
-.profile .link-icon svg {
   width: 12px;
   height: 12px;
 }

@@ -1,6 +1,5 @@
 import "./Copy.css";
-import Check from "Icons/Check";
-import CopyIcon from "Icons/Copy";
+import Icon from "Icons/Icon";
 import { useCopy } from "useCopy";
 
 export interface CopyProps {
@@ -16,7 +15,7 @@ export default function Copy({ text, maxSize = 32 }: CopyProps) {
     <div className="flex flex-row copy" onClick={() => copy(text)}>
       <span className="body">{trimmed}</span>
       <span className="icon" style={{ color: copied ? "var(--success)" : "var(--highlight)" }}>
-        {copied ? <Check width={14} height={14} /> : <CopyIcon width={14} height={14} />}
+        {copied ? <Icon name="check" size={14} /> : <Icon name="copy" size={14} />}
       </span>
     </div>
   );

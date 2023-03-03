@@ -6,15 +6,11 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { TaggedRawEvent } from "@snort/nostr";
 
 import { formatShort } from "Number";
-import Repost from "Icons/Repost";
-import Dislike from "Icons/Dislike";
-import Heart from "Icons/Heart";
-import ZapIcon from "Icons/Zap";
+import Icon from "Icons/Icon";
 import { Tab } from "Element/Tabs";
 import { ParsedZap } from "Element/Zap";
 import ProfileImage from "Element/ProfileImage";
 import Tabs from "Element/Tabs";
-import Close from "Icons/Close";
 import Modal from "Element/Modal";
 
 import messages from "./messages";
@@ -81,7 +77,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
     <Modal className="reactions-modal" onClose={onClose}>
       <div className="reactions-view">
         <div className="close" onClick={onClose}>
-          <Close />
+          <Icon name="close" />
         </div>
         <div className="reactions-header">
           <h2>
@@ -94,9 +90,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
             likes.map(ev => {
               return (
                 <div key={ev.id} className="reactions-item">
-                  <div className="reaction-icon">
-                    {ev.content === "+" ? <Heart width={20} height={18} /> : ev.content}
-                  </div>
+                  <div className="reaction-icon">{ev.content === "+" ? <Icon name="heart" /> : ev.content}</div>
                   <ProfileImage autoWidth={false} pubkey={ev.pubkey} />
                 </div>
               );
@@ -107,7 +101,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                 z.zapper && (
                   <div key={z.id} className="reactions-item">
                     <div className="zap-reaction-icon">
-                      <ZapIcon width={17} height={20} />
+                      <Icon name="zap" size={20} />
                       <span className="zap-amount">{formatShort(z.amount)}</span>
                     </div>
                     <ProfileImage
@@ -129,7 +123,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">
-                    <Repost width={16} height={16} />
+                    <Icon name="repost" size={16} />
                   </div>
                   <ProfileImage autoWidth={false} pubkey={ev.pubkey} />
                 </div>
@@ -140,7 +134,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
               return (
                 <div key={ev.id} className="reactions-item">
                   <div className="reaction-icon">
-                    <Dislike width={20} height={18} />
+                    <Icon name="dislike" />
                   </div>
                   <ProfileImage autoWidth={false} pubkey={ev.pubkey} />
                 </div>

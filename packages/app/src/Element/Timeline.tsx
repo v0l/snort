@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { useCallback, useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
-import ArrowUp from "Icons/ArrowUp";
+import Icon from "Icons/Icon";
 import { dedupeById, dedupeByPubkey, tagFilterOfTextRepost } from "Util";
 import ProfileImage from "Element/ProfileImage";
 import useTimelineFeed, { TimelineSubject } from "Feed/TimelineFeed";
@@ -127,7 +127,7 @@ export default function Timeline({
               defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
               values={{ n: latestFeed.length }}
             />
-            <ArrowUp />
+            <Icon name="arrowUp" />
           </div>
           {!inView && (
             <div className="card latest-notes latest-notes-fixed pointer fade-in" onClick={() => onShowLatest(true)}>
@@ -138,7 +138,7 @@ export default function Timeline({
                 defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
                 values={{ n: latestFeed.length }}
               />
-              <ArrowUp />
+              <Icon name="arrowUp" />
             </div>
           )}
         </>

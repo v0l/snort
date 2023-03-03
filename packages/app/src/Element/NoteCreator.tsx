@@ -2,7 +2,7 @@ import "./NoteCreator.css";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import Attachment from "Icons/Attachment";
+import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
 import { openFile } from "Util";
 import Textarea from "Element/Textarea";
@@ -113,7 +113,7 @@ export function NoteCreator(props: NoteCreatorProps) {
                 onFocus={() => setActive(true)}
               />
               <button type="button" className="attachment" onClick={attachFile}>
-                <Attachment />
+                <Icon name="attachment" />
               </button>
             </div>
             {hasErrors && <span className="error">{error}</span>}

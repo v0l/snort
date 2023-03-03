@@ -4,7 +4,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { useMemo } from "react";
 
 import SendSats from "Element/SendSats";
-import ZapCircle from "Icons/ZapCircle";
+import Icon from "Icons/Icon";
 import { useWallet } from "Wallet";
 import { decodeInvoice } from "Util";
 
@@ -33,7 +33,7 @@ export default function Invoice(props: InvoiceProps) {
         <h4>
           <FormattedMessage {...messages.Invoice} />
         </h4>
-        <ZapCircle className="zap-circle" />
+        <Icon name="zapCircle" className="zap-circle" />
         <SendSats
           title={formatMessage(messages.PayInvoice)}
           invoice={invoice}

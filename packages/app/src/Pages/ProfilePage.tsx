@@ -11,10 +11,7 @@ import Note from "Element/Note";
 import Bookmarks from "Element/Bookmarks";
 import RelaysMetadata from "Element/RelaysMetadata";
 import { Tab, TabElement } from "Element/Tabs";
-import Link from "Icons/Link";
-import Qr from "Icons/Qr";
-import Zap from "Icons/Zap";
-import Envelope from "Icons/Envelope";
+import Icon from "Icons/Icon";
 import useMutedFeed from "Feed/MuteList";
 import useRelaysFeed from "Feed/RelaysFeed";
 import usePinnedFeed from "Feed/PinnedFeed";
@@ -141,9 +138,7 @@ export default function ProfilePage() {
       <div className="links">
         {user?.website && (
           <div className="website f-ellipsis">
-            <span className="link-icon">
-              <Link />
-            </span>
+            <Icon name="link" />
             <a href={website_url} target="_blank" rel="noreferrer">
               {user.website}
             </a>
@@ -152,9 +147,7 @@ export default function ProfilePage() {
 
         {lnurl && (
           <div className="lnurl f-ellipsis" onClick={() => setShowLnQr(true)}>
-            <span className="link-icon">
-              <Zap />
-            </span>
+            <Icon name="zap" />
             {lnurl}
           </div>
         )}
@@ -259,7 +252,7 @@ export default function ProfilePage() {
     return (
       <div className="icon-actions">
         <IconButton onClick={() => setShowProfileQr(true)}>
-          <Qr width={14} height={16} />
+          <Icon name="qr" size={16} />
         </IconButton>
         {showProfileQr && (
           <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
@@ -281,13 +274,13 @@ export default function ProfilePage() {
           <>
             {lnurl && (
               <IconButton onClick={() => setShowLnQr(true)}>
-                <Zap width={14} height={16} />
+                <Icon name="zap" size={16} />
               </IconButton>
             )}
             {loginPubKey && (
               <>
                 <IconButton onClick={() => navigate(`/messages/${hexToBech32(NostrPrefix.PublicKey, id)}`)}>
-                  <Envelope width={16} height={13} />
+                  <Icon name="envelope" size={16} />
                 </IconButton>
               </>
             )}

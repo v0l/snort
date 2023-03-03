@@ -1,6 +1,6 @@
 import { useState, ReactNode } from "react";
 
-import ChevronDown from "Icons/ChevronDown";
+import Icon from "Icons/Icon";
 import ShowMore from "Element/ShowMore";
 
 interface CollapsedProps {
@@ -38,7 +38,7 @@ export const CollapsedSection = ({ title, children }: CollapsedSectionProps) => 
   const [collapsed, setCollapsed] = useState(true);
   const icon = (
     <div className={`collapse-icon ${collapsed ? "" : "flip"}`} onClick={() => setCollapsed(!collapsed)}>
-      <ChevronDown />
+      <Icon name="chevronDown" />
     </div>
   );
   return (

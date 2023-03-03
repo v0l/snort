@@ -1,6 +1,6 @@
 import "./Nip05.css";
 import { useQuery } from "react-query";
-import Badge from "Icons/Badge";
+import Icon from "Icons/Icon";
 import { HexKey } from "@snort/nostr";
 
 interface NostrJson {
@@ -62,7 +62,7 @@ const Nip05 = ({ nip05, pubkey, verifyNip = true }: Nip05Params) => {
           <span className="domain" data-domain={domain?.toLowerCase()}>
             {domain}
           </span>
-          <Badge className="badge" />
+          <Icon name="badge" className="badge" size={16} />
         </>
       )}
     </div>

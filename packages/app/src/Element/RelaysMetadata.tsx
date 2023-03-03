@@ -3,8 +3,7 @@ import Nostrich from "nostrich.webp";
 import { useState } from "react";
 
 import { FullRelaySettings } from "@snort/nostr";
-import Read from "Icons/Read";
-import Write from "Icons/Write";
+import Icon from "Icons/Icon";
 
 const RelayFavicon = ({ url }: { url: string }) => {
   const cleanUrl = url
@@ -30,8 +29,8 @@ const RelaysMetadata = ({ relays }: RelaysMetadataProps) => {
             <RelayFavicon url={url} />
             <code className="relay-url f-ellipsis">{url}</code>
             <div className="relay-settings">
-              <Read className={settings.read ? "enabled" : "disabled"} />
-              <Write className={settings.write ? "enabled" : "disabled"} />
+              <Icon name="read" className={settings.read ? "enabled" : "disabled"} />
+              <Icon name="write" className={settings.write ? "enabled" : "disabled"} />
             </div>
           </div>
         );

@@ -85,4 +85,5 @@
   position: absolute;
   top: 26px;
   right: 20px;
+  color: var(--font-color);
 }

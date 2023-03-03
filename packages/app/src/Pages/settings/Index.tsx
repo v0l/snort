@@ -2,13 +2,7 @@ import "./Index.css";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ArrowFront from "Icons/ArrowFront";
-import Gear from "Icons/Gear";
-import Profile from "Icons/Profile";
-import Relay from "Icons/Relay";
-import Heart from "Icons/Heart";
-import Logout from "Icons/Logout";
-import Bitcoin from "Icons/Bitcoin";
+import Icon from "Icons/Icon";
 import { logout } from "State/Login";
 
 import messages from "./messages";
@@ -26,60 +20,34 @@ const SettingsIndex = () => {
     <>
       <div className="settings-nav">
         <div className="settings-row" onClick={() => navigate("profile")}>
-          <div className="mr10">
-            <Profile />
-          </div>
-          <span>
-            <FormattedMessage {...messages.Profile} />
-          </span>
-          <div className="align-end">
-            <ArrowFront />
-          </div>
+          <Icon name="profile" />
+          <FormattedMessage {...messages.Profile} />
+          <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={() => navigate("relays")}>
-          <div className="mr10">
-            <Relay />
-          </div>
+          <Icon name="relay" />
           <FormattedMessage {...messages.Relays} />
-          <div className="align-end">
-            <ArrowFront />
-          </div>
+          <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={() => navigate("preferences")}>
-          <div className="mr10">
-            <Gear />
-          </div>
+          <Icon name="gear" />
           <FormattedMessage {...messages.Preferences} />
-          <div className="align-end">
-            <ArrowFront />
-          </div>
+          <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={() => navigate("wallet")}>
-          <div className="mr10">
-            <Bitcoin />
-          </div>
+          <Icon name="bitcoin" />
           <FormattedMessage defaultMessage="Wallet" />
-          <div className="align-end">
-            <ArrowFront />
-          </div>
+          <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={() => navigate("/donate")}>
-          <div className="mr10">
-            <Heart />
-          </div>
+          <Icon name="heart" />
           <FormattedMessage {...messages.Donate} />
-          <div className="align-end">
-            <ArrowFront />
-          </div>
+          <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={handleLogout}>
-          <div className="mr10">
-            <Logout />
-          </div>
+          <Icon name="logout" />
           <FormattedMessage {...messages.LogOut} />
-          <div className="align-end">
-            <ArrowFront />
-          </div>
+          <Icon name="arrowFront" />
         </div>
       </div>
     </>
