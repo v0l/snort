@@ -38,6 +38,8 @@ const Translators = [
   bech32ToHex("npub10529hxckjm5t5mchss5lnpsqrmavulglxhrmu5quuu4hs6yuyh3qc9gxd5"), // aadbitcoin - ID
 ];
 
+export const DonateLNURL = "donate@snort.social";
+
 interface Splits {
   pubKey: string;
   split: number;
@@ -105,7 +107,7 @@ const DonatePage = () => {
         <div className="mr10">
           <FormattedMessage defaultMessage="Lightning Donation: " />
         </div>
-        <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={"donate@snort.social"} />
+        <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL} />
       </div>
       {today && (
         <small>

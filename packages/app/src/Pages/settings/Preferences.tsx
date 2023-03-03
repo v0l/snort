@@ -2,6 +2,7 @@ import "./Preferences.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { FormattedMessage, useIntl } from "react-intl";
+import { Link } from "react-router-dom";
 import emoji from "@jukben/emoji-search";
 
 import { DefaultImgProxy, setPreferences, UserPreferences } from "State/Login";
@@ -151,6 +152,42 @@ const PreferencesPage = () => {
             value={perf.defaultZapAmount}
             min={1}
             onChange={e => dispatch(setPreferences({ ...perf, defaultZapAmount: parseInt(e.target.value) }))}
+          />
+        </div>
+      </div>
+      <div className="card flex">
+        <div className="flex f-col f-grow">
+          <div>
+            <FormattedMessage defaultMessage="Fast Zap Donation" />
+          </div>
+          <small>
+            <FormattedMessage
+              defaultMessage="For each Fast Zap an additional {percentage}% ({amount} sats) of the zap amount will be sent to the Snort developers as a donation."
+              values={{
+                percentage: perf.fastZapDonate * 100,
+                amount: Math.floor(perf.defaultZapAmount * perf.fastZapDonate),
+              }}
+            />
+            <br />
+            <FormattedMessage
+              defaultMessage="For more information about donations see {link}."
+              values={{
+                link: (
+                  <Link to="/donate">
+                    <FormattedMessage defaultMessage="Donate Page" />
+                  </Link>
+                ),
+              }}
+            />
+          </small>
+        </div>
+        <div>
+          <input
+            type="number"
+            value={perf.fastZapDonate * 100}
+            min={0}
+            max={100}
+            onChange={e => dispatch(setPreferences({ ...perf, fastZapDonate: parseInt(e.target.value) / 100 }))}
           />
         </div>
       </div>

@@ -21,7 +21,7 @@ import { UserPreferences, setPinned, setBookmarked } from "State/Login";
 import useModeration from "Hooks/useModeration";
 import { TranslateHost } from "Const";
 import { LNURL } from "LNURL";
-
+import { DonateLNURL } from "Pages/DonatePage";
 import { useWallet } from "Wallet";
 
 import messages from "./messages";
@@ -114,11 +114,17 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (wallet?.isReady() && lnurl) {
       setZapping(true);
       try {
-        const handler = new LNURL(lnurl);
-        await handler.load();
-        const zap = handler.canZap ? await publisher.zap(prefs.defaultZapAmount * 1000, ev.PubKey, ev.Id) : undefined;
-        const invoice = await handler.getInvoice(prefs.defaultZapAmount, undefined, zap);
-        await wallet.payInvoice(unwrap(invoice.pr));
+        if (prefs.fastZapDonate > 0) {
+          // spin off donate
+          const donateAmount = Math.floor(prefs.defaultZapAmount * prefs.fastZapDonate);
+          if (donateAmount > 0) {
+            console.debug(`Donating ${donateAmount} sats to ${DonateLNURL}`);
+            fastZapInner(DonateLNURL, donateAmount)
+              .then(() => console.debug("Donation sent! Thank You!"))
+              .catch(() => console.debug("Failed to donate"));
+          }
+        }
+        await fastZapInner(lnurl, prefs.defaultZapAmount);
       } catch (e) {
         console.warn("Fast zap failed", e);
         if (!(e instanceof Error) || e.message !== "User rejected") {
@@ -129,6 +135,16 @@ export default function NoteFooter(props: NoteFooterProps) {
       }
     } else {
       setTip(true);
+    }
+  }
+
+  async function fastZapInner(lnurl: string, amount: number) {
+    if (wallet?.isReady() && lnurl) {
+      const handler = new LNURL(lnurl);
+      await handler.load();
+      const zap = handler.canZap ? await publisher.zap(amount * 1000, ev.PubKey, ev.Id) : undefined;
+      const invoice = await handler.getInvoice(amount, undefined, zap);
+      await wallet.payInvoice(unwrap(invoice.pr));
     }
   }
 

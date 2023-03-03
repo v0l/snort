@@ -80,6 +80,11 @@ export interface UserPreferences {
    * Default zap amount
    */
   defaultZapAmount: number;
+
+  /**
+   * For each fast zap an additional X% will be sent to Snort donate address
+   */
+  fastZapDonate: number;
 }
 
 export interface LoginStore {
@@ -234,6 +239,7 @@ export const InitState = {
     imgProxyConfig: DefaultImgProxy,
     defaultRootTab: "posts",
     defaultZapAmount: 500,
+    fastZapDonate: 0.0,
   },
 } as LoginStore;
 
