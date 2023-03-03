@@ -44,6 +44,7 @@ export const DefaultRelays = new Map<string, RelaySettings>([
   ["wss://eden.nostr.land", { read: true, write: false }],
   ["wss://atlas.nostr.land", { read: true, write: false }],
   ["wss://relay.orangepill.dev", { read: true, write: false }],
+  ["wss://nos.lol", { read: true, write: false }],
 ]);
 
 /**
@@ -152,3 +153,8 @@ export const AppleMusicRegex =
  * Nostr Nests embed regex
  */
 export const NostrNestsRegex = /nostrnests\.com\/[a-zA-Z0-9]+/i;
+
+/*
+ * Magnet link parser
+ */
+export const MagnetRegex = /(magnet:[\S]+)/i; 

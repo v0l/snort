@@ -3,17 +3,16 @@ import { useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { visit, SKIP } from "unist-util-visit";
+import * as unist from "unist";
+import { HexKey, Tag } from "@snort/nostr";
 
-import { MentionRegex, InvoiceRegex, HashtagRegex } from "Const";
-import { eventLink, hexToBech32, splitByUrl, unwrap } from "Util";
+import { MentionRegex, InvoiceRegex, HashtagRegex, MagnetRegex } from "Const";
+import { eventLink, hexToBech32, magnetURIDecode, splitByUrl, unwrap } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
-
-import { Tag } from "@snort/nostr";
 import Mention from "Element/Mention";
 import HyperText from "Element/HyperText";
-import { HexKey } from "@snort/nostr";
-import * as unist from "unist";
+import MagnetLink from "Element/Magnet";
 
 export type Fragment = string | React.ReactNode;
 
@@ -36,6 +35,25 @@ export default function Text({ content, tags, creator }: TextProps) {
           return splitByUrl(f).map(a => {
             if (a.startsWith("http")) {
               return <HyperText key={a} link={a} creator={creator} />;
+            }
+            return a;
+          });
+        }
+        return f;
+      })
+      .flat();
+  }
+
+  function extractMagnetLinks(fragments: Fragment[]) {
+    return fragments
+      .map(f => {
+        if (typeof f === "string") {
+          return f.split(MagnetRegex).map(a => {
+            if (a.startsWith("magnet:")) {
+              const parsed = magnetURIDecode(a);
+              if (parsed) {
+                return <MagnetLink magnet={parsed} />;
+              }
             }
             return a;
           });
@@ -135,6 +153,7 @@ export default function Text({ content, tags, creator }: TextProps) {
     fragments = extractLinks(fragments);
     fragments = extractInvoices(fragments);
     fragments = extractHashtags(fragments);
+    fragments = extractMagnetLinks(fragments);
     return fragments;
   }
 

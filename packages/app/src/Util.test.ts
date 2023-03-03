@@ -1,4 +1,4 @@
-import { splitByUrl } from "./Util";
+import { splitByUrl, magnetURIDecode } from "./Util";
 
 describe("splitByUrl", () => {
   it("should split a string by URLs", () => {
@@ -36,5 +36,23 @@ describe("splitByUrl", () => {
     const expectedOutput = ["This is a regular string with no URLs"];
 
     expect(splitByUrl(inputStr)).toEqual(expectedOutput);
+  });
+});
+
+describe("magnet", () => {
+  it("should parse magnet link", () => {
+    const book =
+      "magnet:?xt=urn:btih:d2474e86c95b19b8bcfdb92bc12c9d44667cfa36&xt=urn:btmh:1220d2474e86c95b19b8bcfdb92bc12c9d44667cfa36d2474e86c95b19b8bcfdb92b&dn=Leaves+of+Grass+by+Walt+Whitman.epub&tr=udp%3A%2F%2Ftracker.example4.com%3A80&tr=udp%3A%2F%2Ftracker.example5.com%3A80&tr=udp%3A%2F%2Ftracker.example3.com%3A6969&tr=udp%3A%2F%2Ftracker.example2.com%3A80&tr=udp%3A%2F%2Ftracker.example1.com%3A1337";
+    const output = magnetURIDecode(book);
+    expect(output).not.toBeUndefined();
+    expect(output!.dn).toEqual("Leaves of Grass by Walt Whitman.epub");
+    expect(output!.infoHash).toEqual("d2474e86c95b19b8bcfdb92bc12c9d44667cfa36");
+    expect(output!.tr).toEqual([
+      "udp://tracker.example4.com:80",
+      "udp://tracker.example5.com:80",
+      "udp://tracker.example3.com:6969",
+      "udp://tracker.example2.com:80",
+      "udp://tracker.example1.com:1337",
+    ]);
   });
 });
