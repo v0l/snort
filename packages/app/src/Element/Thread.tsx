@@ -309,7 +309,7 @@ export default function Thread(props: ThreadProps) {
 
     const possibleRoots = parsedNotes.filter(isRoot);
 
-    // worst case we need to search for the root ID in the chains Map
+    // worst case we need to check every possible root to see which one contains the current note as a child
     for (const ne of possibleRoots) {
       const children = chains.get(ne.Id) ?? [];
 
