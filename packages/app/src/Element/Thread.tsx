@@ -293,29 +293,30 @@ export default function Thread(props: ThreadProps) {
   }, [notes]);
 
   const root = useMemo(() => {
-    const currentNote = parsedNotes.find(a => a.Id === urlNoteHex);
+    const isRoot = (ne?: NEvent) => ne?.Thread === null;
+    const currentNote = parsedNotes.find(ne => ne.Id === urlNoteHex);
 
-    // current note is the root if the current note ID is a key in the chains Map
-    if (chains.has(urlNoteHex)) {
+    if (isRoot(currentNote)) {
       return currentNote;
     }
 
-    let rootEventId = currentNote?.Thread?.Root?.Event;
+    const rootEventId = currentNote?.Thread?.Root?.Event;
 
     // sometimes the root event ID is missing, and we can only take the happy path if the root event ID exists
     if (rootEventId) {
-      return parsedNotes.find(a => a.Id === rootEventId);
+      return parsedNotes.find(ne => ne.Id === rootEventId);
     }
+
+    const possibleRoots = parsedNotes.filter(isRoot);
 
     // worst case we need to search for the root ID in the chains Map
-    for (const [key, value] of chains.entries()) {
-      if (value.find(a => a.Id === urlNoteHex)) {
-        rootEventId = key;
-        break;
+    for (const ne of possibleRoots) {
+      const children = chains.get(ne.Id) ?? [];
+
+      if (children.find(ne => ne.Id === urlNoteHex)) {
+        return ne;
       }
     }
-
-    return parsedNotes.find(a => a.Id === rootEventId);
   }, [notes, chains, urlNoteHex]);
 
   useEffect(() => {
