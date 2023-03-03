@@ -24,7 +24,7 @@ import TidalEmbed from "Element/TidalEmbed";
 import { ProxyImg } from "Element/ProxyImg";
 import TwitchEmbed from "Element/TwitchEmbed";
 import AppleMusicEmbed from "Element/AppleMusicEmbed";
-import NostrNestsEmbed from "./NostrNestsEmbed";
+import NostrNestsEmbed from "Element/NostrNestsEmbed";
 
 export default function HyperText({ link, creator }: { link: string; creator: HexKey }) {
   const pref = useSelector((s: RootState) => s.login.preferences);
