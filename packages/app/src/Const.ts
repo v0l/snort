@@ -157,4 +157,4 @@ export const NostrNestsRegex = /nostrnests\.com\/[a-zA-Z0-9]+/i;
 /*
  * Magnet link parser
  */
-export const MagnetRegex = /(magnet:[\S]+)/i; 
+export const MagnetRegex = /(magnet:[\S]+)/i;
