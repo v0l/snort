@@ -1,3 +1,5 @@
+import { FormattedMessage } from "react-intl";
+
 import { Magnet } from "Util";
 
 interface MagnetLinkProps {
@@ -7,7 +9,9 @@ interface MagnetLinkProps {
 const MagnetLink = ({ magnet }: MagnetLinkProps) => {
   return (
     <div className="note-invoice">
-      <h4>Magnet Link</h4>
+      <h4>
+        <FormattedMessage defaultMessage="Magnet Link" />
+      </h4>
       <a href={magnet.raw} rel="noreferrer">
         {magnet.dn ?? magnet.infoHash}
       </a>

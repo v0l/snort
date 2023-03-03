@@ -18,6 +18,11 @@ declare module "*.png" {
   export default value;
 }
 
+declare module "*.css" {
+  const stylesheet: CSSStyleSheet;
+  export default stylesheet;
+}
+
 declare module "translations/*.json" {
   const value: Record<string, string>;
   export default value;
