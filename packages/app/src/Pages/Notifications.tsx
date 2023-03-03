@@ -4,6 +4,7 @@ import { HexKey } from "@snort/nostr";
 import { markNotificationsRead } from "State/Login";
 import { RootState } from "State/Store";
 import Timeline from "Element/Timeline";
+import { TaskList } from "Tasks/TaskList";
 
 export default function NotificationsPage() {
   const dispatch = useDispatch();
@@ -15,6 +16,9 @@ export default function NotificationsPage() {
 
   return (
     <>
+      <div className="main-content">
+        <TaskList />
+      </div>
       {pubkey && (
         <Timeline
           subject={{

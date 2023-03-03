@@ -9,9 +9,9 @@ import { RootState } from "State/Store";
 import Timeline from "Element/Timeline";
 import { System } from "System";
 import { TimelineSubject } from "Feed/TimelineFeed";
+import { debounce, unwrap } from "Util";
 
 import messages from "./messages";
-import { debounce, unwrap } from "Util";
 
 interface RelayOption {
   url: string;
