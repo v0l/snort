@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl";
 
 import { TaggedRawEvent } from "@snort/nostr";
 
+import { ProxyImg } from "Element/ProxyImg";
 import Icon from "Icons/Icon";
 import Modal from "Element/Modal";
 import Username from "Element/Username";
@@ -29,7 +30,7 @@ export default function BadgeList({ badges }: { badges: TaggedRawEvent[] }) {
     <>
       <div className="badge-list" onClick={() => setShowModal(!showModal)}>
         {badgeMetadata.slice(0, 7).map(({ id, name, img }) => (
-          <img alt={name} key={id} className="badge-item" src={img} />
+          <ProxyImg alt={name} key={id} className="badge-item" size={64} src={img} />
         ))}
       </div>
       {showModal && (
@@ -47,7 +48,7 @@ export default function BadgeList({ badges }: { badges: TaggedRawEvent[] }) {
               {badgeMetadata.map(({ id, name, pubkey, description, img }) => {
                 return (
                   <div key={id} className="reactions-item">
-                    <img className="reaction-icon" src={img} alt={name} />
+                    <ProxyImg className="reaction-icon" src={img} size={64} alt={name} />
                     <div className="badge-info">
                       <h3>{name}</h3>
                       <p>{description}</p>
