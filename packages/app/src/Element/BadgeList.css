@@ -11,7 +11,7 @@
 }
 
 .badge-item:not(:last-child) {
-  margin-right: 4px;
+  margin-right: 8px;
 }
 
 .badge-info {
