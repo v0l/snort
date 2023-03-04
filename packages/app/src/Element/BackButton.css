@@ -4,6 +4,8 @@
   color: var(--highlight);
   font-weight: 400;
   font-size: var(--font-size);
+  display: flex;
+  align-items: center;
 }
 
 .back-button svg {
