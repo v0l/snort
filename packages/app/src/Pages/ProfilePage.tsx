@@ -79,7 +79,6 @@ export default function ProfilePage() {
   const website_url =
     user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
   // feeds
-  const badges = useProfileBadges(id);
   const { blocked } = useModeration();
   const { notes: pinned, related: pinRelated } = usePinnedFeed(id);
   const { notes: bookmarks, related: bookmarkRelated } = useBookmarkFeed(id);
@@ -89,6 +88,7 @@ export default function ProfilePage() {
   const followers = useFollowersFeed(id);
   const follows = useFollowsFeed(id);
   const muted = useMutedFeed(id);
+  const badges = useProfileBadges(id);
   // tabs
   const ProfileTab = {
     Notes: { text: formatMessage(messages.Notes), value: NOTES },
