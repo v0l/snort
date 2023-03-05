@@ -30,10 +30,10 @@ function getInvoice(zap: TaggedRawEvent): InvoiceDetails | undefined {
 }
 
 export function parseZap(zapReceipt: TaggedRawEvent): ParsedZap {
-  const invoice = getInvoice(zapReceipt);
   let innerZapJson = findTag(zapReceipt, "description");
   if (innerZapJson) {
     try {
+      const invoice = getInvoice(zapReceipt);
       if (innerZapJson.startsWith("%")) {
         innerZapJson = decodeURIComponent(innerZapJson);
       }
