@@ -47,7 +47,7 @@ export default function BadgeList({ badges }: { badges: TaggedRawEvent[] }) {
             <div className="body">
               {badgeMetadata.map(({ id, name, pubkey, description, img }) => {
                 return (
-                  <div key={id} className="reactions-item">
+                  <div key={id} className="reactions-item badges-item">
                     <ProxyImg className="reaction-icon" src={img} size={64} alt={name} />
                     <div className="badge-info">
                       <h3>{name}</h3>

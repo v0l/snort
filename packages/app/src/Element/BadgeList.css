@@ -28,3 +28,7 @@
 .badge-info h3 {
   margin: 0;
 }
+
+.badges-item {
+  align-items: flex-start;
+}
