@@ -79,6 +79,13 @@ export const RecommendedFollows = [
 ];
 
 /**
+ * Mark zaps invalid for the following pubkeys
+ */
+export const ZapperSpam = [
+  "e1ff3bfdd4e40315959b08b4fcc8245eaa514637e1d4ec2ae166b743341be1af", // benthecarman
+];
+
+/**
  * Regex to match email address
  */
 export const EmailRegex =

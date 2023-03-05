@@ -9,6 +9,7 @@ import { formatShort } from "Number";
 import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
 import { RootState } from "State/Store";
+import { ZapperSpam } from "Const";
 
 import messages from "./messages";
 
@@ -54,7 +55,13 @@ function getZapper(zap: TaggedRawEvent, dhash: string): Zapper {
       const anonZap = rawEvent.tags.some(a => a[0] === "anon");
       const metaHash = sha256(zapRequest);
       const ev = new Event(rawEvent);
-      return { pubkey: ev.PubKey, isValid: dhash === metaHash, isAnon: anonZap, content: rawEvent.content };
+      const zapperIgnored = ZapperSpam.includes(zap.pubkey);
+      return {
+        pubkey: ev.PubKey,
+        isValid: dhash === metaHash && !zapperIgnored,
+        isAnon: anonZap,
+        content: rawEvent.content,
+      };
     } catch (e) {
       console.warn("Invalid zap", zapRequest);
     }
