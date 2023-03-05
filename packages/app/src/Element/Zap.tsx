@@ -10,6 +10,7 @@ import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
 import { RootState } from "State/Store";
 import { ZapperSpam } from "Const";
+import { UserCache } from "State/Users/UserCache";
 
 import messages from "./messages";
 
@@ -74,6 +75,10 @@ export function parseZap(zapReceipt: TaggedRawEvent): ParsedZap {
       if (findTag(zapRequest, "amount") === invoice?.amount) {
         ret.valid = false;
         ret.errors.push("amount tag does not match invoice amount");
+      }
+      if (UserCache.get(ret.receiver)?.zapService !== ret.zapService) {
+        ret.valid = false;
+        ret.errors.push("zap service pubkey doesn't match");
       }
       if (!ret.valid) {
         console.debug("Invalid zap", ret);

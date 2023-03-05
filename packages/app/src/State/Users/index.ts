@@ -21,6 +21,11 @@ export interface MetadataCache extends UserMetadata {
    * The bech32 encoded pubkey
    */
   npub: string;
+
+  /**
+   * Pubkey of zapper service
+   */
+  zapService?: HexKey;
 }
 
 export function mapEventToProfile(ev: TaggedRawEvent) {

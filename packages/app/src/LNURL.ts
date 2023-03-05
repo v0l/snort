@@ -112,6 +112,13 @@ export class LNURL {
   }
 
   /**
+   * Return pubkey of zap service
+   */
+  get zapperPubkey() {
+    return this.#service?.nostrPubkey;
+  }
+
+  /**
    * Get the max allowed comment length
    */
   get maxCommentLength() {
