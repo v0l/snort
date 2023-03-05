@@ -12,13 +12,13 @@ export default function useProfileBadges(pubkey?: HexKey) {
   const sub = useMemo(() => {
     if (!pubkey) return null;
     const s = new Subscriptions();
-    s.Id = `profile_badges:${pubkey.slice(0, 12)}`;
+    s.Id = `badges:${pubkey.slice(0, 12)}`;
     s.Kinds = new Set([EventKind.ProfileBadges]);
     s.DTags = new Set([Lists.Badges]);
     s.Authors = new Set([pubkey]);
     return s;
   }, [pubkey]);
-  const profileBadges = useSubscription(sub, { leaveOpen: true, cache: false });
+  const profileBadges = useSubscription(sub, { leaveOpen: false, cache: false });
 
   const profile = useMemo(() => {
     const sorted = [...profileBadges.store.notes];
@@ -36,16 +36,17 @@ export default function useProfileBadges(pubkey?: HexKey) {
       }, {});
     }
     return {};
-  }, [pubkey, profileBadges.store.notes]);
+  }, [pubkey, profileBadges.store]);
 
   const awardsSub = useMemo(() => {
-    if (!pubkey) return null;
+    const ids = Object.keys(profile);
+    if (!pubkey || ids.length === 0) return null;
     const s = new Subscriptions();
     s.Id = `profile_awards:${pubkey.slice(0, 12)}`;
     s.Kinds = new Set([EventKind.BadgeAward]);
-    s.Ids = new Set(Object.keys(profile));
+    s.Ids = new Set(ids);
     return s;
-  }, [pubkey, profileBadges.store.notes]);
+  }, [pubkey, profileBadges.store]);
 
   const awards = useSubscription(awardsSub);
 
@@ -64,14 +65,14 @@ export default function useProfileBadges(pubkey?: HexKey) {
   const badgesSub = useMemo(() => {
     if (!pubkey) return null;
     const s = new Subscriptions();
-    s.Id = `profile_awards:${pubkey.slice(0, 12)}`;
+    s.Id = `profile_badges:${pubkey.slice(0, 12)}`;
     s.Kinds = new Set([EventKind.Badge]);
     s.DTags = new Set(ds);
     s.Authors = new Set(pubkeys);
     return s;
   }, [pubkey, profile]);
 
-  const badges = useSubscription(badgesSub, { leaveOpen: true, cache: false });
+  const badges = useSubscription(badgesSub, { leaveOpen: false, cache: false });
 
   const result = useMemo(() => {
     return awards.store.notes
@@ -93,7 +94,7 @@ export default function useProfileBadges(pubkey?: HexKey) {
           badge && award.pubkey === badge.pubkey && award.tags.find(t => t[0] === "p" && t[1] === pubkey)
       )
       .map(({ badge }) => unwrap(badge));
-  }, [pubkey, awards.store.notes, badges.store.notes]);
+  }, [pubkey, awards.store, badges.store]);
 
   return result;
 }

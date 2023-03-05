@@ -29,7 +29,7 @@ export default function BadgeList({ badges }: { badges: TaggedRawEvent[] }) {
   return (
     <>
       <div className="badge-list" onClick={() => setShowModal(!showModal)}>
-        {badgeMetadata.slice(0, 7).map(({ id, name, img }) => (
+        {badgeMetadata.slice(0, 8).map(({ id, name, img }) => (
           <ProxyImg alt={name} key={id} className="badge-item" size={64} src={img} />
         ))}
       </div>
