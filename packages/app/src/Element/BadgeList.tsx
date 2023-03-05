@@ -23,7 +23,7 @@ export default function BadgeList({ badges }: { badges: TaggedRawEvent[] }) {
       pubkey: b.pubkey,
       name,
       description,
-      img: thumb?.length > 0 ? thumb : image,
+      img: thumb?.length ?? 0 > 0 ? thumb : image,
     };
   });
   return (
