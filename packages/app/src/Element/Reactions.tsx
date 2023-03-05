@@ -98,7 +98,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
           {tab.value === 1 &&
             zaps.map(z => {
               return (
-                z.zapper && (
+                z.sender && (
                   <div key={z.id} className="reactions-item">
                     <div className="zap-reaction-icon">
                       <Icon name="zap" size={20} />
@@ -106,7 +106,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                     </div>
                     <ProfileImage
                       autoWidth={false}
-                      pubkey={z.anonZap ? "" : z.zapper}
+                      pubkey={z.anonZap ? "" : z.sender}
                       subHeader={
                         <div className="f-ellipsis zap-comment" title={z.content}>
                           {z.content}

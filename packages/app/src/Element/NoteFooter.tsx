@@ -65,7 +65,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     type: "language",
   });
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  const didZap = zaps.some(a => a.zapper === login);
+  const didZap = zaps.some(a => a.sender === login);
   const longPress = useLongPress(
     e => {
       e.stopPropagation();

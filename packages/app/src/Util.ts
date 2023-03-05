@@ -240,12 +240,13 @@ export const delay = (t: number) => {
   });
 };
 
+export type InvoiceDetails = ReturnType<typeof decodeInvoice>;
 export function decodeInvoice(pr: string) {
   try {
     const parsed = invoiceDecode(pr);
 
     const amountSection = parsed.sections.find(a => a.name === "amount");
-    const amount = amountSection ? (amountSection.value as number) : NaN;
+    const amount = amountSection ? Number(amountSection.value as number | string) : undefined;
 
     const timestampSection = parsed.sections.find(a => a.name === "timestamp");
     const timestamp = timestampSection ? (timestampSection.value as number) : NaN;
@@ -256,7 +257,7 @@ export function decodeInvoice(pr: string) {
     const descriptionHashSection = parsed.sections.find(a => a.name === "description_hash")?.value;
     const paymentHashSection = parsed.sections.find(a => a.name === "payment_hash")?.value;
     const ret = {
-      amount: !isNaN(amount) ? amount : undefined,
+      amount: amount,
       expire: !isNaN(timestamp) && !isNaN(expire) ? timestamp + expire : undefined,
       timestamp: !isNaN(timestamp) ? timestamp : undefined,
       description: descriptionSection as string | undefined,

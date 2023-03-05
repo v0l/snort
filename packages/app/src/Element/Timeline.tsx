@@ -99,7 +99,7 @@ export default function Timeline({
       }
       case EventKind.ZapReceipt: {
         const zap = parseZap(e);
-        return zap.e ? null : <Zap zap={zap} key={e.id} />;
+        return zap.event ? null : <Zap zap={zap} key={e.id} />;
       }
       case EventKind.Reaction:
       case EventKind.Repost: {
