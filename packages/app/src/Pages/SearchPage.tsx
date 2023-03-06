@@ -9,7 +9,6 @@ import { SearchRelays } from "Const";
 import { System } from "System";
 
 import messages from "./messages";
-import useHorizontalScroll from "Hooks/useHorizontalScroll";
 
 const POSTS = 0;
 const PROFILES = 1;
@@ -25,7 +24,6 @@ const SearchPage = () => {
     Profiles: { text: formatMessage(messages.People), value: PROFILES },
   };
   const [tab, setTab] = useState<Tab>(SearchTab.Posts);
-  const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
     if (keyword) {
