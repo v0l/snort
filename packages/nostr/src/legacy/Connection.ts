@@ -11,7 +11,10 @@ import Nips from "./Nips";
 import { unwrap } from "./Util";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
-export type AuthHandler = (challenge: string, relay: string) => Promise<NEvent | undefined>;
+export type AuthHandler = (
+  challenge: string,
+  relay: string
+) => Promise<NEvent | undefined>;
 
 /**
  * Relay settings
@@ -57,7 +60,7 @@ export class Connection {
   AwaitingAuth: Map<string, boolean>;
   Authed: boolean;
 
-  constructor(addr: string, options: RelaySettings, auth: AuthHandler = undefined) {
+  constructor(addr: string, options: RelaySettings, auth?: AuthHandler) {
     this.Id = uuid();
     this.Address = addr;
     this.Socket = null;
@@ -387,7 +390,7 @@ export class Connection {
     const authCleanup = () => {
       this.AwaitingAuth.delete(challenge);
     };
-    if(!this.Auth) {
+    if (!this.Auth) {
       throw new Error("Auth hook not registered");
     }
     this.AwaitingAuth.set(challenge, true);

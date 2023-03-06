@@ -1,9 +1,10 @@
 import { ProtocolError } from "../error"
 import { EventId, Event, EventKind, SignedEvent, RawEvent } from "../event"
-import { PrivateKey, PublicKey } from "../keypair"
+import { PrivateKey, PublicKey } from "../crypto"
 import { Conn } from "./conn"
 import * as secp from "@noble/secp256k1"
 import { EventEmitter } from "./emitter"
+import { defined } from "../util"
 
 /**
  * A nostr client.
@@ -21,6 +22,16 @@ export class Nostr extends EventEmitter {
    * Mapping of subscription IDs to corresponding filters.
    */
   readonly #subscriptions: Map<string, Filters[]> = new Map()
+
+  /**
+   * Optional client private key.
+   */
+  readonly #key?: PrivateKey
+
+  constructor(key?: PrivateKey) {
+    super()
+    this.#key = key
+  }
 
   /**
    * Open a connection and start communicating with a relay. This method recreates all existing
@@ -52,13 +63,13 @@ export class Nostr extends EventEmitter {
     const conn = new Conn({
       url: connUrl,
       // Handle messages on this connection.
-      onMessage: (msg) => {
+      onMessage: async (msg) => {
         try {
           if (msg.kind === "event") {
             this.emit(
               "event",
               {
-                signed: msg.signed,
+                signed: await SignedEvent.verify(msg.raw, this.#key),
                 subscriptionId: msg.subscriptionId,
                 raw: msg.raw,
               },
@@ -208,7 +219,7 @@ export class Nostr extends EventEmitter {
           "publish called with an unsigned Event, private key must be specified"
         )
       }
-      if (event.pubkey.toString() !== key.pubkey.toString()) {
+      if (event.pubkey.toHex() !== key.pubkey.toHex()) {
         throw new Error("invalid private key")
       }
     }
@@ -218,7 +229,7 @@ export class Nostr extends EventEmitter {
         continue
       }
       if (!(event instanceof SignedEvent) && !("sig" in event)) {
-        event = await SignedEvent.sign(event, key)
+        event = await SignedEvent.sign(event, defined(key))
       }
       conn.send({
         kind: "event",
@@ -263,30 +274,13 @@ export class SubscriptionId {
   }
 }
 
-// TODO Rethink this type. Maybe it's not very idiomatic.
-/**
- * A prefix filter. These filters match events which have the appropriate prefix.
- * This also means that exact matches pass the filters. No special syntax is required.
- */
-export class Prefix<T> {
-  #prefix: T
-
-  constructor(prefix: T) {
-    this.#prefix = prefix
-  }
-
-  toString(): string {
-    return this.#prefix.toString()
-  }
-}
-
 /**
  * Subscription filters. All filters from the fields must pass for a message to get through.
  */
 export interface Filters {
   // TODO Document the filters, document that for the arrays only one is enough for the message to pass
-  ids?: Prefix<EventId>[]
-  authors?: Prefix<string>[]
+  ids?: EventId[]
+  authors?: string[]
   kinds?: EventKind[]
   /**
    * Filters for the "#e" tags.
