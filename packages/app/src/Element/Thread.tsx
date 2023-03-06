@@ -5,7 +5,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import { TaggedRawEvent, u256, HexKey } from "@snort/nostr";
 import { Event as NEvent, EventKind } from "@snort/nostr";
-import { eventLink, bech32ToHex, unwrap } from "Util";
+import { eventLink, bech32ToHex, unwrap, parseId } from "Util";
 import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";
@@ -269,7 +269,7 @@ export default function Thread(props: ThreadProps) {
   const location = useLocation();
   const { formatMessage } = useIntl();
   const urlNoteId = location?.pathname.slice(3);
-  const urlNoteHex = urlNoteId && bech32ToHex(urlNoteId);
+  const urlNoteHex = urlNoteId && parseId(urlNoteId);
 
   const chains = useMemo(() => {
     const chains = new Map<u256, NEvent[]>();

@@ -12,7 +12,7 @@ import {
 import { ProfileCacheExpire } from "Const";
 import { mapEventToProfile, MetadataCache } from "State/Users";
 import { UserCache } from "State/Users/UserCache";
-import { unixNowMs, unwrap } from "Util";
+import { sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
 
 /**
  * Manages nostr content retrieval system
@@ -56,16 +56,38 @@ export class NostrSystem {
    */
   async ConnectToRelay(address: string, options: RelaySettings) {
     try {
-      if (!this.Sockets.has(address)) {
-        const c = new Connection(address, options, this.HandleAuth);
+      const addr = unwrap(sanitizeRelayUrl(address));
+      if (!this.Sockets.has(addr)) {
+        const c = new Connection(addr, options, this.HandleAuth);
+        this.Sockets.set(addr, c);
         await c.Connect();
-        this.Sockets.set(address, c);
         for (const [, s] of this.Subscriptions) {
           c.AddSubscription(s);
         }
       } else {
         // update settings if already connected
-        unwrap(this.Sockets.get(address)).Settings = options;
+        unwrap(this.Sockets.get(addr)).Settings = options;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  /**
+   *
+   * @param address Relay address URL
+   */
+  async ConnectEphemeralRelay(address: string): Promise<Connection | undefined> {
+    try {
+      const addr = unwrap(sanitizeRelayUrl(address));
+      if (!this.Sockets.has(addr)) {
+        const c = new Connection(addr, { read: true, write: false }, this.HandleAuth, true);
+        this.Sockets.set(addr, c);
+        await c.Connect();
+        for (const [, s] of this.Subscriptions) {
+          c.AddSubscription(s);
+        }
+        return c;
       }
     } catch (e) {
       console.error(e);
@@ -87,11 +109,25 @@ export class NostrSystem {
     this.Sockets.get(relay)?.AddSubscription(sub);
   }
 
-  AddSubscription(sub: Subscriptions) {
-    for (const [, s] of this.Sockets) {
-      s.AddSubscription(sub);
-    }
+  async AddSubscription(sub: Subscriptions) {
+    let noRelays = true;
     this.Subscriptions.set(sub.Id, sub);
+    for (const [, s] of this.Sockets) {
+      if (s.AddSubscription(sub)) {
+        noRelays = false;
+      }
+    }
+
+    if (noRelays && sub.Relays) {
+      for (const r of sub.Relays) {
+        if (!this.Sockets.has(r) && r) {
+          const c = await this.ConnectEphemeralRelay(r);
+          if (c) {
+            c.AddSubscription(sub);
+          }
+        }
+      }
+    }
   }
 
   RemoveSubscription(subId: string) {
@@ -114,7 +150,7 @@ export class NostrSystem {
    * Write an event to a relay then disconnect
    */
   async WriteOnceToRelay(address: string, ev: NEvent) {
-    const c = new Connection(address, { write: true, read: false }, this.HandleAuth);
+    const c = new Connection(address, { write: true, read: false }, this.HandleAuth, true);
     await c.Connect();
     await c.SendAsync(ev);
     c.Close();
@@ -198,6 +234,7 @@ export class NostrSystem {
       sub.Id = `profiles:${sub.Id.slice(0, 8)}`;
       sub.Kinds = new Set([EventKind.SetMetadata]);
       sub.Authors = missing;
+      sub.Relays = new Set([...this.Sockets.values()].filter(a => !a.Ephemeral).map(a => a.Address));
       sub.OnEvent = async e => {
         const profile = mapEventToProfile(e);
         if (profile) {

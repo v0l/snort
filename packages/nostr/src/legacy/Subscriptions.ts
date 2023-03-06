@@ -97,6 +97,11 @@ export class Subscriptions {
    */
   Finished: Map<string, number>;
 
+  /**
+   * List of relays to send this subscription to
+   */
+  Relays?: Set<string>; 
+
   constructor(sub?: RawReqFilter) {
     this.Id = uuid();
     this.Ids = sub?.ids ? new Set(sub.ids) : undefined;

@@ -75,18 +75,25 @@ const RelayInfo = () => {
             </h4>
             <div className="f-grow">
               {stats.info.supported_nips.map(a => (
-                <span
-                  key={a}
-                  className="pill"
-                  onClick={() =>
-                    navigate(`https://github.com/nostr-protocol/nips/blob/master/${a.toString().padStart(2, "0")}.md`)
-                  }>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`https://github.com/nostr-protocol/nips/blob/master/${a.toString().padStart(2, "0")}.md`}
+                  className="pill">
                   NIP-{a.toString().padStart(2, "0")}
-                </span>
+                </a>
               ))}
             </div>
           </>
         )}
+        <h4>
+          <FormattedMessage defaultMessage="Active Subscriptions" />
+        </h4>
+        <div className="f-grow">
+          {stats?.subs.map(a => (
+            <span className="pill">{a.Id}</span>
+          ))}
+        </div>
         <div className="flex mt10 f-end">
           <div
             className="btn error"

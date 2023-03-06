@@ -206,6 +206,37 @@ export function dedupeById(events: TaggedRawEvent[]) {
   return deduped.list as TaggedRawEvent[];
 }
 
+/**
+ * Return newest event by pubkey
+ * @param events List of all notes to filter from
+ * @returns
+ */
+export function getLatestByPubkey(events: TaggedRawEvent[]): Map<HexKey, TaggedRawEvent> {
+  const deduped = events.reduce((results: Map<HexKey, TaggedRawEvent>, ev) => {
+    if (!results.has(ev.pubkey)) {
+      const latest = getNewest(events.filter(a => a.pubkey === ev.pubkey));
+      if (latest) {
+        results.set(ev.pubkey, latest);
+      }
+    }
+    return results;
+  }, new Map<HexKey, TaggedRawEvent>());
+  return deduped;
+}
+
+export function getLatestProfileByPubkey(profiles: MetadataCache[]): Map<HexKey, MetadataCache> {
+  const deduped = profiles.reduce((results: Map<HexKey, MetadataCache>, ev) => {
+    if (!results.has(ev.pubkey)) {
+      const latest = getNewestProfile(profiles.filter(a => a.pubkey === ev.pubkey));
+      if (latest) {
+        results.set(ev.pubkey, latest);
+      }
+    }
+    return results;
+  }, new Map<HexKey, MetadataCache>());
+  return deduped;
+}
+
 export function unwrap<T>(v: T | undefined | null): T {
   if (v === undefined || v === null) {
     throw new Error("missing value");
@@ -220,9 +251,28 @@ export function randomSample<T>(coll: T[], size: number) {
 
 export function getNewest(rawNotes: TaggedRawEvent[]) {
   const notes = [...rawNotes];
-  notes.sort((a, b) => a.created_at - b.created_at);
+  notes.sort((a, b) => b.created_at - a.created_at);
   if (notes.length > 0) {
     return notes[0];
+  }
+}
+
+export function getNewestProfile(rawNotes: MetadataCache[]) {
+  const notes = [...rawNotes];
+  notes.sort((a, b) => b.created - a.created);
+  if (notes.length > 0) {
+    return notes[0];
+  }
+}
+
+export function getNewestEventTagsByKey(evs: TaggedRawEvent[], tag: string) {
+  const newest = getNewest(evs);
+  if (newest) {
+    const keys = newest.tags.filter(p => p && p.length === 2 && p[0] === tag).map(p => p[1]);
+    return {
+      keys,
+      createdAt: newest.created_at,
+    };
   }
 }
 
@@ -416,3 +466,10 @@ export function findTag(e: TaggedRawEvent, tag: string) {
   });
   return maybeTag && maybeTag[1];
 }
+
+export function sanitizeRelayUrl(url: string) {
+  try {
+    return new URL(url).toString();
+  } catch {
+    // ignore
+  }

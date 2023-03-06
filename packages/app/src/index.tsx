@@ -14,7 +14,7 @@ import EventPage from "Pages/EventPage";
 import Layout from "Pages/Layout";
 import LoginPage from "Pages/Login";
 import ProfilePage from "Pages/ProfilePage";
-import RootPage from "Pages/Root";
+import RootPage, { RootRoutes } from "Pages/Root";
 import NotificationsPage from "Pages/Notifications";
 import SettingsPage, { SettingsRoutes } from "Pages/SettingsPage";
 import ErrorPage from "Pages/ErrorPage";
@@ -42,10 +42,7 @@ export const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: "/",
-        element: <RootPage />,
-      },
+      ...RootRoutes,
       {
         path: "/login",
         element: <LoginPage />,

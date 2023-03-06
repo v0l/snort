@@ -6,7 +6,7 @@ import { useInView } from "react-intersection-observer";
 import Icon from "Icons/Icon";
 import { dedupeById, dedupeByPubkey, tagFilterOfTextRepost } from "Util";
 import ProfileImage from "Element/ProfileImage";
-import useTimelineFeed, { TimelineSubject } from "Feed/TimelineFeed";
+import useTimelineFeed, { TimelineFeed, TimelineSubject } from "Feed/TimelineFeed";
 import { TaggedRawEvent } from "@snort/nostr";
 import { EventKind } from "@snort/nostr";
 import LoadMore from "Element/LoadMore";
@@ -32,32 +32,31 @@ export interface TimelineProps {
 /**
  * A list of notes by pubkeys
  */
-export default function Timeline({
-  subject,
-  postsOnly = false,
-  method,
-  ignoreModeration = false,
-  window: timeWindow,
-  relay,
-}: TimelineProps) {
-  const { muted, isMuted } = useModeration();
+const Timeline = (props: TimelineProps) => {
+  const feedOptions = useMemo(() => {
+    return {
+      method: props.method,
+      window: props.window,
+      relay: props.relay,
+    };
+  }, [props]);
+  const feedType = useMemo(() => props.subject, [props]);
+
+  const feed: TimelineFeed = useTimelineFeed(feedType, feedOptions);
+
   const dispatch = useDispatch();
+  const { muted, isMuted } = useModeration();
   const cache = useSelector((s: RootState) => s.cache.timeline);
-  const feed = useTimelineFeed(subject, {
-    method,
-    window: timeWindow,
-    relay,
-  });
   const { ref, inView } = useInView();
 
   const filterPosts = useCallback(
     (nts: TaggedRawEvent[]) => {
       return [...nts]
         .sort((a, b) => b.created_at - a.created_at)
-        ?.filter(a => (postsOnly ? !a.tags.some(b => b[0] === "e") : true))
-        .filter(a => ignoreModeration || !isMuted(a.pubkey));
+        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
+        .filter(a => props.ignoreModeration || !isMuted(a.pubkey));
     },
-    [postsOnly, muted, ignoreModeration]
+    [props.postsOnly, muted, props.ignoreModeration]
   );
 
   const mainFeed = useMemo(() => {
@@ -72,7 +71,7 @@ export default function Timeline({
   }, [latestFeed]);
 
   useEffect(() => {
-    const key = `${subject.type}-${subject.discriminator}`;
+    const key = `${props.subject.type}-${props.subject.discriminator}`;
     const newFeed = key !== cache.key;
     dispatch(
       setTimeline({
@@ -95,7 +94,7 @@ export default function Timeline({
         if (eRef) {
           return <NoteReaction data={e} key={e.id} root={cache.parent.find(a => a.id === eRef)} />;
         }
-        return <Note key={e.id} data={e} related={cache.related} ignoreModeration={ignoreModeration} />;
+        return <Note key={e.id} data={e} related={cache.related} ignoreModeration={props.ignoreModeration} />;
       }
       case EventKind.ZapReceipt: {
         const zap = parseZap(e);
@@ -151,4 +150,5 @@ export default function Timeline({
       </LoadMore>
     </div>
   );
-}
+};
+export default Timeline;
