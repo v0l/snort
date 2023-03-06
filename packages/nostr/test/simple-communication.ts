@@ -1,6 +1,6 @@
 import { Nostr } from "../src/client"
 import { EventKind, SignedEvent } from "../src/event"
-import { PrivateKey } from "../src/keypair"
+import { PrivateKey } from "../src/crypto"
 import assert from "assert"
 import { EventParams } from "../src/client/emitter"
 
@@ -33,7 +33,7 @@ describe("simple communication", function () {
     function listener({ signed: { event } }: EventParams, nostr: Nostr) {
       assert.equal(nostr, subscriber)
       assert.equal(event.kind, EventKind.TextNote)
-      assert.equal(event.pubkey.toString(), pubkey.toString())
+      assert.equal(event.pubkey.toHex(), pubkey.toHex())
       assert.equal(event.createdAt.toString(), timestamp.toString())
       if (event.kind === EventKind.TextNote) {
         assert.equal(event.content, note)
@@ -73,7 +73,7 @@ describe("simple communication", function () {
     ).then((event) => {
       publisher.on("ok", (params, nostr) => {
         assert.equal(nostr, publisher)
-        assert.equal(params.eventId.toString(), event.eventId.toString())
+        assert.equal(params.eventId.toHex(), event.eventId.toHex())
         assert.equal(params.relay.toString(), url.toString())
         assert.equal(params.ok, true)
         done()
