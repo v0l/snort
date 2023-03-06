@@ -90,7 +90,7 @@ const SearchPage = () => {
           autoFocus={true}
         />
       </div>
-      <div className="tabs" ref={horizontalScroll}>
+      <div className="tabs">
         {[SearchTab.Posts, SearchTab.Profiles].map(renderTab)}
       </div>
       {tabContent()}
