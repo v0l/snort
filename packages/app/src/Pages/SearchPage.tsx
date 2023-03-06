@@ -26,7 +26,6 @@ const SearchPage = () => {
     Profiles: { text: formatMessage(messages.People), value: PROFILES },
   };
   const [tab, setTab] = useState<Tab>(SearchTab.Posts);
-  const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
     if (keyword) {
