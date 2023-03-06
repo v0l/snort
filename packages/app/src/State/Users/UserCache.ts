@@ -1,5 +1,6 @@
 import { HexKey } from "@snort/nostr";
 import { db } from "Db";
+import { LNURL } from "LNURL";
 import { unixNowMs, unwrap } from "Util";
 import { MetadataCache } from ".";
 
@@ -97,6 +98,19 @@ export class UserProfileCache {
     const existing = this.get(m.pubkey);
     const refresh = existing && existing.created === m.created && existing.loaded < m.loaded;
     if (!existing || existing.created < m.created || refresh) {
+      // fetch zapper key
+      const lnurl = m.lud16 || m.lud06;
+      if (lnurl) {
+        try {
+          const svc = new LNURL(lnurl);
+          await svc.load();
+          m.zapService = svc.zapperPubkey;
+        } catch {
+          console.debug("Failed to load LNURL for zapper pubkey", lnurl);
+        }
+        // ignored
+      }
+
       this.#cache.set(m.pubkey, m);
       if (db.ready) {
         await db.users.put(m);

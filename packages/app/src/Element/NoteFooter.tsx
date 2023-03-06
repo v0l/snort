@@ -65,7 +65,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     type: "language",
   });
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  const didZap = zaps.some(a => a.zapper === login);
+  const didZap = zaps.some(a => a.sender === login);
   const longPress = useLongPress(
     e => {
       e.stopPropagation();
@@ -277,7 +277,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           </MenuItem>
         )}
         <MenuItem onClick={() => copyId()}>
-          <Icon name="dislike" />
+          <Icon name="copy" />
           <FormattedMessage {...messages.CopyID} />
         </MenuItem>
         <MenuItem onClick={() => mute(ev.PubKey)}>
@@ -286,7 +286,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         </MenuItem>
         {prefs.enableReactions && (
           <MenuItem onClick={() => react("-")}>
-            <Icon name="copy" />
+            <Icon name="dislike" />
             <FormattedMessage {...messages.DislikeAction} />
           </MenuItem>
         )}

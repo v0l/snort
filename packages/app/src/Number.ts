@@ -8,7 +8,9 @@ export function formatShort(n: number) {
     return n;
   } else if (n < 1e6) {
     return `${intl.format(n / 1e3)}K`;
-  } else {
+  } else if (n < 1e9) {
     return `${intl.format(n / 1e6)}M`;
+  } else {
+    return `${intl.format(n / 1e9)}G`;
   }
 }

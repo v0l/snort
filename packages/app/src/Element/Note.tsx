@@ -115,7 +115,7 @@ export default function Note(props: NoteProps) {
   const zaps = useMemo(() => {
     const sortedZaps = getReactions(related, ev.Id, EventKind.ZapReceipt)
       .map(parseZap)
-      .filter(z => z.valid && z.zapper !== ev.PubKey);
+      .filter(z => z.valid && z.sender !== ev.PubKey);
     sortedZaps.sort((a, b) => b.amount - a.amount);
     return sortedZaps;
   }, [related]);

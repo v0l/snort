@@ -254,15 +254,12 @@ const TierThree = ({ active, path, isLastSubthread, from, notes, related, chains
 };
 
 export interface ThreadProps {
-  this?: u256;
   notes?: TaggedRawEvent[];
 }
 
 export default function Thread(props: ThreadProps) {
   const notes = props.notes ?? [];
   const parsedNotes = notes.map(a => new NEvent(a));
-  // root note has no thread info
-  const root = useMemo(() => parsedNotes.find(a => a.Thread === null), [notes]);
   const [path, setPath] = useState<HexKey[]>([]);
   const currentId = path.length > 0 && path[path.length - 1];
   const currentRoot = useMemo(() => parsedNotes.find(a => a.Id === currentId), [notes, currentId]);
@@ -294,6 +291,33 @@ export default function Thread(props: ThreadProps) {
 
     return chains;
   }, [notes]);
+
+  const root = useMemo(() => {
+    const isRoot = (ne?: NEvent) => ne?.Thread === null;
+    const currentNote = parsedNotes.find(ne => ne.Id === urlNoteHex);
+
+    if (isRoot(currentNote)) {
+      return currentNote;
+    }
+
+    const rootEventId = currentNote?.Thread?.Root?.Event;
+
+    // sometimes the root event ID is missing, and we can only take the happy path if the root event ID exists
+    if (rootEventId) {
+      return parsedNotes.find(ne => ne.Id === rootEventId);
+    }
+
+    const possibleRoots = parsedNotes.filter(isRoot);
+
+    // worst case we need to check every possible root to see which one contains the current note as a child
+    for (const ne of possibleRoots) {
+      const children = chains.get(ne.Id) ?? [];
+
+      if (children.find(ne => ne.Id === urlNoteHex)) {
+        return ne;
+      }
+    }
+  }, [notes, chains, urlNoteHex]);
 
   useEffect(() => {
     if (!root) {
@@ -370,7 +394,7 @@ export default function Thread(props: ThreadProps) {
       const newPath = path.slice(0, path.length - 1);
       setPath(newPath);
     } else {
-      navigate("/");
+      navigate(location.state?.from ?? "/");
     }
   }
 

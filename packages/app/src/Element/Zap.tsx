@@ -2,108 +2,127 @@ import "./Zap.css";
 import { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useSelector } from "react-redux";
-import { Event, HexKey, TaggedRawEvent } from "@snort/nostr";
+import { HexKey, TaggedRawEvent } from "@snort/nostr";
 
-import { decodeInvoice, sha256, unwrap } from "Util";
+import { decodeInvoice, InvoiceDetails, sha256, unwrap } from "Util";
 import { formatShort } from "Number";
 import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
 import { RootState } from "State/Store";
 import { findTag } from "Util";
+import { ZapperSpam } from "Const";
+import { UserCache } from "State/Users/UserCache";
 
 import messages from "./messages";
 
-function getInvoice(zap: TaggedRawEvent) {
+function getInvoice(zap: TaggedRawEvent): InvoiceDetails | undefined {
   const bolt11 = findTag(zap, "bolt11");
   if (!bolt11) {
-    console.debug("Invalid zap: ", zap);
-    return {};
+    throw new Error("Invalid zap, missing bolt11 tag");
   }
-  const decoded = decodeInvoice(bolt11);
-  if (decoded) {
-    return { amount: decoded?.amount, hash: decoded?.descriptionHash };
-  }
-  return {};
+  return decodeInvoice(bolt11);
 }
 
-interface Zapper {
-  pubkey?: HexKey;
-  isValid: boolean;
-  isAnon: boolean;
-  content: string;
-}
-
-function getZapper(zap: TaggedRawEvent, dhash: string): Zapper {
-  let zapRequest = findTag(zap, "description");
-  if (zapRequest) {
+export function parseZap(zapReceipt: TaggedRawEvent): ParsedZap {
+  let innerZapJson = findTag(zapReceipt, "description");
+  if (innerZapJson) {
     try {
-      if (zapRequest.startsWith("%")) {
-        zapRequest = decodeURIComponent(zapRequest);
+      const invoice = getInvoice(zapReceipt);
+      if (innerZapJson.startsWith("%")) {
+        innerZapJson = decodeURIComponent(innerZapJson);
       }
-      const rawEvent: TaggedRawEvent = JSON.parse(zapRequest);
-      if (Array.isArray(rawEvent)) {
+      const zapRequest: TaggedRawEvent = JSON.parse(innerZapJson);
+      if (Array.isArray(zapRequest)) {
         // old format, ignored
-        return { isValid: false, isAnon: false, content: "" };
+        throw new Error("deprecated zap format");
       }
-      const anonZap = rawEvent.tags.some(a => a[0] === "anon");
-      const metaHash = sha256(zapRequest);
-      const ev = new Event(rawEvent);
-      return { pubkey: ev.PubKey, isValid: dhash === metaHash, isAnon: anonZap, content: rawEvent.content };
+      const anonZap = findTag(zapRequest, "anon");
+      const metaHash = sha256(innerZapJson);
+      const ret: ParsedZap = {
+        id: zapReceipt.id,
+        zapService: zapReceipt.pubkey,
+        amount: (invoice?.amount ?? 0) / 1000,
+        event: findTag(zapRequest, "e"),
+        sender: zapRequest.pubkey,
+        receiver: findTag(zapRequest, "p"),
+        valid: true,
+        anonZap: anonZap !== undefined,
+        content: zapRequest.content,
+        errors: [],
+      };
+      if (invoice?.descriptionHash !== metaHash) {
+        ret.valid = false;
+        ret.errors.push("description_hash does not match zap request");
+      }
+      if (ZapperSpam.includes(zapReceipt.pubkey)) {
+        ret.valid = false;
+        ret.errors.push("zapper is banned");
+      }
+      if (findTag(zapRequest, "p") !== findTag(zapReceipt, "p")) {
+        ret.valid = false;
+        ret.errors.push("p tags dont match");
+      }
+      if (ret.event && ret.event !== findTag(zapReceipt, "e")) {
+        ret.valid = false;
+        ret.errors.push("e tags dont match");
+      }
+      if (findTag(zapRequest, "amount") === invoice?.amount) {
+        ret.valid = false;
+        ret.errors.push("amount tag does not match invoice amount");
+      }
+      if (UserCache.get(ret.receiver)?.zapService !== ret.zapService) {
+        ret.valid = false;
+        ret.errors.push("zap service pubkey doesn't match");
+      }
+      if (!ret.valid) {
+        console.debug("Invalid zap", ret);
+      }
+      return ret;
     } catch (e) {
-      console.warn("Invalid zap", zapRequest);
+      console.debug("Invalid zap", zapReceipt, e);
     }
   }
-  return { isValid: false, isAnon: false, content: "" };
+  return {
+    id: zapReceipt.id,
+    zapService: zapReceipt.pubkey,
+    amount: 0,
+    valid: false,
+    anonZap: false,
+    errors: ["invalid zap, parsing failed"],
+  };
 }
 
 export interface ParsedZap {
   id: HexKey;
-  e?: HexKey;
-  p: HexKey;
+  event?: HexKey;
+  receiver?: HexKey;
   amount: number;
-  content: string;
-  zapper?: HexKey;
+  content?: string;
+  sender?: HexKey;
   valid: boolean;
   zapService: HexKey;
   anonZap: boolean;
-}
-
-export function parseZap(zap: TaggedRawEvent): ParsedZap {
-  const { amount, hash } = getInvoice(zap);
-  const zapper = hash ? getZapper(zap, hash) : ({ isValid: false, content: "" } as Zapper);
-  const e = findTag(zap, "e");
-  const p = unwrap(findTag(zap, "p"));
-  return {
-    id: zap.id,
-    e,
-    p,
-    amount: Number(amount) / 1000,
-    zapper: zapper.pubkey,
-    content: zapper.content,
-    valid: zapper.isValid,
-    zapService: zap.pubkey,
-    anonZap: zapper.isAnon,
-  };
+  errors: Array<string>;
 }
 
 const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean }) => {
-  const { amount, content, zapper, valid, p } = zap;
+  const { amount, content, sender, valid, receiver } = zap;
   const pubKey = useSelector((s: RootState) => s.login.publicKey);
 
-  return valid && zapper ? (
+  return valid && sender ? (
     <div className="zap note card">
       <div className="header">
-        <ProfileImage autoWidth={false} pubkey={zapper} />
-        {p !== pubKey && showZapped && <ProfileImage autoWidth={false} pubkey={p} />}
+        <ProfileImage autoWidth={false} pubkey={sender} />
+        {receiver !== pubKey && showZapped && <ProfileImage autoWidth={false} pubkey={unwrap(receiver)} />}
         <div className="amount">
           <span className="amount-number">
-            <FormattedMessage {...messages.Sats} values={{ n: formatShort(amount) }} />
+            <FormattedMessage {...messages.Sats} values={{ n: formatShort(amount ?? 0) }} />
           </span>
         </div>
       </div>
-      {content.length > 0 && zapper && (
+      {(content?.length ?? 0) > 0 && sender && (
         <div className="body">
-          <Text creator={zapper} content={content} tags={[]} />
+          <Text creator={sender} content={unwrap(content)} tags={[]} />
         </div>
       )}
     </div>
@@ -117,8 +136,8 @@ interface ZapsSummaryProps {
 export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
   const { formatMessage } = useIntl();
   const sortedZaps = useMemo(() => {
-    const pub = [...zaps.filter(z => z.zapper && z.valid)];
-    const priv = [...zaps.filter(z => !z.zapper && z.valid)];
+    const pub = [...zaps.filter(z => z.sender && z.valid)];
+    const priv = [...zaps.filter(z => !z.sender && z.valid)];
     pub.sort((a, b) => b.amount - a.amount);
     return pub.concat(priv);
   }, [zaps]);
@@ -128,17 +147,17 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
   }
 
   const [topZap, ...restZaps] = sortedZaps;
-  const { zapper, amount, anonZap } = topZap;
+  const { sender, amount, anonZap } = topZap;
 
   return (
     <div className="zaps-summary">
       {amount && (
         <div className={`top-zap`}>
           <div className="summary">
-            {zapper && (
+            {sender && (
               <ProfileImage
                 autoWidth={false}
-                pubkey={anonZap ? "" : zapper}
+                pubkey={anonZap ? "" : sender}
                 overrideUsername={anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
               />
             )}
