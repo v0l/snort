@@ -66,7 +66,7 @@ export default function Invoice(props: InvoiceProps) {
         <p className="invoice-amount">
           {amount > 0 && (
             <>
-              {amount.toLocaleString()} <span className="sats">sat{amount === 1 ? "" : "s"}</span>
+              {(amount / 1_000).toLocaleString()} <span className="sats">sat{amount === 1_000 ? "" : "s"}</span>
             </>
           )}
         </p>

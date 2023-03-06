@@ -85,8 +85,8 @@ export function prToWalletInvoice(pr: string) {
     return {
       amount: parsedInvoice.amount ?? 0,
       memo: parsedInvoice.description,
-      paymentHash: parsedInvoice.paymentHash,
-      timestamp: parsedInvoice.timestamp,
+      paymentHash: parsedInvoice.paymentHash ?? "",
+      timestamp: parsedInvoice.timestamp ?? 0,
       state: parsedInvoice.expired ? WalletInvoiceState.Expired : WalletInvoiceState.Pending,
       pr,
     } as WalletInvoice;
