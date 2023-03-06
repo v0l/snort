@@ -43,7 +43,9 @@ export default function useProfileBadges(pubkey?: HexKey) {
       (acc: BadgeAwards, addr) => {
         const [, pubkey, d] = (addr as string).split(":");
         acc.pubkeys.push(pubkey);
-        acc.ds.push(d);
+        if (d?.length > 0) {
+          acc.ds.push(d);
+        }
         return acc;
       },
       { pubkeys: [], ds: [] } as BadgeAwards
