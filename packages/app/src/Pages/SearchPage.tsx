@@ -20,6 +20,7 @@ const SearchPage = () => {
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string | undefined>(params.keyword);
   const [keyword, setKeyword] = useState<string | undefined>(params.keyword);
+  const [sortPopular, setSortPopular] = useState<boolean>(true);
   // tabs
   const SearchTab = {
     Posts: { text: formatMessage(messages.Posts), value: POSTS },
@@ -60,18 +61,37 @@ const SearchPage = () => {
     const pf = tab.value == PROFILES;
     return (
       <>
+        {sortOptions()}
         <Timeline
           key={keyword + (pf ? "_p" : "")}
           subject={{
             type: pf ? "profile_keyword" : "post_keyword",
-            items: [keyword],
+            items: [keyword + (sortPopular ? " sort:popular" : "")],
             discriminator: keyword,
           }}
           postsOnly={false}
-          noSort={pf}
+          noSort={pf && sortPopular}
           method={"LIMIT_UNTIL"}
         />
       </>
+    );
+  }
+
+  function sortOptions() {
+    if (tab.value != PROFILES) return null;
+    return (
+      <div className="flex mb10 f-end">
+        <FormattedMessage defaultMessage="Sort" description="Label for sorting options for people search" />
+        &nbsp;
+        <select onChange={e => setSortPopular(e.target.value == "true")} value={sortPopular ? "true" : "false"}>
+          <option value={"true"}>
+            <FormattedMessage defaultMessage="Popular" description="Sort order name" />
+          </option>
+          <option value={"false"}>
+            <FormattedMessage defaultMessage="Recent" description="Sort order name" />
+          </option>
+        </select>
+      </div>
     );
   }
 
@@ -94,9 +114,7 @@ const SearchPage = () => {
           autoFocus={true}
         />
       </div>
-      <div className="tabs">
-        {[SearchTab.Posts, SearchTab.Profiles].map(renderTab)}
-      </div>
+      <div className="tabs">{[SearchTab.Posts, SearchTab.Profiles].map(renderTab)}</div>
       {!keyword && <TrendingUsers />}
       {tabContent()}
     </div>
