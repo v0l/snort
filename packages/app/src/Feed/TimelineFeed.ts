@@ -91,7 +91,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       }
     }
     return sub;
-  }, [until, since, options.method, pref, createSub, subject.type]);
+  }, [until, since, options.method, pref, createSub]);
 
   const main = useSubscription(sub, { leaveOpen: true, cache: subject.type !== "global", relay: options.relay });
 
