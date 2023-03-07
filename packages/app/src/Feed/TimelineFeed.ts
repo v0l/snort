@@ -51,7 +51,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         break;
       }
       case "profile_keyword": {
-        sub.Search = subject.items[0] + " sort:popular";
+        sub.Search = subject.items[0];
         break;
       }
       case "post_keyword": {
