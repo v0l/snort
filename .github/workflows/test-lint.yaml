@@ -14,6 +14,8 @@ jobs:
           node-version: 16
       - name: Install Dependencies
         run: yarn install
+      - name: Build packages
+        run: yarn workspace @snort/nostr build
       - name: Run tests
         run: yarn workspace @snort/app test
       - name: Check Eslint
