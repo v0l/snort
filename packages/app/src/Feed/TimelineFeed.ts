@@ -103,7 +103,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       subLatest.Since = Math.floor(new Date().getTime() / 1000);
     }
     return subLatest;
-  }, [pref, createSub, subject.type]);
+  }, [pref, createSub]);
 
   const latest = useSubscription(subRealtime, {
     leaveOpen: true,
