@@ -175,7 +175,12 @@ export default function Note(props: NoteProps) {
 
   function goToEvent(e: React.MouseEvent, id: u256) {
     e.stopPropagation();
-    navigate(eventLink(id));
+    // detect cmd key and open in new tab
+    if (e.metaKey) {
+      window.open(eventLink(id), "_blank");
+    } else {
+      navigate(eventLink(id));
+    }
   }
 
   function replyTag() {
