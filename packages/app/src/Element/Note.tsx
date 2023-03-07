@@ -179,7 +179,7 @@ export default function Note(props: NoteProps) {
     if (!isTargetAllowed) {
       return;
     }
-    
+
     e.stopPropagation();
     navigate(eventLink(id));
   }
