@@ -35,7 +35,7 @@ export default function Text({ content, tags, creator }: TextProps) {
       .map(f => {
         if (typeof f === "string") {
           return splitByUrl(f).map(a => {
-            if (a.startsWith("http")) {
+            if (a.match(/^https?:\/\//)) {
               return <HyperText key={a} link={a} creator={creator} />;
             }
             return a;
