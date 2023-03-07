@@ -173,7 +173,11 @@ export default function Note(props: NoteProps) {
     }
   }, [inView, entry, extendable]);
 
-  function goToEvent(e: React.MouseEvent, id: u256) {
+  function goToEvent(e: React.MouseEvent, id: u256, isTargetAllowed: boolean = e.target === e.currentTarget) {
+    if (!isTargetAllowed) {
+      return;
+    }
+
     e.stopPropagation();
     // detect cmd key and open in new tab
     if (e.metaKey) {
@@ -282,7 +286,7 @@ export default function Note(props: NoteProps) {
             )}
           </div>
         )}
-        <div className="body" onClick={e => goToEvent(e, ev.Id)}>
+        <div className="body" onClick={e => goToEvent(e, ev.Id, true)}>
           {transformBody()}
           {translation()}
           {options.showReactionsLink && (
@@ -315,6 +319,7 @@ export default function Note(props: NoteProps) {
   const note = (
     <div
       className={`${baseClassName}${highlight ? " active " : " "}${extendable && !showMore ? " note-expand" : ""}`}
+      onClick={e => goToEvent(e, ev.Id)}
       ref={ref}>
       {content()}
     </div>

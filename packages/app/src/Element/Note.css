@@ -2,6 +2,10 @@
   min-height: 110px;
 }
 
+.note:hover {
+  cursor: pointer;
+}
+
 .note > .header .reply {
   font-size: 13px;
   color: var(--font-secondary-color);
@@ -134,8 +138,7 @@
 }
 
 .note > .header img:hover,
-.note > .header .name > .reply:hover,
-.note .body:hover {
+.note > .header .name > .reply:hover {
   cursor: pointer;
 }
 
