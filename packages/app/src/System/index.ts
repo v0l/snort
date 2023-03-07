@@ -10,9 +10,9 @@ import {
 } from "@snort/nostr";
 
 import { ProfileCacheExpire } from "Const";
+import { sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
 import { mapEventToProfile, MetadataCache } from "State/Users";
 import { UserCache } from "State/Users/UserCache";
-import { sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
 
 /**
  * Manages nostr content retrieval system

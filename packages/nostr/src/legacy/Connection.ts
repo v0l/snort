@@ -100,8 +100,10 @@ export class Connection {
     }
     if (this.Ephemeral) {
       this.EphemeralTimeout = setTimeout(() => {
-        this.Close();
-      }, 60_000);
+        if (this.Subscriptions.size === 0) {
+          this.Close();
+        }
+      }, 10_000);
     }
   }
 

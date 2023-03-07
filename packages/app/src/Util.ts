@@ -237,6 +237,14 @@ export function getLatestProfileByPubkey(profiles: MetadataCache[]): Map<HexKey,
   return deduped;
 }
 
+export function dedupe<T>(v: Array<T>) {
+  return [...new Set(v)];
+}
+
+export function appendDedupe<T>(a?: Array<T>, b?: Array<T>) {
+  return dedupe([...(a ?? []), ...(b ?? [])]);
+}
+
 export function unwrap<T>(v: T | undefined | null): T {
   if (v === undefined || v === null) {
     throw new Error("missing value");

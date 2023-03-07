@@ -1,6 +1,5 @@
 import { useMemo } from "react";
-import { HexKey, FullRelaySettings, TaggedRawEvent, RelaySettings } from "@snort/nostr";
-import { EventKind, Subscriptions } from "@snort/nostr";
+import { HexKey, FullRelaySettings, TaggedRawEvent, RelaySettings, EventKind, Subscriptions } from "@snort/nostr";
 import useSubscription from "./Subscription";
 import { getLatestByPubkey, sanitizeRelayUrl } from "../Util";
 
@@ -39,7 +38,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): UserRelayMap {
   function mapFromContactList(notes: Map<HexKey, TaggedRawEvent>): UserRelayMap {
     return Object.fromEntries(
       [...notes.values()].map(ev => {
-        if (ev.content !== "" && ev.content !== "{}") {
+        if (ev.content !== "" && ev.content !== "{}" && ev.content.startsWith("{") && ev.content.endsWith("}")) {
           const relays: Record<string, RelaySettings> = JSON.parse(ev.content);
           return [
             ev.pubkey,

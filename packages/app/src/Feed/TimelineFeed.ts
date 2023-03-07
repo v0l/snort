@@ -105,7 +105,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return sub;
   }, [until, since, options.method, pref, createSub]);
 
-  const main = useSubscription(sub, { leaveOpen: true, cache: false });
+  const main = useSubscription(sub, { leaveOpen: pref.autoShowLatest, cache: false });
 
   const subRealtime = useMemo(() => {
     const subLatest = createSub();

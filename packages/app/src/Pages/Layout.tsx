@@ -225,6 +225,9 @@ const AccountHeader = () => {
 
   return (
     <div className="header-actions">
+      <div className="btn btn-rnd" onClick={() => navigate("/wallet")}>
+        <Icon name="bitcoin" />
+      </div>
       <div className="btn btn-rnd" onClick={() => navigate("/search")}>
         <Icon name="search" />
       </div>
