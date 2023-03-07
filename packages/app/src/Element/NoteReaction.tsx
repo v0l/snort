@@ -56,13 +56,13 @@ export default function NoteReaction(props: NoteReactionProps) {
 
   const root = extractRoot();
   const isOpMuted = root && isMuted(root.pubkey);
-  const shouldBeNotBeRendered = isOpMuted || root?.kind === EventKind.BadgeAward;
+  const shouldNotBeRendered = isOpMuted || root?.kind === EventKind.BadgeAward;
   const opt = {
     showHeader: ev?.Kind === EventKind.Repost || ev?.Kind === EventKind.TextNote,
     showFooter: false,
   };
 
-  return shouldBeNotBeRendered ? null : (
+  return shouldNotBeRendered ? null : (
     <div className="reaction">
       <div className="header flex">
         <ProfileImage pubkey={ev.RootPubKey} />
