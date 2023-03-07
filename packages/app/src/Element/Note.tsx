@@ -177,7 +177,7 @@ export default function Note(props: NoteProps) {
     if (!isTargetAllowed) {
       return;
     }
-    
+
     e.stopPropagation();
     // detect cmd key and open in new tab
     if (e.metaKey) {
