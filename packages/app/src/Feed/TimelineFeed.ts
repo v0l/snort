@@ -35,8 +35,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
     const sub = new Subscriptions();
     sub.Id = `timeline:${subject.type}:${subject.discriminator}`;
-    if (subject.type === "profile_keyword") sub.Kinds = new Set([EventKind.SetMetadata]);
-    else sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
+    sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
     switch (subject.type) {
       case "pubkey": {
         sub.Authors = new Set(subject.items);
@@ -51,6 +50,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         break;
       }
       case "profile_keyword": {
+        sub.Kinds = new Set([EventKind.SetMetadata]);
         sub.Search = subject.items[0];
         break;
       }
