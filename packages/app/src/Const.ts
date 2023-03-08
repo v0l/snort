@@ -112,7 +112,7 @@ export const InvoiceRegex = /(lnbc\w+)/i;
  * YouTube URL regex
  */
 export const YoutubeUrlRegex =
-  /(?:https?:\/\/)?(?:www|m\.)?(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/;
+  /(?:https?:\/\/)?(?:www|m\.)?(?:youtu\.be\/|youtube\.com\/(?:live\/|shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/;
 
 /**
  * Tweet Regex
