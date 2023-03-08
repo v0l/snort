@@ -56,7 +56,7 @@ export default function NoteReaction(props: NoteReactionProps) {
 
   const root = extractRoot();
   const isOpMuted = root && isMuted(root.pubkey);
-  const shouldNotBeRendered = isOpMuted || root?.kind === EventKind.BadgeAward;
+  const shouldNotBeRendered = isOpMuted || root?.kind !== EventKind.TextNote;
   const opt = {
     showHeader: ev?.Kind === EventKind.Repost || ev?.Kind === EventKind.TextNote,
     showFooter: false,
