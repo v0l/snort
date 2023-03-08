@@ -1,7 +1,7 @@
 import { ProtocolError } from "../error"
 import { EventId, Event, EventKind, SignedEvent, RawEvent } from "../event"
 import { PrivateKey, PublicKey } from "../keypair"
-import { Conn, IncomingKind, OutgoingKind } from "./conn"
+import { Conn } from "./conn"
 import * as secp from "@noble/secp256k1"
 import { EventEmitter } from "./emitter"
 
@@ -46,42 +46,53 @@ export class Nostr extends EventEmitter {
       return
     }
 
+    const connUrl = new URL(url)
+
     // If there is no existing connection, open a new one.
-    const conn = new Conn(url)
-
-    // Handle messages on this connection.
-    conn.on("message", async (msg) => {
-      try {
-        if (msg.kind === IncomingKind.Event) {
-          this.emit(
-            "event",
-            {
-              signed: msg.signed,
-              subscriptionId: msg.subscriptionId,
-              raw: msg.raw,
-            },
-            this
-          )
-        } else if (msg.kind === IncomingKind.Notice) {
-          this.emit("notice", msg.notice, this)
-        } else {
-          throw new ProtocolError(`invalid message ${msg}`)
+    const conn = new Conn({
+      url: connUrl,
+      // Handle messages on this connection.
+      onMessage: (msg) => {
+        try {
+          if (msg.kind === "event") {
+            this.emit(
+              "event",
+              {
+                signed: msg.signed,
+                subscriptionId: msg.subscriptionId,
+                raw: msg.raw,
+              },
+              this
+            )
+          } else if (msg.kind === "notice") {
+            this.emit("notice", msg.notice, this)
+          } else if (msg.kind === "ok") {
+            this.emit(
+              "ok",
+              {
+                eventId: msg.eventId,
+                relay: connUrl,
+                ok: msg.ok,
+                message: msg.message,
+              },
+              this
+            )
+          } else {
+            throw new ProtocolError(`invalid message ${msg}`)
+          }
+        } catch (err) {
+          this.emit("error", err, this)
         }
-      } catch (err) {
-        this.emit("error", err, this)
-      }
-    })
-
-    // Forward connection errors to the error callbacks.
-    conn.on("error", (err) => {
-      this.emit("error", err, this)
+      },
+      // Forward errors on this connection.
+      onError: (err) => this.emit("error", err, this),
     })
 
     // Resend existing subscriptions to this connection.
     for (const [key, filters] of this.#subscriptions.entries()) {
       const subscriptionId = new SubscriptionId(key)
       conn.send({
-        kind: OutgoingKind.OpenSubscription,
+        kind: "openSubscription",
         id: subscriptionId,
         filters,
       })
@@ -145,7 +156,7 @@ export class Nostr extends EventEmitter {
         continue
       }
       conn.send({
-        kind: OutgoingKind.OpenSubscription,
+        kind: "openSubscription",
         id: subscriptionId,
         filters,
       })
@@ -167,7 +178,7 @@ export class Nostr extends EventEmitter {
         continue
       }
       conn.send({
-        kind: OutgoingKind.CloseSubscription,
+        kind: "closeSubscription",
         id: subscriptionId,
       })
     }
@@ -210,7 +221,7 @@ export class Nostr extends EventEmitter {
         event = await SignedEvent.sign(event, key)
       }
       conn.send({
-        kind: OutgoingKind.Event,
+        kind: "event",
         event,
       })
     }
@@ -288,11 +299,4 @@ export interface Filters {
   since?: Date
   until?: Date
   limit?: number
-}
-
-// TODO Document this
-export interface EventParams {
-  signed: SignedEvent
-  subscriptionId: SubscriptionId
-  raw: RawEvent
 }

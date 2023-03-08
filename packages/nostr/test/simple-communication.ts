@@ -1,26 +1,37 @@
-import { EventParams, Nostr } from "../src/client"
-import { EventKind } from "../src/event"
+import { Nostr } from "../src/client"
+import { EventKind, SignedEvent } from "../src/event"
 import { PrivateKey } from "../src/keypair"
 import assert from "assert"
+import { EventParams } from "../src/client/emitter"
 
 // TODO Switch out the relay implementation and see if the issue persists
+// TODO Do on("error", done) for all of these
 
-describe("single event communication", function () {
-  it("ok", function (done) {
-    const secret = new PrivateKey(
-      "nsec1xlu55y6fqfgrq448xslt6a8j2rh7lj08hyhgs94ryq04yf6surwsjl0kzh"
-    )
-    const pubkey = secret.pubkey
+describe("simple communication", function () {
+  const secret = new PrivateKey(
+    "nsec1xlu55y6fqfgrq448xslt6a8j2rh7lj08hyhgs94ryq04yf6surwsjl0kzh"
+  )
+  const pubkey = secret.pubkey
+  const timestamp = new Date()
+  const note = "hello world"
+  const url = new URL("ws://localhost:12648")
 
-    const timestamp = new Date()
-    const note = "hello world"
+  const publisher = new Nostr()
+  const subscriber = new Nostr()
 
-    const publisher = new Nostr()
-    publisher.open("ws://localhost:12648")
-    const subscriber = new Nostr()
-    subscriber.open("ws://localhost:12648")
+  beforeEach(() => {
+    publisher.open(url)
+    subscriber.open(url)
+  })
 
-    function listener({ signed: { event } }: EventParams) {
+  afterEach(() => {
+    publisher.close()
+    subscriber.close()
+  })
+
+  it("publish and receive", function (done) {
+    function listener({ signed: { event } }: EventParams, nostr: Nostr) {
+      assert.equal(nostr, subscriber)
       assert.equal(event.kind, EventKind.TextNote)
       assert.equal(event.pubkey.toString(), pubkey.toString())
       assert.equal(event.createdAt.toString(), timestamp.toString())
@@ -34,16 +45,11 @@ describe("single event communication", function () {
       // for future events.
       subscriber.off("event", listener)
 
-      publisher.close()
-      subscriber.close()
-
       done()
     }
 
     subscriber.on("event", listener)
-
     subscriber.subscribe([])
-
     publisher.publish(
       {
         kind: EventKind.TextNote,
@@ -53,5 +59,27 @@ describe("single event communication", function () {
       },
       secret
     )
+  })
+
+  it("publish and ok", function (done) {
+    SignedEvent.sign(
+      {
+        kind: EventKind.TextNote,
+        createdAt: timestamp,
+        content: note,
+        pubkey,
+      },
+      secret
+    ).then((event) => {
+      publisher.on("ok", (params, nostr) => {
+        assert.equal(nostr, publisher)
+        assert.equal(params.eventId.toString(), event.eventId.toString())
+        assert.equal(params.relay.toString(), url.toString())
+        assert.equal(params.ok, true)
+        done()
+      })
+      publisher.on("error", done)
+      publisher.publish(event)
+    })
   })
 })
