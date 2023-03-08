@@ -46,9 +46,13 @@ export function parseId(id: string) {
 }
 
 export function bech32ToHex(str: string) {
-  const nKey = bech32.decode(str, 1_000);
-  const buff = bech32.fromWords(nKey.words);
-  return secp.utils.bytesToHex(Uint8Array.from(buff));
+  try {
+    const nKey = bech32.decode(str, 1_000);
+    const buff = bech32.fromWords(nKey.words);
+    return secp.utils.bytesToHex(Uint8Array.from(buff));
+  } catch {
+    return "";
+  }
 }
 
 /**
@@ -57,9 +61,13 @@ export function bech32ToHex(str: string) {
  * @returns
  */
 export function bech32ToText(str: string) {
-  const decoded = bech32.decode(str, 1000);
-  const buf = bech32.fromWords(decoded.words);
-  return new TextDecoder().decode(Uint8Array.from(buf));
+  try {
+    const decoded = bech32.decode(str, 1000);
+    const buf = bech32.fromWords(decoded.words);
+    return new TextDecoder().decode(Uint8Array.from(buf));
+  } catch {
+    return "";
+  }
 }
 
 /**
