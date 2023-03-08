@@ -1,28 +1,28 @@
 import { TaggedRawEvent } from "@snort/nostr";
 import { FlatNoteStore, ReplaceableNoteStore } from "./NoteCollection";
 
-describe("NotCollection", () => {
+describe("NoteStore", () => {
   describe("flat", () => {
     test("one event", () => {
       const ev = { id: "one" } as TaggedRawEvent;
       const c = new FlatNoteStore();
       c.addNote(ev);
-      expect(c.events).toEqual([ev]);
+      expect(c.getSnapshot()).toEqual([ev]);
     });
     test("still one event", () => {
       const ev = { id: "one" } as TaggedRawEvent;
       const c = new FlatNoteStore();
       c.addNote(ev);
       c.addNote(ev);
-      expect(c.events).toEqual([ev]);
+      expect(c.getSnapshot()).toEqual([ev]);
     });
     test("clears", () => {
       const ev = { id: "one" } as TaggedRawEvent;
       const c = new FlatNoteStore();
       c.addNote(ev);
-      expect(c.events).toEqual([ev]);
+      expect(c.getSnapshot()).toEqual([ev]);
       c.clear();
-      expect(c.events).toEqual([]);
+      expect(c.getSnapshot()).toEqual([]);
     });
   });
   describe("replacable", () => {
@@ -30,7 +30,7 @@ describe("NotCollection", () => {
       const ev = { id: "test", created_at: 69 } as TaggedRawEvent;
       const c = new ReplaceableNoteStore();
       c.addNote(ev);
-      expect(c.event).toEqual(ev);
+      expect(c.getSnapshot()).toEqual(ev);
     });
     test("dont replace with older", () => {
       const ev = { id: "test", created_at: 69 } as TaggedRawEvent;
@@ -38,7 +38,7 @@ describe("NotCollection", () => {
       const c = new ReplaceableNoteStore();
       c.addNote(ev);
       c.addNote(evOlder);
-      expect(c.event).toEqual(ev);
+      expect(c.getSnapshot()).toEqual(ev);
     });
     test("replace with newer", () => {
       const ev = { id: "test", created_at: 69 } as TaggedRawEvent;
@@ -46,7 +46,7 @@ describe("NotCollection", () => {
       const c = new ReplaceableNoteStore();
       c.addNote(ev);
       c.addNote(evNewer);
-      expect(c.event).toEqual(evNewer);
+      expect(c.getSnapshot()).toEqual(evNewer);
     });
   });
 });

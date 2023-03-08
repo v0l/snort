@@ -285,7 +285,7 @@ export default function Thread(props: ThreadProps) {
             unwrap(chains.get(replyTo)).push(v);
           }
         } else if (v.Tags.length > 0) {
-          console.log("Not replying to anything: ", v);
+          //console.log("Not replying to anything: ", v);
         }
       });
 
