@@ -50,8 +50,8 @@ export class RequestBuilder {
     return ret;
   }
 
-  build() {
-    return ["REQ", this.id, ...this.#builders.map(a => a.filter)];
+  build(): Array<RawReqFilter> {
+    return this.#builders.map(a => a.filter);
   }
 }
 

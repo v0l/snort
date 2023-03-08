@@ -7,12 +7,40 @@ import {
   RelaySettings,
   Connection,
   Subscriptions,
+  RawReqFilter,
 } from "@snort/nostr";
 
 import { ProfileCacheExpire } from "Const";
 import { sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
 import { mapEventToProfile, MetadataCache } from "State/Users";
 import { UserCache } from "State/Users/UserCache";
+import { RequestBuilder } from "./RequestBuilder";
+import { FlatNoteStore, NoteStore } from "./NoteCollection";
+import { diffFilters } from "./RequestSplitter";
+
+/**
+ * Active or queued query on the system
+ */
+interface Query {
+  started: number;
+  id: string;
+  filters: Array<RawReqFilter>;
+
+  /**
+   * Which relays this query has already been executed on
+   */
+  sentToRelays: Array<string>;
+
+  /**
+   * Which relays we want to send this query on
+   */
+  shouldSendTo: Array<string>;
+
+  /**
+   * If this query should be closed
+   */
+  closeRequested: boolean;
+}
 
 /**
  * Manages nostr content retrieval system
@@ -27,6 +55,16 @@ export class NostrSystem {
    * All active subscriptions
    */
   Subscriptions: Map<string, Subscriptions>;
+
+  /**
+   * All active queries
+   */
+  Queries: Map<string, Query> = new Map();
+
+  /**
+   * Collection of all feeds which are keyed by subscription id
+   */
+  Feeds: Map<string, NoteStore> = new Map();
 
   /**
    * Pending subscriptions to send when sockets become open
@@ -48,7 +86,7 @@ export class NostrSystem {
     this.Subscriptions = new Map();
     this.PendingSubscriptions = [];
     this.WantsMetadata = new Set();
-    this._FetchMetadata();
+    this.#FetchMetadata();
   }
 
   /**
@@ -60,6 +98,7 @@ export class NostrSystem {
       if (!this.Sockets.has(addr)) {
         const c = new Connection(addr, options, this.HandleAuth);
         this.Sockets.set(addr, c);
+        c.OnEvent = (s, e) => this.OnEvent(s, e);
         await c.Connect();
         for (const [, s] of this.Subscriptions) {
           c.AddSubscription(s);
@@ -73,6 +112,13 @@ export class NostrSystem {
     }
   }
 
+  OnEvent(sub: string, ev: TaggedRawEvent) {
+    const feed = this.Feeds.get(sub);
+    if (feed) {
+      feed.addNote(ev);
+    }
+  }
+
   /**
    *
    * @param address Relay address URL
@@ -83,6 +129,7 @@ export class NostrSystem {
       if (!this.Sockets.has(addr)) {
         const c = new Connection(addr, { read: true, write: false }, this.HandleAuth, true);
         this.Sockets.set(addr, c);
+        c.OnEvent = (s, e) => this.OnEvent(s, e);
         await c.Connect();
         for (const [, s] of this.Subscriptions) {
           c.AddSubscription(s);
@@ -107,6 +154,75 @@ export class NostrSystem {
 
   AddSubscriptionToRelay(sub: Subscriptions, relay: string) {
     this.Sockets.get(relay)?.AddSubscription(sub);
+  }
+
+  Query(req: RequestBuilder): Readonly<NoteStore> {
+    /**
+     * ## Notes
+     *
+     * Given a set of existing filters:
+     * ["REQ", "1", { kinds: [0, 7], authors: [...], since: now()-1hr, until: now() }]
+     * ["REQ", "2", { kinds: [0, 7], authors: [...], since: now(), limit: 0 }]
+     *
+     * ## Problem 1:
+     * Assume we now want to update sub "1" with a new set of authors,
+     * what should we do, should we close sub "1" and send the new set or create another
+     * subscription with the new pubkeys (diff)
+     *
+     * Creating a new subscription sounds great but also is a problem when relays limit
+     * active subscriptions, maybe we should instead queue the new
+     * subscription (assuming that we expect to close at EOSE)
+     *
+     * ## Problem 2:
+     * When multiple filters a specifid in a single filter but only 1 filter changes,
+     * ~~same as above~~
+     *
+     * Seems reasonable to do "Queue Diff", should also be possible to collapse multiple
+     * pending filters for the same subscription
+     */
+
+    const filters = req.build();
+    if (this.Queries.has(req.id)) {
+      const q = unwrap(this.Queries.get(req.id));
+      const diff = diffFilters(q.filters, filters);
+      if (JSON.stringify(filters) === JSON.stringify(diff)) {
+        return unwrap(this.Feeds.get(req.id));
+      } else {
+        return this.AddQuery(req.id, filters);
+      }
+    } else {
+      return this.AddQuery(req.id, filters);
+    }
+  }
+
+  AddQuery(id: string, filters: Array<RawReqFilter>): NoteStore {
+    const q = {
+      started: unixNowMs(),
+      id: id,
+      filters: filters,
+    } as Query;
+    this.Queries.set(id, q);
+    let store = this.Feeds.get(id);
+    if (!store) {
+      store = new FlatNoteStore();
+      this.Feeds.set(id, store);
+    }
+    console.debug("Adding query: ", q.id, JSON.stringify(q.filters));
+    this.SendQuery(q);
+    return store;
+  }
+
+  CancelQuery(sub: string) {
+    const q = this.Queries.get(sub);
+    if (q) {
+      q.closeRequested = true;
+    }
+  }
+
+  SendQuery(q: Query) {
+    for (const [, s] of this.Sockets) {
+      s._SendJson(["REQ", q.id, ...q.filters]);
+    }
   }
 
   async AddSubscription(sub: Subscriptions) {
@@ -219,7 +335,7 @@ export class NostrSystem {
     });
   }
 
-  async _FetchMetadata() {
+  async #FetchMetadata() {
     const missingFromCache = await UserCache.buffer([...this.WantsMetadata]);
 
     const expire = unixNowMs() - ProfileCacheExpire;
@@ -256,7 +372,7 @@ export class NostrSystem {
       }
     }
 
-    setTimeout(() => this._FetchMetadata(), 500);
+    setTimeout(() => this.#FetchMetadata(), 500);
   }
 }
 

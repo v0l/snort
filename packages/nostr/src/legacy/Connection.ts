@@ -54,6 +54,7 @@ export class Connection {
   IsClosed: boolean;
   ReconnectTimer: ReturnType<typeof setTimeout> | null;
   EventsCallback: Map<u256, (msg: boolean[]) => void>;
+  OnEvent?: (sub: string, e: TaggedRawEvent) => void;
   Auth?: AuthHandler;
   AwaitingAuth: Map<string, boolean>;
   Authed: boolean;
@@ -400,12 +401,13 @@ export class Connection {
   }
 
   _OnEvent(subId: string, ev: RawEvent) {
+    const tagged: TaggedRawEvent = {
+      ...ev,
+      relays: [this.Address],
+    };
+    this.OnEvent?.(subId, tagged);
     if (this.Subscriptions.has(subId)) {
       //this._VerifySig(ev);
-      const tagged: TaggedRawEvent = {
-        ...ev,
-        relays: [this.Address],
-      };
       this.Subscriptions.get(subId)?.OnEvent(tagged);
     } else {
       // console.warn(`No subscription for event! ${subId}`);

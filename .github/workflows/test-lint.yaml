@@ -2,7 +2,7 @@ name: Test+Lint
 on:
   pull_request:
 jobs:
-  formatting:
+  test_and_lint:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
