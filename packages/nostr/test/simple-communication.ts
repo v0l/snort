@@ -1,20 +1,20 @@
 import { Nostr } from "../src/client"
-import { EventKind, SignedEvent } from "../src/event"
-import { PrivateKey } from "../src/crypto"
+import { createTextNote, EventKind, signEvent } from "../src/event"
+import { getPublicKey } from "../src/crypto"
 import assert from "assert"
 import { EventParams } from "../src/client/emitter"
+import { unixTimestamp } from "../src/util"
 
 // TODO Switch out the relay implementation and see if the issue persists
 // TODO Do on("error", done) for all of these
 
 describe("simple communication", function () {
-  const secret = new PrivateKey(
+  const secret =
     "nsec1xlu55y6fqfgrq448xslt6a8j2rh7lj08hyhgs94ryq04yf6surwsjl0kzh"
-  )
-  const pubkey = secret.pubkey
-  const timestamp = new Date()
+  const pubkey = getPublicKey(secret)
   const note = "hello world"
   const url = new URL("ws://localhost:12648")
+  const timestamp = unixTimestamp()
 
   const publisher = new Nostr()
   const subscriber = new Nostr()
@@ -30,14 +30,12 @@ describe("simple communication", function () {
   })
 
   it("publish and receive", function (done) {
-    function listener({ signed: { event } }: EventParams, nostr: Nostr) {
+    function listener({ event }: EventParams, nostr: Nostr) {
       assert.equal(nostr, subscriber)
       assert.equal(event.kind, EventKind.TextNote)
-      assert.equal(event.pubkey.toHex(), pubkey.toHex())
-      assert.equal(event.createdAt.toString(), timestamp.toString())
-      if (event.kind === EventKind.TextNote) {
-        assert.equal(event.content, note)
-      }
+      assert.equal(event.pubkey, pubkey)
+      assert.equal(event.created_at, timestamp)
+      assert.equal(event.content, note)
 
       // There is a bug with the nostr relay used for testing where if the publish and
       // subscribe happen at the same time, the same event might end up being broadcast twice.
@@ -48,32 +46,32 @@ describe("simple communication", function () {
       done()
     }
 
+    // TODO do this once EOSE is implemented
+    //subscriber.on("error", done)
+    //publisher.on("error", done)
+
     subscriber.on("event", listener)
     subscriber.subscribe([])
-    publisher.publish(
+    signEvent(
       {
-        kind: EventKind.TextNote,
-        createdAt: timestamp,
-        content: note,
-        pubkey,
+        ...createTextNote(note),
+        tags: [],
       },
       secret
-    )
+    ).then((event) => publisher.publish(event))
   })
 
   it("publish and ok", function (done) {
-    SignedEvent.sign(
+    signEvent(
       {
-        kind: EventKind.TextNote,
-        createdAt: timestamp,
-        content: note,
-        pubkey,
+        ...createTextNote(note),
+        tags: [],
       },
       secret
     ).then((event) => {
       publisher.on("ok", (params, nostr) => {
         assert.equal(nostr, publisher)
-        assert.equal(params.eventId.toHex(), event.eventId.toHex())
+        assert.equal(params.eventId, event.id)
         assert.equal(params.relay.toString(), url.toString())
         assert.equal(params.ok, true)
         done()
