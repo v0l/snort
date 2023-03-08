@@ -76,6 +76,8 @@ export class Nostr extends EventEmitter {
               },
               this
             )
+          } else if (msg.kind === "eose") {
+            this.emit("eose", msg.subscriptionId, this)
           } else {
             throw new ProtocolError(`invalid message ${msg}`)
           }
