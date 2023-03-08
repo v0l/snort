@@ -9,7 +9,7 @@ import { RootState } from "State/Store";
 import Timeline from "Element/Timeline";
 import { System } from "System";
 import { TimelineSubject } from "Feed/TimelineFeed";
-import { debounce, unwrap } from "Util";
+import { debounce, sha256, unwrap } from "Util";
 
 import messages from "./messages";
 
@@ -126,7 +126,7 @@ export default function RootPage() {
 
   const timelineSubect: TimelineSubject = (() => {
     if (isGlobal) {
-      return { type: "global", items: [], discriminator: `all-${relay?.url}` };
+      return { type: "global", items: [], discriminator: `all-${sha256(relay?.url ?? "").slice(0, 12)}` };
     }
     if (tab.value >= 3) {
       const hashtag = tab.text.slice(1);
