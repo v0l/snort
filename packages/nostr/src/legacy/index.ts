@@ -5,6 +5,7 @@ export { default as Event } from "./Event";
 export { default as Tag } from "./Tag";
 export * from "./Links";
 
+import { RelaySettings } from ".";
 export type RawEvent = {
   id: u256;
   pubkey: HexKey;
@@ -82,5 +83,5 @@ export enum Lists {
 
 export interface FullRelaySettings {
   url: string;
-  settings: { read: boolean; write: boolean };
+  settings: RelaySettings;
 }

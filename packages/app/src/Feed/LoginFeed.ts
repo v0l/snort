@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
-import { getNewest } from "Util";
+import { getNewest, getNewestEventTagsByKey, unwrap } from "Util";
 import { makeNotification } from "Notifications";
 import { TaggedRawEvent, HexKey, Lists } from "@snort/nostr";
 import { Event, EventKind, Subscriptions } from "@snort/nostr";
@@ -22,7 +23,8 @@ import useSubscription from "Feed/Subscription";
 import { barrierNip07 } from "Feed/EventPublisher";
 import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
-import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import useRelaysFeedFollows from "Feed/RelaysFeedFollows";
+import { FollowsRelays } from "State/Relays";
 
 /**
  * Managed loading data for the current logged in user
@@ -34,6 +36,7 @@ export default function useLoginFeed() {
     privateKey: privKey,
     latestMuted,
     readNotifications,
+    follows,
   } = useSelector((s: RootState) => s.login);
   const { isMuted } = useModeration();
 
@@ -61,54 +64,14 @@ export default function useLoginFeed() {
     return sub;
   }, [pubKey]);
 
-  const subMuted = useMemo(() => {
+  const subLists = useMemo(() => {
     if (!pubKey) return null;
 
     const sub = new Subscriptions();
     sub.Id = "login:muted";
     sub.Kinds = new Set([EventKind.PubkeyLists]);
     sub.Authors = new Set([pubKey]);
-    sub.DTags = new Set([Lists.Muted]);
-    sub.Limit = 1;
-
-    return sub;
-  }, [pubKey]);
-
-  const subTags = useMemo(() => {
-    if (!pubKey) return null;
-
-    const sub = new Subscriptions();
-    sub.Id = "login:tags";
-    sub.Kinds = new Set([EventKind.TagLists]);
-    sub.Authors = new Set([pubKey]);
-    sub.DTags = new Set([Lists.Followed]);
-    sub.Limit = 1;
-
-    return sub;
-  }, [pubKey]);
-
-  const subPinned = useMemo(() => {
-    if (!pubKey) return null;
-
-    const sub = new Subscriptions();
-    sub.Id = "login:pinned";
-    sub.Kinds = new Set([EventKind.NoteLists]);
-    sub.Authors = new Set([pubKey]);
-    sub.DTags = new Set([Lists.Pinned]);
-    sub.Limit = 1;
-
-    return sub;
-  }, [pubKey]);
-
-  const subBookmarks = useMemo(() => {
-    if (!pubKey) return null;
-
-    const sub = new Subscriptions();
-    sub.Id = "login:bookmarks";
-    sub.Kinds = new Set([EventKind.NoteLists]);
-    sub.Authors = new Set([pubKey]);
-    sub.DTags = new Set([Lists.Bookmarked]);
-    sub.Limit = 1;
+    sub.DTags = new Set([Lists.Muted, Lists.Followed, Lists.Pinned, Lists.Bookmarked]);
 
     return sub;
   }, [pubKey]);
@@ -138,10 +101,7 @@ export default function useLoginFeed() {
     cache: true,
   });
   const dmsFeed = useSubscription(subDms, { leaveOpen: true, cache: true });
-  const mutedFeed = useSubscription(subMuted, { leaveOpen: true, cache: true });
-  const pinnedFeed = useSubscription(subPinned, { leaveOpen: true, cache: true });
-  const tagsFeed = useSubscription(subTags, { leaveOpen: true, cache: true });
-  const bookmarkFeed = useSubscription(subBookmarks, { leaveOpen: true, cache: true });
+  const listsFeed = useSubscription(subLists, { leaveOpen: true, cache: true });
 
   useEffect(() => {
     const contactList = metadataFeed.store.notes.filter(a => a.kind === EventKind.ContactList);
@@ -169,11 +129,11 @@ export default function useLoginFeed() {
     });
   }, [dispatch, notificationFeed.store, readNotifications]);
 
-  useEffect(() => {
-    const muted = getMutedKeys(mutedFeed.store.notes);
+  function handleMutedFeed(mutedFeed: TaggedRawEvent[]) {
+    const muted = getMutedKeys(mutedFeed);
     dispatch(setMuted(muted));
 
-    const newest = getNewest(mutedFeed.store.notes);
+    const newest = getNewest(mutedFeed);
     if (newest && newest.content.length > 0 && pubKey && newest.created_at > latestMuted) {
       decryptBlocked(newest, pubKey, privKey)
         .then(plaintext => {
@@ -192,51 +152,60 @@ export default function useLoginFeed() {
         })
         .catch(error => console.warn(error));
     }
-  }, [dispatch, mutedFeed.store]);
+  }
 
-  useEffect(() => {
-    const newest = getNewest(pinnedFeed.store.notes);
+  function handlePinnedFeed(pinnedFeed: TaggedRawEvent[]) {
+    const newest = getNewestEventTagsByKey(pinnedFeed, "e");
     if (newest) {
-      const keys = newest.tags.filter(p => p && p.length === 2 && p[0] === "e").map(p => p[1]);
-      dispatch(
-        setPinned({
-          keys,
-          createdAt: newest.created_at,
-        })
-      );
+      dispatch(setPinned(newest));
     }
-  }, [dispatch, pinnedFeed.store]);
+  }
 
-  useEffect(() => {
-    const newest = getNewest(tagsFeed.store.notes);
+  function handleTagFeed(tagFeed: TaggedRawEvent[]) {
+    const newest = getNewestEventTagsByKey(tagFeed, "t");
     if (newest) {
-      const tags = newest.tags.filter(p => p && p.length === 2 && p[0] === "t").map(p => p[1]);
       dispatch(
         setTags({
-          tags,
-          createdAt: newest.created_at,
+          tags: newest.keys,
+          createdAt: newest.createdAt,
         })
       );
     }
-  }, [dispatch, tagsFeed.store]);
+  }
+
+  function handleBookmarkFeed(bookmarkFeed: TaggedRawEvent[]) {
+    const newest = getNewestEventTagsByKey(bookmarkFeed, "e");
+    if (newest) {
+      dispatch(setBookmarked(newest));
+    }
+  }
 
   useEffect(() => {
-    const newest = getNewest(bookmarkFeed.store.notes);
-    if (newest) {
-      const keys = newest.tags.filter(p => p && p.length === 2 && p[0] === "e").map(p => p[1]);
-      dispatch(
-        setBookmarked({
-          keys,
-          createdAt: newest.created_at,
-        })
-      );
-    }
-  }, [dispatch, bookmarkFeed.store]);
+    const getList = (evs: TaggedRawEvent[], list: Lists) =>
+      evs.filter(a => unwrap(a.tags.find(b => b[0] === "d"))[1] === list);
+
+    const mutedFeed = getList(listsFeed.store.notes, Lists.Muted);
+    handleMutedFeed(mutedFeed);
+
+    const pinnedFeed = getList(listsFeed.store.notes, Lists.Pinned);
+    handlePinnedFeed(pinnedFeed);
+
+    const tagsFeed = getList(listsFeed.store.notes, Lists.Followed);
+    handleTagFeed(tagsFeed);
+
+    const bookmarkFeed = getList(listsFeed.store.notes, Lists.Bookmarked);
+    handleBookmarkFeed(bookmarkFeed);
+  }, [dispatch, listsFeed.store]);
 
   useEffect(() => {
     const dms = dmsFeed.store.notes.filter(a => a.kind === EventKind.DirectMessage);
     dispatch(addDirectMessage(dms));
   }, [dispatch, dmsFeed.store]);
+
+  const fRelays = useRelaysFeedFollows(follows);
+  useEffect(() => {
+    FollowsRelays.bulkSet(fRelays).catch(console.error);
+  }, [dispatch, fRelays]);
 }
 
 async function decryptBlocked(raw: TaggedRawEvent, pubKey: HexKey, privKey?: HexKey) {

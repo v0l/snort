@@ -5,6 +5,7 @@ import { HexKey, TaggedRawEvent } from "@snort/nostr";
 import { RelaySettings } from "@snort/nostr";
 import type { AppDispatch, RootState } from "State/Store";
 import { ImgProxySettings } from "Hooks/useImgProxy";
+import { sanitizeRelayUrl } from "Util";
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
@@ -338,7 +339,10 @@ const LoginSlice = createSlice({
       const filtered = new Map<string, RelaySettings>();
       for (const [k, v] of Object.entries(relays)) {
         if (k.startsWith("wss://") || k.startsWith("ws://")) {
-          filtered.set(k, v as RelaySettings);
+          const url = sanitizeRelayUrl(k);
+          if (url) {
+            filtered.set(url, v as RelaySettings);
+          }
         }
       }
 

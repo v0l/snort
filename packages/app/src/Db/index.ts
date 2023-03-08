@@ -1,9 +1,9 @@
 import Dexie, { Table } from "dexie";
-import { u256 } from "@snort/nostr";
+import { FullRelaySettings, HexKey, u256 } from "@snort/nostr";
 import { MetadataCache } from "State/Users";
 
 export const NAME = "snortDB";
-export const VERSION = 4;
+export const VERSION = 6;
 
 export interface SubCache {
   id: string;
@@ -12,13 +12,29 @@ export interface SubCache {
   since?: number;
 }
 
+export interface RelayMetrics {
+  addr: string;
+  events: number;
+  disconnects: number;
+  latency: number[];
+}
+
+export interface UsersRelays {
+  pubkey: HexKey;
+  relays: FullRelaySettings[];
+}
+
 const STORES = {
   users: "++pubkey, name, display_name, picture, nip05, npub",
+  relays: "++addr",
+  userRelays: "++pubkey",
 };
 
 export class SnortDB extends Dexie {
   ready = false;
   users!: Table<MetadataCache>;
+  relayMetrics!: Table<RelayMetrics>;
+  userRelays!: Table<UsersRelays>;
 
   constructor() {
     super(NAME);

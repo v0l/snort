@@ -348,6 +348,9 @@
   "KahimY": {
     "defaultMessage": "Unknown event kind: {kind}"
   },
+  "LF5kYT": {
+    "defaultMessage": "Other Connections"
+  },
   "LXxsbk": {
     "defaultMessage": "Anonymous"
   },
@@ -736,6 +739,9 @@
   },
   "oxCa4R": {
     "defaultMessage": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app."
+  },
+  "p85Uwy": {
+    "defaultMessage": "Active Subscriptions"
   },
   "puLNUJ": {
     "defaultMessage": "Pin"

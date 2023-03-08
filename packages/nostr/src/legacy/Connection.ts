@@ -16,7 +16,7 @@ export type AuthHandler = (challenge: string, relay: string) => Promise<NEvent |
 /**
  * Relay settings
  */
-export type RelaySettings = {
+export interface RelaySettings {
   read: boolean;
   write: boolean;
 };
@@ -34,6 +34,7 @@ export type StateSnapshot = {
   };
   info?: RelayInfo;
   id: string;
+  subs: Array<Subscriptions>
 };
 
 export class Connection {
@@ -53,11 +54,14 @@ export class Connection {
   IsClosed: boolean;
   ReconnectTimer: ReturnType<typeof setTimeout> | null;
   EventsCallback: Map<u256, (msg: boolean[]) => void>;
+  OnEvent?: (sub: string, e: TaggedRawEvent) => void;
   Auth?: AuthHandler;
   AwaitingAuth: Map<string, boolean>;
   Authed: boolean;
+  Ephemeral: boolean;
+  EphemeralTimeout: ReturnType<typeof setTimeout> | null;
 
-  constructor(addr: string, options: RelaySettings, auth: AuthHandler = undefined) {
+  constructor(addr: string, options: RelaySettings, auth: AuthHandler = undefined, ephemeral: boolean = false) {
     this.Id = uuid();
     this.Address = addr;
     this.Socket = null;
@@ -84,6 +88,24 @@ export class Connection {
     this.AwaitingAuth = new Map();
     this.Authed = false;
     this.Auth = auth;
+    this.Ephemeral = ephemeral;
+
+    if (this.Ephemeral) {
+      this.ResetEphemeralTimeout();
+    }
+  }
+
+  ResetEphemeralTimeout() {
+    if (this.EphemeralTimeout) {
+      clearTimeout(this.EphemeralTimeout);
+    }
+    if (this.Ephemeral) {
+      this.EphemeralTimeout = setTimeout(() => {
+        if (this.Subscriptions.size === 0) {
+          this.Close();
+        }
+      }, 10_000);
+    }
   }
 
   async Connect() {
@@ -98,7 +120,7 @@ export class Connection {
         if (rsp.ok) {
           const data = await rsp.json();
           for (const [k, v] of Object.entries(data)) {
-            if (v === "unset" || v === "") {
+            if (v === "unset" || v === "" || v === "~") {
               data[k] = undefined;
             }
           }
@@ -107,11 +129,6 @@ export class Connection {
       }
     } catch (e) {
       console.warn("Could not load relay information", e);
-    }
-
-    if (this.IsClosed) {
-      this._UpdateState();
-      return;
     }
 
     this.IsClosed = false;
@@ -250,21 +267,34 @@ export class Connection {
    */
   AddSubscription(sub: Subscriptions) {
     if (!this.Settings.read) {
-      return;
+      return false;
     }
 
     // check relay supports search
     if (sub.Search && !this.SupportsNip(Nips.Search)) {
-      return;
+      return false;
     }
 
     if (this.Subscriptions.has(sub.Id)) {
-      return;
+      return false;
+    }
+
+    if (sub.Relays === undefined && this.Ephemeral) {
+      return false;
+    }
+
+    if (sub.Relays && !sub.Relays.has(this.Address)) {
+      return false;
     }
 
     sub.Started.set(this.Address, new Date().getTime());
     this._SendSubscription(sub);
     this.Subscriptions.set(sub.Id, sub);
+    this.ResetEphemeralTimeout();
+    if (this.Ephemeral && this.IsClosed) {
+      this.Connect();
+    }
+    return true;
   }
 
   /**
@@ -316,11 +346,12 @@ export class Connection {
     this.CurrentState.avgLatency =
       this.Stats.Latency.length > 0
         ? this.Stats.Latency.reduce((acc, v) => acc + v, 0) /
-          this.Stats.Latency.length
+        this.Stats.Latency.length
         : 0;
     this.CurrentState.disconnects = this.Stats.Disconnects;
     this.CurrentState.info = this.Info;
     this.CurrentState.id = this.Id;
+    this.CurrentState.subs = [...this.Subscriptions.values()];
     this.Stats.Latency = this.Stats.Latency.slice(-20); // trim
     this.HasStateChange = true;
     this._NotifyState();
@@ -370,12 +401,13 @@ export class Connection {
   }
 
   _OnEvent(subId: string, ev: RawEvent) {
+    const tagged: TaggedRawEvent = {
+      ...ev,
+      relays: [this.Address],
+    };
+    this.OnEvent?.(subId, tagged);
     if (this.Subscriptions.has(subId)) {
       //this._VerifySig(ev);
-      const tagged: TaggedRawEvent = {
-        ...ev,
-        relays: [this.Address],
-      };
       this.Subscriptions.get(subId)?.OnEvent(tagged);
     } else {
       // console.warn(`No subscription for event! ${subId}`);
@@ -387,7 +419,7 @@ export class Connection {
     const authCleanup = () => {
       this.AwaitingAuth.delete(challenge);
     };
-    if(!this.Auth) {
+    if (!this.Auth) {
       throw new Error("Auth hook not registered");
     }
     this.AwaitingAuth.set(challenge, true);

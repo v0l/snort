@@ -80,12 +80,9 @@ export function parseZap(zapReceipt: TaggedRawEvent): ParsedZap {
         ret.valid = false;
         ret.errors.push("zap service pubkey doesn't match");
       }
-      if (!ret.valid) {
-        console.debug("Invalid zap", ret);
-      }
       return ret;
     } catch (e) {
-      console.debug("Invalid zap", zapReceipt, e);
+      // ignored: console.debug("Invalid zap", zapReceipt, e);
     }
   }
   return {
