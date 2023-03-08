@@ -40,9 +40,8 @@ export default function useThreadFeed(id: u256) {
           .filter(a => a.kind === EventKind.TextNote)
           .map(a => a.tags.filter(b => b[0] === "e").map(b => b[1]))
           .flat();
-        const ids = mainNotes.map(a => a.id);
-        const allEvents = new Set([...eTags, ...ids]);
-        setTrackingEvent(s => appendDedupe(s, Array.from(allEvents)));
+        const eTagsMissing = eTags.filter(a => !mainNotes.some(b => b.id === a));
+        setTrackingEvent(s => appendDedupe(s, eTagsMissing));
       });
     }
   }, [store]);

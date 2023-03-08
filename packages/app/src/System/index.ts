@@ -18,13 +18,22 @@ import { RequestBuilder } from "./RequestBuilder";
 import { FlatNoteStore, NoteStore } from "./NoteCollection";
 import { diffFilters } from "./RequestSplitter";
 
+interface QueryRequest {
+  filters: Array<RawReqFilter>;
+  started: number;
+  finished: number;
+}
 /**
  * Active or queued query on the system
  */
 interface Query {
-  started: number;
   id: string;
-  filters: Array<RawReqFilter>;
+  request: QueryRequest;
+
+  /**
+   * Sub-Queries which are connected to this subscription
+   */
+  subQueries: Array<Query>;
 
   /**
    * Which relays this query has already been executed on
@@ -99,6 +108,7 @@ export class NostrSystem {
         const c = new Connection(addr, options, this.HandleAuth);
         this.Sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
+        c.OnEose = s => this.OnEndOfStoredEvents(c, s);
         await c.Connect();
         for (const [, s] of this.Subscriptions) {
           c.AddSubscription(s);
@@ -112,11 +122,37 @@ export class NostrSystem {
     }
   }
 
+  OnEndOfStoredEvents(c: Connection, sub: string) {
+    const q = this.GetQuery(sub);
+    if (q) {
+      q.request.finished = unixNowMs();
+    }
+    c._SendJson(["CLOSE", sub]);
+  }
+
   OnEvent(sub: string, ev: TaggedRawEvent) {
-    const feed = this.Feeds.get(sub);
+    const feed = this.GetFeed(sub);
     if (feed) {
       feed.addNote(ev);
     }
+  }
+
+  GetFeed(sub: string) {
+    const subFilterId = /-\d+$/i;
+    if (sub.match(subFilterId)) {
+      // feed events back into parent query
+      sub = sub.split(subFilterId)[0];
+    }
+    return this.Feeds.get(sub);
+  }
+
+  GetQuery(sub: string) {
+    const subFilterId = /-\d+$/i;
+    if (sub.match(subFilterId)) {
+      // feed events back into parent query
+      sub = sub.split(subFilterId)[0];
+    }
+    return this.Queries.get(sub);
   }
 
   /**
@@ -130,6 +166,7 @@ export class NostrSystem {
         const c = new Connection(addr, { read: true, write: false }, this.HandleAuth, true);
         this.Sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
+        c.OnEose = s => this.OnEndOfStoredEvents(c, s);
         await c.Connect();
         for (const [, s] of this.Subscriptions) {
           c.AddSubscription(s);
@@ -184,11 +221,21 @@ export class NostrSystem {
     const filters = req.build();
     if (this.Queries.has(req.id)) {
       const q = unwrap(this.Queries.get(req.id));
-      const diff = diffFilters(q.filters, filters);
+      const diff = diffFilters(q.request.filters, filters);
       if (JSON.stringify(filters) === JSON.stringify(diff)) {
         return unwrap(this.Feeds.get(req.id));
       } else {
-        return this.AddQuery(req.id, filters);
+        const subQ = {
+          id: `${q.id}-${q.subQueries.length + 1}`,
+          request: {
+            filters: diff,
+            started: unixNowMs(),
+          },
+        } as Query;
+        q.subQueries.push(subQ);
+        q.request.filters = filters;
+        this.SendQuery(subQ.id, subQ.request.filters);
+        return unwrap(this.Feeds.get(req.id));
       }
     } else {
       return this.AddQuery(req.id, filters);
@@ -197,18 +244,22 @@ export class NostrSystem {
 
   AddQuery(id: string, filters: Array<RawReqFilter>): NoteStore {
     const q = {
-      started: unixNowMs(),
       id: id,
-      filters: filters,
+      request: {
+        filters: filters,
+        started: unixNowMs(),
+        finished: 0,
+      },
+      subQueries: [],
+      sentToRelays: [],
+      shouldSendTo: [],
+      closeRequested: false,
     } as Query;
     this.Queries.set(id, q);
-    let store = this.Feeds.get(id);
-    if (!store) {
-      store = new FlatNoteStore();
-      this.Feeds.set(id, store);
-    }
-    console.debug("Adding query: ", q.id, JSON.stringify(q.filters));
-    this.SendQuery(q);
+    const store = new FlatNoteStore();
+    this.Feeds.set(id, store);
+
+    this.SendQuery(q.id, q.request.filters);
     return store;
   }
 
@@ -219,9 +270,9 @@ export class NostrSystem {
     }
   }
 
-  SendQuery(q: Query) {
+  SendQuery(id: string, filters: Array<RawReqFilter>) {
     for (const [, s] of this.Sockets) {
-      s._SendJson(["REQ", q.id, ...q.filters]);
+      s._SendJson(["REQ", id, ...filters]);
     }
   }
 

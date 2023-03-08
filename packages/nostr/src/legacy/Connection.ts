@@ -55,6 +55,7 @@ export class Connection {
   ReconnectTimer: ReturnType<typeof setTimeout> | null;
   EventsCallback: Map<u256, (msg: boolean[]) => void>;
   OnEvent?: (sub: string, e: TaggedRawEvent) => void;
+  OnEose?: (sub: string) => void;
   Auth?: AuthHandler;
   AwaitingAuth: Map<string, boolean>;
   Authed: boolean;
@@ -194,6 +195,7 @@ export class Connection {
           break;
         }
         case "EOSE": {
+          this.OnEose?.(msg[1]);
           this._OnEnd(msg[1]);
           break;
         }
