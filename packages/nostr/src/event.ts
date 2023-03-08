@@ -3,14 +3,15 @@ import {
   PublicKey,
   PrivateKey,
   sha256,
-  Hex,
   schnorrSign,
   schnorrVerify,
   aesDecryptBase64,
+  getPublicKey,
+  HexOrBechPrivateKey,
+  parsePrivateKey,
 } from "./crypto"
 import { defined, unixTimestamp } from "./util"
 
-// TODO This file is missing proper documentation
 // TODO Add remaining event types
 
 export enum EventKind {
@@ -31,23 +32,57 @@ export enum EventKind {
   ZapReceipt = 9735, // NIP 57
 }
 
-export type Event =
-  | SetMetadataEvent
-  | TextNoteEvent
-  | DirectMessageEvent
-  | UnknownEvent
-
-interface EventCommon {
+/**
+ * A nostr event in the format that's sent across the wire.
+ */
+export interface RawEvent {
+  id: string
   pubkey: PublicKey
-  createdAt: Date
+  created_at: number
+  kind: EventKind
+  tags: string[][]
+  content: string
+  sig: string
 }
 
-// TODO Refactor: the event names don't need to all end with *Event
-
-export interface SetMetadataEvent extends EventCommon {
+interface SetMetadata extends RawEvent {
   kind: EventKind.SetMetadata
-  content: UserMetadata
+
+  /**
+   * Get the user metadata specified in this event.
+   */
+  getUserMetadata(): UserMetadata
 }
+
+export interface TextNote extends RawEvent {
+  kind: EventKind.TextNote
+}
+
+interface DirectMessage extends RawEvent {
+  kind: EventKind.DirectMessage
+
+  /**
+   * Get the message plaintext, or undefined if this client is not the recipient.
+   */
+  getMessage(recipient: PrivateKey): Promise<string | undefined>
+  /**
+   * Get the recipient pubkey.
+   */
+  getRecipient(): PublicKey
+  /**
+   * Get the event ID of the previous message.
+   */
+  getPrevious(): EventId | undefined
+}
+
+export interface Unknown extends RawEvent {
+  kind: Exclude<
+    EventKind,
+    EventKind.SetMetadata | EventKind.TextNote | EventKind.DirectMessage
+  >
+}
+
+export type Event = SetMetadata | TextNote | DirectMessage | Unknown
 
 export interface UserMetadata {
   name: string
@@ -55,307 +90,197 @@ export interface UserMetadata {
   picture: string
 }
 
-export interface TextNoteEvent extends EventCommon {
-  kind: EventKind.TextNote
-  content: string
+/**
+ * Event ID encoded as hex.
+ */
+export type EventId = string
+
+/**
+ * An unsigned event.
+ */
+export type Unsigned<T extends Event | RawEvent> = Omit<
+  T,
+  "id" | "pubkey" | "sig" | "created_at"
+> & {
+  id?: EventId
+  pubkey?: PublicKey
+  sig?: string
+  created_at?: number
 }
 
-export interface DirectMessageEvent extends EventCommon {
-  kind: EventKind.DirectMessage
-  /**
-   * The plaintext message, or undefined if this client is not the recipient.
-   */
-  message?: string
-  recipient: PublicKey
-  previous?: EventId
-}
-
-export interface UnknownEvent extends EventCommon {
-  kind: Exclude<EventKind, EventKind.SetMetadata | EventKind.TextNote>
-}
-
-// TODO Doc comment
-export class EventId {
-  #hex: Hex
-
-  static async create(event: Event | RawEvent): Promise<EventId> {
-    // It's not defined whether JSON.stringify produces a string with whitespace stripped.
-    // Building the JSON string manually as follows ensures that there's no whitespace.
-    // In hindsight using JSON as a data format for hashing and signing is not the best
-    // design decision.
-    if ("id" in event) {
-      // Raw event.
-      const serializedTags = `[${event.tags
-        .map((tag) => `[${tag.map((v) => `"${v}"`).join(",")}]`)
-        .join(",")}]`
-      const serialized = `[0,"${event.pubkey}",${event.created_at},${event.kind},${serializedTags},"${event.content}"]`
-      const hash = await sha256(Uint8Array.from(charCodes(serialized)))
-      return new EventId(hash)
-    } else {
-      // Not a raw event.
-      const tags = serializeTags(event)
-      const content = serializeContent(event)
-      const serializedTags = `[${tags
-        .map((tag) => `[${tag.map((v) => `"${v}"`).join(",")}]`)
-        .join(",")}]`
-      const serialized = `[0,"${event.pubkey}",${unixTimestamp(
-        event.createdAt
-      )},${event.kind},${serializedTags},"${content}"]`
-      const hash = await sha256(Uint8Array.from(charCodes(serialized)))
-      return new EventId(hash)
-    }
-  }
-
-  constructor(hex: string | Uint8Array) {
-    this.#hex = new Hex(hex)
-  }
-
-  toHex(): string {
-    return this.#hex.toString()
-  }
-
-  toString(): string {
-    return this.toHex()
-  }
+type UnsignedWithPubkey<T extends Event | RawEvent> = Omit<
+  T,
+  "id" | "sig" | "created_at"
+> & {
+  id?: EventId
+  sig?: string
+  created_at?: number
 }
 
 /**
- * A signed event. Provides access to the event data, ID, and signature.
+ * Add the "id," "sig," and "pubkey" fields to the event. Set "created_at" to the current timestamp
+ * if missing. Return the event.
  */
-export class SignedEvent {
-  #event: Readonly<Event>
-  #eventId: EventId
-  #signature: Hex
-
-  /**
-   * Sign an event using the specified private key. The private key must match the
-   * public key from the event.
-   */
-  static async sign(event: Event, key: PrivateKey): Promise<SignedEvent> {
-    const id = await EventId.create(event)
-    const sig = await schnorrSign(new Hex(id.toHex()), key)
-    return new SignedEvent(event, id, new Hex(sig))
-  }
-
-  /**
-   * Verify the signature of a raw event. Throw a `ProtocolError` if the signature
-   * is invalid.
-   */
-  static async verify(raw: RawEvent, key?: PrivateKey): Promise<SignedEvent> {
-    const id = await EventId.create(raw)
-    if (id.toHex() !== raw.id) {
-      throw new ProtocolError(`invalid event id: ${raw.id}, expected ${id}`)
-    }
-    const sig = new Hex(raw.sig)
-    if (
-      !(await schnorrVerify(
-        sig,
-        new Hex(id.toHex()),
-        new PublicKey(raw.pubkey)
-      ))
-    ) {
-      throw new ProtocolError(`invalid signature: ${sig}`)
-    }
-    return new SignedEvent(await parseEvent(raw, key), id, sig)
-  }
-
-  private constructor(event: Event, eventId: EventId, signature: Hex) {
-    this.#event = deepCopy(event)
-    this.#eventId = eventId
-    this.#signature = signature
-  }
-
-  /**
-   * Event ID.
-   */
-  get eventId(): EventId {
-    return this.#eventId
-  }
-
-  /**
-   * Event data.
-   */
-  get event(): Event {
-    return deepCopy(this.#event)
-  }
-
-  /**
-   * Event signature in hex format.
-   */
-  get signature(): string {
-    return this.#signature.toString()
-  }
-
-  /**
-   * Serialize the event into its raw format.
-   */
-  serialize(): RawEvent {
-    const { event, eventId: id, signature } = this
-    const tags = serializeTags(event)
-    const content = serializeContent(event)
-    return {
-      id: id.toHex(),
-      pubkey: event.pubkey.toHex(),
-      created_at: unixTimestamp(event.createdAt),
-      kind: event.kind,
-      tags,
-      content,
-      sig: signature,
-    }
+export async function signEvent<T extends Event | RawEvent>(
+  event: Unsigned<T>,
+  priv?: HexOrBechPrivateKey
+): Promise<T> {
+  event.created_at ??= unixTimestamp()
+  if (priv !== undefined) {
+    priv = parsePrivateKey(priv)
+    event.pubkey = getPublicKey(priv)
+    const id = await calculateEventId(event as UnsignedWithPubkey<T>)
+    event.id = id
+    event.sig = await schnorrSign(id, priv)
+    return event as T
+  } else {
+    // TODO Try to use NIP-07, otherwise throw
+    throw new Error("todo")
   }
 }
 
-export interface RawEvent {
-  id: string
-  pubkey: string
-  created_at: number
-  kind: number
-  tags: string[][]
-  content: string
-  sig: string
+export function createTextNote(content: string): Unsigned<TextNote> {
+  return {
+    kind: EventKind.TextNote,
+    tags: [],
+    content,
+  }
+}
+
+export function createSetMetadata(
+  content: UserMetadata
+): Unsigned<SetMetadata> {
+  return {
+    kind: EventKind.SetMetadata,
+    tags: [],
+    content: JSON.stringify(content),
+    getUserMetadata,
+  }
 }
 
 /**
  * Parse an event from its raw format.
  */
-async function parseEvent(
-  raw: RawEvent,
-  key: PrivateKey | undefined
-): Promise<Event> {
-  const pubkey = new PublicKey(raw.pubkey)
-  const createdAt = new Date(raw.created_at * 1000)
-  const event = {
-    pubkey,
-    createdAt,
+export async function parseEvent(event: RawEvent): Promise<Event> {
+  // TODO Validate all the fields. Lowercase hex fields, etc. Make sure everything is correct.
+  if (event.id !== (await calculateEventId(event))) {
+    throw new ProtocolError(
+      `invalid id ${event.id} for event ${JSON.stringify(
+        event
+      )}, expected ${await calculateEventId(event)}`
+    )
+  }
+  if (!schnorrVerify(event.sig, event.id, event.pubkey)) {
+    throw new ProtocolError(
+      `invalid signature for event ${JSON.stringify(event)}`
+    )
   }
 
-  if (raw.kind === EventKind.SetMetadata) {
-    const userMetadata = parseJson(raw.content)
-    if (
-      typeof userMetadata["name"] !== "string" ||
-      typeof userMetadata["about"] !== "string" ||
-      typeof userMetadata["picture"] !== "string"
-    ) {
-      throw new ProtocolError(
-        `invalid user metadata ${userMetadata} in ${JSON.stringify(raw)}`
-      )
-    }
-    return {
-      ...event,
-      kind: EventKind.SetMetadata,
-      content: userMetadata,
-    }
-  }
-
-  if (raw.kind === EventKind.TextNote) {
+  if (event.kind === EventKind.TextNote) {
     return {
       ...event,
       kind: EventKind.TextNote,
-      content: raw.content,
     }
   }
 
-  if (raw.kind === EventKind.DirectMessage) {
-    // Parse the tag identifying the recipient.
-    const recipientTag = raw.tags.find((tag) => tag[0] === "p")
-    if (typeof recipientTag?.[1] !== "string") {
-      throw new ProtocolError(
-        `expected "p" tag to be of type string, but got ${
-          recipientTag?.[1]
-        } in ${JSON.stringify(raw)}`
-      )
+  if (event.kind === EventKind.SetMetadata) {
+    return {
+      ...event,
+      kind: EventKind.SetMetadata,
+      getUserMetadata,
     }
-    const recipient = new PublicKey(recipientTag[1])
+  }
 
-    // Parse the tag identifying the optional previous message.
-    const previousTag = raw.tags.find((tag) => tag[0] === "e")
-    if (typeof recipientTag[1] !== "string") {
-      throw new ProtocolError(
-        `expected "e" tag to be of type string, but got ${
-          previousTag?.[1]
-        } in ${JSON.stringify(raw)}`
-      )
-    }
-    const previous = new EventId(defined(previousTag?.[1]))
-
-    // Decrypt the message content.
-    const [data, iv] = raw.content.split("?iv=")
-    if (data === undefined || iv === undefined) {
-      throw new ProtocolError(`invalid direct message content ${raw.content}`)
-    }
-    let message: string | undefined
-    if (key?.pubkey?.toHex() === recipient.toHex()) {
-      message = await aesDecryptBase64(event.pubkey, key, { data, iv })
-    }
+  if (event.kind === EventKind.DirectMessage) {
     return {
       ...event,
       kind: EventKind.DirectMessage,
-      message,
-      recipient,
-      previous,
+      getMessage,
+      getRecipient,
+      getPrevious,
     }
   }
 
   return {
     ...event,
-    kind: raw.kind,
+    kind: event.kind,
   }
 }
 
-function serializeTags(_event: Event): string[][] {
-  // TODO As I add different event kinds, this will change
-  return []
+async function calculateEventId(
+  event: UnsignedWithPubkey<RawEvent>
+): Promise<EventId> {
+  // It's not defined whether JSON.stringify produces a string with whitespace stripped.
+  // Building the JSON string manually as follows ensures that there's no whitespace.
+  // In hindsight using JSON as a data format for hashing and signing is not the best
+  // design decision.
+  const serializedTags = `[${event.tags
+    .map((tag) => `[${tag.map((v) => `"${v}"`).join(",")}]`)
+    .join(",")}]`
+  const serialized = `[0,"${event.pubkey}",${event.created_at},${event.kind},${serializedTags},"${event.content}"]`
+  return await sha256(Uint8Array.from(charCodes(serialized)))
 }
 
-function serializeContent(event: Event): string {
-  if (event.kind === EventKind.SetMetadata) {
-    return JSON.stringify(event.content)
-  } else if (event.kind === EventKind.TextNote) {
-    return event.content
-  } else {
-    return ""
+function getUserMetadata(this: Unsigned<RawEvent>): UserMetadata {
+  const userMetadata = parseJson(this.content)
+  if (
+    typeof userMetadata.name !== "string" ||
+    typeof userMetadata.about !== "string" ||
+    typeof userMetadata.picture !== "string"
+  ) {
+    throw new ProtocolError(
+      `invalid user metadata ${userMetadata} in ${JSON.stringify(this)}`
+    )
   }
+  return userMetadata
 }
 
-/**
- * Create a deep copy of the event.
- */
-function deepCopy(event: Event): Event {
-  const common = {
-    createdAt: structuredClone(event.createdAt),
-    pubkey: event.pubkey,
+async function getMessage(
+  this: UnsignedWithPubkey<DirectMessage>,
+  priv?: PrivateKey
+): Promise<string | undefined> {
+  const [data, iv] = this.content.split("?iv=")
+  if (data === undefined || iv === undefined) {
+    throw new ProtocolError(`invalid direct message content ${this.content}`)
   }
-  if (event.kind === EventKind.SetMetadata) {
-    return {
-      kind: EventKind.SetMetadata,
-      content: {
-        about: event.content.about,
-        name: event.content.name,
-        picture: event.content.picture,
-      },
-      ...common,
-    }
-  } else if (event.kind === EventKind.TextNote) {
-    return {
-      kind: EventKind.TextNote,
-      content: event.content,
-      ...common,
-    }
-  } else if (event.kind === EventKind.DirectMessage) {
+  if (priv === undefined) {
+    // TODO Try to use NIP-07
     throw new Error("todo")
-  } else {
-    return {
-      kind: event.kind,
-      ...common,
-    }
+  } else if (getPublicKey(priv) === this.getRecipient()) {
+    return await aesDecryptBase64(this.pubkey, priv, { data, iv })
   }
+  return undefined
+}
+
+function getRecipient(this: Unsigned<RawEvent>): PublicKey {
+  const recipientTag = this.tags.find((tag) => tag[0] === "p")
+  if (typeof recipientTag?.[1] !== "string") {
+    throw new ProtocolError(
+      `expected "p" tag to be of type string, but got ${
+        recipientTag?.[1]
+      } in ${JSON.stringify(this)}`
+    )
+  }
+  return recipientTag[1]
+}
+
+function getPrevious(this: Unsigned<RawEvent>): EventId | undefined {
+  const previousTag = this.tags.find((tag) => tag[0] === "e")
+  if (typeof previousTag?.[1] !== "string") {
+    throw new ProtocolError(
+      `expected "e" tag to be of type string, but got ${
+        previousTag?.[1]
+      } in ${JSON.stringify(this)}`
+    )
+  }
+  return defined(previousTag?.[1])
 }
 
 function parseJson(data: string) {
   try {
     return JSON.parse(data)
   } catch (e) {
-    throw new ProtocolError(`invalid json: ${data}`)
+    throw new ProtocolError(`invalid json: ${e}: ${data}`)
   }
 }
 

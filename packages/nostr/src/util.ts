@@ -1,10 +1,11 @@
 import { ProtocolError } from "./error"
 
 /**
- * Calculate the unix timestamp (seconds since epoch) of the `Date`.
+ * Calculate the unix timestamp (seconds since epoch) of the `Date`. If no date is specified,
+ * return the current unix timestamp.
  */
-export function unixTimestamp(date: Date): number {
-  return Math.floor(date.getTime() / 1000)
+export function unixTimestamp(date?: Date): number {
+  return Math.floor((date ?? new Date()).getTime() / 1000)
 }
 
 /**

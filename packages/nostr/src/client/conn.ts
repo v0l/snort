@@ -1,6 +1,6 @@
 import { ProtocolError } from "../error"
 import { Filters, SubscriptionId } from "."
-import { EventId, RawEvent, SignedEvent } from "../event"
+import { EventId, RawEvent } from "../event"
 import WebSocket from "ws"
 import { unixTimestamp } from "../util"
 
@@ -116,11 +116,11 @@ export class Conn {
           `second element of "EVENT" should be an object, but wasn't: ${data}`
         )
       }
-      const raw = parseEventData(json[2])
+      const event = parseEventData(json[2])
       return {
         kind: "event",
-        subscriptionId: new SubscriptionId(json[1]),
-        raw,
+        subscriptionId: json[1],
+        event,
       }
     }
     if (json[0] === "NOTICE") {
@@ -152,7 +152,7 @@ export class Conn {
       }
       return {
         kind: "ok",
-        eventId: new EventId(json[1]),
+        eventId: json[1],
         ok: json[2],
         message: json[3],
       }
@@ -174,7 +174,7 @@ export type IncomingKind = "event" | "notice" | "ok"
 export interface IncomingEvent {
   kind: "event"
   subscriptionId: SubscriptionId
-  raw: RawEvent
+  event: RawEvent
 }
 
 /**
@@ -210,7 +210,7 @@ export type OutgoingKind = "event" | "openSubscription" | "closeSubscription"
  */
 export interface OutgoingEvent {
   kind: "event"
-  event: SignedEvent | RawEvent
+  event: RawEvent
 }
 
 /**
@@ -243,9 +243,7 @@ interface RawFilters {
 
 function serializeOutgoingMessage(msg: OutgoingMessage): string {
   if (msg.kind === "event") {
-    const raw =
-      msg.event instanceof SignedEvent ? msg.event.serialize() : msg.event
-    return JSON.stringify(["EVENT", raw])
+    return JSON.stringify(["EVENT", msg.event])
   } else if (msg.kind === "openSubscription") {
     return JSON.stringify([
       "REQ",
@@ -264,13 +262,15 @@ function serializeFilters(filters: Filters[]): RawFilters[] {
     return [{}]
   }
   return filters.map((filter) => ({
-    ids: filter.ids?.map((id) => id.toHex()),
-    authors: filter.authors?.map((author) => author),
-    kinds: filter.kinds?.map((kind) => kind),
-    ["#e"]: filter.eventTags?.map((e) => e.toHex()),
-    ["#p"]: filter.pubkeyTags?.map((p) => p.toHex()),
-    since: filter.since !== undefined ? unixTimestamp(filter.since) : undefined,
-    until: filter.until !== undefined ? unixTimestamp(filter.until) : undefined,
+    ids: filter.ids,
+    authors: filter.authors,
+    kinds: filter.kinds,
+    ["#e"]: filter.eventTags,
+    ["#p"]: filter.pubkeyTags,
+    since:
+      filter.since instanceof Date ? unixTimestamp(filter.since) : filter.since,
+    until:
+      filter.until instanceof Date ? unixTimestamp(filter.until) : filter.until,
     limit: filter.limit,
   }))
 }

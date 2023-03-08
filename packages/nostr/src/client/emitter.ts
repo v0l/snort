@@ -1,6 +1,6 @@
 import Base from "events"
 import { Nostr, SubscriptionId } from "."
-import { EventId, RawEvent, SignedEvent } from "../event"
+import { Event, EventId } from "../event"
 
 /**
  * Overrides providing better types for EventEmitter methods.
@@ -166,9 +166,8 @@ type Listener =
 
 // TODO Document this
 export interface EventParams {
-  signed: SignedEvent
+  event: Event
   subscriptionId: SubscriptionId
-  raw: RawEvent
 }
 
 // TODO Document this

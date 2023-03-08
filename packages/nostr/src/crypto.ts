@@ -1,5 +1,4 @@
 import * as secp from "@noble/secp256k1"
-import { ProtocolError } from "./error"
 import base64 from "base64-js"
 import { bech32 } from "bech32"
 
@@ -8,92 +7,84 @@ import { bech32 } from "bech32"
 // TODO Or maybe always store Uint8Array and properly use the format parameter passed into toString
 
 /**
- * A 32-byte secp256k1 public key.
+ * A lowercase hex string.
  */
-export class PublicKey {
-  #hex: Hex
+export type Hex = string
 
-  /**
-   * Expects the key encoded as an npub-prefixed bech32 string, lowercase hex string, or byte buffer.
-   */
-  constructor(key: string | Uint8Array) {
-    this.#hex = parseKey(key, "npub1")
-    if (this.#hex.toString().length !== 64) {
-      throw new ProtocolError(`invalid pubkey: ${key}`)
-    }
-  }
+/**
+ * A public key encoded as hex.
+ */
+export type PublicKey = string
 
-  toHex(): string {
-    return this.#hex.toString()
-  }
+/**
+ * A private key encoded as hex or bech32 with the "nsec" prefix.
+ */
+export type HexOrBechPublicKey = string
 
-  toString(): string {
-    return this.toHex()
-  }
+/**
+ * A private key encoded as hex.
+ */
+export type PrivateKey = string
+
+/**
+ * A private key encoded as hex or bech32 with the "nsec" prefix.
+ */
+export type HexOrBechPrivateKey = string
+
+/**
+ * Get a public key corresponding to a private key.
+ */
+export function getPublicKey(priv: HexOrBechPrivateKey): PublicKey {
+  priv = parsePrivateKey(priv)
+  return toHex(secp.schnorr.getPublicKey(priv))
 }
 
 /**
- * A 32-byte secp256k1 private key.
+ * Convert the data to lowercase hex.
  */
-export class PrivateKey {
-  #hex: Hex
-
-  /**
-   * Expects the key encoded as an nsec-prefixed bech32 string, lowercase hex string, or byte buffer.
-   */
-  constructor(key: string | Uint8Array) {
-    this.#hex = parseKey(key, "nsec1")
-    if (this.#hex.toString().length !== 64) {
-      throw new ProtocolError(`invalid private key: ${this.#hex}`)
-    }
-  }
-
-  get pubkey(): PublicKey {
-    return new PublicKey(secp.schnorr.getPublicKey(this.#hex.toString()))
-  }
-
-  /**
-   * The hex representation of the private key. Use with caution!
-   */
-  toHexDangerous(): string {
-    return this.#hex.toString()
-  }
-
-  toString(): string {
-    return "PrivateKey"
-  }
+function toHex(data: Uint8Array): Hex {
+  return secp.utils.bytesToHex(data).toLowerCase()
 }
 
 /**
- * Parse a public or private key into its hex representation.
+ * Convert the public key to hex. Accepts a hex or bech32 string with the "npub" prefix.
  */
-function parseKey(key: string | Uint8Array, bechPrefix: string): Hex {
-  if (typeof key === "string") {
-    // If the key is bech32-encoded, decode it.
-    if (key.startsWith(bechPrefix)) {
-      const { words } = bech32.decode(key)
-      const bytes = Uint8Array.from(bech32.fromWords(words))
-      return new Hex(bytes)
-    }
-  }
-  return new Hex(key)
+export function parsePublicKey(key: HexOrBechPublicKey): PublicKey {
+  return parseKey(key, "npub")
 }
 
 /**
- * Get the SHA256 hash of the data.
+ * Convert the private key to hex. Accepts a hex or bech32 string with the "nsec" prefix.
  */
-export async function sha256(data: Uint8Array): Promise<Uint8Array> {
-  return await secp.utils.sha256(data)
+export function parsePrivateKey(key: HexOrBechPrivateKey): PrivateKey {
+  return parseKey(key, "nsec")
+}
+
+/**
+ * Convert a public or private key into its hex representation.
+ */
+function parseKey(key: string, bechPrefix: string): Hex {
+  // If the key is bech32-encoded, decode it.
+  if (key.startsWith(bechPrefix)) {
+    const { words } = bech32.decode(key)
+    const bytes = Uint8Array.from(bech32.fromWords(words))
+    return toHex(bytes)
+  }
+  return key
+}
+
+/**
+ * Get the SHA256 hash of the data, in hex format.
+ */
+export async function sha256(data: Uint8Array): Promise<Hex> {
+  return toHex(await secp.utils.sha256(data))
 }
 
 /**
  * Sign the data using elliptic curve cryptography.
  */
-export async function schnorrSign(
-  data: Hex,
-  key: PrivateKey
-): Promise<Uint8Array> {
-  return secp.schnorr.sign(data.toString(), key.toHexDangerous())
+export async function schnorrSign(data: Hex, priv: PrivateKey): Promise<Hex> {
+  return toHex(await secp.schnorr.sign(data, priv))
 }
 
 /**
@@ -107,20 +98,12 @@ export async function schnorrVerify(
   return secp.schnorr.verify(sig.toString(), data.toString(), key.toString())
 }
 
-interface AesEncryptedBase64 {
-  data: string
-  iv: string
-}
-
 export async function aesEncryptBase64(
   sender: PrivateKey,
   recipient: PublicKey,
   plaintext: string
 ): Promise<AesEncryptedBase64> {
-  const sharedPoint = secp.getSharedSecret(
-    sender.toHexDangerous(),
-    "02" + recipient.toHex()
-  )
+  const sharedPoint = secp.getSharedSecret(sender, "02" + recipient)
   const sharedKey = sharedPoint.slice(2, 33)
   if (typeof window === "object") {
     const key = await window.crypto.subtle.importKey(
@@ -166,16 +149,12 @@ export async function aesEncryptBase64(
   }
 }
 
-// TODO
 export async function aesDecryptBase64(
   sender: PublicKey,
   recipient: PrivateKey,
   { data, iv }: AesEncryptedBase64
 ): Promise<string> {
-  const sharedPoint = secp.getSharedSecret(
-    recipient.toHexDangerous(),
-    "02" + sender.toHex()
-  )
+  const sharedPoint = secp.getSharedSecret(recipient, "02" + sender)
   const sharedKey = sharedPoint.slice(2, 33)
   if (typeof window === "object") {
     // TODO Can copy this from the legacy code
@@ -192,33 +171,7 @@ export async function aesDecryptBase64(
   }
 }
 
-/**
- * A string in lowercase hex. This type is not available to the users of the library.
- */
-export class Hex {
-  #value: string
-
-  /**
-   * Passing a non-lowercase or non-hex string to the constructor
-   * results in an error being thrown.
-   */
-  constructor(value: string | Uint8Array) {
-    if (value instanceof Uint8Array) {
-      value = secp.utils.bytesToHex(value).toLowerCase()
-    }
-    if (value.length % 2 != 0) {
-      throw new ProtocolError(`invalid lowercase hex string: ${value}`)
-    }
-    const valid = "0123456789abcdef"
-    for (const c of value) {
-      if (!valid.includes(c)) {
-        throw new ProtocolError(`invalid lowercase hex string: ${value}`)
-      }
-    }
-    this.#value = value
-  }
-
-  toString(): string {
-    return this.#value
-  }
+interface AesEncryptedBase64 {
+  data: string
+  iv: string
 }

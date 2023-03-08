@@ -1,10 +1,9 @@
 import { ProtocolError } from "../error"
-import { EventId, Event, EventKind, SignedEvent, RawEvent } from "../event"
-import { PrivateKey, PublicKey } from "../crypto"
+import { EventId, EventKind, RawEvent, parseEvent } from "../event"
+import { PublicKey } from "../crypto"
 import { Conn } from "./conn"
 import * as secp from "@noble/secp256k1"
 import { EventEmitter } from "./emitter"
-import { defined } from "../util"
 
 /**
  * A nostr client.
@@ -21,17 +20,7 @@ export class Nostr extends EventEmitter {
   /**
    * Mapping of subscription IDs to corresponding filters.
    */
-  readonly #subscriptions: Map<string, Filters[]> = new Map()
-
-  /**
-   * Optional client private key.
-   */
-  readonly #key?: PrivateKey
-
-  constructor(key?: PrivateKey) {
-    super()
-    this.#key = key
-  }
+  readonly #subscriptions: Map<SubscriptionId, Filters[]> = new Map()
 
   /**
    * Open a connection and start communicating with a relay. This method recreates all existing
@@ -69,9 +58,8 @@ export class Nostr extends EventEmitter {
             this.emit(
               "event",
               {
-                signed: await SignedEvent.verify(msg.raw, this.#key),
+                event: await parseEvent(msg.event),
                 subscriptionId: msg.subscriptionId,
-                raw: msg.raw,
               },
               this
             )
@@ -101,10 +89,9 @@ export class Nostr extends EventEmitter {
 
     // Resend existing subscriptions to this connection.
     for (const [key, filters] of this.#subscriptions.entries()) {
-      const subscriptionId = new SubscriptionId(key)
       conn.send({
         kind: "openSubscription",
-        id: subscriptionId,
+        id: key,
         filters,
       })
     }
@@ -159,9 +146,9 @@ export class Nostr extends EventEmitter {
    */
   subscribe(
     filters: Filters[],
-    subscriptionId: SubscriptionId = SubscriptionId.random()
+    subscriptionId: SubscriptionId = randomSubscriptionId()
   ): SubscriptionId {
-    this.#subscriptions.set(subscriptionId.toString(), filters)
+    this.#subscriptions.set(subscriptionId, filters)
     for (const { conn, read } of this.#conns.values()) {
       if (!read) {
         continue
@@ -181,7 +168,7 @@ export class Nostr extends EventEmitter {
    * TODO Reference subscribed()
    */
   async unsubscribe(subscriptionId: SubscriptionId): Promise<void> {
-    if (!this.#subscriptions.delete(subscriptionId.toString())) {
+    if (!this.#subscriptions.delete(subscriptionId)) {
       throw new Error(`subscription ${subscriptionId} does not exist`)
     }
     for (const { conn, read } of this.#conns.values()) {
@@ -198,38 +185,10 @@ export class Nostr extends EventEmitter {
   /**
    * Publish an event.
    */
-  async publish(event: SignedEvent): Promise<void>
-  async publish(event: RawEvent): Promise<void>
-  // TODO This will need to change when I add NIP-44 AUTH support - the key should be optional
-  async publish(event: Event, key: PrivateKey): Promise<void>
-  async publish(
-    event: SignedEvent | RawEvent | Event,
-    key?: PrivateKey
-  ): Promise<void> {
-    // Validate the parameters.
-    if (event instanceof SignedEvent || "sig" in event) {
-      if (key !== undefined) {
-        throw new Error(
-          "when calling publish with a SignedEvent, private key should not be specified"
-        )
-      }
-    } else {
-      if (key === undefined) {
-        throw new Error(
-          "publish called with an unsigned Event, private key must be specified"
-        )
-      }
-      if (event.pubkey.toHex() !== key.pubkey.toHex()) {
-        throw new Error("invalid private key")
-      }
-    }
-
+  async publish(event: RawEvent): Promise<void> {
     for (const { conn, write } of this.#conns.values()) {
       if (!write) {
         continue
-      }
-      if (!(event instanceof SignedEvent) && !("sig" in event)) {
-        event = await SignedEvent.sign(event, defined(key))
       }
       conn.send({
         kind: "event",
@@ -258,21 +217,7 @@ interface ConnState {
 /**
  * A string uniquely identifying a client subscription.
  */
-export class SubscriptionId {
-  #id: string
-
-  constructor(subscriptionId: string) {
-    this.#id = subscriptionId
-  }
-
-  static random(): SubscriptionId {
-    return new SubscriptionId(secp.utils.bytesToHex(secp.utils.randomBytes(32)))
-  }
-
-  toString() {
-    return this.#id
-  }
-}
+export type SubscriptionId = string
 
 /**
  * Subscription filters. All filters from the fields must pass for a message to get through.
@@ -283,14 +228,18 @@ export interface Filters {
   authors?: string[]
   kinds?: EventKind[]
   /**
-   * Filters for the "#e" tags.
+   * Filters for the "e" tags.
    */
   eventTags?: EventId[]
   /**
-   * Filters for the "#p" tags.
+   * Filters for the "p" tags.
    */
   pubkeyTags?: PublicKey[]
-  since?: Date
-  until?: Date
+  since?: Date | number
+  until?: Date | number
   limit?: number
+}
+
+function randomSubscriptionId(): SubscriptionId {
+  return secp.utils.bytesToHex(secp.utils.randomBytes(32))
 }
