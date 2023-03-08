@@ -90,7 +90,8 @@ export default function HyperText({ link, creator }: { link: string; creator: He
           case "mov":
           case "mkv":
           case "avi":
-          case "m4v": {
+          case "m4v":
+          case "webm": {
             return <video key={url.toString()} src={url.toString()} controls />;
           }
           default:
