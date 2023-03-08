@@ -3,11 +3,14 @@ import { EventId, Event, EventKind, SignedEvent, RawEvent } from "../event"
 import { PrivateKey, PublicKey } from "../keypair"
 import { Conn, IncomingKind, OutgoingKind } from "./conn"
 import * as secp from "@noble/secp256k1"
+import { EventEmitter } from "./emitter"
 
 /**
  * A nostr client.
+ *
+ * TODO Document the events here
  */
-export class Nostr {
+export class Nostr extends EventEmitter {
   // TODO NIP-44 AUTH, leave this for later
   /**
    * Open connections to relays.
@@ -18,39 +21,6 @@ export class Nostr {
    * Mapping of subscription IDs to corresponding filters.
    */
   readonly #subscriptions: Map<string, Filters[]> = new Map()
-
-  #eventCallback?: EventCallback
-  #noticeCallback?: NoticeCallback
-  #errorCallback?: ErrorCallback
-
-  /**
-   * Add a new callback for received events.
-   */
-  on(on: "event", cb: EventCallback | undefined | null): void
-  /**
-   * Add a new callback for received notices.
-   */
-  on(on: "notice", cb: NoticeCallback | undefined | null): void
-  /**
-   * Add a new callback for errors.
-   */
-  on(on: "error", cb: ErrorCallback | undefined | null): void
-  // TODO Also add on: ("subscribed", subscriptionId) which checks "OK"/"NOTICE" and makes a callback?
-  // TODO Also add on: ("sent", eventId) which checks "OK"/"NOTICE" and makes a callback?
-  on(
-    on: "event" | "notice" | "error",
-    cb: EventCallback | NoticeCallback | ErrorCallback | undefined | null
-  ) {
-    if (on === "event") {
-      this.#eventCallback = (cb as EventCallback) ?? undefined
-    } else if (on === "notice") {
-      this.#noticeCallback = (cb as NoticeCallback) ?? undefined
-    } else if (on === "error") {
-      this.#errorCallback = (cb as ErrorCallback) ?? undefined
-    } else {
-      throw new Error(`unexpected input: ${on}`)
-    }
-  }
 
   /**
    * Open a connection and start communicating with a relay. This method recreates all existing
@@ -81,26 +51,30 @@ export class Nostr {
 
     // Handle messages on this connection.
     conn.on("message", async (msg) => {
-      if (msg.kind === IncomingKind.Event) {
-        this.#eventCallback?.(
-          {
-            signed: msg.signed,
-            subscriptionId: msg.subscriptionId,
-            raw: msg.raw,
-          },
-          this
-        )
-      } else if (msg.kind === IncomingKind.Notice) {
-        this.#noticeCallback?.(msg.notice, this)
-      } else {
-        const err = new ProtocolError(`invalid message ${msg}`)
-        this.#errorCallback?.(err, this)
+      try {
+        if (msg.kind === IncomingKind.Event) {
+          this.emit(
+            "event",
+            {
+              signed: msg.signed,
+              subscriptionId: msg.subscriptionId,
+              raw: msg.raw,
+            },
+            this
+          )
+        } else if (msg.kind === IncomingKind.Notice) {
+          this.emit("notice", msg.notice, this)
+        } else {
+          throw new ProtocolError(`invalid message ${msg}`)
+        }
+      } catch (err) {
+        this.emit("error", err, this)
       }
     })
 
     // Forward connection errors to the error callbacks.
     conn.on("error", (err) => {
-      this.#errorCallback?.(err, this)
+      this.emit("error", err, this)
     })
 
     // Resend existing subscriptions to this connection.
@@ -278,6 +252,7 @@ export class SubscriptionId {
   }
 }
 
+// TODO Rethink this type. Maybe it's not very idiomatic.
 /**
  * A prefix filter. These filters match events which have the appropriate prefix.
  * This also means that exact matches pass the filters. No special syntax is required.
@@ -315,10 +290,7 @@ export interface Filters {
   limit?: number
 }
 
-export type EventCallback = (params: EventParams, nostr: Nostr) => unknown
-export type NoticeCallback = (notice: string, nostr: Nostr) => unknown
-export type ErrorCallback = (error: ProtocolError, nostr: Nostr) => unknown
-
+// TODO Document this
 export interface EventParams {
   signed: SignedEvent
   subscriptionId: SubscriptionId

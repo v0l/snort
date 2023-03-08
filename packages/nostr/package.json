@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "devDependencies": {
+    "@types/events": "^3.0.0",
     "@types/expect": "^24.3.0",
     "@types/mocha": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
@@ -25,6 +26,7 @@
   "dependencies": {
     "@noble/secp256k1": "^1.7.1",
     "bech32": "^2.0.0",
+    "events": "^3.3.0",
     "isomorphic-ws": "^5.0.0",
     "ws": "^8.12.1"
   }
