@@ -15,6 +15,7 @@ import {
   TwitchRegex,
   AppleMusicRegex,
   NostrNestsRegex,
+  WavlakeRegex
 } from "Const";
 import { RootState } from "State/Store";
 import SoundCloudEmbed from "Element/SoundCloudEmded";
@@ -25,6 +26,7 @@ import { ProxyImg } from "Element/ProxyImg";
 import TwitchEmbed from "Element/TwitchEmbed";
 import AppleMusicEmbed from "Element/AppleMusicEmbed";
 import NostrNestsEmbed from "Element/NostrNestsEmbed";
+import WavlakeEmbed from "Element/WavlakeEmbed";
 
 export default function HyperText({ link, creator }: { link: string; creator: HexKey }) {
   const pref = useSelector((s: RootState) => s.login.preferences);
@@ -70,6 +72,7 @@ export default function HyperText({ link, creator }: { link: string; creator: He
       const isTwitchLink = TwitchRegex.test(a);
       const isAppleMusicLink = AppleMusicRegex.test(a);
       const isNostrNestsLink = NostrNestsRegex.test(a);
+      const isWavlakeLink = WavlakeRegex.test(a);
       const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
       if (extension && !isAppleMusicLink) {
         switch (extension) {
@@ -144,6 +147,8 @@ export default function HyperText({ link, creator }: { link: string; creator: He
           </a>,
           <NostrNestsEmbed link={a} />,
         ];
+      } else if (isWavlakeLink) {
+        return <WavlakeEmbed link={a} />;
       } else {
         return (
           <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
