@@ -53,7 +53,7 @@ export class Conn {
         return
       }
       try {
-        const msg = await Conn.#parseIncomingMessage(value)
+        const msg = await parseIncomingMessage(value)
         onMessage(msg)
       } catch (err) {
         onError(err)
@@ -96,77 +96,18 @@ export class Conn {
       this.#onError?.(err)
     }
   }
-
-  static async #parseIncomingMessage(data: string): Promise<IncomingMessage> {
-    const json = parseJson(data)
-    if (!(json instanceof Array)) {
-      throw new ProtocolError(`incoming message is not an array: ${data}`)
-    }
-    if (json.length === 0) {
-      throw new ProtocolError(`incoming message is an empty array: ${data}`)
-    }
-    if (json[0] === "EVENT") {
-      if (typeof json[1] !== "string") {
-        throw new ProtocolError(
-          `second element of "EVENT" should be a string, but wasn't: ${data}`
-        )
-      }
-      if (typeof json[2] !== "object") {
-        throw new ProtocolError(
-          `second element of "EVENT" should be an object, but wasn't: ${data}`
-        )
-      }
-      const event = parseEventData(json[2])
-      return {
-        kind: "event",
-        subscriptionId: json[1],
-        event,
-      }
-    }
-    if (json[0] === "NOTICE") {
-      if (typeof json[1] !== "string") {
-        throw new ProtocolError(
-          `second element of "NOTICE" should be a string, but wasn't: ${data}`
-        )
-      }
-      return {
-        kind: "notice",
-        notice: json[1],
-      }
-    }
-    if (json[0] === "OK") {
-      if (typeof json[1] !== "string") {
-        throw new ProtocolError(
-          `second element of "OK" should be a string, but wasn't: ${data}`
-        )
-      }
-      if (typeof json[2] !== "boolean") {
-        throw new ProtocolError(
-          `third element of "OK" should be a boolean, but wasn't: ${data}`
-        )
-      }
-      if (typeof json[3] !== "string") {
-        throw new ProtocolError(
-          `fourth element of "OK" should be a string, but wasn't: ${data}`
-        )
-      }
-      return {
-        kind: "ok",
-        eventId: json[1],
-        ok: json[2],
-        message: json[3],
-      }
-    }
-    throw new ProtocolError(`unknown incoming message: ${data}`)
-  }
 }
 
 /**
  * A message sent from a relay to the client.
  */
-export type IncomingMessage = IncomingEvent | IncomingNotice | IncomingOk
+export type IncomingMessage =
+  | IncomingEvent
+  | IncomingNotice
+  | IncomingOk
+  | IncomingEose
 
-export type IncomingKind = "event" | "notice" | "ok"
+export type IncomingKind = "event" | "notice" | "ok" | "eose"
 
 /**
  * Incoming "EVENT" message.
@@ -193,6 +134,14 @@ export interface IncomingOk {
   eventId: EventId
   ok: boolean
   message: string
+}
+
+/**
+ * Incoming "EOSE" message.
+ */
+export interface IncomingEose {
+  kind: "eose"
+  subscriptionId: SubscriptionId
 }
 
 /**
@@ -273,6 +222,90 @@ function serializeFilters(filters: Filters[]): RawFilters[] {
       filter.until instanceof Date ? unixTimestamp(filter.until) : filter.until,
     limit: filter.limit,
   }))
+}
+
+async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
+  // Parse the incoming data as a nonempty JSON array.
+  const json = parseJson(data)
+  if (!(json instanceof Array)) {
+    throw new ProtocolError(`incoming message is not an array: ${data}`)
+  }
+  if (json.length === 0) {
+    throw new ProtocolError(`incoming message is an empty array: ${data}`)
+  }
+
+  // Handle incoming events.
+  if (json[0] === "EVENT") {
+    if (typeof json[1] !== "string") {
+      throw new ProtocolError(
+        `second element of "EVENT" should be a string, but wasn't: ${data}`
+      )
+    }
+    if (typeof json[2] !== "object") {
+      throw new ProtocolError(
+        `second element of "EVENT" should be an object, but wasn't: ${data}`
+      )
+    }
+    const event = parseEventData(json[2])
+    return {
+      kind: "event",
+      subscriptionId: json[1],
+      event,
+    }
+  }
+
+  // Handle incoming notices.
+  if (json[0] === "NOTICE") {
+    if (typeof json[1] !== "string") {
+      throw new ProtocolError(
+        `second element of "NOTICE" should be a string, but wasn't: ${data}`
+      )
+    }
+    return {
+      kind: "notice",
+      notice: json[1],
+    }
+  }
+
+  // Handle incoming "OK" messages.
+  if (json[0] === "OK") {
+    if (typeof json[1] !== "string") {
+      throw new ProtocolError(
+        `second element of "OK" should be a string, but wasn't: ${data}`
+      )
+    }
+    if (typeof json[2] !== "boolean") {
+      throw new ProtocolError(
+        `third element of "OK" should be a boolean, but wasn't: ${data}`
+      )
+    }
+    if (typeof json[3] !== "string") {
+      throw new ProtocolError(
+        `fourth element of "OK" should be a string, but wasn't: ${data}`
+      )
+    }
+    return {
+      kind: "ok",
+      eventId: json[1],
+      ok: json[2],
+      message: json[3],
+    }
+  }
+
+  // Handle incoming "EOSE" messages.
+  if (json[0] === "EOSE") {
+    if (typeof json[1] !== "string") {
+      throw new ProtocolError(
+        `second element of "EOSE" should be a string, but wasn't: ${data}`
+      )
+    }
+    return {
+      kind: "eose",
+      subscriptionId: json[1],
+    }
+  }
+
+  throw new ProtocolError(`unknown incoming message: ${data}`)
 }
 
 function parseEventData(json: { [key: string]: unknown }): RawEvent {
