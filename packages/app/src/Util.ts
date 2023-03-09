@@ -132,7 +132,7 @@ export function normalizeReaction(content: string) {
 /**
  * Get reactions to a specific event (#e + kind filter)
  */
-export function getReactions(notes: TaggedRawEvent[], id: u256, kind = EventKind.Reaction) {
+export function getReactions(notes: readonly TaggedRawEvent[], id: u256, kind = EventKind.Reaction) {
   return notes?.filter(a => a.kind === kind && a.tags.some(a => a[0] === "e" && a[1] === id)) || [];
 }
 

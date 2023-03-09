@@ -11,7 +11,7 @@ export type RawEvent = {
   pubkey: HexKey;
   created_at: number;
   kind: number;
-  tags: string[][];
+  tags: Array<Array<string>>;
   content: string;
   sig: string;
 };

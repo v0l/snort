@@ -40,7 +40,7 @@ interface SubthreadProps {
   active: u256;
   path: u256[];
   notes: NEvent[];
-  related: TaggedRawEvent[];
+  related: readonly TaggedRawEvent[];
   chains: Map<u256, NEvent[]>;
   onNavigate: (e: u256) => void;
 }
@@ -254,7 +254,7 @@ const TierThree = ({ active, path, isLastSubthread, from, notes, related, chains
 };
 
 export interface ThreadProps {
-  notes?: TaggedRawEvent[];
+  notes?: readonly TaggedRawEvent[];
 }
 
 export default function Thread(props: ThreadProps) {

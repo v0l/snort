@@ -6,7 +6,7 @@ import { RootState } from "State/Store";
 import { UserPreferences } from "State/Login";
 import { appendDedupe, debounce } from "Util";
 import { RequestBuilder } from "System/RequestBuilder";
-import { System } from "System";
+import { FlatNoteStore, System } from "System";
 import useNoteStore from "Hooks/useNoteStore";
 
 export default function useThreadFeed(id: u256) {
@@ -28,8 +28,8 @@ export default function useThreadFeed(id: u256) {
     return sub;
   }, [trackingEvents, pref, id]);
 
-  const q = System.Query(sub);
-  const store = useNoteStore(q) as Array<TaggedRawEvent>;
+  const q = System.Query<FlatNoteStore>(FlatNoteStore, sub);
+  const store = useNoteStore(q);
 
   useEffect(() => {
     if (store) {

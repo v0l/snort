@@ -39,21 +39,24 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): UserRelayMap {
     return Object.fromEntries(
       [...notes.values()].map(ev => {
         if (ev.content !== "" && ev.content !== "{}" && ev.content.startsWith("{") && ev.content.endsWith("}")) {
-          const relays: Record<string, RelaySettings> = JSON.parse(ev.content);
-          return [
-            ev.pubkey,
-            Object.entries(relays)
-              .map(([k, v]) => {
-                return {
-                  url: sanitizeRelayUrl(k),
-                  settings: v,
-                } as FullRelaySettings;
-              })
-              .filter(a => a.url !== undefined),
-          ];
-        } else {
-          return [ev.pubkey, []];
+          try {
+            const relays: Record<string, RelaySettings> = JSON.parse(ev.content);
+            return [
+              ev.pubkey,
+              Object.entries(relays)
+                .map(([k, v]) => {
+                  return {
+                    url: sanitizeRelayUrl(k),
+                    settings: v,
+                  } as FullRelaySettings;
+                })
+                .filter(a => a.url !== undefined),
+            ];
+          } catch {
+            // ignored
+          }
         }
+        return [ev.pubkey, []];
       })
     );
   }

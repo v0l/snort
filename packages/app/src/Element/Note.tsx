@@ -33,7 +33,7 @@ import messages from "./messages";
 export interface NoteProps {
   data?: TaggedRawEvent;
   className?: string;
-  related: TaggedRawEvent[];
+  related: readonly TaggedRawEvent[];
   highlight?: boolean;
   ignoreModeration?: boolean;
   options?: {

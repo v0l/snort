@@ -15,8 +15,10 @@ import { sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
 import { mapEventToProfile, MetadataCache } from "State/Users";
 import { UserCache } from "State/Users/UserCache";
 import { RequestBuilder } from "./RequestBuilder";
-import { FlatNoteStore, NoteStore } from "./NoteCollection";
+import { FlatNoteStore, NoteStore, PubkeyReplaceableNoteStore } from "./NoteCollection";
 import { diffFilters } from "./RequestSplitter";
+
+export { RequestBuilder, FlatNoteStore, PubkeyReplaceableNoteStore };
 
 interface QueryRequest {
   filters: Array<RawReqFilter>;
@@ -193,7 +195,7 @@ export class NostrSystem {
     this.Sockets.get(relay)?.AddSubscription(sub);
   }
 
-  Query(req: RequestBuilder): Readonly<NoteStore> {
+  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder | null): Readonly<T> {
     /**
      * ## Notes
      *
@@ -218,12 +220,14 @@ export class NostrSystem {
      * pending filters for the same subscription
      */
 
+    if (!req) return new type();
+
     const filters = req.build();
     if (this.Queries.has(req.id)) {
       const q = unwrap(this.Queries.get(req.id));
       const diff = diffFilters(q.request.filters, filters);
       if (JSON.stringify(filters) === JSON.stringify(diff)) {
-        return unwrap(this.Feeds.get(req.id));
+        return unwrap(this.Feeds.get(req.id)) as Readonly<T>;
       } else {
         const subQ = {
           id: `${q.id}-${q.subQueries.length + 1}`,
@@ -235,14 +239,14 @@ export class NostrSystem {
         q.subQueries.push(subQ);
         q.request.filters = filters;
         this.SendQuery(subQ.id, subQ.request.filters);
-        return unwrap(this.Feeds.get(req.id));
+        return unwrap(this.Feeds.get(req.id)) as Readonly<T>;
       }
     } else {
-      return this.AddQuery(req.id, filters);
+      return this.AddQuery<T>(type, req.id, filters);
     }
   }
 
-  AddQuery(id: string, filters: Array<RawReqFilter>): NoteStore {
+  AddQuery<T extends NoteStore>(type: { new (): T }, id: string, filters: Array<RawReqFilter>): T {
     const q = {
       id: id,
       request: {
@@ -256,7 +260,7 @@ export class NostrSystem {
       closeRequested: false,
     } as Query;
     this.Queries.set(id, q);
-    const store = new FlatNoteStore();
+    const store = new type();
     this.Feeds.set(id, store);
 
     this.SendQuery(q.id, q.request.filters);
