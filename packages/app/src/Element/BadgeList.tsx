@@ -23,14 +23,15 @@ export default function BadgeList({ badges }: { badges: TaggedRawEvent[] }) {
       pubkey: b.pubkey,
       name,
       description,
-      img: thumb?.length ?? 0 > 0 ? thumb : image,
+      thumb,
+      image,
     };
   });
   return (
     <>
       <div className="badge-list" onClick={() => setShowModal(!showModal)}>
-        {badgeMetadata.slice(0, 8).map(({ id, name, img }) => (
-          <ProxyImg alt={name} key={id} className="badge-item" size={64} src={img} />
+        {badgeMetadata.slice(0, 8).map(({ id, name, thumb }) => (
+          <ProxyImg alt={name} key={id} className="badge-item" size={64} src={thumb} />
         ))}
       </div>
       {showModal && (
@@ -45,10 +46,10 @@ export default function BadgeList({ badges }: { badges: TaggedRawEvent[] }) {
               </h2>
             </div>
             <div className="body">
-              {badgeMetadata.map(({ id, name, pubkey, description, img }) => {
+              {badgeMetadata.map(({ id, name, pubkey, description, image }) => {
                 return (
                   <div key={id} className="reactions-item badges-item">
-                    <ProxyImg className="reaction-icon" src={img} size={64} alt={name} />
+                    <ProxyImg className="reaction-icon" src={image} size={64} alt={name} />
                     <div className="badge-info">
                       <h3>{name}</h3>
                       <p>{description}</p>
