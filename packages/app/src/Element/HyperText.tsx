@@ -15,7 +15,7 @@ import {
   TwitchRegex,
   AppleMusicRegex,
   NostrNestsRegex,
-  WavlakeRegex
+  WavlakeRegex,
 } from "Const";
 import { RootState } from "State/Store";
 import SoundCloudEmbed from "Element/SoundCloudEmded";
