@@ -6,6 +6,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@gandlaf21/cashu-ts": "^0.6.0",
     "@jukben/emoji-search": "^2.0.1",
     "@lightninglabs/lnc-web": "^0.2.3-alpha",
     "@noble/hashes": "^1.2.0",

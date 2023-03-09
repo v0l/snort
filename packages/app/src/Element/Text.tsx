@@ -4,9 +4,10 @@ import { Link, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { visit, SKIP } from "unist-util-visit";
 import * as unist from "unist";
+import base64 from "@protobufjs/base64";
 import { HexKey, NostrPrefix } from "@snort/nostr";
 
-import { MentionRegex, InvoiceRegex, HashtagRegex } from "Const";
+import { MentionRegex, InvoiceRegex, HashtagRegex, Base64Regex } from "Const";
 import { eventLink, hexToBech32, splitByUrl, unwrap, validateNostrLink } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
@@ -59,6 +60,41 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
                 );
               }
               return <HyperText link={a} creator={creator} depth={depth} />;
+            }
+            return a;
+          });
+        }
+        return f;
+      })
+      .flat();
+  }
+
+  function extractBase64Strings(fragments: Fragment[]) {
+    return fragments
+      .map(f => {
+        if (typeof f === "string") {
+          return f.split(Base64Regex).map(a => {
+            const parsed = base64.test(a);
+            if (parsed && a.length > 0) {
+              const buff = new Uint8Array(3 * (a.length / 4));
+              const len = base64.decode(a, buff, 0);
+              const text = new TextDecoder().decode(buff.slice(0, len));
+              if (text.startsWith("{") && text.endsWith("}") && text.includes("proofs")) {
+                const data = JSON.parse(text) as {
+                  proofs: [
+                    {
+                      amount: number;
+                    }
+                  ];
+                };
+                return (
+                  <div className="note-invoice">
+                    <h4>Cashu tokens</h4>
+                    <p>Amount: {data.proofs.reduce((acc, v) => (acc += v.amount), 0)} sats</p>
+                  </div>
+                );
+              }
+              return a;
             }
             return a;
           });
@@ -163,6 +199,7 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
     fragments = extractLinks(fragments);
     fragments = extractInvoices(fragments);
     fragments = extractHashtags(fragments);
+    fragments = extractBase64Strings(fragments);
     return fragments;
   }
 
