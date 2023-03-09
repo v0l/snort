@@ -170,3 +170,8 @@ export const MagnetRegex = /(magnet:[\S]+)/i;
  */
 export const WavlakeRegex =
   /player\.wavlake\.com\/(?!feed\/)(track\/[.a-zA-Z0-9-]+|album\/[.a-zA-Z0-9-]+|[.a-zA-Z0-9-]+)/i;
+
+  /*
+ * Regex to match any base64 string
+ */
+export const Base64Regex = /([a-zA-Z0-9+/]+={,2})/;
