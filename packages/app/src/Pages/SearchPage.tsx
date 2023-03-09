@@ -15,7 +15,7 @@ import messages from "./messages";
 const SearchPage = () => {
   const params = useParams();
   const { formatMessage } = useIntl();
-  const [search, setSearch] = useState<string>();
+  const [search, setSearch] = useState<string | undefined>(params.keyword);
   const [keyword, setKeyword] = useState<string | undefined>(params.keyword);
   const [allUsers, setAllUsers] = useState<MetadataCache[]>();
 
@@ -24,6 +24,9 @@ const SearchPage = () => {
       // "navigate" changing only url
       router.navigate(`/search/${encodeURIComponent(keyword)}`);
       UserCache.search(keyword).then(v => setAllUsers(v));
+    } else {
+      router.navigate(`/search`);
+      setAllUsers([]);
     }
   }, [keyword]);
 
