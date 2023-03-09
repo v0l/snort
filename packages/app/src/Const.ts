@@ -165,3 +165,8 @@ export const NostrNestsRegex = /nostrnests\.com\/[a-zA-Z0-9]+/i;
  * Magnet link parser
  */
 export const MagnetRegex = /(magnet:[\S]+)/i;
+
+/**
+ * Wavlake embed regex
+ */
+export const WavlakeRegex = /player\.wavlake\.com\/(track)\/([.a-zA-Z0-9-]+)/;
