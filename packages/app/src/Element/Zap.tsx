@@ -9,17 +9,11 @@ import { formatShort } from "Number";
 import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
 import { RootState } from "State/Store";
+import { findTag } from "Util";
 import { ZapperSpam } from "Const";
 import { UserCache } from "State/Users/UserCache";
 
 import messages from "./messages";
-
-function findTag(e: TaggedRawEvent, tag: string) {
-  const maybeTag = e.tags.find(evTag => {
-    return evTag[0] === tag;
-  });
-  return maybeTag && maybeTag[1];
-}
 
 function getInvoice(zap: TaggedRawEvent): InvoiceDetails | undefined {
   const bolt11 = findTag(zap, "bolt11");

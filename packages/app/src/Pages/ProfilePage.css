@@ -75,7 +75,6 @@
 .profile .nip05 {
   display: flex;
   font-size: 16px;
-  margin: 0 0 12px 0;
 }
 
 .profile-wrapper > .avatar-wrapper {
@@ -196,6 +195,10 @@
   align-items: center;
 }
 
+.profile .copy {
+  margin-top: 12px;
+}
+
 .qr-modal .modal-body {
   width: unset;
   margin-top: -120px;
@@ -254,4 +257,19 @@
 }
 .profile .nip05 .domain {
   display: unset;
+}
+
+.badge-card .badge-icon {
+  width: 48px;
+  height: 48px;
+  margin-right: 0.3em;
+}
+
+.badge-card .header {
+  align-items: center;
+  flex-direction: row;
+}
+
+.badge-card .body {
+  margin-bottom: 0;
 }

@@ -397,3 +397,22 @@ export function magnetURIDecode(uri: string): Magnet | undefined {
     console.warn("Failed to parse magnet link", e);
   }
 }
+
+export function chunks<T>(arr: T[], length: number) {
+  const result = [];
+  let idx = 0;
+  let n = arr.length / length;
+  while (n > 0) {
+    result.push(arr.slice(idx, idx + length));
+    idx += length;
+    n -= 1;
+  }
+  return result;
+}
+
+export function findTag(e: TaggedRawEvent, tag: string) {
+  const maybeTag = e.tags.find(evTag => {
+    return evTag[0] === tag;
+  });
+  return maybeTag && maybeTag[1];
+}

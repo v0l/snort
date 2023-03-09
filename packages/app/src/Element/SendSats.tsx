@@ -13,7 +13,7 @@ import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "LNURL";
-import { debounce } from "Util";
+import { chunks, debounce } from "Util";
 
 import messages from "./messages";
 import { useWallet } from "Wallet";
@@ -35,18 +35,6 @@ export interface SendSatsProps {
   target?: string;
   note?: HexKey;
   author?: HexKey;
-}
-
-function chunks<T>(arr: T[], length: number) {
-  const result = [];
-  let idx = 0;
-  let n = arr.length / length;
-  while (n > 0) {
-    result.push(arr.slice(idx, idx + length));
-    idx += length;
-    n -= 1;
-  }
-  return result;
 }
 
 export default function SendSats(props: SendSatsProps) {
