@@ -53,7 +53,7 @@ export default function SendSats(props: SendSatsProps) {
   };
 
   const [handler, setHandler] = useState<LNURL>();
-  const [invoice, setInvoice] = useState(props.invoice);
+  const [invoice, setInvoice] = useState<string>();
   const [amount, setAmount] = useState<number>(defaultZapAmount);
   const [customAmount, setCustomAmount] = useState<number>();
   const [comment, setComment] = useState<string>();
@@ -74,7 +74,7 @@ export default function SendSats(props: SendSatsProps) {
       setAmount(defaultZapAmount);
       setComment(undefined);
       setZapType(ZapType.PublicZap);
-      setInvoice(undefined);
+      setInvoice(props.invoice);
       setSuccess(undefined);
     }
   }, [props.show]);
