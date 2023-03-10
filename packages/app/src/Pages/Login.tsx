@@ -8,8 +8,8 @@ import { useIntl, FormattedMessage } from "react-intl";
 
 import { RootState } from "State/Store";
 import { setPrivateKey, setPublicKey, setRelays, setGeneratedPrivateKey } from "State/Login";
-import { DefaultRelays, EmailRegex } from "Const";
-import { bech32ToHex, unwrap } from "Util";
+import { DefaultRelays, EmailRegex, MnemonicRegex } from "Const";
+import { bech32ToHex, generateBip39Entropy, entropyToDerivedKey, unwrap } from "Util";
 import { HexKey } from "@snort/nostr";
 import ZapButton from "Element/ZapButton";
 // import useImgProxy from "Feed/ImgProxy";
@@ -97,12 +97,14 @@ export default function LoginPage() {
       } else if (key.match(EmailRegex)) {
         const hexKey = await getNip05PubKey(key);
         dispatch(setPublicKey(hexKey));
+      } else if (key.match(MnemonicRegex)) {
+        const ent = generateBip39Entropy(key);
+        const keyHex = entropyToDerivedKey(ent);
+        dispatch(setPrivateKey(keyHex));
+      } else if (secp.utils.isValidPrivateKey(key)) {
+        dispatch(setPrivateKey(key));
       } else {
-        if (secp.utils.isValidPrivateKey(key)) {
-          dispatch(setPrivateKey(key));
-        } else {
-          throw new Error("INVALID PRIVATE KEY");
-        }
+        throw new Error("INVALID PRIVATE KEY");
       }
     } catch (e) {
       setError(`Failed to load NIP-05 pub key (${e})`);
@@ -111,8 +113,10 @@ export default function LoginPage() {
   }
 
   async function makeRandomKey() {
-    const newKey = secp.utils.bytesToHex(secp.utils.randomPrivateKey());
-    dispatch(setGeneratedPrivateKey(newKey));
+    const ent = generateBip39Entropy();
+    const entHex = secp.utils.bytesToHex(ent);
+    const newKeyHex = entropyToDerivedKey(ent);
+    dispatch(setGeneratedPrivateKey({ key: newKeyHex, entropy: entHex }));
     navigate("/new");
   }
 

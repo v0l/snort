@@ -86,11 +86,21 @@ export const ZapperSpam = [
 ];
 
 /**
+ * NIP06-defined derivation path for private keys
+ */
+export const DerivationPath = "m/44'/1237'/0'/0/0";
+
+/**
  * Regex to match email address
  */
 export const EmailRegex =
   // eslint-disable-next-line no-useless-escape
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+/**
+ * Regex to match a mnemonic seed
+ */
+export const MnemonicRegex = /^([^\s]+\s){11}[^\s]+$/;
 
 /**
  * Extract file extensions regex

@@ -197,9 +197,6 @@
   "B6+XJy": {
     "defaultMessage": "zapped"
   },
-  "B6H7eJ": {
-    "defaultMessage": "nsec, npub, nip-05, hex"
-  },
   "BOUMjw": {
     "defaultMessage": "No nostr users found for {twitterUsername}"
   },
@@ -312,6 +309,9 @@
   "IEwZvs": {
     "defaultMessage": "Are you sure you want to unpin this note?"
   },
+  "IKOPx/": {
+    "defaultMessage": "Donate Page"
+  },
   "INSqIz": {
     "defaultMessage": "Twitter username..."
   },
@@ -326,6 +326,9 @@
   },
   "JHEHCk": {
     "defaultMessage": "Zaps ({n})"
+  },
+  "JXtsQW": {
+    "defaultMessage": "Fast Zap Donation"
   },
   "JkLHGw": {
     "defaultMessage": "Website"
@@ -347,6 +350,9 @@
   },
   "KahimY": {
     "defaultMessage": "Unknown event kind: {kind}"
+  },
+  "L7SZPr": {
+    "defaultMessage": "For more information about donations see {link}."
   },
   "LXxsbk": {
     "defaultMessage": "Anonymous"
@@ -410,6 +416,9 @@
   "PCSt5T": {
     "defaultMessage": "Preferences"
   },
+  "PLSbmL": {
+    "defaultMessage": "Your mnemonic phrase"
+  },
   "Pe0ogR": {
     "defaultMessage": "Theme"
   },
@@ -438,6 +447,9 @@
   },
   "RahCRH": {
     "defaultMessage": "Expired"
+  },
+  "RfhLwC": {
+    "defaultMessage": "By: {author}"
   },
   "RhDAoS": {
     "defaultMessage": "Are you sure you want to delete {id}"
@@ -491,6 +503,9 @@
   },
   "WxthCV": {
     "defaultMessage": "e.g. Jack"
+  },
+  "X7xU8J": {
+    "defaultMessage": "nsec, npub, nip-05, hex, mnemonic"
   },
   "XgWvGA": {
     "defaultMessage": "Reactions"
@@ -598,6 +613,9 @@
   },
   "gjBiyj": {
     "defaultMessage": "Loading..."
+  },
+  "h8XMJL": {
+    "defaultMessage": "Badges"
   },
   "hCUivF": {
     "defaultMessage": "Notes will stream in real time into global and posts tab"
@@ -781,6 +799,9 @@
   },
   "rudscU": {
     "defaultMessage": "Failed to load follows, please try again later"
+  },
+  "sBz4+I": {
+    "defaultMessage": "For each Fast Zap an additional {percentage}% ({amount} sats) of the zap amount will be sent to the Snort developers as a donation."
   },
   "sWnYKw": {
     "defaultMessage": "Snort is designed to have a similar experience to Twitter."

@@ -6,7 +6,7 @@ import Logo from "Element/Logo";
 import { CollapsedSection } from "Element/Collapsed";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
-import { hexToBech32 } from "Util";
+import { hexToBech32, hexToMnemonic } from "Util";
 
 import messages from "./messages";
 
@@ -68,7 +68,7 @@ const Extensions = () => {
 };
 
 export default function NewUserFlow() {
-  const { publicKey, privateKey } = useSelector((s: RootState) => s.login);
+  const { publicKey, privateKey, generatedEntropy } = useSelector((s: RootState) => s.login);
   const navigate = useNavigate();
 
   return (
@@ -91,6 +91,10 @@ export default function NewUserFlow() {
         <FormattedMessage {...messages.YourPrivkey} />
       </h2>
       <Copy text={hexToBech32("nsec", privateKey ?? "")} />
+      <h2>
+        <FormattedMessage {...messages.YourMnemonic} />
+      </h2>
+      <Copy text={hexToMnemonic(generatedEntropy ?? "")} />
       <div className="next-actions">
         <button type="button" onClick={() => navigate("/new/username")}>
           <FormattedMessage {...messages.KeysSaved} />{" "}

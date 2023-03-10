@@ -9,7 +9,7 @@ Snort supports the following NIP's:
 - [ ] NIP-03: OpenTimestamps Attestations for Events
 - [x] NIP-04: Encrypted Direct Message
 - [x] NIP-05: Mapping Nostr keys to DNS-based internet identifiers
-- [ ] NIP-06: Basic key derivation from mnemonic seed phrase
+- [x] NIP-06: Basic key derivation from mnemonic seed phrase
 - [x] NIP-07: `window.nostr` capability for web browsers
 - [x] NIP-08: Handling Mentions
 - [x] NIP-09: Event Deletion
