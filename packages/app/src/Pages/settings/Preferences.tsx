@@ -191,6 +191,23 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
+      <div className="card flex">
+        <div className="flex f-col f-grow">
+          <div>
+            <FormattedMessage defaultMessage="Auto Zap" />
+          </div>
+          <small>
+            <FormattedMessage defaultMessage="Automatically zap every note when loaded" />
+          </small>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={perf.autoZap}
+            onChange={e => dispatch(setPreferences({ ...perf, autoZap: e.target.checked }))}
+          />
+        </div>
+      </div>
       <div className="card flex f-col">
         <div className="flex w-max">
           <div className="flex f-col f-grow">

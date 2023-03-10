@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
@@ -25,6 +25,39 @@ import { DonateLNURL } from "Pages/DonatePage";
 import { useWallet } from "Wallet";
 
 import messages from "./messages";
+
+// a dumb cache to remember which notes we zapped
+class DumbZapCache {
+  #set: Set<u256> = new Set();
+  constructor() {
+    this.#load();
+  }
+
+  add(id: u256) {
+    this.#set.add(this.#truncId(id));
+    this.#save();
+  }
+
+  has(id: u256) {
+    return this.#set.has(this.#truncId(id));
+  }
+
+  #truncId(id: u256) {
+    return id.slice(0, 12);
+  }
+
+  #save() {
+    window.localStorage.setItem("zap-cache", JSON.stringify([...this.#set]));
+  }
+
+  #load() {
+    const data = window.localStorage.getItem("zap-cache");
+    if (data) {
+      this.#set = new Set<u256>(JSON.parse(data) as Array<u256>);
+    }
+  }
+}
+const ZapCache = new DumbZapCache();
 
 export interface Translation {
   text: string;
@@ -65,7 +98,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     type: "language",
   });
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  const didZap = zaps.some(a => a.sender === login);
+  const didZap = ZapCache.has(ev.Id) || zaps.some(a => a.sender === login);
   const longPress = useLongPress(
     e => {
       e.stopPropagation();
@@ -114,16 +147,6 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (wallet?.isReady() && lnurl) {
       setZapping(true);
       try {
-        if (prefs.fastZapDonate > 0) {
-          // spin off donate
-          const donateAmount = Math.floor(prefs.defaultZapAmount * prefs.fastZapDonate);
-          if (donateAmount > 0) {
-            console.debug(`Donating ${donateAmount} sats to ${DonateLNURL}`);
-            fastZapInner(DonateLNURL, donateAmount, bech32ToHex(SnortPubKey))
-              .then(() => console.debug("Donation sent! Thank You!"))
-              .catch(() => console.debug("Failed to donate"));
-          }
-        }
         await fastZapInner(lnurl, prefs.defaultZapAmount, ev.PubKey, ev.Id);
       } catch (e) {
         console.warn("Fast zap failed", e);
@@ -145,8 +168,36 @@ export default function NoteFooter(props: NoteFooterProps) {
       const zap = handler.canZap ? await publisher.zap(amount * 1000, key, id) : undefined;
       const invoice = await handler.getInvoice(amount, undefined, zap);
       await wallet.payInvoice(unwrap(invoice.pr));
+
+      if (prefs.fastZapDonate > 0) {
+        // spin off donate
+        const donateAmount = Math.floor(prefs.defaultZapAmount * prefs.fastZapDonate);
+        if (donateAmount > 0) {
+          console.debug(`Donating ${donateAmount} sats to ${DonateLNURL}`);
+          fastZapInner(DonateLNURL, donateAmount, bech32ToHex(SnortPubKey))
+            .then(() => console.debug("Donation sent! Thank You!"))
+            .catch(() => console.debug("Failed to donate"));
+        }
+      }
     }
   }
+
+  useEffect(() => {
+    if (prefs.autoZap) {
+      const lnurl = author?.lud16 || author?.lud06;
+      if (wallet?.isReady() && lnurl && !ZapCache.has(ev.Id)) {
+        queueMicrotask(async () => {
+          setZapping(true);
+          try {
+            await fastZapInner(lnurl, prefs.defaultZapAmount, ev.PubKey, ev.Id);
+            ZapCache.add(ev.Id);
+          } finally {
+            setZapping(false);
+          }
+        });
+      }
+    }
+  }, [prefs.autoZap]);
 
   function tipButton() {
     const service = author?.lud16 || author?.lud06;
