@@ -12,6 +12,8 @@
     "@noble/secp256k1": "^1.7.0",
     "@protobufjs/base64": "^1.1.2",
     "@reduxjs/toolkit": "^1.9.1",
+    "@scure/bip32": "^1.1.5",
+    "@scure/bip39": "^1.1.1",
     "@snort/nostr": "^1.0.0",
     "@szhsin/react-menu": "^3.3.1",
     "base32-decode": "^1.0.0",

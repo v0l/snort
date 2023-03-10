@@ -99,6 +99,11 @@ export interface LoginStore {
   privateKey?: HexKey;
 
   /**
+   * BIP39 generated entropy
+   */
+  generatedEntropy?: HexKey;
+
+  /**
    * Current users public key
    */
   publicKey?: HexKey;
@@ -253,6 +258,11 @@ export interface SetFollowsPayload {
   createdAt: number;
 }
 
+export interface SetGeneratedKeyPayload {
+  key: HexKey;
+  entropy: HexKey;
+}
+
 export const ReadPreferences = () => {
   const pref = window.localStorage.getItem(UserPreferencesKey);
   if (pref) {
@@ -315,12 +325,13 @@ const LoginSlice = createSlice({
       window.localStorage.setItem(PrivateKeyItem, action.payload);
       state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload));
     },
-    setGeneratedPrivateKey: (state, action: PayloadAction<HexKey>) => {
+    setGeneratedPrivateKey: (state, action: PayloadAction<SetGeneratedKeyPayload>) => {
       state.loggedOut = false;
       state.newUserKey = true;
-      state.privateKey = action.payload;
-      window.localStorage.setItem(PrivateKeyItem, action.payload);
-      state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload));
+      state.privateKey = action.payload.key;
+      state.generatedEntropy = action.payload.entropy;
+      window.localStorage.setItem(PrivateKeyItem, action.payload.key);
+      state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload.key));
     },
     setPublicKey: (state, action: PayloadAction<HexKey>) => {
       window.localStorage.setItem(PublicKeyItem, action.payload);

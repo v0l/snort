@@ -5,6 +5,8 @@ import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bech32 } from "bech32";
 import base32Decode from "base32-decode";
 import { HexKey, TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix } from "@snort/nostr";
+import * as bip39 from "@scure/bip39";
+import { wordlist } from "@scure/bip39/wordlists/english";
 
 import { MetadataCache } from "State/Users";
 
@@ -98,6 +100,14 @@ export function hexToBech32(hrp: string, hex?: string) {
     console.warn("Invalid hex", hex, e);
     return "";
   }
+}
+
+/**
+ * Convert hex-encoded entropy into mnemonic phrase
+ */
+export function hexToMnemonic(hex: string): string {
+  const bytes = secp.utils.hexToBytes(hex);
+  return bip39.entropyToMnemonic(bytes, wordlist);
 }
 
 /**

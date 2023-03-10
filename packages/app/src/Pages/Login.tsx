@@ -5,10 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as secp from "@noble/secp256k1";
 import { useIntl, FormattedMessage } from "react-intl";
+import { HDKey } from "@scure/bip32";
+import { wordlist } from "@scure/bip39/wordlists/english";
+import * as bip39 from "@scure/bip39";
 
 import { RootState } from "State/Store";
 import { setPrivateKey, setPublicKey, setRelays, setGeneratedPrivateKey } from "State/Login";
-import { DefaultRelays, EmailRegex } from "Const";
+import { DefaultRelays, EmailRegex, DerivationPath } from "Const";
 import { bech32ToHex, unwrap } from "Util";
 import { HexKey } from "@snort/nostr";
 import ZapButton from "Element/ZapButton";
@@ -111,8 +114,18 @@ export default function LoginPage() {
   }
 
   async function makeRandomKey() {
-    const newKey = secp.utils.bytesToHex(secp.utils.randomPrivateKey());
-    dispatch(setGeneratedPrivateKey(newKey));
+    const mn = bip39.generateMnemonic(wordlist);
+    const ent = bip39.mnemonicToEntropy(mn, wordlist);
+    const entHex = secp.utils.bytesToHex(ent);
+    const masterKey = HDKey.fromMasterSeed(ent);
+    const newKey = masterKey.derive(DerivationPath);
+
+    if (!newKey.privateKey) {
+      throw new Error("INVALID PRIVATE KEY DERIVATION");
+    }
+
+    const newKeyHex = secp.utils.bytesToHex(newKey.privateKey);
+    dispatch(setGeneratedPrivateKey({ key: newKeyHex, entropy: entHex }));
     navigate("/new");
   }
 

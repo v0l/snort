@@ -10,6 +10,7 @@ export default defineMessages({
   },
   YourPubkey: { defaultMessage: "Your public key" },
   YourPrivkey: { defaultMessage: "Your private key" },
+  YourMnemonic: { defaultMessage: "Your mnemonic phrase" },
   KeysSaved: { defaultMessage: "I have saved my keys, continue" },
   WhatIsSnort: { defaultMessage: "What is Snort and how does it work?" },
   WhatIsSnortIntro: {
