@@ -76,7 +76,7 @@ export default function useEventPublisher() {
     };
     const content = msg
       .replace(/@npub[a-z0-9]+/g, replaceNpub)
-      .replace(/note[a-z0-9]+/g, replaceNoteId)
+      .replace(/note1[acdefghjklmnpqrstuvwxyz023456789]{58}/g, replaceNoteId)
       .replace(HashtagRegex, replaceHashtag);
     ev.Content = content;
   }

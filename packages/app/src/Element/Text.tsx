@@ -81,13 +81,15 @@ export default function Text({ content, tags, creator }: TextProps) {
                   }
                   case "e": {
                     const eText = hexToBech32("note", ref.Event).substring(0, 12);
-                    return (
+                    return ref.Event ? (
                       <Link
-                        to={eventLink(ref.Event ?? "")}
+                        to={eventLink(ref.Event)}
                         onClick={e => e.stopPropagation()}
                         state={{ from: location.pathname }}>
                         #{eText}
                       </Link>
+                    ) : (
+                      ""
                     );
                   }
                   case "t": {
