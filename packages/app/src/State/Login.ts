@@ -333,6 +333,9 @@ const LoginSlice = createSlice({
       window.localStorage.setItem(PrivateKeyItem, action.payload.key);
       state.publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(action.payload.key));
     },
+    clearEntropy: state => {
+      state.generatedEntropy = undefined;
+    },
     setPublicKey: (state, action: PayloadAction<HexKey>) => {
       window.localStorage.setItem(PublicKeyItem, action.payload);
       state.loggedOut = false;
@@ -479,6 +482,7 @@ export const {
   init,
   setPrivateKey,
   setGeneratedPrivateKey,
+  clearEntropy,
   setPublicKey,
   setRelays,
   removeRelay,
