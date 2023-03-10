@@ -197,9 +197,6 @@
   "B6+XJy": {
     "defaultMessage": "zapped"
   },
-  "B6H7eJ": {
-    "defaultMessage": "nsec, npub, nip-05, hex"
-  },
   "BOUMjw": {
     "defaultMessage": "No nostr users found for {twitterUsername}"
   },
@@ -506,6 +503,9 @@
   },
   "WxthCV": {
     "defaultMessage": "e.g. Jack"
+  },
+  "X7xU8J": {
+    "defaultMessage": "nsec, npub, nip-05, hex, mnemonic"
   },
   "XgWvGA": {
     "defaultMessage": "Reactions"
