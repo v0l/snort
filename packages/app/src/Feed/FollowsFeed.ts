@@ -24,7 +24,7 @@ export default function useFollowsFeed(pubkey?: HexKey) {
       return follows;
     }
 
-    return getFollowing(contactFeed ?? [], pubkey);
+    return getFollowing(contactFeed.data ?? [], pubkey);
   }, [contactFeed, follows, pubkey]);
 }
 

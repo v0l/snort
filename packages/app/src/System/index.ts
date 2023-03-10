@@ -15,10 +15,15 @@ import { sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
 import { mapEventToProfile, MetadataCache } from "State/Users";
 import { UserCache } from "State/Users/UserCache";
 import { RequestBuilder } from "./RequestBuilder";
-import { FlatNoteStore, NoteStore, PubkeyReplaceableNoteStore } from "./NoteCollection";
+import {
+  FlatNoteStore,
+  NoteStore,
+  PubkeyReplaceableNoteStore,
+  ParameterizedReplaceableNoteStore,
+} from "./NoteCollection";
 import { diffFilters } from "./RequestSplitter";
 
-export { RequestBuilder, FlatNoteStore, PubkeyReplaceableNoteStore };
+export { RequestBuilder, FlatNoteStore, PubkeyReplaceableNoteStore, ParameterizedReplaceableNoteStore };
 
 interface QueryRequest {
   filters: Array<RawReqFilter>;
@@ -28,7 +33,7 @@ interface QueryRequest {
 /**
  * Active or queued query on the system
  */
-interface Query {
+export interface Query {
   id: string;
   request: QueryRequest;
 
@@ -111,6 +116,13 @@ export class NostrSystem {
         this.Sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
+        c.OnConnected = () => {
+          for (const [, q] of this.Queries) {
+            if (!q.closeRequested) {
+              c._SendJson(["REQ", q.id, ...q.request.filters]);
+            }
+          }
+        };
         await c.Connect();
         for (const [, s] of this.Subscriptions) {
           c.AddSubscription(s);
@@ -128,6 +140,10 @@ export class NostrSystem {
     const q = this.GetQuery(sub);
     if (q) {
       q.request.finished = unixNowMs();
+      const f = this.Feeds.get(sub);
+      if (f) {
+        f.eose(true);
+      }
     }
     c._SendJson(["CLOSE", sub]);
   }
@@ -135,7 +151,7 @@ export class NostrSystem {
   OnEvent(sub: string, ev: TaggedRawEvent) {
     const feed = this.GetFeed(sub);
     if (feed) {
-      feed.addNote(ev);
+      feed.add(ev);
     }
   }
 
@@ -169,6 +185,13 @@ export class NostrSystem {
         this.Sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
+        c.OnConnected = () => {
+          for (const [, q] of this.Queries) {
+            if (!q.closeRequested) {
+              c._SendJson(["REQ", q.id, ...q.request.filters]);
+            }
+          }
+        };
         await c.Connect();
         for (const [, s] of this.Subscriptions) {
           c.AddSubscription(s);
@@ -226,20 +249,22 @@ export class NostrSystem {
     if (this.Queries.has(req.id)) {
       const q = unwrap(this.Queries.get(req.id));
       const diff = diffFilters(q.request.filters, filters);
-      if (JSON.stringify(filters) === JSON.stringify(diff)) {
+      if (!diff.changed) {
         return unwrap(this.Feeds.get(req.id)) as Readonly<T>;
       } else {
         const subQ = {
           id: `${q.id}-${q.subQueries.length + 1}`,
           request: {
-            filters: diff,
+            filters: diff.filters,
             started: unixNowMs(),
           },
         } as Query;
         q.subQueries.push(subQ);
         q.request.filters = filters;
+        const f = unwrap(this.Feeds.get(req.id));
+        f.eose(false);
         this.SendQuery(subQ.id, subQ.request.filters);
-        return unwrap(this.Feeds.get(req.id)) as Readonly<T>;
+        return f as Readonly<T>;
       }
     } else {
       return this.AddQuery<T>(type, req.id, filters);

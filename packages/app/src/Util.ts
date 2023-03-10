@@ -481,3 +481,4 @@ export function sanitizeRelayUrl(url: string) {
   } catch {
     // ignore
   }
+}

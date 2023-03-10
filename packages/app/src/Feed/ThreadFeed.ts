@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { u256, EventKind, TaggedRawEvent } from "@snort/nostr";
+import { u256, EventKind } from "@snort/nostr";
 
 import { RootState } from "State/Store";
 import { UserPreferences } from "State/Login";
@@ -32,9 +32,9 @@ export default function useThreadFeed(id: u256) {
   const store = useNoteStore(q);
 
   useEffect(() => {
-    if (store) {
+    if (store.data) {
       return debounce(500, () => {
-        const mainNotes = store.filter(a => a.kind === EventKind.TextNote);
+        const mainNotes = store.data?.filter(a => a.kind === EventKind.TextNote) ?? [];
 
         const eTags = mainNotes
           .filter(a => a.kind === EventKind.TextNote)

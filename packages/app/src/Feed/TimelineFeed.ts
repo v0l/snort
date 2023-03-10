@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { u256 } from "@snort/nostr";
-import { EventKind, Subscriptions } from "@snort/nostr";
-import { unixNow, unwrap, tagFilterOfTextRepost } from "Util";
-import useSubscription from "Feed/Subscription";
 import { useSelector } from "react-redux";
+import { EventKind, u256 } from "@snort/nostr";
+
+import { unixNow, unwrap, tagFilterOfTextRepost } from "Util";
 import { RootState } from "State/Store";
 import { UserPreferences } from "State/Login";
-import useRelaysForFollows from "Hooks/useRelaysForFollows";
+import { FlatNoteStore, RequestBuilder, System } from "System";
+import useNoteStore from "Hooks/useNoteStore";
 
 export interface TimelineFeedOptions {
   method: "TIME_RANGE" | "LIMIT_UNTIL";
@@ -23,152 +23,129 @@ export interface TimelineSubject {
 export type TimelineFeed = ReturnType<typeof useTimelineFeed>;
 
 export default function useTimelineFeed(subject: TimelineSubject, options: TimelineFeedOptions) {
-  const now = unixNow();
+  const [now] = useState<number>(unixNow());
   const [window] = useState<number>(options.window ?? 60 * 60);
   const [until, setUntil] = useState<number>(now);
   const [since, setSince] = useState<number>(now - window);
   const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
   const [trackingParentEvents, setTrackingParentEvents] = useState<u256[]>([]);
   const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
-  const followsList = useMemo(() => (subject.type === "pubkey" ? subject.items : []), [subject.type]);
-  const pickedRelays = useRelaysForFollows(followsList);
 
-  const createSub = useCallback((): Array<Subscriptions> | Subscriptions | null => {
+  const createBuilder = useCallback(() => {
     if (subject.type !== "global" && subject.items.length === 0) {
       return null;
     }
 
-    const sub = new Subscriptions();
-    sub.Id = `timeline:${subject.type}:${subject.discriminator}`;
-    sub.Kinds = new Set([EventKind.TextNote, EventKind.Repost]);
-    if (options.relay) {
-      sub.Relays = new Set([options.relay]);
-    }
+    const b = new RequestBuilder(`timeline:${subject.type}:${subject.discriminator}`);
+    const f = b.withFilter().kinds([EventKind.TextNote, EventKind.Repost]);
+
     switch (subject.type) {
       case "pubkey": {
-        return Object.entries(pickedRelays).map(([k, v]) => {
-          const splitSub = new Subscriptions();
-          splitSub.Id = sub.Id;
-          splitSub.Kinds = sub.Kinds;
-          splitSub.Authors = new Set(v);
-          splitSub.Relays = new Set([k]);
-          return splitSub;
-        });
+        f.authors(subject.items);
+        break;
       }
       case "hashtag": {
-        sub.HashTags = new Set(subject.items);
+        f.tag("t", subject.items);
         break;
       }
       case "ptag": {
-        sub.PTags = new Set(subject.items);
+        f.tag("p", subject.items);
         break;
       }
       case "keyword": {
-        sub.Kinds.add(EventKind.SetMetadata);
-        sub.Search = subject.items[0];
+        f.search(subject.items[0]);
         break;
       }
     }
-    return sub;
-  }, [subject.type, subject.items, subject.discriminator, options.relay, pickedRelays]);
+    return {
+      builder: b,
+      filter: f,
+    };
+  }, [subject.type, subject.items, subject.discriminator, options.relay]);
 
   const sub = useMemo(() => {
-    const sub = createSub();
-    if (sub) {
-      for (const s of Array.isArray(sub) ? sub : [sub]) {
-        if (options.method === "LIMIT_UNTIL") {
-          s.Until = until;
-          s.Limit = 10;
-        } else {
-          s.Since = since;
-          s.Until = until;
-          if (since === undefined) {
-            s.Limit = 50;
-          }
-        }
-
-        if (pref.autoShowLatest) {
-          // copy properties of main sub but with limit 0
-          // this will put latest directly into main feed
-          const latestSub = new Subscriptions();
-          latestSub.Authors = s.Authors;
-          latestSub.HashTags = s.HashTags;
-          latestSub.PTags = s.PTags;
-          latestSub.Kinds = s.Kinds;
-          latestSub.Search = s.Search;
-          latestSub.Limit = 1;
-          latestSub.Since = Math.floor(new Date().getTime() / 1000);
-          s.AddSubscription(latestSub);
+    const rb = createBuilder();
+    if (rb) {
+      if (options.method === "LIMIT_UNTIL") {
+        rb.filter.until(until).limit(10);
+      } else {
+        rb.filter.since(since).until(until);
+        if (since === undefined) {
+          rb.filter.limit(50);
         }
       }
-    }
-    return sub;
-  }, [until, since, options.method, pref, createSub]);
 
-  const main = useSubscription(sub, { leaveOpen: pref.autoShowLatest, cache: false });
+      if (pref.autoShowLatest) {
+        // copy properties of main sub but with limit 0
+        // this will put latest directly into main feed
+        rb.builder
+          .withFilter()
+          .authors(rb.filter.filter.authors)
+          .kinds(rb.filter.filter.kinds)
+          .tag("p", rb.filter.filter["#p"])
+          .tag("t", rb.filter.filter["#t"])
+          .search(rb.filter.filter.search)
+          .limit(1)
+          .since(unixNow());
+      }
+    }
+    return rb?.builder ?? null;
+  }, [until, since, options.method, pref, createBuilder]);
+
+  const q = System.Query<FlatNoteStore>(FlatNoteStore, sub);
+  const main = useNoteStore(q);
 
   const subRealtime = useMemo(() => {
-    const subLatest = createSub();
-    if (subLatest && !pref.autoShowLatest) {
-      for (const s of Array.isArray(subLatest) ? subLatest : [subLatest]) {
-        s.Id = `${s.Id}:latest`;
-        s.Limit = 1;
-        s.Since = Math.floor(new Date().getTime() / 1000);
-      }
+    const rb = createBuilder();
+    if (rb && !pref.autoShowLatest) {
+      rb.builder.id = `${rb.builder.id}:latest`;
+      rb.filter.limit(1).since(unixNow());
     }
-    return subLatest;
-  }, [pref, createSub]);
+    return rb?.builder ?? null;
+  }, [pref.autoShowLatest, createBuilder]);
 
-  const latest = useSubscription(subRealtime, { leaveOpen: true, cache: false });
+  const qLatest = System.Query<FlatNoteStore>(FlatNoteStore, subRealtime);
+  const latest = useNoteStore(qLatest);
 
   useEffect(() => {
-    // clear store if chaning relays
-    main.clear();
-    latest.clear();
+    // clear store if changing relays
+    main.store.clear();
+    latest.store.clear();
   }, [options.relay]);
 
   const subNext = useMemo(() => {
-    let sub: Subscriptions | undefined;
+    const rb = new RequestBuilder(`timeline-related:${subject.type}`);
     if (trackingEvents.length > 0) {
-      sub = new Subscriptions();
-      sub.Id = `timeline-related:${subject.type}`;
-      sub.Kinds = new Set(
-        pref.enableReactions ? [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt] : [EventKind.ZapReceipt]
-      );
-      sub.ETags = new Set(trackingEvents);
+      rb.withFilter()
+        .kinds(
+          pref.enableReactions ? [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt] : [EventKind.ZapReceipt]
+        )
+        .tag("e", trackingEvents);
     }
-    return sub ?? null;
+    if (trackingParentEvents.length > 0) {
+      rb.withFilter().ids(trackingParentEvents);
+    }
+    return rb.numFilters > 0 ? rb : null;
   }, [trackingEvents, pref, subject.type]);
 
-  const others = useSubscription(subNext, { leaveOpen: true, cache: subject.type !== "global" });
-
-  const subParents = useMemo(() => {
-    if (trackingParentEvents.length > 0) {
-      const parents = new Subscriptions();
-      parents.Id = `timeline-parent:${subject.type}`;
-      parents.Ids = new Set(trackingParentEvents);
-      return parents;
-    }
-    return null;
-  }, [trackingParentEvents, subject.type]);
-
-  const parent = useSubscription(subParents, { leaveOpen: false, cache: false });
+  const qRelated = System.Query<FlatNoteStore>(FlatNoteStore, subNext);
+  const related = useNoteStore(qRelated);
 
   useEffect(() => {
-    if (main.store.notes.length > 0) {
+    if (main.data && main.data.length > 0) {
       setTrackingEvent(s => {
-        const ids = main.store.notes.map(a => a.id);
+        const ids = (main.data ?? []).map(a => a.id);
         if (ids.some(a => !s.includes(a))) {
           return Array.from(new Set([...s, ...ids]));
         }
         return s;
       });
-      const repostsByKind6 = main.store.notes
+      const repostsByKind6 = main.data
         .filter(a => a.kind === EventKind.Repost && a.content === "")
         .map(a => a.tags.find(b => b[0] === "e"))
         .filter(a => a)
         .map(a => unwrap(a)[1]);
-      const repostsByKind1 = main.store.notes
+      const repostsByKind1 = main.data
         .filter(
           a => (a.kind === EventKind.Repost || a.kind === EventKind.TextNote) && a.tags.some(tagFilterOfTextRepost(a))
         )
@@ -186,26 +163,30 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         });
       }
     }
-  }, [main.store]);
+  }, [main]);
 
   return {
-    main: main.store,
-    related: others.store,
-    latest: latest.store,
-    parent: parent.store,
+    main: main.data,
+    related: related.data,
+    latest: latest.data,
+    didEose: main.store.didEose(),
     loadMore: () => {
-      console.debug("Timeline load more!");
-      if (options.method === "LIMIT_UNTIL") {
-        const oldest = main.store.notes.reduce((acc, v) => (acc = v.created_at < acc ? v.created_at : acc), unixNow());
-        setUntil(oldest);
-      } else {
-        setUntil(s => s - window);
-        setSince(s => s - window);
+      if (main.data) {
+        console.debug("Timeline load more!");
+        if (options.method === "LIMIT_UNTIL") {
+          const oldest = main.data.reduce((acc, v) => (acc = v.created_at < acc ? v.created_at : acc), unixNow());
+          setUntil(oldest);
+        } else {
+          setUntil(s => s - window);
+          setSince(s => s - window);
+        }
       }
     },
     showLatest: () => {
-      main.append(latest.store.notes);
-      latest.clear();
+      if (latest.data) {
+        main.store.add(latest.data);
+        latest.store.clear();
+      }
     },
   };
 }

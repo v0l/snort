@@ -22,6 +22,7 @@ import { UserCache } from "State/Users/UserCache";
 import { FollowsRelays } from "State/Relays";
 import useEventPublisher from "Feed/EventPublisher";
 import { SnortPubKey } from "Const";
+import SubDebug from "Element/SubDebug";
 
 export default function Layout() {
   const location = useLocation();
@@ -182,6 +183,7 @@ export default function Layout() {
           <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
         </>
       )}
+      {window.localStorage.getItem("debug") && <SubDebug />}
     </div>
   );
 }

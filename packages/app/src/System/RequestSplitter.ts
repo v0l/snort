@@ -2,10 +2,12 @@ import { RawReqFilter } from "@snort/nostr";
 
 export function diffFilters(a: Array<RawReqFilter>, b: Array<RawReqFilter>) {
   const result: Array<RawReqFilter> = [];
+  let anyChanged = false;
   for (const [i, bN] of b.entries()) {
     const prev: Record<string, string | number | string[] | number[] | undefined> = a[i];
     if (!prev) {
       result.push(bN);
+      anyChanged = true;
     } else {
       // Critical keys changing means the entire filter has changed
       const criticalKeys = ["since", "until", "limit"];
@@ -17,10 +19,13 @@ export function diffFilters(a: Array<RawReqFilter>, b: Array<RawReqFilter>) {
           const added = thisArray.filter(a => !prevArray.includes(a));
           // support adding new values to array, removing values is ignored since we only care about getting new values
           result[i] = { ...result[i], [k]: added.length === 0 ? prevArray : added };
+          if (added.length > 0) {
+            anyChanged = true;
+          }
         } else if (prev[k] !== v) {
           result[i] = { ...result[i], [k]: v };
           if (criticalKeys.includes(k)) {
-            anyCriticalKeyChanged = true;
+            anyCriticalKeyChanged = anyChanged = true;
             break;
           }
         }
@@ -31,5 +36,8 @@ export function diffFilters(a: Array<RawReqFilter>, b: Array<RawReqFilter>) {
     }
   }
 
-  return result;
+  return {
+    filters: result,
+    changed: anyChanged,
+  };
 }

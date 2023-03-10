@@ -54,6 +54,7 @@ export class Connection {
   IsClosed: boolean;
   ReconnectTimer: ReturnType<typeof setTimeout> | null;
   EventsCallback: Map<u256, (msg: boolean[]) => void>;
+  OnConnected?: () => void;
   OnEvent?: (sub: string, e: TaggedRawEvent) => void;
   OnEose?: (sub: string) => void;
   Auth?: AuthHandler;
@@ -154,6 +155,7 @@ export class Connection {
     this.ConnectTimeout = DefaultConnectTimeout;
     this._InitSubscriptions();
     console.log(`[${this.Address}] Open!`);
+    this.OnConnected?.();
   }
 
   OnClose(e: CloseEvent) {
@@ -380,11 +382,6 @@ export class Connection {
   }
 
   _SendSubscription(sub: Subscriptions) {
-    if (!this.Authed && this.AwaitingAuth.size > 0) {
-      this.Pending.push(sub.ToObject());
-      return;
-    }
-
     let req = ["REQ", sub.Id, sub.ToObject()];
     if (sub.OrSubs.length > 0) {
       req = [...req, ...sub.OrSubs.map((o) => o.ToObject())];
@@ -394,7 +391,8 @@ export class Connection {
   }
 
   _SendJson(obj: object) {
-    if (this.Socket?.readyState !== WebSocket.OPEN) {
+    const authPending = !this.Authed && this.AwaitingAuth.size > 0;
+    if (this.Socket?.readyState !== WebSocket.OPEN || authPending) {
       this.Pending.push(obj);
       return;
     }

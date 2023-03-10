@@ -32,22 +32,36 @@ export interface BuiltRawReqFilter {
   strategy: NostrRequestStrategy;
 }
 
+export interface RequestBuilderOptions {
+  leaveOpen: boolean;
+}
+
 /**
  * Nostr REQ builder
  */
 export class RequestBuilder {
   id: string;
   #builders: Array<RequestFilterBuilder>;
+  #options?: RequestBuilderOptions;
 
   constructor(id: string) {
     this.id = id;
     this.#builders = [];
   }
 
+  get numFilters() {
+    return this.#builders.length;
+  }
+
   withFilter() {
     const ret = new RequestFilterBuilder();
     this.#builders.push(ret);
     return ret;
+  }
+
+  withOptions(opt: RequestBuilderOptions) {
+    this.#options = opt;
+    return this;
   }
 
   build(): Array<RawReqFilter> {
@@ -82,37 +96,44 @@ export class RequestFilterBuilder {
     return this.ids([id]);
   }
 
-  authors(authors: Array<HexKey>) {
+  authors(authors?: Array<HexKey>) {
+    if (!authors) return this;
     this.#filter.authors = appendDedupe(this.#filter.authors, authors);
     return this;
   }
 
-  kinds(kinds: Array<EventKind>) {
+  kinds(kinds?: Array<EventKind>) {
+    if (!kinds) return this;
     this.#filter.kinds = appendDedupe(this.#filter.kinds, kinds);
     return this;
   }
 
-  since(since: number) {
+  since(since?: number) {
+    if (!since) return this;
     this.#filter.since = since;
     return this;
   }
 
-  until(until: number) {
+  until(until?: number) {
+    if (!until) return this;
     this.#filter.until = until;
     return this;
   }
 
-  limit(limit: number) {
+  limit(limit?: number) {
+    if (!limit) return this;
     this.#filter.limit = limit;
     return this;
   }
 
-  tag(key: "e" | "p" | "d" | "t", value: Array<string>) {
+  tag(key: "e" | "p" | "d" | "t" | "r", value?: Array<string>) {
+    if (!value) return this;
     this.#filter[`#${key}`] = value;
     return this;
   }
 
-  search(keyword: string) {
+  search(keyword?: string) {
+    if (!keyword) return this;
     this.#filter.search = keyword;
     return this;
   }

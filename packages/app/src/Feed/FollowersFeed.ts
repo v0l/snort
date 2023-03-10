@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { HexKey, EventKind } from "@snort/nostr";
+
 import { PubkeyReplaceableNoteStore, RequestBuilder, System } from "System";
 import useNoteStore from "Hooks/useNoteStore";
 
@@ -15,7 +16,7 @@ export default function useFollowersFeed(pubkey?: HexKey) {
   const followersFeed = useNoteStore(q);
 
   const followers = useMemo(() => {
-    const contactLists = followersFeed?.filter(
+    const contactLists = followersFeed.data?.filter(
       a => a.kind === EventKind.ContactList && a.tags.some(b => b[0] === "p" && b[1] === pubkey)
     );
     return [...new Set(contactLists?.map(a => a.pubkey))];
