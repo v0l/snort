@@ -99,9 +99,9 @@ export interface LoginStore {
   privateKey?: HexKey;
 
   /**
-   * BIP39 generated entropy
+   * BIP39-generated, hex-encoded entropy
    */
-  generatedEntropy?: HexKey;
+  generatedEntropy?: string;
 
   /**
    * Current users public key
