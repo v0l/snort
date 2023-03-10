@@ -149,9 +149,9 @@ const PreferencesPage = () => {
         <div>
           <input
             type="number"
-            value={perf.defaultZapAmount}
+            defaultValue={perf.defaultZapAmount}
             min={1}
-            onChange={e => dispatch(setPreferences({ ...perf, defaultZapAmount: parseInt(e.target.value) }))}
+            onChange={e => dispatch(setPreferences({ ...perf, defaultZapAmount: parseInt(e.target.value || "0") }))}
           />
         </div>
       </div>
@@ -184,10 +184,10 @@ const PreferencesPage = () => {
         <div>
           <input
             type="number"
-            value={perf.fastZapDonate * 100}
+            defaultValue={perf.fastZapDonate * 100}
             min={0}
             max={100}
-            onChange={e => dispatch(setPreferences({ ...perf, fastZapDonate: parseInt(e.target.value) / 100 }))}
+            onChange={e => dispatch(setPreferences({ ...perf, fastZapDonate: parseInt(e.target.value || "0") / 100 }))}
           />
         </div>
       </div>
