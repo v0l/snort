@@ -10,7 +10,7 @@ import Spinner from "Icons/Spinner";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { bech32ToHex, hexToBech32, normalizeReaction, unwrap } from "Util";
+import { bech32ToHex, delay, hexToBech32, normalizeReaction, unwrap } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
@@ -58,6 +58,19 @@ class DumbZapCache {
   }
 }
 const ZapCache = new DumbZapCache();
+
+let isZapperBusy = false;
+const barrierZapper = async <T,>(then: () => Promise<T>): Promise<T> => {
+  while (isZapperBusy) {
+    await delay(100);
+  }
+  isZapperBusy = true;
+  try {
+    return await then();
+  } finally {
+    isZapperBusy = false;
+  }
+};
 
 export interface Translation {
   text: string;
@@ -163,11 +176,14 @@ export default function NoteFooter(props: NoteFooterProps) {
 
   async function fastZapInner(lnurl: string, amount: number, key: HexKey, id?: u256) {
     if (wallet?.isReady() && lnurl) {
-      const handler = new LNURL(lnurl);
-      await handler.load();
-      const zap = handler.canZap ? await publisher.zap(amount * 1000, key, id) : undefined;
-      const invoice = await handler.getInvoice(amount, undefined, zap);
-      await wallet.payInvoice(unwrap(invoice.pr));
+      // only allow 1 invoice req/payment at a time to avoid hitting rate limits
+      await barrierZapper(async () => {
+        const handler = new LNURL(lnurl);
+        await handler.load();
+        const zap = handler.canZap ? await publisher.zap(amount * 1000, key, id) : undefined;
+        const invoice = await handler.getInvoice(amount, undefined, zap);
+        await wallet.payInvoice(unwrap(invoice.pr));
+      });
 
       if (prefs.fastZapDonate > 0) {
         // spin off donate
@@ -185,9 +201,9 @@ export default function NoteFooter(props: NoteFooterProps) {
   useEffect(() => {
     if (prefs.autoZap) {
       const lnurl = author?.lud16 || author?.lud06;
-      if (wallet?.isReady() && lnurl && !ZapCache.has(ev.Id)) {
+      if (wallet?.isReady() && lnurl && !ZapCache.has(ev.Id) && !zapping && !isMine) {
+        setZapping(true);
         queueMicrotask(async () => {
-          setZapping(true);
           try {
             await fastZapInner(lnurl, prefs.defaultZapAmount, ev.PubKey, ev.Id);
             ZapCache.add(ev.Id);
@@ -197,7 +213,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         });
       }
     }
-  }, [prefs.autoZap]);
+  }, [prefs.autoZap, author, zapping]);
 
   function tipButton() {
     const service = author?.lud16 || author?.lud06;
