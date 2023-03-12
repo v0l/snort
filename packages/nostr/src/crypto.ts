@@ -104,7 +104,7 @@ export async function aesEncryptBase64(
   plaintext: string
 ): Promise<AesEncryptedBase64> {
   const sharedPoint = secp.getSharedSecret(sender, "02" + recipient)
-  const sharedKey = sharedPoint.slice(2, 33)
+  const sharedKey = sharedPoint.slice(1, 33)
   if (typeof window === "object") {
     const key = await window.crypto.subtle.importKey(
       "raw",
@@ -141,7 +141,7 @@ export async function aesEncryptBase64(
     )
     let encrypted = cipher.update(plaintext, "utf8", "base64")
     // TODO Could save an allocation here by avoiding the +=
-    encrypted += cipher.final()
+    encrypted += cipher.final("base64")
     return {
       data: encrypted,
       iv: Buffer.from(iv.buffer).toString("base64"),
@@ -155,7 +155,7 @@ export async function aesDecryptBase64(
   { data, iv }: AesEncryptedBase64
 ): Promise<string> {
   const sharedPoint = secp.getSharedSecret(recipient, "02" + sender)
-  const sharedKey = sharedPoint.slice(2, 33)
+  const sharedKey = sharedPoint.slice(1, 33)
   if (typeof window === "object") {
     // TODO Can copy this from the legacy code
     throw new Error("todo")

@@ -1,0 +1,4 @@
+[authorization]
+nip42_auth = true
+# This seems to have no effect.
+nip42_dms = true
