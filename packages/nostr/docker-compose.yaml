@@ -1,6 +1,8 @@
 version: "3.1"
 services:
   relay:
-    image: scsibug/nostr-rs-relay
+    build: ./relay
+    restart: on-failure
     ports:
       - 12648:8080
+      - 12649:8000

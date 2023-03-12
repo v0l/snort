@@ -1,7 +1,7 @@
 import { ProtocolError } from "../error"
 import { Filters, SubscriptionId } from "."
 import { EventId, RawEvent } from "../event"
-import WebSocket from "ws"
+import WebSocket from "isomorphic-ws"
 import { unixTimestamp } from "../util"
 
 /**
@@ -34,10 +34,12 @@ export class Conn {
   constructor({
     url,
     onMessage,
+    onOpen,
     onError,
   }: {
     url: URL
     onMessage: (msg: IncomingMessage) => void
+    onOpen: () => void
     onError: (err: unknown) => void
   }) {
     this.#onError = onError
@@ -66,6 +68,7 @@ export class Conn {
         this.send(msg)
       }
       this.#pending = []
+      onOpen()
     })
 
     this.#socket.addEventListener("error", (err) => {
