@@ -78,8 +78,10 @@ export class Nostr extends EventEmitter {
             )
           } else if (msg.kind === "eose") {
             this.emit("eose", msg.subscriptionId, this)
+          } else if (msg.kind === "auth") {
+            // TODO This is incomplete
           } else {
-            throw new ProtocolError(`invalid message ${msg}`)
+            throw new ProtocolError(`invalid message ${JSON.stringify(msg)}`)
           }
         } catch (err) {
           this.emit("error", err, this)

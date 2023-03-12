@@ -109,8 +109,9 @@ export type IncomingMessage =
   | IncomingNotice
   | IncomingOk
   | IncomingEose
+  | IncomingAuth
 
-export type IncomingKind = "event" | "notice" | "ok" | "eose"
+export type IncomingKind = "event" | "notice" | "ok" | "eose" | "auth"
 
 /**
  * Incoming "EVENT" message.
@@ -145,6 +146,13 @@ export interface IncomingOk {
 export interface IncomingEose {
   kind: "eose"
   subscriptionId: SubscriptionId
+}
+
+/**
+ * Incoming "AUTH" message.
+ */
+export interface IncomingAuth {
+  kind: "auth"
 }
 
 /**
@@ -305,6 +313,14 @@ async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
     return {
       kind: "eose",
       subscriptionId: json[1],
+    }
+  }
+
+  // TODO This is incomplete
+  // Handle incoming "AUTH" messages.
+  if (json[0] === "AUTH") {
+    return {
+      kind: "auth",
     }
   }
 

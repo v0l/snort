@@ -37,6 +37,9 @@ describe("dm", async function () {
                 assert.equal(await event.getMessage(subscriberSecret), message)
               }
 
+              publisher.close()
+              subscriber.close()
+
               done()
             } catch (e) {
               done(e)
@@ -63,7 +66,7 @@ describe("dm", async function () {
   })
 
   // Test that an unintended recipient still receives the direct message event, but cannot decrypt it.
-  it.only("to unintended recipient", (done) => {
+  it("to unintended recipient", (done) => {
     setup(done).then(
       ({
         publisher,
@@ -97,6 +100,9 @@ describe("dm", async function () {
                   undefined
                 )
               }
+
+              publisher.close()
+              subscriber.close()
 
               done()
             } catch (e) {
