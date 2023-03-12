@@ -6,8 +6,8 @@ import { setup } from "./setup"
 describe("text note", async function () {
   const note = "hello world"
 
+  // Test that a text note can be published by one client and received by the other.
   it("publish and receive", (done) => {
-    // Test that a text note can be published by one client and received by the other.
     setup(done).then(
       ({
         publisher,
@@ -51,8 +51,8 @@ describe("text note", async function () {
     )
   })
 
+  // Test that a client interprets an "OK" message after publishing a text note.
   it("publish and ok", function (done) {
-    // Test that a client interprets an "OK" message after publishing a text note.
     setup(done).then(({ publisher, subscriber, publisherSecret, url }) => {
       // TODO No signEvent, have a convenient way to do this
       signEvent(createTextNote(note), publisherSecret).then((event) => {

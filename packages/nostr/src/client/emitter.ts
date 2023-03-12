@@ -161,8 +161,7 @@ export class EventEmitter extends Base {
   // emitter[Symbol.for('nodejs.rejection')](err, eventName[, ...args]) shenanigans?
 }
 
-// TODO Add an open event
-// TODO Refactor the params
+// TODO Refactor the params to be a single interface
 type EventName =
   | "newListener"
   | "removeListener"
