@@ -83,6 +83,7 @@ export const RecommendedFollows = [
  */
 export const ZapperSpam = [
   "e1ff3bfdd4e40315959b08b4fcc8245eaa514637e1d4ec2ae166b743341be1af", // benthecarman
+  "0827e302f2e1addb2ab7f56a15bbbc63ad8c4dbea72a054dffeb1d6a20557daa", // semisol
 ];
 
 /**
