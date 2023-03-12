@@ -166,6 +166,7 @@ export function createSetMetadata(
 // Perhaps the best option is for all these factory methods to have an overload which also accept a private
 // key as last parameter and return the event already signed, whereas for this method that would be
 // mandatory
+// E.g. opts: { sign?: boolean | HexOrBechPrivateKey } setting sign to true should use nip07
 export async function createDirectMessage({
   message,
   recipient,
