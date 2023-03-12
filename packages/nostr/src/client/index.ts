@@ -85,6 +85,8 @@ export class Nostr extends EventEmitter {
           this.emit("error", err, this)
         }
       },
+      // Forward "open" events.
+      onOpen: () => this.emit("open", connUrl, this),
       // Forward errors on this connection.
       onError: (err) => this.emit("error", err, this),
     })

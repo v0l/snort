@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "ts-mocha --type-check -j 1 test/*.ts",
+    "test": "ts-mocha --type-check -j 1 --timeout 5s test/*.ts",
     "lint": "eslint ."
   },
   "devDependencies": {
@@ -31,5 +31,12 @@
     "events": "^3.3.0",
     "isomorphic-ws": "^5.0.0",
     "ws": "^8.12.1"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
