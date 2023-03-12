@@ -153,14 +153,15 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }
 
-  async function fastZap(e: React.MouseEvent) {
-    if (zapping || e.isPropagationStopped()) return;
+  async function fastZap(e?: React.MouseEvent) {
+    if (zapping || e?.isPropagationStopped()) return;
 
     const lnurl = author?.lud16 || author?.lud06;
     if (wallet?.isReady() && lnurl) {
       setZapping(true);
       try {
         await fastZapInner(lnurl, prefs.defaultZapAmount, ev.PubKey, ev.Id);
+        fastZapDonate();
       } catch (e) {
         console.warn("Fast zap failed", e);
         if (!(e instanceof Error) || e.message !== "User rejected") {
@@ -175,16 +176,18 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function fastZapInner(lnurl: string, amount: number, key: HexKey, id?: u256) {
-    if (wallet?.isReady() && lnurl) {
-      // only allow 1 invoice req/payment at a time to avoid hitting rate limits
-      await barrierZapper(async () => {
-        const handler = new LNURL(lnurl);
-        await handler.load();
-        const zap = handler.canZap ? await publisher.zap(amount * 1000, key, id) : undefined;
-        const invoice = await handler.getInvoice(amount, undefined, zap);
-        await wallet.payInvoice(unwrap(invoice.pr));
-      });
+    // only allow 1 invoice req/payment at a time to avoid hitting rate limits
+    await barrierZapper(async () => {
+      const handler = new LNURL(lnurl);
+      await handler.load();
+      const zap = handler.canZap ? await publisher.zap(amount * 1000, key, id) : undefined;
+      const invoice = await handler.getInvoice(amount, undefined, zap);
+      await wallet?.payInvoice(unwrap(invoice.pr));
+    });
+  }
 
+  function fastZapDonate() {
+    queueMicrotask(async () => {
       if (prefs.fastZapDonate > 0) {
         // spin off donate
         const donateAmount = Math.floor(prefs.defaultZapAmount * prefs.fastZapDonate);
@@ -195,18 +198,21 @@ export default function NoteFooter(props: NoteFooterProps) {
             .catch(() => console.debug("Failed to donate"));
         }
       }
-    }
+    });
   }
 
   useEffect(() => {
-    if (prefs.autoZap) {
+    if (prefs.autoZap && !ZapCache.has(ev.Id) && !isMine && !zapping) {
       const lnurl = author?.lud16 || author?.lud06;
-      if (wallet?.isReady() && lnurl && !ZapCache.has(ev.Id) && !zapping && !isMine) {
+      if (wallet?.isReady() && lnurl) {
         setZapping(true);
         queueMicrotask(async () => {
           try {
             await fastZapInner(lnurl, prefs.defaultZapAmount, ev.PubKey, ev.Id);
             ZapCache.add(ev.Id);
+            fastZapDonate();
+          } catch {
+            // ignored
           } finally {
             setZapping(false);
           }
