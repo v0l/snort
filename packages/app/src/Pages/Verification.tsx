@@ -15,13 +15,6 @@ export const services = [
     supportLink: "https://snort.social/help",
     about: <FormattedMessage {...messages.SnortSocialNip} />,
   },
-  {
-    name: "Nostr Plebs",
-    service: "https://nostrplebs.com/api/v1",
-    link: "https://nostrplebs.com/",
-    supportLink: "https://nostrplebs.com/manage",
-    about: <FormattedMessage {...messages.NostrPlebsNip} />,
-  },
 ];
 
 export default function VerificationPage() {

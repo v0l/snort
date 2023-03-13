@@ -155,11 +155,6 @@ export const TwitchRegex = /twitch.tv\/([a-z0-9_]+$)/i;
 export const AppleMusicRegex =
   /music\.apple\.com\/([a-z]{2}\/)?(?:album|playlist)\/[\w\d-]+\/([.a-zA-Z0-9-]+)(?:\?i=\d+)?/i;
 
-/**
- * Nostr Nests embed regex
- */
-export const NostrNestsRegex = /nostrnests\.com\/[a-zA-Z0-9]+/i;
-
 /*
  * Magnet link parser
  */
