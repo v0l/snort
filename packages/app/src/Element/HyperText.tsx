@@ -14,7 +14,6 @@ import {
   SpotifyRegex,
   TwitchRegex,
   AppleMusicRegex,
-  NostrNestsRegex,
   WavlakeRegex,
 } from "Const";
 import { RootState } from "State/Store";
@@ -25,7 +24,6 @@ import TidalEmbed from "Element/TidalEmbed";
 import { ProxyImg } from "Element/ProxyImg";
 import TwitchEmbed from "Element/TwitchEmbed";
 import AppleMusicEmbed from "Element/AppleMusicEmbed";
-import NostrNestsEmbed from "Element/NostrNestsEmbed";
 import WavlakeEmbed from "Element/WavlakeEmbed";
 
 export default function HyperText({ link, creator }: { link: string; creator: HexKey }) {
@@ -71,7 +69,6 @@ export default function HyperText({ link, creator }: { link: string; creator: He
       const isSpotifyLink = SpotifyRegex.test(a);
       const isTwitchLink = TwitchRegex.test(a);
       const isAppleMusicLink = AppleMusicRegex.test(a);
-      const isNostrNestsLink = NostrNestsRegex.test(a);
       const isWavlakeLink = WavlakeRegex.test(a);
       const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
       if (extension && !isAppleMusicLink) {
@@ -140,13 +137,6 @@ export default function HyperText({ link, creator }: { link: string; creator: He
         return <TwitchEmbed link={a} />;
       } else if (isAppleMusicLink) {
         return <AppleMusicEmbed link={a} />;
-      } else if (isNostrNestsLink) {
-        return [
-          <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-            {a}
-          </a>,
-          <NostrNestsEmbed link={a} />,
-        ];
       } else if (isWavlakeLink) {
         return <WavlakeEmbed link={a} />;
       } else {
