@@ -10,7 +10,6 @@ import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
 import { RootState } from "State/Store";
 import { findTag } from "Util";
-import { ZapperSpam } from "Const";
 import { UserCache } from "State/Users/UserCache";
 
 import messages from "./messages";
@@ -53,10 +52,6 @@ export function parseZap(zapReceipt: TaggedRawEvent): ParsedZap {
       if (invoice?.descriptionHash !== metaHash) {
         ret.valid = false;
         ret.errors.push("description_hash does not match zap request");
-      }
-      if (ZapperSpam.includes(zapReceipt.pubkey)) {
-        ret.valid = false;
-        ret.errors.push("zapper is banned");
       }
       if (findTag(zapRequest, "p") !== findTag(zapReceipt, "p")) {
         ret.valid = false;

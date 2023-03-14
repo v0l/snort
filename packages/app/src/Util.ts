@@ -106,7 +106,7 @@ export function hexToBech32(hrp: string, hex?: string) {
 
 export function generateBip39Entropy(mnemonic?: string): Uint8Array {
   try {
-    const mn = mnemonic ?? bip39.generateMnemonic(wordlist);
+    const mn = mnemonic ?? bip39.generateMnemonic(wordlist, 256);
     return bip39.mnemonicToEntropy(mn, wordlist);
   } catch (e) {
     throw new Error("INVALID MNEMONIC PHRASE");

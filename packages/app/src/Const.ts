@@ -41,9 +41,6 @@ export const ProfileCacheExpire = 1_000 * 60 * 30;
 export const DefaultRelays = new Map<string, RelaySettings>([
   ["wss://relay.snort.social", { read: true, write: true }],
   ["wss://nostr.wine", { read: true, write: false }],
-  ["wss://eden.nostr.land", { read: true, write: false }],
-  ["wss://atlas.nostr.land", { read: true, write: false }],
-  ["wss://relay.orangepill.dev", { read: true, write: false }],
   ["wss://nos.lol", { read: true, write: false }],
 ]);
 
@@ -75,14 +72,6 @@ export const RecommendedFollows = [
   "1577e4599dd10c863498fe3c20bd82aafaf829a595ce83c5cf8ac3463531b09b", // yegorpetrov
   "04c915daefee38317fa734444acee390a8269fe5810b2241e5e6dd343dfbecc9", // ODELL
   "7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194", // verbiricha
-  "52b4a076bcbbbdc3a1aefa3735816cf74993b1b8db202b01c883c58be7fad8bd", // semisol
-];
-
-/**
- * Mark zaps invalid for the following pubkeys
- */
-export const ZapperSpam = [
-  "e1ff3bfdd4e40315959b08b4fcc8245eaa514637e1d4ec2ae166b743341be1af", // benthecarman
 ];
 
 /**

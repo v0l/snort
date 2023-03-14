@@ -218,6 +218,9 @@
   "Cu/K85": {
     "defaultMessage": "Translated from {lang}"
   },
+  "D+KzKd": {
+    "defaultMessage": "Automatically zap every note when loaded"
+  },
   "D3idYv": {
     "defaultMessage": "Settings"
   },
@@ -226,6 +229,9 @@
   },
   "DZzCem": {
     "defaultMessage": "Show latest {n} notes"
+  },
+  "Dh3hbq": {
+    "defaultMessage": "Auto Zap"
   },
   "Dt/Zd5": {
     "defaultMessage": "Media in posts will automatically be shown for selected people, otherwise only the link will show"
