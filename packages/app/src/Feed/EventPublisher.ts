@@ -58,14 +58,14 @@ export default function useEventPublisher() {
         return match;
       }
     };
-    const replaceNoteId = (_: string, match: string) => {
+    const replaceNoteId = (_: string, before: string, noteId: string, after: string) => {
       try {
-        const hex = bech32ToHex(match);
+        const hex = bech32ToHex(noteId);
         const idx = ev.Tags.length;
         ev.Tags.push(new Tag(["e", hex, "", "mention"], idx));
-        return `#[${idx}]`;
+        return `${before}#[${idx}]${after}`;
       } catch (error) {
-        return match;
+        return _;
       }
     };
     const replaceHashtag = (match: string) => {
@@ -76,7 +76,7 @@ export default function useEventPublisher() {
     };
     const content = msg
       .replace(/@npub[a-z0-9]+/g, replaceNpub)
-      .replace(/\s(note1[acdefghjklmnpqrstuvwxyz023456789]{58})\s/g, replaceNoteId)
+      .replace(/(\s)(note1[acdefghjklmnpqrstuvwxyz023456789]{58})(\s)/g, replaceNoteId)
       .replace(HashtagRegex, replaceHashtag);
     ev.Content = content;
   }
