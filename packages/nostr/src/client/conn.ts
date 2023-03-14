@@ -120,7 +120,6 @@ export class Conn {
       return {
         kind: "event",
         subscriptionId: new SubscriptionId(json[1]),
-        signed: await SignedEvent.verify(raw),
         raw,
       }
     }
@@ -175,7 +174,6 @@ export type IncomingKind = "event" | "notice" | "ok"
 export interface IncomingEvent {
   kind: "event"
   subscriptionId: SubscriptionId
-  signed: SignedEvent
   raw: RawEvent
 }
 
@@ -266,18 +264,18 @@ function serializeFilters(filters: Filters[]): RawFilters[] {
     return [{}]
   }
   return filters.map((filter) => ({
-    ids: filter.ids?.map((id) => id.toString()),
-    authors: filter.authors?.map((author) => author.toString()),
+    ids: filter.ids?.map((id) => id.toHex()),
+    authors: filter.authors?.map((author) => author),
     kinds: filter.kinds?.map((kind) => kind),
-    ["#e"]: filter.eventTags?.map((e) => e.toString()),
-    ["#p"]: filter.pubkeyTags?.map((p) => p.toString()),
+    ["#e"]: filter.eventTags?.map((e) => e.toHex()),
+    ["#p"]: filter.pubkeyTags?.map((p) => p.toHex()),
     since: filter.since !== undefined ? unixTimestamp(filter.since) : undefined,
     until: filter.until !== undefined ? unixTimestamp(filter.until) : undefined,
     limit: filter.limit,
   }))
 }
 
-function parseEventData(json: object): RawEvent {
+function parseEventData(json: { [key: string]: unknown }): RawEvent {
   if (
     typeof json["id"] !== "string" ||
     typeof json["pubkey"] !== "string" ||
@@ -292,7 +290,7 @@ function parseEventData(json: object): RawEvent {
   ) {
     throw new ProtocolError(`invalid event: ${JSON.stringify(json)}`)
   }
-  return json as RawEvent
+  return json as unknown as RawEvent
 }
 
 function parseJson(data: string) {
