@@ -1,14 +1,14 @@
 const WavlakeEmbed = ({ link }: { link: string }) => {
-  const convertedUrl = link.replace(/\/(track)\/([a-zA-Z0-9]+)/, "/embed/$1/$2");
+  const convertedUrl = link.replace("player.wavlake.com", "embed.wavlake.com");
 
   return (
     <iframe
       style={{ borderRadius: 12 }}
       src={convertedUrl}
       width="100%"
-      height="360"
+      height="400"
       frameBorder="0"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      allow=""
       loading="lazy"></iframe>
   );
 };
