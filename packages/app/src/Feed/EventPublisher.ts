@@ -58,14 +58,14 @@ export default function useEventPublisher() {
         return match;
       }
     };
-    const replaceNoteId = (_: string, before: string, noteId: string, after: string) => {
+    const replaceNoteId = (match: string, before: string, noteId: string, after: string) => {
       try {
         const hex = bech32ToHex(noteId);
         const idx = ev.Tags.length;
         ev.Tags.push(new Tag(["e", hex, "", "mention"], idx));
         return `${before}#[${idx}]${after}`;
       } catch (error) {
-        return _;
+        return match;
       }
     };
     const replaceHashtag = (match: string) => {
