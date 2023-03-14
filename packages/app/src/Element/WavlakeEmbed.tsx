@@ -6,9 +6,8 @@ const WavlakeEmbed = ({ link }: { link: string }) => {
       style={{ borderRadius: 12 }}
       src={convertedUrl}
       width="100%"
-      height="400"
+      height="380"
       frameBorder="0"
-      allow=""
       loading="lazy"></iframe>
   );
 };

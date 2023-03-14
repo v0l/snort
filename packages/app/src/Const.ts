@@ -168,4 +168,4 @@ export const MagnetRegex = /(magnet:[\S]+)/i;
 /**
  * Wavlake embed regex
  */
-export const WavlakeRegex = /player\.wavlake\.com\/([.a-zA-Z0-9-/]+)/i;
+export const WavlakeRegex = /player\.wavlake\.com\/(?!feed\/)(track\/[.a-zA-Z0-9-]+|album\/[.a-zA-Z0-9-]+|[.a-zA-Z0-9-]+)/i;
