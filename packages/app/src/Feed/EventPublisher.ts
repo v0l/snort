@@ -58,12 +58,13 @@ export default function useEventPublisher() {
         return match;
       }
     };
-    const replaceNoteId = (match: string, before: string, noteId: string, after: string) => {
+    const replaceNoteId = (match: string) => {
+      const noteId = match.slice(1);
       try {
         const hex = bech32ToHex(noteId);
         const idx = ev.Tags.length;
         ev.Tags.push(new Tag(["e", hex, "", "mention"], idx));
-        return `${before}#[${idx}]${after}`;
+        return `#[${idx}]`;
       } catch (error) {
         return match;
       }
@@ -76,7 +77,7 @@ export default function useEventPublisher() {
     };
     const content = msg
       .replace(/@npub[a-z0-9]+/g, replaceNpub)
-      .replace(/(\s)@{0,1}(note1[acdefghjklmnpqrstuvwxyz023456789]{58})(\s)/g, replaceNoteId)
+      .replace(/@note1[acdefghjklmnpqrstuvwxyz023456789]{58}/g, replaceNoteId)
       .replace(HashtagRegex, replaceHashtag);
     ev.Content = content;
   }
