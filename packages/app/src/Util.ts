@@ -1,5 +1,6 @@
 import * as secp from "@noble/secp256k1";
 import { sha256 as hash } from "@noble/hashes/sha256";
+import { hmac } from "@noble/hashes/hmac";
 import { bytesToHex } from "@noble/hashes/utils";
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bech32 } from "bech32";
@@ -452,4 +453,12 @@ export function findTag(e: TaggedRawEvent, tag: string) {
     return evTag[0] === tag;
   });
   return maybeTag && maybeTag[1];
+}
+
+export async function hmacSha256(key: Uint8Array, ...messages: Uint8Array[]) {
+  if (window.crypto.subtle) {
+    return await secp.utils.hmacSha256(key, ...messages);
+  } else {
+    return hmac(hash, key, secp.utils.concatBytes(...messages));
+  }
 }
