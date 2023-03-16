@@ -1,4 +1,5 @@
 import * as secp from "@noble/secp256k1";
+import { sha256 } from "@noble/hashes/sha256";
 import * as base64 from "@protobufjs/base64";
 import { HexKey, RawEvent, TaggedRawEvent } from "./index";
 import EventKind from "./EventKind";
@@ -78,7 +79,7 @@ export default class Event {
    * Sign this message with a private key
    */
   async Sign(key: HexKey) {
-    this.Id = await this.CreateId();
+    this.Id = this.CreateId();
 
     const sig = await secp.schnorr.sign(this.Id, key);
     this.Signature = secp.utils.bytesToHex(sig);
@@ -92,12 +93,12 @@ export default class Event {
    * @returns True if valid signature
    */
   async Verify() {
-    const id = await this.CreateId();
+    const id = this.CreateId();
     const result = await secp.schnorr.verify(this.Signature, id, this.PubKey);
     return result;
   }
 
-  async CreateId() {
+  CreateId() {
     const payload = [
       0,
       this.PubKey,
@@ -107,9 +108,7 @@ export default class Event {
       this.Content,
     ];
 
-    const payloadData = new TextEncoder().encode(JSON.stringify(payload));
-    const data = await secp.utils.sha256(payloadData);
-    const hash = secp.utils.bytesToHex(data);
+    const hash = secp.utils.bytesToHex(sha256(JSON.stringify(payload)));
     if (this.Id !== "" && hash !== this.Id) {
       console.debug(payload);
       throw "ID doesnt match!";

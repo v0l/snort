@@ -35,7 +35,7 @@ export default function useEventPublisher() {
 
   async function signEvent(ev: NEvent): Promise<NEvent> {
     if (hasNip07 && !privKey) {
-      ev.Id = await ev.CreateId();
+      ev.Id = ev.CreateId();
       const tmpEv = (await barrierNip07(() => window.nostr.signEvent(ev.ToObject()))) as RawEvent;
       return new NEvent(tmpEv as TaggedRawEvent);
     } else if (privKey) {
