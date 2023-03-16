@@ -6,6 +6,10 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 24px;
+}
+
+.login p,
+.login a {
   color: #999999;
 }
 
@@ -21,7 +25,7 @@
 
 .login .logo {
   margin-top: 16px;
-  margin-bottom: 67px;
+  margin-bottom: 50px;
 }
 
 .login > div:nth-child(1) {
@@ -73,12 +77,14 @@
 }
 
 @media (max-width: 1024px) {
+  .login {
+    width: unset;
+    height: unset;
+  }
+
   .login > div:nth-child(2) {
     display: none;
   }
-}
-
-.login .login-note {
 }
 
 .login .login-actions {
@@ -99,20 +105,14 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 24px;
-  margin-top: 56px;
-  margin-bottom: 64px;
-}
-
-@media (max-width: 520px) {
-  .login .login-or {
-    margin-top: 32px;
-    margin-bottom: 32px;
-  }
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .light .login-or {
   color: #a1a1aa;
 }
+
 .login-container input[type="text"] {
   border: none;
   background-color: var(--gray-secondary);

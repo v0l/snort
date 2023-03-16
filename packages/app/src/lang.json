@@ -118,6 +118,9 @@
   "4rYCjn": {
     "defaultMessage": "Note to Self"
   },
+  "5rOdPG": {
+    "defaultMessage": "Once you setup your key manager extension and generated a key, you can follow our new users flow to setup your profile and help you find some interesting people on Nostr to follow."
+  },
   "5ykRmX": {
     "defaultMessage": "Send zap"
   },
@@ -410,6 +413,9 @@
   "OKhRC6": {
     "defaultMessage": "Share"
   },
+  "OLEm6z": {
+    "defaultMessage": "Unknown login error"
+  },
   "P61BTu": {
     "defaultMessage": "Copy Event JSON"
   },
@@ -479,6 +485,9 @@
   "Up5U7K": {
     "defaultMessage": "Block"
   },
+  "VBadwB": {
+    "defaultMessage": "Hmm, can't find a key manager extension.. try reloading the page."
+  },
   "VN0+Fz": {
     "defaultMessage": "Balance: {amount} sats"
   },
@@ -516,6 +525,9 @@
   "XgWvGA": {
     "defaultMessage": "Reactions"
   },
+  "XzF0aC": {
+    "defaultMessage": "Key manager extensions are more secure and allow you to easily login to any Nostr client, here are some well known extensions:"
+  },
   "Y31HTH": {
     "defaultMessage": "Help fund the development of Snort"
   },
@@ -548,6 +560,10 @@
   },
   "bxv59V": {
     "defaultMessage": "Just now"
+  },
+  "c+oiJe": {
+    "defaultMessage": "Install Extension",
+    "description": "Heading for install key manager extension"
   },
   "c35bj2": {
     "defaultMessage": "If you have an enquiry about your NIP-05 order please DM {link}"
@@ -687,6 +703,9 @@
   "kaaf1E": {
     "defaultMessage": "now"
   },
+  "lBboHo": {
+    "defaultMessage": "If you want to try out some others, check out {link} for more!"
+  },
   "lCILNz": {
     "defaultMessage": "Buy Now"
   },
@@ -734,6 +753,9 @@
   },
   "nN9XTz": {
     "defaultMessage": "Share your thoughts with {link}"
+  },
+  "nOaArs": {
+    "defaultMessage": "Setup Profile"
   },
   "nn1qb3": {
     "defaultMessage": "Your donations are greatly appreciated"
@@ -832,6 +854,9 @@
   },
   "uSV4Ti": {
     "defaultMessage": "Reposts need to be manually confirmed"
+  },
+  "ubtr9S": {
+    "defaultMessage": "Can't login with private key on 'http://' connection, please use a Nostr key manager extension instead"
   },
   "usAvMr": {
     "defaultMessage": "Edit Profile"
