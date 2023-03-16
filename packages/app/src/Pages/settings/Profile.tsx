@@ -74,6 +74,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     delete userCopy["pubkey"];
     delete userCopy["npub"];
     delete userCopy["deleted"];
+    delete userCopy["zapService"];
     console.debug(userCopy);
 
     const ev = await publisher.metadata(userCopy);
