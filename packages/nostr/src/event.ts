@@ -170,7 +170,7 @@ export async function parseEvent(event: RawEvent): Promise<Event> {
       )}, expected ${await calculateEventId(event)}`
     )
   }
-  if (!schnorrVerify(event.sig, event.id, event.pubkey)) {
+  if (!(await schnorrVerify(event.sig, event.id, event.pubkey))) {
     throw new ProtocolError(
       `invalid signature for event ${JSON.stringify(event)}`
     )
