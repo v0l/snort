@@ -9,7 +9,9 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "noImplicitOverride": true
+    "noImplicitOverride": true,
+    "module": "CommonJS",
+    "strict": true
   },
   "include": ["src"]
 }

@@ -1,7 +1,14 @@
 import { ProtocolError } from "./error"
-import * as secp from "@noble/secp256k1"
-import { PublicKey, PrivateKey } from "./keypair"
-import { unixTimestamp } from "./util"
+import {
+  PublicKey,
+  PrivateKey,
+  sha256,
+  Hex,
+  schnorrSign,
+  schnorrVerify,
+  aesDecryptBase64,
+} from "./crypto"
+import { defined, unixTimestamp } from "./util"
 
 // TODO This file is missing proper documentation
 // TODO Add remaining event types
@@ -24,12 +31,18 @@ export enum EventKind {
   ZapReceipt = 9735, // NIP 57
 }
 
-export type Event = SetMetadataEvent | TextNoteEvent | UnknownEvent
+export type Event =
+  | SetMetadataEvent
+  | TextNoteEvent
+  | DirectMessageEvent
+  | UnknownEvent
 
 interface EventCommon {
   pubkey: PublicKey
   createdAt: Date
 }
+
+// TODO Refactor: the event names don't need to all end with *Event
 
 export interface SetMetadataEvent extends EventCommon {
   kind: EventKind.SetMetadata
@@ -47,13 +60,23 @@ export interface TextNoteEvent extends EventCommon {
   content: string
 }
 
+export interface DirectMessageEvent extends EventCommon {
+  kind: EventKind.DirectMessage
+  /**
+   * The plaintext message, or undefined if this client is not the recipient.
+   */
+  message?: string
+  recipient: PublicKey
+  previous?: EventId
+}
+
 export interface UnknownEvent extends EventCommon {
   kind: Exclude<EventKind, EventKind.SetMetadata | EventKind.TextNote>
 }
 
 // TODO Doc comment
 export class EventId {
-  #hex: string
+  #hex: Hex
 
   static async create(event: Event | RawEvent): Promise<EventId> {
     // It's not defined whether JSON.stringify produces a string with whitespace stripped.
@@ -66,34 +89,33 @@ export class EventId {
         .map((tag) => `[${tag.map((v) => `"${v}"`).join(",")}]`)
         .join(",")}]`
       const serialized = `[0,"${event.pubkey}",${event.created_at},${event.kind},${serializedTags},"${event.content}"]`
-      const hash = await secp.utils.sha256(
-        Uint8Array.from(charCodes(serialized))
-      )
-      return new EventId(secp.utils.bytesToHex(hash).toLowerCase())
+      const hash = await sha256(Uint8Array.from(charCodes(serialized)))
+      return new EventId(hash)
     } else {
       // Not a raw event.
-      const tags = serializeEventTags(event)
-      const content = serializeEventContent(event)
+      const tags = serializeTags(event)
+      const content = serializeContent(event)
       const serializedTags = `[${tags
         .map((tag) => `[${tag.map((v) => `"${v}"`).join(",")}]`)
         .join(",")}]`
       const serialized = `[0,"${event.pubkey}",${unixTimestamp(
         event.createdAt
       )},${event.kind},${serializedTags},"${content}"]`
-      const hash = await secp.utils.sha256(
-        Uint8Array.from(charCodes(serialized))
-      )
-      return new EventId(secp.utils.bytesToHex(hash).toLowerCase())
+      const hash = await sha256(Uint8Array.from(charCodes(serialized)))
+      return new EventId(hash)
     }
   }
 
-  constructor(hex: string) {
-    // TODO Validate that this is 32-byte hex
-    this.#hex = hex
+  constructor(hex: string | Uint8Array) {
+    this.#hex = new Hex(hex)
+  }
+
+  toHex(): string {
+    return this.#hex.toString()
   }
 
   toString(): string {
-    return this.#hex
+    return this.toHex()
   }
 }
 
@@ -103,7 +125,7 @@ export class EventId {
 export class SignedEvent {
   #event: Readonly<Event>
   #eventId: EventId
-  #signature: string
+  #signature: Hex
 
   /**
    * Sign an event using the specified private key. The private key must match the
@@ -111,29 +133,34 @@ export class SignedEvent {
    */
   static async sign(event: Event, key: PrivateKey): Promise<SignedEvent> {
     const id = await EventId.create(event)
-    const sig = secp.utils
-      .bytesToHex(await secp.schnorr.sign(id.toString(), key.hexDangerous()))
-      .toLowerCase()
-    return new SignedEvent(event, id, sig)
+    const sig = await schnorrSign(new Hex(id.toHex()), key)
+    return new SignedEvent(event, id, new Hex(sig))
   }
 
   /**
    * Verify the signature of a raw event. Throw a `ProtocolError` if the signature
    * is invalid.
    */
-  static async verify(raw: RawEvent): Promise<SignedEvent> {
+  static async verify(raw: RawEvent, key?: PrivateKey): Promise<SignedEvent> {
     const id = await EventId.create(raw)
-    if (id.toString() !== raw.id) {
+    if (id.toHex() !== raw.id) {
       throw new ProtocolError(`invalid event id: ${raw.id}, expected ${id}`)
     }
-    if (!(await secp.schnorr.verify(raw.sig, id.toString(), raw.pubkey))) {
-      throw new ProtocolError(`invalid signature: ${raw.sig}`)
+    const sig = new Hex(raw.sig)
+    if (
+      !(await schnorrVerify(
+        sig,
+        new Hex(id.toHex()),
+        new PublicKey(raw.pubkey)
+      ))
+    ) {
+      throw new ProtocolError(`invalid signature: ${sig}`)
     }
-    return new SignedEvent(parseEvent(raw), id, raw.sig)
+    return new SignedEvent(await parseEvent(raw, key), id, sig)
   }
 
-  private constructor(event: Event, eventId: EventId, signature: string) {
-    this.#event = cloneEvent(event)
+  private constructor(event: Event, eventId: EventId, signature: Hex) {
+    this.#event = deepCopy(event)
     this.#eventId = eventId
     this.#signature = signature
   }
@@ -149,14 +176,14 @@ export class SignedEvent {
    * Event data.
    */
   get event(): Event {
-    return cloneEvent(this.#event)
+    return deepCopy(this.#event)
   }
 
   /**
-   * Event signature.
+   * Event signature in hex format.
    */
   get signature(): string {
-    return this.#signature
+    return this.#signature.toString()
   }
 
   /**
@@ -164,11 +191,11 @@ export class SignedEvent {
    */
   serialize(): RawEvent {
     const { event, eventId: id, signature } = this
-    const tags = serializeEventTags(event)
-    const content = serializeEventContent(event)
+    const tags = serializeTags(event)
+    const content = serializeContent(event)
     return {
-      id: id.toString(),
-      pubkey: event.pubkey.toString(),
+      id: id.toHex(),
+      pubkey: event.pubkey.toHex(),
       created_at: unixTimestamp(event.createdAt),
       kind: event.kind,
       tags,
@@ -191,7 +218,10 @@ export interface RawEvent {
 /**
  * Parse an event from its raw format.
  */
-function parseEvent(raw: RawEvent): Event {
+async function parseEvent(
+  raw: RawEvent,
+  key: PrivateKey | undefined
+): Promise<Event> {
   const pubkey = new PublicKey(raw.pubkey)
   const createdAt = new Date(raw.created_at * 1000)
   const event = {
@@ -206,7 +236,9 @@ function parseEvent(raw: RawEvent): Event {
       typeof userMetadata["about"] !== "string" ||
       typeof userMetadata["picture"] !== "string"
     ) {
-      throw new ProtocolError(`invalid user metadata: ${userMetadata}`)
+      throw new ProtocolError(
+        `invalid user metadata ${userMetadata} in ${JSON.stringify(raw)}`
+      )
     }
     return {
       ...event,
@@ -223,18 +255,59 @@ function parseEvent(raw: RawEvent): Event {
     }
   }
 
+  if (raw.kind === EventKind.DirectMessage) {
+    // Parse the tag identifying the recipient.
+    const recipientTag = raw.tags.find((tag) => tag[0] === "p")
+    if (typeof recipientTag?.[1] !== "string") {
+      throw new ProtocolError(
+        `expected "p" tag to be of type string, but got ${
+          recipientTag?.[1]
+        } in ${JSON.stringify(raw)}`
+      )
+    }
+    const recipient = new PublicKey(recipientTag[1])
+
+    // Parse the tag identifying the optional previous message.
+    const previousTag = raw.tags.find((tag) => tag[0] === "e")
+    if (typeof recipientTag[1] !== "string") {
+      throw new ProtocolError(
+        `expected "e" tag to be of type string, but got ${
+          previousTag?.[1]
+        } in ${JSON.stringify(raw)}`
+      )
+    }
+    const previous = new EventId(defined(previousTag?.[1]))
+
+    // Decrypt the message content.
+    const [data, iv] = raw.content.split("?iv=")
+    if (data === undefined || iv === undefined) {
+      throw new ProtocolError(`invalid direct message content ${raw.content}`)
+    }
+    let message: string | undefined
+    if (key?.pubkey?.toHex() === recipient.toHex()) {
+      message = await aesDecryptBase64(event.pubkey, key, { data, iv })
+    }
+    return {
+      ...event,
+      kind: EventKind.DirectMessage,
+      message,
+      recipient,
+      previous,
+    }
+  }
+
   return {
     ...event,
     kind: raw.kind,
   }
 }
 
-function serializeEventTags(_event: Event): string[][] {
+function serializeTags(_event: Event): string[][] {
   // TODO As I add different event kinds, this will change
   return []
 }
 
-function serializeEventContent(event: Event): string {
+function serializeContent(event: Event): string {
   if (event.kind === EventKind.SetMetadata) {
     return JSON.stringify(event.content)
   } else if (event.kind === EventKind.TextNote) {
@@ -244,10 +317,13 @@ function serializeEventContent(event: Event): string {
   }
 }
 
-function cloneEvent(event: Event): Event {
+/**
+ * Create a deep copy of the event.
+ */
+function deepCopy(event: Event): Event {
   const common = {
     createdAt: structuredClone(event.createdAt),
-    pubkey: new PublicKey(event.pubkey.toString()),
+    pubkey: event.pubkey,
   }
   if (event.kind === EventKind.SetMetadata) {
     return {
@@ -265,6 +341,8 @@ function cloneEvent(event: Event): Event {
       content: event.content,
       ...common,
     }
+  } else if (event.kind === EventKind.DirectMessage) {
+    throw new Error("todo")
   } else {
     return {
       kind: event.kind,
