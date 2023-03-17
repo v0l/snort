@@ -36,8 +36,8 @@ export async function setup(
       new Promise((resolve) => subscriber.on("open", resolve)),
     ])
 
-    await publisher.open(relayUrl)
-    await subscriber.open(relayUrl)
+    publisher.open(relayUrl)
+    subscriber.open(relayUrl)
 
     await openPromise
 

@@ -14,7 +14,7 @@ import { unixTimestamp } from "../util"
  */
 export class Conn {
   readonly #socket: WebSocket
-  // TODO This should probably be moved to Nostr because deciding whether or not to send a message
+  // TODO This should probably be moved to Nostr (ConnState) because deciding whether or not to send a message
   // requires looking at relay info which the Conn should know nothing about.
   /**
    * Messages which were requested to be sent before the websocket was ready.
@@ -39,8 +39,8 @@ export class Conn {
   }: {
     url: URL
     onMessage: (msg: IncomingMessage) => void
-    onOpen: () => void
-    onClose: () => void
+    onOpen: () => void | Promise<void>
+    onClose: () => void | Promise<void>
     onError: (err: unknown) => void
   }) {
     this.#onError = onError
@@ -48,14 +48,12 @@ export class Conn {
 
     // Handle incoming messages.
     this.#socket.addEventListener("message", async (msgData) => {
-      const value = msgData.data.valueOf()
-      // Validate and parse the message.
-      if (typeof value !== "string") {
-        const err = new ProtocolError(`invalid message data: ${value}`)
-        onError(err)
-        return
-      }
       try {
+        const value = msgData.data.valueOf()
+        // Validate and parse the message.
+        if (typeof value !== "string") {
+          throw new ProtocolError(`invalid message data: ${value}`)
+        }
         const msg = await parseIncomingMessage(value)
         onMessage(msg)
       } catch (err) {
@@ -64,15 +62,31 @@ export class Conn {
     })
 
     // When the connection is ready, send any outstanding messages.
-    this.#socket.addEventListener("open", () => {
-      for (const msg of this.#pending) {
-        this.send(msg)
+    this.#socket.addEventListener("open", async () => {
+      try {
+        for (const msg of this.#pending) {
+          this.send(msg)
+        }
+        this.#pending = []
+        const result = onOpen()
+        if (result instanceof Promise) {
+          await result
+        }
+      } catch (e) {
+        onError(e)
       }
-      this.#pending = []
-      onOpen()
     })
 
-    this.#socket.addEventListener("close", onClose)
+    this.#socket.addEventListener("close", async () => {
+      try {
+        const result = onClose()
+        if (result instanceof Promise) {
+          await result
+        }
+      } catch (e) {
+        onError(e)
+      }
+    })
     this.#socket.addEventListener("error", onError)
   }
 

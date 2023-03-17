@@ -177,6 +177,7 @@ export class EventEmitter extends Base {
 // TODO Refactor the params to always be a single interface
 // TODO Params should always include relay as well
 // TODO Params should not include Nostr, `this` should be Nostr
+// TODO Ideas for events: "auth" for NIP-42 AUTH, "message" for the raw incoming messages
 type EventName =
   | "newListener"
   | "removeListener"

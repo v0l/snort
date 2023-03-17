@@ -44,10 +44,10 @@ export class Nostr extends EventEmitter {
    * this method will only update it with the new options, and an exception will be thrown
    * if no options are specified.
    */
-  async open(
+  open(
     url: URL | string,
     opts?: { read?: boolean; write?: boolean; fetchInfo?: boolean }
-  ): Promise<void> {
+  ): void {
     const connUrl = new URL(url)
 
     // If the connection already exists, update the options.
@@ -76,6 +76,7 @@ export class Nostr extends EventEmitter {
     // If there is no existing connection, open a new one.
     const conn = new Conn({
       url: connUrl,
+
       // Handle messages on this connection.
       onMessage: async (msg) => {
         try {
@@ -112,6 +113,7 @@ export class Nostr extends EventEmitter {
           this.emit("error", err, this)
         }
       },
+
       // Handle "open" events.
       onOpen: async () => {
         // Update the connection readyState.
@@ -145,6 +147,7 @@ export class Nostr extends EventEmitter {
         // Forward the event to the user.
         this.emit("open", connUrl, this)
       },
+
       // Handle "close" events.
       onClose: () => {
         // Update the connection readyState.
@@ -168,16 +171,12 @@ export class Nostr extends EventEmitter {
         // Forward the event to the user.
         this.emit("close", connUrl, this)
       },
+
+      // TODO If there is no error handler, this will silently swallow the error. Maybe have an
+      // #onError method which re-throws if emit() returns false? This should at least make
+      // some noise.
       // Forward errors on this connection.
       onError: (err) => this.emit("error", err, this),
-    })
-
-    this.#conns.set(connUrl.toString(), {
-      conn,
-      auth: false,
-      read: opts?.read ?? true,
-      write: opts?.write ?? true,
-      readyState: ReadyState.CONNECTING,
     })
 
     // Resend existing subscriptions to this connection.
@@ -188,6 +187,14 @@ export class Nostr extends EventEmitter {
         filters,
       })
     }
+
+    this.#conns.set(connUrl.toString(), {
+      conn,
+      auth: false,
+      read: opts?.read ?? true,
+      write: opts?.write ?? true,
+      readyState: ReadyState.CONNECTING,
+    })
   }
 
   /**
@@ -279,7 +286,6 @@ export class Nostr extends EventEmitter {
     }
   }
 
-  // TODO Test the readyState stuff
   /**
    * Get the relays which this client has tried to open connections to.
    */
@@ -415,28 +421,25 @@ export enum ReadyState {
   CLOSED = 2,
 }
 
-interface RelayCommon {
-  url: URL
-}
-
-export type Relay = RelayCommon &
-  (
-    | {
-        readyState: ReadyState.CONNECTING
-      }
-    | {
-        readyState: ReadyState.OPEN
-        info: RelayInfo
-      }
-    | {
-        readyState: ReadyState.CLOSED
-        /**
-         * If the relay is closed before the opening process is fully finished,
-         * the relay info may be undefined.
-         */
-        info?: RelayInfo
-      }
-  )
+export type Relay =
+  | {
+      url: URL
+      readyState: ReadyState.CONNECTING
+    }
+  | {
+      url: URL
+      readyState: ReadyState.OPEN
+      info: RelayInfo
+    }
+  | {
+      url: URL
+      readyState: ReadyState.CLOSED
+      /**
+       * If the relay is closed before the opening process is fully finished,
+       * the relay info may be undefined.
+       */
+      info?: RelayInfo
+    }
 
 /**
  * The information that a relay broadcasts about itself as defined in NIP-11.
