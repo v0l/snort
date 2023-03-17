@@ -9,7 +9,7 @@ A strongly-typed nostr client for Node and the browser.
 The goal of the project is to have all of the following implemented
 and tested against a real-world relay implementation.
 
-_Progress: 4/34 (12%)._
+_Progress: 5/34 (15%)._
 
 - [X] NIP-01: Basic protocol flow description
 - [ ] NIP-02: Contact List and Petnames
@@ -22,7 +22,7 @@ _Progress: 4/34 (12%)._
 - [ ] NIP-09: Event Deletion
 - [ ] NIP-10: Conventions for clients' use of `e` and `p` tags in text events
   - TODO Check if this applies
-- [ ] NIP-11: Relay Information Document
+- [X] NIP-11: Relay Information Document
 - [ ] NIP-12: Generic Tag Queries
 - [ ] NIP-13: Proof of Work
 - [ ] NIP-14: Subject tag in text events
@@ -30,7 +30,7 @@ _Progress: 4/34 (12%)._
 - [ ] NIP-19: bech32-encoded entities
   - [X] `npub`
   - [X] `nsec`
-  - [ ] `nprofile`
+  - [ ] `note`, `nprofile`, `nevent`, `nrelay`, `naddr`
 - [X] NIP-20: Command Results
 - [ ] NIP-21: `nostr:` URL scheme
 - [ ] NIP-23: Long-form Content

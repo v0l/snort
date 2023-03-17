@@ -8,7 +8,8 @@ describe("dm", async function () {
 
   // Test that the intended recipient can receive and decrypt the direct message.
   it("to intended recipient", (done) => {
-    setup(done).then(
+    setup(
+      done,
       ({
         publisher,
         publisherPubkey,
@@ -17,33 +18,27 @@ describe("dm", async function () {
         subscriberPubkey,
         subscriberSecret,
         timestamp,
+        done,
       }) => {
         // Expect the direct message.
         subscriber.on(
           "event",
           async ({ event, subscriptionId: actualSubscriptionId }, nostr) => {
-            try {
-              assert.equal(nostr, subscriber)
-              assert.equal(event.kind, EventKind.DirectMessage)
-              assert.equal(event.pubkey, parsePublicKey(publisherPubkey))
-              assert.equal(actualSubscriptionId, subscriptionId)
-              assert.ok(event.created_at >= timestamp)
+            assert.equal(nostr, subscriber)
+            assert.equal(event.kind, EventKind.DirectMessage)
+            assert.equal(event.pubkey, parsePublicKey(publisherPubkey))
+            assert.equal(actualSubscriptionId, subscriptionId)
+            assert.ok(event.created_at >= timestamp)
 
-              if (event.kind === EventKind.DirectMessage) {
-                assert.equal(
-                  event.getRecipient(),
-                  parsePublicKey(subscriberPubkey)
-                )
-                assert.equal(await event.getMessage(subscriberSecret), message)
-              }
-
-              publisher.close()
-              subscriber.close()
-
-              done()
-            } catch (e) {
-              done(e)
+            if (event.kind === EventKind.DirectMessage) {
+              assert.equal(
+                event.getRecipient(),
+                parsePublicKey(subscriberPubkey)
+              )
+              assert.equal(await event.getMessage(subscriberSecret), message)
             }
+
+            done()
           }
         )
 
@@ -67,7 +62,8 @@ describe("dm", async function () {
 
   // Test that an unintended recipient still receives the direct message event, but cannot decrypt it.
   it("to unintended recipient", (done) => {
-    setup(done).then(
+    setup(
+      done,
       ({
         publisher,
         publisherPubkey,
@@ -75,6 +71,7 @@ describe("dm", async function () {
         subscriber,
         subscriberSecret,
         timestamp,
+        done,
       }) => {
         const recipientPubkey =
           "npub1u2dl3scpzuwyd45flgtm3wcjgv20j4azuzgevdpgtsvvmqzvc63sz327gc"
@@ -100,9 +97,6 @@ describe("dm", async function () {
                   undefined
                 )
               }
-
-              publisher.close()
-              subscriber.close()
 
               done()
             } catch (e) {

@@ -14,13 +14,12 @@ import { unixTimestamp } from "../util"
  */
 export class Conn {
   readonly #socket: WebSocket
+  // TODO This should probably be moved to Nostr because deciding whether or not to send a message
+  // requires looking at relay info which the Conn should know nothing about.
   /**
    * Messages which were requested to be sent before the websocket was ready.
    * Once the websocket becomes ready, these messages will be sent and cleared.
    */
-  // TODO Another reason why pending messages might be required is when the user tries to send a message
-  // before NIP-44 auth. The legacy code reuses the same array for these two but I think they should be
-  // different, and the NIP-44 stuff should be handled by Nostr.
   #pending: OutgoingMessage[] = []
   /**
    * Callback for errors.
@@ -35,11 +34,13 @@ export class Conn {
     url,
     onMessage,
     onOpen,
+    onClose,
     onError,
   }: {
     url: URL
     onMessage: (msg: IncomingMessage) => void
     onOpen: () => void
+    onClose: () => void
     onError: (err: unknown) => void
   }) {
     this.#onError = onError
@@ -71,9 +72,8 @@ export class Conn {
       onOpen()
     })
 
-    this.#socket.addEventListener("error", (err) => {
-      onError(err)
-    })
+    this.#socket.addEventListener("close", onClose)
+    this.#socket.addEventListener("error", onError)
   }
 
   send(msg: OutgoingMessage): void {

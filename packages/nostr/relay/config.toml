@@ -1,3 +1,10 @@
+[info]
+relay_url = "wss://nostr.example.com/"
+name = "nostr-rs-relay"
+description = "nostr-rs-relay description"
+contact = "mailto:contact@example.com"
+favicon = "favicon.ico"
+
 [authorization]
 nip42_auth = true
 # This seems to have no effect.
