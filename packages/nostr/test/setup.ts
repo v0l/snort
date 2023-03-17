@@ -1,6 +1,8 @@
 import { Nostr } from "../src/client"
 import { unixTimestamp } from "../src/util"
 
+export const relayUrl = new URL("ws://localhost:12648")
+
 export interface Setup {
   publisher: Nostr
   publisherSecret: string
@@ -25,7 +27,6 @@ export async function setup(
     await restartRelay()
     const publisher = new Nostr()
     const subscriber = new Nostr()
-    const url = new URL("ws://localhost:12648")
 
     publisher.on("error", done)
     subscriber.on("error", done)
@@ -35,8 +36,8 @@ export async function setup(
       new Promise((resolve) => subscriber.on("open", resolve)),
     ])
 
-    await publisher.open(url)
-    await subscriber.open(url)
+    await publisher.open(relayUrl)
+    await subscriber.open(relayUrl)
 
     await openPromise
 
@@ -52,7 +53,7 @@ export async function setup(
       subscriberPubkey:
         "npub1mtwskm558jugtj724nsgf3jf80c5adl39ttydngrn48250l6xmjqa00yxd",
       timestamp: unixTimestamp(),
-      url,
+      url: relayUrl,
       done: (e?: unknown) => {
         publisher.close()
         subscriber.close()
