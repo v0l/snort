@@ -256,7 +256,7 @@ export class Nostr extends EventEmitter {
    *
    * TODO Reference subscribed()
    */
-  async unsubscribe(subscriptionId: SubscriptionId): Promise<void> {
+  unsubscribe(subscriptionId: SubscriptionId): void {
     if (!this.#subscriptions.delete(subscriptionId)) {
       throw new Error(`subscription ${subscriptionId} does not exist`)
     }
@@ -274,7 +274,7 @@ export class Nostr extends EventEmitter {
   /**
    * Publish an event.
    */
-  async publish(event: RawEvent): Promise<void> {
+  publish(event: RawEvent): void {
     for (const { conn, write } of this.#conns.values()) {
       if (!write) {
         continue

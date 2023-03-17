@@ -3,7 +3,7 @@ import { parsePublicKey } from "../src/crypto"
 import assert from "assert"
 import { setup } from "./setup"
 
-describe("text note", async function () {
+describe("text note", () => {
   const note = "hello world"
 
   // Test that a text note can be published by one client and received by the other.

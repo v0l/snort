@@ -47,14 +47,14 @@ export class Conn {
     this.#socket = new WebSocket(url)
 
     // Handle incoming messages.
-    this.#socket.addEventListener("message", async (msgData) => {
+    this.#socket.addEventListener("message", (msgData) => {
       try {
         const value = msgData.data.valueOf()
         // Validate and parse the message.
         if (typeof value !== "string") {
           throw new ProtocolError(`invalid message data: ${value}`)
         }
-        const msg = await parseIncomingMessage(value)
+        const msg = parseIncomingMessage(value)
         onMessage(msg)
       } catch (err) {
         onError(err)
@@ -249,7 +249,7 @@ function serializeFilters(filters: Filters[]): RawFilters[] {
   }))
 }
 
-async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
+function parseIncomingMessage(data: string): IncomingMessage {
   // Parse the incoming data as a nonempty JSON array.
   const json = parseJson(data)
   if (!(json instanceof Array)) {

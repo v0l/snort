@@ -2,7 +2,7 @@ import assert from "assert"
 import { Nostr } from "../src/client"
 import { setup } from "./setup"
 
-describe("relay info", async function () {
+describe("relay info", () => {
   it("fetching relay info", (done) => {
     setup(done, ({ publisher, done }) => {
       assert.strictEqual(publisher.relays.length, 1)

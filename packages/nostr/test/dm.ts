@@ -3,7 +3,7 @@ import { parsePublicKey } from "../src/crypto"
 import assert from "assert"
 import { setup } from "./setup"
 
-describe("dm", async function () {
+describe("dm", () => {
   const message = "for your eyes only"
 
   // Test that the intended recipient can receive and decrypt the direct message.

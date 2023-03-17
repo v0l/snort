@@ -2,7 +2,7 @@ import assert from "assert"
 import { Nostr } from "../src/client"
 import { relayUrl } from "./setup"
 
-describe("ready state", async function () {
+describe("ready state", () => {
   it("ready state transitions", (done) => {
     const nostr = new Nostr()
 
