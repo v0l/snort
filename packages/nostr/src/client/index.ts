@@ -28,7 +28,6 @@ export class Nostr extends EventEmitter {
     return ReadyState.CLOSED
   }
 
-  // TODO NIP-44 AUTH, leave this for later
   /**
    * Open connections to relays.
    */
@@ -72,7 +71,7 @@ export class Nostr extends EventEmitter {
     const fetchInfo =
       opts?.fetchInfo === false
         ? Promise.resolve({})
-        : this.#fetchRelayInfo(connUrl)
+        : fetchRelayInfo(connUrl).catch((e) => this.emit("error", e, this))
 
     // If there is no existing connection, open a new one.
     const conn = new Conn({
@@ -308,132 +307,94 @@ export class Nostr extends EventEmitter {
       }
     })
   }
+}
 
-  /**
-   * Fetch the NIP-11 relay info with some reasonable timeout.
-   */
-  async #fetchRelayInfo(url: URL): Promise<RelayInfo> {
-    url = new URL(url.toString().replace(/^ws/, "http"))
-    try {
-      const abort = new AbortController()
-      const timeout = setTimeout(() => abort.abort(), 15_000)
-      const res = await fetch(url, {
-        signal: abort.signal,
-        headers: {
-          Accept: "application/nostr+json",
-        },
-      })
-      clearTimeout(timeout)
-      const info = await res.json()
-      // Validate the known fields in the JSON.
-      if (info.name !== undefined && typeof info.name !== "string") {
-        info.name = undefined
-        this.emit(
-          "error",
-          new ProtocolError(
-            `invalid relay info, expected "name" to be a string: ${JSON.stringify(
-              info
-            )}`
-          ),
-          this
+// TODO Keep in mind this should be part of the public API of the lib
+/**
+ * Fetch the NIP-11 relay info with some reasonable timeout. Throw an error if
+ * the info is invalid.
+ */
+export async function fetchRelayInfo(url: URL | string): Promise<RelayInfo> {
+  url = new URL(url.toString().trim().replace(/^ws/, "http"))
+  const abort = new AbortController()
+  const timeout = setTimeout(() => abort.abort(), 15_000)
+  const res = await fetch(url, {
+    signal: abort.signal,
+    headers: {
+      Accept: "application/nostr+json",
+    },
+  })
+  clearTimeout(timeout)
+  const info = await res.json()
+  // Validate the known fields in the JSON.
+  if (info.name !== undefined && typeof info.name !== "string") {
+    info.name = undefined
+    throw new ProtocolError(
+      `invalid relay info, expected "name" to be a string: ${JSON.stringify(
+        info
+      )}`
+    )
+  }
+  if (info.description !== undefined && typeof info.description !== "string") {
+    info.description = undefined
+    throw new ProtocolError(
+      `invalid relay info, expected "description" to be a string: ${JSON.stringify(
+        info
+      )}`
+    )
+  }
+  if (info.pubkey !== undefined && typeof info.pubkey !== "string") {
+    info.pubkey = undefined
+    throw new ProtocolError(
+      `invalid relay info, expected "pubkey" to be a string: ${JSON.stringify(
+        info
+      )}`
+    )
+  }
+  if (info.contact !== undefined && typeof info.contact !== "string") {
+    info.contact = undefined
+    throw new ProtocolError(
+      `invalid relay info, expected "contact" to be a string: ${JSON.stringify(
+        info
+      )}`
+    )
+  }
+  if (info.supported_nips !== undefined) {
+    if (info.supported_nips instanceof Array) {
+      if (info.supported_nips.some((e: unknown) => typeof e !== "number")) {
+        info.supported_nips = undefined
+        throw new ProtocolError(
+          `invalid relay info, expected "supported_nips" elements to be numbers: ${JSON.stringify(
+            info
+          )}`
         )
       }
-      if (
-        info.description !== undefined &&
-        typeof info.description !== "string"
-      ) {
-        info.description = undefined
-        this.emit(
-          "error",
-          new ProtocolError(
-            `invalid relay info, expected "description" to be a string: ${JSON.stringify(
-              info
-            )}`
-          ),
-          this
-        )
-      }
-      if (info.pubkey !== undefined && typeof info.pubkey !== "string") {
-        info.pubkey = undefined
-        this.emit(
-          "error",
-          new ProtocolError(
-            `invalid relay info, expected "pubkey" to be a string: ${JSON.stringify(
-              info
-            )}`
-          ),
-          this
-        )
-      }
-      if (info.contact !== undefined && typeof info.contact !== "string") {
-        info.contact = undefined
-        this.emit(
-          "error",
-          new ProtocolError(
-            `invalid relay info, expected "contact" to be a string: ${JSON.stringify(
-              info
-            )}`
-          ),
-          this
-        )
-      }
-      if (info.supported_nips !== undefined) {
-        if (info.supported_nips instanceof Array) {
-          if (info.supported_nips.some((e: unknown) => typeof e !== "number")) {
-            info.supported_nips = undefined
-            this.emit(
-              "error",
-              new ProtocolError(
-                `invalid relay info, expected "supported_nips" elements to be numbers: ${JSON.stringify(
-                  info
-                )}`
-              ),
-              this
-            )
-          }
-        } else {
-          info.supported_nips = undefined
-          this.emit(
-            "error",
-            new ProtocolError(
-              `invalid relay info, expected "supported_nips" to be an array: ${JSON.stringify(
-                info
-              )}`
-            ),
-            this
-          )
-        }
-      }
-      if (info.software !== undefined && typeof info.software !== "string") {
-        info.software = undefined
-        this.emit(
-          "error",
-          new ProtocolError(
-            `invalid relay info, expected "software" to be a string: ${JSON.stringify(
-              info
-            )}`
-          ),
-          this
-        )
-      }
-      if (info.version !== undefined && typeof info.version !== "string") {
-        info.version = undefined
-        this.emit(
-          "error",
-          new ProtocolError(
-            `invalid relay info, expected "version" to be a string: ${JSON.stringify(
-              info
-            )}`
-          ),
-          this
-        )
-      }
-      return info
-    } catch (e) {
-      this.emit("error", e, this)
-      return {}
+    } else {
+      info.supported_nips = undefined
+      throw new ProtocolError(
+        `invalid relay info, expected "supported_nips" to be an array: ${JSON.stringify(
+          info
+        )}`
+      )
     }
   }
+  if (info.software !== undefined && typeof info.software !== "string") {
+    info.software = undefined
+    throw new ProtocolError(
+      `invalid relay info, expected "software" to be a string: ${JSON.stringify(
+        info
+      )}`
+    )
+  }
+  if (info.version !== undefined && typeof info.version !== "string") {
+    info.version = undefined
+    throw new ProtocolError(
+      `invalid relay info, expected "version" to be a string: ${JSON.stringify(
+        info
+      )}`
+    )
+  }
+  return info
 }
 
 /**
@@ -478,7 +439,7 @@ export type Relay = RelayCommon &
   )
 
 /**
- * The information that a relay broadcasts about itself.
+ * The information that a relay broadcasts about itself as defined in NIP-11.
  */
 export interface RelayInfo {
   name?: string
