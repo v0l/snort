@@ -1,5 +1,5 @@
 import { PublicKey } from "../crypto"
-import { ProtocolError } from "../error"
+import { NostrError } from "../common"
 
 export type Relay =
   | {
@@ -73,7 +73,7 @@ export async function fetchRelayInfo(url: URL | string): Promise<RelayInfo> {
   // Validate the known fields in the JSON.
   if (info.name !== undefined && typeof info.name !== "string") {
     info.name = undefined
-    throw new ProtocolError(
+    throw new NostrError(
       `invalid relay info, expected "name" to be a string: ${JSON.stringify(
         info
       )}`
@@ -81,7 +81,7 @@ export async function fetchRelayInfo(url: URL | string): Promise<RelayInfo> {
   }
   if (info.description !== undefined && typeof info.description !== "string") {
     info.description = undefined
-    throw new ProtocolError(
+    throw new NostrError(
       `invalid relay info, expected "description" to be a string: ${JSON.stringify(
         info
       )}`
@@ -89,7 +89,7 @@ export async function fetchRelayInfo(url: URL | string): Promise<RelayInfo> {
   }
   if (info.pubkey !== undefined && typeof info.pubkey !== "string") {
     info.pubkey = undefined
-    throw new ProtocolError(
+    throw new NostrError(
       `invalid relay info, expected "pubkey" to be a string: ${JSON.stringify(
         info
       )}`
@@ -97,7 +97,7 @@ export async function fetchRelayInfo(url: URL | string): Promise<RelayInfo> {
   }
   if (info.contact !== undefined && typeof info.contact !== "string") {
     info.contact = undefined
-    throw new ProtocolError(
+    throw new NostrError(
       `invalid relay info, expected "contact" to be a string: ${JSON.stringify(
         info
       )}`
@@ -107,7 +107,7 @@ export async function fetchRelayInfo(url: URL | string): Promise<RelayInfo> {
     if (info.supported_nips instanceof Array) {
       if (info.supported_nips.some((e: unknown) => typeof e !== "number")) {
         info.supported_nips = undefined
-        throw new ProtocolError(
+        throw new NostrError(
           `invalid relay info, expected "supported_nips" elements to be numbers: ${JSON.stringify(
             info
           )}`
@@ -115,7 +115,7 @@ export async function fetchRelayInfo(url: URL | string): Promise<RelayInfo> {
       }
     } else {
       info.supported_nips = undefined
-      throw new ProtocolError(
+      throw new NostrError(
         `invalid relay info, expected "supported_nips" to be an array: ${JSON.stringify(
           info
         )}`
@@ -124,7 +124,7 @@ export async function fetchRelayInfo(url: URL | string): Promise<RelayInfo> {
   }
   if (info.software !== undefined && typeof info.software !== "string") {
     info.software = undefined
-    throw new ProtocolError(
+    throw new NostrError(
       `invalid relay info, expected "software" to be a string: ${JSON.stringify(
         info
       )}`
@@ -132,7 +132,7 @@ export async function fetchRelayInfo(url: URL | string): Promise<RelayInfo> {
   }
   if (info.version !== undefined && typeof info.version !== "string") {
     info.version = undefined
-    throw new ProtocolError(
+    throw new NostrError(
       `invalid relay info, expected "version" to be a string: ${JSON.stringify(
         info
       )}`

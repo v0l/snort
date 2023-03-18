@@ -1,14 +1,10 @@
-import { ProtocolError } from "../error"
+import { NostrError } from "../common"
 import { RawEvent, parseEvent } from "../event"
 import { Conn } from "./conn"
 import * as secp from "@noble/secp256k1"
 import { EventEmitter } from "./emitter"
 import { fetchRelayInfo, ReadyState, Relay } from "./relay"
 import { Filters } from "../filters"
-
-// TODO The EventEmitter will call "error" by default if errors are thrown,
-// but if there is no error listener it actually rethrows the error. Revisit
-// the try/catch stuff to be consistent with this.
 
 /**
  * A nostr client.
@@ -57,7 +53,7 @@ export class Nostr extends EventEmitter {
     )
     if (existingConn !== undefined) {
       if (opts === undefined) {
-        throw new Error(
+        throw new NostrError(
           `called connect with existing connection ${url}, but options were not specified`
         )
       }
@@ -74,7 +70,10 @@ export class Nostr extends EventEmitter {
     const fetchInfo =
       opts?.fetchInfo === false
         ? Promise.resolve({})
-        : fetchRelayInfo(relayUrl).catch((e) => this.emit("error", e, this))
+        : fetchRelayInfo(relayUrl).catch((e) => {
+            this.#error(e)
+            return {}
+          })
 
     // If there is no existing connection, open a new one.
     const conn = new Conn({
@@ -82,38 +81,34 @@ export class Nostr extends EventEmitter {
 
       // Handle messages on this connection.
       onMessage: async (msg) => {
-        try {
-          if (msg.kind === "event") {
-            this.emit(
-              "event",
-              {
-                event: await parseEvent(msg.event),
-                subscriptionId: msg.subscriptionId,
-              },
-              this
-            )
-          } else if (msg.kind === "notice") {
-            this.emit("notice", msg.notice, this)
-          } else if (msg.kind === "ok") {
-            this.emit(
-              "ok",
-              {
-                eventId: msg.eventId,
-                relay: relayUrl,
-                ok: msg.ok,
-                message: msg.message,
-              },
-              this
-            )
-          } else if (msg.kind === "eose") {
-            this.emit("eose", msg.subscriptionId, this)
-          } else if (msg.kind === "auth") {
-            // TODO This is incomplete
-          } else {
-            throw new ProtocolError(`invalid message ${JSON.stringify(msg)}`)
-          }
-        } catch (err) {
-          this.emit("error", err, this)
+        if (msg.kind === "event") {
+          this.emit(
+            "event",
+            {
+              event: await parseEvent(msg.event),
+              subscriptionId: msg.subscriptionId,
+            },
+            this
+          )
+        } else if (msg.kind === "notice") {
+          this.emit("notice", msg.notice, this)
+        } else if (msg.kind === "ok") {
+          this.emit(
+            "ok",
+            {
+              eventId: msg.eventId,
+              relay: relayUrl,
+              ok: msg.ok,
+              message: msg.message,
+            },
+            this
+          )
+        } else if (msg.kind === "eose") {
+          this.emit("eose", msg.subscriptionId, this)
+        } else if (msg.kind === "auth") {
+          // TODO This is incomplete
+        } else {
+          this.#error(new NostrError(`invalid message ${JSON.stringify(msg)}`))
         }
       },
 
@@ -124,23 +119,19 @@ export class Nostr extends EventEmitter {
           (c) => c.relay.url.toString() === relayUrl.toString()
         )
         if (conn === undefined) {
-          this.emit(
-            "error",
-            new Error(
+          this.#error(
+            new NostrError(
               `bug: expected connection to ${relayUrl.toString()} to be in the map`
-            ),
-            this
+            )
           )
         } else {
           if (conn.relay.readyState !== ReadyState.CONNECTING) {
-            this.emit(
-              "error",
-              new Error(
+            this.#error(
+              new NostrError(
                 `bug: expected connection to ${relayUrl.toString()} to have readyState CONNECTING, got ${
                   conn.relay.readyState
                 }`
-              ),
-              this
+              )
             )
           }
           conn.relay = {
@@ -160,12 +151,10 @@ export class Nostr extends EventEmitter {
           (c) => c.relay.url.toString() === relayUrl.toString()
         )
         if (conn === undefined) {
-          this.emit(
-            "error",
-            new Error(
+          this.#error(
+            new NostrError(
               `bug: expected connection to ${relayUrl.toString()} to be in the map`
-            ),
-            this
+            )
           )
         } else {
           conn.relay.readyState = ReadyState.CLOSED
@@ -178,7 +167,7 @@ export class Nostr extends EventEmitter {
       // #onError method which re-throws if emit() returns false? This should at least make
       // some noise.
       // Forward errors on this connection.
-      onError: (err) => this.emit("error", err, this),
+      onError: (err) => this.#error(err),
     })
 
     // Resend existing subscriptions to this connection.
@@ -221,7 +210,7 @@ export class Nostr extends EventEmitter {
       (c) => c.relay.url.toString() === relayUrl.toString()
     )
     if (c === undefined) {
-      throw new Error(`connection to ${url} doesn't exist`)
+      throw new NostrError(`connection to ${url} doesn't exist`)
     }
     c.conn.close()
   }
@@ -265,7 +254,7 @@ export class Nostr extends EventEmitter {
    */
   unsubscribe(subscriptionId: SubscriptionId): void {
     if (!this.#subscriptions.delete(subscriptionId)) {
-      throw new Error(`subscription ${subscriptionId} does not exist`)
+      throw new NostrError(`subscription ${subscriptionId} does not exist`)
     }
     for (const { conn, read } of this.#conns.values()) {
       if (!read) {
@@ -309,6 +298,12 @@ export class Nostr extends EventEmitter {
         return { ...relay, info }
       }
     })
+  }
+
+  #error(e: unknown) {
+    if (!this.emit("error", e, this)) {
+      throw e
+    }
   }
 }
 

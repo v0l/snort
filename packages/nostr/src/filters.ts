@@ -1,6 +1,6 @@
 import { PublicKey } from "./crypto"
 import { EventId, EventKind } from "./event"
-import { Timestamp } from "./util"
+import { Timestamp } from "./common"
 
 /**
  * Subscription filters. All filters from the fields must pass for a message to get through.

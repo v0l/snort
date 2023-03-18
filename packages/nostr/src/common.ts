@@ -1,6 +1,6 @@
-import { ProtocolError } from "./error"
-
-// TODO Start using this
+/**
+ * A UNIX timestamp.
+ */
 export type Timestamp = number
 
 /**
@@ -16,7 +16,16 @@ export function unixTimestamp(date?: Date): Timestamp {
  */
 export function defined<T>(v: T | undefined | null): T {
   if (v === undefined || v === null) {
-    throw new ProtocolError("bug: unexpected undefined")
+    throw new NostrError("bug: unexpected undefined")
   }
   return v
+}
+
+/**
+ * The error thrown by this library.
+ */
+export class NostrError extends Error {
+  constructor(message?: string) {
+    super(message)
+  }
 }
