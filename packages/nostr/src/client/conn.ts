@@ -1,4 +1,4 @@
-import { NostrError } from "../common"
+import { NostrError, parseJson } from "../common"
 import { SubscriptionId } from "."
 import { EventId, RawEvent } from "../event"
 import WebSocket from "isomorphic-ws"
@@ -8,7 +8,7 @@ import { Filters } from "../filters"
  * The connection to a relay. This is the lowest layer of the nostr protocol.
  * The only responsibility of this type is to send and receive
  * well-formatted nostr messages on the underlying websocket. All other details of the protocol
- * are handled by `Nostr`.
+ * are handled by `Nostr`. This type does not know anything about event semantics.
  *
  * @see Nostr
  */
@@ -320,12 +320,4 @@ function parseEventData(json: { [key: string]: unknown }): RawEvent {
     throw new NostrError(`invalid event: ${JSON.stringify(json)}`)
   }
   return json as unknown as RawEvent
-}
-
-function parseJson(data: string) {
-  try {
-    return JSON.parse(data)
-  } catch (e) {
-    throw new NostrError(`invalid event json: ${data}`)
-  }
 }

@@ -1,13 +1,8 @@
-import {
-  createTextNote,
-  EventKind,
-  signEvent,
-  TextNote,
-  Unsigned,
-} from "../src/event"
+import { EventKind, signEvent, Unsigned } from "../src/event"
 import { parsePublicKey } from "../src/crypto"
 import assert from "assert"
 import { setup } from "./setup"
+import { createTextNote, TextNote } from "../src/event/text"
 
 describe("text note", () => {
   const note = "hello world"
@@ -41,18 +36,20 @@ describe("text note", () => {
         const subscriptionId = subscriber.subscribe([])
 
         // After the subscription event sync is done, publish the test event.
-        subscriber.on("eose", (id, nostr) => {
+        subscriber.on("eose", async (id, nostr) => {
           assert.strictEqual(nostr, subscriber)
           assert.strictEqual(id, subscriptionId)
 
           // TODO No signEvent, have a convenient way to do this
-          signEvent(
-            {
-              ...createTextNote(note),
-              created_at: timestamp,
-            } as Unsigned<TextNote>,
-            publisherSecret
-          ).then((event) => publisher.publish(event))
+          publisher.publish(
+            await signEvent(
+              {
+                ...createTextNote(note),
+                created_at: timestamp,
+              } as Unsigned<TextNote>,
+              publisherSecret
+            )
+          )
         })
       }
     )

@@ -22,6 +22,17 @@ export function defined<T>(v: T | undefined | null): T {
 }
 
 /**
+ * Parse the JSON and throw a @see {@link NostrError} in case of error.
+ */
+export function parseJson(data: string) {
+  try {
+    return JSON.parse(data)
+  } catch (e) {
+    throw new NostrError(`invalid json: ${e}: ${data}`)
+  }
+}
+
+/**
  * The error thrown by this library.
  */
 export class NostrError extends Error {
