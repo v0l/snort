@@ -1,9 +1,10 @@
 import { ProtocolError } from "../error"
-import { EventId, EventKind, RawEvent, parseEvent } from "../event"
-import { PublicKey } from "../crypto"
+import { RawEvent, parseEvent } from "../event"
 import { Conn } from "./conn"
 import * as secp from "@noble/secp256k1"
 import { EventEmitter } from "./emitter"
+import { fetchRelayInfo, ReadyState, Relay } from "./relay"
+import { Filters } from "../filters"
 
 // TODO The EventEmitter will call "error" by default if errors are thrown,
 // but if there is no error listener it actually rethrows the error. Revisit
@@ -31,7 +32,7 @@ export class Nostr extends EventEmitter {
   /**
    * Open connections to relays.
    */
-  readonly #conns: Map<string, ConnState> = new Map()
+  readonly #conns: ConnState[] = []
 
   /**
    * Mapping of subscription IDs to corresponding filters.
@@ -48,10 +49,12 @@ export class Nostr extends EventEmitter {
     url: URL | string,
     opts?: { read?: boolean; write?: boolean; fetchInfo?: boolean }
   ): void {
-    const connUrl = new URL(url)
+    const relayUrl = new URL(url)
 
     // If the connection already exists, update the options.
-    const existingConn = this.#conns.get(connUrl.toString())
+    const existingConn = this.#conns.find(
+      (c) => c.relay.url.toString() === relayUrl.toString()
+    )
     if (existingConn !== undefined) {
       if (opts === undefined) {
         throw new Error(
@@ -71,11 +74,11 @@ export class Nostr extends EventEmitter {
     const fetchInfo =
       opts?.fetchInfo === false
         ? Promise.resolve({})
-        : fetchRelayInfo(connUrl).catch((e) => this.emit("error", e, this))
+        : fetchRelayInfo(relayUrl).catch((e) => this.emit("error", e, this))
 
     // If there is no existing connection, open a new one.
     const conn = new Conn({
-      url: connUrl,
+      url: relayUrl,
 
       // Handle messages on this connection.
       onMessage: async (msg) => {
@@ -96,7 +99,7 @@ export class Nostr extends EventEmitter {
               "ok",
               {
                 eventId: msg.eventId,
-                relay: connUrl,
+                relay: relayUrl,
                 ok: msg.ok,
                 message: msg.message,
               },
@@ -117,59 +120,58 @@ export class Nostr extends EventEmitter {
       // Handle "open" events.
       onOpen: async () => {
         // Update the connection readyState.
-        const conn = this.#conns.get(connUrl.toString())
+        const conn = this.#conns.find(
+          (c) => c.relay.url.toString() === relayUrl.toString()
+        )
         if (conn === undefined) {
           this.emit(
             "error",
             new Error(
-              `bug: expected connection to ${connUrl.toString()} to be in the map`
+              `bug: expected connection to ${relayUrl.toString()} to be in the map`
             ),
             this
           )
         } else {
-          if (conn.readyState !== ReadyState.CONNECTING) {
+          if (conn.relay.readyState !== ReadyState.CONNECTING) {
             this.emit(
               "error",
               new Error(
-                `bug: expected connection to ${connUrl.toString()} to have readyState CONNECTING, got ${
-                  conn.readyState
+                `bug: expected connection to ${relayUrl.toString()} to have readyState CONNECTING, got ${
+                  conn.relay.readyState
                 }`
               ),
               this
             )
           }
-          this.#conns.set(connUrl.toString(), {
-            ...conn,
+          conn.relay = {
+            ...conn.relay,
             readyState: ReadyState.OPEN,
             info: await fetchInfo,
-          })
+          }
         }
         // Forward the event to the user.
-        this.emit("open", connUrl, this)
+        this.emit("open", relayUrl, this)
       },
 
       // Handle "close" events.
       onClose: () => {
         // Update the connection readyState.
-        const conn = this.#conns.get(connUrl.toString())
+        const conn = this.#conns.find(
+          (c) => c.relay.url.toString() === relayUrl.toString()
+        )
         if (conn === undefined) {
           this.emit(
             "error",
             new Error(
-              `bug: expected connection to ${connUrl.toString()} to be in the map`
+              `bug: expected connection to ${relayUrl.toString()} to be in the map`
             ),
             this
           )
         } else {
-          this.#conns.set(connUrl.toString(), {
-            ...conn,
-            readyState: ReadyState.CLOSED,
-            info:
-              conn.readyState === ReadyState.CONNECTING ? undefined : conn.info,
-          })
+          conn.relay.readyState = ReadyState.CLOSED
         }
         // Forward the event to the user.
-        this.emit("close", connUrl, this)
+        this.emit("close", relayUrl, this)
       },
 
       // TODO If there is no error handler, this will silently swallow the error. Maybe have an
@@ -188,12 +190,15 @@ export class Nostr extends EventEmitter {
       })
     }
 
-    this.#conns.set(connUrl.toString(), {
+    this.#conns.push({
+      relay: {
+        url: relayUrl,
+        readyState: ReadyState.CONNECTING,
+      },
       conn,
       auth: false,
       read: opts?.read ?? true,
       write: opts?.write ?? true,
-      readyState: ReadyState.CONNECTING,
     })
   }
 
@@ -211,8 +216,10 @@ export class Nostr extends EventEmitter {
       }
       return
     }
-    const connUrl = new URL(url)
-    const c = this.#conns.get(connUrl.toString())
+    const relayUrl = new URL(url)
+    const c = this.#conns.find(
+      (c) => c.relay.url.toString() === relayUrl.toString()
+    )
     if (c === undefined) {
       throw new Error(`connection to ${url} doesn't exist`)
     }
@@ -290,172 +297,23 @@ export class Nostr extends EventEmitter {
    * Get the relays which this client has tried to open connections to.
    */
   get relays(): Relay[] {
-    return [...this.#conns.entries()].map(([url, c]) => {
-      if (c.readyState === ReadyState.CONNECTING) {
-        return {
-          url: new URL(url),
-          readyState: ReadyState.CONNECTING,
-        }
-      } else if (c.readyState === ReadyState.OPEN) {
-        return {
-          url: new URL(url),
-          readyState: ReadyState.OPEN,
-          info: c.info,
-        }
-      } else if (c.readyState === ReadyState.CLOSED) {
-        return {
-          url: new URL(url),
-          readyState: ReadyState.CLOSED,
-          info: c.info,
-        }
+    return this.#conns.map(({ relay }) => {
+      if (relay.readyState === ReadyState.CONNECTING) {
+        return { ...relay }
       } else {
-        throw new Error("bug: unknown readyState")
+        const info =
+          relay.info === undefined
+            ? undefined
+            : // Deep copy of the info.
+              JSON.parse(JSON.stringify(relay.info))
+        return { ...relay, info }
       }
     })
   }
 }
 
-// TODO Keep in mind this should be part of the public API of the lib
-/**
- * Fetch the NIP-11 relay info with some reasonable timeout. Throw an error if
- * the info is invalid.
- */
-export async function fetchRelayInfo(url: URL | string): Promise<RelayInfo> {
-  url = new URL(url.toString().trim().replace(/^ws/, "http"))
-  const abort = new AbortController()
-  const timeout = setTimeout(() => abort.abort(), 15_000)
-  const res = await fetch(url, {
-    signal: abort.signal,
-    headers: {
-      Accept: "application/nostr+json",
-    },
-  })
-  clearTimeout(timeout)
-  const info = await res.json()
-  // Validate the known fields in the JSON.
-  if (info.name !== undefined && typeof info.name !== "string") {
-    info.name = undefined
-    throw new ProtocolError(
-      `invalid relay info, expected "name" to be a string: ${JSON.stringify(
-        info
-      )}`
-    )
-  }
-  if (info.description !== undefined && typeof info.description !== "string") {
-    info.description = undefined
-    throw new ProtocolError(
-      `invalid relay info, expected "description" to be a string: ${JSON.stringify(
-        info
-      )}`
-    )
-  }
-  if (info.pubkey !== undefined && typeof info.pubkey !== "string") {
-    info.pubkey = undefined
-    throw new ProtocolError(
-      `invalid relay info, expected "pubkey" to be a string: ${JSON.stringify(
-        info
-      )}`
-    )
-  }
-  if (info.contact !== undefined && typeof info.contact !== "string") {
-    info.contact = undefined
-    throw new ProtocolError(
-      `invalid relay info, expected "contact" to be a string: ${JSON.stringify(
-        info
-      )}`
-    )
-  }
-  if (info.supported_nips !== undefined) {
-    if (info.supported_nips instanceof Array) {
-      if (info.supported_nips.some((e: unknown) => typeof e !== "number")) {
-        info.supported_nips = undefined
-        throw new ProtocolError(
-          `invalid relay info, expected "supported_nips" elements to be numbers: ${JSON.stringify(
-            info
-          )}`
-        )
-      }
-    } else {
-      info.supported_nips = undefined
-      throw new ProtocolError(
-        `invalid relay info, expected "supported_nips" to be an array: ${JSON.stringify(
-          info
-        )}`
-      )
-    }
-  }
-  if (info.software !== undefined && typeof info.software !== "string") {
-    info.software = undefined
-    throw new ProtocolError(
-      `invalid relay info, expected "software" to be a string: ${JSON.stringify(
-        info
-      )}`
-    )
-  }
-  if (info.version !== undefined && typeof info.version !== "string") {
-    info.version = undefined
-    throw new ProtocolError(
-      `invalid relay info, expected "version" to be a string: ${JSON.stringify(
-        info
-      )}`
-    )
-  }
-  return info
-}
-
-/**
- * The state of a relay connection.
- */
-export enum ReadyState {
-  /**
-   * The connection has not been established yet.
-   */
-  CONNECTING = 0,
-  /**
-   * The connection has been established.
-   */
-  OPEN = 1,
-  /**
-   * The connection has been closed, forcefully or gracefully, by either party.
-   */
-  CLOSED = 2,
-}
-
-export type Relay =
-  | {
-      url: URL
-      readyState: ReadyState.CONNECTING
-    }
-  | {
-      url: URL
-      readyState: ReadyState.OPEN
-      info: RelayInfo
-    }
-  | {
-      url: URL
-      readyState: ReadyState.CLOSED
-      /**
-       * If the relay is closed before the opening process is fully finished,
-       * the relay info may be undefined.
-       */
-      info?: RelayInfo
-    }
-
-/**
- * The information that a relay broadcasts about itself as defined in NIP-11.
- */
-export interface RelayInfo {
-  name?: string
-  description?: string
-  pubkey?: PublicKey
-  contact?: string
-  supported_nips?: number[]
-  software?: string
-  version?: string
-  [key: string]: unknown
-}
-
-interface ConnStateCommon {
+interface ConnState {
+  relay: Relay
   conn: Conn
   /**
    * Has this connection been authenticated via NIP-44 AUTH?
@@ -471,46 +329,10 @@ interface ConnStateCommon {
   write: boolean
 }
 
-type ConnState = ConnStateCommon &
-  (
-    | {
-        readyState: ReadyState.CONNECTING
-      }
-    | {
-        readyState: ReadyState.OPEN
-        info: RelayInfo
-      }
-    | {
-        readyState: ReadyState.CLOSED
-        info?: RelayInfo
-      }
-  )
-
 /**
  * A string uniquely identifying a client subscription.
  */
 export type SubscriptionId = string
-
-/**
- * Subscription filters. All filters from the fields must pass for a message to get through.
- */
-export interface Filters {
-  // TODO Document the filters, document that for the arrays only one is enough for the message to pass
-  ids?: EventId[]
-  authors?: string[]
-  kinds?: EventKind[]
-  /**
-   * Filters for the "e" tags.
-   */
-  eventTags?: EventId[]
-  /**
-   * Filters for the "p" tags.
-   */
-  pubkeyTags?: PublicKey[]
-  since?: Date | number
-  until?: Date | number
-  limit?: number
-}
 
 function randomSubscriptionId(): SubscriptionId {
   return secp.utils.bytesToHex(secp.utils.randomBytes(32))

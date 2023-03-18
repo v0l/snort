@@ -45,6 +45,8 @@ export interface RawEvent {
   tags: string[][]
   content: string
   sig: string
+
+  [key: string]: unknown
 }
 
 interface SetMetadata extends RawEvent {
@@ -100,20 +102,24 @@ export type EventId = string
 /**
  * An unsigned event.
  */
-export type Unsigned<T extends Event | RawEvent> = Omit<
-  T,
-  "id" | "pubkey" | "sig" | "created_at"
-> & {
-  id?: EventId
+export type Unsigned<T extends Event | RawEvent> = {
+  [Property in keyof UnsignedWithPubkey<T> as Exclude<
+    Property,
+    "pubkey"
+  >]: T[Property]
+} & {
   pubkey?: PublicKey
-  sig?: string
-  created_at?: number
 }
 
-type UnsignedWithPubkey<T extends Event | RawEvent> = Omit<
-  T,
-  "id" | "sig" | "created_at"
-> & {
+/**
+ * Same as @see {@link Unsigned}, but with the pubkey field.
+ */
+type UnsignedWithPubkey<T extends Event | RawEvent> = {
+  [Property in keyof T as Exclude<
+    Property,
+    "id" | "sig" | "created_at"
+  >]: T[Property]
+} & {
   id?: EventId
   sig?: string
   created_at?: number
@@ -131,7 +137,10 @@ export async function signEvent<T extends Event | RawEvent>(
   if (priv !== undefined) {
     priv = parsePrivateKey(priv)
     event.pubkey = getPublicKey(priv)
-    const id = await serializeEventId(event as UnsignedWithPubkey<T>)
+    const id = await serializeEventId(
+      // This conversion is safe because the pubkey field is set above.
+      event as unknown as UnsignedWithPubkey<T>
+    )
     event.id = id
     event.sig = await schnorrSign(id, priv)
     return event as T

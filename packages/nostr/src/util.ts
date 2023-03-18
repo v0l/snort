@@ -1,10 +1,13 @@
 import { ProtocolError } from "./error"
 
+// TODO Start using this
+export type Timestamp = number
+
 /**
  * Calculate the unix timestamp (seconds since epoch) of the `Date`. If no date is specified,
  * return the current unix timestamp.
  */
-export function unixTimestamp(date?: Date): number {
+export function unixTimestamp(date?: Date): Timestamp {
   return Math.floor((date ?? new Date()).getTime() / 1000)
 }
 

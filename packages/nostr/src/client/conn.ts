@@ -1,8 +1,8 @@
 import { ProtocolError } from "../error"
-import { Filters, SubscriptionId } from "."
+import { SubscriptionId } from "."
 import { EventId, RawEvent } from "../event"
 import WebSocket from "isomorphic-ws"
-import { unixTimestamp } from "../util"
+import { Filters } from "../filters"
 
 /**
  * The connection to a relay. This is the lowest layer of the nostr protocol.
@@ -204,49 +204,18 @@ export interface OutgoingCloseSubscription {
   id: SubscriptionId
 }
 
-interface RawFilters {
-  ids?: string[]
-  authors?: string[]
-  kinds?: number[]
-  ["#e"]?: string[]
-  ["#p"]?: string[]
-  since?: number
-  until?: number
-  limit?: number
-}
-
 function serializeOutgoingMessage(msg: OutgoingMessage): string {
   if (msg.kind === "event") {
     return JSON.stringify(["EVENT", msg.event])
   } else if (msg.kind === "openSubscription") {
-    return JSON.stringify([
-      "REQ",
-      msg.id.toString(),
-      ...serializeFilters(msg.filters),
-    ])
+    // If there are no filters, the client is expected to specify a single empty filter.
+    const filters = msg.filters.length === 0 ? [{}] : msg.filters
+    return JSON.stringify(["REQ", msg.id.toString(), ...filters])
   } else if (msg.kind === "closeSubscription") {
     return JSON.stringify(["CLOSE", msg.id.toString()])
   } else {
     throw new Error(`invalid message: ${JSON.stringify(msg)}`)
   }
-}
-
-function serializeFilters(filters: Filters[]): RawFilters[] {
-  if (filters.length === 0) {
-    return [{}]
-  }
-  return filters.map((filter) => ({
-    ids: filter.ids,
-    authors: filter.authors,
-    kinds: filter.kinds,
-    ["#e"]: filter.eventTags,
-    ["#p"]: filter.pubkeyTags,
-    since:
-      filter.since instanceof Date ? unixTimestamp(filter.since) : filter.since,
-    until:
-      filter.until instanceof Date ? unixTimestamp(filter.until) : filter.until,
-    limit: filter.limit,
-  }))
 }
 
 function parseIncomingMessage(data: string): IncomingMessage {
