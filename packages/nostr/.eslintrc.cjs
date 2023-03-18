@@ -10,6 +10,7 @@ module.exports = {
     mocha: true,
   },
   rules: {
-    "require-await": "warn",
+    "require-await": "error",
+    eqeqeq: "error",
   },
 }
