@@ -55,10 +55,10 @@ describe("text note", () => {
       // TODO No signEvent, have a convenient way to do this
       signEvent(createTextNote(note), publisherSecret).then((event) => {
         publisher.on("ok", (params, nostr) => {
-          assert.equal(nostr, publisher)
-          assert.equal(params.eventId, event.id)
-          assert.equal(params.relay.toString(), url.toString())
-          assert.equal(params.ok, true)
+          assert.strictEqual(nostr, publisher)
+          assert.strictEqual(params.eventId, event.id)
+          assert.strictEqual(params.relay.toString(), url.toString())
+          assert.strictEqual(params.ok, true)
           done()
         })
 

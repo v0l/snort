@@ -24,18 +24,21 @@ describe("dm", () => {
         subscriber.on(
           "event",
           async ({ event, subscriptionId: actualSubscriptionId }, nostr) => {
-            assert.equal(nostr, subscriber)
-            assert.equal(event.kind, EventKind.DirectMessage)
-            assert.equal(event.pubkey, parsePublicKey(publisherPubkey))
-            assert.equal(actualSubscriptionId, subscriptionId)
+            assert.strictEqual(nostr, subscriber)
+            assert.strictEqual(event.kind, EventKind.DirectMessage)
+            assert.strictEqual(event.pubkey, parsePublicKey(publisherPubkey))
+            assert.strictEqual(actualSubscriptionId, subscriptionId)
             assert.ok(event.created_at >= timestamp)
 
             if (event.kind === EventKind.DirectMessage) {
-              assert.equal(
+              assert.strictEqual(
                 event.getRecipient(),
                 parsePublicKey(subscriberPubkey)
               )
-              assert.equal(await event.getMessage(subscriberSecret), message)
+              assert.strictEqual(
+                await event.getMessage(subscriberSecret),
+                message
+              )
             }
 
             done()
@@ -81,14 +84,14 @@ describe("dm", () => {
           "event",
           async ({ event, subscriptionId: actualSubscriptionId }, nostr) => {
             try {
-              assert.equal(nostr, subscriber)
-              assert.equal(event.kind, EventKind.DirectMessage)
-              assert.equal(event.pubkey, parsePublicKey(publisherPubkey))
-              assert.equal(actualSubscriptionId, subscriptionId)
+              assert.strictEqual(nostr, subscriber)
+              assert.strictEqual(event.kind, EventKind.DirectMessage)
+              assert.strictEqual(event.pubkey, parsePublicKey(publisherPubkey))
+              assert.strictEqual(actualSubscriptionId, subscriptionId)
               assert.ok(event.created_at >= timestamp)
 
               if (event.kind === EventKind.DirectMessage) {
-                assert.equal(
+                assert.strictEqual(
                   event.getRecipient(),
                   parsePublicKey(recipientPubkey)
                 )
