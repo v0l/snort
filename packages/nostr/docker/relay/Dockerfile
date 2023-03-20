@@ -9,4 +9,4 @@ EXPOSE 8000
 COPY . .
 USER $APP_USER
 RUN yarn
-CMD yarn app /bin/bash -c "rm -rf /usr/src/app/db/* && ./nostr-rs-relay --db /usr/src/app/db --config ./config.toml"
+CMD ["/bin/bash", "-c", "while :; do yarn app /bin/bash -c 'rm -rf /usr/src/app/db/* && ./nostr-rs-relay --db /usr/src/app/db --config ./config.toml'; done;"]

@@ -1,4 +1,4 @@
-import { EventKind, signEvent } from "../src/event"
+import { EventKind } from "../src/event"
 import { parsePublicKey } from "../src/crypto"
 import assert from "assert"
 import { setup } from "./setup"
@@ -49,13 +49,11 @@ describe("dm", () => {
         const subscriptionId = subscriber.subscribe([])
 
         subscriber.on("eose", async () => {
-          // TODO No signEvent, do something more convenient
-          const event = await signEvent(
-            await createDirectMessage({
+          const event = await createDirectMessage(
+            {
               message,
               recipient: subscriberPubkey,
-              priv: publisherSecret,
-            }),
+            },
             publisherSecret
           )
           publisher.publish(event)

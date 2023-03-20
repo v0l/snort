@@ -1,7 +1,12 @@
 version: "3.1"
 services:
+  well-known:
+    build: ./docker/well-known
+    restart: on-failure
+    ports:
+      - 12647:80
   relay:
-    build: ./relay
+    build: ./docker/relay
     restart: on-failure
     ports:
       - 12648:8080

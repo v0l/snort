@@ -1,5 +1,5 @@
 import assert from "assert"
-import { EventKind, signEvent } from "../src/event"
+import { EventKind } from "../src/event"
 import { createContactList } from "../src/event/contact-list"
 import { setup } from "./setup"
 
@@ -47,9 +47,7 @@ describe("contact-list", () => {
       // After the subscription event sync is done, publish the test event.
       subscriber.on("eose", async () => {
         // TODO No signEvent, have a convenient way to do this
-        publisher.publish(
-          await signEvent(createContactList(contacts), subscriberSecret)
-        )
+        publisher.publish(await createContactList(contacts, subscriberSecret))
       })
     })
   })

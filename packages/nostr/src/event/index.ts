@@ -9,7 +9,11 @@ import {
 } from "../crypto"
 import { Timestamp, unixTimestamp, NostrError } from "../common"
 import { TextNote } from "./text"
-import { getUserMetadata, SetMetadata } from "./set-metadata"
+import {
+  getUserMetadata,
+  SetMetadata,
+  verifyInternetIdentifier,
+} from "./set-metadata"
 import {
   DirectMessage,
   getMessage,
@@ -94,11 +98,10 @@ export type Unsigned<T extends Event | RawEvent> = {
   pubkey?: PublicKey
 }
 
-// TODO This doesn't need to be exposed by the lib
 /**
  * Same as @see {@link Unsigned}, but with the pubkey field.
  */
-export type UnsignedWithPubkey<T extends Event | RawEvent> = {
+type UnsignedWithPubkey<T extends Event | RawEvent> = {
   [Property in keyof T as Exclude<
     Property,
     "id" | "sig" | "created_at"
@@ -113,7 +116,7 @@ export type UnsignedWithPubkey<T extends Event | RawEvent> = {
  * Add the "id," "sig," and "pubkey" fields to the event. Set "created_at" to the current timestamp
  * if missing. Return the event.
  */
-export async function signEvent<T extends Event | RawEvent>(
+export async function signEvent<T extends RawEvent>(
   event: Unsigned<T>,
   priv?: HexOrBechPrivateKey
 ): Promise<T> {
@@ -164,6 +167,7 @@ export async function parseEvent(event: RawEvent): Promise<Event> {
       ...event,
       kind: EventKind.SetMetadata,
       getUserMetadata,
+      verifyInternetIdentifier,
     }
   }
 
@@ -194,14 +198,14 @@ export async function parseEvent(event: RawEvent): Promise<Event> {
 async function serializeEventId(
   event: UnsignedWithPubkey<RawEvent>
 ): Promise<EventId> {
-  // It's not defined whether JSON.stringify produces a string with whitespace stripped.
-  // Building the JSON string manually as follows ensures that there's no whitespace.
-  // In hindsight using JSON as a data format for hashing and signing is not the best
-  // design decision.
-  const serializedTags = `[${event.tags
-    .map((tag) => `[${tag.map((v) => `"${v}"`).join(",")}]`)
-    .join(",")}]`
-  const serialized = `[0,"${event.pubkey}",${event.created_at},${event.kind},${serializedTags},"${event.content}"]`
+  const serialized = JSON.stringify([
+    0,
+    event.pubkey,
+    event.created_at,
+    event.kind,
+    event.tags,
+    event.content,
+  ])
   return await sha256(Uint8Array.from(charCodes(serialized)))
 }
 

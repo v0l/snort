@@ -1,8 +1,8 @@
-import { EventKind, signEvent, Unsigned } from "../src/event"
+import { EventKind } from "../src/event"
 import { parsePublicKey } from "../src/crypto"
 import assert from "assert"
 import { setup } from "./setup"
-import { createTextNote, TextNote } from "../src/event/text"
+import { createTextNote } from "../src/event/text"
 
 describe("text note", () => {
   const note = "hello world"
@@ -40,16 +40,10 @@ describe("text note", () => {
           assert.strictEqual(nostr, subscriber)
           assert.strictEqual(id, subscriptionId)
 
-          // TODO No signEvent, have a convenient way to do this
-          publisher.publish(
-            await signEvent(
-              {
-                ...createTextNote(note),
-                created_at: timestamp,
-              } as Unsigned<TextNote>,
-              publisherSecret
-            )
-          )
+          publisher.publish({
+            ...(await createTextNote(note, publisherSecret)),
+            created_at: timestamp,
+          })
         })
       }
     )
@@ -57,19 +51,16 @@ describe("text note", () => {
 
   // Test that a client interprets an "OK" message after publishing a text note.
   it("publish and ok", function (done) {
-    setup(done, ({ publisher, publisherSecret, url, done }) => {
-      // TODO No signEvent, have a convenient way to do this
-      signEvent(createTextNote(note), publisherSecret).then((event) => {
-        publisher.on("ok", (params, nostr) => {
-          assert.strictEqual(nostr, publisher)
-          assert.strictEqual(params.eventId, event.id)
-          assert.strictEqual(params.relay.toString(), url.toString())
-          assert.strictEqual(params.ok, true)
-          done()
-        })
-
-        publisher.publish(event)
+    setup(done, async ({ publisher, publisherSecret, url, done }) => {
+      const event = await createTextNote(note, publisherSecret)
+      publisher.on("ok", (params, nostr) => {
+        assert.strictEqual(nostr, publisher)
+        assert.strictEqual(params.eventId, event.id)
+        assert.strictEqual(params.relay.toString(), url.toString())
+        assert.strictEqual(params.ok, true)
+        done()
       })
+      publisher.publish(event)
     })
   })
 })

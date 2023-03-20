@@ -1,12 +1,5 @@
-import {
-  EventId,
-  EventKind,
-  RawEvent,
-  signEvent,
-  Unsigned,
-  UnsignedWithPubkey,
-} from "."
-import { defined, NostrError } from "../common"
+import { EventId, EventKind, RawEvent, signEvent } from "."
+import { NostrError } from "../common"
 import {
   aesDecryptBase64,
   aesEncryptBase64,
@@ -77,7 +70,7 @@ export async function createDirectMessage(
 }
 
 export async function getMessage(
-  this: UnsignedWithPubkey<DirectMessage>,
+  this: DirectMessage,
   priv?: HexOrBechPrivateKey
 ): Promise<string | undefined> {
   if (priv !== undefined) {
@@ -96,7 +89,7 @@ export async function getMessage(
   return undefined
 }
 
-export function getRecipient(this: Unsigned<RawEvent>): PublicKey {
+export function getRecipient(this: DirectMessage): PublicKey {
   const recipientTag = this.tags.find((tag) => tag[0] === "p")
   if (typeof recipientTag?.[1] !== "string") {
     throw new NostrError(
@@ -108,7 +101,7 @@ export function getRecipient(this: Unsigned<RawEvent>): PublicKey {
   return recipientTag[1]
 }
 
-export function getPrevious(this: Unsigned<RawEvent>): EventId | undefined {
+export function getPrevious(this: DirectMessage): EventId | undefined {
   const previousTag = this.tags.find((tag) => tag[0] === "e")
   if (previousTag === undefined) {
     return undefined
