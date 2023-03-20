@@ -281,7 +281,7 @@
   "ubtr9S": "A Privát kulccsal a 'http://' kapcsolaton keresztül nem lehetséges bejelentkezni, kérjük, helyette egy Nostr kulcskezelő kiterjesztést használj",
   "usAvMr": "Profil módosítása",
   "ut+2Cd": "Szerezz egy partner azonosítót",
-  "vOKedj": "{n,plural,=1{& {n} egyéb} other{& {n} egyebek}}",
+  "vOKedj": "{n,plural,=1{és más {n} által} other{és másik {n} által}}",
   "vU71Ez": "Fizetés {wallet}",
   "vZ4quW": "A NIP-05 egy DNS alapú azonosítási specifikáció, ami segít a valós személyed bizonyításában.",
   "vrTOHJ": "{amount} sats",
