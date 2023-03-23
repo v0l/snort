@@ -18,6 +18,7 @@ import { RootState } from "State/Store";
 import { RelaySettings } from "@snort/nostr";
 
 import messages from "./messages";
+import { getRelayName } from "Util";
 
 export interface RelayProps {
   addr: string;
@@ -30,7 +31,7 @@ export default function Relay(props: RelayProps) {
   const allRelaySettings = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
   const relaySettings = allRelaySettings[props.addr];
   const state = useRelayState(props.addr);
-  const name = useMemo(() => new URL(props.addr).host, [props.addr]);
+  const name = useMemo(() => getRelayName(props.addr), [props.addr]);
 
   function configure(o: RelaySettings) {
     dispatch(

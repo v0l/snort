@@ -9,7 +9,7 @@ import { RootState } from "State/Store";
 import Timeline from "Element/Timeline";
 import { System } from "System";
 import { TimelineSubject } from "Feed/TimelineFeed";
-import { debounce, sha256, unwrap } from "Util";
+import { debounce, getRelayName, sha256, unwrap } from "Util";
 
 import messages from "./messages";
 
@@ -87,7 +87,7 @@ export default function RootPage() {
             <optgroup label="Paid Relays">
               {paidRelays.map(a => (
                 <option key={a.url} value={a.url}>
-                  {new URL(a.url).host}
+                  {getRelayName(a.url)}
                 </option>
               ))}
             </optgroup>
@@ -95,7 +95,7 @@ export default function RootPage() {
           <optgroup label="Public Relays">
             {publicRelays.map(a => (
               <option key={a.url} value={a.url}>
-                {new URL(a.url).host}
+                {getRelayName(a.url)}
               </option>
             ))}
           </optgroup>

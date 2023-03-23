@@ -462,3 +462,8 @@ export async function hmacSha256(key: Uint8Array, ...messages: Uint8Array[]) {
     return hmac(hash, key, secp.utils.concatBytes(...messages));
   }
 }
+
+export function getRelayName(url: string) {
+  const parsedUrl = new URL(url);
+  return parsedUrl.host + parsedUrl.search;
+}
