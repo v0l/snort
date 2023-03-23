@@ -292,6 +292,10 @@ textarea {
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
+option, optgroup {
+  background-color: var(--bg-color);
+}
+
 input:placeholder,
 textarea:placeholder {
   color: var(--font-tertiary-color);
