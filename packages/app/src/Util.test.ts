@@ -1,4 +1,4 @@
-import { splitByUrl, magnetURIDecode } from "./Util";
+import { splitByUrl, magnetURIDecode, getRelayName } from "./Util";
 
 describe("splitByUrl", () => {
   it("should split a string by URLs", () => {
@@ -54,5 +54,24 @@ describe("magnet", () => {
       "udp://tracker.example2.com:80",
       "udp://tracker.example1.com:1337",
     ]);
+  });
+});
+
+describe("getRelayName", () => {
+  it("should return relay name", () => {
+    const url = "wss://relay.snort.social/";
+    const output = getRelayName(url);
+    expect(output).toEqual("relay.snort.social");
+  });
+  it("should return relay name with search property", () => {
+    const url = "wss://relay.example1.com/?lang=en";
+    const output = getRelayName(url);
+    expect(output).toEqual("relay.example1.com?lang=en");
+  });
+  it("should return relay name without pathname", () => {
+    const url =
+      "wss://relay.example2.com/npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x6802npjqhjjtws?broadcast=true";
+    const output = getRelayName(url);
+    expect(output).toEqual("relay.example2.com?broadcast=true");
   });
 });
