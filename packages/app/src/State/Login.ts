@@ -52,6 +52,11 @@ export interface UserPreferences {
   confirmReposts: boolean;
 
   /**
+   * Rewrite Twitter links to Nitter links
+   */
+  rewriteTwitterPosts: boolean;
+
+  /**
    * Automatically show the latests notes
    */
   autoShowLatest: boolean;
@@ -245,6 +250,7 @@ export const InitState = {
     confirmReposts: false,
     showDebugMenus: false,
     autoShowLatest: false,
+    rewriteTwitterPosts: false,
     fileUploader: "void.cat",
     imgProxyConfig: DefaultImgProxy,
     defaultRootTab: "posts",

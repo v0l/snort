@@ -75,6 +75,9 @@
   "2k0Cv+": {
     "defaultMessage": "Dislikes ({n})"
   },
+  "3LAxQH": {
+    "defaultMessage": "Rewrite Twitter links to Nitter links"
+  },
   "3cc4Ct": {
     "defaultMessage": "Light"
   },
@@ -522,6 +525,9 @@
   "X7xU8J": {
     "defaultMessage": "nsec, npub, nip-05, hex, mnemonic"
   },
+  "XSoRjZ": {
+    "defaultMessage": "Nitter Rewrite"
+  },
   "XgWvGA": {
     "defaultMessage": "Reactions"
   },
@@ -665,6 +671,9 @@
   },
   "iNWbVV": {
     "defaultMessage": "Handle"
+  },
+  "iXPL0Z": {
+    "defaultMessage": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead"
   },
   "ieGrWo": {
     "defaultMessage": "Follow"
@@ -854,9 +863,6 @@
   },
   "uSV4Ti": {
     "defaultMessage": "Reposts need to be manually confirmed"
-  },
-  "ubtr9S": {
-    "defaultMessage": "Can't login with private key on 'http://' connection, please use a Nostr key manager extension instead"
   },
   "usAvMr": {
     "defaultMessage": "Edit Profile"
