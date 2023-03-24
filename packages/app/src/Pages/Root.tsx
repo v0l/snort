@@ -76,13 +76,16 @@ export default function RootPage() {
     const paidRelays = allRelays.filter(a => a.paid);
     const publicRelays = allRelays.filter(a => !a.paid);
     return (
-      <div className="flex mb10 f-end">
+      <div className="flex mb10 f-end nowrap">
         <FormattedMessage
           defaultMessage="Read global from"
           description="Label for reading global feed from specific relays"
         />
         &nbsp;
-        <select onChange={e => setRelay(allRelays.find(a => a.url === e.target.value))} value={relay?.url}>
+        <select
+          className="f-ellipsis"
+          onChange={e => setRelay(allRelays.find(a => a.url === e.target.value))}
+          value={relay?.url}>
           {paidRelays.length > 0 && (
             <optgroup label="Paid Relays">
               {paidRelays.map(a => (
