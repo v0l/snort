@@ -11,6 +11,7 @@ export enum NostrPrefix {
   Profile = "nprofile",
   Event = "nevent",
   Relay = "nrelay",
+  Address = "naddr",
 }
 
 export enum TLVEntryType {
@@ -43,7 +44,7 @@ export function encodeTLV(hex: string, prefix: NostrPrefix, relays?: string[]) {
       })
       .flat() ?? [];
 
-  return bech32.encode(prefix, bech32.toWords([...tl0, ...tl1]));
+  return bech32.encode(prefix, bech32.toWords([...tl0, ...tl1]), 1_000);
 }
 
 export function decodeTLV(str: string) {

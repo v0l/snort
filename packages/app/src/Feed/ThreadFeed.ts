@@ -5,10 +5,10 @@ import useSubscription from "Feed/Subscription";
 import { useSelector } from "react-redux";
 import { RootState } from "State/Store";
 import { UserPreferences } from "State/Login";
-import { debounce } from "Util";
+import { debounce, NostrLink } from "Util";
 
-export default function useThreadFeed(id: u256) {
-  const [trackingEvents, setTrackingEvent] = useState<u256[]>([id]);
+export default function useThreadFeed(link: NostrLink) {
+  const [trackingEvents, setTrackingEvent] = useState<u256[]>([link.id]);
   const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
 
   function addId(id: u256[]) {
@@ -25,7 +25,7 @@ export default function useThreadFeed(id: u256) {
 
   const sub = useMemo(() => {
     const thisSub = new Subscriptions();
-    thisSub.Id = `thread:${id.substring(0, 8)}`;
+    thisSub.Id = `thread:${link.id.substring(0, 8)}`;
     thisSub.Ids = new Set(trackingEvents);
 
     // get replies to this event
@@ -39,7 +39,7 @@ export default function useThreadFeed(id: u256) {
     thisSub.AddSubscription(subRelated);
 
     return thisSub;
-  }, [trackingEvents, pref, id]);
+  }, [trackingEvents, pref, link.id]);
 
   const main = useSubscription(sub, { leaveOpen: true, cache: true });
 

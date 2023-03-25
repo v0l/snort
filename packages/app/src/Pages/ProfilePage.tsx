@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { NostrPrefix } from "@snort/nostr";
+import { encodeTLV, NostrPrefix } from "@snort/nostr";
 
-import { unwrap } from "Util";
+import { parseNostrLink, unwrap } from "Util";
 import { formatShort } from "Number";
 import Note from "Element/Note";
 import Bookmarks from "Element/Bookmarks";
@@ -73,7 +73,7 @@ export default function ProfilePage() {
     tags: [],
     creator: "",
   });
-  const npub = !id?.startsWith("npub") ? hexToBech32("npub", id || undefined) : id;
+  const npub = !id?.startsWith(NostrPrefix.PublicKey) ? hexToBech32(NostrPrefix.PublicKey, id || undefined) : id;
 
   const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
   const website_url =
@@ -116,7 +116,13 @@ export default function ProfilePage() {
         setId(a);
       });
     } else {
-      setId(parseId(params.id ?? ""));
+      const nav = parseNostrLink(params.id ?? "");
+      if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
+        // todo: use relays if any for nprofile
+        setId(nav.id);
+      } else {
+        setId(parseId(params.id ?? ""));
+      }
     }
     setTab(ProfileTab.Notes);
   }, [params]);
@@ -252,6 +258,10 @@ export default function ProfilePage() {
   }
 
   function renderIcons() {
+    if (!id) return;
+
+    const firstRelay = relays.find(a => a.settings.write)?.url;
+    const link = encodeTLV(id, NostrPrefix.Profile, firstRelay ? [firstRelay] : undefined);
     return (
       <div className="icon-actions">
         <IconButton onClick={() => setShowProfileQr(true)}>
@@ -259,13 +269,9 @@ export default function ProfilePage() {
         </IconButton>
         {showProfileQr && (
           <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
-            <ProfileImage pubkey={id ?? ""} />
-
-            <QrCode
-              data={`nostr:${hexToBech32(NostrPrefix.PublicKey, id)}`}
-              link={undefined}
-              className=" m10 align-center"
-            />
+            <ProfileImage pubkey={id} />
+            <QrCode data={link} className="m10 align-center" />
+            <Copy text={link} className="align-center" />
           </Modal>
         )}
         {isMe ? (
@@ -295,12 +301,13 @@ export default function ProfilePage() {
   }
 
   function userDetails() {
+    if (!id) return;
     return (
       <div className="details-wrapper">
         {username()}
         <div className="profile-actions">
           {renderIcons()}
-          {!isMe && <FollowButton pubkey={id ?? ""} />}
+          {!isMe && <FollowButton pubkey={id} />}
         </div>
         {bio()}
       </div>

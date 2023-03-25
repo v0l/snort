@@ -5,6 +5,7 @@ import { useIntl } from "react-intl";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import emoji from "@jukben/emoji-search";
 import TextareaAutosize from "react-textarea-autosize";
+import { NostrPrefix } from "@snort/nostr";
 
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
@@ -82,7 +83,7 @@ const Textarea = (props: TextareaProps) => {
           afterWhitespace: true,
           dataProvider: userDataProvider,
           component: (props: { entity: MetadataCache }) => <UserItem {...props.entity} />,
-          output: (item: { pubkey: string }) => `@${hexToBech32("npub", item.pubkey)}`,
+          output: (item: { pubkey: string }) => `@${hexToBech32(NostrPrefix.PublicKey, item.pubkey)}`,
         },
       }}
     />

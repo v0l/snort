@@ -31,6 +31,21 @@ describe("splitByUrl", () => {
     expect(splitByUrl(inputStr)).toEqual(expectedOutput);
   });
 
+  it("should parse nostr links", () => {
+    const input =
+      "web+nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49\nnostr:note1jp6d36lmquhxqn2s5n4ce00pzu2jrpkek8udav6l0y3qcdngpnxsle6ngm\nnostr:naddr1qqv8x6r0wf6x2um594cxzarg946x7ttpwajhxmmdv5pzqx78pgq53vlnzmdr8l3u38eru0n3438lnxqz0mr39wg9e5j0dfq3qvzqqqr4gu5d05rr\nnostr is cool";
+    const expected = [
+      "",
+      "web+nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49",
+      "\n",
+      "nostr:note1jp6d36lmquhxqn2s5n4ce00pzu2jrpkek8udav6l0y3qcdngpnxsle6ngm",
+      "\n",
+      "nostr:naddr1qqv8x6r0wf6x2um594cxzarg946x7ttpwajhxmmdv5pzqx78pgq53vlnzmdr8l3u38eru0n3438lnxqz0mr39wg9e5j0dfq3qvzqqqr4gu5d05rr",
+      "\nnostr is cool",
+    ];
+    expect(splitByUrl(input)).toEqual(expected);
+  });
+
   it("should return an array with a single string if no URLs are found", () => {
     const inputStr = "This is a regular string with no URLs";
     const expectedOutput = ["This is a regular string with no URLs"];

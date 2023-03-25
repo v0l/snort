@@ -6,7 +6,7 @@ import { useUserProfile } from "Hooks/useUserProfile";
 import { hexToBech32, profileLink } from "Util";
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
-import { HexKey } from "@snort/nostr";
+import { HexKey, NostrPrefix } from "@snort/nostr";
 import { MetadataCache } from "State/Users";
 import usePageWidth from "Hooks/usePageWidth";
 
@@ -77,7 +77,7 @@ export default function ProfileImage({
 }
 
 export function getDisplayName(user: MetadataCache | undefined, pubkey: HexKey) {
-  let name = hexToBech32("npub", pubkey).substring(0, 12);
+  let name = hexToBech32(NostrPrefix.PublicKey, pubkey).substring(0, 12);
   if (user?.display_name !== undefined && user.display_name.length > 0) {
     name = user.display_name;
   } else if (user?.name !== undefined && user.name.length > 0) {

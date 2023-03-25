@@ -19,10 +19,11 @@ import {
   normalizeReaction,
   Reaction,
   profileLink,
+  unwrap,
 } from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
-import { TaggedRawEvent, u256, HexKey, Event as NEvent, EventKind } from "@snort/nostr";
+import { TaggedRawEvent, HexKey, Event as NEvent, EventKind, NostrPrefix } from "@snort/nostr";
 import useModeration from "Hooks/useModeration";
 import { setPinned, setBookmarked } from "State/Login";
 import type { RootState } from "State/Store";
@@ -173,17 +174,22 @@ export default function Note(props: NoteProps) {
     }
   }, [inView, entry, extendable]);
 
-  function goToEvent(e: React.MouseEvent, id: u256, isTargetAllowed: boolean = e.target === e.currentTarget) {
+  function goToEvent(
+    e: React.MouseEvent,
+    eTarget: TaggedRawEvent,
+    isTargetAllowed: boolean = e.target === e.currentTarget
+  ) {
     if (!isTargetAllowed) {
       return;
     }
 
     e.stopPropagation();
+    const link = eventLink(eTarget.id, eTarget.relays);
     // detect cmd key and open in new tab
     if (e.metaKey) {
-      window.open(eventLink(id), "_blank");
+      window.open(link, "_blank");
     } else {
-      navigate(eventLink(id));
+      navigate(link);
     }
   }
 
@@ -194,10 +200,11 @@ export default function Note(props: NoteProps) {
 
     const maxMentions = 2;
     const replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
+    const replyRelayHints = ev?.Thread?.ReplyTo?.Relay ?? ev.Thread.Root?.Relay;
     const mentions: { pk: string; name: string; link: ReactNode }[] = [];
     for (const pk of ev.Thread?.PubKeys ?? []) {
       const u = UserCache.get(pk);
-      const npub = hexToBech32("npub", pk);
+      const npub = hexToBech32(NostrPrefix.PublicKey, pk);
       const shortNpub = npub.substring(0, 12);
       mentions.push({
         pk,
@@ -205,7 +212,7 @@ export default function Note(props: NoteProps) {
         link: <Link to={profileLink(pk)}>{u?.name ? `@${u.name}` : shortNpub}</Link>,
       });
     }
-    mentions.sort(a => (a.name.startsWith("npub") ? 1 : -1));
+    mentions.sort(a => (a.name.startsWith(NostrPrefix.PublicKey) ? 1 : -1));
     const othersLength = mentions.length - maxMentions;
     const renderMention = (m: { link: React.ReactNode; pk: string; name: string }, idx: number) => {
       return (
@@ -226,7 +233,11 @@ export default function Note(props: NoteProps) {
             {pubMentions} {others}
           </>
         ) : (
-          replyId && <Link to={eventLink(replyId)}>{hexToBech32("note", replyId)?.substring(0, 12)}</Link>
+          replyId && (
+            <Link to={eventLink(replyId, replyRelayHints)}>
+              {hexToBech32(NostrPrefix.Event, replyId)?.substring(0, 12)}
+            </Link>
+          )
         )}
       </div>
     );
@@ -286,7 +297,7 @@ export default function Note(props: NoteProps) {
             )}
           </div>
         )}
-        <div className="body" onClick={e => goToEvent(e, ev.Id, true)}>
+        <div className="body" onClick={e => goToEvent(e, unwrap(ev.Original), true)}>
           {transformBody()}
           {translation()}
           {options.showReactionsLink && (
@@ -319,7 +330,7 @@ export default function Note(props: NoteProps) {
   const note = (
     <div
       className={`${baseClassName}${highlight ? " active " : " "}${extendable && !showMore ? " note-expand" : ""}`}
-      onClick={e => goToEvent(e, ev.Id)}
+      onClick={e => goToEvent(e, unwrap(ev.Original))}
       ref={ref}>
       {content()}
     </div>

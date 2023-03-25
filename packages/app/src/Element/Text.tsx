@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { visit, SKIP } from "unist-util-visit";
 import * as unist from "unist";
-import { HexKey, Tag } from "@snort/nostr";
+import { HexKey, NostrPrefix, Tag } from "@snort/nostr";
 
 import { MentionRegex, InvoiceRegex, HashtagRegex, MagnetRegex } from "Const";
 import { eventLink, hexToBech32, magnetURIDecode, splitByUrl, unwrap } from "Util";
@@ -35,7 +35,7 @@ export default function Text({ content, tags, creator }: TextProps) {
       .map(f => {
         if (typeof f === "string") {
           return splitByUrl(f).map(a => {
-            if (a.match(/^https?:\/\//)) {
+            if (a.match(/^(?:https?|(?:web\+)?nostr):/i)) {
               return <HyperText key={a} link={a} creator={creator} />;
             }
             return a;
@@ -77,13 +77,13 @@ export default function Text({ content, tags, creator }: TextProps) {
               if (ref) {
                 switch (ref.Key) {
                   case "p": {
-                    return <Mention pubkey={ref.PubKey ?? ""} />;
+                    return <Mention pubkey={ref.PubKey ?? ""} relays={ref.Relay} />;
                   }
                   case "e": {
-                    const eText = hexToBech32("note", ref.Event).substring(0, 12);
+                    const eText = hexToBech32(NostrPrefix.Event, ref.Event).substring(0, 12);
                     return ref.Event ? (
                       <Link
-                        to={eventLink(ref.Event)}
+                        to={eventLink(ref.Event, ref.Relay)}
                         onClick={e => e.stopPropagation()}
                         state={{ from: location.pathname }}>
                         #{eText}

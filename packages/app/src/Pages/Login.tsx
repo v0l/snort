@@ -10,7 +10,8 @@ import { HexKey } from "@snort/nostr";
 import { RootState } from "State/Store";
 import { setPrivateKey, setPublicKey, setRelays, setGeneratedPrivateKey } from "State/Login";
 import { DefaultRelays, EmailRegex, MnemonicRegex } from "Const";
-import { bech32ToHex, generateBip39Entropy, entropyToDerivedKey, unwrap } from "Util";
+import { bech32ToHex, unwrap } from "Util";
+import { generateBip39Entropy, entropyToDerivedKey } from "nip6";
 import ZapButton from "Element/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
 
