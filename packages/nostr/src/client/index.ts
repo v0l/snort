@@ -1,37 +1,39 @@
-import { ProtocolError } from "../error"
-import { EventId, Event, EventKind, SignedEvent, RawEvent } from "../event"
-import { PrivateKey, PublicKey } from "../crypto"
+import { NostrError } from "../common"
+import { RawEvent, parseEvent } from "../event"
 import { Conn } from "./conn"
 import * as secp from "@noble/secp256k1"
 import { EventEmitter } from "./emitter"
-import { defined } from "../util"
+import { fetchRelayInfo, ReadyState, Relay } from "./relay"
+import { Filters } from "../filters"
 
 /**
  * A nostr client.
  *
  * TODO Document the events here
+ * TODO When document this type, remember to explicitly say that promise rejections will also be routed to "error"!
  */
 export class Nostr extends EventEmitter {
-  // TODO NIP-44 AUTH, leave this for later
+  static get CONNECTING(): ReadyState.CONNECTING {
+    return ReadyState.CONNECTING
+  }
+
+  static get OPEN(): ReadyState.OPEN {
+    return ReadyState.OPEN
+  }
+
+  static get CLOSED(): ReadyState.CLOSED {
+    return ReadyState.CLOSED
+  }
+
   /**
    * Open connections to relays.
    */
-  readonly #conns: Map<string, ConnState> = new Map()
+  readonly #conns: ConnState[] = []
 
   /**
    * Mapping of subscription IDs to corresponding filters.
    */
-  readonly #subscriptions: Map<string, Filters[]> = new Map()
-
-  /**
-   * Optional client private key.
-   */
-  readonly #key?: PrivateKey
-
-  constructor(key?: PrivateKey) {
-    super()
-    this.#key = key
-  }
+  readonly #subscriptions: Map<SubscriptionId, Filters[]> = new Map()
 
   /**
    * Open a connection and start communicating with a relay. This method recreates all existing
@@ -39,12 +41,19 @@ export class Nostr extends EventEmitter {
    * this method will only update it with the new options, and an exception will be thrown
    * if no options are specified.
    */
-  open(url: URL | string, opts?: { read?: boolean; write?: boolean }): void {
+  open(
+    url: URL | string,
+    opts?: { read?: boolean; write?: boolean; fetchInfo?: boolean }
+  ): void {
+    const relayUrl = new URL(url)
+
     // If the connection already exists, update the options.
-    const existingConn = this.#conns.get(url.toString())
+    const existingConn = this.#conns.find(
+      (c) => c.relay.url.toString() === relayUrl.toString()
+    )
     if (existingConn !== undefined) {
       if (opts === undefined) {
-        throw new Error(
+        throw new NostrError(
           `called connect with existing connection ${url}, but options were not specified`
         )
       }
@@ -57,59 +66,124 @@ export class Nostr extends EventEmitter {
       return
     }
 
-    const connUrl = new URL(url)
+    // Fetch the relay info in parallel to opening the WebSocket connection.
+    const fetchInfo =
+      opts?.fetchInfo === false
+        ? Promise.resolve({})
+        : fetchRelayInfo(relayUrl).catch((e) => {
+            this.#error(e)
+            return {}
+          })
 
     // If there is no existing connection, open a new one.
     const conn = new Conn({
-      url: connUrl,
+      url: relayUrl,
+
       // Handle messages on this connection.
       onMessage: async (msg) => {
-        try {
-          if (msg.kind === "event") {
-            this.emit(
-              "event",
-              {
-                signed: await SignedEvent.verify(msg.raw, this.#key),
-                subscriptionId: msg.subscriptionId,
-                raw: msg.raw,
-              },
-              this
-            )
-          } else if (msg.kind === "notice") {
-            this.emit("notice", msg.notice, this)
-          } else if (msg.kind === "ok") {
-            this.emit(
-              "ok",
-              {
-                eventId: msg.eventId,
-                relay: connUrl,
-                ok: msg.ok,
-                message: msg.message,
-              },
-              this
-            )
-          } else {
-            throw new ProtocolError(`invalid message ${msg}`)
-          }
-        } catch (err) {
-          this.emit("error", err, this)
+        if (msg.kind === "event") {
+          this.emit(
+            "event",
+            {
+              event: await parseEvent(msg.event),
+              subscriptionId: msg.subscriptionId,
+            },
+            this
+          )
+        } else if (msg.kind === "notice") {
+          this.emit("notice", msg.notice, this)
+        } else if (msg.kind === "ok") {
+          this.emit(
+            "ok",
+            {
+              eventId: msg.eventId,
+              relay: relayUrl,
+              ok: msg.ok,
+              message: msg.message,
+            },
+            this
+          )
+        } else if (msg.kind === "eose") {
+          this.emit("eose", msg.subscriptionId, this)
+        } else if (msg.kind === "auth") {
+          // TODO This is incomplete
+        } else {
+          this.#error(new NostrError(`invalid message ${JSON.stringify(msg)}`))
         }
       },
+
+      // Handle "open" events.
+      onOpen: async () => {
+        // Update the connection readyState.
+        const conn = this.#conns.find(
+          (c) => c.relay.url.toString() === relayUrl.toString()
+        )
+        if (conn === undefined) {
+          this.#error(
+            new NostrError(
+              `bug: expected connection to ${relayUrl.toString()} to be in the map`
+            )
+          )
+        } else {
+          if (conn.relay.readyState !== ReadyState.CONNECTING) {
+            this.#error(
+              new NostrError(
+                `bug: expected connection to ${relayUrl.toString()} to have readyState CONNECTING, got ${
+                  conn.relay.readyState
+                }`
+              )
+            )
+          }
+          conn.relay = {
+            ...conn.relay,
+            readyState: ReadyState.OPEN,
+            info: await fetchInfo,
+          }
+        }
+        // Forward the event to the user.
+        this.emit("open", relayUrl, this)
+      },
+
+      // Handle "close" events.
+      onClose: () => {
+        // Update the connection readyState.
+        const conn = this.#conns.find(
+          (c) => c.relay.url.toString() === relayUrl.toString()
+        )
+        if (conn === undefined) {
+          this.#error(
+            new NostrError(
+              `bug: expected connection to ${relayUrl.toString()} to be in the map`
+            )
+          )
+        } else {
+          conn.relay.readyState = ReadyState.CLOSED
+        }
+        // Forward the event to the user.
+        this.emit("close", relayUrl, this)
+      },
+
+      // TODO If there is no error handler, this will silently swallow the error. Maybe have an
+      // #onError method which re-throws if emit() returns false? This should at least make
+      // some noise.
       // Forward errors on this connection.
-      onError: (err) => this.emit("error", err, this),
+      onError: (err) => this.#error(err),
     })
 
     // Resend existing subscriptions to this connection.
     for (const [key, filters] of this.#subscriptions.entries()) {
-      const subscriptionId = new SubscriptionId(key)
       conn.send({
         kind: "openSubscription",
-        id: subscriptionId,
+        id: key,
         filters,
       })
     }
 
-    this.#conns.set(url.toString(), {
+    this.#conns.push({
+      relay: {
+        url: relayUrl,
+        readyState: ReadyState.CONNECTING,
+      },
       conn,
       auth: false,
       read: opts?.read ?? true,
@@ -123,23 +197,21 @@ export class Nostr extends EventEmitter {
    * @param url If specified, only close the connection to this relay. If the connection does
    * not exist, an exception will be thrown. If this parameter is not specified, all connections
    * will be closed.
-   *
-   * TODO There needs to be a way to check connection state. isOpen(), isReady(), isClosing() maybe?
-   * Because of how WebSocket states work this isn't as simple as it seems.
    */
   close(url?: URL | string): void {
     if (url === undefined) {
       for (const { conn } of this.#conns.values()) {
         conn.close()
       }
-      this.#conns.clear()
       return
     }
-    const c = this.#conns.get(url.toString())
+    const relayUrl = new URL(url)
+    const c = this.#conns.find(
+      (c) => c.relay.url.toString() === relayUrl.toString()
+    )
     if (c === undefined) {
-      throw new Error(`connection to ${url} doesn't exist`)
+      throw new NostrError(`connection to ${url} doesn't exist`)
     }
-    this.#conns.delete(url.toString())
     c.conn.close()
   }
 
@@ -159,9 +231,9 @@ export class Nostr extends EventEmitter {
    */
   subscribe(
     filters: Filters[],
-    subscriptionId: SubscriptionId = SubscriptionId.random()
+    subscriptionId: SubscriptionId = randomSubscriptionId()
   ): SubscriptionId {
-    this.#subscriptions.set(subscriptionId.toString(), filters)
+    this.#subscriptions.set(subscriptionId, filters)
     for (const { conn, read } of this.#conns.values()) {
       if (!read) {
         continue
@@ -180,9 +252,9 @@ export class Nostr extends EventEmitter {
    *
    * TODO Reference subscribed()
    */
-  async unsubscribe(subscriptionId: SubscriptionId): Promise<void> {
-    if (!this.#subscriptions.delete(subscriptionId.toString())) {
-      throw new Error(`subscription ${subscriptionId} does not exist`)
+  unsubscribe(subscriptionId: SubscriptionId): void {
+    if (!this.#subscriptions.delete(subscriptionId)) {
+      throw new NostrError(`subscription ${subscriptionId} does not exist`)
     }
     for (const { conn, read } of this.#conns.values()) {
       if (!read) {
@@ -198,38 +270,10 @@ export class Nostr extends EventEmitter {
   /**
    * Publish an event.
    */
-  async publish(event: SignedEvent): Promise<void>
-  async publish(event: RawEvent): Promise<void>
-  // TODO This will need to change when I add NIP-44 AUTH support - the key should be optional
-  async publish(event: Event, key: PrivateKey): Promise<void>
-  async publish(
-    event: SignedEvent | RawEvent | Event,
-    key?: PrivateKey
-  ): Promise<void> {
-    // Validate the parameters.
-    if (event instanceof SignedEvent || "sig" in event) {
-      if (key !== undefined) {
-        throw new Error(
-          "when calling publish with a SignedEvent, private key should not be specified"
-        )
-      }
-    } else {
-      if (key === undefined) {
-        throw new Error(
-          "publish called with an unsigned Event, private key must be specified"
-        )
-      }
-      if (event.pubkey.toHex() !== key.pubkey.toHex()) {
-        throw new Error("invalid private key")
-      }
-    }
-
+  publish(event: RawEvent): void {
     for (const { conn, write } of this.#conns.values()) {
       if (!write) {
         continue
-      }
-      if (!(event instanceof SignedEvent) && !("sig" in event)) {
-        event = await SignedEvent.sign(event, defined(key))
       }
       conn.send({
         kind: "event",
@@ -237,9 +281,34 @@ export class Nostr extends EventEmitter {
       })
     }
   }
+
+  /**
+   * Get the relays which this client has tried to open connections to.
+   */
+  get relays(): Relay[] {
+    return this.#conns.map(({ relay }) => {
+      if (relay.readyState === ReadyState.CONNECTING) {
+        return { ...relay }
+      } else {
+        const info =
+          relay.info === undefined
+            ? undefined
+            : // Deep copy of the info.
+              JSON.parse(JSON.stringify(relay.info))
+        return { ...relay, info }
+      }
+    })
+  }
+
+  #error(e: unknown) {
+    if (!this.emit("error", e, this)) {
+      throw e
+    }
+  }
 }
 
 interface ConnState {
+  relay: Relay
   conn: Conn
   /**
    * Has this connection been authenticated via NIP-44 AUTH?
@@ -258,39 +327,8 @@ interface ConnState {
 /**
  * A string uniquely identifying a client subscription.
  */
-export class SubscriptionId {
-  #id: string
+export type SubscriptionId = string
 
-  constructor(subscriptionId: string) {
-    this.#id = subscriptionId
-  }
-
-  static random(): SubscriptionId {
-    return new SubscriptionId(secp.utils.bytesToHex(secp.utils.randomBytes(32)))
-  }
-
-  toString() {
-    return this.#id
-  }
-}
-
-/**
- * Subscription filters. All filters from the fields must pass for a message to get through.
- */
-export interface Filters {
-  // TODO Document the filters, document that for the arrays only one is enough for the message to pass
-  ids?: EventId[]
-  authors?: string[]
-  kinds?: EventKind[]
-  /**
-   * Filters for the "#e" tags.
-   */
-  eventTags?: EventId[]
-  /**
-   * Filters for the "#p" tags.
-   */
-  pubkeyTags?: PublicKey[]
-  since?: Date
-  until?: Date
-  limit?: number
+function randomSubscriptionId(): SubscriptionId {
+  return secp.utils.bytesToHex(secp.utils.randomBytes(32))
 }
