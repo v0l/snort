@@ -153,10 +153,18 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }
 
+  function getLNURL() {
+    return ev.Tags.find(a => a.Key === "zap")?.LNURL || author?.lud16 || author?.lud06;
+  }
+
+  function getTargetName() {
+    return ev.Tags.find(a => a.Key === "zap")?.LNURL || author?.display_name || author?.name;
+  }
+
   async function fastZap(e?: React.MouseEvent) {
     if (zapping || e?.isPropagationStopped()) return;
 
-    const lnurl = author?.lud16 || author?.lud06;
+    const lnurl = getLNURL();
     if (wallet?.isReady() && lnurl) {
       setZapping(true);
       try {
@@ -203,7 +211,7 @@ export default function NoteFooter(props: NoteFooterProps) {
 
   useEffect(() => {
     if (prefs.autoZap && !ZapCache.has(ev.id) && !isMine && !zapping) {
-      const lnurl = author?.lud16 || author?.lud06;
+      const lnurl = getLNURL();
       if (wallet?.isReady() && lnurl) {
         setZapping(true);
         queueMicrotask(async () => {
@@ -222,7 +230,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   }, [prefs.autoZap, author, zapping]);
 
   function tipButton() {
-    const service = author?.lud16 || author?.lud06;
+    const service = getLNURL();
     if (service) {
       return (
         <>
@@ -418,11 +426,11 @@ export default function NoteFooter(props: NoteFooterProps) {
           zaps={zaps}
         />
         <SendSats
-          lnurl={author?.lud16 || author?.lud06}
+          lnurl={getLNURL()}
           onClose={() => setTip(false)}
           show={tip}
           author={author?.pubkey}
-          target={author?.display_name || author?.name}
+          target={getTargetName()}
           note={ev.id}
         />
       </div>

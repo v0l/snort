@@ -12,6 +12,7 @@ export default class Tag {
   DTag?: string;
   Index: number;
   Invalid: boolean;
+  LNURL?: string;
 
   constructor(tag: string[], index: number) {
     this.Original = tag;
@@ -48,6 +49,10 @@ export default class Tag {
       }
       case "delegation": {
         this.PubKey = tag[1];
+        break;
+      }
+      case "zap": {
+        this.LNURL = tag[1];
         break;
       }
     }

@@ -78,6 +78,9 @@
   "2k0Cv+": {
     "defaultMessage": "Dislikes ({n})"
   },
+  "3Rx6Qo": {
+    "defaultMessage": "Advanced"
+  },
   "3cc4Ct": {
     "defaultMessage": "Light"
   },
@@ -278,6 +281,9 @@
   "FDguSC": {
     "defaultMessage": "{n} Zaps"
   },
+  "FP+D3H": {
+    "defaultMessage": "LNURL to forward zaps to"
+  },
   "FS3b54": {
     "defaultMessage": "Done!"
   },
@@ -437,6 +443,9 @@
   "OLEm6z": {
     "defaultMessage": "Unknown login error"
   },
+  "P04gQm": {
+    "defaultMessage": "All zaps sent to this note will be received by the following LNURL"
+  },
   "P61BTu": {
     "defaultMessage": "Copy Event JSON"
   },
@@ -471,6 +480,9 @@
   "QxCuTo": {
     "defaultMessage": "Art by {name}",
     "description": "Artwork attribution label"
+  },
+  "R1fEdZ": {
+    "defaultMessage": "Forward Zaps"
   },
   "R2OqnW": {
     "defaultMessage": "Delete Account"
