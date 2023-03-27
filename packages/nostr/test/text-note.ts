@@ -3,18 +3,20 @@ import { parsePublicKey } from "../src/crypto"
 import assert from "assert"
 import { setup } from "./setup"
 
-describe("text note", async function () {
+describe("text note", () => {
   const note = "hello world"
 
   // Test that a text note can be published by one client and received by the other.
   it("publish and receive", (done) => {
-    setup(done).then(
+    setup(
+      done,
       ({
         publisher,
         publisherSecret,
         publisherPubkey,
         subscriber,
         timestamp,
+        done,
       }) => {
         // Expect the test event.
         subscriber.on(
@@ -26,10 +28,6 @@ describe("text note", async function () {
             assert.strictEqual(event.created_at, timestamp)
             assert.strictEqual(event.content, note)
             assert.strictEqual(actualSubscriptionId, subscriptionId)
-
-            subscriber.close()
-            publisher.close()
-
             done()
           }
         )
@@ -53,7 +51,7 @@ describe("text note", async function () {
 
   // Test that a client interprets an "OK" message after publishing a text note.
   it("publish and ok", function (done) {
-    setup(done).then(({ publisher, subscriber, publisherSecret, url }) => {
+    setup(done, ({ publisher, publisherSecret, url, done }) => {
       // TODO No signEvent, have a convenient way to do this
       signEvent(createTextNote(note), publisherSecret).then((event) => {
         publisher.on("ok", (params, nostr) => {
@@ -61,10 +59,6 @@ describe("text note", async function () {
           assert.equal(params.eventId, event.id)
           assert.equal(params.relay.toString(), url.toString())
           assert.equal(params.ok, true)
-
-          publisher.close()
-          subscriber.close()
-
           done()
         })
 

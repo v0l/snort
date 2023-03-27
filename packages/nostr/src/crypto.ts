@@ -90,7 +90,7 @@ export async function schnorrSign(data: Hex, priv: PrivateKey): Promise<Hex> {
 /**
  * Verify that the elliptic curve signature is correct.
  */
-export async function schnorrVerify(
+export function schnorrVerify(
   sig: Hex,
   data: Hex,
   key: PublicKey

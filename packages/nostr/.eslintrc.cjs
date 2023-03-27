@@ -3,10 +3,13 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
   root: true,
-  ignorePatterns: ["dist/"],
+  ignorePatterns: ["dist/", "src/legacy"],
   env: {
     browser: true,
     node: true,
     mocha: true,
+  },
+  rules: {
+    "require-await": "warn",
   },
 }

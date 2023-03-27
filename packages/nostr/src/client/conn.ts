@@ -14,13 +14,12 @@ import { unixTimestamp } from "../util"
  */
 export class Conn {
   readonly #socket: WebSocket
+  // TODO This should probably be moved to Nostr (ConnState) because deciding whether or not to send a message
+  // requires looking at relay info which the Conn should know nothing about.
   /**
    * Messages which were requested to be sent before the websocket was ready.
    * Once the websocket becomes ready, these messages will be sent and cleared.
    */
-  // TODO Another reason why pending messages might be required is when the user tries to send a message
-  // before NIP-44 auth. The legacy code reuses the same array for these two but I think they should be
-  // different, and the NIP-44 stuff should be handled by Nostr.
   #pending: OutgoingMessage[] = []
   /**
    * Callback for errors.
@@ -35,27 +34,27 @@ export class Conn {
     url,
     onMessage,
     onOpen,
+    onClose,
     onError,
   }: {
     url: URL
     onMessage: (msg: IncomingMessage) => void
-    onOpen: () => void
+    onOpen: () => void | Promise<void>
+    onClose: () => void | Promise<void>
     onError: (err: unknown) => void
   }) {
     this.#onError = onError
     this.#socket = new WebSocket(url)
 
     // Handle incoming messages.
-    this.#socket.addEventListener("message", async (msgData) => {
-      const value = msgData.data.valueOf()
-      // Validate and parse the message.
-      if (typeof value !== "string") {
-        const err = new ProtocolError(`invalid message data: ${value}`)
-        onError(err)
-        return
-      }
+    this.#socket.addEventListener("message", (msgData) => {
       try {
-        const msg = await parseIncomingMessage(value)
+        const value = msgData.data.valueOf()
+        // Validate and parse the message.
+        if (typeof value !== "string") {
+          throw new ProtocolError(`invalid message data: ${value}`)
+        }
+        const msg = parseIncomingMessage(value)
         onMessage(msg)
       } catch (err) {
         onError(err)
@@ -63,17 +62,32 @@ export class Conn {
     })
 
     // When the connection is ready, send any outstanding messages.
-    this.#socket.addEventListener("open", () => {
-      for (const msg of this.#pending) {
-        this.send(msg)
+    this.#socket.addEventListener("open", async () => {
+      try {
+        for (const msg of this.#pending) {
+          this.send(msg)
+        }
+        this.#pending = []
+        const result = onOpen()
+        if (result instanceof Promise) {
+          await result
+        }
+      } catch (e) {
+        onError(e)
       }
-      this.#pending = []
-      onOpen()
     })
 
-    this.#socket.addEventListener("error", (err) => {
-      onError(err)
+    this.#socket.addEventListener("close", async () => {
+      try {
+        const result = onClose()
+        if (result instanceof Promise) {
+          await result
+        }
+      } catch (e) {
+        onError(e)
+      }
     })
+    this.#socket.addEventListener("error", onError)
   }
 
   send(msg: OutgoingMessage): void {
@@ -235,7 +249,7 @@ function serializeFilters(filters: Filters[]): RawFilters[] {
   }))
 }
 
-async function parseIncomingMessage(data: string): Promise<IncomingMessage> {
+function parseIncomingMessage(data: string): IncomingMessage {
   // Parse the incoming data as a nonempty JSON array.
   const json = parseJson(data)
   if (!(json instanceof Array)) {
