@@ -5,10 +5,12 @@ import {
   sha256,
   schnorrSign,
   schnorrVerify,
+  parsePublicKey,
   aesDecryptBase64,
   getPublicKey,
   HexOrBechPrivateKey,
   parsePrivateKey,
+  aesEncryptBase64,
 } from "./crypto"
 import { defined, unixTimestamp } from "./util"
 
@@ -64,7 +66,7 @@ interface DirectMessage extends RawEvent {
   /**
    * Get the message plaintext, or undefined if this client is not the recipient.
    */
-  getMessage(recipient: PrivateKey): Promise<string | undefined>
+  getMessage(priv?: HexOrBechPrivateKey): Promise<string | undefined>
   /**
    * Get the recipient pubkey.
    */
@@ -129,7 +131,7 @@ export async function signEvent<T extends Event | RawEvent>(
   if (priv !== undefined) {
     priv = parsePrivateKey(priv)
     event.pubkey = getPublicKey(priv)
-    const id = await calculateEventId(event as UnsignedWithPubkey<T>)
+    const id = await serializeEventId(event as UnsignedWithPubkey<T>)
     event.id = id
     event.sig = await schnorrSign(id, priv)
     return event as T
@@ -158,16 +160,45 @@ export function createSetMetadata(
   }
 }
 
+// TODO This is incomplete
+// TODO Since you already have the private key, maybe this should return the message already signed?
+// Think about this more
+// Perhaps the best option is for all these factory methods to have an overload which also accept a private
+// key as last parameter and return the event already signed, whereas for this method that would be
+// mandatory
+// E.g. opts: { sign?: boolean | HexOrBechPrivateKey } setting sign to true should use nip07
+export async function createDirectMessage({
+  message,
+  recipient,
+  priv,
+}: {
+  message: string
+  recipient: PublicKey
+  priv: PrivateKey
+}): Promise<Unsigned<DirectMessage>> {
+  recipient = parsePublicKey(recipient)
+  priv = parsePrivateKey(priv)
+  const { data, iv } = await aesEncryptBase64(priv, recipient, message)
+  return {
+    kind: EventKind.DirectMessage,
+    tags: [["p", recipient]],
+    content: `${data}?iv=${iv}`,
+    getMessage,
+    getRecipient,
+    getPrevious,
+  }
+}
+
 /**
  * Parse an event from its raw format.
  */
 export async function parseEvent(event: RawEvent): Promise<Event> {
   // TODO Validate all the fields. Lowercase hex fields, etc. Make sure everything is correct.
-  if (event.id !== (await calculateEventId(event))) {
+  if (event.id !== (await serializeEventId(event))) {
     throw new ProtocolError(
       `invalid id ${event.id} for event ${JSON.stringify(
         event
-      )}, expected ${await calculateEventId(event)}`
+      )}, expected ${await serializeEventId(event)}`
     )
   }
   if (!(await schnorrVerify(event.sig, event.id, event.pubkey))) {
@@ -207,7 +238,7 @@ export async function parseEvent(event: RawEvent): Promise<Event> {
   }
 }
 
-async function calculateEventId(
+async function serializeEventId(
   event: UnsignedWithPubkey<RawEvent>
 ): Promise<EventId> {
   // It's not defined whether JSON.stringify produces a string with whitespace stripped.
@@ -237,8 +268,11 @@ function getUserMetadata(this: Unsigned<RawEvent>): UserMetadata {
 
 async function getMessage(
   this: UnsignedWithPubkey<DirectMessage>,
-  priv?: PrivateKey
+  priv?: HexOrBechPrivateKey
 ): Promise<string | undefined> {
+  if (priv !== undefined) {
+    priv = parsePrivateKey(priv)
+  }
   const [data, iv] = this.content.split("?iv=")
   if (data === undefined || iv === undefined) {
     throw new ProtocolError(`invalid direct message content ${this.content}`)
