@@ -6,7 +6,8 @@ import Logo from "Element/Logo";
 import { CollapsedSection } from "Element/Collapsed";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
-import { hexToBech32, hexToMnemonic } from "Util";
+import { hexToBech32 } from "Util";
+import { hexToMnemonic } from "nip6";
 
 import messages from "./messages";
 

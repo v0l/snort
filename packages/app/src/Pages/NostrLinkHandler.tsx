@@ -1,9 +1,10 @@
-import { decodeTLV, NostrPrefix, TLVEntryType } from "@snort/nostr";
+import { NostrPrefix } from "@snort/nostr";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+
 import { setRelays } from "State/Login";
-import { eventLink, profileLink } from "Util";
+import { parseNostrLink, unixNowMs, unwrap } from "Util";
 
 export default function NostrLinkHandler() {
   const params = useParams();
@@ -13,29 +14,21 @@ export default function NostrLinkHandler() {
 
   useEffect(() => {
     if (link.length > 0) {
-      const entity = link.startsWith("web+nostr:") ? link.split(":")[1] : link;
-      if (entity.startsWith(NostrPrefix.PublicKey)) {
-        navigate(`/p/${entity}`);
-      } else if (entity.startsWith(NostrPrefix.Note)) {
-        navigate(`/e/${entity}`);
-      } else if (entity.startsWith(NostrPrefix.Profile) || entity.startsWith(NostrPrefix.Event)) {
-        const decoded = decodeTLV(entity);
-        console.debug(decoded);
-
-        const id = decoded.find(a => a.type === TLVEntryType.Special)?.value as string;
-        const relays = decoded.filter(a => a.type === TLVEntryType.Relay);
-        if (relays.length > 0) {
-          const relayObj = {
-            relays: Object.fromEntries(relays.map(a => [a.value, { read: true, write: false }])),
-            createdAt: new Date().getTime(),
-          };
-          dispatch(setRelays(relayObj));
+      const nav = parseNostrLink(link);
+      if (nav) {
+        if ((nav.relays?.length ?? 0) > 0) {
+          // todo: add as ephemerial connection
+          dispatch(
+            setRelays({
+              relays: Object.fromEntries(unwrap(nav.relays).map(a => [a, { read: true, write: false }])),
+              createdAt: unixNowMs(),
+            })
+          );
         }
-
-        if (entity.startsWith(NostrPrefix.Profile)) {
-          navigate(profileLink(id));
-        } else if (entity.startsWith(NostrPrefix.Event)) {
-          navigate(eventLink(id));
+        if (nav.type === NostrPrefix.Event || nav.type === NostrPrefix.Note || nav.type === NostrPrefix.Address) {
+          navigate(`/e/${nav.encode()}`);
+        } else if (nav.type === NostrPrefix.PublicKey || nav.type === NostrPrefix.Profile) {
+          navigate(`/p/${nav.encode()}`);
         }
       }
     }

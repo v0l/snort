@@ -255,14 +255,14 @@ const TierThree = ({ active, path, isLastSubthread, from, notes, related, chains
 
 export interface ThreadProps {
   notes?: TaggedRawEvent[];
+  selected?: u256;
 }
 
 export default function Thread(props: ThreadProps) {
   const notes = props.notes ?? [];
   const parsedNotes = notes.map(a => new NEvent(a));
   const [path, setPath] = useState<HexKey[]>([]);
-  const currentId = path.length > 0 && path[path.length - 1];
-  const currentRoot = useMemo(() => parsedNotes.find(a => a.Id === currentId), [notes, currentId]);
+  const currentRoot = useMemo(() => parsedNotes.find(a => a.Id === props.selected), [notes, props.selected]);
   const [navigated, setNavigated] = useState(false);
   const navigate = useNavigate();
   const isSingleNote = parsedNotes.filter(a => a.Kind === EventKind.TextNote).length === 1;

@@ -2,7 +2,7 @@ import "./NoteReaction.css";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 
-import { EventKind, Event as NEvent } from "@snort/nostr";
+import { EventKind, Event as NEvent, NostrPrefix } from "@snort/nostr";
 import Note from "Element/Note";
 import ProfileImage from "Element/ProfileImage";
 import { eventLink, hexToBech32 } from "Util";
@@ -24,7 +24,7 @@ export default function NoteReaction(props: NoteReactionProps) {
     if (ev) {
       const eTags = ev.Tags.filter(a => a.Key === "e");
       if (eTags.length > 0) {
-        return eTags[0].Event;
+        return eTags[0];
       }
     }
     return null;
@@ -34,7 +34,7 @@ export default function NoteReaction(props: NoteReactionProps) {
     ev.Kind !== EventKind.Reaction &&
     ev.Kind !== EventKind.Repost &&
     (ev.Kind !== EventKind.TextNote ||
-      ev.Tags.every((a, i) => a.Event !== refEvent || a.Marker !== "mention" || ev.Content !== `#[${i}]`))
+      ev.Tags.every((a, i) => a.Event !== refEvent?.Event || a.Marker !== "mention" || ev.Content !== `#[${i}]`))
   ) {
     return null;
   }
@@ -73,7 +73,9 @@ export default function NoteReaction(props: NoteReactionProps) {
       {root ? <Note data={root} options={opt} related={[]} /> : null}
       {!root && refEvent ? (
         <p>
-          <Link to={eventLink(refEvent)}>#{hexToBech32("note", refEvent).substring(0, 12)}</Link>
+          <Link to={eventLink(refEvent.Event ?? "", refEvent.Relay)}>
+            #{hexToBech32(NostrPrefix.Event, refEvent.Event).substring(0, 12)}
+          </Link>
         </p>
       ) : null}
     </div>

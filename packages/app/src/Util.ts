@@ -5,12 +5,7 @@ import { bytesToHex } from "@noble/hashes/utils";
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bech32 } from "bech32";
 import base32Decode from "base32-decode";
-import { HexKey, TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix } from "@snort/nostr";
-import * as bip39 from "@scure/bip39";
-import { wordlist } from "@scure/bip39/wordlists/english";
-import { HDKey } from "@scure/bip32";
-
-import { DerivationPath } from "Const";
+import { HexKey, TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix, decodeTLV, TLVEntryType } from "@snort/nostr";
 import { MetadataCache } from "State/Users";
 
 export const sha256 = (str: string) => {
@@ -80,8 +75,21 @@ export function bech32ToText(str: string) {
  * @param hex
  * @returns
  */
-export function eventLink(hex: u256) {
-  return `/e/${hexToBech32(NostrPrefix.Note, hex)}`;
+export function eventLink(hex: u256, relays?: Array<string> | string) {
+  const encoded = relays
+    ? encodeTLV(hex, NostrPrefix.Event, Array.isArray(relays) ? relays : [relays])
+    : hexToBech32(NostrPrefix.Note, hex);
+  return `/e/${encoded}`;
+}
+
+/**
+ * Convert hex pubkey to bech32 link url
+ */
+export function profileLink(hex: HexKey, relays?: Array<string> | string) {
+  const encoded = relays
+    ? encodeTLV(hex, NostrPrefix.Profile, Array.isArray(relays) ? relays : [relays])
+    : hexToBech32(NostrPrefix.PublicKey, hex);
+  return `/p/${encoded}`;
 }
 
 /**
@@ -103,46 +111,6 @@ export function hexToBech32(hrp: string, hex?: string) {
     console.warn("Invalid hex", hex, e);
     return "";
   }
-}
-
-export function generateBip39Entropy(mnemonic?: string): Uint8Array {
-  try {
-    const mn = mnemonic ?? bip39.generateMnemonic(wordlist, 256);
-    return bip39.mnemonicToEntropy(mn, wordlist);
-  } catch (e) {
-    throw new Error("INVALID MNEMONIC PHRASE");
-  }
-}
-
-/**
- * Convert hex-encoded entropy into mnemonic phrase
- */
-export function hexToMnemonic(hex: string): string {
-  const bytes = secp.utils.hexToBytes(hex);
-  return bip39.entropyToMnemonic(bytes, wordlist);
-}
-
-/**
- * Convert mnemonic phrase into hex-encoded private key
- * using the derivation path specified in NIP06
- * @param mnemonic the mnemonic-encoded entropy
- */
-export function entropyToDerivedKey(entropy: Uint8Array): string {
-  const masterKey = HDKey.fromMasterSeed(entropy);
-  const newKey = masterKey.derive(DerivationPath);
-
-  if (!newKey.privateKey) {
-    throw new Error("INVALID KEY DERIVATION");
-  }
-
-  return secp.utils.bytesToHex(newKey.privateKey);
-}
-
-/**
- * Convert hex pubkey to bech32 link url
- */
-export function profileLink(hex: HexKey) {
-  return `/p/${hexToBech32(NostrPrefix.PublicKey, hex)}`;
 }
 
 /**
@@ -275,7 +243,7 @@ export function groupByPubkey(acc: Record<HexKey, MetadataCache>, user: Metadata
 
 export function splitByUrl(str: string) {
   const urlRegex =
-    /((?:http|ftp|https):\/\/(?:[\w+?.\w+])+(?:[a-zA-Z0-9~!@#$%^&*()_\-=+\\/?.:;',]*)?(?:[-A-Za-z0-9+&@#/%=~_|]))/i;
+    /((?:http|ftp|https|nostr|web\+nostr):\/?\/?(?:[\w+?.\w+])+(?:[a-zA-Z0-9~!@#$%^&*()_\-=+\\/?.:;',]*)?(?:[-A-Za-z0-9+&@#/%=~_|]))/i;
 
   return str.split(urlRegex);
 }
@@ -466,4 +434,76 @@ export async function hmacSha256(key: Uint8Array, ...messages: Uint8Array[]) {
 export function getRelayName(url: string) {
   const parsedUrl = new URL(url);
   return parsedUrl.host + parsedUrl.search;
+}
+
+export interface NostrLink {
+  type: NostrPrefix;
+  id: string;
+  kind?: number;
+  author?: string;
+  relays?: Array<string>;
+  encode(): string;
+}
+
+export function parseNostrLink(link: string): NostrLink | undefined {
+  const entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
+
+  if (entity.startsWith(NostrPrefix.PublicKey)) {
+    const id = bech32ToHex(entity);
+    return {
+      type: NostrPrefix.PublicKey,
+      id: id,
+      encode: () => hexToBech32(NostrPrefix.PublicKey, id),
+    };
+  } else if (entity.startsWith(NostrPrefix.Note)) {
+    const id = bech32ToHex(entity);
+    return {
+      type: NostrPrefix.Note,
+      id: id,
+      encode: () => hexToBech32(NostrPrefix.Note, id),
+    };
+  } else if (
+    entity.startsWith(NostrPrefix.Profile) ||
+    entity.startsWith(NostrPrefix.Event) ||
+    entity.startsWith(NostrPrefix.Address)
+  ) {
+    const decoded = decodeTLV(entity);
+
+    const id = decoded.find(a => a.type === TLVEntryType.Special)?.value as string;
+    const relays = decoded.filter(a => a.type === TLVEntryType.Relay).map(a => a.value as string);
+    const author = decoded.find(a => a.type === TLVEntryType.Author)?.value as string;
+    const kind = decoded.find(a => a.type === TLVEntryType.Kind)?.value as number;
+
+    const encode = () => {
+      return entity; // return original
+    };
+    if (entity.startsWith(NostrPrefix.Profile)) {
+      return {
+        type: NostrPrefix.Profile,
+        id,
+        relays,
+        kind,
+        author,
+        encode,
+      };
+    } else if (entity.startsWith(NostrPrefix.Event)) {
+      return {
+        type: NostrPrefix.Event,
+        id,
+        relays,
+        kind,
+        author,
+        encode,
+      };
+    } else if (entity.startsWith(NostrPrefix.Address)) {
+      return {
+        type: NostrPrefix.Address,
+        id,
+        relays,
+        kind,
+        author,
+        encode,
+      };
+    }
+  }
 }

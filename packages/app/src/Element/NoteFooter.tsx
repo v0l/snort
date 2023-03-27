@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
-import { Event as NEvent, TaggedRawEvent, HexKey, u256 } from "@snort/nostr";
+import { Event as NEvent, TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { bech32ToHex, delay, hexToBech32, normalizeReaction, unwrap } from "Util";
+import { bech32ToHex, delay, normalizeReaction, unwrap } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
@@ -263,7 +263,8 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function share() {
-    const url = `${window.location.protocol}//${window.location.host}/e/${hexToBech32("note", ev.Id)}`;
+    const link = encodeTLV(ev.Id, NostrPrefix.Event, ev.Original?.relays);
+    const url = `${window.location.protocol}//${window.location.host}/e/${link}`;
     if ("share" in window.navigator) {
       await window.navigator.share({
         title: "Snort",
@@ -298,7 +299,8 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function copyId() {
-    await navigator.clipboard.writeText(hexToBech32("note", ev.Id));
+    const link = encodeTLV(ev.Id, NostrPrefix.Event, ev.Original?.relays);
+    await navigator.clipboard.writeText(link);
   }
 
   async function pin(id: HexKey) {
