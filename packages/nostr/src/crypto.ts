@@ -1,6 +1,7 @@
 import * as secp from "@noble/secp256k1"
 import base64 from "base64-js"
 import { bech32 } from "bech32"
+import { NostrError } from "./common"
 
 // TODO Use toHex as well as toString? Might be more explicit
 // Or maybe replace toString with toHex
@@ -90,7 +91,7 @@ export async function schnorrSign(data: Hex, priv: PrivateKey): Promise<Hex> {
 /**
  * Verify that the elliptic curve signature is correct.
  */
-export async function schnorrVerify(
+export function schnorrVerify(
   sig: Hex,
   data: Hex,
   key: PublicKey
@@ -104,7 +105,7 @@ export async function aesEncryptBase64(
   plaintext: string
 ): Promise<AesEncryptedBase64> {
   const sharedPoint = secp.getSharedSecret(sender, "02" + recipient)
-  const sharedKey = sharedPoint.slice(2, 33)
+  const sharedKey = sharedPoint.slice(1, 33)
   if (typeof window === "object") {
     const key = await window.crypto.subtle.importKey(
       "raw",
@@ -141,7 +142,7 @@ export async function aesEncryptBase64(
     )
     let encrypted = cipher.update(plaintext, "utf8", "base64")
     // TODO Could save an allocation here by avoiding the +=
-    encrypted += cipher.final()
+    encrypted += cipher.final("base64")
     return {
       data: encrypted,
       iv: Buffer.from(iv.buffer).toString("base64"),
@@ -155,10 +156,10 @@ export async function aesDecryptBase64(
   { data, iv }: AesEncryptedBase64
 ): Promise<string> {
   const sharedPoint = secp.getSharedSecret(recipient, "02" + sender)
-  const sharedKey = sharedPoint.slice(2, 33)
+  const sharedKey = sharedPoint.slice(1, 33)
   if (typeof window === "object") {
     // TODO Can copy this from the legacy code
-    throw new Error("todo")
+    throw new NostrError("todo")
   } else {
     const crypto = await import("crypto")
     const decipher = crypto.createDecipheriv(
