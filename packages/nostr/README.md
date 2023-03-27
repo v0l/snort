@@ -9,10 +9,10 @@ A strongly-typed nostr client for Node and the browser.
 The goal of the project is to have all of the following implemented
 and tested against a real-world relay implementation.
 
-_Progress: 6/34 (18%)._
+_Progress: 7/34 (20%)._
 
 - [X] NIP-01: Basic protocol flow description
-- [ ] NIP-02: Contact List and Petnames
+- [X] NIP-02: Contact List and Petnames
 - [ ] NIP-03: OpenTimestamps Attestations for Events
 - [X] NIP-04: Encrypted Direct Message
 - [ ] NIP-05: Mapping Nostr keys to DNS-based internet identifiers
