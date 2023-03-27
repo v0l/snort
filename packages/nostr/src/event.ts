@@ -1,4 +1,3 @@
-import { ProtocolError } from "./error"
 import {
   PublicKey,
   PrivateKey,
@@ -12,7 +11,7 @@ import {
   parsePrivateKey,
   aesEncryptBase64,
 } from "./crypto"
-import { defined, unixTimestamp } from "./util"
+import { defined, Timestamp, unixTimestamp, NostrError } from "./common"
 
 // TODO Add remaining event types
 
@@ -40,11 +39,13 @@ export enum EventKind {
 export interface RawEvent {
   id: string
   pubkey: PublicKey
-  created_at: number
+  created_at: Timestamp
   kind: EventKind
   tags: string[][]
   content: string
   sig: string
+
+  [key: string]: unknown
 }
 
 interface SetMetadata extends RawEvent {
@@ -100,20 +101,24 @@ export type EventId = string
 /**
  * An unsigned event.
  */
-export type Unsigned<T extends Event | RawEvent> = Omit<
-  T,
-  "id" | "pubkey" | "sig" | "created_at"
-> & {
-  id?: EventId
+export type Unsigned<T extends Event | RawEvent> = {
+  [Property in keyof UnsignedWithPubkey<T> as Exclude<
+    Property,
+    "pubkey"
+  >]: T[Property]
+} & {
   pubkey?: PublicKey
-  sig?: string
-  created_at?: number
 }
 
-type UnsignedWithPubkey<T extends Event | RawEvent> = Omit<
-  T,
-  "id" | "sig" | "created_at"
-> & {
+/**
+ * Same as @see {@link Unsigned}, but with the pubkey field.
+ */
+type UnsignedWithPubkey<T extends Event | RawEvent> = {
+  [Property in keyof T as Exclude<
+    Property,
+    "id" | "sig" | "created_at"
+  >]: T[Property]
+} & {
   id?: EventId
   sig?: string
   created_at?: number
@@ -131,13 +136,16 @@ export async function signEvent<T extends Event | RawEvent>(
   if (priv !== undefined) {
     priv = parsePrivateKey(priv)
     event.pubkey = getPublicKey(priv)
-    const id = await serializeEventId(event as UnsignedWithPubkey<T>)
+    const id = await serializeEventId(
+      // This conversion is safe because the pubkey field is set above.
+      event as unknown as UnsignedWithPubkey<T>
+    )
     event.id = id
     event.sig = await schnorrSign(id, priv)
     return event as T
   } else {
     // TODO Try to use NIP-07, otherwise throw
-    throw new Error("todo")
+    throw new NostrError("todo")
   }
 }
 
@@ -195,16 +203,14 @@ export async function createDirectMessage({
 export async function parseEvent(event: RawEvent): Promise<Event> {
   // TODO Validate all the fields. Lowercase hex fields, etc. Make sure everything is correct.
   if (event.id !== (await serializeEventId(event))) {
-    throw new ProtocolError(
+    throw new NostrError(
       `invalid id ${event.id} for event ${JSON.stringify(
         event
       )}, expected ${await serializeEventId(event)}`
     )
   }
   if (!(await schnorrVerify(event.sig, event.id, event.pubkey))) {
-    throw new ProtocolError(
-      `invalid signature for event ${JSON.stringify(event)}`
-    )
+    throw new NostrError(`invalid signature for event ${JSON.stringify(event)}`)
   }
 
   if (event.kind === EventKind.TextNote) {
@@ -259,7 +265,7 @@ function getUserMetadata(this: Unsigned<RawEvent>): UserMetadata {
     typeof userMetadata.about !== "string" ||
     typeof userMetadata.picture !== "string"
   ) {
-    throw new ProtocolError(
+    throw new NostrError(
       `invalid user metadata ${userMetadata} in ${JSON.stringify(this)}`
     )
   }
@@ -275,11 +281,11 @@ async function getMessage(
   }
   const [data, iv] = this.content.split("?iv=")
   if (data === undefined || iv === undefined) {
-    throw new ProtocolError(`invalid direct message content ${this.content}`)
+    throw new NostrError(`invalid direct message content ${this.content}`)
   }
   if (priv === undefined) {
     // TODO Try to use NIP-07
-    throw new Error("todo")
+    throw new NostrError("todo")
   } else if (getPublicKey(priv) === this.getRecipient()) {
     return await aesDecryptBase64(this.pubkey, priv, { data, iv })
   }
@@ -289,7 +295,7 @@ async function getMessage(
 function getRecipient(this: Unsigned<RawEvent>): PublicKey {
   const recipientTag = this.tags.find((tag) => tag[0] === "p")
   if (typeof recipientTag?.[1] !== "string") {
-    throw new ProtocolError(
+    throw new NostrError(
       `expected "p" tag to be of type string, but got ${
         recipientTag?.[1]
       } in ${JSON.stringify(this)}`
@@ -301,7 +307,7 @@ function getRecipient(this: Unsigned<RawEvent>): PublicKey {
 function getPrevious(this: Unsigned<RawEvent>): EventId | undefined {
   const previousTag = this.tags.find((tag) => tag[0] === "e")
   if (typeof previousTag?.[1] !== "string") {
-    throw new ProtocolError(
+    throw new NostrError(
       `expected "e" tag to be of type string, but got ${
         previousTag?.[1]
       } in ${JSON.stringify(this)}`
@@ -314,7 +320,7 @@ function parseJson(data: string) {
   try {
     return JSON.parse(data)
   } catch (e) {
-    throw new ProtocolError(`invalid json: ${e}: ${data}`)
+    throw new NostrError(`invalid json: ${e}: ${data}`)
   }
 }
 

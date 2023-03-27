@@ -1,6 +1,7 @@
 import * as secp from "@noble/secp256k1"
 import base64 from "base64-js"
 import { bech32 } from "bech32"
+import { NostrError } from "./common"
 
 // TODO Use toHex as well as toString? Might be more explicit
 // Or maybe replace toString with toHex
@@ -158,7 +159,7 @@ export async function aesDecryptBase64(
   const sharedKey = sharedPoint.slice(1, 33)
   if (typeof window === "object") {
     // TODO Can copy this from the legacy code
-    throw new Error("todo")
+    throw new NostrError("todo")
   } else {
     const crypto = await import("crypto")
     const decipher = crypto.createDecipheriv(

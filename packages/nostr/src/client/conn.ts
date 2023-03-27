@@ -1,8 +1,8 @@
-import { ProtocolError } from "../error"
-import { Filters, SubscriptionId } from "."
+import { NostrError } from "../common"
+import { SubscriptionId } from "."
 import { EventId, RawEvent } from "../event"
 import WebSocket from "isomorphic-ws"
-import { unixTimestamp } from "../util"
+import { Filters } from "../filters"
 
 /**
  * The connection to a relay. This is the lowest layer of the nostr protocol.
@@ -38,24 +38,24 @@ export class Conn {
     onError,
   }: {
     url: URL
-    onMessage: (msg: IncomingMessage) => void
-    onOpen: () => void | Promise<void>
-    onClose: () => void | Promise<void>
+    onMessage: (msg: IncomingMessage) => Promise<void>
+    onOpen: () => Promise<void>
+    onClose: () => void
     onError: (err: unknown) => void
   }) {
     this.#onError = onError
     this.#socket = new WebSocket(url)
 
     // Handle incoming messages.
-    this.#socket.addEventListener("message", (msgData) => {
+    this.#socket.addEventListener("message", async (msgData) => {
       try {
         const value = msgData.data.valueOf()
         // Validate and parse the message.
         if (typeof value !== "string") {
-          throw new ProtocolError(`invalid message data: ${value}`)
+          throw new NostrError(`invalid message data: ${value}`)
         }
         const msg = parseIncomingMessage(value)
-        onMessage(msg)
+        await onMessage(msg)
       } catch (err) {
         onError(err)
       }
@@ -68,21 +68,15 @@ export class Conn {
           this.send(msg)
         }
         this.#pending = []
-        const result = onOpen()
-        if (result instanceof Promise) {
-          await result
-        }
+        await onOpen()
       } catch (e) {
         onError(e)
       }
     })
 
-    this.#socket.addEventListener("close", async () => {
+    this.#socket.addEventListener("close", () => {
       try {
-        const result = onClose()
-        if (result instanceof Promise) {
-          await result
-        }
+        onClose()
       } catch (e) {
         onError(e)
       }
@@ -91,11 +85,11 @@ export class Conn {
   }
 
   send(msg: OutgoingMessage): void {
-    if (this.#socket.readyState < WebSocket.OPEN) {
-      this.#pending.push(msg)
-      return
-    }
     try {
+      if (this.#socket.readyState < WebSocket.OPEN) {
+        this.#pending.push(msg)
+        return
+      }
       this.#socket.send(serializeOutgoingMessage(msg), (err) => {
         if (err !== undefined && err !== null) {
           this.#onError?.(err)
@@ -204,70 +198,39 @@ export interface OutgoingCloseSubscription {
   id: SubscriptionId
 }
 
-interface RawFilters {
-  ids?: string[]
-  authors?: string[]
-  kinds?: number[]
-  ["#e"]?: string[]
-  ["#p"]?: string[]
-  since?: number
-  until?: number
-  limit?: number
-}
-
 function serializeOutgoingMessage(msg: OutgoingMessage): string {
   if (msg.kind === "event") {
     return JSON.stringify(["EVENT", msg.event])
   } else if (msg.kind === "openSubscription") {
-    return JSON.stringify([
-      "REQ",
-      msg.id.toString(),
-      ...serializeFilters(msg.filters),
-    ])
+    // If there are no filters, the client is expected to specify a single empty filter.
+    const filters = msg.filters.length === 0 ? [{}] : msg.filters
+    return JSON.stringify(["REQ", msg.id.toString(), ...filters])
   } else if (msg.kind === "closeSubscription") {
     return JSON.stringify(["CLOSE", msg.id.toString()])
   } else {
-    throw new Error(`invalid message: ${JSON.stringify(msg)}`)
+    throw new NostrError(`invalid message: ${JSON.stringify(msg)}`)
   }
-}
-
-function serializeFilters(filters: Filters[]): RawFilters[] {
-  if (filters.length === 0) {
-    return [{}]
-  }
-  return filters.map((filter) => ({
-    ids: filter.ids,
-    authors: filter.authors,
-    kinds: filter.kinds,
-    ["#e"]: filter.eventTags,
-    ["#p"]: filter.pubkeyTags,
-    since:
-      filter.since instanceof Date ? unixTimestamp(filter.since) : filter.since,
-    until:
-      filter.until instanceof Date ? unixTimestamp(filter.until) : filter.until,
-    limit: filter.limit,
-  }))
 }
 
 function parseIncomingMessage(data: string): IncomingMessage {
   // Parse the incoming data as a nonempty JSON array.
   const json = parseJson(data)
   if (!(json instanceof Array)) {
-    throw new ProtocolError(`incoming message is not an array: ${data}`)
+    throw new NostrError(`incoming message is not an array: ${data}`)
   }
   if (json.length === 0) {
-    throw new ProtocolError(`incoming message is an empty array: ${data}`)
+    throw new NostrError(`incoming message is an empty array: ${data}`)
   }
 
   // Handle incoming events.
   if (json[0] === "EVENT") {
     if (typeof json[1] !== "string") {
-      throw new ProtocolError(
+      throw new NostrError(
         `second element of "EVENT" should be a string, but wasn't: ${data}`
       )
     }
     if (typeof json[2] !== "object") {
-      throw new ProtocolError(
+      throw new NostrError(
         `second element of "EVENT" should be an object, but wasn't: ${data}`
       )
     }
@@ -282,7 +245,7 @@ function parseIncomingMessage(data: string): IncomingMessage {
   // Handle incoming notices.
   if (json[0] === "NOTICE") {
     if (typeof json[1] !== "string") {
-      throw new ProtocolError(
+      throw new NostrError(
         `second element of "NOTICE" should be a string, but wasn't: ${data}`
       )
     }
@@ -295,17 +258,17 @@ function parseIncomingMessage(data: string): IncomingMessage {
   // Handle incoming "OK" messages.
   if (json[0] === "OK") {
     if (typeof json[1] !== "string") {
-      throw new ProtocolError(
+      throw new NostrError(
         `second element of "OK" should be a string, but wasn't: ${data}`
       )
     }
     if (typeof json[2] !== "boolean") {
-      throw new ProtocolError(
+      throw new NostrError(
         `third element of "OK" should be a boolean, but wasn't: ${data}`
       )
     }
     if (typeof json[3] !== "string") {
-      throw new ProtocolError(
+      throw new NostrError(
         `fourth element of "OK" should be a string, but wasn't: ${data}`
       )
     }
@@ -320,7 +283,7 @@ function parseIncomingMessage(data: string): IncomingMessage {
   // Handle incoming "EOSE" messages.
   if (json[0] === "EOSE") {
     if (typeof json[1] !== "string") {
-      throw new ProtocolError(
+      throw new NostrError(
         `second element of "EOSE" should be a string, but wasn't: ${data}`
       )
     }
@@ -338,7 +301,7 @@ function parseIncomingMessage(data: string): IncomingMessage {
     }
   }
 
-  throw new ProtocolError(`unknown incoming message: ${data}`)
+  throw new NostrError(`unknown incoming message: ${data}`)
 }
 
 function parseEventData(json: { [key: string]: unknown }): RawEvent {
@@ -354,7 +317,7 @@ function parseEventData(json: { [key: string]: unknown }): RawEvent {
     typeof json["content"] !== "string" ||
     typeof json["sig"] !== "string"
   ) {
-    throw new ProtocolError(`invalid event: ${JSON.stringify(json)}`)
+    throw new NostrError(`invalid event: ${JSON.stringify(json)}`)
   }
   return json as unknown as RawEvent
 }
@@ -363,6 +326,6 @@ function parseJson(data: string) {
   try {
     return JSON.parse(data)
   } catch (e) {
-    throw new ProtocolError(`invalid event json: ${data}`)
+    throw new NostrError(`invalid event json: ${data}`)
   }
 }

@@ -1,4 +1,10 @@
-import { createTextNote, EventKind, signEvent } from "../src/event"
+import {
+  createTextNote,
+  EventKind,
+  signEvent,
+  TextNote,
+  Unsigned,
+} from "../src/event"
 import { parsePublicKey } from "../src/crypto"
 import assert from "assert"
 import { setup } from "./setup"
@@ -41,7 +47,10 @@ describe("text note", () => {
 
           // TODO No signEvent, have a convenient way to do this
           signEvent(
-            { ...createTextNote(note), created_at: timestamp },
+            {
+              ...createTextNote(note),
+              created_at: timestamp,
+            } as Unsigned<TextNote>,
             publisherSecret
           ).then((event) => publisher.publish(event))
         })
@@ -55,10 +64,10 @@ describe("text note", () => {
       // TODO No signEvent, have a convenient way to do this
       signEvent(createTextNote(note), publisherSecret).then((event) => {
         publisher.on("ok", (params, nostr) => {
-          assert.equal(nostr, publisher)
-          assert.equal(params.eventId, event.id)
-          assert.equal(params.relay.toString(), url.toString())
-          assert.equal(params.ok, true)
+          assert.strictEqual(nostr, publisher)
+          assert.strictEqual(params.eventId, event.id)
+          assert.strictEqual(params.relay.toString(), url.toString())
+          assert.strictEqual(params.ok, true)
           done()
         })
 

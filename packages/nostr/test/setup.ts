@@ -1,5 +1,5 @@
 import { Nostr } from "../src/client"
-import { unixTimestamp } from "../src/util"
+import { Timestamp, unixTimestamp } from "../src/common"
 
 export const relayUrl = new URL("ws://localhost:12648")
 
@@ -10,7 +10,7 @@ export interface Setup {
   subscriber: Nostr
   subscriberSecret: string
   subscriberPubkey: string
-  timestamp: number
+  timestamp: Timestamp
   url: URL
   /**
    * Signal that the test is done. Call this instead of the callback provided by
