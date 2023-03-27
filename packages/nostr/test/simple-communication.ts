@@ -2,11 +2,7 @@ import { Nostr } from "../src/client"
 import { createTextNote, EventKind, signEvent } from "../src/event"
 import { getPublicKey } from "../src/crypto"
 import assert from "assert"
-import { EventParams } from "../src/client/emitter"
 import { unixTimestamp } from "../src/util"
-
-// TODO Switch out the relay implementation and see if the issue persists
-// TODO Do on("error", done) for all of these
 
 describe("simple communication", function () {
   const secret =
@@ -30,37 +26,39 @@ describe("simple communication", function () {
   })
 
   it("publish and receive", function (done) {
-    function listener({ event }: EventParams, nostr: Nostr) {
+    subscriber.on("error", done)
+    publisher.on("error", done)
+
+    // Expect the test event.
+    subscriber.on("event", ({ event }, nostr) => {
       assert.equal(nostr, subscriber)
       assert.equal(event.kind, EventKind.TextNote)
       assert.equal(event.pubkey, pubkey)
       assert.equal(event.created_at, timestamp)
       assert.equal(event.content, note)
 
-      // There is a bug with the nostr relay used for testing where if the publish and
-      // subscribe happen at the same time, the same event might end up being broadcast twice.
-      // To prevent reacting to the same event and calling done() twice, remove the callback
-      // for future events.
-      subscriber.off("event", listener)
-
       done()
-    }
+    })
 
-    // TODO do this once EOSE is implemented
-    //subscriber.on("error", done)
-    //publisher.on("error", done)
+    const subscriptionId = subscriber.subscribe([])
 
-    subscriber.on("event", listener)
-    subscriber.subscribe([])
-    signEvent(
-      {
-        ...createTextNote(note),
-        tags: [],
-      },
-      secret
-    ).then((event) => publisher.publish(event))
+    // After the subscription event sync is done, publish the test event.
+    subscriber.on("eose", (id, nostr) => {
+      assert.equal(nostr, subscriber)
+      assert.equal(id, subscriptionId)
+
+      signEvent(
+        {
+          ...createTextNote(note),
+          tags: [],
+        },
+        secret
+      ).then((event) => publisher.publish(event))
+    })
   })
 
+  // TODO Have a way to run the relay on-demand and then re-add this test
+  /*
   it("publish and ok", function (done) {
     signEvent(
       {
@@ -80,4 +78,5 @@ describe("simple communication", function () {
       publisher.publish(event)
     })
   })
+  */
 })
