@@ -111,11 +111,24 @@ export default function HyperText({ link, creator }: { link: string; creator: He
               </a>
             );
         }
-      } else if (tweetId) {
+      } else if (tweetId && !pref.rewriteTwitterPosts) {
         return (
           <div className="tweet" key={tweetId}>
             <TwitterTweetEmbed tweetId={tweetId} />
           </div>
+        );
+      } else if (pref.rewriteTwitterPosts && url.hostname == "twitter.com") {
+        url.host = "nitter.net";
+        return (
+          <a
+            key={url.toString()}
+            href={url.toString()}
+            onClick={e => e.stopPropagation()}
+            target="_blank"
+            rel="noreferrer"
+            className="ext">
+            {url.toString()}
+          </a>
         );
       } else if (youtubeId) {
         return (

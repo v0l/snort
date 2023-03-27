@@ -61,4 +61,6 @@ export default defineMessages({
   Nip05: { defaultMessage: "NIP-05" },
   ReactionEmoji: { defaultMessage: "Reaction emoji" },
   ReactionEmojiHelp: { defaultMessage: "Emoji to send when reactiong to a note" },
+  RewriteTwitterPosts: { defaultMessage: "Nitter Rewrite" },
+  RewriteTwitterPostsHelp: { defaultMessage: "Rewrite Twitter links to Nitter links" },
 });
