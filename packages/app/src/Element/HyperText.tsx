@@ -117,7 +117,7 @@ export default function HyperText({ link, creator }: { link: string; creator: He
           </div>
         );
       } else if (pref.rewriteTwitterPosts && url.hostname == "twitter.com") {
-        url.host = "nitter.at";
+        url.host = "nitter.net";
         return (
           <a
             key={url.toString()}
