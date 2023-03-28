@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
 async function fetchUrlPreviewInfo(url: string) {
+  // Hardcoded the dufflepud url here only for initial testing by Snort devs,
+  // will be more ideal for Snort to deploy its own instance of Dufflepud
+  // and link to it in an .env to not bombard dufflepud.onrender.com , which is
+  // Coracle's instance. Repo: https://github.com/staab/dufflepud
   const res = await fetch("http://dufflepud.onrender.com/link/preview", {
     method: "POST",
     body: JSON.stringify({ url }),
@@ -31,10 +35,12 @@ const LinkPreview = ({ url }: { url: string }) => {
       .catch(console.error);
   }, [url]);
   return (
-    <a href={url}>
-      <img src={previewImage}></img>
-      <p>{previewtitle}</p>
-    </a>
+    <div className="link-preview-container">
+      <a href={url}>
+        <img src={previewImage} className="link-preview-image"></img>
+        <p className="link-preview-title">{previewtitle}</p>
+      </a>
+    </div>
   );
 };
 
