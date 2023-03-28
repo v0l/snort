@@ -1,14 +1,13 @@
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import * as secp from "@noble/secp256k1";
+import { EventKind, RelaySettings, TaggedRawEvent, HexKey, RawEvent, u256, UserMetadata, Lists } from "@snort/nostr";
 
-import { TaggedRawEvent } from "@snort/nostr";
-import { EventKind, Tag, Event as NEvent, RelaySettings } from "@snort/nostr";
 import { RootState } from "State/Store";
-import { HexKey, RawEvent, u256, UserMetadata, Lists } from "@snort/nostr";
 import { bech32ToHex, delay, unwrap } from "Util";
 import { DefaultRelays, HashtagRegex } from "Const";
 import { System } from "System";
-import { useMemo } from "react";
+import { EventExt } from "System/EventExt";
 
 declare global {
   interface Window {
@@ -33,26 +32,27 @@ export default function useEventPublisher() {
   const relays = useSelector((s: RootState) => s.login.relays);
   const hasNip07 = "nostr" in window;
 
-  async function signEvent(ev: NEvent): Promise<NEvent> {
+  async function signEvent(ev: RawEvent): Promise<RawEvent> {
     if (hasNip07 && !privKey) {
-      ev.Id = ev.CreateId();
-      const tmpEv = (await barrierNip07(() => window.nostr.signEvent(ev.ToObject()))) as RawEvent;
-      return new NEvent(tmpEv as TaggedRawEvent);
+      ev.id = await EventExt.createId(ev);
+      const tmpEv = (await barrierNip07(() => window.nostr.signEvent(ev))) as RawEvent;
+      ev.sig = tmpEv.sig;
+      return ev;
     } else if (privKey) {
-      await ev.Sign(privKey);
+      await EventExt.sign(ev, privKey);
     } else {
       console.warn("Count not sign event, no private keys available");
     }
     return ev;
   }
 
-  function processContent(ev: NEvent, msg: string) {
+  function processContent(ev: RawEvent, msg: string) {
     const replaceNpub = (match: string) => {
       const npub = match.slice(1);
       try {
         const hex = bech32ToHex(npub);
-        const idx = ev.Tags.length;
-        ev.Tags.push(new Tag(["p", hex], idx));
+        const idx = ev.tags.length;
+        ev.tags.push(["p", hex]);
         return `#[${idx}]`;
       } catch (error) {
         return match;
@@ -62,8 +62,8 @@ export default function useEventPublisher() {
       const noteId = match.slice(1);
       try {
         const hex = bech32ToHex(noteId);
-        const idx = ev.Tags.length;
-        ev.Tags.push(new Tag(["e", hex, "", "mention"], idx));
+        const idx = ev.tags.length;
+        ev.tags.push(["e", hex, "", "mention"]);
         return `#[${idx}]`;
       } catch (error) {
         return match;
@@ -71,29 +71,26 @@ export default function useEventPublisher() {
     };
     const replaceHashtag = (match: string) => {
       const tag = match.slice(1);
-      const idx = ev.Tags.length;
-      ev.Tags.push(new Tag(["t", tag.toLowerCase()], idx));
+      ev.tags.push(["t", tag.toLowerCase()]);
       return match;
     };
     const content = msg
       .replace(/@npub[a-z0-9]+/g, replaceNpub)
       .replace(/@note1[acdefghjklmnpqrstuvwxyz023456789]{58}/g, replaceNoteId)
       .replace(HashtagRegex, replaceHashtag);
-    ev.Content = content;
+    ev.content = content;
   }
 
   const ret = {
     nip42Auth: async (challenge: string, relay: string) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.Auth;
-        ev.Content = "";
-        ev.Tags.push(new Tag(["relay", relay], 0));
-        ev.Tags.push(new Tag(["challenge", challenge], 1));
+        const ev = EventExt.forPubKey(pubKey, EventKind.Auth);
+        ev.tags.push(["relay", relay]);
+        ev.tags.push(["challenge", challenge]);
         return await signEvent(ev);
       }
     },
-    broadcast: (ev: NEvent | undefined) => {
+    broadcast: (ev: RawEvent | undefined) => {
       if (ev) {
         console.debug("Sending event: ", ev);
         System.BroadcastEvent(ev);
@@ -104,7 +101,7 @@ export default function useEventPublisher() {
      * If a user removes all the DefaultRelays from their relay list and saves that relay list,
      * When they open the site again we wont see that updated relay list and so it will appear to reset back to the previous state
      */
-    broadcastForBootstrap: (ev: NEvent | undefined) => {
+    broadcastForBootstrap: (ev: RawEvent | undefined) => {
       if (ev) {
         for (const [k] of DefaultRelays) {
           System.WriteOnceToRelay(k, ev);
@@ -114,7 +111,7 @@ export default function useEventPublisher() {
     /**
      * Write event to all given relays.
      */
-    broadcastAll: (ev: NEvent | undefined, relays: string[]) => {
+    broadcastAll: (ev: RawEvent | undefined, relays: string[]) => {
       if (ev) {
         for (const k of relays) {
           System.WriteOnceToRelay(k, ev);
@@ -123,11 +120,10 @@ export default function useEventPublisher() {
     },
     muted: async (keys: HexKey[], priv: HexKey[]) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.PubkeyLists;
-        ev.Tags.push(new Tag(["d", Lists.Muted], ev.Tags.length));
+        const ev = EventExt.forPubKey(pubKey, EventKind.PubkeyLists);
+        ev.tags.push(["d", Lists.Muted]);
         keys.forEach(p => {
-          ev.Tags.push(new Tag(["p", p], ev.Tags.length));
+          ev.tags.push(["p", p]);
         });
         let content = "";
         if (priv.length > 0) {
@@ -136,76 +132,67 @@ export default function useEventPublisher() {
           if (hasNip07 && !privKey) {
             content = await barrierNip07(() => window.nostr.nip04.encrypt(pubKey, plaintext));
           } else if (privKey) {
-            content = await ev.EncryptData(plaintext, pubKey, privKey);
+            content = await EventExt.encryptData(plaintext, pubKey, privKey);
           }
         }
-        ev.Content = content;
+        ev.content = content;
         return await signEvent(ev);
       }
     },
     pinned: async (notes: HexKey[]) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.NoteLists;
-        ev.Tags.push(new Tag(["d", Lists.Pinned], ev.Tags.length));
+        const ev = EventExt.forPubKey(pubKey, EventKind.NoteLists);
+        ev.tags.push(["d", Lists.Pinned]);
         notes.forEach(n => {
-          ev.Tags.push(new Tag(["e", n], ev.Tags.length));
+          ev.tags.push(["e", n]);
         });
-        ev.Content = "";
         return await signEvent(ev);
       }
     },
     bookmarked: async (notes: HexKey[]) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.NoteLists;
-        ev.Tags.push(new Tag(["d", Lists.Bookmarked], ev.Tags.length));
+        const ev = EventExt.forPubKey(pubKey, EventKind.NoteLists);
+        ev.tags.push(["d", Lists.Bookmarked]);
         notes.forEach(n => {
-          ev.Tags.push(new Tag(["e", n], ev.Tags.length));
+          ev.tags.push(["e", n]);
         });
-        ev.Content = "";
         return await signEvent(ev);
       }
     },
     tags: async (tags: string[]) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.TagLists;
-        ev.Tags.push(new Tag(["d", Lists.Followed], ev.Tags.length));
+        const ev = EventExt.forPubKey(pubKey, EventKind.TagLists);
+        ev.tags.push(["d", Lists.Followed]);
         tags.forEach(t => {
-          ev.Tags.push(new Tag(["t", t], ev.Tags.length));
+          ev.tags.push(["t", t]);
         });
-        ev.Content = "";
         return await signEvent(ev);
       }
     },
     metadata: async (obj: UserMetadata) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.SetMetadata;
-        ev.Content = JSON.stringify(obj);
+        const ev = EventExt.forPubKey(pubKey, EventKind.SetMetadata);
+        ev.content = JSON.stringify(obj);
         return await signEvent(ev);
       }
     },
     note: async (msg: string) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.TextNote;
+        const ev = EventExt.forPubKey(pubKey, EventKind.TextNote);
         processContent(ev, msg);
         return await signEvent(ev);
       }
     },
     zap: async (amount: number, author: HexKey, note?: HexKey, msg?: string) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.ZapRequest;
+        const ev = EventExt.forPubKey(pubKey, EventKind.ZapRequest);
         if (note) {
-          ev.Tags.push(new Tag(["e", note], ev.Tags.length));
+          ev.tags.push(["e", note]);
         }
-        ev.Tags.push(new Tag(["p", author], ev.Tags.length));
+        ev.tags.push(["p", author]);
         const relayTag = ["relays", ...Object.keys(relays).map(a => a.trim())];
-        ev.Tags.push(new Tag(relayTag, ev.Tags.length));
-        ev.Tags.push(new Tag(["amount", amount.toString()], ev.Tags.length));
+        ev.tags.push(relayTag);
+        ev.tags.push(["amount", amount.toString()]);
         processContent(ev, msg || "");
         return await signEvent(ev);
       }
@@ -213,57 +200,54 @@ export default function useEventPublisher() {
     /**
      * Reply to a note
      */
-    reply: async (replyTo: NEvent, msg: string) => {
+    reply: async (replyTo: TaggedRawEvent, msg: string) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.TextNote;
+        const ev = EventExt.forPubKey(pubKey, EventKind.TextNote);
 
-        const thread = replyTo.Thread;
+        const thread = EventExt.extractThread(ev);
         if (thread) {
-          if (thread.Root || thread.ReplyTo) {
-            ev.Tags.push(new Tag(["e", thread.Root?.Event ?? thread.ReplyTo?.Event ?? "", "", "root"], ev.Tags.length));
+          if (thread.root || thread.replyTo) {
+            ev.tags.push(["e", thread.root?.Event ?? thread.replyTo?.Event ?? "", "", "root"]);
           }
-          ev.Tags.push(new Tag(["e", replyTo.Id, "", "reply"], ev.Tags.length));
+          ev.tags.push(["e", replyTo.id, replyTo.relays[0] ?? "", "reply"]);
 
           // dont tag self in replies
-          if (replyTo.PubKey !== pubKey) {
-            ev.Tags.push(new Tag(["p", replyTo.PubKey], ev.Tags.length));
+          if (replyTo.pubkey !== pubKey) {
+            ev.tags.push(["p", replyTo.pubkey]);
           }
 
-          for (const pk of thread.PubKeys) {
+          for (const pk of thread.pubKeys) {
             if (pk === pubKey) {
               continue; // dont tag self in replies
             }
-            ev.Tags.push(new Tag(["p", pk], ev.Tags.length));
+            ev.tags.push(["p", pk]);
           }
         } else {
-          ev.Tags.push(new Tag(["e", replyTo.Id, "", "reply"], 0));
+          ev.tags.push(["e", replyTo.id, "", "reply"]);
           // dont tag self in replies
-          if (replyTo.PubKey !== pubKey) {
-            ev.Tags.push(new Tag(["p", replyTo.PubKey], ev.Tags.length));
+          if (replyTo.pubkey !== pubKey) {
+            ev.tags.push(["p", replyTo.pubkey]);
           }
         }
         processContent(ev, msg);
         return await signEvent(ev);
       }
     },
-    react: async (evRef: NEvent, content = "+") => {
+    react: async (evRef: RawEvent, content = "+") => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.Reaction;
-        ev.Content = content;
-        ev.Tags.push(new Tag(["e", evRef.Id], 0));
-        ev.Tags.push(new Tag(["p", evRef.PubKey], 1));
+        const ev = EventExt.forPubKey(pubKey, EventKind.Reaction);
+        ev.content = content;
+        ev.tags.push(["e", evRef.id]);
+        ev.tags.push(["p", evRef.pubkey]);
         return await signEvent(ev);
       }
     },
     saveRelays: async () => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.ContactList;
-        ev.Content = JSON.stringify(relays);
+        const ev = EventExt.forPubKey(pubKey, EventKind.ContactList);
+        ev.content = JSON.stringify(relays);
         for (const pk of follows) {
-          ev.Tags.push(new Tag(["p", pk], ev.Tags.length));
+          ev.tags.push(["p", pk]);
         }
 
         return await signEvent(ev);
@@ -271,9 +255,7 @@ export default function useEventPublisher() {
     },
     saveRelaysSettings: async () => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.Relays;
-        ev.Content = "";
+        const ev = EventExt.forPubKey(pubKey, EventKind.Relays);
         for (const [url, settings] of Object.entries(relays)) {
           const rTag = ["r", url];
           if (settings.read && !settings.write) {
@@ -282,16 +264,15 @@ export default function useEventPublisher() {
           if (settings.write && !settings.read) {
             rTag.push("write");
           }
-          ev.Tags.push(new Tag(rTag, ev.Tags.length));
+          ev.tags.push(rTag);
         }
         return await signEvent(ev);
       }
     },
     addFollow: async (pkAdd: HexKey | HexKey[], newRelays?: Record<string, RelaySettings>) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.ContactList;
-        ev.Content = JSON.stringify(newRelays ?? relays);
+        const ev = EventExt.forPubKey(pubKey, EventKind.ContactList);
+        ev.content = JSON.stringify(newRelays ?? relays);
         const temp = new Set(follows);
         if (Array.isArray(pkAdd)) {
           pkAdd.forEach(a => temp.add(a));
@@ -302,7 +283,7 @@ export default function useEventPublisher() {
           if (pk.length !== 64) {
             continue;
           }
-          ev.Tags.push(new Tag(["p", pk], ev.Tags.length));
+          ev.tags.push(["p", pk.toLowerCase()]);
         }
 
         return await signEvent(ev);
@@ -310,14 +291,13 @@ export default function useEventPublisher() {
     },
     removeFollow: async (pkRemove: HexKey) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.ContactList;
-        ev.Content = JSON.stringify(relays);
+        const ev = EventExt.forPubKey(pubKey, EventKind.ContactList);
+        ev.content = JSON.stringify(relays);
         for (const pk of follows) {
           if (pk === pkRemove || pk.length !== 64) {
             continue;
           }
-          ev.Tags.push(new Tag(["p", pk], ev.Tags.length));
+          ev.tags.push(["p", pk]);
         }
 
         return await signEvent(ev);
@@ -328,39 +308,33 @@ export default function useEventPublisher() {
      */
     delete: async (id: u256) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.Deletion;
-        ev.Content = "";
-        ev.Tags.push(new Tag(["e", id], 0));
+        const ev = EventExt.forPubKey(pubKey, EventKind.Deletion);
+        ev.tags.push(["e", id]);
         return await signEvent(ev);
       }
     },
     /**
      * Repost a note (NIP-18)
      */
-    repost: async (note: NEvent) => {
+    repost: async (note: TaggedRawEvent) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.Repost;
-        ev.Content = JSON.stringify(note.Original);
-        ev.Tags.push(new Tag(["e", note.Id], 0));
-        ev.Tags.push(new Tag(["p", note.PubKey], 1));
+        const ev = EventExt.forPubKey(pubKey, EventKind.Repost);
+        ev.tags.push(["e", note.id, ""]);
+        ev.tags.push(["p", note.pubkey]);
         return await signEvent(ev);
       }
     },
-    decryptDm: async (note: NEvent): Promise<string | undefined> => {
+    decryptDm: async (note: RawEvent): Promise<string | undefined> => {
       if (pubKey) {
-        if (note.PubKey !== pubKey && !note.Tags.some(a => a.PubKey === pubKey)) {
+        if (note.pubkey !== pubKey && !note.tags.some(a => a[1] === pubKey)) {
           return "<CANT DECRYPT>";
         }
         try {
-          const otherPubKey =
-            note.PubKey === pubKey ? unwrap(note.Tags.filter(a => a.Key === "p")[0].PubKey) : note.PubKey;
+          const otherPubKey = note.pubkey === pubKey ? unwrap(note.tags.filter(a => a[0] === "p")[0][1]) : note.pubkey;
           if (hasNip07 && !privKey) {
-            return await barrierNip07(() => window.nostr.nip04.decrypt(otherPubKey, note.Content));
+            return await barrierNip07(() => window.nostr.nip04.decrypt(otherPubKey, note.content));
           } else if (privKey) {
-            await note.DecryptDm(privKey, otherPubKey);
-            return note.Content;
+            return await EventExt.decryptDm(note.content, privKey, otherPubKey);
           }
         } catch (e) {
           console.error("Decryption failed", e);
@@ -370,18 +344,17 @@ export default function useEventPublisher() {
     },
     sendDm: async (content: string, to: HexKey) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = EventKind.DirectMessage;
-        ev.Content = content;
-        ev.Tags.push(new Tag(["p", to], 0));
+        const ev = EventExt.forPubKey(pubKey, EventKind.DirectMessage);
+        ev.content = content;
+        ev.tags.push(["p", to]);
 
         try {
           if (hasNip07 && !privKey) {
             const cx: string = await barrierNip07(() => window.nostr.nip04.encrypt(to, content));
-            ev.Content = cx;
+            ev.content = cx;
             return await signEvent(ev);
           } else if (privKey) {
-            await ev.EncryptDmForPubkey(to, privKey);
+            ev.content = await EventExt.encryptData(content, to, privKey);
             return await signEvent(ev);
           }
         } catch (e) {
@@ -399,9 +372,8 @@ export default function useEventPublisher() {
     },
     generic: async (content: string, kind: EventKind) => {
       if (pubKey) {
-        const ev = NEvent.ForPubKey(pubKey);
-        ev.Kind = kind;
-        ev.Content = content;
+        const ev = EventExt.forPubKey(pubKey, kind);
+        ev.content = content;
         return await signEvent(ev);
       }
     },

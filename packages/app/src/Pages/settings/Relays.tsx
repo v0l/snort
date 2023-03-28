@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -6,16 +6,20 @@ import { randomSample } from "Util";
 import Relay from "Element/Relay";
 import useEventPublisher from "Feed/EventPublisher";
 import { RootState } from "State/Store";
-import { RelaySettings } from "@snort/nostr";
 import { setRelays } from "State/Login";
+import { System } from "System";
 
 import messages from "./messages";
 
 const RelaySettingsPage = () => {
   const dispatch = useDispatch();
   const publisher = useEventPublisher();
-  const relays = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
+  const relays = useSelector((s: RootState) => s.login.relays);
   const [newRelay, setNewRelay] = useState<string>();
+
+  const otherConnections = useMemo(() => {
+    return [...System.Sockets.keys()].filter(a => relays[a] === undefined);
+  }, [relays]);
 
   async function saveRelays() {
     const ev = await publisher.saveRelays();
@@ -84,6 +88,14 @@ const RelaySettingsPage = () => {
         </button>
       </div>
       {addRelay()}
+      <h3>
+        <FormattedMessage defaultMessage="Other Connections" />
+      </h3>
+      <div className="flex f-col mb10">
+        {otherConnections.map(a => (
+          <Relay addr={a} key={a} />
+        ))}
+      </div>
     </>
   );
 };

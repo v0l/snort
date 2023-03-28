@@ -2,9 +2,9 @@ import "./SendSats.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
+import { HexKey, RawEvent } from "@snort/nostr";
 
 import { formatShort } from "Number";
-import { Event, HexKey, Tag } from "@snort/nostr";
 import { RootState } from "State/Store";
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
@@ -14,9 +14,10 @@ import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "LNURL";
 import { chunks, debounce } from "Util";
+import { useWallet } from "Wallet";
+import { EventExt } from "System/EventExt";
 
 import messages from "./messages";
-import { useWallet } from "Wallet";
 
 enum ZapType {
   PublicZap = 1,
@@ -120,7 +121,7 @@ export default function SendSats(props: SendSatsProps) {
   async function loadInvoice() {
     if (!amount || !handler) return null;
 
-    let zap: Event | undefined;
+    let zap: RawEvent | undefined;
     if (author && zapType !== ZapType.NonZap) {
       const ev = await publisher.zap(amount * 1000, author, note, comment);
       if (ev) {
@@ -128,10 +129,10 @@ export default function SendSats(props: SendSatsProps) {
         if (zapType === ZapType.AnonZap) {
           const randomKey = publisher.newKey();
           console.debug("Generated new key for zap: ", randomKey);
-          ev.PubKey = randomKey.publicKey;
-          ev.Id = "";
-          ev.Tags.push(new Tag(["anon"], ev.Tags.length));
-          await ev.Sign(randomKey.privateKey);
+          ev.pubkey = randomKey.publicKey;
+          ev.id = "";
+          ev.tags.push(["anon"]);
+          await EventExt.sign(ev, randomKey.privateKey);
         }
         zap = ev;
       }

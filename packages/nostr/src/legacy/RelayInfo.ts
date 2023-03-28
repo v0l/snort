@@ -8,5 +8,8 @@ export interface RelayInfo {
   version?: string;
   limitation?: {
     payment_required: boolean;
+    max_subscriptions: number;
+    max_filters: number;
+    max_event_tags: number;
   };
 }

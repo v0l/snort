@@ -1,26 +1,29 @@
 import { useMemo } from "react";
-import { HexKey, EventKind, Subscriptions } from "@snort/nostr";
+import { HexKey, EventKind } from "@snort/nostr";
+
 import { parseZap } from "Element/Zap";
-import useSubscription from "./Subscription";
+import { FlatNoteStore, RequestBuilder } from "System";
+import useRequestBuilder from "Hooks/useRequestBuilder";
 
 export default function useZapsFeed(pubkey?: HexKey) {
   const sub = useMemo(() => {
     if (!pubkey) return null;
-    const x = new Subscriptions();
-    x.Id = `zaps:${pubkey.slice(0, 12)}`;
-    x.Kinds = new Set([EventKind.ZapReceipt]);
-    x.PTags = new Set([pubkey]);
-    return x;
+    const b = new RequestBuilder(`zaps:${pubkey.slice(0, 12)}`);
+    b.withFilter().tag("p", [pubkey]).kinds([EventKind.ZapReceipt]);
+    return b;
   }, [pubkey]);
 
-  const zapsFeed = useSubscription(sub, { leaveOpen: false, cache: true });
+  const zapsFeed = useRequestBuilder<FlatNoteStore>(FlatNoteStore, sub);
 
   const zaps = useMemo(() => {
-    const profileZaps = zapsFeed.store.notes
-      .map(parseZap)
-      .filter(z => z.valid && z.receiver === pubkey && z.sender !== pubkey && !z.event);
-    profileZaps.sort((a, b) => b.amount - a.amount);
-    return profileZaps;
+    if (zapsFeed.data) {
+      const profileZaps = zapsFeed.data
+        .map(parseZap)
+        .filter(z => z.valid && z.receiver === pubkey && z.sender !== pubkey && !z.event);
+      profileZaps.sort((a, b) => b.amount - a.amount);
+      return profileZaps;
+    }
+    return [];
   }, [zapsFeed]);
 
   return zaps;

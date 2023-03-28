@@ -1,25 +1,18 @@
-import * as secp from "@noble/secp256k1";
 import { v4 as uuid } from "uuid";
 
-import { Subscriptions } from "./Subscriptions";
-import { default as NEvent } from "./Event";
 import { DefaultConnectTimeout } from "./Const";
 import { ConnectionStats } from "./ConnectionStats";
-import { RawEvent, RawReqFilter, TaggedRawEvent, u256 } from "./index";
+import { RawEvent, RawReqFilter, ReqCommand, TaggedRawEvent, u256 } from "./index";
 import { RelayInfo } from "./RelayInfo";
-import Nips from "./Nips";
 import { unwrap } from "./Util";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
-export type AuthHandler = (
-  challenge: string,
-  relay: string
-) => Promise<NEvent | undefined>;
+export type AuthHandler = (challenge: string, relay: string) => Promise<RawEvent | undefined>;
 
 /**
  * Relay settings
  */
-export type RelaySettings = {
+export interface RelaySettings {
   read: boolean;
   write: boolean;
 };
@@ -42,35 +35,36 @@ export type StateSnapshot = {
 export class Connection {
   Id: string;
   Address: string;
-  Socket: WebSocket | null;
-  Pending: Array<RawReqFilter>;
-  Subscriptions: Map<string, Subscriptions>;
+  Socket: WebSocket | null = null;
+
+  PendingRaw: Array<object> = [];
+  PendingRequests: Array<ReqCommand> = [];
+  ActiveRequests: Set<string> = new Set();
+
   Settings: RelaySettings;
   Info?: RelayInfo;
-  ConnectTimeout: number;
-  Stats: ConnectionStats;
-  StateHooks: Map<string, CustomHook>;
-  HasStateChange: boolean;
+  ConnectTimeout: number = DefaultConnectTimeout;
+  Stats: ConnectionStats = new ConnectionStats();
+  StateHooks: Map<string, CustomHook> = new Map();
+  HasStateChange: boolean = true;
   CurrentState: StateSnapshot;
   LastState: Readonly<StateSnapshot>;
   IsClosed: boolean;
   ReconnectTimer: ReturnType<typeof setTimeout> | null;
   EventsCallback: Map<u256, (msg: boolean[]) => void>;
+  OnConnected?: () => void;
+  OnEvent?: (sub: string, e: TaggedRawEvent) => void;
+  OnEose?: (sub: string) => void;
   Auth?: AuthHandler;
   AwaitingAuth: Map<string, boolean>;
   Authed: boolean;
+  Ephemeral: boolean;
+  EphemeralTimeout: ReturnType<typeof setTimeout> | undefined;
 
-  constructor(addr: string, options: RelaySettings, auth?: AuthHandler) {
+  constructor(addr: string, options: RelaySettings, auth?: AuthHandler, ephemeral: boolean = false) {
     this.Id = uuid();
     this.Address = addr;
-    this.Socket = null;
-    this.Pending = [];
-    this.Subscriptions = new Map();
     this.Settings = options;
-    this.ConnectTimeout = DefaultConnectTimeout;
-    this.Stats = new ConnectionStats();
-    this.StateHooks = new Map();
-    this.HasStateChange = true;
     this.CurrentState = {
       connected: false,
       disconnects: 0,
@@ -87,13 +81,29 @@ export class Connection {
     this.AwaitingAuth = new Map();
     this.Authed = false;
     this.Auth = auth;
+    this.Ephemeral = ephemeral;
+
+    if (this.Ephemeral) {
+      this.ResetEphemeralTimeout();
+    }
+  }
+
+  ResetEphemeralTimeout() {
+    if (this.EphemeralTimeout) {
+      clearTimeout(this.EphemeralTimeout);
+    }
+    if (this.Ephemeral) {
+      this.EphemeralTimeout = setTimeout(() => {
+        this.Close();
+      }, 10_000);
+    }
   }
 
   async Connect() {
     try {
       if (this.Info === undefined) {
         const u = new URL(this.Address);
-        const rsp = await fetch(`https://${u.host}`, {
+        const rsp = await fetch(`${u.protocol === "wss:" ? "https:" : "http:"}//${u.host}`, {
           headers: {
             accept: "application/nostr+json",
           },
@@ -101,7 +111,7 @@ export class Connection {
         if (rsp.ok) {
           const data = await rsp.json();
           for (const [k, v] of Object.entries(data)) {
-            if (v === "unset" || v === "") {
+            if (v === "unset" || v === "" || v === "~") {
               data[k] = undefined;
             }
           }
@@ -110,11 +120,6 @@ export class Connection {
       }
     } catch (e) {
       console.warn("Could not load relay information", e);
-    }
-
-    if (this.IsClosed) {
-      this._UpdateState();
-      return;
     }
 
     this.IsClosed = false;
@@ -132,17 +137,18 @@ export class Connection {
       this.ReconnectTimer = null;
     }
     this.Socket?.close();
-    this._UpdateState();
+    this.#UpdateState();
   }
 
   OnOpen() {
     this.ConnectTimeout = DefaultConnectTimeout;
-    this._InitSubscriptions();
     console.log(`[${this.Address}] Open!`);
+    this.OnConnected?.();
   }
 
   OnClose(e: CloseEvent) {
     if (!this.IsClosed) {
+      this.#ResetQueues();
       this.ConnectTimeout = this.ConnectTimeout * 2;
       console.log(
         `[${this.Address}] Closed (${e.reason}), trying again in ${(
@@ -159,7 +165,7 @@ export class Connection {
       console.log(`[${this.Address}] Closed!`);
       this.ReconnectTimer = null;
     }
-    this._UpdateState();
+    this.#UpdateState();
   }
 
   OnMessage(e: MessageEvent) {
@@ -170,17 +176,17 @@ export class Connection {
         case "AUTH": {
           this._OnAuthAsync(msg[1]);
           this.Stats.EventsReceived++;
-          this._UpdateState();
+          this.#UpdateState();
           break;
         }
         case "EVENT": {
-          this._OnEvent(msg[1], msg[2]);
+          this.OnEvent?.(msg[1], msg[2]);
           this.Stats.EventsReceived++;
-          this._UpdateState();
+          this.#UpdateState();
           break;
         }
         case "EOSE": {
-          this._OnEnd(msg[1]);
+          this.OnEose?.(msg[1]);
           break;
         }
         case "OK": {
@@ -208,26 +214,26 @@ export class Connection {
 
   OnError(e: Event) {
     console.error(e);
-    this._UpdateState();
+    this.#UpdateState();
   }
 
   /**
    * Send event on this connection
    */
-  SendEvent(e: NEvent) {
+  SendEvent(e: RawEvent) {
     if (!this.Settings.write) {
       return;
     }
-    const req = ["EVENT", e.ToObject()];
-    this._SendJson(req);
+    const req = ["EVENT", e];
+    this.#SendJson(req);
     this.Stats.EventsSent++;
-    this._UpdateState();
+    this.#UpdateState();
   }
 
   /**
    * Send event on this connection and wait for OK response
    */
-  async SendAsync(e: NEvent, timeout = 5000) {
+  async SendAsync(e: RawEvent, timeout = 5000) {
     return new Promise<void>((resolve) => {
       if (!this.Settings.write) {
         resolve();
@@ -236,51 +242,16 @@ export class Connection {
       const t = setTimeout(() => {
         resolve();
       }, timeout);
-      this.EventsCallback.set(e.Id, () => {
+      this.EventsCallback.set(e.id, () => {
         clearTimeout(t);
         resolve();
       });
 
-      const req = ["EVENT", e.ToObject()];
-      this._SendJson(req);
+      const req = ["EVENT", e];
+      this.#SendJson(req);
       this.Stats.EventsSent++;
-      this._UpdateState();
+      this.#UpdateState();
     });
-  }
-
-  /**
-   * Subscribe to data from this connection
-   */
-  AddSubscription(sub: Subscriptions) {
-    if (!this.Settings.read) {
-      return;
-    }
-
-    // check relay supports search
-    if (sub.Search && !this.SupportsNip(Nips.Search)) {
-      return;
-    }
-
-    if (this.Subscriptions.has(sub.Id)) {
-      return;
-    }
-
-    sub.Started.set(this.Address, new Date().getTime());
-    this._SendSubscription(sub);
-    this.Subscriptions.set(sub.Id, sub);
-  }
-
-  /**
-   * Remove a subscription
-   */
-  RemoveSubscription(subId: string) {
-    if (this.Subscriptions.has(subId)) {
-      const req = ["CLOSE", subId];
-      this._SendJson(req);
-      this.Subscriptions.delete(subId);
-      return true;
-    }
-    return false;
   }
 
   /**
@@ -312,78 +283,79 @@ export class Connection {
     return this.Info?.supported_nips?.some((a) => a === n) ?? false;
   }
 
-  _UpdateState() {
+  /**
+   * Queue or send command to the relay
+   * @param cmd The REQ to send to the server
+   */
+  QueueReq(cmd: ReqCommand) {
+    if (this.ActiveRequests.size >= this.#maxSubscriptions) {
+      this.PendingRequests.push(cmd);
+      console.debug("Queuing:", this.Address, cmd);
+    } else {
+      this.ActiveRequests.add(cmd[1]);
+      this.#SendJson(cmd);
+    }
+  }
+
+  CloseReq(id: string) {
+    if (this.ActiveRequests.delete(id)) {
+      this.#SendJson(["CLOSE", id]);
+      this.#SendQueuedRequests();
+    }
+  }
+
+  #SendQueuedRequests() {
+    const canSend = this.#maxSubscriptions - this.ActiveRequests.size;
+    if (canSend > 0) {
+      for (let x = 0; x < canSend; x++) {
+        const cmd = this.PendingRequests.shift();
+        if (cmd) {
+          this.ActiveRequests.add(cmd[1]);
+          this.#SendJson(cmd);
+          console.debug("Sent pending REQ", this.Address, cmd);
+        }
+      }
+    }
+  }
+
+  #ResetQueues() {
+    this.ActiveRequests.clear();
+    this.PendingRequests = [];
+    this.PendingRaw = [];
+  }
+
+  #UpdateState() {
     this.CurrentState.connected = this.Socket?.readyState === WebSocket.OPEN;
     this.CurrentState.events.received = this.Stats.EventsReceived;
     this.CurrentState.events.send = this.Stats.EventsSent;
     this.CurrentState.avgLatency =
       this.Stats.Latency.length > 0
         ? this.Stats.Latency.reduce((acc, v) => acc + v, 0) /
-          this.Stats.Latency.length
+        this.Stats.Latency.length
         : 0;
     this.CurrentState.disconnects = this.Stats.Disconnects;
     this.CurrentState.info = this.Info;
     this.CurrentState.id = this.Id;
     this.Stats.Latency = this.Stats.Latency.slice(-20); // trim
     this.HasStateChange = true;
-    this._NotifyState();
+    this.#NotifyState();
   }
 
-  _NotifyState() {
+  #NotifyState() {
     const state = this.GetState();
     for (const [, h] of this.StateHooks) {
       h(state);
     }
   }
 
-  _InitSubscriptions() {
-    // send pending
-    for (const p of this.Pending) {
-      this._SendJson(p);
-    }
-    this.Pending = [];
-
-    for (const [, s] of this.Subscriptions) {
-      this._SendSubscription(s);
-    }
-    this._UpdateState();
-  }
-
-  _SendSubscription(sub: Subscriptions) {
-    if (!this.Authed && this.AwaitingAuth.size > 0) {
-      this.Pending.push(sub.ToObject());
-      return;
-    }
-
-    let req = ["REQ", sub.Id, sub.ToObject()];
-    if (sub.OrSubs.length > 0) {
-      req = [...req, ...sub.OrSubs.map((o) => o.ToObject())];
-    }
-    sub.Started.set(this.Address, new Date().getTime());
-    this._SendJson(req);
-  }
-
-  _SendJson(obj: object) {
-    if (this.Socket?.readyState !== WebSocket.OPEN) {
-      this.Pending.push(obj);
+  #SendJson(obj: object) {
+    const authPending = !this.Authed && this.AwaitingAuth.size > 0;
+    if (this.Socket?.readyState !== WebSocket.OPEN || authPending) {
+      this.PendingRaw.push(obj);
       return;
     }
     const json = JSON.stringify(obj);
     this.Socket.send(json);
-  }
-
-  _OnEvent(subId: string, ev: RawEvent) {
-    if (this.Subscriptions.has(subId)) {
-      //this._VerifySig(ev);
-      const tagged: TaggedRawEvent = {
-        ...ev,
-        relays: [this.Address],
-      };
-      this.Subscriptions.get(subId)?.OnEvent(tagged);
-    } else {
-      // console.warn(`No subscription for event! ${subId}`);
-      // ignored for now, track as "dropped event" with connection stats
-    }
   }
 
   async _OnAuthAsync(challenge: string): Promise<void> {
@@ -406,61 +378,23 @@ export class Connection {
         resolve();
       }, 10_000);
 
-      this.EventsCallback.set(authEvent.Id, (msg: boolean[]) => {
+      this.EventsCallback.set(authEvent.id, (msg: boolean[]) => {
         clearTimeout(t);
         authCleanup();
         if (msg.length > 3 && msg[2] === true) {
           this.Authed = true;
-          this._InitSubscriptions();
         }
         resolve();
       });
 
-      const req = ["AUTH", authEvent.ToObject()];
-      this._SendJson(req);
+      const req = ["AUTH", authEvent];
+      this.#SendJson(req);
       this.Stats.EventsSent++;
-      this._UpdateState();
+      this.#UpdateState();
     });
   }
 
-  _OnEnd(subId: string) {
-    const sub = this.Subscriptions.get(subId);
-    if (sub) {
-      const now = new Date().getTime();
-      const started = sub.Started.get(this.Address);
-      sub.Finished.set(this.Address, now);
-      if (started) {
-        const responseTime = now - started;
-        if (responseTime > 10_000) {
-          console.warn(
-            `[${this.Address}][${subId}] Slow response time ${(
-              responseTime / 1000
-            ).toFixed(1)} seconds`
-          );
-        }
-        this.Stats.Latency.push(responseTime);
-      } else {
-        console.warn("No started timestamp!");
-      }
-      sub.OnEnd(this);
-      this._UpdateState();
-    } else {
-      console.warn(`No subscription for end! ${subId}`);
-    }
-  }
-
-  _VerifySig(ev: RawEvent) {
-    const payload = [0, ev.pubkey, ev.created_at, ev.kind, ev.tags, ev.content];
-
-    const payloadData = new TextEncoder().encode(JSON.stringify(payload));
-    if (secp.utils.sha256Sync === undefined) {
-      throw "Cannot verify event, no sync sha256 method";
-    }
-    const data = secp.utils.sha256Sync(payloadData);
-    const hash = secp.utils.bytesToHex(data);
-    if (!secp.schnorr.verifySync(ev.sig, hash, ev.pubkey)) {
-      throw "Sig verify failed";
-    }
-    return ev;
+  get #maxSubscriptions() {
+    return this.Info?.limitation?.max_subscriptions ?? 25;
   }
 }

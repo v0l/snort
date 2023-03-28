@@ -5,6 +5,7 @@ import { HexKey, TaggedRawEvent } from "@snort/nostr";
 import { RelaySettings } from "@snort/nostr";
 import type { AppDispatch, RootState } from "State/Store";
 import { ImgProxySettings } from "Hooks/useImgProxy";
+import { sanitizeRelayUrl } from "Util";
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
@@ -50,11 +51,6 @@ export interface UserPreferences {
    * Ask for confirmation when reposting notes
    */
   confirmReposts: boolean;
-
-  /**
-   * Rewrite Twitter links to Nitter links
-   */
-  rewriteTwitterPosts: boolean;
 
   /**
    * Automatically show the latests notes
@@ -250,7 +246,6 @@ export const InitState = {
     confirmReposts: false,
     showDebugMenus: false,
     autoShowLatest: false,
-    rewriteTwitterPosts: false,
     fileUploader: "void.cat",
     imgProxyConfig: DefaultImgProxy,
     defaultRootTab: "posts",
@@ -364,7 +359,10 @@ const LoginSlice = createSlice({
       const filtered = new Map<string, RelaySettings>();
       for (const [k, v] of Object.entries(relays)) {
         if (k.startsWith("wss://") || k.startsWith("ws://")) {
-          filtered.set(k, v as RelaySettings);
+          const url = sanitizeRelayUrl(k);
+          if (url) {
+            filtered.set(url, v as RelaySettings);
+          }
         }
       }
 

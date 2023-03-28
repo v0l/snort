@@ -1,6 +1,9 @@
 import "./Relay.css";
+import { useMemo } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlug,
   faSquareCheck,
@@ -9,16 +12,15 @@ import {
   faPlugCircleXmark,
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
-import useRelayState from "Feed/RelayState";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setRelays } from "State/Login";
-import { RootState } from "State/Store";
 import { RelaySettings } from "@snort/nostr";
 
+import useRelayState from "Feed/RelayState";
+import { setRelays } from "State/Login";
+import { RootState } from "State/Store";
+import { System } from "System";
+import { getRelayName, unwrap } from "Util";
+
 import messages from "./messages";
-import { getRelayName } from "Util";
 
 export interface RelayProps {
   addr: string;
@@ -29,7 +31,7 @@ export default function Relay(props: RelayProps) {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const allRelaySettings = useSelector<RootState, Record<string, RelaySettings>>(s => s.login.relays);
-  const relaySettings = allRelaySettings[props.addr];
+  const relaySettings = unwrap(allRelaySettings[props.addr] ?? System.Sockets.get(props.addr)?.Settings ?? {});
   const state = useRelayState(props.addr);
   const name = useMemo(() => getRelayName(props.addr), [props.addr]);
 

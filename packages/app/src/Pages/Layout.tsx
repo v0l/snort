@@ -2,8 +2,12 @@ import "./Layout.css";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
 
-import { randomSample } from "Util";
+import { RelaySettings } from "@snort/nostr";
+import messages from "./messages";
+
+import { bech32ToHex, randomSample } from "Util";
 import Icon from "Icons/Icon";
 import { RootState } from "State/Store";
 import { init, setRelays } from "State/Login";
@@ -11,34 +15,21 @@ import { System } from "System";
 import ProfileImage from "Element/ProfileImage";
 import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
-import { SearchRelays, SnortPubKey } from "Const";
-import useEventPublisher from "Feed/EventPublisher";
 import useModeration from "Hooks/useModeration";
-import { bech32ToHex } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
-import { RelaySettings } from "@snort/nostr";
-import { FormattedMessage } from "react-intl";
-import messages from "./messages";
 import { db } from "Db";
 import { UserCache } from "State/Users/UserCache";
+import { FollowsRelays } from "State/Relays";
+import useEventPublisher from "Feed/EventPublisher";
+import { SnortPubKey } from "Const";
+import SubDebug from "Element/SubDebug";
 
 export default function Layout() {
   const location = useLocation();
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {
-    loggedOut,
-    publicKey,
-    relays,
-    latestNotification,
-    readNotifications,
-    dms,
-    preferences,
-    newUserKey,
-    dmInteraction,
-  } = useSelector((s: RootState) => s.login);
-  const { isMuted } = useModeration();
+  const { loggedOut, publicKey, relays, preferences, newUserKey } = useSelector((s: RootState) => s.login);
   const [pageClass, setPageClass] = useState("page");
   const pub = useEventPublisher();
   useLoginFeed();
@@ -61,35 +52,22 @@ export default function Layout() {
     }
   }, [location]);
 
-  const hasNotifications = useMemo(
-    () => latestNotification > readNotifications,
-    [latestNotification, readNotifications]
-  );
-  const unreadDms = useMemo(
-    () =>
-      publicKey
-        ? totalUnread(
-            dms.filter(a => !isMuted(a.pubkey)),
-            publicKey
-          )
-        : 0,
-    [dms, publicKey, dmInteraction]
-  );
-
   useEffect(() => {
     System.HandleAuth = pub.nip42Auth;
   }, [pub]);
 
   useEffect(() => {
     if (relays) {
-      for (const [k, v] of Object.entries(relays)) {
-        System.ConnectToRelay(k, v);
-      }
-      for (const [k] of System.Sockets) {
-        if (!relays[k] && !SearchRelays.has(k)) {
-          System.DisconnectRelay(k);
+      (async () => {
+        for (const [k, v] of Object.entries(relays)) {
+          await System.ConnectToRelay(k, v);
         }
-      }
+        for (const [k, c] of System.Sockets) {
+          if (!relays[k] && !c.Ephemeral) {
+            System.DisconnectRelay(k);
+          }
+        }
+      })();
     }
   }, [relays]);
 
@@ -124,6 +102,7 @@ export default function Layout() {
       db.ready = a;
       if (a) {
         await UserCache.preload();
+        await FollowsRelays.preload();
       }
       console.debug(`Using db: ${a ? "IndexedDB" : "In-Memory"}`);
       dispatch(init());
@@ -173,44 +152,6 @@ export default function Layout() {
     }
   }, [newUserKey]);
 
-  async function goToNotifications(e: React.MouseEvent) {
-    e.stopPropagation();
-    // request permissions to send notifications
-    if ("Notification" in window) {
-      try {
-        if (Notification.permission !== "granted") {
-          const res = await Notification.requestPermission();
-          console.debug(res);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    navigate("/notifications");
-  }
-
-  function accountHeader() {
-    return (
-      <div className="header-actions">
-        <div className="btn btn-rnd" onClick={() => navigate("/wallet")}>
-          <Icon name="bitcoin" />
-        </div>
-        <div className="btn btn-rnd" onClick={() => navigate("/search")}>
-          <Icon name="search" size={20} />
-        </div>
-        <div className="btn btn-rnd" onClick={() => navigate("/messages")}>
-          <Icon name="envelope" size={20} />
-          {unreadDms > 0 && <span className="has-unread"></span>}
-        </div>
-        <div className="btn btn-rnd" onClick={goToNotifications}>
-          <Icon name="bell" size={20} />
-          {hasNotifications && <span className="has-unread"></span>}
-        </div>
-        <ProfileImage pubkey={publicKey || ""} showUsername={false} />
-      </div>
-    );
-  }
-
   if (typeof loggedOut !== "boolean") {
     return null;
   }
@@ -223,7 +164,7 @@ export default function Layout() {
           </div>
           <div>
             {publicKey ? (
-              accountHeader()
+              <AccountHeader />
             ) : (
               <button type="button" onClick={() => navigate("/login")}>
                 <FormattedMessage {...messages.Login} />
@@ -242,6 +183,65 @@ export default function Layout() {
           <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
         </>
       )}
+      {window.localStorage.getItem("debug") && <SubDebug />}
     </div>
   );
 }
+
+const AccountHeader = () => {
+  const navigate = useNavigate();
+
+  const { isMuted } = useModeration();
+  const { publicKey, latestNotification, readNotifications, dms } = useSelector((s: RootState) => s.login);
+
+  const hasNotifications = useMemo(
+    () => latestNotification > readNotifications,
+    [latestNotification, readNotifications]
+  );
+  const unreadDms = useMemo(
+    () =>
+      publicKey
+        ? totalUnread(
+            dms.filter(a => !isMuted(a.pubkey)),
+            publicKey
+          )
+        : 0,
+    [dms, publicKey]
+  );
+
+  async function goToNotifications(e: React.MouseEvent) {
+    e.stopPropagation();
+    // request permissions to send notifications
+    if ("Notification" in window) {
+      try {
+        if (Notification.permission !== "granted") {
+          const res = await Notification.requestPermission();
+          console.debug(res);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    navigate("/notifications");
+  }
+
+  return (
+    <div className="header-actions">
+      <div className="btn btn-rnd" onClick={() => navigate("/wallet")}>
+        <Icon name="bitcoin" />
+      </div>
+      <div className="btn btn-rnd" onClick={() => navigate("/search")}>
+        <Icon name="search" />
+      </div>
+      <div className="btn btn-rnd" onClick={() => navigate("/messages")}>
+        <Icon name="envelope" />
+        {unreadDms > 0 && <span className="has-unread"></span>}
+      </div>
+      <div className="btn btn-rnd" onClick={goToNotifications}>
+        <Icon name="bell" />
+        {hasNotifications && <span className="has-unread"></span>}
+      </div>
+      <ProfileImage pubkey={publicKey || ""} showUsername={false} />
+    </div>
+  );
+};

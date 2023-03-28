@@ -1,8 +1,8 @@
-name: Formatting
+name: Test+Lint
 on:
   pull_request:
 jobs:
-  formatting:
+  test_and_lint:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
@@ -14,5 +14,11 @@ jobs:
           node-version: 16
       - name: Install Dependencies
         run: yarn install
+      - name: Build packages
+        run: yarn workspace @snort/nostr build
+      - name: Run tests
+        run: yarn workspace @snort/app test
+      - name: Check Eslint
+        run: yarn workspace @snort/app eslint
       - name: Check Formatting
         run: yarn workspace @snort/app prettier --check .
