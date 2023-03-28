@@ -27,6 +27,7 @@ import TwitchEmbed from "Element/TwitchEmbed";
 import AppleMusicEmbed from "Element/AppleMusicEmbed";
 import NostrNestsEmbed from "Element/NostrNestsEmbed";
 import WavlakeEmbed from "Element/WavlakeEmbed";
+import LinkPreview from "Element/LinkPreview";
 import NostrLink from "Element/NostrLink";
 
 export default function HyperText({ link, creator }: { link: string; creator: HexKey }) {
@@ -166,11 +167,12 @@ export default function HyperText({ link, creator }: { link: string; creator: He
       } else if (url.protocol === "nostr:" || url.protocol === "web+nostr:") {
         return <NostrLink link={a} />;
       } else {
-        return (
+        return [
           <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
             {a}
-          </a>
-        );
+          </a>,
+          <LinkPreview url={a} />,
+        ];
       }
     } catch (error) {
       // Ignore the error.
