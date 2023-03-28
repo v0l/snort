@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { TaggedRawEvent, EventKind, u256 } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
-import { dedupeByPubkey, findTag, tagFilterOfTextRepost, unixNow } from "Util";
+import { dedupeByPubkey, findTag, tagFilterOfTextRepost } from "Util";
 import ProfileImage from "Element/ProfileImage";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "Feed/TimelineFeed";
 import LoadMore from "Element/LoadMore";

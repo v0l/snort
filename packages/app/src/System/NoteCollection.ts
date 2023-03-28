@@ -3,8 +3,21 @@ import { findTag } from "Util";
 
 export interface StoreSnapshot<TSnapshot> {
   data: TSnapshot | undefined;
-  store: NoteStore;
+  clear: () => void;
+  loading: () => boolean;
+  add: (ev: Readonly<TaggedRawEvent> | Readonly<Array<TaggedRawEvent>>) => void;
 }
+
+export const EmptySnapshot = {
+  data: undefined,
+  clear: () => {
+    // empty
+  },
+  loading: () => true,
+  add: (ev: Readonly<TaggedRawEvent> | Readonly<Array<TaggedRawEvent>>) => {
+    // empty
+  },
+} as StoreSnapshot<FlatNoteStore>;
 
 export type NoteStoreSnapshotData = Readonly<Array<TaggedRawEvent>> | Readonly<TaggedRawEvent>;
 export type NoteStoreHook = () => void;
@@ -20,7 +33,6 @@ export type OnEoseCallbackRelease = () => void;
 export abstract class NoteStore {
   abstract add(ev: Readonly<TaggedRawEvent> | Readonly<Array<TaggedRawEvent>>): void;
   abstract clear(): void;
-  abstract eose(c: string): void;
 
   // react hooks
   abstract hook(cb: NoteStoreHook): NoteStoreHookRelease;
@@ -28,7 +40,6 @@ export abstract class NoteStore {
 
   // events
   abstract onEvent(cb: OnEventCallback): OnEventCallbackRelease;
-  abstract onEose(cb: OnEoseCallback): OnEoseCallback;
 
   abstract get snapshot(): StoreSnapshot<NoteStoreSnapshotData>;
   abstract get loading(): boolean;
@@ -38,10 +49,11 @@ export abstract class NoteStore {
 export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> implements NoteStore {
   #hooks: Array<NoteStoreHook> = [];
   #eventHooks: Array<OnEventCallback> = [];
-  #eoseHooks: Array<OnEoseCallback> = [];
   #loading = true;
   #storeSnapshot: StoreSnapshot<TSnapshot> = {
-    store: this,
+    clear: () => this.clear(),
+    loading: () => this.loading,
+    add: ev => this.add(ev),
     data: undefined,
   };
   #needsSnapshot = true;
@@ -60,14 +72,8 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
     this.onChange([]);
   }
 
-  abstract add(ev: TaggedRawEvent | Array<TaggedRawEvent>): void;
+  abstract add(ev: Readonly<TaggedRawEvent> | Readonly<Array<TaggedRawEvent>>): void;
   abstract clear(): void;
-
-  eose(c: string): void {
-    for (const hkE of this.#eoseHooks) {
-      hkE(c);
-    }
-  }
 
   hook(cb: NoteStoreHook): NoteStoreHookRelease {
     this.#hooks.push(cb);
@@ -90,14 +96,6 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
     };
   }
 
-  onEose(cb: OnEoseCallback): OnEoseCallback {
-    this.#eoseHooks.push(cb);
-    return () => {
-      const idx = this.#eoseHooks.findIndex(a => a === cb);
-      this.#eoseHooks.splice(idx, 1);
-    };
-  }
-
   protected abstract takeSnapshot(): TSnapshot | undefined;
 
   protected onChange(changes: Readonly<Array<TaggedRawEvent>>): void {
@@ -115,8 +113,8 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
   #updateSnapshot() {
     if (this.#needsSnapshot) {
       this.#storeSnapshot = {
+        ...this.#storeSnapshot,
         data: this.takeSnapshot(),
-        store: this,
       };
       this.#needsSnapshot = false;
     }

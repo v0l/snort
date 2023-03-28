@@ -112,11 +112,11 @@ export class NostrSystem {
   OnEndOfStoredEvents(c: Connection, sub: string) {
     const q = this.GetQuery(sub);
     if (q) {
-      q.request.finished = unixNowMs();
-      const f = this.Feeds.get(sub);
+      q.eose(sub, c.Address);
+      const f = this.Feeds.get(q.id);
       if (f) {
-        f.eose(c.Address);
-        f.loading = false;
+        f.loading = q.progress <= 0.5;
+        console.debug(`${sub} loading=${f.loading}, progress=${q.progress}`);
       }
       if (!q.leaveOpen) {
         c.CloseReq(sub);
@@ -255,8 +255,6 @@ export class NostrSystem {
     this.Queries.set(rb.id, q);
     const store = new type();
     this.Feeds.set(rb.id, store);
-    store.onEose(c => console.debug(`[EOSE][${rb.id}]: ${c}`));
-
     this.SendQuery(q);
     this.#changed();
     return store;

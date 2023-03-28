@@ -60,6 +60,7 @@ export class Connection {
   Authed: boolean;
   Ephemeral: boolean;
   EphemeralTimeout: ReturnType<typeof setTimeout> | undefined;
+  Down = true;
 
   constructor(addr: string, options: RelaySettings, auth?: AuthHandler, ephemeral: boolean = false) {
     this.Id = uuid();
@@ -143,6 +144,7 @@ export class Connection {
   OnOpen() {
     this.ConnectTimeout = DefaultConnectTimeout;
     console.log(`[${this.Address}] Open!`);
+    this.Down = false;
     this.OnConnected?.();
   }
 
@@ -300,6 +302,7 @@ export class Connection {
   CloseReq(id: string) {
     if (this.ActiveRequests.delete(id)) {
       this.#SendJson(["CLOSE", id]);
+      this.OnEose?.(id);
       this.#SendQueuedRequests();
     }
   }
@@ -319,6 +322,10 @@ export class Connection {
   }
 
   #ResetQueues() {
+    //send EOSE on disconnect for active subs
+    this.ActiveRequests.forEach(v => this.OnEose?.(v))
+    this.PendingRequests.forEach(v => this.OnEose?.(v[1]));
+
     this.ActiveRequests.clear();
     this.PendingRequests = [];
     this.PendingRaw = [];

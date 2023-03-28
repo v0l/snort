@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { RequestBuilder, System } from "System";
-import { FlatNoteStore, NoteStore, StoreSnapshot } from "System/NoteCollection";
+import { EmptySnapshot, NoteStore, StoreSnapshot } from "System/NoteCollection";
 import { unwrap } from "Util";
 
 const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TStore["getSnapshotData"]>>(
@@ -28,10 +28,6 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
       release();
     };
   };
-  const emptyStore = {
-    data: undefined,
-    store: new FlatNoteStore(),
-  } as StoreSnapshot<TSnapshot>;
   const getState = (): StoreSnapshot<TSnapshot> => {
     if (rb?.id) {
       const feed = System.GetFeed(rb.id);
@@ -39,7 +35,7 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
         return unwrap(feed).snapshot as StoreSnapshot<TSnapshot>;
       }
     }
-    return emptyStore;
+    return EmptySnapshot as StoreSnapshot<TSnapshot>;
   };
   return useSyncExternalStore<StoreSnapshot<TSnapshot>>(
     v => subscribe(v),

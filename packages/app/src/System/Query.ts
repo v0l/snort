@@ -32,6 +32,11 @@ export class Query {
   #sentToRelays: Array<Readonly<Connection>> = [];
 
   /**
+   * When each relay returned EOSE
+   */
+  #eoseRelays: Map<string, number> = new Map();
+
+  /**
    * Leave the query open until its removed
    */
   leaveOpen = false;
@@ -87,5 +92,33 @@ export class Query {
     for (const c of this.#sentToRelays) {
       c.CloseReq(this.id);
     }
+  }
+
+  eose(sub: string, relay: string) {
+    if (sub === this.id) {
+      console.debug(`[EOSE][${sub}] ${relay}`);
+      this.#eoseRelays.set(relay, unixNowMs());
+    } else {
+      const subQ = this.subQueries.find(a => a.id === sub);
+      if (subQ) {
+        subQ.eose(sub, relay);
+      }
+    }
+  }
+
+  /**
+   * Get the progress to EOSE, can be used to determine when we should load more content
+   */
+  get progress() {
+    const thisProgress = this.#eoseRelays.size / this.#sentToRelays.reduce((acc, v) => (acc += v.Down ? 0 : 1), 0);
+    if (this.subQueries.length === 0) {
+      return thisProgress;
+    }
+
+    let totalProgress = thisProgress;
+    for (const sq of this.subQueries) {
+      totalProgress += sq.progress;
+    }
+    return totalProgress / (this.subQueries.length + 1);
   }
 }

@@ -121,8 +121,8 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
   useEffect(() => {
     // clear store if changing relays
-    main.store.clear();
-    latest.store.clear();
+    main.clear();
+    latest.clear();
   }, [options.relay]);
 
   const subNext = useMemo(() => {
@@ -180,7 +180,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     main: main.data,
     related: related.data,
     latest: latest.data,
-    loading: main.store.loading,
+    loading: main.loading(),
     loadMore: () => {
       if (main.data) {
         console.debug("Timeline load more!");
@@ -194,8 +194,8 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     },
     showLatest: () => {
       if (latest.data) {
-        main.store.add(latest.data);
-        latest.store.clear();
+        main.add(latest.data);
+        latest.clear();
       }
     },
   };
