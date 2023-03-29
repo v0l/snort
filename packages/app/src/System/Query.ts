@@ -92,6 +92,9 @@ export class Query {
     for (const c of this.#sentToRelays) {
       c.CloseReq(this.id);
     }
+    for (const sq of this.subQueries) {
+      sq.sendClose();
+    }
   }
 
   eose(sub: string, relay: string) {

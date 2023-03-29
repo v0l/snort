@@ -313,9 +313,7 @@ export class NostrSystem {
     let changed = false;
     for (const [k, v] of this.Queries) {
       if (v.closingAt && v.closingAt < now) {
-        if (v.leaveOpen) {
-          v.sendClose();
-        }
+        v.sendClose();
         this.Queries.delete(k);
         this.Feeds.delete(k);
         console.debug("Removed:", k);
