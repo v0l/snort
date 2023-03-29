@@ -56,7 +56,7 @@ class ProfileLoaderService {
 
       const q = System.Query<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
       // never release this callback, it will stop firing anyway after eose
-      q.onEvent(async ev => {
+      const releaseOnEvent = q.onEvent(async ev => {
         for (const e of ev) {
           const profile = mapEventToProfile(e);
           if (profile) {
@@ -79,6 +79,7 @@ class ProfileLoaderService {
         }, 5_000);
       });
 
+      releaseOnEvent();
       const couldNotFetch = [...missing].filter(a => !results.some(b => b.pubkey === a));
       if (couldNotFetch.length > 0) {
         console.debug("No profiles: ", couldNotFetch);
