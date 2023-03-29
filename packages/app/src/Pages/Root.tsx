@@ -58,7 +58,8 @@ export default function RootPage() {
 
   useEffect(() => {
     if (location.pathname === "/") {
-      navigate(unwrap(preferences.defaultRootTab ?? tab.data), {
+      const t = pubKey ? preferences.defaultRootTab ?? tab.data : "/global";
+      navigate(t, {
         replace: true,
       });
     }
