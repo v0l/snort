@@ -249,7 +249,7 @@ export default function Thread() {
   const root = useMemo(() => {
     const currentNote =
       thread.data?.find(ne => ne.id === currentId) ??
-      ("sig" in location.state ? (location.state as TaggedRawEvent) : undefined);
+      (location.state && "sig" in location.state ? (location.state as TaggedRawEvent) : undefined);
     if (currentNote) {
       const currentThread = EventExt.extractThread(currentNote);
       const isRoot = (ne?: ThreadInfo) => ne === undefined;
