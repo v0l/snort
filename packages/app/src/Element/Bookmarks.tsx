@@ -1,30 +1,29 @@
 import { useState, useMemo, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
-
-import { dedupeByPubkey } from "Util";
-import Note from "Element/Note";
 import { HexKey, TaggedRawEvent } from "@snort/nostr";
+
+import Note from "Element/Note";
 import { RootState } from "State/Store";
-import { UserCache } from "State/Users/UserCache";
+import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
 
 interface BookmarksProps {
   pubkey: HexKey;
-  bookmarks: TaggedRawEvent[];
-  related: TaggedRawEvent[];
+  bookmarks: readonly TaggedRawEvent[];
+  related: readonly TaggedRawEvent[];
 }
 
 const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   const [onlyPubkey, setOnlyPubkey] = useState<HexKey | "all">("all");
   const loginPubKey = useSelector((s: RootState) => s.login.publicKey);
   const ps = useMemo(() => {
-    return dedupeByPubkey(bookmarks).map(ev => ev.pubkey);
+    return [...new Set(bookmarks.map(ev => ev.pubkey))];
   }, [bookmarks]);
 
   function renderOption(p: HexKey) {
-    const profile = UserCache.get(p);
+    const profile = UserCache.getFromCache(p);
     return profile ? <option value={p}>{profile?.display_name || profile?.name}</option> : null;
   }
 

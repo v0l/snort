@@ -1,28 +1,26 @@
 import { useMemo } from "react";
-import { HexKey, FullRelaySettings } from "@snort/nostr";
-import { EventKind, Subscriptions } from "@snort/nostr";
-import useSubscription from "./Subscription";
+import { HexKey, FullRelaySettings, EventKind } from "@snort/nostr";
+
+import { RequestBuilder } from "System";
+import { ReplaceableNoteStore } from "System/NoteCollection";
+import useRequestBuilder from "Hooks/useRequestBuilder";
 
 export default function useRelaysFeed(pubkey?: HexKey) {
   const sub = useMemo(() => {
     if (!pubkey) return null;
-    const x = new Subscriptions();
-    x.Id = `relays:${pubkey.slice(0, 12)}`;
-    x.Kinds = new Set([EventKind.ContactList]);
-    x.Authors = new Set([pubkey]);
-    x.Limit = 1;
-    return x;
+    const b = new RequestBuilder(`relays:${pubkey.slice(0, 12)}`);
+    b.withFilter().authors([pubkey]).kinds([EventKind.ContactList]);
+    return b;
   }, [pubkey]);
 
-  const relays = useSubscription(sub, { leaveOpen: false, cache: false });
-  const eventContent = relays.store.notes[0]?.content;
+  const relays = useRequestBuilder<ReplaceableNoteStore>(ReplaceableNoteStore, sub);
 
-  if (!eventContent) {
+  if (!relays.data?.content) {
     return [] as FullRelaySettings[];
   }
 
   try {
-    return Object.entries(JSON.parse(eventContent)).map(([url, settings]) => ({
+    return Object.entries(JSON.parse(relays.data.content)).map(([url, settings]) => ({
       url,
       settings,
     })) as FullRelaySettings[];

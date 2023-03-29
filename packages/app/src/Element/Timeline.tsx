@@ -1,24 +1,20 @@
 import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
+import { TaggedRawEvent, EventKind, u256 } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
-import { dedupeById, dedupeByPubkey, tagFilterOfTextRepost } from "Util";
+import { dedupeByPubkey, findTag, tagFilterOfTextRepost } from "Util";
 import ProfileImage from "Element/ProfileImage";
-import useTimelineFeed, { TimelineSubject } from "Feed/TimelineFeed";
-import { TaggedRawEvent } from "@snort/nostr";
-import { EventKind } from "@snort/nostr";
+import useTimelineFeed, { TimelineFeed, TimelineSubject } from "Feed/TimelineFeed";
 import LoadMore from "Element/LoadMore";
 import Zap, { parseZap } from "Element/Zap";
 import Note from "Element/Note";
 import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
-import ProfilePreview from "./ProfilePreview";
+import ProfilePreview from "Element/ProfilePreview";
 import Skeleton from "Element/Skeleton";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "State/Store";
-import { setTimeline } from "State/Cache";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -27,63 +23,58 @@ export interface TimelineProps {
   ignoreModeration?: boolean;
   window?: number;
   relay?: string;
+  now?: number;
 }
 
 /**
  * A list of notes by pubkeys
  */
-export default function Timeline({
-  subject,
-  postsOnly = false,
-  method,
-  ignoreModeration = false,
-  window: timeWindow,
-  relay,
-}: TimelineProps) {
+const Timeline = (props: TimelineProps) => {
+  const feedOptions = useMemo(() => {
+    return {
+      method: props.method,
+      window: props.window,
+      relay: props.relay,
+      now: props.now,
+    };
+  }, [props]);
+  const feed: TimelineFeed = useTimelineFeed(props.subject, feedOptions);
+
   const { muted, isMuted } = useModeration();
-  const dispatch = useDispatch();
-  const cache = useSelector((s: RootState) => s.cache.timeline);
-  const feed = useTimelineFeed(subject, {
-    method,
-    window: timeWindow,
-    relay,
-  });
   const { ref, inView } = useInView();
 
   const filterPosts = useCallback(
-    (nts: TaggedRawEvent[]) => {
+    (nts: readonly TaggedRawEvent[]) => {
       return [...nts]
         .sort((a, b) => b.created_at - a.created_at)
-        ?.filter(a => (postsOnly ? !a.tags.some(b => b[0] === "e") : true))
-        .filter(a => ignoreModeration || !isMuted(a.pubkey));
+        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : a.tags.some(b => b[0] === "e")))
+        .filter(a => props.ignoreModeration || !isMuted(a.pubkey));
     },
-    [postsOnly, muted, ignoreModeration]
+    [props.postsOnly, muted, props.ignoreModeration]
   );
 
   const mainFeed = useMemo(() => {
-    return filterPosts(cache.main);
-  }, [cache, filterPosts]);
-
+    return filterPosts(feed.main ?? []);
+  }, [feed, filterPosts]);
   const latestFeed = useMemo(() => {
-    return filterPosts(cache.latest).filter(a => !mainFeed.some(b => b.id === a.id));
-  }, [cache, filterPosts]);
+    return filterPosts(feed.latest ?? []).filter(a => !mainFeed.some(b => b.id === a.id));
+  }, [feed, filterPosts]);
+  const relatedFeed = useCallback(
+    (id: u256) => {
+      return (feed.related ?? []).filter(a => findTag(a, "e") === id);
+    },
+    [feed.related]
+  );
+  const findRelated = useCallback(
+    (id?: u256) => {
+      if (!id) return undefined;
+      return (feed.related ?? []).find(a => a.id === id);
+    },
+    [feed.related]
+  );
   const latestAuthors = useMemo(() => {
     return dedupeByPubkey(latestFeed).map(e => e.pubkey);
   }, [latestFeed]);
-
-  useEffect(() => {
-    const key = `${subject.type}-${subject.discriminator}`;
-    const newFeed = key !== cache.key;
-    dispatch(
-      setTimeline({
-        key: key,
-        main: dedupeById([...(newFeed ? [] : cache.main), ...feed.main.notes]),
-        latest: [...feed.latest.notes],
-        related: dedupeById([...(newFeed ? [] : cache.related), ...feed.related.notes]),
-        parent: dedupeById([...(newFeed ? [] : cache.parent), ...feed.parent.notes]),
-      })
-    );
-  }, [feed.main, feed.latest, feed.related, feed.parent]);
 
   function eventElement(e: TaggedRawEvent) {
     switch (e.kind) {
@@ -93,9 +84,9 @@ export default function Timeline({
       case EventKind.TextNote: {
         const eRef = e.tags.find(tagFilterOfTextRepost(e))?.at(1);
         if (eRef) {
-          return <NoteReaction data={e} key={e.id} root={cache.parent.find(a => a.id === eRef)} />;
+          return <NoteReaction data={e} key={e.id} root={findRelated(eRef)} />;
         }
-        return <Note key={e.id} data={e} related={cache.related} ignoreModeration={ignoreModeration} />;
+        return <Note key={e.id} data={e} related={relatedFeed(e.id)} ignoreModeration={props.ignoreModeration} />;
       }
       case EventKind.ZapReceipt: {
         const zap = parseZap(e);
@@ -103,8 +94,8 @@ export default function Timeline({
       }
       case EventKind.Reaction:
       case EventKind.Repost: {
-        const eRef = e.tags.find(a => a[0] === "e")?.at(1);
-        return <NoteReaction data={e} key={e.id} root={cache.parent.find(a => a.id === eRef)} />;
+        const eRef = findTag(e, "e");
+        return <NoteReaction data={e} key={e.id} root={findRelated(eRef)} />;
       }
     }
   }
@@ -115,6 +106,7 @@ export default function Timeline({
       window.scrollTo(0, 0);
     }
   }
+
   return (
     <div className="main-content">
       {latestFeed.length > 0 && (
@@ -144,11 +136,12 @@ export default function Timeline({
         </>
       )}
       {mainFeed.map(eventElement)}
-      <LoadMore onLoadMore={feed.loadMore} shouldLoadMore={feed.main.end}>
+      <LoadMore onLoadMore={feed.loadMore} shouldLoadMore={!feed.loading}>
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
       </LoadMore>
     </div>
   );
-}
+};
+export default Timeline;

@@ -10,7 +10,7 @@ import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
 import { RootState } from "State/Store";
 import { findTag } from "Util";
-import { UserCache } from "State/Users/UserCache";
+import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
 
@@ -65,7 +65,7 @@ export function parseZap(zapReceipt: TaggedRawEvent): ParsedZap {
         ret.valid = false;
         ret.errors.push("amount tag does not match invoice amount");
       }
-      if (UserCache.get(ret.receiver)?.zapService !== ret.zapService) {
+      if (UserCache.getFromCache(ret.receiver)?.zapService !== ret.zapService) {
         ret.valid = false;
         ret.errors.push("zap service pubkey doesn't match");
       }

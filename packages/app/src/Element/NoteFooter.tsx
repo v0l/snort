@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
-import { Event as NEvent, TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix } from "@snort/nostr";
+import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
@@ -85,7 +85,7 @@ export interface NoteFooterProps {
   negative: TaggedRawEvent[];
   showReactions: boolean;
   setShowReactions(b: boolean): void;
-  ev: NEvent;
+  ev: TaggedRawEvent;
   onTranslated?: (content: Translation) => void;
 }
 
@@ -97,7 +97,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const login = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
   const { mute, block } = useModeration();
   const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
-  const author = useUserProfile(ev.RootPubKey);
+  const author = useUserProfile(ev.pubkey);
   const publisher = useEventPublisher();
   const [reply, setReply] = useState(false);
   const [tip, setTip] = useState(false);
@@ -105,13 +105,13 @@ export default function NoteFooter(props: NoteFooterProps) {
   const walletState = useWallet();
   const wallet = walletState.wallet;
 
-  const isMine = ev.RootPubKey === login;
+  const isMine = ev.pubkey === login;
   const lang = window.navigator.language;
   const langNames = new Intl.DisplayNames([...window.navigator.languages], {
     type: "language",
   });
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  const didZap = ZapCache.has(ev.Id) || zaps.some(a => a.sender === login);
+  const didZap = ZapCache.has(ev.id) || zaps.some(a => a.sender === login);
   const longPress = useLongPress(
     e => {
       e.stopPropagation();
@@ -138,15 +138,15 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function deleteEvent() {
-    if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.Id.substring(0, 8) }))) {
-      const evDelete = await publisher.delete(ev.Id);
+    if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.id.substring(0, 8) }))) {
+      const evDelete = await publisher.delete(ev.id);
       publisher.broadcast(evDelete);
     }
   }
 
   async function repost() {
     if (!hasReposted()) {
-      if (!prefs.confirmReposts || window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.Id }))) {
+      if (!prefs.confirmReposts || window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.id }))) {
         const evRepost = await publisher.repost(ev);
         publisher.broadcast(evRepost);
       }
@@ -160,7 +160,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (wallet?.isReady() && lnurl) {
       setZapping(true);
       try {
-        await fastZapInner(lnurl, prefs.defaultZapAmount, ev.PubKey, ev.Id);
+        await fastZapInner(lnurl, prefs.defaultZapAmount, ev.pubkey, ev.id);
         fastZapDonate();
       } catch (e) {
         console.warn("Fast zap failed", e);
@@ -202,14 +202,14 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   useEffect(() => {
-    if (prefs.autoZap && !ZapCache.has(ev.Id) && !isMine && !zapping) {
+    if (prefs.autoZap && !ZapCache.has(ev.id) && !isMine && !zapping) {
       const lnurl = author?.lud16 || author?.lud06;
       if (wallet?.isReady() && lnurl) {
         setZapping(true);
         queueMicrotask(async () => {
           try {
-            await fastZapInner(lnurl, prefs.defaultZapAmount, ev.PubKey, ev.Id);
-            ZapCache.add(ev.Id);
+            await fastZapInner(lnurl, prefs.defaultZapAmount, ev.pubkey, ev.id);
+            ZapCache.add(ev.id);
             fastZapDonate();
           } catch {
             // ignored
@@ -263,7 +263,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function share() {
-    const link = encodeTLV(ev.Id, NostrPrefix.Event, ev.Original?.relays);
+    const link = encodeTLV(ev.id, NostrPrefix.Event, ev.relays);
     const url = `${window.location.protocol}//${window.location.host}/e/${link}`;
     if ("share" in window.navigator) {
       await window.navigator.share({
@@ -279,7 +279,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     const res = await fetch(`${TranslateHost}/translate`, {
       method: "POST",
       body: JSON.stringify({
-        q: ev.Content,
+        q: ev.content,
         source: "auto",
         target: lang.split("-")[0],
       }),
@@ -299,7 +299,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function copyId() {
-    const link = encodeTLV(ev.Id, NostrPrefix.Event, ev.Original?.relays);
+    const link = encodeTLV(ev.id, NostrPrefix.Event, ev.relays);
     await navigator.clipboard.writeText(link);
   }
 
@@ -318,7 +318,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function copyEvent() {
-    await navigator.clipboard.writeText(JSON.stringify(ev.Original, undefined, "  "));
+    await navigator.clipboard.writeText(JSON.stringify(ev, undefined, "  "));
   }
 
   function menuItems() {
@@ -339,14 +339,14 @@ export default function NoteFooter(props: NoteFooterProps) {
           <Icon name="share" />
           <FormattedMessage {...messages.Share} />
         </MenuItem>
-        {!pinned.includes(ev.Id) && (
-          <MenuItem onClick={() => pin(ev.Id)}>
+        {!pinned.includes(ev.id) && (
+          <MenuItem onClick={() => pin(ev.id)}>
             <Icon name="pin" />
             <FormattedMessage {...messages.Pin} />
           </MenuItem>
         )}
-        {!bookmarked.includes(ev.Id) && (
-          <MenuItem onClick={() => bookmark(ev.Id)}>
+        {!bookmarked.includes(ev.id) && (
+          <MenuItem onClick={() => bookmark(ev.id)}>
             <Icon name="bookmark" />
             <FormattedMessage {...messages.Bookmark} />
           </MenuItem>
@@ -355,7 +355,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           <Icon name="copy" />
           <FormattedMessage {...messages.CopyID} />
         </MenuItem>
-        <MenuItem onClick={() => mute(ev.PubKey)}>
+        <MenuItem onClick={() => mute(ev.pubkey)}>
           <Icon name="mute" />
           <FormattedMessage {...messages.Mute} />
         </MenuItem>
@@ -365,7 +365,7 @@ export default function NoteFooter(props: NoteFooterProps) {
             <FormattedMessage {...messages.DislikeAction} />
           </MenuItem>
         )}
-        <MenuItem onClick={() => block(ev.PubKey)}>
+        <MenuItem onClick={() => block(ev.pubkey)}>
           <Icon name="block" />
           <FormattedMessage {...messages.Block} />
         </MenuItem>
@@ -423,7 +423,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           show={tip}
           author={author?.pubkey}
           target={author?.display_name || author?.name}
-          note={ev.Id}
+          note={ev.id}
         />
       </div>
       <div className="zaps-container">

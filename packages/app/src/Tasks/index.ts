@@ -1,4 +1,4 @@
-import { MetadataCache } from "State/Users";
+import { MetadataCache } from "Cache";
 
 export interface UITask {
   id: string;

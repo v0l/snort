@@ -6,9 +6,9 @@ import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bech32 } from "bech32";
 import base32Decode from "base32-decode";
 import { HexKey, TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix, decodeTLV, TLVEntryType } from "@snort/nostr";
-import { MetadataCache } from "State/Users";
+import { MetadataCache } from "Cache";
 
-export const sha256 = (str: string) => {
+export const sha256 = (str: string | Uint8Array): u256 => {
   return secp.utils.bytesToHex(hash(str));
 };
 
@@ -138,8 +138,12 @@ export function normalizeReaction(content: string) {
 /**
  * Get reactions to a specific event (#e + kind filter)
  */
-export function getReactions(notes: TaggedRawEvent[], id: u256, kind = EventKind.Reaction) {
-  return notes?.filter(a => a.kind === kind && a.tags.some(a => a[0] === "e" && a[1] === id)) || [];
+export function getReactions(notes: readonly TaggedRawEvent[] | undefined, id: u256, kind?: EventKind) {
+  return notes?.filter(a => a.kind === (kind ?? a.kind) && a.tags.some(a => a[0] === "e" && a[1] === id)) || [];
+}
+
+export function getAllReactions(notes: readonly TaggedRawEvent[] | undefined, ids: Array<u256>, kind?: EventKind) {
+  return notes?.filter(a => a.kind === (kind ?? a.kind) && a.tags.some(a => a[0] === "e" && ids.includes(a[1]))) || [];
 }
 
 /**
@@ -212,6 +216,45 @@ export function dedupeById(events: TaggedRawEvent[]) {
   return deduped.list as TaggedRawEvent[];
 }
 
+/**
+ * Return newest event by pubkey
+ * @param events List of all notes to filter from
+ * @returns
+ */
+export function getLatestByPubkey(events: TaggedRawEvent[]): Map<HexKey, TaggedRawEvent> {
+  const deduped = events.reduce((results: Map<HexKey, TaggedRawEvent>, ev) => {
+    if (!results.has(ev.pubkey)) {
+      const latest = getNewest(events.filter(a => a.pubkey === ev.pubkey));
+      if (latest) {
+        results.set(ev.pubkey, latest);
+      }
+    }
+    return results;
+  }, new Map<HexKey, TaggedRawEvent>());
+  return deduped;
+}
+
+export function getLatestProfileByPubkey(profiles: MetadataCache[]): Map<HexKey, MetadataCache> {
+  const deduped = profiles.reduce((results: Map<HexKey, MetadataCache>, ev) => {
+    if (!results.has(ev.pubkey)) {
+      const latest = getNewestProfile(profiles.filter(a => a.pubkey === ev.pubkey));
+      if (latest) {
+        results.set(ev.pubkey, latest);
+      }
+    }
+    return results;
+  }, new Map<HexKey, MetadataCache>());
+  return deduped;
+}
+
+export function dedupe<T>(v: Array<T>) {
+  return [...new Set(v)];
+}
+
+export function appendDedupe<T>(a?: Array<T>, b?: Array<T>) {
+  return dedupe([...(a ?? []), ...(b ?? [])]);
+}
+
 export function unwrap<T>(v: T | undefined | null): T {
   if (v === undefined || v === null) {
     throw new Error("missing value");
@@ -224,11 +267,30 @@ export function randomSample<T>(coll: T[], size: number) {
   return random.sort(() => (Math.random() >= 0.5 ? 1 : -1)).slice(0, size);
 }
 
-export function getNewest(rawNotes: TaggedRawEvent[]) {
+export function getNewest(rawNotes: readonly TaggedRawEvent[]) {
   const notes = [...rawNotes];
-  notes.sort((a, b) => a.created_at - b.created_at);
+  notes.sort((a, b) => b.created_at - a.created_at);
   if (notes.length > 0) {
     return notes[0];
+  }
+}
+
+export function getNewestProfile(rawNotes: MetadataCache[]) {
+  const notes = [...rawNotes];
+  notes.sort((a, b) => b.created - a.created);
+  if (notes.length > 0) {
+    return notes[0];
+  }
+}
+
+export function getNewestEventTagsByKey(evs: TaggedRawEvent[], tag: string) {
+  const newest = getNewest(evs);
+  if (newest) {
+    const keys = newest.tags.filter(p => p && p.length === 2 && p[0] === tag).map(p => p[1]);
+    return {
+      keys,
+      createdAt: newest.created_at,
+    };
   }
 }
 
@@ -505,5 +567,13 @@ export function parseNostrLink(link: string): NostrLink | undefined {
         encode,
       };
     }
+  }
+}
+
+export function sanitizeRelayUrl(url: string) {
+  try {
+    return new URL(url).toString();
+  } catch {
+    // ignore
   }
 }

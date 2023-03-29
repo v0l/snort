@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
+import { TaggedRawEvent, HexKey, EventKind, NostrPrefix } from "@snort/nostr";
 
 import useEventPublisher from "Feed/EventPublisher";
 import Icon from "Icons/Icon";
@@ -19,22 +20,21 @@ import {
   normalizeReaction,
   Reaction,
   profileLink,
-  unwrap,
 } from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
-import { TaggedRawEvent, HexKey, Event as NEvent, EventKind, NostrPrefix } from "@snort/nostr";
 import useModeration from "Hooks/useModeration";
 import { setPinned, setBookmarked } from "State/Login";
 import type { RootState } from "State/Store";
-import { UserCache } from "State/Users/UserCache";
+import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
+import { EventExt } from "System/EventExt";
 
 export interface NoteProps {
-  data?: TaggedRawEvent;
+  data: TaggedRawEvent;
   className?: string;
-  related: TaggedRawEvent[];
+  related: readonly TaggedRawEvent[];
   highlight?: boolean;
   ignoreModeration?: boolean;
   options?: {
@@ -47,7 +47,6 @@ export interface NoteProps {
     canUnpin?: boolean;
     canUnbookmark?: boolean;
   };
-  ["data-ev"]?: NEvent;
 }
 
 const HiddenNote = ({ children }: { children: React.ReactNode }) => {
@@ -71,12 +70,11 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
 export default function Note(props: NoteProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { data, related, highlight, options: opt, ["data-ev"]: parsedEvent, ignoreModeration = false } = props;
+  const { data: ev, related, highlight, options: opt, ignoreModeration = false } = props;
   const [showReactions, setShowReactions] = useState(false);
-  const ev = useMemo(() => parsedEvent ?? new NEvent(data), [data]);
-  const deletions = useMemo(() => getReactions(related, ev.Id, EventKind.Deletion), [related]);
+  const deletions = useMemo(() => getReactions(related, ev.id, EventKind.Deletion), [related]);
   const { isMuted } = useModeration();
-  const isOpMuted = isMuted(ev.PubKey);
+  const isOpMuted = isMuted(ev?.pubkey);
   const { ref, inView, entry } = useInView({ triggerOnce: true });
   const [extendable, setExtendable] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
@@ -85,7 +83,7 @@ export default function Note(props: NoteProps) {
   const publisher = useEventPublisher();
   const [translated, setTranslated] = useState<Translation>();
   const { formatMessage } = useIntl();
-  const reactions = useMemo(() => getReactions(related, ev.Id, EventKind.Reaction), [related, ev]);
+  const reactions = useMemo(() => getReactions(related, ev.id, EventKind.Reaction), [related, ev]);
   const groupReactions = useMemo(() => {
     const result = reactions?.reduce(
       (acc, reaction) => {
@@ -108,15 +106,15 @@ export default function Note(props: NoteProps) {
   const reposts = useMemo(
     () =>
       dedupeByPubkey([
-        ...getReactions(related, ev.Id, EventKind.TextNote).filter(e => e.tags.some(tagFilterOfTextRepost(e, ev.Id))),
-        ...getReactions(related, ev.Id, EventKind.Repost),
+        ...getReactions(related, ev.id, EventKind.TextNote).filter(e => e.tags.some(tagFilterOfTextRepost(e, ev.id))),
+        ...getReactions(related, ev.id, EventKind.Repost),
       ]),
     [related, ev]
   );
   const zaps = useMemo(() => {
-    const sortedZaps = getReactions(related, ev.Id, EventKind.ZapReceipt)
+    const sortedZaps = getReactions(related, ev.id, EventKind.ZapReceipt)
       .map(parseZap)
-      .filter(z => z.valid && z.sender !== ev.PubKey);
+      .filter(z => z.valid && z.sender !== ev.pubkey);
     sortedZaps.sort((a, b) => b.amount - a.amount);
     return sortedZaps;
   }, [related]);
@@ -154,7 +152,7 @@ export default function Note(props: NoteProps) {
   }
 
   const transformBody = useCallback(() => {
-    const body = ev?.Content ?? "";
+    const body = ev?.content ?? "";
     if (deletions?.length > 0) {
       return (
         <b className="error">
@@ -162,7 +160,7 @@ export default function Note(props: NoteProps) {
         </b>
       );
     }
-    return <Text content={body} tags={ev.Tags} creator={ev.PubKey} />;
+    return <Text content={body} tags={ev.tags} creator={ev.pubkey} />;
   }, [ev]);
 
   useLayoutEffect(() => {
@@ -189,21 +187,24 @@ export default function Note(props: NoteProps) {
     if (e.metaKey) {
       window.open(link, "_blank");
     } else {
-      navigate(link);
+      navigate(link, {
+        state: ev,
+      });
     }
   }
 
   function replyTag() {
-    if (ev.Thread === null) {
-      return null;
+    const thread = EventExt.extractThread(ev);
+    if (thread === undefined) {
+      return undefined;
     }
 
     const maxMentions = 2;
-    const replyId = ev.Thread?.ReplyTo?.Event ?? ev.Thread?.Root?.Event;
-    const replyRelayHints = ev?.Thread?.ReplyTo?.Relay ?? ev.Thread.Root?.Relay;
+    const replyId = thread?.replyTo?.Event ?? thread?.root?.Event;
+    const replyRelayHints = thread?.replyTo?.Relay ?? thread.root?.Relay;
     const mentions: { pk: string; name: string; link: ReactNode }[] = [];
-    for (const pk of ev.Thread?.PubKeys ?? []) {
-      const u = UserCache.get(pk);
+    for (const pk of thread?.pubKeys ?? []) {
+      const u = UserCache.getFromCache(pk);
       const npub = hexToBech32(NostrPrefix.PublicKey, pk);
       const shortNpub = npub.substring(0, 12);
       mentions.push({
@@ -243,13 +244,13 @@ export default function Note(props: NoteProps) {
     );
   }
 
-  if (ev.Kind !== EventKind.TextNote) {
+  if (ev.kind !== EventKind.TextNote) {
     return (
       <>
         <h4>
-          <FormattedMessage {...messages.UnknownEventKind} values={{ kind: ev.Kind }} />
+          <FormattedMessage {...messages.UnknownEventKind} values={{ kind: ev.kind }} />
         </h4>
-        <pre>{JSON.stringify(ev.ToObject(), undefined, "  ")}</pre>
+        <pre>{JSON.stringify(ev, undefined, "  ")}</pre>
       </>
     );
   }
@@ -274,30 +275,30 @@ export default function Note(props: NoteProps) {
   }
 
   function content() {
-    if (!inView) return null;
+    if (!inView) return undefined;
     return (
       <>
         {options.showHeader && (
           <div className="header flex">
-            <ProfileImage autoWidth={false} pubkey={ev.RootPubKey} subHeader={replyTag() ?? undefined} />
+            <ProfileImage autoWidth={false} pubkey={ev.pubkey} subHeader={replyTag() ?? undefined} />
             {(options.showTime || options.showBookmarked) && (
               <div className="info">
                 {options.showBookmarked && (
-                  <div className={`saved ${options.canUnbookmark ? "pointer" : ""}`} onClick={() => unbookmark(ev.Id)}>
+                  <div className={`saved ${options.canUnbookmark ? "pointer" : ""}`} onClick={() => unbookmark(ev.id)}>
                     <Icon name="bookmark" /> <FormattedMessage {...messages.Bookmarked} />
                   </div>
                 )}
-                {!options.showBookmarked && <NoteTime from={ev.CreatedAt * 1000} />}
+                {!options.showBookmarked && <NoteTime from={ev.created_at * 1000} />}
               </div>
             )}
             {options.showPinned && (
-              <div className={`pinned ${options.canUnpin ? "pointer" : ""}`} onClick={() => unpin(ev.Id)}>
+              <div className={`pinned ${options.canUnpin ? "pointer" : ""}`} onClick={() => unpin(ev.id)}>
                 <Icon name="pin" /> <FormattedMessage {...messages.Pinned} />
               </div>
             )}
           </div>
         )}
-        <div className="body" onClick={e => goToEvent(e, unwrap(ev.Original), true)}>
+        <div className="body" onClick={e => goToEvent(e, ev, true)}>
           {transformBody()}
           {translation()}
           {options.showReactionsLink && (
@@ -330,7 +331,7 @@ export default function Note(props: NoteProps) {
   const note = (
     <div
       className={`${baseClassName}${highlight ? " active " : " "}${extendable && !showMore ? " note-expand" : ""}`}
-      onClick={e => goToEvent(e, unwrap(ev.Original))}
+      onClick={e => goToEvent(e, ev)}
       ref={ref}>
       {content()}
     </div>

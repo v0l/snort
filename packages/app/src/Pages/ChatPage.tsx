@@ -8,11 +8,12 @@ import { bech32ToHex } from "Util";
 import useEventPublisher from "Feed/EventPublisher";
 
 import DM from "Element/DM";
-import { TaggedRawEvent } from "@snort/nostr";
+import { RawEvent, TaggedRawEvent } from "@snort/nostr";
 import { dmsInChat, isToSelf } from "Pages/MessagesPage";
 import NoteToSelf from "Element/NoteToSelf";
 import { RootState } from "State/Store";
 import { FormattedMessage } from "react-intl";
+import { useDmCache } from "Hooks/useDmsCache";
 
 type RouterParams = {
   id: string;
@@ -23,11 +24,11 @@ export default function ChatPage() {
   const publisher = useEventPublisher();
   const id = bech32ToHex(params.id ?? "");
   const pubKey = useSelector((s: RootState) => s.login.publicKey);
-  const dms = useSelector((s: RootState) => filterDms(s.login.dms));
   const [content, setContent] = useState<string>();
   const dmListRef = useRef<HTMLDivElement>(null);
+  const dms = filterDms(useDmCache());
 
-  function filterDms(dms: TaggedRawEvent[]) {
+  function filterDms(dms: readonly RawEvent[]) {
     return dmsInChat(id === pubKey ? dms.filter(d => isToSelf(d, pubKey)) : dms, id);
   }
 

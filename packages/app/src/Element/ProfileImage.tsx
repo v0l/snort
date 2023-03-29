@@ -7,7 +7,7 @@ import { hexToBech32, profileLink } from "Util";
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
 import { HexKey, NostrPrefix } from "@snort/nostr";
-import { MetadataCache } from "State/Users";
+import { MetadataCache } from "Cache";
 import usePageWidth from "Hooks/usePageWidth";
 
 export interface ProfileImageProps {

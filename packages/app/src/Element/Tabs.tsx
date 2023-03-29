@@ -5,6 +5,7 @@ export interface Tab {
   text: string;
   value: number;
   disabled?: boolean;
+  data?: string;
 }
 
 interface TabsProps {

@@ -1,16 +1,16 @@
 export * from "./Connection";
 export { default as EventKind } from "./EventKind";
-export { Subscriptions } from "./Subscriptions";
-export { default as Event } from "./Event";
 export { default as Tag } from "./Tag";
 export * from "./Links";
+export * from "./Nips";
 
+import { RelaySettings } from ".";
 export type RawEvent = {
   id: u256;
   pubkey: HexKey;
   created_at: number;
   kind: number;
-  tags: string[][];
+  tags: Array<Array<string>>;
   content: string;
   sig: string;
 };
@@ -36,6 +36,8 @@ export type MaybeHexKey = HexKey | undefined;
  * A 256bit hex id
  */
 export type u256 = string;
+
+export type ReqCommand = [cmd: "REQ", id: string, ...filters: Array<RawReqFilter>];
 
 /**
  * Raw REQ filter object
@@ -83,5 +85,5 @@ export enum Lists {
 
 export interface FullRelaySettings {
   url: string;
-  settings: { read: boolean; write: boolean };
+  settings: RelaySettings;
 }

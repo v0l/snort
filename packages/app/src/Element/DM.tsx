@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useIntl } from "react-intl";
 import { useInView } from "react-intersection-observer";
+import { HexKey, TaggedRawEvent } from "@snort/nostr";
 
 import useEventPublisher from "Feed/EventPublisher";
-import { Event } from "@snort/nostr";
 import NoteTime from "Element/NoteTime";
 import Text from "Element/Text";
 import { setLastReadDm } from "Pages/MessagesPage";
 import { RootState } from "State/Store";
-import { HexKey, TaggedRawEvent } from "@snort/nostr";
 import { incDmInteraction } from "State/Login";
 import { unwrap } from "Util";
 
@@ -32,11 +31,10 @@ export default function DM(props: DMProps) {
   const otherPubkey = isMe ? pubKey : unwrap(props.data.tags.find(a => a[0] === "p")?.[1]);
 
   async function decrypt() {
-    const e = new Event(props.data);
-    const decrypted = await publisher.decryptDm(e);
+    const decrypted = await publisher.decryptDm(props.data);
     setContent(decrypted || "<ERROR>");
     if (!isMe) {
-      setLastReadDm(e.PubKey);
+      setLastReadDm(props.data.pubkey);
       dispatch(incDmInteraction());
     }
   }

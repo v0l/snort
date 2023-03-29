@@ -24,3 +24,11 @@ export function hexToBech32(hrp: string, hex?: string) {
     return "";
   }
 }
+
+export function sanitizeRelayUrl(url: string) {
+  try {
+    return new URL(url).toString();
+  } catch {
+    // ignore
+  }
+}

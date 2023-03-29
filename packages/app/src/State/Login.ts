@@ -1,10 +1,13 @@
 import { AnyAction, createSlice, PayloadAction, ThunkAction } from "@reduxjs/toolkit";
 import * as secp from "@noble/secp256k1";
+import { HexKey } from "@snort/nostr";
+
 import { DefaultRelays } from "Const";
-import { HexKey, TaggedRawEvent } from "@snort/nostr";
 import { RelaySettings } from "@snort/nostr";
 import type { AppDispatch, RootState } from "State/Store";
 import { ImgProxySettings } from "Hooks/useImgProxy";
+import { sanitizeRelayUrl } from "Util";
+import { DmCache } from "Cache";
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
@@ -50,11 +53,6 @@ export interface UserPreferences {
    * Ask for confirmation when reposting notes
    */
   confirmReposts: boolean;
-
-  /**
-   * Rewrite Twitter links to Nitter links
-   */
-  rewriteTwitterPosts: boolean;
 
   /**
    * Automatically show the latests notes
@@ -199,11 +197,6 @@ export interface LoginStore {
   readNotifications: number;
 
   /**
-   * Encrypted DM's
-   */
-  dms: TaggedRawEvent[];
-
-  /**
    * Counter to trigger refresh of unread dms
    */
   dmInteraction: 0;
@@ -250,7 +243,6 @@ export const InitState = {
     confirmReposts: false,
     showDebugMenus: false,
     autoShowLatest: false,
-    rewriteTwitterPosts: false,
     fileUploader: "void.cat",
     imgProxyConfig: DefaultImgProxy,
     defaultRootTab: "posts",
@@ -325,11 +317,6 @@ const LoginSlice = createSlice({
       // preferences
       const pref = ReadPreferences();
       state.preferences = pref;
-
-      // disable reactions for logged out
-      if (state.loggedOut === true) {
-        state.preferences.enableReactions = false;
-      }
     },
     setPrivateKey: (state, action: PayloadAction<HexKey>) => {
       state.loggedOut = false;
@@ -364,7 +351,10 @@ const LoginSlice = createSlice({
       const filtered = new Map<string, RelaySettings>();
       for (const [k, v] of Object.entries(relays)) {
         if (k.startsWith("wss://") || k.startsWith("ws://")) {
-          filtered.set(k, v as RelaySettings);
+          const url = sanitizeRelayUrl(k);
+          if (url) {
+            filtered.set(url, v as RelaySettings);
+          }
         }
       }
 
@@ -447,34 +437,20 @@ const LoginSlice = createSlice({
         state.latestMuted = createdAt;
       }
     },
-    addDirectMessage: (state, action: PayloadAction<TaggedRawEvent | Array<TaggedRawEvent>>) => {
-      let n = action.payload;
-      if (!Array.isArray(n)) {
-        n = [n];
-      }
-
-      let didChange = false;
-      for (const x of n) {
-        if (!state.dms.some(a => a.id === x.id)) {
-          state.dms.push(x);
-          didChange = true;
-        }
-      }
-
-      if (didChange) {
-        state.dms = [...state.dms];
-      }
-    },
     incDmInteraction: state => {
       state.dmInteraction += 1;
     },
-    logout: state => {
+    logout: (state, payload: PayloadAction<() => void>) => {
       const relays = { ...state.relays };
       state = Object.assign(state, InitState);
       state.loggedOut = true;
       window.localStorage.clear();
       state.relays = relays;
       window.localStorage.setItem(RelayListKey, JSON.stringify(relays));
+      queueMicrotask(async () => {
+        await DmCache.clear();
+        payload.payload();
+      });
     },
     markNotificationsRead: state => {
       state.readNotifications = Math.ceil(new Date().getTime() / 1000);
@@ -504,7 +480,6 @@ export const {
   setPinned,
   setBookmarked,
   setBlocked,
-  addDirectMessage,
   incDmInteraction,
   logout,
   markNotificationsRead,
