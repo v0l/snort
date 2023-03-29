@@ -35,6 +35,14 @@ const RelaySettingsPage = () => {
     }
   }
 
+  const handleNewRelayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    const protocol = window.location.protocol;
+    if ((protocol === "https:" && inputValue.startsWith("wss://")) || protocol === "http:") {
+      setNewRelay(inputValue);
+    }
+  };
+
   function addRelay() {
     return (
       <>
@@ -47,7 +55,7 @@ const RelaySettingsPage = () => {
             className="f-grow"
             placeholder="wss://my-relay.com"
             value={newRelay}
-            onChange={e => setNewRelay(e.target.value)}
+            onChange={handleNewRelayChange}
           />
         </div>
         <button className="secondary mb10" onClick={() => addNewRelay()}>
