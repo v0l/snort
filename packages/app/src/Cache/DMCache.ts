@@ -1,6 +1,5 @@
 import { RawEvent } from "@snort/nostr";
 import { db } from "Db";
-import { dedupe } from "Util";
 import FeedCache from "./FeedCache";
 
 class DMCache extends FeedCache<RawEvent> {

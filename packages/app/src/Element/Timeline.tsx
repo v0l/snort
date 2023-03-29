@@ -47,7 +47,7 @@ const Timeline = (props: TimelineProps) => {
     (nts: readonly TaggedRawEvent[]) => {
       return [...nts]
         .sort((a, b) => b.created_at - a.created_at)
-        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : a.tags.some(b => b[0] === "e")))
+        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
         .filter(a => props.ignoreModeration || !isMuted(a.pubkey));
     },
     [props.postsOnly, muted, props.ignoreModeration]
