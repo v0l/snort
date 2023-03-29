@@ -247,7 +247,9 @@ export default function Thread() {
 
   // Root is the parent of the current note or the current note if its a root note or the root of the thread
   const root = useMemo(() => {
-    const currentNote = thread.data?.find(ne => ne.id === currentId) ?? (location.state as TaggedRawEvent);
+    const currentNote =
+      thread.data?.find(ne => ne.id === currentId) ??
+      ("sig" in location.state ? (location.state as TaggedRawEvent) : undefined);
     if (currentNote) {
       const currentThread = EventExt.extractThread(currentNote);
       const isRoot = (ne?: ThreadInfo) => ne === undefined;
