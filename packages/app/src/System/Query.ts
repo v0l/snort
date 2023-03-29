@@ -102,6 +102,8 @@ export class Query {
       const subQ = this.subQueries.find(a => a.id === sub);
       if (subQ) {
         subQ.eose(sub, relay);
+      } else {
+        throw new Error("No query found");
       }
     }
   }
@@ -110,7 +112,10 @@ export class Query {
    * Get the progress to EOSE, can be used to determine when we should load more content
    */
   get progress() {
-    const thisProgress = this.#eoseRelays.size / this.#sentToRelays.reduce((acc, v) => (acc += v.Down ? 0 : 1), 0);
+    let thisProgress = this.#eoseRelays.size / this.#sentToRelays.reduce((acc, v) => (acc += v.Down ? 0 : 1), 0);
+    if (isNaN(thisProgress)) {
+      thisProgress = 0;
+    }
     if (this.subQueries.length === 0) {
       return thisProgress;
     }
