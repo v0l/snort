@@ -10,8 +10,8 @@ import { NostrPrefix } from "@snort/nostr";
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
 import { hexToBech32 } from "Util";
-import { MetadataCache } from "State/Users";
-import { UserCache } from "State/Users/UserCache";
+import { MetadataCache } from "Cache";
+import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
 

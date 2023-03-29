@@ -7,8 +7,8 @@ import { debounce } from "Util";
 import { router } from "index";
 import { SearchRelays } from "Const";
 import { System } from "System";
-import { MetadataCache } from "State/Users";
-import { UserCache } from "State/Users/UserCache";
+import { MetadataCache } from "Cache";
+import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
 

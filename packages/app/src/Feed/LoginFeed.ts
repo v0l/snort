@@ -6,7 +6,6 @@ import { TaggedRawEvent, HexKey, Lists, EventKind } from "@snort/nostr";
 import { getNewest, getNewestEventTagsByKey, unwrap } from "Util";
 import { makeNotification } from "Notifications";
 import {
-  addDirectMessage,
   setFollows,
   setRelays,
   setMuted,
@@ -24,6 +23,7 @@ import useModeration from "Hooks/useModeration";
 import { FlatNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import { EventExt } from "System/EventExt";
+import { DmCache } from "Cache";
 
 /**
  * Managed loading data for the current logged in user
@@ -45,9 +45,12 @@ export default function useLoginFeed() {
     b.withOptions({
       leaveOpen: true,
     });
-    b.withFilter().authors([pubKey]).kinds([EventKind.ContactList, EventKind.DirectMessage]);
+    b.withFilter().authors([pubKey]).kinds([EventKind.ContactList]);
     b.withFilter().kinds([EventKind.TextNote]).tag("p", [pubKey]).limit(1);
-    b.withFilter().kinds([EventKind.DirectMessage]).tag("p", [pubKey]);
+
+    const dmSince = DmCache.newest();
+    b.withFilter().authors([pubKey]).kinds([EventKind.DirectMessage]).since(dmSince);
+    b.withFilter().kinds([EventKind.DirectMessage]).tag("p", [pubKey]).since(dmSince);
     return b;
   }, [pubKey]);
 
@@ -81,7 +84,7 @@ export default function useLoginFeed() {
       }
 
       const dms = loginFeed.data.filter(a => a.kind === EventKind.DirectMessage);
-      dispatch(addDirectMessage(dms));
+      DmCache.bulkSet(dms);
     }
   }, [dispatch, loginFeed]);
 

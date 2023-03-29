@@ -18,11 +18,11 @@ import { totalUnread } from "Pages/MessagesPage";
 import useModeration from "Hooks/useModeration";
 import { NoteCreator } from "Element/NoteCreator";
 import { db } from "Db";
-import { UserCache } from "State/Users/UserCache";
-import { FollowsRelays } from "State/Relays";
 import useEventPublisher from "Feed/EventPublisher";
 import { SnortPubKey } from "Const";
 import SubDebug from "Element/SubDebug";
+import { preload } from "Cache";
+import { useDmCache } from "Hooks/useDmsCache";
 
 export default function Layout() {
   const location = useLocation();
@@ -101,8 +101,7 @@ export default function Layout() {
     db.isAvailable().then(async a => {
       db.ready = a;
       if (a) {
-        await UserCache.preload();
-        await FollowsRelays.preload();
+        await preload();
       }
       console.debug(`Using db: ${a ? "IndexedDB" : "In-Memory"}`);
       dispatch(init());
@@ -192,7 +191,8 @@ const AccountHeader = () => {
   const navigate = useNavigate();
 
   const { isMuted } = useModeration();
-  const { publicKey, latestNotification, readNotifications, dms } = useSelector((s: RootState) => s.login);
+  const { publicKey, latestNotification, readNotifications } = useSelector((s: RootState) => s.login);
+  const dms = useDmCache();
 
   const hasNotifications = useMemo(
     () => latestNotification > readNotifications,

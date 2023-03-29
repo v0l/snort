@@ -1,11 +1,11 @@
 import { EventKind, HexKey, TaggedRawEvent } from "@snort/nostr";
 import { ProfileCacheExpire } from "Const";
-import { mapEventToProfile, MetadataCache } from "State/Users";
-import { UserCache } from "State/Users/UserCache";
+import { mapEventToProfile, MetadataCache } from "Cache";
+import { UserCache } from "Cache/UserCache";
 import { PubkeyReplaceableNoteStore, RequestBuilder, System } from "System";
 import { unixNowMs } from "Util";
 
-class ProfileCache {
+class ProfileLoaderService {
   /**
    * List of pubkeys to fetch metadata for
    */
@@ -43,7 +43,7 @@ class ProfileCache {
     const expire = unixNowMs() - ProfileCacheExpire;
     const expired = [...this.WantsMetadata]
       .filter(a => !missingFromCache.includes(a))
-      .filter(a => (UserCache.get(a)?.loaded ?? 0) < expire);
+      .filter(a => (UserCache.getFromCache(a)?.loaded ?? 0) < expire);
     const missing = new Set([...missingFromCache, ...expired]);
     if (missing.size > 0) {
       console.debug(`Wants profiles: ${missingFromCache.length} missing, ${expired.length} expired`);
@@ -97,4 +97,4 @@ class ProfileCache {
   }
 }
 
-export const ProfileLoader = new ProfileCache();
+export const ProfileLoader = new ProfileLoaderService();

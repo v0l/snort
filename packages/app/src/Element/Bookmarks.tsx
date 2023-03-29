@@ -5,7 +5,7 @@ import { HexKey, TaggedRawEvent } from "@snort/nostr";
 
 import Note from "Element/Note";
 import { RootState } from "State/Store";
-import { UserCache } from "State/Users/UserCache";
+import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
 
@@ -23,7 +23,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   }, [bookmarks]);
 
   function renderOption(p: HexKey) {
-    const profile = UserCache.get(p);
+    const profile = UserCache.getFromCache(p);
     return profile ? <option value={p}>{profile?.display_name || profile?.name}</option> : null;
   }
 

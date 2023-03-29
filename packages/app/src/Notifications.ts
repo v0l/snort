@@ -3,11 +3,11 @@ import Nostrich from "nostrich.webp";
 import { TaggedRawEvent } from "@snort/nostr";
 import { EventKind } from "@snort/nostr";
 import type { NotificationRequest } from "State/Login";
-import { MetadataCache } from "State/Users";
+import { MetadataCache } from "Cache";
 import { getDisplayName } from "Element/ProfileImage";
 import { MentionRegex } from "Const";
 import { tagFilterOfTextRepost, unwrap } from "Util";
-import { UserCache } from "State/Users/UserCache";
+import { UserCache } from "Cache/UserCache";
 
 export async function makeNotification(ev: TaggedRawEvent): Promise<NotificationRequest | null> {
   switch (ev.kind) {
@@ -18,10 +18,10 @@ export async function makeNotification(ev: TaggedRawEvent): Promise<Notification
       const pubkeys = new Set([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1])]);
       await UserCache.buffer([...pubkeys]);
       const allUsers = [...pubkeys]
-        .map(a => UserCache.get(a))
+        .map(a => UserCache.getFromCache(a))
         .filter(a => a)
         .map(a => unwrap(a));
-      const fromUser = UserCache.get(ev.pubkey);
+      const fromUser = UserCache.getFromCache(ev.pubkey);
       const name = getDisplayName(fromUser, ev.pubkey);
       const avatarUrl = fromUser?.picture || Nostrich;
       return {

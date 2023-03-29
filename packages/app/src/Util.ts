@@ -6,7 +6,7 @@ import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bech32 } from "bech32";
 import base32Decode from "base32-decode";
 import { HexKey, TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix, decodeTLV, TLVEntryType } from "@snort/nostr";
-import { MetadataCache } from "State/Users";
+import { MetadataCache } from "Cache";
 
 export const sha256 = (str: string | Uint8Array): u256 => {
   return secp.utils.bytesToHex(hash(str));

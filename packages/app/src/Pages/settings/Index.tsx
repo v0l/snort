@@ -12,8 +12,11 @@ const SettingsIndex = () => {
   const navigate = useNavigate();
 
   function handleLogout() {
-    dispatch(logout());
-    window.location.href = "/";
+    dispatch(
+      logout(() => {
+        navigate("/");
+      })
+    );
   }
 
   return (

@@ -26,7 +26,7 @@ import NoteTime from "Element/NoteTime";
 import useModeration from "Hooks/useModeration";
 import { setPinned, setBookmarked } from "State/Login";
 import type { RootState } from "State/Store";
-import { UserCache } from "State/Users/UserCache";
+import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
 import { EventExt } from "System/EventExt";
@@ -204,7 +204,7 @@ export default function Note(props: NoteProps) {
     const replyRelayHints = thread?.replyTo?.Relay ?? thread.root?.Relay;
     const mentions: { pk: string; name: string; link: ReactNode }[] = [];
     for (const pk of thread?.pubKeys ?? []) {
-      const u = UserCache.get(pk);
+      const u = UserCache.getFromCache(pk);
       const npub = hexToBech32(NostrPrefix.PublicKey, pk);
       const shortNpub = npub.substring(0, 12);
       mentions.push({
