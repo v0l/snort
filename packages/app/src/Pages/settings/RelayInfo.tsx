@@ -15,7 +15,6 @@ const RelayInfo = () => {
   const dispatch = useDispatch();
 
   const conn = Array.from(System.Sockets.values()).find(a => a.Id === params.id);
-  console.debug(conn);
   const stats = useRelayState(conn?.Address ?? "");
 
   return (
@@ -75,11 +74,7 @@ const RelayInfo = () => {
             </h4>
             <div className="f-grow">
               {stats.info.supported_nips.map(a => (
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  href={`https://github.com/nostr-protocol/nips/blob/master/${a.toString().padStart(2, "0")}.md`}
-                  className="pill">
+                <a target="_blank" rel="noreferrer" href={`https://nips.be/${a}`} className="pill">
                   NIP-{a.toString().padStart(2, "0")}
                 </a>
               ))}
@@ -90,7 +85,21 @@ const RelayInfo = () => {
           <FormattedMessage defaultMessage="Active Subscriptions" />
         </h4>
         <div className="f-grow">
-          <span className="pill">TBD</span>
+          {stats?.activeRequests.map(a => (
+            <span className="pill" key={a}>
+              {a}
+            </span>
+          ))}
+        </div>
+        <h4>
+          <FormattedMessage defaultMessage="Pending Subscriptions" />
+        </h4>
+        <div className="f-grow">
+          {stats?.pendingRequests.map(a => (
+            <span className="pill" key={a}>
+              {a}
+            </span>
+          ))}
         </div>
         <div className="flex mt10 f-end">
           <div

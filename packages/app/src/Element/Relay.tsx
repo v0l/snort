@@ -11,6 +11,7 @@ import {
   faWifi,
   faPlugCircleXmark,
   faGear,
+  faWarning,
 } from "@fortawesome/free-solid-svg-icons";
 import { RelaySettings } from "@snort/nostr";
 
@@ -86,7 +87,7 @@ export default function Relay(props: RelayProps) {
           </div>
           <div className="flex">
             <div className="f-grow">
-              <FontAwesomeIcon icon={faWifi} />{" "}
+              <FontAwesomeIcon icon={faWifi} className="mr5 ml5" />
               {latency > 2000
                 ? formatMessage(messages.Seconds, {
                     n: (latency / 1000).toFixed(0),
@@ -95,7 +96,9 @@ export default function Relay(props: RelayProps) {
                     n: latency.toLocaleString(),
                   })}
               &nbsp;
-              <FontAwesomeIcon icon={faPlugCircleXmark} /> {state?.disconnects}
+              <FontAwesomeIcon icon={faPlugCircleXmark} className="mr5 ml5" /> {state?.disconnects}
+              <FontAwesomeIcon icon={faWarning} className="mr5 ml5" />
+              {state?.pendingRequests?.length}
             </div>
             <div>
               <span className="icon-btn" onClick={() => navigate(state?.id ?? "")}>

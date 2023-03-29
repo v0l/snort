@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 
 import { DefaultConnectTimeout } from "./Const";
 import { ConnectionStats } from "./ConnectionStats";
-import { RawEvent, RawReqFilter, ReqCommand, TaggedRawEvent, u256 } from "./index";
+import { RawEvent, ReqCommand, TaggedRawEvent, u256 } from "./index";
 import { RelayInfo } from "./RelayInfo";
 import { unwrap } from "./Util";
 
@@ -20,7 +20,7 @@ export interface RelaySettings {
 /**
  * Snapshot of connection stats
  */
-export type StateSnapshot = {
+export interface StateSnapshot {
   connected: boolean;
   disconnects: number;
   avgLatency: number;
@@ -29,6 +29,8 @@ export type StateSnapshot = {
     send: number;
   };
   info?: RelayInfo;
+  pendingRequests: Array<string>;
+  activeRequests: Array<string>;
   id: string;
 };
 
@@ -297,6 +299,7 @@ export class Connection {
       this.ActiveRequests.add(cmd[1]);
       this.#SendJson(cmd);
     }
+    this.#UpdateState();
   }
 
   CloseReq(id: string) {
@@ -305,6 +308,7 @@ export class Connection {
       this.OnEose?.(id);
       this.#SendQueuedRequests();
     }
+    this.#UpdateState();
   }
 
   #SendQueuedRequests() {
@@ -329,6 +333,7 @@ export class Connection {
     this.ActiveRequests.clear();
     this.PendingRequests = [];
     this.PendingRaw = [];
+    this.#UpdateState();
   }
 
   #UpdateState() {
@@ -343,6 +348,8 @@ export class Connection {
     this.CurrentState.disconnects = this.Stats.Disconnects;
     this.CurrentState.info = this.Info;
     this.CurrentState.id = this.Id;
+    this.CurrentState.pendingRequests = [...this.PendingRequests.map(a => a[1])];
+    this.CurrentState.activeRequests = [...this.ActiveRequests];
     this.Stats.Latency = this.Stats.Latency.slice(-20); // trim
     this.HasStateChange = true;
     this.#NotifyState();

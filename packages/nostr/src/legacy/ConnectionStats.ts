@@ -5,39 +5,30 @@ export class ConnectionStats {
   /**
    * Last n records of how long between REQ->EOSE
    */
-  Latency: number[];
+  Latency: number[] = [];
 
   /**
    * Total number of REQ's sent on this connection
    */
-  Subs: number;
+  Subs: number = 0;
 
   /**
    * Count of REQ which took too long and where abandoned
    */
-  SubsTimeout: number;
+  SubsTimeout: number = 0;
 
   /**
    * Total number of EVENT messages received
    */
-  EventsReceived: number;
+  EventsReceived: number = 0;
 
   /**
    * Total number of EVENT messages sent
    */
-  EventsSent: number;
+  EventsSent: number = 0;
 
   /**
    * Total number of times this connection was lost
    */
-  Disconnects: number;
-
-  constructor() {
-    this.Latency = [];
-    this.Subs = 0;
-    this.SubsTimeout = 0;
-    this.EventsReceived = 0;
-    this.EventsSent = 0;
-    this.Disconnects = 0;
-  }
+  Disconnects: number = 0;
 }
