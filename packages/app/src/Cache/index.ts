@@ -1,5 +1,7 @@
 import { HexKey, TaggedRawEvent, UserMetadata } from "@snort/nostr";
 import { hexToBech32, unixNowMs } from "Util";
+import { DmCache } from "./DMCache";
+import { UserCache } from "./UserCache";
 
 export interface MetadataCache extends UserMetadata {
   /**
@@ -42,3 +44,10 @@ export function mapEventToProfile(ev: TaggedRawEvent) {
     console.error("Failed to parse JSON", ev, e);
   }
 }
+
+export async function preload() {
+  await UserCache.preload();
+  await DmCache.preload();
+}
+
+export { UserCache, DmCache };

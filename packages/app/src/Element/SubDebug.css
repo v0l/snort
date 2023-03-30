@@ -1,0 +1,14 @@
+.sub-debug {
+  display: block;
+  position: fixed;
+  top: 5px;
+  left: 5px;
+  opacity: 0.8;
+  border: 1px solid;
+  padding: 5px;
+  font-family: monospace;
+  font-size: x-small;
+  background-color: black;
+  z-index: 999999;
+  color: white;
+}

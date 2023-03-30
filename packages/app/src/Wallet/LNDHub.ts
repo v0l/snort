@@ -1,4 +1,3 @@
-import { EventPublisher } from "Feed/EventPublisher";
 import {
   InvoiceRequest,
   LNWallet,
@@ -17,14 +16,13 @@ const defaultHeaders = {
 };
 
 export default class LNDHubWallet implements LNWallet {
-  type: "lndhub" | "snort";
+  type: "lndhub";
   url: URL;
   user: string;
   password: string;
   auth?: AuthResponse;
-  publisher?: EventPublisher;
 
-  constructor(url: string, publisher?: EventPublisher) {
+  constructor(url: string) {
     if (url.startsWith("lndhub://")) {
       const regex = /^lndhub:\/\/([\S-]+):([\S-]+)@(.*)$/i;
       const parsedUrl = url.match(regex);
@@ -36,13 +34,6 @@ export default class LNDHubWallet implements LNWallet {
       this.user = parsedUrl[1];
       this.password = parsedUrl[2];
       this.type = "lndhub";
-    } else if (url.startsWith("snort://")) {
-      const u = new URL(url);
-      this.url = new URL(`https://${u.host}${u.pathname}`);
-      this.user = "";
-      this.password = "";
-      this.type = "snort";
-      this.publisher = publisher;
     } else {
       throw new Error("Invalid config");
     }
@@ -61,8 +52,6 @@ export default class LNDHubWallet implements LNWallet {
   }
 
   async login() {
-    if (this.type === "snort") return true;
-
     const rsp = await this.getJson<AuthResponse>("POST", "/auth?type=auth", {
       login: this.user,
       password: this.password,
@@ -123,11 +112,7 @@ export default class LNDHubWallet implements LNWallet {
   }
 
   private async getJson<T>(method: "GET" | "POST", path: string, body?: unknown): Promise<T> {
-    let auth = `Bearer ${this.auth?.access_token}`;
-    if (this.type === "snort") {
-      const ev = await this.publisher?.generic(`${this.url.pathname}${path}`, 30_000);
-      auth = JSON.stringify(ev?.ToObject());
-    }
+    const auth = `Bearer ${this.auth?.access_token}`;
     const url = `${this.url.pathname === "/" ? this.url.toString().slice(0, -1) : this.url.toString()}${path}`;
     const rsp = await fetch(url, {
       method: method,

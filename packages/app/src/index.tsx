@@ -10,11 +10,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
 import Store from "State/Store";
-import EventPage from "Pages/EventPage";
 import Layout from "Pages/Layout";
 import LoginPage from "Pages/Login";
 import ProfilePage from "Pages/ProfilePage";
-import RootPage from "Pages/Root";
+import { RootRoutes } from "Pages/Root";
 import NotificationsPage from "Pages/Notifications";
 import SettingsPage, { SettingsRoutes } from "Pages/SettingsPage";
 import ErrorPage from "Pages/ErrorPage";
@@ -28,6 +27,7 @@ import HelpPage from "Pages/HelpPage";
 import { NewUserRoutes } from "Pages/new";
 import { WalletRoutes } from "Pages/WalletPage";
 import NostrLinkHandler from "Pages/NostrLinkHandler";
+import Thread from "Element/Thread";
 import { unwrap } from "Util";
 
 /**
@@ -42,10 +42,7 @@ export const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: "/",
-        element: <RootPage />,
-      },
+      ...RootRoutes,
       {
         path: "/login",
         element: <LoginPage />,
@@ -56,7 +53,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/e/:id",
-        element: <EventPage />,
+        element: <Thread />,
       },
       {
         path: "/p/:id",

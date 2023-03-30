@@ -1,4 +1,4 @@
-import { Event, HexKey } from "@snort/nostr";
+import { HexKey, RawEvent } from "@snort/nostr";
 import { EmailRegex } from "Const";
 import { bech32ToText, unwrap } from "Util";
 
@@ -63,7 +63,7 @@ export class LNURL {
    * @param zap
    * @returns
    */
-  async getInvoice(amount: number, comment?: string, zap?: Event) {
+  async getInvoice(amount: number, comment?: string, zap?: RawEvent) {
     const callback = new URL(unwrap(this.#service?.callback));
     const query = new Map<string, string>();
 
@@ -81,7 +81,7 @@ export class LNURL {
       query.set("comment", comment);
     }
     if (this.#service?.nostrPubkey && zap) {
-      query.set("nostr", JSON.stringify(zap.ToObject()));
+      query.set("nostr", JSON.stringify(zap));
     }
 
     const baseUrl = `${callback.protocol}//${callback.host}${callback.pathname}`;

@@ -6,5 +6,8 @@
   "scripts": {
     "build": "yarn workspace @snort/nostr build && yarn workspace @snort/app build",
     "start": "yarn workspace @snort/nostr build && yarn workspace @snort/app start"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.2.3"
   }
 }

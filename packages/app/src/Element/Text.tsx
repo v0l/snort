@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { visit, SKIP } from "unist-util-visit";
 import * as unist from "unist";
-import { HexKey, NostrPrefix, Tag } from "@snort/nostr";
+import { HexKey, NostrPrefix } from "@snort/nostr";
 
 import { MentionRegex, InvoiceRegex, HashtagRegex, MagnetRegex } from "Const";
 import { eventLink, hexToBech32, magnetURIDecode, splitByUrl, unwrap } from "Util";
@@ -18,13 +18,13 @@ export type Fragment = string | React.ReactNode;
 
 export interface TextFragment {
   body: React.ReactNode[];
-  tags: Tag[];
+  tags: Array<Array<string>>;
 }
 
 export interface TextProps {
   content: string;
   creator: HexKey;
-  tags: Tag[];
+  tags: Array<Array<string>>;
 }
 
 export default function Text({ content, tags, creator }: TextProps) {
@@ -73,27 +73,27 @@ export default function Text({ content, tags, creator }: TextProps) {
             const matchTag = match.match(/#\[(\d+)\]/);
             if (matchTag && matchTag.length === 2) {
               const idx = parseInt(matchTag[1]);
-              const ref = frag.tags?.find(a => a.Index === idx);
+              const ref = frag.tags?.[idx];
               if (ref) {
-                switch (ref.Key) {
+                switch (ref[0]) {
                   case "p": {
-                    return <Mention pubkey={ref.PubKey ?? ""} relays={ref.Relay} />;
+                    return <Mention pubkey={ref[1] ?? ""} relays={ref[2]} />;
                   }
                   case "e": {
-                    const eText = hexToBech32(NostrPrefix.Event, ref.Event).substring(0, 12);
-                    return ref.Event ? (
-                      <Link
-                        to={eventLink(ref.Event, ref.Relay)}
-                        onClick={e => e.stopPropagation()}
-                        state={{ from: location.pathname }}>
-                        #{eText}
-                      </Link>
-                    ) : (
-                      ""
+                    const eText = hexToBech32(NostrPrefix.Event, ref[1]).substring(0, 12);
+                    return (
+                      ref[1] && (
+                        <Link
+                          to={eventLink(ref[1], ref[2])}
+                          onClick={e => e.stopPropagation()}
+                          state={{ from: location.pathname }}>
+                          #{eText}
+                        </Link>
+                      )
                     );
                   }
                   case "t": {
-                    return <Hashtag tag={ref.Hashtag ?? ""} />;
+                    return <Hashtag tag={ref[1] ?? ""} />;
                   }
                 }
               }

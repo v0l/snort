@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { encodeTLV, NostrPrefix } from "@snort/nostr";
+import { encodeTLV, EventKind, HexKey, NostrPrefix } from "@snort/nostr";
 
-import { parseNostrLink, unwrap } from "Util";
+import { parseNostrLink, getReactions, unwrap } from "Util";
 import { formatShort } from "Number";
 import Note from "Element/Note";
 import Bookmarks from "Element/Bookmarks";
@@ -57,13 +57,53 @@ const BLOCKED = 6;
 const RELAYS = 7;
 const BOOKMARKS = 8;
 
+function ZapsProfileTab({ id }: { id: HexKey }) {
+  const zaps = useZapsFeed(id);
+  const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
+  return (
+    <div className="main-content">
+      <div className="zaps-total">
+        <FormattedMessage {...messages.Sats} values={{ n: formatShort(zapsTotal) }} />
+      </div>
+      {zaps.map(z => (
+        <ZapElement showZapped={false} zap={z} />
+      ))}
+    </div>
+  );
+}
+
+function FollowersTab({ id }: { id: HexKey }) {
+  const followers = useFollowersFeed(id);
+  return <FollowsList pubkeys={followers} showAbout={true} />;
+}
+
+function FollowsTab({ id }: { id: HexKey }) {
+  const follows = useFollowsFeed(id);
+  return <FollowsList pubkeys={follows} showAbout={true} />;
+}
+
+function RelaysTab({ id }: { id: HexKey }) {
+  const relays = useRelaysFeed(id);
+  return <RelaysMetadata relays={relays} />;
+}
+
+function BookMarksTab({ id }: { id: HexKey }) {
+  const bookmarks = useBookmarkFeed(id);
+  return <Bookmarks pubkey={id} bookmarks={bookmarks} related={bookmarks} />;
+}
+
 export default function ProfilePage() {
   const { formatMessage } = useIntl();
   const params = useParams();
   const navigate = useNavigate();
   const [id, setId] = useState<string>();
   const user = useUserProfile(id);
-  const loginPubKey = useSelector((s: RootState) => s.login.publicKey);
+  const { publicKey: loginPubKey, follows } = useSelector((s: RootState) => {
+    return {
+      publicKey: s.login.publicKey,
+      follows: s.login.follows,
+    };
+  });
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
@@ -80,34 +120,25 @@ export default function ProfilePage() {
     user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
   // feeds
   const { blocked } = useModeration();
-  const { notes: pinned, related: pinRelated } = usePinnedFeed(id);
-  const { notes: bookmarks, related: bookmarkRelated } = useBookmarkFeed(id);
-  const relays = useRelaysFeed(id);
-  const zaps = useZapsFeed(id);
-  const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  const followers = useFollowersFeed(id);
-  const follows = useFollowsFeed(id);
+  const pinned = usePinnedFeed(id);
   const muted = useMutedFeed(id);
   const badges = useProfileBadges(id);
   // tabs
   const ProfileTab = {
     Notes: { text: formatMessage(messages.Notes), value: NOTES },
     Reactions: { text: formatMessage(messages.Reactions), value: REACTIONS },
-    Followers: { text: formatMessage(messages.FollowersCount, { n: followers.length }), value: FOLLOWERS },
-    Follows: { text: formatMessage(messages.FollowsCount, { n: follows.length }), value: FOLLOWS },
-    Zaps: { text: formatMessage(messages.ZapsCount, { n: zaps.length }), value: ZAPS },
-    Muted: { text: formatMessage(messages.MutedCount, { n: muted.length }), value: MUTED },
+    Followers: { text: formatMessage(messages.Followers), value: FOLLOWERS },
+    Follows: { text: formatMessage(messages.Follows), value: FOLLOWS },
+    Zaps: { text: formatMessage(messages.Zaps), value: ZAPS },
+    Muted: { text: formatMessage(messages.Muted), value: MUTED },
     Blocked: { text: formatMessage(messages.BlockedCount, { n: blocked.length }), value: BLOCKED },
-    Relays: { text: formatMessage(messages.RelaysCount, { n: relays.length }), value: RELAYS },
-    Bookmarks: { text: formatMessage(messages.BookmarksCount, { n: bookmarks.length }), value: BOOKMARKS },
+    Relays: { text: formatMessage(messages.Relays), value: RELAYS },
+    Bookmarks: { text: formatMessage(messages.Bookmarks), value: BOOKMARKS },
   };
   const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
-  const optionalTabs = [
-    zapsTotal > 0 && ProfileTab.Zaps,
-    relays.length > 0 && ProfileTab.Relays,
-    bookmarks.length > 0 && ProfileTab.Bookmarks,
-    muted.length > 0 && ProfileTab.Muted,
-  ].filter(a => unwrap(a)) as Tab[];
+  const optionalTabs = [ProfileTab.Zaps, ProfileTab.Relays, ProfileTab.Bookmarks, ProfileTab.Muted].filter(a =>
+    unwrap(a)
+  ) as Tab[];
   const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
@@ -190,16 +221,18 @@ export default function ProfilePage() {
         return (
           <>
             <div className="main-content">
-              {pinned.map(n => {
-                return (
-                  <Note
-                    key={`pinned-${n.id}`}
-                    data={n}
-                    related={pinRelated}
-                    options={{ showTime: false, showPinned: true, canUnpin: id === loginPubKey }}
-                  />
-                );
-              })}
+              {pinned
+                .filter(a => a.kind === EventKind.TextNote)
+                .map(n => {
+                  return (
+                    <Note
+                      key={`pinned-${n.id}`}
+                      data={n}
+                      related={getReactions(pinned, n.id)}
+                      options={{ showTime: false, showPinned: true, canUnpin: id === loginPubKey }}
+                    />
+                  );
+                })}
             </div>
             <Timeline
               key={id}
@@ -216,23 +249,17 @@ export default function ProfilePage() {
           </>
         );
       case ZAPS: {
-        return (
-          <div className="main-content">
-            <div className="zaps-total">
-              <FormattedMessage {...messages.Sats} values={{ n: formatShort(zapsTotal) }} />
-            </div>
-            {zaps.map(z => (
-              <ZapElement showZapped={false} zap={z} />
-            ))}
-          </div>
-        );
+        return <ZapsProfileTab id={id} />;
       }
-
       case FOLLOWS: {
-        return <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={!isMe} />;
+        if (isMe) {
+          return <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={false} />;
+        } else {
+          return <FollowsTab id={id} />;
+        }
       }
       case FOLLOWERS: {
-        return <FollowsList pubkeys={followers} showAbout={true} />;
+        return <FollowersTab id={id} />;
       }
       case MUTED: {
         return <MutedList pubkeys={muted} />;
@@ -241,10 +268,10 @@ export default function ProfilePage() {
         return <BlockList />;
       }
       case RELAYS: {
-        return <RelaysMetadata relays={relays} />;
+        return <RelaysTab id={id} />;
       }
       case BOOKMARKS: {
-        return <Bookmarks pubkey={id} bookmarks={bookmarks} related={bookmarkRelated} />;
+        return <BookMarksTab id={id} />;
       }
     }
   }
@@ -260,8 +287,7 @@ export default function ProfilePage() {
   function renderIcons() {
     if (!id) return;
 
-    const firstRelay = relays.find(a => a.settings.write)?.url;
-    const link = encodeTLV(id, NostrPrefix.Profile, firstRelay ? [firstRelay] : undefined);
+    const link = encodeTLV(id, NostrPrefix.Profile);
     return (
       <div className="icon-actions">
         <IconButton onClick={() => setShowProfileQr(true)}>

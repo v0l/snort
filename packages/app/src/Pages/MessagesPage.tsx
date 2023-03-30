@@ -12,6 +12,7 @@ import NoteToSelf from "Element/NoteToSelf";
 import useModeration from "Hooks/useModeration";
 
 import messages from "./messages";
+import { useDmCache } from "Hooks/useDmsCache";
 
 type DmChat = {
   pubkey: HexKey;
@@ -22,9 +23,9 @@ type DmChat = {
 export default function MessagesPage() {
   const dispatch = useDispatch();
   const myPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
-  const dms = useSelector<RootState, RawEvent[]>(s => s.login.dms);
   const dmInteraction = useSelector<RootState, number>(s => s.login.dmInteraction);
   const { isMuted } = useModeration();
+  const dms = useDmCache();
 
   const chats = useMemo(() => {
     return extractChats(
@@ -105,11 +106,11 @@ export function dmTo(e: RawEvent) {
   return firstP ? firstP[1] : "";
 }
 
-export function isToSelf(e: RawEvent, pk: HexKey) {
+export function isToSelf(e: Readonly<RawEvent>, pk: HexKey) {
   return e.pubkey === pk && dmTo(e) === pk;
 }
 
-export function dmsInChat(dms: RawEvent[], pk: HexKey) {
+export function dmsInChat(dms: readonly RawEvent[], pk: HexKey) {
   return dms.filter(a => a.pubkey === pk || dmTo(a) === pk);
 }
 

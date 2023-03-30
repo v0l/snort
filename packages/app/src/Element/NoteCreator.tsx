@@ -1,6 +1,7 @@
 import "./NoteCreator.css";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
+import { TaggedRawEvent } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
@@ -8,22 +9,21 @@ import { openFile } from "Util";
 import Textarea from "Element/Textarea";
 import Modal from "Element/Modal";
 import ProfileImage from "Element/ProfileImage";
-import { Event as NEvent } from "@snort/nostr";
 import useFileUpload from "Upload";
 
 import messages from "./messages";
 
 interface NotePreviewProps {
-  note: NEvent;
+  note: TaggedRawEvent;
 }
 
 function NotePreview({ note }: NotePreviewProps) {
   return (
     <div className="note-preview">
-      <ProfileImage pubkey={note.PubKey} />
+      <ProfileImage pubkey={note.pubkey} />
       <div className="note-preview-body">
-        {note.Content.slice(0, 136)}
-        {note.Content.length > 140 && "..."}
+        {note.content.slice(0, 136)}
+        {note.content.length > 140 && "..."}
       </div>
     </div>
   );
@@ -32,7 +32,7 @@ function NotePreview({ note }: NotePreviewProps) {
 export interface NoteCreatorProps {
   show: boolean;
   setShow: (s: boolean) => void;
-  replyTo?: NEvent;
+  replyTo?: TaggedRawEvent;
   onSend?: () => void;
   autoFocus: boolean;
 }

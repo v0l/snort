@@ -404,23 +404,6 @@ const PreferencesPage = () => {
       <div className="card flex">
         <div className="flex f-col f-grow">
           <div>
-            <FormattedMessage {...messages.RewriteTwitterPosts} />
-          </div>
-          <small>
-            <FormattedMessage {...messages.RewriteTwitterPostsHelp} />
-          </small>
-        </div>
-        <div>
-          <input
-            type="checkbox"
-            checked={perf.rewriteTwitterPosts}
-            onChange={e => dispatch(setPreferences({ ...perf, rewriteTwitterPosts: e.target.checked }))}
-          />
-        </div>
-      </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
             <FormattedMessage {...messages.FileUpload} />
           </div>
           <small>
