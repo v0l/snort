@@ -14,7 +14,7 @@ export const EmptySnapshot = {
     // empty
   },
   loading: () => true,
-  add: (ev: Readonly<TaggedRawEvent> | Readonly<Array<TaggedRawEvent>>) => {
+  add: () => {
     // empty
   },
 } as StoreSnapshot<FlatNoteStore>;
@@ -118,29 +118,6 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
       };
       this.#needsSnapshot = false;
     }
-  }
-}
-
-export type Node = Map<u256, Array<NodeBranch>>;
-export type NodeBranch = TaggedRawEvent | Node;
-
-/**
- * Tree note store
- */
-export class NostrEventTree extends HookedNoteStore<TaggedRawEvent> {
-  base: Node = new Map();
-  #nodeIndex: Map<u256, Node> = new Map();
-
-  add(ev: TaggedRawEvent | Array<TaggedRawEvent>) {
-    throw new Error("Not implemented");
-  }
-
-  clear(): void {
-    throw new Error("Method not implemented.");
-  }
-
-  takeSnapshot(): TaggedRawEvent {
-    throw new Error("Method not implemented.");
   }
 }
 

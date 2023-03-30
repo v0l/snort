@@ -49,7 +49,7 @@ jobs:
           releaseDraft: true
           prerelease: false
   build_docker:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Set env variables
         run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
