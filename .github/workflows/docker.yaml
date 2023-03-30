@@ -4,7 +4,7 @@ on:
     branches: [main]
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.ref }}
       cancel-in-progress: true
