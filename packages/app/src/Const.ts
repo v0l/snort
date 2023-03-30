@@ -3,7 +3,7 @@ import { RelaySettings } from "@snort/nostr";
 /**
  * Add-on api for snort features
  */
-export const ApiHost = "http://api.snort.social";
+export const ApiHost = "https://api.snort.social";
 
 /**
  * LibreTranslate endpoint
