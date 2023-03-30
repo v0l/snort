@@ -8,7 +8,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   console.debug(next.status);
   console.debug("Fetching data for: ", id);
 
-  const rsp = await fetch(`https://api.snort.social/api/v1/og/tag/e/${id}`, {
+  const rsp = await fetch(`https://api.snort.social/api/v1/og/tag/p/${id}`, {
     method: "POST",
     body: await next.arrayBuffer(),
     headers: {
