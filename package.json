@@ -8,6 +8,7 @@
     "start": "yarn workspace @snort/nostr build && yarn workspace @snort/app start"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.2.3"
+    "@tauri-apps/cli": "^1.2.3",
+    "@cloudflare/workers-types": "^4.20230307.0"
   }
 }
