@@ -6,17 +6,18 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShop } from "@fortawesome/free-solid-svg-icons";
+import { HexKey, TaggedRawEvent } from "@snort/nostr";
 
 import useEventPublisher from "Feed/EventPublisher";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
 import { RootState } from "State/Store";
-import { HexKey } from "@snort/nostr";
 import useFileUpload from "Upload";
 
 import messages from "./messages";
-import AsyncButton from "../../Element/AsyncButton";
+import AsyncButton from "Element/AsyncButton";
+import { mapEventToProfile, UserCache } from "Cache";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -80,6 +81,11 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     const ev = await publisher.metadata(userCopy);
     console.debug(ev);
     publisher.broadcast(ev);
+
+    const newProfile = mapEventToProfile(ev as TaggedRawEvent);
+    if (newProfile) {
+      await UserCache.set(newProfile);
+    }
   }
 
   async function uploadFile() {
