@@ -1,7 +1,7 @@
 import "./NoteCreator.css";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { TaggedRawEvent } from "@snort/nostr";
+import { RawEvent, TaggedRawEvent } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
@@ -10,6 +10,7 @@ import Textarea from "Element/Textarea";
 import Modal from "Element/Modal";
 import ProfileImage from "Element/ProfileImage";
 import useFileUpload from "Upload";
+import Note from "Element/Note";
 
 import messages from "./messages";
 
@@ -40,11 +41,11 @@ export interface NoteCreatorProps {
 export function NoteCreator(props: NoteCreatorProps) {
   const { show, setShow, replyTo, onSend, autoFocus } = props;
   const publisher = useEventPublisher();
-  const [note, setNote] = useState<string>("");
-  const [error, setError] = useState<string>();
-  const [active, setActive] = useState<boolean>(false);
+  const [note, setNote] = useState("");
+  const [error, setError] = useState("");
+  const [active, setActive] = useState(false);
+  const [preview, setPreview] = useState<RawEvent>();
   const uploader = useFileUpload();
-  const hasErrors = (error?.length ?? 0) > 0;
 
   async function sendNote() {
     if (note) {
@@ -98,27 +99,59 @@ export function NoteCreator(props: NoteCreatorProps) {
     sendNote().catch(console.warn);
   }
 
+  async function loadPreview() {
+    if (preview) {
+      setPreview(undefined);
+    } else {
+      const tmpNote = await publisher.note(note);
+      if (tmpNote) {
+        setPreview(tmpNote);
+      }
+    }
+  }
+
+  function getPreviewNote() {
+    if (preview) {
+      return (
+        <Note
+          data={preview as TaggedRawEvent}
+          related={[]}
+          options={{
+            showFooter: false,
+            canClick: false,
+          }}
+        />
+      );
+    }
+  }
+
   return (
     <>
       {show && (
         <Modal className="note-creator-modal" onClose={() => setShow(false)}>
           {replyTo && <NotePreview note={replyTo} />}
-          <div className={`flex note-creator ${replyTo ? "note-reply" : ""}`}>
-            <div className="flex f-col mr10 f-grow">
-              <Textarea
-                autoFocus={autoFocus}
-                className={`textarea ${active ? "textarea--focused" : ""}`}
-                onChange={onChange}
-                value={note}
-                onFocus={() => setActive(true)}
-              />
-              <button type="button" className="attachment" onClick={attachFile}>
-                <Icon name="attachment" />
-              </button>
+          {preview && getPreviewNote()}
+          {!preview && (
+            <div className={`flex note-creator ${replyTo ? "note-reply" : ""}`}>
+              <div className="flex f-col mr10 f-grow">
+                <Textarea
+                  autoFocus={autoFocus}
+                  className={`textarea ${active ? "textarea--focused" : ""}`}
+                  onChange={onChange}
+                  value={note}
+                  onFocus={() => setActive(true)}
+                />
+                <button type="button" className="attachment" onClick={attachFile}>
+                  <Icon name="attachment" />
+                </button>
+              </div>
+              {error && <span className="error">{error}</span>}
             </div>
-            {hasErrors && <span className="error">{error}</span>}
-          </div>
+          )}
           <div className="note-creator-actions">
+            <button className="secondary" type="button" onClick={loadPreview}>
+              <FormattedMessage defaultMessage="Toggle Preview" />
+            </button>
             <button className="secondary" type="button" onClick={cancel}>
               <FormattedMessage {...messages.Cancel} />
             </button>

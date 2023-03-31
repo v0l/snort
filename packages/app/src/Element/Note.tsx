@@ -46,6 +46,7 @@ export interface NoteProps {
     showReactionsLink?: boolean;
     canUnpin?: boolean;
     canUnbookmark?: boolean;
+    canClick?: boolean;
   };
 }
 
@@ -177,7 +178,7 @@ export default function Note(props: NoteProps) {
     eTarget: TaggedRawEvent,
     isTargetAllowed: boolean = e.target === e.currentTarget
   ) {
-    if (!isTargetAllowed) {
+    if (!isTargetAllowed || opt?.canClick === false) {
       return;
     }
 
@@ -280,7 +281,12 @@ export default function Note(props: NoteProps) {
       <>
         {options.showHeader && (
           <div className="header flex">
-            <ProfileImage autoWidth={false} pubkey={ev.pubkey} subHeader={replyTag() ?? undefined} />
+            <ProfileImage
+              autoWidth={false}
+              pubkey={ev.pubkey}
+              subHeader={replyTag() ?? undefined}
+              linkToProfile={opt?.canClick === undefined}
+            />
             {(options.showTime || options.showBookmarked) && (
               <div className="info">
                 {options.showBookmarked && (
