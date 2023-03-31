@@ -370,10 +370,11 @@ export default function useEventPublisher() {
         publicKey: pubKey,
       };
     },
-    generic: async (content: string, kind: EventKind) => {
+    generic: async (content: string, kind: EventKind, tags?: Array<Array<string>>) => {
       if (pubKey) {
         const ev = EventExt.forPubKey(pubKey, kind);
         ev.content = content;
+        ev.tags = tags ?? [];
         return await signEvent(ev);
       }
     },

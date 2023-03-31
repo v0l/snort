@@ -16,6 +16,7 @@ export type ServiceErrorCode =
 
 export interface ServiceError {
   error: ServiceErrorCode;
+  errors: Array<string>;
 }
 
 export interface ServiceConfig {
@@ -67,18 +68,18 @@ export class ServiceProvider {
   }
 
   async GetConfig(): Promise<ServiceConfig | ServiceError> {
-    return await this._GetJson("/config.json");
+    return await this.getJson("/config.json");
   }
 
   async CheckAvailable(handle: string, domain: string): Promise<HandleAvailability | ServiceError> {
-    return await this._GetJson("/registration/availability", "POST", {
+    return await this.getJson("/registration/availability", "POST", {
       name: handle,
       domain,
     });
   }
 
   async RegisterHandle(handle: string, domain: string, pubkey: string): Promise<HandleRegisterResponse | ServiceError> {
-    return await this._GetJson("/registration/register", "PUT", {
+    return await this.getJson("/registration/register", "PUT", {
       name: handle,
       domain,
       pk: pubkey,
@@ -87,11 +88,12 @@ export class ServiceProvider {
   }
 
   async CheckRegistration(token: string): Promise<CheckRegisterResponse | ServiceError> {
-    return await this._GetJson("/registration/register/check", "POST", undefined, {
+    return await this.getJson("/registration/register/check", "POST", undefined, {
       authorization: token,
     });
   }
-  async _GetJson<T>(
+
+  protected async getJson<T>(
     path: string,
     method?: "GET" | string,
     body?: { [key: string]: string },
@@ -110,12 +112,12 @@ export class ServiceProvider {
 
       const obj = await rsp.json();
       if ("error" in obj) {
-        return <ServiceError>obj;
+        return obj as ServiceError;
       }
-      return obj;
+      return obj as T;
     } catch (e) {
       console.warn(e);
     }
-    return { error: "UNKNOWN_ERROR" };
+    return { error: "UNKNOWN_ERROR", errors: [] };
   }
 }

@@ -47,6 +47,11 @@ const SettingsIndex = () => {
           <FormattedMessage {...messages.Donate} />
           <Icon name="arrowFront" />
         </div>
+        <div className="settings-row" onClick={() => navigate("nip5")}>
+          <Icon name="badge" />
+          <FormattedMessage defaultMessage="Manage Nostr Adddress (NIP-05)" />
+          <Icon name="arrowFront" />
+        </div>
         <div className="settings-row" onClick={handleLogout}>
           <Icon name="logout" />
           <FormattedMessage {...messages.LogOut} />
