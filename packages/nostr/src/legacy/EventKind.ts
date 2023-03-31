@@ -19,6 +19,7 @@ enum EventKind {
   ProfileBadges = 30008, // NIP-58
   ZapRequest = 9734, // NIP 57
   ZapReceipt = 9735, // NIP 57
+  HttpAuthentication = 27235, // NIP XX - HTTP Authentication
 }
 
 export default EventKind;

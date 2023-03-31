@@ -121,6 +121,9 @@
   "5rOdPG": {
     "defaultMessage": "Once you setup your key manager extension and generated a key, you can follow our new users flow to setup your profile and help you find some interesting people on Nostr to follow."
   },
+  "5u6iEc": {
+    "defaultMessage": "Transfer to Pubkey"
+  },
   "5ykRmX": {
     "defaultMessage": "Send zap"
   },
@@ -173,6 +176,9 @@
   "9gqH2W": {
     "defaultMessage": "Login",
     "description": "Login button"
+  },
+  "9pMqYs": {
+    "defaultMessage": "Nostr Address"
   },
   "9wO4wJ": {
     "defaultMessage": "Lightning Invoice"
@@ -239,6 +245,9 @@
   "Dt/Zd5": {
     "defaultMessage": "Media in posts will automatically be shown for selected people, otherwise only the link will show"
   },
+  "DtYelJ": {
+    "defaultMessage": "Transfer"
+  },
   "E8a4yq": {
     "defaultMessage": "Follow some popular accounts"
   },
@@ -274,6 +283,9 @@
   },
   "FmXUJg": {
     "defaultMessage": "follows you"
+  },
+  "FpxElY": {
+    "defaultMessage": "Verification"
   },
   "G/yZLu": {
     "defaultMessage": "Remove"
@@ -365,6 +377,9 @@
   },
   "LF5kYT": {
     "defaultMessage": "Other Connections"
+  },
+  "LQahqW": {
+    "defaultMessage": "Manage Nostr Adddress (NIP-05)"
   },
   "LXxsbk": {
     "defaultMessage": "Anonymous"
@@ -482,6 +497,9 @@
     "defaultMessage": "Hex Salt..",
     "description": "Hexidecimal 'salt' input for imgproxy"
   },
+  "UDYlxu": {
+    "defaultMessage": "Pending Subscriptions"
+  },
   "UQ3pOC": {
     "defaultMessage": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step."
   },
@@ -496,6 +514,9 @@
   },
   "VOjC1i": {
     "defaultMessage": "Pick which upload service you want to upload attachments to"
+  },
+  "VR5eHw": {
+    "defaultMessage": "Public key (npub/nprofile)"
   },
   "VlJkSk": {
     "defaultMessage": "{n} muted"
@@ -669,6 +690,9 @@
   "iNWbVV": {
     "defaultMessage": "Handle"
   },
+  "iXPL0Z": {
+    "defaultMessage": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead"
+  },
   "ieGrWo": {
     "defaultMessage": "Follow"
   },
@@ -732,6 +756,9 @@
   },
   "lvlPhZ": {
     "defaultMessage": "Pay Invoice"
+  },
+  "mErPop": {
+    "defaultMessage": "It looks like you dont have any, check {link} to buy one!"
   },
   "mH91FY": {
     "defaultMessage": "Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below"
@@ -860,9 +887,6 @@
   },
   "uSV4Ti": {
     "defaultMessage": "Reposts need to be manually confirmed"
-  },
-  "ubtr9S": {
-    "defaultMessage": "Can't login with private key on 'http://' connection, please use a Nostr key manager extension instead"
   },
   "usAvMr": {
     "defaultMessage": "Edit Profile"
