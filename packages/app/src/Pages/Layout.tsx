@@ -7,7 +7,7 @@ import { FormattedMessage } from "react-intl";
 import { RelaySettings } from "@snort/nostr";
 import messages from "./messages";
 
-import { bech32ToHex, randomSample } from "Util";
+import { bech32ToHex, randomSample, unixNowMs, unwrap } from "Util";
 import Icon from "Icons/Icon";
 import { RootState } from "State/Store";
 import { init, setRelays } from "State/Login";
@@ -19,7 +19,7 @@ import useModeration from "Hooks/useModeration";
 import { NoteCreator } from "Element/NoteCreator";
 import { db } from "Db";
 import useEventPublisher from "Feed/EventPublisher";
-import { SnortPubKey } from "Const";
+import { DefaultRelays, SnortPubKey } from "Const";
 import SubDebug from "Element/SubDebug";
 import { preload } from "Cache";
 import { useDmCache } from "Hooks/useDmsCache";
@@ -110,7 +110,7 @@ export default function Layout() {
         if ("registerProtocolHandler" in window.navigator) {
           window.navigator.registerProtocolHandler(
             "web+nostr",
-            `${window.location.protocol}//${window.location.host}/handler/%s`
+            `${window.location.protocol}//${window.location.host}/%s`
           );
           console.info("Registered protocol handler for 'web+nostr'");
         }
@@ -129,11 +129,14 @@ export default function Layout() {
         const online: string[] = await rsp.json();
         const pickRandom = randomSample(online, 4);
         const relayObjects = pickRandom.map(a => [a, { read: true, write: true }]);
-        newRelays = Object.fromEntries(relayObjects);
+        newRelays = {
+          ...Object.fromEntries(relayObjects),
+          ...Object.fromEntries(DefaultRelays.entries()),
+        };
         dispatch(
           setRelays({
             relays: newRelays,
-            createdAt: 1,
+            createdAt: unixNowMs(),
           })
         );
       }
@@ -141,7 +144,7 @@ export default function Layout() {
       console.warn(e);
     }
 
-    const ev = await pub.addFollow(bech32ToHex(SnortPubKey), newRelays);
+    const ev = await pub.addFollow([bech32ToHex(SnortPubKey), unwrap(publicKey)], newRelays);
     pub.broadcast(ev);
   }
 

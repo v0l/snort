@@ -6,7 +6,7 @@ import { DefaultRelays } from "Const";
 import { RelaySettings } from "@snort/nostr";
 import type { AppDispatch, RootState } from "State/Store";
 import { ImgProxySettings } from "Hooks/useImgProxy";
-import { sanitizeRelayUrl } from "Util";
+import { sanitizeRelayUrl, unwrap } from "Util";
 import { DmCache } from "Cache";
 
 const PrivateKeyItem = "secret";
@@ -300,7 +300,9 @@ const LoginSlice = createSlice({
       if (lastRelayList) {
         state.relays = JSON.parse(lastRelayList);
       } else {
-        state.relays = Object.fromEntries(DefaultRelays.entries());
+        state.relays = Object.fromEntries(
+          [...DefaultRelays.entries()].map(a => [unwrap(sanitizeRelayUrl(a[0])), a[1]])
+        );
       }
 
       const lastFollows = window.localStorage.getItem(FollowList);

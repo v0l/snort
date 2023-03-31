@@ -92,12 +92,12 @@ export const router = createBrowserRouter([
         path: "/search/:keyword?",
         element: <SearchPage />,
       },
-      {
-        path: "/handler/*",
-        element: <NostrLinkHandler />,
-      },
       ...NewUserRoutes,
       ...WalletRoutes,
+      {
+        path: "/*",
+        element: <NostrLinkHandler />,
+      },
     ],
   },
 ]);

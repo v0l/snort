@@ -49,10 +49,12 @@ const Artwork: Array<ArtworkEntry> = [
 
 export async function getNip05PubKey(addr: string): Promise<string> {
   const [username, domain] = addr.split("@");
-  const rsp = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username)}`);
+  const rsp = await fetch(
+    `https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username.toLocaleLowerCase())}`
+  );
   if (rsp.ok) {
     const data = await rsp.json();
-    const pKey = data.names[username];
+    const pKey = data.names[username.toLowerCase()];
     if (pKey) {
       return pKey;
     }
@@ -70,7 +72,7 @@ export default function LoginPage() {
   const { formatMessage } = useIntl();
   const { proxy } = useImgProxy();
   const hasNip7 = "nostr" in window;
-  const isSecure = window.location.protocol === "https:";
+  const hasSubtleCrypto = window.crypto.subtle !== undefined;
 
   useEffect(() => {
     if (publicKey) {
@@ -90,7 +92,7 @@ export default function LoginPage() {
     });
     try {
       if (key.startsWith("nsec")) {
-        if (!isSecure) {
+        if (!hasSubtleCrypto) {
           throw new Error(insecureMsg);
         }
         const hexKey = bech32ToHex(key);
@@ -106,14 +108,14 @@ export default function LoginPage() {
         const hexKey = await getNip05PubKey(key);
         dispatch(setPublicKey(hexKey));
       } else if (key.match(MnemonicRegex)) {
-        if (!isSecure) {
+        if (!hasSubtleCrypto) {
           throw new Error(insecureMsg);
         }
         const ent = generateBip39Entropy(key);
         const keyHex = entropyToDerivedKey(ent);
         dispatch(setPrivateKey(keyHex));
       } else if (secp.utils.isValidPrivateKey(key)) {
-        if (!isSecure) {
+        if (!hasSubtleCrypto) {
           throw new Error(insecureMsg);
         }
         dispatch(setPrivateKey(key));
@@ -176,7 +178,7 @@ export default function LoginPage() {
   }
 
   function generateKey() {
-    if (!isSecure) return;
+    if (!hasSubtleCrypto) return;
 
     return (
       <>
@@ -203,7 +205,7 @@ export default function LoginPage() {
   }
 
   function installExtension() {
-    if (isSecure) return;
+    if (hasSubtleCrypto) return;
 
     return (
       <>
