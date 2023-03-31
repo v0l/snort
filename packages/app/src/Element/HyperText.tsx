@@ -80,6 +80,7 @@ export default function HyperText({ link, creator }: { link: string; creator: He
           case "gif":
           case "jpg":
           case "jpeg":
+          case "jfif":
           case "png":
           case "bmp":
           case "webp": {
