@@ -110,7 +110,7 @@ export default function Layout() {
         if ("registerProtocolHandler" in window.navigator) {
           window.navigator.registerProtocolHandler(
             "web+nostr",
-            `${window.location.protocol}//${window.location.host}/handler/%s`
+            `${window.location.protocol}//${window.location.host}/%s`
           );
           console.info("Registered protocol handler for 'web+nostr'");
         }
