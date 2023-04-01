@@ -21,6 +21,7 @@ import {
   getRecipient,
 } from "./direct-message"
 import { ContactList, getContacts } from "./contact-list"
+import { Deletion, getEvents } from "./deletion"
 
 // TODO Add remaining event types
 
@@ -69,8 +70,9 @@ export interface Unknown extends RawEvent {
     EventKind,
     | EventKind.SetMetadata
     | EventKind.TextNote
-    | EventKind.DirectMessage
     | EventKind.ContactList
+    | EventKind.DirectMessage
+    | EventKind.Deletion
   >
 }
 
@@ -79,6 +81,7 @@ export type Event =
   | TextNote
   | ContactList
   | DirectMessage
+  | Deletion
   | Unknown
 
 /**
@@ -186,6 +189,14 @@ export async function parseEvent(event: RawEvent): Promise<Event> {
       ...event,
       kind: EventKind.ContactList,
       getContacts,
+    }
+  }
+
+  if (event.kind === EventKind.Deletion) {
+    return {
+      ...event,
+      kind: EventKind.Deletion,
+      getEvents,
     }
   }
 
