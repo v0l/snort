@@ -38,7 +38,7 @@ export function getEvents(this: Deletion): EventId[] {
   return this.tags
     .filter((tag) => tag[0] === "e")
     .map((tag) => {
-      if (tag[1] !== undefined) {
+      if (tag[1] === undefined) {
         throw new NostrError(
           `invalid deletion event tag: ${JSON.stringify(tag)}`
         )
