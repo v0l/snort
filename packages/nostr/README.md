@@ -18,7 +18,7 @@ _Progress: 8/34 (23%)._
 - [x] NIP-05: Mapping Nostr keys to DNS-based internet identifiers
 - [ ] NIP-06: Basic key derivation from mnemonic seed phrase
 - [ ] NIP-07: window.nostr capability for web browsers
-- [ ] NIP-09: Event Deletion
+- [x] NIP-09: Event Deletion
 - [ ] NIP-10: Conventions for clients' use of `e` and `p` tags in text events
   - TODO Check if this applies
 - [x] NIP-11: Relay Information Document
