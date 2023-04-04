@@ -1,45 +1,51 @@
 import { useEffect, useState } from "react";
 
+import { ApiHost } from "Const";
+import Spinner from "Icons/Spinner";
+import { ProxyImg } from "Element/ProxyImg";
+
+interface LinkPreviewData {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
 async function fetchUrlPreviewInfo(url: string) {
-  // Hardcoded the dufflepud url here only for initial testing by Snort devs,
-  // will be more ideal for Snort to deploy its own instance of Dufflepud
-  // and link to it in an .env to not bombard dufflepud.onrender.com , which is
-  // Coracle's instance. Repo: https://github.com/staab/dufflepud
-  const res = await fetch("http://dufflepud.onrender.com/link/preview", {
-    method: "POST",
-    body: JSON.stringify({ url }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const json = await res.json();
-  if (json.title || json.image) {
-    const preview = json;
-    return preview;
-  } else {
-    return null;
+  const res = await fetch(`${ApiHost}/api/v1/preview?url=${encodeURIComponent(url)}`);
+  if (res.ok) {
+    return (await res.json()) as LinkPreviewData;
   }
 }
 
 const LinkPreview = ({ url }: { url: string }) => {
-  const [previewImage, setImage] = useState<string>();
-  const [previewtitle, setTitle] = useState<string>();
+  const [preview, setPreview] = useState<LinkPreviewData>();
+
   useEffect(() => {
-    fetchUrlPreviewInfo(url)
-      .then(data => {
-        if (data) {
-          setImage(data.image || undefined);
-          setTitle(data.title || undefined);
-        }
-      })
-      .catch(console.error);
+    (async () => {
+      const data = await fetchUrlPreviewInfo(url);
+      if (data) {
+        setPreview(data);
+      }
+    })().catch(console.error);
   }, [url]);
+
   return (
     <div className="link-preview-container">
-      <a href={url}>
-        <img src={previewImage} className="link-preview-image"></img>
-        <p className="link-preview-title">{previewtitle}</p>
-      </a>
+      {preview && (
+        <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
+          {preview?.image && <ProxyImg src={preview?.image} className="link-preview-image" />}
+          <p className="link-preview-title">
+            {preview?.title}
+            {preview?.description && (
+              <>
+                <br />
+                <small>{preview?.description}</small>
+              </>
+            )}
+          </p>
+        </a>
+      )}
+      {!preview && <Spinner className="f-center" />}
     </div>
   );
 };
