@@ -12,5 +12,6 @@ module.exports = {
   rules: {
     "require-await": "error",
     eqeqeq: "error",
+    "object-shorthand": "warn",
   },
 }
