@@ -98,12 +98,7 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const [id, setId] = useState<string>();
   const user = useUserProfile(id);
-  const { publicKey: loginPubKey, follows } = useSelector((s: RootState) => {
-    return {
-      publicKey: s.login.publicKey,
-      follows: s.login.follows,
-    };
-  });
+  const loginPubKey = useSelector((s: RootState) => s.login.publicKey);
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
@@ -123,6 +118,7 @@ export default function ProfilePage() {
   const pinned = usePinnedFeed(id);
   const muted = useMutedFeed(id);
   const badges = useProfileBadges(id);
+  const follows = useFollowsFeed(id);
   // tabs
   const ProfileTab = {
     Notes: { text: formatMessage(messages.Notes), value: NOTES },
