@@ -14,7 +14,7 @@ export default function DiscoverFollows() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const sortedReccomends = useMemo(() => {
-    return RecommendedFollows.sort(() => (Math.random() >= 0.5 ? -1 : 1));
+    return RecommendedFollows.sort(() => (Math.random() >= 0.5 ? -1 : 1)).map(a => a.toLowerCase());
   }, []);
 
   async function clearEntropyAndGo() {
