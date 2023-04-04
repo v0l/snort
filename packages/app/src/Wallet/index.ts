@@ -4,6 +4,7 @@ import { decodeInvoice, unwrap } from "Util";
 import { LNCWallet } from "./LNCWallet";
 import LNDHubWallet from "./LNDHub";
 import { NostrConnectWallet } from "./NostrWalletConnect";
+import { CashuWallet } from "./Cashu";
 import { setupWebLNWalletConfig, WebLNWallet } from "./WebLN";
 
 export enum WalletKind {
@@ -11,6 +12,7 @@ export enum WalletKind {
   LNC = 2,
   WebLN = 3,
   NWC = 4,
+  Cashu = 5,
 }
 
 export enum WalletErrorCode {
@@ -250,6 +252,9 @@ export class WalletStore {
       }
       case WalletKind.NWC: {
         return new NostrConnectWallet(unwrap(cfg.data));
+      }
+      case WalletKind.Cashu: {
+        return new CashuWallet(unwrap(cfg.data));
       }
     }
   }
