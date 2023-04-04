@@ -11,23 +11,31 @@ interface LinkPreviewData {
 }
 
 async function fetchUrlPreviewInfo(url: string) {
-  const res = await fetch(`${ApiHost}/api/v1/preview?url=${encodeURIComponent(url)}`);
-  if (res.ok) {
-    return (await res.json()) as LinkPreviewData;
+  try {
+    const res = await fetch(`${ApiHost}/api/v1/preview?url=${encodeURIComponent(url)}`);
+    if (res.ok) {
+      return (await res.json()) as LinkPreviewData;
+    }
+  } catch (e) {
+    console.warn(`Failed to load link preview`, url);
   }
 }
 
 const LinkPreview = ({ url }: { url: string }) => {
-  const [preview, setPreview] = useState<LinkPreviewData>();
+  const [preview, setPreview] = useState<LinkPreviewData | null>();
 
   useEffect(() => {
     (async () => {
       const data = await fetchUrlPreviewInfo(url);
       if (data) {
         setPreview(data);
+      } else {
+        setPreview(null);
       }
-    })().catch(console.error);
+    })();
   }, [url]);
+
+  if (preview === null) return null;
 
   return (
     <div className="link-preview-container">
