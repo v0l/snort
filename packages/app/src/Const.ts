@@ -41,7 +41,7 @@ export const ProfileCacheExpire = 1_000 * 60 * 30;
 export const DefaultRelays = new Map<string, RelaySettings>([
   ["wss://relay.snort.social", { read: true, write: true }],
   ["wss://nostr.wine", { read: true, write: false }],
-  ["wss://nos.lol", { read: true, write: false }],
+  ["wss://nos.lol", { read: true, write: true }],
 ]);
 
 /**
@@ -168,10 +168,9 @@ export const MagnetRegex = /(magnet:[\S]+)/i;
 /**
  * Wavlake embed regex
  */
-export const WavlakeRegex =
-  /player\.wavlake\.com\/(?!feed\/)(track\/[.a-zA-Z0-9-]+|album\/[.a-zA-Z0-9-]+|[.a-zA-Z0-9-]+)/i;
+export const WavlakeRegex = /(?:player\.)?wavlake\.com\/(track\/[.a-zA-Z0-9-]+|album\/[.a-zA-Z0-9-]+|[.a-zA-Z0-9-]+)/i;
 
-  /*
+/*
  * Regex to match any base64 string
  */
-export const Base64Regex = /([a-zA-Z0-9+/]+={,2})/;
+export const CashuRegex = /(cashuA[A-Za-z0-9_-]{0,10000}={0,3})/i;

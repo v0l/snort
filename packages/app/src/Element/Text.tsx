@@ -7,7 +7,10 @@ import * as unist from "unist";
 import base64 from "@protobufjs/base64";
 import { HexKey, NostrPrefix } from "@snort/nostr";
 
-import { MentionRegex, InvoiceRegex, HashtagRegex, MagnetRegex, Base64Regex } from "Const";
+import { CashuMint, CashuWallet, getDecodedToken } from "@cashu/cashu-ts";
+import { FormattedMessage } from "react-intl";
+
+import { MentionRegex, InvoiceRegex, HashtagRegex, MagnetRegex, CashuRegex } from "Const";
 import { eventLink, hexToBech32, magnetURIDecode, splitByUrl, unwrap } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
@@ -66,32 +69,45 @@ export default function Text({ content, tags, creator }: TextProps) {
       .flat();
   }
 
-  function extractBase64Strings(fragments: Fragment[]) {
+  function extractCashuTokens(fragments: Fragment[]) {
+    async function copyToken(token: string) {
+      await navigator.clipboard.writeText(token);
+    }
+    async function redeemToken(token: string) {
+      const url = `https://redeem.cashu.me?token=${encodeURIComponent(token)}&lightning=${encodeURIComponent(
+        "callebtc@ln.tips"
+      )}`;
+      window.open(url, "_blank");
+    }
+
     return fragments
       .map(f => {
-        if (typeof f === "string") {
-          return f.split(Base64Regex).map(a => {
-            const parsed = base64.test(a);
-            if (parsed && a.length > 0) {
-              const buff = new Uint8Array(3 * (a.length / 4));
-              const len = base64.decode(a, buff, 0);
-              const text = new TextDecoder().decode(buff.slice(0, len));
-              if (text.startsWith("{") && text.endsWith("}") && text.includes("proofs")) {
-                const data = JSON.parse(text) as {
-                  proofs: [
-                    {
-                      amount: number;
-                    }
-                  ];
-                };
-                return (
-                  <div className="note-invoice">
-                    <h4>Cashu tokens</h4>
-                    <p>Amount: {data.proofs.reduce((acc, v) => (acc += v.amount), 0)} sats</p>
-                  </div>
-                );
-              }
+        if (typeof f === "string" && f.includes("cashuA")) {
+          return f.split(CashuRegex).map(a => {
+            if (!a.startsWith("cashuA") || a.length < 10) {
               return a;
+            }
+            const cashu = getDecodedToken(a);
+            if (cashu && cashu.token[0].proofs) {
+              return (
+                <div className="note-invoice">
+                  <div className="flex f-between">
+                    <div>
+                      <h4>Cashu token</h4>
+                      <p>Amount: {cashu.token[0].proofs.reduce((acc, v) => (acc += v.amount), 0)} sats</p>
+                      <p style={{ fontSize: "0.7em" }}>Mint: {cashu.token[0].mint}</p>
+                    </div>
+                    <div style={{ marginLeft: "auto" }}>
+                      <button type="button" onClick={() => copyToken(a)}>
+                        <FormattedMessage defaultMessage="Copy" description="Button: Copy Cashu token" />
+                      </button>
+                      <button type="button" onClick={() => redeemToken(a)}>
+                        <FormattedMessage defaultMessage="Redeem" description="Button: Redeem Cashu token" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
             }
             return a;
           });
@@ -197,7 +213,7 @@ export default function Text({ content, tags, creator }: TextProps) {
     fragments = extractInvoices(fragments);
     fragments = extractHashtags(fragments);
     fragments = extractMagnetLinks(fragments);
-    fragments = extractBase64Strings(fragments);
+    fragments = extractCashuTokens(fragments);
     return fragments;
   }
 
