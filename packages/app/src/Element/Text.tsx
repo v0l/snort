@@ -25,9 +25,10 @@ export interface TextProps {
   content: string;
   creator: HexKey;
   tags: Array<Array<string>>;
+  disableMedia?: boolean;
 }
 
-export default function Text({ content, tags, creator }: TextProps) {
+export default function Text({ content, tags, creator, disableMedia }: TextProps) {
   const location = useLocation();
 
   function extractLinks(fragments: Fragment[]) {
@@ -36,6 +37,13 @@ export default function Text({ content, tags, creator }: TextProps) {
         if (typeof f === "string") {
           return splitByUrl(f).map(a => {
             if (a.match(/^(?:https?|(?:web\+)?nostr):/i)) {
+              if (disableMedia ?? false) {
+                return (
+                  <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
+                    {a}
+                  </a>
+                );
+              }
               return <HyperText key={a} link={a} creator={creator} />;
             }
             return a;

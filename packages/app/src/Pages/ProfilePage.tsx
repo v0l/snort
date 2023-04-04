@@ -107,6 +107,7 @@ export default function ProfilePage() {
     content: aboutText,
     tags: [],
     creator: "",
+    disableMedia: true,
   });
   const npub = !id?.startsWith(NostrPrefix.PublicKey) ? hexToBech32(NostrPrefix.PublicKey, id || undefined) : id;
 
