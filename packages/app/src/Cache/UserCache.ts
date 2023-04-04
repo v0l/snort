@@ -49,7 +49,6 @@ class UserProfileCache extends FeedCache<MetadataCache> {
    */
   async update(m: MetadataCache) {
     const existing = this.getFromCache(m.pubkey);
-    const refresh = existing && existing.loaded < m.loaded;
     const updateType = (() => {
       if (!existing) {
         return "new_profile";
@@ -57,7 +56,7 @@ class UserProfileCache extends FeedCache<MetadataCache> {
       if (existing.created < m.created) {
         return "updated_profile";
       }
-      if (refresh) {
+      if (existing && existing.loaded < m.loaded) {
         return "refresh_profile";
       }
       return "no_change";
@@ -73,9 +72,8 @@ class UserProfileCache extends FeedCache<MetadataCache> {
             await svc.load();
             m.zapService = svc.zapperPubkey;
           } catch {
-            console.debug("Failed to load LNURL for zapper pubkey", lnurl);
+            console.warn("Failed to load LNURL for zapper pubkey", lnurl);
           }
-          // ignored
         }
       }
 
