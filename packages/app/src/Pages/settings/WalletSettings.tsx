@@ -6,6 +6,9 @@ import { RouteObject, useNavigate } from "react-router-dom";
 import BlueWallet from "Icons/BlueWallet";
 import ConnectLNC from "Pages/settings/wallet/LNC";
 import ConnectLNDHub from "./wallet/LNDHub";
+import ConnectCashu from "./wallet/Cashu";
+
+import CashuLogo from "cashu.png";
 
 const WalletSettings = () => {
   const navigate = useNavigate();
@@ -25,6 +28,10 @@ const WalletSettings = () => {
             <h3 className="f-end">LNDHub</h3>
           </div>
         }
+        <div className="card" onClick={() => navigate("/settings/wallet/cashu")}>
+          <img src={CashuLogo} width={100} />
+          <h3 className="f-end">Cashu</h3>
+        </div>
       </div>
     </>
   );
@@ -44,5 +51,9 @@ export const WalletSettingsRoutes = [
   {
     path: "/settings/wallet/lndhub",
     element: <ConnectLNDHub />,
+  },
+  {
+    path: "/settings/wallet/cashu",
+    element: <ConnectCashu />,
   },
 ] as Array<RouteObject>;
