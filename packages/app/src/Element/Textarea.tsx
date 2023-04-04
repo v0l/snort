@@ -9,9 +9,11 @@ import { NostrPrefix } from "@snort/nostr";
 
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
+import { ProxyImg } from "Element/ProxyImg";
 import { hexToBech32 } from "Util";
 import { MetadataCache } from "Cache";
 import { UserCache } from "Cache/UserCache";
+import PLEBHY, { PLEBHYItem } from "Plebhy";
 
 import messages from "./messages";
 
@@ -44,6 +46,17 @@ const UserItem = (metadata: MetadataCache) => {
   );
 };
 
+const PlebhyItem = (item: PLEBHYItem) => {
+  return (
+    <div key={item.etag} className="gif-item">
+      <div className="gif">
+        <ProxyImg src={decodeURIComponent(item.images.original.url)} width={100} />
+      </div>
+      <div className="gif-name">{item.name}</div>
+    </div>
+  );
+};
+
 interface TextareaProps {
   autoFocus: boolean;
   className: string;
@@ -53,6 +66,7 @@ interface TextareaProps {
 }
 
 const Textarea = (props: TextareaProps) => {
+  const plebHy = new PLEBHY();
   const { formatMessage } = useIntl();
 
   const userDataProvider = async (token: string) => {
@@ -63,6 +77,10 @@ const Textarea = (props: TextareaProps) => {
     return emoji(token)
       .slice(0, 5)
       .map(({ name, char }) => ({ name, char }));
+  };
+
+  const plebhyDataProvider = (token: string) => {
+    return plebHy.search(token);
   };
 
   return (
@@ -84,6 +102,11 @@ const Textarea = (props: TextareaProps) => {
           dataProvider: userDataProvider,
           component: (props: { entity: MetadataCache }) => <UserItem {...props.entity} />,
           output: (item: { pubkey: string }) => `@${hexToBech32(NostrPrefix.PublicKey, item.pubkey)}`,
+        },
+        "~": {
+          dataProvider: plebhyDataProvider,
+          component: (props: { entity: PLEBHYItem }) => <PlebhyItem {...props.entity} />,
+          output: (item: PLEBHYItem) => decodeURIComponent(item.images.original.url),
         },
       }}
     />

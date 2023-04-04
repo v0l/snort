@@ -11,7 +11,8 @@
 }
 
 .user-item,
-.emoji-item {
+.emoji-item,
+.gif-item {
   color: var(--font-color);
   background: var(--note-bg);
   display: flex;
@@ -22,7 +23,8 @@
 }
 
 .user-item:hover,
-.emoji-item:hover {
+.emoji-item:hover,
+.gif-item:hover {
   background: var(--gray-tertiary);
 }
 
