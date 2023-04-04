@@ -37,6 +37,15 @@ class ProfileLoaderService {
     }
   }
 
+  async onProfileEvent(ev: Readonly<Array<TaggedRawEvent>>) {
+    for (const e of ev) {
+      const profile = mapEventToProfile(e);
+      if (profile) {
+        await UserCache.update(profile);
+      }
+    }
+  }
+
   async #FetchMetadata() {
     const missingFromCache = await UserCache.buffer([...this.WantsMetadata]);
 
@@ -50,31 +59,21 @@ class ProfileLoaderService {
 
       const sub = new RequestBuilder(`profiles`);
       sub
-        .withOptions({
-          skipDiff: true,
-        })
         .withFilter()
         .kinds([EventKind.SetMetadata])
         .authors([...missing]);
 
       const q = System.Query<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
       // never release this callback, it will stop firing anyway after eose
-      q.onEvent(async ev => {
-        for (const e of ev) {
-          const profile = mapEventToProfile(e);
-          if (profile) {
-            await UserCache.update(profile);
-          }
-        }
-      });
+      const releaseOnEvent = q.onEvent(this.onProfileEvent);
       const results = await new Promise<Readonly<Array<TaggedRawEvent>>>(resolve => {
         let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
         const release = q.hook(() => {
           if (!q.loading) {
             clearTimeout(timeout);
             resolve(q.getSnapshotData() ?? []);
-            release();
           }
+          release();
         });
         timeout = setTimeout(() => {
           release();
@@ -82,6 +81,7 @@ class ProfileLoaderService {
         }, 5_000);
       });
 
+      releaseOnEvent();
       const couldNotFetch = [...missing].filter(a => !results.some(b => b.pubkey === a));
       if (couldNotFetch.length > 0) {
         console.debug("No profiles: ", couldNotFetch);
