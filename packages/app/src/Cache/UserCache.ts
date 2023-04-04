@@ -64,7 +64,7 @@ class UserProfileCache extends FeedCache<MetadataCache> {
     })();
     console.debug(`Updating ${m.pubkey} ${updateType}`, m);
     if (!existing || existing.created < m.created || refresh) {
-      if (!refresh) {
+      if (updateType !== "refresh_profile") {
         // fetch zapper key
         const lnurl = m.lud16 || m.lud06;
         if (lnurl) {
