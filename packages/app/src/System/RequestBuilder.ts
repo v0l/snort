@@ -35,6 +35,10 @@ export interface BuiltRawReqFilter {
 export interface RequestBuilderOptions {
   leaveOpen?: boolean;
   relays?: Array<string>;
+  /**
+   * Do not apply diff logic and always use full filters for query
+   */
+  skipDiff?: boolean;
 }
 
 /**

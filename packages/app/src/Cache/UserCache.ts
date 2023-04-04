@@ -49,19 +49,34 @@ class UserProfileCache extends FeedCache<MetadataCache> {
    */
   async update(m: MetadataCache) {
     const existing = this.getFromCache(m.pubkey);
-    const refresh = existing && existing.created === m.created && existing.loaded < m.loaded;
+    const refresh = existing && existing.loaded < m.loaded;
+    const updateType = (() => {
+      if (!existing) {
+        return "new_profile";
+      }
+      if (existing.created < m.created) {
+        return "updated_profile";
+      }
+      if (refresh) {
+        return "refresh_profile";
+      }
+      return "no_change";
+    })();
+    console.debug(`Updating ${m.pubkey} ${updateType}`, m);
     if (!existing || existing.created < m.created || refresh) {
-      // fetch zapper key
-      const lnurl = m.lud16 || m.lud06;
-      if (lnurl) {
-        try {
-          const svc = new LNURL(lnurl);
-          await svc.load();
-          m.zapService = svc.zapperPubkey;
-        } catch {
-          console.debug("Failed to load LNURL for zapper pubkey", lnurl);
+      if (!refresh) {
+        // fetch zapper key
+        const lnurl = m.lud16 || m.lud06;
+        if (lnurl) {
+          try {
+            const svc = new LNURL(lnurl);
+            await svc.load();
+            m.zapService = svc.zapperPubkey;
+          } catch {
+            console.debug("Failed to load LNURL for zapper pubkey", lnurl);
+          }
+          // ignored
         }
-        // ignored
       }
 
       this.cache.set(m.pubkey, m);

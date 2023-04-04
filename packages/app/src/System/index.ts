@@ -218,7 +218,7 @@ export class NostrSystem {
       q.unCancel();
 
       const diff = diffFilters(q.request.filters, filters);
-      if (!diff.changed) {
+      if (!diff.changed && !req.options?.skipDiff) {
         this.#changed();
         return unwrap(this.Feeds.get(req.id)) as Readonly<T>;
       } else {

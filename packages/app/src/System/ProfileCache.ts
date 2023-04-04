@@ -50,13 +50,16 @@ class ProfileLoaderService {
 
       const sub = new RequestBuilder(`profiles`);
       sub
+        .withOptions({
+          skipDiff: true,
+        })
         .withFilter()
         .kinds([EventKind.SetMetadata])
         .authors([...missing]);
 
       const q = System.Query<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
       // never release this callback, it will stop firing anyway after eose
-      const releaseOnEvent = q.onEvent(async ev => {
+      q.onEvent(async ev => {
         for (const e of ev) {
           const profile = mapEventToProfile(e);
           if (profile) {
@@ -70,8 +73,8 @@ class ProfileLoaderService {
           if (!q.loading) {
             clearTimeout(timeout);
             resolve(q.getSnapshotData() ?? []);
+            release();
           }
-          release();
         });
         timeout = setTimeout(() => {
           release();
@@ -79,7 +82,6 @@ class ProfileLoaderService {
         }, 5_000);
       });
 
-      releaseOnEvent();
       const couldNotFetch = [...missing].filter(a => !results.some(b => b.pubkey === a));
       if (couldNotFetch.length > 0) {
         console.debug("No profiles: ", couldNotFetch);
