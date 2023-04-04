@@ -77,9 +77,13 @@ class UserProfileCache extends FeedCache<MetadataCache> {
         }
       }
 
-      this.cache.set(m.pubkey, m);
+      const writeProfile = {
+        ...existing,
+        ...m,
+      };
+      this.cache.set(m.pubkey, writeProfile);
       if (db.ready) {
-        await db.users.put(m);
+        await db.users.put(writeProfile);
         this.onTable.add(m.pubkey);
       }
       this.notifyChange([m.pubkey]);
