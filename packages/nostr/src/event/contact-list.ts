@@ -1,6 +1,6 @@
-import { EventKind, RawEvent, Unsigned } from "."
+import { EventKind, RawEvent, signEvent } from "."
 import { NostrError } from "../common"
-import { PublicKey } from "../crypto"
+import { HexOrBechPrivateKey, PublicKey } from "../crypto"
 
 /**
  * Contact list event.
@@ -28,18 +28,24 @@ export interface Contact {
 /**
  * Create a contact list event.
  */
-export function createContactList(contacts: Contact[]): Unsigned<ContactList> {
-  return {
-    kind: EventKind.ContactList,
-    tags: contacts.map((contact) => [
-      "p",
-      contact.pubkey,
-      contact.relay?.toString() ?? "",
-      contact.petname ?? "",
-    ]),
-    content: "",
-    getContacts,
-  }
+export function createContactList(
+  contacts: Contact[],
+  priv?: HexOrBechPrivateKey
+): Promise<ContactList> {
+  return signEvent(
+    {
+      kind: EventKind.ContactList,
+      tags: contacts.map((contact) => [
+        "p",
+        contact.pubkey,
+        contact.relay?.toString() ?? "",
+        contact.petname ?? "",
+      ]),
+      content: "",
+      getContacts,
+    },
+    priv
+  )
 }
 
 export function getContacts(this: ContactList): Contact[] {

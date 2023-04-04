@@ -1,4 +1,5 @@
-import { EventKind, RawEvent, Unsigned } from "."
+import { EventKind, RawEvent, signEvent } from "."
+import { HexOrBechPrivateKey } from "../crypto"
 
 /**
  * A text note event. Used for transmitting user posts.
@@ -9,10 +10,16 @@ export interface TextNote extends RawEvent {
   kind: EventKind.TextNote
 }
 
-export function createTextNote(content: string): Unsigned<TextNote> {
-  return {
-    kind: EventKind.TextNote,
-    tags: [],
-    content,
-  }
+export function createTextNote(
+  content: string,
+  priv?: HexOrBechPrivateKey
+): Promise<TextNote> {
+  return signEvent(
+    {
+      kind: EventKind.TextNote,
+      tags: [],
+      content,
+    },
+    priv
+  )
 }
