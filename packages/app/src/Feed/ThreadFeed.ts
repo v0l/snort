@@ -4,12 +4,13 @@ import { u256, EventKind } from "@snort/nostr";
 
 import { RootState } from "State/Store";
 import { UserPreferences } from "State/Login";
-import { appendDedupe, debounce, NostrLink } from "Util";
+import { appendDedupe, NostrLink } from "Util";
 import { FlatNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 
 export default function useThreadFeed(link: NostrLink) {
   const [trackingEvents, setTrackingEvent] = useState<u256[]>([link.id]);
+  const [allEvents, setAllEvents] = useState<u256[]>([link.id]);
   const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
 
   const sub = useMemo(() => {
@@ -25,25 +26,21 @@ export default function useThreadFeed(link: NostrLink) {
           ? [EventKind.Reaction, EventKind.TextNote, EventKind.Repost, EventKind.ZapReceipt]
           : [EventKind.TextNote, EventKind.ZapReceipt]
       )
-      .tag("e", trackingEvents);
+      .tag("e", allEvents);
 
     return sub;
-  }, [trackingEvents, pref, link.id]);
+  }, [trackingEvents, allEvents, pref, link.id]);
 
   const store = useRequestBuilder<FlatNoteStore>(FlatNoteStore, sub);
 
   useEffect(() => {
     if (store.data) {
-      return debounce(500, () => {
-        const mainNotes = store.data?.filter(a => a.kind === EventKind.TextNote) ?? [];
+      const mainNotes = store.data?.filter(a => a.kind === EventKind.TextNote) ?? [];
 
-        const eTags = mainNotes
-          .filter(a => a.kind === EventKind.TextNote)
-          .map(a => a.tags.filter(b => b[0] === "e").map(b => b[1]))
-          .flat();
-        const eTagsMissing = eTags.filter(a => !mainNotes.some(b => b.id === a));
-        setTrackingEvent(s => appendDedupe(s, eTagsMissing));
-      });
+      const eTags = mainNotes.map(a => a.tags.filter(b => b[0] === "e").map(b => b[1])).flat();
+      const eTagsMissing = eTags.filter(a => !mainNotes.some(b => b.id === a));
+      setTrackingEvent(s => appendDedupe(s, eTagsMissing));
+      setAllEvents(s => appendDedupe(s, eTags));
     }
   }, [store]);
 
