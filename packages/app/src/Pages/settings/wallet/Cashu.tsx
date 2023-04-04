@@ -11,23 +11,26 @@ import { useNavigate } from "react-router-dom";
 const ConnectCashu = () => {
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
-  const [config, setConfig] = useState<string>();
+  const [mintUrl, setMintUrl] = useState<string>();
   const [error, setError] = useState<string>();
 
   async function tryConnect(config: string) {
     try {
-      // const connection = new CashuWallet(config);
-      // await connection.login();
-      // const info = await connection.getInfo();
-      // const newWallet = {
-      //   id: uuid(),
-      //   kind: WalletKind.LNDHub,
-      //   active: true,
-      //   info,
-      //   data: config,
-      // } as WalletConfig;
-      // Wallets.add(newWallet);
-      // navigate("/wallet");
+      if (!mintUrl) {
+        throw new Error("Mint URL is required");
+      }
+      const connection = new CashuWallet(config);
+      await connection.login();
+      const info = await connection.getInfo();
+      const newWallet = {
+        id: uuid(),
+        kind: WalletKind.Cashu,
+        active: true,
+        info,
+        data: mintUrl,
+      } as WalletConfig;
+      Wallets.add(newWallet);
+      navigate("/wallet");
     } catch (e) {
       if (e instanceof Error) {
         setError((e as Error).message);
@@ -44,19 +47,19 @@ const ConnectCashu = () => {
   return (
     <>
       <h4>
-        <FormattedMessage defaultMessage="Enter LNDHub config" />
+        <FormattedMessage defaultMessage="Enter mint URL" />
       </h4>
       <div className="flex">
         <div className="f-grow mr10">
           <input
             type="text"
-            placeholder="lndhub://username:password@lndhub.io"
+            placeholder="Mint URL"
             className="w-max"
-            value={config}
-            onChange={e => setConfig(e.target.value)}
+            value={mintUrl}
+            onChange={e => setMintUrl(e.target.value)}
           />
         </div>
-        <AsyncButton onClick={() => tryConnect(unwrap(config))} disabled={!config}>
+        <AsyncButton onClick={() => tryConnect(unwrap(mintUrl))} disabled={!mintUrl}>
           <FormattedMessage defaultMessage="Connect" />
         </AsyncButton>
       </div>

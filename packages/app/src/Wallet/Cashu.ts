@@ -14,12 +14,10 @@ import { CashuMint, CashuWallet as TheCashuWallet, getEncodedToken, Proof } from
 
 export class CashuWallet implements LNWallet {
   #mint: string;
-  #walletPath: string;
   #wallet?: TheCashuWallet;
 
-  constructor(mint: string, path: string) {
+  constructor(mint: string) {
     this.#mint = mint;
-    this.#walletPath = path;
   }
 
   isReady(): boolean {
@@ -30,14 +28,15 @@ export class CashuWallet implements LNWallet {
     if (!this.#wallet) {
       throw new WalletError(WalletErrorCode.GeneralError, "Wallet not initialized");
     }
+    const keysets = await this.#wallet.mint.getKeySets();
     return {
-      nodePubKey: "asd",
-      alias: "asd",
+      nodePubKey: "asdd",
+      alias: "Cashu  mint: " + this.#mint,
     } as WalletInfo;
   }
 
   async login(_?: string | undefined): Promise<boolean> {
-    const m = new CashuMint(this.#mint, this.#walletPath);
+    const m = new CashuMint(this.#mint);
     const keys = await m.getKeys();
     this.#wallet = new TheCashuWallet(keys, m);
     return true;
@@ -58,7 +57,7 @@ export class CashuWallet implements LNWallet {
     throw new Error("Method not implemented.");
   }
   getInvoices(): Promise<WalletInvoice[]> {
-    throw new Error("Method not implemented.");
+    return Promise.resolve([]);
   }
 }
 
