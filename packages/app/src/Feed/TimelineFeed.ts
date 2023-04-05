@@ -39,7 +39,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     }
 
     const b = new RequestBuilder(`timeline:${subject.type}:${subject.discriminator}`);
-    const f = b.withFilter().kinds([EventKind.TextNote, EventKind.Repost]);
+    const f = b.withFilter().kinds([EventKind.TextNote, EventKind.Repost, EventKind.Polls]);
 
     if (options.relay) {
       b.withOptions({

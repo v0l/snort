@@ -81,6 +81,7 @@ const Timeline = (props: TimelineProps) => {
       case EventKind.SetMetadata: {
         return <ProfilePreview actions={<></>} pubkey={e.pubkey} className="card" />;
       }
+      case EventKind.Polls:
       case EventKind.TextNote: {
         const eRef = e.tags.find(tagFilterOfTextRepost(e))?.at(1);
         if (eRef) {
