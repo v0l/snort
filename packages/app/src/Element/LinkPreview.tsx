@@ -27,7 +27,7 @@ const LinkPreview = ({ url }: { url: string }) => {
   useEffect(() => {
     (async () => {
       const data = await fetchUrlPreviewInfo(url);
-      if (data) {
+      if (data && data.title) {
         setPreview(data);
       } else {
         setPreview(null);
