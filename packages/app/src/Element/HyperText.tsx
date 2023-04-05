@@ -143,7 +143,7 @@ export default function HyperText({ link, creator }: { link: string; creator: He
         return <TwitchEmbed link={a} />;
       } else if (isAppleMusicLink) {
         return <AppleMusicEmbed link={a} />;
-      } else if (isNostrNestsLink) {
+      } else if (isNostrNestsLink && false) {
         return [
           <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
             {a}
