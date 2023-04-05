@@ -111,6 +111,9 @@ export function NoteCreator(props: NoteCreatorProps) {
   function cancel() {
     setShow(false);
     setNote("");
+    setShowAdvanced(false);
+    setPreview(undefined);
+    setZapForward("");
   }
 
   function onSubmit(ev: React.MouseEvent<HTMLButtonElement>) {
@@ -168,9 +171,6 @@ export function NoteCreator(props: NoteCreatorProps) {
             </div>
           )}
           <div className="note-creator-actions">
-            <button className="secondary" type="button" onClick={loadPreview}>
-              <FormattedMessage defaultMessage="Toggle Preview" />
-            </button>
             <button className="secondary" type="button" onClick={() => setShowAdvanced(s => !s)}>
               <FormattedMessage defaultMessage="Advanced" />
             </button>
@@ -182,7 +182,10 @@ export function NoteCreator(props: NoteCreatorProps) {
             </button>
           </div>
           {showAdvanced && (
-            <>
+            <div>
+              <button className="secondary" type="button" onClick={loadPreview}>
+                <FormattedMessage defaultMessage="Toggle Preview" />
+              </button>
               <h4>
                 <FormattedMessage defaultMessage="Forward Zaps" />
               </h4>
@@ -198,7 +201,7 @@ export function NoteCreator(props: NoteCreatorProps) {
                 value={zapForward}
                 onChange={e => setZapForward(e.target.value)}
               />
-            </>
+            </div>
           )}
         </Modal>
       )}
