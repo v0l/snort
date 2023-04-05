@@ -27,7 +27,7 @@ export interface TLVEntry {
   value: string | HexKey | number;
 }
 
-export function encodeTLV(hex: string, prefix: NostrPrefix, relays?: string[]) {
+export function encodeTLV(hex: string, prefix: NostrPrefix, relays?: string[], kind?: number) {
   if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0) {
     return "";
   }
@@ -43,8 +43,9 @@ export function encodeTLV(hex: string, prefix: NostrPrefix, relays?: string[]) {
         return [1, data.length, ...data];
       })
       .flat() ?? [];
+  const tl3 = kind ? [3, 4, ...new Uint8Array(new Uint32Array([kind]).buffer).reverse()] : []
 
-  return bech32.encode(prefix, bech32.toWords([...tl0, ...tl1]), 1_000);
+  return bech32.encode(prefix, bech32.toWords([...tl0, ...tl1, ...tl3]), 1_000);
 }
 
 export function decodeTLV(str: string) {
@@ -74,7 +75,7 @@ function decodeTLVEntry(type: TLVEntryType, data: Uint8Array) {
       return secp.utils.bytesToHex(data);
     }
     case TLVEntryType.Kind: {
-      return 0
+      return new Uint32Array(new Uint8Array(data.reverse()).buffer)[0];
     }
     case TLVEntryType.Relay: {
       return new TextDecoder("ASCII").decode(data);

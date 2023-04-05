@@ -1,7 +1,7 @@
 import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { EventKind, TaggedRawEvent } from "@snort/nostr";
+import { encodeTLV, EventKind, NostrPrefix, TaggedRawEvent } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
@@ -22,6 +22,7 @@ import {
   setSensitive,
   reset,
   setPollOptions,
+  setOtherEvents,
 } from "State/NoteCreator";
 import type { RootState } from "State/Store";
 import { LNURL } from "LNURL";
@@ -51,16 +52,19 @@ export function NoteCreator() {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
-  const note = useSelector((s: RootState) => s.noteCreator.note);
-  const show = useSelector((s: RootState) => s.noteCreator.show);
-  const error = useSelector((s: RootState) => s.noteCreator.error);
-  const active = useSelector((s: RootState) => s.noteCreator.active);
-  const preview = useSelector((s: RootState) => s.noteCreator.preview);
-  const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
-  const showAdvanced = useSelector((s: RootState) => s.noteCreator.showAdvanced);
-  const zapForward = useSelector((s: RootState) => s.noteCreator.zapForward);
-  const sensitive = useSelector((s: RootState) => s.noteCreator.sensitive);
-  const pollOptions = useSelector((s: RootState) => s.noteCreator.pollOptions);
+  const {
+    note,
+    zapForward,
+    sensitive,
+    pollOptions,
+    replyTo,
+    otherEvents,
+    preview,
+    active,
+    show,
+    showAdvanced,
+    error,
+  } = useSelector((s: RootState) => s.noteCreator);
   const [uploadInProgress, setUploadInProgress] = useState(false);
   const dispatch = useDispatch();
 
@@ -82,24 +86,29 @@ export function NoteCreator() {
           );
           return;
         }
+
+        if (sensitive) {
+          extraTags ??= [];
+          extraTags.push(["content-warning", sensitive]);
+        }
+        const kind = pollOptions ? EventKind.Polls : EventKind.TextNote;
+        if (pollOptions) {
+          extraTags ??= [];
+          extraTags.push(...pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
+        }
+        const hk = (eb: EventBuilder) => {
+          extraTags?.forEach(t => eb.tag(t));
+          eb.kind(kind);
+          return eb;
+        };
+        const ev = replyTo ? await publisher.reply(replyTo, note, hk) : await publisher.note(note, hk);
+        publisher.broadcast(ev);
+        dispatch(reset());
+        for (const oe of otherEvents) {
+          publisher.broadcast(oe);
+        }
+        dispatch(reset());
       }
-      if (sensitive) {
-        extraTags ??= [];
-        extraTags.push(["content-warning", sensitive]);
-      }
-      const kind = pollOptions ? EventKind.Polls : EventKind.TextNote;
-      if (pollOptions) {
-        extraTags ??= [];
-        extraTags.push(...pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
-      }
-      const hk = (eb: EventBuilder) => {
-        extraTags?.forEach(t => eb.tag(t));
-        eb.kind(kind);
-        return eb;
-      };
-      const ev = replyTo ? await publisher.reply(replyTo, note, hk) : await publisher.note(note, hk);
-      publisher.broadcast(ev);
-      dispatch(reset());
     }
   }
 
@@ -121,7 +130,11 @@ export function NoteCreator() {
     try {
       if (file) {
         const rx = await uploader.upload(file, file.name);
-        if (rx.url) {
+        if (rx.header) {
+          const link = `nostr:${encodeTLV(rx.header.id, NostrPrefix.Event, undefined, rx.header.kind)}`;
+          dispatch(setNote(`${note ? `${note}\n` : ""}${link}`));
+          dispatch(setOtherEvents([rx.header]))
+        } else if (rx.url) {
           dispatch(setNote(`${note ? `${note}\n` : ""}${rx.url}`));
         } else if (rx?.error) {
           dispatch(setError(rx.error));

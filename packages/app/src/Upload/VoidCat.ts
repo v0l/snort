@@ -1,12 +1,18 @@
 import * as secp from "@noble/secp256k1";
+import { EventKind } from "@snort/nostr";
 import { FileExtensionRegex, VoidCatHost } from "Const";
+import { EventPublisher } from "Feed/EventPublisher";
 import { UploadResult } from "Upload";
 
 /**
  * Upload file to void.cat
  * https://void.cat/swagger/index.html
  */
-export default async function VoidCat(file: File | Blob, filename: string): Promise<UploadResult> {
+export default async function VoidCat(
+  file: File | Blob,
+  filename: string,
+  publisher?: EventPublisher
+): Promise<UploadResult> {
   const buf = await file.arrayBuffer();
   const digest = await crypto.subtle.digest("SHA-256", buf);
 
@@ -31,9 +37,24 @@ export default async function VoidCat(file: File | Blob, filename: string): Prom
       if (rsp.file?.metadata?.mimeType === "image/webp") {
         ext = ["", "webp"];
       }
-      return {
-        url: rsp.file?.metadata?.url ?? `${VoidCatHost}/d/${rsp.file?.id}${ext ? `.${ext[1]}` : ""}`,
-      };
+      const resultUrl = rsp.file?.metadata?.url ?? `${VoidCatHost}/d/${rsp.file?.id}${ext ? `.${ext[1]}` : ""}`;
+
+      const ret = {
+        url: resultUrl,
+      } as UploadResult;
+
+      if (publisher) {
+        const tags = [
+          ["u", resultUrl],
+          ["hash", rsp.file?.metadata?.digest ?? "", "sha256"],
+          ["type", rsp.file?.metadata?.mimeType ?? "application/octet-stream"],
+        ];
+        if (rsp.file?.metadata?.magnetLink) {
+          tags.push(["u", rsp.file.metadata.magnetLink]);
+        }
+        ret.header = await publisher.generic(filename, EventKind.FileHeader, tags);
+      }
+      return ret;
     } else {
       return {
         error: rsp.errorMessage,
@@ -69,4 +90,5 @@ export type VoidFileMeta = {
   expires?: Date;
   storage?: string;
   encryptionParams?: string;
+  magnetLink?: string;
 };

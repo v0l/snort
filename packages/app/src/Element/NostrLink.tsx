@@ -1,8 +1,9 @@
-import { NostrPrefix } from "@snort/nostr";
+import { EventKind, NostrPrefix } from "@snort/nostr";
 import { Link } from "react-router-dom";
 
 import Mention from "Element/Mention";
-import { parseNostrLink } from "Util";
+import NostrFileHeader from "Element/NostrFileHeader";
+import { eventLink, parseNostrLink } from "Util";
 
 export default function NostrLink({ link }: { link: string }) {
   const nav = parseNostrLink(link);
@@ -10,7 +11,10 @@ export default function NostrLink({ link }: { link: string }) {
   if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
     return <Mention pubkey={nav.id} relays={nav.relays} />;
   } else if (nav?.type === NostrPrefix.Note || nav?.type === NostrPrefix.Event || nav?.type === NostrPrefix.Address) {
-    const evLink = nav.encode();
+    if (nav.kind === EventKind.FileHeader) {
+      return <NostrFileHeader link={nav} />;
+    }
+    const evLink = eventLink(nav.id, nav.relays);
     return (
       <Link to={`/e/${evLink}`} onClick={e => e.stopPropagation()} state={{ from: location.pathname }}>
         #{evLink.substring(0, 12)}
