@@ -117,7 +117,6 @@ export default function Note(props: NoteProps) {
       .map(a => parseZap(a, ev))
       .filter(z => z.valid);
     sortedZaps.sort((a, b) => b.amount - a.amount);
-    console.debug(sortedZaps);
     return sortedZaps;
   }, [related]);
   const totalReactions = positive.length + negative.length + reposts.length + zaps.length;
