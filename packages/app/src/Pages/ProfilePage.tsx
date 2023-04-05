@@ -24,7 +24,7 @@ import useModeration from "Hooks/useModeration";
 import useZapsFeed from "Feed/ZapsFeed";
 import { default as ZapElement } from "Element/Zap";
 import FollowButton from "Element/FollowButton";
-import { extractLnAddress, parseId, hexToBech32 } from "Util";
+import { parseId, hexToBech32 } from "Util";
 import Avatar from "Element/Avatar";
 import Timeline from "Element/Timeline";
 import Text from "Element/Text";
@@ -43,9 +43,11 @@ import Modal from "Element/Modal";
 import BadgeList from "Element/BadgeList";
 import { ProxyImg } from "Element/ProxyImg";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
-import messages from "./messages";
 import { EmailRegex } from "Const";
-import { getNip05PubKey } from "./Login";
+import { getNip05PubKey } from "Pages/Login";
+import { LNURL } from "LNURL";
+
+import messages from "./messages";
 
 const NOTES = 0;
 const REACTIONS = 1;
@@ -111,7 +113,13 @@ export default function ProfilePage() {
   });
   const npub = !id?.startsWith(NostrPrefix.PublicKey) ? hexToBech32(NostrPrefix.PublicKey, id || undefined) : id;
 
-  const lnurl = extractLnAddress(user?.lud16 || user?.lud06 || "");
+  const lnurl = (() => {
+    try {
+      return new LNURL(user?.lud16 || user?.lud06 || "");
+    } catch {
+      // ignored
+    }
+  })();
   const website_url =
     user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
   // feeds
@@ -185,12 +193,12 @@ export default function ProfilePage() {
         {lnurl && (
           <div className="lnurl f-ellipsis" onClick={() => setShowLnQr(true)}>
             <Icon name="zap" />
-            {lnurl}
+            {lnurl.name}
           </div>
         )}
 
         <SendSats
-          lnurl={lnurl}
+          lnurl={lnurl?.lnurl}
           show={showLnQr}
           onClose={() => setShowLnQr(false)}
           author={id}

@@ -48,6 +48,62 @@ export class LNURL {
     }
   }
 
+  /**
+   * URL of this payService
+   */
+  get url() {
+    return this.#url;
+  }
+
+  /**
+   * Return the optimal formatted LNURL
+   */
+  get lnurl() {
+    if (this.isLNAddress) {
+      return this.getLNAddress();
+    }
+    return this.#url.toString();
+  }
+
+  /**
+   * Human readable name for this service
+   */
+  get name() {
+    // LN Address formatted URL
+    if (this.isLNAddress) {
+      return this.getLNAddress();
+    }
+    // Generic LUD-06 url
+    return this.#url.hostname;
+  }
+
+  /**
+   * Is this LNURL a LUD-16 Lightning Address
+   */
+  get isLNAddress() {
+    return this.#url.pathname.startsWith("/.well-known/lnurlp/");
+  }
+
+  /**
+   * Get the LN Address for this LNURL
+   */
+  getLNAddress() {
+    const pathParts = this.#url.pathname.split("/");
+    const username = pathParts[pathParts.length - 1];
+    return `${username}@${this.#url.hostname}`;
+  }
+
+  /**
+   * Create a NIP-57 zap tag from this LNURL
+   */
+  getZapTag() {
+    if (this.isLNAddress) {
+      return ["zap", this.getLNAddress(), "lud16"];
+    } else {
+      return ["zap", this.#url.toString(), "lud06"];
+    }
+  }
+
   async load() {
     const rsp = await fetch(this.#url);
     if (rsp.ok) {

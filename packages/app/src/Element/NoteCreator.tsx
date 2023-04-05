@@ -58,6 +58,7 @@ export function NoteCreator(props: NoteCreatorProps) {
         try {
           const svc = new LNURL(zapForward);
           await svc.load();
+          extraTags = [svc.getZapTag()];
         } catch {
           setError(
             formatMessage({
@@ -66,7 +67,6 @@ export function NoteCreator(props: NoteCreatorProps) {
           );
           return;
         }
-        extraTags = [["zap", zapForward]];
       }
       const ev = replyTo ? await publisher.reply(replyTo, note, extraTags) : await publisher.note(note, extraTags);
       console.debug("Sending note: ", ev);

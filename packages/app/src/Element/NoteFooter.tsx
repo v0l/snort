@@ -154,11 +154,16 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   function getLNURL() {
-    return ev.Tags.find(a => a.Key === "zap")?.LNURL || author?.lud16 || author?.lud06;
+    return ev.tags.find(a => a[0] === "zap")?.[1] || author?.lud16 || author?.lud06;
   }
 
   function getTargetName() {
-    return ev.Tags.find(a => a.Key === "zap")?.LNURL || author?.display_name || author?.name;
+    const zapTarget = ev.tags.find(a => a[0] === "zap")?.[1];
+    if (zapTarget) {
+      return new LNURL(zapTarget).name;
+    } else {
+      return author?.display_name || author?.name;
+    }
   }
 
   async function fastZap(e?: React.MouseEvent) {
