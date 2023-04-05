@@ -22,7 +22,7 @@ function getInvoice(zap: TaggedRawEvent): InvoiceDetails | undefined {
   return decodeInvoice(bolt11);
 }
 
-export function parseZap(zapReceipt: TaggedRawEvent): ParsedZap {
+export function parseZap(zapReceipt: TaggedRawEvent, refNote?: TaggedRawEvent): ParsedZap {
   let innerZapJson = findTag(zapReceipt, "description");
   if (innerZapJson) {
     try {
@@ -35,6 +35,7 @@ export function parseZap(zapReceipt: TaggedRawEvent): ParsedZap {
         // old format, ignored
         throw new Error("deprecated zap format");
       }
+      const isForwardedZap = refNote?.tags.some(a => a[0] === "zap") ?? false;
       const anonZap = findTag(zapRequest, "anon");
       const metaHash = sha256(innerZapJson);
       const ret: ParsedZap = {
@@ -65,7 +66,7 @@ export function parseZap(zapReceipt: TaggedRawEvent): ParsedZap {
         ret.valid = false;
         ret.errors.push("amount tag does not match invoice amount");
       }
-      if (UserCache.getFromCache(ret.receiver)?.zapService !== ret.zapService) {
+      if (UserCache.getFromCache(ret.receiver)?.zapService !== ret.zapService && !isForwardedZap) {
         ret.valid = false;
         ret.errors.push("zap service pubkey doesn't match");
       }

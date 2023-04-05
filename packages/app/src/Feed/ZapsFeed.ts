@@ -18,7 +18,7 @@ export default function useZapsFeed(pubkey?: HexKey) {
   const zaps = useMemo(() => {
     if (zapsFeed.data) {
       const profileZaps = zapsFeed.data
-        .map(parseZap)
+        .map(a => parseZap(a))
         .filter(z => z.valid && z.receiver === pubkey && z.sender !== pubkey && !z.event);
       profileZaps.sort((a, b) => b.amount - a.amount);
       return profileZaps;

@@ -114,9 +114,10 @@ export default function Note(props: NoteProps) {
   );
   const zaps = useMemo(() => {
     const sortedZaps = getReactions(related, ev.id, EventKind.ZapReceipt)
-      .map(parseZap)
-      .filter(z => z.valid && z.sender !== ev.pubkey);
+      .map(a => parseZap(a, ev))
+      .filter(z => z.valid);
     sortedZaps.sort((a, b) => b.amount - a.amount);
+    console.debug(sortedZaps);
     return sortedZaps;
   }, [related]);
   const totalReactions = positive.length + negative.length + reposts.length + zaps.length;
