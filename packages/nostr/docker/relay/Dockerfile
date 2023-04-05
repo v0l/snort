@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y curl nodejs npm
 RUN npm i -g yarn
 
 EXPOSE 8000
+EXPOSE 8080
 
 COPY . .
 USER $APP_USER

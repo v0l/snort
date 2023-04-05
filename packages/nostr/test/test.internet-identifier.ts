@@ -1,4 +1,4 @@
-import assert from "assert"
+import { assert } from "chai"
 import { defined } from "../src/common"
 import { EventKind } from "../src/event"
 import { createSetMetadata } from "../src/event/set-metadata"

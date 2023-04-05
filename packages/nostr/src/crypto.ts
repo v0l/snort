@@ -112,7 +112,7 @@ export async function aesEncryptBase64(
       sharedKey,
       { name: "AES-CBC" },
       false,
-      ["encrypt", "decrypt"]
+      ["encrypt"]
     )
     const iv = window.crypto.getRandomValues(new Uint8Array(16))
     const data = new TextEncoder().encode(plaintext)
@@ -133,15 +133,10 @@ export async function aesEncryptBase64(
     const iv = crypto.randomFillSync(new Uint8Array(16))
     const cipher = crypto.createCipheriv(
       "aes-256-cbc",
-      // TODO If this code is correct, also fix the example code
-      // TODO I also this that the slice() above is incorrect because the author
-      // thought this was hex but it's actually bytes so should take 32 bytes not 64
-      // TODO Actually it's probably cleanest to leave out the end of the slice completely, if possible, and it should be
       Buffer.from(sharedKey),
       iv
     )
     let encrypted = cipher.update(plaintext, "utf8", "base64")
-    // TODO Could save an allocation here by avoiding the +=
     encrypted += cipher.final("base64")
     return {
       data: encrypted,
@@ -158,8 +153,24 @@ export async function aesDecryptBase64(
   const sharedPoint = secp.getSharedSecret(recipient, "02" + sender)
   const sharedKey = sharedPoint.slice(1, 33)
   if (typeof window === "object") {
-    // TODO Can copy this from the legacy code
-    throw new NostrError("todo")
+    const decodedData = base64.toByteArray(data)
+    const decodedIv = base64.toByteArray(iv)
+    const importedKey = await window.crypto.subtle.importKey(
+      "raw",
+      sharedKey,
+      { name: "AES-CBC" },
+      false,
+      ["decrypt"]
+    )
+    const plaintext = await window.crypto.subtle.decrypt(
+      {
+        name: "AES-CBC",
+        iv: decodedIv,
+      },
+      importedKey,
+      decodedData
+    )
+    return new TextDecoder().decode(plaintext)
   } else {
     const crypto = await import("crypto")
     const decipher = crypto.createDecipheriv(

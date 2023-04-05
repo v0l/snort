@@ -1,6 +1,6 @@
+import { assert } from "chai"
 import { EventKind } from "../src/event"
 import { parsePublicKey } from "../src/crypto"
-import assert from "assert"
 import { setup } from "./setup"
 import { createDirectMessage } from "../src/event/direct-message"
 

@@ -69,12 +69,8 @@ export async function setup(
 }
 
 async function restartRelay() {
-  // Make a request to the endpoint which will crash the process and cause it to restart.
-  try {
-    await fetch("http://localhost:12649")
-  } catch (e) {
-    // Since the process exits, an error is expected.
-  }
+  // Make a request to the endpoint which will exit the process and cause it to restart.
+  await fetch("http://localhost:12649")
 
   // Wait until the relay process is ready.
   for (;;) {

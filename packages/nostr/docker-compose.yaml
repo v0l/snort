@@ -3,11 +3,31 @@ services:
   well-known:
     build: ./docker/well-known
     restart: on-failure
-    ports:
-      - 12647:80
+
   relay:
     build: ./docker/relay
     restart: on-failure
+
+  well-known-proxy:
+    build: ./docker/cors-proxy
+    restart: on-failure
+    environment:
+      TARGET: "well-known:80"
     ports:
-      - 12648:8080
-      - 12649:8000
+      - 12647:80
+
+  relay-proxy:
+    build: ./docker/cors-proxy
+    restart: on-failure
+    environment:
+      TARGET: "relay:8080"
+    ports:
+      - 12648:80
+
+  relay-restart-proxy:
+    build: ./docker/cors-proxy
+    restart: on-failure
+    environment:
+      TARGET: "relay:8000"
+    ports:
+      - 12649:80
