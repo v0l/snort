@@ -146,26 +146,6 @@ export function getAllReactions(notes: readonly TaggedRawEvent[] | undefined, id
   return notes?.filter(a => a.kind === (kind ?? a.kind) && a.tags.some(a => a[0] === "e" && ids.includes(a[1]))) || [];
 }
 
-/**
- * Converts LNURL service to LN Address
- */
-export function extractLnAddress(lnurl: string) {
-  // some clients incorrectly set this to LNURL service, patch this
-  if (lnurl.toLowerCase().startsWith("lnurl")) {
-    const url = bech32ToText(lnurl);
-    if (url.startsWith("http")) {
-      const parsedUri = new URL(url);
-      // is lightning address
-      if (parsedUri.pathname.startsWith("/.well-known/lnurlp/")) {
-        const pathParts = parsedUri.pathname.split("/");
-        const username = pathParts[pathParts.length - 1];
-        return `${username}@${parsedUri.hostname}`;
-      }
-    }
-  }
-  return lnurl;
-}
-
 export function unixNow() {
   return Math.floor(unixNowMs() / 1000);
 }

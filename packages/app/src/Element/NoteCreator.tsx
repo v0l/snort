@@ -1,6 +1,6 @@
 import "./NoteCreator.css";
 import { useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { RawEvent, TaggedRawEvent } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
@@ -11,6 +11,7 @@ import Modal from "Element/Modal";
 import ProfileImage from "Element/ProfileImage";
 import useFileUpload from "Upload";
 import Note from "Element/Note";
+import { LNURL } from "LNURL";
 
 import messages from "./messages";
 
@@ -40,16 +41,34 @@ export interface NoteCreatorProps {
 
 export function NoteCreator(props: NoteCreatorProps) {
   const { show, setShow, replyTo, onSend, autoFocus } = props;
+  const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
   const [active, setActive] = useState(false);
   const [preview, setPreview] = useState<RawEvent>();
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [zapForward, setZapForward] = useState("");
   const uploader = useFileUpload();
 
   async function sendNote() {
     if (note) {
-      const ev = replyTo ? await publisher.reply(replyTo, note) : await publisher.note(note);
+      let extraTags: Array<Array<string>> | undefined;
+      if (zapForward) {
+        try {
+          const svc = new LNURL(zapForward);
+          await svc.load();
+          extraTags = [svc.getZapTag()];
+        } catch {
+          setError(
+            formatMessage({
+              defaultMessage: "Invalid LNURL",
+            })
+          );
+          return;
+        }
+      }
+      const ev = replyTo ? await publisher.reply(replyTo, note, extraTags) : await publisher.note(note, extraTags);
       console.debug("Sending note: ", ev);
       publisher.broadcast(ev);
       setNote("");
@@ -92,6 +111,9 @@ export function NoteCreator(props: NoteCreatorProps) {
   function cancel() {
     setShow(false);
     setNote("");
+    setShowAdvanced(false);
+    setPreview(undefined);
+    setZapForward("");
   }
 
   function onSubmit(ev: React.MouseEvent<HTMLButtonElement>) {
@@ -149,8 +171,8 @@ export function NoteCreator(props: NoteCreatorProps) {
             </div>
           )}
           <div className="note-creator-actions">
-            <button className="secondary" type="button" onClick={loadPreview}>
-              <FormattedMessage defaultMessage="Toggle Preview" />
+            <button className="secondary" type="button" onClick={() => setShowAdvanced(s => !s)}>
+              <FormattedMessage defaultMessage="Advanced" />
             </button>
             <button className="secondary" type="button" onClick={cancel}>
               <FormattedMessage {...messages.Cancel} />
@@ -159,6 +181,28 @@ export function NoteCreator(props: NoteCreatorProps) {
               {replyTo ? <FormattedMessage {...messages.Reply} /> : <FormattedMessage {...messages.Send} />}
             </button>
           </div>
+          {showAdvanced && (
+            <div>
+              <button className="secondary" type="button" onClick={loadPreview}>
+                <FormattedMessage defaultMessage="Toggle Preview" />
+              </button>
+              <h4>
+                <FormattedMessage defaultMessage="Forward Zaps" />
+              </h4>
+              <p>
+                <FormattedMessage defaultMessage="All zaps sent to this note will be received by the following LNURL" />
+              </p>
+              <input
+                type="text"
+                className="w-max"
+                placeholder={formatMessage({
+                  defaultMessage: "LNURL to forward zaps to",
+                })}
+                value={zapForward}
+                onChange={e => setZapForward(e.target.value)}
+              />
+            </div>
+          )}
         </Modal>
       )}
     </>
