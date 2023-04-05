@@ -153,11 +153,7 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
                 overrideUsername={anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
               />
             )}
-            {restZaps.length > 0 ? (
-              <FormattedMessage {...messages.Others} values={{ n: restZaps.length }} />
-            ) : (
-              <FormattedMessage {...messages.Zapped} />
-            )}{" "}
+            {restZaps.length > 0 && <FormattedMessage {...messages.Others} values={{ n: restZaps.length }} />}{" "}
             <FormattedMessage {...messages.OthersZapped} values={{ n: restZaps.length }} />
           </div>
         </div>
