@@ -188,6 +188,15 @@ export default function useEventPublisher() {
         return await signEvent(ev);
       }
     },
+    /**
+     * Create a zap request event for a given target event/profile
+     * @param amount Millisats amout!
+     * @param author Author pubkey to tag in the zap
+     * @param note Note Id to tag in the zap
+     * @param msg Custom message to be included in the zap
+     * @param extraTags Any extra tags to include on the zap request event
+     * @returns
+     */
     zap: async (amount: number, author: HexKey, note?: HexKey, msg?: string, extraTags?: Array<Array<string>>) => {
       if (pubKey) {
         const ev = EventExt.forPubKey(pubKey, EventKind.ZapRequest);

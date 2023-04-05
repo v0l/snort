@@ -1,7 +1,7 @@
 import { TaggedRawEvent } from "@snort/nostr";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useIntl } from "react-intl";
+import { FormattedNumber, useIntl } from "react-intl";
 
 import { ParsedZap } from "Element/Zap";
 import Text from "Element/Text";
@@ -35,7 +35,7 @@ export default function Poll(props: PollProps) {
     const amount = prefs.defaultZapAmount;
     try {
       setVoting(opt);
-      const zap = await publisher.zap(amount, props.ev.pubkey, props.ev.id, undefined, [
+      const zap = await publisher.zap(amount * 1000, props.ev.pubkey, props.ev.id, undefined, [
         ["poll_option", opt.toString()],
       ]);
 
@@ -79,18 +79,16 @@ export default function Poll(props: PollProps) {
           const zapsOnOption = props.zaps.filter(b => b.pollOption === opt);
           const total = zapsOnOption.reduce((acc, v) => (acc += v.amount), 0);
           const weight = total / allTotal;
-          const percent = `${Math.floor(weight * 100)}%`;
           return (
             <div key={a[1]} className="flex" onClick={() => zapVote(opt)}>
               <div className="f-grow">
                 {opt === voting ? <Spinner /> : <Text content={desc} tags={props.ev.tags} creator={props.ev.pubkey} />}
               </div>
               <div className="flex">
-                {percent}
-                &nbsp;
+                <FormattedNumber value={weight * 100} maximumFractionDigits={0} />% &nbsp;
                 <small>({formatShort(total)})</small>
               </div>
-              <div style={{ width: percent }} className="progress"></div>
+              <div style={{ width: `${weight * 100}%` }} className="progress"></div>
             </div>
           );
         })}
