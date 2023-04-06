@@ -43,7 +43,10 @@ export class Connection {
   Socket: WebSocket | null = null;
 
   PendingRaw: Array<object> = [];
-  PendingRequests: Array<ReqCommand> = [];
+  PendingRequests: Array<{
+    cmd: ReqCommand,
+    cb: () => void
+  }> = [];
   ActiveRequests: Set<string> = new Set();
 
   Settings: RelaySettings;
@@ -60,6 +63,7 @@ export class Connection {
   OnConnected?: () => void;
   OnEvent?: (sub: string, e: TaggedRawEvent) => void;
   OnEose?: (sub: string) => void;
+  OnDisconnect?: (active: Array<string>, pending: Array<string>) => void;
   Auth?: AuthHandler;
   AwaitingAuth: Map<string, boolean>;
   Authed = false;
@@ -162,7 +166,12 @@ export class Connection {
 
   OnClose(e: CloseEvent) {
     if (!this.IsClosed) {
+      this.OnDisconnect?.([...this.ActiveRequests], this.PendingRequests.map(a => a.cmd[1]))
       this.#ResetQueues();
+
+      // reset connection Id on disconnect, for query-tracking
+      this.Id = uuid();
+
       this.ConnectTimeout = this.ConnectTimeout * 2;
       console.log(
         `[${this.Address}] Closed (${e.reason}), trying again in ${(
@@ -303,13 +312,16 @@ export class Connection {
    * Queue or send command to the relay
    * @param cmd The REQ to send to the server
    */
-  QueueReq(cmd: ReqCommand) {
+  QueueReq(cmd: ReqCommand, cbSent: () => void) {
     if (this.ActiveRequests.size >= this.#maxSubscriptions) {
-      this.PendingRequests.push(cmd);
+      this.PendingRequests.push({
+        cmd, cb: cbSent
+      });
       console.debug("Queuing:", this.Address, cmd);
     } else {
       this.ActiveRequests.add(cmd[1]);
       this.#SendJson(cmd);
+      cbSent();
     }
     this.#UpdateState();
   }
@@ -327,21 +339,18 @@ export class Connection {
     const canSend = this.#maxSubscriptions - this.ActiveRequests.size;
     if (canSend > 0) {
       for (let x = 0; x < canSend; x++) {
-        const cmd = this.PendingRequests.shift();
-        if (cmd) {
-          this.ActiveRequests.add(cmd[1]);
-          this.#SendJson(cmd);
-          console.debug("Sent pending REQ", this.Address, cmd);
+        const p = this.PendingRequests.shift();
+        if (p) {
+          this.ActiveRequests.add(p.cmd[1]);
+          this.#SendJson(p.cmd);
+          p.cb();
+          console.debug("Sent pending REQ", this.Address, p.cmd);
         }
       }
     }
   }
 
   #ResetQueues() {
-    //send EOSE on disconnect for active subs
-    this.ActiveRequests.forEach((v) => this.OnEose?.(v));
-    this.PendingRequests.forEach((v) => this.OnEose?.(v[1]));
-
     this.ActiveRequests.clear();
     this.PendingRequests = [];
     this.PendingRaw = [];
@@ -360,9 +369,7 @@ export class Connection {
     this.CurrentState.disconnects = this.Stats.Disconnects;
     this.CurrentState.info = this.Info;
     this.CurrentState.id = this.Id;
-    this.CurrentState.pendingRequests = [
-      ...this.PendingRequests.map((a) => a[1]),
-    ];
+    this.CurrentState.pendingRequests = [...this.PendingRequests.map(a => a.cmd[1])];
     this.CurrentState.activeRequests = [...this.ActiveRequests];
     this.Stats.Latency = this.Stats.Latency.slice(-20); // trim
     this.HasStateChange = true;
@@ -380,7 +387,7 @@ export class Connection {
     const authPending = !this.Authed && (this.AwaitingAuth.size > 0 || this.Info?.limitation?.auth_required === true);
     if (this.Socket?.readyState !== WebSocket.OPEN || authPending) {
       this.PendingRaw.push(obj);
-      return;
+      return false;
     }
 
     this.#sendPendingRaw();
@@ -402,6 +409,7 @@ export class Connection {
     }
     const json = JSON.stringify(obj);
     this.Socket.send(json);
+    return true;
   }
 
   async _OnAuthAsync(challenge: string): Promise<void> {
