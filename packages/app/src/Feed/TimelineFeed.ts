@@ -180,6 +180,8 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     main: main.data,
     related: related.data,
     latest: latest.data,
+    since: since,
+    until: until,
     loading: main.loading(),
     loadMore: () => {
       if (main.data) {

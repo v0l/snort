@@ -7,11 +7,12 @@ const DayInMs = HourInMs * 24;
 export interface NoteTimeProps {
   from: number;
   fallback?: string;
+  displayAbsoluteTime?: boolean;
 }
 
 export default function NoteTime(props: NoteTimeProps) {
   const [time, setTime] = useState<string>();
-  const { from, fallback } = props;
+  const { from, fallback, displayAbsoluteTime } = props;
   const absoluteTime = new Intl.DateTimeFormat(undefined, {
     dateStyle: "medium",
     timeStyle: "long",
@@ -59,7 +60,7 @@ export default function NoteTime(props: NoteTimeProps) {
 
   return (
     <time dateTime={isoDate} title={absoluteTime}>
-      {time}
+      {displayAbsoluteTime ? absoluteTime : time}
     </time>
   );
 }

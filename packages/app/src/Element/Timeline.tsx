@@ -15,6 +15,8 @@ import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
 import ProfilePreview from "Element/ProfilePreview";
 import Skeleton from "Element/Skeleton";
+import NoteTime from "./NoteTime";
+import Spinner from "Icons/Spinner";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -137,6 +139,16 @@ const Timeline = (props: TimelineProps) => {
       )}
       {mainFeed.map(eventElement)}
       <LoadMore onLoadMore={feed.loadMore} shouldLoadMore={!feed.loading}>
+        <div>
+          <Spinner /> Searching for stuff from{" "}
+          <b>
+            <NoteTime from={feed.since * 1000} displayAbsoluteTime />
+          </b>{" "}
+          upto{" "}
+          <b>
+            <NoteTime from={feed.until * 1000} displayAbsoluteTime />
+          </b>
+        </div>
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
