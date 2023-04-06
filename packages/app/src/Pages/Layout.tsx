@@ -11,6 +11,7 @@ import { bech32ToHex, randomSample, unixNowMs, unwrap } from "Util";
 import Icon from "Icons/Icon";
 import { RootState } from "State/Store";
 import { init, setRelays } from "State/Login";
+import { setShow, reset } from "State/NoteCreator";
 import { System } from "System";
 import ProfileImage from "Element/ProfileImage";
 import useLoginFeed from "Feed/LoginFeed";
@@ -26,7 +27,7 @@ import { useDmCache } from "Hooks/useDmsCache";
 
 export default function Layout() {
   const location = useLocation();
-  const [show, setShow] = useState(false);
+  const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loggedOut, publicKey, relays, preferences, newUserKey } = useSelector((s: RootState) => s.login);
@@ -34,8 +35,15 @@ export default function Layout() {
   const pub = useEventPublisher();
   useLoginFeed();
 
+  const handleNoteCreatorButtonClick = () => {
+    if (replyTo) {
+      dispatch(reset());
+    }
+    dispatch(setShow(true));
+  };
+
   const shouldHideNoteCreator = useMemo(() => {
-    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/"];
+    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/", "/e"];
     return hideOn.some(a => location.pathname.startsWith(a));
   }, [location]);
 
@@ -179,10 +187,10 @@ export default function Layout() {
 
       {!shouldHideNoteCreator && (
         <>
-          <button className="note-create-button" type="button" onClick={() => setShow(!show)}>
+          <button className="note-create-button" type="button" onClick={handleNoteCreatorButtonClick}>
             <Icon name="plus" size={16} />
           </button>
-          <NoteCreator replyTo={undefined} autoFocus={true} show={show} setShow={setShow} />
+          <NoteCreator />
         </>
       )}
       {window.localStorage.getItem("debug") && <SubDebug />}
