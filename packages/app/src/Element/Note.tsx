@@ -83,6 +83,7 @@ export default function Note(props: NoteProps) {
   const { pinned, bookmarked } = useSelector((s: RootState) => s.login);
   const publisher = useEventPublisher();
   const [translated, setTranslated] = useState<Translation>();
+  const [contentWarningAccepted, setContentWarningAccepted] = useState(false);
   const { formatMessage } = useIntl();
   const reactions = useMemo(() => getReactions(related, ev.id, EventKind.Reaction), [related, ev]);
   const groupReactions = useMemo(() => {
@@ -161,8 +162,32 @@ export default function Note(props: NoteProps) {
         </b>
       );
     }
+    const contentWarning = ev.tags.find(a => a[0] === "content-warning");
+    if (contentWarning && !contentWarningAccepted) {
+      return (
+        <div
+          className="note-invoice"
+          onClick={e => {
+            e.stopPropagation();
+            setContentWarningAccepted(true);
+          }}>
+          <FormattedMessage defaultMessage="This note has been marked as sensitive, click here to reveal" />
+          {contentWarning[1] && (
+            <>
+              <br />
+              <FormattedMessage
+                defaultMessage="Reason: {reason}"
+                values={{
+                  reason: contentWarning[1],
+                }}
+              />
+            </>
+          )}
+        </div>
+      );
+    }
     return <Text content={body} tags={ev.tags} creator={ev.pubkey} />;
-  }, [ev]);
+  }, [ev, contentWarningAccepted]);
 
   useLayoutEffect(() => {
     if (entry && inView && extendable === false) {
