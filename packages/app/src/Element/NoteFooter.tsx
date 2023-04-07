@@ -102,7 +102,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const publisher = useEventPublisher();
   const showNoteCreatorModal = useSelector((s: RootState) => s.noteCreator.show);
   const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
-  const willRenderNoteCreator = (showNoteCreatorModal && !replyTo) || (showNoteCreatorModal && replyTo?.id === ev.id);
+  const willRenderNoteCreator = showNoteCreatorModal && replyTo?.id === ev.id;
   const [tip, setTip] = useState(false);
   const [zapping, setZapping] = useState(false);
   const walletState = useWallet();
