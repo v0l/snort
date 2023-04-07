@@ -279,7 +279,7 @@ export default function LoginPage() {
           <div className="flex">
             <input
               dir="auto"
-              type="text"
+              type="password"
               placeholder={formatMessage(messages.KeyPlaceholder)}
               className="f-grow"
               onChange={e => setKey(e.target.value)}
