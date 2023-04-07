@@ -8,8 +8,6 @@ import { RootState } from "State/Store";
 import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
-import NoteReaction from "./NoteReaction";
-
 interface BookmarksProps {
   pubkey: HexKey;
   bookmarks: readonly TaggedRawEvent[];
