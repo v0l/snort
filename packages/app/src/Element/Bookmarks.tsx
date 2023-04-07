@@ -56,6 +56,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
               );
             case EventKind.Reaction:
             case EventKind.Repost:
+            case EventKind.ZapReceipt:
               return <NoteReaction data={n} key={n.id} />;
           }
           return (
