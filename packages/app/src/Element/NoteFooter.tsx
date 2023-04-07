@@ -18,7 +18,7 @@ import { ParsedZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { RootState } from "State/Store";
 import { UserPreferences, setPinned, setBookmarked } from "State/Login";
-import { setReplyTo, setShow } from "State/NoteCreator";
+import { setReplyTo, setShow, reset } from "State/NoteCreator";
 import useModeration from "Hooks/useModeration";
 import { SnortPubKey, TranslateHost } from "Const";
 import { LNURL } from "LNURL";
@@ -405,18 +405,22 @@ export default function NoteFooter(props: NoteFooterProps) {
     );
   }
 
+  const handleReplyButtonClick = () => {
+    if (replyTo?.id !== ev.id) {
+      dispatch(reset());
+    }
+
+    dispatch(setReplyTo(ev));
+    dispatch(setShow(!showNoteCreatorModal));
+  };
+
   return (
     <>
       <div className="footer">
         <div className="footer-reactions">
           {tipButton()}
           {reactionIcons()}
-          <div
-            className={`reaction-pill ${showNoteCreatorModal ? "reacted" : ""}`}
-            onClick={() => {
-              dispatch(setReplyTo(ev));
-              dispatch(setShow(!showNoteCreatorModal));
-            }}>
+          <div className={`reaction-pill ${showNoteCreatorModal ? "reacted" : ""}`} onClick={handleReplyButtonClick}>
             <Icon name="reply" size={17} />
           </div>
           <Menu

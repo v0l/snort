@@ -28,6 +28,8 @@ import { useDmCache } from "Hooks/useDmsCache";
 export default function Layout() {
   const location = useLocation();
   const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
+  const isNoteCreatorShowing = useSelector((s: RootState) => s.noteCreator.show);
+  const isReplyNoteCreatorShowing = replyTo && isNoteCreatorShowing;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loggedOut, publicKey, relays, preferences, newUserKey } = useSelector((s: RootState) => s.login);
@@ -44,8 +46,8 @@ export default function Layout() {
 
   const shouldHideNoteCreator = useMemo(() => {
     const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/", "/e"];
-    return hideOn.some(a => location.pathname.startsWith(a));
-  }, [location]);
+    return isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
+  }, [location, isReplyNoteCreatorShowing]);
 
   const shouldHideHeader = useMemo(() => {
     const hideOn = ["/login", "/new"];
