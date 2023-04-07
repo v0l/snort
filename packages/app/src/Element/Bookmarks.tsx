@@ -1,13 +1,14 @@
 import { useState, useMemo, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
-import { HexKey, TaggedRawEvent } from "@snort/nostr";
+import { EventKind, HexKey, TaggedRawEvent } from "@snort/nostr";
 
 import Note from "Element/Note";
 import { RootState } from "State/Store";
 import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
+import NoteReaction from "./NoteReaction";
 
 interface BookmarksProps {
   pubkey: HexKey;
@@ -25,7 +26,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   function renderOption(p: HexKey) {
     const profile = UserCache.getFromCache(p);
     return profile ? <option value={p}>{profile?.display_name || profile?.name}</option> : null;
-  }
+  }  
 
   return (
     <div className="main-content">
@@ -43,6 +44,20 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
       {bookmarks
         .filter(b => (onlyPubkey === "all" ? true : b.pubkey === onlyPubkey))
         .map(n => {
+          switch(n.kind){
+            case EventKind.TextNote:
+              return (
+                <Note
+                  key={n.id}
+                  data={n}
+                  related={related}
+                  options={{ showTime: false, showBookmarked: true, canUnbookmark: loginPubKey === pubkey }}
+                />
+              );
+            case EventKind.Reaction:
+            case EventKind.Repost:
+              return <NoteReaction data={n} key={n.id} />;
+          }
           return (
             <Note
               key={n.id}
