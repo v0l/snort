@@ -45,7 +45,11 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
         .filter(b => (onlyPubkey === "all" ? true : b.pubkey === onlyPubkey))
         .map(n => {
           switch (n.kind) {
-            case EventKind.TextNote:
+            case EventKind.Reaction:
+            case EventKind.Repost:
+            case EventKind.ZapReceipt:
+              return <NoteReaction data={n} key={n.id} />;
+            default:
               return (
                 <Note
                   key={n.id}
@@ -54,19 +58,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
                   options={{ showTime: false, showBookmarked: true, canUnbookmark: loginPubKey === pubkey }}
                 />
               );
-            case EventKind.Reaction:
-            case EventKind.Repost:
-            case EventKind.ZapReceipt:
-              return <NoteReaction data={n} key={n.id} />;
           }
-          return (
-            <Note
-              key={n.id}
-              data={n}
-              related={related}
-              options={{ showTime: false, showBookmarked: true, canUnbookmark: loginPubKey === pubkey }}
-            />
-          );
         })}
     </div>
   );
