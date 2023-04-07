@@ -199,6 +199,9 @@
   "Adk34V": {
     "defaultMessage": "Setup your Profile"
   },
+  "AkCxS/": {
+    "defaultMessage": "Reason"
+  },
   "AnLrRC": {
     "defaultMessage": "Non-Zap",
     "description": "Non-Zap, Regular LN payment"
@@ -372,6 +375,9 @@
   "KAhAcM": {
     "defaultMessage": "Enter LNDHub config"
   },
+  "KLo3SP": {
+    "defaultMessage": "Reason: {reason}"
+  },
   "KQvWvD": {
     "defaultMessage": "Deleted"
   },
@@ -518,6 +524,9 @@
   "UQ3pOC": {
     "defaultMessage": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step."
   },
+  "UUPFlt": {
+    "defaultMessage": "Users must accept the content warning to show the content of your note."
+  },
   "Up5U7K": {
     "defaultMessage": "Block"
   },
@@ -593,6 +602,9 @@
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
+  },
+  "bQdA2k": {
+    "defaultMessage": "Sensitive Content"
   },
   "brAXSu": {
     "defaultMessage": "Pick a username"
@@ -671,6 +683,9 @@
   },
   "gDzDRs": {
     "defaultMessage": "Emoji to send when reactiong to a note"
+  },
+  "gXgY3+": {
+    "defaultMessage": "Not all clients support this yet"
   },
   "gjBiyj": {
     "defaultMessage": "Loading..."
@@ -946,6 +961,9 @@
   },
   "wvFw6Y": {
     "defaultMessage": "Hey, it looks like you dont have a NIP-05 handle yet, you should get one! Check out {link}"
+  },
+  "x/q8d5": {
+    "defaultMessage": "This note has been marked as sensitive, click here to reveal"
   },
   "x82IOl": {
     "defaultMessage": "Mute"

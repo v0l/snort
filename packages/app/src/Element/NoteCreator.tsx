@@ -49,6 +49,7 @@ export function NoteCreator(props: NoteCreatorProps) {
   const [preview, setPreview] = useState<RawEvent>();
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [zapForward, setZapForward] = useState("");
+  const [sensitive, setSensitiveContent] = useState<string>();
   const uploader = useFileUpload();
 
   async function sendNote() {
@@ -67,6 +68,10 @@ export function NoteCreator(props: NoteCreatorProps) {
           );
           return;
         }
+      }
+      if (sensitive) {
+        extraTags ??= [];
+        extraTags.push(["content-warning", sensitive]);
       }
       const ev = replyTo ? await publisher.reply(replyTo, note, extraTags) : await publisher.note(note, extraTags);
       console.debug("Sending note: ", ev);
@@ -192,6 +197,9 @@ export function NoteCreator(props: NoteCreatorProps) {
               <p>
                 <FormattedMessage defaultMessage="All zaps sent to this note will be received by the following LNURL" />
               </p>
+              <b className="warning">
+                <FormattedMessage defaultMessage="Not all clients support this yet" />
+              </b>
               <input
                 type="text"
                 className="w-max"
@@ -201,6 +209,28 @@ export function NoteCreator(props: NoteCreatorProps) {
                 value={zapForward}
                 onChange={e => setZapForward(e.target.value)}
               />
+              <h4>
+                <FormattedMessage defaultMessage="Sensitive Content" />
+              </h4>
+              <p>
+                <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." />
+              </p>
+              <b className="warning">
+                <FormattedMessage defaultMessage="Not all clients support this yet" />
+              </b>
+              <div className="flex">
+                <input
+                  className="w-max"
+                  type="text"
+                  value={sensitive}
+                  onChange={e => setSensitiveContent(e.target.value)}
+                  maxLength={50}
+                  minLength={1}
+                  placeholder={formatMessage({
+                    defaultMessage: "Reason",
+                  })}
+                />
+              </div>
             </div>
           )}
         </Modal>

@@ -12,6 +12,7 @@
   --highlight: #8b5cf6;
   --error: #ff6053;
   --success: #2ad544;
+  --warning: #ff8800;
 
   --gray-superlight: #eee;
   --gray-light: #999;
@@ -478,6 +479,10 @@ body.scroll-lock {
 
 .error {
   color: var(--error);
+}
+
+.warning {
+  color: var(--warning);
 }
 
 .bg-error {
