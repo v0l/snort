@@ -19,6 +19,7 @@ import {
   setPreview,
   setShowAdvanced,
   setZapForward,
+  setSensitive,
   reset,
 } from "State/NoteCreator";
 import type { RootState } from "State/Store";
@@ -54,6 +55,7 @@ export function NoteCreator() {
   const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
   const showAdvanced = useSelector((s: RootState) => s.noteCreator.showAdvanced);
   const zapForward = useSelector((s: RootState) => s.noteCreator.zapForward);
+  const sensitive = useSelector((s: RootState) => s.noteCreator.sensitive);
   const dispatch = useDispatch();
 
   async function sendNote() {
@@ -220,7 +222,7 @@ export function NoteCreator() {
                   className="w-max"
                   type="text"
                   value={sensitive}
-                  onChange={e => setSensitiveContent(e.target.value)}
+                  onChange={e => dispatch(setSensitive(e.target.value))}
                   maxLength={50}
                   minLength={1}
                   placeholder={formatMessage({

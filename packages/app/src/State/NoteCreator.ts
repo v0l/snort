@@ -10,6 +10,7 @@ interface NoteCreatorStore {
   replyTo: TaggedRawEvent | null;
   showAdvanced: boolean;
   zapForward: string;
+  sensitive: string;
 }
 
 const InitState: NoteCreatorStore = {
@@ -21,6 +22,7 @@ const InitState: NoteCreatorStore = {
   replyTo: null,
   showAdvanced: false,
   zapForward: "",
+  sensitive: "",
 };
 
 const NoteCreatorSlice = createSlice({
@@ -51,11 +53,24 @@ const NoteCreatorSlice = createSlice({
     setZapForward: (state, action: PayloadAction<string>) => {
       state.zapForward = action.payload;
     },
+    setSensitive: (state, action: PayloadAction<string>) => {
+      state.sensitive = action.payload;
+    },
     reset: () => InitState,
   },
 });
 
-export const { setShow, setNote, setError, setActive, setPreview, setReplyTo, setShowAdvanced, setZapForward, reset } =
-  NoteCreatorSlice.actions;
+export const {
+  setShow,
+  setNote,
+  setError,
+  setActive,
+  setPreview,
+  setReplyTo,
+  setShowAdvanced,
+  setZapForward,
+  setSensitive,
+  reset,
+} = NoteCreatorSlice.actions;
 
 export const reducer = NoteCreatorSlice.reducer;
