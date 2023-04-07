@@ -26,7 +26,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   function renderOption(p: HexKey) {
     const profile = UserCache.getFromCache(p);
     return profile ? <option value={p}>{profile?.display_name || profile?.name}</option> : null;
-  }  
+  }
 
   return (
     <div className="main-content">
@@ -44,7 +44,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
       {bookmarks
         .filter(b => (onlyPubkey === "all" ? true : b.pubkey === onlyPubkey))
         .map(n => {
-          switch(n.kind){
+          switch (n.kind) {
             case EventKind.TextNote:
               return (
                 <Note
