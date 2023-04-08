@@ -50,8 +50,24 @@ export async function createDirectMessage(
 ): Promise<DirectMessage> {
   recipient = parsePublicKey(recipient)
   if (priv === undefined) {
-    // TODO Use NIP-07
-    throw new NostrError("todo")
+    if (
+      typeof window === "undefined" ||
+      window.nostr?.nip04?.encrypt === undefined
+    ) {
+      throw new NostrError("private key not specified")
+    }
+    const content = await window.nostr.nip04.encrypt(recipient, message)
+    return await signEvent(
+      {
+        kind: EventKind.DirectMessage,
+        tags: [["p", recipient]],
+        content,
+        getMessage,
+        getRecipient,
+        getPrevious,
+      },
+      priv
+    )
   } else {
     priv = parsePrivateKey(priv)
     const { data, iv } = await aesEncryptBase64(priv, recipient, message)
@@ -81,8 +97,13 @@ export async function getMessage(
     throw new NostrError(`invalid direct message content ${this.content}`)
   }
   if (priv === undefined) {
-    // TODO Try to use NIP-07
-    throw new NostrError("todo")
+    if (
+      typeof window === "undefined" ||
+      window.nostr?.nip04?.decrypt === undefined
+    ) {
+      throw new NostrError("private key not specified")
+    }
+    return await window.nostr.nip04.decrypt(this.pubkey, this.content)
   } else if (getPublicKey(priv) === this.getRecipient()) {
     return await aesDecryptBase64(this.pubkey, priv, { data, iv })
   }
