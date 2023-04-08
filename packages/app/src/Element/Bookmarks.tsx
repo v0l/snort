@@ -8,7 +8,6 @@ import { RootState } from "State/Store";
 import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
-
 interface BookmarksProps {
   pubkey: HexKey;
   bookmarks: readonly TaggedRawEvent[];
