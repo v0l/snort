@@ -1,5 +1,5 @@
 import "./Note.css";
-import React, { useCallback, useMemo, useState, useLayoutEffect, ReactNode } from "react";
+import React, { useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useInView } from "react-intersection-observer";
