@@ -18,7 +18,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   const [onlyPubkey, setOnlyPubkey] = useState<HexKey | "all">("all");
   const loginPubKey = useSelector((s: RootState) => s.login.publicKey);
   const ps = useMemo(() => {
-    return [...new Set(bookmarks.filter(ev => ev.kind === EventKind.TextNote).map(ev => ev.pubkey))];
+    return [...new Set(bookmarks.map(ev => ev.pubkey))];
   }, [bookmarks]);
 
   function renderOption(p: HexKey) {
@@ -42,19 +42,14 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
       {bookmarks
         .filter(b => (onlyPubkey === "all" ? true : b.pubkey === onlyPubkey))
         .map(n => {
-          switch (n.kind) {
-            case EventKind.TextNote:
-              return (
-                <Note
-                  key={n.id}
-                  data={n}
-                  related={related}
-                  options={{ showTime: false, showBookmarked: true, canUnbookmark: loginPubKey === pubkey }}
-                />
-              );
-            default:
-              return null;
-          }
+          return (
+            <Note
+              key={n.id}
+              data={n}
+              related={related}
+              options={{ showTime: false, showBookmarked: true, canUnbookmark: loginPubKey === pubkey }}
+            />
+          );
         })}
     </div>
   );
