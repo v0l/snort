@@ -70,8 +70,7 @@ export default function LoginPage() {
   const [key, setKey] = useState("");
   const [error, setError] = useState("");
   const [art, setArt] = useState<ArtworkEntry>();
-  const [isMasking, setMasking] = useState(false);
-  const [suggestMasking, setSuggestMasking] = useState(false);
+  const [isMasking, setMasking] = useState(true);
   const { formatMessage } = useIntl();
   const { proxy } = useImgProxy();
   const hasNip7 = "nostr" in window;
@@ -87,14 +86,6 @@ export default function LoginPage() {
     const ret = unwrap(Artwork.at(Artwork.length * Math.random()));
     proxy(ret.link).then(a => setArt({ ...ret, link: a }));
   }, []);
-
-  useEffect(() => {
-    if (key.startsWith("nsec") || key.match(MnemonicRegex)) {
-      setSuggestMasking(true);
-    } else {
-      setSuggestMasking(false);
-    }
-  }, [key]);
 
   async function doLogin() {
     const insecureMsg = formatMessage({
@@ -306,16 +297,6 @@ export default function LoginPage() {
               onClick={flipMask}
             />
           </div>
-          <p className="login-note">
-            {suggestMasking && !isMasking && (
-              <span className="highlight">
-                <FormattedMessage
-                  defaultMessage="Please mask your input by clicking the eye icon to protect your privacy"
-                  description="Suggestion to mask input"
-                />
-              </span>
-            )}
-          </p>
           {error.length > 0 ? <b className="error">{error}</b> : null}
           <p className="login-note">
             <FormattedMessage
