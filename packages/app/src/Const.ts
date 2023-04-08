@@ -95,7 +95,7 @@ export const MnemonicRegex = /^([^\s]+\s){11}[^\s]+$/;
  * Extract file extensions regex
  */
 // eslint-disable-next-line no-useless-escape
-export const FileExtensionRegex = /\.([\w]+)$/i;
+export const FileExtensionRegex = /\.([\w]{1,7})$/i;
 
 /**
  * Extract note reactions regex

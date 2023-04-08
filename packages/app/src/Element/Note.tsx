@@ -23,6 +23,7 @@ import {
 } from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
+import Reveal from "Element/Reveal";
 import useModeration from "Hooks/useModeration";
 import { setPinned, setBookmarked } from "State/Login";
 import type { RootState } from "State/Store";
@@ -83,7 +84,6 @@ export default function Note(props: NoteProps) {
   const { pinned, bookmarked } = useSelector((s: RootState) => s.login);
   const publisher = useEventPublisher();
   const [translated, setTranslated] = useState<Translation>();
-  const [contentWarningAccepted, setContentWarningAccepted] = useState(false);
   const { formatMessage } = useIntl();
   const reactions = useMemo(() => getReactions(related, ev.id, EventKind.Reaction), [related, ev]);
   const groupReactions = useMemo(() => {
@@ -153,7 +153,7 @@ export default function Note(props: NoteProps) {
     }
   }
 
-  const transformBody = useCallback(() => {
+  const transformBody = () => {
     const body = ev?.content ?? "";
     if (deletions?.length > 0) {
       return (
@@ -163,31 +163,31 @@ export default function Note(props: NoteProps) {
       );
     }
     const contentWarning = ev.tags.find(a => a[0] === "content-warning");
-    if (contentWarning && !contentWarningAccepted) {
+    if (contentWarning) {
       return (
-        <div
-          className="note-invoice"
-          onClick={e => {
-            e.stopPropagation();
-            setContentWarningAccepted(true);
-          }}>
-          <FormattedMessage defaultMessage="This note has been marked as sensitive, click here to reveal" />
-          {contentWarning[1] && (
+        <Reveal
+          message={
             <>
-              <br />
-              <FormattedMessage
-                defaultMessage="Reason: {reason}"
-                values={{
-                  reason: contentWarning[1],
-                }}
-              />
+              <FormattedMessage defaultMessage="This note has been marked as sensitive, click here to reveal" />
+              {contentWarning[1] && (
+                <>
+                  <br />
+                  <FormattedMessage
+                    defaultMessage="Reason: {reason}"
+                    values={{
+                      reason: contentWarning[1],
+                    }}
+                  />
+                </>
+              )}
             </>
-          )}
-        </div>
+          }>
+          <Text content={body} tags={ev.tags} creator={ev.pubkey} />
+        </Reveal>
       );
     }
     return <Text content={body} tags={ev.tags} creator={ev.pubkey} />;
-  }, [ev, contentWarningAccepted]);
+  };
 
   useLayoutEffect(() => {
     if (entry && inView && extendable === false) {
