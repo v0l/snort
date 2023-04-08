@@ -109,6 +109,17 @@ const Timeline = (props: TimelineProps) => {
     }
   }
 
+  function isSearchingMessageShown() {
+    //show in ProfilePage
+    if (props.subject.type === "pubkey" && props.subject.discriminator !== "follows") {
+      return true;
+    }
+    if (props.subject.type === "keyword") {
+      return true;
+    }
+    return false;
+  }
+
   return (
     <div className="main-content">
       {latestFeed.length > 0 && (
@@ -139,16 +150,18 @@ const Timeline = (props: TimelineProps) => {
       )}
       {mainFeed.map(eventElement)}
       <LoadMore onLoadMore={feed.loadMore} shouldLoadMore={!feed.loading}>
-        <div>
-          <Spinner /> Searching for stuff from{" "}
-          <b>
-            <NoteTime from={feed.since * 1000} displayAbsoluteTime />
-          </b>{" "}
-          upto{" "}
-          <b>
-            <NoteTime from={feed.until * 1000} displayAbsoluteTime />
-          </b>
-        </div>
+        {isSearchingMessageShown() && (
+          <div>
+            <Spinner /> <FormattedMessage defaultMessage="Searching for stuff from" />{" "}
+            <b>
+              <NoteTime from={feed.since * 1000} displayAbsoluteTime />
+            </b>{" "}
+            <FormattedMessage defaultMessage="upto" />{" "}
+            <b>
+              <NoteTime from={feed.until * 1000} displayAbsoluteTime />
+            </b>
+          </div>
+        )}
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
         <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
