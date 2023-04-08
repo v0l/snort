@@ -279,12 +279,20 @@ export default function LoginPage() {
           <div className="flex">
             <input
               dir="auto"
-              type="password"
+              type={key?.startsWith("nsec") ? "password" : "text"}
               placeholder={formatMessage(messages.KeyPlaceholder)}
               className="f-grow"
               onChange={e => setKey(e.target.value)}
             />
           </div>
+          <p className="login-note">
+            {key?.startsWith("nsec") && (
+              <span className="highlight">
+                We noticed that you are entering a secret key starting with nsec. We are masking your input to protect
+                your privacy.
+              </span>
+            )}
+          </p>
           {error.length > 0 ? <b className="error">{error}</b> : null}
           <p className="login-note">
             <FormattedMessage
