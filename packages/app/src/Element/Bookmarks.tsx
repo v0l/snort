@@ -1,7 +1,7 @@
 import { useState, useMemo, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
-import { EventKind, HexKey, TaggedRawEvent } from "@snort/nostr";
+import { HexKey, TaggedRawEvent } from "@snort/nostr";
 
 import Note from "Element/Note";
 import { RootState } from "State/Store";
