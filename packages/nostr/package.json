@@ -1,6 +1,8 @@
 {
   "name": "@snort/nostr",
   "version": "1.0.0",
+  "main": "dist/lib.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "webpack",
     "watch": "webpack -w",
