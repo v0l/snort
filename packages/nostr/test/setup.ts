@@ -41,9 +41,9 @@ export async function setup(
     const publisherSecret =
       "nsec15fnff4uxlgyu79ua3l7327w0wstrd6x565cx6zze78zgkktmr8vs90j363"
 
-    // Set up the global window.nostr object for the publisher.
     if (typeof window !== "undefined") {
       if (window.location.pathname === "/nostr-object") {
+        // Mock the global window.nostr object for the publisher.
         window.nostr = {
           getPublicKey: () => Promise.resolve(parsePublicKey(publisherPubkey)),
           signEvent: <T extends RawEvent>(event: Unsigned<T>) =>
@@ -74,7 +74,7 @@ export async function setup(
           },
         }
       } else {
-        // Otherwise, disable the user's nostr extension if they have one.
+        // Disable the user's nostr extension if they have one.
         window.nostr = undefined
       }
     }
