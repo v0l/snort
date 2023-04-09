@@ -7,6 +7,21 @@
     <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
   </head>
   <body>
+    <div style="margin-left: 5px; margin-top: 15px">
+      <a style="color: var(--mocha-color)" id="window.nostr"></a>
+    </div>
+
+    <script>
+      const a = document.getElementById("window.nostr")
+      if (window.location.pathname === "/nostr-object") {
+        a.href = "/"
+        a.innerHTML = "disable window.nostr"
+      } else {
+        a.href = "/nostr-object"
+        a.innerHTML = "enable window.nostr"
+      }
+    </script>
+
     <div id="mocha"></div>
 
     <script src="https://unpkg.com/mocha/mocha.js"></script>
@@ -15,6 +30,7 @@
       mocha.setup({
         ui: "bdd",
         timeout: "5s",
+        global: ["nostr"],
       })
       mocha.checkLeaks()
     </script>

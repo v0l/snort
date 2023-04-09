@@ -7,6 +7,7 @@ declare global {
       getPublicKey: () => Promise<PublicKey>
       signEvent: <T extends RawEvent>(event: Unsigned<T>) => Promise<T>
 
+      // TODO It's unclear to me if I should use this anywhere.
       getRelays?: () => Promise<{
         [url: string]: { read: boolean; write: boolean }
       }>

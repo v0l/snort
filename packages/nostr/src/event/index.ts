@@ -139,7 +139,19 @@ export async function signEvent<T extends RawEvent>(
     if (typeof window === "undefined" || window.nostr === undefined) {
       throw new NostrError("no private key provided")
     }
-    return await window.nostr.signEvent(event)
+    // Extensions like nos2x expect to receive only the event data, without any of the methods.
+    const methods: { [key: string]: unknown } = {}
+    for (const [key, value] of Object.entries(event)) {
+      if (typeof value === "function") {
+        methods[key] = value
+        delete event[key]
+      }
+    }
+    const signed = await window.nostr.signEvent(event)
+    return {
+      ...signed,
+      ...methods,
+    }
   }
 }
 

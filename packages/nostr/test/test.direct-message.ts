@@ -4,7 +4,7 @@ import { parsePublicKey } from "../src/crypto"
 import { setup } from "./setup"
 import { createDirectMessage } from "../src/event/direct-message"
 
-describe("dm", () => {
+describe("direct-message", () => {
   const message = "for your eyes only"
 
   // Test that the intended recipient can receive and decrypt the direct message.

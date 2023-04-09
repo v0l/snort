@@ -10,7 +10,7 @@ const port = 33543
 const app = express()
 
 app.use("/", (req: express.Request, res: express.Response) => {
-  if (req.path === "/") {
+  if (req.path === "/" || req.path === "/nostr-object") {
     const index = fs.readFileSync(path.join(__dirname, "index.html"), {
       encoding: "utf8",
     })
