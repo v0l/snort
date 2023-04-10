@@ -38,6 +38,7 @@
   display: flex;
   align-items: center;
 }
+
 .note > .header > .info .saved svg {
   margin-right: 8px;
 }
@@ -117,6 +118,7 @@
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
+
 .note > .footer .ctx-menu li:last-of-type {
   padding-bottom: 12px;
   border-bottom-left-radius: 16px;
@@ -145,6 +147,36 @@
 .note > .note-creator {
   margin-top: 12px;
   margin-left: 56px;
+}
+
+.note .poll-body {
+  padding: 5px;
+  user-select: none;
+}
+
+.note .poll-body > div {
+  border: 1px solid var(--font-secondary-color);
+  border-radius: 5px;
+  margin-bottom: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.note .poll-body > div > div {
+  padding: 5px 10px;
+  z-index: 2;
+}
+
+.note .poll-body > div:hover {
+  cursor: pointer;
+  border: 1px solid var(--highlight);
+}
+
+.note .poll-body > div > .progress {
+  background-color: var(--gray);
+  height: stretch;
+  position: absolute;
+  z-index: 1;
 }
 
 .reaction-pill {

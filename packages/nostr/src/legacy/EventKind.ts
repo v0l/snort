@@ -9,6 +9,7 @@ enum EventKind {
   Repost = 6, // NIP-18
   Reaction = 7, // NIP-25
   BadgeAward = 8, // NIP-58
+  Polls = 6969, // NIP-69
   Relays = 10002, // NIP-65
   Ephemeral = 20_000,
   Auth = 22242, // NIP-42

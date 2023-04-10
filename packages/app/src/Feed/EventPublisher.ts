@@ -33,6 +33,10 @@ export default function useEventPublisher() {
   const hasNip07 = "nostr" in window;
 
   async function signEvent(ev: RawEvent): Promise<RawEvent> {
+    if (!pubKey) {
+      throw new Error("Cant sign events when logged out");
+    }
+
     if (hasNip07 && !privKey) {
       ev.id = await EventExt.createId(ev);
       const tmpEv = (await barrierNip07(() => window.nostr.signEvent(ev))) as RawEvent;
@@ -92,7 +96,7 @@ export default function useEventPublisher() {
     },
     broadcast: (ev: RawEvent | undefined) => {
       if (ev) {
-        console.debug("Sending event: ", ev);
+        console.debug(ev);
         System.BroadcastEvent(ev);
       }
     },
@@ -176,9 +180,9 @@ export default function useEventPublisher() {
         return await signEvent(ev);
       }
     },
-    note: async (msg: string, extraTags?: Array<Array<string>>) => {
+    note: async (msg: string, extraTags?: Array<Array<string>>, kind?: EventKind) => {
       if (pubKey) {
-        const ev = EventExt.forPubKey(pubKey, EventKind.TextNote);
+        const ev = EventExt.forPubKey(pubKey, kind ?? EventKind.TextNote);
         processContent(ev, msg);
         if (extraTags) {
           for (const et of extraTags) {
@@ -188,7 +192,16 @@ export default function useEventPublisher() {
         return await signEvent(ev);
       }
     },
-    zap: async (amount: number, author: HexKey, note?: HexKey, msg?: string) => {
+    /**
+     * Create a zap request event for a given target event/profile
+     * @param amount Millisats amout!
+     * @param author Author pubkey to tag in the zap
+     * @param note Note Id to tag in the zap
+     * @param msg Custom message to be included in the zap
+     * @param extraTags Any extra tags to include on the zap request event
+     * @returns
+     */
+    zap: async (amount: number, author: HexKey, note?: HexKey, msg?: string, extraTags?: Array<Array<string>>) => {
       if (pubKey) {
         const ev = EventExt.forPubKey(pubKey, EventKind.ZapRequest);
         if (note) {
@@ -198,6 +211,7 @@ export default function useEventPublisher() {
         const relayTag = ["relays", ...Object.keys(relays).map(a => a.trim())];
         ev.tags.push(relayTag);
         ev.tags.push(["amount", amount.toString()]);
+        ev.tags.push(...(extraTags ?? []));
         processContent(ev, msg || "");
         return await signEvent(ev);
       }
@@ -205,9 +219,9 @@ export default function useEventPublisher() {
     /**
      * Reply to a note
      */
-    reply: async (replyTo: TaggedRawEvent, msg: string, extraTags?: Array<Array<string>>) => {
+    reply: async (replyTo: TaggedRawEvent, msg: string, extraTags?: Array<Array<string>>, kind?: EventKind) => {
       if (pubKey) {
-        const ev = EventExt.forPubKey(pubKey, EventKind.TextNote);
+        const ev = EventExt.forPubKey(pubKey, kind ?? EventKind.TextNote);
 
         const thread = EventExt.extractThread(ev);
         if (thread) {

@@ -6,11 +6,12 @@ interface NoteCreatorStore {
   note: string;
   error: string;
   active: boolean;
-  preview: RawEvent | null;
-  replyTo: TaggedRawEvent | null;
+  preview?: RawEvent;
+  replyTo?: TaggedRawEvent;
   showAdvanced: boolean;
   zapForward: string;
   sensitive: string;
+  pollOptions?: Array<string>;
 }
 
 const InitState: NoteCreatorStore = {
@@ -18,8 +19,6 @@ const InitState: NoteCreatorStore = {
   note: "",
   error: "",
   active: false,
-  preview: null,
-  replyTo: null,
   showAdvanced: false,
   zapForward: "",
   sensitive: "",
@@ -41,10 +40,10 @@ const NoteCreatorSlice = createSlice({
     setActive: (state, action: PayloadAction<boolean>) => {
       state.active = action.payload;
     },
-    setPreview: (state, action: PayloadAction<RawEvent | null>) => {
+    setPreview: (state, action: PayloadAction<RawEvent | undefined>) => {
       state.preview = action.payload;
     },
-    setReplyTo: (state, action: PayloadAction<TaggedRawEvent | null>) => {
+    setReplyTo: (state, action: PayloadAction<TaggedRawEvent | undefined>) => {
       state.replyTo = action.payload;
     },
     setShowAdvanced: (state, action: PayloadAction<boolean>) => {
@@ -55,6 +54,9 @@ const NoteCreatorSlice = createSlice({
     },
     setSensitive: (state, action: PayloadAction<string>) => {
       state.sensitive = action.payload;
+    },
+    setPollOptions: (state, action: PayloadAction<Array<string> | undefined>) => {
+      state.pollOptions = action.payload;
     },
     reset: () => InitState,
   },
@@ -70,6 +72,7 @@ export const {
   setShowAdvanced,
   setZapForward,
   setSensitive,
+  setPollOptions,
   reset,
 } = NoteCreatorSlice.actions;
 

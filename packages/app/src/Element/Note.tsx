@@ -28,6 +28,7 @@ import useModeration from "Hooks/useModeration";
 import { setPinned, setBookmarked } from "State/Login";
 import type { RootState } from "State/Store";
 import { UserCache } from "Cache/UserCache";
+import Poll from "Element/Poll";
 
 import messages from "./messages";
 import { EventExt } from "System/EventExt";
@@ -270,7 +271,8 @@ export default function Note(props: NoteProps) {
     );
   }
 
-  if (ev.kind !== EventKind.TextNote) {
+  const canRenderAsTextNote = [EventKind.TextNote, EventKind.Polls];
+  if (!canRenderAsTextNote.includes(ev.kind)) {
     return (
       <>
         <h4>
@@ -298,6 +300,12 @@ export default function Note(props: NoteProps) {
         </p>
       );
     }
+  }
+
+  function pollOptions() {
+    if (ev.kind !== EventKind.Polls) return;
+
+    return <Poll ev={ev} zaps={zaps} />;
   }
 
   function content() {
@@ -332,6 +340,7 @@ export default function Note(props: NoteProps) {
         <div className="body" onClick={e => goToEvent(e, ev, true)}>
           {transformBody()}
           {translation()}
+          {pollOptions()}
           {options.showReactionsLink && (
             <div className="reactions-link" onClick={() => setShowReactions(true)}>
               <FormattedMessage {...messages.ReactionsLink} values={{ n: totalReactions }} />
