@@ -120,6 +120,13 @@
   font-size: 16px;
 }
 
+.login-container input[type="password"] {
+  border: none;
+  background-color: var(--gray-secondary);
+  padding: 12px 16px;
+  font-size: 16px;
+}
+
 .login-container h1 {
   color: var(--font-color);
   font-style: normal;

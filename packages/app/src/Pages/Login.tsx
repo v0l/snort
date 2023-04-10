@@ -16,6 +16,7 @@ import ZapButton from "Element/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
 
 import messages from "./messages";
+import Icon from "Icons/Icon";
 
 interface ArtworkEntry {
   name: string;
@@ -69,6 +70,7 @@ export default function LoginPage() {
   const [key, setKey] = useState("");
   const [error, setError] = useState("");
   const [art, setArt] = useState<ArtworkEntry>();
+  const [isMasking, setMasking] = useState(true);
   const { formatMessage } = useIntl();
   const { proxy } = useImgProxy();
   const hasNip7 = "nostr" in window;
@@ -279,10 +281,16 @@ export default function LoginPage() {
           <div className="flex">
             <input
               dir="auto"
-              type="text"
+              type={isMasking ? "password" : "text"}
               placeholder={formatMessage(messages.KeyPlaceholder)}
               className="f-grow"
               onChange={e => setKey(e.target.value)}
+            />
+            <Icon
+              name={isMasking ? "openeye" : "closedeye"}
+              size={30}
+              className="highlight btn-sm pointer"
+              onClick={() => setMasking(!isMasking)}
             />
           </div>
           {error.length > 0 ? <b className="error">{error}</b> : null}
