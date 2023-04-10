@@ -1,7 +1,7 @@
 import { TaggedRawEvent } from "@snort/nostr";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { FormattedNumber, useIntl } from "react-intl";
+import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
 import { ParsedZap } from "Element/Zap";
 import Text from "Element/Text";
@@ -87,6 +87,14 @@ export default function Poll(props: PollProps) {
   const allTotal = props.zaps.filter(a => a.pollOption !== undefined).reduce((acc, v) => (acc += v.amount), 0);
   return (
     <>
+      <small>
+        <FormattedMessage
+          defaultMessage="Your are voting with {amount} sats"
+          values={{
+            amount: formatShort(prefs.defaultZapAmount),
+          }}
+        />
+      </small>
       <div className="poll-body">
         {options.map(a => {
           const opt = Number(a[1]);
