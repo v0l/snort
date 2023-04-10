@@ -32,12 +32,22 @@ export default function Poll(props: PollProps) {
 
   const options = props.ev.tags.filter(a => a[0] === "poll_option").sort((a, b) => Number(a[1]) - Number(b[1]));
   async function zapVote(opt: number) {
+    if (voting) return;
+
     const amount = prefs.defaultZapAmount;
     try {
       setVoting(opt);
       const zap = await publisher.zap(amount * 1000, props.ev.pubkey, props.ev.id, undefined, [
         ["poll_option", opt.toString()],
       ]);
+
+      if (!zap) {
+        throw new Error(
+          formatMessage({
+            defaultMessage: "Can't create vote, maybe you're not logged in?",
+          })
+        );
+      }
 
       const lnurl = props.ev.tags.find(a => a[0] === "zap")?.[1] || pollerProfile?.lud16 || pollerProfile?.lud06;
       if (!lnurl) return;
@@ -46,7 +56,11 @@ export default function Poll(props: PollProps) {
       await svc.load();
 
       if (!svc.canZap) {
-        throw new Error("Cant vote because LNURL service does not support zaps");
+        throw new Error(
+          formatMessage({
+            defaultMessage: "Can't vote because LNURL service does not support zaps",
+          })
+        );
       }
 
       const invoice = await svc.getInvoice(amount, undefined, zap);
@@ -58,12 +72,13 @@ export default function Poll(props: PollProps) {
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message);
+      } else {
+        setError(
+          formatMessage({
+            defaultMessage: "Failed to send vote",
+          })
+        );
       }
-      setError(
-        formatMessage({
-          defaultMessage: "Failed to send vote",
-        })
-      );
     } finally {
       setVoting(undefined);
     }
@@ -78,7 +93,7 @@ export default function Poll(props: PollProps) {
           const desc = a[2];
           const zapsOnOption = props.zaps.filter(b => b.pollOption === opt);
           const total = zapsOnOption.reduce((acc, v) => (acc += v.amount), 0);
-          const weight = total / allTotal;
+          const weight = allTotal === 0 ? 0 : total / allTotal;
           return (
             <div key={a[1]} className="flex" onClick={() => zapVote(opt)}>
               <div className="f-grow">

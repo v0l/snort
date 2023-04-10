@@ -33,6 +33,10 @@ export default function useEventPublisher() {
   const hasNip07 = "nostr" in window;
 
   async function signEvent(ev: RawEvent): Promise<RawEvent> {
+    if (!pubKey) {
+      throw new Error("Cant sign events when logged out");
+    }
+
     if (hasNip07 && !privKey) {
       ev.id = await EventExt.createId(ev);
       const tmpEv = (await barrierNip07(() => window.nostr.signEvent(ev))) as RawEvent;
@@ -92,7 +96,6 @@ export default function useEventPublisher() {
     },
     broadcast: (ev: RawEvent | undefined) => {
       if (ev) {
-        console.debug("Sending event: ", ev);
         System.BroadcastEvent(ev);
       }
     },
