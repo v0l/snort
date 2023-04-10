@@ -25,17 +25,33 @@ export default function Poll(props: PollProps) {
   const publisher = useEventPublisher();
   const { wallet } = useWallet();
   const prefs = useSelector((s: RootState) => s.login.preferences);
+  const myPubKey = useSelector((s: RootState) => s.login.publicKey);
   const pollerProfile = useUserProfile(props.ev.pubkey);
   const [error, setError] = useState("");
   const [invoice, setInvoice] = useState("");
   const [voting, setVoting] = useState<number>();
+  const didVote = props.zaps.some(a => a.sender === myPubKey);
 
   const options = props.ev.tags.filter(a => a[0] === "poll_option").sort((a, b) => Number(a[1]) - Number(b[1]));
-  async function zapVote(opt: number) {
+  async function zapVote(ev: React.MouseEvent, opt: number) {
+    ev.stopPropagation();
     if (voting) return;
 
     const amount = prefs.defaultZapAmount;
     try {
+      if (amount <= 0) {
+        throw new Error(
+          formatMessage(
+            {
+              defaultMessage: "Can't vote with {amount} sats, please set a different default zap amount",
+            },
+            {
+              amount,
+            }
+          )
+        );
+      }
+
       setVoting(opt);
       const zap = await publisher.zap(amount * 1000, props.ev.pubkey, props.ev.id, undefined, [
         ["poll_option", opt.toString()],
@@ -103,15 +119,19 @@ export default function Poll(props: PollProps) {
           const total = zapsOnOption.reduce((acc, v) => (acc += v.amount), 0);
           const weight = allTotal === 0 ? 0 : total / allTotal;
           return (
-            <div key={a[1]} className="flex" onClick={() => zapVote(opt)}>
+            <div key={a[1]} className="flex" onClick={e => zapVote(e, opt)}>
               <div className="f-grow">
                 {opt === voting ? <Spinner /> : <Text content={desc} tags={props.ev.tags} creator={props.ev.pubkey} />}
               </div>
-              <div className="flex">
-                <FormattedNumber value={weight * 100} maximumFractionDigits={0} />% &nbsp;
-                <small>({formatShort(total)})</small>
-              </div>
-              <div style={{ width: `${weight * 100}%` }} className="progress"></div>
+              {didVote && (
+                <>
+                  <div className="flex">
+                    <FormattedNumber value={weight * 100} maximumFractionDigits={0} />% &nbsp;
+                    <small>({formatShort(total)})</small>
+                  </div>
+                  <div style={{ width: `${weight * 100}%` }} className="progress"></div>
+                </>
+              )}
             </div>
           );
         })}
