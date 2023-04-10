@@ -31,6 +31,8 @@ export default function Poll(props: PollProps) {
   const [invoice, setInvoice] = useState("");
   const [voting, setVoting] = useState<number>();
   const didVote = props.zaps.some(a => a.sender === myPubKey);
+  const isMyPoll = props.ev.pubkey === myPubKey;
+  const showResults = didVote || isMyPoll;
 
   const options = props.ev.tags.filter(a => a[0] === "poll_option").sort((a, b) => Number(a[1]) - Number(b[1]));
   async function zapVote(ev: React.MouseEvent, opt: number) {
@@ -123,7 +125,7 @@ export default function Poll(props: PollProps) {
               <div className="f-grow">
                 {opt === voting ? <Spinner /> : <Text content={desc} tags={props.ev.tags} creator={props.ev.pubkey} />}
               </div>
-              {didVote && (
+              {showResults && (
                 <>
                   <div className="flex">
                     <FormattedNumber value={weight * 100} maximumFractionDigits={0} />% &nbsp;
