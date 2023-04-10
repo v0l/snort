@@ -275,6 +275,7 @@ textarea {
 input[type="text"],
 input[type="password"],
 input[type="number"],
+input[type="datetime-local"],
 select,
 textarea {
   padding: 12px;
@@ -293,7 +294,7 @@ textarea {
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-option,
+select:not([multiple]) > option,
 optgroup {
   background-color: var(--bg-color);
 }

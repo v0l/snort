@@ -9,6 +9,7 @@ import { WalletSettingsRoutes } from "Pages/settings/WalletSettings";
 import Nip5ManagePage from "Pages/settings/ManageNip5";
 
 import messages from "./messages";
+import DelegationPage from "./settings/Delegation";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -47,6 +48,10 @@ export const SettingsRoutes: RouteObject[] = [
   {
     path: "nip5",
     element: <Nip5ManagePage />,
+  },
+  {
+    path: "delegation",
+    element: <DelegationPage />,
   },
   ...WalletSettingsRoutes,
 ];

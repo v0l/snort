@@ -8,6 +8,7 @@ import type { AppDispatch, RootState } from "State/Store";
 import { ImgProxySettings } from "Hooks/useImgProxy";
 import { sanitizeRelayUrl, unwrap } from "Util";
 import { DmCache } from "Cache";
+import { DelegationData } from "Nip26";
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
@@ -205,6 +206,11 @@ export interface LoginStore {
    * Users cusom preferences
    */
   preferences: UserPreferences;
+
+  /**
+   * NIP-26 Delegation information
+   */
+  delegation?: DelegationData;
 }
 
 export const DefaultImgProxy = {
@@ -465,6 +471,9 @@ const LoginSlice = createSlice({
       state.preferences = action.payload;
       window.localStorage.setItem(UserPreferencesKey, JSON.stringify(state.preferences));
     },
+    setDelegation: (state, action: PayloadAction<DelegationData>) => {
+      state.delegation = action.payload;
+    },
   },
 });
 
@@ -487,6 +496,7 @@ export const {
   markNotificationsRead,
   setLatestNotifications,
   setPreferences,
+  setDelegation,
 } = LoginSlice.actions;
 
 export function sendNotification({
