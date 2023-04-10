@@ -166,6 +166,11 @@ export function NoteCreator() {
                   onChange={onChange}
                   value={note}
                   onFocus={() => dispatch(setActive(true))}
+                  onKeyDown={e => {
+                    if (e.key === "Enter" && e.metaKey) {
+                      sendNote().catch(console.warn);
+                    }
+                  }}
                 />
                 <button type="button" className="attachment" onClick={attachFile}>
                   <Icon name="attachment" />

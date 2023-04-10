@@ -50,6 +50,7 @@ interface TextareaProps {
   onChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void;
   value: string;
   onFocus(): void;
+  onKeyDown(ev: React.KeyboardEvent<HTMLTextAreaElement>): void;
 }
 
 const Textarea = (props: TextareaProps) => {
