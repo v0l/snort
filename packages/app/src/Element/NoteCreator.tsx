@@ -1,7 +1,7 @@
 import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { TaggedRawEvent } from "@snort/nostr";
+import { EventKind, TaggedRawEvent } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
@@ -21,6 +21,7 @@ import {
   setZapForward,
   setSensitive,
   reset,
+  setPollOptions,
 } from "State/NoteCreator";
 import type { RootState } from "State/Store";
 import { LNURL } from "LNURL";
@@ -56,6 +57,7 @@ export function NoteCreator() {
   const showAdvanced = useSelector((s: RootState) => s.noteCreator.showAdvanced);
   const zapForward = useSelector((s: RootState) => s.noteCreator.zapForward);
   const sensitive = useSelector((s: RootState) => s.noteCreator.sensitive);
+  const pollOptions = useSelector((s: RootState) => s.noteCreator.pollOptions);
   const dispatch = useDispatch();
 
   async function sendNote() {
@@ -81,8 +83,14 @@ export function NoteCreator() {
         extraTags ??= [];
         extraTags.push(["content-warning", sensitive]);
       }
-      const ev = replyTo ? await publisher.reply(replyTo, note, extraTags) : await publisher.note(note, extraTags);
-      console.debug("Sending note: ", ev);
+      const kind = pollOptions ? EventKind.Polls : EventKind.TextNote;
+      if (pollOptions) {
+        extraTags ??= [];
+        extraTags.push(...pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
+      }
+      const ev = replyTo
+        ? await publisher.reply(replyTo, note, extraTags, kind)
+        : await publisher.note(note, extraTags, kind);
       publisher.broadcast(ev);
       dispatch(reset());
     }
@@ -127,7 +135,7 @@ export function NoteCreator() {
 
   async function loadPreview() {
     if (preview) {
-      dispatch(setPreview(null));
+      dispatch(setPreview(undefined));
     } else {
       const tmpNote = await publisher.note(note);
       if (tmpNote) {
@@ -151,6 +159,52 @@ export function NoteCreator() {
     }
   }
 
+  function renderPollOptions() {
+    if (pollOptions) {
+      return (
+        <>
+          <h4>
+            <FormattedMessage defaultMessage="Poll Options" />
+          </h4>
+          {pollOptions?.map((a, i) => (
+            <div className="form-group w-max" key={`po-${i}`}>
+              <div>
+                <FormattedMessage defaultMessage="Option: {n}" values={{ n: i + 1 }} />
+              </div>
+              <div>
+                <input type="text" value={a} onChange={e => changePollOption(i, e.target.value)} />
+                {i > 1 && (
+                  <button onClick={() => removePollOption(i)} className="ml5">
+                    <Icon name="close" size={14} />
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+          <button onClick={() => dispatch(setPollOptions([...pollOptions, ""]))}>
+            <Icon name="plus" size={14} />
+          </button>
+        </>
+      );
+    }
+  }
+
+  function changePollOption(i: number, v: string) {
+    if (pollOptions) {
+      const copy = [...pollOptions];
+      copy[i] = v;
+      dispatch(setPollOptions(copy));
+    }
+  }
+
+  function removePollOption(i: number) {
+    if (pollOptions) {
+      const copy = [...pollOptions];
+      copy.splice(i, 1);
+      dispatch(setPollOptions(copy));
+    }
+  }
+
   return (
     <>
       {show && (
@@ -158,8 +212,8 @@ export function NoteCreator() {
           {replyTo && <NotePreview note={replyTo} />}
           {preview && getPreviewNote()}
           {!preview && (
-            <div className={`flex note-creator ${replyTo ? "note-reply" : ""}`}>
-              <div className="flex f-col mr10 f-grow">
+            <div className={`flex note-creator${replyTo ? " note-reply" : ""}${pollOptions ? " poll" : ""}`}>
+              <div className="flex f-col f-grow">
                 <Textarea
                   autoFocus
                   className={`textarea ${active ? "textarea--focused" : ""}`}
@@ -172,9 +226,17 @@ export function NoteCreator() {
                     }
                   }}
                 />
-                <button type="button" className="attachment" onClick={attachFile}>
-                  <Icon name="attachment" />
-                </button>
+                {renderPollOptions()}
+                <div className="insert">
+                  {pollOptions === undefined && !replyTo && (
+                    <button type="button" onClick={() => dispatch(setPollOptions(["A", "B"]))}>
+                      <Icon name="pie-chart" />
+                    </button>
+                  )}
+                  <button type="button" onClick={attachFile}>
+                    <Icon name="attachment" />
+                  </button>
+                </div>
               </div>
               {error && <span className="error">{error}</span>}
             </div>

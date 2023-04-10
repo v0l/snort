@@ -96,6 +96,7 @@ export default function useEventPublisher() {
     },
     broadcast: (ev: RawEvent | undefined) => {
       if (ev) {
+        console.debug(ev);
         System.BroadcastEvent(ev);
       }
     },
@@ -179,9 +180,9 @@ export default function useEventPublisher() {
         return await signEvent(ev);
       }
     },
-    note: async (msg: string, extraTags?: Array<Array<string>>) => {
+    note: async (msg: string, extraTags?: Array<Array<string>>, kind?: EventKind) => {
       if (pubKey) {
-        const ev = EventExt.forPubKey(pubKey, EventKind.TextNote);
+        const ev = EventExt.forPubKey(pubKey, kind ?? EventKind.TextNote);
         processContent(ev, msg);
         if (extraTags) {
           for (const et of extraTags) {
@@ -218,9 +219,9 @@ export default function useEventPublisher() {
     /**
      * Reply to a note
      */
-    reply: async (replyTo: TaggedRawEvent, msg: string, extraTags?: Array<Array<string>>) => {
+    reply: async (replyTo: TaggedRawEvent, msg: string, extraTags?: Array<Array<string>>, kind?: EventKind) => {
       if (pubKey) {
-        const ev = EventExt.forPubKey(pubKey, EventKind.TextNote);
+        const ev = EventExt.forPubKey(pubKey, kind ?? EventKind.TextNote);
 
         const thread = EventExt.extractThread(ev);
         if (thread) {
