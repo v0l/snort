@@ -193,6 +193,9 @@
     "defaultMessage": "Parent",
     "description": "Link to parent note in thread"
   },
+  "ALT9tB": {
+    "defaultMessage": "Your are voting with {amount} sats"
+  },
   "ASRK0S": {
     "defaultMessage": "This author has been muted"
   },
@@ -434,6 +437,9 @@
   "NdOYJJ": {
     "defaultMessage": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!"
   },
+  "NepkXH": {
+    "defaultMessage": "Can't vote with {amount} sats, please set a different default zap amount"
+  },
   "NfNk2V": {
     "defaultMessage": "Your private key"
   },
@@ -600,6 +606,9 @@
   "a5UPxh": {
     "defaultMessage": "Fund developers and platforms providing NIP-05 verification services"
   },
+  "aJEO/4": {
+    "defaultMessage": "Can't create vote, maybe you're not logged in?"
+  },
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
@@ -660,6 +669,9 @@
   "eR3YIn": {
     "defaultMessage": "Posts"
   },
+  "fOksnD": {
+    "defaultMessage": "Can't vote because LNURL service does not support zaps"
+  },
   "fWZYP5": {
     "defaultMessage": "Pinned"
   },
@@ -674,6 +686,9 @@
   },
   "g5pX+a": {
     "defaultMessage": "About"
+  },
+  "g985Wp": {
+    "defaultMessage": "Failed to send vote"
   },
   "gBdUXk": {
     "defaultMessage": "Save your keys!"
@@ -801,6 +816,9 @@
   },
   "mKhgP9": {
     "defaultMessage": "{n,plural,=0{} =1{zapped} other{zapped}}"
+  },
+  "mfe8RW": {
+    "defaultMessage": "Option: {n}"
   },
   "n1xHAH": {
     "defaultMessage": "Get an identifier (optional)"
@@ -935,6 +953,9 @@
   },
   "vZ4quW": {
     "defaultMessage": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."
+  },
+  "vhlWFg": {
+    "defaultMessage": "Poll Options"
   },
   "vrTOHJ": {
     "defaultMessage": "{amount} sats"
