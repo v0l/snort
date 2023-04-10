@@ -265,10 +265,6 @@ export default function LoginPage() {
     );
   }
 
-  const flipMask = function () {
-    setMasking(!isMasking);
-  };
-
   return (
     <div className="login">
       <div>
@@ -294,7 +290,7 @@ export default function LoginPage() {
               name={isMasking ? "openeye" : "closedeye"}
               size={30}
               className="highlight btn-sm pointer"
-              onClick={flipMask}
+              onClick={() => setMasking(!isMasking)}
             />
           </div>
           {error.length > 0 ? <b className="error">{error}</b> : null}
