@@ -107,7 +107,7 @@ export default function Poll(props: PollProps) {
     <>
       <small>
         <FormattedMessage
-          defaultMessage="Your are voting with {amount} sats"
+          defaultMessage="You are voting with {amount} sats"
           values={{
             amount: formatShort(prefs.defaultZapAmount),
           }}

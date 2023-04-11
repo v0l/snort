@@ -87,6 +87,9 @@
   "3gOsZq": {
     "defaultMessage": "Translators"
   },
+  "3qnJlS": {
+    "defaultMessage": "You are voting with {amount} sats"
+  },
   "3t3kok": {
     "defaultMessage": "{n,plural,=1{{n} new note} other{{n} new notes}}"
   },
@@ -192,9 +195,6 @@
   "ADmfQT": {
     "defaultMessage": "Parent",
     "description": "Link to parent note in thread"
-  },
-  "ALT9tB": {
-    "defaultMessage": "Your are voting with {amount} sats"
   },
   "ASRK0S": {
     "defaultMessage": "This author has been muted"
