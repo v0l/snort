@@ -131,7 +131,7 @@ export default function SendSats(props: SendSatsProps) {
           console.debug("Generated new key for zap: ", randomKey);
           ev.pubkey = randomKey.publicKey;
           ev.id = "";
-          ev.tags.push(["anon"]);
+          ev.tags.push(["anon", ""]);
           await EventExt.sign(ev, randomKey.privateKey);
         }
         zap = ev;
