@@ -86,29 +86,29 @@ export function NoteCreator() {
           );
           return;
         }
-
-        if (sensitive) {
-          extraTags ??= [];
-          extraTags.push(["content-warning", sensitive]);
-        }
-        const kind = pollOptions ? EventKind.Polls : EventKind.TextNote;
-        if (pollOptions) {
-          extraTags ??= [];
-          extraTags.push(...pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
-        }
-        const hk = (eb: EventBuilder) => {
-          extraTags?.forEach(t => eb.tag(t));
-          eb.kind(kind);
-          return eb;
-        };
-        const ev = replyTo ? await publisher.reply(replyTo, note, hk) : await publisher.note(note, hk);
-        publisher.broadcast(ev);
-        dispatch(reset());
-        for (const oe of otherEvents) {
-          publisher.broadcast(oe);
-        }
-        dispatch(reset());
       }
+
+      if (sensitive) {
+        extraTags ??= [];
+        extraTags.push(["content-warning", sensitive]);
+      }
+      const kind = pollOptions ? EventKind.Polls : EventKind.TextNote;
+      if (pollOptions) {
+        extraTags ??= [];
+        extraTags.push(...pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
+      }
+      const hk = (eb: EventBuilder) => {
+        extraTags?.forEach(t => eb.tag(t));
+        eb.kind(kind);
+        return eb;
+      };
+      const ev = replyTo ? await publisher.reply(replyTo, note, hk) : await publisher.note(note, hk);
+      publisher.broadcast(ev);
+      dispatch(reset());
+      for (const oe of otherEvents) {
+        publisher.broadcast(oe);
+      }
+      dispatch(reset());
     }
   }
 
@@ -133,7 +133,7 @@ export function NoteCreator() {
         if (rx.header) {
           const link = `nostr:${encodeTLV(rx.header.id, NostrPrefix.Event, undefined, rx.header.kind)}`;
           dispatch(setNote(`${note ? `${note}\n` : ""}${link}`));
-          dispatch(setOtherEvents([rx.header]))
+          dispatch(setOtherEvents([...otherEvents, rx.header]));
         } else if (rx.url) {
           dispatch(setNote(`${note ? `${note}\n` : ""}${rx.url}`));
         } else if (rx?.error) {

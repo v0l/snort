@@ -3,6 +3,7 @@ import { EventKind } from "@snort/nostr";
 import { FileExtensionRegex, VoidCatHost } from "Const";
 import { EventPublisher } from "Feed/EventPublisher";
 import { UploadResult } from "Upload";
+import { magnetURIDecode } from "Util";
 
 /**
  * Upload file to void.cat
@@ -45,12 +46,19 @@ export default async function VoidCat(
 
       if (publisher) {
         const tags = [
-          ["u", resultUrl],
-          ["hash", rsp.file?.metadata?.digest ?? "", "sha256"],
-          ["type", rsp.file?.metadata?.mimeType ?? "application/octet-stream"],
+          ["url", resultUrl],
+          ["x", rsp.file?.metadata?.digest ?? ""],
+          ["m", rsp.file?.metadata?.mimeType ?? "application/octet-stream"],
         ];
+        if (rsp.file?.metadata?.size) {
+          tags.push(["size", rsp.file.metadata.size.toString()]);
+        }
         if (rsp.file?.metadata?.magnetLink) {
-          tags.push(["u", rsp.file.metadata.magnetLink]);
+          tags.push(["magnet", rsp.file.metadata.magnetLink]);
+          const parsedMagnet = magnetURIDecode(rsp.file.metadata.magnetLink);
+          if (parsedMagnet?.infoHash) {
+            tags.push(["i", parsedMagnet?.infoHash]);
+          }
         }
         ret.header = await publisher.generic(filename, EventKind.FileHeader, tags);
       }
