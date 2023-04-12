@@ -27,6 +27,8 @@ import type { RootState } from "State/Store";
 import { LNURL } from "LNURL";
 
 import messages from "./messages";
+import { ClipboardEventHandler, useState } from "react";
+import Spinner from "Icons/Spinner";
 
 interface NotePreviewProps {
   note: TaggedRawEvent;
@@ -58,6 +60,7 @@ export function NoteCreator() {
   const zapForward = useSelector((s: RootState) => s.noteCreator.zapForward);
   const sensitive = useSelector((s: RootState) => s.noteCreator.sensitive);
   const pollOptions = useSelector((s: RootState) => s.noteCreator.pollOptions);
+  const [uploadInProgress, setUploadInProgress] = useState(false);
   const dispatch = useDispatch();
 
   async function sendNote() {
@@ -100,17 +103,32 @@ export function NoteCreator() {
     try {
       const file = await openFile();
       if (file) {
+        uploadFile(file);
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        dispatch(setError(error?.message));
+      }
+    }
+  }
+
+  async function uploadFile(file: File) {
+    setUploadInProgress(true);
+    try {
+      if (file) {
         const rx = await uploader.upload(file, file.name);
         if (rx.url) {
           dispatch(setNote(`${note ? `${note}\n` : ""}${rx.url}`));
         } else if (rx?.error) {
           dispatch(setError(rx.error));
         }
+        setUploadInProgress(false);
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
         dispatch(setError(error?.message));
       }
+      setUploadInProgress(false);
     }
   }
 
@@ -205,6 +223,26 @@ export function NoteCreator() {
     }
   }
 
+  const handlePaste: ClipboardEventHandler<HTMLDivElement> = evt => {
+    if (evt.clipboardData) {
+      const clipboardItems = evt.clipboardData.items;
+      const items: DataTransferItem[] = Array.from(clipboardItems).filter(function (item: DataTransferItem) {
+        // Filter the image items only
+        return /^image\//.test(item.type);
+      });
+      if (items.length === 0) {
+        return;
+      }
+
+      const item = items[0];
+      const blob = item.getAsFile();
+      if (blob) {
+        const file = new File([blob], "filename.jpg", { type: "image/jpeg", lastModified: new Date().getTime() });
+        uploadFile(file);
+      }
+    }
+  };
+
   return (
     <>
       {show && (
@@ -212,7 +250,9 @@ export function NoteCreator() {
           {replyTo && <NotePreview note={replyTo} />}
           {preview && getPreviewNote()}
           {!preview && (
-            <div className={`flex note-creator${replyTo ? " note-reply" : ""}${pollOptions ? " poll" : ""}`}>
+            <div
+              onPaste={handlePaste}
+              className={`flex note-creator${replyTo ? " note-reply" : ""}${pollOptions ? " poll" : ""}`}>
               <div className="flex f-col f-grow">
                 <Textarea
                   autoFocus
@@ -242,6 +282,7 @@ export function NoteCreator() {
             </div>
           )}
           <div className="note-creator-actions">
+            {uploadInProgress && <Spinner />}
             <button className="secondary" type="button" onClick={() => dispatch(setShowAdvanced(!showAdvanced))}>
               <FormattedMessage defaultMessage="Advanced" />
             </button>
