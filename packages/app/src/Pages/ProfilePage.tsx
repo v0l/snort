@@ -91,7 +91,13 @@ function RelaysTab({ id }: { id: HexKey }) {
 
 function BookMarksTab({ id }: { id: HexKey }) {
   const bookmarks = useBookmarkFeed(id);
-  return <Bookmarks pubkey={id} bookmarks={bookmarks} related={bookmarks} />;
+  return (
+    <Bookmarks
+      pubkey={id}
+      bookmarks={bookmarks.filter(e => e.kind === EventKind.TextNote)}
+      related={bookmarks.filter(e => e.kind !== EventKind.TextNote)}
+    />
+  );
 }
 
 export default function ProfilePage() {

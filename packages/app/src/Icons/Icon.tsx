@@ -1,7 +1,10 @@
+import { MouseEventHandler } from "react";
+
 type Props = {
   name: string;
   size?: number;
   className?: string;
+  onClick?: MouseEventHandler<SVGSVGElement>;
 };
 
 const Icon = (props: Props) => {
@@ -9,7 +12,7 @@ const Icon = (props: Props) => {
   const href = "/icons.svg#" + props.name;
 
   return (
-    <svg width={size} height={size} className={props.className}>
+    <svg width={size} height={size} className={props.className} onClick={props.onClick}>
       <use href={href} />
     </svg>
   );

@@ -1,7 +1,7 @@
 import "./NoteCreator.css";
-import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { RawEvent, TaggedRawEvent } from "@snort/nostr";
+import { useDispatch, useSelector } from "react-redux";
+import { EventKind, TaggedRawEvent } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
@@ -11,6 +11,19 @@ import Modal from "Element/Modal";
 import ProfileImage from "Element/ProfileImage";
 import useFileUpload from "Upload";
 import Note from "Element/Note";
+import {
+  setShow,
+  setNote,
+  setError,
+  setActive,
+  setPreview,
+  setShowAdvanced,
+  setZapForward,
+  setSensitive,
+  reset,
+  setPollOptions,
+} from "State/NoteCreator";
+import type { RootState } from "State/Store";
 import { LNURL } from "LNURL";
 
 import messages from "./messages";
@@ -31,25 +44,21 @@ function NotePreview({ note }: NotePreviewProps) {
   );
 }
 
-export interface NoteCreatorProps {
-  show: boolean;
-  setShow: (s: boolean) => void;
-  replyTo?: TaggedRawEvent;
-  onSend?: () => void;
-  autoFocus: boolean;
-}
-
-export function NoteCreator(props: NoteCreatorProps) {
-  const { show, setShow, replyTo, onSend, autoFocus } = props;
+export function NoteCreator() {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
-  const [note, setNote] = useState("");
-  const [error, setError] = useState("");
-  const [active, setActive] = useState(false);
-  const [preview, setPreview] = useState<RawEvent>();
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const [zapForward, setZapForward] = useState("");
   const uploader = useFileUpload();
+  const note = useSelector((s: RootState) => s.noteCreator.note);
+  const show = useSelector((s: RootState) => s.noteCreator.show);
+  const error = useSelector((s: RootState) => s.noteCreator.error);
+  const active = useSelector((s: RootState) => s.noteCreator.active);
+  const preview = useSelector((s: RootState) => s.noteCreator.preview);
+  const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
+  const showAdvanced = useSelector((s: RootState) => s.noteCreator.showAdvanced);
+  const zapForward = useSelector((s: RootState) => s.noteCreator.zapForward);
+  const sensitive = useSelector((s: RootState) => s.noteCreator.sensitive);
+  const pollOptions = useSelector((s: RootState) => s.noteCreator.pollOptions);
+  const dispatch = useDispatch();
 
   async function sendNote() {
     if (note) {
@@ -60,23 +69,30 @@ export function NoteCreator(props: NoteCreatorProps) {
           await svc.load();
           extraTags = [svc.getZapTag()];
         } catch {
-          setError(
-            formatMessage({
-              defaultMessage: "Invalid LNURL",
-            })
+          dispatch(
+            setError(
+              formatMessage({
+                defaultMessage: "Invalid LNURL",
+              })
+            )
           );
           return;
         }
       }
-      const ev = replyTo ? await publisher.reply(replyTo, note, extraTags) : await publisher.note(note, extraTags);
-      console.debug("Sending note: ", ev);
-      publisher.broadcast(ev);
-      setNote("");
-      setShow(false);
-      if (typeof onSend === "function") {
-        onSend();
+      if (sensitive) {
+        extraTags ??= [];
+        extraTags.push(["content-warning", sensitive]);
       }
-      setActive(false);
+      const kind = pollOptions ? EventKind.Polls : EventKind.TextNote;
+      if (pollOptions) {
+        extraTags ??= [];
+        extraTags.push(...pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
+      }
+      const ev = replyTo
+        ? await publisher.reply(replyTo, note, extraTags, kind)
+        : await publisher.note(note, extraTags, kind);
+      publisher.broadcast(ev);
+      dispatch(reset());
     }
   }
 
@@ -86,34 +102,30 @@ export function NoteCreator(props: NoteCreatorProps) {
       if (file) {
         const rx = await uploader.upload(file, file.name);
         if (rx.url) {
-          setNote(n => `${n ? `${n}\n` : ""}${rx.url}`);
+          dispatch(setNote(`${note ? `${note}\n` : ""}${rx.url}`));
         } else if (rx?.error) {
-          setError(rx.error);
+          dispatch(setError(rx.error));
         }
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setError(error?.message);
+        dispatch(setError(error?.message));
       }
     }
   }
 
   function onChange(ev: React.ChangeEvent<HTMLTextAreaElement>) {
     const { value } = ev.target;
-    setNote(value);
+    dispatch(setNote(value));
     if (value) {
-      setActive(true);
+      dispatch(setActive(true));
     } else {
-      setActive(false);
+      dispatch(setActive(false));
     }
   }
 
   function cancel() {
-    setShow(false);
-    setNote("");
-    setShowAdvanced(false);
-    setPreview(undefined);
-    setZapForward("");
+    dispatch(reset());
   }
 
   function onSubmit(ev: React.MouseEvent<HTMLButtonElement>) {
@@ -123,11 +135,11 @@ export function NoteCreator(props: NoteCreatorProps) {
 
   async function loadPreview() {
     if (preview) {
-      setPreview(undefined);
+      dispatch(setPreview(undefined));
     } else {
       const tmpNote = await publisher.note(note);
       if (tmpNote) {
-        setPreview(tmpNote);
+        dispatch(setPreview(tmpNote));
       }
     }
   }
@@ -147,31 +159,90 @@ export function NoteCreator(props: NoteCreatorProps) {
     }
   }
 
+  function renderPollOptions() {
+    if (pollOptions) {
+      return (
+        <>
+          <h4>
+            <FormattedMessage defaultMessage="Poll Options" />
+          </h4>
+          {pollOptions?.map((a, i) => (
+            <div className="form-group w-max" key={`po-${i}`}>
+              <div>
+                <FormattedMessage defaultMessage="Option: {n}" values={{ n: i + 1 }} />
+              </div>
+              <div>
+                <input type="text" value={a} onChange={e => changePollOption(i, e.target.value)} />
+                {i > 1 && (
+                  <button onClick={() => removePollOption(i)} className="ml5">
+                    <Icon name="close" size={14} />
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+          <button onClick={() => dispatch(setPollOptions([...pollOptions, ""]))}>
+            <Icon name="plus" size={14} />
+          </button>
+        </>
+      );
+    }
+  }
+
+  function changePollOption(i: number, v: string) {
+    if (pollOptions) {
+      const copy = [...pollOptions];
+      copy[i] = v;
+      dispatch(setPollOptions(copy));
+    }
+  }
+
+  function removePollOption(i: number) {
+    if (pollOptions) {
+      const copy = [...pollOptions];
+      copy.splice(i, 1);
+      dispatch(setPollOptions(copy));
+    }
+  }
+
   return (
     <>
       {show && (
-        <Modal className="note-creator-modal" onClose={() => setShow(false)}>
+        <Modal className="note-creator-modal" onClose={() => dispatch(setShow(false))}>
           {replyTo && <NotePreview note={replyTo} />}
           {preview && getPreviewNote()}
           {!preview && (
-            <div className={`flex note-creator ${replyTo ? "note-reply" : ""}`}>
-              <div className="flex f-col mr10 f-grow">
+            <div className={`flex note-creator${replyTo ? " note-reply" : ""}${pollOptions ? " poll" : ""}`}>
+              <div className="flex f-col f-grow">
                 <Textarea
-                  autoFocus={autoFocus}
+                  autoFocus
                   className={`textarea ${active ? "textarea--focused" : ""}`}
                   onChange={onChange}
                   value={note}
-                  onFocus={() => setActive(true)}
+                  onFocus={() => dispatch(setActive(true))}
+                  onKeyDown={e => {
+                    if (e.key === "Enter" && e.metaKey) {
+                      sendNote().catch(console.warn);
+                    }
+                  }}
                 />
-                <button type="button" className="attachment" onClick={attachFile}>
-                  <Icon name="attachment" />
-                </button>
+                {renderPollOptions()}
+                <div className="insert">
+                  {pollOptions === undefined && !replyTo && (
+                    <button type="button" onClick={() => dispatch(setPollOptions(["A", "B"]))}>
+                      <Icon name="pie-chart" />
+                    </button>
+                  )}
+                  <button type="button" onClick={attachFile}>
+                    <Icon name="attachment" />
+                  </button>
+                </div>
               </div>
               {error && <span className="error">{error}</span>}
             </div>
           )}
           <div className="note-creator-actions">
-            <button className="secondary" type="button" onClick={() => setShowAdvanced(s => !s)}>
+            <button className="secondary" type="button" onClick={() => dispatch(setShowAdvanced(!showAdvanced))}>
               <FormattedMessage defaultMessage="Advanced" />
             </button>
             <button className="secondary" type="button" onClick={cancel}>
@@ -192,6 +263,9 @@ export function NoteCreator(props: NoteCreatorProps) {
               <p>
                 <FormattedMessage defaultMessage="All zaps sent to this note will be received by the following LNURL" />
               </p>
+              <b className="warning">
+                <FormattedMessage defaultMessage="Not all clients support this yet" />
+              </b>
               <input
                 type="text"
                 className="w-max"
@@ -199,8 +273,30 @@ export function NoteCreator(props: NoteCreatorProps) {
                   defaultMessage: "LNURL to forward zaps to",
                 })}
                 value={zapForward}
-                onChange={e => setZapForward(e.target.value)}
+                onChange={e => dispatch(setZapForward(e.target.value))}
               />
+              <h4>
+                <FormattedMessage defaultMessage="Sensitive Content" />
+              </h4>
+              <p>
+                <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." />
+              </p>
+              <b className="warning">
+                <FormattedMessage defaultMessage="Not all clients support this yet" />
+              </b>
+              <div className="flex">
+                <input
+                  className="w-max"
+                  type="text"
+                  value={sensitive}
+                  onChange={e => dispatch(setSensitive(e.target.value))}
+                  maxLength={50}
+                  minLength={1}
+                  placeholder={formatMessage({
+                    defaultMessage: "Reason",
+                  })}
+                />
+              </div>
             </div>
           )}
         </Modal>

@@ -19,19 +19,22 @@ Snort supports the following NIP's:
 - [ ] NIP-13: Proof of Work
 - [ ] NIP-14: Subject tag in text events
 - [x] NIP-15: End of Stored Events Notice
+- [x] NIP-18: Reposts
 - [x] NIP-19: bech32-encoded entities
 - [x] NIP-20: Command Results
 - [x] NIP-21: `nostr:` Protocol handler (`web+nostr`)
 - [x] NIP-25: Reactions
 - [x] NIP-26: Delegated Event Signing (Display delegated signings only)
+- [x] NIP-27: Text note references (Parsing only)
 - [ ] NIP-28: Public Chat
-- [ ] NIP-36: Sensitive Content
+- [x] NIP-36: Sensitive Content
 - [ ] NIP-40: Expiration Timestamp
-- [ ] NIP-42: Authentication of clients to relays
+- [x] NIP-42: Authentication of clients to relays
 - [x] NIP-50: Search
 - [x] NIP-51: Lists
 - [x] NIP-58: Badges
 - [x] NIP-65: Relay List Metadata
+- [ ] NIP-78: App specific data
 
 ### Running
 

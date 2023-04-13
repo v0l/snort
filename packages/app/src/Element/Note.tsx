@@ -1,5 +1,5 @@
 import "./Note.css";
-import React, { useCallback, useMemo, useState, useLayoutEffect, ReactNode } from "react";
+import React, { useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useInView } from "react-intersection-observer";
@@ -23,10 +23,12 @@ import {
 } from "Util";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
+import Reveal from "Element/Reveal";
 import useModeration from "Hooks/useModeration";
 import { setPinned, setBookmarked } from "State/Login";
 import type { RootState } from "State/Store";
 import { UserCache } from "Cache/UserCache";
+import Poll from "Element/Poll";
 
 import messages from "./messages";
 import { EventExt } from "System/EventExt";
@@ -152,7 +154,7 @@ export default function Note(props: NoteProps) {
     }
   }
 
-  const transformBody = useCallback(() => {
+  const transformBody = () => {
     const body = ev?.content ?? "";
     if (deletions?.length > 0) {
       return (
@@ -161,8 +163,32 @@ export default function Note(props: NoteProps) {
         </b>
       );
     }
+    const contentWarning = ev.tags.find(a => a[0] === "content-warning");
+    if (contentWarning) {
+      return (
+        <Reveal
+          message={
+            <>
+              <FormattedMessage defaultMessage="This note has been marked as sensitive, click here to reveal" />
+              {contentWarning[1] && (
+                <>
+                  <br />
+                  <FormattedMessage
+                    defaultMessage="Reason: {reason}"
+                    values={{
+                      reason: contentWarning[1],
+                    }}
+                  />
+                </>
+              )}
+            </>
+          }>
+          <Text content={body} tags={ev.tags} creator={ev.pubkey} />
+        </Reveal>
+      );
+    }
     return <Text content={body} tags={ev.tags} creator={ev.pubkey} />;
-  }, [ev]);
+  };
 
   useLayoutEffect(() => {
     if (entry && inView && extendable === false) {
@@ -245,7 +271,8 @@ export default function Note(props: NoteProps) {
     );
   }
 
-  if (ev.kind !== EventKind.TextNote) {
+  const canRenderAsTextNote = [EventKind.TextNote, EventKind.Polls];
+  if (!canRenderAsTextNote.includes(ev.kind)) {
     return (
       <>
         <h4>
@@ -273,6 +300,12 @@ export default function Note(props: NoteProps) {
         </p>
       );
     }
+  }
+
+  function pollOptions() {
+    if (ev.kind !== EventKind.Polls) return;
+
+    return <Poll ev={ev} zaps={zaps} />;
   }
 
   function content() {
@@ -307,6 +340,7 @@ export default function Note(props: NoteProps) {
         <div className="body" onClick={e => goToEvent(e, ev, true)}>
           {transformBody()}
           {translation()}
+          {pollOptions()}
           {options.showReactionsLink && (
             <div className="reactions-link" onClick={() => setShowReactions(true)}>
               <FormattedMessage {...messages.ReactionsLink} values={{ n: totalReactions }} />

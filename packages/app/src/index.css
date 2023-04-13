@@ -4,14 +4,15 @@
   --font-secondary-color: #a7a7a7;
   --font-tertiary-color: #a3a3a3;
   --border-color: rgba(163, 163, 163, 0.3);
-  --font-size: 16px;
-  --font-size-small: 14px;
-  --font-size-tiny: 12px;
+  --font-size: 15px;
+  --font-size-small: 13px;
+  --font-size-tiny: 11px;
   --modal-bg-color: rgba(0, 0, 0, 0.8);
   --note-bg: #0c0c0c;
   --highlight: #8b5cf6;
   --error: #ff6053;
   --success: #2ad544;
+  --warning: #ff8800;
 
   --gray-superlight: #eee;
   --gray-light: #999;
@@ -478,6 +479,10 @@ body.scroll-lock {
 
 .error {
   color: var(--error);
+}
+
+.warning {
+  color: var(--warning);
 }
 
 .bg-error {

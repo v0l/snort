@@ -2,4 +2,4 @@ project_id: snort
 preserve_hierarchy: true
 files:
   - source: /packages/app/src/translations/en.json
-    translation: /packages/app/src/translations/%two_letters_code%.json
+    translation: /packages/app/src/translations/%locale_with_underscore%.json

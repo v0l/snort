@@ -18,6 +18,7 @@ import { ParsedZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { RootState } from "State/Store";
 import { UserPreferences, setPinned, setBookmarked } from "State/Login";
+import { setReplyTo, setShow, reset } from "State/NoteCreator";
 import useModeration from "Hooks/useModeration";
 import { SnortPubKey, TranslateHost } from "Const";
 import { LNURL } from "LNURL";
@@ -99,7 +100,9 @@ export default function NoteFooter(props: NoteFooterProps) {
   const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
   const author = useUserProfile(ev.pubkey);
   const publisher = useEventPublisher();
-  const [reply, setReply] = useState(false);
+  const showNoteCreatorModal = useSelector((s: RootState) => s.noteCreator.show);
+  const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
+  const willRenderNoteCreator = showNoteCreatorModal && replyTo?.id === ev.id;
   const [tip, setTip] = useState(false);
   const [zapping, setZapping] = useState(false);
   const walletState = useWallet();
@@ -402,13 +405,22 @@ export default function NoteFooter(props: NoteFooterProps) {
     );
   }
 
+  const handleReplyButtonClick = () => {
+    if (replyTo?.id !== ev.id) {
+      dispatch(reset());
+    }
+
+    dispatch(setReplyTo(ev));
+    dispatch(setShow(!showNoteCreatorModal));
+  };
+
   return (
     <>
       <div className="footer">
         <div className="footer-reactions">
           {tipButton()}
           {reactionIcons()}
-          <div className={`reaction-pill ${reply ? "reacted" : ""}`} onClick={() => setReply(s => !s)}>
+          <div className={`reaction-pill ${showNoteCreatorModal ? "reacted" : ""}`} onClick={handleReplyButtonClick}>
             <Icon name="reply" size={17} />
           </div>
           <Menu
@@ -421,7 +433,7 @@ export default function NoteFooter(props: NoteFooterProps) {
             {menuItems()}
           </Menu>
         </div>
-        <NoteCreator autoFocus={true} replyTo={ev} onSend={() => setReply(false)} show={reply} setShow={setReply} />
+        {willRenderNoteCreator && <NoteCreator />}
         <Reactions
           show={showReactions}
           setShow={setShowReactions}

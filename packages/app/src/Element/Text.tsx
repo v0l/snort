@@ -1,18 +1,17 @@
 import "./Text.css";
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { visit, SKIP } from "unist-util-visit";
 import * as unist from "unist";
 import { HexKey, NostrPrefix } from "@snort/nostr";
 
-import { MentionRegex, InvoiceRegex, HashtagRegex, MagnetRegex } from "Const";
-import { eventLink, hexToBech32, magnetURIDecode, splitByUrl, unwrap } from "Util";
+import { MentionRegex, InvoiceRegex, HashtagRegex } from "Const";
+import { eventLink, hexToBech32, splitByUrl, unwrap } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 import Mention from "Element/Mention";
 import HyperText from "Element/HyperText";
-import MagnetLink from "Element/MagnetLink";
 
 export type Fragment = string | React.ReactNode;
 
@@ -36,7 +35,7 @@ export default function Text({ content, tags, creator, disableMedia }: TextProps
       .map(f => {
         if (typeof f === "string") {
           return splitByUrl(f).map(a => {
-            if (a.match(/^(?:https?|(?:web\+)?nostr):/i)) {
+            if (a.match(/^(?:https?|(?:web\+)?nostr|magnet):/i)) {
               if (disableMedia ?? false) {
                 return (
                   <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
@@ -44,26 +43,7 @@ export default function Text({ content, tags, creator, disableMedia }: TextProps
                   </a>
                 );
               }
-              return <HyperText key={a} link={a} creator={creator} />;
-            }
-            return a;
-          });
-        }
-        return f;
-      })
-      .flat();
-  }
-
-  function extractMagnetLinks(fragments: Fragment[]) {
-    return fragments
-      .map(f => {
-        if (typeof f === "string") {
-          return f.split(MagnetRegex).map(a => {
-            if (a.startsWith("magnet:")) {
-              const parsed = magnetURIDecode(a);
-              if (parsed) {
-                return <MagnetLink magnet={parsed} />;
-              }
+              return <HyperText link={a} creator={creator} />;
             }
             return a;
           });
@@ -168,48 +148,45 @@ export default function Text({ content, tags, creator, disableMedia }: TextProps
     fragments = extractLinks(fragments);
     fragments = extractInvoices(fragments);
     fragments = extractHashtags(fragments);
-    fragments = extractMagnetLinks(fragments);
     return fragments;
   }
 
-  const components = useMemo(() => {
-    return {
-      p: (x: { children?: React.ReactNode[] }) => transformParagraph({ body: x.children ?? [], tags }),
-      a: (x: { href?: string }) => <HyperText link={x.href ?? ""} creator={creator} />,
-      li: (x: { children?: Fragment[] }) => transformLi({ body: x.children ?? [], tags }),
-    };
-  }, [content]);
+  const components = {
+    p: (x: { children?: React.ReactNode[] }) => transformParagraph({ body: x.children ?? [], tags }),
+    a: (x: { href?: string }) => <HyperText link={x.href ?? ""} creator={creator} />,
+    li: (x: { children?: Fragment[] }) => transformLi({ body: x.children ?? [], tags }),
+  };
 
   interface Node extends unist.Node<unist.Data> {
     value: string;
   }
 
-  const disableMarkdownLinks = useCallback(
-    () => (tree: Node) => {
-      visit(tree, (node, index, parent) => {
-        if (
-          parent &&
-          typeof index === "number" &&
-          (node.type === "link" ||
-            node.type === "linkReference" ||
-            node.type === "image" ||
-            node.type === "imageReference" ||
-            node.type === "definition")
-        ) {
-          node.type = "text";
-          const position = unwrap(node.position);
-          node.value = content.slice(position.start.offset, position.end.offset).replace(/\)$/, " )");
-          return SKIP;
-        }
-      });
-    },
-    [content]
-  );
-  return (
-    <div dir="auto">
+  const disableMarkdownLinks = () => (tree: Node) => {
+    visit(tree, (node, index, parent) => {
+      if (
+        parent &&
+        typeof index === "number" &&
+        (node.type === "link" ||
+          node.type === "linkReference" ||
+          node.type === "image" ||
+          node.type === "imageReference" ||
+          node.type === "definition")
+      ) {
+        node.type = "text";
+        const position = unwrap(node.position);
+        node.value = content.slice(position.start.offset, position.end.offset).replace(/\)$/, " )");
+        return SKIP;
+      }
+    });
+  };
+
+  const element = useMemo(() => {
+    return (
       <ReactMarkdown className="text" components={components} remarkPlugins={[disableMarkdownLinks]}>
         {content}
       </ReactMarkdown>
-    </div>
-  );
+    );
+  }, [content]);
+
+  return <div dir="auto">{element}</div>;
 }

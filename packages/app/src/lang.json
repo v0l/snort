@@ -30,6 +30,9 @@
   "/n5KSF": {
     "defaultMessage": "{n} ms"
   },
+  "0Azlrb": {
+    "defaultMessage": "Manage"
+  },
   "0BUTMv": {
     "defaultMessage": "Search..."
   },
@@ -86,6 +89,9 @@
   },
   "3gOsZq": {
     "defaultMessage": "Translators"
+  },
+  "3qnJlS": {
+    "defaultMessage": "You are voting with {amount} sats"
   },
   "3t3kok": {
     "defaultMessage": "{n,plural,=1{{n} new note} other{{n} new notes}}"
@@ -199,6 +205,9 @@
   "Adk34V": {
     "defaultMessage": "Setup your Profile"
   },
+  "AkCxS/": {
+    "defaultMessage": "Reason"
+  },
   "AnLrRC": {
     "defaultMessage": "Non-Zap",
     "description": "Non-Zap, Regular LN payment"
@@ -217,6 +226,9 @@
   },
   "BOr9z/": {
     "defaultMessage": "Snort is an open source project built by passionate people in their free time"
+  },
+  "BWpuKl": {
+    "defaultMessage": "Update"
   },
   "BcGMo+": {
     "defaultMessage": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
@@ -372,6 +384,9 @@
   "KAhAcM": {
     "defaultMessage": "Enter LNDHub config"
   },
+  "KLo3SP": {
+    "defaultMessage": "Reason: {reason}"
+  },
   "KQvWvD": {
     "defaultMessage": "Deleted"
   },
@@ -427,6 +442,9 @@
   },
   "NdOYJJ": {
     "defaultMessage": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!"
+  },
+  "NepkXH": {
+    "defaultMessage": "Can't vote with {amount} sats, please set a different default zap amount"
   },
   "NfNk2V": {
     "defaultMessage": "Your private key"
@@ -505,6 +523,9 @@
   "Rs4kCE": {
     "defaultMessage": "Bookmark"
   },
+  "SOqbe9": {
+    "defaultMessage": "Update Lightning Address"
+  },
   "Sjo1P4": {
     "defaultMessage": "Custom"
   },
@@ -517,6 +538,9 @@
   },
   "UQ3pOC": {
     "defaultMessage": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step."
+  },
+  "UUPFlt": {
+    "defaultMessage": "Users must accept the content warning to show the content of your note."
   },
   "Up5U7K": {
     "defaultMessage": "Block"
@@ -591,8 +615,17 @@
   "a5UPxh": {
     "defaultMessage": "Fund developers and platforms providing NIP-05 verification services"
   },
+  "aJEO/4": {
+    "defaultMessage": "Can't create vote, maybe you're not logged in?"
+  },
   "aWpBzj": {
     "defaultMessage": "Show more"
+  },
+  "b5vAk0": {
+    "defaultMessage": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address"
+  },
+  "bQdA2k": {
+    "defaultMessage": "Sensitive Content"
   },
   "brAXSu": {
     "defaultMessage": "Pick a username"
@@ -648,6 +681,9 @@
   "eR3YIn": {
     "defaultMessage": "Posts"
   },
+  "fOksnD": {
+    "defaultMessage": "Can't vote because LNURL service does not support zaps"
+  },
   "fWZYP5": {
     "defaultMessage": "Pinned"
   },
@@ -663,6 +699,9 @@
   "g5pX+a": {
     "defaultMessage": "About"
   },
+  "g985Wp": {
+    "defaultMessage": "Failed to send vote"
+  },
   "gBdUXk": {
     "defaultMessage": "Save your keys!"
   },
@@ -671,6 +710,9 @@
   },
   "gDzDRs": {
     "defaultMessage": "Emoji to send when reactiong to a note"
+  },
+  "gXgY3+": {
+    "defaultMessage": "Not all clients support this yet"
   },
   "gjBiyj": {
     "defaultMessage": "Loading..."
@@ -786,6 +828,9 @@
   },
   "mKhgP9": {
     "defaultMessage": "{n,plural,=0{} =1{zapped} other{zapped}}"
+  },
+  "mfe8RW": {
+    "defaultMessage": "Option: {n}"
   },
   "n1xHAH": {
     "defaultMessage": "Get an identifier (optional)"
@@ -921,6 +966,9 @@
   "vZ4quW": {
     "defaultMessage": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."
   },
+  "vhlWFg": {
+    "defaultMessage": "Poll Options"
+  },
   "vrTOHJ": {
     "defaultMessage": "{amount} sats"
   },
@@ -946,6 +994,9 @@
   },
   "wvFw6Y": {
     "defaultMessage": "Hey, it looks like you dont have a NIP-05 handle yet, you should get one! Check out {link}"
+  },
+  "x/q8d5": {
+    "defaultMessage": "This note has been marked as sensitive, click here to reveal"
   },
   "x82IOl": {
     "defaultMessage": "Mute"
@@ -975,6 +1026,9 @@
   },
   "y1Z3or": {
     "defaultMessage": "Language"
+  },
+  "yCLnBC": {
+    "defaultMessage": "LNURL or Lightning Address"
   },
   "yCmnnm": {
     "defaultMessage": "Read global from",

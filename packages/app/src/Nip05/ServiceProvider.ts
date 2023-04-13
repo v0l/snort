@@ -96,7 +96,7 @@ export class ServiceProvider {
   protected async getJson<T>(
     path: string,
     method?: "GET" | string,
-    body?: { [key: string]: string },
+    body?: unknown,
     headers?: { [key: string]: string }
   ): Promise<T | ServiceError> {
     try {
