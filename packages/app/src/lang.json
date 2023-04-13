@@ -30,6 +30,9 @@
   "/n5KSF": {
     "defaultMessage": "{n} ms"
   },
+  "0Azlrb": {
+    "defaultMessage": "Manage"
+  },
   "0BUTMv": {
     "defaultMessage": "Search..."
   },
@@ -223,6 +226,9 @@
   },
   "BOr9z/": {
     "defaultMessage": "Snort is an open source project built by passionate people in their free time"
+  },
+  "BWpuKl": {
+    "defaultMessage": "Update"
   },
   "BcGMo+": {
     "defaultMessage": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
@@ -517,6 +523,9 @@
   "Rs4kCE": {
     "defaultMessage": "Bookmark"
   },
+  "SOqbe9": {
+    "defaultMessage": "Update Lightning Address"
+  },
   "Sjo1P4": {
     "defaultMessage": "Custom"
   },
@@ -611,6 +620,9 @@
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
+  },
+  "b5vAk0": {
+    "defaultMessage": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address"
   },
   "bQdA2k": {
     "defaultMessage": "Sensitive Content"
@@ -1014,6 +1026,9 @@
   },
   "y1Z3or": {
     "defaultMessage": "Language"
+  },
+  "yCLnBC": {
+    "defaultMessage": "LNURL or Lightning Address"
   },
   "yCmnnm": {
     "defaultMessage": "Read global from",
