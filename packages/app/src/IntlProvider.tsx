@@ -14,6 +14,8 @@ import arMessages from "translations/ar_SA.json";
 import itMessages from "translations/it_IT.json";
 import deMessages from "translations/de_DE.json";
 import ruMessages from "translations/ru_RU.json";
+import svMessages from "translations/sv_SE.json";
+import hrMessages from "translations/hr_HR.json";
 
 const DefaultLocale = "en-US";
 
@@ -55,6 +57,12 @@ const getMessages = (locale: string) => {
       case "ru-RU":
       case "ru":
         return ruMessages;
+      case "sv-SE":
+      case "sv":
+        return svMessages;
+      case "hr-HR":
+      case "hr":
+        return hrMessages;
       case DefaultLocale:
       case "en":
         return enMessages;
