@@ -1,10 +1,12 @@
+import { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
+import { HexKey } from "@snort/nostr";
+
 import { ApiHost, KieranPubKey, SnortPubKey } from "Const";
 import ProfilePreview from "Element/ProfilePreview";
 import ZapButton from "Element/ZapButton";
-import { HexKey } from "@snort/nostr";
-import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
 import { bech32ToHex } from "Util";
+import SnortApi, { RevenueSplit, RevenueToday } from "SnortApi";
 
 const Developers = [
   bech32ToHex(KieranPubKey), // kieran
@@ -42,29 +44,16 @@ const Translators = [
 
 export const DonateLNURL = "donate@snort.social";
 
-interface Splits {
-  pubKey: string;
-  split: number;
-}
-
-interface TotalToday {
-  donations: number;
-  nip5: number;
-}
-
 const DonatePage = () => {
-  const [splits, setSplits] = useState<Splits[]>([]);
-  const [today, setSumToday] = useState<TotalToday>();
+  const [splits, setSplits] = useState<RevenueSplit[]>([]);
+  const [today, setSumToday] = useState<RevenueToday>();
+  const api = new SnortApi(ApiHost);
 
   async function loadData() {
-    const rsp = await fetch(`${ApiHost}/api/v1/revenue/splits`);
-    if (rsp.ok) {
-      setSplits(await rsp.json());
-    }
-    const rsp2 = await fetch(`${ApiHost}/api/v1/revenue/today`);
-    if (rsp2.ok) {
-      setSumToday(await rsp2.json());
-    }
+    const rsp = await api.revenueSplits();
+    setSplits(rsp);
+    const rsp2 = await api.revenueToday();
+    setSumToday(rsp2);
   }
 
   useEffect(() => {

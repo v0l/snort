@@ -354,7 +354,7 @@ export default function useEventPublisher() {
           return "<CANT DECRYPT>";
         }
         try {
-          const otherPubKey = note.pubkey === pubKey ? unwrap(note.tags.filter(a => a[0] === "p")[0][1]) : note.pubkey;
+          const otherPubKey = note.pubkey === pubKey ? unwrap(note.tags.find(a => a[0] === "p")?.[1]) : note.pubkey;
           if (hasNip07 && !privKey) {
             return await barrierNip07(() => window.nostr.nip04.decrypt(otherPubKey, note.content));
           } else if (privKey) {

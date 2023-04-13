@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
+import { useNavigate } from "react-router-dom";
 
 import { ApiHost } from "Const";
 import Logo from "Element/Logo";
@@ -8,11 +9,9 @@ import AsyncButton from "Element/AsyncButton";
 import FollowListBase from "Element/FollowListBase";
 import { RootState } from "State/Store";
 import { bech32ToHex } from "Util";
-import { useNavigate } from "react-router-dom";
+import SnortApi from "SnortApi";
 
 import messages from "./messages";
-
-const TwitterFollowsApi = `${ApiHost}/api/v1/twitter/follows-for-nostr`;
 
 export default function ImportFollows() {
   const navigate = useNavigate();
@@ -21,6 +20,7 @@ export default function ImportFollows() {
   const [twitterUsername, setTwitterUsername] = useState<string>("");
   const [follows, setFollows] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
+  const api = new SnortApi(ApiHost);
 
   const sortedTwitterFollows = useMemo(() => {
     return follows.map(a => bech32ToHex(a)).sort(a => (currentFollows.includes(a) ? 1 : -1));
@@ -30,22 +30,19 @@ export default function ImportFollows() {
     setFollows([]);
     setError("");
     try {
-      const rsp = await fetch(`${TwitterFollowsApi}?username=${twitterUsername}`);
-      const data = await rsp.json();
-      if (rsp.ok) {
-        if (Array.isArray(data) && data.length === 0) {
-          setError(formatMessage(messages.NoUsersFound, { twitterUsername }));
-        } else {
-          setFollows(data);
-        }
-      } else if ("error" in data) {
-        setError(data.error);
+      const rsp = await api.twitterImport(twitterUsername);
+      if (Array.isArray(rsp) && rsp.length === 0) {
+        setError(formatMessage(messages.NoUsersFound, { twitterUsername }));
       } else {
-        setError(formatMessage(messages.FailedToLoad));
+        setFollows(rsp);
       }
     } catch (e) {
       console.warn(e);
-      setError(formatMessage(messages.FailedToLoad));
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError(formatMessage(messages.FailedToLoad));
+      }
     }
   }
 
