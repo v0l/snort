@@ -6,7 +6,7 @@ import Relay from "Pages/settings/Relays";
 import Preferences from "Pages/settings/Preferences";
 import RelayInfo from "Pages/settings/RelayInfo";
 import { WalletSettingsRoutes } from "Pages/settings/WalletSettings";
-import Nip5ManagePage from "Pages/settings/ManageNip5";
+import { ManageHandleRoutes } from "Pages/settings/handle";
 
 import messages from "./messages";
 
@@ -44,9 +44,6 @@ export const SettingsRoutes: RouteObject[] = [
     path: "preferences",
     element: <Preferences />,
   },
-  {
-    path: "nip5",
-    element: <Nip5ManagePage />,
-  },
+  ...ManageHandleRoutes,
   ...WalletSettingsRoutes,
 ];

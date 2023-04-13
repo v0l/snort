@@ -36,7 +36,7 @@ export function parseZap(zapReceipt: TaggedRawEvent, refNote?: TaggedRawEvent): 
         throw new Error("deprecated zap format");
       }
       const isForwardedZap = refNote?.tags.some(a => a[0] === "zap") ?? false;
-      const anonZap = findTag(zapRequest, "anon");
+      const anonZap = zapRequest.tags.find(a => a[0] === "anon");
       const metaHash = sha256(innerZapJson);
       const pollOpt = zapRequest.tags.find(a => a[0] === "poll_option")?.[1];
       const ret: ParsedZap = {

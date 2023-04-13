@@ -8,6 +8,18 @@ export interface ManageHandle {
   domain: string;
   pubkey: string;
   created: Date;
+  lnAddress?: string;
+}
+
+export enum ForwardType {
+  Redirect = 0,
+  ProxyDirect = 1,
+  ProxyTrusted = 2,
+}
+
+export interface PatchHandle {
+  lnAddress?: string;
+  forwardType?: ForwardType;
 }
 
 export default class SnortServiceProvider extends ServiceProvider {
@@ -23,13 +35,17 @@ export default class SnortServiceProvider extends ServiceProvider {
   }
 
   async transfer(id: string, to: string) {
-    return this.getJsonAuthd<object>(`/${id}?to=${to}`, "PATCH");
+    return this.getJsonAuthd<object>(`/${id}/transfer?to=${to}`, "PATCH");
+  }
+
+  async patch(id: string, obj: PatchHandle) {
+    return this.getJsonAuthd<object>(`/${id}`, "PATCH", obj);
   }
 
   async getJsonAuthd<T>(
     path: string,
     method?: "GET" | string,
-    body?: { [key: string]: string },
+    body?: unknown,
     headers?: { [key: string]: string }
   ): Promise<T | ServiceError> {
     const auth = await this.#publisher.generic("", EventKind.HttpAuthentication, [

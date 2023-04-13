@@ -1,7 +1,5 @@
 .nip05 {
   color: var(--font-secondary-color);
-  justify-content: flex-start;
-  align-items: center;
   font-weight: normal;
 }
 
@@ -51,11 +49,5 @@
 @media (max-width: 420px) {
   .zap .pfp .display-name {
     align-items: center;
-  }
-  .nip05 .nick {
-    display: none;
-  }
-  .nip05 .domain {
-    display: none;
   }
 }

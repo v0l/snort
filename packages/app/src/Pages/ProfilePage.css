@@ -72,11 +72,6 @@
   line-height: 23px;
 }
 
-.profile .nip05 {
-  display: flex;
-  font-size: 16px;
-}
-
 .profile-wrapper > .avatar-wrapper {
   z-index: 1;
 }

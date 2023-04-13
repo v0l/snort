@@ -40,13 +40,15 @@ const PreferencesPage = () => {
               )
             }
             style={{ textTransform: "capitalize" }}>
-            {["en", "ja", "es", "hu", "zh", "fr", "ar", "it", "id"].sort().map(a => (
-              <option value={a}>
-                {new Intl.DisplayNames([a], {
-                  type: "language",
-                }).of(a)}
-              </option>
-            ))}
+            {["en", "ja", "es", "hu", "zh-CN", "zh-TW", "fr", "ar", "it", "id", "de", "ru", "sv", "hr"]
+              .sort()
+              .map(a => (
+                <option value={a}>
+                  {new Intl.DisplayNames([a], {
+                    type: "language",
+                  }).of(a)}
+                </option>
+              ))}
           </select>
         </div>
       </div>
