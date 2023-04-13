@@ -1,11 +1,14 @@
 import { ManageHandle } from "Nip05/SnortServiceProvider";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import LNForwardAddress from "./LNAddress";
 import TransferHandle from "./TransferHandle";
 
 export default function ManageHandleIndex() {
   const location = useLocation();
   const handle = location.state as ManageHandle;
+  if (!handle) {
+    return <Navigate to="/settings/handle" />;
+  }
   return (
     <>
       <h3 className="nip05">
