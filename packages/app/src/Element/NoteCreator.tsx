@@ -112,7 +112,7 @@ export function NoteCreator() {
     }
   }
 
-  async function uploadFile(file: File) {
+  async function uploadFile(file: File | Blob) {
     setUploadInProgress(true);
     try {
       if (file) {
@@ -122,12 +122,12 @@ export function NoteCreator() {
         } else if (rx?.error) {
           dispatch(setError(rx.error));
         }
-        setUploadInProgress(false);
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
         dispatch(setError(error?.message));
       }
+    } finally {
       setUploadInProgress(false);
     }
   }
@@ -237,8 +237,7 @@ export function NoteCreator() {
       const item = items[0];
       const blob = item.getAsFile();
       if (blob) {
-        const file = new File([blob], "filename.jpg", { type: "image/jpeg", lastModified: new Date().getTime() });
-        uploadFile(file);
+        uploadFile(blob);
       }
     }
   };
