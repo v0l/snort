@@ -1,8 +1,13 @@
 .logo {
   cursor: pointer;
+}
+
+.logo h1 {
   font-weight: 700;
   font-size: 29px;
   line-height: 23px;
+  padding: 0;
+  margin: 0;
 }
 
 header {
@@ -10,14 +15,7 @@ header {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 72px;
-  padding: 0 12px;
-}
-
-@media (min-width: 720px) {
-  header {
-    padding: 0;
-  }
+  padding: 4px 12px;
 }
 
 header .pfp .avatar-wrapper {

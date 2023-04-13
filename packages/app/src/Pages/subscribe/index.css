@@ -1,0 +1,24 @@
+.subscribe-page > div.card {
+  margin: 5px;
+  min-height: 350px;
+  user-select: none;
+  flex: 1;
+}
+
+.subscribe-page h2 {
+  text-align: center;
+}
+
+.subscribe-page ul {
+  padding-inline-start: 20px;
+}
+
+@media (max-width: 720px) {
+  .subscribe-page {
+    flex-direction: column;
+  }
+
+  .subscribe-page > div.card {
+    flex: unset;
+  }
+}

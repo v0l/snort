@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { TaggedRawEvent, HexKey, Lists, EventKind } from "@snort/nostr";
 
-import { getNewest, getNewestEventTagsByKey, unwrap } from "Util";
+import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "Util";
 import { makeNotification } from "Notifications";
 import {
   setFollows,
@@ -15,15 +15,18 @@ import {
   setBlocked,
   sendNotification,
   setLatestNotifications,
+  addSubscription,
 } from "State/Login";
 import { RootState } from "State/Store";
-import { barrierNip07 } from "Feed/EventPublisher";
+import useEventPublisher, { barrierNip07 } from "Feed/EventPublisher";
 import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 import { FlatNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import { EventExt } from "System/EventExt";
 import { DmCache } from "Cache";
+import { SnortPubKey } from "Const";
+import { SubscriptionEvent } from "Subscription";
 
 /**
  * Managed loading data for the current logged in user
@@ -37,6 +40,7 @@ export default function useLoginFeed() {
     readNotifications,
   } = useSelector((s: RootState) => s.login);
   const { isMuted } = useModeration();
+  const publisher = useEventPublisher();
 
   const subLogin = useMemo(() => {
     if (!pubKey) return null;
@@ -47,6 +51,11 @@ export default function useLoginFeed() {
     });
     b.withFilter().authors([pubKey]).kinds([EventKind.ContactList]);
     b.withFilter().kinds([EventKind.TextNote]).tag("p", [pubKey]).limit(1);
+    b.withFilter()
+      .kinds([EventKind.SnortSubscriptions])
+      .authors([bech32ToHex(SnortPubKey)])
+      .tag("p", [pubKey])
+      .limit(1);
 
     const dmSince = DmCache.newest();
     b.withFilter().authors([pubKey]).kinds([EventKind.DirectMessage]).since(dmSince);
@@ -85,6 +94,22 @@ export default function useLoginFeed() {
 
       const dms = loginFeed.data.filter(a => a.kind === EventKind.DirectMessage);
       DmCache.bulkSet(dms);
+
+      const subs = loginFeed.data.filter(
+        a => a.kind === EventKind.SnortSubscriptions && a.pubkey === bech32ToHex(SnortPubKey)
+      );
+      Promise.all(
+        subs.map(async a => {
+          const dx = await publisher.decryptDm(a);
+          if (dx) {
+            const ex = JSON.parse(dx);
+            return {
+              id: a.id,
+              ...ex,
+            } as SubscriptionEvent;
+          }
+        })
+      ).then(a => dispatch(addSubscription(a.filter(a => a !== undefined).map(unwrap))));
     }
   }, [dispatch, loginFeed]);
 

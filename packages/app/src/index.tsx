@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
+import { unwrap } from "Util";
 import Store from "State/Store";
 import Layout from "Pages/Layout";
 import LoginPage from "Pages/Login";
@@ -28,7 +29,7 @@ import { NewUserRoutes } from "Pages/new";
 import { WalletRoutes } from "Pages/WalletPage";
 import NostrLinkHandler from "Pages/NostrLinkHandler";
 import Thread from "Element/Thread";
-import { unwrap } from "Util";
+import { SubscribeRoutes } from "Pages/subscribe";
 
 /**
  * HTTP query provider
@@ -94,6 +95,7 @@ export const router = createBrowserRouter([
       },
       ...NewUserRoutes,
       ...WalletRoutes,
+      ...SubscribeRoutes,
       {
         path: "/*",
         element: <NostrLinkHandler />,

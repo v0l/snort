@@ -125,6 +125,11 @@ html.light .card {
   flex-direction: row;
 }
 
+.card .card-title {
+  font-size: x-large;
+  font-weight: bold;
+}
+
 button {
   cursor: pointer;
   padding: 6px 12px;

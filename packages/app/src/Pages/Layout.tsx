@@ -24,6 +24,7 @@ import { DefaultRelays, SnortPubKey } from "Const";
 import SubDebug from "Element/SubDebug";
 import { preload } from "Cache";
 import { useDmCache } from "Hooks/useDmsCache";
+import { mapPlanName } from "./subscribe";
 
 export default function Layout() {
   const location = useLocation();
@@ -32,7 +33,9 @@ export default function Layout() {
   const isReplyNoteCreatorShowing = replyTo && isNoteCreatorShowing;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loggedOut, publicKey, relays, preferences, newUserKey } = useSelector((s: RootState) => s.login);
+  const { loggedOut, publicKey, relays, preferences, newUserKey, subscription } = useSelector(
+    (s: RootState) => s.login
+  );
   const [pageClass, setPageClass] = useState("page");
   const pub = useEventPublisher();
   useLoginFeed();
@@ -45,7 +48,7 @@ export default function Layout() {
   };
 
   const shouldHideNoteCreator = useMemo(() => {
-    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/", "/e"];
+    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/", "/e", "/subscribe"];
     return isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
   }, [location, isReplyNoteCreatorShowing]);
 
@@ -172,8 +175,15 @@ export default function Layout() {
       {!shouldHideHeader && (
         <header>
           <div className="logo" onClick={() => navigate("/")}>
-            Snort
+            <h1>Snort</h1>
+            {subscription && (
+              <small className="flex">
+                <Icon name="diamond" size={10} className="mr5" />
+                {mapPlanName(subscription.type)}
+              </small>
+            )}
           </div>
+
           <div>
             {publicKey ? (
               <AccountHeader />
