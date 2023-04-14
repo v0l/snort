@@ -18,7 +18,7 @@ export const Plans = [
   {
     id: SubscriptionType.Supporter,
     price: 5_000,
-    disabled: true,
+    disabled: false,
     unlocks: [LockedFeatures.MultiAccount, LockedFeatures.NostrAddress, LockedFeatures.Badge],
   },
   {

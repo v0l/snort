@@ -1,18 +1,16 @@
 import "./Root.css";
 import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
 import { Link, Outlet, RouteObject, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useIntl, FormattedMessage } from "react-intl";
 
 import Tabs, { Tab } from "Element/Tabs";
-import { RootState } from "State/Store";
 import Timeline from "Element/Timeline";
 import { System } from "System";
 import { TimelineSubject } from "Feed/TimelineFeed";
 import { debounce, getRelayName, sha256, unixNow, unwrap } from "Util";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
-import useLogin from "Hooks/useLogin";
 
 interface RelayOption {
   url: string;

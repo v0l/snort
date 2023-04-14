@@ -20,7 +20,7 @@ import { SubscriptionEvent } from "Subscription";
  */
 export default function useLoginFeed() {
   const login = useLogin();
-  const { publicKey: pubKey, privateKey: privKey, readNotifications, muted: stateMuted } = login;
+  const { publicKey: pubKey, privateKey: privKey, readNotifications } = login;
   const { isMuted } = useModeration();
   const publisher = useEventPublisher();
 

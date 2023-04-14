@@ -1,19 +1,17 @@
 import "./Zap.css";
 import { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useSelector } from "react-redux";
 import { HexKey, TaggedRawEvent } from "@snort/nostr";
 
 import { decodeInvoice, InvoiceDetails, sha256, unwrap } from "Util";
 import { formatShort } from "Number";
 import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
-import { RootState } from "State/Store";
 import { findTag } from "Util";
 import { UserCache } from "Cache/UserCache";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
-import useLogin from "Hooks/useLogin";
 
 function getInvoice(zap: TaggedRawEvent): InvoiceDetails | undefined {
   const bolt11 = findTag(zap, "bolt11");
