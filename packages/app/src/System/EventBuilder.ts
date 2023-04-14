@@ -41,7 +41,7 @@ export class EventBuilder {
   processContent() {
     if (this.#content) {
       this.#content = this.#content
-        .replace(/@n[pub|profile|event|ote|addr|]1[acdefghjklmnpqrstuvwxyz023456789]+/g, m => this.#replaceMention(m))
+        .replace(/@n(pub|profile|event|ote|addr|)1[acdefghjklmnpqrstuvwxyz023456789]+/g, m => this.#replaceMention(m))
         .replace(HashtagRegex, m => this.#replaceHashtag(m));
     }
     return this;
