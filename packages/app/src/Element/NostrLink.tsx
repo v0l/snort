@@ -2,7 +2,7 @@ import { NostrPrefix } from "@snort/nostr";
 import { Link } from "react-router-dom";
 
 import Mention from "Element/Mention";
-import { eventLink, parseNostrLink } from "Util";
+import { parseNostrLink } from "Util";
 
 export default function NostrLink({ link }: { link: string }) {
   const nav = parseNostrLink(link);
