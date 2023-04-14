@@ -10,7 +10,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       method: "POST",
       body: await next.arrayBuffer(),
       headers: {
-        ...context.request.headers,
+        "user-agent": "Snort-Functions/1.0 (https://snort.social)",
         "content-type": "text/plain"
       }
     });
