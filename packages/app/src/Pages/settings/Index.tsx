@@ -36,7 +36,7 @@ const SettingsIndex = () => {
           <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={() => navigate("wallet")}>
-          <Icon name="bitcoin" />
+          <Icon name="wallet" />
           <FormattedMessage defaultMessage="Wallet" />
           <Icon name="arrowFront" />
         </div>

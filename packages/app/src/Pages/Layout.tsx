@@ -10,7 +10,6 @@ import Icon from "Icons/Icon";
 import { RootState } from "State/Store";
 import { setShow, reset } from "State/NoteCreator";
 import { System } from "System";
-import ProfileImage from "Element/ProfileImage";
 import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
 import useModeration from "Hooks/useModeration";
@@ -22,6 +21,9 @@ import { preload } from "Cache";
 import { useDmCache } from "Hooks/useDmsCache";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
+import Avatar from "Element/Avatar";
+import { useUserProfile } from "Hooks/useUserProfile";
+import { profileLink } from "Util";
 
 export default function Layout() {
   const location = useLocation();
@@ -173,6 +175,7 @@ const AccountHeader = () => {
   const { isMuted } = useModeration();
   const { publicKey, latestNotification, readNotifications } = useLogin();
   const dms = useDmCache();
+  const profile = useUserProfile(publicKey);
 
   const hasNotifications = useMemo(
     () => latestNotification > readNotifications,
@@ -208,7 +211,7 @@ const AccountHeader = () => {
   return (
     <div className="header-actions">
       <div className="btn btn-rnd" onClick={() => navigate("/wallet")}>
-        <Icon name="bitcoin" />
+        <Icon name="wallet" />
       </div>
       <div className="btn btn-rnd" onClick={() => navigate("/search")}>
         <Icon name="search" />
@@ -221,7 +224,7 @@ const AccountHeader = () => {
         <Icon name="bell" />
         {hasNotifications && <span className="has-unread"></span>}
       </div>
-      <ProfileImage pubkey={publicKey || ""} showUsername={false} />
+      {profile && <Avatar user={profile} onClick={() => navigate(profileLink(profile.pubkey))} />}
     </div>
   );
 };
