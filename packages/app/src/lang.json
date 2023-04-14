@@ -81,6 +81,9 @@
   "2k0Cv+": {
     "defaultMessage": "Dislikes ({n})"
   },
+  "2ukA4d": {
+    "defaultMessage": "{n} hours"
+  },
   "3Rx6Qo": {
     "defaultMessage": "Advanced"
   },
@@ -205,6 +208,9 @@
   "Adk34V": {
     "defaultMessage": "Setup your Profile"
   },
+  "Ai8VHU": {
+    "defaultMessage": "Unlimited note retention on Snort relay"
+  },
   "AkCxS/": {
     "defaultMessage": "Reason"
   },
@@ -233,6 +239,9 @@
   "BcGMo+": {
     "defaultMessage": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
   },
+  "C5xzTC": {
+    "defaultMessage": "Premium"
+  },
   "C81/uG": {
     "defaultMessage": "Logout"
   },
@@ -256,6 +265,9 @@
   },
   "DZzCem": {
     "defaultMessage": "Show latest {n} notes"
+  },
+  "DcL8P+": {
+    "defaultMessage": "Supporter"
   },
   "Dh3hbq": {
     "defaultMessage": "Auto Zap"
@@ -363,6 +375,9 @@
   "Iwm6o2": {
     "defaultMessage": "NIP-05 Shop"
   },
+  "J+dIsA": {
+    "defaultMessage": "Subscriptions"
+  },
   "JCIgkj": {
     "defaultMessage": "Username"
   },
@@ -401,9 +416,6 @@
   },
   "LF5kYT": {
     "defaultMessage": "Other Connections"
-  },
-  "LQahqW": {
-    "defaultMessage": "Manage Nostr Adddress (NIP-05)"
   },
   "LXxsbk": {
     "defaultMessage": "Anonymous"
@@ -460,6 +472,9 @@
   },
   "OLEm6z": {
     "defaultMessage": "Unknown login error"
+  },
+  "ORGv1Q": {
+    "defaultMessage": "Created"
   },
   "P04gQm": {
     "defaultMessage": "All zaps sent to this note will be received by the following LNURL"
@@ -570,6 +585,9 @@
   "Vx7Zm2": {
     "defaultMessage": "How do keys work?"
   },
+  "W1yoZY": {
+    "defaultMessage": "It looks like you dont have any subscriptions, you can get one {link}"
+  },
   "W2PiAr": {
     "defaultMessage": "{n} Blocked"
   },
@@ -599,6 +617,9 @@
   },
   "YXA3AH": {
     "defaultMessage": "Enable reactions"
+  },
+  "Z0FDj+": {
+    "defaultMessage": "Subscribe to Snort {plan} for {price} and receive the following rewards"
   },
   "Z4BMCZ": {
     "defaultMessage": "Enter pairing phrase"
@@ -653,6 +674,9 @@
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
   },
+  "cuP16y": {
+    "defaultMessage": "Multi account support"
+  },
   "cuV2gK": {
     "defaultMessage": "name is registered"
   },
@@ -668,6 +692,9 @@
   },
   "dOQCL8": {
     "defaultMessage": "Display name"
+  },
+  "e61Jf3": {
+    "defaultMessage": "Coming soon"
   },
   "e7qqly": {
     "defaultMessage": "Mark All Read"
@@ -714,6 +741,9 @@
   "gXgY3+": {
     "defaultMessage": "Not all clients support this yet"
   },
+  "gczcC5": {
+    "defaultMessage": "Subscribe"
+  },
   "gjBiyj": {
     "defaultMessage": "Loading..."
   },
@@ -735,11 +765,17 @@
   "hicxcO": {
     "defaultMessage": "Show replies"
   },
+  "hniz8Z": {
+    "defaultMessage": "here"
+  },
   "iCqGww": {
     "defaultMessage": "Reactions ({n})"
   },
   "iDGAbc": {
     "defaultMessage": "Get a Snort identifier"
+  },
+  "iEoXYx": {
+    "defaultMessage": "DeepL translations"
   },
   "iGT1eE": {
     "defaultMessage": "Prevent fake accounts from imitating you"
@@ -787,6 +823,9 @@
   "kaaf1E": {
     "defaultMessage": "now"
   },
+  "l+ikU1": {
+    "defaultMessage": "Everything in {plan}"
+  },
   "lBboHo": {
     "defaultMessage": "If you want to try out some others, check out {link} for more!"
   },
@@ -795,6 +834,9 @@
   },
   "lD3+8a": {
     "defaultMessage": "Pay"
+  },
+  "lPWASz": {
+    "defaultMessage": "Snort nostr address"
   },
   "lTbT3s": {
     "defaultMessage": "Wallet password"
@@ -829,6 +871,9 @@
   "mKhgP9": {
     "defaultMessage": "{n,plural,=0{} =1{zapped} other{zapped}}"
   },
+  "mLcajD": {
+    "defaultMessage": "Snort Subscription"
+  },
   "mfe8RW": {
     "defaultMessage": "Option: {n}"
   },
@@ -847,6 +892,9 @@
   "nOaArs": {
     "defaultMessage": "Setup Profile"
   },
+  "nWQFic": {
+    "defaultMessage": "Renew"
+  },
   "nn1qb3": {
     "defaultMessage": "Your donations are greatly appreciated"
   },
@@ -863,6 +911,9 @@
   "oJ+JJN": {
     "defaultMessage": "Nothing found :/"
   },
+  "oVSg7o": {
+    "defaultMessage": "Snort Nostr Adddress"
+  },
   "odFwjL": {
     "defaultMessage": "Follows only"
   },
@@ -878,6 +929,9 @@
   },
   "p85Uwy": {
     "defaultMessage": "Active Subscriptions"
+  },
+  "pI+77w": {
+    "defaultMessage": "Downloadable backups from Snort relay"
   },
   "puLNUJ": {
     "defaultMessage": "Pin"
@@ -918,6 +972,9 @@
   "rfuMjE": {
     "defaultMessage": "(Default)"
   },
+  "rmdsT4": {
+    "defaultMessage": "{n} days"
+  },
   "rrfdTe": {
     "defaultMessage": "This is the same technology which is used by Bitcoin and has been proven to be extremely secure."
   },
@@ -938,6 +995,9 @@
   },
   "thnRpU": {
     "defaultMessage": "Getting NIP-05 verified can help:"
+  },
+  "ttxS0b": {
+    "defaultMessage": "Supporter Badge"
   },
   "u/vOPu": {
     "defaultMessage": "Paid"
@@ -1020,6 +1080,9 @@
   },
   "xbVgIm": {
     "defaultMessage": "Automatically load media"
+  },
+  "xhQMeQ": {
+    "defaultMessage": "Expires"
   },
   "xmcVZ0": {
     "defaultMessage": "Search"
