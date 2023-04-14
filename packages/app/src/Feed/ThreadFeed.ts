@@ -1,17 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
 import { u256, EventKind } from "@snort/nostr";
 
-import { RootState } from "State/Store";
-import { UserPreferences } from "State/Login";
 import { appendDedupe, NostrLink } from "Util";
 import { FlatNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
+import useLogin from "Hooks/useLogin";
 
 export default function useThreadFeed(link: NostrLink) {
   const [trackingEvents, setTrackingEvent] = useState<u256[]>([link.id]);
   const [allEvents, setAllEvents] = useState<u256[]>([link.id]);
-  const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
+  const pref = useLogin().preferences;
 
   const sub = useMemo(() => {
     const sub = new RequestBuilder(`thread:${link.id.substring(0, 8)}`);

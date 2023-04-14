@@ -14,9 +14,8 @@ export default function NewUserName() {
   const navigate = useNavigate();
 
   const onNext = async () => {
-    if (username.length > 0) {
+    if (username.length > 0 && publisher) {
       const ev = await publisher.metadata({ name: username });
-      console.debug(ev);
       publisher.broadcast(ev);
     }
     navigate("/new/verify");

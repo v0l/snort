@@ -1,16 +1,15 @@
 import "./Zap.css";
 import { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useSelector } from "react-redux";
 import { HexKey, TaggedRawEvent } from "@snort/nostr";
 
 import { decodeInvoice, InvoiceDetails, sha256, unwrap } from "Util";
 import { formatShort } from "Number";
 import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
-import { RootState } from "State/Store";
 import { findTag } from "Util";
 import { UserCache } from "Cache/UserCache";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
 
@@ -103,7 +102,7 @@ export interface ParsedZap {
 
 const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean }) => {
   const { amount, content, sender, valid, receiver } = zap;
-  const pubKey = useSelector((s: RootState) => s.login.publicKey);
+  const pubKey = useLogin().publicKey;
 
   return valid && sender ? (
     <div className="zap note card">

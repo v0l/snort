@@ -1,5 +1,5 @@
 import { EventKind } from "@snort/nostr";
-import { EventPublisher } from "Feed/EventPublisher";
+import { EventPublisher } from "System/EventPublisher";
 import { ServiceError, ServiceProvider } from "./ServiceProvider";
 
 export interface ManageHandle {
@@ -48,10 +48,12 @@ export default class SnortServiceProvider extends ServiceProvider {
     body?: unknown,
     headers?: { [key: string]: string }
   ): Promise<T | ServiceError> {
-    const auth = await this.#publisher.generic("", EventKind.HttpAuthentication, [
-      ["url", `${this.url}${path}`],
-      ["method", method ?? "GET"],
-    ]);
+    const auth = await this.#publisher.generic(eb => {
+      eb.kind(EventKind.HttpAuthentication);
+      eb.tag(["url", `${this.url}${path}`]);
+      eb.tag(["method", method ?? "GET"]);
+      return eb;
+    });
     if (!auth) {
       return {
         error: "INVALID_TOKEN",

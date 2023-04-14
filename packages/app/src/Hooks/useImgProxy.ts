@@ -1,8 +1,7 @@
 import * as secp from "@noble/secp256k1";
 import * as base64 from "@protobufjs/base64";
-import { useSelector } from "react-redux";
-import { RootState } from "State/Store";
 import { hmacSha256, unwrap } from "Util";
+import useLogin from "Hooks/useLogin";
 
 export interface ImgProxySettings {
   url: string;
@@ -11,7 +10,7 @@ export interface ImgProxySettings {
 }
 
 export default function useImgProxy() {
-  const settings = useSelector((s: RootState) => s.login.preferences.imgProxyConfig);
+  const settings = useLogin().preferences.imgProxyConfig;
   const te = new TextEncoder();
 
   function urlSafe(s: string) {

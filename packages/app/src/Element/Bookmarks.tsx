@@ -1,13 +1,13 @@
 import { useState, useMemo, ChangeEvent } from "react";
-import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { HexKey, TaggedRawEvent } from "@snort/nostr";
 
 import Note from "Element/Note";
-import { RootState } from "State/Store";
+import useLogin from "Hooks/useLogin";
 import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
+
 interface BookmarksProps {
   pubkey: HexKey;
   bookmarks: readonly TaggedRawEvent[];
@@ -16,7 +16,7 @@ interface BookmarksProps {
 
 const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   const [onlyPubkey, setOnlyPubkey] = useState<HexKey | "all">("all");
-  const loginPubKey = useSelector((s: RootState) => s.login.publicKey);
+  const loginPubKey = useLogin().publicKey;
   const ps = useMemo(() => {
     return [...new Set(bookmarks.map(ev => ev.pubkey))];
   }, [bookmarks]);

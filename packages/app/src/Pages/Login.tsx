@@ -1,22 +1,22 @@
 import "./Login.css";
 
 import { CSSProperties, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as secp from "@noble/secp256k1";
 import { useIntl, FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/nostr";
 
-import { RootState } from "State/Store";
-import { setPrivateKey, setPublicKey, setRelays, setGeneratedPrivateKey } from "State/Login";
-import { DefaultRelays, EmailRegex, MnemonicRegex } from "Const";
+import { EmailRegex, MnemonicRegex } from "Const";
 import { bech32ToHex, unwrap } from "Util";
-import { generateBip39Entropy, entropyToDerivedKey } from "nip6";
+import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import ZapButton from "Element/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
+import Icon from "Icons/Icon";
+import useLogin from "Hooks/useLogin";
+import { generateNewLogin, LoginStore } from "Login";
+import AsyncButton from "Element/AsyncButton";
 
 import messages from "./messages";
-import Icon from "Icons/Icon";
 
 interface ArtworkEntry {
   name: string;
@@ -24,26 +24,28 @@ interface ArtworkEntry {
   link: string;
 }
 
+const KarnageKey = bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac");
+
 // todo: fill more
 const Artwork: Array<ArtworkEntry> = [
   {
     name: "",
-    pubkey: bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"),
+    pubkey: KarnageKey,
     link: "https://void.cat/d/VKhPayp9ekeXYZGzAL9CxP",
   },
   {
     name: "",
-    pubkey: bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"),
+    pubkey: KarnageKey,
     link: "https://void.cat/d/3H2h8xxc3aEN6EVeobd8tw",
   },
   {
     name: "",
-    pubkey: bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"),
+    pubkey: KarnageKey,
     link: "https://void.cat/d/7i9W9PXn3TV86C4RUefNC9",
   },
   {
     name: "",
-    pubkey: bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"),
+    pubkey: KarnageKey,
     link: "https://void.cat/d/KtoX4ei6RYHY7HESg3Ve3k",
   },
 ];
@@ -64,9 +66,8 @@ export async function getNip05PubKey(addr: string): Promise<string> {
 }
 
 export default function LoginPage() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const publicKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+  const login = useLogin();
   const [key, setKey] = useState("");
   const [error, setError] = useState("");
   const [art, setArt] = useState<ArtworkEntry>();
@@ -77,10 +78,10 @@ export default function LoginPage() {
   const hasSubtleCrypto = window.crypto.subtle !== undefined;
 
   useEffect(() => {
-    if (publicKey) {
+    if (login.publicKey) {
       navigate("/");
     }
-  }, [publicKey, navigate]);
+  }, [login, navigate]);
 
   useEffect(() => {
     const ret = unwrap(Artwork.at(Artwork.length * Math.random()));
@@ -99,28 +100,28 @@ export default function LoginPage() {
         }
         const hexKey = bech32ToHex(key);
         if (secp.utils.isValidPrivateKey(hexKey)) {
-          dispatch(setPrivateKey(hexKey));
+          LoginStore.loginWithPrivateKey(hexKey);
         } else {
           throw new Error("INVALID PRIVATE KEY");
         }
       } else if (key.startsWith("npub")) {
         const hexKey = bech32ToHex(key);
-        dispatch(setPublicKey(hexKey));
+        LoginStore.loginWithPubkey(hexKey);
       } else if (key.match(EmailRegex)) {
         const hexKey = await getNip05PubKey(key);
-        dispatch(setPublicKey(hexKey));
+        LoginStore.loginWithPubkey(hexKey);
       } else if (key.match(MnemonicRegex)) {
         if (!hasSubtleCrypto) {
           throw new Error(insecureMsg);
         }
         const ent = generateBip39Entropy(key);
-        const keyHex = entropyToDerivedKey(ent);
-        dispatch(setPrivateKey(keyHex));
+        const keyHex = entropyToPrivateKey(ent);
+        LoginStore.loginWithPrivateKey(keyHex);
       } else if (secp.utils.isValidPrivateKey(key)) {
         if (!hasSubtleCrypto) {
           throw new Error(insecureMsg);
         }
-        dispatch(setPrivateKey(key));
+        LoginStore.loginWithPrivateKey(key);
       } else {
         throw new Error("INVALID PRIVATE KEY");
       }
@@ -139,29 +140,14 @@ export default function LoginPage() {
   }
 
   async function makeRandomKey() {
-    const ent = generateBip39Entropy();
-    const entHex = secp.utils.bytesToHex(ent);
-    const newKeyHex = entropyToDerivedKey(ent);
-    dispatch(setGeneratedPrivateKey({ key: newKeyHex, entropy: entHex }));
+    await generateNewLogin();
     navigate("/new");
   }
 
   async function doNip07Login() {
+    const relays = "getRelays" in window.nostr ? await window.nostr.getRelays() : undefined;
     const pubKey = await window.nostr.getPublicKey();
-    dispatch(setPublicKey(pubKey));
-
-    if ("getRelays" in window.nostr) {
-      const relays = await window.nostr.getRelays();
-      dispatch(
-        setRelays({
-          relays: {
-            ...relays,
-            ...Object.fromEntries(DefaultRelays.entries()),
-          },
-          createdAt: 1,
-        })
-      );
-    }
+    LoginStore.loginWithPubkey(pubKey, relays);
   }
 
   function altLogins() {
@@ -198,9 +184,9 @@ export default function LoginPage() {
           />
         </p>
         <div className="login-actions">
-          <button type="button" onClick={() => makeRandomKey()}>
+          <AsyncButton onClick={() => makeRandomKey()}>
             <FormattedMessage defaultMessage="Generate Key" description="Button: Generate a new key" />
-          </button>
+          </AsyncButton>
         </div>
       </>
     );

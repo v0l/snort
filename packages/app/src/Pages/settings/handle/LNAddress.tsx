@@ -10,12 +10,13 @@ import SnortServiceProvider, { ManageHandle } from "Nip05/SnortServiceProvider";
 export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
-  const sp = new SnortServiceProvider(publisher, `${ApiHost}/api/v1/n5sp`);
 
   const [newAddress, setNewAddress] = useState(handle.lnAddress ?? "");
   const [error, setError] = useState("");
 
   async function startUpdate() {
+    if (!publisher) return;
+
     const req = {
       lnAddress: newAddress,
     };
@@ -33,6 +34,7 @@ export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
       return;
     }
 
+    const sp = new SnortServiceProvider(publisher, `${ApiHost}/api/v1/n5sp`);
     const rsp = await sp.patch(handle.id, req);
     if ("error" in rsp) {
       setError(rsp.error);

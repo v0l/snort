@@ -39,9 +39,9 @@ export const ProfileCacheExpire = 1_000 * 60 * 30;
  * Default bootstrap relays
  */
 export const DefaultRelays = new Map<string, RelaySettings>([
-  ["wss://relay.snort.social", { read: true, write: true }],
-  ["wss://nostr.wine", { read: true, write: false }],
-  ["wss://nos.lol", { read: true, write: true }],
+  ["wss://relay.snort.social/", { read: true, write: true }],
+  ["wss://nostr.wine/", { read: true, write: false }],
+  ["wss://nos.lol/", { read: true, write: true }],
 ]);
 
 /**
@@ -73,6 +73,15 @@ export const RecommendedFollows = [
   "04c915daefee38317fa734444acee390a8269fe5810b2241e5e6dd343dfbecc9", // ODELL
   "7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194", // verbiricha
 ];
+
+/**
+ * Snort imgproxy details
+ */
+export const DefaultImgProxy = {
+  url: "https://imgproxy.snort.social",
+  key: "a82fcf26aa0ccb55dfc6b4bd6a1c90744d3be0f38429f21a8828b43449ce7cebe6bdc2b09a827311bef37b18ce35cb1e6b1c60387a254541afa9e5b4264ae942",
+  salt: "a897770d9abf163de055e9617891214e75a9016d748f8ef865e6ffbcb9ed932295659549773a22a019a5f06d0b440c320be411e3fddfe784e199e4f03d74bd9b",
+};
 
 /**
  * NIP06-defined derivation path for private keys

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
-import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix } from "@snort/nostr";
+import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix, Lists } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
@@ -17,13 +17,14 @@ import SendSats from "Element/SendSats";
 import { ParsedZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { RootState } from "State/Store";
-import { UserPreferences, setPinned, setBookmarked } from "State/Login";
 import { setReplyTo, setShow, reset } from "State/NoteCreator";
 import useModeration from "Hooks/useModeration";
 import { SnortPubKey, TranslateHost } from "Const";
 import { LNURL } from "LNURL";
 import { DonateLNURL } from "Pages/DonatePage";
 import { useWallet } from "Wallet";
+import useLogin from "Hooks/useLogin";
+import { setBookmarked, setPinned } from "Login";
 
 import messages from "./messages";
 
@@ -94,10 +95,9 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { ev, showReactions, setShowReactions, positive, negative, reposts, zaps } = props;
   const dispatch = useDispatch();
   const { formatMessage } = useIntl();
-  const { pinned, bookmarked } = useSelector((s: RootState) => s.login);
-  const login = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+  const login = useLogin();
+  const { pinned, bookmarked, publicKey, preferences: prefs, relays } = login;
   const { mute, block } = useModeration();
-  const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
   const author = useUserProfile(ev.pubkey);
   const publisher = useEventPublisher();
   const showNoteCreatorModal = useSelector((s: RootState) => s.noteCreator.show);
@@ -108,13 +108,13 @@ export default function NoteFooter(props: NoteFooterProps) {
   const walletState = useWallet();
   const wallet = walletState.wallet;
 
-  const isMine = ev.pubkey === login;
+  const isMine = ev.pubkey === publicKey;
   const lang = window.navigator.language;
   const langNames = new Intl.DisplayNames([...window.navigator.languages], {
     type: "language",
   });
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  const didZap = ZapCache.has(ev.id) || zaps.some(a => a.sender === login);
+  const didZap = ZapCache.has(ev.id) || zaps.some(a => a.sender === publicKey);
   const longPress = useLongPress(
     e => {
       e.stopPropagation();
@@ -126,29 +126,29 @@ export default function NoteFooter(props: NoteFooterProps) {
   );
 
   function hasReacted(emoji: string) {
-    return positive?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === login);
+    return positive?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === publicKey);
   }
 
   function hasReposted() {
-    return reposts.some(a => a.pubkey === login);
+    return reposts.some(a => a.pubkey === publicKey);
   }
 
   async function react(content: string) {
-    if (!hasReacted(content)) {
+    if (!hasReacted(content) && publisher) {
       const evLike = await publisher.react(ev, content);
       publisher.broadcast(evLike);
     }
   }
 
   async function deleteEvent() {
-    if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.id.substring(0, 8) }))) {
+    if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.id.substring(0, 8) })) && publisher) {
       const evDelete = await publisher.delete(ev.id);
       publisher.broadcast(evDelete);
     }
   }
 
   async function repost() {
-    if (!hasReposted()) {
+    if (!hasReposted() && publisher) {
       if (!prefs.confirmReposts || window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.id }))) {
         const evRepost = await publisher.repost(ev);
         publisher.broadcast(evRepost);
@@ -196,7 +196,9 @@ export default function NoteFooter(props: NoteFooterProps) {
     await barrierZapper(async () => {
       const handler = new LNURL(lnurl);
       await handler.load();
-      const zap = handler.canZap ? await publisher.zap(amount * 1000, key, id) : undefined;
+
+      const zr = Object.keys(relays.item);
+      const zap = handler.canZap && publisher ? await publisher.zap(amount * 1000, key, zr, id) : undefined;
       const invoice = await handler.getInvoice(amount, undefined, zap);
       await wallet?.payInvoice(unwrap(invoice.pr));
     });
@@ -320,17 +322,21 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function pin(id: HexKey) {
-    const es = [...pinned, id];
-    const ev = await publisher.pinned(es);
-    publisher.broadcast(ev);
-    dispatch(setPinned({ keys: es, createdAt: new Date().getTime() }));
+    if (publisher) {
+      const es = [...pinned.item, id];
+      const ev = await publisher.noteList(es, Lists.Pinned);
+      publisher.broadcast(ev);
+      setPinned(login, es, ev.created_at * 1000);
+    }
   }
 
   async function bookmark(id: HexKey) {
-    const es = [...bookmarked, id];
-    const ev = await publisher.bookmarked(es);
-    publisher.broadcast(ev);
-    dispatch(setBookmarked({ keys: es, createdAt: new Date().getTime() }));
+    if (publisher) {
+      const es = [...bookmarked.item, id];
+      const ev = await publisher.noteList(es, Lists.Bookmarked);
+      publisher.broadcast(ev);
+      setBookmarked(login, es, ev.created_at * 1000);
+    }
   }
 
   async function copyEvent() {
@@ -355,13 +361,13 @@ export default function NoteFooter(props: NoteFooterProps) {
           <Icon name="share" />
           <FormattedMessage {...messages.Share} />
         </MenuItem>
-        {!pinned.includes(ev.id) && (
+        {!pinned.item.includes(ev.id) && (
           <MenuItem onClick={() => pin(ev.id)}>
             <Icon name="pin" />
             <FormattedMessage {...messages.Pin} />
           </MenuItem>
         )}
-        {!bookmarked.includes(ev.id) && (
+        {!bookmarked.item.includes(ev.id) && (
           <MenuItem onClick={() => bookmark(ev.id)}>
             <Icon name="bookmark" />
             <FormattedMessage {...messages.Bookmark} />

@@ -1,20 +1,19 @@
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import Logo from "Element/Logo";
 import { services } from "Pages/Verification";
 import Nip5Service from "Element/Nip5Service";
 import ProfileImage from "Element/ProfileImage";
-import type { RootState } from "State/Store";
 import { useUserProfile } from "Hooks/useUserProfile";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
 
 export default function GetVerified() {
   const navigate = useNavigate();
-  const { publicKey } = useSelector((s: RootState) => s.login);
+  const { publicKey } = useLogin();
   const user = useUserProfile(publicKey);
   const [isVerified, setIsVerified] = useState(false);
   const name = user?.name || "nostrich";

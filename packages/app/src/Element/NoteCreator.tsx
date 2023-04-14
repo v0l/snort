@@ -29,6 +29,7 @@ import { LNURL } from "LNURL";
 import messages from "./messages";
 import { ClipboardEventHandler, useState } from "react";
 import Spinner from "Icons/Spinner";
+import { EventBuilder } from "System";
 
 interface NotePreviewProps {
   note: TaggedRawEvent;
@@ -64,7 +65,7 @@ export function NoteCreator() {
   const dispatch = useDispatch();
 
   async function sendNote() {
-    if (note) {
+    if (note && publisher) {
       let extraTags: Array<Array<string>> | undefined;
       if (zapForward) {
         try {
@@ -91,9 +92,12 @@ export function NoteCreator() {
         extraTags ??= [];
         extraTags.push(...pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
       }
-      const ev = replyTo
-        ? await publisher.reply(replyTo, note, extraTags, kind)
-        : await publisher.note(note, extraTags, kind);
+      const hk = (eb: EventBuilder) => {
+        extraTags?.forEach(t => eb.tag(t));
+        eb.kind(kind);
+        return eb;
+      };
+      const ev = replyTo ? await publisher.reply(replyTo, note, hk) : await publisher.note(note, hk);
       publisher.broadcast(ev);
       dispatch(reset());
     }
@@ -154,7 +158,7 @@ export function NoteCreator() {
   async function loadPreview() {
     if (preview) {
       dispatch(setPreview(undefined));
-    } else {
+    } else if (publisher) {
       const tmpNote = await publisher.note(note);
       if (tmpNote) {
         dispatch(setPreview(tmpNote));

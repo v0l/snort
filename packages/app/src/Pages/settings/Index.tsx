@@ -1,22 +1,20 @@
 import "./Index.css";
 import { FormattedMessage } from "react-intl";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Icon from "Icons/Icon";
-import { logout } from "State/Login";
+import { logout } from "Login";
+import useLogin from "Hooks/useLogin";
+import { unwrap } from "Util";
 
 import messages from "./messages";
 
 const SettingsIndex = () => {
-  const dispatch = useDispatch();
+  const login = useLogin();
   const navigate = useNavigate();
 
   function handleLogout() {
-    dispatch(
-      logout(() => {
-        navigate("/");
-      })
-    );
+    logout(unwrap(login.publicKey));
+    navigate("/");
   }
 
   return (
@@ -38,7 +36,7 @@ const SettingsIndex = () => {
           <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={() => navigate("wallet")}>
-          <Icon name="bitcoin" />
+          <Icon name="wallet" />
           <FormattedMessage defaultMessage="Wallet" />
           <Icon name="arrowFront" />
         </div>

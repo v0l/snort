@@ -6,6 +6,7 @@ import { HexKey } from "@snort/nostr";
 import ProfilePreview from "Element/ProfilePreview";
 
 import messages from "./messages";
+import useLogin from "Hooks/useLogin";
 
 export interface FollowListBaseProps {
   pubkeys: HexKey[];
@@ -15,10 +16,13 @@ export interface FollowListBaseProps {
 }
 export default function FollowListBase({ pubkeys, title, showFollowAll, showAbout }: FollowListBaseProps) {
   const publisher = useEventPublisher();
+  const { follows, relays } = useLogin();
 
   async function followAll() {
-    const ev = await publisher.addFollow(pubkeys);
-    publisher.broadcast(ev);
+    if (publisher) {
+      const ev = await publisher.contactList([...pubkeys, ...follows.item], relays.item);
+      publisher.broadcast(ev);
+    }
   }
 
   return (

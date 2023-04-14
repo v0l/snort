@@ -1,20 +1,20 @@
 import "./Preferences.css";
 
-import { useDispatch, useSelector } from "react-redux";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 import emoji from "@jukben/emoji-search";
 
-import { DefaultImgProxy, setPreferences, UserPreferences } from "State/Login";
-import { RootState } from "State/Store";
+import useLogin from "Hooks/useLogin";
+import { updatePreferences, UserPreferences } from "Login";
+import { DefaultImgProxy } from "Const";
 import { unwrap } from "Util";
 
 import messages from "./messages";
 
 const PreferencesPage = () => {
-  const dispatch = useDispatch();
   const { formatMessage } = useIntl();
-  const perf = useSelector<RootState, UserPreferences>(s => s.login.preferences);
+  const login = useLogin();
+  const perf = login.preferences;
 
   return (
     <div className="preferences">
@@ -32,12 +32,10 @@ const PreferencesPage = () => {
           <select
             value={perf.language}
             onChange={e =>
-              dispatch(
-                setPreferences({
-                  ...perf,
-                  language: e.target.value,
-                } as UserPreferences)
-              )
+              updatePreferences(login, {
+                ...perf,
+                language: e.target.value,
+              })
             }
             style={{ textTransform: "capitalize" }}>
             {["en", "ja", "es", "hu", "zh-CN", "zh-TW", "fr", "ar", "it", "id", "de", "ru", "sv", "hr"]
@@ -62,12 +60,10 @@ const PreferencesPage = () => {
           <select
             value={perf.theme}
             onChange={e =>
-              dispatch(
-                setPreferences({
-                  ...perf,
-                  theme: e.target.value,
-                } as UserPreferences)
-              )
+              updatePreferences(login, {
+                ...perf,
+                theme: e.target.value,
+              } as UserPreferences)
             }>
             <option value="system">
               <FormattedMessage {...messages.System} />
@@ -91,12 +87,10 @@ const PreferencesPage = () => {
           <select
             value={perf.defaultRootTab}
             onChange={e =>
-              dispatch(
-                setPreferences({
-                  ...perf,
-                  defaultRootTab: e.target.value,
-                } as UserPreferences)
-              )
+              updatePreferences(login, {
+                ...perf,
+                defaultRootTab: e.target.value,
+              } as UserPreferences)
             }>
             <option value="posts">
               <FormattedMessage {...messages.Posts} />
@@ -122,12 +116,10 @@ const PreferencesPage = () => {
             <select
               value={perf.autoLoadMedia}
               onChange={e =>
-                dispatch(
-                  setPreferences({
-                    ...perf,
-                    autoLoadMedia: e.target.value,
-                  } as UserPreferences)
-                )
+                updatePreferences(login, {
+                  ...perf,
+                  autoLoadMedia: e.target.value,
+                } as UserPreferences)
               }>
               <option value="none">
                 <FormattedMessage {...messages.None} />
@@ -153,7 +145,7 @@ const PreferencesPage = () => {
             type="number"
             defaultValue={perf.defaultZapAmount}
             min={1}
-            onChange={e => dispatch(setPreferences({ ...perf, defaultZapAmount: parseInt(e.target.value || "0") }))}
+            onChange={e => updatePreferences(login, { ...perf, defaultZapAmount: parseInt(e.target.value || "0") })}
           />
         </div>
       </div>
@@ -189,7 +181,7 @@ const PreferencesPage = () => {
             defaultValue={perf.fastZapDonate * 100}
             min={0}
             max={100}
-            onChange={e => dispatch(setPreferences({ ...perf, fastZapDonate: parseInt(e.target.value || "0") / 100 }))}
+            onChange={e => updatePreferences(login, { ...perf, fastZapDonate: parseInt(e.target.value || "0") / 100 })}
           />
         </div>
       </div>
@@ -206,7 +198,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.autoZap}
-            onChange={e => dispatch(setPreferences({ ...perf, autoZap: e.target.checked }))}
+            onChange={e => updatePreferences(login, { ...perf, autoZap: e.target.checked })}
           />
         </div>
       </div>
@@ -225,12 +217,10 @@ const PreferencesPage = () => {
               type="checkbox"
               checked={perf.imgProxyConfig !== null}
               onChange={e =>
-                dispatch(
-                  setPreferences({
-                    ...perf,
-                    imgProxyConfig: e.target.checked ? DefaultImgProxy : null,
-                  })
-                )
+                updatePreferences(login, {
+                  ...perf,
+                  imgProxyConfig: e.target.checked ? DefaultImgProxy : null,
+                })
               }
             />
           </div>
@@ -250,15 +240,13 @@ const PreferencesPage = () => {
                     description: "Placeholder text for imgproxy url textbox",
                   })}
                   onChange={e =>
-                    dispatch(
-                      setPreferences({
-                        ...perf,
-                        imgProxyConfig: {
-                          ...unwrap(perf.imgProxyConfig),
-                          url: e.target.value,
-                        },
-                      })
-                    )
+                    updatePreferences(login, {
+                      ...perf,
+                      imgProxyConfig: {
+                        ...unwrap(perf.imgProxyConfig),
+                        url: e.target.value,
+                      },
+                    })
                   }
                 />
               </div>
@@ -276,15 +264,13 @@ const PreferencesPage = () => {
                     description: "Hexidecimal 'key' input for improxy",
                   })}
                   onChange={e =>
-                    dispatch(
-                      setPreferences({
-                        ...perf,
-                        imgProxyConfig: {
-                          ...unwrap(perf.imgProxyConfig),
-                          key: e.target.value,
-                        },
-                      })
-                    )
+                    updatePreferences(login, {
+                      ...perf,
+                      imgProxyConfig: {
+                        ...unwrap(perf.imgProxyConfig),
+                        key: e.target.value,
+                      },
+                    })
                   }
                 />
               </div>
@@ -302,15 +288,13 @@ const PreferencesPage = () => {
                     description: "Hexidecimal 'salt' input for imgproxy",
                   })}
                   onChange={e =>
-                    dispatch(
-                      setPreferences({
-                        ...perf,
-                        imgProxyConfig: {
-                          ...unwrap(perf.imgProxyConfig),
-                          salt: e.target.value,
-                        },
-                      })
-                    )
+                    updatePreferences(login, {
+                      ...perf,
+                      imgProxyConfig: {
+                        ...unwrap(perf.imgProxyConfig),
+                        salt: e.target.value,
+                      },
+                    })
                   }
                 />
               </div>
@@ -331,7 +315,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.enableReactions}
-            onChange={e => dispatch(setPreferences({ ...perf, enableReactions: e.target.checked }))}
+            onChange={e => updatePreferences(login, { ...perf, enableReactions: e.target.checked })}
           />
         </div>
       </div>
@@ -348,12 +332,10 @@ const PreferencesPage = () => {
               className="emoji-selector"
               value={perf.reactionEmoji}
               onChange={e =>
-                dispatch(
-                  setPreferences({
-                    ...perf,
-                    reactionEmoji: e.target.value,
-                  } as UserPreferences)
-                )
+                updatePreferences(login, {
+                  ...perf,
+                  reactionEmoji: e.target.value,
+                })
               }>
               <option value="+">
                 + <FormattedMessage {...messages.Default} />
@@ -382,7 +364,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.confirmReposts}
-            onChange={e => dispatch(setPreferences({ ...perf, confirmReposts: e.target.checked }))}
+            onChange={e => updatePreferences(login, { ...perf, confirmReposts: e.target.checked })}
           />
         </div>
       </div>
@@ -399,7 +381,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.autoShowLatest}
-            onChange={e => dispatch(setPreferences({ ...perf, autoShowLatest: e.target.checked }))}
+            onChange={e => updatePreferences(login, { ...perf, autoShowLatest: e.target.checked })}
           />
         </div>
       </div>
@@ -415,12 +397,10 @@ const PreferencesPage = () => {
             <select
               value={perf.fileUploader}
               onChange={e =>
-                dispatch(
-                  setPreferences({
-                    ...perf,
-                    fileUploader: e.target.value,
-                  } as UserPreferences)
-                )
+                updatePreferences(login, {
+                  ...perf,
+                  fileUploader: e.target.value,
+                } as UserPreferences)
               }>
               <option value="void.cat">
                 void.cat <FormattedMessage {...messages.Default} />
@@ -444,7 +424,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.showDebugMenus}
-            onChange={e => dispatch(setPreferences({ ...perf, showDebugMenus: e.target.checked }))}
+            onChange={e => updatePreferences(login, { ...perf, showDebugMenus: e.target.checked })}
           />
         </div>
       </div>

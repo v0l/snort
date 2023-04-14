@@ -1,9 +1,8 @@
 import { FormattedMessage } from "react-intl";
-import { useSelector } from "react-redux";
 
 import MediaLink from "Element/MediaLink";
 import Reveal from "Element/Reveal";
-import { RootState } from "State/Store";
+import useLogin from "Hooks/useLogin";
 
 interface RevealMediaProps {
   creator: string;
@@ -11,11 +10,10 @@ interface RevealMediaProps {
 }
 
 export default function RevealMedia(props: RevealMediaProps) {
-  const pref = useSelector((s: RootState) => s.login.preferences);
-  const follows = useSelector((s: RootState) => s.login.follows);
-  const publicKey = useSelector((s: RootState) => s.login.publicKey);
+  const login = useLogin();
+  const { preferences: pref, follows, publicKey } = login;
 
-  const hideNonFollows = pref.autoLoadMedia === "follows-only" && !follows.includes(props.creator);
+  const hideNonFollows = pref.autoLoadMedia === "follows-only" && !follows.item.includes(props.creator);
   const isMine = props.creator === publicKey;
   const hideMedia = pref.autoLoadMedia === "none" || (!isMine && hideNonFollows);
   const hostname = new URL(props.link).hostname;

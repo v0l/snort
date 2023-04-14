@@ -1,7 +1,6 @@
 import { type ReactNode } from "react";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
 
-import { ReadPreferences } from "State/Login";
 import enMessages from "translations/en.json";
 import esMessages from "translations/es_ES.json";
 import zhMessages from "translations/zh_CN.json";
@@ -16,6 +15,7 @@ import deMessages from "translations/de_DE.json";
 import ruMessages from "translations/ru_RU.json";
 import svMessages from "translations/sv_SE.json";
 import hrMessages from "translations/hr_HR.json";
+import useLogin from "Hooks/useLogin";
 
 const DefaultLocale = "en-US";
 
@@ -73,7 +73,7 @@ const getMessages = (locale: string) => {
 };
 
 export const IntlProvider = ({ children }: { children: ReactNode }) => {
-  const { language } = ReadPreferences();
+  const { language } = useLogin().preferences;
   const locale = language ?? getLocale();
 
   return (

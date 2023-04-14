@@ -1,19 +1,17 @@
 import "./ChatPage.css";
 import { KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
+import { RawEvent, TaggedRawEvent } from "@snort/nostr";
 
 import ProfileImage from "Element/ProfileImage";
 import { bech32ToHex } from "Util";
 import useEventPublisher from "Feed/EventPublisher";
-
 import DM from "Element/DM";
-import { RawEvent, TaggedRawEvent } from "@snort/nostr";
 import { dmsInChat, isToSelf } from "Pages/MessagesPage";
 import NoteToSelf from "Element/NoteToSelf";
-import { RootState } from "State/Store";
-import { FormattedMessage } from "react-intl";
 import { useDmCache } from "Hooks/useDmsCache";
+import useLogin from "Hooks/useLogin";
 
 type RouterParams = {
   id: string;
@@ -23,7 +21,7 @@ export default function ChatPage() {
   const params = useParams<RouterParams>();
   const publisher = useEventPublisher();
   const id = bech32ToHex(params.id ?? "");
-  const pubKey = useSelector((s: RootState) => s.login.publicKey);
+  const pubKey = useLogin().publicKey;
   const [content, setContent] = useState<string>();
   const dmListRef = useRef<HTMLDivElement>(null);
   const dms = filterDms(useDmCache());
@@ -43,9 +41,8 @@ export default function ChatPage() {
   }, [dmListRef.current?.scrollHeight]);
 
   async function sendDm() {
-    if (content) {
+    if (content && publisher) {
       const ev = await publisher.sendDm(content, id);
-      console.debug(ev);
       publisher.broadcast(ev);
       setContent("");
     }

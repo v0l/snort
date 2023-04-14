@@ -154,6 +154,14 @@ export function unixNowMs() {
   return new Date().getTime();
 }
 
+export function deepClone<T>(obj: T) {
+  if ("structuredClone" in window) {
+    return structuredClone(obj);
+  } else {
+    return JSON.parse(JSON.stringify(obj));
+  }
+}
+
 /**
  * Simple debounce
  */

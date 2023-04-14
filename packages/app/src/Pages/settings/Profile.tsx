@@ -2,22 +2,21 @@ import "./Profile.css";
 import Nostrich from "nostrich.webp";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShop } from "@fortawesome/free-solid-svg-icons";
-import { HexKey, TaggedRawEvent } from "@snort/nostr";
+import { TaggedRawEvent } from "@snort/nostr";
 
 import useEventPublisher from "Feed/EventPublisher";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { hexToBech32, openFile } from "Util";
 import Copy from "Element/Copy";
-import { RootState } from "State/Store";
 import useFileUpload from "Upload";
-
-import messages from "./messages";
 import AsyncButton from "Element/AsyncButton";
 import { mapEventToProfile, UserCache } from "Cache";
+import useLogin from "Hooks/useLogin";
+
+import messages from "./messages";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -27,8 +26,7 @@ export interface ProfileSettingsProps {
 
 export default function ProfileSettings(props: ProfileSettingsProps) {
   const navigate = useNavigate();
-  const id = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
-  const privKey = useSelector<RootState, HexKey | undefined>(s => s.login.privateKey);
+  const { publicKey: id, privateKey: privKey } = useLogin();
   const user = useUserProfile(id ?? "");
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
@@ -78,13 +76,14 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     delete userCopy["zapService"];
     console.debug(userCopy);
 
-    const ev = await publisher.metadata(userCopy);
-    console.debug(ev);
-    publisher.broadcast(ev);
+    if (publisher) {
+      const ev = await publisher.metadata(userCopy);
+      publisher.broadcast(ev);
 
-    const newProfile = mapEventToProfile(ev as TaggedRawEvent);
-    if (newProfile) {
-      await UserCache.set(newProfile);
+      const newProfile = mapEventToProfile(ev as TaggedRawEvent);
+      if (newProfile) {
+        await UserCache.set(newProfile);
+      }
     }
   }
 

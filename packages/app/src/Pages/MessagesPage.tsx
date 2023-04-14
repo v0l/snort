@@ -1,18 +1,16 @@
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
-import { useDispatch, useSelector } from "react-redux";
-
 import { HexKey, RawEvent } from "@snort/nostr";
+
 import UnreadCount from "Element/UnreadCount";
 import ProfileImage from "Element/ProfileImage";
-import { hexToBech32 } from "../Util";
-import { incDmInteraction } from "State/Login";
-import { RootState } from "State/Store";
+import { hexToBech32 } from "Util";
 import NoteToSelf from "Element/NoteToSelf";
 import useModeration from "Hooks/useModeration";
+import { useDmCache } from "Hooks/useDmsCache";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
-import { useDmCache } from "Hooks/useDmsCache";
 
 type DmChat = {
   pubkey: HexKey;
@@ -21,18 +19,19 @@ type DmChat = {
 };
 
 export default function MessagesPage() {
-  const dispatch = useDispatch();
-  const myPubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
-  const dmInteraction = useSelector<RootState, number>(s => s.login.dmInteraction);
+  const login = useLogin();
   const { isMuted } = useModeration();
   const dms = useDmCache();
 
   const chats = useMemo(() => {
-    return extractChats(
-      dms.filter(a => !isMuted(a.pubkey)),
-      myPubKey ?? ""
-    );
-  }, [dms, myPubKey, dmInteraction]);
+    if (login.publicKey) {
+      return extractChats(
+        dms.filter(a => !isMuted(a.pubkey)),
+        login.publicKey
+      );
+    }
+    return [];
+  }, [dms, login]);
 
   const unreadCount = useMemo(() => chats.reduce((p, c) => p + c.unreadMessages, 0), [chats]);
 
@@ -50,7 +49,7 @@ export default function MessagesPage() {
   }
 
   function person(chat: DmChat) {
-    if (chat.pubkey === myPubKey) return noteToSelf(chat);
+    if (chat.pubkey === login.publicKey) return noteToSelf(chat);
     return (
       <div className="flex mb10" key={chat.pubkey}>
         <ProfileImage pubkey={chat.pubkey} className="f-grow" link={`/messages/${hexToBech32("npub", chat.pubkey)}`} />
@@ -63,7 +62,6 @@ export default function MessagesPage() {
     for (const c of chats) {
       setLastReadDm(c.pubkey);
     }
-    dispatch(incDmInteraction());
   }
 
   return (
@@ -78,7 +76,11 @@ export default function MessagesPage() {
       </div>
       {chats
         .sort((a, b) => {
-          return a.pubkey === myPubKey ? -1 : b.pubkey === myPubKey ? 1 : b.newestMessage - a.newestMessage;
+          return a.pubkey === login.publicKey
+            ? -1
+            : b.pubkey === login.publicKey
+            ? 1
+            : b.newestMessage - a.newestMessage;
         })
         .map(person)}
     </div>

@@ -1,5 +1,4 @@
-import { useSelector } from "react-redux";
-import { RootState } from "State/Store";
+import useLogin from "Hooks/useLogin";
 import NostrBuild from "Upload/NostrBuild";
 import VoidCat from "Upload/VoidCat";
 import NostrImg from "./NostrImg";
@@ -14,7 +13,7 @@ export interface Uploader {
 }
 
 export default function useFileUpload(): Uploader {
-  const fileUploader = useSelector((s: RootState) => s.login.preferences.fileUploader);
+  const fileUploader = useLogin().preferences.fileUploader;
 
   switch (fileUploader) {
     case "nostr.build": {

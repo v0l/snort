@@ -1,8 +1,7 @@
+import useLogin from "Hooks/useLogin";
 import { useUserProfile } from "Hooks/useUserProfile";
 import Icon from "Icons/Icon";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "State/Store";
 import { UITask } from "Tasks";
 import { Nip5Task } from "./Nip5Task";
 
@@ -10,7 +9,7 @@ const AllTasks: Array<UITask> = [new Nip5Task()];
 AllTasks.forEach(a => a.load());
 
 export const TaskList = () => {
-  const publicKey = useSelector((s: RootState) => s.login.publicKey);
+  const publicKey = useLogin().publicKey;
   const user = useUserProfile(publicKey);
   const [, setTick] = useState<number>(0);
 

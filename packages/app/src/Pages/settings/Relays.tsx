@@ -1,37 +1,37 @@
 import { useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useDispatch, useSelector } from "react-redux";
 
-import { randomSample } from "Util";
+import { randomSample, unixNowMs } from "Util";
 import Relay from "Element/Relay";
 import useEventPublisher from "Feed/EventPublisher";
-import { RootState } from "State/Store";
-import { setRelays } from "State/Login";
 import { System } from "System";
+import useLogin from "Hooks/useLogin";
+import { setRelays } from "Login";
 
 import messages from "./messages";
-
 const RelaySettingsPage = () => {
-  const dispatch = useDispatch();
   const publisher = useEventPublisher();
-  const relays = useSelector((s: RootState) => s.login.relays);
+  const login = useLogin();
+  const relays = login.relays;
   const [newRelay, setNewRelay] = useState<string>();
 
   const otherConnections = useMemo(() => {
-    return [...System.Sockets.keys()].filter(a => relays[a] === undefined);
+    return [...System.Sockets.keys()].filter(a => relays.item[a] === undefined);
   }, [relays]);
 
   async function saveRelays() {
-    const ev = await publisher.saveRelays();
-    publisher.broadcast(ev);
-    publisher.broadcastForBootstrap(ev);
-    try {
-      const onlineRelays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
-      const settingsEv = await publisher.saveRelaysSettings();
-      const rs = Object.keys(relays).concat(randomSample(onlineRelays, 20));
-      publisher.broadcastAll(settingsEv, rs);
-    } catch (error) {
-      console.error(error);
+    if (publisher) {
+      const ev = await publisher.contactList(login.follows.item, login.relays.item);
+      publisher.broadcast(ev);
+      publisher.broadcastForBootstrap(ev);
+      try {
+        const onlineRelays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
+        const relayList = await publisher.relayList(login.relays.item);
+        const rs = Object.keys(relays).concat(randomSample(onlineRelays, 20));
+        publisher.broadcastAll(relayList, rs);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
@@ -69,13 +69,10 @@ const RelaySettingsPage = () => {
     if ((newRelay?.length ?? 0) > 0) {
       const parsed = new URL(newRelay ?? "");
       const payload = {
-        relays: {
-          ...relays,
-          [parsed.toString()]: { read: false, write: false },
-        },
-        createdAt: Math.floor(new Date().getTime() / 1000),
+        ...relays.item,
+        [parsed.toString()]: { read: true, write: true },
       };
-      dispatch(setRelays(payload));
+      setRelays(login, payload, unixNowMs());
     }
   }
 
@@ -85,7 +82,7 @@ const RelaySettingsPage = () => {
         <FormattedMessage {...messages.Relays} />
       </h3>
       <div className="flex f-col mb10">
-        {Object.keys(relays || {}).map(a => (
+        {Object.keys(relays.item || {}).map(a => (
           <Relay addr={a} key={a} />
         ))}
       </div>

@@ -2,12 +2,19 @@ import Nostrich from "nostrich.webp";
 
 import { TaggedRawEvent } from "@snort/nostr";
 import { EventKind } from "@snort/nostr";
-import type { NotificationRequest } from "State/Login";
 import { MetadataCache } from "Cache";
 import { getDisplayName } from "Element/ProfileImage";
 import { MentionRegex } from "Const";
 import { tagFilterOfTextRepost, unwrap } from "Util";
 import { UserCache } from "Cache/UserCache";
+import { LoginSession } from "Login";
+
+export interface NotificationRequest {
+  title: string;
+  body: string;
+  icon: string;
+  timestamp: number;
+}
 
 export async function makeNotification(ev: TaggedRawEvent): Promise<NotificationRequest | null> {
   switch (ev.kind) {
@@ -51,4 +58,21 @@ function replaceTagsWithUser(ev: TaggedRawEvent, users: MetadataCache[]) {
       return match;
     })
     .join();
+}
+
+export async function sendNotification(state: LoginSession, req: NotificationRequest) {
+  const hasPermission = "Notification" in window && Notification.permission === "granted";
+  const shouldShowNotification = hasPermission && req.timestamp > state.readNotifications;
+  if (shouldShowNotification) {
+    try {
+      const worker = await navigator.serviceWorker.ready;
+      worker.showNotification(req.title, {
+        tag: "notification",
+        vibrate: [500],
+        ...req,
+      });
+    } catch (error) {
+      console.warn(error);
+    }
+  }
 }

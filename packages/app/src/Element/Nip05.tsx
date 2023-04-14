@@ -1,7 +1,7 @@
 import "./Nip05.css";
 import { useQuery } from "react-query";
-import Icon from "Icons/Icon";
 import { HexKey } from "@snort/nostr";
+import Icon from "Icons/Icon";
 
 interface NostrJson {
   names: Record<string, string>;

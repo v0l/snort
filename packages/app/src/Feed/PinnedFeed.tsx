@@ -1,10 +1,8 @@
-import { useSelector } from "react-redux";
-
-import { RootState } from "State/Store";
 import { HexKey, Lists } from "@snort/nostr";
 import useNotelistSubscription from "Hooks/useNotelistSubscription";
+import useLogin from "Hooks/useLogin";
 
 export default function usePinnedFeed(pubkey?: HexKey) {
-  const { pinned } = useSelector((s: RootState) => s.login);
+  const pinned = useLogin().pinned.item;
   return useNotelistSubscription(pubkey, Lists.Pinned, pinned);
 }
