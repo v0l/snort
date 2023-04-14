@@ -247,7 +247,7 @@ export class EventPublisher {
       if (thread.root || thread.replyTo) {
         eb.tag(["e", thread.root?.Event ?? thread.replyTo?.Event ?? "", "", "root"]);
       }
-      eb.tag(["e", replyTo.id, replyTo.relays[0] ?? "", "reply"]);
+      eb.tag(["e", replyTo.id, replyTo.relays?.[0] ?? "", "reply"]);
 
       for (const pk of thread.pubKeys) {
         if (pk === this.#pubKey) {
