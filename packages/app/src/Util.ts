@@ -179,9 +179,9 @@ export function dedupeByPubkey(events: TaggedRawEvent[]) {
   return deduped.list as TaggedRawEvent[];
 }
 
-export function dedupeById(events: TaggedRawEvent[]) {
+export function dedupeById<T extends { id: string }>(events: Array<T>) {
   const deduped = events.reduce(
-    ({ list, seen }: { list: TaggedRawEvent[]; seen: Set<HexKey> }, ev) => {
+    ({ list, seen }: { list: Array<T>; seen: Set<string> }, ev) => {
       if (seen.has(ev.id)) {
         return { list, seen };
       }
@@ -193,7 +193,7 @@ export function dedupeById(events: TaggedRawEvent[]) {
     },
     { list: [], seen: new Set([]) }
   );
-  return deduped.list as TaggedRawEvent[];
+  return deduped.list as Array<T>;
 }
 
 /**

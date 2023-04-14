@@ -49,7 +49,12 @@ const SettingsIndex = () => {
         </div>
         <div className="settings-row" onClick={() => navigate("handle")}>
           <Icon name="badge" />
-          <FormattedMessage defaultMessage="Manage Nostr Adddress (NIP-05)" />
+          <FormattedMessage defaultMessage="Snort Nostr Adddress" />
+          <Icon name="arrowFront" />
+        </div>
+        <div className="settings-row" onClick={() => navigate("/subscribe/manage")}>
+          <Icon name="diamond" />
+          <FormattedMessage defaultMessage="Snort Subscription" />
           <Icon name="arrowFront" />
         </div>
         <div className="settings-row" onClick={handleLogout}>

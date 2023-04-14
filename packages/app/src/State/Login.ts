@@ -6,8 +6,9 @@ import { DefaultRelays } from "Const";
 import { RelaySettings } from "@snort/nostr";
 import type { AppDispatch, RootState } from "State/Store";
 import { ImgProxySettings } from "Hooks/useImgProxy";
-import { sanitizeRelayUrl, unwrap } from "Util";
+import { dedupeById, sanitizeRelayUrl, unwrap } from "Util";
 import { DmCache } from "Cache";
+import { getCurrentSubscription, SubscriptionEvent } from "Subscription";
 
 const PrivateKeyItem = "secret";
 const PublicKeyItem = "pubkey";
@@ -205,6 +206,16 @@ export interface LoginStore {
    * Users cusom preferences
    */
   preferences: UserPreferences;
+
+  /**
+   * Subscription events for Snort subscriptions
+   */
+  subscriptions: Array<SubscriptionEvent>;
+
+  /**
+   * Current Snort subscription
+   */
+  subscription?: SubscriptionEvent;
 }
 
 export const DefaultImgProxy = {
@@ -235,6 +246,7 @@ export const InitState = {
   readNotifications: new Date().getTime(),
   dms: [],
   dmInteraction: 0,
+  subscriptions: [],
   preferences: {
     enableReactions: true,
     reactionEmoji: "+",
@@ -465,6 +477,10 @@ const LoginSlice = createSlice({
       state.preferences = action.payload;
       window.localStorage.setItem(UserPreferencesKey, JSON.stringify(state.preferences));
     },
+    addSubscription: (state, action: PayloadAction<Array<SubscriptionEvent>>) => {
+      state.subscriptions = dedupeById([...state.subscriptions, ...action.payload]);
+      state.subscription = getCurrentSubscription(state.subscriptions);
+    },
   },
 });
 
@@ -487,6 +503,7 @@ export const {
   markNotificationsRead,
   setLatestNotifications,
   setPreferences,
+  addSubscription,
 } = LoginSlice.actions;
 
 export function sendNotification({
