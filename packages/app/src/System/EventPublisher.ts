@@ -340,6 +340,7 @@ export class EventPublisher {
 
   async generic(fnHook: EventBuilderHook) {
     const eb = new EventBuilder();
+    eb.pubKey(this.#pubKey);
     fnHook(eb);
     return await this.#sign(eb);
   }
