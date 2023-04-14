@@ -66,9 +66,12 @@ export function SubscribePage() {
                 />
                 :
               </p>
+              <b>
+                <FormattedMessage defaultMessage="Not all features are built yet, more features to be added soon!" />
+              </b>
               <ul>
                 {a.unlocks.map(b => (
-                  <li>{mapFeatureName(b)}</li>
+                  <li>{mapFeatureName(b)} </li>
                 ))}
                 {lower.map(b => (
                   <li>
