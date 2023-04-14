@@ -28,6 +28,7 @@ const Translators = [
   bech32ToHex("npub1z0ykz6lp3y8rjjntenns0ee02062g2f0n55u49w44xdemw35vcpsda5jhh"), // noraglyphs - JA
   bech32ToHex("npub13wa880se2h3l54k7x76edrkrt4p94sh4q090974mt0z6n09qtntqxp47uk"), // numpad0 - JA
   bech32ToHex("npub147ccm75um0zkn0lr9fg9wrag2g6yxfw234fpmhdwuvaqjyegrhgs46t2td"), // ROBO358 - JA
+  bech32ToHex("npub1ppxgsqdv4ygvdnzznudahtwqc3vaqjz3824vawfgwchpegz0lsjqqys35r"), // Kisato - JA
 
   bech32ToHex("npub1ww8kjxz2akn82qptdpl7glywnchhkx3x04hez3d3rye397turrhssenvtp"), // Zoltan - HU
 
@@ -40,6 +41,8 @@ const Translators = [
   bech32ToHex("npub10529hxckjm5t5mchss5lnpsqrmavulglxhrmu5quuu4hs6yuyh3qc9gxd5"), // aadbitcoin - ID
 
   bech32ToHex("npub19jk45jz45gczwfm22y9z69xhaex3nwg47dz84zw096xl6z62amkqj99rv7"), // Pextar - SV
+
+  bech32ToHex("npub1z9n5ktfjrlpyywds9t7ljekr9cm9jjnzs27h702te5fy8p2c4dgs5zvycf"), // Felix - DE
 ];
 
 export const DonateLNURL = "donate@snort.social";

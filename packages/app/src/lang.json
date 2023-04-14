@@ -393,6 +393,9 @@
   "K3r6DQ": {
     "defaultMessage": "Delete"
   },
+  "K4GiAj": {
+    "defaultMessage": "Not all features are built yet, more features to be added soon!"
+  },
   "K7AkdL": {
     "defaultMessage": "Show"
   },
@@ -635,9 +638,6 @@
   },
   "a5UPxh": {
     "defaultMessage": "Fund developers and platforms providing NIP-05 verification services"
-  },
-  "aJEO/4": {
-    "defaultMessage": "Can't create vote, maybe you're not logged in?"
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
