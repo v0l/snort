@@ -3,7 +3,7 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
   root: true,
-  ignorePatterns: ["dist/", "src/legacy"],
+  ignorePatterns: ["dist/", "src/legacy", "webpack.config.js"],
   env: {
     browser: true,
     node: true,

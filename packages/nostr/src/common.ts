@@ -40,3 +40,15 @@ export class NostrError extends Error {
     super(message)
   }
 }
+
+/**
+ * Recursive readonly type.
+ */
+export type DeepReadonly<T> = T extends (
+  this: unknown,
+  ...args: unknown[]
+) => unknown
+  ? T
+  : {
+      readonly [P in keyof T]: DeepReadonly<T[P]>
+    }

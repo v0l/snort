@@ -2,8 +2,8 @@ import { assert } from "chai"
 import { EventKind } from "../src/event"
 import { parsePublicKey } from "../src/crypto"
 import { setup } from "./setup"
-import { createTextNote } from "../src/event/text"
-import { createDeletion } from "../src/event/deletion"
+import { TextNote } from "../src/event/kind/text-note"
+import { Deletion } from "../src/event/kind/deletion"
 
 describe("deletion", () => {
   // Test that a deletion event deletes existing events. Test that the deletion event
@@ -32,30 +32,35 @@ describe("deletion", () => {
           assert.strictEqual(event.created_at, timestamp)
           assert.strictEqual(event.content, "")
           if (event.kind === EventKind.Deletion) {
-            assert.deepStrictEqual(event.getEvents(), [textNoteId])
+            assert.deepStrictEqual(event.deletedEvents, [textNoteId])
           }
           done()
         })
 
-        createTextNote("hello world", publisherSecret).then((textNote) => {
-          textNoteId = textNote.id
-          publisher.publish({
-            ...textNote,
+        TextNote.create({
+          note: "hello world",
+          priv: publisherSecret,
+          base: {
             created_at: timestamp,
-          })
+          },
         })
+          .then((textNote) => {
+            textNoteId = textNote.id
+            return publisher.publish(textNote)
+          })
+          .catch(done)
 
         publisher.on("ok", async ({ eventId, ok }) => {
           assert.strictEqual(ok, true)
 
           if (eventId === textNoteId) {
             // After the text note has been published, delete it.
-            const deletion = await createDeletion(
-              { events: [textNoteId] },
-              publisherSecret
-            )
+            const deletion = await Deletion.create({
+              events: [textNoteId],
+              priv: publisherSecret,
+            })
             deletionId = deletion.id
-            publisher.publish({
+            await publisher.publish({
               ...deletion,
               created_at: timestamp,
             })

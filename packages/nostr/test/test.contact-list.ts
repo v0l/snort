@@ -1,6 +1,6 @@
 import { assert } from "chai"
 import { EventKind } from "../src/event"
-import { createContactList } from "../src/event/contact-list"
+import { ContactList } from "../src/event/kind/contact-list"
 import { setup } from "./setup"
 
 describe("contact-list", () => {
@@ -37,7 +37,7 @@ describe("contact-list", () => {
         assert.strictEqual(event.kind, EventKind.ContactList)
         assert.strictEqual(event.content, "")
         if (event.kind === EventKind.ContactList) {
-          assert.deepStrictEqual(event.getContacts(), contacts)
+          assert.deepStrictEqual(event.contacts, contacts)
         }
         done()
       })
@@ -47,7 +47,12 @@ describe("contact-list", () => {
       // After the subscription event sync is done, publish the test event.
       subscriber.on("eose", async () => {
         // TODO No signEvent, have a convenient way to do this
-        publisher.publish(await createContactList(contacts, subscriberSecret))
+        await publisher.publish(
+          await ContactList.create({
+            contacts,
+            priv: subscriberSecret,
+          })
+        )
       })
     })
   })

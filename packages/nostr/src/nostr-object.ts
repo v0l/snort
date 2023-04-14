@@ -1,11 +1,14 @@
+import { DeepReadonly } from "./common"
 import { PublicKey } from "./crypto"
-import { RawEvent, Unsigned } from "./event"
+import { EventProps, UnsignedEventProps } from "./event"
 
 declare global {
   interface Window {
     nostr?: {
       getPublicKey: () => Promise<PublicKey>
-      signEvent: <T extends RawEvent>(event: Unsigned<T>) => Promise<T>
+      signEvent: (
+        event: DeepReadonly<UnsignedEventProps>
+      ) => Promise<EventProps>
 
       getRelays?: () => Promise<
         Record<string, { read: boolean; write: boolean }>

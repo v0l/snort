@@ -1,7 +1,7 @@
 import { assert } from "chai"
 import { defined } from "../src/common"
 import { EventKind } from "../src/event"
-import { createSetMetadata } from "../src/event/set-metadata"
+import { SetMetadata } from "../src/event/kind/set-metadata"
 import { setup } from "./setup"
 
 describe("internet-identifier", () => {
@@ -26,17 +26,17 @@ describe("internet-identifier", () => {
 
       // After the subscription event sync is done, publish the test event.
       subscriber.on("eose", async () => {
-        publisher.publish({
-          ...(await createSetMetadata(
-            {
+        await publisher.publish(
+          await SetMetadata.create({
+            userMetadata: {
               about: "",
               name: "",
               picture: "",
               nip05: "bob@localhost:12647",
             },
-            publisherSecret
-          )),
-        })
+            priv: publisherSecret,
+          })
+        )
       })
     })
   })
@@ -59,16 +59,16 @@ describe("internet-identifier", () => {
 
       // After the subscription event sync is done, publish the test event.
       subscriber.on("eose", async () => {
-        publisher.publish({
-          ...(await createSetMetadata(
-            {
+        await publisher.publish(
+          await SetMetadata.create({
+            userMetadata: {
               about: "",
               name: "",
               picture: "",
             },
-            publisherSecret
-          )),
-        })
+            priv: publisherSecret,
+          })
+        )
       })
     })
   })

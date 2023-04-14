@@ -1,38 +1,25 @@
+import { DeepReadonly, NostrError, Timestamp, unixTimestamp } from "../common"
 import {
-  PublicKey,
-  sha256,
-  schnorrSign,
-  schnorrVerify,
   getPublicKey,
   HexOrBechPrivateKey,
   parsePrivateKey,
+  PublicKey,
+  schnorrSign,
+  schnorrVerify,
+  sha256,
 } from "../crypto"
-import { Timestamp, unixTimestamp, NostrError } from "../common"
-import { TextNote } from "./text"
-import {
-  getUserMetadata,
-  SetMetadata,
-  verifyInternetIdentifier,
-} from "./set-metadata"
-import {
-  DirectMessage,
-  getMessage,
-  getPrevious,
-  getRecipient,
-} from "./direct-message"
-import { ContactList, getContacts } from "./contact-list"
-import { Deletion, getEvents } from "./deletion"
+import { ContactList } from "./kind/contact-list"
+import { Deletion } from "./kind/deletion"
+import { DirectMessage } from "./kind/direct-message"
+import { SetMetadata } from "./kind/set-metadata"
+import { TextNote } from "./kind/text-note"
+import { Unknown } from "./kind/unknown"
 import "../nostr-object"
 
-// TODO Add remaining event types
-
-// TODO
-// Think about this more
-// Perhaps the best option is for all these factory methods to have an overload which also accept a private
-// key as last parameter and return the event already signed
-// Or maybe opts: { sign?: boolean | HexOrBechPrivateKey } setting sign to true should use nip07, setting
-// it to a string will use that string as the private key
-
+/**
+ * The enumeration of all known event kinds. Used to discriminate between different
+ * event types.
+ */
 export enum EventKind {
   SetMetadata = 0, // NIP-01
   TextNote = 1, // NIP-01
@@ -52,31 +39,52 @@ export enum EventKind {
 }
 
 /**
- * A nostr event in the format that's sent across the wire.
+ * For an explanation of the fields, see @see EventProps.
  */
-export interface RawEvent {
-  id: string
-  pubkey: PublicKey
-  created_at: Timestamp
+export interface InputEventProps {
+  tags?: string[][]
+  content?: string
+  created_at?: Timestamp
+}
+
+/**
+ * The fields of an unsigned event. These can be used when building a nonstandard
+ * event.
+ *
+ * TODO Document the fields
+ */
+export interface UnsignedEventProps {
   kind: EventKind
   tags: string[][]
   content: string
-  sig: string
-
-  [key: string]: unknown
+  created_at?: Timestamp
 }
 
-export interface Unknown extends RawEvent {
-  kind: Exclude<
-    EventKind,
-    | EventKind.SetMetadata
-    | EventKind.TextNote
-    | EventKind.ContactList
-    | EventKind.DirectMessage
-    | EventKind.Deletion
-  >
+/**
+ * The fields of a signed event.
+ *
+ * This type is strictly readonly because it's signed. Changing any of the fields would
+ * invalidate the signature.
+ *
+ * TODO Document the fields
+ */
+export interface EventProps extends DeepReadonly<UnsignedEventProps> {
+  readonly id: string
+  readonly pubkey: PublicKey
+  readonly sig: string
+  readonly created_at: Timestamp
 }
 
+/**
+ * An event. The `kind` field can be used to determine the event type at compile
+ * time. The event signature and delegation token are verified when the event is
+ * received or published. The event format is verified at construction time.
+ *
+ * Events are immutable because they're signed. Changing them after singing would
+ * invalidate the signature.
+ *
+ * TODO Document how to work with unsigned events and why one would want to do that.
+ */
 export type Event =
   | SetMetadata
   | TextNote
@@ -91,143 +99,92 @@ export type Event =
 export type EventId = string
 
 /**
- * An unsigned event.
+ * Calculate the id, sig, and pubkey fields of the event. Set created_at to the current timestamp,
+ * if missing. Return a signed clone of the event.
  */
-export type Unsigned<T extends Event | RawEvent> = {
-  [Property in keyof UnsignedWithPubkey<T> as Exclude<
-    Property,
-    "pubkey"
-  >]: T[Property]
-} & {
-  pubkey?: PublicKey
-}
-
-/**
- * Same as @see {@link Unsigned}, but with the pubkey field.
- */
-type UnsignedWithPubkey<T extends Event | RawEvent> = {
-  [Property in keyof T as Exclude<
-    Property,
-    "id" | "sig" | "created_at"
-  >]: T[Property]
-} & {
-  id?: EventId
-  sig?: string
-  created_at?: number
-}
-
-/**
- * Add the "id," "sig," and "pubkey" fields to the event. Set "created_at" to the current timestamp
- * if missing. Return the event.
- */
-export async function signEvent<T extends RawEvent>(
-  event: Unsigned<T>,
+export async function signEvent(
+  event: DeepReadonly<UnsignedEventProps>,
   priv?: HexOrBechPrivateKey
-): Promise<T> {
-  event.created_at ??= unixTimestamp()
+): Promise<EventProps> {
+  const createdAt = event.created_at ?? unixTimestamp()
   if (priv !== undefined) {
     priv = parsePrivateKey(priv)
-    event.pubkey = getPublicKey(priv)
-    const id = await serializeEventId(
-      // This conversion is safe because the pubkey field is set above.
-      event as unknown as UnsignedWithPubkey<T>
-    )
-    event.id = id
-    event.sig = await schnorrSign(id, priv)
-    return event as T
+    const pubkey = getPublicKey(priv)
+    const id = await serializeEventId(event, pubkey, createdAt)
+    const sig = await schnorrSign(id, priv)
+    return {
+      ...structuredClone(event),
+      id,
+      sig,
+      pubkey,
+      created_at: createdAt,
+    }
   } else {
     if (typeof window === "undefined" || window.nostr === undefined) {
-      throw new NostrError("no private key provided")
-    }
-    // Extensions like nos2x expect to receive only the event data, without any of the methods.
-    const methods: { [key: string]: unknown } = {}
-    for (const [key, value] of Object.entries(event)) {
-      if (typeof value === "function") {
-        methods[key] = value
-        delete event[key]
-      }
+      throw new NostrError(
+        "no private key provided and window.nostr is not available"
+      )
     }
     const signed = await window.nostr.signEvent(event)
-    return {
-      ...signed,
-      ...methods,
-    }
+    return structuredClone(signed)
   }
 }
 
+// TODO Shouldn't be exposed to the user
 /**
- * Parse an event from its raw format.
+ * Parse an event from its raw fields.
  */
-export async function parseEvent(event: RawEvent): Promise<Event> {
-  if (event.id !== (await serializeEventId(event))) {
+export function parseEvent(event: EventProps): Event {
+  if (event.kind === EventKind.TextNote) {
+    return new TextNote(event)
+  }
+  if (event.kind === EventKind.SetMetadata) {
+    return new SetMetadata(event)
+  }
+  if (event.kind === EventKind.DirectMessage) {
+    return new DirectMessage(event)
+  }
+  if (event.kind === EventKind.ContactList) {
+    return new ContactList(event)
+  }
+  if (event.kind === EventKind.Deletion) {
+    return new Deletion(event)
+  }
+  return new Unknown(event)
+}
+
+// TODO Probably shouldn't be exposed to the user
+/**
+ * Verify the signature of the event. If the signature is invalid, throw @see NostrError.
+ */
+export async function verifySignature(event: EventProps): Promise<void> {
+  if (
+    event.id !== (await serializeEventId(event, event.pubkey, event.created_at))
+  ) {
     throw new NostrError(
       `invalid id ${event.id} for event ${JSON.stringify(
         event
-      )}, expected ${await serializeEventId(event)}`
+      )}, expected ${await serializeEventId(
+        event,
+        event.pubkey,
+        event.created_at
+      )}`
     )
   }
   if (!(await schnorrVerify(event.sig, event.id, event.pubkey))) {
     throw new NostrError(`invalid signature for event ${JSON.stringify(event)}`)
   }
-
-  // TODO Validate all the fields. Lowercase hex fields, etc. Make sure everything is correct.
-  // TODO Also validate that tags have at least one element
-
-  if (event.kind === EventKind.TextNote) {
-    return {
-      ...event,
-      kind: EventKind.TextNote,
-    }
-  }
-
-  if (event.kind === EventKind.SetMetadata) {
-    return {
-      ...event,
-      kind: EventKind.SetMetadata,
-      getUserMetadata,
-      verifyInternetIdentifier,
-    }
-  }
-
-  if (event.kind === EventKind.DirectMessage) {
-    return {
-      ...event,
-      kind: EventKind.DirectMessage,
-      getMessage,
-      getRecipient,
-      getPrevious,
-    }
-  }
-
-  if (event.kind === EventKind.ContactList) {
-    return {
-      ...event,
-      kind: EventKind.ContactList,
-      getContacts,
-    }
-  }
-
-  if (event.kind === EventKind.Deletion) {
-    return {
-      ...event,
-      kind: EventKind.Deletion,
-      getEvents,
-    }
-  }
-
-  return {
-    ...event,
-    kind: event.kind,
-  }
 }
 
 async function serializeEventId(
-  event: UnsignedWithPubkey<RawEvent>
+  event: DeepReadonly<UnsignedEventProps>,
+  pubkey: PublicKey,
+  createdAt: Timestamp
 ): Promise<EventId> {
   const serialized = JSON.stringify([
     0,
-    event.pubkey,
-    event.created_at,
+    pubkey,
+    createdAt,
     event.kind,
     event.tags,
     event.content,

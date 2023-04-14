@@ -1,6 +1,6 @@
 import Base from "events"
 import { Nostr, SubscriptionId } from "."
-import { Event, EventId } from "../event"
+import { EventId, Event } from "../event"
 
 /**
  * Overrides providing better types for EventEmitter methods.

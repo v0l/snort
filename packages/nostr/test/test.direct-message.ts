@@ -2,7 +2,7 @@ import { assert } from "chai"
 import { EventKind } from "../src/event"
 import { parsePublicKey } from "../src/crypto"
 import { setup } from "./setup"
-import { createDirectMessage } from "../src/event/direct-message"
+import { DirectMessage } from "../src/event/kind/direct-message"
 
 describe("direct-message", () => {
   const message = "for your eyes only"
@@ -33,7 +33,7 @@ describe("direct-message", () => {
 
             if (event.kind === EventKind.DirectMessage) {
               assert.strictEqual(
-                event.getRecipient(),
+                event.recipient,
                 parsePublicKey(subscriberPubkey)
               )
               assert.strictEqual(
@@ -49,14 +49,12 @@ describe("direct-message", () => {
         const subscriptionId = subscriber.subscribe([])
 
         subscriber.on("eose", async () => {
-          const event = await createDirectMessage(
-            {
-              message,
-              recipient: subscriberPubkey,
-            },
-            publisherSecret
-          )
-          publisher.publish(event)
+          const event = await DirectMessage.create({
+            message,
+            recipient: subscriberPubkey,
+            priv: publisherSecret,
+          })
+          await publisher.publish(event)
         })
       }
     )
@@ -91,7 +89,7 @@ describe("direct-message", () => {
 
               if (event.kind === EventKind.DirectMessage) {
                 assert.strictEqual(
-                  event.getRecipient(),
+                  event.recipient,
                   parsePublicKey(recipientPubkey)
                 )
                 assert.strictEqual(
@@ -111,14 +109,12 @@ describe("direct-message", () => {
 
         subscriber.on("eose", async () => {
           // TODO No signEvent, do something more convenient
-          const event = await createDirectMessage(
-            {
-              message,
-              recipient: recipientPubkey,
-            },
-            publisherSecret
-          )
-          publisher.publish(event)
+          const event = await DirectMessage.create({
+            message,
+            recipient: recipientPubkey,
+            priv: publisherSecret,
+          })
+          await publisher.publish(event)
         })
       }
     )

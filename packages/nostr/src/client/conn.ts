@@ -1,6 +1,6 @@
 import { NostrError, parseJson } from "../common"
 import { SubscriptionId } from "."
-import { EventId, RawEvent } from "../event"
+import { EventId, EventProps } from "../event"
 import WebSocket from "isomorphic-ws"
 import { Filters } from "../filters"
 
@@ -127,7 +127,7 @@ export type IncomingKind = "event" | "notice" | "ok" | "eose" | "auth"
 export interface IncomingEvent {
   kind: "event"
   subscriptionId: SubscriptionId
-  event: RawEvent
+  event: EventProps
 }
 
 /**
@@ -178,7 +178,7 @@ export type OutgoingKind = "event" | "openSubscription" | "closeSubscription"
  */
 export interface OutgoingEvent {
   kind: "event"
-  event: RawEvent
+  event: EventProps
 }
 
 /**
@@ -304,7 +304,7 @@ function parseIncomingMessage(data: string): IncomingMessage {
   throw new NostrError(`unknown incoming message: ${data}`)
 }
 
-function parseEventData(json: { [key: string]: unknown }): RawEvent {
+function parseEventData(json: { [key: string]: unknown }): EventProps {
   if (
     typeof json["id"] !== "string" ||
     typeof json["pubkey"] !== "string" ||
@@ -319,5 +319,5 @@ function parseEventData(json: { [key: string]: unknown }): RawEvent {
   ) {
     throw new NostrError(`invalid event: ${JSON.stringify(json)}`)
   }
-  return json as unknown as RawEvent
+  return json as unknown as EventProps
 }

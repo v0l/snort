@@ -8,8 +8,7 @@ import {
   parsePublicKey,
   PublicKey,
 } from "../src/crypto"
-import { RawEvent } from "../src"
-import { signEvent, Unsigned } from "../src/event"
+import { signEvent } from "../src/event"
 
 export const relayUrl = new URL("ws://localhost:12648")
 
@@ -46,8 +45,7 @@ export async function setup(
         // Mock the global window.nostr object for the publisher.
         window.nostr = {
           getPublicKey: () => Promise.resolve(parsePublicKey(publisherPubkey)),
-          signEvent: <T extends RawEvent>(event: Unsigned<T>) =>
-            signEvent(event, publisherSecret),
+          signEvent: (event) => signEvent(event, publisherSecret),
 
           getRelays: () => Promise.resolve({}),
 

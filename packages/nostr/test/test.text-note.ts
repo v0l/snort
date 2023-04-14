@@ -2,7 +2,7 @@ import { assert } from "chai"
 import { EventKind } from "../src/event"
 import { parsePublicKey } from "../src/crypto"
 import { setup } from "./setup"
-import { createTextNote } from "../src/event/text"
+import { TextNote } from "../src/event/kind/text-note"
 
 describe("text note", () => {
   const note = "hello world"
@@ -40,10 +40,15 @@ describe("text note", () => {
           assert.strictEqual(nostr, subscriber)
           assert.strictEqual(id, subscriptionId)
 
-          publisher.publish({
-            ...(await createTextNote(note, publisherSecret)),
-            created_at: timestamp,
-          })
+          publisher.publish(
+            await TextNote.create({
+              note,
+              priv: publisherSecret,
+              base: {
+                created_at: timestamp,
+              },
+            })
+          )
         })
       }
     )
@@ -52,7 +57,7 @@ describe("text note", () => {
   // Test that a client interprets an "OK" message after publishing a text note.
   it("publish and ok", function (done) {
     setup(done, async ({ publisher, publisherSecret, url, done }) => {
-      const event = await createTextNote(note, publisherSecret)
+      const event = await TextNote.create({ note, priv: publisherSecret })
       publisher.on("ok", (params, nostr) => {
         assert.strictEqual(nostr, publisher)
         assert.strictEqual(params.eventId, event.id)

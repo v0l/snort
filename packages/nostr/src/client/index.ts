@@ -1,10 +1,12 @@
 import { NostrError } from "../common"
-import { RawEvent, parseEvent } from "../event"
+import { EventProps, verifySignature } from "../event"
 import { Conn } from "./conn"
 import * as secp from "@noble/secp256k1"
 import { EventEmitter } from "./emitter"
 import { fetchRelayInfo, ReadyState, Relay } from "./relay"
 import { Filters } from "../filters"
+import { parseEvent } from "../event"
+import { verifyDelegation } from "../event/delegation"
 
 /**
  * A nostr client.
@@ -82,10 +84,14 @@ export class Nostr extends EventEmitter {
       // Handle messages on this connection.
       onMessage: async (msg) => {
         if (msg.kind === "event") {
+          await Promise.all([
+            verifySignature(msg.event),
+            verifyDelegation(msg.event),
+          ])
           this.emit(
             "event",
             {
-              event: await parseEvent(msg.event),
+              event: parseEvent(msg.event),
               subscriptionId: msg.subscriptionId,
             },
             this
@@ -270,7 +276,8 @@ export class Nostr extends EventEmitter {
   /**
    * Publish an event.
    */
-  publish(event: RawEvent): void {
+  async publish(event: EventProps): Promise<void> {
+    await Promise.all([verifySignature(event), verifyDelegation(event)])
     for (const { conn, write } of this.#conns.values()) {
       if (!write) {
         continue
