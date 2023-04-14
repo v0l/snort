@@ -1,11 +1,9 @@
 import "./SendSats.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { useSelector } from "react-redux";
 import { HexKey, RawEvent } from "@snort/nostr";
 
 import { formatShort } from "Number";
-import { RootState } from "State/Store";
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
 import ProfileImage from "Element/ProfileImage";
@@ -18,6 +16,7 @@ import { useWallet } from "Wallet";
 import { EventExt } from "System/EventExt";
 
 import messages from "./messages";
+import useLogin from "Hooks/useLogin";
 
 enum ZapType {
   PublicZap = 1,
@@ -41,7 +40,7 @@ export interface SendSatsProps {
 export default function SendSats(props: SendSatsProps) {
   const onClose = props.onClose || (() => undefined);
   const { note, author, target } = props;
-  const defaultZapAmount = useSelector((s: RootState) => s.login.preferences.defaultZapAmount);
+  const defaultZapAmount = useLogin().preferences.defaultZapAmount;
   const amounts = [defaultZapAmount, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000];
   const emojis: Record<number, string> = {
     1_000: "👍",

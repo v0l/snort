@@ -1,12 +1,10 @@
 import { TaggedRawEvent } from "@snort/nostr";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
 import { ParsedZap } from "Element/Zap";
 import Text from "Element/Text";
 import useEventPublisher from "Feed/EventPublisher";
-import { RootState } from "State/Store";
 import { useWallet } from "Wallet";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { LNURL } from "LNURL";
@@ -14,6 +12,7 @@ import { unwrap } from "Util";
 import { formatShort } from "Number";
 import Spinner from "Icons/Spinner";
 import SendSats from "Element/SendSats";
+import useLogin from "Hooks/useLogin";
 
 interface PollProps {
   ev: TaggedRawEvent;
@@ -24,8 +23,7 @@ export default function Poll(props: PollProps) {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const { wallet } = useWallet();
-  const prefs = useSelector((s: RootState) => s.login.preferences);
-  const myPubKey = useSelector((s: RootState) => s.login.publicKey);
+  const { preferences: prefs, publicKey: myPubKey } = useLogin();
   const pollerProfile = useUserProfile(props.ev.pubkey);
   const [error, setError] = useState("");
   const [invoice, setInvoice] = useState("");

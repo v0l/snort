@@ -13,6 +13,7 @@ import { findTag } from "Util";
 import { UserCache } from "Cache/UserCache";
 
 import messages from "./messages";
+import useLogin from "Hooks/useLogin";
 
 function getInvoice(zap: TaggedRawEvent): InvoiceDetails | undefined {
   const bolt11 = findTag(zap, "bolt11");
@@ -103,7 +104,7 @@ export interface ParsedZap {
 
 const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean }) => {
   const { amount, content, sender, valid, receiver } = zap;
-  const pubKey = useSelector((s: RootState) => s.login.publicKey);
+  const pubKey = useLogin().publicKey;
 
   return valid && sender ? (
     <div className="zap note card">

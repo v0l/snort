@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, ChangeEvent } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { UserMetadata } from "@snort/nostr";
 
 import { unwrap } from "Util";
 import { formatShort } from "Number";
@@ -20,10 +20,9 @@ import Copy from "Element/Copy";
 import { useUserProfile } from "Hooks/useUserProfile";
 import useEventPublisher from "Feed/EventPublisher";
 import { debounce } from "Util";
-import { UserMetadata } from "@snort/nostr";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
-import { RootState } from "State/Store";
 
 type Nip05ServiceProps = {
   name: string;
@@ -40,7 +39,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   const navigate = useNavigate();
   const { helpText = true } = props;
   const { formatMessage } = useIntl();
-  const pubkey = useSelector((s: RootState) => s.login.publicKey);
+  const pubkey = useLogin().publicKey;
   const user = useUserProfile(pubkey);
   const publisher = useEventPublisher();
   const svc = useMemo(() => new ServiceProvider(props.service), [props.service]);

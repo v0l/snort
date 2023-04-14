@@ -1,13 +1,12 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { HexKey, TaggedRawEvent, EventKind } from "@snort/nostr";
 
-import { RootState } from "State/Store";
 import { PubkeyReplaceableNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
+import useLogin from "Hooks/useLogin";
 
 export default function useFollowsFeed(pubkey?: HexKey) {
-  const { publicKey, follows } = useSelector((s: RootState) => s.login);
+  const { publicKey, follows } = useLogin();
   const isMe = publicKey === pubkey;
 
   const sub = useMemo(() => {
@@ -20,7 +19,7 @@ export default function useFollowsFeed(pubkey?: HexKey) {
   const contactFeed = useRequestBuilder<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
   return useMemo(() => {
     if (isMe) {
-      return follows;
+      return follows.item;
     }
 
     return getFollowing(contactFeed.data ?? [], pubkey);

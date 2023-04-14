@@ -1,15 +1,13 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
-
-import { getNewest } from "Util";
 import { HexKey, TaggedRawEvent, Lists, EventKind } from "@snort/nostr";
 
-import { RootState } from "State/Store";
+import { getNewest } from "Util";
 import { ParameterizedReplaceableNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
+import useLogin from "Hooks/useLogin";
 
 export default function useMutedFeed(pubkey?: HexKey) {
-  const { publicKey, muted } = useSelector((s: RootState) => s.login);
+  const { publicKey, muted } = useLogin();
   const isMe = publicKey === pubkey;
 
   const sub = useMemo(() => {
@@ -28,18 +26,20 @@ export default function useMutedFeed(pubkey?: HexKey) {
     return [];
   }, [mutedFeed, pubkey]);
 
-  return isMe ? muted : mutedList;
+  return isMe ? muted.item : mutedList;
 }
 
 export function getMutedKeys(rawNotes: TaggedRawEvent[]): {
   createdAt: number;
   keys: HexKey[];
+  raw?: TaggedRawEvent;
 } {
   const newest = getNewest(rawNotes);
   if (newest) {
     const { created_at, tags } = newest;
     const keys = tags.filter(t => t[0] === "p").map(t => t[1]);
     return {
+      raw: newest,
       keys,
       createdAt: created_at,
     };

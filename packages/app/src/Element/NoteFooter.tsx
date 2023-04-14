@@ -17,13 +17,14 @@ import SendSats from "Element/SendSats";
 import { ParsedZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { RootState } from "State/Store";
-import { UserPreferences, setPinned, setBookmarked } from "State/Login";
 import { setReplyTo, setShow, reset } from "State/NoteCreator";
 import useModeration from "Hooks/useModeration";
 import { SnortPubKey, TranslateHost } from "Const";
 import { LNURL } from "LNURL";
 import { DonateLNURL } from "Pages/DonatePage";
 import { useWallet } from "Wallet";
+import useLogin from "Hooks/useLogin";
+import { setBookmarked, setPinned } from "Login";
 
 import messages from "./messages";
 
@@ -94,10 +95,9 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { ev, showReactions, setShowReactions, positive, negative, reposts, zaps } = props;
   const dispatch = useDispatch();
   const { formatMessage } = useIntl();
-  const { pinned, bookmarked } = useSelector((s: RootState) => s.login);
-  const login = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+  const login = useLogin();
+  const { pinned, bookmarked, publicKey, preferences: prefs } = login;
   const { mute, block } = useModeration();
-  const prefs = useSelector<RootState, UserPreferences>(s => s.login.preferences);
   const author = useUserProfile(ev.pubkey);
   const publisher = useEventPublisher();
   const showNoteCreatorModal = useSelector((s: RootState) => s.noteCreator.show);
@@ -108,13 +108,13 @@ export default function NoteFooter(props: NoteFooterProps) {
   const walletState = useWallet();
   const wallet = walletState.wallet;
 
-  const isMine = ev.pubkey === login;
+  const isMine = ev.pubkey === publicKey;
   const lang = window.navigator.language;
   const langNames = new Intl.DisplayNames([...window.navigator.languages], {
     type: "language",
   });
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  const didZap = ZapCache.has(ev.id) || zaps.some(a => a.sender === login);
+  const didZap = ZapCache.has(ev.id) || zaps.some(a => a.sender === publicKey);
   const longPress = useLongPress(
     e => {
       e.stopPropagation();
@@ -126,11 +126,11 @@ export default function NoteFooter(props: NoteFooterProps) {
   );
 
   function hasReacted(emoji: string) {
-    return positive?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === login);
+    return positive?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === publicKey);
   }
 
   function hasReposted() {
-    return reposts.some(a => a.pubkey === login);
+    return reposts.some(a => a.pubkey === publicKey);
   }
 
   async function react(content: string) {
@@ -320,17 +320,21 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function pin(id: HexKey) {
-    const es = [...pinned, id];
+    const es = [...pinned.item, id];
     const ev = await publisher.pinned(es);
-    publisher.broadcast(ev);
-    dispatch(setPinned({ keys: es, createdAt: new Date().getTime() }));
+    if (ev) {
+      publisher.broadcast(ev);
+      setPinned(login, es, ev.created_at * 1000);
+    }
   }
 
   async function bookmark(id: HexKey) {
-    const es = [...bookmarked, id];
+    const es = [...bookmarked.item, id];
     const ev = await publisher.bookmarked(es);
-    publisher.broadcast(ev);
-    dispatch(setBookmarked({ keys: es, createdAt: new Date().getTime() }));
+    if (ev) {
+      publisher.broadcast(ev);
+      setBookmarked(login, es, ev.created_at * 1000);
+    }
   }
 
   async function copyEvent() {
@@ -355,13 +359,13 @@ export default function NoteFooter(props: NoteFooterProps) {
           <Icon name="share" />
           <FormattedMessage {...messages.Share} />
         </MenuItem>
-        {!pinned.includes(ev.id) && (
+        {!pinned.item.includes(ev.id) && (
           <MenuItem onClick={() => pin(ev.id)}>
             <Icon name="pin" />
             <FormattedMessage {...messages.Pin} />
           </MenuItem>
         )}
-        {!bookmarked.includes(ev.id) && (
+        {!bookmarked.item.includes(ev.id) && (
           <MenuItem onClick={() => bookmark(ev.id)}>
             <Icon name="bookmark" />
             <FormattedMessage {...messages.Bookmark} />

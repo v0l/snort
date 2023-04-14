@@ -1,18 +1,18 @@
 import { FormattedMessage } from "react-intl";
 import ProfilePreview from "Element/ProfilePreview";
 import useRelayState from "Feed/RelayState";
-import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { removeRelay } from "State/Login";
 import { parseId, unwrap } from "Util";
 import { System } from "System";
+import { removeRelay } from "Login";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
 
 const RelayInfo = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const login = useLogin();
 
   const conn = Array.from(System.Sockets.values()).find(a => a.Id === params.id);
   const stats = useRelayState(conn?.Address ?? "");
@@ -105,7 +105,7 @@ const RelayInfo = () => {
           <div
             className="btn error"
             onClick={() => {
-              dispatch(removeRelay(unwrap(conn).Address));
+              removeRelay(login, unwrap(conn).Address);
               navigate("/settings/relays");
             }}>
             <FormattedMessage {...messages.Remove} />

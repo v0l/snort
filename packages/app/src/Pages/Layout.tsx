@@ -4,13 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 
-import { RelaySettings } from "@snort/nostr";
 import messages from "./messages";
 
-import { bech32ToHex, randomSample, unixNowMs, unwrap } from "Util";
 import Icon from "Icons/Icon";
 import { RootState } from "State/Store";
-import { init, setRelays } from "State/Login";
 import { setShow, reset } from "State/NoteCreator";
 import { System } from "System";
 import ProfileImage from "Element/ProfileImage";
@@ -20,11 +17,11 @@ import useModeration from "Hooks/useModeration";
 import { NoteCreator } from "Element/NoteCreator";
 import { db } from "Db";
 import useEventPublisher from "Feed/EventPublisher";
-import { DefaultRelays, SnortPubKey } from "Const";
 import SubDebug from "Element/SubDebug";
 import { preload } from "Cache";
 import { useDmCache } from "Hooks/useDmsCache";
 import { mapPlanName } from "./subscribe";
+import useLogin from "Hooks/useLogin";
 
 export default function Layout() {
   const location = useLocation();
@@ -33,9 +30,7 @@ export default function Layout() {
   const isReplyNoteCreatorShowing = replyTo && isNoteCreatorShowing;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loggedOut, publicKey, relays, preferences, newUserKey, subscription } = useSelector(
-    (s: RootState) => s.login
-  );
+  const { publicKey, relays, preferences, currentSubscription } = useLogin();
   const [pageClass, setPageClass] = useState("page");
   const pub = useEventPublisher();
   useLoginFeed();
@@ -72,11 +67,11 @@ export default function Layout() {
   useEffect(() => {
     if (relays) {
       (async () => {
-        for (const [k, v] of Object.entries(relays)) {
+        for (const [k, v] of Object.entries(relays.item)) {
           await System.ConnectToRelay(k, v);
         }
         for (const [k, c] of System.Sockets) {
-          if (!relays[k] && !c.Ephemeral) {
+          if (!relays.item[k] && !c.Ephemeral) {
             System.DisconnectRelay(k);
           }
         }
@@ -117,7 +112,6 @@ export default function Layout() {
         await preload();
       }
       console.debug(`Using db: ${a ? "IndexedDB" : "In-Memory"}`);
-      dispatch(init());
 
       try {
         if ("registerProtocolHandler" in window.navigator) {
@@ -133,53 +127,16 @@ export default function Layout() {
     });
   }, []);
 
-  async function handleNewUser() {
-    let newRelays: Record<string, RelaySettings> = {};
-
-    try {
-      const rsp = await fetch("https://api.nostr.watch/v1/online");
-      if (rsp.ok) {
-        const online: string[] = await rsp.json();
-        const pickRandom = randomSample(online, 4);
-        const relayObjects = pickRandom.map(a => [a, { read: true, write: true }]);
-        newRelays = {
-          ...Object.fromEntries(relayObjects),
-          ...Object.fromEntries(DefaultRelays.entries()),
-        };
-        dispatch(
-          setRelays({
-            relays: newRelays,
-            createdAt: unixNowMs(),
-          })
-        );
-      }
-    } catch (e) {
-      console.warn(e);
-    }
-
-    const ev = await pub.addFollow([bech32ToHex(SnortPubKey), unwrap(publicKey)], newRelays);
-    pub.broadcast(ev);
-  }
-
-  useEffect(() => {
-    if (newUserKey === true) {
-      handleNewUser().catch(console.warn);
-    }
-  }, [newUserKey]);
-
-  if (typeof loggedOut !== "boolean") {
-    return null;
-  }
   return (
     <div className={pageClass}>
       {!shouldHideHeader && (
         <header>
           <div className="logo" onClick={() => navigate("/")}>
             <h1>Snort</h1>
-            {subscription && (
+            {currentSubscription && (
               <small className="flex">
                 <Icon name="diamond" size={10} className="mr5" />
-                {mapPlanName(subscription.type)}
+                {mapPlanName(currentSubscription.type)}
               </small>
             )}
           </div>
@@ -214,7 +171,7 @@ const AccountHeader = () => {
   const navigate = useNavigate();
 
   const { isMuted } = useModeration();
-  const { publicKey, latestNotification, readNotifications } = useSelector((s: RootState) => s.login);
+  const { publicKey, latestNotification, readNotifications } = useLogin();
   const dms = useDmCache();
 
   const hasNotifications = useMemo(

@@ -1,13 +1,12 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import * as secp from "@noble/secp256k1";
 import { EventKind, RelaySettings, TaggedRawEvent, HexKey, RawEvent, u256, UserMetadata, Lists } from "@snort/nostr";
 
-import { RootState } from "State/Store";
 import { bech32ToHex, delay, unwrap } from "Util";
 import { DefaultRelays, HashtagRegex } from "Const";
 import { System } from "System";
 import { EventExt } from "System/EventExt";
+import useLogin from "Hooks/useLogin";
 
 declare global {
   interface Window {
@@ -26,10 +25,7 @@ declare global {
 export type EventPublisher = ReturnType<typeof useEventPublisher>;
 
 export default function useEventPublisher() {
-  const pubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
-  const privKey = useSelector<RootState, HexKey | undefined>(s => s.login.privateKey);
-  const follows = useSelector<RootState, HexKey[]>(s => s.login.follows);
-  const relays = useSelector((s: RootState) => s.login.relays);
+  const { publicKey: pubKey, privateKey: privKey, follows, relays } = useLogin();
   const hasNip07 = "nostr" in window;
 
   async function signEvent(ev: RawEvent): Promise<RawEvent> {
@@ -270,7 +266,7 @@ export default function useEventPublisher() {
       if (pubKey) {
         const ev = EventExt.forPubKey(pubKey, EventKind.ContactList);
         ev.content = JSON.stringify(relays);
-        for (const pk of follows) {
+        for (const pk of follows.item) {
           ev.tags.push(["p", pk]);
         }
 
@@ -297,7 +293,7 @@ export default function useEventPublisher() {
       if (pubKey) {
         const ev = EventExt.forPubKey(pubKey, EventKind.ContactList);
         ev.content = JSON.stringify(newRelays ?? relays);
-        const temp = new Set(follows);
+        const temp = new Set(follows.item);
         if (Array.isArray(pkAdd)) {
           pkAdd.forEach(a => temp.add(a));
         } else {
@@ -317,7 +313,7 @@ export default function useEventPublisher() {
       if (pubKey) {
         const ev = EventExt.forPubKey(pubKey, EventKind.ContactList);
         ev.content = JSON.stringify(relays);
-        for (const pk of follows) {
+        for (const pk of follows.item) {
           if (pk === pkRemove || pk.length !== 64) {
             continue;
           }

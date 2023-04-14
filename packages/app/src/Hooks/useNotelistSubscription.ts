@@ -1,13 +1,12 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { HexKey, Lists, EventKind } from "@snort/nostr";
 
-import { RootState } from "State/Store";
 import { FlatNoteStore, ParameterizedReplaceableNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
+import useLogin from "Hooks/useLogin";
 
 export default function useNotelistSubscription(pubkey: HexKey | undefined, l: Lists, defaultIds: HexKey[]) {
-  const { preferences, publicKey } = useSelector((s: RootState) => s.login);
+  const { preferences, publicKey } = useLogin();
   const isMe = publicKey === pubkey;
 
   const sub = useMemo(() => {

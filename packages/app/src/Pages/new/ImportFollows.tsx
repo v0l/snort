@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
@@ -7,15 +6,15 @@ import { ApiHost } from "Const";
 import Logo from "Element/Logo";
 import AsyncButton from "Element/AsyncButton";
 import FollowListBase from "Element/FollowListBase";
-import { RootState } from "State/Store";
 import { bech32ToHex } from "Util";
 import SnortApi from "SnortApi";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
 
 export default function ImportFollows() {
   const navigate = useNavigate();
-  const currentFollows = useSelector((s: RootState) => s.login.follows);
+  const currentFollows = useLogin().follows;
   const { formatMessage } = useIntl();
   const [twitterUsername, setTwitterUsername] = useState<string>("");
   const [follows, setFollows] = useState<string[]>([]);
@@ -23,7 +22,7 @@ export default function ImportFollows() {
   const api = new SnortApi(ApiHost);
 
   const sortedTwitterFollows = useMemo(() => {
-    return follows.map(a => bech32ToHex(a)).sort(a => (currentFollows.includes(a) ? 1 : -1));
+    return follows.map(a => bech32ToHex(a)).sort(a => (currentFollows.item.includes(a) ? 1 : -1));
   }, [follows, currentFollows]);
 
   async function loadFollows() {

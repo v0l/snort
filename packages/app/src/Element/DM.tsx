@@ -1,17 +1,15 @@
 import "./DM.css";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useIntl } from "react-intl";
 import { useInView } from "react-intersection-observer";
-import { HexKey, TaggedRawEvent } from "@snort/nostr";
+import { TaggedRawEvent } from "@snort/nostr";
 
 import useEventPublisher from "Feed/EventPublisher";
 import NoteTime from "Element/NoteTime";
 import Text from "Element/Text";
 import { setLastReadDm } from "Pages/MessagesPage";
-import { RootState } from "State/Store";
-import { incDmInteraction } from "State/Login";
 import { unwrap } from "Util";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
 
@@ -20,8 +18,7 @@ export type DMProps = {
 };
 
 export default function DM(props: DMProps) {
-  const dispatch = useDispatch();
-  const pubKey = useSelector<RootState, HexKey | undefined>(s => s.login.publicKey);
+  const pubKey = useLogin().publicKey;
   const publisher = useEventPublisher();
   const [content, setContent] = useState("Loading...");
   const [decrypted, setDecrypted] = useState(false);
@@ -35,7 +32,6 @@ export default function DM(props: DMProps) {
     setContent(decrypted || "<ERROR>");
     if (!isMe) {
       setLastReadDm(props.data.pubkey);
-      dispatch(incDmInteraction());
     }
   }
 

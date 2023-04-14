@@ -1,13 +1,12 @@
-import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "Element/Logo";
 import { CollapsedSection } from "Element/Collapsed";
 import Copy from "Element/Copy";
-import { RootState } from "State/Store";
 import { hexToBech32 } from "Util";
 import { hexToMnemonic } from "nip6";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
 
@@ -69,7 +68,7 @@ const Extensions = () => {
 };
 
 export default function NewUserFlow() {
-  const { publicKey, privateKey, generatedEntropy } = useSelector((s: RootState) => s.login);
+  const { publicKey, privateKey, generatedEntropy } = useLogin();
   const navigate = useNavigate();
 
   return (

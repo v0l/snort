@@ -12,6 +12,7 @@ import { TimelineSubject } from "Feed/TimelineFeed";
 import { debounce, getRelayName, sha256, unixNow, unwrap } from "Util";
 
 import messages from "./messages";
+import useLogin from "Hooks/useLogin";
 
 interface RelayOption {
   url: string;
@@ -22,7 +23,7 @@ export default function RootPage() {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
-  const { publicKey: pubKey, tags, preferences } = useSelector((s: RootState) => s.login);
+  const { publicKey: pubKey, tags, preferences } = useLogin();
 
   const RootTab: Record<string, Tab> = {
     Posts: {
@@ -65,7 +66,7 @@ export default function RootPage() {
     }
   }, [location]);
 
-  const tagTabs = tags.map((t, idx) => {
+  const tagTabs = tags.item.map((t, idx) => {
     return { text: `#${t}`, value: idx + 3, data: `/tag/${t}` };
   });
   const tabs = [RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global, ...tagTabs];
@@ -81,8 +82,8 @@ export default function RootPage() {
 }
 
 const FollowsHint = () => {
-  const { publicKey: pubKey, follows } = useSelector((s: RootState) => s.login);
-  if (follows?.length === 0 && pubKey) {
+  const { publicKey: pubKey, follows } = useLogin();
+  if (follows.item?.length === 0 && pubKey) {
     return (
       <FormattedMessage
         {...messages.NoFollows}
@@ -100,7 +101,7 @@ const FollowsHint = () => {
 };
 
 const GlobalTab = () => {
-  const { relays } = useSelector((s: RootState) => s.login);
+  const { relays } = useLogin();
   const [relay, setRelay] = useState<RelayOption>();
   const [allRelays, setAllRelays] = useState<RelayOption[]>();
   const [now] = useState(unixNow());
@@ -177,8 +178,8 @@ const GlobalTab = () => {
 };
 
 const PostsTab = () => {
-  const follows = useSelector((s: RootState) => s.login.follows);
-  const subject: TimelineSubject = { type: "pubkey", items: follows, discriminator: "follows" };
+  const { follows } = useLogin();
+  const subject: TimelineSubject = { type: "pubkey", items: follows.item, discriminator: "follows" };
 
   return (
     <>
@@ -189,8 +190,8 @@ const PostsTab = () => {
 };
 
 const ConversationsTab = () => {
-  const { follows } = useSelector((s: RootState) => s.login);
-  const subject: TimelineSubject = { type: "pubkey", items: follows, discriminator: "follows" };
+  const { follows } = useLogin();
+  const subject: TimelineSubject = { type: "pubkey", items: follows.item, discriminator: "follows" };
 
   return <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} window={undefined} relay={undefined} />;
 };

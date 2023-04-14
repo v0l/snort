@@ -1,10 +1,10 @@
 import "./FollowButton.css";
-import { useSelector } from "react-redux";
 import { FormattedMessage } from "react-intl";
-import useEventPublisher from "Feed/EventPublisher";
 import { HexKey } from "@snort/nostr";
-import { RootState } from "State/Store";
+
+import useEventPublisher from "Feed/EventPublisher";
 import { parseId } from "Util";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
 
@@ -15,7 +15,7 @@ export interface FollowButtonProps {
 export default function FollowButton(props: FollowButtonProps) {
   const pubkey = parseId(props.pubkey);
   const publiser = useEventPublisher();
-  const isFollowing = useSelector<RootState, boolean>(s => s.login.follows?.includes(pubkey) ?? false);
+  const isFollowing = useLogin().follows.item.includes(pubkey);
   const baseClassname = `${props.className} follow-button`;
 
   async function follow(pubkey: HexKey) {

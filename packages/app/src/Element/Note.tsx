@@ -1,7 +1,6 @@
 import "./Note.css";
 import React, { useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
 import { TaggedRawEvent, HexKey, EventKind, NostrPrefix } from "@snort/nostr";
@@ -25,13 +24,13 @@ import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import Reveal from "Element/Reveal";
 import useModeration from "Hooks/useModeration";
-import { setPinned, setBookmarked } from "State/Login";
-import type { RootState } from "State/Store";
 import { UserCache } from "Cache/UserCache";
 import Poll from "Element/Poll";
+import { EventExt } from "System/EventExt";
+import useLogin from "Hooks/useLogin";
+import { setBookmarked, setPinned } from "Login";
 
 import messages from "./messages";
-import { EventExt } from "System/EventExt";
 
 export interface NoteProps {
   data: TaggedRawEvent;
@@ -72,7 +71,6 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
 
 export default function Note(props: NoteProps) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { data: ev, related, highlight, options: opt, ignoreModeration = false } = props;
   const [showReactions, setShowReactions] = useState(false);
   const deletions = useMemo(() => getReactions(related, ev.id, EventKind.Deletion), [related]);
@@ -82,7 +80,8 @@ export default function Note(props: NoteProps) {
   const [extendable, setExtendable] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
   const baseClassName = `note card ${props.className ? props.className : ""}`;
-  const { pinned, bookmarked } = useSelector((s: RootState) => s.login);
+  const login = useLogin();
+  const { pinned, bookmarked } = login;
   const publisher = useEventPublisher();
   const [translated, setTranslated] = useState<Translation>();
   const { formatMessage } = useIntl();
@@ -135,10 +134,12 @@ export default function Note(props: NoteProps) {
   async function unpin(id: HexKey) {
     if (options.canUnpin) {
       if (window.confirm(formatMessage(messages.ConfirmUnpin))) {
-        const es = pinned.filter(e => e !== id);
+        const es = pinned.item.filter(e => e !== id);
         const ev = await publisher.pinned(es);
-        publisher.broadcast(ev);
-        dispatch(setPinned({ keys: es, createdAt: new Date().getTime() }));
+        if (ev) {
+          publisher.broadcast(ev);
+          setPinned(login, es, ev.created_at * 1000);
+        }
       }
     }
   }
@@ -146,10 +147,12 @@ export default function Note(props: NoteProps) {
   async function unbookmark(id: HexKey) {
     if (options.canUnbookmark) {
       if (window.confirm(formatMessage(messages.ConfirmUnbookmark))) {
-        const es = bookmarked.filter(e => e !== id);
+        const es = bookmarked.item.filter(e => e !== id);
         const ev = await publisher.bookmarked(es);
-        publisher.broadcast(ev);
-        dispatch(setBookmarked({ keys: es, createdAt: new Date().getTime() }));
+        if (ev) {
+          publisher.broadcast(ev);
+          setBookmarked(login, es, ev.created_at * 1000);
+        }
       }
     }
   }

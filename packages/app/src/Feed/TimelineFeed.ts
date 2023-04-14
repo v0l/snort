@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
 import { EventKind, u256 } from "@snort/nostr";
 
 import { unixNow, unwrap, tagFilterOfTextRepost } from "Util";
-import { RootState } from "State/Store";
-import { UserPreferences } from "State/Login";
 import { FlatNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import useTimelineWindow from "Hooks/useTimelineWindow";
+import useLogin from "Hooks/useLogin";
 
 export interface TimelineFeedOptions {
   method: "TIME_RANGE" | "LIMIT_UNTIL";
@@ -31,7 +29,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
   });
   const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
   const [trackingParentEvents, setTrackingParentEvents] = useState<u256[]>([]);
-  const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
+  const pref = useLogin().preferences;
 
   const createBuilder = useCallback(() => {
     if (subject.type !== "global" && subject.items.length === 0) {

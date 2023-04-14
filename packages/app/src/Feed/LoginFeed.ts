@@ -1,23 +1,8 @@
 import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { TaggedRawEvent, HexKey, Lists, EventKind } from "@snort/nostr";
 
 import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "Util";
-import { makeNotification } from "Notifications";
-import {
-  setFollows,
-  setRelays,
-  setMuted,
-  setTags,
-  setPinned,
-  setBookmarked,
-  setBlocked,
-  sendNotification,
-  setLatestNotifications,
-  addSubscription,
-} from "State/Login";
-import { RootState } from "State/Store";
+import { makeNotification, sendNotification } from "Notifications";
 import useEventPublisher, { barrierNip07 } from "Feed/EventPublisher";
 import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
@@ -25,6 +10,8 @@ import { FlatNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import { EventExt } from "System/EventExt";
 import { DmCache } from "Cache";
+import useLogin from "Hooks/useLogin";
+import { addSubscription, setBlocked, setBookmarked, setFollows, setMuted, setPinned, setRelays, setTags } from "Login";
 import { SnortPubKey } from "Const";
 import { SubscriptionEvent } from "Subscription";
 
@@ -32,13 +19,8 @@ import { SubscriptionEvent } from "Subscription";
  * Managed loading data for the current logged in user
  */
 export default function useLoginFeed() {
-  const dispatch = useDispatch();
-  const {
-    publicKey: pubKey,
-    privateKey: privKey,
-    latestMuted,
-    readNotifications,
-  } = useSelector((s: RootState) => s.login);
+  const login = useLogin();
+  const { publicKey: pubKey, privateKey: privKey, readNotifications, muted: stateMuted } = login;
   const { isMuted } = useModeration();
   const publisher = useEventPublisher();
 
@@ -86,10 +68,10 @@ export default function useLoginFeed() {
       if (contactList) {
         if (contactList.content !== "" && contactList.content !== "{}") {
           const relays = JSON.parse(contactList.content);
-          dispatch(setRelays({ relays, createdAt: contactList.created_at }));
+          setRelays(login, relays, contactList.created_at * 1000);
         }
         const pTags = contactList.tags.filter(a => a[0] === "p").map(a => a[1]);
-        dispatch(setFollows({ keys: pTags, createdAt: contactList.created_at }));
+        setFollows(login, pTags, contactList.created_at * 1000);
       }
 
       const dms = loginFeed.data.filter(a => a.kind === EventKind.DirectMessage);
@@ -109,9 +91,9 @@ export default function useLoginFeed() {
             } as SubscriptionEvent;
           }
         })
-      ).then(a => dispatch(addSubscription(a.filter(a => a !== undefined).map(unwrap))));
+      ).then(a => addSubscription(login, ...a.filter(a => a !== undefined).map(unwrap)));
     }
-  }, [dispatch, loginFeed]);
+  }, [loginFeed]);
 
   // send out notifications
   useEffect(() => {
@@ -119,34 +101,26 @@ export default function useLoginFeed() {
       const replies = loginFeed.data.filter(
         a => a.kind === EventKind.TextNote && !isMuted(a.pubkey) && a.created_at > readNotifications
       );
-      replies.forEach(nx => {
-        dispatch(setLatestNotifications(nx.created_at));
-        makeNotification(nx).then(notification => {
-          if (notification) {
-            (dispatch as ThunkDispatch<RootState, undefined, AnyAction>)(sendNotification(notification));
-          }
-        });
+      replies.forEach(async nx => {
+        const n = await makeNotification(nx);
+        if (n) {
+          sendNotification(login, n);
+        }
       });
     }
-  }, [dispatch, loginFeed, readNotifications]);
+  }, [loginFeed, readNotifications]);
 
   function handleMutedFeed(mutedFeed: TaggedRawEvent[]) {
     const muted = getMutedKeys(mutedFeed);
-    dispatch(setMuted(muted));
+    setMuted(login, muted.keys, muted.createdAt * 1000);
 
-    const newest = getNewest(mutedFeed);
-    if (newest && newest.content.length > 0 && pubKey && newest.created_at > latestMuted) {
-      decryptBlocked(newest, pubKey, privKey)
+    if (muted.raw && (muted.raw?.content?.length ?? 0) > 0 && pubKey) {
+      decryptBlocked(muted.raw, pubKey, privKey)
         .then(plaintext => {
           try {
             const blocked = JSON.parse(plaintext);
             const keys = blocked.filter((p: string) => p && p.length === 2 && p[0] === "p").map((p: string) => p[1]);
-            dispatch(
-              setBlocked({
-                keys,
-                createdAt: newest.created_at,
-              })
-            );
+            setBlocked(login, keys, unwrap(muted.raw).created_at * 1000);
           } catch (error) {
             console.debug("Couldn't parse JSON");
           }
@@ -158,26 +132,21 @@ export default function useLoginFeed() {
   function handlePinnedFeed(pinnedFeed: TaggedRawEvent[]) {
     const newest = getNewestEventTagsByKey(pinnedFeed, "e");
     if (newest) {
-      dispatch(setPinned(newest));
+      setPinned(login, newest.keys, newest.createdAt * 1000);
     }
   }
 
   function handleTagFeed(tagFeed: TaggedRawEvent[]) {
     const newest = getNewestEventTagsByKey(tagFeed, "t");
     if (newest) {
-      dispatch(
-        setTags({
-          tags: newest.keys,
-          createdAt: newest.createdAt,
-        })
-      );
+      setTags(login, newest.keys, newest.createdAt * 1000);
     }
   }
 
   function handleBookmarkFeed(bookmarkFeed: TaggedRawEvent[]) {
     const newest = getNewestEventTagsByKey(bookmarkFeed, "e");
     if (newest) {
-      dispatch(setBookmarked(newest));
+      setBookmarked(login, newest.keys, newest.createdAt * 1000);
     }
   }
 
@@ -200,7 +169,7 @@ export default function useLoginFeed() {
       const bookmarkFeed = getList(listsFeed.data, Lists.Bookmarked);
       handleBookmarkFeed(bookmarkFeed);
     }
-  }, [dispatch, listsFeed]);
+  }, [listsFeed]);
 
   /*const fRelays = useRelaysFeedFollows(follows);
   useEffect(() => {

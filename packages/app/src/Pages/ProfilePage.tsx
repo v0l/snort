@@ -1,7 +1,6 @@
 import "./ProfilePage.css";
 import { useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { encodeTLV, EventKind, HexKey, NostrPrefix } from "@snort/nostr";
 
@@ -36,7 +35,6 @@ import BlockList from "Element/BlockList";
 import MutedList from "Element/MutedList";
 import FollowsList from "Element/FollowListBase";
 import IconButton from "Element/IconButton";
-import { RootState } from "State/Store";
 import FollowsYou from "Element/FollowsYou";
 import QrCode from "Element/QrCode";
 import Modal from "Element/Modal";
@@ -46,6 +44,7 @@ import useHorizontalScroll from "Hooks/useHorizontalScroll";
 import { EmailRegex } from "Const";
 import { getNip05PubKey } from "Pages/Login";
 import { LNURL } from "LNURL";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
 
@@ -106,7 +105,7 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const [id, setId] = useState<string>();
   const user = useUserProfile(id);
-  const loginPubKey = useSelector((s: RootState) => s.login.publicKey);
+  const loginPubKey = useLogin().publicKey;
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);

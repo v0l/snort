@@ -1,32 +1,25 @@
 import { NostrPrefix } from "@snort/nostr";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Spinner from "Icons/Spinner";
-import { setRelays } from "State/Login";
-import { parseNostrLink, profileLink, unixNowMs, unwrap } from "Util";
+import { parseNostrLink, profileLink } from "Util";
 import { getNip05PubKey } from "Pages/Login";
+import { System } from "System";
 
 export default function NostrLinkHandler() {
   const params = useParams();
-  const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
   const link = decodeURIComponent(params["*"] ?? "").toLowerCase();
 
   async function handleLink(link: string) {
     const nav = parseNostrLink(link);
     if (nav) {
       if ((nav.relays?.length ?? 0) > 0) {
-        // todo: add as ephemerial connection
-        dispatch(
-          setRelays({
-            relays: Object.fromEntries(unwrap(nav.relays).map(a => [a, { read: true, write: false }])),
-            createdAt: unixNowMs(),
-          })
-        );
+        nav.relays?.map(a => System.ConnectEphemeralRelay(a));
       }
       if (nav.type === NostrPrefix.Event || nav.type === NostrPrefix.Note || nav.type === NostrPrefix.Address) {
         navigate(`/e/${nav.encode()}`);
