@@ -23,7 +23,7 @@ export default function Poll(props: PollProps) {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const { wallet } = useWallet();
-  const { preferences: prefs, publicKey: myPubKey } = useLogin();
+  const { preferences: prefs, publicKey: myPubKey, relays } = useLogin();
   const pollerProfile = useUserProfile(props.ev.pubkey);
   const [error, setError] = useState("");
   const [invoice, setInvoice] = useState("");
@@ -35,7 +35,7 @@ export default function Poll(props: PollProps) {
   const options = props.ev.tags.filter(a => a[0] === "poll_option").sort((a, b) => Number(a[1]) - Number(b[1]));
   async function zapVote(ev: React.MouseEvent, opt: number) {
     ev.stopPropagation();
-    if (voting) return;
+    if (voting || !publisher) return;
 
     const amount = prefs.defaultZapAmount;
     try {
@@ -53,17 +53,10 @@ export default function Poll(props: PollProps) {
       }
 
       setVoting(opt);
-      const zap = await publisher.zap(amount * 1000, props.ev.pubkey, props.ev.id, undefined, [
-        ["poll_option", opt.toString()],
-      ]);
-
-      if (!zap) {
-        throw new Error(
-          formatMessage({
-            defaultMessage: "Can't create vote, maybe you're not logged in?",
-          })
-        );
-      }
+      const r = Object.keys(relays.item);
+      const zap = await publisher.zap(amount * 1000, props.ev.pubkey, r, props.ev.id, undefined, eb =>
+        eb.tag(["poll_option", opt.toString()])
+      );
 
       const lnurl = props.ev.tags.find(a => a[0] === "zap")?.[1] || pollerProfile?.lud16 || pollerProfile?.lud06;
       if (!lnurl) return;

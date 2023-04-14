@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
-import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix } from "@snort/nostr";
+import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix, Lists } from "@snort/nostr";
 
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
@@ -96,7 +96,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const dispatch = useDispatch();
   const { formatMessage } = useIntl();
   const login = useLogin();
-  const { pinned, bookmarked, publicKey, preferences: prefs } = login;
+  const { pinned, bookmarked, publicKey, preferences: prefs, relays } = login;
   const { mute, block } = useModeration();
   const author = useUserProfile(ev.pubkey);
   const publisher = useEventPublisher();
@@ -134,21 +134,21 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function react(content: string) {
-    if (!hasReacted(content)) {
+    if (!hasReacted(content) && publisher) {
       const evLike = await publisher.react(ev, content);
       publisher.broadcast(evLike);
     }
   }
 
   async function deleteEvent() {
-    if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.id.substring(0, 8) }))) {
+    if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.id.substring(0, 8) })) && publisher) {
       const evDelete = await publisher.delete(ev.id);
       publisher.broadcast(evDelete);
     }
   }
 
   async function repost() {
-    if (!hasReposted()) {
+    if (!hasReposted() && publisher) {
       if (!prefs.confirmReposts || window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.id }))) {
         const evRepost = await publisher.repost(ev);
         publisher.broadcast(evRepost);
@@ -196,7 +196,9 @@ export default function NoteFooter(props: NoteFooterProps) {
     await barrierZapper(async () => {
       const handler = new LNURL(lnurl);
       await handler.load();
-      const zap = handler.canZap ? await publisher.zap(amount * 1000, key, id) : undefined;
+
+      const zr = Object.keys(relays.item);
+      const zap = handler.canZap && publisher ? await publisher.zap(amount * 1000, key, zr, id) : undefined;
       const invoice = await handler.getInvoice(amount, undefined, zap);
       await wallet?.payInvoice(unwrap(invoice.pr));
     });
@@ -320,18 +322,18 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function pin(id: HexKey) {
-    const es = [...pinned.item, id];
-    const ev = await publisher.pinned(es);
-    if (ev) {
+    if (publisher) {
+      const es = [...pinned.item, id];
+      const ev = await publisher.noteList(es, Lists.Pinned);
       publisher.broadcast(ev);
       setPinned(login, es, ev.created_at * 1000);
     }
   }
 
   async function bookmark(id: HexKey) {
-    const es = [...bookmarked.item, id];
-    const ev = await publisher.bookmarked(es);
-    if (ev) {
+    if (publisher) {
+      const es = [...bookmarked.item, id];
+      const ev = await publisher.noteList(es, Lists.Bookmarked);
       publisher.broadcast(ev);
       setBookmarked(login, es, ev.created_at * 1000);
     }

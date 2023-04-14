@@ -189,7 +189,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   }
 
   async function updateProfile(handle: string, domain: string) {
-    if (user) {
+    if (user && publisher) {
       const nip05 = `${handle}@${domain}`;
       const newProfile = {
         ...user,

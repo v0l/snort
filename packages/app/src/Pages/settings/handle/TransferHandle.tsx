@@ -11,13 +11,13 @@ export default function TransferHandle({ handle }: { handle: ManageHandle }) {
   const publisher = useEventPublisher();
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
-  const sp = new SnortServiceProvider(publisher, `${ApiHost}/api/v1/n5sp`);
 
   const [newKey, setNewKey] = useState("");
   const [error, setError] = useState<Array<string>>([]);
 
   async function startTransfer() {
-    if (!newKey) return;
+    if (!newKey || !publisher) return;
+    const sp = new SnortServiceProvider(publisher, `${ApiHost}/api/v1/n5sp`);
     setError([]);
     const rsp = await sp.transfer(handle.id, newKey);
     if ("error" in rsp) {

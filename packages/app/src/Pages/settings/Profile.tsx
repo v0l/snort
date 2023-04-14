@@ -76,13 +76,14 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     delete userCopy["zapService"];
     console.debug(userCopy);
 
-    const ev = await publisher.metadata(userCopy);
-    console.debug(ev);
-    publisher.broadcast(ev);
+    if (publisher) {
+      const ev = await publisher.metadata(userCopy);
+      publisher.broadcast(ev);
 
-    const newProfile = mapEventToProfile(ev as TaggedRawEvent);
-    if (newProfile) {
-      await UserCache.set(newProfile);
+      const newProfile = mapEventToProfile(ev as TaggedRawEvent);
+      if (newProfile) {
+        await UserCache.set(newProfile);
+      }
     }
   }
 

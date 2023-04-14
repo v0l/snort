@@ -8,13 +8,12 @@ import { HexKey } from "@snort/nostr";
 
 import { EmailRegex, MnemonicRegex } from "Const";
 import { bech32ToHex, unwrap } from "Util";
-import { generateBip39Entropy, entropyToDerivedKey } from "nip6";
+import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import ZapButton from "Element/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
 import Icon from "Icons/Icon";
 import useLogin from "Hooks/useLogin";
 import { generateNewLogin, LoginStore } from "Login";
-import useEventPublisher from "Feed/EventPublisher";
 import AsyncButton from "Element/AsyncButton";
 
 import messages from "./messages";
@@ -68,7 +67,6 @@ export async function getNip05PubKey(addr: string): Promise<string> {
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const publisher = useEventPublisher();
   const login = useLogin();
   const [key, setKey] = useState("");
   const [error, setError] = useState("");
@@ -117,7 +115,7 @@ export default function LoginPage() {
           throw new Error(insecureMsg);
         }
         const ent = generateBip39Entropy(key);
-        const keyHex = entropyToDerivedKey(ent);
+        const keyHex = entropyToPrivateKey(ent);
         LoginStore.loginWithPrivateKey(keyHex);
       } else if (secp.utils.isValidPrivateKey(key)) {
         if (!hasSubtleCrypto) {
@@ -142,7 +140,7 @@ export default function LoginPage() {
   }
 
   async function makeRandomKey() {
-    await generateNewLogin(publisher);
+    await generateNewLogin();
     navigate("/new");
   }
 

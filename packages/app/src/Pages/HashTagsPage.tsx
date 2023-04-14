@@ -17,8 +17,8 @@ const HashTagsPage = () => {
   const publisher = useEventPublisher();
 
   async function followTags(ts: string[]) {
-    const ev = await publisher.tags(ts);
-    if (ev) {
+    if (publisher) {
+      const ev = await publisher.tags(ts);
       publisher.broadcast(ev);
       setTags(login, ts, ev.created_at * 1000);
     }

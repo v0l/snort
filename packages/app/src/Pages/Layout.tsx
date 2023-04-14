@@ -63,7 +63,9 @@ export default function Layout() {
   }, [location]);
 
   useEffect(() => {
-    System.HandleAuth = pub.nip42Auth;
+    if (pub) {
+      System.HandleAuth = pub.nip42Auth;
+    }
   }, [pub]);
 
   useEffect(() => {
@@ -224,7 +226,14 @@ const AccountHeader = () => {
         <Icon name="bell" />
         {hasNotifications && <span className="has-unread"></span>}
       </div>
-      {profile && <Avatar user={profile} onClick={() => navigate(profileLink(profile.pubkey))} />}
+      <Avatar
+        user={profile}
+        onClick={() => {
+          if (profile) {
+            navigate(profileLink(profile.pubkey));
+          }
+        }}
+      />
     </div>
   );
 };

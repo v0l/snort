@@ -10,13 +10,14 @@ export default function ListHandles() {
   const navigate = useNavigate();
   const publisher = useEventPublisher();
   const [handles, setHandles] = useState<Array<ManageHandle>>([]);
-  const sp = new SnortServiceProvider(publisher, `${ApiHost}/api/v1/n5sp`);
 
   useEffect(() => {
     loadHandles().catch(console.error);
-  }, []);
+  }, [publisher]);
 
   async function loadHandles() {
+    if (!publisher) return;
+    const sp = new SnortServiceProvider(publisher, `${ApiHost}/api/v1/n5sp`);
     const list = await sp.list();
     setHandles(list as Array<ManageHandle>);
   }

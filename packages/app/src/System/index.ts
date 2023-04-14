@@ -2,6 +2,7 @@ import { AuthHandler, TaggedRawEvent, RelaySettings, Connection, RawReqFilter, R
 
 import { sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
 import { RequestBuilder } from "./RequestBuilder";
+import { EventBuilder } from "./EventBuilder";
 import {
   FlatNoteStore,
   NoteStore,
@@ -18,6 +19,7 @@ export {
   PubkeyReplaceableNoteStore,
   ParameterizedReplaceableNoteStore,
   Query,
+  EventBuilder,
 };
 
 export interface SystemSnapshot {

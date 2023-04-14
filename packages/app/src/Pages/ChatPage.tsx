@@ -41,9 +41,8 @@ export default function ChatPage() {
   }, [dmListRef.current?.scrollHeight]);
 
   async function sendDm() {
-    if (content) {
+    if (content && publisher) {
       const ev = await publisher.sendDm(content, id);
-      console.debug(ev);
       publisher.broadcast(ev);
       setContent("");
     }

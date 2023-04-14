@@ -28,10 +28,12 @@ export default function DM(props: DMProps) {
   const otherPubkey = isMe ? pubKey : unwrap(props.data.tags.find(a => a[0] === "p")?.[1]);
 
   async function decrypt() {
-    const decrypted = await publisher.decryptDm(props.data);
-    setContent(decrypted || "<ERROR>");
-    if (!isMe) {
-      setLastReadDm(props.data.pubkey);
+    if (publisher) {
+      const decrypted = await publisher.decryptDm(props.data);
+      setContent(decrypted || "<ERROR>");
+      if (!isMe) {
+        setLastReadDm(props.data.pubkey);
+      }
     }
   }
 

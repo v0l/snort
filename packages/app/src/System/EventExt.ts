@@ -26,7 +26,7 @@ export abstract class EventExt {
    * Sign this message with a private key
    */
   static async sign(e: RawEvent, key: HexKey) {
-    e.id = await this.createId(e);
+    e.id = this.createId(e);
 
     const sig = await secp.schnorr.sign(e.id, key);
     e.sig = secp.utils.bytesToHex(sig);
@@ -40,12 +40,12 @@ export abstract class EventExt {
    * @returns True if valid signature
    */
   static async verify(e: RawEvent) {
-    const id = await this.createId(e);
+    const id = this.createId(e);
     const result = await secp.schnorr.verify(e.sig, id, e.pubkey);
     return result;
   }
 
-  static async createId(e: RawEvent) {
+  static createId(e: RawEvent) {
     const payload = [0, e.pubkey, e.created_at, e.kind, e.tags, e.content];
 
     const hash = sha256(JSON.stringify(payload));

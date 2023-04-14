@@ -13,10 +13,11 @@ import Copy from "Element/Copy";
 import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "LNURL";
 import { chunks, debounce } from "Util";
 import { useWallet } from "Wallet";
-import { EventExt } from "System/EventExt";
+import useLogin from "Hooks/useLogin";
+import { generateRandomKey } from "Login";
+import { EventPublisher } from "System/EventPublisher";
 
 import messages from "./messages";
-import useLogin from "Hooks/useLogin";
 
 enum ZapType {
   PublicZap = 1,
@@ -40,7 +41,8 @@ export interface SendSatsProps {
 export default function SendSats(props: SendSatsProps) {
   const onClose = props.onClose || (() => undefined);
   const { note, author, target } = props;
-  const defaultZapAmount = useLogin().preferences.defaultZapAmount;
+  const login = useLogin();
+  const defaultZapAmount = login.preferences.defaultZapAmount;
   const amounts = [defaultZapAmount, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000];
   const emojis: Record<number, string> = {
     1_000: "👍",
@@ -118,22 +120,21 @@ export default function SendSats(props: SendSatsProps) {
   };
 
   async function loadInvoice() {
-    if (!amount || !handler) return null;
+    if (!amount || !handler || !publisher) return null;
 
     let zap: RawEvent | undefined;
     if (author && zapType !== ZapType.NonZap) {
-      const ev = await publisher.zap(amount * 1000, author, note, comment);
-      if (ev) {
-        // replace sig for anon-zap
-        if (zapType === ZapType.AnonZap) {
-          const randomKey = publisher.newKey();
-          console.debug("Generated new key for zap: ", randomKey);
-          ev.pubkey = randomKey.publicKey;
-          ev.id = "";
-          ev.tags.push(["anon", ""]);
-          await EventExt.sign(ev, randomKey.privateKey);
-        }
-        zap = ev;
+      const relays = Object.keys(login.relays.item);
+
+      // use random key for anon zaps
+      if (zapType === ZapType.AnonZap) {
+        const randomKey = generateRandomKey();
+        console.debug("Generated new key for zap: ", randomKey);
+
+        const publisher = new EventPublisher(randomKey.publicKey, randomKey.privateKey);
+        zap = await publisher.zap(amount * 1000, author, relays, note, comment);
+      } else {
+        zap = await publisher.zap(amount * 1000, author, relays, note, comment);
       }
     }
 

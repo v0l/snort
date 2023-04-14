@@ -2,11 +2,11 @@ import { HexKey, RelaySettings } from "@snort/nostr";
 import * as secp from "@noble/secp256k1";
 
 import { DefaultRelays, SnortPubKey } from "Const";
-import { EventPublisher } from "Feed/EventPublisher";
 import { LoginStore, UserPreferences, LoginSession } from "Login";
-import { generateBip39Entropy, entropyToDerivedKey } from "nip6";
-import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unixNowMs } from "Util";
+import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
+import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
 import { getCurrentSubscription, SubscriptionEvent } from "Subscription";
+import { EventPublisher } from "System/EventPublisher";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
   if (state.relays.timestamp > createdAt) {
@@ -55,10 +55,10 @@ export function clearEntropy(state: LoginSession) {
 /**
  * Generate a new key and login with this generated key
  */
-export async function generateNewLogin(publisher: EventPublisher) {
+export async function generateNewLogin() {
   const ent = generateBip39Entropy();
-  const entHex = secp.utils.bytesToHex(ent);
-  const newKeyHex = entropyToDerivedKey(ent);
+  const entropy = secp.utils.bytesToHex(ent);
+  const privateKey = entropyToPrivateKey(ent);
   let newRelays: Record<string, RelaySettings> = {};
 
   try {
@@ -66,7 +66,7 @@ export async function generateNewLogin(publisher: EventPublisher) {
     if (rsp.ok) {
       const online: string[] = await rsp.json();
       const pickRandom = randomSample(online, 4);
-      const relayObjects = pickRandom.map(a => [a, { read: true, write: true }]);
+      const relayObjects = pickRandom.map(a => [unwrap(sanitizeRelayUrl(a)), { read: true, write: true }]);
       newRelays = {
         ...Object.fromEntries(relayObjects),
         ...Object.fromEntries(DefaultRelays.entries()),
@@ -76,10 +76,21 @@ export async function generateNewLogin(publisher: EventPublisher) {
     console.warn(e);
   }
 
-  const ev = await publisher.addFollow([bech32ToHex(SnortPubKey), newKeyHex], newRelays);
+  const publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
+  const publisher = new EventPublisher(publicKey, privateKey);
+  const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey], newRelays);
   publisher.broadcast(ev);
 
-  LoginStore.loginWithPrivateKey(newKeyHex, entHex);
+  LoginStore.loginWithPrivateKey(privateKey, entropy, newRelays);
+}
+
+export function generateRandomKey() {
+  const privateKey = secp.utils.bytesToHex(secp.utils.randomPrivateKey());
+  const publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
+  return {
+    privateKey,
+    publicKey,
+  };
 }
 
 export function setTags(state: LoginSession, tags: Array<string>, ts: number) {

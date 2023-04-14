@@ -40,7 +40,7 @@ const LoggedOut = {
   },
   latestNotification: 0,
   readNotifications: 0,
-  subscriptions: []
+  subscriptions: [],
 } as LoginSession;
 const LegacyKeys = {
   PrivateKeyItem: "secret",
@@ -94,20 +94,27 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     return newSession;
   }
 
-  loginWithPrivateKey(key: HexKey, entropy?: string) {
+  loginWithPrivateKey(key: HexKey, entropy?: string, relays?: Record<string, RelaySettings>) {
     const pubKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(key));
     if (this.#accounts.has(pubKey)) {
       throw new Error("Already logged in with this pubkey");
     }
-    this.#accounts.set(pubKey, {
+    const initRelays = relays ?? Object.fromEntries(DefaultRelays.entries());
+    const newSession = {
       ...LoggedOut,
       privateKey: key,
       publicKey: pubKey,
       generatedEntropy: entropy,
+      relays: {
+        item: initRelays,
+        timestamp: 1,
+      },
       preferences: deepClone(DefaultPreferences),
-    } as LoginSession);
+    } as LoginSession;
+    this.#accounts.set(pubKey, newSession);
     this.#activeAccount = pubKey;
     this.#save();
+    return newSession;
   }
 
   updateSession(s: LoginSession) {

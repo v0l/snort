@@ -1,14 +1,13 @@
 import { useEffect, useMemo } from "react";
-import { TaggedRawEvent, HexKey, Lists, EventKind } from "@snort/nostr";
+import { TaggedRawEvent, Lists, EventKind } from "@snort/nostr";
 
 import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "Util";
 import { makeNotification, sendNotification } from "Notifications";
-import useEventPublisher, { barrierNip07 } from "Feed/EventPublisher";
+import useEventPublisher from "Feed/EventPublisher";
 import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 import { FlatNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
-import { EventExt } from "System/EventExt";
 import { DmCache } from "Cache";
 import useLogin from "Hooks/useLogin";
 import { addSubscription, setBlocked, setBookmarked, setFollows, setMuted, setPinned, setRelays, setTags } from "Login";
@@ -20,7 +19,7 @@ import { SubscriptionEvent } from "Subscription";
  */
 export default function useLoginFeed() {
   const login = useLogin();
-  const { publicKey: pubKey, privateKey: privKey, readNotifications } = login;
+  const { publicKey: pubKey, readNotifications } = login;
   const { isMuted } = useModeration();
   const publisher = useEventPublisher();
 
@@ -63,7 +62,7 @@ export default function useLoginFeed() {
 
   // update relays and follow lists
   useEffect(() => {
-    if (loginFeed.data) {
+    if (loginFeed.data && publisher) {
       const contactList = getNewest(loginFeed.data.filter(a => a.kind === EventKind.ContactList));
       if (contactList) {
         if (contactList.content !== "" && contactList.content !== "{}") {
@@ -93,7 +92,7 @@ export default function useLoginFeed() {
         })
       ).then(a => addSubscription(login, ...a.filter(a => a !== undefined).map(unwrap)));
     }
-  }, [loginFeed]);
+  }, [loginFeed, publisher]);
 
   // send out notifications
   useEffect(() => {
@@ -115,7 +114,8 @@ export default function useLoginFeed() {
     setMuted(login, muted.keys, muted.createdAt * 1000);
 
     if (muted.raw && (muted.raw?.content?.length ?? 0) > 0 && pubKey) {
-      decryptBlocked(muted.raw, pubKey, privKey)
+      publisher
+        ?.nip4Decrypt(muted.raw.content, pubKey)
         .then(plaintext => {
           try {
             const blocked = JSON.parse(plaintext);
@@ -175,12 +175,4 @@ export default function useLoginFeed() {
   useEffect(() => {
     FollowsRelays.bulkSet(fRelays).catch(console.error);
   }, [dispatch, fRelays]);*/
-}
-
-async function decryptBlocked(raw: TaggedRawEvent, pubKey: HexKey, privKey?: HexKey) {
-  if (pubKey && privKey) {
-    return await EventExt.decryptData(raw.content, privKey, pubKey);
-  } else {
-    return await barrierNip07(() => window.nostr.nip04.decrypt(pubKey, raw.content));
-  }
 }

@@ -23,11 +23,9 @@ export function hexToMnemonic(hex: string): string {
 }
 
 /**
- * Convert mnemonic phrase into hex-encoded private key
- * using the derivation path specified in NIP06
- * @param mnemonic the mnemonic-encoded entropy
+ * Derrive NIP-06 private key from master key
  */
-export function entropyToDerivedKey(entropy: Uint8Array): string {
+export function entropyToPrivateKey(entropy: Uint8Array): string {
   const masterKey = HDKey.fromMasterSeed(entropy);
   const newKey = masterKey.derive(DerivationPath);
 

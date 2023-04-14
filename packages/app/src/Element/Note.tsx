@@ -3,7 +3,7 @@ import React, { useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
-import { TaggedRawEvent, HexKey, EventKind, NostrPrefix } from "@snort/nostr";
+import { TaggedRawEvent, HexKey, EventKind, NostrPrefix, Lists } from "@snort/nostr";
 
 import useEventPublisher from "Feed/EventPublisher";
 import Icon from "Icons/Icon";
@@ -132,27 +132,23 @@ export default function Note(props: NoteProps) {
   };
 
   async function unpin(id: HexKey) {
-    if (options.canUnpin) {
+    if (options.canUnpin && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnpin))) {
         const es = pinned.item.filter(e => e !== id);
-        const ev = await publisher.pinned(es);
-        if (ev) {
-          publisher.broadcast(ev);
-          setPinned(login, es, ev.created_at * 1000);
-        }
+        const ev = await publisher.noteList(es, Lists.Pinned);
+        publisher.broadcast(ev);
+        setPinned(login, es, ev.created_at * 1000);
       }
     }
   }
 
   async function unbookmark(id: HexKey) {
-    if (options.canUnbookmark) {
+    if (options.canUnbookmark && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnbookmark))) {
         const es = bookmarked.item.filter(e => e !== id);
-        const ev = await publisher.bookmarked(es);
-        if (ev) {
-          publisher.broadcast(ev);
-          setBookmarked(login, es, ev.created_at * 1000);
-        }
+        const ev = await publisher.noteList(es, Lists.Bookmarked);
+        publisher.broadcast(ev);
+        setBookmarked(login, es, ev.created_at * 1000);
       }
     }
   }

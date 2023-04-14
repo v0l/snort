@@ -68,7 +68,7 @@ const Extensions = () => {
 };
 
 export default function NewUserFlow() {
-  const { publicKey, privateKey, generatedEntropy } = useLogin();
+  const { publicKey, generatedEntropy } = useLogin();
   const navigate = useNavigate();
 
   return (
@@ -87,10 +87,6 @@ export default function NewUserFlow() {
         <FormattedMessage {...messages.YourPubkey} />
       </h2>
       <Copy text={hexToBech32("npub", publicKey ?? "")} />
-      <h2>
-        <FormattedMessage {...messages.YourPrivkey} />
-      </h2>
-      <Copy text={hexToBech32("nsec", privateKey ?? "")} />
       <h2>
         <FormattedMessage {...messages.YourMnemonic} />
       </h2>

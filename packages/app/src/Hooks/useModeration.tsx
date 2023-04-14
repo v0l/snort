@@ -10,14 +10,10 @@ export default function useModeration() {
   const publisher = useEventPublisher();
 
   async function setMutedList(pub: HexKey[], priv: HexKey[]) {
-    try {
+    if (publisher) {
       const ev = await publisher.muted(pub, priv);
-      if (ev) {
-        publisher.broadcast(ev);
-        return ev.created_at * 1000;
-      }
-    } catch (error) {
-      console.debug("Couldn't change mute list");
+      publisher.broadcast(ev);
+      return ev.created_at * 1000;
     }
     return 0;
   }

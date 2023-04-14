@@ -1,6 +1,7 @@
+import { EventKind } from "@snort/nostr";
 import { ApiHost } from "Const";
-import { EventPublisher } from "Feed/EventPublisher";
 import { SubscriptionType } from "Subscription";
+import { EventPublisher } from "System/EventPublisher";
 
 export interface RevenueToday {
   donations: number;
@@ -61,10 +62,12 @@ export default class SnortApi {
     if (!this.#publisher) {
       throw new Error("Publisher not set");
     }
-    const auth = await this.#publisher.generic("", 27_235, [
-      ["url", `${this.#url}${path}`],
-      ["method", method ?? "GET"],
-    ]);
+    const auth = await this.#publisher.generic(eb => {
+      eb.kind(EventKind.HttpAuthentication);
+      eb.tag(["url", `${this.#url}${path}`]);
+      eb.tag(["method", method ?? "GET"]);
+      return eb;
+    });
     if (!auth) {
       throw new Error("Failed to create auth event");
     }
