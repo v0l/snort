@@ -1,7 +1,7 @@
 import * as secp from "@noble/secp256k1";
 import { EventKind } from "@snort/nostr";
 import { FileExtensionRegex, VoidCatHost } from "Const";
-import { EventPublisher } from "Feed/EventPublisher";
+import { EventPublisher } from "System/EventPublisher";
 import { UploadResult } from "Upload";
 import { magnetURIDecode } from "Util";
 
@@ -60,8 +60,11 @@ export default async function VoidCat(
             tags.push(["i", parsedMagnet?.infoHash]);
           }
         }
-        //disable for now
-        //ret.header = await publisher.generic(filename, EventKind.FileHeader, tags);
+        ret.header = await publisher.generic(eb => {
+          eb.kind(EventKind.FileHeader).content(filename);
+          tags.forEach(t => eb.tag(t));
+          return eb;
+        });
       }
       return ret;
     } else {

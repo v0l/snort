@@ -1,6 +1,5 @@
 import useLogin from "Hooks/useLogin";
 import { RawEvent } from "@snort/nostr";
-import useEventPublisher from "Feed/EventPublisher";
 
 import NostrBuild from "Upload/NostrBuild";
 import VoidCat from "Upload/VoidCat";
@@ -22,7 +21,7 @@ export interface Uploader {
 
 export default function useFileUpload(): Uploader {
   const fileUploader = useLogin().preferences.fileUploader;
-  const publisher = useEventPublisher();
+  //const publisher = useEventPublisher();
 
   switch (fileUploader) {
     case "nostr.build": {
@@ -37,7 +36,7 @@ export default function useFileUpload(): Uploader {
     }
     default: {
       return {
-        upload: (f, n) => VoidCat(f, n, publisher),
+        upload: (f, n) => VoidCat(f, n, undefined),
       } as Uploader;
     }
   }
