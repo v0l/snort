@@ -74,10 +74,10 @@ export class EventBuilder {
   }
 
   #validate() {
-    if (!this.#kind) {
+    if (this.#kind === undefined) {
       throw new Error("Kind must be set");
     }
-    if (!this.#pubkey) {
+    if (this.#pubkey === undefined) {
       throw new Error("Pubkey must be set");
     }
   }
