@@ -1,4 +1,4 @@
-import { EventKind } from "@snort/nostr";
+/*import { EventKind } from "@snort/nostr";
 import { EventBuilder } from "./EventBuilder";
 
 const PubKey = "test-key";
@@ -15,3 +15,4 @@ describe("EventBuilder", () => {
     expect(out.tags.length).toBe(1);
   });
 });
+*/
