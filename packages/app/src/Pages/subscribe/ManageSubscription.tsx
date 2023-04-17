@@ -146,7 +146,7 @@ export default function ManageSubscriptionPage() {
         show={invoice !== ""}
         onClose={() => setInvoice("")}
         title={formatMessage({
-          defaultMessage: "Renew subscription",
+          defaultMessage: "Pay for subscription",
         })}
       />
     </>
