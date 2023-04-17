@@ -74,6 +74,7 @@ export interface UserPreferences {
 }
 
 export const DefaultPreferences = {
+  language: "en",
   enableReactions: true,
   reactionEmoji: "+",
   autoLoadMedia: "follows-only",

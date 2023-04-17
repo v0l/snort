@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import emoji from "@jukben/emoji-search";
 
 import useLogin from "Hooks/useLogin";
-import { updatePreferences, UserPreferences } from "Login";
+import { DefaultPreferences, updatePreferences, UserPreferences } from "Login";
 import { DefaultImgProxy } from "Const";
 import { unwrap } from "Util";
 
@@ -30,7 +30,7 @@ const PreferencesPage = () => {
         </div>
         <div>
           <select
-            value={perf.language}
+            value={perf.language || DefaultPreferences.language}
             onChange={e =>
               updatePreferences(login, {
                 ...perf,
