@@ -11,6 +11,7 @@ enum EventKind {
   BadgeAward = 8, // NIP-58
   SnortSubscriptions = 1000, // NIP-XX
   Polls = 6969, // NIP-69
+  FileHeader = 1063, // NIP-94
   Relays = 10002, // NIP-65
   Ephemeral = 20_000,
   Auth = 22242, // NIP-42

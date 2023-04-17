@@ -12,6 +12,7 @@ interface NoteCreatorStore {
   zapForward: string;
   sensitive: string;
   pollOptions?: Array<string>;
+  otherEvents: Array<RawEvent>;
 }
 
 const InitState: NoteCreatorStore = {
@@ -22,6 +23,7 @@ const InitState: NoteCreatorStore = {
   showAdvanced: false,
   zapForward: "",
   sensitive: "",
+  otherEvents: []
 };
 
 const NoteCreatorSlice = createSlice({
@@ -58,6 +60,9 @@ const NoteCreatorSlice = createSlice({
     setPollOptions: (state, action: PayloadAction<Array<string> | undefined>) => {
       state.pollOptions = action.payload;
     },
+    setOtherEvents: (state, action: PayloadAction<Array<RawEvent>>) => {
+      state.otherEvents = action.payload;
+    },
     reset: () => InitState,
   },
 });
@@ -73,6 +78,7 @@ export const {
   setZapForward,
   setSensitive,
   setPollOptions,
+  setOtherEvents,
   reset,
 } = NoteCreatorSlice.actions;
 
