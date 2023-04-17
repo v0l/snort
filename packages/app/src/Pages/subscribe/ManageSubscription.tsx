@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
-import { FormattedDate, FormattedMessage, FormattedNumber } from "react-intl";
+import { FormattedDate, FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 
 import PageSpinner from "Element/PageSpinner";
 import useEventPublisher from "Feed/EventPublisher";
-import SnortApi, { Subscription } from "SnortApi";
-import { mapPlanName } from ".";
+import SnortApi, { Subscription, SubscriptionError } from "SnortApi";
+import { mapPlanName, mapSubscriptionErrorCode } from ".";
 import Icon from "Icons/Icon";
+import AsyncButton from "Element/AsyncButton";
+import SendSats from "Element/SendSats";
 
 export default function ManageSubscriptionPage() {
   const publisher = useEventPublisher();
+  const { formatMessage } = useIntl();
   const api = new SnortApi(undefined, publisher);
 
   const [subs, setSubs] = useState<Array<Subscription>>();
-  const [error, setError] = useState("");
+  const [error, setError] = useState<SubscriptionError>();
+  const [invoice, setInvoice] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -21,14 +25,23 @@ export default function ManageSubscriptionPage() {
         const s = await api.listSubscriptions();
         setSubs(s);
       } catch (e) {
-        if (e instanceof Error) {
-          setError(e.message);
-        } else {
-          setError("Unknown error");
+        if (e instanceof SubscriptionError) {
+          setError(e);
         }
       }
     })();
   }, []);
+
+  async function renew(id: string) {
+    try {
+      const rsp = await api.renewSubscription(id);
+      setInvoice(rsp.pr);
+    } catch (e) {
+      if (e instanceof SubscriptionError) {
+        setError(e);
+      }
+    }
+  }
 
   if (subs === undefined) {
     return <PageSpinner />;
@@ -44,7 +57,8 @@ export default function ManageSubscriptionPage() {
         const now = new Date();
         const daysToExpire = Math.floor((expires.getTime() - now.getTime()) / 8.64e7);
         const hoursToExpire = Math.floor((expires.getTime() - now.getTime()) / 3.6e6);
-        const isExpired = expires < now;
+        const isExpired = a.state === "expired";
+        const isNew = a.state === "new";
         return (
           <div key={a.id} className="card">
             <div className="flex card-title">
@@ -87,17 +101,26 @@ export default function ManageSubscriptionPage() {
                   </time>
                 </p>
               )}
-              {daysToExpire < 0 && (
+              {isExpired && (
                 <p className="f-1 error">
                   <FormattedMessage defaultMessage="Expired" />
                 </p>
               )}
+              {isNew && (
+                <p className="f-1">
+                  <FormattedMessage defaultMessage="Unpaid" />
+                </p>
+              )}
             </div>
-            {isExpired && (
+            {(isExpired || isNew) && (
               <div className="flex">
-                <button>
-                  <FormattedMessage defaultMessage="Renew" />
-                </button>
+                <AsyncButton onClick={() => renew(a.id)}>
+                  {isExpired ? (
+                    <FormattedMessage defaultMessage="Renew" />
+                  ) : (
+                    <FormattedMessage defaultMessage="Pay Now" />
+                  )}
+                </AsyncButton>
               </div>
             )}
           </div>
@@ -117,7 +140,15 @@ export default function ManageSubscriptionPage() {
           />
         </p>
       )}
-      {error && <b className="error">{error}</b>}
+      {error && <b className="error">{mapSubscriptionErrorCode(error)}</b>}
+      <SendSats
+        invoice={invoice}
+        show={invoice !== ""}
+        onClose={() => setInvoice("")}
+        title={formatMessage({
+          defaultMessage: "Renew subscription",
+        })}
+      />
     </>
   );
 }

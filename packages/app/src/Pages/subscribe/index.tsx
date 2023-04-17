@@ -9,7 +9,7 @@ import { LockedFeatures, Plans, SubscriptionType } from "Subscription";
 import ManageSubscriptionPage from "Pages/subscribe/ManageSubscription";
 import AsyncButton from "Element/AsyncButton";
 import useEventPublisher from "Feed/EventPublisher";
-import SnortApi from "SnortApi";
+import SnortApi, { SubscriptionError, SubscriptionErrorCode } from "SnortApi";
 import SendSats from "Element/SendSats";
 
 export function mapPlanName(id: number) {
@@ -38,67 +38,91 @@ export function mapFeatureName(k: LockedFeatures) {
   }
 }
 
+export function mapSubscriptionErrorCode(c: SubscriptionError) {
+  switch (c.code) {
+    case SubscriptionErrorCode.InternalError:
+      return <FormattedMessage defaultMessage="Internal error: {msg}" values={{ msg: c.message }} />;
+    case SubscriptionErrorCode.SubscriptionActive:
+      return <FormattedMessage defaultMessage="You subscription is still active, you can't renew yet" />;
+    case SubscriptionErrorCode.Duplicate:
+      return <FormattedMessage defaultMessage="You already have a subscription of this type, please renew or pay" />;
+    default:
+      return c.message;
+  }
+}
+
 export function SubscribePage() {
   const publisher = useEventPublisher();
   const api = new SnortApi(undefined, publisher);
   const [invoice, setInvoice] = useState("");
+  const [error, setError] = useState<SubscriptionError>();
 
   async function subscribe(type: number) {
-    const rsp = await api.createSubscription(type);
-    setInvoice(rsp.pr);
+    setError(undefined);
+    try {
+      const rsp = await api.createSubscription(type);
+      setInvoice(rsp.pr);
+    } catch (e) {
+      if (e instanceof SubscriptionError) {
+        setError(e);
+      }
+    }
   }
 
   return (
-    <div className="flex subscribe-page">
-      {Plans.map(a => {
-        const lower = Plans.filter(b => b.id < a.id);
-        return (
-          <div className={`card flex f-col${a.disabled ? " disabled" : ""}`}>
-            <div className="f-grow">
-              <h2>{mapPlanName(a.id)}</h2>
-              <p>
-                <FormattedMessage
-                  defaultMessage="Subscribe to Snort {plan} for {price} and receive the following rewards"
-                  values={{
-                    plan: mapPlanName(a.id),
-                    price: <b>{formatShort(a.price)} sats/mo</b>,
-                  }}
-                />
-                :
-              </p>
-              <b>
-                <FormattedMessage defaultMessage="Not all features are built yet, more features to be added soon!" />
-              </b>
-              <ul>
-                {a.unlocks.map(b => (
-                  <li>{mapFeatureName(b)} </li>
-                ))}
-                {lower.map(b => (
-                  <li>
-                    <FormattedMessage
-                      defaultMessage="Everything in {plan}"
-                      values={{
-                        plan: mapPlanName(b.id),
-                      }}
-                    />
-                  </li>
-                ))}
-              </ul>
+    <>
+      <div className="flex subscribe-page">
+        {Plans.map(a => {
+          const lower = Plans.filter(b => b.id < a.id);
+          return (
+            <div className={`card flex f-col${a.disabled ? " disabled" : ""}`}>
+              <div className="f-grow">
+                <h2>{mapPlanName(a.id)}</h2>
+                <p>
+                  <FormattedMessage
+                    defaultMessage="Subscribe to Snort {plan} for {price} and receive the following rewards"
+                    values={{
+                      plan: mapPlanName(a.id),
+                      price: <b>{formatShort(a.price)} sats/mo</b>,
+                    }}
+                  />
+                  :
+                </p>
+                <b>
+                  <FormattedMessage defaultMessage="Not all features are built yet, more features to be added soon!" />
+                </b>
+                <ul>
+                  {a.unlocks.map(b => (
+                    <li>{mapFeatureName(b)} </li>
+                  ))}
+                  {lower.map(b => (
+                    <li>
+                      <FormattedMessage
+                        defaultMessage="Everything in {plan}"
+                        values={{
+                          plan: mapPlanName(b.id),
+                        }}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex f-center w-max mb10">
+                <AsyncButton className="button" disabled={a.disabled} onClick={() => subscribe(a.id)}>
+                  {a.disabled ? (
+                    <FormattedMessage defaultMessage="Coming soon" />
+                  ) : (
+                    <FormattedMessage defaultMessage="Subscribe" />
+                  )}
+                </AsyncButton>
+              </div>
             </div>
-            <div className="flex f-center w-max mb10">
-              <AsyncButton className="button" disabled={a.disabled} onClick={() => subscribe(a.id)}>
-                {a.disabled ? (
-                  <FormattedMessage defaultMessage="Coming soon" />
-                ) : (
-                  <FormattedMessage defaultMessage="Subscribe" />
-                )}
-              </AsyncButton>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
+      {error && <b className="error">{mapSubscriptionErrorCode(error)}</b>}
       <SendSats invoice={invoice} show={invoice !== ""} onClose={() => setInvoice("")} />
-    </div>
+    </>
   );
 }
 
