@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 
 import useEventPublisher from "Feed/EventPublisher";
-import { HexKey } from "@snort/nostr";
+import { HexKey, RawEvent } from "@snort/nostr";
 import ProfilePreview from "Element/ProfilePreview";
 
 import messages from "./messages";

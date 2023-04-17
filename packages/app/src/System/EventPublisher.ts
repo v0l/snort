@@ -72,14 +72,14 @@ export class EventPublisher {
     return eb.pubKey(this.#pubKey).kind(k);
   }
 
-  async #sign(eb: EventBuilder) {
+  async #sign(eb: EventBuilder): Promise<RawEvent> {
     if (this.#hasNip07 && !this.#privateKey) {
       const nip7PubKey = await barrierNip07(() => unwrap(window.nostr).getPublicKey());
       if (nip7PubKey !== this.#pubKey) {
         throw new Error("Can't sign event, NIP-07 pubkey does not match");
       }
       const ev = eb.build();
-      return await barrierNip07(() => unwrap(window.nostr).signEvent(ev));
+      return (await barrierNip07(() => unwrap(window.nostr).signEvent(ev))) as RawEvent;
     } else if (this.#privateKey) {
       return await eb.buildAndSign(this.#privateKey);
     } else {
