@@ -60,7 +60,8 @@ export default async function VoidCat(
             tags.push(["i", parsedMagnet?.infoHash]);
           }
         }
-        ret.header = await publisher.generic(filename, EventKind.FileHeader, tags);
+        //disable for now
+        //ret.header = await publisher.generic(filename, EventKind.FileHeader, tags);
       }
       return ret;
     } else {
