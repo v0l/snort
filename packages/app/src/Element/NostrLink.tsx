@@ -14,7 +14,7 @@ export default function NostrLink({ link }: { link: string }) {
     if (nav.kind === EventKind.FileHeader) {
       return <NostrFileHeader link={nav} />;
     }
-    const evLink = eventLink(nav.id, nav.relays);
+    const evLink = nav.encode();
     return (
       <Link to={`/e/${evLink}`} onClick={e => e.stopPropagation()} state={{ from: location.pathname }}>
         #{evLink.substring(0, 12)}
