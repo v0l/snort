@@ -50,6 +50,7 @@ _Progress: 8/34 (23%)._
 - [ ] NIP-58: Badges
 - [ ] NIP-65: Relay List Metadata
 - [ ] NIP-78: Application-specific data
+- [x] NIP-94: File Header
 
 ### Not Applicable
 

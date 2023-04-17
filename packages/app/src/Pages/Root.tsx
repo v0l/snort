@@ -40,8 +40,22 @@ export default function RootPage() {
       data: "/global",
     },
   };
+
+  const tagTabs = tags.item.map((t, idx) => {
+    return { text: `#${t}`, value: idx + 3, data: `/tag/${t}` };
+  });
+  const tabs = [RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global, ...tagTabs];
   const tab = useMemo(() => {
     const pTab = location.pathname.split("/").slice(-1)[0];
+
+    if (location.pathname.startsWith("/tag")) {
+      const selectedTag = tagTabs.find(t => t.text.slice(1) === pTab);
+
+      if (selectedTag) {
+        return selectedTag;
+      }
+    }
+
     switch (pTab) {
       case "conversations": {
         return RootTab.PostsAndReplies;
@@ -63,11 +77,6 @@ export default function RootPage() {
       });
     }
   }, [location]);
-
-  const tagTabs = tags.item.map((t, idx) => {
-    return { text: `#${t}`, value: idx + 3, data: `/tag/${t}` };
-  });
-  const tabs = [RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global, ...tagTabs];
 
   return (
     <>

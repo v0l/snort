@@ -30,7 +30,9 @@ export class EventBuilder {
     return this;
   }
 
-  tag(t: Array<string>) {
+  tag(t: Array<string>): EventBuilder {
+    const duplicate = this.#tags.some(a => a.length === t.length && a.every((b, i) => b !== a[i]));
+    if (duplicate) return this;
     this.#tags.push(t);
     return this;
   }
@@ -72,10 +74,10 @@ export class EventBuilder {
   }
 
   #validate() {
-    if (!this.#kind) {
+    if (this.#kind === undefined) {
       throw new Error("Kind must be set");
     }
-    if (!this.#pubkey) {
+    if (this.#pubkey === undefined) {
       throw new Error("Pubkey must be set");
     }
   }

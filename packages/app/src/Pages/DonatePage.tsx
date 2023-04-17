@@ -35,6 +35,7 @@ const Translators = [
   bech32ToHex("npub1x8dzy9xegwmdk2vy30l8u08caspcqq2yzncxehdsa6kvnte9pr3qnt8pg4"), // solobalbo - FR
 
   bech32ToHex("npub1xwm9svxrlymymph0hka40zw9frg98m6adxmzcq26jhtm5gwlhjrshhgzfd"), // meitsjustme - ZH
+  bech32ToHex("npub1raspu6ag9kfcw9jz0rz4z693qwmqe5sx6jdhhuvkwz5zy8rygztqnwfhd7"), // ra5pvt1n - ZH
 
   bech32ToHex("npub13tkge7eqeem5cz8gk7gdju76nytvvf064hm5mzmv3x26k2uvaxfqczet2j"), // Mendace - IT
 

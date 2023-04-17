@@ -63,14 +63,11 @@ export default class SnortApi {
       throw new Error("Publisher not set");
     }
     const auth = await this.#publisher.generic(eb => {
-      eb.kind(EventKind.HttpAuthentication);
-      eb.tag(["url", `${this.#url}${path}`]);
-      eb.tag(["method", method ?? "GET"]);
-      return eb;
+      return eb
+        .kind(EventKind.HttpAuthentication)
+        .tag(["url", `${this.#url}${path}`])
+        .tag(["method", method ?? "GET"]);
     });
-    if (!auth) {
-      throw new Error("Failed to create auth event");
-    }
 
     return this.#getJson<T>(path, method, body, {
       ...headers,
