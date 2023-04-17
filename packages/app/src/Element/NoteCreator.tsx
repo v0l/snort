@@ -52,19 +52,8 @@ export function NoteCreator() {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
-  const {
-    note,
-    zapForward,
-    sensitive,
-    pollOptions,
-    replyTo,
-    otherEvents,
-    preview,
-    active,
-    show,
-    showAdvanced,
-    error,
-  } = useSelector((s: RootState) => s.noteCreator);
+  const { note, zapForward, sensitive, pollOptions, replyTo, otherEvents, preview, active, show, showAdvanced, error } =
+    useSelector((s: RootState) => s.noteCreator);
   const [uploadInProgress, setUploadInProgress] = useState(false);
   const dispatch = useDispatch();
 

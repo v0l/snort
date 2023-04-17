@@ -23,7 +23,7 @@ const InitState: NoteCreatorStore = {
   showAdvanced: false,
   zapForward: "",
   sensitive: "",
-  otherEvents: []
+  otherEvents: [],
 };
 
 const NoteCreatorSlice = createSlice({
