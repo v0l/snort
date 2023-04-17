@@ -20,9 +20,10 @@ export interface InvoiceResponse {
 export interface Subscription {
   id: string;
   type: SubscriptionType;
-  created: string;
-  expires: string;
+  created: number;
+  expires: number;
   state: "new" | "expired" | "paid";
+  handle?: string;
 }
 
 export enum SubscriptionErrorCode {
