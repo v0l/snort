@@ -1,6 +1,10 @@
-import { Connection, RelaySettings } from "@snort/nostr";
+import { Connection } from "@snort/nostr";
 import { unixNow } from "Util";
 import { Query } from "./Query";
+import { getRandomValues } from "crypto";
+
+window.crypto = {} as any;
+window.crypto.getRandomValues = getRandomValues as any;
 
 describe("query", () => {
   test("progress", () => {
@@ -16,7 +20,7 @@ describe("query", () => {
     const opt = {
       read: true,
       write: true,
-    } as RelaySettings;
+    };
     const c1 = new Connection("wss://one.com", opt);
     c1.Down = false;
     const c2 = new Connection("wss://two.com", opt);

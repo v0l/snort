@@ -1,4 +1,4 @@
-import assert from "assert"
+import { assert } from "chai"
 import { Nostr } from "../src/client"
 import { relayUrl } from "./setup"
 

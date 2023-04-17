@@ -7,7 +7,10 @@ import { RelayInfo } from "./RelayInfo";
 import { unwrap } from "./Util";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
-export type AuthHandler = (challenge: string, relay: string) => Promise<RawEvent | undefined>;
+export type AuthHandler = (
+  challenge: string,
+  relay: string
+) => Promise<RawEvent | undefined>;
 
 /**
  * Relay settings
@@ -15,7 +18,7 @@ export type AuthHandler = (challenge: string, relay: string) => Promise<RawEvent
 export interface RelaySettings {
   read: boolean;
   write: boolean;
-};
+}
 
 /**
  * Snapshot of connection stats
@@ -32,7 +35,7 @@ export interface StateSnapshot {
   pendingRequests: Array<string>;
   activeRequests: Array<string>;
   id: string;
-};
+}
 
 export class Connection {
   Id: string;
@@ -64,7 +67,12 @@ export class Connection {
   EphemeralTimeout: ReturnType<typeof setTimeout> | undefined;
   Down = true;
 
-  constructor(addr: string, options: RelaySettings, auth?: AuthHandler, ephemeral: boolean = false) {
+  constructor(
+    addr: string,
+    options: RelaySettings,
+    auth?: AuthHandler,
+    ephemeral: boolean = false
+  ) {
     this.Id = uuid();
     this.Address = addr;
     this.Settings = options;
@@ -106,11 +114,14 @@ export class Connection {
     try {
       if (this.Info === undefined) {
         const u = new URL(this.Address);
-        const rsp = await fetch(`${u.protocol === "wss:" ? "https:" : "http:"}//${u.host}`, {
-          headers: {
-            accept: "application/nostr+json",
-          },
-        });
+        const rsp = await fetch(
+          `${u.protocol === "wss:" ? "https:" : "http:"}//${u.host}`,
+          {
+            headers: {
+              accept: "application/nostr+json",
+            },
+          }
+        );
         if (rsp.ok) {
           const data = await rsp.json();
           for (const [k, v] of Object.entries(data)) {
@@ -327,8 +338,8 @@ export class Connection {
 
   #ResetQueues() {
     //send EOSE on disconnect for active subs
-    this.ActiveRequests.forEach(v => this.OnEose?.(v))
-    this.PendingRequests.forEach(v => this.OnEose?.(v[1]));
+    this.ActiveRequests.forEach((v) => this.OnEose?.(v));
+    this.PendingRequests.forEach((v) => this.OnEose?.(v[1]));
 
     this.ActiveRequests.clear();
     this.PendingRequests = [];
@@ -343,12 +354,14 @@ export class Connection {
     this.CurrentState.avgLatency =
       this.Stats.Latency.length > 0
         ? this.Stats.Latency.reduce((acc, v) => acc + v, 0) /
-        this.Stats.Latency.length
+          this.Stats.Latency.length
         : 0;
     this.CurrentState.disconnects = this.Stats.Disconnects;
     this.CurrentState.info = this.Info;
     this.CurrentState.id = this.Id;
-    this.CurrentState.pendingRequests = [...this.PendingRequests.map(a => a[1])];
+    this.CurrentState.pendingRequests = [
+      ...this.PendingRequests.map((a) => a[1]),
+    ];
     this.CurrentState.activeRequests = [...this.ActiveRequests];
     this.Stats.Latency = this.Stats.Latency.slice(-20); // trim
     this.HasStateChange = true;
