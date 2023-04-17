@@ -17,20 +17,6 @@ import { unwrap } from "Util";
 import { EventBuilder } from "./EventBuilder";
 import { EventExt } from "./EventExt";
 
-declare global {
-  interface Window {
-    nostr: {
-      getPublicKey: () => Promise<HexKey>;
-      signEvent: (event: RawEvent) => Promise<RawEvent>;
-      getRelays: () => Promise<Record<string, { read: boolean; write: boolean }>>;
-      nip04: {
-        encrypt: (pubkey: HexKey, content: string) => Promise<string>;
-        decrypt: (pubkey: HexKey, content: string) => Promise<string>;
-      };
-    };
-  }
-}
-
 interface Nip7QueueItem {
   next: () => Promise<unknown>;
   resolve(v: unknown): void;
@@ -88,12 +74,12 @@ export class EventPublisher {
 
   async #sign(eb: EventBuilder) {
     if (this.#hasNip07 && !this.#privateKey) {
-      const nip7PubKey = await barrierNip07(() => window.nostr.getPublicKey());
+      const nip7PubKey = await barrierNip07(() => unwrap(window.nostr).getPublicKey());
       if (nip7PubKey !== this.#pubKey) {
         throw new Error("Can't sign event, NIP-07 pubkey does not match");
       }
       const ev = eb.build();
-      return await barrierNip07(() => window.nostr.signEvent(ev));
+      return await barrierNip07(() => unwrap(window.nostr).signEvent(ev));
     } else if (this.#privateKey) {
       return await eb.buildAndSign(this.#privateKey);
     } else {
@@ -103,11 +89,11 @@ export class EventPublisher {
 
   async nip4Encrypt(content: string, key: HexKey) {
     if (this.#hasNip07 && !this.#privateKey) {
-      const nip7PubKey = await barrierNip07(() => window.nostr.getPublicKey());
+      const nip7PubKey = await barrierNip07(() => unwrap(window.nostr).getPublicKey());
       if (nip7PubKey !== this.#pubKey) {
         throw new Error("Can't encrypt content, NIP-07 pubkey does not match");
       }
-      return await barrierNip07(() => window.nostr.nip04.encrypt(key, content));
+      return await barrierNip07(() => unwrap(window.nostr?.nip04?.encrypt)(key, content));
     } else if (this.#privateKey) {
       return await EventExt.encryptData(content, key, this.#privateKey);
     } else {
@@ -117,7 +103,7 @@ export class EventPublisher {
 
   async nip4Decrypt(content: string, otherKey: HexKey) {
     if (this.#hasNip07 && !this.#privateKey) {
-      return await barrierNip07(() => window.nostr.nip04.decrypt(otherKey, content));
+      return await barrierNip07(() => unwrap(window.nostr?.nip04?.decrypt)(otherKey, content));
     } else if (this.#privateKey) {
       return await EventExt.decryptDm(content, this.#privateKey, otherKey);
     } else {

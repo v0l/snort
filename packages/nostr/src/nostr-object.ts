@@ -7,9 +7,9 @@ declare global {
       getPublicKey: () => Promise<PublicKey>
       signEvent: <T extends RawEvent>(event: Unsigned<T>) => Promise<T>
 
-      getRelays?: () => Promise<{
-        [url: string]: { read: boolean; write: boolean }
-      }>
+      getRelays?: () => Promise<
+        Record<string, { read: boolean; write: boolean }>
+      >
 
       nip04?: {
         encrypt?: (pubkey: PublicKey, plaintext: string) => Promise<string>
