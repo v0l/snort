@@ -30,7 +30,9 @@ export class EventBuilder {
     return this;
   }
 
-  tag(t: Array<string>) {
+  tag(t: Array<string>): EventBuilder {
+    const duplicate = this.#tags.some(a => a.length === t.length && a.every((b, i) => b !== a[i]));
+    if (duplicate) return this;
     this.#tags.push(t);
     return this;
   }
