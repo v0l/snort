@@ -473,12 +473,8 @@ export function findTag(e: TaggedRawEvent, tag: string) {
   return maybeTag && maybeTag[1];
 }
 
-export async function hmacSha256(key: Uint8Array, ...messages: Uint8Array[]) {
-  if (window.crypto.subtle) {
-    return await secp.utils.hmacSha256(key, ...messages);
-  } else {
-    return hmac(hash, key, secp.utils.concatBytes(...messages));
-  }
+export function hmacSha256(key: Uint8Array, ...messages: Uint8Array[]) {
+  return hmac(hash, key, secp.utils.concatBytes(...messages));
 }
 
 export function getRelayName(url: string) {

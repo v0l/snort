@@ -92,14 +92,7 @@ export default function HyperText({ link, creator }: { link: string; creator: st
         return <MagnetLink magnet={parsed} />;
       }
     } else {
-      return (
-        <>
-          <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-            {a}
-          </a>
-          <LinkPreview url={a} />
-        </>
-      );
+      return <LinkPreview url={a} />;
     }
   } catch {
     // Ignore the error.

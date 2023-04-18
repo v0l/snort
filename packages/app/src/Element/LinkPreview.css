@@ -1,0 +1,28 @@
+.link-preview-container {
+  border: 1px solid var(--gray);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.link-preview-container:hover {
+  cursor: pointer;
+}
+
+.link-preview-title {
+  padding: 0 10px 10px 10px;
+}
+
+.link-preview-title > small {
+  color: var(--font-secondary-color);
+  font-size: small;
+}
+
+.link-preview-image {
+  margin: 0 0 15px 0 !important;
+  border-radius: 0 !important;
+  background-image: var(--img-url);
+  min-height: 250px;
+  max-height: 500px;
+  background-size: cover;
+  background-position: center;
+}

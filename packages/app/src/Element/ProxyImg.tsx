@@ -12,9 +12,8 @@ export const ProxyImg = (props: ProxyImgProps) => {
 
   useEffect(() => {
     if (src) {
-      proxy(src, size)
-        .then(a => setUrl(a))
-        .catch(console.warn);
+      const url = proxy(src, size);
+      setUrl(url);
     }
   }, [src]);
 

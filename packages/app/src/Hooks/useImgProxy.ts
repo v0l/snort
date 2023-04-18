@@ -17,8 +17,8 @@ export default function useImgProxy() {
     return s.replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
   }
 
-  async function signUrl(u: string) {
-    const result = await hmacSha256(
+  function signUrl(u: string) {
+    const result = hmacSha256(
       secp.utils.hexToBytes(unwrap(settings).key),
       secp.utils.hexToBytes(unwrap(settings).salt),
       te.encode(u)
@@ -27,13 +27,13 @@ export default function useImgProxy() {
   }
 
   return {
-    proxy: async (url: string, resize?: number) => {
+    proxy: (url: string, resize?: number) => {
       if (!settings) return url;
       const opt = resize ? `rs:fit:${resize}:${resize}/dpr:${window.devicePixelRatio}` : "";
       const urlBytes = te.encode(url);
       const urlEncoded = urlSafe(base64.encode(urlBytes, 0, urlBytes.byteLength));
       const path = `/${opt}/${urlEncoded}`;
-      const sig = await signUrl(path);
+      const sig = signUrl(path);
       return `${new URL(settings.url).toString()}${sig}${path}`;
     },
   };

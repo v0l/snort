@@ -263,26 +263,3 @@
 .close-menu-container {
   position: absolute;
 }
-
-.link-preview-container {
-  border: 1px solid var(--gray);
-  border-radius: 10px;
-  text-align: center;
-}
-
-.link-preview-container:hover {
-  cursor: pointer;
-}
-
-.link-preview-title {
-  padding: 0 10px 10px 10px;
-}
-
-.link-preview-title > small {
-  color: var(--font-secondary-color);
-  font-size: small;
-}
-
-.link-preview-image {
-  margin: 0 0 15px 0 !important;
-}

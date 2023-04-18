@@ -1,21 +1,14 @@
-import { useEffect, useState } from "react";
+import "./LinkPreview.css";
+import { CSSProperties, useEffect, useState } from "react";
 
-import { ApiHost } from "Const";
 import Spinner from "Icons/Spinner";
-import { ProxyImg } from "Element/ProxyImg";
-
-interface LinkPreviewData {
-  title?: string;
-  description?: string;
-  image?: string;
-}
+import SnortApi, { LinkPreviewData } from "SnortApi";
+import useImgProxy from "Hooks/useImgProxy";
 
 async function fetchUrlPreviewInfo(url: string) {
+  const api = new SnortApi();
   try {
-    const res = await fetch(`${ApiHost}/api/v1/preview?url=${encodeURIComponent(url)}`);
-    if (res.ok) {
-      return (await res.json()) as LinkPreviewData;
-    }
+    return await api.linkPreview(url);
   } catch (e) {
     console.warn(`Failed to load link preview`, url);
   }
@@ -23,11 +16,12 @@ async function fetchUrlPreviewInfo(url: string) {
 
 const LinkPreview = ({ url }: { url: string }) => {
   const [preview, setPreview] = useState<LinkPreviewData | null>();
+  const { proxy } = useImgProxy();
 
   useEffect(() => {
     (async () => {
       const data = await fetchUrlPreviewInfo(url);
-      if (data && data.title) {
+      if (data && data.image) {
         setPreview(data);
       } else {
         setPreview(null);
@@ -35,19 +29,27 @@ const LinkPreview = ({ url }: { url: string }) => {
     })();
   }, [url]);
 
-  if (preview === null) return null;
+  if (preview === null)
+    return (
+      <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
+        {url}
+      </a>
+    );
+
+  const backgroundImage = preview?.image ? `url(${proxy(preview?.image)})` : "";
+  const style = { "--img-url": backgroundImage } as CSSProperties;
 
   return (
     <div className="link-preview-container">
       {preview && (
         <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-          {preview?.image && <ProxyImg src={preview?.image} className="link-preview-image" />}
+          {preview?.image && <div className="link-preview-image" style={style} />}
           <p className="link-preview-title">
             {preview?.title}
             {preview?.description && (
               <>
                 <br />
-                <small>{preview?.description}</small>
+                <small>{preview.description.slice(0, 160)}</small>
               </>
             )}
           </p>

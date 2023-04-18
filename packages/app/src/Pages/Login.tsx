@@ -85,7 +85,8 @@ export default function LoginPage() {
 
   useEffect(() => {
     const ret = unwrap(Artwork.at(Artwork.length * Math.random()));
-    proxy(ret.link).then(a => setArt({ ...ret, link: a }));
+    const url = proxy(ret.link);
+    setArt({ ...ret, link: url });
   }, []);
 
   async function doLogin() {

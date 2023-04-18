@@ -41,6 +41,12 @@ export class SubscriptionError extends Error {
   }
 }
 
+export interface LinkPreviewData {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
 export default class SnortApi {
   #url: string;
   #publisher?: EventPublisher;
@@ -72,6 +78,10 @@ export default class SnortApi {
 
   listSubscriptions() {
     return this.#getJsonAuthd<Array<Subscription>>("api/v1/subscription");
+  }
+
+  linkPreview(url: string) {
+    return this.#getJson<LinkPreviewData>(`api/v1/preview?url=${encodeURIComponent(url)}`);
   }
 
   async #getJsonAuthd<T>(

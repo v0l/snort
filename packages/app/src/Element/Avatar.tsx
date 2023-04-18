@@ -12,9 +12,8 @@ const Avatar = ({ user, ...rest }: { user?: UserMetadata; onClick?: () => void }
 
   useEffect(() => {
     if (user?.picture) {
-      proxy(user.picture, 120)
-        .then(a => setUrl(a))
-        .catch(console.warn);
+      const url = proxy(user.picture, 120);
+      setUrl(url);
     }
   }, [user]);
 
