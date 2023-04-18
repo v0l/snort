@@ -204,13 +204,13 @@ export default function Note(props: NoteProps) {
     eTarget: TaggedRawEvent,
     isTargetAllowed: boolean = e.target === e.currentTarget
   ) {
-    if (props.onClick) {
-      e.stopPropagation();
-      props.onClick(eTarget);
+    if (!isTargetAllowed || opt?.canClick === false) {
       return;
     }
 
-    if (!isTargetAllowed || opt?.canClick === false) {
+    if (props.onClick) {
+      e.stopPropagation();
+      props.onClick(eTarget);
       return;
     }
 
