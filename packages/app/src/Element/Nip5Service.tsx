@@ -22,6 +22,7 @@ import useEventPublisher from "Feed/EventPublisher";
 import { debounce } from "Util";
 import useLogin from "Hooks/useLogin";
 import SnortServiceProvider from "Nip05/SnortServiceProvider";
+import { mapEventToProfile, UserCache } from "Cache";
 
 import messages from "./messages";
 
@@ -217,6 +218,10 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       publisher.broadcast(ev);
       if (props.onSuccess) {
         props.onSuccess(nip05);
+      }
+      const newMeta = mapEventToProfile(ev);
+      if (newMeta) {
+        UserCache.set(newMeta);
       }
       if (helpText) {
         navigate("/settings");
