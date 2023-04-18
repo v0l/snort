@@ -9,7 +9,7 @@ import { getCurrentSubscription, SubscriptionEvent } from "Subscription";
 import { EventPublisher } from "System/EventPublisher";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
-  if (state.relays.timestamp > createdAt) {
+  if (state.relays.timestamp >= createdAt) {
     return;
   }
 
@@ -94,7 +94,7 @@ export function generateRandomKey() {
 }
 
 export function setTags(state: LoginSession, tags: Array<string>, ts: number) {
-  if (state.tags.timestamp > ts) {
+  if (state.tags.timestamp >= ts) {
     return;
   }
   state.tags.item = tags;
@@ -103,7 +103,7 @@ export function setTags(state: LoginSession, tags: Array<string>, ts: number) {
 }
 
 export function setMuted(state: LoginSession, muted: Array<string>, ts: number) {
-  if (state.muted.timestamp > ts) {
+  if (state.muted.timestamp >= ts) {
     return;
   }
   state.muted.item = muted;
@@ -112,7 +112,7 @@ export function setMuted(state: LoginSession, muted: Array<string>, ts: number) 
 }
 
 export function setBlocked(state: LoginSession, blocked: Array<string>, ts: number) {
-  if (state.blocked.timestamp > ts) {
+  if (state.blocked.timestamp >= ts) {
     return;
   }
   state.blocked.item = blocked;
@@ -121,7 +121,7 @@ export function setBlocked(state: LoginSession, blocked: Array<string>, ts: numb
 }
 
 export function setFollows(state: LoginSession, follows: Array<string>, ts: number) {
-  if (state.follows.timestamp > ts) {
+  if (state.follows.timestamp >= ts) {
     return;
   }
   state.follows.item = follows;
@@ -130,7 +130,7 @@ export function setFollows(state: LoginSession, follows: Array<string>, ts: numb
 }
 
 export function setPinned(state: LoginSession, pinned: Array<string>, ts: number) {
-  if (state.pinned.timestamp > ts) {
+  if (state.pinned.timestamp >= ts) {
     return;
   }
   state.pinned.item = pinned;
@@ -139,7 +139,7 @@ export function setPinned(state: LoginSession, pinned: Array<string>, ts: number
 }
 
 export function setBookmarked(state: LoginSession, bookmarked: Array<string>, ts: number) {
-  if (state.bookmarked.timestamp > ts) {
+  if (state.bookmarked.timestamp >= ts) {
     return;
   }
   state.bookmarked.item = bookmarked;
@@ -148,7 +148,9 @@ export function setBookmarked(state: LoginSession, bookmarked: Array<string>, ts
 }
 
 export function addSubscription(state: LoginSession, ...subs: SubscriptionEvent[]) {
-  state.subscriptions = dedupeById([...(state.subscriptions || []), ...subs]);
-  state.currentSubscription = getCurrentSubscription(state.subscriptions);
-  LoginStore.updateSession(state);
+  const newSubs = dedupeById([...(state.subscriptions || []), ...subs]);
+  if (newSubs.length !== state.subscriptions.length) {
+    state.currentSubscription = getCurrentSubscription(state.subscriptions);
+    LoginStore.updateSession(state);
+  }
 }

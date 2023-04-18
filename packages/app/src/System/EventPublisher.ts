@@ -70,7 +70,6 @@ export type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
 export class EventPublisher {
   #pubKey: string;
   #privateKey?: string;
-  #hasNip07 = "nostr" in window;
 
   constructor(pubKey: string, privKey?: string) {
     if (privKey) {
@@ -79,6 +78,10 @@ export class EventPublisher {
     } else {
       this.#pubKey = pubKey;
     }
+  }
+
+  get #hasNip07() {
+    return "nostr" in window;
   }
 
   #eb(k: EventKind) {
