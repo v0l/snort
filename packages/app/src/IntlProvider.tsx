@@ -15,6 +15,8 @@ import deMessages from "translations/de_DE.json";
 import ruMessages from "translations/ru_RU.json";
 import svMessages from "translations/sv_SE.json";
 import hrMessages from "translations/hr_HR.json";
+import taINMessages from "translations/ta_IN.json";
+
 import useLogin from "Hooks/useLogin";
 
 const DefaultLocale = "en-US";
@@ -63,6 +65,9 @@ const getMessages = (locale: string) => {
       case "hr-HR":
       case "hr":
         return hrMessages;
+      case "ta-IN":
+      case "ta":
+        return taINMessages;
       case DefaultLocale:
       case "en":
         return enMessages;
