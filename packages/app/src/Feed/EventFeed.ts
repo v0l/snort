@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import useRequestBuilder from "Hooks/useRequestBuilder";
-import { FlatNoteStore, RequestBuilder } from "System";
+import { RequestBuilder, ReplaceableNoteStore } from "System";
 import { NostrLink } from "Util";
 
 export default function useEventFeed(link: NostrLink) {
@@ -11,5 +11,5 @@ export default function useEventFeed(link: NostrLink) {
     return b;
   }, [link]);
 
-  return useRequestBuilder<FlatNoteStore>(FlatNoteStore, sub);
+  return useRequestBuilder<ReplaceableNoteStore>(ReplaceableNoteStore, sub);
 }

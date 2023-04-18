@@ -25,9 +25,10 @@ export interface TextProps {
   creator: HexKey;
   tags: Array<Array<string>>;
   disableMedia?: boolean;
+  depth?: number;
 }
 
-export default function Text({ content, tags, creator, disableMedia }: TextProps) {
+export default function Text({ content, tags, creator, disableMedia, depth }: TextProps) {
   const location = useLocation();
 
   function extractLinks(fragments: Fragment[]) {
@@ -43,7 +44,7 @@ export default function Text({ content, tags, creator, disableMedia }: TextProps
                   </a>
                 );
               }
-              return <HyperText link={a} creator={creator} />;
+              return <HyperText link={a} creator={creator} depth={depth} />;
             }
             return a;
           });

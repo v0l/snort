@@ -57,6 +57,14 @@
   margin-right: 8px;
 }
 
+.note-quote {
+  border: 1px solid var(--gray);
+}
+
+.note-quote.note > .body {
+  padding-left: 0;
+}
+
 .note > .body {
   margin-top: 4px;
   margin-bottom: 24px;
@@ -96,9 +104,6 @@
   margin: 0;
   padding: 0;
   border-radius: 16px;
-}
-
-.light .note > .footer .ctx-menu {
 }
 
 .note > .footer .ctx-menu li {

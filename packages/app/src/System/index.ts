@@ -8,6 +8,7 @@ import {
   NoteStore,
   PubkeyReplaceableNoteStore,
   ParameterizedReplaceableNoteStore,
+  ReplaceableNoteStore,
 } from "./NoteCollection";
 import { diffFilters } from "./RequestSplitter";
 import { Query } from "./Query";
@@ -18,6 +19,7 @@ export {
   FlatNoteStore,
   PubkeyReplaceableNoteStore,
   ParameterizedReplaceableNoteStore,
+  ReplaceableNoteStore,
   Query,
   EventBuilder,
 };

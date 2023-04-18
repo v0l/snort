@@ -39,6 +39,7 @@ export interface NoteProps {
   highlight?: boolean;
   ignoreModeration?: boolean;
   onClick?: (e: TaggedRawEvent) => void;
+  depth?: number;
   options?: {
     showHeader?: boolean;
     showTime?: boolean;
@@ -187,7 +188,7 @@ export default function Note(props: NoteProps) {
         </Reveal>
       );
     }
-    return <Text content={body} tags={ev.tags} creator={ev.pubkey} />;
+    return <Text content={body} tags={ev.tags} creator={ev.pubkey} depth={props.depth} />;
   };
 
   useLayoutEffect(() => {

@@ -5,7 +5,7 @@
   word-break: break-word;
 }
 
-.text a {
+.text > a {
   color: var(--highlight);
   text-decoration: none;
 }

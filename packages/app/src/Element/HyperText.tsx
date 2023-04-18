@@ -26,7 +26,7 @@ import NostrLink from "Element/NostrLink";
 import RevealMedia from "Element/RevealMedia";
 import MagnetLink from "Element/MagnetLink";
 
-export default function HyperText({ link, creator }: { link: string; creator: string }) {
+export default function HyperText({ link, creator, depth }: { link: string; creator: string; depth?: number }) {
   const a = link;
   try {
     const url = new URL(a);
@@ -85,7 +85,7 @@ export default function HyperText({ link, creator }: { link: string; creator: st
     } else if (isWavlakeLink) {
       return <WavlakeEmbed link={a} />;
     } else if (url.protocol === "nostr:" || url.protocol === "web+nostr:") {
-      return <NostrLink link={a} />;
+      return <NostrLink link={a} depth={depth} />;
     } else if (url.protocol === "magnet:") {
       const parsed = magnetURIDecode(a);
       if (parsed) {
