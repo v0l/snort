@@ -166,33 +166,6 @@ export default function LoginPage() {
     );
   }
 
-  function generateKey() {
-    if (!hasSubtleCrypto) return;
-
-    return (
-      <>
-        <div className="flex login-or">
-          <FormattedMessage defaultMessage="OR" description="Seperator text for Login / Generate Key" />
-          <div className="divider w-max"></div>
-        </div>
-        <h1 dir="auto">
-          <FormattedMessage defaultMessage="Create an Account" description="Heading for generate key flow" />
-        </h1>
-        <p>
-          <FormattedMessage
-            defaultMessage="Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!"
-            description="Note about key security before generating a new key"
-          />
-        </p>
-        <div className="login-actions">
-          <AsyncButton onClick={() => makeRandomKey()}>
-            <FormattedMessage defaultMessage="Generate Key" description="Button: Generate a new key" />
-          </AsyncButton>
-        </div>
-      </>
-    );
-  }
-
   function installExtension() {
     if (hasSubtleCrypto) return;
 
@@ -256,9 +229,9 @@ export default function LoginPage() {
     <div className="login">
       <div>
         <div className="login-container">
-          <div className="logo" onClick={() => navigate("/")}>
+          <h1 className="logo" onClick={() => navigate("/")}>
             Snort
-          </div>
+          </h1>
           <h1 dir="auto">
             <FormattedMessage defaultMessage="Login" description="Login header" />
           </h1>
@@ -291,9 +264,11 @@ export default function LoginPage() {
             <button type="button" onClick={doLogin}>
               <FormattedMessage defaultMessage="Login" description="Login button" />
             </button>
+            <AsyncButton onClick={() => makeRandomKey()}>
+              <FormattedMessage defaultMessage="Create Account" />
+            </AsyncButton>
             {altLogins()}
           </div>
-          {generateKey()}
           {installExtension()}
         </div>
       </div>

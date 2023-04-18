@@ -80,7 +80,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       const ev = await publisher.metadata(userCopy);
       publisher.broadcast(ev);
 
-      const newProfile = mapEventToProfile(ev as TaggedRawEvent);
+      const newProfile = mapEventToProfile(ev);
       if (newProfile) {
         await UserCache.set(newProfile);
       }

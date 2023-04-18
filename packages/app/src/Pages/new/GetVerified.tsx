@@ -32,6 +32,11 @@ export default function GetVerified() {
       <h1>
         <FormattedMessage {...messages.Identifier} />
       </h1>
+      <div className="next-actions continue-actions">
+        <button className="secondary" type="button" onClick={onNext}>
+          <FormattedMessage {...messages.Skip} />
+        </button>
+      </div>
       <h4>
         <FormattedMessage {...messages.PreviewOnSnort} />
       </h4>

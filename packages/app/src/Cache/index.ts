@@ -1,4 +1,4 @@
-import { HexKey, TaggedRawEvent, UserMetadata } from "@snort/nostr";
+import { HexKey, RawEvent, UserMetadata } from "@snort/nostr";
 import { hexToBech32, unixNowMs } from "Util";
 import { DmCache } from "./DMCache";
 import { UserCache } from "./UserCache";
@@ -30,7 +30,7 @@ export interface MetadataCache extends UserMetadata {
   zapService?: HexKey;
 }
 
-export function mapEventToProfile(ev: TaggedRawEvent) {
+export function mapEventToProfile(ev: RawEvent) {
   try {
     const data: UserMetadata = JSON.parse(ev.content);
     return {

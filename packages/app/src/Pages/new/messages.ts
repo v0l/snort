@@ -46,7 +46,7 @@ export default defineMessages({
   PopularAccounts: { defaultMessage: "Follow some popular accounts" },
   Skip: { defaultMessage: "Skip" },
   Done: { defaultMessage: "Done!" },
-  ImportTwitter: { defaultMessage: "Import Twitter Follows (optional)" },
+  ImportTwitter: { defaultMessage: "Import Twitter Follows" },
   TwitterPlaceholder: { defaultMessage: "Twitter username..." },
   FindYourFollows: { defaultMessage: "Find your twitter follows on nostr (Data provided by {provider})" },
   TwitterUsername: { defaultMessage: "Twitter username" },
@@ -56,7 +56,7 @@ export default defineMessages({
   Check: { defaultMessage: "Check" },
   Next: { defaultMessage: "Next" },
   SetupProfile: { defaultMessage: "Setup your Profile" },
-  Identifier: { defaultMessage: "Get an identifier (optional)" },
+  Identifier: { defaultMessage: "Get an identifier" },
   IdentifierHelp: {
     defaultMessage:
       "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app.",

@@ -68,9 +68,6 @@ export default function ImportFollows() {
       </p>
 
       <div className="next-actions continue-actions">
-        <button className="secondary" type="button" onClick={() => navigate("/new/discover")}>
-          <FormattedMessage {...messages.Skip} />
-        </button>
         <button type="button" onClick={() => navigate("/new/discover")}>
           <FormattedMessage {...messages.Next} />
         </button>
