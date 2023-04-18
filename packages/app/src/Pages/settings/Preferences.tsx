@@ -38,7 +38,7 @@ const PreferencesPage = () => {
               })
             }
             style={{ textTransform: "capitalize" }}>
-            {["en", "ja", "es", "hu", "zh-CN", "zh-TW", "fr", "ar", "it", "id", "de", "ru", "sv", "hr"]
+            {["en", "ja", "es", "hu", "zh-CN", "zh-TW", "fr", "ar", "it", "id", "de", "ru", "sv", "hr", "ta-IN"]
               .sort()
               .map(a => (
                 <option value={a}>
