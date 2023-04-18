@@ -62,7 +62,7 @@ export class Connection {
   OnEose?: (sub: string) => void;
   Auth?: AuthHandler;
   AwaitingAuth: Map<string, boolean>;
-  Authed: boolean;
+  Authed = false;
   Ephemeral: boolean;
   EphemeralTimeout: ReturnType<typeof setTimeout> | undefined;
   Down = true;
@@ -90,7 +90,6 @@ export class Connection {
     this.ReconnectTimer = null;
     this.EventsCallback = new Map();
     this.AwaitingAuth = new Map();
-    this.Authed = false;
     this.Auth = auth;
     this.Ephemeral = ephemeral;
 
@@ -189,7 +188,9 @@ export class Connection {
       const tag = msg[0];
       switch (tag) {
         case "AUTH": {
-          this._OnAuthAsync(msg[1]);
+          this._OnAuthAsync(msg[1])
+            .then(() => this.#sendPendingRaw())
+            .catch(console.error);
           this.Stats.EventsReceived++;
           this.#UpdateState();
           break;
@@ -354,7 +355,7 @@ export class Connection {
     this.CurrentState.avgLatency =
       this.Stats.Latency.length > 0
         ? this.Stats.Latency.reduce((acc, v) => acc + v, 0) /
-          this.Stats.Latency.length
+        this.Stats.Latency.length
         : 0;
     this.CurrentState.disconnects = this.Stats.Disconnects;
     this.CurrentState.info = this.Info;
@@ -376,10 +377,28 @@ export class Connection {
   }
 
   #SendJson(obj: object) {
-    const authPending = !this.Authed && this.AwaitingAuth.size > 0;
+    const authPending = !this.Authed && (this.AwaitingAuth.size > 0 || this.Info?.limitation?.auth_required === true);
     if (this.Socket?.readyState !== WebSocket.OPEN || authPending) {
       this.PendingRaw.push(obj);
       return;
+    }
+
+    this.#sendPendingRaw();
+    this.#sendOnWire(obj);
+  }
+
+  #sendPendingRaw() {
+    while (this.PendingRaw.length > 0) {
+      const next = this.PendingRaw.shift();
+      if (next) {
+        this.#sendOnWire(next);
+      }
+    }
+  }
+
+  #sendOnWire(obj: unknown) {
+    if (this.Socket?.readyState !== WebSocket.OPEN) {
+      throw new Error("Socket is not open");
     }
     const json = JSON.stringify(obj);
     this.Socket.send(json);
@@ -414,10 +433,7 @@ export class Connection {
         resolve();
       });
 
-      const req = ["AUTH", authEvent];
-      this.#SendJson(req);
-      this.Stats.EventsSent++;
-      this.#UpdateState();
+      this.#sendOnWire(["AUTH", authEvent]);
     });
   }
 

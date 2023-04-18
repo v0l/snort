@@ -11,5 +11,6 @@ export interface RelayInfo {
     max_subscriptions: number;
     max_filters: number;
     max_event_tags: number;
+    auth_required: boolean
   };
 }
