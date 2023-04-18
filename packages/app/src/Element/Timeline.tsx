@@ -24,6 +24,7 @@ export interface TimelineProps {
   window?: number;
   relay?: string;
   now?: number;
+  loadMore?: boolean;
 }
 
 /**
@@ -137,11 +138,13 @@ const Timeline = (props: TimelineProps) => {
         </>
       )}
       {mainFeed.map(eventElement)}
-      <LoadMore onLoadMore={feed.loadMore} shouldLoadMore={!feed.loading}>
-        <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
-        <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
-        <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
-      </LoadMore>
+      {(props.loadMore === undefined || props.loadMore === true) && (
+        <LoadMore onLoadMore={feed.loadMore} shouldLoadMore={!feed.loading}>
+          <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
+          <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
+          <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
+        </LoadMore>
+      )}
     </div>
   );
 };

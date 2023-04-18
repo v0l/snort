@@ -252,7 +252,8 @@ export default function ProfilePage() {
                 discriminator: id.slice(0, 12),
               }}
               postsOnly={false}
-              method={"TIME_RANGE"}
+              method={"LIMIT_UNTIL"}
+              loadMore={false}
               ignoreModeration={true}
               window={60 * 60 * 6}
             />

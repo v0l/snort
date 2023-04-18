@@ -73,7 +73,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     const rb = createBuilder();
     if (rb) {
       if (options.method === "LIMIT_UNTIL") {
-        rb.filter.until(until).limit(10);
+        rb.filter.until(until).limit(200);
       } else {
         rb.filter.since(since).until(until);
         if (since === undefined) {
