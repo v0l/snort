@@ -1,13 +1,12 @@
 import "./ZapButton.css";
-import { faBolt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { HexKey } from "@snort/nostr";
 
 import { useUserProfile } from "Hooks/useUserProfile";
 import SendSats from "Element/SendSats";
+import Icon from "Icons/Icon";
 
-const ZapButton = ({ pubkey, lnurl }: { pubkey: HexKey; lnurl?: string }) => {
+const ZapButton = ({ pubkey, lnurl, children }: { pubkey: HexKey; lnurl?: string; children?: React.ReactNode }) => {
   const profile = useUserProfile(pubkey);
   const [zap, setZap] = useState(false);
   const service = lnurl ?? (profile?.lud16 || profile?.lud06);
@@ -15,8 +14,9 @@ const ZapButton = ({ pubkey, lnurl }: { pubkey: HexKey; lnurl?: string }) => {
 
   return (
     <>
-      <div className="zap-button" onClick={() => setZap(true)}>
-        <FontAwesomeIcon icon={faBolt} />
+      <div className="zap-button flex" onClick={() => setZap(true)}>
+        <Icon name="zap" className={children ? "mr5" : ""} size={15} />
+        {children}
       </div>
       <SendSats
         target={profile?.display_name || profile?.name}

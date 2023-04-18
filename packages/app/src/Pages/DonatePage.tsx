@@ -98,20 +98,24 @@ const DonatePage = () => {
       <p>
         <FormattedMessage defaultMessage="Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below" />
       </p>
-      <div className="flex">
-        <div className="mr10">
-          <FormattedMessage defaultMessage="Lightning Donation: " />
+      <div className="card">
+        <div className="flex">
+          <div className="mr10">
+            <FormattedMessage defaultMessage="Lightning Donation: " />
+          </div>
+          <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL}>
+            <FormattedMessage defaultMessage="Donate" />
+          </ZapButton>
         </div>
-        <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL} />
+        {today && (
+          <small>
+            <FormattedMessage
+              defaultMessage="Total today (UTC): {amount} sats"
+              values={{ amount: today.donations.toLocaleString() }}
+            />
+          </small>
+        )}
       </div>
-      {today && (
-        <small>
-          <FormattedMessage
-            defaultMessage="Total today (UTC): {amount} sats"
-            values={{ amount: today.donations.toLocaleString() }}
-          />
-        </small>
-      )}
       <h3>
         <FormattedMessage defaultMessage="Primary Developers" />
       </h3>
