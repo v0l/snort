@@ -3,9 +3,10 @@ import { useUserProfile } from "Hooks/useUserProfile";
 import Icon from "Icons/Icon";
 import { useState } from "react";
 import { UITask } from "Tasks";
+import { DonateTask } from "./DonateTask";
 import { Nip5Task } from "./Nip5Task";
 
-const AllTasks: Array<UITask> = [new Nip5Task()];
+const AllTasks: Array<UITask> = [new Nip5Task(), new DonateTask()];
 AllTasks.forEach(a => a.load());
 
 export const TaskList = () => {
