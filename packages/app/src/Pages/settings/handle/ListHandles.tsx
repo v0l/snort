@@ -58,6 +58,11 @@ export default function ListHandles() {
           </div>
         </div>
       ))}
+      {handles.length > 0 && (
+        <button onClick={() => navigate("/verification")}>
+          <FormattedMessage defaultMessage="Buy Handle" />
+        </button>
+      )}
     </>
   );
 }

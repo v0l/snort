@@ -133,6 +133,9 @@
   "4rYCjn": {
     "defaultMessage": "Note to Self"
   },
+  "5oTnfy": {
+    "defaultMessage": "Buy Handle"
+  },
   "5rOdPG": {
     "defaultMessage": "Once you setup your key manager extension and generated a key, you can follow our new users flow to setup your profile and help you find some interesting people on Nostr to follow."
   },
@@ -496,6 +499,9 @@
   },
   "PLSbmL": {
     "defaultMessage": "Your mnemonic phrase"
+  },
+  "PamNxw": {
+    "defaultMessage": "Unknown file header: {name}"
   },
   "Pe0ogR": {
     "defaultMessage": "Theme"
