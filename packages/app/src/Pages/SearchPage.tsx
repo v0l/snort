@@ -9,6 +9,7 @@ import { SearchRelays } from "Const";
 import { System } from "System";
 import { MetadataCache } from "Cache";
 import { UserCache } from "Cache/UserCache";
+import TrendingUsers from "Element/TrendingUsers";
 
 import messages from "./messages";
 
@@ -64,6 +65,7 @@ const SearchPage = () => {
           autoFocus={true}
         />
       </div>
+      {!keyword && <TrendingUsers />}
       {keyword && allUsers?.slice(0, 3).map(u => <ProfilePreview actions={<></>} className="card" pubkey={u.pubkey} />)}
       {keyword && (
         <Timeline

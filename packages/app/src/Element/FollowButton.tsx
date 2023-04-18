@@ -5,6 +5,7 @@ import { HexKey } from "@snort/nostr";
 import useEventPublisher from "Feed/EventPublisher";
 import { parseId } from "Util";
 import useLogin from "Hooks/useLogin";
+import AsyncButton from "Element/AsyncButton";
 
 import messages from "./messages";
 
@@ -37,11 +38,10 @@ export default function FollowButton(props: FollowButtonProps) {
   }
 
   return (
-    <button
-      type="button"
+    <AsyncButton
       className={isFollowing ? `${baseClassname} secondary` : baseClassname}
       onClick={() => (isFollowing ? unfollow(pubkey) : follow(pubkey))}>
       {isFollowing ? <FormattedMessage {...messages.Unfollow} /> : <FormattedMessage {...messages.Follow} />}
-    </button>
+    </AsyncButton>
   );
 }
