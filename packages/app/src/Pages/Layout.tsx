@@ -134,7 +134,7 @@ export default function Layout() {
   return (
     <div className={pageClass}>
       {!shouldHideHeader && (
-        <header>
+        <header className="main-content mt5">
           <div className="logo" onClick={() => navigate("/")}>
             <h1>Snort</h1>
             {currentSubscription && (
