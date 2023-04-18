@@ -263,7 +263,14 @@ export default function ProfilePage() {
       }
       case FOLLOWS: {
         if (isMe) {
-          return <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={false} />;
+          return (
+            <>
+              <button onClick={() => navigate("/new/import")} className="mb10">
+                <FormattedMessage defaultMessage="Find Twitter follows" />
+              </button>
+              <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={false} />;
+            </>
+          );
         } else {
           return <FollowsTab id={id} />;
         }
