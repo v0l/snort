@@ -20,8 +20,25 @@ export interface InvoiceResponse {
 export interface Subscription {
   id: string;
   type: SubscriptionType;
-  created: string;
-  expires: string;
+  created: number;
+  expires: number;
+  state: "new" | "expired" | "paid";
+  handle?: string;
+}
+
+export enum SubscriptionErrorCode {
+  InternalError = 1,
+  SubscriptionActive = 2,
+  Duplicate = 3,
+}
+
+export class SubscriptionError extends Error {
+  code: SubscriptionErrorCode;
+
+  constructor(msg: string, code: SubscriptionErrorCode) {
+    super(msg);
+    this.code = code;
+  }
 }
 
 export default class SnortApi {
@@ -47,6 +64,10 @@ export default class SnortApi {
 
   createSubscription(type: number) {
     return this.#getJsonAuthd<InvoiceResponse>(`api/v1/subscription?type=${type}`, "PUT");
+  }
+
+  renewSubscription(id: string) {
+    return this.#getJsonAuthd<InvoiceResponse>(`api/v1/subscription/${id}/renew`, "GET");
   }
 
   listSubscriptions() {
@@ -93,7 +114,7 @@ export default class SnortApi {
 
     const obj = await rsp.json();
     if ("error" in obj) {
-      throw new Error(obj.error);
+      throw new SubscriptionError(obj.error, obj.code);
     }
     return obj as T;
   }

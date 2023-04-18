@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "Element/Logo";
-import { services } from "Pages/Verification";
+import { Nip5Services } from "Pages/Verification";
 import Nip5Service from "Element/Nip5Service";
 import ProfileImage from "Element/ProfileImage";
 import { useUserProfile } from "Hooks/useUserProfile";
@@ -66,7 +66,7 @@ export default function GetVerified() {
           <div className="nip-container">
             <Nip5Service
               key="snort"
-              {...services[0]}
+              {...Nip5Services[0]}
               helpText={false}
               onChange={setNip05}
               onSuccess={() => setIsVerified(true)}
@@ -85,7 +85,7 @@ export default function GetVerified() {
           <div className="nip-container">
             <Nip5Service
               key="nostrplebs"
-              {...services[1]}
+              {...Nip5Services[1]}
               helpText={false}
               onChange={setNip05}
               onSuccess={() => setIsVerified(true)}

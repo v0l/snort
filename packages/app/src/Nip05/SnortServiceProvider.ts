@@ -42,6 +42,15 @@ export default class SnortServiceProvider extends ServiceProvider {
     return this.getJsonAuthd<object>(`/${id}`, "PATCH", obj);
   }
 
+  async registerForSubscription(handle: string, domain: string, id: string) {
+    return this.getJsonAuthd<object>(`/registration/register/${id}`, "PUT", {
+      name: handle,
+      domain,
+      pk: "",
+      ref: "snort",
+    });
+  }
+
   async getJsonAuthd<T>(
     path: string,
     method?: "GET" | string,

@@ -21,6 +21,7 @@ import { useUserProfile } from "Hooks/useUserProfile";
 import useEventPublisher from "Feed/EventPublisher";
 import { debounce } from "Util";
 import useLogin from "Hooks/useLogin";
+import SnortServiceProvider from "Nip05/SnortServiceProvider";
 
 import messages from "./messages";
 
@@ -31,6 +32,7 @@ type Nip05ServiceProps = {
   link: string;
   supportLink: string;
   helpText?: boolean;
+  forSubscription?: string;
   onChange?(h: string): void;
   onSuccess?(h: string): void;
 };
@@ -188,6 +190,22 @@ export default function Nip5Service(props: Nip05ServiceProps) {
     }
   }
 
+  async function claimForSubscription(handle: string, domain: string, sub: string) {
+    if (!pubkey || !publisher) {
+      return;
+    }
+
+    const svcEx = new SnortServiceProvider(publisher, props.service);
+    const rsp = await svcEx.registerForSubscription(handle, domain, sub);
+    if ("error" in rsp) {
+      setError(rsp);
+    } else {
+      if (props.onSuccess) {
+        const nip05 = `${handle}@${domain}`;
+        props.onSuccess(nip05);
+      }
+    }
+  }
   async function updateProfile(handle: string, domain: string) {
     if (user && publisher) {
       const nip05 = `${handle}@${domain}`;
@@ -245,16 +263,27 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       )}
       {availabilityResponse?.available && !registerStatus && (
         <div className="flex">
-          <div className="mr10">
-            <FormattedMessage
-              {...messages.Sats}
-              values={{ n: formatShort(unwrap(availabilityResponse.quote?.price)) }}
-            />
-            <br />
-            <small>{availabilityResponse.quote?.data.type}</small>
-          </div>
-          <AsyncButton onClick={() => startBuy(handle, domain)}>
-            <FormattedMessage {...messages.BuyNow} />
+          {!props.forSubscription && (
+            <div className="mr10">
+              <FormattedMessage
+                {...messages.Sats}
+                values={{ n: formatShort(unwrap(availabilityResponse.quote?.price)) }}
+              />
+              <br />
+              <small>{availabilityResponse.quote?.data.type}</small>
+            </div>
+          )}
+          <AsyncButton
+            onClick={() =>
+              props.forSubscription
+                ? claimForSubscription(handle, domain, props.forSubscription)
+                : startBuy(handle, domain)
+            }>
+            {props.forSubscription ? (
+              <FormattedMessage defaultMessage="Claim Now" />
+            ) : (
+              <FormattedMessage {...messages.BuyNow} />
+            )}
           </AsyncButton>
         </div>
       )}

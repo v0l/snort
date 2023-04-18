@@ -7,14 +7,16 @@ import messages from "./messages";
 
 import "./Verification.css";
 
-export const services = [
-  {
-    name: "Snort",
-    service: `${ApiHost}/api/v1/n5sp`,
-    link: "https://snort.social/",
-    supportLink: "https://snort.social/help",
-    about: <FormattedMessage {...messages.SnortSocialNip} />,
-  },
+export const SnortNostrAddressService = {
+  name: "Snort",
+  service: `${ApiHost}/api/v1/n5sp`,
+  link: "https://snort.social/",
+  supportLink: "https://snort.social/help",
+  about: <FormattedMessage {...messages.SnortSocialNip} />,
+};
+
+export const Nip5Services = [
+  SnortNostrAddressService,
   {
     name: "Nostr Plebs",
     service: "https://nostrplebs.com/api/v1",
@@ -48,7 +50,7 @@ export default function VerificationPage() {
         </li>
       </ul>
 
-      {services.map(a => (
+      {Nip5Services.map(a => (
         <Nip5Service key={a.name} {...a} />
       ))}
     </div>
