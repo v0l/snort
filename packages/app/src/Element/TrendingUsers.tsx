@@ -44,7 +44,7 @@ const TrendingUsers = () => {
       <h3>
         <FormattedMessage defaultMessage="Trending Users" />
       </h3>
-      <FollowListBase pubkeys={userList} />
+      <FollowListBase pubkeys={userList} showAbout={true} />
     </>
   );
 };
