@@ -66,6 +66,7 @@ const getMessages = (locale: string) => {
       case "hr":
         return hrMessages;
       case "ta-IN":
+      case "ta":
         return taINMessages;
       case DefaultLocale:
       case "en":
