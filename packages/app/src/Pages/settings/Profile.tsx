@@ -8,8 +8,7 @@ import { faShop } from "@fortawesome/free-solid-svg-icons";
 
 import useEventPublisher from "Feed/EventPublisher";
 import { useUserProfile } from "Hooks/useUserProfile";
-import { hexToBech32, openFile } from "Util";
-import Copy from "Element/Copy";
+import { openFile } from "Util";
 import useFileUpload from "Upload";
 import AsyncButton from "Element/AsyncButton";
 import { mapEventToProfile, UserCache } from "Cache";
@@ -20,12 +19,11 @@ import messages from "./messages";
 export interface ProfileSettingsProps {
   avatar?: boolean;
   banner?: boolean;
-  privateKey?: boolean;
 }
 
 export default function ProfileSettings(props: ProfileSettingsProps) {
   const navigate = useNavigate();
-  const { publicKey: id, privateKey: privKey } = useLogin();
+  const { publicKey: id } = useLogin();
   const user = useUserProfile(id ?? "");
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
@@ -154,12 +152,10 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </div>
           <div>
             <input type="text" className="mr10" value={nip05} onChange={e => setNip05(e.target.value)} />
-            {nip05 === "" && (
-              <button type="button" onClick={() => navigate("/verification")}>
-                <FontAwesomeIcon icon={faShop} />
-                &nbsp; <FormattedMessage {...messages.Buy} />
-              </button>
-            )}
+            <button type="button" onClick={() => navigate("/verification")}>
+              <FontAwesomeIcon icon={faShop} />
+              &nbsp; <FormattedMessage {...messages.Buy} />
+            </button>
           </div>
         </div>
         <div className="form-group card">
@@ -227,18 +223,6 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         <FormattedMessage {...messages.EditProfile} />
       </h3>
       {settings()}
-      {privKey && (props.privateKey ?? true) && (
-        <div className="flex f-col bg-grey">
-          <div>
-            <h4>
-              <FormattedMessage {...messages.PrivateKey} />:
-            </h4>
-          </div>
-          <div>
-            <Copy text={hexToBech32("nsec", privKey)} />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

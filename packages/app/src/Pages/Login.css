@@ -93,12 +93,7 @@
 
 .login .login-actions > button {
   margin-right: 10px;
-}
-
-@media (max-width: 520px) {
-  .login .login-actions > button {
-    margin-bottom: 10px;
-  }
+  margin-bottom: 10px;
 }
 
 .login .login-or {

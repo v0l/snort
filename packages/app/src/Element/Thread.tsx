@@ -2,7 +2,7 @@ import "./Thread.css";
 import { useMemo, useState, ReactNode } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
-import { TaggedRawEvent, u256, EventKind } from "@snort/nostr";
+import { TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix } from "@snort/nostr";
 import { EventExt, Thread as ThreadInfo } from "System/EventExt";
 
 import { eventLink, unwrap, getReactions, parseNostrLink, getAllReactions } from "Util";
@@ -34,7 +34,7 @@ interface SubthreadProps {
   notes: readonly TaggedRawEvent[];
   related: readonly TaggedRawEvent[];
   chains: Map<u256, Array<TaggedRawEvent>>;
-  onNavigate: (e: u256) => void;
+  onNavigate: (e: TaggedRawEvent) => void;
 }
 
 const Subthread = ({ active, notes, related, chains, onNavigate }: SubthreadProps) => {
@@ -51,6 +51,7 @@ const Subthread = ({ active, notes, related, chains, onNavigate }: SubthreadProp
             data={a}
             key={a.id}
             related={related}
+            onClick={onNavigate}
           />
           <div className="line-container"></div>
         </div>
@@ -95,6 +96,7 @@ const ThreadNote = ({ active, note, isLast, isLastSubthread, from, related, chai
           data={note}
           key={note.id}
           related={related}
+          onClick={onNavigate}
         />
         <div className="line-container"></div>
       </div>
@@ -200,6 +202,7 @@ const TierThree = ({ active, isLastSubthread, from, notes, related, chains, onNa
               data={r}
               key={r.id}
               related={related}
+              onClick={onNavigate}
             />
             <div className="line-container"></div>
           </div>
@@ -221,6 +224,14 @@ export default function Thread() {
   const navigate = useNavigate();
   const isSingleNote = thread.data?.filter(a => a.kind === EventKind.TextNote).length === 1;
   const { formatMessage } = useIntl();
+
+  function navigateThread(e: TaggedRawEvent) {
+    setCurrentId(e.id);
+    const link = encodeTLV(e.id, NostrPrefix.Event, e.relays);
+    navigate(`/e/${link}`, {
+      replace: true,
+    });
+  }
 
   const chains = useMemo(() => {
     const chains = new Map<u256, Array<TaggedRawEvent>>();
@@ -300,6 +311,7 @@ export default function Thread() {
           data={note}
           related={getReactions(thread.data, note.id)}
           options={{ showReactionsLink: true }}
+          onClick={navigateThread}
         />
       );
     } else {
@@ -323,9 +335,7 @@ export default function Thread() {
             replies.map(a => a.id)
           )}
           chains={chains}
-          onNavigate={() => {
-            //nothing
-          }}
+          onNavigate={navigateThread}
         />
       );
     }

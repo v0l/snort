@@ -38,6 +38,7 @@ export interface NoteProps {
   related: readonly TaggedRawEvent[];
   highlight?: boolean;
   ignoreModeration?: boolean;
+  onClick?: (e: TaggedRawEvent) => void;
   options?: {
     showHeader?: boolean;
     showTime?: boolean;
@@ -203,6 +204,12 @@ export default function Note(props: NoteProps) {
     eTarget: TaggedRawEvent,
     isTargetAllowed: boolean = e.target === e.currentTarget
   ) {
+    if (props.onClick) {
+      e.stopPropagation();
+      props.onClick(eTarget);
+      return;
+    }
+
     if (!isTargetAllowed || opt?.canClick === false) {
       return;
     }
