@@ -2,13 +2,13 @@ import "./ChatPage.css";
 import { KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
-import { RawEvent, TaggedRawEvent } from "@snort/nostr";
+import { TaggedRawEvent } from "@snort/nostr";
 
 import ProfileImage from "Element/ProfileImage";
 import { bech32ToHex } from "Util";
 import useEventPublisher from "Feed/EventPublisher";
 import DM from "Element/DM";
-import { dmsInChat, isToSelf } from "Pages/MessagesPage";
+import { dmsForLogin, dmsInChat, isToSelf } from "Pages/MessagesPage";
 import NoteToSelf from "Element/NoteToSelf";
 import { useDmCache } from "Hooks/useDmsCache";
 import useLogin from "Hooks/useLogin";
@@ -24,15 +24,17 @@ export default function ChatPage() {
   const pubKey = useLogin().publicKey;
   const [content, setContent] = useState<string>();
   const dmListRef = useRef<HTMLDivElement>(null);
-  const dms = filterDms(useDmCache());
-
-  function filterDms(dms: readonly RawEvent[]) {
-    return dmsInChat(id === pubKey ? dms.filter(d => isToSelf(d, pubKey)) : dms, id);
-  }
+  const dms = useDmCache();
 
   const sortedDms = useMemo(() => {
-    return [...dms].sort((a, b) => a.created_at - b.created_at);
-  }, [dms]);
+    if (pubKey) {
+      const myDms = dmsForLogin(dms, pubKey);
+      // filter dms in this chat, or dms to self
+      const thisDms = id === pubKey ? myDms.filter(d => isToSelf(d, pubKey)) : myDms;
+      return [...dmsInChat(thisDms, id)].sort((a, b) => a.created_at - b.created_at);
+    }
+    return [];
+  }, [dms, pubKey]);
 
   useEffect(() => {
     if (dmListRef.current) {

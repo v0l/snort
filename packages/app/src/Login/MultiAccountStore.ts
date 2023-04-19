@@ -73,6 +73,17 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     return [...this.#accounts.keys()];
   }
 
+  allSubscriptions() {
+    return [...this.#accounts.values()].map(a => a.subscriptions).flat();
+  }
+
+  switchAccount(pk: string) {
+    if (this.#accounts.has(pk)) {
+      this.#activeAccount = pk;
+      this.#save();
+    }
+  }
+
   loginWithPubkey(key: HexKey, relays?: Record<string, RelaySettings>) {
     if (this.#accounts.has(key)) {
       throw new Error("Already logged in with this pubkey");
@@ -127,6 +138,9 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
 
   removeSession(k: string) {
     if (this.#accounts.delete(k)) {
+      if (this.#activeAccount === k) {
+        this.#activeAccount = undefined;
+      }
       this.#save();
     }
   }

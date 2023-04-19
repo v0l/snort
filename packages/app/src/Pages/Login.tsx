@@ -2,21 +2,17 @@ import "./Login.css";
 
 import { CSSProperties, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import * as secp from "@noble/secp256k1";
 import { useIntl, FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/nostr";
 
-import { EmailRegex, MnemonicRegex } from "Const";
 import { bech32ToHex, unwrap } from "Util";
-import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import ZapButton from "Element/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
 import Icon from "Icons/Icon";
 import useLogin from "Hooks/useLogin";
 import { generateNewLogin, LoginStore } from "Login";
 import AsyncButton from "Element/AsyncButton";
-
-import messages from "./messages";
+import useLoginHandler from "Hooks/useLoginHandler";
 
 interface ArtworkEntry {
   name: string;
@@ -74,6 +70,7 @@ export default function LoginPage() {
   const [isMasking, setMasking] = useState(true);
   const { formatMessage } = useIntl();
   const { proxy } = useImgProxy();
+  const loginHandler = useLoginHandler();
   const hasNip7 = "nostr" in window;
   const hasSubtleCrypto = window.crypto.subtle !== undefined;
 
@@ -90,42 +87,8 @@ export default function LoginPage() {
   }, []);
 
   async function doLogin() {
-    const insecureMsg = formatMessage({
-      defaultMessage:
-        "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead",
-    });
     try {
-      if (key.startsWith("nsec")) {
-        if (!hasSubtleCrypto) {
-          throw new Error(insecureMsg);
-        }
-        const hexKey = bech32ToHex(key);
-        if (secp.utils.isValidPrivateKey(hexKey)) {
-          LoginStore.loginWithPrivateKey(hexKey);
-        } else {
-          throw new Error("INVALID PRIVATE KEY");
-        }
-      } else if (key.startsWith("npub")) {
-        const hexKey = bech32ToHex(key);
-        LoginStore.loginWithPubkey(hexKey);
-      } else if (key.match(EmailRegex)) {
-        const hexKey = await getNip05PubKey(key);
-        LoginStore.loginWithPubkey(hexKey);
-      } else if (key.match(MnemonicRegex)) {
-        if (!hasSubtleCrypto) {
-          throw new Error(insecureMsg);
-        }
-        const ent = generateBip39Entropy(key);
-        const keyHex = entropyToPrivateKey(ent);
-        LoginStore.loginWithPrivateKey(keyHex);
-      } else if (secp.utils.isValidPrivateKey(key)) {
-        if (!hasSubtleCrypto) {
-          throw new Error(insecureMsg);
-        }
-        LoginStore.loginWithPrivateKey(key);
-      } else {
-        throw new Error("INVALID PRIVATE KEY");
-      }
+      await loginHandler.doLogin(key);
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message);
@@ -242,7 +205,9 @@ export default function LoginPage() {
             <input
               dir="auto"
               type={isMasking ? "password" : "text"}
-              placeholder={formatMessage(messages.KeyPlaceholder)}
+              placeholder={formatMessage({
+                defaultMessage: "nsec, npub, nip-05, hex, mnemonic",
+              })}
               className="f-grow"
               onChange={e => setKey(e.target.value)}
             />

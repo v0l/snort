@@ -1,12 +1,13 @@
 import "./ProfileImage.css";
 
 import { useMemo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { HexKey, NostrPrefix } from "@snort/nostr";
+
 import { useUserProfile } from "Hooks/useUserProfile";
 import { hexToBech32, profileLink } from "Util";
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
-import { HexKey, NostrPrefix } from "@snort/nostr";
 import { MetadataCache } from "Cache";
 import usePageWidth from "Hooks/usePageWidth";
 
@@ -55,17 +56,17 @@ export default function ProfileImage({
   };
 
   return (
-    <div className={`pfp f-ellipsis${className ? ` ${className}` : ""}`}>
+    <div className={`pfp f-ellipsis${className ? ` ${className}` : ""}`} onClick={onAvatarClick}>
       <div className="avatar-wrapper">
-        <Avatar user={user} onClick={onAvatarClick} />
+        <Avatar user={user} />
       </div>
       {showUsername && (
         <div className="profile-name">
           <div className="username">
-            <Link className="display-name" key={pubkey} to={link ?? profileLink(pubkey)}>
+            <div className="display-name">
               <div>{name.trim()}</div>
               {nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
-            </Link>
+            </div>
           </div>
           <div className="subheader" style={{ width: autoWidth ? width - 190 : "" }}>
             {subHeader}

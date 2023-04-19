@@ -5,7 +5,7 @@ import { DefaultRelays, SnortPubKey } from "Const";
 import { LoginStore, UserPreferences, LoginSession } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
-import { getCurrentSubscription, SubscriptionEvent } from "Subscription";
+import { SubscriptionEvent } from "Subscription";
 import { EventPublisher } from "System/EventPublisher";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
@@ -150,7 +150,7 @@ export function setBookmarked(state: LoginSession, bookmarked: Array<string>, ts
 export function addSubscription(state: LoginSession, ...subs: SubscriptionEvent[]) {
   const newSubs = dedupeById([...(state.subscriptions || []), ...subs]);
   if (newSubs.length !== state.subscriptions.length) {
-    state.currentSubscription = getCurrentSubscription(state.subscriptions);
+    state.subscriptions = newSubs;
     LoginStore.updateSession(state);
   }
 }

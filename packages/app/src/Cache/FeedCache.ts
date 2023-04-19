@@ -154,7 +154,7 @@ export default abstract class FeedCache<TCached> {
 
   protected notifyChange(keys: Array<string>) {
     this.#changed = true;
-    this.#hooks.filter(a => keys.includes(a.key)).forEach(h => h.fn());
+    this.#hooks.filter(a => keys.includes(a.key) || a.key === "*").forEach(h => h.fn());
   }
 
   abstract key(of: TCached): string;
