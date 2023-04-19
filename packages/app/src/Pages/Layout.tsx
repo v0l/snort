@@ -64,7 +64,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (pub) {
-      System.HandleAuth = pub.nip42Auth;
+      System.HandleAuth = pub.nip42Auth.bind(pub);
     }
   }, [pub]);
 
