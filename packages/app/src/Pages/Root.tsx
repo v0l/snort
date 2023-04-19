@@ -185,8 +185,12 @@ const GlobalTab = () => {
 };
 
 const PostsTab = () => {
-  const { follows } = useLogin();
-  const subject: TimelineSubject = { type: "pubkey", items: follows.item, discriminator: "follows" };
+  const { follows, publicKey } = useLogin();
+  const subject: TimelineSubject = {
+    type: "pubkey",
+    items: follows.item,
+    discriminator: `follows:${publicKey?.slice(0, 12)}`,
+  };
 
   return (
     <>
@@ -197,8 +201,12 @@ const PostsTab = () => {
 };
 
 const ConversationsTab = () => {
-  const { follows } = useLogin();
-  const subject: TimelineSubject = { type: "pubkey", items: follows.item, discriminator: "follows" };
+  const { follows, publicKey } = useLogin();
+  const subject: TimelineSubject = {
+    type: "pubkey",
+    items: follows.item,
+    discriminator: `follows:${publicKey?.slice(0, 12)}`,
+  };
 
   return <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} window={undefined} relay={undefined} />;
 };

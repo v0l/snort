@@ -3,7 +3,7 @@ import { useSyncExternalStore } from "react";
 
 export function useDmCache() {
   return useSyncExternalStore(
-    c => DmCache.hook(c, undefined),
+    c => DmCache.hook(c, "*"),
     () => DmCache.snapshot()
   );
 }

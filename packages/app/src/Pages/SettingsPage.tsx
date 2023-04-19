@@ -5,6 +5,7 @@ import Profile from "Pages/settings/Profile";
 import Relay from "Pages/settings/Relays";
 import Preferences from "Pages/settings/Preferences";
 import RelayInfo from "Pages/settings/RelayInfo";
+import AccountsPage from "Pages/settings/Accounts";
 import { WalletSettingsRoutes } from "Pages/settings/WalletSettings";
 import { ManageHandleRoutes } from "Pages/settings/handle";
 
@@ -43,6 +44,10 @@ export const SettingsRoutes: RouteObject[] = [
   {
     path: "preferences",
     element: <Preferences />,
+  },
+  {
+    path: "accounts",
+    element: <AccountsPage />,
   },
   ...ManageHandleRoutes,
   ...WalletSettingsRoutes,

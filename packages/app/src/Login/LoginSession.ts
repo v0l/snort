@@ -80,9 +80,4 @@ export interface LoginSession {
    * Snort subscriptions licences
    */
   subscriptions: Array<SubscriptionEvent>;
-
-  /**
-   * Current active subscription
-   */
-  currentSubscription?: SubscriptionEvent;
 }

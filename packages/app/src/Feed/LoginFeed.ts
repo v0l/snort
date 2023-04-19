@@ -26,7 +26,7 @@ export default function useLoginFeed() {
   const subLogin = useMemo(() => {
     if (!pubKey) return null;
 
-    const b = new RequestBuilder("login");
+    const b = new RequestBuilder(`login:${pubKey.slice(0, 12)}`);
     b.withOptions({
       leaveOpen: true,
     });
@@ -46,7 +46,7 @@ export default function useLoginFeed() {
 
   const subLists = useMemo(() => {
     if (!pubKey) return null;
-    const b = new RequestBuilder("login:lists");
+    const b = new RequestBuilder(`login:${pubKey.slice(0, 12)}:lists`);
     b.withOptions({
       leaveOpen: true,
     });

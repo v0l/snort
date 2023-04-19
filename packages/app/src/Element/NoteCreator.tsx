@@ -31,6 +31,9 @@ import messages from "./messages";
 import { ClipboardEventHandler, useState } from "react";
 import Spinner from "Icons/Spinner";
 import { EventBuilder } from "System";
+import { Menu, MenuItem } from "@szhsin/react-menu";
+import { LoginStore } from "Login";
+import { getCurrentSubscription } from "Subscription";
 
 interface NotePreviewProps {
   note: TaggedRawEvent;
@@ -56,6 +59,7 @@ export function NoteCreator() {
     useSelector((s: RootState) => s.noteCreator);
   const [uploadInProgress, setUploadInProgress] = useState(false);
   const dispatch = useDispatch();
+  const sub = getCurrentSubscription(LoginStore.allSubscriptions());
 
   async function sendNote() {
     if (note && publisher) {
@@ -229,6 +233,18 @@ export function NoteCreator() {
     }
   }
 
+  function listAccounts() {
+    return LoginStore.getSessions().map(a => (
+      <MenuItem
+        onClick={ev => {
+          ev.stopPropagation = true;
+          LoginStore.switchAccount(a);
+        }}>
+        <ProfileImage pubkey={a} linkToProfile={false} />
+      </MenuItem>
+    ));
+  }
+
   const handlePaste: ClipboardEventHandler<HTMLDivElement> = evt => {
     if (evt.clipboardData) {
       const clipboardItems = evt.clipboardData.items;
@@ -273,12 +289,23 @@ export function NoteCreator() {
                 />
                 {renderPollOptions()}
                 <div className="insert">
+                  {sub && (
+                    <Menu
+                      menuButton={
+                        <button>
+                          <Icon name="code-circle" />
+                        </button>
+                      }
+                      menuClassName="ctx-menu">
+                      {listAccounts()}
+                    </Menu>
+                  )}
                   {pollOptions === undefined && !replyTo && (
-                    <button type="button" onClick={() => dispatch(setPollOptions(["A", "B"]))}>
+                    <button onClick={() => dispatch(setPollOptions(["A", "B"]))}>
                       <Icon name="pie-chart" />
                     </button>
                   )}
-                  <button type="button" onClick={attachFile}>
+                  <button onClick={attachFile}>
                     <Icon name="attachment" />
                   </button>
                 </div>
@@ -288,19 +315,19 @@ export function NoteCreator() {
           )}
           <div className="note-creator-actions">
             {uploadInProgress && <Spinner />}
-            <button className="secondary" type="button" onClick={() => dispatch(setShowAdvanced(!showAdvanced))}>
+            <button className="secondary" onClick={() => dispatch(setShowAdvanced(!showAdvanced))}>
               <FormattedMessage defaultMessage="Advanced" />
             </button>
-            <button className="secondary" type="button" onClick={cancel}>
+            <button className="secondary" onClick={cancel}>
               <FormattedMessage {...messages.Cancel} />
             </button>
-            <button type="button" onClick={onSubmit}>
+            <button onClick={onSubmit}>
               {replyTo ? <FormattedMessage {...messages.Reply} /> : <FormattedMessage {...messages.Send} />}
             </button>
           </div>
           {showAdvanced && (
             <div>
-              <button className="secondary" type="button" onClick={loadPreview}>
+              <button className="secondary" onClick={loadPreview}>
                 <FormattedMessage defaultMessage="Toggle Preview" />
               </button>
               <h4>

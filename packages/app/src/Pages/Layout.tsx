@@ -24,6 +24,7 @@ import useLogin from "Hooks/useLogin";
 import Avatar from "Element/Avatar";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { profileLink } from "Util";
+import { getCurrentSubscription } from "Subscription";
 
 export default function Layout() {
   const location = useLocation();
@@ -32,7 +33,8 @@ export default function Layout() {
   const isReplyNoteCreatorShowing = replyTo && isNoteCreatorShowing;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { publicKey, relays, preferences, currentSubscription } = useLogin();
+  const { publicKey, relays, preferences, subscriptions } = useLogin();
+  const currentSubscription = getCurrentSubscription(subscriptions);
   const [pageClass, setPageClass] = useState("page");
   const pub = useEventPublisher();
   useLoginFeed();

@@ -2,15 +2,17 @@ import "./Index.css";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import Icon from "Icons/Icon";
-import { logout } from "Login";
+import { LoginStore, logout } from "Login";
 import useLogin from "Hooks/useLogin";
 import { unwrap } from "Util";
+import { getCurrentSubscription } from "Subscription";
 
 import messages from "./messages";
 
 const SettingsIndex = () => {
   const login = useLogin();
   const navigate = useNavigate();
+  const sub = getCurrentSubscription(LoginStore.allSubscriptions());
 
   function handleLogout() {
     logout(unwrap(login.publicKey));
@@ -55,6 +57,13 @@ const SettingsIndex = () => {
           <FormattedMessage defaultMessage="Snort Subscription" />
           <Icon name="arrowFront" />
         </div>
+        {sub && (
+          <div className="settings-row" onClick={() => navigate("accounts")}>
+            <Icon name="code-circle" />
+            <FormattedMessage defaultMessage="Accounts" />
+            <Icon name="arrowFront" />
+          </div>
+        )}
         <div className="settings-row" onClick={handleLogout}>
           <Icon name="logout" />
           <FormattedMessage {...messages.LogOut} />
