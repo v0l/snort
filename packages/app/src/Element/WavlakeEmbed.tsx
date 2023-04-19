@@ -1,5 +1,5 @@
 const WavlakeEmbed = ({ link }: { link: string }) => {
-  const convertedUrl = link.replace(/(?:player\.)?wavlake\.com/, "embed.wavlake.com");
+  const convertedUrl = link.replace(/(?:player\.|www\.)?wavlake\.com/, "embed.wavlake.com");
 
   return (
     <iframe

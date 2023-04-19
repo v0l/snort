@@ -177,4 +177,5 @@ export const MagnetRegex = /(magnet:[\S]+)/i;
 /**
  * Wavlake embed regex
  */
-export const WavlakeRegex = /(?:player\.)?wavlake\.com\/(track\/[.a-zA-Z0-9-]+|album\/[.a-zA-Z0-9-]+|[.a-zA-Z0-9-]+)/i;
+export const WavlakeRegex =
+  /(?!zine\.wavlake\.com)(?:player\.|www\.)?wavlake\.com\/(?:(?:track|album)\/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}|[a-z-]+)$/i;
