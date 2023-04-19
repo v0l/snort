@@ -12,6 +12,9 @@ export enum LockedFeatures {
   DeepL = 4,
   RelayRetention = 5,
   RelayBackup = 6,
+  RelayAccess = 7,
+  LNProxy = 8,
+  EmailBridge = 9,
 }
 
 export const Plans = [
@@ -19,13 +22,24 @@ export const Plans = [
     id: SubscriptionType.Supporter,
     price: 5_000,
     disabled: false,
-    unlocks: [LockedFeatures.MultiAccount, LockedFeatures.NostrAddress, LockedFeatures.Badge],
+    unlocks: [
+      LockedFeatures.MultiAccount,
+      LockedFeatures.NostrAddress,
+      LockedFeatures.Badge,
+      LockedFeatures.RelayAccess,
+    ],
   },
   {
     id: SubscriptionType.Premium,
     price: 20_000,
     disabled: true,
-    unlocks: [LockedFeatures.DeepL, LockedFeatures.RelayBackup, LockedFeatures.RelayRetention],
+    unlocks: [
+      LockedFeatures.DeepL,
+      LockedFeatures.RelayBackup,
+      LockedFeatures.RelayRetention,
+      LockedFeatures.LNProxy,
+      LockedFeatures.EmailBridge,
+    ],
   },
 ];
 

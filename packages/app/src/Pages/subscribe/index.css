@@ -1,6 +1,6 @@
 .subscribe-page > div.card {
   margin: 5px;
-  min-height: 350px;
+  min-height: 400px;
   user-select: none;
   flex: 1;
 }

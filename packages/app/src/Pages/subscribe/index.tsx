@@ -35,6 +35,12 @@ export function mapFeatureName(k: LockedFeatures) {
       return <FormattedMessage defaultMessage="Unlimited note retention on Snort relay" />;
     case LockedFeatures.RelayBackup:
       return <FormattedMessage defaultMessage="Downloadable backups from Snort relay" />;
+    case LockedFeatures.RelayAccess:
+      return <FormattedMessage defaultMessage="Write access to Snort relay, with 1 year of event retention" />;
+    case LockedFeatures.LNProxy:
+      return <FormattedMessage defaultMessage="LN Address Proxy" />;
+    case LockedFeatures.EmailBridge:
+      return <FormattedMessage defaultMessage="Email <> DM bridge for your Snort nostr address" />;
   }
 }
 
@@ -88,9 +94,6 @@ export function SubscribePage() {
                   />
                   :
                 </p>
-                <b>
-                  <FormattedMessage defaultMessage="Not all features are built yet, more features to be added soon!" />
-                </b>
                 <ul>
                   {a.unlocks.map(b => (
                     <li>{mapFeatureName(b)} </li>

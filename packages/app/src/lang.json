@@ -133,6 +133,9 @@
   "4rYCjn": {
     "defaultMessage": "Note to Self"
   },
+  "5JcXdV": {
+    "defaultMessage": "Create Account"
+  },
   "5oTnfy": {
     "defaultMessage": "Buy Handle"
   },
@@ -145,12 +148,11 @@
   "5ykRmX": {
     "defaultMessage": "Send zap"
   },
+  "6Yfvvp": {
+    "defaultMessage": "Get an identifier"
+  },
   "6ewQqw": {
     "defaultMessage": "Likes ({n})"
-  },
-  "6tUqAb": {
-    "defaultMessage": "Generate a public / private key pair. Do not share your private key with anyone, this acts as your password. Once lost, it cannot be “reset” or recovered. Keep safe!",
-    "description": "Note about key security before generating a new key"
   },
   "6uMqL1": {
     "defaultMessage": "Unpaid"
@@ -169,9 +171,6 @@
   },
   "89q5wc": {
     "defaultMessage": "Confirm Reposts"
-  },
-  "8E9muH": {
-    "defaultMessage": "Import Twitter Follows (optional)"
   },
   "8QDesP": {
     "defaultMessage": "Zap {n} sats"
@@ -232,6 +231,9 @@
   },
   "B6+XJy": {
     "defaultMessage": "zapped"
+  },
+  "BGCM48": {
+    "defaultMessage": "Write access to Snort relay, with 1 year of event retention"
   },
   "BOUMjw": {
     "defaultMessage": "No nostr users found for {twitterUsername}"
@@ -414,9 +416,6 @@
   "K3r6DQ": {
     "defaultMessage": "Delete"
   },
-  "K4GiAj": {
-    "defaultMessage": "Not all features are built yet, more features to be added soon!"
-  },
   "K7AkdL": {
     "defaultMessage": "Show"
   },
@@ -446,10 +445,6 @@
   },
   "LgbKvU": {
     "defaultMessage": "Comment"
-  },
-  "LxY9tW": {
-    "defaultMessage": "Generate Key",
-    "description": "Button: Generate a new key"
   },
   "M3Oirc": {
     "defaultMessage": "Debug Menus"
@@ -481,6 +476,9 @@
   },
   "NAuFNH": {
     "defaultMessage": "You already have a subscription of this type, please renew or pay"
+  },
+  "NNSu3d": {
+    "defaultMessage": "Import Twitter Follows"
   },
   "NdOYJJ": {
     "defaultMessage": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!"
@@ -539,10 +537,6 @@
   "QDFTjG": {
     "defaultMessage": "{n} Relays"
   },
-  "QTdJfH": {
-    "defaultMessage": "Create an Account",
-    "description": "Heading for generate key flow"
-  },
   "QawghE": {
     "defaultMessage": "You can change your username at any point."
   },
@@ -576,6 +570,9 @@
   },
   "SOqbe9": {
     "defaultMessage": "Update Lightning Address"
+  },
+  "SYQtZ7": {
+    "defaultMessage": "LN Address Proxy"
   },
   "Sjo1P4": {
     "defaultMessage": "Custom"
@@ -916,9 +913,6 @@
   "mfe8RW": {
     "defaultMessage": "Option: {n}"
   },
-  "n1xHAH": {
-    "defaultMessage": "Get an identifier (optional)"
-  },
   "nDejmx": {
     "defaultMessage": "Unblock"
   },
@@ -977,6 +971,9 @@
   },
   "pzTOmv": {
     "defaultMessage": "Followers"
+  },
+  "qD9EUF": {
+    "defaultMessage": "Email <> DM bridge for your Snort nostr address"
   },
   "qDwvZ4": {
     "defaultMessage": "Unknown error"
