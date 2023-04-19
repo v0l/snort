@@ -78,9 +78,9 @@ export default function ProfileImage({
 
 export function getDisplayName(user: MetadataCache | undefined, pubkey: HexKey) {
   let name = hexToBech32(NostrPrefix.PublicKey, pubkey).substring(0, 12);
-  if (user?.display_name !== undefined && user.display_name.length > 0) {
+  if (typeof user?.display_name === "string" && user.display_name.length > 0) {
     name = user.display_name;
-  } else if (user?.name !== undefined && user.name.length > 0) {
+  } else if (typeof user?.name === "string" && user.name.length > 0) {
     name = user.name;
   }
   return name;
