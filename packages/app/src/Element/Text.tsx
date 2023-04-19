@@ -36,7 +36,7 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
       .map(f => {
         if (typeof f === "string") {
           return splitByUrl(f).map(a => {
-            if (a.match(/^(?:https?|(?:web\+)?nostr|magnet):/i)) {
+            if (a.match(/^(?:https?|(?:web\+)?nostr|magnet):/i) && a.toLowerCase() !== "nostr:npub") {
               if (disableMedia ?? false) {
                 return (
                   <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
