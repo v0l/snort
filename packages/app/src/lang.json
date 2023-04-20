@@ -5,6 +5,9 @@
   "+aZY2h": {
     "defaultMessage": "Zap Type"
   },
+  "+vA//S": {
+    "defaultMessage": "Logins"
+  },
   "+vIQlC": {
     "defaultMessage": "Please make sure to save the following password in order to manage your handle in the future"
   },
@@ -304,11 +307,17 @@
   "EnCOBJ": {
     "defaultMessage": "Buy"
   },
+  "EqRgFp": {
+    "defaultMessage": "Some clients will only allow zaps on your notes"
+  },
   "Eqjl5K": {
     "defaultMessage": "Only Snort and our integration partner identifier gives you a colorful domain name, but you are welcome to use other services too."
   },
   "F+B3x1": {
     "defaultMessage": "We have also partnered with nostrplebs.com to give you more options"
+  },
+  "F3l7xL": {
+    "defaultMessage": "Add Account"
   },
   "FDguSC": {
     "defaultMessage": "{n} Zaps"
@@ -333,6 +342,9 @@
   },
   "FpxElY": {
     "defaultMessage": "Verification"
+  },
+  "FvanT6": {
+    "defaultMessage": "Accounts"
   },
   "G/yZLu": {
     "defaultMessage": "Remove"
@@ -913,6 +925,9 @@
   "mfe8RW": {
     "defaultMessage": "Option: {n}"
   },
+  "n1Whvj": {
+    "defaultMessage": "Switch"
+  },
   "nDejmx": {
     "defaultMessage": "Unblock"
   },
@@ -1052,6 +1067,9 @@
   },
   "ut+2Cd": {
     "defaultMessage": "Get a partner identifier"
+  },
+  "v48Uwm": {
+    "defaultMessage": "OnlyZaps"
   },
   "vOKedj": {
     "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"

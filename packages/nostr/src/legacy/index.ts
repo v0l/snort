@@ -70,6 +70,7 @@ export type UserMetadata = {
   nip05?: string;
   lud06?: string;
   lud16?: string;
+  reactions?: boolean;
 };
 
 /**

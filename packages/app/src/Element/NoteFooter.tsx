@@ -264,7 +264,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   function reactionIcons() {
-    if (!prefs.enableReactions) {
+    if (!prefs.enableReactions || author?.reactions === false) {
       return null;
     }
     return (
@@ -275,7 +275,6 @@ export default function NoteFooter(props: NoteFooterProps) {
           <Icon name="heart" />
           <div className="reaction-pill-number">{formatShort(positive.length)}</div>
         </div>
-        {repostIcon()}
       </>
     );
   }
@@ -426,6 +425,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         <div className="footer-reactions">
           {tipButton()}
           {reactionIcons()}
+          {repostIcon()}
           <div className={`reaction-pill ${showNoteCreatorModal ? "reacted" : ""}`} onClick={handleReplyButtonClick}>
             <Icon name="reply" size={17} />
           </div>

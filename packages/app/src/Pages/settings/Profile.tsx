@@ -36,6 +36,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   const [website, setWebsite] = useState<string>();
   const [nip05, setNip05] = useState<string>();
   const [lud16, setLud16] = useState<string>();
+  const [reactions, setReactions] = useState<boolean>();
 
   const avatarPicture = (picture?.length ?? 0) === 0 ? Nostrich : picture;
 
@@ -49,6 +50,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       setWebsite(user.website);
       setNip05(user.nip05);
       setLud16(user.lud16);
+      setReactions(user.reactions);
     }
   }, [user]);
 
@@ -64,6 +66,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       website,
       nip05,
       lud16,
+      reactions,
     } as Record<string, string | number | undefined>;
     delete userCopy["loaded"];
     delete userCopy["created"];
@@ -164,6 +167,17 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </div>
           <div>
             <input type="text" value={lud16} onChange={e => setLud16(e.target.value)} />
+          </div>
+        </div>
+        <div className="form-group card">
+          <div className="flex f-col">
+            <FormattedMessage defaultMessage="OnlyZaps" />:
+            <small>
+              <FormattedMessage defaultMessage="Some clients will only allow zaps on your notes" />
+            </small>
+          </div>
+          <div>
+            <input type="checkbox" checked={!reactions} onChange={e => setReactions(!e.target.checked)} />
           </div>
         </div>
         <div className="form-group card">

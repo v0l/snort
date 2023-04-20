@@ -22,7 +22,7 @@ export default function useThreadFeed(link: NostrLink) {
       .kinds(
         pref.enableReactions
           ? [EventKind.Reaction, EventKind.TextNote, EventKind.Repost, EventKind.ZapReceipt]
-          : [EventKind.TextNote, EventKind.ZapReceipt]
+          : [EventKind.TextNote, EventKind.ZapReceipt, EventKind.Repost]
       )
       .tag("e", allEvents);
 

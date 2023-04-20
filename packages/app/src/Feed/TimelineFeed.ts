@@ -128,7 +128,9 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     if (trackingEvents.length > 0) {
       rb.withFilter()
         .kinds(
-          pref.enableReactions ? [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt] : [EventKind.ZapReceipt]
+          pref.enableReactions
+            ? [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt]
+            : [EventKind.ZapReceipt, EventKind.Repost]
         )
         .tag("e", trackingEvents);
     }
