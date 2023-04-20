@@ -18,6 +18,7 @@ import {
   setActive,
   setPreview,
   setShowAdvanced,
+  setSelectedCustomRelays,
   setZapForward,
   setSensitive,
   reset,
@@ -34,6 +35,7 @@ import { EventBuilder } from "System";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { LoginStore } from "Login";
 import { getCurrentSubscription } from "Subscription";
+import useLogin from "Hooks/useLogin";
 
 interface NotePreviewProps {
   note: TaggedRawEvent;
@@ -55,11 +57,13 @@ export function NoteCreator() {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
-  const { note, zapForward, sensitive, pollOptions, replyTo, otherEvents, preview, active, show, showAdvanced, error } =
+  const { note, zapForward, sensitive, pollOptions, replyTo, otherEvents, preview, active, show, showAdvanced, selectedCustomRelays, error } =
     useSelector((s: RootState) => s.noteCreator);
   const [uploadInProgress, setUploadInProgress] = useState(false);
   const dispatch = useDispatch();
   const sub = getCurrentSubscription(LoginStore.allSubscriptions());
+  const login = useLogin();
+  const relays = login.relays;
 
   async function sendNote() {
     if (note && publisher) {
@@ -96,10 +100,12 @@ export function NoteCreator() {
         return eb;
       };
       const ev = replyTo ? await publisher.reply(replyTo, note, hk) : await publisher.note(note, hk);
-      publisher.broadcast(ev);
+      if (selectedCustomRelays) publisher.broadcastAll(ev,selectedCustomRelays);
+      else publisher.broadcast(ev);
       dispatch(reset());
       for (const oe of otherEvents) {
-        publisher.broadcast(oe);
+        if (selectedCustomRelays) publisher.broadcastAll(oe,selectedCustomRelays);
+        else publisher.broadcast(oe);
       }
       dispatch(reset());
     }
@@ -232,6 +238,38 @@ export function NoteCreator() {
       dispatch(setPollOptions(copy));
     }
   }
+  
+  function renderRelayCustomisation() {
+    return (
+      <div>
+        {Object.keys(relays.item || {}).filter((el) => relays.item[el].write).map((r,i,a) => 
+          <div className="card flex">
+            <div className="flex f-col f-grow">
+              <div>
+                <FormattedMessage defaultMessage="{relay}" values={{ relay:r }} />
+              </div>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                checked={!selectedCustomRelays || selectedCustomRelays.includes(r)}
+                onChange={e => dispatch(setSelectedCustomRelays(
+                  // set false if all relays selected
+                  e.target.checked && selectedCustomRelays && selectedCustomRelays.length == a.length - 1
+                    ? false
+                  // otherwise return selectedCustomRelays with target relay added / removed 
+                    : a.filter((el) => el === r
+                    ? e.target.checked
+                    : !selectedCustomRelays || selectedCustomRelays.includes(el)
+                  )
+                ))}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   function listAccounts() {
     return LoginStore.getSessions().map(a => (
@@ -330,6 +368,13 @@ export function NoteCreator() {
               <button className="secondary" onClick={loadPreview}>
                 <FormattedMessage defaultMessage="Toggle Preview" />
               </button>
+              <h4>
+                <FormattedMessage defaultMessage="Custom Relays" />
+              </h4>
+              <p>
+                <FormattedMessage defaultMessage="Send note to a subset of my write relays" />
+              </p>
+              {renderRelayCustomisation()}
               <h4>
                 <FormattedMessage defaultMessage="Forward Zaps" />
               </h4>
