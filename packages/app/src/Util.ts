@@ -491,6 +491,20 @@ export interface NostrLink {
   encode(): string;
 }
 
+export function validateNostrLink(link: string): boolean {
+  try {
+    const parsedLink = parseNostrLink(link);
+
+    if (!parsedLink) {
+      return false;
+    }
+
+    return parsedLink.id.length === 64;
+  } catch {
+    return false;
+  }
+}
+
 export function parseNostrLink(link: string): NostrLink | undefined {
   const entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
 
