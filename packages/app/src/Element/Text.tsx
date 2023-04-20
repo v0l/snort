@@ -39,14 +39,14 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
             const validateLink = () => {
               const normalizedStr = a.toLowerCase();
 
-              if (normalizedStr.startsWith("web+nostr") || normalizedStr.startsWith("nostr")) {
+              if (normalizedStr.startsWith("web+nostr:") || normalizedStr.startsWith("nostr:")) {
                 return validateNostrLink(normalizedStr);
               }
 
               return (
-                normalizedStr.startsWith("http") ||
-                normalizedStr.startsWith("https") ||
-                normalizedStr.startsWith("magnet")
+                normalizedStr.startsWith("http:") ||
+                normalizedStr.startsWith("https:") ||
+                normalizedStr.startsWith("magnet:")
               );
             };
 
