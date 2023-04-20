@@ -1,11 +1,14 @@
 import FeedCache from "Cache/FeedCache";
 import { db } from "Db";
-import { LNURL } from "LNURL";
 import { MetadataCache } from "Cache";
+import { LNURL } from "LNURL";
 
 class UserProfileCache extends FeedCache<MetadataCache> {
+  #zapperQueue: Array<{ pubkey: string; lnurl: string }> = [];
+
   constructor() {
     super("UserCache", db.users);
+    this.#processZapperQueue();
   }
 
   key(of: MetadataCache): string {
@@ -63,37 +66,58 @@ class UserProfileCache extends FeedCache<MetadataCache> {
     })();
     console.debug(`Updating ${m.pubkey} ${updateType}`, m);
     if (updateType !== "no_change") {
-      if (updateType !== "refresh_profile") {
-        // fetch zapper key
-        const lnurl = m.lud16 || m.lud06;
-        if (lnurl) {
-          try {
-            const svc = new LNURL(lnurl);
-            await svc.load();
-            m.zapService = svc.zapperPubkey;
-          } catch {
-            console.warn("Failed to load LNURL for zapper pubkey", lnurl);
-          }
-        }
-      }
-
       const writeProfile = {
         ...existing,
         ...m,
       };
-      this.cache.set(m.pubkey, writeProfile);
-      if (db.ready) {
-        await db.users.put(writeProfile);
-        this.onTable.add(m.pubkey);
+      await this.#setItem(writeProfile);
+      if (updateType !== "refresh_profile") {
+        const lnurl = m.lud16 ?? m.lud06;
+        if (lnurl) {
+          this.#zapperQueue.push({
+            pubkey: m.pubkey,
+            lnurl,
+          });
+        }
       }
-      this.notifyChange([m.pubkey]);
-      return true;
     }
-    return false;
+    return updateType;
   }
 
   takeSnapshot(): MetadataCache[] {
     return [];
+  }
+
+  async #setItem(m: MetadataCache) {
+    this.cache.set(m.pubkey, m);
+    if (db.ready) {
+      await db.users.put(m);
+      this.onTable.add(m.pubkey);
+    }
+    this.notifyChange([m.pubkey]);
+  }
+
+  async #processZapperQueue() {
+    while (this.#zapperQueue.length > 0) {
+      const i = this.#zapperQueue.shift();
+      if (i) {
+        try {
+          const svc = new LNURL(i.lnurl);
+          await svc.load();
+          const p = this.getFromCache(i.pubkey);
+          if (p) {
+            this.#setItem({
+              ...p,
+              zapService: svc.zapperPubkey,
+            });
+          }
+        } catch {
+          console.warn("Failed to load LNURL for zapper pubkey", i.lnurl);
+        }
+      }
+    }
+
+    setTimeout(() => this.#processZapperQueue(), 1_000);
   }
 }
 

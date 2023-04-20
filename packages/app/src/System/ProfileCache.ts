@@ -65,7 +65,7 @@ class ProfileLoaderService {
 
       const q = System.Query<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
       // never release this callback, it will stop firing anyway after eose
-      const releaseOnEvent = q.onEvent(this.onProfileEvent);
+      const releaseOnEvent = q.onEvent(e => this.onProfileEvent(e));
       const results = await new Promise<Readonly<Array<TaggedRawEvent>>>(resolve => {
         let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
         const release = q.hook(() => {
