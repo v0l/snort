@@ -7,7 +7,7 @@ import * as unist from "unist";
 import { HexKey, NostrPrefix } from "@snort/nostr";
 
 import { MentionRegex, InvoiceRegex, HashtagRegex } from "Const";
-import { eventLink, hexToBech32, splitByUrl, unwrap } from "Util";
+import { eventLink, hexToBech32, splitByUrl, unwrap, validateNostrLink } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 import Mention from "Element/Mention";
@@ -36,7 +36,21 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
       .map(f => {
         if (typeof f === "string") {
           return splitByUrl(f).map(a => {
-            if (a.match(/^(?:https?|(?:web\+)?nostr|magnet):/i)) {
+            const validateLink = () => {
+              const normalizedStr = a.toLowerCase();
+
+              if (normalizedStr.startsWith("web+nostr:") || normalizedStr.startsWith("nostr:")) {
+                return validateNostrLink(normalizedStr);
+              }
+
+              return (
+                normalizedStr.startsWith("http:") ||
+                normalizedStr.startsWith("https:") ||
+                normalizedStr.startsWith("magnet:")
+              );
+            };
+
+            if (validateLink()) {
               if (disableMedia ?? false) {
                 return (
                   <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
