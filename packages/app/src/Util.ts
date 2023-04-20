@@ -499,7 +499,11 @@ export function validateNostrLink(link: string): boolean {
       return false;
     }
 
-    return parsedLink.id.length === 64;
+    if (parsedLink.type === NostrPrefix.PublicKey || parsedLink.type === NostrPrefix.Note) {
+      return parsedLink.id.length === 64;
+    }
+
+    return true;
   } catch {
     return false;
   }
