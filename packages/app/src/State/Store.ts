@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { reducer as NoteCreatorReducer } from "State/NoteCreator";
+import { reducer as ReBroadcastReducer } from "State/ReBroadcast";
 
 const store = configureStore({
   reducer: {
     noteCreator: NoteCreatorReducer,
+    reBroadcast: ReBroadcastReducer,
   },
 });
 

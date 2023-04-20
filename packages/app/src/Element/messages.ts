@@ -104,4 +104,5 @@ export default defineMessages({
   ConfirmUnbookmark: { defaultMessage: "Are you sure you want to remove this note from bookmarks?" },
   ConfirmUnpin: { defaultMessage: "Are you sure you want to unpin this note?" },
   ReactionsLink: { defaultMessage: "{n} Reactions" },
+  ReBroadcast: { defaultMessage: "Broadcast Again" },
 });
