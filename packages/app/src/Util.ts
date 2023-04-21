@@ -5,7 +5,17 @@ import { bytesToHex } from "@noble/hashes/utils";
 import { decode as invoiceDecode } from "light-bolt11-decoder";
 import { bech32 } from "bech32";
 import base32Decode from "base32-decode";
-import { HexKey, TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix, decodeTLV, TLVEntryType } from "@snort/nostr";
+import {
+  HexKey,
+  TaggedRawEvent,
+  u256,
+  EventKind,
+  encodeTLV,
+  NostrPrefix,
+  decodeTLV,
+  TLVEntryType,
+  RawEvent,
+} from "@snort/nostr";
 import { MetadataCache } from "Cache";
 
 export const sha256 = (str: string | Uint8Array): u256 => {
@@ -466,7 +476,7 @@ export function chunks<T>(arr: T[], length: number) {
   return result;
 }
 
-export function findTag(e: TaggedRawEvent, tag: string) {
+export function findTag(e: RawEvent, tag: string) {
   const maybeTag = e.tags.find(evTag => {
     return evTag[0] === tag;
   });

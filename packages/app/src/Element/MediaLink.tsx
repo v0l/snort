@@ -1,43 +1,31 @@
-import { FileExtensionRegex } from "Const";
 import { ProxyImg } from "Element/ProxyImg";
 
-export default function MediaLink({ link }: { link: string }) {
-  const url = new URL(link);
-  const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
-  switch (extension) {
-    case "gif":
-    case "jpg":
-    case "jpeg":
-    case "jfif":
-    case "png":
-    case "bmp":
-    case "webp": {
-      return <ProxyImg key={url.toString()} src={url.toString()} />;
-    }
-    case "wav":
-    case "mp3":
-    case "ogg": {
-      return <audio key={url.toString()} src={url.toString()} controls />;
-    }
-    case "mp4":
-    case "mov":
-    case "mkv":
-    case "avi":
-    case "m4v":
-    case "webm": {
-      return <video key={url.toString()} src={url.toString()} controls />;
-    }
-    default:
-      return (
-        <a
-          key={url.toString()}
-          href={url.toString()}
-          onClick={e => e.stopPropagation()}
-          target="_blank"
-          rel="noreferrer"
-          className="ext">
-          {url.toString()}
-        </a>
-      );
+interface MediaElementProps {
+  mime: string;
+  url: string;
+  magnet?: string;
+  sha256?: string;
+  blurHash?: string;
+}
+
+export function MediaElement(props: MediaElementProps) {
+  if (props.mime.startsWith("image/")) {
+    return <ProxyImg key={props.url} src={props.url} />;
+  } else if (props.mime.startsWith("audio/")) {
+    return <audio key={props.url} src={props.url} controls />;
+  } else if (props.mime.startsWith("video/")) {
+    return <video key={props.url} src={props.url} controls />;
+  } else {
+    return (
+      <a
+        key={props.url}
+        href={props.url}
+        onClick={e => e.stopPropagation()}
+        target="_blank"
+        rel="noreferrer"
+        className="ext">
+        {props.url}
+      </a>
+    );
   }
 }

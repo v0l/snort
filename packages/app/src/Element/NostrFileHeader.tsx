@@ -1,24 +1,39 @@
-import useEventFeed from "Feed/EventFeed";
-import { NostrLink } from "Util";
-import HyperText from "Element/HyperText";
 import { FormattedMessage } from "react-intl";
+import { RawEvent } from "@snort/nostr";
+
+import { findTag, NostrLink } from "Util";
+import useEventFeed from "Feed/EventFeed";
 import PageSpinner from "Element/PageSpinner";
+import Reveal from "Element/Reveal";
+import { MediaElement } from "Element/MediaLink";
 
 export default function NostrFileHeader({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);
 
   if (!ev.data) return <PageSpinner />;
+  return <NostrFileElement ev={ev.data} />;
+}
 
+export function NostrFileElement({ ev }: { ev: RawEvent }) {
   // assume image or embed which can be rendered by the hypertext kind
   // todo: make use of hash
   // todo: use magnet or other links if present
-  const u = ev.data?.tags.find(a => a[0] === "u")?.[1] ?? "";
-  if (u) {
-    return <HyperText link={u} creator={ev.data?.pubkey ?? ""} />;
+  const u = findTag(ev, "url");
+  const x = findTag(ev, "x");
+  const m = findTag(ev, "m");
+  const blurHash = findTag(ev, "blurhash");
+  const magnet = findTag(ev, "magnet");
+
+  if (u && m) {
+    return (
+      <Reveal message={<FormattedMessage defaultMessage="Click to load content from {link}" values={{ link: u }} />}>
+        <MediaElement mime={m} url={u} sha256={x} magnet={magnet} blurHash={blurHash} />
+      </Reveal>
+    );
   } else {
     return (
       <b className="error">
-        <FormattedMessage defaultMessage="Unknown file header: {name}" values={{ name: ev.data?.content }} />
+        <FormattedMessage defaultMessage="Unknown file header: {name}" values={{ name: ev.content }} />
       </b>
     );
   }
