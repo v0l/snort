@@ -98,7 +98,7 @@ export const EmailRegex =
 /**
  * Regex to match a mnemonic seed
  */
-export const MnemonicRegex = /^([^\s]+\s){11}[^\s]+$/;
+export const MnemonicRegex = /(\w+)/g;
 
 /**
  * Extract file extensions regex

@@ -32,7 +32,7 @@ export default function useLoginHandler() {
     } else if (key.match(EmailRegex)) {
       const hexKey = await getNip05PubKey(key);
       LoginStore.loginWithPubkey(hexKey);
-    } else if (key.match(MnemonicRegex)) {
+    } else if (key.match(MnemonicRegex)?.length === 24) {
       if (!hasSubtleCrypto) {
         throw new Error(insecureMsg);
       }
