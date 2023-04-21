@@ -32,23 +32,25 @@ export const CollapsedIcon = ({ icon, collapsed }: CollapsedIconProps) => {
 interface CollapsedSectionProps {
   title: ReactNode;
   children: ReactNode;
+  className?: string;
 }
 
-export const CollapsedSection = ({ title, children }: CollapsedSectionProps) => {
+export const CollapsedSection = ({ title, children, className }: CollapsedSectionProps) => {
   const [collapsed, setCollapsed] = useState(true);
   const icon = (
-    <div className={`collapse-icon ${collapsed ? "" : "flip"}`} onClick={() => setCollapsed(!collapsed)}>
-      <Icon name="chevronDown" />
+    <div className={`collapse-icon ${collapsed ? "" : "flip"}`}>
+      <Icon name="arrowFront" />
     </div>
   );
   return (
     <>
-      <div className="collapsable-section">
-        <h3 onClick={() => setCollapsed(!collapsed)}>{title}</h3>
+      <div
+        className={`collapsable-section${className ? ` ${className}` : ""}`}
+        onClick={() => setCollapsed(!collapsed)}>
+        {title}
         <CollapsedIcon icon={icon} collapsed={collapsed} />
       </div>
-
-      {collapsed ? null : children}
+      {!collapsed && children}
     </>
   );
 };

@@ -8,6 +8,7 @@ import RelayInfo from "Pages/settings/RelayInfo";
 import AccountsPage from "Pages/settings/Accounts";
 import { WalletSettingsRoutes } from "Pages/settings/WalletSettings";
 import { ManageHandleRoutes } from "Pages/settings/handle";
+import ExportKeys from "Pages/settings/Keys";
 
 import messages from "./messages";
 
@@ -48,6 +49,10 @@ export const SettingsRoutes: RouteObject[] = [
   {
     path: "accounts",
     element: <AccountsPage />,
+  },
+  {
+    path: "keys",
+    element: <ExportKeys />,
   },
   ...ManageHandleRoutes,
   ...WalletSettingsRoutes,

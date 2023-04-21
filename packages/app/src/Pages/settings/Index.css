@@ -13,14 +13,28 @@
   border-radius: 10px;
   cursor: pointer;
   gap: 10px;
+  margin-bottom: 5px;
 }
 
-.settings-row:hover {
+.settings-row.inner {
+  padding: 0.8em 0;
+  background-color: unset;
+  border-radius: unset;
+  margin: 0;
+}
+
+.settings-group-header {
+  font-weight: 600;
+  font-size: 16px;
+  padding: 0.8em 1em;
+  background-color: var(--note-bg);
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
+
+.settings-row:hover,
+.settings-group-header:hover {
   color: var(--highlight);
-}
-
-.settings-row + .settings-row {
-  margin-top: 10px;
 }
 
 .align-end {
@@ -30,4 +44,8 @@
 .settings-row svg {
   width: 100%;
   height: 100%;
+}
+
+.settings-group-header .collapse-icon > svg {
+  width: 8px;
 }

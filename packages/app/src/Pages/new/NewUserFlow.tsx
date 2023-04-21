@@ -12,7 +12,12 @@ import messages from "./messages";
 
 const WhatIsSnort = () => {
   return (
-    <CollapsedSection title={<FormattedMessage {...messages.WhatIsSnort} />}>
+    <CollapsedSection
+      title={
+        <h3>
+          <FormattedMessage {...messages.WhatIsSnort} />
+        </h3>
+      }>
       <p>
         <FormattedMessage {...messages.WhatIsSnortIntro} />
       </p>
@@ -28,7 +33,12 @@ const WhatIsSnort = () => {
 
 const HowDoKeysWork = () => {
   return (
-    <CollapsedSection title={<FormattedMessage {...messages.HowKeysWork} />}>
+    <CollapsedSection
+      title={
+        <h3>
+          <FormattedMessage {...messages.HowKeysWork} />
+        </h3>
+      }>
       <p>
         <FormattedMessage {...messages.DigitalSignatures} />
       </p>
@@ -44,7 +54,12 @@ const HowDoKeysWork = () => {
 
 const Extensions = () => {
   return (
-    <CollapsedSection title={<FormattedMessage {...messages.ImproveSecurity} />}>
+    <CollapsedSection
+      title={
+        <h3>
+          <FormattedMessage {...messages.ImproveSecurity} />
+        </h3>
+      }>
       <p>
         <FormattedMessage {...messages.Extensions} />
       </p>

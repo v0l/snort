@@ -581,19 +581,16 @@ button.tall {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-}
-
-.collapsable-section h3,
-.collapsable-section svg {
   cursor: pointer;
 }
 
 .collapsable-section .collapse-icon {
+  transform: rotate(90deg);
   transition: transform 300ms ease-in-out;
 }
 
 .collapsable-section .collapse-icon.flip {
-  transform: rotate(180deg);
+  transform: rotate(270deg);
   transition: transform 300ms ease-in-out;
 }
 
