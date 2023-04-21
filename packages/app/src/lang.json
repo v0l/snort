@@ -33,6 +33,9 @@
   "/n5KSF": {
     "defaultMessage": "{n} ms"
   },
+  "08zn6O": {
+    "defaultMessage": "Export Keys"
+  },
   "0Azlrb": {
     "defaultMessage": "Manage"
   },
@@ -162,6 +165,9 @@
   },
   "7+Domh": {
     "defaultMessage": "Notes"
+  },
+  "7BX/yC": {
+    "defaultMessage": "Account Switcher"
   },
   "7hp70g": {
     "defaultMessage": "NIP-05"
@@ -343,9 +349,6 @@
   "FpxElY": {
     "defaultMessage": "Verification"
   },
-  "FvanT6": {
-    "defaultMessage": "Accounts"
-  },
   "G/yZLu": {
     "defaultMessage": "Remove"
   },
@@ -424,6 +427,9 @@
   },
   "JkLHGw": {
     "defaultMessage": "Website"
+  },
+  "JymXbw": {
+    "defaultMessage": "Private Key"
   },
   "K3r6DQ": {
     "defaultMessage": "Delete"
@@ -556,6 +562,9 @@
     "defaultMessage": "Art by {name}",
     "description": "Artwork attribution label"
   },
+  "R/6nsx": {
+    "defaultMessage": "Subscription"
+  },
   "R1fEdZ": {
     "defaultMessage": "Forward Zaps"
   },
@@ -595,6 +604,9 @@
   "TpgeGw": {
     "defaultMessage": "Hex Salt..",
     "description": "Hexidecimal 'salt' input for imgproxy"
+  },
+  "TwyMau": {
+    "defaultMessage": "Account"
   },
   "UDYlxu": {
     "defaultMessage": "Pending Subscriptions"
@@ -687,11 +699,17 @@
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
+  "b12Goz": {
+    "defaultMessage": "Mnemonic"
+  },
   "b5vAk0": {
     "defaultMessage": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address"
   },
   "bQdA2k": {
     "defaultMessage": "Sensitive Content"
+  },
+  "bep9C3": {
+    "defaultMessage": "Public Key"
   },
   "brAXSu": {
     "defaultMessage": "Pick a username"
@@ -919,9 +937,6 @@
   "mKhgP9": {
     "defaultMessage": "{n,plural,=0{} =1{zapped} other{zapped}}"
   },
-  "mLcajD": {
-    "defaultMessage": "Snort Subscription"
-  },
   "mfe8RW": {
     "defaultMessage": "Option: {n}"
   },
@@ -958,9 +973,6 @@
   },
   "oJ+JJN": {
     "defaultMessage": "Nothing found :/"
-  },
-  "oVSg7o": {
-    "defaultMessage": "Snort Nostr Adddress"
   },
   "odFwjL": {
     "defaultMessage": "Follows only"
@@ -1096,6 +1108,9 @@
   "wWLwvh": {
     "defaultMessage": "Anon",
     "description": "Anonymous Zap"
+  },
+  "wYSD2L": {
+    "defaultMessage": "Nostr Adddress"
   },
   "wih7iJ": {
     "defaultMessage": "name is blocked"
