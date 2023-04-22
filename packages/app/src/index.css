@@ -601,10 +601,6 @@ button.tall {
   justify-content: space-between;
 }
 
-.action-heading button {
-  width: 98px;
-}
-
 .flex-end {
   display: flex;
   justify-content: flex-end;
