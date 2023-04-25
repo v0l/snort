@@ -264,7 +264,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   function reactionIcons() {
-    if (!prefs.enableReactions || author?.reactions === false) {
+    if (!prefs.enableReactions) {
       return null;
     }
     return (
