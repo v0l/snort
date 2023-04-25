@@ -194,15 +194,8 @@
   margin-top: 12px;
 }
 
-.qr-modal .modal-body {
-  width: unset;
-  margin-top: -120px;
-}
-
 .qr-modal .pfp {
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .qr-modal .pfp .avatar {
@@ -220,18 +213,10 @@
 
 .qr-modal .pfp .username {
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
 }
 
 .qr-modal canvas {
   border-radius: 10px;
-}
-
-.qr-modal .pfp .display-name {
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
 }
 
 .profile .zap-amount {
