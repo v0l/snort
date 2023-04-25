@@ -30,9 +30,9 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
   };
   const getState = (): StoreSnapshot<TSnapshot> => {
     if (rb?.id) {
-      const feed = System.GetFeed(rb.id);
-      if (feed) {
-        return unwrap(feed).snapshot as StoreSnapshot<TSnapshot>;
+      const q = System.GetQuery(rb.id);
+      if (q) {
+        return unwrap(q).feed?.snapshot as StoreSnapshot<TSnapshot>;
       }
     }
     return EmptySnapshot as StoreSnapshot<TSnapshot>;

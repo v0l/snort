@@ -51,11 +51,6 @@ export class NostrSystem {
   Queries: Map<string, Query> = new Map();
 
   /**
-   * Collection of all feeds which are keyed by subscription id
-   */
-  Feeds: Map<string, NoteStore> = new Map();
-
-  /**
    * Handler function for NIP-42
    */
   HandleAuth?: AuthHandler;
@@ -98,6 +93,7 @@ export class NostrSystem {
         this.Sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
+        c.OnDisconnect = (a, p) => this.OnRelayDisconnect(c, a, p);
         c.OnConnected = () => {
           for (const [, q] of this.Queries) {
             q.sendToRelay(c);
@@ -113,35 +109,24 @@ export class NostrSystem {
     }
   }
 
-  OnEndOfStoredEvents(c: Connection, sub: string) {
+  OnRelayDisconnect(c: Connection, active: Array<string>, pending: Array<string>) {
+    for (const [, q] of this.Queries) {
+      q.connectionLost(c, active, pending);
+    }
+  }
+
+  OnEndOfStoredEvents(c: Readonly<Connection>, sub: string) {
     const q = this.GetQuery(sub);
     if (q) {
-      q.eose(sub, c.Address);
-      const f = this.Feeds.get(q.id);
-      if (f) {
-        f.loading = q.progress <= 0.5;
-        console.debug(`${sub} loading=${f.loading}, progress=${q.progress}`);
-      }
-      if (!q.leaveOpen) {
-        c.CloseReq(sub);
-      }
+      q.eose(sub, c);
     }
   }
 
   OnEvent(sub: string, ev: TaggedRawEvent) {
-    const feed = this.GetFeed(sub);
-    if (feed) {
-      feed.add(ev);
+    const q = this.GetQuery(sub);
+    if (q?.feed) {
+      q.feed.add(ev);
     }
-  }
-
-  GetFeed(sub: string) {
-    const subFilterId = /-\d+$/i;
-    if (sub.match(subFilterId)) {
-      // feed events back into parent query
-      sub = sub.split(subFilterId)[0];
-    }
-    return this.Feeds.get(sub);
   }
 
   GetQuery(sub: string) {
@@ -165,6 +150,7 @@ export class NostrSystem {
         this.Sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
+        c.OnDisconnect = (a, p) => this.OnRelayDisconnect(c, a, p);
         c.OnConnected = () => {
           for (const [, q] of this.Queries) {
             q.sendToRelay(c);
@@ -221,18 +207,15 @@ export class NostrSystem {
       const q = unwrap(this.Queries.get(req.id));
       q.unCancel();
 
-      const diff = diffFilters(q.request.filters, filters);
+      const diff = diffFilters(q.filters, filters);
       if (!diff.changed && !req.options?.skipDiff) {
         this.#changed();
-        return unwrap(this.Feeds.get(req.id)) as Readonly<T>;
+        return unwrap(q.feed) as Readonly<T>;
       } else {
-        const subQ = new Query(`${q.id}-${q.subQueries.length + 1}`, {
-          filters: diff.filters,
-          started: unixNowMs(),
-        });
+        const subQ = new Query(`${q.id}-${q.subQueries.length + 1}`, filters);
         q.subQueries.push(subQ);
-        q.request.filters = filters;
-        const f = unwrap(this.Feeds.get(req.id));
+        q.filters = filters;
+        const f = unwrap(q.feed);
         f.loading = true;
         this.SendQuery(subQ);
         this.#changed();
@@ -244,11 +227,8 @@ export class NostrSystem {
   }
 
   AddQuery<T extends NoteStore>(type: { new (): T }, rb: RequestBuilder): T {
-    const q = new Query(rb.id, {
-      filters: rb.build(),
-      started: unixNowMs(),
-      finished: 0,
-    });
+    const store = new type();
+    const q = new Query(rb.id, rb.build(), store);
     if (rb.options?.leaveOpen) {
       q.leaveOpen = rb.options.leaveOpen;
     }
@@ -257,8 +237,6 @@ export class NostrSystem {
     }
 
     this.Queries.set(rb.id, q);
-    const store = new type();
-    this.Feeds.set(rb.id, store);
     this.SendQuery(q);
     this.#changed();
     return store;
@@ -301,9 +279,9 @@ export class NostrSystem {
       queries: [...this.Queries.values()].map(a => {
         return {
           id: a.id,
-          filters: a.request.filters,
+          filters: a.filters,
           closing: a.closing,
-          subFilters: a.subQueries.map(a => a.request.filters).flat(),
+          subFilters: a.subQueries.map(a => a.filters).flat(),
         };
       }),
     });
@@ -319,7 +297,6 @@ export class NostrSystem {
       if (v.closingAt && v.closingAt < now) {
         v.sendClose();
         this.Queries.delete(k);
-        this.Feeds.delete(k);
         console.debug("Removed:", k);
         changed = true;
       }

@@ -1,5 +1,4 @@
 import { Connection } from "@snort/nostr";
-import { unixNow } from "Util";
 import { Query } from "./Query";
 import { getRandomValues } from "crypto";
 
@@ -8,15 +7,12 @@ window.crypto.getRandomValues = getRandomValues as any;
 
 describe("query", () => {
   test("progress", () => {
-    const q = new Query("test", {
-      filters: [
-        {
-          kinds: [1],
-          authors: ["test"],
-        },
-      ],
-      started: unixNow(),
-    });
+    const q = new Query("test", [
+      {
+        kinds: [1],
+        authors: ["test"],
+      },
+    ]);
     const opt = {
       read: true,
       write: true,
@@ -33,29 +29,26 @@ describe("query", () => {
     q.sendToRelay(c3);
 
     expect(q.progress).toBe(0);
-    q.eose(q.id, c1.Address);
+    q.eose(q.id, c1);
     expect(q.progress).toBe(1 / 3);
-    q.eose(q.id, c1.Address);
+    q.eose(q.id, c1);
     expect(q.progress).toBe(1 / 3);
-    q.eose(q.id, c2.Address);
+    q.eose(q.id, c2);
     expect(q.progress).toBe(2 / 3);
-    q.eose(q.id, c3.Address);
+    q.eose(q.id, c3);
     expect(q.progress).toBe(1);
 
-    const qs = new Query("test-1", {
-      filters: [
-        {
-          kinds: [1],
-          authors: ["test-sub"],
-        },
-      ],
-      started: unixNow(),
-    });
+    const qs = new Query("test-1", [
+      {
+        kinds: [1],
+        authors: ["test-sub"],
+      },
+    ]);
     q.subQueries.push(qs);
     qs.sendToRelay(c1);
 
     expect(q.progress).toBe(0.5);
-    q.eose(qs.id, c1.Address);
+    q.eose(qs.id, c1);
     expect(q.progress).toBe(1);
     qs.sendToRelay(c2);
     // 1 + 0.5 (1/2 sent sub query)
