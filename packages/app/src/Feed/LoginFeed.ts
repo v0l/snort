@@ -73,7 +73,7 @@ export default function useLoginFeed() {
         setFollows(login, pTags, contactList.created_at * 1000);
       }
 
-      const dms = loginFeed.data.filter(a => a.kind === EventKind.DirectMessage);
+      const dms = loginFeed.data.filter(a => a.kind === EventKind.DirectMessage && a.tags.some(b => b[0] === "p"));
       DmCache.bulkSet(dms);
 
       const subs = loginFeed.data.filter(
