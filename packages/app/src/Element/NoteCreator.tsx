@@ -370,7 +370,7 @@ export function NoteCreator() {
                 <FormattedMessage defaultMessage="Custom Relays" />
               </h4>
               <p>
-                <FormattedMessage defaultMessage="Send note to a subset of my write relays" />
+                <FormattedMessage defaultMessage="Send note to a subset of your write relays" />
               </p>
               {renderRelayCustomisation()}
               <h4>
