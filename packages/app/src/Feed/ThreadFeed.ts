@@ -39,9 +39,15 @@ export default function useThreadFeed(link: NostrLink) {
         );
     }
     return sub;
-  }, [trackingEvents, trackingATags, allEvents, pref, link.id]);
+  }, [trackingEvents, trackingATags, allEvents, pref]);
 
   const store = useRequestBuilder<FlatNoteStore>(FlatNoteStore, sub);
+
+  useEffect(() => {
+    setTrackingATags([]);
+    setTrackingEvent([link.id]);
+    setAllEvents([link.id]);
+  }, [link.id]);
 
   useEffect(() => {
     if (store.data) {
