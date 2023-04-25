@@ -245,9 +245,7 @@ export function NoteCreator() {
         {Object.keys(relays.item || {}).filter((el) => relays.item[el].write).map((r,i,a) => 
           <div className="card flex">
             <div className="flex f-col f-grow">
-              <div>
-                <FormattedMessage defaultMessage="{relay}" values={{ relay:r }} />
-              </div>
+              <div>{r}</div>
             </div>
             <div>
               <input
