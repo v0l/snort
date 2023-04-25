@@ -212,14 +212,13 @@ export class NostrSystem {
         this.#changed();
         return unwrap(q.feed) as Readonly<T>;
       } else {
-        const subQ = new Query(`${q.id}-${q.subQueries.length + 1}`, filters);
+        const subQ = new Query(`${q.id}-${q.subQueries.length + 1}`, filters, q.feed);
         q.subQueries.push(subQ);
         q.filters = filters;
-        const f = unwrap(q.feed);
-        f.loading = true;
+        q.feed.loading = true;
         this.SendQuery(subQ);
         this.#changed();
-        return f as Readonly<T>;
+        return q.feed as Readonly<T>;
       }
     } else {
       return this.AddQuery<T>(type, req);

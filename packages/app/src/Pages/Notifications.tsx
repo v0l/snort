@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Timeline from "Element/Timeline";
 import { TaskList } from "Tasks/TaskList";
 import useLogin from "Hooks/useLogin";
 import { markNotificationsRead } from "Login";
+import { unixNow } from "Util";
 
 export default function NotificationsPage() {
   const login = useLogin();
+  const [now] = useState(unixNow());
 
   useEffect(() => {
     markNotificationsRead(login);
@@ -24,6 +26,8 @@ export default function NotificationsPage() {
             items: [login.publicKey],
             discriminator: login.publicKey.slice(0, 12),
           }}
+          now={now}
+          window={60 * 60 * 12}
           postsOnly={false}
           method={"TIME_RANGE"}
         />

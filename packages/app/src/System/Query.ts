@@ -121,9 +121,9 @@ export class Query {
   /**
    * Feed object which collects events
    */
-  #feed?: NoteStore;
+  #feed: NoteStore;
 
-  constructor(id: string, filters: Array<RawReqFilter>, feed?: NoteStore) {
+  constructor(id: string, filters: Array<RawReqFilter>, feed: NoteStore) {
     this.id = id;
     this.filters = filters;
     this.#feed = feed;
@@ -190,14 +190,12 @@ export class Query {
   }
 
   eose(sub: string, conn: Readonly<Connection>) {
-    const qt = this.#tracing.filter(a => a.subId === sub && a.connId === conn.Id);
+    const qt = this.#tracing.find(a => a.subId === sub && a.connId === conn.Id);
+    qt?.gotEose();
     if (sub === this.id) {
       console.debug(`[EOSE][${sub}] ${conn.Address}`);
-      qt.forEach(a => a.gotEose());
-      if (this.#feed) {
-        this.#feed.loading = this.progress < 1;
-      }
-      if (!this.leaveOpen) {
+      this.#feed.loading = this.progress < 1;
+      if (!this.leaveOpen && !this.#feed.loading) {
         this.sendClose();
       }
     } else {

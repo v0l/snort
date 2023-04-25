@@ -1,18 +1,23 @@
 import { Connection } from "@snort/nostr";
 import { Query } from "./Query";
 import { getRandomValues } from "crypto";
+import { FlatNoteStore } from "./NoteCollection";
 
 window.crypto = {} as any;
 window.crypto.getRandomValues = getRandomValues as any;
 
 describe("query", () => {
   test("progress", () => {
-    const q = new Query("test", [
-      {
-        kinds: [1],
-        authors: ["test"],
-      },
-    ]);
+    const q = new Query(
+      "test",
+      [
+        {
+          kinds: [1],
+          authors: ["test"],
+        },
+      ],
+      new FlatNoteStore()
+    );
     const opt = {
       read: true,
       write: true,
@@ -38,12 +43,16 @@ describe("query", () => {
     q.eose(q.id, c3);
     expect(q.progress).toBe(1);
 
-    const qs = new Query("test-1", [
-      {
-        kinds: [1],
-        authors: ["test-sub"],
-      },
-    ]);
+    const qs = new Query(
+      "test-1",
+      [
+        {
+          kinds: [1],
+          authors: ["test-sub"],
+        },
+      ],
+      new FlatNoteStore()
+    );
     q.subQueries.push(qs);
     qs.sendToRelay(c1);
 
