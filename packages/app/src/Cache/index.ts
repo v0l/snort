@@ -1,6 +1,7 @@
 import { HexKey, RawEvent, UserMetadata } from "@snort/nostr";
 import { hexToBech32, unixNowMs } from "Util";
 import { DmCache } from "./DMCache";
+import { InteractionCache } from "./EventInteractionCache";
 import { UserCache } from "./UserCache";
 
 export interface MetadataCache extends UserMetadata {
@@ -48,6 +49,7 @@ export function mapEventToProfile(ev: RawEvent) {
 export async function preload() {
   await UserCache.preload();
   await DmCache.preload();
+  await InteractionCache.preload();
 }
 
 export { UserCache, DmCache };

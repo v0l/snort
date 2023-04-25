@@ -25,41 +25,9 @@ import { DonateLNURL } from "Pages/DonatePage";
 import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
 import { setBookmarked, setPinned } from "Login";
+import { useInteractionCache } from "Hooks/useInteractionCache";
 
 import messages from "./messages";
-
-// a dumb cache to remember which notes we zapped
-class DumbZapCache {
-  #set: Set<u256> = new Set();
-  constructor() {
-    this.#load();
-  }
-
-  add(id: u256) {
-    this.#set.add(this.#truncId(id));
-    this.#save();
-  }
-
-  has(id: u256) {
-    return this.#set.has(this.#truncId(id));
-  }
-
-  #truncId(id: u256) {
-    return id.slice(0, 12);
-  }
-
-  #save() {
-    window.localStorage.setItem("zap-cache", JSON.stringify([...this.#set]));
-  }
-
-  #load() {
-    const data = window.localStorage.getItem("zap-cache");
-    if (data) {
-      this.#set = new Set<u256>(JSON.parse(data) as Array<u256>);
-    }
-  }
-}
-const ZapCache = new DumbZapCache();
 
 let isZapperBusy = false;
 const barrierZapper = async <T,>(then: () => Promise<T>): Promise<T> => {
@@ -99,6 +67,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { pinned, bookmarked, publicKey, preferences: prefs, relays } = login;
   const { mute, block } = useModeration();
   const author = useUserProfile(ev.pubkey);
+  const interactionCache = useInteractionCache(publicKey, ev.id);
   const publisher = useEventPublisher();
   const showNoteCreatorModal = useSelector((s: RootState) => s.noteCreator.show);
   const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
@@ -114,7 +83,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     type: "language",
   });
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  const didZap = ZapCache.has(ev.id) || zaps.some(a => a.sender === publicKey);
+  const didZap = interactionCache.data.zapped || zaps.some(a => a.sender === publicKey);
   const longPress = useLongPress(
     e => {
       e.stopPropagation();
@@ -126,17 +95,21 @@ export default function NoteFooter(props: NoteFooterProps) {
   );
 
   function hasReacted(emoji: string) {
-    return positive?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === publicKey);
+    return (
+      interactionCache.data.reacted ||
+      positive?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === publicKey)
+    );
   }
 
   function hasReposted() {
-    return reposts.some(a => a.pubkey === publicKey);
+    return interactionCache.data.reposted || reposts.some(a => a.pubkey === publicKey);
   }
 
   async function react(content: string) {
     if (!hasReacted(content) && publisher) {
       const evLike = await publisher.react(ev, content);
       publisher.broadcast(evLike);
+      await interactionCache.react();
     }
   }
 
@@ -152,6 +125,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       if (!prefs.confirmReposts || window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.id }))) {
         const evRepost = await publisher.repost(ev);
         publisher.broadcast(evRepost);
+        await interactionCache.repost();
       }
     }
   }
@@ -201,6 +175,8 @@ export default function NoteFooter(props: NoteFooterProps) {
       const zap = handler.canZap && publisher ? await publisher.zap(amount * 1000, key, zr, id) : undefined;
       const invoice = await handler.getInvoice(amount, undefined, zap);
       await wallet?.payInvoice(unwrap(invoice.pr));
+
+      await interactionCache.zap();
     });
   }
 
@@ -220,14 +196,13 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   useEffect(() => {
-    if (prefs.autoZap && !ZapCache.has(ev.id) && !isMine && !zapping) {
+    if (prefs.autoZap && !didZap && !isMine && !zapping) {
       const lnurl = getLNURL();
       if (wallet?.isReady() && lnurl) {
         setZapping(true);
         queueMicrotask(async () => {
           try {
             await fastZapInner(lnurl, prefs.defaultZapAmount, ev.pubkey, ev.id);
-            ZapCache.add(ev.id);
             fastZapDonate();
           } catch {
             // ignored
