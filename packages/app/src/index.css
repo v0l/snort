@@ -374,6 +374,7 @@ input:disabled {
 a {
   color: inherit;
   line-height: 1.3em;
+  text-decoration: none;
 }
 
 a.ext {
