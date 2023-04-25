@@ -61,7 +61,7 @@ export function bech32ToHex(str: string) {
     const buff = bech32.fromWords(nKey.words);
     return secp.utils.bytesToHex(Uint8Array.from(buff));
   } catch {
-    return "";
+    return str;
   }
 }
 
@@ -519,28 +519,28 @@ export function validateNostrLink(link: string): boolean {
   }
 }
 
-export function parseNostrLink(link: string): NostrLink | undefined {
+export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLink | undefined {
   const entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
 
-  if (entity.startsWith(NostrPrefix.PublicKey)) {
+  const isPrefix = (prefix: NostrPrefix) => {
+    return entity.startsWith(prefix) || prefix === prefixHint;
+  };
+
+  if (isPrefix(NostrPrefix.PublicKey)) {
     const id = bech32ToHex(entity);
     return {
       type: NostrPrefix.PublicKey,
       id: id,
       encode: () => hexToBech32(NostrPrefix.PublicKey, id),
     };
-  } else if (entity.startsWith(NostrPrefix.Note)) {
+  } else if (isPrefix(NostrPrefix.Note)) {
     const id = bech32ToHex(entity);
     return {
       type: NostrPrefix.Note,
       id: id,
       encode: () => hexToBech32(NostrPrefix.Note, id),
     };
-  } else if (
-    entity.startsWith(NostrPrefix.Profile) ||
-    entity.startsWith(NostrPrefix.Event) ||
-    entity.startsWith(NostrPrefix.Address)
-  ) {
+  } else if (isPrefix(NostrPrefix.Profile) || isPrefix(NostrPrefix.Event) || isPrefix(NostrPrefix.Address)) {
     const decoded = decodeTLV(entity);
 
     const id = decoded.find(a => a.type === TLVEntryType.Special)?.value as string;
@@ -551,7 +551,7 @@ export function parseNostrLink(link: string): NostrLink | undefined {
     const encode = () => {
       return entity; // return original
     };
-    if (entity.startsWith(NostrPrefix.Profile)) {
+    if (isPrefix(NostrPrefix.Profile)) {
       return {
         type: NostrPrefix.Profile,
         id,
@@ -560,7 +560,7 @@ export function parseNostrLink(link: string): NostrLink | undefined {
         author,
         encode,
       };
-    } else if (entity.startsWith(NostrPrefix.Event)) {
+    } else if (isPrefix(NostrPrefix.Event)) {
       return {
         type: NostrPrefix.Event,
         id,
@@ -569,7 +569,7 @@ export function parseNostrLink(link: string): NostrLink | undefined {
         author,
         encode,
       };
-    } else if (entity.startsWith(NostrPrefix.Address)) {
+    } else if (isPrefix(NostrPrefix.Address)) {
       return {
         type: NostrPrefix.Address,
         id,

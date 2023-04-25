@@ -72,7 +72,7 @@ export abstract class EventExt {
   }
 
   static extractThread(ev: RawEvent) {
-    const isThread = ev.tags.some(a => a[0] === "e" && a[3] !== "mention");
+    const isThread = ev.tags.some(a => (a[0] === "e" && a[3] !== "mention") || a[0] == "a");
     if (!isThread) {
       return undefined;
     }
@@ -82,7 +82,7 @@ export abstract class EventExt {
       mentions: [],
       pubKeys: [],
     } as Thread;
-    const eTags = ev.tags.filter(a => a[0] === "e").map((v, i) => new Tag(v, i));
+    const eTags = ev.tags.filter(a => a[0] === "e" || a[0] === "a").map((v, i) => new Tag(v, i));
     const marked = eTags.some(a => a.Marker !== undefined);
     if (!marked) {
       ret.root = eTags[0];

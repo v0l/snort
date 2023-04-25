@@ -8,6 +8,7 @@ import useLogin from "Hooks/useLogin";
 
 export default function useThreadFeed(link: NostrLink) {
   const [trackingEvents, setTrackingEvent] = useState<u256[]>([link.id]);
+  const [trackingATags, setTrackingATags] = useState<string[]>([]);
   const [allEvents, setAllEvents] = useState<u256[]>([link.id]);
   const pref = useLogin().preferences;
 
@@ -26,8 +27,19 @@ export default function useThreadFeed(link: NostrLink) {
       )
       .tag("e", allEvents);
 
+    if (trackingATags.length > 0) {
+      const parsed = trackingATags.map(a => a.split(":"));
+      sub
+        .withFilter()
+        .kinds(parsed.map(a => Number(a[0])))
+        .authors(parsed.map(a => a[1]))
+        .tag(
+          "d",
+          parsed.map(a => a[2])
+        );
+    }
     return sub;
-  }, [trackingEvents, allEvents, pref, link.id]);
+  }, [trackingEvents, trackingATags, allEvents, pref, link.id]);
 
   const store = useRequestBuilder<FlatNoteStore>(FlatNoteStore, sub);
 
@@ -39,6 +51,9 @@ export default function useThreadFeed(link: NostrLink) {
       const eTagsMissing = eTags.filter(a => !mainNotes.some(b => b.id === a));
       setTrackingEvent(s => appendDedupe(s, eTagsMissing));
       setAllEvents(s => appendDedupe(s, eTags));
+
+      const aTags = mainNotes.map(a => a.tags.filter(b => b[0] === "a").map(b => b[1])).flat();
+      setTrackingATags(s => appendDedupe(s, aTags));
     }
   }, [store]);
 

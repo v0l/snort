@@ -10,6 +10,7 @@ export default class Tag {
   Marker?: string;
   Hashtag?: string;
   DTag?: string;
+  ATag?: string;
   Index: number;
   Invalid: boolean;
   LNURL?: string;
@@ -41,6 +42,10 @@ export default class Tag {
       }
       case "d": {
         this.DTag = tag[1];
+        break;
+      }
+      case "a": {
+        this.ATag  = tag[1];
         break;
       }
       case "t": {

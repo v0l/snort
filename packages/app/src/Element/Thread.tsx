@@ -5,7 +5,7 @@ import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
 import { TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix } from "@snort/nostr";
 import { EventExt, Thread as ThreadInfo } from "System/EventExt";
 
-import { eventLink, unwrap, getReactions, parseNostrLink, getAllReactions } from "Util";
+import { eventLink, unwrap, getReactions, parseNostrLink, getAllReactions, findTag } from "Util";
 import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";
@@ -29,7 +29,6 @@ const Divider = ({ variant = "regular" }: DividerProps) => {
 
 interface SubthreadProps {
   isLastSubthread?: boolean;
-  from: u256;
   active: u256;
   notes: readonly TaggedRawEvent[];
   related: readonly TaggedRawEvent[];
@@ -59,7 +58,6 @@ const Subthread = ({ active, notes, related, chains, onNavigate }: SubthreadProp
           <TierTwo
             active={active}
             isLastSubthread={isLastSubthread}
-            from={a.id}
             notes={replies}
             related={related}
             chains={chains}
@@ -78,7 +76,7 @@ interface ThreadNoteProps extends Omit<SubthreadProps, "notes"> {
   isLast: boolean;
 }
 
-const ThreadNote = ({ active, note, isLast, isLastSubthread, from, related, chains, onNavigate }: ThreadNoteProps) => {
+const ThreadNote = ({ active, note, isLast, isLastSubthread, related, chains, onNavigate }: ThreadNoteProps) => {
   const { formatMessage } = useIntl();
   const replies = getReplies(note.id, chains);
   const activeInReplies = replies.map(r => r.id).includes(active);
@@ -105,7 +103,6 @@ const ThreadNote = ({ active, note, isLast, isLastSubthread, from, related, chai
           <TierThree
             active={active}
             isLastSubthread={isLastSubthread}
-            from={from}
             notes={replies}
             related={related}
             chains={chains}
@@ -117,14 +114,13 @@ const ThreadNote = ({ active, note, isLast, isLastSubthread, from, related, chai
   );
 };
 
-const TierTwo = ({ active, isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
+const TierTwo = ({ active, isLastSubthread, notes, related, chains, onNavigate }: SubthreadProps) => {
   const [first, ...rest] = notes;
 
   return (
     <>
       <ThreadNote
         active={active}
-        from={from}
         onNavigate={onNavigate}
         note={first}
         chains={chains}
@@ -138,7 +134,6 @@ const TierTwo = ({ active, isLastSubthread, from, notes, related, chains, onNavi
         return (
           <ThreadNote
             active={active}
-            from={from}
             onNavigate={onNavigate}
             note={r}
             chains={chains}
@@ -152,7 +147,7 @@ const TierTwo = ({ active, isLastSubthread, from, notes, related, chains, onNavi
   );
 };
 
-const TierThree = ({ active, isLastSubthread, from, notes, related, chains, onNavigate }: SubthreadProps) => {
+const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate }: SubthreadProps) => {
   const [first, ...rest] = notes;
   const replies = getReplies(first.id, chains);
   const hasMultipleNotes = rest.length > 0 || replies.length > 0;
@@ -178,7 +173,6 @@ const TierThree = ({ active, isLastSubthread, from, notes, related, chains, onNa
         <TierThree
           active={active}
           isLastSubthread={isLastSubthread}
-          from={from}
           notes={replies}
           related={related}
           chains={chains}
@@ -216,7 +210,7 @@ export default function Thread() {
   const params = useParams();
   const location = useLocation();
 
-  const link = parseNostrLink(params.id ?? "");
+  const link = parseNostrLink(params.id ?? "", NostrPrefix.Note);
   const thread = useThreadFeed(unwrap(link));
 
   const [currentId, setCurrentId] = useState(link?.id);
@@ -240,16 +234,20 @@ export default function Thread() {
         ?.filter(a => a.kind === EventKind.TextNote)
         .sort((a, b) => b.created_at - a.created_at)
         .forEach(v => {
-          const thread = EventExt.extractThread(v);
-          const replyTo = thread?.replyTo?.Event ?? thread?.root?.Event;
+          const t = EventExt.extractThread(v);
+          let replyTo = t?.replyTo?.Event ?? t?.root?.Event;
+          if (t?.root?.ATag) {
+            const parsed = t.root.ATag.split(":");
+            replyTo = thread.data?.find(
+              a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2]
+            )?.id;
+          }
           if (replyTo) {
             if (!chains.has(replyTo)) {
               chains.set(replyTo, [v]);
             } else {
               unwrap(chains.get(replyTo)).push(v);
             }
-          } else if (v.tags.length > 0) {
-            //console.log("Not replying to anything: ", v);
           }
         });
     }
@@ -268,11 +266,19 @@ export default function Thread() {
       if (isRoot(currentThread)) {
         return currentNote;
       }
-      const replyTo = currentThread?.replyTo?.Event ?? currentThread?.root?.Event;
+      const replyTo = currentThread?.replyTo ?? currentThread?.root;
 
       // sometimes the root event ID is missing, and we can only take the happy path if the root event ID exists
       if (replyTo) {
-        return thread.data?.find(a => a.id === replyTo);
+        if (replyTo.ATag) {
+          const parsed = replyTo.ATag.split(":");
+          return thread.data?.find(
+            a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2]
+          );
+        }
+        if (replyTo.Event) {
+          return thread.data?.find(a => a.id === replyTo.Event);
+        }
       }
 
       const possibleRoots = thread.data?.filter(a => {
@@ -295,7 +301,7 @@ export default function Thread() {
   const parent = useMemo(() => {
     if (root) {
       const currentThread = EventExt.extractThread(root);
-      return currentThread?.replyTo?.Event ?? currentThread?.root?.Event;
+      return currentThread?.replyTo?.Event ?? currentThread?.root?.Event ?? currentThread?.root?.ATag;
     }
   }, [root]);
 
@@ -328,7 +334,6 @@ export default function Thread() {
       return (
         <Subthread
           active={currentId}
-          from={from}
           notes={replies}
           related={getAllReactions(
             thread.data,
