@@ -215,13 +215,12 @@ export default function Note(props: NoteProps) {
       return;
     }
 
+    e.stopPropagation();
     if (props.onClick) {
-      e.stopPropagation();
       props.onClick(eTarget);
       return;
     }
 
-    e.stopPropagation();
     const link = eventLink(eTarget.id, eTarget.relays);
     // detect cmd key and open in new tab
     if (e.metaKey) {

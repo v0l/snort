@@ -2,7 +2,7 @@ import "./Thread.css";
 import { useMemo, useState, ReactNode } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
-import { TaggedRawEvent, u256, EventKind, encodeTLV, NostrPrefix } from "@snort/nostr";
+import { TaggedRawEvent, u256, EventKind, NostrPrefix } from "@snort/nostr";
 import { EventExt, Thread as ThreadInfo } from "System/EventExt";
 
 import { eventLink, unwrap, getReactions, parseNostrLink, getAllReactions, findTag } from "Util";
@@ -221,10 +221,7 @@ export default function Thread() {
 
   function navigateThread(e: TaggedRawEvent) {
     setCurrentId(e.id);
-    const link = encodeTLV(e.id, NostrPrefix.Event, e.relays);
-    navigate(`/e/${link}`, {
-      replace: true,
-    });
+    //const link = encodeTLV(e.id, NostrPrefix.Event, e.relays);
   }
 
   const chains = useMemo(() => {
