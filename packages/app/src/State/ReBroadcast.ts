@@ -29,11 +29,6 @@ const ReBroadcastSlice = createSlice({
   },
 });
 
-export const {
-  setShow,
-  setNote,
-  setSelectedCustomRelays,
-  reset,
-} = ReBroadcastSlice.actions;
+export const { setShow, setNote, setSelectedCustomRelays, reset } = ReBroadcastSlice.actions;
 
 export const reducer = ReBroadcastSlice.reducer;

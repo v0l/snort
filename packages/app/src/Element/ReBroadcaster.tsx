@@ -9,13 +9,12 @@ import useLogin from "Hooks/useLogin";
 
 export function ReBroadcaster() {
   const publisher = useEventPublisher();
-  const { note, show, selectedCustomRelays } =
-    useSelector((s: RootState) => s.reBroadcast);
+  const { note, show, selectedCustomRelays } = useSelector((s: RootState) => s.reBroadcast);
   const dispatch = useDispatch();
 
   async function sendReBroadcast() {
     if (note && publisher) {
-      if (selectedCustomRelays) publisher.broadcastAll(note,selectedCustomRelays);
+      if (selectedCustomRelays) publisher.broadcastAll(note, selectedCustomRelays);
       else publisher.broadcast(note);
       dispatch(reset());
     }
@@ -36,29 +35,34 @@ export function ReBroadcaster() {
   function renderRelayCustomisation() {
     return (
       <div>
-        {Object.keys(relays.item || {}).filter((el) => relays.item[el].write).map((r,i,a) => 
-          <div className="card flex">
-            <div className="flex f-col f-grow">
-              <div>{r}</div>
+        {Object.keys(relays.item || {})
+          .filter(el => relays.item[el].write)
+          .map((r, i, a) => (
+            <div className="card flex">
+              <div className="flex f-col f-grow">
+                <div>{r}</div>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  checked={!selectedCustomRelays || selectedCustomRelays.includes(r)}
+                  onChange={e =>
+                    dispatch(
+                      setSelectedCustomRelays(
+                        // set false if all relays selected
+                        e.target.checked && selectedCustomRelays && selectedCustomRelays.length == a.length - 1
+                          ? false
+                          : // otherwise return selectedCustomRelays with target relay added / removed
+                            a.filter(el =>
+                              el === r ? e.target.checked : !selectedCustomRelays || selectedCustomRelays.includes(el)
+                            )
+                      )
+                    )
+                  }
+                />
+              </div>
             </div>
-            <div>
-              <input
-                type="checkbox"
-                checked={!selectedCustomRelays || selectedCustomRelays.includes(r)}
-                onChange={e => dispatch(setSelectedCustomRelays(
-                  // set false if all relays selected
-                  e.target.checked && selectedCustomRelays && selectedCustomRelays.length == a.length - 1
-                    ? false
-                  // otherwise return selectedCustomRelays with target relay added / removed 
-                    : a.filter((el) => el === r
-                    ? e.target.checked
-                    : !selectedCustomRelays || selectedCustomRelays.includes(el)
-                  )
-                ))}
-              />
-            </div>
-          </div>
-        )}
+          ))}
       </div>
     );
   }

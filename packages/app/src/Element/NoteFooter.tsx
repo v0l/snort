@@ -19,7 +19,11 @@ import { ParsedZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { RootState } from "State/Store";
 import { setReplyTo, setShow, reset } from "State/NoteCreator";
-import { setNote as setReBroadcastNote, setShow as setReBroadcastShow, reset as resetReBroadcast } from "State/ReBroadcast";
+import {
+  setNote as setReBroadcastNote,
+  setShow as setReBroadcastShow,
+  reset as resetReBroadcast,
+} from "State/ReBroadcast";
 import useModeration from "Hooks/useModeration";
 import { SnortPubKey, TranslateHost } from "Const";
 import { LNURL } from "LNURL";
@@ -437,7 +441,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (reBroadcastNote?.id !== ev.id) {
       dispatch(resetReBroadcast());
     }
-    
+
     dispatch(setReBroadcastNote(ev));
     dispatch(setReBroadcastShow(!showReBroadcastModal));
   };
