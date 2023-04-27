@@ -63,5 +63,5 @@ These NIPs only apply to relays and have no implications for a generic nostr cli
 ### Others
 
 _If you notice an accepted NIP missing from both lists above, please [open an
-issue](https://github.com/v0l/snort/issues/new?assignees=&labels=&template=feature_request.md&title=)
+issue](https://https://git.v0l.io/Kieran/snort/issues/new?assignees=&labels=&template=feature_request.md&title=)
 to let us know_.

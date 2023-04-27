@@ -89,8 +89,8 @@ const DonatePage = () => {
           defaultMessage={"Check out the code here: {link}"}
           values={{
             link: (
-              <a className="highlight" href="https://github.com/v0l/snort" rel="noreferrer" target="_blank">
-                https://github.com/v0l/snort
+              <a className="highlight" href="https://git.v0l.io/Kieran/snort" rel="noreferrer" target="_blank">
+                https://git.v0l.io/Kieran/snort
               </a>
             ),
           }}
