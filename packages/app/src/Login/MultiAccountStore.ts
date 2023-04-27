@@ -88,7 +88,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     if (this.#accounts.has(key)) {
       throw new Error("Already logged in with this pubkey");
     }
-    const initRelays = relays ?? Object.fromEntries(DefaultRelays.entries());
+    const initRelays = this.decideInitRelays(relays);
     const newSession = {
       ...LoggedOut,
       publicKey: key,
@@ -103,6 +103,13 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     this.#activeAccount = key;
     this.#save();
     return newSession;
+  }
+
+  decideInitRelays(relays: Record<string, RelaySettings> | undefined): Record<string, RelaySettings> {
+    if (relays && Object.keys(relays).length > 0) {
+      return relays;
+    }
+    return Object.fromEntries(DefaultRelays.entries());
   }
 
   loginWithPrivateKey(key: HexKey, entropy?: string, relays?: Record<string, RelaySettings>) {
