@@ -523,7 +523,7 @@ export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLin
   const entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
 
   const isPrefix = (prefix: NostrPrefix) => {
-    return entity.startsWith(prefix) || prefix === prefixHint;
+    return entity.startsWith(prefix);
   };
 
   if (isPrefix(NostrPrefix.PublicKey)) {
@@ -579,6 +579,14 @@ export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLin
         encode,
       };
     }
+  } else if (prefixHint) {
+    return {
+      type: prefixHint,
+      id: link,
+      encode: () => hexToBech32(prefixHint, link),
+    };
+  } else {
+    throw new Error("Invalid nostr link");
   }
 }
 
