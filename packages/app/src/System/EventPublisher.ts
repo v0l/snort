@@ -96,7 +96,7 @@ export class EventPublisher {
       if (nip7PubKey !== this.#pubKey) {
         throw new Error("Can't encrypt content, NIP-07 pubkey does not match");
       }
-      return await barrierNip07(() => unwrap(window.nostr?.nip04?.encrypt)(key, content));
+      return await barrierNip07(() => unwrap(window.nostr?.nip04?.encrypt).call(window.nostr?.nip04, key, content));
     } else if (this.#privateKey) {
       return await EventExt.encryptData(content, key, this.#privateKey);
     } else {
@@ -105,8 +105,10 @@ export class EventPublisher {
   }
 
   async nip4Decrypt(content: string, otherKey: HexKey) {
-    if (this.#hasNip07 && !this.#privateKey) {
-      return await barrierNip07(() => unwrap(window.nostr?.nip04?.decrypt)(otherKey, content));
+    if (this.#hasNip07 && !this.#privateKey && window.nostr?.nip04?.decrypt) {
+      return await barrierNip07(() =>
+        unwrap(window.nostr?.nip04?.decrypt).call(window.nostr?.nip04, otherKey, content)
+      );
     } else if (this.#privateKey) {
       return await EventExt.decryptDm(content, this.#privateKey, otherKey);
     } else {
