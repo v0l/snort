@@ -9,6 +9,7 @@ interface NoteCreatorStore {
   preview?: RawEvent;
   replyTo?: TaggedRawEvent;
   showAdvanced: boolean;
+  selectedCustomRelays: false | Array<string>;
   zapForward: string;
   sensitive: string;
   pollOptions?: Array<string>;
@@ -21,6 +22,7 @@ const InitState: NoteCreatorStore = {
   error: "",
   active: false,
   showAdvanced: false,
+  selectedCustomRelays: false,
   zapForward: "",
   sensitive: "",
   otherEvents: [],
@@ -51,6 +53,9 @@ const NoteCreatorSlice = createSlice({
     setShowAdvanced: (state, action: PayloadAction<boolean>) => {
       state.showAdvanced = action.payload;
     },
+    setSelectedCustomRelays: (state, action: PayloadAction<false | Array<string>>) => {
+      state.selectedCustomRelays = action.payload;
+    },
     setZapForward: (state, action: PayloadAction<string>) => {
       state.zapForward = action.payload;
     },
@@ -75,6 +80,7 @@ export const {
   setPreview,
   setReplyTo,
   setShowAdvanced,
+  setSelectedCustomRelays,
   setZapForward,
   setSensitive,
   setPollOptions,
