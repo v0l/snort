@@ -12,12 +12,18 @@ import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
 import { bech32ToHex, delay, normalizeReaction, unwrap } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
+import { ReBroadcaster } from "Element/ReBroadcaster";
 import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
 import { ParsedZap, ZapsSummary } from "Element/Zap";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { RootState } from "State/Store";
 import { setReplyTo, setShow, reset } from "State/NoteCreator";
+import {
+  setNote as setReBroadcastNote,
+  setShow as setReBroadcastShow,
+  reset as resetReBroadcast,
+} from "State/ReBroadcast";
 import useModeration from "Hooks/useModeration";
 import { SnortPubKey, TranslateHost } from "Const";
 import { LNURL } from "LNURL";
@@ -70,8 +76,11 @@ export default function NoteFooter(props: NoteFooterProps) {
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const publisher = useEventPublisher();
   const showNoteCreatorModal = useSelector((s: RootState) => s.noteCreator.show);
+  const showReBroadcastModal = useSelector((s: RootState) => s.reBroadcast.show);
+  const reBroadcastNote = useSelector((s: RootState) => s.reBroadcast.note);
   const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
   const willRenderNoteCreator = showNoteCreatorModal && replyTo?.id === ev.id;
+  const willRenderReBroadcast = showReBroadcastModal && reBroadcastNote && reBroadcastNote?.id === ev.id;
   const [tip, setTip] = useState(false);
   const [zapping, setZapping] = useState(false);
   const walletState = useWallet();
@@ -361,10 +370,18 @@ export default function NoteFooter(props: NoteFooterProps) {
             <FormattedMessage {...messages.DislikeAction} />
           </MenuItem>
         )}
-        <MenuItem onClick={() => block(ev.pubkey)}>
-          <Icon name="block" />
-          <FormattedMessage {...messages.Block} />
-        </MenuItem>
+        {ev.pubkey === publicKey && (
+          <MenuItem onClick={handleReBroadcastButtonClick}>
+            <Icon name="relay" />
+            <FormattedMessage {...messages.ReBroadcast} />
+          </MenuItem>
+        )}
+        {ev.pubkey !== publicKey && (
+          <MenuItem onClick={() => block(ev.pubkey)}>
+            <Icon name="block" />
+            <FormattedMessage {...messages.Block} />
+          </MenuItem>
+        )}
         <MenuItem onClick={() => translate()}>
           <Icon name="translate" />
           <FormattedMessage {...messages.TranslateTo} values={{ lang: langNames.of(lang.split("-")[0]) }} />
@@ -394,6 +411,15 @@ export default function NoteFooter(props: NoteFooterProps) {
     dispatch(setShow(!showNoteCreatorModal));
   };
 
+  const handleReBroadcastButtonClick = () => {
+    if (reBroadcastNote?.id !== ev.id) {
+      dispatch(resetReBroadcast());
+    }
+
+    dispatch(setReBroadcastNote(ev));
+    dispatch(setReBroadcastShow(!showReBroadcastModal));
+  };
+
   return (
     <>
       <div className="footer">
@@ -415,6 +441,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           </Menu>
         </div>
         {willRenderNoteCreator && <NoteCreator />}
+        {willRenderReBroadcast && <ReBroadcaster />}
         <Reactions
           show={showReactions}
           setShow={setShowReactions}

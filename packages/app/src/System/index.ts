@@ -267,10 +267,18 @@ export class NostrSystem {
    * Write an event to a relay then disconnect
    */
   async WriteOnceToRelay(address: string, ev: RawEvent) {
-    const c = new Connection(address, { write: true, read: false }, this.HandleAuth, true);
-    await c.Connect();
-    await c.SendAsync(ev);
-    c.Close();
+    return new Promise<void>((resolve, reject) => {
+      const c = new Connection(address, { write: true, read: false }, this.HandleAuth, true);
+
+      const t = setTimeout(reject, 5_000);
+      c.OnConnected = async () => {
+        clearTimeout(t);
+        await c.SendAsync(ev);
+        c.Close();
+        resolve();
+      };
+      c.Connect();
+    });
   }
 
   #changed() {
