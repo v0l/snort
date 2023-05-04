@@ -1,12 +1,16 @@
 import "./Nip05.css";
 import { useQuery } from "react-query";
 import { HexKey } from "@snort/nostr";
+import DnsOverHttpResolver from "dns-over-http-resolver";
+
 import Icon from "Icons/Icon";
+import { bech32ToHex } from "Util";
 
 interface NostrJson {
   names: Record<string, string>;
 }
 
+const resolver = new DnsOverHttpResolver();
 async function fetchNip05Pubkey(name: string, domain: string) {
   if (!name || !domain) {
     return undefined;
@@ -18,9 +22,18 @@ async function fetchNip05Pubkey(name: string, domain: string) {
       return n.toLowerCase() === name.toLowerCase();
     });
     return match ? data.names[match] : undefined;
-  } catch (error) {
-    return undefined;
+  } catch {
+    // ignored
   }
+
+  // Check as DoH TXT entry
+  try {
+    const resDns = await resolver.resolveTxt(`${name}._nostr.${domain}`);
+    return bech32ToHex(resDns[0][0]);
+  } catch {
+    // ignored
+  }
+  return undefined;
 }
 
 const VERIFICATION_CACHE_TIME = 24 * 60 * 60 * 1000;
