@@ -22,6 +22,7 @@ import {
 } from "./direct-message"
 import { ContactList, getContacts } from "./contact-list"
 import { Deletion, getEvents } from "./deletion"
+import "../nostr-object"
 
 // TODO Add remaining event types
 
@@ -135,8 +136,22 @@ export async function signEvent<T extends RawEvent>(
     event.sig = await schnorrSign(id, priv)
     return event as T
   } else {
-    // TODO Try to use NIP-07, otherwise throw
-    throw new NostrError("todo")
+    if (typeof window === "undefined" || window.nostr === undefined) {
+      throw new NostrError("no private key provided")
+    }
+    // Extensions like nos2x expect to receive only the event data, without any of the methods.
+    const methods: { [key: string]: unknown } = {}
+    for (const [key, value] of Object.entries(event)) {
+      if (typeof value === "function") {
+        methods[key] = value
+        delete event[key]
+      }
+    }
+    const signed = await window.nostr.signEvent(event)
+    return {
+      ...signed,
+      ...methods,
+    }
   }
 }
 
