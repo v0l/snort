@@ -5,7 +5,7 @@ import { findTag, NostrLink } from "Util";
 import useEventFeed from "Feed/EventFeed";
 import PageSpinner from "Element/PageSpinner";
 import Reveal from "Element/Reveal";
-import { MediaElement } from "Element/MediaLink";
+import { MediaElement } from "Element/MediaElement";
 
 export default function NostrFileHeader({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);
