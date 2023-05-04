@@ -109,7 +109,8 @@ export default function LoginPage() {
   }
 
   async function doNip07Login() {
-    const relays = "getRelays" in unwrap(window.nostr) ? await unwrap(window.nostr?.getRelays)() : undefined;
+    const relays =
+      "getRelays" in unwrap(window.nostr) ? await unwrap(window.nostr?.getRelays).call(window.nostr) : undefined;
     const pubKey = await unwrap(window.nostr).getPublicKey();
     LoginStore.loginWithPubkey(pubKey, relays);
   }
