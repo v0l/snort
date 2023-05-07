@@ -283,7 +283,9 @@ export class EventPublisher {
       if (rx.settings.write && !rx.settings.read) {
         rTag.push("write");
       }
-      eb.tag(rTag);
+      if (rx.settings.read || rx.settings.write) {
+        eb.tag(rTag);
+      }
     }
     return await this.#sign(eb);
   }
