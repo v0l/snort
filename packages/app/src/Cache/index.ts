@@ -3,6 +3,7 @@ import { hexToBech32, unixNowMs } from "Util";
 import { DmCache } from "./DMCache";
 import { InteractionCache } from "./EventInteractionCache";
 import { UserCache } from "./UserCache";
+import { UserRelays } from "./UserRelayCache";
 
 export interface MetadataCache extends UserMetadata {
   /**
@@ -55,6 +56,7 @@ export async function preload() {
   await UserCache.preload();
   await DmCache.preload();
   await InteractionCache.preload();
+  await UserRelays.preload();
 }
 
 export { UserCache, DmCache };

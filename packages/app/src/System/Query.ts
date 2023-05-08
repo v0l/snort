@@ -151,7 +151,6 @@ export class Query {
   }
 
   cleanup() {
-    console.debug("Cleanup", this.id);
     this.#stopCheckTraces();
   }
 

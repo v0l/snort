@@ -119,6 +119,37 @@ export default abstract class FeedCache<TCached> {
   }
 
   /**
+   * Try to update an entry where created values exists
+   * @param m Profile metadata
+   * @returns
+   */
+  async update<TCachedWithCreated extends TCached & { created: number; loaded: number }>(m: TCachedWithCreated) {
+    const k = this.key(m);
+    const existing = this.getFromCache(k) as TCachedWithCreated;
+    const updateType = (() => {
+      if (!existing) {
+        return "new";
+      }
+      if (existing.created < m.created) {
+        return "updated";
+      }
+      if (existing && existing.loaded < m.loaded) {
+        return "refresh";
+      }
+      return "no_change";
+    })();
+    console.debug(`Updating ${k} ${updateType}`, m);
+    if (updateType !== "no_change") {
+      const updated = {
+        ...existing,
+        ...m,
+      };
+      await this.set(updated);
+    }
+    return updateType;
+  }
+
+  /**
    * Loads a list of rows from disk cache
    * @param keys List of ids to load
    * @returns Keys that do not exist on disk cache

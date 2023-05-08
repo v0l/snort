@@ -13,13 +13,15 @@ import useLogin from "Hooks/useLogin";
 import { addSubscription, setBlocked, setBookmarked, setFollows, setMuted, setPinned, setRelays, setTags } from "Login";
 import { SnortPubKey } from "Const";
 import { SubscriptionEvent } from "Subscription";
+import useRelaysFeedFollows from "./RelaysFeedFollows";
+import { UserRelays } from "Cache/UserRelayCache";
 
 /**
  * Managed loading data for the current logged in user
  */
 export default function useLoginFeed() {
   const login = useLogin();
-  const { publicKey: pubKey, readNotifications } = login;
+  const { publicKey: pubKey, readNotifications, follows } = login;
   const { isMuted } = useModeration();
   const publisher = useEventPublisher();
 
@@ -171,8 +173,12 @@ export default function useLoginFeed() {
     }
   }, [listsFeed]);
 
-  /*const fRelays = useRelaysFeedFollows(follows);
   useEffect(() => {
-    FollowsRelays.bulkSet(fRelays).catch(console.error);
-  }, [dispatch, fRelays]);*/
+    UserRelays.buffer(follows.item).catch(console.error);
+  }, [follows.item]);
+
+  const fRelays = useRelaysFeedFollows(follows.item);
+  useEffect(() => {
+    UserRelays.bulkSet(fRelays).catch(console.error);
+  }, [fRelays]);
 }

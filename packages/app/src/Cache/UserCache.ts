@@ -53,35 +53,15 @@ class UserProfileCache extends FeedCache<MetadataCache> {
    * @param m Profile metadata
    * @returns
    */
-  async update(m: MetadataCache) {
-    const existing = this.getFromCache(m.pubkey);
-    const updateType = (() => {
-      if (!existing) {
-        return "new_profile";
-      }
-      if (existing.created < m.created) {
-        return "updated_profile";
-      }
-      if (existing && existing.loaded < m.loaded) {
-        return "refresh_profile";
-      }
-      return "no_change";
-    })();
-    console.debug(`Updating ${m.pubkey} ${updateType}`, m);
-    if (updateType !== "no_change") {
-      const writeProfile = {
-        ...existing,
-        ...m,
-      };
-      await this.#setItem(writeProfile);
-      if (updateType !== "refresh_profile") {
-        const lnurl = m.lud16 ?? m.lud06;
-        if (lnurl) {
-          this.#zapperQueue.push({
-            pubkey: m.pubkey,
-            lnurl,
-          });
-        }
+  override async update(m: MetadataCache) {
+    const updateType = await super.update(m);
+    if (updateType !== "refresh") {
+      const lnurl = m.lud16 ?? m.lud06;
+      if (lnurl) {
+        this.#zapperQueue.push({
+          pubkey: m.pubkey,
+          lnurl,
+        });
       }
       if (m.nip05) {
         this.#nip5Queue.push({
@@ -95,15 +75,6 @@ class UserProfileCache extends FeedCache<MetadataCache> {
 
   takeSnapshot(): MetadataCache[] {
     return [];
-  }
-
-  async #setItem(m: MetadataCache) {
-    this.cache.set(m.pubkey, m);
-    if (db.ready) {
-      await db.users.put(m);
-      this.onTable.add(m.pubkey);
-    }
-    this.notifyChange([m.pubkey]);
   }
 
   async #processZapperQueue() {
