@@ -117,9 +117,9 @@ export class NostrConnectWallet implements LNWallet {
       throw new WalletError(WalletErrorCode.GeneralError, "No pending command found");
     }
 
-    const body = JSON.parse(await EventExt.decryptData(e.content, this.#config.secret, this.#config.walletPubkey));
-    pending.resolve(body);
+    pending.resolve(e.content);
     this.#commandQueue.delete(replyTo[1]);
+    this.#conn?.CloseReq(sub);
   }
 
   async #rpc<T>(method: string, params: Record<string, string>) {
@@ -135,12 +135,30 @@ export class NostrConnectWallet implements LNWallet {
       .tag(["p", this.#config.walletPubkey]);
 
     const evCommand = await eb.buildAndSign(this.#config.secret);
+    this.#conn.QueueReq(
+      [
+        "REQ",
+        evCommand.id.slice(0, 12),
+        {
+          kinds: [23195],
+          authors: [this.#config.walletPubkey],
+          ["#e"]: [evCommand.id],
+        },
+      ],
+      () => {
+        // ignored
+      }
+    );
     await this.#conn.SendAsync(evCommand);
-    /*return await new Promise<T>((resolve, reject) => {
-            this.#commandQueue.set(evCommand.id, {
-                resolve, reject
-            })
-        })*/
-    return {} as T;
+    return await new Promise<T>((resolve, reject) => {
+      this.#commandQueue.set(evCommand.id, {
+        resolve: async (o: string) => {
+          const reply = JSON.parse(await EventExt.decryptData(o, this.#config.secret, this.#config.walletPubkey));
+          console.debug("NWC", reply);
+          resolve(reply);
+        },
+        reject,
+      });
+    });
   }
 }
