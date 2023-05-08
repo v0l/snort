@@ -22,6 +22,10 @@ export const sha256 = (str: string | Uint8Array): u256 => {
   return secp.utils.bytesToHex(hash(str));
 };
 
+export function getPublicKey(privKey: HexKey) {
+  return secp.utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
+}
+
 export async function openFile(): Promise<File | undefined> {
   return new Promise(resolve => {
     const elm = document.createElement("input");

@@ -3,12 +3,14 @@ import { useSyncExternalStore } from "react";
 import { decodeInvoice, unwrap } from "Util";
 import { LNCWallet } from "./LNCWallet";
 import LNDHubWallet from "./LNDHub";
+import { NostrConnectWallet } from "./NostrWalletConnect";
 import { setupWebLNWalletConfig, WebLNWallet } from "./WebLN";
 
 export enum WalletKind {
   LNDHub = 1,
   LNC = 2,
   WebLN = 3,
+  NWC = 4,
 }
 
 export enum WalletErrorCode {
@@ -245,6 +247,9 @@ export class WalletStore {
       }
       case WalletKind.LNDHub: {
         return new LNDHubWallet(unwrap(cfg.data));
+      }
+      case WalletKind.NWC: {
+        return new NostrConnectWallet(unwrap(cfg.data));
       }
     }
   }

@@ -1,0 +1,146 @@
+import { Connection, RawEvent } from "@snort/nostr";
+import { EventBuilder } from "System";
+import { EventExt } from "System/EventExt";
+import { LNWallet, WalletError, WalletErrorCode, WalletInfo, WalletInvoice } from "Wallet";
+
+interface WalletConnectConfig {
+  relayUrl: string;
+  walletPubkey: string;
+  secret: string;
+}
+
+interface QueueObj {
+  resolve: (o: string) => void;
+  reject: (e: Error) => void;
+}
+
+export class NostrConnectWallet implements LNWallet {
+  #config: WalletConnectConfig;
+  #conn?: Connection;
+  #commandQueue: Map<string, QueueObj>;
+
+  constructor(cfg: string) {
+    this.#config = NostrConnectWallet.parseConfigUrl(cfg);
+    this.#commandQueue = new Map();
+  }
+
+  static parseConfigUrl(url: string) {
+    const uri = new URL(url.replace("nostrwalletconnect://", "http://").replace("nostr+walletconnect://", "http://"));
+    return {
+      relayUrl: uri.searchParams.get("relay"),
+      walletPubkey: uri.host,
+      secret: uri.searchParams.get("secret"),
+    } as WalletConnectConfig;
+  }
+
+  isReady(): boolean {
+    return true;
+  }
+
+  async getInfo() {
+    await this.login();
+    return await new Promise<WalletInfo>((resolve, reject) => {
+      this.#commandQueue.set("info", {
+        resolve: (o: string) => {
+          resolve({
+            alias: "NWC",
+            chains: o.split(" "),
+          } as WalletInfo);
+        },
+        reject,
+      });
+      this.#conn?.QueueReq(["REQ", "info", { kinds: [13194], limit: 1 }], () => {
+        // ignored
+      });
+    });
+  }
+
+  async login() {
+    if (this.#conn) return true;
+
+    return await new Promise<boolean>(resolve => {
+      this.#conn = new Connection(this.#config.relayUrl, { read: true, write: true });
+      this.#conn.OnConnected = () => resolve(true);
+      this.#conn.OnEvent = (s, e) => {
+        this.#onReply(s, e);
+      };
+      this.#conn.Connect();
+    });
+  }
+
+  async close() {
+    this.#conn?.Close();
+    return true;
+  }
+
+  async getBalance() {
+    return 0;
+  }
+
+  createInvoice() {
+    return Promise.reject(new WalletError(WalletErrorCode.GeneralError, "Not implemented"));
+  }
+
+  async payInvoice(pr: string) {
+    await this.login();
+    return await this.#rpc<WalletInvoice>("pay_invoice", {
+      invoice: pr,
+    });
+  }
+
+  getInvoices() {
+    return Promise.resolve([]);
+  }
+
+  async #onReply(sub: string, e: RawEvent) {
+    if (sub === "info") {
+      const pending = this.#commandQueue.get("info");
+      if (!pending) {
+        throw new WalletError(WalletErrorCode.GeneralError, "No pending info command found");
+      }
+      pending.resolve(e.content);
+      this.#commandQueue.delete("info");
+      return;
+    }
+
+    if (e.kind !== 23195) {
+      throw new WalletError(WalletErrorCode.GeneralError, "Unknown event kind");
+    }
+
+    const replyTo = e.tags.find(a => a[0] === "e");
+    if (!replyTo) {
+      throw new WalletError(WalletErrorCode.GeneralError, "Missing e-tag in command response");
+    }
+
+    const pending = this.#commandQueue.get(replyTo[1]);
+    if (!pending) {
+      throw new WalletError(WalletErrorCode.GeneralError, "No pending command found");
+    }
+
+    const body = JSON.parse(await EventExt.decryptData(e.content, this.#config.secret, this.#config.walletPubkey));
+    pending.resolve(body);
+    this.#commandQueue.delete(replyTo[1]);
+  }
+
+  async #rpc<T>(method: string, params: Record<string, string>) {
+    if (!this.#conn) throw new WalletError(WalletErrorCode.GeneralError, "Not implemented");
+
+    const payload = JSON.stringify({
+      method,
+      params,
+    });
+    const eb = new EventBuilder();
+    eb.kind(23194)
+      .content(await EventExt.encryptData(payload, this.#config.walletPubkey, this.#config.secret))
+      .tag(["p", this.#config.walletPubkey]);
+
+    const evCommand = await eb.buildAndSign(this.#config.secret);
+    await this.#conn.SendAsync(evCommand);
+    /*return await new Promise<T>((resolve, reject) => {
+            this.#commandQueue.set(evCommand.id, {
+                resolve, reject
+            })
+        })*/
+    return {} as T;
+  }
+}

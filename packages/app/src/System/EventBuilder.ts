@@ -1,6 +1,6 @@
 import { EventKind, HexKey, NostrPrefix, RawEvent } from "@snort/nostr";
 import { HashtagRegex } from "Const";
-import { parseNostrLink, unixNow } from "Util";
+import { getPublicKey, parseNostrLink, unixNow } from "Util";
 import { EventExt } from "./EventExt";
 
 export class EventBuilder {
@@ -68,7 +68,7 @@ export class EventBuilder {
    * @param pk Private key to sign event with
    */
   async buildAndSign(pk: HexKey) {
-    const ev = this.build();
+    const ev = this.pubKey(getPublicKey(pk)).build();
     await EventExt.sign(ev, pk);
     return ev;
   }

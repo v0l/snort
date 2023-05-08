@@ -57,6 +57,9 @@
   "1Mo59U": {
     "defaultMessage": "Are you sure you want to remove this note from bookmarks?"
   },
+  "1R43+L": {
+    "defaultMessage": "Enter Nostr Wallet Connect config"
+  },
   "1c4YST": {
     "defaultMessage": "Connected to: {node} 🎉"
   },
@@ -307,14 +310,14 @@
   "Ebl/B2": {
     "defaultMessage": "Translate to {lang}"
   },
+  "EcZF24": {
+    "defaultMessage": "Custom Relays"
+  },
   "EcglP9": {
     "defaultMessage": "Key"
   },
   "EnCOBJ": {
     "defaultMessage": "Buy"
-  },
-  "EqRgFp": {
-    "defaultMessage": "Some clients will only allow zaps on your notes"
   },
   "Eqjl5K": {
     "defaultMessage": "Only Snort and our integration partner identifier gives you a colorful domain name, but you are welcome to use other services too."
@@ -724,6 +727,9 @@
   "c35bj2": {
     "defaultMessage": "If you have an enquiry about your NIP-05 order please DM {link}"
   },
+  "c3g2hL": {
+    "defaultMessage": "Broadcast Again"
+  },
   "cPIKU2": {
     "defaultMessage": "Following"
   },
@@ -1056,6 +1062,9 @@
   "tOdNiY": {
     "defaultMessage": "Dark"
   },
+  "th5lxp": {
+    "defaultMessage": "Send note to a subset of your write relays"
+  },
   "thnRpU": {
     "defaultMessage": "Getting NIP-05 verified can help:"
   },
@@ -1079,9 +1088,6 @@
   },
   "ut+2Cd": {
     "defaultMessage": "Get a partner identifier"
-  },
-  "v48Uwm": {
-    "defaultMessage": "OnlyZaps"
   },
   "vOKedj": {
     "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
