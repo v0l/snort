@@ -100,7 +100,7 @@ export class WebLNWallet implements LNWallet {
     if (window.webln) {
       return true;
     }
-    throw new WalletError(WalletErrorCode.GeneralError, "WebLN not available");
+    return false;
   }
 
   async getInfo(): Promise<WalletInfo> {
