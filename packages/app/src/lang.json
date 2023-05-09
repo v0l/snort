@@ -455,6 +455,9 @@
   "KahimY": {
     "defaultMessage": "Unknown event kind: {kind}"
   },
+  "KoFlZg": {
+    "defaultMessage": "Enter mint URL"
+  },
   "L7SZPr": {
     "defaultMessage": "For more information about donations see {link}."
   },
@@ -595,6 +598,10 @@
   "SOqbe9": {
     "defaultMessage": "Update Lightning Address"
   },
+  "SX58hM": {
+    "defaultMessage": "Copy",
+    "description": "Button: Copy Cashu token"
+  },
   "SYQtZ7": {
     "defaultMessage": "LN Address Proxy"
   },
@@ -603,6 +610,9 @@
   },
   "Ss0sWu": {
     "defaultMessage": "Pay Now"
+  },
+  "TMfYfY": {
+    "defaultMessage": "Cashu token"
   },
   "TpgeGw": {
     "defaultMessage": "Hex Salt..",
@@ -613,6 +623,9 @@
   },
   "UDYlxu": {
     "defaultMessage": "Pending Subscriptions"
+  },
+  "ULotH9": {
+    "defaultMessage": "Amount: {amount} sats"
   },
   "UQ3pOC": {
     "defaultMessage": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step."
@@ -668,6 +681,10 @@
   },
   "XgWvGA": {
     "defaultMessage": "Reactions"
+  },
+  "XrSk2j": {
+    "defaultMessage": "Redeem",
+    "description": "Button: Redeem Cashu token"
   },
   "XzF0aC": {
     "defaultMessage": "Key manager extensions are more secure and allow you to easily login to any Nostr client, here are some well known extensions:"
@@ -851,6 +868,9 @@
   },
   "iNWbVV": {
     "defaultMessage": "Handle"
+  },
+  "iUsU2x": {
+    "defaultMessage": "Mint: {url}"
   },
   "iXPL0Z": {
     "defaultMessage": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead"

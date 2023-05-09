@@ -32,10 +32,10 @@ const WalletSettings = () => {
           <NostrIcon width={100} height={100} />
           <h3 className="f-end">Nostr Wallet Connect</h3>
         </div>
-        <div className="card" onClick={() => navigate("/settings/wallet/cashu")}>
+        {/*<div className="card" onClick={() => navigate("/settings/wallet/cashu")}>
           <img src={CashuLogo} width={100} />
           <h3 className="f-end">Cashu</h3>
-        </div>
+  </div>*/}
       </div>
     </>
   );
