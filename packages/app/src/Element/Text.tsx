@@ -90,15 +90,15 @@ export default function Text({ content, tags, creator }: TextProps) {
             const cashu = getDecodedToken(a);
             if (cashu && cashu.token[0].proofs) {
               return (
-                <div className="note-invoice">
+                <div className="note-invoice" style={{ paddingRight: "0px" }}>
                   <div className="flex f-between">
                     <div>
                       <h4>Cashu token</h4>
                       <p>Amount: {cashu.token[0].proofs.reduce((acc, v) => (acc += v.amount), 0)} sats</p>
-                      <p style={{ fontSize: "0.7em" }}>Mint: {cashu.token[0].mint}</p>
+                      <p style={{ fontSize: "0.6em" }}>Mint: {cashu.token[0].mint}</p>
                     </div>
-                    <div style={{ marginLeft: "auto" }}>
-                      <button type="button" onClick={() => copyToken(a)}>
+                    <div>
+                      <button style={{ margin: "5px" }} type="button" onClick={() => copyToken(a)}>
                         <FormattedMessage defaultMessage="Copy" description="Button: Copy Cashu token" />
                       </button>
                       <button type="button" onClick={() => redeemToken(a)}>
