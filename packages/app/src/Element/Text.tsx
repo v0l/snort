@@ -6,15 +6,13 @@ import { visit, SKIP } from "unist-util-visit";
 import * as unist from "unist";
 import { HexKey, NostrPrefix } from "@snort/nostr";
 
-import { getDecodedToken } from "@cashu/cashu-ts";
-import { FormattedMessage } from "react-intl";
-
 import { MentionRegex, InvoiceRegex, HashtagRegex, CashuRegex } from "Const";
-import { eventLink, hexToBech32, splitByUrl, unwrap } from "Util";
+import { eventLink, hexToBech32, splitByUrl, unwrap, validateNostrLink } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 import Mention from "Element/Mention";
 import HyperText from "Element/HyperText";
+import CashuNuts from "Element/CashuNuts";
 
 export type Fragment = string | React.ReactNode;
 
@@ -72,46 +70,11 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
   }
 
   function extractCashuTokens(fragments: Fragment[]) {
-    async function copyToken(token: string) {
-      await navigator.clipboard.writeText(token);
-    }
-    async function redeemToken(token: string) {
-      const url = `https://redeem.cashu.me?token=${encodeURIComponent(token)}&lightning=${encodeURIComponent(
-        "callebtc@ln.tips"
-      )}`;
-      window.open(url, "_blank");
-    }
-
     return fragments
       .map(f => {
         if (typeof f === "string" && f.includes("cashuA")) {
           return f.split(CashuRegex).map(a => {
-            if (!a.startsWith("cashuA") || a.length < 10) {
-              return a;
-            }
-            const cashu = getDecodedToken(a);
-            if (cashu && cashu.token[0].proofs) {
-              return (
-                <div className="note-invoice" style={{ paddingRight: "0px" }}>
-                  <div className="flex f-between">
-                    <div>
-                      <h4>Cashu token</h4>
-                      <p>Amount: {cashu.token[0].proofs.reduce((acc, v) => (acc += v.amount), 0)} sats</p>
-                      <p style={{ fontSize: "0.6em" }}>Mint: {cashu.token[0].mint}</p>
-                    </div>
-                    <div>
-                      <button style={{ margin: "5px" }} type="button" onClick={() => copyToken(a)}>
-                        <FormattedMessage defaultMessage="Copy" description="Button: Copy Cashu token" />
-                      </button>
-                      <button type="button" onClick={() => redeemToken(a)}>
-                        <FormattedMessage defaultMessage="Redeem" description="Button: Redeem Cashu token" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-            return a;
+            return <CashuNuts token={a} />;
           });
         }
         return f;

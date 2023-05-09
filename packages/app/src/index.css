@@ -422,6 +422,10 @@ body.scroll-lock {
   height: 100vh;
 }
 
+small.xs {
+  font-size: small;
+}
+
 .pointer {
   cursor: pointer;
 }

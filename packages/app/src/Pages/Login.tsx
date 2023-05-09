@@ -220,7 +220,7 @@ export default function LoginPage() {
             />
           </div>
           {error.length > 0 ? <b className="error">{error}</b> : null}
-          <p className="login-note">
+          <p>
             <FormattedMessage
               defaultMessage="Only the secret key can be used to publish (sign events), everything else logs you in read-only mode."
               description="Explanation for public key only login is read-only"
