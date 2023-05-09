@@ -16,7 +16,9 @@ export default function CashuNuts({ token }: { token: string }) {
   async function redeemToken(e: React.MouseEvent<HTMLButtonElement>, token: string) {
     e.stopPropagation();
     const lnurl = profile?.lud16 ?? "";
-    const url = `https://redeem.cashu.me?token=${encodeURIComponent(token)}&lightning=${encodeURIComponent(lnurl)}`;
+    const url = `https://redeem.cashu.me?token=${encodeURIComponent(token)}&lightning=${encodeURIComponent(
+      lnurl
+    )}&autopay=yes`;
     window.open(url, "_blank");
   }
 
