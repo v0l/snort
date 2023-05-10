@@ -44,7 +44,7 @@ export default function DiscoverFollows() {
       <h3>
         <FormattedMessage {...messages.PopularAccounts} />
       </h3>
-      <div>{sortedReccomends.length > 0 && <FollowListBase pubkeys={sortedReccomends} />}</div>
+      <div>{sortedReccomends.length > 0 && <FollowListBase pubkeys={sortedReccomends} showAbout={true} />}</div>
       <TrendingUsers />
     </div>
   );
