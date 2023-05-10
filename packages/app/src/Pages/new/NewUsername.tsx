@@ -13,12 +13,14 @@ export default function NewUserName() {
   const publisher = useEventPublisher();
   const navigate = useNavigate();
 
+  const nextPage = "/new/discover";
+
   const onNext = async () => {
     if (username.length > 0 && publisher) {
       const ev = await publisher.metadata({ name: username });
       publisher.broadcast(ev);
     }
-    navigate("/new/verify");
+    navigate(nextPage);
   };
 
   return (
@@ -47,7 +49,7 @@ export default function NewUserName() {
         <FormattedMessage defaultMessage="You can change your username at any point." />
       </div>
       <div className="next-actions">
-        <button type="button" className="transparent" onClick={() => navigate("/new/verify")}>
+        <button type="button" className="transparent" onClick={() => navigate(nextPage)}>
           <FormattedMessage {...messages.Skip} />
         </button>
         <button type="button" onClick={onNext}>

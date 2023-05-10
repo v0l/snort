@@ -7,6 +7,7 @@ import Logo from "Element/Logo";
 import FollowListBase from "Element/FollowListBase";
 import { clearEntropy } from "Login";
 import useLogin from "Hooks/useLogin";
+import TrendingUsers from "Element/TrendingUsers";
 
 import messages from "./messages";
 
@@ -43,7 +44,8 @@ export default function DiscoverFollows() {
       <h3>
         <FormattedMessage {...messages.PopularAccounts} />
       </h3>
-      <div dir="ltr">{sortedReccomends.length > 0 && <FollowListBase pubkeys={sortedReccomends} />}</div>
+      <div>{sortedReccomends.length > 0 && <FollowListBase pubkeys={sortedReccomends} />}</div>
+      <TrendingUsers />
     </div>
   );
 }
