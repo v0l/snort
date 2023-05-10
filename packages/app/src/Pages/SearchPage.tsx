@@ -8,11 +8,10 @@ import { router } from "index";
 import { SearchRelays } from "Const";
 import { System } from "System";
 import TrendingUsers from "Element/TrendingUsers";
-import useHorizontalScroll from "Hooks/useHorizontalScroll";
 
-import messages from "./messages";
+import TrendingNotes from "Element/TrendingPosts";
 
-const POSTS = 0;
+const NOTES = 0;
 const PROFILES = 1;
 
 const SearchPage = () => {
@@ -23,8 +22,8 @@ const SearchPage = () => {
   const [sortPopular, setSortPopular] = useState<boolean>(true);
   // tabs
   const SearchTab = {
-    Posts: { text: formatMessage(messages.Posts), value: POSTS },
-    Profiles: { text: formatMessage(messages.People), value: PROFILES },
+    Posts: { text: formatMessage({ defaultMessage: "Notes" }), value: NOTES },
+    Profiles: { text: formatMessage({ defaultMessage: "People" }), value: PROFILES },
   };
   const [tab, setTab] = useState<Tab>(SearchTab.Posts);
 
@@ -57,7 +56,16 @@ const SearchPage = () => {
   }, []);
 
   function tabContent() {
-    if (!keyword) return null;
+    if (!keyword) {
+      switch (tab.value) {
+        case PROFILES:
+          return <TrendingUsers />;
+        case NOTES:
+          return <TrendingNotes />;
+      }
+      return null;
+    }
+
     const pf = tab.value == PROFILES;
     return (
       <>
@@ -72,6 +80,7 @@ const SearchPage = () => {
           postsOnly={false}
           noSort={pf && sortPopular}
           method={"LIMIT_UNTIL"}
+          loadMore={false}
         />
       </>
     );
@@ -102,20 +111,19 @@ const SearchPage = () => {
   return (
     <div className="main-content">
       <h2>
-        <FormattedMessage {...messages.Search} />
+        <FormattedMessage defaultMessage="Search" />
       </h2>
       <div className="flex mb10">
         <input
           type="text"
           className="f-grow mr10"
-          placeholder={formatMessage(messages.SearchPlaceholder)}
+          placeholder={formatMessage({ defaultMessage: "Search..." })}
           value={search}
           onChange={e => setSearch(e.target.value)}
           autoFocus={true}
         />
       </div>
       <div className="tabs">{[SearchTab.Posts, SearchTab.Profiles].map(renderTab)}</div>
-      {!keyword && <TrendingUsers />}
       {tabContent()}
     </div>
   );

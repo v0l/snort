@@ -22,8 +22,6 @@ export default defineMessages({
   Sats: { defaultMessage: "{n} {n, plural, =1 {sat} other {sats}}" },
   Following: { defaultMessage: "Following {n}" },
   Settings: { defaultMessage: "Settings" },
-  Search: { defaultMessage: "Search" },
-  SearchPlaceholder: { defaultMessage: "Search..." },
   Messages: { defaultMessage: "Messages" },
   MarkAllRead: { defaultMessage: "Mark All Read" },
   GetVerified: { defaultMessage: "Get Verified" },
@@ -47,5 +45,4 @@ export default defineMessages({
   Bookmarks: { defaultMessage: "Bookmarks" },
   BookmarksCount: { defaultMessage: "{n} Bookmarks" },
   KeyPlaceholder: { defaultMessage: "nsec, npub, nip-05, hex" },
-  People: { defaultMessage: "People" },
 });

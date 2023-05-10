@@ -4,37 +4,20 @@ import { FormattedMessage } from "react-intl";
 
 import FollowListBase from "Element/FollowListBase";
 import PageSpinner from "Element/PageSpinner";
+import NostrBandApi from "NostrBand";
 
-interface TrendingUser {
-  pubkey: HexKey;
-}
-
-interface TrendingUserResponse {
-  profiles: Array<TrendingUser>;
-}
-
-async function fetchTrendingUsers() {
-  try {
-    const res = await fetch(`https://api.nostr.band/v0/trending/profiles`);
-    if (res.ok) {
-      const data = (await res.json()) as TrendingUserResponse;
-      return data.profiles.map(a => a.pubkey);
-    }
-  } catch (e) {
-    console.warn(`Failed to load link preview`);
-  }
-}
-
-const TrendingUsers = () => {
+export default function TrendingUsers() {
   const [userList, setUserList] = useState<HexKey[]>();
 
+  async function loadTrendingUsers() {
+    const api = new NostrBandApi();
+    const users = await api.trendingProfiles();
+    const keys = users.profiles.map(a => a.pubkey);
+    setUserList(keys);
+  }
+
   useEffect(() => {
-    (async () => {
-      const data = await fetchTrendingUsers();
-      if (data) {
-        setUserList(data);
-      }
-    })();
+    loadTrendingUsers().catch(console.error);
   }, []);
 
   if (!userList) return <PageSpinner />;
@@ -42,11 +25,9 @@ const TrendingUsers = () => {
   return (
     <>
       <h3>
-        <FormattedMessage defaultMessage="Trending Users" />
+        <FormattedMessage defaultMessage="Trending People" />
       </h3>
       <FollowListBase pubkeys={userList} showAbout={true} />
     </>
   );
-};
-
-export default TrendingUsers;
+}

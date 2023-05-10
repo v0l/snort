@@ -244,6 +244,9 @@
   "B6+XJy": {
     "defaultMessage": "zapped"
   },
+  "B6H7eJ": {
+    "defaultMessage": "nsec, npub, nip-05, hex"
+  },
   "BGCM48": {
     "defaultMessage": "Write access to Snort relay, with 1 year of event retention"
   },
@@ -267,6 +270,9 @@
   },
   "CHTbO3": {
     "defaultMessage": "Failed to load invoice"
+  },
+  "CVWeJ6": {
+    "defaultMessage": "Trending People"
   },
   "CmZ9ls": {
     "defaultMessage": "{n} Muted"
@@ -336,9 +342,6 @@
   },
   "FS3b54": {
     "defaultMessage": "Done!"
-  },
-  "FSYL8G": {
-    "defaultMessage": "Trending Users"
   },
   "FdhSU2": {
     "defaultMessage": "Claim Now"
@@ -413,6 +416,9 @@
   "Iwm6o2": {
     "defaultMessage": "NIP-05 Shop"
   },
+  "Ix8l+B": {
+    "defaultMessage": "Trending Notes"
+  },
   "J+dIsA": {
     "defaultMessage": "Subscriptions"
   },
@@ -421,9 +427,6 @@
   },
   "JHEHCk": {
     "defaultMessage": "Zaps ({n})"
-  },
-  "JTgbT0": {
-    "defaultMessage": "Find Twitter follows"
   },
   "JXtsQW": {
     "defaultMessage": "Fast Zap Donation"
@@ -516,6 +519,9 @@
   "NndBJE": {
     "defaultMessage": "New users page"
   },
+  "O9GTIc": {
+    "defaultMessage": "Profile picture"
+  },
   "OEW7yJ": {
     "defaultMessage": "Zaps"
   },
@@ -589,11 +595,19 @@
   "RhDAoS": {
     "defaultMessage": "Are you sure you want to delete {id}"
   },
+  "RjpoYG": {
+    "defaultMessage": "Recent",
+    "description": "Sort order name"
+  },
   "RoOyAh": {
     "defaultMessage": "Relays"
   },
   "Rs4kCE": {
     "defaultMessage": "Bookmark"
+  },
+  "RwFaYs": {
+    "defaultMessage": "Sort",
+    "description": "Label for sorting options for people search"
   },
   "SOqbe9": {
     "defaultMessage": "Update Lightning Address"
@@ -618,6 +632,9 @@
     "defaultMessage": "Hex Salt..",
     "description": "Hexidecimal 'salt' input for imgproxy"
   },
+  "Tpy00S": {
+    "defaultMessage": "People"
+  },
   "TwyMau": {
     "defaultMessage": "Account"
   },
@@ -626,9 +643,6 @@
   },
   "ULotH9": {
     "defaultMessage": "Amount: {amount} sats"
-  },
-  "UQ3pOC": {
-    "defaultMessage": "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step."
   },
   "UUPFlt": {
     "defaultMessage": "Users must accept the content warning to show the content of your note."
@@ -712,6 +726,9 @@
   },
   "ZUZedV": {
     "defaultMessage": "Lightning Donation:"
+  },
+  "Zr5TMx": {
+    "defaultMessage": "Setup profile"
   },
   "a5UPxh": {
     "defaultMessage": "Fund developers and platforms providing NIP-05 verification services"
@@ -962,6 +979,10 @@
   },
   "mKhgP9": {
     "defaultMessage": "{n,plural,=0{} =1{zapped} other{zapped}}"
+  },
+  "mTJFgF": {
+    "defaultMessage": "Popular",
+    "description": "Sort order name"
   },
   "mfe8RW": {
     "defaultMessage": "Option: {n}"
