@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
+import { HexKey } from "@snort/nostr";
 
 import useEventPublisher from "Feed/EventPublisher";
-import { HexKey } from "@snort/nostr";
 import ProfilePreview from "Element/ProfilePreview";
+import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
-import useLogin from "Hooks/useLogin";
 
 export interface FollowListBaseProps {
   pubkeys: HexKey[];
@@ -26,7 +26,7 @@ export default function FollowListBase({ pubkeys, title, showFollowAll, showAbou
   }
 
   return (
-    <div className="main-content">
+    <>
       {(showFollowAll ?? true) && (
         <div className="flex mt10 mb10">
           <div className="f-grow bold">{title}</div>
@@ -38,6 +38,6 @@ export default function FollowListBase({ pubkeys, title, showFollowAll, showAbou
       {pubkeys?.map(a => (
         <ProfilePreview pubkey={a} key={a} options={{ about: showAbout }} />
       ))}
-    </div>
+    </>
   );
 }

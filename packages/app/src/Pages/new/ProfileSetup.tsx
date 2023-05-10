@@ -1,26 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "Element/Logo";
 import useEventPublisher from "Feed/EventPublisher";
+import useLogin from "Hooks/useLogin";
+import { useUserProfile } from "Hooks/useUserProfile";
+import { mapEventToProfile, UserCache } from "Cache";
+import AvatarEditor from "Element/AvatarEditor";
 
 import messages from "./messages";
+import { DISCOVER } from ".";
 
-export default function NewUserName() {
+export default function ProfileSetup() {
+  const login = useLogin();
+  const myProfile = useUserProfile(login.publicKey);
   const [username, setUsername] = useState("");
+  const [picture, setPicture] = useState("");
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const navigate = useNavigate();
 
-  const nextPage = "/new/discover";
+  useEffect(() => {
+    if (myProfile) {
+      setUsername(myProfile.name ?? "");
+      setPicture(myProfile.picture ?? "");
+    }
+  }, [myProfile]);
 
   const onNext = async () => {
-    if (username.length > 0 && publisher) {
-      const ev = await publisher.metadata({ name: username });
+    if ((username.length > 0 || picture.length > 0) && publisher) {
+      const ev = await publisher.metadata({
+        ...myProfile,
+        name: username,
+        picture,
+      });
       publisher.broadcast(ev);
+      const profile = mapEventToProfile(ev);
+      if (profile) {
+        UserCache.set(profile);
+      }
     }
-    navigate(nextPage);
+    navigate(DISCOVER);
   };
 
   return (
@@ -30,13 +51,14 @@ export default function NewUserName() {
         <div className="progress progress-second"></div>
       </div>
       <h1>
-        <FormattedMessage {...messages.PickUsername} />
+        <FormattedMessage defaultMessage="Setup profile" />
       </h1>
-      <p>
-        <FormattedMessage {...messages.UsernameHelp} />
-      </p>
       <h2>
-        <FormattedMessage {...messages.Username} />
+        <FormattedMessage defaultMessage="Profile picture" />
+      </h2>
+      <AvatarEditor picture={picture} onPictureChange={p => setPicture(p)} />
+      <h2>
+        <FormattedMessage defaultMessage="Username" />
       </h2>
       <input
         className="username"
@@ -49,7 +71,7 @@ export default function NewUserName() {
         <FormattedMessage defaultMessage="You can change your username at any point." />
       </div>
       <div className="next-actions">
-        <button type="button" className="transparent" onClick={() => navigate(nextPage)}>
+        <button type="button" className="transparent" onClick={() => navigate(DISCOVER)}>
           <FormattedMessage {...messages.Skip} />
         </button>
         <button type="button" onClick={onNext}>

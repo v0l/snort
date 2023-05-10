@@ -2,15 +2,15 @@ import "./index.css";
 import { RouteObject } from "react-router-dom";
 
 import GetVerified from "Pages/new/GetVerified";
-import NewUserName from "Pages/new/NewUsername";
+import ProfileSetup from "Pages/new/ProfileSetup";
 import NewUserFlow from "Pages/new/NewUserFlow";
 import ImportFollows from "Pages/new/ImportFollows";
 import DiscoverFollows from "Pages/new/DiscoverFollows";
 
-const USERNAME = "/new/username";
-const IMPORT = "/new/import";
-const DISCOVER = "/new/discover";
-const VERIFY = "/new/verify";
+export const PROFILE = "/new/profile";
+export const IMPORT = "/new/import";
+export const DISCOVER = "/new/discover";
+export const VERIFY = "/new/verify";
 
 export const NewUserRoutes: RouteObject[] = [
   {
@@ -18,8 +18,8 @@ export const NewUserRoutes: RouteObject[] = [
     element: <NewUserFlow />,
   },
   {
-    path: USERNAME,
-    element: <NewUserName />,
+    path: PROFILE,
+    element: <ProfileSetup />,
   },
   {
     path: IMPORT,

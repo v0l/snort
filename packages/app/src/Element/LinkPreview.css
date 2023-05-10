@@ -8,6 +8,10 @@
   cursor: pointer;
 }
 
+.link-preview-container > a {
+  text-decoration: none;
+}
+
 .link-preview-title {
   padding: 0 10px 10px 10px;
 }

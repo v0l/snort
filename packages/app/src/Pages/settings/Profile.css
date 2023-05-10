@@ -22,29 +22,31 @@
 
 .settings .image-setting {
   display: flex;
+  justify-content: space-between;
 }
 
 .settings .image-setting > div:first-child {
   align-self: center;
 }
 
-.settings .avatar,
-.settings .banner {
-  margin-left: auto;
-}
-
-.settings .avatar .edit,
-.settings .banner .edit {
+.avatar .edit,
+.banner .edit {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  opacity: 0;
   background-color: var(--bg-color);
+  cursor: pointer;
+  opacity: 0;
+  border-radius: 100%;
 }
 
-.settings .avatar .edit:hover {
+.avatar .edit.new {
+  opacity: 0.5;
+}
+
+.avatar .edit:hover {
   opacity: 0.5;
 }
 

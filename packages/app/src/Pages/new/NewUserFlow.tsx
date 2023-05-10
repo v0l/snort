@@ -9,6 +9,7 @@ import { hexToMnemonic } from "nip6";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
+import { PROFILE } from ".";
 
 const WhatIsSnort = () => {
   return (
@@ -107,7 +108,7 @@ export default function NewUserFlow() {
       </h2>
       <Copy text={hexToMnemonic(generatedEntropy ?? "")} />
       <div className="next-actions">
-        <button type="button" onClick={() => navigate("/new/username")}>
+        <button type="button" onClick={() => navigate(PROFILE)}>
           <FormattedMessage {...messages.KeysSaved} />{" "}
         </button>
       </div>

@@ -8,6 +8,7 @@
   background-clip: content-box, border-box;
   background-size: cover;
   box-sizing: border-box;
+  background-color: var(--gray);
 }
 
 .avatar[data-domain="snort.social"] {

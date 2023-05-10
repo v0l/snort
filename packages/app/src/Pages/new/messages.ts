@@ -37,10 +37,6 @@ export default defineMessages({
   ExtensionsNostr: { defaultMessage: `You can also use these extensions to login to most Nostr sites.` },
   ImproveSecurity: { defaultMessage: "Improve login security with browser extensions" },
   PickUsername: { defaultMessage: "Pick a username" },
-  UsernameHelp: {
-    defaultMessage:
-      "On Nostr, many people have the same username. User names and identity are separate things. You can get a unique identifier in the next step.",
-  },
   Username: { defaultMessage: "Username" },
   UsernamePlaceholder: { defaultMessage: "e.g. Jack" },
   PopularAccounts: { defaultMessage: "Follow some popular accounts" },

@@ -15,6 +15,7 @@ import { mapEventToProfile, UserCache } from "Cache";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
+import AvatarEditor from "Element/AvatarEditor";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -36,7 +37,6 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   const [website, setWebsite] = useState<string>();
   const [nip05, setNip05] = useState<string>();
   const [lud16, setLud16] = useState<string>();
-  const [reactions, setReactions] = useState<boolean>();
 
   const avatarPicture = (picture?.length ?? 0) === 0 ? Nostrich : picture;
 
@@ -95,13 +95,6 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         throw new Error(`Upload failed ${rsp.error}`);
       }
       return rsp.url;
-    }
-  }
-
-  async function setNewAvatar() {
-    const rsp = await uploadFile();
-    if (rsp) {
-      setPicture(rsp);
     }
   }
 
@@ -189,11 +182,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               <div>
                 <FormattedMessage {...messages.Avatar} />:
               </div>
-              <div style={{ backgroundImage: `url(${avatarPicture})` }} className="avatar">
-                <div className="edit" onClick={() => setNewAvatar()}>
-                  <FormattedMessage {...messages.Edit} />
-                </div>
-              </div>
+              <AvatarEditor picture={avatarPicture} onPictureChange={p => setPicture(p)} />
             </div>
           )}
           {(props.banner ?? true) && (

@@ -264,14 +264,7 @@ export default function ProfilePage() {
       }
       case FOLLOWS: {
         if (isMe) {
-          return (
-            <>
-              <button onClick={() => navigate("/new/import")} className="mb10">
-                <FormattedMessage defaultMessage="Find Twitter follows" />
-              </button>
-              <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={false} />;
-            </>
-          );
+          return <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={false} />;
         } else {
           return <FollowsTab id={id} />;
         }
@@ -379,7 +372,7 @@ export default function ProfilePage() {
           {isMe && blocked.length > 0 && renderTab(ProfileTab.Blocked)}
         </div>
       </div>
-      {tabContent()}
+      <div className="main-content">{tabContent()}</div>
     </>
   );
 }
