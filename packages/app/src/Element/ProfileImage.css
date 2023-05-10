@@ -1,6 +1,10 @@
 .pfp {
-  display: flex;
+  display: grid;
+  grid-template-columns: min-content auto;
   align-items: center;
+  text-decoration: none;
+  user-select: none;
+  min-width: 0;
 }
 
 .pfp .avatar-wrapper {
@@ -14,7 +18,7 @@
   cursor: pointer;
 }
 
-.pfp a {
+a.pfp {
   text-decoration: none;
 }
 
@@ -25,6 +29,10 @@
   font-weight: 600;
 }
 
-.pfp .subheader .about {
-  max-width: calc(100vw - 140px);
+.pfp .profile-name {
+  max-width: stretch;
+}
+
+.pfp a {
+  text-decoration: none;
 }

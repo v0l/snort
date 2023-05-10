@@ -293,7 +293,7 @@ export function NoteCreator() {
           ev.stopPropagation = true;
           LoginStore.switchAccount(a);
         }}>
-        <ProfileImage pubkey={a} linkToProfile={false} />
+        <ProfileImage pubkey={a} link={""} />
       </MenuItem>
     ));
   }

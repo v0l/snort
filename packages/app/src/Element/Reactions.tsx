@@ -2,7 +2,6 @@ import "./Reactions.css";
 
 import { useState, useMemo, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-
 import { TaggedRawEvent } from "@snort/nostr";
 
 import { formatShort } from "Number";
@@ -75,72 +74,66 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
 
   return show ? (
     <Modal className="reactions-modal" onClose={onClose}>
-      <div className="reactions-view">
-        <div className="close" onClick={onClose}>
-          <Icon name="close" />
-        </div>
-        <div className="reactions-header">
-          <h2>
-            <FormattedMessage {...messages.ReactionsCount} values={{ n: total }} />
-          </h2>
-        </div>
-        <Tabs tabs={tabs} tab={tab} setTab={setTab} />
-        <div className="body" key={tab.value}>
-          {tab.value === 0 &&
-            likes.map(ev => {
-              return (
-                <div key={ev.id} className="reactions-item">
-                  <div className="reaction-icon">{ev.content === "+" ? <Icon name="heart" /> : ev.content}</div>
-                  <ProfileImage autoWidth={false} pubkey={ev.pubkey} />
-                </div>
-              );
-            })}
-          {tab.value === 1 &&
-            zaps.map(z => {
-              return (
-                z.sender && (
-                  <div key={z.id} className="reactions-item">
-                    <div className="zap-reaction-icon">
-                      <Icon name="zap" size={20} />
-                      <span className="zap-amount">{formatShort(z.amount)}</span>
-                    </div>
-                    <ProfileImage
-                      autoWidth={false}
-                      pubkey={z.anonZap ? "" : z.sender}
-                      subHeader={
-                        <div className="f-ellipsis zap-comment" title={z.content}>
-                          {z.content}
-                        </div>
-                      }
-                      overrideUsername={z.anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
-                    />
+      <div className="close" onClick={onClose}>
+        <Icon name="close" />
+      </div>
+      <div className="reactions-header">
+        <h2>
+          <FormattedMessage {...messages.ReactionsCount} values={{ n: total }} />
+        </h2>
+      </div>
+      <Tabs tabs={tabs} tab={tab} setTab={setTab} />
+      <div className="body" key={tab.value}>
+        {tab.value === 0 &&
+          likes.map(ev => {
+            return (
+              <div key={ev.id} className="reactions-item">
+                <div className="reaction-icon">{ev.content === "+" ? <Icon name="heart" /> : ev.content}</div>
+                <ProfileImage pubkey={ev.pubkey} />
+              </div>
+            );
+          })}
+        {tab.value === 1 &&
+          zaps.map(z => {
+            return (
+              z.sender && (
+                <div key={z.id} className="reactions-item">
+                  <div className="zap-reaction-icon">
+                    <Icon name="zap" size={20} />
+                    <span className="zap-amount">{formatShort(z.amount)}</span>
                   </div>
-                )
-              );
-            })}
-          {tab.value === 2 &&
-            reposts.map(ev => {
-              return (
-                <div key={ev.id} className="reactions-item">
-                  <div className="reaction-icon">
-                    <Icon name="repost" size={16} />
-                  </div>
-                  <ProfileImage autoWidth={false} pubkey={ev.pubkey} />
+                  <ProfileImage
+                    pubkey={z.anonZap ? "" : z.sender}
+                    subHeader={<div title={z.content}>{z.content}</div>}
+                    link={z.anonZap ? "" : undefined}
+                    overrideUsername={z.anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
+                  />
                 </div>
-              );
-            })}
-          {tab.value === 3 &&
-            dislikes.map(ev => {
-              return (
-                <div key={ev.id} className="reactions-item">
-                  <div className="reaction-icon">
-                    <Icon name="dislike" />
-                  </div>
-                  <ProfileImage autoWidth={false} pubkey={ev.pubkey} />
+              )
+            );
+          })}
+        {tab.value === 2 &&
+          reposts.map(ev => {
+            return (
+              <div key={ev.id} className="reactions-item">
+                <div className="reaction-icon">
+                  <Icon name="repost" size={16} />
                 </div>
-              );
-            })}
-        </div>
+                <ProfileImage pubkey={ev.pubkey} />
+              </div>
+            );
+          })}
+        {tab.value === 3 &&
+          dislikes.map(ev => {
+            return (
+              <div key={ev.id} className="reactions-item f-ellipsis">
+                <div className="reaction-icon">
+                  <Icon name="dislike" />
+                </div>
+                <ProfileImage pubkey={ev.pubkey} />
+              </div>
+            );
+          })}
       </div>
     </Modal>
   ) : null;

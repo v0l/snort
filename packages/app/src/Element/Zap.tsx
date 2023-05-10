@@ -107,8 +107,8 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean 
   return valid && sender ? (
     <div className="zap note card">
       <div className="header">
-        <ProfileImage autoWidth={false} pubkey={sender} />
-        {receiver !== pubKey && showZapped && <ProfileImage autoWidth={false} pubkey={unwrap(receiver)} />}
+        <ProfileImage pubkey={sender} />
+        {receiver !== pubKey && showZapped && <ProfileImage pubkey={unwrap(receiver)} />}
         <div className="amount">
           <span className="amount-number">
             <FormattedMessage {...messages.Sats} values={{ n: formatShort(amount ?? 0) }} />
@@ -151,7 +151,6 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
           <div className="summary">
             {sender && (
               <ProfileImage
-                autoWidth={false}
                 pubkey={anonZap ? "" : sender}
                 overrideUsername={anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
               />

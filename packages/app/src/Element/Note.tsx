@@ -327,10 +327,9 @@ export default function Note(props: NoteProps) {
         {options.showHeader && (
           <div className="header flex">
             <ProfileImage
-              autoWidth={false}
               pubkey={ev.pubkey}
               subHeader={replyTag() ?? undefined}
-              linkToProfile={opt?.canClick === undefined}
+              link={opt?.canClick === undefined ? undefined : ""}
             />
             {(options.showTime || options.showBookmarked) && (
               <div className="info">
