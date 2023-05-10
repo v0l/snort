@@ -114,7 +114,7 @@ const Timeline = (props: TimelineProps) => {
   }
 
   return (
-    <div className="main-content">
+    <>
       {latestFeed.length > 0 && (
         <>
           <div className="card latest-notes pointer" onClick={() => onShowLatest()} ref={ref}>
@@ -149,7 +149,7 @@ const Timeline = (props: TimelineProps) => {
           <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
         </LoadMore>
       )}
-    </div>
+    </>
   );
 };
 export default Timeline;

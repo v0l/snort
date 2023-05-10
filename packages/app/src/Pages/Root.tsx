@@ -83,7 +83,9 @@ export default function RootPage() {
       <div className="main-content">
         {pubKey && <Tabs tabs={tabs} tab={tab} setTab={t => navigate(unwrap(t.data))} />}
       </div>
-      <Outlet />
+      <div className="main-content">
+        <Outlet />
+      </div>
     </>
   );
 }

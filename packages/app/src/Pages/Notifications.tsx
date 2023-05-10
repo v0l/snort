@@ -15,10 +15,8 @@ export default function NotificationsPage() {
   }, []);
 
   return (
-    <>
-      <div className="main-content">
-        <TaskList />
-      </div>
+    <div className="main-content">
+      <TaskList />
       {login.publicKey && (
         <Timeline
           subject={{
@@ -32,6 +30,6 @@ export default function NotificationsPage() {
           method={"TIME_RANGE"}
         />
       )}
-    </>
+    </div>
   );
 }

@@ -230,20 +230,18 @@ export default function ProfilePage() {
       case NOTES:
         return (
           <>
-            <div className="main-content">
-              {pinned
-                .filter(a => a.kind === EventKind.TextNote)
-                .map(n => {
-                  return (
-                    <Note
-                      key={`pinned-${n.id}`}
-                      data={n}
-                      related={getReactions(pinned, n.id)}
-                      options={{ showTime: false, showPinned: true, canUnpin: id === loginPubKey }}
-                    />
-                  );
-                })}
-            </div>
+            {pinned
+              .filter(a => a.kind === EventKind.TextNote)
+              .map(n => {
+                return (
+                  <Note
+                    key={`pinned-${n.id}`}
+                    data={n}
+                    related={getReactions(pinned, n.id)}
+                    options={{ showTime: false, showPinned: true, canUnpin: id === loginPubKey }}
+                  />
+                );
+              })}
             <Timeline
               key={id}
               subject={{
