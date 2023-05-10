@@ -17,8 +17,8 @@ export interface ProfilePreviewProps {
 }
 export default function ProfilePreview(props: ProfilePreviewProps) {
   const pubkey = props.pubkey;
-  const user = useUserProfile(pubkey);
   const { ref, inView } = useInView({ triggerOnce: true });
+  const user = useUserProfile(inView ? pubkey : undefined);
   const options = {
     about: true,
     ...props.options,

@@ -15,6 +15,8 @@ export default abstract class FeedCache<TCached> {
   #hooks: Array<HookFilter> = [];
   #snapshot: Readonly<Array<TCached>> = [];
   #changed = true;
+  #hits = 0;
+  #miss = 0;
   protected onTable: Set<string> = new Set();
   protected cache: Map<string, TCached> = new Map();
 
@@ -23,7 +25,10 @@ export default abstract class FeedCache<TCached> {
     this.#table = table;
     setInterval(() => {
       console.debug(
-        `[${this.#name}] ${this.cache.size} loaded, ${this.onTable.size} on-disk, ${this.#hooks.length} hooks`
+        `[${this.#name}] ${this.cache.size} loaded, ${this.onTable.size} on-disk, ${this.#hooks.length} hooks, ${(
+          (this.#hits / (this.#hits + this.#miss)) *
+          100
+        ).toFixed(1)} % hit`
       );
     }, 5_000);
   }
@@ -56,7 +61,13 @@ export default abstract class FeedCache<TCached> {
 
   getFromCache(key?: string) {
     if (key) {
-      return this.cache.get(key);
+      const ret = this.cache.get(key);
+      if (ret) {
+        this.#hits++;
+      } else {
+        this.#miss++;
+      }
+      return ret;
     }
   }
 

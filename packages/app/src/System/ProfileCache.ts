@@ -19,11 +19,13 @@ class ProfileLoaderService {
    * Request profile metadata for a set of pubkeys
    */
   TrackMetadata(pk: HexKey | Array<HexKey>) {
+    const bufferNow = [];
     for (const p of Array.isArray(pk) ? pk : [pk]) {
-      if (p.length > 0) {
-        this.WantsMetadata.add(p);
+      if (p.length > 0 && this.WantsMetadata.add(p)) {
+        bufferNow.push(p);
       }
     }
+    UserCache.buffer(bufferNow);
   }
 
   /**
@@ -55,7 +57,7 @@ class ProfileLoaderService {
       .filter(a => (UserCache.getFromCache(a)?.loaded ?? 0) < expire);
     const missing = new Set([...missingFromCache, ...expired]);
     if (missing.size > 0) {
-      console.debug(`Wants profiles: ${missingFromCache.length} missing, ${expired.length} expired`);
+      console.debug(`[UserCache] Wants profiles: ${missingFromCache.length} missing, ${expired.length} expired`);
 
       const sub = new RequestBuilder(`profiles`);
       sub
