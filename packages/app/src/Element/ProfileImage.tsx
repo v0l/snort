@@ -39,7 +39,7 @@ export default function ProfileImage({
   }, [user, pubkey, overrideUsername]);
 
   return (
-    <Link className={`pfp${className ? ` ${className}` : ""}`} to={link === undefined ? profileLink(pubkey) : ""}>
+    <Link className={`pfp${className ? ` ${className}` : ""}`} to={link === undefined ? profileLink(pubkey) : link}>
       <div className="avatar-wrapper">
         <Avatar user={user} />
       </div>
