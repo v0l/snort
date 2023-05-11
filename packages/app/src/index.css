@@ -23,7 +23,8 @@
   --gray-dark: #2b2b2b;
   --gray-superdark: #1a1a1a;
   --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
-  --snort-gradient: linear-gradient(90deg, #a178ff 0%, #ff6baf 108.33%);
+  --snort-gradient: linear-gradient(90deg, #a178ff 0%, #ff6baf 100%);
+  --dm-gradient: linear-gradient(90deg, #5722d2 0%, #db1771 100%);
   --invoice-gradient: linear-gradient(
     45deg,
     var(--note-bg) 50%,
@@ -65,8 +66,9 @@ html.light {
   --gray-dark: #2b2b2b;
   --gray-superdark: #eee;
 
-  --invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgb(247, 183, 51, 0.2), rgb(252, 74, 26, 0.2));
-  --paid-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, rgb(247, 183, 51, 0.6), rgb(252, 74, 26, 0.6));
+  --dm-gradient: var(--gray);
+  --invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, #f7b73333, #fc4a1a33);
+  --paid-invoice-gradient: linear-gradient(45deg, var(--note-bg) 50%, #f7b73399, #fc4a1a99);
 }
 
 body {
@@ -89,6 +91,9 @@ code {
   margin-right: auto;
 }
 
+body #root > div:not(.page) header {
+  padding: 2px 10px;
+}
 @media (min-width: 720px) {
   .page {
     width: 586px;
@@ -258,20 +263,11 @@ button.icon:hover {
 }
 
 .btn-rnd {
-  border: none;
   border-radius: 100%;
-  width: 21px;
-  height: 21px;
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-@media (min-width: 520px) {
-  .btn-rnd {
-    width: 32px;
-    height: 32px;
-  }
 }
 
 textarea {
@@ -356,6 +352,11 @@ input:disabled {
 .f-col {
   flex-direction: column;
   align-items: flex-start !important;
+}
+
+.f-col-end {
+  flex-direction: column;
+  align-items: flex-end !important;
 }
 
 .f-end {
@@ -614,4 +615,9 @@ button.tall {
   100% {
     opacity: 1;
   }
+}
+
+.rta__textarea {
+  /* Fix width calculation to account for 12px padding on input */
+  width: calc(100% - 24px) !important;
 }

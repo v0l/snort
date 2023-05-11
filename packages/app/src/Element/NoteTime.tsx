@@ -28,7 +28,6 @@ export default function NoteTime(props: NoteTimeProps) {
         year: "2-digit",
         month: "short",
         day: "2-digit",
-        weekday: "short",
       });
     } else if (absAgo > HourInMs) {
       return `${fromDate.getHours().toString().padStart(2, "0")}:${fromDate.getMinutes().toString().padStart(2, "0")}`;

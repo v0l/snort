@@ -1,36 +1,3 @@
-.dm-list {
-  overflow-y: auto;
-  overflow-x: hidden;
-  --header-height: 72px;
-  --profile-container-height: 58px;
-  --write-dm-input-height: 86px;
-  height: calc(100vh - var(--header-height) - var(--profile-container-height) - var(--write-dm-input-height));
-}
-
-.dm-list > div {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  scroll-padding-bottom: 40px;
-}
-
-.write-dm {
-  position: fixed;
-  bottom: 0;
-  background-color: var(--gray);
-  width: inherit;
-  border-radius: 5px 5px 0 0;
-}
-
-.write-dm .inner {
-  display: flex;
-  align-items: center;
-  padding: 10px 5px;
-}
-.write-dm textarea {
-  resize: none;
-}
-
-.write-dm-spacer {
-  margin-bottom: 80px;
+.chat-page {
+  height: calc(100vh - 57px);
 }

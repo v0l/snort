@@ -1,6 +1,6 @@
 import "./ProfileImage.css";
 
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { HexKey, NostrPrefix } from "@snort/nostr";
 
 import { useUserProfile } from "Hooks/useUserProfile";
@@ -38,8 +38,18 @@ export default function ProfileImage({
     return overrideUsername ?? getDisplayName(user, pubkey);
   }, [user, pubkey, overrideUsername]);
 
+  function handleClick(e: React.MouseEvent) {
+    if (link === "") {
+      e.preventDefault();
+    }
+  }
+
   return (
-    <Link className={`pfp${className ? ` ${className}` : ""}`} to={link === undefined ? profileLink(pubkey) : link}>
+    <Link
+      className={`pfp${className ? ` ${className}` : ""}`}
+      to={link === undefined ? profileLink(pubkey) : link}
+      onClick={handleClick}
+      replace={true}>
       <div className="avatar-wrapper">
         <Avatar user={user} />
       </div>

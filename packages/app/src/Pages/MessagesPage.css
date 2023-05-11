@@ -1,0 +1,39 @@
+.dm-page {
+  display: grid;
+  grid-template-columns: 350px auto;
+  height: calc(100vh - 57px);
+  /* 100vh - header - padding */
+  overflow: hidden;
+}
+
+/* These should match what is in code too */
+@media (max-width: 768px) {
+  .dm-page {
+    grid-template-columns: 100vw;
+  }
+  .dm-page > div:nth-child(1) {
+    margin: 0 !important;
+  }
+}
+@media (min-width: 1500px) {
+  .dm-page {
+    grid-template-columns: 350px auto 350px;
+  }
+}
+
+/* User list */
+.dm-page > div:nth-child(1) {
+  overflow-y: auto;
+  margin: 0 10px;
+  padding: 0 10px 0 0;
+}
+
+/* Chat window */
+.dm-page > div:nth-child(2) {
+  height: calc(100vh - 57px);
+}
+
+/* Profile pannel */
+.dm-page > div:nth-child(3) {
+  margin: 0 10px;
+}

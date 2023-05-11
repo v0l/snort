@@ -1,13 +1,10 @@
 import "./Text.css";
 import { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
-import { visit, SKIP } from "unist-util-visit";
-import * as unist from "unist";
 import { HexKey, NostrPrefix } from "@snort/nostr";
 
 import { MentionRegex, InvoiceRegex, HashtagRegex, CashuRegex } from "Const";
-import { eventLink, hexToBech32, splitByUrl, unwrap, validateNostrLink } from "Util";
+import { eventLink, hexToBech32, splitByUrl, validateNostrLink } from "Util";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 import Mention from "Element/Mention";
@@ -159,19 +156,6 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
       .flat();
   }
 
-  function transformLi(frag: TextFragment) {
-    const fragments = transformText(frag);
-    return <li>{fragments}</li>;
-  }
-
-  function transformParagraph(frag: TextFragment) {
-    const fragments = transformText(frag);
-    if (fragments.every(f => typeof f === "string")) {
-      return <p>{fragments}</p>;
-    }
-    return <>{fragments}</>;
-  }
-
   function transformText(frag: TextFragment) {
     let fragments = extractMentions(frag);
     fragments = extractLinks(fragments);
@@ -181,41 +165,8 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
     return fragments;
   }
 
-  const components = {
-    p: (x: { children?: React.ReactNode[] }) => transformParagraph({ body: x.children ?? [], tags }),
-    a: (x: { href?: string }) => <HyperText link={x.href ?? ""} creator={creator} />,
-    li: (x: { children?: Fragment[] }) => transformLi({ body: x.children ?? [], tags }),
-  };
-
-  interface Node extends unist.Node<unist.Data> {
-    value: string;
-  }
-
-  const disableMarkdownLinks = () => (tree: Node) => {
-    visit(tree, (node, index, parent) => {
-      if (
-        parent &&
-        typeof index === "number" &&
-        (node.type === "link" ||
-          node.type === "linkReference" ||
-          node.type === "image" ||
-          node.type === "imageReference" ||
-          node.type === "definition")
-      ) {
-        node.type = "text";
-        const position = unwrap(node.position);
-        node.value = content.slice(position.start.offset, position.end.offset).replace(/\)$/, " )");
-        return SKIP;
-      }
-    });
-  };
-
   const element = useMemo(() => {
-    return (
-      <ReactMarkdown className="text" components={components} remarkPlugins={[disableMarkdownLinks]}>
-        {content}
-      </ReactMarkdown>
-    );
+    return <div className="text">{transformText({ body: [content], tags })}</div>;
   }, [content]);
 
   return <div dir="auto">{element}</div>;
