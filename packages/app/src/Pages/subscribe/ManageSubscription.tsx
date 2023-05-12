@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import PageSpinner from "Element/PageSpinner";
 import useEventPublisher from "Feed/EventPublisher";
@@ -11,6 +11,7 @@ import SubscriptionCard from "./SubscriptionCard";
 export default function ManageSubscriptionPage() {
   const publisher = useEventPublisher();
   const api = new SnortApi(undefined, publisher);
+  const navigate = useNavigate();
 
   const [subs, setSubs] = useState<Array<Subscription>>();
   const [error, setError] = useState<SubscriptionError>();
@@ -39,6 +40,11 @@ export default function ManageSubscriptionPage() {
       {subs.map(a => (
         <SubscriptionCard sub={a} key={a.id} />
       ))}
+      {subs.length !== 0 && (
+        <button onClick={() => navigate("/subscribe")}>
+          <FormattedMessage defaultMessage="Buy Subscription" />
+        </button>
+      )}
       {subs.length === 0 && (
         <p>
           <FormattedMessage
