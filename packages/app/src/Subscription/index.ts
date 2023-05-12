@@ -32,7 +32,7 @@ export const Plans = [
   {
     id: SubscriptionType.Premium,
     price: 20_000,
-    disabled: true,
+    disabled: false,
     unlocks: [
       LockedFeatures.DeepL,
       LockedFeatures.RelayBackup,
