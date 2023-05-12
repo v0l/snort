@@ -52,7 +52,7 @@ export interface SubscriptionEvent {
 
 export function getActiveSubscriptions(s: Array<SubscriptionEvent>) {
   const now = unixNow();
-  return s.filter(a => a.start <= now && a.end > now);
+  return [...s].sort((a, b) => b.type - a.type).filter(a => a.start <= now && a.end > now);
 }
 
 export function getCurrentSubscription(s: Array<SubscriptionEvent>) {
