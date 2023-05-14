@@ -14,8 +14,14 @@ steps:
         from_secret: crowdin_token
     commands:
       - crowdin pull -b main -T $TOKEN
+  - name: Push changes
+    image: node:current-bullseye
+    commands:
       - npx yarn workspace @snort/app format
+      - apt update && apt install git -y
+      - git switch lang
       - git commit -a -m "Update translations"
+      - git push --force
 ---
 kind: pipeline
 type: kubernetes
