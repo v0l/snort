@@ -1,5 +1,5 @@
-project_id: snort
+project_id: 568149
 preserve_hierarchy: true
 files:
-  - source: /packages/app/src/translations/en.json
-    translation: /packages/app/src/translations/%locale_with_underscore%.json
+  - source: packages/app/src/translations/en.json
+    translation: packages/app/src/translations/%locale_with_underscore%.json
