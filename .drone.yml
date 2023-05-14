@@ -1,0 +1,37 @@
+---
+kind: pipeline
+type: kubernetes
+name: default
+
+metadata:
+  namespace: git
+
+steps:
+  - name: Update Translations
+    image: crowdin/cli
+    environment: 
+      TOKEN:
+        from_secret: crowdin_token
+    commands:
+      - crowdin pull -b main -T $TOKEN
+      - yarn workspace @snort/app format
+      - git commit -a -m "Update translations"
+---
+kind: pipeline
+type: kubernetes
+name: default
+
+metadata:
+  namespace: git
+
+steps:
+  - name: build docker image
+    image: r.j3ss.co/img
+    privileged: true
+    environment: 
+      TOKEN:
+        from_secret: img_token
+    commands:
+      - img login -u kieran -p $TOKEN git.v0l.io
+      - img build -t git.v0l.io/kieran/snort:latest .
+      - img push git.v0l.io/kieran/snort:latest
