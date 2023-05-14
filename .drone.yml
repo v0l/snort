@@ -1,7 +1,7 @@
 ---
 kind: pipeline
 type: kubernetes
-name: default
+name: crowdin
 
 metadata:
   namespace: git
@@ -19,7 +19,7 @@ steps:
 ---
 kind: pipeline
 type: kubernetes
-name: default
+name: docker
 
 metadata:
   namespace: git
