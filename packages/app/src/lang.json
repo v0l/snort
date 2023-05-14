@@ -157,6 +157,9 @@
   "5ykRmX": {
     "defaultMessage": "Send zap"
   },
+  "65BmHb": {
+    "defaultMessage": "Failed to proxy image from {host}, click here to load directly"
+  },
   "6Yfvvp": {
     "defaultMessage": "Get an identifier"
   },
