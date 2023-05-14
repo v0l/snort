@@ -2,10 +2,8 @@
 kind: pipeline
 type: kubernetes
 name: crowdin
-
 metadata:
   namespace: git
-
 steps:
   - name: Update Translations
     image: crowdin/cli
@@ -17,7 +15,8 @@ steps:
   - name: Push changes
     image: node:current-bullseye
     commands:
-      - npx yarn workspace @snort/app format
+      - yarn install
+      - yarn workspace @snort/app format
       - apt update && apt install git -y
       - git switch lang
       - git commit -a -m "Update translations"
@@ -26,10 +25,8 @@ steps:
 kind: pipeline
 type: kubernetes
 name: docker
-
 metadata:
   namespace: git
-
 steps:
   - name: build docker image
     image: r.j3ss.co/img
@@ -42,8 +39,7 @@ steps:
         from_secret: img_token
     commands:
       - img login -u kieran -p $TOKEN git.v0l.io
-      - |-
-        img build -t git.v0l.io/kieran/snort:latest \
+      - img build -t git.v0l.io/kieran/snort:latest \
         --platform linux/amd64,linux/arm64 \
         --cache-from "type=local,src=/docker-cache" \
         --cache-to "type=local,dest=/docker-cache" \
@@ -53,3 +49,18 @@ volumes:
 - name: cache
   claim:
     name: docker-cache
+---
+kind: pipeline
+type: kubernetes
+name: test-lint
+metadata:
+  namespace: git
+steps:
+  - name: Test/Lint
+    image: node:current-bullseye
+    commands:
+      - yarn install
+      - yarn workspace @snort/nostr build
+      - yarn workspace @snort/app test
+      - yarn workspace @snort/app eslint
+      - yarn workspace @snort/app prettier --check .
