@@ -42,7 +42,7 @@ import BadgeList from "Element/BadgeList";
 import { ProxyImg } from "Element/ProxyImg";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
 import { EmailRegex } from "Const";
-import { getNip05PubKey } from "Pages/Login";
+import { getNip05PubKey } from "Pages/LoginPage";
 import { LNURL } from "LNURL";
 import useLogin from "Hooks/useLogin";
 

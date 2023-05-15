@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import Spinner from "Icons/Spinner";
 import { parseNostrLink, profileLink } from "Util";
-import { getNip05PubKey } from "Pages/Login";
+import { getNip05PubKey } from "Pages/LoginPage";
 import { System } from "System";
 
 export default function NostrLinkHandler() {

@@ -3,11 +3,11 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
   root: true,
-  ignorePatterns: ["build/", "*.test.ts"],
+  ignorePatterns: ["build/", "*.test.ts", "*.js"],
   env: {
     browser: true,
     worker: true,
     commonjs: true,
-    node: true,
+    node: false,
   },
 };

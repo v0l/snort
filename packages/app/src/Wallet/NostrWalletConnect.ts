@@ -1,4 +1,4 @@
-import { Connection, RawEvent } from "@snort/nostr";
+import { Connection, EventKind, RawEvent } from "@snort/nostr";
 import { EventBuilder } from "System";
 import { EventExt } from "System/EventExt";
 import { LNWallet, WalletError, WalletErrorCode, WalletInfo, WalletInvoice, WalletInvoiceState } from "Wallet";
@@ -156,7 +156,7 @@ export class NostrConnectWallet implements LNWallet {
       params,
     });
     const eb = new EventBuilder();
-    eb.kind(23194)
+    eb.kind(23194 as EventKind)
       .content(await EventExt.encryptData(payload, this.#config.walletPubkey, this.#config.secret))
       .tag(["p", this.#config.walletPubkey]);
 
@@ -166,7 +166,7 @@ export class NostrConnectWallet implements LNWallet {
         "REQ",
         evCommand.id.slice(0, 12),
         {
-          kinds: [23195],
+          kinds: [23195 as EventKind],
           authors: [this.#config.walletPubkey],
           ["#e"]: [evCommand.id],
         },

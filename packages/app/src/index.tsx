@@ -1,5 +1,6 @@
 import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
+import "public/manifest.json";
 
 import { StrictMode } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -12,7 +13,7 @@ import { IntlProvider } from "IntlProvider";
 import { unwrap } from "Util";
 import Store from "State/Store";
 import Layout from "Pages/Layout";
-import LoginPage from "Pages/Login";
+import LoginPage from "Pages/LoginPage";
 import ProfilePage from "Pages/ProfilePage";
 import { RootRoutes } from "Pages/Root";
 import NotificationsPage from "Pages/Notifications";
