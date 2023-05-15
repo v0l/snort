@@ -68,7 +68,7 @@ const Nip05 = ({ nip05, pubkey, verifyNip = true }: Nip05Params) => {
   const { isVerified, couldNotVerify } = useIsVerified(pubkey, nip05, !verifyNip);
 
   return (
-    <div className={`flex nip05${couldNotVerify ? " failed" : ""}`} onClick={ev => ev.stopPropagation()}>
+    <div className={`flex nip05${couldNotVerify ? " failed" : ""}`}>
       {!isDefaultUser && isVerified && <span className="nick">{`${name}@`}</span>}
       {isVerified && (
         <>

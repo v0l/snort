@@ -2,6 +2,10 @@
 kind: pipeline
 type: kubernetes
 name: crowdin
+concurrency:
+  limit: 1
+trigger:
+  branch: ["main"]
 metadata:
   namespace: git
 steps:
@@ -38,6 +42,10 @@ volumes:
 kind: pipeline
 type: kubernetes
 name: docker
+concurrency:
+  limit: 1
+trigger:
+  branch: ["main"]
 metadata:
   namespace: git
 steps:
@@ -67,6 +75,8 @@ volumes:
 kind: pipeline
 type: kubernetes
 name: test-lint
+concurrency:
+  limit: 1
 metadata:
   namespace: git
 steps:

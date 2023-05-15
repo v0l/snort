@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 
 export default function usePageWidth() {
-  const ref = useRef<HTMLDivElement | null>(document.querySelector(".page"));
+  const ref = useRef<HTMLDivElement | null>(document.querySelector("#root"));
   const [width, setWidth] = useState(0);
 
   useEffect(() => {

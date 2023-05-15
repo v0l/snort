@@ -3,7 +3,7 @@
   font-size: var(--font-size-small);
   display: inline-block;
   background-color: var(--gray-secondary);
-  padding: 2px 10px;
+  padding: 2px 8px;
   border-radius: 10px;
   user-select: none;
   margin: 2px 5px;
@@ -16,4 +16,8 @@
 
 .pill:hover {
   cursor: pointer;
+}
+
+.light .pill.unread {
+  color: white;
 }
