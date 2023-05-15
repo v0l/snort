@@ -5,27 +5,23 @@ name: crowdin
 metadata:
   namespace: git
 steps:
-  - name: Update Translations
-    image: crowdin/cli
-    environment: 
-      TOKEN:
-        from_secret: crowdin_token
-    commands:
-      - crowdin upload -b main -T $TOKEN
-      - crowdin pull -b main -T $TOKEN
-  - name: Push changes
+  - name: Push/Pull translations 
     image: node:current-bullseye
     environment: 
       TOKEN:
         from_secret: drone_gitea
+      CTOKEN:
+        from_secret: crowdin_token
     commands:
-      - yarn install
-      - yarn workspace @snort/app format
+      - git checkout -B lang
       - git config --global user.email drone@v0l.io
       - git config --global user.name "Drone CI"
       - git remote set-url origin https://drone:$TOKEN@git.v0l.io/Kieran/snort.git
+      - yarn install
+      - npx @crowdin/cli upload -b main -T $CTOKEN
+      - npx @crowdin/cli pull -b main -T $CTOKEN
+      - yarn workspace @snort/app format
       - git diff
-      - git checkout -B lang
       - git commit -a -m "Update translations"
       - git push -u origin lang
 ---
