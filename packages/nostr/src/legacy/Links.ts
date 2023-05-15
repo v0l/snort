@@ -61,16 +61,22 @@ export function decodeTLV(str: string) {
     entries.push({
       type: t,
       length: l,
-      value: decodeTLVEntry(t, new Uint8Array(v)),
+      value: decodeTLVEntry(t, decoded.prefix, new Uint8Array(v)),
     });
     x += 2 + l;
   }
   return entries;
 }
 
-function decodeTLVEntry(type: TLVEntryType, data: Uint8Array) {
+function decodeTLVEntry(type: TLVEntryType, prefix: string, data: Uint8Array) {
   switch (type) {
-    case TLVEntryType.Special:
+    case TLVEntryType.Special: {
+      if (prefix === NostrPrefix.Address) {
+        return new TextDecoder("ASCII").decode(data);
+      } else {
+        return secp.utils.bytesToHex(data);
+      }
+    }
     case TLVEntryType.Author: {
       return secp.utils.bytesToHex(data);
     }
