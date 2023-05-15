@@ -15,13 +15,19 @@ steps:
       - crowdin pull -b main -T $TOKEN
   - name: Push changes
     image: node:current-bullseye
+    environment: 
+      TOKEN:
+        from_secret: drone_gitea
     commands:
       - yarn install
       - yarn workspace @snort/app format
       - apt update && apt install git -y
-      - git switch lang
+      - git config --local user.email drone@v0l.io
+      - git config --local user.name "Drone CI"
+      - git remote set-url origin https://$TOKEN@git.v0l.io/Kieran/snort.git
+      - git switch -c lang
       - git commit -a -m "Update translations"
-      - git push --force
+      - git push
 ---
 kind: pipeline
 type: kubernetes
