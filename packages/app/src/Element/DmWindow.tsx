@@ -16,6 +16,8 @@ export default function DmWindow({ id }: { id: string }) {
   const dmListRef = useRef<HTMLDivElement>(null);
 
   function resize(chatList: HTMLDivElement) {
+    if (!chatList.parentElement) return;
+
     const scrollWrap = unwrap(chatList.parentElement);
     const h = scrollWrap.scrollHeight;
     const s = scrollWrap.clientHeight + scrollWrap.scrollTop;
