@@ -1,9 +1,12 @@
 import "./ZapstrEmbed.css";
+import { Link } from "react-router-dom";
+
 import useEventFeed from "Feed/EventFeed";
 import Spinner from "Icons/Spinner";
 import { NostrLink } from "Util";
 import { ProxyImg } from "Element/ProxyImg";
 import ProfileImage from "Element/ProfileImage";
+import { FormattedMessage } from "react-intl";
 
 export default function ZapstrEmbed({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);
@@ -16,7 +19,7 @@ export default function ZapstrEmbed({ link }: { link: NostrLink }) {
   const refPersons = ev.data.tags.filter(a => a[0] === "p");
   return (
     <>
-      <div className="flex zapstr">
+      <div className="flex zapstr mb10">
         <ProxyImg src={cover?.[1] ?? ""} size={100} />
         <div className="flex f-col">
           <div>
@@ -30,6 +33,11 @@ export default function ZapstrEmbed({ link }: { link: NostrLink }) {
           </div>
         </div>
       </div>
+      <Link to={`https://zapstr.live/?track=${link.encode()}`} target="_blank">
+        <button>
+          <FormattedMessage defaultMessage="Open on Zapstr" />
+        </button>
+      </Link>
     </>
   );
 }
