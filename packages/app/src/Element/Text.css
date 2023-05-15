@@ -61,7 +61,7 @@
   margin: 20px;
 }
 
-.text img,
+.text img:not(.custom-emoji),
 .text video,
 .text iframe,
 .text audio {

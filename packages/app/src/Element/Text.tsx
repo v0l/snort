@@ -10,6 +10,7 @@ import Hashtag from "Element/Hashtag";
 import Mention from "Element/Mention";
 import HyperText from "Element/HyperText";
 import CashuNuts from "Element/CashuNuts";
+import { ProxyImg } from "Element/ProxyImg";
 
 export type Fragment = string | React.ReactNode;
 
@@ -156,12 +157,31 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
       .flat();
   }
 
+  function extractCustomEmoji(fragments: Fragment[]) {
+    return fragments
+      .map(f => {
+        if (typeof f === "string") {
+          return f.split(/:(\w+):/g).map(i => {
+            const t = tags.find(a => a[0] === "emoji" && a[1] === i);
+            if (t) {
+              return <ProxyImg src={t[2]} size={15} className="custom-emoji" />;
+            } else {
+              return i;
+            }
+          });
+        }
+        return f;
+      })
+      .flat();
+  }
+
   function transformText(frag: TextFragment) {
     let fragments = extractMentions(frag);
     fragments = extractLinks(fragments);
     fragments = extractInvoices(fragments);
     fragments = extractHashtags(fragments);
     fragments = extractCashuTokens(fragments);
+    fragments = extractCustomEmoji(fragments);
     return fragments;
   }
 

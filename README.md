@@ -27,6 +27,7 @@ Snort supports the following NIP's:
 - [x] NIP-26: Delegated Event Signing (Display delegated signings only)
 - [x] NIP-27: Text note references (Parsing only)
 - [ ] NIP-28: Public Chat
+- [x] NIP-30: Custom Emoji
 - [x] NIP-36: Sensitive Content
 - [ ] NIP-40: Expiration Timestamp
 - [x] NIP-42: Authentication of clients to relays
