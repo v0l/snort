@@ -42,9 +42,14 @@ export class EventBuilder {
    */
   processContent() {
     if (this.#content) {
-      this.#content = this.#content
-        .replace(/@n(pub|profile|event|ote|addr|)1[acdefghjklmnpqrstuvwxyz023456789]+/g, m => this.#replaceMention(m))
-        .replace(HashtagRegex, m => this.#replaceHashtag(m));
+      this.#content = this.#content.replace(/@n(pub|profile|event|ote|addr|)1[acdefghjklmnpqrstuvwxyz023456789]+/g, m =>
+        this.#replaceMention(m)
+      );
+
+      const hashTags = [...this.#content.matchAll(HashtagRegex)];
+      hashTags.map(hashTag => {
+        this.#addHashtag(hashTag[0]);
+      });
     }
     return this;
   }
@@ -95,9 +100,8 @@ export class EventBuilder {
     }
   }
 
-  #replaceHashtag(match: string) {
+  #addHashtag(match: string) {
     const tag = match.slice(1);
     this.tag(["t", tag.toLowerCase()]);
-    return match;
   }
 }

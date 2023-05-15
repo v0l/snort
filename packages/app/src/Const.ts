@@ -131,7 +131,7 @@ export const TweetUrlRegex = /https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:
  * Hashtag regex
  */
 // eslint-disable-next-line no-useless-escape
-export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/;
+export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/g;
 
 /**
  * Tidal share link regex
