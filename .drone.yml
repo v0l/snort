@@ -23,6 +23,7 @@ steps:
       - npx @crowdin/cli pull -b main -T $CTOKEN
       - yarn workspace @snort/app format
       - git diff
+      - git add .
       - git commit -a -m "Update translations"
       - git push -u origin lang
 ---
