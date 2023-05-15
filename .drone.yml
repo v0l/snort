@@ -14,8 +14,7 @@ steps:
         from_secret: crowdin_token
     commands:
       - git fetch origin
-      - git checkout -B lang
-      - git pull
+      - git switch -c lang 2>/dev/null || git switch lang
       - git config --global user.email drone@v0l.io
       - git config --global user.name "Drone CI"
       - git remote set-url origin https://drone:$TOKEN@git.v0l.io/Kieran/snort.git
