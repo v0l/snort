@@ -23,12 +23,12 @@ export default function ZapstrEmbed({ link }: { link: NostrLink }) {
             <h3>{subject?.[1] ?? ""}</h3>
           </div>
           <audio src={media?.[1] ?? ""} controls={true} />
+          <div>
+            {refPersons.map(a => (
+              <ProfileImage pubkey={a[1]} subHeader={<>{a[2] ?? ""}</>} className="" defaultNip=" " />
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="zapstr">
-        {refPersons.map(a => (
-          <ProfileImage pubkey={a[1]} subHeader={<>{a[2] ?? ""}</>} className="card" />
-        ))}
       </div>
     </>
   );
