@@ -1,0 +1,20 @@
+.zapstr {
+}
+
+.zapstr > img {
+  margin: 0 10px 0 0;
+}
+
+.zapstr audio {
+  margin: 0;
+  height: 2em;
+}
+
+.zapstr .pfp .avatar {
+  width: 25px;
+  height: 25px;
+}
+
+.zapstr .pfp .subheader {
+  text-transform: capitalize;
+}
