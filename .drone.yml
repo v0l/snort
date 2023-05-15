@@ -7,7 +7,11 @@ metadata:
 steps:
   - name: Push/Pull translations 
     image: node:current-bullseye
+    volumes:
+      - name: cache
+        path: /docker-cache
     environment: 
+      YARN_CACHE_FOLDER: /docker-cache/yarn
       TOKEN:
         from_secret: drone_gitea
       CTOKEN:
@@ -26,6 +30,10 @@ steps:
       - git add .
       - git commit -a -m "Update translations"
       - git push -u origin lang
+volumes:
+- name: cache
+  claim:
+    name: docker-cache
 ---
 kind: pipeline
 type: kubernetes
@@ -64,9 +72,18 @@ metadata:
 steps:
   - name: Test/Lint
     image: node:current-bullseye
+    volumes:
+      - name: cache
+        path: /docker-cache
+    environment: 
+      YARN_CACHE_FOLDER: /docker-cache/yarn
     commands:
       - yarn install
       - yarn workspace @snort/nostr build
       - yarn workspace @snort/app test
       - yarn workspace @snort/app eslint
       - yarn workspace @snort/app prettier --check .
+volumes:
+- name: cache
+  claim:
+    name: docker-cache
