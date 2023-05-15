@@ -11,6 +11,7 @@ steps:
       TOKEN:
         from_secret: crowdin_token
     commands:
+      - crowdin upload -b main -T $TOKEN
       - crowdin pull -b main -T $TOKEN
   - name: Push changes
     image: node:current-bullseye
@@ -39,7 +40,8 @@ steps:
         from_secret: img_token
     commands:
       - img login -u kieran -p $TOKEN git.v0l.io
-      - img build -t git.v0l.io/kieran/snort:latest \
+      - |-
+        img build -t git.v0l.io/kieran/snort:latest \
         --platform linux/amd64,linux/arm64 \
         --cache-from "type=local,src=/docker-cache" \
         --cache-to "type=local,dest=/docker-cache" \
