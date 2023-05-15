@@ -9,6 +9,7 @@ import { System } from "System";
 import { TimelineSubject } from "Feed/TimelineFeed";
 import { debounce, getRelayName, sha256, unixNow, unwrap } from "Util";
 import useLogin from "Hooks/useLogin";
+import Discover from "Pages/Discover";
 
 import messages from "./messages";
 
@@ -39,12 +40,17 @@ export default function RootPage() {
       value: 2,
       data: "/global",
     },
+    Discover: {
+      text: formatMessage({ defaultMessage: "Discover" }),
+      value: 3,
+      data: "/discover",
+    },
   };
 
   const tagTabs = tags.item.map((t, idx) => {
     return { text: `#${t}`, value: idx + 3, data: `/tag/${t}` };
   });
-  const tabs = [RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global, ...tagTabs];
+  const tabs = [RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global, RootTab.Discover, ...tagTabs];
   const tab = useMemo(() => {
     const pTab = location.pathname.split("/").slice(-1)[0];
 
@@ -62,6 +68,9 @@ export default function RootPage() {
       }
       case "global": {
         return RootTab.Global;
+      }
+      case "discover": {
+        return RootTab.Discover;
       }
       default: {
         return RootTab.Posts;
@@ -236,6 +245,10 @@ export const RootRoutes = [
       {
         path: "conversations",
         element: <ConversationsTab />,
+      },
+      {
+        path: "discover",
+        element: <Discover />,
       },
       {
         path: "tag/:tag",

@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 
 import PageSpinner from "Element/PageSpinner";
 import Note from "Element/Note";
-import NostrBandApi from "NostrBand";
+import NostrBandApi from "External/NostrBand";
 
 export default function TrendingNotes() {
   const [posts, setPosts] = useState<Array<RawEvent>>();

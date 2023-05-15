@@ -30,6 +30,7 @@ import { WalletRoutes } from "Pages/WalletPage";
 import NostrLinkHandler from "Pages/NostrLinkHandler";
 import Thread from "Element/Thread";
 import { SubscribeRoutes } from "Pages/subscribe";
+import Discover from "Pages/Discover";
 
 /**
  * HTTP query provider

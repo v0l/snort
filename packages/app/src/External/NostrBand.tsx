@@ -17,6 +17,14 @@ export interface TrendingNoteResponse {
   notes: Array<TrendingNote>;
 }
 
+export interface SuggestedFollow {
+  pubkey: string;
+}
+
+export interface SuggestedFollowsResponse {
+  profiles: Array<SuggestedFollow>;
+}
+
 export class NostrBandError extends Error {
   body: string;
   statusCode: number;
@@ -29,7 +37,7 @@ export class NostrBandError extends Error {
 }
 
 export default class NostrBandApi {
-  #url = "https://api.nostr.band";
+  readonly #url = "https://api.nostr.band";
 
   async trendingProfiles() {
     return await this.#json<TrendingUserResponse>("GET", "/v0/trending/profiles");
@@ -37,6 +45,10 @@ export default class NostrBandApi {
 
   async trendingNotes() {
     return await this.#json<TrendingNoteResponse>("GET", "/v0/trending/notes");
+  }
+
+  async sugguestedFollows(pubkey: string) {
+    return await this.#json<SuggestedFollowsResponse>("GET", `/v0/suggested/profiles/${pubkey}`);
   }
 
   async #json<T>(method: string, path: string) {
