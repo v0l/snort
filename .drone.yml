@@ -9,9 +9,9 @@ steps:
     image: node:current-bullseye
     volumes:
       - name: cache
-        path: /docker-cache
+        path: /cache
     environment: 
-      YARN_CACHE_FOLDER: /docker-cache/yarn
+      YARN_CACHE_FOLDER: /cache/.yarn-translations
       TOKEN:
         from_secret: drone_gitea
       CTOKEN:
@@ -46,7 +46,7 @@ steps:
     privileged: true
     volumes:
       - name: cache
-        path: /docker-cache
+        path: /cache
     environment: 
       TOKEN:
         from_secret: img_token
@@ -55,8 +55,8 @@ steps:
       - |-
         img build -t git.v0l.io/kieran/snort:latest \
         --platform linux/amd64,linux/arm64 \
-        --cache-from "type=local,src=/docker-cache" \
-        --cache-to "type=local,dest=/docker-cache" \
+        --cache-from "type=local,src=/cache" \
+        --cache-to "type=local,dest=/cache" \
         .
       - img push git.v0l.io/kieran/snort:latest
 volumes:
@@ -74,9 +74,9 @@ steps:
     image: node:current-bullseye
     volumes:
       - name: cache
-        path: /docker-cache
+        path: /cache
     environment: 
-      YARN_CACHE_FOLDER: /docker-cache/yarn
+      YARN_CACHE_FOLDER: /cache/.yarn-test
     commands:
       - yarn install
       - yarn workspace @snort/nostr build
