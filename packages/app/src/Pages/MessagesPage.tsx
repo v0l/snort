@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { HexKey, RawEvent, NostrPrefix } from "@snort/nostr";
 
 import UnreadCount from "Element/UnreadCount";
-import ProfileImage from "Element/ProfileImage";
+import ProfileImage, { getDisplayName } from "Element/ProfileImage";
 import { dedupe, hexToBech32, unwrap } from "Util";
 import NoteToSelf from "Element/NoteToSelf";
 import useModeration from "Hooks/useModeration";
@@ -13,6 +13,10 @@ import useLogin from "Hooks/useLogin";
 import usePageWidth from "Hooks/usePageWidth";
 import NoteTime from "Element/NoteTime";
 import DmWindow from "Element/DmWindow";
+import Avatar from "Element/Avatar";
+import { useUserProfile } from "Hooks/useUserProfile";
+import Icon from "Icons/Icon";
+import Text from "Element/Text";
 
 import "./MessagesPage.css";
 import messages from "./messages";
@@ -43,7 +47,7 @@ export default function MessagesPage() {
       );
     }
     return [];
-  }, [dms, login.publicKey]);
+  }, [dms, login.publicKey, isMuted]);
 
   const unreadCount = useMemo(() => chats.reduce((p, c) => p + c.unreadMessages, 0), [chats]);
 
@@ -112,8 +116,33 @@ export default function MessagesPage() {
           .map(person)}
       </div>
       {pageWidth >= TwoCol && chat && <DmWindow id={chat} />}
-      {pageWidth >= ThreeCol && <div></div>}
+      {pageWidth >= ThreeCol && chat && (
+        <div>
+          <ProfileDmActions pubkey={chat} />
+        </div>
+      )}
     </div>
+  );
+}
+
+function ProfileDmActions({ pubkey }: { pubkey: string }) {
+  const profile = useUserProfile(pubkey);
+  const { block, unblock, isBlocked } = useModeration();
+
+  const blocked = isBlocked(pubkey);
+  return (
+    <>
+      <Avatar user={profile} size={210} />
+      <h2>{getDisplayName(profile, pubkey)}</h2>
+      <p>
+        <Text content={profile?.about ?? ""} tags={[]} creator={pubkey} disableMedia={true} depth={0} />
+      </p>
+
+      <div className="settings-row" onClick={() => (blocked ? unblock(pubkey) : block(pubkey))}>
+        <Icon name="block" />
+        {blocked ? <FormattedMessage defaultMessage="Unblock" /> : <FormattedMessage defaultMessage="Block" />}
+      </div>
+    </>
   );
 }
 

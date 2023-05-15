@@ -11,13 +11,15 @@
   .dm-page {
     grid-template-columns: 100vw;
   }
+
   .dm-page > div:nth-child(1) {
     margin: 0 !important;
   }
 }
+
 @media (min-width: 1500px) {
   .dm-page {
-    grid-template-columns: 350px auto 350px;
+    grid-template-columns: 400px auto 400px;
   }
 }
 
@@ -36,4 +38,13 @@
 /* Profile pannel */
 .dm-page > div:nth-child(3) {
   margin: 0 10px;
+}
+
+.dm-page > div:nth-child(3) .avatar {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dm-page > div:nth-child(3) .card {
+  cursor: pointer;
 }

@@ -84,6 +84,7 @@ export default function WriteDm({ chatPubKey }: { chatPubKey: string }) {
       <div className="w-max">
         <Textarea
           autoFocus={true}
+          placeholder=""
           className=""
           value={msg}
           onChange={e => onChange(e)}

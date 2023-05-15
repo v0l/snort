@@ -47,6 +47,7 @@ const UserItem = (metadata: MetadataCache) => {
 interface TextareaProps {
   autoFocus: boolean;
   className: string;
+  placeholder?: string;
   onChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void;
   value: string;
   onFocus(): void;
@@ -72,7 +73,7 @@ const Textarea = (props: TextareaProps) => {
       dir="auto"
       {...props}
       loadingComponent={() => <span>Loading...</span>}
-      placeholder={formatMessage(messages.NotePlaceholder)}
+      placeholder={props.placeholder ?? formatMessage(messages.NotePlaceholder)}
       textAreaComponent={TextareaAutosize}
       trigger={{
         ":": {
