@@ -296,7 +296,7 @@ export default function ProfilePage() {
   function renderIcons() {
     if (!id) return;
 
-    const link = encodeTLV(id, NostrPrefix.Profile);
+    const link = encodeTLV(NostrPrefix.Profile, id);
     return (
       <div className="icon-actions">
         <IconButton onClick={() => setShowProfileQr(true)}>

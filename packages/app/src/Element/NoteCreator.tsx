@@ -142,7 +142,7 @@ export function NoteCreator() {
       if (file) {
         const rx = await uploader.upload(file, file.name);
         if (rx.header) {
-          const link = `nostr:${encodeTLV(rx.header.id, NostrPrefix.Event, undefined, rx.header.kind)}`;
+          const link = `nostr:${encodeTLV(NostrPrefix.Event, rx.header.id, undefined, rx.header.kind)}`;
           dispatch(setNote(`${note ? `${note}\n` : ""}${link}`));
           dispatch(setOtherEvents([...otherEvents, rx.header]));
         } else if (rx.url) {

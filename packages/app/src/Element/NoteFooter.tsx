@@ -264,7 +264,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function share() {
-    const link = encodeTLV(ev.id, NostrPrefix.Event, ev.relays);
+    const link = encodeTLV(NostrPrefix.Event, ev.id, ev.relays);
     const url = `${window.location.protocol}//${window.location.host}/e/${link}`;
     if ("share" in window.navigator) {
       await window.navigator.share({
@@ -300,7 +300,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   async function copyId() {
-    const link = encodeTLV(ev.id, NostrPrefix.Event, ev.relays);
+    const link = encodeTLV(NostrPrefix.Event, ev.id, ev.relays);
     await navigator.clipboard.writeText(link);
   }
 

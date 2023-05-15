@@ -91,7 +91,7 @@ export function bech32ToText(str: string) {
  */
 export function eventLink(hex: u256, relays?: Array<string> | string) {
   const encoded = relays
-    ? encodeTLV(hex, NostrPrefix.Event, Array.isArray(relays) ? relays : [relays])
+    ? encodeTLV(NostrPrefix.Event, hex, Array.isArray(relays) ? relays : [relays])
     : hexToBech32(NostrPrefix.Note, hex);
   return `/e/${encoded}`;
 }
@@ -101,7 +101,7 @@ export function eventLink(hex: u256, relays?: Array<string> | string) {
  */
 export function profileLink(hex: HexKey, relays?: Array<string> | string) {
   const encoded = relays
-    ? encodeTLV(hex, NostrPrefix.Profile, Array.isArray(relays) ? relays : [relays])
+    ? encodeTLV(NostrPrefix.Event, hex, Array.isArray(relays) ? relays : [relays])
     : hexToBech32(NostrPrefix.PublicKey, hex);
   return `/p/${encoded}`;
 }
@@ -119,7 +119,7 @@ export function hexToBech32(hrp: string, hex?: string) {
       const buf = secp.utils.hexToBytes(hex);
       return bech32.encode(hrp, bech32.toWords(buf));
     } else {
-      return encodeTLV(hex, hrp as NostrPrefix);
+      return encodeTLV(hrp as NostrPrefix, hex);
     }
   } catch (e) {
     console.warn("Invalid hex", hex, e);

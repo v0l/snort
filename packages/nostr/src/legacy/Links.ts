@@ -27,13 +27,9 @@ export interface TLVEntry {
   value: string | HexKey | number;
 }
 
-export function encodeTLV(hex: string, prefix: NostrPrefix, relays?: string[], kind?: number) {
-  if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0) {
-    return "";
-  }
-
+export function encodeTLV(prefix: NostrPrefix, id: string, relays?: string[], kind?: number, author?: string) {
   const enc = new TextEncoder();
-  const buf = secp.utils.hexToBytes(hex);
+  const buf = prefix === NostrPrefix.Address ? enc.encode(id) : secp.utils.hexToBytes(id);
 
   const tl0 = [0, buf.length, ...buf];
   const tl1 =
@@ -43,9 +39,11 @@ export function encodeTLV(hex: string, prefix: NostrPrefix, relays?: string[], k
         return [1, data.length, ...data];
       })
       .flat() ?? [];
+
+  const tl2 = author ? [2, 32, ...secp.utils.hexToBytes(author)] : [];
   const tl3 = kind ? [3, 4, ...new Uint8Array(new Uint32Array([kind]).buffer).reverse()] : []
 
-  return bech32.encode(prefix, bech32.toWords([...tl0, ...tl1, ...tl3]), 1_000);
+  return bech32.encode(prefix, bech32.toWords([...tl0, ...tl1, ...tl2, ...tl3]), 1_000);
 }
 
 export function decodeTLV(str: string) {

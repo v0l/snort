@@ -30,6 +30,7 @@ import { EventExt } from "System/EventExt";
 import useLogin from "Hooks/useLogin";
 import { setBookmarked, setPinned } from "Login";
 import { NostrFileElement } from "Element/NostrFileHeader";
+import ZapstrEmbed from "Element/ZapstrEmbed";
 
 import messages from "./messages";
 
@@ -78,7 +79,9 @@ export default function Note(props: NoteProps) {
   if (ev.kind === EventKind.FileHeader) {
     return <NostrFileElement ev={ev} />;
   }
-
+  if (ev.kind === 31337) {
+    return <ZapstrEmbed ev={ev} />;
+  }
   const navigate = useNavigate();
   const [showReactions, setShowReactions] = useState(false);
   const deletions = useMemo(() => getReactions(related, ev.id, EventKind.Deletion), [related]);

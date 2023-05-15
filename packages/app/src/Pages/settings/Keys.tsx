@@ -15,7 +15,7 @@ export default function ExportKeys() {
         <FormattedMessage defaultMessage="Public Key" />
       </h3>
       <Copy text={hexToBech32("npub", publicKey ?? "")} maxSize={48} className="mb10" />
-      <Copy text={encodeTLV(publicKey ?? "", NostrPrefix.Profile)} maxSize={48} />
+      <Copy text={encodeTLV(NostrPrefix.Profile, publicKey ?? "")} maxSize={48} />
       {privateKey && (
         <>
           <h3>
