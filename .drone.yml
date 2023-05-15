@@ -24,7 +24,7 @@ steps:
       - apt update && apt install git -y
       - git config --local user.email drone@v0l.io
       - git config --local user.name "Drone CI"
-      - git remote set-url origin https://$TOKEN@git.v0l.io/Kieran/snort.git
+      - git remote set-url origin https://drone:$TOKEN@git.v0l.io/Kieran/snort.git
       - git diff
       - git switch -c lang
       - git commit -a -m "Update translations"
