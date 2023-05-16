@@ -416,9 +416,6 @@
   "IEwZvs": {
     "defaultMessage": "Are you sure you want to unpin this note?"
   },
-  "IKOPx/": {
-    "defaultMessage": "Donate Page"
-  },
   "INSqIz": {
     "defaultMessage": "Twitter username..."
   },
@@ -442,9 +439,6 @@
   },
   "JPFYIM": {
     "defaultMessage": "No lightning address"
-  },
-  "JXtsQW": {
-    "defaultMessage": "Fast Zap Donation"
   },
   "JkLHGw": {
     "defaultMessage": "Website"
@@ -475,9 +469,6 @@
   },
   "KoFlZg": {
     "defaultMessage": "Enter mint URL"
-  },
-  "L7SZPr": {
-    "defaultMessage": "For more information about donations see {link}."
   },
   "LF5kYT": {
     "defaultMessage": "Other Connections"
@@ -1132,9 +1123,6 @@
   },
   "rudscU": {
     "defaultMessage": "Failed to load follows, please try again later"
-  },
-  "sBz4+I": {
-    "defaultMessage": "For each Fast Zap an additional {percentage}% ({amount} sats) of the zap amount will be sent to the Snort developers as a donation."
   },
   "sWnYKw": {
     "defaultMessage": "Snort is designed to have a similar experience to Twitter."
