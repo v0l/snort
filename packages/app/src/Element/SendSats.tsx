@@ -16,6 +16,7 @@ import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
 import { generateRandomKey } from "Login";
 import { EventPublisher } from "System/EventPublisher";
+import { ZapPoolController } from "ZapPoolController";
 
 import messages from "./messages";
 
@@ -36,6 +37,7 @@ export interface SendSatsProps {
   target?: string;
   note?: HexKey;
   author?: HexKey;
+  allocatePool?: boolean;
 }
 
 export default function SendSats(props: SendSatsProps) {
@@ -194,9 +196,12 @@ export default function SendSats(props: SendSatsProps) {
 
   async function payWithWallet(invoice: LNURLInvoice) {
     try {
-      if (wallet?.isReady) {
+      if (wallet?.isReady()) {
         setPaying(true);
         const res = await wallet.payInvoice(invoice?.pr ?? "");
+        if (props.allocatePool) {
+          ZapPoolController.allocate(amount);
+        }
         console.log(res);
         setSuccess(invoice?.successAction ?? {});
       }
