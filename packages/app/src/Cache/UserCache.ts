@@ -2,13 +2,16 @@ import FeedCache from "Cache/FeedCache";
 import { db } from "Db";
 import { MetadataCache } from "Cache";
 import { LNURL } from "LNURL";
+import { fetchNip05Pubkey } from "Nip05/Verifier";
 
 class UserProfileCache extends FeedCache<MetadataCache> {
   #zapperQueue: Array<{ pubkey: string; lnurl: string }> = [];
+  #nip5Queue: Array<{ pubkey: string; nip05: string }> = [];
 
   constructor() {
     super("UserCache", db.users);
     this.#processZapperQueue();
+    this.#processNip5Queue();
   }
 
   key(of: MetadataCache): string {
@@ -80,6 +83,12 @@ class UserProfileCache extends FeedCache<MetadataCache> {
           });
         }
       }
+      if (m.nip05) {
+        this.#nip5Queue.push({
+          pubkey: m.pubkey,
+          nip05: m.nip05,
+        });
+      }
     }
     return updateType;
   }
@@ -118,6 +127,29 @@ class UserProfileCache extends FeedCache<MetadataCache> {
     }
 
     setTimeout(() => this.#processZapperQueue(), 1_000);
+  }
+
+  async #processNip5Queue() {
+    while (this.#nip5Queue.length > 0) {
+      const i = this.#nip5Queue.shift();
+      if (i) {
+        try {
+          const [name, domain] = i.nip05.split("@");
+          const nip5pk = await fetchNip05Pubkey(name, domain);
+          const p = this.getFromCache(i.pubkey);
+          if (p) {
+            this.#setItem({
+              ...p,
+              isNostrAddressValid: i.pubkey === nip5pk,
+            });
+          }
+        } catch {
+          console.warn("Failed to load nip-05", i.nip05);
+        }
+      }
+    }
+
+    setTimeout(() => this.#processNip5Queue(), 1_000);
   }
 }
 

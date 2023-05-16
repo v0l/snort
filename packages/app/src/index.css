@@ -366,11 +366,15 @@ input:disabled {
 .w-max {
   width: 100%;
   width: stretch;
+  width: -webkit-fill-available;
+  width: -moz-available;
 }
 
 .w-max-w {
   max-width: 100%;
   max-width: stretch;
+  max-width: -webkit-fill-available;
+  max-width: -moz-available;
 }
 
 a {

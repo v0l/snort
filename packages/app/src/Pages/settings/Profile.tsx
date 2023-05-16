@@ -64,13 +64,14 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       website,
       nip05,
       lud16,
-    } as Record<string, string | number | undefined>;
+    } as Record<string, string | number | undefined | boolean>;
     delete userCopy["loaded"];
     delete userCopy["created"];
     delete userCopy["pubkey"];
     delete userCopy["npub"];
     delete userCopy["deleted"];
     delete userCopy["zapService"];
+    delete userCopy["isNostrAddressValid"];
     console.debug(userCopy);
 
     if (publisher) {

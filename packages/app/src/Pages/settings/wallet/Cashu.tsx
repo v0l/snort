@@ -4,7 +4,6 @@ import { v4 as uuid } from "uuid";
 
 import AsyncButton from "Element/AsyncButton";
 import { unwrap } from "Util";
-import { CashuWallet } from "Wallet/Cashu";
 import { WalletConfig, WalletKind, Wallets } from "Wallet";
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +18,8 @@ const ConnectCashu = () => {
       if (!mintUrl) {
         throw new Error("Mint URL is required");
       }
+
+      const { CashuWallet } = await import("Wallet/Cashu");
       const connection = new CashuWallet(config);
       await connection.login();
       const info = await connection.getInfo();

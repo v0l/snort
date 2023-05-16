@@ -3,20 +3,19 @@
   align-items: center;
 }
 
-.note-to-self {
-  margin-left: 5px;
-  margin-top: 3px;
-}
-
 .nts .avatar-wrapper {
   margin-right: 8px;
 }
 
 .nts .avatar {
   border-width: 1px;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .nts .avatar.clickable {
   cursor: pointer;
 }

@@ -16,7 +16,7 @@ export interface NoteToSelfProps {
 function NoteLabel() {
   return (
     <div>
-      <FormattedMessage {...messages.NoteToSelf} /> <Icon name="book-closed" />
+      <FormattedMessage {...messages.NoteToSelf} /> <Icon name="badge" size={15} />
     </div>
   );
 }
@@ -34,7 +34,7 @@ export default function NoteToSelf({ pubkey, clickable, className, link }: NoteT
     <div className={`nts${className ? ` ${className}` : ""}`}>
       <div className="avatar-wrapper">
         <div className={`avatar${clickable ? " clickable" : ""}`}>
-          <Icon onClick={clickLink} className="note-to-self" name="book-closed" size={48} />
+          <Icon onClick={clickLink} name="book-closed" size={20} />
         </div>
       </div>
       <div className="f-grow">

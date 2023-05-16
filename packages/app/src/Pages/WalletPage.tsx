@@ -62,11 +62,11 @@ export default function WalletPage() {
   function stateIcon(s: WalletInvoiceState) {
     switch (s) {
       case WalletInvoiceState.Pending:
-        return <Icon name="clock" className="mr5" />;
+        return <Icon name="clock" className="mr5" size={15} />;
       case WalletInvoiceState.Paid:
-        return <Icon name="check" className="mr5" />;
+        return <Icon name="check" className="mr5" size={15} />;
       case WalletInvoiceState.Expired:
-        return <Icon name="close" className="mr5" />;
+        return <Icon name="close" className="mr5" size={15} />;
     }
   }
 

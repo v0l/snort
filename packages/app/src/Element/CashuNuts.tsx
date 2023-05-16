@@ -1,9 +1,18 @@
-import { getDecodedToken } from "@cashu/cashu-ts";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import useLogin from "Hooks/useLogin";
 import { useUserProfile } from "Hooks/useUserProfile";
+
+interface Token {
+  token: Array<{
+    mint: string;
+    proofs: Array<{
+      amount: number;
+    }>;
+  }>;
+  memo?: string;
+}
 
 export default function CashuNuts({ token }: { token: string }) {
   const login = useLogin();
@@ -22,12 +31,16 @@ export default function CashuNuts({ token }: { token: string }) {
     window.open(url, "_blank");
   }
 
-  const cashu = useMemo(() => {
+  const [cashu, setCashu] = useState<Token>();
+  useEffect(() => {
     try {
       if (!token.startsWith("cashuA") || token.length < 10) {
         return;
       }
-      return getDecodedToken(token);
+      import("@cashu/cashu-ts").then(({ getDecodedToken }) => {
+        const tkn = getDecodedToken(token);
+        setCashu(tkn);
+      });
     } catch {
       // ignored
     }

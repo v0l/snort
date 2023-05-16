@@ -11,14 +11,21 @@ const TsTransformer = require("@formatjs/ts-transformer");
 const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
-  entry: "./src/index.tsx",
+  entry: {
+    main: "./src/index.tsx",
+  },
   target: "browserslist",
-  devtool: "source-map",
+  devtool: isProduction ? "source-map" : "eval",
   output: {
     publicPath: "/",
     path: path.resolve(__dirname, "build"),
-    filename: "[name].[chunkhash].js",
-    clean: true,
+    filename: ({ runtime }) => {
+      if (runtime === "sw") {
+        return "[name].js";
+      }
+      return isProduction ? "[name].[chunkhash].js" : "[name].js";
+    },
+    clean: isProduction,
   },
   devServer: {
     open: true,
@@ -32,7 +39,7 @@ const config = {
     }),
     new ESLintPlugin(),
     new MiniCssExtractPlugin({
-      filename: "[name].[chunkhash].css",
+      filename: isProduction ? "[name].[chunkhash].css" : "[name].css",
     }),
   ],
   module: {
@@ -70,6 +77,7 @@ const config = {
   },
   optimization: {
     usedExports: true,
+    chunkIds: "deterministic",
     minimizer: ["...", new CssMinimizerPlugin()],
   },
   resolve: {
@@ -81,11 +89,12 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = "production";
-
-    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+    config.entry.sw = {
+      import: "./src/service-worker.ts",
+      name: "sw.js",
+    };
   } else {
     config.mode = "development";
-    config.output.clean = false;
   }
   return config;
 };
