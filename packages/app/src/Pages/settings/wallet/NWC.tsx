@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid";
 import AsyncButton from "Element/AsyncButton";
 import { unwrap } from "Util";
 import { WalletConfig, WalletKind, Wallets } from "Wallet";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NostrConnectWallet } from "Wallet/NostrWalletConnect";
 
 const ConnectNostrWallet = () => {
@@ -63,6 +63,18 @@ const ConnectNostrWallet = () => {
         </AsyncButton>
       </div>
       {error && <b className="error p10">{error}</b>}
+      <p>
+        <FormattedMessage
+          defaultMessage="Using Alby? Go to {link} to get your NWC config!"
+          values={{
+            link: (
+              <Link to="https://nwc.getalby.com/" target="_blank">
+                nwc.getalby.com
+              </Link>
+            ),
+          }}
+        />
+      </p>
     </>
   );
 };
