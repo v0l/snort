@@ -11,6 +11,24 @@ import { unwrap } from "Util";
 
 import messages from "./messages";
 
+export const AllLanguageCodes = [
+  "en",
+  "ja",
+  "es",
+  "hu",
+  "zh-CN",
+  "zh-TW",
+  "fr",
+  "ar",
+  "it",
+  "id",
+  "de",
+  "ru",
+  "sv",
+  "hr",
+  "ta-IN",
+];
+
 const PreferencesPage = () => {
   const { formatMessage } = useIntl();
   const login = useLogin();
@@ -38,15 +56,13 @@ const PreferencesPage = () => {
               })
             }
             style={{ textTransform: "capitalize" }}>
-            {["en", "ja", "es", "hu", "zh-CN", "zh-TW", "fr", "ar", "it", "id", "de", "ru", "sv", "hr", "ta-IN"]
-              .sort()
-              .map(a => (
-                <option value={a}>
-                  {new Intl.DisplayNames([a], {
-                    type: "language",
-                  }).of(a)}
-                </option>
-              ))}
+            {AllLanguageCodes.sort().map(a => (
+              <option value={a}>
+                {new Intl.DisplayNames([a], {
+                  type: "language",
+                }).of(a)}
+              </option>
+            ))}
           </select>
         </div>
       </div>

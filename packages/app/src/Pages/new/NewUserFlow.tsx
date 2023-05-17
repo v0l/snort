@@ -7,9 +7,11 @@ import Copy from "Element/Copy";
 import { hexToBech32 } from "Util";
 import { hexToMnemonic } from "nip6";
 import useLogin from "Hooks/useLogin";
+import { PROFILE } from ".";
+import { DefaultPreferences, updatePreferences } from "Login";
+import { AllLanguageCodes } from "Pages/settings/Preferences";
 
 import messages from "./messages";
-import { PROFILE } from ".";
 
 const WhatIsSnort = () => {
   return (
@@ -84,7 +86,7 @@ const Extensions = () => {
 };
 
 export default function NewUserFlow() {
-  const { publicKey, generatedEntropy } = useLogin();
+  const login = useLogin();
   const navigate = useNavigate();
 
   return (
@@ -96,17 +98,43 @@ export default function NewUserFlow() {
       <h1>
         <FormattedMessage {...messages.SaveKeys} />
       </h1>
+      <div className="card flex">
+        <div className="flex f-col f-grow">
+          <div>
+            <FormattedMessage defaultMessage="Language" />
+          </div>
+        </div>
+        <div>
+          <select
+            value={login.preferences.language || DefaultPreferences.language}
+            onChange={e =>
+              updatePreferences(login, {
+                ...login.preferences,
+                language: e.target.value,
+              })
+            }
+            style={{ textTransform: "capitalize" }}>
+            {AllLanguageCodes.sort().map(a => (
+              <option value={a}>
+                {new Intl.DisplayNames([a], {
+                  type: "language",
+                }).of(a)}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       <p>
         <FormattedMessage {...messages.SaveKeysHelp} />
       </p>
       <h2>
         <FormattedMessage {...messages.YourPubkey} />
       </h2>
-      <Copy text={hexToBech32("npub", publicKey ?? "")} />
+      <Copy text={hexToBech32("npub", login.publicKey ?? "")} />
       <h2>
         <FormattedMessage {...messages.YourMnemonic} />
       </h2>
-      <Copy text={hexToMnemonic(generatedEntropy ?? "")} />
+      <Copy text={hexToMnemonic(login.generatedEntropy ?? "")} />
       <div className="next-actions">
         <button type="button" onClick={() => navigate(PROFILE)}>
           <FormattedMessage {...messages.KeysSaved} />{" "}
