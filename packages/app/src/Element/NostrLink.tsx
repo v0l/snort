@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { EventKind, NostrPrefix } from "@snort/nostr";
+import { NostrPrefix } from "@snort/nostr";
 
 import Mention from "Element/Mention";
 import { parseNostrLink } from "Util";
