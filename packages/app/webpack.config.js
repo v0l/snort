@@ -6,6 +6,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 const TsTransformer = require("@formatjs/ts-transformer");
 
 const isProduction = process.env.NODE_ENV == "production";
@@ -33,9 +34,18 @@ const config = {
     historyApiFallback: true,
   },
   plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: "public/manifest.json" },
+        { from: "public/robots.txt" },
+        { from: "public/nostrich_512.png" },
+        { from: "public/nostrich_256.png" },
+      ],
+    }),
     new HtmlWebpackPlugin({
       template: "public/index.html",
       favicon: "public/favicon.ico",
+      excludeChunks: ["sw"],
     }),
     new ESLintPlugin(),
     new MiniCssExtractPlugin({
@@ -119,7 +129,7 @@ module.exports = () => {
     config.mode = "production";
     config.entry.sw = {
       import: "./src/service-worker.ts",
-      name: "sw.js",
+      filename: "service-worker.js",
     };
   } else {
     config.mode = "development";

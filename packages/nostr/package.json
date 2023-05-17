@@ -4,7 +4,7 @@
   "main": "dist/lib.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "build": "webpack --mode=production",
+    "build": "webpack --node-env=production",
     "watch": "webpack -w",
     "clean": "rm -rf dist",
     "test": "ts-mocha --type-check -j 1 --timeout 5s test/test.*.ts",

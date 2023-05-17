@@ -46,7 +46,7 @@
   },
   "scripts": {
     "start": "webpack serve",
-    "build": "webpack --mode=production",
+    "build": "webpack --node-env=production",
     "test": "",
     "intl-extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file src/lang.json --flatten true",
     "intl-compile": "formatjs compile src/lang.json --out-file src/translations/en.json",
@@ -89,6 +89,7 @@
     "@webscopeio/react-textarea-autocomplete": "^4.9.2",
     "babel-loader": "^9.1.2",
     "babel-plugin-formatjs": "^10.5.1",
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
     "css-minimizer-webpack-plugin": "^5.0.0",
     "customize-cra": "^1.0.0",
