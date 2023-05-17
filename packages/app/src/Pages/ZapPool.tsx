@@ -74,7 +74,7 @@ export default function ZapPoolPage() {
 
   const sumPending = zapPool.reduce((acc, v) => acc + v.sum, 0);
   return (
-    <div className="zap-pool">
+    <div className="zap-pool main-content">
       <h1>
         <FormattedMessage defaultMessage="Zap Pool" />
       </h1>

@@ -1,6 +1,9 @@
 import { UserCache } from "Cache";
+import { getDisplayName } from "Element/ProfileImage";
 import ExternalStore from "ExternalStore";
 import { LNURL } from "LNURL";
+import { Toastore } from "Toaster";
+import { unixNow } from "Util";
 import { LNWallet, WalletInvoiceState } from "Wallet";
 
 export enum ZapPoolRecipientType {
@@ -46,6 +49,14 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
           const result = await wallet.payInvoice(invoice.pr);
           if (result.state === WalletInvoiceState.Paid) {
             x.sum -= amtSend;
+            Toastore.push({
+              element: `Sent ${amtSend.toLocaleString()} sats to ${getDisplayName(
+                profile,
+                x.pubkey
+              )} from your zap pool`,
+              expire: unixNow() + 10,
+              icon: "zap",
+            });
           } else {
             throw new Error("Payment failed");
           }

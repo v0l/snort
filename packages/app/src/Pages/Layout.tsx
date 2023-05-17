@@ -25,6 +25,7 @@ import Avatar from "Element/Avatar";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { profileLink } from "Util";
 import { getCurrentSubscription } from "Subscription";
+import Toaster from "Toaster";
 
 export default function Layout() {
   const location = useLocation();
@@ -170,6 +171,7 @@ export default function Layout() {
         </>
       )}
       {window.localStorage.getItem("debug") && <SubDebug />}
+      <Toaster />
     </div>
   );
 }
