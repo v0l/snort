@@ -1,6 +1,7 @@
+import { ReactNode, useSyncExternalStore } from "react";
+import { v4 as uuid } from "uuid";
 import ExternalStore from "ExternalStore";
 import Icon from "Icons/Icon";
-import { ReactNode, useSyncExternalStore } from "react";
 import { unixNow } from "Util";
 
 import "./Toaster.css";
@@ -9,6 +10,7 @@ interface ToastNotification {
   element: ReactNode;
   expire?: number;
   icon?: string;
+  id?: string;
 }
 
 class ToasterSlots extends ExternalStore<Array<ToastNotification>> {
@@ -17,6 +19,7 @@ class ToasterSlots extends ExternalStore<Array<ToastNotification>> {
 
   push(n: ToastNotification) {
     n.expire ??= unixNow() + 3;
+    n.id ??= uuid();
     this.#stack.push(n);
     this.notifyChange();
   }
@@ -43,7 +46,7 @@ export default function Toaster() {
   return (
     <div className="toaster">
       {toast.map(a => (
-        <div className="card flex">
+        <div className="card flex" key={a.id}>
           <Icon name={a.icon ?? "bell"} className="mr5" />
           {a.element}
         </div>

@@ -123,7 +123,7 @@ export default class LNDHubWallet implements LNWallet {
       },
     });
     const json = await rsp.json();
-    if ("error" in json) {
+    if ("code" in json && !rsp.ok) {
       const err = json as ErrorResponse;
       throw new WalletError(err.code, err.message);
     }

@@ -1,7 +1,7 @@
 import { Connection, RawEvent } from "@snort/nostr";
 import { EventBuilder } from "System";
 import { EventExt } from "System/EventExt";
-import { LNWallet, WalletError, WalletErrorCode, WalletInfo, WalletInvoice } from "Wallet";
+import { LNWallet, WalletError, WalletErrorCode, WalletInfo, WalletInvoice, WalletInvoiceState } from "Wallet";
 
 interface WalletConnectConfig {
   relayUrl: string;
@@ -12,6 +12,23 @@ interface WalletConnectConfig {
 interface QueueObj {
   resolve: (o: string) => void;
   reject: (e: Error) => void;
+}
+
+interface WalletConnectResponse<T> {
+  result_type?: string;
+  result?: T;
+  error?: {
+    code:
+      | "RATE_LIMITED"
+      | "NOT_IMPLEMENTED"
+      | "INSUFFICIENT_BALANCE"
+      | "QUOTA_EXCEEDED"
+      | "RESTRICTED"
+      | "UNAUTHORIZED"
+      | "INTERNAL"
+      | "OTHER";
+    message: string;
+  };
 }
 
 export class NostrConnectWallet implements LNWallet {
@@ -83,9 +100,18 @@ export class NostrConnectWallet implements LNWallet {
 
   async payInvoice(pr: string) {
     await this.login();
-    return await this.#rpc<WalletInvoice>("pay_invoice", {
+    const rsp = await this.#rpc<WalletConnectResponse<WalletInvoice>>("pay_invoice", {
       invoice: pr,
     });
+    if (!rsp.error) {
+      return {
+        ...rsp.result,
+        pr,
+        state: WalletInvoiceState.Paid,
+      } as WalletInvoice;
+    } else {
+      throw new WalletError(WalletErrorCode.GeneralError, rsp.error.message);
+    }
   }
 
   getInvoices() {

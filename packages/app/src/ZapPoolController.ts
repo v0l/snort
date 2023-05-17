@@ -47,6 +47,7 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
         const invoice = await svc.getInvoice(amtSend, `SnortZapPool: ${x.split}%`);
         if (invoice.pr) {
           const result = await wallet.payInvoice(invoice.pr);
+          console.debug("ZPC", invoice, result);
           if (result.state === WalletInvoiceState.Paid) {
             x.sum -= amtSend;
             Toastore.push({
@@ -58,13 +59,23 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
               icon: "zap",
             });
           } else {
-            throw new Error("Payment failed");
+            throw new Error(`Failed to pay invoice, unknown reason`);
           }
         } else {
           throw new Error(invoice.reason ?? "Failed to get invoice");
         }
       } catch (e) {
         console.error(e);
+        if (e instanceof Error) {
+          const profile = UserCache.getFromCache(x.pubkey);
+          Toastore.push({
+            element: `Failed to send sats to ${getDisplayName(profile, x.pubkey)} (${
+              e.message
+            }), please try again later`,
+            expire: unixNow() + 10,
+            icon: "close",
+          });
+        }
       }
     }
     this.#save();
