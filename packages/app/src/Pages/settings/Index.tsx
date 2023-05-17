@@ -83,7 +83,11 @@ const SettingsIndex = () => {
           <FormattedMessage {...messages.Donate} />
           <Icon name="arrowFront" />
         </div>
-
+        <div className="settings-row" onClick={() => navigate("/zap-pool")}>
+          <Icon name="piggy-bank" />
+          <FormattedMessage defaultMessage="Zap Pool" />
+          <Icon name="arrowFront" />
+        </div>
         <div className="settings-row" onClick={handleLogout}>
           <Icon name="logout" />
           <FormattedMessage {...messages.LogOut} />

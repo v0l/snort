@@ -2,6 +2,9 @@
   "+D82kt": {
     "defaultMessage": "Are you sure you want to repost: {id}"
   },
+  "+PzQ9Y": {
+    "defaultMessage": "Payout Now"
+  },
   "+aZY2h": {
     "defaultMessage": "Zap Type"
   },
@@ -271,6 +274,9 @@
   "C81/uG": {
     "defaultMessage": "Logout"
   },
+  "C8HhVE": {
+    "defaultMessage": "Suggested Follows"
+  },
   "CHTbO3": {
     "defaultMessage": "Failed to load invoice"
   },
@@ -279,6 +285,9 @@
   },
   "CmZ9ls": {
     "defaultMessage": "{n} Muted"
+  },
+  "CsCUYo": {
+    "defaultMessage": "{n} sats"
   },
   "Cu/K85": {
     "defaultMessage": "Translated from {lang}"
@@ -407,9 +416,6 @@
   "IEwZvs": {
     "defaultMessage": "Are you sure you want to unpin this note?"
   },
-  "IKOPx/": {
-    "defaultMessage": "Donate Page"
-  },
   "INSqIz": {
     "defaultMessage": "Twitter username..."
   },
@@ -431,8 +437,8 @@
   "JHEHCk": {
     "defaultMessage": "Zaps ({n})"
   },
-  "JXtsQW": {
-    "defaultMessage": "Fast Zap Donation"
+  "JPFYIM": {
+    "defaultMessage": "No lightning address"
   },
   "JkLHGw": {
     "defaultMessage": "Website"
@@ -464,9 +470,6 @@
   "KoFlZg": {
     "defaultMessage": "Enter mint URL"
   },
-  "L7SZPr": {
-    "defaultMessage": "For more information about donations see {link}."
-  },
   "LF5kYT": {
     "defaultMessage": "Other Connections"
   },
@@ -475,6 +478,9 @@
   },
   "LgbKvU": {
     "defaultMessage": "Comment"
+  },
+  "Lu5/Bj": {
+    "defaultMessage": "Open on Zapstr"
   },
   "M3Oirc": {
     "defaultMessage": "Debug Menus"
@@ -570,12 +576,18 @@
   "QDFTjG": {
     "defaultMessage": "{n} Relays"
   },
+  "QWhotP": {
+    "defaultMessage": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)"
+  },
   "QawghE": {
     "defaultMessage": "You can change your username at any point."
   },
   "QxCuTo": {
     "defaultMessage": "Art by {name}",
     "description": "Artwork attribution label"
+  },
+  "Qxv0B2": {
+    "defaultMessage": "You currently have {number} sats in your zap pool."
   },
   "R/6nsx": {
     "defaultMessage": "Subscription"
@@ -699,8 +711,14 @@
   "X7xU8J": {
     "defaultMessage": "nsec, npub, nip-05, hex, mnemonic"
   },
+  "XICsE8": {
+    "defaultMessage": "File hosts"
+  },
   "XgWvGA": {
     "defaultMessage": "Reactions"
+  },
+  "Xopqkl": {
+    "defaultMessage": "Your default zap amount is {number} sats, example values are calculated from this."
   },
   "XrSk2j": {
     "defaultMessage": "Redeem",
@@ -770,6 +788,9 @@
   "c3g2hL": {
     "defaultMessage": "Broadcast Again"
   },
+  "cE4Hfw": {
+    "defaultMessage": "Discover"
+  },
   "cPIKU2": {
     "defaultMessage": "Following"
   },
@@ -816,6 +837,9 @@
   },
   "eR3YIn": {
     "defaultMessage": "Posts"
+  },
+  "eSzf2G": {
+    "defaultMessage": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool."
   },
   "fOksnD": {
     "defaultMessage": "Can't vote because LNURL service does not support zaps"
@@ -876,6 +900,9 @@
   },
   "hniz8Z": {
     "defaultMessage": "here"
+  },
+  "i/dBAR": {
+    "defaultMessage": "Zap Pool"
   },
   "iCqGww": {
     "defaultMessage": "Reactions ({n})"
@@ -1097,9 +1124,6 @@
   "rudscU": {
     "defaultMessage": "Failed to load follows, please try again later"
   },
-  "sBz4+I": {
-    "defaultMessage": "For each Fast Zap an additional {percentage}% ({amount} sats) of the zap amount will be sent to the Snort developers as a donation."
-  },
   "sWnYKw": {
     "defaultMessage": "Snort is designed to have a similar experience to Twitter."
   },
@@ -1177,6 +1201,9 @@
   "wvFw6Y": {
     "defaultMessage": "Hey, it looks like you dont have a NIP-05 handle yet, you should get one! Check out {link}"
   },
+  "x/Fx2P": {
+    "defaultMessage": "Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"
+  },
   "x/q8d5": {
     "defaultMessage": "This note has been marked as sensitive, click here to reveal"
   },
@@ -1188,10 +1215,6 @@
   },
   "xJ9n2N": {
     "defaultMessage": "Your public key"
-  },
-  "xKdNPm": {
-    "defaultMessage": "Send",
-    "description": "Send DM button"
   },
   "xKflGN": {
     "defaultMessage": "{username}''s Follows on Nostr"

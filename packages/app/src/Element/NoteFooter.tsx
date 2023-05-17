@@ -10,7 +10,7 @@ import Spinner from "Icons/Spinner";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { bech32ToHex, delay, normalizeReaction, unwrap } from "Util";
+import { delay, normalizeReaction, unwrap } from "Util";
 import { NoteCreator } from "Element/NoteCreator";
 import { ReBroadcaster } from "Element/ReBroadcaster";
 import Reactions from "Element/Reactions";
@@ -25,13 +25,13 @@ import {
   reset as resetReBroadcast,
 } from "State/ReBroadcast";
 import useModeration from "Hooks/useModeration";
-import { SnortPubKey, TranslateHost } from "Const";
+import { TranslateHost } from "Const";
 import { LNURL } from "LNURL";
-import { DonateLNURL } from "Pages/DonatePage";
 import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
 import { setBookmarked, setPinned } from "Login";
 import { useInteractionCache } from "Hooks/useInteractionCache";
+import { ZapPoolController } from "ZapPoolController";
 
 import messages from "./messages";
 
@@ -160,7 +160,6 @@ export default function NoteFooter(props: NoteFooterProps) {
       setZapping(true);
       try {
         await fastZapInner(lnurl, prefs.defaultZapAmount, ev.pubkey, ev.id);
-        fastZapDonate();
       } catch (e) {
         console.warn("Fast zap failed", e);
         if (!(e instanceof Error) || e.message !== "User rejected") {
@@ -184,23 +183,9 @@ export default function NoteFooter(props: NoteFooterProps) {
       const zap = handler.canZap && publisher ? await publisher.zap(amount * 1000, key, zr, id) : undefined;
       const invoice = await handler.getInvoice(amount, undefined, zap);
       await wallet?.payInvoice(unwrap(invoice.pr));
+      ZapPoolController.allocate(amount);
 
       await interactionCache.zap();
-    });
-  }
-
-  function fastZapDonate() {
-    queueMicrotask(async () => {
-      if (prefs.fastZapDonate > 0) {
-        // spin off donate
-        const donateAmount = Math.floor(prefs.defaultZapAmount * prefs.fastZapDonate);
-        if (donateAmount > 0) {
-          console.debug(`Donating ${donateAmount} sats to ${DonateLNURL}`);
-          fastZapInner(DonateLNURL, donateAmount, bech32ToHex(SnortPubKey))
-            .then(() => console.debug("Donation sent! Thank You!"))
-            .catch(() => console.debug("Failed to donate"));
-        }
-      }
     });
   }
 
@@ -212,7 +197,6 @@ export default function NoteFooter(props: NoteFooterProps) {
         queueMicrotask(async () => {
           try {
             await fastZapInner(lnurl, prefs.defaultZapAmount, ev.pubkey, ev.id);
-            fastZapDonate();
           } catch {
             // ignored
           } finally {
@@ -457,6 +441,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           author={author?.pubkey}
           target={getTargetName()}
           note={ev.id}
+          allocatePool={true}
         />
       </div>
       <div className="zaps-container">

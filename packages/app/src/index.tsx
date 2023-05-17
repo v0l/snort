@@ -30,7 +30,7 @@ import { WalletRoutes } from "Pages/WalletPage";
 import NostrLinkHandler from "Pages/NostrLinkHandler";
 import Thread from "Element/Thread";
 import { SubscribeRoutes } from "Pages/subscribe";
-import Discover from "Pages/Discover";
+import ZapPoolPage from "Pages/ZapPool";
 
 /**
  * HTTP query provider
@@ -93,6 +93,10 @@ export const router = createBrowserRouter([
       {
         path: "/search/:keyword?",
         element: <SearchPage />,
+      },
+      {
+        path: "/zap-pool",
+        element: <ZapPoolPage />,
       },
       ...NewUserRoutes,
       ...WalletRoutes,

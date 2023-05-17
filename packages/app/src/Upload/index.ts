@@ -4,6 +4,8 @@ import { RawEvent } from "@snort/nostr";
 import NostrBuild from "Upload/NostrBuild";
 import VoidCat from "Upload/VoidCat";
 import NostrImg from "Upload/NostrImg";
+import { KieranPubKey } from "Const";
+import { bech32ToHex } from "Util";
 
 export interface UploadResult {
   url?: string;
@@ -14,6 +16,24 @@ export interface UploadResult {
    */
   header?: RawEvent;
 }
+
+/**
+ * List of supported upload services and their owners on nostr
+ */
+export const UploaderServices = [
+  {
+    name: "void.cat",
+    owner: bech32ToHex(KieranPubKey),
+  },
+  {
+    name: "nostr.build",
+    owner: bech32ToHex("npub1nxy4qpqnld6kmpphjykvx2lqwvxmuxluddwjamm4nc29ds3elyzsm5avr7"),
+  },
+  {
+    name: "nostrimg.com",
+    owner: bech32ToHex("npub1xv6axulxcx6mce5mfvfzpsy89r4gee3zuknulm45cqqpmyw7680q5pxea6"),
+  },
+];
 
 export interface Uploader {
   upload: (f: File | Blob, filename: string) => Promise<UploadResult>;

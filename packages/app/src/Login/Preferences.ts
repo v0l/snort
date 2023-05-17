@@ -63,11 +63,6 @@ export interface UserPreferences {
   defaultZapAmount: number;
 
   /**
-   * For each fast zap an additional X% will be sent to Snort donate address
-   */
-  fastZapDonate: number;
-
-  /**
    * Auto-zap every post
    */
   autoZap: boolean;
@@ -86,6 +81,5 @@ export const DefaultPreferences = {
   imgProxyConfig: DefaultImgProxy,
   defaultRootTab: "posts",
   defaultZapAmount: 50,
-  fastZapDonate: 0.0,
   autoZap: false,
 } as UserPreferences;
