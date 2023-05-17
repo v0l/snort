@@ -497,6 +497,14 @@ export function getRelayName(url: string) {
   return parsedUrl.host + parsedUrl.search;
 }
 
+export function getUrlHostname(url?: string) {
+  try {
+    return new URL(url ?? "").hostname;
+  } catch {
+    return url?.match(/(\S+\.\S+)/i)?.[1] ?? url;
+  }
+}
+
 export interface NostrLink {
   type: NostrPrefix;
   id: string;

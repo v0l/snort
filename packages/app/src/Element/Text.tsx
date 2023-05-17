@@ -166,7 +166,7 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
             if (t) {
               return <ProxyImg src={t[2]} size={15} className="custom-emoji" />;
             } else {
-              return i;
+              return `:${i}:`;
             }
           });
         }
