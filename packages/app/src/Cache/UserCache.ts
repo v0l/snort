@@ -107,49 +107,67 @@ class UserProfileCache extends FeedCache<MetadataCache> {
   }
 
   async #processZapperQueue() {
-    while (this.#zapperQueue.length > 0) {
-      const i = this.#zapperQueue.shift();
-      if (i) {
-        try {
-          const svc = new LNURL(i.lnurl);
-          await svc.load();
-          const p = this.getFromCache(i.pubkey);
-          if (p) {
-            this.#setItem({
-              ...p,
-              zapService: svc.zapperPubkey,
-            });
-          }
-        } catch {
-          console.warn("Failed to load LNURL for zapper pubkey", i.lnurl);
+    await this.#batchQueue(
+      this.#zapperQueue,
+      async i => {
+        const svc = new LNURL(i.lnurl);
+        await svc.load();
+        const p = this.getFromCache(i.pubkey);
+        if (p) {
+          this.#setItem({
+            ...p,
+            zapService: svc.zapperPubkey,
+          });
         }
-      }
-    }
+      },
+      5
+    );
 
     setTimeout(() => this.#processZapperQueue(), 1_000);
   }
 
   async #processNip5Queue() {
-    while (this.#nip5Queue.length > 0) {
-      const i = this.#nip5Queue.shift();
-      if (i) {
-        try {
-          const [name, domain] = i.nip05.split("@");
-          const nip5pk = await fetchNip05Pubkey(name, domain);
-          const p = this.getFromCache(i.pubkey);
-          if (p) {
-            this.#setItem({
-              ...p,
-              isNostrAddressValid: i.pubkey === nip5pk,
-            });
-          }
-        } catch {
-          console.warn("Failed to load nip-05", i.nip05);
+    await this.#batchQueue(
+      this.#nip5Queue,
+      async i => {
+        const [name, domain] = i.nip05.split("@");
+        const nip5pk = await fetchNip05Pubkey(name, domain);
+        const p = this.getFromCache(i.pubkey);
+        if (p) {
+          this.#setItem({
+            ...p,
+            isNostrAddressValid: i.pubkey === nip5pk,
+          });
         }
-      }
-    }
+      },
+      5
+    );
 
     setTimeout(() => this.#processNip5Queue(), 1_000);
+  }
+
+  async #batchQueue<T>(queue: Array<T>, proc: (v: T) => Promise<void>, batchSize = 3) {
+    const batch = [];
+    while (queue.length > 0) {
+      const i = queue.shift();
+      if (i) {
+        batch.push(
+          (async () => {
+            try {
+              await proc(i);
+            } catch {
+              console.warn("Failed to process item", i);
+            }
+            batch.pop(); // pop any
+          })()
+        );
+        if (batch.length === batchSize) {
+          await Promise.all(batch);
+        }
+      } else {
+        await Promise.all(batch);
+      }
+    }
   }
 }
 
