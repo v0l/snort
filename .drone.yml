@@ -49,6 +49,16 @@ trigger:
 metadata:
   namespace: git
 steps:
+  - name: Build site
+    image: node:current-bullseye
+    volumes:
+      - name: cache
+        path: /cache
+    environment: 
+      YARN_CACHE_FOLDER: /cache/.yarn-docker
+    commands:
+      - yarn install
+      - yarn build
   - name: build docker image
     image: r.j3ss.co/img
     privileged: true
@@ -65,7 +75,7 @@ steps:
         --platform linux/amd64,linux/arm64 \
         --cache-from "type=local,src=/cache" \
         --cache-to "type=local,dest=/cache" \
-        .
+        -f Dockerfile.prebuilt .
       - img push git.v0l.io/kieran/snort:latest
 volumes:
 - name: cache
