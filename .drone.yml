@@ -27,7 +27,7 @@ steps:
       - git config --global user.name "Drone CI"
       - git remote set-url origin https://drone:$TOKEN@git.v0l.io/Kieran/snort.git
       - yarn install
-      - npx @crowdin/cli upload -b main -T $CTOKEN
+      - npx @crowdin/cli upload sources -b main -T $CTOKEN
       - npx @crowdin/cli pull -b main -T $CTOKEN
       - yarn workspace @snort/app format
       - git diff
