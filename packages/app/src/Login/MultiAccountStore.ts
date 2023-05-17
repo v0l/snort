@@ -1,4 +1,6 @@
-import * as secp from "@noble/secp256k1";
+import * as secp from "@noble/curves/secp256k1";
+import * as utils from "@noble/curves/abstract/utils";
+
 import { HexKey, RelaySettings } from "@snort/nostr";
 
 import { DefaultRelays } from "Const";
@@ -113,7 +115,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   }
 
   loginWithPrivateKey(key: HexKey, entropy?: string, relays?: Record<string, RelaySettings>) {
-    const pubKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(key));
+    const pubKey = utils.bytesToHex(secp.schnorr.getPublicKey(key));
     if (this.#accounts.has(pubKey)) {
       throw new Error("Already logged in with this pubkey");
     }
@@ -167,7 +169,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
 
     const privKey = window.localStorage.getItem(LegacyKeys.PrivateKeyItem);
     if (privKey) {
-      const pubKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
+      const pubKey = utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
       this.#accounts.set(pubKey, {
         ...LoggedOut,
         privateKey: privKey,

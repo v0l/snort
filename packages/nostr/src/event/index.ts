@@ -128,12 +128,12 @@ export async function signEvent<T extends RawEvent>(
   if (priv !== undefined) {
     priv = parsePrivateKey(priv)
     event.pubkey = getPublicKey(priv)
-    const id = await serializeEventId(
+    const id = serializeEventId(
       // This conversion is safe because the pubkey field is set above.
       event as unknown as UnsignedWithPubkey<T>
     )
     event.id = id
-    event.sig = await schnorrSign(id, priv)
+    event.sig = schnorrSign(id, priv)
     return event as T
   } else {
     if (typeof window === "undefined" || window.nostr === undefined) {
@@ -158,15 +158,15 @@ export async function signEvent<T extends RawEvent>(
 /**
  * Parse an event from its raw format.
  */
-export async function parseEvent(event: RawEvent): Promise<Event> {
-  if (event.id !== (await serializeEventId(event))) {
+export function parseEvent(event: RawEvent): Event {
+  if (event.id !== (serializeEventId(event))) {
     throw new NostrError(
       `invalid id ${event.id} for event ${JSON.stringify(
         event
-      )}, expected ${await serializeEventId(event)}`
+      )}, expected ${serializeEventId(event)}`
     )
   }
-  if (!(await schnorrVerify(event.sig, event.id, event.pubkey))) {
+  if (!(schnorrVerify(event.sig, event.id, event.pubkey))) {
     throw new NostrError(`invalid signature for event ${JSON.stringify(event)}`)
   }
 
@@ -221,9 +221,9 @@ export async function parseEvent(event: RawEvent): Promise<Event> {
   }
 }
 
-async function serializeEventId(
+function serializeEventId(
   event: UnsignedWithPubkey<RawEvent>
-): Promise<EventId> {
+): EventId {
   const serialized = JSON.stringify([
     0,
     event.pubkey,
@@ -232,7 +232,7 @@ async function serializeEventId(
     event.tags,
     event.content,
   ])
-  return await sha256(Uint8Array.from(charCodes(serialized)))
+  return sha256(Uint8Array.from(charCodes(serialized)))
 }
 
 function* charCodes(data: string): Iterable<number> {

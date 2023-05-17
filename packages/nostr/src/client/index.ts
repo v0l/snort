@@ -1,7 +1,7 @@
 import { NostrError } from "../common"
 import { RawEvent, parseEvent } from "../event"
 import { Conn } from "./conn"
-import * as secp from "@noble/secp256k1"
+import * as utils from "@noble/curves/abstract/utils";
 import { EventEmitter } from "./emitter"
 import { fetchRelayInfo, ReadyState, Relay } from "./relay"
 import { Filters } from "../filters"
@@ -71,21 +71,21 @@ export class Nostr extends EventEmitter {
       opts?.fetchInfo === false
         ? Promise.resolve({})
         : fetchRelayInfo(relayUrl).catch((e) => {
-            this.#error(e)
-            return {}
-          })
+          this.#error(e)
+          return {}
+        })
 
     // If there is no existing connection, open a new one.
     const conn = new Conn({
       url: relayUrl,
 
       // Handle messages on this connection.
-      onMessage: async (msg) => {
+      onMessage: (msg) => {
         if (msg.kind === "event") {
           this.emit(
             "event",
             {
-              event: await parseEvent(msg.event),
+              event: parseEvent(msg.event),
               subscriptionId: msg.subscriptionId,
             },
             this
@@ -128,8 +128,7 @@ export class Nostr extends EventEmitter {
           if (conn.relay.readyState !== ReadyState.CONNECTING) {
             this.#error(
               new NostrError(
-                `bug: expected connection to ${relayUrl.toString()} to have readyState CONNECTING, got ${
-                  conn.relay.readyState
+                `bug: expected connection to ${relayUrl.toString()} to have readyState CONNECTING, got ${conn.relay.readyState
                 }`
               )
             )
@@ -294,7 +293,7 @@ export class Nostr extends EventEmitter {
           relay.info === undefined
             ? undefined
             : // Deep copy of the info.
-              JSON.parse(JSON.stringify(relay.info))
+            JSON.parse(JSON.stringify(relay.info))
         return { ...relay, info }
       }
     })
@@ -330,5 +329,5 @@ interface ConnState {
 export type SubscriptionId = string
 
 function randomSubscriptionId(): SubscriptionId {
-  return secp.utils.bytesToHex(secp.utils.randomBytes(32))
+  return utils.bytesToHex(globalThis.crypto.getRandomValues(new Uint8Array(32)))
 }

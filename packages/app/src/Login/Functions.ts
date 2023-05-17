@@ -1,5 +1,6 @@
 import { HexKey, RelaySettings } from "@snort/nostr";
-import * as secp from "@noble/secp256k1";
+import * as secp from "@noble/curves/secp256k1";
+import * as utils from "@noble/curves/abstract/utils";
 
 import { DefaultRelays, SnortPubKey } from "Const";
 import { LoginStore, UserPreferences, LoginSession } from "Login";
@@ -57,7 +58,7 @@ export function clearEntropy(state: LoginSession) {
  */
 export async function generateNewLogin() {
   const ent = generateBip39Entropy();
-  const entropy = secp.utils.bytesToHex(ent);
+  const entropy = utils.bytesToHex(ent);
   const privateKey = entropyToPrivateKey(ent);
   let newRelays: Record<string, RelaySettings> = {};
 
@@ -76,7 +77,7 @@ export async function generateNewLogin() {
     console.warn(e);
   }
 
-  const publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
+  const publicKey = utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
   const publisher = new EventPublisher(publicKey, privateKey);
   const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey], newRelays);
   publisher.broadcast(ev);
@@ -85,8 +86,8 @@ export async function generateNewLogin() {
 }
 
 export function generateRandomKey() {
-  const privateKey = secp.utils.bytesToHex(secp.utils.randomPrivateKey());
-  const publicKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
+  const privateKey = utils.bytesToHex(secp.schnorr.utils.randomPrivateKey());
+  const publicKey = utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
   return {
     privateKey,
     publicKey,

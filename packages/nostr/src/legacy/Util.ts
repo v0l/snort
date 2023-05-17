@@ -1,4 +1,4 @@
-import * as secp from "@noble/secp256k1";
+import * as utils from "@noble/curves/abstract/utils";
 import { bech32 } from "bech32";
 
 export function unwrap<T>(v: T | undefined | null): T {
@@ -17,7 +17,7 @@ export function hexToBech32(hrp: string, hex?: string) {
   }
 
   try {
-    const buf = secp.utils.hexToBytes(hex);
+    const buf = utils.hexToBytes(hex);
     return bech32.encode(hrp, bech32.toWords(buf));
   } catch (e) {
     console.warn("Invalid hex", hex, e);

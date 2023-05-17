@@ -38,7 +38,7 @@ export class Conn {
     onError,
   }: {
     url: URL
-    onMessage: (msg: IncomingMessage) => Promise<void>
+    onMessage: (msg: IncomingMessage) => void
     onOpen: () => Promise<void>
     onClose: () => void
     onError: (err: unknown) => void
@@ -55,7 +55,7 @@ export class Conn {
           throw new NostrError(`invalid message data: ${value}`)
         }
         const msg = parseIncomingMessage(value)
-        await onMessage(msg)
+        onMessage(msg)
       } catch (err) {
         onError(err)
       }

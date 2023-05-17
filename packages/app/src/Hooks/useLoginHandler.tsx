@@ -1,5 +1,4 @@
 import { useIntl } from "react-intl";
-import * as secp from "@noble/secp256k1";
 
 import { EmailRegex, MnemonicRegex } from "Const";
 import { LoginStore } from "Login";
@@ -21,7 +20,7 @@ export default function useLoginHandler() {
         throw new Error(insecureMsg);
       }
       const hexKey = bech32ToHex(key);
-      if (secp.utils.isValidPrivateKey(hexKey)) {
+      if (hexKey.length === 64) {
         LoginStore.loginWithPrivateKey(hexKey);
       } else {
         throw new Error("INVALID PRIVATE KEY");
@@ -39,7 +38,7 @@ export default function useLoginHandler() {
       const ent = generateBip39Entropy(key);
       const keyHex = entropyToPrivateKey(ent);
       LoginStore.loginWithPrivateKey(keyHex);
-    } else if (secp.utils.isValidPrivateKey(key)) {
+    } else if (key.length === 64) {
       if (!hasSubtleCrypto) {
         throw new Error(insecureMsg);
       }

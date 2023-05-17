@@ -1,4 +1,4 @@
-import * as secp from "@noble/secp256k1";
+import * as utils from "@noble/curves/abstract/utils";
 import * as bip39 from "@scure/bip39";
 import { wordlist } from "@scure/bip39/wordlists/english";
 import { HDKey } from "@scure/bip32";
@@ -18,7 +18,7 @@ export function generateBip39Entropy(mnemonic?: string): Uint8Array {
  * Convert hex-encoded entropy into mnemonic phrase
  */
 export function hexToMnemonic(hex: string): string {
-  const bytes = secp.utils.hexToBytes(hex);
+  const bytes = utils.hexToBytes(hex);
   return bip39.entropyToMnemonic(bytes, wordlist);
 }
 
@@ -33,5 +33,5 @@ export function entropyToPrivateKey(entropy: Uint8Array): string {
     throw new Error("INVALID KEY DERIVATION");
   }
 
-  return secp.utils.bytesToHex(newKey.privateKey);
+  return utils.bytesToHex(newKey.privateKey);
 }

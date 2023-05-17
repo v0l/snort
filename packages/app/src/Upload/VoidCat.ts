@@ -1,4 +1,4 @@
-import * as secp from "@noble/secp256k1";
+import * as utils from "@noble/curves/abstract/utils";
 import { EventKind } from "@snort/nostr";
 import { FileExtensionRegex, VoidCatHost } from "Const";
 import { EventPublisher } from "System/EventPublisher";
@@ -25,7 +25,7 @@ export default async function VoidCat(
       "Content-Type": "application/octet-stream",
       "V-Content-Type": file.type,
       "V-Filename": filename,
-      "V-Full-Digest": secp.utils.bytesToHex(new Uint8Array(digest)),
+      "V-Full-Digest": utils.bytesToHex(new Uint8Array(digest)),
       "V-Description": "Upload from https://snort.social",
       "V-Strip-Metadata": "true",
     },

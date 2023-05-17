@@ -1,4 +1,4 @@
-import * as secp from "@noble/secp256k1";
+import * as utils from "@noble/curves/abstract/utils";
 import * as base64 from "@protobufjs/base64";
 import { hmacSha256, unwrap } from "Util";
 import useLogin from "Hooks/useLogin";
@@ -19,8 +19,8 @@ export default function useImgProxy() {
 
   function signUrl(u: string) {
     const result = hmacSha256(
-      secp.utils.hexToBytes(unwrap(settings).key),
-      secp.utils.hexToBytes(unwrap(settings).salt),
+      utils.hexToBytes(unwrap(settings).key),
+      utils.hexToBytes(unwrap(settings).salt),
       te.encode(u)
     );
     return urlSafe(base64.encode(result, 0, result.byteLength));

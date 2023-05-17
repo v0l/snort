@@ -1,4 +1,5 @@
-import * as secp from "@noble/secp256k1";
+import * as secp from "@noble/curves/secp256k1";
+import * as utils from "@noble/curves/abstract/utils";
 import {
   EventKind,
   FullRelaySettings,
@@ -60,7 +61,7 @@ export class EventPublisher {
   constructor(pubKey: string, privKey?: string) {
     if (privKey) {
       this.#privateKey = privKey;
-      this.#pubKey = secp.utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
+      this.#pubKey = utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
     } else {
       this.#pubKey = pubKey;
     }

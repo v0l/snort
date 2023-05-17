@@ -1,4 +1,5 @@
-import * as secp from "@noble/secp256k1";
+import * as secp from "@noble/curves/secp256k1";
+import * as utils from "@noble/curves/abstract/utils";
 import { EventKind, HexKey, RawEvent, Tag } from "@snort/nostr";
 import base64 from "@protobufjs/base64";
 import { sha256, unixNow } from "Util";
@@ -29,7 +30,7 @@ export abstract class EventExt {
     e.id = this.createId(e);
 
     const sig = await secp.schnorr.sign(e.id, key);
-    e.sig = secp.utils.bytesToHex(sig);
+    e.sig = utils.bytesToHex(sig);
     if (!(await secp.schnorr.verify(e.sig, e.id, e.pubkey))) {
       throw new Error("Signing failed");
     }
@@ -158,7 +159,7 @@ export abstract class EventExt {
   }
 
   static async #getDmSharedKey(pubkey: HexKey, privkey: HexKey) {
-    const sharedPoint = secp.getSharedSecret(privkey, "02" + pubkey);
+    const sharedPoint = secp.secp256k1.getSharedSecret(privkey, "02" + pubkey);
     const sharedX = sharedPoint.slice(1, 33);
     return await window.crypto.subtle.importKey("raw", sharedX, { name: "AES-CBC" }, false, ["encrypt", "decrypt"]);
   }

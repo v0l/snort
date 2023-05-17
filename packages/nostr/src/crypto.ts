@@ -1,4 +1,6 @@
-import * as secp from "@noble/secp256k1"
+import * as secp from "@noble/curves/secp256k1"
+import * as utils from "@noble/curves/abstract/utils";
+import {sha256 as sha} from "@noble/hashes/sha256";
 import base64 from "base64-js"
 import { bech32 } from "bech32"
 
@@ -43,7 +45,7 @@ export function getPublicKey(priv: HexOrBechPrivateKey): PublicKey {
  * Convert the data to lowercase hex.
  */
 function toHex(data: Uint8Array): Hex {
-  return secp.utils.bytesToHex(data).toLowerCase()
+  return utils.bytesToHex(data).toLowerCase()
 }
 
 /**
@@ -76,15 +78,15 @@ function parseKey(key: string, bechPrefix: string): Hex {
 /**
  * Get the SHA256 hash of the data, in hex format.
  */
-export async function sha256(data: Uint8Array): Promise<Hex> {
-  return toHex(await secp.utils.sha256(data))
+export function sha256(data: Uint8Array): Hex {
+  return toHex(sha(data))
 }
 
 /**
  * Sign the data using elliptic curve cryptography.
  */
-export async function schnorrSign(data: Hex, priv: PrivateKey): Promise<Hex> {
-  return toHex(await secp.schnorr.sign(data, priv))
+export function schnorrSign(data: Hex, priv: PrivateKey): Hex {
+  return toHex(secp.schnorr.sign(data, priv))
 }
 
 /**
@@ -94,7 +96,7 @@ export function schnorrVerify(
   sig: Hex,
   data: Hex,
   key: PublicKey
-): Promise<boolean> {
+): boolean {
   return secp.schnorr.verify(sig.toString(), data.toString(), key.toString())
 }
 
@@ -103,7 +105,7 @@ export async function aesEncryptBase64(
   recipient: PublicKey,
   plaintext: string
 ): Promise<AesEncryptedBase64> {
-  const sharedPoint = secp.getSharedSecret(sender, "02" + recipient)
+  const sharedPoint = secp.secp256k1.getSharedSecret(sender, "02" + recipient)
   const sharedKey = sharedPoint.slice(1, 33)
   if (typeof window === "object") {
     const key = await window.crypto.subtle.importKey(
@@ -149,7 +151,7 @@ export async function aesDecryptBase64(
   recipient: PrivateKey,
   { data, iv }: AesEncryptedBase64
 ): Promise<string> {
-  const sharedPoint = secp.getSharedSecret(recipient, "02" + sender)
+  const sharedPoint = secp.secp256k1.getSharedSecret(recipient, "02" + sender)
   const sharedKey = sharedPoint.slice(1, 33)
   if (typeof window === "object") {
     const decodedData = base64.toByteArray(data)

@@ -29,8 +29,8 @@
     "semi": false
   },
   "dependencies": {
+    "@noble/curves": "^1.0.0",
     "@noble/hashes": "^1.2.0",
-    "@noble/secp256k1": "^1.7.1",
     "@types/chai": "^4.3.4",
     "@types/uuid": "^9.0.1",
     "base64-js": "^1.5.1",
@@ -46,6 +46,20 @@
   },
   "directories": {
     "test": "test"
+  },
+  "browserslist": {
+    "production": [
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "keywords": [],
   "author": "",

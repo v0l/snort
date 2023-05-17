@@ -1,4 +1,5 @@
-import * as secp from "@noble/secp256k1";
+import * as secp from "@noble/curves/secp256k1";
+import * as utils from "@noble/curves/abstract/utils";
 import { sha256 as hash } from "@noble/hashes/sha256";
 import { hmac } from "@noble/hashes/hmac";
 import { bytesToHex } from "@noble/hashes/utils";
@@ -19,11 +20,11 @@ import {
 import { MetadataCache } from "Cache";
 
 export const sha256 = (str: string | Uint8Array): u256 => {
-  return secp.utils.bytesToHex(hash(str));
+  return utils.bytesToHex(hash(str));
 };
 
 export function getPublicKey(privKey: HexKey) {
-  return secp.utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
+  return utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
 }
 
 export async function openFile(): Promise<File | undefined> {
@@ -63,7 +64,7 @@ export function bech32ToHex(str: string) {
   try {
     const nKey = bech32.decode(str, 1_000);
     const buff = bech32.fromWords(nKey.words);
-    return secp.utils.bytesToHex(Uint8Array.from(buff));
+    return utils.bytesToHex(Uint8Array.from(buff));
   } catch {
     return str;
   }
@@ -116,7 +117,7 @@ export function hexToBech32(hrp: string, hex?: string) {
 
   try {
     if (hrp === NostrPrefix.Note || hrp === NostrPrefix.PrivateKey || hrp === NostrPrefix.PublicKey) {
-      const buf = secp.utils.hexToBytes(hex);
+      const buf = utils.hexToBytes(hex);
       return bech32.encode(hrp, bech32.toWords(buf));
     } else {
       return encodeTLV(hrp as NostrPrefix, hex);
@@ -488,7 +489,7 @@ export function findTag(e: RawEvent, tag: string) {
 }
 
 export function hmacSha256(key: Uint8Array, ...messages: Uint8Array[]) {
-  return hmac(hash, key, secp.utils.concatBytes(...messages));
+  return hmac(hash, key, utils.concatBytes(...messages));
 }
 
 export function getRelayName(url: string) {
