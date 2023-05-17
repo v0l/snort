@@ -2,7 +2,7 @@
 
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
@@ -78,7 +78,35 @@ const config = {
   optimization: {
     usedExports: true,
     chunkIds: "deterministic",
-    minimizer: ["...", new CssMinimizerPlugin()],
+    minimize: isProduction,
+    minimizer: [
+      "...",
+      // same as https://github.com/facebook/create-react-app/blob/main/packages/react-scripts/config/webpack.config.js
+      new TerserPlugin({
+        terserOptions: {
+          parse: {
+            ecma: 8,
+          },
+          compress: {
+            ecma: 5,
+            warnings: false,
+            comparisons: false,
+            inline: 2,
+          },
+          mangle: {
+            safari10: true,
+          },
+          keep_classnames: isProduction,
+          keep_fnames: isProduction,
+          output: {
+            ecma: 5,
+            comments: false,
+            ascii_only: true,
+          },
+        },
+      }),
+      new CssMinimizerPlugin(),
+    ],
   },
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", "..."],

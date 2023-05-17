@@ -1,22 +1,7 @@
-import { type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
 
 import enMessages from "translations/en.json";
-import esMessages from "translations/es_ES.json";
-import zhMessages from "translations/zh_CN.json";
-import twMessages from "translations/zh_TW.json";
-import jaMessages from "translations/ja_JP.json";
-import frMessages from "translations/fr_FR.json";
-import huMessages from "translations/hu_HU.json";
-import idMessages from "translations/id_ID.json";
-import arMessages from "translations/ar_SA.json";
-import itMessages from "translations/it_IT.json";
-import deMessages from "translations/de_DE.json";
-import ruMessages from "translations/ru_RU.json";
-import svMessages from "translations/sv_SE.json";
-import hrMessages from "translations/hr_HR.json";
-import taINMessages from "translations/ta_IN.json";
-
 import useLogin from "Hooks/useLogin";
 
 const DefaultLocale = "en-US";
@@ -24,65 +9,76 @@ const DefaultLocale = "en-US";
 const getMessages = (locale: string) => {
   const truncatedLocale = locale.toLowerCase().split(/[_-]+/)[0];
 
-  const matchLang = (lng: string) => {
+  const matchLang = async (lng: string) => {
     switch (lng) {
       case "es-ES":
       case "es":
-        return esMessages;
+        return (await import("translations/es_ES.json")).default;
       case "zh-CN":
       case "zh-Hans-CN":
       case "zh":
-        return zhMessages;
+        return (await import("translations/zh_CN.json")).default;
       case "zh-TW":
-        return twMessages;
+        return (await import("translations/zh_TW.json")).default;
       case "ja-JP":
       case "ja":
-        return jaMessages;
+        return (await import("translations/ja_JP.json")).default;
       case "fr-FR":
       case "fr":
-        return frMessages;
+        return (await import("translations/fr_FR.json")).default;
       case "hu-HU":
       case "hu":
-        return huMessages;
+        return (await import("translations/hu_HU.json")).default;
       case "id-ID":
       case "id":
-        return idMessages;
+        return (await import("translations/id_ID.json")).default;
       case "ar-SA":
       case "ar":
-        return arMessages;
+        return (await import("translations/ar_SA.json")).default;
       case "it-IT":
       case "it":
-        return itMessages;
+        return (await import("translations/it_IT.json")).default;
       case "de-DE":
       case "de":
-        return deMessages;
+        return (await import("translations/de_DE.json")).default;
       case "ru-RU":
       case "ru":
-        return ruMessages;
+        return (await import("translations/ru_RU.json")).default;
       case "sv-SE":
       case "sv":
-        return svMessages;
+        return (await import("translations/sv_SE.json")).default;
       case "hr-HR":
       case "hr":
-        return hrMessages;
+        return (await import("translations/hr_HR.json")).default;
       case "ta-IN":
       case "ta":
-        return taINMessages;
+        return (await import("translations/ta_IN.json")).default;
       case DefaultLocale:
       case "en":
         return enMessages;
     }
   };
 
-  return matchLang(locale) ?? matchLang(truncatedLocale) ?? enMessages;
+  return matchLang(locale) ?? matchLang(truncatedLocale) ?? Promise.resolve(enMessages);
 };
 
 export const IntlProvider = ({ children }: { children: ReactNode }) => {
   const { language } = useLogin().preferences;
   const locale = language ?? getLocale();
+  const [messages, setMessages] = useState<Record<string, string>>(enMessages);
+
+  useEffect(() => {
+    getMessages(locale)
+      .then(x => {
+        if (x) {
+          setMessages(x);
+        }
+      })
+      .catch(console.error);
+  }, [language]);
 
   return (
-    <ReactIntlProvider locale={locale} messages={getMessages(locale)}>
+    <ReactIntlProvider locale={locale} messages={messages}>
       {children}
     </ReactIntlProvider>
   );

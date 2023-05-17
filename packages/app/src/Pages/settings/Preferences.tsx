@@ -1,8 +1,7 @@
 import "./Preferences.css";
 
 import { FormattedMessage, useIntl } from "react-intl";
-import emoji from "@jukben/emoji-search";
-
+import { useEffect, useState } from "react";
 import useLogin from "Hooks/useLogin";
 import { DefaultPreferences, updatePreferences, UserPreferences } from "Login";
 import { DefaultImgProxy } from "Const";
@@ -32,6 +31,14 @@ const PreferencesPage = () => {
   const { formatMessage } = useIntl();
   const login = useLogin();
   const perf = login.preferences;
+  const [emoji, setEmoji] = useState<Array<{ name: string; char: string }>>([]);
+
+  useEffect(() => {
+    (async () => {
+      const emoji = await import("@jukben/emoji-search");
+      setEmoji(emoji.default("").map(a => ({ name: a.name, char: a.char })));
+    })();
+  }, []);
 
   return (
     <div className="preferences">
@@ -319,7 +326,7 @@ const PreferencesPage = () => {
               <option value="+">
                 + <FormattedMessage {...messages.Default} />
               </option>
-              {emoji("").map(({ name, char }) => {
+              {emoji.map(({ name, char }) => {
                 return (
                   <option value={char}>
                     {name} {char}
