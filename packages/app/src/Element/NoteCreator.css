@@ -18,8 +18,9 @@
   background-color: var(--note-bg);
   border-radius: 10px 10px 0 0;
   min-height: 100px;
-  max-width: stretch;
-  min-width: stretch;
+  width: stretch;
+  width: -webkit-fill-available;
+  width: -moz-available;
   max-height: 210px;
 }
 
@@ -57,6 +58,8 @@
   display: flex;
   justify-content: flex-end;
   width: stretch;
+  width: -webkit-fill-available;
+  width: -moz-available;
 }
 
 .note-creator .insert > button {

@@ -1,11 +1,10 @@
 import "./NoteToSelf.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBook, faCertificate } from "@fortawesome/free-solid-svg-icons";
 import { profileLink } from "Util";
 
 import messages from "./messages";
+import Icon from "Icons/Icon";
 
 export interface NoteToSelfProps {
   pubkey: string;
@@ -17,7 +16,7 @@ export interface NoteToSelfProps {
 function NoteLabel() {
   return (
     <div>
-      <FormattedMessage {...messages.NoteToSelf} /> <FontAwesomeIcon icon={faCertificate} size="xs" />
+      <FormattedMessage {...messages.NoteToSelf} /> <Icon name="badge" size={15} />
     </div>
   );
 }
@@ -35,7 +34,7 @@ export default function NoteToSelf({ pubkey, clickable, className, link }: NoteT
     <div className={`nts${className ? ` ${className}` : ""}`}>
       <div className="avatar-wrapper">
         <div className={`avatar${clickable ? " clickable" : ""}`}>
-          <FontAwesomeIcon onClick={clickLink} className="note-to-self" icon={faBook} size="2xl" />
+          <Icon onClick={clickLink} name="book-closed" size={20} />
         </div>
       </div>
       <div className="f-grow">

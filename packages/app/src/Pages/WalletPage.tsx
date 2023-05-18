@@ -3,14 +3,13 @@ import "./WalletPage.css";
 import { useEffect, useState } from "react";
 import { RouteObject, useNavigate } from "react-router-dom";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faClock, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import NoteTime from "Element/NoteTime";
 import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets, WalletKind } from "Wallet";
 import AsyncButton from "Element/AsyncButton";
 import { unwrap } from "Util";
 import { WebLNWallet } from "Wallet/WebLN";
+import Icon from "Icons/Icon";
 
 export const WalletRoutes: RouteObject[] = [
   {
@@ -63,11 +62,11 @@ export default function WalletPage() {
   function stateIcon(s: WalletInvoiceState) {
     switch (s) {
       case WalletInvoiceState.Pending:
-        return <FontAwesomeIcon icon={faClock} className="mr5" />;
+        return <Icon name="clock" className="mr5" size={15} />;
       case WalletInvoiceState.Paid:
-        return <FontAwesomeIcon icon={faCheck} className="mr5" />;
+        return <Icon name="check" className="mr5" size={15} />;
       case WalletInvoiceState.Expired:
-        return <FontAwesomeIcon icon={faXmark} className="mr5" />;
+        return <Icon name="close" className="mr5" size={15} />;
     }
   }
 

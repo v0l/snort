@@ -3,8 +3,6 @@ import Nostrich from "nostrich.webp";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShop } from "@fortawesome/free-solid-svg-icons";
 
 import useEventPublisher from "Feed/EventPublisher";
 import { useUserProfile } from "Hooks/useUserProfile";
@@ -13,9 +11,10 @@ import useFileUpload from "Upload";
 import AsyncButton from "Element/AsyncButton";
 import { mapEventToProfile, UserCache } from "Cache";
 import useLogin from "Hooks/useLogin";
+import AvatarEditor from "Element/AvatarEditor";
+import Icon from "Icons/Icon";
 
 import messages from "./messages";
-import AvatarEditor from "Element/AvatarEditor";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -65,13 +64,14 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       website,
       nip05,
       lud16,
-    } as Record<string, string | number | undefined>;
+    } as Record<string, string | number | undefined | boolean>;
     delete userCopy["loaded"];
     delete userCopy["created"];
     delete userCopy["pubkey"];
     delete userCopy["npub"];
     delete userCopy["deleted"];
     delete userCopy["zapService"];
+    delete userCopy["isNostrAddressValid"];
     console.debug(userCopy);
 
     if (publisher) {
@@ -147,7 +147,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           <div>
             <input type="text" className="mr10" value={nip05} onChange={e => setNip05(e.target.value)} />
             <button type="button" onClick={() => navigate("/verification")}>
-              <FontAwesomeIcon icon={faShop} />
+              <Icon name="shopping-bag" />
               &nbsp; <FormattedMessage {...messages.Buy} />
             </button>
           </div>

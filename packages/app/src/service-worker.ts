@@ -1,4 +1,6 @@
-/* eslint-disable no-restricted-globals */
+/// <reference lib="webworker" />
+import {} from ".";
+declare var self: ServiceWorkerGlobalScope;
 
 import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";

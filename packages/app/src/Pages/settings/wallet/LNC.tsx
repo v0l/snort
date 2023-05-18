@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 
 import AsyncButton from "Element/AsyncButton";
-import { LNCWallet } from "Wallet/LNCWallet";
-import { WalletInfo, WalletKind, Wallets } from "Wallet";
+import { LNWallet, WalletInfo, WalletKind, Wallets } from "Wallet";
 import { unwrap } from "Util";
 
 const ConnectLNC = () => {
@@ -13,12 +12,13 @@ const ConnectLNC = () => {
   const navigate = useNavigate();
   const [pairingPhrase, setPairingPhrase] = useState<string>();
   const [error, setError] = useState<string>();
-  const [connectedLNC, setConnectedLNC] = useState<LNCWallet>();
+  const [connectedLNC, setConnectedLNC] = useState<LNWallet & { setPassword(pw: string): void }>();
   const [walletInfo, setWalletInfo] = useState<WalletInfo>();
   const [walletPassword, setWalletPassword] = useState<string>();
 
   async function tryConnect(cfg: string) {
     try {
+      const { LNCWallet } = await import("Wallet/LNCWallet");
       const lnc = await LNCWallet.Initialize(cfg);
       const info = await lnc.getInfo();
 

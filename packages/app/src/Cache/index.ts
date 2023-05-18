@@ -29,6 +29,11 @@ export interface MetadataCache extends UserMetadata {
    * Pubkey of zapper service
    */
   zapService?: HexKey;
+
+  /**
+   * If the nip05 is valid for this user
+   */
+  isNostrAddressValid: boolean;
 }
 
 export function mapEventToProfile(ev: RawEvent) {

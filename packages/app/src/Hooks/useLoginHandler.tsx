@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 import { EmailRegex, MnemonicRegex } from "Const";
 import { LoginStore } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
-import { getNip05PubKey } from "Pages/Login";
+import { getNip05PubKey } from "Pages/LoginPage";
 import { bech32ToHex } from "Util";
 
 export default function useLoginHandler() {

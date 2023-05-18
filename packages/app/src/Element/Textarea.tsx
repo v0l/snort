@@ -3,7 +3,6 @@ import "./Textarea.css";
 
 import { useIntl } from "react-intl";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
-import emoji from "@jukben/emoji-search";
 import TextareaAutosize from "react-textarea-autosize";
 import { NostrPrefix } from "@snort/nostr";
 
@@ -61,8 +60,10 @@ const Textarea = (props: TextareaProps) => {
     return await UserCache.search(token);
   };
 
-  const emojiDataProvider = (token: string) => {
-    return emoji(token)
+  const emojiDataProvider = async (token: string) => {
+    const emoji = await import("@jukben/emoji-search");
+    return emoji
+      .default(token)
       .slice(0, 5)
       .map(({ name, char }) => ({ name, char }));
   };

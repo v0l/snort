@@ -1,8 +1,8 @@
 import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
+import "public/manifest.json";
 
 import { StrictMode } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
 import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -12,7 +12,7 @@ import { IntlProvider } from "IntlProvider";
 import { unwrap } from "Util";
 import Store from "State/Store";
 import Layout from "Pages/Layout";
-import LoginPage from "Pages/Login";
+import LoginPage from "Pages/LoginPage";
 import ProfilePage from "Pages/ProfilePage";
 import { RootRoutes } from "Pages/Root";
 import NotificationsPage from "Pages/Notifications";
@@ -32,10 +32,8 @@ import Thread from "Element/Thread";
 import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
 
-/**
- * HTTP query provider
- */
-const HTTP = new QueryClient();
+// @ts-ignore
+window.__webpack_nonce__ = "ZmlhdGphZiBzYWlkIHNub3J0LnNvY2lhbCBpcyBwcmV0dHkgZ29vZCwgd2UgbWFkZSBpdCE=";
 
 serviceWorkerRegistration.register();
 
@@ -113,11 +111,9 @@ const root = ReactDOM.createRoot(unwrap(document.getElementById("root")));
 root.render(
   <StrictMode>
     <Provider store={Store}>
-      <QueryClientProvider client={HTTP}>
-        <IntlProvider>
-          <RouterProvider router={router} />
-        </IntlProvider>
-      </QueryClientProvider>
+      <IntlProvider>
+        <RouterProvider router={router} />
+      </IntlProvider>
     </Provider>
   </StrictMode>
 );

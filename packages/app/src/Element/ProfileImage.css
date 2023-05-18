@@ -31,6 +31,8 @@ a.pfp {
 
 .pfp .profile-name {
   max-width: stretch;
+  max-width: -webkit-fill-available;
+  max-width: -moz-available;
 }
 
 .pfp a {

@@ -180,6 +180,8 @@
 .note .poll-body > div > .progress {
   background-color: var(--gray);
   height: stretch;
+  height: -webkit-fill-available;
+  height: -moz-available;
   position: absolute;
   z-index: 1;
 }
