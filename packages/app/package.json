@@ -31,6 +31,7 @@
     "react-textarea-autosize": "^8.4.0",
     "react-twitter-embed": "^4.0.4",
     "use-long-press": "^2.0.3",
+    "webln": "^0.3.2",
     "workbox-background-sync": "^6.4.2",
     "workbox-broadcast-update": "^6.4.2",
     "workbox-cacheable-response": "^6.4.2",

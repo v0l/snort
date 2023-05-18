@@ -100,6 +100,7 @@ export type MilliSats = number;
 
 export interface LNWallet {
   isReady(): boolean;
+  canAutoLogin(): boolean;
   getInfo: () => Promise<WalletInfo>;
   login: (password?: string) => Promise<boolean>;
   close: () => Promise<boolean>;
@@ -140,8 +141,8 @@ export class WalletStore {
       configs: [],
     });
     this.load(false);
-    setupWebLNWalletConfig(this);
     this.snapshotState();
+    setupWebLNWalletConfig(this);
   }
 
   hook(fn: WalletStateHook) {

@@ -50,8 +50,12 @@ export class NostrConnectWallet implements LNWallet {
     } as WalletConnectConfig;
   }
 
-  isReady(): boolean {
+  canAutoLogin(): boolean {
     return true;
+  }
+
+  isReady(): boolean {
+    return this.#conn !== undefined;
   }
 
   async getInfo() {

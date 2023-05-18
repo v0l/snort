@@ -30,6 +30,10 @@ export class LNCWallet implements LNWallet {
     });
   }
 
+  canAutoLogin(): boolean {
+    return false;
+  }
+
   isReady(): boolean {
     return this.#lnc.isReady;
   }

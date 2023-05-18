@@ -43,6 +43,10 @@ export default class LNDHubWallet implements LNWallet {
     return this.auth !== undefined;
   }
 
+  canAutoLogin(): boolean {
+    return true;
+  }
+
   close(): Promise<boolean> {
     return Promise.resolve(true);
   }
@@ -91,7 +95,12 @@ export default class LNDHubWallet implements LNWallet {
     return {
       pr: pr,
       paymentHash: pRsp.payment_hash,
-      state: pRsp.payment_error === undefined ? WalletInvoiceState.Paid : WalletInvoiceState.Pending,
+      preimage: pRsp.payment_preimage,
+      state: pRsp.payment_error
+        ? WalletInvoiceState.Failed
+        : pRsp.payment_preimage
+        ? WalletInvoiceState.Paid
+        : WalletInvoiceState.Pending,
     } as WalletInvoice;
   }
 

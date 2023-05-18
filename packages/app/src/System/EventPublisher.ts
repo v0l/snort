@@ -17,41 +17,10 @@ import { System } from "System";
 import { unwrap } from "Util";
 import { EventBuilder } from "./EventBuilder";
 import { EventExt } from "./EventExt";
+import { barrierQueue, processWorkQueue, WorkQueueItem } from "WorkQueue";
 
-interface Nip7QueueItem {
-  next: () => Promise<unknown>;
-  resolve(v: unknown): void;
-  reject(e: unknown): void;
-}
-
-const Nip7QueueDelay = 200;
-const Nip7Queue: Array<Nip7QueueItem> = [];
-async function processQueue() {
-  while (Nip7Queue.length > 0) {
-    const v = Nip7Queue.shift();
-    if (v) {
-      try {
-        const ret = await v.next();
-        v.resolve(ret);
-      } catch (e) {
-        v.reject(e);
-      }
-    }
-  }
-  setTimeout(processQueue, Nip7QueueDelay);
-}
-processQueue();
-
-export const barrierNip07 = async <T>(then: () => Promise<T>): Promise<T> => {
-  return new Promise<T>((resolve, reject) => {
-    Nip7Queue.push({
-      next: then,
-      resolve,
-      reject,
-    });
-  });
-};
-
+const Nip7Queue: Array<WorkQueueItem> = [];
+processWorkQueue(Nip7Queue);
 export type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
 
 export class EventPublisher {
@@ -78,12 +47,12 @@ export class EventPublisher {
 
   async #sign(eb: EventBuilder) {
     if (this.#hasNip07 && !this.#privateKey) {
-      const nip7PubKey = await barrierNip07(() => unwrap(window.nostr).getPublicKey());
+      const nip7PubKey = await barrierQueue(Nip7Queue, () => unwrap(window.nostr).getPublicKey());
       if (nip7PubKey !== this.#pubKey) {
         throw new Error("Can't sign event, NIP-07 pubkey does not match");
       }
       const ev = eb.build();
-      return await barrierNip07(() => unwrap(window.nostr).signEvent(ev));
+      return await barrierQueue(Nip7Queue, () => unwrap(window.nostr).signEvent(ev));
     } else if (this.#privateKey) {
       return await eb.buildAndSign(this.#privateKey);
     } else {
@@ -93,11 +62,13 @@ export class EventPublisher {
 
   async nip4Encrypt(content: string, key: HexKey) {
     if (this.#hasNip07 && !this.#privateKey) {
-      const nip7PubKey = await barrierNip07(() => unwrap(window.nostr).getPublicKey());
+      const nip7PubKey = await barrierQueue(Nip7Queue, () => unwrap(window.nostr).getPublicKey());
       if (nip7PubKey !== this.#pubKey) {
         throw new Error("Can't encrypt content, NIP-07 pubkey does not match");
       }
-      return await barrierNip07(() => unwrap(window.nostr?.nip04?.encrypt).call(window.nostr?.nip04, key, content));
+      return await barrierQueue(Nip7Queue, () =>
+        unwrap(window.nostr?.nip04?.encrypt).call(window.nostr?.nip04, key, content)
+      );
     } else if (this.#privateKey) {
       return await EventExt.encryptData(content, key, this.#privateKey);
     } else {
@@ -107,7 +78,7 @@ export class EventPublisher {
 
   async nip4Decrypt(content: string, otherKey: HexKey) {
     if (this.#hasNip07 && !this.#privateKey && window.nostr?.nip04?.decrypt) {
-      return await barrierNip07(() =>
+      return await barrierQueue(Nip7Queue, () =>
         unwrap(window.nostr?.nip04?.decrypt).call(window.nostr?.nip04, otherKey, content)
       );
     } else if (this.#privateKey) {

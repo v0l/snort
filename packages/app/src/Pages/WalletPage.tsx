@@ -5,7 +5,7 @@ import { RouteObject, useNavigate } from "react-router-dom";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
 import NoteTime from "Element/NoteTime";
-import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets, WalletKind } from "Wallet";
+import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets } from "Wallet";
 import AsyncButton from "Element/AsyncButton";
 import { unwrap } from "Util";
 import { WebLNWallet } from "Wallet/WebLN";
@@ -50,7 +50,7 @@ export default function WalletPage() {
     if (wallet) {
       if (wallet.isReady()) {
         loadWallet(wallet).catch(console.warn);
-      } else if (walletState.config?.kind !== WalletKind.LNC) {
+      } else if (wallet.canAutoLogin()) {
         wallet
           .login()
           .then(async () => await loadWallet(wallet))

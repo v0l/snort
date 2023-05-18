@@ -10,6 +10,10 @@ export class CashuWallet implements LNWallet {
     this.#mint = mint;
   }
 
+  canAutoLogin(): boolean {
+    return true;
+  }
+
   isReady(): boolean {
     return this.#wallet !== undefined;
   }
