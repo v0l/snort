@@ -168,11 +168,27 @@ export default function ProfilePage() {
     setTab(ProfileTab.Notes);
   }, [params]);
 
+  function extractCustomEmoji(name: string) {
+    return name.split(" ").map(word => {
+      const isEmoji = word[0] === ":" && word[word.length - 1] === ":";
+      const emojiTag = isEmoji && user?.emojis?.find(tag => tag[1] === word.substring(1, word.length - 1));
+      if (emojiTag) {
+        return (
+          <>
+            <ProxyImg src={emojiTag[2]} size={15} className="custom-emoji" />{" "}
+          </>
+        );
+      } else {
+        return word + " ";
+      }
+    });
+  }
+
   function username() {
     return (
       <div className="name">
         <h2>
-          {user?.display_name || user?.name || "Nostrich"}
+          {extractCustomEmoji(user?.display_name || user?.name || "Nostrich")}
           <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
         </h2>
         {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}

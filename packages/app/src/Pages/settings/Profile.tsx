@@ -53,9 +53,11 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   }, [user]);
 
   async function saveProfile() {
+    const { emojis, ...u } = user || { emojis: [] };
+
     // copy user object and delete internal fields
     const userCopy = {
-      ...user,
+      ...u,
       name,
       display_name: displayName,
       about,

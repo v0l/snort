@@ -34,6 +34,11 @@ export interface MetadataCache extends UserMetadata {
    * If the nip05 is valid for this user
    */
   isNostrAddressValid: boolean;
+
+  /**
+   * emojis present in metadata tags
+   */
+  emojis?: string[][];
 }
 
 export function mapEventToProfile(ev: RawEvent) {
@@ -45,6 +50,7 @@ export function mapEventToProfile(ev: RawEvent) {
       created: ev.created_at,
       ...data,
       loaded: unixNowMs(),
+      emojis: ev.tags?.filter(t => t[0] === "emoji" && t.length === 3),
     } as MetadataCache;
   } catch (e) {
     console.error("Failed to parse JSON", ev, e);
