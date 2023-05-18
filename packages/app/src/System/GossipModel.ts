@@ -97,13 +97,15 @@ export function splitByWriteRelays(filter: RawReqFilter): Array<RelayTaggedFilte
       },
     } as RelayTaggedFilter;
   });
-  picked.push({
-    relay: "",
-    filter: {
-      ...filter,
-      authors: missing.map(a => a.key),
-    },
-  });
+  if (missing.length > 0) {
+    picked.push({
+      relay: "",
+      filter: {
+        ...filter,
+        authors: missing.map(a => a.key),
+      },
+    });
+  }
   console.debug("GOSSIP", picked);
   return picked;
 }

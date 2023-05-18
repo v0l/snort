@@ -96,10 +96,6 @@ export class Connection {
     this.AwaitingAuth = new Map();
     this.Auth = auth;
     this.Ephemeral = ephemeral;
-
-    if (this.Ephemeral) {
-      this.ResetEphemeralTimeout();
-    }
   }
 
   ResetEphemeralTimeout() {
@@ -109,7 +105,7 @@ export class Connection {
     if (this.Ephemeral) {
       this.EphemeralTimeout = setTimeout(() => {
         this.Close();
-      }, 10_000);
+      }, 30_000);
     }
   }
 
@@ -139,6 +135,13 @@ export class Connection {
       console.warn("Could not load relay information", e);
     }
 
+    if (this.Socket) {
+      this.Id = uuid();
+      this.Socket.onopen = null;
+      this.Socket.onmessage = null;
+      this.Socket.onerror = null;
+      this.Socket.onclose = null;
+    }
     this.IsClosed = false;
     this.Socket = new WebSocket(this.Address);
     this.Socket.onopen = () => this.OnOpen();
@@ -161,17 +164,15 @@ export class Connection {
     this.ConnectTimeout = DefaultConnectTimeout;
     console.log(`[${this.Address}] Open!`);
     this.Down = false;
+    if (this.Ephemeral) {
+      this.ResetEphemeralTimeout();
+    }
     this.OnConnected?.();
+    this.#sendPendingRaw();
   }
 
   OnClose(e: CloseEvent) {
     if (!this.IsClosed) {
-      this.OnDisconnect?.([...this.ActiveRequests], this.PendingRequests.map(a => a.cmd[1]))
-      this.#ResetQueues();
-
-      // reset connection Id on disconnect, for query-tracking
-      this.Id = uuid();
-
       this.ConnectTimeout = this.ConnectTimeout * 2;
       console.log(
         `[${this.Address}] Closed (${e.reason}), trying again in ${(
@@ -188,6 +189,11 @@ export class Connection {
       console.log(`[${this.Address}] Closed!`);
       this.ReconnectTimer = null;
     }
+
+    this.OnDisconnect?.([...this.ActiveRequests], this.PendingRequests.map(a => a.cmd[1]))
+    this.#ResetQueues();
+    // reset connection Id on disconnect, for query-tracking
+    this.Id = uuid();
     this.#UpdateState();
   }
 
@@ -387,6 +393,9 @@ export class Connection {
     const authPending = !this.Authed && (this.AwaitingAuth.size > 0 || this.Info?.limitation?.auth_required === true);
     if (this.Socket?.readyState !== WebSocket.OPEN || authPending) {
       this.PendingRaw.push(obj);
+      if (this.Socket?.readyState === WebSocket.CLOSED && this.Ephemeral && this.IsClosed) {
+        this.Connect()
+      }
       return false;
     }
 
@@ -405,7 +414,7 @@ export class Connection {
 
   #sendOnWire(obj: unknown) {
     if (this.Socket?.readyState !== WebSocket.OPEN) {
-      throw new Error("Socket is not open");
+      throw new Error(`Socket is not open, state is ${this.Socket?.readyState}`);
     }
     const json = JSON.stringify(obj);
     this.Socket.send(json);

@@ -80,7 +80,7 @@ export default function ZapPoolPage() {
   const relayConnections = useMemo(() => {
     return [...System.Sockets.values()]
       .map(a => {
-        if (a.Info?.pubkey) {
+        if (a.Info?.pubkey && !a.Ephemeral) {
           return {
             address: a.Address,
             pubkey: a.Info.pubkey,

@@ -85,7 +85,7 @@ class UserProfileCache extends FeedCache<MetadataCache> {
         await svc.load();
         const p = this.getFromCache(i.pubkey);
         if (p) {
-          this.#setItem({
+          await this.set({
             ...p,
             zapService: svc.zapperPubkey,
           });
@@ -105,7 +105,7 @@ class UserProfileCache extends FeedCache<MetadataCache> {
         const nip5pk = await fetchNip05Pubkey(name, domain);
         const p = this.getFromCache(i.pubkey);
         if (p) {
-          this.#setItem({
+          await this.set({
             ...p,
             isNostrAddressValid: i.pubkey === nip5pk,
           });

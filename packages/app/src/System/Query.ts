@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { Connection, RawReqFilter, Nips } from "@snort/nostr";
-import { unixNowMs } from "Util";
+import { unixNowMs, unwrap } from "Util";
 import { NoteStore } from "./NoteCollection";
 /**
  * Tracing for relay query status
@@ -32,6 +32,9 @@ class QueryTrace {
 
   gotEose() {
     this.eose = unixNowMs();
+    if (this.responseTime > 5_000) {
+      console.debug(`Slow query ${this.subId} on ${this.relay} took ${this.responseTime.toLocaleString()}ms`);
+    }
   }
 
   forceEose() {
@@ -64,6 +67,13 @@ class QueryTrace {
    */
   get runtime() {
     return (this.eose === undefined ? unixNowMs() : this.eose) - this.start;
+  }
+
+  /**
+   * Total time spent waiting for relay to respond
+   */
+  get responseTime() {
+    return this.finished ? unwrap(this.eose) - unwrap(this.sent) : 0;
   }
 
   /**
@@ -193,16 +203,13 @@ export class Query {
     qt?.gotEose();
     if (sub === this.id) {
       console.debug(`[EOSE][${sub}] ${conn.Address}`);
-      this.#feed.loading = this.progress < 1;
-      if (!this.leaveOpen && !this.#feed.loading) {
-        this.sendClose();
+      if (!this.leaveOpen) {
+        qt?.sendClose();
       }
     } else {
       const subQ = this.subQueries.find(a => a.id === sub);
       if (subQ) {
         subQ.eose(sub, conn);
-      } else {
-        throw new Error("No query found");
       }
     }
   }
