@@ -41,6 +41,24 @@
   --strike-army-gradient: linear-gradient(to bottom right, #ccff00, #a1c900);
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--gray-superdark);
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--gray);
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--gray-tertiary);
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
@@ -58,9 +76,9 @@ html.light {
 
   --note-bg: white;
 
-  --gray: #ccc;
-  --gray-secondary: #ddd;
-  --gray-tertiary: #eee;
+  --gray: #aaa;
+  --gray-secondary: #bbb;
+  --gray-tertiary: #ccc;
   --gray-superlight: #333;
   --gray-light: #555;
   --gray-dark: #2b2b2b;
@@ -94,6 +112,7 @@ code {
 body #root > div:not(.page) header {
   padding: 2px 10px;
 }
+
 @media (min-width: 720px) {
   .page {
     width: 586px;
@@ -616,6 +635,7 @@ button.tall {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
