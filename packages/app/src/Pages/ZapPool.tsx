@@ -14,6 +14,21 @@ import { useUserProfile } from "Hooks/useUserProfile";
 import AsyncButton from "Element/AsyncButton";
 import { useWallet } from "Wallet";
 
+const DataProviders = [
+  {
+    name: "nostr.band",
+    owner: bech32ToHex("npub1sx9rnd03vs34lp39fvfv5krwlnxpl90f3dzuk8y3cuwutk2gdhdqjz6g8m"),
+  },
+  {
+    name: "nostr.watch",
+    owner: bech32ToHex("npub1uac67zc9er54ln0kl6e4qp2y6ta3enfcg7ywnayshvlw9r5w6ehsqq99rx"),
+  },
+  {
+    name: "nostr.directory",
+    owner: bech32ToHex("npub1teawtzxh6y02cnp9jphxm2q8u6xxfx85nguwg6ftuksgjctvavvqnsgq5u"),
+  },
+];
+
 function ZapTarget({ target }: { target: ZapPoolRecipient }) {
   const login = useLogin();
   const profile = useUserProfile(target.pubkey);
@@ -172,6 +187,24 @@ export default function ZapPoolPage() {
             target={
               zapPool.find(b => b.pubkey === a.owner && b.type === ZapPoolRecipientType.FileHost) ?? {
                 type: ZapPoolRecipientType.FileHost,
+                pubkey: a.owner,
+                split: 0,
+                sum: 0,
+              }
+            }
+          />
+        </div>
+      ))}
+      <h3>
+        <FormattedMessage defaultMessage="Data Providers" />
+      </h3>
+      {DataProviders.map(a => (
+        <div className="card">
+          <h4>{a.name}</h4>
+          <ZapTarget
+            target={
+              zapPool.find(b => b.pubkey === a.owner && b.type === ZapPoolRecipientType.DataProvider) ?? {
+                type: ZapPoolRecipientType.DataProvider,
                 pubkey: a.owner,
                 split: 0,
                 sum: 0,

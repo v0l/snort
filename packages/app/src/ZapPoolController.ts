@@ -10,6 +10,7 @@ export enum ZapPoolRecipientType {
   Generic = 0,
   Relay = 1,
   FileHost = 2,
+  DataProvider = 3,
 }
 
 export interface ZapPoolRecipient {
