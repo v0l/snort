@@ -1,3 +1,5 @@
+/// <reference types="@webbtc/webln-types" />
+
 declare module "*.jpg" {
   const value: unknown;
   export default value;

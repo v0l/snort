@@ -85,6 +85,7 @@
     "@types/react-dom": "^18.0.10",
     "@types/webscopeio__react-textarea-autocomplete": "^4.7.2",
     "@types/webtorrent": "^0.109.3",
+    "@webbtc/webln-types": "^1.0.10",
     "@webpack-cli/generators": "^3.0.4",
     "@webscopeio/react-textarea-autocomplete": "^4.9.2",
     "babel-loader": "^9.1.2",

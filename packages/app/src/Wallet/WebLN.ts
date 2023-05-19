@@ -14,56 +14,6 @@ import {
 } from "Wallet";
 import { barrierQueue, processWorkQueue, WorkQueueItem } from "WorkQueue";
 
-interface SendPaymentResponse {
-  paymentHash?: string;
-  preimage: string;
-  route?: {
-    total_amt: number;
-    total_fees: number;
-  };
-}
-
-interface RequestInvoiceArgs {
-  amount?: string | number;
-  defaultAmount?: string | number;
-  minimumAmount?: string | number;
-  maximumAmount?: string | number;
-  defaultMemo?: string;
-}
-
-interface RequestInvoiceResponse {
-  paymentRequest: string;
-}
-
-interface GetInfoResponse {
-  node: {
-    alias: string;
-    pubkey: string;
-    color?: string;
-  };
-}
-
-interface SignMessageResponse {
-  message: string;
-  signature: string;
-}
-
-interface WebLN {
-  enabled: boolean;
-  getInfo(): Promise<GetInfoResponse>;
-  enable(): Promise<void>;
-  makeInvoice(args: RequestInvoiceArgs): Promise<RequestInvoiceResponse>;
-  signMessage(message: string): Promise<SignMessageResponse>;
-  verifyMessage(signature: string, message: string): Promise<void>;
-  sendPayment: (pr: string) => Promise<SendPaymentResponse>;
-}
-
-declare global {
-  interface Window {
-    webln?: WebLN;
-  }
-}
-
 const WebLNQueue: Array<WorkQueueItem> = [];
 processWorkQueue(WebLNQueue);
 
@@ -111,7 +61,7 @@ export class WebLNWallet implements LNWallet {
   }
 
   async login(): Promise<boolean> {
-    if (window.webln && !window.webln.enabled) {
+    if (window.webln) {
       await window.webln.enable();
     }
     return true;
