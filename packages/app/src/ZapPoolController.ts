@@ -4,7 +4,7 @@ import ExternalStore from "ExternalStore";
 import { LNURL } from "LNURL";
 import { Toastore } from "Toaster";
 import { unixNow } from "Util";
-import { LNWallet, WalletInvoiceState } from "Wallet";
+import { LNWallet, WalletInvoiceState, Wallets } from "Wallet";
 
 export enum ZapPoolRecipientType {
   Generic = 0,
@@ -23,11 +23,13 @@ export interface ZapPoolRecipient {
 class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
   #store: Map<string, ZapPoolRecipient>;
   #isPayoutInProgress = false;
+  #lastPayout: number = 0;
 
   constructor() {
     super();
     this.#store = new Map();
     this.#load();
+    setTimeout(() => this.#autoPayout().catch(console.error), 5_000);
   }
 
   async payout(wallet: LNWallet) {
@@ -35,6 +37,7 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
       throw new Error("Payout already in progress");
     }
     this.#isPayoutInProgress = true;
+    this.#lastPayout = unixNow();
     for (const x of this.#store.values()) {
       if (x.sum === 0) continue;
       try {
@@ -129,6 +132,7 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
 
   #save() {
     self.localStorage.setItem("zap-pool", JSON.stringify(this.takeSnapshot()));
+    self.localStorage.setItem("zap-pool-last-payout", this.#lastPayout.toString());
   }
 
   #load() {
@@ -137,6 +141,29 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
       const arr = JSON.parse(existing) as Array<ZapPoolRecipient>;
       this.#store = new Map(arr.map(a => [`${a.pubkey}-${a.type}`, a]));
     }
+
+    const lastPayout = self.localStorage.getItem("zap-pool-last-payout");
+    if (lastPayout) {
+      this.#lastPayout = Number(lastPayout);
+    }
+  }
+
+  async #autoPayout() {
+    const payoutInterval = 60 * 60;
+    try {
+      if (this.#lastPayout < unixNow() - payoutInterval) {
+        const wallet = Wallets.get();
+        if (wallet) {
+          if (wallet.canAutoLogin()) {
+            await wallet.login();
+          }
+          await this.payout(wallet);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    setTimeout(() => this.#autoPayout().catch(console.error), 60_000);
   }
 
   takeSnapshot(): ZapPoolRecipient[] {
