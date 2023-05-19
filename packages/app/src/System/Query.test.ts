@@ -1,4 +1,5 @@
 import { Connection } from "@snort/nostr";
+import { describe, expect } from "@jest/globals";
 import { Query } from "./Query";
 import { getRandomValues } from "crypto";
 import { FlatNoteStore } from "./NoteCollection";

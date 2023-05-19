@@ -65,7 +65,7 @@ export function bech32ToHex(str: string) {
     const nKey = bech32.decode(str, 1_000);
     const buff = bech32.fromWords(nKey.words);
     return utils.bytesToHex(Uint8Array.from(buff));
-  } catch {
+  } catch (e) {
     return str;
   }
 }
@@ -517,11 +517,9 @@ export interface NostrLink {
 export function validateNostrLink(link: string): boolean {
   try {
     const parsedLink = parseNostrLink(link);
-
     if (!parsedLink) {
       return false;
     }
-
     if (parsedLink.type === NostrPrefix.PublicKey || parsedLink.type === NostrPrefix.Note) {
       return parsedLink.id.length === 64;
     }

@@ -1,4 +1,5 @@
 import { splitByUrl, magnetURIDecode, getRelayName, validateNostrLink } from "./Util";
+import { describe, expect } from "@jest/globals";
 
 describe("splitByUrl", () => {
   it("should split a string by URLs", () => {
@@ -12,8 +13,8 @@ describe("splitByUrl", () => {
       " but I made a ",
       "https://example.com",
       "! simple example (",
-      "https://example.com",
-      ") of how ",
+      "https://example.com)",
+      " of how ",
       "https://example.com/yo-yo",
       " ",
       "https://example.example.com",
@@ -92,22 +93,18 @@ describe("getRelayName", () => {
 });
 
 describe("validateNostrLink", () => {
-  it("should return true for valid nostr links", () => {
-    [
-      "nostr:npub10elfcs4fr0l0r8af98jlmgdh9c8tcxjvz9qkw038js35mp4dma8qzvjptg",
-      "web+nostr:npub10elfcs4fr0l0r8af98jlmgdh9c8tcxjvz9qkw038js35mp4dma8qzvjptg",
-      "nostr:note15449edq4qa5wzgqvh8td0q0dp6hwtes4pknsrm7eygeenhlj99xsq94wu9",
-      "nostr:nprofile1qqsrhuxx8l9ex335q7he0f09aej04zpazpl0ne2cgukyawd24mayt8gpp4mhxue69uhhytnc9e3k7mgpz4mhxue69uhkg6nzv9ejuumpv34kytnrdaksjlyr9p",
-      "nostr:nevent1qqs226juks2sw68pyqxtn4khs8ksath9uc2smfcpalvjyvuemlezjngrd87dq",
-      "nostr:naddr1qqzkjurnw4ksz9thwden5te0wfjkccte9ehx7um5wghx7un8qgs2d90kkcq3nk2jry62dyf50k0h36rhpdtd594my40w9pkal876jxgrqsqqqa28pccpzu",
-    ].forEach(link => {
-      expect(validateNostrLink(link)).toBe(true);
-    });
+  test.each([
+    "nostr:npub10elfcs4fr0l0r8af98jlmgdh9c8tcxjvz9qkw038js35mp4dma8qzvjptg",
+    "web+nostr:npub10elfcs4fr0l0r8af98jlmgdh9c8tcxjvz9qkw038js35mp4dma8qzvjptg",
+    "nostr:note15449edq4qa5wzgqvh8td0q0dp6hwtes4pknsrm7eygeenhlj99xsq94wu9",
+    "nostr:nprofile1qqsrhuxx8l9ex335q7he0f09aej04zpazpl0ne2cgukyawd24mayt8gpp4mhxue69uhhytnc9e3k7mgpz4mhxue69uhkg6nzv9ejuumpv34kytnrdaksjlyr9p",
+    "nostr:nevent1qqs226juks2sw68pyqxtn4khs8ksath9uc2smfcpalvjyvuemlezjngrd87dq",
+    "nostr:naddr1qqzkjurnw4ksz9thwden5te0wfjkccte9ehx7um5wghx7un8qgs2d90kkcq3nk2jry62dyf50k0h36rhpdtd594my40w9pkal876jxgrqsqqqa28pccpzu",
+  ])("should return true for valid nostr links", la => {
+    expect(validateNostrLink(la)).toBe(true);
   });
 
-  it("should return false for invalid nostr links", () => {
-    ["nostr:npub", "web+nostr:npub", "nostr:nevent1xxx"].forEach(link => {
-      expect(validateNostrLink(link)).toBe(false);
-    });
+  test.each(["nostr:npub", "web+nostr:npub", "nostr:nevent1xxx"])("should return false for invalid nostr links", lb => {
+    expect(validateNostrLink(lb)).toBe(false);
   });
 });

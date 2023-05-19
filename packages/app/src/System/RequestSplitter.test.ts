@@ -1,4 +1,5 @@
 import { RawReqFilter } from "@snort/nostr";
+import { describe, expect } from "@jest/globals";
 import { diffFilters } from "./RequestSplitter";
 
 describe("RequestSplitter", () => {

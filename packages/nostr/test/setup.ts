@@ -30,7 +30,7 @@ export interface Setup {
 }
 
 export async function setup(
-  done: jest.DoneCallback,
+  done: (e?: unknown) => void,
   test: (setup: Setup) => void | Promise<void>
 ) {
   try {
