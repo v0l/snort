@@ -141,8 +141,8 @@ export class WalletStore {
       configs: [],
     });
     this.load(false);
-    this.snapshotState();
     setupWebLNWalletConfig(this);
+    this.snapshotState();
   }
 
   hook(fn: WalletStateHook) {
