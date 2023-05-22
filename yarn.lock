@@ -2587,6 +2587,13 @@
     "@typescript-eslint/types" "5.59.0"
     eslint-visitor-keys "^3.3.0"
 
+"@void-cat/api@^1.0.4":
+  version "1.0.4"
+  resolved "https://git.v0l.io/api/packages/Kieran/npm/%40void-cat%2Fapi/-/1.0.4/api-1.0.4.tgz#2e2f6eddc198fcf64d7e8b1fe7326641a6ce0d43"
+  integrity sha512-xGAGTWrra1UxoCAvbHLUQc/ibp7/tzgUay/F3fOklVpRPzFs8bdgc35v+EEQKHT7U5RXzCkdWjyfs+5NMESlxg==
+  dependencies:
+    sjcl "^1.0.8"
+
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
   resolved "https://registry.npmjs.org/@webassemblyjs/ast/-/ast-1.11.1.tgz"
@@ -8208,6 +8215,11 @@ sirv@^1.0.7:
     "@polka/url" "^1.0.0-next.20"
     mrmime "^1.0.0"
     totalist "^1.0.0"
+
+sjcl@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/sjcl/-/sjcl-1.0.8.tgz#f2ec8d7dc1f0f21b069b8914a41a8f236b0e252a"
+  integrity sha512-LzIjEQ0S0DpIgnxMEayM1rq9aGwGRG4OnZhCdjx7glTaJtf4zRfpg87ImfjSJjoW9vKpagd82McDOwbRT5kQKQ==
 
 slash@^3.0.0:
   version "3.0.0"
