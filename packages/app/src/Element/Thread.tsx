@@ -305,7 +305,7 @@ export default function Thread() {
   const brokenChains = Array.from(chains?.keys()).filter(a => !thread.data?.some(b => b.id === a));
 
   function renderRoot(note: TaggedRawEvent) {
-    const className = `thread-root ${isSingleNote ? "thread-root-single" : ""}`;
+    const className = `thread-root${isSingleNote ? " thread-root-single" : ""}`;
     if (note) {
       return (
         <Note

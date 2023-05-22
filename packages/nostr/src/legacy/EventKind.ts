@@ -20,6 +20,7 @@ enum EventKind {
   TagLists = 30002, // NIP-51c
   Badge = 30009, // NIP-58
   ProfileBadges = 30008, // NIP-58
+  ZapstrTrack = 31337,
   ZapRequest = 9734, // NIP 57
   ZapReceipt = 9735, // NIP 57
   HttpAuthentication = 27235, // NIP XX - HTTP Authentication

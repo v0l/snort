@@ -13,8 +13,9 @@ export interface FollowListBaseProps {
   title?: ReactNode | string;
   showFollowAll?: boolean;
   showAbout?: boolean;
+  className?: string;
 }
-export default function FollowListBase({ pubkeys, title, showFollowAll, showAbout }: FollowListBaseProps) {
+export default function FollowListBase({ pubkeys, title, showFollowAll, showAbout, className }: FollowListBaseProps) {
   const publisher = useEventPublisher();
   const { follows, relays } = useLogin();
 
@@ -26,7 +27,7 @@ export default function FollowListBase({ pubkeys, title, showFollowAll, showAbou
   }
 
   return (
-    <>
+    <div className={className}>
       {(showFollowAll ?? true) && (
         <div className="flex mt10 mb10">
           <div className="f-grow bold">{title}</div>
@@ -38,6 +39,6 @@ export default function FollowListBase({ pubkeys, title, showFollowAll, showAbou
       {pubkeys?.map(a => (
         <ProfilePreview pubkey={a} key={a} options={{ about: showAbout }} />
       ))}
-    </>
+    </div>
   );
 }

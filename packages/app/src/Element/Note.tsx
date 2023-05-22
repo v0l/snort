@@ -31,6 +31,7 @@ import useLogin from "Hooks/useLogin";
 import { setBookmarked, setPinned } from "Login";
 import { NostrFileElement } from "Element/NostrFileHeader";
 import ZapstrEmbed from "Element/ZapstrEmbed";
+import PubkeyList from "Element/PubkeyList";
 
 import messages from "./messages";
 
@@ -74,14 +75,19 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function Note(props: NoteProps) {
-  const { data: ev, related, highlight, options: opt, ignoreModeration = false } = props;
+  const { data: ev, related, highlight, options: opt, ignoreModeration = false, className } = props;
 
   if (ev.kind === EventKind.FileHeader) {
     return <NostrFileElement ev={ev} />;
   }
-  if (ev.kind === 31337) {
+  if (ev.kind === EventKind.ZapstrTrack) {
     return <ZapstrEmbed ev={ev} />;
   }
+  if (ev.kind === EventKind.PubkeyLists) {
+    return <PubkeyList ev={ev} className={className} />;
+  }
+
+  const baseClassName = `note card${className ? ` ${className}` : ""}`;
   const navigate = useNavigate();
   const [showReactions, setShowReactions] = useState(false);
   const deletions = useMemo(() => getReactions(related, ev.id, EventKind.Deletion), [related]);
@@ -90,7 +96,6 @@ export default function Note(props: NoteProps) {
   const { ref, inView, entry } = useInView({ triggerOnce: true });
   const [extendable, setExtendable] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
-  const baseClassName = `note card ${props.className ? props.className : ""}`;
   const login = useLogin();
   const { pinned, bookmarked } = login;
   const publisher = useEventPublisher();
