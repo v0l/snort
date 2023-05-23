@@ -30,7 +30,7 @@ steps:
       - yarn workspace @snort/app format
       - git add .
       - 'git commit -a -m "chore: Update translations"'
-      - git push
+      - git push -u origin main
 volumes:
 - name: cache
   claim:
