@@ -25,6 +25,7 @@ export const AllLanguageCodes = [
   "sv",
   "hr",
   "ta-IN",
+  "fa-IR",
 ];
 
 const PreferencesPage = () => {
