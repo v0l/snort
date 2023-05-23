@@ -40,6 +40,7 @@ const config = {
         { from: "public/robots.txt" },
         { from: "public/nostrich_512.png" },
         { from: "public/nostrich_256.png" },
+        { from: "_headers" },
       ],
     }),
     new HtmlWebpackPlugin({
