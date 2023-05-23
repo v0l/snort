@@ -29,7 +29,7 @@ steps:
       - npx @crowdin/cli pull -b main -T $CTOKEN
       - yarn workspace @snort/app format
       - git add .
-      - git commit -a -m "chore: Update translations"
+      - 'git commit -a -m "chore: Update translations"'
       - git push
 volumes:
 - name: cache
