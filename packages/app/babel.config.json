@@ -1,11 +1,4 @@
 {
-  "presets": [
-    "@babel/preset-env",
-    "@babel/preset-react"
-  ],
-  "plugins": [
-    [
-      "formatjs"
-    ]
-  ]
+  "presets": ["@babel/preset-env", "@babel/preset-react"],
+  "plugins": [["formatjs"]]
 }
