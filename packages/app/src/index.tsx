@@ -31,6 +31,7 @@ import NostrLinkHandler from "Pages/NostrLinkHandler";
 import Thread from "Element/Thread";
 import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
+import DebugPage from "Pages/Debug";
 
 // @ts-ignore
 window.__webpack_nonce__ = "ZmlhdGphZiBzYWlkIHNub3J0LnNvY2lhbCBpcyBwcmV0dHkgZ29vZCwgd2UgbWFkZSBpdCE=";
@@ -99,6 +100,10 @@ export const router = createBrowserRouter([
       ...NewUserRoutes,
       ...WalletRoutes,
       ...SubscribeRoutes,
+      {
+        path: "/debug",
+        element: <DebugPage />,
+      },
       {
         path: "/*",
         element: <NostrLinkHandler />,

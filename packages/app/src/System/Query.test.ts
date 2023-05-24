@@ -1,6 +1,6 @@
 import { Connection } from "@snort/nostr";
 import { describe, expect } from "@jest/globals";
-import { Query } from "./Query";
+import { Query, QueryBase } from "./Query";
 import { getRandomValues } from "crypto";
 import { FlatNoteStore } from "./NoteCollection";
 
@@ -44,24 +44,21 @@ describe("query", () => {
     q.eose(q.id, c3);
     expect(q.progress).toBe(1);
 
-    const qs = new Query(
-      "test-1",
-      [
+    const qs = {
+      id: "test-1",
+      filters: [
         {
           kinds: [1],
           authors: ["test-sub"],
         },
       ],
-      new FlatNoteStore()
-    );
-    q.subQueries.push(qs);
-    qs.sendToRelay(c1);
+    } as QueryBase;
+    q.sendSubQueryToRelay(c1, qs);
 
-    expect(q.progress).toBe(0.5);
+    expect(q.progress).toBe(3 / 4);
     q.eose(qs.id, c1);
     expect(q.progress).toBe(1);
-    qs.sendToRelay(c2);
-    // 1 + 0.5 (1/2 sent sub query)
-    expect(q.progress).toBe(1.5 / 2);
+    q.sendSubQueryToRelay(c2, qs);
+    expect(q.progress).toBe(4 / 5);
   });
 });

@@ -11,8 +11,9 @@ import {
   ReplaceableNoteStore,
 } from "./NoteCollection";
 import { diffFilters } from "./RequestSplitter";
-import { Query } from "./Query";
+import { Query, QueryBase } from "./Query";
 import { splitAllByWriteRelays } from "./GossipModel";
+import ExternalStore from "ExternalStore";
 
 export {
   NoteStore,
@@ -40,7 +41,7 @@ export type HookSystemSnapshot = () => void;
 /**
  * Manages nostr content retrieval system
  */
-export class NostrSystem {
+export class NostrSystem extends ExternalStore<SystemSnapshot> {
   /**
    * All currently connected websockets
    */
@@ -56,31 +57,10 @@ export class NostrSystem {
    */
   HandleAuth?: AuthHandler;
 
-  /**
-   * State change hooks
-   */
-  #stateHooks: Array<HookSystemSnapshot> = [];
-
-  /**
-   * Current snapshot of the system
-   */
-  #snapshot: Readonly<SystemSnapshot> = { queries: [] };
-
   constructor() {
+    super();
     this.Sockets = new Map();
     this.#cleanup();
-  }
-
-  hook(cb: HookSystemSnapshot): HookSystemSnapshotRelease {
-    this.#stateHooks.push(cb);
-    return () => {
-      const idx = this.#stateHooks.findIndex(a => a === cb);
-      this.#stateHooks.splice(idx, 1);
-    };
-  }
-
-  getSnapshot(): Readonly<SystemSnapshot> {
-    return this.#snapshot;
   }
 
   /**
@@ -210,19 +190,20 @@ export class NostrSystem {
 
       const diff = diffFilters(q.filters, filters);
       if (!diff.changed && !req.options?.skipDiff) {
-        this.#changed();
+        this.notifyChange();
         return unwrap(q.feed) as Readonly<T>;
       } else {
         const splitFilters = splitAllByWriteRelays(filters);
         for (const sf of splitFilters) {
-          const subQ = new Query(`${q.id}-${q.subQueries.length + 1}`, sf.filters, q.feed);
-          subQ.relays = sf.relay ? [sf.relay] : [];
-          q.subQueries.push(subQ);
-          this.SendQuery(subQ);
+          const subQ = {
+            id: `${q.id}-${q.subQueryCounter++}`,
+            filters: sf.filters,
+            relays: sf.relay ? [sf.relay] : [],
+          } as QueryBase;
+          this.SendSubQuery(q, subQ);
         }
         q.filters = filters;
-        q.feed.loading = true;
-        this.#changed();
+        this.notifyChange();
         return q.feed as Readonly<T>;
       }
     } else {
@@ -246,15 +227,17 @@ export class NostrSystem {
     const splitFilters = splitAllByWriteRelays(filters);
     if (splitFilters.length > 1) {
       for (const sf of splitFilters) {
-        const subQ = new Query(`${q.id}-${q.subQueries.length + 1}`, sf.filters, q.feed);
-        subQ.relays = sf.relay ? [sf.relay] : [];
-        q.subQueries.push(subQ);
-        this.SendQuery(subQ);
+        const subQ = {
+          id: `${q.id}-${q.subQueryCounter++}`,
+          filters: sf.filters,
+          relays: sf.relay ? [sf.relay] : [],
+        } as QueryBase;
+        this.SendSubQuery(q, subQ);
       }
     } else {
       this.SendQuery(q);
     }
-    this.#changed();
+    this.notifyChange();
     return store;
   }
 
@@ -266,7 +249,7 @@ export class NostrSystem {
   }
 
   async SendQuery(q: Query) {
-    if (q.relays.length > 0) {
+    if (q.relays && q.relays.length > 0) {
       for (const r of q.relays) {
         const s = this.Sockets.get(r);
         if (s) {
@@ -284,6 +267,30 @@ export class NostrSystem {
       for (const [, s] of this.Sockets) {
         if (!s.Ephemeral) {
           q.sendToRelay(s);
+        }
+      }
+    }
+  }
+
+  async SendSubQuery(q: Query, subQ: QueryBase) {
+    if (subQ.relays && subQ.relays.length > 0) {
+      for (const r of subQ.relays) {
+        const s = this.Sockets.get(r);
+        if (s) {
+          q.sendSubQueryToRelay(s, subQ);
+        } else {
+          const nc = await this.ConnectEphemeralRelay(r);
+          if (nc) {
+            q.sendSubQueryToRelay(nc, subQ);
+          } else {
+            console.warn("Failed to connect to new relay for:", r, subQ);
+          }
+        }
+      }
+    } else {
+      for (const [, s] of this.Sockets) {
+        if (!s.Ephemeral) {
+          q.sendSubQueryToRelay(s, subQ);
         }
       }
     }
@@ -316,20 +323,17 @@ export class NostrSystem {
     });
   }
 
-  #changed() {
-    this.#snapshot = Object.freeze({
+  takeSnapshot(): SystemSnapshot {
+    return {
       queries: [...this.Queries.values()].map(a => {
         return {
           id: a.id,
           filters: a.filters,
           closing: a.closing,
-          subFilters: a.subQueries.map(a => a.filters).flat(),
+          subFilters: [],
         };
       }),
-    });
-    for (const h of this.#stateHooks) {
-      h();
-    }
+    };
   }
 
   #cleanup() {
@@ -343,7 +347,7 @@ export class NostrSystem {
       }
     }
     if (changed) {
-      this.#changed();
+      this.notifyChange();
     }
     setTimeout(() => this.#cleanup(), 1_000);
   }

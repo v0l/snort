@@ -143,7 +143,7 @@ const Timeline = (props: TimelineProps) => {
       )}
       {mainFeed.map(eventElement)}
       {(props.loadMore === undefined || props.loadMore === true) && (
-        <LoadMore onLoadMore={feed.loadMore} shouldLoadMore={!feed.loading}>
+        <LoadMore onLoadMore={() => feed.loadMore()} shouldLoadMore={!feed.loading}>
           <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
           <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
           <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
