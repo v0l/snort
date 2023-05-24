@@ -1,5 +1,5 @@
 import LNC from "@lightninglabs/lnc-web";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 import {
   InvoiceRequest,
   LNWallet,

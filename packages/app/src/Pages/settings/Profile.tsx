@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import useEventPublisher from "Feed/EventPublisher";
 import { useUserProfile } from "Hooks/useUserProfile";
-import { openFile } from "Util";
+import { openFile } from "SnortUtils";
 import useFileUpload from "Upload";
 import AsyncButton from "Element/AsyncButton";
 import { mapEventToProfile, UserCache } from "Cache";

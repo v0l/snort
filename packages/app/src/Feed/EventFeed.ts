@@ -3,7 +3,7 @@ import { NostrPrefix } from "@snort/nostr";
 
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import { RequestBuilder, ReplaceableNoteStore } from "System";
-import { NostrLink, unwrap } from "Util";
+import { NostrLink, unwrap } from "SnortUtils";
 
 export default function useEventFeed(link: NostrLink) {
   const sub = useMemo(() => {

@@ -19,7 +19,7 @@ import {
   normalizeReaction,
   Reaction,
   profileLink,
-} from "Util";
+} from "SnortUtils";
 import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import Reveal from "Element/Reveal";

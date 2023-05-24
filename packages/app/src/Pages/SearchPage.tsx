@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Timeline from "Element/Timeline";
 import { Tab, TabElement } from "Element/Tabs";
 import { useEffect, useState } from "react";
-import { debounce } from "Util";
+import { debounce } from "SnortUtils";
 import { router } from "index";
 import { SearchRelays } from "Const";
 import { System } from "System";

@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { Connection, RawReqFilter, Nips } from "@snort/nostr";
-import { unixNowMs, unwrap } from "Util";
+import { unixNowMs, unwrap } from "SnortUtils";
 import { NoteStore } from "./NoteCollection";
 /**
  * Tracing for relay query status

@@ -5,7 +5,7 @@ import { encodeTLV, EventKind, NostrPrefix, TaggedRawEvent } from "@snort/nostr"
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
-import { openFile } from "Util";
+import { openFile } from "SnortUtils";
 import Textarea from "Element/Textarea";
 import Modal from "Element/Modal";
 import ProfileImage from "Element/ProfileImage";

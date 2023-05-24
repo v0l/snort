@@ -5,7 +5,7 @@ import { HexKey, RawEvent, NostrPrefix } from "@snort/nostr";
 
 import UnreadCount from "Element/UnreadCount";
 import ProfileImage, { getDisplayName } from "Element/ProfileImage";
-import { dedupe, hexToBech32, unwrap } from "Util";
+import { dedupe, hexToBech32, unwrap } from "SnortUtils";
 import NoteToSelf from "Element/NoteToSelf";
 import useModeration from "Hooks/useModeration";
 import { useDmCache } from "Hooks/useDmsCache";

@@ -1,6 +1,6 @@
 import { db } from "Db";
 import { Table } from "dexie";
-import { unixNowMs, unwrap } from "Util";
+import { unixNowMs, unwrap } from "SnortUtils";
 
 type HookFn = () => void;
 

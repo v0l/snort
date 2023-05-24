@@ -1,6 +1,6 @@
 import { HexKey, RawEvent } from "@snort/nostr";
 import { EmailRegex } from "Const";
-import { bech32ToText, unwrap } from "Util";
+import { bech32ToText, unwrap } from "SnortUtils";
 
 const PayServiceTag = "payRequest";
 

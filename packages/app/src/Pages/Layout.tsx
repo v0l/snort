@@ -23,7 +23,7 @@ import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
 import Avatar from "Element/Avatar";
 import { useUserProfile } from "Hooks/useUserProfile";
-import { profileLink } from "Util";
+import { profileLink } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 import Toaster from "Toaster";
 

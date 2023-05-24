@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Spinner from "Icons/Spinner";
-import { parseNostrLink, profileLink } from "Util";
+import { parseNostrLink, profileLink } from "SnortUtils";
 import { getNip05PubKey } from "Pages/LoginPage";
 import { System } from "System";
 

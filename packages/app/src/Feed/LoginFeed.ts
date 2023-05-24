@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { TaggedRawEvent, Lists, EventKind } from "@snort/nostr";
 
-import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "Util";
+import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";
 import { makeNotification, sendNotification } from "Notifications";
 import useEventPublisher from "Feed/EventPublisher";
 import { getMutedKeys } from "Feed/MuteList";

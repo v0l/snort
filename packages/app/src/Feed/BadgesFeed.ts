@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { EventKind, HexKey, Lists } from "@snort/nostr";
 
-import { unwrap, findTag, chunks } from "Util";
+import { unwrap, findTag, chunks } from "SnortUtils";
 import { RequestBuilder } from "System";
 import { FlatNoteStore, ReplaceableNoteStore } from "System/NoteCollection";
 import useRequestBuilder from "Hooks/useRequestBuilder";

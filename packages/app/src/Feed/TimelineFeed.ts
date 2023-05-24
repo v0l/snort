@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { EventKind, u256 } from "@snort/nostr";
 
-import { unixNow, unwrap, tagFilterOfTextRepost } from "Util";
+import { unixNow, unwrap, tagFilterOfTextRepost } from "SnortUtils";
 import { FlatNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import useTimelineWindow from "Hooks/useTimelineWindow";

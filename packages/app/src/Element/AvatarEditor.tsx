@@ -1,7 +1,7 @@
 import Icon from "Icons/Icon";
 import { useState } from "react";
 import useFileUpload from "Upload";
-import { openFile, unwrap } from "Util";
+import { openFile, unwrap } from "SnortUtils";
 
 interface AvatarEditorProps {
   picture?: string;

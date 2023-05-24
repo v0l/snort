@@ -5,7 +5,7 @@ import * as utils from "@noble/curves/abstract/utils";
 import { DefaultRelays, SnortPubKey } from "Const";
 import { LoginStore, UserPreferences, LoginSession } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
-import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
+import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unixNowMs, unwrap } from "SnortUtils";
 import { SubscriptionEvent } from "Subscription";
 import { EventPublisher } from "System/EventPublisher";
 

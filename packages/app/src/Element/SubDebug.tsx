@@ -4,7 +4,7 @@ import { useState } from "react";
 import useRelayState from "Feed/RelayState";
 import Tabs, { Tab } from "Element/Tabs";
 import { System } from "System";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 import useSystemState from "Hooks/useSystemState";
 import { RawReqFilter } from "@snort/nostr";
 import { useCopy } from "useCopy";

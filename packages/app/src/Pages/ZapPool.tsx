@@ -8,7 +8,7 @@ import ProfilePreview from "Element/ProfilePreview";
 import useLogin from "Hooks/useLogin";
 import { System } from "System";
 import { UploaderServices } from "Upload";
-import { bech32ToHex, getRelayName, unwrap } from "Util";
+import { bech32ToHex, getRelayName, unwrap } from "SnortUtils";
 import { ZapPoolController, ZapPoolRecipient, ZapPoolRecipientType } from "ZapPoolController";
 import { useUserProfile } from "Hooks/useUserProfile";
 import AsyncButton from "Element/AsyncButton";

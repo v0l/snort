@@ -3,7 +3,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { UserMetadata } from "@snort/nostr";
 
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 import { formatShort } from "Number";
 import {
   ServiceProvider,
@@ -19,7 +19,7 @@ import SendSats from "Element/SendSats";
 import Copy from "Element/Copy";
 import { useUserProfile } from "Hooks/useUserProfile";
 import useEventPublisher from "Feed/EventPublisher";
-import { debounce } from "Util";
+import { debounce } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import SnortServiceProvider from "Nip05/SnortServiceProvider";
 import { mapEventToProfile, UserCache } from "Cache";

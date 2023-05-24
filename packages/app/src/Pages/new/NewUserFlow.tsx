@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "Element/Logo";
 import { CollapsedSection } from "Element/Collapsed";
 import Copy from "Element/Copy";
-import { hexToBech32 } from "Util";
+import { hexToBech32 } from "SnortUtils";
 import { hexToMnemonic } from "nip6";
 import useLogin from "Hooks/useLogin";
 import { PROFILE } from ".";

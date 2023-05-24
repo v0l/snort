@@ -3,11 +3,11 @@ import { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { HexKey, TaggedRawEvent } from "@snort/nostr";
 
-import { decodeInvoice, InvoiceDetails, sha256, unwrap } from "Util";
+import { decodeInvoice, InvoiceDetails, sha256, unwrap } from "SnortUtils";
 import { formatShort } from "Number";
 import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
-import { findTag } from "Util";
+import { findTag } from "SnortUtils";
 import { UserCache } from "Cache/UserCache";
 import useLogin from "Hooks/useLogin";
 

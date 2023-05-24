@@ -6,7 +6,7 @@ import { HexKey, RelaySettings } from "@snort/nostr";
 import { DefaultRelays } from "Const";
 import ExternalStore from "ExternalStore";
 import { LoginSession } from "Login";
-import { deepClone, sanitizeRelayUrl, unwrap } from "Util";
+import { deepClone, sanitizeRelayUrl, unwrap } from "SnortUtils";
 import { DefaultPreferences, UserPreferences } from "./Preferences";
 
 const AccountStoreKey = "sessions";

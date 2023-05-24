@@ -2,7 +2,7 @@ import { ReactNode, useSyncExternalStore } from "react";
 import { v4 as uuid } from "uuid";
 import ExternalStore from "ExternalStore";
 import Icon from "Icons/Icon";
-import { unixNow } from "Util";
+import { unixNow } from "SnortUtils";
 
 import "./Toaster.css";
 

@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import SendSats from "Element/SendSats";
 import Icon from "Icons/Icon";
 import { useWallet } from "Wallet";
-import { decodeInvoice } from "Util";
+import { decodeInvoice } from "SnortUtils";
 
 import messages from "./messages";
 

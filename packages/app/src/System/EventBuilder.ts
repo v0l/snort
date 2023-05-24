@@ -1,6 +1,6 @@
 import { EventKind, HexKey, NostrPrefix, RawEvent } from "@snort/nostr";
 import { HashtagRegex } from "Const";
-import { getPublicKey, parseNostrLink, unixNow } from "Util";
+import { getPublicKey, parseNostrLink, unixNow } from "SnortUtils";
 import { EventExt } from "./EventExt";
 
 export class EventBuilder {

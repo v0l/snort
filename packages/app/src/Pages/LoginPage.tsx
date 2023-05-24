@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useIntl, FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/nostr";
 
-import { bech32ToHex, unwrap } from "Util";
+import { bech32ToHex, unwrap } from "SnortUtils";
 import ZapButton from "Element/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
 import Icon from "Icons/Icon";

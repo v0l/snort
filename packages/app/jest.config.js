@@ -3,5 +3,7 @@ module.exports = {
   bail: true,
   preset: "ts-jest",
   testEnvironment: "jsdom",
-  roots: ["./src/"],
+  roots: ["src"],
+  moduleDirectories: ["src", "node_modules"],
+  setupFiles: ["./src/setupTests.ts"],
 };

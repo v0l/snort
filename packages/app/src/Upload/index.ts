@@ -5,7 +5,7 @@ import NostrBuild from "Upload/NostrBuild";
 import VoidCat from "Upload/VoidCat";
 import NostrImg from "Upload/NostrImg";
 import { KieranPubKey } from "Const";
-import { bech32ToHex } from "Util";
+import { bech32ToHex } from "SnortUtils";
 
 export interface UploadResult {
   url?: string;

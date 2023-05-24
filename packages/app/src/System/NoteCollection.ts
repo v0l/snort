@@ -1,5 +1,5 @@
 import { TaggedRawEvent, u256 } from "@snort/nostr";
-import { findTag } from "Util";
+import { findTag } from "SnortUtils";
 
 export interface StoreSnapshot<TSnapshot> {
   data: TSnapshot | undefined;

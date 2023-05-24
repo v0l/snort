@@ -1,7 +1,7 @@
 import { useEffect, useSyncExternalStore } from "react";
 
 import ExternalStore from "ExternalStore";
-import { decodeInvoice, unwrap } from "Util";
+import { decodeInvoice, unwrap } from "SnortUtils";
 import LNDHubWallet from "./LNDHub";
 import { NostrConnectWallet } from "./NostrWalletConnect";
 import { setupWebLNWalletConfig, WebLNWallet } from "./WebLN";
@@ -135,7 +135,7 @@ export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
     this.#instance = new Map();
     this.load(false);
     setupWebLNWalletConfig(this);
-    this.snapshotState();
+    this.notifyChange();
   }
 
   list() {

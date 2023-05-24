@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { HexKey, TaggedRawEvent, Lists, EventKind } from "@snort/nostr";
 
-import { getNewest } from "Util";
+import { getNewest } from "SnortUtils";
 import { ParameterizedReplaceableNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import useLogin from "Hooks/useLogin";

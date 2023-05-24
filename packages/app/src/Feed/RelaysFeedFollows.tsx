@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { HexKey, FullRelaySettings, TaggedRawEvent, RelaySettings, EventKind } from "@snort/nostr";
 
-import { sanitizeRelayUrl } from "Util";
+import { sanitizeRelayUrl } from "SnortUtils";
 import { PubkeyReplaceableNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 

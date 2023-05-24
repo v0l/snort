@@ -5,7 +5,7 @@ import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
 import { TaggedRawEvent, u256, EventKind, NostrPrefix } from "@snort/nostr";
 import { EventExt, Thread as ThreadInfo } from "System/EventExt";
 
-import { eventLink, unwrap, getReactions, parseNostrLink, getAllReactions, findTag } from "Util";
+import { eventLink, unwrap, getReactions, parseNostrLink, getAllReactions, findTag } from "SnortUtils";
 import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";

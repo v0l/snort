@@ -6,7 +6,7 @@ import { RelaySettings } from "@snort/nostr";
 
 import useRelayState from "Feed/RelayState";
 import { System } from "System";
-import { getRelayName, unixNowMs, unwrap } from "Util";
+import { getRelayName, unixNowMs, unwrap } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import { setRelays } from "Login";
 import Icon from "Icons/Icon";

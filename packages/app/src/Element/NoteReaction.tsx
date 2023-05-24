@@ -5,7 +5,7 @@ import { EventKind, RawEvent, TaggedRawEvent, NostrPrefix } from "@snort/nostr";
 
 import Note from "Element/Note";
 import ProfileImage from "Element/ProfileImage";
-import { eventLink, hexToBech32 } from "Util";
+import { eventLink, hexToBech32 } from "SnortUtils";
 import NoteTime from "Element/NoteTime";
 import useModeration from "Hooks/useModeration";
 import { EventExt } from "System/EventExt";

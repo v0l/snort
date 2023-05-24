@@ -2,7 +2,7 @@ import { FormattedMessage } from "react-intl";
 import ProfilePreview from "Element/ProfilePreview";
 import useRelayState from "Feed/RelayState";
 import { useNavigate, useParams } from "react-router-dom";
-import { parseId, unwrap } from "Util";
+import { parseId, unwrap } from "SnortUtils";
 import { System } from "System";
 import { removeRelay } from "Login";
 import useLogin from "Hooks/useLogin";

@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { v4 as uuid } from "uuid";
 
 import AsyncButton from "Element/AsyncButton";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 import { WalletConfig, WalletKind, Wallets } from "Wallet";
 import { Link, useNavigate } from "react-router-dom";
 import { NostrConnectWallet } from "Wallet/NostrWalletConnect";

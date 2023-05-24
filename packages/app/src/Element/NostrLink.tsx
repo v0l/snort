@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { NostrPrefix } from "@snort/nostr";
 
 import Mention from "Element/Mention";
-import { parseNostrLink } from "Util";
+import { parseNostrLink } from "SnortUtils";
 import NoteQuote from "Element/NoteQuote";
 
 export default function NostrLink({ link, depth }: { link: string; depth?: number }) {

@@ -1,5 +1,5 @@
 import { RawReqFilter, u256, HexKey, EventKind } from "@snort/nostr";
-import { appendDedupe } from "Util";
+import { appendDedupe } from "SnortUtils";
 
 /**
  * Which strategy is used when building REQ filters

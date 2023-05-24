@@ -5,7 +5,7 @@ import { EventKind } from "@snort/nostr";
 import { MetadataCache } from "Cache";
 import { getDisplayName } from "Element/ProfileImage";
 import { MentionRegex } from "Const";
-import { tagFilterOfTextRepost, unwrap } from "Util";
+import { tagFilterOfTextRepost, unwrap } from "SnortUtils";
 import { UserCache } from "Cache/UserCache";
 import { LoginSession } from "Login";
 

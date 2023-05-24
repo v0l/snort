@@ -3,7 +3,7 @@ import { HexKey, u256 } from "@snort/nostr";
 
 import { InteractionCache } from "Cache/EventInteractionCache";
 import { EventInteraction } from "Db";
-import { sha256, unwrap } from "Util";
+import { sha256, unwrap } from "SnortUtils";
 
 export function useInteractionCache(pubkey?: HexKey, event?: u256) {
   const id = event && pubkey ? sha256(event + pubkey) : undefined;

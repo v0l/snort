@@ -4,7 +4,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 import { encodeTLV, EventKind, HexKey, NostrPrefix } from "@snort/nostr";
 
-import { parseNostrLink, getReactions, unwrap } from "Util";
+import { parseNostrLink, getReactions, unwrap } from "SnortUtils";
 import { formatShort } from "Number";
 import Note from "Element/Note";
 import Bookmarks from "Element/Bookmarks";
@@ -23,7 +23,7 @@ import useModeration from "Hooks/useModeration";
 import useZapsFeed from "Feed/ZapsFeed";
 import { default as ZapElement } from "Element/Zap";
 import FollowButton from "Element/FollowButton";
-import { parseId, hexToBech32 } from "Util";
+import { parseId, hexToBech32 } from "SnortUtils";
 import Avatar from "Element/Avatar";
 import Timeline from "Element/Timeline";
 import Text from "Element/Text";

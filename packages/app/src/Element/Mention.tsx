@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { HexKey } from "@snort/nostr";
 
 import { useUserProfile } from "Hooks/useUserProfile";
-import { profileLink } from "Util";
+import { profileLink } from "SnortUtils";
 import { getDisplayName } from "Element/ProfileImage";
 
 export default function Mention({ pubkey, relays }: { pubkey: HexKey; relays?: Array<string> | string }) {

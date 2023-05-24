@@ -7,7 +7,7 @@ import Tabs, { Tab } from "Element/Tabs";
 import Timeline from "Element/Timeline";
 import { System } from "System";
 import { TimelineSubject } from "Feed/TimelineFeed";
-import { debounce, getRelayName, sha256, unixNow, unwrap } from "Util";
+import { debounce, getRelayName, sha256, unixNow, unwrap } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import Discover from "Pages/Discover";
 

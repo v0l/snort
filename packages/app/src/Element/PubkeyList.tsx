@@ -1,5 +1,5 @@
 import { RawEvent } from "@snort/nostr";
-import { dedupe } from "Util";
+import { dedupe } from "SnortUtils";
 import FollowListBase from "./FollowListBase";
 
 export default function PubkeyList({ ev, className }: { ev: RawEvent; className?: string }) {

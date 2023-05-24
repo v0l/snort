@@ -1,5 +1,5 @@
 import { HexKey, RawEvent, UserMetadata } from "@snort/nostr";
-import { hexToBech32, unixNowMs } from "Util";
+import { hexToBech32, unixNowMs } from "SnortUtils";
 import { DmCache } from "./DMCache";
 import { InteractionCache } from "./EventInteractionCache";
 import { UserCache } from "./UserCache";

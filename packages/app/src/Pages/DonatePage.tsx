@@ -5,7 +5,7 @@ import { HexKey } from "@snort/nostr";
 import { ApiHost, KieranPubKey, SnortPubKey } from "Const";
 import ProfilePreview from "Element/ProfilePreview";
 import ZapButton from "Element/ZapButton";
-import { bech32ToHex } from "Util";
+import { bech32ToHex } from "SnortUtils";
 import SnortApi, { RevenueSplit, RevenueToday } from "SnortApi";
 
 const Developers = [

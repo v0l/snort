@@ -8,7 +8,7 @@ import useEventPublisher from "Feed/EventPublisher";
 import NoteTime from "Element/NoteTime";
 import Text from "Element/Text";
 import { setLastReadDm } from "Pages/MessagesPage";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";

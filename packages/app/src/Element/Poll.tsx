@@ -8,7 +8,7 @@ import useEventPublisher from "Feed/EventPublisher";
 import { useWallet } from "Wallet";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { LNURL } from "LNURL";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 import { formatShort } from "Number";
 import Spinner from "Icons/Spinner";
 import SendSats from "Element/SendSats";

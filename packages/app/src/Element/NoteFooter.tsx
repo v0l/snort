@@ -10,7 +10,7 @@ import Spinner from "Icons/Spinner";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { delay, normalizeReaction, unwrap } from "Util";
+import { delay, normalizeReaction, unwrap } from "SnortUtils";
 import { NoteCreator } from "Element/NoteCreator";
 import { ReBroadcaster } from "Element/ReBroadcaster";
 import Reactions from "Element/Reactions";

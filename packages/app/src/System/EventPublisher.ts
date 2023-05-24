@@ -14,7 +14,7 @@ import {
 
 import { DefaultRelays } from "Const";
 import { System } from "System";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 import { EventBuilder } from "./EventBuilder";
 import { EventExt } from "./EventExt";
 import { barrierQueue, processWorkQueue, WorkQueueItem } from "WorkQueue";

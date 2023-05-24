@@ -1,6 +1,6 @@
 import { AuthHandler, TaggedRawEvent, RelaySettings, Connection, RawReqFilter, RawEvent } from "@snort/nostr";
 
-import { sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
+import { sanitizeRelayUrl, unixNowMs, unwrap } from "SnortUtils";
 import { RequestBuilder } from "./RequestBuilder";
 import { EventBuilder } from "./EventBuilder";
 import {

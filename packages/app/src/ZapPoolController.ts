@@ -3,7 +3,7 @@ import { getDisplayName } from "Element/ProfileImage";
 import ExternalStore from "ExternalStore";
 import { LNURL } from "LNURL";
 import { Toastore } from "Toaster";
-import { unixNow } from "Util";
+import { unixNow } from "SnortUtils";
 import { LNWallet, WalletInvoiceState, Wallets } from "Wallet";
 
 export enum ZapPoolRecipientType {

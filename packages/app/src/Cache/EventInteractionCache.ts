@@ -1,6 +1,6 @@
 import { db, EventInteraction } from "Db";
 import { LoginStore } from "Login";
-import { sha256 } from "Util";
+import { sha256 } from "SnortUtils";
 import FeedCache from "./FeedCache";
 
 class EventInteractionCache extends FeedCache<EventInteraction> {

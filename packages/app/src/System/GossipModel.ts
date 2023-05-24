@@ -1,6 +1,6 @@
 import { RawReqFilter } from "@snort/nostr";
 import { UserRelays } from "Cache/UserRelayCache";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 
 const PickNRelays = 2;
 

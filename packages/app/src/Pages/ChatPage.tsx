@@ -1,6 +1,6 @@
 import DmWindow from "Element/DmWindow";
 import { useParams } from "react-router-dom";
-import { bech32ToHex } from "Util";
+import { bech32ToHex } from "SnortUtils";
 
 import "./ChatPage.css";
 

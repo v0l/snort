@@ -4,7 +4,7 @@ import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
 import { useState } from "react";
 import useFileUpload from "Upload";
-import { openFile } from "Util";
+import { openFile } from "SnortUtils";
 import Textarea from "./Textarea";
 
 export default function WriteDm({ chatPubKey }: { chatPubKey: string }) {

@@ -3,7 +3,7 @@ import { ProfileCacheExpire } from "Const";
 import { mapEventToProfile, MetadataCache } from "Cache";
 import { UserCache } from "Cache/UserCache";
 import { PubkeyReplaceableNoteStore, RequestBuilder, System } from "System";
-import { unixNowMs } from "Util";
+import { unixNowMs } from "SnortUtils";
 
 class ProfileLoaderService {
   /**

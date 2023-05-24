@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { randomSample, unixNowMs } from "Util";
+import { randomSample, unixNowMs } from "SnortUtils";
 import Relay from "Element/Relay";
 import useEventPublisher from "Feed/EventPublisher";
 import { System } from "System";

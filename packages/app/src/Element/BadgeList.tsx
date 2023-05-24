@@ -9,7 +9,7 @@ import { ProxyImg } from "Element/ProxyImg";
 import Icon from "Icons/Icon";
 import Modal from "Element/Modal";
 import Username from "Element/Username";
-import { findTag } from "Util";
+import { findTag } from "SnortUtils";
 
 export default function BadgeList({ badges }: { badges: TaggedRawEvent[] }) {
   const [showModal, setShowModal] = useState(false);

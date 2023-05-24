@@ -11,7 +11,7 @@ import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "LNURL";
-import { chunks, debounce } from "Util";
+import { chunks, debounce } from "SnortUtils";
 import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
 import { generateRandomKey } from "Login";
