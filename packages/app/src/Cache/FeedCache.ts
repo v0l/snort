@@ -1,4 +1,5 @@
 import { db } from "Db";
+import debug from "debug";
 import { Table } from "dexie";
 import { unixNowMs, unwrap } from "SnortUtils";
 
@@ -24,13 +25,14 @@ export default abstract class FeedCache<TCached> {
     this.#name = name;
     this.#table = table;
     setInterval(() => {
-      console.debug(
-        `[${this.#name}] ${this.cache.size} loaded, ${this.onTable.size} on-disk, ${this.#hooks.length} hooks, ${(
-          (this.#hits / (this.#hits + this.#miss)) *
-          100
-        ).toFixed(1)} % hit`
+      debug(this.#name)(
+        "%d loaded, %d on-disk, %d hooks, %d% hit",
+        this.cache.size,
+        this.onTable.size,
+        this.#hooks.length,
+        ((this.#hits / (this.#hits + this.#miss)) * 100).toFixed(1)
       );
-    }, 5_000);
+    }, 30_000);
   }
 
   async preload() {
@@ -138,7 +140,7 @@ export default abstract class FeedCache<TCached> {
       }
       return "no_change";
     })();
-    console.debug(`Updating ${k} ${updateType}`, m);
+    debug(this.#name)("Updating %s %s %o", k, updateType, m);
     if (updateType !== "no_change") {
       const updated = {
         ...existing,
@@ -168,10 +170,11 @@ export default abstract class FeedCache<TCached> {
         this.cache.set(this.key(a), a);
       });
       this.notifyChange(fromCacheFiltered.map(a => this.key(a)));
-      console.debug(
-        `[${this.#name}] Loaded ${fromCacheFiltered.length}/${keys.length} in ${(
-          unixNowMs() - start
-        ).toLocaleString()} ms`
+      debug(this.#name)(
+        `Loaded %d/%d in %d ms`,
+        fromCacheFiltered.length,
+        keys.length,
+        (unixNowMs() - start).toLocaleString()
       );
       return mapped.filter(a => !a.has).map(a => a.key);
     }

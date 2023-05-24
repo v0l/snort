@@ -89,8 +89,8 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
   }
 
   onEvent(cb: OnEventCallback): OnEventCallbackRelease {
-    const existing = this.#eventHooks.findIndex(a => a === cb);
-    if (existing === -1) {
+    const existing = this.#eventHooks.find(a => a === cb);
+    if (!existing) {
       this.#eventHooks.push(cb);
       return () => {
         const idx = this.#eventHooks.findIndex(a => a === cb);

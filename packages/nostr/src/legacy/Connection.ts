@@ -47,7 +47,7 @@ export class Connection {
     cmd: ReqCommand,
     cb: () => void
   }> = [];
-  ActiveRequests: Set<string> = new Set();
+  ActiveRequests = new Set<string>();
 
   Settings: RelaySettings;
   Info?: RelayInfo;
@@ -63,7 +63,7 @@ export class Connection {
   OnConnected?: () => void;
   OnEvent?: (sub: string, e: TaggedRawEvent) => void;
   OnEose?: (sub: string) => void;
-  OnDisconnect?: (active: Array<string>, pending: Array<string>) => void;
+  OnDisconnect?: (id: string) => void;
   Auth?: AuthHandler;
   AwaitingAuth: Map<string, boolean>;
   Authed = false;
@@ -190,7 +190,7 @@ export class Connection {
       this.ReconnectTimer = null;
     }
 
-    this.OnDisconnect?.([...this.ActiveRequests], this.PendingRequests.map(a => a.cmd[1]))
+    this.OnDisconnect?.(this.Id);
     this.#ResetQueues();
     // reset connection Id on disconnect, for query-tracking
     this.Id = uuid();

@@ -74,7 +74,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
         this.Sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
-        c.OnDisconnect = (a, p) => this.OnRelayDisconnect(c, a, p);
+        c.OnDisconnect = id => this.OnRelayDisconnect(id);
         c.OnConnected = () => {
           for (const [, q] of this.Queries) {
             q.sendToRelay(c);
@@ -90,9 +90,9 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
     }
   }
 
-  OnRelayDisconnect(c: Connection, active: Array<string>, pending: Array<string>) {
+  OnRelayDisconnect(id: string) {
     for (const [, q] of this.Queries) {
-      q.connectionLost(c, active, pending);
+      q.connectionLost(id);
     }
   }
 
@@ -131,10 +131,12 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
         this.Sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
-        c.OnDisconnect = (a, p) => this.OnRelayDisconnect(c, a, p);
+        c.OnDisconnect = id => this.OnRelayDisconnect(id);
         c.OnConnected = () => {
           for (const [, q] of this.Queries) {
-            q.sendToRelay(c);
+            if (q.progress !== 1) {
+              q.sendToRelay(c);
+            }
           }
         };
         await c.Connect();
@@ -198,7 +200,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
           const subQ = {
             id: `${q.id}-${q.subQueryCounter++}`,
             filters: sf.filters,
-            relays: sf.relay ? [sf.relay] : [],
+            relays: sf.relay ? [sf.relay] : undefined,
           } as QueryBase;
           this.SendSubQuery(q, subQ);
         }
@@ -230,7 +232,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
         const subQ = {
           id: `${q.id}-${q.subQueryCounter++}`,
           filters: sf.filters,
-          relays: sf.relay ? [sf.relay] : [],
+          relays: sf.relay ? [sf.relay] : undefined,
         } as QueryBase;
         this.SendSubQuery(q, subQ);
       }

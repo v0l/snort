@@ -1,7 +1,9 @@
 import { v4 as uuid } from "uuid";
+import debug from "debug";
 import { Connection, RawReqFilter, Nips } from "@snort/nostr";
 import { unixNowMs, unwrap } from "SnortUtils";
 import { NoteStore } from "./NoteCollection";
+
 /**
  * Tracing for relay query status
  */
@@ -17,6 +19,7 @@ class QueryTrace {
   #wasForceClosed = false;
   readonly #fnClose: (id: string) => void;
   readonly #fnProgress: () => void;
+  readonly #log = debug("QueryTrace");
 
   constructor(sub: string, relay: string, connId: string, fnClose: (id: string) => void, fnProgress: () => void) {
     this.id = uuid();
@@ -35,32 +38,21 @@ class QueryTrace {
 
   gotEose() {
     this.eose = unixNowMs();
-    if (this.responseTime > 5_000) {
-      console.debug(`Slow query ${this.subId} on ${this.relay} took ${this.responseTime.toLocaleString()}ms`);
-    }
     this.#fnProgress();
-    console.debug(`[EOSE][${this.subId}] ${this.relay}`);
+    //this.#log("[EOSE] %s %s", this.subId, this.relay);
   }
 
   forceEose() {
     this.eose = unixNowMs();
     this.#wasForceClosed = true;
     this.#fnProgress();
-    console.debug(`[F-EOSE][${this.subId}] ${this.relay}`);
+    //this.#log("[F-EOSE] %s %s", this.subId, this.relay);
   }
 
   sendClose() {
     this.close = unixNowMs();
     this.#fnClose(this.subId);
     this.#fnProgress();
-  }
-
-  log() {
-    console.debug(
-      `QT:${this.id}, ${this.subId}, finished=${
-        this.finished
-      }, queued=${this.queued.toLocaleString()}ms, runtime=${this.runtime?.toLocaleString()}ms, ${this.relay}`
-    );
   }
 
   /**
@@ -143,6 +135,7 @@ export class Query implements QueryBase {
   #feed: NoteStore;
 
   subQueryCounter = 0;
+  #log = debug("Query");
 
   constructor(id: string, filters: Array<RawReqFilter>, feed: NoteStore) {
     this.id = id;
@@ -189,15 +182,8 @@ export class Query implements QueryBase {
     this.#sendQueryInternal(c, subq);
   }
 
-  connectionLost(c: Connection, active: Array<string>, pending: Array<string>) {
-    const allQueriesLost = [...active, ...pending].filter(a => this.id === a || this.#tracing.some(b => b.subId === a));
-    if (allQueriesLost.length > 0) {
-      console.debug("Lost", allQueriesLost, c.Address, c.Id);
-    }
-    for (const qLost of allQueriesLost) {
-      const qt = this.#tracing.find(a => a.subId === qLost && a.connId == c.Id);
-      qt?.forceEose();
-    }
+  connectionLost(id: string) {
+    this.#tracing.filter(a => a.connId == id).forEach(a => a.forceEose());
   }
 
   sendClose() {
@@ -234,7 +220,7 @@ export class Query implements QueryBase {
   #onProgress() {
     const isFinished = this.progress === 1;
     if (this.feed.loading !== isFinished) {
-      console.debug(`[QT] ${this.id}, loading=${this.feed.loading}, progress=${this.progress}`);
+      this.#log("%s loading=%s, progress=%d", this.id, this.feed.loading, this.progress);
       this.feed.loading = isFinished;
     }
   }
@@ -261,11 +247,11 @@ export class Query implements QueryBase {
       return false;
     }
     if ((q.relays?.length ?? 0) === 0 && c.Ephemeral) {
-      console.debug("Cant send non-specific REQ to ephemeral connection");
+      this.#log("Cant send non-specific REQ to ephemeral connection");
       return false;
     }
     if (q.filters.some(a => a.search) && !c.SupportsNip(Nips.Search)) {
-      console.debug("Cant send REQ to non-search relay", c.Address);
+      this.#log("Cant send REQ to non-search relay", c.Address);
       return false;
     }
     return true;

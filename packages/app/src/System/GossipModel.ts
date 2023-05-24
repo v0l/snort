@@ -1,6 +1,7 @@
 import { RawReqFilter } from "@snort/nostr";
 import { UserRelays } from "Cache/UserRelayCache";
 import { unwrap } from "SnortUtils";
+import debug from "debug";
 
 const PickNRelays = 2;
 
@@ -106,6 +107,6 @@ export function splitByWriteRelays(filter: RawReqFilter): Array<RelayTaggedFilte
       },
     });
   }
-  console.debug("GOSSIP", picked);
+  debug("GOSSIP")("Picked %o", picked);
   return picked;
 }

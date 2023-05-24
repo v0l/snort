@@ -16,7 +16,6 @@ import useModeration from "Hooks/useModeration";
 import { NoteCreator } from "Element/NoteCreator";
 import { db } from "Db";
 import useEventPublisher from "Feed/EventPublisher";
-import SubDebug from "Element/SubDebug";
 import { preload } from "Cache";
 import { useDmCache } from "Hooks/useDmsCache";
 import { mapPlanName } from "./subscribe";
@@ -170,7 +169,6 @@ export default function Layout() {
           <NoteCreator />
         </>
       )}
-      {window.localStorage.getItem("debug") && <SubDebug />}
       <Toaster />
     </div>
   );

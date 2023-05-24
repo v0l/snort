@@ -4,12 +4,15 @@ import { mapEventToProfile, MetadataCache } from "Cache";
 import { UserCache } from "Cache/UserCache";
 import { PubkeyReplaceableNoteStore, RequestBuilder, System } from "System";
 import { unixNowMs } from "SnortUtils";
+import debug from "debug";
 
 class ProfileLoaderService {
   /**
    * List of pubkeys to fetch metadata for
    */
   WantsMetadata: Set<HexKey> = new Set();
+
+  readonly #log = debug("ProfileCache");
 
   constructor() {
     this.#FetchMetadata();
@@ -39,12 +42,10 @@ class ProfileLoaderService {
     }
   }
 
-  async onProfileEvent(ev: Readonly<Array<TaggedRawEvent>>) {
-    for (const e of ev) {
-      const profile = mapEventToProfile(e);
-      if (profile) {
-        await UserCache.update(profile);
-      }
+  async onProfileEvent(e: Readonly<TaggedRawEvent>) {
+    const profile = mapEventToProfile(e);
+    if (profile) {
+      await UserCache.update(profile);
     }
   }
 
@@ -57,18 +58,25 @@ class ProfileLoaderService {
       .filter(a => (UserCache.getFromCache(a)?.loaded ?? 0) < expire);
     const missing = new Set([...missingFromCache, ...expired]);
     if (missing.size > 0) {
-      console.debug(`[UserCache] Wants profiles: ${missingFromCache.length} missing, ${expired.length} expired`);
+      this.#log("Wants profiles: %d missing, %d expired", missingFromCache.length, expired.length);
 
-      const sub = new RequestBuilder(`profiles`);
+      const sub = new RequestBuilder("profiles");
       sub
+        .withOptions({
+          skipDiff: true,
+        })
         .withFilter()
         .kinds([EventKind.SetMetadata])
         .authors([...missing]);
 
+      const newProfiles = new Set<string>();
       const q = System.Query<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
       // never release this callback, it will stop firing anyway after eose
       const releaseOnEvent = q.onEvent(async e => {
-        await this.onProfileEvent(e);
+        for (const pe of e) {
+          newProfiles.add(pe.id);
+          await this.onProfileEvent(pe);
+        }
       });
       const results = await new Promise<Readonly<Array<TaggedRawEvent>>>(resolve => {
         let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
@@ -76,21 +84,21 @@ class ProfileLoaderService {
           if (!q.loading) {
             clearTimeout(timeout);
             resolve(q.getSnapshotData() ?? []);
-            console.debug("Profiles finished: ", sub.id);
+            this.#log("Profiles finished: %s", sub.id);
             release();
           }
         });
         timeout = setTimeout(() => {
           release();
           resolve(q.getSnapshotData() ?? []);
-          console.debug("Profiles timeout: ", sub.id);
+          this.#log("Profiles timeout: %s", sub.id);
         }, 5_000);
       });
 
       releaseOnEvent();
       const couldNotFetch = [...missing].filter(a => !results.some(b => b.pubkey === a));
       if (couldNotFetch.length > 0) {
-        console.debug("No profiles: ", couldNotFetch);
+        this.#log("No profiles: %o", couldNotFetch);
         const empty = couldNotFetch.map(a =>
           UserCache.update({
             pubkey: a,
@@ -100,6 +108,11 @@ class ProfileLoaderService {
         );
         await Promise.all(empty);
       }
+
+      // When we fetch an expired profile and its the same as what we already have
+      // onEvent is not fired and the loaded timestamp never gets updated
+      const expiredSame = results.filter(a => !newProfiles.has(a.id) && expired.includes(a.pubkey));
+      await Promise.all(expiredSame.map(v => this.onProfileEvent(v)));
     }
 
     setTimeout(() => this.#FetchMetadata(), 500);
