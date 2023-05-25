@@ -45,6 +45,7 @@ export interface LinkPreviewData {
   title?: string;
   description?: string;
   image?: string;
+  og_tags?: Array<[name: string, value: string]>;
 }
 
 export default class SnortApi {
