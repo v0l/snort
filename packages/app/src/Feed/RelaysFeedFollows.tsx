@@ -42,6 +42,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
     });
   }
 
+  // instead of discarding the follow list we should also use it for follow graph
   function mapFromContactList(notes: Array<TaggedRawEvent>): Array<RelayList> {
     return notes.map(ev => {
       if (ev.content !== "" && ev.content !== "{}" && ev.content.startsWith("{") && ev.content.endsWith("}")) {

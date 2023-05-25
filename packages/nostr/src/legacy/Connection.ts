@@ -211,7 +211,10 @@ export class Connection {
           break;
         }
         case "EVENT": {
-          this.OnEvent?.(msg[1], msg[2]);
+          this.OnEvent?.(msg[1], {
+            ...msg[2],
+            relays: [this.Address]
+          });
           this.Stats.EventsReceived++;
           this.#UpdateState();
           break;

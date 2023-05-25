@@ -1,5 +1,4 @@
-import { RawReqFilter } from "@snort/nostr";
-import { UserRelays } from "Cache/UserRelayCache";
+import { FullRelaySettings, RawReqFilter } from "@snort/nostr";
 import { unwrap } from "SnortUtils";
 import debug from "debug";
 
@@ -15,18 +14,24 @@ export interface RelayTaggedFilters {
   filters: Array<RawReqFilter>;
 }
 
-export function splitAllByWriteRelays(filters: Array<RawReqFilter>) {
-  const allSplit = filters.map(splitByWriteRelays).reduce((acc, v) => {
-    for (const vn of v) {
-      const existing = acc.get(vn.relay);
-      if (existing) {
-        existing.push(vn.filter);
-      } else {
-        acc.set(vn.relay, [vn.filter]);
+export interface RelayCache {
+  get(pubkey?: string): Array<FullRelaySettings> | undefined;
+}
+
+export function splitAllByWriteRelays(cache: RelayCache, filters: Array<RawReqFilter>) {
+  const allSplit = filters
+    .map(a => splitByWriteRelays(cache, a))
+    .reduce((acc, v) => {
+      for (const vn of v) {
+        const existing = acc.get(vn.relay);
+        if (existing) {
+          existing.push(vn.filter);
+        } else {
+          acc.set(vn.relay, [vn.filter]);
+        }
       }
-    }
-    return acc;
-  }, new Map<string, Array<RawReqFilter>>());
+      return acc;
+    }, new Map<string, Array<RawReqFilter>>());
 
   return [...allSplit.entries()].map(([k, v]) => {
     return {
@@ -41,7 +46,7 @@ export function splitAllByWriteRelays(filters: Array<RawReqFilter>) {
  * @param filter
  * @returns
  */
-export function splitByWriteRelays(filter: RawReqFilter): Array<RelayTaggedFilter> {
+export function splitByWriteRelays(cache: RelayCache, filter: RawReqFilter): Array<RelayTaggedFilter> {
   if ((filter.authors?.length ?? 0) === 0)
     return [
       {
@@ -53,7 +58,7 @@ export function splitByWriteRelays(filter: RawReqFilter): Array<RelayTaggedFilte
   const allRelays = unwrap(filter.authors).map(a => {
     return {
       key: a,
-      relays: UserRelays.getFromCache(a)?.relays,
+      relays: cache.get(a)?.filter(a => a.settings.write),
     };
   });
 

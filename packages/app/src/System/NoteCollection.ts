@@ -1,5 +1,5 @@
 import { TaggedRawEvent, u256 } from "@snort/nostr";
-import { findTag } from "SnortUtils";
+import { appendDedupe, findTag } from "SnortUtils";
 
 export interface StoreSnapshot<TSnapshot> {
   data: TSnapshot | undefined;
@@ -142,6 +142,11 @@ export class FlatNoteStore extends HookedNoteStore<Readonly<Array<TaggedRawEvent
         this.#events.push(a);
         this.#ids.add(a.id);
         changes.push(a);
+      } else {
+        const existing = this.#events.find(b => b.id === a.id);
+        if (existing) {
+          existing.relays = appendDedupe(existing.relays, a.relays);
+        }
       }
     });
 

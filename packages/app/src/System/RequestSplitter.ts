@@ -15,6 +15,9 @@ export function diffFilters(a: Array<RawReqFilter>, b: Array<RawReqFilter>) {
       for (const [k, v] of Object.entries(bN)) {
         if (Array.isArray(v)) {
           const prevArray = prev[k] as Array<string | number>;
+          if (!prevArray) {
+            throw new Error(`Tried to add new filter prop ${k} which isnt supported!`);
+          }
           const thisArray = v as Array<string | number>;
           const added = thisArray.filter(a => !prevArray.includes(a));
           // support adding new values to array, removing values is ignored since we only care about getting new values

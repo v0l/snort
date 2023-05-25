@@ -15,6 +15,7 @@ import { diffFilters } from "./RequestSplitter";
 import { Query, QueryBase } from "./Query";
 import { splitAllByWriteRelays } from "./GossipModel";
 import ExternalStore from "ExternalStore";
+import { UserRelays } from "Cache/UserRelayCache";
 
 export {
   NoteStore,
@@ -59,6 +60,9 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
   HandleAuth?: AuthHandler;
 
   #log = debug("System");
+  #relayCache = {
+    get: (pk?: string) => UserRelays.getFromCache(pk)?.relays,
+  };
 
   constructor() {
     super();
@@ -188,17 +192,42 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
 
     if (!req) return new type();
 
-    if (this.Queries.has(req.id)) {
-      const filters = req.build();
-      const q = unwrap(this.Queries.get(req.id));
-      q.unCancel();
+    const existing = this.Queries.get(req.id);
+    if (existing) {
+      const filters = req.buildDiff(this.#relayCache, existing);
+      existing.unCancel();
 
-      const diff = diffFilters(q.filters, filters);
-      if (!diff.changed && !req.options?.skipDiff) {
+      if (filters.length === 0 && !req.options?.skipDiff) {
         this.notifyChange();
-        return unwrap(q.feed) as Readonly<T>;
+        return existing.feed as Readonly<T>;
       } else {
-        const splitFilters = splitAllByWriteRelays(filters);
+        for (const subQ of filters) {
+          this.SendQuery(
+            existing,
+            {
+              id: `${existing.id}-${existing.subQueryCounter++}`,
+              filters: [subQ.filter],
+              relays: [],
+            },
+            (q, s, c) => q.sendSubQueryToRelay(c, s)
+          );
+        }
+        q.filters = filters;
+        this.notifyChange();
+        return q.feed as Readonly<T>;
+      }
+    } else {
+      const store = new type();
+
+      const filters = req.build(this.#relayCache);
+      const q = new Query(req.id, store);
+      if (req.options?.leaveOpen) {
+        q.leaveOpen = req.options.leaveOpen;
+      }
+
+      this.Queries.set(rb.id, q);
+      const splitFilters = splitAllByWriteRelays(filters);
+      if (splitFilters.length > 1) {
         for (const sf of splitFilters) {
           const subQ = {
             id: `${q.id}-${q.subQueryCounter++}`,
@@ -207,43 +236,12 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
           } as QueryBase;
           this.SendQuery(q, subQ, (q, s, c) => q.sendSubQueryToRelay(c, s));
         }
-        q.filters = filters;
-        this.notifyChange();
-        return q.feed as Readonly<T>;
+      } else {
+        this.SendQuery(q, q, (q, s, c) => q.sendToRelay(c));
       }
-    } else {
-      return this.AddQuery<T>(type, req);
+      this.notifyChange();
+      return store;
     }
-  }
-
-  AddQuery<T extends NoteStore>(type: { new (): T }, rb: RequestBuilder): T {
-    const store = new type();
-
-    const filters = rb.build();
-    const q = new Query(rb.id, filters, store);
-    if (rb.options?.leaveOpen) {
-      q.leaveOpen = rb.options.leaveOpen;
-    }
-    if (rb.options?.relays && (rb.options?.relays?.length ?? 0) > 0) {
-      q.relays = rb.options.relays;
-    }
-
-    this.Queries.set(rb.id, q);
-    const splitFilters = splitAllByWriteRelays(filters);
-    if (splitFilters.length > 1) {
-      for (const sf of splitFilters) {
-        const subQ = {
-          id: `${q.id}-${q.subQueryCounter++}`,
-          filters: sf.filters,
-          relays: sf.relay ? [sf.relay] : undefined,
-        } as QueryBase;
-        this.SendQuery(q, subQ, (q, s, c) => q.sendSubQueryToRelay(c, s));
-      }
-    } else {
-      this.SendQuery(q, q, (q, s, c) => q.sendToRelay(c));
-    }
-    this.notifyChange();
-    return store;
   }
 
   CancelQuery(sub: string) {

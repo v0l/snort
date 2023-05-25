@@ -13,28 +13,18 @@ class QueryTrace {
   readonly relay: string;
   readonly connId: string;
   readonly start: number;
-  readonly leaveOpen: boolean;
   sent?: number;
   eose?: number;
   close?: number;
   #wasForceClosed = false;
   readonly #fnClose: (id: string) => void;
   readonly #fnProgress: () => void;
-  readonly #log = debug("QueryTrace");
 
-  constructor(
-    sub: string,
-    relay: string,
-    connId: string,
-    leaveOpen: boolean,
-    fnClose: (id: string) => void,
-    fnProgress: () => void
-  ) {
+  constructor(sub: string, relay: string, connId: string, fnClose: (id: string) => void, fnProgress: () => void) {
     this.id = uuid();
     this.subId = sub;
     this.relay = relay;
     this.connId = connId;
-    this.leaveOpen = leaveOpen;
     this.start = unixNowMs();
     this.#fnClose = fnClose;
     this.#fnProgress = fnProgress;
@@ -48,10 +38,6 @@ class QueryTrace {
   gotEose() {
     this.eose = unixNowMs();
     this.#fnProgress();
-    if (!this.leaveOpen) {
-      this.sendClose();
-    }
-    //this.#log("[EOSE] %s %s", this.subId, this.relay);
   }
 
   forceEose() {
@@ -59,7 +45,6 @@ class QueryTrace {
     this.#wasForceClosed = true;
     this.#fnProgress();
     this.sendClose();
-    //this.#log("[F-EOSE] %s %s", this.subId, this.relay);
   }
 
   sendClose() {
@@ -117,10 +102,16 @@ export interface QueryBase {
 /**
  * Active or queued query on the system
  */
-export class Query implements QueryBase {
+export class Query {
+  /**
+   * Uniquie ID of this query
+   */
   id: string;
-  filters: Array<RawReqFilter>;
-  relays?: Array<string>;
+
+  /**
+   * A merged set of all filters send to relays for this query
+   */
+  filters: Array<RawReqFilter> = [];
 
   /**
    * Which relays this query has already been executed on
@@ -150,9 +141,8 @@ export class Query implements QueryBase {
   subQueryCounter = 0;
   #log = debug("Query");
 
-  constructor(id: string, filters: Array<RawReqFilter>, feed: NoteStore) {
+  constructor(id: string, feed: NoteStore) {
     this.id = id;
-    this.filters = filters;
     this.#feed = feed;
     this.#checkTraces();
   }
@@ -181,14 +171,7 @@ export class Query implements QueryBase {
     this.#stopCheckTraces();
   }
 
-  sendToRelay(c: Connection) {
-    if (!this.#canSendQuery(c, this)) {
-      return;
-    }
-    this.#sendQueryInternal(c, this);
-  }
-
-  sendSubQueryToRelay(c: Connection, subq: QueryBase) {
+  sendToRelay(c: Connection, subq: QueryBase) {
     if (!this.#canSendQuery(c, subq)) {
       return;
     }
@@ -203,15 +186,15 @@ export class Query implements QueryBase {
     for (const qt of this.#tracing) {
       qt.sendClose();
     }
-    for (const qt of this.#tracing) {
-      qt.sendClose();
-    }
     this.cleanup();
   }
 
   eose(sub: string, conn: Readonly<Connection>) {
     const qt = this.#tracing.find(a => a.subId === sub && a.connId === conn.Id);
     qt?.gotEose();
+    if (!this.leaveOpen) {
+      qt?.sendClose();
+    }
   }
 
   /**
@@ -270,7 +253,6 @@ export class Query implements QueryBase {
       q.id,
       c.Address,
       c.Id,
-      this.leaveOpen,
       x => c.CloseReq(x),
       () => this.#onProgress()
     );
