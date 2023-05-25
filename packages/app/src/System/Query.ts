@@ -247,7 +247,7 @@ export class Query implements QueryBase {
       return false;
     }
     if ((q.relays?.length ?? 0) === 0 && c.Ephemeral) {
-      this.#log("Cant send non-specific REQ to ephemeral connection");
+      this.#log("Cant send non-specific REQ to ephemeral connection %o", q.relays);
       return false;
     }
     if (q.filters.some(a => a.search) && !c.SupportsNip(Nips.Search)) {

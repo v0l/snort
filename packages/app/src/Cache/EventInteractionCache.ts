@@ -12,8 +12,8 @@ class EventInteractionCache extends FeedCache<EventInteraction> {
     return sha256(of.event + of.by);
   }
 
-  override async preload(): Promise<void> {
-    await super.preload();
+  override async preload(follows?: Array<string>): Promise<void> {
+    await super.preload(follows);
 
     const data = window.localStorage.getItem("zap-cache");
     if (data) {

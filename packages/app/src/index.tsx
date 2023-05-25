@@ -32,6 +32,9 @@ import Thread from "Element/Thread";
 import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
 import DebugPage from "Pages/Debug";
+import { db } from "Db";
+import { preload } from "Cache";
+import { LoginStore } from "Login";
 
 // @ts-ignore
 window.__webpack_nonce__ = "ZmlhdGphZiBzYWlkIHNub3J0LnNvY2lhbCBpcyBwcmV0dHkgZ29vZCwgd2UgbWFkZSBpdCE=";
@@ -42,6 +45,25 @@ export const router = createBrowserRouter([
   {
     element: <Layout />,
     errorElement: <ErrorPage />,
+    loader: async () => {
+      db.ready = await db.isAvailable();
+      if (db.ready) {
+        await preload(LoginStore.takeSnapshot().follows.item);
+      }
+
+      try {
+        if ("registerProtocolHandler" in window.navigator) {
+          window.navigator.registerProtocolHandler(
+            "web+nostr",
+            `${window.location.protocol}//${window.location.host}/%s`
+          );
+          console.info("Registered protocol handler for 'web+nostr'");
+        }
+      } catch (e) {
+        console.error("Failed to register protocol handler", e);
+      }
+      return null;
+    },
     children: [
       ...RootRoutes,
       {

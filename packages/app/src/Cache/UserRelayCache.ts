@@ -10,6 +10,19 @@ class UsersRelaysCache extends FeedCache<UsersRelays> {
     return of.pubkey;
   }
 
+  override async preload(follows?: Array<string>): Promise<void> {
+    await super.preload(follows);
+    if (follows) {
+      await this.buffer(follows);
+    }
+  }
+
+  newest(): number {
+    let ret = 0;
+    this.cache.forEach(v => (ret = v.created_at > ret ? v.created_at : ret));
+    return ret;
+  }
+
   takeSnapshot(): Array<UsersRelays> {
     return [...this.cache.values()];
   }

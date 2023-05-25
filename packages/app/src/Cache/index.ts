@@ -52,11 +52,14 @@ export function mapEventToProfile(ev: RawEvent) {
   }
 }
 
-export async function preload() {
-  await UserCache.preload();
-  await DmCache.preload();
-  await InteractionCache.preload();
-  await UserRelays.preload();
+export async function preload(follows?: Array<string>) {
+  const preloads = [
+    UserCache.preload(follows),
+    DmCache.preload(follows),
+    InteractionCache.preload(follows),
+    UserRelays.preload(follows),
+  ];
+  await Promise.all(preloads);
 }
 
 export { UserCache, DmCache };

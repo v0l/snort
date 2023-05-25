@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { TaggedRawEvent, Lists, EventKind } from "@snort/nostr";
+import debug from "debug";
 
 import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";
 import { makeNotification, sendNotification } from "Notifications";
@@ -41,6 +42,7 @@ export default function useLoginFeed() {
       .limit(1);
 
     const dmSince = DmCache.newest();
+    debug("LoginFeed")("Loading dms since %s", new Date(dmSince * 1000).toISOString());
     b.withFilter().authors([pubKey]).kinds([EventKind.DirectMessage]).since(dmSince);
     b.withFilter().kinds([EventKind.DirectMessage]).tag("p", [pubKey]).since(dmSince);
     return b;

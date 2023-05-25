@@ -221,7 +221,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
     if (rb.options?.leaveOpen) {
       q.leaveOpen = rb.options.leaveOpen;
     }
-    if (rb.options?.relays) {
+    if (rb.options?.relays && (rb.options?.relays?.length ?? 0) > 0) {
       q.relays = rb.options.relays;
     }
 

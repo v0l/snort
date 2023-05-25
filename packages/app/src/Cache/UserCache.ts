@@ -18,6 +18,14 @@ class UserProfileCache extends FeedCache<MetadataCache> {
     return of.pubkey;
   }
 
+  override async preload(follows?: Array<string>): Promise<void> {
+    await super.preload(follows);
+    // load follows profiles
+    if (follows) {
+      await this.buffer(follows);
+    }
+  }
+
   async search(q: string): Promise<Array<MetadataCache>> {
     if (db.ready) {
       // on-disk cache will always have more data

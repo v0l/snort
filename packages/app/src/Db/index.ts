@@ -21,6 +21,7 @@ export interface RelayMetrics {
 
 export interface UsersRelays {
   pubkey: HexKey;
+  created_at: number;
   relays: FullRelaySettings[];
 }
 

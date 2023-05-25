@@ -11,8 +11,8 @@ class DMCache extends FeedCache<RawEvent> {
     return of.id;
   }
 
-  override async preload(): Promise<void> {
-    await super.preload();
+  override async preload(follows?: Array<string>): Promise<void> {
+    await super.preload(follows);
     // load all dms to memory
     await this.buffer([...this.onTable]);
   }

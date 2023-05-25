@@ -1,20 +1,24 @@
 import { useMemo } from "react";
 import { HexKey, FullRelaySettings, TaggedRawEvent, RelaySettings, EventKind } from "@snort/nostr";
+import debug from "debug";
 
 import { sanitizeRelayUrl } from "SnortUtils";
 import { PubkeyReplaceableNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
+import { UserRelays } from "Cache/UserRelayCache";
 
 interface RelayList {
   pubkey: string;
-  created: number;
+  created_at: number;
   relays: FullRelaySettings[];
 }
 
 export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList> {
   const sub = useMemo(() => {
     const b = new RequestBuilder(`relays:follows`);
-    b.withFilter().authors(pubkeys).kinds([EventKind.Relays, EventKind.ContactList]);
+    const since = UserRelays.newest();
+    debug("LoginFeed")("Loading relay lists since %s", new Date(since * 1000).toISOString());
+    b.withFilter().authors(pubkeys).kinds([EventKind.Relays, EventKind.ContactList]).since(since);
     return b;
   }, [pubkeys]);
 
@@ -22,7 +26,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
     return notes.map(ev => {
       return {
         pubkey: ev.pubkey,
-        created: ev.created_at,
+        created_at: ev.created_at,
         relays: ev.tags
           .map(a => {
             return {
@@ -45,7 +49,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
           const relays: Record<string, RelaySettings> = JSON.parse(ev.content);
           return {
             pubkey: ev.pubkey,
-            created: ev.created_at,
+            created_at: ev.created_at,
             relays: Object.entries(relays)
               .map(([k, v]) => {
                 return {
@@ -61,7 +65,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
       }
       return {
         pubkey: ev.pubkey,
-        created: 0,
+        created_at: 0,
         relays: [],
       };
     });

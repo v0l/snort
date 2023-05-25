@@ -12,18 +12,18 @@ interface HookFilter {
 
 export default abstract class FeedCache<TCached> {
   #name: string;
-  #table: Table<TCached>;
   #hooks: Array<HookFilter> = [];
   #snapshot: Readonly<Array<TCached>> = [];
   #changed = true;
   #hits = 0;
   #miss = 0;
+  protected table: Table<TCached>;
   protected onTable: Set<string> = new Set();
   protected cache: Map<string, TCached> = new Map();
 
   constructor(name: string, table: Table<TCached>) {
     this.#name = name;
-    this.#table = table;
+    this.table = table;
     setInterval(() => {
       debug(this.#name)(
         "%d loaded, %d on-disk, %d hooks, %d% hit",
@@ -35,9 +35,9 @@ export default abstract class FeedCache<TCached> {
     }, 30_000);
   }
 
-  async preload() {
+  async preload(follows?: Array<string>) {
     if (db.ready) {
-      const keys = await this.#table.toCollection().primaryKeys();
+      const keys = await this.table.toCollection().primaryKeys();
       this.onTable = new Set<string>(keys.map(a => a as string));
     }
   }
@@ -75,7 +75,7 @@ export default abstract class FeedCache<TCached> {
 
   async get(key?: string) {
     if (key && !this.cache.has(key) && db.ready) {
-      const cached = await this.#table.get(key);
+      const cached = await this.table.get(key);
       if (cached) {
         this.cache.set(this.key(cached), cached);
         this.notifyChange([key]);
@@ -88,7 +88,7 @@ export default abstract class FeedCache<TCached> {
   async bulkGet(keys: Array<string>) {
     const missing = keys.filter(a => !this.cache.has(a));
     if (missing.length > 0 && db.ready) {
-      const cached = await this.#table.bulkGet(missing);
+      const cached = await this.table.bulkGet(missing);
       cached.forEach(a => {
         if (a) {
           this.cache.set(this.key(a), a);
@@ -105,7 +105,7 @@ export default abstract class FeedCache<TCached> {
     const k = this.key(obj);
     this.cache.set(k, obj);
     if (db.ready) {
-      await this.#table.put(obj);
+      await this.table.put(obj);
       this.onTable.add(k);
     }
     this.notifyChange([k]);
@@ -113,7 +113,7 @@ export default abstract class FeedCache<TCached> {
 
   async bulkSet(obj: Array<TCached>) {
     if (db.ready) {
-      await this.#table.bulkPut(obj);
+      await this.table.bulkPut(obj);
       obj.forEach(a => this.onTable.add(this.key(a)));
     }
     obj.forEach(v => this.cache.set(this.key(v), v));
@@ -164,7 +164,7 @@ export default abstract class FeedCache<TCached> {
         key: a,
       }));
       const start = unixNowMs();
-      const fromCache = await this.#table.bulkGet(mapped.filter(a => a.has).map(a => a.key));
+      const fromCache = await this.table.bulkGet(mapped.filter(a => a.has).map(a => a.key));
       const fromCacheFiltered = fromCache.filter(a => a !== undefined).map(a => unwrap(a));
       fromCacheFiltered.forEach(a => {
         this.cache.set(this.key(a), a);
@@ -184,7 +184,7 @@ export default abstract class FeedCache<TCached> {
   }
 
   async clear() {
-    await this.#table.clear();
+    await this.table.clear();
     this.cache.clear();
     this.onTable.clear();
   }
