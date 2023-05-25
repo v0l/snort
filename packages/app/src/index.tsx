@@ -35,6 +35,7 @@ import DebugPage from "Pages/Debug";
 import { db } from "Db";
 import { preload } from "Cache";
 import { LoginStore } from "Login";
+import { System } from "System";
 
 // @ts-expect-error Setting webpack nonce
 window.__webpack_nonce__ = "ZmlhdGphZiBzYWlkIHNub3J0LnNvY2lhbCBpcyBwcmV0dHkgZ29vZCwgd2UgbWFkZSBpdCE=";
@@ -46,11 +47,15 @@ export const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     loader: async () => {
+      const login = LoginStore.takeSnapshot();
       db.ready = await db.isAvailable();
       if (db.ready) {
-        await preload(LoginStore.takeSnapshot().follows.item);
+        await preload(login.follows.item);
       }
 
+      for (const [k, v] of Object.entries(login.relays.item)) {
+        await System.ConnectToRelay(k, v);
+      }
       try {
         if ("registerProtocolHandler" in window.navigator) {
           window.navigator.registerProtocolHandler(

@@ -27,7 +27,7 @@ const RelaySettingsPage = () => {
       try {
         const onlineRelays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
         const relayList = await publisher.relayList(login.relays.item);
-        const rs = Object.keys(relays).concat(randomSample(onlineRelays, 20));
+        const rs = Object.keys(relays.item).concat(randomSample(onlineRelays, 20));
         publisher.broadcastAll(relayList, rs);
       } catch (error) {
         console.error(error);

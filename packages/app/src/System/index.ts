@@ -1,4 +1,5 @@
 import { AuthHandler, TaggedRawEvent, RelaySettings, Connection, RawReqFilter, RawEvent } from "@snort/nostr";
+import debug from "debug";
 
 import { sanitizeRelayUrl, unixNowMs, unwrap } from "SnortUtils";
 import { RequestBuilder } from "./RequestBuilder";
@@ -56,6 +57,8 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
    * Handler function for NIP-42
    */
   HandleAuth?: AuthHandler;
+
+  #log = debug("System");
 
   constructor() {
     super();
@@ -251,8 +254,9 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
   }
 
   async SendQuery(q: Query, qSend: QueryBase, qSender: (q: Query, qSend: QueryBase, c: Connection) => void) {
-    if (q.relays && q.relays.length > 0) {
-      for (const r of q.relays) {
+    if (qSend.relays && qSend.relays.length > 0) {
+      for (const r of qSend.relays) {
+        this.#log("Sending query to %s %O", r, qSend);
         const s = this.Sockets.get(r);
         if (s) {
           qSender(q, qSend, s);
