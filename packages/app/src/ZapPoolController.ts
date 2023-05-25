@@ -21,13 +21,12 @@ export interface ZapPoolRecipient {
 }
 
 class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
-  #store: Map<string, ZapPoolRecipient>;
+  #store = new Map<string, ZapPoolRecipient>();
   #isPayoutInProgress = false;
-  #lastPayout: number = 0;
+  #lastPayout = 0;
 
   constructor() {
     super();
-    this.#store = new Map();
     this.#load();
     setTimeout(() => this.#autoPayout().catch(console.error), 5_000);
   }

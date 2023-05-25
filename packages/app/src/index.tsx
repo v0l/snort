@@ -36,7 +36,7 @@ import { db } from "Db";
 import { preload } from "Cache";
 import { LoginStore } from "Login";
 
-// @ts-ignore
+// @ts-expect-error Setting webpack nonce
 window.__webpack_nonce__ = "ZmlhdGphZiBzYWlkIHNub3J0LnNvY2lhbCBpcyBwcmV0dHkgZ29vZCwgd2UgbWFkZSBpdCE=";
 
 serviceWorkerRegistration.register();

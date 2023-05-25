@@ -19,7 +19,7 @@ class UserProfileCache extends FeedCache<MetadataCache> {
   }
 
   override async preload(follows?: Array<string>): Promise<void> {
-    await super.preload(follows);
+    await super.preload();
     // load follows profiles
     if (follows) {
       await this.buffer(follows);

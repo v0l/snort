@@ -55,8 +55,8 @@ export function mapEventToProfile(ev: RawEvent) {
 export async function preload(follows?: Array<string>) {
   const preloads = [
     UserCache.preload(follows),
-    DmCache.preload(follows),
-    InteractionCache.preload(follows),
+    DmCache.preload(),
+    InteractionCache.preload(),
     UserRelays.preload(follows),
   ];
   await Promise.all(preloads);

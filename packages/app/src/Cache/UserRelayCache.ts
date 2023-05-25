@@ -11,7 +11,7 @@ class UsersRelaysCache extends FeedCache<UsersRelays> {
   }
 
   override async preload(follows?: Array<string>): Promise<void> {
-    await super.preload(follows);
+    await super.preload();
     if (follows) {
       await this.buffer(follows);
     }

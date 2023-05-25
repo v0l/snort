@@ -35,7 +35,6 @@ export default function Relay(props: RelayProps) {
     );
   }
 
-  const latency = Math.floor(state?.avgLatency ?? 0);
   return (
     <>
       <div className={`relay w-max`}>
