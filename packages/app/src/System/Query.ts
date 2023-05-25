@@ -13,6 +13,7 @@ class QueryTrace {
   readonly relay: string;
   readonly connId: string;
   readonly start: number;
+  readonly leaveOpen: boolean;
   sent?: number;
   eose?: number;
   close?: number;
@@ -21,11 +22,19 @@ class QueryTrace {
   readonly #fnProgress: () => void;
   readonly #log = debug("QueryTrace");
 
-  constructor(sub: string, relay: string, connId: string, fnClose: (id: string) => void, fnProgress: () => void) {
+  constructor(
+    sub: string,
+    relay: string,
+    connId: string,
+    leaveOpen: boolean,
+    fnClose: (id: string) => void,
+    fnProgress: () => void
+  ) {
     this.id = uuid();
     this.subId = sub;
     this.relay = relay;
     this.connId = connId;
+    this.leaveOpen = leaveOpen;
     this.start = unixNowMs();
     this.#fnClose = fnClose;
     this.#fnProgress = fnProgress;
@@ -39,6 +48,9 @@ class QueryTrace {
   gotEose() {
     this.eose = unixNowMs();
     this.#fnProgress();
+    if (!this.leaveOpen) {
+      this.sendClose();
+    }
     //this.#log("[EOSE] %s %s", this.subId, this.relay);
   }
 
@@ -46,6 +58,7 @@ class QueryTrace {
     this.eose = unixNowMs();
     this.#wasForceClosed = true;
     this.#fnProgress();
+    this.sendClose();
     //this.#log("[F-EOSE] %s %s", this.subId, this.relay);
   }
 
@@ -199,11 +212,6 @@ export class Query implements QueryBase {
   eose(sub: string, conn: Readonly<Connection>) {
     const qt = this.#tracing.find(a => a.subId === sub && a.connId === conn.Id);
     qt?.gotEose();
-    if (sub === this.id) {
-      if (!this.leaveOpen) {
-        qt?.sendClose();
-      }
-    }
   }
 
   /**
@@ -262,6 +270,7 @@ export class Query implements QueryBase {
       q.id,
       c.Address,
       c.Id,
+      this.leaveOpen,
       x => c.CloseReq(x),
       () => this.#onProgress()
     );

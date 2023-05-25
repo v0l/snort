@@ -41,10 +41,10 @@ export function mapEventToProfile(ev: RawEvent) {
   try {
     const data: UserMetadata = JSON.parse(ev.content);
     return {
+      ...data,
       pubkey: ev.pubkey,
       npub: hexToBech32("npub", ev.pubkey),
       created: ev.created_at,
-      ...data,
       loaded: unixNowMs(),
     } as MetadataCache;
   } catch (e) {

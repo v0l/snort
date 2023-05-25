@@ -4,12 +4,10 @@ declare var self: ServiceWorkerGlobalScope;
 
 import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
-import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { StaleWhileRevalidate, CacheFirst } from "workbox-strategies";
 
 clientsClaim();
-precacheAndRoute(self.__WB_MANIFEST);
 
 const staticTypes = ["image", "video", "audio"];
 registerRoute(

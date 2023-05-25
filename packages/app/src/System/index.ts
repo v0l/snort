@@ -202,7 +202,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
             filters: sf.filters,
             relays: sf.relay ? [sf.relay] : undefined,
           } as QueryBase;
-          this.SendSubQuery(q, subQ);
+          this.SendQuery(q, subQ, (q, s, c) => q.sendSubQueryToRelay(c, s));
         }
         q.filters = filters;
         this.notifyChange();
@@ -234,10 +234,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
           filters: sf.filters,
           relays: sf.relay ? [sf.relay] : undefined,
         } as QueryBase;
-        this.SendSubQuery(q, subQ);
+        this.SendQuery(q, subQ, (q, s, c) => q.sendSubQueryToRelay(c, s));
       }
     } else {
-      this.SendQuery(q);
+      this.SendQuery(q, q, (q, s, c) => q.sendToRelay(c));
     }
     this.notifyChange();
     return store;
@@ -250,16 +250,16 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
     }
   }
 
-  async SendQuery(q: Query) {
+  async SendQuery(q: Query, qSend: QueryBase, qSender: (q: Query, qSend: QueryBase, c: Connection) => void) {
     if (q.relays && q.relays.length > 0) {
       for (const r of q.relays) {
         const s = this.Sockets.get(r);
         if (s) {
-          q.sendToRelay(s);
+          qSender(q, qSend, s);
         } else {
           const nc = await this.ConnectEphemeralRelay(r);
           if (nc) {
-            q.sendToRelay(nc);
+            qSender(q, qSend, nc);
           } else {
             console.warn("Failed to connect to new relay for:", r, q);
           }
@@ -268,31 +268,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
     } else {
       for (const [, s] of this.Sockets) {
         if (!s.Ephemeral) {
-          q.sendToRelay(s);
-        }
-      }
-    }
-  }
-
-  async SendSubQuery(q: Query, subQ: QueryBase) {
-    if (subQ.relays && subQ.relays.length > 0) {
-      for (const r of subQ.relays) {
-        const s = this.Sockets.get(r);
-        if (s) {
-          q.sendSubQueryToRelay(s, subQ);
-        } else {
-          const nc = await this.ConnectEphemeralRelay(r);
-          if (nc) {
-            q.sendSubQueryToRelay(nc, subQ);
-          } else {
-            console.warn("Failed to connect to new relay for:", r, subQ);
-          }
-        }
-      }
-    } else {
-      for (const [, s] of this.Sockets) {
-        if (!s.Ephemeral) {
-          q.sendSubQueryToRelay(s, subQ);
+          qSender(q, qSend, s);
         }
       }
     }
