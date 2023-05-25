@@ -225,6 +225,9 @@
     "defaultMessage": "Parent",
     "description": "Link to parent note in thread"
   },
+  "AGNz71": {
+    "defaultMessage": "Zap All {n} sats"
+  },
   "ASRK0S": {
     "defaultMessage": "This author has been muted"
   },
@@ -427,6 +430,9 @@
   },
   "IUZC+0": {
     "defaultMessage": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you."
+  },
+  "Ig9/a1": {
+    "defaultMessage": "Sent {n} sats to {name}"
   },
   "Iwm6o2": {
     "defaultMessage": "NIP-05 Shop"
@@ -1231,6 +1237,9 @@
   "xQtL3v": {
     "defaultMessage": "Unlock",
     "description": "Unlock wallet"
+  },
+  "xaj9Ba": {
+    "defaultMessage": "Provider"
   },
   "xbVgIm": {
     "defaultMessage": "Automatically load media"
