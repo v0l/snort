@@ -27,10 +27,11 @@ const LinkPreview = ({ url }: { url: string }) => {
         const canPreviewType = type?.[1].startsWith("image") || type?.[1].startsWith("video") || false;
         if (canPreviewType || data.image) {
           setPreview(data);
+          return;
         }
-      } else {
-        setPreview(null);
       }
+
+      setPreview(null);
     })();
   }, [url]);
 
