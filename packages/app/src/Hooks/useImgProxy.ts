@@ -29,6 +29,7 @@ export default function useImgProxy() {
   return {
     proxy: (url: string, resize?: number) => {
       if (!settings) return url;
+      if (url.startsWith("data:")) return url;
       const opt = resize ? `rs:fit:${resize}:${resize}/dpr:${window.devicePixelRatio}` : "";
       const urlBytes = te.encode(url);
       const urlEncoded = urlSafe(base64.encode(urlBytes, 0, urlBytes.byteLength));
