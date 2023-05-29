@@ -9,16 +9,7 @@ window.crypto.getRandomValues = getRandomValues as any;
 
 describe("query", () => {
   test("progress", () => {
-    const q = new Query(
-      "test",
-      [
-        {
-          kinds: [1],
-          authors: ["test"],
-        },
-      ],
-      new FlatNoteStore()
-    );
+    const q = new Query("test", new FlatNoteStore());
     const opt = {
       read: true,
       write: true,
@@ -30,7 +21,15 @@ describe("query", () => {
     const c3 = new Connection("wss://three.com", opt);
     c3.Down = false;
 
-    q.sendToRelay(c1);
+    q.sendToRelay(c1, {
+      id: "test",
+      filters: [
+        {
+          kinds: [1],
+          authors: ["test"],
+        },
+      ],
+    });
     q.sendToRelay(c2);
     q.sendToRelay(c3);
 
@@ -53,12 +52,12 @@ describe("query", () => {
         },
       ],
     } as QueryBase;
-    q.sendSubQueryToRelay(c1, qs);
+    q.sendToRelay(c1, qs);
 
     expect(q.progress).toBe(3 / 4);
     q.eose(qs.id, c1);
     expect(q.progress).toBe(1);
-    q.sendSubQueryToRelay(c2, qs);
+    q.sendToRelay(c2, qs);
     expect(q.progress).toBe(4 / 5);
   });
 });

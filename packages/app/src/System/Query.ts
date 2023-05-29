@@ -3,15 +3,13 @@ import debug from "debug";
 import { Connection, RawReqFilter, Nips } from "@snort/nostr";
 import { unixNowMs, unwrap } from "SnortUtils";
 import { NoteStore } from "./NoteCollection";
+import { mergeSimilar } from "./RequestMerger";
 
 /**
  * Tracing for relay query status
  */
 class QueryTrace {
   readonly id: string;
-  readonly subId: string;
-  readonly relay: string;
-  readonly connId: string;
   readonly start: number;
   sent?: number;
   eose?: number;
@@ -20,11 +18,15 @@ class QueryTrace {
   readonly #fnClose: (id: string) => void;
   readonly #fnProgress: () => void;
 
-  constructor(sub: string, relay: string, connId: string, fnClose: (id: string) => void, fnProgress: () => void) {
+  constructor(
+    readonly subId: string,
+    readonly relay: string,
+    readonly filters: Array<RawReqFilter>,
+    readonly connId: string,
+    fnClose: (id: string) => void,
+    fnProgress: () => void
+  ) {
     this.id = uuid();
-    this.subId = sub;
-    this.relay = relay;
-    this.connId = connId;
     this.start = unixNowMs();
     this.#fnClose = fnClose;
     this.#fnProgress = fnProgress;
@@ -102,16 +104,11 @@ export interface QueryBase {
 /**
  * Active or queued query on the system
  */
-export class Query {
+export class Query implements QueryBase {
   /**
    * Uniquie ID of this query
    */
   id: string;
-
-  /**
-   * A merged set of all filters send to relays for this query
-   */
-  filters: Array<RawReqFilter> = [];
 
   /**
    * Which relays this query has already been executed on
@@ -159,6 +156,11 @@ export class Query {
     return this.#feed;
   }
 
+  get filters() {
+    const filters = this.#tracing.flatMap(a => a.filters);
+    return mergeSimilar(filters);
+  }
+
   cancel() {
     this.#cancelTimeout = unixNowMs() + 5_000;
   }
@@ -171,11 +173,11 @@ export class Query {
     this.#stopCheckTraces();
   }
 
-  sendToRelay(c: Connection, subq: QueryBase) {
-    if (!this.#canSendQuery(c, subq)) {
+  sendToRelay(c: Connection, subq?: QueryBase) {
+    if (!this.#canSendQuery(c, subq ?? this)) {
       return;
     }
-    this.#sendQueryInternal(c, subq);
+    this.#sendQueryInternal(c, subq ?? this);
   }
 
   connectionLost(id: string) {
@@ -252,6 +254,7 @@ export class Query {
     const qt = new QueryTrace(
       q.id,
       c.Address,
+      q.filters,
       c.Id,
       x => c.CloseReq(x),
       () => this.#onProgress()

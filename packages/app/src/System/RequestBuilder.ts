@@ -2,7 +2,7 @@ import { RawReqFilter, u256, HexKey, EventKind } from "@snort/nostr";
 import { appendDedupe, dedupe } from "SnortUtils";
 import { QueryBase } from "./Query";
 import { diffFilters } from "./RequestSplitter";
-import { RelayCache, splitByWriteRelays } from "./GossipModel";
+import { RelayCache, splitAllByWriteRelays, splitByWriteRelays } from "./GossipModel";
 import { mergeSimilar } from "./RequestMerger";
 
 /**
@@ -30,7 +30,7 @@ export enum RequestStrategy {
  * A built REQ filter ready for sending to System
  */
 export interface BuiltRawReqFilter {
-  filter: RawReqFilter;
+  filters: Array<RawReqFilter>;
   relay: string;
   strategy: RequestStrategy;
 }
@@ -97,6 +97,14 @@ export class RequestBuilder {
     const next = this.buildRaw();
     const diff = diffFilters(q.filters, next);
     if (diff.changed) {
+      console.debug("DIFF", q.filters, next, diff);
+      return splitAllByWriteRelays(relays, diff.filters).map(a => {
+        return {
+          strategy: RequestStrategy.AuthorsRelays,
+          filters: a.filters,
+          relay: a.relay,
+        };
+      });
     }
     return [];
   }
@@ -118,9 +126,9 @@ export class RequestBuilder {
     }, new Map<string, Array<BuiltRawReqFilter>>());
 
     const filtersSquashed = [...relayMerged.values()].flatMap(a => {
-      return mergeSimilar(a.map(b => b.filter)).map(b => {
+      return mergeSimilar(a.flatMap(b => b.filters)).map(b => {
         return {
-          filter: b,
+          filters: [b],
           relay: a[0].relay,
           strategy: a[0].strategy,
         } as BuiltRawReqFilter;
@@ -210,10 +218,12 @@ export class RequestFilterBuilder {
       const relays = dedupe([...this.#relayHints.values()].flat());
       return relays.map(r => {
         return {
-          filter: {
-            ...this.#filter,
-            ids: [...this.#relayHints.entries()].filter(([, v]) => v.includes(r)).map(([k]) => k),
-          },
+          filters: [
+            {
+              ...this.#filter,
+              ids: [...this.#relayHints.entries()].filter(([, v]) => v.includes(r)).map(([k]) => k),
+            },
+          ],
           relay: r,
           strategy: RequestStrategy.RelayHintedEventIds,
         };
@@ -225,7 +235,8 @@ export class RequestFilterBuilder {
       const split = splitByWriteRelays(relays, this.#filter);
       return split.map(a => {
         return {
-          ...a,
+          filters: [a.filter],
+          relay: a.relay,
           strategy: RequestStrategy.AuthorsRelays,
         };
       });
@@ -233,7 +244,7 @@ export class RequestFilterBuilder {
 
     return [
       {
-        filter: this.filter,
+        filters: [this.filter],
         relay: "*",
         strategy: RequestStrategy.DefaultRelays,
       },

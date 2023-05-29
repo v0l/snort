@@ -84,7 +84,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
         c.OnDisconnect = id => this.OnRelayDisconnect(id);
         c.OnConnected = () => {
           for (const [, q] of this.Queries) {
-            q.sendToRelay(c);
+            q.sendToRelay(c, q);
           }
         };
         await c.Connect();
@@ -142,7 +142,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
         c.OnConnected = () => {
           for (const [, q] of this.Queries) {
             if (q.progress !== 1) {
-              q.sendToRelay(c);
+              q.sendToRelay(c, q);
             }
           }
         };
@@ -206,15 +206,14 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
             existing,
             {
               id: `${existing.id}-${existing.subQueryCounter++}`,
-              filters: [subQ.filter],
-              relays: [],
+              filters: subQ.filters,
+              relays: [subQ.relay],
             },
-            (q, s, c) => q.sendSubQueryToRelay(c, s)
+            (q, s, c) => q.sendToRelay(c, s)
           );
         }
-        q.filters = filters;
         this.notifyChange();
-        return q.feed as Readonly<T>;
+        return existing.feed as Readonly<T>;
       }
     } else {
       const store = new type();
@@ -225,22 +224,20 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
         q.leaveOpen = req.options.leaveOpen;
       }
 
-      this.Queries.set(rb.id, q);
-      const splitFilters = splitAllByWriteRelays(filters);
-      if (splitFilters.length > 1) {
-        for (const sf of splitFilters) {
-          const subQ = {
+      this.Queries.set(req.id, q);
+      for (const subQ of filters) {
+        this.SendQuery(
+          q,
+          {
             id: `${q.id}-${q.subQueryCounter++}`,
-            filters: sf.filters,
-            relays: sf.relay ? [sf.relay] : undefined,
-          } as QueryBase;
-          this.SendQuery(q, subQ, (q, s, c) => q.sendSubQueryToRelay(c, s));
-        }
-      } else {
-        this.SendQuery(q, q, (q, s, c) => q.sendToRelay(c));
+            filters: subQ.filters,
+            relays: [subQ.relay],
+          },
+          (q, s, c) => q.sendToRelay(c, s)
+        );
       }
       this.notifyChange();
-      return store;
+      return q.feed as Readonly<T>;
     }
   }
 
