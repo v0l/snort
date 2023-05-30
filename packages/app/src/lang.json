@@ -45,6 +45,9 @@
   "0BUTMv": {
     "defaultMessage": "Search..."
   },
+  "0ehN4t": {
+    "defaultMessage": "Please connect a wallet {here} to be able to pay this invoice"
+  },
   "0jOEtS": {
     "defaultMessage": "Invalid LNURL"
   },
@@ -95,6 +98,10 @@
   },
   "2ukA4d": {
     "defaultMessage": "{n} hours"
+  },
+  "380eol": {
+    "defaultMessage": "here",
+    "description": "Inline link text pointing to another page"
   },
   "3Rx6Qo": {
     "defaultMessage": "Advanced"
@@ -218,6 +225,9 @@
   "9pMqYs": {
     "defaultMessage": "Nostr Address"
   },
+  "9qtLJC": {
+    "defaultMessage": "Payment Required"
+  },
   "9wO4wJ": {
     "defaultMessage": "Lightning Invoice"
   },
@@ -312,6 +322,9 @@
   },
   "Dh3hbq": {
     "defaultMessage": "Auto Zap"
+  },
+  "DqLx9k": {
+    "defaultMessage": "You must pay {n} sats to access this file."
   },
   "Dt/Zd5": {
     "defaultMessage": "Media in posts will automatically be shown for selected people, otherwise only the link will show"

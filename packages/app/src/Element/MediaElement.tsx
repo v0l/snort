@@ -1,6 +1,7 @@
 import { ProxyImg } from "Element/ProxyImg";
 import React, { MouseEvent, useEffect, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
+import { Link } from "react-router-dom";
 
 import "./MediaElement.css";
 import Modal from "Element/Modal";
@@ -11,7 +12,6 @@ import { useWallet } from "Wallet";
 import { PaymentsCache } from "Cache/PaymentsCache";
 import { Payment } from "Db";
 import PageSpinner from "Element/PageSpinner";
-
 /*
 [
   "imeta",
@@ -137,11 +137,27 @@ export function MediaElement(props: MediaElementProps) {
             />
           </div>
           <div>
-            <AsyncButton onClick={() => payInvoice()}>
-              <FormattedMessage defaultMessage="Pay Now" />
-            </AsyncButton>
+            {wallet.wallet && (
+              <AsyncButton onClick={() => payInvoice()}>
+                <FormattedMessage defaultMessage="Pay Now" />
+              </AsyncButton>
+            )}
           </div>
         </div>
+        {!wallet.wallet && (
+          <b>
+            <FormattedMessage
+              defaultMessage="Please connect a wallet {here} to be able to pay this invoice"
+              values={{
+                here: (
+                  <Link to="/settings/wallet" onClick={e => e.stopPropagation()}>
+                    <FormattedMessage defaultMessage="here" description="Inline link text pointing to another page" />
+                  </Link>
+                ),
+              }}
+            />
+          </b>
+        )}
         {error && <b className="error">{error}</b>}
       </div>
     );
