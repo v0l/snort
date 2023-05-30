@@ -8,8 +8,7 @@ import {
   parsePublicKey,
   PublicKey,
 } from "../src/crypto"
-import { RawEvent } from "../src"
-import { signEvent, Unsigned } from "../src/event"
+import { RawEvent, signEvent, Unsigned } from "../src/event"
 
 export const relayUrl = new URL("ws://localhost:12648")
 
