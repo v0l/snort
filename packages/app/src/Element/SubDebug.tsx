@@ -3,11 +3,11 @@ import { useState } from "react";
 
 import useRelayState from "Feed/RelayState";
 import Tabs, { Tab } from "Element/Tabs";
-import { System } from "System";
 import { unwrap } from "SnortUtils";
 import useSystemState from "Hooks/useSystemState";
-import { RawReqFilter } from "@snort/nostr";
+import { RawReqFilter } from "System";
 import { useCopy } from "useCopy";
+import { System } from "index";
 
 function RelayInfo({ id }: { id: string }) {
   const state = useRelayState(id);

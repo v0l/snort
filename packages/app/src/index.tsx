@@ -35,7 +35,21 @@ import DebugPage from "Pages/Debug";
 import { db } from "Db";
 import { preload } from "Cache";
 import { LoginStore } from "Login";
-import { System } from "System";
+import { UserRelays } from "Cache/UserRelayCache";
+import { NostrSystem } from "System";
+import { ProfileLoaderService } from "System/ProfileCache";
+
+/**
+ * Singleton nostr system
+ */
+export const System = new NostrSystem({
+  get: pk => UserRelays.getFromCache(pk)?.relays,
+});
+
+/**
+ * Singleton user profile loader
+ */
+export const ProfileLoader = new ProfileLoaderService(System);
 
 // @ts-expect-error Setting webpack nonce
 window.__webpack_nonce__ = "ZmlhdGphZiBzYWlkIHNub3J0LnNvY2lhbCBpcyBwcmV0dHkgZ29vZCwgd2UgbWFkZSBpdCE=";

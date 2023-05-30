@@ -1,4 +1,4 @@
-import { EventKind } from "@snort/nostr";
+import { EventKind } from "System";
 import { EventPublisher } from "System/EventPublisher";
 import { ServiceError, ServiceProvider } from "./ServiceProvider";
 

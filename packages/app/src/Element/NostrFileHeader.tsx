@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { RawEvent } from "@snort/nostr";
+import { RawEvent } from "System";
 
 import { findTag, NostrLink } from "SnortUtils";
 import useEventFeed from "Feed/EventFeed";

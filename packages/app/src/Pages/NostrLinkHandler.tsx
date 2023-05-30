@@ -1,4 +1,4 @@
-import { NostrPrefix } from "@snort/nostr";
+import { NostrPrefix } from "System";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "Icons/Spinner";
 import { parseNostrLink, profileLink } from "SnortUtils";
 import { getNip05PubKey } from "Pages/LoginPage";
-import { System } from "System";
+import { System } from "index";
 
 export default function NostrLinkHandler() {
   const params = useParams();

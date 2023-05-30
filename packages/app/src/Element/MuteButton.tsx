@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { HexKey } from "@snort/nostr";
+import { HexKey } from "System";
 import useModeration from "Hooks/useModeration";
 
 import messages from "./messages";

@@ -1,4 +1,4 @@
-import { Connection } from "@snort/nostr";
+import { Connection } from "System";
 import { describe, expect } from "@jest/globals";
 import { Query, QueryBase } from "./Query";
 import { getRandomValues } from "crypto";

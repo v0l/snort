@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, ChangeEvent } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { UserMetadata } from "@snort/nostr";
+import { UserMetadata } from "System";
 
 import { unwrap } from "SnortUtils";
 import { formatShort } from "Number";

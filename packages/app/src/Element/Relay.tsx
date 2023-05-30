@@ -2,10 +2,10 @@ import "./Relay.css";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { RelaySettings } from "@snort/nostr";
+import { RelaySettings } from "System";
 
 import useRelayState from "Feed/RelayState";
-import { System } from "System";
+import { System } from "index";
 import { getRelayName, unixNowMs, unwrap } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import { setRelays } from "Login";

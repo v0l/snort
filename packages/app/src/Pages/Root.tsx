@@ -5,7 +5,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 
 import Tabs, { Tab } from "Element/Tabs";
 import Timeline from "Element/Timeline";
-import { System } from "System";
+import { System } from "index";
 import { TimelineSubject } from "Feed/TimelineFeed";
 import { debounce, getRelayName, sha256, unixNow, unwrap } from "SnortUtils";
 import useLogin from "Hooks/useLogin";

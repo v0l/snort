@@ -1,4 +1,4 @@
-import { HexKey, RelaySettings, u256 } from "@snort/nostr";
+import { HexKey, RelaySettings, u256 } from "System";
 import { UserPreferences } from "Login";
 import { SubscriptionEvent } from "Subscription";
 

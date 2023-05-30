@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { HexKey, u256 } from "@snort/nostr";
+import { HexKey, u256 } from "System";
 
 import { InteractionCache } from "Cache/EventInteractionCache";
 import { EventInteraction } from "Db";

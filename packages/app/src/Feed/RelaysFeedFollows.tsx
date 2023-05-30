@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { HexKey, FullRelaySettings, TaggedRawEvent, RelaySettings, EventKind } from "@snort/nostr";
+import { HexKey, FullRelaySettings, TaggedRawEvent, RelaySettings, EventKind } from "System";
 import debug from "debug";
 
 import { sanitizeRelayUrl } from "SnortUtils";

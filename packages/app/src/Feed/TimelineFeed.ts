@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { EventKind, u256 } from "@snort/nostr";
+import { EventKind, u256 } from "System";
 
 import { unixNow, unwrap, tagFilterOfTextRepost } from "SnortUtils";
 import { FlatNoteStore, RequestBuilder } from "System";

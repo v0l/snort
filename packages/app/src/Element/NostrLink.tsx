@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { NostrPrefix } from "@snort/nostr";
+import { NostrPrefix } from "System";
 
 import Mention from "Element/Mention";
 import { parseNostrLink } from "SnortUtils";

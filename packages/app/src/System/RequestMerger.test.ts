@@ -1,5 +1,5 @@
-import { RawReqFilter } from "@snort/nostr";
-import { mergeSimilar } from "./RequestMerger";
+import { RawReqFilter } from "System";
+import { filterIncludes, mergeSimilar } from "./RequestMerger";
 
 describe("RequestMerger", () => {
   it("should simple merge authors", () => {
@@ -40,5 +40,17 @@ describe("RequestMerger", () => {
         authors: ["a"],
       },
     ]);
+  });
+
+  it("filterIncludes", () => {
+    const bigger = {
+      authors: ["a", "b", "c"],
+      since: 99,
+    } as RawReqFilter;
+    const smaller = {
+      authors: ["c"],
+      since: 100,
+    } as RawReqFilter;
+    expect(filterIncludes(bigger, smaller)).toBe(true);
   });
 });

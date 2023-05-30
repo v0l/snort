@@ -1,4 +1,4 @@
-import { HexKey, RawEvent } from "@snort/nostr";
+import { HexKey, RawEvent } from "System";
 import { EmailRegex } from "Const";
 import { bech32ToText, unwrap } from "SnortUtils";
 

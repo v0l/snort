@@ -1,4 +1,4 @@
-import { TaggedRawEvent } from "@snort/nostr";
+import { TaggedRawEvent } from "System";
 import { describe, expect } from "@jest/globals";
 import { FlatNoteStore, ReplaceableNoteStore } from "./NoteCollection";
 

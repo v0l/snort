@@ -1,6 +1,6 @@
 import "./Keys.css";
 import { FormattedMessage } from "react-intl";
-import { encodeTLV, NostrPrefix } from "@snort/nostr";
+import { encodeTLV, NostrPrefix } from "System";
 
 import Copy from "Element/Copy";
 import useLogin from "Hooks/useLogin";

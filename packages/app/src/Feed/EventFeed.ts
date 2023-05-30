@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { NostrPrefix } from "@snort/nostr";
+import { NostrPrefix } from "System";
 
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import { RequestBuilder, ReplaceableNoteStore } from "System";

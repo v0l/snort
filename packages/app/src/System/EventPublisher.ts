@@ -10,10 +10,9 @@ import {
   TaggedRawEvent,
   u256,
   UserMetadata,
-} from "@snort/nostr";
+} from "System";
 
 import { DefaultRelays } from "Const";
-import { System } from "System";
 import { unwrap } from "SnortUtils";
 import { EventBuilder } from "./EventBuilder";
 import { EventExt } from "./EventExt";
@@ -23,11 +22,34 @@ const Nip7Queue: Array<WorkQueueItem> = [];
 processWorkQueue(Nip7Queue);
 export type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
 
+declare global {
+  interface Window {
+    nostr?: {
+      getPublicKey: () => Promise<HexKey>;
+      signEvent: <T extends RawEvent>(event: T) => Promise<T>;
+
+      getRelays?: () => Promise<Record<string, { read: boolean; write: boolean }>>;
+
+      nip04?: {
+        encrypt?: (pubkey: HexKey, plaintext: string) => Promise<string>;
+        decrypt?: (pubkey: HexKey, ciphertext: string) => Promise<string>;
+      };
+    };
+  }
+}
+
+interface SystemInterface {
+  BroadcastEvent(ev: RawEvent): void;
+  WriteOnceToRelay(relay: string, ev: RawEvent): Promise<void>;
+}
+
 export class EventPublisher {
+  #system: SystemInterface;
   #pubKey: string;
   #privateKey?: string;
 
-  constructor(pubKey: string, privKey?: string) {
+  constructor(system: SystemInterface, pubKey: string, privKey?: string) {
+    this.#system = system;
     if (privKey) {
       this.#privateKey = privKey;
       this.#pubKey = utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
@@ -97,7 +119,7 @@ export class EventPublisher {
 
   broadcast(ev: RawEvent) {
     console.debug(ev);
-    System.BroadcastEvent(ev);
+    this.#system.BroadcastEvent(ev);
   }
 
   /**
@@ -107,7 +129,7 @@ export class EventPublisher {
    */
   broadcastForBootstrap(ev: RawEvent) {
     for (const [k] of DefaultRelays) {
-      System.WriteOnceToRelay(k, ev);
+      this.#system.WriteOnceToRelay(k, ev);
     }
   }
 
@@ -116,7 +138,7 @@ export class EventPublisher {
    */
   broadcastAll(ev: RawEvent, relays: string[]) {
     for (const k of relays) {
-      System.WriteOnceToRelay(k, ev);
+      this.#system.WriteOnceToRelay(k, ev);
     }
   }
 

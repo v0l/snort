@@ -16,7 +16,7 @@ import {
   decodeTLV,
   TLVEntryType,
   RawEvent,
-} from "@snort/nostr";
+} from "System";
 import { MetadataCache } from "Cache";
 import NostrLink from "Element/NostrLink";
 

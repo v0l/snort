@@ -4,7 +4,7 @@ import "./Textarea.css";
 import { useIntl } from "react-intl";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import TextareaAutosize from "react-textarea-autosize";
-import { NostrPrefix } from "@snort/nostr";
+import { NostrPrefix } from "System";
 
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";

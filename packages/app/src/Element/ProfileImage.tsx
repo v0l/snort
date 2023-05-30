@@ -1,7 +1,7 @@
 import "./ProfileImage.css";
 
 import React, { useMemo } from "react";
-import { HexKey, NostrPrefix } from "@snort/nostr";
+import { HexKey, NostrPrefix } from "System";
 
 import { useUserProfile } from "Hooks/useUserProfile";
 import { hexToBech32, profileLink } from "SnortUtils";

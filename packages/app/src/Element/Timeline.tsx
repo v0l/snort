@@ -2,7 +2,7 @@ import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
 import { useCallback, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
-import { TaggedRawEvent, EventKind, u256 } from "@snort/nostr";
+import { TaggedRawEvent, EventKind, u256 } from "System";
 
 import Icon from "Icons/Icon";
 import { dedupeByPubkey, findTag, tagFilterOfTextRepost } from "SnortUtils";

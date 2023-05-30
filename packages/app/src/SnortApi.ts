@@ -1,4 +1,4 @@
-import { EventKind } from "@snort/nostr";
+import { EventKind } from "System";
 import { ApiHost } from "Const";
 import { SubscriptionType } from "Subscription";
 import { EventPublisher } from "System/EventPublisher";

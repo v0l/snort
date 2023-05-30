@@ -1,8 +1,9 @@
 import "./SendSats.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { HexKey, RawEvent } from "@snort/nostr";
 
+import { HexKey, RawEvent } from "System";
+import { System } from "index";
 import { formatShort } from "Number";
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
@@ -133,7 +134,7 @@ export default function SendSats(props: SendSatsProps) {
         const randomKey = generateRandomKey();
         console.debug("Generated new key for zap: ", randomKey);
 
-        const publisher = new EventPublisher(randomKey.publicKey, randomKey.privateKey);
+        const publisher = new EventPublisher(System, randomKey.publicKey, randomKey.privateKey);
         zap = await publisher.zap(amount * 1000, author, relays, note, comment, eb => eb.tag(["anon", ""]));
       } else {
         zap = await publisher.zap(amount * 1000, author, relays, note, comment);

@@ -1,4 +1,4 @@
-import { RawReqFilter } from "@snort/nostr";
+import { RawReqFilter } from "System";
 import { describe, expect } from "@jest/globals";
 import { diffFilters } from "./RequestSplitter";
 

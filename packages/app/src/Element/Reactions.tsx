@@ -2,7 +2,7 @@ import "./Reactions.css";
 
 import { useState, useMemo, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { TaggedRawEvent } from "@snort/nostr";
+import { TaggedRawEvent } from "System";
 
 import { formatShort } from "Number";
 import Icon from "Icons/Icon";

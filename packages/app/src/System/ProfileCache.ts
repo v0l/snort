@@ -1,12 +1,14 @@
-import { EventKind, HexKey, TaggedRawEvent } from "@snort/nostr";
+import { EventKind, HexKey, NostrSystem, TaggedRawEvent } from "System";
 import { ProfileCacheExpire } from "Const";
 import { mapEventToProfile, MetadataCache } from "Cache";
 import { UserCache } from "Cache/UserCache";
-import { PubkeyReplaceableNoteStore, RequestBuilder, System } from "System";
+import { PubkeyReplaceableNoteStore, RequestBuilder } from "System";
 import { unixNowMs } from "SnortUtils";
 import debug from "debug";
 
-class ProfileLoaderService {
+export class ProfileLoaderService {
+  #system: NostrSystem;
+
   /**
    * List of pubkeys to fetch metadata for
    */
@@ -14,7 +16,8 @@ class ProfileLoaderService {
 
   readonly #log = debug("ProfileCache");
 
-  constructor() {
+  constructor(system: NostrSystem) {
+    this.#system = system;
     this.#FetchMetadata();
   }
 
@@ -70,7 +73,7 @@ class ProfileLoaderService {
         .authors([...missing]);
 
       const newProfiles = new Set<string>();
-      const q = System.Query<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
+      const q = this.#system.Query<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
       // never release this callback, it will stop firing anyway after eose
       const releaseOnEvent = q.onEvent(async e => {
         for (const pe of e) {
@@ -118,5 +121,3 @@ class ProfileLoaderService {
     setTimeout(() => this.#FetchMetadata(), 500);
   }
 }
-
-export const ProfileLoader = new ProfileLoaderService();

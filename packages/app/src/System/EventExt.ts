@@ -1,6 +1,6 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
-import { EventKind, HexKey, RawEvent, Tag } from "@snort/nostr";
+import { EventKind, HexKey, RawEvent, Tag } from "System";
 import base64 from "@protobufjs/base64";
 import { sha256, unixNow } from "SnortUtils";
 

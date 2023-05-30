@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { randomSample, unixNowMs } from "SnortUtils";
 import Relay from "Element/Relay";
 import useEventPublisher from "Feed/EventPublisher";
-import { System } from "System";
+import { System } from "index";
 import useLogin from "Hooks/useLogin";
 import { setRelays } from "Login";
 

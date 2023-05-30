@@ -9,7 +9,7 @@ import messages from "./messages";
 import Icon from "Icons/Icon";
 import { RootState } from "State/Store";
 import { setShow, reset } from "State/NoteCreator";
-import { System } from "System";
+import { System } from "index";
 import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
 import useModeration from "Hooks/useModeration";

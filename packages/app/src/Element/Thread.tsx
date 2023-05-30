@@ -2,7 +2,7 @@ import "./Thread.css";
 import { useMemo, useState, ReactNode } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
-import { TaggedRawEvent, u256, EventKind, NostrPrefix } from "@snort/nostr";
+import { TaggedRawEvent, u256, EventKind, NostrPrefix } from "System";
 import { EventExt, Thread as ThreadInfo } from "System/EventExt";
 
 import { eventLink, unwrap, getReactions, parseNostrLink, getAllReactions, findTag } from "SnortUtils";

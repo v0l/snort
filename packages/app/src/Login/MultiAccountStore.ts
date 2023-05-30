@@ -1,7 +1,7 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
-import { HexKey, RelaySettings } from "@snort/nostr";
+import { HexKey, RelaySettings } from "System";
 
 import { DefaultRelays } from "Const";
 import ExternalStore from "ExternalStore";

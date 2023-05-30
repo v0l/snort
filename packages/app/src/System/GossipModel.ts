@@ -1,4 +1,4 @@
-import { FullRelaySettings, RawReqFilter } from "@snort/nostr";
+import { FullRelaySettings, RawReqFilter } from "System";
 import { unwrap } from "SnortUtils";
 import debug from "debug";
 

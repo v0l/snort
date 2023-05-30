@@ -1,6 +1,6 @@
 import "./ZapstrEmbed.css";
 import { Link } from "react-router-dom";
-import { encodeTLV, NostrPrefix, RawEvent } from "@snort/nostr";
+import { encodeTLV, NostrPrefix, RawEvent } from "System";
 
 import { ProxyImg } from "Element/ProxyImg";
 import ProfileImage from "Element/ProfileImage";

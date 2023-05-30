@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RawEvent } from "@snort/nostr";
+import { RawEvent } from "System";
 
 interface ReBroadcastStore {
   show: boolean;

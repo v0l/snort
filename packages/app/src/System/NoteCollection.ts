@@ -1,4 +1,4 @@
-import { TaggedRawEvent, u256 } from "@snort/nostr";
+import { TaggedRawEvent, u256 } from "System";
 import { appendDedupe, findTag } from "SnortUtils";
 
 export interface StoreSnapshot<TSnapshot> {

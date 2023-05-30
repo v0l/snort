@@ -1,4 +1,4 @@
-import { EventKind } from "@snort/nostr";
+import { EventKind } from "System";
 import { VoidApi } from "@void-cat/api";
 
 import { FileExtensionRegex, VoidCatHost } from "Const";

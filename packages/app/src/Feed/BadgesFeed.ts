@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { EventKind, HexKey, Lists } from "@snort/nostr";
+import { EventKind, HexKey, Lists } from "System";
 
 import { unwrap, findTag, chunks } from "SnortUtils";
 import { RequestBuilder } from "System";

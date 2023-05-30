@@ -3,7 +3,7 @@ import ProfilePreview from "Element/ProfilePreview";
 import useRelayState from "Feed/RelayState";
 import { useNavigate, useParams } from "react-router-dom";
 import { parseId, unwrap } from "SnortUtils";
-import { System } from "System";
+import { System } from "index";
 import { removeRelay } from "Login";
 import useLogin from "Hooks/useLogin";
 

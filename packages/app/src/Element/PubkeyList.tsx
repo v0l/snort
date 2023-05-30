@@ -1,4 +1,4 @@
-import { RawEvent } from "@snort/nostr";
+import { RawEvent } from "System";
 import { dedupe } from "SnortUtils";
 import FollowListBase from "./FollowListBase";
 

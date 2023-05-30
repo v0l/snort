@@ -1,7 +1,8 @@
 import { useSyncExternalStore } from "react";
-import { RequestBuilder, System } from "System";
+import { RequestBuilder } from "System";
 import { EmptySnapshot, NoteStore, StoreSnapshot } from "System/NoteCollection";
 import { unwrap } from "SnortUtils";
+import { System } from "index";
 
 const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TStore["getSnapshotData"]>>(
   type: { new (): TStore },

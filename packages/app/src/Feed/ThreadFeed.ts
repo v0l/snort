@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { u256, EventKind } from "@snort/nostr";
+import { u256, EventKind } from "System";
 
 import { appendDedupe, NostrLink } from "SnortUtils";
 import { FlatNoteStore, RequestBuilder } from "System";

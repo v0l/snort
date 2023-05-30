@@ -1,9 +1,9 @@
 import { useEffect, useSyncExternalStore } from "react";
-import { HexKey } from "@snort/nostr";
 
+import { HexKey } from "System";
 import { MetadataCache } from "Cache";
 import { UserCache } from "Cache/UserCache";
-import { ProfileLoader } from "System/ProfileCache";
+import { ProfileLoader } from "index";
 
 export function useUserProfile(pubKey?: HexKey): MetadataCache | undefined {
   const user = useSyncExternalStore<MetadataCache | undefined>(

@@ -1,4 +1,6 @@
-import { RelaySettings } from "@snort/nostr";
+import { UserRelays } from "Cache/UserRelayCache";
+import { NostrSystem, RelaySettings } from "System";
+import { ProfileLoaderService } from "System/ProfileCache";
 
 /**
  * Add-on api for snort features

@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { TaggedRawEvent, Lists, EventKind } from "@snort/nostr";
+import { TaggedRawEvent, Lists, EventKind } from "System";
 import debug from "debug";
 
 import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";

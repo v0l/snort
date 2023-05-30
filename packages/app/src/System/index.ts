@@ -1,7 +1,8 @@
-import { AuthHandler, TaggedRawEvent, RelaySettings, Connection, RawReqFilter, RawEvent } from "@snort/nostr";
 import debug from "debug";
 
 import { sanitizeRelayUrl, unixNowMs, unwrap } from "SnortUtils";
+import { RawEvent, RawReqFilter, TaggedRawEvent } from "./Nostr";
+import { AuthHandler, Connection, RelaySettings, StateSnapshot } from "./Connection";
 import { RequestBuilder } from "./RequestBuilder";
 import { EventBuilder } from "./EventBuilder";
 import {
@@ -11,11 +12,16 @@ import {
   ParameterizedReplaceableNoteStore,
   ReplaceableNoteStore,
 } from "./NoteCollection";
-import { diffFilters } from "./RequestSplitter";
 import { Query, QueryBase } from "./Query";
-import { splitAllByWriteRelays } from "./GossipModel";
 import ExternalStore from "ExternalStore";
-import { UserRelays } from "Cache/UserRelayCache";
+import { RelayCache } from "./GossipModel";
+
+export { default as EventKind } from "./EventKind";
+export * from "./Nostr";
+export * from "./Links";
+export { default as Tag } from "./Tag";
+export * from "./Nips";
+export * from "./RelayInfo";
 
 export {
   NoteStore,
@@ -26,6 +32,10 @@ export {
   ReplaceableNoteStore,
   Query,
   EventBuilder,
+  AuthHandler,
+  Connection,
+  RelaySettings,
+  StateSnapshot,
 };
 
 export interface SystemSnapshot {
@@ -60,13 +70,12 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
   HandleAuth?: AuthHandler;
 
   #log = debug("System");
-  #relayCache = {
-    get: (pk?: string) => UserRelays.getFromCache(pk)?.relays,
-  };
+  #relayCache: RelayCache;
 
-  constructor() {
+  constructor(relayCache: RelayCache) {
     super();
     this.Sockets = new Map();
+    this.#relayCache = relayCache;
     this.#cleanup();
   }
 
@@ -202,15 +211,11 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
         return existing.feed as Readonly<T>;
       } else {
         for (const subQ of filters) {
-          this.SendQuery(
-            existing,
-            {
-              id: `${existing.id}-${existing.subQueryCounter++}`,
-              filters: subQ.filters,
-              relays: [subQ.relay],
-            },
-            (q, s, c) => q.sendToRelay(c, s)
-          );
+          this.SendQuery(existing, {
+            id: `${existing.id}-${existing.subQueryCounter++}`,
+            filters: subQ.filters,
+            relays: subQ.relay ? [subQ.relay] : undefined,
+          });
         }
         this.notifyChange();
         return existing.feed as Readonly<T>;
@@ -226,15 +231,11 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
 
       this.Queries.set(req.id, q);
       for (const subQ of filters) {
-        this.SendQuery(
-          q,
-          {
-            id: `${q.id}-${q.subQueryCounter++}`,
-            filters: subQ.filters,
-            relays: [subQ.relay],
-          },
-          (q, s, c) => q.sendToRelay(c, s)
-        );
+        this.SendQuery(q, {
+          id: `${q.id}-${q.subQueryCounter++}`,
+          filters: subQ.filters,
+          relays: subQ.relay ? [subQ.relay] : undefined,
+        });
       }
       this.notifyChange();
       return q.feed as Readonly<T>;
@@ -248,17 +249,17 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
     }
   }
 
-  async SendQuery(q: Query, qSend: QueryBase, qSender: (q: Query, qSend: QueryBase, c: Connection) => void) {
+  async SendQuery(q: Query, qSend: QueryBase) {
     if (qSend.relays && qSend.relays.length > 0) {
       for (const r of qSend.relays) {
         this.#log("Sending query to %s %O", r, qSend);
         const s = this.Sockets.get(r);
         if (s) {
-          qSender(q, qSend, s);
+          q.sendToRelay(s, qSend);
         } else {
           const nc = await this.ConnectEphemeralRelay(r);
           if (nc) {
-            qSender(q, qSend, nc);
+            q.sendToRelay(nc, qSend);
           } else {
             console.warn("Failed to connect to new relay for:", r, q);
           }
@@ -267,7 +268,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
     } else {
       for (const [, s] of this.Sockets) {
         if (!s.Ephemeral) {
-          qSender(q, qSend, s);
+          q.sendToRelay(s, qSend);
         }
       }
     }
@@ -329,5 +330,3 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> {
     setTimeout(() => this.#cleanup(), 1_000);
   }
 }
-
-export const System = new NostrSystem();

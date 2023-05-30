@@ -1,4 +1,4 @@
-import { NostrPrefix } from "@snort/nostr";
+import { NostrPrefix } from "System";
 import { parseNostrLink, tryParseNostrLink } from ".";
 import { splitByUrl, magnetURIDecode, getRelayName } from ".";
 import { describe, expect } from "@jest/globals";

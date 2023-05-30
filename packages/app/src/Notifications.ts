@@ -1,7 +1,6 @@
 import Nostrich from "nostrich.webp";
 
-import { TaggedRawEvent } from "@snort/nostr";
-import { EventKind } from "@snort/nostr";
+import { TaggedRawEvent, EventKind } from "System";
 import { MetadataCache } from "Cache";
 import { getDisplayName } from "Element/ProfileImage";
 import { MentionRegex } from "Const";

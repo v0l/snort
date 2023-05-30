@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
-import { Connection, RawReqFilter, Nips } from "@snort/nostr";
+import { Connection, RawReqFilter, Nips } from "System";
 import { unixNowMs, unwrap } from "SnortUtils";
 import { NoteStore } from "./NoteCollection";
 import { mergeSimilar } from "./RequestMerger";

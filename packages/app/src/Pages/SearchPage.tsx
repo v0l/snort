@@ -4,9 +4,8 @@ import Timeline from "Element/Timeline";
 import { Tab, TabElement } from "Element/Tabs";
 import { useEffect, useState } from "react";
 import { debounce } from "SnortUtils";
-import { router } from "index";
+import { System, router } from "index";
 import { SearchRelays } from "Const";
-import { System } from "System";
 import TrendingUsers from "Element/TrendingUsers";
 
 import TrendingNotes from "Element/TrendingPosts";

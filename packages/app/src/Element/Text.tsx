@@ -1,7 +1,7 @@
 import "./Text.css";
 import { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { HexKey, NostrPrefix } from "@snort/nostr";
+import { HexKey, NostrPrefix } from "System";
 
 import { MentionRegex, InvoiceRegex, HashtagRegex, CashuRegex } from "Const";
 import { eventLink, hexToBech32, splitByUrl, validateNostrLink } from "SnortUtils";

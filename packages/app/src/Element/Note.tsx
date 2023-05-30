@@ -3,7 +3,7 @@ import React, { useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
-import { TaggedRawEvent, HexKey, EventKind, NostrPrefix, Lists } from "@snort/nostr";
+import { TaggedRawEvent, HexKey, EventKind, NostrPrefix, Lists } from "System";
 
 import useEventPublisher from "Feed/EventPublisher";
 import Icon from "Icons/Icon";

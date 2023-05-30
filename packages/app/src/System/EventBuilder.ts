@@ -1,4 +1,4 @@
-import { EventKind, HexKey, NostrPrefix, RawEvent } from "@snort/nostr";
+import { EventKind, HexKey, NostrPrefix, RawEvent } from "System";
 import { HashtagRegex } from "Const";
 import { getPublicKey, parseNostrLink, unixNow } from "SnortUtils";
 import { EventExt } from "./EventExt";

@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { HexKey } from "@snort/nostr";
+import { HexKey } from "System";
 import MuteButton from "Element/MuteButton";
 import ProfilePreview from "Element/ProfilePreview";
 import useModeration from "Hooks/useModeration";

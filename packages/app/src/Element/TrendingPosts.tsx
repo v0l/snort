@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { RawEvent, TaggedRawEvent } from "@snort/nostr";
+import { RawEvent, TaggedRawEvent } from "System";
 import { FormattedMessage } from "react-intl";
 
 import PageSpinner from "Element/PageSpinner";

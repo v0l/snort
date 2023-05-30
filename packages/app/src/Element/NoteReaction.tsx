@@ -1,7 +1,7 @@
 import "./NoteReaction.css";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import { EventKind, RawEvent, TaggedRawEvent, NostrPrefix } from "@snort/nostr";
+import { EventKind, RawEvent, TaggedRawEvent, NostrPrefix } from "System";
 
 import Note from "Element/Note";
 import ProfileImage from "Element/ProfileImage";

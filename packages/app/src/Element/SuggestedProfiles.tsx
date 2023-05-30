@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { HexKey, NostrPrefix } from "@snort/nostr";
+import { HexKey, NostrPrefix } from "System";
 import { FormattedMessage } from "react-intl";
 
 import FollowListBase from "Element/FollowListBase";

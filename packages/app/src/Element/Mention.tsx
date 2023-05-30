@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { HexKey } from "@snort/nostr";
+import { HexKey } from "System";
 
 import { useUserProfile } from "Hooks/useUserProfile";
 import { profileLink } from "SnortUtils";

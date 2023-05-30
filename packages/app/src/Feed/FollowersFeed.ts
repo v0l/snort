@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { HexKey, EventKind } from "@snort/nostr";
+import { HexKey, EventKind } from "System";
 
 import { PubkeyReplaceableNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";

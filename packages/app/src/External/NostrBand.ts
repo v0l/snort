@@ -1,4 +1,4 @@
-import { RawEvent } from "@snort/nostr";
+import { RawEvent } from "System";
 
 export interface TrendingUser {
   pubkey: string;

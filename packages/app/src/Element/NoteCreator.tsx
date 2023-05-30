@@ -1,7 +1,7 @@
 import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { encodeTLV, EventKind, NostrPrefix, TaggedRawEvent } from "@snort/nostr";
+import { encodeTLV, EventKind, NostrPrefix, TaggedRawEvent } from "System";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";

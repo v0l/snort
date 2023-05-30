@@ -2,7 +2,7 @@ import "./Avatar.css";
 import Nostrich from "nostrich.webp";
 
 import { CSSProperties, useEffect, useState } from "react";
-import type { UserMetadata } from "@snort/nostr";
+import type { UserMetadata } from "System";
 
 import useImgProxy from "Hooks/useImgProxy";
 

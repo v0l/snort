@@ -1,4 +1,4 @@
-import { RawReqFilter, u256, HexKey, EventKind } from "@snort/nostr";
+import { RawReqFilter, u256, HexKey, EventKind } from "System";
 import { appendDedupe, dedupe } from "SnortUtils";
 import { QueryBase } from "./Query";
 import { diffFilters } from "./RequestSplitter";
@@ -245,7 +245,7 @@ export class RequestFilterBuilder {
     return [
       {
         filters: [this.filter],
-        relay: "*",
+        relay: "",
         strategy: RequestStrategy.DefaultRelays,
       },
     ];

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { HexKey, FullRelaySettings, EventKind } from "@snort/nostr";
+import { HexKey, FullRelaySettings, EventKind } from "System";
 
 import { RequestBuilder } from "System";
 import { ReplaceableNoteStore } from "System/NoteCollection";

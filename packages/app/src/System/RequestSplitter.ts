@@ -1,4 +1,4 @@
-import { RawReqFilter } from "@snort/nostr";
+import { RawReqFilter } from "System";
 
 // Critical keys changing means the entire filter has changed
 export const CriticalKeys = ["since", "until", "limit"];
@@ -19,7 +19,7 @@ export function diffFilters(a: Array<RawReqFilter>, b: Array<RawReqFilter>) {
           const thisArray = v as Array<string | number>;
           const added = thisArray.filter(a => !prevArray?.includes(a));
           // support adding new values to array, removing values is ignored since we only care about getting new values
-          result[i] = { ...result[i], [k]: added.length === 0 ? prevArray ?? thisArray : added };
+          result[i] = { ...result[i], [k]: added.length === 0 ? prevArray ?? [] : added };
           if (added.length > 0) {
             anyChanged = true;
           }

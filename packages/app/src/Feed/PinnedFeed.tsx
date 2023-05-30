@@ -1,4 +1,4 @@
-import { HexKey, Lists } from "@snort/nostr";
+import { HexKey, Lists } from "System";
 import useNotelistSubscription from "Hooks/useNotelistSubscription";
 import useLogin from "Hooks/useLogin";
 

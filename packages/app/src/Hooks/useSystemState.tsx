@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
-import { System, SystemSnapshot } from "System";
+import { SystemSnapshot } from "System";
+import { System } from "index";
 
 export default function useSystemState() {
   return useSyncExternalStore<SystemSnapshot>(
