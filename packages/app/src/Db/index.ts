@@ -3,7 +3,7 @@ import { FullRelaySettings, HexKey, RawEvent, u256 } from "@snort/nostr";
 import { MetadataCache } from "Cache";
 
 export const NAME = "snortDB";
-export const VERSION = 8;
+export const VERSION = 9;
 
 export interface SubCache {
   id: string;
@@ -33,6 +33,13 @@ export interface EventInteraction {
   reposted: boolean;
 }
 
+export interface Payment {
+  url: string;
+  pr: string;
+  preimage: string;
+  macaroon: string;
+}
+
 const STORES = {
   users: "++pubkey, name, display_name, picture, nip05, npub",
   relays: "++addr",
@@ -40,6 +47,7 @@ const STORES = {
   events: "++id, pubkey, created_at",
   dms: "++id, pubkey",
   eventInteraction: "++id",
+  payments: "++url",
 };
 
 export class SnortDB extends Dexie {
@@ -50,6 +58,7 @@ export class SnortDB extends Dexie {
   events!: Table<RawEvent>;
   dms!: Table<RawEvent>;
   eventInteraction!: Table<EventInteraction>;
+  payments!: Table<Payment>;
 
   constructor() {
     super(NAME);

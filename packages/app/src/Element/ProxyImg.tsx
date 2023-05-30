@@ -8,22 +8,13 @@ interface ProxyImgProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<
 }
 
 export const ProxyImg = (props: ProxyImgProps) => {
-  const { src, size, ...rest } = props;
-  const [url, setUrl] = useState<string>();
+  const { proxy } = useImgProxy();
   const [loadFailed, setLoadFailed] = useState(false);
   const [bypass, setBypass] = useState(false);
-  const { proxy } = useImgProxy();
-
-  useEffect(() => {
-    if (src) {
-      const url = proxy(src, size);
-      setUrl(url);
-    }
-  }, [src]);
 
   if (loadFailed) {
     if (bypass) {
-      return <img src={src} {...rest} />;
+      return <img {...props} />;
     }
     return (
       <div
@@ -35,11 +26,23 @@ export const ProxyImg = (props: ProxyImgProps) => {
         <FormattedMessage
           defaultMessage="Failed to proxy image from {host}, click here to load directly"
           values={{
-            host: getUrlHostname(src),
+            host: getUrlHostname(props.src),
           }}
         />
       </div>
     );
   }
-  return <img src={url} {...rest} onError={() => setLoadFailed(true)} />;
+  return (
+    <img
+      {...props}
+      src={props.src ? proxy(props.src, props.size) : ""}
+      onError={e => {
+        if (props.onError) {
+          props.onError(e);
+        } else {
+          setLoadFailed(true);
+        }
+      }}
+    />
+  );
 };
