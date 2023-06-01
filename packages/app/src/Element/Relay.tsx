@@ -20,7 +20,9 @@ export interface RelayProps {
 export default function Relay(props: RelayProps) {
   const navigate = useNavigate();
   const login = useLogin();
-  const relaySettings = unwrap(login.relays.item[props.addr] ?? System.Sockets.get(props.addr)?.Settings ?? {});
+  const relaySettings = unwrap(
+    login.relays.item[props.addr] ?? System.Sockets.find(a => a.address === props.addr)?.settings ?? {}
+  );
   const state = useRelayState(props.addr);
   const name = useMemo(() => getRelayName(props.addr), [props.addr]);
 

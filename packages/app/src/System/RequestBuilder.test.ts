@@ -88,10 +88,7 @@ describe("RequestBuilder", () => {
     f0.authors(["a"]);
     expect(a).toEqual([{}]);
 
-    const b = rb.buildDiff(DummyCache, {
-      filters: a,
-      id: "test",
-    });
+    const b = rb.buildDiff(DummyCache, a);
     expect(b).toMatchObject([
       {
         filters: [{ authors: ["a"] }],

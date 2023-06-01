@@ -1,5 +1,5 @@
 import { RawReqFilter } from "System";
-import { filterIncludes, mergeSimilar } from "./RequestMerger";
+import { filterIncludes, mergeSimilar, simpleMerge } from "./RequestMerger";
 
 describe("RequestMerger", () => {
   it("should simple merge authors", () => {
@@ -52,5 +52,20 @@ describe("RequestMerger", () => {
       since: 100,
     } as RawReqFilter;
     expect(filterIncludes(bigger, smaller)).toBe(true);
+  });
+
+  it("simpleMerge", () => {
+    const a = {
+      authors: ["a", "b", "c"],
+      since: 99,
+    } as RawReqFilter;
+    const b = {
+      authors: ["c", "d", "e"],
+      since: 100,
+    } as RawReqFilter;
+    expect(simpleMerge([a, b])).toEqual({
+      authors: ["a", "b", "c", "d", "e"],
+      since: 100,
+    });
   });
 });

@@ -9,7 +9,12 @@ export function mergeSimilar(filters: Array<RawReqFilter>): Array<RawReqFilter> 
   return [...(canEasilyMerge.length > 0 ? [simpleMerge(canEasilyMerge)] : []), ...cannotMerge];
 }
 
-function simpleMerge(filters: Array<RawReqFilter>) {
+/**
+ * Simply flatten all filters into one
+ * @param filters
+ * @returns
+ */
+export function simpleMerge(filters: Array<RawReqFilter>) {
   const result: any = {};
 
   filters.forEach(filter => {
@@ -21,7 +26,7 @@ function simpleMerge(filters: Array<RawReqFilter>) {
           result[key] = [...new Set([...result[key], ...value])];
         }
       } else {
-        throw new Error("Cannot simple merge with non-array filter properties");
+        result[key] = value;
       }
     });
   });

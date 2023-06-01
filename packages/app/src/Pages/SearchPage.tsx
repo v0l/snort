@@ -42,7 +42,7 @@ const SearchPage = () => {
   useEffect(() => {
     const addedRelays: string[] = [];
     for (const [k, v] of SearchRelays) {
-      if (!System.Sockets.has(k)) {
+      if (!System.Sockets.some(v => v.address === k)) {
         System.ConnectToRelay(k, v);
         addedRelays.push(k);
       }

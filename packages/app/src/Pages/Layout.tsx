@@ -75,9 +75,9 @@ export default function Layout() {
         for (const [k, v] of Object.entries(relays.item)) {
           await System.ConnectToRelay(k, v);
         }
-        for (const [k, c] of System.Sockets) {
-          if (!relays.item[k] && !c.Ephemeral) {
-            System.DisconnectRelay(k);
+        for (const v of System.Sockets) {
+          if (!relays.item[v.address] && !v.ephemeral) {
+            System.DisconnectRelay(v.address);
           }
         }
       })();

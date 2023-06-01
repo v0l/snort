@@ -78,15 +78,14 @@ export default function ZapPoolPage() {
   const { wallet } = useWallet();
 
   const relayConnections = useMemo(() => {
-    return [...System.Sockets.values()]
-      .map(a => {
-        if (a.Info?.pubkey && !a.Ephemeral) {
-          return {
-            address: a.Address,
-            pubkey: a.Info.pubkey,
-          };
-        }
-      })
+    return System.Sockets.map(a => {
+      if (a.info?.pubkey && !a.ephemeral) {
+        return {
+          address: a.address,
+          pubkey: a.info.pubkey,
+        };
+      }
+    })
       .filter(a => a !== undefined)
       .map(unwrap);
   }, [login.relays]);

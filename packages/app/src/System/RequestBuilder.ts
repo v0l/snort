@@ -1,9 +1,7 @@
 import { RawReqFilter, u256, HexKey, EventKind } from "System";
 import { appendDedupe, dedupe } from "SnortUtils";
-import { QueryBase } from "./Query";
 import { diffFilters } from "./RequestSplitter";
 import { RelayCache, splitAllByWriteRelays, splitByWriteRelays } from "./GossipModel";
-import { mergeSimilar } from "./RequestMerger";
 
 /**
  * Which strategy is used when building REQ filters
@@ -84,8 +82,8 @@ export class RequestBuilder {
   }
 
   build(relays: RelayCache): Array<BuiltRawReqFilter> {
-    const expanded = this.#builders.map(a => a.build(relays)).flat();
-    return this.#mergeSimilar(expanded);
+    const expanded = this.#builders.flatMap(a => a.build(relays, this.id));
+    return this.#groupByRelay(expanded);
   }
 
   /**
@@ -93,11 +91,10 @@ export class RequestBuilder {
    * @param q All previous filters merged
    * @returns
    */
-  buildDiff(relays: RelayCache, q: QueryBase): Array<BuiltRawReqFilter> {
+  buildDiff(relays: RelayCache, filters: Array<RawReqFilter>): Array<BuiltRawReqFilter> {
     const next = this.buildRaw();
-    const diff = diffFilters(q.filters, next);
+    const diff = diffFilters(filters, next);
     if (diff.changed) {
-      console.debug("DIFF", q.filters, next, diff);
       return splitAllByWriteRelays(relays, diff.filters).map(a => {
         return {
           strategy: RequestStrategy.AuthorsRelays,
@@ -114,7 +111,7 @@ export class RequestBuilder {
    * @param expanded
    * @returns
    */
-  #mergeSimilar(expanded: Array<BuiltRawReqFilter>) {
+  #groupByRelay(expanded: Array<BuiltRawReqFilter>) {
     const relayMerged = expanded.reduce((acc, v) => {
       const existing = acc.get(v.relay);
       if (existing) {
@@ -125,14 +122,12 @@ export class RequestBuilder {
       return acc;
     }, new Map<string, Array<BuiltRawReqFilter>>());
 
-    const filtersSquashed = [...relayMerged.values()].flatMap(a => {
-      return mergeSimilar(a.flatMap(b => b.filters)).map(b => {
-        return {
-          filters: [b],
-          relay: a[0].relay,
-          strategy: a[0].strategy,
-        } as BuiltRawReqFilter;
-      });
+    const filtersSquashed = [...relayMerged.values()].map(a => {
+      return {
+        filters: a.flatMap(b => b.filters),
+        relay: a[0].relay,
+        strategy: a[0].strategy,
+      } as BuiltRawReqFilter;
     });
 
     return filtersSquashed;
@@ -211,7 +206,7 @@ export class RequestFilterBuilder {
   /**
    * Build/expand this filter into a set of relay specific queries
    */
-  build(relays: RelayCache): Array<BuiltRawReqFilter> {
+  build(relays: RelayCache, id: string): Array<BuiltRawReqFilter> {
     // when querying for specific event ids with relay hints
     // take the first approach which is to split the filter by relay
     if (this.#filter.ids && this.#relayHints.size > 0) {

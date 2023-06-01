@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "Icons/Spinner";
 import { parseNostrLink, profileLink } from "SnortUtils";
 import { getNip05PubKey } from "Pages/LoginPage";
-import { System } from "index";
 
 export default function NostrLinkHandler() {
   const params = useParams();
@@ -18,9 +17,6 @@ export default function NostrLinkHandler() {
   async function handleLink(link: string) {
     const nav = parseNostrLink(link);
     if (nav) {
-      if ((nav.relays?.length ?? 0) > 0) {
-        nav.relays?.map(a => System.ConnectEphemeralRelay(a));
-      }
       if (nav.type === NostrPrefix.Event || nav.type === NostrPrefix.Note || nav.type === NostrPrefix.Address) {
         navigate(`/e/${nav.encode()}`);
       } else if (nav.type === NostrPrefix.PublicKey || nav.type === NostrPrefix.Profile) {

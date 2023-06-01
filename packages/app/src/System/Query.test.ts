@@ -3,6 +3,7 @@ import { describe, expect } from "@jest/globals";
 import { Query, QueryBase } from "./Query";
 import { getRandomValues } from "crypto";
 import { FlatNoteStore } from "./NoteCollection";
+import { RequestStrategy } from "./RequestBuilder";
 
 window.crypto = {} as any;
 window.crypto.getRandomValues = getRandomValues as any;
@@ -21,43 +22,88 @@ describe("query", () => {
     const c3 = new Connection("wss://three.com", opt);
     c3.Down = false;
 
-    q.sendToRelay(c1, {
-      id: "test",
+    const f = {
+      relay: "",
+      strategy: RequestStrategy.DefaultRelays,
       filters: [
         {
           kinds: [1],
           authors: ["test"],
         },
       ],
-    });
-    q.sendToRelay(c2);
-    q.sendToRelay(c3);
+    };
+    const qt1 = q.sendToRelay(c1, f);
+    const qt2 = q.sendToRelay(c2, f);
+    const qt3 = q.sendToRelay(c3, f);
 
     expect(q.progress).toBe(0);
-    q.eose(q.id, c1);
+    q.eose(qt1!.id, c1);
     expect(q.progress).toBe(1 / 3);
-    q.eose(q.id, c1);
+    q.eose(qt1!.id, c1);
     expect(q.progress).toBe(1 / 3);
-    q.eose(q.id, c2);
+    q.eose(qt2!.id, c2);
     expect(q.progress).toBe(2 / 3);
-    q.eose(q.id, c3);
+    q.eose(qt3!.id, c3);
     expect(q.progress).toBe(1);
 
     const qs = {
-      id: "test-1",
+      relay: "",
+      strategy: RequestStrategy.DefaultRelays,
       filters: [
         {
           kinds: [1],
           authors: ["test-sub"],
         },
       ],
-    } as QueryBase;
-    q.sendToRelay(c1, qs);
+    };
+    const qt = q.sendToRelay(c1, qs);
 
     expect(q.progress).toBe(3 / 4);
-    q.eose(qs.id, c1);
+    q.eose(qt!.id, c1);
     expect(q.progress).toBe(1);
     q.sendToRelay(c2, qs);
     expect(q.progress).toBe(4 / 5);
+  });
+
+  it("should merge all sub-query filters", () => {
+    const q = new Query("test", new FlatNoteStore());
+    const c0 = new Connection("wss://test.com", { read: true, write: true });
+    q.sendToRelay(c0, {
+      filters: [
+        {
+          authors: ["a"],
+          kinds: [1],
+        },
+      ],
+      relay: "",
+      strategy: RequestStrategy.DefaultRelays,
+    });
+    q.sendToRelay(c0, {
+      filters: [
+        {
+          authors: ["b"],
+          kinds: [1, 2],
+        },
+      ],
+      relay: "",
+      strategy: RequestStrategy.DefaultRelays,
+    });
+    q.sendToRelay(c0, {
+      filters: [
+        {
+          authors: ["c"],
+          kinds: [2],
+        },
+      ],
+      relay: "",
+      strategy: RequestStrategy.DefaultRelays,
+    });
+
+    expect(q.filters).toEqual([
+      {
+        authors: ["a", "b", "c"],
+        kinds: [1, 2],
+      },
+    ]);
   });
 });

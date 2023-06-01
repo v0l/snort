@@ -5,8 +5,8 @@ import { ConnectionStats } from "./ConnectionStats";
 import { RawEvent, ReqCommand, TaggedRawEvent, u256 } from "./Nostr";
 import { RelayInfo } from "./RelayInfo";
 import { unwrap } from "./Util";
+import ExternalStore from "ExternalStore";
 
-export type CustomHook = (state: Readonly<StateSnapshot>) => void;
 export type AuthHandler = (challenge: string, relay: string) => Promise<RawEvent | undefined>;
 
 /**
@@ -20,7 +20,7 @@ export interface RelaySettings {
 /**
  * Snapshot of connection stats
  */
-export interface StateSnapshot {
+export interface ConnectionStateSnapshot {
   connected: boolean;
   disconnects: number;
   avgLatency: number;
@@ -28,13 +28,16 @@ export interface StateSnapshot {
     received: number;
     send: number;
   };
+  settings?: RelaySettings;
   info?: RelayInfo;
   pendingRequests: Array<string>;
   activeRequests: Array<string>;
   id: string;
+  ephemeral: boolean;
+  address: string;
 }
 
-export class Connection {
+export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   Id: string;
   Address: string;
   Socket: WebSocket | null = null;
@@ -50,10 +53,7 @@ export class Connection {
   Info?: RelayInfo;
   ConnectTimeout: number = DefaultConnectTimeout;
   Stats: ConnectionStats = new ConnectionStats();
-  StateHooks: Map<string, CustomHook> = new Map();
   HasStateChange: boolean = true;
-  CurrentState: StateSnapshot;
-  LastState: Readonly<StateSnapshot>;
   IsClosed: boolean;
   ReconnectTimer: ReturnType<typeof setTimeout> | null;
   EventsCallback: Map<u256, (msg: boolean[]) => void>;
@@ -69,19 +69,10 @@ export class Connection {
   Down = true;
 
   constructor(addr: string, options: RelaySettings, auth?: AuthHandler, ephemeral: boolean = false) {
+    super();
     this.Id = uuid();
     this.Address = addr;
     this.Settings = options;
-    this.CurrentState = {
-      connected: false,
-      disconnects: 0,
-      avgLatency: 0,
-      events: {
-        received: 0,
-        send: 0,
-      },
-    } as StateSnapshot;
-    this.LastState = Object.freeze({ ...this.CurrentState });
     this.IsClosed = false;
     this.ReconnectTimer = null;
     this.EventsCallback = new Map();
@@ -146,7 +137,7 @@ export class Connection {
       this.ReconnectTimer = null;
     }
     this.Socket?.close();
-    this.#UpdateState();
+    this.notifyChange();
   }
 
   OnOpen() {
@@ -181,7 +172,7 @@ export class Connection {
     this.#ResetQueues();
     // reset connection Id on disconnect, for query-tracking
     this.Id = uuid();
-    this.#UpdateState();
+    this.notifyChange();
   }
 
   OnMessage(e: MessageEvent) {
@@ -194,7 +185,7 @@ export class Connection {
             .then(() => this.#sendPendingRaw())
             .catch(console.error);
           this.Stats.EventsReceived++;
-          this.#UpdateState();
+          this.notifyChange();
           break;
         }
         case "EVENT": {
@@ -203,7 +194,7 @@ export class Connection {
             relays: [this.Address],
           });
           this.Stats.EventsReceived++;
-          this.#UpdateState();
+          this.notifyChange();
           break;
         }
         case "EOSE": {
@@ -235,7 +226,7 @@ export class Connection {
 
   OnError(e: Event) {
     console.error(e);
-    this.#UpdateState();
+    this.notifyChange();
   }
 
   /**
@@ -248,7 +239,7 @@ export class Connection {
     const req = ["EVENT", e];
     this.#SendJson(req);
     this.Stats.EventsSent++;
-    this.#UpdateState();
+    this.notifyChange();
   }
 
   /**
@@ -271,30 +262,8 @@ export class Connection {
       const req = ["EVENT", e];
       this.#SendJson(req);
       this.Stats.EventsSent++;
-      this.#UpdateState();
+      this.notifyChange();
     });
-  }
-
-  /**
-   * Hook status for connection
-   */
-  StatusHook(fnHook: CustomHook) {
-    const id = uuid();
-    this.StateHooks.set(id, fnHook);
-    return () => {
-      this.StateHooks.delete(id);
-    };
-  }
-
-  /**
-   * Returns the current state of this connection
-   */
-  GetState() {
-    if (this.HasStateChange) {
-      this.LastState = Object.freeze({ ...this.CurrentState });
-      this.HasStateChange = false;
-    }
-    return this.LastState;
   }
 
   /**
@@ -320,7 +289,7 @@ export class Connection {
       this.#SendJson(cmd);
       cbSent();
     }
-    this.#UpdateState();
+    this.notifyChange();
   }
 
   CloseReq(id: string) {
@@ -329,7 +298,28 @@ export class Connection {
       this.OnEose?.(id);
       this.#SendQueuedRequests();
     }
-    this.#UpdateState();
+    this.notifyChange();
+  }
+
+  takeSnapshot(): ConnectionStateSnapshot {
+    return {
+      connected: this.Socket?.readyState === WebSocket.OPEN,
+      events: {
+        received: this.Stats.EventsReceived,
+        send: this.Stats.EventsSent,
+      },
+      avgLatency:
+        this.Stats.Latency.length > 0
+          ? this.Stats.Latency.reduce((acc, v) => acc + v, 0) / this.Stats.Latency.length
+          : 0,
+      disconnects: this.Stats.Disconnects,
+      info: this.Info,
+      id: this.Id,
+      pendingRequests: [...this.PendingRequests.map(a => a.cmd[1])],
+      activeRequests: [...this.ActiveRequests],
+      ephemeral: this.Ephemeral,
+      address: this.Address,
+    };
   }
 
   #SendQueuedRequests() {
@@ -351,30 +341,7 @@ export class Connection {
     this.ActiveRequests.clear();
     this.PendingRequests = [];
     this.PendingRaw = [];
-    this.#UpdateState();
-  }
-
-  #UpdateState() {
-    this.CurrentState.connected = this.Socket?.readyState === WebSocket.OPEN;
-    this.CurrentState.events.received = this.Stats.EventsReceived;
-    this.CurrentState.events.send = this.Stats.EventsSent;
-    this.CurrentState.avgLatency =
-      this.Stats.Latency.length > 0 ? this.Stats.Latency.reduce((acc, v) => acc + v, 0) / this.Stats.Latency.length : 0;
-    this.CurrentState.disconnects = this.Stats.Disconnects;
-    this.CurrentState.info = this.Info;
-    this.CurrentState.id = this.Id;
-    this.CurrentState.pendingRequests = [...this.PendingRequests.map(a => a.cmd[1])];
-    this.CurrentState.activeRequests = [...this.ActiveRequests];
-    this.Stats.Latency = this.Stats.Latency.slice(-20); // trim
-    this.HasStateChange = true;
-    this.#NotifyState();
-  }
-
-  #NotifyState() {
-    const state = this.GetState();
-    for (const [, h] of this.StateHooks) {
-      h(state);
-    }
+    this.notifyChange();
   }
 
   #SendJson(obj: object) {

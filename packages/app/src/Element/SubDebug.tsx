@@ -66,8 +66,8 @@ const SubDebug = () => {
     return (
       <>
         <b>Connections:</b>
-        {[...System.Sockets.keys()].map(k => (
-          <RelayInfo id={k} />
+        {System.Sockets.map(k => (
+          <RelayInfo id={k.address} />
         ))}
       </>
     );

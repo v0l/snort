@@ -35,9 +35,9 @@ import DebugPage from "Pages/Debug";
 import { db } from "Db";
 import { preload } from "Cache";
 import { LoginStore } from "Login";
-import { UserRelays } from "Cache/UserRelayCache";
-import { NostrSystem } from "System";
 import { ProfileLoaderService } from "System/ProfileCache";
+import { NostrSystem } from "System";
+import { UserRelays } from "Cache/UserRelayCache";
 
 /**
  * Singleton nostr system

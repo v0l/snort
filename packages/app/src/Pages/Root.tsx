@@ -170,10 +170,10 @@ const GlobalTab = () => {
   useEffect(() => {
     return debounce(500, () => {
       const ret: RelayOption[] = [];
-      System.Sockets.forEach((v, k) => {
+      System.Sockets.forEach(v => {
         ret.push({
-          url: k,
-          paid: v.Info?.limitation?.payment_required ?? false,
+          url: v.address,
+          paid: v.info?.limitation?.payment_required ?? false,
         });
       });
       ret.sort(a => (a.paid ? -1 : 1));

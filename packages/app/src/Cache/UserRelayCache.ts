@@ -1,7 +1,7 @@
 import { db, UsersRelays } from "Db";
 import FeedCache from "./FeedCache";
 
-class UsersRelaysCache extends FeedCache<UsersRelays> {
+export class UsersRelaysCache extends FeedCache<UsersRelays> {
   constructor() {
     super("UserRelays", db.userRelays);
   }

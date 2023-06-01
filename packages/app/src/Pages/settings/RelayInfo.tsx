@@ -14,8 +14,8 @@ const RelayInfo = () => {
   const navigate = useNavigate();
   const login = useLogin();
 
-  const conn = Array.from(System.Sockets.values()).find(a => a.Id === params.id);
-  const stats = useRelayState(conn?.Address ?? "");
+  const conn = System.Sockets.find(a => a.id === params.id);
+  const stats = useRelayState(conn?.address ?? "");
 
   return (
     <>
@@ -105,7 +105,7 @@ const RelayInfo = () => {
           <div
             className="btn error"
             onClick={() => {
-              removeRelay(login, unwrap(conn).Address);
+              removeRelay(login, unwrap(conn).address);
               navigate("/settings/relays");
             }}>
             <FormattedMessage {...messages.Remove} />

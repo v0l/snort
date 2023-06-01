@@ -32,3 +32,11 @@ export function sanitizeRelayUrl(url: string) {
     // ignore
   }
 }
+
+export function unixNow() {
+  return Math.floor(unixNowMs() / 1000);
+}
+
+export function unixNowMs() {
+  return new Date().getTime();
+}

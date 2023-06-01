@@ -10,7 +10,7 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
   debounced?: number
 ) => {
   const subscribe = (onChanged: () => void) => {
-    const store = System.Query<TStore>(type, rb);
+    const store = (System.Query<TStore>(type, rb)?.feed as TStore) ?? new type();
     let t: ReturnType<typeof setTimeout> | undefined;
     const release = store.hook(() => {
       if (!t) {
@@ -24,7 +24,7 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
 
     return () => {
       if (rb?.id) {
-        System.CancelQuery(rb.id);
+        System.GetQuery(rb.id)?.cancel();
       }
       release();
     };

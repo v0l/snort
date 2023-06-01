@@ -1,4 +1,4 @@
-import { EventKind, HexKey, NostrSystem, TaggedRawEvent } from "System";
+import { EventKind, HexKey, SystemInterface, TaggedRawEvent } from "System";
 import { ProfileCacheExpire } from "Const";
 import { mapEventToProfile, MetadataCache } from "Cache";
 import { UserCache } from "Cache/UserCache";
@@ -7,7 +7,7 @@ import { unixNowMs } from "SnortUtils";
 import debug from "debug";
 
 export class ProfileLoaderService {
-  #system: NostrSystem;
+  #system: SystemInterface;
 
   /**
    * List of pubkeys to fetch metadata for
@@ -16,7 +16,7 @@ export class ProfileLoaderService {
 
   readonly #log = debug("ProfileCache");
 
-  constructor(system: NostrSystem) {
+  constructor(system: SystemInterface) {
     this.#system = system;
     this.#FetchMetadata();
   }
@@ -74,8 +74,9 @@ export class ProfileLoaderService {
 
       const newProfiles = new Set<string>();
       const q = this.#system.Query<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
+      const feed = (q?.feed as PubkeyReplaceableNoteStore) ?? new PubkeyReplaceableNoteStore();
       // never release this callback, it will stop firing anyway after eose
-      const releaseOnEvent = q.onEvent(async e => {
+      const releaseOnEvent = feed.onEvent(async e => {
         for (const pe of e) {
           newProfiles.add(pe.id);
           await this.onProfileEvent(pe);
@@ -83,17 +84,17 @@ export class ProfileLoaderService {
       });
       const results = await new Promise<Readonly<Array<TaggedRawEvent>>>(resolve => {
         let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
-        const release = q.hook(() => {
-          if (!q.loading) {
+        const release = feed.hook(() => {
+          if (!feed.loading) {
             clearTimeout(timeout);
-            resolve(q.getSnapshotData() ?? []);
+            resolve(feed.getSnapshotData() ?? []);
             this.#log("Profiles finished: %s", sub.id);
             release();
           }
         });
         timeout = setTimeout(() => {
           release();
-          resolve(q.getSnapshotData() ?? []);
+          resolve(feed.getSnapshotData() ?? []);
           this.#log("Profiles timeout: %s", sub.id);
         }, 5_000);
       });

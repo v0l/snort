@@ -1,18 +1,18 @@
-type HookFn = () => void;
+type HookFn<TSnapshot> = (e?: TSnapshot) => void;
 
-interface HookFilter {
-  fn: HookFn;
+interface HookFilter<TSnapshot> {
+  fn: HookFn<TSnapshot>;
 }
 
 /**
  * Simple React hookable store with manual change notifications
  */
 export default abstract class ExternalStore<TSnapshot> {
-  #hooks: Array<HookFilter> = [];
+  #hooks: Array<HookFilter<TSnapshot>> = [];
   #snapshot: Readonly<TSnapshot> = {} as Readonly<TSnapshot>;
   #changed = true;
 
-  hook(fn: HookFn) {
+  hook(fn: HookFn<TSnapshot>) {
     this.#hooks.push({
       fn,
     });
@@ -32,9 +32,9 @@ export default abstract class ExternalStore<TSnapshot> {
     return this.#snapshot;
   }
 
-  protected notifyChange() {
+  protected notifyChange(sn?: TSnapshot) {
     this.#changed = true;
-    this.#hooks.forEach(h => h.fn());
+    this.#hooks.forEach(h => h.fn(sn));
   }
 
   abstract takeSnapshot(): TSnapshot;

@@ -7,6 +7,7 @@ import {
   Lists,
   RawEvent,
   RelaySettings,
+  SystemInterface,
   TaggedRawEvent,
   u256,
   UserMetadata,
@@ -36,11 +37,6 @@ declare global {
       };
     };
   }
-}
-
-interface SystemInterface {
-  BroadcastEvent(ev: RawEvent): void;
-  WriteOnceToRelay(relay: string, ev: RawEvent): Promise<void>;
 }
 
 export class EventPublisher {

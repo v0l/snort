@@ -1,9 +1,11 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
-import { Connection, RawReqFilter, Nips } from "System";
+import { Connection, RawReqFilter, Nips, TaggedRawEvent } from "System";
 import { unixNowMs, unwrap } from "SnortUtils";
 import { NoteStore } from "./NoteCollection";
-import { mergeSimilar } from "./RequestMerger";
+import { simpleMerge } from "./RequestMerger";
+import { eventMatchesFilter } from "./RequestMatcher";
+import { BuiltRawReqFilter } from "./RequestBuilder";
 
 /**
  * Tracing for relay query status
@@ -19,7 +21,6 @@ class QueryTrace {
   readonly #fnProgress: () => void;
 
   constructor(
-    readonly subId: string,
     readonly relay: string,
     readonly filters: Array<RawReqFilter>,
     readonly connId: string,
@@ -51,7 +52,7 @@ class QueryTrace {
 
   sendClose() {
     this.close = unixNowMs();
-    this.#fnClose(this.subId);
+    this.#fnClose(this.id);
     this.#fnProgress();
   }
 
@@ -135,7 +136,6 @@ export class Query implements QueryBase {
    */
   #feed: NoteStore;
 
-  subQueryCounter = 0;
   #log = debug("Query");
 
   constructor(id: string, feed: NoteStore) {
@@ -152,32 +152,37 @@ export class Query implements QueryBase {
     return this.#cancelTimeout;
   }
 
+  get filters() {
+    const filters = this.#tracing.flatMap(a => a.filters);
+    return [simpleMerge(filters)];
+  }
+
   get feed() {
     return this.#feed;
   }
 
-  get filters() {
-    const filters = this.#tracing.flatMap(a => a.filters);
-    return mergeSimilar(filters);
+  onEvent(sub: string, e: TaggedRawEvent) {
+    for (const t of this.#tracing) {
+      if (t.id === sub) {
+        this.feed.add(e);
+        break;
+      }
+    }
   }
 
   cancel() {
     this.#cancelTimeout = unixNowMs() + 5_000;
   }
 
-  unCancel() {
-    this.#cancelTimeout = undefined;
-  }
-
   cleanup() {
     this.#stopCheckTraces();
   }
 
-  sendToRelay(c: Connection, subq?: QueryBase) {
-    if (!this.#canSendQuery(c, subq ?? this)) {
+  sendToRelay(c: Connection, subq: BuiltRawReqFilter) {
+    if (!this.#canSendQuery(c, subq)) {
       return;
     }
-    this.#sendQueryInternal(c, subq ?? this);
+    return this.#sendQueryInternal(c, subq);
   }
 
   connectionLost(id: string) {
@@ -192,7 +197,7 @@ export class Query implements QueryBase {
   }
 
   eose(sub: string, conn: Readonly<Connection>) {
-    const qt = this.#tracing.find(a => a.subId === sub && a.connId === conn.Id);
+    const qt = this.#tracing.find(a => a.id === sub && a.connId === conn.Id);
     qt?.gotEose();
     if (!this.leaveOpen) {
       qt?.sendClose();
@@ -235,12 +240,12 @@ export class Query implements QueryBase {
     }, 500);
   }
 
-  #canSendQuery(c: Connection, q: QueryBase) {
-    if (q.relays && !q.relays.includes(c.Address)) {
+  #canSendQuery(c: Connection, q: BuiltRawReqFilter) {
+    if (q.relay && q.relay !== c.Address) {
       return false;
     }
-    if ((q.relays?.length ?? 0) === 0 && c.Ephemeral) {
-      this.#log("Cant send non-specific REQ to ephemeral connection %O %O %O", q, q.relays, c);
+    if (!q.relay && c.Ephemeral) {
+      this.#log("Cant send non-specific REQ to ephemeral connection %O %O %O", q, q.relay, c);
       return false;
     }
     if (q.filters.some(a => a.search) && !c.SupportsNip(Nips.Search)) {
@@ -250,9 +255,8 @@ export class Query implements QueryBase {
     return true;
   }
 
-  #sendQueryInternal(c: Connection, q: QueryBase) {
+  #sendQueryInternal(c: Connection, q: BuiltRawReqFilter) {
     const qt = new QueryTrace(
-      q.id,
       c.Address,
       q.filters,
       c.Id,
@@ -260,6 +264,7 @@ export class Query implements QueryBase {
       () => this.#onProgress()
     );
     this.#tracing.push(qt);
-    c.QueueReq(["REQ", q.id, ...q.filters], () => qt.sentToRelay());
+    c.QueueReq(["REQ", qt.id, ...q.filters], () => qt.sentToRelay());
+    return qt;
   }
 }

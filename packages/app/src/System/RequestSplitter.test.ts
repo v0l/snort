@@ -1,6 +1,6 @@
 import { RawReqFilter } from "System";
 import { describe, expect } from "@jest/globals";
-import { diffFilters } from "./RequestSplitter";
+import { diffFilters, expandFilter } from "./RequestSplitter";
 
 describe("RequestSplitter", () => {
   test("single filter add value", () => {
@@ -71,5 +71,34 @@ describe("RequestSplitter", () => {
       ],
       changed: true,
     });
+  });
+  test("expand filter", () => {
+    const a = {
+      authors: ["a", "b", "c"],
+      kinds: [1, 2, 3],
+      ids: ["x", "y"],
+      since: 99,
+      limit: 10,
+    };
+    expect(expandFilter(a)).toEqual([
+      { authors: ["a"], kinds: [1], ids: ["x"], since: 99, limit: 10 },
+      { authors: ["a"], kinds: [1], ids: ["y"], since: 99, limit: 10 },
+      { authors: ["a"], kinds: [2], ids: ["x"], since: 99, limit: 10 },
+      { authors: ["a"], kinds: [2], ids: ["y"], since: 99, limit: 10 },
+      { authors: ["a"], kinds: [3], ids: ["x"], since: 99, limit: 10 },
+      { authors: ["a"], kinds: [3], ids: ["y"], since: 99, limit: 10 },
+      { authors: ["b"], kinds: [1], ids: ["x"], since: 99, limit: 10 },
+      { authors: ["b"], kinds: [1], ids: ["y"], since: 99, limit: 10 },
+      { authors: ["b"], kinds: [2], ids: ["x"], since: 99, limit: 10 },
+      { authors: ["b"], kinds: [2], ids: ["y"], since: 99, limit: 10 },
+      { authors: ["b"], kinds: [3], ids: ["x"], since: 99, limit: 10 },
+      { authors: ["b"], kinds: [3], ids: ["y"], since: 99, limit: 10 },
+      { authors: ["c"], kinds: [1], ids: ["x"], since: 99, limit: 10 },
+      { authors: ["c"], kinds: [1], ids: ["y"], since: 99, limit: 10 },
+      { authors: ["c"], kinds: [2], ids: ["x"], since: 99, limit: 10 },
+      { authors: ["c"], kinds: [2], ids: ["y"], since: 99, limit: 10 },
+      { authors: ["c"], kinds: [3], ids: ["x"], since: 99, limit: 10 },
+      { authors: ["c"], kinds: [3], ids: ["y"], since: 99, limit: 10 },
+    ]);
   });
 });

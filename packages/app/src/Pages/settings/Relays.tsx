@@ -16,7 +16,7 @@ const RelaySettingsPage = () => {
   const [newRelay, setNewRelay] = useState<string>();
 
   const otherConnections = useMemo(() => {
-    return [...System.Sockets.keys()].filter(a => relays.item[a] === undefined);
+    return System.Sockets.filter(a => relays.item[a.address] === undefined);
   }, [relays]);
 
   async function saveRelays() {
@@ -98,7 +98,7 @@ const RelaySettingsPage = () => {
       </h3>
       <div className="flex f-col mb10">
         {otherConnections.map(a => (
-          <Relay addr={a} key={a} />
+          <Relay addr={a.address} key={a.id} />
         ))}
       </div>
     </>
