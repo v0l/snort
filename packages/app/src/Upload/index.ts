@@ -1,5 +1,5 @@
 import useLogin from "Hooks/useLogin";
-import { RawEvent } from "System";
+import { NostrEvent } from "System";
 
 import NostrBuild from "Upload/NostrBuild";
 import VoidCat from "Upload/VoidCat";
@@ -14,7 +14,7 @@ export interface UploadResult {
   /**
    * NIP-94 File Header
    */
-  header?: RawEvent;
+  header?: NostrEvent;
 }
 
 /**

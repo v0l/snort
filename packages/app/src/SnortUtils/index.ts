@@ -15,7 +15,7 @@ import {
   NostrPrefix,
   decodeTLV,
   TLVEntryType,
-  RawEvent,
+  NostrEvent,
 } from "System";
 import { MetadataCache } from "Cache";
 import NostrLink from "Element/NostrLink";
@@ -482,7 +482,7 @@ export function chunks<T>(arr: T[], length: number) {
   return result;
 }
 
-export function findTag(e: RawEvent, tag: string) {
+export function findTag(e: NostrEvent, tag: string) {
   const maybeTag = e.tags.find(evTag => {
     return evTag[0] === tag;
   });

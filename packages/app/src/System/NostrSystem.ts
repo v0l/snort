@@ -2,7 +2,7 @@ import debug from "debug";
 import { v4 as uuid } from "uuid";
 
 import ExternalStore from "ExternalStore";
-import { RawEvent, RawReqFilter, TaggedRawEvent } from "./Nostr";
+import { NostrEvent, ReqFilter, TaggedRawEvent } from "./Nostr";
 import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot } from "./Connection";
 import { Query, QueryBase } from "./Query";
 import { RelayCache } from "./GossipModel";
@@ -194,7 +194,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   /**
    * Send events to writable relays
    */
-  BroadcastEvent(ev: RawEvent) {
+  BroadcastEvent(ev: NostrEvent) {
     for (const [, s] of this.#sockets) {
       s.SendEvent(ev);
     }
@@ -203,7 +203,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   /**
    * Write an event to a relay then disconnect
    */
-  async WriteOnceToRelay(address: string, ev: RawEvent) {
+  async WriteOnceToRelay(address: string, ev: NostrEvent) {
     return new Promise<void>((resolve, reject) => {
       const c = new Connection(address, { write: true, read: false }, this.HandleAuth, true);
 

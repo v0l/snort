@@ -1,4 +1,4 @@
-import { EventKind, HexKey, NostrPrefix, RawEvent } from "System";
+import { EventKind, HexKey, NostrPrefix, NostrEvent } from "System";
 import { HashtagRegex } from "Const";
 import { getPublicKey, parseNostrLink, unixNow } from "SnortUtils";
 import { EventExt } from "./EventExt";
@@ -63,7 +63,7 @@ export class EventBuilder {
       kind: this.#kind,
       created_at: this.#createdAt ?? unixNow(),
       tags: this.#tags,
-    } as RawEvent;
+    } as NostrEvent;
     ev.id = EventExt.createId(ev);
     return ev;
   }

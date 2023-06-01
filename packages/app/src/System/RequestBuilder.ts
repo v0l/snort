@@ -1,7 +1,8 @@
-import { RawReqFilter, u256, HexKey, EventKind } from "System";
+import { ReqFilter, u256, HexKey, EventKind } from "System";
 import { appendDedupe, dedupe } from "SnortUtils";
 import { diffFilters } from "./RequestSplitter";
 import { RelayCache, splitAllByWriteRelays, splitByWriteRelays } from "./GossipModel";
+import { mergeSimilar } from "./RequestMerger";
 
 /**
  * Which strategy is used when building REQ filters
@@ -28,7 +29,7 @@ export enum RequestStrategy {
  * A built REQ filter ready for sending to System
  */
 export interface BuiltRawReqFilter {
-  filters: Array<RawReqFilter>;
+  filters: Array<ReqFilter>;
   relay: string;
   strategy: RequestStrategy;
 }
@@ -77,7 +78,7 @@ export class RequestBuilder {
     return this;
   }
 
-  buildRaw(): Array<RawReqFilter> {
+  buildRaw(): Array<ReqFilter> {
     return this.#builders.map(f => f.filter);
   }
 
@@ -91,11 +92,11 @@ export class RequestBuilder {
    * @param q All previous filters merged
    * @returns
    */
-  buildDiff(relays: RelayCache, filters: Array<RawReqFilter>): Array<BuiltRawReqFilter> {
+  buildDiff(relays: RelayCache, filters: Array<ReqFilter>): Array<BuiltRawReqFilter> {
     const next = this.buildRaw();
     const diff = diffFilters(filters, next);
     if (diff.changed) {
-      return splitAllByWriteRelays(relays, diff.filters).map(a => {
+      return splitAllByWriteRelays(relays, diff.added).map(a => {
         return {
           strategy: RequestStrategy.AuthorsRelays,
           filters: a.filters,
@@ -124,7 +125,7 @@ export class RequestBuilder {
 
     const filtersSquashed = [...relayMerged.values()].map(a => {
       return {
-        filters: a.flatMap(b => b.filters),
+        filters: mergeSimilar(a.flatMap(b => b.filters)),
         relay: a[0].relay,
         strategy: a[0].strategy,
       } as BuiltRawReqFilter;
@@ -138,7 +139,7 @@ export class RequestBuilder {
  * Builder class for a single request filter
  */
 export class RequestFilterBuilder {
-  #filter: RawReqFilter = {};
+  #filter: ReqFilter = {};
   #relayHints = new Map<u256, Array<string>>();
 
   get filter() {

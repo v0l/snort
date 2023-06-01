@@ -2,7 +2,7 @@ import "./SendSats.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 
-import { HexKey, RawEvent } from "System";
+import { HexKey, NostrEvent } from "System";
 import { System } from "index";
 import { formatShort } from "Number";
 import Icon from "Icons/Icon";
@@ -125,7 +125,7 @@ export default function SendSats(props: SendSatsProps) {
   async function loadInvoice() {
     if (!amount || !handler || !publisher) return null;
 
-    let zap: RawEvent | undefined;
+    let zap: NostrEvent | undefined;
     if (author && zapType !== ZapType.NonZap) {
       const relays = Object.keys(login.relays.item);
 

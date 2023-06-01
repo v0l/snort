@@ -1,4 +1,4 @@
-import { Connection, EventKind, RawEvent } from "System";
+import { Connection, EventKind, NostrEvent } from "System";
 import { EventBuilder } from "System";
 import { EventExt } from "System/EventExt";
 import { LNWallet, WalletError, WalletErrorCode, WalletInfo, WalletInvoice, WalletInvoiceState } from "Wallet";
@@ -123,7 +123,7 @@ export class NostrConnectWallet implements LNWallet {
     return Promise.resolve([]);
   }
 
-  async #onReply(sub: string, e: RawEvent) {
+  async #onReply(sub: string, e: NostrEvent) {
     if (sub === "info") {
       const pending = this.#commandQueue.get("info");
       if (!pending) {

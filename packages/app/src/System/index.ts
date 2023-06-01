@@ -9,7 +9,7 @@ import {
   ReplaceableNoteStore,
 } from "./NoteCollection";
 import { Query } from "./Query";
-import { RawEvent, RawReqFilter } from "./Nostr";
+import { NostrEvent, ReqFilter } from "./Nostr";
 
 export * from "./NostrSystem";
 export { default as EventKind } from "./EventKind";
@@ -29,15 +29,15 @@ export interface SystemInterface {
   Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder | null): Query | undefined;
   ConnectToRelay(address: string, options: RelaySettings): Promise<void>;
   DisconnectRelay(address: string): void;
-  BroadcastEvent(ev: RawEvent): void;
-  WriteOnceToRelay(relay: string, ev: RawEvent): Promise<void>;
+  BroadcastEvent(ev: NostrEvent): void;
+  WriteOnceToRelay(relay: string, ev: NostrEvent): Promise<void>;
 }
 
 export interface SystemSnapshot {
   queries: Array<{
     id: string;
-    filters: Array<RawReqFilter>;
-    subFilters: Array<RawReqFilter>;
+    filters: Array<ReqFilter>;
+    subFilters: Array<ReqFilter>;
     closing: boolean;
   }>;
 }

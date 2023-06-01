@@ -1,6 +1,6 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
-import { EventKind, HexKey, RawEvent, Tag } from "System";
+import { EventKind, HexKey, NostrEvent, Tag } from "System";
 import base64 from "@protobufjs/base64";
 import { sha256, unixNow } from "SnortUtils";
 
@@ -15,7 +15,7 @@ export abstract class EventExt {
   /**
    * Get the pub key of the creator of this event NIP-26
    */
-  static getRootPubKey(e: RawEvent): HexKey {
+  static getRootPubKey(e: NostrEvent): HexKey {
     const delegation = e.tags.find(a => a[0] === "delegation");
     if (delegation?.[1]) {
       return delegation[1];
@@ -26,7 +26,7 @@ export abstract class EventExt {
   /**
    * Sign this message with a private key
    */
-  static async sign(e: RawEvent, key: HexKey) {
+  static async sign(e: NostrEvent, key: HexKey) {
     e.id = this.createId(e);
 
     const sig = await secp.schnorr.sign(e.id, key);
@@ -40,13 +40,13 @@ export abstract class EventExt {
    * Check the signature of this message
    * @returns True if valid signature
    */
-  static async verify(e: RawEvent) {
+  static async verify(e: NostrEvent) {
     const id = this.createId(e);
     const result = await secp.schnorr.verify(e.sig, id, e.pubkey);
     return result;
   }
 
-  static createId(e: RawEvent) {
+  static createId(e: NostrEvent) {
     const payload = [0, e.pubkey, e.created_at, e.kind, e.tags, e.content];
 
     const hash = sha256(JSON.stringify(payload));
@@ -69,10 +69,10 @@ export abstract class EventExt {
       tags: [],
       id: "",
       sig: "",
-    } as RawEvent;
+    } as NostrEvent;
   }
 
-  static extractThread(ev: RawEvent) {
+  static extractThread(ev: NostrEvent) {
     const isThread = ev.tags.some(a => (a[0] === "e" && a[3] !== "mention") || a[0] == "a");
     if (!isThread) {
       return undefined;

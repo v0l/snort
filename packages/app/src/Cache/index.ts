@@ -1,4 +1,4 @@
-import { HexKey, RawEvent, UserMetadata } from "System";
+import { HexKey, NostrEvent, UserMetadata } from "System";
 import { hexToBech32, unixNowMs } from "SnortUtils";
 import { DmCache } from "./DMCache";
 import { InteractionCache } from "./EventInteractionCache";
@@ -37,7 +37,7 @@ export interface MetadataCache extends UserMetadata {
   isNostrAddressValid: boolean;
 }
 
-export function mapEventToProfile(ev: RawEvent) {
+export function mapEventToProfile(ev: NostrEvent) {
   try {
     const data: UserMetadata = JSON.parse(ev.content);
     return {

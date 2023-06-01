@@ -1,6 +1,6 @@
 import { RelaySettings } from "./Connection";
 
-export type RawEvent = {
+export interface NostrEvent {
   id: u256;
   pubkey: HexKey;
   created_at: number;
@@ -8,9 +8,9 @@ export type RawEvent = {
   tags: Array<Array<string>>;
   content: string;
   sig: string;
-};
+}
 
-export interface TaggedRawEvent extends RawEvent {
+export interface TaggedRawEvent extends NostrEvent {
   /**
    * A list of relays this event was seen on
    */
@@ -32,12 +32,12 @@ export type MaybeHexKey = HexKey | undefined;
  */
 export type u256 = string;
 
-export type ReqCommand = [cmd: "REQ", id: string, ...filters: Array<RawReqFilter>];
+export type ReqCommand = [cmd: "REQ", id: string, ...filters: Array<ReqFilter>];
 
 /**
  * Raw REQ filter object
  */
-export type RawReqFilter = {
+export interface ReqFilter {
   ids?: u256[];
   authors?: u256[];
   kinds?: number[];
@@ -50,7 +50,7 @@ export type RawReqFilter = {
   since?: number;
   until?: number;
   limit?: number;
-};
+}
 
 /**
  * Medatadata event content

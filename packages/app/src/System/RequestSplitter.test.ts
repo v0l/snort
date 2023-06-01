@@ -1,104 +1,87 @@
-import { RawReqFilter } from "System";
+import { ReqFilter } from "System";
 import { describe, expect } from "@jest/globals";
-import { diffFilters, expandFilter } from "./RequestSplitter";
+import { diffFilters } from "./RequestSplitter";
 
 describe("RequestSplitter", () => {
   test("single filter add value", () => {
-    const a: Array<RawReqFilter> = [{ kinds: [0], authors: ["a"] }];
-    const b: Array<RawReqFilter> = [{ kinds: [0], authors: ["a", "b"] }];
+    const a: Array<ReqFilter> = [{ kinds: [0], authors: ["a"] }];
+    const b: Array<ReqFilter> = [{ kinds: [0], authors: ["a", "b"] }];
     const diff = diffFilters(a, b);
-    expect(diff).toEqual({ filters: [{ kinds: [0], authors: ["b"] }], changed: true });
+    expect(diff).toEqual({
+      added: [{ kinds: [0], authors: ["b"] }],
+      removed: [],
+      changed: true,
+    });
   });
   test("single filter remove value", () => {
-    const a: Array<RawReqFilter> = [{ kinds: [0], authors: ["a"] }];
-    const b: Array<RawReqFilter> = [{ kinds: [0], authors: ["b"] }];
+    const a: Array<ReqFilter> = [{ kinds: [0], authors: ["a"] }];
+    const b: Array<ReqFilter> = [{ kinds: [0], authors: ["b"] }];
     const diff = diffFilters(a, b);
-    expect(diff).toEqual({ filters: [{ kinds: [0], authors: ["b"] }], changed: true });
+    expect(diff).toEqual({
+      added: [{ kinds: [0], authors: ["b"] }],
+      removed: [{ kinds: [0], authors: ["a"] }],
+      changed: true,
+    });
   });
   test("single filter change critical key", () => {
-    const a: Array<RawReqFilter> = [{ kinds: [0], authors: ["a"], since: 100 }];
-    const b: Array<RawReqFilter> = [{ kinds: [0], authors: ["a", "b"], since: 101 }];
+    const a: Array<ReqFilter> = [{ kinds: [0], authors: ["a"], since: 100 }];
+    const b: Array<ReqFilter> = [{ kinds: [0], authors: ["a", "b"], since: 101 }];
     const diff = diffFilters(a, b);
-    expect(diff).toEqual({ filters: [{ kinds: [0], authors: ["a", "b"], since: 101 }], changed: true });
+    expect(diff).toEqual({
+      added: [{ kinds: [0], authors: ["a", "b"], since: 101 }],
+      removed: [{ kinds: [0], authors: ["a"], since: 100 }],
+      changed: true,
+    });
   });
   test("multiple filter add value", () => {
-    const a: Array<RawReqFilter> = [
+    const a: Array<ReqFilter> = [
       { kinds: [0], authors: ["a"] },
       { kinds: [69], authors: ["a"] },
     ];
-    const b: Array<RawReqFilter> = [
+    const b: Array<ReqFilter> = [
       { kinds: [0], authors: ["a", "b"] },
       { kinds: [69], authors: ["a", "c"] },
     ];
     const diff = diffFilters(a, b);
     expect(diff).toEqual({
-      filters: [
+      added: [
         { kinds: [0], authors: ["b"] },
         { kinds: [69], authors: ["c"] },
       ],
+      removed: [],
       changed: true,
     });
   });
   test("multiple filter remove value", () => {
-    const a: Array<RawReqFilter> = [
+    const a: Array<ReqFilter> = [
       { kinds: [0], authors: ["a"] },
       { kinds: [69], authors: ["a"] },
     ];
-    const b: Array<RawReqFilter> = [
+    const b: Array<ReqFilter> = [
       { kinds: [0], authors: ["b"] },
       { kinds: [69], authors: ["c"] },
     ];
     const diff = diffFilters(a, b);
     expect(diff).toEqual({
-      filters: [
+      added: [
         { kinds: [0], authors: ["b"] },
         { kinds: [69], authors: ["c"] },
       ],
+      removed: [{ kinds: [0, 69], authors: ["a"] }],
       changed: true,
     });
   });
   test("add filter", () => {
-    const a: Array<RawReqFilter> = [{ kinds: [0], authors: ["a"] }];
-    const b: Array<RawReqFilter> = [
+    const a: Array<ReqFilter> = [{ kinds: [0], authors: ["a"] }];
+    const b: Array<ReqFilter> = [
       { kinds: [0], authors: ["a"] },
       { kinds: [69], authors: ["c"] },
     ];
     const diff = diffFilters(a, b);
     expect(diff).toEqual({
-      filters: [
-        { kinds: [0], authors: ["a"] },
-        { kinds: [69], authors: ["c"] },
-      ],
+      added: [{ kinds: [69], authors: ["c"] }],
+      removed: [],
       changed: true,
     });
-  });
-  test("expand filter", () => {
-    const a = {
-      authors: ["a", "b", "c"],
-      kinds: [1, 2, 3],
-      ids: ["x", "y"],
-      since: 99,
-      limit: 10,
-    };
-    expect(expandFilter(a)).toEqual([
-      { authors: ["a"], kinds: [1], ids: ["x"], since: 99, limit: 10 },
-      { authors: ["a"], kinds: [1], ids: ["y"], since: 99, limit: 10 },
-      { authors: ["a"], kinds: [2], ids: ["x"], since: 99, limit: 10 },
-      { authors: ["a"], kinds: [2], ids: ["y"], since: 99, limit: 10 },
-      { authors: ["a"], kinds: [3], ids: ["x"], since: 99, limit: 10 },
-      { authors: ["a"], kinds: [3], ids: ["y"], since: 99, limit: 10 },
-      { authors: ["b"], kinds: [1], ids: ["x"], since: 99, limit: 10 },
-      { authors: ["b"], kinds: [1], ids: ["y"], since: 99, limit: 10 },
-      { authors: ["b"], kinds: [2], ids: ["x"], since: 99, limit: 10 },
-      { authors: ["b"], kinds: [2], ids: ["y"], since: 99, limit: 10 },
-      { authors: ["b"], kinds: [3], ids: ["x"], since: 99, limit: 10 },
-      { authors: ["b"], kinds: [3], ids: ["y"], since: 99, limit: 10 },
-      { authors: ["c"], kinds: [1], ids: ["x"], since: 99, limit: 10 },
-      { authors: ["c"], kinds: [1], ids: ["y"], since: 99, limit: 10 },
-      { authors: ["c"], kinds: [2], ids: ["x"], since: 99, limit: 10 },
-      { authors: ["c"], kinds: [2], ids: ["y"], since: 99, limit: 10 },
-      { authors: ["c"], kinds: [3], ids: ["x"], since: 99, limit: 10 },
-      { authors: ["c"], kinds: [3], ids: ["y"], since: 99, limit: 10 },
-    ]);
   });
 });

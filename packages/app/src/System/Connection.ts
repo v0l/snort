@@ -2,12 +2,12 @@ import { v4 as uuid } from "uuid";
 
 import { DefaultConnectTimeout } from "./Const";
 import { ConnectionStats } from "./ConnectionStats";
-import { RawEvent, ReqCommand, TaggedRawEvent, u256 } from "./Nostr";
+import { NostrEvent, ReqCommand, TaggedRawEvent, u256 } from "./Nostr";
 import { RelayInfo } from "./RelayInfo";
 import { unwrap } from "./Util";
 import ExternalStore from "ExternalStore";
 
-export type AuthHandler = (challenge: string, relay: string) => Promise<RawEvent | undefined>;
+export type AuthHandler = (challenge: string, relay: string) => Promise<NostrEvent | undefined>;
 
 /**
  * Relay settings
@@ -232,7 +232,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   /**
    * Send event on this connection
    */
-  SendEvent(e: RawEvent) {
+  SendEvent(e: NostrEvent) {
     if (!this.Settings.write) {
       return;
     }
@@ -245,7 +245,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   /**
    * Send event on this connection and wait for OK response
    */
-  async SendAsync(e: RawEvent, timeout = 5000) {
+  async SendAsync(e: NostrEvent, timeout = 5000) {
     return new Promise<void>(resolve => {
       if (!this.Settings.write) {
         resolve();

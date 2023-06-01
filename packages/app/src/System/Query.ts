@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
-import { Connection, RawReqFilter, Nips, TaggedRawEvent } from "System";
+import { Connection, ReqFilter, Nips, TaggedRawEvent } from "System";
 import { unixNowMs, unwrap } from "SnortUtils";
 import { NoteStore } from "./NoteCollection";
 import { simpleMerge } from "./RequestMerger";
@@ -22,7 +22,7 @@ class QueryTrace {
 
   constructor(
     readonly relay: string,
-    readonly filters: Array<RawReqFilter>,
+    readonly filters: Array<ReqFilter>,
     readonly connId: string,
     fnClose: (id: string) => void,
     fnProgress: () => void
@@ -94,7 +94,7 @@ export interface QueryBase {
   /**
    * The query payload (REQ filters)
    */
-  filters: Array<RawReqFilter>;
+  filters: Array<ReqFilter>;
 
   /**
    * List of relays to send this query to

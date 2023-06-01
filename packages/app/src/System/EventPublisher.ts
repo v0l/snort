@@ -5,7 +5,7 @@ import {
   FullRelaySettings,
   HexKey,
   Lists,
-  RawEvent,
+  NostrEvent,
   RelaySettings,
   SystemInterface,
   TaggedRawEvent,
@@ -27,7 +27,7 @@ declare global {
   interface Window {
     nostr?: {
       getPublicKey: () => Promise<HexKey>;
-      signEvent: <T extends RawEvent>(event: T) => Promise<T>;
+      signEvent: <T extends NostrEvent>(event: T) => Promise<T>;
 
       getRelays?: () => Promise<Record<string, { read: boolean; write: boolean }>>;
 
@@ -113,7 +113,7 @@ export class EventPublisher {
     return await this.#sign(eb);
   }
 
-  broadcast(ev: RawEvent) {
+  broadcast(ev: NostrEvent) {
     console.debug(ev);
     this.#system.BroadcastEvent(ev);
   }
@@ -123,7 +123,7 @@ export class EventPublisher {
    * If a user removes all the DefaultRelays from their relay list and saves that relay list,
    * When they open the site again we wont see that updated relay list and so it will appear to reset back to the previous state
    */
-  broadcastForBootstrap(ev: RawEvent) {
+  broadcastForBootstrap(ev: NostrEvent) {
     for (const [k] of DefaultRelays) {
       this.#system.WriteOnceToRelay(k, ev);
     }
@@ -132,7 +132,7 @@ export class EventPublisher {
   /**
    * Write event to all given relays.
    */
-  broadcastAll(ev: RawEvent, relays: string[]) {
+  broadcastAll(ev: NostrEvent, relays: string[]) {
     for (const k of relays) {
       this.#system.WriteOnceToRelay(k, ev);
     }
@@ -249,7 +249,7 @@ export class EventPublisher {
     return await this.#sign(eb);
   }
 
-  async react(evRef: RawEvent, content = "+") {
+  async react(evRef: NostrEvent, content = "+") {
     const eb = this.#eb(EventKind.Reaction);
     eb.content(content);
     eb.tag(["e", evRef.id]);
@@ -298,14 +298,14 @@ export class EventPublisher {
   /**
    * Repost a note (NIP-18)
    */
-  async repost(note: RawEvent) {
+  async repost(note: NostrEvent) {
     const eb = this.#eb(EventKind.Repost);
     eb.tag(["e", note.id, ""]);
     eb.tag(["p", note.pubkey]);
     return await this.#sign(eb);
   }
 
-  async decryptDm(note: RawEvent) {
+  async decryptDm(note: NostrEvent) {
     if (note.pubkey !== this.#pubKey && !note.tags.some(a => a[1] === this.#pubKey)) {
       throw new Error("Can't decrypt, DM does not belong to this user");
     }

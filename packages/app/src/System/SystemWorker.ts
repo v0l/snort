@@ -2,7 +2,7 @@ import ExternalStore from "ExternalStore";
 import {
   NoteStore,
   Query,
-  RawEvent,
+  NostrEvent,
   RelaySettings,
   RequestBuilder,
   SystemSnapshot,
@@ -51,11 +51,11 @@ export class SystemWorker extends ExternalStore<SystemSnapshot> implements Syste
     throw new Error("Method not implemented.");
   }
 
-  BroadcastEvent(ev: RawEvent): void {
+  BroadcastEvent(ev: NostrEvent): void {
     throw new Error("Method not implemented.");
   }
 
-  WriteOnceToRelay(relay: string, ev: RawEvent): Promise<void> {
+  WriteOnceToRelay(relay: string, ev: NostrEvent): Promise<void> {
     throw new Error("Method not implemented.");
   }
 

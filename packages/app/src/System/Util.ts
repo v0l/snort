@@ -40,3 +40,47 @@ export function unixNow() {
 export function unixNowMs() {
   return new Date().getTime();
 }
+
+export function deepEqual(x: any, y: any): boolean {
+  const ok = Object.keys,
+    tx = typeof x,
+    ty = typeof y;
+
+  return x && y && tx === "object" && tx === ty
+    ? ok(x).length === ok(y).length && ok(x).every(key => deepEqual(x[key], y[key]))
+    : x === y;
+}
+
+/**
+ * Compute the "distance" between two objects by comparing their difference in properties
+ * Missing/Added keys result in +10 distance
+ * This is not recursive
+ */
+export function distance(a: any, b: any): number {
+  const keys1 = Object.keys(a);
+  const keys2 = Object.keys(b);
+  const maxKeys = keys1.length > keys2.length ? keys1 : keys2;
+
+  let distance = 0;
+  for (const key of maxKeys) {
+    if (key in a && key in b) {
+      if (Array.isArray(a[key]) && Array.isArray(b[key])) {
+        const aa = a[key] as Array<string | number>;
+        const bb = b[key] as Array<string | number>;
+        if (aa.length === bb.length) {
+          if (aa.some(v => !bb.includes(v))) {
+            distance++;
+          }
+        } else {
+          distance++;
+        }
+      } else if (a[key] !== b[key]) {
+        distance++;
+      }
+    } else {
+      distance += 10;
+    }
+  }
+
+  return distance;
+}

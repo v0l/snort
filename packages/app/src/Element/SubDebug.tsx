@@ -5,7 +5,7 @@ import useRelayState from "Feed/RelayState";
 import Tabs, { Tab } from "Element/Tabs";
 import { unwrap } from "SnortUtils";
 import useSystemState from "Hooks/useSystemState";
-import { RawReqFilter } from "System";
+import { ReqFilter } from "System";
 import { useCopy } from "useCopy";
 import { System } from "index";
 
@@ -18,7 +18,7 @@ function Queries() {
   const qs = useSystemState();
   const { copy } = useCopy();
 
-  function countElements(filters: Array<RawReqFilter>) {
+  function countElements(filters: Array<ReqFilter>) {
     let total = 0;
     for (const f of filters) {
       for (const v of Object.values(f)) {
@@ -30,12 +30,7 @@ function Queries() {
     return total;
   }
 
-  function queryInfo(q: {
-    id: string;
-    filters: Array<RawReqFilter>;
-    closing: boolean;
-    subFilters: Array<RawReqFilter>;
-  }) {
+  function queryInfo(q: { id: string; filters: Array<ReqFilter>; closing: boolean; subFilters: Array<ReqFilter> }) {
     return (
       <div key={q.id}>
         {q.closing ? <s>{q.id}</s> : <>{q.id}</>}

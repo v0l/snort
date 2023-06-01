@@ -1,7 +1,7 @@
 import "./NoteReaction.css";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import { EventKind, RawEvent, TaggedRawEvent, NostrPrefix } from "System";
+import { EventKind, NostrEvent, TaggedRawEvent, NostrPrefix } from "System";
 
 import Note from "Element/Note";
 import ProfileImage from "Element/ProfileImage";
@@ -43,7 +43,7 @@ export default function NoteReaction(props: NoteReactionProps) {
   function extractRoot() {
     if (ev?.kind === EventKind.Repost && ev.content.length > 0 && ev.content !== "#[0]") {
       try {
-        const r: RawEvent = JSON.parse(ev.content);
+        const r: NostrEvent = JSON.parse(ev.content);
         return r as TaggedRawEvent;
       } catch (e) {
         console.error("Could not load reposted content", e);

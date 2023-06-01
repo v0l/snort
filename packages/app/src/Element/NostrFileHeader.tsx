@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import { RawEvent } from "System";
+import { NostrEvent } from "System";
 
 import { findTag, NostrLink } from "SnortUtils";
 import useEventFeed from "Feed/EventFeed";
@@ -14,7 +14,7 @@ export default function NostrFileHeader({ link }: { link: NostrLink }) {
   return <NostrFileElement ev={ev.data} />;
 }
 
-export function NostrFileElement({ ev }: { ev: RawEvent }) {
+export function NostrFileElement({ ev }: { ev: NostrEvent }) {
   // assume image or embed which can be rendered by the hypertext kind
   // todo: make use of hash
   // todo: use magnet or other links if present

@@ -1,6 +1,6 @@
-import { RawEvent, RawReqFilter } from "./Nostr";
+import { NostrEvent, ReqFilter } from "./Nostr";
 
-export function eventMatchesFilter(ev: RawEvent, filter: RawReqFilter) {
+export function eventMatchesFilter(ev: NostrEvent, filter: ReqFilter) {
   if (!(filter.ids?.includes(ev.id) ?? false)) {
     return false;
   }

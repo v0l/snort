@@ -1,4 +1,4 @@
-import { FullRelaySettings, RawReqFilter } from "System";
+import { FullRelaySettings, ReqFilter } from "System";
 import { unwrap } from "SnortUtils";
 import debug from "debug";
 
@@ -6,19 +6,19 @@ const PickNRelays = 2;
 
 export interface RelayTaggedFilter {
   relay: string;
-  filter: RawReqFilter;
+  filter: ReqFilter;
 }
 
 export interface RelayTaggedFilters {
   relay: string;
-  filters: Array<RawReqFilter>;
+  filters: Array<ReqFilter>;
 }
 
 export interface RelayCache {
   get(pubkey?: string): Array<FullRelaySettings> | undefined;
 }
 
-export function splitAllByWriteRelays(cache: RelayCache, filters: Array<RawReqFilter>) {
+export function splitAllByWriteRelays(cache: RelayCache, filters: Array<ReqFilter>) {
   const allSplit = filters
     .map(a => splitByWriteRelays(cache, a))
     .reduce((acc, v) => {
@@ -31,7 +31,7 @@ export function splitAllByWriteRelays(cache: RelayCache, filters: Array<RawReqFi
         }
       }
       return acc;
-    }, new Map<string, Array<RawReqFilter>>());
+    }, new Map<string, Array<ReqFilter>>());
 
   return [...allSplit.entries()].map(([k, v]) => {
     return {
@@ -46,7 +46,7 @@ export function splitAllByWriteRelays(cache: RelayCache, filters: Array<RawReqFi
  * @param filter
  * @returns
  */
-export function splitByWriteRelays(cache: RelayCache, filter: RawReqFilter): Array<RelayTaggedFilter> {
+export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter): Array<RelayTaggedFilter> {
   if ((filter.authors?.length ?? 0) === 0)
     return [
       {

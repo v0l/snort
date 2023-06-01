@@ -1,5 +1,5 @@
 import Dexie, { Table } from "dexie";
-import { FullRelaySettings, HexKey, RawEvent, u256 } from "System";
+import { FullRelaySettings, HexKey, NostrEvent, u256 } from "System";
 import { MetadataCache } from "Cache";
 
 export const NAME = "snortDB";
@@ -48,8 +48,8 @@ export class SnortDB extends Dexie {
   users!: Table<MetadataCache>;
   relayMetrics!: Table<RelayMetrics>;
   userRelays!: Table<UsersRelays>;
-  events!: Table<RawEvent>;
-  dms!: Table<RawEvent>;
+  events!: Table<NostrEvent>;
+  dms!: Table<NostrEvent>;
   eventInteraction!: Table<EventInteraction>;
 
   constructor() {

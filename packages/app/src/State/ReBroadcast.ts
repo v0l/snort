@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RawEvent } from "System";
+import { NostrEvent } from "System";
 
 interface ReBroadcastStore {
   show: boolean;
   selectedCustomRelays: false | Array<string>;
-  note?: RawEvent;
+  note?: NostrEvent;
 }
 
 const InitState: ReBroadcastStore = {
@@ -19,7 +19,7 @@ const ReBroadcastSlice = createSlice({
     setShow: (state, action: PayloadAction<boolean>) => {
       state.show = action.payload;
     },
-    setNote: (state, action: PayloadAction<RawEvent>) => {
+    setNote: (state, action: PayloadAction<NostrEvent>) => {
       state.note = action.payload;
     },
     setSelectedCustomRelays: (state, action: PayloadAction<false | Array<string>>) => {

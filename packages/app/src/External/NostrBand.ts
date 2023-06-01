@@ -1,4 +1,4 @@
-import { RawEvent } from "System";
+import { NostrEvent } from "System";
 
 export interface TrendingUser {
   pubkey: string;
@@ -9,8 +9,8 @@ export interface TrendingUserResponse {
 }
 
 export interface TrendingNote {
-  event: RawEvent;
-  author: RawEvent; // kind0 event
+  event: NostrEvent;
+  author: NostrEvent; // kind0 event
 }
 
 export interface TrendingNoteResponse {

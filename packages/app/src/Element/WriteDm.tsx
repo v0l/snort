@@ -1,4 +1,4 @@
-import { encodeTLV, NostrPrefix, RawEvent } from "System";
+import { encodeTLV, NostrPrefix, NostrEvent } from "System";
 import useEventPublisher from "Feed/EventPublisher";
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
@@ -11,7 +11,7 @@ export default function WriteDm({ chatPubKey }: { chatPubKey: string }) {
   const [msg, setMsg] = useState("");
   const [sending, setSending] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [otherEvents, setOtherEvents] = useState<Array<RawEvent>>([]);
+  const [otherEvents, setOtherEvents] = useState<Array<NostrEvent>>([]);
   const [error, setError] = useState("");
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
