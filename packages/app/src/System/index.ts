@@ -38,7 +38,6 @@ export interface SystemSnapshot {
     id: string;
     filters: Array<ReqFilter>;
     subFilters: Array<ReqFilter>;
-    closing: boolean;
   }>;
 }
 

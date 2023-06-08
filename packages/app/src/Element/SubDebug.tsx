@@ -30,10 +30,10 @@ function Queries() {
     return total;
   }
 
-  function queryInfo(q: { id: string; filters: Array<ReqFilter>; closing: boolean; subFilters: Array<ReqFilter> }) {
+  function queryInfo(q: { id: string; filters: Array<ReqFilter>; subFilters: Array<ReqFilter> }) {
     return (
       <div key={q.id}>
-        {q.closing ? <s>{q.id}</s> : <>{q.id}</>}
+        {q.id}
         <br />
         <span onClick={() => copy(JSON.stringify(q.filters))} className="pointer">
           &nbsp; Filters: {q.filters.length} ({countElements(q.filters)} elements)

@@ -122,7 +122,9 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): Query {
     const existing = this.Queries.get(req.id);
     if (existing) {
-      const filters = req.buildDiff(this.#relayCache, existing.filters);
+      const filters = !req.options?.skipDiff
+        ? req.buildDiff(this.#relayCache, existing.filters)
+        : req.build(this.#relayCache);
       if (filters.length === 0 && !!req.options?.skipDiff) {
         return existing;
       } else {
@@ -138,11 +140,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       const store = new type();
 
       const filters = req.build(this.#relayCache);
-      const q = new Query(req.id, store);
-      if (req.options?.leaveOpen) {
-        q.leaveOpen = req.options.leaveOpen;
-      }
-
+      const q = new Query(req.id, store, req.options?.leaveOpen);
       this.Queries.set(req.id, q);
       for (const subQ of filters) {
         this.SendQuery(q, subQ).then(qta =>
@@ -222,7 +220,6 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         return {
           id: a.id,
           filters: a.filters,
-          closing: a.closing,
           subFilters: [],
         };
       }),
@@ -230,12 +227,12 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   }
 
   #cleanup() {
-    const now = unixNowMs();
     let changed = false;
     for (const [k, v] of this.Queries) {
-      if (v.closingAt && v.closingAt < now) {
+      if (v.canRemove()) {
         v.sendClose();
         this.Queries.delete(k);
+        this.#log("Deleted query %s", k);
         changed = true;
       }
     }

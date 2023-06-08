@@ -120,12 +120,12 @@ export class Query implements QueryBase {
   /**
    * Leave the query open until its removed
    */
-  leaveOpen = false;
+  #leaveOpen = false;
 
   /**
    * Time when this query can be removed
    */
-  #cancelTimeout?: number;
+  #cancelAt?: number;
 
   /**
    * Timer used to track tracing status
@@ -140,18 +140,15 @@ export class Query implements QueryBase {
   #log = debug("Query");
   #allFilters: Array<ReqFilter> = [];
 
-  constructor(id: string, feed: NoteStore) {
+  constructor(id: string, feed: NoteStore, leaveOpen?: boolean) {
     this.id = id;
     this.#feed = feed;
+    this.#leaveOpen = leaveOpen ?? false;
     this.#checkTraces();
   }
 
-  get closing() {
-    return this.#cancelTimeout !== undefined;
-  }
-
-  get closingAt() {
-    return this.#cancelTimeout;
+  canRemove() {
+    return this.#cancelAt !== undefined && this.#cancelAt < unixNowMs();
   }
 
   /**
@@ -174,8 +171,15 @@ export class Query implements QueryBase {
     }
   }
 
+  /**
+   * This function should be called when this Query object and FeedStore is no longer needed
+   */
   cancel() {
-    this.#cancelTimeout = unixNowMs() + 5_000;
+    this.#cancelAt = unixNowMs() + 5_000;
+  }
+
+  uncancel() {
+    this.#cancelAt = undefined;
   }
 
   cleanup() {
@@ -203,7 +207,7 @@ export class Query implements QueryBase {
   eose(sub: string, conn: Readonly<Connection>) {
     const qt = this.#tracing.find(a => a.id === sub && a.connId === conn.Id);
     qt?.gotEose();
-    if (!this.leaveOpen) {
+    if (!this.#leaveOpen) {
       qt?.sendClose();
     }
   }
@@ -272,6 +276,7 @@ export class Query implements QueryBase {
     c.QueueReq(["REQ", qt.id, ...q.filters], () => qt.sentToRelay());
     return qt;
   }
+
   #reComputeFilters() {
     console.time("reComputeFilters");
     this.#allFilters = flatMerge(this.#tracing.flatMap(a => a.filters).flatMap(expandFilter));

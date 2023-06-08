@@ -7,7 +7,7 @@ import { distance } from "./Util";
  */
 const DiscriminatorKeys = ["since", "until", "limit", "search"];
 
-export function canMergeFilters(a: FlatReqFilter, b: FlatReqFilter): boolean {
+export function canMergeFilters(a: FlatReqFilter | ReqFilter, b: FlatReqFilter | ReqFilter): boolean {
   const aObj = a as Record<string, string | number | undefined>;
   const bObj = b as Record<string, string | number | undefined>;
   for (const key of DiscriminatorKeys) {
@@ -17,34 +17,21 @@ export function canMergeFilters(a: FlatReqFilter, b: FlatReqFilter): boolean {
       }
     }
   }
-  const keys1 = Object.keys(aObj);
-  const keys2 = Object.keys(bObj);
-  const maxKeys = keys1.length > keys2.length ? keys1 : keys2;
-
-  let distance = 0;
-  for (const key of maxKeys) {
-    if (key in aObj && key in bObj) {
-      if (aObj[key] !== bObj[key]) {
-        distance++;
-      }
-    } else {
-      return false;
-    }
-  }
-  return distance <= 1;
+  return distance(aObj, bObj) <= 1;
 }
 
 export function mergeSimilar(filters: Array<ReqFilter>): Array<ReqFilter> {
   console.time("mergeSimilar");
   const ret = [];
 
-  while (filters.length > 0) {
-    const current = filters.shift()!;
+  const fCopy = [...filters];
+  while (fCopy.length > 0) {
+    const current = fCopy.shift()!;
     const mergeSet = [current];
-    for (let i = 0; i < filters.length; i++) {
-      const f = filters[i];
+    for (let i = 0; i < fCopy.length; i++) {
+      const f = fCopy[i];
       if (mergeSet.every(v => canMergeFilters(v, f))) {
-        mergeSet.push(filters.splice(i, 1)[0]);
+        mergeSet.push(fCopy.splice(i, 1)[0]);
         i--;
       }
     }
