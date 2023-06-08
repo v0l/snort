@@ -1,8 +1,6 @@
 import { useMemo } from "react";
-import { HexKey, FullRelaySettings, EventKind } from "System";
+import { HexKey, FullRelaySettings, EventKind, RequestBuilder, ReplaceableNoteStore } from "@snort/system";
 
-import { RequestBuilder } from "System";
-import { ReplaceableNoteStore } from "System/NoteCollection";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 
 export default function useRelaysFeed(pubkey?: HexKey) {

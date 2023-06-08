@@ -3,7 +3,7 @@ import "./BadgeList.css";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { TaggedRawEvent } from "System";
+import { TaggedRawEvent } from "@snort/system";
 
 import { ProxyImg } from "Element/ProxyImg";
 import Icon from "Icons/Icon";

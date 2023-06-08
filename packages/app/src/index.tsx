@@ -33,10 +33,9 @@ import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
 import DebugPage from "Pages/Debug";
 import { db } from "Db";
-import { preload } from "Cache";
+import { preload, UserCache } from "Cache";
 import { LoginStore } from "Login";
-import { ProfileLoaderService } from "System/ProfileCache";
-import { NostrSystem } from "System";
+import { NostrSystem, ProfileLoaderService } from "@snort/system";
 import { UserRelays } from "Cache/UserRelayCache";
 
 /**
@@ -49,7 +48,7 @@ export const System = new NostrSystem({
 /**
  * Singleton user profile loader
  */
-export const ProfileLoader = new ProfileLoaderService(System);
+export const ProfileLoader = new ProfileLoaderService(System, UserCache);
 
 // @ts-expect-error Setting webpack nonce
 window.__webpack_nonce__ = "ZmlhdGphZiBzYWlkIHNub3J0LnNvY2lhbCBpcyBwcmV0dHkgZ29vZCwgd2UgbWFkZSBpdCE=";

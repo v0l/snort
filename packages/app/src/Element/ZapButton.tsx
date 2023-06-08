@@ -1,6 +1,6 @@
 import "./ZapButton.css";
 import { useState } from "react";
-import { HexKey } from "System";
+import { HexKey } from "@snort/system";
 
 import { useUserProfile } from "Hooks/useUserProfile";
 import SendSats from "Element/SendSats";

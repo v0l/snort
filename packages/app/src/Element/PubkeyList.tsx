@@ -1,4 +1,4 @@
-import { NostrEvent } from "System";
+import { NostrEvent } from "@snort/system";
 import { dedupe } from "SnortUtils";
 import FollowListBase from "./FollowListBase";
 

@@ -1,5 +1,5 @@
 import useLogin from "Hooks/useLogin";
-import { NostrEvent } from "System";
+import { NostrEvent } from "@snort/system";
 
 import NostrBuild from "Upload/NostrBuild";
 import VoidCat from "Upload/VoidCat";

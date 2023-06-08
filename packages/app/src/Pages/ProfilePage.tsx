@@ -2,9 +2,9 @@ import "./ProfilePage.css";
 import { useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
-import { encodeTLV, EventKind, HexKey, NostrPrefix } from "System";
+import { encodeTLV, EventKind, HexKey, NostrPrefix, parseNostrLink } from "@snort/system";
 
-import { parseNostrLink, getReactions, unwrap } from "SnortUtils";
+import { getReactions, unwrap } from "SnortUtils";
 import { formatShort } from "Number";
 import Note from "Element/Note";
 import Bookmarks from "Element/Bookmarks";

@@ -1,5 +1,5 @@
 import "./Nip05.css";
-import { HexKey } from "System";
+import { HexKey } from "@snort/system";
 
 import Icon from "Icons/Icon";
 import { useUserProfile } from "Hooks/useUserProfile";

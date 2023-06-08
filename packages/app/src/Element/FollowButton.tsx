@@ -1,6 +1,6 @@
 import "./FollowButton.css";
 import { FormattedMessage } from "react-intl";
-import { HexKey } from "System";
+import { HexKey } from "@snort/system";
 
 import useEventPublisher from "Feed/EventPublisher";
 import { parseId } from "SnortUtils";

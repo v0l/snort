@@ -5,7 +5,7 @@ import useRelayState from "Feed/RelayState";
 import Tabs, { Tab } from "Element/Tabs";
 import { unwrap } from "SnortUtils";
 import useSystemState from "Hooks/useSystemState";
-import { ReqFilter } from "System";
+import { ReqFilter } from "@snort/system";
 import { useCopy } from "useCopy";
 import { System } from "index";
 

@@ -1,7 +1,6 @@
-import { EventKind } from "System";
+import { EventKind, EventPublisher } from "@snort/system";
 import { ApiHost } from "Const";
 import { SubscriptionType } from "Subscription";
-import { EventPublisher } from "System/EventPublisher";
 
 export interface RevenueToday {
   donations: number;

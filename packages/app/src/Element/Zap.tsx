@@ -1,7 +1,7 @@
 import "./Zap.css";
 import { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { HexKey, TaggedRawEvent } from "System";
+import { HexKey, TaggedRawEvent } from "@snort/system";
 
 import { decodeInvoice, InvoiceDetails, sha256, unwrap } from "SnortUtils";
 import { formatShort } from "Number";

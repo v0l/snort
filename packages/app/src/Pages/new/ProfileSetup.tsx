@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
+import { mapEventToProfile } from "@snort/system";
 
 import Logo from "Element/Logo";
 import useEventPublisher from "Feed/EventPublisher";
 import useLogin from "Hooks/useLogin";
 import { useUserProfile } from "Hooks/useUserProfile";
-import { mapEventToProfile, UserCache } from "Cache";
+import { UserCache } from "Cache";
 import AvatarEditor from "Element/AvatarEditor";
 
 import messages from "./messages";

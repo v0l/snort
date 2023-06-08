@@ -1,0 +1,32 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventKind;
+(function (EventKind) {
+    EventKind[EventKind["Unknown"] = -1] = "Unknown";
+    EventKind[EventKind["SetMetadata"] = 0] = "SetMetadata";
+    EventKind[EventKind["TextNote"] = 1] = "TextNote";
+    EventKind[EventKind["RecommendServer"] = 2] = "RecommendServer";
+    EventKind[EventKind["ContactList"] = 3] = "ContactList";
+    EventKind[EventKind["DirectMessage"] = 4] = "DirectMessage";
+    EventKind[EventKind["Deletion"] = 5] = "Deletion";
+    EventKind[EventKind["Repost"] = 6] = "Repost";
+    EventKind[EventKind["Reaction"] = 7] = "Reaction";
+    EventKind[EventKind["BadgeAward"] = 8] = "BadgeAward";
+    EventKind[EventKind["SnortSubscriptions"] = 1000] = "SnortSubscriptions";
+    EventKind[EventKind["Polls"] = 6969] = "Polls";
+    EventKind[EventKind["FileHeader"] = 1063] = "FileHeader";
+    EventKind[EventKind["Relays"] = 10002] = "Relays";
+    EventKind[EventKind["Ephemeral"] = 20000] = "Ephemeral";
+    EventKind[EventKind["Auth"] = 22242] = "Auth";
+    EventKind[EventKind["PubkeyLists"] = 30000] = "PubkeyLists";
+    EventKind[EventKind["NoteLists"] = 30001] = "NoteLists";
+    EventKind[EventKind["TagLists"] = 30002] = "TagLists";
+    EventKind[EventKind["Badge"] = 30009] = "Badge";
+    EventKind[EventKind["ProfileBadges"] = 30008] = "ProfileBadges";
+    EventKind[EventKind["ZapstrTrack"] = 31337] = "ZapstrTrack";
+    EventKind[EventKind["ZapRequest"] = 9734] = "ZapRequest";
+    EventKind[EventKind["ZapReceipt"] = 9735] = "ZapReceipt";
+    EventKind[EventKind["HttpAuthentication"] = 27235] = "HttpAuthentication";
+})(EventKind || (EventKind = {}));
+exports.default = EventKind;
+//# sourceMappingURL=EventKind.js.map

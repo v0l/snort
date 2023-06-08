@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { HexKey, EventKind } from "System";
+import { HexKey, EventKind, PubkeyReplaceableNoteStore, RequestBuilder } from "@snort/system";
 
-import { PubkeyReplaceableNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 
 export default function useFollowersFeed(pubkey?: HexKey) {

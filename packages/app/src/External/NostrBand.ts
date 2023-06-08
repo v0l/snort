@@ -1,4 +1,4 @@
-import { NostrEvent } from "System";
+import { NostrEvent } from "@snort/system";
 
 export interface TrendingUser {
   pubkey: string;

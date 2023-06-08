@@ -2,7 +2,7 @@ import "./Relay.css";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { RelaySettings } from "System";
+import { RelaySettings } from "@snort/system";
 
 import useRelayState from "Feed/RelayState";
 import { System } from "index";

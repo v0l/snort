@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { HexKey, NostrEvent, NostrPrefix } from "System";
+import { HexKey, NostrEvent, NostrPrefix } from "@snort/system";
 
 import UnreadCount from "Element/UnreadCount";
 import ProfileImage, { getDisplayName } from "Element/ProfileImage";

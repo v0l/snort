@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { u256, EventKind } from "System";
+import { u256, EventKind, NostrLink, FlatNoteStore, RequestBuilder } from "@snort/system";
 
-import { appendDedupe, NostrLink } from "SnortUtils";
-import { FlatNoteStore, RequestBuilder } from "System";
+import { appendDedupe } from "SnortUtils";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import useLogin from "Hooks/useLogin";
 

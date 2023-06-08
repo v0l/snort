@@ -1,6 +1,4 @@
-import { Connection, EventKind, NostrEvent } from "System";
-import { EventBuilder } from "System";
-import { EventExt } from "System/EventExt";
+import { Connection, EventKind, NostrEvent, EventBuilder, EventExt } from "@snort/system";
 import { LNWallet, WalletError, WalletErrorCode, WalletInfo, WalletInvoice, WalletInvoiceState } from "Wallet";
 import debug from "debug";
 

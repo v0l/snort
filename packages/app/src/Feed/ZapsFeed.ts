@@ -1,8 +1,7 @@
 import { useMemo } from "react";
-import { HexKey, EventKind } from "System";
+import { HexKey, EventKind, FlatNoteStore, RequestBuilder } from "@snort/system";
 
 import { parseZap } from "Element/Zap";
-import { FlatNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 
 export default function useZapsFeed(pubkey?: HexKey) {

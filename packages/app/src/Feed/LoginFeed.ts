@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { TaggedRawEvent, Lists, EventKind } from "System";
+import { TaggedRawEvent, Lists, EventKind, FlatNoteStore, RequestBuilder } from "@snort/system";
 import debug from "debug";
 
 import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";
@@ -7,7 +7,6 @@ import { makeNotification, sendNotification } from "Notifications";
 import useEventPublisher from "Feed/EventPublisher";
 import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
-import { FlatNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import { DmCache } from "Cache";
 import useLogin from "Hooks/useLogin";

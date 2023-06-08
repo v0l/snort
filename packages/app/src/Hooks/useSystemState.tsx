@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { SystemSnapshot } from "System";
+import { SystemSnapshot } from "@snort/system";
 import { System } from "index";
 
 export default function useSystemState() {

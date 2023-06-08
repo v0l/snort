@@ -3,7 +3,7 @@ import "./LoginPage.css";
 import { CSSProperties, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useIntl, FormattedMessage } from "react-intl";
-import { HexKey } from "System";
+import { HexKey } from "@snort/system";
 
 import { bech32ToHex, unwrap } from "SnortUtils";
 import ZapButton from "Element/ZapButton";

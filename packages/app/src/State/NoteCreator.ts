@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NostrEvent, TaggedRawEvent } from "System";
+import { NostrEvent, TaggedRawEvent } from "@snort/system";
 
 interface NoteCreatorStore {
   show: boolean;

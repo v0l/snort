@@ -1,14 +1,13 @@
 import "./NoteReaction.css";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import { EventKind, NostrEvent, TaggedRawEvent, NostrPrefix } from "System";
+import { EventKind, NostrEvent, TaggedRawEvent, NostrPrefix, EventExt } from "@snort/system";
 
 import Note from "Element/Note";
 import ProfileImage from "Element/ProfileImage";
 import { eventLink, hexToBech32 } from "SnortUtils";
 import NoteTime from "Element/NoteTime";
 import useModeration from "Hooks/useModeration";
-import { EventExt } from "System/EventExt";
 
 export interface NoteReactionProps {
   data: TaggedRawEvent;

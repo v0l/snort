@@ -1,8 +1,7 @@
-import { EventKind } from "System";
+import { EventKind, EventPublisher } from "@snort/system";
 import { VoidApi } from "@void-cat/api";
 
 import { FileExtensionRegex, VoidCatHost } from "Const";
-import { EventPublisher } from "System/EventPublisher";
 import { UploadResult } from "Upload";
 import { magnetURIDecode } from "SnortUtils";
 

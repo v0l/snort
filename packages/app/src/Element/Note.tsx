@@ -3,7 +3,7 @@ import React, { useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
-import { TaggedRawEvent, HexKey, EventKind, NostrPrefix, Lists } from "System";
+import { TaggedRawEvent, HexKey, EventKind, NostrPrefix, Lists, EventExt } from "@snort/system";
 
 import useEventPublisher from "Feed/EventPublisher";
 import Icon from "Icons/Icon";
@@ -26,7 +26,6 @@ import Reveal from "Element/Reveal";
 import useModeration from "Hooks/useModeration";
 import { UserCache } from "Cache/UserCache";
 import Poll from "Element/Poll";
-import { EventExt } from "System/EventExt";
 import useLogin from "Hooks/useLogin";
 import { setBookmarked, setPinned } from "Login";
 import { NostrFileElement } from "Element/NostrFileHeader";

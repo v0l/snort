@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
-import { HexKey } from "System";
+import { HexKey } from "@snort/system";
 
 import useEventPublisher from "Feed/EventPublisher";
 import ProfilePreview from "Element/ProfilePreview";

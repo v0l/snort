@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { HexKey } from "System";
+import { HexKey } from "@snort/system";
 
 import { ApiHost, KieranPubKey, SnortPubKey } from "Const";
 import ProfilePreview from "Element/ProfilePreview";

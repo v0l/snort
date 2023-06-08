@@ -1,7 +1,7 @@
 import { MouseEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import { HexKey } from "System";
+import { HexKey } from "@snort/system";
 
 import { useUserProfile } from "Hooks/useUserProfile";
 import { profileLink } from "SnortUtils";

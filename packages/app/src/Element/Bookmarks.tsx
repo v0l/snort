@@ -1,6 +1,6 @@
 import { useState, useMemo, ChangeEvent } from "react";
 import { FormattedMessage } from "react-intl";
-import { HexKey, TaggedRawEvent } from "System";
+import { HexKey, TaggedRawEvent } from "@snort/system";
 
 import Note from "Element/Note";
 import useLogin from "Hooks/useLogin";

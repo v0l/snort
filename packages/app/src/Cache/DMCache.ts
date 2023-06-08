@@ -1,4 +1,4 @@
-import { NostrEvent } from "System";
+import { NostrEvent } from "@snort/system";
 import { db } from "Db";
 import FeedCache from "./FeedCache";
 

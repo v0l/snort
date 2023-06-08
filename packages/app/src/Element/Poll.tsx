@@ -1,4 +1,4 @@
-import { TaggedRawEvent } from "System";
+import { TaggedRawEvent } from "@snort/system";
 import { useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 

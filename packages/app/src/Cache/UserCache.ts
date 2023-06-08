@@ -1,6 +1,6 @@
 import FeedCache from "Cache/FeedCache";
 import { db } from "Db";
-import { MetadataCache } from "Cache";
+import { MetadataCache } from "@snort/system";
 import { LNURL } from "LNURL";
 import { fetchNip05Pubkey } from "Nip05/Verifier";
 

@@ -23,7 +23,6 @@ const RelaySettingsPage = () => {
     if (publisher) {
       const ev = await publisher.contactList(login.follows.item, login.relays.item);
       publisher.broadcast(ev);
-      publisher.broadcastForBootstrap(ev);
       try {
         const onlineRelays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
         const relayList = await publisher.relayList(login.relays.item);

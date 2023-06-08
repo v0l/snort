@@ -1,6 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { RequestBuilder } from "System";
-import { EmptySnapshot, NoteStore, StoreSnapshot } from "System/NoteCollection";
+import { RequestBuilder, EmptySnapshot, NoteStore, StoreSnapshot } from "@snort/system";
 import { unwrap } from "SnortUtils";
 import { System } from "index";
 

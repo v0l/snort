@@ -1,6 +1,6 @@
 import "./DmWindow.css";
 import { useEffect, useMemo, useRef } from "react";
-import { TaggedRawEvent } from "System";
+import { TaggedRawEvent } from "@snort/system";
 
 import ProfileImage from "Element/ProfileImage";
 import DM from "Element/DM";

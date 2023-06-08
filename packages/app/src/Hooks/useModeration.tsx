@@ -1,4 +1,4 @@
-import { HexKey } from "System";
+import { HexKey } from "@snort/system";
 import useEventPublisher from "Feed/EventPublisher";
 import useLogin from "Hooks/useLogin";
 import { setBlocked, setMuted } from "Login";

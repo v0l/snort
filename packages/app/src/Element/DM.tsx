@@ -2,7 +2,7 @@ import "./DM.css";
 import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useInView } from "react-intersection-observer";
-import { TaggedRawEvent } from "System";
+import { TaggedRawEvent } from "@snort/system";
 
 import useEventPublisher from "Feed/EventPublisher";
 import NoteTime from "Element/NoteTime";

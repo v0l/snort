@@ -1,4 +1,4 @@
-import { encodeTLV, NostrPrefix, NostrEvent } from "System";
+import { encodeTLV, NostrPrefix, NostrEvent } from "@snort/system";
 import useEventPublisher from "Feed/EventPublisher";
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";

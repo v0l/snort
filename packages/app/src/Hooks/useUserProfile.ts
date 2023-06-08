@@ -1,7 +1,6 @@
 import { useEffect, useSyncExternalStore } from "react";
 
-import { HexKey } from "System";
-import { MetadataCache } from "Cache";
+import { HexKey, MetadataCache } from "@snort/system";
 import { UserCache } from "Cache/UserCache";
 import { ProfileLoader } from "index";
 

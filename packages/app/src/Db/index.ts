@@ -1,6 +1,5 @@
 import Dexie, { Table } from "dexie";
-import { FullRelaySettings, HexKey, NostrEvent, u256 } from "System";
-import { MetadataCache } from "Cache";
+import { FullRelaySettings, HexKey, NostrEvent, u256, MetadataCache } from "@snort/system";
 
 export const NAME = "snortDB";
 export const VERSION = 8;

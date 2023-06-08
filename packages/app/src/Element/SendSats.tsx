@@ -2,7 +2,7 @@ import "./SendSats.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 
-import { HexKey, NostrEvent } from "System";
+import { HexKey, NostrEvent, EventPublisher } from "@snort/system";
 import { System } from "index";
 import { formatShort } from "Number";
 import Icon from "Icons/Icon";
@@ -16,7 +16,6 @@ import { chunks, debounce } from "SnortUtils";
 import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
 import { generateRandomKey } from "Login";
-import { EventPublisher } from "System/EventPublisher";
 import { ZapPoolController } from "ZapPoolController";
 
 import messages from "./messages";
