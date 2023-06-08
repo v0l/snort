@@ -119,13 +119,11 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     return this.Queries.get(id);
   }
 
-  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder | null): Query | undefined {
-    if (!req) return;
-
+  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): Query {
     const existing = this.Queries.get(req.id);
     if (existing) {
       const filters = req.buildDiff(this.#relayCache, existing.filters);
-      if (filters.length === 0 && !req.options?.skipDiff) {
+      if (filters.length === 0 && !!req.options?.skipDiff) {
         return existing;
       } else {
         for (const subQ of filters) {

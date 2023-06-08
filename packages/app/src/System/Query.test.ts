@@ -101,8 +101,12 @@ describe("query", () => {
 
     expect(q.filters).toEqual([
       {
-        authors: ["a", "b", "c"],
-        kinds: [1, 2],
+        authors: ["a", "b"],
+        kinds: [1],
+      },
+      {
+        authors: ["b", "c"],
+        kinds: [2],
       },
     ]);
   });

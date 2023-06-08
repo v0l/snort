@@ -79,6 +79,7 @@ describe("flatMerge", () => {
       { ids: 0, authors: "b" },
       { kinds: 1 },
       { kinds: 2 },
+      { kinds: 2 },
       { ids: 0, authors: "c" },
       { authors: "c", kinds: 1 },
       { authors: "c", limit: 100 },

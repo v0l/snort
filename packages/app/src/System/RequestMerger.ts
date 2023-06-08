@@ -7,19 +7,35 @@ import { distance } from "./Util";
  */
 const DiscriminatorKeys = ["since", "until", "limit", "search"];
 
-export function canMergeFilters(a: any, b: any): boolean {
+export function canMergeFilters(a: FlatReqFilter, b: FlatReqFilter): boolean {
+  const aObj = a as Record<string, string | number | undefined>;
+  const bObj = b as Record<string, string | number | undefined>;
   for (const key of DiscriminatorKeys) {
-    if (key in a || key in b) {
-      if (a[key] !== b[key]) {
+    if (key in aObj || key in bObj) {
+      if (aObj[key] !== bObj[key]) {
         return false;
       }
     }
   }
+  const keys1 = Object.keys(aObj);
+  const keys2 = Object.keys(bObj);
+  const maxKeys = keys1.length > keys2.length ? keys1 : keys2;
 
-  return true;
+  let distance = 0;
+  for (const key of maxKeys) {
+    if (key in aObj && key in bObj) {
+      if (aObj[key] !== bObj[key]) {
+        distance++;
+      }
+    } else {
+      return false;
+    }
+  }
+  return distance <= 1;
 }
 
 export function mergeSimilar(filters: Array<ReqFilter>): Array<ReqFilter> {
+  console.time("mergeSimilar");
   const ret = [];
 
   while (filters.length > 0) {
@@ -27,13 +43,14 @@ export function mergeSimilar(filters: Array<ReqFilter>): Array<ReqFilter> {
     const mergeSet = [current];
     for (let i = 0; i < filters.length; i++) {
       const f = filters[i];
-      if (mergeSet.every(v => canMergeFilters(v, f) && distance(v, f) === 1)) {
+      if (mergeSet.every(v => canMergeFilters(v, f))) {
         mergeSet.push(filters.splice(i, 1)[0]);
         i--;
       }
     }
     ret.push(simpleMerge(mergeSet));
   }
+  console.timeEnd("mergeSimilar");
   return ret;
 }
 
@@ -96,6 +113,7 @@ export function filterIncludes(bigger: ReqFilter, smaller: ReqFilter) {
  * @returns
  */
 export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
+  console.time("flatMerge");
   let ret: Array<ReqFilter> = [];
 
   // to compute filters which can be merged we need to calucate the distance change between each filter
@@ -130,7 +148,7 @@ export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
     for (let i = 0; i < all.length; i++) {
       const f = all[i];
 
-      if (mergeSet.every(a => canMergeFilters(a, f) && distance(a, f) === 1)) {
+      if (mergeSet.every(a => canMergeFilters(a, f))) {
         mergeSet.push(all.splice(i, 1)[0]);
         i--;
       }
@@ -145,5 +163,7 @@ export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
     }
     ret = n;
   }
+  console.timeEnd("flatMerge");
+  console.debug(ret);
   return ret;
 }

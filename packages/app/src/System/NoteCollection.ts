@@ -57,6 +57,7 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
     data: undefined,
   };
   #needsSnapshot = true;
+  #nextNotifyTimer?: ReturnType<typeof setTimeout>;
 
   get snapshot() {
     this.#updateSnapshot();
@@ -106,8 +107,13 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
 
   protected onChange(changes: Readonly<Array<TaggedRawEvent>>): void {
     this.#needsSnapshot = true;
-    for (const hk of this.#hooks) {
-      hk();
+    if (!this.#nextNotifyTimer) {
+      this.#nextNotifyTimer = setTimeout(() => {
+        this.#nextNotifyTimer = undefined;
+        for (const hk of this.#hooks) {
+          hk();
+        }
+      }, 500);
     }
     if (changes.length > 0) {
       for (const hkE of this.#eventHooks) {

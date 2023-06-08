@@ -3,9 +3,10 @@ import debug from "debug";
 import { Connection, ReqFilter, Nips, TaggedRawEvent } from "System";
 import { unixNowMs, unwrap } from "SnortUtils";
 import { NoteStore } from "./NoteCollection";
-import { simpleMerge } from "./RequestMerger";
+import { flatMerge, mergeSimilar, simpleMerge } from "./RequestMerger";
 import { eventMatchesFilter } from "./RequestMatcher";
 import { BuiltRawReqFilter } from "./RequestBuilder";
+import { expandFilter } from "./RequestExpander";
 
 /**
  * Tracing for relay query status
@@ -137,6 +138,7 @@ export class Query implements QueryBase {
   #feed: NoteStore;
 
   #log = debug("Query");
+  #allFilters: Array<ReqFilter> = [];
 
   constructor(id: string, feed: NoteStore) {
     this.id = id;
@@ -152,9 +154,11 @@ export class Query implements QueryBase {
     return this.#cancelTimeout;
   }
 
+  /**
+   * Recompute the complete set of compressed filters from all query traces
+   */
   get filters() {
-    const filters = this.#tracing.flatMap(a => a.filters);
-    return [simpleMerge(filters)];
+    return this.#allFilters;
   }
 
   get feed() {
@@ -264,7 +268,13 @@ export class Query implements QueryBase {
       () => this.#onProgress()
     );
     this.#tracing.push(qt);
+    this.#reComputeFilters();
     c.QueueReq(["REQ", qt.id, ...q.filters], () => qt.sentToRelay());
     return qt;
+  }
+  #reComputeFilters() {
+    console.time("reComputeFilters");
+    this.#allFilters = flatMerge(this.#tracing.flatMap(a => a.filters).flatMap(expandFilter));
+    console.timeEnd("reComputeFilters");
   }
 }
