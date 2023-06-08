@@ -3,3 +3,4 @@ src/
 *.tgz
 jest.config.js
 worker.ts
+yarn*

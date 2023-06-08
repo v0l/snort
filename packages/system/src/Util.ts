@@ -3,6 +3,7 @@ import * as secp from "@noble/curves/secp256k1";
 import { sha256 as sha2 } from "@noble/hashes/sha256";
 import { bech32 } from "bech32";
 import { NostrEvent, u256 } from "./Nostr";
+import { FlatReqFilter } from "RequestExpander";
 
 export function unwrap<T>(v: T | undefined | null): T {
   if (v === undefined || v === null) {
@@ -54,38 +55,19 @@ export function deepEqual(x: any, y: any): boolean {
     : x === y;
 }
 
-/**
- * Compute the "distance" between two objects by comparing their difference in properties
- * Missing/Added keys result in +10 distance
- * This is not recursive
- */
-export function distance(a: any, b: any): number {
-  const keys1 = Object.keys(a);
-  const keys2 = Object.keys(b);
-  const maxKeys = keys1.length > keys2.length ? keys1 : keys2;
-
-  let distance = 0;
-  for (const key of maxKeys) {
-    if (key in a && key in b) {
-      if (Array.isArray(a[key]) && Array.isArray(b[key])) {
-        const aa = a[key] as Array<string | number>;
-        const bb = b[key] as Array<string | number>;
-        if (aa.length === bb.length) {
-          if (aa.some(v => !bb.includes(v))) {
-            distance++;
-          }
-        } else {
-          distance++;
-        }
-      } else if (a[key] !== b[key]) {
-        distance++;
-      }
-    } else {
-      distance += 10;
-    }
-  }
-
-  return distance;
+export function flatReqFilterEq(a: FlatReqFilter, b: FlatReqFilter): boolean {
+  return a.ids === b.ids
+    && a.kinds === b.kinds
+    && a.authors === b.authors
+    && a.limit === b.limit
+    && a.since === b.since
+    && a.until === b.until
+    && a.search === b.search
+    && a["#e"] === b["#e"]
+    && a["#p"] === b["#p"]
+    && a["#t"] === b["#t"]
+    && a["#d"] === b["#d"]
+    && a["#r"] === b["#r"];
 }
 
 export function dedupe<T>(v: Array<T>) {

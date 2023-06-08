@@ -1,6 +1,5 @@
 import { ReqFilter } from ".";
 import { FlatReqFilter } from "./RequestExpander";
-import { distance } from "./Util";
 
 /**
  * Keys which can change the entire meaning of the filter outside the array types
@@ -17,7 +16,70 @@ export function canMergeFilters(a: FlatReqFilter | ReqFilter, b: FlatReqFilter |
       }
     }
   }
-  return distance(aObj, bObj) <= 1;
+  let flag = false;
+  if (!equalProp(a.ids, b.ids)) {
+    flag = true;
+  }
+  if (!equalProp(a.authors, b.authors)) {
+    if (flag) return false;
+    flag = true;
+  }
+  if (!equalProp(a.kinds, b.kinds)) {
+    if (flag) return false;
+    flag = true;
+  }
+  if (!equalProp(a.limit, b.limit)) {
+    if (flag) return false;
+    flag = true;
+  }
+  if (!equalProp(a.until, b.until)) {
+    if (flag) return false;
+    flag = true;
+  }
+  if (!equalProp(a.since, b.since)) {
+    if (flag) return false;
+    flag = true;
+  }
+  if (!equalProp(a.search, b.search)) {
+    if (flag) return false;
+    flag = true;
+  }
+  if (!equalProp(a["#e"], b["#e"])) {
+    if (flag) return false;
+    flag = true;
+  }
+  if (!equalProp(a["#p"], b["#p"])) {
+    if (flag) return false;
+    flag = true;
+  }
+  if (!equalProp(a["#d"], b["#d"])) {
+    if (flag) return false;
+    flag = true;
+  }
+  if (!equalProp(a["#r"], b["#r"])) {
+    if (flag) return false;
+    flag = true;
+  }
+  if (!equalProp(a["#t"], b["#t"])) {
+    if (flag) return false;
+    flag = true;
+  }
+  return true;
+}
+
+function equalProp(a: string | number | Array<string | number> | undefined, b: string | number | Array<string | number> | undefined) {
+  if ((a !== undefined && b === undefined) || (a === undefined && b !== undefined)) {
+    return false;
+  }
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) {
+      return false;
+    }
+    if (!a.every(v => b.includes(v))) {
+      return false;
+    }
+  }
+  return a === b;
 }
 
 export function mergeSimilar(filters: Array<ReqFilter>): Array<ReqFilter> {
