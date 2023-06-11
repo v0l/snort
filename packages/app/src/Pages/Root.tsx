@@ -25,12 +25,12 @@ export default function RootPage() {
   const { publicKey: pubKey, tags, preferences } = useLogin();
 
   const RootTab: Record<string, Tab> = {
-    Posts: {
-      text: formatMessage(messages.Posts),
+    Notes: {
+      text: formatMessage(messages.Notes),
       value: 0,
-      data: "/posts",
+      data: "/notes",
     },
-    PostsAndReplies: {
+    Conversations: {
       text: formatMessage(messages.Conversations),
       value: 1,
       data: "/conversations",
@@ -50,7 +50,7 @@ export default function RootPage() {
   const tagTabs = tags.item.map((t, idx) => {
     return { text: `#${t}`, value: idx + 3, data: `/tag/${t}` };
   });
-  const tabs = [RootTab.Posts, RootTab.PostsAndReplies, RootTab.Global, RootTab.Discover, ...tagTabs];
+  const tabs = [RootTab.Notes, RootTab.Conversations, RootTab.Global, RootTab.Discover, ...tagTabs];
   const tab = useMemo(() => {
     const pTab = location.pathname.split("/").slice(-1)[0];
 
@@ -64,7 +64,7 @@ export default function RootPage() {
 
     switch (pTab) {
       case "conversations": {
-        return RootTab.PostsAndReplies;
+        return RootTab.NotesAndReplies;
       }
       case "global": {
         return RootTab.Global;
@@ -73,7 +73,7 @@ export default function RootPage() {
         return RootTab.Discover;
       }
       default: {
-        return RootTab.Posts;
+        return RootTab.Notes;
       }
     }
   }, [location]);
@@ -195,7 +195,7 @@ const GlobalTab = () => {
   );
 };
 
-const PostsTab = () => {
+const NotesTab = () => {
   const { follows, publicKey } = useLogin();
   const subject: TimelineSubject = {
     type: "pubkey",
@@ -239,8 +239,8 @@ export const RootRoutes = [
         element: <GlobalTab />,
       },
       {
-        path: "posts",
-        element: <PostsTab />,
+        path: "notes",
+        element: <NotesTab />,
       },
       {
         path: "conversations",

@@ -326,9 +326,6 @@
   "DqLx9k": {
     "defaultMessage": "You must pay {n} sats to access this file."
   },
-  "Dt/Zd5": {
-    "defaultMessage": "Media in posts will automatically be shown for selected people, otherwise only the link will show"
-  },
   "DtYelJ": {
     "defaultMessage": "Transfer"
   },
@@ -668,6 +665,9 @@
   "Ss0sWu": {
     "defaultMessage": "Pay Now"
   },
+  "TDR5ge": {
+    "defaultMessage": "Media in notes will automatically be shown for selected people, otherwise only the link will show"
+  },
   "TMfYfY": {
     "defaultMessage": "Cashu token"
   },
@@ -782,6 +782,9 @@
   "a5UPxh": {
     "defaultMessage": "Fund developers and platforms providing NIP-05 verification services"
   },
+  "a7TDNm": {
+    "defaultMessage": "Notes will stream in real time into global and notes tab"
+  },
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
@@ -863,9 +866,6 @@
   "eJj8HD": {
     "defaultMessage": "Get Verified"
   },
-  "eR3YIn": {
-    "defaultMessage": "Posts"
-  },
   "eSzf2G": {
     "defaultMessage": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool."
   },
@@ -910,9 +910,6 @@
   },
   "h8XMJL": {
     "defaultMessage": "Badges"
-  },
-  "hCUivF": {
-    "defaultMessage": "Notes will stream in real time into global and posts tab"
   },
   "hK5ZDk": {
     "defaultMessage": "the world"

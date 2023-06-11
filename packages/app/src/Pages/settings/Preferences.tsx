@@ -115,8 +115,8 @@ const PreferencesPage = () => {
                 defaultRootTab: e.target.value,
               } as UserPreferences)
             }>
-            <option value="posts">
-              <FormattedMessage {...messages.Posts} />
+            <option value="notes">
+              <FormattedMessage defaultMessage="Notes" />
             </option>
             <option value="conversations">
               <FormattedMessage {...messages.Conversations} />

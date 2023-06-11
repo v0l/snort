@@ -55,7 +55,7 @@ export interface UserPreferences {
   /**
    * Default page to select on load
    */
-  defaultRootTab: "posts" | "conversations" | "global";
+  defaultRootTab: "notes" | "conversations" | "global";
 
   /**
    * Default zap amount
@@ -79,7 +79,7 @@ export const DefaultPreferences = {
   autoShowLatest: false,
   fileUploader: "void.cat",
   imgProxyConfig: DefaultImgProxy,
-  defaultRootTab: "posts",
+  defaultRootTab: "notes",
   defaultZapAmount: 50,
   autoZap: false,
 } as UserPreferences;
