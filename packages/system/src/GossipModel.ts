@@ -1,5 +1,5 @@
 import { FullRelaySettings, ReqFilter } from ".";
-import { unwrap } from "./Util";
+import { unwrap } from "./Utils";
 import debug from "debug";
 
 const PickNRelays = 2;

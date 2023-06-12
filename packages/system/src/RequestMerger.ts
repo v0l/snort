@@ -1,3 +1,4 @@
+import { distance } from "./Utils";
 import { ReqFilter } from ".";
 import { FlatReqFilter } from "./RequestExpander";
 
@@ -16,74 +17,10 @@ export function canMergeFilters(a: FlatReqFilter | ReqFilter, b: FlatReqFilter |
       }
     }
   }
-  let flag = false;
-  if (!equalProp(a.ids, b.ids)) {
-    flag = true;
-  }
-  if (!equalProp(a.authors, b.authors)) {
-    if (flag) return false;
-    flag = true;
-  }
-  if (!equalProp(a.kinds, b.kinds)) {
-    if (flag) return false;
-    flag = true;
-  }
-  if (!equalProp(a.limit, b.limit)) {
-    if (flag) return false;
-    flag = true;
-  }
-  if (!equalProp(a.until, b.until)) {
-    if (flag) return false;
-    flag = true;
-  }
-  if (!equalProp(a.since, b.since)) {
-    if (flag) return false;
-    flag = true;
-  }
-  if (!equalProp(a.search, b.search)) {
-    if (flag) return false;
-    flag = true;
-  }
-  if (!equalProp(a["#e"], b["#e"])) {
-    if (flag) return false;
-    flag = true;
-  }
-  if (!equalProp(a["#p"], b["#p"])) {
-    if (flag) return false;
-    flag = true;
-  }
-  if (!equalProp(a["#d"], b["#d"])) {
-    if (flag) return false;
-    flag = true;
-  }
-  if (!equalProp(a["#r"], b["#r"])) {
-    if (flag) return false;
-    flag = true;
-  }
-  if (!equalProp(a["#t"], b["#t"])) {
-    if (flag) return false;
-    flag = true;
-  }
-  return true;
-}
-
-function equalProp(a: string | number | Array<string | number> | undefined, b: string | number | Array<string | number> | undefined) {
-  if ((a !== undefined && b === undefined) || (a === undefined && b !== undefined)) {
-    return false;
-  }
-  if (Array.isArray(a) && Array.isArray(b)) {
-    if (a.length !== b.length) {
-      return false;
-    }
-    if (!a.every(v => b.includes(v))) {
-      return false;
-    }
-  }
-  return a === b;
+  return distance(a, b) <= 1;
 }
 
 export function mergeSimilar(filters: Array<ReqFilter>): Array<ReqFilter> {
-  console.time("mergeSimilar");
   const ret = [];
 
   const fCopy = [...filters];
@@ -92,14 +29,13 @@ export function mergeSimilar(filters: Array<ReqFilter>): Array<ReqFilter> {
     const mergeSet = [current];
     for (let i = 0; i < fCopy.length; i++) {
       const f = fCopy[i];
-      if (mergeSet.every(v => canMergeFilters(v, f))) {
+      if (!mergeSet.some(v => !canMergeFilters(v, f))) {
         mergeSet.push(fCopy.splice(i, 1)[0]);
         i--;
       }
     }
     ret.push(simpleMerge(mergeSet));
   }
-  console.timeEnd("mergeSimilar");
   return ret;
 }
 
@@ -117,7 +53,8 @@ export function simpleMerge(filters: Array<ReqFilter>) {
         if (result[key] === undefined) {
           result[key] = [...value];
         } else {
-          result[key] = [...new Set([...result[key], ...value])];
+          const toAdd = value.filter(a => !result[key].includes(a));
+          result[key].push(...toAdd);
         }
       } else {
         result[key] = value;
@@ -162,31 +99,25 @@ export function filterIncludes(bigger: ReqFilter, smaller: ReqFilter) {
  * @returns
  */
 export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
-  console.time("flatMerge");
   let ret: Array<ReqFilter> = [];
 
   // to compute filters which can be merged we need to calucate the distance change between each filter
   // then we can merge filters which are exactly 1 change diff from each other
 
   function mergeFiltersInSet(filters: Array<FlatReqFilter>) {
-    const result: any = {};
-
-    filters.forEach(f => {
-      const filter = f as Record<string, string | number>;
-      Object.entries(filter).forEach(([key, value]) => {
-        if (!DiscriminatorKeys.includes(key)) {
-          if (result[key] === undefined) {
-            result[key] = [value];
-          } else {
-            result[key] = [...new Set([...result[key], value])];
-          }
+    return filters.reduce((acc, a) => {
+      Object.entries(a).forEach(([k, v]) => {
+        if (DiscriminatorKeys.includes(k)) {
+          acc[k] = v;
         } else {
-          result[key] = value;
+          acc[k] ??= [];
+          if (!acc[k].includes(v)) {
+            acc[k].push(v);
+          }
         }
-      });
-    });
-
-    return result as ReqFilter;
+      })
+      return acc;
+    }, {} as any) as ReqFilter;
   }
 
   // reducer, kinda verbose
@@ -212,7 +143,5 @@ export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
     }
     ret = n;
   }
-  console.timeEnd("flatMerge");
-  console.debug(ret);
   return ret;
 }

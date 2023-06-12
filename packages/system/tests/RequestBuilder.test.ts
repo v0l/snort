@@ -1,6 +1,7 @@
 import { RelayCache } from "../src/GossipModel";
 import { RequestBuilder, RequestStrategy } from "../src/RequestBuilder";
 import { describe, expect } from "@jest/globals";
+import { expandFilter } from "../src/RequestExpander";
 
 const DummyCache = {
   get: (pk?: string) => {
@@ -88,7 +89,7 @@ describe("RequestBuilder", () => {
     f0.authors(["a"]);
     expect(a).toEqual([{}]);
 
-    const b = rb.buildDiff(DummyCache, a);
+    const b = rb.buildDiff(DummyCache, a.flatMap(expandFilter));
     expect(b).toMatchObject([
       {
         filters: [{ authors: ["a"] }],

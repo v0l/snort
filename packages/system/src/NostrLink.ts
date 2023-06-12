@@ -1,4 +1,4 @@
-import { bech32ToHex, hexToBech32 } from "./Util";
+import { bech32ToHex, hexToBech32 } from "./Utils";
 import { NostrPrefix, decodeTLV, TLVEntryType } from ".";
 
 export interface NostrLink {

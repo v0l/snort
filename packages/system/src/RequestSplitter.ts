@@ -1,18 +1,15 @@
-import { ReqFilter } from ".";
-import { flatReqFilterEq } from "./Util";
-import { expandFilter } from "./RequestExpander";
+import { flatFilterEq } from "./Utils";
+import { FlatReqFilter } from "./RequestExpander";
 import { flatMerge } from "./RequestMerger";
 
-export function diffFilters(prev: Array<ReqFilter>, next: Array<ReqFilter>) {
-  const prevExpanded = prev.flatMap(expandFilter);
-  const nextExpanded = next.flatMap(expandFilter);
+export function diffFilters(prev: Array<FlatReqFilter>, next: Array<FlatReqFilter>, calcRemoved?: boolean) {
+  const added = next.filter(a => !prev.some(b => flatFilterEq(a, b)));
+  const removed = calcRemoved ? prev.filter(a => !next.some(b => flatFilterEq(a, b))) : [];
 
-  const added = flatMerge(nextExpanded.filter(a => !prevExpanded.some(b => flatReqFilterEq(a, b))));
-  const removed = flatMerge(prevExpanded.filter(a => !nextExpanded.some(b => flatReqFilterEq(a, b))));
-
+  const changed = added.length > 0 || removed.length > 0;
   return {
-    added,
-    removed,
-    changed: added.length > 0 || removed.length > 0,
+    added: changed ? flatMerge(added) : [],
+    removed: changed ? flatMerge(removed) : [],
+    changed,
   };
 }

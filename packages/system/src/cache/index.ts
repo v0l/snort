@@ -1,5 +1,5 @@
 import { HexKey, NostrEvent, UserMetadata } from "..";
-import { hexToBech32, unixNowMs } from "../Util";
+import { hexToBech32, unixNowMs } from "../Utils";
 
 export interface MetadataCache extends UserMetadata {
   /**
@@ -36,13 +36,21 @@ export interface MetadataCache extends UserMetadata {
 export function mapEventToProfile(ev: NostrEvent) {
   try {
     const data: UserMetadata = JSON.parse(ev.content);
-    return {
+    let ret = {
       ...data,
       pubkey: ev.pubkey,
       npub: hexToBech32("npub", ev.pubkey),
       created: ev.created_at,
       loaded: unixNowMs(),
     } as MetadataCache;
+
+    // sanitize non-string/number
+    for (const [k, v] of Object.entries(ret)) {
+      if (typeof v !== "number" && typeof v !== "string") {
+        (ret as any)[k] = undefined;
+      }
+    }
+    return ret;
   } catch (e) {
     console.error("Failed to parse JSON", ev, e);
   }

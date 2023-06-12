@@ -9,10 +9,10 @@
     "strict": true,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "outDir": "dist",
     "skipLibCheck": true
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts"],
   "files": ["src/index.ts"]
 }

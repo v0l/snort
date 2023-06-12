@@ -13,7 +13,7 @@ import {
   UserMetadata,
 } from ".";
 
-import { unwrap } from "./Util";
+import { unwrap } from "./Utils";
 import { EventBuilder } from "./EventBuilder";
 import { EventExt } from "./EventExt";
 import { barrierQueue, processWorkQueue, WorkQueueItem } from "./WorkQueue";

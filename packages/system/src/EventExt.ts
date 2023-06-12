@@ -2,7 +2,7 @@ import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 import { EventKind, HexKey, NostrEvent, Tag } from ".";
 import base64 from "@protobufjs/base64";
-import { sha256, unixNow } from "./Util";
+import { sha256, unixNow } from "./Utils";
 
 export interface Thread {
   root?: Tag;

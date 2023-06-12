@@ -7,7 +7,7 @@ import { Query } from "./Query";
 import { RelayCache } from "./GossipModel";
 import { NoteStore } from "./NoteCollection";
 import { BuiltRawReqFilter, RequestBuilder } from "./RequestBuilder";
-import { unwrap, sanitizeRelayUrl } from "./Util";
+import { unwrap, sanitizeRelayUrl } from "./Utils";
 import { SystemInterface, SystemSnapshot } from ".";
 
 /**
@@ -122,15 +122,13 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     const existing = this.Queries.get(req.id);
     if (existing) {
       const filters = !req.options?.skipDiff
-        ? req.buildDiff(this.#relayCache, existing.filters)
+        ? req.buildDiff(this.#relayCache, existing.flatFilters)
         : req.build(this.#relayCache);
       if (filters.length === 0 && !!req.options?.skipDiff) {
         return existing;
       } else {
         for (const subQ of filters) {
-          this.SendQuery(existing, subQ).then(qta =>
-            qta.forEach(v => this.#log("New QT from diff %s %s %O from: %O", req.id, v.id, v.filters, existing.filters))
-          );
+          this.SendQuery(existing, subQ);
         }
         this.notifyChange();
         return existing;
@@ -142,9 +140,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       const q = new Query(req.id, store, req.options?.leaveOpen);
       this.Queries.set(req.id, q);
       for (const subQ of filters) {
-        this.SendQuery(q, subQ).then(qta =>
-          qta.forEach(v => this.#log("New QT from diff %s %s %O", req.id, v.id, v.filters))
-        );
+        this.SendQuery(q, subQ);
       }
       this.notifyChange();
       return q;

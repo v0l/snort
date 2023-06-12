@@ -1,7 +1,7 @@
 import { EventKind, HexKey, SystemInterface, TaggedRawEvent, PubkeyReplaceableNoteStore, RequestBuilder } from ".";
 import { ProfileCacheExpire } from "./Const";
 import { CacheStore, mapEventToProfile, MetadataCache } from "./cache";
-import { unixNowMs } from "./Util";
+import { unixNowMs } from "./Utils";
 import debug from "debug";
 
 export class ProfileLoaderService {

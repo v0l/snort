@@ -1,5 +1,5 @@
 import { HexKey, u256 } from "./Nostr";
-import { unwrap } from "./Util";
+import { unwrap } from "./Utils";
 
 export default class Tag {
   Original: string[];

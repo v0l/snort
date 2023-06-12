@@ -1,6 +1,6 @@
 import { EventKind, HexKey, NostrPrefix, NostrEvent } from ".";
 import { HashtagRegex } from "./Const";
-import { getPublicKey, unixNow } from "./Util";
+import { getPublicKey, unixNow } from "./Utils";
 import { EventExt } from "./EventExt";
 import { parseNostrLink } from "./NostrLink";
 

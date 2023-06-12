@@ -4,7 +4,7 @@ import { DefaultConnectTimeout } from "./Const";
 import { ConnectionStats } from "./ConnectionStats";
 import { NostrEvent, ReqCommand, TaggedRawEvent, u256 } from "./Nostr";
 import { RelayInfo } from "./RelayInfo";
-import { unwrap } from "./Util";
+import { unwrap } from "./Utils";
 import ExternalStore from "./ExternalStore";
 
 export type AuthHandler = (challenge: string, relay: string) => Promise<NostrEvent | undefined>;

@@ -1,5 +1,5 @@
 import { TaggedRawEvent, u256 } from ".";
-import { appendDedupe, findTag } from "./Util";
+import { appendDedupe, findTag } from "./Utils";
 
 export interface StoreSnapshot<TSnapshot> {
   data: TSnapshot | undefined;

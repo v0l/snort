@@ -1,12 +1,13 @@
 import { ReqFilter } from "../src";
 import { describe, expect } from "@jest/globals";
 import { diffFilters } from "../src/RequestSplitter";
+import { expandFilter } from "../src/RequestExpander";
 
 describe("RequestSplitter", () => {
   test("single filter add value", () => {
     const a: Array<ReqFilter> = [{ kinds: [0], authors: ["a"] }];
     const b: Array<ReqFilter> = [{ kinds: [0], authors: ["a", "b"] }];
-    const diff = diffFilters(a, b);
+    const diff = diffFilters(a.flatMap(expandFilter), b.flatMap(expandFilter), true);
     expect(diff).toEqual({
       added: [{ kinds: [0], authors: ["b"] }],
       removed: [],
@@ -16,7 +17,7 @@ describe("RequestSplitter", () => {
   test("single filter remove value", () => {
     const a: Array<ReqFilter> = [{ kinds: [0], authors: ["a"] }];
     const b: Array<ReqFilter> = [{ kinds: [0], authors: ["b"] }];
-    const diff = diffFilters(a, b);
+    const diff = diffFilters(a.flatMap(expandFilter), b.flatMap(expandFilter), true);
     expect(diff).toEqual({
       added: [{ kinds: [0], authors: ["b"] }],
       removed: [{ kinds: [0], authors: ["a"] }],
@@ -26,7 +27,7 @@ describe("RequestSplitter", () => {
   test("single filter change critical key", () => {
     const a: Array<ReqFilter> = [{ kinds: [0], authors: ["a"], since: 100 }];
     const b: Array<ReqFilter> = [{ kinds: [0], authors: ["a", "b"], since: 101 }];
-    const diff = diffFilters(a, b);
+    const diff = diffFilters(a.flatMap(expandFilter), b.flatMap(expandFilter), true);
     expect(diff).toEqual({
       added: [{ kinds: [0], authors: ["a", "b"], since: 101 }],
       removed: [{ kinds: [0], authors: ["a"], since: 100 }],
@@ -42,7 +43,7 @@ describe("RequestSplitter", () => {
       { kinds: [0], authors: ["a", "b"] },
       { kinds: [69], authors: ["a", "c"] },
     ];
-    const diff = diffFilters(a, b);
+    const diff = diffFilters(a.flatMap(expandFilter), b.flatMap(expandFilter), true);
     expect(diff).toEqual({
       added: [
         { kinds: [0], authors: ["b"] },
@@ -61,7 +62,7 @@ describe("RequestSplitter", () => {
       { kinds: [0], authors: ["b"] },
       { kinds: [69], authors: ["c"] },
     ];
-    const diff = diffFilters(a, b);
+    const diff = diffFilters(a.flatMap(expandFilter), b.flatMap(expandFilter), true);
     expect(diff).toEqual({
       added: [
         { kinds: [0], authors: ["b"] },
@@ -77,7 +78,7 @@ describe("RequestSplitter", () => {
       { kinds: [0], authors: ["a"] },
       { kinds: [69], authors: ["c"] },
     ];
-    const diff = diffFilters(a, b);
+    const diff = diffFilters(a.flatMap(expandFilter), b.flatMap(expandFilter), true);
     expect(diff).toEqual({
       added: [{ kinds: [69], authors: ["c"] }],
       removed: [],

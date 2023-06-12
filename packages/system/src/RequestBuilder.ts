@@ -1,8 +1,10 @@
 import { ReqFilter, u256, HexKey, EventKind } from ".";
-import { appendDedupe, dedupe } from "./Util";
+import { appendDedupe, dedupe, unixNowMs } from "./Utils";
 import { diffFilters } from "./RequestSplitter";
 import { RelayCache, splitAllByWriteRelays, splitByWriteRelays } from "./GossipModel";
 import { mergeSimilar } from "./RequestMerger";
+import { FlatReqFilter, expandFilter } from "./RequestExpander";
+import debug from "debug";
 
 /**
  * Which strategy is used when building REQ filters
@@ -92,10 +94,18 @@ export class RequestBuilder {
    * @param q All previous filters merged
    * @returns
    */
-  buildDiff(relays: RelayCache, filters: Array<ReqFilter>): Array<BuiltRawReqFilter> {
-    const next = this.buildRaw();
+  buildDiff(relays: RelayCache, filters: Array<FlatReqFilter>): Array<BuiltRawReqFilter> {
+    const start = unixNowMs();
+    const next = this.#builders.flatMap(f => expandFilter(f.filter))
     const diff = diffFilters(filters, next);
+    const ts = (unixNowMs() - start);
+    const log = debug("buildDiff");
+    log("%s %d ms", this.id, ts);
+    if (ts > 200) {
+      console.warn(diff, filters);
+    }
     if (diff.changed) {
+      log(diff);
       return splitAllByWriteRelays(relays, diff.added).map(a => {
         return {
           strategy: RequestStrategy.AuthorsRelays,

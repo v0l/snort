@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
 import { Connection, ReqFilter, Nips, TaggedRawEvent } from ".";
-import { unixNowMs, unwrap } from "./Util";
+import { unixNowMs, unwrap } from "./Utils";
 import { NoteStore } from "./NoteCollection";
 import { flatMerge } from "./RequestMerger";
 import { BuiltRawReqFilter } from "./RequestBuilder";
@@ -137,7 +137,6 @@ export class Query implements QueryBase {
   #feed: NoteStore;
 
   #log = debug("Query");
-  #allFilters: Array<ReqFilter> = [];
 
   constructor(id: string, feed: NoteStore, leaveOpen?: boolean) {
     this.id = id;
@@ -154,7 +153,11 @@ export class Query implements QueryBase {
    * Recompute the complete set of compressed filters from all query traces
    */
   get filters() {
-    return this.#allFilters;
+    return flatMerge(this.flatFilters);
+  }
+
+  get flatFilters() {
+    return this.#tracing.flatMap(a => a.filters).flatMap(expandFilter);
   }
 
   get feed() {
@@ -271,14 +274,7 @@ export class Query implements QueryBase {
       () => this.#onProgress()
     );
     this.#tracing.push(qt);
-    this.#reComputeFilters();
     c.QueueReq(["REQ", qt.id, ...q.filters], () => qt.sentToRelay());
     return qt;
-  }
-
-  #reComputeFilters() {
-    console.time("reComputeFilters");
-    this.#allFilters = flatMerge(this.#tracing.flatMap(a => a.filters).flatMap(expandFilter));
-    console.timeEnd("reComputeFilters");
   }
 }
