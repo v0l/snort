@@ -133,7 +133,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
   }, [options.relay]);
 
   const subNext = useMemo(() => {
-    const rb = new RequestBuilder(`timeline-related:${subject.type}`);
+    const rb = new RequestBuilder(`timeline-related:${subject.type}:${subject.discriminator}`);
     if (trackingEvents.length > 0) {
       rb.withFilter()
         .kinds(

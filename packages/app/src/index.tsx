@@ -67,7 +67,7 @@ export const router = createBrowserRouter([
       }
 
       for (const [k, v] of Object.entries(login.relays.item)) {
-        await System.ConnectToRelay(k, v);
+        System.ConnectToRelay(k, v);
       }
       try {
         if ("registerProtocolHandler" in window.navigator) {

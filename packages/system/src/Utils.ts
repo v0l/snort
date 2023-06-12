@@ -73,12 +73,12 @@ export function reqFilterEq(a: FlatReqFilter | ReqFilter, b: FlatReqFilter | Req
 export function flatFilterEq(a: FlatReqFilter, b: FlatReqFilter): boolean {
   return a.ids === b.ids
     && a.kinds === b.kinds
+    && a["#e"] === b["#e"]
     && a.authors === b.authors
     && a.limit === b.limit
     && a.since === b.since
     && a.until === b.until
     && a.search === b.search
-    && a["#e"] === b["#e"]
     && a["#p"] === b["#p"]
     && a["#t"] === b["#t"]
     && a["#d"] === b["#d"]
