@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import "./MediaElement.css";
 import Modal from "Element/Modal";
 import Icon from "Icons/Icon";
-import { decodeInvoice, InvoiceDetails, kvToObject } from "Util";
+import { decodeInvoice, InvoiceDetails, kvToObject } from "SnortUtils";
 import AsyncButton from "Element/AsyncButton";
 import { useWallet } from "Wallet";
 import { PaymentsCache } from "Cache/PaymentsCache";
