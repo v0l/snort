@@ -1,7 +1,7 @@
 import "./NoteToSelf.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
-import { profileLink } from "Util";
+import { profileLink } from "SnortUtils";
 
 import messages from "./messages";
 import Icon from "Icons/Icon";

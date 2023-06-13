@@ -1,12 +1,12 @@
 import "./ZapstrEmbed.css";
 import { Link } from "react-router-dom";
-import { encodeTLV, NostrPrefix, RawEvent } from "@snort/nostr";
+import { encodeTLV, NostrPrefix, NostrEvent } from "@snort/system";
 
 import { ProxyImg } from "Element/ProxyImg";
 import ProfileImage from "Element/ProfileImage";
 import { FormattedMessage } from "react-intl";
 
-export default function ZapstrEmbed({ ev }: { ev: RawEvent }) {
+export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
   const media = ev.tags.find(a => a[0] === "media");
   const cover = ev.tags.find(a => a[0] === "cover");
   const subject = ev.tags.find(a => a[0] === "subject");

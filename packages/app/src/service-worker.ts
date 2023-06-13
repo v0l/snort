@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 import {} from ".";
-declare var self: ServiceWorkerGlobalScope;
+declare const self: ServiceWorkerGlobalScope;
 
 import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";

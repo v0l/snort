@@ -1,6 +1,6 @@
 import { FormattedMessage } from "react-intl";
 
-import { Magnet } from "Util";
+import { Magnet } from "SnortUtils";
 
 interface MagnetLinkProps {
   magnet: Magnet;

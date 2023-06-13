@@ -1,25 +1,27 @@
 import { useEffect, useMemo } from "react";
-import { TaggedRawEvent, Lists, EventKind } from "@snort/nostr";
+import { TaggedRawEvent, Lists, EventKind, FlatNoteStore, RequestBuilder } from "@snort/system";
+import debug from "debug";
 
-import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "Util";
+import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";
 import { makeNotification, sendNotification } from "Notifications";
 import useEventPublisher from "Feed/EventPublisher";
 import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
-import { FlatNoteStore, RequestBuilder } from "System";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import { DmCache } from "Cache";
 import useLogin from "Hooks/useLogin";
 import { addSubscription, setBlocked, setBookmarked, setFollows, setMuted, setPinned, setRelays, setTags } from "Login";
 import { SnortPubKey } from "Const";
 import { SubscriptionEvent } from "Subscription";
+import useRelaysFeedFollows from "./RelaysFeedFollows";
+import { UserRelays } from "Cache/UserRelayCache";
 
 /**
  * Managed loading data for the current logged in user
  */
 export default function useLoginFeed() {
   const login = useLogin();
-  const { publicKey: pubKey, readNotifications } = login;
+  const { publicKey: pubKey, readNotifications, follows } = login;
   const { isMuted } = useModeration();
   const publisher = useEventPublisher();
 
@@ -39,6 +41,7 @@ export default function useLoginFeed() {
       .limit(1);
 
     const dmSince = DmCache.newest();
+    debug("LoginFeed")("Loading dms since %s", new Date(dmSince * 1000).toISOString());
     b.withFilter().authors([pubKey]).kinds([EventKind.DirectMessage]).since(dmSince);
     b.withFilter().kinds([EventKind.DirectMessage]).tag("p", [pubKey]).since(dmSince);
     return b;
@@ -171,8 +174,12 @@ export default function useLoginFeed() {
     }
   }, [listsFeed]);
 
-  /*const fRelays = useRelaysFeedFollows(follows);
   useEffect(() => {
-    FollowsRelays.bulkSet(fRelays).catch(console.error);
-  }, [dispatch, fRelays]);*/
+    UserRelays.buffer(follows.item).catch(console.error);
+  }, [follows.item]);
+
+  const fRelays = useRelaysFeedFollows(follows.item);
+  useEffect(() => {
+    UserRelays.bulkSet(fRelays).catch(console.error);
+  }, [fRelays]);
 }

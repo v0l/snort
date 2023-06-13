@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { EventKind, u256 } from "@snort/nostr";
+import { EventKind, u256, FlatNoteStore, RequestBuilder } from "@snort/system";
 
-import { unixNow, unwrap, tagFilterOfTextRepost } from "Util";
-import { FlatNoteStore, RequestBuilder } from "System";
+import { unixNow, unwrap, tagFilterOfTextRepost } from "SnortUtils";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 import useTimelineWindow from "Hooks/useTimelineWindow";
 import useLogin from "Hooks/useLogin";
@@ -134,7 +133,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
   }, [options.relay]);
 
   const subNext = useMemo(() => {
-    const rb = new RequestBuilder(`timeline-related:${subject.type}`);
+    const rb = new RequestBuilder(`timeline-related:${subject.type}:${subject.discriminator}`);
     if (trackingEvents.length > 0) {
       rb.withFilter()
         .kinds(

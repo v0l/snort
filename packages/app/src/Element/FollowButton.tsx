@@ -1,9 +1,9 @@
 import "./FollowButton.css";
 import { FormattedMessage } from "react-intl";
-import { HexKey } from "@snort/nostr";
+import { HexKey } from "@snort/system";
 
 import useEventPublisher from "Feed/EventPublisher";
-import { parseId } from "Util";
+import { parseId } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import AsyncButton from "Element/AsyncButton";
 

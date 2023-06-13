@@ -2,10 +2,10 @@ import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
 import { useCallback, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
-import { TaggedRawEvent, EventKind, u256 } from "@snort/nostr";
+import { TaggedRawEvent, EventKind, u256 } from "@snort/system";
 
 import Icon from "Icons/Icon";
-import { dedupeByPubkey, findTag, tagFilterOfTextRepost } from "Util";
+import { dedupeByPubkey, findTag, tagFilterOfTextRepost } from "SnortUtils";
 import ProfileImage from "Element/ProfileImage";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "Feed/TimelineFeed";
 import LoadMore from "Element/LoadMore";
@@ -143,7 +143,7 @@ const Timeline = (props: TimelineProps) => {
       )}
       {mainFeed.map(eventElement)}
       {(props.loadMore === undefined || props.loadMore === true) && (
-        <LoadMore onLoadMore={feed.loadMore} shouldLoadMore={!feed.loading}>
+        <LoadMore onLoadMore={() => feed.loadMore()} shouldLoadMore={!feed.loading}>
           <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
           <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
           <Skeleton width="100%" height="120px" margin="0 0 16px 0" />

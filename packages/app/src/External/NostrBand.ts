@@ -1,4 +1,4 @@
-import { RawEvent } from "@snort/nostr";
+import { NostrEvent } from "@snort/system";
 
 export interface TrendingUser {
   pubkey: string;
@@ -9,8 +9,8 @@ export interface TrendingUserResponse {
 }
 
 export interface TrendingNote {
-  event: RawEvent;
-  author: RawEvent; // kind0 event
+  event: NostrEvent;
+  author: NostrEvent; // kind0 event
 }
 
 export interface TrendingNoteResponse {

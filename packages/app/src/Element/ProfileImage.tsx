@@ -1,13 +1,12 @@
 import "./ProfileImage.css";
 
 import React, { useMemo } from "react";
-import { HexKey, NostrPrefix } from "@snort/nostr";
+import { HexKey, NostrPrefix, MetadataCache } from "@snort/system";
 
 import { useUserProfile } from "Hooks/useUserProfile";
-import { hexToBech32, profileLink } from "Util";
+import { hexToBech32, profileLink } from "SnortUtils";
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
-import { MetadataCache } from "Cache";
 import { Link } from "react-router-dom";
 
 export interface ProfileImageProps {

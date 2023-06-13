@@ -2,10 +2,17 @@ import "./Thread.css";
 import { useMemo, useState, ReactNode } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
-import { TaggedRawEvent, u256, EventKind, NostrPrefix } from "@snort/nostr";
-import { EventExt, Thread as ThreadInfo } from "System/EventExt";
+import {
+  TaggedRawEvent,
+  u256,
+  EventKind,
+  NostrPrefix,
+  EventExt,
+  Thread as ThreadInfo,
+  parseNostrLink,
+} from "@snort/system";
 
-import { eventLink, unwrap, getReactions, parseNostrLink, getAllReactions, findTag } from "Util";
+import { eventLink, unwrap, getReactions, getAllReactions, findTag } from "SnortUtils";
 import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";

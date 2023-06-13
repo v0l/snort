@@ -1,10 +1,10 @@
 import "./Text.css";
 import { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { HexKey, NostrPrefix } from "@snort/nostr";
+import { HexKey, NostrPrefix, validateNostrLink } from "@snort/system";
 
 import { MentionRegex, InvoiceRegex, HashtagRegex, CashuRegex } from "Const";
-import { eventLink, hexToBech32, splitByUrl, validateNostrLink } from "Util";
+import { eventLink, hexToBech32, splitByUrl } from "SnortUtils";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 import Mention from "Element/Mention";

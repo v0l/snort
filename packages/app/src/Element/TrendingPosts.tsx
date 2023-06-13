@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { RawEvent, TaggedRawEvent } from "@snort/nostr";
+import { NostrEvent, TaggedRawEvent } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import PageSpinner from "Element/PageSpinner";
@@ -7,7 +7,7 @@ import Note from "Element/Note";
 import NostrBandApi from "External/NostrBand";
 
 export default function TrendingNotes() {
-  const [posts, setPosts] = useState<Array<RawEvent>>();
+  const [posts, setPosts] = useState<Array<NostrEvent>>();
 
   async function loadTrendingNotes() {
     const api = new NostrBandApi();

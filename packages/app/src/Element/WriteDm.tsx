@@ -1,17 +1,17 @@
-import { encodeTLV, NostrPrefix, RawEvent } from "@snort/nostr";
+import { encodeTLV, NostrPrefix, NostrEvent } from "@snort/system";
 import useEventPublisher from "Feed/EventPublisher";
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
 import { useState } from "react";
 import useFileUpload from "Upload";
-import { openFile } from "Util";
+import { openFile } from "SnortUtils";
 import Textarea from "./Textarea";
 
 export default function WriteDm({ chatPubKey }: { chatPubKey: string }) {
   const [msg, setMsg] = useState("");
   const [sending, setSending] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [otherEvents, setOtherEvents] = useState<Array<RawEvent>>([]);
+  const [otherEvents, setOtherEvents] = useState<Array<NostrEvent>>([]);
   const [error, setError] = useState("");
   const publisher = useEventPublisher();
   const uploader = useFileUpload();

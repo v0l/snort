@@ -5,9 +5,9 @@ import { useIntl, FormattedMessage } from "react-intl";
 
 import Tabs, { Tab } from "Element/Tabs";
 import Timeline from "Element/Timeline";
-import { System } from "System";
+import { System } from "index";
 import { TimelineSubject } from "Feed/TimelineFeed";
-import { debounce, getRelayName, sha256, unixNow, unwrap } from "Util";
+import { debounce, getRelayName, sha256, unixNow, unwrap } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import Discover from "Pages/Discover";
 
@@ -64,7 +64,7 @@ export default function RootPage() {
 
     switch (pTab) {
       case "conversations": {
-        return RootTab.NotesAndReplies;
+        return RootTab.Conversations;
       }
       case "global": {
         return RootTab.Global;
@@ -170,10 +170,10 @@ const GlobalTab = () => {
   useEffect(() => {
     return debounce(500, () => {
       const ret: RelayOption[] = [];
-      System.Sockets.forEach((v, k) => {
+      System.Sockets.forEach(v => {
         ret.push({
-          url: k,
-          paid: v.Info?.limitation?.payment_required ?? false,
+          url: v.address,
+          paid: v.info?.limitation?.payment_required ?? false,
         });
       });
       ret.sort(a => (a.paid ? -1 : 1));

@@ -1,7 +1,7 @@
 import { FormattedMessage } from "react-intl";
-import { RawEvent } from "@snort/nostr";
+import { NostrEvent, NostrLink } from "@snort/system";
 
-import { findTag, NostrLink } from "Util";
+import { findTag } from "SnortUtils";
 import useEventFeed from "Feed/EventFeed";
 import PageSpinner from "Element/PageSpinner";
 import Reveal from "Element/Reveal";
@@ -14,7 +14,7 @@ export default function NostrFileHeader({ link }: { link: NostrLink }) {
   return <NostrFileElement ev={ev.data} />;
 }
 
-export function NostrFileElement({ ev }: { ev: RawEvent }) {
+export function NostrFileElement({ ev }: { ev: NostrEvent }) {
   // assume image or embed which can be rendered by the hypertext kind
   // todo: make use of hash
   // todo: use magnet or other links if present

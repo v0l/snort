@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid";
 
 import AsyncButton from "Element/AsyncButton";
 import { LNWallet, WalletInfo, WalletKind, Wallets } from "Wallet";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 
 const ConnectLNC = () => {
   const { formatMessage } = useIntl();

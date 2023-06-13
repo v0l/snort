@@ -1,13 +1,13 @@
-import { HexKey, RelaySettings } from "@snort/nostr";
+import { HexKey, RelaySettings, EventPublisher } from "@snort/system";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
 import { DefaultRelays, SnortPubKey } from "Const";
 import { LoginStore, UserPreferences, LoginSession } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
-import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unixNowMs, unwrap } from "Util";
+import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unixNowMs, unwrap } from "SnortUtils";
 import { SubscriptionEvent } from "Subscription";
-import { EventPublisher } from "System/EventPublisher";
+import { System } from "index";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
   if (state.relays.timestamp >= createdAt) {
@@ -78,7 +78,7 @@ export async function generateNewLogin() {
   }
 
   const publicKey = utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
-  const publisher = new EventPublisher(publicKey, privateKey);
+  const publisher = new EventPublisher(System, publicKey, privateKey);
   const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey], newRelays);
   publisher.broadcast(ev);
 

@@ -1,14 +1,13 @@
 import "./NoteReaction.css";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import { EventKind, RawEvent, TaggedRawEvent, NostrPrefix } from "@snort/nostr";
+import { EventKind, NostrEvent, TaggedRawEvent, NostrPrefix, EventExt } from "@snort/system";
 
 import Note from "Element/Note";
 import ProfileImage from "Element/ProfileImage";
-import { eventLink, hexToBech32 } from "Util";
+import { eventLink, hexToBech32 } from "SnortUtils";
 import NoteTime from "Element/NoteTime";
 import useModeration from "Hooks/useModeration";
-import { EventExt } from "System/EventExt";
 
 export interface NoteReactionProps {
   data: TaggedRawEvent;
@@ -43,7 +42,7 @@ export default function NoteReaction(props: NoteReactionProps) {
   function extractRoot() {
     if (ev?.kind === EventKind.Repost && ev.content.length > 0 && ev.content !== "#[0]") {
       try {
-        const r: RawEvent = JSON.parse(ev.content);
+        const r: NostrEvent = JSON.parse(ev.content);
         return r as TaggedRawEvent;
       } catch (e) {
         console.error("Could not load reposted content", e);

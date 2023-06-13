@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { HexKey } from "@snort/nostr";
+import { HexKey } from "@snort/system";
 
 import { ApiHost, KieranPubKey, SnortPubKey } from "Const";
 import ProfilePreview from "Element/ProfilePreview";
 import ZapButton from "Element/ZapButton";
-import { bech32ToHex } from "Util";
+import { bech32ToHex } from "SnortUtils";
 import SnortApi, { RevenueSplit, RevenueToday } from "SnortApi";
 
 const Developers = [

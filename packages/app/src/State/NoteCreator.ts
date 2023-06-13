@@ -1,19 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RawEvent, TaggedRawEvent } from "@snort/nostr";
+import { NostrEvent, TaggedRawEvent } from "@snort/system";
 
 interface NoteCreatorStore {
   show: boolean;
   note: string;
   error: string;
   active: boolean;
-  preview?: RawEvent;
+  preview?: NostrEvent;
   replyTo?: TaggedRawEvent;
   showAdvanced: boolean;
   selectedCustomRelays: false | Array<string>;
   zapForward: string;
   sensitive: string;
   pollOptions?: Array<string>;
-  otherEvents: Array<RawEvent>;
+  otherEvents: Array<NostrEvent>;
 }
 
 const InitState: NoteCreatorStore = {
@@ -44,7 +44,7 @@ const NoteCreatorSlice = createSlice({
     setActive: (state, action: PayloadAction<boolean>) => {
       state.active = action.payload;
     },
-    setPreview: (state, action: PayloadAction<RawEvent | undefined>) => {
+    setPreview: (state, action: PayloadAction<NostrEvent | undefined>) => {
       state.preview = action.payload;
     },
     setReplyTo: (state, action: PayloadAction<TaggedRawEvent | undefined>) => {
@@ -65,7 +65,7 @@ const NoteCreatorSlice = createSlice({
     setPollOptions: (state, action: PayloadAction<Array<string> | undefined>) => {
       state.pollOptions = action.payload;
     },
-    setOtherEvents: (state, action: PayloadAction<Array<RawEvent>>) => {
+    setOtherEvents: (state, action: PayloadAction<Array<NostrEvent>>) => {
       state.otherEvents = action.payload;
     },
     reset: () => InitState,

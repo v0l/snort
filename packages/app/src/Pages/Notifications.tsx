@@ -4,7 +4,7 @@ import Timeline from "Element/Timeline";
 import { TaskList } from "Tasks/TaskList";
 import useLogin from "Hooks/useLogin";
 import { markNotificationsRead } from "Login";
-import { unixNow } from "Util";
+import { unixNow } from "SnortUtils";
 
 export default function NotificationsPage() {
   const login = useLogin();

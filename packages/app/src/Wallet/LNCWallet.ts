@@ -1,5 +1,5 @@
 import LNC from "@lightninglabs/lnc-web";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 import {
   InvoiceRequest,
   LNWallet,
@@ -11,6 +11,7 @@ import {
   WalletInvoice,
   WalletInvoiceState,
 } from "Wallet";
+import debug from "debug";
 
 enum Payment_PaymentStatus {
   UNKNOWN = "UNKNOWN",
@@ -22,6 +23,7 @@ enum Payment_PaymentStatus {
 
 export class LNCWallet implements LNWallet {
   #lnc: LNC;
+  readonly #log = debug("LNC");
 
   private constructor(pairingPhrase?: string, password?: string) {
     this.#lnc = new LNC({
@@ -90,7 +92,7 @@ export class LNCWallet implements LNWallet {
 
   async getBalance(): Promise<number> {
     const rsp = await this.#lnc.lnd.lightning.channelBalance();
-    console.debug(rsp);
+    this.#log(rsp);
     return parseInt(rsp.localBalance?.sat ?? "0");
   }
 
@@ -112,7 +114,7 @@ export class LNCWallet implements LNWallet {
           feeLimitSat: "100",
         },
         msg => {
-          console.debug(msg);
+          this.#log(msg);
           if (msg.status === Payment_PaymentStatus.SUCCEEDED) {
             resolve({
               preimage: msg.paymentPreimage,
@@ -122,7 +124,7 @@ export class LNCWallet implements LNWallet {
           }
         },
         err => {
-          console.debug(err);
+          this.#log(err);
           reject(err);
         }
       );
@@ -135,7 +137,7 @@ export class LNCWallet implements LNWallet {
       reversed: true,
     });
 
-    console.debug(invoices);
+    this.#log(invoices);
     return invoices.payments.map(a => {
       const parsedInvoice = prToWalletInvoice(a.paymentRequest);
       if (!parsedInvoice) {

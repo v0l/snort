@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { randomSample, unixNowMs } from "Util";
+import { randomSample, unixNowMs } from "SnortUtils";
 import Relay from "Element/Relay";
 import useEventPublisher from "Feed/EventPublisher";
-import { System } from "System";
+import { System } from "index";
 import useLogin from "Hooks/useLogin";
 import { setRelays } from "Login";
 
@@ -16,18 +16,17 @@ const RelaySettingsPage = () => {
   const [newRelay, setNewRelay] = useState<string>();
 
   const otherConnections = useMemo(() => {
-    return [...System.Sockets.keys()].filter(a => relays.item[a] === undefined);
+    return System.Sockets.filter(a => relays.item[a.address] === undefined);
   }, [relays]);
 
   async function saveRelays() {
     if (publisher) {
       const ev = await publisher.contactList(login.follows.item, login.relays.item);
       publisher.broadcast(ev);
-      publisher.broadcastForBootstrap(ev);
       try {
         const onlineRelays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
         const relayList = await publisher.relayList(login.relays.item);
-        const rs = Object.keys(relays).concat(randomSample(onlineRelays, 20));
+        const rs = Object.keys(relays.item).concat(randomSample(onlineRelays, 20));
         publisher.broadcastAll(relayList, rs);
       } catch (error) {
         console.error(error);
@@ -98,7 +97,7 @@ const RelaySettingsPage = () => {
       </h3>
       <div className="flex f-col mb10">
         {otherConnections.map(a => (
-          <Relay addr={a} key={a} />
+          <Relay addr={a.address} key={a.id} />
         ))}
       </div>
     </>

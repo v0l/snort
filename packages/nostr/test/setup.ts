@@ -8,8 +8,7 @@ import {
   parsePublicKey,
   PublicKey,
 } from "../src/crypto"
-import { RawEvent } from "../src"
-import { signEvent, Unsigned } from "../src/event"
+import { RawEvent, signEvent, Unsigned } from "../src/event"
 
 export const relayUrl = new URL("ws://localhost:12648")
 
@@ -30,7 +29,7 @@ export interface Setup {
 }
 
 export async function setup(
-  done: jest.DoneCallback,
+  done: (e?: unknown) => void,
   test: (setup: Setup) => void | Promise<void>
 ) {
   try {

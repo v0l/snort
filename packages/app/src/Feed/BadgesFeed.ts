@@ -1,9 +1,7 @@
 import { useMemo } from "react";
-import { EventKind, HexKey, Lists } from "@snort/nostr";
+import { EventKind, HexKey, Lists, RequestBuilder, FlatNoteStore, ReplaceableNoteStore } from "@snort/system";
 
-import { unwrap, findTag, chunks } from "Util";
-import { RequestBuilder } from "System";
-import { FlatNoteStore, ReplaceableNoteStore } from "System/NoteCollection";
+import { unwrap, findTag, chunks } from "SnortUtils";
 import useRequestBuilder from "Hooks/useRequestBuilder";
 
 type BadgeAwards = {

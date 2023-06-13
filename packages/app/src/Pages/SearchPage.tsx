@@ -3,10 +3,9 @@ import { useParams } from "react-router-dom";
 import Timeline from "Element/Timeline";
 import { Tab, TabElement } from "Element/Tabs";
 import { useEffect, useState } from "react";
-import { debounce } from "Util";
-import { router } from "index";
+import { debounce } from "SnortUtils";
+import { System, router } from "index";
 import { SearchRelays } from "Const";
-import { System } from "System";
 import TrendingUsers from "Element/TrendingUsers";
 
 import TrendingNotes from "Element/TrendingPosts";
@@ -43,7 +42,7 @@ const SearchPage = () => {
   useEffect(() => {
     const addedRelays: string[] = [];
     for (const [k, v] of SearchRelays) {
-      if (!System.Sockets.has(k)) {
+      if (!System.Sockets.some(v => v.address === k)) {
         System.ConnectToRelay(k, v);
         addedRelays.push(k);
       }

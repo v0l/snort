@@ -1,7 +1,6 @@
-import { Connection, EventKind, RawEvent } from "@snort/nostr";
-import { EventBuilder } from "System";
-import { EventExt } from "System/EventExt";
+import { Connection, EventKind, NostrEvent, EventBuilder, EventExt } from "@snort/system";
 import { LNWallet, WalletError, WalletErrorCode, WalletInfo, WalletInvoice, WalletInvoiceState } from "Wallet";
+import debug from "debug";
 
 interface WalletConnectConfig {
   relayUrl: string;
@@ -122,7 +121,7 @@ export class NostrConnectWallet implements LNWallet {
     return Promise.resolve([]);
   }
 
-  async #onReply(sub: string, e: RawEvent) {
+  async #onReply(sub: string, e: NostrEvent) {
     if (sub === "info") {
       const pending = this.#commandQueue.get("info");
       if (!pending) {
@@ -184,7 +183,7 @@ export class NostrConnectWallet implements LNWallet {
       this.#commandQueue.set(evCommand.id, {
         resolve: async (o: string) => {
           const reply = JSON.parse(await EventExt.decryptData(o, this.#config.secret, this.#config.walletPubkey));
-          console.debug("NWC", reply);
+          debug("NWC")("%o", reply);
           resolve(reply);
         },
         reject,

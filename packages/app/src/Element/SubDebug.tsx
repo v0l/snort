@@ -3,11 +3,11 @@ import { useState } from "react";
 
 import useRelayState from "Feed/RelayState";
 import Tabs, { Tab } from "Element/Tabs";
-import { System } from "System";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 import useSystemState from "Hooks/useSystemState";
-import { RawReqFilter } from "@snort/nostr";
+import { ReqFilter } from "@snort/system";
 import { useCopy } from "useCopy";
+import { System } from "index";
 
 function RelayInfo({ id }: { id: string }) {
   const state = useRelayState(id);
@@ -18,7 +18,7 @@ function Queries() {
   const qs = useSystemState();
   const { copy } = useCopy();
 
-  function countElements(filters: Array<RawReqFilter>) {
+  function countElements(filters: Array<ReqFilter>) {
     let total = 0;
     for (const f of filters) {
       for (const v of Object.values(f)) {
@@ -30,15 +30,10 @@ function Queries() {
     return total;
   }
 
-  function queryInfo(q: {
-    id: string;
-    filters: Array<RawReqFilter>;
-    closing: boolean;
-    subFilters: Array<RawReqFilter>;
-  }) {
+  function queryInfo(q: { id: string; filters: Array<ReqFilter>; subFilters: Array<ReqFilter> }) {
     return (
       <div key={q.id}>
-        {q.closing ? <s>{q.id}</s> : <>{q.id}</>}
+        {q.id}
         <br />
         <span onClick={() => copy(JSON.stringify(q.filters))} className="pointer">
           &nbsp; Filters: {q.filters.length} ({countElements(q.filters)} elements)
@@ -66,8 +61,8 @@ const SubDebug = () => {
     return (
       <>
         <b>Connections:</b>
-        {[...System.Sockets.keys()].map(k => (
-          <RelayInfo id={k} />
+        {System.Sockets.map(k => (
+          <RelayInfo id={k.address} />
         ))}
       </>
     );

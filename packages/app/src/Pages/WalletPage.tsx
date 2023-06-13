@@ -7,7 +7,7 @@ import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import NoteTime from "Element/NoteTime";
 import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets } from "Wallet";
 import AsyncButton from "Element/AsyncButton";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 import { WebLNWallet } from "Wallet/WebLN";
 import Icon from "Icons/Icon";
 

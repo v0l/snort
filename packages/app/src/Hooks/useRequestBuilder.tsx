@@ -1,39 +1,30 @@
 import { useSyncExternalStore } from "react";
-import { RequestBuilder, System } from "System";
-import { EmptySnapshot, NoteStore, StoreSnapshot } from "System/NoteCollection";
-import { unwrap } from "Util";
+import { RequestBuilder, EmptySnapshot, NoteStore, StoreSnapshot } from "@snort/system";
+import { unwrap } from "SnortUtils";
+import { System } from "index";
 
 const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TStore["getSnapshotData"]>>(
   type: { new (): TStore },
-  rb: RequestBuilder | null,
-  debounced?: number
+  rb: RequestBuilder | null
 ) => {
   const subscribe = (onChanged: () => void) => {
-    const store = System.Query<TStore>(type, rb);
-    let t: ReturnType<typeof setTimeout> | undefined;
-    const release = store.hook(() => {
-      if (!t) {
-        t = setTimeout(() => {
-          clearTimeout(t);
-          t = undefined;
-          onChanged();
-        }, debounced ?? 500);
-      }
-    });
-
+    if (rb) {
+      const q = System.Query<TStore>(type, rb);
+      const release = q.feed.hook(onChanged);
+      q.uncancel();
+      return () => {
+        q.cancel();
+        release();
+      };
+    }
     return () => {
-      if (rb?.id) {
-        System.CancelQuery(rb.id);
-      }
-      release();
+      // noop
     };
   };
   const getState = (): StoreSnapshot<TSnapshot> => {
-    if (rb?.id) {
-      const q = System.GetQuery(rb.id);
-      if (q) {
-        return unwrap(q).feed?.snapshot as StoreSnapshot<TSnapshot>;
-      }
+    const q = System.GetQuery(rb?.id ?? "");
+    if (q) {
+      return unwrap(q).feed?.snapshot as StoreSnapshot<TSnapshot>;
     }
     return EmptySnapshot as StoreSnapshot<TSnapshot>;
   };

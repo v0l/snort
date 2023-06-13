@@ -1,4 +1,4 @@
-import { MetadataCache } from "Cache";
+import { MetadataCache } from "@snort/system";
 
 export interface UITask {
   id: string;

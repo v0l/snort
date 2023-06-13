@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import useLogin from "Hooks/useLogin";
 import { DefaultPreferences, updatePreferences, UserPreferences } from "Login";
 import { DefaultImgProxy } from "Const";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 
 import messages from "./messages";
 

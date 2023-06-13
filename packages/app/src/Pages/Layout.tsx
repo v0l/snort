@@ -9,21 +9,18 @@ import messages from "./messages";
 import Icon from "Icons/Icon";
 import { RootState } from "State/Store";
 import { setShow, reset } from "State/NoteCreator";
-import { System } from "System";
+import { System } from "index";
 import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
 import useModeration from "Hooks/useModeration";
 import { NoteCreator } from "Element/NoteCreator";
-import { db } from "Db";
 import useEventPublisher from "Feed/EventPublisher";
-import SubDebug from "Element/SubDebug";
-import { preload } from "Cache";
 import { useDmCache } from "Hooks/useDmsCache";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
 import Avatar from "Element/Avatar";
 import { useUserProfile } from "Hooks/useUserProfile";
-import { profileLink } from "Util";
+import { profileLink } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 import Toaster from "Toaster";
 
@@ -78,9 +75,9 @@ export default function Layout() {
         for (const [k, v] of Object.entries(relays.item)) {
           await System.ConnectToRelay(k, v);
         }
-        for (const [k, c] of System.Sockets) {
-          if (!relays.item[k] && !c.Ephemeral) {
-            System.DisconnectRelay(k);
+        for (const v of System.Sockets) {
+          if (!relays.item[v.address] && !v.ephemeral) {
+            System.DisconnectRelay(v.address);
           }
         }
       })();
@@ -111,29 +108,6 @@ export default function Layout() {
       osTheme.onchange = null;
     };
   }, [preferences.theme]);
-
-  useEffect(() => {
-    // check DB support then init
-    db.isAvailable().then(async a => {
-      db.ready = a;
-      if (a) {
-        await preload();
-      }
-      console.debug(`Using db: ${a ? "IndexedDB" : "In-Memory"}`);
-
-      try {
-        if ("registerProtocolHandler" in window.navigator) {
-          window.navigator.registerProtocolHandler(
-            "web+nostr",
-            `${window.location.protocol}//${window.location.host}/%s`
-          );
-          console.info("Registered protocol handler for 'web+nostr'");
-        }
-      } catch (e) {
-        console.error("Failed to register protocol handler", e);
-      }
-    });
-  }, []);
 
   return (
     <div className={pageClass}>
@@ -170,7 +144,6 @@ export default function Layout() {
           <NoteCreator />
         </>
       )}
-      {window.localStorage.getItem("debug") && <SubDebug />}
       <Toaster />
     </div>
   );

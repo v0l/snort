@@ -1,11 +1,11 @@
 import useLogin from "Hooks/useLogin";
-import { RawEvent } from "@snort/nostr";
+import { NostrEvent } from "@snort/system";
 
 import NostrBuild from "Upload/NostrBuild";
 import VoidCat from "Upload/VoidCat";
 import NostrImg from "Upload/NostrImg";
 import { KieranPubKey } from "Const";
-import { bech32ToHex } from "Util";
+import { bech32ToHex } from "SnortUtils";
 
 export interface UploadResult {
   url?: string;
@@ -14,7 +14,7 @@ export interface UploadResult {
   /**
    * NIP-94 File Header
    */
-  header?: RawEvent;
+  header?: NostrEvent;
 }
 
 /**

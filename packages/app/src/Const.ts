@@ -1,4 +1,4 @@
-import { RelaySettings } from "@snort/nostr";
+import { RelaySettings } from "@snort/system";
 
 /**
  * Add-on api for snort features
@@ -33,7 +33,7 @@ export const DefaultConnectTimeout = 2000;
 /**
  * How long profile cache should be considered valid for
  */
-export const ProfileCacheExpire = 1_000 * 60 * 30;
+export const ProfileCacheExpire = 1_000 * 60 * 60 * 6;
 
 /**
  * Default bootstrap relays

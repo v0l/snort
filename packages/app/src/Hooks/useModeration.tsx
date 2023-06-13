@@ -1,8 +1,8 @@
-import { HexKey } from "@snort/nostr";
+import { HexKey } from "@snort/system";
 import useEventPublisher from "Feed/EventPublisher";
 import useLogin from "Hooks/useLogin";
 import { setBlocked, setMuted } from "Login";
-import { appendDedupe } from "Util";
+import { appendDedupe } from "SnortUtils";
 
 export default function useModeration() {
   const login = useLogin();

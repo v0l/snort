@@ -56,7 +56,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/i,
+        test: /\.tsx?$/i,
         use: [
           "babel-loader",
           {

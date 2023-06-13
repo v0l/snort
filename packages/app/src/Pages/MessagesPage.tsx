@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { HexKey, RawEvent, NostrPrefix } from "@snort/nostr";
+import { HexKey, NostrEvent, NostrPrefix } from "@snort/system";
 
 import UnreadCount from "Element/UnreadCount";
 import ProfileImage, { getDisplayName } from "Element/ProfileImage";
-import { dedupe, hexToBech32, unwrap } from "Util";
+import { dedupe, hexToBech32, unwrap } from "SnortUtils";
 import NoteToSelf from "Element/NoteToSelf";
 import useModeration from "Hooks/useModeration";
 import { useDmCache } from "Hooks/useDmsCache";
@@ -162,30 +162,30 @@ export function setLastReadDm(pk: HexKey) {
   window.localStorage.setItem(k, now.toString());
 }
 
-export function dmTo(e: RawEvent) {
+export function dmTo(e: NostrEvent) {
   const firstP = e.tags.find(b => b[0] === "p");
   return unwrap(firstP?.[1]);
 }
 
-export function isToSelf(e: Readonly<RawEvent>, pk: HexKey) {
+export function isToSelf(e: Readonly<NostrEvent>, pk: HexKey) {
   return e.pubkey === pk && dmTo(e) === pk;
 }
 
-export function dmsInChat(dms: readonly RawEvent[], pk: HexKey) {
+export function dmsInChat(dms: readonly NostrEvent[], pk: HexKey) {
   return dms.filter(a => a.pubkey === pk || dmTo(a) === pk);
 }
 
-export function totalUnread(dms: RawEvent[], myPubKey: HexKey) {
+export function totalUnread(dms: NostrEvent[], myPubKey: HexKey) {
   return extractChats(dms, myPubKey).reduce((acc, v) => (acc += v.unreadMessages), 0);
 }
 
-function unreadDms(dms: RawEvent[], myPubKey: HexKey, pk: HexKey) {
+function unreadDms(dms: NostrEvent[], myPubKey: HexKey, pk: HexKey) {
   if (pk === myPubKey) return 0;
   const lastRead = lastReadDm(pk);
   return dmsInChat(dms, pk).filter(a => a.created_at >= lastRead && a.pubkey !== myPubKey).length;
 }
 
-function newestMessage(dms: readonly RawEvent[], myPubKey: HexKey, pk: HexKey) {
+function newestMessage(dms: readonly NostrEvent[], myPubKey: HexKey, pk: HexKey) {
   if (pk === myPubKey) {
     return dmsInChat(
       dms.filter(d => isToSelf(d, myPubKey)),
@@ -196,11 +196,11 @@ function newestMessage(dms: readonly RawEvent[], myPubKey: HexKey, pk: HexKey) {
   return dmsInChat(dms, pk).reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
 }
 
-export function dmsForLogin(dms: readonly RawEvent[], myPubKey: HexKey) {
+export function dmsForLogin(dms: readonly NostrEvent[], myPubKey: HexKey) {
   return dms.filter(a => a.pubkey === myPubKey || (a.pubkey !== myPubKey && dmTo(a) === myPubKey));
 }
 
-export function extractChats(dms: RawEvent[], myPubKey: HexKey) {
+export function extractChats(dms: NostrEvent[], myPubKey: HexKey) {
   const myDms = dmsForLogin(dms, myPubKey);
   const keys = myDms.map(a => [a.pubkey, dmTo(a)]).flat();
   const filteredKeys = dedupe(keys);

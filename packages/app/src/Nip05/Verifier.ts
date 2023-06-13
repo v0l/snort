@@ -1,5 +1,5 @@
 import DnsOverHttpResolver from "dns-over-http-resolver";
-import { bech32ToHex } from "Util";
+import { bech32ToHex } from "SnortUtils";
 
 const resolver = new DnsOverHttpResolver();
 interface NostrJson {

@@ -13,7 +13,7 @@ import {
   NostrNestsRegex,
   WavlakeRegex,
 } from "Const";
-import { magnetURIDecode } from "Util";
+import { magnetURIDecode } from "SnortUtils";
 import SoundCloudEmbed from "Element/SoundCloudEmded";
 import MixCloudEmbed from "Element/MixCloudEmbed";
 import SpotifyEmbed from "Element/SpotifyEmbed";

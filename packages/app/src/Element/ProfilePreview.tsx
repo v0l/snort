@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 import ProfileImage from "Element/ProfileImage";
 import FollowButton from "Element/FollowButton";
 import { useUserProfile } from "Hooks/useUserProfile";
-import { HexKey } from "@snort/nostr";
+import { HexKey } from "@snort/system";
 import { useInView } from "react-intersection-observer";
 
 export interface ProfilePreviewProps {

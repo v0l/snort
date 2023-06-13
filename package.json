@@ -4,8 +4,9 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace @snort/nostr build && yarn workspace @snort/app build",
-    "start": "yarn workspace @snort/nostr build && yarn workspace @snort/app start"
+    "build": "yarn workspace @snort/system build && yarn workspace @snort/app build",
+    "start": "yarn workspace @snort/system build && yarn workspace @snort/app start",
+    "test": "yarn workspace @snort/app test"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.2.3",

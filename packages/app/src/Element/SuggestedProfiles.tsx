@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { HexKey, NostrPrefix } from "@snort/nostr";
+import { HexKey, NostrPrefix } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import FollowListBase from "Element/FollowListBase";
@@ -7,7 +7,7 @@ import PageSpinner from "Element/PageSpinner";
 import NostrBandApi from "External/NostrBand";
 import SemisolDevApi from "External/SemisolDev";
 import useLogin from "Hooks/useLogin";
-import { hexToBech32 } from "Util";
+import { hexToBech32 } from "SnortUtils";
 
 enum Provider {
   NostrBand = 1,

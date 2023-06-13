@@ -1,6 +1,6 @@
-import { HexKey, RawEvent } from "@snort/nostr";
+import { HexKey, NostrEvent } from "@snort/system";
 import { EmailRegex } from "Const";
-import { bech32ToText, unwrap } from "Util";
+import { bech32ToText, unwrap } from "SnortUtils";
 
 const PayServiceTag = "payRequest";
 
@@ -119,7 +119,7 @@ export class LNURL {
    * @param zap
    * @returns
    */
-  async getInvoice(amount: number, comment?: string, zap?: RawEvent) {
+  async getInvoice(amount: number, comment?: string, zap?: NostrEvent) {
     const callback = new URL(unwrap(this.#service?.callback));
     const query = new Map<string, string>();
 

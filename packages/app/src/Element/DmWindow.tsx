@@ -1,6 +1,6 @@
 import "./DmWindow.css";
 import { useEffect, useMemo, useRef } from "react";
-import { TaggedRawEvent } from "@snort/nostr";
+import { TaggedRawEvent } from "@snort/system";
 
 import ProfileImage from "Element/ProfileImage";
 import DM from "Element/DM";
@@ -9,7 +9,7 @@ import NoteToSelf from "Element/NoteToSelf";
 import { useDmCache } from "Hooks/useDmsCache";
 import useLogin from "Hooks/useLogin";
 import WriteDm from "Element/WriteDm";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 
 export default function DmWindow({ id }: { id: string }) {
   const pubKey = useLogin().publicKey;

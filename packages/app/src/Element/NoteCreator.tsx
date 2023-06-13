@@ -1,11 +1,11 @@
 import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { encodeTLV, EventKind, NostrPrefix, TaggedRawEvent } from "@snort/nostr";
+import { encodeTLV, EventKind, NostrPrefix, TaggedRawEvent, EventBuilder } from "@snort/system";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
-import { openFile } from "Util";
+import { openFile } from "SnortUtils";
 import Textarea from "Element/Textarea";
 import Modal from "Element/Modal";
 import ProfileImage from "Element/ProfileImage";
@@ -31,7 +31,6 @@ import { LNURL } from "LNURL";
 import messages from "./messages";
 import { ClipboardEventHandler, useState } from "react";
 import Spinner from "Icons/Spinner";
-import { EventBuilder } from "System";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { LoginStore } from "Login";
 import { getCurrentSubscription } from "Subscription";

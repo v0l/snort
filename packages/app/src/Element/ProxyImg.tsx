@@ -1,7 +1,7 @@
 import useImgProxy from "Hooks/useImgProxy";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { getUrlHostname } from "Util";
+import { getUrlHostname } from "SnortUtils";
 
 interface ProxyImgProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
   size?: number;

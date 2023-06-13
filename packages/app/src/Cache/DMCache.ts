@@ -1,13 +1,13 @@
-import { RawEvent } from "@snort/nostr";
+import { NostrEvent } from "@snort/system";
 import { db } from "Db";
 import FeedCache from "./FeedCache";
 
-class DMCache extends FeedCache<RawEvent> {
+class DMCache extends FeedCache<NostrEvent> {
   constructor() {
     super("DMCache", db.dms);
   }
 
-  key(of: RawEvent): string {
+  key(of: NostrEvent): string {
     return of.id;
   }
 
@@ -23,11 +23,11 @@ class DMCache extends FeedCache<RawEvent> {
     return ret;
   }
 
-  allDms(): Array<RawEvent> {
+  allDms(): Array<NostrEvent> {
     return [...this.cache.values()];
   }
 
-  takeSnapshot(): Array<RawEvent> {
+  takeSnapshot(): Array<NostrEvent> {
     return this.allDms();
   }
 }

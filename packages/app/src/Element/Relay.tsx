@@ -2,11 +2,11 @@ import "./Relay.css";
 import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { RelaySettings } from "@snort/nostr";
+import { RelaySettings } from "@snort/system";
 
 import useRelayState from "Feed/RelayState";
-import { System } from "System";
-import { getRelayName, unixNowMs, unwrap } from "Util";
+import { System } from "index";
+import { getRelayName, unixNowMs, unwrap } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import { setRelays } from "Login";
 import Icon from "Icons/Icon";
@@ -20,7 +20,9 @@ export interface RelayProps {
 export default function Relay(props: RelayProps) {
   const navigate = useNavigate();
   const login = useLogin();
-  const relaySettings = unwrap(login.relays.item[props.addr] ?? System.Sockets.get(props.addr)?.Settings ?? {});
+  const relaySettings = unwrap(
+    login.relays.item[props.addr] ?? System.Sockets.find(a => a.address === props.addr)?.settings ?? {}
+  );
   const state = useRelayState(props.addr);
   const name = useMemo(() => getRelayName(props.addr), [props.addr]);
 
@@ -35,7 +37,6 @@ export default function Relay(props: RelayProps) {
     );
   }
 
-  const latency = Math.floor(state?.avgLatency ?? 0);
   return (
     <>
       <div className={`relay w-max`}>

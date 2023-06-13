@@ -6,13 +6,13 @@ import { FormattedMessage, FormattedNumber } from "react-intl";
 import { SnortPubKey } from "Const";
 import ProfilePreview from "Element/ProfilePreview";
 import useLogin from "Hooks/useLogin";
-import { System } from "System";
 import { UploaderServices } from "Upload";
-import { bech32ToHex, getRelayName, unwrap } from "Util";
+import { bech32ToHex, getRelayName, unwrap } from "SnortUtils";
 import { ZapPoolController, ZapPoolRecipient, ZapPoolRecipientType } from "ZapPoolController";
 import { useUserProfile } from "Hooks/useUserProfile";
 import AsyncButton from "Element/AsyncButton";
 import { useWallet } from "Wallet";
+import { System } from "index";
 
 const DataProviders = [
   {
@@ -78,15 +78,14 @@ export default function ZapPoolPage() {
   const { wallet } = useWallet();
 
   const relayConnections = useMemo(() => {
-    return [...System.Sockets.values()]
-      .map(a => {
-        if (a.Info?.pubkey) {
-          return {
-            address: a.Address,
-            pubkey: a.Info.pubkey,
-          };
-        }
-      })
+    return System.Sockets.map(a => {
+      if (a.info?.pubkey && !a.ephemeral) {
+        return {
+          address: a.address,
+          pubkey: a.info.pubkey,
+        };
+      }
+    })
       .filter(a => a !== undefined)
       .map(unwrap);
   }, [login.relays]);

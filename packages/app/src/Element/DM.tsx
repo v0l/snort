@@ -2,13 +2,13 @@ import "./DM.css";
 import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useInView } from "react-intersection-observer";
-import { TaggedRawEvent } from "@snort/nostr";
+import { TaggedRawEvent } from "@snort/system";
 
 import useEventPublisher from "Feed/EventPublisher";
 import NoteTime from "Element/NoteTime";
 import Text from "Element/Text";
 import { setLastReadDm } from "Pages/MessagesPage";
-import { unwrap } from "Util";
+import { unwrap } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";

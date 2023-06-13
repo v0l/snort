@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
-import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix, Lists } from "@snort/nostr";
+import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix, Lists } from "@snort/system";
 
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { delay, normalizeReaction, unwrap } from "Util";
+import { delay, normalizeReaction, unwrap } from "SnortUtils";
 import { NoteCreator } from "Element/NoteCreator";
 import { ReBroadcaster } from "Element/ReBroadcaster";
 import Reactions from "Element/Reactions";

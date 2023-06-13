@@ -1,5 +1,4 @@
-import { InvoiceRequest, LNWallet, Sats, WalletError, WalletErrorCode, WalletInfo, WalletInvoice } from "Wallet";
-
+import { LNWallet, Sats, WalletError, WalletErrorCode, WalletInfo, WalletInvoice } from "Wallet";
 import { CashuMint, CashuWallet as TheCashuWallet, Proof } from "@cashu/cashu-ts";
 
 export class CashuWallet implements LNWallet {

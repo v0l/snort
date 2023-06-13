@@ -26,7 +26,6 @@ export default class LNDHubWallet implements LNWallet {
     if (url.startsWith("lndhub://")) {
       const regex = /^lndhub:\/\/([\S-]+):([\S-]+)@(.*)$/i;
       const parsedUrl = url.match(regex);
-      console.debug(parsedUrl);
       if (!parsedUrl || parsedUrl.length !== 4) {
         throw new Error("Invalid LNDHUB config");
       }

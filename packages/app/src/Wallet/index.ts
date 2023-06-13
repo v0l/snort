@@ -1,6 +1,7 @@
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
-import { decodeInvoice, unwrap } from "Util";
+import ExternalStore from "ExternalStore";
+import { decodeInvoice, unwrap } from "SnortUtils";
 import LNDHubWallet from "./LNDHub";
 import { NostrConnectWallet } from "./NostrWalletConnect";
 import { setupWebLNWalletConfig, WebLNWallet } from "./WebLN";
@@ -124,33 +125,17 @@ export interface WalletStoreSnapshot {
   wallet?: LNWallet;
 }
 
-type WalletStateHook = (state: WalletStoreSnapshot) => void;
-
-export class WalletStore {
+export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
   #configs: Array<WalletConfig>;
   #instance: Map<string, LNWallet>;
 
-  #hooks: Array<WalletStateHook>;
-  #snapshot: Readonly<WalletStoreSnapshot>;
-
   constructor() {
+    super();
     this.#configs = [];
     this.#instance = new Map();
-    this.#hooks = [];
-    this.#snapshot = Object.freeze({
-      configs: [],
-    });
     this.load(false);
     setupWebLNWalletConfig(this);
-    this.snapshotState();
-  }
-
-  hook(fn: WalletStateHook) {
-    this.#hooks.push(fn);
-    return () => {
-      const idx = this.#hooks.findIndex(a => a === fn);
-      this.#hooks = this.#hooks.splice(idx, 1);
-    };
+    this.notifyChange();
   }
 
   list() {
@@ -171,9 +156,9 @@ export class WalletStore {
       const w = this.#activateWallet(activeConfig);
       if (w) {
         if ("then" in w) {
-          w.then(wx => {
+          w.then(async wx => {
             this.#instance.set(activeConfig.id, wx);
-            this.snapshotState();
+            this.notifyChange();
           });
           return undefined;
         }
@@ -209,7 +194,7 @@ export class WalletStore {
   save() {
     const json = JSON.stringify(this.#configs);
     window.localStorage.setItem("wallet-config", json);
-    this.snapshotState();
+    this.notifyChange();
   }
 
   load(snapshot = true) {
@@ -218,7 +203,7 @@ export class WalletStore {
       this.#configs = JSON.parse(cfg);
     }
     if (snapshot) {
-      this.snapshotState();
+      this.notifyChange();
     }
   }
 
@@ -226,21 +211,12 @@ export class WalletStore {
     this.#instance.forEach(w => w.close());
   }
 
-  getSnapshot() {
-    return this.#snapshot;
-  }
-
-  snapshotState() {
-    const newState = {
+  takeSnapshot(): WalletStoreSnapshot {
+    return {
       configs: [...this.#configs],
       config: this.#configs.find(a => a.active),
       wallet: this.get(),
     } as WalletStoreSnapshot;
-    this.#snapshot = Object.freeze(newState);
-    for (const hook of this.#hooks) {
-      console.debug(this.#snapshot);
-      hook(this.#snapshot);
-    }
   }
 
   #activateWallet(cfg: WalletConfig): LNWallet | Promise<LNWallet> | undefined {
@@ -270,8 +246,14 @@ window.document.addEventListener("close", () => {
 });
 
 export function useWallet() {
-  return useSyncExternalStore<WalletStoreSnapshot>(
+  const wallet = useSyncExternalStore<WalletStoreSnapshot>(
     h => Wallets.hook(h),
-    () => Wallets.getSnapshot()
+    () => Wallets.snapshot()
   );
+  useEffect(() => {
+    if (wallet.wallet?.isReady() === false && wallet.wallet.canAutoLogin()) {
+      wallet.wallet.login().catch(console.error);
+    }
+  }, [wallet]);
+  return wallet;
 }

@@ -1,6 +1,6 @@
 import * as utils from "@noble/curves/abstract/utils";
 import * as base64 from "@protobufjs/base64";
-import { hmacSha256, unwrap } from "Util";
+import { hmacSha256, unwrap } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 
 export interface ImgProxySettings {

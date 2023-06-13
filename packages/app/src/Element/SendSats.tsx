@@ -1,8 +1,9 @@
 import "./SendSats.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { HexKey, RawEvent } from "@snort/nostr";
 
+import { HexKey, NostrEvent, EventPublisher } from "@snort/system";
+import { System } from "index";
 import { formatShort } from "Number";
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
@@ -11,11 +12,10 @@ import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "LNURL";
-import { chunks, debounce } from "Util";
+import { chunks, debounce } from "SnortUtils";
 import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
 import { generateRandomKey } from "Login";
-import { EventPublisher } from "System/EventPublisher";
 import { ZapPoolController } from "ZapPoolController";
 
 import messages from "./messages";
@@ -124,7 +124,7 @@ export default function SendSats(props: SendSatsProps) {
   async function loadInvoice() {
     if (!amount || !handler || !publisher) return null;
 
-    let zap: RawEvent | undefined;
+    let zap: NostrEvent | undefined;
     if (author && zapType !== ZapType.NonZap) {
       const relays = Object.keys(login.relays.item);
 
@@ -133,7 +133,7 @@ export default function SendSats(props: SendSatsProps) {
         const randomKey = generateRandomKey();
         console.debug("Generated new key for zap: ", randomKey);
 
-        const publisher = new EventPublisher(randomKey.publicKey, randomKey.privateKey);
+        const publisher = new EventPublisher(System, randomKey.publicKey, randomKey.privateKey);
         zap = await publisher.zap(amount * 1000, author, relays, note, comment, eb => eb.tag(["anon", ""]));
       } else {
         zap = await publisher.zap(amount * 1000, author, relays, note, comment);
