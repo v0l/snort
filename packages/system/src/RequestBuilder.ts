@@ -95,8 +95,6 @@ export class RequestBuilder {
 
   /**
    * Detects a change in request from a previous set of filters
-   * @param q All previous filters merged
-   * @returns
    */
   buildDiff(relays: RelayCache, filters: Array<FlatReqFilter>): Array<BuiltRawReqFilter> {
     const start = unixNowMs();
@@ -114,6 +112,8 @@ export class RequestBuilder {
           relay: a.relay,
         };
       });
+    } else {
+      this.#log(`Wasted ${ts} ms detecting no changes!`);
     }
     return [];
   }

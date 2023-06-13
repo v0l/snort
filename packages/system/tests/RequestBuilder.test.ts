@@ -167,7 +167,7 @@ describe("RequestBuilder", () => {
 
 describe("build diff, large follow list", () => {
   const f = [];
-  for (let x = 0; x < 500; x++) {
+  for (let x = 0; x < 2500; x++) {
     const bytes = crypto.getRandomValues(new Uint8Array(32));
     f.push(bytesToHex(bytes));
   }
@@ -194,6 +194,6 @@ describe("build diff, large follow list", () => {
   const start2 = unixNowMs();
   const b = rb.buildDiff(DummyCache, rb.buildRaw().flatMap(expandFilter));
   expect(b).toEqual([]);
-  expect(unixNowMs() - start2).toBeLessThan(200);
+  expect(unixNowMs() - start2).toBeLessThan(100);
 
 })
