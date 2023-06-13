@@ -64,7 +64,7 @@ export default function RootPage() {
 
     switch (pTab) {
       case "conversations": {
-        return RootTab.NotesAndReplies;
+        return RootTab.Conversations;
       }
       case "global": {
         return RootTab.Global;
