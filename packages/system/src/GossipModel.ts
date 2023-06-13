@@ -62,8 +62,8 @@ export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter): Array<
     };
   });
 
-  const missing = allRelays.filter(a => a.relays === undefined);
-  const hasRelays = allRelays.filter(a => a.relays !== undefined);
+  const missing = allRelays.filter(a => a.relays === undefined || a.relays.length === 0);
+  const hasRelays = allRelays.filter(a => a.relays !== undefined && a.relays.length > 0);
   const relayUserMap = hasRelays.reduce((acc, v) => {
     for (const r of unwrap(v.relays)) {
       if (!acc.has(r.url)) {
