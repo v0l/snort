@@ -1,18 +1,19 @@
-import { u256, ReqFilter } from "./Nostr";
+import { ReqFilter } from "./Nostr";
 
 export interface FlatReqFilter {
-  ids?: u256;
-  authors?: u256;
-  kinds?: number;
-  "#e"?: u256;
-  "#p"?: u256;
-  "#t"?: string;
-  "#d"?: string;
-  "#r"?: string;
-  search?: string;
-  since?: number;
-  until?: number;
-  limit?: number;
+  keys: number
+  ids?: string
+  authors?: string
+  kinds?: number
+  "#e"?: string
+  "#p"?: string
+  "#t"?: string
+  "#d"?: string
+  "#r"?: string
+  search?: string
+  since?: number
+  until?: number
+  limit?: number
 }
 
 /**
@@ -41,6 +42,7 @@ export function expandFilter(f: ReqFilter): Array<FlatReqFilter> {
   }
 
   generateCombinations(0, {
+    keys: keys.length,
     ...Object.fromEntries(props),
   });
 

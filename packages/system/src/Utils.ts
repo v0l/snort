@@ -71,7 +71,8 @@ export function reqFilterEq(a: FlatReqFilter | ReqFilter, b: FlatReqFilter | Req
 }
 
 export function flatFilterEq(a: FlatReqFilter, b: FlatReqFilter): boolean {
-  return a.since === b.since
+  return a.keys === b.keys
+    && a.since === b.since
     && a.until === b.until
     && a.limit === b.limit
     && a.search === b.search

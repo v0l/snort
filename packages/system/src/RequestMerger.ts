@@ -11,10 +11,8 @@ export function canMergeFilters(a: FlatReqFilter | ReqFilter, b: FlatReqFilter |
   const aObj = a as Record<string, string | number | undefined>;
   const bObj = b as Record<string, string | number | undefined>;
   for (const key of DiscriminatorKeys) {
-    if (key in aObj || key in bObj) {
-      if (aObj[key] !== bObj[key]) {
-        return false;
-      }
+    if (aObj[key] !== bObj[key]) {
+      return false;
     }
   }
   return distance(a, b) <= 1;
@@ -107,6 +105,7 @@ export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
   function mergeFiltersInSet(filters: Array<FlatReqFilter>) {
     return filters.reduce((acc, a) => {
       Object.entries(a).forEach(([k, v]) => {
+        if (k === "keys") return;
         if (DiscriminatorKeys.includes(k)) {
           acc[k] = v;
         } else {

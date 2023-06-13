@@ -2,6 +2,8 @@ import { RelayCache } from "../src/GossipModel";
 import { RequestBuilder, RequestStrategy } from "../src/RequestBuilder";
 import { describe, expect } from "@jest/globals";
 import { expandFilter } from "../src/RequestExpander";
+import { unixNowMs } from "../src/Utils";
+import { bytesToHex } from "@noble/curves/abstract/utils";
 
 const DummyCache = {
   get: (pk?: string) => {
@@ -162,3 +164,36 @@ describe("RequestBuilder", () => {
     ]);
   });
 });
+
+describe("build diff, large follow list", () => {
+  const f = [];
+  for (let x = 0; x < 500; x++) {
+    const bytes = crypto.getRandomValues(new Uint8Array(32));
+    f.push(bytesToHex(bytes));
+  }
+
+  const rb = new RequestBuilder("test");
+  rb.withFilter().authors(f).kinds([1, 6, 10002, 3, 6969]);
+
+  const start = unixNowMs();
+  const a = rb.build(DummyCache);
+  expect(a).toEqual(f.map(a => {
+    return {
+      strategy: RequestStrategy.AuthorsRelays,
+      relay: `wss://${a}.com/`,
+      filters: [
+        {
+          kinds: [1, 6, 10002, 3, 6969],
+          authors: [a],
+        }
+      ],
+    }
+  }));
+  expect(unixNowMs() - start).toBeLessThan(500);
+
+  const start2 = unixNowMs();
+  const b = rb.buildDiff(DummyCache, rb.buildRaw().flatMap(expandFilter));
+  expect(b).toEqual([]);
+  expect(unixNowMs() - start2).toBeLessThan(200);
+
+})
