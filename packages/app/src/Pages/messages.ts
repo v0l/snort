@@ -2,7 +2,6 @@ import { defineMessages } from "react-intl";
 
 export default defineMessages({
   Login: { defaultMessage: "Login" },
-  Posts: { defaultMessage: "Posts" },
   Conversations: { defaultMessage: "Conversations" },
   Global: { defaultMessage: "Global" },
   NewUsers: { defaultMessage: "New users page" },

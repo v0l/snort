@@ -12,6 +12,7 @@ export default function AsyncButton(props: AsyncButtonProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
   async function handle(e: React.MouseEvent) {
+    e.stopPropagation();
     if (loading || props.disabled) return;
     setLoading(true);
     try {

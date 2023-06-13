@@ -45,6 +45,9 @@
   "0BUTMv": {
     "defaultMessage": "Search..."
   },
+  "0ehN4t": {
+    "defaultMessage": "Please connect a wallet {here} to be able to pay this invoice"
+  },
   "0jOEtS": {
     "defaultMessage": "Invalid LNURL"
   },
@@ -95,6 +98,10 @@
   },
   "2ukA4d": {
     "defaultMessage": "{n} hours"
+  },
+  "380eol": {
+    "defaultMessage": "here",
+    "description": "Inline link text pointing to another page"
   },
   "3Rx6Qo": {
     "defaultMessage": "Advanced"
@@ -218,12 +225,18 @@
   "9pMqYs": {
     "defaultMessage": "Nostr Address"
   },
+  "9qtLJC": {
+    "defaultMessage": "Payment Required"
+  },
   "9wO4wJ": {
     "defaultMessage": "Lightning Invoice"
   },
   "ADmfQT": {
     "defaultMessage": "Parent",
     "description": "Link to parent note in thread"
+  },
+  "AGNz71": {
+    "defaultMessage": "Zap All {n} sats"
   },
   "ASRK0S": {
     "defaultMessage": "This author has been muted"
@@ -310,8 +323,8 @@
   "Dh3hbq": {
     "defaultMessage": "Auto Zap"
   },
-  "Dt/Zd5": {
-    "defaultMessage": "Media in posts will automatically be shown for selected people, otherwise only the link will show"
+  "DqLx9k": {
+    "defaultMessage": "You must pay {n} sats to access this file."
   },
   "DtYelJ": {
     "defaultMessage": "Transfer"
@@ -427,6 +440,9 @@
   },
   "IUZC+0": {
     "defaultMessage": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you."
+  },
+  "Ig9/a1": {
+    "defaultMessage": "Sent {n} sats to {name}"
   },
   "Iwm6o2": {
     "defaultMessage": "NIP-05 Shop"
@@ -649,6 +665,9 @@
   "Ss0sWu": {
     "defaultMessage": "Pay Now"
   },
+  "TDR5ge": {
+    "defaultMessage": "Media in notes will automatically be shown for selected people, otherwise only the link will show"
+  },
   "TMfYfY": {
     "defaultMessage": "Cashu token"
   },
@@ -763,6 +782,9 @@
   "a5UPxh": {
     "defaultMessage": "Fund developers and platforms providing NIP-05 verification services"
   },
+  "a7TDNm": {
+    "defaultMessage": "Notes will stream in real time into global and notes tab"
+  },
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
@@ -844,9 +866,6 @@
   "eJj8HD": {
     "defaultMessage": "Get Verified"
   },
-  "eR3YIn": {
-    "defaultMessage": "Posts"
-  },
   "eSzf2G": {
     "defaultMessage": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool."
   },
@@ -891,9 +910,6 @@
   },
   "h8XMJL": {
     "defaultMessage": "Badges"
-  },
-  "hCUivF": {
-    "defaultMessage": "Notes will stream in real time into global and posts tab"
   },
   "hK5ZDk": {
     "defaultMessage": "the world"
@@ -1231,6 +1247,9 @@
   "xQtL3v": {
     "defaultMessage": "Unlock",
     "description": "Unlock wallet"
+  },
+  "xaj9Ba": {
+    "defaultMessage": "Provider"
   },
   "xbVgIm": {
     "defaultMessage": "Automatically load media"

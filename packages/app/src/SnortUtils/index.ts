@@ -325,6 +325,7 @@ export interface InvoiceDetails {
   descriptionHash?: string;
   paymentHash?: string;
   expired: boolean;
+  pr: string;
 }
 
 export function decodeInvoice(pr: string): InvoiceDetails | undefined {
@@ -343,6 +344,7 @@ export function decodeInvoice(pr: string): InvoiceDetails | undefined {
     const descriptionHashSection = parsed.sections.find(a => a.name === "description_hash")?.value;
     const paymentHashSection = parsed.sections.find(a => a.name === "payment_hash")?.value;
     const ret = {
+      pr,
       amount: amount,
       expire: timestamp && expire ? timestamp + expire : undefined,
       timestamp: timestamp,
@@ -509,4 +511,16 @@ export function sanitizeRelayUrl(url: string) {
   } catch {
     // ignore
   }
+}
+
+export function kvToObject<T>(o: string, sep?: string) {
+  return Object.fromEntries(
+    o.split(sep ?? ",").map(v => {
+      const match = v.trim().match(/^(\w+)="(.*)"$/);
+      if (match) {
+        return [match[1], match[2]];
+      }
+      return [];
+    })
+  ) as T;
 }

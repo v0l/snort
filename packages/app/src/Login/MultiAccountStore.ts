@@ -195,6 +195,15 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     window.localStorage.removeItem(LegacyKeys.RelayListKey);
     window.localStorage.removeItem(LegacyKeys.FollowList);
     window.localStorage.removeItem(LegacyKeys.NotificationsReadItem);
+
+    // replace default tab with notes
+    for (const [, v] of this.#accounts) {
+      if ((v.preferences.defaultRootTab as string) === "posts") {
+        v.preferences.defaultRootTab = "notes";
+        didMigrate = true;
+      }
+    }
+
     if (didMigrate) {
       console.debug("Finished migration to MultiAccountStore");
       this.#save();
