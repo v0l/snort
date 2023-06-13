@@ -5,6 +5,7 @@ import { RelayCache, splitAllByWriteRelays, splitByWriteRelays } from "./GossipM
 import { mergeSimilar } from "./RequestMerger";
 import { FlatReqFilter, expandFilter } from "./RequestExpander";
 import debug from "debug";
+import { v4 as uuid } from "uuid";
 
 /**
  * Which strategy is used when building REQ filters
@@ -50,11 +51,13 @@ export interface RequestBuilderOptions {
  */
 export class RequestBuilder {
   id: string;
+  instance: string;
   #builders: Array<RequestFilterBuilder>;
   #options?: RequestBuilderOptions;
   #log = debug("RequestBuilder");
 
   constructor(id: string) {
+    this.instance = uuid();
     this.id = id;
     this.#builders = [];
   }

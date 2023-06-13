@@ -118,9 +118,13 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     return this.Queries.get(id);
   }
 
-  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): Query {
+  Query<T extends NoteStore>(type: { new(): T }, req: RequestBuilder): Query {
     const existing = this.Queries.get(req.id);
     if (existing) {
+      // if same instance, just return query
+      if (existing.fromInstance === req.instance) {
+        return existing;
+      }
       const filters = !req.options?.skipDiff
         ? req.buildDiff(this.#relayCache, existing.flatFilters)
         : req.build(this.#relayCache);
@@ -137,7 +141,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       const store = new type();
 
       const filters = req.build(this.#relayCache);
-      const q = new Query(req.id, store, req.options?.leaveOpen);
+      const q = new Query(req.id, req.instance, store, req.options?.leaveOpen);
       this.Queries.set(req.id, q);
       for (const subQ of filters) {
         this.SendQuery(q, subQ);

@@ -112,6 +112,11 @@ export class Query implements QueryBase {
   id: string;
 
   /**
+   * RequestBuilder instance
+   */
+  fromInstance: string;
+
+  /**
    * Which relays this query has already been executed on
    */
   #tracing: Array<QueryTrace> = [];
@@ -138,9 +143,10 @@ export class Query implements QueryBase {
 
   #log = debug("Query");
 
-  constructor(id: string, feed: NoteStore, leaveOpen?: boolean) {
+  constructor(id: string, instance: string, feed: NoteStore, leaveOpen?: boolean) {
     this.id = id;
     this.#feed = feed;
+    this.fromInstance = instance;
     this.#leaveOpen = leaveOpen ?? false;
     this.#checkTraces();
   }

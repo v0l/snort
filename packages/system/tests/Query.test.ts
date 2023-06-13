@@ -10,7 +10,7 @@ window.crypto.getRandomValues = getRandomValues as any;
 
 describe("query", () => {
   test("progress", () => {
-    const q = new Query("test", new FlatNoteStore());
+    const q = new Query("test", "", new FlatNoteStore());
     const opt = {
       read: true,
       write: true,
@@ -66,7 +66,7 @@ describe("query", () => {
   });
 
   it("should merge all sub-query filters", () => {
-    const q = new Query("test", new FlatNoteStore());
+    const q = new Query("test", "", new FlatNoteStore());
     const c0 = new Connection("wss://test.com", { read: true, write: true });
     q.sendToRelay(c0, {
       filters: [
