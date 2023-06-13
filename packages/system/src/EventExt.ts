@@ -1,14 +1,21 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
-import { EventKind, HexKey, NostrEvent, Tag } from ".";
+import { EventKind, HexKey, NostrEvent } from ".";
 import base64 from "@protobufjs/base64";
 import { sha256, unixNow } from "./Utils";
 
+export interface Tag {
+  key: string
+  value?: string
+  relay?: string
+  marker?: string // NIP-10
+}
+
 export interface Thread {
-  root?: Tag;
-  replyTo?: Tag;
-  mentions: Array<Tag>;
-  pubKeys: Array<HexKey>;
+  root?: Tag
+  replyTo?: Tag
+  mentions: Array<Tag>
+  pubKeys: Array<HexKey>
 }
 
 export abstract class EventExt {
@@ -73,6 +80,24 @@ export abstract class EventExt {
     } as NostrEvent;
   }
 
+  static parseTag(tag: Array<string>) {
+    if (tag.length < 1) {
+      throw new Error("Invalid tag, must have more than 2 items")
+    }
+
+    const ret = {
+      key: tag[0],
+      value: tag[1]
+    } as Tag;
+    switch (ret.key) {
+      case "e": {
+        ret.relay = tag.length > 2 ? tag[2] : undefined;
+        ret.marker = tag.length > 3 ? tag[3] : undefined;
+        break;
+      }
+    }
+    return ret;
+  }
   static extractThread(ev: NostrEvent) {
     const isThread = ev.tags.some(a => (a[0] === "e" && a[3] !== "mention") || a[0] == "a");
     if (!isThread) {
@@ -84,27 +109,27 @@ export abstract class EventExt {
       mentions: [],
       pubKeys: [],
     } as Thread;
-    const eTags = ev.tags.filter(a => a[0] === "e" || a[0] === "a").map((v, i) => new Tag(v, i));
-    const marked = eTags.some(a => a.Marker !== undefined);
+    const eTags = ev.tags.filter(a => a[0] === "e" || a[0] === "a").map(a => EventExt.parseTag(a));
+    const marked = eTags.some(a => a.marker);
     if (!marked) {
       ret.root = eTags[0];
-      ret.root.Marker = shouldWriteMarkers ? "root" : undefined;
+      ret.root.marker = shouldWriteMarkers ? "root" : undefined;
       if (eTags.length > 1) {
-        ret.replyTo = eTags[1];
-        ret.replyTo.Marker = shouldWriteMarkers ? "reply" : undefined;
+        ret.replyTo = eTags[eTags.length - 1];
+        ret.replyTo.marker = shouldWriteMarkers ? "reply" : undefined;
       }
       if (eTags.length > 2) {
-        ret.mentions = eTags.slice(2);
+        ret.mentions = eTags.slice(1, -1);
         if (shouldWriteMarkers) {
-          ret.mentions.forEach(a => (a.Marker = "mention"));
+          ret.mentions.forEach(a => (a.marker = "mention"));
         }
       }
     } else {
-      const root = eTags.find(a => a.Marker === "root");
-      const reply = eTags.find(a => a.Marker === "reply");
+      const root = eTags.find(a => a.marker === "root");
+      const reply = eTags.find(a => a.marker === "reply");
       ret.root = root;
       ret.replyTo = reply;
-      ret.mentions = eTags.filter(a => a.Marker === "mention");
+      ret.mentions = eTags.filter(a => a.marker === "mention");
     }
     ret.pubKeys = Array.from(new Set(ev.tags.filter(a => a[0] === "p").map(a => a[1])));
     return ret;

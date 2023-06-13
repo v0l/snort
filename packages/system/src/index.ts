@@ -8,7 +8,6 @@ export * from "./NostrSystem";
 export { default as EventKind } from "./EventKind";
 export * from "./Nostr";
 export * from "./Links";
-export { default as Tag } from "./Tag";
 export * from "./Nips";
 export * from "./RelayInfo";
 export * from "./EventExt";

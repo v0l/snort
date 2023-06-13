@@ -246,8 +246,8 @@ export default function Note(props: NoteProps) {
     }
 
     const maxMentions = 2;
-    const replyId = thread?.replyTo?.Event ?? thread?.root?.Event;
-    const replyRelayHints = thread?.replyTo?.Relay ?? thread.root?.Relay;
+    const replyId = thread?.replyTo?.value ?? thread?.root?.value;
+    const replyRelayHints = thread?.replyTo?.relay ?? thread.root?.relay;
     const mentions: { pk: string; name: string; link: ReactNode }[] = [];
     for (const pk of thread?.pubKeys ?? []) {
       const u = UserCache.getFromCache(pk);
