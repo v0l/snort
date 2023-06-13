@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import { NostrPrefix, parseNostrLink } from "@snort/system";
+import { NostrPrefix, tryParseNostrLink } from "@snort/system";
 
 import Mention from "Element/Mention";
 import NoteQuote from "Element/NoteQuote";
 
 export default function NostrLink({ link, depth }: { link: string; depth?: number }) {
-  const nav = parseNostrLink(link);
+  const nav = tryParseNostrLink(link);
 
   if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
     return <Mention pubkey={nav.id} relays={nav.relays} />;

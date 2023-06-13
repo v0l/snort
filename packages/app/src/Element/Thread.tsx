@@ -218,9 +218,9 @@ export default function Thread() {
   const location = useLocation();
 
   const link = parseNostrLink(params.id ?? "", NostrPrefix.Note);
-  const thread = useThreadFeed(unwrap(link));
+  const thread = useThreadFeed(link);
 
-  const [currentId, setCurrentId] = useState(link?.id);
+  const [currentId, setCurrentId] = useState(link.id);
 
   const navigate = useNavigate();
   const isSingleNote = thread.data?.filter(a => a.kind === EventKind.TextNote).length === 1;

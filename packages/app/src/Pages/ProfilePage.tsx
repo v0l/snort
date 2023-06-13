@@ -2,7 +2,7 @@ import "./ProfilePage.css";
 import { useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
-import { encodeTLV, EventKind, HexKey, NostrPrefix, parseNostrLink } from "@snort/system";
+import { encodeTLV, EventKind, HexKey, NostrPrefix, tryParseNostrLink } from "@snort/system";
 
 import { getReactions, unwrap } from "SnortUtils";
 import { formatShort } from "Number";
@@ -157,7 +157,7 @@ export default function ProfilePage() {
         setId(a);
       });
     } else {
-      const nav = parseNostrLink(params.id ?? "");
+      const nav = tryParseNostrLink(params.id ?? "");
       if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
         // todo: use relays if any for nprofile
         setId(nav.id);

@@ -2,7 +2,7 @@ import { EventKind, HexKey, NostrPrefix, NostrEvent } from ".";
 import { HashtagRegex } from "./Const";
 import { getPublicKey, unixNow } from "./Utils";
 import { EventExt } from "./EventExt";
-import { parseNostrLink } from "./NostrLink";
+import { tryParseNostrLink } from "./NostrLink";
 
 export class EventBuilder {
   #kind?: EventKind;
@@ -90,7 +90,7 @@ export class EventBuilder {
 
   #replaceMention(match: string) {
     const npub = match.slice(1);
-    const link = parseNostrLink(npub);
+    const link = tryParseNostrLink(npub);
     if (link) {
       if (link.type === NostrPrefix.Profile || link.type === NostrPrefix.PublicKey) {
         this.tag(["p", link.id]);
