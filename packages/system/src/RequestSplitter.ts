@@ -6,21 +6,23 @@ export function diffFilters(prev: Array<FlatReqFilter>, next: Array<FlatReqFilte
   const added = [];
   const removed = [];
 
-  for (let x = 0; x < next.length; x++) {
-    const px = prev.findIndex(a => flatFilterEq(a, next[x]));
+  prev = [...prev];
+  next = [...next];
+  for (const n of next) {
+    const px = prev.findIndex(a => flatFilterEq(a, n));
     if (px !== -1) {
       prev.splice(px, 1);
     } else {
-      added.push(next[x]);
+      added.push(n);
     }
   }
   if (calcRemoved) {
-    for (let x = 0; x < prev.length; x++) {
-      const px = next.findIndex(a => flatFilterEq(a, prev[x]));
+    for (const p of prev) {
+      const px = next.findIndex(a => flatFilterEq(a, p));
       if (px !== -1) {
         next.splice(px, 1);
       } else {
-        removed.push(prev[x]);
+        removed.push(p);
       }
     }
   }

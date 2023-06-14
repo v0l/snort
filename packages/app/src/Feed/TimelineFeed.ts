@@ -26,8 +26,6 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     window: options.window,
     now: options.now ?? unixNow(),
   });
-  const [trackingEvents, setTrackingEvent] = useState<u256[]>([]);
-  const [trackingParentEvents, setTrackingParentEvents] = useState<u256[]>([]);
   const pref = useLogin().preferences;
 
   const createBuilder = useCallback(() => {
@@ -132,34 +130,8 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     latest.clear();
   }, [options.relay]);
 
-  const subNext = useMemo(() => {
-    const rb = new RequestBuilder(`timeline-related:${subject.type}:${subject.discriminator}`);
-    if (trackingEvents.length > 0) {
-      rb.withFilter()
-        .kinds(
-          pref.enableReactions
-            ? [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt]
-            : [EventKind.ZapReceipt, EventKind.Repost]
-        )
-        .tag("e", trackingEvents);
-    }
-    if (trackingParentEvents.length > 0) {
-      rb.withFilter().ids(trackingParentEvents);
-    }
-    return rb.numFilters > 0 ? rb : null;
-  }, [trackingEvents, pref, subject.type]);
-
-  const related = useRequestBuilder<FlatNoteStore>(FlatNoteStore, subNext);
-
-  useEffect(() => {
-    if (main.data && main.data.length > 0) {
-      setTrackingEvent(s => {
-        const ids = (main.data ?? []).map(a => a.id);
-        if (ids.some(a => !s.includes(a))) {
-          return Array.from(new Set([...s, ...ids]));
-        }
-        return s;
-      });
+  function getParentEvents() {
+    if (main.data) {
       const repostsByKind6 = main.data
         .filter(a => a.kind === EventKind.Repost && a.content === "")
         .map(a => a.tags.find(b => b[0] === "e"))
@@ -172,18 +144,31 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         .map(a => a.tags.find(tagFilterOfTextRepost(a)))
         .filter(a => a)
         .map(a => unwrap(a)[1]);
-      const reposts = [...repostsByKind6, ...repostsByKind1];
-      if (reposts.length > 0) {
-        setTrackingParentEvents(s => {
-          if (reposts.some(a => !s.includes(a))) {
-            const temp = new Set([...s, ...reposts]);
-            return Array.from(temp);
-          }
-          return s;
-        });
-      }
+      return [...repostsByKind6, ...repostsByKind1];
     }
-  }, [main]);
+    return [];
+  }
+
+  const subNext = useMemo(() => {
+    const rb = new RequestBuilder(`timeline-related:${subject.type}:${subject.discriminator}`);
+    const trackingEvents = main.data?.map(a => a.id) ?? [];
+    if (trackingEvents.length > 0) {
+      rb.withFilter()
+        .kinds(
+          pref.enableReactions
+            ? [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt]
+            : [EventKind.ZapReceipt, EventKind.Repost]
+        )
+        .tag("e", trackingEvents);
+    }
+    const trackingParentEvents = getParentEvents();
+    if (trackingParentEvents.length > 0) {
+      rb.withFilter().ids(trackingParentEvents);
+    }
+    return rb.numFilters > 0 ? rb : null;
+  }, [main.data, pref, subject.type]);
+
+  const related = useRequestBuilder<FlatNoteStore>(FlatNoteStore, subNext);
 
   return {
     main: main.data,

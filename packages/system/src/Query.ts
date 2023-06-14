@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
 import { Connection, ReqFilter, Nips, TaggedRawEvent } from ".";
-import { unixNowMs, unwrap } from "./Utils";
+import { reqFilterEq, unixNowMs, unwrap } from "./Utils";
 import { NoteStore } from "./NoteCollection";
 import { flatMerge } from "./RequestMerger";
 import { BuiltRawReqFilter } from "./RequestBuilder";
@@ -46,7 +46,6 @@ class QueryTrace {
   forceEose() {
     this.eose = unixNowMs();
     this.#wasForceClosed = true;
-    this.#fnProgress();
     this.sendClose();
   }
 
@@ -163,7 +162,13 @@ export class Query implements QueryBase {
   }
 
   get flatFilters() {
-    return this.#tracing.flatMap(a => a.filters).flatMap(expandFilter);
+    const f: Array<ReqFilter> = [];
+    for (const x of this.#tracing.flatMap(a => a.filters)) {
+      if (!f.some(a => reqFilterEq(a, x))) {
+        f.push(x);
+      }
+    }
+    return f.flatMap(expandFilter);
   }
 
   get feed() {

@@ -96,11 +96,11 @@ export class RequestBuilder {
   /**
    * Detects a change in request from a previous set of filters
    */
-  buildDiff(relays: RelayCache, filters: Array<FlatReqFilter>): Array<BuiltRawReqFilter> {
+  buildDiff(relays: RelayCache, prev: Array<FlatReqFilter>): Array<BuiltRawReqFilter> {
     const start = unixNowMs();
 
-    const next = this.#builders.flatMap(f => expandFilter(f.filter))
-    const diff = diffFilters(filters, next);
+    const next = this.#builders.flatMap(f => expandFilter(f.filter));
+    const diff = diffFilters(prev, next);
     const ts = (unixNowMs() - start);
     this.#log("buildDiff %s %d ms", this.id, ts);
     if (diff.changed) {
@@ -205,7 +205,7 @@ export class RequestFilterBuilder {
 
   tag(key: "e" | "p" | "d" | "t" | "r", value?: Array<string>) {
     if (!value) return this;
-    this.#filter[`#${key}`] = value;
+    this.#filter[`#${key}`] = appendDedupe(this.#filter[`#${key}`], value);
     return this;
   }
 

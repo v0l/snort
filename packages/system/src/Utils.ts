@@ -86,6 +86,16 @@ export function flatFilterEq(a: FlatReqFilter, b: FlatReqFilter): boolean {
     && a["#r"] === b["#r"];
 }
 
+export function countMembers(a: any) {
+  let ret = 0;
+  for (const [k, v] of Object.entries(a)) {
+    if (Array.isArray(v)) {
+      ret += v.length;
+    }
+  }
+  return ret;
+}
+
 export function equalProp(a: string | number | Array<string | number> | undefined, b: string | number | Array<string | number> | undefined) {
   if ((a !== undefined && b === undefined) || (a === undefined && b !== undefined)) {
     return false;
