@@ -19,6 +19,8 @@ export * from "./EventBuilder";
 export * from "./NostrLink";
 export * from "./cache";
 export * from "./ProfileCache";
+export * from "./impl/nip4";
+export * from "./impl/nip44";
 
 export interface SystemInterface {
   /**
@@ -40,4 +42,10 @@ export interface SystemSnapshot {
     filters: Array<ReqFilter>;
     subFilters: Array<ReqFilter>;
   }>;
+}
+
+export interface MessageEncryptor {
+  getSharedSecret(privateKey: string, publicKey: string): Promise<Uint8Array> | Uint8Array
+  encryptData(plaintext: string, sharedSecet: Uint8Array): Promise<string> | string
+  decryptData(cyphertext: string, sharedSecet: Uint8Array): Promise<string> | string
 }

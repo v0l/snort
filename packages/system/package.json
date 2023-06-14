@@ -17,6 +17,7 @@
   ],
   "devDependencies": {
     "@jest/globals": "^29.5.0",
+    "@peculiar/webcrypto": "^1.4.3",
     "@types/jest": "^29.5.1",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
@@ -25,7 +26,8 @@
   },
   "dependencies": {
     "@noble/curves": "^1.0.0",
-    "@protobufjs/base64": "^1.1.2",
+    "@scure/base": "^1.1.1",
+    "@stablelib/xchacha20": "^1.0.1",
     "bech32": "^2.0.0",
     "debug": "^4.3.4",
     "uuid": "^9.0.0"

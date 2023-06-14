@@ -1,8 +1,9 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
+
 import { EventKind, HexKey, NostrEvent } from ".";
-import base64 from "@protobufjs/base64";
 import { sha256, unixNow } from "./Utils";
+import { Nip4WebCryptoEncryptor } from "./impl/nip4";
 
 export interface Tag {
   key: string
@@ -135,58 +136,15 @@ export abstract class EventExt {
     return ret;
   }
 
-  /**
-   * Encrypt the given message content
-   */
-  static async encryptData(content: string, pubkey: HexKey, privkey: HexKey) {
-    const key = await this.#getDmSharedKey(pubkey, privkey);
-    const iv = window.crypto.getRandomValues(new Uint8Array(16));
-    const data = new TextEncoder().encode(content);
-    const result = await window.crypto.subtle.encrypt(
-      {
-        name: "AES-CBC",
-        iv: iv,
-      },
-      key,
-      data
-    );
-    const uData = new Uint8Array(result);
-    return `${base64.encode(uData, 0, result.byteLength)}?iv=${base64.encode(iv, 0, 16)}`;
-  }
-
-  /**
-   * Decrypt the content of the message
-   */
-  static async decryptData(cyphertext: string, privkey: HexKey, pubkey: HexKey) {
-    const key = await this.#getDmSharedKey(pubkey, privkey);
-    const cSplit = cyphertext.split("?iv=");
-    const data = new Uint8Array(base64.length(cSplit[0]));
-    base64.decode(cSplit[0], data, 0);
-
-    const iv = new Uint8Array(base64.length(cSplit[1]));
-    base64.decode(cSplit[1], iv, 0);
-
-    const result = await window.crypto.subtle.decrypt(
-      {
-        name: "AES-CBC",
-        iv: iv,
-      },
-      key,
-      data
-    );
-    return new TextDecoder().decode(result);
-  }
-
-  /**
-   * Decrypt the content of this message in place
-   */
   static async decryptDm(content: string, privkey: HexKey, pubkey: HexKey) {
-    return await this.decryptData(content, privkey, pubkey);
+    const enc = new Nip4WebCryptoEncryptor();
+    const key = enc.getSharedSecret(privkey, pubkey);
+    return await enc.decryptData(content, key);
   }
 
-  static async #getDmSharedKey(pubkey: HexKey, privkey: HexKey) {
-    const sharedPoint = secp.secp256k1.getSharedSecret(privkey, "02" + pubkey);
-    const sharedX = sharedPoint.slice(1, 33);
-    return await window.crypto.subtle.importKey("raw", sharedX, { name: "AES-CBC" }, false, ["encrypt", "decrypt"]);
+  static async encryptDm(content: string, privKey: HexKey, pubKey: HexKey) {
+    const enc = new Nip4WebCryptoEncryptor();
+    const secret = enc.getSharedSecret(privKey, pubKey);
+    return await enc.encryptData(content, secret);
   }
 }

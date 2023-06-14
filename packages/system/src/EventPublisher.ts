@@ -87,7 +87,7 @@ export class EventPublisher {
         unwrap(window.nostr?.nip04?.encrypt).call(window.nostr?.nip04, key, content)
       );
     } else if (this.#privateKey) {
-      return await EventExt.encryptData(content, key, this.#privateKey);
+      return await EventExt.encryptDm(content, this.#privateKey, key);
     } else {
       throw new Error("Can't encrypt content, no private keys available");
     }
