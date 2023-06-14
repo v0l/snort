@@ -47,18 +47,19 @@ export function splitAllByWriteRelays(cache: RelayCache, filters: Array<ReqFilte
  * @returns
  */
 export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter): Array<RelayTaggedFilter> {
-  if ((filter.authors?.length ?? 0) === 0)
+  if ((filter.authors?.length ?? 0) === 0) {
     return [
       {
         relay: "",
         filter,
       },
     ];
+  }
 
   const allRelays = unwrap(filter.authors).map(a => {
     return {
       key: a,
-      relays: cache.get(a)?.filter(a => a.settings.write),
+      relays: cache.get(a)?.filter(a => a.settings.write).sort(() => Math.random() < 0.5 ? 1 : -1),
     };
   });
 
