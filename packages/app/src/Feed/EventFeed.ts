@@ -16,7 +16,10 @@ export default function useEventFeed(link: NostrLink) {
         f.kinds([unwrap(link.kind)]);
       }
     } else {
-      b.withFilter().id(link.id, link.relays?.at(0));
+      const f = b.withFilter().id(link.id, link.relays?.at(0));
+      if (link.author) {
+        f.authors([link.author]);
+      }
     }
     return b;
   }, [link]);
