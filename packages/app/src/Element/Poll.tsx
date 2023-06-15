@@ -1,4 +1,5 @@
 import { TaggedRawEvent } from "@snort/system";
+import { LNURL } from "@snort/shared";
 import { useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
@@ -7,7 +8,6 @@ import Text from "Element/Text";
 import useEventPublisher from "Feed/EventPublisher";
 import { useWallet } from "Wallet";
 import { useUserProfile } from "Hooks/useUserProfile";
-import { LNURL } from "LNURL";
 import { unwrap } from "SnortUtils";
 import { formatShort } from "Number";
 import Spinner from "Icons/Spinner";

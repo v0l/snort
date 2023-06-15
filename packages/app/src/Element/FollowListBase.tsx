@@ -5,6 +5,7 @@ import { HexKey } from "@snort/system";
 import useEventPublisher from "Feed/EventPublisher";
 import ProfilePreview from "Element/ProfilePreview";
 import useLogin from "Hooks/useLogin";
+import { System } from "index";
 
 import messages from "./messages";
 
@@ -31,7 +32,7 @@ export default function FollowListBase({
   async function followAll() {
     if (publisher) {
       const ev = await publisher.contactList([...pubkeys, ...follows.item], relays.item);
-      publisher.broadcast(ev);
+      System.BroadcastEvent(ev);
     }
   }
 

@@ -17,10 +17,14 @@ export * from "./RequestBuilder";
 export * from "./EventPublisher";
 export * from "./EventBuilder";
 export * from "./NostrLink";
-export * from "./cache";
 export * from "./ProfileCache";
+
 export * from "./impl/nip4";
 export * from "./impl/nip44";
+
+export * from "./cache";
+export * from "./cache/UserRelayCache";
+export * from "./cache/UserCache";
 
 export interface SystemInterface {
   /**

@@ -1,13 +1,13 @@
-type HookFn<TSnapshot> = (e?: TSnapshot) => void;
+export type HookFn<TSnapshot> = (e?: TSnapshot) => void;
 
-interface HookFilter<TSnapshot> {
+export interface HookFilter<TSnapshot> {
   fn: HookFn<TSnapshot>;
 }
 
 /**
  * Simple React hookable store with manual change notifications
  */
-export default abstract class ExternalStore<TSnapshot> {
+export abstract class ExternalStore<TSnapshot> {
   #hooks: Array<HookFilter<TSnapshot>> = [];
   #snapshot: Readonly<TSnapshot> = {} as Readonly<TSnapshot>;
   #changed = true;

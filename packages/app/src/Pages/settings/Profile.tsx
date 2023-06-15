@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { mapEventToProfile } from "@snort/system";
 
+import { System } from "index";
 import useEventPublisher from "Feed/EventPublisher";
 import { useUserProfile } from "Hooks/useUserProfile";
 import { openFile } from "SnortUtils";
@@ -77,7 +78,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
     if (publisher) {
       const ev = await publisher.metadata(userCopy);
-      publisher.broadcast(ev);
+      System.BroadcastEvent(ev);
 
       const newProfile = mapEventToProfile(ev);
       if (newProfile) {

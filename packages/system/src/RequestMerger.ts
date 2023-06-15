@@ -1,4 +1,4 @@
-import { distance } from "./Utils";
+import { distance } from "@snort/shared";
 import { ReqFilter } from ".";
 import { FlatReqFilter } from "./RequestExpander";
 

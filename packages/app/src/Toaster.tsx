@@ -1,9 +1,8 @@
 import { ReactNode, useSyncExternalStore } from "react";
 import { v4 as uuid } from "uuid";
-import ExternalStore from "ExternalStore";
-import Icon from "Icons/Icon";
-import { unixNow } from "SnortUtils";
+import { ExternalStore, unixNow } from "@snort/shared";
 
+import Icon from "Icons/Icon";
 import "./Toaster.css";
 
 interface ToastNotification {

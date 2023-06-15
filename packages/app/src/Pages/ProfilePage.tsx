@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 import { encodeTLV, EventKind, HexKey, NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { LNURL } from "@snort/shared";
 
 import { getReactions, unwrap } from "SnortUtils";
 import { formatShort } from "Number";
@@ -43,7 +44,6 @@ import { ProxyImg } from "Element/ProxyImg";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
 import { EmailRegex } from "Const";
 import { getNip05PubKey } from "Pages/LoginPage";
-import { LNURL } from "LNURL";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";

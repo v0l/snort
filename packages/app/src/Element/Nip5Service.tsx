@@ -25,6 +25,7 @@ import SnortServiceProvider from "Nip05/SnortServiceProvider";
 import { UserCache } from "Cache";
 
 import messages from "./messages";
+import { System } from "index";
 
 type Nip05ServiceProps = {
   name: string;
@@ -215,7 +216,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         nip05,
       } as UserMetadata;
       const ev = await publisher.metadata(newProfile);
-      publisher.broadcast(ev);
+      System.BroadcastEvent(ev);
       if (props.onSuccess) {
         props.onSuccess(nip05);
       }

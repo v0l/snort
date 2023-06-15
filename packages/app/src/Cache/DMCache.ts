@@ -1,6 +1,6 @@
 import { NostrEvent } from "@snort/system";
+import { FeedCache } from "@snort/shared";
 import { db } from "Db";
-import FeedCache from "./FeedCache";
 
 class DMCache extends FeedCache<NostrEvent> {
   constructor() {

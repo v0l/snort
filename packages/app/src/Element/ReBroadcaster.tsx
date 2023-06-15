@@ -6,6 +6,7 @@ import type { RootState } from "State/Store";
 import { setShow, reset, setSelectedCustomRelays } from "State/ReBroadcast";
 import messages from "./messages";
 import useLogin from "Hooks/useLogin";
+import { System } from "index";
 
 export function ReBroadcaster() {
   const publisher = useEventPublisher();
@@ -14,8 +15,8 @@ export function ReBroadcaster() {
 
   async function sendReBroadcast() {
     if (note && publisher) {
-      if (selectedCustomRelays) publisher.broadcastAll(note, selectedCustomRelays);
-      else publisher.broadcast(note);
+      if (selectedCustomRelays) selectedCustomRelays.forEach(r => System.WriteOnceToRelay(r, note));
+      else System.BroadcastEvent(note);
       dispatch(reset());
     }
   }

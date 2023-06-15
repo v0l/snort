@@ -12,7 +12,7 @@ import debug from "debug";
 
 import { sanitizeRelayUrl } from "SnortUtils";
 import useRequestBuilder from "Hooks/useRequestBuilder";
-import { UserRelays } from "Cache/UserRelayCache";
+import { UserRelays } from "Cache";
 
 interface RelayList {
   pubkey: string;

@@ -1,5 +1,5 @@
 import * as utils from "@noble/curves/abstract/utils";
-import { bech32 } from "bech32";
+import { bech32 } from "@scure/base";
 import { HexKey } from "./Nostr";
 
 export enum NostrPrefix {
@@ -43,7 +43,7 @@ export function encodeTLV(prefix: NostrPrefix, id: string, relays?: string[], ki
   const tl2 = author ? [2, 32, ...utils.hexToBytes(author)] : [];
   const tl3 = kind ? [3, 4, ...new Uint8Array(new Uint32Array([kind]).buffer).reverse()] : [];
 
-  return bech32.encode(prefix, bech32.toWords([...tl0, ...tl1, ...tl2, ...tl3]), 1_000);
+  return bech32.encode(prefix, bech32.toWords(new Uint8Array([...tl0, ...tl1, ...tl2, ...tl3])), 1_000);
 }
 
 export function decodeTLV(str: string) {

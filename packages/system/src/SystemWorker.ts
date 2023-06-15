@@ -1,6 +1,7 @@
+import { ExternalStore } from "@snort/shared";
+
 import { SystemSnapshot, SystemInterface } from ".";
 import { AuthHandler, ConnectionStateSnapshot, RelaySettings } from "./Connection";
-import ExternalStore from "./ExternalStore";
 import { NostrEvent } from "./Nostr";
 import { NoteStore } from "./NoteCollection";
 import { Query } from "./Query";

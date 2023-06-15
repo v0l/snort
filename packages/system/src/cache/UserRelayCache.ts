@@ -1,7 +1,7 @@
-import { db, UsersRelays } from "Db";
-import FeedCache from "./FeedCache";
+import { db, UsersRelays } from ".";
+import { FeedCache } from "@snort/shared";
 
-export class UsersRelaysCache extends FeedCache<UsersRelays> {
+export class UserRelaysCache extends FeedCache<UsersRelays> {
   constructor() {
     super("UserRelays", db.userRelays);
   }
@@ -27,5 +27,3 @@ export class UsersRelaysCache extends FeedCache<UsersRelays> {
     return [...this.cache.values()];
   }
 }
-
-export const UserRelays = new UsersRelaysCache();

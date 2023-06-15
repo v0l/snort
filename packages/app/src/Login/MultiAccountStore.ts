@@ -2,11 +2,10 @@ import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
 import { HexKey, RelaySettings } from "@snort/system";
+import { deepClone, sanitizeRelayUrl, unwrap, ExternalStore } from "@snort/shared";
 
 import { DefaultRelays } from "Const";
-import ExternalStore from "ExternalStore";
 import { LoginSession } from "Login";
-import { deepClone, sanitizeRelayUrl, unwrap } from "SnortUtils";
 import { DefaultPreferences, UserPreferences } from "./Preferences";
 
 const AccountStoreKey = "sessions";

@@ -14,7 +14,7 @@ import { addSubscription, setBlocked, setBookmarked, setFollows, setMuted, setPi
 import { SnortPubKey } from "Const";
 import { SubscriptionEvent } from "Subscription";
 import useRelaysFeedFollows from "./RelaysFeedFollows";
-import { UserRelays } from "Cache/UserRelayCache";
+import { UserRelays } from "Cache";
 
 /**
  * Managed loading data for the current logged in user

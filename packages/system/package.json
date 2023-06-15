@@ -1,6 +1,6 @@
 {
   "name": "@snort/system",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Snort nostr system package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,6 +30,7 @@
     "@stablelib/xchacha20": "^1.0.1",
     "bech32": "^2.0.0",
     "debug": "^4.3.4",
+    "dexie": "^3.2.4",
     "uuid": "^9.0.0"
   }
 }

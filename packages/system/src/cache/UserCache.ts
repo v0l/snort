@@ -1,10 +1,7 @@
-import FeedCache from "Cache/FeedCache";
-import { db } from "Db";
-import { MetadataCache } from "@snort/system";
-import { LNURL } from "LNURL";
-import { fetchNip05Pubkey } from "Nip05/Verifier";
+import { db, MetadataCache } from ".";
+import { fetchNip05Pubkey, FeedCache, LNURL } from "@snort/shared";
 
-class UserProfileCache extends FeedCache<MetadataCache> {
+export class UserProfileCache extends FeedCache<MetadataCache> {
   #zapperQueue: Array<{ pubkey: string; lnurl: string }> = [];
   #nip5Queue: Array<{ pubkey: string; nip05: string }> = [];
 
@@ -149,5 +146,3 @@ class UserProfileCache extends FeedCache<MetadataCache> {
     }
   }
 }
-
-export const UserCache = new UserProfileCache();

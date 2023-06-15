@@ -14,7 +14,6 @@ import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
 import useModeration from "Hooks/useModeration";
 import { NoteCreator } from "Element/NoteCreator";
-import useEventPublisher from "Feed/EventPublisher";
 import { useDmCache } from "Hooks/useDmsCache";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
@@ -34,7 +33,6 @@ export default function Layout() {
   const { publicKey, relays, preferences, subscriptions } = useLogin();
   const currentSubscription = getCurrentSubscription(subscriptions);
   const [pageClass, setPageClass] = useState("page");
-  const pub = useEventPublisher();
   useLoginFeed();
 
   const handleNoteCreatorButtonClick = () => {
@@ -62,12 +60,6 @@ export default function Layout() {
       setPageClass("page");
     }
   }, [location]);
-
-  useEffect(() => {
-    if (pub) {
-      System.HandleAuth = pub.nip42Auth.bind(pub);
-    }
-  }, [pub]);
 
   useEffect(() => {
     if (relays) {

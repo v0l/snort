@@ -8,7 +8,7 @@ import { formatShort } from "Number";
 import Text from "Element/Text";
 import ProfileImage from "Element/ProfileImage";
 import { findTag } from "SnortUtils";
-import { UserCache } from "Cache/UserCache";
+import { UserCache } from "Cache";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";

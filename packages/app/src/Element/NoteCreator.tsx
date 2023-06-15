@@ -2,6 +2,7 @@ import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { encodeTLV, EventKind, NostrPrefix, TaggedRawEvent, EventBuilder } from "@snort/system";
+import { LNURL } from "@snort/shared";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
@@ -26,7 +27,6 @@ import {
   setOtherEvents,
 } from "State/NoteCreator";
 import type { RootState } from "State/Store";
-import { LNURL } from "LNURL";
 
 import messages from "./messages";
 import { ClipboardEventHandler, useState } from "react";
@@ -35,6 +35,7 @@ import { Menu, MenuItem } from "@szhsin/react-menu";
 import { LoginStore } from "Login";
 import { getCurrentSubscription } from "Subscription";
 import useLogin from "Hooks/useLogin";
+import { System } from "index";
 
 interface NotePreviewProps {
   note: TaggedRawEvent;
@@ -111,12 +112,12 @@ export function NoteCreator() {
         return eb;
       };
       const ev = replyTo ? await publisher.reply(replyTo, note, hk) : await publisher.note(note, hk);
-      if (selectedCustomRelays) publisher.broadcastAll(ev, selectedCustomRelays);
-      else publisher.broadcast(ev);
+      if (selectedCustomRelays) selectedCustomRelays.forEach(r => System.WriteOnceToRelay(r, ev));
+      else System.BroadcastEvent(ev);
       dispatch(reset());
       for (const oe of otherEvents) {
-        if (selectedCustomRelays) publisher.broadcastAll(oe, selectedCustomRelays);
-        else publisher.broadcast(oe);
+        if (selectedCustomRelays) selectedCustomRelays.forEach(r => System.WriteOnceToRelay(r, oe));
+        else System.BroadcastEvent(oe);
       }
       dispatch(reset());
     }

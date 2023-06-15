@@ -1,11 +1,12 @@
+import debug from "debug";
+import { v4 as uuid } from "uuid";
+import { appendDedupe, dedupe, unixNowMs } from "@snort/shared";
+
 import { ReqFilter, u256, HexKey, EventKind } from ".";
-import { appendDedupe, dedupe, unixNowMs } from "./Utils";
 import { diffFilters } from "./RequestSplitter";
 import { RelayCache, splitAllByWriteRelays, splitByWriteRelays } from "./GossipModel";
 import { mergeSimilar } from "./RequestMerger";
 import { FlatReqFilter, expandFilter } from "./RequestExpander";
-import debug from "debug";
-import { v4 as uuid } from "uuid";
 
 /**
  * Which strategy is used when building REQ filters

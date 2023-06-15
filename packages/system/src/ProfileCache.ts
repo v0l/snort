@@ -1,12 +1,13 @@
+
+import debug from "debug";
+import { unixNowMs, FeedCache } from "@snort/shared";
 import { EventKind, HexKey, SystemInterface, TaggedRawEvent, PubkeyReplaceableNoteStore, RequestBuilder } from ".";
 import { ProfileCacheExpire } from "./Const";
-import { CacheStore, mapEventToProfile, MetadataCache } from "./cache";
-import { unixNowMs } from "./Utils";
-import debug from "debug";
+import { mapEventToProfile, MetadataCache } from "./cache";
 
 export class ProfileLoaderService {
   #system: SystemInterface;
-  #cache: CacheStore<MetadataCache>;
+  #cache: FeedCache<MetadataCache>;
 
   /**
    * List of pubkeys to fetch metadata for
@@ -15,7 +16,7 @@ export class ProfileLoaderService {
 
   readonly #log = debug("ProfileCache");
 
-  constructor(system: SystemInterface, cache: CacheStore<MetadataCache>) {
+  constructor(system: SystemInterface, cache: FeedCache<MetadataCache>) {
     this.#system = system;
     this.#cache = cache;
     this.#FetchMetadata();

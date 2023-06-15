@@ -1,8 +1,8 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
+import { sha256, unixNow } from "@snort/shared";
 
 import { EventKind, HexKey, NostrEvent } from ".";
-import { sha256, unixNow } from "./Utils";
 import { Nip4WebCryptoEncryptor } from "./impl/nip4";
 
 export interface Tag {

@@ -35,14 +35,21 @@ import DebugPage from "Pages/Debug";
 import { db } from "Db";
 import { preload, UserCache } from "Cache";
 import { LoginStore } from "Login";
-import { NostrSystem, ProfileLoaderService } from "@snort/system";
-import { UserRelays } from "Cache/UserRelayCache";
+import { EventPublisher, NostrSystem, ProfileLoaderService } from "@snort/system";
+import { UserRelays } from "Cache";
 
 /**
  * Singleton nostr system
  */
 export const System = new NostrSystem({
-  get: pk => UserRelays.getFromCache(pk)?.relays,
+  relayCache: UserRelays,
+  authHandler: async (c, r) => {
+    const { publicKey, privateKey } = LoginStore.snapshot();
+    if (publicKey) {
+      const pub = new EventPublisher(publicKey, privateKey);
+      return await pub.nip42Auth(c, r);
+    }
+  },
 });
 
 /**

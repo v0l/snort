@@ -1,5 +1,6 @@
 import { NostrEvent } from "@snort/system";
 import { FormattedMessage, FormattedNumber } from "react-intl";
+import { LNURL } from "@snort/shared";
 
 import { dedupe, hexToBech32, unixNow } from "SnortUtils";
 import FollowListBase from "Element/FollowListBase";
@@ -9,7 +10,6 @@ import { Toastore } from "Toaster";
 import { getDisplayName } from "Element/ProfileImage";
 import { UserCache } from "Cache";
 import useLogin from "Hooks/useLogin";
-import { LNURL } from "LNURL";
 import useEventPublisher from "Feed/EventPublisher";
 import { WalletInvoiceState } from "Wallet";
 

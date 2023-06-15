@@ -78,9 +78,9 @@ export async function generateNewLogin() {
   }
 
   const publicKey = utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
-  const publisher = new EventPublisher(System, publicKey, privateKey);
+  const publisher = new EventPublisher(publicKey, privateKey);
   const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey], newRelays);
-  publisher.broadcast(ev);
+  System.BroadcastEvent(ev);
 
   LoginStore.loginWithPrivateKey(privateKey, entropy, newRelays);
 }

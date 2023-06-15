@@ -1781,10 +1781,22 @@
   dependencies:
     "@noble/hashes" "1.3.0"
 
+"@noble/curves@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.1.0.tgz#f13fc667c89184bc04cccb9b11e8e7bae27d8c3d"
+  integrity sha512-091oBExgENk/kGj3AZmtBDMpxQPDtxQABR2B9lb1JbVTs6ytdzZNwvhxQ4MWasRNEzlbEH8jCWFCwhF/Obj5AA==
+  dependencies:
+    "@noble/hashes" "1.3.1"
+
 "@noble/hashes@1.3.0", "@noble/hashes@^1.2.0", "@noble/hashes@~1.3.0":
   version "1.3.0"
   resolved "https://registry.npmjs.org/@noble/hashes/-/hashes-1.3.0.tgz"
   integrity sha512-ilHEACi9DwqJB0pw7kv+Apvh50jiiSyR/cQ3y4W7lOR5mhvn/50FLUfsnfJz0BDZtl/RR16kXvptiv6q1msYZg==
+
+"@noble/hashes@1.3.1", "@noble/hashes@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.3.1.tgz#8831ef002114670c603c458ab8b11328406953a9"
+  integrity sha512-EbqwksQwz9xDRGfDST86whPBgM65E0OH/pCgqW0GBVzO22bNE+NuIbeTb714+IfSjU3aRk47EUvXIb5bTsenKA==
 
 "@noble/secp256k1@^1.7.0":
   version "1.7.1"
@@ -2090,11 +2102,6 @@
   version "1.0.0-next.21"
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
-
-"@protobufjs/base64@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/@protobufjs/base64/-/base64-1.1.2.tgz"
-  integrity sha512-AZkcAA5vnN/v4PDqKyMR5lx7hZttPDgClv83E//FMNhR2TMcLUhfRUBHCmSl0oi9zMgDDqRUJkSxO3wm85+XLg==
 
 "@reduxjs/toolkit@^1.9.1":
   version "1.9.3"
@@ -3616,11 +3623,6 @@ balanced-match@^1.0.0:
   resolved "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
-base32-decode@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/base32-decode/-/base32-decode-1.0.0.tgz"
-  integrity sha512-KNWUX/R7wKenwE/G/qFMzGScOgVntOmbE27vvc6GrniDGYb6a5+qWcuoXl8WIOQL7q0TpK7nZDm1Y04Yi3Yn5g==
-
 base64-js@^1.3.1, base64-js@^1.5.1:
   version "1.5.1"
   resolved "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz"
@@ -4644,15 +4646,10 @@ detect-node@^2.0.4:
   resolved "https://registry.npmjs.org/detect-node/-/detect-node-2.1.0.tgz"
   integrity sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==
 
-dexie-react-hooks@^1.1.1:
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/dexie-react-hooks/-/dexie-react-hooks-1.1.3.tgz"
-  integrity sha512-bXXE1gfYtfuVYTNiOlyam+YVaO8KaqacgRuxFuP37YtpS6o/jxT6KOl5h+hhqY36s0UavlHWbL+HWJFMcQumIg==
-
-dexie@^3.2.2:
-  version "3.2.3"
-  resolved "https://registry.npmjs.org/dexie/-/dexie-3.2.3.tgz"
-  integrity sha512-iHayBd4UYryDCVUNa3PMsJMEnd8yjyh5p7a+RFeC8i8n476BC9wMhVvqiImq5zJZJf5Tuer+s4SSj+AA3x+ZbQ==
+dexie@^3.2.4:
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/dexie/-/dexie-3.2.4.tgz#b22a9729be1102acb2eee16102ea6e2bc76454cf"
+  integrity sha512-VKoTQRSv7+RnffpOJ3Dh6ozknBqzWw/F3iqMdsZg958R0AS8AnY9x9d1lbwENr0gzeGJHXKcGhAMRaqys6SxqA==
 
 dezalgo@^1.0.0:
   version "1.0.4"
@@ -10633,7 +10630,7 @@ word-wrap@^1.2.3, word-wrap@~1.2.3:
   resolved "https://registry.npmjs.org/word-wrap/-/word-wrap-1.2.3.tgz"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
 
-workbox-background-sync@6.5.4, workbox-background-sync@^6.4.2:
+workbox-background-sync@6.5.4:
   version "6.5.4"
   resolved "https://registry.npmjs.org/workbox-background-sync/-/workbox-background-sync-6.5.4.tgz"
   integrity sha512-0r4INQZMyPky/lj4Ou98qxcThrETucOde+7mRGJl13MPJugQNKeZQOdIJe/1AchOP23cTqHcN/YVpD6r8E6I8g==
@@ -10641,7 +10638,7 @@ workbox-background-sync@6.5.4, workbox-background-sync@^6.4.2:
     idb "^7.0.1"
     workbox-core "6.5.4"
 
-workbox-broadcast-update@6.5.4, workbox-broadcast-update@^6.4.2:
+workbox-broadcast-update@6.5.4:
   version "6.5.4"
   resolved "https://registry.npmjs.org/workbox-broadcast-update/-/workbox-broadcast-update-6.5.4.tgz"
   integrity sha512-I/lBERoH1u3zyBosnpPEtcAVe5lwykx9Yg1k6f8/BGEPGaMMgZrwVrqL1uA9QZ1NGGFoyE6t9i7lBjOlDhFEEw==
@@ -10691,7 +10688,7 @@ workbox-build@6.5.4:
     workbox-sw "6.5.4"
     workbox-window "6.5.4"
 
-workbox-cacheable-response@6.5.4, workbox-cacheable-response@^6.4.2:
+workbox-cacheable-response@6.5.4:
   version "6.5.4"
   resolved "https://registry.npmjs.org/workbox-cacheable-response/-/workbox-cacheable-response-6.5.4.tgz"
   integrity sha512-DCR9uD0Fqj8oB2TSWQEm1hbFs/85hXXoayVwFKLVuIuxwJaihBsLsp4y7J9bvZbqtPJ1KlCkmYVGQKrBU4KAug==
@@ -10703,7 +10700,7 @@ workbox-core@6.5.4, workbox-core@^6.4.2:
   resolved "https://registry.npmjs.org/workbox-core/-/workbox-core-6.5.4.tgz"
   integrity sha512-OXYb+m9wZm8GrORlV2vBbE5EC1FKu71GGp0H4rjmxmF4/HLbMCoTFws87M3dFwgpmg0v00K++PImpNQ6J5NQ6Q==
 
-workbox-expiration@6.5.4, workbox-expiration@^6.4.2:
+workbox-expiration@6.5.4:
   version "6.5.4"
   resolved "https://registry.npmjs.org/workbox-expiration/-/workbox-expiration-6.5.4.tgz"
   integrity sha512-jUP5qPOpH1nXtjGGh1fRBa1wJL2QlIb5mGpct3NzepjGG2uFFBn4iiEBiI9GUmfAFR2ApuRhDydjcRmYXddiEQ==
@@ -10711,7 +10708,7 @@ workbox-expiration@6.5.4, workbox-expiration@^6.4.2:
     idb "^7.0.1"
     workbox-core "6.5.4"
 
-workbox-google-analytics@6.5.4, workbox-google-analytics@^6.4.2:
+workbox-google-analytics@6.5.4:
   version "6.5.4"
   resolved "https://registry.npmjs.org/workbox-google-analytics/-/workbox-google-analytics-6.5.4.tgz"
   integrity sha512-8AU1WuaXsD49249Wq0B2zn4a/vvFfHkpcFfqAFHNHwln3jK9QUYmzdkKXGIZl9wyKNP+RRX30vcgcyWMcZ9VAg==
@@ -10721,14 +10718,14 @@ workbox-google-analytics@6.5.4, workbox-google-analytics@^6.4.2:
     workbox-routing "6.5.4"
     workbox-strategies "6.5.4"
 
-workbox-navigation-preload@6.5.4, workbox-navigation-preload@^6.4.2:
+workbox-navigation-preload@6.5.4:
   version "6.5.4"
   resolved "https://registry.npmjs.org/workbox-navigation-preload/-/workbox-navigation-preload-6.5.4.tgz"
   integrity sha512-IIwf80eO3cr8h6XSQJF+Hxj26rg2RPFVUmJLUlM0+A2GzB4HFbQyKkrgD5y2d84g2IbJzP4B4j5dPBRzamHrng==
   dependencies:
     workbox-core "6.5.4"
 
-workbox-precaching@6.5.4, workbox-precaching@^6.4.2:
+workbox-precaching@6.5.4:
   version "6.5.4"
   resolved "https://registry.npmjs.org/workbox-precaching/-/workbox-precaching-6.5.4.tgz"
   integrity sha512-hSMezMsW6btKnxHB4bFy2Qfwey/8SYdGWvVIKFaUm8vJ4E53JAY+U2JwLTRD8wbLWoP6OVUdFlXsTdKu9yoLTg==
@@ -10737,7 +10734,7 @@ workbox-precaching@6.5.4, workbox-precaching@^6.4.2:
     workbox-routing "6.5.4"
     workbox-strategies "6.5.4"
 
-workbox-range-requests@6.5.4, workbox-range-requests@^6.4.2:
+workbox-range-requests@6.5.4:
   version "6.5.4"
   resolved "https://registry.npmjs.org/workbox-range-requests/-/workbox-range-requests-6.5.4.tgz"
   integrity sha512-Je2qR1NXCFC8xVJ/Lux6saH6IrQGhMpDrPXWZWWS8n/RD+WZfKa6dSZwU+/QksfEadJEr/NfY+aP/CXFFK5JFg==
@@ -10770,7 +10767,7 @@ workbox-strategies@6.5.4, workbox-strategies@^6.4.2:
   dependencies:
     workbox-core "6.5.4"
 
-workbox-streams@6.5.4, workbox-streams@^6.4.2:
+workbox-streams@6.5.4:
   version "6.5.4"
   resolved "https://registry.npmjs.org/workbox-streams/-/workbox-streams-6.5.4.tgz"
   integrity sha512-FXKVh87d2RFXkliAIheBojBELIPnWbQdyDvsH3t74Cwhg0fDheL1T8BqSM86hZvC0ZESLsznSYWw+Va+KVbUzg==

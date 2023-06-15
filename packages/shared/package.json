@@ -1,0 +1,21 @@
+{
+  "name": "@snort/shared",
+  "version": "1.0.0",
+  "description": "Shared components for Snort",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "https://git.v0l.io/Kieran/snort",
+  "author": "Kieran",
+  "license": "GPL-3.0-or-later",
+  "private": false,
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@noble/curves": "^1.1.0",
+    "@noble/hashes": "^1.3.1",
+    "@scure/base": "^1.1.1",
+    "debug": "^4.3.4",
+    "dexie": "^3.2.4"
+  }
+}

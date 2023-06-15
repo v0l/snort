@@ -22,12 +22,14 @@ const RelaySettingsPage = () => {
   async function saveRelays() {
     if (publisher) {
       const ev = await publisher.contactList(login.follows.item, login.relays.item);
-      publisher.broadcast(ev);
+      System.BroadcastEvent(ev);
       try {
         const onlineRelays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
         const relayList = await publisher.relayList(login.relays.item);
         const rs = Object.keys(relays.item).concat(randomSample(onlineRelays, 20));
-        publisher.broadcastAll(relayList, rs);
+        rs.forEach(r => {
+          System.WriteOnceToRelay(r, relayList);
+        });
       } catch (error) {
         console.error(error);
       }

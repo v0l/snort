@@ -4,8 +4,7 @@ import { sha256 as hash } from "@noble/hashes/sha256";
 import { hmac } from "@noble/hashes/hmac";
 import { bytesToHex } from "@noble/hashes/utils";
 import { decode as invoiceDecode } from "light-bolt11-decoder";
-import { bech32 } from "bech32";
-import base32Decode from "base32-decode";
+import { bech32, base32hex } from "@scure/base";
 import {
   HexKey,
   TaggedRawEvent,
@@ -433,8 +432,8 @@ export function magnetURIDecode(uri: string): Magnet | undefined {
           if ((m = xt.match(/^urn:btih:(.{40})/))) {
             result.infoHash = [m[1].toLowerCase()];
           } else if ((m = xt.match(/^urn:btih:(.{32})/))) {
-            const decodedStr = base32Decode(m[1], "RFC4648-HEX");
-            result.infoHash = [bytesToHex(new Uint8Array(decodedStr))];
+            const decodedStr = base32hex.decode(m[1]);
+            result.infoHash = [bytesToHex(decodedStr)];
           } else if ((m = xt.match(/^urn:btmh:1220(.{64})/))) {
             result.infoHashV2 = [m[1].toLowerCase()];
           }

@@ -1,5 +1,6 @@
+import { appendDedupe } from "@snort/shared";
 import { TaggedRawEvent, u256 } from ".";
-import { appendDedupe, findTag } from "./Utils";
+import { findTag } from "./Utils";
 
 export interface StoreSnapshot<TSnapshot> {
   data: TSnapshot | undefined;

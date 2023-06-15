@@ -1,5 +1,5 @@
-import { FullRelaySettings, ReqFilter } from ".";
-import { unwrap } from "./Utils";
+import { ReqFilter, UsersRelays } from ".";
+import { unwrap } from "@snort/shared";
 import debug from "debug";
 
 const PickNRelays = 2;
@@ -15,7 +15,7 @@ export interface RelayTaggedFilters {
 }
 
 export interface RelayCache {
-  get(pubkey?: string): Array<FullRelaySettings> | undefined;
+  getFromCache(pubkey?: string): UsersRelays | undefined;
 }
 
 export function splitAllByWriteRelays(cache: RelayCache, filters: Array<ReqFilter>) {
@@ -59,7 +59,7 @@ export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter): Array<
   const allRelays = unwrap(filter.authors).map(a => {
     return {
       key: a,
-      relays: cache.get(a)?.filter(a => a.settings.write).sort(() => Math.random() < 0.5 ? 1 : -1),
+      relays: cache.getFromCache(a)?.relays?.filter(a => a.settings.write).sort(() => Math.random() < 0.5 ? 1 : -1),
     };
   });
 

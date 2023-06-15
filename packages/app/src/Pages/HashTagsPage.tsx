@@ -6,6 +6,7 @@ import Timeline from "Element/Timeline";
 import useEventPublisher from "Feed/EventPublisher";
 import useLogin from "Hooks/useLogin";
 import { setTags } from "Login";
+import { System } from "index";
 
 const HashTagsPage = () => {
   const params = useParams();
@@ -19,7 +20,7 @@ const HashTagsPage = () => {
   async function followTags(ts: string[]) {
     if (publisher) {
       const ev = await publisher.tags(ts);
-      publisher.broadcast(ev);
+      System.BroadcastEvent(ev);
       setTags(login, ts, ev.created_at * 1000);
     }
   }

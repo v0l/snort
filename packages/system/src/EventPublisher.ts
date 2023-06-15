@@ -1,5 +1,7 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
+import { unwrap, barrierQueue, processWorkQueue, WorkQueueItem } from "@snort/shared";
+
 import {
   EventKind,
   FullRelaySettings,
@@ -7,16 +9,13 @@ import {
   Lists,
   NostrEvent,
   RelaySettings,
-  SystemInterface,
   TaggedRawEvent,
   u256,
   UserMetadata,
 } from ".";
 
-import { unwrap } from "./Utils";
 import { EventBuilder } from "./EventBuilder";
 import { EventExt } from "./EventExt";
-import { barrierQueue, processWorkQueue, WorkQueueItem } from "./WorkQueue";
 
 const Nip7Queue: Array<WorkQueueItem> = [];
 processWorkQueue(Nip7Queue);
@@ -39,12 +38,10 @@ declare global {
 }
 
 export class EventPublisher {
-  #system: SystemInterface;
   #pubKey: string;
   #privateKey?: string;
 
-  constructor(system: SystemInterface, pubKey: string, privKey?: string) {
-    this.#system = system;
+  constructor(pubKey: string, privKey?: string) {
     if (privKey) {
       this.#privateKey = privKey;
       this.#pubKey = utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
@@ -55,6 +52,18 @@ export class EventPublisher {
 
   get #hasNip07() {
     return "nostr" in window;
+  }
+
+  /**
+   * Get a NIP-07 EventPublisher
+   */
+  static async nip7() {
+    if("nostr" in window) {
+      const pubkey = await window.nostr?.getPublicKey();
+      if(pubkey) {
+        return new EventPublisher(pubkey);
+      }
+    }
   }
 
   #eb(k: EventKind) {
@@ -110,20 +119,6 @@ export class EventPublisher {
     eb.tag(["relay", relay]);
     eb.tag(["challenge", challenge]);
     return await this.#sign(eb);
-  }
-
-  broadcast(ev: NostrEvent) {
-    console.debug(ev);
-    this.#system.BroadcastEvent(ev);
-  }
-
-  /**
-   * Write event to all given relays.
-   */
-  broadcastAll(ev: NostrEvent, relays: string[]) {
-    for (const k of relays) {
-      this.#system.WriteOnceToRelay(k, ev);
-    }
   }
 
   async muted(keys: HexKey[], priv: HexKey[]) {

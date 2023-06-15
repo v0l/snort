@@ -1,4 +1,4 @@
-import { bech32ToHex, hexToBech32 } from "./Utils";
+import { bech32ToHex, hexToBech32 } from "@snort/shared";
 import { NostrPrefix, decodeTLV, TLVEntryType } from ".";
 
 export interface NostrLink {

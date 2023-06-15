@@ -5,6 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
 import { TaggedRawEvent, HexKey, EventKind, NostrPrefix, Lists, EventExt } from "@snort/system";
 
+import { System } from "index";
 import useEventPublisher from "Feed/EventPublisher";
 import Icon from "Icons/Icon";
 import { parseZap } from "Element/Zap";
@@ -24,7 +25,7 @@ import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import Reveal from "Element/Reveal";
 import useModeration from "Hooks/useModeration";
-import { UserCache } from "Cache/UserCache";
+import { UserCache } from "Cache";
 import Poll from "Element/Poll";
 import useLogin from "Hooks/useLogin";
 import { setBookmarked, setPinned } from "Login";
@@ -151,7 +152,7 @@ export default function Note(props: NoteProps) {
       if (window.confirm(formatMessage(messages.ConfirmUnpin))) {
         const es = pinned.item.filter(e => e !== id);
         const ev = await publisher.noteList(es, Lists.Pinned);
-        publisher.broadcast(ev);
+        System.BroadcastEvent(ev);
         setPinned(login, es, ev.created_at * 1000);
       }
     }
@@ -162,7 +163,7 @@ export default function Note(props: NoteProps) {
       if (window.confirm(formatMessage(messages.ConfirmUnbookmark))) {
         const es = bookmarked.item.filter(e => e !== id);
         const ev = await publisher.noteList(es, Lists.Bookmarked);
-        publisher.broadcast(ev);
+        System.BroadcastEvent(ev);
         setBookmarked(login, es, ev.created_at * 1000);
       }
     }

@@ -1,5 +1,8 @@
-import { HexKey, NostrEvent, UserMetadata } from "..";
-import { hexToBech32, unixNowMs } from "../Utils";
+import { FullRelaySettings, HexKey, NostrEvent, UserMetadata } from "..";
+import { hexToBech32, unixNowMs } from "@snort/shared";
+import { SnortSystemDb } from "./db";
+
+export const db = new SnortSystemDb();
 
 export interface MetadataCache extends UserMetadata {
   /**
@@ -33,6 +36,19 @@ export interface MetadataCache extends UserMetadata {
   isNostrAddressValid: boolean;
 }
 
+export interface RelayMetrics {
+  addr: string;
+  events: number;
+  disconnects: number;
+  latency: number[];
+}
+
+export interface UsersRelays {
+  pubkey: string;
+  created_at: number;
+  relays: FullRelaySettings[];
+}
+
 export function mapEventToProfile(ev: NostrEvent) {
   try {
     const data: UserMetadata = JSON.parse(ev.content);
@@ -54,23 +70,4 @@ export function mapEventToProfile(ev: NostrEvent) {
   } catch (e) {
     console.error("Failed to parse JSON", ev, e);
   }
-}
-
-export interface CacheStore<T> {
-  preload(): Promise<void>;
-  getFromCache(key?: string): T | undefined;
-  get(key?: string): Promise<T | undefined>;
-  bulkGet(keys: Array<string>): Promise<Array<T>>;
-  set(obj: T): Promise<void>;
-  bulkSet(obj: Array<T>): Promise<void>;
-  update<TCachedWithCreated extends T & { created: number; loaded: number }>(m: TCachedWithCreated): Promise<"new" | "updated" | "refresh" | "no_change">
-
-  /**
-   * Loads a list of rows from disk cache
-   * @param keys List of ids to load
-   * @returns Keys that do not exist on disk cache
-   */
-  buffer(keys: Array<string>): Promise<Array<string>>;
-
-  clear(): Promise<void>;
 }

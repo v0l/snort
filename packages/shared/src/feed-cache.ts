@@ -1,27 +1,29 @@
-import { db } from "Db";
 import debug from "debug";
 import { Table } from "dexie";
-import { unixNowMs, unwrap } from "SnortUtils";
+import { unixNowMs, unwrap } from "./utils";
 
 type HookFn = () => void;
 
-interface HookFilter {
+export interface KeyedHookFilter {
   key: string;
   fn: HookFn;
 }
 
-export default abstract class FeedCache<TCached> {
+/**
+ * Dexie backed generic hookable store
+ */
+export abstract class FeedCache<TCached> {
   #name: string;
-  #hooks: Array<HookFilter> = [];
+  #hooks: Array<KeyedHookFilter> = [];
   #snapshot: Readonly<Array<TCached>> = [];
   #changed = true;
   #hits = 0;
   #miss = 0;
-  protected table: Table<TCached>;
+  protected table?: Table<TCached>;
   protected onTable: Set<string> = new Set();
   protected cache: Map<string, TCached> = new Map();
 
-  constructor(name: string, table: Table<TCached>) {
+  constructor(name: string, table?: Table<TCached>) {
     this.#name = name;
     this.table = table;
     setInterval(() => {
@@ -36,10 +38,8 @@ export default abstract class FeedCache<TCached> {
   }
 
   async preload() {
-    if (db.ready) {
-      const keys = await this.table.toCollection().primaryKeys();
-      this.onTable = new Set<string>(keys.map(a => a as string));
-    }
+    const keys = await this.table?.toCollection().primaryKeys() ?? [];
+    this.onTable = new Set<string>(keys.map(a => a as string));
   }
 
   hook(fn: HookFn, key: string | undefined) {
@@ -74,7 +74,7 @@ export default abstract class FeedCache<TCached> {
   }
 
   async get(key?: string) {
-    if (key && !this.cache.has(key) && db.ready) {
+    if (key && !this.cache.has(key) && this.table) {
       const cached = await this.table.get(key);
       if (cached) {
         this.cache.set(this.key(cached), cached);
@@ -87,7 +87,7 @@ export default abstract class FeedCache<TCached> {
 
   async bulkGet(keys: Array<string>) {
     const missing = keys.filter(a => !this.cache.has(a));
-    if (missing.length > 0 && db.ready) {
+    if (missing.length > 0 && this.table) {
       const cached = await this.table.bulkGet(missing);
       cached.forEach(a => {
         if (a) {
@@ -104,7 +104,7 @@ export default abstract class FeedCache<TCached> {
   async set(obj: TCached) {
     const k = this.key(obj);
     this.cache.set(k, obj);
-    if (db.ready) {
+    if (this.table) {
       await this.table.put(obj);
       this.onTable.add(k);
     }
@@ -112,7 +112,7 @@ export default abstract class FeedCache<TCached> {
   }
 
   async bulkSet(obj: Array<TCached>) {
-    if (db.ready) {
+    if (this.table) {
       await this.table.bulkPut(obj);
       obj.forEach(a => this.onTable.add(this.key(a)));
     }
@@ -158,7 +158,7 @@ export default abstract class FeedCache<TCached> {
    */
   async buffer(keys: Array<string>): Promise<Array<string>> {
     const needsBuffer = keys.filter(a => !this.cache.has(a));
-    if (db.ready && needsBuffer.length > 0) {
+    if (this.table && needsBuffer.length > 0) {
       const mapped = needsBuffer.map(a => ({
         has: this.onTable.has(a),
         key: a,
@@ -184,7 +184,7 @@ export default abstract class FeedCache<TCached> {
   }
 
   async clear() {
-    await this.table.clear();
+    await this.table?.clear();
     this.cache.clear();
     this.onTable.clear();
   }

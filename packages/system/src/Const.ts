@@ -13,4 +13,4 @@ export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/g;
 /**
  * How long profile cache should be considered valid for
  */
- export const ProfileCacheExpire = 1_000 * 60 * 60 * 6;
+export const ProfileCacheExpire = 1_000 * 60 * 60 * 6;

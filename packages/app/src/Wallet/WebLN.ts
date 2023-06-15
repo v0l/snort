@@ -12,7 +12,7 @@ import {
   WalletKind,
   WalletStore,
 } from "Wallet";
-import { barrierQueue, processWorkQueue, WorkQueueItem } from "WorkQueue";
+import { barrierQueue, processWorkQueue, WorkQueueItem } from "@snort/shared";
 
 const WebLNQueue: Array<WorkQueueItem> = [];
 processWorkQueue(WebLNQueue);

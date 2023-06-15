@@ -1,7 +1,9 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
+import { unixNowMs, unwrap } from "@snort/shared";
+
 import { Connection, ReqFilter, Nips, TaggedRawEvent } from ".";
-import { reqFilterEq, unixNowMs, unwrap } from "./Utils";
+import { reqFilterEq } from "./Utils";
 import { NoteStore } from "./NoteCollection";
 import { flatMerge } from "./RequestMerger";
 import { BuiltRawReqFilter } from "./RequestBuilder";

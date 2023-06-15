@@ -1,6 +1,5 @@
-import { HexKey, NostrEvent } from "@snort/system";
-import { EmailRegex } from "Const";
-import { bech32ToText, unwrap } from "SnortUtils";
+import { EmailRegex } from "./const";
+import { bech32ToText, unwrap } from "./utils";
 
 const PayServiceTag = "payRequest";
 
@@ -119,7 +118,7 @@ export class LNURL {
    * @param zap
    * @returns
    */
-  async getInvoice(amount: number, comment?: string, zap?: NostrEvent) {
+  async getInvoice(amount: number, comment?: string, zap?: object) {
     const callback = new URL(unwrap(this.#service?.callback));
     const query = new Map<string, string>();
 
@@ -206,26 +205,26 @@ export class LNURL {
 }
 
 export interface LNURLService {
-  tag: string;
-  nostrPubkey?: HexKey;
-  minSendable?: number;
-  maxSendable?: number;
-  metadata: string;
-  callback: string;
-  commentAllowed?: number;
+  tag: string
+  nostrPubkey?: string
+  minSendable?: number
+  maxSendable?: number
+  metadata: string
+  callback: string
+  commentAllowed?: number
 }
 
 export interface LNURLStatus {
-  status: "SUCCESS" | "ERROR";
-  reason?: string;
+  status: "SUCCESS" | "ERROR"
+  reason?: string
 }
 
 export interface LNURLInvoice extends LNURLStatus {
-  pr?: string;
-  successAction?: LNURLSuccessAction;
+  pr?: string
+  successAction?: LNURLSuccessAction
 }
 
 export interface LNURLSuccessAction {
-  description?: string;
-  url?: string;
+  description?: string
+  url?: string
 }

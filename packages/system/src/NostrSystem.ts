@@ -1,19 +1,20 @@
 import debug from "debug";
 
-import ExternalStore from "./ExternalStore";
+import { unwrap, sanitizeRelayUrl, ExternalStore } from "@snort/shared";
 import { NostrEvent, TaggedRawEvent } from "./Nostr";
 import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot } from "./Connection";
 import { Query } from "./Query";
 import { RelayCache } from "./GossipModel";
 import { NoteStore } from "./NoteCollection";
 import { BuiltRawReqFilter, RequestBuilder } from "./RequestBuilder";
-import { unwrap, sanitizeRelayUrl } from "./Utils";
 import { SystemInterface, SystemSnapshot } from ".";
 
 /**
  * Manages nostr content retrieval system
  */
 export class NostrSystem extends ExternalStore<SystemSnapshot> implements SystemInterface {
+  #log = debug("System");
+
   /**
    * All currently connected websockets
    */
@@ -25,16 +26,19 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   Queries: Map<string, Query> = new Map();
 
   /**
-   * Handler function for NIP-42
+   * NIP-42 Auth handler
    */
-  HandleAuth?: AuthHandler;
+  #handleAuth?: AuthHandler;
 
-  #log = debug("System");
+  /**
+   * Storage class for user relay lists
+   */
   #relayCache: RelayCache;
 
-  constructor(relayCache: RelayCache) {
+  constructor(props: { authHandler?: AuthHandler, relayCache: RelayCache }) {
     super();
-    this.#relayCache = relayCache;
+    this.#handleAuth = props.authHandler;
+    this.#relayCache = props.relayCache;
     this.#cleanup();
   }
 
@@ -49,7 +53,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     try {
       const addr = unwrap(sanitizeRelayUrl(address));
       if (!this.#sockets.has(addr)) {
-        const c = new Connection(addr, options, this.HandleAuth?.bind(this));
+        const c = new Connection(addr, options, this.#handleAuth?.bind(this));
         this.#sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
@@ -90,7 +94,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     try {
       const addr = unwrap(sanitizeRelayUrl(address));
       if (!this.#sockets.has(addr)) {
-        const c = new Connection(addr, { read: true, write: false }, this.HandleAuth?.bind(this), true);
+        const c = new Connection(addr, { read: true, write: false }, this.#handleAuth?.bind(this), true);
         this.#sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
@@ -200,7 +204,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
    */
   async WriteOnceToRelay(address: string, ev: NostrEvent) {
     return new Promise<void>((resolve, reject) => {
-      const c = new Connection(address, { write: true, read: false }, this.HandleAuth, true);
+      const c = new Connection(address, { write: true, read: false }, this.#handleAuth?.bind(this), true);
 
       const t = setTimeout(reject, 5_000);
       c.OnConnected = async () => {

@@ -6,6 +6,7 @@ import { useState } from "react";
 import useFileUpload from "Upload";
 import { openFile } from "SnortUtils";
 import Textarea from "./Textarea";
+import { System } from "index";
 
 export default function WriteDm({ chatPubKey }: { chatPubKey: string }) {
   const [msg, setMsg] = useState("");
@@ -57,7 +58,7 @@ export default function WriteDm({ chatPubKey }: { chatPubKey: string }) {
     if (msg && publisher) {
       setSending(true);
       const ev = await publisher.sendDm(msg, chatPubKey);
-      publisher.broadcast(ev);
+      System.BroadcastEvent(ev);
       setMsg("");
       setSending(false);
     }

@@ -4,6 +4,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
 import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix, Lists } from "@snort/system";
+import { LNURL } from "@snort/shared";
 
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
@@ -26,12 +27,12 @@ import {
 } from "State/ReBroadcast";
 import useModeration from "Hooks/useModeration";
 import { TranslateHost } from "Const";
-import { LNURL } from "LNURL";
 import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
 import { setBookmarked, setPinned } from "Login";
 import { useInteractionCache } from "Hooks/useInteractionCache";
 import { ZapPoolController } from "ZapPoolController";
+import { System } from "index";
 
 import messages from "./messages";
 
@@ -117,7 +118,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   async function react(content: string) {
     if (!hasReacted(content) && publisher) {
       const evLike = await publisher.react(ev, content);
-      publisher.broadcast(evLike);
+      System.BroadcastEvent(evLike);
       await interactionCache.react();
     }
   }
@@ -125,7 +126,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   async function deleteEvent() {
     if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.id.substring(0, 8) })) && publisher) {
       const evDelete = await publisher.delete(ev.id);
-      publisher.broadcast(evDelete);
+      System.BroadcastEvent(evDelete);
     }
   }
 
@@ -133,7 +134,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (!hasReposted() && publisher) {
       if (!prefs.confirmReposts || window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.id }))) {
         const evRepost = await publisher.repost(ev);
-        publisher.broadcast(evRepost);
+        System.BroadcastEvent(evRepost);
         await interactionCache.repost();
       }
     }
@@ -292,7 +293,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (publisher) {
       const es = [...pinned.item, id];
       const ev = await publisher.noteList(es, Lists.Pinned);
-      publisher.broadcast(ev);
+      System.BroadcastEvent(ev);
       setPinned(login, es, ev.created_at * 1000);
     }
   }
@@ -301,7 +302,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (publisher) {
       const es = [...bookmarked.item, id];
       const ev = await publisher.noteList(es, Lists.Bookmarked);
-      publisher.broadcast(ev);
+      System.BroadcastEvent(ev);
       setBookmarked(login, es, ev.created_at * 1000);
     }
   }
