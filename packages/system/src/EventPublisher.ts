@@ -1,12 +1,13 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
-import { unwrap, barrierQueue, processWorkQueue, WorkQueueItem } from "@snort/shared";
+import { unwrap, barrierQueue, processWorkQueue, WorkQueueItem, getPublicKey } from "@snort/shared";
 
 import {
   EventKind,
   FullRelaySettings,
   HexKey,
   Lists,
+  Nip44Encryptor,
   NostrEvent,
   RelaySettings,
   TaggedRawEvent,
@@ -16,6 +17,7 @@ import {
 
 import { EventBuilder } from "./EventBuilder";
 import { EventExt } from "./EventExt";
+import { findTag } from "./Utils";
 
 const Nip7Queue: Array<WorkQueueItem> = [];
 processWorkQueue(Nip7Queue);
@@ -58,9 +60,9 @@ export class EventPublisher {
    * Get a NIP-07 EventPublisher
    */
   static async nip7() {
-    if("nostr" in window) {
+    if ("nostr" in window) {
       const pubkey = await window.nostr?.getPublicKey();
-      if(pubkey) {
+      if (pubkey) {
         return new EventPublisher(pubkey);
       }
     }
@@ -308,5 +310,26 @@ export class EventPublisher {
     eb.pubKey(this.#pubKey);
     fnHook(eb);
     return await this.#sign(eb);
+  }
+
+  /**
+   * NIP-59 Gift Wrap event with ephemeral key
+   */
+  async giftWrap(inner: NostrEvent) {
+    const secret = utils.bytesToHex(secp.secp256k1.utils.randomPrivateKey());
+
+    const pTag = findTag(inner, "p");
+    if (!pTag) throw new Error("Inner event must have a p tag");
+
+    const eb = new EventBuilder();
+    eb.pubKey(getPublicKey(secret));
+    eb.kind(EventKind.GiftWrap);
+    eb.tag(["p", pTag]);
+
+    const enc = new Nip44Encryptor();
+    const shared = enc.getSharedSecret(secret, pTag);
+    eb.content(enc.encryptData(JSON.stringify(inner), shared));
+
+    return await eb.buildAndSign(secret);
   }
 }
