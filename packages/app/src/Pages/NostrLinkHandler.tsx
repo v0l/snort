@@ -1,4 +1,4 @@
-import { NostrPrefix, parseNostrLink } from "@snort/system";
+import { NostrPrefix, tryParseNostrLink } from "@snort/system";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,7 +15,7 @@ export default function NostrLinkHandler() {
   const link = decodeURIComponent(params["*"] ?? "").toLowerCase();
 
   async function handleLink(link: string) {
-    const nav = parseNostrLink(link);
+    const nav = tryParseNostrLink(link);
     if (nav) {
       if (nav.type === NostrPrefix.Event || nav.type === NostrPrefix.Note || nav.type === NostrPrefix.Address) {
         navigate(`/e/${nav.encode()}`);
