@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { EventKind, u256, FlatNoteStore, RequestBuilder } from "@snort/system";
+import { useRequestBuilder } from "@snort/system-react";
 
 import { unixNow, unwrap, tagFilterOfTextRepost } from "SnortUtils";
-import useRequestBuilder from "Hooks/useRequestBuilder";
 import useTimelineWindow from "Hooks/useTimelineWindow";
 import useLogin from "Hooks/useLogin";
+import { System } from "index";
 
 export interface TimelineFeedOptions {
   method: "TIME_RANGE" | "LIMIT_UNTIL";
@@ -108,7 +109,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb?.builder ?? null;
   }, [until, since, options.method, pref, createBuilder]);
 
-  const main = useRequestBuilder<FlatNoteStore>(FlatNoteStore, sub);
+  const main = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, sub);
 
   const subRealtime = useMemo(() => {
     const rb = createBuilder();
@@ -122,7 +123,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb?.builder ?? null;
   }, [pref.autoShowLatest, createBuilder]);
 
-  const latest = useRequestBuilder<FlatNoteStore>(FlatNoteStore, subRealtime);
+  const latest = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, subRealtime);
 
   useEffect(() => {
     // clear store if changing relays
@@ -168,7 +169,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb.numFilters > 0 ? rb : null;
   }, [main.data, pref, subject.type]);
 
-  const related = useRequestBuilder<FlatNoteStore>(FlatNoteStore, subNext);
+  const related = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, subNext);
 
   return {
     main: main.data,

@@ -1,13 +1,14 @@
 import "./ZapButton.css";
 import { useState } from "react";
 import { HexKey } from "@snort/system";
+import { useUserProfile } from "@snort/system-react";
 
-import { useUserProfile } from "Hooks/useUserProfile";
 import SendSats from "Element/SendSats";
 import Icon from "Icons/Icon";
+import { System } from "index";
 
 const ZapButton = ({ pubkey, lnurl, children }: { pubkey: HexKey; lnurl?: string; children?: React.ReactNode }) => {
-  const profile = useUserProfile(pubkey);
+  const profile = useUserProfile(System, pubkey);
   const [zap, setZap] = useState(false);
   const service = lnurl ?? (profile?.lud16 || profile?.lud06);
   if (!service) return null;

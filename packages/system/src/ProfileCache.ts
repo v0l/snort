@@ -22,6 +22,10 @@ export class ProfileLoaderService {
     this.#FetchMetadata();
   }
 
+  get Cache() {
+    return this.#cache;
+  }
+
   /**
    * Request profile metadata for a set of pubkeys
    */

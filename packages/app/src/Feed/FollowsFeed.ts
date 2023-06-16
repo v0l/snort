@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import { HexKey, TaggedRawEvent, EventKind, PubkeyReplaceableNoteStore, RequestBuilder } from "@snort/system";
+import { useRequestBuilder } from "@snort/system-react";
 
-import useRequestBuilder from "Hooks/useRequestBuilder";
 import useLogin from "Hooks/useLogin";
+import { System } from "index";
 
 export default function useFollowsFeed(pubkey?: HexKey) {
   const { publicKey, follows } = useLogin();
@@ -15,7 +16,7 @@ export default function useFollowsFeed(pubkey?: HexKey) {
     return b;
   }, [isMe, pubkey]);
 
-  const contactFeed = useRequestBuilder<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
+  const contactFeed = useRequestBuilder<PubkeyReplaceableNoteStore>(System, PubkeyReplaceableNoteStore, sub);
   return useMemo(() => {
     if (isMe) {
       return follows.item;

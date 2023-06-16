@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { mapEventToProfile } from "@snort/system";
+import { useUserProfile } from "@snort/system-react";
 
 import { System } from "index";
 import useEventPublisher from "Feed/EventPublisher";
-import { useUserProfile } from "Hooks/useUserProfile";
 import { openFile } from "SnortUtils";
 import useFileUpload from "Upload";
 import AsyncButton from "Element/AsyncButton";
@@ -26,7 +26,7 @@ export interface ProfileSettingsProps {
 export default function ProfileSettings(props: ProfileSettingsProps) {
   const navigate = useNavigate();
   const { publicKey: id } = useLogin();
-  const user = useUserProfile(id ?? "");
+  const user = useUserProfile(System, id ?? "");
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
 

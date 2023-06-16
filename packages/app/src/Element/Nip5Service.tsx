@@ -17,7 +17,7 @@ import {
 import AsyncButton from "Element/AsyncButton";
 import SendSats from "Element/SendSats";
 import Copy from "Element/Copy";
-import { useUserProfile } from "Hooks/useUserProfile";
+import { useUserProfile } from "@snort/system-react";
 import useEventPublisher from "Feed/EventPublisher";
 import { debounce } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
@@ -44,7 +44,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   const { helpText = true } = props;
   const { formatMessage } = useIntl();
   const pubkey = useLogin().publicKey;
-  const user = useUserProfile(pubkey);
+  const user = useUserProfile(System, pubkey);
   const publisher = useEventPublisher();
   const svc = useMemo(() => new ServiceProvider(props.service), [props.service]);
   const [serviceConfig, setServiceConfig] = useState<ServiceConfig>();

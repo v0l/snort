@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { mapEventToProfile } from "@snort/system";
+import { useUserProfile } from "@snort/system-react";
 
 import Logo from "Element/Logo";
 import useEventPublisher from "Feed/EventPublisher";
 import useLogin from "Hooks/useLogin";
-import { useUserProfile } from "Hooks/useUserProfile";
 import { UserCache } from "Cache";
 import AvatarEditor from "Element/AvatarEditor";
 import { DISCOVER } from ".";
@@ -16,7 +16,7 @@ import messages from "./messages";
 
 export default function ProfileSetup() {
   const login = useLogin();
-  const myProfile = useUserProfile(login.publicKey);
+  const myProfile = useUserProfile(System, login.publicKey);
   const [username, setUsername] = useState("");
   const [picture, setPicture] = useState("");
   const { formatMessage } = useIntl();

@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import { NostrPrefix, RequestBuilder, ReplaceableNoteStore, NostrLink } from "@snort/system";
+import { useRequestBuilder } from "@snort/system-react";
 
-import useRequestBuilder from "Hooks/useRequestBuilder";
 import { unwrap } from "SnortUtils";
+import { System } from "index";
 
 export default function useEventFeed(link: NostrLink) {
   const sub = useMemo(() => {
@@ -24,5 +25,5 @@ export default function useEventFeed(link: NostrLink) {
     return b;
   }, [link]);
 
-  return useRequestBuilder<ReplaceableNoteStore>(ReplaceableNoteStore, sub);
+  return useRequestBuilder<ReplaceableNoteStore>(System, ReplaceableNoteStore, sub);
 }

@@ -7,9 +7,10 @@ import {
   ParameterizedReplaceableNoteStore,
   RequestBuilder,
 } from "@snort/system";
+import { useRequestBuilder } from "@snort/system-react";
 
-import useRequestBuilder from "Hooks/useRequestBuilder";
 import useLogin from "Hooks/useLogin";
+import { System } from "index";
 
 export default function useNotelistSubscription(pubkey: HexKey | undefined, l: Lists, defaultIds: HexKey[]) {
   const { preferences, publicKey } = useLogin();
@@ -23,7 +24,11 @@ export default function useNotelistSubscription(pubkey: HexKey | undefined, l: L
     return rb;
   }, [pubkey]);
 
-  const listStore = useRequestBuilder<ParameterizedReplaceableNoteStore>(ParameterizedReplaceableNoteStore, sub);
+  const listStore = useRequestBuilder<ParameterizedReplaceableNoteStore>(
+    System,
+    ParameterizedReplaceableNoteStore,
+    sub
+  );
   const etags = useMemo(() => {
     if (isMe) return defaultIds;
     // there should only be a single event here because we only load 1 pubkey
@@ -45,7 +50,7 @@ export default function useNotelistSubscription(pubkey: HexKey | undefined, l: L
     return s;
   }, [etags, pubkey, preferences]);
 
-  const store = useRequestBuilder<FlatNoteStore>(FlatNoteStore, esub);
+  const store = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, esub);
 
   return store.data ?? [];
 }

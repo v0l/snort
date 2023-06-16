@@ -2,6 +2,7 @@ import "./ZapPool.css";
 
 import { useMemo, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
+import { useUserProfile } from "@snort/system-react";
 
 import { SnortPubKey } from "Const";
 import ProfilePreview from "Element/ProfilePreview";
@@ -9,7 +10,6 @@ import useLogin from "Hooks/useLogin";
 import { UploaderServices } from "Upload";
 import { bech32ToHex, getRelayName, unwrap } from "SnortUtils";
 import { ZapPoolController, ZapPoolRecipient, ZapPoolRecipientType } from "ZapPoolController";
-import { useUserProfile } from "Hooks/useUserProfile";
 import AsyncButton from "Element/AsyncButton";
 import { useWallet } from "Wallet";
 import { System } from "index";
@@ -35,7 +35,7 @@ const DataProviders = [
 
 function ZapTarget({ target }: { target: ZapPoolRecipient }) {
   const login = useLogin();
-  const profile = useUserProfile(target.pubkey);
+  const profile = useUserProfile(System, target.pubkey);
   const hasAddress = profile?.lud16 || profile?.lud06;
   const defaultZapMount = Math.ceil(login.preferences.defaultZapAmount * (target.split / 100));
   return (

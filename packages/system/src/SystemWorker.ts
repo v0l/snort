@@ -27,7 +27,7 @@ export class SystemWorker extends ExternalStore<SystemSnapshot> implements Syste
     throw new Error("Method not implemented.");
   }
 
-  Query<T extends NoteStore>(type: new () => T, req: RequestBuilder | null): Query | undefined {
+  Query<T extends NoteStore>(type: new () => T, req: RequestBuilder | null): Query {
     throw new Error("Method not implemented.");
   }
 

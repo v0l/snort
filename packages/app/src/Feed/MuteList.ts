@@ -7,10 +7,11 @@ import {
   ParameterizedReplaceableNoteStore,
   RequestBuilder,
 } from "@snort/system";
+import { useRequestBuilder } from "@snort/system-react";
 
 import { getNewest } from "SnortUtils";
-import useRequestBuilder from "Hooks/useRequestBuilder";
 import useLogin from "Hooks/useLogin";
+import { System } from "index";
 
 export default function useMutedFeed(pubkey?: HexKey) {
   const { publicKey, muted } = useLogin();
@@ -23,7 +24,11 @@ export default function useMutedFeed(pubkey?: HexKey) {
     return b;
   }, [pubkey]);
 
-  const mutedFeed = useRequestBuilder<ParameterizedReplaceableNoteStore>(ParameterizedReplaceableNoteStore, sub);
+  const mutedFeed = useRequestBuilder<ParameterizedReplaceableNoteStore>(
+    System,
+    ParameterizedReplaceableNoteStore,
+    sub
+  );
 
   const mutedList = useMemo(() => {
     if (pubkey && mutedFeed.data) {

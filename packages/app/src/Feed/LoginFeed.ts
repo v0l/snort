@@ -1,13 +1,13 @@
 import { useEffect, useMemo } from "react";
 import { TaggedRawEvent, Lists, EventKind, FlatNoteStore, RequestBuilder } from "@snort/system";
 import debug from "debug";
+import { useRequestBuilder } from "@snort/system-react";
 
 import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";
 import { makeNotification, sendNotification } from "Notifications";
 import useEventPublisher from "Feed/EventPublisher";
 import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
-import useRequestBuilder from "Hooks/useRequestBuilder";
 import { DmCache } from "Cache";
 import useLogin from "Hooks/useLogin";
 import { addSubscription, setBlocked, setBookmarked, setFollows, setMuted, setPinned, setRelays, setTags } from "Login";
@@ -15,6 +15,7 @@ import { SnortPubKey } from "Const";
 import { SubscriptionEvent } from "Subscription";
 import useRelaysFeedFollows from "./RelaysFeedFollows";
 import { UserRelays } from "Cache";
+import { System } from "index";
 
 /**
  * Managed loading data for the current logged in user
@@ -61,7 +62,7 @@ export default function useLoginFeed() {
     return b;
   }, [pubKey]);
 
-  const loginFeed = useRequestBuilder<FlatNoteStore>(FlatNoteStore, subLogin);
+  const loginFeed = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, subLogin);
 
   // update relays and follow lists
   useEffect(() => {
@@ -153,7 +154,7 @@ export default function useLoginFeed() {
     }
   }
 
-  const listsFeed = useRequestBuilder<FlatNoteStore>(FlatNoteStore, subLists);
+  const listsFeed = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, subLists);
 
   useEffect(() => {
     if (listsFeed.data) {

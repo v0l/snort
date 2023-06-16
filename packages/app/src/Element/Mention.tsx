@@ -2,12 +2,13 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { HexKey } from "@snort/system";
 
-import { useUserProfile } from "Hooks/useUserProfile";
+import { useUserProfile } from "@snort/system-react";
 import { profileLink } from "SnortUtils";
 import { getDisplayName } from "Element/ProfileImage";
+import { System } from "index";
 
 export default function Mention({ pubkey, relays }: { pubkey: HexKey; relays?: Array<string> | string }) {
-  const user = useUserProfile(pubkey);
+  const user = useUserProfile(System, pubkey);
 
   const name = useMemo(() => {
     return getDisplayName(user, pubkey);

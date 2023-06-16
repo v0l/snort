@@ -2,10 +2,11 @@ import "./Nip05.css";
 import { HexKey } from "@snort/system";
 
 import Icon from "Icons/Icon";
-import { useUserProfile } from "Hooks/useUserProfile";
+import { useUserProfile } from "@snort/system-react";
+import { System } from "index";
 
 export function useIsVerified(pubkey: HexKey, bypassCheck?: boolean) {
-  const profile = useUserProfile(pubkey);
+  const profile = useUserProfile(System, pubkey);
   return { isVerified: bypassCheck || profile?.isNostrAddressValid };
 }
 

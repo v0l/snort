@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { HexKey, NostrEvent, NostrPrefix } from "@snort/system";
+import { useUserProfile } from "@snort/system-react";
 
 import UnreadCount from "Element/UnreadCount";
 import ProfileImage, { getDisplayName } from "Element/ProfileImage";
@@ -14,12 +15,12 @@ import usePageWidth from "Hooks/usePageWidth";
 import NoteTime from "Element/NoteTime";
 import DmWindow from "Element/DmWindow";
 import Avatar from "Element/Avatar";
-import { useUserProfile } from "Hooks/useUserProfile";
 import Icon from "Icons/Icon";
 import Text from "Element/Text";
 
 import "./MessagesPage.css";
 import messages from "./messages";
+import { System } from "index";
 
 const TwoCol = 768;
 const ThreeCol = 1500;
@@ -126,7 +127,7 @@ export default function MessagesPage() {
 }
 
 function ProfileDmActions({ pubkey }: { pubkey: string }) {
-  const profile = useUserProfile(pubkey);
+  const profile = useUserProfile(System, pubkey);
   const { block, unblock, isBlocked } = useModeration();
 
   const blocked = isBlocked(pubkey);

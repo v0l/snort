@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import { EventKind, HexKey, Lists, RequestBuilder, FlatNoteStore, ReplaceableNoteStore } from "@snort/system";
+import { useRequestBuilder } from "@snort/system-react";
 
 import { unwrap, findTag, chunks } from "SnortUtils";
-import useRequestBuilder from "Hooks/useRequestBuilder";
+import { System } from "index";
 
 type BadgeAwards = {
   pubkeys: string[];
@@ -17,7 +18,7 @@ export default function useProfileBadges(pubkey?: HexKey) {
     return b;
   }, [pubkey]);
 
-  const profileBadges = useRequestBuilder<ReplaceableNoteStore>(ReplaceableNoteStore, sub);
+  const profileBadges = useRequestBuilder<ReplaceableNoteStore>(System, ReplaceableNoteStore, sub);
 
   const profile = useMemo(() => {
     if (profileBadges.data) {
@@ -57,7 +58,7 @@ export default function useProfileBadges(pubkey?: HexKey) {
     return b;
   }, [profile, ds]);
 
-  const awards = useRequestBuilder<FlatNoteStore>(FlatNoteStore, awardsSub);
+  const awards = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, awardsSub);
 
   const result = useMemo(() => {
     if (awards.data) {

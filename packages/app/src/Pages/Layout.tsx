@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
+import { useUserProfile } from "@snort/system-react";
 
 import messages from "./messages";
 
@@ -18,7 +19,6 @@ import { useDmCache } from "Hooks/useDmsCache";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
 import Avatar from "Element/Avatar";
-import { useUserProfile } from "Hooks/useUserProfile";
 import { profileLink } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 import Toaster from "Toaster";
@@ -147,7 +147,7 @@ const AccountHeader = () => {
   const { isMuted } = useModeration();
   const { publicKey, latestNotification, readNotifications } = useLogin();
   const dms = useDmCache();
-  const profile = useUserProfile(publicKey);
+  const profile = useUserProfile(System, publicKey);
 
   const hasNotifications = useMemo(
     () => latestNotification > readNotifications,

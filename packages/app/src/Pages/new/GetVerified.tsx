@@ -1,20 +1,21 @@
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
+import { useUserProfile } from "@snort/system-react";
 
 import Logo from "Element/Logo";
 import { Nip5Services } from "Pages/Verification";
 import Nip5Service from "Element/Nip5Service";
 import ProfileImage from "Element/ProfileImage";
-import { useUserProfile } from "Hooks/useUserProfile";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
+import { System } from "index";
 
 export default function GetVerified() {
   const navigate = useNavigate();
   const { publicKey } = useLogin();
-  const user = useUserProfile(publicKey);
+  const user = useUserProfile(System, publicKey);
   const [isVerified, setIsVerified] = useState(false);
   const name = user?.name || "nostrich";
   const [nip05, setNip05] = useState(`${name}@snort.social`);

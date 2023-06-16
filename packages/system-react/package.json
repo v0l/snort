@@ -1,0 +1,23 @@
+{
+  "name": "@snort/system-react",
+  "version": "1.0.0",
+  "description": "React hooks for @snort/system",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "https://git.v0l.io/Kieran/snort",
+  "author": "Kieran",
+  "license": "GPL-3.0-or-later",
+  "private": false,
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "dependencies": {
+    "@snort/system": "",
+    "@snort/shared": "",
+    "react": "^18.2.0"
+  }
+}

@@ -1,15 +1,18 @@
 import { useSyncExternalStore } from "react";
-import { RequestBuilder, EmptySnapshot, NoteStore, StoreSnapshot } from "@snort/system";
-import { unwrap } from "SnortUtils";
-import { System } from "index";
+import { RequestBuilder, EmptySnapshot, NoteStore, StoreSnapshot, SystemInterface } from "@snort/system";
+import { unwrap } from "@snort/shared";
 
+/**
+ * Send a query to the relays and wait for data
+ */
 const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TStore["getSnapshotData"]>>(
-  type: { new (): TStore },
+  system: SystemInterface,
+  type: { new(): TStore },
   rb: RequestBuilder | null
 ) => {
   const subscribe = (onChanged: () => void) => {
     if (rb) {
-      const q = System.Query<TStore>(type, rb);
+      const q = system.Query<TStore>(type, rb);
       const release = q.feed.hook(onChanged);
       q.uncancel();
       return () => {
@@ -22,7 +25,7 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
     };
   };
   const getState = (): StoreSnapshot<TSnapshot> => {
-    const q = System.GetQuery(rb?.id ?? "");
+    const q = system.GetQuery(rb?.id ?? "");
     if (q) {
       return unwrap(q).feed?.snapshot as StoreSnapshot<TSnapshot>;
     }
@@ -34,4 +37,4 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
   );
 };
 
-export default useRequestBuilder;
+export { useRequestBuilder };

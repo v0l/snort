@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { u256, EventKind, NostrLink, FlatNoteStore, RequestBuilder } from "@snort/system";
+import { useRequestBuilder } from "@snort/system-react";
 
 import { appendDedupe } from "SnortUtils";
-import useRequestBuilder from "Hooks/useRequestBuilder";
 import useLogin from "Hooks/useLogin";
+import { System } from "index";
 
 interface RelayTaggedEventId {
   id: u256;
@@ -54,7 +55,7 @@ export default function useThreadFeed(link: NostrLink) {
     return sub;
   }, [trackingEvents, trackingATags, allEvents, pref]);
 
-  const store = useRequestBuilder<FlatNoteStore>(FlatNoteStore, sub);
+  const store = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, sub);
 
   useEffect(() => {
     setTrackingATags([]);

@@ -8,11 +8,12 @@ import {
   PubkeyReplaceableNoteStore,
   RequestBuilder,
 } from "@snort/system";
+import { useRequestBuilder } from "@snort/system-react";
 import debug from "debug";
 
 import { sanitizeRelayUrl } from "SnortUtils";
-import useRequestBuilder from "Hooks/useRequestBuilder";
 import { UserRelays } from "Cache";
+import { System } from "index";
 
 interface RelayList {
   pubkey: string;
@@ -79,7 +80,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
     });
   }
 
-  const relays = useRequestBuilder<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
+  const relays = useRequestBuilder<PubkeyReplaceableNoteStore>(System, PubkeyReplaceableNoteStore, sub);
   const notesRelays = relays.data?.filter(a => a.kind === EventKind.Relays) ?? [];
   const notesContactLists = relays.data?.filter(a => a.kind === EventKind.ContactList) ?? [];
   return useMemo(() => {

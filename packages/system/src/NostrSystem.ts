@@ -1,13 +1,13 @@
 import debug from "debug";
 
-import { unwrap, sanitizeRelayUrl, ExternalStore } from "@snort/shared";
+import { unwrap, sanitizeRelayUrl, ExternalStore, FeedCache } from "@snort/shared";
 import { NostrEvent, TaggedRawEvent } from "./Nostr";
 import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot } from "./Connection";
 import { Query } from "./Query";
 import { RelayCache } from "./GossipModel";
 import { NoteStore } from "./NoteCollection";
 import { BuiltRawReqFilter, RequestBuilder } from "./RequestBuilder";
-import { SystemInterface, SystemSnapshot } from ".";
+import { MetadataCache, ProfileLoaderService, SystemInterface, SystemSnapshot, UserProfileCache, UserRelaysCache } from ".";
 
 /**
  * Manages nostr content retrieval system
@@ -35,11 +35,34 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
    */
   #relayCache: RelayCache;
 
-  constructor(props: { authHandler?: AuthHandler, relayCache: RelayCache }) {
+  /**
+   * Storage class for user profiles
+   */
+  #profileCache: FeedCache<MetadataCache>;
+
+  /**
+   * Profile loading service
+   */
+  #profileLoader: ProfileLoaderService;
+
+  constructor(props: {
+    authHandler?: AuthHandler,
+    relayCache?: RelayCache,
+    profileCache?: FeedCache<MetadataCache>
+  }) {
     super();
     this.#handleAuth = props.authHandler;
-    this.#relayCache = props.relayCache;
+    this.#relayCache = props.relayCache ?? new UserRelaysCache();
+    this.#profileCache = props.profileCache ?? new UserProfileCache();
+    this.#profileLoader = new ProfileLoaderService(this, this.#profileCache);
     this.#cleanup();
+  }
+
+  /**
+   * Profile loader service allows you to request profiles
+   */
+  get ProfileLoader() {
+    return this.#profileLoader;
   }
 
   get Sockets(): ConnectionStateSnapshot[] {

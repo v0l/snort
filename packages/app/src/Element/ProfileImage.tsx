@@ -1,13 +1,14 @@
 import "./ProfileImage.css";
 
 import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
 import { HexKey, NostrPrefix, MetadataCache } from "@snort/system";
+import { useUserProfile } from "@snort/system-react";
 
-import { useUserProfile } from "Hooks/useUserProfile";
 import { hexToBech32, profileLink } from "SnortUtils";
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
-import { Link } from "react-router-dom";
+import { System } from "index";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -30,7 +31,7 @@ export default function ProfileImage({
   verifyNip,
   overrideUsername,
 }: ProfileImageProps) {
-  const user = useUserProfile(pubkey);
+  const user = useUserProfile(System, pubkey);
   const nip05 = defaultNip ? defaultNip : user?.nip05;
 
   const name = useMemo(() => {

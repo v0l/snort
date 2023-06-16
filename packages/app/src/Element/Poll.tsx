@@ -2,17 +2,18 @@ import { TaggedRawEvent } from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
+import { useUserProfile } from "@snort/system-react";
 
 import { ParsedZap } from "Element/Zap";
 import Text from "Element/Text";
 import useEventPublisher from "Feed/EventPublisher";
 import { useWallet } from "Wallet";
-import { useUserProfile } from "Hooks/useUserProfile";
 import { unwrap } from "SnortUtils";
 import { formatShort } from "Number";
 import Spinner from "Icons/Spinner";
 import SendSats from "Element/SendSats";
 import useLogin from "Hooks/useLogin";
+import { System } from "index";
 
 interface PollProps {
   ev: TaggedRawEvent;
@@ -24,7 +25,7 @@ export default function Poll(props: PollProps) {
   const publisher = useEventPublisher();
   const { wallet } = useWallet();
   const { preferences: prefs, publicKey: myPubKey, relays } = useLogin();
-  const pollerProfile = useUserProfile(props.ev.pubkey);
+  const pollerProfile = useUserProfile(System, props.ev.pubkey);
   const [error, setError] = useState("");
   const [invoice, setInvoice] = useState("");
   const [voting, setVoting] = useState<number>();

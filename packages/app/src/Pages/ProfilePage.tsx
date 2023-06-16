@@ -4,6 +4,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 import { encodeTLV, EventKind, HexKey, NostrPrefix, tryParseNostrLink } from "@snort/system";
 import { LNURL } from "@snort/shared";
+import { useUserProfile } from "@snort/system-react";
 
 import { getReactions, unwrap } from "SnortUtils";
 import { formatShort } from "Number";
@@ -19,7 +20,6 @@ import useBookmarkFeed from "Feed/BookmarkFeed";
 import useFollowersFeed from "Feed/FollowersFeed";
 import useFollowsFeed from "Feed/FollowsFeed";
 import useProfileBadges from "Feed/BadgesFeed";
-import { useUserProfile } from "Hooks/useUserProfile";
 import useModeration from "Hooks/useModeration";
 import useZapsFeed from "Feed/ZapsFeed";
 import { default as ZapElement } from "Element/Zap";
@@ -47,6 +47,7 @@ import { getNip05PubKey } from "Pages/LoginPage";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
+import { System } from "index";
 
 const NOTES = 0;
 const REACTIONS = 1;
@@ -104,7 +105,7 @@ export default function ProfilePage() {
   const params = useParams();
   const navigate = useNavigate();
   const [id, setId] = useState<string>();
-  const user = useUserProfile(id);
+  const user = useUserProfile(System, id);
   const loginPubKey = useLogin().publicKey;
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);

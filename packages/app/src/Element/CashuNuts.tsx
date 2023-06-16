@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import useLogin from "Hooks/useLogin";
-import { useUserProfile } from "Hooks/useUserProfile";
+import { useUserProfile } from "@snort/system-react";
+import { System } from "index";
 
 interface Token {
   token: Array<{
@@ -16,7 +17,7 @@ interface Token {
 
 export default function CashuNuts({ token }: { token: string }) {
   const login = useLogin();
-  const profile = useUserProfile(login.publicKey);
+  const profile = useUserProfile(System, login.publicKey);
 
   async function copyToken(e: React.MouseEvent<HTMLButtonElement>, token: string) {
     e.stopPropagation();

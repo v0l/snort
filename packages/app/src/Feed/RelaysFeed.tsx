@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { HexKey, FullRelaySettings, EventKind, RequestBuilder, ReplaceableNoteStore } from "@snort/system";
-
-import useRequestBuilder from "Hooks/useRequestBuilder";
+import { useRequestBuilder } from "@snort/system-react";
+import { System } from "index";
 
 export default function useRelaysFeed(pubkey?: HexKey) {
   const sub = useMemo(() => {
@@ -11,7 +11,7 @@ export default function useRelaysFeed(pubkey?: HexKey) {
     return b;
   }, [pubkey]);
 
-  const relays = useRequestBuilder<ReplaceableNoteStore>(ReplaceableNoteStore, sub);
+  const relays = useRequestBuilder<ReplaceableNoteStore>(System, ReplaceableNoteStore, sub);
 
   if (!relays.data?.content) {
     return [] as FullRelaySettings[];

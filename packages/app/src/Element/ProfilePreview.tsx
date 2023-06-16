@@ -1,11 +1,12 @@
 import "./ProfilePreview.css";
 import { ReactNode } from "react";
+import { HexKey } from "@snort/system";
+import { useUserProfile } from "@snort/system-react";
+import { useInView } from "react-intersection-observer";
 
 import ProfileImage from "Element/ProfileImage";
 import FollowButton from "Element/FollowButton";
-import { useUserProfile } from "Hooks/useUserProfile";
-import { HexKey } from "@snort/system";
-import { useInView } from "react-intersection-observer";
+import { System } from "index";
 
 export interface ProfilePreviewProps {
   pubkey: HexKey;
@@ -18,7 +19,7 @@ export interface ProfilePreviewProps {
 export default function ProfilePreview(props: ProfilePreviewProps) {
   const pubkey = props.pubkey;
   const { ref, inView } = useInView({ triggerOnce: true });
-  const user = useUserProfile(inView ? pubkey : undefined);
+  const user = useUserProfile(System, inView ? pubkey : undefined);
   const options = {
     about: true,
     ...props.options,

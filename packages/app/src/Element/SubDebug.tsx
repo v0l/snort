@@ -1,11 +1,11 @@
 import "./SubDebug.css";
 import { useState } from "react";
+import { ReqFilter } from "@snort/system";
+import { useSystemState } from "@snort/system-react";
 
 import useRelayState from "Feed/RelayState";
 import Tabs, { Tab } from "Element/Tabs";
 import { unwrap } from "SnortUtils";
-import useSystemState from "Hooks/useSystemState";
-import { ReqFilter } from "@snort/system";
 import { useCopy } from "useCopy";
 import { System } from "index";
 
@@ -15,7 +15,7 @@ function RelayInfo({ id }: { id: string }) {
 }
 
 function Queries() {
-  const qs = useSystemState();
+  const qs = useSystemState(System);
   const { copy } = useCopy();
 
   function countElements(filters: Array<ReqFilter>) {

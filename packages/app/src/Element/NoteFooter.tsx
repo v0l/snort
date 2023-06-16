@@ -5,6 +5,7 @@ import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
 import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix, Lists } from "@snort/system";
 import { LNURL } from "@snort/shared";
+import { useUserProfile } from "@snort/system-react";
 
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
@@ -17,7 +18,6 @@ import { ReBroadcaster } from "Element/ReBroadcaster";
 import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
 import { ParsedZap, ZapsSummary } from "Element/Zap";
-import { useUserProfile } from "Hooks/useUserProfile";
 import { RootState } from "State/Store";
 import { setReplyTo, setShow, reset } from "State/NoteCreator";
 import {
@@ -73,7 +73,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const login = useLogin();
   const { pinned, bookmarked, publicKey, preferences: prefs, relays } = login;
   const { mute, block } = useModeration();
-  const author = useUserProfile(ev.pubkey);
+  const author = useUserProfile(System, ev.pubkey);
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const publisher = useEventPublisher();
   const showNoteCreatorModal = useSelector((s: RootState) => s.noteCreator.show);
