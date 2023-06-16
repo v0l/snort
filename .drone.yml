@@ -113,7 +113,7 @@ steps:
         img build -t git.v0l.io/kieran/snort:${DRONE_TAG} \
         --platform linux/amd64,linux/arm64 \
         -f Dockerfile.prebuilt .
-      - img push git.v0l.io/kieran/snort:latest
+      - img push git.v0l.io/kieran/snort:${DRONE_TAG}
 volumes:
 - name: cache
   claim:
