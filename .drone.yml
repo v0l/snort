@@ -79,6 +79,48 @@ volumes:
 ---
 kind: pipeline
 type: kubernetes
+name: docker-release
+concurrency:
+  limit: 1
+trigger:
+  event:
+  - tag
+metadata:
+  namespace: git
+steps:
+  - name: Build site
+    image: node:current-bullseye
+    volumes:
+      - name: cache
+        path: /cache
+    environment: 
+      YARN_CACHE_FOLDER: /cache/.yarn-docker-release
+    commands:
+      - yarn install
+      - yarn build
+  - name: build docker image
+    image: r.j3ss.co/img
+    privileged: true
+    volumes:
+      - name: cache
+        path: /cache
+    environment: 
+      TOKEN:
+        from_secret: img_token
+    commands:
+      - img login -u kieran -p $TOKEN git.v0l.io
+      - |-
+        img build -t git.v0l.io/kieran/snort:${DRONE_TAG} \
+        --platform linux/amd64,linux/arm64 \
+        -f Dockerfile.prebuilt .
+      - img push git.v0l.io/kieran/snort:latest
+volumes:
+- name: cache
+  claim:
+    name: docker-cache
+---
+kind: pipeline
+type: kubernetes
 name: test-lint
 concurrency:
   limit: 1
@@ -94,8 +136,8 @@ steps:
       YARN_CACHE_FOLDER: /cache/.yarn-test
     commands:
       - yarn install
-      - yarn workspace @snort/nostr build
-      - yarn workspace @snort/app test
+      - yarn build
+      - yarn test
       - yarn workspace @snort/app eslint
       - yarn workspace @snort/app prettier --check .
 volumes:
