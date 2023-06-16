@@ -31,9 +31,11 @@ Snort supports the following NIP's:
 - [x] NIP-36: Sensitive Content
 - [ ] NIP-40: Expiration Timestamp
 - [x] NIP-42: Authentication of clients to relays
+- [x] NIP-44: Versioned encryption
 - [x] NIP-50: Search
 - [x] NIP-51: Lists
 - [x] NIP-58: Badges
+- [x] NIP-59: Gift Wrap
 - [x] NIP-65: Relay List Metadata
 - [ ] NIP-78: App specific data
 
