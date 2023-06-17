@@ -46,6 +46,7 @@ export interface ReqFilter {
   "#t"?: string[];
   "#d"?: string[];
   "#r"?: string[];
+  "#a"?: string[];
   search?: string;
   since?: number;
   until?: number;

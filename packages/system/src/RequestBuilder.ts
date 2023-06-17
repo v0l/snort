@@ -204,7 +204,7 @@ export class RequestFilterBuilder {
     return this;
   }
 
-  tag(key: "e" | "p" | "d" | "t" | "r", value?: Array<string>) {
+  tag(key: "e" | "p" | "d" | "t" | "r" | "a", value?: Array<string>) {
     if (!value) return this;
     this.#filter[`#${key}`] = appendDedupe(this.#filter[`#${key}`], value);
     return this;

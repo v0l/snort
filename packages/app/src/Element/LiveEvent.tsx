@@ -14,8 +14,8 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
     }
   }, [video, ev]);
   return (
-    <div>
-      <video ref={video} controls={true} autoPlay={true} muted={true} />
+    <div className="w-max">
+      <video className="w-max" ref={video} controls={true} />
     </div>
   );
 }
