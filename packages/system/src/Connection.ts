@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+import debug from "debug";
 import { unwrap, ExternalStore } from "@snort/shared";
 
 import { DefaultConnectTimeout } from "./Const";
@@ -37,6 +38,7 @@ export interface ConnectionStateSnapshot {
 }
 
 export class Connection extends ExternalStore<ConnectionStateSnapshot> {
+  #log = debug("Connection");
   Id: string;
   Address: string;
   Socket: WebSocket | null = null;
@@ -54,7 +56,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   Stats: ConnectionStats = new ConnectionStats();
   HasStateChange: boolean = true;
   IsClosed: boolean;
-  ReconnectTimer: ReturnType<typeof setTimeout> | null;
+  ReconnectTimer?: ReturnType<typeof setTimeout>;
   EventsCallback: Map<u256, (msg: boolean[]) => void>;
   OnConnected?: () => void;
   OnEvent?: (sub: string, e: TaggedRawEvent) => void;
@@ -64,7 +66,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   AwaitingAuth: Map<string, boolean>;
   Authed = false;
   Ephemeral: boolean;
-  EphemeralTimeout: ReturnType<typeof setTimeout> | undefined;
+  EphemeralTimeout?: ReturnType<typeof setTimeout>;
   Down = true;
 
   constructor(addr: string, options: RelaySettings, auth?: AuthHandler, ephemeral: boolean = false) {
@@ -73,7 +75,6 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     this.Address = addr;
     this.Settings = options;
     this.IsClosed = false;
-    this.ReconnectTimer = null;
     this.EventsCallback = new Map();
     this.AwaitingAuth = new Map();
     this.Auth = auth;
@@ -111,7 +112,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
         }
       }
     } catch (e) {
-      console.warn("Could not load relay information", e);
+      this.#log("Could not load relay information %O", e);
     }
 
     if (this.Socket) {
@@ -133,7 +134,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     this.IsClosed = true;
     if (this.ReconnectTimer !== null) {
       clearTimeout(this.ReconnectTimer);
-      this.ReconnectTimer = null;
+      this.ReconnectTimer = undefined;
     }
     this.Socket?.close();
     this.notifyChange();
@@ -141,7 +142,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
 
   OnOpen() {
     this.ConnectTimeout = DefaultConnectTimeout;
-    console.log(`[${this.Address}] Open!`);
+    this.#log(`[${this.Address}] Open!`);
     this.Down = false;
     if (this.Ephemeral) {
       this.ResetEphemeralTimeout();
@@ -151,9 +152,22 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   }
 
   OnClose(e: CloseEvent) {
-    if (!this.IsClosed) {
+    if (this.EphemeralTimeout) {
+      clearTimeout(this.EphemeralTimeout);
+      this.EphemeralTimeout = undefined;
+    }
+    if (this.ReconnectTimer) {
+      clearTimeout(this.ReconnectTimer);
+      this.ReconnectTimer = undefined;
+    }
+
+    // remote server closed the connection, dont re-connect
+    if (e.code === 4000) {
+      this.IsClosed = true;
+      this.#log(`[${this.Address}] Closed! (Remote)`);
+    } else if (!this.IsClosed) {
       this.ConnectTimeout = this.ConnectTimeout * 2;
-      console.log(
+      this.#log(
         `[${this.Address}] Closed (${e.reason}), trying again in ${(this.ConnectTimeout / 1000)
           .toFixed(0)
           .toLocaleString()} sec`
@@ -163,8 +177,8 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
       }, this.ConnectTimeout);
       this.Stats.Disconnects++;
     } else {
-      console.log(`[${this.Address}] Closed!`);
-      this.ReconnectTimer = null;
+      this.#log(`[${this.Address}] Closed!`);
+      this.ReconnectTimer = undefined;
     }
 
     this.OnDisconnect?.(this.Id);
@@ -182,7 +196,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
         case "AUTH": {
           this._OnAuthAsync(msg[1])
             .then(() => this.#sendPendingRaw())
-            .catch(console.error);
+            .catch(this.#log);
           this.Stats.EventsReceived++;
           this.notifyChange();
           break;
@@ -202,7 +216,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
         }
         case "OK": {
           // feedback to broadcast call
-          console.debug(`${this.Address} OK: `, msg);
+          this.#log(`${this.Address} OK: %O`, msg);
           const id = msg[1];
           if (this.EventsCallback.has(id)) {
             const cb = unwrap(this.EventsCallback.get(id));
@@ -212,11 +226,11 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
           break;
         }
         case "NOTICE": {
-          console.warn(`[${this.Address}] NOTICE: ${msg[1]}`);
+          this.#log(`[${this.Address}] NOTICE: ${msg[1]}`);
           break;
         }
         default: {
-          console.warn(`Unknown tag: ${tag}`);
+          this.#log(`Unknown tag: ${tag}`);
           break;
         }
       }
@@ -224,7 +238,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   }
 
   OnError(e: Event) {
-    console.error(e);
+    this.#log("Error: %O", e);
     this.notifyChange();
   }
 
@@ -282,12 +296,13 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
         cmd,
         cb: cbSent,
       });
-      console.debug("Queuing:", this.Address, cmd);
+      this.#log("Queuing: %s %O", this.Address, cmd);
     } else {
       this.ActiveRequests.add(cmd[1]);
       this.#SendJson(cmd);
       cbSent();
     }
+    this.ResetEphemeralTimeout();
     this.notifyChange();
   }
 
@@ -330,7 +345,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
           this.ActiveRequests.add(p.cmd[1]);
           this.#SendJson(p.cmd);
           p.cb();
-          console.debug("Sent pending REQ", this.Address, p.cmd);
+          this.#log("Sent pending REQ %s %O", this.Address, p.cmd);
         }
       }
     }
