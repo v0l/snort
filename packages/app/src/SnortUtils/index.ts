@@ -99,7 +99,7 @@ export function eventLink(hex: u256, relays?: Array<string> | string) {
  */
 export function profileLink(hex: HexKey, relays?: Array<string> | string) {
   const encoded = relays
-    ? encodeTLV(NostrPrefix.Event, hex, Array.isArray(relays) ? relays : [relays])
+    ? encodeTLV(NostrPrefix.Profile, hex, Array.isArray(relays) ? relays : [relays])
     : hexToBech32(NostrPrefix.PublicKey, hex);
   return `/p/${encoded}`;
 }
