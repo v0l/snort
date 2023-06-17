@@ -1,21 +1,11 @@
 import { NostrEvent } from "@snort/system";
 import { findTag } from "SnortUtils";
-import { useEffect, useRef } from "react";
-import Hls from "hls.js";
+import { LiveVideoPlayer } from "Element/LiveVideoPlayer";
 
 export function LiveEvent({ ev }: { ev: NostrEvent }) {
-  const video = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const stream = findTag(ev, "streaming");
-    if (stream && video.current && !video.current.src && Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(stream);
-      hls.attachMedia(video.current);
-    }
-  }, [video, ev]);
-  return (
-    <div className="w-max">
-      <video className="w-max" ref={video} controls={true} />
-    </div>
-  );
+  const stream = findTag(ev, "streaming");
+  if (stream) {
+    return <LiveVideoPlayer src={stream} />;
+  }
+  return null;
 }

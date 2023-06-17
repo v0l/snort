@@ -41,6 +41,7 @@ export default function RevealMedia(props: RevealMediaProps) {
       case "avi":
       case "m4v":
       case "webm":
+      case "m3u8":
         return "video";
       default:
         return "unknown";

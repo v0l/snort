@@ -12,6 +12,7 @@ import { useWallet } from "Wallet";
 import { PaymentsCache } from "Cache/PaymentsCache";
 import { Payment } from "Db";
 import PageSpinner from "Element/PageSpinner";
+import { LiveVideoPlayer } from "Element/LiveVideoPlayer";
 /*
 [
   "imeta",
@@ -172,11 +173,10 @@ export function MediaElement(props: MediaElementProps) {
   } else if (props.mime.startsWith("audio/")) {
     return <audio key={props.url} src={url} controls onError={() => probeFor402()} />;
   } else if (props.mime.startsWith("video/")) {
-    return (
-      <SpotlightMedia>
-        <video key={props.url} src={url} controls onError={() => probeFor402()} />
-      </SpotlightMedia>
-    );
+    if (props.url.endsWith(".m3u8")) {
+      return <LiveVideoPlayer src={props.url} />;
+    }
+    return <video key={props.url} src={url} controls onError={() => probeFor402()} />;
   } else {
     return (
       <a
