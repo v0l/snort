@@ -8,6 +8,7 @@ export function LiveVideoPlayer(props: HTMLProps<HTMLVideoElement>) {
       const hls = new Hls();
       hls.loadSource(props.src);
       hls.attachMedia(video.current);
+      return () => hls.destroy();
     }
   }, [video, props]);
   return (
