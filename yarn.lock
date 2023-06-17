@@ -5769,6 +5769,11 @@ he@1.2.0, he@^1.2.0:
   resolved "https://registry.npmjs.org/he/-/he-1.2.0.tgz"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
+hls.js@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.4.6.tgz#928752ef7286259aff8f372d4fa179bf932cac78"
+  integrity sha512-lGv9QfjfjfuGQfLa/28vDFlYWb9Myq5QuvM9qWp5DyElp8jTGMNodTdeAjOLzaA/fN4XHeG+HhTkRGzntwuDZw==
+
 hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.npmjs.org/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz"

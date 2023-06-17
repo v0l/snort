@@ -38,6 +38,7 @@ Snort supports the following NIP's:
 - [x] NIP-59: Gift Wrap
 - [x] NIP-65: Relay List Metadata
 - [ ] NIP-78: App specific data
+- [x] NIP-102: Live Events
 
 ### Running
 

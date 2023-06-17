@@ -32,6 +32,7 @@ import { setBookmarked, setPinned } from "Login";
 import { NostrFileElement } from "Element/NostrFileHeader";
 import ZapstrEmbed from "Element/ZapstrEmbed";
 import PubkeyList from "Element/PubkeyList";
+import { LiveEvent } from "Element/LiveEvent";
 
 import messages from "./messages";
 
@@ -85,6 +86,9 @@ export default function Note(props: NoteProps) {
   }
   if (ev.kind === EventKind.PubkeyLists) {
     return <PubkeyList ev={ev} className={className} />;
+  }
+  if (ev.kind === EventKind.LiveEvent) {
+    return <LiveEvent ev={ev} />;
   }
 
   const baseClassName = `note card${className ? ` ${className}` : ""}`;

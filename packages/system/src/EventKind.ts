@@ -21,6 +21,7 @@ enum EventKind {
   TagLists = 30002, // NIP-51c
   Badge = 30009, // NIP-58
   ProfileBadges = 30008, // NIP-58
+  LiveEvent = 30311, // NIP-102
   ZapstrTrack = 31337,
   ZapRequest = 9734, // NIP 57
   ZapReceipt = 9735, // NIP 57
