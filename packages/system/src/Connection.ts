@@ -64,7 +64,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   OnConnected?: () => void;
   OnEvent?: (sub: string, e: TaggedRawEvent) => void;
   OnEose?: (sub: string) => void;
-  OnDisconnect?: (id: string) => void;
+  OnDisconnect?: (code: number) => void;
   Auth?: AuthHandler;
   AwaitingAuth: Map<string, boolean>;
   Authed = false;
@@ -162,7 +162,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
       this.ReconnectTimer = undefined;
     }
 
-    this.OnDisconnect?.(this.Id);
+    this.OnDisconnect?.(e.code);
     this.#resetQueues();
     // reset connection Id on disconnect, for query-tracking
     this.Id = uuid();

@@ -1,9 +1,10 @@
-import { UserProfileCache, UserRelaysCache } from "@snort/system";
+import { UserProfileCache, UserRelaysCache, RelayMetricCache } from "@snort/system";
 import { DmCache } from "./DMCache";
 import { InteractionCache } from "./EventInteractionCache";
 
 export const UserCache = new UserProfileCache();
 export const UserRelays = new UserRelaysCache();
+export const RelayMetrics = new RelayMetricCache();
 export { DmCache };
 
 export async function preload(follows?: Array<string>) {
@@ -12,6 +13,7 @@ export async function preload(follows?: Array<string>) {
     DmCache.preload(),
     InteractionCache.preload(),
     UserRelays.preload(follows),
+    RelayMetrics.preload(),
   ];
   await Promise.all(preloads);
 }

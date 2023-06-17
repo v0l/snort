@@ -7,7 +7,17 @@ import { Query } from "./Query";
 import { RelayCache } from "./GossipModel";
 import { NoteStore } from "./NoteCollection";
 import { BuiltRawReqFilter, RequestBuilder } from "./RequestBuilder";
-import { MetadataCache, ProfileLoaderService, SystemInterface, SystemSnapshot, UserProfileCache, UserRelaysCache } from ".";
+import { RelayMetricHandler } from "./RelayMetricHandler";
+import {
+  MetadataCache,
+  ProfileLoaderService,
+  RelayMetrics,
+  SystemInterface,
+  SystemSnapshot,
+  UserProfileCache,
+  UserRelaysCache,
+  RelayMetricCache
+} from ".";
 
 /**
  * Manages nostr content retrieval system
@@ -41,20 +51,34 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   #profileCache: FeedCache<MetadataCache>;
 
   /**
+   * Storage class for relay metrics (connects/disconnects)
+   */
+  #relayMetricsCache: FeedCache<RelayMetrics>;
+
+  /**
    * Profile loading service
    */
   #profileLoader: ProfileLoaderService;
+
+  /**
+   * Relay metrics handler cache
+   */
+  #relayMetrics: RelayMetricHandler;
 
   constructor(props: {
     authHandler?: AuthHandler,
     relayCache?: RelayCache,
     profileCache?: FeedCache<MetadataCache>
+    relayMetrics?: FeedCache<RelayMetrics>
   }) {
     super();
     this.#handleAuth = props.authHandler;
     this.#relayCache = props.relayCache ?? new UserRelaysCache();
     this.#profileCache = props.profileCache ?? new UserProfileCache();
+    this.#relayMetricsCache = props.relayMetrics ?? new RelayMetricCache();
+
     this.#profileLoader = new ProfileLoaderService(this, this.#profileCache);
+    this.#relayMetrics = new RelayMetricHandler(this.#relayMetricsCache);
     this.#cleanup();
   }
 
@@ -80,7 +104,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         this.#sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
-        c.OnDisconnect = id => this.OnRelayDisconnect(id);
+        c.OnDisconnect = (code) => this.OnRelayDisconnect(c, code);
         await c.Connect();
       } else {
         // update settings if already connected
@@ -91,9 +115,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     }
   }
 
-  OnRelayDisconnect(id: string) {
+  OnRelayDisconnect(c: Connection, code: number) {
+    this.#relayMetrics.onDisconnect(c, code);
     for (const [, q] of this.Queries) {
-      q.connectionLost(id);
+      q.connectionLost(c.Id);
     }
   }
 
@@ -121,7 +146,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         this.#sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
-        c.OnDisconnect = id => this.OnRelayDisconnect(id);
+        c.OnDisconnect = code => this.OnRelayDisconnect(c, code);
         await c.Connect();
         return c;
       }

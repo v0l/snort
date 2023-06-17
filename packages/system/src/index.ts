@@ -25,6 +25,7 @@ export * from "./impl/nip44";
 export * from "./cache";
 export * from "./cache/UserRelayCache";
 export * from "./cache/UserCache";
+export * from "./cache/RelayMetricCache";
 
 export interface SystemInterface {
   /**

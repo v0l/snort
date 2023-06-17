@@ -3,11 +3,11 @@ import { NostrEvent } from "../Nostr";
 import Dexie, { Table } from "dexie";
 
 const NAME = "snort-system";
-const VERSION = 1;
+const VERSION = 2;
 
 const STORES = {
     users: "++pubkey, name, display_name, picture, nip05, npub",
-    relays: "++addr",
+    relayMetrics: "++addr",
     userRelays: "++pubkey",
     events: "++id, pubkey, created_at"
 };

@@ -6,6 +6,7 @@ import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { EventPublisher, NostrSystem, ProfileLoaderService } from "@snort/system";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
@@ -33,16 +34,16 @@ import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
 import DebugPage from "Pages/Debug";
 import { db } from "Db";
-import { preload, UserCache } from "Cache";
+import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
-import { EventPublisher, NostrSystem, ProfileLoaderService } from "@snort/system";
-import { UserRelays } from "Cache";
 
 /**
  * Singleton nostr system
  */
 export const System = new NostrSystem({
   relayCache: UserRelays,
+  profileCache: UserCache,
+  relayMetrics: RelayMetrics,
   authHandler: async (c, r) => {
     const { publicKey, privateKey } = LoginStore.snapshot();
     if (publicKey) {
