@@ -1,0 +1,8 @@
+.live-page {
+  display: grid;
+  grid-template-columns: auto 250px;
+}
+
+.live-page video {
+  width: 100%;
+}

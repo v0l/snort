@@ -174,7 +174,7 @@ export function MediaElement(props: MediaElementProps) {
     return <audio key={props.url} src={url} controls onError={() => probeFor402()} />;
   } else if (props.mime.startsWith("video/")) {
     if (props.url.endsWith(".m3u8")) {
-      return <LiveVideoPlayer src={props.url} />;
+      return <LiveVideoPlayer stream={props.url} />;
     }
     return <video key={props.url} src={url} controls onError={() => probeFor402()} />;
   } else {

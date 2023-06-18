@@ -445,7 +445,7 @@ div.form-col {
   grid-template-columns: auto;
 }
 
-body.scroll-lock {
+.scroll-lock {
   overflow: hidden;
   height: 100vh;
 }

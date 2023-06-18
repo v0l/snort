@@ -1,0 +1,11 @@
+.live-chat {
+  height: calc(100vh - 73px);
+  display: flex;
+  flex-direction: column;
+}
+
+.live-chat > div:nth-child(1) {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column-reverse;
+}

@@ -43,7 +43,7 @@ export default function Layout() {
   };
 
   const shouldHideNoteCreator = useMemo(() => {
-    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/", "/e", "/subscribe"];
+    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/", "/e", "/subscribe", "/live"];
     return isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
   }, [location, isReplyNoteCreatorShowing]);
 
@@ -53,9 +53,10 @@ export default function Layout() {
   }, [location]);
 
   useEffect(() => {
-    const widePage = ["/login", "/messages"];
+    const widePage = ["/login", "/messages", "/live"];
+    const noScroll = ["/messages", "/live"];
     if (widePage.some(a => location.pathname.startsWith(a))) {
-      setPageClass("");
+      setPageClass(noScroll.some(a => location.pathname.startsWith(a)) ? "scroll-lock" : "");
     } else {
       setPageClass("page");
     }
