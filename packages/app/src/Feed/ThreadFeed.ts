@@ -61,14 +61,13 @@ export default function useThreadFeed(link: NostrLink) {
     if (link.type === NostrPrefix.Address) {
       setTrackingATags([`${link.kind}:${link.author}:${link.id}`]);
     } else {
-      setTrackingEvent([
-        {
-          id: link.id,
-          relay: link.relays?.[0],
-        },
-      ]);
+      const lnk = {
+        id: link.id,
+        relay: link.relays?.[0],
+      };
+      setTrackingEvent([lnk]);
+      setAllEvents([lnk]);
     }
-    setAllEvents([]);
   }, [link.id]);
 
   useEffect(() => {
