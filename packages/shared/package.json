@@ -1,6 +1,6 @@
 {
   "name": "@snort/shared",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shared components for Snort",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
   "license": "GPL-3.0-or-later",
   "private": false,
   "scripts": {
-    "build": "tsc"
+    "build": "rm -rf dist && tsc"
   },
   "dependencies": {
     "@noble/curves": "^1.1.0",
