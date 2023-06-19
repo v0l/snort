@@ -16,6 +16,7 @@
   gap: 16px;
   flex-direction: column-reverse;
   margin-block-end: 20px;
+  overflow-y: auto;
 }
 
 .live-chat > div:nth-child(3) {
