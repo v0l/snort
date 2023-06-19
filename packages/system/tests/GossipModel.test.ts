@@ -3,8 +3,14 @@ import { splitAllByWriteRelays } from "../src/GossipModel"
 describe("GossipModel", () => {
     it("should not output empty", () => {
         const Relays = {
-            get: (pk?: string) => {
-                return [];
+            getFromCache: (pk?: string) => {
+                if (pk) {
+                    return {
+                        pubkey: pk,
+                        created_at: 0,
+                        relays: []
+                    };
+                }
             }
         }
         const a = [{

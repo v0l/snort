@@ -2,22 +2,26 @@ import { RelayCache } from "../src/GossipModel";
 import { RequestBuilder, RequestStrategy } from "../src/RequestBuilder";
 import { describe, expect } from "@jest/globals";
 import { expandFilter } from "../src/RequestExpander";
-import { unixNowMs } from "../src/Utils";
 import { bytesToHex } from "@noble/curves/abstract/utils";
+import { unixNow, unixNowMs } from "@snort/shared";
 
 const DummyCache = {
-  get: (pk?: string) => {
+  getFromCache: (pk?: string) => {
     if (!pk) return undefined;
 
-    return [
-      {
-        url: `wss://${pk}.com/`,
-        settings: {
-          read: true,
-          write: true,
+    return {
+      pubkey: pk,
+      created_at: unixNow(),
+      relays: [
+        {
+          url: `wss://${pk}.com/`,
+          settings: {
+            read: true,
+            write: true,
+          },
         },
-      },
-    ];
+      ]
+    };
   },
 } as RelayCache;
 

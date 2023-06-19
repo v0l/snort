@@ -1,6 +1,6 @@
 import debug from "debug";
 import { v4 as uuid } from "uuid";
-import { appendDedupe, dedupe, unixNowMs } from "@snort/shared";
+import { appendDedupe, sanitizeRelayUrl, unixNowMs } from "@snort/shared";
 
 import { ReqFilter, u256, HexKey, EventKind } from ".";
 import { diffFilters } from "./RequestSplitter";
@@ -24,9 +24,9 @@ export enum RequestStrategy {
   AuthorsRelays = 2,
 
   /**
-   * Relay hints are usually provided when using replies
+   * Use pre-determined relays for query
    */
-  RelayHintedEventIds = 3,
+  ExplicitRelays = 3,
 }
 
 /**
@@ -152,26 +152,26 @@ export class RequestBuilder {
  */
 export class RequestFilterBuilder {
   #filter: ReqFilter = {};
-  #relayHints = new Map<u256, Array<string>>();
+  #relays = new Set<string>();
 
   get filter() {
     return { ...this.#filter };
   }
 
-  get relayHints() {
-    return new Map(this.#relayHints);
+  /**
+   * Use a specific relay for this request filter
+   */
+  relay(u: string) {
+    const uClean = sanitizeRelayUrl(u);
+    if (uClean) {
+      this.#relays.add(uClean);
+    }
+    return this;
   }
 
   ids(ids: Array<u256>) {
     this.#filter.ids = appendDedupe(this.#filter.ids, ids);
     return this;
-  }
-
-  id(id: u256, relay?: string) {
-    if (relay) {
-      this.#relayHints.set(id, appendDedupe(this.#relayHints.get(id), [relay]));
-    }
-    return this.ids([id]);
   }
 
   authors(authors?: Array<HexKey>) {
@@ -220,20 +220,13 @@ export class RequestFilterBuilder {
    * Build/expand this filter into a set of relay specific queries
    */
   build(relays: RelayCache, id: string): Array<BuiltRawReqFilter> {
-    // when querying for specific event ids with relay hints
-    // take the first approach which is to split the filter by relay
-    if (this.#filter.ids && this.#relayHints.size > 0) {
-      const relays = dedupe([...this.#relayHints.values()].flat());
-      return relays.map(r => {
+    // use the explicit relay list first
+    if (this.#relays.size > 0) {
+      return [...this.#relays].map(r => {
         return {
-          filters: [
-            {
-              ...this.#filter,
-              ids: [...this.#relayHints.entries()].filter(([, v]) => v.includes(r)).map(([k]) => k),
-            },
-          ],
+          filters: [this.#filter],
           relay: r,
-          strategy: RequestStrategy.RelayHintedEventIds,
+          strategy: RequestStrategy.ExplicitRelays,
         };
       });
     }

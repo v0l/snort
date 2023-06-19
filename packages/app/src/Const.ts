@@ -47,7 +47,7 @@ export const DefaultRelays = new Map<string, RelaySettings>([
 /**
  * Default search relays
  */
-export const SearchRelays = new Map<string, RelaySettings>([["wss://relay.nostr.band", { read: true, write: false }]]);
+export const SearchRelays = ["wss://relay.nostr.band"];
 
 /**
  * List of recommended follows for new users

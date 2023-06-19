@@ -6,6 +6,7 @@ import { unixNow, unwrap, tagFilterOfTextRepost } from "SnortUtils";
 import useTimelineWindow from "Hooks/useTimelineWindow";
 import useLogin from "Hooks/useLogin";
 import { System } from "index";
+import { SearchRelays } from "Const";
 
 export interface TimelineFeedOptions {
   method: "TIME_RANGE" | "LIMIT_UNTIL";
@@ -64,10 +65,12 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       }
       case "profile_keyword": {
         f.search(subject.items[0] + " sort:popular");
+        SearchRelays.forEach(r => f.relay(r));
         break;
       }
       case "post_keyword": {
         f.search(subject.items[0]);
+        SearchRelays.forEach(r => f.relay(r));
         break;
       }
     }

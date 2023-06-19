@@ -22,9 +22,12 @@ export default function useThreadFeed(link: NostrLink) {
       leaveOpen: true,
     });
     if (trackingEvents.length > 0) {
-      const fTracking = sub.withFilter();
       for (const te of trackingEvents) {
-        fTracking.id(te.id, te.relay);
+        const fTracking = sub.withFilter();
+        fTracking.ids([te.id]);
+        if (te.relay) {
+          fTracking.relay(te.relay);
+        }
       }
     }
     if (allEvents.length > 0) {

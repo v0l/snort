@@ -17,7 +17,10 @@ export default function useEventFeed(link: NostrLink) {
         f.kinds([unwrap(link.kind)]);
       }
     } else {
-      const f = b.withFilter().id(link.id, link.relays?.at(0));
+      const f = b.withFilter().ids([link.id]);
+      if (link.relays) {
+        link.relays.slice(0, 2).forEach(r => f.relay(r));
+      }
       if (link.author) {
         f.authors([link.author]);
       }

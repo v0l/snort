@@ -4,8 +4,7 @@ import Timeline from "Element/Timeline";
 import { Tab, TabElement } from "Element/Tabs";
 import { useEffect, useState } from "react";
 import { debounce } from "SnortUtils";
-import { System, router } from "index";
-import { SearchRelays } from "Const";
+import { router } from "index";
 import TrendingUsers from "Element/TrendingUsers";
 
 import TrendingNotes from "Element/TrendingPosts";
@@ -38,21 +37,6 @@ const SearchPage = () => {
   useEffect(() => {
     return debounce(500, () => setKeyword(search));
   }, [search]);
-
-  useEffect(() => {
-    const addedRelays: string[] = [];
-    for (const [k, v] of SearchRelays) {
-      if (!System.Sockets.some(v => v.address === k)) {
-        System.ConnectToRelay(k, v);
-        addedRelays.push(k);
-      }
-    }
-    return () => {
-      for (const r of addedRelays) {
-        System.DisconnectRelay(r);
-      }
-    };
-  }, []);
 
   function tabContent() {
     if (!keyword) {
