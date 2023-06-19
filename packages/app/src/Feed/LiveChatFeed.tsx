@@ -1,4 +1,4 @@
-import { FlatNoteStore, NostrLink, RequestBuilder } from "@snort/system";
+import { EventKind, FlatNoteStore, NostrLink, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { System } from "index";
 import { useMemo } from "react";
@@ -10,6 +10,7 @@ export function useLiveChatFeed(link: NostrLink) {
       leaveOpen: true,
     });
     rb.withFilter()
+      .kinds([EventKind.ZapReceipt, 1311 as EventKind])
       .tag("a", [`${link.kind}:${link.author}:${link.id}`])
       .limit(100);
     return rb;

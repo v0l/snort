@@ -498,6 +498,14 @@ small.xs {
   margin-right: auto;
 }
 
+.g5 {
+  gap: 5px;
+}
+
+.g10 {
+  gap: 10px;
+}
+
 .error {
   color: var(--error);
 }

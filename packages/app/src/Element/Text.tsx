@@ -50,7 +50,7 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
             };
 
             if (validateLink()) {
-              if (disableMedia ?? false) {
+              if ((disableMedia ?? false) && !a.startsWith("nostr:")) {
                 return (
                   <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
                     {a}
