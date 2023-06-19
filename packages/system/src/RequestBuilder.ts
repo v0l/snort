@@ -222,7 +222,9 @@ export class RequestFilterBuilder {
   build(relays: RelayCache, id: string): Array<BuiltRawReqFilter> {
     // use the explicit relay list first
     if (this.#relays.size > 0) {
-      return [...this.#relays].map(r => {
+      // always query our default relay lists too when using explicit relays
+      // these explicit relays may not always be available
+      return [...this.#relays, ""].map(r => {
         return {
           filters: [this.#filter],
           relay: r,

@@ -225,8 +225,9 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       }
     } else {
       const ret = [];
-      for (const [, s] of this.#sockets) {
+      for (const [a, s] of this.#sockets) {
         if (!s.Ephemeral) {
+          this.#log("Sending query to %s %O", a, qSend);
           const qt = q.sendToRelay(s, qSend);
           if (qt) {
             ret.push(qt);
