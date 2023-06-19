@@ -40,7 +40,6 @@ export interface BuiltRawReqFilter {
 
 export interface RequestBuilderOptions {
   leaveOpen?: boolean;
-  relays?: Array<string>;
   /**
    * Do not apply diff logic and always use full filters for query
    */
@@ -222,9 +221,7 @@ export class RequestFilterBuilder {
   build(relays: RelayCache, id: string): Array<BuiltRawReqFilter> {
     // use the explicit relay list first
     if (this.#relays.size > 0) {
-      // always query our default relay lists too when using explicit relays
-      // these explicit relays may not always be available
-      return [...this.#relays, ""].map(r => {
+      return [...this.#relays].map(r => {
         return {
           filters: [this.#filter],
           relay: r,

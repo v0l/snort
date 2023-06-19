@@ -22,7 +22,6 @@ export interface TimelineProps {
   method: "TIME_RANGE" | "LIMIT_UNTIL";
   ignoreModeration?: boolean;
   window?: number;
-  relay?: string;
   now?: number;
   loadMore?: boolean;
   noSort?: boolean;
@@ -36,7 +35,6 @@ const Timeline = (props: TimelineProps) => {
     return {
       method: props.method,
       window: props.window,
-      relay: props.relay,
       now: props.now,
     };
   }, [props]);

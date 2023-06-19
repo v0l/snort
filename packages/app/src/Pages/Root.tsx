@@ -127,6 +127,7 @@ const GlobalTab = () => {
   const subject: TimelineSubject = {
     type: "global",
     items: [],
+    relay: relay?.url,
     discriminator: `all-${sha256(relay?.url ?? "").slice(0, 12)}`,
   };
 
@@ -188,9 +189,7 @@ const GlobalTab = () => {
   return (
     <>
       {globalRelaySelector()}
-      {relay && (
-        <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} window={600} relay={relay.url} now={now} />
-      )}
+      {relay && <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} window={600} now={now} />}
     </>
   );
 };
@@ -206,7 +205,7 @@ const NotesTab = () => {
   return (
     <>
       <FollowsHint />
-      <Timeline subject={subject} postsOnly={true} method={"TIME_RANGE"} window={undefined} relay={undefined} />
+      <Timeline subject={subject} postsOnly={true} method={"TIME_RANGE"} />
     </>
   );
 };
@@ -219,14 +218,14 @@ const ConversationsTab = () => {
     discriminator: `follows:${publicKey?.slice(0, 12)}`,
   };
 
-  return <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} window={undefined} relay={undefined} />;
+  return <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} />;
 };
 
 const TagsTab = () => {
   const { tag } = useParams();
   const subject: TimelineSubject = { type: "hashtag", items: [tag ?? ""], discriminator: `tags-${tag}` };
 
-  return <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} window={undefined} relay={undefined} />;
+  return <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} />;
 };
 
 export const RootRoutes = [

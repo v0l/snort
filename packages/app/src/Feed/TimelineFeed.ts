@@ -11,7 +11,6 @@ import { SearchRelays } from "Const";
 export interface TimelineFeedOptions {
   method: "TIME_RANGE" | "LIMIT_UNTIL";
   window?: number;
-  relay?: string;
   now?: number;
 }
 
@@ -19,6 +18,7 @@ export interface TimelineSubject {
   type: "pubkey" | "hashtag" | "global" | "ptag" | "post_keyword" | "profile_keyword";
   discriminator: string;
   items: string[];
+  relay?: string;
 }
 
 export type TimelineFeed = ReturnType<typeof useTimelineFeed>;
@@ -44,11 +44,8 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
           : [EventKind.TextNote, EventKind.Repost, EventKind.Polls]
       );
 
-    if (options.relay) {
-      b.withOptions({
-        leaveOpen: false,
-        relays: [options.relay],
-      });
+    if (subject.relay) {
+      f.relay(subject.relay);
     }
     switch (subject.type) {
       case "pubkey": {
@@ -132,7 +129,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     // clear store if changing relays
     main.clear();
     latest.clear();
-  }, [options.relay]);
+  }, [subject.relay]);
 
   function getParentEvents() {
     if (main.data) {
