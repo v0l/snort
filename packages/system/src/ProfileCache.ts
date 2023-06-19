@@ -5,9 +5,19 @@ import { EventKind, HexKey, SystemInterface, TaggedRawEvent, PubkeyReplaceableNo
 import { ProfileCacheExpire } from "./Const";
 import { mapEventToProfile, MetadataCache } from "./cache";
 
+const MetadataRelays = [
+  "wss://purplepag.es"
+]
+
 export class ProfileLoaderService {
   #system: SystemInterface;
   #cache: FeedCache<MetadataCache>;
+
+  /**
+   * A set of pubkeys we could not find last run,
+   * This list will attempt to use known profile metadata relays
+   */
+  #missingLastRun: Set<string> = new Set();
 
   /**
    * List of pubkeys to fetch metadata for
@@ -77,6 +87,12 @@ export class ProfileLoaderService {
         .kinds([EventKind.SetMetadata])
         .authors([...missing]);
 
+      if (this.#missingLastRun.size > 0) {
+        const fMissing = sub.withFilter()
+          .kinds([EventKind.SetMetadata])
+          .authors([...this.#missingLastRun]);
+        MetadataRelays.forEach(r => fMissing.relay(r));
+      }
       const newProfiles = new Set<string>();
       const q = this.#system.Query<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
       const feed = (q?.feed as PubkeyReplaceableNoteStore) ?? new PubkeyReplaceableNoteStore();
@@ -106,6 +122,7 @@ export class ProfileLoaderService {
 
       releaseOnEvent();
       const couldNotFetch = [...missing].filter(a => !results.some(b => b.pubkey === a));
+      this.#missingLastRun = new Set(couldNotFetch);
       if (couldNotFetch.length > 0) {
         this.#log("No profiles: %o", couldNotFetch);
         const empty = couldNotFetch.map(a =>
