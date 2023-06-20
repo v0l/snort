@@ -34,7 +34,9 @@ export abstract class ExternalStore<TSnapshot> {
 
   protected notifyChange(sn?: TSnapshot) {
     this.#changed = true;
-    this.#hooks.forEach(h => h.fn(sn));
+    if (this.#hooks.length > 0) {
+      this.#hooks.forEach(h => h.fn(sn));
+    }
   }
 
   abstract takeSnapshot(): TSnapshot;

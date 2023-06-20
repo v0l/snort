@@ -7,8 +7,9 @@ import useFileUpload from "Upload";
 import { openFile } from "SnortUtils";
 import Textarea from "./Textarea";
 import { System } from "index";
+import { useChatSystem } from "chat";
 
-export default function WriteDm({ chatPubKey }: { chatPubKey: string }) {
+export default function WriteMessage({ chatId }: { chatId: string }) {
   const [msg, setMsg] = useState("");
   const [sending, setSending] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -16,6 +17,7 @@ export default function WriteDm({ chatPubKey }: { chatPubKey: string }) {
   const [error, setError] = useState("");
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
+  const chat = useChatSystem().find(a => a.id === chatId);
 
   async function attachFile() {
     try {
@@ -54,11 +56,11 @@ export default function WriteDm({ chatPubKey }: { chatPubKey: string }) {
     }
   }
 
-  async function sendDm() {
-    if (msg && publisher) {
+  async function sendMessage() {
+    if (msg && publisher && chat) {
       setSending(true);
-      const ev = await publisher.sendDm(msg, chatPubKey);
-      System.BroadcastEvent(ev);
+      const ev = await chat.createMessage(msg, publisher);
+      await chat.sendMessage(ev, System);
       setMsg("");
       setSending(false);
     }
@@ -73,7 +75,8 @@ export default function WriteDm({ chatPubKey }: { chatPubKey: string }) {
   async function onEnter(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     const isEnter = e.code === "Enter";
     if (isEnter && !e.shiftKey) {
-      await sendDm();
+      e.preventDefault();
+      await sendMessage();
     }
   }
 
@@ -96,7 +99,7 @@ export default function WriteDm({ chatPubKey }: { chatPubKey: string }) {
         />
         {error && <b className="error">{error}</b>}
       </div>
-      <button className="btn-rnd" onClick={() => sendDm()}>
+      <button className="btn-rnd" onClick={() => sendMessage()}>
         {sending ? <Spinner width={20} /> : <Icon name="arrow-right" size={20} />}
       </button>
     </>

@@ -1,85 +1,60 @@
 import "./DmWindow.css";
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { TaggedRawEvent } from "@snort/system";
 
 import ProfileImage from "Element/ProfileImage";
 import DM from "Element/DM";
-import { dmsForLogin, dmsInChat, isToSelf } from "Pages/MessagesPage";
 import NoteToSelf from "Element/NoteToSelf";
-import { useDmCache } from "Hooks/useDmsCache";
 import useLogin from "Hooks/useLogin";
-import WriteDm from "Element/WriteDm";
-import { unwrap } from "SnortUtils";
+import WriteMessage from "Element/WriteMessage";
+import { Chat, ChatType, useChatSystem } from "chat";
 
 export default function DmWindow({ id }: { id: string }) {
   const pubKey = useLogin().publicKey;
-  const dmListRef = useRef<HTMLDivElement>(null);
+  const dms = useChatSystem();
+  const chat = dms.find(a => a.id === id);
 
-  function resize(chatList: HTMLDivElement) {
-    if (!chatList.parentElement) return;
-
-    const scrollWrap = unwrap(chatList.parentElement);
-    const h = scrollWrap.scrollHeight;
-    const s = scrollWrap.clientHeight + scrollWrap.scrollTop;
-    const pos = Math.abs(h - s);
-    const atBottom = pos === 0;
-    //console.debug("Resize", h, s, pos, atBottom);
-    if (atBottom) {
-      scrollWrap.scrollTo(0, scrollWrap.scrollHeight);
+  function sender() {
+    if (id === pubKey) {
+      return <NoteToSelf className="f-grow mb-10" pubkey={id} />;
     }
+    if (chat?.type === ChatType.DirectMessage) {
+      return <ProfileImage pubkey={id} className="f-grow mb10" />;
+    }
+    if (chat?.profile) {
+      return <ProfileImage pubkey={id} className="f-grow mb10" profile={chat.profile} />;
+    }
+    return <ProfileImage pubkey={""} className="f-grow mb10" overrideUsername={chat?.id} />;
   }
-
-  useEffect(() => {
-    if (dmListRef.current) {
-      const scrollWrap = dmListRef.current;
-      const chatList = unwrap(scrollWrap.parentElement);
-      chatList.onscroll = () => {
-        resize(dmListRef.current as HTMLDivElement);
-      };
-      new ResizeObserver(() => resize(dmListRef.current as HTMLDivElement)).observe(scrollWrap);
-      return () => {
-        chatList.onscroll = null;
-        new ResizeObserver(() => resize(dmListRef.current as HTMLDivElement)).unobserve(scrollWrap);
-      };
-    }
-  }, [dmListRef]);
 
   return (
     <div className="dm-window">
+      <div>{sender()}</div>
       <div>
-        {(id === pubKey && <NoteToSelf className="f-grow mb-10" pubkey={id} />) || (
-          <ProfileImage pubkey={id} className="f-grow mb10" />
-        )}
+        <div className="flex f-col">{chat && <DmChatSelected chat={chat} />}</div>
       </div>
       <div>
-        <div className="flex f-col" ref={dmListRef}>
-          <DmChatSelected chatPubKey={id} />
-        </div>
-      </div>
-      <div>
-        <WriteDm chatPubKey={id} />
+        <WriteMessage chatId={id} />
       </div>
     </div>
   );
 }
 
-function DmChatSelected({ chatPubKey }: { chatPubKey: string }) {
-  const dms = useDmCache();
+function DmChatSelected({ chat }: { chat: Chat }) {
   const { publicKey: myPubKey } = useLogin();
   const sortedDms = useMemo(() => {
-    if (myPubKey) {
-      const myDms = dmsForLogin(dms, myPubKey);
+    const myDms = chat?.messages;
+    if (myPubKey && myDms) {
       // filter dms in this chat, or dms to self
-      const thisDms = myPubKey === chatPubKey ? myDms.filter(d => isToSelf(d, myPubKey)) : myDms;
-      return [...dmsInChat(thisDms, chatPubKey)].sort((a, b) => a.created_at - b.created_at);
+      return [...myDms].sort((a, b) => a.created_at - b.created_at);
     }
     return [];
-  }, [dms, myPubKey, chatPubKey]);
+  }, [chat, myPubKey]);
 
   return (
     <>
       {sortedDms.map(a => (
-        <DM data={a as TaggedRawEvent} key={a.id} />
+        <DM data={a as TaggedRawEvent} key={a.id} chat={chat} />
       ))}
     </>
   );

@@ -12,10 +12,8 @@ import { RootState } from "State/Store";
 import { setShow, reset } from "State/NoteCreator";
 import { System } from "index";
 import useLoginFeed from "Feed/LoginFeed";
-import { totalUnread } from "Pages/MessagesPage";
 import useModeration from "Hooks/useModeration";
 import { NoteCreator } from "Element/NoteCreator";
-import { useDmCache } from "Hooks/useDmsCache";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
 import Avatar from "Element/Avatar";
@@ -145,25 +143,14 @@ export default function Layout() {
 const AccountHeader = () => {
   const navigate = useNavigate();
 
-  const { isMuted } = useModeration();
   const { publicKey, latestNotification, readNotifications } = useLogin();
-  const dms = useDmCache();
   const profile = useUserProfile(System, publicKey);
 
   const hasNotifications = useMemo(
     () => latestNotification > readNotifications,
     [latestNotification, readNotifications]
   );
-  const unreadDms = useMemo(
-    () =>
-      publicKey
-        ? totalUnread(
-            dms.filter(a => !isMuted(a.pubkey)),
-            publicKey
-          )
-        : 0,
-    [dms, publicKey]
-  );
+  const unreadDms = useMemo(() => (publicKey ? 0 : 0), [publicKey]);
 
   async function goToNotifications(e: React.MouseEvent) {
     e.stopPropagation();

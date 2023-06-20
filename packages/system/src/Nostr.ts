@@ -38,19 +38,21 @@ export type ReqCommand = [cmd: "REQ", id: string, ...filters: Array<ReqFilter>];
  * Raw REQ filter object
  */
 export interface ReqFilter {
-  ids?: u256[];
-  authors?: u256[];
-  kinds?: number[];
-  "#e"?: u256[];
-  "#p"?: u256[];
-  "#t"?: string[];
-  "#d"?: string[];
-  "#r"?: string[];
-  "#a"?: string[];
-  search?: string;
-  since?: number;
-  until?: number;
-  limit?: number;
+  ids?: u256[]
+  authors?: u256[]
+  kinds?: number[]
+  "#e"?: u256[]
+  "#p"?: u256[]
+  "#t"?: string[]
+  "#d"?: string[]
+  "#r"?: string[]
+  "#a"?: string[]
+  "#g"?: string[]
+  search?: string
+  since?: number
+  until?: number
+  limit?: number
+  [key: string]: Array<string> | Array<number> | string | number | undefined
 }
 
 /**

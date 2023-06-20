@@ -2,7 +2,7 @@ import Dexie, { Table } from "dexie";
 import { HexKey, NostrEvent, u256 } from "@snort/system";
 
 export const NAME = "snortDB";
-export const VERSION = 10;
+export const VERSION = 11;
 
 export interface SubCache {
   id: string;
@@ -28,14 +28,14 @@ export interface Payment {
 }
 
 const STORES = {
-  dms: "++id, pubkey",
+  chats: "++id",
   eventInteraction: "++id",
   payments: "++url",
 };
 
 export class SnortDB extends Dexie {
   ready = false;
-  dms!: Table<NostrEvent>;
+  chats!: Table<NostrEvent>;
   eventInteraction!: Table<EventInteraction>;
   payments!: Table<Payment>;
 

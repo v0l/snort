@@ -142,7 +142,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     try {
       const addr = unwrap(sanitizeRelayUrl(address));
       if (!this.#sockets.has(addr)) {
-        const c = new Connection(addr, { read: true, write: false }, this.#handleAuth?.bind(this), true);
+        const c = new Connection(addr, { read: true, write: true }, this.#handleAuth?.bind(this), true);
         this.#sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
@@ -252,18 +252,27 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
    * Write an event to a relay then disconnect
    */
   async WriteOnceToRelay(address: string, ev: NostrEvent) {
-    return new Promise<void>((resolve, reject) => {
-      const c = new Connection(address, { write: true, read: false }, this.#handleAuth?.bind(this), true);
+    const addrClean = sanitizeRelayUrl(address);
+    if (!addrClean) {
+      throw new Error("Invalid relay address");
+    }
 
-      const t = setTimeout(reject, 5_000);
-      c.OnConnected = async () => {
-        clearTimeout(t);
-        await c.SendAsync(ev);
-        c.Close();
-        resolve();
-      };
-      c.Connect();
-    });
+    if (this.#sockets.has(addrClean)) {
+      await this.#sockets.get(addrClean)?.SendAsync(ev);
+    } else {
+      return await new Promise<void>((resolve, reject) => {
+        const c = new Connection(address, { write: true, read: true }, this.#handleAuth?.bind(this), true);
+
+        const t = setTimeout(reject, 5_000);
+        c.OnConnected = async () => {
+          clearTimeout(t);
+          await c.SendAsync(ev);
+          c.Close();
+          resolve();
+        };
+        c.Connect();
+      });
+    }
   }
 
   takeSnapshot(): SystemSnapshot {

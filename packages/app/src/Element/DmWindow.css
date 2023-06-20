@@ -8,6 +8,8 @@
   overflow-y: auto;
   padding: 0 10px 10px 10px;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .dm-window > div:nth-child(3) {

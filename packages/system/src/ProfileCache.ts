@@ -22,7 +22,7 @@ export class ProfileLoaderService {
   /**
    * List of pubkeys to fetch metadata for
    */
-  WantsMetadata: Set<HexKey> = new Set();
+  #wantsMetadata: Set<HexKey> = new Set();
 
   readonly #log = debug("ProfileCache");
 
@@ -42,7 +42,7 @@ export class ProfileLoaderService {
   TrackMetadata(pk: HexKey | Array<HexKey>) {
     const bufferNow = [];
     for (const p of Array.isArray(pk) ? pk : [pk]) {
-      if (p.length > 0 && this.WantsMetadata.add(p)) {
+      if (p.length === 64 && this.#wantsMetadata.add(p)) {
         bufferNow.push(p);
       }
     }
@@ -55,7 +55,7 @@ export class ProfileLoaderService {
   UntrackMetadata(pk: HexKey | Array<HexKey>) {
     for (const p of Array.isArray(pk) ? pk : [pk]) {
       if (p.length > 0) {
-        this.WantsMetadata.delete(p);
+        this.#wantsMetadata.delete(p);
       }
     }
   }
@@ -68,10 +68,10 @@ export class ProfileLoaderService {
   }
 
   async #FetchMetadata() {
-    const missingFromCache = await this.#cache.buffer([...this.WantsMetadata]);
+    const missingFromCache = await this.#cache.buffer([...this.#wantsMetadata]);
 
     const expire = unixNowMs() - ProfileCacheExpire;
-    const expired = [...this.WantsMetadata]
+    const expired = [...this.#wantsMetadata]
       .filter(a => !missingFromCache.includes(a))
       .filter(a => (this.#cache.getFromCache(a)?.loaded ?? 0) < expire);
     const missing = new Set([...missingFromCache, ...expired]);

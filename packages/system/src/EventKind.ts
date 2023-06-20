@@ -9,6 +9,7 @@ enum EventKind {
   Repost = 6, // NIP-18
   Reaction = 7, // NIP-25
   BadgeAward = 8, // NIP-58
+  SimpleChatMessage = 9, // NIP-29
   SnortSubscriptions = 1000, // NIP-XX
   Polls = 6969, // NIP-69
   GiftWrap = 1059, // NIP-59
@@ -23,6 +24,7 @@ enum EventKind {
   ProfileBadges = 30008, // NIP-58
   LiveEvent = 30311, // NIP-102
   ZapstrTrack = 31337,
+  SimpleChatMetadata = 39_000, // NIP-29
   ZapRequest = 9734, // NIP 57
   ZapReceipt = 9735, // NIP 57
   HttpAuthentication = 27235, // NIP XX - HTTP Authentication

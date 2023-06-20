@@ -2,9 +2,9 @@ import { NostrEvent } from "@snort/system";
 import { FeedCache } from "@snort/shared";
 import { db } from "Db";
 
-class DMCache extends FeedCache<NostrEvent> {
+export class ChatCache extends FeedCache<NostrEvent> {
   constructor() {
-    super("DMCache", db.dms);
+    super("ChatCache", db.chats);
   }
 
   key(of: NostrEvent): string {
@@ -23,13 +23,7 @@ class DMCache extends FeedCache<NostrEvent> {
     return ret;
   }
 
-  allDms(): Array<NostrEvent> {
+  takeSnapshot(): Array<NostrEvent> {
     return [...this.cache.values()];
   }
-
-  takeSnapshot(): Array<NostrEvent> {
-    return this.allDms();
-  }
 }
-
-export const DmCache = new DMCache();

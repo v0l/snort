@@ -70,6 +70,13 @@ export class RequestBuilder {
     return this.#options;
   }
 
+  /**
+   * Add another request builders filters to this one
+   */
+  add(other: RequestBuilder) {
+    this.#builders.push(...other.#builders);
+  }
+
   withFilter() {
     const ret = new RequestFilterBuilder();
     this.#builders.push(ret);
@@ -203,7 +210,7 @@ export class RequestFilterBuilder {
     return this;
   }
 
-  tag(key: "e" | "p" | "d" | "t" | "r" | "a", value?: Array<string>) {
+  tag(key: "e" | "p" | "d" | "t" | "r" | "a" | "g", value?: Array<string>) {
     if (!value) return this;
     this.#filter[`#${key}`] = appendDedupe(this.#filter[`#${key}`], value);
     return this;
