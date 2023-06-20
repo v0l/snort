@@ -51,7 +51,7 @@ export function simpleMerge(filters: Array<ReqFilter>) {
         if (result[key] === undefined) {
           result[key] = [...value];
         } else {
-          const toAdd = value.filter(a => !result[key].includes(a));
+          const toAdd = (value as Array<any>).filter(a => !result[key].includes(a));
           result[key].push(...toAdd);
         }
       } else {
