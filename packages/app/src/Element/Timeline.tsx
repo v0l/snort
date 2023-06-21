@@ -2,19 +2,20 @@ import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
 import { useCallback, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
-import { TaggedRawEvent, EventKind, u256 } from "@snort/system";
+import { TaggedRawEvent, EventKind, u256, parseZap } from "@snort/system";
 
 import Icon from "Icons/Icon";
 import { dedupeByPubkey, findTag, tagFilterOfTextRepost } from "SnortUtils";
 import ProfileImage from "Element/ProfileImage";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "Feed/TimelineFeed";
 import LoadMore from "Element/LoadMore";
-import Zap, { parseZap } from "Element/Zap";
+import Zap from "Element/Zap";
 import Note from "Element/Note";
 import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
 import ProfilePreview from "Element/ProfilePreview";
 import Skeleton from "Element/Skeleton";
+import { UserCache } from "Cache";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -93,7 +94,7 @@ const Timeline = (props: TimelineProps) => {
         );
       }
       case EventKind.ZapReceipt: {
-        const zap = parseZap(e);
+        const zap = parseZap(e, UserCache);
         return zap.event ? null : <Zap zap={zap} key={e.id} />;
       }
       case EventKind.Reaction:

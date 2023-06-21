@@ -18,14 +18,15 @@ export * from "./EventPublisher";
 export * from "./EventBuilder";
 export * from "./NostrLink";
 export * from "./ProfileCache";
+export * from "./Zaps";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";
 
-export * from "./cache";
-export * from "./cache/UserRelayCache";
-export * from "./cache/UserCache";
-export * from "./cache/RelayMetricCache";
+export * from "./Cache";
+export * from "./Cache/UserRelayCache";
+export * from "./Cache/UserCache";
+export * from "./Cache/RelayMetricCache";
 
 export interface SystemInterface {
   /**

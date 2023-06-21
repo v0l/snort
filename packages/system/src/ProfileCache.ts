@@ -3,7 +3,7 @@ import debug from "debug";
 import { unixNowMs, FeedCache } from "@snort/shared";
 import { EventKind, HexKey, SystemInterface, TaggedRawEvent, PubkeyReplaceableNoteStore, RequestBuilder } from ".";
 import { ProfileCacheExpire } from "./Const";
-import { mapEventToProfile, MetadataCache } from "./cache";
+import { mapEventToProfile, MetadataCache } from "./Cache";
 
 const MetadataRelays = [
   "wss://purplepag.es"

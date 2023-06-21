@@ -2,12 +2,11 @@ import "./Reactions.css";
 
 import { useState, useMemo, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { TaggedRawEvent } from "@snort/system";
+import { TaggedRawEvent, ParsedZap } from "@snort/system";
 
 import { formatShort } from "Number";
 import Icon from "Icons/Icon";
 import { Tab } from "Element/Tabs";
-import { ParsedZap } from "Element/Zap";
 import ProfileImage from "Element/ProfileImage";
 import Tabs from "Element/Tabs";
 import Modal from "Element/Modal";

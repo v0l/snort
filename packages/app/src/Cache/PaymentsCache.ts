@@ -1,7 +1,7 @@
 import { Payment, db } from "Db";
 import { FeedCache } from "@snort/shared";
 
-class Payments extends FeedCache<Payment> {
+export class Payments extends FeedCache<Payment> {
   constructor() {
     super("PaymentsCache", db.payments);
   }
@@ -14,5 +14,3 @@ class Payments extends FeedCache<Payment> {
     return [...this.cache.values()];
   }
 }
-
-export const PaymentsCache = new Payments();

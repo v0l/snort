@@ -1,6 +1,6 @@
 import { FeedCache } from "@snort/shared";
 import { Connection } from "Connection";
-import { RelayMetrics } from "cache";
+import { RelayMetrics } from "Cache";
 
 export class RelayMetricHandler {
     readonly #cache: FeedCache<RelayMetrics>;

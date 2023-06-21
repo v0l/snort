@@ -1,6 +1,6 @@
 {
   "name": "@snort/system",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Snort nostr system package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,7 +25,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@snort/shared": "^1.0.1",
+    "@snort/shared": "^1.0.2",
     "@noble/curves": "^1.0.0",
     "@scure/base": "^1.1.1",
     "@stablelib/xchacha20": "^1.0.1",

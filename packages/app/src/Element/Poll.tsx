@@ -1,10 +1,9 @@
-import { TaggedRawEvent } from "@snort/system";
+import { TaggedRawEvent, ParsedZap } from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
-import { ParsedZap } from "Element/Zap";
 import Text from "Element/Text";
 import useEventPublisher from "Feed/EventPublisher";
 import { useWallet } from "Wallet";

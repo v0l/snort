@@ -3,7 +3,7 @@ import { db, EventInteraction } from "Db";
 import { LoginStore } from "Login";
 import { sha256 } from "SnortUtils";
 
-class EventInteractionCache extends FeedCache<EventInteraction> {
+export class EventInteractionCache extends FeedCache<EventInteraction> {
   constructor() {
     super("EventInteraction", db.eventInteraction);
   }
@@ -40,5 +40,3 @@ class EventInteractionCache extends FeedCache<EventInteraction> {
     return [...this.cache.values()];
   }
 }
-
-export const InteractionCache = new EventInteractionCache();

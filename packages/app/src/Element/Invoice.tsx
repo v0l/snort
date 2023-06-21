@@ -2,11 +2,11 @@ import "./Invoice.css";
 import { useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useMemo } from "react";
+import { decodeInvoice } from "@snort/shared";
 
 import SendSats from "Element/SendSats";
 import Icon from "Icons/Icon";
 import { useWallet } from "Wallet";
-import { decodeInvoice } from "SnortUtils";
 
 import messages from "./messages";
 

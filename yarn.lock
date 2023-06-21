@@ -2155,7 +2155,7 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@scure/base@^1.1.1", "@scure/base@~1.1.0":
+"@scure/base@1.1.1", "@scure/base@^1.1.1", "@scure/base@~1.1.0":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.1.1.tgz#ebb651ee52ff84f420097055f4bf46cfba403938"
   integrity sha512-ZxOhsSyxYwLJj3pLZCefNitxsj093tb2vq90mp2txoYeBqbcjDjqFhyM8eUjq/uFm6zJ+mUuqxlS2FkuSY1MTA==
@@ -7032,6 +7032,13 @@ light-bolt11-decoder@^2.1.0:
     bech32 "^1.1.2"
     bn.js "^4.11.8"
     buffer "^6.0.3"
+
+light-bolt11-decoder@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/light-bolt11-decoder/-/light-bolt11-decoder-3.0.0.tgz#f644576120426c9ef65621bde254f11016055044"
+  integrity sha512-AKvOigD2pmC8ktnn2TIqdJu0K0qk6ukUmTvHwF3JNkm8uWCqt18Ijn33A/a7gaRZ4PghJ59X+8+MXrzLKdBTmQ==
+  dependencies:
+    "@scure/base" "1.1.1"
 
 lilconfig@2.1.0, lilconfig@^2.1.0:
   version "2.1.0"

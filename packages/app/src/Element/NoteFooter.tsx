@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
-import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix, Lists } from "@snort/system";
+import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix, Lists, ParsedZap } from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
@@ -17,7 +17,7 @@ import { NoteCreator } from "Element/NoteCreator";
 import { ReBroadcaster } from "Element/ReBroadcaster";
 import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
-import { ParsedZap, ZapsSummary } from "Element/Zap";
+import { ZapsSummary } from "Element/Zap";
 import { RootState } from "State/Store";
 import { setReplyTo, setShow, reset } from "State/NoteCreator";
 import {

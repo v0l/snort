@@ -1,7 +1,7 @@
 import { useEffect, useSyncExternalStore } from "react";
 
-import { ExternalStore } from "@snort/shared";
-import { decodeInvoice, unwrap } from "SnortUtils";
+import { ExternalStore, decodeInvoice } from "@snort/shared";
+import { unwrap } from "SnortUtils";
 import LNDHubWallet from "./LNDHub";
 import { NostrConnectWallet } from "./NostrWalletConnect";
 import { setupWebLNWalletConfig, WebLNWallet } from "./WebLN";
