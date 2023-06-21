@@ -1,32 +1,32 @@
-import { AuthHandler, RelaySettings, ConnectionStateSnapshot } from "./Connection";
-import { RequestBuilder } from "./RequestBuilder";
-import { NoteStore } from "./NoteCollection";
-import { Query } from "./Query";
-import { NostrEvent, ReqFilter } from "./Nostr";
+import { AuthHandler, RelaySettings, ConnectionStateSnapshot } from "./connection";
+import { RequestBuilder } from "./request-builder";
+import { NoteStore } from "./note-collection";
+import { Query } from "./query";
+import { NostrEvent, ReqFilter } from "./nostr";
 
-export * from "./NostrSystem";
-export { default as EventKind } from "./EventKind";
-export * from "./Nostr";
-export * from "./Links";
-export * from "./Nips";
-export * from "./RelayInfo";
-export * from "./EventExt";
-export * from "./Connection";
-export * from "./NoteCollection";
-export * from "./RequestBuilder";
-export * from "./EventPublisher";
-export * from "./EventBuilder";
-export * from "./NostrLink";
-export * from "./ProfileCache";
-export * from "./Zaps";
+export * from "./nostr-system";
+export { default as EventKind } from "./event-kind";
+export * from "./nostr";
+export * from "./links";
+export * from "./nips";
+export * from "./relay-info";
+export * from "./event-ext";
+export * from "./connection";
+export * from "./note-collection";
+export * from "./request-builder";
+export * from "./event-publisher";
+export * from "./event-builder";
+export * from "./nostr-link";
+export * from "./profile-cache";
+export * from "./zaps";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";
 
-export * from "./Cache";
-export * from "./Cache/UserRelayCache";
-export * from "./Cache/UserCache";
-export * from "./Cache/RelayMetricCache";
+export * from "./cache/index";
+export * from "./cache/user-relays";
+export * from "./cache/user-metadata";
+export * from "./cache/relay-metric";
 
 export interface SystemInterface {
   /**

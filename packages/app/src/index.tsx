@@ -34,7 +34,7 @@ import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
 import DebugPage from "Pages/Debug";
 import { db } from "Db";
-import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
+import { preload, RelayMetrics, UserCache, UserRelays } from "cache";
 import { LoginStore } from "Login";
 import { LivePage } from "Pages/LivePage";
 

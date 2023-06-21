@@ -1,8 +1,8 @@
 import { EventKind, HexKey, NostrPrefix, NostrEvent } from ".";
-import { HashtagRegex } from "./Const";
+import { HashtagRegex } from "./const";
 import { getPublicKey, unixNow } from "@snort/shared";
-import { EventExt } from "./EventExt";
-import { tryParseNostrLink } from "./NostrLink";
+import { EventExt } from "./event-ext";
+import { tryParseNostrLink } from "./nostr-link";
 
 export class EventBuilder {
   #kind?: EventKind;

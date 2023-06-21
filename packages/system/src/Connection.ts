@@ -2,10 +2,10 @@ import { v4 as uuid } from "uuid";
 import debug from "debug";
 import { unwrap, ExternalStore, unixNowMs } from "@snort/shared";
 
-import { DefaultConnectTimeout } from "./Const";
-import { ConnectionStats } from "./ConnectionStats";
-import { NostrEvent, ReqCommand, TaggedRawEvent, u256 } from "./Nostr";
-import { RelayInfo } from "./RelayInfo";
+import { DefaultConnectTimeout } from "./const";
+import { ConnectionStats } from "./connection-stats";
+import { NostrEvent, ReqCommand, TaggedRawEvent, u256 } from "./nostr";
+import { RelayInfo } from "./relay-info";
 
 export type AuthHandler = (challenge: string, relay: string) => Promise<NostrEvent | undefined>;
 

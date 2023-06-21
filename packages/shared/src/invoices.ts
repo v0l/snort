@@ -34,8 +34,8 @@ export function decodeInvoice(pr: string): InvoiceDetails | undefined {
             expire: timestamp && expire ? timestamp + expire : undefined,
             timestamp: timestamp,
             description: descriptionSection as string | undefined,
-            descriptionHash: descriptionHashSection ? bytesToHex(descriptionHashSection as Uint8Array) : undefined,
-            paymentHash: paymentHashSection ? bytesToHex(paymentHashSection as Uint8Array) : undefined,
+            descriptionHash: descriptionHashSection ? (typeof descriptionHashSection === "string" ? descriptionHashSection as string : bytesToHex(descriptionHashSection as Uint8Array)) : undefined,
+            paymentHash: paymentHashSection ? (typeof paymentHashSection === "string" ? paymentHashSection as string : bytesToHex(paymentHashSection as Uint8Array)) : undefined,
             expired: false,
         };
         if (ret.expire) {

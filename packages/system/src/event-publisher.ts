@@ -15,9 +15,9 @@ import {
   UserMetadata,
 } from ".";
 
-import { EventBuilder } from "./EventBuilder";
-import { EventExt } from "./EventExt";
-import { findTag } from "./Utils";
+import { EventBuilder } from "./event-builder";
+import { EventExt } from "./event-ext";
+import { findTag } from "./utisl";
 
 const Nip7Queue: Array<WorkQueueItem> = [];
 processWorkQueue(Nip7Queue);

@@ -15,7 +15,7 @@ import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
 import ProfilePreview from "Element/ProfilePreview";
 import Skeleton from "Element/Skeleton";
-import { UserCache } from "Cache";
+import { UserCache } from "cache";
 
 export interface TimelineProps {
   postsOnly: boolean;

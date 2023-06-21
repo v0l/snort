@@ -4,7 +4,7 @@ import { HexKey, TaggedRawEvent } from "@snort/system";
 
 import Note from "Element/Note";
 import useLogin from "Hooks/useLogin";
-import { UserCache } from "Cache";
+import { UserCache } from "cache";
 
 import messages from "./messages";
 

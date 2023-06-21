@@ -24,7 +24,7 @@ import NoteFooter, { Translation } from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import Reveal from "Element/Reveal";
 import useModeration from "Hooks/useModeration";
-import { UserCache } from "Cache";
+import { UserCache } from "cache";
 import Poll from "Element/Poll";
 import useLogin from "Hooks/useLogin";
 import { setBookmarked, setPinned } from "Login";

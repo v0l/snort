@@ -2,8 +2,8 @@
 import debug from "debug";
 import { unixNowMs, FeedCache } from "@snort/shared";
 import { EventKind, HexKey, SystemInterface, TaggedRawEvent, PubkeyReplaceableNoteStore, RequestBuilder } from ".";
-import { ProfileCacheExpire } from "./Const";
-import { mapEventToProfile, MetadataCache } from "./Cache";
+import { ProfileCacheExpire } from "./const";
+import { mapEventToProfile, MetadataCache } from "./cache";
 
 const MetadataRelays = [
   "wss://purplepag.es"

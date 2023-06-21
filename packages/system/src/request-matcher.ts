@@ -1,4 +1,4 @@
-import { NostrEvent, ReqFilter } from "./Nostr";
+import { NostrEvent, ReqFilter } from "./nostr";
 
 export function eventMatchesFilter(ev: NostrEvent, filter: ReqFilter) {
   if (!(filter.ids?.includes(ev.id) ?? false)) {

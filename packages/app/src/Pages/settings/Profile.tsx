@@ -11,7 +11,7 @@ import useEventPublisher from "Feed/EventPublisher";
 import { openFile } from "SnortUtils";
 import useFileUpload from "Upload";
 import AsyncButton from "Element/AsyncButton";
-import { UserCache } from "Cache";
+import { UserCache } from "cache";
 import useLogin from "Hooks/useLogin";
 import AvatarEditor from "Element/AvatarEditor";
 import Icon from "Icons/Icon";

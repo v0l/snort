@@ -9,7 +9,7 @@ import { NostrPrefix, MetadataCache } from "@snort/system";
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
 import { hexToBech32 } from "SnortUtils";
-import { UserCache } from "Cache";
+import { UserCache } from "cache";
 
 import messages from "./messages";
 

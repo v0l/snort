@@ -1,8 +1,8 @@
 import { FeedCache } from "@snort/shared";
 import { sha256, decodeInvoice, InvoiceDetails } from "@snort/shared";
-import { HexKey, NostrEvent } from "Nostr";
-import { findTag } from "./Utils";
-import { MetadataCache } from "./Cache";
+import { HexKey, NostrEvent } from "./nostr";
+import { findTag } from "./utisl";
+import { MetadataCache } from "./cache";
 
 function getInvoice(zap: NostrEvent): InvoiceDetails | undefined {
     const bolt11 = findTag(zap, "bolt11");

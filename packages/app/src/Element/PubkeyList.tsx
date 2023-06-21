@@ -8,7 +8,7 @@ import AsyncButton from "Element/AsyncButton";
 import { useWallet } from "Wallet";
 import { Toastore } from "Toaster";
 import { getDisplayName } from "Element/ProfileImage";
-import { UserCache } from "Cache";
+import { UserCache } from "cache";
 import useLogin from "Hooks/useLogin";
 import useEventPublisher from "Feed/EventPublisher";
 import { WalletInvoiceState } from "Wallet";

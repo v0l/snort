@@ -1,4 +1,4 @@
-import { ReqFilter } from "./Nostr";
+import { ReqFilter } from "./nostr";
 
 export interface FlatReqFilter {
   keys: number

@@ -12,7 +12,7 @@ import { useRequestBuilder } from "@snort/system-react";
 import debug from "debug";
 
 import { sanitizeRelayUrl } from "SnortUtils";
-import { UserRelays } from "Cache";
+import { UserRelays } from "cache";
 import { System } from "index";
 
 interface RelayList {

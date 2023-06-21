@@ -3,11 +3,11 @@ import debug from "debug";
 import { unixNowMs, unwrap } from "@snort/shared";
 
 import { Connection, ReqFilter, Nips, TaggedRawEvent } from ".";
-import { reqFilterEq } from "./Utils";
-import { NoteStore } from "./NoteCollection";
-import { flatMerge } from "./RequestMerger";
-import { BuiltRawReqFilter } from "./RequestBuilder";
-import { expandFilter } from "./RequestExpander";
+import { reqFilterEq } from "./utisl";
+import { NoteStore } from "./note-collection";
+import { flatMerge } from "./request-merger";
+import { BuiltRawReqFilter } from "./request-builder";
+import { expandFilter } from "./request-expander";
 
 /**
  * Tracing for relay query status

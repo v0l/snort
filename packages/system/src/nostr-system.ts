@@ -1,13 +1,13 @@
 import debug from "debug";
 
 import { unwrap, sanitizeRelayUrl, ExternalStore, FeedCache } from "@snort/shared";
-import { NostrEvent, TaggedRawEvent } from "./Nostr";
-import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot } from "./Connection";
-import { Query } from "./Query";
-import { RelayCache } from "./GossipModel";
-import { NoteStore } from "./NoteCollection";
-import { BuiltRawReqFilter, RequestBuilder } from "./RequestBuilder";
-import { RelayMetricHandler } from "./RelayMetricHandler";
+import { NostrEvent, TaggedRawEvent } from "./nostr";
+import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot } from "./connection";
+import { Query } from "./query";
+import { RelayCache } from "./gossip-model";
+import { NoteStore } from "./note-collection";
+import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
+import { RelayMetricHandler } from "./relay-metric-handler";
 import {
   MetadataCache,
   ProfileLoaderService,

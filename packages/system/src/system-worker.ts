@@ -1,11 +1,11 @@
 import { ExternalStore } from "@snort/shared";
 
 import { SystemSnapshot, SystemInterface } from ".";
-import { AuthHandler, ConnectionStateSnapshot, RelaySettings } from "./Connection";
-import { NostrEvent } from "./Nostr";
-import { NoteStore } from "./NoteCollection";
-import { Query } from "./Query";
-import { RequestBuilder } from "./RequestBuilder";
+import { AuthHandler, ConnectionStateSnapshot, RelaySettings } from "./connection";
+import { NostrEvent } from "./nostr";
+import { NoteStore } from "./note-collection";
+import { Query } from "./query";
+import { RequestBuilder } from "./request-builder";
 
 export class SystemWorker extends ExternalStore<SystemSnapshot> implements SystemInterface {
   #port: MessagePort;

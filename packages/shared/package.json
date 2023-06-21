@@ -1,6 +1,6 @@
 {
   "name": "@snort/shared",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Shared components for Snort",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

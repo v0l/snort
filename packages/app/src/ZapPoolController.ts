@@ -1,4 +1,4 @@
-import { UserCache } from "Cache";
+import { UserCache } from "cache";
 import { getDisplayName } from "Element/ProfileImage";
 import { LNURL, ExternalStore, unixNow } from "@snort/shared";
 import { Toastore } from "Toaster";

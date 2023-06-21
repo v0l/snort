@@ -1,6 +1,6 @@
-import { flatFilterEq } from "./Utils";
-import { FlatReqFilter } from "./RequestExpander";
-import { flatMerge } from "./RequestMerger";
+import { flatFilterEq } from "./utisl";
+import { FlatReqFilter } from "./request-expander";
+import { flatMerge } from "./request-merger";
 
 export function diffFilters(prev: Array<FlatReqFilter>, next: Array<FlatReqFilter>, calcRemoved?: boolean) {
   const added = [];

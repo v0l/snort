@@ -3,10 +3,10 @@ import { v4 as uuid } from "uuid";
 import { appendDedupe, sanitizeRelayUrl, unixNowMs } from "@snort/shared";
 
 import { ReqFilter, u256, HexKey, EventKind } from ".";
-import { diffFilters } from "./RequestSplitter";
-import { RelayCache, splitAllByWriteRelays, splitByWriteRelays } from "./GossipModel";
-import { mergeSimilar } from "./RequestMerger";
-import { FlatReqFilter, expandFilter } from "./RequestExpander";
+import { diffFilters } from "./request-splitter";
+import { RelayCache, splitAllByWriteRelays, splitByWriteRelays } from "./gossip-model";
+import { mergeSimilar } from "./request-merger";
+import { FlatReqFilter, expandFilter } from "./request-expander";
 
 /**
  * Which strategy is used when building REQ filters

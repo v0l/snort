@@ -10,7 +10,7 @@ import Icon from "Icons/Icon";
 import { kvToObject } from "SnortUtils";
 import AsyncButton from "Element/AsyncButton";
 import { useWallet } from "Wallet";
-import { PaymentsCache } from "Cache";
+import { PaymentsCache } from "cache";
 import { Payment } from "Db";
 import PageSpinner from "Element/PageSpinner";
 import { LiveVideoPlayer } from "Element/LiveVideoPlayer";

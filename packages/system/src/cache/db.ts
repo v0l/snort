@@ -1,5 +1,5 @@
 import { MetadataCache, RelayMetrics, UsersRelays } from ".";
-import { NostrEvent } from "../Nostr";
+import { NostrEvent } from "../nostr";
 import Dexie, { Table } from "dexie";
 
 const NAME = "snort-system";

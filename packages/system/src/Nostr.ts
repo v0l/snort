@@ -1,4 +1,4 @@
-import { RelaySettings } from "./Connection";
+import { RelaySettings } from "./connection";
 
 export interface NostrEvent {
   id: u256;

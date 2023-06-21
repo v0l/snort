@@ -1,7 +1,7 @@
 
 import { equalProp } from "@snort/shared";
-import { FlatReqFilter } from "./RequestExpander";
-import { NostrEvent, ReqFilter } from "./Nostr";
+import { FlatReqFilter } from "./request-expander";
+import { NostrEvent, ReqFilter } from "./nostr";
 
 export function findTag(e: NostrEvent, tag: string) {
     const maybeTag = e.tags.find(evTag => {

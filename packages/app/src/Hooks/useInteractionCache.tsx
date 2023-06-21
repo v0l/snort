@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "react";
 import { HexKey, u256 } from "@snort/system";
 
-import { InteractionCache } from "Cache";
+import { InteractionCache } from "cache";
 import { EventInteraction } from "Db";
 import { sha256, unwrap } from "SnortUtils";
 
