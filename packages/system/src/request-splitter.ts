@@ -1,4 +1,4 @@
-import { flatFilterEq } from "./utisl";
+import { flatFilterEq } from "./utils";
 import { FlatReqFilter } from "./request-expander";
 import { flatMerge } from "./request-merger";
 

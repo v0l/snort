@@ -17,7 +17,7 @@ import {
 
 import { EventBuilder } from "./event-builder";
 import { EventExt } from "./event-ext";
-import { findTag } from "./utisl";
+import { findTag } from "./utils";
 
 const Nip7Queue: Array<WorkQueueItem> = [];
 processWorkQueue(Nip7Queue);

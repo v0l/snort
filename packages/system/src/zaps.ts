@@ -1,7 +1,7 @@
 import { FeedCache } from "@snort/shared";
 import { sha256, decodeInvoice, InvoiceDetails } from "@snort/shared";
 import { HexKey, NostrEvent } from "./nostr";
-import { findTag } from "./utisl";
+import { findTag } from "./utils";
 import { MetadataCache } from "./cache";
 
 function getInvoice(zap: NostrEvent): InvoiceDetails | undefined {
