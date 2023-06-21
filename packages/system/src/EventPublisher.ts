@@ -52,6 +52,10 @@ export class EventPublisher {
     }
   }
 
+  get pubKey() {
+    return this.#pubKey;
+  }
+
   get #hasNip07() {
     return "nostr" in window;
   }
