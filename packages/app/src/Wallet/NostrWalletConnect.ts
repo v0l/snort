@@ -81,6 +81,11 @@ export class NostrConnectWallet implements LNWallet {
     return await new Promise<boolean>(resolve => {
       this.#conn = new Connection(this.#config.relayUrl, { read: true, write: true });
       this.#conn.OnConnected = () => resolve(true);
+      this.#conn.Auth = async (c, r) => {
+        const eb = new EventBuilder();
+        eb.kind(EventKind.Auth).tag(["relay", r]).tag(["challenge", c]);
+        return await eb.buildAndSign(this.#config.secret);
+      };
       this.#conn.OnEvent = (s, e) => {
         this.#onReply(s, e);
       };
