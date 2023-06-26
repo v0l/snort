@@ -5,6 +5,7 @@ import { unwrap } from "@snort/shared";
 import { Chats } from "Cache";
 import { findTag, unixNow } from "SnortUtils";
 import { Nip29ChatSystem } from "./nip29";
+import useModeration from "Hooks/useModeration";
 
 export enum ChatType {
   DirectMessage = 1,
@@ -85,6 +86,7 @@ export function useNip29Chat() {
 export function useChatSystem() {
   const nip4 = useNip4Chat();
   const nip29 = useNip29Chat();
+  const { muted, blocked } = useModeration();
 
-  return [...nip4, ...nip29];
+  return [...nip4, ...nip29].filter(a => !(muted.includes(a.id) || blocked.includes(a.id)));
 }
