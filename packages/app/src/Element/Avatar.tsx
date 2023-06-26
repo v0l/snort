@@ -19,6 +19,8 @@ const Avatar = ({ user, size, onClick }: AvatarProps) => {
     if (user?.picture) {
       const url = proxy(user.picture, size ?? 120);
       setUrl(url);
+    } else {
+      setUrl(Nostrich);
     }
   }, [user]);
 
