@@ -40,23 +40,27 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
 
   listChats(): Chat[] {
     const myDms = this.#nip4Events();
-    return dedupe(myDms.map(a => a.pubkey)).map(a => {
+    return dedupe(myDms.map(a => chatTo(a))).map(a => {
       const messages = myDms.filter(b => chatTo(b) === a || b.pubkey === a);
-      const last = lastReadInChat(a);
-      return {
-        type: ChatType.DirectMessage,
-        id: a,
-        unread: messages.reduce((acc, v) => (v.created_at > last ? acc++ : acc), 0),
-        lastMessage: messages.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0),
-        messages,
-        createMessage: (msg, pub) => {
-          return pub.sendDm(msg, a);
-        },
-        sendMessage: (ev: NostrEvent, system: SystemInterface) => {
-          system.BroadcastEvent(ev);
-        },
-      } as Chat;
+      return Nip4ChatSystem.createChatObj(a, messages);
     });
+  }
+
+  static createChatObj(id: string, messages: Array<NostrEvent>) {
+    const last = lastReadInChat(id);
+    return {
+      type: ChatType.DirectMessage,
+      id,
+      unread: messages.reduce((acc, v) => (v.created_at > last ? acc++ : acc), 0),
+      lastMessage: messages.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0),
+      messages,
+      createMessage: (msg, pub) => {
+        return pub.sendDm(msg, id);
+      },
+      sendMessage: (ev: NostrEvent, system: SystemInterface) => {
+        system.BroadcastEvent(ev);
+      },
+    } as Chat;
   }
 
   #nip4Events() {

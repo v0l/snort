@@ -107,7 +107,7 @@ export function profileLink(hex: HexKey, relays?: Array<string> | string) {
  * Convert hex to bech32
  */
 export function hexToBech32(hrp: string, hex?: string) {
-  if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0) {
+  if (typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0 || !isHex(hex)) {
     return "";
   }
 
@@ -173,6 +173,14 @@ export function deepClone<T>(obj: T) {
   }
 }
 
+export function isHex(s: string) {
+  // 48-57 = 0-9
+  // 65-90 = A-Z
+  // 97-122 = a-z
+  return [...s]
+    .map(v => v.charCodeAt(0))
+    .every(v => (v >= 48 && v <= 57) || (v >= 65 && v <= 90) || v >= 97 || v <= 122);
+}
 /**
  * Simple debounce
  */

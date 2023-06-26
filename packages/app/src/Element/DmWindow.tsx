@@ -8,11 +8,12 @@ import NoteToSelf from "Element/NoteToSelf";
 import useLogin from "Hooks/useLogin";
 import WriteMessage from "Element/WriteMessage";
 import { Chat, ChatType, useChatSystem } from "chat";
+import { Nip4ChatSystem } from "chat/nip4";
 
 export default function DmWindow({ id }: { id: string }) {
   const pubKey = useLogin().publicKey;
   const dms = useChatSystem();
-  const chat = dms.find(a => a.id === id);
+  const chat = dms.find(a => a.id === id) ?? Nip4ChatSystem.createChatObj(id, []);
 
   function sender() {
     if (id === pubKey) {
@@ -24,7 +25,7 @@ export default function DmWindow({ id }: { id: string }) {
     if (chat?.profile) {
       return <ProfileImage pubkey={id} className="f-grow mb10" profile={chat.profile} />;
     }
-    return <ProfileImage pubkey={""} className="f-grow mb10" overrideUsername={chat?.id} />;
+    return <ProfileImage pubkey={id ?? ""} className="f-grow mb10" overrideUsername={chat?.id} />;
   }
 
   return (
@@ -34,7 +35,7 @@ export default function DmWindow({ id }: { id: string }) {
         <div className="flex f-col">{chat && <DmChatSelected chat={chat} />}</div>
       </div>
       <div>
-        <WriteMessage chatId={id} />
+        <WriteMessage chat={chat} />
       </div>
     </div>
   );

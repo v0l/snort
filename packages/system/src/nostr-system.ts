@@ -244,7 +244,9 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
    */
   BroadcastEvent(ev: NostrEvent) {
     for (const [, s] of this.#sockets) {
-      s.SendEvent(ev);
+      if (!s.Ephemeral) {
+        s.SendEvent(ev);
+      }
     }
   }
 

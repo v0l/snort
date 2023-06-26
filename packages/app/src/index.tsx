@@ -21,7 +21,6 @@ import SettingsPage, { SettingsRoutes } from "Pages/SettingsPage";
 import ErrorPage from "Pages/ErrorPage";
 import VerificationPage from "Pages/Verification";
 import MessagesPage from "Pages/MessagesPage";
-import ChatPage from "Pages/ChatPage";
 import DonatePage from "Pages/DonatePage";
 import HashTagsPage from "Pages/HashTagsPage";
 import SearchPage from "Pages/SearchPage";
@@ -123,12 +122,8 @@ export const router = createBrowserRouter([
         element: <VerificationPage />,
       },
       {
-        path: "/messages",
+        path: "/messages/:id?",
         element: <MessagesPage />,
-      },
-      {
-        path: "/messages/:id",
-        element: <ChatPage />,
       },
       {
         path: "/donate",

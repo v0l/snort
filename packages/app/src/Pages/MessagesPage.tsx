@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NostrPrefix } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
 import UnreadCount from "Element/UnreadCount";
 import ProfileImage, { getDisplayName } from "Element/ProfileImage";
-import { hexToBech32 } from "SnortUtils";
+import { hexToBech32, parseId } from "SnortUtils";
 import NoteToSelf from "Element/NoteToSelf";
 import useModeration from "Hooks/useModeration";
 import useLogin from "Hooks/useLogin";
@@ -29,7 +29,9 @@ export default function MessagesPage() {
   const login = useLogin();
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
-  const [chat, setChat] = useState<string>();
+  const { id } = useParams();
+  const parsedId = parseId(id ?? "");
+  const [chat, setChat] = useState(id ? parsedId : undefined);
   const pageWidth = usePageWidth();
 
   const chats = useChatSystem();

@@ -7,9 +7,9 @@ import useFileUpload from "Upload";
 import { openFile } from "SnortUtils";
 import Textarea from "./Textarea";
 import { System } from "index";
-import { useChatSystem } from "chat";
+import { Chat } from "chat";
 
-export default function WriteMessage({ chatId }: { chatId: string }) {
+export default function WriteMessage({ chat }: { chat: Chat }) {
   const [msg, setMsg] = useState("");
   const [sending, setSending] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -17,7 +17,6 @@ export default function WriteMessage({ chatId }: { chatId: string }) {
   const [error, setError] = useState("");
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
-  const chat = useChatSystem().find(a => a.id === chatId);
 
   async function attachFile() {
     try {
