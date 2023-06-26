@@ -22,7 +22,7 @@ import useEventPublisher from "Feed/EventPublisher";
 import { debounce } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import SnortServiceProvider from "Nip05/SnortServiceProvider";
-import { UserCache } from "cache";
+import { UserCache } from "Cache";
 
 import messages from "./messages";
 import { System } from "index";

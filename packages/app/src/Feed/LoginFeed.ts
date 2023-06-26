@@ -12,7 +12,7 @@ import { addSubscription, setBlocked, setBookmarked, setFollows, setMuted, setPi
 import { SnortPubKey } from "Const";
 import { SubscriptionEvent } from "Subscription";
 import useRelaysFeedFollows from "./RelaysFeedFollows";
-import { UserRelays } from "cache";
+import { UserRelays } from "Cache";
 import { System } from "index";
 import { Nip29Chats, Nip4Chats } from "chat";
 

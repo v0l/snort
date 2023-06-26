@@ -2,7 +2,7 @@ import { useSyncExternalStore } from "react";
 import { Nip4ChatSystem } from "./nip4";
 import { EventKind, EventPublisher, NostrEvent, RequestBuilder, SystemInterface, UserMetadata } from "@snort/system";
 import { unwrap } from "@snort/shared";
-import { Chats } from "cache";
+import { Chats } from "Cache";
 import { findTag, unixNow } from "SnortUtils";
 import { Nip29ChatSystem } from "./nip29";
 

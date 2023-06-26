@@ -4,7 +4,7 @@ import { TaggedRawEvent, EventKind, MetadataCache } from "@snort/system";
 import { getDisplayName } from "Element/ProfileImage";
 import { MentionRegex } from "Const";
 import { tagFilterOfTextRepost, unwrap } from "SnortUtils";
-import { UserCache } from "cache";
+import { UserCache } from "Cache";
 import { LoginSession } from "Login";
 
 export interface NotificationRequest {

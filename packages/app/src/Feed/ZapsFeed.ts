@@ -3,7 +3,7 @@ import { HexKey, EventKind, FlatNoteStore, RequestBuilder, parseZap } from "@sno
 import { useRequestBuilder } from "@snort/system-react";
 
 import { System } from "index";
-import { UserCache } from "cache";
+import { UserCache } from "Cache";
 
 export default function useZapsFeed(pubkey?: HexKey) {
   const sub = useMemo(() => {
