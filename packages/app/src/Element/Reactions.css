@@ -44,14 +44,14 @@
   line-height: 19px;
 }
 
-.reactions-modal .modal-body .body {
+.reactions-modal .modal-body .reactions-body {
   overflow: scroll;
   height: 40vh;
   -ms-overflow-style: none; /* for Internet Explorer, Edge */
   scrollbar-width: none; /* Firefox */
 }
 
-.reactions-modal .modal-body .body::-webkit-scrollbar {
+.reactions-modal .modal-body .reactions-body::-webkit-scrollbar {
   display: none;
 }
 

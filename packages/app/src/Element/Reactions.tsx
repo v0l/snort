@@ -82,7 +82,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
         </h2>
       </div>
       <Tabs tabs={tabs} tab={tab} setTab={setTab} />
-      <div className="body" key={tab.value}>
+      <div className="reactions-body" key={tab.value}>
         {tab.value === 0 &&
           likes.map(ev => {
             return (
