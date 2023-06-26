@@ -180,6 +180,7 @@ export default function useLoginFeed() {
 
   useEffect(() => {
     UserRelays.buffer(follows.item).catch(console.error);
+    System.ProfileLoader.TrackMetadata(follows.item); // always track follows profiles
   }, [follows.item]);
 
   const fRelays = useRelaysFeedFollows(follows.item);
