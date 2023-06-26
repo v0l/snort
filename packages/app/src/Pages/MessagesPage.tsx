@@ -107,13 +107,20 @@ function ProfileDmActions({ pubkey }: { pubkey: string }) {
   const profile = useUserProfile(System, pubkey);
   const { block, unblock, isBlocked } = useModeration();
 
+  function truncAbout(s?: string) {
+    if ((s?.length ?? 0) > 200) {
+      return `${s?.slice(0, 200)}...`;
+    }
+    return s;
+  }
+
   const blocked = isBlocked(pubkey);
   return (
     <>
       <Avatar user={profile} size={210} />
       <h2>{getDisplayName(profile, pubkey)}</h2>
       <p>
-        <Text content={profile?.about ?? ""} tags={[]} creator={pubkey} disableMedia={true} depth={0} />
+        <Text content={truncAbout(profile?.about) ?? ""} tags={[]} creator={pubkey} disableMedia={true} depth={0} />
       </p>
 
       <div className="settings-row" onClick={() => (blocked ? unblock(pubkey) : block(pubkey))}>
