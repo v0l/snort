@@ -105,6 +105,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
         c.OnDisconnect = (code) => this.OnRelayDisconnect(c, code);
+        c.OnConnected = (r) => this.OnRelayConnected(c, r);
         await c.Connect();
       } else {
         // update settings if already connected
@@ -112,6 +113,14 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       }
     } catch (e) {
       console.error(e);
+    }
+  }
+
+  OnRelayConnected(c: Connection, wasReconnect: boolean) {
+    if (wasReconnect) {
+      for (const [, q] of this.Queries) {
+        q.connectionRestored(c);
+      }
     }
   }
 
@@ -147,6 +156,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
         c.OnDisconnect = code => this.OnRelayDisconnect(c, code);
+        c.OnConnected = (r) => this.OnRelayConnected(c, r);
         await c.Connect();
         return c;
       }

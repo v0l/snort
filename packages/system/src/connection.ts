@@ -61,7 +61,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   IsClosed: boolean;
   ReconnectTimer?: ReturnType<typeof setTimeout>;
   EventsCallback: Map<u256, (msg: boolean[]) => void>;
-  OnConnected?: () => void;
+  OnConnected?: (wasReconnect: boolean) => void;
   OnEvent?: (sub: string, e: TaggedRawEvent) => void;
   OnEose?: (sub: string) => void;
   OnDisconnect?: (code: number) => void;
@@ -106,16 +106,18 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
       // ignored
     }
 
+    const wasReconnect = this.Socket !== null && !this.IsClosed;
     if (this.Socket) {
       this.Id = uuid();
       this.Socket.onopen = null;
       this.Socket.onmessage = null;
       this.Socket.onerror = null;
       this.Socket.onclose = null;
+      this.Socket = null;
     }
     this.IsClosed = false;
     this.Socket = new WebSocket(this.Address);
-    this.Socket.onopen = () => this.OnOpen();
+    this.Socket.onopen = () => this.OnOpen(wasReconnect);
     this.Socket.onmessage = e => this.OnMessage(e);
     this.Socket.onerror = e => this.OnError(e);
     this.Socket.onclose = e => this.OnClose(e);
@@ -127,12 +129,12 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     this.notifyChange();
   }
 
-  OnOpen() {
+  OnOpen(wasReconnect: boolean) {
     this.ConnectTimeout = DefaultConnectTimeout;
     this.#log(`[${this.Address}] Open!`);
     this.Down = false;
     this.#setupEphemeral();
-    this.OnConnected?.();
+    this.OnConnected?.(wasReconnect);
     this.#sendPendingRaw();
   }
 

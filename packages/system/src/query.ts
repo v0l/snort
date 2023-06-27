@@ -152,6 +152,10 @@ export class Query implements QueryBase {
     this.#checkTraces();
   }
 
+  isOpen() {
+    return this.#cancelAt === undefined && this.#leaveOpen;
+  }
+
   canRemove() {
     return this.#cancelAt !== undefined && this.#cancelAt < unixNowMs();
   }
@@ -210,6 +214,17 @@ export class Query implements QueryBase {
 
   connectionLost(id: string) {
     this.#tracing.filter(a => a.connId == id).forEach(a => a.forceEose());
+  }
+
+  connectionRestored(c: Connection) {
+    if (this.isOpen()) {
+      for (const qt of this.#tracing) {
+        if (qt.relay === c.Address) {
+          debugger;
+          c.QueueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
+        }
+      }
+    }
   }
 
   sendClose() {
@@ -287,7 +302,7 @@ export class Query implements QueryBase {
       () => this.#onProgress()
     );
     this.#tracing.push(qt);
-    c.QueueReq(["REQ", qt.id, ...q.filters], () => qt.sentToRelay());
+    c.QueueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
     return qt;
   }
 }
