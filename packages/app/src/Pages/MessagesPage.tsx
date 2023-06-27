@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 import { NostrPrefix } from "@snort/system";
@@ -30,27 +30,34 @@ export default function MessagesPage() {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const { id } = useParams();
-  const parsedId = parseId(id ?? "");
-  const [chat, setChat] = useState(id ? parsedId : undefined);
+  const [chat, setChat] = useState<string>();
   const pageWidth = usePageWidth();
 
+  useEffect(() => {
+    const parsedId = parseId(id ?? "");
+    setChat(id ? parsedId : undefined);
+  }, [id]);
   const chats = useChatSystem();
 
   const unreadCount = useMemo(() => chats.reduce((p, c) => p + c.unread, 0), [chats]);
 
-  function openChat(e: React.MouseEvent<HTMLDivElement>, pubkey: string) {
+  function openChat(e: React.MouseEvent<HTMLDivElement>, type: ChatType, id: string) {
     e.stopPropagation();
     e.preventDefault();
-    if (pageWidth < TwoCol) {
-      navigate(`/messages/${hexToBech32(NostrPrefix.PublicKey, pubkey)}`);
+    if (type === ChatType.DirectMessage) {
+      navigate(`/messages/${hexToBech32(NostrPrefix.PublicKey, id)}`, {
+        replace: true,
+      });
     } else {
-      setChat(pubkey);
+      navigate(`/messages/${encodeURIComponent(id)}`, {
+        replace: true,
+      });
     }
   }
 
   function noteToSelf(chat: Chat) {
     return (
-      <div className="flex mb10" key={chat.id} onClick={e => openChat(e, chat.id)}>
+      <div className="flex mb10" key={chat.id} onClick={e => openChat(e, chat.type, chat.id)}>
         <NoteToSelf clickable={true} className="f-grow" link="" pubkey={chat.id} />
       </div>
     );
@@ -60,7 +67,7 @@ export default function MessagesPage() {
     if (!login.publicKey) return null;
     if (chat.id === login.publicKey) return noteToSelf(chat);
     return (
-      <div className="flex mb10" key={chat.id} onClick={e => openChat(e, chat.id)}>
+      <div className="flex mb10" key={chat.id} onClick={e => openChat(e, chat.type, chat.id)}>
         {chat.type === ChatType.DirectMessage ? (
           <ProfileImage pubkey={chat.id} className="f-grow" link="" />
         ) : (
@@ -78,22 +85,24 @@ export default function MessagesPage() {
 
   return (
     <div className="dm-page">
-      <div>
-        <div className="flex">
-          <h3 className="f-grow">
-            <FormattedMessage {...messages.Messages} />
-          </h3>
-          <button disabled={unreadCount <= 0} type="button">
-            <FormattedMessage {...messages.MarkAllRead} />
-          </button>
+      {(pageWidth >= TwoCol || !chat) && (
+        <div>
+          <div className="flex">
+            <h3 className="f-grow">
+              <FormattedMessage {...messages.Messages} />
+            </h3>
+            <button disabled={unreadCount <= 0} type="button">
+              <FormattedMessage {...messages.MarkAllRead} />
+            </button>
+          </div>
+          {chats
+            .sort((a, b) => {
+              return a.id === login.publicKey ? -1 : b.id === login.publicKey ? 1 : b.lastMessage - a.lastMessage;
+            })
+            .map(person)}
         </div>
-        {chats
-          .sort((a, b) => {
-            return a.id === login.publicKey ? -1 : b.id === login.publicKey ? 1 : b.lastMessage - a.lastMessage;
-          })
-          .map(person)}
-      </div>
-      {pageWidth >= TwoCol && chat && <DmWindow id={chat} />}
+      )}
+      {chat && <DmWindow id={chat} />}
       {pageWidth >= ThreeCol && chat && (
         <div>
           <ProfileDmActions pubkey={chat} />
