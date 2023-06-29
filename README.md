@@ -47,6 +47,7 @@ This repository is a yarn workspace. To install dependencies, run `yarn` from th
 To run the application, use
 
 ```
+$ yarn install
 $ yarn start
 ```
 
