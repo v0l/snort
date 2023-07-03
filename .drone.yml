@@ -5,7 +5,8 @@ name: docker
 concurrency:
   limit: 1
 trigger:
-  branch: ["main"]
+  branch:
+  - main
 metadata:
   namespace: git
 steps:
@@ -36,9 +37,9 @@ steps:
         -f Dockerfile.prebuilt .
       - img push voidic/snort:latest
 volumes:
-  - name: cache
-    claim:
-      name: docker-cache
+- name: cache
+  claim:
+    name: docker-cache
 ---
 kind: pipeline
 type: kubernetes
@@ -47,7 +48,7 @@ concurrency:
   limit: 1
 trigger:
   event:
-    - tag
+  - tag
 metadata:
   namespace: git
 steps:
@@ -114,7 +115,8 @@ name: crowdin
 concurrency:
   limit: 1
 trigger:
-  branch: ["main"]
+  branch:
+  - main
 metadata:
   namespace: git
 steps:
