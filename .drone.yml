@@ -32,9 +32,9 @@ steps:
       - 'git commit -a -m "chore: Update translations"'
       - git push -u origin main
 volumes:
-- name: cache
-  claim:
-    name: docker-cache
+  - name: cache
+    claim:
+      name: docker-cache
 ---
 kind: pipeline
 type: kubernetes
@@ -73,9 +73,9 @@ steps:
         -f Dockerfile.prebuilt .
       - img push voidic/snort:latest
 volumes:
-- name: cache
-  claim:
-    name: docker-cache
+  - name: cache
+    claim:
+      name: docker-cache
 ---
 kind: pipeline
 type: kubernetes
@@ -115,9 +115,9 @@ steps:
         -f Dockerfile.prebuilt .
       - img push voidic/snort:${DRONE_TAG}
 volumes:
-- name: cache
-  claim:
-    name: docker-cache
+  - name: cache
+    claim:
+      name: docker-cache
 ---
 kind: pipeline
 type: kubernetes
@@ -141,6 +141,6 @@ steps:
       - yarn workspace @snort/app eslint
       - yarn workspace @snort/app prettier --check .
 volumes:
-- name: cache
-  claim:
-    name: docker-cache
+  - name: cache
+    claim:
+      name: docker-cache
