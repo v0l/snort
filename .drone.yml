@@ -64,14 +64,14 @@ steps:
         path: /cache
     environment: 
       TOKEN:
-        from_secret: img_token
+        from_secret: docker_hub
     commands:
-      - img login -u kieran -p $TOKEN git.v0l.io
+      - img login -u voidic -p $TOKEN
       - |-
-        img build -t git.v0l.io/kieran/snort:latest \
+        img build -t voidic/snort:latest \
         --platform linux/amd64,linux/arm64 \
         -f Dockerfile.prebuilt .
-      - img push git.v0l.io/kieran/snort:latest
+      - img push voidic/snort:latest
 volumes:
 - name: cache
   claim:
@@ -106,14 +106,14 @@ steps:
         path: /cache
     environment: 
       TOKEN:
-        from_secret: img_token
+        from_secret: docker_hub
     commands:
-      - img login -u kieran -p $TOKEN git.v0l.io
+      - img login -u voidic -p $TOKEN
       - |-
-        img build -t git.v0l.io/kieran/snort:${DRONE_TAG} \
+        img build -t voidic/snort:${DRONE_TAG} \
         --platform linux/amd64,linux/arm64 \
         -f Dockerfile.prebuilt .
-      - img push git.v0l.io/kieran/snort:${DRONE_TAG}
+      - img push voidic/snort:${DRONE_TAG}
 volumes:
 - name: cache
   claim:
