@@ -9,17 +9,17 @@ trigger:
 metadata:
   namespace: git
 steps:
-  - name: Push/Pull translations 
+  - name: Push/Pull translations
     image: node:current-bullseye
     volumes:
       - name: cache
         path: /cache
-    environment: 
+    environment:
       YARN_CACHE_FOLDER: /cache/.yarn-translations
       TOKEN:
-        from_secret: drone_gitea
+        from_secret: gitea
       CTOKEN:
-        from_secret: crowdin_token
+        from_secret: crowdin
     commands:
       - git config --global user.email drone@v0l.io
       - git config --global user.name "Drone CI"
@@ -51,7 +51,7 @@ steps:
     volumes:
       - name: cache
         path: /cache
-    environment: 
+    environment:
       YARN_CACHE_FOLDER: /cache/.yarn-docker
     commands:
       - yarn install
@@ -62,7 +62,7 @@ steps:
     volumes:
       - name: cache
         path: /cache
-    environment: 
+    environment:
       TOKEN:
         from_secret: docker_hub
     commands:
@@ -84,7 +84,7 @@ concurrency:
   limit: 1
 trigger:
   event:
-  - tag
+    - tag
 metadata:
   namespace: git
 steps:
@@ -93,7 +93,7 @@ steps:
     volumes:
       - name: cache
         path: /cache
-    environment: 
+    environment:
       YARN_CACHE_FOLDER: /cache/.yarn-docker-release
     commands:
       - yarn install
@@ -104,7 +104,7 @@ steps:
     volumes:
       - name: cache
         path: /cache
-    environment: 
+    environment:
       TOKEN:
         from_secret: docker_hub
     commands:
@@ -132,7 +132,7 @@ steps:
     volumes:
       - name: cache
         path: /cache
-    environment: 
+    environment:
       YARN_CACHE_FOLDER: /cache/.yarn-test
     commands:
       - yarn install
