@@ -101,3 +101,42 @@ volumes:
 - name: cache
   claim:
     name: docker-cache
+---
+kind: pipeline
+type: kubernetes
+name: docker-release
+concurrency:
+  limit: 1
+trigger:
+  event:
+  - tag
+metadata:
+  namespace: git
+steps:
+  - name: Build site
+    image: node:current-bullseye
+    volumes:
+      - name: cache
+        path: /cache
+    environment:
+      YARN_CACHE_FOLDER: /cache/.yarn-docker-release
+    commands:
+      - yarn install
+      - yarn build
+  - name: build docker image
+    image: r.j3ss.co/img
+    privileged: true
+    volumes:
+      - name: cache
+        path: /cache
+    environment:
+      TOKEN:
+        from_secret: docker_hub
+    commands:
+      - img login -u voidic -p $TOKEN
+      - img build -t voidic/snort:$DRONE_TAG --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
+      - img push voidic/snort:$DRONE_TAG
+volumes:
+- name: cache
+  claim:
+    name: docker-cache

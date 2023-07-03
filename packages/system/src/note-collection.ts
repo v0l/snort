@@ -245,22 +245,24 @@ export class ReplaceableNoteStore extends HookedNoteStore<Readonly<TaggedRawEven
 }
 
 /**
- * A note store that holds a single replaceable event per pubkey
+ * General use note store based on kind ranges
  */
-export class PubkeyReplaceableNoteStore extends KeyedReplaceableNoteStore {
+export class NoteCollection extends KeyedReplaceableNoteStore {
   constructor() {
-    super(e => e.pubkey);
-  }
-}
-
-/**
- * A note store that holds a single replaceable event per "pubkey-dtag"
- */
-export class ParameterizedReplaceableNoteStore extends KeyedReplaceableNoteStore {
-  constructor() {
-    super(ev => {
-      const dTag = findTag(ev, "d");
-      return `${ev.pubkey}-${dTag}`;
-    });
+    super((e) => {
+      const legacyReplaceable = [0, 3, 41]
+      if (e.kind >= 30_000 && e.kind < 40_000) {
+        return `${e.kind}:${e.pubkey}:${findTag(e, "d")}`; // Parameterized replaceable
+      } else if (e.kind >= 10_000 && e.kind < 20_000) {
+        return `${e.kind}:${e.pubkey}`; // Replaceable event
+      } else if (legacyReplaceable.includes(e.kind)) {
+        return `${e.kind}:${e.pubkey}`; // Replaceable event
+      } else {
+        // Regular event
+        // ephemeral events are like regular events
+        // unknown kind
+        return e.id;
+      }
+    })
   }
 }
