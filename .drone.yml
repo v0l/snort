@@ -31,7 +31,7 @@ steps:
         from_secret: docker_hub
     commands:
       - img login -u voidic -p $TOKEN
-      - img build -t voidic/snort:latest --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
+      - 'img build -t voidic/snort:latest --platform linux/amd64 --platform linux/arm64 -f Dockerfile.prebuilt .'
       - img push voidic/snort:latest
 volumes:
 - name: cache
@@ -70,7 +70,7 @@ steps:
         from_secret: docker_hub
     commands:
       - img login -u voidic -p $TOKEN
-      - img build -t voidic/snort:${DRONE_TAG} --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
+      - 'img build -t voidic/snort:${DRONE_TAG} --platform linux/amd64 --platform linux/arm64 -f Dockerfile.prebuilt .'
       - img push voidic/snort:${DRONE_TAG}
 volumes:
   - name: cache
