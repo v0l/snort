@@ -1,43 +1,6 @@
 ---
 kind: pipeline
 type: kubernetes
-name: crowdin
-concurrency:
-  limit: 1
-trigger:
-  branch: ["main"]
-metadata:
-  namespace: git
-steps:
-  - name: Push/Pull translations
-    image: node:current-bullseye
-    volumes:
-      - name: cache
-        path: /cache
-    environment:
-      YARN_CACHE_FOLDER: /cache/.yarn-translations
-      TOKEN:
-        from_secret: gitea
-      CTOKEN:
-        from_secret: crowdin
-    commands:
-      - git config --global user.email drone@v0l.io
-      - git config --global user.name "Drone CI"
-      - git remote set-url origin https://drone:$TOKEN@git.v0l.io/Kieran/snort.git
-      - yarn install
-      - npx @crowdin/cli upload sources -b main -T $CTOKEN
-      - npx @crowdin/cli pull -b main -T $CTOKEN
-      - yarn workspace @snort/app format
-      - git add .
-      - 'git commit -a -m "chore: Update translations"'
-      - git push -u origin main
-volumes:
-  - name: cache
-    claim:
-      name: docker-cache
----
-kind: pipeline
-type: kubernetes
 name: docker
 concurrency:
   limit: 1
@@ -140,6 +103,43 @@ steps:
       - yarn test
       - yarn workspace @snort/app eslint
       - yarn workspace @snort/app prettier --check .
+volumes:
+  - name: cache
+    claim:
+      name: docker-cache
+---
+kind: pipeline
+type: kubernetes
+name: crowdin
+concurrency:
+  limit: 1
+trigger:
+  branch: ["main"]
+metadata:
+  namespace: git
+steps:
+  - name: Push/Pull translations
+    image: node:current-bullseye
+    volumes:
+      - name: cache
+        path: /cache
+    environment:
+      YARN_CACHE_FOLDER: /cache/.yarn-translations
+      TOKEN:
+        from_secret: gitea
+      CTOKEN:
+        from_secret: crowdin
+    commands:
+      - git config --global user.email drone@v0l.io
+      - git config --global user.name "Drone CI"
+      - git remote set-url origin https://drone:$TOKEN@git.v0l.io/Kieran/snort.git
+      - yarn install
+      - npx @crowdin/cli upload sources -b main -T $CTOKEN
+      - npx @crowdin/cli pull -b main -T $CTOKEN
+      - yarn workspace @snort/app format
+      - git add .
+      - 'git commit -a -m "chore: Update translations"'
+      - git push -u origin main
 volumes:
   - name: cache
     claim:
