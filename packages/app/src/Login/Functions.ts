@@ -78,7 +78,7 @@ export async function generateNewLogin() {
   }
 
   const publicKey = utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
-  const publisher = new EventPublisher(publicKey, privateKey);
+  const publisher = EventPublisher.privateKey(privateKey);
   const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey], newRelays);
   System.BroadcastEvent(ev);
 

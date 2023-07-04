@@ -134,7 +134,7 @@ export default function SendSats(props: SendSatsProps) {
         const randomKey = generateRandomKey();
         console.debug("Generated new key for zap: ", randomKey);
 
-        const publisher = new EventPublisher(randomKey.publicKey, randomKey.privateKey);
+        const publisher = EventPublisher.privateKey(randomKey.privateKey);
         zap = await publisher.zap(amount * 1000, author, relays, note, comment, eb => eb.tag(["anon", ""]));
       } else {
         zap = await publisher.zap(amount * 1000, author, relays, note, comment);

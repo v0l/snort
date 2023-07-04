@@ -6,7 +6,7 @@ import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { EventPublisher, NostrSystem, ProfileLoaderService } from "@snort/system";
+import { EventPublisher, NostrSystem, ProfileLoaderService, Nip7Signer } from "@snort/system";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
@@ -46,8 +46,12 @@ export const System = new NostrSystem({
   relayMetrics: RelayMetrics,
   authHandler: async (c, r) => {
     const { publicKey, privateKey } = LoginStore.snapshot();
+    if (privateKey) {
+      const pub = EventPublisher.privateKey(privateKey);
+      return await pub.nip42Auth(c, r);
+    }
     if (publicKey) {
-      const pub = new EventPublisher(publicKey, privateKey);
+      const pub = new EventPublisher(new Nip7Signer(), publicKey);
       return await pub.nip42Auth(c, r);
     }
   },
