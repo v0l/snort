@@ -1,12 +1,5 @@
 import { useMemo } from "react";
-import {
-  HexKey,
-  TaggedRawEvent,
-  Lists,
-  EventKind,
-  ParameterizedReplaceableNoteStore,
-  RequestBuilder,
-} from "@snort/system";
+import { HexKey, TaggedRawEvent, Lists, EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
 import { getNewest } from "SnortUtils";
@@ -24,11 +17,7 @@ export default function useMutedFeed(pubkey?: HexKey) {
     return b;
   }, [pubkey]);
 
-  const mutedFeed = useRequestBuilder<ParameterizedReplaceableNoteStore>(
-    System,
-    ParameterizedReplaceableNoteStore,
-    sub
-  );
+  const mutedFeed = useRequestBuilder<NoteCollection>(System, NoteCollection, sub);
 
   const mutedList = useMemo(() => {
     if (pubkey && mutedFeed.data) {

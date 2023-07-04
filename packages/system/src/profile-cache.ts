@@ -1,7 +1,7 @@
 
 import debug from "debug";
 import { unixNowMs, FeedCache } from "@snort/shared";
-import { EventKind, HexKey, SystemInterface, TaggedRawEvent, PubkeyReplaceableNoteStore, RequestBuilder } from ".";
+import { EventKind, HexKey, SystemInterface, TaggedRawEvent, NoteCollection, RequestBuilder } from ".";
 import { ProfileCacheExpire } from "./const";
 import { mapEventToProfile, MetadataCache } from "./cache";
 
@@ -94,8 +94,8 @@ export class ProfileLoaderService {
         MetadataRelays.forEach(r => fMissing.relay(r));
       }
       const newProfiles = new Set<string>();
-      const q = this.#system.Query<PubkeyReplaceableNoteStore>(PubkeyReplaceableNoteStore, sub);
-      const feed = (q?.feed as PubkeyReplaceableNoteStore) ?? new PubkeyReplaceableNoteStore();
+      const q = this.#system.Query<NoteCollection>(NoteCollection, sub);
+      const feed = (q?.feed as NoteCollection) ?? new NoteCollection();
       // never release this callback, it will stop firing anyway after eose
       const releaseOnEvent = feed.onEvent(async e => {
         for (const pe of e) {

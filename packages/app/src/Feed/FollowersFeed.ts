@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { HexKey, EventKind, PubkeyReplaceableNoteStore, RequestBuilder } from "@snort/system";
+import { HexKey, EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { System } from "index";
 
@@ -11,7 +11,7 @@ export default function useFollowersFeed(pubkey?: HexKey) {
     return b;
   }, [pubkey]);
 
-  const followersFeed = useRequestBuilder<PubkeyReplaceableNoteStore>(System, PubkeyReplaceableNoteStore, sub);
+  const followersFeed = useRequestBuilder<NoteCollection>(System, NoteCollection, sub);
 
   const followers = useMemo(() => {
     const contactLists = followersFeed.data?.filter(

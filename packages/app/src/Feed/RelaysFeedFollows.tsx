@@ -5,7 +5,7 @@ import {
   TaggedRawEvent,
   RelaySettings,
   EventKind,
-  PubkeyReplaceableNoteStore,
+  NoteCollection,
   RequestBuilder,
 } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
@@ -80,7 +80,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
     });
   }
 
-  const relays = useRequestBuilder<PubkeyReplaceableNoteStore>(System, PubkeyReplaceableNoteStore, sub);
+  const relays = useRequestBuilder<NoteCollection>(System, NoteCollection, sub);
   const notesRelays = relays.data?.filter(a => a.kind === EventKind.Relays) ?? [];
   const notesContactLists = relays.data?.filter(a => a.kind === EventKind.ContactList) ?? [];
   return useMemo(() => {
