@@ -1,6 +1,6 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
-import { sha256, unixNow } from "@snort/shared";
+import { getPublicKey, sha256, unixNow } from "@snort/shared";
 
 import { EventKind, HexKey, NostrEvent } from ".";
 import { Nip4WebCryptoEncryptor } from "./impl/nip4";
@@ -36,6 +36,7 @@ export abstract class EventExt {
    * Sign this message with a private key
    */
   static sign(e: NostrEvent, key: HexKey) {
+    e.pubkey = getPublicKey(key);
     e.id = this.createId(e);
 
     const sig = secp.schnorr.sign(e.id, key);

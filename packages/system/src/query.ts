@@ -220,7 +220,6 @@ export class Query implements QueryBase {
     if (this.isOpen()) {
       for (const qt of this.#tracing) {
         if (qt.relay === c.Address) {
-          debugger;
           c.QueueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
         }
       }

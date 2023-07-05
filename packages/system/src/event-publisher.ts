@@ -1,6 +1,6 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
-import { unwrap, barrierQueue, processWorkQueue, WorkQueueItem, getPublicKey } from "@snort/shared";
+import { unwrap, getPublicKey } from "@snort/shared";
 
 import {
   EventKind,
@@ -18,76 +18,33 @@ import {
 import { EventBuilder } from "./event-builder";
 import { EventExt } from "./event-ext";
 import { findTag } from "./utils";
+import { Nip7Signer } from "./impl/nip7";
 
-const Nip7Queue: Array<WorkQueueItem> = [];
-processWorkQueue(Nip7Queue);
-export type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
-
-declare global {
-  interface Window {
-    nostr?: {
-      getPublicKey: () => Promise<HexKey>;
-      signEvent: <T extends NostrEvent>(event: T) => Promise<T>;
-
-      getRelays?: () => Promise<Record<string, { read: boolean; write: boolean }>>;
-
-      nip04?: {
-        encrypt?: (pubkey: HexKey, plaintext: string) => Promise<string>;
-        decrypt?: (pubkey: HexKey, ciphertext: string) => Promise<string>;
-      };
-    };
-  }
-}
+type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
 
 export interface EventSigner {
+  init(): Promise<void>;
   getPubKey(): Promise<string> | string;
   nip4Encrypt(content: string, key: string): Promise<string>;
   nip4Decrypt(content: string, otherKey: string): Promise<string>;
   sign(ev: NostrEvent): Promise<NostrEvent>;
 }
 
-export class Nip7Signer implements EventSigner {
-  async getPubKey(): Promise<string> {
-    if (!window.nostr) {
-      throw new Error("Cannot use NIP-07 signer, not found!");
-    }
-    return await window.nostr.getPublicKey();
-  }
-
-  async nip4Encrypt(content: string, key: string): Promise<string> {
-    if (!window.nostr) {
-      throw new Error("Cannot use NIP-07 signer, not found!");
-    }
-    return await barrierQueue(Nip7Queue, () =>
-      unwrap(window.nostr?.nip04?.encrypt).call(window.nostr?.nip04, key, content)
-    );
-  }
-
-  async nip4Decrypt(content: string, otherKey: string): Promise<string> {
-    if (!window.nostr) {
-      throw new Error("Cannot use NIP-07 signer, not found!");
-    }
-    return await barrierQueue(Nip7Queue, () =>
-      unwrap(window.nostr?.nip04?.decrypt).call(window.nostr?.nip04, otherKey, content)
-    );
-  }
-
-  async sign(ev: NostrEvent): Promise<NostrEvent> {
-    if (!window.nostr) {
-      throw new Error("Cannot use NIP-07 signer, not found!");
-    }
-    return await barrierQueue(Nip7Queue, () => unwrap(window.nostr).signEvent(ev));
-  }
-
-}
-
 export class PrivateKeySigner implements EventSigner {
   #publicKey: string;
   #privateKey: string;
 
-  constructor(privateKey: string) {
-    this.#privateKey = privateKey;
-    this.#publicKey = getPublicKey(privateKey);
+  constructor(privateKey: string | Uint8Array) {
+    if (typeof privateKey === "string") {
+      this.#privateKey = privateKey;
+    } else {
+      this.#privateKey = utils.bytesToHex(privateKey);
+    }
+    this.#publicKey = getPublicKey(this.#privateKey);
+  }
+
+  init(): Promise<void> {
+    return Promise.resolve();
   }
 
   getPubKey(): string {

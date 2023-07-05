@@ -22,6 +22,8 @@ export * from "./zaps";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";
+export * from "./impl/nip7";
+export * from "./impl/nip46";
 
 export * from "./cache/index";
 export * from "./cache/user-relays";
