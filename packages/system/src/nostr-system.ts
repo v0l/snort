@@ -4,7 +4,6 @@ import { unwrap, sanitizeRelayUrl, ExternalStore, FeedCache } from "@snort/share
 import { NostrEvent, TaggedRawEvent } from "./nostr";
 import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot } from "./connection";
 import { Query } from "./query";
-import { RelayCache } from "./gossip-model";
 import { NoteStore } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
@@ -16,7 +15,9 @@ import {
   SystemSnapshot,
   UserProfileCache,
   UserRelaysCache,
-  RelayMetricCache
+  RelayMetricCache,
+  db,
+  UsersRelays
 } from ".";
 
 /**
@@ -43,7 +44,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   /**
    * Storage class for user relay lists
    */
-  #relayCache: RelayCache;
+  #relayCache: FeedCache<UsersRelays>;
 
   /**
    * Storage class for user profiles
@@ -67,7 +68,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
 
   constructor(props: {
     authHandler?: AuthHandler,
-    relayCache?: RelayCache,
+    relayCache?: FeedCache<UsersRelays>,
     profileCache?: FeedCache<MetadataCache>
     relayMetrics?: FeedCache<RelayMetrics>
   }) {
@@ -91,6 +92,19 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
 
   get Sockets(): ConnectionStateSnapshot[] {
     return [...this.#sockets.values()].map(a => a.snapshot());
+  }
+
+  /**
+   * Setup caches
+   */
+  async Init() {
+    db.ready = await db.isAvailable();
+    const t = [
+      this.#relayCache.preload(),
+      this.#profileCache.preload(),
+      this.#relayMetricsCache.preload()
+    ];
+    await Promise.all(t);
   }
 
   /**
