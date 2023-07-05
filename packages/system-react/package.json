@@ -1,6 +1,6 @@
 {
   "name": "@snort/system-react",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "React hooks for @snort/system",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,8 +16,8 @@
     "dist"
   ],
   "dependencies": {
-    "@snort/system": "^1.0.12",
-    "@snort/shared": "^1.0.2",
+    "@snort/system": "^1.0.14",
+    "@snort/shared": "^1.0.4",
     "react": "^18.2.0"
   }
 }
