@@ -25,12 +25,12 @@ export class Nip7Signer implements EventSigner {
     init(): Promise<void> {
         return Promise.resolve();
     }
-    
+
     async getPubKey(): Promise<string> {
         if (!window.nostr) {
             throw new Error("Cannot use NIP-07 signer, not found!");
         }
-        return await window.nostr.getPublicKey();
+        return await barrierQueue(Nip7Queue, () => unwrap(window.nostr).getPublicKey());
     }
 
     async nip4Encrypt(content: string, key: string): Promise<string> {
