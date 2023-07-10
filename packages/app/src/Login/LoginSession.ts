@@ -1,4 +1,4 @@
-import { HexKey, RelaySettings, u256 } from "@snort/system";
+import { HexKey, RelaySettings, u256, EventPublisher } from "@snort/system";
 import { UserPreferences } from "Login";
 import { SubscriptionEvent } from "Subscription";
 
@@ -10,7 +10,19 @@ interface Newest<T> {
   timestamp: number;
 }
 
+export enum LoginSessionType {
+  PrivateKey = "private_key",
+  PublicKey = "public_key",
+  Nip7 = "nip7",
+  Nip46 = "nip46",
+}
+
 export interface LoginSession {
+  /**
+   * Type of login session
+   */
+  type: LoginSessionType;
+
   /**
    * Current user private key
    */
@@ -80,4 +92,14 @@ export interface LoginSession {
    * Snort subscriptions licences
    */
   subscriptions: Array<SubscriptionEvent>;
+
+  /**
+   * Remote signer relays (NIP-46)
+   */
+  remoteSignerRelays?: Array<string>;
+
+  /**
+   * Instance event publisher
+   */
+  publisher?: EventPublisher;
 }

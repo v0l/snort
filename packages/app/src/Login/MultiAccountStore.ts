@@ -1,15 +1,16 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
-import { HexKey, RelaySettings } from "@snort/system";
+import { HexKey, RelaySettings, EventPublisher, Nip46Signer, Nip7Signer } from "@snort/system";
 import { deepClone, sanitizeRelayUrl, unwrap, ExternalStore } from "@snort/shared";
 
 import { DefaultRelays } from "Const";
-import { LoginSession } from "Login";
+import { LoginSession, LoginSessionType } from "Login";
 import { DefaultPreferences, UserPreferences } from "./Preferences";
 
 const AccountStoreKey = "sessions";
 const LoggedOut = {
+  type: "public_key",
   preferences: DefaultPreferences,
   tags: {
     item: [],
@@ -60,13 +61,17 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     super();
     const existing = window.localStorage.getItem(AccountStoreKey);
     if (existing) {
-      this.#accounts = new Map((JSON.parse(existing) as Array<LoginSession>).map(a => [unwrap(a.publicKey), a]));
+      const logins = JSON.parse(existing);
+      this.#accounts = new Map((logins as Array<LoginSession>).map(a => [unwrap(a.publicKey), a]));
     } else {
       this.#accounts = new Map();
     }
     this.#migrate();
     if (!this.#activeAccount) {
       this.#activeAccount = this.#accounts.keys().next().value;
+    }
+    for (const [, v] of this.#accounts) {
+      v.publisher = this.#createPublisher(v);
     }
   }
 
@@ -85,20 +90,28 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     }
   }
 
-  loginWithPubkey(key: HexKey, relays?: Record<string, RelaySettings>) {
+  loginWithPubkey(
+    key: HexKey,
+    type: LoginSessionType,
+    relays?: Record<string, RelaySettings>,
+    remoteSignerRelays?: Array<string>
+  ) {
     if (this.#accounts.has(key)) {
       throw new Error("Already logged in with this pubkey");
     }
     const initRelays = this.decideInitRelays(relays);
     const newSession = {
       ...LoggedOut,
+      type,
       publicKey: key,
       relays: {
         item: initRelays,
         timestamp: 1,
       },
       preferences: deepClone(DefaultPreferences),
+      remoteSignerRelays,
     } as LoginSession;
+    newSession.publisher = this.#createPublisher(newSession);
 
     this.#accounts.set(key, newSession);
     this.#activeAccount = key;
@@ -121,6 +134,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     const initRelays = relays ?? Object.fromEntries(DefaultRelays.entries());
     const newSession = {
       ...LoggedOut,
+      type: LoginSessionType.PrivateKey,
       privateKey: key,
       publicKey: pubKey,
       generatedEntropy: entropy,
@@ -130,6 +144,8 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       },
       preferences: deepClone(DefaultPreferences),
     } as LoginSession;
+    newSession.publisher = this.#createPublisher(newSession);
+
     this.#accounts.set(pubKey, newSession);
     this.#activeAccount = pubKey;
     this.#save();
@@ -157,7 +173,26 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     const s = this.#activeAccount ? this.#accounts.get(this.#activeAccount) : undefined;
     if (!s) return LoggedOut;
 
-    return deepClone(s);
+    return s;
+  }
+
+  #createPublisher(l: LoginSession) {
+    switch (l.type) {
+      case LoginSessionType.PrivateKey: {
+        return EventPublisher.privateKey(unwrap(l.privateKey));
+      }
+      case LoginSessionType.Nip46: {
+        const relayArgs = (l.remoteSignerRelays ?? []).map(a => `relay=${encodeURIComponent(a)}`);
+        const inner = new Nip7Signer();
+        const nip46 = new Nip46Signer(`bunker://${unwrap(l.publicKey)}?${[...relayArgs].join("&")}`, inner);
+        return new EventPublisher(nip46, unwrap(l.publicKey));
+      }
+      default: {
+        if (l.publicKey) {
+          return new EventPublisher(new Nip7Signer(), l.publicKey);
+        }
+      }
+    }
   }
 
   #migrate() {
@@ -199,6 +234,18 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     for (const [, v] of this.#accounts) {
       if ((v.preferences.defaultRootTab as string) === "posts") {
         v.preferences.defaultRootTab = "notes";
+        didMigrate = true;
+      }
+    }
+
+    // update session types
+    for (const [, v] of this.#accounts) {
+      if (v.privateKey) {
+        v.type = LoginSessionType.PrivateKey;
+        didMigrate = true;
+      }
+      if (!v.type) {
+        v.type = LoginSessionType.Nip7;
         didMigrate = true;
       }
     }

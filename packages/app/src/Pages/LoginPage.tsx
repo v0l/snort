@@ -3,16 +3,22 @@ import "./LoginPage.css";
 import { CSSProperties, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useIntl, FormattedMessage } from "react-intl";
-import { HexKey } from "@snort/system";
+import { HexKey, Nip46Signer, PrivateKeySigner } from "@snort/system";
 
-import { bech32ToHex, unwrap } from "SnortUtils";
+import { bech32ToHex, getPublicKey, unwrap } from "SnortUtils";
 import ZapButton from "Element/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
 import Icon from "Icons/Icon";
 import useLogin from "Hooks/useLogin";
-import { generateNewLogin, LoginStore } from "Login";
+import { generateNewLogin, LoginSessionType, LoginStore } from "Login";
 import AsyncButton from "Element/AsyncButton";
 import useLoginHandler from "Hooks/useLoginHandler";
+import { secp256k1 } from "@noble/curves/secp256k1";
+import { bytesToHex } from "@noble/curves/abstract/utils";
+import Modal from "Element/Modal";
+import QrCode from "Element/QrCode";
+import Copy from "Element/Copy";
+import { delay } from "SnortUtils";
 
 interface ArtworkEntry {
   name: string;
@@ -73,6 +79,7 @@ export default function LoginPage() {
   const loginHandler = useLoginHandler();
   const hasNip7 = "nostr" in window;
   const hasSubtleCrypto = window.crypto.subtle !== undefined;
+  const [nostrConnect, setNostrConnect] = useState("");
 
   useEffect(() => {
     if (login.publicKey) {
@@ -112,7 +119,27 @@ export default function LoginPage() {
     const relays =
       "getRelays" in unwrap(window.nostr) ? await unwrap(window.nostr?.getRelays).call(window.nostr) : undefined;
     const pubKey = await unwrap(window.nostr).getPublicKey();
-    LoginStore.loginWithPubkey(pubKey, relays);
+    LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip7, relays);
+  }
+
+  async function startNip46() {
+    const meta = {
+      name: "Snort",
+      url: window.location.href,
+    };
+
+    const newKey = bytesToHex(secp256k1.utils.randomPrivateKey());
+    const relays = ["wss://relay.damus.io"].map(a => `relay=${encodeURIComponent(a)}`);
+    const connectUrl = `nostrconnect://${getPublicKey(newKey)}?${[
+      ...relays,
+      `metadata=${encodeURIComponent(JSON.stringify(meta))}`,
+    ].join("&")}`;
+    setNostrConnect(connectUrl);
+
+    const signer = new Nip46Signer(connectUrl, new PrivateKeySigner(newKey));
+    await signer.init();
+    await delay(500);
+    await signer.describe();
   }
 
   function altLogins() {
@@ -121,12 +148,25 @@ export default function LoginPage() {
     }
 
     return (
-      <button type="button" onClick={doNip07Login}>
-        <FormattedMessage
-          defaultMessage="Login with Extension (NIP-07)"
-          description="Login button for NIP7 key manager extension"
-        />
-      </button>
+      <>
+        <AsyncButton type="button" onClick={doNip07Login}>
+          <FormattedMessage
+            defaultMessage="Login with Extension (NIP-07)"
+            description="Login button for NIP7 key manager extension"
+          />
+        </AsyncButton>
+        <AsyncButton type="button" onClick={startNip46}>
+          <FormattedMessage defaultMessage="Nostr Connect (NIP-46)" description="Login button for NIP-46 signer app" />
+        </AsyncButton>
+        {nostrConnect && (
+          <Modal onClose={() => setNostrConnect("")}>
+            <div className="flex f-col">
+              <QrCode data={nostrConnect} />
+              <Copy text={nostrConnect} />
+            </div>
+          </Modal>
+        )}
+      </>
     );
   }
 
@@ -227,9 +267,9 @@ export default function LoginPage() {
             />
           </p>
           <div dir="auto" className="login-actions">
-            <button type="button" onClick={doLogin}>
+            <AsyncButton type="button" onClick={doLogin}>
               <FormattedMessage defaultMessage="Login" description="Login button" />
-            </button>
+            </AsyncButton>
             <AsyncButton onClick={() => makeRandomKey()}>
               <FormattedMessage defaultMessage="Create Account" />
             </AsyncButton>
