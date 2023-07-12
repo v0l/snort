@@ -43,6 +43,10 @@ export class PrivateKeySigner implements EventSigner {
     this.#publicKey = getPublicKey(this.#privateKey);
   }
 
+  get privateKey() {
+    return this.#privateKey;
+  }
+
   init(): Promise<void> {
     return Promise.resolve();
   }

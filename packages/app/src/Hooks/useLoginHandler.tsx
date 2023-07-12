@@ -45,12 +45,11 @@ export default function useLoginHandler() {
       }
       LoginStore.loginWithPrivateKey(key);
     } else if (key.startsWith("bunker://")) {
-      const inner = new Nip7Signer();
-      const nip46 = new Nip46Signer(key, inner);
+      const nip46 = new Nip46Signer(key);
       await nip46.init();
 
       const loginPubkey = await nip46.getPubKey();
-      LoginStore.loginWithPubkey(loginPubkey, LoginSessionType.Nip46, undefined, nip46.relays);
+      LoginStore.loginWithPubkey(loginPubkey, LoginSessionType.Nip46, undefined, nip46.relays, nip46.privateKey);
       nip46.close();
     } else {
       throw new Error("INVALID PRIVATE KEY");

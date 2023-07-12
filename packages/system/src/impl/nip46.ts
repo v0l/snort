@@ -67,6 +67,12 @@ export class Nip46Signer implements EventSigner {
         return [this.#relay];
     }
 
+    get privateKey() {
+        if(this.#insideSigner instanceof PrivateKeySigner) {
+            return this.#insideSigner.privateKey;
+        }
+    }
+
     async init() {
         const isBunker = this.#proto === "bunker:";
         if (isBunker) {

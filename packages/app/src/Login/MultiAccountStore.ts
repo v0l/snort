@@ -1,7 +1,7 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
-import { HexKey, RelaySettings, EventPublisher, Nip46Signer, Nip7Signer } from "@snort/system";
+import { HexKey, RelaySettings, EventPublisher, Nip46Signer, Nip7Signer, PrivateKeySigner } from "@snort/system";
 import { deepClone, sanitizeRelayUrl, unwrap, ExternalStore } from "@snort/shared";
 
 import { DefaultRelays } from "Const";
@@ -94,7 +94,8 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     key: HexKey,
     type: LoginSessionType,
     relays?: Record<string, RelaySettings>,
-    remoteSignerRelays?: Array<string>
+    remoteSignerRelays?: Array<string>,
+    privateKey?: string
   ) {
     if (this.#accounts.has(key)) {
       throw new Error("Already logged in with this pubkey");
@@ -110,6 +111,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       },
       preferences: deepClone(DefaultPreferences),
       remoteSignerRelays,
+      privateKey,
     } as LoginSession;
     newSession.publisher = this.#createPublisher(newSession);
 
@@ -183,7 +185,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       }
       case LoginSessionType.Nip46: {
         const relayArgs = (l.remoteSignerRelays ?? []).map(a => `relay=${encodeURIComponent(a)}`);
-        const inner = new Nip7Signer();
+        const inner = new PrivateKeySigner(unwrap(l.privateKey));
         const nip46 = new Nip46Signer(`bunker://${unwrap(l.publicKey)}?${[...relayArgs].join("&")}`, inner);
         return new EventPublisher(nip46, unwrap(l.publicKey));
       }
@@ -240,12 +242,8 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
 
     // update session types
     for (const [, v] of this.#accounts) {
-      if (v.privateKey) {
-        v.type = LoginSessionType.PrivateKey;
-        didMigrate = true;
-      }
       if (!v.type) {
-        v.type = LoginSessionType.Nip7;
+        v.type = v.privateKey ? LoginSessionType.PrivateKey : LoginSessionType.Nip7;
         didMigrate = true;
       }
     }
