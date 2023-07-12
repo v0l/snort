@@ -142,6 +142,25 @@ export default function LoginPage() {
     await signer.describe();
   }
 
+  function nip46Buttons() {
+    return null;
+    return (
+      <>
+        <AsyncButton type="button" onClick={startNip46}>
+          <FormattedMessage defaultMessage="Nostr Connect (NIP-46)" description="Login button for NIP-46 signer app" />
+        </AsyncButton>
+        {nostrConnect && (
+          <Modal onClose={() => setNostrConnect("")}>
+            <div className="flex f-col">
+              <QrCode data={nostrConnect} />
+              <Copy text={nostrConnect} />
+            </div>
+          </Modal>
+        )}
+      </>
+    );
+  }
+
   function altLogins() {
     if (!hasNip7) {
       return;
@@ -155,17 +174,7 @@ export default function LoginPage() {
             description="Login button for NIP7 key manager extension"
           />
         </AsyncButton>
-        <AsyncButton type="button" onClick={startNip46}>
-          <FormattedMessage defaultMessage="Nostr Connect (NIP-46)" description="Login button for NIP-46 signer app" />
-        </AsyncButton>
-        {nostrConnect && (
-          <Modal onClose={() => setNostrConnect("")}>
-            <div className="flex f-col">
-              <QrCode data={nostrConnect} />
-              <Copy text={nostrConnect} />
-            </div>
-          </Modal>
-        )}
+        {nip46Buttons()}
       </>
     );
   }
