@@ -114,7 +114,11 @@ export default function Poll(props: PollProps) {
           return (
             <div key={a[1]} className="flex" onClick={e => zapVote(e, opt)}>
               <div className="f-grow">
-                {opt === voting ? <Spinner /> : <Text content={desc} tags={props.ev.tags} creator={props.ev.pubkey} />}
+                {opt === voting ? (
+                  <Spinner />
+                ) : (
+                  <Text content={desc} tags={props.ev.tags} creator={props.ev.pubkey} disableMediaSpotlight={true} />
+                )}
               </div>
               {showResults && (
                 <>

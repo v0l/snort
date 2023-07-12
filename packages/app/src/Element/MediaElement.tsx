@@ -28,6 +28,7 @@ interface MediaElementProps {
   magnet?: string;
   sha256?: string;
   blurHash?: string;
+  disableSpotlight?: boolean;
 }
 
 interface L402Object {
@@ -166,11 +167,15 @@ export function MediaElement(props: MediaElementProps) {
   }
 
   if (props.mime.startsWith("image/")) {
-    return (
-      <SpotlightMedia>
-        <ProxyImg key={props.url} src={url} onError={() => probeFor402()} />
-      </SpotlightMedia>
-    );
+    if (!(props.disableSpotlight ?? false)) {
+      return (
+        <SpotlightMedia>
+          <ProxyImg key={props.url} src={url} onError={() => probeFor402()} />
+        </SpotlightMedia>
+      );
+    } else {
+      return <ProxyImg key={props.url} src={url} onError={() => probeFor402()} />;
+    }
   } else if (props.mime.startsWith("audio/")) {
     return <audio key={props.url} src={url} controls onError={() => probeFor402()} />;
   } else if (props.mime.startsWith("video/")) {

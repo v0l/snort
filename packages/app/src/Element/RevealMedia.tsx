@@ -8,6 +8,7 @@ import { MediaElement } from "Element/MediaElement";
 interface RevealMediaProps {
   creator: string;
   link: string;
+  disableSpotlight?: boolean;
 }
 
 export default function RevealMedia(props: RevealMediaProps) {
@@ -52,10 +53,12 @@ export default function RevealMedia(props: RevealMediaProps) {
     return (
       <Reveal
         message={<FormattedMessage defaultMessage="Click to load content from {link}" values={{ link: hostname }} />}>
-        <MediaElement mime={`${type}/${extension}`} url={url.toString()} />
+        <MediaElement mime={`${type}/${extension}`} url={url.toString()} disableSpotlight={props.disableSpotlight} />
       </Reveal>
     );
   } else {
-    return <MediaElement mime={`${type}/${extension}`} url={url.toString()} />;
+    return (
+      <MediaElement mime={`${type}/${extension}`} url={url.toString()} disableSpotlight={props.disableSpotlight} />
+    );
   }
 }

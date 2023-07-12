@@ -24,10 +24,11 @@ export interface TextProps {
   creator: HexKey;
   tags: Array<Array<string>>;
   disableMedia?: boolean;
+  disableMediaSpotlight?: boolean;
   depth?: number;
 }
 
-export default function Text({ content, tags, creator, disableMedia, depth }: TextProps) {
+export default function Text({ content, tags, creator, disableMedia, depth, disableMediaSpotlight }: TextProps) {
   const location = useLocation();
 
   function extractLinks(fragments: Fragment[]) {
@@ -57,7 +58,9 @@ export default function Text({ content, tags, creator, disableMedia, depth }: Te
                   </a>
                 );
               }
-              return <HyperText link={a} creator={creator} depth={depth} />;
+              return (
+                <HyperText link={a} creator={creator} depth={depth} disableMediaSpotlight={disableMediaSpotlight} />
+              );
             }
             return a;
           });

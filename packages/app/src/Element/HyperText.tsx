@@ -26,7 +26,14 @@ import NostrLink from "Element/NostrLink";
 import RevealMedia from "Element/RevealMedia";
 import MagnetLink from "Element/MagnetLink";
 
-export default function HyperText({ link, creator, depth }: { link: string; creator: string; depth?: number }) {
+interface HypeTextProps {
+  link: string;
+  creator: string;
+  depth?: number;
+  disableMediaSpotlight?: boolean;
+}
+
+export default function HyperText({ link, creator, depth, disableMediaSpotlight }: HypeTextProps) {
   const a = link;
   try {
     const url = new URL(a);
@@ -42,7 +49,7 @@ export default function HyperText({ link, creator, depth }: { link: string; crea
     const isWavlakeLink = WavlakeRegex.test(a);
     const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
     if (extension && !isAppleMusicLink) {
-      return <RevealMedia link={a} creator={creator} />;
+      return <RevealMedia link={a} creator={creator} disableSpotlight={disableMediaSpotlight} />;
     } else if (tweetId) {
       return (
         <div className="tweet" key={tweetId}>
