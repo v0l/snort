@@ -19,16 +19,17 @@
   text-decoration-color: var(--highlight);
 }
 
-.note > .header > .info {
+.note .header .info {
   font-size: var(--font-size);
   margin-left: 4px;
   white-space: nowrap;
   color: var(--font-secondary-color);
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
-.note > .header > .info .saved {
+.note .header .info .saved {
   margin-right: 12px;
   font-weight: 600;
   font-size: 10px;
@@ -39,11 +40,11 @@
   align-items: center;
 }
 
-.note > .header > .info .saved svg {
+.note .header .info .saved svg {
   margin-right: 8px;
 }
 
-.note > .header > .pinned {
+.note .header .pinned {
   font-size: var(--font-size-small);
   color: var(--font-secondary-color);
   font-weight: 500;
@@ -53,7 +54,7 @@
   align-items: center;
 }
 
-.note > .header > .pinned svg {
+.note .header .pinned svg {
   margin-right: 8px;
 }
 
@@ -67,10 +68,11 @@
   padding-left: 0;
 }
 
-.note > .body {
-  margin-top: 4px;
-  margin-bottom: 24px;
-  padding-left: 56px;
+.note > .body .text-frag {
+  padding-left: 61px;
+}
+
+.note > .body .text-frag {
   text-overflow: ellipsis;
   white-space: pre-wrap;
   word-break: normal;
@@ -78,8 +80,14 @@
   overflow-y: visible;
 }
 
+.note > .body img,
+.note > .body video,
+.note > .body audio {
+  margin-top: 16px;
+}
+
 .note > .footer {
-  padding-left: 46px;
+  padding: 16px 0 0px 61px;
 }
 
 .note .footer .footer-reactions {
@@ -88,8 +96,7 @@
   align-items: center;
   justify-content: center;
   margin-left: auto;
-  gap: 1em;
-  padding-left: 0.8em;
+  gap: 48px;
 }
 
 @media (min-width: 720px) {
@@ -98,7 +105,7 @@
   }
 }
 
-.note > .footer .ctx-menu {
+.note .ctx-menu {
   color: var(--font-secondary-color);
   background: transparent;
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
@@ -108,7 +115,7 @@
   border-radius: 16px;
 }
 
-.note > .footer .ctx-menu li {
+.note .ctx-menu li {
   background: #1e1e1e;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -116,28 +123,28 @@
   grid-template-columns: 2rem auto;
 }
 
-.light .note > .footer .ctx-menu li {
+.light .note .ctx-menu li {
   background: var(--note-bg);
 }
 
-.note > .footer .ctx-menu li:first-of-type {
+.note .ctx-menu li:first-of-type {
   padding-top: 12px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
 
-.note > .footer .ctx-menu li:last-of-type {
+.note .ctx-menu li:last-of-type {
   padding-bottom: 12px;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
 }
 
-.note > .footer .ctx-menu li:hover {
+.note .ctx-menu li:hover {
   color: white;
   background: #2a2a2a;
 }
 
-.light .note > .footer .ctx-menu li:hover {
+.light .note .ctx-menu li:hover {
   color: white;
   background: var(--font-secondary-color);
 }
@@ -196,11 +203,7 @@
   user-select: none;
   color: var(--font-secondary-color);
   font-feature-settings: "tnum";
-}
-
-.reaction-pill .reaction-pill-number {
-  margin-left: 8px;
-  font-feature-settings: "tnum";
+  gap: 5px;
 }
 
 .reaction-pill.reacted {

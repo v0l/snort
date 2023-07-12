@@ -20,6 +20,7 @@ export * from "./nostr-link";
 export * from "./profile-cache";
 export * from "./zaps";
 export * from "./signer";
+export * from "./text";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";

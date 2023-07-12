@@ -12,7 +12,6 @@ import { RootState } from "State/Store";
 import { setShow, reset } from "State/NoteCreator";
 import { System } from "index";
 import useLoginFeed from "Feed/LoginFeed";
-import useModeration from "Hooks/useModeration";
 import { NoteCreator } from "Element/NoteCreator";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
@@ -103,7 +102,7 @@ export default function Layout() {
   return (
     <div className={pageClass}>
       {!shouldHideHeader && (
-        <header className="main-content mt5">
+        <header className="main-content">
           <div className="logo" onClick={() => navigate("/")}>
             <Icon name="snort-by" size={150} height={20} />
             {currentSubscription && (
@@ -177,11 +176,11 @@ const AccountHeader = () => {
         <Icon name="search" />
       </div>
       <div className="btn btn-rnd" onClick={() => navigate("/messages")}>
-        <Icon name="envelope" />
+        <Icon name="mail" size={24} />
         {unreadDms > 0 && <span className="has-unread"></span>}
       </div>
       <div className="btn btn-rnd" onClick={goToNotifications}>
-        <Icon name="bell" />
+        <Icon name="bell-v2" size={24} />
         {hasNotifications && <span className="has-unread"></span>}
       </div>
       <Avatar

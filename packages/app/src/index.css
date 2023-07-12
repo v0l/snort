@@ -14,6 +14,9 @@
   --success: #2ad544;
   --warning: #ff8800;
 
+  /* V2 */
+  --border-primary: #1a1a1a;
+
   --gray-superlight: #eee;
   --gray-light: #999;
   --gray-medium: #7b7b7b;
@@ -115,24 +118,15 @@ body #root > div:not(.page) header {
 
 @media (min-width: 720px) {
   .page {
-    width: 586px;
+    width: 640px;
     margin-left: auto;
     margin-right: auto;
   }
 }
 
 .card {
-  margin-bottom: 12px;
-  border-radius: 16px;
-  background-color: var(--note-bg);
-  padding: 6px 12px;
-}
-
-@media (min-width: 720px) {
-  .card {
-    margin-bottom: 16px;
-    padding: 12px 24px;
-  }
+  padding: 16px 12px;
+  border-bottom: 1px solid var(--border-primary);
 }
 
 html.light .card {
@@ -560,14 +554,7 @@ small.xs {
 }
 
 .main-content {
-  padding: 0 12px;
-  position: relative;
-}
-
-@media (min-width: 720px) {
-  .main-content {
-    padding: 0;
-  }
+  border: 1px solid var(--border-primary);
 }
 
 .bold {

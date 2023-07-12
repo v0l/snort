@@ -5,11 +5,7 @@
   text-decoration: none;
   user-select: none;
   min-width: 0;
-}
-
-.pfp .avatar-wrapper {
-  margin-right: 8px;
-  z-index: 2;
+  gap: 12px;
 }
 
 .pfp .avatar {

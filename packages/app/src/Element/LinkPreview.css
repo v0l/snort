@@ -1,6 +1,6 @@
 .link-preview-container {
-  border: 1px solid var(--gray);
-  border-radius: 10px;
+  border-radius: 0px 0px 12px 12px;
+  background: #151515;
   overflow: hidden;
 }
 

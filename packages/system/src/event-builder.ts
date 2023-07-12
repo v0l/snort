@@ -1,5 +1,5 @@
 import { EventKind, HexKey, NostrPrefix, NostrEvent, EventSigner } from ".";
-import { HashtagRegex } from "./const";
+import { HashtagRegex, MentionNostrEntityRegex } from "./const";
 import { getPublicKey, unixNow } from "@snort/shared";
 import { EventExt } from "./event-ext";
 import { tryParseNostrLink } from "./nostr-link";
@@ -43,7 +43,7 @@ export class EventBuilder {
    */
   processContent() {
     if (this.#content) {
-      this.#content = this.#content.replace(/@n(pub|profile|event|ote|addr|)1[acdefghjklmnpqrstuvwxyz023456789]+/g, m =>
+      this.#content = this.#content.replace(MentionNostrEntityRegex, m =>
         this.#replaceMention(m)
       );
 

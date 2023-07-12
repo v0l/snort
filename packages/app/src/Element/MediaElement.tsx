@@ -52,25 +52,29 @@ export function MediaElement(props: MediaElementProps) {
       return;
     }
 
-    const req = new Request(props.url, {
-      method: "OPTIONS",
-      headers: {
-        accept: "L402",
-      },
-    });
-    const rsp = await fetch(req);
-    if (rsp.status === 402) {
-      const auth = rsp.headers.get("www-authenticate");
-      if (auth?.startsWith("L402")) {
-        const vals = kvToObject<L402Object>(auth.substring(5));
-        console.debug(vals);
-        setL402(vals);
+    try {
+      const req = new Request(props.url, {
+        method: "OPTIONS",
+        headers: {
+          accept: "L402",
+        },
+      });
+      const rsp = await fetch(req);
+      if (rsp.status === 402) {
+        const auth = rsp.headers.get("www-authenticate");
+        if (auth?.startsWith("L402")) {
+          const vals = kvToObject<L402Object>(auth.substring(5));
+          console.debug(vals);
+          setL402(vals);
 
-        if (vals.invoice) {
-          const decoded = decodeInvoice(vals.invoice);
-          setInvoice(decoded);
+          if (vals.invoice) {
+            const decoded = decodeInvoice(vals.invoice);
+            setInvoice(decoded);
+          }
         }
       }
+    } catch (e) {
+      console.error(e);
     }
   }
 
