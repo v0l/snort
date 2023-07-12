@@ -6,6 +6,7 @@ import { Chats } from "Cache";
 import { findTag, unixNow } from "SnortUtils";
 import { Nip29ChatSystem } from "./nip29";
 import useModeration from "Hooks/useModeration";
+import useLogin from "Hooks/useLogin";
 
 export enum ChatType {
   DirectMessage = 1,
@@ -31,7 +32,7 @@ export interface ChatSystem {
   subscription(id: string): RequestBuilder | undefined;
   onEvent(evs: Array<NostrEvent>): Promise<void> | void;
 
-  listChats(): Array<Chat>;
+  listChats(pk: string): Array<Chat>;
 }
 
 export const Nip4Chats = new Nip4ChatSystem(Chats);
@@ -58,6 +59,10 @@ export function inChatWith(e: NostrEvent, myPk: string) {
   }
 }
 
+export function selfChat(e: NostrEvent, myPk: string) {
+  return chatTo(e) === myPk && e.pubkey === myPk;
+}
+
 export function lastReadInChat(id: string) {
   const k = `dm:seen:${id}`;
   return parseInt(window.localStorage.getItem(k) ?? "0");
@@ -70,9 +75,10 @@ export function setLastReadIn(id: string) {
 }
 
 export function useNip4Chat() {
+  const { publicKey } = useLogin();
   return useSyncExternalStore(
     c => Nip4Chats.hook(c),
-    () => Nip4Chats.snapshot()
+    () => Nip4Chats.snapshot(publicKey)
   );
 }
 

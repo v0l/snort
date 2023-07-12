@@ -1,6 +1,6 @@
 import { ExternalStore, FeedCache, dedupe } from "@snort/shared";
 import { EventKind, NostrEvent, RequestBuilder, SystemInterface } from "@snort/system";
-import { Chat, ChatSystem, ChatType, chatTo, inChatWith, lastReadInChat } from "chat";
+import { Chat, ChatSystem, ChatType, inChatWith, lastReadInChat, selfChat } from "chat";
 import { debug } from "debug";
 
 export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
@@ -34,14 +34,16 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
     return rb;
   }
 
-  takeSnapshot() {
-    return this.listChats();
+  takeSnapshot(p: string) {
+    return this.listChats(p);
   }
 
-  listChats(): Chat[] {
+  listChats(pk: string): Chat[] {
     const myDms = this.#nip4Events();
-    return dedupe(myDms.map(a => chatTo(a))).map(a => {
-      const messages = myDms.filter(b => chatTo(b) === a || b.pubkey === a);
+    return dedupe(myDms.map(a => inChatWith(a, pk))).map(a => {
+      const messages = myDms.filter(
+        b => (a === pk && selfChat(b, pk)) || (!selfChat(b, pk) && inChatWith(b, pk) === a)
+      );
       return Nip4ChatSystem.createChatObj(a, messages);
     });
   }

@@ -24,9 +24,9 @@ export abstract class ExternalStore<TSnapshot> {
     };
   }
 
-  snapshot() {
+  snapshot(p?: any) {
     if (this.#changed) {
-      this.#snapshot = this.takeSnapshot();
+      this.#snapshot = this.takeSnapshot(p);
       this.#changed = false;
     }
     return this.#snapshot;
@@ -39,5 +39,5 @@ export abstract class ExternalStore<TSnapshot> {
     }
   }
 
-  abstract takeSnapshot(): TSnapshot;
+  abstract takeSnapshot(p?: any): TSnapshot;
 }
