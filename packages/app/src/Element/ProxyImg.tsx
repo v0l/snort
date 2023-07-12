@@ -14,7 +14,7 @@ export const ProxyImg = (props: ProxyImgProps) => {
 
   if (loadFailed) {
     if (bypass) {
-      return <img {...props} />;
+      return <img {...props} width={props.size} height={props.size} />;
     }
     return (
       <div
