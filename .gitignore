@@ -1,6 +1,7 @@
 node_modules/
 .idea
 .yarn/
+!.yarn/releases/yarn*.cjs
 yarn.lock
 dist/
 *.tgz
