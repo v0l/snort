@@ -1,8 +1,12 @@
 node_modules/
 .idea
-.yarn/
-!.yarn/releases/yarn*.cjs
-yarn.lock
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 dist/
 *.tgz
 *.log
