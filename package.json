@@ -16,5 +16,10 @@
     "printWidth": 120,
     "bracketSameLine": true,
     "arrowParens": "avoid"
+  },
+  "packageManager": "yarn@3.6.1",
+  "dependencies": {
+    "eslint": "^8.44.0",
+    "typescript": "^5.1.6"
   }
 }

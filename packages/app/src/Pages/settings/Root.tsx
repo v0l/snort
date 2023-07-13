@@ -1,4 +1,4 @@
-import "./Index.css";
+import "./Root.css";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import Icon from "Icons/Icon";

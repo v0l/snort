@@ -6,6 +6,7 @@ import useLogin from "Hooks/useLogin";
 import { DefaultPreferences, updatePreferences, UserPreferences } from "Login";
 import { DefaultImgProxy } from "Const";
 import { unwrap } from "SnortUtils";
+import searchEmoji from "emoji-search";
 
 import messages from "./messages";
 
@@ -36,8 +37,7 @@ const PreferencesPage = () => {
 
   useEffect(() => {
     (async () => {
-      const emoji = await import("@jukben/emoji-search");
-      setEmoji(emoji.default("").map(a => ({ name: a.name, char: a.char })));
+      setEmoji((await searchEmoji("")).map(a => ({ name: a.name, char: a.char })));
     })();
   }, []);
 

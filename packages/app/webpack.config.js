@@ -121,8 +121,9 @@ const config = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".jsx", ".js", "..."],
-    modules: ["node_modules", __dirname, path.resolve(__dirname, "src")],
+    aliasFields: ["browser"],
+    extensions: ["...", ".tsx", ".ts", ".jsx", ".js"],
+    modules: ["...", __dirname, path.resolve(__dirname, "src")],
   },
 };
 

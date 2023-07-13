@@ -1,5 +1,5 @@
 import useImgProxy from "Hooks/useImgProxy";
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { getUrlHostname } from "SnortUtils";
 

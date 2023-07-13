@@ -1,6 +1,6 @@
 import { FormattedMessage } from "react-intl";
 import { Outlet, RouteObject, useNavigate } from "react-router-dom";
-import SettingsIndex from "Pages/settings/Index";
+import SettingsIndex from "Pages/settings/Root";
 import Profile from "Pages/settings/Profile";
 import Relay from "Pages/settings/Relays";
 import Preferences from "Pages/settings/Preferences";

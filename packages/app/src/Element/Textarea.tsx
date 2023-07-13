@@ -10,6 +10,7 @@ import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
 import { hexToBech32 } from "SnortUtils";
 import { UserCache } from "Cache";
+import searchEmoji from "emoji-search";
 
 import messages from "./messages";
 
@@ -60,11 +61,7 @@ const Textarea = (props: TextareaProps) => {
   };
 
   const emojiDataProvider = async (token: string) => {
-    const emoji = await import("@jukben/emoji-search");
-    return emoji
-      .default(token)
-      .slice(0, 5)
-      .map(({ name, char }) => ({ name, char }));
+    return (await searchEmoji(token)).slice(0, 5).map(({ name, char }) => ({ name, char }));
   };
 
   return (

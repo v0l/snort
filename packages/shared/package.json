@@ -7,7 +7,6 @@
   "repository": "https://git.v0l.io/Kieran/snort",
   "author": "Kieran",
   "license": "GPL-3.0-or-later",
-  "private": false,
   "scripts": {
     "build": "rm -rf dist && tsc"
   },
@@ -18,5 +17,9 @@
     "debug": "^4.3.4",
     "dexie": "^3.2.4",
     "light-bolt11-decoder": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.8",
+    "typescript": "^5.1.6"
   }
 }

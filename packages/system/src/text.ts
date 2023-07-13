@@ -12,11 +12,6 @@ export interface ParsedFragment {
 
 export type Fragment = string | ParsedFragment;
 
-export interface TextFragment {
-    body: React.ReactNode[];
-    tags: Array<Array<string>>;
-}
-
 function extractLinks(fragments: Fragment[]) {
     return fragments
         .map(f => {

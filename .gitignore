@@ -1,8 +1,9 @@
 node_modules/
 .idea
-.yarn
+.yarn/
 yarn.lock
 dist/
 *.tgz
 *.log
 .DS_Store
+.pnp*
