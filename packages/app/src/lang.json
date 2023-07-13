@@ -269,6 +269,9 @@
   "BGCM48": {
     "defaultMessage": "Write access to Snort relay, with 1 year of event retention"
   },
+  "BGxpTN": {
+    "defaultMessage": "Stream Chat"
+  },
   "BOUMjw": {
     "defaultMessage": "No nostr users found for {twitterUsername}"
   },
@@ -416,6 +419,9 @@
   },
   "HAlOn1": {
     "defaultMessage": "Name"
+  },
+  "HF4YnO": {
+    "defaultMessage": "Watch Live!"
   },
   "HFls6j": {
     "defaultMessage": "name will be available later"
@@ -869,6 +875,9 @@
   "eSzf2G": {
     "defaultMessage": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool."
   },
+  "fBI91o": {
+    "defaultMessage": "Zap"
+  },
   "fOksnD": {
     "defaultMessage": "Can't vote because LNURL service does not support zaps"
   },
@@ -916,6 +925,10 @@
   },
   "hMzcSq": {
     "defaultMessage": "Messages"
+  },
+  "hWSp+B": {
+    "defaultMessage": "Nostr Connect (NIP-46)",
+    "description": "Login button for NIP-46 signer app"
   },
   "hY4lzx": {
     "defaultMessage": "Supports"
@@ -1109,6 +1122,9 @@
   },
   "qDwvZ4": {
     "defaultMessage": "Unknown error"
+  },
+  "qInqHy": {
+    "defaultMessage": "Message..."
   },
   "qMx1sA": {
     "defaultMessage": "Default Zap amount"
