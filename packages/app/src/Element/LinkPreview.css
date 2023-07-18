@@ -1,5 +1,5 @@
 .link-preview-container {
-  border-radius: 0px 0px 12px 12px;
+  border-radius: 12px;
   background: #151515;
   overflow: hidden;
 }
@@ -14,11 +14,26 @@
 
 .link-preview-title {
   padding: 0 10px 10px 10px;
+  line-height: 21px;
+}
+
+.link-preview-title > h1 {
+  padding: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.link-preview-container:hover .link-preview-title > h1 {
+  color: var(--highlight);
 }
 
 .link-preview-title > small {
   color: var(--font-secondary-color);
-  font-size: small;
+  font-size: 14px;
+}
+
+.link-preview-title > small.host {
+  font-size: 12px;
 }
 
 .link-preview-image {
@@ -29,4 +44,8 @@
   max-height: 500px;
   background-size: cover;
   background-position: center;
+}
+
+.light .link-preview-container {
+  background: #ddd;
 }

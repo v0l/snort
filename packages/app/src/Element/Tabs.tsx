@@ -21,7 +21,7 @@ interface TabElementProps extends Omit<TabsProps, "tabs"> {
 export const TabElement = ({ t, tab, setTab }: TabElementProps) => {
   return (
     <div
-      className={`tab ${tab.value === t.value ? "active" : ""} ${t.disabled ? "disabled" : ""}`}
+      className={`tab${tab.value === t.value ? " active" : ""}${t.disabled ? " disabled" : ""}`}
       onClick={() => !t.disabled && setTab(t)}>
       {t.text}
     </div>

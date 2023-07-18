@@ -98,7 +98,7 @@ export default function Note(props: NoteProps) {
   const deletions = useMemo(() => getReactions(related, ev.id, EventKind.Deletion), [related]);
   const { isMuted } = useModeration();
   const isOpMuted = isMuted(ev?.pubkey);
-  const { ref, inView, entry } = useInView({ triggerOnce: true });
+  const { ref, inView } = useInView({ triggerOnce: true });
   const login = useLogin();
   const { pinned, bookmarked } = login;
   const publisher = useEventPublisher();

@@ -5,7 +5,6 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { HexKey, NostrEvent, EventPublisher } from "@snort/system";
 import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "@snort/shared";
 
-import { System } from "index";
 import { formatShort } from "Number";
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";

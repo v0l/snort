@@ -28,20 +28,15 @@ header {
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 24px;
 }
 
-.header-actions .btn-rnd {
-  position: relative;
-  margin-right: 8px;
+.header-actions .btn {
+  border-radius: 0;
+  padding: 5px;
 }
 
-@media (min-width: 520px) {
-  .header-actions .btn-rnd:last-of-type {
-    margin-right: 16px;
-  }
-}
-
-.header-actions .btn-rnd .has-unread {
+.header-actions .btn .has-unread {
   background: var(--highlight);
   border-radius: 100%;
   width: 9px;
@@ -52,20 +47,24 @@ header {
 }
 
 @media (max-width: 520px) {
-  .header-actions .btn-rnd .has-unread {
+  .header-actions .btn .has-unread {
     top: 2px;
     right: 2px;
   }
 }
 
 .search {
-  margin: 0 10px 0 10px;
+  flex-grow: 1;
+  display: flex;
+  padding: 9px 16px;
+  background: var(--gray-superdark);
+  border-radius: 1000px;
 }
 
 .search input {
-  margin: 0 5px 0 5px;
-}
-
-.search .btn {
-  display: none;
+  border: none !important;
+  border-radius: 0 !important;
+  font-size: 15px;
+  line-height: 21px;
+  padding: 0 !important;
 }

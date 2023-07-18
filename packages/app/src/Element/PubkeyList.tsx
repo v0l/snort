@@ -2,7 +2,7 @@ import { NostrEvent } from "@snort/system";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { LNURL } from "@snort/shared";
 
-import { dedupe, hexToBech32, unixNow } from "SnortUtils";
+import { dedupe, hexToBech32 } from "SnortUtils";
 import FollowListBase from "Element/FollowListBase";
 import AsyncButton from "Element/AsyncButton";
 import { useWallet } from "Wallet";

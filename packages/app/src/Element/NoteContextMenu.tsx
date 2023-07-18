@@ -36,7 +36,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   const dispatch = useDispatch();
   const { formatMessage } = useIntl();
   const login = useLogin();
-  const { pinned, bookmarked, publicKey, preferences: prefs, relays } = login;
+  const { pinned, bookmarked, publicKey, preferences: prefs } = login;
   const { mute, block } = useModeration();
   const publisher = useEventPublisher();
   const showReBroadcastModal = useSelector((s: RootState) => s.reBroadcast.show);

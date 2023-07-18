@@ -1,5 +1,8 @@
 .note {
   min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .note:hover {
@@ -64,30 +67,13 @@
   padding: 5px;
 }
 
-.note-quote.note > .body {
-  padding-left: 0;
-}
-
-.note > .body .text-frag {
-  padding-left: 61px;
-}
-
 .note > .body .text-frag {
   text-overflow: ellipsis;
   white-space: pre-wrap;
   word-break: normal;
   overflow-x: hidden;
   overflow-y: visible;
-}
-
-.note > .body img,
-.note > .body video,
-.note > .body audio {
-  margin-top: 16px;
-}
-
-.note > .footer {
-  padding: 16px 0 0px 61px;
+  display: inline;
 }
 
 .note .footer .footer-reactions {

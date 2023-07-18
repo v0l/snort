@@ -244,9 +244,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           allocatePool={true}
         />
       </div>
-      <div className="zaps-container">
-        <ZapsSummary zaps={zaps} />
-      </div>
+      <ZapsSummary zaps={zaps} />
     </>
   );
 }

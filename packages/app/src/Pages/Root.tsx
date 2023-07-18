@@ -35,22 +35,12 @@ export default function RootPage() {
       value: 1,
       data: "/conversations",
     },
-    Global: {
-      text: formatMessage(messages.Global),
-      value: 2,
-      data: "/global",
-    },
-    Discover: {
-      text: formatMessage({ defaultMessage: "Discover" }),
-      value: 3,
-      data: "/discover",
-    },
   };
 
   const tagTabs = tags.item.map((t, idx) => {
     return { text: `#${t}`, value: idx + 3, data: `/tag/${t}` };
   });
-  const tabs = [RootTab.Notes, RootTab.Conversations, RootTab.Global, RootTab.Discover, ...tagTabs];
+  const tabs = [RootTab.Notes, RootTab.Conversations, ...tagTabs];
   const tab = useMemo(() => {
     const pTab = location.pathname.split("/").slice(-1)[0];
 
@@ -65,12 +55,6 @@ export default function RootPage() {
     switch (pTab) {
       case "conversations": {
         return RootTab.Conversations;
-      }
-      case "global": {
-        return RootTab.Global;
-      }
-      case "discover": {
-        return RootTab.Discover;
       }
       default: {
         return RootTab.Notes;

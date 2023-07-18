@@ -2,7 +2,7 @@ import "./Layout.css";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
 import messages from "./messages";
@@ -113,15 +113,13 @@ export default function Layout() {
             )}
           </div>
 
-          <div>
-            {publicKey ? (
-              <AccountHeader />
-            ) : (
-              <button type="button" onClick={() => navigate("/login")}>
-                <FormattedMessage {...messages.Login} />
-              </button>
-            )}
-          </div>
+          {publicKey ? (
+            <AccountHeader />
+          ) : (
+            <button type="button" onClick={() => navigate("/login")}>
+              <FormattedMessage {...messages.Login} />
+            </button>
+          )}
         </header>
       )}
       <Outlet />
@@ -141,6 +139,7 @@ export default function Layout() {
 
 const AccountHeader = () => {
   const navigate = useNavigate();
+  const { formatMessage } = useIntl();
 
   const { publicKey, latestNotification, readNotifications } = useLogin();
   const profile = useUserProfile(System, publicKey);
@@ -169,17 +168,15 @@ const AccountHeader = () => {
 
   return (
     <div className="header-actions">
-      <div className="btn btn-rnd" onClick={() => navigate("/wallet")}>
-        <Icon name="wallet" />
+      <div className="search">
+        <input type="text" placeholder={formatMessage({ defaultMessage: "Search" })} className="w-max" />
+        <Icon name="search" size={24} />
       </div>
-      <div className="btn btn-rnd" onClick={() => navigate("/search")}>
-        <Icon name="search" />
-      </div>
-      <div className="btn btn-rnd" onClick={() => navigate("/messages")}>
+      <div className="btn" onClick={() => navigate("/messages")}>
         <Icon name="mail" size={24} />
         {unreadDms > 0 && <span className="has-unread"></span>}
       </div>
-      <div className="btn btn-rnd" onClick={goToNotifications}>
+      <div className="btn" onClick={goToNotifications}>
         <Icon name="bell-v2" size={24} />
         {hasNotifications && <span className="has-unread"></span>}
       </div>

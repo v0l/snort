@@ -14,9 +14,6 @@
   --success: #2ad544;
   --warning: #ff8800;
 
-  /* V2 */
-  --border-primary: #1a1a1a;
-
   --gray-superlight: #eee;
   --gray-light: #999;
   --gray-medium: #7b7b7b;
@@ -125,12 +122,8 @@ body #root > div:not(.page) header {
 }
 
 .card {
-  padding: 16px 12px;
-  border-bottom: 1px solid var(--border-primary);
-}
-
-html.light .card {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  border-bottom: 1px solid var(--gray-superdark);
 }
 
 .card .header {
@@ -247,7 +240,7 @@ button.icon:hover {
   user-select: none;
   background: none;
   border: none;
-  display: inline-block;
+  display: inline-flex;
 }
 
 .btn-warn {
@@ -554,7 +547,7 @@ small.xs {
 }
 
 .main-content {
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--gray-superdark);
 }
 
 .bold {

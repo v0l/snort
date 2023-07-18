@@ -73,15 +73,12 @@ const LinkPreview = ({ url }: { url: string }) => {
       {preview && (
         <a href={url} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
           {previewElement()}
-          <p className="link-preview-title">
-            {preview?.title}
-            {preview?.description && (
-              <>
-                <br />
-                <small>{preview.description.slice(0, 160)}</small>
-              </>
-            )}
-          </p>
+          <div className="link-preview-title">
+            <h1>{preview?.title}</h1>
+            {preview?.description && <small>{preview.description.slice(0, 160)}</small>}
+            <br />
+            <small className="host">{new URL(url).host}</small>
+          </div>
         </a>
       )}
       {!preview && <Spinner className="f-center" />}

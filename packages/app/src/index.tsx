@@ -35,7 +35,6 @@ import DebugPage from "Pages/Debug";
 import { db } from "Db";
 import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
-import { LivePage } from "Pages/LivePage";
 
 /**
  * Singleton nostr system
@@ -144,10 +143,6 @@ export const router = createBrowserRouter([
       {
         path: "/zap-pool",
         element: <ZapPoolPage />,
-      },
-      {
-        path: "/live/:id",
-        element: <LivePage />,
       },
       ...NewUserRoutes,
       ...WalletRoutes,
