@@ -2,11 +2,9 @@ import { defineMessages } from "react-intl";
 
 export default defineMessages({
   Login: { defaultMessage: "Login" },
-  Conversations: { defaultMessage: "Conversations" },
   Global: { defaultMessage: "Global" },
   NewUsers: { defaultMessage: "New users page" },
   NoFollows: { defaultMessage: "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!" },
-  Notes: { defaultMessage: "Notes" },
   Reactions: { defaultMessage: "Reactions" },
   Followers: { defaultMessage: "Followers" },
   FollowersCount: { defaultMessage: "{n} Followers" },

@@ -55,9 +55,6 @@ export default function SuggestedProfiles() {
 
   return (
     <>
-      <h3>
-        <FormattedMessage defaultMessage="Suggested Follows" />
-      </h3>
       <div className="card flex f-space">
         <FormattedMessage defaultMessage="Provider" />
         <select onChange={e => setProvider(Number(e.target.value))}>

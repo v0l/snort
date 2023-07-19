@@ -269,9 +269,6 @@
   "BGCM48": {
     "defaultMessage": "Write access to Snort relay, with 1 year of event retention"
   },
-  "BGxpTN": {
-    "defaultMessage": "Stream Chat"
-  },
   "BOUMjw": {
     "defaultMessage": "No nostr users found for {twitterUsername}"
   },
@@ -822,9 +819,6 @@
   "c3g2hL": {
     "defaultMessage": "Broadcast Again"
   },
-  "cE4Hfw": {
-    "defaultMessage": "Discover"
-  },
   "cFbU1B": {
     "defaultMessage": "Using Alby? Go to {link} to get your NWC config!"
   },
@@ -874,9 +868,6 @@
   },
   "eSzf2G": {
     "defaultMessage": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool."
-  },
-  "fBI91o": {
-    "defaultMessage": "Zap"
   },
   "fOksnD": {
     "defaultMessage": "Can't vote because LNURL service does not support zaps"
@@ -1122,9 +1113,6 @@
   },
   "qDwvZ4": {
     "defaultMessage": "Unknown error"
-  },
-  "qInqHy": {
-    "defaultMessage": "Message..."
   },
   "qMx1sA": {
     "defaultMessage": "Default Zap amount"

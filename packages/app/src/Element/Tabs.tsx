@@ -5,7 +5,6 @@ export interface Tab {
   text: string;
   value: number;
   disabled?: boolean;
-  data?: string;
 }
 
 interface TabsProps {
@@ -33,7 +32,7 @@ const Tabs = ({ tabs, tab, setTab }: TabsProps) => {
   return (
     <div className="tabs" ref={horizontalScroll}>
       {tabs.map(t => (
-        <TabElement key={t.value} tab={tab} setTab={setTab} t={t} />
+        <TabElement tab={tab} setTab={setTab} t={t} />
       ))}
     </div>
   );

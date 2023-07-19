@@ -13,6 +13,7 @@
   --error: #ff6053;
   --success: #2ad544;
   --warning: #ff8800;
+  --live: #f83838;
 
   --gray-superlight: #eee;
   --gray-light: #999;
@@ -373,6 +374,22 @@ input:disabled {
   justify-content: space-between;
 }
 
+.g2 {
+  gap: 2px;
+}
+
+.g4 {
+  gap: 4px;
+}
+
+.g8 {
+  gap: 8px;
+}
+
+.g12 {
+  gap: 12px;
+}
+
 .w-max {
   width: 100%;
   width: stretch;
@@ -636,4 +653,72 @@ button.tall {
 .rta__textarea {
   /* Fix width calculation to account for 12px padding on input */
   width: calc(100% - 24px) !important;
+}
+
+.ctx-menu {
+  color: var(--font-secondary-color) !important;
+  background: transparent !important;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4) !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+.ctx-menu li {
+  background: #1e1e1e !important;
+  padding: 8px 32px 8px 32px !important;
+  display: grid !important;
+  grid-template-columns: 2rem auto !important;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.light .ctx-menu li {
+  background: var(--note-bg) !important;
+}
+
+.ctx-menu li:first-of-type {
+  background: transparent !important;
+}
+
+.ctx-menu li:nth-child(3) {
+  padding-top: 24px !important;
+  border-top-left-radius: 16px !important;
+  border-top-right-radius: 16px !important;
+}
+
+.ctx-menu li:last-of-type {
+  padding-bottom: 24px !important;
+  border-bottom-left-radius: 16px !important;
+  border-bottom-right-radius: 16px !important;
+}
+
+.ctx-menu li:hover {
+  color: white !important;
+  background: #2a2a2a !important;
+}
+
+.ctx-menu li:hover:first-of-type {
+  background: transparent !important;
+}
+
+.light .ctx-menu li:hover {
+  color: white !important;
+  background: var(--font-secondary-color) !important;
+}
+
+.ctx-menu .red {
+  color: var(--error) !important;
+}
+
+.ctx-menu .close-menu {
+  position: absolute !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  top: -400px !important;
+  left: -600px !important;
+}
+
+.ctx-menu .close-menu-container {
+  background: transparent !important;
+  position: absolute !important;
 }

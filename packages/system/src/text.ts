@@ -188,7 +188,7 @@ export function transformText(body: string, tags: Array<Array<string>>) {
     fragments = extractCustomEmoji(fragments, tags);
     fragments = fragments.map(a => {
         if (typeof a === "string") {
-            if (a.trim().length > 0) {
+            if (a.length > 0) {
                 return { type: "text", content: a } as ParsedFragment;
             }
         } else {

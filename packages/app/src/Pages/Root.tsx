@@ -1,80 +1,161 @@
-import "./Root.css";
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Link, Outlet, RouteObject, useLocation, useNavigate, useParams } from "react-router-dom";
-import { useIntl, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
+import { Menu, MenuItem } from "@szhsin/react-menu";
+import "./Root.css";
 
-import Tabs, { Tab } from "Element/Tabs";
 import Timeline from "Element/Timeline";
 import { System } from "index";
 import { TimelineSubject } from "Feed/TimelineFeed";
-import { debounce, getRelayName, sha256, unixNow, unwrap } from "SnortUtils";
+import { debounce, getRelayName, sha256, unixNow } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import Discover from "Pages/Discover";
+import Icon from "Icons/Icon";
+import TrendingUsers from "Element/TrendingUsers";
+import TrendingNotes from "Element/TrendingPosts";
+import HashTagsPage from "Pages/HashTagsPage";
 
 import messages from "./messages";
+import SuggestedProfiles from "Element/SuggestedProfiles";
 
 interface RelayOption {
   url: string;
   paid: boolean;
 }
 
+type RootPage = "following" | "conversations" | "trending-notes" | "trending-people" | "suggested" | "tags" | "global";
+
 export default function RootPage() {
-  const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
   const { publicKey: pubKey, tags, preferences } = useLogin();
-
-  const RootTab: Record<string, Tab> = {
-    Notes: {
-      text: formatMessage(messages.Notes),
-      value: 0,
-      data: "/notes",
-    },
-    Conversations: {
-      text: formatMessage(messages.Conversations),
-      value: 1,
-      data: "/conversations",
-    },
-  };
-
-  const tagTabs = tags.item.map((t, idx) => {
-    return { text: `#${t}`, value: idx + 3, data: `/tag/${t}` };
-  });
-  const tabs = [RootTab.Notes, RootTab.Conversations, ...tagTabs];
-  const tab = useMemo(() => {
-    const pTab = location.pathname.split("/").slice(-1)[0];
-
-    if (location.pathname.startsWith("/tag")) {
-      const selectedTag = tagTabs.find(t => t.text.slice(1) === pTab);
-
-      if (selectedTag) {
-        return selectedTag;
-      }
-    }
-
-    switch (pTab) {
-      case "conversations": {
-        return RootTab.Conversations;
-      }
-      default: {
-        return RootTab.Notes;
-      }
-    }
-  }, [location]);
+  const [rootType, setRootType] = useState<RootPage>("following");
 
   useEffect(() => {
     if (location.pathname === "/") {
-      const t = pubKey ? preferences.defaultRootTab ?? tab.data : "/global";
+      const t = pubKey ? preferences.defaultRootTab ?? "/notes" : "/global";
       navigate(t, {
         replace: true,
       });
     }
   }, [location]);
 
+  const menuItems = [
+    {
+      tab: "following",
+      path: "/notes",
+      element: (
+        <>
+          <Icon name="user-v2" />
+          <FormattedMessage defaultMessage="Following" />
+        </>
+      ),
+    },
+    {
+      tab: "trending-notes",
+      path: "/trending/notes",
+      element: (
+        <>
+          <Icon name="fire" />
+          <FormattedMessage defaultMessage="Trending Notes" />
+        </>
+      ),
+    },
+    {
+      tab: "conversations",
+      path: "/conversations",
+      element: (
+        <>
+          <Icon name="message-chat-circle" />
+          <FormattedMessage defaultMessage="Conversations" />
+        </>
+      ),
+    },
+    {
+      tab: "trending-people",
+      path: "/trending/people",
+      element: (
+        <>
+          <Icon name="user-up" />
+          <FormattedMessage defaultMessage="Trending People" />
+        </>
+      ),
+    },
+    {
+      tab: "suggested",
+      path: "/suggested",
+      element: (
+        <>
+          <Icon name="thumbs-up" />
+          <FormattedMessage defaultMessage="Suggested Follows" />
+        </>
+      ),
+    },
+    {
+      tab: "global",
+      path: "/global",
+      element: (
+        <>
+          <Icon name="globe" />
+          <FormattedMessage defaultMessage="Global" />
+        </>
+      ),
+    },
+  ] as Array<{
+    tab: RootPage;
+    path: string;
+    element: ReactNode;
+  }>;
+
+  function currentMenuItem() {
+    if (location.pathname.startsWith("/t/")) {
+      return (
+        <>
+          <Icon name="hash" />
+          {location.pathname.split("/").slice(-1)}
+        </>
+      );
+    }
+    return menuItems.find(a => a.tab === rootType)?.element;
+  }
+
   return (
     <>
-      <div className="main-content">
-        {pubKey && <Tabs tabs={tabs} tab={tab} setTab={t => navigate(unwrap(t.data))} />}
+      <div className="main-content root-type">
+        <Menu
+          menuButton={
+            <button type="button">
+              {currentMenuItem()}
+              <Icon name="chevronDown" />
+            </button>
+          }
+          align="center"
+          menuClassName={() => "ctx-menu"}>
+          <div className="close-menu-container">
+            <MenuItem>
+              <div className="close-menu" />
+            </MenuItem>
+          </div>
+          {menuItems.map(a => (
+            <MenuItem
+              onClick={() => {
+                setRootType(a.tab);
+                navigate(a.path, { replace: true });
+              }}>
+              {a.element}
+            </MenuItem>
+          ))}
+          {tags.item.map(v => (
+            <MenuItem
+              onClick={() => {
+                setRootType("tags");
+                navigate(`/t/${v}`, { replace: true });
+              }}>
+              <Icon name="hash" />
+              {v}
+            </MenuItem>
+          ))}
+        </Menu>
       </div>
       <div className="main-content">
         <Outlet />
@@ -184,6 +265,7 @@ const NotesTab = () => {
     type: "pubkey",
     items: follows.item,
     discriminator: `follows:${publicKey?.slice(0, 12)}`,
+    streams: true,
   };
 
   return (
@@ -207,7 +289,12 @@ const ConversationsTab = () => {
 
 const TagsTab = () => {
   const { tag } = useParams();
-  const subject: TimelineSubject = { type: "hashtag", items: [tag ?? ""], discriminator: `tags-${tag}` };
+  const subject: TimelineSubject = {
+    type: "hashtag",
+    items: [tag ?? ""],
+    discriminator: `tags-${tag}`,
+    streams: true,
+  };
 
   return <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} />;
 };
@@ -236,6 +323,22 @@ export const RootRoutes = [
       {
         path: "tag/:tag",
         element: <TagsTab />,
+      },
+      {
+        path: "trending/notes",
+        element: <TrendingNotes />,
+      },
+      {
+        path: "trending/people",
+        element: <TrendingUsers />,
+      },
+      {
+        path: "suggested",
+        element: <SuggestedProfiles />,
+      },
+      {
+        path: "/t/:tag",
+        element: <HashTagsPage />,
       },
     ],
   },

@@ -22,7 +22,6 @@ import ErrorPage from "Pages/ErrorPage";
 import VerificationPage from "Pages/Verification";
 import MessagesPage from "Pages/MessagesPage";
 import DonatePage from "Pages/DonatePage";
-import HashTagsPage from "Pages/HashTagsPage";
 import SearchPage from "Pages/SearchPage";
 import HelpPage from "Pages/HelpPage";
 import { NewUserRoutes } from "Pages/new";
@@ -131,10 +130,6 @@ export const router = createBrowserRouter([
       {
         path: "/donate",
         element: <DonatePage />,
-      },
-      {
-        path: "/t/:tag",
-        element: <HashTagsPage />,
       },
       {
         path: "/search/:keyword?",

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { EventKind, FlatNoteStore, RequestBuilder } from "@snort/system";
+import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
 import { unixNow, unwrap, tagFilterOfTextRepost } from "SnortUtils";
@@ -19,6 +19,7 @@ export interface TimelineSubject {
   discriminator: string;
   items: string[];
   relay?: string;
+  streams?: boolean;
 }
 
 export type TimelineFeed = ReturnType<typeof useTimelineFeed>;
@@ -71,6 +72,13 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         break;
       }
     }
+    if (subject.streams && subject.type === "pubkey") {
+      b.withFilter()
+        .kinds([EventKind.LiveEvent])
+        .authors(subject.items)
+        .since(now - 60 * 60 * 24);
+      b.withFilter().kinds([EventKind.LiveEvent]).tag("p", subject.items);
+    }
     return {
       builder: b,
       filter: f,
@@ -109,7 +117,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb?.builder ?? null;
   }, [until, since, options.method, pref, createBuilder]);
 
-  const main = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, sub);
+  const main = useRequestBuilder<NoteCollection>(System, NoteCollection, sub);
 
   const subRealtime = useMemo(() => {
     const rb = createBuilder();
@@ -123,7 +131,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb?.builder ?? null;
   }, [pref.autoShowLatest, createBuilder]);
 
-  const latest = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, subRealtime);
+  const latest = useRequestBuilder<NoteCollection>(System, NoteCollection, subRealtime);
 
   useEffect(() => {
     // clear store if changing relays
@@ -169,7 +177,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb.numFilters > 0 ? rb : null;
   }, [main.data, pref, subject.type]);
 
-  const related = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, subNext);
+  const related = useRequestBuilder<NoteCollection>(System, NoteCollection, subNext);
 
   return {
     main: main.data,

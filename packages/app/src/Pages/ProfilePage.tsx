@@ -144,7 +144,7 @@ export default function ProfilePage() {
   const follows = useFollowsFeed(id);
   // tabs
   const ProfileTab = {
-    Notes: { text: formatMessage(messages.Notes), value: NOTES },
+    Notes: { text: formatMessage({ defaultMessage: "Notes" }), value: NOTES },
     Reactions: { text: formatMessage(messages.Reactions), value: REACTIONS },
     Followers: { text: formatMessage(messages.Followers), value: FOLLOWERS },
     Follows: { text: formatMessage(messages.Follows), value: FOLLOWS },
