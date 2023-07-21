@@ -1,4 +1,4 @@
-import Nostrich from "public/logo.png";
+import Nostrich from "public/logo_256.png";
 
 import { TaggedRawEvent, EventKind, MetadataCache } from "@snort/system";
 import { getDisplayName } from "Element/ProfileImage";
