@@ -9,7 +9,7 @@ import { MediaElement } from "Element/MediaElement";
 async function fetchUrlPreviewInfo(url: string) {
   const api = new SnortApi();
   try {
-    return await api.linkPreview(url);
+    return await api.linkPreview(url.endsWith(")") ? url.slice(0, -1) : url);
   } catch (e) {
     console.warn(`Failed to load link preview`, url);
   }
