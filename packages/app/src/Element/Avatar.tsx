@@ -1,5 +1,5 @@
 import "./Avatar.css";
-import Nostrich from "nostrich.webp";
+import Nostrich from "public/logo.png";
 
 import { CSSProperties, useEffect, useState } from "react";
 import type { UserMetadata } from "@snort/system";

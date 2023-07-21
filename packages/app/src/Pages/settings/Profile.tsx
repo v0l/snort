@@ -1,5 +1,5 @@
 import "./Profile.css";
-import Nostrich from "nostrich.webp";
+import Nostrich from "public/logo.png";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
