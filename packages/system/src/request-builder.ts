@@ -108,10 +108,9 @@ export class RequestBuilder {
 
     const next = this.#builders.flatMap(f => expandFilter(f.filter));
     const diff = diffFilters(prev, next);
-    const ts = (unixNowMs() - start);
+    const ts = unixNowMs() - start;
     this.#log("buildDiff %s %d ms", this.id, ts);
     if (diff.changed) {
-      this.#log(diff);
       return splitAllByWriteRelays(relays, diff.added).map(a => {
         return {
           strategy: RequestStrategy.AuthorsRelays,

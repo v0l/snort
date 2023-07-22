@@ -249,8 +249,8 @@ export class ReplaceableNoteStore extends HookedNoteStore<Readonly<TaggedRawEven
  */
 export class NoteCollection extends KeyedReplaceableNoteStore {
   constructor() {
-    super((e) => {
-      const legacyReplaceable = [0, 3, 41]
+    super(e => {
+      const legacyReplaceable = [0, 3, 41];
       if (e.kind >= 30_000 && e.kind < 40_000) {
         return `${e.kind}:${e.pubkey}:${findTag(e, "d")}`; // Parameterized replaceable
       } else if (e.kind >= 10_000 && e.kind < 20_000) {
@@ -263,6 +263,6 @@ export class NoteCollection extends KeyedReplaceableNoteStore {
         // unknown kind
         return e.id;
       }
-    })
+    });
   }
 }

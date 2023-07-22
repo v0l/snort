@@ -1,7 +1,6 @@
-interface Env {
-}
+interface Env {}
 
-export const onRequest: PagesFunction<Env> = async (context) => {
+export const onRequest: PagesFunction<Env> = async context => {
   const id = context.params.id as string;
 
   const next = await context.next();
@@ -11,16 +10,16 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       body: await next.arrayBuffer(),
       headers: {
         "user-agent": "Snort-Functions/1.0 (https://snort.social)",
-        "content-type": "text/plain"
-      }
+        "content-type": "text/plain",
+      },
     });
     if (rsp.ok) {
       const body = await rsp.text();
       if (body.length > 0) {
         return new Response(body, {
           headers: {
-            "content-type": "text/html"
-          }
+            "content-type": "text/html",
+          },
         });
       }
     }
@@ -28,4 +27,4 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     // ignore
   }
   return next;
-}
+};

@@ -1,6 +1,6 @@
 const fs = require("fs")
 
-const isProduction = process.env.NODE_ENV == "production";
+const isProduction = process.env.NODE_ENV == "production"
 
 const entry = {
   lib: "./src/index.ts",

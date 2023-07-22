@@ -3,11 +3,10 @@ import debug from "debug";
 import { unixNowMs, unwrap } from "@snort/shared";
 
 import { Connection, ReqFilter, Nips, TaggedRawEvent } from ".";
-import { reqFilterEq } from "./utils";
 import { NoteStore } from "./note-collection";
 import { flatMerge } from "./request-merger";
 import { BuiltRawReqFilter } from "./request-builder";
-import { expandFilter } from "./request-expander";
+import { FlatReqFilter, expandFilter } from "./request-expander";
 
 /**
  * Tracing for relay query status
@@ -19,6 +18,7 @@ class QueryTrace {
   eose?: number;
   close?: number;
   #wasForceClosed = false;
+  readonly flatFilters: Array<FlatReqFilter>;
   readonly #fnClose: (id: string) => void;
   readonly #fnProgress: () => void;
 
@@ -33,6 +33,7 @@ class QueryTrace {
     this.start = unixNowMs();
     this.#fnClose = fnClose;
     this.#fnProgress = fnProgress;
+    this.flatFilters = filters.flatMap(expandFilter);
   }
 
   sentToRelay() {
@@ -168,13 +169,7 @@ export class Query implements QueryBase {
   }
 
   get flatFilters() {
-    const f: Array<ReqFilter> = [];
-    for (const x of this.#tracing.flatMap(a => a.filters)) {
-      if (!f.some(a => reqFilterEq(a, x))) {
-        f.push(x);
-      }
-    }
-    return f.flatMap(expandFilter);
+    return this.#tracing.flatMap(a => a.flatFilters);
   }
 
   get feed() {

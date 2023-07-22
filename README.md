@@ -63,6 +63,7 @@ $ yarn build
 Translations are managed on [Crowdin](https://crowdin.com/project/snort)
 
 To extract translations run:
+
 ```bash
 yarn workspace @snort/app intl-extract
 yarn workspace @snort/app intl-compile

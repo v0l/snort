@@ -1,6 +1,6 @@
 import * as secp from "@noble/curves/secp256k1"
-import * as utils from "@noble/curves/abstract/utils";
-import {sha256 as sha} from "@noble/hashes/sha256";
+import * as utils from "@noble/curves/abstract/utils"
+import { sha256 as sha } from "@noble/hashes/sha256"
 import base64 from "base64-js"
 import { bech32 } from "bech32"
 
@@ -92,11 +92,7 @@ export function schnorrSign(data: Hex, priv: PrivateKey): Hex {
 /**
  * Verify that the elliptic curve signature is correct.
  */
-export function schnorrVerify(
-  sig: Hex,
-  data: Hex,
-  key: PublicKey
-): boolean {
+export function schnorrVerify(sig: Hex, data: Hex, key: PublicKey): boolean {
   return secp.schnorr.verify(sig.toString(), data.toString(), key.toString())
 }
 

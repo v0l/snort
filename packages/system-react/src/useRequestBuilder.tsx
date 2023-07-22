@@ -7,7 +7,7 @@ import { unwrap } from "@snort/shared";
  */
 const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TStore["getSnapshotData"]>>(
   system: SystemInterface,
-  type: { new(): TStore },
+  type: { new (): TStore },
   rb: RequestBuilder | null
 ) => {
   const subscribe = (onChanged: () => void) => {

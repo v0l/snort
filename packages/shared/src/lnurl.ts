@@ -205,26 +205,26 @@ export class LNURL {
 }
 
 export interface LNURLService {
-  tag: string
-  nostrPubkey?: string
-  minSendable?: number
-  maxSendable?: number
-  metadata: string
-  callback: string
-  commentAllowed?: number
+  tag: string;
+  nostrPubkey?: string;
+  minSendable?: number;
+  maxSendable?: number;
+  metadata: string;
+  callback: string;
+  commentAllowed?: number;
 }
 
 export interface LNURLStatus {
-  status: "SUCCESS" | "ERROR"
-  reason?: string
+  status: "SUCCESS" | "ERROR";
+  reason?: string;
 }
 
 export interface LNURLInvoice extends LNURLStatus {
-  pr?: string
-  successAction?: LNURLSuccessAction
+  pr?: string;
+  successAction?: LNURLSuccessAction;
 }
 
 export interface LNURLSuccessAction {
-  description?: string
-  url?: string
+  description?: string;
+  url?: string;
 }

@@ -6,7 +6,7 @@ concurrency:
   limit: 1
 trigger:
   branch:
-  - main
+    - main
 metadata:
   namespace: git
 steps:
@@ -34,9 +34,9 @@ steps:
       - img build -t voidic/snort:latest --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
       - img push voidic/snort:latest
 volumes:
-- name: cache
-  claim:
-    name: docker-cache
+  - name: cache
+    claim:
+      name: docker-cache
 ---
 kind: pipeline
 type: kubernetes
@@ -60,9 +60,9 @@ steps:
       - yarn workspace @snort/app eslint
       - yarn workspace @snort/app prettier --check .
 volumes:
-- name: cache
-  claim:
-    name: docker-cache
+  - name: cache
+    claim:
+      name: docker-cache
 ---
 kind: pipeline
 type: kubernetes
@@ -71,7 +71,7 @@ concurrency:
   limit: 1
 trigger:
   branch:
-  - main
+    - main
 metadata:
   namespace: git
 steps:
@@ -98,9 +98,9 @@ steps:
       - 'git commit -a -m "chore: Update translations"'
       - git push -u origin main
 volumes:
-- name: cache
-  claim:
-    name: docker-cache
+  - name: cache
+    claim:
+      name: docker-cache
 ---
 kind: pipeline
 type: kubernetes
@@ -109,7 +109,7 @@ concurrency:
   limit: 1
 trigger:
   event:
-  - tag
+    - tag
 metadata:
   namespace: git
 steps:
@@ -137,6 +137,6 @@ steps:
       - img build -t voidic/snort:$DRONE_TAG --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
       - img push voidic/snort:$DRONE_TAG
 volumes:
-- name: cache
-  claim:
-    name: docker-cache
+  - name: cache
+    claim:
+      name: docker-cache

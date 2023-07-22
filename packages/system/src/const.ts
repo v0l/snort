@@ -9,7 +9,6 @@ export const DefaultConnectTimeout = 2000;
 // eslint-disable-next-line no-useless-escape
 export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/g;
 
-
 /**
  * How long profile cache should be considered valid for
  */

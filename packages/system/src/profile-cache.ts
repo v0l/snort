@@ -1,13 +1,10 @@
-
 import debug from "debug";
 import { unixNowMs, FeedCache } from "@snort/shared";
 import { EventKind, HexKey, SystemInterface, TaggedRawEvent, NoteCollection, RequestBuilder } from ".";
 import { ProfileCacheExpire } from "./const";
 import { mapEventToProfile, MetadataCache } from "./cache";
 
-const MetadataRelays = [
-  "wss://purplepag.es"
-]
+const MetadataRelays = ["wss://purplepag.es"];
 
 export class ProfileLoaderService {
   #system: SystemInterface;
@@ -88,7 +85,8 @@ export class ProfileLoaderService {
         .authors([...missing]);
 
       if (this.#missingLastRun.size > 0) {
-        const fMissing = sub.withFilter()
+        const fMissing = sub
+          .withFilter()
           .kinds([EventKind.SetMetadata])
           .authors([...this.#missingLastRun]);
         MetadataRelays.forEach(r => fMissing.relay(r));

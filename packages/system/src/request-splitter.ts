@@ -28,8 +28,8 @@ export function diffFilters(prev: Array<FlatReqFilter>, next: Array<FlatReqFilte
   }
   const changed = added.length > 0 || removed.length > 0;
   return {
-    added: changed ? flatMerge(added) : [],
-    removed: changed ? flatMerge(removed) : [],
+    added: changed ? added : [],
+    removed: changed ? removed : [],
     changed,
   };
 }
