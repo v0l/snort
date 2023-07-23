@@ -159,14 +159,14 @@ export async function signEvent<T extends RawEvent>(
  * Parse an event from its raw format.
  */
 export function parseEvent(event: RawEvent): Event {
-  if (event.id !== (serializeEventId(event))) {
+  if (event.id !== serializeEventId(event)) {
     throw new NostrError(
       `invalid id ${event.id} for event ${JSON.stringify(
         event
       )}, expected ${serializeEventId(event)}`
     )
   }
-  if (!(schnorrVerify(event.sig, event.id, event.pubkey))) {
+  if (!schnorrVerify(event.sig, event.id, event.pubkey)) {
     throw new NostrError(`invalid signature for event ${JSON.stringify(event)}`)
   }
 
@@ -221,9 +221,7 @@ export function parseEvent(event: RawEvent): Event {
   }
 }
 
-function serializeEventId(
-  event: UnsignedWithPubkey<RawEvent>
-): EventId {
+function serializeEventId(event: UnsignedWithPubkey<RawEvent>): EventId {
   const serialized = JSON.stringify([
     0,
     event.pubkey,

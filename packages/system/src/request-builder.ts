@@ -4,8 +4,8 @@ import { appendDedupe, sanitizeRelayUrl, unixNowMs } from "@snort/shared";
 
 import { ReqFilter, u256, HexKey, EventKind } from ".";
 import { diffFilters } from "./request-splitter";
-import { RelayCache, splitAllByWriteRelays, splitByWriteRelays } from "./gossip-model";
-import { mergeSimilar } from "./request-merger";
+import { RelayCache, splitByWriteRelays, splitFlatByWriteRelays } from "./gossip-model";
+import { flatMerge, mergeSimilar } from "./request-merger";
 import { FlatReqFilter, expandFilter } from "./request-expander";
 
 /**
@@ -108,14 +108,13 @@ export class RequestBuilder {
 
     const next = this.#builders.flatMap(f => expandFilter(f.filter));
     const diff = diffFilters(prev, next);
-    const ts = (unixNowMs() - start);
+    const ts = unixNowMs() - start;
     this.#log("buildDiff %s %d ms", this.id, ts);
     if (diff.changed) {
-      this.#log(diff);
-      return splitAllByWriteRelays(relays, diff.added).map(a => {
+      return splitFlatByWriteRelays(relays, diff.added).map(a => {
         return {
           strategy: RequestStrategy.AuthorsRelays,
-          filters: a.filters,
+          filters: flatMerge(a.filters),
           relay: a.relay,
         };
       });

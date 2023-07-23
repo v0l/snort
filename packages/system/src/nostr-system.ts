@@ -17,7 +17,7 @@ import {
   UserRelaysCache,
   RelayMetricCache,
   db,
-  UsersRelays
+  UsersRelays,
 } from ".";
 
 /**
@@ -67,10 +67,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   #relayMetrics: RelayMetricHandler;
 
   constructor(props: {
-    authHandler?: AuthHandler,
-    relayCache?: FeedCache<UsersRelays>,
-    profileCache?: FeedCache<MetadataCache>
-    relayMetrics?: FeedCache<RelayMetrics>
+    authHandler?: AuthHandler;
+    relayCache?: FeedCache<UsersRelays>;
+    profileCache?: FeedCache<MetadataCache>;
+    relayMetrics?: FeedCache<RelayMetrics>;
   }) {
     super();
     this.#handleAuth = props.authHandler;
@@ -99,11 +99,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
    */
   async Init() {
     db.ready = await db.isAvailable();
-    const t = [
-      this.#relayCache.preload(),
-      this.#profileCache.preload(),
-      this.#relayMetricsCache.preload()
-    ];
+    const t = [this.#relayCache.preload(), this.#profileCache.preload(), this.#relayMetricsCache.preload()];
     await Promise.all(t);
   }
 
@@ -118,8 +114,8 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         this.#sockets.set(addr, c);
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
-        c.OnDisconnect = (code) => this.OnRelayDisconnect(c, code);
-        c.OnConnected = (r) => this.OnRelayConnected(c, r);
+        c.OnDisconnect = code => this.OnRelayDisconnect(c, code);
+        c.OnConnected = r => this.OnRelayConnected(c, r);
         await c.Connect();
       } else {
         // update settings if already connected
@@ -170,7 +166,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         c.OnEvent = (s, e) => this.OnEvent(s, e);
         c.OnEose = s => this.OnEndOfStoredEvents(c, s);
         c.OnDisconnect = code => this.OnRelayDisconnect(c, code);
-        c.OnConnected = (r) => this.OnRelayConnected(c, r);
+        c.OnConnected = r => this.OnRelayConnected(c, r);
         await c.Connect();
         return c;
       }
@@ -194,7 +190,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     return this.Queries.get(id);
   }
 
-  Query<T extends NoteStore>(type: { new(): T }, req: RequestBuilder): Query {
+  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): Query {
     const existing = this.Queries.get(req.id);
     if (existing) {
       // if same instance, just return query

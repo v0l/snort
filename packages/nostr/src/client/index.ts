@@ -1,7 +1,7 @@
 import { NostrError } from "../common"
 import { RawEvent, parseEvent } from "../event"
 import { Conn } from "./conn"
-import * as utils from "@noble/curves/abstract/utils";
+import * as utils from "@noble/curves/abstract/utils"
 import { EventEmitter } from "./emitter"
 import { fetchRelayInfo, ReadyState, Relay } from "./relay"
 import { Filters } from "../filters"
@@ -71,9 +71,9 @@ export class Nostr extends EventEmitter {
       opts?.fetchInfo === false
         ? Promise.resolve({})
         : fetchRelayInfo(relayUrl).catch((e) => {
-          this.#error(e)
-          return {}
-        })
+            this.#error(e)
+            return {}
+          })
 
     // If there is no existing connection, open a new one.
     const conn = new Conn({
@@ -128,7 +128,8 @@ export class Nostr extends EventEmitter {
           if (conn.relay.readyState !== ReadyState.CONNECTING) {
             this.#error(
               new NostrError(
-                `bug: expected connection to ${relayUrl.toString()} to have readyState CONNECTING, got ${conn.relay.readyState
+                `bug: expected connection to ${relayUrl.toString()} to have readyState CONNECTING, got ${
+                  conn.relay.readyState
                 }`
               )
             )
@@ -293,7 +294,7 @@ export class Nostr extends EventEmitter {
           relay.info === undefined
             ? undefined
             : // Deep copy of the info.
-            JSON.parse(JSON.stringify(relay.info))
+              JSON.parse(JSON.stringify(relay.info))
         return { ...relay, info }
       }
     })

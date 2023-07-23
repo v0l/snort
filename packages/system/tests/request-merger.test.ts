@@ -1,6 +1,6 @@
 import { ReqFilter } from "../src";
-import { canMergeFilters, filterIncludes, flatMerge, mergeSimilar, simpleMerge } from "../src/RequestMerger";
-import { FlatReqFilter, expandFilter } from "../src/RequestExpander";
+import { canMergeFilters, filterIncludes, flatMerge, mergeSimilar, simpleMerge } from "../src/request-merger";
+import { FlatReqFilter, expandFilter } from "../src/request-expander";
 
 describe("RequestMerger", () => {
   it("should simple merge authors", () => {
@@ -108,50 +108,50 @@ describe("flatMerge", () => {
   });
 });
 
-describe('canMerge', () => {
+describe("canMerge", () => {
   it("should have 0 distance", () => {
     const a = {
       ids: "a",
-      keys: 1
+      keys: 1,
     };
     const b = {
       ids: "a",
-      keys: 1
+      keys: 1,
     };
     expect(canMergeFilters(a, b)).toEqual(true);
   });
   it("should have 1 distance", () => {
     const a = {
       ids: "a",
-      keys: 1
+      keys: 1,
     };
     const b = {
       ids: "b",
-      keys: 1
+      keys: 1,
     };
     expect(canMergeFilters(a, b)).toEqual(true);
   });
   it("should have 10 distance", () => {
     const a = {
       ids: "a",
-      keys: 1
+      keys: 1,
     };
     const b = {
       ids: "a",
       kinds: 1,
-      keys: 2
+      keys: 2,
     };
     expect(canMergeFilters(a, b)).toEqual(false);
   });
   it("should have 11 distance", () => {
     const a = {
       ids: "a",
-      keys: 1
+      keys: 1,
     };
     const b = {
       ids: "b",
       kinds: 1,
-      keys: 2
+      keys: 2,
     };
     expect(canMergeFilters(a, b)).toEqual(false);
   });
@@ -160,13 +160,13 @@ describe('canMerge', () => {
       since: 1,
       until: 100,
       kinds: [1],
-      authors: ["kieran", "snort", "c", "d", "e"]
+      authors: ["kieran", "snort", "c", "d", "e"],
     };
     const b = {
       since: 1,
       until: 100,
       kinds: [6969],
-      authors: ["kieran", "snort", "c", "d", "e"]
+      authors: ["kieran", "snort", "c", "d", "e"],
     };
     expect(canMergeFilters(a, b)).toEqual(true);
   });
@@ -175,14 +175,14 @@ describe('canMerge', () => {
       since: 1,
       until: 100,
       kinds: [1],
-      authors: ["f", "kieran", "snort", "c", "d"]
+      authors: ["f", "kieran", "snort", "c", "d"],
     };
     const b = {
       since: 1,
       until: 100,
       kinds: [1],
-      authors: ["kieran", "snort", "c", "d", "e"]
+      authors: ["kieran", "snort", "c", "d", "e"],
     };
     expect(canMergeFilters(a, b)).toEqual(true);
   });
-})
+});

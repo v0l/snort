@@ -421,7 +421,12 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
         const lastActivity = unixNowMs() - this.#activity;
         if (lastActivity > 30_000 && !this.IsClosed) {
           if (this.ActiveRequests.size > 0) {
-            this.#log("%s Inactive connection has %d active requests! %O", this.Address, this.ActiveRequests.size, this.ActiveRequests);
+            this.#log(
+              "%s Inactive connection has %d active requests! %O",
+              this.Address,
+              this.ActiveRequests.size,
+              this.ActiveRequests
+            );
           } else {
             this.Close();
           }

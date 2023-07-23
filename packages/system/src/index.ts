@@ -37,7 +37,7 @@ export interface SystemInterface {
   HandleAuth?: AuthHandler;
   get Sockets(): Array<ConnectionStateSnapshot>;
   GetQuery(id: string): Query | undefined;
-  Query<T extends NoteStore>(type: { new(): T }, req: RequestBuilder | null): Query;
+  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder | null): Query;
   ConnectToRelay(address: string, options: RelaySettings): Promise<void>;
   DisconnectRelay(address: string): void;
   BroadcastEvent(ev: NostrEvent): void;
@@ -53,7 +53,7 @@ export interface SystemSnapshot {
 }
 
 export interface MessageEncryptor {
-  getSharedSecret(privateKey: string, publicKey: string): Promise<Uint8Array> | Uint8Array
-  encryptData(plaintext: string, sharedSecet: Uint8Array): Promise<string> | string
-  decryptData(cyphertext: string, sharedSecet: Uint8Array): Promise<string> | string
+  getSharedSecret(privateKey: string, publicKey: string): Promise<Uint8Array> | Uint8Array;
+  encryptData(plaintext: string, sharedSecet: Uint8Array): Promise<string> | string;
+  decryptData(cyphertext: string, sharedSecet: Uint8Array): Promise<string> | string;
 }

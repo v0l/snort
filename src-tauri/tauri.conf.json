@@ -22,10 +22,7 @@
         "depends": []
       },
       "externalBin": [],
-      "icon": [
-        "icons/128x128.png",
-        "icons/128x128@2x.png"
-      ],
+      "icon": ["icons/128x128.png", "icons/128x128@2x.png"],
       "identifier": "social.snort.app",
       "longDescription": "",
       "macOS": {

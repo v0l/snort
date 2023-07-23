@@ -71,7 +71,10 @@ export function countMembers(a: any) {
   return ret;
 }
 
-export function equalProp(a: string | number | Array<string | number> | undefined, b: string | number | Array<string | number> | undefined) {
+export function equalProp(
+  a: string | number | Array<string | number> | undefined,
+  b: string | number | Array<string | number> | undefined
+) {
   if ((a !== undefined && b === undefined) || (a === undefined && b !== undefined)) {
     return false;
   }
@@ -130,7 +133,7 @@ export function appendDedupe<T>(a?: Array<T>, b?: Array<T>) {
 
 export const sha256 = (str: string | Uint8Array): string => {
   return utils.bytesToHex(sha2(str));
-}
+};
 
 export function getPublicKey(privKey: string) {
   return utils.bytesToHex(secp.schnorr.getPublicKey(privKey));

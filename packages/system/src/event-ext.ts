@@ -6,17 +6,17 @@ import { EventKind, HexKey, NostrEvent } from ".";
 import { Nip4WebCryptoEncryptor } from "./impl/nip4";
 
 export interface Tag {
-  key: string
-  value?: string
-  relay?: string
-  marker?: string // NIP-10
+  key: string;
+  value?: string;
+  relay?: string;
+  marker?: string; // NIP-10
 }
 
 export interface Thread {
-  root?: Tag
-  replyTo?: Tag
-  mentions: Array<Tag>
-  pubKeys: Array<HexKey>
+  root?: Tag;
+  replyTo?: Tag;
+  mentions: Array<Tag>;
+  pubKeys: Array<HexKey>;
 }
 
 export abstract class EventExt {
@@ -41,7 +41,7 @@ export abstract class EventExt {
 
     const sig = secp.schnorr.sign(e.id, key);
     e.sig = utils.bytesToHex(sig);
-    if (!(secp.schnorr.verify(e.sig, e.id, e.pubkey))) {
+    if (!secp.schnorr.verify(e.sig, e.id, e.pubkey)) {
       throw new Error("Signing failed");
     }
   }
@@ -84,12 +84,12 @@ export abstract class EventExt {
 
   static parseTag(tag: Array<string>) {
     if (tag.length < 1) {
-      throw new Error("Invalid tag, must have more than 2 items")
+      throw new Error("Invalid tag, must have more than 2 items");
     }
 
     const ret = {
       key: tag[0],
-      value: tag[1]
+      value: tag[1],
     } as Tag;
     switch (ret.key) {
       case "e": {

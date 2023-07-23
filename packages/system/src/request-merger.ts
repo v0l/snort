@@ -114,7 +114,7 @@ export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
             acc[k].push(v);
           }
         }
-      })
+      });
       return acc;
     }, {} as any) as ReqFilter;
   }

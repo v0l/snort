@@ -1,4 +1,4 @@
-import { eventMatchesFilter } from "../src/RequestMatcher";
+import { eventMatchesFilter } from "../src/request-matcher";
 
 describe("RequestMatcher", () => {
   it("should match simple filter", () => {

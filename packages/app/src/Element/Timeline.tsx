@@ -8,13 +8,11 @@ import Icon from "Icons/Icon";
 import { dedupeByPubkey, findTag, tagFilterOfTextRepost } from "SnortUtils";
 import ProfileImage from "Element/ProfileImage";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "Feed/TimelineFeed";
-import LoadMore from "Element/LoadMore";
 import Zap from "Element/Zap";
 import Note from "Element/Note";
 import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
 import ProfilePreview from "Element/ProfilePreview";
-import Skeleton from "Element/Skeleton";
 import { UserCache } from "Cache";
 
 export interface TimelineProps {
@@ -142,11 +140,11 @@ const Timeline = (props: TimelineProps) => {
       )}
       {mainFeed.map(eventElement)}
       {(props.loadMore === undefined || props.loadMore === true) && (
-        <LoadMore onLoadMore={() => feed.loadMore()} shouldLoadMore={!feed.loading}>
-          <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
-          <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
-          <Skeleton width="100%" height="120px" margin="0 0 16px 0" />
-        </LoadMore>
+        <div className="flex f-center">
+          <button type="button" onClick={() => feed.loadMore()}>
+            <FormattedMessage defaultMessage="Load more" />
+          </button>
+        </div>
       )}
     </>
   );

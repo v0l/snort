@@ -3,14 +3,15 @@
 A collection of caching and querying techniquies used by https://snort.social to serve all content from the nostr protocol.
 
 Simple example:
+
 ```js
-import { 
-    NostrSystem, 
-    EventPublisher, 
-    UserRelaysCache, 
-    RequestBuilder, 
-    FlatNoteStore, 
-    StoreSnapshot 
+import {
+    NostrSystem,
+    EventPublisher,
+    UserRelaysCache,
+    RequestBuilder,
+    FlatNoteStore,
+    StoreSnapshot
 } from "@snort/system"
 
 // Provided in-memory / indexedDb cache for relays

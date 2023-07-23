@@ -95,7 +95,7 @@ export class EventPublisher {
    * Create an EventPublisher for a private key
    */
   static privateKey(privateKey: string) {
-    const signer = new PrivateKeySigner(privateKey)
+    const signer = new PrivateKeySigner(privateKey);
     return new EventPublisher(signer, signer.getPubKey());
   }
 

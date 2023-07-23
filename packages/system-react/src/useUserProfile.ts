@@ -16,7 +16,7 @@ export function useUserProfile(system: NostrSystem, pubKey?: HexKey): MetadataCa
         if (pubKey) {
           system.ProfileLoader.UntrackMetadata(pubKey);
         }
-      }
+      };
     },
     () => system.ProfileLoader.Cache.getFromCache(pubKey)
   );
