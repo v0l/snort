@@ -1,4 +1,4 @@
-import { splitAllByWriteRelays } from "../src/GossipModel";
+import { splitAllByWriteRelays } from "../src/gossip-model";
 
 describe("GossipModel", () => {
   it("should not output empty", () => {

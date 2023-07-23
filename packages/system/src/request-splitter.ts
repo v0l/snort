@@ -1,13 +1,10 @@
 import { flatFilterEq } from "./utils";
 import { FlatReqFilter } from "./request-expander";
-import { flatMerge } from "./request-merger";
 
 export function diffFilters(prev: Array<FlatReqFilter>, next: Array<FlatReqFilter>, calcRemoved?: boolean) {
   const added = [];
   const removed = [];
 
-  prev = [...prev];
-  next = [...next];
   for (const n of next) {
     const px = prev.findIndex(a => flatFilterEq(a, n));
     if (px !== -1) {

@@ -9,7 +9,7 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "files": [
     "src",

@@ -1,7 +1,7 @@
-import { RelayCache } from "../src/GossipModel";
-import { RequestBuilder, RequestStrategy } from "../src/RequestBuilder";
+import { RelayCache } from "../src/gossip-model";
+import { RequestBuilder, RequestStrategy } from "../src/request-builder";
 import { describe, expect } from "@jest/globals";
-import { expandFilter } from "../src/RequestExpander";
+import { expandFilter } from "../src/request-expander";
 import { bytesToHex } from "@noble/curves/abstract/utils";
 import { unixNow, unixNowMs } from "@snort/shared";
 

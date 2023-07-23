@@ -250,7 +250,7 @@ export class Query implements QueryBase {
   #onProgress() {
     const isFinished = this.progress === 1;
     if (this.feed.loading !== isFinished) {
-      this.#log("%s loading=%s, progress=%d", this.id, this.feed.loading, this.progress);
+      this.#log("%s loading=%s, progress=%d, traces=%O", this.id, this.feed.loading, this.progress, this.#tracing);
       this.feed.loading = isFinished;
     }
   }

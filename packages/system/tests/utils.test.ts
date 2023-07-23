@@ -1,5 +1,5 @@
-import { NostrPrefix } from "../src/Links";
-import { parseNostrLink, tryParseNostrLink } from "../src/NostrLink";
+import { NostrPrefix } from "../src/links";
+import { parseNostrLink, tryParseNostrLink } from "../src/nostr-link";
 
 describe("tryParseNostrLink", () => {
   it("is a valid nostr link", () => {

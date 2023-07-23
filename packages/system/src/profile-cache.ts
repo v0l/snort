@@ -126,7 +126,7 @@ export class ProfileLoaderService {
         const empty = couldNotFetch.map(a =>
           this.#cache.update({
             pubkey: a,
-            loaded: unixNowMs() - ProfileCacheExpire + 5_000, // expire in 5s
+            loaded: unixNowMs() - ProfileCacheExpire + 30_000, // expire in 30s
             created: 69,
           } as MetadataCache)
         );

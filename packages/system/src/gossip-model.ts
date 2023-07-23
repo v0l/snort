@@ -61,63 +61,26 @@ export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter): Array<
     ];
   }
 
-  const allRelays = unwrap(authors).map(a => {
-    return {
-      key: a,
-      relays: cache
-        .getFromCache(a)
-        ?.relays?.filter(a => a.settings.write)
-        .sort(() => (Math.random() < 0.5 ? 1 : -1)),
-    };
-  });
+  const topRelays = pickTopRelays(cache, unwrap(authors), PickNRelays);
+  const pickedRelays = dedupe(topRelays.flatMap(a => a.relays));
 
-  const missing = allRelays.filter(a => a.relays === undefined || a.relays.length === 0);
-  const hasRelays = allRelays.filter(a => a.relays !== undefined && a.relays.length > 0);
-  const relayUserMap = hasRelays.reduce((acc, v) => {
-    for (const r of unwrap(v.relays)) {
-      if (!acc.has(r.url)) {
-        acc.set(r.url, new Set([v.key]));
-      } else {
-        unwrap(acc.get(r.url)).add(v.key);
-      }
-    }
-    return acc;
-  }, new Map<string, Set<string>>());
-
-  // selection algo will just pick relays with the most users
-  const topRelays = [...relayUserMap.entries()].sort(([, v], [, v1]) => v1.size - v.size);
-
-  // <relay, key[]> - count keys per relay
-  // <key, relay[]> - pick n top relays
-  // <relay, key[]> - map keys per relay (for subscription filter)
-
-  const userPickedRelays = unwrap(authors).map(k => {
-    // pick top 3 relays for this key
-    const relaysForKey = topRelays
-      .filter(([, v]) => v.has(k))
-      .slice(0, PickNRelays)
-      .map(([k]) => k);
-    return { k, relaysForKey };
-  });
-
-  const pickedRelays = new Set(userPickedRelays.map(a => a.relaysForKey).flat());
-
-  const picked = [...pickedRelays].map(a => {
-    const keysOnPickedRelay = new Set(userPickedRelays.filter(b => b.relaysForKey.includes(a)).map(b => b.k));
+  const picked = pickedRelays.map(a => {
+    const keysOnPickedRelay = dedupe(topRelays.filter(b => b.relays.includes(a)).map(b => b.key));
     return {
       relay: a,
       filter: {
         ...filter,
-        authors: [...keysOnPickedRelay],
+        authors: keysOnPickedRelay,
       },
     } as RelayTaggedFilter;
   });
-  if (missing.length > 0) {
+  const noRelays = dedupe(topRelays.filter(a => a.relays.length === 0).map(a => a.key));
+  if (noRelays.length > 0) {
     picked.push({
       relay: "",
       filter: {
         ...filter,
-        authors: missing.map(a => a.key),
+        authors: noRelays,
       },
     });
   }
@@ -142,24 +105,20 @@ export function splitFlatByWriteRelays(cache: RelayCache, input: Array<FlatReqFi
   const pickedRelays = dedupe(topRelays.flatMap(a => a.relays));
 
   const picked = pickedRelays.map(a => {
-    const keysOnPickedRelay = new Set(userPickedRelays.filter(b => b.relaysForKey.includes(a)).map(b => b.k));
+    const authorsOnRelay = new Set(topRelays.filter(v => v.relays.includes(a)).map(v => v.key));
     return {
       relay: a,
-      filter: {
-        ...filter,
-        authors: [...keysOnPickedRelay],
-      },
-    } as RelayTaggedFilter;
+      filters: input.filter(v => v.authors && authorsOnRelay.has(v.authors)),
+    } as RelayTaggedFlatFilters;
   });
-  if (missing.length > 0) {
+  const noRelays = new Set(topRelays.filter(v => v.relays.length === 0).map(v => v.key));
+  if (noRelays.size > 0) {
     picked.push({
       relay: "",
-      filter: {
-        ...filter,
-        authors: missing.map(a => a.key),
-      },
-    });
+      filters: input.filter(v => !v.authors || noRelays.has(v.authors)),
+    } as RelayTaggedFlatFilters);
   }
+
   debug("GOSSIP")("Picked %o", picked);
   return picked;
 }

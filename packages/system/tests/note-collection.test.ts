@@ -1,6 +1,6 @@
-import { TaggedRawEvent } from "../src/Nostr";
+import { TaggedRawEvent } from "../src/nostr";
 import { describe, expect } from "@jest/globals";
-import { FlatNoteStore, ReplaceableNoteStore } from "../src/NoteCollection";
+import { FlatNoteStore, ReplaceableNoteStore } from "../src/note-collection";
 
 describe("NoteStore", () => {
   describe("flat", () => {

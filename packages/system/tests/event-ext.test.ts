@@ -1,4 +1,4 @@
-import { EventExt } from "../src/EventExt";
+import { EventExt } from "../src/event-ext";
 
 describe("NIP-10", () => {
   it("should extract thread", () => {

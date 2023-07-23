@@ -1,9 +1,9 @@
 import { Connection } from "../src";
 import { describe, expect } from "@jest/globals";
-import { Query } from "../src/Query";
+import { Query } from "../src/query";
 import { getRandomValues } from "crypto";
-import { FlatNoteStore } from "../src/NoteCollection";
-import { RequestStrategy } from "../src/RequestBuilder";
+import { FlatNoteStore } from "../src/note-collection";
+import { RequestStrategy } from "../src/request-builder";
 
 window.crypto = {} as any;
 window.crypto.getRandomValues = getRandomValues as any;
