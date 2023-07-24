@@ -94,7 +94,7 @@ export class Nip46Signer implements EventSigner {
               "#p": [this.#localPubkey],
             },
           ],
-          () => {}
+          () => {},
         );
 
         if (isBunker) {
@@ -181,7 +181,7 @@ export class Nip46Signer implements EventSigner {
           result: "ack",
           error: "",
         },
-        unwrap(this.#remotePubkey)
+        unwrap(this.#remotePubkey),
       );
       id = "connect";
     }

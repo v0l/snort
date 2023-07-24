@@ -2,7 +2,7 @@
   min-height: 110px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .note:hover {
@@ -185,7 +185,6 @@
 
 .note.active {
   border-left: 1px solid var(--highlight);
-  border-bottom-left-radius: 0;
   margin-left: -1px;
 }
 

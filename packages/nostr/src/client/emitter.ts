@@ -13,7 +13,7 @@ export class EventEmitter extends Base {
   override addListener(eventName: "newListener", listener: NewListener): this
   override addListener(
     eventName: "removeListener",
-    listener: RemoveListener
+    listener: RemoveListener,
   ): this
   override addListener(eventName: "open", listener: OpenListener): this
   override addListener(eventName: "close", listener: CloseListener): this
@@ -36,7 +36,7 @@ export class EventEmitter extends Base {
   override emit(
     eventName: "eose",
     subscriptionId: SubscriptionId,
-    nostr: Nostr
+    nostr: Nostr,
   ): boolean
   override emit(eventName: "error", err: unknown, nostr: Nostr): boolean
   override emit(eventName: EventName, ...args: unknown[]): boolean {
@@ -101,11 +101,11 @@ export class EventEmitter extends Base {
 
   override prependListener(
     eventName: "newListener",
-    listener: NewListener
+    listener: NewListener,
   ): this
   override prependListener(
     eventName: "removeListener",
-    listener: RemoveListener
+    listener: RemoveListener,
   ): this
   override prependListener(eventName: "open", listener: OpenListener): this
   override prependListener(eventName: "close", listener: CloseListener): this
@@ -120,30 +120,30 @@ export class EventEmitter extends Base {
 
   override prependOnceListener(
     eventName: "newListener",
-    listener: NewListener
+    listener: NewListener,
   ): this
   override prependOnceListener(
     eventName: "removeListener",
-    listener: RemoveListener
+    listener: RemoveListener,
   ): this
   override prependOnceListener(eventName: "open", listener: OpenListener): this
   override prependOnceListener(
     eventName: "close",
-    listener: CloseListener
+    listener: CloseListener,
   ): this
   override prependOnceListener(
     eventName: "event",
-    listener: EventListener
+    listener: EventListener,
   ): this
   override prependOnceListener(
     eventName: "notice",
-    listener: NoticeListener
+    listener: NoticeListener,
   ): this
   override prependOnceListener(eventName: "ok", listener: OkListener): this
   override prependOnceListener(eventName: "eose", listener: EoseListener): this
   override prependOnceListener(
     eventName: "error",
-    listener: ErrorListener
+    listener: ErrorListener,
   ): this
   override prependOnceListener(eventName: EventName, listener: Listener): this {
     return super.prependOnceListener(eventName, listener)
@@ -156,7 +156,7 @@ export class EventEmitter extends Base {
   override removeListener(eventName: "newListener", listener: NewListener): this
   override removeListener(
     eventName: "removeListener",
-    listener: RemoveListener
+    listener: RemoveListener,
   ): this
   override removeListener(eventName: "open", listener: OpenListener): this
   override removeListener(eventName: "close", listener: CloseListener): this

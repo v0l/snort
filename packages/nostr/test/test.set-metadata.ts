@@ -43,12 +43,12 @@ describe("set metadata", () => {
           publisher.publish({
             ...(await createSetMetadata(
               { name, about, picture },
-              publisherSecret
+              publisherSecret,
             )),
             created_at: timestamp,
           })
         })
-      }
+      },
     )
   })
 })

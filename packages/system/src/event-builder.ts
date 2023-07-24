@@ -43,9 +43,7 @@ export class EventBuilder {
    */
   processContent() {
     if (this.#content) {
-      this.#content = this.#content.replace(MentionNostrEntityRegex, m =>
-        this.#replaceMention(m)
-      );
+      this.#content = this.#content.replace(MentionNostrEntityRegex, m => this.#replaceMention(m));
 
       const hashTags = [...this.#content.matchAll(HashtagRegex)];
       hashTags.map(hashTag => {

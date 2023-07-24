@@ -31,15 +31,6 @@ export default function RootPage() {
   const { publicKey: pubKey, tags, preferences } = useLogin();
   const [rootType, setRootType] = useState<RootPage>("following");
 
-  useEffect(() => {
-    if (location.pathname === "/") {
-      const t = pubKey ? preferences.defaultRootTab ?? "/notes" : "/global";
-      navigate(t, {
-        replace: true,
-      });
-    }
-  }, [location]);
-
   const menuItems = [
     {
       tab: "following",
@@ -107,6 +98,18 @@ export default function RootPage() {
     element: ReactNode;
   }>;
 
+  useEffect(() => {
+    if (location.pathname === "/") {
+      const t = pubKey ? preferences.defaultRootTab ?? "/notes" : "/global";
+      navigate(t);
+    } else {
+      const currentTab = menuItems.find(a => a.path === location.pathname)?.tab;
+      if (currentTab) {
+        setRootType(currentTab);
+      }
+    }
+  }, [location]);
+
   function currentMenuItem() {
     if (location.pathname.startsWith("/t/")) {
       return (
@@ -139,8 +142,7 @@ export default function RootPage() {
           {menuItems.map(a => (
             <MenuItem
               onClick={() => {
-                setRootType(a.tab);
-                navigate(a.path, { replace: true });
+                navigate(a.path);
               }}>
               {a.element}
             </MenuItem>
@@ -148,8 +150,7 @@ export default function RootPage() {
           {tags.item.map(v => (
             <MenuItem
               onClick={() => {
-                setRootType("tags");
-                navigate(`/t/${v}`, { replace: true });
+                navigate(`/t/${v}`);
               }}>
               <Icon name="hash" />
               {v}

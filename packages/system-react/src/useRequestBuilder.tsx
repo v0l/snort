@@ -8,7 +8,7 @@ import { unwrap } from "@snort/shared";
 const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TStore["getSnapshotData"]>>(
   system: SystemInterface,
   type: { new (): TStore },
-  rb: RequestBuilder | null
+  rb: RequestBuilder | null,
 ) => {
   const subscribe = (onChanged: () => void) => {
     if (rb) {
@@ -33,7 +33,7 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
   };
   return useSyncExternalStore<StoreSnapshot<TSnapshot>>(
     v => subscribe(v),
-    () => getState()
+    () => getState(),
   );
 };
 

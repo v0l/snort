@@ -153,7 +153,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
       this.#log(
         `[${this.Address}] Closed (code=${e.code}), trying again in ${(this.ConnectTimeout / 1000)
           .toFixed(0)
-          .toLocaleString()} sec`
+          .toLocaleString()} sec`,
       );
       this.ReconnectTimer = setTimeout(() => {
         this.Connect();
@@ -425,7 +425,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
               "%s Inactive connection has %d active requests! %O",
               this.Address,
               this.ActiveRequests.size,
-              this.ActiveRequests
+              this.ActiveRequests,
             );
           } else {
             this.Close();

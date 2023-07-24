@@ -9,7 +9,7 @@
   --font-size-tiny: 11px;
   --modal-bg-color: rgba(0, 0, 0, 0.8);
   --note-bg: #0c0c0c;
-  --highlight: #8b5cf6;
+  --highlight: #ac88ff;
   --error: #ff6053;
   --success: #2ad544;
   --warning: #ff8800;
@@ -23,6 +23,7 @@
   --gray-tertiary: #444;
   --gray-dark: #2b2b2b;
   --gray-superdark: #1a1a1a;
+  --gray-ultradark: #111;
   --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
   --snort-gradient: linear-gradient(90deg, #a178ff 0%, #ff6baf 100%);
   --dm-gradient: linear-gradient(90deg, #5722d2 0%, #db1771 100%);
@@ -123,8 +124,15 @@ body #root > div:not(.page) header {
 }
 
 .card {
-  padding: 16px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--gray-superdark);
+}
+
+/* Card inside card */
+.card .card {
+  border: 1px solid var(--gray-superdark);
+  border-radius: 16px;
+  min-height: 0;
 }
 
 .card .header {
@@ -407,6 +415,11 @@ input:disabled {
 a {
   color: inherit;
   line-height: 1.3em;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 a.ext {

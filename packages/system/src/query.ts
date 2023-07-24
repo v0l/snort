@@ -27,7 +27,7 @@ class QueryTrace {
     readonly filters: Array<ReqFilter>,
     readonly connId: string,
     fnClose: (id: string) => void,
-    fnProgress: () => void
+    fnProgress: () => void,
   ) {
     this.id = uuid();
     this.start = unixNowMs();
@@ -293,7 +293,7 @@ export class Query implements QueryBase {
       q.filters,
       c.Id,
       x => c.CloseReq(x),
-      () => this.#onProgress()
+      () => this.#onProgress(),
     );
     this.#tracing.push(qt);
     c.QueueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());

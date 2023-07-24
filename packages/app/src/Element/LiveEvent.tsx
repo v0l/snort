@@ -13,7 +13,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
           <h3>{title}</h3>
         </div>
         <div>
-          <Link to={`/live/${encodeTLV(NostrPrefix.Address, d, undefined, ev.kind, ev.pubkey)}`}>
+          <Link to={`https://zap.stream/${encodeTLV(NostrPrefix.Address, d, undefined, ev.kind, ev.pubkey)}`}>
             <button className="primary" type="button">
               <FormattedMessage defaultMessage="Watch Live!" />
             </button>

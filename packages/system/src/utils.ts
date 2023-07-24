@@ -27,24 +27,26 @@ export function reqFilterEq(a: FlatReqFilter | ReqFilter, b: FlatReqFilter | Req
 }
 
 export function flatFilterEq(a: FlatReqFilter, b: FlatReqFilter): boolean {
-    return a.keys === b.keys
-        && a.since === b.since
-        && a.until === b.until
-        && a.limit === b.limit
-        && a.search === b.search
-        && a.ids === b.ids
-        && a.kinds === b.kinds
-        && a.authors === b.authors
-        && a["#e"] === b["#e"]
-        && a["#p"] === b["#p"]
-        && a["#t"] === b["#t"]
-        && a["#d"] === b["#d"]
-        && a["#r"] === b["#r"];
+  return (
+    a.keys === b.keys &&
+    a.since === b.since &&
+    a.until === b.until &&
+    a.limit === b.limit &&
+    a.search === b.search &&
+    a.ids === b.ids &&
+    a.kinds === b.kinds &&
+    a.authors === b.authors &&
+    a["#e"] === b["#e"] &&
+    a["#p"] === b["#p"] &&
+    a["#t"] === b["#t"] &&
+    a["#d"] === b["#d"] &&
+    a["#r"] === b["#r"]
+  );
 }
 
 export function splitByUrl(str: string) {
-    const urlRegex =
-      /((?:http|ftp|https|nostr|web\+nostr|magnet):\/?\/?(?:[\w+?.\w+])+(?:[a-zA-Z0-9~!@#$%^&*()_\-=+\\/?.:;',]*)?(?:[-A-Za-z0-9+&@#/%=~()_|]))/i;
-  
-    return str.split(urlRegex);
-  }
+  const urlRegex =
+    /((?:http|ftp|https|nostr|web\+nostr|magnet):\/?\/?(?:[\w+?.\w+])+(?:[a-zA-Z0-9~!@#$%^&*()_\-=+\\/?.:;',]*)?(?:[-A-Za-z0-9+&@#/%=~()_|]))/i;
+
+  return str.split(urlRegex);
+}

@@ -226,12 +226,12 @@ function parseIncomingMessage(data: string): IncomingMessage {
   if (json[0] === "EVENT") {
     if (typeof json[1] !== "string") {
       throw new NostrError(
-        `second element of "EVENT" should be a string, but wasn't: ${data}`
+        `second element of "EVENT" should be a string, but wasn't: ${data}`,
       )
     }
     if (typeof json[2] !== "object") {
       throw new NostrError(
-        `second element of "EVENT" should be an object, but wasn't: ${data}`
+        `second element of "EVENT" should be an object, but wasn't: ${data}`,
       )
     }
     const event = parseEventData(json[2])
@@ -246,7 +246,7 @@ function parseIncomingMessage(data: string): IncomingMessage {
   if (json[0] === "NOTICE") {
     if (typeof json[1] !== "string") {
       throw new NostrError(
-        `second element of "NOTICE" should be a string, but wasn't: ${data}`
+        `second element of "NOTICE" should be a string, but wasn't: ${data}`,
       )
     }
     return {
@@ -259,17 +259,17 @@ function parseIncomingMessage(data: string): IncomingMessage {
   if (json[0] === "OK") {
     if (typeof json[1] !== "string") {
       throw new NostrError(
-        `second element of "OK" should be a string, but wasn't: ${data}`
+        `second element of "OK" should be a string, but wasn't: ${data}`,
       )
     }
     if (typeof json[2] !== "boolean") {
       throw new NostrError(
-        `third element of "OK" should be a boolean, but wasn't: ${data}`
+        `third element of "OK" should be a boolean, but wasn't: ${data}`,
       )
     }
     if (typeof json[3] !== "string") {
       throw new NostrError(
-        `fourth element of "OK" should be a string, but wasn't: ${data}`
+        `fourth element of "OK" should be a string, but wasn't: ${data}`,
       )
     }
     return {
@@ -284,7 +284,7 @@ function parseIncomingMessage(data: string): IncomingMessage {
   if (json[0] === "EOSE") {
     if (typeof json[1] !== "string") {
       throw new NostrError(
-        `second element of "EOSE" should be a string, but wasn't: ${data}`
+        `second element of "EOSE" should be a string, but wasn't: ${data}`,
       )
     }
     return {
@@ -312,7 +312,7 @@ function parseEventData(json: { [key: string]: unknown }): RawEvent {
     typeof json["kind"] !== "number" ||
     !(json["tags"] instanceof Array) ||
     !json["tags"].every(
-      (x) => x instanceof Array && x.every((y) => typeof y === "string")
+      (x) => x instanceof Array && x.every((y) => typeof y === "string"),
     ) ||
     typeof json["content"] !== "string" ||
     typeof json["sig"] !== "string"

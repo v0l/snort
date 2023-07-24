@@ -374,9 +374,11 @@ export default function Thread() {
     description: "Navigate back button on threads view",
   });
   return (
-    <div className="main-content mt10">
-      <BackButton onClick={goBack} text={parent ? parentText : backText} />
-      <div className="thread-container">
+    <>
+      <div className="main-content">
+        <BackButton onClick={goBack} text={parent ? parentText : backText} />
+      </div>
+      <div className="main-content">
         {root && renderRoot(root)}
         {root && renderChain(root.id)}
 
@@ -392,7 +394,7 @@ export default function Thread() {
           );
         })}
       </div>
-    </div>
+    </>
   );
 }
 

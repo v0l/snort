@@ -73,7 +73,7 @@ export function countMembers(a: any) {
 
 export function equalProp(
   a: string | number | Array<string | number> | undefined,
-  b: string | number | Array<string | number> | undefined
+  b: string | number | Array<string | number> | undefined,
 ) {
   if ((a !== undefined && b === undefined) || (a === undefined && b !== undefined)) {
     return false;

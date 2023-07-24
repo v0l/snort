@@ -99,7 +99,7 @@ export function schnorrVerify(sig: Hex, data: Hex, key: PublicKey): boolean {
 export async function aesEncryptBase64(
   sender: PrivateKey,
   recipient: PublicKey,
-  plaintext: string
+  plaintext: string,
 ): Promise<AesEncryptedBase64> {
   const sharedPoint = secp.secp256k1.getSharedSecret(sender, "02" + recipient)
   const sharedKey = sharedPoint.slice(1, 33)
@@ -109,7 +109,7 @@ export async function aesEncryptBase64(
       sharedKey,
       { name: "AES-CBC" },
       false,
-      ["encrypt"]
+      ["encrypt"],
     )
     const iv = window.crypto.getRandomValues(new Uint8Array(16))
     const data = new TextEncoder().encode(plaintext)
@@ -119,7 +119,7 @@ export async function aesEncryptBase64(
         iv,
       },
       key,
-      data
+      data,
     )
     return {
       data: base64.fromByteArray(new Uint8Array(encrypted)),
@@ -131,7 +131,7 @@ export async function aesEncryptBase64(
     const cipher = crypto.createCipheriv(
       "aes-256-cbc",
       Buffer.from(sharedKey),
-      iv
+      iv,
     )
     let encrypted = cipher.update(plaintext, "utf8", "base64")
     encrypted += cipher.final("base64")
@@ -145,7 +145,7 @@ export async function aesEncryptBase64(
 export async function aesDecryptBase64(
   sender: PublicKey,
   recipient: PrivateKey,
-  { data, iv }: AesEncryptedBase64
+  { data, iv }: AesEncryptedBase64,
 ): Promise<string> {
   const sharedPoint = secp.secp256k1.getSharedSecret(recipient, "02" + sender)
   const sharedKey = sharedPoint.slice(1, 33)
@@ -157,7 +157,7 @@ export async function aesDecryptBase64(
       sharedKey,
       { name: "AES-CBC" },
       false,
-      ["decrypt"]
+      ["decrypt"],
     )
     const plaintext = await window.crypto.subtle.decrypt(
       {
@@ -165,7 +165,7 @@ export async function aesDecryptBase64(
         iv: decodedIv,
       },
       importedKey,
-      decodedData
+      decodedData,
     )
     return new TextDecoder().decode(plaintext)
   } else {
@@ -173,7 +173,7 @@ export async function aesDecryptBase64(
     const decipher = crypto.createDecipheriv(
       "aes-256-cbc",
       Buffer.from(sharedKey),
-      base64.toByteArray(iv)
+      base64.toByteArray(iv),
     )
     const plaintext = decipher.update(data, "base64", "utf8")
     return plaintext + decipher.final()

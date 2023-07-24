@@ -52,7 +52,7 @@ describe("deletion", () => {
             // After the text note has been published, delete it.
             const deletion = await createDeletion(
               { events: [textNoteId] },
-              publisherSecret
+              publisherSecret,
             )
             deletionId = deletion.id
             publisher.publish({
@@ -66,7 +66,7 @@ describe("deletion", () => {
             subscriber.subscribe([])
           }
         })
-      }
+      },
     )
   })
 })

@@ -9,8 +9,9 @@
     "test": "yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/app test && yarn workspace @snort/system test"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230307.0",
     "@tauri-apps/cli": "^1.2.3",
-    "@cloudflare/workers-types": "^4.20230307.0"
+    "prettier": "^3.0.0"
   },
   "prettier": {
     "printWidth": 120,

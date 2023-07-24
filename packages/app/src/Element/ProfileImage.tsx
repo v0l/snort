@@ -50,8 +50,7 @@ export default function ProfileImage({
     <Link
       className={`pfp${className ? ` ${className}` : ""}`}
       to={link === undefined ? profileLink(pubkey) : link}
-      onClick={handleClick}
-      replace={true}>
+      onClick={handleClick}>
       <div className="avatar-wrapper">
         <Avatar user={user} />
       </div>

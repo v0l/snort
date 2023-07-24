@@ -1,13 +1,16 @@
 import "./NoteReaction.css";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import { EventKind, NostrEvent, TaggedNostrEvent, NostrPrefix, EventExt } from "@snort/system";
+import { EventKind, NostrEvent, TaggedNostrEvent, NostrPrefix } from "@snort/system";
 
 import Note from "Element/Note";
-import ProfileImage from "Element/ProfileImage";
+import { getDisplayName } from "Element/ProfileImage";
 import { eventLink, hexToBech32 } from "SnortUtils";
-import NoteTime from "Element/NoteTime";
 import useModeration from "Hooks/useModeration";
+import { FormattedMessage } from "react-intl";
+import Icon from "Icons/Icon";
+import { useUserProfile } from "@snort/system-react";
+import { System } from "index";
 
 export interface NoteReactionProps {
   data: TaggedNostrEvent;
@@ -16,6 +19,7 @@ export interface NoteReactionProps {
 export default function NoteReaction(props: NoteReactionProps) {
   const { data: ev } = props;
   const { isMuted } = useModeration();
+  const profile = useUserProfile(System, ev.pubkey);
 
   const refEvent = useMemo(() => {
     if (ev) {
@@ -60,12 +64,15 @@ export default function NoteReaction(props: NoteReactionProps) {
   };
 
   return shouldNotBeRendered ? null : (
-    <div className="reaction">
-      <div className="header flex">
-        <ProfileImage pubkey={EventExt.getRootPubKey(ev)} />
-        <div className="info">
-          <NoteTime from={ev.created_at * 1000} />
-        </div>
+    <div className="card reaction">
+      <div className="flex g4">
+        <Icon name="repeat" size={18} />
+        <FormattedMessage
+          defaultMessage="{name} reposted"
+          values={{
+            name: getDisplayName(profile, ev.pubkey),
+          }}
+        />
       </div>
       {root ? <Note data={root} options={opt} related={[]} /> : null}
       {!root && refEvent ? (

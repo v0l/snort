@@ -146,7 +146,7 @@ export class EventPublisher {
     relays: Array<string>,
     note?: HexKey,
     msg?: string,
-    fnExtra?: EventBuilderHook
+    fnExtra?: EventBuilderHook,
   ) {
     const eb = this.#eb(EventKind.ZapRequest);
     eb.content(msg ?? "");

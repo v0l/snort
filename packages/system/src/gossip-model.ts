@@ -175,6 +175,6 @@ function pickTopRelays(cache: RelayCache, authors: Array<string>, n: number) {
           key: a.key,
           relays: [],
         };
-      })
+      }),
     );
 }

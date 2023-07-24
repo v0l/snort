@@ -17,6 +17,9 @@
   "+vVZ/G": {
     "defaultMessage": "Connect"
   },
+  "+xliwN": {
+    "defaultMessage": "{name} reposted"
+  },
   "/4tOwT": {
     "defaultMessage": "Skip"
   },
@@ -35,6 +38,9 @@
   },
   "/n5KSF": {
     "defaultMessage": "{n} ms"
+  },
+  "00LcfG": {
+    "defaultMessage": "Load more"
   },
   "08zn6O": {
     "defaultMessage": "Export Keys"
@@ -437,6 +443,9 @@
   },
   "IEwZvs": {
     "defaultMessage": "Are you sure you want to unpin this note?"
+  },
+  "IKKHqV": {
+    "defaultMessage": "Follows"
   },
   "INSqIz": {
     "defaultMessage": "Twitter username..."

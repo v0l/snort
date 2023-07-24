@@ -32,7 +32,7 @@ export abstract class FeedCache<TCached> {
         this.cache.size,
         this.onTable.size,
         this.#hooks.length,
-        ((this.#hits / (this.#hits + this.#miss)) * 100).toFixed(1)
+        ((this.#hits / (this.#hits + this.#miss)) * 100).toFixed(1),
       );
     }, 30_000);
   }
@@ -174,7 +174,7 @@ export abstract class FeedCache<TCached> {
         `Loaded %d/%d in %d ms`,
         fromCacheFiltered.length,
         keys.length,
-        (unixNowMs() - start).toLocaleString()
+        (unixNowMs() - start).toLocaleString(),
       );
       return mapped.filter(a => !a.has).map(a => a.key);
     }

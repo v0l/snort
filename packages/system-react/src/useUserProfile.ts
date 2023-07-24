@@ -18,6 +18,6 @@ export function useUserProfile(system: NostrSystem, pubKey?: HexKey): MetadataCa
         }
       };
     },
-    () => system.ProfileLoader.Cache.getFromCache(pubKey)
+    () => system.ProfileLoader.Cache.getFromCache(pubKey),
   );
 }

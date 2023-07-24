@@ -191,7 +191,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   function repostIcon() {
     return (
       <div className={`reaction-pill ${hasReposted() ? "reacted" : ""}`} onClick={() => repost()}>
-        <Icon name="repost" size={17} />
+        <Icon name="repeat" size={18} />
         {reposts.length > 0 && <div className="reaction-pill-number">{formatShort(reposts.length)}</div>}
       </div>
     );
@@ -201,12 +201,11 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (!prefs.enableReactions) {
       return null;
     }
+    const reacted = hasReacted("+");
     return (
       <>
-        <div
-          className={`reaction-pill ${hasReacted("+") ? "reacted" : ""} `}
-          onClick={() => react(prefs.reactionEmoji)}>
-          <Icon name="heart" />
+        <div className={`reaction-pill ${reacted ? "reacted" : ""} `} onClick={() => react(prefs.reactionEmoji)}>
+          <Icon name={reacted ? "heart-solid" : "heart"} size={18} />
           <div className="reaction-pill-number">{formatShort(positive.length)}</div>
         </div>
       </>

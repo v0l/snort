@@ -34,16 +34,16 @@ describe("direct-message", () => {
             if (event.kind === EventKind.DirectMessage) {
               assert.strictEqual(
                 event.getRecipient(),
-                parsePublicKey(subscriberPubkey)
+                parsePublicKey(subscriberPubkey),
               )
               assert.strictEqual(
                 await event.getMessage(subscriberSecret),
-                message
+                message,
               )
             }
 
             done()
-          }
+          },
         )
 
         const subscriptionId = subscriber.subscribe([])
@@ -54,11 +54,11 @@ describe("direct-message", () => {
               message,
               recipient: subscriberPubkey,
             },
-            publisherSecret
+            publisherSecret,
           )
           publisher.publish(event)
         })
-      }
+      },
     )
   })
 
@@ -92,11 +92,11 @@ describe("direct-message", () => {
               if (event.kind === EventKind.DirectMessage) {
                 assert.strictEqual(
                   event.getRecipient(),
-                  parsePublicKey(recipientPubkey)
+                  parsePublicKey(recipientPubkey),
                 )
                 assert.strictEqual(
                   await event.getMessage(subscriberSecret),
-                  undefined
+                  undefined,
                 )
               }
 
@@ -104,7 +104,7 @@ describe("direct-message", () => {
             } catch (e) {
               done(e)
             }
-          }
+          },
         )
 
         const subscriptionId = subscriber.subscribe([])
@@ -116,11 +116,11 @@ describe("direct-message", () => {
               message,
               recipient: recipientPubkey,
             },
-            publisherSecret
+            publisherSecret,
           )
           publisher.publish(event)
         })
-      }
+      },
     )
   })
 })

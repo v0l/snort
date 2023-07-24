@@ -193,7 +193,7 @@ describe("build diff, large follow list", () => {
           },
         ],
       };
-    })
+    }),
   );
   expect(unixNowMs() - start).toBeLessThan(500);
 
