@@ -10,6 +10,10 @@
   margin: 0;
 }
 
+.logo:hover {
+  text-decoration: none;
+}
+
 header {
   display: flex;
   padding: 10px 16px;

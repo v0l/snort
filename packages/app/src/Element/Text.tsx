@@ -1,5 +1,5 @@
 import "./Text.css";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { HexKey, ParsedFragment, transformText } from "@snort/system";
 
 import Invoice from "Element/Invoice";
@@ -8,6 +8,7 @@ import HyperText from "Element/HyperText";
 import CashuNuts from "Element/CashuNuts";
 import RevealMedia from "./RevealMedia";
 import { ProxyImg } from "./ProxyImg";
+import { SpotlightMedia } from "./SpotlightMedia";
 
 export interface TextProps {
   content: string;
@@ -19,6 +20,15 @@ export interface TextProps {
 }
 
 export default function Text({ content, tags, creator, disableMedia, depth, disableMediaSpotlight }: TextProps) {
+  const [showSpotlight, setShowSpotlight] = useState(false);
+  const [imageIdx, setImageIdx] = useState(0);
+
+  const elements = useMemo(() => {
+    return transformText(content, tags);
+  }, [content]);
+
+  const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content);
+
   function renderChunk(a: ParsedFragment) {
     if (a.type === "media" && !a.mimeType?.startsWith("unknown")) {
       if (disableMedia ?? false) {
@@ -28,7 +38,21 @@ export default function Text({ content, tags, creator, disableMedia, depth, disa
           </a>
         );
       }
-      return <RevealMedia link={a.content} creator={creator} disableSpotlight={disableMediaSpotlight} />;
+      return (
+        <RevealMedia
+          link={a.content}
+          creator={creator}
+          onMediaClick={e => {
+            if (!disableMediaSpotlight) {
+              e.stopPropagation();
+              e.preventDefault();
+              setShowSpotlight(true);
+              const selected = images.findIndex(b => b === a.content);
+              setImageIdx(selected === -1 ? 0 : selected);
+            }
+          }}
+        />
+      );
     } else {
       switch (a.type) {
         case "invoice":
@@ -48,13 +72,10 @@ export default function Text({ content, tags, creator, disableMedia, depth, disa
     }
   }
 
-  const elements = useMemo(() => {
-    return transformText(content, tags);
-  }, [content]);
-
   return (
     <div dir="auto" className="text">
       {elements.map(a => renderChunk(a))}
+      {showSpotlight && <SpotlightMedia images={images} onClose={() => setShowSpotlight(false)} idx={imageIdx} />}
     </div>
   );
 }

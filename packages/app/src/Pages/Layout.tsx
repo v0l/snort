@@ -1,7 +1,7 @@
 import "./Layout.css";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
@@ -103,7 +103,7 @@ export default function Layout() {
     <div className={pageClass}>
       {!shouldHideHeader && (
         <header className="main-content">
-          <div className="logo" onClick={() => navigate("/")}>
+          <Link to="/" className="logo">
             <h1>Snort</h1>
             {currentSubscription && (
               <small className="flex">
@@ -111,7 +111,7 @@ export default function Layout() {
                 {mapPlanName(currentSubscription.type)}
               </small>
             )}
-          </div>
+          </Link>
 
           {publicKey ? (
             <AccountHeader />
@@ -150,8 +150,7 @@ const AccountHeader = () => {
   );
   const unreadDms = useMemo(() => (publicKey ? 0 : 0), [publicKey]);
 
-  async function goToNotifications(e: React.MouseEvent) {
-    e.stopPropagation();
+  async function goToNotifications() {
     // request permissions to send notifications
     if ("Notification" in window) {
       try {
@@ -163,7 +162,6 @@ const AccountHeader = () => {
         console.error(e);
       }
     }
-    navigate("/notifications");
   }
 
   return (
@@ -172,14 +170,14 @@ const AccountHeader = () => {
         <input type="text" placeholder={formatMessage({ defaultMessage: "Search" })} className="w-max" />
         <Icon name="search" size={24} />
       </div>
-      <div className="btn" onClick={() => navigate("/messages")}>
+      <Link className="btn" to="/messages">
         <Icon name="mail" size={24} />
         {unreadDms > 0 && <span className="has-unread"></span>}
-      </div>
-      <div className="btn" onClick={goToNotifications}>
+      </Link>
+      <Link className="btn" to="/notifications" onClick={goToNotifications}>
         <Icon name="bell-v2" size={24} />
         {hasNotifications && <span className="has-unread"></span>}
-      </div>
+      </Link>
       <Avatar
         user={profile}
         onClick={() => {
