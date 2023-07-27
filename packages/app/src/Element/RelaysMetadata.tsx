@@ -1,5 +1,5 @@
 import "./RelaysMetadata.css";
-import Nostrich from "public/logo_256.png";
+import Nostrich from "nostrich.webp";
 import { useState } from "react";
 
 import { FullRelaySettings } from "@snort/system";

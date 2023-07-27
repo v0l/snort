@@ -104,7 +104,7 @@ export default function Layout() {
       {!shouldHideHeader && (
         <header className="main-content">
           <div className="logo" onClick={() => navigate("/")}>
-            <Icon name="snort-by" size={150} height={20} />
+            <h1>Snort</h1>
             {currentSubscription && (
               <small className="flex">
                 <Icon name="diamond" size={10} className="mr5" />

@@ -42,9 +42,8 @@ const config = {
       patterns: [
         { from: "public/manifest.json" },
         { from: "public/robots.txt" },
-        { from: "public/logo_512.png" },
-        { from: "public/logo_256.png" },
         { from: "public/nostrich_512.png" },
+        { from: "public/nostrich_256.png" },
         { from: "_headers" },
       ],
     }),

@@ -4,12 +4,12 @@
   "description": "Fast nostr web ui",
   "icons": [
     {
-      "src": "logo_256.png",
+      "src": "nostrich_256.png",
       "type": "image/png",
       "sizes": "256x256"
     },
     {
-      "src": "logo_512.png",
+      "src": "nostrich_512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
