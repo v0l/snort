@@ -8,6 +8,7 @@ import {
   NostrPrefix,
   TaggedRawEvent,
   createNostrLink,
+  parseZap,
 } from "@snort/system";
 import { unwrap } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
@@ -16,7 +17,7 @@ import { FormattedMessage } from "react-intl";
 
 import useLogin from "Hooks/useLogin";
 import { markNotificationsRead } from "Login";
-import { Notifications } from "Cache";
+import { Notifications, UserCache } from "Cache";
 import { dedupe, findTag, orderDescending } from "SnortUtils";
 import Note from "Element/Note";
 import Icon from "Icons/Icon";
@@ -25,6 +26,7 @@ import useModeration from "Hooks/useModeration";
 import { System } from "index";
 import useEventFeed from "Feed/EventFeed";
 import Text from "Element/Text";
+import { formatShort } from "Number";
 
 function notificationContext(ev: TaggedRawEvent) {
   switch (ev.kind) {
@@ -112,7 +114,7 @@ function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
 
   const actionName = (n: number, name: string) => {
     switch (kind) {
-      case EventKind.Reaction:
+      case EventKind.Reaction: {
         return (
           <FormattedMessage
             defaultMessage={"{n,plural,=0{{name} liked} other{{name} & {n} others liked}}"}
@@ -122,7 +124,8 @@ function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
             }}
           />
         );
-      case EventKind.Repost:
+      }
+      case EventKind.Repost: {
         return (
           <FormattedMessage
             defaultMessage={"{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"}
@@ -132,6 +135,18 @@ function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
             }}
           />
         );
+      }
+      case EventKind.ZapReceipt: {
+        return (
+          <FormattedMessage
+            defaultMessage={"{n,plural,=0{{name} zapped} other{{name} & {n} others zapped}}"}
+            values={{
+              n,
+              name,
+            }}
+          />
+        );
+      }
     }
     return `${kind}'d your post`;
   };
@@ -146,10 +161,22 @@ function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
     );
   }
 
-  const pubkeys = dedupe(evs.map(a => a.pubkey));
+  const zaps = useMemo(() => {
+    return evs.filter(a => a.kind === EventKind.ZapReceipt).map(a => parseZap(a, UserCache));
+  }, [evs]);
+  const pubkeys = dedupe(
+    evs.map(a => {
+      if (a.kind === EventKind.ZapReceipt) {
+        const zap = zaps.find(a => a.id === a.id);
+        return zap?.sender ?? a.pubkey;
+      }
+      return a.pubkey;
+    })
+  );
   const firstPubkey = pubkeys[0];
   const firstPubkeyProfile = useUserProfile(System, inView ? firstPubkey : "");
   const context = notificationContext(evs[0]);
+  const totalZaps = zaps.reduce((acc, v) => acc + v.amount, 0);
 
   return (
     <div className="card notification-group" ref={ref}>
@@ -162,7 +189,7 @@ function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
         </div>
       </div>
       <div className="names">
-        <div></div>
+        <div>{kind === EventKind.ZapReceipt && formatShort(totalZaps)}</div>
         {actionName(pubkeys.length - 1, getDisplayName(firstPubkeyProfile, firstPubkey))}
       </div>
       <div className="content">{context && <NotificationContext link={context} />}</div>
@@ -172,10 +199,15 @@ function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
 
 function NotificationContext({ link }: { link: NostrLink }) {
   const { data: ev } = useEventFeed(link);
+  const content = ev?.content ?? "";
 
   return (
     <div className="card">
-      <Text content={ev?.content ?? ""} tags={ev?.tags ?? []} creator={ev?.pubkey ?? ""} />
+      <Text
+        content={content.length > 120 ? `${content.substring(0, 120)}...` : content}
+        tags={ev?.tags ?? []}
+        creator={ev?.pubkey ?? ""}
+      />
     </div>
   );
 }

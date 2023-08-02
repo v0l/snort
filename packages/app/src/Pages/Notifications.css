@@ -23,6 +23,7 @@
 
 .notification-group .names > div:first-of-type {
   width: 24px;
+  text-align: center;
 }
 
 .notification-group .content {
