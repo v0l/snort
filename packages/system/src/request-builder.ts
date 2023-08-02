@@ -2,7 +2,7 @@ import debug from "debug";
 import { v4 as uuid } from "uuid";
 import { appendDedupe, sanitizeRelayUrl, unixNowMs } from "@snort/shared";
 
-import { ReqFilter, u256, HexKey, EventKind } from ".";
+import { ReqFilter, u256, HexKey, EventKind, TaggedRawEvent, OnEventCallback, OnEventCallbackRelease } from ".";
 import { diffFilters } from "./request-splitter";
 import { RelayCache, splitByWriteRelays, splitFlatByWriteRelays } from "./gossip-model";
 import { flatMerge, mergeSimilar } from "./request-merger";

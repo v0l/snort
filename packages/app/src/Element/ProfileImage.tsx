@@ -20,6 +20,7 @@ export interface ProfileImageProps {
   verifyNip?: boolean;
   overrideUsername?: string;
   profile?: UserMetadata;
+  size?: number;
 }
 
 export default function ProfileImage({
@@ -32,6 +33,7 @@ export default function ProfileImage({
   verifyNip,
   overrideUsername,
   profile,
+  size,
 }: ProfileImageProps) {
   const user = profile ?? useUserProfile(System, pubkey);
   const nip05 = defaultNip ? defaultNip : user?.nip05;
@@ -52,7 +54,7 @@ export default function ProfileImage({
       to={link === undefined ? profileLink(pubkey) : link}
       onClick={handleClick}>
       <div className="avatar-wrapper">
-        <Avatar user={user} />
+        <Avatar user={user} size={size} />
       </div>
       {showUsername && (
         <div className="f-ellipsis">

@@ -1,5 +1,5 @@
 import { bech32ToHex, hexToBech32 } from "@snort/shared";
-import { NostrPrefix, decodeTLV, TLVEntryType } from ".";
+import { NostrPrefix, decodeTLV, TLVEntryType, encodeTLV } from ".";
 
 export interface NostrLink {
   type: NostrPrefix;
@@ -8,6 +8,24 @@ export interface NostrLink {
   author?: string;
   relays?: Array<string>;
   encode(): string;
+}
+
+export function createNostrLink(prefix: NostrPrefix, id: string, relays?: string[], kind?: number, author?: string) {
+  return {
+    type: prefix,
+    id,
+    relays,
+    kind, author,
+    encode: () => {
+      if(prefix === NostrPrefix.Note || prefix === NostrPrefix.PublicKey) {
+        return hexToBech32(prefix, id);
+      } 
+      if(prefix === NostrPrefix.Address || prefix === NostrPrefix.Event || prefix === NostrPrefix.Profile) {
+        return encodeTLV(prefix, id, relays, kind, author);
+      }
+      return "";
+    }
+  } as NostrLink;
 }
 
 export function validateNostrLink(link: string): boolean {

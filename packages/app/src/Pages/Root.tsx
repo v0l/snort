@@ -14,9 +14,10 @@ import Icon from "Icons/Icon";
 import TrendingUsers from "Element/TrendingUsers";
 import TrendingNotes from "Element/TrendingPosts";
 import HashTagsPage from "Pages/HashTagsPage";
+import SuggestedProfiles from "Element/SuggestedProfiles";
+import { TaskList } from "Tasks/TaskList";
 
 import messages from "./messages";
-import SuggestedProfiles from "Element/SuggestedProfiles";
 
 interface RelayOption {
   url: string;
@@ -272,6 +273,7 @@ const NotesTab = () => {
   return (
     <>
       <FollowsHint />
+      <TaskList />
       <Timeline subject={subject} postsOnly={true} method={"TIME_RANGE"} />
     </>
   );

@@ -1,6 +1,14 @@
 import { useSyncExternalStore } from "react";
 import { Nip4ChatSystem } from "./nip4";
-import { EventKind, EventPublisher, NostrEvent, RequestBuilder, SystemInterface, UserMetadata } from "@snort/system";
+import {
+  EventKind,
+  EventPublisher,
+  NostrEvent,
+  RequestBuilder,
+  SystemInterface,
+  TaggedRawEvent,
+  UserMetadata,
+} from "@snort/system";
 import { unwrap } from "@snort/shared";
 import { Chats, GiftsCache } from "Cache";
 import { findTag, unixNow } from "SnortUtils";
@@ -49,7 +57,7 @@ export interface ChatSystem {
    * Create a request for this system to get updates
    */
   subscription(id: string): RequestBuilder | undefined;
-  onEvent(evs: Array<NostrEvent>): Promise<void> | void;
+  onEvent(evs: readonly TaggedRawEvent[]): Promise<void> | void;
 
   listChats(pk: string): Array<Chat>;
 }

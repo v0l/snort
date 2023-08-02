@@ -8,8 +8,9 @@ import {
   TLVEntryType,
   decodeTLV,
   encodeTLVEntries,
+  TaggedNostrEvent,
 } from "@snort/system";
-import { Chat, ChatSystem, ChatType, inChatWith, lastReadInChat, selfChat } from "chat";
+import { Chat, ChatSystem, ChatType, inChatWith, lastReadInChat } from "chat";
 import { debug } from "debug";
 
 export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
@@ -21,8 +22,8 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
     this.#cache = cache;
   }
 
-  async onEvent(evs: Array<NostrEvent>) {
-    const dms = evs.filter(a => a.kind === EventKind.DirectMessage);
+  async onEvent(evs: readonly TaggedNostrEvent[]) {
+    const dms = evs.filter(a => a.kind === EventKind.DirectMessage && a.tags.some(b => b[0] === "p"));
     if (dms.length > 0) {
       await this.#cache.bulkSet(dms);
       this.notifyChange();

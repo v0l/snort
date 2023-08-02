@@ -398,6 +398,10 @@ input:disabled {
   gap: 12px;
 }
 
+.g24 {
+  gap: 24px;
+}
+
 .w-max {
   width: 100%;
   width: stretch;

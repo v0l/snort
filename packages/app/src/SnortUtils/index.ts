@@ -323,6 +323,10 @@ export const delay = (t: number) => {
   });
 };
 
+export function orderDescending<T>(arr: Array<T & { created_at: number }>) {
+  return arr.sort((a, b) => (b.created_at > a.created_at ? 1 : -1));
+}
+
 export interface Magnet {
   dn?: string | string[];
   tr?: string | string[];
