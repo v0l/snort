@@ -13,13 +13,12 @@ import {
 import { unwrap } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 import { useInView } from "react-intersection-observer";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import useLogin from "Hooks/useLogin";
 import { markNotificationsRead } from "Login";
 import { Notifications, UserCache } from "Cache";
 import { dedupe, findTag, orderDescending } from "SnortUtils";
-import Note from "Element/Note";
 import Icon from "Icons/Icon";
 import ProfileImage, { getDisplayName } from "Element/ProfileImage";
 import useModeration from "Hooks/useModeration";
@@ -27,6 +26,7 @@ import { System } from "index";
 import useEventFeed from "Feed/EventFeed";
 import Text from "Element/Text";
 import { formatShort } from "Number";
+import { useNavigate } from "react-router-dom";
 
 function notificationContext(ev: TaggedRawEvent) {
   switch (ev.kind) {
@@ -47,11 +47,20 @@ function notificationContext(ev: TaggedRawEvent) {
       break;
     }
     case EventKind.Repost:
-    case EventKind.TextNote:
     case EventKind.Reaction: {
       const thread = EventExt.extractThread(ev);
-      const id = unwrap(thread?.replyTo?.value ?? thread?.root?.value ?? ev.id);
-      return createNostrLink(NostrPrefix.Event, id);
+      const tag = unwrap(thread?.replyTo ?? thread?.root ?? { value: ev.id, key: "e" });
+      if (tag.key === "e") {
+        return createNostrLink(NostrPrefix.Event, unwrap(tag.value));
+      } else if (tag.key === "a") {
+        const [kind, author, d] = unwrap(tag.value).split(":");
+        return createNostrLink(NostrPrefix.Address, d, undefined, Number(kind), author);
+      } else {
+        throw new Error("Unknown thread context");
+      }
+    }
+    case EventKind.TextNote: {
+      return createNostrLink(NostrPrefix.Note, ev.id);
     }
   }
 }
@@ -98,7 +107,25 @@ export default function NotificationsPage() {
 
 function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
   const { ref, inView } = useInView({ triggerOnce: true });
+  const { formatMessage } = useIntl();
   const kind = evs[0].kind;
+
+  const zaps = useMemo(() => {
+    return evs.filter(a => a.kind === EventKind.ZapReceipt).map(a => parseZap(a, UserCache));
+  }, [evs]);
+  const pubkeys = dedupe(
+    evs.map(a => {
+      if (a.kind === EventKind.ZapReceipt) {
+        const zap = unwrap(zaps.find(b => b.id === a.id));
+        return zap.anonZap ? "anon" : zap.sender ?? a.pubkey;
+      }
+      return a.pubkey;
+    })
+  );
+  const firstPubkey = pubkeys[0];
+  const firstPubkeyProfile = useUserProfile(System, inView ? (firstPubkey === "anon" ? "" : firstPubkey) : "");
+  const context = notificationContext(evs[0]);
+  const totalZaps = zaps.reduce((acc, v) => acc + v.amount, 0);
 
   const iconName = () => {
     switch (kind) {
@@ -108,12 +135,17 @@ function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
         return "zap-solid";
       case EventKind.Repost:
         return "repeat";
+      case EventKind.TextNote:
+        return "reverse-left";
     }
     return "";
   };
 
   const actionName = (n: number, name: string) => {
     switch (kind) {
+      case EventKind.TextNote: {
+        return "";
+      }
       case EventKind.Reaction: {
         return (
           <FormattedMessage
@@ -151,58 +183,56 @@ function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
     return `${kind}'d your post`;
   };
 
-  if (kind === EventKind.TextNote) {
-    return (
-      <>
-        {evs.map(v => (
-          <Note data={v} related={[]} />
-        ))}
-      </>
-    );
-  }
-
-  const zaps = useMemo(() => {
-    return evs.filter(a => a.kind === EventKind.ZapReceipt).map(a => parseZap(a, UserCache));
-  }, [evs]);
-  const pubkeys = dedupe(
-    evs.map(a => {
-      if (a.kind === EventKind.ZapReceipt) {
-        const zap = zaps.find(a => a.id === a.id);
-        return zap?.sender ?? a.pubkey;
-      }
-      return a.pubkey;
-    })
-  );
-  const firstPubkey = pubkeys[0];
-  const firstPubkeyProfile = useUserProfile(System, inView ? firstPubkey : "");
-  const context = notificationContext(evs[0]);
-  const totalZaps = zaps.reduce((acc, v) => acc + v.amount, 0);
-
   return (
     <div className="card notification-group" ref={ref}>
-      <div className="flex g24">
-        <Icon name={iconName()} size={24} />
-        <div className="flex g8">
-          {pubkeys.map(v => (
-            <ProfileImage key={v} showUsername={false} pubkey={v} size={40} />
-          ))}
-        </div>
-      </div>
-      <div className="names">
-        <div>{kind === EventKind.ZapReceipt && formatShort(totalZaps)}</div>
-        {actionName(pubkeys.length - 1, getDisplayName(firstPubkeyProfile, firstPubkey))}
-      </div>
-      <div className="content">{context && <NotificationContext link={context} />}</div>
+      {inView && (
+        <>
+          <div className="flex f-col g12">
+            <div>
+              <Icon name={iconName()} size={24} className={iconName()} />
+            </div>
+            <div>{kind === EventKind.ZapReceipt && formatShort(totalZaps)}</div>
+          </div>
+          <div className="flex f-col g12 w-max">
+            <div className="flex">
+              {pubkeys
+                .filter(a => a !== "anon")
+                .slice(0, 12)
+                .map(v => (
+                  <ProfileImage
+                    key={v}
+                    showUsername={kind === EventKind.TextNote}
+                    pubkey={v}
+                    size={40}
+                    overrideUsername={v === "" ? formatMessage({ defaultMessage: "Anon" }) : undefined}
+                  />
+                ))}
+            </div>
+            {kind !== EventKind.TextNote && (
+              <div className="names">
+                {actionName(
+                  pubkeys.length - 1,
+                  firstPubkey === "anon"
+                    ? formatMessage({ defaultMessage: "Anon" })
+                    : getDisplayName(firstPubkeyProfile, firstPubkey)
+                )}
+              </div>
+            )}
+            <div className="content">{context && <NotificationContext link={context} />}</div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
 function NotificationContext({ link }: { link: NostrLink }) {
   const { data: ev } = useEventFeed(link);
+  const navigate = useNavigate();
   const content = ev?.content ?? "";
 
   return (
-    <div className="card">
+    <div onClick={() => navigate(`/${link.encode()}`)} className="pointer">
       <Text
         content={content.length > 120 ? `${content.substring(0, 120)}...` : content}
         tags={ev?.tags ?? []}

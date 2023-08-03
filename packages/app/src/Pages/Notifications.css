@@ -1,16 +1,33 @@
 .notification-group {
   display: flex;
+  padding: 16px 24px 26px 0;
+  min-height: 100px;
+}
+
+.notification-group > div:first-of-type {
+  width: 64px;
+  min-width: 64px;
+  max-width: 64px;
+  align-items: center;
+}
+
+.notification-group > div:first-of-type > div:first-of-type {
+  height: 40px;
+  display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: center;
+}
+
+.notification-group > div:first-of-type > div {
+  align-self: center;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1em;
 }
 
 .notification-group .avatar {
   width: 40px;
   height: 40px;
-}
-
-.notification-group .pfp {
-  gap: unset;
 }
 
 .notification-group .names {
@@ -21,13 +38,7 @@
   line-height: 1em;
 }
 
-.notification-group .names > div:first-of-type {
-  width: 24px;
-  text-align: center;
-}
-
 .notification-group .content {
-  margin-left: 48px;
   font-size: 14px;
   line-height: 22px;
   color: var(--font-secondary-color);

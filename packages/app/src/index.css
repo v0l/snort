@@ -14,6 +14,8 @@
   --success: #2ad544;
   --warning: #ff8800;
   --live: #f83838;
+  --heart: #ef4444;
+  --zap: #ff710a;
 
   --gray-superlight: #eee;
   --gray-light: #999;
@@ -738,4 +740,12 @@ button.tall {
 .ctx-menu .close-menu-container {
   background: transparent !important;
   position: absolute !important;
+}
+
+svg.heart-solid {
+  color: var(--heart);
+}
+
+svg.zap-solid {
+  color: var(--zap);
 }
