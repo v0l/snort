@@ -40,6 +40,7 @@ const config = {
         { from: "public/robots.txt" },
         { from: "public/logo_512.png" },
         { from: "public/logo_256.png" },
+        { from: "public/nostrich_512.png" },
         { from: "_headers" },
       ],
     }),
