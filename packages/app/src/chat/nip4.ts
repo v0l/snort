@@ -1,5 +1,14 @@
 import { ExternalStore, FeedCache, dedupe } from "@snort/shared";
-import { EventKind, NostrEvent, RequestBuilder, SystemInterface } from "@snort/system";
+import {
+  EventKind,
+  NostrEvent,
+  NostrPrefix,
+  RequestBuilder,
+  SystemInterface,
+  TLVEntryType,
+  decodeTLV,
+  encodeTLVEntries,
+} from "@snort/system";
 import { Chat, ChatSystem, ChatType, inChatWith, lastReadInChat, selfChat } from "chat";
 import { debug } from "debug";
 
@@ -40,27 +49,50 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
 
   listChats(pk: string): Chat[] {
     const myDms = this.#nip4Events();
-    return dedupe(myDms.map(a => inChatWith(a, pk))).map(a => {
-      const messages = myDms.filter(
-        b => (a === pk && selfChat(b, pk)) || (!selfChat(b, pk) && inChatWith(b, pk) === a)
-      );
+    const chatId = (a: NostrEvent) => {
+      return encodeTLVEntries("chat4" as NostrPrefix, {
+        type: TLVEntryType.Author,
+        value: inChatWith(a, pk),
+        length: 0,
+      });
+    };
+
+    return dedupe(myDms.map(chatId)).map(a => {
+      const messages = myDms.filter(b => chatId(b) === a);
       return Nip4ChatSystem.createChatObj(a, messages);
     });
   }
 
   static createChatObj(id: string, messages: Array<NostrEvent>) {
     const last = lastReadInChat(id);
+    const pk = decodeTLV(id).find(a => a.type === TLVEntryType.Author)?.value as string;
     return {
       type: ChatType.DirectMessage,
       id,
       unread: messages.reduce((acc, v) => (v.created_at > last ? acc++ : acc), 0),
       lastMessage: messages.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0),
-      messages,
-      createMessage: (msg, pub) => {
-        return pub.sendDm(msg, id);
+      participants: [
+        {
+          type: "pubkey",
+          id: pk,
+        },
+      ],
+      messages: messages.map(m => ({
+        id: m.id,
+        created_at: m.created_at,
+        from: m.pubkey,
+        tags: m.tags,
+        content: "",
+        needsDecryption: true,
+        decrypt: async pub => {
+          return await pub.decryptDm(m);
+        },
+      })),
+      createMessage: async (msg, pub) => {
+        return [await pub.sendDm(msg, pk)];
       },
-      sendMessage: (ev: NostrEvent, system: SystemInterface) => {
-        system.BroadcastEvent(ev);
+      sendMessage: (ev, system: SystemInterface) => {
+        ev.forEach(a => system.BroadcastEvent(a));
       },
     } as Chat;
   }

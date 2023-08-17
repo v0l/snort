@@ -1,4 +1,4 @@
-import { TaggedRawEvent, ParsedZap } from "@snort/system";
+import { TaggedNostrEvent, ParsedZap } from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
@@ -15,7 +15,7 @@ import useLogin from "Hooks/useLogin";
 import { System } from "index";
 
 interface PollProps {
-  ev: TaggedRawEvent;
+  ev: TaggedNostrEvent;
   zaps: Array<ParsedZap>;
 }
 

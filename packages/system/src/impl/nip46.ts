@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import debug from "debug";
 
 import { Connection } from "../connection";
-import { EventSigner, PrivateKeySigner } from "../event-publisher";
+import { EventSigner, PrivateKeySigner } from "../signer";
 import { NostrEvent } from "../nostr";
 import { EventBuilder } from "../event-builder";
 import EventKind from "../event-kind";
@@ -136,6 +136,14 @@ export class Nip46Signer implements EventSigner {
 
   async nip4Decrypt(content: string, otherKey: string) {
     return await this.#rpc<string>("nip04_decrypt", [otherKey, content]);
+  }
+
+  nip44Encrypt(content: string, key: string): Promise<string> {
+    throw new Error("Method not implemented.");
+  }
+
+  nip44Decrypt(content: string, otherKey: string): Promise<string> {
+    throw new Error("Method not implemented.");
   }
 
   async sign(ev: NostrEvent) {

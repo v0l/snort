@@ -1,6 +1,6 @@
 import { useState, useMemo, ChangeEvent } from "react";
 import { FormattedMessage } from "react-intl";
-import { HexKey, TaggedRawEvent } from "@snort/system";
+import { HexKey, TaggedNostrEvent } from "@snort/system";
 
 import Note from "Element/Note";
 import useLogin from "Hooks/useLogin";
@@ -10,8 +10,8 @@ import messages from "./messages";
 
 interface BookmarksProps {
   pubkey: HexKey;
-  bookmarks: readonly TaggedRawEvent[];
-  related: readonly TaggedRawEvent[];
+  bookmarks: readonly TaggedNostrEvent[];
+  related: readonly TaggedNostrEvent[];
 }
 
 const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {

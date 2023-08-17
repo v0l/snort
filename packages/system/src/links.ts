@@ -46,6 +46,38 @@ export function encodeTLV(prefix: NostrPrefix, id: string, relays?: string[], ki
   return bech32.encode(prefix, bech32.toWords(new Uint8Array([...tl0, ...tl1, ...tl2, ...tl3])), 1_000);
 }
 
+export function encodeTLVEntries(prefix: NostrPrefix, ...entries: Array<TLVEntry>) {
+  const enc = new TextEncoder();
+  const buffers: Array<number> = [];
+
+  for (const v of entries) {
+    switch (v.type) {
+      case TLVEntryType.Special: {
+        const buf =
+          prefix === NostrPrefix.Address ? enc.encode(v.value as string) : utils.hexToBytes(v.value as string);
+        buffers.push(0, buf.length, ...buf);
+        break;
+      }
+      case TLVEntryType.Relay: {
+        const data = enc.encode(v.value as string);
+        buffers.push(1, data.length, ...data);
+        break;
+      }
+      case TLVEntryType.Author: {
+        if ((v.value as string).length !== 64) throw new Error("Author must be 32 bytes");
+        buffers.push(2, 32, ...utils.hexToBytes(v.value as string));
+        break;
+      }
+      case TLVEntryType.Kind: {
+        if (typeof v.value !== "number") throw new Error("Kind must be a number");
+        buffers.push(3, 4, ...new Uint8Array(new Uint32Array([v.value as number]).buffer).reverse());
+        break;
+      }
+    }
+  }
+  return bech32.encode(prefix, bech32.toWords(new Uint8Array(buffers)), 1_000);
+}
+
 export function decodeTLV(str: string) {
   const decoded = bech32.decode(str, 1_000);
   const data = bech32.fromWords(decoded.words);

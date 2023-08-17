@@ -10,6 +10,8 @@ enum EventKind {
   Reaction = 7, // NIP-25
   BadgeAward = 8, // NIP-58
   SimpleChatMessage = 9, // NIP-29
+  SealedRumor = 13, // NIP-59
+  ChatRumor = 14, // NIP-24
   SnortSubscriptions = 1000, // NIP-XX
   Polls = 6969, // NIP-69
   GiftWrap = 1059, // NIP-59

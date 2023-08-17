@@ -1,31 +1,46 @@
 import "./DmWindow.css";
 import { useMemo } from "react";
-import { TaggedRawEvent } from "@snort/system";
 
 import ProfileImage from "Element/ProfileImage";
 import DM from "Element/DM";
 import NoteToSelf from "Element/NoteToSelf";
 import useLogin from "Hooks/useLogin";
 import WriteMessage from "Element/WriteMessage";
-import { Chat, ChatType, useChatSystem } from "chat";
+import { Chat, ChatParticipant, ChatType, useChatSystem } from "chat";
 import { Nip4ChatSystem } from "chat/nip4";
+import { FormattedMessage } from "react-intl";
 
 export default function DmWindow({ id }: { id: string }) {
   const pubKey = useLogin().publicKey;
   const dms = useChatSystem();
   const chat = dms.find(a => a.id === id) ?? Nip4ChatSystem.createChatObj(id, []);
 
+  function participant(p: ChatParticipant) {
+    if (p.id === pubKey) {
+      return <NoteToSelf className="f-grow mb-10" pubkey={p.id} />;
+    }
+    if (p.type === "pubkey") {
+      return <ProfileImage pubkey={p.id} className="f-grow mb10" />;
+    }
+    if (p?.profile) {
+      return <ProfileImage pubkey={p.id} className="f-grow mb10" profile={p.profile} />;
+    }
+    return <ProfileImage pubkey={p.id} className="f-grow mb10" overrideUsername={p.id} />;
+  }
+
   function sender() {
-    if (id === pubKey) {
-      return <NoteToSelf className="f-grow mb-10" pubkey={id} />;
+    if (chat.participants.length === 1) {
+      return participant(chat.participants[0]);
+    } else {
+      return (
+        <div className="flex pfp-overlap mb10">
+          {chat.participants.map(v => (
+            <ProfileImage pubkey={v.id} showUsername={false} />
+          ))}
+          {chat.title ?? <FormattedMessage defaultMessage="Group Chat" />}
+        </div>
+      );
     }
-    if (chat?.type === ChatType.DirectMessage) {
-      return <ProfileImage pubkey={id} className="f-grow mb10" />;
-    }
-    if (chat?.profile) {
-      return <ProfileImage pubkey={id} className="f-grow mb10" profile={chat.profile} />;
-    }
-    return <ProfileImage pubkey={id ?? ""} className="f-grow mb10" overrideUsername={chat?.id} />;
   }
 
   return (
@@ -55,7 +70,7 @@ function DmChatSelected({ chat }: { chat: Chat }) {
   return (
     <>
       {sortedDms.map(a => (
-        <DM data={a as TaggedRawEvent} key={a.id} chat={chat} />
+        <DM data={a} key={a.id} chat={chat} />
       ))}
     </>
   );

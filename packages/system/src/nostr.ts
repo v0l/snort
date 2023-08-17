@@ -10,7 +10,7 @@ export interface NostrEvent {
   sig: string;
 }
 
-export interface TaggedRawEvent extends NostrEvent {
+export interface TaggedNostrEvent extends NostrEvent {
   /**
    * A list of relays this event was seen on
    */
@@ -85,3 +85,5 @@ export interface FullRelaySettings {
   url: string;
   settings: RelaySettings;
 }
+
+export type NotSignedNostrEvent = Omit<NostrEvent, "sig">;

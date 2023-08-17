@@ -1,7 +1,7 @@
 import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { encodeTLV, EventKind, NostrPrefix, TaggedRawEvent, EventBuilder } from "@snort/system";
+import { encodeTLV, EventKind, NostrPrefix, TaggedNostrEvent, EventBuilder } from "@snort/system";
 import { LNURL } from "@snort/shared";
 
 import Icon from "Icons/Icon";
@@ -38,7 +38,7 @@ import useLogin from "Hooks/useLogin";
 import { System } from "index";
 
 interface NotePreviewProps {
-  note: TaggedRawEvent;
+  note: TaggedNostrEvent;
 }
 
 function NotePreview({ note }: NotePreviewProps) {
@@ -194,7 +194,7 @@ export function NoteCreator() {
     if (preview) {
       return (
         <Note
-          data={preview as TaggedRawEvent}
+          data={preview as TaggedNostrEvent}
           related={[]}
           options={{
             showFooter: false,

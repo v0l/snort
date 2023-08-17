@@ -2,27 +2,46 @@ import { useSyncExternalStore } from "react";
 import { Nip4ChatSystem } from "./nip4";
 import { EventKind, EventPublisher, NostrEvent, RequestBuilder, SystemInterface, UserMetadata } from "@snort/system";
 import { unwrap } from "@snort/shared";
-import { Chats } from "Cache";
+import { Chats, GiftsCache } from "Cache";
 import { findTag, unixNow } from "SnortUtils";
 import { Nip29ChatSystem } from "./nip29";
 import useModeration from "Hooks/useModeration";
 import useLogin from "Hooks/useLogin";
+import { Nip24ChatSystem } from "./nip24";
 
 export enum ChatType {
   DirectMessage = 1,
   PublicGroupChat = 2,
   PrivateGroupChat = 3,
+  PrivateDirectMessage = 4,
+}
+
+export interface ChatMessage {
+  id: string;
+  from: string;
+  created_at: number;
+  tags: Array<Array<string>>;
+  needsDecryption: boolean;
+  content: string;
+  decrypt: (pub: EventPublisher) => Promise<string>;
+}
+
+export interface ChatParticipant {
+  type: "pubkey" | "generic";
+  id: string;
+  profile?: UserMetadata;
 }
 
 export interface Chat {
   type: ChatType;
   id: string;
+  title?: string;
   unread: number;
   lastMessage: number;
-  messages: Array<NostrEvent>;
-  profile?: UserMetadata;
-  createMessage(msg: string, pub: EventPublisher): Promise<NostrEvent>;
-  sendMessage(ev: NostrEvent, system: SystemInterface): void | Promise<void>;
+  participants: Array<ChatParticipant>;
+  messages: Array<ChatMessage>;
+  createMessage(msg: string, pub: EventPublisher): Promise<Array<NostrEvent>>;
+  sendMessage(ev: Array<NostrEvent>, system: SystemInterface): void | Promise<void>;
 }
 
 export interface ChatSystem {
@@ -37,6 +56,7 @@ export interface ChatSystem {
 
 export const Nip4Chats = new Nip4ChatSystem(Chats);
 export const Nip29Chats = new Nip29ChatSystem(Chats);
+export const Nip24Chats = new Nip24ChatSystem(GiftsCache);
 
 /**
  * Extract the P tag of the event
@@ -89,10 +109,18 @@ export function useNip29Chat() {
   );
 }
 
+export function useNip24Chat() {
+  const { publicKey } = useLogin();
+  return useSyncExternalStore(
+    c => Nip24Chats.hook(c),
+    () => Nip24Chats.snapshot(publicKey)
+  );
+}
+
 export function useChatSystem() {
   const nip4 = useNip4Chat();
-  const nip29 = useNip29Chat();
+  const nip24 = useNip24Chat();
   const { muted, blocked } = useModeration();
 
-  return [...nip4, ...nip29].filter(a => !(muted.includes(a.id) || blocked.includes(a.id)));
+  return [...nip4, ...nip24].filter(a => !(muted.includes(a.id) || blocked.includes(a.id)));
 }

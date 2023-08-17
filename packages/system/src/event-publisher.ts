@@ -1,16 +1,18 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
-import { unwrap, getPublicKey } from "@snort/shared";
+import { unwrap, getPublicKey, unixNow } from "@snort/shared";
 
 import {
   EventKind,
+  EventSigner,
   FullRelaySettings,
   HexKey,
   Lists,
-  Nip44Encryptor,
   NostrEvent,
+  NotSignedNostrEvent,
+  PrivateKeySigner,
   RelaySettings,
-  TaggedRawEvent,
+  TaggedNostrEvent,
   u256,
   UserMetadata,
 } from ".";
@@ -21,53 +23,6 @@ import { findTag } from "./utils";
 import { Nip7Signer } from "./impl/nip7";
 
 type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
-
-export interface EventSigner {
-  init(): Promise<void>;
-  getPubKey(): Promise<string> | string;
-  nip4Encrypt(content: string, key: string): Promise<string>;
-  nip4Decrypt(content: string, otherKey: string): Promise<string>;
-  sign(ev: NostrEvent): Promise<NostrEvent>;
-}
-
-export class PrivateKeySigner implements EventSigner {
-  #publicKey: string;
-  #privateKey: string;
-
-  constructor(privateKey: string | Uint8Array) {
-    if (typeof privateKey === "string") {
-      this.#privateKey = privateKey;
-    } else {
-      this.#privateKey = utils.bytesToHex(privateKey);
-    }
-    this.#publicKey = getPublicKey(this.#privateKey);
-  }
-
-  get privateKey() {
-    return this.#privateKey;
-  }
-
-  init(): Promise<void> {
-    return Promise.resolve();
-  }
-
-  getPubKey(): string {
-    return this.#publicKey;
-  }
-
-  async nip4Encrypt(content: string, key: string): Promise<string> {
-    return await EventExt.encryptDm(content, this.#privateKey, key);
-  }
-
-  async nip4Decrypt(content: string, otherKey: string): Promise<string> {
-    return await EventExt.decryptDm(content, this.#privateKey, otherKey);
-  }
-
-  sign(ev: NostrEvent): Promise<NostrEvent> {
-    EventExt.sign(ev, this.#privateKey);
-    return Promise.resolve(ev);
-  }
-}
 
 export class EventPublisher {
   #pubKey: string;
@@ -209,7 +164,7 @@ export class EventPublisher {
   /**
    * Reply to a note
    */
-  async reply(replyTo: TaggedRawEvent, msg: string, fnExtra?: EventBuilderHook) {
+  async reply(replyTo: TaggedNostrEvent, msg: string, fnExtra?: EventBuilderHook) {
     const eb = this.#eb(EventKind.TextNote);
     eb.content(msg);
 
@@ -298,7 +253,15 @@ export class EventPublisher {
   }
 
   async decryptDm(note: NostrEvent) {
-    if (note.pubkey !== this.#pubKey && !note.tags.some(a => a[1] === this.#pubKey)) {
+    if (note.kind === EventKind.SealedRumor) {
+      const unseal = await this.unsealRumor(note);
+      return unseal.content;
+    }
+    if (
+      note.kind === EventKind.DirectMessage &&
+      note.pubkey !== this.#pubKey &&
+      !note.tags.some(a => a[1] === this.#pubKey)
+    ) {
       throw new Error("Can't decrypt, DM does not belong to this user");
     }
     const otherPubKey = note.pubkey === this.#pubKey ? unwrap(note.tags.find(a => a[0] === "p")?.[1]) : note.pubkey;
@@ -322,21 +285,54 @@ export class EventPublisher {
   /**
    * NIP-59 Gift Wrap event with ephemeral key
    */
-  async giftWrap(inner: NostrEvent) {
+  async giftWrap(inner: NostrEvent, explicitP?: string) {
     const secret = utils.bytesToHex(secp.secp256k1.utils.randomPrivateKey());
+    const signer = new PrivateKeySigner(secret);
 
-    const pTag = findTag(inner, "p");
+    const pTag = explicitP ?? findTag(inner, "p");
     if (!pTag) throw new Error("Inner event must have a p tag");
 
     const eb = new EventBuilder();
-    eb.pubKey(getPublicKey(secret));
+    eb.pubKey(signer.getPubKey());
     eb.kind(EventKind.GiftWrap);
     eb.tag(["p", pTag]);
-
-    const enc = new Nip44Encryptor();
-    const shared = enc.getSharedSecret(secret, pTag);
-    eb.content(enc.encryptData(JSON.stringify(inner), shared));
+    eb.content(await signer.nip44Encrypt(JSON.stringify(inner), pTag));
 
     return await eb.buildAndSign(secret);
+  }
+
+  async unwrapGift(gift: NostrEvent) {
+    const body = await this.#signer.nip44Decrypt(gift.content, gift.pubkey);
+    return JSON.parse(body) as NostrEvent;
+  }
+
+  /**
+   * Create an unsigned gossip message
+   */
+  createUnsigned(kind: EventKind, content: string, fnHook: EventBuilderHook) {
+    const eb = new EventBuilder();
+    eb.pubKey(this.pubKey);
+    eb.kind(kind);
+    eb.content(content);
+    fnHook(eb);
+    return eb.build() as NotSignedNostrEvent;
+  }
+
+  /**
+   * Create sealed rumor
+   */
+  async sealRumor(inner: NotSignedNostrEvent, toKey: string) {
+    const eb = this.#eb(EventKind.SealedRumor);
+    eb.content(await this.#signer.nip44Encrypt(JSON.stringify(inner), toKey));
+    return await this.#sign(eb);
+  }
+
+  /**
+   * Unseal rumor
+   */
+  async unsealRumor(inner: NostrEvent) {
+    if (inner.kind !== EventKind.SealedRumor) throw new Error("Not a sealed rumor event");
+    const body = await this.#signer.nip44Decrypt(inner.content, inner.pubkey);
+    return JSON.parse(body) as NostrEvent;
   }
 }

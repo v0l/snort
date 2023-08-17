@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { TaggedRawEvent, Lists, EventKind, FlatNoteStore, RequestBuilder } from "@snort/system";
+import { TaggedNostrEvent, Lists, EventKind, FlatNoteStore, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
 import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";
@@ -12,7 +12,7 @@ import { addSubscription, setBlocked, setBookmarked, setFollows, setMuted, setPi
 import { SnortPubKey } from "Const";
 import { SubscriptionEvent } from "Subscription";
 import useRelaysFeedFollows from "./RelaysFeedFollows";
-import { UserRelays } from "Cache";
+import { GiftsCache, UserRelays } from "Cache";
 import { System } from "index";
 import { Nip29Chats, Nip4Chats } from "chat";
 
@@ -39,9 +39,9 @@ export default function useLoginFeed() {
       .authors([bech32ToHex(SnortPubKey)])
       .tag("p", [pubKey])
       .limit(1);
+    b.withFilter().kinds([EventKind.GiftWrap]).tag("p", [pubKey]).since(GiftsCache.newest());
 
     b.add(Nip4Chats.subscription(pubKey));
-    b.add(Nip29Chats.subscription("n29.nostr.com/"));
 
     return b;
   }, [pubKey]);
@@ -83,6 +83,9 @@ export default function useLoginFeed() {
       );
       Nip29Chats.onEvent(nip29Messages);
 
+      const giftWraps = loginFeed.data.filter(a => a.kind === EventKind.GiftWrap);
+      GiftsCache.onEvent(giftWraps, publisher);
+
       const subs = loginFeed.data.filter(
         a => a.kind === EventKind.SnortSubscriptions && a.pubkey === bech32ToHex(SnortPubKey)
       );
@@ -116,7 +119,7 @@ export default function useLoginFeed() {
     }
   }, [loginFeed, readNotifications]);
 
-  function handleMutedFeed(mutedFeed: TaggedRawEvent[]) {
+  function handleMutedFeed(mutedFeed: TaggedNostrEvent[]) {
     const muted = getMutedKeys(mutedFeed);
     setMuted(login, muted.keys, muted.createdAt * 1000);
 
@@ -136,21 +139,21 @@ export default function useLoginFeed() {
     }
   }
 
-  function handlePinnedFeed(pinnedFeed: TaggedRawEvent[]) {
+  function handlePinnedFeed(pinnedFeed: TaggedNostrEvent[]) {
     const newest = getNewestEventTagsByKey(pinnedFeed, "e");
     if (newest) {
       setPinned(login, newest.keys, newest.createdAt * 1000);
     }
   }
 
-  function handleTagFeed(tagFeed: TaggedRawEvent[]) {
+  function handleTagFeed(tagFeed: TaggedNostrEvent[]) {
     const newest = getNewestEventTagsByKey(tagFeed, "t");
     if (newest) {
       setTags(login, newest.keys, newest.createdAt * 1000);
     }
   }
 
-  function handleBookmarkFeed(bookmarkFeed: TaggedRawEvent[]) {
+  function handleBookmarkFeed(bookmarkFeed: TaggedNostrEvent[]) {
     const newest = getNewestEventTagsByKey(bookmarkFeed, "e");
     if (newest) {
       setBookmarked(login, newest.keys, newest.createdAt * 1000);
@@ -161,7 +164,7 @@ export default function useLoginFeed() {
 
   useEffect(() => {
     if (listsFeed.data) {
-      const getList = (evs: readonly TaggedRawEvent[], list: Lists) =>
+      const getList = (evs: readonly TaggedNostrEvent[], list: Lists) =>
         evs.filter(a => unwrap(a.tags.find(b => b[0] === "d"))[1] === list);
 
       const mutedFeed = getList(listsFeed.data, Lists.Muted);

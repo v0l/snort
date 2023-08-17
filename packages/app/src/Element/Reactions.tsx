@@ -2,7 +2,7 @@ import "./Reactions.css";
 
 import { useState, useMemo, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { TaggedRawEvent, ParsedZap } from "@snort/system";
+import { TaggedNostrEvent, ParsedZap } from "@snort/system";
 
 import { formatShort } from "Number";
 import Icon from "Icons/Icon";
@@ -16,9 +16,9 @@ import messages from "./messages";
 interface ReactionsProps {
   show: boolean;
   setShow(b: boolean): void;
-  positive: TaggedRawEvent[];
-  negative: TaggedRawEvent[];
-  reposts: TaggedRawEvent[];
+  positive: TaggedNostrEvent[];
+  negative: TaggedNostrEvent[];
+  reposts: TaggedNostrEvent[];
   zaps: ParsedZap[];
 }
 

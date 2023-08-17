@@ -2,7 +2,7 @@ import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 import { getPublicKey, sha256, unixNow } from "@snort/shared";
 
-import { EventKind, HexKey, NostrEvent } from ".";
+import { EventKind, HexKey, NostrEvent, NotSignedNostrEvent } from ".";
 import { Nip4WebCryptoEncryptor } from "./impl/nip4";
 
 export interface Tag {
@@ -56,7 +56,7 @@ export abstract class EventExt {
     return result;
   }
 
-  static createId(e: NostrEvent) {
+  static createId(e: NostrEvent | NotSignedNostrEvent) {
     const payload = [0, e.pubkey, e.created_at, e.kind, e.tags, e.content];
 
     const hash = sha256(JSON.stringify(payload));
@@ -135,17 +135,5 @@ export abstract class EventExt {
     }
     ret.pubKeys = Array.from(new Set(ev.tags.filter(a => a[0] === "p").map(a => a[1])));
     return ret;
-  }
-
-  static async decryptDm(content: string, privkey: HexKey, pubkey: HexKey) {
-    const enc = new Nip4WebCryptoEncryptor();
-    const key = enc.getSharedSecret(privkey, pubkey);
-    return await enc.decryptData(content, key);
-  }
-
-  static async encryptDm(content: string, privKey: HexKey, pubKey: HexKey) {
-    const enc = new Nip4WebCryptoEncryptor();
-    const secret = enc.getSharedSecret(privKey, pubKey);
-    return await enc.encryptData(content, secret);
   }
 }

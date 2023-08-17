@@ -4,7 +4,7 @@ import { unwrap, ExternalStore, unixNowMs } from "@snort/shared";
 
 import { DefaultConnectTimeout } from "./const";
 import { ConnectionStats } from "./connection-stats";
-import { NostrEvent, ReqCommand, TaggedRawEvent, u256 } from "./nostr";
+import { NostrEvent, ReqCommand, TaggedNostrEvent, u256 } from "./nostr";
 import { RelayInfo } from "./relay-info";
 
 export type AuthHandler = (challenge: string, relay: string) => Promise<NostrEvent | undefined>;
@@ -62,7 +62,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   ReconnectTimer?: ReturnType<typeof setTimeout>;
   EventsCallback: Map<u256, (msg: boolean[]) => void>;
   OnConnected?: (wasReconnect: boolean) => void;
-  OnEvent?: (sub: string, e: TaggedRawEvent) => void;
+  OnEvent?: (sub: string, e: TaggedNostrEvent) => void;
   OnEose?: (sub: string) => void;
   OnDisconnect?: (code: number) => void;
   Auth?: AuthHandler;

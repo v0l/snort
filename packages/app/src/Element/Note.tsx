@@ -3,7 +3,7 @@ import React, { useMemo, useState, useLayoutEffect, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
-import { TaggedRawEvent, HexKey, EventKind, NostrPrefix, Lists, EventExt, parseZap } from "@snort/system";
+import { TaggedNostrEvent, HexKey, EventKind, NostrPrefix, Lists, EventExt, parseZap } from "@snort/system";
 
 import { System } from "index";
 import useEventPublisher from "Feed/EventPublisher";
@@ -36,12 +36,12 @@ import { LiveEvent } from "Element/LiveEvent";
 import messages from "./messages";
 
 export interface NoteProps {
-  data: TaggedRawEvent;
+  data: TaggedNostrEvent;
   className?: string;
-  related: readonly TaggedRawEvent[];
+  related: readonly TaggedNostrEvent[];
   highlight?: boolean;
   ignoreModeration?: boolean;
-  onClick?: (e: TaggedRawEvent) => void;
+  onClick?: (e: TaggedNostrEvent) => void;
   depth?: number;
   options?: {
     showHeader?: boolean;
@@ -113,8 +113,8 @@ export default function Note(props: NoteProps) {
         return { ...acc, [kind]: [...rs, reaction] };
       },
       {
-        [Reaction.Positive]: [] as TaggedRawEvent[],
-        [Reaction.Negative]: [] as TaggedRawEvent[],
+        [Reaction.Positive]: [] as TaggedNostrEvent[],
+        [Reaction.Negative]: [] as TaggedNostrEvent[],
       }
     );
     return {
@@ -219,7 +219,7 @@ export default function Note(props: NoteProps) {
 
   function goToEvent(
     e: React.MouseEvent,
-    eTarget: TaggedRawEvent,
+    eTarget: TaggedNostrEvent,
     isTargetAllowed: boolean = e.target === e.currentTarget
   ) {
     if (!isTargetAllowed || opt?.canClick === false) {

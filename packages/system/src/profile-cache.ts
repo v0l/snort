@@ -1,6 +1,6 @@
 import debug from "debug";
 import { unixNowMs, FeedCache } from "@snort/shared";
-import { EventKind, HexKey, SystemInterface, TaggedRawEvent, NoteCollection, RequestBuilder } from ".";
+import { EventKind, HexKey, SystemInterface, TaggedNostrEvent, NoteCollection, RequestBuilder } from ".";
 import { ProfileCacheExpire } from "./const";
 import { mapEventToProfile, MetadataCache } from "./cache";
 
@@ -57,7 +57,7 @@ export class ProfileLoaderService {
     }
   }
 
-  async onProfileEvent(e: Readonly<TaggedRawEvent>) {
+  async onProfileEvent(e: Readonly<TaggedNostrEvent>) {
     const profile = mapEventToProfile(e);
     if (profile) {
       await this.#cache.update(profile);
@@ -101,7 +101,7 @@ export class ProfileLoaderService {
           await this.onProfileEvent(pe);
         }
       });
-      const results = await new Promise<Readonly<Array<TaggedRawEvent>>>(resolve => {
+      const results = await new Promise<Readonly<Array<TaggedNostrEvent>>>(resolve => {
         let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
         const release = feed.hook(() => {
           if (!feed.loading) {

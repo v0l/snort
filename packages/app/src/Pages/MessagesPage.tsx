@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
-import { NostrPrefix } from "@snort/system";
+import { NostrPrefix, TLVEntryType, decodeTLV } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
 import UnreadCount from "Element/UnreadCount";
@@ -44,15 +44,7 @@ export default function MessagesPage() {
   function openChat(e: React.MouseEvent<HTMLDivElement>, type: ChatType, id: string) {
     e.stopPropagation();
     e.preventDefault();
-    if (type === ChatType.DirectMessage) {
-      navigate(`/messages/${hexToBech32(NostrPrefix.PublicKey, id)}`, {
-        replace: true,
-      });
-    } else {
-      navigate(`/messages/${encodeURIComponent(id)}`, {
-        replace: true,
-      });
-    }
+    navigate(`/messages/${encodeURIComponent(id)}`);
   }
 
   function noteToSelf(chat: Chat) {
@@ -63,16 +55,34 @@ export default function MessagesPage() {
     );
   }
 
-  function person(chat: Chat) {
+  function conversationIdent(chat: Chat) {
+    if (chat.participants.length === 1) {
+      const p = chat.participants[0];
+
+      if (p.type === "pubkey") {
+        return <ProfileImage pubkey={p.id} className="f-grow" link="" />;
+      } else {
+        return <ProfileImage pubkey={""} overrideUsername={p.id} className="f-grow" link="" />;
+      }
+    } else {
+      return (
+        <div className="flex f-grow pfp-overlap">
+          {chat.participants.map(v => (
+            <ProfileImage pubkey={v.id} link="" showUsername={false} />
+          ))}
+          <div className="f-grow">{chat.title}</div>
+        </div>
+      );
+    }
+  }
+
+  function conversation(chat: Chat) {
     if (!login.publicKey) return null;
-    if (chat.id === login.publicKey) return noteToSelf(chat);
+    const participants = chat.participants.map(a => a.id);
+    if (participants.length === 1 && participants[0] === login.publicKey) return noteToSelf(chat);
     return (
       <div className="flex mb10" key={chat.id} onClick={e => openChat(e, chat.type, chat.id)}>
-        {chat.type === ChatType.DirectMessage ? (
-          <ProfileImage pubkey={chat.id} className="f-grow" link="" />
-        ) : (
-          <ProfileImage pubkey={chat.id} overrideUsername={chat.id} className="f-grow" link="" />
-        )}
+        {conversationIdent(chat)}
         <div className="nowrap">
           <small>
             <NoteTime from={chat.lastMessage * 1000} fallback={formatMessage({ defaultMessage: "Just now" })} />
@@ -97,22 +107,31 @@ export default function MessagesPage() {
           </div>
           {chats
             .sort((a, b) => {
-              return a.id === login.publicKey ? -1 : b.id === login.publicKey ? 1 : b.lastMessage - a.lastMessage;
+              const aSelf = a.participants.length === 1 && a.participants[0].id === login.publicKey;
+              const bSelf = b.participants.length === 1 && b.participants[0].id === login.publicKey;
+              if (aSelf || bSelf) {
+                return aSelf ? -1 : 1;
+              }
+              return b.lastMessage > a.lastMessage ? 1 : -1;
             })
-            .map(person)}
+            .map(conversation)}
         </div>
       )}
       {chat && <DmWindow id={chat} />}
       {pageWidth >= ThreeCol && chat && (
         <div>
-          <ProfileDmActions pubkey={chat} />
+          <ProfileDmActions id={chat} />
         </div>
       )}
     </div>
   );
 }
 
-function ProfileDmActions({ pubkey }: { pubkey: string }) {
+function ProfileDmActions({ id }: { id: string }) {
+  const authors = decodeTLV(id)
+    .filter(a => a.type === TLVEntryType.Author)
+    .map(a => a.value as string);
+  const pubkey = authors[0];
   const profile = useUserProfile(System, pubkey);
   const { block, unblock, isBlocked } = useModeration();
 

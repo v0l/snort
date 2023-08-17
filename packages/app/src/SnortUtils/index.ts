@@ -6,7 +6,7 @@ import { bytesToHex } from "@noble/hashes/utils";
 import { bech32, base32hex } from "@scure/base";
 import {
   HexKey,
-  TaggedRawEvent,
+  TaggedNostrEvent,
   u256,
   EventKind,
   encodeTLV,
@@ -149,11 +149,11 @@ export function normalizeReaction(content: string) {
 /**
  * Get reactions to a specific event (#e + kind filter)
  */
-export function getReactions(notes: readonly TaggedRawEvent[] | undefined, id: u256, kind?: EventKind) {
+export function getReactions(notes: readonly TaggedNostrEvent[] | undefined, id: u256, kind?: EventKind) {
   return notes?.filter(a => a.kind === (kind ?? a.kind) && a.tags.some(a => a[0] === "e" && a[1] === id)) || [];
 }
 
-export function getAllReactions(notes: readonly TaggedRawEvent[] | undefined, ids: Array<u256>, kind?: EventKind) {
+export function getAllReactions(notes: readonly TaggedNostrEvent[] | undefined, ids: Array<u256>, kind?: EventKind) {
   return notes?.filter(a => a.kind === (kind ?? a.kind) && a.tags.some(a => a[0] === "e" && ids.includes(a[1]))) || [];
 }
 
@@ -189,9 +189,9 @@ export function debounce(timeout: number, fn: () => void) {
   return () => clearTimeout(t);
 }
 
-export function dedupeByPubkey(events: TaggedRawEvent[]) {
+export function dedupeByPubkey(events: TaggedNostrEvent[]) {
   const deduped = events.reduce(
-    ({ list, seen }: { list: TaggedRawEvent[]; seen: Set<HexKey> }, ev) => {
+    ({ list, seen }: { list: TaggedNostrEvent[]; seen: Set<HexKey> }, ev) => {
       if (seen.has(ev.pubkey)) {
         return { list, seen };
       }
@@ -203,7 +203,7 @@ export function dedupeByPubkey(events: TaggedRawEvent[]) {
     },
     { list: [], seen: new Set([]) }
   );
-  return deduped.list as TaggedRawEvent[];
+  return deduped.list as TaggedNostrEvent[];
 }
 
 export function dedupeById<T extends { id: string }>(events: Array<T>) {
@@ -228,8 +228,8 @@ export function dedupeById<T extends { id: string }>(events: Array<T>) {
  * @param events List of all notes to filter from
  * @returns
  */
-export function getLatestByPubkey(events: TaggedRawEvent[]): Map<HexKey, TaggedRawEvent> {
-  const deduped = events.reduce((results: Map<HexKey, TaggedRawEvent>, ev) => {
+export function getLatestByPubkey(events: TaggedNostrEvent[]): Map<HexKey, TaggedNostrEvent> {
+  const deduped = events.reduce((results: Map<HexKey, TaggedNostrEvent>, ev) => {
     if (!results.has(ev.pubkey)) {
       const latest = getNewest(events.filter(a => a.pubkey === ev.pubkey));
       if (latest) {
@@ -237,7 +237,7 @@ export function getLatestByPubkey(events: TaggedRawEvent[]): Map<HexKey, TaggedR
       }
     }
     return results;
-  }, new Map<HexKey, TaggedRawEvent>());
+  }, new Map<HexKey, TaggedNostrEvent>());
   return deduped;
 }
 
@@ -274,7 +274,7 @@ export function randomSample<T>(coll: T[], size: number) {
   return random.sort(() => (Math.random() >= 0.5 ? 1 : -1)).slice(0, size);
 }
 
-export function getNewest(rawNotes: readonly TaggedRawEvent[]) {
+export function getNewest(rawNotes: readonly TaggedNostrEvent[]) {
   const notes = [...rawNotes];
   notes.sort((a, b) => b.created_at - a.created_at);
   if (notes.length > 0) {
@@ -290,7 +290,7 @@ export function getNewestProfile(rawNotes: MetadataCache[]) {
   }
 }
 
-export function getNewestEventTagsByKey(evs: TaggedRawEvent[], tag: string) {
+export function getNewestEventTagsByKey(evs: TaggedNostrEvent[], tag: string) {
   const newest = getNewest(evs);
   if (newest) {
     const keys = newest.tags.filter(p => p && p.length === 2 && p[0] === tag).map(p => p[1]);
@@ -301,7 +301,7 @@ export function getNewestEventTagsByKey(evs: TaggedRawEvent[], tag: string) {
   }
 }
 
-export function tagFilterOfTextRepost(note: TaggedRawEvent, id?: u256): (tag: string[], i: number) => boolean {
+export function tagFilterOfTextRepost(note: TaggedNostrEvent, id?: u256): (tag: string[], i: number) => boolean {
   return (tag, i) =>
     tag[0] === "e" && tag[3] === "mention" && note.content === `#[${i}]` && (id ? tag[1] === id : true);
 }

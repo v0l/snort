@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import {
   HexKey,
   FullRelaySettings,
-  TaggedRawEvent,
+  TaggedNostrEvent,
   RelaySettings,
   EventKind,
   NoteCollection,
@@ -30,7 +30,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
     return b;
   }, [pubkeys]);
 
-  function mapFromRelays(notes: Array<TaggedRawEvent>): Array<RelayList> {
+  function mapFromRelays(notes: Array<TaggedNostrEvent>): Array<RelayList> {
     return notes.map(ev => {
       return {
         pubkey: ev.pubkey,
@@ -51,7 +51,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
   }
 
   // instead of discarding the follow list we should also use it for follow graph
-  function mapFromContactList(notes: Array<TaggedRawEvent>): Array<RelayList> {
+  function mapFromContactList(notes: Array<TaggedNostrEvent>): Array<RelayList> {
     return notes.map(ev => {
       if (ev.content !== "" && ev.content !== "{}" && ev.content.startsWith("{") && ev.content.endsWith("}")) {
         try {

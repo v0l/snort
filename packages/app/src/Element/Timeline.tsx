@@ -2,7 +2,7 @@ import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
 import { useCallback, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
-import { TaggedRawEvent, EventKind, u256, parseZap } from "@snort/system";
+import { TaggedNostrEvent, EventKind, u256, parseZap } from "@snort/system";
 
 import Icon from "Icons/Icon";
 import { dedupeByPubkey, findTag, tagFilterOfTextRepost } from "SnortUtils";
@@ -43,7 +43,7 @@ const Timeline = (props: TimelineProps) => {
   const { ref, inView } = useInView();
 
   const filterPosts = useCallback(
-    (nts: readonly TaggedRawEvent[]) => {
+    (nts: readonly TaggedNostrEvent[]) => {
       const a = [...nts];
       props.noSort || a.sort((a, b) => b.created_at - a.created_at);
       return a
@@ -76,7 +76,7 @@ const Timeline = (props: TimelineProps) => {
     return dedupeByPubkey(latestFeed).map(e => e.pubkey);
   }, [latestFeed]);
 
-  function eventElement(e: TaggedRawEvent) {
+  function eventElement(e: TaggedNostrEvent) {
     switch (e.kind) {
       case EventKind.SetMetadata: {
         return <ProfilePreview actions={<></>} pubkey={e.pubkey} className="card" />;

@@ -1,5 +1,5 @@
 import "./LiveChat.css";
-import { EventKind, NostrLink, TaggedRawEvent } from "@snort/system";
+import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ import Text from "Element/Text";
 import { System } from "index";
 import { profileLink } from "SnortUtils";
 
-export function LiveChat({ ev, link }: { ev: TaggedRawEvent; link: NostrLink }) {
+export function LiveChat({ ev, link }: { ev: TaggedNostrEvent; link: NostrLink }) {
   const [chat, setChat] = useState("");
   const messages = useLiveChatFeed(link);
   const pub = useEventPublisher();
@@ -74,7 +74,7 @@ export function LiveChat({ ev, link }: { ev: TaggedRawEvent; link: NostrLink }) 
   );
 }
 
-function ChatMessage({ ev }: { ev: TaggedRawEvent }) {
+function ChatMessage({ ev }: { ev: TaggedNostrEvent }) {
   const profile = useUserProfile(System, ev.pubkey);
   const navigate = useNavigate();
 

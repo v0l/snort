@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useLongPress } from "use-long-press";
-import { TaggedRawEvent, HexKey, u256, encodeTLV, NostrPrefix, Lists, ParsedZap } from "@snort/system";
+import { TaggedNostrEvent, HexKey, u256, encodeTLV, NostrPrefix, Lists, ParsedZap } from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
@@ -56,13 +56,13 @@ export interface Translation {
 }
 
 export interface NoteFooterProps {
-  reposts: TaggedRawEvent[];
+  reposts: TaggedNostrEvent[];
   zaps: ParsedZap[];
-  positive: TaggedRawEvent[];
-  negative: TaggedRawEvent[];
+  positive: TaggedNostrEvent[];
+  negative: TaggedNostrEvent[];
   showReactions: boolean;
   setShowReactions(b: boolean): void;
-  ev: TaggedRawEvent;
+  ev: TaggedNostrEvent;
   onTranslated?: (content: Translation) => void;
 }
 

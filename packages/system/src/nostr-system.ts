@@ -1,7 +1,7 @@
 import debug from "debug";
 
 import { unwrap, sanitizeRelayUrl, ExternalStore, FeedCache } from "@snort/shared";
-import { NostrEvent, TaggedRawEvent } from "./nostr";
+import { NostrEvent, TaggedNostrEvent } from "./nostr";
 import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot } from "./connection";
 import { Query } from "./query";
 import { NoteStore } from "./note-collection";
@@ -147,7 +147,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     }
   }
 
-  OnEvent(sub: string, ev: TaggedRawEvent) {
+  OnEvent(sub: string, ev: TaggedNostrEvent) {
     for (const [, v] of this.Queries) {
       v.onEvent(sub, ev);
     }

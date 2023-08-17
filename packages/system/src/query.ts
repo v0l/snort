@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import debug from "debug";
 import { unixNowMs, unwrap } from "@snort/shared";
 
-import { Connection, ReqFilter, Nips, TaggedRawEvent } from ".";
+import { Connection, ReqFilter, Nips, TaggedNostrEvent } from ".";
 import { NoteStore } from "./note-collection";
 import { flatMerge } from "./request-merger";
 import { BuiltRawReqFilter } from "./request-builder";
@@ -176,7 +176,7 @@ export class Query implements QueryBase {
     return this.#feed;
   }
 
-  onEvent(sub: string, e: TaggedRawEvent) {
+  onEvent(sub: string, e: TaggedNostrEvent) {
     for (const t of this.#tracing) {
       if (t.id === sub) {
         this.feed.add(e);

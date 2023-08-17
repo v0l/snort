@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NostrEvent, TaggedRawEvent } from "@snort/system";
+import { NostrEvent, TaggedNostrEvent } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import PageSpinner from "Element/PageSpinner";
@@ -27,7 +27,7 @@ export default function TrendingNotes() {
         <FormattedMessage defaultMessage="Trending Notes" />
       </h3>
       {posts.map(e => (
-        <Note key={e.id} data={e as TaggedRawEvent} related={[]} depth={0} />
+        <Note key={e.id} data={e as TaggedNostrEvent} related={[]} depth={0} />
       ))}
     </>
   );

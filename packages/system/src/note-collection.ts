@@ -1,12 +1,12 @@
 import { appendDedupe } from "@snort/shared";
-import { TaggedRawEvent, u256 } from ".";
+import { TaggedNostrEvent, u256 } from ".";
 import { findTag } from "./utils";
 
 export interface StoreSnapshot<TSnapshot> {
   data: TSnapshot | undefined;
   clear: () => void;
   loading: () => boolean;
-  add: (ev: Readonly<TaggedRawEvent> | Readonly<Array<TaggedRawEvent>>) => void;
+  add: (ev: Readonly<TaggedNostrEvent> | Readonly<Array<TaggedNostrEvent>>) => void;
 }
 
 export const EmptySnapshot = {
@@ -20,10 +20,10 @@ export const EmptySnapshot = {
   },
 } as StoreSnapshot<FlatNoteStore>;
 
-export type NoteStoreSnapshotData = Readonly<Array<TaggedRawEvent>> | Readonly<TaggedRawEvent>;
+export type NoteStoreSnapshotData = Readonly<Array<TaggedNostrEvent>> | Readonly<TaggedNostrEvent>;
 export type NoteStoreHook = () => void;
 export type NoteStoreHookRelease = () => void;
-export type OnEventCallback = (e: Readonly<Array<TaggedRawEvent>>) => void;
+export type OnEventCallback = (e: Readonly<Array<TaggedNostrEvent>>) => void;
 export type OnEventCallbackRelease = () => void;
 export type OnEoseCallback = (c: string) => void;
 export type OnEoseCallbackRelease = () => void;
@@ -32,7 +32,7 @@ export type OnEoseCallbackRelease = () => void;
  * Generic note store interface
  */
 export abstract class NoteStore {
-  abstract add(ev: Readonly<TaggedRawEvent> | Readonly<Array<TaggedRawEvent>>): void;
+  abstract add(ev: Readonly<TaggedNostrEvent> | Readonly<Array<TaggedNostrEvent>>): void;
   abstract clear(): void;
 
   // react hooks
@@ -74,7 +74,7 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
     this.onChange([]);
   }
 
-  abstract add(ev: Readonly<TaggedRawEvent> | Readonly<Array<TaggedRawEvent>>): void;
+  abstract add(ev: Readonly<TaggedNostrEvent> | Readonly<Array<TaggedNostrEvent>>): void;
   abstract clear(): void;
 
   hook(cb: NoteStoreHook): NoteStoreHookRelease {
@@ -106,7 +106,7 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
 
   protected abstract takeSnapshot(): TSnapshot | undefined;
 
-  protected onChange(changes: Readonly<Array<TaggedRawEvent>>): void {
+  protected onChange(changes: Readonly<Array<TaggedNostrEvent>>): void {
     this.#needsSnapshot = true;
     if (!this.#nextNotifyTimer) {
       this.#nextNotifyTimer = setTimeout(() => {
@@ -137,13 +137,13 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
 /**
  * A simple flat container of events with no duplicates
  */
-export class FlatNoteStore extends HookedNoteStore<Readonly<Array<TaggedRawEvent>>> {
-  #events: Array<TaggedRawEvent> = [];
+export class FlatNoteStore extends HookedNoteStore<Readonly<Array<TaggedNostrEvent>>> {
+  #events: Array<TaggedNostrEvent> = [];
   #ids: Set<u256> = new Set();
 
-  add(ev: TaggedRawEvent | Array<TaggedRawEvent>) {
+  add(ev: TaggedNostrEvent | Array<TaggedNostrEvent>) {
     ev = Array.isArray(ev) ? ev : [ev];
-    const changes: Array<TaggedRawEvent> = [];
+    const changes: Array<TaggedNostrEvent> = [];
     ev.forEach(a => {
       if (!this.#ids.has(a.id)) {
         this.#events.push(a);
@@ -176,18 +176,18 @@ export class FlatNoteStore extends HookedNoteStore<Readonly<Array<TaggedRawEvent
 /**
  * A note store that holds a single replaceable event for a given user defined key generator function
  */
-export class KeyedReplaceableNoteStore extends HookedNoteStore<Readonly<Array<TaggedRawEvent>>> {
-  #keyFn: (ev: TaggedRawEvent) => string;
-  #events: Map<string, TaggedRawEvent> = new Map();
+export class KeyedReplaceableNoteStore extends HookedNoteStore<Readonly<Array<TaggedNostrEvent>>> {
+  #keyFn: (ev: TaggedNostrEvent) => string;
+  #events: Map<string, TaggedNostrEvent> = new Map();
 
-  constructor(fn: (ev: TaggedRawEvent) => string) {
+  constructor(fn: (ev: TaggedNostrEvent) => string) {
     super();
     this.#keyFn = fn;
   }
 
-  add(ev: TaggedRawEvent | Array<TaggedRawEvent>) {
+  add(ev: TaggedNostrEvent | Array<TaggedNostrEvent>) {
     ev = Array.isArray(ev) ? ev : [ev];
-    const changes: Array<TaggedRawEvent> = [];
+    const changes: Array<TaggedNostrEvent> = [];
     ev.forEach(a => {
       const keyOnEvent = this.#keyFn(a);
       const existingCreated = this.#events.get(keyOnEvent)?.created_at ?? 0;
@@ -214,12 +214,12 @@ export class KeyedReplaceableNoteStore extends HookedNoteStore<Readonly<Array<Ta
 /**
  * A note store that holds a single replaceable event
  */
-export class ReplaceableNoteStore extends HookedNoteStore<Readonly<TaggedRawEvent>> {
-  #event?: TaggedRawEvent;
+export class ReplaceableNoteStore extends HookedNoteStore<Readonly<TaggedNostrEvent>> {
+  #event?: TaggedNostrEvent;
 
-  add(ev: TaggedRawEvent | Array<TaggedRawEvent>) {
+  add(ev: TaggedNostrEvent | Array<TaggedNostrEvent>) {
     ev = Array.isArray(ev) ? ev : [ev];
-    const changes: Array<TaggedRawEvent> = [];
+    const changes: Array<TaggedNostrEvent> = [];
     ev.forEach(a => {
       const existingCreated = this.#event?.created_at ?? 0;
       if (a.created_at > existingCreated) {

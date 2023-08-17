@@ -1,4 +1,4 @@
-import { Connection, EventKind, NostrEvent, EventBuilder, EventExt } from "@snort/system";
+import { Connection, EventKind, NostrEvent, EventBuilder, EventExt, PrivateKeySigner } from "@snort/system";
 import { LNWallet, WalletError, WalletErrorCode, WalletInfo, WalletInvoice, WalletInvoiceState } from "Wallet";
 import debug from "debug";
 
@@ -163,9 +163,10 @@ export class NostrConnectWallet implements LNWallet {
       method,
       params,
     });
+    const signer = new PrivateKeySigner(this.#config.secret);
     const eb = new EventBuilder();
     eb.kind(23194 as EventKind)
-      .content(await EventExt.encryptDm(payload, this.#config.secret, this.#config.walletPubkey))
+      .content(await signer.nip4Encrypt(payload, this.#config.walletPubkey))
       .tag(["p", this.#config.walletPubkey]);
 
     const evCommand = await eb.buildAndSign(this.#config.secret);
@@ -187,7 +188,7 @@ export class NostrConnectWallet implements LNWallet {
     return await new Promise<T>((resolve, reject) => {
       this.#commandQueue.set(evCommand.id, {
         resolve: async (o: string) => {
-          const reply = JSON.parse(await EventExt.decryptDm(o, this.#config.secret, this.#config.walletPubkey));
+          const reply = JSON.parse(await signer.nip4Decrypt(o, this.#config.walletPubkey));
           debug("NWC")("%o", reply);
           resolve(reply);
         },

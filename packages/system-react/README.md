@@ -7,7 +7,7 @@ Sample:
 ```js
 import { useMemo } from "react";
 import { useRequestBuilder, useUserProfile } from "@snort/system-react";
-import { FlatNoteStore, NostrSystem, RequestBuilder, TaggedRawEvent } from "@snort/system";
+import { FlatNoteStore, NostrSystem, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 
 // singleton nostr system class
 const System = new NostrSystem({});
@@ -15,7 +15,7 @@ const System = new NostrSystem({});
 // some bootstrap relays
 ["wss://relay.snort.social", "wss://nos.lol"].forEach(r => System.ConnectToRelay(r, { read: true, write: false }));
 
-export function Note({ ev }: { ev: TaggedRawEvent }) {
+export function Note({ ev }: { ev: TaggedNostrEvent }) {
   // get profile from cache or request a profile from relays
   const profile = useUserProfile(System, ev.pubkey);
 

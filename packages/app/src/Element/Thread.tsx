@@ -3,7 +3,7 @@ import { useMemo, useState, ReactNode } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
 import {
-  TaggedRawEvent,
+  TaggedNostrEvent,
   u256,
   EventKind,
   NostrPrefix,
@@ -37,14 +37,14 @@ const Divider = ({ variant = "regular" }: DividerProps) => {
 interface SubthreadProps {
   isLastSubthread?: boolean;
   active: u256;
-  notes: readonly TaggedRawEvent[];
-  related: readonly TaggedRawEvent[];
-  chains: Map<u256, Array<TaggedRawEvent>>;
-  onNavigate: (e: TaggedRawEvent) => void;
+  notes: readonly TaggedNostrEvent[];
+  related: readonly TaggedNostrEvent[];
+  chains: Map<u256, Array<TaggedNostrEvent>>;
+  onNavigate: (e: TaggedNostrEvent) => void;
 }
 
 const Subthread = ({ active, notes, related, chains, onNavigate }: SubthreadProps) => {
-  const renderSubthread = (a: TaggedRawEvent, idx: number) => {
+  const renderSubthread = (a: TaggedNostrEvent, idx: number) => {
     const isLastSubthread = idx === notes.length - 1;
     const replies = getReplies(a.id, chains);
     return (
@@ -79,7 +79,7 @@ const Subthread = ({ active, notes, related, chains, onNavigate }: SubthreadProp
 };
 
 interface ThreadNoteProps extends Omit<SubthreadProps, "notes"> {
-  note: TaggedRawEvent;
+  note: TaggedNostrEvent;
   isLast: boolean;
 }
 
@@ -136,7 +136,7 @@ const TierTwo = ({ active, isLastSubthread, notes, related, chains, onNavigate }
         isLast={rest.length === 0}
       />
 
-      {rest.map((r: TaggedRawEvent, idx: number) => {
+      {rest.map((r: TaggedNostrEvent, idx: number) => {
         const lastReply = idx === rest.length - 1;
         return (
           <ThreadNote
@@ -187,7 +187,7 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
         />
       )}
 
-      {rest.map((r: TaggedRawEvent, idx: number) => {
+      {rest.map((r: TaggedNostrEvent, idx: number) => {
         const lastReply = idx === rest.length - 1;
         const lastNote = isLastSubthread && lastReply;
         return (
@@ -226,13 +226,13 @@ export default function Thread() {
   const isSingleNote = thread.data?.filter(a => a.kind === EventKind.TextNote).length === 1;
   const { formatMessage } = useIntl();
 
-  function navigateThread(e: TaggedRawEvent) {
+  function navigateThread(e: TaggedNostrEvent) {
     setCurrentId(e.id);
     //const link = encodeTLV(e.id, NostrPrefix.Event, e.relays);
   }
 
   const chains = useMemo(() => {
-    const chains = new Map<u256, Array<TaggedRawEvent>>();
+    const chains = new Map<u256, Array<TaggedNostrEvent>>();
     if (thread.data) {
       thread.data
         ?.filter(a => a.kind === EventKind.TextNote)
@@ -265,7 +265,7 @@ export default function Thread() {
         ne =>
           ne.id === currentId ||
           (link.type === NostrPrefix.Address && findTag(ne, "d") === currentId && ne.pubkey === link.author)
-      ) ?? (location.state && "sig" in location.state ? (location.state as TaggedRawEvent) : undefined);
+      ) ?? (location.state && "sig" in location.state ? (location.state as TaggedNostrEvent) : undefined);
     if (currentNote) {
       const currentThread = EventExt.extractThread(currentNote);
       const isRoot = (ne?: ThreadInfo) => ne === undefined;
@@ -318,7 +318,7 @@ export default function Thread() {
 
   const brokenChains = Array.from(chains?.keys()).filter(a => !thread.data?.some(b => b.id === a));
 
-  function renderRoot(note: TaggedRawEvent) {
+  function renderRoot(note: TaggedNostrEvent) {
     const className = `thread-root${isSingleNote ? " thread-root-single" : ""}`;
     if (note) {
       return (
@@ -396,7 +396,7 @@ export default function Thread() {
   );
 }
 
-function getReplies(from: u256, chains?: Map<u256, Array<TaggedRawEvent>>): Array<TaggedRawEvent> {
+function getReplies(from: u256, chains?: Map<u256, Array<TaggedNostrEvent>>): Array<TaggedNostrEvent> {
   if (!from || !chains) {
     return [];
   }

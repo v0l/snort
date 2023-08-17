@@ -1,4 +1,4 @@
-import { MessageEncryptor } from "index";
+import { MessageEncryptor, MessageEncryptorPayload, MessageEncryptorVersion } from "index";
 
 import { base64 } from "@scure/base";
 import { secp256k1 } from "@noble/curves/secp256k1";
@@ -22,26 +22,22 @@ export class Nip4WebCryptoEncryptor implements MessageEncryptor {
       key,
       data
     );
-    const uData = new Uint8Array(result);
-    return `${base64.encode(uData)}?iv=${base64.encode(iv)}`;
+    return {
+      ciphertext: new Uint8Array(result),
+      nonce: iv,
+      v: MessageEncryptorVersion.Nip4
+    } as MessageEncryptorPayload;
   }
-
-  /**
-   * Decrypt the content of the message
-   */
-  async decryptData(cyphertext: string, sharedSecet: Uint8Array) {
+  
+  async decryptData(payload: MessageEncryptorPayload, sharedSecet: Uint8Array) {
     const key = await this.#importKey(sharedSecet);
-    const cSplit = cyphertext.split("?iv=");
-    const data = base64.decode(cSplit[0]);
-    const iv = base64.decode(cSplit[1]);
-
     const result = await window.crypto.subtle.decrypt(
       {
         name: "AES-CBC",
-        iv: iv,
+        iv: payload.nonce,
       },
       key,
-      data
+      payload.ciphertext
     );
     return new TextDecoder().decode(result);
   }

@@ -1,14 +1,14 @@
 import { useMemo } from "react";
 import { useRequestBuilder, useUserProfile } from "../src";
 
-import { FlatNoteStore, NostrSystem, RequestBuilder, TaggedRawEvent } from "@snort/system";
+import { FlatNoteStore, NostrSystem, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 
 const System = new NostrSystem({});
 
 // some bootstrap relays
 ["wss://relay.snort.social", "wss://nos.lol"].forEach(r => System.ConnectToRelay(r, { read: true, write: false }));
 
-export function Note({ ev }: { ev: TaggedRawEvent }) {
+export function Note({ ev }: { ev: TaggedNostrEvent }) {
   const profile = useUserProfile(System, ev.pubkey);
 
   return (
