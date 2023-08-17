@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { KieranPubKey } from "Const";
 import { FormattedMessage } from "react-intl";
+import { TLVEntryType, encodeTLVEntries, NostrPrefix } from "@snort/system";
+import { bech32ToHex } from "SnortUtils";
 
 export default function HelpPage() {
   return (
@@ -12,7 +14,16 @@ export default function HelpPage() {
         <FormattedMessage
           defaultMessage="If you have an enquiry about your NIP-05 order please DM {link}"
           values={{
-            link: <Link to={`/messages/${KieranPubKey}`}>Kieran</Link>,
+            link: (
+              <Link
+                to={`/messages/${encodeTLVEntries("chat4" as NostrPrefix, {
+                  type: TLVEntryType.Author,
+                  length: 64,
+                  value: bech32ToHex(KieranPubKey),
+                })}`}>
+                Kieran
+              </Link>
+            ),
           }}
         />
       </p>

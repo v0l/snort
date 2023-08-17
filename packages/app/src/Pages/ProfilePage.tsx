@@ -2,7 +2,15 @@ import "./ProfilePage.css";
 import { useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
-import { encodeTLV, EventKind, HexKey, NostrPrefix, tryParseNostrLink } from "@snort/system";
+import {
+  encodeTLV,
+  encodeTLVEntries,
+  EventKind,
+  HexKey,
+  NostrPrefix,
+  TLVEntryType,
+  tryParseNostrLink,
+} from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
@@ -325,7 +333,16 @@ export default function ProfilePage() {
             )}
             {loginPubKey && (
               <>
-                <IconButton onClick={() => navigate(`/messages/${hexToBech32(NostrPrefix.PublicKey, id)}`)}>
+                <IconButton
+                  onClick={() =>
+                    navigate(
+                      `/messages/${encodeTLVEntries("chat4" as NostrPrefix, {
+                        type: TLVEntryType.Author,
+                        length: 64,
+                        value: id,
+                      })}`
+                    )
+                  }>
                   <Icon name="envelope" size={16} />
                 </IconButton>
               </>
