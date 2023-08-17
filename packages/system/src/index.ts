@@ -21,6 +21,7 @@ export * from "./profile-cache";
 export * from "./zaps";
 export * from "./signer";
 export * from "./text";
+export * from "./pow";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";
@@ -60,9 +61,9 @@ export const enum MessageEncryptorVersion {
 }
 
 export interface MessageEncryptorPayload {
-  ciphertext: Uint8Array,
-  nonce: Uint8Array,
-  v: MessageEncryptorVersion
+  ciphertext: Uint8Array;
+  nonce: Uint8Array;
+  v: MessageEncryptorVersion;
 }
 
 export interface MessageEncryptor {

@@ -23,10 +23,10 @@ export class Nip4WebCryptoEncryptor implements MessageEncryptor {
     return {
       ciphertext: new Uint8Array(result),
       nonce: iv,
-      v: MessageEncryptorVersion.Nip4
+      v: MessageEncryptorVersion.Nip4,
     } as MessageEncryptorPayload;
   }
-  
+
   async decryptData(payload: MessageEncryptorPayload, sharedSecet: Uint8Array) {
     const key = await this.#importKey(sharedSecet);
     const result = await window.crypto.subtle.decrypt(
@@ -35,7 +35,7 @@ export class Nip4WebCryptoEncryptor implements MessageEncryptor {
         iv: payload.nonce,
       },
       key,
-      payload.ciphertext
+      payload.ciphertext,
     );
     return new TextDecoder().decode(result);
   }

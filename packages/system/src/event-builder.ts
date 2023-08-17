@@ -1,4 +1,4 @@
-import { EventKind, HexKey, NostrPrefix, NostrEvent, EventSigner } from ".";
+import { EventKind, HexKey, NostrPrefix, NostrEvent, EventSigner, PowMiner } from ".";
 import { HashtagRegex, MentionNostrEntityRegex } from "./const";
 import { getPublicKey, unixNow } from "@snort/shared";
 import { EventExt } from "./event-ext";
@@ -10,6 +10,8 @@ export class EventBuilder {
   #createdAt?: number;
   #pubkey?: string;
   #tags: Array<Array<string>> = [];
+  #pow?: number;
+  #powMiner?: PowMiner;
 
   kind(k: EventKind) {
     this.#kind = k;
@@ -35,6 +37,17 @@ export class EventBuilder {
     const duplicate = this.#tags.some(a => a.length === t.length && a.every((b, i) => b !== a[i]));
     if (duplicate) return this;
     this.#tags.push(t);
+    return this;
+  }
+
+  pow(target: number, miner?: PowMiner) {
+    this.#pow = target;
+    this.#powMiner = miner ?? {
+      minePow: (ev, target) => {
+        EventExt.minePow(ev, target);
+        return Promise.resolve(ev);
+      },
+    };
     return this;
   }
 
@@ -74,12 +87,19 @@ export class EventBuilder {
   async buildAndSign(pk: HexKey | EventSigner) {
     if (typeof pk === "string") {
       const ev = this.pubKey(getPublicKey(pk)).build();
-      EventExt.sign(ev, pk);
-      return ev;
+      return EventExt.sign(await this.#mine(ev), pk);
     } else {
       const ev = this.pubKey(await pk.getPubKey()).build();
-      return await pk.sign(ev);
+      return await pk.sign(await this.#mine(ev));
     }
+  }
+
+  async #mine(ev: NostrEvent) {
+    if (this.#pow && this.#powMiner) {
+      const ret = await this.#powMiner.minePow(ev, this.#pow);
+      return ret;
+    }
+    return ev;
   }
 
   #validate() {

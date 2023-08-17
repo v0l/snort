@@ -3,7 +3,7 @@ import * as utils from "@noble/curves/abstract/utils";
 import { getPublicKey, sha256, unixNow } from "@snort/shared";
 
 import { EventKind, HexKey, NostrEvent, NotSignedNostrEvent } from ".";
-import { Nip4WebCryptoEncryptor } from "./impl/nip4";
+import { minePow } from "./pow-util";
 
 export interface Tag {
   key: string;
@@ -44,6 +44,7 @@ export abstract class EventExt {
     if (!secp.schnorr.verify(e.sig, e.id, e.pubkey)) {
       throw new Error("Signing failed");
     }
+    return e;
   }
 
   /**
@@ -58,13 +59,14 @@ export abstract class EventExt {
 
   static createId(e: NostrEvent | NotSignedNostrEvent) {
     const payload = [0, e.pubkey, e.created_at, e.kind, e.tags, e.content];
+    return sha256(JSON.stringify(payload));
+  }
 
-    const hash = sha256(JSON.stringify(payload));
-    if (e.id !== "" && hash !== e.id) {
-      console.debug(payload);
-      throw new Error("ID doesnt match!");
-    }
-    return hash;
+  /**
+   * Mine POW for an event (NIP-13)
+   */
+  static minePow(e: NostrEvent, target: number) {
+    return minePow(e, target);
   }
 
   /**

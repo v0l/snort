@@ -15,16 +15,17 @@ export function createNostrLink(prefix: NostrPrefix, id: string, relays?: string
     type: prefix,
     id,
     relays,
-    kind, author,
+    kind,
+    author,
     encode: () => {
-      if(prefix === NostrPrefix.Note || prefix === NostrPrefix.PublicKey) {
+      if (prefix === NostrPrefix.Note || prefix === NostrPrefix.PublicKey) {
         return hexToBech32(prefix, id);
-      } 
-      if(prefix === NostrPrefix.Address || prefix === NostrPrefix.Event || prefix === NostrPrefix.Profile) {
+      }
+      if (prefix === NostrPrefix.Address || prefix === NostrPrefix.Event || prefix === NostrPrefix.Profile) {
         return encodeTLV(prefix, id, relays, kind, author);
       }
       return "";
-    }
+    },
   } as NostrLink;
 }
 

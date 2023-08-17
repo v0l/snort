@@ -10,6 +10,7 @@ import {
   Lists,
   NostrEvent,
   NotSignedNostrEvent,
+  PowMiner,
   PrivateKeySigner,
   RelaySettings,
   TaggedNostrEvent,
@@ -285,7 +286,7 @@ export class EventPublisher {
   /**
    * NIP-59 Gift Wrap event with ephemeral key
    */
-  async giftWrap(inner: NostrEvent, explicitP?: string) {
+  async giftWrap(inner: NostrEvent, explicitP?: string, powTarget?: number, powMiner?: PowMiner) {
     const secret = utils.bytesToHex(secp.secp256k1.utils.randomPrivateKey());
     const signer = new PrivateKeySigner(secret);
 
@@ -296,6 +297,9 @@ export class EventPublisher {
     eb.pubKey(signer.getPubKey());
     eb.kind(EventKind.GiftWrap);
     eb.tag(["p", pTag]);
+    if (powTarget) {
+      eb.pow(powTarget, powMiner);
+    }
     eb.content(await signer.nip44Encrypt(JSON.stringify(inner), pTag));
 
     return await eb.buildAndSign(secret);

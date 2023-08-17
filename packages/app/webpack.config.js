@@ -17,6 +17,10 @@ const config = {
       import: "./src/service-worker.ts",
       filename: "service-worker.js",
     },
+    pow: {
+      import: require.resolve("@snort/system/dist/pow-worker.js"),
+      filename: "pow.js",
+    },
   },
   target: "browserslist",
   mode: isProduction ? "production" : "development",
@@ -24,12 +28,7 @@ const config = {
   output: {
     publicPath: "/",
     path: path.resolve(__dirname, "build"),
-    filename: ({ runtime }) => {
-      if (runtime === "sw") {
-        return "[name].js";
-      }
-      return isProduction ? "[name].[chunkhash].js" : "[name].js";
-    },
+    filename: isProduction ? "[name].[chunkhash].js" : "[name].js",
     clean: isProduction,
   },
   devServer: {
@@ -50,7 +49,7 @@ const config = {
     new HtmlWebpackPlugin({
       template: "public/index.html",
       favicon: "public/favicon.ico",
-      excludeChunks: ["sw"],
+      excludeChunks: ["sw", "pow"],
     }),
     new ESLintPlugin({
       extensions: ["js", "mjs", "jsx", "ts", "tsx"],
