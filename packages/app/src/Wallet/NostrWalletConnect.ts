@@ -1,4 +1,4 @@
-import { Connection, EventKind, NostrEvent, EventBuilder, EventExt, PrivateKeySigner } from "@snort/system";
+import { Connection, EventKind, NostrEvent, EventBuilder, PrivateKeySigner } from "@snort/system";
 import { LNWallet, WalletError, WalletErrorCode, WalletInfo, WalletInvoice, WalletInvoiceState } from "Wallet";
 import debug from "debug";
 

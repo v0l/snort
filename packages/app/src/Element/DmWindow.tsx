@@ -6,7 +6,7 @@ import DM from "Element/DM";
 import NoteToSelf from "Element/NoteToSelf";
 import useLogin from "Hooks/useLogin";
 import WriteMessage from "Element/WriteMessage";
-import { Chat, ChatParticipant, ChatType, useChatSystem } from "chat";
+import { Chat, ChatParticipant, useChatSystem } from "chat";
 import { Nip4ChatSystem } from "chat/nip4";
 import { FormattedMessage } from "react-intl";
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
-import { NostrPrefix, TLVEntryType, decodeTLV } from "@snort/system";
+import { TLVEntryType, decodeTLV } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
 import UnreadCount from "Element/UnreadCount";
 import ProfileImage, { getDisplayName } from "Element/ProfileImage";
-import { hexToBech32, parseId } from "SnortUtils";
+import { parseId } from "SnortUtils";
 import NoteToSelf from "Element/NoteToSelf";
 import useModeration from "Hooks/useModeration";
 import useLogin from "Hooks/useLogin";
