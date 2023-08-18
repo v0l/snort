@@ -30,7 +30,7 @@ export function minePow(e: NostrPowEvent, target: number) {
     e.tags[nonceTagIdx][1] = (++ctr).toString();
 
     e.id = createId(e);
-  } while (countLeadingZeroes(e.id) < target);
+  } while (countLeadingZeros(e.id) < target);
 
   return e;
 }
@@ -40,7 +40,7 @@ function createId(e: NostrPowEvent) {
   return bytesToHex(sha256(JSON.stringify(payload)));
 }
 
-function countLeadingZeroes(hex: string) {
+export function countLeadingZeros(hex: string) {
   let count = 0;
 
   for (let i = 0; i < hex.length; i++) {

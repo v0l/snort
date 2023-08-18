@@ -36,6 +36,7 @@ import { LoginStore } from "Login";
 import { getCurrentSubscription } from "Subscription";
 import useLogin from "Hooks/useLogin";
 import { System } from "index";
+import AsyncButton from "Element/AsyncButton";
 
 interface NotePreviewProps {
   note: TaggedNostrEvent;
@@ -174,9 +175,9 @@ export function NoteCreator() {
     dispatch(reset());
   }
 
-  function onSubmit(ev: React.MouseEvent<HTMLButtonElement>) {
+  async function onSubmit(ev: React.MouseEvent<HTMLButtonElement>) {
     ev.stopPropagation();
-    sendNote().catch(console.warn);
+    await sendNote();
   }
 
   async function loadPreview() {
@@ -374,9 +375,9 @@ export function NoteCreator() {
             <button className="secondary" onClick={cancel}>
               <FormattedMessage {...messages.Cancel} />
             </button>
-            <button onClick={onSubmit}>
+            <AsyncButton onClick={onSubmit}>
               {replyTo ? <FormattedMessage {...messages.Reply} /> : <FormattedMessage {...messages.Send} />}
-            </button>
+            </AsyncButton>
           </div>
           {showAdvanced && (
             <div>

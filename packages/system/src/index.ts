@@ -22,6 +22,7 @@ export * from "./zaps";
 export * from "./signer";
 export * from "./text";
 export * from "./pow";
+export * from "./pow-util";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";

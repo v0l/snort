@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { HTMLProps, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
-import { TaggedNostrEvent, HexKey, u256, ParsedZap } from "@snort/system";
+import { TaggedNostrEvent, HexKey, u256, ParsedZap, countLeadingZeros } from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
@@ -11,7 +11,7 @@ import Spinner from "Icons/Spinner";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { delay, normalizeReaction, unwrap } from "SnortUtils";
+import { delay, findTag, normalizeReaction, unwrap } from "SnortUtils";
 import { NoteCreator } from "Element/NoteCreator";
 import SendSats from "Element/SendSats";
 import { ZapsSummary } from "Element/Zap";
@@ -173,16 +173,26 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }, [prefs.autoZap, author, zapping]);
 
+  function powIcon() {
+    const pow = findTag(ev, "nonce") ? countLeadingZeros(ev.id) : undefined;
+    if (pow) {
+      return (
+        <AsyncFooterIcon title={formatMessage({ defaultMessage: "Proof of Work" })} iconName="diamond" value={pow} />
+      );
+    }
+  }
+
   function tipButton() {
     const service = getLNURL();
     if (service) {
       return (
-        <>
-          <div className={`reaction-pill ${didZap ? "reacted" : ""}`} {...longPress()} onClick={e => fastZap(e)}>
-            {zapping ? <Spinner /> : wallet?.isReady() ? <Icon name="zapFast" /> : <Icon name="zap" />}
-            {zapTotal > 0 && <div className="reaction-pill-number">{formatShort(zapTotal)}</div>}
-          </div>
-        </>
+        <AsyncFooterIcon
+          className={didZap ? "reacted" : ""}
+          {...longPress()}
+          iconName={wallet?.isReady() ? "zapFast" : "zap"}
+          value={zapTotal}
+          onClick={e => fastZap(e)}
+        />
       );
     }
     return null;
@@ -190,10 +200,12 @@ export default function NoteFooter(props: NoteFooterProps) {
 
   function repostIcon() {
     return (
-      <div className={`reaction-pill ${hasReposted() ? "reacted" : ""}`} onClick={() => repost()}>
-        <Icon name="repeat" size={18} />
-        {reposts.length > 0 && <div className="reaction-pill-number">{formatShort(reposts.length)}</div>}
-      </div>
+      <AsyncFooterIcon
+        className={hasReposted() ? "reacted" : ""}
+        iconName="repeat"
+        value={reposts.length}
+        onClick={() => repost()}
+      />
     );
   }
 
@@ -203,12 +215,12 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
     const reacted = hasReacted("+");
     return (
-      <>
-        <div className={`reaction-pill ${reacted ? "reacted" : ""} `} onClick={() => react(prefs.reactionEmoji)}>
-          <Icon name={reacted ? "heart-solid" : "heart"} size={18} />
-          <div className="reaction-pill-number">{formatShort(positive.length)}</div>
-        </div>
-      </>
+      <AsyncFooterIcon
+        className={reacted ? "reacted" : ""}
+        iconName={reacted ? "heart-solid" : "heart"}
+        value={positive.length}
+        onClick={() => react(prefs.reactionEmoji)}
+      />
     );
   }
 
@@ -228,9 +240,12 @@ export default function NoteFooter(props: NoteFooterProps) {
           {tipButton()}
           {reactionIcons()}
           {repostIcon()}
-          <div className={`reaction-pill ${showNoteCreatorModal ? "reacted" : ""}`} onClick={handleReplyButtonClick}>
-            <Icon name="reply" size={17} />
-          </div>
+          <AsyncFooterIcon
+            className={showNoteCreatorModal ? "reacted" : ""}
+            iconName="reply"
+            onClick={async () => handleReplyButtonClick()}
+          />
+          {powIcon()}
         </div>
         {willRenderNoteCreator && <NoteCreator />}
         <SendSats
@@ -245,5 +260,38 @@ export default function NoteFooter(props: NoteFooterProps) {
       </div>
       <ZapsSummary zaps={zaps} />
     </>
+  );
+}
+
+interface AsyncFooterIconProps extends HTMLProps<HTMLDivElement> {
+  iconName: string;
+  value?: number;
+  loading?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => Promise<void>;
+}
+
+function AsyncFooterIcon(props: AsyncFooterIconProps) {
+  const [loading, setLoading] = useState(props.loading ?? false);
+
+  async function handleClick(e: React.MouseEvent<HTMLDivElement>) {
+    setLoading(true);
+    try {
+      if (props.onClick) {
+        await props.onClick(e);
+      }
+    } catch (ex) {
+      console.error(ex);
+    }
+    setLoading(false);
+  }
+
+  return (
+    <div
+      {...props}
+      className={`reaction-pill${props.className ? ` ${props.className}` : ""}`}
+      onClick={e => handleClick(e)}>
+      {loading ? <Spinner /> : <Icon name={props.iconName} size={18} />}
+      {props.value && <div className="reaction-pill-number">{formatShort(props.value)}</div>}
+    </div>
   );
 }
