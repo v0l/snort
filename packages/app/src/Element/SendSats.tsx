@@ -17,6 +17,7 @@ import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
 import { generateRandomKey } from "Login";
 import { ZapPoolController } from "ZapPoolController";
+import AsyncButton from "Element/AsyncButton";
 
 import messages from "./messages";
 
@@ -121,8 +122,8 @@ export default function SendSats(props: SendSatsProps) {
     setAmount(a);
   };
 
-  async function loadInvoice() {
-    if (!amount || !handler || !publisher) return null;
+  async function loadInvoice(): Promise<void> {
+    if (!amount || !handler || !publisher) return;
 
     let zap: NostrEvent | undefined;
     if (author && zapType !== ZapType.NonZap) {
@@ -250,7 +251,7 @@ export default function SendSats(props: SendSatsProps) {
         </div>
         {zapTypeSelector()}
         {(amount ?? 0) > 0 && (
-          <button type="button" className="zap-action" onClick={() => loadInvoice()}>
+          <AsyncButton className="zap-action" onClick={() => loadInvoice()}>
             <div className="zap-action-container">
               <Icon name="zap" />
               {target ? (
@@ -259,7 +260,7 @@ export default function SendSats(props: SendSatsProps) {
                 <FormattedMessage {...messages.ZapSats} values={{ n: formatShort(amount) }} />
               )}
             </div>
-          </button>
+          </AsyncButton>
         )}
       </>
     );
