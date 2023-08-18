@@ -160,6 +160,24 @@ const PreferencesPage = () => {
       <div className="card flex">
         <div className="flex f-col f-grow">
           <div>
+            <FormattedMessage defaultMessage="Proof of Work" />
+          </div>
+          <small>
+            <FormattedMessage defaultMessage="Amount of work to apply to all published events" />
+          </small>
+        </div>
+        <div>
+          <input
+            type="number"
+            defaultValue={perf.pow}
+            min={0}
+            onChange={e => updatePreferences(login, { ...perf, pow: parseInt(e.target.value || "0") })}
+          />
+        </div>
+      </div>
+      <div className="card flex">
+        <div className="flex f-col f-grow">
+          <div>
             <FormattedMessage defaultMessage="Default Zap amount" />
           </div>
         </div>

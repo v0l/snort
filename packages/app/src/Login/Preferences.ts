@@ -66,6 +66,11 @@ export interface UserPreferences {
    * Auto-zap every post
    */
   autoZap: boolean;
+
+  /**
+   * Proof-of-Work to apply to all events
+   */
+  pow?: number;
 }
 
 export const DefaultPreferences = {

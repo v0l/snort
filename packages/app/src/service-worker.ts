@@ -1,5 +1,4 @@
 /// <reference lib="webworker" />
-import {} from ".";
 declare const self: ServiceWorkerGlobalScope;
 
 import { clientsClaim } from "workbox-core";

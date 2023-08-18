@@ -1,17 +1,9 @@
 import { ExternalStore, dedupe } from "@snort/shared";
-import {
-  EventKind,
-  NostrPrefix,
-  encodeTLVEntries,
-  TLVEntryType,
-  TLVEntry,
-  decodeTLV,
-  PowWorker,
-  NostrEvent,
-} from "@snort/system";
+import { EventKind, NostrPrefix, encodeTLVEntries, TLVEntryType, TLVEntry, decodeTLV, NostrEvent } from "@snort/system";
 import { GiftWrapCache } from "Cache/GiftWrapCache";
 import { UnwrappedGift } from "Db";
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "chat";
+import { DefaultPowWorker } from "index";
 
 export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   #cache: GiftWrapCache;
@@ -107,17 +99,10 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
         const messages: Array<Promise<NostrEvent>> = [];
         const powTarget = 4 * 4; // 4-char zero
         for (const pt of participants) {
-          const recvSealedN = pub.giftWrap(
-            await pub.sealRumor(gossip, pt.id),
-            pt.id,
-            powTarget,
-            new PowWorker("/pow.js")
-          );
+          const recvSealedN = pub.giftWrap(await pub.sealRumor(gossip, pt.id), pt.id, powTarget);
           messages.push(recvSealedN);
         }
-        messages.push(
-          pub.giftWrap(await pub.sealRumor(gossip, pub.pubKey), pub.pubKey, powTarget, new PowWorker("/pow.js"))
-        );
+        messages.push(pub.giftWrap(await pub.sealRumor(gossip, pub.pubKey), pub.pubKey, powTarget, DefaultPowWorker));
         return await Promise.all(messages);
       },
       sendMessage: (ev, system) => {

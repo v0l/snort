@@ -28,6 +28,8 @@ type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
 export class EventPublisher {
   #pubKey: string;
   #signer: EventSigner;
+  #pow?: number;
+  #miner?: PowMiner;
 
   constructor(signer: EventSigner, pubKey: string) {
     this.#signer = signer;
@@ -59,14 +61,21 @@ export class EventPublisher {
     return this.#pubKey;
   }
 
+  /**
+   * Apply POW to every event
+   */
+  pow(target:number, miner?: PowMiner) {
+    this.#pow = target;
+    this.#miner = miner;
+  }
+
   #eb(k: EventKind) {
     const eb = new EventBuilder();
     return eb.pubKey(this.#pubKey).kind(k);
   }
 
   async #sign(eb: EventBuilder) {
-    const ev = eb.build();
-    return await this.#signer.sign(ev);
+    return await (this.#pow ? eb.pow(this.#pow, this.#miner) : eb).buildAndSign(this.#signer);
   }
 
   async nip4Encrypt(content: string, otherKey: string) {
