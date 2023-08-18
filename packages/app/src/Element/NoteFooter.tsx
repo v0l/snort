@@ -189,6 +189,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         <AsyncFooterIcon
           className={didZap ? "reacted" : ""}
           {...longPress()}
+          title={formatMessage({ defaultMessage: "Zap" })}
           iconName={wallet?.isReady() ? "zapFast" : "zap"}
           value={zapTotal}
           onClick={e => fastZap(e)}
@@ -203,13 +204,14 @@ export default function NoteFooter(props: NoteFooterProps) {
       <AsyncFooterIcon
         className={hasReposted() ? "reacted" : ""}
         iconName="repeat"
+        title={formatMessage({ defaultMessage: "Repost" })}
         value={reposts.length}
         onClick={() => repost()}
       />
     );
   }
 
-  function reactionIcons() {
+  function reactionIcon() {
     if (!prefs.enableReactions) {
       return null;
     }
@@ -218,8 +220,21 @@ export default function NoteFooter(props: NoteFooterProps) {
       <AsyncFooterIcon
         className={reacted ? "reacted" : ""}
         iconName={reacted ? "heart-solid" : "heart"}
+        title={formatMessage({ defaultMessage: "Like" })}
         value={positive.length}
         onClick={() => react(prefs.reactionEmoji)}
+      />
+    );
+  }
+
+  function replyIcon() {
+    return (
+      <AsyncFooterIcon
+        className={showNoteCreatorModal ? "reacted" : ""}
+        iconName="reply"
+        title={formatMessage({ defaultMessage: "Reply" })}
+        value={0}
+        onClick={async () => handleReplyButtonClick()}
       />
     );
   }
@@ -238,13 +253,9 @@ export default function NoteFooter(props: NoteFooterProps) {
       <div className="footer">
         <div className="footer-reactions">
           {tipButton()}
-          {reactionIcons()}
+          {reactionIcon()}
           {repostIcon()}
-          <AsyncFooterIcon
-            className={showNoteCreatorModal ? "reacted" : ""}
-            iconName="reply"
-            onClick={async () => handleReplyButtonClick()}
-          />
+          {replyIcon()}
           {powIcon()}
         </div>
         {willRenderNoteCreator && <NoteCreator />}
@@ -265,7 +276,7 @@ export default function NoteFooter(props: NoteFooterProps) {
 
 interface AsyncFooterIconProps extends HTMLProps<HTMLDivElement> {
   iconName: string;
-  value?: number;
+  value: number;
   loading?: boolean;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => Promise<void>;
 }
@@ -291,7 +302,7 @@ function AsyncFooterIcon(props: AsyncFooterIconProps) {
       className={`reaction-pill${props.className ? ` ${props.className}` : ""}`}
       onClick={e => handleClick(e)}>
       {loading ? <Spinner /> : <Icon name={props.iconName} size={18} />}
-      {props.value && <div className="reaction-pill-number">{formatShort(props.value)}</div>}
+      {props.value > 0 && <div className="reaction-pill-number">{formatShort(props.value)}</div>}
     </div>
   );
 }
