@@ -7,9 +7,11 @@ import { CacheFirst } from "workbox-strategies";
 
 clientsClaim();
 
-const staticTypes = ["image", "video", "audio", "script", "style", "font", "document"];
+const staticTypes = ["image", "video", "audio", "script", "style", "font"];
+const paths = ["/"];
 registerRoute(
-  ({ request, url }) => url.origin === self.location.origin && staticTypes.includes(request.destination),
+  ({ request, url }) =>
+    url.origin === self.location.origin && (staticTypes.includes(request.destination) || paths.includes(url.pathname)),
   new CacheFirst({
     cacheName: "static-content",
   })
