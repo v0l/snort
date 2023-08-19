@@ -5,6 +5,7 @@ import { CSSProperties, useEffect, useState } from "react";
 import type { UserMetadata } from "@snort/system";
 
 import useImgProxy from "Hooks/useImgProxy";
+import { getDisplayName } from "Element/ProfileImage";
 
 interface AvatarProps {
   user?: UserMetadata;
@@ -27,7 +28,14 @@ const Avatar = ({ user, size, onClick }: AvatarProps) => {
   const backgroundImage = `url(${url})`;
   const style = { "--img-url": backgroundImage } as CSSProperties;
   const domain = user?.nip05 && user.nip05.split("@")[1];
-  return <div onClick={onClick} style={style} className="avatar" data-domain={domain?.toLowerCase()}></div>;
+  return (
+    <div
+      onClick={onClick}
+      style={style}
+      className="avatar"
+      data-domain={domain?.toLowerCase()}
+      title={getDisplayName(user, "")}></div>
+  );
 };
 
 export default Avatar;
