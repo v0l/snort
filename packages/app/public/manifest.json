@@ -2,6 +2,7 @@
   "short_name": "Snort",
   "name": "snort.social - Nostr interface",
   "description": "Fast nostr web ui",
+  "id": "/",
   "icons": [
     {
       "src": "nostrich_256.png",
@@ -14,8 +15,14 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#000000"
+  "background_color": "#000000",
+  "protocol_handlers": [
+    {
+      "protocol": "web+nostr",
+      "url": "/%s"
+    }
+  ]
 }
