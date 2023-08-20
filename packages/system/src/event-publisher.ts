@@ -64,7 +64,7 @@ export class EventPublisher {
   /**
    * Apply POW to every event
    */
-  pow(target:number, miner?: PowMiner) {
+  pow(target: number, miner?: PowMiner) {
     this.#pow = target;
     this.#miner = miner;
   }

@@ -180,7 +180,7 @@ export class Query implements QueryBase {
   onEvent(sub: string, e: TaggedNostrEvent) {
     for (const t of this.#tracing) {
       if (t.id === sub) {
-        if(t.filters.some(v => eventMatchesFilter(e, v))) {
+        if (t.filters.some(v => eventMatchesFilter(e, v))) {
           this.feed.add(e);
         } else {
           this.#log("Event did not match filter, rejecting %O", e);

@@ -34,6 +34,7 @@ import PubkeyList from "Element/PubkeyList";
 import { LiveEvent } from "Element/LiveEvent";
 import { NoteContextMenu, NoteTranslation } from "Element/NoteContextMenu";
 import Reactions from "Element/Reactions";
+import { ZapGoal } from "Element/ZapGoal";
 
 import messages from "./messages";
 
@@ -90,6 +91,9 @@ export default function Note(props: NoteProps) {
   }
   if (ev.kind === EventKind.LiveEvent) {
     return <LiveEvent ev={ev} />;
+  }
+  if (ev.kind === (9041 as EventKind)) {
+    return <ZapGoal ev={ev} />;
   }
 
   const baseClassName = `note card${className ? ` ${className}` : ""}`;

@@ -7,7 +7,17 @@ import SendSats from "Element/SendSats";
 import Icon from "Icons/Icon";
 import { System } from "index";
 
-const ZapButton = ({ pubkey, lnurl, children }: { pubkey: HexKey; lnurl?: string; children?: React.ReactNode }) => {
+const ZapButton = ({
+  pubkey,
+  lnurl,
+  children,
+  event,
+}: {
+  pubkey: HexKey;
+  lnurl?: string;
+  children?: React.ReactNode;
+  event?: string;
+}) => {
   const profile = useUserProfile(System, pubkey);
   const [zap, setZap] = useState(false);
   const service = lnurl ?? (profile?.lud16 || profile?.lud06);
@@ -25,6 +35,7 @@ const ZapButton = ({ pubkey, lnurl, children }: { pubkey: HexKey; lnurl?: string
         show={zap}
         onClose={() => setZap(false)}
         author={pubkey}
+        note={event}
       />
     </>
   );

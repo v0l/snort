@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  createNostrLink,
   encodeTLV,
   encodeTLVEntries,
   EventKind,
@@ -68,7 +69,7 @@ const RELAYS = 7;
 const BOOKMARKS = 8;
 
 function ZapsProfileTab({ id }: { id: HexKey }) {
-  const zaps = useZapsFeed(id);
+  const zaps = useZapsFeed(createNostrLink(NostrPrefix.PublicKey, id));
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   return (
     <div className="main-content">
