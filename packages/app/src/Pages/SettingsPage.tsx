@@ -16,12 +16,14 @@ export default function SettingsPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="main-content">
-      <h2 onClick={() => navigate("/settings")} className="pointer">
-        <FormattedMessage {...messages.Settings} />
-      </h2>
+    <>
+      <div className="main-content p">
+        <h2 onClick={() => navigate("/settings")} className="pointer">
+          <FormattedMessage {...messages.Settings} />
+        </h2>
+      </div>
       <Outlet />
-    </div>
+    </>
   );
 }
 
