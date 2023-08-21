@@ -75,7 +75,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
       const newProfile = mapEventToProfile(ev);
       if (newProfile) {
-        await UserCache.set(newProfile);
+        await UserCache.update(newProfile);
       }
     }
   }

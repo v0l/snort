@@ -375,7 +375,7 @@ export default function Thread() {
   });
   return (
     <>
-      <div className="main-content">
+      <div className="main-content p">
         <BackButton onClick={goBack} text={parent ? parentText : backText} />
       </div>
       <div className="main-content">

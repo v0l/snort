@@ -10,7 +10,7 @@ export function ZapGoal({ ev }: { ev: NostrEvent }) {
   const zaps = useZapsFeed(createNostrLink(NostrPrefix.Note, ev.id));
   const target = Number(findTag(ev, "amount"));
   const amount = zaps.reduce((acc, v) => (acc += v.amount * 1000), 0);
-  const progress = Math.min(100, 100 * (amount / target));
+  const progress = 100 * (amount / target);
 
   return (
     <div className="zap-goal card">
@@ -29,7 +29,7 @@ export function ZapGoal({ ev }: { ev: NostrEvent }) {
         <div
           style={
             {
-              "--progress": `${progress}%`,
+              "--progress": `${Math.min(100, progress)}%`,
             } as CSSProperties
           }></div>
       </div>

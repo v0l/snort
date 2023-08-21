@@ -101,10 +101,15 @@ body {
   background-color: var(--bg-color);
   color: var(--font-color);
   font-size: var(--font-size);
+  overflow-x: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+#root {
+  overflow-x: hidden;
 }
 
 .page {
@@ -117,7 +122,7 @@ body #root > div:not(.page) header {
   padding: 2px 10px;
 }
 
-@media (min-width: 720px) {
+@media (min-width: 768px) {
   .page {
     width: 640px;
     margin-left: auto;
@@ -686,7 +691,6 @@ button.tall {
 .ctx-menu {
   color: var(--font-secondary-color) !important;
   background: transparent !important;
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4) !important;
   min-width: 0 !important;
   margin: 0 !important;
 }

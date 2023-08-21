@@ -109,10 +109,16 @@
   border-radius: 100%;
   position: fixed;
   bottom: 50px;
-  right: 16px;
+  right: calc(((100vw - 640px) / 2) - 60px);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .note-create-button {
+    right: 16px;
+  }
 }
 
 .note-creator-modal .modal-body {
