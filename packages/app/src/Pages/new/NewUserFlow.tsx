@@ -90,7 +90,7 @@ export default function NewUserFlow() {
   const navigate = useNavigate();
 
   return (
-    <div className="main-content new-user" dir="auto">
+    <div className="main-content new-user p" dir="auto">
       <Logo />
       <div className="progress-bar">
         <div className="progress progress-first"></div>
@@ -98,31 +98,25 @@ export default function NewUserFlow() {
       <h1>
         <FormattedMessage {...messages.SaveKeys} />
       </h1>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
-            <FormattedMessage defaultMessage="Language" />
-          </div>
-        </div>
-        <div>
-          <select
-            value={login.preferences.language || DefaultPreferences.language}
-            onChange={e =>
-              updatePreferences(login, {
-                ...login.preferences,
-                language: e.target.value,
-              })
-            }
-            style={{ textTransform: "capitalize" }}>
-            {AllLanguageCodes.sort().map(a => (
-              <option value={a}>
-                {new Intl.DisplayNames([a], {
-                  type: "language",
-                }).of(a)}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="flex f-space">
+        <FormattedMessage defaultMessage="Language" />
+        <select
+          value={login.preferences.language || DefaultPreferences.language}
+          onChange={e =>
+            updatePreferences(login, {
+              ...login.preferences,
+              language: e.target.value,
+            })
+          }
+          style={{ textTransform: "capitalize" }}>
+          {AllLanguageCodes.sort().map(a => (
+            <option value={a}>
+              {new Intl.DisplayNames([a], {
+                type: "language",
+              }).of(a)}
+            </option>
+          ))}
+        </select>
       </div>
       <p>
         <FormattedMessage {...messages.SaveKeysHelp} />

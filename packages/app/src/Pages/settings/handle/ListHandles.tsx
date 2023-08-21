@@ -29,37 +29,33 @@ export default function ListHandles() {
           defaultMessage="It looks like you dont have any, check {link} to buy one!"
           values={{
             link: (
-              <Link to="/verification">
-                <FormattedMessage defaultMessage="Verification" />
+              <Link to="/nostr-address">
+                <FormattedMessage defaultMessage="Buy Handle" />
               </Link>
             ),
           }}
         />
       )}
       {handles.map(a => (
-        <div className="card flex" key={a.id}>
-          <div className="f-grow">
-            <h4 className="nip05">
-              {a.handle}@
-              <span className="domain" data-domain={a.domain?.toLowerCase()}>
-                {a.domain}
-              </span>
-            </h4>
-          </div>
-          <div>
-            <button
-              onClick={() =>
-                navigate("manage", {
-                  state: a,
-                })
-              }>
-              <FormattedMessage defaultMessage="Manage" />
-            </button>
-          </div>
+        <div className="flex f-space" key={a.id}>
+          <h4 className="nip05">
+            {a.handle}@
+            <span className="domain" data-domain={a.domain?.toLowerCase()}>
+              {a.domain}
+            </span>
+          </h4>
+          <button
+            onClick={() =>
+              navigate("manage", {
+                state: a,
+              })
+            }>
+            <FormattedMessage defaultMessage="Manage" />
+          </button>
         </div>
       ))}
       {handles.length > 0 && (
-        <button onClick={() => navigate("/verification")}>
+        <button onClick={() => navigate("/nostr-address")}>
           <FormattedMessage defaultMessage="Buy Handle" />
         </button>
       )}

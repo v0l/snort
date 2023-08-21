@@ -1,7 +1,7 @@
 import "./WalletSettings.css";
 import LndLogo from "lnd-logo.png";
 import { FormattedMessage } from "react-intl";
-import { RouteObject, useNavigate } from "react-router-dom";
+import { Link, RouteObject, useNavigate } from "react-router-dom";
 
 import BlueWallet from "Icons/BlueWallet";
 import ConnectLNC from "Pages/settings/wallet/LNC";
@@ -15,21 +15,26 @@ const WalletSettings = () => {
   const navigate = useNavigate();
   return (
     <>
+      <Link to="/wallet">
+        <button type="button">
+          <FormattedMessage defaultMessage="View Wallets" />
+        </button>
+      </Link>
       <h3>
         <FormattedMessage defaultMessage="Connect Wallet" />
       </h3>
       <div className="wallet-grid">
-        <div className="card" onClick={() => navigate("/settings/wallet/lnc")}>
+        <div onClick={() => navigate("/settings/wallet/lnc")}>
           <img src={LndLogo} width={100} />
-          <h3 className="f-end">LND with LNC</h3>
+          <h3>LND with LNC</h3>
         </div>
-        <div className="card" onClick={() => navigate("/settings/wallet/lndhub")}>
+        <div onClick={() => navigate("/settings/wallet/lndhub")}>
           <BlueWallet width={100} height={100} />
-          <h3 className="f-end">LNDHub</h3>
+          <h3>LNDHub</h3>
         </div>
-        <div className="card" onClick={() => navigate("/settings/wallet/nwc")}>
+        <div onClick={() => navigate("/settings/wallet/nwc")}>
           <NostrIcon width={100} height={100} />
-          <h3 className="f-end">Nostr Wallet Connect</h3>
+          <h3>Nostr Wallet Connect</h3>
         </div>
       </div>
     </>

@@ -86,7 +86,7 @@ export default function NotificationsPage() {
 
   const timeGrouped = useMemo(() => {
     return orderDescending([...notifications])
-      .filter(a => !isMuted(a.pubkey))
+      .filter(a => !isMuted(a.pubkey) && findTag(a, "p") === login.publicKey)
       .reduce((acc, v) => {
         const key = `${timeKey(v)}:${notificationContext(v as TaggedRawEvent)?.encode()}:${v.kind}`;
         if (acc.has(key)) {

@@ -1,8 +1,14 @@
 .preferences small {
-  margin-top: 0.5em;
   color: var(--font-secondary-color);
 }
 
 .preferences select {
   min-width: 100px;
+}
+
+.preferences h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px; /* 137.5% */
 }

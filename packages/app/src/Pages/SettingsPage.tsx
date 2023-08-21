@@ -29,31 +29,33 @@ export const SettingsRoutes: RouteObject[] = [
   {
     path: "",
     element: <SettingsIndex />,
+    children: [
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "relays",
+        element: <Relay />,
+      },
+      {
+        path: "relays/:id",
+        element: <RelayInfo />,
+      },
+      {
+        path: "preferences",
+        element: <Preferences />,
+      },
+      {
+        path: "accounts",
+        element: <AccountsPage />,
+      },
+      {
+        path: "keys",
+        element: <ExportKeys />,
+      },
+      ...ManageHandleRoutes,
+      ...WalletSettingsRoutes,
+    ],
   },
-  {
-    path: "profile",
-    element: <Profile />,
-  },
-  {
-    path: "relays",
-    element: <Relay />,
-  },
-  {
-    path: "relays/:id",
-    element: <RelayInfo />,
-  },
-  {
-    path: "preferences",
-    element: <Preferences />,
-  },
-  {
-    path: "accounts",
-    element: <AccountsPage />,
-  },
-  {
-    path: "keys",
-    element: <ExportKeys />,
-  },
-  ...ManageHandleRoutes,
-  ...WalletSettingsRoutes,
 ];

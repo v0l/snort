@@ -33,7 +33,7 @@ export default function ManageSubscriptionPage() {
     return <PageSpinner />;
   }
   return (
-    <>
+    <div className="main-content p flex-column g24">
       <h2>
         <FormattedMessage defaultMessage="Subscriptions" />
       </h2>
@@ -60,6 +60,6 @@ export default function ManageSubscriptionPage() {
         </p>
       )}
       {error && <b className="error">{mapSubscriptionErrorCode(error)}</b>}
-    </>
+    </div>
   );
 }

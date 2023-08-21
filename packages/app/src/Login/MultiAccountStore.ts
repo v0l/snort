@@ -158,6 +158,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     const pk = unwrap(s.publicKey);
     if (this.#accounts.has(pk)) {
       this.#accounts.set(pk, s);
+      console.debug("SET SESSION", s);
       this.#save();
     }
   }
@@ -175,7 +176,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     const s = this.#activeAccount ? this.#accounts.get(this.#activeAccount) : undefined;
     if (!s) return LoggedOut;
 
-    return s;
+    return { ...s };
   }
 
   #createPublisher(l: LoginSession) {

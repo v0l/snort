@@ -1,7 +1,9 @@
+import "./AvatarEditor.css";
 import Icon from "Icons/Icon";
 import { useState } from "react";
 import useFileUpload from "Upload";
 import { openFile, unwrap } from "SnortUtils";
+import Spinner from "Icons/Spinner";
 
 interface AvatarEditorProps {
   picture?: string;
@@ -11,9 +13,11 @@ interface AvatarEditorProps {
 export default function AvatarEditor({ picture, onPictureChange }: AvatarEditorProps) {
   const uploader = useFileUpload();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function uploadFile() {
     setError("");
+    setLoading(true);
     try {
       const f = await openFile();
       if (f) {
@@ -32,6 +36,7 @@ export default function AvatarEditor({ picture, onPictureChange }: AvatarEditorP
         setError(`Upload failed`);
       }
     }
+    setLoading(false);
   }
 
   return (
@@ -39,7 +44,7 @@ export default function AvatarEditor({ picture, onPictureChange }: AvatarEditorP
       <div className="flex f-center">
         <div style={{ backgroundImage: `url(${picture})` }} className="avatar">
           <div className={`edit${picture ? "" : " new"}`} onClick={() => uploadFile().catch(console.error)}>
-            <Icon name={picture ? "edit" : "camera-plus"} />
+            {loading ? <Spinner /> : <Icon name={picture ? "edit" : "camera-plus"} />}
           </div>
         </div>
       </div>

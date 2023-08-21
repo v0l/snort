@@ -27,14 +27,18 @@ export async function openFile(): Promise<File | undefined> {
   return new Promise(resolve => {
     const elm = document.createElement("input");
     elm.type = "file";
-    elm.onchange = (e: Event) => {
+    const handleInput = (e: Event) => {
+      console.debug(e);
       const elm = e.target as HTMLInputElement;
-      if (elm.files) {
-        resolve(elm.files[0]);
+      if ((elm.files?.length ?? 0) > 0) {
+        resolve(elm.files![0]);
       } else {
         resolve(undefined);
       }
     };
+
+    elm.onchange = e => handleInput(e);
+    elm.onblur = e => handleInput(e);
     elm.click();
   });
 }

@@ -11,19 +11,21 @@ interface AvatarProps {
   user?: UserMetadata;
   onClick?: () => void;
   size?: number;
+  image?: string;
 }
-const Avatar = ({ user, size, onClick }: AvatarProps) => {
+const Avatar = ({ user, size, onClick, image }: AvatarProps) => {
   const [url, setUrl] = useState<string>(Nostrich);
   const { proxy } = useImgProxy();
 
   useEffect(() => {
-    if (user?.picture) {
-      const url = proxy(user.picture, size ?? 120);
-      setUrl(url);
+    const url = image ?? user?.picture;
+    if (url) {
+      const proxyUrl = proxy(url, size ?? 120);
+      setUrl(proxyUrl);
     } else {
       setUrl(Nostrich);
     }
-  }, [user]);
+  }, [user, image]);
 
   const backgroundImage = `url(${url})`;
   const style = { "--img-url": backgroundImage } as CSSProperties;

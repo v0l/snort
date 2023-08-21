@@ -333,11 +333,19 @@ export const RootRoutes = [
       },
       {
         path: "trending/people",
-        element: <TrendingUsers />,
+        element: (
+          <div className="p">
+            <TrendingUsers />
+          </div>
+        ),
       },
       {
         path: "suggested",
-        element: <SuggestedProfiles />,
+        element: (
+          <div className="p">
+            <SuggestedProfiles />
+          </div>
+        ),
       },
       {
         path: "/t/:tag",

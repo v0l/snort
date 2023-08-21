@@ -19,7 +19,7 @@ import { RootRoutes } from "Pages/Root";
 import NotificationsPage from "Pages/Notifications";
 import SettingsPage, { SettingsRoutes } from "Pages/SettingsPage";
 import ErrorPage from "Pages/ErrorPage";
-import VerificationPage from "Pages/Verification";
+import NostrAddressPage from "Pages/NostrAddressPage";
 import MessagesPage from "Pages/MessagesPage";
 import DonatePage from "Pages/DonatePage";
 import SearchPage from "Pages/SearchPage";
@@ -125,8 +125,8 @@ export const router = createBrowserRouter([
         children: SettingsRoutes,
       },
       {
-        path: "/verification",
-        element: <VerificationPage />,
+        path: "/nostr-address",
+        element: <NostrAddressPage />,
       },
       {
         path: "/messages/:id?",

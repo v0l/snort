@@ -47,7 +47,7 @@ export default function ProfileSetup() {
   };
 
   return (
-    <div className="main-content new-user" dir="auto">
+    <div className="main-content new-user p" dir="auto">
       <Logo />
       <div className="progress-bar">
         <div className="progress progress-second"></div>

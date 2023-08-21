@@ -92,7 +92,7 @@ export default function ZapPoolPage() {
 
   const sumPending = zapPool.reduce((acc, v) => acc + v.sum, 0);
   return (
-    <div className="zap-pool main-content">
+    <div className="zap-pool main-content p">
       <h1>
         <FormattedMessage defaultMessage="Zap Pool" />
       </h1>
@@ -150,7 +150,7 @@ export default function ZapPoolPage() {
           </AsyncButton>
         )}
       </p>
-      <div className="card">
+      <div>
         <ZapTarget
           target={
             zapPool.find(b => b.pubkey === bech32ToHex(SnortPubKey) && b.type === ZapPoolRecipientType.Generic) ?? {
@@ -166,7 +166,7 @@ export default function ZapPoolPage() {
         <FormattedMessage defaultMessage="Relays" />
       </h3>
       {relayConnections.map(a => (
-        <div className="card">
+        <div>
           <h4>{getRelayName(a.address)}</h4>
           <ZapTarget
             target={
@@ -184,7 +184,7 @@ export default function ZapPoolPage() {
         <FormattedMessage defaultMessage="File hosts" />
       </h3>
       {UploaderServices.map(a => (
-        <div className="card">
+        <div>
           <h4>{a.name}</h4>
           <ZapTarget
             target={
@@ -202,7 +202,7 @@ export default function ZapPoolPage() {
         <FormattedMessage defaultMessage="Data Providers" />
       </h3>
       {DataProviders.map(a => (
-        <div className="card">
+        <div>
           <h4>{a.name}</h4>
           <ZapTarget
             target={

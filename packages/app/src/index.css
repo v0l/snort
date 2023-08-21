@@ -125,6 +125,10 @@ body #root > div:not(.page) header {
   }
 }
 
+.p {
+  padding: 12px 16px;
+}
+
 .card {
   padding: 12px 16px;
   border-bottom: 1px solid var(--gray-superdark);
@@ -158,7 +162,6 @@ button {
   padding: 6px 12px;
   font-weight: 600;
   color: white;
-  min-height: 35px;
   font-size: var(--font-size);
   background-color: var(--highlight);
   border: none;
@@ -296,12 +299,13 @@ input[type="password"],
 input[type="number"],
 select,
 textarea {
-  padding: 12px;
+  padding: 12px 16px;
   color: var(--font-color);
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   outline: none;
+  line-height: 24px; /* 150% */
 }
 
 .light input[type="text"],
@@ -336,6 +340,11 @@ input:disabled {
   display: flex;
   align-items: center;
   min-width: 0;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
 }
 
 .f-center {
