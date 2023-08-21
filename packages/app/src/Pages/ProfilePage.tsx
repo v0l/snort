@@ -410,7 +410,7 @@ export default function ProfilePage() {
         )}
         {isMe ? (
           <>
-            <button type="button" onClick={() => navigate("/settings")}>
+            <button type="button" onClick={() => navigate("/settings/profile")}>
               <FormattedMessage {...messages.Settings} />
             </button>
           </>

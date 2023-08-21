@@ -117,9 +117,10 @@ const Timeline = (props: TimelineProps) => {
 
   return (
     <>
+      <LiveStreams evs={liveStreams} />
       {latestFeed.length > 0 && (
         <>
-          <div className="card latest-notes pointer" onClick={() => onShowLatest()} ref={ref}>
+          <div className="card latest-notes" onClick={() => onShowLatest()} ref={ref}>
             {latestAuthors.slice(0, 3).map(p => {
               return <ProfileImage pubkey={p} showUsername={false} link={""} />;
             })}
@@ -143,7 +144,6 @@ const Timeline = (props: TimelineProps) => {
           )}
         </>
       )}
-      <LiveStreams evs={liveStreams} />
       {mainFeed.map(eventElement)}
       {(props.loadMore === undefined || props.loadMore === true) && (
         <div className="flex f-center">

@@ -225,7 +225,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         UserCache.set(newMeta);
       }
       if (helpText) {
-        navigate("/settings");
+        navigate("/settings/profile");
       }
     }
   }

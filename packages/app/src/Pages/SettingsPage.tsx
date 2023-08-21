@@ -18,7 +18,7 @@ export default function SettingsPage() {
   return (
     <>
       <div className="main-content p">
-        <h2 onClick={() => navigate("/settings")} className="pointer">
+        <h2 onClick={() => navigate("/settings/profile")} className="pointer">
           <FormattedMessage {...messages.Settings} />
         </h2>
       </div>
