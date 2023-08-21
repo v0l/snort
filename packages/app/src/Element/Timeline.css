@@ -23,11 +23,6 @@
 }
 
 @media (max-width: 520px) {
-  .latest-notes {
-    width: 200px;
-    left: calc(50% - 110px);
-    padding: 6px 12px;
-  }
   .latest-notes-fixed {
     width: 200px;
     padding: 6px 12px;

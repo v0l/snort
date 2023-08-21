@@ -72,3 +72,14 @@ header {
   line-height: 21px;
   padding: 0 !important;
 }
+
+@media (max-width: 768px) {
+  .search {
+    padding: unset;
+    background: unset;
+  }
+
+  .search input {
+    display: none;
+  }
+}
