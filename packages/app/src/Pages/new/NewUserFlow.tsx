@@ -56,6 +56,7 @@ const HowDoKeysWork = () => {
 };
 
 const Extensions = () => {
+  const { preferences } = useLogin();
   return (
     <CollapsedSection
       title={
@@ -71,6 +72,11 @@ const Extensions = () => {
           <a href="https://getalby.com/" target="_blank" rel="noreferrer">
             Alby
           </a>
+          {(preferences.language === "ru" || preferences.language === "ru-RU") && (
+            <a href="https://nostr.21ideas.org/docs/guides/Alby.html" target="_blank" rel="noreferrer">
+              (Tony's Guide)
+            </a>
+          )}
         </li>
         <li>
           <a href="https://github.com/fiatjaf/nos2x" target="_blank" rel="noreferrer">

@@ -12,11 +12,16 @@
 }
 
 .modal-body {
-  background-color: var(--note-bg);
-  padding: 10px;
-  border-radius: 10px;
+  background-color: var(--gray-superdark);
+  padding: 16px 24px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
   width: 500px;
-  border: 1px solid var(--font-tertiary-color);
   margin-top: auto;
   margin-bottom: auto;
+}
+
+.modal-body button:hover {
+  background-color: var(--gray);
 }

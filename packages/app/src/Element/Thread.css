@@ -37,7 +37,7 @@
 }
 
 .thread-container .show-more {
-  background: var(--note-bg);
+  background: var(--gray-superdark);
   padding-left: 76px;
   width: 100%;
   text-align: left;
@@ -95,12 +95,12 @@
 
 .thread-container .collapsed,
 .thread-container .show-more-container {
-  background: var(--note-bg);
+  background: var(--gray-superdark);
   min-height: 48px;
 }
 
 .thread-container .collapsed {
-  background-color: var(--note-bg);
+  background-color: var(--gray-superdark);
 }
 
 .thread-container .hidden-note {

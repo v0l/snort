@@ -22,7 +22,7 @@
 }
 
 .light .lnurl-tip {
-  background-color: var(--note-bg);
+  background-color: var(--gray-superdark);
 }
 
 .lnurl-tip h3 {
@@ -95,7 +95,7 @@
 
 .sat-amount.active {
   font-weight: bold;
-  color: var(--note-bg);
+  color: var(--gray-superdark);
   background-color: var(--font-color);
 }
 

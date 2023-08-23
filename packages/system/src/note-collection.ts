@@ -152,6 +152,9 @@ export class FlatNoteStore extends HookedNoteStore<Readonly<Array<TaggedNostrEve
       } else {
         const existing = this.#events.find(b => b.id === a.id);
         if (existing) {
+          if(!Boolean(Object.getOwnPropertyDescriptor(existing, "relays")?.writable)) {
+            debugger;
+          }
           existing.relays = appendDedupe(existing.relays, a.relays);
         }
       }
@@ -239,7 +242,7 @@ export class ReplaceableNoteStore extends HookedNoteStore<Readonly<TaggedNostrEv
 
   takeSnapshot() {
     if (this.#event) {
-      return Object.freeze({ ...this.#event });
+      return { ...this.#event };
     }
   }
 }

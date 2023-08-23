@@ -48,25 +48,37 @@ export default function ProfileImage({
     }
   }
 
-  return (
-    <Link
-      className={`pfp${className ? ` ${className}` : ""}`}
-      to={link === undefined ? profileLink(pubkey) : link}
-      onClick={handleClick}>
-      <div className="avatar-wrapper">
-        <Avatar user={user} size={size} />
-      </div>
-      {showUsername && (
-        <div className="f-ellipsis">
-          <div className="username">
-            <div>{name.trim()}</div>
-            {nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
-          </div>
-          <div className="subheader">{subHeader}</div>
+  function inner() {
+    return (
+      <>
+        <div className="avatar-wrapper">
+          <Avatar user={user} size={size} />
         </div>
-      )}
-    </Link>
-  );
+        {showUsername && (
+          <div className="f-ellipsis">
+            <div className="username">
+              <div>{name.trim()}</div>
+              {nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
+            </div>
+            <div className="subheader">{subHeader}</div>
+          </div>
+        )}
+      </>
+    );
+  }
+
+  if (link === "") {
+    return <div className={`pfp${className ? ` ${className}` : ""}`}>{inner()}</div>;
+  } else {
+    return (
+      <Link
+        className={`pfp${className ? ` ${className}` : ""}`}
+        to={link === undefined ? profileLink(pubkey) : link}
+        onClick={handleClick}>
+        {inner()}
+      </Link>
+    );
+  }
 }
 
 export function getDisplayName(user: UserMetadata | undefined, pubkey: HexKey) {

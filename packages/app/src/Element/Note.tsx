@@ -48,11 +48,13 @@ export interface NoteProps {
   depth?: number;
   options?: {
     showHeader?: boolean;
+    showContextMenu?: boolean;
     showTime?: boolean;
     showPinned?: boolean;
     showBookmarked?: boolean;
     showFooter?: boolean;
     showReactionsLink?: boolean;
+    showMedia?: boolean;
     canUnpin?: boolean;
     canUnbookmark?: boolean;
     canClick?: boolean;
@@ -151,6 +153,7 @@ export default function Note(props: NoteProps) {
     showFooter: true,
     canUnpin: false,
     canUnbookmark: false,
+    showContextMenu: true,
     ...opt,
   };
 
@@ -209,7 +212,15 @@ export default function Note(props: NoteProps) {
         </Reveal>
       );
     }
-    return <Text content={body} tags={ev.tags} creator={ev.pubkey} depth={props.depth} />;
+    return (
+      <Text
+        content={body}
+        tags={ev.tags}
+        creator={ev.pubkey}
+        depth={props.depth}
+        disableMedia={!(options.showMedia ?? true)}
+      />
+    );
   };
 
   function goToEvent(
@@ -355,12 +366,14 @@ export default function Note(props: NoteProps) {
                   <Icon name="pin" /> <FormattedMessage {...messages.Pinned} />
                 </div>
               )}
-              <NoteContextMenu
-                ev={ev}
-                react={async () => {}}
-                onTranslated={t => setTranslated(t)}
-                setShowReactions={setShowReactions}
-              />
+              {options.showContextMenu && (
+                <NoteContextMenu
+                  ev={ev}
+                  react={async () => {}}
+                  onTranslated={t => setTranslated(t)}
+                  setShowReactions={setShowReactions}
+                />
+              )}
             </div>
           </div>
         )}

@@ -6,9 +6,6 @@ import { TaggedNostrEvent, HexKey, u256, ParsedZap, countLeadingZeros } from "@s
 import { LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
-import Icon from "Icons/Icon";
-import Spinner from "Icons/Spinner";
-
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
 import { delay, findTag, normalizeReaction, unwrap } from "SnortUtils";
@@ -17,6 +14,7 @@ import SendSats from "Element/SendSats";
 import { ZapsSummary } from "Element/Zap";
 import { RootState } from "State/Store";
 import { setReplyTo, setShow, reset } from "State/NoteCreator";
+import { AsyncIcon } from "Element/AsyncIcon";
 
 import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
@@ -282,27 +280,14 @@ interface AsyncFooterIconProps extends HTMLProps<HTMLDivElement> {
 }
 
 function AsyncFooterIcon(props: AsyncFooterIconProps) {
-  const [loading, setLoading] = useState(props.loading ?? false);
-
-  async function handleClick(e: React.MouseEvent<HTMLDivElement>) {
-    setLoading(true);
-    try {
-      if (props.onClick) {
-        await props.onClick(e);
-      }
-    } catch (ex) {
-      console.error(ex);
-    }
-    setLoading(false);
-  }
-
+  const mergedProps = {
+    ...props,
+    iconSize: 18,
+    className: `reaction-pill${props.className ? ` ${props.className}` : ""}`,
+  };
   return (
-    <div
-      {...props}
-      className={`reaction-pill${props.className ? ` ${props.className}` : ""}`}
-      onClick={e => handleClick(e)}>
-      {loading ? <Spinner /> : <Icon name={props.iconName} size={18} />}
+    <AsyncIcon {...mergedProps}>
       {props.value > 0 && <div className="reaction-pill-number">{formatShort(props.value)}</div>}
-    </div>
+    </AsyncIcon>
   );
 }

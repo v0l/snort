@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,22 +38,7 @@ import { getCurrentSubscription } from "Subscription";
 import useLogin from "Hooks/useLogin";
 import { System } from "index";
 import AsyncButton from "Element/AsyncButton";
-
-interface NotePreviewProps {
-  note: TaggedNostrEvent;
-}
-
-function NotePreview({ note }: NotePreviewProps) {
-  return (
-    <div className="note-preview">
-      <ProfileImage pubkey={note.pubkey} />
-      <div className="note-preview-body">
-        {note.content.slice(0, 136)}
-        {note.content.length > 140 && "..."}
-      </div>
-    </div>
-  );
-}
+import { AsyncIcon } from "Element/AsyncIcon";
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();
@@ -72,7 +58,6 @@ export function NoteCreator() {
     selectedCustomRelays,
     error,
   } = useSelector((s: RootState) => s.noteCreator);
-  const [uploadInProgress, setUploadInProgress] = useState(false);
   const dispatch = useDispatch();
   const sub = getCurrentSubscription(LoginStore.allSubscriptions());
   const login = useLogin();
@@ -138,7 +123,6 @@ export function NoteCreator() {
   }
 
   async function uploadFile(file: File | Blob) {
-    setUploadInProgress(true);
     try {
       if (file) {
         const rx = await uploader.upload(file, file.name);
@@ -156,8 +140,6 @@ export function NoteCreator() {
       if (error instanceof Error) {
         dispatch(setError(error?.message));
       }
-    } finally {
-      setUploadInProgress(false);
     }
   }
 
@@ -198,8 +180,10 @@ export function NoteCreator() {
           data={preview as TaggedNostrEvent}
           related={[]}
           options={{
+            showContextMenu: false,
             showFooter: false,
             canClick: false,
+            showTime: false,
           }}
         />
       );
@@ -254,14 +238,12 @@ export function NoteCreator() {
 
   function renderRelayCustomisation() {
     return (
-      <div>
+      <div className="flex-column g8">
         {Object.keys(relays.item || {})
           .filter(el => relays.item[el].write)
           .map((r, i, a) => (
-            <div className="card flex">
-              <div className="flex f-col f-grow">
-                <div>{r}</div>
-              </div>
+            <div className="p flex f-space note-creator-relay">
+              <div>{r}</div>
               <div>
                 <input
                   type="checkbox"
@@ -322,103 +304,97 @@ export function NoteCreator() {
     <>
       {show && (
         <Modal className="note-creator-modal" onClose={() => dispatch(setShow(false))}>
-          {replyTo && <NotePreview note={replyTo} />}
+          {replyTo && (
+            <Note
+              data={replyTo}
+              related={[]}
+              options={{
+                showFooter: false,
+                showContextMenu: false,
+                showTime: false,
+                canClick: false,
+                showMedia: false,
+              }}
+            />
+          )}
           {preview && getPreviewNote()}
           {!preview && (
-            <div
-              onPaste={handlePaste}
-              className={`flex note-creator${replyTo ? " note-reply" : ""}${pollOptions ? " poll" : ""}`}>
-              <div className="flex f-col f-grow">
-                <Textarea
-                  autoFocus
-                  className={`textarea ${active ? "textarea--focused" : ""}`}
-                  onChange={onChange}
-                  value={note}
-                  onFocus={() => dispatch(setActive(true))}
-                  onKeyDown={e => {
-                    if (e.key === "Enter" && e.metaKey) {
-                      sendNote().catch(console.warn);
-                    }
-                  }}
-                />
-                {renderPollOptions()}
-                <div className="insert">
-                  {sub && (
-                    <Menu
-                      menuButton={
-                        <button>
-                          <Icon name="code-circle" />
-                        </button>
-                      }
-                      menuClassName="ctx-menu">
-                      {listAccounts()}
-                    </Menu>
-                  )}
-                  {pollOptions === undefined && !replyTo && (
-                    <button onClick={() => dispatch(setPollOptions(["A", "B"]))}>
-                      <Icon name="pie-chart" />
-                    </button>
-                  )}
-                  <button onClick={attachFile}>
-                    <Icon name="attachment" />
-                  </button>
-                </div>
-              </div>
-              {error && <span className="error">{error}</span>}
+            <div onPaste={handlePaste} className={`note-creator${pollOptions ? " poll" : ""}`}>
+              <Textarea
+                autoFocus
+                className={`textarea ${active ? "textarea--focused" : ""}`}
+                onChange={onChange}
+                value={note}
+                onFocus={() => dispatch(setActive(true))}
+                onKeyDown={e => {
+                  if (e.key === "Enter" && e.metaKey) {
+                    sendNote().catch(console.warn);
+                  }
+                }}
+              />
+              {renderPollOptions()}
             </div>
           )}
-          <div className="note-creator-actions">
-            {uploadInProgress && <Spinner />}
-            <button className="secondary" onClick={() => dispatch(setShowAdvanced(!showAdvanced))}>
-              <FormattedMessage defaultMessage="Advanced" />
-            </button>
-            <button className="secondary" onClick={cancel}>
-              <FormattedMessage {...messages.Cancel} />
-            </button>
-            <AsyncButton onClick={onSubmit}>
-              {replyTo ? <FormattedMessage {...messages.Reply} /> : <FormattedMessage {...messages.Send} />}
-            </AsyncButton>
+          <div className="flex f-space">
+            <div className="flex g8">
+              <ProfileImage pubkey={login.publicKey ?? ""} className="note-creator-icon" link="" showUsername={false} />
+              {pollOptions === undefined && !replyTo && (
+                <div className="note-creator-icon">
+                  <Icon name="pie-chart" onClick={() => dispatch(setPollOptions(["A", "B"]))} size={24} />
+                </div>
+              )}
+              <AsyncIcon iconName="image-plus" iconSize={24} onClick={attachFile} className="note-creator-icon" />
+              <button className="secondary" onClick={() => dispatch(setShowAdvanced(!showAdvanced))}>
+                <FormattedMessage defaultMessage="Advanced" />
+              </button>
+            </div>
+            <div className="flex g8">
+              <button className="secondary" onClick={cancel}>
+                <FormattedMessage defaultMessage="Cancel" />
+              </button>
+              <AsyncButton onClick={onSubmit}>
+                {replyTo ? <FormattedMessage defaultMessage="Reply" /> : <FormattedMessage defaultMessage="Send" />}
+              </AsyncButton>
+            </div>
           </div>
+          {error && <span className="error">{error}</span>}
           {showAdvanced && (
-            <div>
+            <>
               <button className="secondary" onClick={loadPreview}>
                 <FormattedMessage defaultMessage="Toggle Preview" />
               </button>
-              <h4>
-                <FormattedMessage defaultMessage="Custom Relays" />
-              </h4>
-              <p>
-                <FormattedMessage defaultMessage="Send note to a subset of your write relays" />
-              </p>
-              {renderRelayCustomisation()}
-              <h4>
-                <FormattedMessage defaultMessage="Forward Zaps" />
-              </h4>
-              <p>
+              <div>
+                <h4>
+                  <FormattedMessage defaultMessage="Custom Relays" />
+                </h4>
+                <p>
+                  <FormattedMessage defaultMessage="Send note to a subset of your write relays" />
+                </p>
+                {renderRelayCustomisation()}
+              </div>
+              <div className="flex-column g8">
+                <h4>
+                  <FormattedMessage defaultMessage="Forward Zaps" />
+                </h4>
                 <FormattedMessage defaultMessage="All zaps sent to this note will be received by the following LNURL" />
-              </p>
-              <b className="warning">
-                <FormattedMessage defaultMessage="Not all clients support this yet" />
-              </b>
-              <input
-                type="text"
-                className="w-max"
-                placeholder={formatMessage({
-                  defaultMessage: "LNURL to forward zaps to",
-                })}
-                value={zapForward}
-                onChange={e => dispatch(setZapForward(e.target.value))}
-              />
-              <h4>
-                <FormattedMessage defaultMessage="Sensitive Content" />
-              </h4>
-              <p>
+                <input
+                  type="text"
+                  className="w-max"
+                  placeholder={formatMessage({
+                    defaultMessage: "LNURL to forward zaps to",
+                  })}
+                  value={zapForward}
+                  onChange={e => dispatch(setZapForward(e.target.value))}
+                />
+                <span className="warning">
+                  <FormattedMessage defaultMessage="Not all clients support this yet" />
+                </span>
+              </div>
+              <div className="flex-column g8">
+                <h4>
+                  <FormattedMessage defaultMessage="Sensitive Content" />
+                </h4>
                 <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." />
-              </p>
-              <b className="warning">
-                <FormattedMessage defaultMessage="Not all clients support this yet" />
-              </b>
-              <div className="flex">
                 <input
                   className="w-max"
                   type="text"
@@ -430,8 +406,11 @@ export function NoteCreator() {
                     defaultMessage: "Reason",
                   })}
                 />
+                <span className="warning">
+                  <FormattedMessage defaultMessage="Not all clients support this yet" />
+                </span>
               </div>
-            </div>
+            </>
           )}
         </Modal>
       )}
