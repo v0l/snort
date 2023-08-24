@@ -38,7 +38,9 @@ export function UserPosts(props: { pubkey: string }) {
 }
 
 export function MyApp() {
-  return <SnortContext.Provider value={System}>
-    <UserPosts pubkey="63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed" />
-  </SnortContext.Provider>;
+  return (
+    <SnortContext.Provider value={System}>
+      <UserPosts pubkey="63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed" />
+    </SnortContext.Provider>
+  );
 }

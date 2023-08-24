@@ -20,7 +20,7 @@ export class SystemWorker extends ExternalStore<SystemSnapshot> implements Syste
       throw new Error("SharedWorker is not supported");
     }
   }
-  
+
   get ProfileLoader(): ProfileLoaderService {
     throw new Error("Method not implemented.");
   }

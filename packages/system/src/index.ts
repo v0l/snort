@@ -47,7 +47,7 @@ export interface SystemInterface {
   DisconnectRelay(address: string): void;
   BroadcastEvent(ev: NostrEvent): void;
   WriteOnceToRelay(relay: string, ev: NostrEvent): Promise<void>;
-  get ProfileLoader(): ProfileLoaderService
+  get ProfileLoader(): ProfileLoaderService;
 }
 
 export interface SystemSnapshot {

@@ -6,7 +6,7 @@ import { SnortContext } from "./context";
  * Gets a profile from cache or requests it from the relays
  */
 export function useUserProfile(pubKey?: HexKey): MetadataCache | undefined {
-  const system = useContext(SnortContext);  
+  const system = useContext(SnortContext);
   return useSyncExternalStore<MetadataCache | undefined>(
     h => {
       if (pubKey) {

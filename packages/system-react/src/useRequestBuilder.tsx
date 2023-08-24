@@ -7,7 +7,7 @@ import { SnortContext } from "./context";
  * Send a query to the relays and wait for data
  */
 const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TStore["getSnapshotData"]>>(
-  type: { new(): TStore },
+  type: { new (): TStore },
   rb: RequestBuilder | null,
 ) => {
   const system = useContext(SnortContext);
