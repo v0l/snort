@@ -1,5 +1,5 @@
-import { EventKind, HexKey, NostrPrefix, NostrEvent, EventSigner } from ".";
-import { HashtagRegex } from "./const";
+import { EventKind, HexKey, NostrPrefix, NostrEvent, EventSigner, PowMiner } from ".";
+import { HashtagRegex, MentionNostrEntityRegex } from "./const";
 import { getPublicKey, unixNow } from "@snort/shared";
 import { EventExt } from "./event-ext";
 import { tryParseNostrLink } from "./nostr-link";
@@ -10,6 +10,8 @@ export class EventBuilder {
   #createdAt?: number;
   #pubkey?: string;
   #tags: Array<Array<string>> = [];
+  #pow?: number;
+  #powMiner?: PowMiner;
 
   kind(k: EventKind) {
     this.#kind = k;
@@ -38,14 +40,23 @@ export class EventBuilder {
     return this;
   }
 
+  pow(target: number, miner?: PowMiner) {
+    this.#pow = target;
+    this.#powMiner = miner ?? {
+      minePow: (ev, target) => {
+        EventExt.minePow(ev, target);
+        return Promise.resolve(ev);
+      },
+    };
+    return this;
+  }
+
   /**
    * Extract mentions
    */
   processContent() {
     if (this.#content) {
-      this.#content = this.#content.replace(/@n(pub|profile|event|ote|addr|)1[acdefghjklmnpqrstuvwxyz023456789]+/g, m =>
-        this.#replaceMention(m)
-      );
+      this.#content = this.#content.replace(MentionNostrEntityRegex, m => this.#replaceMention(m));
 
       const hashTags = [...this.#content.matchAll(HashtagRegex)];
       hashTags.map(hashTag => {
@@ -76,12 +87,19 @@ export class EventBuilder {
   async buildAndSign(pk: HexKey | EventSigner) {
     if (typeof pk === "string") {
       const ev = this.pubKey(getPublicKey(pk)).build();
-      EventExt.sign(ev, pk);
-      return ev;
+      return EventExt.sign(await this.#mine(ev), pk);
     } else {
       const ev = this.pubKey(await pk.getPubKey()).build();
-      return await pk.sign(ev);
+      return await pk.sign(await this.#mine(ev));
     }
+  }
+
+  async #mine(ev: NostrEvent) {
+    if (this.#pow && this.#powMiner) {
+      const ret = await this.#powMiner.minePow(ev, this.#pow);
+      return ret;
+    }
+    return ev;
   }
 
   #validate() {

@@ -37,7 +37,7 @@ export class Nip7Signer implements EventSigner {
       throw new Error("Cannot use NIP-07 signer, not found!");
     }
     return await barrierQueue(Nip7Queue, () =>
-      unwrap(window.nostr?.nip04?.encrypt).call(window.nostr?.nip04, key, content)
+      unwrap(window.nostr?.nip04?.encrypt).call(window.nostr?.nip04, key, content),
     );
   }
 
@@ -46,7 +46,7 @@ export class Nip7Signer implements EventSigner {
       throw new Error("Cannot use NIP-07 signer, not found!");
     }
     return await barrierQueue(Nip7Queue, () =>
-      unwrap(window.nostr?.nip04?.decrypt).call(window.nostr?.nip04, otherKey, content)
+      unwrap(window.nostr?.nip04?.decrypt).call(window.nostr?.nip04, otherKey, content),
     );
   }
 

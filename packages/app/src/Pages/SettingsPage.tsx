@@ -1,6 +1,6 @@
 import { FormattedMessage } from "react-intl";
 import { Outlet, RouteObject, useNavigate } from "react-router-dom";
-import SettingsIndex from "Pages/settings/Index";
+import SettingsIndex from "Pages/settings/Root";
 import Profile from "Pages/settings/Profile";
 import Relay from "Pages/settings/Relays";
 import Preferences from "Pages/settings/Preferences";
@@ -16,12 +16,14 @@ export default function SettingsPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="main-content">
-      <h2 onClick={() => navigate("/settings")} className="pointer">
-        <FormattedMessage {...messages.Settings} />
-      </h2>
+    <>
+      <div className="main-content p">
+        <h2 onClick={() => navigate("/settings/profile")} className="pointer">
+          <FormattedMessage {...messages.Settings} />
+        </h2>
+      </div>
       <Outlet />
-    </div>
+    </>
   );
 }
 
@@ -29,31 +31,33 @@ export const SettingsRoutes: RouteObject[] = [
   {
     path: "",
     element: <SettingsIndex />,
+    children: [
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "relays",
+        element: <Relay />,
+      },
+      {
+        path: "relays/:id",
+        element: <RelayInfo />,
+      },
+      {
+        path: "preferences",
+        element: <Preferences />,
+      },
+      {
+        path: "accounts",
+        element: <AccountsPage />,
+      },
+      {
+        path: "keys",
+        element: <ExportKeys />,
+      },
+      ...ManageHandleRoutes,
+      ...WalletSettingsRoutes,
+    ],
   },
-  {
-    path: "profile",
-    element: <Profile />,
-  },
-  {
-    path: "relays",
-    element: <Relay />,
-  },
-  {
-    path: "relays/:id",
-    element: <RelayInfo />,
-  },
-  {
-    path: "preferences",
-    element: <Preferences />,
-  },
-  {
-    path: "accounts",
-    element: <AccountsPage />,
-  },
-  {
-    path: "keys",
-    element: <ExportKeys />,
-  },
-  ...ManageHandleRoutes,
-  ...WalletSettingsRoutes,
 ];

@@ -1,19 +1,29 @@
+.settings-nav {
+  display: grid;
+  grid-template-columns: 237px auto;
+}
+
+.settings-nav > div {
+  border: 1px solid var(--gray-superdark);
+}
+
+.settings-nav > div:nth-child(2) {
+  padding: 12px 16px;
+}
+
 .settings-nav .card {
   cursor: pointer;
 }
 
 .settings-row {
   display: grid;
-  grid-template-columns: 22px 1fr 8px;
+  grid-template-columns: 24px 1fr 24px;
   align-items: center;
-  font-weight: 600;
-  font-size: 16px;
-  padding: 0.8em 1em;
-  background: var(--note-bg);
-  border-radius: 10px;
   cursor: pointer;
-  gap: 10px;
-  margin-bottom: 5px;
+  padding: 12px 16px;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .settings-row.inner {
@@ -24,12 +34,12 @@
 }
 
 .settings-group-header {
-  font-weight: 600;
+  align-items: center;
+  cursor: pointer;
+  padding: 12px 16px;
+  gap: 8px;
   font-size: 16px;
-  padding: 0.8em 1em;
-  background-color: var(--note-bg);
-  border-radius: 10px;
-  margin-bottom: 5px;
+  font-weight: 600;
 }
 
 .settings-row:hover,
@@ -39,11 +49,6 @@
 
 .align-end {
   margin-left: auto;
-}
-
-.settings-row svg {
-  width: 100%;
-  height: 100%;
 }
 
 .settings-group-header .collapse-icon > svg {

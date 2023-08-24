@@ -46,7 +46,7 @@ export async function createDirectMessage(
     message: string
     recipient: PublicKey
   },
-  priv?: PrivateKey
+  priv?: PrivateKey,
 ): Promise<DirectMessage> {
   recipient = parsePublicKey(recipient)
   if (priv === undefined) {
@@ -66,7 +66,7 @@ export async function createDirectMessage(
         getRecipient,
         getPrevious,
       },
-      priv
+      priv,
     )
   } else {
     priv = parsePrivateKey(priv)
@@ -80,14 +80,14 @@ export async function createDirectMessage(
         getRecipient,
         getPrevious,
       },
-      priv
+      priv,
     )
   }
 }
 
 export async function getMessage(
   this: DirectMessage,
-  priv?: HexOrBechPrivateKey
+  priv?: HexOrBechPrivateKey,
 ): Promise<string | undefined> {
   if (priv !== undefined) {
     priv = parsePrivateKey(priv)
@@ -114,9 +114,9 @@ export function getRecipient(this: DirectMessage): PublicKey {
   const recipientTag = this.tags.find((tag) => tag[0] === "p")
   if (typeof recipientTag?.[1] !== "string") {
     throw new NostrError(
-      `expected "p" tag to be of type string, but got ${
-        recipientTag?.[1]
-      } in ${JSON.stringify(this)}`
+      `expected "p" tag to be of type string, but got ${recipientTag?.[1]} in ${JSON.stringify(
+        this,
+      )}`,
     )
   }
   return recipientTag[1]
@@ -129,9 +129,9 @@ export function getPrevious(this: DirectMessage): EventId | undefined {
   }
   if (typeof previousTag[1] !== "string") {
     throw new NostrError(
-      `expected "e" tag to be of type string, but got ${
-        previousTag?.[1]
-      } in ${JSON.stringify(this)}`
+      `expected "e" tag to be of type string, but got ${previousTag?.[1]} in ${JSON.stringify(
+        this,
+      )}`,
     )
   }
   return previousTag[1]

@@ -22,7 +22,7 @@ const RelayInfo = () => {
       <h3 className="pointer" onClick={() => navigate("/settings/relays")}>
         <FormattedMessage {...messages.Relays} />
       </h3>
-      <div className="card">
+      <div>
         <h3>{stats?.info?.name}</h3>
         <p>{stats?.info?.description}</p>
 

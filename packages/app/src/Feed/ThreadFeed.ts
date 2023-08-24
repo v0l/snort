@@ -4,7 +4,6 @@ import { useRequestBuilder } from "@snort/system-react";
 
 import { appendDedupe } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
-import { System } from "index";
 
 interface RelayTaggedEventId {
   id: u256;
@@ -58,7 +57,7 @@ export default function useThreadFeed(link: NostrLink) {
     return sub;
   }, [trackingEvents, trackingATags, allEvents, pref]);
 
-  const store = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, sub);
+  const store = useRequestBuilder(FlatNoteStore, sub);
 
   useEffect(() => {
     if (link.type === NostrPrefix.Address) {

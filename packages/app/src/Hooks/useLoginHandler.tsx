@@ -5,7 +5,7 @@ import { LoginSessionType, LoginStore } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import { getNip05PubKey } from "Pages/LoginPage";
 import { bech32ToHex } from "SnortUtils";
-import { Nip7Signer, Nip46Signer } from "@snort/system";
+import { Nip46Signer } from "@snort/system";
 
 export default function useLoginHandler() {
   const { formatMessage } = useIntl();

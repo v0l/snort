@@ -1,16 +1,18 @@
 .text {
   font-size: var(--font-size);
   line-height: 24px;
-  white-space: pre-wrap;
-  word-break: break-word;
 }
 
-.text > a {
+.text .text-frag > a {
   color: var(--highlight);
   text-decoration: none;
 }
 
-.text a:hover {
+.text .text-frag > a:hover {
+  text-decoration: underline;
+}
+
+.text .text-frag .hashtag:hover {
   text-decoration: underline;
 }
 
@@ -65,11 +67,8 @@
 .text video,
 .text iframe,
 .text audio {
-  max-width: 100%;
-  max-height: 500px;
-  margin: 10px auto;
+  width: 100%;
   display: block;
-  border-radius: 12px;
 }
 
 .text iframe,

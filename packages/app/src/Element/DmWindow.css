@@ -3,6 +3,9 @@
   flex-direction: column;
   height: 100%;
 }
+.dm-window > div:nth-child(1) {
+  padding: 12px 0;
+}
 
 .dm-window > div:nth-child(2) {
   overflow-y: auto;
@@ -15,7 +18,6 @@
 .dm-window > div:nth-child(3) {
   display: flex;
   align-items: center;
-  background-color: var(--bg-color);
   gap: 10px;
   padding: 5px 10px;
 }

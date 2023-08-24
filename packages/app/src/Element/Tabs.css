@@ -5,8 +5,9 @@
   overflow-x: scroll;
   -ms-overflow-style: none; /* for Internet Explorer, Edge */
   scrollbar-width: none; /* Firefox */
-  margin-bottom: 18px;
   white-space: nowrap;
+  gap: 8px;
+  padding: 16px 12px;
 }
 
 .tabs::-webkit-scrollbar {
@@ -14,23 +15,21 @@
 }
 
 .tab {
+  background: var(--gray-ultradark);
   color: var(--font-tertiary-color);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: 100px;
   font-weight: 600;
-  font-size: 14px;
-  padding: 6px 12px;
-  text-align: center;
-  font-feature-settings: "tnum";
-}
-
-.tab:not(:last-of-type) {
-  margin-right: 8px;
+  font-size: 16px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  gap: 6px;
 }
 
 .tab.active {
-  border-color: var(--font-color);
-  color: var(--font-color);
+  color: black;
+  background: white;
 }
 
 .tabs > div {

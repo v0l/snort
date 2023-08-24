@@ -22,7 +22,7 @@ export interface SetMetadata extends RawEvent {
    * @return The internet identifier. `undefined` if there is no internet identifier.
    */
   verifyInternetIdentifier(
-    opts?: VerificationOptions
+    opts?: VerificationOptions,
   ): Promise<InternetIdentifier | undefined>
 }
 
@@ -38,7 +38,7 @@ export interface UserMetadata {
  */
 export function createSetMetadata(
   content: UserMetadata,
-  priv?: HexOrBechPrivateKey
+  priv?: HexOrBechPrivateKey,
 ): Promise<SetMetadata> {
   return signEvent(
     {
@@ -48,7 +48,7 @@ export function createSetMetadata(
       getUserMetadata,
       verifyInternetIdentifier,
     },
-    priv
+    priv,
   )
 }
 
@@ -60,7 +60,7 @@ export function getUserMetadata(this: SetMetadata): UserMetadata {
     typeof userMetadata.picture !== "string"
   ) {
     throw new NostrError(
-      `invalid user metadata ${userMetadata} in ${JSON.stringify(this)}`
+      `invalid user metadata ${userMetadata} in ${JSON.stringify(this)}`,
     )
   }
   return userMetadata
@@ -68,7 +68,7 @@ export function getUserMetadata(this: SetMetadata): UserMetadata {
 
 export async function verifyInternetIdentifier(
   this: SetMetadata,
-  opts?: VerificationOptions
+  opts?: VerificationOptions,
 ): Promise<InternetIdentifier | undefined> {
   const metadata = this.getUserMetadata()
   if (metadata.nip05 === undefined) {
@@ -81,14 +81,14 @@ export async function verifyInternetIdentifier(
     !/^[a-zA-Z0-9-_]+$/.test(name)
   ) {
     throw new NostrError(
-      `invalid NIP-05 internet identifier: ${metadata.nip05}`
+      `invalid NIP-05 internet identifier: ${metadata.nip05}`,
     )
   }
   const res = await fetch(
     `${
       opts?.https === false ? "http" : "https"
     }://${domain}/.well-known/nostr.json?name=${name}`,
-    { redirect: "error" }
+    { redirect: "error" },
   )
   const wellKnown = await res.json()
   const pubkey = wellKnown.names?.[name]
@@ -96,7 +96,7 @@ export async function verifyInternetIdentifier(
     throw new NostrError(
       `invalid NIP-05 internet identifier: ${
         metadata.nip05
-      } pubkey does not match, ${JSON.stringify(wellKnown)}`
+      } pubkey does not match, ${JSON.stringify(wellKnown)}`,
     )
   }
   const relays = wellKnown.relays?.[pubkey]

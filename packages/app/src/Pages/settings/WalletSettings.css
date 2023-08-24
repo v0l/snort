@@ -5,10 +5,10 @@
   grid-gap: 10px;
 }
 
-.wallet-grid .card {
+.wallet-grid > div {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
+  justify-content: space-between;
 }

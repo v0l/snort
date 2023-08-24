@@ -43,18 +43,18 @@ export class Nostr extends EventEmitter {
    */
   open(
     url: URL | string,
-    opts?: { read?: boolean; write?: boolean; fetchInfo?: boolean }
+    opts?: { read?: boolean; write?: boolean; fetchInfo?: boolean },
   ): void {
     const relayUrl = new URL(url)
 
     // If the connection already exists, update the options.
     const existingConn = this.#conns.find(
-      (c) => c.relay.url.toString() === relayUrl.toString()
+      (c) => c.relay.url.toString() === relayUrl.toString(),
     )
     if (existingConn !== undefined) {
       if (opts === undefined) {
         throw new NostrError(
-          `called connect with existing connection ${url}, but options were not specified`
+          `called connect with existing connection ${url}, but options were not specified`,
         )
       }
       if (opts.read !== undefined) {
@@ -88,7 +88,7 @@ export class Nostr extends EventEmitter {
               event: parseEvent(msg.event),
               subscriptionId: msg.subscriptionId,
             },
-            this
+            this,
           )
         } else if (msg.kind === "notice") {
           this.emit("notice", msg.notice, this)
@@ -101,7 +101,7 @@ export class Nostr extends EventEmitter {
               ok: msg.ok,
               message: msg.message,
             },
-            this
+            this,
           )
         } else if (msg.kind === "eose") {
           this.emit("eose", msg.subscriptionId, this)
@@ -116,13 +116,13 @@ export class Nostr extends EventEmitter {
       onOpen: async () => {
         // Update the connection readyState.
         const conn = this.#conns.find(
-          (c) => c.relay.url.toString() === relayUrl.toString()
+          (c) => c.relay.url.toString() === relayUrl.toString(),
         )
         if (conn === undefined) {
           this.#error(
             new NostrError(
-              `bug: expected connection to ${relayUrl.toString()} to be in the map`
-            )
+              `bug: expected connection to ${relayUrl.toString()} to be in the map`,
+            ),
           )
         } else {
           if (conn.relay.readyState !== ReadyState.CONNECTING) {
@@ -130,8 +130,8 @@ export class Nostr extends EventEmitter {
               new NostrError(
                 `bug: expected connection to ${relayUrl.toString()} to have readyState CONNECTING, got ${
                   conn.relay.readyState
-                }`
-              )
+                }`,
+              ),
             )
           }
           conn.relay = {
@@ -148,13 +148,13 @@ export class Nostr extends EventEmitter {
       onClose: () => {
         // Update the connection readyState.
         const conn = this.#conns.find(
-          (c) => c.relay.url.toString() === relayUrl.toString()
+          (c) => c.relay.url.toString() === relayUrl.toString(),
         )
         if (conn === undefined) {
           this.#error(
             new NostrError(
-              `bug: expected connection to ${relayUrl.toString()} to be in the map`
-            )
+              `bug: expected connection to ${relayUrl.toString()} to be in the map`,
+            ),
           )
         } else {
           conn.relay.readyState = ReadyState.CLOSED
@@ -207,7 +207,7 @@ export class Nostr extends EventEmitter {
     }
     const relayUrl = new URL(url)
     const c = this.#conns.find(
-      (c) => c.relay.url.toString() === relayUrl.toString()
+      (c) => c.relay.url.toString() === relayUrl.toString(),
     )
     if (c === undefined) {
       throw new NostrError(`connection to ${url} doesn't exist`)
@@ -231,7 +231,7 @@ export class Nostr extends EventEmitter {
    */
   subscribe(
     filters: Filters[],
-    subscriptionId: SubscriptionId = randomSubscriptionId()
+    subscriptionId: SubscriptionId = randomSubscriptionId(),
   ): SubscriptionId {
     this.#subscriptions.set(subscriptionId, filters)
     for (const { conn, read } of this.#conns.values()) {

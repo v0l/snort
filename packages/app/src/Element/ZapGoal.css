@@ -1,0 +1,21 @@
+.zap-goal {
+}
+
+.zap-goal h1 {
+  line-height: 1em;
+}
+
+.zap-goal .progress {
+  position: relative;
+  height: 1em;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: var(--gray);
+}
+
+.zap-goal .progress > div {
+  position: absolute;
+  background-color: var(--success);
+  width: var(--progress);
+  height: 100%;
+}

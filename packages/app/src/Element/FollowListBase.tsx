@@ -16,6 +16,7 @@ export interface FollowListBaseProps {
   showAbout?: boolean;
   className?: string;
   actions?: ReactNode;
+  profileActions?: (pk: string) => ReactNode;
 }
 
 export default function FollowListBase({
@@ -25,6 +26,7 @@ export default function FollowListBase({
   showAbout,
   className,
   actions,
+  profileActions,
 }: FollowListBaseProps) {
   const publisher = useEventPublisher();
   const { follows, relays } = useLogin();
@@ -48,7 +50,7 @@ export default function FollowListBase({
         </div>
       )}
       {pubkeys?.map(a => (
-        <ProfilePreview pubkey={a} key={a} options={{ about: showAbout }} />
+        <ProfilePreview pubkey={a} key={a} options={{ about: showAbout }} actions={profileActions?.(a)} />
       ))}
     </div>
   );

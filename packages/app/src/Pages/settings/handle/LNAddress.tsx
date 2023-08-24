@@ -42,7 +42,7 @@ export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
   }
 
   return (
-    <div className="card">
+    <div>
       <h4>
         <FormattedMessage defaultMessage="Update Lightning Address" />
       </h4>

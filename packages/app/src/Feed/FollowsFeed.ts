@@ -3,7 +3,6 @@ import { HexKey, TaggedNostrEvent, EventKind, NoteCollection, RequestBuilder } f
 import { useRequestBuilder } from "@snort/system-react";
 
 import useLogin from "Hooks/useLogin";
-import { System } from "index";
 
 export default function useFollowsFeed(pubkey?: HexKey) {
   const { publicKey, follows } = useLogin();
@@ -16,7 +15,7 @@ export default function useFollowsFeed(pubkey?: HexKey) {
     return b;
   }, [isMe, pubkey]);
 
-  const contactFeed = useRequestBuilder<NoteCollection>(System, NoteCollection, sub);
+  const contactFeed = useRequestBuilder(NoteCollection, sub);
   return useMemo(() => {
     if (isMe) {
       return follows.item;

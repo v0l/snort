@@ -21,7 +21,7 @@ export interface Deletion extends RawEvent {
  */
 export function createDeletion(
   { events, content }: { events: EventId[]; content?: string },
-  priv?: HexOrBechPrivateKey
+  priv?: HexOrBechPrivateKey,
 ): Promise<Deletion> {
   return signEvent(
     {
@@ -30,7 +30,7 @@ export function createDeletion(
       content: content ?? "",
       getEvents,
     },
-    priv
+    priv,
   )
 }
 
@@ -40,7 +40,7 @@ export function getEvents(this: Deletion): EventId[] {
     .map((tag) => {
       if (tag[1] === undefined) {
         throw new NostrError(
-          `invalid deletion event tag: ${JSON.stringify(tag)}`
+          `invalid deletion event tag: ${JSON.stringify(tag)}`,
         )
       }
       return tag[1]

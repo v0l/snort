@@ -10,6 +10,7 @@ import {
   Lists,
   NostrEvent,
   NotSignedNostrEvent,
+  PowMiner,
   PrivateKeySigner,
   RelaySettings,
   TaggedNostrEvent,
@@ -27,6 +28,8 @@ type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
 export class EventPublisher {
   #pubKey: string;
   #signer: EventSigner;
+  #pow?: number;
+  #miner?: PowMiner;
 
   constructor(signer: EventSigner, pubKey: string) {
     this.#signer = signer;
@@ -58,14 +61,21 @@ export class EventPublisher {
     return this.#pubKey;
   }
 
+  /**
+   * Apply POW to every event
+   */
+  pow(target: number, miner?: PowMiner) {
+    this.#pow = target;
+    this.#miner = miner;
+  }
+
   #eb(k: EventKind) {
     const eb = new EventBuilder();
     return eb.pubKey(this.#pubKey).kind(k);
   }
 
   async #sign(eb: EventBuilder) {
-    const ev = eb.build();
-    return await this.#signer.sign(ev);
+    return await (this.#pow ? eb.pow(this.#pow, this.#miner) : eb).buildAndSign(this.#signer);
   }
 
   async nip4Encrypt(content: string, otherKey: string) {
@@ -146,7 +156,7 @@ export class EventPublisher {
     relays: Array<string>,
     note?: HexKey,
     msg?: string,
-    fnExtra?: EventBuilderHook
+    fnExtra?: EventBuilderHook,
   ) {
     const eb = this.#eb(EventKind.ZapRequest);
     eb.content(msg ?? "");
@@ -285,7 +295,7 @@ export class EventPublisher {
   /**
    * NIP-59 Gift Wrap event with ephemeral key
    */
-  async giftWrap(inner: NostrEvent, explicitP?: string) {
+  async giftWrap(inner: NostrEvent, explicitP?: string, powTarget?: number, powMiner?: PowMiner) {
     const secret = utils.bytesToHex(secp.secp256k1.utils.randomPrivateKey());
     const signer = new PrivateKeySigner(secret);
 
@@ -296,6 +306,9 @@ export class EventPublisher {
     eb.pubKey(signer.getPubKey());
     eb.kind(EventKind.GiftWrap);
     eb.tag(["p", pTag]);
+    if (powTarget) {
+      eb.pow(powTarget, powMiner);
+    }
     eb.content(await signer.nip44Encrypt(JSON.stringify(inner), pTag));
 
     return await eb.buildAndSign(secret);

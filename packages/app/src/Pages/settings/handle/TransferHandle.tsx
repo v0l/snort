@@ -28,7 +28,7 @@ export default function TransferHandle({ handle }: { handle: ManageHandle }) {
   }
 
   return (
-    <div className="card">
+    <div>
       <h4>
         <FormattedMessage defaultMessage="Transfer to Pubkey" />
       </h4>

@@ -1,6 +1,6 @@
 import { ExternalStore } from "@snort/shared";
 
-import { SystemSnapshot, SystemInterface } from ".";
+import { SystemSnapshot, SystemInterface, ProfileLoaderService } from ".";
 import { AuthHandler, ConnectionStateSnapshot, RelaySettings } from "./connection";
 import { NostrEvent } from "./nostr";
 import { NoteStore } from "./note-collection";
@@ -19,6 +19,10 @@ export class SystemWorker extends ExternalStore<SystemSnapshot> implements Syste
     } else {
       throw new Error("SharedWorker is not supported");
     }
+  }
+
+  get ProfileLoader(): ProfileLoaderService {
+    throw new Error("Method not implemented.");
   }
 
   HandleAuth?: AuthHandler;

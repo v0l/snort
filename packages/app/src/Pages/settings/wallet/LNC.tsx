@@ -46,7 +46,7 @@ const ConnectLNC = () => {
       active: true,
       info: unwrap(walletInfo),
     });
-    navigate("/wallet");
+    navigate("/settings/wallet");
   }
 
   function flowConnect() {

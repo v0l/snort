@@ -1,35 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { HTMLProps, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useIntl, FormattedMessage } from "react-intl";
-import { Menu, MenuItem } from "@szhsin/react-menu";
+import { useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
-import { TaggedNostrEvent, HexKey, u256, encodeTLV, NostrPrefix, Lists, ParsedZap } from "@snort/system";
+import { TaggedNostrEvent, HexKey, u256, ParsedZap, countLeadingZeros } from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
-import Icon from "Icons/Icon";
-import Spinner from "Icons/Spinner";
-
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { delay, normalizeReaction, unwrap } from "SnortUtils";
+import { delay, findTag, normalizeReaction, unwrap } from "SnortUtils";
 import { NoteCreator } from "Element/NoteCreator";
-import { ReBroadcaster } from "Element/ReBroadcaster";
-import Reactions from "Element/Reactions";
 import SendSats from "Element/SendSats";
 import { ZapsSummary } from "Element/Zap";
 import { RootState } from "State/Store";
 import { setReplyTo, setShow, reset } from "State/NoteCreator";
-import {
-  setNote as setReBroadcastNote,
-  setShow as setReBroadcastShow,
-  reset as resetReBroadcast,
-} from "State/ReBroadcast";
-import useModeration from "Hooks/useModeration";
-import { TranslateHost } from "Const";
+import { AsyncIcon } from "Element/AsyncIcon";
+
 import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
-import { setBookmarked, setPinned } from "Login";
 import { useInteractionCache } from "Hooks/useInteractionCache";
 import { ZapPoolController } from "ZapPoolController";
 import { System } from "index";
@@ -49,49 +37,31 @@ const barrierZapper = async <T,>(then: () => Promise<T>): Promise<T> => {
   }
 };
 
-export interface Translation {
-  text: string;
-  fromLanguage: string;
-  confidence: number;
-}
-
 export interface NoteFooterProps {
   reposts: TaggedNostrEvent[];
   zaps: ParsedZap[];
   positive: TaggedNostrEvent[];
-  negative: TaggedNostrEvent[];
-  showReactions: boolean;
-  setShowReactions(b: boolean): void;
   ev: TaggedNostrEvent;
-  onTranslated?: (content: Translation) => void;
 }
 
 export default function NoteFooter(props: NoteFooterProps) {
-  const { ev, showReactions, setShowReactions, positive, negative, reposts, zaps } = props;
+  const { ev, positive, reposts, zaps } = props;
   const dispatch = useDispatch();
   const { formatMessage } = useIntl();
   const login = useLogin();
-  const { pinned, bookmarked, publicKey, preferences: prefs, relays } = login;
-  const { mute, block } = useModeration();
-  const author = useUserProfile(System, ev.pubkey);
+  const { publicKey, preferences: prefs, relays } = login;
+  const author = useUserProfile(ev.pubkey);
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const publisher = useEventPublisher();
   const showNoteCreatorModal = useSelector((s: RootState) => s.noteCreator.show);
-  const showReBroadcastModal = useSelector((s: RootState) => s.reBroadcast.show);
-  const reBroadcastNote = useSelector((s: RootState) => s.reBroadcast.note);
   const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
   const willRenderNoteCreator = showNoteCreatorModal && replyTo?.id === ev.id;
-  const willRenderReBroadcast = showReBroadcastModal && reBroadcastNote && reBroadcastNote?.id === ev.id;
   const [tip, setTip] = useState(false);
   const [zapping, setZapping] = useState(false);
   const walletState = useWallet();
   const wallet = walletState.wallet;
 
   const isMine = ev.pubkey === publicKey;
-  const lang = window.navigator.language;
-  const langNames = new Intl.DisplayNames([...window.navigator.languages], {
-    type: "language",
-  });
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   const didZap = interactionCache.data.zapped || zaps.some(a => a.sender === publicKey);
   const longPress = useLongPress(
@@ -120,13 +90,6 @@ export default function NoteFooter(props: NoteFooterProps) {
       const evLike = await publisher.react(ev, content);
       System.BroadcastEvent(evLike);
       await interactionCache.react();
-    }
-  }
-
-  async function deleteEvent() {
-    if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.id.substring(0, 8) })) && publisher) {
-      const evDelete = await publisher.delete(ev.id);
-      System.BroadcastEvent(evDelete);
     }
   }
 
@@ -208,16 +171,27 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }, [prefs.autoZap, author, zapping]);
 
+  function powIcon() {
+    const pow = findTag(ev, "nonce") ? countLeadingZeros(ev.id) : undefined;
+    if (pow) {
+      return (
+        <AsyncFooterIcon title={formatMessage({ defaultMessage: "Proof of Work" })} iconName="diamond" value={pow} />
+      );
+    }
+  }
+
   function tipButton() {
     const service = getLNURL();
     if (service) {
       return (
-        <>
-          <div className={`reaction-pill ${didZap ? "reacted" : ""}`} {...longPress()} onClick={e => fastZap(e)}>
-            {zapping ? <Spinner /> : wallet?.isReady() ? <Icon name="zapFast" /> : <Icon name="zap" />}
-            {zapTotal > 0 && <div className="reaction-pill-number">{formatShort(zapTotal)}</div>}
-          </div>
-        </>
+        <AsyncFooterIcon
+          className={didZap ? "reacted" : ""}
+          {...longPress()}
+          title={formatMessage({ defaultMessage: "Zap" })}
+          iconName={wallet?.isReady() ? "zapFast" : "zap"}
+          value={zapTotal}
+          onClick={e => fastZap(e)}
+        />
       );
     }
     return null;
@@ -225,165 +199,41 @@ export default function NoteFooter(props: NoteFooterProps) {
 
   function repostIcon() {
     return (
-      <div className={`reaction-pill ${hasReposted() ? "reacted" : ""}`} onClick={() => repost()}>
-        <Icon name="repost" size={17} />
-        {reposts.length > 0 && <div className="reaction-pill-number">{formatShort(reposts.length)}</div>}
-      </div>
+      <AsyncFooterIcon
+        className={hasReposted() ? "reacted" : ""}
+        iconName="repeat"
+        title={formatMessage({ defaultMessage: "Repost" })}
+        value={reposts.length}
+        onClick={() => repost()}
+      />
     );
   }
 
-  function reactionIcons() {
+  function reactionIcon() {
     if (!prefs.enableReactions) {
       return null;
     }
+    const reacted = hasReacted("+");
     return (
-      <>
-        <div
-          className={`reaction-pill ${hasReacted("+") ? "reacted" : ""} `}
-          onClick={() => react(prefs.reactionEmoji)}>
-          <Icon name="heart" />
-          <div className="reaction-pill-number">{formatShort(positive.length)}</div>
-        </div>
-      </>
+      <AsyncFooterIcon
+        className={reacted ? "reacted" : ""}
+        iconName={reacted ? "heart-solid" : "heart"}
+        title={formatMessage({ defaultMessage: "Like" })}
+        value={positive.length}
+        onClick={() => react(prefs.reactionEmoji)}
+      />
     );
   }
 
-  async function share() {
-    const link = encodeTLV(NostrPrefix.Event, ev.id, ev.relays);
-    const url = `${window.location.protocol}//${window.location.host}/e/${link}`;
-    if ("share" in window.navigator) {
-      await window.navigator.share({
-        title: "Snort",
-        url: url,
-      });
-    } else {
-      await navigator.clipboard.writeText(url);
-    }
-  }
-
-  async function translate() {
-    const res = await fetch(`${TranslateHost}/translate`, {
-      method: "POST",
-      body: JSON.stringify({
-        q: ev.content,
-        source: "auto",
-        target: lang.split("-")[0],
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (res.ok) {
-      const result = await res.json();
-      if (typeof props.onTranslated === "function" && result) {
-        props.onTranslated({
-          text: result.translatedText,
-          fromLanguage: langNames.of(result.detectedLanguage.language),
-          confidence: result.detectedLanguage.confidence,
-        } as Translation);
-      }
-    }
-  }
-
-  async function copyId() {
-    const link = encodeTLV(NostrPrefix.Event, ev.id, ev.relays);
-    await navigator.clipboard.writeText(link);
-  }
-
-  async function pin(id: HexKey) {
-    if (publisher) {
-      const es = [...pinned.item, id];
-      const ev = await publisher.noteList(es, Lists.Pinned);
-      System.BroadcastEvent(ev);
-      setPinned(login, es, ev.created_at * 1000);
-    }
-  }
-
-  async function bookmark(id: HexKey) {
-    if (publisher) {
-      const es = [...bookmarked.item, id];
-      const ev = await publisher.noteList(es, Lists.Bookmarked);
-      System.BroadcastEvent(ev);
-      setBookmarked(login, es, ev.created_at * 1000);
-    }
-  }
-
-  async function copyEvent() {
-    await navigator.clipboard.writeText(JSON.stringify(ev, undefined, "  "));
-  }
-
-  function menuItems() {
+  function replyIcon() {
     return (
-      <>
-        <div className="close-menu-container">
-          {/* This menu item serves as a "close menu" button;
-          it allows the user to click anywhere nearby the menu to close it. */}
-          <MenuItem>
-            <div className="close-menu" />
-          </MenuItem>
-        </div>
-        <MenuItem onClick={() => setShowReactions(true)}>
-          <Icon name="heart" />
-          <FormattedMessage {...messages.Reactions} />
-        </MenuItem>
-        <MenuItem onClick={() => share()}>
-          <Icon name="share" />
-          <FormattedMessage {...messages.Share} />
-        </MenuItem>
-        {!pinned.item.includes(ev.id) && (
-          <MenuItem onClick={() => pin(ev.id)}>
-            <Icon name="pin" />
-            <FormattedMessage {...messages.Pin} />
-          </MenuItem>
-        )}
-        {!bookmarked.item.includes(ev.id) && (
-          <MenuItem onClick={() => bookmark(ev.id)}>
-            <Icon name="bookmark" />
-            <FormattedMessage {...messages.Bookmark} />
-          </MenuItem>
-        )}
-        <MenuItem onClick={() => copyId()}>
-          <Icon name="copy" />
-          <FormattedMessage {...messages.CopyID} />
-        </MenuItem>
-        <MenuItem onClick={() => mute(ev.pubkey)}>
-          <Icon name="mute" />
-          <FormattedMessage {...messages.Mute} />
-        </MenuItem>
-        {prefs.enableReactions && (
-          <MenuItem onClick={() => react("-")}>
-            <Icon name="dislike" />
-            <FormattedMessage {...messages.DislikeAction} />
-          </MenuItem>
-        )}
-        {ev.pubkey === publicKey && (
-          <MenuItem onClick={handleReBroadcastButtonClick}>
-            <Icon name="relay" />
-            <FormattedMessage {...messages.ReBroadcast} />
-          </MenuItem>
-        )}
-        {ev.pubkey !== publicKey && (
-          <MenuItem onClick={() => block(ev.pubkey)}>
-            <Icon name="block" />
-            <FormattedMessage {...messages.Block} />
-          </MenuItem>
-        )}
-        <MenuItem onClick={() => translate()}>
-          <Icon name="translate" />
-          <FormattedMessage {...messages.TranslateTo} values={{ lang: langNames.of(lang.split("-")[0]) }} />
-        </MenuItem>
-        {prefs.showDebugMenus && (
-          <MenuItem onClick={() => copyEvent()}>
-            <Icon name="json" />
-            <FormattedMessage {...messages.CopyJSON} />
-          </MenuItem>
-        )}
-        {isMine && (
-          <MenuItem onClick={() => deleteEvent()}>
-            <Icon name="trash" className="red" />
-            <FormattedMessage {...messages.Delete} />
-          </MenuItem>
-        )}
-      </>
+      <AsyncFooterIcon
+        className={showNoteCreatorModal ? "reacted" : ""}
+        iconName="reply"
+        title={formatMessage({ defaultMessage: "Reply" })}
+        value={0}
+        onClick={async () => handleReplyButtonClick()}
+      />
     );
   }
 
@@ -396,45 +246,17 @@ export default function NoteFooter(props: NoteFooterProps) {
     dispatch(setShow(!showNoteCreatorModal));
   };
 
-  const handleReBroadcastButtonClick = () => {
-    if (reBroadcastNote?.id !== ev.id) {
-      dispatch(resetReBroadcast());
-    }
-
-    dispatch(setReBroadcastNote(ev));
-    dispatch(setReBroadcastShow(!showReBroadcastModal));
-  };
-
   return (
     <>
       <div className="footer">
         <div className="footer-reactions">
           {tipButton()}
-          {reactionIcons()}
+          {reactionIcon()}
           {repostIcon()}
-          <div className={`reaction-pill ${showNoteCreatorModal ? "reacted" : ""}`} onClick={handleReplyButtonClick}>
-            <Icon name="reply" size={17} />
-          </div>
-          <Menu
-            menuButton={
-              <div className="reaction-pill">
-                <Icon name="dots" size={15} />
-              </div>
-            }
-            menuClassName="ctx-menu">
-            {menuItems()}
-          </Menu>
+          {replyIcon()}
+          {powIcon()}
         </div>
         {willRenderNoteCreator && <NoteCreator />}
-        {willRenderReBroadcast && <ReBroadcaster />}
-        <Reactions
-          show={showReactions}
-          setShow={setShowReactions}
-          positive={positive}
-          negative={negative}
-          reposts={reposts}
-          zaps={zaps}
-        />
         <SendSats
           lnurl={getLNURL()}
           onClose={() => setTip(false)}
@@ -445,9 +267,27 @@ export default function NoteFooter(props: NoteFooterProps) {
           allocatePool={true}
         />
       </div>
-      <div className="zaps-container">
-        <ZapsSummary zaps={zaps} />
-      </div>
+      <ZapsSummary zaps={zaps} />
     </>
+  );
+}
+
+interface AsyncFooterIconProps extends HTMLProps<HTMLDivElement> {
+  iconName: string;
+  value: number;
+  loading?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => Promise<void>;
+}
+
+function AsyncFooterIcon(props: AsyncFooterIconProps) {
+  const mergedProps = {
+    ...props,
+    iconSize: 18,
+    className: `reaction-pill${props.className ? ` ${props.className}` : ""}`,
+  };
+  return (
+    <AsyncIcon {...mergedProps}>
+      {props.value > 0 && <div className="reaction-pill-number">{formatShort(props.value)}</div>}
+    </AsyncIcon>
   );
 }

@@ -96,7 +96,7 @@ export class UserProfileCache extends FeedCache<MetadataCache> {
           });
         }
       },
-      5
+      5,
     );
 
     setTimeout(() => this.#processZapperQueue(), 1_000);
@@ -116,7 +116,7 @@ export class UserProfileCache extends FeedCache<MetadataCache> {
           });
         }
       },
-      5
+      5,
     );
 
     setTimeout(() => this.#processNip5Queue(), 1_000);
@@ -135,7 +135,7 @@ export class UserProfileCache extends FeedCache<MetadataCache> {
               console.warn("Failed to process item", i);
             }
             batch.pop(); // pop any
-          })()
+          })(),
         );
         if (batch.length === batchSize) {
           await Promise.all(batch);

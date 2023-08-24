@@ -5,6 +5,9 @@
   "+PzQ9Y": {
     "defaultMessage": "Payout Now"
   },
+  "+Vxixo": {
+    "defaultMessage": "Secret Group Chat"
+  },
   "+aZY2h": {
     "defaultMessage": "Zap Type"
   },
@@ -16,6 +19,9 @@
   },
   "+vVZ/G": {
     "defaultMessage": "Connect"
+  },
+  "+xliwN": {
+    "defaultMessage": "{name} reposted"
   },
   "/4tOwT": {
     "defaultMessage": "Skip"
@@ -36,6 +42,9 @@
   "/n5KSF": {
     "defaultMessage": "{n} ms"
   },
+  "00LcfG": {
+    "defaultMessage": "Load more"
+  },
   "08zn6O": {
     "defaultMessage": "Export Keys"
   },
@@ -44,9 +53,6 @@
   },
   "0BUTMv": {
     "defaultMessage": "Search..."
-  },
-  "0ehN4t": {
-    "defaultMessage": "Please connect a wallet {here} to be able to pay this invoice"
   },
   "0jOEtS": {
     "defaultMessage": "Invalid LNURL"
@@ -98,10 +104,6 @@
   },
   "2ukA4d": {
     "defaultMessage": "{n} hours"
-  },
-  "380eol": {
-    "defaultMessage": "here",
-    "description": "Inline link text pointing to another page"
   },
   "3Rx6Qo": {
     "defaultMessage": "Advanced"
@@ -164,6 +166,9 @@
   "5u6iEc": {
     "defaultMessage": "Transfer to Pubkey"
   },
+  "5vMmmR": {
+    "defaultMessage": "Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration."
+  },
   "5ykRmX": {
     "defaultMessage": "Send zap"
   },
@@ -224,9 +229,6 @@
   },
   "9pMqYs": {
     "defaultMessage": "Nostr Address"
-  },
-  "9qtLJC": {
-    "defaultMessage": "Payment Required"
   },
   "9wO4wJ": {
     "defaultMessage": "Lightning Invoice"
@@ -323,9 +325,6 @@
   "Dh3hbq": {
     "defaultMessage": "Auto Zap"
   },
-  "DqLx9k": {
-    "defaultMessage": "You must pay {n} sats to access this file."
-  },
   "DtYelJ": {
     "defaultMessage": "Transfer"
   },
@@ -371,6 +370,9 @@
   "FS3b54": {
     "defaultMessage": "Done!"
   },
+  "FSYL8G": {
+    "defaultMessage": "Trending Users"
+  },
   "FdhSU2": {
     "defaultMessage": "Claim Now"
   },
@@ -379,9 +381,6 @@
   },
   "FmXUJg": {
     "defaultMessage": "follows you"
-  },
-  "FpxElY": {
-    "defaultMessage": "Verification"
   },
   "G/yZLu": {
     "defaultMessage": "Remove"
@@ -394,6 +393,9 @@
   },
   "GL8aXW": {
     "defaultMessage": "Bookmarks ({n})"
+  },
+  "GSye7T": {
+    "defaultMessage": "Lightning Address"
   },
   "GUlSVG": {
     "defaultMessage": "Claim your included Snort nostr address"
@@ -417,6 +419,9 @@
   "HAlOn1": {
     "defaultMessage": "Name"
   },
+  "HF4YnO": {
+    "defaultMessage": "Watch Live!"
+  },
   "HFls6j": {
     "defaultMessage": "name will be available later"
   },
@@ -435,6 +440,9 @@
   "IEwZvs": {
     "defaultMessage": "Are you sure you want to unpin this note?"
   },
+  "IKKHqV": {
+    "defaultMessage": "Follows"
+  },
   "INSqIz": {
     "defaultMessage": "Twitter username..."
   },
@@ -443,9 +451,6 @@
   },
   "Ig9/a1": {
     "defaultMessage": "Sent {n} sats to {name}"
-  },
-  "Iwm6o2": {
-    "defaultMessage": "NIP-05 Shop"
   },
   "Ix8l+B": {
     "defaultMessage": "Trending Notes"
@@ -461,6 +466,12 @@
   },
   "JPFYIM": {
     "defaultMessage": "No lightning address"
+  },
+  "JeoS4y": {
+    "defaultMessage": "Repost"
+  },
+  "JjGgXI": {
+    "defaultMessage": "Search users"
   },
   "JkLHGw": {
     "defaultMessage": "Website"
@@ -504,6 +515,9 @@
   "Lu5/Bj": {
     "defaultMessage": "Open on Zapstr"
   },
+  "Lw+I+J": {
+    "defaultMessage": "{n,plural,=0{{name} zapped} other{{name} & {n} others zapped}}"
+  },
   "M3Oirc": {
     "defaultMessage": "Debug Menus"
   },
@@ -525,6 +539,9 @@
   },
   "Mrpkot": {
     "defaultMessage": "Pay for subscription"
+  },
+  "MuVeKe": {
+    "defaultMessage": "Buy nostr address"
   },
   "MzRYWH": {
     "defaultMessage": "Buying {item}"
@@ -617,8 +634,8 @@
   "R1fEdZ": {
     "defaultMessage": "Forward Zaps"
   },
-  "R2OqnW": {
-    "defaultMessage": "Delete Account"
+  "R81upa": {
+    "defaultMessage": "People you follow"
   },
   "RDZVQL": {
     "defaultMessage": "Check"
@@ -659,6 +676,9 @@
   "SYQtZ7": {
     "defaultMessage": "LN Address Proxy"
   },
+  "ShdEie": {
+    "defaultMessage": "Mark all read"
+  },
   "Sjo1P4": {
     "defaultMessage": "Custom"
   },
@@ -678,14 +698,14 @@
   "Tpy00S": {
     "defaultMessage": "People"
   },
-  "TwyMau": {
-    "defaultMessage": "Account"
-  },
   "UDYlxu": {
     "defaultMessage": "Pending Subscriptions"
   },
   "ULotH9": {
     "defaultMessage": "Amount: {amount} sats"
+  },
+  "UT7Nkj": {
+    "defaultMessage": "New Chat"
   },
   "UUPFlt": {
     "defaultMessage": "Users must accept the content warning to show the content of your note."
@@ -714,6 +734,9 @@
   "VtPV/B": {
     "defaultMessage": "Login with Extension (NIP-07)",
     "description": "Login button for NIP7 key manager extension"
+  },
+  "VvaJst": {
+    "defaultMessage": "View Wallets"
   },
   "Vx7Zm2": {
     "defaultMessage": "How do keys work?"
@@ -800,6 +823,9 @@
   "bep9C3": {
     "defaultMessage": "Public Key"
   },
+  "bfvyfs": {
+    "defaultMessage": "Anon"
+  },
   "brAXSu": {
     "defaultMessage": "Pick a username"
   },
@@ -815,9 +841,6 @@
   },
   "c3g2hL": {
     "defaultMessage": "Broadcast Again"
-  },
-  "cE4Hfw": {
-    "defaultMessage": "Discover"
   },
   "cFbU1B": {
     "defaultMessage": "Using Alby? Go to {link} to get your NWC config!"
@@ -869,6 +892,12 @@
   "eSzf2G": {
     "defaultMessage": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool."
   },
+  "eXT2QQ": {
+    "defaultMessage": "Group Chat"
+  },
+  "fBI91o": {
+    "defaultMessage": "Zap"
+  },
   "fOksnD": {
     "defaultMessage": "Can't vote because LNURL service does not support zaps"
   },
@@ -908,6 +937,9 @@
   "gjBiyj": {
     "defaultMessage": "Loading..."
   },
+  "grQ+mI": {
+    "defaultMessage": "Proof of Work"
+  },
   "h8XMJL": {
     "defaultMessage": "Badges"
   },
@@ -916,6 +948,10 @@
   },
   "hMzcSq": {
     "defaultMessage": "Messages"
+  },
+  "hWSp+B": {
+    "defaultMessage": "Nostr Connect (NIP-46)",
+    "description": "Login button for NIP-46 signer app"
   },
   "hY4lzx": {
     "defaultMessage": "Supports"
@@ -987,8 +1023,14 @@
   "k7sKNy": {
     "defaultMessage": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
   },
+  "kJYo0u": {
+    "defaultMessage": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"
+  },
   "kaaf1E": {
     "defaultMessage": "now"
+  },
+  "kuPHYE": {
+    "defaultMessage": "{n,plural,=0{{name} liked} other{{name} & {n} others liked}}"
   },
   "l+ikU1": {
     "defaultMessage": "Everything in {plan}"
@@ -1086,11 +1128,17 @@
     "defaultMessage": "Login",
     "description": "Login header"
   },
+  "ojzbwv": {
+    "defaultMessage": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}"
+  },
   "osUr8O": {
     "defaultMessage": "You can also use these extensions to login to most Nostr sites."
   },
   "oxCa4R": {
     "defaultMessage": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app."
+  },
+  "p4N05H": {
+    "defaultMessage": "Upload"
   },
   "p85Uwy": {
     "defaultMessage": "Active Subscriptions"
@@ -1124,6 +1172,9 @@
   },
   "qmJ8kD": {
     "defaultMessage": "Translation failed"
+  },
+  "qtWLmt": {
+    "defaultMessage": "Like"
   },
   "r3C4x/": {
     "defaultMessage": "Software"
@@ -1185,6 +1236,9 @@
   "ut+2Cd": {
     "defaultMessage": "Get a partner identifier"
   },
+  "v8lolG": {
+    "defaultMessage": "Start chat"
+  },
   "vOKedj": {
     "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
   },
@@ -1197,8 +1251,14 @@
   "vhlWFg": {
     "defaultMessage": "Poll Options"
   },
+  "vlbWtt": {
+    "defaultMessage": "Get a free one"
+  },
   "vrTOHJ": {
     "defaultMessage": "{amount} sats"
+  },
+  "vxwnbh": {
+    "defaultMessage": "Amount of work to apply to all published events"
   },
   "wEQDC6": {
     "defaultMessage": "Edit"
@@ -1222,9 +1282,6 @@
   },
   "wtLjP6": {
     "defaultMessage": "Copy ID"
-  },
-  "wvFw6Y": {
-    "defaultMessage": "Hey, it looks like you dont have a NIP-05 handle yet, you should get one! Check out {link}"
   },
   "x/Fx2P": {
     "defaultMessage": "Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"

@@ -1,53 +1,52 @@
+.settings h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
 .settings .avatar {
-  width: 256px;
-  height: 256px;
+  width: 64px;
+  height: 64px;
   background-size: cover;
   border-radius: 100%;
-  cursor: pointer;
-  margin-bottom: 20px;
 }
 
 .settings .banner {
-  width: 300px;
-  height: 150px;
+  width: 100%;
+  height: 100%;
   background-size: cover;
-  margin-bottom: 20px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 100%);
 }
 
 .settings .image-settings {
-  display: block;
-  align-items: center;
-  justify-content: center;
-}
-
-.settings .image-setting {
-  display: flex;
-  justify-content: space-between;
-}
-
-.settings .image-setting > div:first-child {
-  align-self: center;
-}
-
-.avatar .edit,
-.banner .edit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   width: 100%;
-  height: 100%;
-  background-color: var(--bg-color);
-  cursor: pointer;
-  opacity: 0;
-  border-radius: 100%;
+  height: 145px;
+  margin-block-end: 45px;
 }
 
-.avatar .edit.new {
-  opacity: 0.5;
+.settings .image-settings > div {
+  position: absolute;
 }
 
-.avatar .edit:hover {
-  opacity: 0.5;
+.settings .image-settings .avatar-stack {
+  bottom: -32px;
+}
+
+.settings .image-settings .avatar-stack .btn-rnd {
+  position: absolute;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  right: -10px;
+  bottom: -10px;
+}
+
+.settings .image-settings .banner button {
+  right: 16px;
+  top: 12px;
+  position: absolute;
 }
 
 .settings .editor textarea {
@@ -58,4 +57,9 @@
 
 .settings .actions {
   margin-top: 16px;
+}
+
+.settings small {
+  font-size: 14px;
+  color: var(--font-secondary-color);
 }

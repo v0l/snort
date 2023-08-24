@@ -18,7 +18,7 @@ app.use("/", (req: express.Request, res: express.Response) => {
       .readdirSync(path.join(__dirname, "..", "..", "dist", "test"))
       .filter(
         (f) =>
-          f.startsWith("test.") && !f.endsWith(".map") && !f.endsWith(".d.ts")
+          f.startsWith("test.") && !f.endsWith(".map") && !f.endsWith(".d.ts"),
       )
       .map((src) => `<script src="${src}"></script>`)
       .join("\n")

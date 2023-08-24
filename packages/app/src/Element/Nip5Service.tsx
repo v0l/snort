@@ -44,7 +44,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   const { helpText = true } = props;
   const { formatMessage } = useIntl();
   const pubkey = useLogin().publicKey;
-  const user = useUserProfile(System, pubkey);
+  const user = useUserProfile(pubkey);
   const publisher = useEventPublisher();
   const svc = useMemo(() => new ServiceProvider(props.service), [props.service]);
   const [serviceConfig, setServiceConfig] = useState<ServiceConfig>();
@@ -225,7 +225,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         UserCache.set(newMeta);
       }
       if (helpText) {
-        navigate("/settings");
+        navigate("/settings/profile");
       }
     }
   }

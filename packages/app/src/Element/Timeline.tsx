@@ -14,6 +14,7 @@ import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
 import ProfilePreview from "Element/ProfilePreview";
 import { UserCache } from "Cache";
+import { LiveStreams } from "Element/LiveStreams";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -44,7 +45,7 @@ const Timeline = (props: TimelineProps) => {
 
   const filterPosts = useCallback(
     (nts: readonly TaggedNostrEvent[]) => {
-      const a = [...nts];
+      const a = [...nts.filter(a => a.kind !== EventKind.LiveEvent)];
       props.noSort || a.sort((a, b) => b.created_at - a.created_at);
       return a
         ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
@@ -65,6 +66,10 @@ const Timeline = (props: TimelineProps) => {
     },
     [feed.related]
   );
+  const liveStreams = useMemo(() => {
+    return (feed.main ?? []).filter(a => a.kind === EventKind.LiveEvent && findTag(a, "status") === "live");
+  }, [feed]);
+
   const findRelated = useCallback(
     (id?: u256) => {
       if (!id) return undefined;
@@ -112,9 +117,10 @@ const Timeline = (props: TimelineProps) => {
 
   return (
     <>
+      <LiveStreams evs={liveStreams} />
       {latestFeed.length > 0 && (
         <>
-          <div className="card latest-notes pointer" onClick={() => onShowLatest()} ref={ref}>
+          <div className="card latest-notes" onClick={() => onShowLatest()} ref={ref}>
             {latestAuthors.slice(0, 3).map(p => {
               return <ProfileImage pubkey={p} showUsername={false} link={""} />;
             })}

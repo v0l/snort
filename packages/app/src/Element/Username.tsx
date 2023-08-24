@@ -5,10 +5,9 @@ import { HexKey } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
 import { profileLink } from "SnortUtils";
-import { System } from "index";
 
 export default function Username({ pubkey, onLinkVisit }: { pubkey: HexKey; onLinkVisit(): void }) {
-  const user = useUserProfile(System, pubkey);
+  const user = useUserProfile(pubkey);
   const navigate = useNavigate();
 
   function onClick(ev: MouseEvent) {

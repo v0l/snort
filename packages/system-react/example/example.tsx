@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { useRequestBuilder, useUserProfile } from "../src";
+import { SnortContext, useRequestBuilder, useUserProfile } from "../src";
 
-import { FlatNoteStore, NostrSystem, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { NostrSystem, NoteCollection, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 
 const System = new NostrSystem({});
 
@@ -9,7 +9,7 @@ const System = new NostrSystem({});
 ["wss://relay.snort.social", "wss://nos.lol"].forEach(r => System.ConnectToRelay(r, { read: true, write: false }));
 
 export function Note({ ev }: { ev: TaggedNostrEvent }) {
-  const profile = useUserProfile(System, ev.pubkey);
+  const profile = useUserProfile(ev.pubkey);
 
   return (
     <div>
@@ -27,7 +27,7 @@ export function UserPosts(props: { pubkey: string }) {
     return rb;
   }, [props.pubkey]);
 
-  const data = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, sub);
+  const data = useRequestBuilder(NoteCollection, sub);
   return (
     <>
       {data.data.map(a => (
@@ -38,5 +38,9 @@ export function UserPosts(props: { pubkey: string }) {
 }
 
 export function MyApp() {
-  return <UserPosts pubkey="63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed" />;
+  return (
+    <SnortContext.Provider value={System}>
+      <UserPosts pubkey="63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed" />
+    </SnortContext.Provider>
+  );
 }

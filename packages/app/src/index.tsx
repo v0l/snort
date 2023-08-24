@@ -6,7 +6,7 @@ import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { EventPublisher, NostrSystem, ProfileLoaderService, Nip7Signer } from "@snort/system";
+import { EventPublisher, NostrSystem, ProfileLoaderService, Nip7Signer, PowWorker } from "@snort/system";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
@@ -19,10 +19,9 @@ import { RootRoutes } from "Pages/Root";
 import NotificationsPage from "Pages/Notifications";
 import SettingsPage, { SettingsRoutes } from "Pages/SettingsPage";
 import ErrorPage from "Pages/ErrorPage";
-import VerificationPage from "Pages/Verification";
+import NostrAddressPage from "Pages/NostrAddressPage";
 import MessagesPage from "Pages/MessagesPage";
 import DonatePage from "Pages/DonatePage";
-import HashTagsPage from "Pages/HashTagsPage";
 import SearchPage from "Pages/SearchPage";
 import HelpPage from "Pages/HelpPage";
 import { NewUserRoutes } from "Pages/new";
@@ -35,7 +34,7 @@ import DebugPage from "Pages/Debug";
 import { db } from "Db";
 import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
-import { LivePage } from "Pages/LivePage";
+import { SnortContext } from "@snort/system-react";
 
 /**
  * Singleton nostr system
@@ -61,6 +60,11 @@ export const System = new NostrSystem({
  * Singleton user profile loader
  */
 export const ProfileLoader = new ProfileLoaderService(System, UserCache);
+
+/**
+ * Singleton POW worker
+ */
+export const DefaultPowWorker = new PowWorker("/pow.js");
 
 // @ts-expect-error Setting webpack nonce
 window.__webpack_nonce__ = "ZmlhdGphZiBzYWlkIHNub3J0LnNvY2lhbCBpcyBwcmV0dHkgZ29vZCwgd2UgbWFkZSBpdCE=";
@@ -122,8 +126,8 @@ export const router = createBrowserRouter([
         children: SettingsRoutes,
       },
       {
-        path: "/verification",
-        element: <VerificationPage />,
+        path: "/nostr-address",
+        element: <NostrAddressPage />,
       },
       {
         path: "/messages/:id?",
@@ -134,20 +138,12 @@ export const router = createBrowserRouter([
         element: <DonatePage />,
       },
       {
-        path: "/t/:tag",
-        element: <HashTagsPage />,
-      },
-      {
         path: "/search/:keyword?",
         element: <SearchPage />,
       },
       {
         path: "/zap-pool",
         element: <ZapPoolPage />,
-      },
-      {
-        path: "/live/:id",
-        element: <LivePage />,
       },
       ...NewUserRoutes,
       ...WalletRoutes,
@@ -169,7 +165,9 @@ root.render(
   <StrictMode>
     <Provider store={Store}>
       <IntlProvider>
-        <RouterProvider router={router} />
+        <SnortContext.Provider value={System}>
+          <RouterProvider router={router} />
+        </SnortContext.Provider>
       </IntlProvider>
     </Provider>
   </StrictMode>

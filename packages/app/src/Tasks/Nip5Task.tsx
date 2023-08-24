@@ -14,11 +14,11 @@ export class Nip5Task extends BaseUITask {
     return (
       <p>
         <FormattedMessage
-          defaultMessage="Hey, it looks like you dont have a NIP-05 handle yet, you should get one! Check out {link}"
+          defaultMessage="Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}"
           values={{
             link: (
-              <Link to="/verification">
-                <FormattedMessage defaultMessage="NIP-05 Shop" />
+              <Link to="/nostr-address">
+                <FormattedMessage defaultMessage="Buy nostr address" />
               </Link>
             ),
           }}

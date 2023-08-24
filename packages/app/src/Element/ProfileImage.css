@@ -5,11 +5,7 @@
   text-decoration: none;
   user-select: none;
   min-width: 0;
-}
-
-.pfp .avatar-wrapper {
-  margin-right: 8px;
-  z-index: 2;
+  gap: 8px;
 }
 
 .pfp .avatar {
@@ -23,9 +19,6 @@ a.pfp {
 }
 
 .pfp .username {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   font-weight: 600;
 }
 

@@ -39,7 +39,8 @@ export default function DM(props: DMProps) {
   }
 
   function sender() {
-    if (props.chat.type !== ChatType.DirectMessage && !isMe) {
+    const isGroup = props.chat.type === ChatType.PrivateGroupChat || props.chat.type === ChatType.PublicGroupChat;
+    if (isGroup && !isMe) {
       return <ProfileImage pubkey={msg.from} />;
     }
   }

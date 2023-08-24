@@ -34,7 +34,7 @@ describe("internet-identifier", () => {
               picture: "",
               nip05: "bob@localhost:12647",
             },
-            publisherSecret
+            publisherSecret,
           )),
         })
       })
@@ -66,7 +66,7 @@ describe("internet-identifier", () => {
               name: "",
               picture: "",
             },
-            publisherSecret
+            publisherSecret,
           )),
         })
       })

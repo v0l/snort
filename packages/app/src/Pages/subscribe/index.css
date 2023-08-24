@@ -1,4 +1,4 @@
-.subscribe-page > div.card {
+.subscribe-page > div {
   margin: 5px;
   min-height: 400px;
   user-select: none;
@@ -18,7 +18,7 @@
     flex-direction: column;
   }
 
-  .subscribe-page > div.card {
+  .subscribe-page > div {
     flex: unset;
   }
 }

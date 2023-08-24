@@ -74,7 +74,7 @@ const DonatePage = () => {
   }
 
   return (
-    <div className="main-content m5">
+    <div className="main-content p">
       <h2>
         <FormattedMessage defaultMessage="Help fund the development of Snort" />
       </h2>

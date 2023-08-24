@@ -7,25 +7,28 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
-const TsTransformer = require("@formatjs/ts-transformer");
 
 const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
   entry: {
     main: "./src/index.tsx",
+    sw: {
+      import: "./src/service-worker.ts",
+      filename: "service-worker.js",
+    },
+    pow: {
+      import: require.resolve("@snort/system/dist/pow-worker.js"),
+      filename: "pow.js",
+    },
   },
   target: "browserslist",
-  devtool: isProduction ? "source-map" : "eval",
+  mode: isProduction ? "production" : "development",
+  devtool: isProduction ? "source-map" : "cheap-module-source-map",
   output: {
     publicPath: "/",
     path: path.resolve(__dirname, "build"),
-    filename: ({ runtime }) => {
-      if (runtime === "sw") {
-        return "[name].js";
-      }
-      return isProduction ? "[name].[chunkhash].js" : "[name].js";
-    },
+    filename: isProduction ? "[name].[chunkhash].js" : "[name].js",
     clean: isProduction,
   },
   devServer: {
@@ -38,18 +41,22 @@ const config = {
       patterns: [
         { from: "public/manifest.json" },
         { from: "public/robots.txt" },
-        { from: "public/logo_512.png" },
-        { from: "public/logo_256.png" },
         { from: "public/nostrich_512.png" },
+        { from: "public/nostrich_256.png" },
         { from: "_headers" },
       ],
     }),
     new HtmlWebpackPlugin({
       template: "public/index.html",
       favicon: "public/favicon.ico",
-      excludeChunks: ["sw"],
+      excludeChunks: ["sw", "pow"],
     }),
-    new ESLintPlugin(),
+    new ESLintPlugin({
+      extensions: ["js", "mjs", "jsx", "ts", "tsx"],
+      eslintPath: require.resolve("eslint"),
+      failOnError: !isProduction,
+      cache: true,
+    }),
     new MiniCssExtractPlugin({
       filename: isProduction ? "[name].[chunkhash].css" : "[name].css",
     }),
@@ -57,21 +64,33 @@ const config = {
   module: {
     rules: [
       {
+        enforce: "pre",
+        exclude: /@babel(?:\/|\\{1,2})runtime/,
+        test: /\.(js|mjs|jsx|ts|tsx|css)$/,
+        loader: require.resolve("source-map-loader"),
+      },
+      {
         test: /\.tsx?$/i,
         use: [
-          "babel-loader",
           {
-            loader: "ts-loader",
+            loader: require.resolve("babel-loader"),
             options: {
-              getCustomTransformers() {
-                return {
-                  before: [
-                    TsTransformer.transform({
-                      overrideIdFn: "[sha512:contenthash:base64:6]",
-                    }),
-                  ],
-                };
-              },
+              babelrc: false,
+              configFile: false,
+              presets: [
+                "@babel/preset-env",
+                ["@babel/preset-react", { runtime: "automatic" }],
+                "@babel/preset-typescript",
+              ],
+              plugins: [
+                [
+                  "formatjs",
+                  {
+                    idInterpolationPattern: "[sha512:contenthash:base64:6]",
+                    ast: true,
+                  },
+                ],
+              ],
             },
           },
         ],
@@ -79,7 +98,7 @@ const config = {
       },
       {
         test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: [MiniCssExtractPlugin.loader, require.resolve("css-loader")],
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|webp)$/i,
@@ -121,20 +140,10 @@ const config = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".jsx", ".js", "..."],
-    modules: ["node_modules", __dirname, path.resolve(__dirname, "src")],
+    aliasFields: ["browser"],
+    extensions: ["...", ".tsx", ".ts", ".jsx", ".js"],
+    modules: ["...", __dirname, path.resolve(__dirname, "src")],
   },
 };
 
-module.exports = () => {
-  if (isProduction) {
-    config.mode = "production";
-    config.entry.sw = {
-      import: "./src/service-worker.ts",
-      filename: "service-worker.js",
-    };
-  } else {
-    config.mode = "development";
-  }
-  return config;
-};
+module.exports = () => config;

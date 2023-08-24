@@ -6,14 +6,13 @@ import DM from "Element/DM";
 import NoteToSelf from "Element/NoteToSelf";
 import useLogin from "Hooks/useLogin";
 import WriteMessage from "Element/WriteMessage";
-import { Chat, ChatParticipant, ChatType, useChatSystem } from "chat";
-import { Nip4ChatSystem } from "chat/nip4";
+import { Chat, ChatParticipant, createEmptyChatObject, useChatSystem } from "chat";
 import { FormattedMessage } from "react-intl";
 
 export default function DmWindow({ id }: { id: string }) {
   const pubKey = useLogin().publicKey;
   const dms = useChatSystem();
-  const chat = dms.find(a => a.id === id) ?? Nip4ChatSystem.createChatObj(id, []);
+  const chat = dms.find(a => a.id === id) ?? createEmptyChatObject(id);
 
   function participant(p: ChatParticipant) {
     if (p.id === pubKey) {
@@ -37,7 +36,7 @@ export default function DmWindow({ id }: { id: string }) {
           {chat.participants.map(v => (
             <ProfileImage pubkey={v.id} showUsername={false} />
           ))}
-          {chat.title ?? <FormattedMessage defaultMessage="Group Chat" />}
+          {chat.title ?? <FormattedMessage defaultMessage="Secret Group Chat" />}
         </div>
       );
     }

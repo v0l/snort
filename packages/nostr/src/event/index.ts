@@ -122,7 +122,7 @@ type UnsignedWithPubkey<T extends Event | RawEvent> = {
  */
 export async function signEvent<T extends RawEvent>(
   event: Unsigned<T>,
-  priv?: HexOrBechPrivateKey
+  priv?: HexOrBechPrivateKey,
 ): Promise<T> {
   event.created_at ??= unixTimestamp()
   if (priv !== undefined) {
@@ -130,7 +130,7 @@ export async function signEvent<T extends RawEvent>(
     event.pubkey = getPublicKey(priv)
     const id = serializeEventId(
       // This conversion is safe because the pubkey field is set above.
-      event as unknown as UnsignedWithPubkey<T>
+      event as unknown as UnsignedWithPubkey<T>,
     )
     event.id = id
     event.sig = schnorrSign(id, priv)
@@ -162,8 +162,8 @@ export function parseEvent(event: RawEvent): Event {
   if (event.id !== serializeEventId(event)) {
     throw new NostrError(
       `invalid id ${event.id} for event ${JSON.stringify(
-        event
-      )}, expected ${serializeEventId(event)}`
+        event,
+      )}, expected ${serializeEventId(event)}`,
     )
   }
   if (!schnorrVerify(event.sig, event.id, event.pubkey)) {

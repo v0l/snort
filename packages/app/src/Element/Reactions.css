@@ -7,7 +7,7 @@
 }
 
 .light .reactions-modal .modal-body {
-  background-color: var(--note-bg);
+  background-color: var(--gray-superdark);
 }
 
 @media (max-width: 720px) {

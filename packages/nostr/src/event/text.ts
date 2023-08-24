@@ -12,7 +12,7 @@ export interface TextNote extends RawEvent {
 
 export function createTextNote(
   content: string,
-  priv?: HexOrBechPrivateKey
+  priv?: HexOrBechPrivateKey,
 ): Promise<TextNote> {
   return signEvent(
     {
@@ -20,6 +20,6 @@ export function createTextNote(
       tags: [],
       content,
     },
-    priv
+    priv,
   )
 }

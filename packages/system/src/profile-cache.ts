@@ -128,7 +128,7 @@ export class ProfileLoaderService {
             pubkey: a,
             loaded: unixNowMs() - ProfileCacheExpire + 30_000, // expire in 30s
             created: 69,
-          } as MetadataCache)
+          } as MetadataCache),
         );
         await Promise.all(empty);
       }

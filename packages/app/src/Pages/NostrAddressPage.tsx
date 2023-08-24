@@ -5,8 +5,6 @@ import Nip5Service from "Element/Nip5Service";
 
 import messages from "./messages";
 
-import "./Verification.css";
-
 export const SnortNostrAddressService = {
   name: "Snort",
   service: `${ApiHost}/api/v1/n5sp`,
@@ -26,11 +24,11 @@ export const Nip5Services = [
   },
 ];
 
-export default function VerificationPage() {
+export default function NostrAddressPage() {
   return (
-    <div className="main-content verification">
+    <div className="main-content p">
       <h2>
-        <FormattedMessage {...messages.GetVerified} />
+        <FormattedMessage defaultMessage="Buy nostr address" />
       </h2>
       <p>
         <FormattedMessage {...messages.Nip05} />

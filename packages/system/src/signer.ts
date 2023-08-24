@@ -59,7 +59,7 @@ export class PrivateKeySigner implements EventSigner {
         nonce: base64.decode(iv),
         v: MessageEncryptorVersion.Nip4,
       },
-      secret
+      secret,
     );
   }
 

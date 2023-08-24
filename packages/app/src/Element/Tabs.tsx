@@ -1,11 +1,11 @@
+import { ReactNode } from "react";
 import "./Tabs.css";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
 
 export interface Tab {
-  text: string;
+  text: ReactNode;
   value: number;
   disabled?: boolean;
-  data?: string;
 }
 
 interface TabsProps {
@@ -21,7 +21,7 @@ interface TabElementProps extends Omit<TabsProps, "tabs"> {
 export const TabElement = ({ t, tab, setTab }: TabElementProps) => {
   return (
     <div
-      className={`tab ${tab.value === t.value ? "active" : ""} ${t.disabled ? "disabled" : ""}`}
+      className={`tab${tab.value === t.value ? " active" : ""}${t.disabled ? " disabled" : ""}`}
       onClick={() => !t.disabled && setTab(t)}>
       {t.text}
     </div>
@@ -33,7 +33,7 @@ const Tabs = ({ tabs, tab, setTab }: TabsProps) => {
   return (
     <div className="tabs" ref={horizontalScroll}>
       {tabs.map(t => (
-        <TabElement key={t.value} tab={tab} setTab={setTab} t={t} />
+        <TabElement tab={tab} setTab={setTab} t={t} />
       ))}
     </div>
   );

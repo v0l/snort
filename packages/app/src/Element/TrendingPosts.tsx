@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { NostrEvent, TaggedNostrEvent } from "@snort/system";
-import { FormattedMessage } from "react-intl";
 
 import PageSpinner from "Element/PageSpinner";
 import Note from "Element/Note";
 import NostrBandApi from "External/NostrBand";
+import { useReactions } from "Feed/FeedReactions";
 
 export default function TrendingNotes() {
   const [posts, setPosts] = useState<Array<NostrEvent>>();
+  const related = useReactions("trending", posts?.map(a => a.id) ?? []);
 
   async function loadTrendingNotes() {
     const api = new NostrBandApi();
@@ -23,11 +24,8 @@ export default function TrendingNotes() {
 
   return (
     <>
-      <h3>
-        <FormattedMessage defaultMessage="Trending Notes" />
-      </h3>
       {posts.map(e => (
-        <Note key={e.id} data={e as TaggedNostrEvent} related={[]} depth={0} />
+        <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} />
       ))}
     </>
   );

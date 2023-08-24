@@ -41,6 +41,8 @@ export function updatePreferences(state: LoginSession, p: UserPreferences) {
 
 export function logout(k: HexKey) {
   LoginStore.removeSession(k);
+  //TODO: delete giftwarps for:k
+  //TODO: delete notifications for:k
 }
 
 export function markNotificationsRead(state: LoginSession) {

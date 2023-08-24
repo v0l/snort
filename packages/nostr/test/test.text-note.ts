@@ -30,7 +30,7 @@ describe("text note", () => {
             assert.strictEqual(event.content, note)
             assert.strictEqual(actualSubscriptionId, subscriptionId)
             done()
-          }
+          },
         )
 
         const subscriptionId = subscriber.subscribe([])
@@ -45,7 +45,7 @@ describe("text note", () => {
             created_at: timestamp,
           })
         })
-      }
+      },
     )
   })
 

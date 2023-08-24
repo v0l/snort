@@ -1,3 +1,7 @@
 .zap-pool input[type="range"] {
   width: 200px;
 }
+
+.zap-pool h4 {
+  margin: 0;
+}

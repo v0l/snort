@@ -3,7 +3,6 @@ import { NostrPrefix, RequestBuilder, ReplaceableNoteStore, NostrLink } from "@s
 import { useRequestBuilder } from "@snort/system-react";
 
 import { unwrap } from "SnortUtils";
-import { System } from "index";
 
 export default function useEventFeed(link: NostrLink) {
   const sub = useMemo(() => {
@@ -28,5 +27,5 @@ export default function useEventFeed(link: NostrLink) {
     return b;
   }, [link]);
 
-  return useRequestBuilder<ReplaceableNoteStore>(System, ReplaceableNoteStore, sub);
+  return useRequestBuilder(ReplaceableNoteStore, sub);
 }

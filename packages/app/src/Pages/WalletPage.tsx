@@ -204,15 +204,11 @@ export default function WalletPage() {
   }
 
   return (
-    <div className="main-content">
+    <div className="main-content p">
       {error && <b className="error">{error}</b>}
       {walletList()}
       {unlockWallet()}
       {walletInfo()}
-
-      <button onClick={() => Wallets.remove(unwrap(walletState.config).id)}>
-        <FormattedMessage defaultMessage="Delete Account" />
-      </button>
     </div>
   );
 }

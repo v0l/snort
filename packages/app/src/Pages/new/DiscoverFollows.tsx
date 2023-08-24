@@ -25,7 +25,7 @@ export default function DiscoverFollows() {
   }
 
   return (
-    <div className="main-content new-user" dir="auto">
+    <div className="main-content new-user p" dir="auto">
       <Logo />
       <div className="progress-bar">
         <div className="progress"></div>
@@ -45,6 +45,9 @@ export default function DiscoverFollows() {
         <FormattedMessage {...messages.PopularAccounts} />
       </h3>
       {sortedReccomends.length > 0 && <FollowListBase pubkeys={sortedReccomends} showAbout={true} />}
+      <h3>
+        <FormattedMessage defaultMessage="Trending Users" />
+      </h3>
       <TrendingUsers />
     </div>
   );

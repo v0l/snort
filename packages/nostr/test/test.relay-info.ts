@@ -16,7 +16,7 @@ describe("relay info", () => {
         assert.ok((relay.info.supported_nips?.length ?? 0) > 0)
         assert.strictEqual(
           relay.info.software,
-          "https://git.sr.ht/~gheartsfield/nostr-rs-relay"
+          "https://git.sr.ht/~gheartsfield/nostr-rs-relay",
         )
         assert.strictEqual(relay.info.version, "0.8.8")
       }

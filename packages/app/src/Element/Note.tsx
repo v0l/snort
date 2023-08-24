@@ -1,5 +1,5 @@
 import "./Note.css";
-import React, { useMemo, useState, useLayoutEffect, ReactNode } from "react";
+import React, { useMemo, useState, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
@@ -20,7 +20,7 @@ import {
   Reaction,
   profileLink,
 } from "SnortUtils";
-import NoteFooter, { Translation } from "Element/NoteFooter";
+import NoteFooter from "Element/NoteFooter";
 import NoteTime from "Element/NoteTime";
 import Reveal from "Element/Reveal";
 import useModeration from "Hooks/useModeration";
@@ -32,6 +32,9 @@ import { NostrFileElement } from "Element/NostrFileHeader";
 import ZapstrEmbed from "Element/ZapstrEmbed";
 import PubkeyList from "Element/PubkeyList";
 import { LiveEvent } from "Element/LiveEvent";
+import { NoteContextMenu, NoteTranslation } from "Element/NoteContextMenu";
+import Reactions from "Element/Reactions";
+import { ZapGoal } from "Element/ZapGoal";
 
 import messages from "./messages";
 
@@ -45,11 +48,13 @@ export interface NoteProps {
   depth?: number;
   options?: {
     showHeader?: boolean;
+    showContextMenu?: boolean;
     showTime?: boolean;
     showPinned?: boolean;
     showBookmarked?: boolean;
     showFooter?: boolean;
     showReactionsLink?: boolean;
+    showMedia?: boolean;
     canUnpin?: boolean;
     canUnbookmark?: boolean;
     canClick?: boolean;
@@ -89,6 +94,9 @@ export default function Note(props: NoteProps) {
   if (ev.kind === EventKind.LiveEvent) {
     return <LiveEvent ev={ev} />;
   }
+  if (ev.kind === (9041 as EventKind)) {
+    return <ZapGoal ev={ev} />;
+  }
 
   const baseClassName = `note card${className ? ` ${className}` : ""}`;
   const navigate = useNavigate();
@@ -96,13 +104,11 @@ export default function Note(props: NoteProps) {
   const deletions = useMemo(() => getReactions(related, ev.id, EventKind.Deletion), [related]);
   const { isMuted } = useModeration();
   const isOpMuted = isMuted(ev?.pubkey);
-  const { ref, inView, entry } = useInView({ triggerOnce: true });
-  const [extendable, setExtendable] = useState<boolean>(false);
-  const [showMore, setShowMore] = useState<boolean>(false);
+  const { ref, inView } = useInView({ triggerOnce: true });
   const login = useLogin();
   const { pinned, bookmarked } = login;
   const publisher = useEventPublisher();
-  const [translated, setTranslated] = useState<Translation>();
+  const [translated, setTranslated] = useState<NoteTranslation>();
   const { formatMessage } = useIntl();
   const reactions = useMemo(() => getReactions(related, ev.id, EventKind.Reaction), [related, ev]);
   const groupReactions = useMemo(() => {
@@ -147,6 +153,7 @@ export default function Note(props: NoteProps) {
     showFooter: true,
     canUnpin: false,
     canUnbookmark: false,
+    showContextMenu: true,
     ...opt,
   };
 
@@ -205,17 +212,16 @@ export default function Note(props: NoteProps) {
         </Reveal>
       );
     }
-    return <Text content={body} tags={ev.tags} creator={ev.pubkey} depth={props.depth} />;
+    return (
+      <Text
+        content={body}
+        tags={ev.tags}
+        creator={ev.pubkey}
+        depth={props.depth}
+        disableMedia={!(options.showMedia ?? true)}
+      />
+    );
   };
-
-  useLayoutEffect(() => {
-    if (entry && inView && extendable === false) {
-      const h = (entry?.target as HTMLDivElement)?.offsetHeight ?? 0;
-      if (h > 650) {
-        setExtendable(true);
-      }
-    }
-  }, [inView, entry, extendable]);
 
   function goToEvent(
     e: React.MouseEvent,
@@ -342,21 +348,33 @@ export default function Note(props: NoteProps) {
               subHeader={replyTag() ?? undefined}
               link={opt?.canClick === undefined ? undefined : ""}
             />
-            {(options.showTime || options.showBookmarked) && (
-              <div className="info">
-                {options.showBookmarked && (
-                  <div className={`saved ${options.canUnbookmark ? "pointer" : ""}`} onClick={() => unbookmark(ev.id)}>
-                    <Icon name="bookmark" /> <FormattedMessage {...messages.Bookmarked} />
-                  </div>
-                )}
-                {!options.showBookmarked && <NoteTime from={ev.created_at * 1000} />}
-              </div>
-            )}
-            {options.showPinned && (
-              <div className={`pinned ${options.canUnpin ? "pointer" : ""}`} onClick={() => unpin(ev.id)}>
-                <Icon name="pin" /> <FormattedMessage {...messages.Pinned} />
-              </div>
-            )}
+            <div className="info">
+              {(options.showTime || options.showBookmarked) && (
+                <>
+                  {options.showBookmarked && (
+                    <div
+                      className={`saved ${options.canUnbookmark ? "pointer" : ""}`}
+                      onClick={() => unbookmark(ev.id)}>
+                      <Icon name="bookmark" /> <FormattedMessage {...messages.Bookmarked} />
+                    </div>
+                  )}
+                  {!options.showBookmarked && <NoteTime from={ev.created_at * 1000} />}
+                </>
+              )}
+              {options.showPinned && (
+                <div className={`pinned ${options.canUnpin ? "pointer" : ""}`} onClick={() => unpin(ev.id)}>
+                  <Icon name="pin" /> <FormattedMessage {...messages.Pinned} />
+                </div>
+              )}
+              {options.showContextMenu && (
+                <NoteContextMenu
+                  ev={ev}
+                  react={async () => {}}
+                  onTranslated={t => setTranslated(t)}
+                  setShowReactions={setShowReactions}
+                />
+              )}
+            </div>
           </div>
         )}
         <div className="body" onClick={e => goToEvent(e, ev, true)}>
@@ -369,32 +387,21 @@ export default function Note(props: NoteProps) {
             </div>
           )}
         </div>
-        {extendable && !showMore && (
-          <span className="expand-note mt10 flex f-center" onClick={() => setShowMore(true)}>
-            <FormattedMessage {...messages.ShowMore} />
-          </span>
-        )}
-        {options.showFooter && (
-          <NoteFooter
-            ev={ev}
-            positive={positive}
-            negative={negative}
-            reposts={reposts}
-            zaps={zaps}
-            onTranslated={t => setTranslated(t)}
-            showReactions={showReactions}
-            setShowReactions={setShowReactions}
-          />
-        )}
+        {options.showFooter && <NoteFooter ev={ev} positive={positive} reposts={reposts} zaps={zaps} />}
+        <Reactions
+          show={showReactions}
+          setShow={setShowReactions}
+          positive={positive}
+          negative={negative}
+          reposts={reposts}
+          zaps={zaps}
+        />
       </>
     );
   }
 
   const note = (
-    <div
-      className={`${baseClassName}${highlight ? " active " : " "}${extendable && !showMore ? " note-expand" : ""}`}
-      onClick={e => goToEvent(e, ev)}
-      ref={ref}>
+    <div className={`${baseClassName}${highlight ? " active " : " "}`} onClick={e => goToEvent(e, ev)} ref={ref}>
       {content()}
     </div>
   );

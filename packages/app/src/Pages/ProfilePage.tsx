@@ -1,8 +1,9 @@
 import "./ProfilePage.css";
 import { useEffect, useState } from "react";
-import { useIntl, FormattedMessage } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  createNostrLink,
   encodeTLV,
   encodeTLVEntries,
   EventKind,
@@ -55,7 +56,6 @@ import { getNip05PubKey } from "Pages/LoginPage";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
-import { System } from "index";
 
 const NOTES = 0;
 const REACTIONS = 1;
@@ -68,7 +68,7 @@ const RELAYS = 7;
 const BOOKMARKS = 8;
 
 function ZapsProfileTab({ id }: { id: HexKey }) {
-  const zaps = useZapsFeed(id);
+  const zaps = useZapsFeed(createNostrLink(NostrPrefix.PublicKey, id));
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   return (
     <div className="main-content">
@@ -109,11 +109,10 @@ function BookMarksTab({ id }: { id: HexKey }) {
 }
 
 export default function ProfilePage() {
-  const { formatMessage } = useIntl();
   const params = useParams();
   const navigate = useNavigate();
   const [id, setId] = useState<string>();
-  const user = useUserProfile(System, id);
+  const user = useUserProfile(id);
   const loginPubKey = useLogin().publicKey;
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
@@ -144,16 +143,88 @@ export default function ProfilePage() {
   const follows = useFollowsFeed(id);
   // tabs
   const ProfileTab = {
-    Notes: { text: formatMessage(messages.Notes), value: NOTES },
-    Reactions: { text: formatMessage(messages.Reactions), value: REACTIONS },
-    Followers: { text: formatMessage(messages.Followers), value: FOLLOWERS },
-    Follows: { text: formatMessage(messages.Follows), value: FOLLOWS },
-    Zaps: { text: formatMessage(messages.Zaps), value: ZAPS },
-    Muted: { text: formatMessage(messages.Muted), value: MUTED },
-    Blocked: { text: formatMessage(messages.BlockedCount, { n: blocked.length }), value: BLOCKED },
-    Relays: { text: formatMessage(messages.Relays), value: RELAYS },
-    Bookmarks: { text: formatMessage(messages.Bookmarks), value: BOOKMARKS },
-  };
+    Notes: {
+      text: (
+        <>
+          <Icon name="pencil" size={16} />
+          <FormattedMessage defaultMessage="Notes" />
+        </>
+      ),
+      value: NOTES,
+    },
+    Reactions: {
+      text: (
+        <>
+          <Icon name="reaction" size={16} />
+          <FormattedMessage defaultMessage="Reactions" />
+        </>
+      ),
+      value: REACTIONS,
+    },
+    Followers: {
+      text: (
+        <>
+          <Icon name="user-v2" size={16} />
+          <FormattedMessage defaultMessage="Followers" />
+        </>
+      ),
+      value: FOLLOWERS,
+    },
+    Follows: {
+      text: (
+        <>
+          <Icon name="stars" size={16} />
+          <FormattedMessage defaultMessage="Follows" />
+        </>
+      ),
+      value: FOLLOWS,
+    },
+    Zaps: {
+      text: (
+        <>
+          <Icon name="zap-solid" size={16} />
+          <FormattedMessage defaultMessage="Zaps" />
+        </>
+      ),
+      value: ZAPS,
+    },
+    Muted: {
+      text: (
+        <>
+          <Icon name="mute" size={16} />
+          <FormattedMessage defaultMessage="Muted" />
+        </>
+      ),
+      value: MUTED,
+    },
+    Blocked: {
+      text: (
+        <>
+          <Icon name="block" size={16} />
+          <FormattedMessage defaultMessage="Blocked" />
+        </>
+      ),
+      value: BLOCKED,
+    },
+    Relays: {
+      text: (
+        <>
+          <Icon name="wifi" size={16} />
+          <FormattedMessage defaultMessage="Relays" />
+        </>
+      ),
+      value: RELAYS,
+    },
+    Bookmarks: {
+      text: (
+        <>
+          <Icon name="bookmark-solid" size={16} />
+          <FormattedMessage defaultMessage="Bookmarks" />
+        </>
+      ),
+      value: BOOKMARKS,
+    },
+  } as { [key: string]: Tab };
   const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
   const optionalTabs = [ProfileTab.Zaps, ProfileTab.Relays, ProfileTab.Bookmarks, ProfileTab.Muted].filter(a =>
     unwrap(a)
@@ -179,34 +250,48 @@ export default function ProfilePage() {
 
   function username() {
     return (
-      <div className="name">
-        <h2>
-          {user?.display_name || user?.name || "Nostrich"}
-          <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
-        </h2>
-        {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+      <>
+        <div className="name">
+          <h2>
+            {user?.display_name || user?.name || "Nostrich"}
+            <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
+          </h2>
+          {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+        </div>
         <BadgeList badges={badges} />
-        <Copy text={npub} />
-        {links()}
-      </div>
+        <div className="link-section">
+          <Copy text={npub} />
+          {links()}
+        </div>
+      </>
     );
+  }
+
+  function tryFormatWebsite(url: string) {
+    try {
+      const u = new URL(url);
+      return `${u.hostname}${u.pathname !== "/" ? u.pathname : ""}`;
+    } catch {
+      // ignore
+    }
+    return url;
   }
 
   function links() {
     return (
-      <div className="links">
+      <>
         {user?.website && (
-          <div className="website f-ellipsis">
-            <Icon name="link" />
+          <div className="link website f-ellipsis">
+            <Icon name="link-02" size={16} />
             <a href={website_url} target="_blank" rel="noreferrer">
-              {user.website}
+              {tryFormatWebsite(user.website)}
             </a>
           </div>
         )}
 
         {lnurl && (
-          <div className="lnurl f-ellipsis" onClick={() => setShowLnQr(true)}>
-            <Icon name="zap" />
+          <div className="link lnurl f-ellipsis" onClick={() => setShowLnQr(true)}>
+            <Icon name="zapCircle" size={16} />
             {lnurl.name}
           </div>
         )}
@@ -218,14 +303,14 @@ export default function ProfilePage() {
           author={id}
           target={user?.display_name || user?.name}
         />
-      </div>
+      </>
     );
   }
 
   function bio() {
     return (
       aboutText.length > 0 && (
-        <div dir="auto" className="details">
+        <div dir="auto" className="about">
           {about}
         </div>
       )
@@ -296,8 +381,12 @@ export default function ProfilePage() {
 
   function avatar() {
     return (
-      <div className="avatar-wrapper">
-        <Avatar user={user} />
+      <div className="avatar-wrapper w-max">
+        <Avatar pubkey={id ?? ""} user={user} />
+        <div className="profile-actions">
+          {renderIcons()}
+          {!isMe && id && <FollowButton pubkey={id} />}
+        </div>
       </div>
     );
   }
@@ -320,7 +409,7 @@ export default function ProfilePage() {
         )}
         {isMe ? (
           <>
-            <button type="button" onClick={() => navigate("/settings")}>
+            <button type="button" onClick={() => navigate("/settings/profile")}>
               <FormattedMessage {...messages.Settings} />
             </button>
           </>
@@ -356,12 +445,8 @@ export default function ProfilePage() {
   function userDetails() {
     if (!id) return;
     return (
-      <div className="details-wrapper">
+      <div className="details-wrapper w-max">
         {username()}
-        <div className="profile-actions">
-          {renderIcons()}
-          {!isMe && <FollowButton pubkey={id} />}
-        </div>
         {bio()}
       </div>
     );
@@ -374,9 +459,9 @@ export default function ProfilePage() {
   const w = window.document.querySelector(".page")?.clientWidth;
   return (
     <>
-      <div className="profile flex">
+      <div className="profile">
         {user?.banner && <ProxyImg alt="banner" className="banner" src={user.banner} size={w} />}
-        <div className="profile-wrapper flex">
+        <div className="profile-wrapper w-max">
           {avatar()}
           {userDetails()}
         </div>

@@ -66,13 +66,18 @@ export interface UserPreferences {
    * Auto-zap every post
    */
   autoZap: boolean;
+
+  /**
+   * Proof-of-Work to apply to all events
+   */
+  pow?: number;
 }
 
 export const DefaultPreferences = {
   language: "en",
   enableReactions: true,
   reactionEmoji: "+",
-  autoLoadMedia: "follows-only",
+  autoLoadMedia: "all",
   theme: "system",
   confirmReposts: false,
   showDebugMenus: false,

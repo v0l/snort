@@ -3,6 +3,7 @@ import { RequestBuilder } from "./request-builder";
 import { NoteStore } from "./note-collection";
 import { Query } from "./query";
 import { NostrEvent, ReqFilter } from "./nostr";
+import { ProfileLoaderService } from "./profile-cache";
 
 export * from "./nostr-system";
 export { default as EventKind } from "./event-kind";
@@ -20,6 +21,9 @@ export * from "./nostr-link";
 export * from "./profile-cache";
 export * from "./zaps";
 export * from "./signer";
+export * from "./text";
+export * from "./pow";
+export * from "./pow-util";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";
@@ -43,6 +47,7 @@ export interface SystemInterface {
   DisconnectRelay(address: string): void;
   BroadcastEvent(ev: NostrEvent): void;
   WriteOnceToRelay(relay: string, ev: NostrEvent): Promise<void>;
+  get ProfileLoader(): ProfileLoaderService;
 }
 
 export interface SystemSnapshot {
@@ -59,9 +64,9 @@ export const enum MessageEncryptorVersion {
 }
 
 export interface MessageEncryptorPayload {
-  ciphertext: Uint8Array,
-  nonce: Uint8Array,
-  v: MessageEncryptorVersion
+  ciphertext: Uint8Array;
+  nonce: Uint8Array;
+  v: MessageEncryptorVersion;
 }
 
 export interface MessageEncryptor {

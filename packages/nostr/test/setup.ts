@@ -30,7 +30,7 @@ export interface Setup {
 
 export async function setup(
   done: (e?: unknown) => void,
-  test: (setup: Setup) => void | Promise<void>
+  test: (setup: Setup) => void | Promise<void>,
 ) {
   try {
     await restartRelay()
@@ -55,7 +55,7 @@ export async function setup(
               const { data, iv } = await aesEncryptBase64(
                 parsePrivateKey(publisherSecret),
                 pubkey,
-                plaintext
+                plaintext,
               )
               return `${data}?iv=${iv}`
             },
@@ -67,7 +67,7 @@ export async function setup(
                 {
                   data,
                   iv,
-                }
+                },
               )
             },
           },

@@ -1,8 +1,8 @@
 import "./Layout.css";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
 import messages from "./messages";
@@ -12,7 +12,6 @@ import { RootState } from "State/Store";
 import { setShow, reset } from "State/NoteCreator";
 import { System } from "index";
 import useLoginFeed from "Feed/LoginFeed";
-import useModeration from "Hooks/useModeration";
 import { NoteCreator } from "Element/NoteCreator";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
@@ -41,7 +40,7 @@ export default function Layout() {
   };
 
   const shouldHideNoteCreator = useMemo(() => {
-    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/", "/e", "/subscribe", "/live"];
+    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/", "/e", "/subscribe"];
     return isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
   }, [location, isReplyNoteCreatorShowing]);
 
@@ -51,8 +50,8 @@ export default function Layout() {
   }, [location]);
 
   useEffect(() => {
-    const widePage = ["/login", "/messages", "/live"];
-    const noScroll = ["/messages", "/live"];
+    const widePage = ["/login", "/messages"];
+    const noScroll = ["/messages"];
     if (widePage.some(a => location.pathname.startsWith(a))) {
       setPageClass(noScroll.some(a => location.pathname.startsWith(a)) ? "scroll-lock" : "");
     } else {
@@ -103,26 +102,24 @@ export default function Layout() {
   return (
     <div className={pageClass}>
       {!shouldHideHeader && (
-        <header className="main-content mt5">
-          <div className="logo" onClick={() => navigate("/")}>
-            <Icon name="snort-by" size={150} height={20} />
+        <header className="main-content">
+          <Link to="/" className="logo">
+            <h1>Snort</h1>
             {currentSubscription && (
               <small className="flex">
                 <Icon name="diamond" size={10} className="mr5" />
                 {mapPlanName(currentSubscription.type)}
               </small>
             )}
-          </div>
+          </Link>
 
-          <div>
-            {publicKey ? (
-              <AccountHeader />
-            ) : (
-              <button type="button" onClick={() => navigate("/login")}>
-                <FormattedMessage {...messages.Login} />
-              </button>
-            )}
-          </div>
+          {publicKey ? (
+            <AccountHeader />
+          ) : (
+            <button type="button" onClick={() => navigate("/login")}>
+              <FormattedMessage {...messages.Login} />
+            </button>
+          )}
         </header>
       )}
       <Outlet />
@@ -142,9 +139,10 @@ export default function Layout() {
 
 const AccountHeader = () => {
   const navigate = useNavigate();
+  const { formatMessage } = useIntl();
 
   const { publicKey, latestNotification, readNotifications } = useLogin();
-  const profile = useUserProfile(System, publicKey);
+  const profile = useUserProfile(publicKey);
 
   const hasNotifications = useMemo(
     () => latestNotification > readNotifications,
@@ -152,8 +150,7 @@ const AccountHeader = () => {
   );
   const unreadDms = useMemo(() => (publicKey ? 0 : 0), [publicKey]);
 
-  async function goToNotifications(e: React.MouseEvent) {
-    e.stopPropagation();
+  async function goToNotifications() {
     // request permissions to send notifications
     if ("Notification" in window) {
       try {
@@ -165,26 +162,24 @@ const AccountHeader = () => {
         console.error(e);
       }
     }
-    navigate("/notifications");
   }
 
   return (
     <div className="header-actions">
-      <div className="btn btn-rnd" onClick={() => navigate("/wallet")}>
-        <Icon name="wallet" />
+      <div className="search">
+        <input type="text" placeholder={formatMessage({ defaultMessage: "Search" })} className="w-max" />
+        <Icon name="search" size={24} />
       </div>
-      <div className="btn btn-rnd" onClick={() => navigate("/search")}>
-        <Icon name="search" />
-      </div>
-      <div className="btn btn-rnd" onClick={() => navigate("/messages")}>
-        <Icon name="envelope" />
+      <Link className="btn" to="/messages">
+        <Icon name="mail" size={24} />
         {unreadDms > 0 && <span className="has-unread"></span>}
-      </div>
-      <div className="btn btn-rnd" onClick={goToNotifications}>
-        <Icon name="bell" />
+      </Link>
+      <Link className="btn" to="/notifications" onClick={goToNotifications}>
+        <Icon name="bell-v2" size={24} />
         {hasNotifications && <span className="has-unread"></span>}
-      </div>
+      </Link>
       <Avatar
+        pubkey={publicKey ?? ""}
         user={profile}
         onClick={() => {
           if (profile) {

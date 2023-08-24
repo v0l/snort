@@ -26,16 +26,32 @@ export function getPublicKey(privKey: HexKey) {
 export async function openFile(): Promise<File | undefined> {
   return new Promise(resolve => {
     const elm = document.createElement("input");
+    let lock = false;
     elm.type = "file";
-    elm.onchange = (e: Event) => {
+    const handleInput = (e: Event) => {
+      lock = true;
       const elm = e.target as HTMLInputElement;
-      if (elm.files) {
-        resolve(elm.files[0]);
+      if ((elm.files?.length ?? 0) > 0) {
+        resolve(elm.files![0]);
       } else {
         resolve(undefined);
       }
     };
+
+    elm.onchange = e => handleInput(e);
     elm.click();
+    window.addEventListener(
+      "focus",
+      () => {
+        setTimeout(() => {
+          if (!lock) {
+            console.debug("FOCUS WINDOW UPLOAD");
+            resolve(undefined);
+          }
+        }, 300);
+      },
+      { once: true }
+    );
   });
 }
 
@@ -323,6 +339,10 @@ export const delay = (t: number) => {
   });
 };
 
+export function orderDescending<T>(arr: Array<T & { created_at: number }>) {
+  return arr.sort((a, b) => (b.created_at > a.created_at ? 1 : -1));
+}
+
 export interface Magnet {
   dn?: string | string[];
   tr?: string | string[];
@@ -484,4 +504,8 @@ export function kvToObject<T>(o: string, sep?: string) {
       return [];
     })
   ) as T;
+}
+
+export function defaultAvatar(input: string) {
+  return `https://robohash.v0l.io/${input}.png`;
 }

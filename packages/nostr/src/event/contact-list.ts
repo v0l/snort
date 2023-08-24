@@ -30,7 +30,7 @@ export interface Contact {
  */
 export function createContactList(
   contacts: Contact[],
-  priv?: HexOrBechPrivateKey
+  priv?: HexOrBechPrivateKey,
 ): Promise<ContactList> {
   return signEvent(
     {
@@ -44,7 +44,7 @@ export function createContactList(
       content: "",
       getContacts,
     },
-    priv
+    priv,
   )
 }
 
@@ -57,8 +57,8 @@ export function getContacts(this: ContactList): Contact[] {
       if (pubkey === undefined) {
         throw new NostrError(
           `missing contact pubkey for contact list event: ${JSON.stringify(
-            this
-          )}`
+            this,
+          )}`,
         )
       }
 
@@ -70,7 +70,7 @@ export function getContacts(this: ContactList): Contact[] {
         }
       } catch (e) {
         throw new NostrError(
-          `invalid relay URL for contact list event: ${JSON.stringify(this)}`
+          `invalid relay URL for contact list event: ${JSON.stringify(this)}`,
         )
       }
 

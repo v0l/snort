@@ -1,25 +1,25 @@
 import { useMemo } from "react";
-import { HexKey, EventKind, FlatNoteStore, RequestBuilder, parseZap } from "@snort/system";
+import { EventKind, RequestBuilder, parseZap, NostrLink, NostrPrefix, NoteCollection } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
-
-import { System } from "index";
 import { UserCache } from "Cache";
 
-export default function useZapsFeed(pubkey?: HexKey) {
+export default function useZapsFeed(link?: NostrLink) {
   const sub = useMemo(() => {
-    if (!pubkey) return null;
-    const b = new RequestBuilder(`zaps:${pubkey.slice(0, 12)}`);
-    b.withFilter().tag("p", [pubkey]).kinds([EventKind.ZapReceipt]);
+    if (!link) return null;
+    const b = new RequestBuilder(`zaps:${link.encode()}`);
+    if (link.type === NostrPrefix.PublicKey) {
+      b.withFilter().tag("p", [link.id]).kinds([EventKind.ZapReceipt]);
+    } else if (link.type === NostrPrefix.Event || link.type === NostrPrefix.Note) {
+      b.withFilter().tag("e", [link.id]).kinds([EventKind.ZapReceipt]);
+    }
     return b;
-  }, [pubkey]);
+  }, [link]);
 
-  const zapsFeed = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, sub);
+  const zapsFeed = useRequestBuilder(NoteCollection, sub);
 
   const zaps = useMemo(() => {
     if (zapsFeed.data) {
-      const profileZaps = zapsFeed.data
-        .map(a => parseZap(a, UserCache))
-        .filter(z => z.valid && z.receiver === pubkey && z.sender !== pubkey && !z.event);
+      const profileZaps = zapsFeed.data.map(a => parseZap(a, UserCache)).filter(z => z.valid);
       profileZaps.sort((a, b) => b.amount - a.amount);
       return profileZaps;
     }

@@ -6,6 +6,7 @@ import useLogin from "Hooks/useLogin";
 import { DefaultPreferences, updatePreferences, UserPreferences } from "Login";
 import { DefaultImgProxy } from "Const";
 import { unwrap } from "SnortUtils";
+import searchEmoji from "emoji-search";
 
 import messages from "./messages";
 
@@ -31,28 +32,26 @@ export const AllLanguageCodes = [
 const PreferencesPage = () => {
   const { formatMessage } = useIntl();
   const login = useLogin();
+  console.debug(login);
   const perf = login.preferences;
   const [emoji, setEmoji] = useState<Array<{ name: string; char: string }>>([]);
 
   useEffect(() => {
     (async () => {
-      const emoji = await import("@jukben/emoji-search");
-      setEmoji(emoji.default("").map(a => ({ name: a.name, char: a.char })));
+      setEmoji((await searchEmoji("")).map(a => ({ name: a.name, char: a.char })));
     })();
   }, []);
 
   return (
-    <div className="preferences">
+    <div className="preferences flex-column g24">
       <h3>
         <FormattedMessage {...messages.Preferences} />
       </h3>
 
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
-            <FormattedMessage defaultMessage="Language" />
-          </div>
-        </div>
+      <div className="flex f-space w-max">
+        <h4>
+          <FormattedMessage defaultMessage="Language" />
+        </h4>
         <div>
           <select
             value={perf.language || DefaultPreferences.language}
@@ -73,12 +72,10 @@ const PreferencesPage = () => {
           </select>
         </div>
       </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
-            <FormattedMessage {...messages.Theme} />
-          </div>
-        </div>
+      <div className="flex f-space w-max">
+        <h4>
+          <FormattedMessage {...messages.Theme} />
+        </h4>
         <div>
           <select
             value={perf.theme}
@@ -100,12 +97,10 @@ const PreferencesPage = () => {
           </select>
         </div>
       </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
-            <FormattedMessage {...messages.DefaultRootTab} />
-          </div>
-        </div>
+      <div className="flex f-space w-max">
+        <h4>
+          <FormattedMessage {...messages.DefaultRootTab} />
+        </h4>
         <div>
           <select
             value={perf.defaultRootTab}
@@ -127,16 +122,17 @@ const PreferencesPage = () => {
           </select>
         </div>
       </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
+      <div className="flex w-max">
+        <div className="flex-column g8">
+          <h4>
             <FormattedMessage {...messages.AutoloadMedia} />
-          </div>
+          </h4>
           <small>
             <FormattedMessage {...messages.AutoloadMediaHelp} />
           </small>
-          <div className="mt10">
+          <div className="w-max">
             <select
+              className="w-max"
               value={perf.autoLoadMedia}
               onChange={e =>
                 updatePreferences(login, {
@@ -157,12 +153,28 @@ const PreferencesPage = () => {
           </div>
         </div>
       </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
-            <FormattedMessage defaultMessage="Default Zap amount" />
-          </div>
+      <div className="flex f-space w-max">
+        <div className="flex-column g8">
+          <h4>
+            <FormattedMessage defaultMessage="Proof of Work" />
+          </h4>
+          <small>
+            <FormattedMessage defaultMessage="Amount of work to apply to all published events" />
+          </small>
         </div>
+        <div>
+          <input
+            type="number"
+            defaultValue={perf.pow}
+            min={0}
+            onChange={e => updatePreferences(login, { ...perf, pow: parseInt(e.target.value || "0") })}
+          />
+        </div>
+      </div>
+      <div className="flex f-space w-max">
+        <h4>
+          <FormattedMessage defaultMessage="Default Zap amount" />
+        </h4>
         <div>
           <input
             type="number"
@@ -172,11 +184,11 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
+      <div className="flex f-space w-max">
+        <div className="flex-column g8">
+          <h4>
             <FormattedMessage defaultMessage="Auto Zap" />
-          </div>
+          </h4>
           <small>
             <FormattedMessage defaultMessage="Automatically zap every note when loaded" />
           </small>
@@ -189,12 +201,12 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="card flex f-col">
-        <div className="flex w-max">
-          <div className="flex f-col f-grow">
-            <div>
+      <div className="flex-column">
+        <div className="flex f-space">
+          <div className="flex-column g8">
+            <h4>
               <FormattedMessage {...messages.ImgProxy} />
-            </div>
+            </h4>
             <small>
               <FormattedMessage {...messages.ImgProxyHelp} />
             </small>
@@ -213,7 +225,7 @@ const PreferencesPage = () => {
           </div>
         </div>
         {perf.imgProxyConfig && (
-          <div className="w-max mt10 form">
+          <div className="w-max form">
             <div className="form-group">
               <div>
                 <FormattedMessage {...messages.ServiceUrl} />
@@ -289,11 +301,11 @@ const PreferencesPage = () => {
           </div>
         )}
       </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
+      <div className="flex f-space w-max">
+        <div className="flex-column g8">
+          <h4>
             <FormattedMessage {...messages.EnableReactions} />
-          </div>
+          </h4>
           <small>
             <FormattedMessage {...messages.EnableReactionsHelp} />
           </small>
@@ -306,43 +318,39 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
-            <FormattedMessage {...messages.ReactionEmoji} />
-          </div>
-          <small>
-            <FormattedMessage {...messages.ReactionEmojiHelp} />
-          </small>
-          <div className="mt10">
-            <select
-              className="emoji-selector"
-              value={perf.reactionEmoji}
-              onChange={e =>
-                updatePreferences(login, {
-                  ...perf,
-                  reactionEmoji: e.target.value,
-                })
-              }>
-              <option value="+">
-                + <FormattedMessage {...messages.Default} />
+      <div className="flex-column g8">
+        <h4>
+          <FormattedMessage {...messages.ReactionEmoji} />
+        </h4>
+        <small>
+          <FormattedMessage {...messages.ReactionEmojiHelp} />
+        </small>
+        <select
+          className="emoji-selector"
+          value={perf.reactionEmoji}
+          onChange={e =>
+            updatePreferences(login, {
+              ...perf,
+              reactionEmoji: e.target.value,
+            })
+          }>
+          <option value="+">
+            + <FormattedMessage {...messages.Default} />
+          </option>
+          {emoji.map(({ name, char }) => {
+            return (
+              <option value={char}>
+                {name} {char}
               </option>
-              {emoji.map(({ name, char }) => {
-                return (
-                  <option value={char}>
-                    {name} {char}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-        </div>
+            );
+          })}
+        </select>
       </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
+      <div className="flex f-space">
+        <div className="flex-column g8">
+          <h4>
             <FormattedMessage {...messages.ConfirmReposts} />
-          </div>
+          </h4>
           <small>
             <FormattedMessage {...messages.ConfirmRepostsHelp} />
           </small>
@@ -355,11 +363,11 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
+      <div className="flex f-space">
+        <div className="flex-column g8">
+          <h4>
             <FormattedMessage {...messages.ShowLatest} />
-          </div>
+          </h4>
           <small>
             <FormattedMessage {...messages.ShowLatestHelp} />
           </small>
@@ -372,37 +380,33 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
-            <FormattedMessage {...messages.FileUpload} />
-          </div>
-          <small>
-            <FormattedMessage {...messages.FileUploadHelp} />
-          </small>
-          <div className="mt10">
-            <select
-              value={perf.fileUploader}
-              onChange={e =>
-                updatePreferences(login, {
-                  ...perf,
-                  fileUploader: e.target.value,
-                } as UserPreferences)
-              }>
-              <option value="void.cat">
-                void.cat <FormattedMessage {...messages.Default} />
-              </option>
-              <option value="nostr.build">nostr.build</option>
-              <option value="nostrimg.com">nostrimg.com</option>
-            </select>
-          </div>
-        </div>
+      <div className="flex-column g8">
+        <h4>
+          <FormattedMessage {...messages.FileUpload} />
+        </h4>
+        <small>
+          <FormattedMessage {...messages.FileUploadHelp} />
+        </small>
+        <select
+          value={perf.fileUploader}
+          onChange={e =>
+            updatePreferences(login, {
+              ...perf,
+              fileUploader: e.target.value,
+            } as UserPreferences)
+          }>
+          <option value="void.cat">
+            void.cat <FormattedMessage {...messages.Default} />
+          </option>
+          <option value="nostr.build">nostr.build</option>
+          <option value="nostrimg.com">nostrimg.com</option>
+        </select>
       </div>
-      <div className="card flex">
-        <div className="flex f-col f-grow">
-          <div>
+      <div className="flex f-space">
+        <div className="flex-column g8">
+          <h4>
             <FormattedMessage {...messages.DebugMenus} />
-          </div>
+          </h4>
           <small>
             <FormattedMessage {...messages.DebugMenusHelp} />
           </small>
