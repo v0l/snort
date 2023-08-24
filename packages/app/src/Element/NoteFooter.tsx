@@ -50,7 +50,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { formatMessage } = useIntl();
   const login = useLogin();
   const { publicKey, preferences: prefs, relays } = login;
-  const author = useUserProfile(System, ev.pubkey);
+  const author = useUserProfile(ev.pubkey);
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const publisher = useEventPublisher();
   const showNoteCreatorModal = useSelector((s: RootState) => s.noteCreator.show);

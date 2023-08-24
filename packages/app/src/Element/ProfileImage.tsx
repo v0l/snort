@@ -8,7 +8,6 @@ import { useUserProfile } from "@snort/system-react";
 import { hexToBech32, profileLink } from "SnortUtils";
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
-import { System } from "index";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -21,6 +20,7 @@ export interface ProfileImageProps {
   overrideUsername?: string;
   profile?: UserMetadata;
   size?: number;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 export default function ProfileImage({
@@ -34,8 +34,9 @@ export default function ProfileImage({
   overrideUsername,
   profile,
   size,
+  onClick,
 }: ProfileImageProps) {
-  const user = profile ?? useUserProfile(System, pubkey);
+  const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const nip05 = defaultNip ? defaultNip : user?.nip05;
 
   const name = useMemo(() => {
@@ -45,6 +46,7 @@ export default function ProfileImage({
   function handleClick(e: React.MouseEvent) {
     if (link === "") {
       e.preventDefault();
+      onClick?.(e);
     }
   }
 
@@ -68,7 +70,11 @@ export default function ProfileImage({
   }
 
   if (link === "") {
-    return <div className={`pfp${className ? ` ${className}` : ""}`}>{inner()}</div>;
+    return (
+      <div className={`pfp${className ? ` ${className}` : ""}`} onClick={handleClick}>
+        {inner()}
+      </div>
+    );
   } else {
     return (
       <Link

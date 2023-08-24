@@ -60,7 +60,7 @@ export default function useLoginFeed() {
     return b;
   }, [pubKey]);
 
-  const loginFeed = useRequestBuilder(System, NoteCollection, subLogin);
+  const loginFeed = useRequestBuilder(NoteCollection, subLogin);
 
   // update relays and follow lists
   useEffect(() => {
@@ -156,7 +156,7 @@ export default function useLoginFeed() {
     }
   }
 
-  const listsFeed = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, subLists);
+  const listsFeed = useRequestBuilder(FlatNoteStore, subLists);
 
   useEffect(() => {
     if (listsFeed.data) {

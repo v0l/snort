@@ -12,7 +12,6 @@ import { formatShort } from "Number";
 import Spinner from "Icons/Spinner";
 import SendSats from "Element/SendSats";
 import useLogin from "Hooks/useLogin";
-import { System } from "index";
 
 interface PollProps {
   ev: TaggedNostrEvent;
@@ -24,7 +23,7 @@ export default function Poll(props: PollProps) {
   const publisher = useEventPublisher();
   const { wallet } = useWallet();
   const { preferences: prefs, publicKey: myPubKey, relays } = useLogin();
-  const pollerProfile = useUserProfile(System, props.ev.pubkey);
+  const pollerProfile = useUserProfile(props.ev.pubkey);
   const [error, setError] = useState("");
   const [invoice, setInvoice] = useState("");
   const [voting, setVoting] = useState<number>();

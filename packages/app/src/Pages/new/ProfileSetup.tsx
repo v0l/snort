@@ -16,7 +16,7 @@ import messages from "./messages";
 
 export default function ProfileSetup() {
   const login = useLogin();
-  const myProfile = useUserProfile(System, login.publicKey);
+  const myProfile = useUserProfile(login.publicKey);
   const [username, setUsername] = useState("");
   const [picture, setPicture] = useState("");
   const { formatMessage } = useIntl();

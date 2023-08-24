@@ -6,14 +6,13 @@ import Icon from "Icons/Icon";
 import { UITask } from "Tasks";
 import { DonateTask } from "./DonateTask";
 import { Nip5Task } from "./Nip5Task";
-import { System } from "index";
 
 const AllTasks: Array<UITask> = [new Nip5Task(), new DonateTask()];
 AllTasks.forEach(a => a.load());
 
 export const TaskList = () => {
   const publicKey = useLogin().publicKey;
-  const user = useUserProfile(System, publicKey);
+  const user = useUserProfile(publicKey);
   const [, setTick] = useState<number>(0);
 
   function muteTask(t: UITask) {

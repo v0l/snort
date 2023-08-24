@@ -4,7 +4,6 @@ import { useRequestBuilder } from "@snort/system-react";
 
 import { getNewest } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
-import { System } from "index";
 
 export default function useMutedFeed(pubkey?: HexKey) {
   const { publicKey, muted } = useLogin();
@@ -17,7 +16,7 @@ export default function useMutedFeed(pubkey?: HexKey) {
     return b;
   }, [pubkey]);
 
-  const mutedFeed = useRequestBuilder<NoteCollection>(System, NoteCollection, sub);
+  const mutedFeed = useRequestBuilder(NoteCollection, sub);
 
   const mutedList = useMemo(() => {
     if (pubkey && mutedFeed.data) {

@@ -142,7 +142,7 @@ const AccountHeader = () => {
   const { formatMessage } = useIntl();
 
   const { publicKey, latestNotification, readNotifications } = useLogin();
-  const profile = useUserProfile(System, publicKey);
+  const profile = useUserProfile(publicKey);
 
   const hasNotifications = useMemo(
     () => latestNotification > readNotifications,

@@ -3,6 +3,7 @@ import { RequestBuilder } from "./request-builder";
 import { NoteStore } from "./note-collection";
 import { Query } from "./query";
 import { NostrEvent, ReqFilter } from "./nostr";
+import { ProfileLoaderService } from "./profile-cache";
 
 export * from "./nostr-system";
 export { default as EventKind } from "./event-kind";
@@ -46,6 +47,7 @@ export interface SystemInterface {
   DisconnectRelay(address: string): void;
   BroadcastEvent(ev: NostrEvent): void;
   WriteOnceToRelay(relay: string, ev: NostrEvent): Promise<void>;
+  get ProfileLoader(): ProfileLoaderService
 }
 
 export interface SystemSnapshot {

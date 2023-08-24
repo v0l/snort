@@ -164,7 +164,7 @@ export function bech32ToText(str: string) {
   }
 }
 
-export async function fetchNip05Pubkey(name: string, domain: string, timeout = 2_000) {
+export async function fetchNip05Pubkey(name: string, domain: string, timeout = 2_000): Promise<string | undefined> {
   interface NostrJson {
     names: Record<string, string>;
   }

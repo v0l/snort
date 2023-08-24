@@ -4,10 +4,14 @@ import {
   EventKind,
   EventPublisher,
   NostrEvent,
+  NostrPrefix,
   RequestBuilder,
   SystemInterface,
+  TLVEntry,
+  TLVEntryType,
   TaggedRawEvent,
   UserMetadata,
+  encodeTLVEntries,
 } from "@snort/system";
 import { unwrap } from "@snort/shared";
 import { Chats, GiftsCache } from "Cache";
@@ -100,6 +104,57 @@ export function setLastReadIn(id: string) {
   const now = unixNow();
   const k = `dm:seen:${id}`;
   window.localStorage.setItem(k, now.toString());
+}
+
+export function createChatLink(type: ChatType, ...params: Array<string>) {
+  switch (type) {
+    case ChatType.DirectMessage: {
+      if (params.length > 1) throw new Error("Must only contain one pubkey");
+      return `/messages/${encodeTLVEntries(
+        "chat4" as NostrPrefix,
+        {
+          type: TLVEntryType.Author,
+          length: params[0].length,
+          value: params[0],
+        } as TLVEntry
+      )}`;
+    }
+    case ChatType.PrivateDirectMessage: {
+      if (params.length > 1) throw new Error("Must only contain one pubkey");
+      return `/messages/${encodeTLVEntries(
+        "chat24" as NostrPrefix,
+        {
+          type: TLVEntryType.Author,
+          length: params[0].length,
+          value: params[0],
+        } as TLVEntry
+      )}`;
+    }
+    case ChatType.PrivateGroupChat: {
+      return `/messages/${encodeTLVEntries(
+        "chat24" as NostrPrefix,
+        ...params.map(
+          a =>
+            ({
+              type: TLVEntryType.Author,
+              length: a.length,
+              value: a,
+            } as TLVEntry)
+        )
+      )}`;
+    }
+  }
+  throw new Error("Unknown chat type");
+}
+
+export function createEmptyChatObject(id: string) {
+  if (id.startsWith("chat4")) {
+    return Nip4ChatSystem.createChatObj(id, []);
+  }
+  if (id.startsWith("chat24")) {
+    return Nip24ChatSystem.createChatObj(id, []);
+  }
+  throw new Error("Cant create new empty chat, unknown id");
 }
 
 export function useNip4Chat() {

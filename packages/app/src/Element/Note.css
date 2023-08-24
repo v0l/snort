@@ -2,7 +2,7 @@
   min-height: 110px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .note:hover {

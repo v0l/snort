@@ -68,7 +68,10 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
       },
       {
         t: 0,
-        title: "",
+        title: undefined,
+      } as {
+        t: number;
+        title: string | undefined;
       }
     );
     return {

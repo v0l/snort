@@ -35,7 +35,7 @@ const DataProviders = [
 
 function ZapTarget({ target }: { target: ZapPoolRecipient }) {
   const login = useLogin();
-  const profile = useUserProfile(System, target.pubkey);
+  const profile = useUserProfile(target.pubkey);
   const hasAddress = profile?.lud16 || profile?.lud06;
   const defaultZapMount = Math.ceil(login.preferences.defaultZapAmount * (target.split / 100));
   return (

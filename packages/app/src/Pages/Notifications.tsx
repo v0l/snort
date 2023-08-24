@@ -6,7 +6,7 @@ import {
   NostrEvent,
   NostrLink,
   NostrPrefix,
-  TaggedRawEvent,
+  TaggedNostrEvent,
   createNostrLink,
   parseZap,
 } from "@snort/system";
@@ -22,13 +22,12 @@ import { dedupe, findTag, orderDescending } from "SnortUtils";
 import Icon from "Icons/Icon";
 import ProfileImage, { getDisplayName } from "Element/ProfileImage";
 import useModeration from "Hooks/useModeration";
-import { System } from "index";
 import useEventFeed from "Feed/EventFeed";
 import Text from "Element/Text";
 import { formatShort } from "Number";
 import { useNavigate } from "react-router-dom";
 
-function notificationContext(ev: TaggedRawEvent) {
+function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {
     case EventKind.ZapReceipt: {
       const aTag = findTag(ev, "a");
@@ -88,14 +87,14 @@ export default function NotificationsPage() {
     return orderDescending([...notifications])
       .filter(a => !isMuted(a.pubkey) && findTag(a, "p") === login.publicKey)
       .reduce((acc, v) => {
-        const key = `${timeKey(v)}:${notificationContext(v as TaggedRawEvent)?.encode()}:${v.kind}`;
+        const key = `${timeKey(v)}:${notificationContext(v as TaggedNostrEvent)?.encode()}:${v.kind}`;
         if (acc.has(key)) {
-          unwrap(acc.get(key)).push(v as TaggedRawEvent);
+          unwrap(acc.get(key)).push(v as TaggedNostrEvent);
         } else {
-          acc.set(key, [v as TaggedRawEvent]);
+          acc.set(key, [v as TaggedNostrEvent]);
         }
         return acc;
-      }, new Map<string, Array<TaggedRawEvent>>());
+      }, new Map<string, Array<TaggedNostrEvent>>());
   }, [notifications]);
 
   return (
@@ -105,7 +104,7 @@ export default function NotificationsPage() {
   );
 }
 
-function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
+function NotificationGroup({ evs }: { evs: Array<TaggedNostrEvent> }) {
   const { ref, inView } = useInView({ triggerOnce: true });
   const { formatMessage } = useIntl();
   const kind = evs[0].kind;
@@ -123,7 +122,7 @@ function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
     })
   );
   const firstPubkey = pubkeys[0];
-  const firstPubkeyProfile = useUserProfile(System, inView ? (firstPubkey === "anon" ? "" : firstPubkey) : "");
+  const firstPubkeyProfile = useUserProfile(inView ? (firstPubkey === "anon" ? "" : firstPubkey) : "");
   const context = notificationContext(evs[0]);
   const totalZaps = zaps.reduce((acc, v) => acc + v.amount, 0);
 
@@ -187,13 +186,13 @@ function NotificationGroup({ evs }: { evs: Array<TaggedRawEvent> }) {
     <div className="card notification-group" ref={ref}>
       {inView && (
         <>
-          <div className="flex f-col g12">
+          <div className="flex-column g12">
             <div>
               <Icon name={iconName()} size={24} className={iconName()} />
             </div>
             <div>{kind === EventKind.ZapReceipt && formatShort(totalZaps)}</div>
           </div>
-          <div className="flex f-col g12 w-max">
+          <div className="flex-column g12">
             <div className="flex">
               {pubkeys
                 .filter(a => a !== "anon")

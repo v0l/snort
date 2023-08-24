@@ -10,7 +10,6 @@ import useModeration from "Hooks/useModeration";
 import { FormattedMessage } from "react-intl";
 import Icon from "Icons/Icon";
 import { useUserProfile } from "@snort/system-react";
-import { System } from "index";
 
 export interface NoteReactionProps {
   data: TaggedNostrEvent;
@@ -19,7 +18,7 @@ export interface NoteReactionProps {
 export default function NoteReaction(props: NoteReactionProps) {
   const { data: ev } = props;
   const { isMuted } = useModeration();
-  const profile = useUserProfile(System, ev.pubkey);
+  const profile = useUserProfile(ev.pubkey);
 
   const refEvent = useMemo(() => {
     if (ev) {

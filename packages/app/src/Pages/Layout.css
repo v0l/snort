@@ -16,7 +16,7 @@
 
 header {
   display: flex;
-  padding: 10px 16px;
+  padding: var(--header-padding-tb) 16px;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;

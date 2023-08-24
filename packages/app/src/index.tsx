@@ -34,6 +34,7 @@ import DebugPage from "Pages/Debug";
 import { db } from "Db";
 import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
+import { SnortContext } from "@snort/system-react";
 
 /**
  * Singleton nostr system
@@ -164,7 +165,9 @@ root.render(
   <StrictMode>
     <Provider store={Store}>
       <IntlProvider>
-        <RouterProvider router={router} />
+        <SnortContext.Provider value={System}>
+          <RouterProvider router={router} />
+        </SnortContext.Provider>
       </IntlProvider>
     </Provider>
   </StrictMode>

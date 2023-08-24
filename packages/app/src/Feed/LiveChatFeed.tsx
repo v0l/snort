@@ -1,6 +1,5 @@
 import { EventKind, FlatNoteStore, NostrLink, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
-import { System } from "index";
 import { useMemo } from "react";
 
 export function useLiveChatFeed(link: NostrLink) {
@@ -16,5 +15,5 @@ export function useLiveChatFeed(link: NostrLink) {
     return rb;
   }, [link]);
 
-  return useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, sub);
+  return useRequestBuilder(FlatNoteStore, sub);
 }

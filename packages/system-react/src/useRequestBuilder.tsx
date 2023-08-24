@@ -1,15 +1,16 @@
-import { useSyncExternalStore } from "react";
-import { RequestBuilder, EmptySnapshot, NoteStore, StoreSnapshot, SystemInterface } from "@snort/system";
+import { useContext, useSyncExternalStore } from "react";
+import { RequestBuilder, EmptySnapshot, NoteStore, StoreSnapshot } from "@snort/system";
 import { unwrap } from "@snort/shared";
+import { SnortContext } from "./context";
 
 /**
  * Send a query to the relays and wait for data
  */
 const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TStore["getSnapshotData"]>>(
-  system: SystemInterface,
-  type: { new (): TStore },
+  type: { new(): TStore },
   rb: RequestBuilder | null,
 ) => {
+  const system = useContext(SnortContext);
   const subscribe = (onChanged: () => void) => {
     if (rb) {
       const q = system.Query<TStore>(type, rb);

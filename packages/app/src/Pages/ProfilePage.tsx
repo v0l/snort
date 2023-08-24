@@ -56,7 +56,6 @@ import { getNip05PubKey } from "Pages/LoginPage";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
-import { System } from "index";
 
 const NOTES = 0;
 const REACTIONS = 1;
@@ -113,7 +112,7 @@ export default function ProfilePage() {
   const params = useParams();
   const navigate = useNavigate();
   const [id, setId] = useState<string>();
-  const user = useUserProfile(System, id);
+  const user = useUserProfile(id);
   const loginPubKey = useLogin().publicKey;
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);

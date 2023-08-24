@@ -5,7 +5,6 @@ import { useRequestBuilder } from "@snort/system-react";
 import { unixNow, unwrap, tagFilterOfTextRepost } from "SnortUtils";
 import useTimelineWindow from "Hooks/useTimelineWindow";
 import useLogin from "Hooks/useLogin";
-import { System } from "index";
 import { SearchRelays } from "Const";
 
 export interface TimelineFeedOptions {
@@ -117,7 +116,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb?.builder ?? null;
   }, [until, since, options.method, pref, createBuilder]);
 
-  const main = useRequestBuilder<NoteCollection>(System, NoteCollection, sub);
+  const main = useRequestBuilder(NoteCollection, sub);
 
   const subRealtime = useMemo(() => {
     const rb = createBuilder();
@@ -131,7 +130,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb?.builder ?? null;
   }, [pref.autoShowLatest, createBuilder]);
 
-  const latest = useRequestBuilder<NoteCollection>(System, NoteCollection, subRealtime);
+  const latest = useRequestBuilder(NoteCollection, subRealtime);
 
   useEffect(() => {
     // clear store if changing relays
@@ -177,7 +176,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb.numFilters > 0 ? rb : null;
   }, [main.data, pref, subject.type]);
 
-  const related = useRequestBuilder<NoteCollection>(System, NoteCollection, subNext);
+  const related = useRequestBuilder(NoteCollection, subNext);
 
   return {
     main: main.data,

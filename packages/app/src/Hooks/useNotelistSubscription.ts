@@ -3,7 +3,6 @@ import { HexKey, Lists, EventKind, FlatNoteStore, NoteCollection, RequestBuilder
 import { useRequestBuilder } from "@snort/system-react";
 
 import useLogin from "Hooks/useLogin";
-import { System } from "index";
 
 export default function useNotelistSubscription(pubkey: HexKey | undefined, l: Lists, defaultIds: HexKey[]) {
   const { preferences, publicKey } = useLogin();
@@ -17,7 +16,7 @@ export default function useNotelistSubscription(pubkey: HexKey | undefined, l: L
     return rb;
   }, [pubkey]);
 
-  const listStore = useRequestBuilder<NoteCollection>(System, NoteCollection, sub);
+  const listStore = useRequestBuilder(NoteCollection, sub);
   const etags = useMemo(() => {
     if (isMe) return defaultIds;
     // there should only be a single event here because we only load 1 pubkey
@@ -39,7 +38,7 @@ export default function useNotelistSubscription(pubkey: HexKey | undefined, l: L
     return s;
   }, [etags, pubkey, preferences]);
 
-  const store = useRequestBuilder<FlatNoteStore>(System, FlatNoteStore, esub);
+  const store = useRequestBuilder(FlatNoteStore, esub);
 
   return store.data ?? [];
 }

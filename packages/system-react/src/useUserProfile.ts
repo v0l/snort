@@ -1,10 +1,12 @@
-import { useSyncExternalStore } from "react";
-import { HexKey, MetadataCache, NostrSystem } from "@snort/system";
+import { useContext, useSyncExternalStore } from "react";
+import { HexKey, MetadataCache } from "@snort/system";
+import { SnortContext } from "./context";
 
 /**
  * Gets a profile from cache or requests it from the relays
  */
-export function useUserProfile(system: NostrSystem, pubKey?: HexKey): MetadataCache | undefined {
+export function useUserProfile(pubKey?: HexKey): MetadataCache | undefined {
+  const system = useContext(SnortContext);  
   return useSyncExternalStore<MetadataCache | undefined>(
     h => {
       if (pubKey) {

@@ -24,7 +24,7 @@ export interface ProfileSettingsProps {
 export default function ProfileSettings(props: ProfileSettingsProps) {
   const navigate = useNavigate();
   const { publicKey: id } = useLogin();
-  const user = useUserProfile(System, id ?? "");
+  const user = useUserProfile(id ?? "");
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
 

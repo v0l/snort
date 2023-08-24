@@ -3,10 +3,9 @@ import { HexKey } from "@snort/system";
 
 import Icon from "Icons/Icon";
 import { useUserProfile } from "@snort/system-react";
-import { System } from "index";
 
 export function useIsVerified(pubkey: HexKey, bypassCheck?: boolean) {
-  const profile = useUserProfile(System, pubkey);
+  const profile = useUserProfile(pubkey);
   return { isVerified: bypassCheck || profile?.isNostrAddressValid };
 }
 
