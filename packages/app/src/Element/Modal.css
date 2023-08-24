@@ -22,6 +22,6 @@
   margin-bottom: auto;
 }
 
-.modal-body button:hover {
+.modal-body button.secondary:hover {
   background-color: var(--gray);
 }

@@ -19,9 +19,6 @@ a.pfp {
 }
 
 .pfp .username {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   font-weight: 600;
 }
 

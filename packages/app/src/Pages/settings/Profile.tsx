@@ -1,5 +1,4 @@
 import "./Profile.css";
-import Nostrich from "nostrich.webp";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
@@ -168,7 +167,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           {(props.banner ?? true) && (
             <div
               style={{
-                backgroundImage: `url(${(banner?.length ?? 0) === 0 ? Nostrich : banner})`,
+                backgroundImage: (banner?.length ?? 0) > 0 ? `url(${banner})` : undefined,
               }}
               className="banner">
               <AsyncButton type="button" onClick={() => setNewBanner()}>
@@ -178,7 +177,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           )}
           {(props.avatar ?? true) && (
             <div className="avatar-stack">
-              <Avatar user={user} image={picture} />
+              <Avatar pubkey={id} user={user} image={picture} />
               <AsyncButton type="button" className="btn-rnd" onClick={() => setNewAvatar()}>
                 <Icon name="upload-01" />
               </AsyncButton>

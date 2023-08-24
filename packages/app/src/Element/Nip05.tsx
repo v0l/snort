@@ -1,7 +1,5 @@
 import "./Nip05.css";
 import { HexKey } from "@snort/system";
-
-import Icon from "Icons/Icon";
 import { useUserProfile } from "@snort/system-react";
 
 export function useIsVerified(pubkey: HexKey, bypassCheck?: boolean) {
@@ -28,7 +26,6 @@ const Nip05 = ({ nip05, pubkey, verifyNip = true }: Nip05Params) => {
           <span className="domain" data-domain={domain?.toLowerCase()}>
             {domain}
           </span>
-          <Icon name="check-verified" className="badge" size={16} />
         </>
       )}
     </div>

@@ -27,7 +27,7 @@ const HashTagsPage = () => {
 
   return (
     <>
-      <div className="main-content">
+      <div className="main-content p">
         <div className="action-heading">
           <h2>#{tag}</h2>
           {isFollowing ? (

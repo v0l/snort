@@ -382,7 +382,7 @@ export default function ProfilePage() {
   function avatar() {
     return (
       <div className="avatar-wrapper w-max">
-        <Avatar user={user} />
+        <Avatar pubkey={id ?? ""} user={user} />
         <div className="profile-actions">
           {renderIcons()}
           {!isMe && id && <FollowButton pubkey={id} />}

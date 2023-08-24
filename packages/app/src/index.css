@@ -123,6 +123,10 @@ code {
     margin-left: auto;
     margin-right: auto;
   }
+
+  .main-content {
+    border: 1px solid var(--gray-superdark);
+  }
 }
 
 .p {
@@ -161,9 +165,9 @@ button {
   cursor: pointer;
   padding: 6px 12px;
   font-weight: 600;
-  color: white;
+  color: var(--bg-color);
   font-size: var(--font-size);
-  background-color: var(--highlight);
+  background-color: var(--font-color);
   border: none;
   border-radius: 16px;
   outline: none;
@@ -194,8 +198,7 @@ button:disabled:hover {
 }
 
 button:hover {
-  background-color: var(--font-color);
-  color: var(--bg-color);
+  background-color: var(--gray-light);
 }
 
 button.secondary {
@@ -593,10 +596,6 @@ small.xs {
 
 .highlight {
   color: var(--highlight);
-}
-
-.main-content {
-  border: 1px solid var(--gray-superdark);
 }
 
 .bold {

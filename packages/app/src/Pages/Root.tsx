@@ -36,6 +36,7 @@ export default function RootPage() {
     {
       tab: "following",
       path: "/notes",
+      show: Boolean(pubKey),
       element: (
         <>
           <Icon name="user-v2" />
@@ -46,6 +47,7 @@ export default function RootPage() {
     {
       tab: "trending-notes",
       path: "/trending/notes",
+      show: true,
       element: (
         <>
           <Icon name="fire" />
@@ -56,6 +58,7 @@ export default function RootPage() {
     {
       tab: "conversations",
       path: "/conversations",
+      show: Boolean(pubKey),
       element: (
         <>
           <Icon name="message-chat-circle" />
@@ -66,6 +69,7 @@ export default function RootPage() {
     {
       tab: "trending-people",
       path: "/trending/people",
+      show: true,
       element: (
         <>
           <Icon name="user-up" />
@@ -76,6 +80,7 @@ export default function RootPage() {
     {
       tab: "suggested",
       path: "/suggested",
+      show: Boolean(pubKey),
       element: (
         <>
           <Icon name="thumbs-up" />
@@ -86,6 +91,7 @@ export default function RootPage() {
     {
       tab: "global",
       path: "/global",
+      show: true,
       element: (
         <>
           <Icon name="globe" />
@@ -96,12 +102,13 @@ export default function RootPage() {
   ] as Array<{
     tab: RootPage;
     path: string;
+    show: boolean;
     element: ReactNode;
   }>;
 
   useEffect(() => {
     if (location.pathname === "/") {
-      const t = pubKey ? preferences.defaultRootTab ?? "/notes" : "/global";
+      const t = pubKey ? preferences.defaultRootTab ?? "/notes" : "/trending/notes";
       navigate(t);
     } else {
       const currentTab = menuItems.find(a => a.path === location.pathname)?.tab;
@@ -140,14 +147,16 @@ export default function RootPage() {
               <div className="close-menu" />
             </MenuItem>
           </div>
-          {menuItems.map(a => (
-            <MenuItem
-              onClick={() => {
-                navigate(a.path);
-              }}>
-              {a.element}
-            </MenuItem>
-          ))}
+          {menuItems
+            .filter(a => a.show)
+            .map(a => (
+              <MenuItem
+                onClick={() => {
+                  navigate(a.path);
+                }}>
+                {a.element}
+              </MenuItem>
+            ))}
           {tags.item.map(v => (
             <MenuItem
               onClick={() => {

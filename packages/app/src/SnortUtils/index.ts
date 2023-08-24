@@ -505,3 +505,7 @@ export function kvToObject<T>(o: string, sep?: string) {
     })
   ) as T;
 }
+
+export function defaultAvatar(input: string) {
+  return `https://robohash.v0l.io/${input}.png`;
+}

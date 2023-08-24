@@ -1,9 +1,7 @@
-import Nostrich from "nostrich.webp";
-
 import { TaggedNostrEvent, EventKind, MetadataCache } from "@snort/system";
 import { getDisplayName } from "Element/ProfileImage";
 import { MentionRegex } from "Const";
-import { tagFilterOfTextRepost, unwrap } from "SnortUtils";
+import { defaultAvatar, tagFilterOfTextRepost, unwrap } from "SnortUtils";
 import { UserCache } from "Cache";
 import { LoginSession } from "Login";
 
@@ -28,7 +26,7 @@ export async function makeNotification(ev: TaggedNostrEvent): Promise<Notificati
         .map(a => unwrap(a));
       const fromUser = UserCache.getFromCache(ev.pubkey);
       const name = getDisplayName(fromUser, ev.pubkey);
-      const avatarUrl = fromUser?.picture || Nostrich;
+      const avatarUrl = fromUser?.picture || defaultAvatar(ev.pubkey);
       return {
         title: `Reply from ${name}`,
         body: replaceTagsWithUser(ev, allUsers).substring(0, 50),

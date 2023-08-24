@@ -54,11 +54,11 @@ export default function ProfileImage({
     return (
       <>
         <div className="avatar-wrapper">
-          <Avatar user={user} size={size} />
+          <Avatar pubkey={pubkey} user={user} size={size} />
         </div>
         {showUsername && (
           <div className="f-ellipsis">
-            <div className="username">
+            <div className="flex g4 username">
               <div>{name.trim()}</div>
               {nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
             </div>

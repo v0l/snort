@@ -77,7 +77,7 @@ export const DefaultPreferences = {
   language: "en",
   enableReactions: true,
   reactionEmoji: "+",
-  autoLoadMedia: "follows-only",
+  autoLoadMedia: "all",
   theme: "system",
   confirmReposts: false,
   showDebugMenus: false,

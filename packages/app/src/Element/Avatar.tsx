@@ -1,20 +1,21 @@
 import "./Avatar.css";
-import Nostrich from "nostrich.webp";
 
 import { CSSProperties, useEffect, useState } from "react";
 import type { UserMetadata } from "@snort/system";
 
 import useImgProxy from "Hooks/useImgProxy";
 import { getDisplayName } from "Element/ProfileImage";
+import { defaultAvatar } from "SnortUtils";
 
 interface AvatarProps {
+  pubkey: string;
   user?: UserMetadata;
   onClick?: () => void;
   size?: number;
   image?: string;
 }
-const Avatar = ({ user, size, onClick, image }: AvatarProps) => {
-  const [url, setUrl] = useState<string>(Nostrich);
+const Avatar = ({ pubkey, user, size, onClick, image }: AvatarProps) => {
+  const [url, setUrl] = useState("");
   const { proxy } = useImgProxy();
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Avatar = ({ user, size, onClick, image }: AvatarProps) => {
       const proxyUrl = proxy(url, size ?? 120);
       setUrl(proxyUrl);
     } else {
-      setUrl(Nostrich);
+      setUrl(defaultAvatar(pubkey));
     }
   }, [user, image]);
 

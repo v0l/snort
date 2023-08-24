@@ -6,6 +6,7 @@ import { unixNow, unwrap, tagFilterOfTextRepost } from "SnortUtils";
 import useTimelineWindow from "Hooks/useTimelineWindow";
 import useLogin from "Hooks/useLogin";
 import { SearchRelays } from "Const";
+import { useReactions } from "./FeedReactions";
 
 export interface TimelineFeedOptions {
   method: "TIME_RANGE" | "LIMIT_UNTIL";
@@ -157,26 +158,13 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return [];
   }
 
-  const subNext = useMemo(() => {
-    const rb = new RequestBuilder(`timeline-related:${subject.type}:${subject.discriminator}`);
-    const trackingEvents = main.data?.map(a => a.id) ?? [];
-    if (trackingEvents.length > 0) {
-      rb.withFilter()
-        .kinds(
-          pref.enableReactions
-            ? [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt]
-            : [EventKind.ZapReceipt, EventKind.Repost]
-        )
-        .tag("e", trackingEvents);
-    }
+  const trackingEvents = main.data?.map(a => a.id) ?? [];
+  const related = useReactions(`timeline-related:${subject.type}:${subject.discriminator}`, trackingEvents, rb => {
     const trackingParentEvents = getParentEvents();
     if (trackingParentEvents.length > 0) {
       rb.withFilter().ids(trackingParentEvents);
     }
-    return rb.numFilters > 0 ? rb : null;
-  }, [main.data, pref, subject.type]);
-
-  const related = useRequestBuilder(NoteCollection, subNext);
+  });
 
   return {
     main: main.data,

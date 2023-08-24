@@ -179,6 +179,7 @@ const AccountHeader = () => {
         {hasNotifications && <span className="has-unread"></span>}
       </Link>
       <Avatar
+        pubkey={publicKey ?? ""}
         user={profile}
         onClick={() => {
           if (profile) {

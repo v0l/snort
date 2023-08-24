@@ -81,6 +81,7 @@
   width: 48px;
   height: 48px;
   background-color: var(--highlight);
+  color: white;
   border: none;
   border-radius: 100%;
   position: fixed;
