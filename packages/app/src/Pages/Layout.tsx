@@ -43,7 +43,7 @@ export default function Layout() {
   };
 
   const shouldHideNoteCreator = useMemo(() => {
-    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/p/", "/e", "/subscribe"];
+    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/e", "/subscribe"];
     return isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
   }, [location, isReplyNoteCreatorShowing]);
 
