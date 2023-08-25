@@ -56,6 +56,9 @@ const getMessages = (locale: string) => {
       case "fa-IR":
       case "fa":
         return (await import("translations/fa_IR.json")).default;
+      case "th-TH":
+      case "th":
+        return (await import("translations/th_TH.json")).default;
       case DefaultLocale:
       case "en":
         return enMessages;
