@@ -1,7 +1,8 @@
 .dm-page {
+  --full-height: calc(100vh - 42px - var(--header-padding-tb) - var(--header-padding-tb) - 16px);
   display: grid;
   grid-template-columns: 350px auto;
-  height: calc(100vh - 42px - var(--header-padding-tb) - var(--header-padding-tb) - 16px);
+  height: var(--full-height);
   /* 100vh - header - padding */
   overflow: hidden;
 }
@@ -32,6 +33,7 @@
 /* Chat window */
 .dm-page > div:nth-child(2) {
   padding: 0 12px;
+  height: var(--full-height);
   background-color: var(--gray-superdark);
   border-radius: 16px;
 }
