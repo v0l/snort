@@ -59,7 +59,7 @@ export default function SuggestedProfiles() {
         <FormattedMessage defaultMessage="Provider" />
         <select onChange={e => setProvider(Number(e.target.value))}>
           <option value={Provider.NostrBand}>nostr.band</option>
-          <option value={Provider.SemisolDev}>semisol.dev</option>
+          {/*<option value={Provider.SemisolDev}>semisol.dev</option>*/}
         </select>
       </div>
       {error && <b className="error">{error}</b>}
