@@ -19,6 +19,9 @@ import Avatar from "Element/Avatar";
 import { profileLink } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 import Toaster from "Toaster";
+import Spinner from "Icons/Spinner";
+import { NostrPrefix, createNostrLink, tryParseNostrLink } from "@snort/system";
+import { fetchNip05Pubkey } from "Nip05/Verifier";
 
 export default function Layout() {
   const location = useLocation();
@@ -143,6 +146,31 @@ const AccountHeader = () => {
 
   const { publicKey, latestNotification, readNotifications } = useLogin();
   const profile = useUserProfile(publicKey);
+  const [search, setSearch] = useState("");
+  const [searching, setSearching] = useState(false);
+
+  async function searchThing() {
+    try {
+      setSearching(true);
+      const link = tryParseNostrLink(search);
+      if (link) {
+        navigate(`/${link.encode()}`);
+        return;
+      }
+      if (search.includes("@")) {
+        const [handle, domain] = search.split("@");
+        const pk = await fetchNip05Pubkey(handle, domain);
+        if (pk) {
+          navigate(`/${createNostrLink(NostrPrefix.PublicKey, pk).encode()}`);
+          return;
+        }
+      }
+      navigate(`/search/${encodeURIComponent(search)}`);
+    } finally {
+      setSearch("");
+      setSearching(false);
+    }
+  }
 
   const hasNotifications = useMemo(
     () => latestNotification > readNotifications,
@@ -166,10 +194,27 @@ const AccountHeader = () => {
 
   return (
     <div className="header-actions">
-      <div className="search">
-        <input type="text" placeholder={formatMessage({ defaultMessage: "Search" })} className="w-max" />
-        <Icon name="search" size={24} />
-      </div>
+      {!location.pathname.startsWith("/search") && (
+        <div className="search">
+          <input
+            type="text"
+            placeholder={formatMessage({ defaultMessage: "Search" })}
+            className="w-max"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            onKeyDown={async e => {
+              if (e.key === "Enter") {
+                await searchThing();
+              }
+            }}
+          />
+          {searching ? (
+            <Spinner width={24} height={24} />
+          ) : (
+            <Icon name="search" size={24} onClick={() => navigate("/search")} />
+          )}
+        </div>
+      )}
       <Link className="btn" to="/messages">
         <Icon name="mail" size={24} />
         {unreadDms > 0 && <span className="has-unread"></span>}

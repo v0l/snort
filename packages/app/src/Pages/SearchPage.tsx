@@ -92,7 +92,7 @@ const SearchPage = () => {
   }
 
   return (
-    <div className="main-content">
+    <div className="main-content p">
       <h2>
         <FormattedMessage defaultMessage="Search" />
       </h2>
