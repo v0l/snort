@@ -9,7 +9,7 @@ import {
   SystemInterface,
   TLVEntry,
   TLVEntryType,
-  TaggedRawEvent,
+  TaggedNostrEvent,
   UserMetadata,
   encodeTLVEntries,
 } from "@snort/system";
@@ -61,7 +61,7 @@ export interface ChatSystem {
    * Create a request for this system to get updates
    */
   subscription(id: string): RequestBuilder | undefined;
-  onEvent(evs: readonly TaggedRawEvent[]): Promise<void> | void;
+  onEvent(evs: readonly TaggedNostrEvent[]): Promise<void> | void;
 
   listChats(pk: string): Array<Chat>;
 }

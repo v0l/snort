@@ -18,9 +18,9 @@
     "bracketSameLine": true,
     "arrowParens": "avoid"
   },
-  "packageManager": "yarn@3.6.1",
+  "packageManager": "yarn@3.6.3",
   "dependencies": {
-    "eslint": "^8.44.0",
-    "typescript": "^5.1.6"
+    "eslint": "^8.48.0",
+    "typescript": "^5.2.2"
   }
 }

@@ -7,6 +7,7 @@ import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { EventPublisher, NostrSystem, ProfileLoaderService, Nip7Signer, PowWorker } from "@snort/system";
+import { SnortContext } from "@snort/system-react";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
@@ -34,7 +35,6 @@ import DebugPage from "Pages/Debug";
 import { db } from "Db";
 import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
-import { SnortContext } from "@snort/system-react";
 
 /**
  * Singleton nostr system
@@ -65,9 +65,6 @@ export const ProfileLoader = new ProfileLoaderService(System, UserCache);
  * Singleton POW worker
  */
 export const DefaultPowWorker = new PowWorker("/pow.js");
-
-// @ts-expect-error Setting webpack nonce
-window.__webpack_nonce__ = "ZmlhdGphZiBzYWlkIHNub3J0LnNvY2lhbCBpcyBwcmV0dHkgZ29vZCwgd2UgbWFkZSBpdCE=";
 
 serviceWorkerRegistration.register();
 

@@ -1,5 +1,5 @@
 import { ExternalStore, FeedCache, dedupe } from "@snort/shared";
-import { RequestBuilder, NostrEvent, EventKind, SystemInterface, TaggedRawEvent } from "@snort/system";
+import { RequestBuilder, NostrEvent, EventKind, SystemInterface, TaggedNostrEvent } from "@snort/system";
 import { unwrap } from "SnortUtils";
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "chat";
 
@@ -31,7 +31,7 @@ export class Nip29ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     return rb;
   }
 
-  async onEvent(evs: readonly TaggedRawEvent[]) {
+  async onEvent(evs: readonly TaggedNostrEvent[]) {
     const msg = evs.filter(a => a.kind === EventKind.SimpleChatMessage && a.tags.some(b => b[0] === "g"));
     if (msg.length > 0) {
       await this.#cache.bulkSet(msg);

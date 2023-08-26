@@ -39,7 +39,8 @@ const PreferencesPage = () => {
 
   useEffect(() => {
     (async () => {
-      setEmoji((await searchEmoji("")).map(a => ({ name: a.name, char: a.char })));
+      const allEmoji = await searchEmoji("");
+      setEmoji(allEmoji.map(a => ({ name: a.name, char: a.char })));
     })();
   }, []);
 

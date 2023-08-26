@@ -33,7 +33,7 @@ const UserItem = (metadata: MetadataCache) => {
   return (
     <div key={pubkey} className="user-item">
       <div className="user-picture">
-        <Avatar user={metadata} />
+        <Avatar pubkey={pubkey} user={metadata} />
       </div>
       <div className="user-details">
         <strong>{display_name || rest.name}</strong>

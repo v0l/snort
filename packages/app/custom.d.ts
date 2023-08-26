@@ -31,6 +31,6 @@ declare module "translations/*.json" {
 }
 
 declare module "emojilib" {
-  const value: Record<string, Array<string>>;
+  const value: Record<string, string>;
   export default value;
 }

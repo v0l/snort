@@ -7,16 +7,14 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const IntlTsTransformer =require('@formatjs/ts-transformer');
 
 const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
   entry: {
     main: "./src/index.tsx",
-    sw: {
-      import: "./src/service-worker.ts",
-      filename: "service-worker.js",
-    },
     pow: {
       import: require.resolve("@snort/system/dist/pow-worker.js"),
       filename: "pow.js",
@@ -49,16 +47,19 @@ const config = {
     new HtmlWebpackPlugin({
       template: "public/index.html",
       favicon: "public/favicon.ico",
-      excludeChunks: ["sw", "pow"],
+      excludeChunks: ["pow"],
     }),
     new ESLintPlugin({
       extensions: ["js", "mjs", "jsx", "ts", "tsx"],
       eslintPath: require.resolve("eslint"),
-      failOnError: !isProduction,
+      failOnError: true,
       cache: true,
     }),
     new MiniCssExtractPlugin({
       filename: isProduction ? "[name].[chunkhash].css" : "[name].css",
+    }),
+    new WorkboxPlugin.InjectManifest({
+      swSrc: "./src/service-worker.ts"
     }),
   ],
   module: {
@@ -68,9 +69,19 @@ const config = {
         exclude: /@babel(?:\/|\\{1,2})runtime/,
         test: /\.(js|mjs|jsx|ts|tsx|css)$/,
         loader: require.resolve("source-map-loader"),
+        options: {
+          filterSourceMappingUrl: (url, resourcePath) => {
+              // disable warning for missing @scure-bip39 sourcemaps
+              if (/.*\/.yarn\/cache\/@scure-bip39.*/.test(resourcePath)) {
+                  return false
+              }
+              return true
+          }
+        }
       },
       {
         test: /\.tsx?$/i,
+        exclude: ["/node_modules/"],
         use: [
           {
             loader: require.resolve("babel-loader"),
@@ -78,23 +89,27 @@ const config = {
               babelrc: false,
               configFile: false,
               presets: [
-                "@babel/preset-env",
+                ["@babel/preset-env"],
                 ["@babel/preset-react", { runtime: "automatic" }],
-                "@babel/preset-typescript",
-              ],
-              plugins: [
-                [
-                  "formatjs",
-                  {
-                    idInterpolationPattern: "[sha512:contenthash:base64:6]",
-                    ast: true,
-                  },
-                ],
               ],
             },
-          },
+          }, 
+          {
+            loader: require.resolve("ts-loader"),
+            options: {
+              getCustomTransformers() {
+                return {
+                  before: [
+                    IntlTsTransformer.transform({
+                      overrideIdFn: '[sha512:contenthash:base64:6]',
+                      ast: true
+                    }),
+                  ]
+              };
+              },
+            }
+          }
         ],
-        exclude: ["/node_modules/"],
       },
       {
         test: /\.css$/i,
@@ -107,12 +122,9 @@ const config = {
     ],
   },
   optimization: {
-    usedExports: true,
     chunkIds: "deterministic",
     minimize: isProduction,
     minimizer: [
-      "...",
-      // same as https://github.com/facebook/create-react-app/blob/main/packages/react-scripts/config/webpack.config.js
       new TerserPlugin({
         terserOptions: {
           parse: {
@@ -128,12 +140,7 @@ const config = {
             safari10: true,
           },
           keep_classnames: isProduction,
-          keep_fnames: isProduction,
-          output: {
-            ecma: 5,
-            comments: false,
-            ascii_only: true,
-          },
+          keep_fnames: isProduction
         },
       }),
       new CssMinimizerPlugin(),
@@ -143,6 +150,7 @@ const config = {
     aliasFields: ["browser"],
     extensions: ["...", ".tsx", ".ts", ".jsx", ".js"],
     modules: ["...", __dirname, path.resolve(__dirname, "src")],
+    fallback: { crypto: false }
   },
 };
 

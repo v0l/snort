@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from "react-intl";
-import { HexKey, Lists, NostrPrefix, TaggedRawEvent, encodeTLV } from "@snort/system";
+import { HexKey, Lists, NostrPrefix, TaggedNostrEvent, encodeTLV } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -26,7 +26,7 @@ export interface NoteTranslation {
 }
 
 interface NosteContextMenuProps {
-  ev: TaggedRawEvent;
+  ev: TaggedNostrEvent;
   setShowReactions(b: boolean): void;
   react(content: string): Promise<void>;
   onTranslated?: (t: NoteTranslation) => void;

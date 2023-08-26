@@ -1,4 +1,4 @@
-import { EventKind, NostrEvent, RequestBuilder, TaggedRawEvent } from "@snort/system";
+import { EventKind, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { RefreshFeedCache, TWithCreated } from "./RefreshFeedCache";
 import { LoginSession } from "Login";
 import { unixNow } from "SnortUtils";
@@ -21,7 +21,7 @@ export class NotificationsCache extends RefreshFeedCache<NostrEvent> {
     }
   }
 
-  async onEvent(evs: readonly TaggedRawEvent[]) {
+  async onEvent(evs: readonly TaggedNostrEvent[]) {
     const filtered = evs.filter(a => this.#kinds.includes(a.kind) && a.tags.some(b => b[0] === "p"));
     if (filtered.length > 0) {
       await this.bulkSet(filtered);

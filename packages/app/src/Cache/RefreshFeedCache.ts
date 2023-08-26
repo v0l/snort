@@ -1,12 +1,12 @@
 import { FeedCache } from "@snort/shared";
-import { RequestBuilder, TaggedRawEvent } from "@snort/system";
+import { RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { LoginSession } from "Login";
 
 export type TWithCreated<T> = T & { created_at: number };
 
 export abstract class RefreshFeedCache<T> extends FeedCache<TWithCreated<T>> {
   abstract buildSub(session: LoginSession, rb: RequestBuilder): void;
-  abstract onEvent(evs: Readonly<Array<TaggedRawEvent>>): void;
+  abstract onEvent(evs: Readonly<Array<TaggedNostrEvent>>): void;
 
   /**
    * Get latest event

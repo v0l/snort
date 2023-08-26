@@ -145,7 +145,7 @@ function ProfileDmActions({ id }: { id: string }) {
   const blocked = isBlocked(pubkey);
   return (
     <>
-      <Avatar user={profile} size={210} />
+      <Avatar pubkey={pubkey} user={profile} size={210} />
       <h2>{getDisplayName(profile, pubkey)}</h2>
       <p>
         <Text content={truncAbout(profile?.about) ?? ""} tags={[]} creator={pubkey} disableMedia={true} depth={0} />
