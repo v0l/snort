@@ -1,10 +1,10 @@
 /// <reference lib="webworker" />
 declare const self: ServiceWorkerGlobalScope & {
-  __WB_MANIFEST: (string | PrecacheEntry)[]
+  __WB_MANIFEST: (string | PrecacheEntry)[];
 };
 
 import { clientsClaim } from "workbox-core";
-import {PrecacheEntry, precacheAndRoute} from 'workbox-precaching';
+import { PrecacheEntry, precacheAndRoute } from "workbox-precaching";
 
 precacheAndRoute(self.__WB_MANIFEST);
 clientsClaim();

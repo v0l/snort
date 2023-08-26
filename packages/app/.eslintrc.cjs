@@ -9,5 +9,5 @@ module.exports = {
     worker: true,
     commonjs: true,
     node: false,
-  }
+  },
 };

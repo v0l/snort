@@ -7,8 +7,8 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
-const WorkboxPlugin = require('workbox-webpack-plugin');
-const IntlTsTransformer =require('@formatjs/ts-transformer');
+const WorkboxPlugin = require("workbox-webpack-plugin");
+const IntlTsTransformer = require("@formatjs/ts-transformer");
 
 const isProduction = process.env.NODE_ENV == "production";
 
@@ -59,7 +59,7 @@ const config = {
       filename: isProduction ? "[name].[chunkhash].css" : "[name].css",
     }),
     new WorkboxPlugin.InjectManifest({
-      swSrc: "./src/service-worker.ts"
+      swSrc: "./src/service-worker.ts",
     }),
   ],
   module: {
@@ -71,13 +71,13 @@ const config = {
         loader: require.resolve("source-map-loader"),
         options: {
           filterSourceMappingUrl: (url, resourcePath) => {
-              // disable warning for missing @scure-bip39 sourcemaps
-              if (/.*\/.yarn\/cache\/@scure-bip39.*/.test(resourcePath)) {
-                  return false
-              }
-              return true
-          }
-        }
+            // disable warning for missing @scure-bip39 sourcemaps
+            if (/.*\/.yarn\/cache\/@scure-bip39.*/.test(resourcePath)) {
+              return false;
+            }
+            return true;
+          },
+        },
       },
       {
         test: /\.tsx?$/i,
@@ -88,12 +88,9 @@ const config = {
             options: {
               babelrc: false,
               configFile: false,
-              presets: [
-                ["@babel/preset-env"],
-                ["@babel/preset-react", { runtime: "automatic" }],
-              ],
+              presets: [["@babel/preset-env"], ["@babel/preset-react", { runtime: "automatic" }]],
             },
-          }, 
+          },
           {
             loader: require.resolve("ts-loader"),
             options: {
@@ -101,14 +98,14 @@ const config = {
                 return {
                   before: [
                     IntlTsTransformer.transform({
-                      overrideIdFn: '[sha512:contenthash:base64:6]',
-                      ast: true
+                      overrideIdFn: "[sha512:contenthash:base64:6]",
+                      ast: true,
                     }),
-                  ]
-              };
+                  ],
+                };
               },
-            }
-          }
+            },
+          },
         ],
       },
       {
@@ -140,7 +137,7 @@ const config = {
             safari10: true,
           },
           keep_classnames: isProduction,
-          keep_fnames: isProduction
+          keep_fnames: isProduction,
         },
       }),
       new CssMinimizerPlugin(),
@@ -150,7 +147,7 @@ const config = {
     aliasFields: ["browser"],
     extensions: ["...", ".tsx", ".ts", ".jsx", ".js"],
     modules: ["...", __dirname, path.resolve(__dirname, "src")],
-    fallback: { crypto: false }
+    fallback: { crypto: false },
   },
 };
 
