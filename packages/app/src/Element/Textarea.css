@@ -1,3 +1,7 @@
+.rta__autocomplete {
+  z-index: 99;
+}
+
 .rta__list {
   border: none;
 }
