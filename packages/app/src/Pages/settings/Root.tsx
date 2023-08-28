@@ -1,6 +1,7 @@
 import "./Root.css";
+import { useEffect, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Icon from "Icons/Icon";
 import { LoginStore, logout } from "Login";
 import useLogin from "Hooks/useLogin";
@@ -8,10 +9,13 @@ import { unwrap } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 
 import messages from "./messages";
+import usePageWidth from "Hooks/usePageWidth";
 
 const SettingsIndex = () => {
   const login = useLogin();
   const navigate = useNavigate();
+  const location = useLocation();
+  const pageWidth = usePageWidth();
   const sub = getCurrentSubscription(LoginStore.allSubscriptions());
 
   function handleLogout() {
@@ -19,9 +23,19 @@ const SettingsIndex = () => {
     navigate("/");
   }
 
+  useEffect(() => {
+    if (location.pathname === "/settings" && pageWidth >= 768) {
+      navigate("/settings/profile", { replace: true });
+    }
+  }, [location, pageWidth]);
+
+  const [hideMenu, hideContent] = useMemo(() => {
+    return [location.pathname !== "/settings" && pageWidth < 768, location.pathname === "/settings" && pageWidth < 768];
+  }, [location, pageWidth]);
+
   return (
     <div className="settings-nav">
-      <div>
+      {!hideMenu && <div>
         <div className="settings-row" onClick={() => navigate("profile")}>
           <Icon name="profile" size={24} />
           <FormattedMessage {...messages.Profile} />
@@ -81,10 +95,10 @@ const SettingsIndex = () => {
           <FormattedMessage {...messages.LogOut} />
           <Icon name="arrowFront" size={16} />
         </div>
-      </div>
-      <div>
+      </div>}
+      {!hideContent && <div className="content">
         <Outlet />
-      </div>
+      </div>}
     </div>
   );
 };

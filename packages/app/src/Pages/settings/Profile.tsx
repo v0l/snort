@@ -167,7 +167,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           {(props.banner ?? true) && (
             <div
               style={{
-                backgroundImage: (banner?.length ?? 0) > 0 ? `url(${banner})` : undefined,
+                background: (banner?.length ?? 0) > 0 ? `no-repeat center/cover url("${banner}")` : undefined,
               }}
               className="banner">
               <AsyncButton type="button" onClick={() => setNewBanner()}>

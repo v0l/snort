@@ -58,9 +58,9 @@ const config = {
     new MiniCssExtractPlugin({
       filename: isProduction ? "[name].[chunkhash].css" : "[name].css",
     }),
-    new WorkboxPlugin.InjectManifest({
-      swSrc: "./src/service-worker.ts",
-    }),
+    isProduction ? new WorkboxPlugin.InjectManifest({
+      swSrc: "./src/service-worker.ts"
+    }) : false,
   ],
   module: {
     rules: [
