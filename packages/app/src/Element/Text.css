@@ -3,6 +3,15 @@
   line-height: 24px;
 }
 
+.text .text-frag {
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  word-break: normal;
+  overflow-x: hidden;
+  overflow-y: visible;
+  display: inline;
+}
+
 .text .text-frag > a {
   color: var(--highlight);
   text-decoration: none;

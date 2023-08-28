@@ -67,15 +67,6 @@
   padding: 8px 16px 16px 16px;
 }
 
-.note > .body .text-frag {
-  text-overflow: ellipsis;
-  white-space: pre-wrap;
-  word-break: normal;
-  overflow-x: hidden;
-  overflow-y: visible;
-  display: inline;
-}
-
 .note .footer .footer-reactions {
   display: flex;
   flex-direction: row;
