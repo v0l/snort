@@ -305,9 +305,11 @@ export default function Note(props: NoteProps) {
   if (!canRenderAsTextNote.includes(ev.kind)) {
     const alt = findTag(ev, "alt");
     if (alt) {
-      return <div className="note-quote">
-        <Text content={alt} tags={[]} creator={ev.pubkey} />
-      </div>
+      return (
+        <div className="note-quote">
+          <Text content={alt} tags={[]} creator={ev.pubkey} />
+        </div>
+      );
     } else {
       return (
         <>
@@ -377,7 +379,7 @@ export default function Note(props: NoteProps) {
               {options.showContextMenu && (
                 <NoteContextMenu
                   ev={ev}
-                  react={async () => { }}
+                  react={async () => {}}
                   onTranslated={t => setTranslated(t)}
                   setShowReactions={setShowReactions}
                 />

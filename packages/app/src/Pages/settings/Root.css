@@ -3,7 +3,7 @@
   grid-template-columns: 237px auto;
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
   .settings-nav {
     grid-template-columns: auto;
   }
