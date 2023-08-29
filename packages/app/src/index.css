@@ -3,7 +3,7 @@
   --font-color: #fff;
   --font-secondary-color: #a7a7a7;
   --font-tertiary-color: #a3a3a3;
-  --border-color: rgba(163, 163, 163, 0.3);
+  --border-color: var(--gray-superdark);
   --font-size: 15px;
   --font-size-small: 13px;
   --font-size-tiny: 11px;
@@ -71,21 +71,22 @@ html {
 
 html.light {
   --bg-color: #f8f8f8;
-  --font-color: #27272a;
+  --font-color: #2F3F64;
   --font-secondary-color: #71717a;
   --font-tertiary-color: #52525b;
-  --border-color: rgba(167, 167, 167, 0.3);
+  --border-color: #DEE1E8;
 
   --highlight: #7139f1;
   --modal-bg-color: rgba(240, 240, 240, 0.8);
 
-  --gray: #aaa;
-  --gray-secondary: #bbb;
-  --gray-tertiary: #ccc;
+  --gray: #999;
+  --gray-secondary: #aaa;
+  --gray-tertiary: #bbb;
   --gray-superlight: #333;
   --gray-light: #555;
-  --gray-dark: #2b2b2b;
-  --gray-superdark: #eee;
+  --gray-dark: #ccc;
+  --gray-superdark: #ddd;
+  --gray-ultradark: #eee;
 
   --dm-gradient: var(--gray);
   --invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73333, #fc4a1a33);
@@ -125,7 +126,7 @@ code {
   }
 
   .main-content {
-    border: 1px solid var(--gray-superdark);
+    border: 1px solid var(--border-color);
   }
 }
 

@@ -16,6 +16,7 @@ export default function useLoginHandler() {
       defaultMessage:
         "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead",
     });
+    // private key logins
     if (key.startsWith("nsec")) {
       if (!hasSubtleCrypto) {
         throw new Error(insecureMsg);
@@ -26,12 +27,6 @@ export default function useLoginHandler() {
       } else {
         throw new Error("INVALID PRIVATE KEY");
       }
-    } else if (key.startsWith("npub")) {
-      const hexKey = bech32ToHex(key);
-      LoginStore.loginWithPubkey(hexKey, LoginSessionType.PublicKey);
-    } else if (key.match(EmailRegex)) {
-      const hexKey = await getNip05PubKey(key);
-      LoginStore.loginWithPubkey(hexKey, LoginSessionType.PublicKey);
     } else if (key.match(MnemonicRegex)?.length === 24) {
       if (!hasSubtleCrypto) {
         throw new Error(insecureMsg);
@@ -44,6 +39,15 @@ export default function useLoginHandler() {
         throw new Error(insecureMsg);
       }
       LoginStore.loginWithPrivateKey(key);
+    }
+
+    // public key logins
+    if (key.startsWith("npub")) {
+      const hexKey = bech32ToHex(key);
+      LoginStore.loginWithPubkey(hexKey, LoginSessionType.PublicKey);
+    } else if (key.match(EmailRegex)) {
+      const hexKey = await getNip05PubKey(key);
+      LoginStore.loginWithPubkey(hexKey, LoginSessionType.PublicKey);
     } else if (key.startsWith("bunker://")) {
       const nip46 = new Nip46Signer(key);
       await nip46.init();

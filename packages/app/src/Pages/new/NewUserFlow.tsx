@@ -8,7 +8,7 @@ import { hexToBech32 } from "SnortUtils";
 import { hexToMnemonic } from "nip6";
 import useLogin from "Hooks/useLogin";
 import { PROFILE } from ".";
-import { DefaultPreferences, updatePreferences } from "Login";
+import { DefaultPreferences, LoginStore, updatePreferences } from "Login";
 import { AllLanguageCodes } from "Pages/settings/Preferences";
 
 import messages from "./messages";
@@ -136,7 +136,13 @@ export default function NewUserFlow() {
       </h2>
       <Copy text={hexToMnemonic(login.generatedEntropy ?? "")} />
       <div className="next-actions">
-        <button type="button" onClick={() => navigate(PROFILE)}>
+        <button type="button" onClick={() => {
+          LoginStore.updateSession({
+            ...login,
+            generatedEntropy: undefined
+          })
+          navigate(PROFILE)
+        }}>
           <FormattedMessage {...messages.KeysSaved} />{" "}
         </button>
       </div>

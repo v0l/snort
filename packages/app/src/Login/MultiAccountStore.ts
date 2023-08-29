@@ -7,6 +7,7 @@ import { deepClone, sanitizeRelayUrl, unwrap, ExternalStore } from "@snort/share
 import { DefaultRelays } from "Const";
 import { LoginSession, LoginSessionType } from "Login";
 import { DefaultPreferences, UserPreferences } from "./Preferences";
+import { Nip7OsSigner } from "./Nip7OsSigner";
 
 const AccountStoreKey = "sessions";
 const LoggedOut = {
@@ -146,6 +147,12 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       },
       preferences: deepClone(DefaultPreferences),
     } as LoginSession;
+
+    if("nostr_os" in window && window.nostr_os) {
+      window.nostr_os.saveKey(key);
+      newSession.type = LoginSessionType.Nip7os;
+      newSession.privateKey = undefined;
+    }
     newSession.publisher = this.#createPublisher(newSession);
 
     this.#accounts.set(pubKey, newSession);
@@ -189,6 +196,9 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         const inner = new PrivateKeySigner(unwrap(l.privateKey));
         const nip46 = new Nip46Signer(`bunker://${unwrap(l.publicKey)}?${[...relayArgs].join("&")}`, inner);
         return new EventPublisher(nip46, unwrap(l.publicKey));
+      }
+      case LoginSessionType.Nip7os: {
+        return new EventPublisher(new Nip7OsSigner(), unwrap(l.publicKey));
       }
       default: {
         if (l.publicKey) {
