@@ -71,10 +71,10 @@ html {
 
 html.light {
   --bg-color: #f8f8f8;
-  --font-color: #2F3F64;
+  --font-color: #2f3f64;
   --font-secondary-color: #71717a;
   --font-tertiary-color: #52525b;
-  --border-color: #DEE1E8;
+  --border-color: #dee1e8;
 
   --highlight: #7139f1;
   --modal-bg-color: rgba(240, 240, 240, 0.8);

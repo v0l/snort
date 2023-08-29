@@ -36,7 +36,8 @@ export const ProxyImg = (props: ProxyImgProps) => {
     <img
       {...props}
       src={props.src ? proxy(props.src, props.size) : ""}
-      width={props.size} height={props.size}
+      width={props.size}
+      height={props.size}
       onError={e => {
         if (props.onError) {
           props.onError(e);

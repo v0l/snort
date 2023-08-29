@@ -15,7 +15,7 @@ export enum LoginSessionType {
   PublicKey = "public_key",
   Nip7 = "nip7",
   Nip46 = "nip46",
-  Nip7os = "nip7_os"
+  Nip7os = "nip7_os",
 }
 
 export interface LoginSession {

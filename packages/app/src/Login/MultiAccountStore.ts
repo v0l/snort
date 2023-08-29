@@ -148,7 +148,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       preferences: deepClone(DefaultPreferences),
     } as LoginSession;
 
-    if("nostr_os" in window && window.nostr_os) {
+    if ("nostr_os" in window && window.nostr_os) {
       window.nostr_os.saveKey(key);
       newSession.type = LoginSessionType.Nip7os;
       newSession.privateKey = undefined;

@@ -136,13 +136,15 @@ export default function NewUserFlow() {
       </h2>
       <Copy text={hexToMnemonic(login.generatedEntropy ?? "")} />
       <div className="next-actions">
-        <button type="button" onClick={() => {
-          LoginStore.updateSession({
-            ...login,
-            generatedEntropy: undefined
-          })
-          navigate(PROFILE)
-        }}>
+        <button
+          type="button"
+          onClick={() => {
+            LoginStore.updateSession({
+              ...login,
+              generatedEntropy: undefined,
+            });
+            navigate(PROFILE);
+          }}>
           <FormattedMessage {...messages.KeysSaved} />{" "}
         </button>
       </div>
