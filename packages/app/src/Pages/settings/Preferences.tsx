@@ -29,6 +29,7 @@ export const AllLanguageCodes = [
   "fa-IR",
   "th",
   "pt-BR",
+  "sw"
 ];
 
 const PreferencesPage = () => {
