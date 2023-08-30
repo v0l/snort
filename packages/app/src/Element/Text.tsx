@@ -63,7 +63,7 @@ export default function Text({ content, tags, creator, disableMedia, depth, disa
           return <CashuNuts token={a.content} />;
         case "media":
         case "link":
-          return <HyperText link={a.content} depth={depth} />;
+          return <HyperText link={a.content} depth={depth} showLinkPreview={!(disableMedia ?? false)}/>;
         case "custom_emoji":
           return <ProxyImg src={a.content} size={15} className="custom-emoji" />;
         default:

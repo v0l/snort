@@ -1,7 +1,7 @@
 import "./NoteReaction.css";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import { EventKind, NostrEvent, TaggedNostrEvent, NostrPrefix } from "@snort/system";
+import { EventKind, NostrEvent, TaggedNostrEvent, NostrPrefix, EventExt } from "@snort/system";
 
 import Note from "Element/Note";
 import { getDisplayName } from "Element/ProfileImage";
@@ -46,6 +46,11 @@ export default function NoteReaction(props: NoteReactionProps) {
     if (ev?.kind === EventKind.Repost && ev.content.length > 0 && ev.content !== "#[0]") {
       try {
         const r: NostrEvent = JSON.parse(ev.content);
+        EventExt.fixupEvent(r);
+        if(!EventExt.verify(r)) {
+          console.debug("Event in repost is invalid");
+          return undefined;
+        }
         return r as TaggedNostrEvent;
       } catch (e) {
         console.error("Could not load reposted content", e);

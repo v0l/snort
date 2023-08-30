@@ -138,4 +138,17 @@ export abstract class EventExt {
     ret.pubKeys = Array.from(new Set(ev.tags.filter(a => a[0] === "p").map(a => a[1])));
     return ret;
   }
+
+  /**
+   * Assign props if undefined
+   */
+  static fixupEvent(e: NostrEvent) {
+    e.tags ??= [];
+    e.created_at ??= 0;
+    e.content ??= "";
+    e.id ??= "";
+    e.kind ??= 0;
+    e.pubkey ??= "";
+    e.sig ??= "";
+  }
 }

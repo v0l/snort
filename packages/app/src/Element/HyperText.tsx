@@ -27,9 +27,10 @@ import MagnetLink from "Element/MagnetLink";
 interface HypeTextProps {
   link: string;
   depth?: number;
+  showLinkPreview?: boolean;
 }
 
-export default function HyperText({ link, depth }: HypeTextProps) {
+export default function HyperText({ link, depth, showLinkPreview }: HypeTextProps) {
   const a = link;
   try {
     const url = new URL(a);
@@ -91,7 +92,7 @@ export default function HyperText({ link, depth }: HypeTextProps) {
       if (parsed) {
         return <MagnetLink magnet={parsed} />;
       }
-    } else {
+    } else if (showLinkPreview ?? true) {
       return <LinkPreview url={a} />;
     }
   } catch {

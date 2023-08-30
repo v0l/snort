@@ -121,8 +121,9 @@ export default function ProfilePage() {
   const about = Text({
     content: aboutText,
     tags: [],
-    creator: "",
+    creator: id ?? "",
     disableMedia: true,
+    disableMediaSpotlight: true,
   });
   const npub = !id?.startsWith(NostrPrefix.PublicKey) ? hexToBech32(NostrPrefix.PublicKey, id || undefined) : id;
 
