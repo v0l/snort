@@ -5,7 +5,7 @@ import { validateNostrLink } from "./nostr-link";
 import { splitByUrl } from "./utils";
 
 export interface ParsedFragment {
-  type: "text" | "link" | "mention" | "invoice" | "media" | "cashu" | "hashtag" | "custom_emoji";
+  type: "text" | "link" | "mention" | "invoice" | "media" | "cashu" | "hashtag" | "custom_emoji" | "highlighted_text";
   content: string;
   mimeType?: string;
 }

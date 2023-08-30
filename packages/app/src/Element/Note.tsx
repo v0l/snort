@@ -47,6 +47,7 @@ export interface NoteProps {
   ignoreModeration?: boolean;
   onClick?: (e: TaggedNostrEvent) => void;
   depth?: number;
+  searchedValue?: string;
   options?: {
     showHeader?: boolean;
     showContextMenu?: boolean;
@@ -209,12 +210,13 @@ export default function Note(props: NoteProps) {
               )}
             </>
           }>
-          <Text content={body} tags={ev.tags} creator={ev.pubkey} />
+          <Text highlighText={props.searchedValue} content={body} tags={ev.tags} creator={ev.pubkey} />
         </Reveal>
       );
     }
     return (
       <Text
+        highlighText={props.searchedValue}
         content={body}
         tags={ev.tags}
         creator={ev.pubkey}

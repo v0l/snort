@@ -9,6 +9,7 @@ import CashuNuts from "Element/CashuNuts";
 import RevealMedia from "./RevealMedia";
 import { ProxyImg } from "./ProxyImg";
 import { SpotlightMedia } from "./SpotlightMedia";
+import HighlightedText from "./HighlightedText";
 
 export interface TextProps {
   content: string;
@@ -17,9 +18,10 @@ export interface TextProps {
   disableMedia?: boolean;
   disableMediaSpotlight?: boolean;
   depth?: number;
+  highlighText?: string;
 }
 
-export default function Text({ content, tags, creator, disableMedia, depth, disableMediaSpotlight }: TextProps) {
+export default function Text({ content, tags, creator, disableMedia, depth, disableMediaSpotlight, highlighText }: TextProps) {
   const [showSpotlight, setShowSpotlight] = useState(false);
   const [imageIdx, setImageIdx] = useState(0);
 
@@ -28,6 +30,35 @@ export default function Text({ content, tags, creator, disableMedia, depth, disa
   }, [content]);
 
   const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content);
+
+  function renderContentWithHighlightedText(content: string, textToHighlight: string) {
+    const textToHighlightArray = textToHighlight.trim().toLowerCase().split(' ');
+    const re = new RegExp(`(${textToHighlightArray.join('|')})`, 'gi');
+    const splittedContent = content.split(re);
+
+    const fragments = splittedContent.map(c => {
+      if (textToHighlightArray.includes(c.toLowerCase())) {
+        return {
+          type: 'highlighted_text',
+          content: c,
+        } as ParsedFragment;
+      }
+
+      return c;
+    })
+
+    return (
+      <>
+        {fragments.map(f => {
+          if (typeof f === "string") {
+            return f;
+          }
+
+          return <HighlightedText content={f.content} />;
+        })}
+      </>
+    );
+  }
 
   function renderChunk(a: ParsedFragment) {
     if (a.type === "media" && !a.mimeType?.startsWith("unknown")) {
@@ -67,7 +98,9 @@ export default function Text({ content, tags, creator, disableMedia, depth, disa
         case "custom_emoji":
           return <ProxyImg src={a.content} size={15} className="custom-emoji" />;
         default:
-          return <div className="text-frag">{a.content}</div>;
+          return <div className="text-frag">
+            {highlighText ? renderContentWithHighlightedText(a.content, highlighText) : a.content}
+          </div>;
       }
     }
   }

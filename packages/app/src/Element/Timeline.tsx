@@ -93,7 +93,7 @@ const Timeline = (props: TimelineProps) => {
           return <NoteReaction data={e} key={e.id} root={findRelated(eRef)} />;
         }
         return (
-          <Note key={e.id} data={e} related={relatedFeed(e.id)} ignoreModeration={props.ignoreModeration} depth={0} />
+          <Note key={e.id} searchedValue={props.subject.discriminator} data={e} related={relatedFeed(e.id)} ignoreModeration={props.ignoreModeration} depth={0} />
         );
       }
       case EventKind.ZapReceipt: {
