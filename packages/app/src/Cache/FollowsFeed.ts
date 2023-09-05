@@ -112,8 +112,8 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
    * Backfill cache based on follows list
    */
   async backFillIfMissing(system: SystemInterface, keys: Array<string>) {
-    if(!this.#oldest) return;
-    
+    if (!this.#oldest) return;
+
     const start = unixNowMs();
     const everything = await this.table?.toArray();
     if ((everything?.length ?? 0) > 0) {
