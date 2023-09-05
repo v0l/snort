@@ -12,7 +12,7 @@ const MaxCacheWindow = Day * 7;
 
 export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
   #kinds = [EventKind.TextNote, EventKind.Repost, EventKind.Polls];
-  #oldest: number = 0;
+  #oldest?: number;
 
   constructor() {
     super("FollowsFeedCache", db.followsFeed);
@@ -58,14 +58,14 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
       .delete();
 
     const oldest = await this.table?.orderBy("created_at").first();
-    this.#oldest = oldest?.created_at ?? 0;
+    this.#oldest = oldest?.created_at ?? (unixNow() - MaxCacheWindow);
     this.notifyChange(latest?.map(a => this.key(a)) ?? []);
 
     debug(this.name)(`Loaded %d/%d in %d ms`, latest?.length ?? 0, keys.length, (unixNowMs() - start).toLocaleString());
   }
 
   async loadMore(system: SystemInterface, session: LoginSession, before: number) {
-    if (before <= this.#oldest) {
+    if (this.#oldest && before <= this.#oldest) {
       const rb = new RequestBuilder(`${this.name}-loadmore`);
       rb.withFilter()
         .kinds(this.#kinds)
