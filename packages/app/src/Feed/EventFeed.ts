@@ -33,7 +33,7 @@ export function useEventFeed(link: NostrLink) {
 export function useEventsFeed(id: string, links: Array<NostrLink>) {
   const sub = useMemo(() => {
     const b = new RequestBuilder(`events:${id}`);
-    for(const l of links) {
+    for (const l of links) {
       if (l.type === NostrPrefix.Address) {
         const f = b.withFilter().tag("d", [l.id]);
         if (l.author) {

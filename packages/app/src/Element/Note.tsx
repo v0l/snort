@@ -106,7 +106,7 @@ export default function Note(props: NoteProps) {
     return <ZapGoal ev={ev} />;
   }
 
-  return <NoteInner {...props} />
+  return <NoteInner {...props} />;
 }
 
 export function NoteInner(props: NoteProps) {
@@ -393,7 +393,7 @@ export function NoteInner(props: NoteProps) {
               {options.showContextMenu && (
                 <NoteContextMenu
                   ev={ev}
-                  react={async () => { }}
+                  react={async () => {}}
                   onTranslated={t => setTranslated(t)}
                   setShowReactions={setShowReactions}
                 />

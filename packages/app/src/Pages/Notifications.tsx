@@ -229,14 +229,18 @@ function NotificationContext({ link }: { link: NostrLink }) {
   const { data: ev } = useEventFeed(link);
   const navigate = useNavigate();
 
-  return ev && <Text
-    id={ev.id}
-    content={ev.content}
-    tags={ev.tags}
-    creator={ev.pubkey}
-    truncate={120}
-    disableLinkPreview={true}
-    className="content"
-    onClick={() => navigate(`/${link.encode()}`)}
-  />
+  return (
+    ev && (
+      <Text
+        id={ev.id}
+        content={ev.content}
+        tags={ev.tags}
+        creator={ev.pubkey}
+        truncate={120}
+        disableLinkPreview={true}
+        className="content"
+        onClick={() => navigate(`/${link.encode()}`)}
+      />
+    )
+  );
 }

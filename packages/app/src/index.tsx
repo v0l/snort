@@ -80,10 +80,7 @@ async function initSite() {
   }
   try {
     if ("registerProtocolHandler" in window.navigator) {
-      window.navigator.registerProtocolHandler(
-        "web+nostr",
-        `${window.location.protocol}//${window.location.host}/%s`
-      );
+      window.navigator.registerProtocolHandler("web+nostr", `${window.location.protocol}//${window.location.host}/%s`);
       console.info("Registered protocol handler for 'web+nostr'");
     }
   } catch (e) {
@@ -100,7 +97,7 @@ export const router = createBrowserRouter([
     loader: async () => {
       if (!didInit) {
         didInit = true;
-        return await initSite()
+        return await initSite();
       }
       return null;
     },

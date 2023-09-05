@@ -116,7 +116,13 @@ export default function Poll(props: PollProps) {
                 {opt === voting ? (
                   <Spinner />
                 ) : (
-                  <Text id={props.ev.id} content={desc} tags={props.ev.tags} creator={props.ev.pubkey} disableMediaSpotlight={true} />
+                  <Text
+                    id={props.ev.id}
+                    content={desc}
+                    tags={props.ev.tags}
+                    creator={props.ev.pubkey}
+                    disableMediaSpotlight={true}
+                  />
                 )}
               </div>
               {showResults && (

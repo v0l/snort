@@ -37,7 +37,7 @@ export default function Text({
   disableLinkPreview,
   truncate,
   className,
-  onClick
+  onClick,
 }: TextProps) {
   const [showSpotlight, setShowSpotlight] = useState(false);
   const [imageIdx, setImageIdx] = useState(0);
@@ -60,7 +60,7 @@ export default function Text({
           return null;
         } else if (lenCtr + a.content.length > truncate) {
           lenCtr += a.content.length;
-          return <div className="text-frag">{a.content.slice(0, truncate - lenCtr)}...</div>
+          return <div className="text-frag">{a.content.slice(0, truncate - lenCtr)}...</div>;
         } else {
           lenCtr += a.content.length;
         }
@@ -109,7 +109,7 @@ export default function Text({
     }
 
     return elements.map(a => renderChunk(a));
-  }
+  };
 
   return (
     <div dir="auto" className={`text${className ? ` ${className}` : ""}`} onClick={onClick}>

@@ -13,7 +13,7 @@ const MaxCacheWindow = Day * 7;
 export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
   #kinds = [EventKind.TextNote, EventKind.Repost, EventKind.Polls];
   #oldest: number = 0;
-  
+
   constructor() {
     super("FollowsFeedCache", db.followsFeed);
   }
@@ -29,14 +29,14 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
   buildSub(session: LoginSession, rb: RequestBuilder): void {
     const since = this.newest();
     rb.withFilter()
-    .kinds(this.#kinds)
-    .authors(session.follows.item)
-    .since(since === 0 ? unixNow() - WindowSize : since);
+      .kinds(this.#kinds)
+      .authors(session.follows.item)
+      .since(since === 0 ? unixNow() - WindowSize : since);
   }
 
   async onEvent(evs: readonly TaggedNostrEvent[]): Promise<void> {
     const filtered = evs.filter(a => this.#kinds.includes(a.kind));
-    if(filtered.length > 0) {
+    if (filtered.length > 0) {
       await this.bulkSet(filtered);
       this.notifyChange(filtered.map(a => this.key(a)));
     }
@@ -52,22 +52,20 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
     latest?.forEach(v => this.cache.set(this.key(v), v));
 
     // cleanup older than 7 days
-    await this.table?.where("created_at").below(unixNow() - MaxCacheWindow).delete();
+    await this.table
+      ?.where("created_at")
+      .below(unixNow() - MaxCacheWindow)
+      .delete();
 
     const oldest = await this.table?.orderBy("created_at").first();
     this.#oldest = oldest?.created_at ?? 0;
     this.notifyChange(latest?.map(a => this.key(a)) ?? []);
-    
-    debug(this.name)(
-      `Loaded %d/%d in %d ms`,
-      latest?.length ?? 0,
-      keys.length,
-      (unixNowMs() - start).toLocaleString(),
-    );
+
+    debug(this.name)(`Loaded %d/%d in %d ms`, latest?.length ?? 0, keys.length, (unixNowMs() - start).toLocaleString());
   }
 
   async loadMore(system: SystemInterface, session: LoginSession, before: number) {
-    if(before <= this.#oldest) {
+    if (before <= this.#oldest) {
       const rb = new RequestBuilder(`${this.name}-loadmore`);
       rb.withFilter()
         .kinds(this.#kinds)
@@ -78,13 +76,17 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
         await this.bulkSet(evs);
       });
     } else {
-      const latest = await this.table?.where("created_at").between(before - WindowSize, before).reverse().sortBy("created_at");
+      const latest = await this.table
+        ?.where("created_at")
+        .between(before - WindowSize, before)
+        .reverse()
+        .sortBy("created_at");
       latest?.forEach(v => {
         const k = this.key(v);
         this.cache.set(k, v);
         this.onTable.add(k);
       });
-      
+
       this.notifyChange(latest?.map(a => this.key(a)) ?? []);
     }
   }
@@ -93,7 +95,7 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
    * Backfill cache with new follows
    */
   async backFill(system: SystemInterface, keys: Array<string>) {
-    if(keys.length === 0) return;
+    if (keys.length === 0) return;
 
     const rb = new RequestBuilder(`${this.name}-backfill`);
     rb.withFilter()
@@ -115,10 +117,6 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
     const allKeys = new Set(everything?.map(a => a.pubkey));
     const missingKeys = keys.filter(a => !allKeys.has(a));
     await this.backFill(system, missingKeys);
-    debug(this.name)(
-      `Backfilled %d keys in %d ms`,
-      missingKeys.length,
-      (unixNowMs() - start).toLocaleString(),
-    );
+    debug(this.name)(`Backfilled %d keys in %d ms`, missingKeys.length, (unixNowMs() - start).toLocaleString());
   }
 }

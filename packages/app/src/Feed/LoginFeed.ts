@@ -28,7 +28,7 @@ export default function useLoginFeed() {
 
   useRefreshFeedCache(Notifications, true);
   useRefreshFeedCache(FollowsFeed, true);
-  if(publisher?.supports("nip44")) {
+  if (publisher?.supports("nip44")) {
     useRefreshFeedCache(GiftsCache, true);
   }
 
@@ -78,7 +78,7 @@ export default function useLoginFeed() {
         }
         const pTags = contactList.tags.filter(a => a[0] === "p").map(a => a[1]);
         setFollows(login, pTags, contactList.created_at * 1000);
-        
+
         FollowsFeed.backFillIfMissing(System, pTags);
       }
 

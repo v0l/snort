@@ -307,7 +307,15 @@ export default function ProfilePage() {
     return (
       aboutText.length > 0 && (
         <div dir="auto" className="about">
-          <Text id={id} content={aboutText} tags={[]} creator={id} disableMedia={true} disableLinkPreview={true} disableMediaSpotlight={true} />
+          <Text
+            id={id}
+            content={aboutText}
+            tags={[]}
+            creator={id}
+            disableMedia={true}
+            disableLinkPreview={true}
+            disableMediaSpotlight={true}
+          />
         </div>
       )
     );

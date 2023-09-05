@@ -18,7 +18,7 @@ export class NotificationsCache extends RefreshFeedCache<NostrEvent> {
       rb.withFilter()
         .kinds(this.#kinds)
         .tag("p", [session.publicKey])
-        .since(newest === 0 ? unixNow() -  (Day * 30): newest);
+        .since(newest === 0 ? unixNow() - Day * 30 : newest);
     }
   }
 

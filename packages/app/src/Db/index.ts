@@ -41,7 +41,7 @@ const STORES = {
   payments: "++url",
   gifts: "++id",
   notifications: "++id",
-  followsFeed: "++id, created_at, kind"
+  followsFeed: "++id, created_at, kind",
 };
 
 export class SnortDB extends Dexie {
