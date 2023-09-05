@@ -44,8 +44,7 @@
     "intl-extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file src/lang.json --flatten true",
     "intl-compile": "formatjs compile src/lang.json --out-file src/translations/en.json",
     "format": "prettier --write .",
-    "eslint": "eslint .",
-    "prepare": "cd ../.. && husky install"
+    "eslint": "eslint ."
   },
   "eslintConfig": {
     "extends": [
@@ -110,8 +109,5 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
     "workbox-webpack-plugin": "^6.5.4"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
   }
 }

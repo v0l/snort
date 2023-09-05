@@ -58,7 +58,7 @@ steps:
       - yarn build
       - yarn test
       - yarn workspace @snort/app eslint
-      - yarn workspace @snort/app prettier --check .
+      - yarn prettier --check .
 volumes:
   - name: cache
     claim:
