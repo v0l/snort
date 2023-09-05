@@ -58,7 +58,7 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
       .delete();
 
     const oldest = await this.table?.orderBy("created_at").first();
-    this.#oldest = oldest?.created_at ?? unixNow() - MaxCacheWindow;
+    this.#oldest = oldest?.created_at;
     this.notifyChange(latest?.map(a => this.key(a)) ?? []);
 
     debug(this.name)(`Loaded %d/%d in %d ms`, latest?.length ?? 0, keys.length, (unixNowMs() - start).toLocaleString());
@@ -112,6 +112,8 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
    * Backfill cache based on follows list
    */
   async backFillIfMissing(system: SystemInterface, keys: Array<string>) {
+    if(!this.#oldest) return;
+    
     const start = unixNowMs();
     const everything = await this.table?.toArray();
     if ((everything?.length ?? 0) > 0) {
