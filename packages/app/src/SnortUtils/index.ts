@@ -50,7 +50,7 @@ export async function openFile(): Promise<File | undefined> {
           }
         }, 300);
       },
-      { once: true }
+      { once: true },
     );
   });
 }
@@ -209,7 +209,7 @@ export function dedupeByPubkey(events: TaggedNostrEvent[]) {
         list: [...list, ev],
       };
     },
-    { list: [], seen: new Set([]) }
+    { list: [], seen: new Set([]) },
   );
   return deduped.list as TaggedNostrEvent[];
 }
@@ -226,7 +226,7 @@ export function dedupeById<T extends { id: string }>(events: Array<T>) {
         list: [...list, ev],
       };
     },
-    { list: [], seen: new Set([]) }
+    { list: [], seen: new Set([]) },
   );
   return deduped.list as Array<T>;
 }
@@ -487,7 +487,7 @@ export function kvToObject<T>(o: string, sep?: string) {
         return [match[1], match[2]];
       }
       return [];
-    })
+    }),
   ) as T;
 }
 

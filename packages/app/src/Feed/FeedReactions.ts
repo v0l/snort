@@ -13,7 +13,7 @@ export function useReactions(subId: string, ids: Array<string>, others?: (rb: Re
         .kinds(
           pref.enableReactions
             ? [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt]
-            : [EventKind.ZapReceipt, EventKind.Repost]
+            : [EventKind.ZapReceipt, EventKind.Repost],
         )
         .tag("e", ids);
     }

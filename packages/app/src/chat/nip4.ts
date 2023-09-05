@@ -34,7 +34,7 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
     const dms = this.#cache.snapshot();
     const dmSince = dms.reduce(
       (acc, v) => (v.created_at > acc && v.kind === EventKind.DirectMessage ? (acc = v.created_at) : acc),
-      0
+      0,
     );
 
     this.#log("Loading DMS since %s", new Date(dmSince * 1000));
@@ -49,12 +49,15 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
 
   listChats(pk: string): Chat[] {
     const myDms = this.#nip4Events();
-    const chats = myDms.reduce((acc, v) => {
-      const chatId = inChatWith(v, pk);
-      acc[chatId] ??= [];
-      acc[chatId].push(v);
-      return acc;
-    }, {} as Record<string, Array<NostrEvent>>);
+    const chats = myDms.reduce(
+      (acc, v) => {
+        const chatId = inChatWith(v, pk);
+        acc[chatId] ??= [];
+        acc[chatId].push(v);
+        return acc;
+      },
+      {} as Record<string, Array<NostrEvent>>,
+    );
 
     return [...Object.entries(chats)].map(([k, v]) => Nip4ChatSystem.createChatObj(k, v));
   }

@@ -85,7 +85,7 @@ export default function useLoginFeed() {
       Nip4Chats.onEvent(loginFeed.data);
 
       const subs = loginFeed.data.filter(
-        a => a.kind === EventKind.SnortSubscriptions && a.pubkey === bech32ToHex(SnortPubKey)
+        a => a.kind === EventKind.SnortSubscriptions && a.pubkey === bech32ToHex(SnortPubKey),
       );
       Promise.all(
         subs.map(async a => {
@@ -97,7 +97,7 @@ export default function useLoginFeed() {
               ...ex,
             } as SubscriptionEvent;
           }
-        })
+        }),
       ).then(a => addSubscription(login, ...a.filter(a => a !== undefined).map(unwrap)));
     }
   }, [loginFeed, publisher]);
@@ -106,7 +106,7 @@ export default function useLoginFeed() {
   useEffect(() => {
     if (loginFeed.data) {
       const replies = loginFeed.data.filter(
-        a => a.kind === EventKind.TextNote && !isMuted(a.pubkey) && a.created_at > readNotifications
+        a => a.kind === EventKind.TextNote && !isMuted(a.pubkey) && a.created_at > readNotifications,
       );
       replies.forEach(async nx => {
         const n = await makeNotification(nx);

@@ -285,7 +285,7 @@ export default function SendSats(props: SendSatsProps) {
           {makeTab(ZapType.AnonZap, <FormattedMessage defaultMessage="Anon" description="Anonymous Zap" />)}
           {makeTab(
             ZapType.NonZap,
-            <FormattedMessage defaultMessage="Non-Zap" description="Non-Zap, Regular LN payment" />
+            <FormattedMessage defaultMessage="Non-Zap" description="Non-Zap, Regular LN payment" />,
           )}
         </div>
       </>

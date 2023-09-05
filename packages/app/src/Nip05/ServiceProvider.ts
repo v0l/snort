@@ -97,7 +97,7 @@ export class ServiceProvider {
     path: string,
     method?: "GET" | string,
     body?: unknown,
-    headers?: { [key: string]: string }
+    headers?: { [key: string]: string },
   ): Promise<T | ServiceError> {
     try {
       const rsp = await fetch(`${this.url}${path}`, {
