@@ -73,7 +73,7 @@ export default function ZapPoolPage() {
   const login = useLogin();
   const zapPool = useSyncExternalStore(
     c => ZapPoolController.hook(c),
-    () => ZapPoolController.snapshot(),
+    () => ZapPoolController.snapshot()
   );
   const { wallet } = useWallet();
 

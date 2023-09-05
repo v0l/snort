@@ -54,7 +54,7 @@ export default class SnortServiceProvider extends ServiceProvider {
     path: string,
     method?: "GET" | string,
     body?: unknown,
-    headers?: { [key: string]: string },
+    headers?: { [key: string]: string }
   ): Promise<T | ServiceError> {
     const auth = await this.#publisher.generic(eb => {
       eb.kind(EventKind.HttpAuthentication);

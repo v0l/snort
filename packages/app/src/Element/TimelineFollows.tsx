@@ -28,11 +28,11 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const [latest, setLatest] = useState(unixNow());
   const feed = useSyncExternalStore(
     cb => FollowsFeed.hook(cb, "*"),
-    () => FollowsFeed.snapshot(),
+    () => FollowsFeed.snapshot()
   );
   const reactions = useReactions(
     "follows-feed-reactions",
-    feed.map(a => a.id),
+    feed.map(a => a.id)
   );
   const system = useContext(SnortContext);
   const login = useLogin();
@@ -48,7 +48,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
         .filter(a => !isMuted(a.pubkey) && login.follows.item.includes(a.pubkey));
     },
-    [props.postsOnly, muted, login.follows.timestamp],
+    [props.postsOnly, muted, login.follows.timestamp]
   );
 
   const mainFeed = useMemo(() => {
@@ -63,7 +63,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     (id: u256) => {
       return (reactions?.data ?? []).filter(a => findTag(a, "e") === id);
     },
-    [reactions],
+    [reactions]
   );
 
   const liveStreams = useMemo(() => {

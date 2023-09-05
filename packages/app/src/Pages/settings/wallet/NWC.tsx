@@ -37,7 +37,7 @@ const ConnectNostrWallet = () => {
         setError(
           formatMessage({
             defaultMessage: "Unknown error",
-          }),
+          })
         );
       }
     }

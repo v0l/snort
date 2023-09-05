@@ -23,7 +23,7 @@ export default function useProfileBadges(pubkey?: HexKey) {
     if (profileBadges.data) {
       return chunks(
         profileBadges.data.tags.filter(t => t[0] === "a" || t[0] === "e"),
-        2,
+        2
       ).reduce((acc, [a, e]) => {
         return {
           ...acc,
@@ -44,7 +44,7 @@ export default function useProfileBadges(pubkey?: HexKey) {
         }
         return acc;
       },
-      { pubkeys: [], ds: [] } as BadgeAwards,
+      { pubkeys: [], ds: [] } as BadgeAwards
     ) as BadgeAwards;
   }, [profile]);
 
@@ -77,7 +77,7 @@ export default function useProfileBadges(pubkey?: HexKey) {
         })
         .filter(
           ({ award, badge }) =>
-            badge && award.pubkey === badge.pubkey && award.tags.find(t => t[0] === "p" && t[1] === pubkey),
+            badge && award.pubkey === badge.pubkey && award.tags.find(t => t[0] === "p" && t[1] === pubkey)
         )
         .map(({ badge }) => unwrap(badge));
     }

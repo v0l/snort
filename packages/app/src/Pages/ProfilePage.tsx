@@ -221,7 +221,7 @@ export default function ProfilePage() {
   } as { [key: string]: Tab };
   const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
   const optionalTabs = [ProfileTab.Zaps, ProfileTab.Relays, ProfileTab.Bookmarks, ProfileTab.Muted].filter(a =>
-    unwrap(a),
+    unwrap(a)
   ) as Tab[];
   const horizontalScroll = useHorizontalScroll();
 
@@ -433,7 +433,7 @@ export default function ProfilePage() {
                         type: TLVEntryType.Author,
                         length: 64,
                         value: id,
-                      })}`,
+                      })}`
                     )
                   }>
                   <Icon name="envelope" size={16} />

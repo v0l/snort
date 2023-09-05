@@ -35,11 +35,11 @@ export default function useThreadFeed(link: NostrLink) {
         .kinds(
           pref.enableReactions
             ? [EventKind.Reaction, EventKind.TextNote, EventKind.Repost, EventKind.ZapReceipt]
-            : [EventKind.TextNote, EventKind.ZapReceipt, EventKind.Repost],
+            : [EventKind.TextNote, EventKind.ZapReceipt, EventKind.Repost]
         )
         .tag(
           "e",
-          allEvents.map(a => a.id),
+          allEvents.map(a => a.id)
         );
     }
     if (trackingATags.length > 0) {
@@ -50,7 +50,7 @@ export default function useThreadFeed(link: NostrLink) {
         .authors(parsed.map(a => a[1]))
         .tag(
           "d",
-          parsed.map(a => a[2]),
+          parsed.map(a => a[2])
         );
       sub.withFilter().tag("a", trackingATags);
     }
@@ -85,7 +85,7 @@ export default function useThreadFeed(link: NostrLink) {
                 id: b[1],
                 relay: b[2],
               };
-            }),
+            })
         )
         .flat();
       const eTagsMissing = eTags.filter(a => !mainNotes.some(b => b.id === a.id));

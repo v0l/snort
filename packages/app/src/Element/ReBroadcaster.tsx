@@ -55,9 +55,9 @@ export function ReBroadcaster() {
                           ? false
                           : // otherwise return selectedCustomRelays with target relay added / removed
                             a.filter(el =>
-                              el === r ? e.target.checked : !selectedCustomRelays || selectedCustomRelays.includes(el),
-                            ),
-                      ),
+                              el === r ? e.target.checked : !selectedCustomRelays || selectedCustomRelays.includes(el)
+                            )
+                      )
                     )
                   }
                 />

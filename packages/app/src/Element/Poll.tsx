@@ -46,15 +46,15 @@ export default function Poll(props: PollProps) {
             },
             {
               amount,
-            },
-          ),
+            }
+          )
         );
       }
 
       setVoting(opt);
       const r = Object.keys(relays.item);
       const zap = await publisher.zap(amount * 1000, props.ev.pubkey, r, props.ev.id, undefined, eb =>
-        eb.tag(["poll_option", opt.toString()]),
+        eb.tag(["poll_option", opt.toString()])
       );
 
       const lnurl = props.ev.tags.find(a => a[0] === "zap")?.[1] || pollerProfile?.lud16 || pollerProfile?.lud06;
@@ -67,7 +67,7 @@ export default function Poll(props: PollProps) {
         throw new Error(
           formatMessage({
             defaultMessage: "Can't vote because LNURL service does not support zaps",
-          }),
+          })
         );
       }
 
@@ -84,7 +84,7 @@ export default function Poll(props: PollProps) {
         setError(
           formatMessage({
             defaultMessage: "Failed to send vote",
-          }),
+          })
         );
       }
     } finally {

@@ -43,7 +43,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       .kinds(
         subject.type === "profile_keyword"
           ? [EventKind.SetMetadata]
-          : [EventKind.TextNote, EventKind.Repost, EventKind.Polls],
+          : [EventKind.TextNote, EventKind.Repost, EventKind.Polls]
       );
 
     if (subject.relay) {
@@ -149,7 +149,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         .map(a => unwrap(a)[1]);
       const repostsByKind1 = main.data
         .filter(
-          a => (a.kind === EventKind.Repost || a.kind === EventKind.TextNote) && a.tags.some(tagFilterOfTextRepost(a)),
+          a => (a.kind === EventKind.Repost || a.kind === EventKind.TextNote) && a.tags.some(tagFilterOfTextRepost(a))
         )
         .map(a => a.tags.find(tagFilterOfTextRepost(a)))
         .filter(a => a)

@@ -32,7 +32,7 @@ const ConnectLNC = () => {
         setError(
           formatMessage({
             defaultMessage: "Unknown error",
-          }),
+          })
         );
       }
     }
