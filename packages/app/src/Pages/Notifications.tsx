@@ -14,6 +14,7 @@ import { unwrap } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 
 import useLogin from "Hooks/useLogin";
 import { markNotificationsRead } from "Login";
@@ -22,10 +23,9 @@ import { dedupe, findTag, orderDescending } from "SnortUtils";
 import Icon from "Icons/Icon";
 import ProfileImage, { getDisplayName } from "Element/ProfileImage";
 import useModeration from "Hooks/useModeration";
-import useEventFeed from "Feed/EventFeed";
+import { useEventFeed } from "Feed/EventFeed";
 import Text from "Element/Text";
 import { formatShort } from "Number";
-import { useNavigate } from "react-router-dom";
 
 function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {
@@ -85,7 +85,7 @@ export default function NotificationsPage() {
 
   const timeGrouped = useMemo(() => {
     return orderDescending([...notifications])
-      .filter(a => !isMuted(a.pubkey) && findTag(a, "p") === login.publicKey)
+      .filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey))
       .reduce((acc, v) => {
         const key = `${timeKey(v)}:${notificationContext(v as TaggedNostrEvent)?.encode()}:${v.kind}`;
         if (acc.has(key)) {
@@ -217,7 +217,7 @@ function NotificationGroup({ evs }: { evs: Array<TaggedNostrEvent> }) {
                 )}
               </div>
             )}
-            <div className="content">{context && <NotificationContext link={context} />}</div>
+            {context && <NotificationContext link={context} />}
           </div>
         </>
       )}
@@ -228,15 +228,15 @@ function NotificationGroup({ evs }: { evs: Array<TaggedNostrEvent> }) {
 function NotificationContext({ link }: { link: NostrLink }) {
   const { data: ev } = useEventFeed(link);
   const navigate = useNavigate();
-  const content = ev?.content ?? "";
 
-  return (
-    <div onClick={() => navigate(`/${link.encode()}`)} className="pointer">
-      <Text
-        content={content.length > 120 ? `${content.substring(0, 120)}...` : content}
-        tags={ev?.tags ?? []}
-        creator={ev?.pubkey ?? ""}
-      />
-    </div>
-  );
+  return ev && <Text
+    id={ev.id}
+    content={ev.content}
+    tags={ev.tags}
+    creator={ev.pubkey}
+    truncate={120}
+    disableLinkPreview={true}
+    className="content"
+    onClick={() => navigate(`/${link.encode()}`)}
+  />
 }

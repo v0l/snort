@@ -148,7 +148,7 @@ function ProfileDmActions({ id }: { id: string }) {
       <Avatar pubkey={pubkey} user={profile} size={210} />
       <h2>{getDisplayName(profile, pubkey)}</h2>
       <p>
-        <Text content={truncAbout(profile?.about) ?? ""} tags={[]} creator={pubkey} disableMedia={true} depth={0} />
+        <Text id={pubkey} content={truncAbout(profile?.about) ?? ""} tags={[]} creator={pubkey} disableMedia={true} depth={0} />
       </p>
 
       <div className="settings-row" onClick={() => (blocked ? unblock(pubkey) : block(pubkey))}>

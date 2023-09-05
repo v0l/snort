@@ -1,13 +1,15 @@
 import { HexKey, RelaySettings, EventPublisher } from "@snort/system";
+import { unixNowMs } from "@snort/shared";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
 import { DefaultRelays, SnortPubKey } from "Const";
 import { LoginStore, UserPreferences, LoginSession } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
-import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unixNowMs, unwrap } from "SnortUtils";
+import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unwrap } from "SnortUtils";
 import { SubscriptionEvent } from "Subscription";
 import { System } from "index";
+import { Chats, FollowsFeed, GiftsCache, Notifications } from "Cache";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
   if (state.relays.timestamp >= createdAt) {
@@ -41,8 +43,10 @@ export function updatePreferences(state: LoginSession, p: UserPreferences) {
 
 export function logout(k: HexKey) {
   LoginStore.removeSession(k);
-  //TODO: delete giftwarps for:k
-  //TODO: delete notifications for:k
+  GiftsCache.clear();
+  Notifications.clear();
+  FollowsFeed.clear();
+  Chats.clear();
 }
 
 export function markNotificationsRead(state: LoginSession) {

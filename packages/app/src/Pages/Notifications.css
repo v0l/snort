@@ -25,6 +25,10 @@
   line-height: 1em;
 }
 
+.notification-group > div:last-of-type {
+  max-width: calc(100% - 64px);
+}
+
 .notification-group .avatar {
   width: 40px;
   height: 40px;
@@ -39,8 +43,11 @@
 }
 
 .notification-group .content {
-  font-size: 14px;
-  line-height: 22px;
+  cursor: pointer;
   color: var(--font-secondary-color);
-  word-break: break-all;
+}
+
+.notification-group .content img {
+  width: unset;
+  max-height: 300px; /* Cap images in notifications to 300px height */
 }

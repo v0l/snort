@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
+import { unixNowMs } from "@snort/shared";
 
-import { randomSample, unixNowMs } from "SnortUtils";
+import { randomSample } from "SnortUtils";
 import Relay from "Element/Relay";
 import useEventPublisher from "Feed/EventPublisher";
 import { System } from "index";
@@ -9,6 +10,7 @@ import useLogin from "Hooks/useLogin";
 import { setRelays } from "Login";
 
 import messages from "./messages";
+
 const RelaySettingsPage = () => {
   const publisher = useEventPublisher();
   const login = useLogin();

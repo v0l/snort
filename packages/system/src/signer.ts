@@ -7,6 +7,8 @@ import { MessageEncryptorPayload, MessageEncryptorVersion } from "./index";
 import { NostrEvent } from "./nostr";
 import { base64 } from "@scure/base";
 
+export type SignerSupports = "nip04" | "nip44" | string;
+
 export interface EventSigner {
   init(): Promise<void>;
   getPubKey(): Promise<string> | string;
@@ -15,6 +17,7 @@ export interface EventSigner {
   nip44Encrypt(content: string, key: string): Promise<string>;
   nip44Decrypt(content: string, otherKey: string): Promise<string>;
   sign(ev: NostrEvent): Promise<NostrEvent>;
+  get supports(): Array<SignerSupports>;
 }
 
 export class PrivateKeySigner implements EventSigner {
@@ -28,6 +31,10 @@ export class PrivateKeySigner implements EventSigner {
       this.#privateKey = bytesToHex(privateKey);
     }
     this.#publicKey = getPublicKey(this.#privateKey);
+  }
+
+  get supports(): string[] {
+    return ["nip04", "nip44"]
   }
 
   get privateKey() {

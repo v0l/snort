@@ -3,10 +3,11 @@ import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { RelaySettings } from "@snort/system";
+import { unixNowMs } from "@snort/shared";
 
 import useRelayState from "Feed/RelayState";
 import { System } from "index";
-import { getRelayName, unixNowMs, unwrap } from "SnortUtils";
+import { getRelayName, unwrap } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import { setRelays } from "Login";
 import Icon from "Icons/Icon";

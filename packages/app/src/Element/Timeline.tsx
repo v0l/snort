@@ -2,18 +2,14 @@ import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
 import { useCallback, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
-import { TaggedNostrEvent, EventKind, u256, parseZap } from "@snort/system";
+import { TaggedNostrEvent, EventKind, u256 } from "@snort/system";
 
 import Icon from "Icons/Icon";
-import { dedupeByPubkey, findTag, tagFilterOfTextRepost } from "SnortUtils";
+import { dedupeByPubkey, findTag } from "SnortUtils";
 import ProfileImage from "Element/ProfileImage";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "Feed/TimelineFeed";
-import Zap from "Element/Zap";
 import Note from "Element/Note";
-import NoteReaction from "Element/NoteReaction";
 import useModeration from "Hooks/useModeration";
-import ProfilePreview from "Element/ProfilePreview";
-import { UserCache } from "Cache";
 import { LiveStreams } from "Element/LiveStreams";
 
 export interface TimelineProps {
@@ -28,7 +24,7 @@ export interface TimelineProps {
 }
 
 /**
- * A list of notes by pubkeys
+ * A list of notes by "subject"
  */
 const Timeline = (props: TimelineProps) => {
   const feedOptions = useMemo(() => {
@@ -70,43 +66,9 @@ const Timeline = (props: TimelineProps) => {
     return (feed.main ?? []).filter(a => a.kind === EventKind.LiveEvent && findTag(a, "status") === "live");
   }, [feed]);
 
-  const findRelated = useCallback(
-    (id?: u256) => {
-      if (!id) return undefined;
-      return (feed.related ?? []).find(a => a.id === id);
-    },
-    [feed.related]
-  );
   const latestAuthors = useMemo(() => {
     return dedupeByPubkey(latestFeed).map(e => e.pubkey);
   }, [latestFeed]);
-
-  function eventElement(e: TaggedNostrEvent) {
-    switch (e.kind) {
-      case EventKind.SetMetadata: {
-        return <ProfilePreview actions={<></>} pubkey={e.pubkey} className="card" />;
-      }
-      case EventKind.Polls:
-      case EventKind.TextNote: {
-        const eRef = e.tags.find(tagFilterOfTextRepost(e))?.at(1);
-        if (eRef) {
-          return <NoteReaction data={e} key={e.id} root={findRelated(eRef)} />;
-        }
-        return (
-          <Note key={e.id} data={e} related={relatedFeed(e.id)} ignoreModeration={props.ignoreModeration} depth={0} />
-        );
-      }
-      case EventKind.ZapReceipt: {
-        const zap = parseZap(e, UserCache);
-        return zap.event ? null : <Zap zap={zap} key={e.id} />;
-      }
-      case EventKind.Reaction:
-      case EventKind.Repost: {
-        const eRef = findTag(e, "e");
-        return <NoteReaction data={e} key={e.id} root={findRelated(eRef)} />;
-      }
-    }
-  }
 
   function onShowLatest(scrollToTop = false) {
     feed.showLatest();
@@ -144,7 +106,7 @@ const Timeline = (props: TimelineProps) => {
           )}
         </>
       )}
-      {mainFeed.map(eventElement)}
+      {mainFeed.map(e => <Note key={e.id} data={e} related={relatedFeed(e.id)} ignoreModeration={props.ignoreModeration} depth={0} />)}
       {(props.loadMore === undefined || props.loadMore === true) && (
         <div className="flex f-center">
           <button type="button" onClick={() => feed.loadMore()}>

@@ -8,6 +8,7 @@ import useLogin from "Hooks/useLogin";
 import { System } from "index";
 
 import messages from "./messages";
+import { FollowsFeed } from "Cache";
 
 export interface FollowListBaseProps {
   pubkeys: HexKey[];
@@ -34,6 +35,7 @@ export default function FollowListBase({
   async function followAll() {
     if (publisher) {
       const ev = await publisher.contactList([...pubkeys, ...follows.item], relays.item);
+      await FollowsFeed.backFill(System, pubkeys);
       System.BroadcastEvent(ev);
     }
   }

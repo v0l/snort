@@ -13,9 +13,9 @@ import {
   UserMetadata,
   encodeTLVEntries,
 } from "@snort/system";
-import { unwrap } from "@snort/shared";
+import { unwrap, unixNow } from "@snort/shared";
 import { Chats, GiftsCache } from "Cache";
-import { findTag, unixNow } from "SnortUtils";
+import { findTag } from "SnortUtils";
 import { Nip29ChatSystem } from "./nip29";
 import useModeration from "Hooks/useModeration";
 import useLogin from "Hooks/useLogin";
@@ -182,8 +182,8 @@ export function useNip24Chat() {
 
 export function useChatSystem() {
   const nip4 = useNip4Chat();
-  const nip24 = useNip24Chat();
+  //const nip24 = useNip24Chat();
   const { muted, blocked } = useModeration();
 
-  return [...nip4, ...nip24].filter(a => !(muted.includes(a.id) || blocked.includes(a.id)));
+  return [...nip4].filter(a => !(muted.includes(a.id) || blocked.includes(a.id)));
 }

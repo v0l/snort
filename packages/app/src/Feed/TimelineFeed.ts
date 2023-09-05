@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
+import { unixNow } from "@snort/shared";
 
-import { unixNow, unwrap, tagFilterOfTextRepost } from "SnortUtils";
+import { unwrap, tagFilterOfTextRepost } from "SnortUtils";
 import useTimelineWindow from "Hooks/useTimelineWindow";
 import useLogin from "Hooks/useLogin";
 import { SearchRelays } from "Const";

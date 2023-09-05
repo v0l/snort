@@ -1,8 +1,9 @@
 import { EventKind, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { RefreshFeedCache, TWithCreated } from "./RefreshFeedCache";
 import { LoginSession } from "Login";
-import { unixNow } from "SnortUtils";
 import { db } from "Db";
+import { Day } from "Const";
+import { unixNow } from "@snort/shared";
 
 export class NotificationsCache extends RefreshFeedCache<NostrEvent> {
   #kinds = [EventKind.TextNote, EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt];
@@ -17,7 +18,7 @@ export class NotificationsCache extends RefreshFeedCache<NostrEvent> {
       rb.withFilter()
         .kinds(this.#kinds)
         .tag("p", [session.publicKey])
-        .since(newest === 0 ? unixNow() - 60 * 60 * 24 * 30 : newest);
+        .since(newest === 0 ? unixNow() -  (Day * 30): newest);
     }
   }
 

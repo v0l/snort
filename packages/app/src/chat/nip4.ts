@@ -1,4 +1,4 @@
-import { ExternalStore, FeedCache, dedupe } from "@snort/shared";
+import { ExternalStore, FeedCache } from "@snort/shared";
 import {
   EventKind,
   NostrEvent,
@@ -6,7 +6,6 @@ import {
   RequestBuilder,
   SystemInterface,
   TLVEntryType,
-  decodeTLV,
   encodeTLVEntries,
   TaggedNostrEvent,
 } from "@snort/system";
@@ -50,32 +49,31 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
 
   listChats(pk: string): Chat[] {
     const myDms = this.#nip4Events();
-    const chatId = (a: NostrEvent) => {
-      return encodeTLVEntries("chat4" as NostrPrefix, {
-        type: TLVEntryType.Author,
-        value: inChatWith(a, pk),
-        length: 0,
-      });
-    };
+    const chats = myDms.reduce((acc, v) => {
+      const chatId = inChatWith(v, pk);
+      acc[chatId] ??= [];
+      acc[chatId].push(v);
+      return acc;
+    }, {} as Record<string, Array<NostrEvent>>);
 
-    return dedupe(myDms.map(chatId)).map(a => {
-      const messages = myDms.filter(b => chatId(b) === a);
-      return Nip4ChatSystem.createChatObj(a, messages);
-    });
+    return [...Object.entries(chats)].map(([k, v]) => Nip4ChatSystem.createChatObj(k, v));
   }
 
   static createChatObj(id: string, messages: Array<NostrEvent>) {
     const last = lastReadInChat(id);
-    const pk = decodeTLV(id).find(a => a.type === TLVEntryType.Author)?.value as string;
     return {
       type: ChatType.DirectMessage,
-      id,
+      id: encodeTLVEntries("chat4" as NostrPrefix, {
+        type: TLVEntryType.Author,
+        value: id,
+        length: 0,
+      }),
       unread: messages.reduce((acc, v) => (v.created_at > last ? acc++ : acc), 0),
       lastMessage: messages.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0),
       participants: [
         {
           type: "pubkey",
-          id: pk,
+          id: id,
         },
       ],
       messages: messages.map(m => ({
@@ -90,7 +88,7 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
         },
       })),
       createMessage: async (msg, pub) => {
-        return [await pub.sendDm(msg, pk)];
+        return [await pub.sendDm(msg, id)];
       },
       sendMessage: (ev, system: SystemInterface) => {
         ev.forEach(a => system.BroadcastEvent(a));

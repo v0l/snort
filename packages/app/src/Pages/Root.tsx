@@ -7,7 +7,7 @@ import "./Root.css";
 import Timeline from "Element/Timeline";
 import { System } from "index";
 import { TimelineSubject } from "Feed/TimelineFeed";
-import { debounce, getRelayName, sha256, unixNow } from "SnortUtils";
+import { debounce, getRelayName, sha256 } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import Discover from "Pages/Discover";
 import Icon from "Icons/Icon";
@@ -16,8 +16,10 @@ import TrendingNotes from "Element/TrendingPosts";
 import HashTagsPage from "Pages/HashTagsPage";
 import SuggestedProfiles from "Element/SuggestedProfiles";
 import { TaskList } from "Tasks/TaskList";
+import TimelineFollows from "Element/TimelineFollows";
 
 import messages from "./messages";
+import { unixNow } from "@snort/shared";
 
 interface RelayOption {
   url: string;
@@ -271,32 +273,17 @@ const GlobalTab = () => {
 };
 
 const NotesTab = () => {
-  const { follows, publicKey } = useLogin();
-  const subject: TimelineSubject = {
-    type: "pubkey",
-    items: follows.item,
-    discriminator: `follows:${publicKey?.slice(0, 12)}`,
-    streams: true,
-  };
-
   return (
     <>
       <FollowsHint />
       <TaskList />
-      <Timeline subject={subject} postsOnly={true} method={"TIME_RANGE"} />
+      <TimelineFollows postsOnly={true} />
     </>
   );
 };
 
 const ConversationsTab = () => {
-  const { follows, publicKey } = useLogin();
-  const subject: TimelineSubject = {
-    type: "pubkey",
-    items: follows.item,
-    discriminator: `follows:${publicKey?.slice(0, 12)}`,
-  };
-
-  return <Timeline subject={subject} postsOnly={false} method={"TIME_RANGE"} />;
+  return <TimelineFollows postsOnly={false} />;
 };
 
 const TagsTab = () => {

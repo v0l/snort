@@ -1,8 +1,8 @@
 import { AuthHandler, RelaySettings, ConnectionStateSnapshot } from "./connection";
 import { RequestBuilder } from "./request-builder";
-import { NoteStore } from "./note-collection";
+import { NoteStore, NoteStoreHook, NoteStoreSnapshotData } from "./note-collection";
 import { Query } from "./query";
-import { NostrEvent, ReqFilter } from "./nostr";
+import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { ProfileLoaderService } from "./profile-cache";
 
 export * from "./nostr-system";
@@ -40,13 +40,61 @@ export interface SystemInterface {
    * Handler function for NIP-42
    */
   HandleAuth?: AuthHandler;
+
+  /**
+   * Get a snapshot of the relay connections 
+   */
   get Sockets(): Array<ConnectionStateSnapshot>;
+  
+  /**
+   * Get an active query by ID
+   * @param id Query ID
+   */
   GetQuery(id: string): Query | undefined;
-  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder | null): Query;
+  
+  /**
+   * Open a new query to relays
+   * @param type Store type
+   * @param req Request to send to relays
+   */
+  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): Query;
+
+  /**
+   * Fetch data from nostr relays asynchronously
+   * @param req Request to send to relays
+   * @param cb A callback which will fire every 100ms when new data is received
+   */
+  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) : Promise<NoteStoreSnapshotData>;
+
+  /**
+   * Create a new permanent connection to a relay
+   * @param address Relay URL
+   * @param options Read/Write settings
+   */
   ConnectToRelay(address: string, options: RelaySettings): Promise<void>;
+
+  /**
+   * Disconnect permanent relay connection
+   * @param address Relay URL
+   */
   DisconnectRelay(address: string): void;
+
+  /**
+   * Send an event to all permanent connections
+   * @param ev Event to broadcast
+   */
   BroadcastEvent(ev: NostrEvent): void;
+
+  /**
+   * Connect to a specific relay and send an event and wait for the response
+   * @param relay Relay URL
+   * @param ev Event to send
+   */
   WriteOnceToRelay(relay: string, ev: NostrEvent): Promise<void>;
+
+  /**
+   * Profile cache/loader
+   */
   get ProfileLoader(): ProfileLoaderService;
 }
 

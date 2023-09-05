@@ -118,13 +118,6 @@ export default function ProfilePage() {
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
   const aboutText = user?.about || "";
-  const about = Text({
-    content: aboutText,
-    tags: [],
-    creator: id ?? "",
-    disableMedia: true,
-    disableMediaSpotlight: true,
-  });
   const npub = !id?.startsWith(NostrPrefix.PublicKey) ? hexToBech32(NostrPrefix.PublicKey, id || undefined) : id;
 
   const lnurl = (() => {
@@ -309,10 +302,12 @@ export default function ProfilePage() {
   }
 
   function bio() {
+    if (!id) return null;
+
     return (
       aboutText.length > 0 && (
         <div dir="auto" className="about">
-          {about}
+          <Text id={id} content={aboutText} tags={[]} creator={id} disableMedia={true} disableLinkPreview={true} disableMediaSpotlight={true} />
         </div>
       )
     );

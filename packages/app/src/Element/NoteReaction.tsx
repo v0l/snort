@@ -14,6 +14,7 @@ import { useUserProfile } from "@snort/system-react";
 export interface NoteReactionProps {
   data: TaggedNostrEvent;
   root?: TaggedNostrEvent;
+  depth?: number;
 }
 export default function NoteReaction(props: NoteReactionProps) {
   const { data: ev } = props;
@@ -47,7 +48,7 @@ export default function NoteReaction(props: NoteReactionProps) {
       try {
         const r: NostrEvent = JSON.parse(ev.content);
         EventExt.fixupEvent(r);
-        if(!EventExt.verify(r)) {
+        if (!EventExt.verify(r)) {
           console.debug("Event in repost is invalid");
           return undefined;
         }
@@ -78,7 +79,7 @@ export default function NoteReaction(props: NoteReactionProps) {
           }}
         />
       </div>
-      {root ? <Note data={root} options={opt} related={[]} /> : null}
+      {root ? <Note data={root} options={opt} related={[]} depth={props.depth} /> : null}
       {!root && refEvent ? (
         <p>
           <Link to={eventLink(refEvent[1] ?? "", refEvent[2])}>

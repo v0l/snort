@@ -173,14 +173,6 @@ export function getAllReactions(notes: readonly TaggedNostrEvent[] | undefined, 
   return notes?.filter(a => a.kind === (kind ?? a.kind) && a.tags.some(a => a[0] === "e" && ids.includes(a[1]))) || [];
 }
 
-export function unixNow() {
-  return Math.floor(unixNowMs() / 1000);
-}
-
-export function unixNowMs() {
-  return new Date().getTime();
-}
-
 export function deepClone<T>(obj: T) {
   if ("structuredClone" in window) {
     return structuredClone(obj);

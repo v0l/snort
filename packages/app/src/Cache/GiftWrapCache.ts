@@ -1,9 +1,10 @@
-import { FeedCache } from "@snort/shared";
-import { EventKind, EventPublisher, TaggedNostrEvent } from "@snort/system";
+import { EventKind, EventPublisher, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { UnwrappedGift, db } from "Db";
 import { findTag, unwrap } from "SnortUtils";
+import { RefreshFeedCache } from "./RefreshFeedCache";
+import { LoginSession } from "Login";
 
-export class GiftWrapCache extends FeedCache<UnwrappedGift> {
+export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift>  {
   constructor() {
     super("GiftWrapCache", db.gifts);
   }
@@ -12,22 +13,20 @@ export class GiftWrapCache extends FeedCache<UnwrappedGift> {
     return of.id;
   }
 
-  override async preload(): Promise<void> {
-    await super.preload();
-    await this.buffer([...this.onTable]);
+  buildSub(session: LoginSession, rb: RequestBuilder): void {
+    const pubkey = session.publicKey;
+    if(pubkey) {
+      rb.withFilter()
+      .kinds([EventKind.GiftWrap])
+      .tag("p", [pubkey]).since(this.newest());
+    }
   }
-
-  newest(): number {
-    let ret = 0;
-    this.cache.forEach(v => (ret = v.created_at > ret ? v.created_at : ret));
-    return ret;
-  }
-
+  
   takeSnapshot(): Array<UnwrappedGift> {
     return [...this.cache.values()];
   }
 
-  async onEvent(evs: Array<TaggedNostrEvent>, pub: EventPublisher) {
+  override async onEvent(evs: Array<TaggedNostrEvent>, pub: EventPublisher) {
     const unwrapped = (
       await Promise.all(
         evs.map(async v => {

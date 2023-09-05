@@ -1,4 +1,4 @@
-import useEventFeed from "Feed/EventFeed";
+import { useEventFeed } from "Feed/EventFeed";
 import { NostrLink } from "@snort/system";
 import Note from "Element/Note";
 import PageSpinner from "Element/PageSpinner";

@@ -9,6 +9,7 @@ import AsyncButton from "Element/AsyncButton";
 import { System } from "index";
 
 import messages from "./messages";
+import { FollowsFeed } from "Cache";
 
 export interface FollowButtonProps {
   pubkey: HexKey;
@@ -24,6 +25,7 @@ export default function FollowButton(props: FollowButtonProps) {
   async function follow(pubkey: HexKey) {
     if (publisher) {
       const ev = await publisher.contactList([pubkey, ...follows.item], relays.item);
+      await FollowsFeed.backFill(System, [pubkey]);
       System.BroadcastEvent(ev);
     }
   }

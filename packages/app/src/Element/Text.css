@@ -6,10 +6,8 @@
 .text .text-frag {
   text-overflow: ellipsis;
   white-space: pre-wrap;
-  word-break: normal;
-  overflow-x: hidden;
-  overflow-y: visible;
   display: inline;
+  overflow-wrap: break-word;
 }
 
 .text .text-frag > a {

@@ -28,7 +28,7 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean 
       </div>
       {(content?.length ?? 0) > 0 && sender && (
         <div className="body">
-          <Text creator={sender} content={unwrap(content)} tags={[]} />
+          <Text id={zap.id} creator={sender} content={unwrap(content)} tags={[]} />
         </div>
       )}
     </div>

@@ -12,9 +12,10 @@ import { addSubscription, setBlocked, setBookmarked, setFollows, setMuted, setPi
 import { SnortPubKey } from "Const";
 import { SubscriptionEvent } from "Subscription";
 import useRelaysFeedFollows from "./RelaysFeedFollows";
-import { GiftsCache, Notifications, UserRelays } from "Cache";
+import { FollowsFeed, GiftsCache, Notifications, UserRelays } from "Cache";
 import { System } from "index";
-import { Nip29Chats, Nip4Chats } from "chat";
+import { Nip4Chats } from "chat";
+import { useRefreshFeedCache } from "Hooks/useRefreshFeedcache";
 
 /**
  * Managed loading data for the current logged in user
@@ -24,6 +25,12 @@ export default function useLoginFeed() {
   const { publicKey: pubKey, readNotifications, follows } = login;
   const { isMuted } = useModeration();
   const publisher = useEventPublisher();
+
+  useRefreshFeedCache(Notifications, true);
+  useRefreshFeedCache(FollowsFeed, true);
+  if(publisher?.supports("nip44")) {
+    useRefreshFeedCache(GiftsCache, true);
+  }
 
   const subLogin = useMemo(() => {
     if (!pubKey) return null;
@@ -38,10 +45,8 @@ export default function useLoginFeed() {
       .authors([bech32ToHex(SnortPubKey)])
       .tag("p", [pubKey])
       .limit(1);
-    b.withFilter().kinds([EventKind.GiftWrap]).tag("p", [pubKey]).since(GiftsCache.newest());
 
     b.add(Nip4Chats.subscription(pubKey));
-    Notifications.buildSub(login, b);
 
     return b;
   }, [pubKey]);
@@ -73,14 +78,11 @@ export default function useLoginFeed() {
         }
         const pTags = contactList.tags.filter(a => a[0] === "p").map(a => a[1]);
         setFollows(login, pTags, contactList.created_at * 1000);
+        
+        FollowsFeed.backFillIfMissing(System, pTags);
       }
 
       Nip4Chats.onEvent(loginFeed.data);
-      Nip29Chats.onEvent(loginFeed.data);
-      Notifications.onEvent(loginFeed.data);
-
-      const giftWraps = loginFeed.data.filter(a => a.kind === EventKind.GiftWrap);
-      GiftsCache.onEvent(giftWraps, publisher);
 
       const subs = loginFeed.data.filter(
         a => a.kind === EventKind.SnortSubscriptions && a.pubkey === bech32ToHex(SnortPubKey)

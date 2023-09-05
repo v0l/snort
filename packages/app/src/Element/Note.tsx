@@ -36,6 +36,8 @@ import { LiveEvent } from "Element/LiveEvent";
 import { NoteContextMenu, NoteTranslation } from "Element/NoteContextMenu";
 import Reactions from "Element/Reactions";
 import { ZapGoal } from "Element/ZapGoal";
+import NoteReaction from "Element/NoteReaction";
+import ProfilePreview from "Element/ProfilePreview";
 
 import messages from "./messages";
 
@@ -81,8 +83,10 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function Note(props: NoteProps) {
-  const { data: ev, related, highlight, options: opt, ignoreModeration = false, className } = props;
-
+  const { data: ev, className } = props;
+  if (ev.kind === EventKind.Repost) {
+    return <NoteReaction data={ev} key={ev.id} root={undefined} depth={(props.depth ?? 0) + 1} />;
+  }
   if (ev.kind === EventKind.FileHeader) {
     return <NostrFileElement ev={ev} />;
   }
@@ -95,9 +99,18 @@ export default function Note(props: NoteProps) {
   if (ev.kind === EventKind.LiveEvent) {
     return <LiveEvent ev={ev} />;
   }
+  if (ev.kind === EventKind.SetMetadata) {
+    return <ProfilePreview actions={<></>} pubkey={ev.pubkey} className="card" />;
+  }
   if (ev.kind === (9041 as EventKind)) {
     return <ZapGoal ev={ev} />;
   }
+
+  return <NoteInner {...props} />
+}
+
+export function NoteInner(props: NoteProps) {
+  const { data: ev, related, highlight, options: opt, ignoreModeration = false, className } = props;
 
   const baseClassName = `note card${className ? ` ${className}` : ""}`;
   const navigate = useNavigate();
@@ -209,12 +222,13 @@ export default function Note(props: NoteProps) {
               )}
             </>
           }>
-          <Text content={body} tags={ev.tags} creator={ev.pubkey} />
+          <Text id={ev.id} content={body} tags={ev.tags} creator={ev.pubkey} />
         </Reveal>
       );
     }
     return (
       <Text
+        id={ev.id}
         content={body}
         tags={ev.tags}
         creator={ev.pubkey}
@@ -307,7 +321,7 @@ export default function Note(props: NoteProps) {
     if (alt) {
       return (
         <div className="note-quote">
-          <Text content={alt} tags={[]} creator={ev.pubkey} />
+          <Text id={ev.id} content={alt} tags={[]} creator={ev.pubkey} />
         </div>
       );
     } else {
@@ -379,7 +393,7 @@ export default function Note(props: NoteProps) {
               {options.showContextMenu && (
                 <NoteContextMenu
                   ev={ev}
-                  react={async () => {}}
+                  react={async () => { }}
                   onTranslated={t => setTranslated(t)}
                   setShowReactions={setShowReactions}
                 />

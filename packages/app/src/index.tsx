@@ -68,30 +68,39 @@ export const DefaultPowWorker = new PowWorker("/pow.js");
 
 serviceWorkerRegistration.register();
 
+async function initSite() {
+  const login = LoginStore.takeSnapshot();
+  db.ready = await db.isAvailable();
+  if (db.ready) {
+    await preload(login.follows.item);
+  }
+
+  for (const [k, v] of Object.entries(login.relays.item)) {
+    System.ConnectToRelay(k, v);
+  }
+  try {
+    if ("registerProtocolHandler" in window.navigator) {
+      window.navigator.registerProtocolHandler(
+        "web+nostr",
+        `${window.location.protocol}//${window.location.host}/%s`
+      );
+      console.info("Registered protocol handler for 'web+nostr'");
+    }
+  } catch (e) {
+    console.error("Failed to register protocol handler", e);
+  }
+  return null;
+}
+
+let didInit = false;
 export const router = createBrowserRouter([
   {
     element: <Layout />,
     errorElement: <ErrorPage />,
     loader: async () => {
-      const login = LoginStore.takeSnapshot();
-      db.ready = await db.isAvailable();
-      if (db.ready) {
-        await preload(login.follows.item);
-      }
-
-      for (const [k, v] of Object.entries(login.relays.item)) {
-        System.ConnectToRelay(k, v);
-      }
-      try {
-        if ("registerProtocolHandler" in window.navigator) {
-          window.navigator.registerProtocolHandler(
-            "web+nostr",
-            `${window.location.protocol}//${window.location.host}/%s`
-          );
-          console.info("Registered protocol handler for 'web+nostr'");
-        }
-      } catch (e) {
-        console.error("Failed to register protocol handler", e);
+      if (!didInit) {
+        didInit = true;
+        return await initSite()
       }
       return null;
     },

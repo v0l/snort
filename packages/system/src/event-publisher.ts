@@ -13,6 +13,7 @@ import {
   PowMiner,
   PrivateKeySigner,
   RelaySettings,
+  SignerSupports,
   TaggedNostrEvent,
   u256,
   UserMetadata,
@@ -55,6 +56,10 @@ export class EventPublisher {
   static privateKey(privateKey: string) {
     const signer = new PrivateKeySigner(privateKey);
     return new EventPublisher(signer, signer.getPubKey());
+  }
+
+  supports(t: SignerSupports) {
+    return this.#signer.supports.includes(t);
   }
 
   get pubKey() {

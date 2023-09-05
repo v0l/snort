@@ -20,6 +20,10 @@ export class SystemWorker extends ExternalStore<SystemSnapshot> implements Syste
       throw new Error("SharedWorker is not supported");
     }
   }
+  
+  Fetch(req: RequestBuilder): Promise<Query> {
+    throw new Error("Method not implemented.");
+  }
 
   get ProfileLoader(): ProfileLoaderService {
     throw new Error("Method not implemented.");
