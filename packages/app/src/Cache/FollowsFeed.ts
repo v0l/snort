@@ -58,7 +58,7 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
       .delete();
 
     const oldest = await this.table?.orderBy("created_at").first();
-    this.#oldest = oldest?.created_at ?? (unixNow() - MaxCacheWindow);
+    this.#oldest = oldest?.created_at ?? unixNow() - MaxCacheWindow;
     this.notifyChange(latest?.map(a => this.key(a)) ?? []);
 
     debug(this.name)(`Loaded %d/%d in %d ms`, latest?.length ?? 0, keys.length, (unixNowMs() - start).toLocaleString());
