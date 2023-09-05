@@ -54,7 +54,7 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
             Toastore.push({
               element: `Sent ${amtSend.toLocaleString()} sats to ${getDisplayName(
                 profile,
-                x.pubkey
+                x.pubkey,
               )} from your zap pool`,
               expire: unixNow() + 10,
               icon: "zap",

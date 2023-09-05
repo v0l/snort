@@ -20,8 +20,8 @@ export class SystemWorker extends ExternalStore<SystemSnapshot> implements Syste
       throw new Error("SharedWorker is not supported");
     }
   }
-  
-  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) : Promise<NoteStoreSnapshotData> {
+
+  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void): Promise<NoteStoreSnapshotData> {
     throw new Error("Method not implemented.");
   }
 

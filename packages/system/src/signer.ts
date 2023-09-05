@@ -34,7 +34,7 @@ export class PrivateKeySigner implements EventSigner {
   }
 
   get supports(): string[] {
-    return ["nip04", "nip44"]
+    return ["nip04", "nip44"];
   }
 
   get privateKey() {

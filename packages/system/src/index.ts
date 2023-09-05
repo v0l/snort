@@ -42,16 +42,16 @@ export interface SystemInterface {
   HandleAuth?: AuthHandler;
 
   /**
-   * Get a snapshot of the relay connections 
+   * Get a snapshot of the relay connections
    */
   get Sockets(): Array<ConnectionStateSnapshot>;
-  
+
   /**
    * Get an active query by ID
    * @param id Query ID
    */
   GetQuery(id: string): Query | undefined;
-  
+
   /**
    * Open a new query to relays
    * @param type Store type
@@ -64,7 +64,7 @@ export interface SystemInterface {
    * @param req Request to send to relays
    * @param cb A callback which will fire every 100ms when new data is received
    */
-  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) : Promise<NoteStoreSnapshotData>;
+  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void): Promise<NoteStoreSnapshotData>;
 
   /**
    * Create a new permanent connection to a relay

@@ -4,3 +4,4 @@ build/
 .github/
 transifex.yml
 dist/
+src-tauri/

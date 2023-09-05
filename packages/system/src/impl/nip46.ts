@@ -64,7 +64,7 @@ export class Nip46Signer implements EventSigner {
   }
 
   get supports(): string[] {
-    return ["nip04"]
+    return ["nip04"];
   }
 
   get relays() {

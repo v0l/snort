@@ -39,7 +39,7 @@ const ConnectCashu = () => {
         setError(
           formatMessage({
             defaultMessage: "Unknown error",
-          })
+          }),
         );
       }
     }

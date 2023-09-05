@@ -25,7 +25,7 @@ const ErrorPage = () => {
           {JSON.stringify(
             error instanceof Error ? { name: error.name, message: error.message, stack: error.stack } : error,
             undefined,
-            "  "
+            "  ",
           )}
         </pre>
       }

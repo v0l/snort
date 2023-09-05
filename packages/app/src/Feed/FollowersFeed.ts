@@ -14,7 +14,7 @@ export default function useFollowersFeed(pubkey?: HexKey) {
 
   const followers = useMemo(() => {
     const contactLists = followersFeed.data?.filter(
-      a => a.kind === EventKind.ContactList && a.tags.some(b => b[0] === "p" && b[1] === pubkey)
+      a => a.kind === EventKind.ContactList && a.tags.some(b => b[0] === "p" && b[1] === pubkey),
     );
     return [...new Set(contactLists?.map(a => a.pubkey))];
   }, [followersFeed, pubkey]);

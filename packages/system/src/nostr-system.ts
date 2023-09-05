@@ -109,10 +109,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   async Init() {
     db.ready = await db.isAvailable();
     const t = [
-      this.#relayCache.preload(), 
-      this.#profileCache.preload(), 
-      this.#relayMetricsCache.preload(), 
-      this.#eventsCache.preload()
+      this.#relayCache.preload(),
+      this.#profileCache.preload(),
+      this.#relayMetricsCache.preload(),
+      this.#eventsCache.preload(),
     ];
     await Promise.all(t);
   }
@@ -206,29 +206,31 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
 
   Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
     const q = this.Query(NoteCollection, req);
-    return new Promise<NoteStoreSnapshotData>((resolve) => {
+    return new Promise<NoteStoreSnapshotData>(resolve => {
       let t: ReturnType<typeof setTimeout> | undefined;
       let tBuf: Array<TaggedNostrEvent> = [];
-      const releaseOnEvent = cb ? q.feed.onEvent(evs => {
-        if(!t) {
-          tBuf = [...evs];
-          t = setTimeout(() => {
-            t = undefined;
-            cb(tBuf);
-          }, 100);
-        } else {
-          tBuf.push(...evs);
-        }
-      }) : undefined;
+      const releaseOnEvent = cb
+        ? q.feed.onEvent(evs => {
+            if (!t) {
+              tBuf = [...evs];
+              t = setTimeout(() => {
+                t = undefined;
+                cb(tBuf);
+              }, 100);
+            } else {
+              tBuf.push(...evs);
+            }
+          })
+        : undefined;
       const releaseFeedHook = q.feed.hook(() => {
-        if(q.progress === 1) {
+        if (q.progress === 1) {
           releaseOnEvent?.();
           releaseFeedHook();
           q.cancel();
           resolve(unwrap(q.feed.snapshot.data));
         }
-      })
-    })
+      });
+    });
   }
 
   Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): Query {
@@ -255,7 +257,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
 
       const filters = req.build(this.#relayCache);
       const q = new Query(req.id, req.instance, store, req.options?.leaveOpen);
-      if(filters.some(a => a.filters.some(b=>b.ids))) {
+      if (filters.some(a => a.filters.some(b => b.ids))) {
         q.feed.onEvent(async evs => {
           await this.#eventsCache.bulkSet(evs);
         });
@@ -271,10 +273,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
 
   async SendQuery(q: Query, qSend: BuiltRawReqFilter) {
     // trim query of cached ids
-    for(const f of qSend.filters) {
+    for (const f of qSend.filters) {
       if (f.ids) {
         const cacheResults = await this.#eventsCache.bulkGet(f.ids);
-        if(cacheResults.length > 0) {
+        if (cacheResults.length > 0) {
           const resultIds = new Set(cacheResults.map(a => a.id));
           f.ids = f.ids.filter(a => !resultIds.has(a));
           q.feed.add(cacheResults as Array<TaggedNostrEvent>);
@@ -283,10 +285,13 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     }
 
     // check for empty filters
-    qSend.filters = qSend.filters.filter(a => Object.values(a).filter(v => Array.isArray(v)).every(b => (b as Array<string | number>).length > 0));
-    if(qSend.filters.length === 0) {
+    qSend.filters = qSend.filters.filter(a =>
+      Object.values(a)
+        .filter(v => Array.isArray(v))
+        .every(b => (b as Array<string | number>).length > 0),
+    );
+    if (qSend.filters.length === 0) {
       return;
-
     }
     if (qSend.relay) {
       this.#log("Sending query to %s %O", qSend.relay, qSend);

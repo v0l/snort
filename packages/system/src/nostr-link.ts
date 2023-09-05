@@ -14,23 +14,23 @@ export interface NostrLink {
 export function createNostrLinkToEvent(ev: TaggedNostrEvent | NostrEvent) {
   const relays = "relays" in ev ? ev.relays : undefined;
 
-    if (ev.kind >= 30_000 && ev.kind < 40_000) {
-      const dTag = unwrap(findTag(ev, "d"));
-      return createNostrLink(NostrPrefix.Address, dTag, relays, ev.kind, ev.pubkey);
-    }
-    return createNostrLink(NostrPrefix.Event, ev.id, relays, ev.kind, ev.pubkey);
+  if (ev.kind >= 30_000 && ev.kind < 40_000) {
+    const dTag = unwrap(findTag(ev, "d"));
+    return createNostrLink(NostrPrefix.Address, dTag, relays, ev.kind, ev.pubkey);
+  }
+  return createNostrLink(NostrPrefix.Event, ev.id, relays, ev.kind, ev.pubkey);
 }
 
 export function linkMatch(link: NostrLink, ev: NostrEvent) {
-  if(link.type === NostrPrefix.Address) {
+  if (link.type === NostrPrefix.Address) {
     const dTag = findTag(ev, "d");
-    if(dTag && dTag === link.id && unwrap(link.author) === ev.pubkey && unwrap(link.kind) === ev.kind) {
+    if (dTag && dTag === link.id && unwrap(link.author) === ev.pubkey && unwrap(link.kind) === ev.kind) {
       return true;
     }
-  } else if(link.type === NostrPrefix.Event || link.type === NostrPrefix.Note) {
+  } else if (link.type === NostrPrefix.Event || link.type === NostrPrefix.Note) {
     return link.id === ev.id;
   }
-  
+
   return false;
 }
 

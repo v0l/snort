@@ -40,7 +40,7 @@ export abstract class FeedCache<TCached> {
   get name() {
     return this.#name;
   }
-  
+
   async preload() {
     const keys = (await this.table?.toCollection().primaryKeys()) ?? [];
     this.onTable = new Set<string>(keys.map(a => a as string));
