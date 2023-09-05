@@ -47,7 +47,7 @@ const Timeline = (props: TimelineProps) => {
         ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
         .filter(a => props.ignoreModeration || !isMuted(a.pubkey));
     },
-    [props.postsOnly, muted, props.ignoreModeration],
+    [props.postsOnly, muted, props.ignoreModeration]
   );
 
   const mainFeed = useMemo(() => {
@@ -60,7 +60,7 @@ const Timeline = (props: TimelineProps) => {
     (id: u256) => {
       return (feed.related ?? []).filter(a => findTag(a, "e") === id);
     },
-    [feed.related],
+    [feed.related]
   );
   const liveStreams = useMemo(() => {
     return (feed.main ?? []).filter(a => a.kind === EventKind.LiveEvent && findTag(a, "status") === "live");

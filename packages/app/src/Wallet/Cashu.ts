@@ -57,6 +57,6 @@ export interface NutStashBackup {
   mints: [
     {
       mintURL: string;
-    },
+    }
   ];
 }
