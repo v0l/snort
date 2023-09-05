@@ -114,9 +114,11 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
   async backFillIfMissing(system: SystemInterface, keys: Array<string>) {
     const start = unixNowMs();
     const everything = await this.table?.toArray();
-    const allKeys = new Set(everything?.map(a => a.pubkey));
-    const missingKeys = keys.filter(a => !allKeys.has(a));
-    await this.backFill(system, missingKeys);
-    debug(this.name)(`Backfilled %d keys in %d ms`, missingKeys.length, (unixNowMs() - start).toLocaleString());
+    if((everything?.length ?? 0) > 0) {
+      const allKeys = new Set(everything?.map(a => a.pubkey));
+      const missingKeys = keys.filter(a => !allKeys.has(a));
+      await this.backFill(system, missingKeys);
+      debug(this.name)(`Backfilled %d keys in %d ms`, missingKeys.length, (unixNowMs() - start).toLocaleString());
+    }
   }
 }
