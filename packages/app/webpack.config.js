@@ -115,7 +115,7 @@ const config = {
         use: [MiniCssExtractPlugin.loader, require.resolve("css-loader")],
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|webp)$/i,
+        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|webp|wasm)$/i,
         type: "asset",
       },
     ],
@@ -150,7 +150,7 @@ const config = {
     extensions: ["...", ".tsx", ".ts", ".jsx", ".js"],
     modules: ["...", __dirname, path.resolve(__dirname, "src")],
     fallback: { crypto: false },
-  },
+  }
 };
 
 module.exports = () => config;

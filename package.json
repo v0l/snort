@@ -4,9 +4,9 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/system-react build && yarn workspace @snort/app build",
-    "start": "yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/system-react build && yarn workspace @snort/app start",
-    "test": "yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/app test && yarn workspace @snort/system test"
+    "build": "yarn workspace @snort/system-query build && yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/system-react build && yarn workspace @snort/app build",
+    "start": "arn workspace @snort/system-query build && yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/system-react build && yarn workspace @snort/app start",
+    "test": "arn workspace @snort/system-query build && yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/app test && yarn workspace @snort/system test"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230307.0",

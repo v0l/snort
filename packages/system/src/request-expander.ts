@@ -1,4 +1,5 @@
 import { ReqFilter } from "./nostr";
+import {expand_filter} from "@snort/system-query";
 
 export interface FlatReqFilter {
   keys: number;
@@ -20,7 +21,7 @@ export interface FlatReqFilter {
  * Expand a filter into its most fine grained form
  */
 export function expandFilter(f: ReqFilter): Array<FlatReqFilter> {
-  const ret: Array<FlatReqFilter> = [];
+  /*const ret: Array<FlatReqFilter> = [];
   const src = Object.entries(f);
   const keys = src.filter(([, v]) => Array.isArray(v)).map(a => a[0]);
   const props = src.filter(([, v]) => !Array.isArray(v));
@@ -46,5 +47,8 @@ export function expandFilter(f: ReqFilter): Array<FlatReqFilter> {
     ...Object.fromEntries(props),
   });
 
-  return ret;
+  return ret;*/
+
+  const ret = expand_filter(f);
+  return ret as Array<FlatReqFilter>;
 }

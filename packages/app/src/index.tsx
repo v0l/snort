@@ -2,6 +2,9 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "./fonts/inter.css";
 
+import {default as wasmInit} from "@snort/system-query";
+import WasmPath from "@snort/system-query/pkg/system_query_bg.wasm";
+
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
@@ -69,6 +72,7 @@ export const DefaultPowWorker = new PowWorker("/pow.js");
 serviceWorkerRegistration.register();
 
 async function initSite() {
+  await wasmInit(WasmPath);
   const login = LoginStore.takeSnapshot();
   db.ready = await db.isAvailable();
   if (db.ready) {

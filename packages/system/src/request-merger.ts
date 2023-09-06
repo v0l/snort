@@ -105,7 +105,7 @@ export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
   function mergeFiltersInSet(filters: Array<FlatReqFilter>) {
     return filters.reduce((acc, a) => {
       Object.entries(a).forEach(([k, v]) => {
-        if (k === "keys") return;
+        if (k === "keys" || v === undefined) return;
         if (DiscriminatorKeys.includes(k)) {
           acc[k] = v;
         } else {
