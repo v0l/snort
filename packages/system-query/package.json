@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "packageManager": "yarn@3.6.3",
   "scripts": {
-    "build": "npx -y wasm-pack build -t web -s snort"
+    "build": "wasm-pack build -t web -s snort"
   },
   "files": [
     "pkg/system_query_bg.wasm",
@@ -11,8 +11,5 @@
     "pkg/system_query.d.ts"
   ],
   "module": "pkg/system_query.js",
-  "types": "pkg/system_query.d.ts",
-  "devDependencies": {
-    "wasm-pack": "^0.12.1"
-  }
+  "types": "pkg/system_query.d.ts"
 }
