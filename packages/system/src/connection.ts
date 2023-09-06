@@ -1,5 +1,6 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
+import WebSocket from "isomorphic-ws";
 import { unwrap, ExternalStore, unixNowMs } from "@snort/shared";
 
 import { DefaultConnectTimeout } from "./const";
@@ -138,7 +139,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     this.#sendPendingRaw();
   }
 
-  OnClose(e: CloseEvent) {
+  OnClose(e: WebSocket.CloseEvent) {
     if (this.ReconnectTimer) {
       clearTimeout(this.ReconnectTimer);
       this.ReconnectTimer = undefined;
@@ -171,10 +172,10 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     this.notifyChange();
   }
 
-  OnMessage(e: MessageEvent) {
+  OnMessage(e: WebSocket.MessageEvent) {
     this.#activity = unixNowMs();
-    if (e.data.length > 0) {
-      const msg = JSON.parse(e.data);
+    if ((e.data as string).length > 0) {
+      const msg = JSON.parse(e.data as string);
       const tag = msg[0];
       switch (tag) {
         case "AUTH": {
@@ -221,7 +222,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     }
   }
 
-  OnError(e: Event) {
+  OnError(e: WebSocket.Event) {
     this.#log("Error: %O", e);
     this.notifyChange();
   }
