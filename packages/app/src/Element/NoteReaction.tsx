@@ -10,6 +10,7 @@ import useModeration from "Hooks/useModeration";
 import { FormattedMessage } from "react-intl";
 import Icon from "Icons/Icon";
 import { useUserProfile } from "@snort/system-react";
+import { useInView } from "react-intersection-observer";
 
 export interface NoteReactionProps {
   data: TaggedNostrEvent;
@@ -19,7 +20,8 @@ export interface NoteReactionProps {
 export default function NoteReaction(props: NoteReactionProps) {
   const { data: ev } = props;
   const { isMuted } = useModeration();
-  const profile = useUserProfile(ev.pubkey);
+  const { inView, ref } = useInView({ triggerOnce: true });
+  const profile = useUserProfile(inView ? ev.pubkey : "");
 
   const refEvent = useMemo(() => {
     if (ev) {
@@ -44,6 +46,7 @@ export default function NoteReaction(props: NoteReactionProps) {
    * Some clients embed the reposted note in the content
    */
   function extractRoot() {
+    if(!inView) return null;
     if (ev?.kind === EventKind.Repost && ev.content.length > 0 && ev.content !== "#[0]") {
       try {
         const r: NostrEvent = JSON.parse(ev.content);
@@ -60,7 +63,11 @@ export default function NoteReaction(props: NoteReactionProps) {
     return props.root;
   }
 
-  const root = extractRoot();
+  const root = useMemo(() => extractRoot(), [ev, props.root, inView]);
+
+  if (!inView) {
+    return (<div className="card reaction" ref={ref}></div>)
+  }
   const isOpMuted = root && isMuted(root.pubkey);
   const shouldNotBeRendered = isOpMuted || root?.kind !== EventKind.TextNote;
   const opt = {
