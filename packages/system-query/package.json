@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "packageManager": "yarn@3.6.3",
   "scripts": {
-    "build": "wasm-pack build -t web -s snort"
+    "build": "cargo install wasm-pack && wasm-pack build -t web -s snort"
   },
   "files": [
     "pkg/system_query_bg.wasm",
