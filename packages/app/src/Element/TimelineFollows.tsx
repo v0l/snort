@@ -1,5 +1,5 @@
 import "./Timeline.css";
-import { useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
+import { ReactNode, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
 import { FormattedMessage } from "react-intl";
 import { TaggedNostrEvent, EventKind, u256, NostrEvent } from "@snort/system";
 import { unixNow } from "@snort/shared";
@@ -19,6 +19,9 @@ import Icon from "Icons/Icon";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;
+  liveStreams?: boolean;
+  noteFilter?: (ev: NostrEvent) => boolean;
+  noteRenderer?: (ev: NostrEvent) => ReactNode;
 }
 
 /**
@@ -46,7 +49,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
       const a = nts.filter(a => a.kind !== EventKind.LiveEvent);
       return a
         ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
-        .filter(a => !isMuted(a.pubkey) && login.follows.item.includes(a.pubkey));
+        .filter(a => !isMuted(a.pubkey) && login.follows.item.includes(a.pubkey) && (props.noteFilter?.(a) ?? true));
     },
     [props.postsOnly, muted, login.follows.timestamp],
   );
@@ -83,7 +86,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
 
   return (
     <>
-      <LiveStreams evs={liveStreams} />
+      {(props.liveStreams ?? true) && <LiveStreams evs={liveStreams} />}
       {latestFeed.length > 0 && (
         <>
           <div className="card latest-notes" onClick={() => onShowLatest()} ref={ref}>
@@ -110,7 +113,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
           )}
         </>
       )}
-      {mainFeed.map(a => (
+      {mainFeed.map(a => props.noteRenderer?.(a) ?? (
         <Note data={a as TaggedNostrEvent} related={relatedFeed(a.id)} key={a.id} depth={0} />
       ))}
       <div className="flex f-center p">

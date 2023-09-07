@@ -3,7 +3,7 @@ import React, { useMemo, useState, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
-import { TaggedNostrEvent, HexKey, EventKind, NostrPrefix, Lists, EventExt, parseZap } from "@snort/system";
+import { TaggedNostrEvent, HexKey, EventKind, NostrPrefix, Lists, EventExt, parseZap, tagToNostrLink, createNostrLinkToEvent } from "@snort/system";
 
 import { System } from "index";
 import useEventPublisher from "Feed/EventPublisher";
@@ -11,7 +11,6 @@ import Icon from "Icons/Icon";
 import ProfileImage from "Element/ProfileImage";
 import Text from "Element/Text";
 import {
-  eventLink,
   getReactions,
   dedupeByPubkey,
   tagFilterOfTextRepost,
@@ -40,6 +39,7 @@ import NoteReaction from "Element/NoteReaction";
 import ProfilePreview from "Element/ProfilePreview";
 
 import messages from "./messages";
+import { ProxyImg } from "./ProxyImg";
 
 export interface NoteProps {
   data: TaggedNostrEvent;
@@ -193,8 +193,42 @@ export function NoteInner(props: NoteProps) {
     }
   }
 
+  const innerContent = () => {
+    if (ev.kind === EventKind.LongFormTextNote) {
+      const title = findTag(ev, "title");
+      const summary = findTag(ev, "simmary");
+      const image = findTag(ev, "image");
+      return (
+        <div className="long-form-note">
+          <h3>
+            {title}
+          </h3>
+          <div className="text">
+            <p>
+              {summary}
+            </p>
+            <Text id={ev.id} content={ev.content} tags={ev.tags} creator={ev.pubkey} depth={props.depth} truncate={255} disableLinkPreview={true} />
+            {image && <ProxyImg src={image} />}
+          </div>
+
+        </div>
+      )
+    } else {
+      const body = ev?.content ?? "";
+      return (
+        <Text
+          id={ev.id}
+          content={body}
+          tags={ev.tags}
+          creator={ev.pubkey}
+          depth={props.depth}
+          disableMedia={!(options.showMedia ?? true)}
+        />
+      );
+    }
+  }
+
   const transformBody = () => {
-    const body = ev?.content ?? "";
     if (deletions?.length > 0) {
       return (
         <b className="error">
@@ -222,20 +256,11 @@ export function NoteInner(props: NoteProps) {
               )}
             </>
           }>
-          <Text id={ev.id} content={body} tags={ev.tags} creator={ev.pubkey} />
+          {innerContent()}
         </Reveal>
       );
     }
-    return (
-      <Text
-        id={ev.id}
-        content={body}
-        tags={ev.tags}
-        creator={ev.pubkey}
-        depth={props.depth}
-        disableMedia={!(options.showMedia ?? true)}
-      />
-    );
+    return innerContent();
   };
 
   function goToEvent(
@@ -253,13 +278,13 @@ export function NoteInner(props: NoteProps) {
       return;
     }
 
-    const link = eventLink(eTarget.id, eTarget.relays);
+    const link = createNostrLinkToEvent(eTarget);
     // detect cmd key and open in new tab
     if (e.metaKey) {
-      window.open(link, "_blank");
+      window.open(`/e/${link.encode()}`, "_blank");
     } else {
-      navigate(link, {
-        state: ev,
+      navigate(`/e/${link.encode()}`, {
+        state: eTarget,
       });
     }
   }
@@ -271,8 +296,8 @@ export function NoteInner(props: NoteProps) {
     }
 
     const maxMentions = 2;
-    const replyId = thread?.replyTo?.value ?? thread?.root?.value;
-    const replyRelayHints = thread?.replyTo?.relay ?? thread.root?.relay;
+    const replyTo = thread?.replyTo ?? thread?.root;
+    const replyLink = replyTo ? tagToNostrLink([replyTo.key, replyTo.value ?? "", replyTo.relay ?? "", replyTo.marker ?? ""].filter(a => a.length > 0)) : undefined;
     const mentions: { pk: string; name: string; link: ReactNode }[] = [];
     for (const pk of thread?.pubKeys ?? []) {
       const u = UserCache.getFromCache(pk);
@@ -305,9 +330,9 @@ export function NoteInner(props: NoteProps) {
             {pubMentions} {others}
           </>
         ) : (
-          replyId && (
-            <Link to={eventLink(replyId, replyRelayHints)}>
-              {hexToBech32(NostrPrefix.Event, replyId)?.substring(0, 12)}
+          replyLink && (
+            <Link to={`/e/${replyLink.encode()}`}>
+              {replyLink.encode().substring(0, 12)}
             </Link>
           )
         )}
@@ -315,7 +340,7 @@ export function NoteInner(props: NoteProps) {
     );
   }
 
-  const canRenderAsTextNote = [EventKind.TextNote, EventKind.Polls];
+  const canRenderAsTextNote = [EventKind.TextNote, EventKind.Polls, EventKind.LongFormTextNote];
   if (!canRenderAsTextNote.includes(ev.kind)) {
     const alt = findTag(ev, "alt");
     if (alt) {
@@ -393,7 +418,7 @@ export function NoteInner(props: NoteProps) {
               {options.showContextMenu && (
                 <NoteContextMenu
                   ev={ev}
-                  react={async () => {}}
+                  react={async () => { }}
                   onTranslated={t => setTranslated(t)}
                   setShowReactions={setShowReactions}
                 />

@@ -1,6 +1,6 @@
 import "./Text.css";
-import { useMemo, useState } from "react";
-import { HexKey, ParsedFragment, transformText } from "@snort/system";
+import { useState } from "react";
+import { HexKey, ParsedFragment } from "@snort/system";
 
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
@@ -8,7 +8,8 @@ import HyperText from "Element/HyperText";
 import CashuNuts from "Element/CashuNuts";
 import RevealMedia from "./RevealMedia";
 import { ProxyImg } from "./ProxyImg";
-import { SpotlightMedia } from "./SpotlightMedia";
+import { SpotlightMediaModal } from "./SpotlightMedia";
+import { useTextTransformer } from "Hooks/useTextTransformCache";
 
 export interface TextProps {
   id: string;
@@ -23,8 +24,6 @@ export interface TextProps {
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
 }
-
-const TextCache = new Map<string, Array<ParsedFragment>>();
 
 export default function Text({
   id,
@@ -42,13 +41,7 @@ export default function Text({
   const [showSpotlight, setShowSpotlight] = useState(false);
   const [imageIdx, setImageIdx] = useState(0);
 
-  const elements = useMemo(() => {
-    const cached = TextCache.get(id);
-    if (cached) return cached;
-    const newCache = transformText(content, tags);
-    TextCache.set(id, newCache);
-    return newCache;
-  }, [content, id]);
+  const elements = useTextTransformer(id, content, tags);
 
   const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content);
 
@@ -114,7 +107,7 @@ export default function Text({
   return (
     <div dir="auto" className={`text${className ? ` ${className}` : ""}`} onClick={onClick}>
       {renderContent()}
-      {showSpotlight && <SpotlightMedia images={images} onClose={() => setShowSpotlight(false)} idx={imageIdx} />}
+      {showSpotlight && <SpotlightMediaModal images={images} onClose={() => setShowSpotlight(false)} idx={imageIdx} />}
     </div>
   );
 }

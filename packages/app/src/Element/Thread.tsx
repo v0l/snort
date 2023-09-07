@@ -1,23 +1,21 @@
 import "./Thread.css";
-import { useMemo, useState, ReactNode } from "react";
+import { useMemo, useState, ReactNode, useContext } from "react";
 import { useIntl } from "react-intl";
-import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import {
   TaggedNostrEvent,
   u256,
-  EventKind,
   NostrPrefix,
   EventExt,
-  Thread as ThreadInfo,
   parseNostrLink,
 } from "@snort/system";
 
-import { eventLink, unwrap, getReactions, getAllReactions, findTag } from "SnortUtils";
+import { eventLink, getReactions, getAllReactions } from "SnortUtils";
 import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";
 import Collapsed from "Element/Collapsed";
-import useThreadFeed from "Feed/ThreadFeed";
+import { ThreadContext, ThreadContextWrapper } from "Hooks/useThreadContext";
 
 import messages from "./messages";
 
@@ -162,9 +160,8 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
   return (
     <>
       <div
-        className={`subthread-container ${hasMultipleNotes ? "subthread-multi" : ""} ${
-          isLast ? "subthread-last" : "subthread-mid"
-        }`}>
+        className={`subthread-container ${hasMultipleNotes ? "subthread-multi" : ""} ${isLast ? "subthread-last" : "subthread-mid"
+          }`}>
         <Divider variant="small" />
         <Note
           highlight={active === first.id}
@@ -193,9 +190,8 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
         return (
           <div
             key={r.id}
-            className={`subthread-container ${lastReply ? "" : "subthread-multi"} ${
-              lastReply ? "subthread-last" : "subthread-mid"
-            }`}>
+            className={`subthread-container ${lastReply ? "" : "subthread-multi"} ${lastReply ? "subthread-last" : "subthread-mid"
+              }`}>
             <Divider variant="small" />
             <Note
               className={`thread-note ${lastNote ? "is-last-note" : ""}`}
@@ -213,110 +209,39 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
   );
 };
 
-export default function Thread() {
+export function ThreadRoute() {
   const params = useParams();
-  const location = useLocation();
-
   const link = parseNostrLink(params.id ?? "", NostrPrefix.Note);
-  const thread = useThreadFeed(link);
 
-  const [currentId, setCurrentId] = useState(link.id);
+  return <ThreadContextWrapper link={link}>
+    <Thread />
+  </ThreadContextWrapper>
+}
+
+export function Thread() {
+  const thread = useContext(ThreadContext);
 
   const navigate = useNavigate();
-  const isSingleNote = thread.data?.filter(a => a.kind === EventKind.TextNote).length === 1;
+  const isSingleNote = thread.chains?.size === 1 && [thread.chains.values].every(v => v.length === 0);
   const { formatMessage } = useIntl();
 
   function navigateThread(e: TaggedNostrEvent) {
-    setCurrentId(e.id);
+    thread.setCurrent(e.id);
     //const link = encodeTLV(e.id, NostrPrefix.Event, e.relays);
   }
 
-  const chains = useMemo(() => {
-    const chains = new Map<u256, Array<TaggedNostrEvent>>();
-    if (thread.data) {
-      thread.data
-        ?.filter(a => a.kind === EventKind.TextNote)
-        .sort((a, b) => b.created_at - a.created_at)
-        .forEach(v => {
-          const t = EventExt.extractThread(v);
-          let replyTo = t?.replyTo?.value ?? t?.root?.value;
-          if (t?.root?.key === "a" && t?.root?.value) {
-            const parsed = t.root.value.split(":");
-            replyTo = thread.data?.find(
-              a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2],
-            )?.id;
-          }
-          if (replyTo) {
-            if (!chains.has(replyTo)) {
-              chains.set(replyTo, [v]);
-            } else {
-              unwrap(chains.get(replyTo)).push(v);
-            }
-          }
-        });
-    }
-    return chains;
-  }, [thread.data]);
-
-  // Root is the parent of the current note or the current note if its a root note or the root of the thread
-  const root = useMemo(() => {
-    const currentNote =
-      thread.data?.find(
-        ne =>
-          ne.id === currentId ||
-          (link.type === NostrPrefix.Address && findTag(ne, "d") === currentId && ne.pubkey === link.author),
-      ) ?? (location.state && "sig" in location.state ? (location.state as TaggedNostrEvent) : undefined);
-    if (currentNote) {
-      const currentThread = EventExt.extractThread(currentNote);
-      const isRoot = (ne?: ThreadInfo) => ne === undefined;
-
-      if (isRoot(currentThread)) {
-        return currentNote;
-      }
-      const replyTo = currentThread?.replyTo ?? currentThread?.root;
-
-      // sometimes the root event ID is missing, and we can only take the happy path if the root event ID exists
-      if (replyTo) {
-        if (replyTo.key === "a" && replyTo.value) {
-          const parsed = replyTo.value.split(":");
-          return thread.data?.find(
-            a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2],
-          );
-        }
-        if (replyTo.value) {
-          return thread.data?.find(a => a.id === replyTo.value);
-        }
-      }
-
-      const possibleRoots = thread.data?.filter(a => {
-        const thread = EventExt.extractThread(a);
-        return isRoot(thread);
-      });
-      if (possibleRoots) {
-        // worst case we need to check every possible root to see which one contains the current note as a child
-        for (const ne of possibleRoots) {
-          const children = chains.get(ne.id) ?? [];
-
-          if (children.find(ne => ne.id === currentId)) {
-            return ne;
-          }
-        }
-      }
-    }
-  }, [thread.data, currentId, location]);
-
   const parent = useMemo(() => {
-    if (root) {
-      const currentThread = EventExt.extractThread(root);
+    if (thread.root) {
+      const currentThread = EventExt.extractThread(thread.root);
       return (
         currentThread?.replyTo?.value ??
         currentThread?.root?.value ??
         (currentThread?.root?.key === "a" && currentThread.root?.value)
       );
     }
-  }, [root]);
+  }, [thread.root]);
 
-  const brokenChains = Array.from(chains?.keys()).filter(a => !thread.data?.some(b => b.id === a));
+  const brokenChains = Array.from(thread.chains?.keys()).filter(a => !thread.data?.some(b => b.id === a));
 
   function renderRoot(note: TaggedNostrEvent) {
     const className = `thread-root${isSingleNote ? " thread-root-single" : ""}`;
@@ -337,20 +262,20 @@ export default function Thread() {
   }
 
   function renderChain(from: u256): ReactNode {
-    if (!from || !chains) {
+    if (!from || thread.chains.size === 0) {
       return;
     }
-    const replies = chains.get(from);
-    if (replies && currentId) {
+    const replies = thread.chains.get(from);
+    if (replies && thread.current) {
       return (
         <Subthread
-          active={currentId}
+          active={thread.current}
           notes={replies}
           related={getAllReactions(
             thread.data,
             replies.map(a => a.id),
           )}
-          chains={chains}
+          chains={thread.chains}
           onNavigate={navigateThread}
         />
       );
@@ -359,7 +284,7 @@ export default function Thread() {
 
   function goBack() {
     if (parent) {
-      setCurrentId(parent);
+      thread.setCurrent(parent);
     } else {
       navigate(-1);
     }
@@ -379,8 +304,8 @@ export default function Thread() {
         <BackButton onClick={goBack} text={parent ? parentText : backText} />
       </div>
       <div className="main-content">
-        {root && renderRoot(root)}
-        {root && renderChain(root.id)}
+        {thread.root && renderRoot(thread.root)}
+        {thread.root && renderChain(thread.root.id)}
 
         {brokenChains.length > 0 && <h3>Other replies</h3>}
         {brokenChains.map(a => {
