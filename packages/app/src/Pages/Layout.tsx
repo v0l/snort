@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
+import { NostrPrefix, createNostrLink, tryParseNostrLink } from "@snort/system";
 
 import messages from "./messages";
 
@@ -19,7 +20,6 @@ import { profileLink } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 import Toaster from "Toaster";
 import Spinner from "Icons/Spinner";
-import { NostrPrefix, createNostrLink, tryParseNostrLink } from "@snort/system";
 import { fetchNip05Pubkey } from "Nip05/Verifier";
 import { useTheme } from "Hooks/useTheme";
 import { useLoginRelays } from "Hooks/useLoginRelays";
