@@ -4,7 +4,6 @@ import { useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
-import Text from "Element/Text";
 import useEventPublisher from "Feed/EventPublisher";
 import { useWallet } from "Wallet";
 import { unwrap } from "SnortUtils";
@@ -31,7 +30,7 @@ export default function Poll(props: PollProps) {
   const isMyPoll = props.ev.pubkey === myPubKey;
   const showResults = didVote || isMyPoll;
 
-  const options = props.ev.tags.filter(a => a[0] === "poll_option").sort((a, b) => Number(a[1]) - Number(b[1]));
+  const options = props.ev.tags.filter(a => a[0] === "poll_option").sort((a, b) => Number(a[1]) > Number(b[1]) ? 1 : -1);
   async function zapVote(ev: React.MouseEvent, opt: number) {
     ev.stopPropagation();
     if (voting || !publisher) return;
@@ -116,13 +115,7 @@ export default function Poll(props: PollProps) {
                 {opt === voting ? (
                   <Spinner />
                 ) : (
-                  <Text
-                    id={props.ev.id}
-                    content={desc}
-                    tags={props.ev.tags}
-                    creator={props.ev.pubkey}
-                    disableMediaSpotlight={true}
-                  />
+                  <>{desc}</>
                 )}
               </div>
               {showResults && (
