@@ -1,12 +1,12 @@
 import debug from "debug";
 import { v4 as uuid } from "uuid";
 import { appendDedupe, sanitizeRelayUrl, unixNowMs } from "@snort/shared";
+import { get_diff }from "@snort/system-query";
 
 import { ReqFilter, u256, HexKey, EventKind } from ".";
-import { diffFilters } from "./request-splitter";
 import { RelayCache, splitByWriteRelays, splitFlatByWriteRelays } from "./gossip-model";
 import { flatMerge, mergeSimilar } from "./request-merger";
-import { FlatReqFilter, expandFilter } from "./request-expander";
+import { FlatReqFilter } from "./request-expander";
 
 /**
  * Which strategy is used when building REQ filters
@@ -103,15 +103,16 @@ export class RequestBuilder {
   /**
    * Detects a change in request from a previous set of filters
    */
-  buildDiff(relays: RelayCache, prev: Array<FlatReqFilter>): Array<BuiltRawReqFilter> {
+  buildDiff(relays: RelayCache, prev: Array<ReqFilter>): Array<BuiltRawReqFilter> {
     const start = unixNowMs();
 
-    const next = this.#builders.flatMap(f => expandFilter(f.filter));
-    const diff = diffFilters(prev, next);
+    //const next = this.#builders.flatMap(f => expandFilter(f.filter));
+    //const diff = diffFilters(prev, next);
+    const diff = get_diff(prev, this.buildRaw()) as Array<FlatReqFilter>;
     const ts = unixNowMs() - start;
     this.#log("buildDiff %s %d ms", this.id, ts);
-    if (diff.changed) {
-      return splitFlatByWriteRelays(relays, diff.added).map(a => {
+    if (diff.length > 0) {
+      return splitFlatByWriteRelays(relays, diff).map(a => {
         return {
           strategy: RequestStrategy.AuthorsRelays,
           filters: flatMerge(a.filters),

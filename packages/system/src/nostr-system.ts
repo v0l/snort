@@ -241,7 +241,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         return existing;
       }
       const filters = !req.options?.skipDiff
-        ? req.buildDiff(this.#relayCache, existing.flatFilters)
+        ? req.buildDiff(this.#relayCache, existing.filters)
         : req.build(this.#relayCache);
       if (filters.length === 0 && !!req.options?.skipDiff) {
         return existing;

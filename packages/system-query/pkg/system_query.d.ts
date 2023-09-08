@@ -11,6 +11,12 @@ export function diff_filters(prev: any, next: any): any;
 * @returns {any}
 */
 export function expand_filter(val: any): any;
+/**
+* @param {any} prev
+* @param {any} next
+* @returns {any}
+*/
+export function get_diff(prev: any, next: any): any;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
@@ -18,6 +24,7 @@ export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly diff_filters: (a: number, b: number, c: number) => void;
   readonly expand_filter: (a: number, b: number) => void;
+  readonly get_diff: (a: number, b: number, c: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;

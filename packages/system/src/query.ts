@@ -4,9 +4,7 @@ import { unixNowMs, unwrap } from "@snort/shared";
 
 import { Connection, ReqFilter, Nips, TaggedNostrEvent } from ".";
 import { NoteStore } from "./note-collection";
-import { flatMerge } from "./request-merger";
 import { BuiltRawReqFilter } from "./request-builder";
-import { FlatReqFilter, expandFilter } from "./request-expander";
 import { eventMatchesFilter } from "./request-matcher";
 
 /**
@@ -19,7 +17,6 @@ class QueryTrace {
   eose?: number;
   close?: number;
   #wasForceClosed = false;
-  readonly flatFilters: Array<FlatReqFilter>;
   readonly #fnClose: (id: string) => void;
   readonly #fnProgress: () => void;
 
@@ -34,7 +31,6 @@ class QueryTrace {
     this.start = unixNowMs();
     this.#fnClose = fnClose;
     this.#fnProgress = fnProgress;
-    this.flatFilters = filters.flatMap(expandFilter);
   }
 
   sentToRelay() {
@@ -166,11 +162,7 @@ export class Query implements QueryBase {
    * Recompute the complete set of compressed filters from all query traces
    */
   get filters() {
-    return flatMerge(this.flatFilters);
-  }
-
-  get flatFilters() {
-    return this.#tracing.flatMap(a => a.flatFilters);
+    return this.#tracing.flatMap(a => a.filters);
   }
 
   get feed() {

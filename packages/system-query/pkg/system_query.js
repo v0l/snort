@@ -229,6 +229,27 @@ export function expand_filter(val) {
     }
 }
 
+/**
+* @param {any} prev
+* @param {any} next
+* @returns {any}
+*/
+export function get_diff(prev, next) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        wasm.get_diff(retptr, addHeapObject(prev), addHeapObject(next));
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        var r2 = getInt32Memory0()[retptr / 4 + 2];
+        if (r2) {
+            throw takeObject(r1);
+        }
+        return takeObject(r0);
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+    }
+}
+
 function handleError(f, args) {
     try {
         return f.apply(this, args);
