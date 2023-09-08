@@ -30,7 +30,9 @@ export default function Poll(props: PollProps) {
   const isMyPoll = props.ev.pubkey === myPubKey;
   const showResults = didVote || isMyPoll;
 
-  const options = props.ev.tags.filter(a => a[0] === "poll_option").sort((a, b) => Number(a[1]) > Number(b[1]) ? 1 : -1);
+  const options = props.ev.tags
+    .filter(a => a[0] === "poll_option")
+    .sort((a, b) => (Number(a[1]) > Number(b[1]) ? 1 : -1));
   async function zapVote(ev: React.MouseEvent, opt: number) {
     ev.stopPropagation();
     if (voting || !publisher) return;
@@ -111,13 +113,7 @@ export default function Poll(props: PollProps) {
           const weight = allTotal === 0 ? 0 : total / allTotal;
           return (
             <div key={a[1]} className="flex" onClick={e => zapVote(e, opt)}>
-              <div className="f-grow">
-                {opt === voting ? (
-                  <Spinner />
-                ) : (
-                  <>{desc}</>
-                )}
-              </div>
+              <div className="f-grow">{opt === voting ? <Spinner /> : <>{desc}</>}</div>
               {showResults && (
                 <>
                   <div className="flex">
