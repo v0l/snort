@@ -19,6 +19,7 @@ const config = {
       import: require.resolve("@snort/system/dist/pow-worker.js"),
       filename: "pow.js",
     },
+    bench: "./src/benchmarks.ts"
   },
   target: "browserslist",
   mode: isProduction ? "production" : "development",
@@ -47,7 +48,12 @@ const config = {
     new HtmlWebpackPlugin({
       template: "public/index.html",
       favicon: "public/favicon.ico",
-      excludeChunks: ["pow"],
+      excludeChunks: ["pow", "bench"],
+    }),
+    new HtmlWebpackPlugin({
+      filename: "bench.html",
+      template: "public/bench.html",
+      chunks: ["bench"],
     }),
     new ESLintPlugin({
       extensions: ["js", "mjs", "jsx", "ts", "tsx"],

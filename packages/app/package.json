@@ -102,6 +102,7 @@
     "prop-types": "^15.8.1",
     "source-map-loader": "^4.0.1",
     "terser-webpack-plugin": "^5.3.9",
+    "tinybench": "^2.5.0",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.4",
     "typescript": "^5.2.2",
