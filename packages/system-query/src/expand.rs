@@ -161,14 +161,19 @@ pub fn expand_filter(filter: &ReqFilter) -> Vec<FlatReqFilter> {
 mod tests {
     use super::*;
     use crate::ReqFilter;
+    use std::collections::HashSet;
 
     #[test]
     fn test_expand_filter() {
         let input = ReqFilter {
-            authors: Some(vec!["a".to_owned(), "b".to_owned(), "c".to_owned()]),
-            kinds: Some(vec![1, 2, 3]),
-            ids: Some(vec!["x".to_owned(), "y".to_owned()]),
-            p_tag: Some(vec!["a".to_owned()]),
+            authors: Some(HashSet::from([
+                "a".to_owned(),
+                "b".to_owned(),
+                "c".to_owned(),
+            ])),
+            kinds: Some(HashSet::from([1, 2, 3])),
+            ids: Some(HashSet::from(["x".to_owned(), "y".to_owned()])),
+            p_tag: Some(HashSet::from(["a".to_owned()])),
             t_tag: None,
             d_tag: None,
             r_tag: None,

@@ -1,78 +1,10 @@
-use std::fmt::{Debug};
-use serde::{Deserialize, Serialize};
+use crate::filter::{FlatReqFilter, ReqFilter};
 use wasm_bindgen::prelude::*;
 
 mod diff;
 mod expand;
+mod filter;
 mod merge;
-
-#[derive(PartialEq, Clone, Serialize, Deserialize)]
-pub struct ReqFilter {
-    #[serde(rename = "ids", skip_serializing_if = "Option::is_none")]
-    pub ids: Option<Vec<String>>,
-    #[serde(rename = "authors", skip_serializing_if = "Option::is_none")]
-    pub authors: Option<Vec<String>>,
-    #[serde(rename = "kinds", skip_serializing_if = "Option::is_none")]
-    pub kinds: Option<Vec<i32>>,
-    #[serde(rename = "#e", skip_serializing_if = "Option::is_none")]
-    pub e_tag: Option<Vec<String>>,
-    #[serde(rename = "#p", skip_serializing_if = "Option::is_none")]
-    pub p_tag: Option<Vec<String>>,
-    #[serde(rename = "#t", skip_serializing_if = "Option::is_none")]
-    pub t_tag: Option<Vec<String>>,
-    #[serde(rename = "#d", skip_serializing_if = "Option::is_none")]
-    pub d_tag: Option<Vec<String>>,
-    #[serde(rename = "#r", skip_serializing_if = "Option::is_none")]
-    pub r_tag: Option<Vec<String>>,
-    #[serde(rename = "search", skip_serializing_if = "Option::is_none")]
-    pub search: Option<Vec<String>>,
-    #[serde(rename = "since", skip_serializing_if = "Option::is_none")]
-    pub since: Option<i32>,
-    #[serde(rename = "until", skip_serializing_if = "Option::is_none")]
-    pub until: Option<i32>,
-    #[serde(rename = "limit", skip_serializing_if = "Option::is_none")]
-    pub limit: Option<i32>,
-}
-
-impl Debug for ReqFilter {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str(&serde_json::to_string(self).unwrap().to_owned())
-    }
-}
-
-#[derive(PartialEq, Clone, Serialize, Deserialize)]
-pub struct FlatReqFilter {
-    #[serde(rename = "ids", skip_serializing_if = "Option::is_none")]
-    id: Option<String>,
-    #[serde(rename = "authors", skip_serializing_if = "Option::is_none")]
-    author: Option<String>,
-    #[serde(rename = "kinds", skip_serializing_if = "Option::is_none")]
-    kind: Option<i32>,
-    #[serde(rename = "#e", skip_serializing_if = "Option::is_none")]
-    e_tag: Option<String>,
-    #[serde(rename = "#p", skip_serializing_if = "Option::is_none")]
-    p_tag: Option<String>,
-    #[serde(rename = "#t", skip_serializing_if = "Option::is_none")]
-    t_tag: Option<String>,
-    #[serde(rename = "#d", skip_serializing_if = "Option::is_none")]
-    d_tag: Option<String>,
-    #[serde(rename = "#r", skip_serializing_if = "Option::is_none")]
-    r_tag: Option<String>,
-    #[serde(rename = "search", skip_serializing_if = "Option::is_none")]
-    search: Option<String>,
-    #[serde(rename = "since", skip_serializing_if = "Option::is_none")]
-    since: Option<i32>,
-    #[serde(rename = "until", skip_serializing_if = "Option::is_none")]
-    until: Option<i32>,
-    #[serde(rename = "limit", skip_serializing_if = "Option::is_none")]
-    limit: Option<i32>,
-}
-
-impl Debug for FlatReqFilter {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str(&serde_json::to_string(self).unwrap().to_owned())
-    }
-}
 
 #[wasm_bindgen]
 pub fn diff_filters(prev: JsValue, next: JsValue) -> Result<JsValue, JsValue> {
@@ -108,7 +40,7 @@ pub fn get_diff(prev: JsValue, next: JsValue) -> Result<JsValue, JsValue> {
 #[wasm_bindgen]
 pub fn flat_merge(val: JsValue) -> Result<JsValue, JsValue> {
     let val_parsed: Vec<FlatReqFilter> = serde_wasm_bindgen::from_value(val)?;
-    let result = merge::flat_merge(&val_parsed);
+    let result = merge::merge::<FlatReqFilter, ReqFilter>(val_parsed.iter().collect());
     Ok(serde_wasm_bindgen::to_value(&result)?)
 }
 
@@ -117,25 +49,26 @@ mod tests {
     use super::*;
     use itertools::Itertools;
     use std::cmp::Ordering;
+    use std::collections::HashSet;
 
     #[test]
     fn flat_merge_expanded() {
         let input = vec![
             ReqFilter {
                 ids: None,
-                kinds: Some(vec![1, 6969, 6]),
+                kinds: Some(HashSet::from([1, 6969, 6])),
                 e_tag: None,
                 p_tag: None,
                 t_tag: None,
                 d_tag: None,
                 r_tag: None,
-                authors: Some(vec![
+                authors: Some(HashSet::from([
                     "kieran".to_string(),
                     "snort".to_string(),
                     "c".to_string(),
                     "d".to_string(),
                     "e".to_string(),
-                ]),
+                ])),
                 since: Some(1),
                 until: Some(100),
                 search: None,
@@ -143,7 +76,7 @@ mod tests {
             },
             ReqFilter {
                 ids: None,
-                kinds: Some(vec![4]),
+                kinds: Some(HashSet::from([4])),
                 e_tag: None,
                 p_tag: None,
                 t_tag: None,
@@ -152,15 +85,15 @@ mod tests {
                 search: None,
                 since: None,
                 until: None,
-                authors: Some(vec!["kieran".to_string()]),
+                authors: Some(HashSet::from(["kieran".to_string()])),
                 limit: None,
             },
             ReqFilter {
                 ids: None,
                 authors: None,
-                kinds: Some(vec![4]),
+                kinds: Some(HashSet::from([4])),
                 e_tag: None,
-                p_tag: Some(vec!["kieran".to_string()]),
+                p_tag: Some(HashSet::from(["kieran".to_string()])),
                 t_tag: None,
                 d_tag: None,
                 r_tag: None,
@@ -171,9 +104,9 @@ mod tests {
             },
             ReqFilter {
                 ids: None,
-                kinds: Some(vec![1000]),
-                authors: Some(vec!["snort".to_string()]),
-                p_tag: Some(vec!["kieran".to_string()]),
+                kinds: Some(HashSet::from([1000])),
+                authors: Some(HashSet::from(["snort".to_string()])),
+                p_tag: Some(HashSet::from(["kieran".to_string()])),
                 t_tag: None,
                 d_tag: None,
                 r_tag: None,
@@ -196,7 +129,8 @@ mod tests {
                 }
             })
             .collect_vec();
-        let expanded_flat = merge::flat_merge(&expanded);
-        assert_eq!(expanded_flat, input);
+        let merged_expanded: Vec<ReqFilter> = merge::merge(expanded.iter().collect());
+        assert_eq!(merged_expanded.len(), input.len());
+        assert!(merged_expanded.iter().all(|v| input.contains(v)));
     }
 }

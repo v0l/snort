@@ -1,7 +1,7 @@
 import debug from "debug";
 import { v4 as uuid } from "uuid";
 import { appendDedupe, sanitizeRelayUrl, unixNowMs } from "@snort/shared";
-import { get_diff }from "@snort/system-query";
+import { flat_merge, get_diff }from "@snort/system-query";
 
 import { ReqFilter, u256, HexKey, EventKind } from ".";
 import { RelayCache, splitByWriteRelays, splitFlatByWriteRelays } from "./gossip-model";
@@ -115,7 +115,7 @@ export class RequestBuilder {
       return splitFlatByWriteRelays(relays, diff).map(a => {
         return {
           strategy: RequestStrategy.AuthorsRelays,
-          filters: flatMerge(a.filters),
+          filters: flat_merge(a.filters) as Array<ReqFilter>,
           relay: a.relay,
         };
       });

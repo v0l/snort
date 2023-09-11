@@ -4,7 +4,7 @@ import { unwrap, sanitizeRelayUrl, ExternalStore, FeedCache } from "@snort/share
 import { NostrEvent, TaggedNostrEvent } from "./nostr";
 import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot } from "./connection";
 import { Query } from "./query";
-import { NoteCollection, NoteStore, NoteStoreHook, NoteStoreSnapshotData } from "./note-collection";
+import { NoteCollection, NoteStore, NoteStoreSnapshotData } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
@@ -258,8 +258,12 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       const filters = req.build(this.#relayCache);
       const q = new Query(req.id, req.instance, store, req.options?.leaveOpen);
       if (filters.some(a => a.filters.some(b => b.ids))) {
+        const expectIds = new Set(filters.flatMap(a => a.filters).flatMap(a => a.ids ?? []));
         q.feed.onEvent(async evs => {
-          await this.#eventsCache.bulkSet(evs);
+          const toSet = evs.filter(a => expectIds.has(a.id) && this.#eventsCache.getFromCache(a.id) === undefined);
+          if(toSet.length > 0) {
+            await this.#eventsCache.bulkSet(toSet);
+          }
         });
       }
       this.Queries.set(req.id, q);

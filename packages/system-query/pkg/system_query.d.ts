@@ -17,6 +17,11 @@ export function expand_filter(val: any): any;
 * @returns {any}
 */
 export function get_diff(prev: any, next: any): any;
+/**
+* @param {any} val
+* @returns {any}
+*/
+export function flat_merge(val: any): any;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
@@ -25,6 +30,7 @@ export interface InitOutput {
   readonly diff_filters: (a: number, b: number, c: number) => void;
   readonly expand_filter: (a: number, b: number) => void;
   readonly get_diff: (a: number, b: number, c: number) => void;
+  readonly flat_merge: (a: number, b: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
