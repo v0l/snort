@@ -44,6 +44,13 @@ pub fn flat_merge(val: JsValue) -> Result<JsValue, JsValue> {
     Ok(serde_wasm_bindgen::to_value(&result)?)
 }
 
+#[wasm_bindgen]
+pub fn compress(val: JsValue) -> Result<JsValue, JsValue> {
+    let val_parsed: Vec<ReqFilter> = serde_wasm_bindgen::from_value(val)?;
+    let result = merge::merge::<ReqFilter, ReqFilter>(val_parsed.iter().collect());
+    Ok(serde_wasm_bindgen::to_value(&result)?)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

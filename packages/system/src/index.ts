@@ -1,9 +1,11 @@
 import { AuthHandler, RelaySettings, ConnectionStateSnapshot } from "./connection";
 import { RequestBuilder } from "./request-builder";
-import { NoteStore, NoteStoreHook, NoteStoreSnapshotData } from "./note-collection";
+import { NoteStore, NoteStoreSnapshotData } from "./note-collection";
 import { Query } from "./query";
 import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { ProfileLoaderService } from "./profile-cache";
+import { RelayCache } from "./gossip-model";
+import { QueryOptimizer } from "./query-optimizer";
 
 export * from "./nostr-system";
 export { default as EventKind } from "./event-kind";
@@ -24,6 +26,7 @@ export * from "./signer";
 export * from "./text";
 export * from "./pow";
 export * from "./pow-util";
+export * from "./query-optimizer";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";
@@ -96,6 +99,16 @@ export interface SystemInterface {
    * Profile cache/loader
    */
   get ProfileLoader(): ProfileLoaderService;
+
+  /**
+   * Relay cache for "Gossip" model
+   */
+  get RelayCache(): RelayCache;
+
+  /**
+   * Query optimizer
+   */
+  get QueryOptimizer(): QueryOptimizer;
 }
 
 export interface SystemSnapshot {

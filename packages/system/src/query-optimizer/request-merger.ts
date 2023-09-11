@@ -1,6 +1,6 @@
 import { distance } from "@snort/shared";
-import { ReqFilter } from ".";
-import { FlatReqFilter } from "./request-expander";
+import { ReqFilter } from "..";
+import { FlatReqFilter } from ".";
 
 /**
  * Keys which can change the entire meaning of the filter outside the array types

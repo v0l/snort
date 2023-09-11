@@ -1,9 +1,8 @@
-import { flatFilterEq } from "./utils";
-import { FlatReqFilter } from "./request-expander";
-import { diff_filters } from "@snort/system-query";
+import { flatFilterEq } from "../utils";
+import { FlatReqFilter } from ".";
 
 export function diffFilters(prev: Array<FlatReqFilter>, next: Array<FlatReqFilter>, calcRemoved?: boolean) {
-  /*const added = [];
+  const added = [];
   const removed = [];
 
   for (const n of next) {
@@ -29,12 +28,5 @@ export function diffFilters(prev: Array<FlatReqFilter>, next: Array<FlatReqFilte
     added: changed ? added : [],
     removed: changed ? removed : [],
     changed,
-  };*/
-
-  const added = diff_filters(prev, next);
-  return {
-    changed: added.length > 0,
-    added: (added as Array<FlatReqFilter>),
-    removed: []
-  }
+  };
 }

@@ -1,12 +1,11 @@
 import debug from "debug";
 import { v4 as uuid } from "uuid";
 import { appendDedupe, sanitizeRelayUrl, unixNowMs } from "@snort/shared";
-import { flat_merge, get_diff }from "@snort/system-query";
 
-import { ReqFilter, u256, HexKey, EventKind } from ".";
+import EventKind from "./event-kind";
+import { SystemInterface } from "index";
+import { ReqFilter, u256, HexKey } from "./nostr";
 import { RelayCache, splitByWriteRelays, splitFlatByWriteRelays } from "./gossip-model";
-import { flatMerge, mergeSimilar } from "./request-merger";
-import { FlatReqFilter } from "./request-expander";
 
 /**
  * Which strategy is used when building REQ filters
@@ -95,27 +94,25 @@ export class RequestBuilder {
     return this.#builders.map(f => f.filter);
   }
 
-  build(relays: RelayCache): Array<BuiltRawReqFilter> {
-    const expanded = this.#builders.flatMap(a => a.build(relays, this.id));
-    return this.#groupByRelay(expanded);
+  build(system: SystemInterface): Array<BuiltRawReqFilter> {
+    const expanded = this.#builders.flatMap(a => a.build(system.RelayCache, this.id));
+    return this.#groupByRelay(system, expanded);
   }
 
   /**
    * Detects a change in request from a previous set of filters
    */
-  buildDiff(relays: RelayCache, prev: Array<ReqFilter>): Array<BuiltRawReqFilter> {
+  buildDiff(system: SystemInterface, prev: Array<ReqFilter>): Array<BuiltRawReqFilter> {
     const start = unixNowMs();
 
-    //const next = this.#builders.flatMap(f => expandFilter(f.filter));
-    //const diff = diffFilters(prev, next);
-    const diff = get_diff(prev, this.buildRaw()) as Array<FlatReqFilter>;
+    const diff = system.QueryOptimizer.getDiff(prev, this.buildRaw());
     const ts = unixNowMs() - start;
     this.#log("buildDiff %s %d ms", this.id, ts);
     if (diff.length > 0) {
-      return splitFlatByWriteRelays(relays, diff).map(a => {
+      return splitFlatByWriteRelays(system.RelayCache, diff).map(a => {
         return {
           strategy: RequestStrategy.AuthorsRelays,
-          filters: flat_merge(a.filters) as Array<ReqFilter>,
+          filters: system.QueryOptimizer.flatMerge(a.filters),
           relay: a.relay,
         };
       });
@@ -130,7 +127,7 @@ export class RequestBuilder {
    * @param expanded
    * @returns
    */
-  #groupByRelay(expanded: Array<BuiltRawReqFilter>) {
+  #groupByRelay(system: SystemInterface, expanded: Array<BuiltRawReqFilter>) {
     const relayMerged = expanded.reduce((acc, v) => {
       const existing = acc.get(v.relay);
       if (existing) {
@@ -143,7 +140,7 @@ export class RequestBuilder {
 
     const filtersSquashed = [...relayMerged.values()].map(a => {
       return {
-        filters: mergeSimilar(a.flatMap(b => b.filters)),
+        filters: system.QueryOptimizer.compress(a.flatMap(b => b.filters)),
         relay: a[0].relay,
         strategy: a[0].strategy,
       } as BuiltRawReqFilter;
