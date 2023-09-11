@@ -19,7 +19,7 @@ where
 fn merge_once<'a, T, Z>(all: Vec<&'a T>) -> Vec<Z>
 where
     T: CanMerge,
-    for<'b> Z: CanMerge + From<Vec<&'a T>> + From<Vec<&'b Z>>,
+    Z: From<Vec<&'a T>>,
 {
     let mut ret: Vec<Z> = vec![];
     if all.is_empty() {
