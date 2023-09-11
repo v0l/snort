@@ -4,6 +4,8 @@ import { HexKey, NostrEvent } from "./nostr";
 import { findTag } from "./utils";
 import { MetadataCache } from "./cache";
 
+const ParsedZapCache = new Map<string, ParsedZap>();
+
 function getInvoice(zap: NostrEvent): InvoiceDetails | undefined {
   const bolt11 = findTag(zap, "bolt11");
   if (!bolt11) {
@@ -13,6 +15,11 @@ function getInvoice(zap: NostrEvent): InvoiceDetails | undefined {
 }
 
 export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCache>, refNote?: NostrEvent): ParsedZap {
+  const existing = ParsedZapCache.get(zapReceipt.id);
+  if(existing) {
+    return existing;
+  }
+
   let innerZapJson = findTag(zapReceipt, "description");
   if (innerZapJson) {
     try {
@@ -67,7 +74,7 @@ export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCa
       // ignored: console.debug("Invalid zap", zapReceipt, e);
     }
   }
-  return {
+  const ret = {
     id: zapReceipt.id,
     zapService: zapReceipt.pubkey,
     amount: 0,
@@ -75,6 +82,8 @@ export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCa
     anonZap: false,
     errors: ["invalid zap, parsing failed"],
   };
+  ParsedZapCache.set(ret.id, ret);
+  return ret;
 }
 
 export interface ParsedZap {
