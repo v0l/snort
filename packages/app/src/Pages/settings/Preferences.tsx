@@ -30,6 +30,8 @@ export const AllLanguageCodes = [
   "th",
   "pt-BR",
   "sw",
+  "nl",
+  "fi",
 ];
 
 const PreferencesPage = () => {
