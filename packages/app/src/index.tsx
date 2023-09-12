@@ -2,11 +2,23 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "./fonts/inter.css";
 
+import { compress, expand_filter, flat_merge, get_diff, default as wasmInit } from "@snort/system-query";
+import WasmPath from "@snort/system-query/pkg/system_query_bg.wasm";
+
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { EventPublisher, NostrSystem, ProfileLoaderService, Nip7Signer, PowWorker } from "@snort/system";
+import {
+  EventPublisher,
+  NostrSystem,
+  ProfileLoaderService,
+  Nip7Signer,
+  PowWorker,
+  QueryOptimizer,
+  FlatReqFilter,
+  ReqFilter,
+} from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
@@ -36,6 +48,21 @@ import { db } from "Db";
 import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
 
+const WasmQueryOptimizer = {
+  expandFilter: (f: ReqFilter) => {
+    return expand_filter(f) as Array<FlatReqFilter>;
+  },
+  getDiff: (prev: Array<ReqFilter>, next: Array<ReqFilter>) => {
+    return get_diff(prev, next) as Array<FlatReqFilter>;
+  },
+  flatMerge: (all: Array<FlatReqFilter>) => {
+    return flat_merge(all) as Array<ReqFilter>;
+  },
+  compress: (all: Array<ReqFilter>) => {
+    return compress(all) as Array<ReqFilter>;
+  },
+} as QueryOptimizer;
+
 /**
  * Singleton nostr system
  */
@@ -43,6 +70,7 @@ export const System = new NostrSystem({
   relayCache: UserRelays,
   profileCache: UserCache,
   relayMetrics: RelayMetrics,
+  queryOptimizer: WasmQueryOptimizer,
   authHandler: async (c, r) => {
     const { publicKey, privateKey } = LoginStore.snapshot();
     if (privateKey) {
@@ -69,6 +97,7 @@ export const DefaultPowWorker = new PowWorker("/pow.js");
 serviceWorkerRegistration.register();
 
 async function initSite() {
+  await wasmInit(WasmPath);
   const login = LoginStore.takeSnapshot();
   db.ready = await db.isAvailable();
   if (db.ready) {
@@ -173,5 +202,5 @@ root.render(
         </SnortContext.Provider>
       </IntlProvider>
     </Provider>
-  </StrictMode>
+  </StrictMode>,
 );

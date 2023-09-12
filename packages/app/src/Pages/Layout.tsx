@@ -89,7 +89,7 @@ export default function Layout() {
   useEffect(() => {
     const osTheme = window.matchMedia("(prefers-color-scheme: light)");
     setTheme(
-      preferences.theme === "system" && osTheme.matches ? "light" : preferences.theme === "light" ? "light" : "dark"
+      preferences.theme === "system" && osTheme.matches ? "light" : preferences.theme === "light" ? "light" : "dark",
     );
 
     osTheme.onchange = e => {
@@ -174,7 +174,7 @@ const AccountHeader = () => {
 
   const hasNotifications = useMemo(
     () => latestNotification > readNotifications,
-    [latestNotification, readNotifications]
+    [latestNotification, readNotifications],
   );
   const unreadDms = useMemo(() => (publicKey ? 0 : 0), [publicKey]);
 

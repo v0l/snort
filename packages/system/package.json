@@ -34,6 +34,7 @@
     "@noble/hashes": "^1.3.2",
     "@scure/base": "^1.1.2",
     "@snort/shared": "^1.0.5",
+    "@snort/system-query": "workspace:*",
     "@stablelib/xchacha20": "^1.0.1",
     "debug": "^4.3.4",
     "dexie": "^3.2.4",

@@ -2711,6 +2711,7 @@ __metadata:
     "@scure/bip39": ^1.1.1
     "@snort/shared": "workspace:*"
     "@snort/system": "workspace:*"
+    "@snort/system-query": "workspace:*"
     "@snort/system-react": "workspace:*"
     "@szhsin/react-menu": ^3.3.1
     "@types/debug": ^4.1.8
@@ -2756,6 +2757,7 @@ __metadata:
     react-twitter-embed: ^4.0.4
     source-map-loader: ^4.0.1
     terser-webpack-plugin: ^5.3.9
+    tinybench: ^2.5.0
     ts-jest: ^29.1.0
     ts-loader: ^9.4.4
     typescript: ^5.2.2
@@ -2822,6 +2824,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@snort/system-query@workspace:*, @snort/system-query@workspace:packages/system-query":
+  version: 0.0.0-use.local
+  resolution: "@snort/system-query@workspace:packages/system-query"
+  languageName: unknown
+  linkType: soft
+
 "@snort/system-react@workspace:*, @snort/system-react@workspace:packages/system-react":
   version: 0.0.0-use.local
   resolution: "@snort/system-react@workspace:packages/system-react"
@@ -2844,6 +2852,7 @@ __metadata:
     "@peculiar/webcrypto": ^1.4.3
     "@scure/base": ^1.1.2
     "@snort/shared": ^1.0.5
+    "@snort/system-query": "workspace:*"
     "@stablelib/xchacha20": ^1.0.1
     "@types/debug": ^4.1.8
     "@types/jest": ^29.5.1
@@ -13150,6 +13159,13 @@ __metadata:
   version: 1.1.0
   resolution: "thunky@npm:1.1.0"
   checksum: 993096c472b6b8f30e29dc777a8d17720e4cab448375041f20c0cb802a09a7fb2217f2a3e8cdc11851faa71c957e2db309357367fc9d7af3cb7a4d00f4b66034
+  languageName: node
+  linkType: hard
+
+"tinybench@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "tinybench@npm:2.5.0"
+  checksum: 284bb9428f197ec8b869c543181315e65e41ccfdad3c4b6c916bb1fdae1b5c6785661b0d90cf135b48d833b03cb84dc5357b2d33ec65a1f5971fae0ab2023821
   languageName: node
   linkType: hard
 

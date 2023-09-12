@@ -1,6 +1,6 @@
 import { distance } from "@snort/shared";
-import { ReqFilter } from ".";
-import { FlatReqFilter } from "./request-expander";
+import { ReqFilter } from "..";
+import { FlatReqFilter } from ".";
 
 /**
  * Keys which can change the entire meaning of the filter outside the array types
@@ -105,7 +105,7 @@ export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
   function mergeFiltersInSet(filters: Array<FlatReqFilter>) {
     return filters.reduce((acc, a) => {
       Object.entries(a).forEach(([k, v]) => {
-        if (k === "keys") return;
+        if (k === "keys" || v === undefined) return;
         if (DiscriminatorKeys.includes(k)) {
           acc[k] = v;
         } else {

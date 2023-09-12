@@ -21,7 +21,7 @@ export default function useImgProxy() {
     const result = hmacSha256(
       utils.hexToBytes(unwrap(settings).key),
       utils.hexToBytes(unwrap(settings).salt),
-      te.encode(u)
+      te.encode(u),
     );
     return urlSafe(base64.encode(result));
   }

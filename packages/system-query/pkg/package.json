@@ -1,0 +1,14 @@
+{
+  "name": "@snort/system-query",
+  "version": "0.1.0",
+  "files": [
+    "system_query_bg.wasm",
+    "system_query.js",
+    "system_query.d.ts"
+  ],
+  "module": "system_query.js",
+  "types": "system_query.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

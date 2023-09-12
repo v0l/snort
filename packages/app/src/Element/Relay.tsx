@@ -22,7 +22,7 @@ export default function Relay(props: RelayProps) {
   const navigate = useNavigate();
   const login = useLogin();
   const relaySettings = unwrap(
-    login.relays.item[props.addr] ?? System.Sockets.find(a => a.address === props.addr)?.settings ?? {}
+    login.relays.item[props.addr] ?? System.Sockets.find(a => a.address === props.addr)?.settings ?? {},
   );
   const state = useRelayState(props.addr);
   const name = useMemo(() => getRelayName(props.addr), [props.addr]);
@@ -34,7 +34,7 @@ export default function Relay(props: RelayProps) {
         ...login.relays.item,
         [props.addr]: o,
       },
-      unixNowMs()
+      unixNowMs(),
     );
   }
 

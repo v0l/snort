@@ -71,7 +71,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     },
     {
       captureEvent: true,
-    }
+    },
   );
 
   function hasReacted(emoji: string) {

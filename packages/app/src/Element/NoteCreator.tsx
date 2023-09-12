@@ -76,8 +76,8 @@ export function NoteCreator() {
             setError(
               formatMessage({
                 defaultMessage: "Invalid LNURL",
-              })
-            )
+              }),
+            ),
           );
           return;
         }
@@ -256,9 +256,9 @@ export function NoteCreator() {
                           ? false
                           : // otherwise return selectedCustomRelays with target relay added / removed
                             a.filter(el =>
-                              el === r ? e.target.checked : !selectedCustomRelays || selectedCustomRelays.includes(el)
-                            )
-                      )
+                              el === r ? e.target.checked : !selectedCustomRelays || selectedCustomRelays.includes(el),
+                            ),
+                      ),
                     )
                   }
                 />

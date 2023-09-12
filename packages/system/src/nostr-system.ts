@@ -4,7 +4,7 @@ import { unwrap, sanitizeRelayUrl, ExternalStore, FeedCache } from "@snort/share
 import { NostrEvent, TaggedNostrEvent } from "./nostr";
 import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot } from "./connection";
 import { Query } from "./query";
-import { NoteCollection, NoteStore, NoteStoreHook, NoteStoreSnapshotData } from "./note-collection";
+import { NoteCollection, NoteStore, NoteStoreSnapshotData } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
@@ -20,6 +20,8 @@ import {
   UsersRelays,
 } from ".";
 import { EventsCache } from "./cache/events";
+import { RelayCache } from "./gossip-model";
+import { QueryOptimizer, DefaultQueryOptimizer } from "./query-optimizer";
 
 /**
  * Manages nostr content retrieval system
@@ -72,12 +74,18 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
    */
   #eventsCache: FeedCache<NostrEvent>;
 
+  /**
+   * Query optimizer instance
+   */
+  #queryOptimizer: QueryOptimizer;
+
   constructor(props: {
     authHandler?: AuthHandler;
     relayCache?: FeedCache<UsersRelays>;
     profileCache?: FeedCache<MetadataCache>;
     relayMetrics?: FeedCache<RelayMetrics>;
     eventsCache?: FeedCache<NostrEvent>;
+    queryOptimizer?: QueryOptimizer;
   }) {
     super();
     this.#handleAuth = props.authHandler;
@@ -85,6 +93,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     this.#profileCache = props.profileCache ?? new UserProfileCache();
     this.#relayMetricsCache = props.relayMetrics ?? new RelayMetricCache();
     this.#eventsCache = props.eventsCache ?? new EventsCache();
+    this.#queryOptimizer = props.queryOptimizer ?? DefaultQueryOptimizer;
 
     this.#profileLoader = new ProfileLoaderService(this, this.#profileCache);
     this.#relayMetrics = new RelayMetricHandler(this.#relayMetricsCache);
@@ -92,15 +101,20 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   }
   HandleAuth?: AuthHandler | undefined;
 
-  /**
-   * Profile loader service allows you to request profiles
-   */
   get ProfileLoader() {
     return this.#profileLoader;
   }
 
   get Sockets(): ConnectionStateSnapshot[] {
     return [...this.#sockets.values()].map(a => a.snapshot());
+  }
+
+  get RelayCache(): RelayCache {
+    return this.#relayCache;
+  }
+
+  get QueryOptimizer(): QueryOptimizer {
+    return this.#queryOptimizer;
   }
 
   /**
@@ -240,9 +254,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       if (existing.fromInstance === req.instance) {
         return existing;
       }
-      const filters = !req.options?.skipDiff
-        ? req.buildDiff(this.#relayCache, existing.flatFilters)
-        : req.build(this.#relayCache);
+      const filters = !req.options?.skipDiff ? req.buildDiff(this, existing.filters) : req.build(this);
       if (filters.length === 0 && !!req.options?.skipDiff) {
         return existing;
       } else {
@@ -255,11 +267,15 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     } else {
       const store = new type();
 
-      const filters = req.build(this.#relayCache);
+      const filters = req.build(this);
       const q = new Query(req.id, req.instance, store, req.options?.leaveOpen);
       if (filters.some(a => a.filters.some(b => b.ids))) {
+        const expectIds = new Set(filters.flatMap(a => a.filters).flatMap(a => a.ids ?? []));
         q.feed.onEvent(async evs => {
-          await this.#eventsCache.bulkSet(evs);
+          const toSet = evs.filter(a => expectIds.has(a.id) && this.#eventsCache.getFromCache(a.id) === undefined);
+          if (toSet.length > 0) {
+            await this.#eventsCache.bulkSet(toSet);
+          }
         });
       }
       this.Queries.set(req.id, q);

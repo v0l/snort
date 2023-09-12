@@ -1,20 +1,5 @@
-import { ReqFilter } from "./nostr";
-
-export interface FlatReqFilter {
-  keys: number;
-  ids?: string;
-  authors?: string;
-  kinds?: number;
-  "#e"?: string;
-  "#p"?: string;
-  "#t"?: string;
-  "#d"?: string;
-  "#r"?: string;
-  search?: string;
-  since?: number;
-  until?: number;
-  limit?: number;
-}
+import { FlatReqFilter } from ".";
+import { ReqFilter } from "../nostr";
 
 /**
  * Expand a filter into its most fine grained form

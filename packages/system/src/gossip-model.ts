@@ -1,7 +1,7 @@
 import { ReqFilter, UsersRelays } from ".";
 import { dedupe, unwrap } from "@snort/shared";
 import debug from "debug";
-import { FlatReqFilter } from "request-expander";
+import { FlatReqFilter } from "./query-optimizer";
 
 const PickNRelays = 2;
 
