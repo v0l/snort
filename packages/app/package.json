@@ -44,7 +44,6 @@
     "test": "jest --runInBand",
     "intl-extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file src/lang.json --flatten true",
     "intl-compile": "formatjs compile src/lang.json --out-file src/translations/en.json",
-    "format": "prettier --write .",
     "eslint": "eslint ."
   },
   "eslintConfig": {
