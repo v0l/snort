@@ -212,5 +212,5 @@ root.render(
         </SnortContext.Provider>
       </IntlProvider>
     </Provider>
-  </StrictMode>
+  </StrictMode>,
 );

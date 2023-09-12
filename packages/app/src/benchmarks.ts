@@ -51,7 +51,7 @@ const testGetDiff = (q: QueryOptimizer) => {
         kinds: [1, 2, 3, 4, 5],
         authors: randomPubkeys,
       },
-    ]
+    ],
   );
 };
 const testFlatMerge = (q: QueryOptimizer) => {
@@ -59,7 +59,7 @@ const testFlatMerge = (q: QueryOptimizer) => {
     q.expandFilter({
       kinds: [1, 6, 7, 6969],
       authors: randomPubkeys,
-    })
+    }),
   );
 };
 const testCompress = (q: QueryOptimizer) => {

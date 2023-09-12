@@ -84,7 +84,7 @@ export class WebLNWallet implements LNWallet {
           await window.webln?.makeInvoice({
             amount: req.amount,
             defaultMemo: req.memo,
-          })
+          }),
       );
       if (rsp) {
         const invoice = prToWalletInvoice(rsp.paymentRequest);

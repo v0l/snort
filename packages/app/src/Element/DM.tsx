@@ -58,7 +58,11 @@ export default function DM(props: DMProps) {
     <div className={isMe ? "dm me" : "dm other"} ref={ref}>
       <div>
         {sender()}
-        {content ? <Text id={msg.id} content={content} tags={[]} creator={otherPubkey} /> : <FormattedMessage defaultMessage="Loading..." />}
+        {content ? (
+          <Text id={msg.id} content={content} tags={[]} creator={otherPubkey} />
+        ) : (
+          <FormattedMessage defaultMessage="Loading..." />
+        )}
       </div>
       <div>
         <NoteTime from={msg.created_at * 1000} fallback={formatMessage(messages.JustNow)} />

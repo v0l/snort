@@ -51,15 +51,15 @@ export default function Poll(props: PollProps) {
             },
             {
               amount,
-            }
-          )
+            },
+          ),
         );
       }
 
       setVoting(opt);
       const r = Object.keys(relays.item);
       const zap = await publisher.zap(amount * 1000, props.ev.pubkey, r, props.ev.id, undefined, eb =>
-        eb.tag(["poll_option", opt.toString()])
+        eb.tag(["poll_option", opt.toString()]),
       );
 
       const lnurl = props.ev.tags.find(a => a[0] === "zap")?.[1] || pollerProfile?.lud16 || pollerProfile?.lud06;
@@ -72,7 +72,7 @@ export default function Poll(props: PollProps) {
         throw new Error(
           formatMessage({
             defaultMessage: "Can't vote because LNURL service does not support zaps",
-          })
+          }),
         );
       }
 
@@ -89,7 +89,7 @@ export default function Poll(props: PollProps) {
         setError(
           formatMessage({
             defaultMessage: "Failed to send vote",
-          })
+          }),
         );
       }
     } finally {
@@ -117,10 +117,18 @@ export default function Poll(props: PollProps) {
             }}
           />
         </small>
-        <button type="button" onClick={() => setTallyBy(s => s !== "zaps" ? "zaps" : "pubkeys")}>
-          <FormattedMessage defaultMessage="Votes by {type}" values={{
-            type: tallyBy === "zaps" ? <FormattedMessage defaultMessage="zap" /> : <FormattedMessage defaultMessage="user" />
-          }} />
+        <button type="button" onClick={() => setTallyBy(s => (s !== "zaps" ? "zaps" : "pubkeys"))}>
+          <FormattedMessage
+            defaultMessage="Votes by {type}"
+            values={{
+              type:
+                tallyBy === "zaps" ? (
+                  <FormattedMessage defaultMessage="zap" />
+                ) : (
+                  <FormattedMessage defaultMessage="user" />
+                ),
+            }}
+          />
         </button>
       </div>
       <div className="poll-body">
@@ -130,8 +138,10 @@ export default function Poll(props: PollProps) {
           const zapsOnOption = props.zaps.filter(b => b.pollOption === opt);
           const total = (() => {
             switch (tallyBy) {
-              case "zaps": return zapsOnOption.reduce((acc, v) => (acc += v.amount), 0);
-              case "pubkeys": return new Set(zapsOnOption.map(a => unwrap(a.sender))).size;
+              case "zaps":
+                return zapsOnOption.reduce((acc, v) => (acc += v.amount), 0);
+              case "pubkeys":
+                return new Set(zapsOnOption.map(a => unwrap(a.sender))).size;
             }
           })();
           const weight = totalVotes === 0 ? 0 : total / totalVotes;

@@ -29,7 +29,7 @@ export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
       setError(
         formatMessage({
           defaultMessage: "Invalid LNURL",
-        })
+        }),
       );
       return;
     }

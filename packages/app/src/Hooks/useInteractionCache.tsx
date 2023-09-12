@@ -15,7 +15,7 @@ export function useInteractionCache(pubkey?: HexKey, event?: u256) {
   const data =
     useSyncExternalStore(
       c => InteractionCache.hook(c, id),
-      () => InteractionCache.snapshot().find(a => a.id === id)
+      () => InteractionCache.snapshot().find(a => a.id === id),
     ) || EmptyInteraction;
   return {
     data: data,

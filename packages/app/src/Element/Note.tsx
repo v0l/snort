@@ -135,7 +135,7 @@ export function NoteInner(props: NoteProps) {
       {
         [Reaction.Positive]: [] as TaggedNostrEvent[],
         [Reaction.Negative]: [] as TaggedNostrEvent[],
-      }
+      },
     );
     return {
       [Reaction.Positive]: dedupeByPubkey(result[Reaction.Positive]),
@@ -150,7 +150,7 @@ export function NoteInner(props: NoteProps) {
         ...getReactions(related, ev.id, EventKind.TextNote).filter(e => e.tags.some(tagFilterOfTextRepost(e, ev.id))),
         ...getReactions(related, ev.id, EventKind.Repost),
       ]),
-    [related, ev]
+    [related, ev],
   );
   const zaps = useMemo(() => {
     const sortedZaps = getReactions(related, ev.id, EventKind.ZapReceipt)
@@ -241,7 +241,7 @@ export function NoteInner(props: NoteProps) {
   function goToEvent(
     e: React.MouseEvent,
     eTarget: TaggedNostrEvent,
-    isTargetAllowed: boolean = e.target === e.currentTarget
+    isTargetAllowed: boolean = e.target === e.currentTarget,
   ) {
     if (!isTargetAllowed || opt?.canClick === false) {
       return;

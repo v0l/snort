@@ -22,7 +22,7 @@ import { delay } from "SnortUtils";
 
 declare global {
   interface Window {
-    plausible?: (tag: string) => void
+    plausible?: (tag: string) => void;
   }
 }
 
@@ -61,7 +61,7 @@ const Artwork: Array<ArtworkEntry> = [
 export async function getNip05PubKey(addr: string): Promise<string> {
   const [username, domain] = addr.split("@");
   const rsp = await fetch(
-    `https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username.toLocaleLowerCase())}`
+    `https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username.toLocaleLowerCase())}`,
   );
   if (rsp.ok) {
     const data = await rsp.json();
@@ -109,7 +109,7 @@ export default function LoginPage() {
         setError(
           formatMessage({
             defaultMessage: "Unknown login error",
-          })
+          }),
         );
       }
       console.error(e);
@@ -118,7 +118,7 @@ export default function LoginPage() {
 
   async function makeRandomKey() {
     await generateNewLogin();
-    window.plausible?.("Generate Account")
+    window.plausible?.("Generate Account");
     navigate("/new");
   }
 
