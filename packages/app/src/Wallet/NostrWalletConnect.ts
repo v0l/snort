@@ -182,7 +182,7 @@ export class NostrConnectWallet implements LNWallet {
       ],
       () => {
         // ignored
-      },
+      }
     );
     await this.#conn.SendAsync(evCommand);
     return await new Promise<T>((resolve, reject) => {

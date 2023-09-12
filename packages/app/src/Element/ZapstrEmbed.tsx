@@ -17,7 +17,7 @@ export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
     ev.tags.find(a => a[0] === "d")?.[1] ?? "",
     undefined,
     ev.kind,
-    ev.pubkey,
+    ev.pubkey
   );
   return (
     <>

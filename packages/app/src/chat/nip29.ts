@@ -46,12 +46,12 @@ export class Nip29ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
         .map(a => a.tags.find(b => b[0] === "g"))
         .filter(a => a !== undefined)
         .map(a => unwrap(a))
-        .map(a => `${a[2]}${a[1]}`),
+        .map(a => `${a[2]}${a[1]}`)
     );
     return groups.map(g => {
       const [relay, channel] = g.split("/", 2);
       const messages = allMessages.filter(
-        a => `${a.tags.find(b => b[0] === "g")?.[2]}${a.tags.find(b => b[0] === "g")?.[1]}` === g,
+        a => `${a.tags.find(b => b[0] === "g")?.[2]}${a.tags.find(b => b[0] === "g")?.[1]}` === g
       );
       const lastRead = lastReadInChat(g);
       return {

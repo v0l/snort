@@ -34,7 +34,7 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
             pk,
             Object.keys(login.relays.item),
             undefined,
-            `Zap from ${hexToBech32("note", ev.id)}`,
+            `Zap from ${hexToBech32("note", ev.id)}`
           );
           const invoice = await svc.getInvoice(amtSend, undefined, zap);
           if (invoice.pr) {

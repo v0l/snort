@@ -96,7 +96,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     type: LoginSessionType,
     relays?: Record<string, RelaySettings>,
     remoteSignerRelays?: Array<string>,
-    privateKey?: string,
+    privateKey?: string
   ) {
     if (this.#accounts.has(key)) {
       throw new Error("Already logged in with this pubkey");

@@ -34,7 +34,7 @@ export default function FollowButton(props: FollowButtonProps) {
     if (publisher) {
       const ev = await publisher.contactList(
         follows.item.filter(a => a !== pubkey),
-        relays.item,
+        relays.item
       );
       System.BroadcastEvent(ev);
     }

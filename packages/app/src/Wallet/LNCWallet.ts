@@ -126,7 +126,7 @@ export class LNCWallet implements LNWallet {
         err => {
           this.#log(err);
           reject(err);
-        },
+        }
       );
     });
   }

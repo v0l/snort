@@ -39,7 +39,7 @@ export const Toastore = new ToasterSlots();
 export default function Toaster() {
   const toast = useSyncExternalStore(
     c => Toastore.hook(c),
-    () => Toastore.snapshot(),
+    () => Toastore.snapshot()
   );
 
   return (

@@ -261,7 +261,9 @@ export default function Nip5Service(props: Nip05ServiceProps) {
           />
           &nbsp;@&nbsp;
           <select value={domain} onChange={onDomainChange}>
-            {serviceConfig?.domains.map(a => <option key={a.name}>{a.name}</option>)}
+            {serviceConfig?.domains.map(a => (
+              <option key={a.name}>{a.name}</option>
+            ))}
           </select>
         </div>
       )}

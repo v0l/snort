@@ -116,7 +116,7 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
           type: TLVEntryType.Author,
           length: params[0].length,
           value: params[0],
-        } as TLVEntry,
+        } as TLVEntry
       )}`;
     }
     case ChatType.PrivateDirectMessage: {
@@ -127,7 +127,7 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
           type: TLVEntryType.Author,
           length: params[0].length,
           value: params[0],
-        } as TLVEntry,
+        } as TLVEntry
       )}`;
     }
     case ChatType.PrivateGroupChat: {
@@ -139,8 +139,8 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
               type: TLVEntryType.Author,
               length: a.length,
               value: a,
-            }) as TLVEntry,
-        ),
+            } as TLVEntry)
+        )
       )}`;
     }
   }
@@ -161,14 +161,14 @@ export function useNip4Chat() {
   const { publicKey } = useLogin();
   return useSyncExternalStore(
     c => Nip4Chats.hook(c),
-    () => Nip4Chats.snapshot(publicKey),
+    () => Nip4Chats.snapshot(publicKey)
   );
 }
 
 export function useNip29Chat() {
   return useSyncExternalStore(
     c => Nip29Chats.hook(c),
-    () => Nip29Chats.snapshot(),
+    () => Nip29Chats.snapshot()
   );
 }
 
@@ -176,7 +176,7 @@ export function useNip24Chat() {
   const { publicKey } = useLogin();
   return useSyncExternalStore(
     c => Nip24Chats.hook(c),
-    () => Nip24Chats.snapshot(publicKey),
+    () => Nip24Chats.snapshot(publicKey)
   );
 }
 
