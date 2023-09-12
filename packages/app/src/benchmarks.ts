@@ -34,7 +34,7 @@ const WasmQueryOptimizer = {
 
   const testExpand = (q: QueryOptimizer) => {
         q.expandFilter({
-            kinds: [1, 6, 7, 6969],
+            kinds: [1,2,3],
             authors: randomPubkeys
         });
   }

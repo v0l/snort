@@ -1,10 +1,9 @@
 use crate::filter::{FlatReqFilter, ReqFilter};
 use wasm_bindgen::prelude::*;
 
-mod diff;
-mod expand;
-mod filter;
-mod merge;
+pub mod diff;
+pub mod filter;
+pub mod merge;
 
 #[wasm_bindgen]
 pub fn diff_filters(prev: JsValue, next: JsValue) -> Result<JsValue, JsValue> {
@@ -17,7 +16,7 @@ pub fn diff_filters(prev: JsValue, next: JsValue) -> Result<JsValue, JsValue> {
 #[wasm_bindgen]
 pub fn expand_filter(val: JsValue) -> Result<JsValue, JsValue> {
     let parsed: ReqFilter = serde_wasm_bindgen::from_value(val)?;
-    let result = expand::expand_filter(&parsed);
+    let result: Vec<FlatReqFilter> = (&parsed).into();
     Ok(serde_wasm_bindgen::to_value(&result)?)
 }
 
@@ -27,11 +26,17 @@ pub fn get_diff(prev: JsValue, next: JsValue) -> Result<JsValue, JsValue> {
     let next_parsed: Vec<ReqFilter> = serde_wasm_bindgen::from_value(next)?;
     let expanded_prev: Vec<FlatReqFilter> = prev_parsed
         .iter()
-        .flat_map(|v| expand::expand_filter(v))
+        .flat_map(|v| {
+            let vec: Vec<FlatReqFilter> = v.into();
+            vec
+        })
         .collect();
     let expanded_next: Vec<FlatReqFilter> = next_parsed
         .iter()
-        .flat_map(|v| expand::expand_filter(v))
+        .flat_map(|v| {
+            let vec: Vec<FlatReqFilter> = v.into();
+            vec
+        })
         .collect();
     let result = diff::diff_filter(&expanded_prev, &expanded_next);
     Ok(serde_wasm_bindgen::to_value(&result)?)
@@ -125,9 +130,12 @@ mod tests {
             },
         ];
 
-        let expanded = input
+        let expanded: Vec<FlatReqFilter> = input
             .iter()
-            .flat_map(|v| expand::expand_filter(v))
+            .flat_map(|v| {
+                let r: Vec<FlatReqFilter> = v.into();
+                r
+            })
             .sorted_by(|_, _| {
                 if rand::random() {
                     Ordering::Less
@@ -135,7 +143,7 @@ mod tests {
                     Ordering::Greater
                 }
             })
-            .collect_vec();
+            .collect();
         let merged_expanded: Vec<ReqFilter> = merge::merge(expanded.iter().collect());
         assert_eq!(merged_expanded.len(), input.len());
         assert!(merged_expanded.iter().all(|v| input.contains(v)));

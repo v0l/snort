@@ -3,6 +3,13 @@ use std::collections::HashSet;
 #[cfg(test)]
 use std::fmt::Debug;
 use std::hash::Hash;
+use itertools::Itertools;
+
+#[derive(Clone)]
+enum StringOrNumberEntry<'a> {
+    String((&'static str, &'a String)),
+    Number((&'static str, &'a i32)),
+}
 
 #[derive(PartialEq, Clone, Serialize, Deserialize)]
 pub struct ReqFilter {
@@ -197,6 +204,157 @@ impl From<Vec<&ReqFilter>> for ReqFilter {
     }
 }
 
+impl Into<Vec<FlatReqFilter>> for &ReqFilter {
+    fn into(self) -> Vec<FlatReqFilter> {
+        let mut ret: Vec<FlatReqFilter> = Vec::new();
+
+        let mut inputs: Vec<Vec<StringOrNumberEntry>> = vec![];
+        if let Some(ids) = &self.ids {
+            let t_ids = ids
+                .iter()
+                .map(|z| StringOrNumberEntry::String(("id", z)))
+                .collect();
+            inputs.push(t_ids);
+        }
+        if let Some(authors) = &self.authors {
+            let t_ids = authors
+                .iter()
+                .map(|z| StringOrNumberEntry::String(("author", z)))
+                .collect();
+            inputs.push(t_ids);
+        }
+        if let Some(kinds) = &self.kinds {
+            let t_ids = kinds
+                .iter()
+                .map(|z| StringOrNumberEntry::Number(("kind", z)))
+                .collect();
+            inputs.push(t_ids);
+        }
+        if let Some(e_tags) = &self.e_tag {
+            let t_ids = e_tags
+                .iter()
+                .map(|z| StringOrNumberEntry::String(("e_tag", z)))
+                .collect();
+            inputs.push(t_ids);
+        }
+        if let Some(p_tags) = &self.p_tag {
+            let t_ids = p_tags
+                .iter()
+                .map(|z| StringOrNumberEntry::String(("p_tag", z)))
+                .collect();
+            inputs.push(t_ids);
+        }
+        if let Some(d_tags) = &self.d_tag {
+            let t_ids = d_tags
+                .iter()
+                .map(|z| StringOrNumberEntry::String(("d_tag", z)))
+                .collect();
+            inputs.push(t_ids);
+        }
+        if let Some(t_tags) = &self.t_tag {
+            let t_ids = t_tags
+                .iter()
+                .map(|z| StringOrNumberEntry::String(("t_tag", z)))
+                .collect();
+            inputs.push(t_ids);
+        }
+        if let Some(r_tags) = &self.r_tag {
+            let t_ids = r_tags
+                .iter()
+                .map(|z| StringOrNumberEntry::String(("r_tag", z)))
+                .collect();
+            inputs.push(t_ids);
+        }
+        if let Some(search) = &self.search {
+            let t_ids = search
+                .iter()
+                .map(|z| StringOrNumberEntry::String(("search", z)))
+                .collect();
+            inputs.push(t_ids);
+        }
+
+        for p in inputs.iter().multi_cartesian_product() {
+            ret.push(FlatReqFilter {
+                id: p.iter().find_map(|q| {
+                    if let StringOrNumberEntry::String((k, v)) = q {
+                        if (*k).eq("id") {
+                            return Some((*v).to_string());
+                        }
+                    }
+                    None
+                }),
+                author: p.iter().find_map(|q| {
+                    if let StringOrNumberEntry::String((k, v)) = q {
+                        if (*k).eq("author") {
+                            return Some((*v).to_string());
+                        }
+                    }
+                    None
+                }),
+                kind: p.iter().find_map(|q| {
+                    if let StringOrNumberEntry::Number((k, v)) = q {
+                        if (*k).eq("kind") {
+                            return Some((*v).clone());
+                        }
+                    }
+                    None
+                }),
+                e_tag: p.iter().find_map(|q| {
+                    if let StringOrNumberEntry::String((k, v)) = q {
+                        if (*k).eq("e_tag") {
+                            return Some((*v).to_string());
+                        }
+                    }
+                    None
+                }),
+                p_tag: p.iter().find_map(|q| {
+                    if let StringOrNumberEntry::String((k, v)) = q {
+                        if (*k).eq("p_tag") {
+                            return Some((*v).to_string());
+                        }
+                    }
+                    None
+                }),
+                t_tag: p.iter().find_map(|q| {
+                    if let StringOrNumberEntry::String((k, v)) = q {
+                        if (*k).eq("t_tag") {
+                            return Some((*v).to_string());
+                        }
+                    }
+                    None
+                }),
+                d_tag: p.iter().find_map(|q| {
+                    if let StringOrNumberEntry::String((k, v)) = q {
+                        if (*k).eq("d_tag") {
+                            return Some((*v).to_string());
+                        }
+                    }
+                    None
+                }),
+                r_tag: p.iter().find_map(|q| {
+                    if let StringOrNumberEntry::String((k, v)) = q {
+                        if (*k).eq("r_tag") {
+                            return Some((*v).to_string());
+                        }
+                    }
+                    None
+                }),
+                search: p.iter().find_map(|q| {
+                    if let StringOrNumberEntry::String((k, v)) = q {
+                        if (*k).eq("search") {
+                            return Some((*v).to_string());
+                        }
+                    }
+                    None
+                }),
+                since: self.since,
+                until: self.until,
+                limit: self.limit,
+            })
+        }
+        ret
+    }
+}
 impl Distance for ReqFilter {
     fn distance(&self, b: &Self) -> u32 {
         let mut ret = 0u32;
@@ -283,5 +441,292 @@ fn array_prop_append_vec<T: Clone + Eq + Hash>(
                 arr.as_mut().unwrap().insert((*v).clone());
             });
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::ReqFilter;
+    use std::collections::HashSet;
+    use crate::filter::FlatReqFilter;
+
+    #[test]
+    fn test_expand_filter() {
+        let input = ReqFilter {
+            authors: Some(HashSet::from([
+                "a".to_owned(),
+                "b".to_owned(),
+                "c".to_owned(),
+            ])),
+            kinds: Some(HashSet::from([1, 2, 3])),
+            ids: Some(HashSet::from(["x".to_owned(), "y".to_owned()])),
+            p_tag: Some(HashSet::from(["a".to_owned()])),
+            t_tag: None,
+            d_tag: None,
+            r_tag: None,
+            search: None,
+            since: Some(99),
+            until: None,
+            limit: Some(10),
+            e_tag: None,
+        };
+
+        let output : Vec<FlatReqFilter> = (&input).into();
+        let expected = vec![
+            FlatReqFilter {
+                author: Some("a".to_owned()),
+                kind: Some(1),
+                id: Some("x".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("a".to_owned()),
+                kind: Some(1),
+                id: Some("y".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("a".to_owned()),
+                kind: Some(2),
+                id: Some("x".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("a".to_owned()),
+                kind: Some(2),
+                id: Some("y".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("a".to_owned()),
+                kind: Some(3),
+                id: Some("x".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("a".to_owned()),
+                kind: Some(3),
+                id: Some("y".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("b".to_owned()),
+                kind: Some(1),
+                id: Some("x".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("b".to_owned()),
+                kind: Some(1),
+                id: Some("y".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("b".to_owned()),
+                kind: Some(2),
+                id: Some("x".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("b".to_owned()),
+                kind: Some(2),
+                id: Some("y".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("b".to_owned()),
+                kind: Some(3),
+                id: Some("x".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("b".to_owned()),
+                kind: Some(3),
+                id: Some("y".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("c".to_owned()),
+                kind: Some(1),
+                id: Some("x".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("c".to_owned()),
+                kind: Some(1),
+                id: Some("y".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("c".to_owned()),
+                kind: Some(2),
+                id: Some("x".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("c".to_owned()),
+                kind: Some(2),
+                id: Some("y".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("c".to_owned()),
+                kind: Some(3),
+                id: Some("x".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+            FlatReqFilter {
+                author: Some("c".to_owned()),
+                kind: Some(3),
+                id: Some("y".to_owned()),
+                p_tag: Some("a".to_owned()),
+                t_tag: None,
+                d_tag: None,
+                r_tag: None,
+                search: None,
+                since: Some(99),
+                until: None,
+                limit: Some(10),
+                e_tag: None,
+            },
+        ];
+        assert_eq!(output.len(), expected.len());
+        output.iter().for_each(|a| assert!(expected.contains(a)));
     }
 }
