@@ -17,12 +17,15 @@ interface PollProps {
   zaps: Array<ParsedZap>;
 }
 
+type PollTally = "zaps" | "pubkeys";
+
 export default function Poll(props: PollProps) {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const { wallet } = useWallet();
   const { preferences: prefs, publicKey: myPubKey, relays } = useLogin();
   const pollerProfile = useUserProfile(props.ev.pubkey);
+  const [tallyBy, setTallyBy] = useState<PollTally>("pubkeys");
   const [error, setError] = useState("");
   const [invoice, setInvoice] = useState("");
   const [voting, setVoting] = useState<number>();
@@ -33,6 +36,7 @@ export default function Poll(props: PollProps) {
   const options = props.ev.tags
     .filter(a => a[0] === "poll_option")
     .sort((a, b) => (Number(a[1]) > Number(b[1]) ? 1 : -1));
+
   async function zapVote(ev: React.MouseEvent, opt: number) {
     ev.stopPropagation();
     if (voting || !publisher) return;
@@ -93,24 +97,44 @@ export default function Poll(props: PollProps) {
     }
   }
 
-  const allTotal = props.zaps.filter(a => a.pollOption !== undefined).reduce((acc, v) => (acc += v.amount), 0);
+  const totalVotes = (() => {
+    switch (tallyBy) {
+      case "zaps":
+        return props.zaps.filter(a => a.pollOption !== undefined).reduce((acc, v) => (acc += v.amount), 0);
+      case "pubkeys":
+        return new Set(props.zaps.filter(a => a.pollOption !== undefined).map(a => unwrap(a.sender))).size;
+    }
+  })();
+
   return (
     <>
-      <small>
-        <FormattedMessage
-          defaultMessage="You are voting with {amount} sats"
-          values={{
-            amount: formatShort(prefs.defaultZapAmount),
-          }}
-        />
-      </small>
+      <div className="flex f-space p">
+        <small>
+          <FormattedMessage
+            defaultMessage="You are voting with {amount} sats"
+            values={{
+              amount: formatShort(prefs.defaultZapAmount),
+            }}
+          />
+        </small>
+        <button type="button" onClick={() => setTallyBy(s => s !== "zaps" ? "zaps" : "pubkeys")}>
+          <FormattedMessage defaultMessage="Votes by {type}" values={{
+            type: tallyBy === "zaps" ? <FormattedMessage defaultMessage="zap" /> : <FormattedMessage defaultMessage="user" />
+          }} />
+        </button>
+      </div>
       <div className="poll-body">
         {options.map(a => {
           const opt = Number(a[1]);
           const desc = a[2];
           const zapsOnOption = props.zaps.filter(b => b.pollOption === opt);
-          const total = zapsOnOption.reduce((acc, v) => (acc += v.amount), 0);
-          const weight = allTotal === 0 ? 0 : total / allTotal;
+          const total = (() => {
+            switch (tallyBy) {
+              case "zaps": return zapsOnOption.reduce((acc, v) => (acc += v.amount), 0);
+              case "pubkeys": return new Set(zapsOnOption.map(a => unwrap(a.sender))).size;
+            }
+          })();
+          const weight = totalVotes === 0 ? 0 : total / totalVotes;
           return (
             <div key={a[1]} className="flex" onClick={e => zapVote(e, opt)}>
               <div className="f-grow">{opt === voting ? <Spinner /> : <>{desc}</>}</div>

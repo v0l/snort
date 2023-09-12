@@ -154,6 +154,9 @@
   "4rYCjn": {
     "defaultMessage": "Note to Self"
   },
+  "5BVs2e": {
+    "defaultMessage": "zap"
+  },
   "5JcXdV": {
     "defaultMessage": "Create Account"
   },
@@ -1200,6 +1203,9 @@
   "rudscU": {
     "defaultMessage": "Failed to load follows, please try again later"
   },
+  "sUNhQE": {
+    "defaultMessage": "user"
+  },
   "sWnYKw": {
     "defaultMessage": "Snort is designed to have a similar experience to Twitter."
   },
@@ -1291,6 +1297,9 @@
   },
   "x82IOl": {
     "defaultMessage": "Mute"
+  },
+  "xIcAOU": {
+    "defaultMessage": "Votes by {type}"
   },
   "xIoGG9": {
     "defaultMessage": "Go to"
