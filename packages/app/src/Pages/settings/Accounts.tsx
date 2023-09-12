@@ -27,7 +27,7 @@ export default function AccountsPage() {
         setError(
           formatMessage({
             defaultMessage: "Unknown login error",
-          })
+          }),
         );
       }
       console.error(e);

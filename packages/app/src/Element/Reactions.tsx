@@ -60,7 +60,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
             value: 3,
           },
         ]
-      : []
+      : [],
   );
 
   const [tab, setTab] = useState(tabs[0]);

@@ -75,7 +75,7 @@ export default function NotificationsPage() {
 
   const notifications = useSyncExternalStore(
     c => Notifications.hook(c, "*"),
-    () => Notifications.snapshot()
+    () => Notifications.snapshot(),
   );
 
   const timeKey = (ev: NostrEvent) => {
@@ -119,7 +119,7 @@ function NotificationGroup({ evs }: { evs: Array<TaggedNostrEvent> }) {
         return zap.anonZap ? "anon" : zap.sender ?? a.pubkey;
       }
       return a.pubkey;
-    })
+    }),
   );
   const firstPubkey = pubkeys[0];
   const firstPubkeyProfile = useUserProfile(inView ? (firstPubkey === "anon" ? "" : firstPubkey) : "");
@@ -213,7 +213,7 @@ function NotificationGroup({ evs }: { evs: Array<TaggedNostrEvent> }) {
                   pubkeys.length - 1,
                   firstPubkey === "anon"
                     ? formatMessage({ defaultMessage: "Anon" })
-                    : getDisplayName(firstPubkeyProfile, firstPubkey)
+                    : getDisplayName(firstPubkeyProfile, firstPubkey),
                 )}
               </div>
             )}

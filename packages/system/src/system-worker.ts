@@ -34,7 +34,7 @@ export class SystemWorker extends ExternalStore<SystemSnapshot> implements Syste
   get RelayCache(): RelayCache {
     throw new Error("Method not implemented.");
   }
-  
+
   get QueryOptimizer(): QueryOptimizer {
     throw new Error("Method not implemented.");
   }

@@ -19,7 +19,7 @@ const config = {
       import: require.resolve("@snort/system/dist/pow-worker.js"),
       filename: "pow.js",
     },
-    bench: "./src/benchmarks.ts"
+    bench: "./src/benchmarks.ts",
   },
   target: "browserslist",
   mode: isProduction ? "production" : "development",
@@ -156,7 +156,7 @@ const config = {
     extensions: ["...", ".tsx", ".ts", ".jsx", ".js"],
     modules: ["...", __dirname, path.resolve(__dirname, "src")],
     fallback: { crypto: false },
-  }
+  },
 };
 
 module.exports = () => config;

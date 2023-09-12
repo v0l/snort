@@ -12,7 +12,7 @@ import { magnetURIDecode } from "SnortUtils";
 export default async function VoidCatUpload(
   file: File | Blob,
   filename: string,
-  publisher?: EventPublisher
+  publisher?: EventPublisher,
 ): Promise<UploadResult> {
   const api = new VoidApi(VoidCatHost);
   const uploader = api.getUploader(file);

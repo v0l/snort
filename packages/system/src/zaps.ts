@@ -16,7 +16,7 @@ function getInvoice(zap: NostrEvent): InvoiceDetails | undefined {
 
 export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCache>, refNote?: NostrEvent): ParsedZap {
   const existing = ParsedZapCache.get(zapReceipt.id);
-  if(existing) {
+  if (existing) {
     return existing;
   }
 

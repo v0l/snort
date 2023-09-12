@@ -39,8 +39,8 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
               value: v,
               type: TLVEntryType.Author,
               length: v.length,
-            } as TLVEntry)
-        )
+            }) as TLVEntry,
+        ),
       );
     };
     return dedupe(messages.map(a => chatId(a))).map(a => {
@@ -72,7 +72,7 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
       } as {
         t: number;
         title: string | undefined;
-      }
+      },
     );
     return {
       type: ChatType.PrivateDirectMessage,

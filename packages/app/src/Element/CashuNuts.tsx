@@ -26,7 +26,7 @@ export default function CashuNuts({ token }: { token: string }) {
     e.stopPropagation();
     const lnurl = profile?.lud16 ?? "";
     const url = `https://redeem.cashu.me?token=${encodeURIComponent(token)}&lightning=${encodeURIComponent(
-      lnurl
+      lnurl,
     )}&autopay=yes`;
     window.open(url, "_blank");
   }

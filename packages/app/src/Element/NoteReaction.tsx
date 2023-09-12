@@ -46,7 +46,7 @@ export default function NoteReaction(props: NoteReactionProps) {
    * Some clients embed the reposted note in the content
    */
   function extractRoot() {
-    if(!inView) return null;
+    if (!inView) return null;
     if (ev?.kind === EventKind.Repost && ev.content.length > 0 && ev.content !== "#[0]") {
       try {
         const r: NostrEvent = JSON.parse(ev.content);
@@ -66,7 +66,7 @@ export default function NoteReaction(props: NoteReactionProps) {
   const root = useMemo(() => extractRoot(), [ev, props.root, inView]);
 
   if (!inView) {
-    return (<div className="card reaction" ref={ref}></div>)
+    return <div className="card reaction" ref={ref}></div>;
   }
   const isOpMuted = root && isMuted(root.pubkey);
   const shouldNotBeRendered = isOpMuted || root?.kind !== EventKind.TextNote;

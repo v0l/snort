@@ -38,7 +38,7 @@ export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
           } catch (e) {
             console.debug(e, v);
           }
-        })
+        }),
       )
     )
       .filter(a => a !== undefined)

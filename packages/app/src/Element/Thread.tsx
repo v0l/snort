@@ -243,7 +243,7 @@ export default function Thread() {
           if (t?.root?.key === "a" && t?.root?.value) {
             const parsed = t.root.value.split(":");
             replyTo = thread.data?.find(
-              a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2]
+              a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2],
             )?.id;
           }
           if (replyTo) {
@@ -264,7 +264,7 @@ export default function Thread() {
       thread.data?.find(
         ne =>
           ne.id === currentId ||
-          (link.type === NostrPrefix.Address && findTag(ne, "d") === currentId && ne.pubkey === link.author)
+          (link.type === NostrPrefix.Address && findTag(ne, "d") === currentId && ne.pubkey === link.author),
       ) ?? (location.state && "sig" in location.state ? (location.state as TaggedNostrEvent) : undefined);
     if (currentNote) {
       const currentThread = EventExt.extractThread(currentNote);
@@ -280,7 +280,7 @@ export default function Thread() {
         if (replyTo.key === "a" && replyTo.value) {
           const parsed = replyTo.value.split(":");
           return thread.data?.find(
-            a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2]
+            a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2],
           );
         }
         if (replyTo.value) {
@@ -348,7 +348,7 @@ export default function Thread() {
           notes={replies}
           related={getAllReactions(
             thread.data,
-            replies.map(a => a.id)
+            replies.map(a => a.id),
           )}
           chains={chains}
           onNavigate={navigateThread}

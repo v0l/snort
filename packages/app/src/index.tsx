@@ -9,7 +9,16 @@ import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { EventPublisher, NostrSystem, ProfileLoaderService, Nip7Signer, PowWorker, QueryOptimizer, FlatReqFilter, ReqFilter } from "@snort/system";
+import {
+  EventPublisher,
+  NostrSystem,
+  ProfileLoaderService,
+  Nip7Signer,
+  PowWorker,
+  QueryOptimizer,
+  FlatReqFilter,
+  ReqFilter,
+} from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
@@ -51,7 +60,7 @@ const WasmQueryOptimizer = {
   },
   compress: (all: Array<ReqFilter>) => {
     return compress(all) as Array<ReqFilter>;
-  }
+  },
 } as QueryOptimizer;
 
 /**
@@ -193,5 +202,5 @@ root.render(
         </SnortContext.Provider>
       </IntlProvider>
     </Provider>
-  </StrictMode>
+  </StrictMode>,
 );

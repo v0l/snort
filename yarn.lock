@@ -2852,6 +2852,7 @@ __metadata:
     "@peculiar/webcrypto": ^1.4.3
     "@scure/base": ^1.1.2
     "@snort/shared": ^1.0.5
+    "@snort/system-query": "workspace:*"
     "@stablelib/xchacha20": ^1.0.1
     "@types/debug": ^4.1.8
     "@types/jest": ^29.5.1

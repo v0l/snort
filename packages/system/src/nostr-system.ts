@@ -93,7 +93,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     this.#profileCache = props.profileCache ?? new UserProfileCache();
     this.#relayMetricsCache = props.relayMetrics ?? new RelayMetricCache();
     this.#eventsCache = props.eventsCache ?? new EventsCache();
-    this.#queryOptimizer = props.queryOptimizer ?? DefaultQueryOptimizer; 
+    this.#queryOptimizer = props.queryOptimizer ?? DefaultQueryOptimizer;
 
     this.#profileLoader = new ProfileLoaderService(this, this.#profileCache);
     this.#relayMetrics = new RelayMetricHandler(this.#relayMetricsCache);
@@ -254,9 +254,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       if (existing.fromInstance === req.instance) {
         return existing;
       }
-      const filters = !req.options?.skipDiff
-        ? req.buildDiff(this, existing.filters)
-        : req.build(this);
+      const filters = !req.options?.skipDiff ? req.buildDiff(this, existing.filters) : req.build(this);
       if (filters.length === 0 && !!req.options?.skipDiff) {
         return existing;
       } else {
@@ -275,7 +273,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         const expectIds = new Set(filters.flatMap(a => a.filters).flatMap(a => a.ids ?? []));
         q.feed.onEvent(async evs => {
           const toSet = evs.filter(a => expectIds.has(a.id) && this.#eventsCache.getFromCache(a.id) === undefined);
-          if(toSet.length > 0) {
+          if (toSet.length > 0) {
             await this.#eventsCache.bulkSet(toSet);
           }
         });
