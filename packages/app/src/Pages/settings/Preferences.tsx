@@ -128,6 +128,23 @@ const PreferencesPage = () => {
           </select>
         </div>
       </div>
+      <div className="flex f-space w-max">
+        <div className="flex-column g8">
+          <h4>
+            <FormattedMessage defaultMessage="Send usage metrics" />
+          </h4>
+          <small>
+            <FormattedMessage defaultMessage="Send anonymous usage metrics" />
+          </small>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={perf.telemetry ?? true}
+            onChange={e => updatePreferences(login, { ...perf, telemetry: e.target.checked })}
+          />
+        </div>
+      </div>
       <div className="flex w-max">
         <div className="flex-column g8">
           <h4>

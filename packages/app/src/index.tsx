@@ -115,6 +115,16 @@ async function initSite() {
   } catch (e) {
     console.error("Failed to register protocol handler", e);
   }
+
+  // inject analytics script
+  // <script defer data-domain="snort.social" src="http://analytics.v0l.io/js/script.js"></script>
+  if (login.preferences.telemetry ?? true) {
+    const sc = document.createElement("script");
+    sc.src = "http://analytics.v0l.io/js/script.js";
+    sc.defer = true;
+    sc.setAttribute("data-domain", "snort.social");
+    document.head.appendChild(sc);
+  }
   return null;
 }
 

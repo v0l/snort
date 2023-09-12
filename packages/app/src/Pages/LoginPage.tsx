@@ -20,6 +20,12 @@ import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import { delay } from "SnortUtils";
 
+declare global {
+  interface Window {
+    plausible?: (tag: string) => void
+  }
+}
+
 interface ArtworkEntry {
   name: string;
   pubkey: HexKey;
@@ -112,6 +118,7 @@ export default function LoginPage() {
 
   async function makeRandomKey() {
     await generateNewLogin();
+    window.plausible?.("Generate Account")
     navigate("/new");
   }
 

@@ -71,6 +71,11 @@ export interface UserPreferences {
    * Proof-of-Work to apply to all events
    */
   pow?: number;
+
+  /**
+   * Collect usage metrics
+   */
+  telemetry?: boolean;
 }
 
 export const DefaultPreferences = {
@@ -87,4 +92,5 @@ export const DefaultPreferences = {
   defaultRootTab: "notes",
   defaultZapAmount: 50,
   autoZap: false,
+  telemetry: true,
 } as UserPreferences;
