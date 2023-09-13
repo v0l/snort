@@ -110,7 +110,11 @@ export default function NoteFooter(props: NoteFooterProps) {
   function getTargetName() {
     const zapTarget = ev.tags.find(a => a[0] === "zap")?.[1];
     if (zapTarget) {
-      return new LNURL(zapTarget).name;
+      try {
+        return new LNURL(zapTarget).name;
+      } catch {
+        // ignore
+      }
     } else {
       return author?.display_name || author?.name;
     }
