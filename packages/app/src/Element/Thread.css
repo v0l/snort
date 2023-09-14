@@ -55,52 +55,44 @@
   position: absolute;
   left: calc(48px / 2 + 16px);
   top: 48px;
-  border-left: 1px solid var(--gray-superdark);
+  border-left: 1px solid var(--border-color);
   height: 100%;
-  z-index: -1;
+  z-index: 1;
 }
 
 .subthread-container.subthread-mid:not(.subthread-last) .line-container:before {
   content: "";
   position: absolute;
-  border-left: 1px solid var(--gray-superdark);
+  border-left: 1px solid var(--border-color);
   left: calc(48px / 2 + 16px);
   top: 0;
   height: 48px;
-  z-index: -1;
+  z-index: 1;
 }
 
 .subthread-container.subthread-last .line-container:before {
   content: "";
   position: absolute;
-  border-left: 1px solid var(--gray-superdark);
+  border-left: 1px solid var(--border-color);
   left: calc(48px / 2 + 16px);
   top: 0;
   height: 48px;
-  z-index: -1;
-}
-
-.divider-container {
-  margin-right: 16px;
+  z-index: 1;
 }
 
 .divider {
   height: 1px;
-  background: var(--gray-superdark);
+  background: var(--border-color);
 }
 
 .divider.divider-small {
   margin-left: calc(16px + 61px);
+  margin-right: 16px;
 }
 
 .thread-container .collapsed,
 .thread-container .show-more-container {
-  background: var(--gray-superdark);
   min-height: 48px;
-}
-
-.thread-container .collapsed {
-  background-color: var(--gray-superdark);
 }
 
 .thread-container .hidden-note {

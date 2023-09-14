@@ -24,6 +24,7 @@ enum EventKind {
   TagLists = 30002, // NIP-51c
   Badge = 30009, // NIP-58
   ProfileBadges = 30008, // NIP-58
+  LongFormTextNote = 30023, // NIP-23
   LiveEvent = 30311, // NIP-102
   ZapstrTrack = 31337,
   SimpleChatMetadata = 39_000, // NIP-29

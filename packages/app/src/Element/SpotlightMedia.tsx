@@ -37,7 +37,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
     });
   }
   return (
-    <Modal onClose={props.onClose} className="spotlight">
+    <div className="spotlight">
       <ProxyImg src={image} />
       <div className="details">
         {idx + 1}/{props.images.length}
@@ -49,6 +49,15 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
           <Icon className="right" name="arrowFront" size={24} onClick={() => inc()} />
         </>
       )}
+    </div>
+  );
+}
+
+
+export function SpotlightMediaModal(props: SpotlightMediaProps) {
+  return (
+    <Modal onClose={props.onClose} className="spotlight">
+      <SpotlightMedia {...props} />
     </Modal>
   );
 }

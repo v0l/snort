@@ -49,5 +49,6 @@
 
 .notification-group .content img {
   width: unset;
+  max-width: 100%;
   max-height: 300px; /* Cap images in notifications to 300px height */
 }

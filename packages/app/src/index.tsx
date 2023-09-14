@@ -28,7 +28,7 @@ import Store from "State/Store";
 import Layout from "Pages/Layout";
 import LoginPage from "Pages/LoginPage";
 import ProfilePage from "Pages/ProfilePage";
-import { RootRoutes } from "Pages/Root";
+import { RootRoutes, RootTabRoutes } from "Pages/Root";
 import NotificationsPage from "Pages/Notifications";
 import SettingsPage, { SettingsRoutes } from "Pages/SettingsPage";
 import ErrorPage from "Pages/ErrorPage";
@@ -40,13 +40,14 @@ import HelpPage from "Pages/HelpPage";
 import { NewUserRoutes } from "Pages/new";
 import { WalletRoutes } from "Pages/WalletPage";
 import NostrLinkHandler from "Pages/NostrLinkHandler";
-import Thread from "Element/Thread";
+import { ThreadRoute } from "Element/Thread";
 import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
 import DebugPage from "Pages/Debug";
 import { db } from "Db";
 import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
+import { SnortDeckLayout } from "Pages/DeckLayout";
 
 const WasmQueryOptimizer = {
   expandFilter: (f: ReqFilter) => {
@@ -152,7 +153,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/e/:id",
-        element: <Thread />,
+        element: <ThreadRoute />,
       },
       {
         path: "/p/:id",
@@ -200,6 +201,18 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/deck",
+    element: <SnortDeckLayout />,
+    loader: async () => {
+      if (!didInit) {
+        didInit = true;
+        return await initSite();
+      }
+      return null;
+    },
+    children: RootTabRoutes
+  }
 ]);
 
 const root = ReactDOM.createRoot(unwrap(document.getElementById("root")));

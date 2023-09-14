@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
+import { NostrPrefix, createNostrLink, tryParseNostrLink } from "@snort/system";
 
 import messages from "./messages";
 
 import Icon from "Icons/Icon";
 import { RootState } from "State/Store";
 import { setShow, reset } from "State/NoteCreator";
-import { System } from "index";
 import useLoginFeed from "Feed/LoginFeed";
 import { NoteCreator } from "Element/NoteCreator";
 import { mapPlanName } from "./subscribe";
@@ -20,8 +20,9 @@ import { profileLink } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 import Toaster from "Toaster";
 import Spinner from "Icons/Spinner";
-import { NostrPrefix, createNostrLink, tryParseNostrLink } from "@snort/system";
 import { fetchNip05Pubkey } from "Nip05/Verifier";
+import { useTheme } from "Hooks/useTheme";
+import { useLoginRelays } from "Hooks/useLoginRelays";
 
 export default function Layout() {
   const location = useLocation();
@@ -30,10 +31,13 @@ export default function Layout() {
   const isReplyNoteCreatorShowing = replyTo && isNoteCreatorShowing;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { publicKey, relays, preferences, subscriptions } = useLogin();
+  const { publicKey, subscriptions } = useLogin();
   const currentSubscription = getCurrentSubscription(subscriptions);
   const [pageClass, setPageClass] = useState("page");
+
   useLoginFeed();
+  useTheme();
+  useLoginRelays();
 
   const handleNoteCreatorButtonClick = () => {
     if (replyTo) {
@@ -61,46 +65,6 @@ export default function Layout() {
       setPageClass("page");
     }
   }, [location]);
-
-  useEffect(() => {
-    if (relays) {
-      (async () => {
-        for (const [k, v] of Object.entries(relays.item)) {
-          await System.ConnectToRelay(k, v);
-        }
-        for (const v of System.Sockets) {
-          if (!relays.item[v.address] && !v.ephemeral) {
-            System.DisconnectRelay(v.address);
-          }
-        }
-      })();
-    }
-  }, [relays]);
-
-  function setTheme(theme: "light" | "dark") {
-    const elm = document.documentElement;
-    if (theme === "light" && !elm.classList.contains("light")) {
-      elm.classList.add("light");
-    } else if (theme === "dark" && elm.classList.contains("light")) {
-      elm.classList.remove("light");
-    }
-  }
-
-  useEffect(() => {
-    const osTheme = window.matchMedia("(prefers-color-scheme: light)");
-    setTheme(
-      preferences.theme === "system" && osTheme.matches ? "light" : preferences.theme === "light" ? "light" : "dark",
-    );
-
-    osTheme.onchange = e => {
-      if (preferences.theme === "system") {
-        setTheme(e.matches ? "light" : "dark");
-      }
-    };
-    return () => {
-      osTheme.onchange = null;
-    };
-  }, [preferences.theme]);
 
   return (
     <div className={pageClass}>
@@ -220,7 +184,7 @@ const AccountHeader = () => {
         {unreadDms > 0 && <span className="has-unread"></span>}
       </Link>
       <Link className="btn" to="/notifications" onClick={goToNotifications}>
-        <Icon name="bell-v2" size={24} />
+        <Icon name="bell-02" size={24} />
         {hasNotifications && <span className="has-unread"></span>}
       </Link>
       <Avatar
