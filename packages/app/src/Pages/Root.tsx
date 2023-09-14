@@ -28,7 +28,7 @@ export default function RootPage() {
   return (
     <>
       <div className="main-content p">
-        <RootTabs base=""/>
+        <RootTabs base="" />
       </div>
       <div className="main-content">
         <Outlet />
