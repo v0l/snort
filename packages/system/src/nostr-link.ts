@@ -23,7 +23,7 @@ export function linkToEventTag(link: NostrLink) {
 }
 
 export function tagToNostrLink(tag: Array<string>) {
-  switch(tag[0]) {
+  switch (tag[0]) {
     case "e": {
       return createNostrLink(NostrPrefix.Event, tag[1], tag.slice(2));
     }

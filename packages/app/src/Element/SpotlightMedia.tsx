@@ -53,7 +53,6 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
   );
 }
 
-
 export function SpotlightMediaModal(props: SpotlightMediaProps) {
   return (
     <Modal onClose={props.onClose} className="spotlight">

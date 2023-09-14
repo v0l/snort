@@ -2,13 +2,7 @@ import "./Thread.css";
 import { useMemo, useState, ReactNode, useContext } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, Link, useParams } from "react-router-dom";
-import {
-  TaggedNostrEvent,
-  u256,
-  NostrPrefix,
-  EventExt,
-  parseNostrLink,
-} from "@snort/system";
+import { TaggedNostrEvent, u256, NostrPrefix, EventExt, parseNostrLink } from "@snort/system";
 
 import { eventLink, getReactions, getAllReactions } from "SnortUtils";
 import BackButton from "Element/BackButton";
@@ -160,8 +154,9 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
   return (
     <>
       <div
-        className={`subthread-container ${hasMultipleNotes ? "subthread-multi" : ""} ${isLast ? "subthread-last" : "subthread-mid"
-          }`}>
+        className={`subthread-container ${hasMultipleNotes ? "subthread-multi" : ""} ${
+          isLast ? "subthread-last" : "subthread-mid"
+        }`}>
         <Divider variant="small" />
         <Note
           highlight={active === first.id}
@@ -190,8 +185,9 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
         return (
           <div
             key={r.id}
-            className={`subthread-container ${lastReply ? "" : "subthread-multi"} ${lastReply ? "subthread-last" : "subthread-mid"
-              }`}>
+            className={`subthread-container ${lastReply ? "" : "subthread-multi"} ${
+              lastReply ? "subthread-last" : "subthread-mid"
+            }`}>
             <Divider variant="small" />
             <Note
               className={`thread-note ${lastNote ? "is-last-note" : ""}`}
@@ -213,9 +209,11 @@ export function ThreadRoute() {
   const params = useParams();
   const link = parseNostrLink(params.id ?? "", NostrPrefix.Note);
 
-  return <ThreadContextWrapper link={link}>
-    <Thread />
-  </ThreadContextWrapper>
+  return (
+    <ThreadContextWrapper link={link}>
+      <Thread />
+    </ThreadContextWrapper>
+  );
 }
 
 export function Thread() {

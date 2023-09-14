@@ -211,8 +211,8 @@ export const router = createBrowserRouter([
       }
       return null;
     },
-    children: RootTabRoutes
-  }
+    children: RootTabRoutes,
+  },
 ]);
 
 const root = ReactDOM.createRoot(unwrap(document.getElementById("root")));

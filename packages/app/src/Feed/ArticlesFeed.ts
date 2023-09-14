@@ -4,18 +4,15 @@ import useLogin from "Hooks/useLogin";
 import { useMemo } from "react";
 
 export function useArticles() {
-    const {publicKey, follows} = useLogin();
+  const { publicKey, follows } = useLogin();
 
-    const sub = useMemo(() => {
-        if(!publicKey) return null;
-        const rb = new RequestBuilder(`articles:${publicKey}`);
-        rb.withFilter()
-            .kinds([EventKind.LongFormTextNote])
-            .authors(follows.item)
-            .limit(20);
-        
-        return rb;
-    }, [follows.timestamp]);
+  const sub = useMemo(() => {
+    if (!publicKey) return null;
+    const rb = new RequestBuilder(`articles:${publicKey}`);
+    rb.withFilter().kinds([EventKind.LongFormTextNote]).authors(follows.item).limit(20);
 
-    return useRequestBuilder(NoteCollection, sub);
+    return rb;
+  }, [follows.timestamp]);
+
+  return useRequestBuilder(NoteCollection, sub);
 }

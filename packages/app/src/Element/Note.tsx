@@ -3,7 +3,17 @@ import React, { useMemo, useState, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
-import { TaggedNostrEvent, HexKey, EventKind, NostrPrefix, Lists, EventExt, parseZap, tagToNostrLink, createNostrLinkToEvent } from "@snort/system";
+import {
+  TaggedNostrEvent,
+  HexKey,
+  EventKind,
+  NostrPrefix,
+  Lists,
+  EventExt,
+  parseZap,
+  tagToNostrLink,
+  createNostrLinkToEvent,
+} from "@snort/system";
 
 import { System } from "index";
 import useEventPublisher from "Feed/EventPublisher";
@@ -200,19 +210,22 @@ export function NoteInner(props: NoteProps) {
       const image = findTag(ev, "image");
       return (
         <div className="long-form-note">
-          <h3>
-            {title}
-          </h3>
+          <h3>{title}</h3>
           <div className="text">
-            <p>
-              {summary}
-            </p>
-            <Text id={ev.id} content={ev.content} tags={ev.tags} creator={ev.pubkey} depth={props.depth} truncate={255} disableLinkPreview={true} />
+            <p>{summary}</p>
+            <Text
+              id={ev.id}
+              content={ev.content}
+              tags={ev.tags}
+              creator={ev.pubkey}
+              depth={props.depth}
+              truncate={255}
+              disableLinkPreview={true}
+            />
             {image && <ProxyImg src={image} />}
           </div>
-
         </div>
-      )
+      );
     } else {
       const body = ev?.content ?? "";
       return (
@@ -226,7 +239,7 @@ export function NoteInner(props: NoteProps) {
         />
       );
     }
-  }
+  };
 
   const transformBody = () => {
     if (deletions?.length > 0) {
@@ -297,7 +310,11 @@ export function NoteInner(props: NoteProps) {
 
     const maxMentions = 2;
     const replyTo = thread?.replyTo ?? thread?.root;
-    const replyLink = replyTo ? tagToNostrLink([replyTo.key, replyTo.value ?? "", replyTo.relay ?? "", replyTo.marker ?? ""].filter(a => a.length > 0)) : undefined;
+    const replyLink = replyTo
+      ? tagToNostrLink(
+          [replyTo.key, replyTo.value ?? "", replyTo.relay ?? "", replyTo.marker ?? ""].filter(a => a.length > 0),
+        )
+      : undefined;
     const mentions: { pk: string; name: string; link: ReactNode }[] = [];
     for (const pk of thread?.pubKeys ?? []) {
       const u = UserCache.getFromCache(pk);
@@ -330,11 +347,7 @@ export function NoteInner(props: NoteProps) {
             {pubMentions} {others}
           </>
         ) : (
-          replyLink && (
-            <Link to={`/e/${replyLink.encode()}`}>
-              {replyLink.encode().substring(0, 12)}
-            </Link>
-          )
+          replyLink && <Link to={`/e/${replyLink.encode()}`}>{replyLink.encode().substring(0, 12)}</Link>
         )}
       </div>
     );
@@ -418,7 +431,7 @@ export function NoteInner(props: NoteProps) {
               {options.showContextMenu && (
                 <NoteContextMenu
                   ev={ev}
-                  react={async () => { }}
+                  react={async () => {}}
                   onTranslated={t => setTranslated(t)}
                   setShowReactions={setShowReactions}
                 />

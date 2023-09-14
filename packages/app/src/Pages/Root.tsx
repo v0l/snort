@@ -164,12 +164,12 @@ const DefaultTab = () => {
   const tab = publicKey ? preferences.defaultRootTab ?? `notes` : `trending/notes`;
   const elm = RootTabRoutes.find(a => a.path === tab)?.element;
   return elm;
-}
+};
 
 export const RootTabRoutes = [
   {
     path: "",
-    element: <DefaultTab />
+    element: <DefaultTab />,
   },
   {
     path: "global",

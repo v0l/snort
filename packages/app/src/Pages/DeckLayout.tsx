@@ -25,127 +25,147 @@ import useLogin from "Hooks/useLogin";
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 
 export function SnortDeckLayout() {
-    const login = useLogin();
-    const navigate = useNavigate();
-    const [thread, setThread] = useState<string>();
+  const login = useLogin();
+  const navigate = useNavigate();
+  const [thread, setThread] = useState<string>();
 
-    useLoginFeed();
-    useTheme();
-    useLoginRelays();
+  useLoginFeed();
+  useTheme();
+  useLoginRelays();
 
-    useEffect(() => {
-        if (!login.publicKey) {
-            navigate("/");
-        }
-    }, [login]);
+  useEffect(() => {
+    if (!login.publicKey) {
+      navigate("/");
+    }
+  }, [login]);
 
-    if (!login.publicKey) return null;
-    const cols = ["notes", "media", "notifications", "articles"] as Array<Cols>;
-    return <div className="deck-layout">
-        <DeckNav />
-        <div className="deck-cols">
-            {cols.map(c => {
-                switch (c) {
-                    case "notes": return <NotesCol />
-                    case "media": return <MediaCol setThread={setThread} />
-                    case "articles": return <ArticlesCol />
-                    case "notifications": return <NotificationsCol />
-                }
-            })}
-        </div>
-        {thread && <>
-            <Modal onClose={() => setThread(undefined)} className="thread-overlay">
-                <ThreadContextWrapper link={createNostrLink(NostrPrefix.Note, thread)}>
-                    <SpotlightFromThread onClose={() => setThread(undefined)} />
-                    <div>
-                        <Thread />
-                    </div>
-                </ThreadContextWrapper>
-            </Modal>
-        </>}
-        <Toaster />
+  if (!login.publicKey) return null;
+  const cols = ["notes", "media", "notifications", "articles"] as Array<Cols>;
+  return (
+    <div className="deck-layout">
+      <DeckNav />
+      <div className="deck-cols">
+        {cols.map(c => {
+          switch (c) {
+            case "notes":
+              return <NotesCol />;
+            case "media":
+              return <MediaCol setThread={setThread} />;
+            case "articles":
+              return <ArticlesCol />;
+            case "notifications":
+              return <NotificationsCol />;
+          }
+        })}
+      </div>
+      {thread && (
+        <>
+          <Modal onClose={() => setThread(undefined)} className="thread-overlay">
+            <ThreadContextWrapper link={createNostrLink(NostrPrefix.Note, thread)}>
+              <SpotlightFromThread onClose={() => setThread(undefined)} />
+              <div>
+                <Thread />
+              </div>
+            </ThreadContextWrapper>
+          </Modal>
+        </>
+      )}
+      <Toaster />
     </div>
+  );
 }
 
 function SpotlightFromThread({ onClose }: { onClose: () => void }) {
-    const thread = useContext(ThreadContext);
+  const thread = useContext(ThreadContext);
 
-    const parsed = thread.root ? transformTextCached(thread.root.id, thread.root.content, thread.root.tags) : [];
-    const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
+  const parsed = thread.root ? transformTextCached(thread.root.id, thread.root.content, thread.root.tags) : [];
+  const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
 
-    return <SpotlightMedia images={images.map(a => a.content)} idx={0} onClose={onClose} />
+  return <SpotlightMedia images={images.map(a => a.content)} idx={0} onClose={onClose} />;
 }
 
 function NotesCol() {
-    return (
-        <div>
-            <div className="deck-col-header flex">
-                <div className="flex f-1 g8">
-                    <Icon name="rows-01" size={24} />
-                    <FormattedMessage defaultMessage="Notes" />
-                </div>
-                <div className="f-1">
-                    <RootTabs base="/deck" />
-                </div>
-            </div>
-            <div>
-                <Outlet />
-            </div>
+  return (
+    <div>
+      <div className="deck-col-header flex">
+        <div className="flex f-1 g8">
+          <Icon name="rows-01" size={24} />
+          <FormattedMessage defaultMessage="Notes" />
         </div>
-    );
+        <div className="f-1">
+          <RootTabs base="/deck" />
+        </div>
+      </div>
+      <div>
+        <Outlet />
+      </div>
+    </div>
+  );
 }
 
 function ArticlesCol() {
-    return (
-        <div>
-            <div className="deck-col-header flex g8">
-                <Icon name="file-06" size={24} />
-                <FormattedMessage defaultMessage="Articles" />
-            </div>
-            <div>
-                <Articles />
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <div className="deck-col-header flex g8">
+        <Icon name="file-06" size={24} />
+        <FormattedMessage defaultMessage="Articles" />
+      </div>
+      <div>
+        <Articles />
+      </div>
+    </div>
+  );
 }
 
 function MediaCol({ setThread }: { setThread: (e: string) => void }) {
-    const { proxy } = useImgProxy();
-    return (
-        <div>
-            <div className="deck-col-header flex g8">
-                <Icon name="camera-lens" size={24} />
-                <FormattedMessage defaultMessage="Media" />
-            </div>
-            <div className="image-grid p">
-                <TimelineFollows postsOnly={true} liveStreams={false} noteFilter={e => {
-                    const parsed = transformTextCached(e.id, e.content, e.tags);
-                    const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
-                    return images.length > 0;
-                }} noteRenderer={e => {
-                    const parsed = transformTextCached(e.id, e.content, e.tags);
-                    const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
+  const { proxy } = useImgProxy();
+  return (
+    <div>
+      <div className="deck-col-header flex g8">
+        <Icon name="camera-lens" size={24} />
+        <FormattedMessage defaultMessage="Media" />
+      </div>
+      <div className="image-grid p">
+        <TimelineFollows
+          postsOnly={true}
+          liveStreams={false}
+          noteFilter={e => {
+            const parsed = transformTextCached(e.id, e.content, e.tags);
+            const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
+            return images.length > 0;
+          }}
+          noteRenderer={e => {
+            const parsed = transformTextCached(e.id, e.content, e.tags);
+            const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
 
-                    return <div className="media-note" key={e.id} style={{
-                        "--img": `url(${proxy(images[0].content)})`
-                    } as CSSProperties} onClick={() => setThread(e.id)}></div>
-                }} />
-            </div>
-        </div>
-    );
+            return (
+              <div
+                className="media-note"
+                key={e.id}
+                style={
+                  {
+                    "--img": `url(${proxy(images[0].content)})`,
+                  } as CSSProperties
+                }
+                onClick={() => setThread(e.id)}></div>
+            );
+          }}
+        />
+      </div>
+    </div>
+  );
 }
 
 function NotificationsCol() {
-
-    return (
-        <div>
-            <div className="deck-col-header flex g8">
-                <Icon name="bell-02" size={24} />
-                <FormattedMessage defaultMessage="Notifications" />
-            </div>
-            <div>
-                <NotificationsPage />
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <div className="deck-col-header flex g8">
+        <Icon name="bell-02" size={24} />
+        <FormattedMessage defaultMessage="Notifications" />
+      </div>
+      <div>
+        <NotificationsPage />
+      </div>
+    </div>
+  );
 }

@@ -1,12 +1,12 @@
 nav.deck {
-    width: 48px;
-    height: calc(100vh - 20px);
-    padding: 10px 8px;
-    border-right: 1px solid var(--border-color);
-    text-align: center;
+  width: 48px;
+  height: calc(100vh - 20px);
+  padding: 10px 8px;
+  border-right: 1px solid var(--border-color);
+  text-align: center;
 }
 
 nav.deck .avatar {
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 }
