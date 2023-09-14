@@ -36,7 +36,6 @@ export interface SendSatsProps {
   title?: ReactNode;
   notice?: string;
   note?: HexKey;
-  author?: HexKey;
   allocatePool?: boolean;
 }
 

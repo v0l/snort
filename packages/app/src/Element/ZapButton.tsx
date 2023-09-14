@@ -5,6 +5,7 @@ import { useUserProfile } from "@snort/system-react";
 
 import SendSats from "Element/SendSats";
 import Icon from "Icons/Icon";
+import { ZapTarget } from "Zapper";
 
 const ZapButton = ({
   pubkey,
@@ -29,10 +30,9 @@ const ZapButton = ({
         {children}
       </div>
       <SendSats
-        targets={[{ type: "lnurl", value: service, weight: 1, name: profile?.display_name || profile?.name }]}
+        targets={[{ type: "lnurl", value: service, weight: 1, name: profile?.display_name || profile?.name, zap: { pubkey: pubkey } } as ZapTarget]}
         show={zap}
         onClose={() => setZap(false)}
-        author={pubkey}
         note={event}
       />
     </>

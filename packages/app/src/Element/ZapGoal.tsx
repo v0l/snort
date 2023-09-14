@@ -1,12 +1,15 @@
 import "./ZapGoal.css";
+import { CSSProperties, useState } from "react";
 import { NostrEvent, NostrPrefix, createNostrLink } from "@snort/system";
 import useZapsFeed from "Feed/ZapsFeed";
 import { formatShort } from "Number";
 import { findTag } from "SnortUtils";
-import { CSSProperties } from "react";
-import ZapButton from "./ZapButton";
+import Icon from "Icons/Icon";
+import SendSats from "./SendSats";
+import { Zapper } from "Zapper";
 
 export function ZapGoal({ ev }: { ev: NostrEvent }) {
+  const [zap, setZap] = useState(false);
   const zaps = useZapsFeed(createNostrLink(NostrPrefix.Note, ev.id));
   const target = Number(findTag(ev, "amount"));
   const amount = zaps.reduce((acc, v) => (acc += v.amount * 1000), 0);
@@ -16,7 +19,14 @@ export function ZapGoal({ ev }: { ev: NostrEvent }) {
     <div className="zap-goal card">
       <div className="flex f-space">
         <h2>{ev.content}</h2>
-        <ZapButton pubkey={ev.pubkey} event={ev.id} />
+        <div className="zap-button flex" onClick={() => setZap(true)}>
+          <Icon name="zap" size={15} />
+        </div>
+        <SendSats
+          targets={Zapper.fromEvent(ev)}
+          show={zap}
+          onClose={() => setZap(false)}
+        />
       </div>
 
       <div className="flex f-space">

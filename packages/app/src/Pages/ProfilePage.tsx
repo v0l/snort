@@ -54,6 +54,7 @@ import useHorizontalScroll from "Hooks/useHorizontalScroll";
 import { EmailRegex } from "Const";
 import { getNip05PubKey } from "Pages/LoginPage";
 import useLogin from "Hooks/useLogin";
+import { ZapTarget } from "Zapper";
 
 import messages from "./messages";
 
@@ -292,13 +293,12 @@ export default function ProfilePage() {
 
         <SendSats
           targets={
-            lnurl?.lnurl
-              ? [{ type: "lnurl", value: lnurl?.lnurl, weight: 1, name: user?.display_name || user?.name }]
+            lnurl?.lnurl && id
+              ? [{ type: "lnurl", value: lnurl?.lnurl, weight: 1, name: user?.display_name || user?.name, zap: { pubkey: id } } as ZapTarget]
               : undefined
           }
           show={showLnQr}
           onClose={() => setShowLnQr(false)}
-          author={id}
         />
       </>
     );

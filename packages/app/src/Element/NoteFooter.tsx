@@ -271,7 +271,6 @@ export default function NoteFooter(props: NoteFooterProps) {
           targets={getZapTarget()}
           onClose={() => setTip(false)}
           show={tip}
-          author={author?.pubkey}
           note={ev.id}
           allocatePool={true}
         />
