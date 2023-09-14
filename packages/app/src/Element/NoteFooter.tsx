@@ -267,13 +267,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           {powIcon()}
         </div>
         {willRenderNoteCreator && <NoteCreator />}
-        <SendSats
-          targets={getZapTarget()}
-          onClose={() => setTip(false)}
-          show={tip}
-          note={ev.id}
-          allocatePool={true}
-        />
+        <SendSats targets={getZapTarget()} onClose={() => setTip(false)} show={tip} note={ev.id} allocatePool={true} />
       </div>
       <ZapsSummary zaps={zaps} />
     </>

@@ -22,11 +22,7 @@ export function ZapGoal({ ev }: { ev: NostrEvent }) {
         <div className="zap-button flex" onClick={() => setZap(true)}>
           <Icon name="zap" size={15} />
         </div>
-        <SendSats
-          targets={Zapper.fromEvent(ev)}
-          show={zap}
-          onClose={() => setZap(false)}
-        />
+        <SendSats targets={Zapper.fromEvent(ev)} show={zap} onClose={() => setZap(false)} />
       </div>
 
       <div className="flex f-space">

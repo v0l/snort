@@ -30,7 +30,15 @@ const ZapButton = ({
         {children}
       </div>
       <SendSats
-        targets={[{ type: "lnurl", value: service, weight: 1, name: profile?.display_name || profile?.name, zap: { pubkey: pubkey } } as ZapTarget]}
+        targets={[
+          {
+            type: "lnurl",
+            value: service,
+            weight: 1,
+            name: profile?.display_name || profile?.name,
+            zap: { pubkey: pubkey },
+          } as ZapTarget,
+        ]}
         show={zap}
         onClose={() => setZap(false)}
         note={event}
