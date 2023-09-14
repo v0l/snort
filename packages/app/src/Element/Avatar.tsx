@@ -1,6 +1,6 @@
 import "./Avatar.css";
 
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, ReactNode, useEffect, useState } from "react";
 import type { UserMetadata } from "@snort/system";
 
 import useImgProxy from "Hooks/useImgProxy";
@@ -13,8 +13,9 @@ interface AvatarProps {
   onClick?: () => void;
   size?: number;
   image?: string;
+  imageOverlay?: ReactNode;
 }
-const Avatar = ({ pubkey, user, size, onClick, image }: AvatarProps) => {
+const Avatar = ({ pubkey, user, size, onClick, image, imageOverlay }: AvatarProps) => {
   const [url, setUrl] = useState("");
   const { proxy } = useImgProxy();
 
@@ -35,9 +36,11 @@ const Avatar = ({ pubkey, user, size, onClick, image }: AvatarProps) => {
     <div
       onClick={onClick}
       style={style}
-      className="avatar"
+      className={`avatar${imageOverlay ? " with-overlay" : ""}`}
       data-domain={domain?.toLowerCase()}
-      title={getDisplayName(user, "")}></div>
+      title={getDisplayName(user, "")}>
+      {imageOverlay && <div className="overlay">{imageOverlay}</div>}
+    </div>
   );
 };
 

@@ -106,7 +106,7 @@ const SearchPage = () => {
           autoFocus={true}
         />
       </div>
-      <div className="tabs">{[SearchTab.Posts, SearchTab.Profiles].map(renderTab)}</div>
+      <div className="tabs p">{[SearchTab.Posts, SearchTab.Profiles].map(renderTab)}</div>
       {tabContent()}
     </div>
   );

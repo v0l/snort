@@ -64,6 +64,25 @@ export class ProfileLoaderService {
     }
   }
 
+  async fetchProfile(key: string) {
+    const existing = this.Cache.get(key);
+    if (existing) {
+      return existing;
+    } else {
+      return await new Promise<MetadataCache>((resolve, reject) => {
+        this.TrackMetadata(key);
+        const release = this.Cache.hook(() => {
+          const existing = this.Cache.getFromCache(key);
+          if (existing) {
+            resolve(existing);
+            release();
+            this.UntrackMetadata(key);
+          }
+        }, key);
+      });
+    }
+  }
+
   async #FetchMetadata() {
     const missingFromCache = await this.#cache.buffer([...this.#wantsMetadata]);
 

@@ -7,7 +7,6 @@
   scrollbar-width: none; /* Firefox */
   white-space: nowrap;
   gap: 8px;
-  padding: 16px 12px;
 }
 
 .tabs::-webkit-scrollbar {

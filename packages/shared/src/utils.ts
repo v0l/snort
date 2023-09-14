@@ -43,6 +43,10 @@ export function unixNowMs() {
   return new Date().getTime();
 }
 
+export function jitter(n: number) {
+  return n * 2 * Math.random() - n;
+}
+
 export function deepClone<T>(obj: T) {
   if ("structuredClone" in window) {
     return structuredClone(obj);

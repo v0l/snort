@@ -1,6 +1,6 @@
 import "./ProfileImage.css";
 
-import React, { useMemo } from "react";
+import React, { ReactNode, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { HexKey, NostrPrefix, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
@@ -21,6 +21,7 @@ export interface ProfileImageProps {
   profile?: UserMetadata;
   size?: number;
   onClick?: (e: React.MouseEvent) => void;
+  imageOverlay?: ReactNode;
 }
 
 export default function ProfileImage({
@@ -34,6 +35,7 @@ export default function ProfileImage({
   overrideUsername,
   profile,
   size,
+  imageOverlay,
   onClick,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
@@ -54,7 +56,7 @@ export default function ProfileImage({
     return (
       <>
         <div className="avatar-wrapper">
-          <Avatar pubkey={pubkey} user={user} size={size} />
+          <Avatar pubkey={pubkey} user={user} size={size} imageOverlay={imageOverlay} />
         </div>
         {showUsername && (
           <div className="f-ellipsis">

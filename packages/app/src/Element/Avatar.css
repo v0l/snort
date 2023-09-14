@@ -18,3 +18,13 @@
 .avatar[data-domain="strike.army"] {
   background-image: var(--img-url), var(--strike-army-gradient);
 }
+
+.avatar .overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.4);
+}

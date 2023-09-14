@@ -29,7 +29,7 @@ export default function Discover() {
 
   return (
     <>
-      <div className="tabs">
+      <div className="tabs p">
         {[Tabs.Follows, Tabs.Posts, Tabs.Profiles].map(a => (
           <TabElement key={a.value} tab={tab} setTab={setTab} t={a} />
         ))}

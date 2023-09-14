@@ -75,7 +75,7 @@ export default function Invoice(props: InvoiceProps) {
           {description && <p>{description}</p>}
           {isPaid ? (
             <div className="paid">
-              <FormattedMessage {...messages.Paid} />
+              <FormattedMessage defaultMessage="Paid" />
             </div>
           ) : (
             <button disabled={isExpired} type="button" onClick={payInvoice}>

@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { encodeTLV, EventKind, NostrPrefix, TaggedNostrEvent, EventBuilder } from "@snort/system";
-import { LNURL } from "@snort/shared";
+import { encodeTLV, EventKind, NostrPrefix, TaggedNostrEvent, EventBuilder, tryParseNostrLink } from "@snort/system";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
@@ -21,7 +19,7 @@ import {
   setPreview,
   setShowAdvanced,
   setSelectedCustomRelays,
-  setZapForward,
+  setZapSplits,
   setSensitive,
   reset,
   setPollOptions,
@@ -29,16 +27,13 @@ import {
 } from "State/NoteCreator";
 import type { RootState } from "State/Store";
 
-import messages from "./messages";
-import { ClipboardEventHandler, useState } from "react";
-import Spinner from "Icons/Spinner";
-import { Menu, MenuItem } from "@szhsin/react-menu";
-import { LoginStore } from "Login";
-import { getCurrentSubscription } from "Subscription";
+import { ClipboardEventHandler } from "react";
 import useLogin from "Hooks/useLogin";
 import { System } from "index";
 import AsyncButton from "Element/AsyncButton";
 import { AsyncIcon } from "Element/AsyncIcon";
+import { fetchNip05Pubkey } from "@snort/shared";
+import { ZapTarget } from "Zapper";
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();
@@ -46,7 +41,7 @@ export function NoteCreator() {
   const uploader = useFileUpload();
   const {
     note,
-    zapForward,
+    zapSplits,
     sensitive,
     pollOptions,
     replyTo,
@@ -59,45 +54,95 @@ export function NoteCreator() {
     error,
   } = useSelector((s: RootState) => s.noteCreator);
   const dispatch = useDispatch();
-  const sub = getCurrentSubscription(LoginStore.allSubscriptions());
   const login = useLogin();
   const relays = login.relays;
 
-  async function sendNote() {
-    if (note && publisher) {
-      let extraTags: Array<Array<string>> | undefined;
-      if (zapForward) {
-        try {
-          const svc = new LNURL(zapForward);
-          await svc.load();
-          extraTags = [svc.getZapTag()];
-        } catch {
-          dispatch(
-            setError(
-              formatMessage({
-                defaultMessage: "Invalid LNURL",
-              }),
-            ),
-          );
-          return;
+  async function buildNote() {
+    try {
+      dispatch(setError(""));
+      if (note && publisher) {
+        let extraTags: Array<Array<string>> | undefined;
+        if (zapSplits) {
+          const parsedSplits = [] as Array<ZapTarget>;
+          for (const s of zapSplits) {
+            if (s.value.startsWith(NostrPrefix.PublicKey) || s.value.startsWith(NostrPrefix.Profile)) {
+              const link = tryParseNostrLink(s.value);
+              if (link) {
+                parsedSplits.push({ ...s, value: link.id });
+              } else {
+                throw new Error(
+                  formatMessage(
+                    {
+                      defaultMessage: "Failed to parse zap split: {input}",
+                    },
+                    {
+                      input: s.value,
+                    },
+                  ),
+                );
+              }
+            } else if (s.value.includes("@")) {
+              const [name, domain] = s.value.split("@");
+              const pubkey = await fetchNip05Pubkey(name, domain);
+              if (pubkey) {
+                parsedSplits.push({ ...s, value: pubkey });
+              } else {
+                throw new Error(
+                  formatMessage(
+                    {
+                      defaultMessage: "Failed to parse zap split: {input}",
+                    },
+                    {
+                      input: s.value,
+                    },
+                  ),
+                );
+              }
+            } else {
+              throw new Error(
+                formatMessage(
+                  {
+                    defaultMessage: "Invalid zap split: {input}",
+                  },
+                  {
+                    input: s.value,
+                  },
+                ),
+              );
+            }
+          }
+          extraTags = parsedSplits.map(v => ["zap", v.value, "", String(v.weight)]);
         }
-      }
 
-      if (sensitive) {
-        extraTags ??= [];
-        extraTags.push(["content-warning", sensitive]);
+        if (sensitive) {
+          extraTags ??= [];
+          extraTags.push(["content-warning", sensitive]);
+        }
+        const kind = pollOptions ? EventKind.Polls : EventKind.TextNote;
+        if (pollOptions) {
+          extraTags ??= [];
+          extraTags.push(...pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
+        }
+        const hk = (eb: EventBuilder) => {
+          extraTags?.forEach(t => eb.tag(t));
+          eb.kind(kind);
+          return eb;
+        };
+        const ev = replyTo ? await publisher.reply(replyTo, note, hk) : await publisher.note(note, hk);
+        return ev;
       }
-      const kind = pollOptions ? EventKind.Polls : EventKind.TextNote;
-      if (pollOptions) {
-        extraTags ??= [];
-        extraTags.push(...pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
+    } catch (e) {
+      if (e instanceof Error) {
+        dispatch(setError(e.message));
+      } else {
+        dispatch(setError(e as string));
       }
-      const hk = (eb: EventBuilder) => {
-        extraTags?.forEach(t => eb.tag(t));
-        eb.kind(kind);
-        return eb;
-      };
-      const ev = replyTo ? await publisher.reply(replyTo, note, hk) : await publisher.note(note, hk);
+    }
+  }
+
+  async function sendNote() {
+    const ev = await buildNote();
+    if (ev) {
       if (selectedCustomRelays) selectedCustomRelays.forEach(r => System.WriteOnceToRelay(r, ev));
       else System.BroadcastEvent(ev);
       dispatch(reset());
@@ -166,7 +211,7 @@ export function NoteCreator() {
     if (preview) {
       dispatch(setPreview(undefined));
     } else if (publisher) {
-      const tmpNote = await publisher.note(note);
+      const tmpNote = await buildNote();
       if (tmpNote) {
         dispatch(setPreview(tmpNote));
       }
@@ -269,7 +314,7 @@ export function NoteCreator() {
     );
   }
 
-  function listAccounts() {
+  /*function listAccounts() {
     return LoginStore.getSessions().map(a => (
       <MenuItem
         onClick={ev => {
@@ -279,7 +324,7 @@ export function NoteCreator() {
         <ProfileImage pubkey={a} link={""} />
       </MenuItem>
     ));
-  }
+  }*/
 
   const handlePaste: ClipboardEventHandler<HTMLDivElement> = evt => {
     if (evt.clipboardData) {
@@ -374,20 +419,63 @@ export function NoteCreator() {
               </div>
               <div className="flex-column g8">
                 <h4>
-                  <FormattedMessage defaultMessage="Forward Zaps" />
+                  <FormattedMessage defaultMessage="Zap Splits" />
                 </h4>
-                <FormattedMessage defaultMessage="All zaps sent to this note will be received by the following LNURL" />
-                <input
-                  type="text"
-                  className="w-max"
-                  placeholder={formatMessage({
-                    defaultMessage: "LNURL to forward zaps to",
-                  })}
-                  value={zapForward}
-                  onChange={e => dispatch(setZapForward(e.target.value))}
-                />
+                <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." />
+                <div className="flex-column g8">
+                  {[...(zapSplits ?? [])].map((v, i, arr) => (
+                    <div className="flex f-center g8">
+                      <div className="flex-column f-4 g4">
+                        <h4>
+                          <FormattedMessage defaultMessage="Recipient" />
+                        </h4>
+                        <input
+                          type="text"
+                          value={v.value}
+                          onChange={e =>
+                            dispatch(
+                              setZapSplits(arr.map((vv, ii) => (ii === i ? { ...vv, value: e.target.value } : vv))),
+                            )
+                          }
+                          placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address" })}
+                        />
+                      </div>
+                      <div className="flex-column f-1 g4">
+                        <h4>
+                          <FormattedMessage defaultMessage="Weight" />
+                        </h4>
+                        <input
+                          type="number"
+                          min={0}
+                          value={v.weight}
+                          onChange={e =>
+                            dispatch(
+                              setZapSplits(
+                                arr.map((vv, ii) => (ii === i ? { ...vv, weight: Number(e.target.value) } : vv)),
+                              ),
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="flex-column f-shrink g4">
+                        <div>&nbsp;</div>
+                        <Icon
+                          name="close"
+                          onClick={() => dispatch(setZapSplits((zapSplits ?? []).filter((_v, ii) => ii !== i)))}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      dispatch(setZapSplits([...(zapSplits ?? []), { type: "pubkey", value: "", weight: 1 }]))
+                    }>
+                    <FormattedMessage defaultMessage="Add" />
+                  </button>
+                </div>
                 <span className="warning">
-                  <FormattedMessage defaultMessage="Not all clients support this yet" />
+                  <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" />
                 </span>
               </div>
               <div className="flex-column g8">

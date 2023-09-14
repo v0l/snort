@@ -1,14 +1,13 @@
-import React, { HTMLProps, useEffect, useState } from "react";
+import React, { HTMLProps, useContext, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
-import { TaggedNostrEvent, HexKey, u256, ParsedZap, countLeadingZeros } from "@snort/system";
-import { LNURL } from "@snort/shared";
-import { useUserProfile } from "@snort/system-react";
+import { TaggedNostrEvent, ParsedZap, countLeadingZeros, createNostrLinkToEvent } from "@snort/system";
+import { SnortContext, useUserProfile } from "@snort/system-react";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Feed/EventPublisher";
-import { delay, findTag, normalizeReaction, unwrap } from "SnortUtils";
+import { delay, findTag, normalizeReaction } from "SnortUtils";
 import { NoteCreator } from "Element/NoteCreator";
 import SendSats from "Element/SendSats";
 import { ZapsSummary } from "Element/Zap";
@@ -21,6 +20,8 @@ import useLogin from "Hooks/useLogin";
 import { useInteractionCache } from "Hooks/useInteractionCache";
 import { ZapPoolController } from "ZapPoolController";
 import { System } from "index";
+import { Zapper, ZapTarget } from "Zapper";
+import { getDisplayName } from "./ProfileImage";
 
 import messages from "./messages";
 
@@ -47,9 +48,10 @@ export interface NoteFooterProps {
 export default function NoteFooter(props: NoteFooterProps) {
   const { ev, positive, reposts, zaps } = props;
   const dispatch = useDispatch();
+  const system = useContext(SnortContext);
   const { formatMessage } = useIntl();
   const login = useLogin();
-  const { publicKey, preferences: prefs, relays } = login;
+  const { publicKey, preferences: prefs } = login;
   const author = useUserProfile(ev.pubkey);
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const publisher = useEventPublisher();
@@ -103,31 +105,36 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }
 
-  function getLNURL() {
-    return ev.tags.find(a => a[0] === "zap")?.[1] || author?.lud16 || author?.lud06;
-  }
+  function getZapTarget(): Array<ZapTarget> | undefined {
+    if (ev.tags.some(v => v[0] === "zap")) {
+      return Zapper.fromEvent(ev);
+    }
 
-  function getTargetName() {
-    const zapTarget = ev.tags.find(a => a[0] === "zap")?.[1];
-    if (zapTarget) {
-      try {
-        return new LNURL(zapTarget).name;
-      } catch {
-        // ignore
-      }
-    } else {
-      return author?.display_name || author?.name;
+    const authorTarget = author?.lud16 || author?.lud06;
+    if (authorTarget) {
+      return [
+        {
+          type: "lnurl",
+          value: authorTarget,
+          weight: 1,
+          name: getDisplayName(author, ev.pubkey),
+          zap: {
+            pubkey: ev.pubkey,
+            event: createNostrLinkToEvent(ev),
+          },
+        } as ZapTarget,
+      ];
     }
   }
 
   async function fastZap(e?: React.MouseEvent) {
     if (zapping || e?.isPropagationStopped()) return;
 
-    const lnurl = getLNURL();
+    const lnurl = getZapTarget();
     if (wallet?.isReady() && lnurl) {
       setZapping(true);
       try {
-        await fastZapInner(lnurl, prefs.defaultZapAmount, ev.pubkey, ev.id);
+        await fastZapInner(lnurl, prefs.defaultZapAmount);
       } catch (e) {
         console.warn("Fast zap failed", e);
         if (!(e instanceof Error) || e.message !== "User rejected") {
@@ -141,30 +148,29 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }
 
-  async function fastZapInner(lnurl: string, amount: number, key: HexKey, id?: u256) {
-    // only allow 1 invoice req/payment at a time to avoid hitting rate limits
-    await barrierZapper(async () => {
-      const handler = new LNURL(lnurl);
-      await handler.load();
-
-      const zr = Object.keys(relays.item);
-      const zap = handler.canZap && publisher ? await publisher.zap(amount * 1000, key, zr, id) : undefined;
-      const invoice = await handler.getInvoice(amount, undefined, zap);
-      await wallet?.payInvoice(unwrap(invoice.pr));
-      ZapPoolController.allocate(amount);
-
-      await interactionCache.zap();
-    });
+  async function fastZapInner(targets: Array<ZapTarget>, amount: number) {
+    if (wallet) {
+      // only allow 1 invoice req/payment at a time to avoid hitting rate limits
+      await barrierZapper(async () => {
+        const zapper = new Zapper(system, publisher);
+        const result = await zapper.send(wallet, targets, amount);
+        const totalSent = result.reduce((acc, v) => (acc += v.sent), 0);
+        if (totalSent > 0) {
+          ZapPoolController.allocate(totalSent);
+          await interactionCache.zap();
+        }
+      });
+    }
   }
 
   useEffect(() => {
     if (prefs.autoZap && !didZap && !isMine && !zapping) {
-      const lnurl = getLNURL();
+      const lnurl = getZapTarget();
       if (wallet?.isReady() && lnurl) {
         setZapping(true);
         queueMicrotask(async () => {
           try {
-            await fastZapInner(lnurl, prefs.defaultZapAmount, ev.pubkey, ev.id);
+            await fastZapInner(lnurl, prefs.defaultZapAmount);
           } catch {
             // ignored
           } finally {
@@ -185,8 +191,8 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   function tipButton() {
-    const service = getLNURL();
-    if (service) {
+    const targets = getZapTarget();
+    if (targets) {
       return (
         <AsyncFooterIcon
           className={didZap ? "reacted" : ""}
@@ -262,11 +268,10 @@ export default function NoteFooter(props: NoteFooterProps) {
         </div>
         {willRenderNoteCreator && <NoteCreator />}
         <SendSats
-          lnurl={getLNURL()}
+          targets={getZapTarget()}
           onClose={() => setTip(false)}
           show={tip}
           author={author?.pubkey}
-          target={getTargetName()}
           note={ev.id}
           allocatePool={true}
         />

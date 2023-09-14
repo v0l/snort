@@ -11,6 +11,17 @@ export interface NostrLink {
   encode(): string;
 }
 
+export function linkToEventTag(link: NostrLink) {
+  const relayEntry = link.relays ? [link.relays[0]] : [];
+  if (link.type === NostrPrefix.PublicKey) {
+    return ["p", link.id];
+  } else if (link.type === NostrPrefix.Note || link.type === NostrPrefix.Event) {
+    return ["e", link.id];
+  } else if (link.type === NostrPrefix.Address) {
+    return ["a", `${link.kind}:${link.author}:${link.id}`, ...relayEntry];
+  }
+}
+
 export function createNostrLinkToEvent(ev: TaggedNostrEvent | NostrEvent) {
   const relays = "relays" in ev ? ev.relays : undefined;
 

@@ -291,11 +291,14 @@ export default function ProfilePage() {
         )}
 
         <SendSats
-          lnurl={lnurl?.lnurl}
+          targets={
+            lnurl?.lnurl
+              ? [{ type: "lnurl", value: lnurl?.lnurl, weight: 1, name: user?.display_name || user?.name }]
+              : undefined
+          }
           show={showLnQr}
           onClose={() => setShowLnQr(false)}
           author={id}
-          target={user?.display_name || user?.name}
         />
       </>
     );
@@ -471,7 +474,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="main-content">
-        <div className="tabs" ref={horizontalScroll}>
+        <div className="tabs p" ref={horizontalScroll}>
           {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows].map(renderTab)}
           {optionalTabs.map(renderTab)}
           {isMe && blocked.length > 0 && renderTab(ProfileTab.Blocked)}

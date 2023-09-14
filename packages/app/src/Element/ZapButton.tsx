@@ -29,8 +29,7 @@ const ZapButton = ({
         {children}
       </div>
       <SendSats
-        target={profile?.display_name || profile?.name}
-        lnurl={service}
+        targets={[{ type: "lnurl", value: service, weight: 1, name: profile?.display_name || profile?.name }]}
         show={zap}
         onClose={() => setZap(false)}
         author={pubkey}

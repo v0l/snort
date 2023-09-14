@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { NostrEvent, TaggedNostrEvent } from "@snort/system";
+import { ZapTarget } from "Zapper";
 
 interface NoteCreatorStore {
   show: boolean;
@@ -10,7 +11,7 @@ interface NoteCreatorStore {
   replyTo?: TaggedNostrEvent;
   showAdvanced: boolean;
   selectedCustomRelays: false | Array<string>;
-  zapForward: string;
+  zapSplits?: Array<ZapTarget>;
   sensitive: string;
   pollOptions?: Array<string>;
   otherEvents: Array<NostrEvent>;
@@ -23,7 +24,6 @@ const InitState: NoteCreatorStore = {
   active: false,
   showAdvanced: false,
   selectedCustomRelays: false,
-  zapForward: "",
   sensitive: "",
   otherEvents: [],
 };
@@ -56,9 +56,6 @@ const NoteCreatorSlice = createSlice({
     setSelectedCustomRelays: (state, action: PayloadAction<false | Array<string>>) => {
       state.selectedCustomRelays = action.payload;
     },
-    setZapForward: (state, action: PayloadAction<string>) => {
-      state.zapForward = action.payload;
-    },
     setSensitive: (state, action: PayloadAction<string>) => {
       state.sensitive = action.payload;
     },
@@ -67,6 +64,9 @@ const NoteCreatorSlice = createSlice({
     },
     setOtherEvents: (state, action: PayloadAction<Array<NostrEvent>>) => {
       state.otherEvents = action.payload;
+    },
+    setZapSplits: (state, action: PayloadAction<Array<ZapTarget>>) => {
+      state.zapSplits = action.payload;
     },
     reset: () => InitState,
   },
@@ -81,7 +81,7 @@ export const {
   setReplyTo,
   setShowAdvanced,
   setSelectedCustomRelays,
-  setZapForward,
+  setZapSplits,
   setSensitive,
   setPollOptions,
   setOtherEvents,

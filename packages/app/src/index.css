@@ -363,6 +363,14 @@ input:disabled {
   flex: 2;
 }
 
+.f-3 {
+  flex: 3;
+}
+
+.f-4 {
+  flex: 4;
+}
+
 .f-grow {
   flex-grow: 1;
   min-width: 0;
@@ -419,6 +427,10 @@ input:disabled {
 
 .g24 {
   gap: 24px;
+}
+
+.txt-center {
+  text-align: center;
 }
 
 .w-max {

@@ -36,6 +36,9 @@
   "/RD0e2": {
     "defaultMessage": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content."
   },
+  "/Xf4UW": {
+    "defaultMessage": "Send anonymous usage metrics"
+  },
   "/d6vEc": {
     "defaultMessage": "Make your profile easier to find and share"
   },
@@ -157,6 +160,9 @@
   "5BVs2e": {
     "defaultMessage": "zap"
   },
+  "5CB6zB": {
+    "defaultMessage": "Zap Splits"
+  },
   "5JcXdV": {
     "defaultMessage": "Create Account"
   },
@@ -181,6 +187,9 @@
   "6Yfvvp": {
     "defaultMessage": "Get an identifier"
   },
+  "6bgpn+": {
+    "defaultMessage": "Not all clients support this, you may still receive some zaps as if zap splits was not configured"
+  },
   "6ewQqw": {
     "defaultMessage": "Likes ({n})"
   },
@@ -196,9 +205,6 @@
   "7hp70g": {
     "defaultMessage": "NIP-05"
   },
-  "7xzTiH": {
-    "defaultMessage": "{action} to {target}"
-  },
   "8/vBbP": {
     "defaultMessage": "Reposts ({n})"
   },
@@ -208,6 +214,12 @@
   "8QDesP": {
     "defaultMessage": "Zap {n} sats"
   },
+  "8Rkoyb": {
+    "defaultMessage": "Recipient"
+  },
+  "8Y6bZQ": {
+    "defaultMessage": "Invalid zap split: {input}"
+  },
   "8g2vyB": {
     "defaultMessage": "name too long"
   },
@@ -216,6 +228,9 @@
   },
   "9+Ddtu": {
     "defaultMessage": "Next"
+  },
+  "91VPqq": {
+    "defaultMessage": "Paying with wallet"
   },
   "9HU8vw": {
     "defaultMessage": "Reply"
@@ -367,9 +382,6 @@
   "FDguSC": {
     "defaultMessage": "{n} Zaps"
   },
-  "FP+D3H": {
-    "defaultMessage": "LNURL to forward zaps to"
-  },
   "FS3b54": {
     "defaultMessage": "Done!"
   },
@@ -464,6 +476,9 @@
   "JCIgkj": {
     "defaultMessage": "Username"
   },
+  "JGrt9q": {
+    "defaultMessage": "Send sats to {name}"
+  },
   "JHEHCk": {
     "defaultMessage": "Zaps ({n})"
   },
@@ -520,6 +535,9 @@
   },
   "Lw+I+J": {
     "defaultMessage": "{n,plural,=0{{name} zapped} other{{name} & {n} others zapped}}"
+  },
+  "LwYmVi": {
+    "defaultMessage": "Zaps on this note will be split to the following users."
   },
   "M3Oirc": {
     "defaultMessage": "Debug Menus"
@@ -588,9 +606,6 @@
   "ORGv1Q": {
     "defaultMessage": "Created"
   },
-  "P04gQm": {
-    "defaultMessage": "All zaps sent to this note will be received by the following LNURL"
-  },
   "P61BTu": {
     "defaultMessage": "Copy Event JSON"
   },
@@ -634,9 +649,6 @@
   "R/6nsx": {
     "defaultMessage": "Subscription"
   },
-  "R1fEdZ": {
-    "defaultMessage": "Forward Zaps"
-  },
   "R81upa": {
     "defaultMessage": "People you follow"
   },
@@ -665,6 +677,9 @@
   "RwFaYs": {
     "defaultMessage": "Sort",
     "description": "Label for sorting options for people search"
+  },
+  "SMO+on": {
+    "defaultMessage": "Send zap to {name}"
   },
   "SOqbe9": {
     "defaultMessage": "Update Lightning Address"
@@ -756,11 +771,17 @@
   "WONP5O": {
     "defaultMessage": "Find your twitter follows on nostr (Data provided by {provider})"
   },
+  "WvGmZT": {
+    "defaultMessage": "npub / nprofile / nostr address"
+  },
   "WxthCV": {
     "defaultMessage": "e.g. Jack"
   },
   "X7xU8J": {
     "defaultMessage": "nsec, npub, nip-05, hex, mnemonic"
+  },
+  "XECMfW": {
+    "defaultMessage": "Send usage metrics"
   },
   "XICsE8": {
     "defaultMessage": "File hosts"
@@ -798,6 +819,9 @@
   },
   "ZLmyG9": {
     "defaultMessage": "Contributors"
+  },
+  "ZS+jRE": {
+    "defaultMessage": "Send zap splits to"
   },
   "ZUZedV": {
     "defaultMessage": "Lightning Donation:"
@@ -1209,6 +1233,9 @@
   "sWnYKw": {
     "defaultMessage": "Snort is designed to have a similar experience to Twitter."
   },
+  "sZQzjQ": {
+    "defaultMessage": "Failed to parse zap split: {input}"
+  },
   "svOoEH": {
     "defaultMessage": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule."
   },
@@ -1230,11 +1257,11 @@
   "u4bHcR": {
     "defaultMessage": "Check out the code here: {link}"
   },
-  "uD/N6c": {
-    "defaultMessage": "Zap {target} {n} sats"
-  },
   "uSV4Ti": {
     "defaultMessage": "Reposts need to be manually confirmed"
+  },
+  "uc0din": {
+    "defaultMessage": "Send sats splits to"
   },
   "usAvMr": {
     "defaultMessage": "Edit Profile"
@@ -1247,9 +1274,6 @@
   },
   "vOKedj": {
     "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
-  },
-  "vU71Ez": {
-    "defaultMessage": "Paying with {wallet}"
   },
   "vZ4quW": {
     "defaultMessage": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."
@@ -1335,6 +1359,9 @@
   "yCmnnm": {
     "defaultMessage": "Read global from",
     "description": "Label for reading global feed from specific relays"
+  },
+  "zCb8fX": {
+    "defaultMessage": "Weight"
   },
   "zFegDD": {
     "defaultMessage": "Contact"
