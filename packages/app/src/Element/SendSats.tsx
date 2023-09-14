@@ -17,7 +17,7 @@ import { debounce } from "SnortUtils";
 import { LNWallet, useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
 import AsyncButton from "Element/AsyncButton";
-import { ZapTarget, Zapper } from "Zapper";
+import { ZapTarget, ZapTargetResult, Zapper } from "Zapper";
 
 import messages from "./messages";
 
@@ -44,7 +44,7 @@ export default function SendSats(props: SendSatsProps) {
   const onClose = props.onClose || (() => undefined);
 
   const [zapper, setZapper] = useState<Zapper>();
-  const [invoice, setInvoice] = useState<string>();
+  const [invoice, setInvoice] = useState<Array<ZapTargetResult>>();
   const [error, setError] = useState<string>();
   const [success, setSuccess] = useState<LNURLSuccessAction>();
   const [amount, setAmount] = useState<SendSatsInputSelection>();
@@ -56,8 +56,20 @@ export default function SendSats(props: SendSatsProps) {
 
   useEffect(() => {
     if (props.show) {
+      const invoiceTarget = {
+        target: {
+          type: "lnurl",
+          value: "",
+          weight: 1,
+        },
+        pr: props.invoice,
+        paid: false,
+        sent: 0,
+        fee: 0,
+      } as ZapTargetResult;
+
       setError(undefined);
-      setInvoice(props.invoice);
+      setInvoice(props.invoice ? [invoiceTarget] : undefined);
       setSuccess(undefined);
     }
   }, [props.show]);
@@ -199,10 +211,10 @@ export default function SendSats(props: SendSatsProps) {
                 const sends = await zapper.send(wallet, targetsWithComments, p.amount);
                 if (sends[0].error) {
                   setError(sends[0].error.message);
-                } else if (sends.length === 1) {
-                  setInvoice(sends[0].pr);
-                } else if (sends.every(a => a.sent)) {
+                } else if (sends.every(a => a.paid)) {
                   setSuccess({});
+                } else {
+                  setInvoice(sends);
                 }
               }
             }}
@@ -369,57 +381,28 @@ function SendSatsZapTypeSelector({ zapType, setZapType }: { zapType: ZapType; se
   );
 }
 
-function SendSatsInvoice(props: { invoice: string; wallet?: LNWallet; notice?: ReactNode; onInvoicePaid: () => void }) {
-  const [paying, setPaying] = useState(false);
-  const [error, setError] = useState("");
-
-  async function payWithWallet() {
-    try {
-      if (props.wallet?.isReady()) {
-        setPaying(true);
-        const res = await props.wallet.payInvoice(props.invoice);
-        console.log(res);
-        props.onInvoicePaid();
-      }
-    } catch (e) {
-      if (e instanceof Error) {
-        setError(e.message);
-      }
-    } finally {
-      setPaying(false);
-    }
-  }
-
-  useEffect(() => {
-    if (props.wallet && !paying && !error) {
-      payWithWallet();
-    }
-  }, [props.wallet, props.invoice, paying]);
-
+function SendSatsInvoice(props: {
+  invoice: Array<ZapTargetResult>;
+  wallet?: LNWallet;
+  notice?: ReactNode;
+  onInvoicePaid: () => void;
+}) {
   return (
     <div className="flex-column g12 txt-center">
-      {error && <p className="error">{error}</p>}
       {props.notice && <b className="error">{props.notice}</b>}
-      {paying ? (
-        <h4>
-          <FormattedMessage defaultMessage="Paying with wallet" />
-          ...
-        </h4>
-      ) : (
-        <QrCode data={props.invoice} link={`lightning:${props.invoice}`} />
-      )}
-      <div className="flex-column g12">
-        {props.invoice && (
-          <>
-            <Copy text={props.invoice} maxSize={26} className="f-center" />
-            <a href={`lightning:${props.invoice}`}>
+      {props.invoice.map(v => (
+        <>
+          <QrCode data={v.pr} link={`lightning:${v.pr}`} />
+          <div className="flex-column g12">
+            <Copy text={v.pr} maxSize={26} className="f-center" />
+            <a href={`lightning:${v.pr}`}>
               <button type="button">
                 <FormattedMessage defaultMessage="Open Wallet" />
               </button>
             </a>
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      ))}
     </div>
   );
 }

@@ -22,7 +22,9 @@ processWorkQueue(WebLNQueue);
  */
 export function setupWebLNWalletConfig(store: WalletStore) {
   const wallets = store.list();
-  if (window.webln && !wallets.some(a => a.kind === WalletKind.WebLN)) {
+
+  const existing = wallets.find(a => a.kind === WalletKind.WebLN);
+  if (window.webln && !existing) {
     const newConfig = {
       id: "webln",
       kind: WalletKind.WebLN,
@@ -32,6 +34,8 @@ export function setupWebLNWalletConfig(store: WalletStore) {
       },
     } as WalletConfig;
     store.add(newConfig);
+  } else if (existing) {
+    store.remove(existing.id);
   }
 }
 

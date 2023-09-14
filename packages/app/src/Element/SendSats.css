@@ -14,10 +14,6 @@
   }
 }
 
-.light .lnurl-modal {
-  background-color: var(--gray-superdark);
-}
-
 .lnurl-modal h2 {
   margin: 0;
   font-weight: 600;
