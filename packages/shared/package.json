@@ -1,12 +1,12 @@
 {
   "name": "@snort/shared",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Shared components for Snort",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://git.v0l.io/Kieran/snort",
   "author": "Kieran",
-  "license": "GPL-3.0-or-later",
+  "license": "MIT",
   "scripts": {
     "build": "rm -rf dist && tsc"
   },

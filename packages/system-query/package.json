@@ -1,7 +1,9 @@
 {
   "name": "@snort/system-query",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "packageManager": "yarn@3.6.3",
+  "author": "Kieran",
+  "license": "MIT",
   "scripts": {
     "build": "wasm-pack build -t web -s snort"
   },

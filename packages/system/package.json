@@ -1,12 +1,12 @@
 {
   "name": "@snort/system",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Snort nostr system package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://git.v0l.io/Kieran/snort",
   "author": "v0l",
-  "license": "GPL-3.0-or-later",
+  "license": "MIT",
   "scripts": {
     "build": "rm -rf dist && tsc",
     "test": "jest --runInBand"
@@ -33,7 +33,7 @@
     "@noble/curves": "^1.2.0",
     "@noble/hashes": "^1.3.2",
     "@scure/base": "^1.1.2",
-    "@snort/shared": "^1.0.5",
+    "@snort/shared": "^1.0.6",
     "@stablelib/xchacha20": "^1.0.1",
     "debug": "^4.3.4",
     "dexie": "^3.2.4",
