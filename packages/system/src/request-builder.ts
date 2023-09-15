@@ -82,6 +82,12 @@ export class RequestBuilder {
     return ret;
   }
 
+  withBareFilter(f: ReqFilter) {
+    const ret = new RequestFilterBuilder(f);
+    this.#builders.push(ret);
+    return ret;
+  }
+  
   withOptions(opt: RequestBuilderOptions) {
     this.#options = {
       ...this.#options,
@@ -154,8 +160,12 @@ export class RequestBuilder {
  * Builder class for a single request filter
  */
 export class RequestFilterBuilder {
-  #filter: ReqFilter = {};
+  #filter: ReqFilter;
   #relays = new Set<string>();
+
+  constructor(f?: ReqFilter) {
+    this.#filter = f ?? {};
+  }
 
   get filter() {
     return { ...this.#filter };
