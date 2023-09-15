@@ -140,10 +140,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       if (!this.#sockets.has(addr)) {
         const c = new Connection(addr, options, this.#handleAuth?.bind(this));
         this.#sockets.set(addr, c);
-        c.OnEvent = (s, e) => this.OnEvent(s, e);
-        c.OnEose = s => this.OnEndOfStoredEvents(c, s);
-        c.OnDisconnect = code => this.OnRelayDisconnect(c, code);
-        c.OnConnected = r => this.OnRelayConnected(c, r);
+        c.OnEvent = (s, e) => this.#onEvent(s, e);
+        c.OnEose = s => this.#onEndOfStoredEvents(c, s);
+        c.OnDisconnect = code => this.#onRelayDisconnect(c, code);
+        c.OnConnected = r => this.#onRelayConnected(c, r);
         await c.Connect();
       } else {
         // update settings if already connected
@@ -154,7 +154,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     }
   }
 
-  OnRelayConnected(c: Connection, wasReconnect: boolean) {
+  #onRelayConnected(c: Connection, wasReconnect: boolean) {
     if (wasReconnect) {
       for (const [, q] of this.Queries) {
         q.connectionRestored(c);
@@ -162,22 +162,22 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     }
   }
 
-  OnRelayDisconnect(c: Connection, code: number) {
+  #onRelayDisconnect(c: Connection, code: number) {
     this.#relayMetrics.onDisconnect(c, code);
     for (const [, q] of this.Queries) {
       q.connectionLost(c.Id);
     }
   }
 
-  OnEndOfStoredEvents(c: Readonly<Connection>, sub: string) {
+  #onEndOfStoredEvents(c: Readonly<Connection>, sub: string) {
     for (const [, v] of this.Queries) {
       v.eose(sub, c);
     }
   }
 
-  OnEvent(sub: string, ev: TaggedNostrEvent) {
+  #onEvent(sub: string, ev: TaggedNostrEvent) {
     for (const [, v] of this.Queries) {
-      v.onEvent(sub, ev);
+      v.handleEvent(sub, ev);
     }
   }
 
@@ -191,10 +191,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       if (!this.#sockets.has(addr)) {
         const c = new Connection(addr, { read: true, write: true }, this.#handleAuth?.bind(this), true);
         this.#sockets.set(addr, c);
-        c.OnEvent = (s, e) => this.OnEvent(s, e);
-        c.OnEose = s => this.OnEndOfStoredEvents(c, s);
-        c.OnDisconnect = code => this.OnRelayDisconnect(c, code);
-        c.OnConnected = r => this.OnRelayConnected(c, r);
+        c.OnEvent = (s, e) => this.#onEvent(s, e);
+        c.OnEose = s => this.#onEndOfStoredEvents(c, s);
+        c.OnDisconnect = code => this.#onRelayDisconnect(c, code);
+        c.OnConnected = r => this.#onRelayConnected(c, r);
         await c.Connect();
         return c;
       }

@@ -169,7 +169,7 @@ export class Query implements QueryBase {
     return this.#feed;
   }
 
-  onEvent(sub: string, e: TaggedNostrEvent) {
+  handleEvent(sub: string, e: TaggedNostrEvent) {
     for (const t of this.#tracing) {
       if (t.id === sub) {
         if (t.filters.some(v => eventMatchesFilter(e, v))) {
