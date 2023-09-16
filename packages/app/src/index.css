@@ -709,9 +709,14 @@ button.tall {
   margin: 0 !important;
 }
 
+.szh-menu {
+  border-radius: 16px !important;
+  padding: 0.5rem 0 0 !important;
+}
+
 .ctx-menu li {
   background: #1e1e1e !important;
-  padding: 8px 32px 8px 32px !important;
+  padding: 8px 24px !important;
   display: grid !important;
   grid-template-columns: 2rem auto !important;
   font-size: 16px;
