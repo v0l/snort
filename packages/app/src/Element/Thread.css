@@ -7,11 +7,12 @@
   box-shadow: none;
 }
 
-.thread-root.note > .body .text {
+.thread-root.note>.body .text {
   font-size: 19px;
+  line-height: 27px;
 }
 
-.thread-root.note > .footer {
+.thread-root.note>.footer {
   padding-left: 0;
 }
 
