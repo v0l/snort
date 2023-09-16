@@ -12,9 +12,12 @@
 }
 
 .note-creator-modal .note.card {
+  padding: 0;
+}
+
+.note-creator-modal .note.card.note-quote {
+  border: 1px solid #333;
   padding: 8px 12px;
-  border-radius: 12px;
-  background-color: var(--gray-dark);
 }
 
 .note-creator-modal h4 {
