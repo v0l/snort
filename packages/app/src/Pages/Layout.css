@@ -67,6 +67,11 @@ header {
   border-radius: 1000px;
 }
 
+.light .search {
+  background: #FFF;
+  border: 1px solid var(--border-color);
+}
+
 .search input {
   border: none !important;
   border-radius: 0 !important;
