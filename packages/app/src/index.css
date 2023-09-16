@@ -4,7 +4,7 @@
   --font-secondary-color: #a7a7a7;
   --font-tertiary-color: #a3a3a3;
   --border-color: var(--gray-superdark);
-  --font-size: 15px;
+  --font-size: 16px;
   --font-size-small: 13px;
   --font-size-tiny: 11px;
   --modal-bg-color: rgba(0, 0, 0, 0.8);
@@ -28,18 +28,14 @@
   --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
   --snort-gradient: linear-gradient(90deg, #a178ff 0%, #ff6baf 100%);
   --dm-gradient: linear-gradient(90deg, #5722d2 0%, #db1771 100%);
-  --invoice-gradient: linear-gradient(
-    45deg,
-    var(--gray-superdark) 50%,
-    rgba(161, 120, 255, 0.2),
-    rgba(255, 107, 175, 0.2) 108.33%
-  );
-  --paid-invoice-gradient: linear-gradient(
-    45deg,
-    var(--gray-superdark) 50%,
-    rgba(161, 120, 255, 0.6),
-    rgba(255, 107, 175, 0.6) 108.33%
-  );
+  --invoice-gradient: linear-gradient(45deg,
+      var(--gray-superdark) 50%,
+      rgba(161, 120, 255, 0.2),
+      rgba(255, 107, 175, 0.2) 108.33%);
+  --paid-invoice-gradient: linear-gradient(45deg,
+      var(--gray-superdark) 50%,
+      rgba(161, 120, 255, 0.6),
+      rgba(255, 107, 175, 0.6) 108.33%);
   --expired-invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, var(--gray), var(--gray-superdark));
   --strike-army-gradient: linear-gradient(to bottom right, #ccff00, #a1c900);
 
@@ -152,7 +148,7 @@ code {
   justify-content: space-between;
 }
 
-.card > .footer {
+.card>.footer {
   display: flex;
   flex-direction: row;
 }
@@ -313,7 +309,8 @@ textarea {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   outline: none;
-  line-height: 24px; /* 150% */
+  line-height: 24px;
+  /* 150% */
 }
 
 .light input[type="text"],
@@ -478,22 +475,22 @@ div.form-group {
   grid-template-columns: 1fr 2fr;
 }
 
-div.form-group > div {
+div.form-group>div {
   padding: 3px 5px;
 }
 
-div.form-group > div:nth-child(1) {
+div.form-group>div:nth-child(1) {
   display: flex;
   align-self: center;
 }
 
-div.form-group > div:nth-child(2) {
+div.form-group>div:nth-child(2) {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
 }
 
-div.form-group > div:nth-child(2) input {
+div.form-group>div:nth-child(2) input {
   flex-grow: 1;
 }
 
@@ -597,7 +594,7 @@ small.xs {
   margin: 0 auto;
 }
 
-.tweet div .twitter-tweet > iframe {
+.tweet div .twitter-tweet>iframe {
   max-height: unset;
 }
 
@@ -729,13 +726,13 @@ button.tall {
 }
 
 .ctx-menu li:nth-child(3) {
-  padding-top: 24px !important;
+  padding-top: 16px !important;
   border-top-left-radius: 16px !important;
   border-top-right-radius: 16px !important;
 }
 
 .ctx-menu li:last-of-type {
-  padding-bottom: 24px !important;
+  padding-bottom: 16px !important;
   border-bottom-left-radius: 16px !important;
   border-bottom-right-radius: 16px !important;
 }
