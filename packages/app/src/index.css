@@ -16,6 +16,7 @@
   --heart: #ef4444;
   --zap: #ff710a;
   --gray-superlight: #eee;
+  --bg-secondary: #2A2A2A;
   --gray-light: #999;
   --gray-medium: #7b7b7b;
   --gray: #333;
@@ -72,7 +73,6 @@ html.light {
   --border-color: #dee1e8;
   --highlight: #7139f1;
   --modal-bg-color: rgba(240, 240, 240, 0.8);
-
   --gray: #999;
   --gray-secondary: #aaa;
   --gray-tertiary: #bbb;
@@ -81,10 +81,10 @@ html.light {
   --gray-dark: #ccc;
   --gray-superdark: #ddd;
   --gray-ultradark: #FFF;
-
   --dm-gradient: var(--gray);
   --invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73333, #fc4a1a33);
   --paid-invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73399, #fc4a1a99);
+  --bg-secondary: #FFF;
 }
 
 body {
@@ -240,7 +240,7 @@ button.transparent:hover {
 
 button.icon {
   border: none;
-  background: none;
+  background: var(--bg-secondary);
   color: var(--font-color);
   width: 40px;
   height: 40px;
@@ -643,7 +643,7 @@ small.xs {
 }
 
 .main-content .profile-preview {
-  margin-bottom: 16px;
+  margin: 8px 0;
 }
 
 button.tall {
