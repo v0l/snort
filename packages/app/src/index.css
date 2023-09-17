@@ -15,7 +15,6 @@
   --live: #f83838;
   --heart: #ef4444;
   --zap: #ff710a;
-
   --gray-superlight: #eee;
   --gray-light: #999;
   --gray-medium: #7b7b7b;
@@ -66,12 +65,11 @@ html {
 }
 
 html.light {
-  --bg-color: #f8f8f8;
+  --bg-color: #fff;
   --font-color: #2f3f64;
   --font-secondary-color: #71717a;
   --font-tertiary-color: #52525b;
   --border-color: #dee1e8;
-
   --highlight: #7139f1;
   --modal-bg-color: rgba(240, 240, 240, 0.8);
 
@@ -82,7 +80,7 @@ html.light {
   --gray-light: #555;
   --gray-dark: #ccc;
   --gray-superdark: #ddd;
-  --gray-ultradark: #eee;
+  --gray-ultradark: #FFF;
 
   --dm-gradient: var(--gray);
   --invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73333, #fc4a1a33);
@@ -161,14 +159,24 @@ code {
 
 button {
   cursor: pointer;
-  padding: 6px 12px;
+  padding: 10px 16px;
   font-weight: 600;
   color: var(--bg-color);
   font-size: var(--font-size);
   background-color: var(--font-color);
   border: none;
-  border-radius: 16px;
+  border-radius: 100px;
   outline: none;
+}
+
+button.primary {
+  background: rgb(239, 150, 68);
+  background: linear-gradient(90deg, rgba(239, 150, 68, 1) 0%, rgba(123, 65, 246, 1) 100%);
+  color: #FFF;
+}
+
+button.primary:hover {
+  box-shadow: 0px 0px 10px rgba(128, 29, 255, 1);
 }
 
 button:disabled {
@@ -711,7 +719,8 @@ button.tall {
 
 .szh-menu {
   border-radius: 16px !important;
-  padding: 0.5rem 0 0 !important;
+  ;
+  padding: 0.5rem 0 0;
 }
 
 .ctx-menu li {
@@ -753,8 +762,8 @@ button.tall {
 }
 
 .light .ctx-menu li:hover {
-  color: white !important;
-  background: var(--font-secondary-color) !important;
+  color: var(--font-secondary-color) !important;
+  background: #EEE !important;
 }
 
 .ctx-menu .red {
