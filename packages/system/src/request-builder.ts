@@ -87,7 +87,7 @@ export class RequestBuilder {
     this.#builders.push(ret);
     return ret;
   }
-  
+
   withOptions(opt: RequestBuilderOptions) {
     this.#options = {
       ...this.#options,
