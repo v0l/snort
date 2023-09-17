@@ -3,6 +3,8 @@
   flex-direction: column;
   align-items: flex-start;
   border: 1px solid var(--gray-superdark);
+  border-bottom: none;
+  border-top: none;
 }
 
 .profile .banner {
