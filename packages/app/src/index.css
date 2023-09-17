@@ -242,7 +242,9 @@ button.icon {
   border: none;
   background: none;
   color: var(--font-color);
-  min-height: 28px;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
 }
 
 button.icon .icon-wrapper {
@@ -708,6 +710,7 @@ button.tall {
 .rta__textarea {
   /* Fix width calculation to account for 32px padding on input */
   width: calc(100% - 32px) !important;
+  font-size: 15px !important;
 }
 
 .ctx-menu {

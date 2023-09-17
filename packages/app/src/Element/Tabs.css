@@ -3,8 +3,10 @@
   align-items: center;
   flex-direction: row;
   overflow-x: scroll;
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* for Internet Explorer, Edge */
+  scrollbar-width: none;
+  /* Firefox */
   white-space: nowrap;
   gap: 8px;
 }
@@ -12,6 +14,17 @@
 .tabs::-webkit-scrollbar {
   display: none;
 }
+
+.light .tab {
+  border: 1px solid var(--border-color);
+
+}
+
+.light .tab.active {
+  background: var(--gray-superdark);
+}
+
+
 
 .tab {
   background: var(--gray-ultradark);
@@ -27,11 +40,11 @@
 }
 
 .tab.active {
-  color: black;
-  background: white;
+  background: #FFF;
+  color: #000;
 }
 
-.tabs > div {
+.tabs>div {
   cursor: pointer;
 }
 
