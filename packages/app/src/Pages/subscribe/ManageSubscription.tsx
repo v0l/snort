@@ -33,7 +33,7 @@ export default function ManageSubscriptionPage() {
     return <PageSpinner />;
   }
   return (
-    <div className="main-content p flex-column g24">
+    <div className="main-content p flex-column g16">
       <h2>
         <FormattedMessage defaultMessage="Subscriptions" />
       </h2>

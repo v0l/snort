@@ -38,7 +38,7 @@
       rgba(255, 107, 175, 0.6) 108.33%);
   --expired-invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, var(--gray), var(--gray-superdark));
   --strike-army-gradient: linear-gradient(to bottom right, #ccff00, #a1c900);
-
+  --sub-bg: #111;
   --header-padding-tb: 10px;
 }
 
@@ -85,6 +85,7 @@ html.light {
   --invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73333, #fc4a1a33);
   --paid-invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73399, #fc4a1a99);
   --bg-secondary: #FFF;
+  --sub-bg: #FFF;
 }
 
 body {
@@ -794,4 +795,9 @@ svg.heart-solid {
 
 svg.zap-solid {
   color: var(--zap);
+}
+
+.subtier {
+  background: var(--sub-bg);
+  border-radius: 16px;
 }
