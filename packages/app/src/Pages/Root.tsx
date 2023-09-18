@@ -141,9 +141,16 @@ export const NotesTab = () => {
     <>
       <FollowsHint />
       <TaskList />
-      <TimelineFollows postsOnly={true} noteOnClick={deckContext ? (ev) => {
-        deckContext.setThread(ev.id);
-      } : undefined} />
+      <TimelineFollows
+        postsOnly={true}
+        noteOnClick={
+          deckContext
+            ? ev => {
+                deckContext.setThread(ev.id);
+              }
+            : undefined
+        }
+      />
     </>
   );
 };

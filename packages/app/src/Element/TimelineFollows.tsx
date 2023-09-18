@@ -117,7 +117,13 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
       {mainFeed.map(
         a =>
           props.noteRenderer?.(a) ?? (
-            <Note data={a as TaggedNostrEvent} related={relatedFeed(a.id)} key={a.id} depth={0} onClick={props.noteOnClick} />
+            <Note
+              data={a as TaggedNostrEvent}
+              related={relatedFeed(a.id)}
+              key={a.id}
+              depth={0}
+              onClick={props.noteOnClick}
+            />
           ),
       )}
       <div className="flex f-center p">

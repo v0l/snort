@@ -1,7 +1,7 @@
 span.following {
-    padding: 2px 4px;
-    border-radius: 4px;
-    font-size: 11px;
-    color: var(--font-secondary-color);
-    background-color: var(--gray-superdark);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--font-secondary-color);
+  background-color: var(--gray-superdark);
 }

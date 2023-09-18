@@ -25,7 +25,7 @@ export interface ProfileImageProps {
   onClick?: (e: React.MouseEvent) => void;
   imageOverlay?: ReactNode;
   showFollowingMark?: boolean;
-  icons?: ReactNode
+  icons?: ReactNode;
 }
 
 export default function ProfileImage({
@@ -42,7 +42,7 @@ export default function ProfileImage({
   imageOverlay,
   onClick,
   showFollowingMark = true,
-  icons
+  icons,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const nip05 = defaultNip ? defaultNip : user?.nip05;
@@ -64,12 +64,24 @@ export default function ProfileImage({
     return (
       <>
         <div className="avatar-wrapper">
-          <Avatar pubkey={pubkey} user={user} size={size} imageOverlay={imageOverlay} icons={((doesFollow && showFollowingMark) || icons) ? <>
-            {icons}
-            {showFollowingMark && <div className="icon-circle">
-              <Icon name="check" className="success" size={10} />
-            </div>}
-          </> : undefined} />
+          <Avatar
+            pubkey={pubkey}
+            user={user}
+            size={size}
+            imageOverlay={imageOverlay}
+            icons={
+              (doesFollow && showFollowingMark) || icons ? (
+                <>
+                  {icons}
+                  {showFollowingMark && (
+                    <div className="icon-circle">
+                      <Icon name="check" className="success" size={10} />
+                    </div>
+                  )}
+                </>
+              ) : undefined
+            }
+          />
         </div>
         {showUsername && (
           <div className="f-ellipsis">

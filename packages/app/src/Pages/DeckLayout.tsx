@@ -25,8 +25,8 @@ import useLogin from "Hooks/useLogin";
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 
 interface DeckScope {
-  thread?: string,
-  setThread: (e?: string) => void
+  thread?: string;
+  setThread: (e?: string) => void;
 }
 
 export const DeckContext = createContext<DeckScope | undefined>(undefined);
@@ -35,9 +35,8 @@ export function SnortDeckLayout() {
   const login = useLogin();
   const navigate = useNavigate();
   const [deckScope, setDeckScope] = useState<DeckScope>({
-    setThread: (e?: string) => setDeckScope(s => ({ ...s, thread: e }))
+    setThread: (e?: string) => setDeckScope(s => ({ ...s, thread: e })),
   });
-
 
   useLoginFeed();
   useTheme();
@@ -75,7 +74,7 @@ export function SnortDeckLayout() {
               <ThreadContextWrapper link={createNostrLink(NostrPrefix.Note, deckScope.thread)}>
                 <SpotlightFromThread onClose={() => deckScope.setThread(undefined)} />
                 <div>
-                  <Thread onBack={() => deckScope.setThread(undefined)}/>
+                  <Thread onBack={() => deckScope.setThread(undefined)} />
                 </div>
               </ThreadContextWrapper>
             </Modal>
