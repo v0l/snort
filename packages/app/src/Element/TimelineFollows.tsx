@@ -22,6 +22,7 @@ export interface TimelineFollowsProps {
   liveStreams?: boolean;
   noteFilter?: (ev: NostrEvent) => boolean;
   noteRenderer?: (ev: NostrEvent) => ReactNode;
+  noteOnClick?: (ev: NostrEvent) => void;
 }
 
 /**
@@ -91,7 +92,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         <>
           <div className="card latest-notes" onClick={() => onShowLatest()} ref={ref}>
             {latestAuthors.slice(0, 3).map(p => {
-              return <ProfileImage pubkey={p} showUsername={false} link={""} />;
+              return <ProfileImage pubkey={p} showUsername={false} link={""} showFollowingMark={false} />;
             })}
             <FormattedMessage
               defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
@@ -102,7 +103,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
           {!inView && (
             <div className="card latest-notes latest-notes-fixed pointer fade-in" onClick={() => onShowLatest(true)}>
               {latestAuthors.slice(0, 3).map(p => {
-                return <ProfileImage pubkey={p} showUsername={false} link={""} />;
+                return <ProfileImage pubkey={p} showUsername={false} link={""} showFollowingMark={false} />;
               })}
               <FormattedMessage
                 defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
@@ -116,7 +117,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
       {mainFeed.map(
         a =>
           props.noteRenderer?.(a) ?? (
-            <Note data={a as TaggedNostrEvent} related={relatedFeed(a.id)} key={a.id} depth={0} />
+            <Note data={a as TaggedNostrEvent} related={relatedFeed(a.id)} key={a.id} depth={0} onClick={props.noteOnClick} />
           ),
       )}
       <div className="flex f-center p">

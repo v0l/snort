@@ -1,5 +1,5 @@
 import "./Deck.css";
-import { CSSProperties, useContext, useEffect, useState } from "react";
+import { CSSProperties, createContext, useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { NostrPrefix, createNostrLink } from "@snort/system";
@@ -24,10 +24,20 @@ import useLogin from "Hooks/useLogin";
 
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 
+interface DeckScope {
+  thread?: string,
+  setThread: (e?: string) => void
+}
+
+export const DeckContext = createContext<DeckScope | undefined>(undefined);
+
 export function SnortDeckLayout() {
   const login = useLogin();
   const navigate = useNavigate();
-  const [thread, setThread] = useState<string>();
+  const [deckScope, setDeckScope] = useState<DeckScope>({
+    setThread: (e?: string) => setDeckScope(s => ({ ...s, thread: e }))
+  });
+
 
   useLoginFeed();
   useTheme();
@@ -43,34 +53,36 @@ export function SnortDeckLayout() {
   const cols = ["notes", "media", "notifications", "articles"] as Array<Cols>;
   return (
     <div className="deck-layout">
-      <DeckNav />
-      <div className="deck-cols">
-        {cols.map(c => {
-          switch (c) {
-            case "notes":
-              return <NotesCol />;
-            case "media":
-              return <MediaCol setThread={setThread} />;
-            case "articles":
-              return <ArticlesCol />;
-            case "notifications":
-              return <NotificationsCol />;
-          }
-        })}
-      </div>
-      {thread && (
-        <>
-          <Modal onClose={() => setThread(undefined)} className="thread-overlay">
-            <ThreadContextWrapper link={createNostrLink(NostrPrefix.Note, thread)}>
-              <SpotlightFromThread onClose={() => setThread(undefined)} />
-              <div>
-                <Thread />
-              </div>
-            </ThreadContextWrapper>
-          </Modal>
-        </>
-      )}
-      <Toaster />
+      <DeckContext.Provider value={deckScope}>
+        <DeckNav />
+        <div className="deck-cols">
+          {cols.map(c => {
+            switch (c) {
+              case "notes":
+                return <NotesCol />;
+              case "media":
+                return <MediaCol setThread={deckScope.setThread} />;
+              case "articles":
+                return <ArticlesCol />;
+              case "notifications":
+                return <NotificationsCol />;
+            }
+          })}
+        </div>
+        {deckScope.thread && (
+          <>
+            <Modal onClose={() => deckScope.setThread(undefined)} className="thread-overlay">
+              <ThreadContextWrapper link={createNostrLink(NostrPrefix.Note, deckScope.thread)}>
+                <SpotlightFromThread onClose={() => deckScope.setThread(undefined)} />
+                <div>
+                  <Thread onBack={() => deckScope.setThread(undefined)}/>
+                </div>
+              </ThreadContextWrapper>
+            </Modal>
+          </>
+        )}
+        <Toaster />
+      </DeckContext.Provider>
     </div>
   );
 }
@@ -80,7 +92,7 @@ function SpotlightFromThread({ onClose }: { onClose: () => void }) {
 
   const parsed = thread.root ? transformTextCached(thread.root.id, thread.root.content, thread.root.tags) : [];
   const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
-
+  if (images.length === 0) return;
   return <SpotlightMedia images={images.map(a => a.content)} idx={0} onClose={onClose} />;
 }
 

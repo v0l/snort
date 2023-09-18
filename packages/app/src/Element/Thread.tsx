@@ -154,9 +154,8 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
   return (
     <>
       <div
-        className={`subthread-container ${hasMultipleNotes ? "subthread-multi" : ""} ${
-          isLast ? "subthread-last" : "subthread-mid"
-        }`}>
+        className={`subthread-container ${hasMultipleNotes ? "subthread-multi" : ""} ${isLast ? "subthread-last" : "subthread-mid"
+          }`}>
         <Divider variant="small" />
         <Note
           highlight={active === first.id}
@@ -185,9 +184,8 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
         return (
           <div
             key={r.id}
-            className={`subthread-container ${lastReply ? "" : "subthread-multi"} ${
-              lastReply ? "subthread-last" : "subthread-mid"
-            }`}>
+            className={`subthread-container ${lastReply ? "" : "subthread-multi"} ${lastReply ? "subthread-last" : "subthread-mid"
+              }`}>
             <Divider variant="small" />
             <Note
               className={`thread-note ${lastNote ? "is-last-note" : ""}`}
@@ -216,7 +214,7 @@ export function ThreadRoute() {
   );
 }
 
-export function Thread() {
+export function Thread(props: { onBack?: () => void }) {
   const thread = useContext(ThreadContext);
 
   const navigate = useNavigate();
@@ -283,6 +281,8 @@ export function Thread() {
   function goBack() {
     if (parent) {
       thread.setCurrent(parent);
+    } else if (props.onBack) {
+      props.onBack();
     } else {
       navigate(-1);
     }
@@ -296,6 +296,7 @@ export function Thread() {
     defaultMessage: "Back",
     description: "Navigate back button on threads view",
   });
+
   return (
     <>
       <div className="main-content p">

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, Outlet, RouteObject, useParams } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { unixNow } from "@snort/shared";
@@ -16,6 +16,7 @@ import SuggestedProfiles from "Element/SuggestedProfiles";
 import { TaskList } from "Tasks/TaskList";
 import TimelineFollows from "Element/TimelineFollows";
 import { RootTabs } from "Element/RootTabs";
+import { DeckContext } from "Pages/DeckLayout";
 
 import messages from "./messages";
 
@@ -133,11 +134,16 @@ export const GlobalTab = () => {
 };
 
 export const NotesTab = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const deckContext = useContext(DeckContext);
+
   return (
     <>
       <FollowsHint />
       <TaskList />
-      <TimelineFollows postsOnly={true} />
+      <TimelineFollows postsOnly={true} noteOnClick={deckContext ? (ev) => {
+        deckContext.setThread(ev.id);
+      } : undefined} />
     </>
   );
 };
