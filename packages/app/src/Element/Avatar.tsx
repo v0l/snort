@@ -14,8 +14,10 @@ interface AvatarProps {
   size?: number;
   image?: string;
   imageOverlay?: ReactNode;
+  icons?: ReactNode;
 }
-const Avatar = ({ pubkey, user, size, onClick, image, imageOverlay }: AvatarProps) => {
+
+const Avatar = ({ pubkey, user, size, onClick, image, imageOverlay, icons }: AvatarProps) => {
   const [url, setUrl] = useState("");
   const { proxy } = useImgProxy();
 
@@ -39,6 +41,7 @@ const Avatar = ({ pubkey, user, size, onClick, image, imageOverlay }: AvatarProp
       className={`avatar${imageOverlay ? " with-overlay" : ""}`}
       data-domain={domain?.toLowerCase()}
       title={getDisplayName(user, "")}>
+      {icons && <div className="icons">{icons}</div>}
       {imageOverlay && <div className="overlay">{imageOverlay}</div>}
     </div>
   );

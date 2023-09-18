@@ -63,6 +63,7 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
             {sender && (
               <ProfileImage
                 pubkey={anonZap ? "" : sender}
+                showFollowingMark={false}
                 overrideUsername={anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
               />
             )}

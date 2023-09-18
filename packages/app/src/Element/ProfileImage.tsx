@@ -8,6 +8,8 @@ import { useUserProfile } from "@snort/system-react";
 import { hexToBech32, profileLink } from "SnortUtils";
 import Avatar from "Element/Avatar";
 import Nip05 from "Element/Nip05";
+import useLogin from "Hooks/useLogin";
+import Icon from "Icons/Icon";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -22,6 +24,8 @@ export interface ProfileImageProps {
   size?: number;
   onClick?: (e: React.MouseEvent) => void;
   imageOverlay?: ReactNode;
+  showFollowingMark?: boolean;
+  icons?: ReactNode
 }
 
 export default function ProfileImage({
@@ -37,9 +41,13 @@ export default function ProfileImage({
   size,
   imageOverlay,
   onClick,
+  showFollowingMark = true,
+  icons
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const nip05 = defaultNip ? defaultNip : user?.nip05;
+  const { follows } = useLogin();
+  const doesFollow = follows.item.includes(pubkey);
 
   const name = useMemo(() => {
     return overrideUsername ?? getDisplayName(user, pubkey);
@@ -56,7 +64,12 @@ export default function ProfileImage({
     return (
       <>
         <div className="avatar-wrapper">
-          <Avatar pubkey={pubkey} user={user} size={size} imageOverlay={imageOverlay} />
+          <Avatar pubkey={pubkey} user={user} size={size} imageOverlay={imageOverlay} icons={((doesFollow && showFollowingMark) || icons) ? <>
+            {icons}
+            {showFollowingMark && <div className="icon-circle">
+              <Icon name="check" className="success" size={10} />
+            </div>}
+          </> : undefined} />
         </div>
         {showUsername && (
           <div className="f-ellipsis">
