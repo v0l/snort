@@ -30,6 +30,7 @@ Snort supports the following NIP's:
 - [x] NIP-30: Custom Emoji
 - [x] NIP-31: Alt tag for unknown events
 - [x] NIP-36: Sensitive Content
+- [x] NIP-38: User Statuses
 - [ ] NIP-40: Expiration Timestamp
 - [x] NIP-42: Authentication of clients to relays
 - [x] NIP-44: Versioned encryption

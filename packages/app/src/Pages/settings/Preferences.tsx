@@ -210,6 +210,40 @@ const PreferencesPage = () => {
       <div className="flex f-space w-max">
         <div className="flex-column g8">
           <h4>
+            <FormattedMessage defaultMessage="Show Badges" />
+          </h4>
+          <small>
+            <FormattedMessage defaultMessage="Show badges on profile pages" />
+          </small>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={perf.showBadges ?? false}
+            onChange={e => updatePreferences(login, { ...perf, showBadges: e.target.checked })}
+          />
+        </div>
+      </div>
+      <div className="flex f-space w-max">
+        <div className="flex-column g8">
+          <h4>
+            <FormattedMessage defaultMessage="Show Status" />
+          </h4>
+          <small>
+            <FormattedMessage defaultMessage="Show status messages on profile pages" />
+          </small>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={perf.showStatus ?? true}
+            onChange={e => updatePreferences(login, { ...perf, showStatus: e.target.checked })}
+          />
+        </div>
+      </div>
+      <div className="flex f-space w-max">
+        <div className="flex-column g8">
+          <h4>
             <FormattedMessage defaultMessage="Auto Zap" />
           </h4>
           <small>

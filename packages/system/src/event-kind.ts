@@ -26,6 +26,7 @@ enum EventKind {
   ProfileBadges = 30008, // NIP-58
   LongFormTextNote = 30023, // NIP-23
   LiveEvent = 30311, // NIP-102
+  UserStatus = 30315, // NIP-38
   ZapstrTrack = 31337,
   SimpleChatMetadata = 39_000, // NIP-29
   ZapRequest = 9734, // NIP 57

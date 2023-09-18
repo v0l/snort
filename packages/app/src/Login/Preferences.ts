@@ -76,6 +76,16 @@ export interface UserPreferences {
    * Collect usage metrics
    */
   telemetry?: boolean;
+
+  /**
+   * Show badges on profiles
+   */
+  showBadges?: boolean;
+
+  /**
+   * Show user status messages on profiles
+   */
+  showStatus?: boolean;
 }
 
 export const DefaultPreferences = {
@@ -93,4 +103,6 @@ export const DefaultPreferences = {
   defaultZapAmount: 50,
   autoZap: false,
   telemetry: true,
+  showBadges: false,
+  showStatus: true,
 } as UserPreferences;

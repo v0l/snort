@@ -15,7 +15,7 @@ import {
 import { LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
-import { getReactions, unwrap } from "SnortUtils";
+import { findTag, getReactions, unwrap } from "SnortUtils";
 import { formatShort } from "Number";
 import Note from "Element/Note";
 import Bookmarks from "Element/Bookmarks";
@@ -55,6 +55,7 @@ import { EmailRegex } from "Const";
 import { getNip05PubKey } from "Pages/LoginPage";
 import useLogin from "Hooks/useLogin";
 import { ZapTarget } from "Zapper";
+import { useStatusFeed } from "Feed/StatusFeed";
 
 import messages from "./messages";
 
@@ -114,7 +115,8 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const [id, setId] = useState<string>();
   const user = useUserProfile(id);
-  const loginPubKey = useLogin().publicKey;
+  const login = useLogin();
+  const loginPubKey = login.publicKey;
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
@@ -128,14 +130,19 @@ export default function ProfilePage() {
       // ignored
     }
   })();
+  const showBadges = login.preferences.showBadges ?? false;
+  const showStatus = login.preferences.showStatus ?? true;
+
   const website_url =
     user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
   // feeds
   const { blocked } = useModeration();
   const pinned = usePinnedFeed(id);
   const muted = useMutedFeed(id);
-  const badges = useProfileBadges(id);
+  const badges = useProfileBadges(showBadges ? id : undefined);
   const follows = useFollowsFeed(id);
+  const status = useStatusFeed(showStatus ? id : undefined, true);
+
   // tabs
   const ProfileTab = {
     Notes: {
@@ -243,6 +250,23 @@ export default function ProfilePage() {
     setTab(ProfileTab.Notes);
   }, [params]);
 
+  function musicStatus() {
+    if (!status.music) return;
+
+    const link = findTag(status.music, "r");
+    const cover = findTag(status.music, "cover");
+    const inner = () => {
+      return <div className="flex g8">
+        {cover && <ProxyImg src={cover} size={40} />}
+        <small>🎵 {unwrap(status.music).content}</small>
+      </div>
+    }
+    if (link) {
+      return <a href={link} rel="noreferer" target="_blank" className="ext">{inner()}</a>;
+    }
+    return inner();
+  }
+
   function username() {
     return (
       <>
@@ -253,7 +277,10 @@ export default function ProfilePage() {
           </h2>
           {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
         </div>
-        <BadgeList badges={badges} />
+        {showBadges && <BadgeList badges={badges} />}
+        {showStatus && <>
+          {musicStatus()}
+        </>}
         <div className="link-section">
           <Copy text={npub} />
           {links()}
@@ -295,14 +322,14 @@ export default function ProfilePage() {
           targets={
             lnurl?.lnurl && id
               ? [
-                  {
-                    type: "lnurl",
-                    value: lnurl?.lnurl,
-                    weight: 1,
-                    name: user?.display_name || user?.name,
-                    zap: { pubkey: id },
-                  } as ZapTarget,
-                ]
+                {
+                  type: "lnurl",
+                  value: lnurl?.lnurl,
+                  weight: 1,
+                  name: user?.display_name || user?.name,
+                  zap: { pubkey: id },
+                } as ZapTarget,
+              ]
               : undefined
           }
           show={showLnQr}
