@@ -28,7 +28,7 @@
 
 .tab {
   background: var(--gray-ultradark);
-  color: var(--font-tertiary-color);
+  color: var(--font-secondary-color);
   border-radius: 100px;
   font-weight: 600;
   font-size: 16px;
@@ -41,7 +41,7 @@
 
 .tab.active {
   background: #FFF;
-  color: #000;
+  color: var(--font-color);
 }
 
 .tabs>div {
@@ -55,5 +55,5 @@
 }
 
 .tab:hover {
-  border-color: var(--font-color);
+  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
 }
