@@ -41,7 +41,7 @@ export default function ManageSubscriptionPage() {
         <SubscriptionCard sub={a} key={a.id} />
       ))}
       {subs.length !== 0 && (
-        <button onClick={() => navigate("/subscribe")}>
+        <button className="primary" onClick={() => navigate("/subscribe")}>
           <FormattedMessage defaultMessage="Buy Subscription" />
         </button>
       )}
