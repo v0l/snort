@@ -10,7 +10,7 @@
 }
 
 .settings-nav>div {
-  border: 1px solid var(--gray-superdark);
+  border: 1px solid var(--border-color);
 }
 
 .settings-nav>div.content {

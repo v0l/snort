@@ -19,6 +19,7 @@
   color: white;
   background: var(--highlight);
   border-radius: 100px;
+  border: none;
 }
 
 @media (max-width: 520px) {

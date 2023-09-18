@@ -47,7 +47,12 @@
 }
 
 .light .link-preview-container {
-  background: #ddd;
+  background: #FFF;
+  border: 1px solid var(--border-color);
+}
+
+.light .link-preview-container:hover {
+  box-shadow: rgba(0, 0, 0, 0.08) 0 1px 3px;
 }
 
 @media (min-width: 1025px) {

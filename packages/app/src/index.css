@@ -40,6 +40,8 @@
   --strike-army-gradient: linear-gradient(to bottom right, #ccff00, #a1c900);
   --sub-bg: #111;
   --header-padding-tb: 10px;
+  --btn-color: #FFF;
+  --primary-gradient: linear-gradient(90deg, rgba(239, 150, 68, 1) 0%, rgba(123, 65, 246, 1) 100%);
 }
 
 ::-webkit-scrollbar {
@@ -68,24 +70,25 @@ html {
 html.light {
   --bg-color: #fff;
   --font-color: #2f3f64;
-  --font-secondary-color: #71717a;
+  --font-secondary-color: #6E7EA2;
   --font-tertiary-color: #52525b;
   --border-color: #dee1e8;
   --highlight: #7139f1;
-  --modal-bg-color: rgba(240, 240, 240, 0.8);
-  --gray: #999;
+  --modal-bg-color: #0009;
+  --gray: #dee1e8;
   --gray-secondary: #aaa;
   --gray-tertiary: #bbb;
   --gray-superlight: #333;
   --gray-light: #555;
   --gray-dark: #ccc;
-  --gray-superdark: #ddd;
+  --gray-superdark: #FFF;
   --gray-ultradark: #FFF;
   --dm-gradient: var(--gray);
   --invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73333, #fc4a1a33);
   --paid-invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73399, #fc4a1a99);
   --bg-secondary: #FFF;
   --sub-bg: #FFF;
+  --btn-color: #FFF;
 }
 
 body {
@@ -131,12 +134,12 @@ code {
 
 .card {
   padding: 12px 16px;
-  border-bottom: 1px solid var(--gray-superdark);
+  border-bottom: 1px solid var(--border-color);
 }
 
 /* Card inside card */
 .card .card {
-  border: 1px solid var(--gray-superdark);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   min-height: 0;
 }
@@ -164,7 +167,7 @@ button {
   font-weight: 600;
   color: var(--bg-color);
   font-size: var(--font-size);
-  background-color: var(--font-color);
+  background-color: var(--btn-color);
   border: none;
   border-radius: 100px;
   outline: none;
@@ -172,12 +175,14 @@ button {
 
 button.primary {
   background: rgb(239, 150, 68);
-  background: linear-gradient(90deg, rgba(239, 150, 68, 1) 0%, rgba(123, 65, 246, 1) 100%);
-  color: #FFF;
+  background: var(--primary-gradient);
+  color: #FFF !important;
+  border: none !important;
 }
 
 button.primary:hover {
-  box-shadow: 0px 0px 10px rgba(128, 29, 255, 1);
+  box-shadow: 0px 1px 4px rgba(128, 29, 255, 1) !important;
+  background: var(--primary-gradient) !important;
 }
 
 button:disabled {
@@ -193,7 +198,7 @@ button.secondary:disabled {
 button:disabled:hover {
   cursor: not-allowed;
   color: var(--font-color);
-  border-color: var(--gray-superdark);
+  border-color: var(--gray-border-color);
 }
 
 .light button.transparent {
@@ -217,11 +222,7 @@ button.transparent {
   font-weight: 400;
   color: var(--font-secondary);
   background-color: transparent;
-  border: 1px solid var(--gray-superdark);
-}
-
-.light button.secondary {
-  background-color: var(--gray);
+  border: 1px solid var(--border-color);
 }
 
 button.secondary:hover {
@@ -233,10 +234,6 @@ button.secondary:hover {
 button.transparent:hover {
   color: var(--bg-color);
   background-color: var(--font-color);
-}
-
-.light button.secondary:hover {
-  background-color: var(--gray-secondary);
 }
 
 button.icon {
@@ -331,7 +328,7 @@ textarea {
 .light input[type="number"],
 .light select,
 .light textarea {
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
 }
 
 option,
@@ -725,8 +722,8 @@ button.tall {
 
 .szh-menu {
   border-radius: 16px !important;
-  ;
   padding: 0.5rem 0 0;
+  box-shadow: none !important;
 }
 
 .ctx-menu li {
@@ -739,7 +736,7 @@ button.tall {
 }
 
 .light .ctx-menu li {
-  background: var(--gray-superdark) !important;
+  background: #FFF !important;
 }
 
 .ctx-menu li:first-of-type {
@@ -811,4 +808,35 @@ svg.zap-solid {
 
 .light .spinner-button:hover {
   box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
+}
+
+.main-content.p {
+  border-bottom: 0;
+  border-top: 0;
+}
+
+.light button.icon {
+  border: 1px solid var(--border-color);
+  box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
+}
+
+.light button.icon:hover {
+  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
+}
+
+.light button,
+.light button.secondary {
+  color: var(--highlight);
+  background-color: #FFF;
+  border: 1px solid var(--border-color);
+  box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
+}
+
+.light button:hover,
+.light button.secondary:hover {
+  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px !important;
+}
+
+.light .modal button.secondary:hover {
+  background: #FFF !important;
 }
