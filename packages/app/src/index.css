@@ -70,7 +70,7 @@ html {
 html.light {
   --bg-color: #fff;
   --font-color: #2f3f64;
-  --font-secondary-color: #6E7EA2;
+  --font-secondary-color: #5C6C92;
   --font-tertiary-color: #52525b;
   --border-color: #dee1e8;
   --highlight: #7139f1;
@@ -714,7 +714,7 @@ button.tall {
 }
 
 .ctx-menu {
-  color: var(--font-secondary-color) !important;
+  color: var(--font-color) !important;
   background: transparent !important;
   min-width: 0 !important;
   margin: 0 !important;
@@ -722,8 +722,7 @@ button.tall {
 
 .szh-menu {
   border-radius: 16px !important;
-  padding: 0.5rem 0 0;
-  box-shadow: none !important;
+  padding: 0 !important;
 }
 
 .ctx-menu li {
@@ -765,7 +764,7 @@ button.tall {
 }
 
 .light .ctx-menu li:hover {
-  color: var(--font-secondary-color) !important;
+  color: var(--font-color) !important;
   background: #EEE !important;
 }
 
@@ -799,6 +798,10 @@ svg.zap-solid {
   border-radius: 16px;
 }
 
+.light .subtier {
+  border: 1px solid var(--border-color);
+}
+
 .light .spinner-button {
   background: #FFF;
   border: 1px solid var(--border-color);
@@ -826,7 +829,7 @@ svg.zap-solid {
 
 .light button,
 .light button.secondary {
-  color: var(--highlight);
+  color: #4B5C83;
   background-color: #FFF;
   border: 1px solid var(--border-color);
   box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
