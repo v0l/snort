@@ -1,3 +1,5 @@
+import "./Reveal.css";
+import Icon from "Icons/Icon";
 import { useState } from "react";
 
 interface RevealProps {
@@ -15,8 +17,9 @@ export default function Reveal(props: RevealProps): JSX.Element {
           e.stopPropagation();
           setReveal(true);
         }}
-        className="note-invoice">
-        {props.message}
+        className="note-notice flex g8">
+        <Icon name="alert-circle" size={24} />
+        <div>{props.message}</div>
       </div>
     );
   } else {

@@ -63,6 +63,9 @@
   "0mch2Y": {
     "defaultMessage": "name has disallowed characters"
   },
+  "0uoY11": {
+    "defaultMessage": "Show Status"
+  },
   "0yO7wF": {
     "defaultMessage": "{n} secs"
   },
@@ -107,6 +110,9 @@
   },
   "2ukA4d": {
     "defaultMessage": "{n} hours"
+  },
+  "3KNMbJ": {
+    "defaultMessage": "Articles"
   },
   "3Rx6Qo": {
     "defaultMessage": "Advanced"
@@ -184,6 +190,9 @@
   "65BmHb": {
     "defaultMessage": "Failed to proxy image from {host}, click here to load directly"
   },
+  "6OSOXl": {
+    "defaultMessage": "Reason: <i>{reason}</i>"
+  },
   "6Yfvvp": {
     "defaultMessage": "Get an identifier"
   },
@@ -228,9 +237,6 @@
   },
   "9+Ddtu": {
     "defaultMessage": "Next"
-  },
-  "91VPqq": {
-    "defaultMessage": "Paying with wallet"
   },
   "9HU8vw": {
     "defaultMessage": "Reply"
@@ -355,6 +361,9 @@
   "EPYwm7": {
     "defaultMessage": "Your private key is your password. If you lose this key, you will lose access to your account! Copy it and keep it in a safe place. There is no way to reset your private key."
   },
+  "EQKRE4": {
+    "defaultMessage": "Show badges on profile pages"
+  },
   "EWyQH5": {
     "defaultMessage": "Global"
   },
@@ -381,6 +390,9 @@
   },
   "FDguSC": {
     "defaultMessage": "{n} Zaps"
+  },
+  "FMfjrl": {
+    "defaultMessage": "Show status messages on profile pages"
   },
   "FS3b54": {
     "defaultMessage": "Done!"
@@ -467,6 +479,9 @@
   "Ig9/a1": {
     "defaultMessage": "Sent {n} sats to {name}"
   },
+  "IoQq+a": {
+    "defaultMessage": "Click here to load anyway"
+  },
   "Ix8l+B": {
     "defaultMessage": "Trending Notes"
   },
@@ -505,9 +520,6 @@
   },
   "KAhAcM": {
     "defaultMessage": "Enter LNDHub config"
-  },
-  "KLo3SP": {
-    "defaultMessage": "Reason: {reason}"
   },
   "KQvWvD": {
     "defaultMessage": "Deleted"
@@ -569,6 +581,9 @@
   },
   "N2IrpM": {
     "defaultMessage": "Confirm"
+  },
+  "NAidKb": {
+    "defaultMessage": "Notifications"
   },
   "NAuFNH": {
     "defaultMessage": "You already have a subscription of this type, please renew or pay"
@@ -702,6 +717,9 @@
   },
   "Ss0sWu": {
     "defaultMessage": "Pay Now"
+  },
+  "StKzTE": {
+    "defaultMessage": "The author has marked this note as a <i>sensitive topic</i>"
   },
   "TDR5ge": {
     "defaultMessage": "Media in notes will automatically be shown for selected people, otherwise only the link will show"
@@ -986,6 +1004,9 @@
   "hicxcO": {
     "defaultMessage": "Show replies"
   },
+  "hmZ3Bz": {
+    "defaultMessage": "Media"
+  },
   "hniz8Z": {
     "defaultMessage": "here"
   },
@@ -1227,6 +1248,9 @@
   "rudscU": {
     "defaultMessage": "Failed to load follows, please try again later"
   },
+  "sKDn4e": {
+    "defaultMessage": "Show Badges"
+  },
   "sUNhQE": {
     "defaultMessage": "user"
   },
@@ -1315,9 +1339,6 @@
   },
   "x/Fx2P": {
     "defaultMessage": "Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"
-  },
-  "x/q8d5": {
-    "defaultMessage": "This note has been marked as sensitive, click here to reveal"
   },
   "x82IOl": {
     "defaultMessage": "Mute"

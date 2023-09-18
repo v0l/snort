@@ -255,18 +255,26 @@ export function NoteInner(props: NoteProps) {
         <Reveal
           message={
             <>
-              <FormattedMessage defaultMessage="This note has been marked as sensitive, click here to reveal" />
+              <FormattedMessage
+                defaultMessage="The author has marked this note as a <i>sensitive topic</i>"
+                values={{
+                  i: c => <i>{c}</i>,
+                }}
+              />
               {contentWarning[1] && (
                 <>
-                  <br />
+                  &nbsp;
                   <FormattedMessage
-                    defaultMessage="Reason: {reason}"
+                    defaultMessage="Reason: <i>{reason}</i>"
                     values={{
+                      i: c => <i>{c}</i>,
                       reason: contentWarning[1],
                     }}
                   />
                 </>
               )}
+              &nbsp;
+              <FormattedMessage defaultMessage="Click here to load anyway" />
             </>
           }>
           {innerContent()}
