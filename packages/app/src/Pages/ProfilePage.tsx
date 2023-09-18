@@ -256,13 +256,19 @@ export default function ProfilePage() {
     const link = findTag(status.music, "r");
     const cover = findTag(status.music, "cover");
     const inner = () => {
-      return <div className="flex g8">
-        {cover && <ProxyImg src={cover} size={40} />}
-        <small>🎵 {unwrap(status.music).content}</small>
-      </div>
-    }
+      return (
+        <div className="flex g8">
+          {cover && <ProxyImg src={cover} size={40} />}
+          <small>🎵 {unwrap(status.music).content}</small>
+        </div>
+      );
+    };
     if (link) {
-      return <a href={link} rel="noreferer" target="_blank" className="ext">{inner()}</a>;
+      return (
+        <a href={link} rel="noreferer" target="_blank" className="ext">
+          {inner()}
+        </a>
+      );
     }
     return inner();
   }
@@ -278,9 +284,7 @@ export default function ProfilePage() {
           {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
         </div>
         {showBadges && <BadgeList badges={badges} />}
-        {showStatus && <>
-          {musicStatus()}
-        </>}
+        {showStatus && <>{musicStatus()}</>}
         <div className="link-section">
           <Copy text={npub} />
           {links()}
@@ -322,14 +326,14 @@ export default function ProfilePage() {
           targets={
             lnurl?.lnurl && id
               ? [
-                {
-                  type: "lnurl",
-                  value: lnurl?.lnurl,
-                  weight: 1,
-                  name: user?.display_name || user?.name,
-                  zap: { pubkey: id },
-                } as ZapTarget,
-              ]
+                  {
+                    type: "lnurl",
+                    value: lnurl?.lnurl,
+                    weight: 1,
+                    name: user?.display_name || user?.name,
+                    zap: { pubkey: id },
+                  } as ZapTarget,
+                ]
               : undefined
           }
           show={showLnQr}
