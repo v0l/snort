@@ -461,6 +461,9 @@
   "HbefNb": {
     "defaultMessage": "Open Wallet"
   },
+  "HhcAVH": {
+    "defaultMessage": "You don't follow this person, click here to load media from <i>{link}</i>, or update <a><i>your preferences</i></a> to always load media from everybody."
+  },
   "IDjHJ6": {
     "defaultMessage": "Thanks for using Snort, please consider donating if you can."
   },

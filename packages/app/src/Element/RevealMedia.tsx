@@ -4,6 +4,7 @@ import { FileExtensionRegex } from "Const";
 import Reveal from "Element/Reveal";
 import useLogin from "Hooks/useLogin";
 import { MediaElement } from "Element/MediaElement";
+import { Link } from "react-router-dom";
 
 interface RevealMediaProps {
   creator: string;
@@ -51,7 +52,16 @@ export default function RevealMedia(props: RevealMediaProps) {
   if (hideMedia) {
     return (
       <Reveal
-        message={<FormattedMessage defaultMessage="Click to load content from {link}" values={{ link: hostname }} />}>
+        message={
+          <FormattedMessage
+            defaultMessage="You don't follow this person, click here to load media from <i>{link}</i>, or update <a><i>your preferences</i></a> to always load media from everybody."
+            values={{
+              i: i => <i>{i}</i>,
+              a: a => <Link to="/settings/preferences">{a}</Link>,
+              link: hostname,
+            }}
+          />
+        }>
         <MediaElement mime={`${type}/${extension}`} url={url.toString()} onMediaClick={props.onMediaClick} />
       </Reveal>
     );
