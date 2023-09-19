@@ -34,7 +34,7 @@ export default function useThreadFeed(link: NostrLink) {
     }
   }, [store.data?.length]);
 
-  const reactions = useReactions(`thread:${link.id.slice(0, 12)}:reactions`, allEvents);
+  const reactions = useReactions(`thread:${link.id.slice(0, 12)}:reactions`, [link, ...allEvents]);
 
   return {
     thread: store.data ?? [],
