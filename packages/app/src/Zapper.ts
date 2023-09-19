@@ -190,17 +190,21 @@ export class Zapper {
   }
 
   async #getService(t: ZapTarget) {
-    if (t.type === "lnurl") {
-      const svc = new LNURL(t.value);
-      await svc.load();
-      return svc;
-    } else if (t.type === "pubkey") {
-      const profile = await this.system.ProfileLoader.fetchProfile(t.value);
-      if (profile) {
-        const svc = new LNURL(profile.lud16 ?? profile.lud06 ?? "");
+    try {
+      if (t.type === "lnurl") {
+        const svc = new LNURL(t.value);
         await svc.load();
         return svc;
+      } else if (t.type === "pubkey") {
+        const profile = await this.system.ProfileLoader.fetchProfile(t.value);
+        if (profile) {
+          const svc = new LNURL(profile.lud16 ?? profile.lud06 ?? "");
+          await svc.load();
+          return svc;
+        }
       }
+    }catch {
+      // nothing
     }
   }
 }

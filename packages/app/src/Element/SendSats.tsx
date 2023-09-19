@@ -163,11 +163,12 @@ export default function SendSats(props: SendSatsProps) {
               <FormattedMessage defaultMessage="Send sats splits to" />
             )}
           </h2>
-          <div className="flex g4">
+          <div className="flex g4 f-wrap">
             {props.targets.map(v => (
               <ProfileImage
                 pubkey={v.value}
                 showUsername={false}
+                showFollowingMark={false}
                 imageOverlay={formatShort(Math.floor((amount?.amount ?? 0) * (v.weight / total)))}
               />
             ))}

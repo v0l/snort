@@ -410,6 +410,10 @@ input:disabled {
   justify-content: space-between;
 }
 
+.f-wrap {
+  flex-flow: wrap;
+}
+
 .g2 {
   gap: 2px;
 }
