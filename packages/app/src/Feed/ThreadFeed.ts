@@ -12,11 +12,7 @@ export default function useThreadFeed(link: NostrLink) {
     sub.withOptions({
       leaveOpen: true,
     });
-    sub
-      .withFilter()
-      .kinds([EventKind.TextNote])
-      .link(link)
-      .replyToLink(link);
+    sub.withFilter().kinds([EventKind.TextNote]).link(link).replyToLink(link);
     allEvents.forEach(x => {
       sub.withFilter().kinds([EventKind.TextNote]).link(x).replyToLink(x);
     });

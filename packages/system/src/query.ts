@@ -198,14 +198,14 @@ export class Query implements QueryBase {
   }
 
   /**
-   * Insert a new trace as a placeholder 
+   * Insert a new trace as a placeholder
    */
   insertCompletedTrace(subq: BuiltRawReqFilter, data: Readonly<Array<TaggedNostrEvent>>) {
     const qt = new QueryTrace(
       "",
       subq.filters,
       "",
-      () => { 
+      () => {
         // nothing to close
       },
       () => {

@@ -39,7 +39,7 @@ export class ProfileLoaderService {
   TrackMetadata(pk: HexKey | Array<HexKey>) {
     for (const p of Array.isArray(pk) ? pk : [pk]) {
       if (p.length === 64) {
-        this.#wantsMetadata.add(p)
+        this.#wantsMetadata.add(p);
       }
     }
   }

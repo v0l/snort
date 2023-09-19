@@ -296,11 +296,14 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         if (cacheResults.length > 0) {
           const resultIds = new Set(cacheResults.map(a => a.id));
           f.ids = f.ids.filter(a => !resultIds.has(a));
-          q.insertCompletedTrace({
-            filters:[{...f, ids: [...resultIds]}],
-            strategy: RequestStrategy.ExplicitRelays,
-            relay: ""
-          }, cacheResults as Array<TaggedNostrEvent>);
+          q.insertCompletedTrace(
+            {
+              filters: [{ ...f, ids: [...resultIds] }],
+              strategy: RequestStrategy.ExplicitRelays,
+              relay: "",
+            },
+            cacheResults as Array<TaggedNostrEvent>,
+          );
         }
       }
     }

@@ -146,7 +146,9 @@ export class RequestBuilder {
 
     const filtersSquashed = [...relayMerged.values()].map(a => {
       return {
-        filters: system.QueryOptimizer.flatMerge(a.flatMap(b => b.filters.flatMap(c => system.QueryOptimizer.expandFilter(c)))),
+        filters: system.QueryOptimizer.flatMerge(
+          a.flatMap(b => b.filters.flatMap(c => system.QueryOptimizer.expandFilter(c))),
+        ),
         relay: a[0].relay,
         strategy: a[0].strategy,
       } as BuiltRawReqFilter;
@@ -252,7 +254,7 @@ export class RequestFilterBuilder {
     if (link.type === NostrPrefix.Address) {
       this.tag("a", [`${link.kind}:${link.author}:${link.id}`]);
       link.relays?.forEach(v => this.relay(v));
-    } else if(link.type === NostrPrefix.PublicKey || link.type === NostrPrefix.Profile) {
+    } else if (link.type === NostrPrefix.PublicKey || link.type === NostrPrefix.Profile) {
       this.tag("p", [link.id]);
       link.relays?.forEach(v => this.relay(v));
     } else {

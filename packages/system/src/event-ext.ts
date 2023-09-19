@@ -111,7 +111,7 @@ export abstract class EventExt {
       pubKeys: [],
     } as Thread;
     const replyTags = ev.tags.filter(a => a[0] === "e" || a[0] === "a").map(a => EventExt.parseTag(a));
-    if(replyTags.length > 0) {
+    if (replyTags.length > 0) {
       const marked = replyTags.some(a => a.marker);
       if (!marked) {
         ret.root = replyTags[0];
