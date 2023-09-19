@@ -8,6 +8,12 @@
   background: var(--invoice-gradient);
 }
 
+.note-invoice.error {
+  padding: 8px 12px !important;
+  color: #AAA;
+  background: transparent;
+}
+
 .note-invoice.expired {
   background: var(--expired-invoice-gradient);
   color: var(--font-secondary-color);

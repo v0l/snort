@@ -5,6 +5,12 @@
   height: var(--full-height);
   /* 100vh - header - padding */
   overflow: hidden;
+  padding: 4px;
+}
+
+.dm-page>div:nth-child(1)::-webkit-scrollbar-track {
+  background: transparent !important;
+  ;
 }
 
 /* These should match what is in code too */
@@ -13,7 +19,7 @@
     grid-template-columns: 100vw;
   }
 
-  .dm-page > div:nth-child(1) {
+  .dm-page>div:nth-child(1) {
     margin: 0 !important;
   }
 }
@@ -25,30 +31,31 @@
 }
 
 /* User list */
-.dm-page > div:nth-child(1) {
+.dm-page>div:nth-child(1) {
   overflow-y: auto;
   padding: 0 5px;
 }
 
 /* Chat window */
-.dm-page > div:nth-child(2) {
+.dm-page>div:nth-child(2) {
   padding: 0 12px;
+  margin: 0 4px;
   height: var(--full-height);
   background-color: var(--gray-superdark);
   border-radius: 16px;
 }
 
 /* Profile pannel */
-.dm-page > div:nth-child(3) {
-  margin: 0 10px;
+.dm-page>div:nth-child(3) {
+  margin: 16px;
 }
 
-.dm-page > div:nth-child(3) .avatar {
+.dm-page>div:nth-child(3) .avatar {
   margin-left: auto;
   margin-right: auto;
 }
 
-.dm-page > div:nth-child(3) .card {
+.dm-page>div:nth-child(3) .card {
   cursor: pointer;
 }
 
@@ -56,7 +63,7 @@
   min-width: 100px;
 }
 
-.dm-page .chat-list > div.active {
+.dm-page .chat-list>div.active {
   background-color: var(--gray-superdark);
   border-radius: 16px;
 }
@@ -66,13 +73,13 @@
   overflow-y: auto;
 }
 
-.new-chat-modal .user-list > div {
+.new-chat-modal .user-list>div {
   padding: 8px 12px;
   cursor: pointer;
 }
 
 /* user in list selected */
-.new-chat-modal .user-list > div.active {
+.new-chat-modal .user-list>div.active {
   background-color: var(--gray-dark);
   border-radius: 16px;
 }

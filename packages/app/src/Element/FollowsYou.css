@@ -3,4 +3,7 @@
   font-size: var(--font-size-tiny);
   margin-left: 0.2em;
   font-weight: normal;
+  padding: 4px 6px;
+  background: var(--bg-secondary);
+  border-radius: 6px;
 }

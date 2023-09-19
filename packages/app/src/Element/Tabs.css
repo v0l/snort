@@ -3,8 +3,10 @@
   align-items: center;
   flex-direction: row;
   overflow-x: scroll;
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* for Internet Explorer, Edge */
+  scrollbar-width: none;
+  /* Firefox */
   white-space: nowrap;
   gap: 8px;
 }
@@ -13,9 +15,23 @@
   display: none;
 }
 
+.light .tab {
+  border: 1px solid var(--border-color);
+
+}
+
+.tab.active {
+  background: var(--gray-superdark);
+}
+
+.light .tab.active {
+  background: #FFF;
+  border-color: #bfc6d6;
+}
+
 .tab {
   background: var(--gray-ultradark);
-  color: var(--font-tertiary-color);
+  color: var(--font-secondary-color);
   border-radius: 100px;
   font-weight: 600;
   font-size: 16px;
@@ -27,11 +43,10 @@
 }
 
 .tab.active {
-  color: black;
-  background: white;
+  color: var(--font-color);
 }
 
-.tabs > div {
+.tabs>div {
   cursor: pointer;
 }
 
@@ -42,5 +57,5 @@
 }
 
 .tab:hover {
-  border-color: var(--font-color);
+  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
 }

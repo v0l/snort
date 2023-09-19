@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border: 1px solid var(--gray-superdark);
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+  border-top: none;
 }
 
 .profile .banner {
@@ -17,12 +19,14 @@
   display: flex;
   align-items: center;
   align-self: flex-end;
+  gap: 8px;
 }
 
 .profile .icon-actions {
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 8px;
 }
 
 .profile .profile-actions button:not(:last-child) {
@@ -39,6 +43,7 @@
     max-width: 720px;
     height: 280px;
   }
+
   .profile .profile-actions button.icon:not(:last-child) {
     margin-right: 2px;
   }
@@ -58,23 +63,23 @@
   white-space: pre-wrap;
 }
 
-.details-wrapper > .name > h2 {
+.details-wrapper>.name>h2 {
   margin: 0 0 4px 0;
   font-weight: 600;
   font-size: 21px;
 }
 
-.details-wrapper > .name > .nip05 {
+.details-wrapper>.name>.nip05 {
   font-size: 15px;
 }
 
-.profile-wrapper > .avatar-wrapper {
+.profile-wrapper>.avatar-wrapper {
   z-index: 1;
   display: flex;
   justify-content: space-between;
 }
 
-.profile-wrapper > .avatar-wrapper .avatar {
+.profile-wrapper>.avatar-wrapper .avatar {
   width: 100px;
   height: 100px;
   background-image: var(--img-url);
@@ -87,7 +92,7 @@
 }
 
 .profile .about {
-  color: var(--font-secondary-color);
+  color: var(--font-color);
   font-size: 16px;
   line-height: 26px;
 }
@@ -138,6 +143,7 @@
 .profile .website a {
   text-decoration: none;
 }
+
 .profile .website a:hover {
   text-decoration: underline;
 }
@@ -205,6 +211,7 @@
 .profile .nip05 .nick {
   display: unset;
 }
+
 .profile .nip05 .domain {
   display: unset;
 }

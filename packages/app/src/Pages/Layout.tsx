@@ -93,7 +93,7 @@ export default function Layout() {
 
       {!shouldHideNoteCreator && (
         <>
-          <button className="note-create-button" onClick={handleNoteCreatorButtonClick}>
+          <button className="primary note-create-button" onClick={handleNoteCreatorButtonClick}>
             <Icon name="plus" size={16} />
           </button>
           <NoteCreator />
