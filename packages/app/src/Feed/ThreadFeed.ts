@@ -1,101 +1,48 @@
 import { useEffect, useMemo, useState } from "react";
-import { u256, EventKind, NostrLink, FlatNoteStore, RequestBuilder, NostrPrefix } from "@snort/system";
+import { EventKind, NostrLink, RequestBuilder, NoteCollection } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
-import { appendDedupe } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
+import { useReactions } from "./FeedReactions";
 
-interface RelayTaggedEventId {
-  id: u256;
-  relay?: string;
-}
 export default function useThreadFeed(link: NostrLink) {
-  const [trackingEvents, setTrackingEvent] = useState<Array<RelayTaggedEventId>>([]);
-  const [trackingATags, setTrackingATags] = useState<string[]>([]);
-  const [allEvents, setAllEvents] = useState<Array<RelayTaggedEventId>>([]);
+  const [allEvents, setAllEvents] = useState<Array<NostrLink>>([]);
   const pref = useLogin().preferences;
 
   const sub = useMemo(() => {
-    const sub = new RequestBuilder(`thread:${link.id.substring(0, 8)}`);
+    const sub = new RequestBuilder(`thread:${link.id}`);
     sub.withOptions({
       leaveOpen: true,
     });
-    if (trackingEvents.length > 0) {
-      for (const te of trackingEvents) {
-        const fTracking = sub.withFilter();
-        fTracking.ids([te.id]);
-        if (te.relay) {
-          fTracking.relay(te.relay);
-        }
-      }
-    }
+    sub.withFilter()
+      .kinds([EventKind.TextNote])
+      .link(link);
     if (allEvents.length > 0) {
-      sub
+      const f = sub
         .withFilter()
-        .kinds(
-          pref.enableReactions
-            ? [EventKind.Reaction, EventKind.TextNote, EventKind.Repost, EventKind.ZapReceipt]
-            : [EventKind.TextNote, EventKind.ZapReceipt, EventKind.Repost],
-        )
-        .tag(
-          "e",
-          allEvents.map(a => a.id),
-        );
-    }
-    if (trackingATags.length > 0) {
-      const parsed = trackingATags.map(a => a.split(":"));
-      sub
-        .withFilter()
-        .kinds(parsed.map(a => Number(a[0])))
-        .authors(parsed.map(a => a[1]))
-        .tag(
-          "d",
-          parsed.map(a => a[2]),
-        );
-      sub.withFilter().tag("a", trackingATags);
+        .kinds([EventKind.TextNote]);
+      allEvents.forEach(x => f.replyToLink(x));
     }
     return sub;
-  }, [trackingEvents, trackingATags, allEvents, pref]);
+  }, [allEvents.length, pref]);
 
-  const store = useRequestBuilder(FlatNoteStore, sub);
-
-  useEffect(() => {
-    if (link.type === NostrPrefix.Address) {
-      setTrackingATags([`${link.kind}:${link.author}:${link.id}`]);
-    } else {
-      const lnk = {
-        id: link.id,
-        relay: link.relays?.[0],
-      };
-      setTrackingEvent([lnk]);
-      setAllEvents([lnk]);
-    }
-  }, [link.id]);
+  const store = useRequestBuilder(NoteCollection, sub);
 
   useEffect(() => {
     if (store.data) {
       const mainNotes = store.data?.filter(a => a.kind === EventKind.TextNote || a.kind === EventKind.Polls) ?? [];
-
-      const eTags = mainNotes
-        .map(a =>
-          a.tags
-            .filter(b => b[0] === "e")
-            .map(b => {
-              return {
-                id: b[1],
-                relay: b[2],
-              };
-            }),
-        )
-        .flat();
-      const eTagsMissing = eTags.filter(a => !mainNotes.some(b => b.id === a.id));
-      setTrackingEvent(s => appendDedupe(s, eTagsMissing));
-      setAllEvents(s => appendDedupe(s, eTags));
-
-      const aTags = mainNotes.map(a => a.tags.filter(b => b[0] === "a").map(b => b[1])).flat();
-      setTrackingATags(s => appendDedupe(s, aTags));
+      const links = mainNotes.map(a => [
+        NostrLink.fromEvent(a), 
+        ...a.tags.filter(a => a[0] === "e" || a[0] === "a").map(v => NostrLink.fromTag(v))
+      ]).flat();
+      setAllEvents(links);
     }
-  }, [store]);
+  }, [store.data?.length]);
 
-  return store;
+  const reactions = useReactions(`thread:${link.id}:reactions`, allEvents);
+
+  return {
+    thread: store.data ?? [],
+    reactions: reactions.data ?? [],
+  };
 }

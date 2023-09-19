@@ -25,19 +25,19 @@ export const ThreadContext = createContext({} as ThreadContext);
 export function ThreadContextWrapper({ link, children }: { link: NostrLink; children?: ReactNode }) {
   const location = useLocation();
   const [currentId, setCurrentId] = useState(link.id);
-  const thread = useThreadFeed(link);
+  const feed = useThreadFeed(link);
 
   const chains = useMemo(() => {
     const chains = new Map<u256, Array<TaggedNostrEvent>>();
-    if (thread.data) {
-      thread.data
+    if (feed.thread) {
+      feed.thread
         ?.sort((a, b) => b.created_at - a.created_at)
         .forEach(v => {
           const t = EventExt.extractThread(v);
           let replyTo = t?.replyTo?.value ?? t?.root?.value;
           if (t?.root?.key === "a" && t?.root?.value) {
             const parsed = t.root.value.split(":");
-            replyTo = thread.data?.find(
+            replyTo = feed.thread?.find(
               a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2],
             )?.id;
           }
@@ -51,12 +51,12 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
         });
     }
     return chains;
-  }, [thread.data]);
+  }, [feed.thread]);
 
   // Root is the parent of the current note or the current note if its a root note or the root of the thread
   const root = useMemo(() => {
     const currentNote =
-      thread.data?.find(
+    feed.thread?.find(
         ne =>
           ne.id === currentId ||
           (link.type === NostrPrefix.Address && findTag(ne, "d") === currentId && ne.pubkey === link.author),
@@ -74,16 +74,16 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
       if (replyTo) {
         if (replyTo.key === "a" && replyTo.value) {
           const parsed = replyTo.value.split(":");
-          return thread.data?.find(
+          return feed.thread?.find(
             a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2],
           );
         }
         if (replyTo.value) {
-          return thread.data?.find(a => a.id === replyTo.value);
+          return feed.thread?.find(a => a.id === replyTo.value);
         }
       }
 
-      const possibleRoots = thread.data?.filter(a => {
+      const possibleRoots = feed.thread?.filter(a => {
         const thread = EventExt.extractThread(a);
         return isRoot(thread);
       });
@@ -98,14 +98,14 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
         }
       }
     }
-  }, [thread.data, currentId, location]);
+  }, [feed.thread, currentId, location]);
 
   const ctxValue = useMemo(() => {
     return {
       current: currentId,
       root,
       chains,
-      data: thread.data,
+      data: feed.reactions,
       setCurrent: v => setCurrentId(v),
     } as ThreadContext;
   }, [root, chains]);
