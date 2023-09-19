@@ -2,7 +2,7 @@ import * as utils from "@noble/curves/abstract/utils";
 import { bech32 } from "@scure/base";
 import { HexKey } from "./nostr";
 
-export enum NostrPrefix {
+export const enum NostrPrefix {
   PublicKey = "npub",
   PrivateKey = "nsec",
   Note = "note",

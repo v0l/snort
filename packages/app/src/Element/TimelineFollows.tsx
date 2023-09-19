@@ -1,7 +1,7 @@
 import "./Timeline.css";
 import { ReactNode, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
 import { FormattedMessage } from "react-intl";
-import { TaggedNostrEvent, EventKind, u256, NostrEvent } from "@snort/system";
+import { TaggedNostrEvent, EventKind, u256, NostrEvent, NostrLink } from "@snort/system";
 import { unixNow } from "@snort/shared";
 import { SnortContext } from "@snort/system-react";
 import { useInView } from "react-intersection-observer";
@@ -36,7 +36,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   );
   const reactions = useReactions(
     "follows-feed-reactions",
-    feed.map(a => a.id),
+    feed.map(a => NostrLink.fromEvent(a)),
   );
   const system = useContext(SnortContext);
   const login = useLogin();

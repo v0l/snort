@@ -11,8 +11,7 @@ import {
   Lists,
   EventExt,
   parseZap,
-  tagToNostrLink,
-  createNostrLinkToEvent,
+  NostrLink
 } from "@snort/system";
 
 import { System } from "index";
@@ -47,9 +46,9 @@ import Reactions from "Element/Reactions";
 import { ZapGoal } from "Element/ZapGoal";
 import NoteReaction from "Element/NoteReaction";
 import ProfilePreview from "Element/ProfilePreview";
+import { ProxyImg } from "Element/ProxyImg";
 
 import messages from "./messages";
-import { ProxyImg } from "./ProxyImg";
 
 export interface NoteProps {
   data: TaggedNostrEvent;
@@ -299,7 +298,7 @@ export function NoteInner(props: NoteProps) {
       return;
     }
 
-    const link = createNostrLinkToEvent(eTarget);
+    const link = NostrLink.fromEvent(eTarget);
     // detect cmd key and open in new tab
     if (e.metaKey) {
       window.open(`/e/${link.encode()}`, "_blank");
@@ -319,7 +318,7 @@ export function NoteInner(props: NoteProps) {
     const maxMentions = 2;
     const replyTo = thread?.replyTo ?? thread?.root;
     const replyLink = replyTo
-      ? tagToNostrLink(
+      ? NostrLink.fromTag(
           [replyTo.key, replyTo.value ?? "", replyTo.relay ?? "", replyTo.marker ?? ""].filter(a => a.length > 0),
         )
       : undefined;

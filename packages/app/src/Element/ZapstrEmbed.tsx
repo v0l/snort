@@ -1,6 +1,6 @@
 import "./ZapstrEmbed.css";
 import { Link } from "react-router-dom";
-import { encodeTLV, NostrPrefix, NostrEvent } from "@snort/system";
+import { NostrEvent, NostrLink } from "@snort/system";
 
 import { ProxyImg } from "Element/ProxyImg";
 import ProfileImage from "Element/ProfileImage";
@@ -12,13 +12,7 @@ export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
   const subject = ev.tags.find(a => a[0] === "subject");
   const refPersons = ev.tags.filter(a => a[0] === "p");
 
-  const link = encodeTLV(
-    NostrPrefix.Address,
-    ev.tags.find(a => a[0] === "d")?.[1] ?? "",
-    undefined,
-    ev.kind,
-    ev.pubkey,
-  );
+  const link = NostrLink.fromEvent(ev).encode();
   return (
     <>
       <div className="flex zapstr mb10 card">

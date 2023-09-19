@@ -7,7 +7,6 @@ import {
   NostrLink,
   NostrPrefix,
   TaggedNostrEvent,
-  createNostrLink,
   parseZap,
 } from "@snort/system";
 import { unwrap } from "@snort/shared";
@@ -33,15 +32,15 @@ function notificationContext(ev: TaggedNostrEvent) {
       const aTag = findTag(ev, "a");
       if (aTag) {
         const [kind, author, d] = aTag.split(":");
-        return createNostrLink(NostrPrefix.Address, d, undefined, Number(kind), author);
+        return new NostrLink(NostrPrefix.Address, d, Number(kind), author);
       }
       const eTag = findTag(ev, "e");
       if (eTag) {
-        return createNostrLink(NostrPrefix.Event, eTag);
+        return new NostrLink(NostrPrefix.Event, eTag);
       }
       const pTag = ev.tags.filter(a => a[0] === "p").slice(-1)?.[0];
       if (pTag) {
-        return createNostrLink(NostrPrefix.PublicKey, pTag[1]);
+        return new NostrLink(NostrPrefix.PublicKey, pTag[1]);
       }
       break;
     }
@@ -50,16 +49,16 @@ function notificationContext(ev: TaggedNostrEvent) {
       const thread = EventExt.extractThread(ev);
       const tag = unwrap(thread?.replyTo ?? thread?.root ?? { value: ev.id, key: "e" });
       if (tag.key === "e") {
-        return createNostrLink(NostrPrefix.Event, unwrap(tag.value));
+        return new NostrLink(NostrPrefix.Event, unwrap(tag.value));
       } else if (tag.key === "a") {
         const [kind, author, d] = unwrap(tag.value).split(":");
-        return createNostrLink(NostrPrefix.Address, d, undefined, Number(kind), author);
+        return new NostrLink(NostrPrefix.Address, d, Number(kind), author);
       } else {
         throw new Error("Unknown thread context");
       }
     }
     case EventKind.TextNote: {
-      return createNostrLink(NostrPrefix.Note, ev.id);
+      return new NostrLink(NostrPrefix.Note, ev.id);
     }
   }
 }

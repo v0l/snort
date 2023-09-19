@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, Outlet, RouteObject, useParams } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { unixNow } from "@snort/shared";
+import { NostrLink } from "@snort/system";
 
 import Timeline from "Element/Timeline";
 import { System } from "index";
@@ -141,16 +142,9 @@ export const NotesTab = () => {
     <>
       <FollowsHint />
       <TaskList />
-      <TimelineFollows
-        postsOnly={true}
-        noteOnClick={
-          deckContext
-            ? ev => {
-                deckContext.setThread(ev.id);
-              }
-            : undefined
-        }
-      />
+      <TimelineFollows postsOnly={true} noteOnClick={deckContext ? (ev) => {
+        deckContext.setThread(NostrLink.fromEvent(ev));
+      } : undefined} />
     </>
   );
 };

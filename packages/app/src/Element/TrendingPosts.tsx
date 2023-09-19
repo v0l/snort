@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NostrEvent, TaggedNostrEvent } from "@snort/system";
+import { NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
 
 import PageSpinner from "Element/PageSpinner";
 import Note from "Element/Note";
@@ -8,7 +8,7 @@ import { useReactions } from "Feed/FeedReactions";
 
 export default function TrendingNotes() {
   const [posts, setPosts] = useState<Array<NostrEvent>>();
-  const related = useReactions("trending", posts?.map(a => a.id) ?? []);
+  const related = useReactions("trending", posts?.map(a => NostrLink.fromEvent(a)) ?? []);
 
   async function loadTrendingNotes() {
     const api = new NostrBandApi();

@@ -2,7 +2,7 @@ import React, { HTMLProps, useContext, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
-import { TaggedNostrEvent, ParsedZap, countLeadingZeros, createNostrLinkToEvent } from "@snort/system";
+import { TaggedNostrEvent, ParsedZap, countLeadingZeros, NostrLink } from "@snort/system";
 import { SnortContext, useUserProfile } from "@snort/system-react";
 
 import { formatShort } from "Number";
@@ -120,7 +120,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           name: getDisplayName(author, ev.pubkey),
           zap: {
             pubkey: ev.pubkey,
-            event: createNostrLinkToEvent(ev),
+            event: NostrLink.fromEvent(ev),
           },
         } as ZapTarget,
       ];

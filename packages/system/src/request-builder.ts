@@ -1,9 +1,9 @@
 import debug from "debug";
 import { v4 as uuid } from "uuid";
-import { appendDedupe, sanitizeRelayUrl, unixNowMs } from "@snort/shared";
+import { appendDedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
 
 import EventKind from "./event-kind";
-import { SystemInterface } from "index";
+import { NostrLink, NostrPrefix, SystemInterface } from "index";
 import { ReqFilter, u256, HexKey } from "./nostr";
 import { RelayCache, splitByWriteRelays, splitFlatByWriteRelays } from "./gossip-model";
 
@@ -227,6 +227,30 @@ export class RequestFilterBuilder {
     if (!keyword) return this;
     this.#filter.search = keyword;
     return this;
+  }
+
+  /**
+   * Get event from link
+   */
+  link(link: NostrLink) {
+    if(link.type === NostrPrefix.Address) {
+      return this.tag("d", [link.id])
+        .kinds([unwrap(link.kind)])
+        .authors([unwrap(link.author)]);
+    } else {
+      return this.ids([link.id]);
+    }
+  }
+
+  /**
+   * Get replies to link with e/a tags
+   */
+  replyToLink(link: NostrLink) {
+    if(link.type === NostrPrefix.Address) {
+      return this.tag("a", [`${link.kind}:${link.author}:${link.id}`]);
+    } else {
+      return this.tag("e", [link.id]);
+    }
   }
 
   /**

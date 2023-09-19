@@ -1,5 +1,5 @@
 import "./LiveStreams.css";
-import { NostrEvent, NostrPrefix, encodeTLV } from "@snort/system";
+import { NostrEvent, NostrLink } from "@snort/system";
 import { findTag } from "SnortUtils";
 import { CSSProperties, useMemo } from "react";
 import { Link } from "react-router-dom";
@@ -32,7 +32,7 @@ function LiveStreamEvent({ ev }: { ev: NostrEvent }) {
   const image = findTag(ev, "image");
   const status = findTag(ev, "status");
 
-  const link = encodeTLV(NostrPrefix.Address, findTag(ev, "d") ?? "", undefined, ev.kind, ev.pubkey);
+  const link = NostrLink.fromEvent(ev).encode();
   const imageProxy = proxy(image ?? "");
 
   return (

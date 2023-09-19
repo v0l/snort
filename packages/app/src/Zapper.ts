@@ -3,9 +3,7 @@ import {
   EventPublisher,
   NostrEvent,
   NostrLink,
-  SystemInterface,
-  createNostrLinkToEvent,
-  linkToEventTag,
+  SystemInterface
 } from "@snort/system";
 import { generateRandomKey } from "Login";
 import { isHex } from "SnortUtils";
@@ -63,7 +61,7 @@ export class Zapper {
             weight: Number(v[3] ?? 0),
             zap: {
               pubkey: v[1],
-              event: createNostrLinkToEvent(ev),
+              event: NostrLink.fromEvent(ev),
             },
           } as ZapTarget;
         } else {
@@ -74,7 +72,7 @@ export class Zapper {
             weight: 1,
             zap: {
               pubkey: ev.pubkey,
-              event: createNostrLinkToEvent(ev),
+              event: NostrLink.fromEvent(ev),
             },
           } as ZapTarget;
         }
@@ -103,7 +101,7 @@ export class Zapper {
           t.zap && svc.canZap
             ? await pub?.zap(toSend * 1000, t.zap.pubkey, relays, undefined, t.memo, eb => {
                 if (t.zap?.event) {
-                  const tag = linkToEventTag(t.zap.event);
+                  const tag = t.zap.event.toEventTag();
                   if (tag) {
                     eb.tag(tag);
                   }

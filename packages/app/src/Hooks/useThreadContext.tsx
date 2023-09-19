@@ -1,7 +1,6 @@
 import { unwrap } from "@snort/shared";
 import {
   EventExt,
-  EventKind,
   NostrLink,
   NostrPrefix,
   TaggedNostrEvent,
@@ -32,8 +31,7 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
     const chains = new Map<u256, Array<TaggedNostrEvent>>();
     if (thread.data) {
       thread.data
-        ?.filter(a => a.kind === EventKind.TextNote)
-        .sort((a, b) => b.created_at - a.created_at)
+        ?.sort((a, b) => b.created_at - a.created_at)
         .forEach(v => {
           const t = EventExt.extractThread(v);
           let replyTo = t?.replyTo?.value ?? t?.root?.value;

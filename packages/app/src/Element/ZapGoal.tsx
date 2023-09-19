@@ -1,6 +1,6 @@
 import "./ZapGoal.css";
 import { CSSProperties, useState } from "react";
-import { NostrEvent, NostrPrefix, createNostrLink } from "@snort/system";
+import { NostrEvent, NostrLink } from "@snort/system";
 import useZapsFeed from "Feed/ZapsFeed";
 import { formatShort } from "Number";
 import { findTag } from "SnortUtils";
@@ -10,7 +10,7 @@ import { Zapper } from "Zapper";
 
 export function ZapGoal({ ev }: { ev: NostrEvent }) {
   const [zap, setZap] = useState(false);
-  const zaps = useZapsFeed(createNostrLink(NostrPrefix.Note, ev.id));
+  const zaps = useZapsFeed(NostrLink.fromEvent(ev));
   const target = Number(findTag(ev, "amount"));
   const amount = zaps.reduce((acc, v) => (acc += v.amount * 1000), 0);
   const progress = 100 * (amount / target);

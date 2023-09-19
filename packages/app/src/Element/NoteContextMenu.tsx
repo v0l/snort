@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from "react-intl";
-import { HexKey, Lists, NostrPrefix, TaggedNostrEvent, encodeTLV } from "@snort/system";
+import { HexKey, Lists, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -56,7 +56,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   }
 
   async function share() {
-    const link = encodeTLV(NostrPrefix.Event, ev.id, ev.relays);
+    const link = NostrLink.fromEvent(ev).encode();
     const url = `${window.location.protocol}//${window.location.host}/e/${link}`;
     if ("share" in window.navigator) {
       await window.navigator.share({
@@ -92,7 +92,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   }
 
   async function copyId() {
-    const link = encodeTLV(NostrPrefix.Event, ev.id, ev.relays);
+    const link = NostrLink.fromEvent(ev).encode();
     await navigator.clipboard.writeText(link);
   }
 

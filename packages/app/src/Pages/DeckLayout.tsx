@@ -2,7 +2,7 @@ import "./Deck.css";
 import { CSSProperties, createContext, useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
-import { NostrPrefix, createNostrLink } from "@snort/system";
+import { NostrLink } from "@snort/system";
 
 import { DeckNav } from "Element/Deck/Nav";
 import useLoginFeed from "Feed/LoginFeed";
@@ -25,8 +25,8 @@ import useLogin from "Hooks/useLogin";
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 
 interface DeckScope {
-  thread?: string;
-  setThread: (e?: string) => void;
+  thread?: NostrLink,
+  setThread: (e?: NostrLink) => void
 }
 
 export const DeckContext = createContext<DeckScope | undefined>(undefined);
@@ -35,7 +35,7 @@ export function SnortDeckLayout() {
   const login = useLogin();
   const navigate = useNavigate();
   const [deckScope, setDeckScope] = useState<DeckScope>({
-    setThread: (e?: string) => setDeckScope(s => ({ ...s, thread: e })),
+    setThread: (e?: NostrLink) => setDeckScope(s => ({ ...s, thread: e }))
   });
 
   useLoginFeed();
@@ -71,7 +71,7 @@ export function SnortDeckLayout() {
         {deckScope.thread && (
           <>
             <Modal onClose={() => deckScope.setThread(undefined)} className="thread-overlay">
-              <ThreadContextWrapper link={createNostrLink(NostrPrefix.Note, deckScope.thread)}>
+              <ThreadContextWrapper link={deckScope.thread}>
                 <SpotlightFromThread onClose={() => deckScope.setThread(undefined)} />
                 <div>
                   <Thread onBack={() => deckScope.setThread(undefined)} />
@@ -128,7 +128,7 @@ function ArticlesCol() {
   );
 }
 
-function MediaCol({ setThread }: { setThread: (e: string) => void }) {
+function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
   const { proxy } = useImgProxy();
   return (
     <div>
@@ -158,7 +158,7 @@ function MediaCol({ setThread }: { setThread: (e: string) => void }) {
                     "--img": `url(${proxy(images[0].content)})`,
                   } as CSSProperties
                 }
-                onClick={() => setThread(e.id)}></div>
+                onClick={() => setThread(NostrLink.fromEvent(e))}></div>
             );
           }}
         />

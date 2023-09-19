@@ -1,7 +1,7 @@
 import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { encodeTLV, EventKind, NostrPrefix, TaggedNostrEvent, EventBuilder, tryParseNostrLink } from "@snort/system";
+import { EventKind, NostrPrefix, TaggedNostrEvent, EventBuilder, tryParseNostrLink, NostrLink } from "@snort/system";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Feed/EventPublisher";
@@ -172,7 +172,7 @@ export function NoteCreator() {
       if (file) {
         const rx = await uploader.upload(file, file.name);
         if (rx.header) {
-          const link = `nostr:${encodeTLV(NostrPrefix.Event, rx.header.id, undefined, rx.header.kind)}`;
+          const link = `nostr:${new NostrLink(NostrPrefix.Event, rx.header.id, rx.header.kind).encode()}`;
           dispatch(setNote(`${note ? `${note}\n` : ""}${link}`));
           dispatch(setOtherEvents([...otherEvents, rx.header]));
         } else if (rx.url) {

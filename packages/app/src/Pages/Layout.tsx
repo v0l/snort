@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
-import { NostrPrefix, createNostrLink, tryParseNostrLink } from "@snort/system";
+import { NostrLink, NostrPrefix, tryParseNostrLink } from "@snort/system";
 
 import messages from "./messages";
 
@@ -125,7 +125,7 @@ const AccountHeader = () => {
         const [handle, domain] = search.split("@");
         const pk = await fetchNip05Pubkey(handle, domain);
         if (pk) {
-          navigate(`/${createNostrLink(NostrPrefix.PublicKey, pk).encode()}`);
+          navigate(`/${new NostrLink(NostrPrefix.PublicKey, pk).encode()}`);
           return;
         }
       }
