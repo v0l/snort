@@ -37,13 +37,11 @@ export class ProfileLoaderService {
    * Request profile metadata for a set of pubkeys
    */
   TrackMetadata(pk: HexKey | Array<HexKey>) {
-    const bufferNow = [];
     for (const p of Array.isArray(pk) ? pk : [pk]) {
-      if (p.length === 64 && this.#wantsMetadata.add(p)) {
-        bufferNow.push(p);
+      if (p.length === 64) {
+        this.#wantsMetadata.add(p)
       }
     }
-    this.#cache.buffer(bufferNow);
   }
 
   /**

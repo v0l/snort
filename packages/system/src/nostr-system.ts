@@ -5,7 +5,7 @@ import { NostrEvent, TaggedNostrEvent } from "./nostr";
 import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot } from "./connection";
 import { Query } from "./query";
 import { NoteCollection, NoteStore, NoteStoreSnapshotData } from "./note-collection";
-import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
+import { BuiltRawReqFilter, RequestBuilder, RequestStrategy } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
   MetadataCache,
@@ -22,6 +22,7 @@ import {
 import { EventsCache } from "./cache/events";
 import { RelayCache } from "./gossip-model";
 import { QueryOptimizer, DefaultQueryOptimizer } from "./query-optimizer";
+import { trimFilters } from "./request-trim";
 
 /**
  * Manages nostr content retrieval system
@@ -295,20 +296,22 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         if (cacheResults.length > 0) {
           const resultIds = new Set(cacheResults.map(a => a.id));
           f.ids = f.ids.filter(a => !resultIds.has(a));
-          q.feed.add(cacheResults as Array<TaggedNostrEvent>);
+          q.insertCompletedTrace({
+            filters:[{...f, ids: [...resultIds]}],
+            strategy: RequestStrategy.ExplicitRelays,
+            relay: ""
+          }, cacheResults as Array<TaggedNostrEvent>);
         }
       }
     }
 
     // check for empty filters
-    qSend.filters = qSend.filters.filter(a =>
-      Object.values(a)
-        .filter(v => Array.isArray(v))
-        .every(b => (b as Array<string | number>).length > 0),
-    );
-    if (qSend.filters.length === 0) {
+    const fNew = trimFilters(qSend.filters);
+    if (fNew.length === 0) {
       return;
     }
+    qSend.filters = fNew;
+
     if (qSend.relay) {
       this.#log("Sending query to %s %O", qSend.relay, qSend);
       const s = this.#sockets.get(qSend.relay);

@@ -197,6 +197,28 @@ export class Query implements QueryBase {
     this.#stopCheckTraces();
   }
 
+  /**
+   * Insert a new trace as a placeholder 
+   */
+  insertCompletedTrace(subq: BuiltRawReqFilter, data: Readonly<Array<TaggedNostrEvent>>) {
+    const qt = new QueryTrace(
+      "",
+      subq.filters,
+      "",
+      () => { 
+        // nothing to close
+      },
+      () => {
+        // nothing to progress
+      },
+    );
+    qt.sentToRelay();
+    qt.gotEose();
+    this.#tracing.push(qt);
+    this.feed.add(data);
+    return qt;
+  }
+
   sendToRelay(c: Connection, subq: BuiltRawReqFilter) {
     if (!this.#canSendQuery(c, subq)) {
       return;

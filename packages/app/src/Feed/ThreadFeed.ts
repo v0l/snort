@@ -2,25 +2,26 @@ import { useEffect, useMemo, useState } from "react";
 import { EventKind, NostrLink, RequestBuilder, NoteCollection } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
-import useLogin from "Hooks/useLogin";
 import { useReactions } from "./FeedReactions";
 
 export default function useThreadFeed(link: NostrLink) {
   const [allEvents, setAllEvents] = useState<Array<NostrLink>>([]);
-  const pref = useLogin().preferences;
 
   const sub = useMemo(() => {
-    const sub = new RequestBuilder(`thread:${link.id}`);
+    const sub = new RequestBuilder(`thread:${link.id.slice(0, 12)}`);
     sub.withOptions({
       leaveOpen: true,
     });
-    sub.withFilter().kinds([EventKind.TextNote]).link(link);
-    if (allEvents.length > 0) {
-      const f = sub.withFilter().kinds([EventKind.TextNote]);
-      allEvents.forEach(x => f.replyToLink(x));
-    }
+    sub
+      .withFilter()
+      .kinds([EventKind.TextNote])
+      .link(link)
+      .replyToLink(link);
+    allEvents.forEach(x => {
+      sub.withFilter().kinds([EventKind.TextNote]).link(x).replyToLink(x);
+    });
     return sub;
-  }, [allEvents.length, pref]);
+  }, [allEvents.length]);
 
   const store = useRequestBuilder(NoteCollection, sub);
 
@@ -37,7 +38,7 @@ export default function useThreadFeed(link: NostrLink) {
     }
   }, [store.data?.length]);
 
-  const reactions = useReactions(`thread:${link.id}:reactions`, allEvents);
+  const reactions = useReactions(`thread:${link.id.slice(0, 12)}:reactions`, allEvents);
 
   return {
     thread: store.data ?? [],

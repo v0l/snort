@@ -27,18 +27,20 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
         ?.sort((a, b) => b.created_at - a.created_at)
         .forEach(v => {
           const t = EventExt.extractThread(v);
-          let replyTo = t?.replyTo?.value ?? t?.root?.value;
-          if (t?.root?.key === "a" && t?.root?.value) {
-            const parsed = t.root.value.split(":");
-            replyTo = feed.thread?.find(
-              a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2],
-            )?.id;
-          }
-          if (replyTo) {
-            if (!chains.has(replyTo)) {
-              chains.set(replyTo, [v]);
-            } else {
-              unwrap(chains.get(replyTo)).push(v);
+          if (t) {
+            let replyTo = t.replyTo?.value ?? t.root?.value;
+            if (t.root?.key === "a" && t.root?.value) {
+              const parsed = t.root.value.split(":");
+              replyTo = feed.thread?.find(
+                a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2],
+              )?.id;
+            }
+            if (replyTo) {
+              if (!chains.has(replyTo)) {
+                chains.set(replyTo, [v]);
+              } else {
+                unwrap(chains.get(replyTo)).push(v);
+              }
             }
           }
         });
@@ -91,7 +93,7 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
         }
       }
     }
-  }, [feed.thread, currentId, location]);
+  }, [feed.thread.length, currentId, location]);
 
   const ctxValue = useMemo(() => {
     return {

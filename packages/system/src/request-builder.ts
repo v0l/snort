@@ -113,7 +113,7 @@ export class RequestBuilder {
 
     const diff = system.QueryOptimizer.getDiff(prev, this.buildRaw());
     const ts = unixNowMs() - start;
-    this.#log("buildDiff %s %d ms", this.id, ts);
+    this.#log("buildDiff %s %d ms +%d %O=>%O", this.id, ts, diff.length, prev, this.buildRaw());
     if (diff.length > 0) {
       return splitFlatByWriteRelays(system.RelayCache, diff).map(a => {
         return {
@@ -146,7 +146,7 @@ export class RequestBuilder {
 
     const filtersSquashed = [...relayMerged.values()].map(a => {
       return {
-        filters: system.QueryOptimizer.compress(a.flatMap(b => b.filters)),
+        filters: system.QueryOptimizer.flatMerge(a.flatMap(b => b.filters.flatMap(c => system.QueryOptimizer.expandFilter(c)))),
         relay: a[0].relay,
         strategy: a[0].strategy,
       } as BuiltRawReqFilter;
@@ -234,12 +234,15 @@ export class RequestFilterBuilder {
    */
   link(link: NostrLink) {
     if (link.type === NostrPrefix.Address) {
-      return this.tag("d", [link.id])
+      this.tag("d", [link.id])
         .kinds([unwrap(link.kind)])
         .authors([unwrap(link.author)]);
+      link.relays?.forEach(v => this.relay(v));
     } else {
-      return this.ids([link.id]);
+      this.ids([link.id]);
+      link.relays?.forEach(v => this.relay(v));
     }
+    return this;
   }
 
   /**
@@ -247,10 +250,16 @@ export class RequestFilterBuilder {
    */
   replyToLink(link: NostrLink) {
     if (link.type === NostrPrefix.Address) {
-      return this.tag("a", [`${link.kind}:${link.author}:${link.id}`]);
+      this.tag("a", [`${link.kind}:${link.author}:${link.id}`]);
+      link.relays?.forEach(v => this.relay(v));
+    } else if(link.type === NostrPrefix.PublicKey || link.type === NostrPrefix.Profile) {
+      this.tag("p", [link.id]);
+      link.relays?.forEach(v => this.relay(v));
     } else {
-      return this.tag("e", [link.id]);
+      this.tag("e", [link.id]);
+      link.relays?.forEach(v => this.relay(v));
     }
+    return this;
   }
 
   /**
