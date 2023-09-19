@@ -25,8 +25,8 @@ import useLogin from "Hooks/useLogin";
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 
 interface DeckScope {
-  thread?: NostrLink,
-  setThread: (e?: NostrLink) => void
+  thread?: NostrLink;
+  setThread: (e?: NostrLink) => void;
 }
 
 export const DeckContext = createContext<DeckScope | undefined>(undefined);
@@ -35,7 +35,7 @@ export function SnortDeckLayout() {
   const login = useLogin();
   const navigate = useNavigate();
   const [deckScope, setDeckScope] = useState<DeckScope>({
-    setThread: (e?: NostrLink) => setDeckScope(s => ({ ...s, thread: e }))
+    setThread: (e?: NostrLink) => setDeckScope(s => ({ ...s, thread: e })),
   });
 
   useLoginFeed();

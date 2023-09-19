@@ -233,7 +233,7 @@ export class RequestFilterBuilder {
    * Get event from link
    */
   link(link: NostrLink) {
-    if(link.type === NostrPrefix.Address) {
+    if (link.type === NostrPrefix.Address) {
       return this.tag("d", [link.id])
         .kinds([unwrap(link.kind)])
         .authors([unwrap(link.author)]);
@@ -246,7 +246,7 @@ export class RequestFilterBuilder {
    * Get replies to link with e/a tags
    */
   replyToLink(link: NostrLink) {
-    if(link.type === NostrPrefix.Address) {
+    if (link.type === NostrPrefix.Address) {
       return this.tag("a", [`${link.kind}:${link.author}:${link.id}`]);
     } else {
       return this.tag("e", [link.id]);

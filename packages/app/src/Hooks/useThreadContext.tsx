@@ -1,12 +1,5 @@
 import { unwrap } from "@snort/shared";
-import {
-  EventExt,
-  NostrLink,
-  NostrPrefix,
-  TaggedNostrEvent,
-  u256,
-  Thread as ThreadInfo,
-} from "@snort/system";
+import { EventExt, NostrLink, NostrPrefix, TaggedNostrEvent, u256, Thread as ThreadInfo } from "@snort/system";
 import useThreadFeed from "Feed/ThreadFeed";
 import { findTag } from "SnortUtils";
 import { ReactNode, createContext, useMemo, useState } from "react";
@@ -56,7 +49,7 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
   // Root is the parent of the current note or the current note if its a root note or the root of the thread
   const root = useMemo(() => {
     const currentNote =
-    feed.thread?.find(
+      feed.thread?.find(
         ne =>
           ne.id === currentId ||
           (link.type === NostrPrefix.Address && findTag(ne, "d") === currentId && ne.pubkey === link.author),

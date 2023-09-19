@@ -1,10 +1,5 @@
 import { LNURL } from "@snort/shared";
-import {
-  EventPublisher,
-  NostrEvent,
-  NostrLink,
-  SystemInterface
-} from "@snort/system";
+import { EventPublisher, NostrEvent, NostrLink, SystemInterface } from "@snort/system";
 import { generateRandomKey } from "Login";
 import { isHex } from "SnortUtils";
 import { LNWallet, WalletInvoiceState } from "Wallet";
@@ -203,7 +198,7 @@ export class Zapper {
           return svc;
         }
       }
-    }catch {
+    } catch {
       // nothing
     }
   }

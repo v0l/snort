@@ -1,14 +1,6 @@
 import "./Notifications.css";
 import { useEffect, useMemo, useSyncExternalStore } from "react";
-import {
-  EventExt,
-  EventKind,
-  NostrEvent,
-  NostrLink,
-  NostrPrefix,
-  TaggedNostrEvent,
-  parseZap,
-} from "@snort/system";
+import { EventExt, EventKind, NostrEvent, NostrLink, NostrPrefix, TaggedNostrEvent, parseZap } from "@snort/system";
 import { unwrap } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 import { useInView } from "react-intersection-observer";

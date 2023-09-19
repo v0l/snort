@@ -14,13 +14,9 @@ export default function useThreadFeed(link: NostrLink) {
     sub.withOptions({
       leaveOpen: true,
     });
-    sub.withFilter()
-      .kinds([EventKind.TextNote])
-      .link(link);
+    sub.withFilter().kinds([EventKind.TextNote]).link(link);
     if (allEvents.length > 0) {
-      const f = sub
-        .withFilter()
-        .kinds([EventKind.TextNote]);
+      const f = sub.withFilter().kinds([EventKind.TextNote]);
       allEvents.forEach(x => f.replyToLink(x));
     }
     return sub;
@@ -31,10 +27,12 @@ export default function useThreadFeed(link: NostrLink) {
   useEffect(() => {
     if (store.data) {
       const mainNotes = store.data?.filter(a => a.kind === EventKind.TextNote || a.kind === EventKind.Polls) ?? [];
-      const links = mainNotes.map(a => [
-        NostrLink.fromEvent(a), 
-        ...a.tags.filter(a => a[0] === "e" || a[0] === "a").map(v => NostrLink.fromTag(v))
-      ]).flat();
+      const links = mainNotes
+        .map(a => [
+          NostrLink.fromEvent(a),
+          ...a.tags.filter(a => a[0] === "e" || a[0] === "a").map(v => NostrLink.fromTag(v)),
+        ])
+        .flat();
       setAllEvents(links);
     }
   }, [store.data?.length]);

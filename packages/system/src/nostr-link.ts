@@ -8,11 +8,11 @@ export class NostrLink {
     readonly id: string,
     readonly kind?: number,
     readonly author?: string,
-    readonly relays?: Array<string>
-  ) { }
+    readonly relays?: Array<string>,
+  ) {}
 
   encode(): string {
-    if(this.type === NostrPrefix.Note || this.type === NostrPrefix.PrivateKey || this.type === NostrPrefix.PublicKey) {
+    if (this.type === NostrPrefix.Note || this.type === NostrPrefix.PrivateKey || this.type === NostrPrefix.PublicKey) {
       return hexToBech32(this.type, this.id);
     } else {
       return encodeTLV(this.type, this.id, this.relays, this.kind, this.author);
@@ -39,12 +39,12 @@ export class NostrLink {
     } else if (this.type === NostrPrefix.Event || this.type === NostrPrefix.Note) {
       return this.id === ev.id;
     }
-  
+
     return false;
   }
 
   static fromTag(tag: Array<string>) {
-    const relays = tag.length > 2 ? [tag[2]]: undefined;
+    const relays = tag.length > 2 ? [tag[2]] : undefined;
     switch (tag[0]) {
       case "e": {
         return new NostrLink(NostrPrefix.Event, tag[1], undefined, undefined, relays);

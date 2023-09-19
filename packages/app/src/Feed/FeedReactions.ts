@@ -12,19 +12,16 @@ export function useReactions(subId: string, ids: Array<NostrLink>, others?: (rb:
     const aTags = ids.filter(a => a.type === NostrPrefix.Address);
 
     if (aTags.length > 0 || eTags.length > 0) {
-      const f = rb.withFilter()
+      const f = rb
+        .withFilter()
         .kinds(
           pref.enableReactions
             ? [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt]
             : [EventKind.ZapReceipt, EventKind.Repost],
         );
 
-        if(aTags.length > 0) {
-          f.tag("a", aTags.map(v => `${v.kind}:${v.author}:${v.id}`));
-        }
-        if(eTags.length > 0) {
-          f.tag("e", eTags.map(v => v.id));
-        }
+      aTags.forEach(v => f.replyToLink(v));
+      eTags.forEach(v => f.replyToLink(v));
     }
     others?.(rb);
     return rb.numFilters > 0 ? rb : null;

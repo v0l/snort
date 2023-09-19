@@ -3,16 +3,7 @@ import React, { useMemo, useState, ReactNode } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { useIntl, FormattedMessage } from "react-intl";
-import {
-  TaggedNostrEvent,
-  HexKey,
-  EventKind,
-  NostrPrefix,
-  Lists,
-  EventExt,
-  parseZap,
-  NostrLink
-} from "@snort/system";
+import { TaggedNostrEvent, HexKey, EventKind, NostrPrefix, Lists, EventExt, parseZap, NostrLink } from "@snort/system";
 
 import { System } from "index";
 import useEventPublisher from "Feed/EventPublisher";
