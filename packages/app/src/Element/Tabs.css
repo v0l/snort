@@ -20,11 +20,14 @@
 
 }
 
-.light .tab.active {
+.tab.active {
   background: var(--gray-superdark);
 }
 
-
+.light .tab.active {
+  background: #FFF;
+  border-color: #bfc6d6;
+}
 
 .tab {
   background: var(--gray-ultradark);
@@ -40,7 +43,6 @@
 }
 
 .tab.active {
-  background: #FFF;
   color: var(--font-color);
 }
 
