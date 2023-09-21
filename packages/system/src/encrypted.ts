@@ -32,7 +32,7 @@ export class PinEncrypted {
       const key = pbkdf2(sha256, pin, base64.decode(this.#encrypted.salt), PinEncrypted.#opts);
       const ciphertext = base64.decode(this.#encrypted.ciphertext);
       const nonce = base64.decode(this.#encrypted.iv);
-      const plaintext = xchacha20(key, nonce, ciphertext, ciphertext);
+      const plaintext = xchacha20(key, nonce, ciphertext, new Uint8Array(32));
       if(plaintext.length !== 32) throw new InvalidPinError();
       const mac = base64.encode(hmac(sha256, key, plaintext));
       if(mac !== this.#encrypted.mac) throw new InvalidPinError();
@@ -49,7 +49,7 @@ export class PinEncrypted {
       const plaintext = hexToBytes(content);
       const key = pbkdf2(sha256, pin, salt, PinEncrypted.#opts);
       const mac = base64.encode(hmac(sha256, key, plaintext));
-      const ciphertext = xchacha20(key, nonce, plaintext, plaintext);
+      const ciphertext = xchacha20(key, nonce, plaintext, new Uint8Array(32));
       const ret = new PinEncrypted({
         salt: base64.encode(salt),
         ciphertext: base64.encode(ciphertext),
