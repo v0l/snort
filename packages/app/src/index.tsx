@@ -7,7 +7,6 @@ import WasmPath from "@snort/system-query/pkg/system_query_bg.wasm";
 
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import {
   EventPublisher,
@@ -24,7 +23,6 @@ import { SnortContext } from "@snort/system-react";
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
 import { unwrap } from "SnortUtils";
-import Store from "State/Store";
 import Layout from "Pages/Layout";
 import LoginPage from "Pages/LoginPage";
 import ProfilePage from "Pages/ProfilePage";
@@ -218,12 +216,10 @@ export const router = createBrowserRouter([
 const root = ReactDOM.createRoot(unwrap(document.getElementById("root")));
 root.render(
   <StrictMode>
-    <Provider store={Store}>
-      <IntlProvider>
-        <SnortContext.Provider value={System}>
-          <RouterProvider router={router} />
-        </SnortContext.Provider>
-      </IntlProvider>
-    </Provider>
+    <IntlProvider>
+      <SnortContext.Provider value={System}>
+        <RouterProvider router={router} />
+      </SnortContext.Provider>
+    </IntlProvider>
   </StrictMode>,
 );

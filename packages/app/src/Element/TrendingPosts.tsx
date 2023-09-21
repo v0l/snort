@@ -4,7 +4,7 @@ import { NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
 import PageSpinner from "Element/PageSpinner";
 import Note from "Element/Note";
 import NostrBandApi from "External/NostrBand";
-import { useReactions } from "Feed/FeedReactions";
+import { useReactions } from "Feed/Reactions";
 
 export default function TrendingNotes() {
   const [posts, setPosts] = useState<Array<NostrEvent>>();

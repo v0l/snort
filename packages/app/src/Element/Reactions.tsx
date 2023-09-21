@@ -72,7 +72,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
   }, [show]);
 
   return show ? (
-    <Modal className="reactions-modal" onClose={onClose}>
+    <Modal id="reactions" className="reactions-modal" onClose={onClose}>
       <div className="close" onClick={onClose}>
         <Icon name="close" />
       </div>

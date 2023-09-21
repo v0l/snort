@@ -4,7 +4,7 @@ import { unixNowMs } from "@snort/shared";
 
 import { randomSample } from "SnortUtils";
 import Relay from "Element/Relay";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import { System } from "index";
 import useLogin from "Hooks/useLogin";
 import { setRelays } from "Login";

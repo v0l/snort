@@ -1,15 +1,17 @@
-import { HexKey, RelaySettings, EventPublisher } from "@snort/system";
+import { RelaySettings, EventPublisher, PinEncrypted, Nip46Signer, Nip7Signer, PrivateKeySigner } from "@snort/system";
 import { unixNowMs } from "@snort/shared";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
 import { DefaultRelays, SnortPubKey } from "Const";
-import { LoginStore, UserPreferences, LoginSession } from "Login";
+import { LoginStore, UserPreferences, LoginSession, LoginSessionType } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unwrap } from "SnortUtils";
 import { SubscriptionEvent } from "Subscription";
 import { System } from "index";
 import { Chats, FollowsFeed, GiftsCache, Notifications } from "Cache";
+import { PinRequiredError } from "Hooks/useLoginHandler";
+import { Nip7OsSigner } from "./Nip7OsSigner";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
   if (state.relays.timestamp >= createdAt) {
@@ -41,8 +43,8 @@ export function updatePreferences(state: LoginSession, p: UserPreferences) {
   LoginStore.updateSession(state);
 }
 
-export function logout(k: HexKey) {
-  LoginStore.removeSession(k);
+export function logout(id: string) {
+  LoginStore.removeSession(id);
   GiftsCache.clear();
   Notifications.clear();
   FollowsFeed.clear();
@@ -62,7 +64,7 @@ export function clearEntropy(state: LoginSession) {
 /**
  * Generate a new key and login with this generated key
  */
-export async function generateNewLogin() {
+export async function generateNewLogin(pin: string) {
   const ent = generateBip39Entropy();
   const entropy = utils.bytesToHex(ent);
   const privateKey = entropyToPrivateKey(ent);
@@ -88,7 +90,9 @@ export async function generateNewLogin() {
   const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey], newRelays);
   System.BroadcastEvent(ev);
 
-  LoginStore.loginWithPrivateKey(privateKey, entropy, newRelays);
+  const key = PinEncrypted.create(privateKey, pin);
+  key.decrypt(pin);
+  LoginStore.loginWithPrivateKey(key, entropy, newRelays);
 }
 
 export function generateRandomKey() {
@@ -159,5 +163,40 @@ export function addSubscription(state: LoginSession, ...subs: SubscriptionEvent[
   if (newSubs.length !== state.subscriptions.length) {
     state.subscriptions = newSubs;
     LoginStore.updateSession(state);
+  }
+}
+
+export function sessionNeedsPin(l: LoginSession) {
+  return l.type === LoginSessionType.PrivateKey || l.type === LoginSessionType.Nip46;
+}
+
+export function createPublisher(l: LoginSession, pin?: string) {
+  switch (l.type) {
+    case LoginSessionType.PrivateKey: {
+      if(!pin) throw new PinRequiredError();
+      const v = l.privateKeyData instanceof PinEncrypted ? l.privateKeyData : new PinEncrypted(unwrap(l.privateKeyData));
+      v.decrypt(pin);
+      l.privateKeyData = v;
+      return EventPublisher.privateKey(v.value);
+    }
+    case LoginSessionType.Nip46: {
+      if(!pin) throw new PinRequiredError();
+      const v = l.privateKeyData instanceof PinEncrypted ? l.privateKeyData : new PinEncrypted(unwrap(l.privateKeyData));
+      v.decrypt(pin);
+      l.privateKeyData = v;
+
+      const relayArgs = (l.remoteSignerRelays ?? []).map(a => `relay=${encodeURIComponent(a)}`);
+      const inner = new PrivateKeySigner(v.value);
+      const nip46 = new Nip46Signer(`bunker://${unwrap(l.publicKey)}?${[...relayArgs].join("&")}`, inner);
+      return new EventPublisher(nip46, unwrap(l.publicKey));
+    }
+    case LoginSessionType.Nip7os: {
+      return new EventPublisher(new Nip7OsSigner(), unwrap(l.publicKey));
+    }
+    default: {
+      if (l.publicKey) {
+        return new EventPublisher(new Nip7Signer(), l.publicKey);
+      }
+    }
   }
 }

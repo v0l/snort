@@ -326,14 +326,14 @@ export default function ProfilePage() {
           targets={
             lnurl?.lnurl && id
               ? [
-                  {
-                    type: "lnurl",
-                    value: lnurl?.lnurl,
-                    weight: 1,
-                    name: user?.display_name || user?.name,
-                    zap: { pubkey: id },
-                  } as ZapTarget,
-                ]
+                {
+                  type: "lnurl",
+                  value: lnurl?.lnurl,
+                  weight: 1,
+                  name: user?.display_name || user?.name,
+                  zap: { pubkey: id },
+                } as ZapTarget,
+              ]
               : undefined
           }
           show={showLnQr}
@@ -447,7 +447,7 @@ export default function ProfilePage() {
           <Icon name="qr" size={16} />
         </IconButton>
         {showProfileQr && (
-          <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
+          <Modal id="profile-qr" className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id} />
             <QrCode data={link} className="m10 align-center" />
             <Copy text={link} className="align-center" />

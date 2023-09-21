@@ -9,7 +9,7 @@ export interface HookFilter<TSnapshot> {
  */
 export abstract class ExternalStore<TSnapshot> {
   #hooks: Array<HookFilter<TSnapshot>> = [];
-  #snapshot: Readonly<TSnapshot> = {} as Readonly<TSnapshot>;
+  #snapshot: TSnapshot = {} as TSnapshot;
   #changed = true;
 
   hook(fn: HookFn<TSnapshot>) {
@@ -35,7 +35,9 @@ export abstract class ExternalStore<TSnapshot> {
   protected notifyChange(sn?: TSnapshot) {
     this.#changed = true;
     if (this.#hooks.length > 0) {
-      this.#hooks.forEach(h => h.fn(sn));
+      queueMicrotask(() => {
+        this.#hooks.forEach(h => h.fn(sn));
+      });
     }
   }
 

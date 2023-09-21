@@ -300,7 +300,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
             {
               filters: [{ ...f, ids: [...resultIds] }],
               strategy: RequestStrategy.ExplicitRelays,
-              relay: "",
+              relay: qSend.relay,
             },
             cacheResults as Array<TaggedNostrEvent>,
           );

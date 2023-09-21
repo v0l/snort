@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
 import PageSpinner from "Element/PageSpinner";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import SnortApi, { Subscription, SubscriptionError } from "SnortApi";
 import { mapSubscriptionErrorCode } from ".";
 import SubscriptionCard from "./SubscriptionCard";

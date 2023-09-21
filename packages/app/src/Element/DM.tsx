@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useInView } from "react-intersection-observer";
 
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import NoteTime from "Element/NoteTime";
 import Text from "Element/Text";
 import useLogin from "Hooks/useLogin";

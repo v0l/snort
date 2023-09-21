@@ -12,13 +12,14 @@ import Icon from "Icons/Icon";
 import useLogin from "Hooks/useLogin";
 import { generateNewLogin, LoginSessionType, LoginStore } from "Login";
 import AsyncButton from "Element/AsyncButton";
-import useLoginHandler from "Hooks/useLoginHandler";
+import useLoginHandler, { PinRequiredError } from "Hooks/useLoginHandler";
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { bytesToHex } from "@noble/curves/abstract/utils";
 import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import { delay } from "SnortUtils";
+import { PinPrompt } from "Element/PinPrompt";
 
 declare global {
   interface Window {
@@ -78,6 +79,7 @@ export default function LoginPage() {
   const login = useLogin();
   const [key, setKey] = useState("");
   const [error, setError] = useState("");
+  const [pin, setPin] = useState(false);
   const [art, setArt] = useState<ArtworkEntry>();
   const [isMasking, setMasking] = useState(true);
   const { formatMessage } = useIntl();
@@ -99,10 +101,13 @@ export default function LoginPage() {
     setArt({ ...ret, link: url });
   }, []);
 
-  async function doLogin() {
+  async function doLogin(pin?: string) {
     try {
-      await loginHandler.doLogin(key);
+      await loginHandler.doLogin(key, pin);
     } catch (e) {
+      if (e instanceof PinRequiredError) {
+        setPin(true);
+      }
       if (e instanceof Error) {
         setError(e.message);
       } else {
@@ -116,10 +121,16 @@ export default function LoginPage() {
     }
   }
 
-  async function makeRandomKey() {
-    await generateNewLogin();
-    window.plausible?.("Generate Account");
-    navigate("/new");
+  async function makeRandomKey(pin: string) {
+    try {
+      await generateNewLogin(pin);
+      window.plausible?.("Generate Account");
+      navigate("/new");
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      }
+    }
   }
 
   async function doNip07Login() {
@@ -157,7 +168,7 @@ export default function LoginPage() {
           <FormattedMessage defaultMessage="Nostr Connect (NIP-46)" description="Login button for NIP-46 signer app" />
         </AsyncButton>
         {nostrConnect && (
-          <Modal onClose={() => setNostrConnect("")}>
+          <Modal id="nostr-connect" onClose={() => setNostrConnect("")}>
             <div className="flex f-col">
               <QrCode data={nostrConnect} />
               <Copy text={nostrConnect} />
@@ -283,12 +294,19 @@ export default function LoginPage() {
             />
           </p>
           <div dir="auto" className="login-actions">
-            <AsyncButton type="button" onClick={doLogin}>
+            <AsyncButton type="button" onClick={() => doLogin()}>
               <FormattedMessage defaultMessage="Login" description="Login button" />
             </AsyncButton>
-            <AsyncButton onClick={() => makeRandomKey()}>
+            <AsyncButton onClick={() => setPin(true)}>
               <FormattedMessage defaultMessage="Create Account" />
             </AsyncButton>
+            {pin && <PinPrompt onResult={pin => {
+              if (key) {
+                doLogin(pin);
+              } else {
+                makeRandomKey(pin);
+              }
+            }} onCancel={() => setPin(false)} />}
             {altLogins()}
           </div>
           {installExtension()}

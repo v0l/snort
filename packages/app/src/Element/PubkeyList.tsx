@@ -10,7 +10,7 @@ import { Toastore } from "Toaster";
 import { getDisplayName } from "Element/ProfileImage";
 import { UserCache } from "Cache";
 import useLogin from "Hooks/useLogin";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import { WalletInvoiceState } from "Wallet";
 
 export default function PubkeyList({ ev, className }: { ev: NostrEvent; className?: string }) {

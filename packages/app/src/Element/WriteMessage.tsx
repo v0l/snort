@@ -1,5 +1,5 @@
 import { NostrPrefix, NostrEvent, NostrLink } from "@snort/system";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
 import { useState } from "react";

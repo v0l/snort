@@ -8,7 +8,7 @@ import { LNURLSuccessAction } from "@snort/shared";
 
 import { formatShort } from "Number";
 import Icon from "Icons/Icon";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import ProfileImage from "Element/ProfileImage";
 import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
@@ -180,7 +180,7 @@ export default function SendSats(props: SendSatsProps) {
 
   if (!(props.show ?? false)) return null;
   return (
-    <Modal className="lnurl-modal" onClose={onClose}>
+    <Modal id="send-sats" className="lnurl-modal" onClose={onClose}>
       <div className="p flex-column g12">
         <div className="flex g12">
           <div className="flex f-grow">{props.title || title()}</div>

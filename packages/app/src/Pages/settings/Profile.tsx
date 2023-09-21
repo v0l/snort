@@ -6,7 +6,7 @@ import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
 import { System } from "index";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import { openFile } from "SnortUtils";
 import useFileUpload from "Upload";
 import AsyncButton from "Element/AsyncButton";

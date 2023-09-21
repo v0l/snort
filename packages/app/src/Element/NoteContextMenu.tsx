@@ -1,23 +1,17 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import { HexKey, Lists, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
-import { useDispatch, useSelector } from "react-redux";
 
 import { TranslateHost } from "Const";
 import { System } from "index";
 import Icon from "Icons/Icon";
 import { setPinned, setBookmarked } from "Login";
-import {
-  setNote as setReBroadcastNote,
-  setShow as setReBroadcastShow,
-  reset as resetReBroadcast,
-} from "State/ReBroadcast";
 import messages from "Element/messages";
 import useLogin from "Hooks/useLogin";
 import useModeration from "Hooks/useModeration";
-import useEventPublisher from "Feed/EventPublisher";
-import { RootState } from "State/Store";
+import useEventPublisher from "Hooks/useEventPublisher";
 import { ReBroadcaster } from "./ReBroadcaster";
+import { useState } from "react";
 
 export interface NoteTranslation {
   text: string;
@@ -33,15 +27,12 @@ interface NosteContextMenuProps {
 }
 
 export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
-  const dispatch = useDispatch();
   const { formatMessage } = useIntl();
   const login = useLogin();
   const { pinned, bookmarked, publicKey, preferences: prefs } = login;
   const { mute, block } = useModeration();
   const publisher = useEventPublisher();
-  const showReBroadcastModal = useSelector((s: RootState) => s.reBroadcast.show);
-  const reBroadcastNote = useSelector((s: RootState) => s.reBroadcast.note);
-  const willRenderReBroadcast = showReBroadcastModal && reBroadcastNote && reBroadcastNote?.id === ev.id;
+  const [showBroadcast, setShowBroadcast] = useState(false);
   const lang = window.navigator.language;
   const langNames = new Intl.DisplayNames([...window.navigator.languages], {
     type: "language",
@@ -119,12 +110,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   }
 
   const handleReBroadcastButtonClick = () => {
-    if (reBroadcastNote?.id !== ev.id) {
-      dispatch(resetReBroadcast());
-    }
-
-    dispatch(setReBroadcastNote(ev));
-    dispatch(setReBroadcastShow(!showReBroadcastModal));
+    setShowBroadcast(true);
   };
 
   function menuItems() {
@@ -214,7 +200,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
         menuClassName="ctx-menu">
         {menuItems()}
       </Menu>
-      {willRenderReBroadcast && <ReBroadcaster />}
+      {showBroadcast && <ReBroadcaster ev={ev} onClose={() => setShowBroadcast(false)} />}
     </>
   );
 }

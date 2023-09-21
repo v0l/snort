@@ -1,16 +1,17 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
+import {v4 as uuid} from "uuid";
 
-import { HexKey, RelaySettings, EventPublisher, Nip46Signer, Nip7Signer, PrivateKeySigner } from "@snort/system";
+import { HexKey, RelaySettings, PinEncrypted, EventPublisher } from "@snort/system";
 import { deepClone, sanitizeRelayUrl, unwrap, ExternalStore } from "@snort/shared";
 
 import { DefaultRelays } from "Const";
-import { LoginSession, LoginSessionType } from "Login";
-import { DefaultPreferences, UserPreferences } from "./Preferences";
-import { Nip7OsSigner } from "./Nip7OsSigner";
+import { LoginSession, LoginSessionType, createPublisher } from "Login";
+import { DefaultPreferences } from "./Preferences";
 
 const AccountStoreKey = "sessions";
 const LoggedOut = {
+  id: "default",
   type: "public_key",
   preferences: DefaultPreferences,
   tags: {
@@ -45,25 +46,18 @@ const LoggedOut = {
   readNotifications: 0,
   subscriptions: [],
 } as LoginSession;
-const LegacyKeys = {
-  PrivateKeyItem: "secret",
-  PublicKeyItem: "pubkey",
-  NotificationsReadItem: "notifications-read",
-  UserPreferencesKey: "preferences",
-  RelayListKey: "last-relays",
-  FollowList: "last-follows",
-};
 
 export class MultiAccountStore extends ExternalStore<LoginSession> {
   #activeAccount?: HexKey;
   #accounts: Map<string, LoginSession>;
+  #publishers = new Map<string, EventPublisher>();
 
   constructor() {
     super();
     const existing = window.localStorage.getItem(AccountStoreKey);
     if (existing) {
       const logins = JSON.parse(existing);
-      this.#accounts = new Map((logins as Array<LoginSession>).map(a => [unwrap(a.publicKey), a]));
+      this.#accounts = new Map((logins as Array<LoginSession>).map(a => [a.id, a]));
     } else {
       this.#accounts = new Map();
     }
@@ -71,24 +65,30 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     if (!this.#activeAccount) {
       this.#activeAccount = this.#accounts.keys().next().value;
     }
-    for (const [, v] of this.#accounts) {
-      v.publisher = this.#createPublisher(v);
-    }
   }
 
   getSessions() {
-    return [...this.#accounts.keys()];
+    return [...this.#accounts.values()].map(v => unwrap(v.publicKey));
   }
 
   allSubscriptions() {
     return [...this.#accounts.values()].map(a => a.subscriptions).flat();
   }
 
-  switchAccount(pk: string) {
-    if (this.#accounts.has(pk)) {
-      this.#activeAccount = pk;
+  switchAccount(id: string) {
+    if (this.#accounts.has(id)) {
+      this.#activeAccount = id;
       this.#save();
     }
+  }
+
+  getPublisher(id: string) {
+    return this.#publishers.get(id);
+  }
+
+  setPublisher(id: string, pub: EventPublisher) {
+    this.#publishers.set(id, pub);
+    this.notifyChange();
   }
 
   loginWithPubkey(
@@ -104,6 +104,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     const initRelays = this.decideInitRelays(relays);
     const newSession = {
       ...LoggedOut,
+      id: uuid(),
       type,
       publicKey: key,
       relays: {
@@ -114,10 +115,13 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       remoteSignerRelays,
       privateKey,
     } as LoginSession;
-    newSession.publisher = this.#createPublisher(newSession);
 
-    this.#accounts.set(key, newSession);
-    this.#activeAccount = key;
+    const pub = createPublisher(newSession);
+    if(pub) {
+      this.setPublisher(newSession.id, pub);
+    }
+    this.#accounts.set(newSession.id, newSession);
+    this.#activeAccount = newSession.id;
     this.#save();
     return newSession;
   }
@@ -129,16 +133,17 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     return Object.fromEntries(DefaultRelays.entries());
   }
 
-  loginWithPrivateKey(key: HexKey, entropy?: string, relays?: Record<string, RelaySettings>) {
-    const pubKey = utils.bytesToHex(secp.schnorr.getPublicKey(key));
+  loginWithPrivateKey(key: PinEncrypted, entropy?: string, relays?: Record<string, RelaySettings>) {
+    const pubKey = utils.bytesToHex(secp.schnorr.getPublicKey(key.value));
     if (this.#accounts.has(pubKey)) {
       throw new Error("Already logged in with this pubkey");
     }
     const initRelays = relays ?? Object.fromEntries(DefaultRelays.entries());
     const newSession = {
       ...LoggedOut,
+      id: uuid(),
       type: LoginSessionType.PrivateKey,
-      privateKey: key,
+      privateKeyData: key,
       publicKey: pubKey,
       generatedEntropy: entropy,
       relays: {
@@ -149,30 +154,30 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     } as LoginSession;
 
     if ("nostr_os" in window && window.nostr_os) {
-      window.nostr_os.saveKey(key);
+      window.nostr_os.saveKey(key.value);
       newSession.type = LoginSessionType.Nip7os;
-      newSession.privateKey = undefined;
+      newSession.privateKeyData = undefined;
     }
-    newSession.publisher = this.#createPublisher(newSession);
+    const pub = EventPublisher.privateKey(key.value);
+    this.setPublisher(newSession.id, pub);
 
-    this.#accounts.set(pubKey, newSession);
-    this.#activeAccount = pubKey;
+    this.#accounts.set(newSession.id, newSession);
+    this.#activeAccount = newSession.id;
     this.#save();
     return newSession;
   }
 
   updateSession(s: LoginSession) {
-    const pk = unwrap(s.publicKey);
-    if (this.#accounts.has(pk)) {
-      this.#accounts.set(pk, s);
+    if (this.#accounts.has(s.id)) {
+      this.#accounts.set(s.id, s);
       console.debug("SET SESSION", s);
       this.#save();
     }
   }
 
-  removeSession(k: string) {
-    if (this.#accounts.delete(k)) {
-      if (this.#activeAccount === k) {
+  removeSession(id: string) {
+    if (this.#accounts.delete(id)) {
+      if (this.#activeAccount === id) {
         this.#activeAccount = undefined;
       }
       this.#save();
@@ -183,65 +188,11 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     const s = this.#activeAccount ? this.#accounts.get(this.#activeAccount) : undefined;
     if (!s) return LoggedOut;
 
-    return { ...s };
-  }
-
-  #createPublisher(l: LoginSession) {
-    switch (l.type) {
-      case LoginSessionType.PrivateKey: {
-        return EventPublisher.privateKey(unwrap(l.privateKey));
-      }
-      case LoginSessionType.Nip46: {
-        const relayArgs = (l.remoteSignerRelays ?? []).map(a => `relay=${encodeURIComponent(a)}`);
-        const inner = new PrivateKeySigner(unwrap(l.privateKey));
-        const nip46 = new Nip46Signer(`bunker://${unwrap(l.publicKey)}?${[...relayArgs].join("&")}`, inner);
-        return new EventPublisher(nip46, unwrap(l.publicKey));
-      }
-      case LoginSessionType.Nip7os: {
-        return new EventPublisher(new Nip7OsSigner(), unwrap(l.publicKey));
-      }
-      default: {
-        if (l.publicKey) {
-          return new EventPublisher(new Nip7Signer(), l.publicKey);
-        }
-      }
-    }
+    return {...s};
   }
 
   #migrate() {
     let didMigrate = false;
-    const oldPreferences = window.localStorage.getItem(LegacyKeys.UserPreferencesKey);
-    const pref: UserPreferences = oldPreferences ? JSON.parse(oldPreferences) : deepClone(DefaultPreferences);
-    window.localStorage.removeItem(LegacyKeys.UserPreferencesKey);
-
-    const privKey = window.localStorage.getItem(LegacyKeys.PrivateKeyItem);
-    if (privKey) {
-      const pubKey = utils.bytesToHex(secp.schnorr.getPublicKey(privKey));
-      this.#accounts.set(pubKey, {
-        ...LoggedOut,
-        privateKey: privKey,
-        publicKey: pubKey,
-        preferences: pref,
-      } as LoginSession);
-      window.localStorage.removeItem(LegacyKeys.PrivateKeyItem);
-      window.localStorage.removeItem(LegacyKeys.PublicKeyItem);
-      didMigrate = true;
-    }
-
-    const pubKey = window.localStorage.getItem(LegacyKeys.PublicKeyItem);
-    if (pubKey) {
-      this.#accounts.set(pubKey, {
-        ...LoggedOut,
-        publicKey: pubKey,
-        preferences: pref,
-      } as LoginSession);
-      window.localStorage.removeItem(LegacyKeys.PublicKeyItem);
-      didMigrate = true;
-    }
-
-    window.localStorage.removeItem(LegacyKeys.RelayListKey);
-    window.localStorage.removeItem(LegacyKeys.FollowList);
-    window.localStorage.removeItem(LegacyKeys.NotificationsReadItem);
 
     // replace default tab with notes
     for (const [, v] of this.#accounts) {
@@ -259,6 +210,14 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       }
     }
 
+    // add ids
+    for (const [, v] of this.#accounts) {
+      if ((v.id?.length ?? 0) === 0) {
+        v.id = uuid();
+        didMigrate = true;
+      }
+    }
+
     if (didMigrate) {
       console.debug("Finished migration to MultiAccountStore");
       this.#save();
@@ -267,9 +226,16 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
 
   #save() {
     if (!this.#activeAccount && this.#accounts.size > 0) {
-      this.#activeAccount = [...this.#accounts.keys()][0];
+      this.#activeAccount = this.#accounts.keys().next().value;
     }
-    window.localStorage.setItem(AccountStoreKey, JSON.stringify([...this.#accounts.values()]));
+    const toSave = [...this.#accounts.values()];
+    for(const v of toSave) {
+      if(v.privateKeyData instanceof PinEncrypted) {
+        v.privateKeyData = v.privateKeyData.toPayload();
+      }
+    }
+
+    window.localStorage.setItem(AccountStoreKey, JSON.stringify(toSave));
     this.notifyChange();
   }
 }

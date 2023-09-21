@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { EventKind, NostrLink, RequestBuilder, NoteCollection } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
-import { useReactions } from "./FeedReactions";
+import { useReactions } from "./Reactions";
 
 export default function useThreadFeed(link: NostrLink) {
   const [allEvents, setAllEvents] = useState<Array<NostrLink>>([]);
@@ -12,9 +12,10 @@ export default function useThreadFeed(link: NostrLink) {
     sub.withOptions({
       leaveOpen: true,
     });
-    sub.withFilter().kinds([EventKind.TextNote]).link(link).replyToLink(link);
+    sub.withFilter().link(link);
+    sub.withFilter().kinds([EventKind.TextNote]).replyToLink(link);
     allEvents.forEach(x => {
-      sub.withFilter().kinds([EventKind.TextNote]).link(x).replyToLink(x);
+      sub.withFilter().kinds([EventKind.TextNote]).replyToLink(x);
     });
     return sub;
   }, [allEvents.length]);
@@ -23,8 +24,7 @@ export default function useThreadFeed(link: NostrLink) {
 
   useEffect(() => {
     if (store.data) {
-      const mainNotes = store.data?.filter(a => a.kind === EventKind.TextNote || a.kind === EventKind.Polls) ?? [];
-      const links = mainNotes
+      const links = store.data
         .map(a => [
           NostrLink.fromEvent(a),
           ...a.tags.filter(a => a[0] === "e" || a[0] === "a").map(v => NostrLink.fromTag(v)),

@@ -8,7 +8,7 @@ import { formatShort } from "Number";
 import { LockedFeatures, Plans, SubscriptionType } from "Subscription";
 import ManageSubscriptionPage from "Pages/subscribe/ManageSubscription";
 import AsyncButton from "Element/AsyncButton";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import SnortApi, { SubscriptionError, SubscriptionErrorCode } from "SnortApi";
 import SendSats from "Element/SendSats";
 

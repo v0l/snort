@@ -5,7 +5,6 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Icon from "Icons/Icon";
 import { LoginStore, logout } from "Login";
 import useLogin from "Hooks/useLogin";
-import { unwrap } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 
 import messages from "./messages";
@@ -19,7 +18,7 @@ const SettingsIndex = () => {
   const sub = getCurrentSubscription(LoginStore.allSubscriptions());
 
   function handleLogout() {
-    logout(unwrap(login.publicKey));
+    logout(login.id);
     navigate("/");
   }
 

@@ -18,7 +18,7 @@ import AsyncButton from "Element/AsyncButton";
 import SendSats from "Element/SendSats";
 import Copy from "Element/Copy";
 import { useUserProfile } from "@snort/system-react";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import { debounce } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import SnortServiceProvider from "Nip05/SnortServiceProvider";

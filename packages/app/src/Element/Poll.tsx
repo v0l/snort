@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import { useWallet } from "Wallet";
 import { unwrap } from "SnortUtils";
 import { formatShort } from "Number";

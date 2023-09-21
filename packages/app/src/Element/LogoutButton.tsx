@@ -7,15 +7,15 @@ import messages from "./messages";
 
 export default function LogoutButton() {
   const navigate = useNavigate();
-  const publicKey = useLogin().publicKey;
+  const login = useLogin();
 
-  if (!publicKey) return;
+  if (!login.publicKey) return;
   return (
     <button
       className="secondary"
       type="button"
       onClick={() => {
-        logout(publicKey);
+        logout(login.id);
         navigate("/");
       }}>
       <FormattedMessage {...messages.Logout} />

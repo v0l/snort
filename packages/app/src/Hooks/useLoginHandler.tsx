@@ -1,17 +1,19 @@
 import { useIntl } from "react-intl";
+import { Nip46Signer, PinEncrypted } from "@snort/system";
 
 import { EmailRegex, MnemonicRegex } from "Const";
 import { LoginSessionType, LoginStore } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import { getNip05PubKey } from "Pages/LoginPage";
 import { bech32ToHex } from "SnortUtils";
-import { Nip46Signer } from "@snort/system";
+
+export class PinRequiredError extends Error { }
 
 export default function useLoginHandler() {
   const { formatMessage } = useIntl();
   const hasSubtleCrypto = window.crypto.subtle !== undefined;
 
-  async function doLogin(key: string) {
+  async function doLogin(key: string, pin?: string) {
     const insecureMsg = formatMessage({
       defaultMessage:
         "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead",
@@ -23,7 +25,8 @@ export default function useLoginHandler() {
       }
       const hexKey = bech32ToHex(key);
       if (hexKey.length === 64) {
-        LoginStore.loginWithPrivateKey(hexKey);
+        if (!pin) throw new PinRequiredError();
+        LoginStore.loginWithPrivateKey(PinEncrypted.create(hexKey, pin));
       } else {
         throw new Error("INVALID PRIVATE KEY");
       }
@@ -31,14 +34,16 @@ export default function useLoginHandler() {
       if (!hasSubtleCrypto) {
         throw new Error(insecureMsg);
       }
+      if (!pin) throw new PinRequiredError();
       const ent = generateBip39Entropy(key);
       const keyHex = entropyToPrivateKey(ent);
-      LoginStore.loginWithPrivateKey(keyHex);
+      LoginStore.loginWithPrivateKey(PinEncrypted.create(keyHex, pin));
     } else if (key.length === 64) {
       if (!hasSubtleCrypto) {
         throw new Error(insecureMsg);
       }
-      LoginStore.loginWithPrivateKey(key);
+      if (!pin) throw new PinRequiredError();
+      LoginStore.loginWithPrivateKey(PinEncrypted.create(key, pin));
     }
 
     // public key logins

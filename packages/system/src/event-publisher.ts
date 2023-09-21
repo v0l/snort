@@ -185,8 +185,9 @@ export class EventPublisher {
 
     const thread = EventExt.extractThread(replyTo);
     if (thread) {
-      if (thread.root || thread.replyTo) {
-        eb.tag(["e", thread.root?.value ?? thread.replyTo?.value ?? "", "", "root"]);
+      const rootOrReplyAsRoot = thread.root || thread.replyTo;
+      if (rootOrReplyAsRoot) {
+        eb.tag(["e", rootOrReplyAsRoot?.value ?? "", rootOrReplyAsRoot?.relay ?? "", "root"]);
       }
       eb.tag(["e", replyTo.id, replyTo.relays?.[0] ?? "", "reply"]);
 

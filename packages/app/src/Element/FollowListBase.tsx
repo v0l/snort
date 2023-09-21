@@ -2,13 +2,16 @@ import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/system";
 
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import ProfilePreview from "Element/ProfilePreview";
 import useLogin from "Hooks/useLogin";
 import { System } from "index";
 
 import messages from "./messages";
 import { FollowsFeed } from "Cache";
+import AsyncButton from "./AsyncButton";
+import { setFollows } from "Login";
+import { dedupe } from "@snort/shared";
 
 export interface FollowListBaseProps {
   pubkeys: HexKey[];
@@ -30,13 +33,15 @@ export default function FollowListBase({
   profileActions,
 }: FollowListBaseProps) {
   const publisher = useEventPublisher();
-  const { follows, relays } = useLogin();
+  const login = useLogin();
 
   async function followAll() {
     if (publisher) {
-      const ev = await publisher.contactList([...pubkeys, ...follows.item], relays.item);
-      await FollowsFeed.backFill(System, pubkeys);
+      const newFollows = dedupe([...pubkeys, ...login.follows.item]);
+      const ev = await publisher.contactList(newFollows, login.relays.item);
       System.BroadcastEvent(ev);
+      await FollowsFeed.backFill(System, pubkeys);
+      setFollows(login, newFollows, ev.created_at);
     }
   }
 
@@ -46,9 +51,9 @@ export default function FollowListBase({
         <div className="flex mt10 mb10">
           <div className="f-grow bold">{title}</div>
           {actions}
-          <button className="transparent" type="button" onClick={() => followAll()}>
+          <AsyncButton className="transparent" type="button" onClick={() => followAll()}>
             <FormattedMessage {...messages.FollowAll} />
-          </button>
+          </AsyncButton>
         </div>
       )}
       {pubkeys?.map(a => (

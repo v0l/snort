@@ -210,7 +210,7 @@ function NewChatWindow() {
         <Icon name="plus" size={16} />
       </button>
       {show && (
-        <Modal onClose={() => setShow(false)} className="new-chat-modal">
+        <Modal id="new-chat" onClose={() => setShow(false)} className="new-chat-modal">
           <div className="flex-column g16">
             <div className="flex f-space">
               <h2>

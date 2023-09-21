@@ -113,7 +113,7 @@ export class RequestBuilder {
 
     const diff = system.QueryOptimizer.getDiff(prev, this.buildRaw());
     const ts = unixNowMs() - start;
-    this.#log("buildDiff %s %d ms +%d %O=>%O", this.id, ts, diff.length, prev, this.buildRaw());
+    this.#log("buildDiff %s %d ms +%d", this.id, ts, diff.length);
     if (diff.length > 0) {
       return splitFlatByWriteRelays(system.RelayCache, diff).map(a => {
         return {
