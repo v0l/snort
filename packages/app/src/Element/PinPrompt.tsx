@@ -5,12 +5,13 @@ import { FormattedMessage, useIntl } from "react-intl";
 import useEventPublisher from "Hooks/useEventPublisher";
 import { LoginStore, createPublisher, sessionNeedsPin } from "Login";
 import { unwrap } from "@snort/shared";
-import { EventPublisher, InvalidPinError, PinEncrypted } from "@snort/system";
+import { EventPublisher, InvalidPinError, PinEncrypted, PinEncryptedPayload } from "@snort/system";
 import { DefaultPowWorker } from "index";
 import Modal from "./Modal";
+import Spinner from "Icons/Spinner";
 
 const PinLen = 6;
-export function PinPrompt({ onResult, onCancel, subTitle }: { onResult: (v: string) => void, onCancel: () => void, subTitle?: ReactNode }) {
+export function PinPrompt({ onResult, onCancel, subTitle }: { onResult: (v: string) => Promise<void>, onCancel: () => void, subTitle?: ReactNode }) {
     const [pin, setPin] = useState("");
     const [error, setError] = useState("");
     const { formatMessage } = useIntl();
@@ -32,12 +33,14 @@ export function PinPrompt({ onResult, onCancel, subTitle }: { onResult: (v: stri
     }, [pin]);
 
     useEffect(() => {
-        setError("");
+        if (pin.length > 0) {
+            setError("");
+        }
+
         if (pin.length === PinLen) {
-            try {
-                onResult(pin);
-            } catch (e) {
+            onResult(pin).catch(e => {
                 console.error(e);
+                setPin("");
                 if (e instanceof InvalidPinError) {
                     setError(formatMessage({
                         defaultMessage: "Incorrect pin"
@@ -45,15 +48,19 @@ export function PinPrompt({ onResult, onCancel, subTitle }: { onResult: (v: stri
                 } else if (e instanceof Error) {
                     setError(e.message);
                 }
-            }
+            })
         }
     }, [pin]);
 
     const boxes = [];
-    for (let x = 0; x < PinLen; x++) {
-        boxes.push(<div className="pin-box flex f-center f-1">
-            {pin[x]}
-        </div>)
+    if (pin.length === PinLen) {
+        boxes.push(<Spinner className="flex f-center f-1" />);
+    } else {
+        for (let x = 0; x < PinLen; x++) {
+            boxes.push(<div className="pin-box flex f-center f-1">
+                {pin[x]}
+            </div>)
+        }
     }
     return <Modal id="pin" onClose={() => onCancel()}>
         <div className="flex-column g12">
@@ -78,9 +85,9 @@ export function LoginUnlock() {
     const login = useLogin();
     const publisher = useEventPublisher();
 
-    function encryptMigration(pin: string) {
+    async function encryptMigration(pin: string) {
         const k = unwrap(login.privateKey);
-        const newPin = PinEncrypted.create(k, pin);
+        const newPin = await PinEncrypted.create(k, pin);
 
         const pub = EventPublisher.privateKey(k);
         if (login.preferences.pow) {
@@ -89,13 +96,15 @@ export function LoginUnlock() {
         LoginStore.setPublisher(login.id, pub);
         LoginStore.updateSession({
             ...login,
-            privateKeyData: newPin.toPayload(),
+            privateKeyData: newPin,
             privateKey: undefined
         });
     }
 
-    function unlockSession(pin: string) {
-        const pub = createPublisher(login, pin);
+    async function unlockSession(pin: string) {
+        const key = new PinEncrypted(unwrap(login.privateKeyData) as PinEncryptedPayload);
+        await key.decrypt(pin);
+        const pub = createPublisher(login, key);
         if (pub) {
             if (login.preferences.pow) {
                 pub.pow(login.preferences.pow, DefaultPowWorker);

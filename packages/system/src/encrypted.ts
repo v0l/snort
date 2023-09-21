@@ -1,4 +1,4 @@
-import { scrypt } from "@noble/hashes/scrypt";
+import { scryptAsync } from "@noble/hashes/scrypt";
 import { sha256 } from '@noble/hashes/sha256';
 import { hmac } from "@noble/hashes/hmac";
 import { bytesToHex, hexToBytes, randomBytes } from "@noble/hashes/utils";
@@ -28,8 +28,8 @@ export class PinEncrypted {
       return bytesToHex(this.#decrypted);
     }
   
-    decrypt(pin: string) {
-      const key = scrypt(pin, base64.decode(this.#encrypted.salt), PinEncrypted.#opts);
+    async decrypt(pin: string) {
+      const key = await scryptAsync(pin, base64.decode(this.#encrypted.salt), PinEncrypted.#opts);
       const ciphertext = base64.decode(this.#encrypted.ciphertext);
       const nonce = base64.decode(this.#encrypted.iv);
       const plaintext = xchacha20(key, nonce, ciphertext, new Uint8Array(32));
@@ -43,11 +43,11 @@ export class PinEncrypted {
       return this.#encrypted;
     }
   
-    static create(content: string, pin: string) {
+    static async create(content: string, pin: string) {
       const salt = randomBytes(24);
       const nonce = randomBytes(24);
       const plaintext = hexToBytes(content);
-      const key = scrypt(pin, salt, PinEncrypted.#opts);
+      const key = await scryptAsync(pin, salt, PinEncrypted.#opts);
       const mac = base64.encode(hmac(sha256, key, plaintext));
       const ciphertext = xchacha20(key, nonce, plaintext, new Uint8Array(32));
       const ret = new PinEncrypted({

@@ -90,8 +90,7 @@ export async function generateNewLogin(pin: string) {
   const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey], newRelays);
   System.BroadcastEvent(ev);
 
-  const key = PinEncrypted.create(privateKey, pin);
-  key.decrypt(pin);
+  const key = await PinEncrypted.create(privateKey, pin);
   LoginStore.loginWithPrivateKey(key, entropy, newRelays);
 }
 
@@ -170,23 +169,19 @@ export function sessionNeedsPin(l: LoginSession) {
   return l.type === LoginSessionType.PrivateKey || l.type === LoginSessionType.Nip46;
 }
 
-export function createPublisher(l: LoginSession, pin?: string) {
+export function createPublisher(l: LoginSession, pin?: PinEncrypted) {
   switch (l.type) {
     case LoginSessionType.PrivateKey: {
       if(!pin) throw new PinRequiredError();
-      const v = l.privateKeyData instanceof PinEncrypted ? l.privateKeyData : new PinEncrypted(unwrap(l.privateKeyData));
-      v.decrypt(pin);
-      l.privateKeyData = v;
-      return EventPublisher.privateKey(v.value);
+      l.privateKeyData = pin;
+      return EventPublisher.privateKey(pin.value);
     }
     case LoginSessionType.Nip46: {
       if(!pin) throw new PinRequiredError();
-      const v = l.privateKeyData instanceof PinEncrypted ? l.privateKeyData : new PinEncrypted(unwrap(l.privateKeyData));
-      v.decrypt(pin);
-      l.privateKeyData = v;
+      l.privateKeyData = pin;
 
       const relayArgs = (l.remoteSignerRelays ?? []).map(a => `relay=${encodeURIComponent(a)}`);
-      const inner = new PrivateKeySigner(v.value);
+      const inner = new PrivateKeySigner(pin.value);
       const nip46 = new Nip46Signer(`bunker://${unwrap(l.publicKey)}?${[...relayArgs].join("&")}`, inner);
       return new EventPublisher(nip46, unwrap(l.publicKey));
     }

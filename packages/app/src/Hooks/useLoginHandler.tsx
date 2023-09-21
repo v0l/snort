@@ -26,7 +26,7 @@ export default function useLoginHandler() {
       const hexKey = bech32ToHex(key);
       if (hexKey.length === 64) {
         if (!pin) throw new PinRequiredError();
-        LoginStore.loginWithPrivateKey(PinEncrypted.create(hexKey, pin));
+        LoginStore.loginWithPrivateKey(await PinEncrypted.create(hexKey, pin));
       } else {
         throw new Error("INVALID PRIVATE KEY");
       }
@@ -37,13 +37,13 @@ export default function useLoginHandler() {
       if (!pin) throw new PinRequiredError();
       const ent = generateBip39Entropy(key);
       const keyHex = entropyToPrivateKey(ent);
-      LoginStore.loginWithPrivateKey(PinEncrypted.create(keyHex, pin));
+      LoginStore.loginWithPrivateKey(await PinEncrypted.create(keyHex, pin));
     } else if (key.length === 64) {
       if (!hasSubtleCrypto) {
         throw new Error(insecureMsg);
       }
       if (!pin) throw new PinRequiredError();
-      LoginStore.loginWithPrivateKey(PinEncrypted.create(key, pin));
+      LoginStore.loginWithPrivateKey(await PinEncrypted.create(key, pin));
     }
 
     // public key logins

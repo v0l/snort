@@ -300,11 +300,13 @@ export default function LoginPage() {
             <AsyncButton onClick={() => setPin(true)}>
               <FormattedMessage defaultMessage="Create Account" />
             </AsyncButton>
-            {pin && <PinPrompt onResult={pin => {
+            {pin && <PinPrompt subTitle={<p>
+              <FormattedMessage defaultMessage="Enter a pin to encrypt your private key, you must enter this pin every time you open Snort." />
+            </p>} onResult={async pin => {
               if (key) {
-                doLogin(pin);
+                await doLogin(pin);
               } else {
-                makeRandomKey(pin);
+                await makeRandomKey(pin);
               }
             }} onCancel={() => setPin(false)} />}
             {altLogins()}
