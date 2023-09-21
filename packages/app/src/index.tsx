@@ -8,16 +8,7 @@ import WasmPath from "@snort/system-query/pkg/system_query_bg.wasm";
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import {
-  EventPublisher,
-  NostrSystem,
-  ProfileLoaderService,
-  Nip7Signer,
-  PowWorker,
-  QueryOptimizer,
-  FlatReqFilter,
-  ReqFilter,
-} from "@snort/system";
+import { NostrSystem, ProfileLoaderService, PowWorker, QueryOptimizer, FlatReqFilter, ReqFilter } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
@@ -71,13 +62,9 @@ export const System = new NostrSystem({
   relayMetrics: RelayMetrics,
   queryOptimizer: WasmQueryOptimizer,
   authHandler: async (c, r) => {
-    const { publicKey, privateKey } = LoginStore.snapshot();
-    if (privateKey) {
-      const pub = EventPublisher.privateKey(privateKey);
-      return await pub.nip42Auth(c, r);
-    }
-    if (publicKey) {
-      const pub = new EventPublisher(new Nip7Signer(), publicKey);
+    const { id } = LoginStore.snapshot();
+    const pub = LoginStore.getPublisher(id);
+    if (pub) {
       return await pub.nip42Auth(c, r);
     }
   },

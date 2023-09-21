@@ -6,6 +6,7 @@ import { LoginSessionType, LoginStore } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import { getNip05PubKey } from "Pages/LoginPage";
 import { bech32ToHex } from "SnortUtils";
+import { unwrap } from "@snort/shared";
 
 export class PinRequiredError extends Error {}
 
@@ -54,11 +55,18 @@ export default function useLoginHandler() {
       const hexKey = await getNip05PubKey(key);
       LoginStore.loginWithPubkey(hexKey, LoginSessionType.PublicKey);
     } else if (key.startsWith("bunker://")) {
+      if (!pin) throw new PinRequiredError();
       const nip46 = new Nip46Signer(key);
       await nip46.init();
 
       const loginPubkey = await nip46.getPubKey();
-      LoginStore.loginWithPubkey(loginPubkey, LoginSessionType.Nip46, undefined, nip46.relays, nip46.privateKey);
+      LoginStore.loginWithPubkey(
+        loginPubkey,
+        LoginSessionType.Nip46,
+        undefined,
+        nip46.relays,
+        await PinEncrypted.create(unwrap(nip46.privateKey), pin),
+      );
       nip46.close();
     } else {
       throw new Error("INVALID PRIVATE KEY");

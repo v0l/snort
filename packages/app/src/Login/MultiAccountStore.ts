@@ -96,7 +96,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     type: LoginSessionType,
     relays?: Record<string, RelaySettings>,
     remoteSignerRelays?: Array<string>,
-    privateKey?: string,
+    privateKey?: PinEncrypted,
   ) {
     if (this.#accounts.has(key)) {
       throw new Error("Already logged in with this pubkey");
@@ -113,7 +113,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       },
       preferences: deepClone(DefaultPreferences),
       remoteSignerRelays,
-      privateKey,
+      privateKeyData: privateKey,
     } as LoginSession;
 
     const pub = createPublisher(newSession);
@@ -228,10 +228,15 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     if (!this.#activeAccount && this.#accounts.size > 0) {
       this.#activeAccount = this.#accounts.keys().next().value;
     }
-    const toSave = [...this.#accounts.values()];
-    for (const v of toSave) {
+    const toSave = [];
+    for (const v of this.#accounts.values()) {
       if (v.privateKeyData instanceof PinEncrypted) {
-        v.privateKeyData = v.privateKeyData.toPayload();
+        toSave.push({
+          ...v,
+          privateKeyData: v.privateKeyData.toPayload(),
+        });
+      } else {
+        toSave.push({ ...v });
       }
     }
 

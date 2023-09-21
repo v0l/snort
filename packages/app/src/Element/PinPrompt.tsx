@@ -119,6 +119,10 @@ export function LoginUnlock() {
         pub.pow(login.preferences.pow, DefaultPowWorker);
       }
       LoginStore.setPublisher(login.id, pub);
+      LoginStore.updateSession({
+        ...login,
+        privateKeyData: key,
+      });
     }
   }
 
@@ -142,7 +146,7 @@ export function LoginUnlock() {
       <PinPrompt
         subTitle={
           <p>
-            <FormattedMessage defaultMessage="Enter pin to unlock private key" />
+            <FormattedMessage defaultMessage="Enter pin to unlock your private key" />
           </p>
         }
         onResult={unlockSession}

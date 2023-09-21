@@ -99,9 +99,6 @@
   "25V4l1": {
     "defaultMessage": "Banner"
   },
-  "27jzYm": {
-    "defaultMessage": "Enter pin to unlock private key"
-  },
   "2IFGap": {
     "defaultMessage": "Donate"
   },
@@ -144,6 +141,9 @@
   },
   "3yk8fB": {
     "defaultMessage": "Wallet"
+  },
+  "40VR6s": {
+    "defaultMessage": "Nostr Connect"
   },
   "450Fty": {
     "defaultMessage": "None"
@@ -226,6 +226,9 @@
   "89q5wc": {
     "defaultMessage": "Confirm Reposts"
   },
+  "8Kboo2": {
+    "defaultMessage": "Scan this QR code with your signer app to get started"
+  },
   "8QDesP": {
     "defaultMessage": "Zap {n} sats"
   },
@@ -240,6 +243,10 @@
   },
   "8v1NN+": {
     "defaultMessage": "Pairing phrase"
+  },
+  "8xNnhi": {
+    "defaultMessage": "Nostr Extension",
+    "description": "Login button for NIP7 key manager extension"
   },
   "9+Ddtu": {
     "defaultMessage": "Next"
@@ -563,6 +570,10 @@
   "LwYmVi": {
     "defaultMessage": "Zaps on this note will be split to the following users."
   },
+  "M10zFV": {
+    "defaultMessage": "Nostr Connect",
+    "description": "Login button for NIP-46 signer app"
+  },
   "M3Oirc": {
     "defaultMessage": "Debug Menus"
   },
@@ -779,10 +790,6 @@
   "VnXp8Z": {
     "defaultMessage": "Avatar"
   },
-  "VtPV/B": {
-    "defaultMessage": "Login with Extension (NIP-07)",
-    "description": "Login button for NIP7 key manager extension"
-  },
   "VvaJst": {
     "defaultMessage": "View Wallets"
   },
@@ -940,6 +947,9 @@
   "e61Jf3": {
     "defaultMessage": "Coming soon"
   },
+  "e7VmYP": {
+    "defaultMessage": "Enter pin to unlock your private key"
+  },
   "e7qqly": {
     "defaultMessage": "Mark All Read"
   },
@@ -1008,10 +1018,6 @@
   },
   "hMzcSq": {
     "defaultMessage": "Messages"
-  },
-  "hWSp+B": {
-    "defaultMessage": "Nostr Connect (NIP-46)",
-    "description": "Login button for NIP-46 signer app"
   },
   "hY4lzx": {
     "defaultMessage": "Supports"

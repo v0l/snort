@@ -9,7 +9,6 @@ import { bech32ToHex, getPublicKey, unwrap } from "SnortUtils";
 import ZapButton from "Element/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
 import Icon from "Icons/Icon";
-import useLogin from "Hooks/useLogin";
 import { generateNewLogin, LoginSessionType, LoginStore } from "Login";
 import AsyncButton from "Element/AsyncButton";
 import useLoginHandler, { PinRequiredError } from "Hooks/useLoginHandler";
@@ -76,7 +75,6 @@ export async function getNip05PubKey(addr: string): Promise<string> {
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const login = useLogin();
   const [key, setKey] = useState("");
   const [error, setError] = useState("");
   const [pin, setPin] = useState(false);
@@ -88,12 +86,6 @@ export default function LoginPage() {
   const hasNip7 = "nostr" in window;
   const hasSubtleCrypto = window.crypto.subtle !== undefined;
   const [nostrConnect, setNostrConnect] = useState("");
-
-  useEffect(() => {
-    if (login.publicKey) {
-      navigate("/");
-    }
-  }, [login, navigate]);
 
   useEffect(() => {
     const ret = unwrap(Artwork.at(Artwork.length * Math.random()));
@@ -161,18 +153,25 @@ export default function LoginPage() {
   }
 
   function nip46Buttons() {
-    return null;
     return (
       <>
         <AsyncButton type="button" onClick={startNip46}>
-          <FormattedMessage defaultMessage="Nostr Connect (NIP-46)" description="Login button for NIP-46 signer app" />
+          <FormattedMessage defaultMessage="Nostr Connect" description="Login button for NIP-46 signer app" />
         </AsyncButton>
         {nostrConnect && (
           <Modal id="nostr-connect" onClose={() => setNostrConnect("")}>
-            <div className="flex f-col">
-              <QrCode data={nostrConnect} />
-              <Copy text={nostrConnect} />
-            </div>
+            <>
+              <h2>
+                <FormattedMessage defaultMessage="Nostr Connect" />
+              </h2>
+              <p>
+                <FormattedMessage defaultMessage="Scan this QR code with your signer app to get started" />
+              </p>
+              <div className="flex-column f-center g12">
+                <QrCode data={nostrConnect} />
+                <Copy text={nostrConnect} />
+              </div>
+            </>
           </Modal>
         )}
       </>
@@ -188,7 +187,7 @@ export default function LoginPage() {
       <>
         <AsyncButton type="button" onClick={doNip07Login}>
           <FormattedMessage
-            defaultMessage="Login with Extension (NIP-07)"
+            defaultMessage="Nostr Extension"
             description="Login button for NIP7 key manager extension"
           />
         </AsyncButton>
@@ -269,7 +268,7 @@ export default function LoginPage() {
           <p dir="auto">
             <FormattedMessage defaultMessage="Your key" description="Label for key input" />
           </p>
-          <div className="flex">
+          <div className="flex f-center g8">
             <input
               dir="auto"
               type={isMasking ? "password" : "text"}
@@ -282,7 +281,7 @@ export default function LoginPage() {
             <Icon
               name={isMasking ? "openeye" : "closedeye"}
               size={30}
-              className="highlight btn-sm pointer"
+              className="highlight pointer"
               onClick={() => setMasking(!isMasking)}
             />
           </div>
