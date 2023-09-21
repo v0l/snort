@@ -1,6 +1,6 @@
-import { pbkdf2 } from "@noble/hashes/pbkdf2";
+import { scrypt } from "@noble/hashes/scrypt";
 import { sha256 } from '@noble/hashes/sha256';
-import {hmac} from "@noble/hashes/hmac";
+import { hmac } from "@noble/hashes/hmac";
 import { bytesToHex, hexToBytes, randomBytes } from "@noble/hashes/utils";
 import { base64 } from "@scure/base";
 import { streamXOR as xchacha20 } from "@stablelib/xchacha20";
@@ -15,7 +15,7 @@ export class InvalidPinError extends Error {
  * Pin protected data
  */
 export class PinEncrypted {
-    static readonly #opts = {c: 32, dkLen: 32}
+    static readonly #opts = {N: 2**20, r: 8, p: 1, dkLen: 32}
     #decrypted?: Uint8Array
     #encrypted: PinEncryptedPayload
   
@@ -29,7 +29,7 @@ export class PinEncrypted {
     }
   
     decrypt(pin: string) {
-      const key = pbkdf2(sha256, pin, base64.decode(this.#encrypted.salt), PinEncrypted.#opts);
+      const key = scrypt(pin, base64.decode(this.#encrypted.salt), PinEncrypted.#opts);
       const ciphertext = base64.decode(this.#encrypted.ciphertext);
       const nonce = base64.decode(this.#encrypted.iv);
       const plaintext = xchacha20(key, nonce, ciphertext, new Uint8Array(32));
@@ -47,7 +47,7 @@ export class PinEncrypted {
       const salt = randomBytes(24);
       const nonce = randomBytes(24);
       const plaintext = hexToBytes(content);
-      const key = pbkdf2(sha256, pin, salt, PinEncrypted.#opts);
+      const key = scrypt(pin, salt, PinEncrypted.#opts);
       const mac = base64.encode(hmac(sha256, key, plaintext));
       const ciphertext = xchacha20(key, nonce, plaintext, new Uint8Array(32));
       const ret = new PinEncrypted({
