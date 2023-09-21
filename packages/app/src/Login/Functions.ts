@@ -172,12 +172,12 @@ export function sessionNeedsPin(l: LoginSession) {
 export function createPublisher(l: LoginSession, pin?: PinEncrypted) {
   switch (l.type) {
     case LoginSessionType.PrivateKey: {
-      if(!pin) throw new PinRequiredError();
+      if (!pin) throw new PinRequiredError();
       l.privateKeyData = pin;
       return EventPublisher.privateKey(pin.value);
     }
     case LoginSessionType.Nip46: {
-      if(!pin) throw new PinRequiredError();
+      if (!pin) throw new PinRequiredError();
       l.privateKeyData = pin;
 
       const relayArgs = (l.remoteSignerRelays ?? []).map(a => `relay=${encodeURIComponent(a)}`);

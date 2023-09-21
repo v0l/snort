@@ -53,31 +53,35 @@ export default function Layout() {
     }
   }, [location]);
 
-  return (<>
-    <div className={pageClass}>
-      {!shouldHideHeader && (
-        <header className="main-content">
-          <LogoHeader />
-          <AccountHeader />
-        </header>
-      )}
-      <Outlet />
-
-      {!shouldHideNoteCreator && (
-        <>
-          <button className="primary note-create-button" onClick={() => note.update(v => {
-            v.replyTo = undefined;
-            v.show = true
-          })}>
-            <Icon name="plus" size={16} />
-          </button>
-          <NoteCreator />
-        </>
-      )}
-      <Toaster />
-    </div>
-    <LoginUnlock />
-  </>
+  return (
+    <>
+      <div className={pageClass}>
+        {!shouldHideHeader && (
+          <header className="main-content">
+            <LogoHeader />
+            <AccountHeader />
+          </header>
+        )}
+        <Outlet />
+        {!shouldHideNoteCreator && (
+          <>
+            <button
+              className="primary note-create-button"
+              onClick={() =>
+                note.update(v => {
+                  v.replyTo = undefined;
+                  v.show = true;
+                })
+              }>
+              <Icon name="plus" size={16} />
+            </button>
+            <NoteCreator />
+          </>
+        )}
+        <Toaster />
+      </div>
+      <LoginUnlock />
+    </>
   );
 }
 
@@ -138,7 +142,7 @@ const AccountHeader = () => {
       <button type="button" onClick={() => navigate("/login")}>
         <FormattedMessage {...messages.Login} />
       </button>
-    )
+    );
   }
   return (
     <div className="header-actions">

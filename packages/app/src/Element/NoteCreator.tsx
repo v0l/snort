@@ -1,6 +1,14 @@
 import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
-import { EventKind, NostrPrefix, TaggedNostrEvent, EventBuilder, tryParseNostrLink, NostrLink, NostrEvent } from "@snort/system";
+import {
+  EventKind,
+  NostrPrefix,
+  TaggedNostrEvent,
+  EventBuilder,
+  tryParseNostrLink,
+  NostrLink,
+  NostrEvent,
+} from "@snort/system";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Hooks/useEventPublisher";
@@ -30,7 +38,7 @@ export function NoteCreator() {
 
   async function buildNote() {
     try {
-      note.update(v => v.error = "");
+      note.update(v => (v.error = ""));
       if (note && publisher) {
         let extraTags: Array<Array<string>> | undefined;
         if (note.zapSplits) {
@@ -99,7 +107,9 @@ export function NoteCreator() {
           eb.kind(kind);
           return eb;
         };
-        const ev = note.replyTo ? await publisher.reply(note.replyTo, note.note, hk) : await publisher.note(note.note, hk);
+        const ev = note.replyTo
+          ? await publisher.reply(note.replyTo, note.note, hk)
+          : await publisher.note(note.note, hk);
         return ev;
       }
     } catch (e) {
@@ -131,7 +141,7 @@ export function NoteCreator() {
       note.update(v => {
         v.reset();
         v.show = false;
-      })
+      });
     }
   }
 
@@ -181,7 +191,7 @@ export function NoteCreator() {
 
   function onChange(ev: React.ChangeEvent<HTMLTextAreaElement>) {
     const { value } = ev.target;
-    note.update(n => n.note = value);
+    note.update(n => (n.note = value));
   }
 
   function cancel() {
@@ -198,10 +208,10 @@ export function NoteCreator() {
 
   async function loadPreview() {
     if (note.preview) {
-      note.update(v => v.preview = undefined);
+      note.update(v => (v.preview = undefined));
     } else if (publisher) {
       const tmpNote = await buildNote();
-      note.update(v => v.preview = tmpNote);
+      note.update(v => (v.preview = tmpNote));
     }
   }
 
@@ -244,7 +254,7 @@ export function NoteCreator() {
               </div>
             </div>
           ))}
-          <button onClick={() => note.update(v => v.pollOptions = [...(note.pollOptions ?? []), ""])}>
+          <button onClick={() => note.update(v => (v.pollOptions = [...(note.pollOptions ?? []), ""]))}>
             <Icon name="plus" size={14} />
           </button>
         </>
@@ -256,7 +266,7 @@ export function NoteCreator() {
     if (note.pollOptions) {
       const copy = [...note.pollOptions];
       copy[i] = v;
-      note.update(v => v.pollOptions = copy);
+      note.update(v => (v.pollOptions = copy));
     }
   }
 
@@ -264,7 +274,7 @@ export function NoteCreator() {
     if (note.pollOptions) {
       const copy = [...note.pollOptions];
       copy.splice(i, 1);
-      note.update(v => v.pollOptions = copy);
+      note.update(v => (v.pollOptions = copy));
     }
   }
 
@@ -281,15 +291,22 @@ export function NoteCreator() {
                   type="checkbox"
                   checked={!note.selectedCustomRelays || note.selectedCustomRelays.includes(r)}
                   onChange={e => {
-                    note.update(v => v.selectedCustomRelays = (
-                      // set false if all relays selected
-                      e.target.checked && note.selectedCustomRelays && note.selectedCustomRelays.length == a.length - 1
-                        ? undefined
-                        : // otherwise return selectedCustomRelays with target relay added / removed
-                        a.filter(el => el === r ? e.target.checked : !note.selectedCustomRelays || note.selectedCustomRelays.includes(el))
-                    ));
-                  }
-                  }
+                    note.update(
+                      v =>
+                        (v.selectedCustomRelays =
+                          // set false if all relays selected
+                          e.target.checked &&
+                          note.selectedCustomRelays &&
+                          note.selectedCustomRelays.length == a.length - 1
+                            ? undefined
+                            : // otherwise return selectedCustomRelays with target relay added / removed
+                              a.filter(el =>
+                                el === r
+                                  ? e.target.checked
+                                  : !note.selectedCustomRelays || note.selectedCustomRelays.includes(el),
+                              )),
+                    );
+                  }}
                 />
               </div>
             </div>
@@ -330,146 +347,166 @@ export function NoteCreator() {
   };
 
   if (!note.show) return null;
-  return (<Modal id="note-creator" className="note-creator-modal" onClose={() => note.update(v => v.show = false)}>
-    {note.replyTo && (
-      <Note
-        data={note.replyTo}
-        related={[]}
-        options={{
-          showFooter: false,
-          showContextMenu: false,
-          showTime: false,
-          canClick: false,
-          showMedia: false,
-        }}
-      />
-    )}
-    {note.preview && getPreviewNote()}
-    {!note.preview && (
-      <div onPaste={handlePaste} className={`note-creator${note.pollOptions ? " poll" : ""}`}>
-        <Textarea
-          autoFocus
-          className={`textarea ${note.active ? "textarea--focused" : ""}`}
-          onChange={c => onChange(c)}
-          value={note.note}
-          onFocus={() => note.update(v => v.active = true)}
-          onKeyDown={e => {
-            if (e.key === "Enter" && e.metaKey) {
-              sendNote().catch(console.warn);
-            }
+  return (
+    <Modal id="note-creator" className="note-creator-modal" onClose={() => note.update(v => (v.show = false))}>
+      {note.replyTo && (
+        <Note
+          data={note.replyTo}
+          related={[]}
+          options={{
+            showFooter: false,
+            showContextMenu: false,
+            showTime: false,
+            canClick: false,
+            showMedia: false,
           }}
         />
-        {renderPollOptions()}
-      </div>
-    )}
-    <div className="flex f-space">
-      <div className="flex g8">
-        <ProfileImage pubkey={login.publicKey ?? ""} className="note-creator-icon" link="" showUsername={false} showFollowingMark={false} />
-        {note.pollOptions === undefined && !note.replyTo && (
-          <div className="note-creator-icon">
-            <Icon name="pie-chart" onClick={() => note.update(v => v.pollOptions = ["A", "B"])} size={24} />
-          </div>
-        )}
-        <AsyncIcon iconName="image-plus" iconSize={24} onClick={attachFile} className="note-creator-icon" />
-        <button className="secondary" onClick={() => note.update(v => v.advanced = !v.advanced)}>
-          <FormattedMessage defaultMessage="Advanced" />
-        </button>
-      </div>
-      <div className="flex g8">
-        <button className="secondary" onClick={cancel}>
-          <FormattedMessage defaultMessage="Cancel" />
-        </button>
-        <AsyncButton onClick={onSubmit}>
-          {note.replyTo ? <FormattedMessage defaultMessage="Reply" /> : <FormattedMessage defaultMessage="Send" />}
-        </AsyncButton>
-      </div>
-    </div>
-    {note.error && <span className="error">{note.error}</span>}
-    {note.advanced && (
-      <>
-        <button className="secondary" onClick={loadPreview}>
-          <FormattedMessage defaultMessage="Toggle Preview" />
-        </button>
-        <div>
-          <h4>
-            <FormattedMessage defaultMessage="Custom Relays" />
-          </h4>
-          <p>
-            <FormattedMessage defaultMessage="Send note to a subset of your write relays" />
-          </p>
-          {renderRelayCustomisation()}
-        </div>
-        <div className="flex-column g8">
-          <h4>
-            <FormattedMessage defaultMessage="Zap Splits" />
-          </h4>
-          <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." />
-          <div className="flex-column g8">
-            {[...(note.zapSplits ?? [])].map((v, i, arr) => (
-              <div className="flex f-center g8">
-                <div className="flex-column f-4 g4">
-                  <h4>
-                    <FormattedMessage defaultMessage="Recipient" />
-                  </h4>
-                  <input
-                    type="text"
-                    value={v.value}
-                    onChange={e => note.update(v => v.zapSplits = arr.map((vv, ii) => (ii === i ? { ...vv, value: e.target.value } : vv)))}
-                    placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address" })}
-                  />
-                </div>
-                <div className="flex-column f-1 g4">
-                  <h4>
-                    <FormattedMessage defaultMessage="Weight" />
-                  </h4>
-                  <input
-                    type="number"
-                    min={0}
-                    value={v.weight}
-                    onChange={e => note.update(v => v.zapSplits = arr.map((vv, ii) => (ii === i ? { ...vv, weight: Number(e.target.value) } : vv)))}
-                  />
-                </div>
-                <div className="flex-column f-shrink g4">
-                  <div>&nbsp;</div>
-                  <Icon
-                    name="close"
-                    onClick={() => note.update(v => v.zapSplits = (v.zapSplits ?? []).filter((_v, ii) => ii !== i))}
-                  />
-                </div>
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={() => note.update(v => v.zapSplits = [...(v.zapSplits ?? []), { type: "pubkey", value: "", weight: 1 }])}>
-              <FormattedMessage defaultMessage="Add" />
-            </button>
-          </div>
-          <span className="warning">
-            <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" />
-          </span>
-        </div>
-        <div className="flex-column g8">
-          <h4>
-            <FormattedMessage defaultMessage="Sensitive Content" />
-          </h4>
-          <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." />
-          <input
-            className="w-max"
-            type="text"
-            value={note.sensitive}
-            onChange={e => note.update(v => v.sensitive = e.target.value)}
-            maxLength={50}
-            minLength={1}
-            placeholder={formatMessage({
-              defaultMessage: "Reason",
-            })}
+      )}
+      {note.preview && getPreviewNote()}
+      {!note.preview && (
+        <div onPaste={handlePaste} className={`note-creator${note.pollOptions ? " poll" : ""}`}>
+          <Textarea
+            autoFocus
+            className={`textarea ${note.active ? "textarea--focused" : ""}`}
+            onChange={c => onChange(c)}
+            value={note.note}
+            onFocus={() => note.update(v => (v.active = true))}
+            onKeyDown={e => {
+              if (e.key === "Enter" && e.metaKey) {
+                sendNote().catch(console.warn);
+              }
+            }}
           />
-          <span className="warning">
-            <FormattedMessage defaultMessage="Not all clients support this yet" />
-          </span>
+          {renderPollOptions()}
         </div>
-      </>
-    )}
-  </Modal>
+      )}
+      <div className="flex f-space">
+        <div className="flex g8">
+          <ProfileImage
+            pubkey={login.publicKey ?? ""}
+            className="note-creator-icon"
+            link=""
+            showUsername={false}
+            showFollowingMark={false}
+          />
+          {note.pollOptions === undefined && !note.replyTo && (
+            <div className="note-creator-icon">
+              <Icon name="pie-chart" onClick={() => note.update(v => (v.pollOptions = ["A", "B"]))} size={24} />
+            </div>
+          )}
+          <AsyncIcon iconName="image-plus" iconSize={24} onClick={attachFile} className="note-creator-icon" />
+          <button className="secondary" onClick={() => note.update(v => (v.advanced = !v.advanced))}>
+            <FormattedMessage defaultMessage="Advanced" />
+          </button>
+        </div>
+        <div className="flex g8">
+          <button className="secondary" onClick={cancel}>
+            <FormattedMessage defaultMessage="Cancel" />
+          </button>
+          <AsyncButton onClick={onSubmit}>
+            {note.replyTo ? <FormattedMessage defaultMessage="Reply" /> : <FormattedMessage defaultMessage="Send" />}
+          </AsyncButton>
+        </div>
+      </div>
+      {note.error && <span className="error">{note.error}</span>}
+      {note.advanced && (
+        <>
+          <button className="secondary" onClick={loadPreview}>
+            <FormattedMessage defaultMessage="Toggle Preview" />
+          </button>
+          <div>
+            <h4>
+              <FormattedMessage defaultMessage="Custom Relays" />
+            </h4>
+            <p>
+              <FormattedMessage defaultMessage="Send note to a subset of your write relays" />
+            </p>
+            {renderRelayCustomisation()}
+          </div>
+          <div className="flex-column g8">
+            <h4>
+              <FormattedMessage defaultMessage="Zap Splits" />
+            </h4>
+            <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." />
+            <div className="flex-column g8">
+              {[...(note.zapSplits ?? [])].map((v, i, arr) => (
+                <div className="flex f-center g8">
+                  <div className="flex-column f-4 g4">
+                    <h4>
+                      <FormattedMessage defaultMessage="Recipient" />
+                    </h4>
+                    <input
+                      type="text"
+                      value={v.value}
+                      onChange={e =>
+                        note.update(
+                          v => (v.zapSplits = arr.map((vv, ii) => (ii === i ? { ...vv, value: e.target.value } : vv))),
+                        )
+                      }
+                      placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address" })}
+                    />
+                  </div>
+                  <div className="flex-column f-1 g4">
+                    <h4>
+                      <FormattedMessage defaultMessage="Weight" />
+                    </h4>
+                    <input
+                      type="number"
+                      min={0}
+                      value={v.weight}
+                      onChange={e =>
+                        note.update(
+                          v =>
+                            (v.zapSplits = arr.map((vv, ii) =>
+                              ii === i ? { ...vv, weight: Number(e.target.value) } : vv,
+                            )),
+                        )
+                      }
+                    />
+                  </div>
+                  <div className="flex-column f-shrink g4">
+                    <div>&nbsp;</div>
+                    <Icon
+                      name="close"
+                      onClick={() => note.update(v => (v.zapSplits = (v.zapSplits ?? []).filter((_v, ii) => ii !== i)))}
+                    />
+                  </div>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() =>
+                  note.update(v => (v.zapSplits = [...(v.zapSplits ?? []), { type: "pubkey", value: "", weight: 1 }]))
+                }>
+                <FormattedMessage defaultMessage="Add" />
+              </button>
+            </div>
+            <span className="warning">
+              <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" />
+            </span>
+          </div>
+          <div className="flex-column g8">
+            <h4>
+              <FormattedMessage defaultMessage="Sensitive Content" />
+            </h4>
+            <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." />
+            <input
+              className="w-max"
+              type="text"
+              value={note.sensitive}
+              onChange={e => note.update(v => (v.sensitive = e.target.value))}
+              maxLength={50}
+              minLength={1}
+              placeholder={formatMessage({
+                defaultMessage: "Reason",
+              })}
+            />
+            <span className="warning">
+              <FormattedMessage defaultMessage="Not all clients support this yet" />
+            </span>
+          </div>
+        </>
+      )}
+    </Modal>
   );
 }

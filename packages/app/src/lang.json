@@ -99,6 +99,9 @@
   "25V4l1": {
     "defaultMessage": "Banner"
   },
+  "27jzYm": {
+    "defaultMessage": "Enter pin to unlock private key"
+  },
   "2IFGap": {
     "defaultMessage": "Donate"
   },
@@ -539,6 +542,9 @@
   "KoFlZg": {
     "defaultMessage": "Enter mint URL"
   },
+  "KtsyO0": {
+    "defaultMessage": "Enter Pin"
+  },
   "LF5kYT": {
     "defaultMessage": "Other Connections"
   },
@@ -887,6 +893,9 @@
     "defaultMessage": "Install Extension",
     "description": "Heading for install key manager extension"
   },
+  "c2DTVd": {
+    "defaultMessage": "Enter a pin to encrypt your private key, you must enter this pin every time you open Snort."
+  },
   "c35bj2": {
     "defaultMessage": "If you have an enquiry about your NIP-05 order please DM {link}"
   },
@@ -1229,6 +1238,9 @@
   },
   "qtWLmt": {
     "defaultMessage": "Like"
+  },
+  "qz9fty": {
+    "defaultMessage": "Incorrect pin"
   },
   "r3C4x/": {
     "defaultMessage": "Software"

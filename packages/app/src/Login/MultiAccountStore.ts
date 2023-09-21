@@ -1,6 +1,6 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
-import {v4 as uuid} from "uuid";
+import { v4 as uuid } from "uuid";
 
 import { HexKey, RelaySettings, PinEncrypted, EventPublisher } from "@snort/system";
 import { deepClone, sanitizeRelayUrl, unwrap, ExternalStore } from "@snort/shared";
@@ -117,7 +117,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     } as LoginSession;
 
     const pub = createPublisher(newSession);
-    if(pub) {
+    if (pub) {
       this.setPublisher(newSession.id, pub);
     }
     this.#accounts.set(newSession.id, newSession);
@@ -188,7 +188,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     const s = this.#activeAccount ? this.#accounts.get(this.#activeAccount) : undefined;
     if (!s) return LoggedOut;
 
-    return {...s};
+    return { ...s };
   }
 
   #migrate() {
@@ -229,8 +229,8 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       this.#activeAccount = this.#accounts.keys().next().value;
     }
     const toSave = [...this.#accounts.values()];
-    for(const v of toSave) {
-      if(v.privateKeyData instanceof PinEncrypted) {
+    for (const v of toSave) {
+      if (v.privateKeyData instanceof PinEncrypted) {
         v.privateKeyData = v.privateKeyData.toPayload();
       }
     }

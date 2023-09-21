@@ -38,7 +38,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
       update: (fn: (v: NoteCreatorDataSnapshot) => void) => {
         fn(this.#data);
         this.notifyChange();
-      }
+      },
     };
   }
 
@@ -67,7 +67,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
         fn(this.#data);
         console.debug(this.#data);
         this.notifyChange();
-      }
+      },
     } as NoteCreatorDataSnapshot;
     return sn;
   }
@@ -76,5 +76,8 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
 const NoteCreatorState = new NoteCreatorStore();
 
 export function useNoteCreator() {
-  return useSyncExternalStore(c => NoteCreatorState.hook(c), () => NoteCreatorState.snapshot());
+  return useSyncExternalStore(
+    c => NoteCreatorState.hook(c),
+    () => NoteCreatorState.snapshot(),
+  );
 }

@@ -8,7 +8,7 @@ import messages from "./messages";
 import useLogin from "Hooks/useLogin";
 import { System } from "index";
 
-export function ReBroadcaster({ onClose, ev }: { onClose: () => void, ev: TaggedNostrEvent }) {
+export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: TaggedNostrEvent }) {
   const [selected, setSelected] = useState<Array<string>>();
   const publisher = useEventPublisher();
 
@@ -44,10 +44,12 @@ export function ReBroadcaster({ onClose, ev }: { onClose: () => void, ev: Tagged
                 <input
                   type="checkbox"
                   checked={!selected || selected.includes(r)}
-                  onChange={e => setSelected(
-                    e.target.checked && selected && selected.length == a.length - 1
-                      ? undefined
-                      : a.filter(el => el === r ? e.target.checked : !selected || selected.includes(el)))
+                  onChange={e =>
+                    setSelected(
+                      e.target.checked && selected && selected.length == a.length - 1
+                        ? undefined
+                        : a.filter(el => (el === r ? e.target.checked : !selected || selected.includes(el))),
+                    )
                   }
                 />
               </div>
