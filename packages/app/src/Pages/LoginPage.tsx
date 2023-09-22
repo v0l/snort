@@ -157,17 +157,25 @@ export default function LoginPage() {
     await signer.init();
     await delay(500);
     await signer.describe();
-    LoginStore.loginWithPubkey(await signer.getPubKey(), LoginSessionType.Nip46, undefined, ["wss://relay.damus.io"], await PinEncrypted.create(nip46Key, pin));
+    LoginStore.loginWithPubkey(
+      await signer.getPubKey(),
+      LoginSessionType.Nip46,
+      undefined,
+      ["wss://relay.damus.io"],
+      await PinEncrypted.create(nip46Key, pin),
+    );
     navigate("/");
   }
 
   function nip46Buttons() {
     return (
       <>
-        <AsyncButton type="button" onClick={() => {
-          generateNip46();
-          setPin(true);
-        }}>
+        <AsyncButton
+          type="button"
+          onClick={() => {
+            generateNip46();
+            setPin(true);
+          }}>
           <FormattedMessage defaultMessage="Nostr Connect" description="Login button for NIP-46 signer app" />
         </AsyncButton>
         {nostrConnect && !pin && (

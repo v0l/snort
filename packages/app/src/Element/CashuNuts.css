@@ -1,8 +1,8 @@
 .cashu {
-    background: var(--cashu-gradient);
+  background: var(--cashu-gradient);
 }
 
 .cashu h1 {
-    font-size: 44px;
-    line-height: 1em;
+  font-size: 44px;
+  line-height: 1em;
 }

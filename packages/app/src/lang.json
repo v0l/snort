@@ -193,6 +193,12 @@
   "5ykRmX": {
     "defaultMessage": "Send zap"
   },
+  "6/SF6e": {
+    "defaultMessage": "<h1>{n}</h1> Cashu sats"
+  },
+  "6/hB3S": {
+    "defaultMessage": "Watch Replay"
+  },
   "65BmHb": {
     "defaultMessage": "Failed to proxy image from {host}, click here to load directly"
   },
@@ -362,6 +368,9 @@
   "Dh3hbq": {
     "defaultMessage": "Auto Zap"
   },
+  "Dn82AL": {
+    "defaultMessage": "Live"
+  },
   "DtYelJ": {
     "defaultMessage": "Transfer"
   },
@@ -434,6 +443,9 @@
   "GL8aXW": {
     "defaultMessage": "Bookmarks ({n})"
   },
+  "GQPtfk": {
+    "defaultMessage": "Join Stream"
+  },
   "GSye7T": {
     "defaultMessage": "Lightning Address"
   },
@@ -458,9 +470,6 @@
   },
   "HAlOn1": {
     "defaultMessage": "Name"
-  },
-  "HF4YnO": {
-    "defaultMessage": "Watch Live!"
   },
   "HFls6j": {
     "defaultMessage": "name will be available later"
@@ -725,10 +734,6 @@
   "SP0+yi": {
     "defaultMessage": "Buy Subscription"
   },
-  "SX58hM": {
-    "defaultMessage": "Copy",
-    "description": "Button: Copy Cashu token"
-  },
   "SYQtZ7": {
     "defaultMessage": "LN Address Proxy"
   },
@@ -747,8 +752,8 @@
   "TDR5ge": {
     "defaultMessage": "Media in notes will automatically be shown for selected people, otherwise only the link will show"
   },
-  "TMfYfY": {
-    "defaultMessage": "Cashu token"
+  "TP/cMX": {
+    "defaultMessage": "Ended"
   },
   "TpgeGw": {
     "defaultMessage": "Hex Salt..",
@@ -759,9 +764,6 @@
   },
   "UDYlxu": {
     "defaultMessage": "Pending Subscriptions"
-  },
-  "ULotH9": {
-    "defaultMessage": "Amount: {amount} sats"
   },
   "UT7Nkj": {
     "defaultMessage": "New Chat"
@@ -1048,9 +1050,6 @@
   },
   "iNWbVV": {
     "defaultMessage": "Handle"
-  },
-  "iUsU2x": {
-    "defaultMessage": "Mint: {url}"
   },
   "iXPL0Z": {
     "defaultMessage": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead"
@@ -1428,5 +1427,8 @@
   },
   "zvCDao": {
     "defaultMessage": "Automatically show latest notes"
+  },
+  "zwb6LR": {
+    "defaultMessage": "<b>Mint:</b> {url}"
   }
 }

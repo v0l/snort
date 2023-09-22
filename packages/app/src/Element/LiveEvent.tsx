@@ -15,16 +15,30 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
   function statusLine() {
     switch (status) {
       case "live": {
-        return <div className="flex g4">
-          <Icon name="signal-01" />
-          <b className="uppercase"><FormattedMessage defaultMessage="Live" /></b>
-        </div>
+        return (
+          <div className="flex g4">
+            <Icon name="signal-01" />
+            <b className="uppercase">
+              <FormattedMessage defaultMessage="Live" />
+            </b>
+          </div>
+        );
       }
       case "ended": {
-        return <b className="uppercase"><FormattedMessage defaultMessage="Ended" /></b>
+        return (
+          <b className="uppercase">
+            <FormattedMessage defaultMessage="Ended" />
+          </b>
+        );
       }
       case "planned": {
-        return <b className="uppercase">{new Intl.DateTimeFormat(undefined, { dateStyle: 'full', timeStyle: 'short' }).format(new Date(starts * 1000))}</b>
+        return (
+          <b className="uppercase">
+            {new Intl.DateTimeFormat(undefined, { dateStyle: "full", timeStyle: "short" }).format(
+              new Date(starts * 1000),
+            )}
+          </b>
+        );
       }
     }
   }
@@ -33,19 +47,23 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
     const link = `https://zap.stream/${NostrLink.fromEvent(ev).encode()}`;
     switch (status) {
       case "live": {
-        return <Link to={link} target="_blank">
-          <button type="button">
-            <FormattedMessage defaultMessage="Join Stream" />
-          </button>
-        </Link>;
+        return (
+          <Link to={link} target="_blank">
+            <button type="button">
+              <FormattedMessage defaultMessage="Join Stream" />
+            </button>
+          </Link>
+        );
       }
       case "ended": {
         if (findTag(ev, "recording")) {
-          return <Link to={link} target="_blank">
-            <button type="button">
-              <FormattedMessage defaultMessage="Watch Replay" />
-            </button>
-          </Link>;
+          return (
+            <Link to={link} target="_blank">
+              <button type="button">
+                <FormattedMessage defaultMessage="Watch Replay" />
+              </button>
+            </Link>
+          );
         }
       }
     }
@@ -60,9 +78,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
           {statusLine()}
         </div>
       </div>
-      <div>
-        {cta()}
-      </div>
+      <div>{cta()}</div>
     </div>
   );
 }
