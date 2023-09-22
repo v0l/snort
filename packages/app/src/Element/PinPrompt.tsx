@@ -8,7 +8,6 @@ import { unwrap } from "@snort/shared";
 import { EventPublisher, InvalidPinError, PinEncrypted, PinEncryptedPayload } from "@snort/system";
 import { DefaultPowWorker } from "index";
 import Modal from "./Modal";
-import Spinner from "Icons/Spinner";
 
 const PinLen = 6;
 export function PinPrompt({
@@ -24,22 +23,16 @@ export function PinPrompt({
   const [error, setError] = useState("");
   const { formatMessage } = useIntl();
 
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      console.debug(e);
-      if (!isNaN(Number(e.key)) && pin.length < PinLen) {
-        setPin(s => (s += e.key));
-      }
-      if (e.key === "Backspace") {
-        setPin(s => s.slice(0, -1));
-      } else {
-        e.preventDefault();
-      }
-    };
-    const handler = (e: Event) => handleKey(e as KeyboardEvent);
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
-  }, [pin]);
+  const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!isNaN(Number(e.key)) && pin.length < PinLen) {
+      setPin(s => (s += e.key));
+    }
+    if (e.key === "Backspace") {
+      setPin(s => s.slice(0, -1));
+    } else {
+      e.preventDefault();
+    }
+  };
 
   useEffect(() => {
     if (pin.length > 0) {
@@ -63,14 +56,6 @@ export function PinPrompt({
     }
   }, [pin]);
 
-  const boxes = [];
-  if (pin.length === PinLen) {
-    boxes.push(<Spinner className="flex f-center f-1" />);
-  } else {
-    for (let x = 0; x < PinLen; x++) {
-      boxes.push(<div className="pin-box flex f-center f-1">{pin[x]}</div>);
-    }
-  }
   return (
     <Modal id="pin" onClose={() => onCancel()}>
       <div className="flex-column g12">
@@ -78,7 +63,7 @@ export function PinPrompt({
           <FormattedMessage defaultMessage="Enter Pin" />
         </h2>
         {subTitle}
-        <div className="flex g4">{boxes}</div>
+        <input type="number" onKeyDown={handleKey} value={pin} autoFocus={true} maxLength={PinLen} />
         {error && <b className="error">{error}</b>}
         <div>
           <button type="button" onClick={() => onCancel()}>
