@@ -12,9 +12,13 @@
 }
 
 .note-creator-modal .note.card {
+  padding: 0;
+  border: none;
+}
+
+.note-creator-modal .note.card.note-quote {
+  border: 1px solid var(--gray);
   padding: 8px 12px;
-  border-radius: 12px;
-  background-color: var(--gray-dark);
 }
 
 .note-creator-modal h4 {
@@ -81,13 +85,13 @@
 .note-create-button {
   width: 48px;
   height: 48px;
-  background-color: var(--highlight);
   color: white;
+  background: linear-gradient(90deg, rgba(239, 150, 68, 1) 0%, rgba(123, 65, 246, 1) 100%);
   border: none;
   border-radius: 100%;
   position: fixed;
-  bottom: 50px;
-  right: calc(((100vw - 640px) / 2) - 60px);
+  bottom: 40px;
+  right: calc(((100vw - 640px) / 2) - 75px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,4 +101,15 @@
   .note-create-button {
     right: 16px;
   }
+}
+
+.light .note-creator textarea {
+  background-color: #FFF;
+}
+
+.light .note-creator {
+  box-shadow: 0px 0px 6px 1px rgba(182, 108, 156, 0.3);
+  background: linear-gradient(var(--gray-superdark), var(--gray-superdark)) padding-box,
+    linear-gradient(90deg, #ef9644, #fd7c49, #ff5e58, #ff3b70, #ff088e, #eb00b1, #c31ed5, #7b41f6) border-box;
+
 }

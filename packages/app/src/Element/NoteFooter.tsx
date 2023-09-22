@@ -260,10 +260,10 @@ export default function NoteFooter(props: NoteFooterProps) {
     <>
       <div className="footer">
         <div className="footer-reactions">
-          {tipButton()}
-          {reactionIcon()}
-          {repostIcon()}
           {replyIcon()}
+          {repostIcon()}
+          {reactionIcon()}
+          {tipButton()}
           {powIcon()}
         </div>
         {willRenderNoteCreator && <NoteCreator />}

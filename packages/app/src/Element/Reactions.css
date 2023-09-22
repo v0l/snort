@@ -29,11 +29,31 @@
   color: var(--font-tertiary-color);
 }
 
+.reactions-modal .modal-body .tabs.p {
+  padding: 12px 0;
+}
+
 .reactions-modal .modal-body .reactions-header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 12px;
+}
+
+.reactions-modal .modal-body .tab {
+  background: none;
+  border: none;
+}
+
+.reactions-modal .modal-body .tab.active {
+  background: #FFF;
+  color: #000;
+}
+
+.reactions-modal .modal-body .tab:hover {
+  background: rgba(255, 255, 255, 0.8);
+  color: #000;
+  border: none;
 }
 
 .reactions-modal .modal-body .reactions-header h2 {
@@ -47,8 +67,11 @@
 .reactions-modal .modal-body .reactions-body {
   overflow: scroll;
   height: 40vh;
-  -ms-overflow-style: none; /* for Internet Explorer, Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* for Internet Explorer, Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  margin-top: 12px;
 }
 
 .reactions-modal .modal-body .reactions-body::-webkit-scrollbar {
@@ -70,6 +93,7 @@
 
 .reactions-item .follow-button {
   margin-left: auto;
+
 }
 
 .reactions-item .zap-reaction-icon {

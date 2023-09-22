@@ -152,7 +152,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </h4>
           <input className="w-max" type="text" value={lud16} onChange={e => setLud16(e.target.value)} />
         </div>
-        <AsyncButton onClick={() => saveProfile()}>
+        <AsyncButton className="primary" onClick={() => saveProfile()}>
           <FormattedMessage defaultMessage="Save" />
         </AsyncButton>
       </div>

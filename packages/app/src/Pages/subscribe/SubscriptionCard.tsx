@@ -62,7 +62,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
 
   return (
     <>
-      <div className="p">
+      <div className="p subtier">
         <div className="flex card-title">
           <Icon name="badge" className="mr5" size={25} />
           {mapPlanName(sub.type)}

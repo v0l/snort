@@ -20,6 +20,7 @@ header {
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
+  gap: 24px;
 }
 
 .header-actions .avatar {
@@ -33,6 +34,7 @@ header {
   flex-direction: row;
   align-items: center;
   gap: 24px;
+  width: 100%;
 }
 
 .header-actions .btn {
@@ -63,6 +65,11 @@ header {
   padding: 9px 16px;
   background: var(--gray-superdark);
   border-radius: 1000px;
+}
+
+.light .search {
+  background: #FFF;
+  border: 1px solid var(--border-color);
 }
 
 .search input {

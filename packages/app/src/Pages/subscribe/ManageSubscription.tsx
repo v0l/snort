@@ -33,7 +33,7 @@ export default function ManageSubscriptionPage() {
     return <PageSpinner />;
   }
   return (
-    <div className="main-content p flex-column g24">
+    <div className="main-content p flex-column g16">
       <h2>
         <FormattedMessage defaultMessage="Subscriptions" />
       </h2>
@@ -41,7 +41,7 @@ export default function ManageSubscriptionPage() {
         <SubscriptionCard sub={a} key={a.id} />
       ))}
       {subs.length !== 0 && (
-        <button onClick={() => navigate("/subscribe")}>
+        <button className="primary" onClick={() => navigate("/subscribe")}>
           <FormattedMessage defaultMessage="Buy Subscription" />
         </button>
       )}
