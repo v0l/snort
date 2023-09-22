@@ -34,7 +34,7 @@ pub struct ReqFilter {
     #[serde(rename = "#g", skip_serializing_if = "Option::is_none")]
     pub g_tag: Option<HashSet<String>>,
     #[serde(rename = "search", skip_serializing_if = "Option::is_none")]
-    pub search: Option<HashSet<String>>,
+    pub search: Option<String>,
     #[serde(rename = "since", skip_serializing_if = "Option::is_none")]
     pub since: Option<i32>,
     #[serde(rename = "until", skip_serializing_if = "Option::is_none")]
@@ -122,7 +122,6 @@ impl Distance for FlatReqFilter {
         ret += prop_dist(&self.d_tag, &b.d_tag);
         ret += prop_dist(&self.r_tag, &b.r_tag);
         ret += prop_dist(&self.t_tag, &b.t_tag);
-        ret += prop_dist(&self.search, &b.search);
 
         ret
     }
@@ -171,7 +170,7 @@ impl From<Vec<&FlatReqFilter>> for ReqFilter {
             array_prop_append(&x.r_tag, &mut acc.r_tag);
             array_prop_append(&x.a_tag, &mut acc.a_tag);
             array_prop_append(&x.g_tag, &mut acc.g_tag);
-            array_prop_append(&x.search, &mut acc.search);
+            acc.search = x.search.to_owned();
             acc.since = x.since;
             acc.until = x.until;
             acc.limit = x.limit;
@@ -210,7 +209,7 @@ impl From<Vec<&ReqFilter>> for ReqFilter {
             array_prop_append_vec(&x.r_tag, &mut acc.r_tag);
             array_prop_append_vec(&x.a_tag, &mut acc.a_tag);
             array_prop_append_vec(&x.g_tag, &mut acc.g_tag);
-            array_prop_append_vec(&x.search, &mut acc.search);
+            acc.search = x.search.to_owned();
             acc.since = x.since;
             acc.until = x.until;
             acc.limit = x.limit;
@@ -292,13 +291,6 @@ impl Into<Vec<FlatReqFilter>> for &ReqFilter {
             let t_ids = g_tags
                 .iter()
                 .map(|z| StringOrNumberEntry::String(("g_tag", z)))
-                .collect();
-            inputs.push(t_ids);
-        }
-        if let Some(search) = &self.search {
-            let t_ids = search
-                .iter()
-                .map(|z| StringOrNumberEntry::String(("search", z)))
                 .collect();
             inputs.push(t_ids);
         }
@@ -385,14 +377,7 @@ impl Into<Vec<FlatReqFilter>> for &ReqFilter {
                     }
                     None
                 }),
-                search: p.iter().find_map(|q| {
-                    if let StringOrNumberEntry::String((k, v)) = q {
-                        if (*k).eq("search") {
-                            return Some((*v).to_string());
-                        }
-                    }
-                    None
-                }),
+                search: self.search.to_owned(),
                 since: self.since,
                 until: self.until,
                 limit: self.limit,
@@ -415,7 +400,6 @@ impl Distance for ReqFilter {
         ret += prop_dist_vec(&self.r_tag, &b.r_tag);
         ret += prop_dist_vec(&self.t_tag, &b.t_tag);
         ret += prop_dist_vec(&self.a_tag, &b.a_tag);
-        ret += prop_dist_vec(&self.search, &b.search);
 
         ret
     }
