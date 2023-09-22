@@ -9,16 +9,16 @@
   cursor: pointer;
 }
 
-.note>.header .reply {
+.note > .header .reply {
   font-size: 13px;
   color: var(--font-secondary-color);
 }
 
-.note>.header .reply a {
+.note > .header .reply a {
   color: var(--highlight);
 }
 
-.note>.header .reply a:hover {
+.note > .header .reply a:hover {
   text-decoration-color: var(--highlight);
 }
 
@@ -83,12 +83,12 @@
   }
 }
 
-.note>.header img:hover,
-.note>.header .name>.reply:hover {
+.note > .header img:hover,
+.note > .header .name > .reply:hover {
   cursor: pointer;
 }
 
-.note>.note-creator {
+.note > .note-creator {
   margin-top: 12px;
   margin-left: 56px;
 }
@@ -98,7 +98,7 @@
   user-select: none;
 }
 
-.note .poll-body>div {
+.note .poll-body > div {
   border: 1px solid var(--font-secondary-color);
   border-radius: 5px;
   margin-bottom: 3px;
@@ -106,17 +106,17 @@
   overflow: hidden;
 }
 
-.note .poll-body>div>div {
+.note .poll-body > div > div {
   padding: 5px 10px;
   z-index: 2;
 }
 
-.note .poll-body>div:hover {
+.note .poll-body > div:hover {
   cursor: pointer;
   border: 1px solid var(--highlight);
 }
 
-.note .poll-body>div>.progress {
+.note .poll-body > div > .progress {
   background-color: var(--gray);
   height: stretch;
   height: -webkit-fill-available;
@@ -193,6 +193,6 @@
   text-decoration: underline;
 }
 
-.note .body>.text>a {
+.note .body > .text > a {
   color: var(--highlight);
 }

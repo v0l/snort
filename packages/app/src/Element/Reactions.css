@@ -46,7 +46,7 @@
 }
 
 .reactions-modal .modal-body .tab.active {
-  background: #FFF;
+  background: #fff;
   color: #000;
 }
 
@@ -93,7 +93,6 @@
 
 .reactions-item .follow-button {
   margin-left: auto;
-
 }
 
 .reactions-item .zap-reaction-icon {

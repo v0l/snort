@@ -9,11 +9,11 @@
   }
 }
 
-.settings-nav>div {
+.settings-nav > div {
   border: 1px solid var(--border-color);
 }
 
-.settings-nav>div.content {
+.settings-nav > div.content {
   padding: 12px 16px;
 }
 
@@ -57,6 +57,6 @@
   margin-left: auto;
 }
 
-.settings-group-header .collapse-icon>svg {
+.settings-group-header .collapse-icon > svg {
   width: 8px;
 }

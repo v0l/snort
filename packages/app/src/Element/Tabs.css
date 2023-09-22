@@ -17,7 +17,6 @@
 
 .light .tab {
   border: 1px solid var(--border-color);
-
 }
 
 .tab.active {
@@ -25,7 +24,7 @@
 }
 
 .light .tab.active {
-  background: #FFF;
+  background: #fff;
   border-color: #bfc6d6;
 }
 
@@ -46,7 +45,7 @@
   color: var(--font-color);
 }
 
-.tabs>div {
+.tabs > div {
   cursor: pointer;
 }
 

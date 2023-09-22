@@ -16,7 +16,7 @@
   --heart: #ef4444;
   --zap: #ff710a;
   --gray-superlight: #eee;
-  --bg-secondary: #2A2A2A;
+  --bg-secondary: #2a2a2a;
   --gray-light: #999;
   --gray-medium: #7b7b7b;
   --gray: #333;
@@ -28,19 +28,23 @@
   --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
   --snort-gradient: linear-gradient(90deg, #a178ff 0%, #ff6baf 100%);
   --dm-gradient: linear-gradient(90deg, #5722d2 0%, #db1771 100%);
-  --invoice-gradient: linear-gradient(45deg,
-      var(--gray-superdark) 50%,
-      rgba(161, 120, 255, 0.2),
-      rgba(255, 107, 175, 0.2) 108.33%);
-  --paid-invoice-gradient: linear-gradient(45deg,
-      var(--gray-superdark) 50%,
-      rgba(161, 120, 255, 0.6),
-      rgba(255, 107, 175, 0.6) 108.33%);
+  --invoice-gradient: linear-gradient(
+    45deg,
+    var(--gray-superdark) 50%,
+    rgba(161, 120, 255, 0.2),
+    rgba(255, 107, 175, 0.2) 108.33%
+  );
+  --paid-invoice-gradient: linear-gradient(
+    45deg,
+    var(--gray-superdark) 50%,
+    rgba(161, 120, 255, 0.6),
+    rgba(255, 107, 175, 0.6) 108.33%
+  );
   --expired-invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, var(--gray), var(--gray-superdark));
   --strike-army-gradient: linear-gradient(to bottom right, #ccff00, #a1c900);
   --sub-bg: #111;
   --header-padding-tb: 10px;
-  --btn-color: #FFF;
+  --btn-color: #fff;
   --primary-gradient: linear-gradient(90deg, rgba(239, 150, 68, 1) 0%, rgba(123, 65, 246, 1) 100%);
 }
 
@@ -70,7 +74,7 @@ html {
 html.light {
   --bg-color: #fff;
   --font-color: #2f3f64;
-  --font-secondary-color: #5C6C92;
+  --font-secondary-color: #5c6c92;
   --font-tertiary-color: #52525b;
   --border-color: #dee1e8;
   --highlight: #7139f1;
@@ -81,14 +85,14 @@ html.light {
   --gray-superlight: #333;
   --gray-light: #555;
   --gray-dark: #ccc;
-  --gray-superdark: #FFF;
-  --gray-ultradark: #FFF;
+  --gray-superdark: #fff;
+  --gray-ultradark: #fff;
   --dm-gradient: var(--gray);
   --invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73333, #fc4a1a33);
   --paid-invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73399, #fc4a1a99);
-  --bg-secondary: #FFF;
-  --sub-bg: #FFF;
-  --btn-color: #FFF;
+  --bg-secondary: #fff;
+  --sub-bg: #fff;
+  --btn-color: #fff;
 }
 
 body {
@@ -151,7 +155,7 @@ code {
   margin-bottom: -8px;
 }
 
-.card>.footer {
+.card > .footer {
   display: flex;
   flex-direction: row;
 }
@@ -176,7 +180,7 @@ button {
 button.primary {
   background: rgb(239, 150, 68);
   background: var(--primary-gradient);
-  color: #FFF !important;
+  color: #fff !important;
   border: none !important;
 }
 
@@ -489,22 +493,22 @@ div.form-group {
   grid-template-columns: 1fr 2fr;
 }
 
-div.form-group>div {
+div.form-group > div {
   padding: 3px 5px;
 }
 
-div.form-group>div:nth-child(1) {
+div.form-group > div:nth-child(1) {
   display: flex;
   align-self: center;
 }
 
-div.form-group>div:nth-child(2) {
+div.form-group > div:nth-child(2) {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
 }
 
-div.form-group>div:nth-child(2) input {
+div.form-group > div:nth-child(2) input {
   flex-grow: 1;
 }
 
@@ -608,7 +612,7 @@ small.xs {
   margin: 0 auto;
 }
 
-.tweet div .twitter-tweet>iframe {
+.tweet div .twitter-tweet > iframe {
   max-height: unset;
 }
 
@@ -739,7 +743,7 @@ button.tall {
 }
 
 .light .ctx-menu li {
-  background: #FFF !important;
+  background: #fff !important;
 }
 
 .ctx-menu li:first-of-type {
@@ -769,7 +773,7 @@ button.tall {
 
 .light .ctx-menu li:hover {
   color: var(--font-color) !important;
-  background: #EEE !important;
+  background: #eee !important;
 }
 
 .ctx-menu .red {
@@ -807,7 +811,7 @@ svg.zap-solid {
 }
 
 .light .spinner-button {
-  background: #FFF;
+  background: #fff;
   border: 1px solid var(--border-color);
   color: var(--font-secondary);
   box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
@@ -833,8 +837,8 @@ svg.zap-solid {
 
 .light button,
 .light button.secondary {
-  color: #4B5C83;
-  background-color: #FFF;
+  color: #4b5c83;
+  background-color: #fff;
   border: 1px solid var(--border-color);
   box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
 }
@@ -845,5 +849,5 @@ svg.zap-solid {
 }
 
 .light .modal button.secondary:hover {
-  background: #FFF !important;
+  background: #fff !important;
 }

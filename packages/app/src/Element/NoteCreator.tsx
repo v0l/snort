@@ -300,9 +300,9 @@ export function NoteCreator() {
                         e.target.checked && selectedCustomRelays && selectedCustomRelays.length == a.length - 1
                           ? false
                           : // otherwise return selectedCustomRelays with target relay added / removed
-                          a.filter(el =>
-                            el === r ? e.target.checked : !selectedCustomRelays || selectedCustomRelays.includes(el),
-                          ),
+                            a.filter(el =>
+                              el === r ? e.target.checked : !selectedCustomRelays || selectedCustomRelays.includes(el),
+                            ),
                       ),
                     )
                   }

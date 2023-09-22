@@ -4,7 +4,7 @@
   justify-content: center;
 }
 
-.root-type>button {
+.root-type > button {
   background: white;
   color: var(--bg-color);
   font-size: 16px;
@@ -17,7 +17,7 @@
   border: 1px solid var(--gray-superdark);
 }
 
-.light .root-type>button {
+.light .root-type > button {
   color: var(--font-color);
   border: 1px solid var(--border-color);
 }

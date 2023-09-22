@@ -326,14 +326,14 @@ export default function ProfilePage() {
           targets={
             lnurl?.lnurl && id
               ? [
-                {
-                  type: "lnurl",
-                  value: lnurl?.lnurl,
-                  weight: 1,
-                  name: user?.display_name || user?.name,
-                  zap: { pubkey: id },
-                } as ZapTarget,
-              ]
+                  {
+                    type: "lnurl",
+                    value: lnurl?.lnurl,
+                    weight: 1,
+                    name: user?.display_name || user?.name,
+                    zap: { pubkey: id },
+                  } as ZapTarget,
+                ]
               : undefined
           }
           show={showLnQr}
