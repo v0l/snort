@@ -81,8 +81,8 @@ export default function CashuNuts({ token }: { token: string }) {
                 x2="7.11501"
                 y2="6.7213"
                 gradientUnits="userSpaceOnUse">
-                <stop stop-color="white" />
-                <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                <stop stopColor="white" />
+                <stop offset="1" stopColor="white" stopOpacity="0.5" />
               </linearGradient>
               <linearGradient
                 id="paint1_linear_1976_19241"
@@ -91,8 +91,8 @@ export default function CashuNuts({ token }: { token: string }) {
                 x2="7.11501"
                 y2="32.2311"
                 gradientUnits="userSpaceOnUse">
-                <stop stop-color="white" />
-                <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                <stop stopColor="white" />
+                <stop offset="1" stopColor="white" stopOpacity="0.5" />
               </linearGradient>
               <linearGradient
                 id="paint2_linear_1976_19241"
@@ -101,8 +101,8 @@ export default function CashuNuts({ token }: { token: string }) {
                 x2="22.2658"
                 y2="19.4576"
                 gradientUnits="userSpaceOnUse">
-                <stop stop-color="white" />
-                <stop offset="1" stop-color="white" stop-opacity="0.5" />
+                <stop stopColor="white" />
+                <stop offset="1" stopColor="white" stopOpacity="0.5" />
               </linearGradient>
             </defs>
           </svg>

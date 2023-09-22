@@ -68,7 +68,10 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   }
 
   getSessions() {
-    return [...this.#accounts.values()].map(v => unwrap(v.publicKey));
+    return [...this.#accounts.values()].map(v => ({
+      pubkey: unwrap(v.publicKey),
+      id: v.id,
+    }));
   }
 
   allSubscriptions() {

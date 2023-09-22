@@ -2,6 +2,7 @@ import { ExternalStore } from "@snort/shared";
 import { NostrEvent, TaggedNostrEvent } from "@snort/system";
 import { ZapTarget } from "Zapper";
 import { useSyncExternalStore } from "react";
+import { useSyncExternalStoreWithSelector } from "use-sync-external-store/with-selector";
 
 interface NoteCreatorDataSnapshot {
   show: boolean;
@@ -33,11 +34,11 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
       advanced: false,
       reset: () => {
         this.#reset(this.#data);
-        this.notifyChange();
+        this.notifyChange(this.#data);
       },
       update: (fn: (v: NoteCreatorDataSnapshot) => void) => {
         fn(this.#data);
-        this.notifyChange();
+        this.notifyChange(this.#data);
       },
     };
   }
@@ -65,8 +66,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
       },
       update: (fn: (v: NoteCreatorDataSnapshot) => void) => {
         fn(this.#data);
-        console.debug(this.#data);
-        this.notifyChange();
+        this.notifyChange(this.#data);
       },
     } as NoteCreatorDataSnapshot;
     return sn;
@@ -75,9 +75,20 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
 
 const NoteCreatorState = new NoteCreatorStore();
 
-export function useNoteCreator() {
-  return useSyncExternalStore(
-    c => NoteCreatorState.hook(c),
-    () => NoteCreatorState.snapshot(),
-  );
+export function useNoteCreator<T extends object = NoteCreatorDataSnapshot>(
+  selector?: (v: NoteCreatorDataSnapshot) => T,
+) {
+  if (selector) {
+    return useSyncExternalStoreWithSelector<NoteCreatorDataSnapshot, T>(
+      c => NoteCreatorState.hook(c),
+      () => NoteCreatorState.snapshot(),
+      undefined,
+      selector,
+    );
+  } else {
+    return useSyncExternalStore<T>(
+      c => NoteCreatorState.hook(c),
+      () => NoteCreatorState.snapshot() as T,
+    );
+  }
 }

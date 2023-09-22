@@ -35,9 +35,7 @@ export abstract class ExternalStore<TSnapshot> {
   protected notifyChange(sn?: TSnapshot) {
     this.#changed = true;
     if (this.#hooks.length > 0) {
-      queueMicrotask(() => {
-        this.#hooks.forEach(h => h.fn(sn));
-      });
+      this.#hooks.forEach(h => h.fn(sn));
     }
   }
 

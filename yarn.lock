@@ -2698,6 +2698,7 @@ __metadata:
     "@types/node": ^20.4.1
     "@types/react": ^18.0.26
     "@types/react-dom": ^18.0.10
+    "@types/use-sync-external-store": ^0.0.4
     "@types/uuid": ^9.0.2
     "@types/webscopeio__react-textarea-autocomplete": ^4.7.2
     "@types/webtorrent": ^0.109.3
@@ -2740,6 +2741,7 @@ __metadata:
     ts-loader: ^9.4.4
     typescript: ^5.2.2
     use-long-press: ^2.0.3
+    use-sync-external-store: ^1.2.0
     uuid: ^9.0.0
     webpack: ^5.88.2
     webpack-bundle-analyzer: ^4.8.0
@@ -3565,6 +3567,13 @@ __metadata:
   version: 2.0.3
   resolution: "@types/trusted-types@npm:2.0.3"
   checksum: 4794804bc4a4a173d589841b6d26cf455ff5dc4f3e704e847de7d65d215f2e7043d8757e4741ce3a823af3f08260a8d04a1a6e9c5ec9b20b7b04586956a6b005
+  languageName: node
+  linkType: hard
+
+"@types/use-sync-external-store@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@types/use-sync-external-store@npm:0.0.4"
+  checksum: f8bf56b14f28fda6d0215281d50623d5affd17c549ba46bcfcfbb97c6301a583066c0477856260ae6feadcaa714c46cd45678e76b74da0f6f8b364aec07bd854
   languageName: node
   linkType: hard
 
@@ -13328,6 +13337,15 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 50e57a33653c2e4825ef700565e6db7ac94441929aaaf3226b164162f9be62084d97689d017ff0e9a33834b6fc454be8768d0cb6f10ecb1ca95c06cf509596e7
+  languageName: node
+  linkType: hard
+
+"use-sync-external-store@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 5c639e0f8da3521d605f59ce5be9e094ca772bd44a4ce7322b055a6f58eeed8dda3c94cabd90c7a41fb6fa852210092008afe48f7038792fd47501f33299116a
   languageName: node
   linkType: hard
 

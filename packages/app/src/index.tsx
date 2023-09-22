@@ -38,7 +38,6 @@ import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
 import { SnortDeckLayout } from "Pages/DeckLayout";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const WasmQueryOptimizer = {
   expandFilter: (f: ReqFilter) => {
     return expand_filter(f) as Array<FlatReqFilter>;
@@ -61,7 +60,7 @@ export const System = new NostrSystem({
   relayCache: UserRelays,
   profileCache: UserCache,
   relayMetrics: RelayMetrics,
-  //queryOptimizer: WasmQueryOptimizer,
+  queryOptimizer: WasmQueryOptimizer,
   authHandler: async (c, r) => {
     const { id } = LoginStore.snapshot();
     const pub = LoginStore.getPublisher(id);

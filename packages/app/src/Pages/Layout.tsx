@@ -25,18 +25,11 @@ import { LoginUnlock } from "Element/PinPrompt";
 
 export default function Layout() {
   const location = useLocation();
-  const note = useNoteCreator();
-  const isReplyNoteCreatorShowing = note.replyTo && note.show;
   const [pageClass, setPageClass] = useState("page");
 
   useLoginFeed();
   useTheme();
   useLoginRelays();
-
-  const shouldHideNoteCreator = useMemo(() => {
-    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/e", "/subscribe"];
-    return isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
-  }, [location, isReplyNoteCreatorShowing]);
 
   const shouldHideHeader = useMemo(() => {
     const hideOn = ["/login", "/new"];
@@ -63,27 +56,41 @@ export default function Layout() {
           </header>
         )}
         <Outlet />
-        {!shouldHideNoteCreator && (
-          <>
-            <button
-              className="primary note-create-button"
-              onClick={() =>
-                note.update(v => {
-                  v.replyTo = undefined;
-                  v.show = true;
-                })
-              }>
-              <Icon name="plus" size={16} />
-            </button>
-            <NoteCreator />
-          </>
-        )}
+        <NoteCreatorButton />
         <Toaster />
       </div>
       <LoginUnlock />
     </>
   );
 }
+
+const NoteCreatorButton = () => {
+  const location = useLocation();
+  const { show, replyTo, update } = useNoteCreator(v => ({ show: v.show, replyTo: v.replyTo, update: v.update }));
+
+  const shouldHideNoteCreator = useMemo(() => {
+    const isReplyNoteCreatorShowing = replyTo && show;
+    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/e", "/subscribe"];
+    return isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
+  }, [location]);
+
+  if (shouldHideNoteCreator) return;
+  return (
+    <>
+      <button
+        className="primary note-create-button"
+        onClick={() =>
+          update(v => {
+            v.replyTo = undefined;
+            v.show = true;
+          })
+        }>
+        <Icon name="plus" size={16} />
+      </button>
+      <NoteCreator key="global-note-creator" />
+    </>
+  );
+};
 
 const AccountHeader = () => {
   const navigate = useNavigate();

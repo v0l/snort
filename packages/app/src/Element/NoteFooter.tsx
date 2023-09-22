@@ -52,7 +52,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const author = useUserProfile(ev.pubkey);
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const publisher = useEventPublisher();
-  const note = useNoteCreator();
+  const note = useNoteCreator(n => ({ show: n.show, replyTo: n.replyTo, update: n.update }));
   const willRenderNoteCreator = note.show && note.replyTo?.id === ev.id;
   const [tip, setTip] = useState(false);
   const [zapping, setZapping] = useState(false);
@@ -263,7 +263,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           {tipButton()}
           {powIcon()}
         </div>
-        {willRenderNoteCreator && <NoteCreator />}
+        {willRenderNoteCreator && <NoteCreator key={`note-creator-${ev.id}`} />}
         <SendSats targets={getZapTarget()} onClose={() => setTip(false)} show={tip} note={ev.id} allocatePool={true} />
       </div>
       <ZapsSummary zaps={zaps} />
