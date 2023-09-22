@@ -5,7 +5,7 @@
   "author": "Kieran",
   "license": "MIT",
   "scripts": {
-    "build": "wasm-pack build -t web -s snort"
+    "build": "wasm-pack build -t web -s snort && rm -f pkg/.gitignore"
   },
   "files": [
     "pkg/system_wasm_bg.wasm",
