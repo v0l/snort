@@ -3,7 +3,7 @@ import "./LoginPage.css";
 import { CSSProperties, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useIntl, FormattedMessage } from "react-intl";
-import { HexKey, Nip46Signer, PrivateKeySigner } from "@snort/system";
+import { HexKey, Nip46Signer, PinEncrypted, PrivateKeySigner } from "@snort/system";
 
 import { bech32ToHex, getPublicKey, unwrap } from "SnortUtils";
 import ZapButton from "Element/ZapButton";
@@ -76,6 +76,7 @@ export async function getNip05PubKey(addr: string): Promise<string> {
 export default function LoginPage() {
   const navigate = useNavigate();
   const [key, setKey] = useState("");
+  const [nip46Key, setNip46Key] = useState("");
   const [error, setError] = useState("");
   const [pin, setPin] = useState(false);
   const [art, setArt] = useState<ArtworkEntry>();
@@ -130,9 +131,10 @@ export default function LoginPage() {
       "getRelays" in unwrap(window.nostr) ? await unwrap(window.nostr?.getRelays).call(window.nostr) : undefined;
     const pubKey = await unwrap(window.nostr).getPublicKey();
     LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip7, relays);
+    navigate("/");
   }
 
-  async function startNip46() {
+  function generateNip46() {
     const meta = {
       name: "Snort",
       url: window.location.href,
@@ -145,20 +147,30 @@ export default function LoginPage() {
       `metadata=${encodeURIComponent(JSON.stringify(meta))}`,
     ].join("&")}`;
     setNostrConnect(connectUrl);
+    setNip46Key(newKey);
+  }
 
-    const signer = new Nip46Signer(connectUrl, new PrivateKeySigner(newKey));
+  async function startNip46(pin: string) {
+    if (!nostrConnect || !nip46Key) return;
+
+    const signer = new Nip46Signer(nostrConnect, new PrivateKeySigner(nip46Key));
     await signer.init();
     await delay(500);
     await signer.describe();
+    LoginStore.loginWithPubkey(await signer.getPubKey(), LoginSessionType.Nip46, undefined, ["wss://relay.damus.io"], await PinEncrypted.create(nip46Key, pin));
+    navigate("/");
   }
 
   function nip46Buttons() {
     return (
       <>
-        <AsyncButton type="button" onClick={startNip46}>
+        <AsyncButton type="button" onClick={() => {
+          generateNip46();
+          setPin(true);
+        }}>
           <FormattedMessage defaultMessage="Nostr Connect" description="Login button for NIP-46 signer app" />
         </AsyncButton>
-        {nostrConnect && (
+        {nostrConnect && !pin && (
           <Modal id="nostr-connect" onClose={() => setNostrConnect("")}>
             <>
               <h2>
@@ -307,8 +319,11 @@ export default function LoginPage() {
                   </p>
                 }
                 onResult={async pin => {
+                  setPin(false);
                   if (key) {
                     await doLogin(pin);
+                  } else if (nostrConnect) {
+                    await startNip46(pin);
                   } else {
                     await makeRandomKey(pin);
                   }
