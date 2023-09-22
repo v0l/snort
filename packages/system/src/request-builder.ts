@@ -1,6 +1,6 @@
 import debug from "debug";
 import { v4 as uuid } from "uuid";
-import { appendDedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
+import { appendDedupe, dedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
 
 import EventKind from "./event-kind";
 import { NostrLink, NostrPrefix, SystemInterface } from "index";
@@ -219,9 +219,9 @@ export class RequestFilterBuilder {
     return this;
   }
 
-  tag(key: "e" | "p" | "d" | "t" | "r" | "a" | "g", value?: Array<string>) {
+  tag(key: "e" | "p" | "d" | "t" | "r" | "a" | "g" | string, value?: Array<string>) {
     if (!value) return this;
-    this.#filter[`#${key}`] = appendDedupe(this.#filter[`#${key}`], value);
+    this.#filter[`#${key}`] = appendDedupe(this.#filter[`#${key}`] as Array<string>, value);
     return this;
   }
 
@@ -239,11 +239,10 @@ export class RequestFilterBuilder {
       this.tag("d", [link.id])
         .kinds([unwrap(link.kind)])
         .authors([unwrap(link.author)]);
-      link.relays?.forEach(v => this.relay(v));
     } else {
       this.ids([link.id]);
-      link.relays?.forEach(v => this.relay(v));
     }
+    link.relays?.forEach(v => this.relay(v));
     return this;
   }
 
@@ -251,27 +250,14 @@ export class RequestFilterBuilder {
    * Get replies to link with e/a tags
    */
   replyToLink(links: Array<NostrLink>) {
-    const grouped = links.reduce((acc, v) => {
-      acc[v.type] ??= [];
-      if (v.type === NostrPrefix.Address) {
-        acc[v.type].push(`${v.kind}:${v.author}:${v.id}`);
-      } else if (v.type === NostrPrefix.PublicKey || v.type === NostrPrefix.Profile) {
-        acc[v.type].push(v.id);
-      } else {
-        acc[v.type].push(v.id);
-      }
-      return acc;
-    }, {} as Record<string, Array<string>>);
+    const types = dedupe(links.map(a => a.type));
+    if (types.length > 1) throw new Error("Cannot add multiple links of different kinds");
 
-    for(const [k,v] of Object.entries(grouped)) {
-      if (k === NostrPrefix.Address) {
-        this.tag("a", v);
-      } else if (k === NostrPrefix.PublicKey || k === NostrPrefix.Profile) {
-        this.tag("p", v);
-      } else {
-        this.tag("e", v);
-      }
-    }
+    const tags = links.map(a => unwrap(a.toEventTag()));
+    this.tag(
+      tags[0][0],
+      tags.map(v => v[1]),
+    );
     return this;
   }
 
