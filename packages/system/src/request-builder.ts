@@ -250,16 +250,27 @@ export class RequestFilterBuilder {
   /**
    * Get replies to link with e/a tags
    */
-  replyToLink(link: NostrLink) {
-    if (link.type === NostrPrefix.Address) {
-      this.tag("a", [`${link.kind}:${link.author}:${link.id}`]);
-      link.relays?.forEach(v => this.relay(v));
-    } else if (link.type === NostrPrefix.PublicKey || link.type === NostrPrefix.Profile) {
-      this.tag("p", [link.id]);
-      link.relays?.forEach(v => this.relay(v));
-    } else {
-      this.tag("e", [link.id]);
-      link.relays?.forEach(v => this.relay(v));
+  replyToLink(links: Array<NostrLink>) {
+    const grouped = links.reduce((acc, v) => {
+      acc[v.type] ??= [];
+      if (v.type === NostrPrefix.Address) {
+        acc[v.type].push(`${v.kind}:${v.author}:${v.id}`);
+      } else if (v.type === NostrPrefix.PublicKey || v.type === NostrPrefix.Profile) {
+        acc[v.type].push(v.id);
+      } else {
+        acc[v.type].push(v.id);
+      }
+      return acc;
+    }, {} as Record<string, Array<string>>);
+
+    for(const [k,v] of Object.entries(grouped)) {
+      if (k === NostrPrefix.Address) {
+        this.tag("a", v);
+      } else if (k === NostrPrefix.PublicKey || k === NostrPrefix.Profile) {
+        this.tag("p", v);
+      } else {
+        this.tag("e", v);
+      }
     }
     return this;
   }
@@ -293,7 +304,7 @@ export class RequestFilterBuilder {
 
     return [
       {
-        filters: [this.filter],
+        filters: [this.#filter],
         relay: "",
         strategy: RequestStrategy.DefaultRelays,
       },

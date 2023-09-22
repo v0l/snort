@@ -2,9 +2,9 @@ import "./Thread.css";
 import { useMemo, useState, ReactNode, useContext } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
-import { TaggedNostrEvent, u256, NostrPrefix, EventExt, parseNostrLink } from "@snort/system";
+import { TaggedNostrEvent, u256, NostrPrefix, EventExt, parseNostrLink, NostrLink } from "@snort/system";
 
-import { getReactions, getAllReactions } from "SnortUtils";
+import { getReactions, getAllReactions, unwrap } from "SnortUtils";
 import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";
@@ -154,9 +154,8 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
   return (
     <>
       <div
-        className={`subthread-container ${hasMultipleNotes ? "subthread-multi" : ""} ${
-          isLast ? "subthread-last" : "subthread-mid"
-        }`}>
+        className={`subthread-container ${hasMultipleNotes ? "subthread-multi" : ""} ${isLast ? "subthread-last" : "subthread-mid"
+          }`}>
         <Divider variant="small" />
         <Note
           highlight={active === first.id}
@@ -185,9 +184,8 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
         return (
           <div
             key={r.id}
-            className={`subthread-container ${lastReply ? "" : "subthread-multi"} ${
-              lastReply ? "subthread-last" : "subthread-mid"
-            }`}>
+            className={`subthread-container ${lastReply ? "" : "subthread-multi"} ${lastReply ? "subthread-last" : "subthread-mid"
+              }`}>
             <Divider variant="small" />
             <Note
               className={`thread-note ${lastNote ? "is-last-note" : ""}`}
@@ -297,6 +295,11 @@ export function Thread(props: { onBack?: () => void }) {
     description: "Navigate back button on threads view",
   });
 
+  const rootChainId = (ev: TaggedNostrEvent) => {
+    const link = NostrLink.fromEvent(ev);
+    return unwrap(link.toEventTag())[1];
+  }
+
   return (
     <>
       <div className="main-content p">
@@ -304,7 +307,7 @@ export function Thread(props: { onBack?: () => void }) {
       </div>
       <div className="main-content">
         {thread.root && renderRoot(thread.root)}
-        {thread.root && renderChain(thread.root.id)}
+        {thread.root && renderChain(rootChainId(thread.root))}
       </div>
     </>
   );

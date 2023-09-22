@@ -10,15 +10,13 @@ export function useReactions(subId: string, ids: Array<NostrLink>, others?: (rb:
     const rb = new RequestBuilder(subId);
 
     if (ids.length > 0) {
-      const f = rb
+      rb
         .withFilter()
         .kinds(
           pref.enableReactions
             ? [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt]
             : [EventKind.ZapReceipt, EventKind.Repost],
-        );
-
-      ids.forEach(v => f.replyToLink(v));
+        ).replyToLink(ids);
     }
     others?.(rb);
     return rb.numFilters > 0 ? rb : null;

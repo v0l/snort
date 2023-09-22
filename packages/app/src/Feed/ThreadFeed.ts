@@ -13,10 +13,7 @@ export default function useThreadFeed(link: NostrLink) {
       leaveOpen: true,
     });
     sub.withFilter().link(link);
-    sub.withFilter().kinds([EventKind.TextNote]).replyToLink(link);
-    allEvents.forEach(x => {
-      sub.withFilter().kinds([EventKind.TextNote]).replyToLink(x);
-    });
+    sub.withFilter().kinds([EventKind.TextNote]).replyToLink([link, ...allEvents]);
     return sub;
   }, [allEvents.length]);
 

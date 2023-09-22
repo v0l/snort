@@ -15,6 +15,13 @@ export interface ThreadContext {
 
 export const ThreadContext = createContext({} as ThreadContext);
 
+export function threadChainKey(ev: TaggedNostrEvent) {
+  const t = EventExt.extractThread(ev);
+  if (t) {
+    return unwrap(t.replyTo?.value ?? t.root?.value);
+  }
+}
+
 export function ThreadContextWrapper({ link, children }: { link: NostrLink; children?: ReactNode }) {
   const location = useLocation();
   const [currentId, setCurrentId] = useState(link.id);
@@ -26,21 +33,12 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
       feed.thread
         ?.sort((a, b) => b.created_at - a.created_at)
         .forEach(v => {
-          const t = EventExt.extractThread(v);
-          if (t) {
-            let replyTo = t.replyTo?.value ?? t.root?.value;
-            if (t.root?.key === "a" && t.root?.value) {
-              const parsed = t.root.value.split(":");
-              replyTo = feed.thread?.find(
-                a => a.kind === Number(parsed[0]) && a.pubkey === parsed[1] && findTag(a, "d") === parsed[2],
-              )?.id;
-            }
-            if (replyTo) {
-              if (!chains.has(replyTo)) {
-                chains.set(replyTo, [v]);
-              } else {
-                unwrap(chains.get(replyTo)).push(v);
-              }
+          const replyTo = threadChainKey(v);
+          if (replyTo) {
+            if (!chains.has(replyTo)) {
+              chains.set(replyTo, [v]);
+            } else {
+              unwrap(chains.get(replyTo)).push(v);
             }
           }
         });
