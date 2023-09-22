@@ -4,7 +4,7 @@ import { useRequestBuilder } from "@snort/system-react";
 
 import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";
 import { makeNotification, sendNotification } from "Notifications";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 import useLogin from "Hooks/useLogin";
@@ -28,9 +28,7 @@ export default function useLoginFeed() {
 
   useRefreshFeedCache(Notifications, true);
   useRefreshFeedCache(FollowsFeed, true);
-  if (publisher?.supports("nip44")) {
-    useRefreshFeedCache(GiftsCache, true);
-  }
+  useRefreshFeedCache(GiftsCache, true);
 
   const subLogin = useMemo(() => {
     if (!pubKey) return null;

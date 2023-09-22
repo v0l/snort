@@ -4,7 +4,7 @@ import { LNURL } from "@snort/shared";
 
 import { ApiHost } from "Const";
 import AsyncButton from "Element/AsyncButton";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import SnortServiceProvider, { ManageHandle } from "Nip05/SnortServiceProvider";
 
 export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {

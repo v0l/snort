@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 
 import Timeline from "Element/Timeline";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import useLogin from "Hooks/useLogin";
 import { setTags } from "Login";
 import { System } from "index";

@@ -35,7 +35,7 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
         ))}
       </div>
       {showModal && (
-        <Modal className="reactions-modal" onClose={() => setShowModal(false)}>
+        <Modal id="badges" className="reactions-modal" onClose={() => setShowModal(false)}>
           <div className="reactions-view">
             <div className="close" onClick={() => setShowModal(false)}>
               <Icon name="close" />

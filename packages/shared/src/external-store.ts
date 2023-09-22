@@ -9,7 +9,7 @@ export interface HookFilter<TSnapshot> {
  */
 export abstract class ExternalStore<TSnapshot> {
   #hooks: Array<HookFilter<TSnapshot>> = [];
-  #snapshot: Readonly<TSnapshot> = {} as Readonly<TSnapshot>;
+  #snapshot: TSnapshot = {} as TSnapshot;
   #changed = true;
 
   hook(fn: HookFn<TSnapshot>) {

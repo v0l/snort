@@ -1,5 +1,5 @@
 import { HexKey } from "@snort/system";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import useLogin from "Hooks/useLogin";
 import { setBlocked, setMuted } from "Login";
 import { appendDedupe } from "SnortUtils";

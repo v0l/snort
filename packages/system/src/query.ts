@@ -202,7 +202,7 @@ export class Query implements QueryBase {
    */
   insertCompletedTrace(subq: BuiltRawReqFilter, data: Readonly<Array<TaggedNostrEvent>>) {
     const qt = new QueryTrace(
-      "",
+      subq.relay,
       subq.filters,
       "",
       () => {

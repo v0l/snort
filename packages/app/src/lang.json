@@ -142,6 +142,9 @@
   "3yk8fB": {
     "defaultMessage": "Wallet"
   },
+  "40VR6s": {
+    "defaultMessage": "Nostr Connect"
+  },
   "450Fty": {
     "defaultMessage": "None"
   },
@@ -190,6 +193,12 @@
   "5ykRmX": {
     "defaultMessage": "Send zap"
   },
+  "6/SF6e": {
+    "defaultMessage": "<h1>{n}</h1> Cashu sats"
+  },
+  "6/hB3S": {
+    "defaultMessage": "Watch Replay"
+  },
   "65BmHb": {
     "defaultMessage": "Failed to proxy image from {host}, click here to load directly"
   },
@@ -223,6 +232,9 @@
   "89q5wc": {
     "defaultMessage": "Confirm Reposts"
   },
+  "8Kboo2": {
+    "defaultMessage": "Scan this QR code with your signer app to get started"
+  },
   "8QDesP": {
     "defaultMessage": "Zap {n} sats"
   },
@@ -237,6 +249,10 @@
   },
   "8v1NN+": {
     "defaultMessage": "Pairing phrase"
+  },
+  "8xNnhi": {
+    "defaultMessage": "Nostr Extension",
+    "description": "Login button for NIP7 key manager extension"
   },
   "9+Ddtu": {
     "defaultMessage": "Next"
@@ -352,6 +368,9 @@
   "Dh3hbq": {
     "defaultMessage": "Auto Zap"
   },
+  "Dn82AL": {
+    "defaultMessage": "Live"
+  },
   "DtYelJ": {
     "defaultMessage": "Transfer"
   },
@@ -424,6 +443,9 @@
   "GL8aXW": {
     "defaultMessage": "Bookmarks ({n})"
   },
+  "GQPtfk": {
+    "defaultMessage": "Join Stream"
+  },
   "GSye7T": {
     "defaultMessage": "Lightning Address"
   },
@@ -448,9 +470,6 @@
   },
   "HAlOn1": {
     "defaultMessage": "Name"
-  },
-  "HF4YnO": {
-    "defaultMessage": "Watch Live!"
   },
   "HFls6j": {
     "defaultMessage": "name will be available later"
@@ -539,6 +558,9 @@
   "KoFlZg": {
     "defaultMessage": "Enter mint URL"
   },
+  "KtsyO0": {
+    "defaultMessage": "Enter Pin"
+  },
   "LF5kYT": {
     "defaultMessage": "Other Connections"
   },
@@ -556,6 +578,10 @@
   },
   "LwYmVi": {
     "defaultMessage": "Zaps on this note will be split to the following users."
+  },
+  "M10zFV": {
+    "defaultMessage": "Nostr Connect",
+    "description": "Login button for NIP-46 signer app"
   },
   "M3Oirc": {
     "defaultMessage": "Debug Menus"
@@ -708,10 +734,6 @@
   "SP0+yi": {
     "defaultMessage": "Buy Subscription"
   },
-  "SX58hM": {
-    "defaultMessage": "Copy",
-    "description": "Button: Copy Cashu token"
-  },
   "SYQtZ7": {
     "defaultMessage": "LN Address Proxy"
   },
@@ -730,8 +752,8 @@
   "TDR5ge": {
     "defaultMessage": "Media in notes will automatically be shown for selected people, otherwise only the link will show"
   },
-  "TMfYfY": {
-    "defaultMessage": "Cashu token"
+  "TP/cMX": {
+    "defaultMessage": "Ended"
   },
   "TpgeGw": {
     "defaultMessage": "Hex Salt..",
@@ -742,9 +764,6 @@
   },
   "UDYlxu": {
     "defaultMessage": "Pending Subscriptions"
-  },
-  "ULotH9": {
-    "defaultMessage": "Amount: {amount} sats"
   },
   "UT7Nkj": {
     "defaultMessage": "New Chat"
@@ -772,10 +791,6 @@
   },
   "VnXp8Z": {
     "defaultMessage": "Avatar"
-  },
-  "VtPV/B": {
-    "defaultMessage": "Login with Extension (NIP-07)",
-    "description": "Login button for NIP7 key manager extension"
   },
   "VvaJst": {
     "defaultMessage": "View Wallets"
@@ -887,6 +902,9 @@
     "defaultMessage": "Install Extension",
     "description": "Heading for install key manager extension"
   },
+  "c2DTVd": {
+    "defaultMessage": "Enter a pin to encrypt your private key, you must enter this pin every time you open Snort."
+  },
   "c35bj2": {
     "defaultMessage": "If you have an enquiry about your NIP-05 order please DM {link}"
   },
@@ -930,6 +948,9 @@
   },
   "e61Jf3": {
     "defaultMessage": "Coming soon"
+  },
+  "e7VmYP": {
+    "defaultMessage": "Enter pin to unlock your private key"
   },
   "e7qqly": {
     "defaultMessage": "Mark All Read"
@@ -1000,10 +1021,6 @@
   "hMzcSq": {
     "defaultMessage": "Messages"
   },
-  "hWSp+B": {
-    "defaultMessage": "Nostr Connect (NIP-46)",
-    "description": "Login button for NIP-46 signer app"
-  },
   "hY4lzx": {
     "defaultMessage": "Supports"
   },
@@ -1033,9 +1050,6 @@
   },
   "iNWbVV": {
     "defaultMessage": "Handle"
-  },
-  "iUsU2x": {
-    "defaultMessage": "Mint: {url}"
   },
   "iXPL0Z": {
     "defaultMessage": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead"
@@ -1230,6 +1244,9 @@
   "qtWLmt": {
     "defaultMessage": "Like"
   },
+  "qz9fty": {
+    "defaultMessage": "Incorrect pin"
+  },
   "r3C4x/": {
     "defaultMessage": "Software"
   },
@@ -1410,5 +1427,8 @@
   },
   "zvCDao": {
     "defaultMessage": "Automatically show latest notes"
+  },
+  "zwb6LR": {
+    "defaultMessage": "<b>Mint:</b> {url}"
   }
 }

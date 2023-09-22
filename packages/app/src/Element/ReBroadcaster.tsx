@@ -1,28 +1,25 @@
+import { useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useDispatch, useSelector } from "react-redux";
-import useEventPublisher from "Feed/EventPublisher";
+import { TaggedNostrEvent } from "@snort/system";
+
+import useEventPublisher from "Hooks/useEventPublisher";
 import Modal from "Element/Modal";
-import type { RootState } from "State/Store";
-import { setShow, reset, setSelectedCustomRelays } from "State/ReBroadcast";
 import messages from "./messages";
 import useLogin from "Hooks/useLogin";
 import { System } from "index";
 
-export function ReBroadcaster() {
+export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: TaggedNostrEvent }) {
+  const [selected, setSelected] = useState<Array<string>>();
   const publisher = useEventPublisher();
-  const { note, show, selectedCustomRelays } = useSelector((s: RootState) => s.reBroadcast);
-  const dispatch = useDispatch();
 
   async function sendReBroadcast() {
-    if (note && publisher) {
-      if (selectedCustomRelays) selectedCustomRelays.forEach(r => System.WriteOnceToRelay(r, note));
-      else System.BroadcastEvent(note);
-      dispatch(reset());
+    if (publisher) {
+      if (selected) {
+        await Promise.all(selected.map(r => System.WriteOnceToRelay(r, ev)));
+      } else {
+        System.BroadcastEvent(ev);
+      }
     }
-  }
-
-  function cancel() {
-    dispatch(reset());
   }
 
   function onSubmit(ev: React.MouseEvent<HTMLButtonElement>) {
@@ -46,18 +43,12 @@ export function ReBroadcaster() {
               <div>
                 <input
                   type="checkbox"
-                  checked={!selectedCustomRelays || selectedCustomRelays.includes(r)}
+                  checked={!selected || selected.includes(r)}
                   onChange={e =>
-                    dispatch(
-                      setSelectedCustomRelays(
-                        // set false if all relays selected
-                        e.target.checked && selectedCustomRelays && selectedCustomRelays.length == a.length - 1
-                          ? false
-                          : // otherwise return selectedCustomRelays with target relay added / removed
-                            a.filter(el =>
-                              el === r ? e.target.checked : !selectedCustomRelays || selectedCustomRelays.includes(el),
-                            ),
-                      ),
+                    setSelected(
+                      e.target.checked && selected && selected.length == a.length - 1
+                        ? undefined
+                        : a.filter(el => (el === r ? e.target.checked : !selected || selected.includes(el))),
                     )
                   }
                 />
@@ -70,19 +61,17 @@ export function ReBroadcaster() {
 
   return (
     <>
-      {show && (
-        <Modal className="note-creator-modal" onClose={() => dispatch(setShow(false))}>
-          {renderRelayCustomisation()}
-          <div className="note-creator-actions">
-            <button className="secondary" onClick={cancel}>
-              <FormattedMessage {...messages.Cancel} />
-            </button>
-            <button onClick={onSubmit}>
-              <FormattedMessage {...messages.ReBroadcast} />
-            </button>
-          </div>
-        </Modal>
-      )}
+      <Modal id="broadcaster" className="note-creator-modal" onClose={onClose}>
+        {renderRelayCustomisation()}
+        <div className="note-creator-actions">
+          <button className="secondary" onClick={onClose}>
+            <FormattedMessage {...messages.Cancel} />
+          </button>
+          <button onClick={onSubmit}>
+            <FormattedMessage {...messages.ReBroadcast} />
+          </button>
+        </div>
+      </Modal>
     </>
   );
 }

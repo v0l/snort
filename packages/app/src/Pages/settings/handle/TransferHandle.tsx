@@ -1,6 +1,6 @@
 import { ApiHost } from "Const";
 import AsyncButton from "Element/AsyncButton";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import { ServiceError } from "Nip05/ServiceProvider";
 import SnortServiceProvider, { ManageHandle } from "Nip05/SnortServiceProvider";
 import { useState } from "react";

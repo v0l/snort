@@ -447,7 +447,7 @@ export default function ProfilePage() {
           <Icon name="qr" size={16} />
         </IconButton>
         {showProfileQr && (
-          <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
+          <Modal id="profile-qr" className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id} />
             <QrCode data={link} className="m10 align-center" />
             <Copy text={link} className="align-center" />
@@ -473,7 +473,7 @@ export default function ProfilePage() {
                     navigate(
                       `/messages/${encodeTLVEntries("chat4" as NostrPrefix, {
                         type: TLVEntryType.Author,
-                        length: 64,
+                        length: 32,
                         value: id,
                       })}`,
                     )

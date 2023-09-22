@@ -1,6 +1,5 @@
 import "./Layout.css";
 import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
@@ -9,8 +8,6 @@ import { NostrLink, NostrPrefix, tryParseNostrLink } from "@snort/system";
 import messages from "./messages";
 
 import Icon from "Icons/Icon";
-import { RootState } from "State/Store";
-import { setShow, reset } from "State/NoteCreator";
 import useLoginFeed from "Feed/LoginFeed";
 import { NoteCreator } from "Element/NoteCreator";
 import { mapPlanName } from "./subscribe";
@@ -23,33 +20,16 @@ import Spinner from "Icons/Spinner";
 import { fetchNip05Pubkey } from "Nip05/Verifier";
 import { useTheme } from "Hooks/useTheme";
 import { useLoginRelays } from "Hooks/useLoginRelays";
+import { useNoteCreator } from "State/NoteCreator";
+import { LoginUnlock } from "Element/PinPrompt";
 
 export default function Layout() {
   const location = useLocation();
-  const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
-  const isNoteCreatorShowing = useSelector((s: RootState) => s.noteCreator.show);
-  const isReplyNoteCreatorShowing = replyTo && isNoteCreatorShowing;
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { publicKey, subscriptions } = useLogin();
-  const currentSubscription = getCurrentSubscription(subscriptions);
   const [pageClass, setPageClass] = useState("page");
 
   useLoginFeed();
   useTheme();
   useLoginRelays();
-
-  const handleNoteCreatorButtonClick = () => {
-    if (replyTo) {
-      dispatch(reset());
-    }
-    dispatch(setShow(true));
-  };
-
-  const shouldHideNoteCreator = useMemo(() => {
-    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/e", "/subscribe"];
-    return isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
-  }, [location, isReplyNoteCreatorShowing]);
 
   const shouldHideHeader = useMemo(() => {
     const hideOn = ["/login", "/new"];
@@ -67,42 +47,50 @@ export default function Layout() {
   }, [location]);
 
   return (
-    <div className={pageClass}>
-      {!shouldHideHeader && (
-        <header className="main-content">
-          <Link to="/" className="logo">
-            <h1>Snort</h1>
-            {currentSubscription && (
-              <small className="flex">
-                <Icon name="diamond" size={10} className="mr5" />
-                {mapPlanName(currentSubscription.type)}
-              </small>
-            )}
-          </Link>
-
-          {publicKey ? (
+    <>
+      <div className={pageClass}>
+        {!shouldHideHeader && (
+          <header className="main-content">
+            <LogoHeader />
             <AccountHeader />
-          ) : (
-            <button type="button" onClick={() => navigate("/login")}>
-              <FormattedMessage {...messages.Login} />
-            </button>
-          )}
-        </header>
-      )}
-      <Outlet />
-
-      {!shouldHideNoteCreator && (
-        <>
-          <button className="primary note-create-button" onClick={handleNoteCreatorButtonClick}>
-            <Icon name="plus" size={16} />
-          </button>
-          <NoteCreator />
-        </>
-      )}
-      <Toaster />
-    </div>
+          </header>
+        )}
+        <Outlet />
+        <NoteCreatorButton />
+        <Toaster />
+      </div>
+      <LoginUnlock />
+    </>
   );
 }
+
+const NoteCreatorButton = () => {
+  const location = useLocation();
+  const { show, replyTo, update } = useNoteCreator(v => ({ show: v.show, replyTo: v.replyTo, update: v.update }));
+
+  const shouldHideNoteCreator = useMemo(() => {
+    const isReplyNoteCreatorShowing = replyTo && show;
+    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/e", "/subscribe"];
+    return isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
+  }, [location]);
+
+  if (shouldHideNoteCreator) return;
+  return (
+    <>
+      <button
+        className="primary note-create-button"
+        onClick={() =>
+          update(v => {
+            v.replyTo = undefined;
+            v.show = true;
+          })
+        }>
+        <Icon name="plus" size={16} />
+      </button>
+      <NoteCreator key="global-note-creator" />
+    </>
+  );
+};
 
 const AccountHeader = () => {
   const navigate = useNavigate();
@@ -156,6 +144,13 @@ const AccountHeader = () => {
     }
   }
 
+  if (!publicKey) {
+    return (
+      <button type="button" onClick={() => navigate("/login")}>
+        <FormattedMessage {...messages.Login} />
+      </button>
+    );
+  }
   return (
     <div className="header-actions">
       {!location.pathname.startsWith("/search") && (
@@ -199,3 +194,20 @@ const AccountHeader = () => {
     </div>
   );
 };
+
+function LogoHeader() {
+  const { subscriptions } = useLogin();
+  const currentSubscription = getCurrentSubscription(subscriptions);
+
+  return (
+    <Link to="/" className="logo">
+      <h1>Snort</h1>
+      {currentSubscription && (
+        <small className="flex">
+          <Icon name="diamond" size={10} className="mr5" />
+          {mapPlanName(currentSubscription.type)}
+        </small>
+      )}
+    </Link>
+  );
+}

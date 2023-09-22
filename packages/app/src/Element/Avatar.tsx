@@ -21,10 +21,11 @@ const Avatar = ({ pubkey, user, size, onClick, image, imageOverlay, icons }: Ava
   const [url, setUrl] = useState("");
   const { proxy } = useImgProxy();
 
+  const s = size ?? 120;
   useEffect(() => {
     const url = image ?? user?.picture;
     if (url) {
-      const proxyUrl = proxy(url, size ?? 120);
+      const proxyUrl = proxy(url, s);
       setUrl(proxyUrl);
     } else {
       setUrl(defaultAvatar(pubkey));
@@ -33,6 +34,10 @@ const Avatar = ({ pubkey, user, size, onClick, image, imageOverlay, icons }: Ava
 
   const backgroundImage = `url(${url})`;
   const style = { "--img-url": backgroundImage } as CSSProperties;
+  if (size) {
+    style.width = `${s}px`;
+    style.height = `${s}px`;
+  }
   const domain = user?.nip05 && user.nip05.split("@")[1];
   return (
     <div

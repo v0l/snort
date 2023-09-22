@@ -1,18 +1,15 @@
 import React, { HTMLProps, useContext, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
 import { TaggedNostrEvent, ParsedZap, countLeadingZeros, NostrLink } from "@snort/system";
 import { SnortContext, useUserProfile } from "@snort/system-react";
 
 import { formatShort } from "Number";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import { delay, findTag, normalizeReaction } from "SnortUtils";
 import { NoteCreator } from "Element/NoteCreator";
 import SendSats from "Element/SendSats";
 import { ZapsSummary } from "Element/Zap";
-import { RootState } from "State/Store";
-import { setReplyTo, setShow, reset } from "State/NoteCreator";
 import { AsyncIcon } from "Element/AsyncIcon";
 
 import { useWallet } from "Wallet";
@@ -22,6 +19,7 @@ import { ZapPoolController } from "ZapPoolController";
 import { System } from "index";
 import { Zapper, ZapTarget } from "Zapper";
 import { getDisplayName } from "./ProfileImage";
+import { useNoteCreator } from "State/NoteCreator";
 
 import messages from "./messages";
 
@@ -47,7 +45,6 @@ export interface NoteFooterProps {
 
 export default function NoteFooter(props: NoteFooterProps) {
   const { ev, positive, reposts, zaps } = props;
-  const dispatch = useDispatch();
   const system = useContext(SnortContext);
   const { formatMessage } = useIntl();
   const login = useLogin();
@@ -55,9 +52,8 @@ export default function NoteFooter(props: NoteFooterProps) {
   const author = useUserProfile(ev.pubkey);
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const publisher = useEventPublisher();
-  const showNoteCreatorModal = useSelector((s: RootState) => s.noteCreator.show);
-  const replyTo = useSelector((s: RootState) => s.noteCreator.replyTo);
-  const willRenderNoteCreator = showNoteCreatorModal && replyTo?.id === ev.id;
+  const note = useNoteCreator(n => ({ show: n.show, replyTo: n.replyTo, update: n.update }));
+  const willRenderNoteCreator = note.show && note.replyTo?.id === ev.id;
   const [tip, setTip] = useState(false);
   const [zapping, setZapping] = useState(false);
   const walletState = useWallet();
@@ -238,7 +234,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   function replyIcon() {
     return (
       <AsyncFooterIcon
-        className={showNoteCreatorModal ? "reacted" : ""}
+        className={note.show ? "reacted" : ""}
         iconName="reply"
         title={formatMessage({ defaultMessage: "Reply" })}
         value={0}
@@ -248,12 +244,13 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   const handleReplyButtonClick = () => {
-    if (replyTo?.id !== ev.id) {
-      dispatch(reset());
-    }
-
-    dispatch(setReplyTo(ev));
-    dispatch(setShow(!showNoteCreatorModal));
+    note.update(v => {
+      if (v.replyTo?.id !== ev.id) {
+        v.reset();
+      }
+      v.show = true;
+      v.replyTo = ev;
+    });
   };
 
   return (
@@ -266,7 +263,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           {tipButton()}
           {powIcon()}
         </div>
-        {willRenderNoteCreator && <NoteCreator />}
+        {willRenderNoteCreator && <NoteCreator key={`note-creator-${ev.id}`} />}
         <SendSats targets={getZapTarget()} onClose={() => setTip(false)} show={tip} note={ev.id} allocatePool={true} />
       </div>
       <ZapsSummary zaps={zaps} />

@@ -5,7 +5,7 @@ import SnortApi, { Subscription, SubscriptionError } from "SnortApi";
 import { mapPlanName, mapSubscriptionErrorCode } from ".";
 import AsyncButton from "Element/AsyncButton";
 import Icon from "Icons/Icon";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import SendSats from "Element/SendSats";
 import Nip5Service from "Element/Nip5Service";
 import { SnortNostrAddressService } from "Pages/NostrAddressPage";

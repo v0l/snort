@@ -70,7 +70,7 @@ export function SnortDeckLayout() {
         </div>
         {deckScope.thread && (
           <>
-            <Modal onClose={() => deckScope.setThread(undefined)} className="thread-overlay">
+            <Modal id="thread-overlay" onClose={() => deckScope.setThread(undefined)} className="thread-overlay">
               <ThreadContextWrapper link={deckScope.thread}>
                 <SpotlightFromThread onClose={() => deckScope.setThread(undefined)} />
                 <div>

@@ -9,7 +9,7 @@ import BackButton from "Element/BackButton";
 import Note from "Element/Note";
 import NoteGhost from "Element/NoteGhost";
 import Collapsed from "Element/Collapsed";
-import { ThreadContext, ThreadContextWrapper } from "Hooks/useThreadContext";
+import { ThreadContext, ThreadContextWrapper, chainKey } from "Hooks/useThreadContext";
 
 import messages from "./messages";
 
@@ -297,14 +297,35 @@ export function Thread(props: { onBack?: () => void }) {
     description: "Navigate back button on threads view",
   });
 
+  const debug = window.location.search.includes("debug=true");
   return (
     <>
+      {debug && (
+        <div className="main-content p xs">
+          <h1>Chains</h1>
+          <pre>
+            {JSON.stringify(
+              Object.fromEntries([...thread.chains.entries()].map(([k, v]) => [k, v.map(c => c.id)])),
+              undefined,
+              "  ",
+            )}
+          </pre>
+          <h1>Current</h1>
+          <pre>{JSON.stringify(thread.current)}</pre>
+          <h1>Root</h1>
+          <pre>{JSON.stringify(thread.root, undefined, "  ")}</pre>
+          <h1>Data</h1>
+          <pre>{JSON.stringify(thread.data, undefined, "  ")}</pre>
+          <h1>Reactions</h1>
+          <pre>{JSON.stringify(thread.reactions, undefined, "  ")}</pre>
+        </div>
+      )}
       <div className="main-content p">
         <BackButton onClick={goBack} text={parent ? parentText : backText} />
       </div>
       <div className="main-content">
         {thread.root && renderRoot(thread.root)}
-        {thread.root && renderChain(thread.root.id)}
+        {thread.root && renderChain(chainKey(thread.root))}
       </div>
     </>
   );

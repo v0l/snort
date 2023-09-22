@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { EventKind, NostrLink, RequestBuilder, NoteCollection } from "@snort/system";
+import { EventKind, NostrLink, RequestBuilder, NoteCollection, EventExt } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
-import { useReactions } from "./FeedReactions";
+import { useReactions } from "./Reactions";
 
 export default function useThreadFeed(link: NostrLink) {
+  const [root, setRoot] = useState<NostrLink>();
   const [allEvents, setAllEvents] = useState<Array<NostrLink>>([]);
 
   const sub = useMemo(() => {
@@ -12,10 +13,22 @@ export default function useThreadFeed(link: NostrLink) {
     sub.withOptions({
       leaveOpen: true,
     });
-    sub.withFilter().kinds([EventKind.TextNote]).link(link).replyToLink(link);
-    allEvents.forEach(x => {
-      sub.withFilter().kinds([EventKind.TextNote]).link(x).replyToLink(x);
-    });
+    sub.withFilter().link(link);
+    if (root) {
+      sub.withFilter().link(root);
+    }
+    const grouped = [link, ...allEvents].reduce(
+      (acc, v) => {
+        acc[v.type] ??= [];
+        acc[v.type].push(v);
+        return acc;
+      },
+      {} as Record<string, Array<NostrLink>>,
+    );
+
+    for (const [, v] of Object.entries(grouped)) {
+      sub.withFilter().kinds([EventKind.TextNote]).replyToLink(v);
+    }
     return sub;
   }, [allEvents.length]);
 
@@ -23,14 +36,31 @@ export default function useThreadFeed(link: NostrLink) {
 
   useEffect(() => {
     if (store.data) {
-      const mainNotes = store.data?.filter(a => a.kind === EventKind.TextNote || a.kind === EventKind.Polls) ?? [];
-      const links = mainNotes
+      const links = store.data
         .map(a => [
           NostrLink.fromEvent(a),
           ...a.tags.filter(a => a[0] === "e" || a[0] === "a").map(v => NostrLink.fromTag(v)),
         ])
         .flat();
       setAllEvents(links);
+
+      const current = store.data.find(a => link.matchesEvent(a));
+      if (current) {
+        const t = EventExt.extractThread(current);
+        if (t) {
+          const rootOrReplyAsRoot = t?.root ?? t?.replyTo;
+          if (rootOrReplyAsRoot) {
+            setRoot(
+              NostrLink.fromTag([
+                rootOrReplyAsRoot.key,
+                rootOrReplyAsRoot.value ?? "",
+                rootOrReplyAsRoot.relay ?? "",
+                ...(rootOrReplyAsRoot.marker ?? []),
+              ]),
+            );
+          }
+        }
+      }
     }
   }, [store.data?.length]);
 

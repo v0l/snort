@@ -1,6 +1,6 @@
 import debug from "debug";
 import { v4 as uuid } from "uuid";
-import { appendDedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
+import { appendDedupe, dedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
 
 import EventKind from "./event-kind";
 import { NostrLink, NostrPrefix, SystemInterface } from "index";
@@ -113,7 +113,7 @@ export class RequestBuilder {
 
     const diff = system.QueryOptimizer.getDiff(prev, this.buildRaw());
     const ts = unixNowMs() - start;
-    this.#log("buildDiff %s %d ms +%d %O=>%O", this.id, ts, diff.length, prev, this.buildRaw());
+    this.#log("buildDiff %s %d ms +%d", this.id, ts, diff.length);
     if (diff.length > 0) {
       return splitFlatByWriteRelays(system.RelayCache, diff).map(a => {
         return {
@@ -219,9 +219,9 @@ export class RequestFilterBuilder {
     return this;
   }
 
-  tag(key: "e" | "p" | "d" | "t" | "r" | "a" | "g", value?: Array<string>) {
+  tag(key: "e" | "p" | "d" | "t" | "r" | "a" | "g" | string, value?: Array<string>) {
     if (!value) return this;
-    this.#filter[`#${key}`] = appendDedupe(this.#filter[`#${key}`], value);
+    this.#filter[`#${key}`] = appendDedupe(this.#filter[`#${key}`] as Array<string>, value);
     return this;
   }
 
@@ -239,28 +239,25 @@ export class RequestFilterBuilder {
       this.tag("d", [link.id])
         .kinds([unwrap(link.kind)])
         .authors([unwrap(link.author)]);
-      link.relays?.forEach(v => this.relay(v));
     } else {
       this.ids([link.id]);
-      link.relays?.forEach(v => this.relay(v));
     }
+    link.relays?.forEach(v => this.relay(v));
     return this;
   }
 
   /**
    * Get replies to link with e/a tags
    */
-  replyToLink(link: NostrLink) {
-    if (link.type === NostrPrefix.Address) {
-      this.tag("a", [`${link.kind}:${link.author}:${link.id}`]);
-      link.relays?.forEach(v => this.relay(v));
-    } else if (link.type === NostrPrefix.PublicKey || link.type === NostrPrefix.Profile) {
-      this.tag("p", [link.id]);
-      link.relays?.forEach(v => this.relay(v));
-    } else {
-      this.tag("e", [link.id]);
-      link.relays?.forEach(v => this.relay(v));
-    }
+  replyToLink(links: Array<NostrLink>) {
+    const types = dedupe(links.map(a => a.type));
+    if (types.length > 1) throw new Error("Cannot add multiple links of different kinds");
+
+    const tags = links.map(a => unwrap(a.toEventTag()));
+    this.tag(
+      tags[0][0],
+      tags.map(v => v[1]),
+    );
     return this;
   }
 
@@ -293,7 +290,7 @@ export class RequestFilterBuilder {
 
     return [
       {
-        filters: [this.filter],
+        filters: [this.#filter],
         relay: "",
         strategy: RequestStrategy.DefaultRelays,
       },

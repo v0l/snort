@@ -7,24 +7,13 @@ import WasmPath from "@snort/system-query/pkg/system_query_bg.wasm";
 
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import {
-  EventPublisher,
-  NostrSystem,
-  ProfileLoaderService,
-  Nip7Signer,
-  PowWorker,
-  QueryOptimizer,
-  FlatReqFilter,
-  ReqFilter,
-} from "@snort/system";
+import { NostrSystem, ProfileLoaderService, PowWorker, QueryOptimizer, FlatReqFilter, ReqFilter } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
 import { unwrap } from "SnortUtils";
-import Store from "State/Store";
 import Layout from "Pages/Layout";
 import LoginPage from "Pages/LoginPage";
 import ProfilePage from "Pages/ProfilePage";
@@ -73,13 +62,9 @@ export const System = new NostrSystem({
   relayMetrics: RelayMetrics,
   queryOptimizer: WasmQueryOptimizer,
   authHandler: async (c, r) => {
-    const { publicKey, privateKey } = LoginStore.snapshot();
-    if (privateKey) {
-      const pub = EventPublisher.privateKey(privateKey);
-      return await pub.nip42Auth(c, r);
-    }
-    if (publicKey) {
-      const pub = new EventPublisher(new Nip7Signer(), publicKey);
+    const { id } = LoginStore.snapshot();
+    const pub = LoginStore.getPublisher(id);
+    if (pub) {
       return await pub.nip42Auth(c, r);
     }
   },
@@ -218,12 +203,10 @@ export const router = createBrowserRouter([
 const root = ReactDOM.createRoot(unwrap(document.getElementById("root")));
 root.render(
   <StrictMode>
-    <Provider store={Store}>
-      <IntlProvider>
-        <SnortContext.Provider value={System}>
-          <RouterProvider router={router} />
-        </SnortContext.Provider>
-      </IntlProvider>
-    </Provider>
+    <IntlProvider>
+      <SnortContext.Provider value={System}>
+        <RouterProvider router={router} />
+      </SnortContext.Provider>
+    </IntlProvider>
   </StrictMode>,
 );

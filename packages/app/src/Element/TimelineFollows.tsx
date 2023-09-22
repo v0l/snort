@@ -11,7 +11,7 @@ import Note from "Element/Note";
 import useModeration from "Hooks/useModeration";
 import { FollowsFeed } from "Cache";
 import { LiveStreams } from "Element/LiveStreams";
-import { useReactions } from "Feed/FeedReactions";
+import { useReactions } from "Feed/Reactions";
 import AsyncButton from "./AsyncButton";
 import useLogin from "Hooks/useLogin";
 import ProfileImage from "Element/ProfileImage";

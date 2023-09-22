@@ -9,6 +9,7 @@ import {
   HexKey,
   Lists,
   NostrEvent,
+  NostrLink,
   NotSignedNostrEvent,
   PowMiner,
   PrivateKeySigner,
@@ -185,10 +186,11 @@ export class EventPublisher {
 
     const thread = EventExt.extractThread(replyTo);
     if (thread) {
-      if (thread.root || thread.replyTo) {
-        eb.tag(["e", thread.root?.value ?? thread.replyTo?.value ?? "", "", "root"]);
+      const rootOrReplyAsRoot = thread.root || thread.replyTo;
+      if (rootOrReplyAsRoot) {
+        eb.tag([rootOrReplyAsRoot.key, rootOrReplyAsRoot.value ?? "", rootOrReplyAsRoot.relay ?? "", "root"]);
       }
-      eb.tag(["e", replyTo.id, replyTo.relays?.[0] ?? "", "reply"]);
+      eb.tag([...(NostrLink.fromEvent(replyTo).toEventTag() ?? []), "reply"]);
 
       eb.tag(["p", replyTo.pubkey]);
       for (const pk of thread.pubKeys) {
@@ -198,7 +200,7 @@ export class EventPublisher {
         eb.tag(["p", pk]);
       }
     } else {
-      eb.tag(["e", replyTo.id, "", "reply"]);
+      eb.tag([...(NostrLink.fromEvent(replyTo).toEventTag() ?? []), "reply"]);
       // dont tag self in replies
       if (replyTo.pubkey !== this.#pubKey) {
         eb.tag(["p", replyTo.pubkey]);

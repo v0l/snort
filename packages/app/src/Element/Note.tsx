@@ -6,7 +6,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { TaggedNostrEvent, HexKey, EventKind, NostrPrefix, Lists, EventExt, parseZap, NostrLink } from "@snort/system";
 
 import { System } from "index";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import Icon from "Icons/Icon";
 import ProfileImage from "Element/ProfileImage";
 import Text from "Element/Text";
