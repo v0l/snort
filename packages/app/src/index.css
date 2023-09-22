@@ -132,8 +132,24 @@ code {
   }
 }
 
+.bg-primary {
+  background: var(--primary-gradient);
+}
+
+.br {
+  border-radius: 16px;
+}
+
 .p {
   padding: 12px 16px;
+}
+
+.p24 {
+  padding: 24px;
+}
+
+.uppercase {
+  text-transform: uppercase;
 }
 
 .card {
