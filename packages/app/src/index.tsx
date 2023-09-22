@@ -2,8 +2,8 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "./fonts/inter.css";
 
-import { compress, expand_filter, flat_merge, get_diff, default as wasmInit } from "@snort/system-query";
-import WasmPath from "@snort/system-query/pkg/system_query_bg.wasm";
+import { compress, expand_filter, flat_merge, get_diff, default as wasmInit } from "@snort/system-wasm";
+import WasmPath from "@snort/system-wasm/pkg/system_wasm_bg.wasm";
 
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";

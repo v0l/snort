@@ -588,7 +588,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "system-query"
+name = "system-wasm"
 version = "0.1.0"
 dependencies = [
  "criterion",

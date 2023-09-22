@@ -1,7 +1,7 @@
 import { bytesToHex } from "@noble/hashes/utils";
 import { DefaultQueryOptimizer, FlatReqFilter, QueryOptimizer, ReqFilter } from "@snort/system";
-import { compress, expand_filter, flat_merge, get_diff, default as wasmInit } from "@snort/system-query";
-import WasmPath from "@snort/system-query/pkg/system_query_bg.wasm";
+import { compress, expand_filter, flat_merge, get_diff, default as wasmInit } from "@snort/system-wasm";
+import WasmPath from "@snort/system-wasm/pkg/system_wasm_bg.wasm";
 import { Bench } from "tinybench";
 
 const WasmQueryOptimizer = {

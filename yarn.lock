@@ -2690,8 +2690,8 @@ __metadata:
     "@scure/bip39": ^1.1.1
     "@snort/shared": "workspace:*"
     "@snort/system": "workspace:*"
-    "@snort/system-query": "workspace:*"
     "@snort/system-react": "workspace:*"
+    "@snort/system-wasm": "workspace:*"
     "@szhsin/react-menu": ^3.3.1
     "@types/debug": ^4.1.8
     "@types/jest": ^29.5.1
@@ -2770,12 +2770,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snort/system-query@workspace:*, @snort/system-query@workspace:packages/system-query":
-  version: 0.0.0-use.local
-  resolution: "@snort/system-query@workspace:packages/system-query"
-  languageName: unknown
-  linkType: soft
-
 "@snort/system-react@workspace:*, @snort/system-react@workspace:packages/system-react":
   version: 0.0.0-use.local
   resolution: "@snort/system-react@workspace:packages/system-react"
@@ -2796,6 +2790,12 @@ __metadata:
     "@snort/system": ^1.0.21
     svelte: ^4.2.0
     typescript: ^5.2.2
+  languageName: unknown
+  linkType: soft
+
+"@snort/system-wasm@workspace:*, @snort/system-wasm@workspace:packages/system-wasm":
+  version: 0.0.0-use.local
+  resolution: "@snort/system-wasm@workspace:packages/system-wasm"
   languageName: unknown
   linkType: soft
 
