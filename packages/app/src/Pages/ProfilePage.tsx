@@ -473,7 +473,7 @@ export default function ProfilePage() {
                     navigate(
                       `/messages/${encodeTLVEntries("chat4" as NostrPrefix, {
                         type: TLVEntryType.Author,
-                        length: 64,
+                        length: 32,
                         value: id,
                       })}`,
                     )

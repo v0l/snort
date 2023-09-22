@@ -8,6 +8,7 @@ import {
   TLVEntryType,
   encodeTLVEntries,
   TaggedNostrEvent,
+  decodeTLV,
 } from "@snort/system";
 import { Chat, ChatSystem, ChatType, inChatWith, lastReadInChat } from "chat";
 import { debug } from "debug";
@@ -59,26 +60,27 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
       {} as Record<string, Array<NostrEvent>>,
     );
 
-    return [...Object.entries(chats)].map(([k, v]) => Nip4ChatSystem.createChatObj(k, v));
+    return [...Object.entries(chats)].map(([k, v]) => Nip4ChatSystem.createChatObj(encodeTLVEntries("chat4" as NostrPrefix, {
+      type: TLVEntryType.Author,
+      value: k,
+      length: 32,
+    }), v));
   }
 
   static createChatObj(id: string, messages: Array<NostrEvent>) {
     const last = lastReadInChat(id);
+    const participants = decodeTLV(id)
+      .filter(v => v.type === TLVEntryType.Author)
+      .map(v => ({
+        type: "pubkey",
+        id: v.value as string,
+      }));
     return {
       type: ChatType.DirectMessage,
-      id: encodeTLVEntries("chat4" as NostrPrefix, {
-        type: TLVEntryType.Author,
-        value: id,
-        length: 0,
-      }),
+      id,
       unread: messages.reduce((acc, v) => (v.created_at > last ? acc++ : acc), 0),
       lastMessage: messages.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0),
-      participants: [
-        {
-          type: "pubkey",
-          id: id,
-        },
-      ],
+      participants,
       messages: messages.map(m => ({
         id: m.id,
         created_at: m.created_at,
@@ -91,7 +93,7 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
         },
       })),
       createMessage: async (msg, pub) => {
-        return [await pub.sendDm(msg, id)];
+        return await Promise.all(participants.map(v => pub.sendDm(msg, v.id)));
       },
       sendMessage: (ev, system: SystemInterface) => {
         ev.forEach(a => system.BroadcastEvent(a));
