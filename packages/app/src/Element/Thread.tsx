@@ -247,7 +247,7 @@ export function Thread(props: { onBack?: () => void }) {
           className={className}
           key={note.id}
           data={note}
-          related={getReactions(thread.data, note.id)}
+          related={getReactions(thread.reactions, note.id)}
           options={{ showReactionsLink: true }}
           onClick={navigateThread}
         />
@@ -268,7 +268,7 @@ export function Thread(props: { onBack?: () => void }) {
           active={thread.current}
           notes={replies}
           related={getAllReactions(
-            thread.data,
+            thread.reactions,
             replies.map(a => a.id),
           )}
           chains={thread.chains}
