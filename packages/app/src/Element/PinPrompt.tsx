@@ -1,6 +1,6 @@
 import useLogin from "Hooks/useLogin";
 import "./PinPrompt.css";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import useEventPublisher from "Hooks/useEventPublisher";
 import { LoginStore, createPublisher, sessionNeedsPin } from "Login";
@@ -8,8 +8,8 @@ import { unwrap } from "@snort/shared";
 import { EventPublisher, InvalidPinError, PinEncrypted, PinEncryptedPayload } from "@snort/system";
 import { DefaultPowWorker } from "index";
 import Modal from "./Modal";
+import AsyncButton from "./AsyncButton";
 
-const PinLen = 6;
 export function PinPrompt({
   onResult,
   onCancel,
@@ -23,38 +23,32 @@ export function PinPrompt({
   const [error, setError] = useState("");
   const { formatMessage } = useIntl();
 
-  const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!isNaN(Number(e.key)) && pin.length < PinLen) {
-      setPin(s => (s += e.key));
+  async function submitPin() {
+    if (pin.length < 4) {
+      setError(formatMessage({
+        defaultMessage: "Pin too short"
+      }));
+      return;
     }
-    if (e.key === "Backspace") {
-      setPin(s => s.slice(0, -1));
-    } else {
-      e.preventDefault();
-    }
-  };
+    setError("");
 
-  useEffect(() => {
-    if (pin.length > 0) {
-      setError("");
+    try {
+      await onResult(pin);
+    } catch (e) {
+      console.error(e);
+      if (e instanceof InvalidPinError) {
+        setError(
+          formatMessage({
+            defaultMessage: "Incorrect pin",
+          }),
+        );
+      } else if (e instanceof Error) {
+        setError(e.message);
+      }
+    } finally {
+      setPin("");
     }
-
-    if (pin.length === PinLen) {
-      onResult(pin).catch(e => {
-        console.error(e);
-        setPin("");
-        if (e instanceof InvalidPinError) {
-          setError(
-            formatMessage({
-              defaultMessage: "Incorrect pin",
-            }),
-          );
-        } else if (e instanceof Error) {
-          setError(e.message);
-        }
-      });
-    }
-  }, [pin]);
+  }
 
   return (
     <Modal id="pin" onClose={() => onCancel()}>
@@ -63,12 +57,15 @@ export function PinPrompt({
           <FormattedMessage defaultMessage="Enter Pin" />
         </h2>
         {subTitle}
-        <input type="number" onKeyDown={handleKey} value={pin} autoFocus={true} maxLength={PinLen} />
+        <input type="number" onChange={e => setPin(e.target.value)} value={pin} autoFocus={true} maxLength={20} minLength={4} />
         {error && <b className="error">{error}</b>}
-        <div>
+        <div className="flex g8">
           <button type="button" onClick={() => onCancel()}>
             <FormattedMessage defaultMessage="Cancel" />
           </button>
+          <AsyncButton type="button" onClick={() => submitPin()}>
+            <FormattedMessage defaultMessage="Submit" />
+          </AsyncButton>
         </div>
       </div>
     </Modal>
