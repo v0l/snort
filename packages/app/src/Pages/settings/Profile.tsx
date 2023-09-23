@@ -22,7 +22,7 @@ export interface ProfileSettingsProps {
 
 export default function ProfileSettings(props: ProfileSettingsProps) {
   const navigate = useNavigate();
-  const { publicKey: id } = useLogin();
+  const { publicKey: id, readonly } = useLogin(s => ({ publicKey: s.publicKey, readonly: s.readonly }));
   const user = useUserProfile(id ?? "");
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
@@ -113,26 +113,48 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           <h4>
             <FormattedMessage defaultMessage="Name" />
           </h4>
-          <input className="w-max" type="text" value={name} onChange={e => setName(e.target.value)} />
+          <input
+            className="w-max"
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            disabled={readonly}
+          />
         </div>
         <div className="flex f-col w-max g8">
           <h4>
             <FormattedMessage defaultMessage="About" />
           </h4>
-          <textarea className="w-max" onChange={e => setAbout(e.target.value)} value={about}></textarea>
+          <textarea
+            className="w-max"
+            onChange={e => setAbout(e.target.value)}
+            value={about}
+            disabled={readonly}></textarea>
         </div>
         <div className="flex f-col w-max g8">
           <h4>
             <FormattedMessage defaultMessage="Website" />
           </h4>
-          <input className="w-max" type="text" value={website} onChange={e => setWebsite(e.target.value)} />
+          <input
+            className="w-max"
+            type="text"
+            value={website}
+            onChange={e => setWebsite(e.target.value)}
+            disabled={readonly}
+          />
         </div>
         <div className="flex f-col w-max g8">
           <h4>
             <FormattedMessage defaultMessage="Nostr Address" />
           </h4>
           <div className="flex f-col g8 w-max">
-            <input type="text" className="w-max" value={nip05} onChange={e => setNip05(e.target.value)} />
+            <input
+              type="text"
+              className="w-max"
+              value={nip05}
+              onChange={e => setNip05(e.target.value)}
+              disabled={readonly}
+            />
             <small>
               <FormattedMessage defaultMessage="Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration." />
             </small>
@@ -150,9 +172,15 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           <h4>
             <FormattedMessage defaultMessage="Lightning Address" />
           </h4>
-          <input className="w-max" type="text" value={lud16} onChange={e => setLud16(e.target.value)} />
+          <input
+            className="w-max"
+            type="text"
+            value={lud16}
+            onChange={e => setLud16(e.target.value)}
+            disabled={readonly}
+          />
         </div>
-        <AsyncButton className="primary" onClick={() => saveProfile()}>
+        <AsyncButton className="primary" onClick={() => saveProfile()} disabled={readonly}>
           <FormattedMessage defaultMessage="Save" />
         </AsyncButton>
       </div>
@@ -170,7 +198,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
                 background: (banner?.length ?? 0) > 0 ? `no-repeat center/cover url("${banner}")` : undefined,
               }}
               className="banner">
-              <AsyncButton type="button" onClick={() => setNewBanner()}>
+              <AsyncButton type="button" onClick={() => setNewBanner()} disabled={readonly}>
                 <FormattedMessage defaultMessage="Upload" />
               </AsyncButton>
             </div>
@@ -178,7 +206,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           {(props.avatar ?? true) && (
             <div className="avatar-stack">
               <Avatar pubkey={id} user={user} image={picture} />
-              <AsyncButton type="button" className="btn-rnd" onClick={() => setNewAvatar()}>
+              <AsyncButton type="button" className="btn-rnd" onClick={() => setNewAvatar()} disabled={readonly}>
                 <Icon name="upload-01" />
               </AsyncButton>
             </div>

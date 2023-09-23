@@ -7,7 +7,7 @@ import messages from "./messages";
 
 export default function LogoutButton() {
   const navigate = useNavigate();
-  const login = useLogin();
+  const login = useLogin(s => ({ publicKey: s.publicKey, id: s.id }));
 
   if (!login.publicKey) return;
   return (

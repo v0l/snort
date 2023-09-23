@@ -43,8 +43,8 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   const navigate = useNavigate();
   const { helpText = true } = props;
   const { formatMessage } = useIntl();
-  const pubkey = useLogin().publicKey;
-  const user = useUserProfile(pubkey);
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
+  const user = useUserProfile(publicKey);
   const publisher = useEventPublisher();
   const svc = useMemo(() => new ServiceProvider(props.service), [props.service]);
   const [serviceConfig, setServiceConfig] = useState<ServiceConfig>();
@@ -179,11 +179,11 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   }
 
   async function startBuy(handle: string, domain: string) {
-    if (!pubkey) {
+    if (!publicKey) {
       return;
     }
 
-    const rsp = await svc.RegisterHandle(handle, domain, pubkey);
+    const rsp = await svc.RegisterHandle(handle, domain, publicKey);
     if ("error" in rsp) {
       setError(rsp);
     } else {
@@ -193,7 +193,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   }
 
   async function claimForSubscription(handle: string, domain: string, sub: string) {
-    if (!pubkey || !publisher) {
+    if (!publicKey || !publisher) {
       return;
     }
 

@@ -188,10 +188,8 @@ export function createPublisher(l: LoginSession, pin?: PinEncrypted) {
     case LoginSessionType.Nip7os: {
       return new EventPublisher(new Nip7OsSigner(), unwrap(l.publicKey));
     }
-    default: {
-      if (l.publicKey) {
-        return new EventPublisher(new Nip7Signer(), l.publicKey);
-      }
+    case LoginSessionType.Nip7: {
+      return new EventPublisher(new Nip7Signer(), unwrap(l.publicKey));
     }
   }
 }

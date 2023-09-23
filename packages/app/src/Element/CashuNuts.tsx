@@ -17,8 +17,8 @@ interface Token {
 }
 
 export default function CashuNuts({ token }: { token: string }) {
-  const login = useLogin();
-  const profile = useUserProfile(login.publicKey);
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
+  const profile = useUserProfile(publicKey);
 
   async function copyToken(e: React.MouseEvent<HTMLButtonElement>, token: string) {
     e.stopPropagation();

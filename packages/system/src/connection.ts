@@ -384,12 +384,12 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     }
     this.AwaitingAuth.set(challenge, true);
     const authEvent = await this.Auth(challenge, this.Address);
-    return new Promise(resolve => {
-      if (!authEvent) {
-        authCleanup();
-        return Promise.reject("no event");
-      }
+    if (!authEvent) {
+      authCleanup();
+      throw new Error("No auth event");
+    }
 
+    return await new Promise(resolve => {
       const t = setTimeout(() => {
         authCleanup();
         resolve();

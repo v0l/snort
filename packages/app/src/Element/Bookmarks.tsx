@@ -16,7 +16,7 @@ interface BookmarksProps {
 
 const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   const [onlyPubkey, setOnlyPubkey] = useState<HexKey | "all">("all");
-  const loginPubKey = useLogin().publicKey;
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   const ps = useMemo(() => {
     return [...new Set(bookmarks.map(ev => ev.pubkey))];
   }, [bookmarks]);
@@ -47,7 +47,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
               key={n.id}
               data={n}
               related={related}
-              options={{ showTime: false, showBookmarked: true, canUnbookmark: loginPubKey === pubkey }}
+              options={{ showTime: false, showBookmarked: true, canUnbookmark: publicKey === pubkey }}
             />
           );
         })}

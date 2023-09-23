@@ -29,7 +29,6 @@ interface NosteContextMenuProps {
 export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   const { formatMessage } = useIntl();
   const login = useLogin();
-  const { pinned, bookmarked, publicKey, preferences: prefs } = login;
   const { mute, block } = useModeration();
   const publisher = useEventPublisher();
   const [showBroadcast, setShowBroadcast] = useState(false);
@@ -37,7 +36,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   const langNames = new Intl.DisplayNames([...window.navigator.languages], {
     type: "language",
   });
-  const isMine = ev.pubkey === publicKey;
+  const isMine = ev.pubkey === login.publicKey;
 
   async function deleteEvent() {
     if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.id.substring(0, 8) })) && publisher) {
@@ -89,7 +88,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
 
   async function pin(id: HexKey) {
     if (publisher) {
-      const es = [...pinned.item, id];
+      const es = [...login.pinned.item, id];
       const ev = await publisher.noteList(es, Lists.Pinned);
       System.BroadcastEvent(ev);
       setPinned(login, es, ev.created_at * 1000);
@@ -98,7 +97,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
 
   async function bookmark(id: HexKey) {
     if (publisher) {
-      const es = [...bookmarked.item, id];
+      const es = [...login.bookmarked.item, id];
       const ev = await publisher.noteList(es, Lists.Bookmarked);
       System.BroadcastEvent(ev);
       setBookmarked(login, es, ev.created_at * 1000);
@@ -131,13 +130,13 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
           <Icon name="share" />
           <FormattedMessage {...messages.Share} />
         </MenuItem>
-        {!pinned.item.includes(ev.id) && (
+        {!login.pinned.item.includes(ev.id) && !login.readonly && (
           <MenuItem onClick={() => pin(ev.id)}>
             <Icon name="pin" />
             <FormattedMessage {...messages.Pin} />
           </MenuItem>
         )}
-        {!bookmarked.item.includes(ev.id) && (
+        {!login.bookmarked.item.includes(ev.id) && !login.readonly && (
           <MenuItem onClick={() => bookmark(ev.id)}>
             <Icon name="bookmark" />
             <FormattedMessage {...messages.Bookmark} />
@@ -147,23 +146,23 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
           <Icon name="copy" />
           <FormattedMessage {...messages.CopyID} />
         </MenuItem>
-        <MenuItem onClick={() => mute(ev.pubkey)}>
-          <Icon name="mute" />
-          <FormattedMessage {...messages.Mute} />
-        </MenuItem>
-        {prefs.enableReactions && (
+        {!login.readonly && (
+          <MenuItem onClick={() => mute(ev.pubkey)}>
+            <Icon name="mute" />
+            <FormattedMessage {...messages.Mute} />
+          </MenuItem>
+        )}
+        {login.preferences.enableReactions && !login.readonly && (
           <MenuItem onClick={() => props.react("-")}>
             <Icon name="dislike" />
             <FormattedMessage {...messages.DislikeAction} />
           </MenuItem>
         )}
-        {ev.pubkey === publicKey && (
-          <MenuItem onClick={handleReBroadcastButtonClick}>
-            <Icon name="relay" />
-            <FormattedMessage {...messages.ReBroadcast} />
-          </MenuItem>
-        )}
-        {ev.pubkey !== publicKey && (
+        <MenuItem onClick={handleReBroadcastButtonClick}>
+          <Icon name="relay" />
+          <FormattedMessage defaultMessage="Broadcast Event" />
+        </MenuItem>
+        {ev.pubkey !== login.publicKey && !login.readonly && (
           <MenuItem onClick={() => block(ev.pubkey)}>
             <Icon name="block" />
             <FormattedMessage {...messages.Block} />
@@ -173,13 +172,13 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
           <Icon name="translate" />
           <FormattedMessage {...messages.TranslateTo} values={{ lang: langNames.of(lang.split("-")[0]) }} />
         </MenuItem>
-        {prefs.showDebugMenus && (
+        {login.preferences.showDebugMenus && (
           <MenuItem onClick={() => copyEvent()}>
             <Icon name="json" />
             <FormattedMessage {...messages.CopyJSON} />
           </MenuItem>
         )}
-        {isMine && (
+        {isMine && !login.readonly && (
           <MenuItem onClick={() => deleteEvent()}>
             <Icon name="trash" className="red" />
             <FormattedMessage {...messages.Delete} />

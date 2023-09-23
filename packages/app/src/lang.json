@@ -458,6 +458,9 @@
   "GspYR7": {
     "defaultMessage": "{n} Dislike"
   },
+  "Gxcr08": {
+    "defaultMessage": "Broadcast Event"
+  },
   "H+vHiz": {
     "defaultMessage": "Hex Key..",
     "description": "Hexidecimal 'key' input for improxy"
@@ -563,6 +566,9 @@
   },
   "LF5kYT": {
     "defaultMessage": "Other Connections"
+  },
+  "LR1XjT": {
+    "defaultMessage": "Pin too short"
   },
   "LXxsbk": {
     "defaultMessage": "Anonymous"
@@ -1343,6 +1349,9 @@
   "wLtRCF": {
     "defaultMessage": "Your key",
     "description": "Label for key input"
+  },
+  "wSZR47": {
+    "defaultMessage": "Submit"
   },
   "wWLwvh": {
     "defaultMessage": "Anon",

@@ -10,12 +10,12 @@ import { Chat, ChatParticipant, createEmptyChatObject, useChatSystem } from "cha
 import { FormattedMessage } from "react-intl";
 
 export default function DmWindow({ id }: { id: string }) {
-  const pubKey = useLogin().publicKey;
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   const dms = useChatSystem();
   const chat = dms.find(a => a.id === id) ?? createEmptyChatObject(id);
 
   function participant(p: ChatParticipant) {
-    if (p.id === pubKey) {
+    if (p.id === publicKey) {
       return <NoteToSelf className="f-grow mb-10" pubkey={p.id} />;
     }
     if (p.type === "pubkey") {
@@ -56,7 +56,7 @@ export default function DmWindow({ id }: { id: string }) {
 }
 
 function DmChatSelected({ chat }: { chat: Chat }) {
-  const { publicKey: myPubKey } = useLogin();
+  const { publicKey: myPubKey } = useLogin(s => ({ publicKey: s.publicKey }));
   const sortedDms = useMemo(() => {
     const myDms = chat?.messages;
     if (myPubKey && myDms) {

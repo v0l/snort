@@ -1,45 +1,34 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { TaggedNostrEvent } from "@snort/system";
+import { SnortContext } from "@snort/system-react";
 
-import useEventPublisher from "Hooks/useEventPublisher";
 import Modal from "Element/Modal";
 import messages from "./messages";
 import useLogin from "Hooks/useLogin";
-import { System } from "index";
+import AsyncButton from "./AsyncButton";
 
 export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: TaggedNostrEvent }) {
   const [selected, setSelected] = useState<Array<string>>();
-  const publisher = useEventPublisher();
+  const system = useContext(SnortContext);
+  const { relays } = useLogin(s => ({ relays: s.relays }));
 
   async function sendReBroadcast() {
-    if (publisher) {
-      if (selected) {
-        await Promise.all(selected.map(r => System.WriteOnceToRelay(r, ev)));
-      } else {
-        System.BroadcastEvent(ev);
-      }
+    if (selected) {
+      await Promise.all(selected.map(r => system.WriteOnceToRelay(r, ev)));
+    } else {
+      system.BroadcastEvent(ev);
     }
   }
 
-  function onSubmit(ev: React.MouseEvent<HTMLButtonElement>) {
-    ev.stopPropagation();
-    sendReBroadcast().catch(console.warn);
-  }
-
-  const login = useLogin();
-  const relays = login.relays;
-
   function renderRelayCustomisation() {
     return (
-      <div>
+      <div className="flex-column g8">
         {Object.keys(relays.item || {})
           .filter(el => relays.item[el].write)
           .map((r, i, a) => (
-            <div className="card flex">
-              <div className="flex f-col f-grow">
-                <div>{r}</div>
-              </div>
+            <div className="card flex f-space">
+              <div>{r}</div>
               <div>
                 <input
                   type="checkbox"
@@ -63,13 +52,13 @@ export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: Tagged
     <>
       <Modal id="broadcaster" className="note-creator-modal" onClose={onClose}>
         {renderRelayCustomisation()}
-        <div className="note-creator-actions">
+        <div className="flex g8">
           <button className="secondary" onClick={onClose}>
             <FormattedMessage {...messages.Cancel} />
           </button>
-          <button onClick={onSubmit}>
+          <AsyncButton onClick={sendReBroadcast}>
             <FormattedMessage {...messages.ReBroadcast} />
-          </button>
+          </AsyncButton>
         </div>
       </Modal>
     </>

@@ -96,6 +96,7 @@ export function LoginUnlock() {
     LoginStore.setPublisher(login.id, pub);
     LoginStore.updateSession({
       ...login,
+      readonly: false,
       privateKeyData: newPin,
       privateKey: undefined,
     });
@@ -112,12 +113,20 @@ export function LoginUnlock() {
       LoginStore.setPublisher(login.id, pub);
       LoginStore.updateSession({
         ...login,
+        readonly: false,
         privateKeyData: key,
       });
     }
   }
 
-  if (login.publicKey && !publisher && sessionNeedsPin(login)) {
+  function makeSessionReadonly() {
+    LoginStore.updateSession({
+      ...login,
+      readonly: true,
+    });
+  }
+
+  if (login.publicKey && !publisher && sessionNeedsPin(login) && !login.readonly) {
     if (login.privateKey !== undefined) {
       return (
         <PinPrompt
@@ -142,7 +151,7 @@ export function LoginUnlock() {
         }
         onResult={unlockSession}
         onCancel={() => {
-          //nothing
+          makeSessionReadonly();
         }}
       />
     );

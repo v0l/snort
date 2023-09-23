@@ -32,7 +32,7 @@ export function NoteCreator() {
   const { formatMessage } = useIntl();
   const publisher = useEventPublisher();
   const uploader = useFileUpload();
-  const login = useLogin();
+  const login = useLogin(s => ({ relays: s.relays, publicKey: s.publicKey }));
   const note = useNoteCreator();
   const relays = login.relays;
 

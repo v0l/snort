@@ -51,7 +51,7 @@ export default function FollowListBase({
         <div className="flex mt10 mb10">
           <div className="f-grow bold">{title}</div>
           {actions}
-          <AsyncButton className="transparent" type="button" onClick={() => followAll()}>
+          <AsyncButton className="transparent" type="button" onClick={() => followAll()} disabled={login.readonly}>
             <FormattedMessage {...messages.FollowAll} />
           </AsyncButton>
         </div>

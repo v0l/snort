@@ -4,7 +4,7 @@ import Icon from "Icons/Icon";
 import { FormattedMessage } from "react-intl";
 
 export function FollowingMark({ pubkey }: { pubkey: string }) {
-  const { follows } = useLogin();
+  const { follows } = useLogin(s => ({ follows: s.follows }));
   const doesFollow = follows.item.includes(pubkey);
   if (!doesFollow) return;
 

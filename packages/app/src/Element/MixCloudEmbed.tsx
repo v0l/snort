@@ -4,8 +4,8 @@ import useLogin from "Hooks/useLogin";
 const MixCloudEmbed = ({ link }: { link: string }) => {
   const feedPath = (MixCloudRegex.test(link) && RegExp.$1) + "%2F" + (MixCloudRegex.test(link) && RegExp.$2);
 
-  const lightTheme = useLogin().preferences.theme === "light";
-  const lightParams = lightTheme ? "light=1" : "light=0";
+  const { theme } = useLogin(s => ({ theme: s.preferences.theme }));
+  const lightParams = theme === "light" ? "light=1" : "light=0";
   return (
     <>
       <br />

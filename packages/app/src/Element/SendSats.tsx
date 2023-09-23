@@ -248,9 +248,11 @@ function SendSatsInput(props: {
   onChange?: (v: SendSatsInputSelection) => void;
   onNextStage: (v: SendSatsInputSelection) => Promise<void>;
 }) {
-  const login = useLogin();
+  const { defaultZapAmount, readonly } = useLogin(s => ({
+    defaultZapAmount: s.preferences.defaultZapAmount,
+    readonly: s.readonly,
+  }));
   const { formatMessage } = useIntl();
-  const defaultZapAmount = login.preferences.defaultZapAmount;
   const amounts: Record<string, string> = {
     [defaultZapAmount.toString()]: "",
     "1000": "👍",
@@ -264,7 +266,7 @@ function SendSatsInput(props: {
   const [comment, setComment] = useState<string>();
   const [amount, setAmount] = useState<number>(defaultZapAmount);
   const [customAmount, setCustomAmount] = useState<number>(defaultZapAmount);
-  const [zapType, setZapType] = useState(ZapType.PublicZap);
+  const [zapType, setZapType] = useState(readonly ? ZapType.AnonZap : ZapType.PublicZap);
 
   function getValue() {
     return {
@@ -358,6 +360,7 @@ function SendSatsInput(props: {
 }
 
 function SendSatsZapTypeSelector({ zapType, setZapType }: { zapType: ZapType; setZapType: (t: ZapType) => void }) {
+  const { readonly } = useLogin(s => ({ readonly: s.readonly }));
   const makeTab = (t: ZapType, n: React.ReactNode) => (
     <button type="button" className={zapType === t ? "" : "secondary"} onClick={() => setZapType(t)}>
       {n}
@@ -369,7 +372,7 @@ function SendSatsZapTypeSelector({ zapType, setZapType }: { zapType: ZapType; se
         <FormattedMessage defaultMessage="Zap Type" />
       </h3>
       <div className="flex g8">
-        {makeTab(ZapType.PublicZap, <FormattedMessage defaultMessage="Public" description="Public Zap" />)}
+        {!readonly && makeTab(ZapType.PublicZap, <FormattedMessage defaultMessage="Public" description="Public Zap" />)}
         {/*makeTab(ZapType.PrivateZap, "Private")*/}
         {makeTab(ZapType.AnonZap, <FormattedMessage defaultMessage="Anon" description="Anonymous Zap" />)}
         {makeTab(

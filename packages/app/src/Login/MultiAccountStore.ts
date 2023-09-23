@@ -14,6 +14,7 @@ const LoggedOut = {
   id: "default",
   type: "public_key",
   preferences: DefaultPreferences,
+  readonly: true,
   tags: {
     item: [],
     timestamp: 0,
@@ -65,6 +66,12 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     if (!this.#activeAccount) {
       this.#activeAccount = this.#accounts.keys().next().value;
     }
+    // reset readonly on load
+    for (const [, v] of this.#accounts) {
+      if (v.type === LoginSessionType.PrivateKey && v.readonly) {
+        v.readonly = false;
+      }
+    }
   }
 
   getSessions() {
@@ -108,6 +115,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     const newSession = {
       ...LoggedOut,
       id: uuid(),
+      readonly: type === LoginSessionType.PublicKey,
       type,
       publicKey: key,
       relays: {
@@ -146,6 +154,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       ...LoggedOut,
       id: uuid(),
       type: LoginSessionType.PrivateKey,
+      readonly: false,
       privateKeyData: key,
       publicKey: pubKey,
       generatedEntropy: entropy,
@@ -221,8 +230,21 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       }
     }
 
+    // mark readonly
+    for (const [, v] of this.#accounts) {
+      if (v.type === LoginSessionType.PublicKey && !v.readonly) {
+        v.readonly = true;
+        didMigrate = true;
+      }
+      // reset readonly on load
+      if (v.type === LoginSessionType.PrivateKey && v.readonly) {
+        v.readonly = false;
+        didMigrate = true;
+      }
+    }
+
     if (didMigrate) {
-      console.debug("Finished migration to MultiAccountStore");
+      console.debug("Finished migration in MultiAccountStore");
       this.#save();
     }
   }

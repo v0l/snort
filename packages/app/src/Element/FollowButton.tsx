@@ -18,9 +18,9 @@ export interface FollowButtonProps {
 export default function FollowButton(props: FollowButtonProps) {
   const pubkey = parseId(props.pubkey);
   const publisher = useEventPublisher();
-  const { follows, relays } = useLogin();
+  const { follows, relays, readonly } = useLogin(s => ({ follows: s.follows, relays: s.relays, readonly: s.readonly }));
   const isFollowing = follows.item.includes(pubkey);
-  const baseClassname = `${props.className} follow-button`;
+  const baseClassname = `${props.className ? ` ${props.className}` : ""}follow-button`;
 
   async function follow(pubkey: HexKey) {
     if (publisher) {
@@ -43,6 +43,7 @@ export default function FollowButton(props: FollowButtonProps) {
   return (
     <AsyncButton
       className={isFollowing ? `${baseClassname} secondary` : baseClassname}
+      disabled={readonly}
       onClick={() => (isFollowing ? unfollow(pubkey) : follow(pubkey))}>
       {isFollowing ? <FormattedMessage {...messages.Unfollow} /> : <FormattedMessage {...messages.Follow} />}
     </AsyncButton>

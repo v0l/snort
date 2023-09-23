@@ -8,6 +8,7 @@ import useEventPublisher from "Hooks/useEventPublisher";
 import { System } from "index";
 import useLogin from "Hooks/useLogin";
 import { setRelays } from "Login";
+import AsyncButton from "Element/AsyncButton";
 
 import messages from "./messages";
 
@@ -91,9 +92,9 @@ const RelaySettingsPage = () => {
       </div>
       <div className="flex mt10">
         <div className="f-grow"></div>
-        <button type="button" onClick={() => saveRelays()}>
+        <AsyncButton type="button" onClick={() => saveRelays()} disabled={login.readonly}>
           <FormattedMessage {...messages.Save} />
-        </button>
+        </AsyncButton>
       </div>
       {addRelay()}
       <h3>

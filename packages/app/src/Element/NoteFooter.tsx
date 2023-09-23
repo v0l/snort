@@ -47,8 +47,11 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { ev, positive, reposts, zaps } = props;
   const system = useContext(SnortContext);
   const { formatMessage } = useIntl();
-  const login = useLogin();
-  const { publicKey, preferences: prefs } = login;
+  const {
+    publicKey,
+    preferences: prefs,
+    readonly,
+  } = useLogin(s => ({ preferences: s.preferences, publicKey: s.publicKey, readonly: s.readonly }));
   const author = useUserProfile(ev.pubkey);
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const publisher = useEventPublisher();
@@ -59,6 +62,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const walletState = useWallet();
   const wallet = walletState.wallet;
 
+  const canFastZap = wallet?.isReady() && !readonly;
   const isMine = ev.pubkey === publicKey;
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   const didZap = interactionCache.data.zapped || zaps.some(a => a.sender === publicKey);
@@ -127,7 +131,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (zapping || e?.isPropagationStopped()) return;
 
     const lnurl = getZapTarget();
-    if (wallet?.isReady() && lnurl) {
+    if (canFastZap && lnurl) {
       setZapping(true);
       try {
         await fastZapInner(lnurl, prefs.defaultZapAmount);
@@ -194,7 +198,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           className={didZap ? "reacted" : ""}
           {...longPress()}
           title={formatMessage({ defaultMessage: "Zap" })}
-          iconName={wallet?.isReady() ? "zapFast" : "zap"}
+          iconName={canFastZap ? "zapFast" : "zap"}
           value={zapTotal}
           onClick={e => fastZap(e)}
         />
@@ -204,13 +208,17 @@ export default function NoteFooter(props: NoteFooterProps) {
   }
 
   function repostIcon() {
+    if (readonly) return;
     return (
       <AsyncFooterIcon
         className={hasReposted() ? "reacted" : ""}
         iconName="repeat"
         title={formatMessage({ defaultMessage: "Repost" })}
         value={reposts.length}
-        onClick={() => repost()}
+        onClick={async () => {
+          if (readonly) return;
+          await repost();
+        }}
       />
     );
   }
@@ -226,12 +234,16 @@ export default function NoteFooter(props: NoteFooterProps) {
         iconName={reacted ? "heart-solid" : "heart"}
         title={formatMessage({ defaultMessage: "Like" })}
         value={positive.length}
-        onClick={() => react(prefs.reactionEmoji)}
+        onClick={async () => {
+          if (readonly) return;
+          await react(prefs.reactionEmoji);
+        }}
       />
     );
   }
 
   function replyIcon() {
+    if (readonly) return;
     return (
       <AsyncFooterIcon
         className={note.show ? "reacted" : ""}

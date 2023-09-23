@@ -18,14 +18,14 @@ export interface DMProps {
 }
 
 export default function DM(props: DMProps) {
-  const pubKey = useLogin().publicKey;
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   const publisher = useEventPublisher();
   const msg = props.data;
   const [content, setContent] = useState<string>();
   const { ref, inView } = useInView({ triggerOnce: true });
   const { formatMessage } = useIntl();
-  const isMe = msg.from === pubKey;
-  const otherPubkey = isMe ? pubKey : msg.from;
+  const isMe = msg.from === publicKey;
+  const otherPubkey = isMe ? publicKey : msg.from;
 
   async function decrypt() {
     if (publisher) {

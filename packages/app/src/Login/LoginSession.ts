@@ -36,6 +36,11 @@ export interface LoginSession {
   privateKey?: HexKey;
 
   /**
+   * If this session cannot sign events
+   */
+  readonly: boolean;
+
+  /**
    * Encrypted private key
    */
   privateKeyData?: PinEncrypted | PinEncryptedPayload;

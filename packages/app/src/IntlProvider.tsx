@@ -81,7 +81,7 @@ const getMessages = (locale: string) => {
 };
 
 export const IntlProvider = ({ children }: { children: ReactNode }) => {
-  const { language } = useLogin().preferences;
+  const { language } = useLogin(s => ({ language: s.preferences.language }));
   const locale = language ?? getLocale();
   const [messages, setMessages] = useState<Record<string, string>>(enMessages);
 

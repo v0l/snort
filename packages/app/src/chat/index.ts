@@ -158,7 +158,7 @@ export function createEmptyChatObject(id: string) {
 }
 
 export function useNip4Chat() {
-  const { publicKey } = useLogin();
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   return useSyncExternalStore(
     c => Nip4Chats.hook(c),
     () => Nip4Chats.snapshot(publicKey),
@@ -173,7 +173,7 @@ export function useNip29Chat() {
 }
 
 export function useNip24Chat() {
-  const { publicKey } = useLogin();
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   return useSyncExternalStore(
     c => Nip24Chats.hook(c),
     () => Nip24Chats.snapshot(publicKey),

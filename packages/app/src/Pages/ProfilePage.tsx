@@ -466,7 +466,7 @@ export default function ProfilePage() {
                 <Icon name="zap" size={16} />
               </IconButton>
             )}
-            {loginPubKey && (
+            {loginPubKey && !login.readonly && (
               <>
                 <IconButton
                   onClick={() =>

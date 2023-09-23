@@ -66,13 +66,14 @@ export default function Layout() {
 
 const NoteCreatorButton = () => {
   const location = useLocation();
+  const { readonly } = useLogin(s => ({ readonly: s.readonly }));
   const { show, replyTo, update } = useNoteCreator(v => ({ show: v.show, replyTo: v.replyTo, update: v.update }));
 
   const shouldHideNoteCreator = useMemo(() => {
     const isReplyNoteCreatorShowing = replyTo && show;
     const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/e", "/subscribe"];
-    return isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
-  }, [location]);
+    return readonly || isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
+  }, [location, readonly]);
 
   if (shouldHideNoteCreator) return;
   return (
@@ -96,7 +97,12 @@ const AccountHeader = () => {
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
 
-  const { publicKey, latestNotification, readNotifications } = useLogin();
+  const { publicKey, latestNotification, readNotifications, readonly } = useLogin(s => ({
+    publicKey: s.publicKey,
+    latestNotification: s.latestNotification,
+    readNotifications: s.readNotifications,
+    readonly: s.readonly,
+  }));
   const profile = useUserProfile(publicKey);
   const [search, setSearch] = useState("");
   const [searching, setSearching] = useState(false);
@@ -174,10 +180,12 @@ const AccountHeader = () => {
           )}
         </div>
       )}
-      <Link className="btn" to="/messages">
-        <Icon name="mail" size={24} />
-        {unreadDms > 0 && <span className="has-unread"></span>}
-      </Link>
+      {!readonly && (
+        <Link className="btn" to="/messages">
+          <Icon name="mail" size={24} />
+          {unreadDms > 0 && <span className="has-unread"></span>}
+        </Link>
+      )}
       <Link className="btn" to="/notifications" onClick={goToNotifications}>
         <Icon name="bell-02" size={24} />
         {hasNotifications && <span className="has-unread"></span>}
