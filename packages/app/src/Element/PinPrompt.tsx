@@ -25,9 +25,11 @@ export function PinPrompt({
 
   async function submitPin() {
     if (pin.length < 4) {
-      setError(formatMessage({
-        defaultMessage: "Pin too short"
-      }));
+      setError(
+        formatMessage({
+          defaultMessage: "Pin too short",
+        }),
+      );
       return;
     }
     setError("");
@@ -57,7 +59,14 @@ export function PinPrompt({
           <FormattedMessage defaultMessage="Enter Pin" />
         </h2>
         {subTitle}
-        <input type="number" onChange={e => setPin(e.target.value)} value={pin} autoFocus={true} maxLength={20} minLength={4} />
+        <input
+          type="number"
+          onChange={e => setPin(e.target.value)}
+          value={pin}
+          autoFocus={true}
+          maxLength={20}
+          minLength={4}
+        />
         {error && <b className="error">{error}</b>}
         <div className="flex g8">
           <button type="button" onClick={() => onCancel()}>
