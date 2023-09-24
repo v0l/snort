@@ -4,7 +4,7 @@ import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
 import { DefaultRelays, SnortPubKey } from "Const";
-import { LoginStore, UserPreferences, LoginSession, LoginSessionType } from "Login";
+import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unwrap } from "SnortUtils";
 import { SubscriptionEvent } from "Subscription";
@@ -154,6 +154,15 @@ export function setBookmarked(state: LoginSession, bookmarked: Array<string>, ts
   }
   state.bookmarked.item = bookmarked;
   state.bookmarked.timestamp = ts;
+  LoginStore.updateSession(state);
+}
+
+export function setAppData(state: LoginSession, data: SnortAppData, ts: number) {
+  if(state.appData.timestamp >= ts) {
+    return;
+  }
+  state.appData.item = data;
+  state.appData.timestamp = ts;
   LoginStore.updateSession(state);
 }
 

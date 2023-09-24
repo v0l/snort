@@ -6,6 +6,7 @@ import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { ProfileLoaderService } from "./profile-cache";
 import { RelayCache } from "./gossip-model";
 import { QueryOptimizer } from "./query-optimizer";
+import { base64 } from "@scure/base";
 
 export * from "./nostr-system";
 export { default as EventKind } from "./event-kind";
@@ -135,4 +136,26 @@ export interface MessageEncryptor {
   getSharedSecret(privateKey: string, publicKey: string): Promise<Uint8Array> | Uint8Array;
   encryptData(plaintext: string, sharedSecet: Uint8Array): Promise<MessageEncryptorPayload> | MessageEncryptorPayload;
   decryptData(payload: MessageEncryptorPayload, sharedSecet: Uint8Array): Promise<string> | string;
+}
+
+export function decodeEncryptionPayload(p: string) {
+  if (p.startsWith("{") && p.endsWith("}")) {
+    const pj = JSON.parse(p) as { v: number; nonce: string; ciphertext: string };
+    return {
+      v: pj.v,
+      nonce: base64.decode(pj.nonce),
+      ciphertext: base64.decode(pj.ciphertext),
+    } as MessageEncryptorPayload;
+  } else {
+    const buf = base64.decode(p);
+    return {
+      v: buf[0],
+      nonce: buf.subarray(1, 25),
+      ciphertext: buf.subarray(25),
+    } as MessageEncryptorPayload;
+  }
+}
+
+export function encodeEncryptionPayload(p: MessageEncryptorPayload) {
+  return base64.encode(new Uint8Array([p.v, ...p.nonce, ...p.ciphertext]));
 }

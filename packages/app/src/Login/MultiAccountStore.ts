@@ -46,6 +46,12 @@ const LoggedOut = {
   latestNotification: 0,
   readNotifications: 0,
   subscriptions: [],
+  appData: {
+    item: {
+      mutedWords: []
+    },
+    timestamp: 0,
+  },
 } as LoginSession;
 
 export class MultiAccountStore extends ExternalStore<LoginSession> {

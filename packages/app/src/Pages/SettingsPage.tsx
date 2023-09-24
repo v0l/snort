@@ -9,6 +9,7 @@ import AccountsPage from "Pages/settings/Accounts";
 import { WalletSettingsRoutes } from "Pages/settings/WalletSettings";
 import { ManageHandleRoutes } from "Pages/settings/handle";
 import ExportKeys from "Pages/settings/Keys";
+import { ModerationSettings } from "./settings/Moderation";
 
 import messages from "./messages";
 
@@ -55,6 +56,10 @@ export const SettingsRoutes: RouteObject[] = [
       {
         path: "keys",
         element: <ExportKeys />,
+      },
+      {
+        path: "moderation",
+        element: <ModerationSettings />,
       },
       ...ManageHandleRoutes,
       ...WalletSettingsRoutes,

@@ -51,6 +51,11 @@ const SettingsIndex = () => {
             <FormattedMessage defaultMessage="Export Keys" />
             <Icon name="arrowFront" size={16} />
           </div>
+          <div className="settings-row" onClick={() => navigate("moderation")}>
+            <Icon name="shield-tick" size={24} />
+            <FormattedMessage defaultMessage="Moderation" />
+            <Icon name="arrowFront" size={16} />
+          </div>
           <div className="settings-row" onClick={() => navigate("handle")}>
             <Icon name="badge" size={24} />
             <FormattedMessage defaultMessage="Nostr Adddress" />

@@ -164,10 +164,6 @@
   min-height: unset;
 }
 
-.hidden-note button {
-  max-height: 30px;
-}
-
 .expand-note {
   padding: 0 0 16px 0;
   font-weight: 400;

@@ -133,6 +133,10 @@ code {
   }
 }
 
+.b {
+  border: 1px solid var(--border-color);
+}
+
 .bg-primary {
   background: var(--primary-gradient);
 }

@@ -67,14 +67,14 @@ export interface NoteProps {
 const HiddenNote = ({ children }: { children: React.ReactNode }) => {
   const [show, setShow] = useState(false);
   return show ? (
-    <>{children}</>
+    children
   ) : (
     <div className="card note hidden-note">
       <div className="header">
         <p>
-          <FormattedMessage {...messages.MutedAuthor} />
+          <FormattedMessage defaultMessage="This note has been muted" />
         </p>
-        <button onClick={() => setShow(true)}>
+        <button type="button" onClick={() => setShow(true)}>
           <FormattedMessage {...messages.Show} />
         </button>
       </div>
@@ -116,8 +116,7 @@ export function NoteInner(props: NoteProps) {
   const navigate = useNavigate();
   const [showReactions, setShowReactions] = useState(false);
   const deletions = useMemo(() => getReactions(related, ev.id, EventKind.Deletion), [related]);
-  const { isMuted } = useModeration();
-  const isOpMuted = isMuted(ev?.pubkey);
+  const { isEventMuted } = useModeration();
   const { ref, inView } = useInView({ triggerOnce: true });
   const login = useLogin();
   const { pinned, bookmarked } = login;
@@ -466,5 +465,5 @@ export function NoteInner(props: NoteProps) {
     </div>
   );
 
-  return !ignoreModeration && isOpMuted ? <HiddenNote>{note}</HiddenNote> : note;
+  return !ignoreModeration && isEventMuted(ev) ? <HiddenNote>{note}</HiddenNote> : note;
 }

@@ -25,6 +25,7 @@ enum EventKind {
   Badge = 30009, // NIP-58
   ProfileBadges = 30008, // NIP-58
   LongFormTextNote = 30023, // NIP-23
+  AppData = 30_078, // NIP-78
   LiveEvent = 30311, // NIP-102
   UserStatus = 30315, // NIP-38
   ZapstrTrack = 31337,

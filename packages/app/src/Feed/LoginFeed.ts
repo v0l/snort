@@ -8,7 +8,7 @@ import useEventPublisher from "Hooks/useEventPublisher";
 import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 import useLogin from "Hooks/useLogin";
-import { addSubscription, setBlocked, setBookmarked, setFollows, setMuted, setPinned, setRelays, setTags } from "Login";
+import { SnortAppData, addSubscription, setAppData, setBlocked, setBookmarked, setFollows, setMuted, setPinned, setRelays, setTags } from "Login";
 import { SnortPubKey } from "Const";
 import { SubscriptionEvent } from "Subscription";
 import useRelaysFeedFollows from "./RelaysFeedFollows";
@@ -38,7 +38,9 @@ export default function useLoginFeed() {
       leaveOpen: true,
     });
     b.withFilter().authors([pubKey]).kinds([EventKind.ContactList]);
+    b.withFilter().authors([pubKey]).kinds([EventKind.AppData]).tag("d", ["snort"]);
     b.withFilter()
+      .relay("wss://relay.snort.social")
       .kinds([EventKind.SnortSubscriptions])
       .authors([bech32ToHex(SnortPubKey)])
       .tag("p", [pubKey])
@@ -97,6 +99,14 @@ export default function useLoginFeed() {
           }
         }),
       ).then(a => addSubscription(login, ...a.filter(a => a !== undefined).map(unwrap)));
+
+      const appData = getNewest(loginFeed.data.filter(a => a.kind === EventKind.AppData));
+      if(appData) {
+        publisher.decryptGeneric(appData.content, appData.pubkey).then(d => {
+          setAppData(login, JSON.parse(d) as SnortAppData, appData.created_at * 1000);
+        })
+      }
+
     }
   }, [loginFeed, publisher]);
 

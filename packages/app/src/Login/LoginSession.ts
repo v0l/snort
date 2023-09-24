@@ -18,6 +18,10 @@ export enum LoginSessionType {
   Nip7os = "nip7_os",
 }
 
+export interface SnortAppData {
+  mutedWords: Array<string>
+}
+
 export interface LoginSession {
   /**
    * Unique ID to identify this session
@@ -114,4 +118,9 @@ export interface LoginSession {
    * Remote signer relays (NIP-46)
    */
   remoteSignerRelays?: Array<string>;
+
+  /**
+   * Snort application data
+   */
+  appData: Newest<SnortAppData>;
 }
