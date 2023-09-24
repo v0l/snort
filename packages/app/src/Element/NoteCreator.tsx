@@ -21,7 +21,7 @@ import Note from "Element/Note";
 
 import { ClipboardEventHandler } from "react";
 import useLogin from "Hooks/useLogin";
-import { System } from "index";
+import { System, WasmPowWorker } from "index";
 import AsyncButton from "Element/AsyncButton";
 import { AsyncIcon } from "Element/AsyncIcon";
 import { fetchNip05Pubkey } from "@snort/shared";
@@ -30,9 +30,9 @@ import { useNoteCreator } from "State/NoteCreator";
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();
-  const publisher = useEventPublisher();
   const uploader = useFileUpload();
-  const login = useLogin(s => ({ relays: s.relays, publicKey: s.publicKey }));
+  const login = useLogin(s => ({ relays: s.relays, publicKey: s.publicKey, pow: s.preferences.pow }));
+  const publisher = login.pow ? useEventPublisher()?.pow(login.pow, new WasmPowWorker()) : useEventPublisher();
   const note = useNoteCreator();
   const relays = login.relays;
 

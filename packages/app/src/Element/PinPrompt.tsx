@@ -2,13 +2,14 @@ import useLogin from "Hooks/useLogin";
 import "./PinPrompt.css";
 import { ReactNode, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import useEventPublisher from "Hooks/useEventPublisher";
-import { LoginStore, createPublisher, sessionNeedsPin } from "Login";
 import { unwrap } from "@snort/shared";
 import { EventPublisher, InvalidPinError, PinEncrypted, PinEncryptedPayload } from "@snort/system";
-import { DefaultPowWorker } from "index";
+
+import useEventPublisher from "Hooks/useEventPublisher";
+import { LoginStore, createPublisher, sessionNeedsPin } from "Login";
 import Modal from "./Modal";
 import AsyncButton from "./AsyncButton";
+import { WasmPowWorker } from "index";
 
 export function PinPrompt({
   onResult,
@@ -91,7 +92,7 @@ export function LoginUnlock() {
 
     const pub = EventPublisher.privateKey(k);
     if (login.preferences.pow) {
-      pub.pow(login.preferences.pow, DefaultPowWorker);
+      pub.pow(login.preferences.pow, new WasmPowWorker());
     }
     LoginStore.setPublisher(login.id, pub);
     LoginStore.updateSession({
@@ -108,7 +109,7 @@ export function LoginUnlock() {
     const pub = createPublisher(login, key);
     if (pub) {
       if (login.preferences.pow) {
-        pub.pow(login.preferences.pow, DefaultPowWorker);
+        pub.pow(login.preferences.pow, new WasmPowWorker());
       }
       LoginStore.setPublisher(login.id, pub);
       LoginStore.updateSession({

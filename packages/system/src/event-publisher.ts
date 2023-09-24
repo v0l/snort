@@ -71,11 +71,13 @@ export class EventPublisher {
   }
 
   /**
-   * Apply POW to every event
+   * Create a copy of this publisher with PoW
    */
   pow(target: number, miner?: PowMiner) {
-    this.#pow = target;
-    this.#miner = miner;
+    const ret = new EventPublisher(this.#signer, this.#pubKey);
+    ret.#pow = target;
+    ret.#miner = miner;
+    return ret;
   }
 
   #eb(k: EventKind) {

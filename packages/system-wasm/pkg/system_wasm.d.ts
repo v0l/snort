@@ -27,6 +27,18 @@ export function flat_merge(val: any): any;
  * @returns {any}
  */
 export function compress(val: any): any;
+/**
+ * @param {any} val
+ * @param {any} target
+ * @returns {any}
+ */
+export function pow(val: any, target: any): any;
+/**
+ * @param {any} password
+ * @param {any} salt
+ * @returns {any}
+ */
+export function argon2(password: any, salt: any): any;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
@@ -37,10 +49,13 @@ export interface InitOutput {
   readonly get_diff: (a: number, b: number, c: number) => void;
   readonly flat_merge: (a: number, b: number) => void;
   readonly compress: (a: number, b: number) => void;
+  readonly pow: (a: number, b: number, c: number) => void;
+  readonly argon2: (a: number, b: number, c: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
   readonly __wbindgen_exn_store: (a: number) => void;
+  readonly __wbindgen_free: (a: number, b: number, c: number) => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;

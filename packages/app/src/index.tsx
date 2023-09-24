@@ -2,13 +2,21 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "./fonts/inter.css";
 
-import { compress, expand_filter, flat_merge, get_diff, default as wasmInit } from "@snort/system-wasm";
+import { compress, expand_filter, flat_merge, get_diff, pow, default as wasmInit } from "@snort/system-wasm";
 import WasmPath from "@snort/system-wasm/pkg/system_wasm_bg.wasm";
 
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { NostrSystem, ProfileLoaderService, PowWorker, QueryOptimizer, FlatReqFilter, ReqFilter } from "@snort/system";
+import {
+  NostrSystem,
+  ProfileLoaderService,
+  QueryOptimizer,
+  FlatReqFilter,
+  ReqFilter,
+  PowMiner,
+  NostrEvent,
+} from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
@@ -53,6 +61,13 @@ const WasmQueryOptimizer = {
   },
 } as QueryOptimizer;
 
+export class WasmPowWorker implements PowMiner {
+  minePow(ev: NostrEvent, target: number): Promise<NostrEvent> {
+    const res = pow(ev, target);
+    return Promise.resolve(res);
+  }
+}
+
 /**
  * Singleton nostr system
  */
@@ -74,11 +89,6 @@ export const System = new NostrSystem({
  * Singleton user profile loader
  */
 export const ProfileLoader = new ProfileLoaderService(System, UserCache);
-
-/**
- * Singleton POW worker
- */
-export const DefaultPowWorker = new PowWorker("/pow.js");
 
 serviceWorkerRegistration.register();
 

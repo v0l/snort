@@ -1,8 +1,9 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 use rand::prelude::*;
 use std::collections::HashSet;
-use system_query::diff::diff_filter;
-use system_query::filter::{FlatReqFilter, ReqFilter};
+use system_wasm::diff::diff_filter;
+use system_wasm::filter::{FlatReqFilter, ReqFilter};
+use system_wasm::{Event, pow};
 
 fn random_pubkey(rng: &mut ThreadRng) -> String {
     let mut bytes = [0u8; 32];
@@ -62,6 +63,20 @@ fn criterion_benchmark(c: &mut Criterion) {
             let next: Vec<FlatReqFilter> = (&input_authors_diff).into();
             let _ = diff_filter(&prev, &next);
         })
+    });
+    c.bench_function("pow", |b| {
+       b.iter(|| {
+           let mut ev = Event {
+               id: None,
+               kind: 1,
+               created_at: 1234567,
+               pubkey: "63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed".to_string(),
+               content: "test".to_owned(),
+               sig: None,
+               tags: vec![],
+           };
+           pow::pow(&mut ev, 12);
+       })
     });
 }
 

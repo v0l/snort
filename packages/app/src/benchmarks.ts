@@ -1,6 +1,6 @@
 import { bytesToHex } from "@noble/hashes/utils";
-import { DefaultQueryOptimizer, FlatReqFilter, QueryOptimizer, ReqFilter } from "@snort/system";
-import { compress, expand_filter, flat_merge, get_diff, default as wasmInit } from "@snort/system-wasm";
+import { DefaultQueryOptimizer, EventExt, FlatReqFilter, PowMiner, QueryOptimizer, ReqFilter } from "@snort/system";
+import { compress, expand_filter, flat_merge, get_diff, pow, default as wasmInit } from "@snort/system-wasm";
 import WasmPath from "@snort/system-wasm/pkg/system_wasm_bg.wasm";
 import { Bench } from "tinybench";
 
@@ -90,15 +90,35 @@ const testCompress = (q: QueryOptimizer) => {
 const wasmSuite = new Bench({ time: 1_000 });
 const suite = new Bench({ time: 1_000 });
 
-const addTests = (s: Bench, q: QueryOptimizer) => {
+const addTests = (s: Bench, q: QueryOptimizer, p: PowMiner) => {
   s.add("expand", () => testExpand(q));
   s.add("get_diff", () => testGetDiff(q));
   s.add("flat_merge", () => testFlatMerge(q));
   s.add("compress", () => testCompress(q));
+  s.add("pow", () => {
+    const ev = {
+      id: "",
+      kind: 1,
+      created_at: 1234567,
+      pubkey: "63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed",
+      content: "test",
+      sig: "",
+      tags: [],
+    };
+    p.minePow(ev, 12);
+  });
 };
 
-addTests(suite, DefaultQueryOptimizer);
-addTests(wasmSuite, WasmQueryOptimizer);
+addTests(suite, DefaultQueryOptimizer, {
+  minePow(ev, target) {
+    return Promise.resolve(EventExt.minePow(ev, target));
+  },
+});
+addTests(wasmSuite, WasmQueryOptimizer, {
+  minePow(ev, target) {
+    return Promise.resolve(pow(ev, target));
+  },
+});
 
 const runAll = async () => {
   await wasmInit(WasmPath);
@@ -106,9 +126,15 @@ const runAll = async () => {
   console.log("DefaultQueryOptimizer");
   await suite.run();
   console.table(suite.table());
+  const p0 = document.createElement("pre");
+  p0.innerText = JSON.stringify(suite.table(), undefined, "  ");
+  document.body.appendChild(p0);
 
   console.log("WasmQueryOptimizer");
   await wasmSuite.run();
   console.table(wasmSuite.table());
+  const p1 = document.createElement("pre");
+  p1.innerText = JSON.stringify(wasmSuite.table(), undefined, "  ");
+  document.body.appendChild(p1);
 };
 runAll().catch(console.error);
