@@ -283,6 +283,9 @@
   "AGNz71": {
     "defaultMessage": "Zap All {n} sats"
   },
+  "AN0Z7Q": {
+    "defaultMessage": "Muted Words"
+  },
   "ASRK0S": {
     "defaultMessage": "This author has been muted"
   },
@@ -1241,6 +1244,9 @@
   "qdGuQo": {
     "defaultMessage": "Your Private Key Is (do not share this with anyone)"
   },
+  "qfmMQh": {
+    "defaultMessage": "This note has been muted"
+  },
   "qkvYUb": {
     "defaultMessage": "Add to Profile"
   },
@@ -1362,6 +1368,9 @@
   },
   "wih7iJ": {
     "defaultMessage": "name is blocked"
+  },
+  "wofVHy": {
+    "defaultMessage": "Moderation"
   },
   "wqyN/i": {
     "defaultMessage": "Find out more info about {service} at {link}"
