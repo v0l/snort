@@ -48,7 +48,7 @@ const LoggedOut = {
   subscriptions: [],
   appData: {
     item: {
-      mutedWords: []
+      mutedWords: [],
     },
     timestamp: 0,
   },

@@ -158,7 +158,7 @@ export function setBookmarked(state: LoginSession, bookmarked: Array<string>, ts
 }
 
 export function setAppData(state: LoginSession, data: SnortAppData, ts: number) {
-  if(state.appData.timestamp >= ts) {
+  if (state.appData.timestamp >= ts) {
     return;
   }
   state.appData.item = data;

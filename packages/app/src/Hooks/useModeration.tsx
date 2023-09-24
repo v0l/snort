@@ -76,6 +76,6 @@ export default function useModeration() {
     unblock,
     isBlocked,
     isMutedWord,
-    isEventMuted
+    isEventMuted,
   };
 }

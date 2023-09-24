@@ -19,7 +19,7 @@ export enum LoginSessionType {
 }
 
 export interface SnortAppData {
-  mutedWords: Array<string>
+  mutedWords: Array<string>;
 }
 
 export interface LoginSession {

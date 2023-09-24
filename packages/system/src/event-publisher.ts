@@ -277,7 +277,7 @@ export class EventPublisher {
    */
   async decryptGeneric(content: string, from: string) {
     const pl = decodeEncryptionPayload(content);
-    switch(pl.v) {
+    switch (pl.v) {
       case MessageEncryptorVersion.Nip4: {
         const nip4Payload = `${base64.encode(pl.ciphertext)}?iv=${base64.encode(pl.nonce)}`;
         return await this.#signer.nip4Decrypt(nip4Payload, from);
