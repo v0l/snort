@@ -28,6 +28,7 @@ export default function useLoginHandler() {
       if (hexKey.length === 64) {
         if (!pin) throw new PinRequiredError();
         LoginStore.loginWithPrivateKey(await PinEncrypted.create(hexKey, pin));
+        return;
       } else {
         throw new Error("INVALID PRIVATE KEY");
       }
@@ -39,12 +40,14 @@ export default function useLoginHandler() {
       const ent = generateBip39Entropy(key);
       const keyHex = entropyToPrivateKey(ent);
       LoginStore.loginWithPrivateKey(await PinEncrypted.create(keyHex, pin));
+      return;
     } else if (key.length === 64) {
       if (!hasSubtleCrypto) {
         throw new Error(insecureMsg);
       }
       if (!pin) throw new PinRequiredError();
       LoginStore.loginWithPrivateKey(await PinEncrypted.create(key, pin));
+      return;
     }
 
     // public key logins

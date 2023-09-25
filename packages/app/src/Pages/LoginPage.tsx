@@ -95,12 +95,14 @@ export default function LoginPage() {
   }, []);
 
   async function doLogin(pin?: string) {
+    setError("");
     try {
       await loginHandler.doLogin(key, pin);
       navigate("/");
     } catch (e) {
       if (e instanceof PinRequiredError) {
         setPin(true);
+        return;
       }
       if (e instanceof Error) {
         setError(e.message);
