@@ -276,8 +276,8 @@ export default function ProfilePage() {
   function username() {
     return (
       <>
-        <div className="name">
-          <h2>
+        <div className="flex-column g4">
+          <h2 className="flex g4">
             {user?.display_name || user?.name || "Nostrich"}
             <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
           </h2>

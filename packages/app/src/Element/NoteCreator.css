@@ -7,7 +7,9 @@
     linear-gradient(90deg, #ef9644, #fd7c49, #ff5e58, #ff3b70, #ff088e, #eb00b1, #c31ed5, #7b41f6) border-box;
 }
 
-.note-creator-modal .modal-body {
+.note-creator-modal .modal-body > div {
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 
