@@ -33,7 +33,7 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
 
   subscription(session: LoginSession) {
     const pk = session.publicKey;
-    if (!pk) return;
+    if (!pk || session.readonly) return;
 
     const rb = new RequestBuilder(`nip4:${pk.slice(0, 12)}`);
     const dms = this.#cache.snapshot();

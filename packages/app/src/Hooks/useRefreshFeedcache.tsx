@@ -29,7 +29,7 @@ export function useRefreshFeedCache<T>(c: RefreshFeedCache<T>, leaveOpen = false
       let t: ReturnType<typeof setTimeout> | undefined;
       let tBuf: Array<TaggedNostrEvent> = [];
       const releaseOnEvent = q.feed.onEvent(evs => {
-        if (!t && publisher) {
+        if (!t) {
           tBuf = [...evs];
           t = setTimeout(() => {
             t = undefined;

@@ -6,7 +6,7 @@ export type TWithCreated<T> = (T | Readonly<T>) & { created_at: number };
 
 export abstract class RefreshFeedCache<T> extends FeedCache<TWithCreated<T>> {
   abstract buildSub(session: LoginSession, rb: RequestBuilder): void;
-  abstract onEvent(evs: Readonly<Array<TaggedNostrEvent>>, pub: EventPublisher): void;
+  abstract onEvent(evs: Readonly<Array<TaggedNostrEvent>>, pub?: EventPublisher): void;
 
   /**
    * Get latest event
