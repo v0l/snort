@@ -10,6 +10,7 @@ import {
   TaggedNostrEvent,
   decodeTLV,
 } from "@snort/system";
+import { LoginSession } from "Login";
 import { Chat, ChatSystem, ChatType, inChatWith, lastReadInChat } from "chat";
 import { debug } from "debug";
 
@@ -30,7 +31,10 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
     }
   }
 
-  subscription(pk: string) {
+  subscription(session: LoginSession) {
+    const pk = session.publicKey;
+    if (!pk) return;
+
     const rb = new RequestBuilder(`nip4:${pk.slice(0, 12)}`);
     const dms = this.#cache.snapshot();
     const dmSince = dms.reduce(

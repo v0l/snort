@@ -3,33 +3,19 @@ import { useMemo } from "react";
 
 import ProfileImage from "Element/ProfileImage";
 import DM from "Element/DM";
-import NoteToSelf from "Element/NoteToSelf";
 import useLogin from "Hooks/useLogin";
 import WriteMessage from "Element/WriteMessage";
-import { Chat, ChatParticipant, createEmptyChatObject, useChatSystem } from "chat";
+import { Chat, createEmptyChatObject, useChatSystem } from "chat";
 import { FormattedMessage } from "react-intl";
+import { ChatParticipantProfile } from "./ChatParticipant";
 
 export default function DmWindow({ id }: { id: string }) {
-  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   const dms = useChatSystem();
   const chat = dms.find(a => a.id === id) ?? createEmptyChatObject(id);
 
-  function participant(p: ChatParticipant) {
-    if (p.id === publicKey) {
-      return <NoteToSelf className="f-grow mb-10" pubkey={p.id} />;
-    }
-    if (p.type === "pubkey") {
-      return <ProfileImage pubkey={p.id} className="f-grow mb10" />;
-    }
-    if (p?.profile) {
-      return <ProfileImage pubkey={p.id} className="f-grow mb10" profile={p.profile} />;
-    }
-    return <ProfileImage pubkey={p.id} className="f-grow mb10" overrideUsername={p.id} />;
-  }
-
   function sender() {
     if (chat.participants.length === 1) {
-      return participant(chat.participants[0]);
+      return <ChatParticipantProfile participant={chat.participants[0]} />;
     } else {
       return (
         <div className="flex pfp-overlap mb10">

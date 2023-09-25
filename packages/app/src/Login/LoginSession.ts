@@ -123,4 +123,9 @@ export interface LoginSession {
    * Snort application data
    */
   appData: Newest<SnortAppData>;
+
+  /**
+   * A list of chats which we have joined (NIP-28/NIP-29)
+   */
+  extraChats: Array<string>;
 }

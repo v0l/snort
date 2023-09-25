@@ -25,7 +25,7 @@ import { SubscriptionEvent } from "Subscription";
 import useRelaysFeedFollows from "./RelaysFeedFollows";
 import { FollowsFeed, GiftsCache, Notifications, UserRelays } from "Cache";
 import { System } from "index";
-import { Nip4Chats } from "chat";
+import { Nip28Chats, Nip4Chats } from "chat";
 import { useRefreshFeedCache } from "Hooks/useRefreshFeedcache";
 
 /**
@@ -42,7 +42,7 @@ export default function useLoginFeed() {
   useRefreshFeedCache(GiftsCache, true);
 
   const subLogin = useMemo(() => {
-    if (!pubKey) return null;
+    if (!login || !pubKey) return null;
 
     const b = new RequestBuilder(`login:${pubKey.slice(0, 12)}`);
     b.withOptions({
@@ -57,10 +57,16 @@ export default function useLoginFeed() {
       .tag("p", [pubKey])
       .limit(1);
 
-    b.add(Nip4Chats.subscription(pubKey));
-
+    const n4Sub = Nip4Chats.subscription(login);
+    if (n4Sub) {
+      b.add(n4Sub);
+    }
+    const n28Sub = Nip28Chats.subscription(login);
+    if (n28Sub) {
+      b.add(n28Sub);
+    }
     return b;
-  }, [pubKey]);
+  }, [login]);
 
   const subLists = useMemo(() => {
     if (!pubKey) return null;
@@ -94,6 +100,7 @@ export default function useLoginFeed() {
       }
 
       Nip4Chats.onEvent(loginFeed.data);
+      Nip28Chats.onEvent(loginFeed.data);
 
       const subs = loginFeed.data.filter(
         a => a.kind === EventKind.SnortSubscriptions && a.pubkey === bech32ToHex(SnortPubKey),

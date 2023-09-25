@@ -52,6 +52,7 @@ const LoggedOut = {
     },
     timestamp: 0,
   },
+  extraChats: [],
 } as LoginSession;
 
 export class MultiAccountStore extends ExternalStore<LoginSession> {
@@ -79,10 +80,11 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       }
       v.appData ??= {
         item: {
-          mutedWords: []
+          mutedWords: [],
         },
-        timestamp: 0
-      }
+        timestamp: 0,
+      };
+      v.extraChats ??= [];
     }
   }
 

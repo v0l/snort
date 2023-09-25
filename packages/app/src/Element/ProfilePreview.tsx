@@ -1,6 +1,6 @@
 import "./ProfilePreview.css";
 import { ReactNode } from "react";
-import { HexKey } from "@snort/system";
+import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useInView } from "react-intersection-observer";
 
@@ -13,6 +13,7 @@ export interface ProfilePreviewProps {
     about?: boolean;
     linkToProfile?: boolean;
   };
+  profile?: UserMetadata;
   actions?: ReactNode;
   className?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
@@ -41,6 +42,7 @@ export default function ProfilePreview(props: ProfilePreviewProps) {
           <>
             <ProfileImage
               pubkey={pubkey}
+              profile={props.profile}
               link={options.linkToProfile ?? true ? undefined : ""}
               subHeader={options.about ? <div className="about">{user?.about}</div> : undefined}
             />

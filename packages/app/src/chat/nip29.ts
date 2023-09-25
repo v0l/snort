@@ -1,5 +1,6 @@
 import { ExternalStore, FeedCache, dedupe } from "@snort/shared";
 import { RequestBuilder, NostrEvent, EventKind, SystemInterface, TaggedNostrEvent } from "@snort/system";
+import { LoginSession } from "Login";
 import { unwrap } from "SnortUtils";
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "chat";
 
@@ -15,7 +16,9 @@ export class Nip29ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     return this.listChats();
   }
 
-  subscription(id: string) {
+  subscription(session: LoginSession) {
+    const id = session.publicKey;
+    if (!id) return;
     const gs = id.split("/", 2);
     const rb = new RequestBuilder(`nip29:${id}`);
     const last = this.listChats().find(a => a.id === id)?.lastMessage;

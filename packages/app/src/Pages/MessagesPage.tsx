@@ -3,7 +3,7 @@ import "./MessagesPage.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
-import { TLVEntryType, decodeTLV } from "@snort/system";
+import { NostrLink, NostrPrefix, TLVEntryType, UserMetadata, decodeTLV } from "@snort/system";
 import { useUserProfile, useUserSearch } from "@snort/system-react";
 
 import UnreadCount from "Element/UnreadCount";
@@ -21,6 +21,10 @@ import Text from "Element/Text";
 import { Chat, ChatType, createChatLink, useChatSystem } from "chat";
 import Modal from "Element/Modal";
 import ProfilePreview from "Element/ProfilePreview";
+import { useEventFeed } from "Feed/EventFeed";
+import { LoginSession, LoginStore } from "Login";
+import { Nip28ChatSystem } from "chat/nip28";
+import { ChatParticipantProfile } from "Element/ChatParticipant";
 
 const TwoCol = 768;
 const ThreeCol = 1500;
@@ -57,18 +61,12 @@ export default function MessagesPage() {
 
   function conversationIdent(cx: Chat) {
     if (cx.participants.length === 1) {
-      const p = cx.participants[0];
-
-      if (p.type === "pubkey") {
-        return <ProfileImage pubkey={p.id} className="f-grow" link="" />;
-      } else {
-        return <ProfileImage pubkey={""} overrideUsername={p.id} className="f-grow" link="" />;
-      }
+      return <ChatParticipantProfile participant={cx.participants[0]} />;
     } else {
       return (
         <div className="flex f-grow pfp-overlap">
           {cx.participants.map(v => (
-            <ProfileImage pubkey={v.id} link="" showUsername={false} />
+            <ProfileImage pubkey={v.id} link="" showUsername={false} profile={v.profile} />
           ))}
           {cx.title ?? <FormattedMessage defaultMessage="Group Chat" />}
         </div>
@@ -168,17 +166,17 @@ function ProfileDmActions({ id }: { id: string }) {
 
 function NewChatWindow() {
   const [show, setShow] = useState(false);
-  const [newChat, setNewChat] = useState<string[]>([]);
-  const [results, setResults] = useState<string[]>([]);
+  const [newChat, setNewChat] = useState<Array<string>>([]);
+  const [results, setResults] = useState<Array<string>>([]);
   const [term, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const search = useUserSearch();
-  const { follows } = useLogin();
+  const login = useLogin();
 
   useEffect(() => {
     setNewChat([]);
     setSearchTerm("");
-    setResults(follows.item);
+    setResults(login.follows.item);
   }, [show]);
 
   useEffect(() => {
@@ -186,7 +184,7 @@ function NewChatWindow() {
       if (term) {
         search(term).then(setResults);
       } else {
-        setResults(follows.item);
+        setResults(login.follows.item);
       }
     });
   }, [term]);
@@ -259,6 +257,19 @@ function NewChatWindow() {
                     />
                   );
                 })}
+                {results.length === 1 && (
+                  <Nip28ChatProfile
+                    id={results[0]}
+                    onClick={id => {
+                      setShow(false);
+                      LoginStore.updateSession({
+                        ...login,
+                        extraChats: appendDedupe(login.extraChats, [Nip28ChatSystem.chatId(id)]),
+                      } as LoginSession);
+                      navigate(createChatLink(ChatType.PublicGroupChat, id));
+                    }}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -266,4 +277,20 @@ function NewChatWindow() {
       )}
     </>
   );
+}
+
+export function Nip28ChatProfile({ id, onClick }: { id: string; onClick: (id: string) => void }) {
+  const channel = useEventFeed(new NostrLink(NostrPrefix.Event, id, 40));
+  if (channel?.data) {
+    const meta = JSON.parse(channel.data.content) as UserMetadata;
+    return (
+      <ProfilePreview
+        pubkey=""
+        profile={meta}
+        options={{ about: false, linkToProfile: false }}
+        actions={<></>}
+        onClick={() => onClick(id)}
+      />
+    );
+  }
 }
