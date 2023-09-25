@@ -61,6 +61,7 @@ export interface NoteProps {
     canUnpin?: boolean;
     canUnbookmark?: boolean;
     canClick?: boolean;
+    showMediaSpotlight?: boolean;
   };
 }
 
@@ -210,6 +211,7 @@ export function NoteInner(props: NoteProps) {
               depth={props.depth}
               truncate={255}
               disableLinkPreview={true}
+              disableMediaSpotlight={!(props.options?.showMediaSpotlight ?? true)}
             />
             {image && <ProxyImg src={image} />}
           </div>
@@ -225,6 +227,7 @@ export function NoteInner(props: NoteProps) {
           creator={ev.pubkey}
           depth={props.depth}
           disableMedia={!(options.showMedia ?? true)}
+          disableMediaSpotlight={!(props.options?.showMediaSpotlight ?? true)}
         />
       );
     }

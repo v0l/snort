@@ -52,20 +52,23 @@
   cursor: pointer;
 }
 
-.thread-overlay .modal-body {
+.modal.thread-overlay > .modal-body {
   background-color: unset;
   padding: 0;
   width: 100vw;
   height: 100vh;
+  --border-color: #3a3a3a;
+}
+
+.modal.thread-overlay > .modal-body > div {
   display: flex;
   flex-direction: row;
   border-radius: unset;
   justify-content: center;
   gap: 16px;
-  --border-color: #3a3a3a;
 }
 
-.thread-overlay .modal-body > div:last-of-type {
+.modal.thread-overlay > .modal-body > div > div:last-of-type {
   width: 550px;
   min-width: 550px;
   height: 100vh;

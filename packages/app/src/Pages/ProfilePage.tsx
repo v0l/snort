@@ -74,9 +74,9 @@ function ZapsProfileTab({ id }: { id: HexKey }) {
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   return (
     <div className="main-content">
-      <div className="zaps-total">
+      <h2 className="p">
         <FormattedMessage {...messages.Sats} values={{ n: formatShort(zapsTotal) }} />
-      </div>
+      </h2>
       {zaps.map(z => (
         <ZapElement showZapped={false} zap={z} />
       ))}
@@ -86,12 +86,12 @@ function ZapsProfileTab({ id }: { id: HexKey }) {
 
 function FollowersTab({ id }: { id: HexKey }) {
   const followers = useFollowersFeed(id);
-  return <FollowsList pubkeys={followers} showAbout={true} />;
+  return <FollowsList pubkeys={followers} showAbout={true} className="p" />;
 }
 
 function FollowsTab({ id }: { id: HexKey }) {
   const follows = useFollowsFeed(id);
-  return <FollowsList pubkeys={follows} showAbout={true} />;
+  return <FollowsList pubkeys={follows} showAbout={true} className="p" />;
 }
 
 function RelaysTab({ id }: { id: HexKey }) {
@@ -402,7 +402,7 @@ export default function ProfilePage() {
       }
       case FOLLOWS: {
         if (isMe) {
-          return <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={false} />;
+          return <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={false} className="p" />;
         } else {
           return <FollowsTab id={id} />;
         }

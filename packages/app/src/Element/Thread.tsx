@@ -216,7 +216,7 @@ export function ThreadRoute() {
   );
 }
 
-export function Thread(props: { onBack?: () => void }) {
+export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean }) {
   const thread = useContext(ThreadContext);
 
   const navigate = useNavigate();
@@ -248,7 +248,7 @@ export function Thread(props: { onBack?: () => void }) {
           key={note.id}
           data={note}
           related={getReactions(thread.reactions, note.id)}
-          options={{ showReactionsLink: true }}
+          options={{ showReactionsLink: true, showMediaSpotlight: !props.disableSpotlight }}
           onClick={navigateThread}
         />
       );

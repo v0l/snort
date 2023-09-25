@@ -64,7 +64,7 @@ export function SnortDeckLayout() {
               case "articles":
                 return <ArticlesCol />;
               case "notifications":
-                return <NotificationsCol />;
+                return <NotificationsCol setThread={deckScope.setThread} />;
             }
           })}
         </div>
@@ -74,7 +74,7 @@ export function SnortDeckLayout() {
               <ThreadContextWrapper link={deckScope.thread}>
                 <SpotlightFromThread onClose={() => deckScope.setThread(undefined)} />
                 <div>
-                  <Thread onBack={() => deckScope.setThread(undefined)} />
+                  <Thread onBack={() => deckScope.setThread(undefined)} disableSpotlight={true} />
                 </div>
               </ThreadContextWrapper>
             </Modal>
@@ -167,7 +167,7 @@ function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
   );
 }
 
-function NotificationsCol() {
+function NotificationsCol({ setThread }: { setThread: (e: NostrLink) => void }) {
   return (
     <div>
       <div className="deck-col-header flex g8">
@@ -175,7 +175,7 @@ function NotificationsCol() {
         <FormattedMessage defaultMessage="Notifications" />
       </div>
       <div>
-        <NotificationsPage />
+        <NotificationsPage onClick={setThread} />
       </div>
     </div>
   );

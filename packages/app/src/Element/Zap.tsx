@@ -16,20 +16,16 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean 
   const pubKey = useLogin().publicKey;
 
   return valid && sender ? (
-    <div className="zap note card">
-      <div className="header">
+    <div className="card">
+      <div className="flex f-space">
         <ProfileImage pubkey={sender} />
         {receiver !== pubKey && showZapped && <ProfileImage pubkey={unwrap(receiver)} />}
-        <div className="amount">
-          <span className="amount-number">
-            <FormattedMessage {...messages.Sats} values={{ n: formatShort(amount ?? 0) }} />
-          </span>
-        </div>
+        <h3>
+          <FormattedMessage {...messages.Sats} values={{ n: formatShort(amount ?? 0) }} />
+        </h3>
       </div>
       {(content?.length ?? 0) > 0 && sender && (
-        <div className="body">
-          <Text id={zap.id} creator={sender} content={unwrap(content)} tags={[]} />
-        </div>
+        <Text id={zap.id} creator={sender} content={unwrap(content)} tags={[]} />
       )}
     </div>
   ) : null;
