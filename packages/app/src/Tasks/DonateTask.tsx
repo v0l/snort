@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { Link } from "react-router-dom";
 import { BaseUITask } from "Tasks";
 

@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { NostrEvent, NostrLink } from "@snort/system";
 
 import { findTag } from "SnortUtils";

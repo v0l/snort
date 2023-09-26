@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, Outlet, RouteObject, useParams } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { unixNow } from "@snort/shared";
 import { NostrLink } from "@snort/system";
 

@@ -1,5 +1,5 @@
 import "./Timeline.css";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { useCallback, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import { TaggedNostrEvent, EventKind, u256 } from "@snort/system";

@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { Outlet, RouteObject, useNavigate } from "react-router-dom";
 
 import ListHandles from "./ListHandles";

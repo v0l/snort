@@ -4,7 +4,7 @@ import { NostrEvent, NostrLink } from "@snort/system";
 
 import { ProxyImg } from "Element/ProxyImg";
 import ProfileImage from "Element/ProfileImage";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 
 export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
   const media = ev.tags.find(a => a[0] === "media");

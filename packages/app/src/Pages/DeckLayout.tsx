@@ -1,7 +1,7 @@
 import "./Deck.css";
 import { CSSProperties, createContext, useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { NostrLink } from "@snort/system";
 
 import { DeckNav } from "Element/Deck/Nav";

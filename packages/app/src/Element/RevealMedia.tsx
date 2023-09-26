@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 
 import { FileExtensionRegex } from "Const";
 import Reveal from "Element/Reveal";

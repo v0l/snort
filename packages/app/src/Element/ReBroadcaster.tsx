@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 

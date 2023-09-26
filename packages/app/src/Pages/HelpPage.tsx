@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { KieranPubKey } from "Const";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { TLVEntryType, encodeTLVEntries, NostrPrefix } from "@snort/system";
 import { bech32ToHex } from "SnortUtils";
 

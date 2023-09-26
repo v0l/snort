@@ -1,6 +1,6 @@
 import "./Timeline.css";
 import { ReactNode, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { TaggedNostrEvent, EventKind, u256, NostrEvent, NostrLink } from "@snort/system";
 import { unixNow } from "@snort/shared";
 import { SnortContext } from "@snort/system-react";

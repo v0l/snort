@@ -1,6 +1,6 @@
 import "./ProfilePage.css";
 import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   encodeTLV,

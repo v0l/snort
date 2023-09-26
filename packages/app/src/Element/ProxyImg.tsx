@@ -1,6 +1,6 @@
 import useImgProxy from "Hooks/useImgProxy";
 import React, { useState } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { getUrlHostname } from "SnortUtils";
 
 interface ProxyImgProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {

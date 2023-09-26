@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 import { unixNowMs } from "@snort/shared";
 
 import { randomSample } from "SnortUtils";
