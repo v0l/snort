@@ -209,7 +209,7 @@ function LogoHeader() {
 
   return (
     <Link to="/" className="logo">
-      <h1>Snort</h1>
+      <h1>{process.env.APP_NAME}</h1>
       {currentSubscription && (
         <small className="flex">
           <Icon name="diamond" size={10} className="mr5" />

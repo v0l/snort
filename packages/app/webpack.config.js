@@ -9,6 +9,9 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const IntlTsTransformer = require("@formatjs/ts-transformer");
+const { DefinePlugin } = require('webpack');
+const appConfig = require('config');
+console.log(`Current config: ${JSON.stringify(appConfig, null, 2)}`);
 
 const isProduction = process.env.NODE_ENV == "production";
 
@@ -49,6 +52,9 @@ const config = {
       template: "public/index.html",
       favicon: "public/favicon.ico",
       excludeChunks: ["pow", "bench"],
+      templateParameters: {
+        appTitle: appConfig.get('appTitle'),
+      },
     }),
     new HtmlWebpackPlugin({
       filename: "bench.html",
@@ -69,6 +75,9 @@ const config = {
           swSrc: "./src/service-worker.ts",
         })
       : false,
+    new DefinePlugin({
+      "process.env.APP_NAME": JSON.stringify(appConfig.get('appName')),
+    }),
   ],
   module: {
     rules: [

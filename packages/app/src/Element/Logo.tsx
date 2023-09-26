@@ -4,7 +4,7 @@ const Logo = () => {
   const navigate = useNavigate();
   return (
     <h1 className="logo" onClick={() => navigate("/")}>
-      Snort
+      {process.env.APP_NAME}
     </h1>
   );
 };
