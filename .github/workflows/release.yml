@@ -71,12 +71,11 @@ jobs:
       - name: Build Site
         run: yarn build
 
-      - name: Checkout code
+      - name: Copy files
         run: |-
           git clone https://git.v0l.io/Kieran/snort_android.git
-
-      - name: Copy files
-        run: cp packages/app/build/* snort_android/app/src/main/assets/
+          mkdir -p snort_android/app/src/main/assets/
+          cp packages/app/build/* snort_android/app/src/main/assets/
 
       - name: Build AAB
         working-directory: snort_android
