@@ -329,6 +329,9 @@
   "BcGMo+": {
     "defaultMessage": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
   },
+  "C1LjMx": {
+    "defaultMessage": "Lightning Donation"
+  },
   "C5xzTC": {
     "defaultMessage": "Premium"
   },
@@ -400,6 +403,9 @@
   },
   "EcglP9": {
     "defaultMessage": "Key"
+  },
+  "EjFyoR": {
+    "defaultMessage": "On-chain Donation Address"
   },
   "EnCOBJ": {
     "defaultMessage": "Buy"
@@ -871,9 +877,6 @@
   "ZS+jRE": {
     "defaultMessage": "Send zap splits to"
   },
-  "ZUZedV": {
-    "defaultMessage": "Lightning Donation:"
-  },
   "Zr5TMx": {
     "defaultMessage": "Setup profile"
   },
@@ -891,6 +894,9 @@
   },
   "b5vAk0": {
     "defaultMessage": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address"
+  },
+  "bLZL5a": {
+    "defaultMessage": "Get Address"
   },
   "bQdA2k": {
     "defaultMessage": "Sensitive Content"
@@ -990,6 +996,9 @@
   },
   "flnGvv": {
     "defaultMessage": "What's on your mind?"
+  },
+  "fqwcJ1": {
+    "defaultMessage": "On-chain Donation"
   },
   "fsB/4p": {
     "defaultMessage": "Saved"

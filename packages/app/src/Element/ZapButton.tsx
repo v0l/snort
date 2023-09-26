@@ -25,10 +25,10 @@ const ZapButton = ({
 
   return (
     <>
-      <div className="zap-button flex" onClick={() => setZap(true)}>
-        <Icon name="zap" className={children ? "mr5" : ""} size={15} />
+      <button type="button" className="flex g8" onClick={() => setZap(true)}>
+        <Icon name="zap-solid" />
         {children}
-      </div>
+      </button>
       <SendSats
         targets={[
           {

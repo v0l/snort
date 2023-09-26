@@ -7,6 +7,10 @@ import ProfilePreview from "Element/ProfilePreview";
 import ZapButton from "Element/ZapButton";
 import { bech32ToHex } from "SnortUtils";
 import SnortApi, { RevenueSplit, RevenueToday } from "SnortApi";
+import Modal from "Element/Modal";
+import AsyncButton from "Element/AsyncButton";
+import QrCode from "Element/QrCode";
+import Copy from "Element/Copy";
 
 const Developers = [
   bech32ToHex(KieranPubKey), // kieran
@@ -56,7 +60,13 @@ export const DonateLNURL = "donate@snort.social";
 const DonatePage = () => {
   const [splits, setSplits] = useState<RevenueSplit[]>([]);
   const [today, setSumToday] = useState<RevenueToday>();
+  const [onChain, setOnChain] = useState("");
   const api = new SnortApi(ApiHost);
+
+  async function getOnChainAddress() {
+    const { address } = await api.onChainDonation();
+    setOnChain(address);
+  }
 
   async function loadData() {
     const rsp = await api.revenueSplits();
@@ -103,24 +113,43 @@ const DonatePage = () => {
       <p>
         <FormattedMessage defaultMessage="Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below" />
       </p>
-      <div className="card">
-        <div className="flex">
-          <div className="mr10">
-            <FormattedMessage defaultMessage="Lightning Donation: " />
+      <div className="flex-column g12">
+        <div className="b br p">
+          <div className="flex f-space">
+            <FormattedMessage defaultMessage="Lightning Donation" />
+            <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL}>
+              <FormattedMessage defaultMessage="Donate" />
+            </ZapButton>
           </div>
-          <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL}>
-            <FormattedMessage defaultMessage="Donate" />
-          </ZapButton>
+          {today && (
+            <small>
+              <FormattedMessage
+                defaultMessage="Total today (UTC): {amount} sats"
+                values={{ amount: today.donations.toLocaleString() }}
+              />
+            </small>
+          )}
         </div>
-        {today && (
-          <small>
-            <FormattedMessage
-              defaultMessage="Total today (UTC): {amount} sats"
-              values={{ amount: today.donations.toLocaleString() }}
-            />
-          </small>
-        )}
+        <div className="b br p">
+          <div className="flex f-space">
+            <FormattedMessage defaultMessage="On-chain Donation" />
+            <AsyncButton type="button" onClick={getOnChainAddress}>
+              <FormattedMessage defaultMessage="Get Address" />
+            </AsyncButton>
+          </div>
+        </div>
       </div>
+      {onChain && (
+        <Modal onClose={() => setOnChain("")} id="donate-on-chain">
+          <div className="flex-column f-center g12">
+            <h2>
+              <FormattedMessage defaultMessage="On-chain Donation Address" />
+            </h2>
+            <QrCode data={onChain} link={`bitcoin:${onChain}`} />
+            <Copy text={onChain} />
+          </div>
+        </Modal>
+      )}
       <h3>
         <FormattedMessage defaultMessage="Primary Developers" />
       </h3>

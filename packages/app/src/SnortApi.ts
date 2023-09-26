@@ -84,6 +84,10 @@ export default class SnortApi {
     return this.#getJson<LinkPreviewData>(`api/v1/preview?url=${encodeURIComponent(url)}`);
   }
 
+  onChainDonation() {
+    return this.#getJson<{ address: string }>("p/on-chain");
+  }
+
   async #getJsonAuthd<T>(
     path: string,
     method?: "GET" | string,
