@@ -78,6 +78,7 @@ const config = {
     new DefinePlugin({
       "process.env.APP_NAME": JSON.stringify(appConfig.get('appName')),
       "process.env.APP_NAME_CAPITALIZED": JSON.stringify(appConfig.get('appNameCapitalized')),
+      "process.env.NIP05_DOMAIN": JSON.stringify(appConfig.get('nip05Domain')),
     }),
   ],
   module: {

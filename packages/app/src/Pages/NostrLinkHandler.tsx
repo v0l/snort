@@ -24,7 +24,7 @@ export default function NostrLinkHandler() {
       }
     } else {
       try {
-        const pubkey = await getNip05PubKey(`${link}@snort.social`);
+        const pubkey = await getNip05PubKey(`${link}@${process.env.NIP05_DOMAIN}`);
         if (pubkey) {
           navigate(profileLink(pubkey));
         }

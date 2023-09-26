@@ -2,5 +2,6 @@
   "appName": "Snort",
   "appNameCapitalized": "Snort",
   "appTitle": "Snort - Nostr",
+  "nip05Domain": "snort.social",
   "favicon": "public/favicon.ico"
 }
