@@ -72,10 +72,8 @@ jobs:
         run: yarn build
 
       - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          repository: https://git.v0l.io/Kieran/snort_android.git
-          path: snort_android
+        run: |-
+          git clone https://git.v0l.io/Kieran/snort_android.git
 
       - name: Copy files
         run: cp packages/app/build/* snort_android/app/src/main/assets/
