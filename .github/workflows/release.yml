@@ -84,21 +84,37 @@ jobs:
         working-directory: snort_android
         run: ./gradlew assembleRelease --stacktrace
 
-      - name: Sign
+      - name: Sign AAB
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: snort_android/app/release
+          releaseDirectory: snort_android/app/build/outputs/bundle/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: snort_android/app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      - name: Rename files
+        run: |-
+          mkdir -p snort_android/app/release
+          mv snort_android/app/build/outputs/bundle/release/app-release.aab snort_android/app/release/snort-${{ github.ref_name }}.aab
+          mv snort_android/app/build/outputs/apk/release/app-universal-release-unsigned.apk snort_android/app/release/snort-universal-${{ github.ref_name }}.apk
+          mv snort_android/app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk snort_android/app/release/snort-arm64-v8a-${{ github.ref_name }}.apk
+          mv snort_android/app/build/outputs/apk/release/app-x86_64-release-unsigned.apk snort_android/app/release/snort-x86_64-${{ github.ref_name }}.apk
+          mv snort_android/app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk snort_android/app/release/snort-armeabi-v7a-${{ github.ref_name }}.apk
       - name: Upload assets
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            snort_android/app/release/app-release.aab
-            snort_android/app/release/app-universal-release.apk
-            snort_android/app/release/app-arm64-v8a-release.apk
-            snort_android/app/release/app-x86_64-release.apk
-            snort_android/app/release/app-armeabi-v7a-release.apk
+            snort_android/app/release/snort-${{ github.ref_name }}.aab
+            snort_android/app/release/snort-universal-${{ github.ref_name }}.apk
+            snort_android/app/release/snort-arm64-v8a-${{ github.ref_name }}.apk
+            snort_android/app/release/snort-x86_64-${{ github.ref_name }}.apk
+            snort_android/app/release/snort-armeabi-v7a-${{ github.ref_name }}.apk
