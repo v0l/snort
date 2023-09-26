@@ -50,7 +50,7 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       template: "public/index.html",
-      favicon: "public/favicon.ico",
+      favicon: appConfig.get('favicon'),
       excludeChunks: ["pow", "bench"],
       templateParameters: {
         appTitle: appConfig.get('appTitle'),

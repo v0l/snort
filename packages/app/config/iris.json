@@ -1,5 +1,6 @@
 {
   "appName": "iris",
   "appNameCapitalized": "Iris",
-  "appTitle": "iris"
+  "appTitle": "iris",
+  "favicon": "public/iris.ico"
 }
