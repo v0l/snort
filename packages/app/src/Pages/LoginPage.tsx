@@ -283,7 +283,7 @@ export default function LoginPage() {
       <div>
         <div className="login-container">
           <h1 className="logo" onClick={() => navigate("/")}>
-            Snort
+            {process.env.APP_NAME}
           </h1>
           <h1 dir="auto">
             <FormattedMessage defaultMessage="Login" description="Login header" />
