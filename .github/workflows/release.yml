@@ -105,10 +105,10 @@ jobs:
         run: |-
           mkdir -p snort_android/app/release
           mv snort_android/app/build/outputs/bundle/release/app-release.aab snort_android/app/release/snort-${{ github.ref_name }}.aab
-          mv snort_android/app/build/outputs/apk/release/app-universal-release-unsigned.apk snort_android/app/release/snort-universal-${{ github.ref_name }}.apk
-          mv snort_android/app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk snort_android/app/release/snort-arm64-v8a-${{ github.ref_name }}.apk
-          mv snort_android/app/build/outputs/apk/release/app-x86_64-release-unsigned.apk snort_android/app/release/snort-x86_64-${{ github.ref_name }}.apk
-          mv snort_android/app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk snort_android/app/release/snort-armeabi-v7a-${{ github.ref_name }}.apk
+          mv snort_android/app/build/outputs/apk/release/app-universal-release-unsigned-signed.apk snort_android/app/release/snort-universal-${{ github.ref_name }}.apk
+          mv snort_android/app/build/outputs/apk/release/app-arm64-v8a-release-unsigned-signed.apk snort_android/app/release/snort-arm64-v8a-${{ github.ref_name }}.apk
+          mv snort_android/app/build/outputs/apk/release/app-x86_64-release-unsigned-signed.apk snort_android/app/release/snort-x86_64-${{ github.ref_name }}.apk
+          mv snort_android/app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned-signed.apk snort_android/app/release/snort-armeabi-v7a-${{ github.ref_name }}.apk
       - name: Upload assets
         uses: softprops/action-gh-release@v1
         with:
