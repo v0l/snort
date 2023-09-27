@@ -1,6 +1,6 @@
 import useLogin from "Hooks/useLogin";
 import "./PinPrompt.css";
-import {ReactNode, useRef, useState} from "react";
+import { ReactNode, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { unwrap } from "@snort/shared";
 import { EventPublisher, InvalidPinError, PinEncrypted, PinEncryptedPayload } from "@snort/system";
@@ -57,13 +57,12 @@ export function PinPrompt({
   return (
     <Modal id="pin" onClose={() => onCancel()}>
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
           if (submitButtonRef.current) {
             submitButtonRef.current.click();
           }
-        }}
-      >
+        }}>
         <div className="flex-column g12">
           <h2>
             <FormattedMessage defaultMessage="Enter Pin" />
@@ -71,7 +70,7 @@ export function PinPrompt({
           {subTitle}
           <input
             type="number"
-            onChange={(e) => setPin(e.target.value)}
+            onChange={e => setPin(e.target.value)}
             value={pin}
             autoFocus={true}
             maxLength={20}

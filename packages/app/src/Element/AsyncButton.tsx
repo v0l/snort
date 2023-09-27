@@ -29,7 +29,13 @@ export default function AsyncButton(props: AsyncButtonProps) {
   }
 
   return (
-    <button ref={props.ref} className="spinner-button" type="button" disabled={loading || props.disabled} {...props} onClick={handle}>
+    <button
+      ref={props.ref}
+      className="spinner-button"
+      type="button"
+      disabled={loading || props.disabled}
+      {...props}
+      onClick={handle}>
       <span style={{ visibility: loading ? "hidden" : "visible" }}>{props.children}</span>
       {loading && (
         <span className="spinner-wrapper">

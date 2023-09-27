@@ -9,8 +9,8 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const IntlTsTransformer = require("@formatjs/ts-transformer");
-const { DefinePlugin } = require('webpack');
-const appConfig = require('config');
+const { DefinePlugin } = require("webpack");
+const appConfig = require("config");
 
 const isProduction = process.env.NODE_ENV == "production";
 
@@ -49,10 +49,10 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       template: "public/index.html",
-      favicon: appConfig.get('favicon'),
+      favicon: appConfig.get("favicon"),
       excludeChunks: ["pow", "bench"],
       templateParameters: {
-        appTitle: appConfig.get('appTitle'),
+        appTitle: appConfig.get("appTitle"),
       },
     }),
     new HtmlWebpackPlugin({
@@ -75,9 +75,9 @@ const config = {
         })
       : false,
     new DefinePlugin({
-      "process.env.APP_NAME": JSON.stringify(appConfig.get('appName')),
-      "process.env.APP_NAME_CAPITALIZED": JSON.stringify(appConfig.get('appNameCapitalized')),
-      "process.env.NIP05_DOMAIN": JSON.stringify(appConfig.get('nip05Domain')),
+      "process.env.APP_NAME": JSON.stringify(appConfig.get("appName")),
+      "process.env.APP_NAME_CAPITALIZED": JSON.stringify(appConfig.get("appNameCapitalized")),
+      "process.env.NIP05_DOMAIN": JSON.stringify(appConfig.get("nip05Domain")),
     }),
   ],
   module: {
