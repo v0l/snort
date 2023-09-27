@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { Link, useNavigate } from "react-router-dom";
 
 import PageSpinner from "Element/PageSpinner";

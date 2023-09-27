@@ -1,6 +1,6 @@
 import "./Profile.css";
 import { useEffect, useState } from "react";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { useNavigate } from "react-router-dom";
 import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";

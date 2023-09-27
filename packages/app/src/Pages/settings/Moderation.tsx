@@ -3,7 +3,7 @@ import useLogin from "Hooks/useLogin";
 import { setAppData } from "Login";
 import { appendDedupe } from "SnortUtils";
 import { useState } from "react";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 
 export function ModerationSettings() {
   const login = useLogin();

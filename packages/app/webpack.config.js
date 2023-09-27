@@ -11,7 +11,6 @@ const WorkboxPlugin = require("workbox-webpack-plugin");
 const IntlTsTransformer = require("@formatjs/ts-transformer");
 const { DefinePlugin } = require('webpack');
 const appConfig = require('config');
-console.log(`Current config: ${JSON.stringify(appConfig, null, 2)}`);
 
 const isProduction = process.env.NODE_ENV == "production";
 

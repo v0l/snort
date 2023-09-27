@@ -2,7 +2,7 @@ import "./RootTabs.css";
 import { useState, ReactNode, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, MenuItem } from "@szhsin/react-menu";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 
 import useLogin from "Hooks/useLogin";
 import Icon from "Icons/Icon";

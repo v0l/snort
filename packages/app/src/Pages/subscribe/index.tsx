@@ -1,7 +1,7 @@
 import "./index.css";
 
 import { useState } from "react";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { RouteObject } from "react-router-dom";
 
 import { formatShort } from "Number";

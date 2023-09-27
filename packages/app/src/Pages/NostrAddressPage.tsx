@@ -1,4 +1,4 @@
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 
 import { ApiHost } from "Const";
 import Nip5Service from "Element/Nip5Service";

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { HexKey } from "@snort/system";
 
 import useEventPublisher from "Hooks/useEventPublisher";

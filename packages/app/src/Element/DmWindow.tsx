@@ -6,7 +6,7 @@ import DM from "Element/DM";
 import useLogin from "Hooks/useLogin";
 import WriteMessage from "Element/WriteMessage";
 import { Chat, createEmptyChatObject, useChatSystem } from "chat";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { ChatParticipantProfile } from "./ChatParticipant";
 
 export default function DmWindow({ id }: { id: string }) {

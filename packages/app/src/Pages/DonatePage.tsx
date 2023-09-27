@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { HexKey } from "@snort/system";
 
 import { ApiHost, KieranPubKey, SnortPubKey } from "Const";

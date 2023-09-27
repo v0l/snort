@@ -1,6 +1,6 @@
 import "./WalletSettings.css";
 import LndLogo from "lnd-logo.png";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { Link, RouteObject, useNavigate } from "react-router-dom";
 
 import BlueWallet from "Icons/BlueWallet";

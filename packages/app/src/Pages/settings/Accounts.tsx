@@ -1,4 +1,4 @@
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { Link } from "react-router-dom";
 
 import ProfilePreview from "Element/ProfilePreview";

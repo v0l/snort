@@ -1,5 +1,5 @@
 import "./Keys.css";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { encodeTLV, NostrPrefix, PinEncrypted } from "@snort/system";
 
 import Copy from "Element/Copy";

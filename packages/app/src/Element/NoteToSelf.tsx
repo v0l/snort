@@ -1,6 +1,6 @@
 import "./NoteToSelf.css";
 import { Link, useNavigate } from "react-router-dom";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { profileLink } from "SnortUtils";
 
 import messages from "./messages";

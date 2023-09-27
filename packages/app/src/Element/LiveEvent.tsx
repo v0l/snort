@@ -1,5 +1,5 @@
 import { NostrEvent, NostrLink } from "@snort/system";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { Link } from "react-router-dom";
 
 import { findTag } from "SnortUtils";

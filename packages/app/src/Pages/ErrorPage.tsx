@@ -1,6 +1,6 @@
 import { db } from "Db";
 import AsyncButton from "Element/AsyncButton";
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { useRouteError } from "react-router-dom";
 
 const ErrorPage = () => {

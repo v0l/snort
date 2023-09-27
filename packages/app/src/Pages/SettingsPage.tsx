@@ -1,4 +1,4 @@
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import FormattedMessage from "Element/FormattedMessage";
 import { Outlet, RouteObject, useNavigate } from "react-router-dom";
 import SettingsIndex from "Pages/settings/Root";
 import Profile from "Pages/settings/Profile";
