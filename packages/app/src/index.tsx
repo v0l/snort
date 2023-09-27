@@ -45,6 +45,7 @@ import { db } from "Db";
 import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
 import { SnortDeckLayout } from "Pages/DeckLayout";
+import FreeNostrAddressPage from "./Pages/FreeNostrAddressPage";
 
 const WasmQueryOptimizer = {
   expandFilter: (f: ReqFilter) => {
@@ -162,6 +163,10 @@ export const router = createBrowserRouter([
         path: "/settings",
         element: <SettingsPage />,
         children: SettingsRoutes,
+      },
+      {
+        path: "/free-nostr-address",
+        element: <FreeNostrAddressPage />,
       },
       {
         path: "/nostr-address",

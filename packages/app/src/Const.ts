@@ -16,6 +16,11 @@ export const Day = Hour * 24;
 export const ApiHost = "https://api.snort.social";
 
 /**
+ * Iris api for free nip05 names
+ */
+export const IrisHost = "https://api.iris.to";
+
+/**
  * LibreTranslate endpoint
  */
 export const TranslateHost = "https://translate.snort.social";
