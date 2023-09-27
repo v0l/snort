@@ -1,6 +1,6 @@
 import "./Root.css";
 import { useEffect, useMemo } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Icon from "Icons/Icon";
 import { LoginStore, logout } from "Login";

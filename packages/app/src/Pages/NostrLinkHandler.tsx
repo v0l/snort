@@ -1,6 +1,6 @@
 import { NostrPrefix, tryParseNostrLink } from "@snort/system";
 import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Spinner from "Icons/Spinner";
@@ -24,7 +24,7 @@ export default function NostrLinkHandler() {
       }
     } else {
       try {
-        const pubkey = await getNip05PubKey(`${link}@snort.social`);
+        const pubkey = await getNip05PubKey(`${link}@${process.env.NIP05_DOMAIN}`);
         if (pubkey) {
           navigate(profileLink(pubkey));
         }

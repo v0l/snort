@@ -6,6 +6,7 @@ interface AsyncButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>
   disabled?: boolean;
   onClick(e: React.MouseEvent): Promise<void> | void;
   children?: React.ReactNode;
+  ref?: React.Ref<HTMLButtonElement>;
 }
 
 export default function AsyncButton(props: AsyncButtonProps) {
@@ -28,7 +29,7 @@ export default function AsyncButton(props: AsyncButtonProps) {
   }
 
   return (
-    <button className="spinner-button" type="button" disabled={loading || props.disabled} {...props} onClick={handle}>
+    <button ref={props.ref} className="spinner-button" type="button" disabled={loading || props.disabled} {...props} onClick={handle}>
       <span style={{ visibility: loading ? "hidden" : "visible" }}>{props.children}</span>
       {loading && (
         <span className="spinner-wrapper">

@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { useNavigate } from "react-router-dom";
 
 import { logout } from "Login";

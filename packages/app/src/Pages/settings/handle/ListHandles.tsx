@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { Link, useNavigate } from "react-router-dom";
 
 import { ApiHost } from "Const";

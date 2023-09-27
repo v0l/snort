@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 
 import { FileExtensionRegex } from "Const";
 import Reveal from "Element/Reveal";

@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { Link } from "react-router-dom";
 
 import ProfilePreview from "Element/ProfilePreview";

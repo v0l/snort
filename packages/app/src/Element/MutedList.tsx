@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { HexKey } from "@snort/system";
 import MuteButton from "Element/MuteButton";
 import ProfilePreview from "Element/ProfilePreview";

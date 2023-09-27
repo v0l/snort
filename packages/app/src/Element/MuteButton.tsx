@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { HexKey } from "@snort/system";
 import useModeration from "Hooks/useModeration";
 
