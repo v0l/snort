@@ -5,7 +5,7 @@ import { HexKey, ParsedFragment } from "@snort/system";
 import Invoice from "Element/Invoice";
 import Hashtag from "Element/Hashtag";
 import HyperText from "Element/HyperText";
-import CashuNuts from "Element/CashuNuts";
+import CashuNuts from "Element/Embed/CashuNuts";
 import RevealMedia from "./RevealMedia";
 import { ProxyImg } from "./ProxyImg";
 import { SpotlightMediaModal } from "./SpotlightMedia";

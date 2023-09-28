@@ -3,7 +3,7 @@ import FormattedMessage from "Element/FormattedMessage";
 import { FileExtensionRegex } from "Const";
 import Reveal from "Element/Reveal";
 import useLogin from "Hooks/useLogin";
-import { MediaElement } from "Element/MediaElement";
+import { MediaElement } from "Element/Embed/MediaElement";
 import { Link } from "react-router-dom";
 
 interface RevealMediaProps {

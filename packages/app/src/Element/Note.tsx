@@ -29,7 +29,7 @@ import Poll from "Element/Poll";
 import useLogin from "Hooks/useLogin";
 import { setBookmarked, setPinned } from "Login";
 import { NostrFileElement } from "Element/NostrFileHeader";
-import ZapstrEmbed from "Element/ZapstrEmbed";
+import ZapstrEmbed from "Element/Embed/ZapstrEmbed";
 import PubkeyList from "Element/PubkeyList";
 import { LiveEvent } from "Element/LiveEvent";
 import { NoteContextMenu, NoteTranslation } from "Element/NoteContextMenu";

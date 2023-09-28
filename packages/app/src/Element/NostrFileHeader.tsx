@@ -5,7 +5,7 @@ import { findTag } from "SnortUtils";
 import { useEventFeed } from "Feed/EventFeed";
 import PageSpinner from "Element/PageSpinner";
 import Reveal from "Element/Reveal";
-import { MediaElement } from "Element/MediaElement";
+import { MediaElement } from "Element/Embed/MediaElement";
 
 export default function NostrFileHeader({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);
