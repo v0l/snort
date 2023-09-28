@@ -9,7 +9,7 @@ import { LNURLSuccessAction } from "@snort/shared";
 import { formatShort } from "Number";
 import Icon from "Icons/Icon";
 import useEventPublisher from "Hooks/useEventPublisher";
-import ProfileImage from "Element/ProfileImage";
+import ProfileImage from "Element/User/ProfileImage";
 import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";

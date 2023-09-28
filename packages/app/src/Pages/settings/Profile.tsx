@@ -13,7 +13,7 @@ import AsyncButton from "Element/AsyncButton";
 import { UserCache } from "Cache";
 import useLogin from "Hooks/useLogin";
 import Icon from "Icons/Icon";
-import Avatar from "Element/Avatar";
+import Avatar from "Element/User/Avatar";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;

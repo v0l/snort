@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import FormattedMessage from "Element/FormattedMessage";
 
-import Timeline from "Element/Timeline";
+import Timeline from "Element/Feed/Timeline";
 import useEventPublisher from "Hooks/useEventPublisher";
 import useLogin from "Hooks/useLogin";
 import { setTags } from "Login";

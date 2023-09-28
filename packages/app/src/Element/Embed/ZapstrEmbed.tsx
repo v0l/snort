@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { NostrEvent, NostrLink } from "@snort/system";
 
 import { ProxyImg } from "Element/ProxyImg";
-import ProfileImage from "Element/ProfileImage";
+import ProfileImage from "Element/User/ProfileImage";
 import FormattedMessage from "Element/FormattedMessage";
 
 export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {

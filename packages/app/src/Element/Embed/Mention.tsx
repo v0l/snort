@@ -4,7 +4,7 @@ import { HexKey } from "@snort/system";
 
 import { useUserProfile } from "@snort/system-react";
 import { profileLink } from "SnortUtils";
-import { getDisplayName } from "Element/ProfileImage";
+import { getDisplayName } from "Element/User/ProfileImage";
 
 export default function Mention({ pubkey, relays }: { pubkey: HexKey; relays?: Array<string> | string }) {
   const user = useUserProfile(pubkey);

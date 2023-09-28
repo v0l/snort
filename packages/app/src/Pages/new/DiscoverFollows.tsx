@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 import { RecommendedFollows } from "Const";
 import Logo from "Element/Logo";
-import FollowListBase from "Element/FollowListBase";
+import FollowListBase from "Element/User/FollowListBase";
 import { clearEntropy } from "Login";
 import useLogin from "Hooks/useLogin";
 import TrendingUsers from "Element/TrendingUsers";

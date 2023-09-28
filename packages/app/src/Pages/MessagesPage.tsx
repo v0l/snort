@@ -7,24 +7,24 @@ import { NostrLink, NostrPrefix, TLVEntryType, UserMetadata, decodeTLV } from "@
 import { useUserProfile, useUserSearch } from "@snort/system-react";
 
 import UnreadCount from "Element/UnreadCount";
-import ProfileImage, { getDisplayName } from "Element/ProfileImage";
+import ProfileImage, { getDisplayName } from "Element/User/ProfileImage";
 import { appendDedupe, debounce, parseId } from "SnortUtils";
-import NoteToSelf from "Element/NoteToSelf";
+import NoteToSelf from "Element/User/NoteToSelf";
 import useModeration from "Hooks/useModeration";
 import useLogin from "Hooks/useLogin";
 import usePageWidth from "Hooks/usePageWidth";
-import NoteTime from "Element/NoteTime";
-import DmWindow from "Element/DmWindow";
-import Avatar from "Element/Avatar";
+import NoteTime from "Element/Event/NoteTime";
+import DmWindow from "Element/Chat/DmWindow";
+import Avatar from "Element/User/Avatar";
 import Icon from "Icons/Icon";
 import Text from "Element/Text";
 import { Chat, ChatType, createChatLink, useChatSystem } from "chat";
 import Modal from "Element/Modal";
-import ProfilePreview from "Element/ProfilePreview";
+import ProfilePreview from "Element/User/ProfilePreview";
 import { useEventFeed } from "Feed/EventFeed";
 import { LoginSession, LoginStore } from "Login";
 import { Nip28ChatSystem } from "chat/nip28";
-import { ChatParticipantProfile } from "Element/ChatParticipant";
+import { ChatParticipantProfile } from "Element/Chat/ChatParticipant";
 
 const TwoCol = 768;
 const ThreeCol = 1500;

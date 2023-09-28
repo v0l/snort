@@ -1,7 +1,7 @@
 import FormattedMessage from "Element/FormattedMessage";
 import { Link } from "react-router-dom";
 
-import ProfilePreview from "Element/ProfilePreview";
+import ProfilePreview from "Element/User/ProfilePreview";
 import { LoginStore } from "Login";
 import { getActiveSubscriptions } from "Subscription";
 

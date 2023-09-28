@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { RouteObject, useNavigate } from "react-router-dom";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
-import NoteTime from "Element/NoteTime";
+import NoteTime from "Element/Event/NoteTime";
 import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets } from "Wallet";
 import AsyncButton from "Element/AsyncButton";
 import { unwrap } from "SnortUtils";

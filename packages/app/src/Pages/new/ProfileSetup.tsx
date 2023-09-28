@@ -8,7 +8,7 @@ import Logo from "Element/Logo";
 import useEventPublisher from "Hooks/useEventPublisher";
 import useLogin from "Hooks/useLogin";
 import { UserCache } from "Cache";
-import AvatarEditor from "Element/AvatarEditor";
+import AvatarEditor from "Element/User/AvatarEditor";
 import { DISCOVER } from ".";
 import { System } from "index";
 

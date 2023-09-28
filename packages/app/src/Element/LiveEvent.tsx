@@ -3,7 +3,7 @@ import FormattedMessage from "Element/FormattedMessage";
 import { Link } from "react-router-dom";
 
 import { findTag } from "SnortUtils";
-import ProfileImage from "./ProfileImage";
+import ProfileImage from "./User/ProfileImage";
 import Icon from "Icons/Icon";
 
 export function LiveEvent({ ev }: { ev: NostrEvent }) {

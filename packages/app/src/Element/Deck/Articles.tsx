@@ -1,7 +1,7 @@
 import { NostrLink } from "@snort/system";
 import { useArticles } from "Feed/ArticlesFeed";
 import { orderDescending } from "SnortUtils";
-import Note from "../Note";
+import Note from "../Event/Note";
 import { useReactions } from "Feed/Reactions";
 
 export default function Articles() {

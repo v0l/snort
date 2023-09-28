@@ -9,7 +9,7 @@ import useEventPublisher from "Hooks/useEventPublisher";
 import SendSats from "Element/SendSats";
 import Nip5Service from "Element/Nip5Service";
 import { SnortNostrAddressService } from "Pages/NostrAddressPage";
-import Nip05 from "Element/Nip05";
+import Nip05 from "Element/User/Nip05";
 
 export default function SubscriptionCard({ sub }: { sub: Subscription }) {
   const publisher = useEventPublisher();

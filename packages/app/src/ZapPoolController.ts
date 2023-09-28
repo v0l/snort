@@ -1,5 +1,5 @@
 import { UserCache } from "Cache";
-import { getDisplayName } from "Element/ProfileImage";
+import { getDisplayName } from "Element/User/ProfileImage";
 import { LNURL, ExternalStore, unixNow } from "@snort/shared";
 import { Toastore } from "Toaster";
 import { LNWallet, WalletInvoiceState, Wallets } from "Wallet";

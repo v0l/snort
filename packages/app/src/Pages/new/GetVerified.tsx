@@ -6,7 +6,7 @@ import { useUserProfile } from "@snort/system-react";
 import Logo from "Element/Logo";
 import { Nip5Services } from "Pages/NostrAddressPage";
 import Nip5Service from "Element/Nip5Service";
-import ProfileImage from "Element/ProfileImage";
+import ProfileImage from "Element/User/ProfileImage";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
