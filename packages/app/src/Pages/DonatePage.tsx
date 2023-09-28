@@ -3,8 +3,8 @@ import FormattedMessage from "Element/FormattedMessage";
 import { HexKey } from "@snort/system";
 
 import { ApiHost, KieranPubKey, SnortPubKey } from "Const";
-import ProfilePreview from "Element/ProfilePreview";
-import ZapButton from "Element/ZapButton";
+import ProfilePreview from "Element/User/ProfilePreview";
+import ZapButton from "Element/Event/ZapButton";
 import { bech32ToHex } from "SnortUtils";
 import SnortApi, { RevenueSplit, RevenueToday } from "SnortApi";
 import Modal from "Element/Modal";

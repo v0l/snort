@@ -1,5 +1,5 @@
 import { TaggedNostrEvent, EventKind, MetadataCache } from "@snort/system";
-import { getDisplayName } from "Element/ProfileImage";
+import { getDisplayName } from "Element/User/ProfileImage";
 import { MentionRegex } from "Const";
 import { defaultAvatar, tagFilterOfTextRepost, unwrap } from "SnortUtils";
 import { UserCache } from "Cache";

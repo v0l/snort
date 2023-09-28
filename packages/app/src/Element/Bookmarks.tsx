@@ -2,7 +2,7 @@ import { useState, useMemo, ChangeEvent } from "react";
 import FormattedMessage from "Element/FormattedMessage";
 import { HexKey, TaggedNostrEvent } from "@snort/system";
 
-import Note from "Element/Note";
+import Note from "Element/Event/Note";
 import useLogin from "Hooks/useLogin";
 import { UserCache } from "Cache";
 

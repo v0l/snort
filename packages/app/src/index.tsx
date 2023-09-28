@@ -37,7 +37,7 @@ import HelpPage from "Pages/HelpPage";
 import { NewUserRoutes } from "Pages/new";
 import { WalletRoutes } from "Pages/WalletPage";
 import NostrLinkHandler from "Pages/NostrLinkHandler";
-import { ThreadRoute } from "Element/Thread";
+import { ThreadRoute } from "Element/Event/Thread";
 import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
 import DebugPage from "Pages/Debug";

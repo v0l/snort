@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { HexKey } from "@snort/system";
 
-import FollowListBase from "Element/FollowListBase";
+import FollowListBase from "Element/User/FollowListBase";
 import PageSpinner from "Element/PageSpinner";
 import NostrBandApi from "External/NostrBand";
 

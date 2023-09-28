@@ -6,7 +6,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { HexKey, Nip46Signer, PinEncrypted, PrivateKeySigner } from "@snort/system";
 
 import { bech32ToHex, getPublicKey, unwrap } from "SnortUtils";
-import ZapButton from "Element/ZapButton";
+import ZapButton from "Element/Event/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
 import Icon from "Icons/Icon";
 import { generateNewLogin, LoginSessionType, LoginStore } from "Login";

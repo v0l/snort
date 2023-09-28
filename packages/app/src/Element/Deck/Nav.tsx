@@ -1,5 +1,5 @@
 import { useUserProfile } from "@snort/system-react";
-import Avatar from "Element/Avatar";
+import Avatar from "Element/User/Avatar";
 import useLogin from "Hooks/useLogin";
 import "./Nav.css";
 import Icon from "Icons/Icon";

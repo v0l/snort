@@ -9,10 +9,10 @@ import messages from "./messages";
 
 import Icon from "Icons/Icon";
 import useLoginFeed from "Feed/LoginFeed";
-import { NoteCreator } from "Element/NoteCreator";
+import { NoteCreator } from "Element/Event/NoteCreator";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
-import Avatar from "Element/Avatar";
+import Avatar from "Element/User/Avatar";
 import { profileLink } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 import Toaster from "Toaster";

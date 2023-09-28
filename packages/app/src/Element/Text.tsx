@@ -2,13 +2,13 @@ import "./Text.css";
 import { useState } from "react";
 import { HexKey, ParsedFragment } from "@snort/system";
 
-import Invoice from "Element/Invoice";
-import Hashtag from "Element/Hashtag";
+import Invoice from "Element/Embed/Invoice";
+import Hashtag from "Element/Embed/Hashtag";
 import HyperText from "Element/HyperText";
-import CashuNuts from "Element/CashuNuts";
-import RevealMedia from "./RevealMedia";
+import CashuNuts from "Element/Embed/CashuNuts";
+import RevealMedia from "./Event/RevealMedia";
 import { ProxyImg } from "./ProxyImg";
-import { SpotlightMediaModal } from "./SpotlightMedia";
+import { SpotlightMediaModal } from "./Deck/SpotlightMedia";
 import { useTextTransformer } from "Hooks/useTextTransformCache";
 
 export interface TextProps {

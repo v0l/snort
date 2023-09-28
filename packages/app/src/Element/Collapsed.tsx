@@ -1,7 +1,7 @@
 import { useState, ReactNode } from "react";
 
 import Icon from "Icons/Icon";
-import ShowMore from "Element/ShowMore";
+import ShowMore from "Element/Event/ShowMore";
 
 interface CollapsedProps {
   text?: string;
