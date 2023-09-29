@@ -1,6 +1,6 @@
 import { EventKind, HexKey, NostrPrefix, NostrEvent, EventSigner, PowMiner } from ".";
 import { HashtagRegex, MentionNostrEntityRegex } from "./const";
-import { getPublicKey, unixNow } from "@snort/shared";
+import { getPublicKey, jitter, unixNow } from "@snort/shared";
 import { EventExt } from "./event-ext";
 import { tryParseNostrLink } from "./nostr-link";
 
@@ -12,6 +12,12 @@ export class EventBuilder {
   #tags: Array<Array<string>> = [];
   #pow?: number;
   #powMiner?: PowMiner;
+  #jitter?: number;
+
+  jitter(n: number) {
+    this.#jitter = n;
+    return this;
+  }
 
   kind(k: EventKind) {
     this.#kind = k;
@@ -73,8 +79,8 @@ export class EventBuilder {
       pubkey: this.#pubkey ?? "",
       content: this.#content ?? "",
       kind: this.#kind,
-      created_at: this.#createdAt ?? unixNow(),
-      tags: this.#tags,
+      created_at: (this.#createdAt ?? unixNow()) + (this.#jitter ? jitter(this.#jitter) : 0),
+      tags: this.#tags.sort((a, b) => a[0].localeCompare(b[0])),
     } as NostrEvent;
     ev.id = EventExt.createId(ev);
     return ev;

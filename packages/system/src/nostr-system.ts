@@ -4,8 +4,8 @@ import { unwrap, sanitizeRelayUrl, ExternalStore, FeedCache } from "@snort/share
 import { NostrEvent, TaggedNostrEvent } from "./nostr";
 import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot } from "./connection";
 import { Query } from "./query";
-import { NoteStore } from "./note-collection";
-import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
+import { NoteCollection, NoteStore, NoteStoreSnapshotData } from "./note-collection";
+import { BuiltRawReqFilter, RequestBuilder, RequestStrategy } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
   MetadataCache,
@@ -19,6 +19,10 @@ import {
   db,
   UsersRelays,
 } from ".";
+import { EventsCache } from "./cache/events";
+import { RelayCache } from "./gossip-model";
+import { QueryOptimizer, DefaultQueryOptimizer } from "./query-optimizer";
+import { trimFilters } from "./request-trim";
 
 /**
  * Manages nostr content retrieval system
@@ -66,26 +70,38 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
    */
   #relayMetrics: RelayMetricHandler;
 
+  /**
+   * General events cache
+   */
+  #eventsCache: FeedCache<NostrEvent>;
+
+  /**
+   * Query optimizer instance
+   */
+  #queryOptimizer: QueryOptimizer;
+
   constructor(props: {
     authHandler?: AuthHandler;
     relayCache?: FeedCache<UsersRelays>;
     profileCache?: FeedCache<MetadataCache>;
     relayMetrics?: FeedCache<RelayMetrics>;
+    eventsCache?: FeedCache<NostrEvent>;
+    queryOptimizer?: QueryOptimizer;
   }) {
     super();
     this.#handleAuth = props.authHandler;
     this.#relayCache = props.relayCache ?? new UserRelaysCache();
     this.#profileCache = props.profileCache ?? new UserProfileCache();
     this.#relayMetricsCache = props.relayMetrics ?? new RelayMetricCache();
+    this.#eventsCache = props.eventsCache ?? new EventsCache();
+    this.#queryOptimizer = props.queryOptimizer ?? DefaultQueryOptimizer;
 
     this.#profileLoader = new ProfileLoaderService(this, this.#profileCache);
     this.#relayMetrics = new RelayMetricHandler(this.#relayMetricsCache);
     this.#cleanup();
   }
+  HandleAuth?: AuthHandler | undefined;
 
-  /**
-   * Profile loader service allows you to request profiles
-   */
   get ProfileLoader() {
     return this.#profileLoader;
   }
@@ -94,12 +110,25 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     return [...this.#sockets.values()].map(a => a.snapshot());
   }
 
+  get RelayCache(): RelayCache {
+    return this.#relayCache;
+  }
+
+  get QueryOptimizer(): QueryOptimizer {
+    return this.#queryOptimizer;
+  }
+
   /**
    * Setup caches
    */
   async Init() {
     db.ready = await db.isAvailable();
-    const t = [this.#relayCache.preload(), this.#profileCache.preload(), this.#relayMetricsCache.preload()];
+    const t = [
+      this.#relayCache.preload(),
+      this.#profileCache.preload(),
+      this.#relayMetricsCache.preload(),
+      this.#eventsCache.preload(),
+    ];
     await Promise.all(t);
   }
 
@@ -112,10 +141,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       if (!this.#sockets.has(addr)) {
         const c = new Connection(addr, options, this.#handleAuth?.bind(this));
         this.#sockets.set(addr, c);
-        c.OnEvent = (s, e) => this.OnEvent(s, e);
-        c.OnEose = s => this.OnEndOfStoredEvents(c, s);
-        c.OnDisconnect = code => this.OnRelayDisconnect(c, code);
-        c.OnConnected = r => this.OnRelayConnected(c, r);
+        c.OnEvent = (s, e) => this.#onEvent(s, e);
+        c.OnEose = s => this.#onEndOfStoredEvents(c, s);
+        c.OnDisconnect = code => this.#onRelayDisconnect(c, code);
+        c.OnConnected = r => this.#onRelayConnected(c, r);
         await c.Connect();
       } else {
         // update settings if already connected
@@ -126,7 +155,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     }
   }
 
-  OnRelayConnected(c: Connection, wasReconnect: boolean) {
+  #onRelayConnected(c: Connection, wasReconnect: boolean) {
     if (wasReconnect) {
       for (const [, q] of this.Queries) {
         q.connectionRestored(c);
@@ -134,22 +163,22 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     }
   }
 
-  OnRelayDisconnect(c: Connection, code: number) {
+  #onRelayDisconnect(c: Connection, code: number) {
     this.#relayMetrics.onDisconnect(c, code);
     for (const [, q] of this.Queries) {
       q.connectionLost(c.Id);
     }
   }
 
-  OnEndOfStoredEvents(c: Readonly<Connection>, sub: string) {
+  #onEndOfStoredEvents(c: Readonly<Connection>, sub: string) {
     for (const [, v] of this.Queries) {
       v.eose(sub, c);
     }
   }
 
-  OnEvent(sub: string, ev: TaggedNostrEvent) {
+  #onEvent(sub: string, ev: TaggedNostrEvent) {
     for (const [, v] of this.Queries) {
-      v.onEvent(sub, ev);
+      v.handleEvent(sub, ev);
     }
   }
 
@@ -163,10 +192,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       if (!this.#sockets.has(addr)) {
         const c = new Connection(addr, { read: true, write: true }, this.#handleAuth?.bind(this), true);
         this.#sockets.set(addr, c);
-        c.OnEvent = (s, e) => this.OnEvent(s, e);
-        c.OnEose = s => this.OnEndOfStoredEvents(c, s);
-        c.OnDisconnect = code => this.OnRelayDisconnect(c, code);
-        c.OnConnected = r => this.OnRelayConnected(c, r);
+        c.OnEvent = (s, e) => this.#onEvent(s, e);
+        c.OnEose = s => this.#onEndOfStoredEvents(c, s);
+        c.OnDisconnect = code => this.#onRelayDisconnect(c, code);
+        c.OnConnected = r => this.#onRelayConnected(c, r);
         await c.Connect();
         return c;
       }
@@ -190,6 +219,35 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     return this.Queries.get(id);
   }
 
+  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
+    const q = this.Query(NoteCollection, req);
+    return new Promise<NoteStoreSnapshotData>(resolve => {
+      let t: ReturnType<typeof setTimeout> | undefined;
+      let tBuf: Array<TaggedNostrEvent> = [];
+      const releaseOnEvent = cb
+        ? q.feed.onEvent(evs => {
+            if (!t) {
+              tBuf = [...evs];
+              t = setTimeout(() => {
+                t = undefined;
+                cb(tBuf);
+              }, 100);
+            } else {
+              tBuf.push(...evs);
+            }
+          })
+        : undefined;
+      const releaseFeedHook = q.feed.hook(() => {
+        if (q.progress === 1) {
+          releaseOnEvent?.();
+          releaseFeedHook();
+          q.cancel();
+          resolve(unwrap(q.feed.snapshot.data));
+        }
+      });
+    });
+  }
+
   Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): Query {
     const existing = this.Queries.get(req.id);
     if (existing) {
@@ -197,9 +255,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       if (existing.fromInstance === req.instance) {
         return existing;
       }
-      const filters = !req.options?.skipDiff
-        ? req.buildDiff(this.#relayCache, existing.flatFilters)
-        : req.build(this.#relayCache);
+      const filters = !req.options?.skipDiff ? req.buildDiff(this, existing.filters) : req.build(this);
       if (filters.length === 0 && !!req.options?.skipDiff) {
         return existing;
       } else {
@@ -212,8 +268,17 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     } else {
       const store = new type();
 
-      const filters = req.build(this.#relayCache);
+      const filters = req.build(this);
       const q = new Query(req.id, req.instance, store, req.options?.leaveOpen);
+      if (filters.some(a => a.filters.some(b => b.ids))) {
+        const expectIds = new Set(filters.flatMap(a => a.filters).flatMap(a => a.ids ?? []));
+        q.feed.onEvent(async evs => {
+          const toSet = evs.filter(a => expectIds.has(a.id) && this.#eventsCache.getFromCache(a.id) === undefined);
+          if (toSet.length > 0) {
+            await this.#eventsCache.bulkSet(toSet);
+          }
+        });
+      }
       this.Queries.set(req.id, q);
       for (const subQ of filters) {
         this.SendQuery(q, subQ);
@@ -224,6 +289,32 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   }
 
   async SendQuery(q: Query, qSend: BuiltRawReqFilter) {
+    // trim query of cached ids
+    for (const f of qSend.filters) {
+      if (f.ids) {
+        const cacheResults = await this.#eventsCache.bulkGet(f.ids);
+        if (cacheResults.length > 0) {
+          const resultIds = new Set(cacheResults.map(a => a.id));
+          f.ids = f.ids.filter(a => !resultIds.has(a));
+          q.insertCompletedTrace(
+            {
+              filters: [{ ...f, ids: [...resultIds] }],
+              strategy: RequestStrategy.ExplicitRelays,
+              relay: qSend.relay,
+            },
+            cacheResults as Array<TaggedNostrEvent>,
+          );
+        }
+      }
+    }
+
+    // check for empty filters
+    const fNew = trimFilters(qSend.filters);
+    if (fNew.length === 0) {
+      return;
+    }
+    qSend.filters = fNew;
+
     if (qSend.relay) {
       this.#log("Sending query to %s %O", qSend.relay, qSend);
       const s = this.#sockets.get(qSend.relay);

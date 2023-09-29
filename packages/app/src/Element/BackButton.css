@@ -6,18 +6,17 @@
   font-size: var(--font-size);
   display: flex;
   align-items: center;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .back-button svg {
   margin-right: 0.5em;
 }
 
-.back-button:hover {
+.back-button:hover:hover,
+.light .back-button:hover {
   text-decoration: underline;
-}
-
-.back-button:hover {
-  background: none;
-  color: var(--font-color);
-  text-decoration: underline;
+  box-shadow: none !important;
+  background: none !important;
 }

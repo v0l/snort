@@ -1,7 +1,7 @@
 import { ReqFilter, UsersRelays } from ".";
 import { dedupe, unwrap } from "@snort/shared";
 import debug from "debug";
-import { FlatReqFilter } from "request-expander";
+import { FlatReqFilter } from "./query-optimizer";
 
 const PickNRelays = 2;
 
@@ -84,7 +84,7 @@ export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter): Array<
       },
     });
   }
-  debug("GOSSIP")("Picked %o", picked);
+  debug("GOSSIP")("Picked %O => %O", filter, picked);
   return picked;
 }
 
@@ -119,7 +119,7 @@ export function splitFlatByWriteRelays(cache: RelayCache, input: Array<FlatReqFi
     } as RelayTaggedFlatFilters);
   }
 
-  debug("GOSSIP")("Picked %o", picked);
+  debug("GOSSIP")("Picked %d relays from %d filters", picked.length, input.length);
   return picked;
 }
 

@@ -37,13 +37,11 @@ export class ProfileLoaderService {
    * Request profile metadata for a set of pubkeys
    */
   TrackMetadata(pk: HexKey | Array<HexKey>) {
-    const bufferNow = [];
     for (const p of Array.isArray(pk) ? pk : [pk]) {
-      if (p.length === 64 && this.#wantsMetadata.add(p)) {
-        bufferNow.push(p);
+      if (p.length === 64) {
+        this.#wantsMetadata.add(p);
       }
     }
-    this.#cache.buffer(bufferNow);
   }
 
   /**
@@ -61,6 +59,25 @@ export class ProfileLoaderService {
     const profile = mapEventToProfile(e);
     if (profile) {
       await this.#cache.update(profile);
+    }
+  }
+
+  async fetchProfile(key: string) {
+    const existing = this.Cache.get(key);
+    if (existing) {
+      return existing;
+    } else {
+      return await new Promise<MetadataCache>((resolve, reject) => {
+        this.TrackMetadata(key);
+        const release = this.Cache.hook(() => {
+          const existing = this.Cache.getFromCache(key);
+          if (existing) {
+            resolve(existing);
+            release();
+            this.UntrackMetadata(key);
+          }
+        }, key);
+      });
     }
   }
 

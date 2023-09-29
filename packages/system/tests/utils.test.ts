@@ -29,7 +29,7 @@ describe("splitByUrl", () => {
       "https://i.imgur.com/rkqhjeq.png",
       " Every form of money that could be inflated by way of force or technological advancement has been. ",
       "https://www.dw.com/de/amtsinhaber-mnangagwa-gewinnt-präsidentenwahl-in-simbabwe/a-66640006?maca=de-rss-de-all-1119-xml-atom",
-      " and some shit."
+      " and some shit.",
     ];
 
     expect(splitByUrl(inputStr)).toEqual(expectedOutput);

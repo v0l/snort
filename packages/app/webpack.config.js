@@ -9,6 +9,8 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const IntlTsTransformer = require("@formatjs/ts-transformer");
+const { DefinePlugin } = require("webpack");
+const appConfig = require("config");
 
 const isProduction = process.env.NODE_ENV == "production";
 
@@ -19,6 +21,7 @@ const config = {
       import: require.resolve("@snort/system/dist/pow-worker.js"),
       filename: "pow.js",
     },
+    bench: "./src/benchmarks.ts",
   },
   target: "browserslist",
   mode: isProduction ? "production" : "development",
@@ -46,8 +49,16 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       template: "public/index.html",
-      favicon: "public/favicon.ico",
-      excludeChunks: ["pow"],
+      favicon: appConfig.get("favicon"),
+      excludeChunks: ["pow", "bench"],
+      templateParameters: {
+        appTitle: appConfig.get("appTitle"),
+      },
+    }),
+    new HtmlWebpackPlugin({
+      filename: "bench.html",
+      template: "public/bench.html",
+      chunks: ["bench"],
     }),
     new ESLintPlugin({
       extensions: ["js", "mjs", "jsx", "ts", "tsx"],
@@ -63,6 +74,11 @@ const config = {
           swSrc: "./src/service-worker.ts",
         })
       : false,
+    new DefinePlugin({
+      "process.env.APP_NAME": JSON.stringify(appConfig.get("appName")),
+      "process.env.APP_NAME_CAPITALIZED": JSON.stringify(appConfig.get("appNameCapitalized")),
+      "process.env.NIP05_DOMAIN": JSON.stringify(appConfig.get("nip05Domain")),
+    }),
   ],
   module: {
     rules: [
@@ -115,7 +131,7 @@ const config = {
         use: [MiniCssExtractPlugin.loader, require.resolve("css-loader")],
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|webp)$/i,
+        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|webp|wasm)$/i,
         type: "asset",
       },
     ],

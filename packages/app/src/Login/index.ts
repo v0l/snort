@@ -1,4 +1,5 @@
 import { MultiAccountStore } from "./MultiAccountStore";
+
 export const LoginStore = new MultiAccountStore();
 
 export interface Nip7os {

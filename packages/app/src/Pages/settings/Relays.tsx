@@ -1,14 +1,17 @@
 import { useMemo, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
+import { unixNowMs } from "@snort/shared";
 
-import { randomSample, unixNowMs } from "SnortUtils";
-import Relay from "Element/Relay";
-import useEventPublisher from "Feed/EventPublisher";
+import { randomSample } from "SnortUtils";
+import Relay from "Element/Relay/Relay";
+import useEventPublisher from "Hooks/useEventPublisher";
 import { System } from "index";
 import useLogin from "Hooks/useLogin";
 import { setRelays } from "Login";
+import AsyncButton from "Element/AsyncButton";
 
 import messages from "./messages";
+
 const RelaySettingsPage = () => {
   const publisher = useEventPublisher();
   const login = useLogin();
@@ -89,9 +92,9 @@ const RelaySettingsPage = () => {
       </div>
       <div className="flex mt10">
         <div className="f-grow"></div>
-        <button type="button" onClick={() => saveRelays()}>
+        <AsyncButton type="button" onClick={() => saveRelays()} disabled={login.readonly}>
           <FormattedMessage {...messages.Save} />
-        </button>
+        </AsyncButton>
       </div>
       {addRelay()}
       <h3>

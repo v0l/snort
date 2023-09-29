@@ -1,5 +1,5 @@
 import "./AsyncButton.css";
-import { useState } from "react";
+import React, { useState, ForwardedRef } from "react";
 import Spinner from "../Icons/Spinner";
 
 interface AsyncButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,7 +8,7 @@ interface AsyncButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>
   children?: React.ReactNode;
 }
 
-export default function AsyncButton(props: AsyncButtonProps) {
+const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>((props, ref) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   async function handle(e: React.MouseEvent) {
@@ -28,7 +28,13 @@ export default function AsyncButton(props: AsyncButtonProps) {
   }
 
   return (
-    <button className="spinner-button" type="button" disabled={loading || props.disabled} {...props} onClick={handle}>
+    <button
+      ref={ref as ForwardedRef<HTMLButtonElement>}
+      className="spinner-button"
+      type="button"
+      disabled={loading || props.disabled}
+      {...props}
+      onClick={handle}>
       <span style={{ visibility: loading ? "hidden" : "visible" }}>{props.children}</span>
       {loading && (
         <span className="spinner-wrapper">
@@ -37,4 +43,6 @@ export default function AsyncButton(props: AsyncButtonProps) {
       )}
     </button>
   );
-}
+});
+
+export default AsyncButton;

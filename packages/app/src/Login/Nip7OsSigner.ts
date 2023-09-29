@@ -13,6 +13,10 @@ export class Nip7OsSigner implements EventSigner {
     }
   }
 
+  get supports(): string[] {
+    return ["nip04"];
+  }
+
   init(): Promise<void> {
     return Promise.resolve();
   }

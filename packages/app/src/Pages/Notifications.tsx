@@ -1,31 +1,24 @@
 import "./Notifications.css";
 import { useEffect, useMemo, useSyncExternalStore } from "react";
-import {
-  EventExt,
-  EventKind,
-  NostrEvent,
-  NostrLink,
-  NostrPrefix,
-  TaggedNostrEvent,
-  createNostrLink,
-  parseZap,
-} from "@snort/system";
+import { EventExt, EventKind, NostrEvent, NostrLink, NostrPrefix, TaggedNostrEvent, parseZap } from "@snort/system";
 import { unwrap } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 
 import useLogin from "Hooks/useLogin";
 import { markNotificationsRead } from "Login";
 import { Notifications, UserCache } from "Cache";
 import { dedupe, findTag, orderDescending } from "SnortUtils";
 import Icon from "Icons/Icon";
-import ProfileImage, { getDisplayName } from "Element/ProfileImage";
+import ProfileImage, { getDisplayName } from "Element/User/ProfileImage";
 import useModeration from "Hooks/useModeration";
-import useEventFeed from "Feed/EventFeed";
+import { useEventFeed } from "Feed/EventFeed";
 import Text from "Element/Text";
 import { formatShort } from "Number";
-import { useNavigate } from "react-router-dom";
+import { LiveEvent } from "Element/LiveEvent";
+import ProfilePreview from "Element/User/ProfilePreview";
 
 function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {
@@ -33,15 +26,15 @@ function notificationContext(ev: TaggedNostrEvent) {
       const aTag = findTag(ev, "a");
       if (aTag) {
         const [kind, author, d] = aTag.split(":");
-        return createNostrLink(NostrPrefix.Address, d, undefined, Number(kind), author);
+        return new NostrLink(NostrPrefix.Address, d, Number(kind), author);
       }
       const eTag = findTag(ev, "e");
       if (eTag) {
-        return createNostrLink(NostrPrefix.Event, eTag);
+        return new NostrLink(NostrPrefix.Event, eTag);
       }
       const pTag = ev.tags.filter(a => a[0] === "p").slice(-1)?.[0];
       if (pTag) {
-        return createNostrLink(NostrPrefix.PublicKey, pTag[1]);
+        return new NostrLink(NostrPrefix.PublicKey, pTag[1]);
       }
       break;
     }
@@ -50,21 +43,21 @@ function notificationContext(ev: TaggedNostrEvent) {
       const thread = EventExt.extractThread(ev);
       const tag = unwrap(thread?.replyTo ?? thread?.root ?? { value: ev.id, key: "e" });
       if (tag.key === "e") {
-        return createNostrLink(NostrPrefix.Event, unwrap(tag.value));
+        return new NostrLink(NostrPrefix.Event, unwrap(tag.value));
       } else if (tag.key === "a") {
         const [kind, author, d] = unwrap(tag.value).split(":");
-        return createNostrLink(NostrPrefix.Address, d, undefined, Number(kind), author);
+        return new NostrLink(NostrPrefix.Address, d, Number(kind), author);
       } else {
         throw new Error("Unknown thread context");
       }
     }
     case EventKind.TextNote: {
-      return createNostrLink(NostrPrefix.Note, ev.id);
+      return new NostrLink(NostrPrefix.Note, ev.id);
     }
   }
 }
 
-export default function NotificationsPage() {
+export default function NotificationsPage({ onClick }: { onClick?: (link: NostrLink) => void }) {
   const login = useLogin();
   const { isMuted } = useModeration();
   const groupInterval = 3600 * 3;
@@ -75,7 +68,7 @@ export default function NotificationsPage() {
 
   const notifications = useSyncExternalStore(
     c => Notifications.hook(c, "*"),
-    () => Notifications.snapshot()
+    () => Notifications.snapshot(),
   );
 
   const timeKey = (ev: NostrEvent) => {
@@ -85,7 +78,7 @@ export default function NotificationsPage() {
 
   const timeGrouped = useMemo(() => {
     return orderDescending([...notifications])
-      .filter(a => !isMuted(a.pubkey) && findTag(a, "p") === login.publicKey)
+      .filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey))
       .reduce((acc, v) => {
         const key = `${timeKey(v)}:${notificationContext(v as TaggedNostrEvent)?.encode()}:${v.kind}`;
         if (acc.has(key)) {
@@ -99,15 +92,17 @@ export default function NotificationsPage() {
 
   return (
     <div className="main-content">
-      {login.publicKey && [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} />)}
+      {login.publicKey &&
+        [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
     </div>
   );
 }
 
-function NotificationGroup({ evs }: { evs: Array<TaggedNostrEvent> }) {
+function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onClick?: (link: NostrLink) => void }) {
   const { ref, inView } = useInView({ triggerOnce: true });
   const { formatMessage } = useIntl();
   const kind = evs[0].kind;
+  const navigate = useNavigate();
 
   const zaps = useMemo(() => {
     return evs.filter(a => a.kind === EventKind.ZapReceipt).map(a => parseZap(a, UserCache));
@@ -119,7 +114,7 @@ function NotificationGroup({ evs }: { evs: Array<TaggedNostrEvent> }) {
         return zap.anonZap ? "anon" : zap.sender ?? a.pubkey;
       }
       return a.pubkey;
-    })
+    }),
   );
   const firstPubkey = pubkeys[0];
   const firstPubkeyProfile = useUserProfile(inView ? (firstPubkey === "anon" ? "" : firstPubkey) : "");
@@ -192,7 +187,7 @@ function NotificationGroup({ evs }: { evs: Array<TaggedNostrEvent> }) {
             </div>
             <div>{kind === EventKind.ZapReceipt && formatShort(totalZaps)}</div>
           </div>
-          <div className="flex-column g12">
+          <div className="flex-column w-max g12">
             <div className="flex">
               {pubkeys
                 .filter(a => a !== "anon")
@@ -213,11 +208,22 @@ function NotificationGroup({ evs }: { evs: Array<TaggedNostrEvent> }) {
                   pubkeys.length - 1,
                   firstPubkey === "anon"
                     ? formatMessage({ defaultMessage: "Anon" })
-                    : getDisplayName(firstPubkeyProfile, firstPubkey)
+                    : getDisplayName(firstPubkeyProfile, firstPubkey),
                 )}
               </div>
             )}
-            <div className="content">{context && <NotificationContext link={context} />}</div>
+            {context && (
+              <NotificationContext
+                link={context}
+                onClick={() => {
+                  if (onClick) {
+                    onClick(context);
+                  } else {
+                    navigate(`/e/${context.encode()}`);
+                  }
+                }}
+              />
+            )}
           </div>
         </>
       )}
@@ -225,18 +231,25 @@ function NotificationGroup({ evs }: { evs: Array<TaggedNostrEvent> }) {
   );
 }
 
-function NotificationContext({ link }: { link: NostrLink }) {
+function NotificationContext({ link, onClick }: { link: NostrLink; onClick: () => void }) {
   const { data: ev } = useEventFeed(link);
-  const navigate = useNavigate();
-  const content = ev?.content ?? "";
-
+  if (link.type === NostrPrefix.PublicKey) {
+    return <ProfilePreview pubkey={link.id} actions={<></>} />;
+  }
+  if (!ev) return;
+  if (ev.kind === EventKind.LiveEvent) {
+    return <LiveEvent ev={ev} />;
+  }
   return (
-    <div onClick={() => navigate(`/${link.encode()}`)} className="pointer">
-      <Text
-        content={content.length > 120 ? `${content.substring(0, 120)}...` : content}
-        tags={ev?.tags ?? []}
-        creator={ev?.pubkey ?? ""}
-      />
-    </div>
+    <Text
+      id={ev.id}
+      content={ev.content}
+      tags={ev.tags}
+      creator={ev.pubkey}
+      truncate={120}
+      disableLinkPreview={true}
+      className="content"
+      onClick={onClick}
+    />
   );
 }

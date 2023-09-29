@@ -1,0 +1,101 @@
+.deck-layout {
+  display: flex;
+  height: 100vh;
+  overflow-y: hidden;
+}
+
+.deck-layout .deck-cols {
+  display: flex;
+  height: 100vh;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.deck-layout .deck-cols .deck-col-header {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-collapse: collapse;
+  font-size: 20px;
+  font-weight: 700;
+  min-height: 40px;
+  max-height: 40px;
+}
+
+.deck-layout .deck-cols .deck-col-header:not(:last-of-type) {
+  border-right: 0;
+}
+
+.deck-layout .deck-cols > div {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 550px;
+  min-width: 550px;
+}
+
+.deck-layout .deck-cols > div > div:not(:first-of-type) {
+  overflow-y: scroll;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.image-grid > .media-note {
+  border: 1px solid var(--border-color);
+  background-image: var(--img);
+  background-position: center;
+  background-size: cover;
+  aspect-ratio: 1;
+  cursor: pointer;
+}
+
+.modal.thread-overlay > .modal-body {
+  background-color: unset;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  --border-color: #3a3a3a;
+}
+
+.modal.thread-overlay > .modal-body > div {
+  display: flex;
+  flex-direction: row;
+  border-radius: unset;
+  justify-content: center;
+  gap: 16px;
+}
+
+.modal.thread-overlay > .modal-body > div > div:last-of-type {
+  width: 550px;
+  min-width: 550px;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: var(--gray-superdark);
+}
+
+.thread-overlay .spotlight {
+  flex-grow: 1;
+  margin: auto;
+  text-align: center;
+}
+
+.thread-overlay .spotlight .details {
+  right: calc(28px + 550px + 16px);
+}
+
+.thread-overlay .spotlight .right {
+  right: calc(24px + 550px + 16px);
+}
+
+.thread-overlay .spotlight img,
+.thread-overlay .spotlight video {
+  max-width: calc(100vw - 550px - 16px);
+}
+
+.thread-overlay .main-content {
+  border: 0;
+  border-bottom: 1px solid var(--border-color);
+}

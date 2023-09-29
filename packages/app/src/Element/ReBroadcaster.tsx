@@ -1,63 +1,43 @@
-import { FormattedMessage } from "react-intl";
-import { useDispatch, useSelector } from "react-redux";
-import useEventPublisher from "Feed/EventPublisher";
+import { useContext, useState } from "react";
+import FormattedMessage from "Element/FormattedMessage";
+import { TaggedNostrEvent } from "@snort/system";
+import { SnortContext } from "@snort/system-react";
+
 import Modal from "Element/Modal";
-import type { RootState } from "State/Store";
-import { setShow, reset, setSelectedCustomRelays } from "State/ReBroadcast";
 import messages from "./messages";
 import useLogin from "Hooks/useLogin";
-import { System } from "index";
+import AsyncButton from "./AsyncButton";
 
-export function ReBroadcaster() {
-  const publisher = useEventPublisher();
-  const { note, show, selectedCustomRelays } = useSelector((s: RootState) => s.reBroadcast);
-  const dispatch = useDispatch();
+export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: TaggedNostrEvent }) {
+  const [selected, setSelected] = useState<Array<string>>();
+  const system = useContext(SnortContext);
+  const { relays } = useLogin(s => ({ relays: s.relays }));
 
   async function sendReBroadcast() {
-    if (note && publisher) {
-      if (selectedCustomRelays) selectedCustomRelays.forEach(r => System.WriteOnceToRelay(r, note));
-      else System.BroadcastEvent(note);
-      dispatch(reset());
+    if (selected) {
+      await Promise.all(selected.map(r => system.WriteOnceToRelay(r, ev)));
+    } else {
+      system.BroadcastEvent(ev);
     }
   }
 
-  function cancel() {
-    dispatch(reset());
-  }
-
-  function onSubmit(ev: React.MouseEvent<HTMLButtonElement>) {
-    ev.stopPropagation();
-    sendReBroadcast().catch(console.warn);
-  }
-
-  const login = useLogin();
-  const relays = login.relays;
-
   function renderRelayCustomisation() {
     return (
-      <div>
+      <div className="flex-column g8">
         {Object.keys(relays.item || {})
           .filter(el => relays.item[el].write)
           .map((r, i, a) => (
-            <div className="card flex">
-              <div className="flex f-col f-grow">
-                <div>{r}</div>
-              </div>
+            <div className="card flex f-space">
+              <div>{r}</div>
               <div>
                 <input
                   type="checkbox"
-                  checked={!selectedCustomRelays || selectedCustomRelays.includes(r)}
+                  checked={!selected || selected.includes(r)}
                   onChange={e =>
-                    dispatch(
-                      setSelectedCustomRelays(
-                        // set false if all relays selected
-                        e.target.checked && selectedCustomRelays && selectedCustomRelays.length == a.length - 1
-                          ? false
-                          : // otherwise return selectedCustomRelays with target relay added / removed
-                            a.filter(el =>
-                              el === r ? e.target.checked : !selectedCustomRelays || selectedCustomRelays.includes(el)
-                            )
-                      )
+                    setSelected(
+                      e.target.checked && selected && selected.length == a.length - 1
+                        ? undefined
+                        : a.filter(el => (el === r ? e.target.checked : !selected || selected.includes(el))),
                     )
                   }
                 />
@@ -70,19 +50,17 @@ export function ReBroadcaster() {
 
   return (
     <>
-      {show && (
-        <Modal className="note-creator-modal" onClose={() => dispatch(setShow(false))}>
-          {renderRelayCustomisation()}
-          <div className="note-creator-actions">
-            <button className="secondary" onClick={cancel}>
-              <FormattedMessage {...messages.Cancel} />
-            </button>
-            <button onClick={onSubmit}>
-              <FormattedMessage {...messages.ReBroadcast} />
-            </button>
-          </div>
-        </Modal>
-      )}
+      <Modal id="broadcaster" className="note-creator-modal" onClose={onClose}>
+        {renderRelayCustomisation()}
+        <div className="flex g8">
+          <button className="secondary" onClick={onClose}>
+            <FormattedMessage {...messages.Cancel} />
+          </button>
+          <AsyncButton onClick={sendReBroadcast}>
+            <FormattedMessage {...messages.ReBroadcast} />
+          </AsyncButton>
+        </div>
+      </Modal>
     </>
   );
 }

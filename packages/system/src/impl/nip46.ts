@@ -63,6 +63,10 @@ export class Nip46Signer implements EventSigner {
     this.#insideSigner = insideSigner ?? new PrivateKeySigner(secp256k1.utils.randomPrivateKey());
   }
 
+  get supports(): string[] {
+    return ["nip04"];
+  }
+
   get relays() {
     return [this.#relay];
   }

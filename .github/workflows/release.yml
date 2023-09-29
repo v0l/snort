@@ -44,7 +44,77 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: "Snort v__VERSION__"
-          releaseBody: "See the assets to download and install this version."
-          releaseDraft: true
-          prerelease: false
+  app:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: Cache gradle
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-            
+
+      - name: Install frontend dependencies
+        run: yarn install
+
+      - name: Build Site
+        run: yarn build
+
+      - name: Copy files
+        run: |-
+          git clone https://git.v0l.io/Kieran/snort_android.git
+          mkdir -p snort_android/app/src/main/assets/
+          cp packages/app/build/* snort_android/app/src/main/assets/
+
+      - name: Build AAB
+        working-directory: snort_android
+        run: ./gradlew clean bundleRelease --stacktrace
+      - name: Build APK
+        working-directory: snort_android
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Sign AAB
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: snort_android/app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: snort_android/app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      - name: Rename files
+        run: |-
+          mkdir -p snort_android/app/release
+          mv snort_android/app/build/outputs/bundle/release/app-release.aab snort_android/app/release/snort-${{ github.ref_name }}.aab
+          mv snort_android/app/build/outputs/apk/release/app-universal-release-unsigned-signed.apk snort_android/app/release/snort-universal-${{ github.ref_name }}.apk
+          mv snort_android/app/build/outputs/apk/release/app-arm64-v8a-release-unsigned-signed.apk snort_android/app/release/snort-arm64-v8a-${{ github.ref_name }}.apk
+          mv snort_android/app/build/outputs/apk/release/app-x86_64-release-unsigned-signed.apk snort_android/app/release/snort-x86_64-${{ github.ref_name }}.apk
+          mv snort_android/app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned-signed.apk snort_android/app/release/snort-armeabi-v7a-${{ github.ref_name }}.apk
+      - name: Upload assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            snort_android/app/release/snort-${{ github.ref_name }}.aab
+            snort_android/app/release/snort-universal-${{ github.ref_name }}.apk
+            snort_android/app/release/snort-arm64-v8a-${{ github.ref_name }}.apk
+            snort_android/app/release/snort-x86_64-${{ github.ref_name }}.apk
+            snort_android/app/release/snort-armeabi-v7a-${{ github.ref_name }}.apk

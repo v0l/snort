@@ -1,8 +1,8 @@
 import { useState, useMemo, ChangeEvent } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { HexKey, TaggedNostrEvent } from "@snort/system";
 
-import Note from "Element/Note";
+import Note from "Element/Event/Note";
 import useLogin from "Hooks/useLogin";
 import { UserCache } from "Cache";
 
@@ -16,7 +16,7 @@ interface BookmarksProps {
 
 const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   const [onlyPubkey, setOnlyPubkey] = useState<HexKey | "all">("all");
-  const loginPubKey = useLogin().publicKey;
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   const ps = useMemo(() => {
     return [...new Set(bookmarks.map(ev => ev.pubkey))];
   }, [bookmarks]);
@@ -28,7 +28,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
 
   return (
     <div className="main-content">
-      <div className="mb10 flex-end">
+      <div className="flex-end p">
         <select
           disabled={ps.length <= 1}
           value={onlyPubkey}
@@ -47,7 +47,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
               key={n.id}
               data={n}
               related={related}
-              options={{ showTime: false, showBookmarked: true, canUnbookmark: loginPubKey === pubkey }}
+              options={{ showTime: false, showBookmarked: true, canUnbookmark: publicKey === pubkey }}
             />
           );
         })}

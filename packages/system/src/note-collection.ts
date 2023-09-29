@@ -20,7 +20,7 @@ export const EmptySnapshot = {
   },
 } as StoreSnapshot<FlatNoteStore>;
 
-export type NoteStoreSnapshotData = Readonly<Array<TaggedNostrEvent>> | Readonly<TaggedNostrEvent>;
+export type NoteStoreSnapshotData = Array<TaggedNostrEvent> | TaggedNostrEvent;
 export type NoteStoreHook = () => void;
 export type NoteStoreHookRelease = () => void;
 export type OnEventCallback = (e: Readonly<Array<TaggedNostrEvent>>) => void;
@@ -135,9 +135,27 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
 }
 
 /**
+ * A store which doesnt store anything, useful for hooks only
+ */
+export class NoopStore extends HookedNoteStore<Array<TaggedNostrEvent>> {
+  override add(ev: readonly TaggedNostrEvent[] | Readonly<TaggedNostrEvent>): void {
+    this.onChange(Array.isArray(ev) ? ev : [ev]);
+  }
+
+  override clear(): void {
+    // nothing to do
+  }
+
+  protected override takeSnapshot(): TaggedNostrEvent[] | undefined {
+    // nothing to do
+    return undefined;
+  }
+}
+
+/**
  * A simple flat container of events with no duplicates
  */
-export class FlatNoteStore extends HookedNoteStore<Readonly<Array<TaggedNostrEvent>>> {
+export class FlatNoteStore extends HookedNoteStore<Array<TaggedNostrEvent>> {
   #events: Array<TaggedNostrEvent> = [];
   #ids: Set<u256> = new Set();
 
@@ -176,7 +194,7 @@ export class FlatNoteStore extends HookedNoteStore<Readonly<Array<TaggedNostrEve
 /**
  * A note store that holds a single replaceable event for a given user defined key generator function
  */
-export class KeyedReplaceableNoteStore extends HookedNoteStore<Readonly<Array<TaggedNostrEvent>>> {
+export class KeyedReplaceableNoteStore extends HookedNoteStore<Array<TaggedNostrEvent>> {
   #keyFn: (ev: TaggedNostrEvent) => string;
   #events: Map<string, TaggedNostrEvent> = new Map();
 

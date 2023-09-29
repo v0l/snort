@@ -4,6 +4,7 @@ import { ChatCache } from "./ChatCache";
 import { Payments } from "./PaymentsCache";
 import { GiftWrapCache } from "./GiftWrapCache";
 import { NotificationsCache } from "./Notifications";
+import { FollowsFeedCache } from "./FollowsFeed";
 
 export const UserCache = new UserProfileCache();
 export const UserRelays = new UserRelaysCache();
@@ -13,6 +14,7 @@ export const PaymentsCache = new Payments();
 export const InteractionCache = new EventInteractionCache();
 export const GiftsCache = new GiftWrapCache();
 export const Notifications = new NotificationsCache();
+export const FollowsFeed = new FollowsFeedCache();
 
 export async function preload(follows?: Array<string>) {
   const preloads = [
@@ -23,6 +25,7 @@ export async function preload(follows?: Array<string>) {
     RelayMetrics.preload(),
     GiftsCache.preload(),
     Notifications.preload(),
+    FollowsFeed.preload(),
   ];
   await Promise.all(preloads);
 }

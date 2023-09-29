@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { useNavigate } from "react-router-dom";
 
 import { logout } from "Login";
@@ -7,15 +7,15 @@ import messages from "./messages";
 
 export default function LogoutButton() {
   const navigate = useNavigate();
-  const publicKey = useLogin().publicKey;
+  const login = useLogin(s => ({ publicKey: s.publicKey, id: s.id }));
 
-  if (!publicKey) return;
+  if (!login.publicKey) return;
   return (
     <button
       className="secondary"
       type="button"
       onClick={() => {
-        logout(publicKey);
+        logout(login.id);
         navigate("/");
       }}>
       <FormattedMessage {...messages.Logout} />

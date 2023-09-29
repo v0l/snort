@@ -13,23 +13,24 @@ import {
   WavlakeRegex,
 } from "Const";
 import { magnetURIDecode } from "SnortUtils";
-import SoundCloudEmbed from "Element/SoundCloudEmded";
-import MixCloudEmbed from "Element/MixCloudEmbed";
-import SpotifyEmbed from "Element/SpotifyEmbed";
-import TidalEmbed from "Element/TidalEmbed";
-import TwitchEmbed from "Element/TwitchEmbed";
-import AppleMusicEmbed from "Element/AppleMusicEmbed";
-import WavlakeEmbed from "Element/WavlakeEmbed";
-import LinkPreview from "Element/LinkPreview";
-import NostrLink from "Element/NostrLink";
-import MagnetLink from "Element/MagnetLink";
+import SoundCloudEmbed from "Element/Embed/SoundCloudEmded";
+import MixCloudEmbed from "Element/Embed/MixCloudEmbed";
+import SpotifyEmbed from "Element/Embed/SpotifyEmbed";
+import TidalEmbed from "Element/Embed/TidalEmbed";
+import TwitchEmbed from "Element/Embed/TwitchEmbed";
+import AppleMusicEmbed from "Element/Embed/AppleMusicEmbed";
+import WavlakeEmbed from "Element/Embed/WavlakeEmbed";
+import LinkPreview from "Element/Embed/LinkPreview";
+import NostrLink from "Element/Embed/NostrLink";
+import MagnetLink from "Element/Embed/MagnetLink";
 
 interface HypeTextProps {
   link: string;
   depth?: number;
+  showLinkPreview?: boolean;
 }
 
-export default function HyperText({ link, depth }: HypeTextProps) {
+export default function HyperText({ link, depth, showLinkPreview }: HypeTextProps) {
   const a = link;
   try {
     const url = new URL(a);
@@ -91,7 +92,7 @@ export default function HyperText({ link, depth }: HypeTextProps) {
       if (parsed) {
         return <MagnetLink magnet={parsed} />;
       }
-    } else {
+    } else if (showLinkPreview ?? true) {
       return <LinkPreview url={a} />;
     }
   } catch {

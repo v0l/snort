@@ -37,7 +37,7 @@ const ConnectLNDHub = () => {
         setError(
           formatMessage({
             defaultMessage: "Unknown error",
-          })
+          }),
         );
       }
     }

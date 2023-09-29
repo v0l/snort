@@ -5,7 +5,7 @@ import { FormattedMessage, FormattedNumber } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
 import { SnortPubKey } from "Const";
-import ProfilePreview from "Element/ProfilePreview";
+import ProfilePreview from "Element/User/ProfilePreview";
 import useLogin from "Hooks/useLogin";
 import { UploaderServices } from "Upload";
 import { bech32ToHex, getRelayName, unwrap } from "SnortUtils";
@@ -73,7 +73,7 @@ export default function ZapPoolPage() {
   const login = useLogin();
   const zapPool = useSyncExternalStore(
     c => ZapPoolController.hook(c),
-    () => ZapPoolController.snapshot()
+    () => ZapPoolController.snapshot(),
   );
   const { wallet } = useWallet();
 

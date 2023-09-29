@@ -20,15 +20,7 @@ export function minePow(e: NostrPowEvent, target: number) {
     e.tags.push(["nonce", ctr.toString(), target.toString()]);
   }
   do {
-    //roll ctr and compute id
-    const now = Math.floor(new Date().getTime() / 1000);
-    // reset ctr if timestamp changed, this is not really needed but makes the ctr value smaller
-    if (now !== e.created_at) {
-      ctr = 0;
-      e.created_at = now;
-    }
     e.tags[nonceTagIdx][1] = (++ctr).toString();
-
     e.id = createId(e);
   } while (countLeadingZeros(e.id) < target);
 

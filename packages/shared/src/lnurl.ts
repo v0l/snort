@@ -92,17 +92,6 @@ export class LNURL {
     return `${username}@${this.#url.hostname}`;
   }
 
-  /**
-   * Create a NIP-57 zap tag from this LNURL
-   */
-  getZapTag() {
-    if (this.isLNAddress) {
-      return ["zap", this.getLNAddress(), "lud16"];
-    } else {
-      return ["zap", this.#url.toString(), "lud06"];
-    }
-  }
-
   async load() {
     const rsp = await fetch(this.#url);
     if (rsp.ok) {

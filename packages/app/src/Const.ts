@@ -1,6 +1,16 @@
 import { RelaySettings } from "@snort/system";
 
 /**
+ * 1 Hour in seconds
+ */
+export const Hour = 60 * 60;
+
+/**
+ * 1 Day in seconds
+ */
+export const Day = Hour * 24;
+
+/**
  * Add-on api for snort features
  */
 export const ApiHost = "https://api.snort.social";

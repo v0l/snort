@@ -1,5 +1,5 @@
 import { equalProp } from "@snort/shared";
-import { FlatReqFilter } from "./request-expander";
+import { FlatReqFilter } from "./query-optimizer";
 import { NostrEvent, ReqFilter } from "./nostr";
 
 export function findTag(e: NostrEvent, tag: string) {

@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { useNavigate } from "react-router-dom";
 import { useUserProfile } from "@snort/system-react";
 
 import Logo from "Element/Logo";
 import { Nip5Services } from "Pages/NostrAddressPage";
 import Nip5Service from "Element/Nip5Service";
-import ProfileImage from "Element/ProfileImage";
+import ProfileImage from "Element/User/ProfileImage";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";

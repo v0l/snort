@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { HexKey, NostrPrefix } from "@snort/system";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 
-import FollowListBase from "Element/FollowListBase";
+import FollowListBase from "Element/User/FollowListBase";
 import PageSpinner from "Element/PageSpinner";
 import NostrBandApi from "External/NostrBand";
 import SemisolDevApi from "External/SemisolDev";

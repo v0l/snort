@@ -50,7 +50,7 @@ export async function openFile(): Promise<File | undefined> {
           }
         }, 300);
       },
-      { once: true }
+      { once: true },
     );
   });
 }
@@ -173,14 +173,6 @@ export function getAllReactions(notes: readonly TaggedNostrEvent[] | undefined, 
   return notes?.filter(a => a.kind === (kind ?? a.kind) && a.tags.some(a => a[0] === "e" && ids.includes(a[1]))) || [];
 }
 
-export function unixNow() {
-  return Math.floor(unixNowMs() / 1000);
-}
-
-export function unixNowMs() {
-  return new Date().getTime();
-}
-
 export function deepClone<T>(obj: T) {
   if ("structuredClone" in window) {
     return structuredClone(obj);
@@ -217,7 +209,7 @@ export function dedupeByPubkey(events: TaggedNostrEvent[]) {
         list: [...list, ev],
       };
     },
-    { list: [], seen: new Set([]) }
+    { list: [], seen: new Set([]) },
   );
   return deduped.list as TaggedNostrEvent[];
 }
@@ -234,7 +226,7 @@ export function dedupeById<T extends { id: string }>(events: Array<T>) {
         list: [...list, ev],
       };
     },
-    { list: [], seen: new Set([]) }
+    { list: [], seen: new Set([]) },
   );
   return deduped.list as Array<T>;
 }
@@ -495,7 +487,7 @@ export function kvToObject<T>(o: string, sep?: string) {
         return [match[1], match[2]];
       }
       return [];
-    })
+    }),
   ) as T;
 }
 

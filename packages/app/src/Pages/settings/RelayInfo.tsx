@@ -1,5 +1,5 @@
-import { FormattedMessage } from "react-intl";
-import ProfilePreview from "Element/ProfilePreview";
+import FormattedMessage from "Element/FormattedMessage";
+import ProfilePreview from "Element/User/ProfilePreview";
 import useRelayState from "Feed/RelayState";
 import { useNavigate, useParams } from "react-router-dom";
 import { parseId, unwrap } from "SnortUtils";

@@ -2,21 +2,30 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "./fonts/inter.css";
 
+import { compress, expand_filter, flat_merge, get_diff, pow, default as wasmInit } from "@snort/system-wasm";
+import WasmPath from "@snort/system-wasm/pkg/system_wasm_bg.wasm";
+
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { EventPublisher, NostrSystem, ProfileLoaderService, Nip7Signer, PowWorker } from "@snort/system";
+import {
+  NostrSystem,
+  ProfileLoaderService,
+  QueryOptimizer,
+  FlatReqFilter,
+  ReqFilter,
+  PowMiner,
+  NostrEvent,
+} from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
 import { unwrap } from "SnortUtils";
-import Store from "State/Store";
 import Layout from "Pages/Layout";
 import LoginPage from "Pages/LoginPage";
 import ProfilePage from "Pages/ProfilePage";
-import { RootRoutes } from "Pages/Root";
+import { RootRoutes, RootTabRoutes } from "Pages/Root";
 import NotificationsPage from "Pages/Notifications";
 import SettingsPage, { SettingsRoutes } from "Pages/SettingsPage";
 import ErrorPage from "Pages/ErrorPage";
@@ -28,13 +37,36 @@ import HelpPage from "Pages/HelpPage";
 import { NewUserRoutes } from "Pages/new";
 import { WalletRoutes } from "Pages/WalletPage";
 import NostrLinkHandler from "Pages/NostrLinkHandler";
-import Thread from "Element/Thread";
+import { ThreadRoute } from "Element/Event/Thread";
 import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
 import DebugPage from "Pages/Debug";
 import { db } from "Db";
 import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
+import { SnortDeckLayout } from "Pages/DeckLayout";
+
+const WasmQueryOptimizer = {
+  expandFilter: (f: ReqFilter) => {
+    return expand_filter(f) as Array<FlatReqFilter>;
+  },
+  getDiff: (prev: Array<ReqFilter>, next: Array<ReqFilter>) => {
+    return get_diff(prev, next) as Array<FlatReqFilter>;
+  },
+  flatMerge: (all: Array<FlatReqFilter>) => {
+    return flat_merge(all) as Array<ReqFilter>;
+  },
+  compress: (all: Array<ReqFilter>) => {
+    return compress(all) as Array<ReqFilter>;
+  },
+} as QueryOptimizer;
+
+export class WasmPowWorker implements PowMiner {
+  minePow(ev: NostrEvent, target: number): Promise<NostrEvent> {
+    const res = pow(ev, target);
+    return Promise.resolve(res);
+  }
+}
 
 /**
  * Singleton nostr system
@@ -43,14 +75,11 @@ export const System = new NostrSystem({
   relayCache: UserRelays,
   profileCache: UserCache,
   relayMetrics: RelayMetrics,
+  queryOptimizer: WasmQueryOptimizer,
   authHandler: async (c, r) => {
-    const { publicKey, privateKey } = LoginStore.snapshot();
-    if (privateKey) {
-      const pub = EventPublisher.privateKey(privateKey);
-      return await pub.nip42Auth(c, r);
-    }
-    if (publicKey) {
-      const pub = new EventPublisher(new Nip7Signer(), publicKey);
+    const { id } = LoginStore.snapshot();
+    const pub = LoginStore.getPublisher(id);
+    if (pub) {
       return await pub.nip42Auth(c, r);
     }
   },
@@ -61,37 +90,49 @@ export const System = new NostrSystem({
  */
 export const ProfileLoader = new ProfileLoaderService(System, UserCache);
 
-/**
- * Singleton POW worker
- */
-export const DefaultPowWorker = new PowWorker("/pow.js");
-
 serviceWorkerRegistration.register();
 
+async function initSite() {
+  await wasmInit(WasmPath);
+  const login = LoginStore.takeSnapshot();
+  db.ready = await db.isAvailable();
+  if (db.ready) {
+    await preload(login.follows.item);
+  }
+
+  for (const [k, v] of Object.entries(login.relays.item)) {
+    System.ConnectToRelay(k, v);
+  }
+  try {
+    if ("registerProtocolHandler" in window.navigator) {
+      window.navigator.registerProtocolHandler("web+nostr", `${window.location.protocol}//${window.location.host}/%s`);
+      console.info("Registered protocol handler for 'web+nostr'");
+    }
+  } catch (e) {
+    console.error("Failed to register protocol handler", e);
+  }
+
+  // inject analytics script
+  // <script defer data-domain="snort.social" src="http://analytics.v0l.io/js/script.js"></script>
+  if (login.preferences.telemetry ?? true) {
+    const sc = document.createElement("script");
+    sc.src = "https://analytics.v0l.io/js/script.js";
+    sc.defer = true;
+    sc.setAttribute("data-domain", "snort.social");
+    document.head.appendChild(sc);
+  }
+  return null;
+}
+
+let didInit = false;
 export const router = createBrowserRouter([
   {
     element: <Layout />,
     errorElement: <ErrorPage />,
     loader: async () => {
-      const login = LoginStore.takeSnapshot();
-      db.ready = await db.isAvailable();
-      if (db.ready) {
-        await preload(login.follows.item);
-      }
-
-      for (const [k, v] of Object.entries(login.relays.item)) {
-        System.ConnectToRelay(k, v);
-      }
-      try {
-        if ("registerProtocolHandler" in window.navigator) {
-          window.navigator.registerProtocolHandler(
-            "web+nostr",
-            `${window.location.protocol}//${window.location.host}/%s`
-          );
-          console.info("Registered protocol handler for 'web+nostr'");
-        }
-      } catch (e) {
-        console.error("Failed to register protocol handler", e);
+      if (!didInit) {
+        didInit = true;
+        return await initSite();
       }
       return null;
     },
@@ -107,7 +148,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/e/:id",
-        element: <Thread />,
+        element: <ThreadRoute />,
       },
       {
         path: "/p/:id",
@@ -155,17 +196,27 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/deck",
+    element: <SnortDeckLayout />,
+    loader: async () => {
+      if (!didInit) {
+        didInit = true;
+        return await initSite();
+      }
+      return null;
+    },
+    children: RootTabRoutes,
+  },
 ]);
 
 const root = ReactDOM.createRoot(unwrap(document.getElementById("root")));
 root.render(
   <StrictMode>
-    <Provider store={Store}>
-      <IntlProvider>
-        <SnortContext.Provider value={System}>
-          <RouterProvider router={router} />
-        </SnortContext.Provider>
-      </IntlProvider>
-    </Provider>
-  </StrictMode>
+    <IntlProvider>
+      <SnortContext.Provider value={System}>
+        <RouterProvider router={router} />
+      </SnortContext.Provider>
+    </IntlProvider>
+  </StrictMode>,
 );

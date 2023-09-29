@@ -13,13 +13,15 @@ import {
   UserMetadata,
   encodeTLVEntries,
 } from "@snort/system";
-import { unwrap } from "@snort/shared";
+import { unwrap, unixNow } from "@snort/shared";
 import { Chats, GiftsCache } from "Cache";
-import { findTag, unixNow } from "SnortUtils";
+import { findTag } from "SnortUtils";
 import { Nip29ChatSystem } from "./nip29";
 import useModeration from "Hooks/useModeration";
 import useLogin from "Hooks/useLogin";
 import { Nip24ChatSystem } from "./nip24";
+import { LoginSession } from "Login";
+import { Nip28ChatSystem } from "./nip28";
 
 export enum ChatType {
   DirectMessage = 1,
@@ -60,7 +62,7 @@ export interface ChatSystem {
   /**
    * Create a request for this system to get updates
    */
-  subscription(id: string): RequestBuilder | undefined;
+  subscription(session: LoginSession): RequestBuilder | undefined;
   onEvent(evs: readonly TaggedNostrEvent[]): Promise<void> | void;
 
   listChats(pk: string): Array<Chat>;
@@ -69,6 +71,7 @@ export interface ChatSystem {
 export const Nip4Chats = new Nip4ChatSystem(Chats);
 export const Nip29Chats = new Nip29ChatSystem(Chats);
 export const Nip24Chats = new Nip24ChatSystem(GiftsCache);
+export const Nip28Chats = new Nip28ChatSystem(Chats);
 
 /**
  * Extract the P tag of the event
@@ -116,7 +119,7 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
           type: TLVEntryType.Author,
           length: params[0].length,
           value: params[0],
-        } as TLVEntry
+        } as TLVEntry,
       )}`;
     }
     case ChatType.PrivateDirectMessage: {
@@ -127,7 +130,7 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
           type: TLVEntryType.Author,
           length: params[0].length,
           value: params[0],
-        } as TLVEntry
+        } as TLVEntry,
       )}`;
     }
     case ChatType.PrivateGroupChat: {
@@ -139,51 +142,65 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
               type: TLVEntryType.Author,
               length: a.length,
               value: a,
-            } as TLVEntry)
-        )
+            }) as TLVEntry,
+        ),
       )}`;
+    }
+    case ChatType.PublicGroupChat: {
+      return `/messages/${Nip28ChatSystem.chatId(params[0])}`;
     }
   }
   throw new Error("Unknown chat type");
 }
 
 export function createEmptyChatObject(id: string) {
-  if (id.startsWith("chat4")) {
+  if (id.startsWith("chat41")) {
     return Nip4ChatSystem.createChatObj(id, []);
   }
-  if (id.startsWith("chat24")) {
+  if (id.startsWith("chat241")) {
     return Nip24ChatSystem.createChatObj(id, []);
+  }
+  if (id.startsWith("chat281")) {
+    return Nip28ChatSystem.createChatObj(id, []);
   }
   throw new Error("Cant create new empty chat, unknown id");
 }
 
 export function useNip4Chat() {
-  const { publicKey } = useLogin();
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   return useSyncExternalStore(
     c => Nip4Chats.hook(c),
-    () => Nip4Chats.snapshot(publicKey)
+    () => Nip4Chats.snapshot(publicKey),
   );
 }
 
 export function useNip29Chat() {
   return useSyncExternalStore(
     c => Nip29Chats.hook(c),
-    () => Nip29Chats.snapshot()
+    () => Nip29Chats.snapshot(),
   );
 }
 
 export function useNip24Chat() {
-  const { publicKey } = useLogin();
+  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   return useSyncExternalStore(
     c => Nip24Chats.hook(c),
-    () => Nip24Chats.snapshot(publicKey)
+    () => Nip24Chats.snapshot(publicKey),
+  );
+}
+
+export function useNip28Chat() {
+  return useSyncExternalStore(
+    c => Nip28Chats.hook(c),
+    () => Nip28Chats.snapshot(),
   );
 }
 
 export function useChatSystem() {
   const nip4 = useNip4Chat();
-  const nip24 = useNip24Chat();
+  //const nip24 = useNip24Chat();
+  const nip28 = useNip28Chat();
   const { muted, blocked } = useModeration();
 
-  return [...nip4, ...nip24].filter(a => !(muted.includes(a.id) || blocked.includes(a.id)));
+  return [...nip4, ...nip28].filter(a => !(muted.includes(a.id) || blocked.includes(a.id)));
 }

@@ -6,8 +6,8 @@ import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import TextareaAutosize from "react-textarea-autosize";
 import { NostrPrefix, MetadataCache } from "@snort/system";
 
-import Avatar from "Element/Avatar";
-import Nip05 from "Element/Nip05";
+import Avatar from "Element/User/Avatar";
+import Nip05 from "Element/User/Nip05";
 import { hexToBech32 } from "SnortUtils";
 import { UserCache } from "Cache";
 import searchEmoji from "emoji-search";

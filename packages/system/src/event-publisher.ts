@@ -3,16 +3,20 @@ import * as utils from "@noble/curves/abstract/utils";
 import { unwrap, getPublicKey, unixNow } from "@snort/shared";
 
 import {
+  decodeEncryptionPayload,
   EventKind,
   EventSigner,
   FullRelaySettings,
   HexKey,
   Lists,
+  MessageEncryptorVersion,
   NostrEvent,
+  NostrLink,
   NotSignedNostrEvent,
   PowMiner,
   PrivateKeySigner,
   RelaySettings,
+  SignerSupports,
   TaggedNostrEvent,
   u256,
   UserMetadata,
@@ -22,6 +26,7 @@ import { EventBuilder } from "./event-builder";
 import { EventExt } from "./event-ext";
 import { findTag } from "./utils";
 import { Nip7Signer } from "./impl/nip7";
+import { base64 } from "@scure/base";
 
 type EventBuilderHook = (ev: EventBuilder) => EventBuilder;
 
@@ -57,16 +62,22 @@ export class EventPublisher {
     return new EventPublisher(signer, signer.getPubKey());
   }
 
+  supports(t: SignerSupports) {
+    return this.#signer.supports.includes(t);
+  }
+
   get pubKey() {
     return this.#pubKey;
   }
 
   /**
-   * Apply POW to every event
+   * Create a copy of this publisher with PoW
    */
   pow(target: number, miner?: PowMiner) {
-    this.#pow = target;
-    this.#miner = miner;
+    const ret = new EventPublisher(this.#signer, this.#pubKey);
+    ret.#pow = target;
+    ret.#miner = miner;
+    return ret;
   }
 
   #eb(k: EventKind) {
@@ -180,10 +191,11 @@ export class EventPublisher {
 
     const thread = EventExt.extractThread(replyTo);
     if (thread) {
-      if (thread.root || thread.replyTo) {
-        eb.tag(["e", thread.root?.value ?? thread.replyTo?.value ?? "", "", "root"]);
+      const rootOrReplyAsRoot = thread.root || thread.replyTo;
+      if (rootOrReplyAsRoot) {
+        eb.tag([rootOrReplyAsRoot.key, rootOrReplyAsRoot.value ?? "", rootOrReplyAsRoot.relay ?? "", "root"]);
       }
-      eb.tag(["e", replyTo.id, replyTo.relays?.[0] ?? "", "reply"]);
+      eb.tag([...(NostrLink.fromEvent(replyTo).toEventTag() ?? []), "reply"]);
 
       eb.tag(["p", replyTo.pubkey]);
       for (const pk of thread.pubKeys) {
@@ -193,7 +205,7 @@ export class EventPublisher {
         eb.tag(["p", pk]);
       }
     } else {
-      eb.tag(["e", replyTo.id, "", "reply"]);
+      eb.tag([...(NostrLink.fromEvent(replyTo).toEventTag() ?? []), "reply"]);
       // dont tag self in replies
       if (replyTo.pubkey !== this.#pubKey) {
         eb.tag(["p", replyTo.pubkey]);
@@ -260,6 +272,23 @@ export class EventPublisher {
     eb.tag(["e", note.id, ""]);
     eb.tag(["p", note.pubkey]);
     return await this.#sign(eb);
+  }
+
+  /**
+   * Generic decryption using NIP-23 payload scheme
+   */
+  async decryptGeneric(content: string, from: string) {
+    const pl = decodeEncryptionPayload(content);
+    switch (pl.v) {
+      case MessageEncryptorVersion.Nip4: {
+        const nip4Payload = `${base64.encode(pl.ciphertext)}?iv=${base64.encode(pl.nonce)}`;
+        return await this.#signer.nip4Decrypt(nip4Payload, from);
+      }
+      case MessageEncryptorVersion.XChaCha20: {
+        return await this.#signer.nip44Decrypt(content, from);
+      }
+    }
+    throw new Error("Not supported version");
   }
 
   async decryptDm(note: NostrEvent) {

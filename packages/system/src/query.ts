@@ -4,9 +4,7 @@ import { unixNowMs, unwrap } from "@snort/shared";
 
 import { Connection, ReqFilter, Nips, TaggedNostrEvent } from ".";
 import { NoteStore } from "./note-collection";
-import { flatMerge } from "./request-merger";
 import { BuiltRawReqFilter } from "./request-builder";
-import { FlatReqFilter, expandFilter } from "./request-expander";
 import { eventMatchesFilter } from "./request-matcher";
 
 /**
@@ -19,7 +17,6 @@ class QueryTrace {
   eose?: number;
   close?: number;
   #wasForceClosed = false;
-  readonly flatFilters: Array<FlatReqFilter>;
   readonly #fnClose: (id: string) => void;
   readonly #fnProgress: () => void;
 
@@ -34,7 +31,6 @@ class QueryTrace {
     this.start = unixNowMs();
     this.#fnClose = fnClose;
     this.#fnProgress = fnProgress;
-    this.flatFilters = filters.flatMap(expandFilter);
   }
 
   sentToRelay() {
@@ -166,18 +162,14 @@ export class Query implements QueryBase {
    * Recompute the complete set of compressed filters from all query traces
    */
   get filters() {
-    return flatMerge(this.flatFilters);
-  }
-
-  get flatFilters() {
-    return this.#tracing.flatMap(a => a.flatFilters);
+    return this.#tracing.flatMap(a => a.filters);
   }
 
   get feed() {
     return this.#feed;
   }
 
-  onEvent(sub: string, e: TaggedNostrEvent) {
+  handleEvent(sub: string, e: TaggedNostrEvent) {
     for (const t of this.#tracing) {
       if (t.id === sub) {
         if (t.filters.some(v => eventMatchesFilter(e, v))) {
@@ -203,6 +195,28 @@ export class Query implements QueryBase {
 
   cleanup() {
     this.#stopCheckTraces();
+  }
+
+  /**
+   * Insert a new trace as a placeholder
+   */
+  insertCompletedTrace(subq: BuiltRawReqFilter, data: Readonly<Array<TaggedNostrEvent>>) {
+    const qt = new QueryTrace(
+      subq.relay,
+      subq.filters,
+      "",
+      () => {
+        // nothing to close
+      },
+      () => {
+        // nothing to progress
+      },
+    );
+    qt.sentToRelay();
+    qt.gotEose();
+    this.#tracing.push(qt);
+    this.feed.add(data);
+    return qt;
   }
 
   sendToRelay(c: Connection, subq: BuiltRawReqFilter) {

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { Link, useNavigate } from "react-router-dom";
 
 import { ApiHost } from "Const";
-import useEventPublisher from "Feed/EventPublisher";
+import useEventPublisher from "Hooks/useEventPublisher";
 import SnortServiceProvider, { ManageHandle } from "Nip05/SnortServiceProvider";
 
 export default function ListHandles() {

@@ -3,7 +3,7 @@ import { EventKind, NostrPrefix, encodeTLVEntries, TLVEntryType, TLVEntry, decod
 import { GiftWrapCache } from "Cache/GiftWrapCache";
 import { UnwrappedGift } from "Db";
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "chat";
-import { DefaultPowWorker } from "index";
+import { WasmPowWorker } from "index";
 
 export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   #cache: GiftWrapCache;
@@ -39,8 +39,8 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
               value: v,
               type: TLVEntryType.Author,
               length: v.length,
-            } as TLVEntry)
-        )
+            }) as TLVEntry,
+        ),
       );
     };
     return dedupe(messages.map(a => chatId(a))).map(a => {
@@ -72,7 +72,7 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
       } as {
         t: number;
         title: string | undefined;
-      }
+      },
     );
     return {
       type: ChatType.PrivateDirectMessage,
@@ -105,7 +105,9 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
           const recvSealedN = pub.giftWrap(await pub.sealRumor(gossip, pt.id), pt.id, powTarget);
           messages.push(recvSealedN);
         }
-        messages.push(pub.giftWrap(await pub.sealRumor(gossip, pub.pubKey), pub.pubKey, powTarget, DefaultPowWorker));
+        messages.push(
+          pub.giftWrap(await pub.sealRumor(gossip, pub.pubKey), pub.pubKey, powTarget, new WasmPowWorker()),
+        );
         return await Promise.all(messages);
       },
       sendMessage: (ev, system) => {

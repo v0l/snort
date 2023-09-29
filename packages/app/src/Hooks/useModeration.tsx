@@ -1,5 +1,5 @@
-import { HexKey } from "@snort/system";
-import useEventPublisher from "Feed/EventPublisher";
+import { HexKey, TaggedNostrEvent } from "@snort/system";
+import useEventPublisher from "Hooks/useEventPublisher";
 import useLogin from "Hooks/useLogin";
 import { setBlocked, setMuted } from "Login";
 import { appendDedupe } from "SnortUtils";
@@ -7,7 +7,7 @@ import { System } from "index";
 
 export default function useModeration() {
   const login = useLogin();
-  const { muted, blocked } = login;
+  const { muted, blocked, appData } = login;
   const publisher = useEventPublisher();
 
   async function setMutedList(pub: HexKey[], priv: HexKey[]) {
@@ -57,6 +57,14 @@ export default function useModeration() {
     setMuted(login, newMuted, ts);
   }
 
+  function isMutedWord(word: string) {
+    return appData.item.mutedWords.includes(word.toLowerCase());
+  }
+
+  function isEventMuted(ev: TaggedNostrEvent) {
+    return isMuted(ev.pubkey) || appData.item.mutedWords.some(w => ev.content.toLowerCase().includes(w));
+  }
+
   return {
     muted: muted.item,
     mute,
@@ -67,5 +75,7 @@ export default function useModeration() {
     block,
     unblock,
     isBlocked,
+    isMutedWord,
+    isEventMuted,
   };
 }

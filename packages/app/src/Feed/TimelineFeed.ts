@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
+import { unixNow } from "@snort/shared";
 
-import { unixNow, unwrap, tagFilterOfTextRepost } from "SnortUtils";
 import useTimelineWindow from "Hooks/useTimelineWindow";
 import useLogin from "Hooks/useLogin";
 import { SearchRelays } from "Const";
-import { useReactions } from "./FeedReactions";
 
 export interface TimelineFeedOptions {
   method: "TIME_RANGE" | "LIMIT_UNTIL";
@@ -42,7 +41,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       .kinds(
         subject.type === "profile_keyword"
           ? [EventKind.SetMetadata]
-          : [EventKind.TextNote, EventKind.Repost, EventKind.Polls]
+          : [EventKind.TextNote, EventKind.Repost, EventKind.Polls],
       );
 
     if (subject.relay) {
@@ -139,36 +138,9 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     latest.clear();
   }, [subject.relay]);
 
-  function getParentEvents() {
-    if (main.data) {
-      const repostsByKind6 = main.data
-        .filter(a => a.kind === EventKind.Repost && a.content === "")
-        .map(a => a.tags.find(b => b[0] === "e"))
-        .filter(a => a)
-        .map(a => unwrap(a)[1]);
-      const repostsByKind1 = main.data
-        .filter(
-          a => (a.kind === EventKind.Repost || a.kind === EventKind.TextNote) && a.tags.some(tagFilterOfTextRepost(a))
-        )
-        .map(a => a.tags.find(tagFilterOfTextRepost(a)))
-        .filter(a => a)
-        .map(a => unwrap(a)[1]);
-      return [...repostsByKind6, ...repostsByKind1];
-    }
-    return [];
-  }
-
-  const trackingEvents = main.data?.map(a => a.id) ?? [];
-  const related = useReactions(`timeline-related:${subject.type}:${subject.discriminator}`, trackingEvents, rb => {
-    const trackingParentEvents = getParentEvents();
-    if (trackingParentEvents.length > 0) {
-      rb.withFilter().ids(trackingParentEvents);
-    }
-  });
-
   return {
     main: main.data,
-    related: related.data,
+    related: [],
     latest: latest.data,
     loading: main.loading(),
     loadMore: () => {

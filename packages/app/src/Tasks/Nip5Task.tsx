@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { Link } from "react-router-dom";
 import { MetadataCache } from "@snort/system";
 import { BaseUITask } from "Tasks";

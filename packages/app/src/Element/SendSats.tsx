@@ -1,23 +1,23 @@
 import "./SendSats.css";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 
-import { HexKey, NostrEvent, EventPublisher } from "@snort/system";
-import { LNURL, LNURLError, LNURLErrorCode, LNURLInvoice, LNURLSuccessAction } from "@snort/shared";
+import { HexKey } from "@snort/system";
+import { SnortContext } from "@snort/system-react";
+import { LNURLSuccessAction } from "@snort/shared";
 
 import { formatShort } from "Number";
 import Icon from "Icons/Icon";
-import useEventPublisher from "Feed/EventPublisher";
-import ProfileImage from "Element/ProfileImage";
+import useEventPublisher from "Hooks/useEventPublisher";
+import ProfileImage from "Element/User/ProfileImage";
 import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
-import { chunks, debounce } from "SnortUtils";
-import { useWallet } from "Wallet";
+import { debounce } from "SnortUtils";
+import { LNWallet, useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
-import { generateRandomKey } from "Login";
-import { ZapPoolController } from "ZapPoolController";
 import AsyncButton from "Element/AsyncButton";
+import { ZapTarget, ZapTargetResult, Zapper } from "Zapper";
 
 import messages from "./messages";
 
@@ -30,56 +30,45 @@ enum ZapType {
 
 export interface SendSatsProps {
   onClose?: () => void;
-  lnurl?: string;
+  targets?: Array<ZapTarget>;
   show?: boolean;
   invoice?: string; // shortcut to invoice qr tab
-  title?: string;
+  title?: ReactNode;
   notice?: string;
-  target?: string;
   note?: HexKey;
-  author?: HexKey;
   allocatePool?: boolean;
 }
 
 export default function SendSats(props: SendSatsProps) {
   const onClose = props.onClose || (() => undefined);
-  const { note, author, target } = props;
-  const login = useLogin();
-  const defaultZapAmount = login.preferences.defaultZapAmount;
-  const amounts = [defaultZapAmount, 1_000, 5_000, 10_000, 20_000, 50_000, 100_000, 1_000_000];
-  const emojis: Record<number, string> = {
-    1_000: "👍",
-    5_000: "💜",
-    10_000: "😍",
-    20_000: "🤩",
-    50_000: "🔥",
-    100_000: "🚀",
-    1_000_000: "🤯",
-  };
 
-  const [handler, setHandler] = useState<LNURL>();
-  const [invoice, setInvoice] = useState<string>();
-  const [amount, setAmount] = useState<number>(defaultZapAmount);
-  const [customAmount, setCustomAmount] = useState<number>();
-  const [comment, setComment] = useState<string>();
-  const [success, setSuccess] = useState<LNURLSuccessAction>();
+  const [zapper, setZapper] = useState<Zapper>();
+  const [invoice, setInvoice] = useState<Array<ZapTargetResult>>();
   const [error, setError] = useState<string>();
-  const [zapType, setZapType] = useState(ZapType.PublicZap);
-  const [paying, setPaying] = useState<boolean>(false);
+  const [success, setSuccess] = useState<LNURLSuccessAction>();
+  const [amount, setAmount] = useState<SendSatsInputSelection>();
 
-  const { formatMessage } = useIntl();
+  const system = useContext(SnortContext);
   const publisher = useEventPublisher();
-  const canComment = handler ? (handler.canZap && zapType !== ZapType.NonZap) || handler.maxCommentLength > 0 : false;
   const walletState = useWallet();
   const wallet = walletState.wallet;
 
   useEffect(() => {
     if (props.show) {
+      const invoiceTarget = {
+        target: {
+          type: "lnurl",
+          value: "",
+          weight: 1,
+        },
+        pr: props.invoice,
+        paid: false,
+        sent: 0,
+        fee: 0,
+      } as ZapTargetResult;
+
       setError(undefined);
-      setAmount(defaultZapAmount);
-      setComment(undefined);
-      setZapType(ZapType.PublicZap);
-      setInvoice(props.invoice);
+      setInvoice(props.invoice ? [invoiceTarget] : undefined);
       setSuccess(undefined);
     }
   }, [props.show]);
@@ -94,247 +83,30 @@ export default function SendSats(props: SendSatsProps) {
   }, [success]);
 
   useEffect(() => {
-    if (props.lnurl && props.show) {
+    if (props.targets && props.show) {
       try {
-        const h = new LNURL(props.lnurl);
-        setHandler(h);
-        h.load().catch(e => handleLNURLError(e, formatMessage(messages.InvoiceFail)));
+        console.debug("loading zapper");
+        const zapper = new Zapper(system, publisher);
+        zapper.load(props.targets).then(() => {
+          console.debug(zapper);
+          setZapper(zapper);
+        });
       } catch (e) {
+        console.error(e);
         if (e instanceof Error) {
           setError(e.message);
         }
       }
     }
-  }, [props.lnurl, props.show]);
-
-  const serviceAmounts = useMemo(() => {
-    if (handler) {
-      const min = handler.min / 1000;
-      const max = handler.max / 1000;
-      return amounts.filter(a => a >= min && a <= max);
-    }
-    return [];
-  }, [handler]);
-  const amountRows = useMemo(() => chunks(serviceAmounts, 3), [serviceAmounts]);
-
-  const selectAmount = (a: number) => {
-    setError(undefined);
-    setAmount(a);
-  };
-
-  async function loadInvoice(): Promise<void> {
-    if (!amount || !handler || !publisher) return;
-
-    let zap: NostrEvent | undefined;
-    if (author && zapType !== ZapType.NonZap) {
-      const relays = Object.keys(login.relays.item);
-
-      // use random key for anon zaps
-      if (zapType === ZapType.AnonZap) {
-        const randomKey = generateRandomKey();
-        console.debug("Generated new key for zap: ", randomKey);
-
-        const publisher = EventPublisher.privateKey(randomKey.privateKey);
-        zap = await publisher.zap(amount * 1000, author, relays, note, comment, eb => eb.tag(["anon", ""]));
-      } else {
-        zap = await publisher.zap(amount * 1000, author, relays, note, comment);
-      }
-    }
-
-    try {
-      const rsp = await handler.getInvoice(amount, comment, zap);
-      if (rsp.pr) {
-        setInvoice(rsp.pr);
-        await payWithWallet(rsp);
-      }
-    } catch (e) {
-      handleLNURLError(e, formatMessage(messages.InvoiceFail));
-    }
-  }
-
-  function handleLNURLError(e: unknown, fallback: string) {
-    if (e instanceof LNURLError) {
-      switch (e.code) {
-        case LNURLErrorCode.ServiceUnavailable: {
-          setError(formatMessage(messages.LNURLFail));
-          return;
-        }
-        case LNURLErrorCode.InvalidLNURL: {
-          setError(formatMessage(messages.InvalidLNURL));
-          return;
-        }
-      }
-    }
-    setError(fallback);
-  }
-
-  function custom() {
-    if (!handler) return null;
-    const min = handler.min / 1000;
-    const max = handler.max / 1000;
-
-    return (
-      <div className="custom-amount flex">
-        <input
-          type="number"
-          min={min}
-          max={max}
-          className="f-grow mr10"
-          placeholder={formatMessage(messages.Custom)}
-          value={customAmount}
-          onChange={e => setCustomAmount(parseInt(e.target.value))}
-        />
-        <button
-          className="secondary"
-          type="button"
-          disabled={!customAmount}
-          onClick={() => selectAmount(customAmount ?? 0)}>
-          <FormattedMessage {...messages.Confirm} />
-        </button>
-      </div>
-    );
-  }
-
-  async function payWithWallet(invoice: LNURLInvoice) {
-    try {
-      if (wallet?.isReady()) {
-        setPaying(true);
-        const res = await wallet.payInvoice(invoice?.pr ?? "");
-        if (props.allocatePool) {
-          ZapPoolController.allocate(amount);
-        }
-        console.log(res);
-        setSuccess(invoice?.successAction ?? {});
-      }
-    } catch (e: unknown) {
-      console.warn(e);
-      if (e instanceof Error) {
-        setError(e.toString());
-      }
-    } finally {
-      setPaying(false);
-    }
-  }
-
-  function renderAmounts(amount: number, amounts: number[]) {
-    return (
-      <div className="amounts">
-        {amounts.map(a => (
-          <span className={`sat-amount ${amount === a ? "active" : ""}`} key={a} onClick={() => selectAmount(a)}>
-            {emojis[a] && <>{emojis[a]}&nbsp;</>}
-            {a === 1000 ? "1K" : formatShort(a)}
-          </span>
-        ))}
-      </div>
-    );
-  }
-
-  function invoiceForm() {
-    if (!handler || invoice) return null;
-    return (
-      <>
-        <h3>
-          <FormattedMessage {...messages.ZapAmount} />
-        </h3>
-        {amountRows.map(amounts => renderAmounts(amount, amounts))}
-        {custom()}
-        <div className="flex">
-          {canComment && (
-            <input
-              type="text"
-              placeholder={formatMessage(messages.Comment)}
-              className="f-grow"
-              maxLength={handler.canZap && zapType !== ZapType.NonZap ? 250 : handler.maxCommentLength}
-              onChange={e => setComment(e.target.value)}
-            />
-          )}
-        </div>
-        {zapTypeSelector()}
-        {(amount ?? 0) > 0 && (
-          <AsyncButton className="zap-action" onClick={() => loadInvoice()}>
-            <div className="zap-action-container">
-              <Icon name="zap" />
-              {target ? (
-                <FormattedMessage {...messages.ZapTarget} values={{ target, n: formatShort(amount) }} />
-              ) : (
-                <FormattedMessage {...messages.ZapSats} values={{ n: formatShort(amount) }} />
-              )}
-            </div>
-          </AsyncButton>
-        )}
-      </>
-    );
-  }
-
-  function zapTypeSelector() {
-    if (!handler || !handler.canZap) return;
-
-    const makeTab = (t: ZapType, n: React.ReactNode) => (
-      <div className={`tab${zapType === t ? " active" : ""}`} onClick={() => setZapType(t)}>
-        {n}
-      </div>
-    );
-    return (
-      <>
-        <h3>
-          <FormattedMessage defaultMessage="Zap Type" />
-        </h3>
-        <div className="tabs mt10">
-          {makeTab(ZapType.PublicZap, <FormattedMessage defaultMessage="Public" description="Public Zap" />)}
-          {/*makeTab(ZapType.PrivateZap, "Private")*/}
-          {makeTab(ZapType.AnonZap, <FormattedMessage defaultMessage="Anon" description="Anonymous Zap" />)}
-          {makeTab(
-            ZapType.NonZap,
-            <FormattedMessage defaultMessage="Non-Zap" description="Non-Zap, Regular LN payment" />
-          )}
-        </div>
-      </>
-    );
-  }
-
-  function payInvoice() {
-    if (success || !invoice) return null;
-    return (
-      <>
-        <div className="invoice">
-          {props.notice && <b className="error">{props.notice}</b>}
-          {paying ? (
-            <h4>
-              <FormattedMessage
-                defaultMessage="Paying with {wallet}"
-                values={{
-                  wallet: walletState.config?.info.alias,
-                }}
-              />
-              ...
-            </h4>
-          ) : (
-            <QrCode data={invoice} link={`lightning:${invoice}`} />
-          )}
-          <div className="actions">
-            {invoice && (
-              <>
-                <div className="copy-action">
-                  <Copy text={invoice} maxSize={26} />
-                </div>
-                <button className="wallet-action" type="button" onClick={() => window.open(`lightning:${invoice}`)}>
-                  <FormattedMessage {...messages.OpenWallet} />
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </>
-    );
-  }
+  }, [props.targets, props.show]);
 
   function successAction() {
     if (!success) return null;
     return (
-      <div className="success-action">
-        <p className="paid">
-          <Icon name="check" className="success mr10" />
-          {success?.description ?? <FormattedMessage {...messages.Paid} />}
+      <div className="flex f-center">
+        <p className="flex g12">
+          <Icon name="check" className="success" />
+          {success?.description ?? <FormattedMessage defaultMessage="Paid" />}
         </p>
         {success.url && (
           <p>
@@ -347,29 +119,293 @@ export default function SendSats(props: SendSatsProps) {
     );
   }
 
-  const defaultTitle = handler?.canZap ? formatMessage(messages.SendZap) : formatMessage(messages.SendSats);
-  const title = target
-    ? formatMessage(messages.ToTarget, {
-        action: defaultTitle,
-        target,
-      })
-    : defaultTitle;
+  function title() {
+    if (!props.targets) {
+      return (
+        <>
+          <h2>
+            {zapper?.canZap() ? (
+              <FormattedMessage defaultMessage="Send zap" />
+            ) : (
+              <FormattedMessage defaultMessage="Send sats" />
+            )}
+          </h2>
+        </>
+      );
+    }
+    if (props.targets.length === 1 && props.targets[0].name) {
+      const t = props.targets[0];
+      const values = {
+        name: t.name,
+      };
+      return (
+        <>
+          {t.zap?.pubkey && <ProfileImage pubkey={t.zap.pubkey} showUsername={false} />}
+          <h2>
+            {zapper?.canZap() ? (
+              <FormattedMessage defaultMessage="Send zap to {name}" values={values} />
+            ) : (
+              <FormattedMessage defaultMessage="Send sats to {name}" values={values} />
+            )}
+          </h2>
+        </>
+      );
+    }
+    if (props.targets.length > 1) {
+      const total = props.targets.reduce((acc, v) => (acc += v.weight), 0);
+
+      return (
+        <div className="flex-column g12">
+          <h2>
+            {zapper?.canZap() ? (
+              <FormattedMessage defaultMessage="Send zap splits to" />
+            ) : (
+              <FormattedMessage defaultMessage="Send sats splits to" />
+            )}
+          </h2>
+          <div className="flex g4 f-wrap">
+            {props.targets.map(v => (
+              <ProfileImage
+                pubkey={v.value}
+                showUsername={false}
+                showFollowingMark={false}
+                imageOverlay={formatShort(Math.floor((amount?.amount ?? 0) * (v.weight / total)))}
+              />
+            ))}
+          </div>
+        </div>
+      );
+    }
+  }
+
   if (!(props.show ?? false)) return null;
   return (
-    <Modal className="lnurl-modal" onClose={onClose}>
-      <div className="lnurl-tip" onClick={e => e.stopPropagation()}>
-        <div className="close" onClick={onClose}>
-          <Icon name="close" />
+    <Modal id="send-sats" className="lnurl-modal" onClose={onClose}>
+      <div className="p flex-column g12">
+        <div className="flex g12">
+          <div className="flex f-grow">{props.title || title()}</div>
+          <div onClick={onClose}>
+            <Icon name="close" />
+          </div>
         </div>
-        <div className="lnurl-header">
-          {author && <ProfileImage pubkey={author} showUsername={false} />}
-          <h2>{props.title || title}</h2>
-        </div>
-        {invoiceForm()}
+        {zapper && !invoice && (
+          <SendSatsInput
+            zapper={zapper}
+            onChange={v => setAmount(v)}
+            onNextStage={async p => {
+              const targetsWithComments = (props.targets ?? []).map(v => {
+                if (p.comment) {
+                  v.memo = p.comment;
+                }
+                if (p.type === ZapType.AnonZap && v.zap) {
+                  v.zap = {
+                    ...v.zap,
+                    anon: true,
+                  };
+                } else if (p.type === ZapType.NonZap) {
+                  v.zap = undefined;
+                }
+                return v;
+              });
+              if (targetsWithComments.length > 0) {
+                const sends = await zapper.send(wallet, targetsWithComments, p.amount);
+                if (sends[0].error) {
+                  setError(sends[0].error.message);
+                } else if (sends.every(a => a.paid)) {
+                  setSuccess({});
+                } else {
+                  setInvoice(sends);
+                }
+              }
+            }}
+          />
+        )}
         {error && <p className="error">{error}</p>}
-        {payInvoice()}
+        {invoice && !success && (
+          <SendSatsInvoice
+            invoice={invoice}
+            wallet={wallet}
+            notice={props.notice}
+            onInvoicePaid={() => {
+              setSuccess({});
+            }}
+          />
+        )}
         {successAction()}
       </div>
     </Modal>
+  );
+}
+
+interface SendSatsInputSelection {
+  amount: number;
+  comment?: string;
+  type: ZapType;
+}
+
+function SendSatsInput(props: {
+  zapper: Zapper;
+  onChange?: (v: SendSatsInputSelection) => void;
+  onNextStage: (v: SendSatsInputSelection) => Promise<void>;
+}) {
+  const { defaultZapAmount, readonly } = useLogin(s => ({
+    defaultZapAmount: s.preferences.defaultZapAmount,
+    readonly: s.readonly,
+  }));
+  const { formatMessage } = useIntl();
+  const amounts: Record<string, string> = {
+    [defaultZapAmount.toString()]: "",
+    "1000": "👍",
+    "5000": "💜",
+    "10000": "😍",
+    "20000": "🤩",
+    "50000": "🔥",
+    "100000": "🚀",
+    "1000000": "🤯",
+  };
+  const [comment, setComment] = useState<string>();
+  const [amount, setAmount] = useState<number>(defaultZapAmount);
+  const [customAmount, setCustomAmount] = useState<number>(defaultZapAmount);
+  const [zapType, setZapType] = useState(readonly ? ZapType.AnonZap : ZapType.PublicZap);
+
+  function getValue() {
+    return {
+      amount,
+      comment,
+      type: zapType,
+    } as SendSatsInputSelection;
+  }
+
+  useEffect(() => {
+    if (props.onChange) {
+      props.onChange(getValue());
+    }
+  }, [amount, comment, zapType]);
+
+  function renderAmounts() {
+    const min = props.zapper.minAmount() / 1000;
+    const max = props.zapper.maxAmount() / 1000;
+    const filteredAmounts = Object.entries(amounts).filter(([k]) => Number(k) >= min && Number(k) <= max);
+
+    return (
+      <div className="amounts">
+        {filteredAmounts.map(([k, v]) => (
+          <span
+            className={`sat-amount ${amount === Number(k) ? "active" : ""}`}
+            key={k}
+            onClick={() => setAmount(Number(k))}>
+            {v}&nbsp;
+            {k === "1000" ? "1K" : formatShort(Number(k))}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  function custom() {
+    const min = props.zapper.minAmount() / 1000;
+    const max = props.zapper.maxAmount() / 1000;
+
+    return (
+      <div className="flex g8">
+        <input
+          type="number"
+          min={min}
+          max={max}
+          className="f-grow"
+          placeholder={formatMessage(messages.Custom)}
+          value={customAmount}
+          onChange={e => setCustomAmount(parseInt(e.target.value))}
+        />
+        <button
+          className="secondary"
+          type="button"
+          disabled={!customAmount}
+          onClick={() => setAmount(customAmount ?? 0)}>
+          <FormattedMessage {...messages.Confirm} />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-column g24">
+      <div className="flex-column g8">
+        <h3>
+          <FormattedMessage defaultMessage="Zap amount in sats" />
+        </h3>
+        {renderAmounts()}
+        {custom()}
+        {props.zapper.maxComment() > 0 && (
+          <input
+            type="text"
+            placeholder={formatMessage(messages.Comment)}
+            className="f-grow"
+            maxLength={props.zapper.maxComment()}
+            onChange={e => setComment(e.target.value)}
+          />
+        )}
+      </div>
+      <SendSatsZapTypeSelector zapType={zapType} setZapType={setZapType} />
+      {(amount ?? 0) > 0 && (
+        <AsyncButton className="zap-action" onClick={() => props.onNextStage(getValue())}>
+          <div className="zap-action-container">
+            <Icon name="zap" />
+            <FormattedMessage defaultMessage="Zap {n} sats" values={{ n: formatShort(amount) }} />
+          </div>
+        </AsyncButton>
+      )}
+    </div>
+  );
+}
+
+function SendSatsZapTypeSelector({ zapType, setZapType }: { zapType: ZapType; setZapType: (t: ZapType) => void }) {
+  const { readonly } = useLogin(s => ({ readonly: s.readonly }));
+  const makeTab = (t: ZapType, n: React.ReactNode) => (
+    <button type="button" className={zapType === t ? "" : "secondary"} onClick={() => setZapType(t)}>
+      {n}
+    </button>
+  );
+  return (
+    <div className="flex-column g8">
+      <h3>
+        <FormattedMessage defaultMessage="Zap Type" />
+      </h3>
+      <div className="flex g8">
+        {!readonly && makeTab(ZapType.PublicZap, <FormattedMessage defaultMessage="Public" description="Public Zap" />)}
+        {/*makeTab(ZapType.PrivateZap, "Private")*/}
+        {makeTab(ZapType.AnonZap, <FormattedMessage defaultMessage="Anon" description="Anonymous Zap" />)}
+        {makeTab(
+          ZapType.NonZap,
+          <FormattedMessage defaultMessage="Non-Zap" description="Non-Zap, Regular LN payment" />,
+        )}
+      </div>
+    </div>
+  );
+}
+
+function SendSatsInvoice(props: {
+  invoice: Array<ZapTargetResult>;
+  wallet?: LNWallet;
+  notice?: ReactNode;
+  onInvoicePaid: () => void;
+}) {
+  return (
+    <div className="flex-column g12 txt-center">
+      {props.notice && <b className="error">{props.notice}</b>}
+      {props.invoice.map(v => (
+        <>
+          <QrCode data={v.pr} link={`lightning:${v.pr}`} />
+          <div className="flex-column g12">
+            <Copy text={v.pr} maxSize={26} className="f-center" />
+            <a href={`lightning:${v.pr}`}>
+              <button type="button">
+                <FormattedMessage defaultMessage="Open Wallet" />
+              </button>
+            </a>
+          </div>
+        </>
+      ))}
+    </div>
   );
 }

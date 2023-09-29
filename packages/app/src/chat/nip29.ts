@@ -1,5 +1,6 @@
 import { ExternalStore, FeedCache, dedupe } from "@snort/shared";
 import { RequestBuilder, NostrEvent, EventKind, SystemInterface, TaggedNostrEvent } from "@snort/system";
+import { LoginSession } from "Login";
 import { unwrap } from "SnortUtils";
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "chat";
 
@@ -15,7 +16,9 @@ export class Nip29ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     return this.listChats();
   }
 
-  subscription(id: string) {
+  subscription(session: LoginSession) {
+    const id = session.publicKey;
+    if (!id) return;
     const gs = id.split("/", 2);
     const rb = new RequestBuilder(`nip29:${id}`);
     const last = this.listChats().find(a => a.id === id)?.lastMessage;
@@ -46,12 +49,12 @@ export class Nip29ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
         .map(a => a.tags.find(b => b[0] === "g"))
         .filter(a => a !== undefined)
         .map(a => unwrap(a))
-        .map(a => `${a[2]}${a[1]}`)
+        .map(a => `${a[2]}${a[1]}`),
     );
     return groups.map(g => {
       const [relay, channel] = g.split("/", 2);
       const messages = allMessages.filter(
-        a => `${a.tags.find(b => b[0] === "g")?.[2]}${a.tags.find(b => b[0] === "g")?.[1]}` === g
+        a => `${a.tags.find(b => b[0] === "g")?.[2]}${a.tags.find(b => b[0] === "g")?.[1]}` === g,
       );
       const lastRead = lastReadInChat(g);
       return {

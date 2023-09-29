@@ -1,12 +1,11 @@
 import debug from "debug";
 import { v4 as uuid } from "uuid";
-import { appendDedupe, sanitizeRelayUrl, unixNowMs } from "@snort/shared";
+import { appendDedupe, dedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
 
-import { ReqFilter, u256, HexKey, EventKind } from ".";
-import { diffFilters } from "./request-splitter";
+import EventKind from "./event-kind";
+import { NostrLink, NostrPrefix, SystemInterface } from "index";
+import { ReqFilter, u256, HexKey } from "./nostr";
 import { RelayCache, splitByWriteRelays, splitFlatByWriteRelays } from "./gossip-model";
-import { flatMerge, mergeSimilar } from "./request-merger";
-import { FlatReqFilter, expandFilter } from "./request-expander";
 
 /**
  * Which strategy is used when building REQ filters
@@ -83,6 +82,12 @@ export class RequestBuilder {
     return ret;
   }
 
+  withBareFilter(f: ReqFilter) {
+    const ret = new RequestFilterBuilder(f);
+    this.#builders.push(ret);
+    return ret;
+  }
+
   withOptions(opt: RequestBuilderOptions) {
     this.#options = {
       ...this.#options,
@@ -95,26 +100,25 @@ export class RequestBuilder {
     return this.#builders.map(f => f.filter);
   }
 
-  build(relays: RelayCache): Array<BuiltRawReqFilter> {
-    const expanded = this.#builders.flatMap(a => a.build(relays, this.id));
-    return this.#groupByRelay(expanded);
+  build(system: SystemInterface): Array<BuiltRawReqFilter> {
+    const expanded = this.#builders.flatMap(a => a.build(system.RelayCache, this.id));
+    return this.#groupByRelay(system, expanded);
   }
 
   /**
    * Detects a change in request from a previous set of filters
    */
-  buildDiff(relays: RelayCache, prev: Array<FlatReqFilter>): Array<BuiltRawReqFilter> {
+  buildDiff(system: SystemInterface, prev: Array<ReqFilter>): Array<BuiltRawReqFilter> {
     const start = unixNowMs();
 
-    const next = this.#builders.flatMap(f => expandFilter(f.filter));
-    const diff = diffFilters(prev, next);
+    const diff = system.QueryOptimizer.getDiff(prev, this.buildRaw());
     const ts = unixNowMs() - start;
-    this.#log("buildDiff %s %d ms", this.id, ts);
-    if (diff.changed) {
-      return splitFlatByWriteRelays(relays, diff.added).map(a => {
+    this.#log("buildDiff %s %d ms +%d", this.id, ts, diff.length);
+    if (diff.length > 0) {
+      return splitFlatByWriteRelays(system.RelayCache, diff).map(a => {
         return {
           strategy: RequestStrategy.AuthorsRelays,
-          filters: flatMerge(a.filters),
+          filters: system.QueryOptimizer.flatMerge(a.filters),
           relay: a.relay,
         };
       });
@@ -129,7 +133,7 @@ export class RequestBuilder {
    * @param expanded
    * @returns
    */
-  #groupByRelay(expanded: Array<BuiltRawReqFilter>) {
+  #groupByRelay(system: SystemInterface, expanded: Array<BuiltRawReqFilter>) {
     const relayMerged = expanded.reduce((acc, v) => {
       const existing = acc.get(v.relay);
       if (existing) {
@@ -142,7 +146,9 @@ export class RequestBuilder {
 
     const filtersSquashed = [...relayMerged.values()].map(a => {
       return {
-        filters: mergeSimilar(a.flatMap(b => b.filters)),
+        filters: system.QueryOptimizer.flatMerge(
+          a.flatMap(b => b.filters.flatMap(c => system.QueryOptimizer.expandFilter(c))),
+        ),
         relay: a[0].relay,
         strategy: a[0].strategy,
       } as BuiltRawReqFilter;
@@ -156,8 +162,12 @@ export class RequestBuilder {
  * Builder class for a single request filter
  */
 export class RequestFilterBuilder {
-  #filter: ReqFilter = {};
+  #filter: ReqFilter;
   #relays = new Set<string>();
+
+  constructor(f?: ReqFilter) {
+    this.#filter = f ?? {};
+  }
 
   get filter() {
     return { ...this.#filter };
@@ -209,15 +219,45 @@ export class RequestFilterBuilder {
     return this;
   }
 
-  tag(key: "e" | "p" | "d" | "t" | "r" | "a" | "g", value?: Array<string>) {
+  tag(key: "e" | "p" | "d" | "t" | "r" | "a" | "g" | string, value?: Array<string>) {
     if (!value) return this;
-    this.#filter[`#${key}`] = appendDedupe(this.#filter[`#${key}`], value);
+    this.#filter[`#${key}`] = appendDedupe(this.#filter[`#${key}`] as Array<string>, value);
     return this;
   }
 
   search(keyword?: string) {
     if (!keyword) return this;
     this.#filter.search = keyword;
+    return this;
+  }
+
+  /**
+   * Get event from link
+   */
+  link(link: NostrLink) {
+    if (link.type === NostrPrefix.Address) {
+      this.tag("d", [link.id])
+        .kinds([unwrap(link.kind)])
+        .authors([unwrap(link.author)]);
+    } else {
+      this.ids([link.id]);
+    }
+    link.relays?.forEach(v => this.relay(v));
+    return this;
+  }
+
+  /**
+   * Get replies to link with e/a tags
+   */
+  replyToLink(links: Array<NostrLink>) {
+    const types = dedupe(links.map(a => a.type));
+    if (types.length > 1) throw new Error("Cannot add multiple links of different kinds");
+
+    const tags = links.map(a => unwrap(a.toEventTag()));
+    this.tag(
+      tags[0][0],
+      tags.map(v => v[1]),
+    );
     return this;
   }
 
@@ -250,7 +290,7 @@ export class RequestFilterBuilder {
 
     return [
       {
-        filters: [this.filter],
+        filters: [this.#filter],
         relay: "",
         strategy: RequestStrategy.DefaultRelays,
       },

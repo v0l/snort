@@ -1,0 +1,14 @@
+{
+  "name": "@snort/system-wasm",
+  "version": "0.1.0",
+  "files": [
+    "system_wasm_bg.wasm",
+    "system_wasm.js",
+    "system_wasm.d.ts"
+  ],
+  "module": "system_wasm.js",
+  "types": "system_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

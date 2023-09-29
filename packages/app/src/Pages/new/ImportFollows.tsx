@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ApiHost } from "Const";
 import Logo from "Element/Logo";
 import AsyncButton from "Element/AsyncButton";
-import FollowListBase from "Element/FollowListBase";
+import FollowListBase from "Element/User/FollowListBase";
 import { bech32ToHex } from "SnortUtils";
 import SnortApi from "SnortApi";
 import useLogin from "Hooks/useLogin";

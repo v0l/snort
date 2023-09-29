@@ -3,22 +3,28 @@ import "./LoginPage.css";
 import { CSSProperties, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useIntl, FormattedMessage } from "react-intl";
-import { HexKey, Nip46Signer, PrivateKeySigner } from "@snort/system";
+import { HexKey, Nip46Signer, PinEncrypted, PrivateKeySigner } from "@snort/system";
 
 import { bech32ToHex, getPublicKey, unwrap } from "SnortUtils";
-import ZapButton from "Element/ZapButton";
+import ZapButton from "Element/Event/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
 import Icon from "Icons/Icon";
-import useLogin from "Hooks/useLogin";
 import { generateNewLogin, LoginSessionType, LoginStore } from "Login";
 import AsyncButton from "Element/AsyncButton";
-import useLoginHandler from "Hooks/useLoginHandler";
+import useLoginHandler, { PinRequiredError } from "Hooks/useLoginHandler";
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { bytesToHex } from "@noble/curves/abstract/utils";
 import Modal from "Element/Modal";
 import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import { delay } from "SnortUtils";
+import { PinPrompt } from "Element/PinPrompt";
+
+declare global {
+  interface Window {
+    plausible?: (tag: string) => void;
+  }
+}
 
 interface ArtworkEntry {
   name: string;
@@ -55,7 +61,7 @@ const Artwork: Array<ArtworkEntry> = [
 export async function getNip05PubKey(addr: string): Promise<string> {
   const [username, domain] = addr.split("@");
   const rsp = await fetch(
-    `https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username.toLocaleLowerCase())}`
+    `https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username.toLocaleLowerCase())}`,
   );
   if (rsp.ok) {
     const data = await rsp.json();
@@ -69,9 +75,10 @@ export async function getNip05PubKey(addr: string): Promise<string> {
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const login = useLogin();
   const [key, setKey] = useState("");
+  const [nip46Key, setNip46Key] = useState("");
   const [error, setError] = useState("");
+  const [pin, setPin] = useState(false);
   const [art, setArt] = useState<ArtworkEntry>();
   const [isMasking, setMasking] = useState(true);
   const { formatMessage } = useIntl();
@@ -82,37 +89,44 @@ export default function LoginPage() {
   const [nostrConnect, setNostrConnect] = useState("");
 
   useEffect(() => {
-    if (login.publicKey) {
-      navigate("/");
-    }
-  }, [login, navigate]);
-
-  useEffect(() => {
     const ret = unwrap(Artwork.at(Artwork.length * Math.random()));
     const url = proxy(ret.link);
     setArt({ ...ret, link: url });
   }, []);
 
-  async function doLogin() {
+  async function doLogin(pin?: string) {
+    setError("");
     try {
-      await loginHandler.doLogin(key);
+      await loginHandler.doLogin(key, pin);
+      navigate("/");
     } catch (e) {
+      if (e instanceof PinRequiredError) {
+        setPin(true);
+        return;
+      }
       if (e instanceof Error) {
         setError(e.message);
       } else {
         setError(
           formatMessage({
             defaultMessage: "Unknown login error",
-          })
+          }),
         );
       }
       console.error(e);
     }
   }
 
-  async function makeRandomKey() {
-    await generateNewLogin();
-    navigate("/new");
+  async function makeRandomKey(pin: string) {
+    try {
+      await generateNewLogin(pin);
+      window.plausible?.("Generate Account");
+      navigate("/new");
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      }
+    }
   }
 
   async function doNip07Login() {
@@ -120,9 +134,10 @@ export default function LoginPage() {
       "getRelays" in unwrap(window.nostr) ? await unwrap(window.nostr?.getRelays).call(window.nostr) : undefined;
     const pubKey = await unwrap(window.nostr).getPublicKey();
     LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip7, relays);
+    navigate("/");
   }
 
-  async function startNip46() {
+  function generateNip46() {
     const meta = {
       name: "Snort",
       url: window.location.href,
@@ -135,26 +150,51 @@ export default function LoginPage() {
       `metadata=${encodeURIComponent(JSON.stringify(meta))}`,
     ].join("&")}`;
     setNostrConnect(connectUrl);
+    setNip46Key(newKey);
+  }
 
-    const signer = new Nip46Signer(connectUrl, new PrivateKeySigner(newKey));
+  async function startNip46(pin: string) {
+    if (!nostrConnect || !nip46Key) return;
+
+    const signer = new Nip46Signer(nostrConnect, new PrivateKeySigner(nip46Key));
     await signer.init();
     await delay(500);
     await signer.describe();
+    LoginStore.loginWithPubkey(
+      await signer.getPubKey(),
+      LoginSessionType.Nip46,
+      undefined,
+      ["wss://relay.damus.io"],
+      await PinEncrypted.create(nip46Key, pin),
+    );
+    navigate("/");
   }
 
   function nip46Buttons() {
-    return null;
     return (
       <>
-        <AsyncButton type="button" onClick={startNip46}>
-          <FormattedMessage defaultMessage="Nostr Connect (NIP-46)" description="Login button for NIP-46 signer app" />
+        <AsyncButton
+          type="button"
+          onClick={() => {
+            generateNip46();
+            setPin(true);
+          }}>
+          <FormattedMessage defaultMessage="Nostr Connect" description="Login button for NIP-46 signer app" />
         </AsyncButton>
-        {nostrConnect && (
-          <Modal onClose={() => setNostrConnect("")}>
-            <div className="flex f-col">
-              <QrCode data={nostrConnect} />
-              <Copy text={nostrConnect} />
-            </div>
+        {nostrConnect && !pin && (
+          <Modal id="nostr-connect" onClose={() => setNostrConnect("")}>
+            <>
+              <h2>
+                <FormattedMessage defaultMessage="Nostr Connect" />
+              </h2>
+              <p>
+                <FormattedMessage defaultMessage="Scan this QR code with your signer app to get started" />
+              </p>
+              <div className="flex-column f-center g12">
+                <QrCode data={nostrConnect} />
+                <Copy text={nostrConnect} />
+              </div>
+            </>
           </Modal>
         )}
       </>
@@ -170,7 +210,7 @@ export default function LoginPage() {
       <>
         <AsyncButton type="button" onClick={doNip07Login}>
           <FormattedMessage
-            defaultMessage="Login with Extension (NIP-07)"
+            defaultMessage="Nostr Extension"
             description="Login button for NIP7 key manager extension"
           />
         </AsyncButton>
@@ -243,7 +283,7 @@ export default function LoginPage() {
       <div>
         <div className="login-container">
           <h1 className="logo" onClick={() => navigate("/")}>
-            Snort
+            {process.env.APP_NAME}
           </h1>
           <h1 dir="auto">
             <FormattedMessage defaultMessage="Login" description="Login header" />
@@ -251,7 +291,7 @@ export default function LoginPage() {
           <p dir="auto">
             <FormattedMessage defaultMessage="Your key" description="Label for key input" />
           </p>
-          <div className="flex">
+          <div className="flex f-center g8">
             <input
               dir="auto"
               type={isMasking ? "password" : "text"}
@@ -264,7 +304,7 @@ export default function LoginPage() {
             <Icon
               name={isMasking ? "openeye" : "closedeye"}
               size={30}
-              className="highlight btn-sm pointer"
+              className="highlight pointer"
               onClick={() => setMasking(!isMasking)}
             />
           </div>
@@ -276,12 +316,32 @@ export default function LoginPage() {
             />
           </p>
           <div dir="auto" className="login-actions">
-            <AsyncButton type="button" onClick={doLogin}>
+            <AsyncButton type="button" onClick={() => doLogin()}>
               <FormattedMessage defaultMessage="Login" description="Login button" />
             </AsyncButton>
-            <AsyncButton onClick={() => makeRandomKey()}>
+            <AsyncButton onClick={() => setPin(true)}>
               <FormattedMessage defaultMessage="Create Account" />
             </AsyncButton>
+            {pin && (
+              <PinPrompt
+                subTitle={
+                  <p>
+                    <FormattedMessage defaultMessage="Enter a pin to encrypt your private key, you must enter this pin every time you open Snort." />
+                  </p>
+                }
+                onResult={async pin => {
+                  setPin(false);
+                  if (key) {
+                    await doLogin(pin);
+                  } else if (nostrConnect) {
+                    await startNip46(pin);
+                  } else {
+                    await makeRandomKey(pin);
+                  }
+                }}
+                onCancel={() => setPin(false)}
+              />
+            )}
             {altLogins()}
           </div>
           {installExtension()}

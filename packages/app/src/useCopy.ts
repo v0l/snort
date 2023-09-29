@@ -5,10 +5,21 @@ export const useCopy = (timeout = 2000) => {
   const [copied, setCopied] = useState(false);
 
   const copy = async (text: string) => {
+    setError(false);
     try {
-      await navigator.clipboard.writeText(text);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "absolute";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.select();
+        await document.execCommand("copy");
+        textArea.remove();
+      }
       setCopied(true);
-      setError(false);
     } catch (error) {
       setError(true);
     }

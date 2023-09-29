@@ -2,10 +2,12 @@ import { ExternalStore } from "@snort/shared";
 
 import { SystemSnapshot, SystemInterface, ProfileLoaderService } from ".";
 import { AuthHandler, ConnectionStateSnapshot, RelaySettings } from "./connection";
-import { NostrEvent } from "./nostr";
-import { NoteStore } from "./note-collection";
+import { NostrEvent, TaggedNostrEvent } from "./nostr";
+import { NoteStore, NoteStoreSnapshotData } from "./note-collection";
 import { Query } from "./query";
 import { RequestBuilder } from "./request-builder";
+import { RelayCache } from "./gossip-model";
+import { QueryOptimizer } from "./query-optimizer";
 
 export class SystemWorker extends ExternalStore<SystemSnapshot> implements SystemInterface {
   #port: MessagePort;
@@ -21,10 +23,21 @@ export class SystemWorker extends ExternalStore<SystemSnapshot> implements Syste
     }
   }
 
+  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void): Promise<NoteStoreSnapshotData> {
+    throw new Error("Method not implemented.");
+  }
+
   get ProfileLoader(): ProfileLoaderService {
     throw new Error("Method not implemented.");
   }
 
+  get RelayCache(): RelayCache {
+    throw new Error("Method not implemented.");
+  }
+
+  get QueryOptimizer(): QueryOptimizer {
+    throw new Error("Method not implemented.");
+  }
   HandleAuth?: AuthHandler;
 
   get Sockets(): ConnectionStateSnapshot[] {

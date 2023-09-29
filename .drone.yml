@@ -58,7 +58,7 @@ steps:
       - yarn build
       - yarn test
       - yarn workspace @snort/app eslint
-      - yarn workspace @snort/app prettier --check .
+      - yarn prettier --check .
 volumes:
   - name: cache
     claim:
@@ -93,7 +93,7 @@ steps:
       - yarn install
       - npx @crowdin/cli upload sources -b main -T $CTOKEN
       - npx @crowdin/cli pull -b main -T $CTOKEN
-      - yarn workspace @snort/app format
+      - yarn prettier --write .
       - git add .
       - 'git commit -a -m "chore: Update translations"'
       - git push -u origin main

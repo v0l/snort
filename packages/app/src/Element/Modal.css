@@ -13,15 +13,24 @@
 
 .modal-body {
   background-color: var(--gray-superdark);
-  padding: 16px 24px;
-  border-radius: 12px;
+  padding: 24px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   width: 500px;
   margin-top: auto;
   margin-bottom: auto;
+  --border-color: var(--gray);
 }
 
 .modal-body button.secondary:hover {
   background-color: var(--gray);
+}
+
+.light .modal-body {
+  background-color: #fff;
+}
+
+.modal.spotlight {
+  color: #fff;
 }

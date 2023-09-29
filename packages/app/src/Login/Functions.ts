@@ -1,13 +1,17 @@
-import { HexKey, RelaySettings, EventPublisher } from "@snort/system";
+import { RelaySettings, EventPublisher, PinEncrypted, Nip46Signer, Nip7Signer, PrivateKeySigner } from "@snort/system";
+import { unixNowMs } from "@snort/shared";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
 import { DefaultRelays, SnortPubKey } from "Const";
-import { LoginStore, UserPreferences, LoginSession } from "Login";
+import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
-import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unixNowMs, unwrap } from "SnortUtils";
+import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unwrap } from "SnortUtils";
 import { SubscriptionEvent } from "Subscription";
 import { System } from "index";
+import { Chats, FollowsFeed, GiftsCache, Notifications } from "Cache";
+import { PinRequiredError } from "Hooks/useLoginHandler";
+import { Nip7OsSigner } from "./Nip7OsSigner";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
   if (state.relays.timestamp >= createdAt) {
@@ -39,10 +43,12 @@ export function updatePreferences(state: LoginSession, p: UserPreferences) {
   LoginStore.updateSession(state);
 }
 
-export function logout(k: HexKey) {
-  LoginStore.removeSession(k);
-  //TODO: delete giftwarps for:k
-  //TODO: delete notifications for:k
+export function logout(id: string) {
+  LoginStore.removeSession(id);
+  GiftsCache.clear();
+  Notifications.clear();
+  FollowsFeed.clear();
+  Chats.clear();
 }
 
 export function markNotificationsRead(state: LoginSession) {
@@ -58,7 +64,7 @@ export function clearEntropy(state: LoginSession) {
 /**
  * Generate a new key and login with this generated key
  */
-export async function generateNewLogin() {
+export async function generateNewLogin(pin: string) {
   const ent = generateBip39Entropy();
   const entropy = utils.bytesToHex(ent);
   const privateKey = entropyToPrivateKey(ent);
@@ -84,7 +90,8 @@ export async function generateNewLogin() {
   const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey], newRelays);
   System.BroadcastEvent(ev);
 
-  LoginStore.loginWithPrivateKey(privateKey, entropy, newRelays);
+  const key = await PinEncrypted.create(privateKey, pin);
+  LoginStore.loginWithPrivateKey(key, entropy, newRelays);
 }
 
 export function generateRandomKey() {
@@ -150,10 +157,48 @@ export function setBookmarked(state: LoginSession, bookmarked: Array<string>, ts
   LoginStore.updateSession(state);
 }
 
+export function setAppData(state: LoginSession, data: SnortAppData, ts: number) {
+  if (state.appData.timestamp >= ts) {
+    return;
+  }
+  state.appData.item = data;
+  state.appData.timestamp = ts;
+  LoginStore.updateSession(state);
+}
+
 export function addSubscription(state: LoginSession, ...subs: SubscriptionEvent[]) {
   const newSubs = dedupeById([...(state.subscriptions || []), ...subs]);
   if (newSubs.length !== state.subscriptions.length) {
     state.subscriptions = newSubs;
     LoginStore.updateSession(state);
+  }
+}
+
+export function sessionNeedsPin(l: LoginSession) {
+  return l.type === LoginSessionType.PrivateKey || l.type === LoginSessionType.Nip46;
+}
+
+export function createPublisher(l: LoginSession, pin?: PinEncrypted) {
+  switch (l.type) {
+    case LoginSessionType.PrivateKey: {
+      if (!pin) throw new PinRequiredError();
+      l.privateKeyData = pin;
+      return EventPublisher.privateKey(pin.value);
+    }
+    case LoginSessionType.Nip46: {
+      if (!pin) throw new PinRequiredError();
+      l.privateKeyData = pin;
+
+      const relayArgs = (l.remoteSignerRelays ?? []).map(a => `relay=${encodeURIComponent(a)}`);
+      const inner = new PrivateKeySigner(pin.value);
+      const nip46 = new Nip46Signer(`bunker://${unwrap(l.publicKey)}?${[...relayArgs].join("&")}`, inner);
+      return new EventPublisher(nip46, unwrap(l.publicKey));
+    }
+    case LoginSessionType.Nip7os: {
+      return new EventPublisher(new Nip7OsSigner(), unwrap(l.publicKey));
+    }
+    case LoginSessionType.Nip7: {
+      return new EventPublisher(new Nip7Signer(), unwrap(l.publicKey));
+    }
   }
 }

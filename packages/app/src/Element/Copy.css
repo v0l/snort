@@ -1,14 +1,5 @@
-.copy {
-  cursor: pointer;
-  align-items: center;
-}
-
-.copy .body {
+.copy .copy-body {
   font-size: var(--font-size-small);
   color: var(--font-color);
   margin-right: 6px;
-}
-
-.copy .icon {
-  margin-bottom: -4px;
 }

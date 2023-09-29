@@ -1,13 +1,13 @@
 import "./ProfilePage.css";
 import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  createNostrLink,
   encodeTLV,
   encodeTLVEntries,
   EventKind,
   HexKey,
+  NostrLink,
   NostrPrefix,
   TLVEntryType,
   tryParseNostrLink,
@@ -15,11 +15,11 @@ import {
 import { LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
-import { getReactions, unwrap } from "SnortUtils";
+import { findTag, getReactions, unwrap } from "SnortUtils";
 import { formatShort } from "Number";
-import Note from "Element/Note";
+import Note from "Element/Event/Note";
 import Bookmarks from "Element/Bookmarks";
-import RelaysMetadata from "Element/RelaysMetadata";
+import RelaysMetadata from "Element/Relay/RelaysMetadata";
 import { Tab, TabElement } from "Element/Tabs";
 import Icon from "Icons/Icon";
 import useMutedFeed from "Feed/MuteList";
@@ -31,29 +31,31 @@ import useFollowsFeed from "Feed/FollowsFeed";
 import useProfileBadges from "Feed/BadgesFeed";
 import useModeration from "Hooks/useModeration";
 import useZapsFeed from "Feed/ZapsFeed";
-import { default as ZapElement } from "Element/Zap";
-import FollowButton from "Element/FollowButton";
+import { default as ZapElement } from "Element/Event/Zap";
+import FollowButton from "Element/User/FollowButton";
 import { parseId, hexToBech32 } from "SnortUtils";
-import Avatar from "Element/Avatar";
-import Timeline from "Element/Timeline";
+import Avatar from "Element/User/Avatar";
+import Timeline from "Element/Feed/Timeline";
 import Text from "Element/Text";
 import SendSats from "Element/SendSats";
-import Nip05 from "Element/Nip05";
+import Nip05 from "Element/User/Nip05";
 import Copy from "Element/Copy";
-import ProfileImage from "Element/ProfileImage";
-import BlockList from "Element/BlockList";
-import MutedList from "Element/MutedList";
-import FollowsList from "Element/FollowListBase";
+import ProfileImage from "Element/User/ProfileImage";
+import BlockList from "Element/User/BlockList";
+import MutedList from "Element/User/MutedList";
+import FollowsList from "Element/User/FollowListBase";
 import IconButton from "Element/IconButton";
-import FollowsYou from "Element/FollowsYou";
+import FollowsYou from "Element/User/FollowsYou";
 import QrCode from "Element/QrCode";
 import Modal from "Element/Modal";
-import BadgeList from "Element/BadgeList";
+import BadgeList from "Element/User/BadgeList";
 import { ProxyImg } from "Element/ProxyImg";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
 import { EmailRegex } from "Const";
 import { getNip05PubKey } from "Pages/LoginPage";
 import useLogin from "Hooks/useLogin";
+import { ZapTarget } from "Zapper";
+import { useStatusFeed } from "Feed/StatusFeed";
 
 import messages from "./messages";
 
@@ -68,13 +70,13 @@ const RELAYS = 7;
 const BOOKMARKS = 8;
 
 function ZapsProfileTab({ id }: { id: HexKey }) {
-  const zaps = useZapsFeed(createNostrLink(NostrPrefix.PublicKey, id));
+  const zaps = useZapsFeed(new NostrLink(NostrPrefix.PublicKey, id));
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   return (
     <div className="main-content">
-      <div className="zaps-total">
+      <h2 className="p">
         <FormattedMessage {...messages.Sats} values={{ n: formatShort(zapsTotal) }} />
-      </div>
+      </h2>
       {zaps.map(z => (
         <ZapElement showZapped={false} zap={z} />
       ))}
@@ -84,12 +86,12 @@ function ZapsProfileTab({ id }: { id: HexKey }) {
 
 function FollowersTab({ id }: { id: HexKey }) {
   const followers = useFollowersFeed(id);
-  return <FollowsList pubkeys={followers} showAbout={true} />;
+  return <FollowsList pubkeys={followers} showAbout={true} className="p" />;
 }
 
 function FollowsTab({ id }: { id: HexKey }) {
   const follows = useFollowsFeed(id);
-  return <FollowsList pubkeys={follows} showAbout={true} />;
+  return <FollowsList pubkeys={follows} showAbout={true} className="p" />;
 }
 
 function RelaysTab({ id }: { id: HexKey }) {
@@ -113,17 +115,12 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const [id, setId] = useState<string>();
   const user = useUserProfile(id);
-  const loginPubKey = useLogin().publicKey;
+  const login = useLogin();
+  const loginPubKey = login.publicKey;
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
   const aboutText = user?.about || "";
-  const about = Text({
-    content: aboutText,
-    tags: [],
-    creator: "",
-    disableMedia: true,
-  });
   const npub = !id?.startsWith(NostrPrefix.PublicKey) ? hexToBech32(NostrPrefix.PublicKey, id || undefined) : id;
 
   const lnurl = (() => {
@@ -133,14 +130,19 @@ export default function ProfilePage() {
       // ignored
     }
   })();
+  const showBadges = login.preferences.showBadges ?? false;
+  const showStatus = login.preferences.showStatus ?? true;
+
   const website_url =
     user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
   // feeds
   const { blocked } = useModeration();
   const pinned = usePinnedFeed(id);
   const muted = useMutedFeed(id);
-  const badges = useProfileBadges(id);
+  const badges = useProfileBadges(showBadges ? id : undefined);
   const follows = useFollowsFeed(id);
+  const status = useStatusFeed(showStatus ? id : undefined, true);
+
   // tabs
   const ProfileTab = {
     Notes: {
@@ -227,7 +229,7 @@ export default function ProfilePage() {
   } as { [key: string]: Tab };
   const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
   const optionalTabs = [ProfileTab.Zaps, ProfileTab.Relays, ProfileTab.Bookmarks, ProfileTab.Muted].filter(a =>
-    unwrap(a)
+    unwrap(a),
   ) as Tab[];
   const horizontalScroll = useHorizontalScroll();
 
@@ -248,17 +250,41 @@ export default function ProfilePage() {
     setTab(ProfileTab.Notes);
   }, [params]);
 
+  function musicStatus() {
+    if (!status.music) return;
+
+    const link = findTag(status.music, "r");
+    const cover = findTag(status.music, "cover");
+    const inner = () => {
+      return (
+        <div className="flex g8">
+          {cover && <ProxyImg src={cover} size={40} />}
+          <small>🎵 {unwrap(status.music).content}</small>
+        </div>
+      );
+    };
+    if (link) {
+      return (
+        <a href={link} rel="noreferer" target="_blank" className="ext">
+          {inner()}
+        </a>
+      );
+    }
+    return inner();
+  }
+
   function username() {
     return (
       <>
-        <div className="name">
-          <h2>
+        <div className="flex-column g4">
+          <h2 className="flex g4">
             {user?.display_name || user?.name || "Nostrich"}
             <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
           </h2>
           {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
         </div>
-        <BadgeList badges={badges} />
+        {showBadges && <BadgeList badges={badges} />}
+        {showStatus && <>{musicStatus()}</>}
         <div className="link-section">
           <Copy text={npub} />
           {links()}
@@ -297,21 +323,41 @@ export default function ProfilePage() {
         )}
 
         <SendSats
-          lnurl={lnurl?.lnurl}
+          targets={
+            lnurl?.lnurl && id
+              ? [
+                  {
+                    type: "lnurl",
+                    value: lnurl?.lnurl,
+                    weight: 1,
+                    name: user?.display_name || user?.name,
+                    zap: { pubkey: id },
+                  } as ZapTarget,
+                ]
+              : undefined
+          }
           show={showLnQr}
           onClose={() => setShowLnQr(false)}
-          author={id}
-          target={user?.display_name || user?.name}
         />
       </>
     );
   }
 
   function bio() {
+    if (!id) return null;
+
     return (
       aboutText.length > 0 && (
         <div dir="auto" className="about">
-          {about}
+          <Text
+            id={id}
+            content={aboutText}
+            tags={[]}
+            creator={id}
+            disableMedia={true}
+            disableLinkPreview={true}
+            disableMediaSpotlight={true}
+          />
         </div>
       )
     );
@@ -356,7 +402,7 @@ export default function ProfilePage() {
       }
       case FOLLOWS: {
         if (isMe) {
-          return <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={false} />;
+          return <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={false} className="p" />;
         } else {
           return <FollowsTab id={id} />;
         }
@@ -385,7 +431,7 @@ export default function ProfilePage() {
         <Avatar pubkey={id ?? ""} user={user} />
         <div className="profile-actions">
           {renderIcons()}
-          {!isMe && id && <FollowButton pubkey={id} />}
+          {!isMe && id && <FollowButton className="primary" pubkey={id} />}
         </div>
       </div>
     );
@@ -401,7 +447,7 @@ export default function ProfilePage() {
           <Icon name="qr" size={16} />
         </IconButton>
         {showProfileQr && (
-          <Modal className="qr-modal" onClose={() => setShowProfileQr(false)}>
+          <Modal id="profile-qr" className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id} />
             <QrCode data={link} className="m10 align-center" />
             <Copy text={link} className="align-center" />
@@ -420,16 +466,16 @@ export default function ProfilePage() {
                 <Icon name="zap" size={16} />
               </IconButton>
             )}
-            {loginPubKey && (
+            {loginPubKey && !login.readonly && (
               <>
                 <IconButton
                   onClick={() =>
                     navigate(
                       `/messages/${encodeTLVEntries("chat4" as NostrPrefix, {
                         type: TLVEntryType.Author,
-                        length: 64,
+                        length: 32,
                         value: id,
-                      })}`
+                      })}`,
                     )
                   }>
                   <Icon name="envelope" size={16} />
@@ -467,7 +513,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="main-content">
-        <div className="tabs" ref={horizontalScroll}>
+        <div className="tabs p" ref={horizontalScroll}>
           {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows].map(renderTab)}
           {optionalTabs.map(renderTab)}
           {isMe && blocked.length > 0 && renderTab(ProfileTab.Blocked)}

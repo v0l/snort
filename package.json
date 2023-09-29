@@ -6,12 +6,8 @@
   "scripts": {
     "build": "yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/system-react build && yarn workspace @snort/app build",
     "start": "yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/system-react build && yarn workspace @snort/app start",
-    "test": "yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/app test && yarn workspace @snort/system test"
-  },
-  "devDependencies": {
-    "@cloudflare/workers-types": "^4.20230307.0",
-    "@tauri-apps/cli": "^1.2.3",
-    "prettier": "^3.0.0"
+    "test": "yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/app test && yarn workspace @snort/system test",
+    "pre:commit": "yarn workspace @snort/app intl-extract && yarn workspace @snort/app intl-compile && yarn prettier --write ."
   },
   "prettier": {
     "printWidth": 120,
@@ -20,7 +16,10 @@
   },
   "packageManager": "yarn@3.6.3",
   "dependencies": {
+    "@cloudflare/workers-types": "^4.20230307.0",
+    "@tauri-apps/cli": "^1.2.3",
     "eslint": "^8.48.0",
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   }
 }

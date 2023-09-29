@@ -1,4 +1,4 @@
-import { FormattedMessage } from "react-intl";
+import FormattedMessage from "Element/FormattedMessage";
 import { Outlet, RouteObject, useNavigate } from "react-router-dom";
 import SettingsIndex from "Pages/settings/Root";
 import Profile from "Pages/settings/Profile";
@@ -9,6 +9,7 @@ import AccountsPage from "Pages/settings/Accounts";
 import { WalletSettingsRoutes } from "Pages/settings/WalletSettings";
 import { ManageHandleRoutes } from "Pages/settings/handle";
 import ExportKeys from "Pages/settings/Keys";
+import { ModerationSettings } from "./settings/Moderation";
 
 import messages from "./messages";
 
@@ -55,6 +56,10 @@ export const SettingsRoutes: RouteObject[] = [
       {
         path: "keys",
         element: <ExportKeys />,
+      },
+      {
+        path: "moderation",
+        element: <ModerationSettings />,
       },
       ...ManageHandleRoutes,
       ...WalletSettingsRoutes,

@@ -84,11 +84,15 @@ export default class SnortApi {
     return this.#getJson<LinkPreviewData>(`api/v1/preview?url=${encodeURIComponent(url)}`);
   }
 
+  onChainDonation() {
+    return this.#getJson<{ address: string }>("p/on-chain");
+  }
+
   async #getJsonAuthd<T>(
     path: string,
     method?: "GET" | string,
     body?: { [key: string]: string },
-    headers?: { [key: string]: string }
+    headers?: { [key: string]: string },
   ): Promise<T> {
     if (!this.#publisher) {
       throw new Error("Publisher not set");
@@ -110,7 +114,7 @@ export default class SnortApi {
     path: string,
     method?: "GET" | string,
     body?: { [key: string]: string },
-    headers?: { [key: string]: string }
+    headers?: { [key: string]: string },
   ): Promise<T> {
     const rsp = await fetch(`${this.#url}${path}`, {
       method: method,

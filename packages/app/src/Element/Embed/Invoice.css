@@ -1,0 +1,95 @@
+.note-invoice {
+  border: 1px solid var(--gray-superdark);
+  border-radius: 16px;
+  padding: 26px 26px 20px 26px;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  background: var(--invoice-gradient);
+}
+
+.note-invoice.error {
+  padding: 8px 12px !important;
+  color: #aaa;
+  background: transparent;
+}
+
+.note-invoice.expired {
+  background: var(--expired-invoice-gradient);
+  color: var(--font-secondary-color);
+  cursor: not-allowed;
+}
+
+.note-invoice.paid {
+  background: var(--paid-invoice-gradient);
+  cursor: not-allowed;
+}
+
+.invoice-header h4 {
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  margin-bottom: 10px;
+}
+
+.note-invoice .invoice-amount {
+  margin-bottom: 16px;
+}
+
+.note-invoice .invoice-body {
+  color: var(--font-secondary-color);
+  width: 100%;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.note-invoice .invoice-body p {
+  margin-bottom: 16px;
+}
+
+.note-invoice .invoice-body button {
+  width: 100%;
+  height: 44px;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 23px;
+}
+
+.note-invoice.expired .invoice-body button {
+  color: var(--font-secondary-color);
+}
+
+.note-invoice .invoice-body .paid {
+  width: 100%;
+  height: 44px;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--success);
+  color: white;
+  border-radius: 16px;
+}
+
+.note-invoice .invoice-amount {
+  font-weight: 400;
+  font-size: 37px;
+  line-height: 45px;
+}
+
+.note-invoice .invoice-amount .sats {
+  color: var(--font-secondary-color);
+  text-transform: uppercase;
+  font-size: 21px;
+}
+
+.zap-circle {
+  position: absolute;
+  top: 26px;
+  right: 20px;
+  color: var(--font-color);
+}

@@ -1,13 +1,13 @@
 import { useIntl, FormattedMessage } from "react-intl";
 import { useParams } from "react-router-dom";
-import Timeline from "Element/Timeline";
+import Timeline from "Element/Feed/Timeline";
 import { Tab, TabElement } from "Element/Tabs";
 import { useEffect, useState } from "react";
 import { debounce } from "SnortUtils";
 import { router } from "index";
 import TrendingUsers from "Element/TrendingUsers";
 
-import TrendingNotes from "Element/TrendingPosts";
+import TrendingNotes from "Element/Feed/TrendingPosts";
 
 const NOTES = 0;
 const PROFILES = 1;
@@ -106,7 +106,7 @@ const SearchPage = () => {
           autoFocus={true}
         />
       </div>
-      <div className="tabs">{[SearchTab.Posts, SearchTab.Profiles].map(renderTab)}</div>
+      <div className="tabs p">{[SearchTab.Posts, SearchTab.Profiles].map(renderTab)}</div>
       {tabContent()}
     </div>
   );

@@ -1,4 +1,4 @@
-import { unixNow } from "SnortUtils";
+import { unixNow } from "@snort/shared";
 
 export enum SubscriptionType {
   Supporter = 0,
