@@ -107,7 +107,7 @@ const Timeline = (props: TimelineProps) => {
         </>
       )}
       {mainFeed.map(e => (
-        <Note key={e.id} data={e} related={relatedFeed(e.id)} ignoreModeration={props.ignoreModeration} depth={0} />
+        <Note key={e.id} searchedValue={props.subject.discriminator} data={e} related={relatedFeed(e.id)} ignoreModeration={props.ignoreModeration} depth={0} />
       ))}
       {(props.loadMore === undefined || props.loadMore === true) && (
         <div className="flex f-center">

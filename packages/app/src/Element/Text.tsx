@@ -9,6 +9,7 @@ import CashuNuts from "Element/Embed/CashuNuts";
 import RevealMedia from "./Event/RevealMedia";
 import { ProxyImg } from "./ProxyImg";
 import { SpotlightMediaModal } from "./Deck/SpotlightMedia";
+import HighlightedText from "./HighlightedText";
 import { useTextTransformer } from "Hooks/useTextTransformCache";
 
 export interface TextProps {
@@ -22,6 +23,7 @@ export interface TextProps {
   depth?: number;
   truncate?: number;
   className?: string;
+  highlighText?: string;
   onClick?: (e: React.MouseEvent) => void;
 }
 
@@ -36,6 +38,7 @@ export default function Text({
   disableLinkPreview,
   truncate,
   className,
+  highlighText,
   onClick,
 }: TextProps) {
   const [showSpotlight, setShowSpotlight] = useState(false);
@@ -44,6 +47,35 @@ export default function Text({
   const elements = useTextTransformer(id, content, tags);
 
   const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content);
+
+  function renderContentWithHighlightedText(content: string, textToHighlight: string) {
+    const textToHighlightArray = textToHighlight.trim().toLowerCase().split(' ');
+    const re = new RegExp(`(${textToHighlightArray.join('|')})`, 'gi');
+    const splittedContent = content.split(re);
+
+    const fragments = splittedContent.map(c => {
+      if (textToHighlightArray.includes(c.toLowerCase())) {
+        return {
+          type: 'highlighted_text',
+          content: c,
+        } as ParsedFragment;
+      }
+
+      return c;
+    })
+
+    return (
+      <>
+        {fragments.map(f => {
+          if (typeof f === "string") {
+            return f;
+          }
+
+          return <HighlightedText content={f.content} />;
+        })}
+      </>
+    );
+  }
 
   const renderContent = () => {
     let lenCtr = 0;
@@ -96,7 +128,9 @@ export default function Text({
           case "custom_emoji":
             return <ProxyImg src={a.content} size={15} className="custom-emoji" />;
           default:
-            return <div className="text-frag">{a.content}</div>;
+            return <div className="text-frag">
+              {highlighText ? renderContentWithHighlightedText(a.content, highlighText) : a.content}
+            </div>;
         }
       }
     }
