@@ -8,7 +8,7 @@ export const useCopy = (timeout = 2000) => {
     setError(false);
     try {
       if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(text);
       } else {
         const textArea = document.createElement("textarea");
         textArea.value = text;
