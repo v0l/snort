@@ -14,6 +14,7 @@ import Copy from "Element/Copy";
 
 const Developers = [
   bech32ToHex(KieranPubKey), // kieran
+  bech32ToHex("npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk"), // Martti
   bech32ToHex("npub107jk7htfv243u0x5ynn43scq9wrxtaasmrwwa8lfu2ydwag6cx2quqncxg"), // verbiricha
   bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"), // Karnage
 ];
