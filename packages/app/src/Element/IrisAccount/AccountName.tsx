@@ -1,6 +1,6 @@
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function AccountName({ name = '', link = true }) {
+export default function AccountName({ name = "", link = true }) {
   const navigate = useNavigate();
   return (
     <>
@@ -8,15 +8,14 @@ export default function AccountName({ name = '', link = true }) {
         Username: <b>{name}</b>
       </div>
       <div>
-        Short link:{' '}
+        Short link:{" "}
         {link ? (
           <a
             href={`https://iris.to/${name}`}
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               navigate(`/${name}`);
-            }}
-          >
+            }}>
             iris.to/{name}
           </a>
         ) : (

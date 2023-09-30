@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any  */
-import { Component, FormEvent} from 'react';
+import { Component, FormEvent } from "react";
 import { LoginStore } from "Login";
 
-import AccountName from './AccountName';
-import ActiveAccount from './ActiveAccount';
-import ReservedAccount from './ReservedAccount';
+import AccountName from "./AccountName";
+import ActiveAccount from "./ActiveAccount";
+import ReservedAccount from "./ReservedAccount";
+import { ProfileLoader } from "../../index";
 //import {ProfileLoader} from "../../index";
 
 declare global {
@@ -19,7 +20,7 @@ export default class IrisAccount extends Component {
     irisToActive: false,
     existing: null as any,
     profile: null as any,
-    newUserName: '',
+    newUserName: "",
     newUserNameValid: false,
     error: null as any,
     showChallenge: false,
@@ -30,14 +31,11 @@ export default class IrisAccount extends Component {
     let view: any;
 
     if (this.state.irisToActive) {
-      const username = this.state.profile.nip05.split('@')[0];
-      view = <AccountName name={username}/>;
+      const username = this.state.profile?.nip05.split("@")[0];
+      view = <AccountName name={username} />;
     } else if (this.state.existing && this.state.existing.confirmed) {
       view = (
-        <ActiveAccount
-          name={this.state.existing.name}
-          setAsPrimary={() => this.setState({irisToActive: true})}
-        />
+        <ActiveAccount name={this.state.existing.name} setAsPrimary={() => this.setState({ irisToActive: true })} />
       );
     } else if (this.state.existing) {
       view = (
@@ -56,36 +54,33 @@ export default class IrisAccount extends Component {
           <div
             className="cf-turnstile"
             data-sitekey={
-              ['iris.to', 'beta.iris.to', 'snort.social'].includes(window.location.hostname)
-                ? '0x4AAAAAAACsEd8XuwpPTFwz'
-                : '3x00000000000000000000FF'
+              ["iris.to", "beta.iris.to", "snort.social"].includes(window.location.hostname)
+                ? "0x4AAAAAAACsEd8XuwpPTFwz"
+                : "3x00000000000000000000FF"
             }
-            data-callback="cf_turnstile_callback"
-          ></div>
+            data-callback="cf_turnstile_callback"></div>
         </>
       );
     } else {
       view = (
         <div>
           <p>Register an Iris username (iris.to/username)</p>
-          <form onSubmit={(e) => this.showChallenge(e)}>
+          <form onSubmit={e => this.showChallenge(e)}>
             <div className="flex gap-2">
               <input
                 className="input"
                 type="text"
                 placeholder="Username"
                 value={this.state.newUserName}
-                onInput={(e) => this.onNewUserNameChange(e)}
+                onInput={e => this.onNewUserNameChange(e)}
               />
-              <button className="btn btn-primary" type="submit">
-                Register
-              </button>
+              <button type="submit">Register</button>
             </div>
             <div>
               {this.state.newUserNameValid ? (
                 <>
                   <span className="text-iris-green">Username is available</span>
-                  <AccountName name={this.state.newUserName} link={false}/>
+                  <AccountName name={this.state.newUserName} link={false} />
                 </>
               ) : (
                 <span className="text-iris-red">{this.state.invalidUsernameMessage}</span>
@@ -113,7 +108,7 @@ export default class IrisAccount extends Component {
       this.setState({
         newUserName,
         newUserNameValid: false,
-        invalidUsernameMessage: '',
+        invalidUsernameMessage: "",
       });
       return;
     }
@@ -121,7 +116,7 @@ export default class IrisAccount extends Component {
       this.setState({
         newUserName,
         newUserNameValid: false,
-        invalidUsernameMessage: 'Username must be between 8 and 15 characters',
+        invalidUsernameMessage: "Username must be between 8 and 15 characters",
       });
       return;
     }
@@ -129,13 +124,13 @@ export default class IrisAccount extends Component {
       this.setState({
         newUserName,
         newUserNameValid: false,
-        invalidUsernameMessage: 'Username must only contain lowercase letters and numbers',
+        invalidUsernameMessage: "Username must only contain lowercase letters and numbers",
       });
       return;
     }
     this.setState({
       newUserName,
-      invalidUsernameMessage: '',
+      invalidUsernameMessage: "",
     });
     this.checkAvailabilityFromAPI(newUserName);
   }
@@ -148,7 +143,7 @@ export default class IrisAccount extends Component {
     if (res.status < 500) {
       const json = await res.json();
       if (json.available) {
-        this.setState({newUserNameValid: true});
+        this.setState({ newUserNameValid: true });
       } else {
         this.setState({
           newUserNameValid: false,
@@ -158,10 +153,10 @@ export default class IrisAccount extends Component {
     } else {
       this.setState({
         newUserNameValid: false,
-        invalidUsernameMessage: 'Error checking username availability',
+        invalidUsernameMessage: "Error checking username availability",
       });
     }
-  }
+  };
 
   showChallenge(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -181,15 +176,15 @@ export default class IrisAccount extends Component {
   }
 
   async register(cfToken: any) {
-    console.log('register', cfToken);
+    console.log("register", cfToken);
     const login = LoginStore.snapshot();
-    const publisher = LoginStore.getPublisher(login.id)
+    const publisher = LoginStore.getPublisher(login.id);
     const event = await publisher?.note(`iris.to/${this.state.newUserName}`);
     // post signed event as request body to https://api.iris.to/user/confirm_user
-    const res = await fetch('https://api.iris.to/user/signup', {
-      method: 'POST',
+    const res = await fetch("https://api.iris.to/user/signup", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ event, cfToken }),
     });
@@ -205,24 +200,24 @@ export default class IrisAccount extends Component {
     } else {
       res
         .json()
-        .then((json) => {
-          this.setState({ error: json.message || 'error' });
+        .then(json => {
+          this.setState({ error: json.message || "error" });
         })
         .catch(() => {
-          this.setState({ error: 'error' });
+          this.setState({ error: "error" });
         });
     }
   }
 
   async enableReserved() {
     const login = LoginStore.snapshot();
-    const publisher = LoginStore.getPublisher(login.id)
+    const publisher = LoginStore.getPublisher(login.id);
     const event = await publisher?.note(`iris.to/${this.state.newUserName}`);
     // post signed event as request body to https://api.iris.to/user/confirm_user
-    const res = await fetch('https://api.iris.to/user/confirm_user', {
-      method: 'POST',
+    const res = await fetch("https://api.iris.to/user/confirm_user", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(event),
     });
@@ -234,11 +229,11 @@ export default class IrisAccount extends Component {
     } else {
       res
         .json()
-        .then((json) => {
-          this.setState({ error: json.message || 'error' });
+        .then(json => {
+          this.setState({ error: json.message || "error" });
         })
         .catch(() => {
-          this.setState({ error: 'error' });
+          this.setState({ error: "error" });
         });
     }
   }
@@ -248,13 +243,13 @@ export default class IrisAccount extends Component {
       return;
     }
     const login = LoginStore.snapshot();
-    const publisher = LoginStore.getPublisher(login.id)
+    const publisher = LoginStore.getPublisher(login.id);
     const event = await publisher?.note(`decline iris.to/${this.state.newUserName}`);
     // post signed event as request body to https://api.iris.to/user/confirm_user
-    const res = await fetch('https://api.iris.to/user/decline_user', {
-      method: 'POST',
+    const res = await fetch("https://api.iris.to/user/decline_user", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(event),
     });
@@ -263,11 +258,11 @@ export default class IrisAccount extends Component {
     } else {
       res
         .json()
-        .then((json) => {
-          this.setState({ error: json.message || 'error' });
+        .then(json => {
+          this.setState({ error: json.message || "error" });
         })
         .catch(() => {
-          this.setState({ error: 'error' });
+          this.setState({ error: "error" });
         });
     }
   }
@@ -275,22 +270,14 @@ export default class IrisAccount extends Component {
   componentDidMount() {
     const session = LoginStore.snapshot();
     const myPub = session.publicKey;
-    /*
-    ProfileLoader.Cache.hook(h, myPub);
-    SocialNetwork.getProfile(
-      myPub,
-      (profile) => {
-        const irisToActive =
-          profile && profile.nip05 && profile.nip05valid && profile.nip05.endsWith('@iris.to');
-        this.setState({ profile, irisToActive });
-        if (profile && !irisToActive) {
-          this.checkExistingAccount(myPub);
-        }
-      },
-      true,
-    );
-
-     */
+    ProfileLoader.Cache.hook(() => {
+      const profile = ProfileLoader.Cache.getFromCache(myPub);
+      const irisToActive = profile && profile.nip05 && profile.nip05.endsWith("@iris.to");
+      this.setState({ profile, irisToActive });
+      if (profile && !irisToActive) {
+        this.checkExistingAccount(myPub);
+      }
+    }, myPub);
     this.checkExistingAccount(myPub);
   }
 

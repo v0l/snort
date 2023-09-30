@@ -1,12 +1,12 @@
-import AccountName from './AccountName';
+import AccountName from "./AccountName";
 import useLogin from "../../Hooks/useLogin";
-import {useUserProfile} from "@snort/system-react";
-import {System} from "../../index";
-import {UserCache} from "../../Cache";
+import { useUserProfile } from "@snort/system-react";
+import { System } from "../../index";
+import { UserCache } from "../../Cache";
 import useEventPublisher from "../../Hooks/useEventPublisher";
-import {mapEventToProfile} from "@snort/system";
+import { mapEventToProfile } from "@snort/system";
 
-export default function ActiveAccount({ name = '', setAsPrimary = () => {} }) {
+export default function ActiveAccount({ name = "", setAsPrimary = () => {} }) {
   const { publicKey, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
     readonly: s.readonly,
@@ -20,7 +20,7 @@ export default function ActiveAccount({ name = '', setAsPrimary = () => {} }) {
     }
     // copy user object and delete internal fields
     const userCopy = {
-      ...profile,
+      ...(profile || {}),
       nip05,
     } as Record<string, string | number | undefined | boolean>;
     delete userCopy["loaded"];
@@ -44,7 +44,7 @@ export default function ActiveAccount({ name = '', setAsPrimary = () => {} }) {
   }
 
   const onClick = () => {
-    const newNip = name + '@iris.to';
+    const newNip = name + "@iris.to";
     const timeout = setTimeout(() => {
       saveProfile(newNip);
     }, 2000);
@@ -64,7 +64,7 @@ export default function ActiveAccount({ name = '', setAsPrimary = () => {} }) {
         <AccountName name={name} />
       </div>
       <p>
-        <button className="btn btn-sm btn-primary" onClick={onClick}>
+        <button type="button" onClick={onClick}>
           Set as primary Nostr address (nip05)
         </button>
       </p>

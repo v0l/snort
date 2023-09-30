@@ -1,6 +1,6 @@
-import AccountName from './AccountName';
+import AccountName from "./AccountName";
 
-export default function ReservedAccount({ name = '', enableReserved = () => {}, declineReserved = () => {} }) {
+export default function ReservedAccount({ name = "", enableReserved = () => {}, declineReserved = () => {} }) {
   return (
     <div>
       <p className="text-iris-green">
