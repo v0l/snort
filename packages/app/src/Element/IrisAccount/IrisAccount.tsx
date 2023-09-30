@@ -6,7 +6,6 @@ import AccountName from "./AccountName";
 import ActiveAccount from "./ActiveAccount";
 import ReservedAccount from "./ReservedAccount";
 import { ProfileLoader } from "../../index";
-//import {ProfileLoader} from "../../index";
 
 declare global {
   interface Window {
