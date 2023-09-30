@@ -12,7 +12,7 @@ export interface KeyedHookFilter {
 /**
  * Dexie backed generic hookable store
  */
-export abstract class FeedCache<TCached> {
+export abstract class   FeedCache<TCached> {
   #name: string;
   #hooks: Array<KeyedHookFilter> = [];
   #snapshot: Array<TCached> = [];
@@ -109,16 +109,24 @@ export abstract class FeedCache<TCached> {
     const k = this.key(obj);
     this.cache.set(k, obj);
     if (this.table) {
-      await this.table.put(obj);
-      this.onTable.add(k);
+      try {
+        await this.table.put(obj);
+        this.onTable.add(k);
+      } catch (e) {
+        console.error(e);
+      }
     }
     this.notifyChange([k]);
   }
 
   async bulkSet(obj: Array<TCached> | Readonly<Array<TCached>>) {
     if (this.table) {
-      await this.table.bulkPut(obj);
-      obj.forEach(a => this.onTable.add(this.key(a)));
+      try {
+        await this.table.bulkPut(obj);
+        obj.forEach(a => this.onTable.add(this.key(a)));
+      } catch (e) {
+        console.error(e);
+      }
     }
     obj.forEach(v => this.cache.set(this.key(v), v));
     this.notifyChange(obj.map(a => this.key(a)));
