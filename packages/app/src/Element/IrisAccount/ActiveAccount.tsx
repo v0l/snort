@@ -5,6 +5,7 @@ import { System } from "../../index";
 import { UserCache } from "../../Cache";
 import useEventPublisher from "../../Hooks/useEventPublisher";
 import { mapEventToProfile } from "@snort/system";
+import FormattedMessage from "Element/FormattedMessage";
 
 export default function ActiveAccount({ name = "", setAsPrimary = () => {} }) {
   const { publicKey, readonly } = useLogin(s => ({
@@ -60,12 +61,12 @@ export default function ActiveAccount({ name = "", setAsPrimary = () => {} }) {
   return (
     <div>
       <div className="negative">
-        You have an active iris.to account:
+        <FormattedMessage defaultMessage="You have an active iris.to account" />:
         <AccountName name={name} />
       </div>
       <p>
         <button type="button" onClick={onClick}>
-          Set as primary Nostr address (nip05)
+          <FormattedMessage defaultMessage="Set as primary Nostr address (nip05)" />
         </button>
       </p>
     </div>

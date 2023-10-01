@@ -6,6 +6,9 @@ import AccountName from "./AccountName";
 import ActiveAccount from "./ActiveAccount";
 import ReservedAccount from "./ReservedAccount";
 import { ProfileLoader } from "../../index";
+import FormattedMessage from "Element/FormattedMessage";
+import { injectIntl } from "react-intl";
+import messages from "Element/messages";
 
 declare global {
   interface Window {
@@ -13,8 +16,12 @@ declare global {
   }
 }
 
+type Props = {
+  intl: any;
+};
+
 // TODO split into smaller components
-export default class IrisAccount extends Component {
+class IrisAccount extends Component<Props> {
   state = {
     irisToActive: false,
     existing: null as any,
@@ -63,7 +70,9 @@ export default class IrisAccount extends Component {
     } else {
       view = (
         <div>
-          <p>Register an Iris username (iris.to/username)</p>
+          <p>
+            <FormattedMessage defaultMessage="Register an Iris username" /> (iris.to/username)
+          </p>
           <form onSubmit={e => this.showChallenge(e)}>
             <div className="flex gap-2">
               <input
@@ -73,12 +82,16 @@ export default class IrisAccount extends Component {
                 value={this.state.newUserName}
                 onInput={e => this.onNewUserNameChange(e)}
               />
-              <button type="submit">Register</button>
+              <button type="submit">
+                <FormattedMessage defaultMessage="Register" />
+              </button>
             </div>
             <div>
               {this.state.newUserNameValid ? (
                 <>
-                  <span className="text-iris-green">Username is available</span>
+                  <span className="text-iris-green">
+                    <FormattedMessage defaultMessage="Username is available" />
+                  </span>
                   <AccountName name={this.state.newUserName} link={false} />
                 </>
               ) : (
@@ -92,7 +105,9 @@ export default class IrisAccount extends Component {
 
     return (
       <>
-        <h3>Iris.to account</h3>
+        <h3>
+          <FormattedMessage defaultMessage="Iris.to account" />
+        </h3>
         {view}
         <p>
           <a href="https://github.com/irislib/faq#iris-username">FAQ</a>
@@ -111,11 +126,12 @@ export default class IrisAccount extends Component {
       });
       return;
     }
+
     if (newUserName.length < 8 || newUserName.length > 15) {
       this.setState({
         newUserName,
         newUserNameValid: false,
-        invalidUsernameMessage: "Username must be between 8 and 15 characters",
+        invalidUsernameMessage: this.props.intl.formatMessage(messages.IrisUserNameLengthError),
       });
       return;
     }
@@ -123,7 +139,7 @@ export default class IrisAccount extends Component {
       this.setState({
         newUserName,
         newUserNameValid: false,
-        invalidUsernameMessage: "Username must only contain lowercase letters and numbers",
+        invalidUsernameMessage: this.props.intl.formatMessage(messages.IrisUserNameFormatError),
       });
       return;
     }
@@ -244,7 +260,6 @@ export default class IrisAccount extends Component {
     const login = LoginStore.snapshot();
     const publisher = LoginStore.getPublisher(login.id);
     const event = await publisher?.note(`decline iris.to/${this.state.newUserName}`);
-    // post signed event as request body to https://api.iris.to/user/confirm_user
     const res = await fetch("https://api.iris.to/user/decline_user", {
       method: "POST",
       headers: {
@@ -288,3 +303,5 @@ export default class IrisAccount extends Component {
     }
   }
 }
+
+export default injectIntl(IrisAccount);

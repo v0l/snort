@@ -12,7 +12,7 @@ export interface KeyedHookFilter {
 /**
  * Dexie backed generic hookable store
  */
-export abstract class   FeedCache<TCached> {
+export abstract class FeedCache<TCached> {
   #name: string;
   #hooks: Array<KeyedHookFilter> = [];
   #snapshot: Array<TCached> = [];

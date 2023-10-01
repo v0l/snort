@@ -1,20 +1,24 @@
 import AccountName from "./AccountName";
+import FormattedMessage from "Element/FormattedMessage";
 
 export default function ReservedAccount({ name = "", enableReserved = () => {}, declineReserved = () => {} }) {
   return (
     <div>
       <p className="text-iris-green">
-        Username iris.to/<b>{name}</b> is reserved for you!
+        <FormattedMessage
+          defaultMessage="Username iris.to/<b>{name}</b> is reserved for you!"
+          values={{ name, b: s => <b>{s}</b> }}
+        />
       </p>
       <AccountName name={name} link={false} />
       <p>
         <button className="btn btn-sm btn-primary" onClick={() => enableReserved()}>
-          Yes please
+          <FormattedMessage defaultMessage="Yes please" />
         </button>
       </p>
       <p>
         <button className="btn btn-sm btn-neutral" onClick={() => declineReserved()}>
-          No thanks
+          <FormattedMessage defaultMessage="No thanks" />
         </button>
       </p>
     </div>

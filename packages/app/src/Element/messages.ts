@@ -98,4 +98,6 @@ export default defineMessages({
   ConfirmUnpin: { defaultMessage: "Are you sure you want to unpin this note?" },
   ReactionsLink: { defaultMessage: "{n} Reactions" },
   ReBroadcast: { defaultMessage: "Broadcast Again" },
+  IrisUserNameLengthError: { defaultMessage: "Name must be between 1 and 32 characters" },
+  IrisUserNameFormatError: { defaultMessage: "Username must only contain lowercase letters and numbers" },
 });

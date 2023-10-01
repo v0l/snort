@@ -1,14 +1,15 @@
 import { useNavigate } from "react-router-dom";
+import FormattedMessage from "Element/FormattedMessage";
 
 export default function AccountName({ name = "", link = true }) {
   const navigate = useNavigate();
   return (
     <>
       <div>
-        Username: <b>{name}</b>
+        <FormattedMessage defaultMessage="Username" />: <b>{name}</b>
       </div>
       <div>
-        Short link:{" "}
+        <FormattedMessage defaultMessage="Short link" />:{" "}
         {link ? (
           <a
             href={`https://iris.to/${name}`}
@@ -23,7 +24,7 @@ export default function AccountName({ name = "", link = true }) {
         )}
       </div>
       <div>
-        Nostr address (nip05): <b>{name}@iris.to</b>
+        <FormattedMessage defaultMessage="Nostr address (nip05)" />: <b>{name}@iris.to</b>
       </div>
     </>
   );
