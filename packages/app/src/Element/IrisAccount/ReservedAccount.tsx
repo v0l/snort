@@ -4,7 +4,7 @@ import FormattedMessage from "Element/FormattedMessage";
 export default function ReservedAccount({ name = "", enableReserved = () => {}, declineReserved = () => {} }) {
   return (
     <div>
-      <p className="text-iris-green">
+      <p className="success">
         <FormattedMessage
           defaultMessage="Username iris.to/<b>{name}</b> is reserved for you!"
           values={{ name, b: s => <b>{s}</b> }}

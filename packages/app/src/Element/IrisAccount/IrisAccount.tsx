@@ -52,7 +52,7 @@ class IrisAccount extends Component<Props> {
         />
       );
     } else if (this.state.error) {
-      view = <div className="text-iris-red">Error: {this.state.error}</div>;
+      view = <div className="error">Error: {this.state.error}</div>;
     } else if (this.state.showChallenge) {
       window.cf_turnstile_callback = (token: any) => this.register(token);
       view = (
@@ -89,13 +89,13 @@ class IrisAccount extends Component<Props> {
             <div>
               {this.state.newUserNameValid ? (
                 <>
-                  <span className="text-iris-green">
+                  <span className="success">
                     <FormattedMessage defaultMessage="Username is available" />
                   </span>
                   <AccountName name={this.state.newUserName} link={false} />
                 </>
               ) : (
-                <span className="text-iris-red">{this.state.invalidUsernameMessage}</span>
+                <span className="error">{this.state.invalidUsernameMessage}</span>
               )}
             </div>
           </form>
