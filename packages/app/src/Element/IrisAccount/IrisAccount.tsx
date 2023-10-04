@@ -74,7 +74,7 @@ class IrisAccount extends Component<Props> {
             <FormattedMessage defaultMessage="Register an Iris username" /> (iris.to/username)
           </p>
           <form onSubmit={e => this.showChallenge(e)}>
-            <div className="flex gap-2">
+            <div className="flex g8">
               <input
                 className="input"
                 type="text"
