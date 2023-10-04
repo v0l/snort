@@ -64,6 +64,7 @@ const config = {
       excludeChunks: ["pow", "bench"],
       templateParameters: {
         appTitle,
+        appleTouchIconUrl: appConfig.get("appleTouchIconUrl"),
       },
     }),
     new HtmlWebpackPlugin({
