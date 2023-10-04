@@ -14,6 +14,23 @@ const appConfig = require("config");
 
 const isProduction = process.env.NODE_ENV == "production";
 
+const appTitle = appConfig.get("appTitle");
+
+const copyPatterns = [
+  { from: "public/robots.txt" },
+  { from: "public/nostrich_512.png" },
+  { from: "public/nostrich_256.png" },
+  { from: "_headers" },
+];
+
+if (appTitle === "iris") {
+  copyPatterns.push({ from: "public/iris/manifest_iris.json", to: "manifest.json" });
+  copyPatterns.push({ from: "public/iris/img", to: "img" });
+  copyPatterns.push({ from: "public/iris/.well-known", to: ".well-known" });
+} else {
+  copyPatterns.push({ from: "public/manifest.json" });
+}
+
 const config = {
   entry: {
     main: "./src/index.tsx",
@@ -39,20 +56,14 @@ const config = {
   },
   plugins: [
     new CopyPlugin({
-      patterns: [
-        { from: "public/manifest.json" },
-        { from: "public/robots.txt" },
-        { from: "public/nostrich_512.png" },
-        { from: "public/nostrich_256.png" },
-        { from: "_headers" },
-      ],
+      patterns: copyPatterns,
     }),
     new HtmlWebpackPlugin({
       template: "public/index.html",
       favicon: appConfig.get("favicon"),
       excludeChunks: ["pow", "bench"],
       templateParameters: {
-        appTitle: appConfig.get("appTitle"),
+        appTitle,
       },
     }),
     new HtmlWebpackPlugin({
