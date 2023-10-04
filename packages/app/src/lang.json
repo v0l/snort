@@ -157,6 +157,9 @@
   "4L2vUY": {
     "defaultMessage": "Your new NIP-05 handle is:"
   },
+  "4MBtMa": {
+    "defaultMessage": "Name must be between 1 and 32 characters"
+  },
   "4OB335": {
     "defaultMessage": "Dislike"
   },
@@ -329,6 +332,9 @@
   "BcGMo+": {
     "defaultMessage": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
   },
+  "BjNwZW": {
+    "defaultMessage": "Nostr address (nip05)"
+  },
   "C1LjMx": {
     "defaultMessage": "Lightning Donation"
   },
@@ -400,6 +406,9 @@
   },
   "EcZF24": {
     "defaultMessage": "Custom Relays"
+  },
+  "EcfIwB": {
+    "defaultMessage": "Username is available"
   },
   "EcglP9": {
     "defaultMessage": "Key"
@@ -617,6 +626,9 @@
   "MWTx65": {
     "defaultMessage": "Default Page"
   },
+  "MiMipu": {
+    "defaultMessage": "Set as primary Nostr address (nip05)"
+  },
   "Mrpkot": {
     "defaultMessage": "Pay for subscription"
   },
@@ -625,6 +637,9 @@
   },
   "MzRYWH": {
     "defaultMessage": "Buying {item}"
+  },
+  "Mzizei": {
+    "defaultMessage": "Iris.to account"
   },
   "N2IrpM": {
     "defaultMessage": "Confirm"
@@ -661,6 +676,9 @@
   },
   "OLEm6z": {
     "defaultMessage": "Unknown login error"
+  },
+  "OQSOJF": {
+    "defaultMessage": "Get a free nostr address"
   },
   "OQXnew": {
     "defaultMessage": "You subscription is still active, you can't renew yet"
@@ -716,6 +734,9 @@
   },
   "RDZVQL": {
     "defaultMessage": "Check"
+  },
+  "RSr2uB": {
+    "defaultMessage": "Username must only contain lowercase letters and numbers"
   },
   "RahCRH": {
     "defaultMessage": "Expired"
@@ -789,6 +810,9 @@
   "Up5U7K": {
     "defaultMessage": "Block"
   },
+  "UrKTqQ": {
+    "defaultMessage": "You have an active iris.to account"
+  },
   "VBadwB": {
     "defaultMessage": "Hmm, can't find a key manager extension.. try reloading the page."
   },
@@ -800,6 +824,9 @@
   },
   "VR5eHw": {
     "defaultMessage": "Public key (npub/nprofile)"
+  },
+  "VcwrfF": {
+    "defaultMessage": "Yes please"
   },
   "VlJkSk": {
     "defaultMessage": "{n} muted"
@@ -877,6 +904,9 @@
   "ZS+jRE": {
     "defaultMessage": "Send zap splits to"
   },
+  "Zff6lu": {
+    "defaultMessage": "Username iris.to/<b>{name}</b> is reserved for you!"
+  },
   "Zr5TMx": {
     "defaultMessage": "Setup profile"
   },
@@ -912,6 +942,9 @@
   },
   "bxv59V": {
     "defaultMessage": "Just now"
+  },
+  "c+JYNI": {
+    "defaultMessage": "No thanks"
   },
   "c+oiJe": {
     "defaultMessage": "Install Extension",
@@ -960,6 +993,9 @@
   },
   "dOQCL8": {
     "defaultMessage": "Display name"
+  },
+  "deEeEI": {
+    "defaultMessage": "Register"
   },
   "e61Jf3": {
     "defaultMessage": "Coming soon"
@@ -1108,6 +1144,9 @@
   },
   "k7sKNy": {
     "defaultMessage": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
+  },
+  "kEZUR8": {
+    "defaultMessage": "Register an Iris username"
   },
   "kJYo0u": {
     "defaultMessage": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"
@@ -1291,6 +1330,9 @@
   },
   "rudscU": {
     "defaultMessage": "Failed to load follows, please try again later"
+  },
+  "rx1i0i": {
+    "defaultMessage": "Short link"
   },
   "sKDn4e": {
     "defaultMessage": "Show Badges"

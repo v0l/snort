@@ -162,7 +162,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               <button className="flex f-center" type="button" onClick={() => navigate("/nostr-address")}>
                 <FormattedMessage defaultMessage="Buy nostr address" />
               </button>
-              <button className="flex f-center secondary" type="button" onClick={() => navigate("/nostr-address")}>
+              <button className="flex f-center secondary" type="button" onClick={() => navigate("/free-nostr-address")}>
                 <FormattedMessage defaultMessage="Get a free one" />
               </button>
             </div>
