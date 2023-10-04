@@ -142,9 +142,12 @@ export function LoginUnlock() {
         <PinPrompt
           subTitle={
             <p>
-              <FormattedMessage defaultMessage="Enter a pin to encrypt your private key, you must enter this pin every time you open {site}." values={{
-                site: process.env.APP_NAME_CAPITALIZED
-              }} />
+              <FormattedMessage
+                defaultMessage="Enter a pin to encrypt your private key, you must enter this pin every time you open {site}."
+                values={{
+                  site: process.env.APP_NAME_CAPITALIZED,
+                }}
+              />
             </p>
           }
           onResult={encryptMigration}
