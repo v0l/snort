@@ -139,7 +139,7 @@ export default function LoginPage() {
 
   function generateNip46() {
     const meta = {
-      name: "Snort",
+      name: process.env.APP_NAME_CAPITALIZED,
       url: window.location.href,
     };
 

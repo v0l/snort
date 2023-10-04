@@ -12,15 +12,22 @@ export default defineMessages({
   YourPrivkey: { defaultMessage: "Your private key" },
   YourMnemonic: { defaultMessage: "Your mnemonic phrase" },
   KeysSaved: { defaultMessage: "I have saved my keys, continue" },
-  WhatIsSnort: { defaultMessage: "What is Snort and how does it work?" },
+  WhatIsSnort: {
+    defaultMessage: "What is {site} and how does it work?",
+    values: { site: process.env.APP_NAME_CAPITALIZED },
+  },
   WhatIsSnortIntro: {
-    defaultMessage: `Snort is a Nostr UI, nostr is a decentralised protocol for saving and distributing "notes".`,
+    defaultMessage: `{site} is a Nostr UI, nostr is a decentralised protocol for saving and distributing "notes".`,
+    values: { site: process.env.APP_NAME_CAPITALIZED },
   },
   WhatIsSnortNotes: {
     defaultMessage: `Notes hold text content, the most popular usage of these notes is to store "tweet like" messages.`,
   },
 
-  WhatIsSnortExperience: { defaultMessage: "Snort is designed to have a similar experience to Twitter." },
+  WhatIsSnortExperience: {
+    defaultMessage: "{site} is designed to have a similar experience to Twitter.",
+    values: { site: process.env.APP_NAME_CAPITALIZED },
+  },
   HowKeysWork: { defaultMessage: "How do keys work?" },
   DigitalSignatures: {
     defaultMessage: `Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content.`,
@@ -62,9 +69,10 @@ export default defineMessages({
   Funding: { defaultMessage: "Fund developers and platforms providing NIP-05 verification services" },
   NameSquatting: {
     defaultMessage:
-      "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule.",
+      "Name-squatting and impersonation is not allowed. {site} and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule.",
+    values: { site: process.env.APP_NAME_CAPITALIZED },
   },
-  PreviewOnSnort: { defaultMessage: "Preview on snort" },
+  PreviewOnSnort: { defaultMessage: "Preview on {site}", values: { site: process.env.APP_NAME_CAPITALIZED } },
   GetSnortId: { defaultMessage: "Get a Snort identifier" },
   GetSnortIdHelp: {
     defaultMessage:

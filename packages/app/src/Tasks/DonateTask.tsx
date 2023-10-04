@@ -13,7 +13,7 @@ export class DonateTask extends BaseUITask {
     return (
       <>
         <p>
-          <FormattedMessage defaultMessage="Thanks for using Snort, please consider donating if you can." />
+          <FormattedMessage defaultMessage="Thanks for using {site}, please consider donating if you can." values={{ site: process.env.APP_NAME_CAPITALIZED }} />
         </p>
         <Link to="/donate">
           <button>

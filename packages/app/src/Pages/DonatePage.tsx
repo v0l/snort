@@ -92,10 +92,10 @@ const DonatePage = () => {
   return (
     <div className="main-content p">
       <h2>
-        <FormattedMessage defaultMessage="Help fund the development of Snort" />
+        <FormattedMessage defaultMessage="Help fund the development of {site}" values={{ site: process.env.APP_NAME_CAPITALIZED }} />
       </h2>
       <p>
-        <FormattedMessage defaultMessage="Snort is an open source project built by passionate people in their free time" />
+        <FormattedMessage defaultMessage="{site} is an open source project built by passionate people in their free time" values={{ site: process.env.APP_NAME_CAPITALIZED }} />
       </p>
       <p>
         <FormattedMessage defaultMessage="Your donations are greatly appreciated" />
