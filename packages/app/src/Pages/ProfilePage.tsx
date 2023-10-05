@@ -121,7 +121,7 @@ export default function ProfilePage() {
   const isMe = loginPubKey === id;
   const [showLnQr, setShowLnQr] = useState<boolean>(false);
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
-  const [showAvatarModal, setShowAvatarModal] = useState<boolean>(false);
+  const [modalImage, setModalImage] = useState<string>("");
   const aboutText = user?.about || "";
   const npub = !id?.startsWith(NostrPrefix.PublicKey) ? hexToBech32(NostrPrefix.PublicKey, id || undefined) : id;
 
@@ -430,12 +430,7 @@ export default function ProfilePage() {
   function avatar() {
     return (
       <div className="avatar-wrapper w-max">
-        <Avatar
-          pubkey={id ?? ""}
-          user={user}
-          onClick={() => user?.picture && setShowAvatarModal(true)}
-          className="pointer"
-        />
+        <Avatar pubkey={id ?? ""} user={user} onClick={() => setModalImage(user?.picture || "")} className="pointer" />
         <div className="profile-actions">
           {renderIcons()}
           {!isMe && id && <FollowButton className="primary" pubkey={id} />}
@@ -513,7 +508,15 @@ export default function ProfilePage() {
   return (
     <>
       <div className="profile">
-        {user?.banner && <ProxyImg alt="banner" className="banner" src={user.banner} size={w} />}
+        {user?.banner && (
+          <ProxyImg
+            alt="banner"
+            className="banner pointer"
+            src={user.banner}
+            size={w}
+            onClick={() => setModalImage(user.banner || "")}
+          />
+        )}
         <div className="profile-wrapper w-max">
           {avatar()}
           {userDetails()}
@@ -527,9 +530,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="main-content">{tabContent()}</div>
-      {user?.picture && showAvatarModal && (
-        <SpotlightMediaModal onClose={() => setShowAvatarModal(false)} images={[user.picture]} idx={0} />
-      )}
+      {modalImage && <SpotlightMediaModal onClose={() => setModalImage("")} images={[modalImage]} idx={0} />}
     </>
   );
 }
