@@ -3,7 +3,7 @@ import "./PinPrompt.css";
 import { ReactNode, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { unwrap } from "@snort/shared";
-import { EventPublisher, InvalidPinError, PinEncrypted, PinEncryptedPayload } from "@snort/system";
+import { EventPublisher, InvalidPinError, PinEncrypted } from "@snort/system";
 
 import useEventPublisher from "Hooks/useEventPublisher";
 import { LoginStore, createPublisher, sessionNeedsPin } from "Login";
@@ -67,7 +67,7 @@ export function PinPrompt({
           <h2>
             <FormattedMessage defaultMessage="Enter Pin" />
           </h2>
-          {subTitle}
+          {subTitle ? <div>{subTitle}</div> : null}
           <input
             type="number"
             onChange={e => setPin(e.target.value)}
@@ -113,9 +113,9 @@ export function LoginUnlock() {
   }
 
   async function unlockSession(pin: string) {
-    const key = new PinEncrypted(unwrap(login.privateKeyData) as PinEncryptedPayload);
-    await key.decrypt(pin);
-    const pub = createPublisher(login, key);
+    const key = unwrap(login.privateKeyData);
+    await key.unlock(pin);
+    const pub = createPublisher(login);
     if (pub) {
       if (login.preferences.pow) {
         pub.pow(login.preferences.pow, new WasmPowWorker());

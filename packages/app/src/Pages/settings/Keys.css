@@ -3,3 +3,28 @@
   border: 2px dashed #222222;
   border-radius: 16px;
 }
+
+.mnemonic-grid {
+  display: grid;
+  text-align: center;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.mnemonic-grid > div {
+  border: 1px solid #222222;
+  border-radius: 5px;
+  overflow: hidden;
+  user-select: none;
+}
+
+.mnemonic-grid .word > div:nth-of-type(1) {
+  background-color: var(--gray);
+  padding: 4px 8px;
+  min-width: 1.5em;
+  font-variant-numeric: ordinal;
+}
+
+.mnemonic-grid .word > div:nth-of-type(2) {
+  flex-grow: 1;
+}

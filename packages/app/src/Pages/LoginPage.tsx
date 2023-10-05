@@ -3,15 +3,15 @@ import "./LoginPage.css";
 import { CSSProperties, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useIntl, FormattedMessage } from "react-intl";
-import { HexKey, Nip46Signer, PinEncrypted, PrivateKeySigner } from "@snort/system";
+import { HexKey, Nip46Signer, NotEncrypted, PinEncrypted, PrivateKeySigner } from "@snort/system";
 
-import { bech32ToHex, getPublicKey, unwrap } from "SnortUtils";
+import { bech32ToHex, getPublicKey, isHex, unwrap } from "SnortUtils";
 import ZapButton from "Element/Event/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
 import Icon from "Icons/Icon";
 import { generateNewLogin, LoginSessionType, LoginStore } from "Login";
 import AsyncButton from "Element/AsyncButton";
-import useLoginHandler, { PinRequiredError } from "Hooks/useLoginHandler";
+import useLoginHandler from "Hooks/useLoginHandler";
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { bytesToHex } from "@noble/curves/abstract/utils";
 import Modal from "Element/Modal";
@@ -94,16 +94,20 @@ export default function LoginPage() {
     setArt({ ...ret, link: url });
   }, []);
 
+  async function makeKeyStore(key: string, pin?: string) {
+    if (pin) {
+      return await PinEncrypted.create(key, pin);
+    } else {
+      return new NotEncrypted(key);
+    }
+  }
+
   async function doLogin(pin?: string) {
     setError("");
     try {
-      await loginHandler.doLogin(key, pin);
+      await loginHandler.doLogin(key, key => makeKeyStore(key, pin));
       navigate("/");
     } catch (e) {
-      if (e instanceof PinRequiredError) {
-        setPin(true);
-        return;
-      }
       if (e instanceof Error) {
         setError(e.message);
       } else {
@@ -117,9 +121,9 @@ export default function LoginPage() {
     }
   }
 
-  async function makeRandomKey(pin: string) {
+  async function makeRandomKey(pin?: string) {
     try {
-      await generateNewLogin(pin);
+      await generateNewLogin(key => makeKeyStore(key, pin));
       window.plausible?.("Generate Account");
       navigate("/new");
     } catch (e) {
@@ -153,7 +157,7 @@ export default function LoginPage() {
     setNip46Key(newKey);
   }
 
-  async function startNip46(pin: string) {
+  async function startNip46(pin?: string) {
     if (!nostrConnect || !nip46Key) return;
 
     const signer = new Nip46Signer(nostrConnect, new PrivateKeySigner(nip46Key));
@@ -165,7 +169,7 @@ export default function LoginPage() {
       LoginSessionType.Nip46,
       undefined,
       ["wss://relay.damus.io"],
-      await PinEncrypted.create(nip46Key, pin),
+      await makeKeyStore(nip46Key, pin),
     );
     navigate("/");
   }
@@ -316,7 +320,15 @@ export default function LoginPage() {
             />
           </p>
           <div dir="auto" className="login-actions">
-            <AsyncButton type="button" onClick={() => doLogin()}>
+            <AsyncButton
+              type="button"
+              onClick={async () => {
+                if (key.startsWith("nsec") || (key.length === 64 && isHex(key))) {
+                  setPin(true);
+                } else {
+                  await doLogin();
+                }
+              }}>
               <FormattedMessage defaultMessage="Login" description="Login button" />
             </AsyncButton>
             <AsyncButton onClick={() => setPin(true)}>
@@ -325,9 +337,22 @@ export default function LoginPage() {
             {pin && (
               <PinPrompt
                 subTitle={
-                  <p>
-                    <FormattedMessage defaultMessage="Enter a pin to encrypt your private key, you must enter this pin every time you open Snort." />
-                  </p>
+                  <>
+                    <p>
+                      <FormattedMessage
+                        defaultMessage="Secure your private key with a PIN, ensuring enhanced protection on {site}. You'll be prompted to enter this PIN each time you access the site."
+                        values={{
+                          site: process.env.APP_NAME_CAPITALIZED,
+                        }}
+                      />
+                    </p>
+                    <p>
+                      <FormattedMessage defaultMessage="Alternatively, you may choose to store your private key without a PIN by selecting 'Cancel.'" />
+                    </p>
+                    <p>
+                      <FormattedMessage defaultMessage="After submitting the pin there may be a slight delay as we encrypt the key." />
+                    </p>
+                  </>
                 }
                 onResult={async pin => {
                   setPin(false);
@@ -339,7 +364,16 @@ export default function LoginPage() {
                     await makeRandomKey(pin);
                   }
                 }}
-                onCancel={() => setPin(false)}
+                onCancel={async () => {
+                  setPin(false);
+                  if (key) {
+                    await doLogin();
+                  } else if (nostrConnect) {
+                    await startNip46();
+                  } else {
+                    await makeRandomKey();
+                  }
+                }}
               />
             )}
             {altLogins()}

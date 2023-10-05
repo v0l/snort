@@ -2,7 +2,7 @@ import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 import { v4 as uuid } from "uuid";
 
-import { HexKey, RelaySettings, PinEncrypted, EventPublisher } from "@snort/system";
+import { HexKey, RelaySettings, EventPublisher, KeyStorage, NotEncrypted } from "@snort/system";
 import { deepClone, sanitizeRelayUrl, unwrap, ExternalStore } from "@snort/shared";
 
 import { DefaultRelays } from "Const";
@@ -85,6 +85,9 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         timestamp: 0,
       };
       v.extraChats ??= [];
+      if (v.privateKeyData) {
+        v.privateKeyData = KeyStorage.fromPayload(v.privateKeyData as object);
+      }
     }
     this.#loadIrisKeyIfExists();
   }
@@ -121,7 +124,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     type: LoginSessionType,
     relays?: Record<string, RelaySettings>,
     remoteSignerRelays?: Array<string>,
-    privateKey?: PinEncrypted,
+    privateKey?: KeyStorage,
   ) {
     if (this.#accounts.has(key)) {
       throw new Error("Already logged in with this pubkey");
@@ -159,7 +162,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     return Object.fromEntries(DefaultRelays.entries());
   }
 
-  loginWithPrivateKey(key: PinEncrypted, entropy?: string, relays?: Record<string, RelaySettings>) {
+  loginWithPrivateKey(key: KeyStorage, entropy?: string, relays?: Record<string, RelaySettings>) {
     const pubKey = utils.bytesToHex(secp.schnorr.getPublicKey(key.value));
     if (this.#accounts.has(pubKey)) {
       throw new Error("Already logged in with this pubkey");
@@ -218,13 +221,13 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     return { ...s };
   }
 
-  async #loadIrisKeyIfExists() {
+  #loadIrisKeyIfExists() {
     try {
       const irisKeyJSON = window.localStorage.getItem("iris.myKey");
       if (irisKeyJSON) {
         const irisKeyObj = JSON.parse(irisKeyJSON);
         if (irisKeyObj.priv) {
-          const privateKey = await PinEncrypted.create(irisKeyObj.priv, "1234");
+          const privateKey = new NotEncrypted(irisKeyObj.priv);
           this.loginWithPrivateKey(privateKey);
           window.localStorage.removeItem("iris.myKey");
         }
@@ -286,7 +289,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     }
     const toSave = [];
     for (const v of this.#accounts.values()) {
-      if (v.privateKeyData instanceof PinEncrypted) {
+      if (v.privateKeyData instanceof KeyStorage) {
         toSave.push({
           ...v,
           privateKeyData: v.privateKeyData.toPayload(),

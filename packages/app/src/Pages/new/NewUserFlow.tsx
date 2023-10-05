@@ -3,15 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 import Logo from "Element/Logo";
 import { CollapsedSection } from "Element/Collapsed";
-import Copy from "Element/Copy";
-import { hexToBech32 } from "SnortUtils";
-import { hexToMnemonic } from "nip6";
 import useLogin from "Hooks/useLogin";
 import { PROFILE } from ".";
 import { DefaultPreferences, LoginStore, updatePreferences } from "Login";
 import { AllLanguageCodes } from "Pages/settings/Preferences";
 
 import messages from "./messages";
+import ExportKeys from "Pages/settings/Keys";
 
 const WhatIsSnort = () => {
   return (
@@ -127,14 +125,7 @@ export default function NewUserFlow() {
       <p>
         <FormattedMessage {...messages.SaveKeysHelp} />
       </p>
-      <h2>
-        <FormattedMessage {...messages.YourPubkey} />
-      </h2>
-      <Copy text={hexToBech32("npub", login.publicKey ?? "")} />
-      <h2>
-        <FormattedMessage {...messages.YourMnemonic} />
-      </h2>
-      <Copy text={hexToMnemonic(login.generatedEntropy ?? "")} />
+      <ExportKeys />
       <div className="next-actions">
         <button
           type="button"

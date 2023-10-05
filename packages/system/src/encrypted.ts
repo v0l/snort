@@ -11,15 +11,44 @@ export class InvalidPinError extends Error {
   }
 }
 
+export abstract class KeyStorage {
+  // Raw value
+  abstract get value(): string;
+
+  /**
+   * Is the storage locked
+   */
+  abstract shouldUnlock(): boolean;
+
+  abstract unlock(code: string): Promise<void>;
+
+  /**
+   * Get a payload object which can be serialized to JSON
+   */
+  abstract toPayload(): Object;
+
+  /**
+   * Create a key storage class from its payload
+   */
+  static fromPayload(o: object) {
+    if ("raw" in o && typeof o.raw === "string") {
+      return new NotEncrypted(o.raw);
+    } else {
+      return new PinEncrypted(o as unknown as PinEncryptedPayload);
+    }
+  }
+}
+
 /**
  * Pin protected data
  */
-export class PinEncrypted {
+export class PinEncrypted extends KeyStorage {
   static readonly #opts = { N: 2 ** 20, r: 8, p: 1, dkLen: 32 };
   #decrypted?: Uint8Array;
   #encrypted: PinEncryptedPayload;
 
   constructor(enc: PinEncryptedPayload) {
+    super();
     this.#encrypted = enc;
   }
 
@@ -28,7 +57,11 @@ export class PinEncrypted {
     return bytesToHex(this.#decrypted);
   }
 
-  async decrypt(pin: string) {
+  override shouldUnlock(): boolean {
+    return !this.#decrypted;
+  }
+
+  override async unlock(pin: string) {
     const key = await scryptAsync(pin, base64.decode(this.#encrypted.salt), PinEncrypted.#opts);
     const ciphertext = base64.decode(this.#encrypted.ciphertext);
     const nonce = base64.decode(this.#encrypted.iv);
@@ -58,6 +91,33 @@ export class PinEncrypted {
     });
     ret.#decrypted = plaintext;
     return ret;
+  }
+}
+
+export class NotEncrypted extends KeyStorage {
+  #key: string;
+
+  constructor(key: string) {
+    super();
+    this.#key = key;
+  }
+
+  get value() {
+    return this.#key;
+  }
+
+  override shouldUnlock(): boolean {
+    return false;
+  }
+
+  override unlock(code: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  override toPayload(): Object {
+    return {
+      raw: this.#key,
+    };
   }
 }
 

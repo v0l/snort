@@ -1,5 +1,5 @@
 import { useIntl } from "react-intl";
-import { Nip46Signer, PinEncrypted } from "@snort/system";
+import { Nip46Signer, KeyStorage } from "@snort/system";
 
 import { EmailRegex, MnemonicRegex } from "Const";
 import { LoginSessionType, LoginStore } from "Login";
@@ -8,13 +8,11 @@ import { getNip05PubKey } from "Pages/LoginPage";
 import { bech32ToHex } from "SnortUtils";
 import { unwrap } from "@snort/shared";
 
-export class PinRequiredError extends Error {}
-
 export default function useLoginHandler() {
   const { formatMessage } = useIntl();
   const hasSubtleCrypto = window.crypto.subtle !== undefined;
 
-  async function doLogin(key: string, pin?: string) {
+  async function doLogin(key: string, pin: (key: string) => Promise<KeyStorage>) {
     const insecureMsg = formatMessage({
       defaultMessage:
         "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead",
@@ -26,8 +24,7 @@ export default function useLoginHandler() {
       }
       const hexKey = bech32ToHex(key);
       if (hexKey.length === 64) {
-        if (!pin) throw new PinRequiredError();
-        LoginStore.loginWithPrivateKey(await PinEncrypted.create(hexKey, pin));
+        LoginStore.loginWithPrivateKey(await pin(hexKey));
         return;
       } else {
         throw new Error("INVALID PRIVATE KEY");
@@ -36,17 +33,15 @@ export default function useLoginHandler() {
       if (!hasSubtleCrypto) {
         throw new Error(insecureMsg);
       }
-      if (!pin) throw new PinRequiredError();
       const ent = generateBip39Entropy(key);
-      const keyHex = entropyToPrivateKey(ent);
-      LoginStore.loginWithPrivateKey(await PinEncrypted.create(keyHex, pin));
+      const hexKey = entropyToPrivateKey(ent);
+      LoginStore.loginWithPrivateKey(await pin(hexKey));
       return;
     } else if (key.length === 64) {
       if (!hasSubtleCrypto) {
         throw new Error(insecureMsg);
       }
-      if (!pin) throw new PinRequiredError();
-      LoginStore.loginWithPrivateKey(await PinEncrypted.create(key, pin));
+      LoginStore.loginWithPrivateKey(await pin(key));
       return;
     }
 
@@ -58,7 +53,6 @@ export default function useLoginHandler() {
       const hexKey = await getNip05PubKey(key);
       LoginStore.loginWithPubkey(hexKey, LoginSessionType.PublicKey);
     } else if (key.startsWith("bunker://")) {
-      if (!pin) throw new PinRequiredError();
       const nip46 = new Nip46Signer(key);
       await nip46.init();
 
@@ -68,7 +62,7 @@ export default function useLoginHandler() {
         LoginSessionType.Nip46,
         undefined,
         nip46.relays,
-        await PinEncrypted.create(unwrap(nip46.privateKey), pin),
+        await pin(unwrap(nip46.privateKey)),
       );
       nip46.close();
     } else {

@@ -1,4 +1,4 @@
-import { HexKey, RelaySettings, u256, PinEncrypted, PinEncryptedPayload } from "@snort/system";
+import { HexKey, RelaySettings, u256, KeyStorage } from "@snort/system";
 import { UserPreferences } from "Login";
 import { SubscriptionEvent } from "Subscription";
 
@@ -47,7 +47,7 @@ export interface LoginSession {
   /**
    * Encrypted private key
    */
-  privateKeyData?: PinEncrypted | PinEncryptedPayload;
+  privateKeyData?: KeyStorage;
 
   /**
    * BIP39-generated, hex-encoded entropy

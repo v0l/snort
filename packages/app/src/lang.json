@@ -72,9 +72,6 @@
   "0yO7wF": {
     "defaultMessage": "{n} secs"
   },
-  "1A7TZk": {
-    "defaultMessage": "What is Snort and how does it work?"
-  },
   "1Mo59U": {
     "defaultMessage": "Are you sure you want to remove this note from bookmarks?"
   },
@@ -208,6 +205,9 @@
   "6OSOXl": {
     "defaultMessage": "Reason: <i>{reason}</i>"
   },
+  "6TfgXX": {
+    "defaultMessage": "{site} is an open source project built by passionate people in their free time"
+  },
   "6Yfvvp": {
     "defaultMessage": "Get an identifier"
   },
@@ -222,6 +222,9 @@
   },
   "7+Domh": {
     "defaultMessage": "Notes"
+  },
+  "7/h1jn": {
+    "defaultMessage": "After submitting the pin there may be a slight delay as we encrypt the key."
   },
   "7BX/yC": {
     "defaultMessage": "Account Switcher"
@@ -323,9 +326,6 @@
   "BOUMjw": {
     "defaultMessage": "No nostr users found for {twitterUsername}"
   },
-  "BOr9z/": {
-    "defaultMessage": "Snort is an open source project built by passionate people in their free time"
-  },
   "BWpuKl": {
     "defaultMessage": "Update"
   },
@@ -355,6 +355,9 @@
   },
   "CmZ9ls": {
     "defaultMessage": "{n} Muted"
+  },
+  "CoVXRS": {
+    "defaultMessage": "Alternatively, you may choose to store your private key without a PIN by selecting 'Cancel.'"
   },
   "CsCUYo": {
     "defaultMessage": "{n} sats"
@@ -506,9 +509,6 @@
   },
   "HhcAVH": {
     "defaultMessage": "You don't follow this person, click here to load media from <i>{link}</i>, or update <a><i>your preferences</i></a> to always load media from everybody."
-  },
-  "IDjHJ6": {
-    "defaultMessage": "Thanks for using Snort, please consider donating if you can."
   },
   "IEwZvs": {
     "defaultMessage": "Are you sure you want to unpin this note?"
@@ -686,6 +686,12 @@
   "ORGv1Q": {
     "defaultMessage": "Created"
   },
+  "Oq/kVn": {
+    "defaultMessage": "Name-squatting and impersonation is not allowed. {site} and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule."
+  },
+  "P/xrLk": {
+    "defaultMessage": "Secure your private key with a PIN, ensuring enhanced protection on {site}. You'll be prompted to enter this PIN each time you access the site."
+  },
   "P61BTu": {
     "defaultMessage": "Copy Event JSON"
   },
@@ -700,6 +706,9 @@
   },
   "PLSbmL": {
     "defaultMessage": "Your mnemonic phrase"
+  },
+  "PaN7t3": {
+    "defaultMessage": "Preview on {site}"
   },
   "PamNxw": {
     "defaultMessage": "Unknown file header: {name}"
@@ -760,6 +769,9 @@
   "RwFaYs": {
     "defaultMessage": "Sort",
     "description": "Label for sorting options for people search"
+  },
+  "SLZGPn": {
+    "defaultMessage": "Enter a pin to encrypt your private key, you must enter this pin every time you open {site}."
   },
   "SMO+on": {
     "defaultMessage": "Send zap to {name}"
@@ -880,9 +892,6 @@
   "XzF0aC": {
     "defaultMessage": "Key manager extensions are more secure and allow you to easily login to any Nostr client, here are some well known extensions:"
   },
-  "Y31HTH": {
-    "defaultMessage": "Help fund the development of Snort"
-  },
   "YDURw6": {
     "defaultMessage": "Service URL"
   },
@@ -949,9 +958,6 @@
   "c+oiJe": {
     "defaultMessage": "Install Extension",
     "description": "Heading for install key manager extension"
-  },
-  "c2DTVd": {
-    "defaultMessage": "Enter a pin to encrypt your private key, you must enter this pin every time you open Snort."
   },
   "c35bj2": {
     "defaultMessage": "If you have an enquiry about your NIP-05 order please DM {link}"
@@ -1021,6 +1027,9 @@
   "fBI91o": {
     "defaultMessage": "Zap"
   },
+  "fBlba3": {
+    "defaultMessage": "Thanks for using {site}, please consider donating if you can."
+  },
   "fOksnD": {
     "defaultMessage": "Can't vote because LNURL service does not support zaps"
   },
@@ -1047,9 +1056,6 @@
   },
   "gBdUXk": {
     "defaultMessage": "Save your keys!"
-  },
-  "gDZkld": {
-    "defaultMessage": "Snort is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
   },
   "gDzDRs": {
     "defaultMessage": "Emoji to send when reactiong to a note"
@@ -1120,9 +1126,6 @@
   "jA3OE/": {
     "defaultMessage": "{n,plural,=1{{n} sat} other{{n} sats}}"
   },
-  "jCA7Cw": {
-    "defaultMessage": "Preview on snort"
-  },
   "jMzO1S": {
     "defaultMessage": "Internal error: {msg}"
   },
@@ -1151,6 +1154,9 @@
   "kJYo0u": {
     "defaultMessage": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"
   },
+  "kTLGM2": {
+    "defaultMessage": "{site} is designed to have a similar experience to Twitter."
+  },
   "kaaf1E": {
     "defaultMessage": "now"
   },
@@ -1174,6 +1180,9 @@
   },
   "lTbT3s": {
     "defaultMessage": "Wallet password"
+  },
+  "lVKH7C": {
+    "defaultMessage": "What is {site} and how does it work?"
   },
   "lgg1KN": {
     "defaultMessage": "account page"
@@ -1229,6 +1238,9 @@
   },
   "nWQFic": {
     "defaultMessage": "Renew"
+  },
+  "ncbgUU": {
+    "defaultMessage": "{site} is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
   },
   "nn1qb3": {
     "defaultMessage": "Your donations are greatly appreciated"
@@ -1340,14 +1352,8 @@
   "sUNhQE": {
     "defaultMessage": "user"
   },
-  "sWnYKw": {
-    "defaultMessage": "Snort is designed to have a similar experience to Twitter."
-  },
   "sZQzjQ": {
     "defaultMessage": "Failed to parse zap split: {input}"
-  },
-  "svOoEH": {
-    "defaultMessage": "Name-squatting and impersonation is not allowed. Snort and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule."
   },
   "tOdNiY": {
     "defaultMessage": "Dark"
@@ -1472,6 +1478,9 @@
   "yCmnnm": {
     "defaultMessage": "Read global from",
     "description": "Label for reading global feed from specific relays"
+  },
+  "yNBPJp": {
+    "defaultMessage": "Help fund the development of {site}"
   },
   "zCb8fX": {
     "defaultMessage": "Weight"
