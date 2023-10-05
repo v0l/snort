@@ -2,6 +2,6 @@
   color: var(--highlight);
 }
 
-.hashtag > a {
-  text-decoration: none;
+.hashtag::after {
+  content: " ";
 }
