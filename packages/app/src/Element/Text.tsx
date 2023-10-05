@@ -1,5 +1,5 @@
 import "./Text.css";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { HexKey, ParsedFragment } from "@snort/system";
 
 import Invoice from "Element/Embed/Invoice";
@@ -155,16 +155,15 @@ export default function Text({
   const renderContent = () => {
     let lenCtr = 0;
 
-    let chunks: (JSX.Element | null)[] = [];
+    const chunks: Array<ReactNode> = [];
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
 
       if (truncate) {
-        if (lenCtr > truncate) {
-          continue;
-        } else if (lenCtr + element.content.length > truncate) {
+        if (lenCtr + element.content.length > truncate) {
           lenCtr += element.content.length;
-          chunks = chunks.concat(<div className="text-frag">{element.content.slice(0, truncate - lenCtr)}...</div>);
+          chunks.push(<div className="text-frag">{element.content.slice(0, truncate - lenCtr)}...</div>);
+          return chunks;
         } else {
           lenCtr += element.content.length;
         }
@@ -172,9 +171,9 @@ export default function Text({
 
       if (element.type === "media" && element.mimeType?.startsWith("image")) {
         if (disableMedia ?? false) {
-          chunks = chunks.concat(<DisableMedia content={element.content} />);
+          chunks.push(<DisableMedia content={element.content} />);
         } else {
-          let galleryImages: ParsedFragment[] = [element];
+          const galleryImages: ParsedFragment[] = [element];
           // If the current element is of type media and mimeType starts with image,
           // we verify if the next elements are of the same type and mimeType and push to the galleryImages
           // Whenever one of the next elements is not longer of the type we are looking for, we break the loop
@@ -182,46 +181,49 @@ export default function Text({
             const nextElement = elements[j + 1];
 
             if (nextElement && nextElement.type === "media" && nextElement.mimeType?.startsWith("image")) {
-              galleryImages = galleryImages.concat(nextElement);
+              galleryImages.push(nextElement);
               i++;
             } else {
               break;
             }
           }
+          if (galleryImages.length === 1) {
+            chunks.push(<RevealMediaInstance content={galleryImages[0].content} />);
+          } else {
+            // We build a grid layout to render the grouped images
+            const imagesWithGridConfig = galleryImages.map((gi, index) => {
+              const config = gridConfigMap.get(galleryImages.length);
+              let height = ROW_HEIGHT;
 
-          // We build a grid layout to render the grouped images
-          const imagesWithGridConfig = galleryImages.map((gi, index) => {
-            const config = gridConfigMap.get(galleryImages.length);
-            let height = ROW_HEIGHT;
+              if (config && config[index][1] > 1) {
+                height = config[index][1] * ROW_HEIGHT + GRID_GAP;
+              }
 
-            if (config && config[index][1] > 1) {
-              height = config[index][1] * ROW_HEIGHT + GRID_GAP;
-            }
-
-            return {
-              content: gi.content,
-              gridColumn: config ? config[index][0] : 1,
-              gridRow: config ? config[index][1] : 1,
-              height,
-            };
-          });
-          const gallery = (
-            <div className="gallery">
-              {imagesWithGridConfig.map(img => (
-                <div
-                  key={img.content}
-                  className="gallery-item"
-                  style={{
-                    height: `${img.height}px`,
-                    gridColumn: `span ${img.gridColumn}`,
-                    gridRow: `span ${img.gridRow}`,
-                  }}>
-                  <RevealMediaInstance content={img.content} />
-                </div>
-              ))}
-            </div>
-          );
-          chunks = chunks.concat(gallery);
+              return {
+                content: gi.content,
+                gridColumn: config ? config[index][0] : 1,
+                gridRow: config ? config[index][1] : 1,
+                height,
+              };
+            });
+            const gallery = (
+              <div className="gallery">
+                {imagesWithGridConfig.map(img => (
+                  <div
+                    key={img.content}
+                    className="gallery-item"
+                    style={{
+                      height: `${img.height}px`,
+                      gridColumn: `span ${img.gridColumn}`,
+                      gridRow: `span ${img.gridRow}`,
+                    }}>
+                    <RevealMediaInstance content={img.content} />
+                  </div>
+                ))}
+              </div>
+            );
+            chunks.push(gallery);
+          }
         }
       }
 
@@ -230,30 +232,30 @@ export default function Text({
         (element.mimeType?.startsWith("audio") || element.mimeType?.startsWith("video"))
       ) {
         if (disableMedia ?? false) {
-          chunks = chunks.concat(<DisableMedia content={element.content} />);
+          chunks.push(<DisableMedia content={element.content} />);
         } else {
-          chunks = chunks.concat(<RevealMediaInstance content={element.content} />);
+          chunks.push(<RevealMediaInstance content={element.content} />);
         }
       }
       if (element.type === "invoice") {
-        chunks = chunks.concat(<Invoice invoice={element.content} />);
+        chunks.push(<Invoice invoice={element.content} />);
       }
       if (element.type === "hashtag") {
-        chunks = chunks.concat(<Hashtag tag={element.content} />);
+        chunks.push(<Hashtag tag={element.content} />);
       }
       if (element.type === "cashu") {
-        chunks = chunks.concat(<CashuNuts token={element.content} />);
+        chunks.push(<CashuNuts token={element.content} />);
       }
       if (element.type === "link" || (element.type === "media" && element.mimeType?.startsWith("unknown"))) {
-        chunks = chunks.concat(
+        chunks.push(
           <HyperText link={element.content} depth={depth} showLinkPreview={!(disableLinkPreview ?? false)} />,
         );
       }
       if (element.type === "custom_emoji") {
-        chunks = chunks.concat(<ProxyImg src={element.content} size={15} className="custom-emoji" />);
+        chunks.push(<ProxyImg src={element.content} size={15} className="custom-emoji" />);
       }
       if (element.type === "text") {
-        chunks = chunks.concat(
+        chunks.push(
           <div className="text-frag">
             {highlighText ? renderContentWithHighlightedText(element.content, highlighText) : element.content}
           </div>,
