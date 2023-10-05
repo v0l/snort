@@ -29,11 +29,51 @@ export interface TextProps {
 
 const gridConfigMap = new Map<number, number[][]>([
   [1, [[4, 3]]],
-  [2, [[2, 2], [2, 2]]],
-  [3, [[2, 2], [2, 1], [2, 1]]],
-  [4, [[2, 1], [2, 1], [2, 1], [2, 1]]],
-  [5, [[2, 1], [2, 1], [2, 1], [1, 1], [1, 1]]],
-  [6, [[2, 2], [1, 1], [1, 1], [2, 2], [1, 1], [1, 1]]],
+  [
+    2,
+    [
+      [2, 2],
+      [2, 2],
+    ],
+  ],
+  [
+    3,
+    [
+      [2, 2],
+      [2, 1],
+      [2, 1],
+    ],
+  ],
+  [
+    4,
+    [
+      [2, 1],
+      [2, 1],
+      [2, 1],
+      [2, 1],
+    ],
+  ],
+  [
+    5,
+    [
+      [2, 1],
+      [2, 1],
+      [2, 1],
+      [1, 1],
+      [1, 1],
+    ],
+  ],
+  [
+    6,
+    [
+      [2, 2],
+      [1, 1],
+      [1, 1],
+      [2, 2],
+      [1, 1],
+      [1, 1],
+    ],
+  ],
 ]);
 
 const ROW_HEIGHT = 140;
@@ -90,13 +130,7 @@ export default function Text({
   }
 
   const DisableMedia = ({ content }: { content: string }) => (
-    <a
-      href={content}
-      onClick={(e) => e.stopPropagation()}
-      target="_blank"
-      rel="noreferrer"
-      className="ext"
-    >
+    <a href={content} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
       {content}
     </a>
   );
@@ -106,12 +140,12 @@ export default function Text({
       key={content}
       link={content}
       creator={creator}
-      onMediaClick={(e) => {
+      onMediaClick={e => {
         if (!disableMediaSpotlight) {
           e.stopPropagation();
           e.preventDefault();
           setShowSpotlight(true);
-          const selected = images.findIndex((b) => b === content);
+          const selected = images.findIndex(b => b === content);
           setImageIdx(selected === -1 ? 0 : selected);
         }
       }}
@@ -146,12 +180,8 @@ export default function Text({
           // Whenever one of the next elements is not longer of the type we are looking for, we break the loop
           for (let j = i; j < elements.length; j++) {
             const nextElement = elements[j + 1];
-          
-            if (
-              nextElement &&
-              nextElement.type === "media" &&
-              nextElement.mimeType?.startsWith("image")
-            ) {
+
+            if (nextElement && nextElement.type === "media" && nextElement.mimeType?.startsWith("image")) {
               galleryImages = galleryImages.concat(nextElement);
               i++;
             } else {
@@ -165,7 +195,7 @@ export default function Text({
             let height = ROW_HEIGHT;
 
             if (config && config[index][1] > 1) {
-              height = (config[index][1] * ROW_HEIGHT) + GRID_GAP;
+              height = config[index][1] * ROW_HEIGHT + GRID_GAP;
             }
 
             return {
@@ -173,34 +203,34 @@ export default function Text({
               gridColumn: config ? config[index][0] : 1,
               gridRow: config ? config[index][1] : 1,
               height,
-            }
+            };
           });
           const gallery = (
             <div className="gallery">
-              {
-                imagesWithGridConfig.map((img) => (
-                  <div
-                    key={img.content}
-                    className="gallery-item"
-                    style={{
-                      height: `${img.height}px`,
-                      gridColumn: `span ${img.gridColumn}`,
-                      gridRow: `span ${img.gridRow}`,
-                    }}
-                  >
-                    <RevealMediaInstance content={img.content} />
-                  </div>
-                ))
-              }
+              {imagesWithGridConfig.map(img => (
+                <div
+                  key={img.content}
+                  className="gallery-item"
+                  style={{
+                    height: `${img.height}px`,
+                    gridColumn: `span ${img.gridColumn}`,
+                    gridRow: `span ${img.gridRow}`,
+                  }}>
+                  <RevealMediaInstance content={img.content} />
+                </div>
+              ))}
             </div>
           );
           chunks = chunks.concat(gallery);
         }
       }
 
-      if (element.type === "media" && (element.mimeType?.startsWith("audio") || element.mimeType?.startsWith("video"))) {
+      if (
+        element.type === "media" &&
+        (element.mimeType?.startsWith("audio") || element.mimeType?.startsWith("video"))
+      ) {
         if (disableMedia ?? false) {
-          chunks = chunks.concat(<DisableMedia content={element.content} />);          
+          chunks = chunks.concat(<DisableMedia content={element.content} />);
         } else {
           chunks = chunks.concat(<RevealMediaInstance content={element.content} />);
         }
@@ -214,8 +244,10 @@ export default function Text({
       if (element.type === "cashu") {
         chunks = chunks.concat(<CashuNuts token={element.content} />);
       }
-      if(element.type === "link" || (element.type === 'media' && element.mimeType?.startsWith('unknown'))) {
-        chunks = chunks.concat(<HyperText link={element.content} depth={depth} showLinkPreview={!(disableLinkPreview ?? false)} />);
+      if (element.type === "link" || (element.type === "media" && element.mimeType?.startsWith("unknown"))) {
+        chunks = chunks.concat(
+          <HyperText link={element.content} depth={depth} showLinkPreview={!(disableLinkPreview ?? false)} />,
+        );
       }
       if (element.type === "custom_emoji") {
         chunks = chunks.concat(<ProxyImg src={element.content} size={15} className="custom-emoji" />);
@@ -223,12 +255,9 @@ export default function Text({
       if (element.type === "text") {
         chunks = chunks.concat(
           <div className="text-frag">
-            {highlighText
-              ? renderContentWithHighlightedText(element.content, highlighText)
-              : element.content}
+            {highlighText ? renderContentWithHighlightedText(element.content, highlighText) : element.content}
           </div>,
         );
-        
       }
     }
     return chunks;
