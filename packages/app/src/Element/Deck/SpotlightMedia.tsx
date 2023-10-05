@@ -1,5 +1,5 @@
 import "./SpotlightMedia.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Modal from "Element/Modal";
 import Icon from "Icons/Icon";
 import { ProxyImg } from "Element/ProxyImg";
@@ -16,6 +16,24 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
   const image = useMemo(() => {
     return props.images.at(idx % props.images.length);
   }, [idx, props]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "ArrowLeft":
+        case "ArrowUp":
+          dec();
+          break;
+        case "ArrowRight":
+        case "ArrowDown":
+          inc();
+          break;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   function dec() {
     setIdx(s => {
@@ -36,6 +54,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
       }
     });
   }
+
   return (
     <div className="spotlight">
       <ProxyImg src={image} />
