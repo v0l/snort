@@ -58,7 +58,7 @@ import { ZapTarget } from "Zapper";
 import { useStatusFeed } from "Feed/StatusFeed";
 
 import messages from "./messages";
-import { SpotlightMediaModal } from "../Element/Deck/SpotlightMedia";
+import { SpotlightMediaModal } from "Element/Deck/SpotlightMedia";
 
 const NOTES = 0;
 const REACTIONS = 1;

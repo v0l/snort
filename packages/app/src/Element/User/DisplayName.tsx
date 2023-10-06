@@ -18,9 +18,9 @@ export function getDisplayNameOrPlaceHolder(user: UserMetadata | undefined, pubk
   let name = hexToBech32(NostrPrefix.PublicKey, pubkey).substring(0, 12);
   let isPlaceHolder = false;
 
-  if (user?.display_name) {
+  if (typeof user?.display_name === "string" && user.display_name.length > 0) {
     name = user.display_name;
-  } else if (user?.name) {
+  } else if (typeof user?.name === "string" && user.name.length > 0) {
     name = user.name;
   } else if (pubkey && process.env.ANIMAL_NAME_PLACEHOLDERS) {
     name = AnimalName(pubkey);

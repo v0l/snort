@@ -25,7 +25,7 @@ import { useEventFeed } from "Feed/EventFeed";
 import { LoginSession, LoginStore } from "Login";
 import { Nip28ChatSystem } from "chat/nip28";
 import { ChatParticipantProfile } from "Element/Chat/ChatParticipant";
-import { getDisplayName } from "../Element/User/DisplayName";
+import { getDisplayName } from "Element/User/DisplayName";
 
 const TwoCol = 768;
 const ThreeCol = 1500;

@@ -6,7 +6,7 @@ import Nip5Service from "Element/Nip5Service";
  */
 
 import messages from "./messages";
-import IrisAccount from "../Element/IrisAccount/IrisAccount";
+import IrisAccount from "Element/IrisAccount/IrisAccount";
 
 export default function FreeNostrAddressPage() {
   return (

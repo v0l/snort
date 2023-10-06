@@ -19,7 +19,7 @@ import Text from "Element/Text";
 import { formatShort } from "Number";
 import { LiveEvent } from "Element/LiveEvent";
 import ProfilePreview from "Element/User/ProfilePreview";
-import { getDisplayName } from "../Element/User/DisplayName";
+import { getDisplayName } from "Element/User/DisplayName";
 
 function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {
