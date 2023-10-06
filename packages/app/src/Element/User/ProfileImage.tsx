@@ -10,6 +10,7 @@ import Avatar from "Element/User/Avatar";
 import Nip05 from "Element/User/Nip05";
 import useLogin from "Hooks/useLogin";
 import Icon from "Icons/Icon";
+import AnimalName from "./AnimalName";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -49,8 +50,8 @@ export default function ProfileImage({
   const { follows } = useLogin();
   const doesFollow = follows.item.includes(pubkey);
 
-  const name = useMemo(() => {
-    return overrideUsername ?? getDisplayName(user, pubkey);
+  const [name, isPlaceHolder] = useMemo(() => {
+    return overrideUsername ? [overrideUsername, false] : getDisplayNameOrPlaceHolder(user, pubkey);
   }, [user, pubkey, overrideUsername]);
 
   function handleClick(e: React.MouseEvent) {
@@ -86,7 +87,7 @@ export default function ProfileImage({
         {showUsername && (
           <div className="f-ellipsis">
             <div className="flex g4 username">
-              <div>{name.trim()}</div>
+              <div className={isPlaceHolder ? "placeholder" : ""}>{name.trim()}</div>
               {nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
             </div>
             <div className="subheader">{subHeader}</div>
@@ -114,7 +115,21 @@ export default function ProfileImage({
   }
 }
 
-export function getDisplayName(user: UserMetadata | undefined, pubkey: HexKey) {
+export function getDisplayNameOrPlaceHolder(user: UserMetadata | undefined, pubkey: HexKey): [string, boolean] {
+  let name = hexToBech32(NostrPrefix.PublicKey, pubkey).substring(0, 12);
+  let isPlaceHolder = false;
+  if (typeof user?.display_name === "string" && user.display_name.length > 0) {
+    name = user.display_name;
+  } else if (typeof user?.name === "string" && user.name.length > 0) {
+    name = user.name;
+  } else if (pubkey && process.env.ANIMAL_NAME_PLACEHOLDERS) {
+    name = AnimalName(pubkey);
+    isPlaceHolder = true;
+  }
+  return [name, isPlaceHolder];
+}
+
+export function getDisplayName(user: UserMetadata | undefined, pubkey: HexKey): string {
   let name = hexToBech32(NostrPrefix.PublicKey, pubkey).substring(0, 12);
   if (typeof user?.display_name === "string" && user.display_name.length > 0) {
     name = user.display_name;
