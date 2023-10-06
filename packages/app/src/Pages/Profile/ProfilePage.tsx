@@ -2,14 +2,7 @@ import "./ProfilePage.css";
 import { useEffect, useState } from "react";
 import FormattedMessage from "Element/FormattedMessage";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  encodeTLV,
-  encodeTLVEntries,
-  EventKind,
-  NostrPrefix,
-  TLVEntryType,
-  tryParseNostrLink,
-} from "@snort/system";
+import { encodeTLV, encodeTLVEntries, EventKind, NostrPrefix, TLVEntryType, tryParseNostrLink } from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
@@ -28,7 +21,7 @@ import Avatar from "Element/User/Avatar";
 import Timeline from "Element/Feed/Timeline";
 import Text from "Element/Text";
 import SendSats from "Element/SendSats";
-import Nip05 from "Element/User/Nip05";
+import Nip05, { useIsVerified } from "Element/User/Nip05";
 import Copy from "Element/Copy";
 import ProfileImage from "Element/User/ProfileImage";
 import BlockList from "Element/User/BlockList";
@@ -55,7 +48,7 @@ import ProfileTab, {
   FollowsTab,
   ProfileTabType,
   RelaysTab,
-  ZapsProfileTab
+  ZapsProfileTab,
 } from "Pages/Profile/ProfileTab";
 
 export default function ProfilePage() {
@@ -71,6 +64,7 @@ export default function ProfilePage() {
   const [modalImage, setModalImage] = useState<string>("");
   const aboutText = user?.about || "";
   const npub = !id?.startsWith(NostrPrefix.PublicKey) ? hexToBech32(NostrPrefix.PublicKey, id || undefined) : id;
+  const { isVerified } = useIsVerified(user?.pubkey || "");
 
   const lnurl = (() => {
     try {
@@ -138,6 +132,25 @@ export default function ProfilePage() {
     }
     return inner();
   }
+
+  useEffect(() => {
+    const replaceWith = (username: string) => {
+      const current = window.location.pathname;
+      const npub = hexToBech32(NostrPrefix.PublicKey, user?.pubkey);
+      if (current.endsWith(`/${npub}`)) {
+        window.history.replaceState?.(null, "", `/${username}`);
+      }
+    };
+    if (user?.nip05) {
+      if (user.nip05.endsWith(`@${process.env.NIP05_DOMAIN}`)) {
+        const username = user.nip05?.replace(`@${process.env.NIP05_DOMAIN}`, "");
+        replaceWith(username);
+      } else {
+        // do we want this? would need to support urls with dots like /fiatjaf.com
+        // replaceWith(user.nip05?.replace(/^_@/, ""));
+      }
+    }
+  }, [isVerified, user?.pubkey]);
 
   function username() {
     return (

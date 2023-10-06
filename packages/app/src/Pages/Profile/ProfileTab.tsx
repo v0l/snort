@@ -1,7 +1,7 @@
 import useZapsFeed from "../../Feed/ZapsFeed";
 import FormattedMessage from "../../Element/FormattedMessage";
 import messages from "../messages";
-import {formatShort} from "../../Number";
+import { formatShort } from "../../Number";
 import useFollowersFeed from "../../Feed/FollowersFeed";
 import FollowsList from "../../Element/User/FollowListBase";
 import useFollowsFeed from "../../Feed/FollowsFeed";
@@ -10,8 +10,8 @@ import RelaysMetadata from "../../Element/Relay/RelaysMetadata";
 import useBookmarkFeed from "../../Feed/BookmarkFeed";
 import Bookmarks from "../../Element/Bookmarks";
 import Icon from "../../Icons/Icon";
-import {Tab} from "../../Element/Tabs";
-import {EventKind, HexKey, NostrLink, NostrPrefix} from "@snort/system";
+import { Tab } from "../../Element/Tabs";
+import { EventKind, HexKey, NostrLink, NostrPrefix } from "@snort/system";
 import { default as ZapElement } from "Element/Event/Zap";
 
 export enum ProfileTabType {
@@ -68,87 +68,87 @@ export function BookMarksTab({ id }: { id: HexKey }) {
 }
 
 const ProfileTab = {
-    Notes: {
-      text: (
-        <>
-          <Icon name="pencil" size={16} />
-          <FormattedMessage defaultMessage="Notes" />
-        </>
-      ),
-      value: ProfileTabType.NOTES,
-    },
-    Reactions: {
-      text: (
-        <>
-          <Icon name="reaction" size={16} />
-          <FormattedMessage defaultMessage="Reactions" />
-        </>
-      ),
-      value: ProfileTabType.REACTIONS,
-    },
-    Followers: {
-      text: (
-        <>
-          <Icon name="user-v2" size={16} />
-          <FormattedMessage defaultMessage="Followers" />
-        </>
-      ),
-      value: ProfileTabType.FOLLOWERS,
-    },
-    Follows: {
-      text: (
-        <>
-          <Icon name="stars" size={16} />
-          <FormattedMessage defaultMessage="Follows" />
-        </>
-      ),
-      value: ProfileTabType.FOLLOWS,
-    },
-    Zaps: {
-      text: (
-        <>
-          <Icon name="zap-solid" size={16} />
-          <FormattedMessage defaultMessage="Zaps" />
-        </>
-      ),
-      value: ProfileTabType.ZAPS,
-    },
-    Muted: {
-      text: (
-        <>
-          <Icon name="mute" size={16} />
-          <FormattedMessage defaultMessage="Muted" />
-        </>
-      ),
-      value: ProfileTabType.MUTED,
-    },
-    Blocked: {
-      text: (
-        <>
-          <Icon name="block" size={16} />
-          <FormattedMessage defaultMessage="Blocked" />
-        </>
-      ),
-      value: ProfileTabType.BLOCKED,
-    },
-    Relays: {
-      text: (
-        <>
-          <Icon name="wifi" size={16} />
-          <FormattedMessage defaultMessage="Relays" />
-        </>
-      ),
-      value: ProfileTabType.RELAYS,
-    },
-    Bookmarks: {
-      text: (
-        <>
-          <Icon name="bookmark-solid" size={16} />
-          <FormattedMessage defaultMessage="Bookmarks" />
-        </>
-      ),
-      value: ProfileTabType.BOOKMARKS,
-    },
-  } as { [key: string]: Tab };
+  Notes: {
+    text: (
+      <>
+        <Icon name="pencil" size={16} />
+        <FormattedMessage defaultMessage="Notes" />
+      </>
+    ),
+    value: ProfileTabType.NOTES,
+  },
+  Reactions: {
+    text: (
+      <>
+        <Icon name="reaction" size={16} />
+        <FormattedMessage defaultMessage="Reactions" />
+      </>
+    ),
+    value: ProfileTabType.REACTIONS,
+  },
+  Followers: {
+    text: (
+      <>
+        <Icon name="user-v2" size={16} />
+        <FormattedMessage defaultMessage="Followers" />
+      </>
+    ),
+    value: ProfileTabType.FOLLOWERS,
+  },
+  Follows: {
+    text: (
+      <>
+        <Icon name="stars" size={16} />
+        <FormattedMessage defaultMessage="Follows" />
+      </>
+    ),
+    value: ProfileTabType.FOLLOWS,
+  },
+  Zaps: {
+    text: (
+      <>
+        <Icon name="zap-solid" size={16} />
+        <FormattedMessage defaultMessage="Zaps" />
+      </>
+    ),
+    value: ProfileTabType.ZAPS,
+  },
+  Muted: {
+    text: (
+      <>
+        <Icon name="mute" size={16} />
+        <FormattedMessage defaultMessage="Muted" />
+      </>
+    ),
+    value: ProfileTabType.MUTED,
+  },
+  Blocked: {
+    text: (
+      <>
+        <Icon name="block" size={16} />
+        <FormattedMessage defaultMessage="Blocked" />
+      </>
+    ),
+    value: ProfileTabType.BLOCKED,
+  },
+  Relays: {
+    text: (
+      <>
+        <Icon name="wifi" size={16} />
+        <FormattedMessage defaultMessage="Relays" />
+      </>
+    ),
+    value: ProfileTabType.RELAYS,
+  },
+  Bookmarks: {
+    text: (
+      <>
+        <Icon name="bookmark-solid" size={16} />
+        <FormattedMessage defaultMessage="Bookmarks" />
+      </>
+    ),
+    value: ProfileTabType.BOOKMARKS,
+  },
+} as { [key: string]: Tab };
 
 export default ProfileTab;
