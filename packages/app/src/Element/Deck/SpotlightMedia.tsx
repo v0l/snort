@@ -59,7 +59,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
     <div className="spotlight">
       <ProxyImg src={image} />
       <div className="details">
-        {idx + 1}/{props.images.length}
+        {props.images.length > 1 && `${idx + 1}/${props.images.length}`}
         <Icon name="x-close" size={24} onClick={props.onClose} />
       </div>
       {props.images.length > 1 && (
