@@ -5,5 +5,6 @@
   "nip05Domain": "snort.social",
   "favicon": "public/favicon.ico",
   "appleTouchIconUrl": "/nostrich_512.png",
-  "httpCache": ""
+  "httpCache": "",
+  "animalNamePlaceholders": false
 }
