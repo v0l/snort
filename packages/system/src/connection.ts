@@ -344,7 +344,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
 
   #sendJson(obj: object) {
     const authPending = !this.Authed && (this.AwaitingAuth.size > 0 || this.Info?.limitation?.auth_required === true);
-    if (this.Socket?.readyState !== WebSocket.OPEN || authPending) {
+    if (!this.Socket || this.Socket?.readyState !== WebSocket.OPEN || authPending) {
       this.PendingRaw.push(obj);
       if (this.Socket?.readyState === WebSocket.CLOSED && this.Ephemeral && this.IsClosed) {
         this.Connect();

@@ -1,4 +1,4 @@
-import { expandFilter } from "../src/request-expander";
+import { expandFilter } from "../src/query-optimizer/request-expander";
 
 describe("RequestExpander", () => {
   test("expand filter", () => {

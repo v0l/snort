@@ -36,7 +36,6 @@
     "@snort/shared": "^1.0.6",
     "@stablelib/xchacha20": "^1.0.1",
     "debug": "^4.3.4",
-    "dexie": "^3.2.4",
     "isomorphic-ws": "^5.0.0",
     "uuid": "^9.0.0",
     "ws": "^8.14.0"

@@ -1,7 +1,3 @@
-import DnsOverHttpResolver from "dns-over-http-resolver";
-import { bech32ToHex } from "SnortUtils";
-
-const resolver = new DnsOverHttpResolver();
 interface NostrJson {
   names: Record<string, string>;
 }
@@ -23,12 +19,5 @@ export async function fetchNip05Pubkey(name: string, domain: string, timeout = 2
     // ignored
   }
 
-  // Check as DoH TXT entry
-  try {
-    const resDns = await resolver.resolveTxt(`${name}._nostr.${domain}`);
-    return bech32ToHex(resDns[0][0]);
-  } catch {
-    // ignored
-  }
   return undefined;
 }

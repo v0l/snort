@@ -1,6 +1,6 @@
 import debug from "debug";
-import { Table } from "dexie";
 import { unixNowMs, unwrap } from "./utils";
+import { DexieTableLike } from "./dexie-like";
 
 type HookFn = () => void;
 
@@ -19,11 +19,11 @@ export abstract class FeedCache<TCached> {
   #changed = true;
   #hits = 0;
   #miss = 0;
-  protected table?: Table<TCached>;
+  protected table?: DexieTableLike<TCached>;
   protected onTable: Set<string> = new Set();
   protected cache: Map<string, TCached> = new Map();
 
-  constructor(name: string, table?: Table<TCached>) {
+  constructor(name: string, table?: DexieTableLike<TCached>) {
     this.#name = name;
     this.table = table;
     setInterval(() => {

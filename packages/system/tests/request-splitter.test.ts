@@ -1,7 +1,7 @@
 import { ReqFilter } from "../src";
 import { describe, expect } from "@jest/globals";
-import { diffFilters } from "../src/request-splitter";
-import { expandFilter } from "../src/request-expander";
+import { diffFilters } from "../src/query-optimizer/request-splitter";
+import { expandFilter } from "../src/query-optimizer/request-expander";
 
 describe("RequestSplitter", () => {
   test("single filter add value", () => {

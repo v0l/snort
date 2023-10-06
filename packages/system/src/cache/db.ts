@@ -1,6 +1,6 @@
+import { DexieLike, DexieTableLike } from "@snort/shared";
 import { MetadataCache, RelayMetrics, UsersRelays } from ".";
 import { NostrEvent } from "../nostr";
-import Dexie, { Table } from "dexie";
 
 const NAME = "snort-system";
 const VERSION = 2;
@@ -12,13 +12,13 @@ const STORES = {
   events: "++id, pubkey, created_at",
 };
 
-export class SnortSystemDb extends Dexie {
+export class SnortSystemDb extends DexieLike {
   ready = false;
-  users!: Table<MetadataCache>;
-  relayMetrics!: Table<RelayMetrics>;
-  userRelays!: Table<UsersRelays>;
-  events!: Table<NostrEvent>;
-  dms!: Table<NostrEvent>;
+  users!: DexieTableLike<MetadataCache>;
+  relayMetrics!: DexieTableLike<RelayMetrics>;
+  userRelays!: DexieTableLike<UsersRelays>;
+  events!: DexieTableLike<NostrEvent>;
+  dms!: DexieTableLike<NostrEvent>;
 
   constructor() {
     super(NAME);

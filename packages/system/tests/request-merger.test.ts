@@ -1,6 +1,13 @@
 import { ReqFilter } from "../src";
-import { canMergeFilters, filterIncludes, flatMerge, mergeSimilar, simpleMerge } from "../src/request-merger";
-import { FlatReqFilter, expandFilter } from "../src/request-expander";
+import {
+  canMergeFilters,
+  filterIncludes,
+  flatMerge,
+  mergeSimilar,
+  simpleMerge,
+} from "../src/query-optimizer/request-merger";
+import { FlatReqFilter } from "../src/query-optimizer";
+import { expandFilter } from "../src/query-optimizer/request-expander";
 
 describe("RequestMerger", () => {
   it("should simple merge authors", () => {

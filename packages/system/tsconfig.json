@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "target": "ES2020",
-    "moduleResolution": "node",
+    "target": "ESNext",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "noImplicitOverride": true,
-    "module": "CommonJS",
+    "module": "NodeNext",
     "strict": true,
     "declaration": true,
     "declarationMap": true,
     "inlineSourceMap": true,
     "outDir": "dist",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true
   },
   "include": ["./src/**/*.ts"],
   "files": ["./src/index.ts"]

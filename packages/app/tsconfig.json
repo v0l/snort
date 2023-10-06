@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "target": "es2020",
-    "module": "es2020",
+    "target": "ESNext",
+    "module": "NodeNext",
     "jsx": "react-jsx",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "allowJs": true
+    "allowSyntheticDefaultImports": true
   }
 }

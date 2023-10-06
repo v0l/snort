@@ -1,9 +1,9 @@
 import { RelayCache } from "../src/gossip-model";
 import { RequestBuilder, RequestStrategy } from "../src/request-builder";
 import { describe, expect } from "@jest/globals";
-import { expandFilter } from "../src/request-expander";
 import { bytesToHex } from "@noble/curves/abstract/utils";
-import { unixNow, unixNowMs } from "@snort/shared";
+import { FeedCache, unixNow, unixNowMs } from "@snort/shared";
+import { NostrSystem, UsersRelays } from "../src";
 
 const DummyCache = {
   getFromCache: (pk?: string) => {
@@ -23,7 +23,11 @@ const DummyCache = {
       ],
     };
   },
-} as RelayCache;
+} as FeedCache<UsersRelays>;
+
+const System = new NostrSystem({
+  relayCache: DummyCache,
+});
 
 describe("RequestBuilder", () => {
   describe("basic", () => {
@@ -95,7 +99,7 @@ describe("RequestBuilder", () => {
     f0.authors(["a"]);
     expect(a).toEqual([{}]);
 
-    const b = rb.buildDiff(DummyCache, a.flatMap(expandFilter));
+    const b = rb.buildDiff(System, a);
     expect(b).toMatchObject([
       {
         filters: [{ authors: ["a"] }],
@@ -107,7 +111,7 @@ describe("RequestBuilder", () => {
     const rb = new RequestBuilder("test");
     rb.withFilter().authors(["a", "b"]).kinds([0]);
 
-    const a = rb.build(DummyCache);
+    const a = rb.build(System);
     expect(a).toEqual([
       {
         strategy: RequestStrategy.AuthorsRelays,
@@ -138,7 +142,7 @@ describe("RequestBuilder", () => {
     rb.withFilter().authors(["a", "b"]).kinds([10002]);
     rb.withFilter().authors(["a"]).limit(10).kinds([4]);
 
-    const a = rb.build(DummyCache);
+    const a = rb.build(System);
     expect(a).toEqual([
       {
         strategy: RequestStrategy.AuthorsRelays,
@@ -170,7 +174,7 @@ describe("RequestBuilder", () => {
 });
 
 describe("build diff, large follow list", () => {
-  const f = [];
+  const f: Array<string> = [];
   for (let x = 0; x < 2500; x++) {
     const bytes = crypto.getRandomValues(new Uint8Array(32));
     f.push(bytesToHex(bytes));
@@ -180,7 +184,7 @@ describe("build diff, large follow list", () => {
   rb.withFilter().authors(f).kinds([1, 6, 10002, 3, 6969]);
 
   const start = unixNowMs();
-  const a = rb.build(DummyCache);
+  const a = rb.build(System);
   expect(a).toEqual(
     f.map(a => {
       return {
@@ -198,7 +202,7 @@ describe("build diff, large follow list", () => {
   expect(unixNowMs() - start).toBeLessThan(500);
 
   const start2 = unixNowMs();
-  const b = rb.buildDiff(DummyCache, rb.buildRaw().flatMap(expandFilter));
+  const b = rb.buildDiff(System, rb.buildRaw());
   expect(b).toEqual([]);
   expect(unixNowMs() - start2).toBeLessThan(100);
 });

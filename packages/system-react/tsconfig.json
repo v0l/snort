@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "target": "ES2020",
-    "moduleResolution": "node",
+    "target": "ESNext",
+    "moduleResolution": "Bundler",
     "esModuleInterop": true,
     "noImplicitOverride": true,
-    "module": "CommonJS",
     "jsx": "react-jsx",
     "strict": true,
     "declaration": true,
