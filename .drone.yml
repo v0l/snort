@@ -95,10 +95,8 @@ steps:
       - npx @crowdin/cli pull -b main -T $CTOKEN
       - yarn prettier --write .
       - git add .
-      - |
-        if output=$(git status --porcelain) && [ -z "$output" ]; then
-          # Working directory clean
-        else 
+      - >
+        if output=$(git status --porcelain) && [ -n "$output" ]; then
           git commit -a -m "chore: Update translations"
           git push -u origin main
         fi
