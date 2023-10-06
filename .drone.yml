@@ -95,8 +95,13 @@ steps:
       - npx @crowdin/cli pull -b main -T $CTOKEN
       - yarn prettier --write .
       - git add .
-      - 'git commit -a -m "chore: Update translations"'
-      - git push -u origin main
+      - |
+        if output=$(git status --porcelain) && [ -z "$output" ]; then
+          # Working directory clean
+        else 
+          git commit -a -m "chore: Update translations"
+          git push -u origin main
+        fi
 volumes:
   - name: cache
     claim:
