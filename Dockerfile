@@ -9,6 +9,6 @@ RUN yarn install --network-timeout 1000000
 COPY . .
 RUN yarn build
 
-FROM nginx:mainline-alpine
+FROM nginxinc/nginx-unprivileged:mainline-alpine
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/packages/app/build /usr/share/nginx/html
