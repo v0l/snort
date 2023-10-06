@@ -1,12 +1,10 @@
-FROM node:16 as build
+FROM node:19 as build
 WORKDIR /app
 
-COPY package.json yarn.lock .
-COPY packages/app/package.json packages/app/
-COPY packages/nostr/package.json packages/nostr/
-RUN yarn install --network-timeout 1000000
-
-COPY . .
+COPY package.json yarn.lock .yarnrc.yml .
+COPY .yarn .yarn
+COPY packages packages
+RUN yarn --network-timeout 1000000
 RUN yarn build
 
 FROM nginxinc/nginx-unprivileged:mainline-alpine

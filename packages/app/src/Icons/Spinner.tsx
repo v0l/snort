@@ -1,5 +1,5 @@
 import IconProps from "./IconProps";
-import "./Spinner.css";
+import "./spinner.css";
 
 const Spinner = (props: IconProps) => (
   <svg
