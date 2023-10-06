@@ -39,14 +39,3 @@
   transform-origin: center;
   transform: rotate(-135deg) translateY(50%);
 }
-
-.avatar .icons > .icon-circle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform-origin: center;
-  padding: 4px;
-  border-radius: 100%;
-  background-color: var(--gray-superdark);
-  transform: rotate(135deg);
-}

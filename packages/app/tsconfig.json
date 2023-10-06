@@ -2,9 +2,9 @@
   "compilerOptions": {
     "baseUrl": "src",
     "target": "ESNext",
-    "module": "NodeNext",
+    "module": "ESNext",
     "jsx": "react-jsx",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Bundler",
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

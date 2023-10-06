@@ -10,7 +10,7 @@ interface Newest<T> {
   timestamp: number;
 }
 
-export enum LoginSessionType {
+export const enum LoginSessionType {
   PrivateKey = "private_key",
   PublicKey = "public_key",
   Nip7 = "nip7",
