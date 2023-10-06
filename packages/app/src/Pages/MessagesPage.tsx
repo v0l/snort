@@ -7,7 +7,7 @@ import { NostrLink, NostrPrefix, TLVEntryType, UserMetadata, decodeTLV } from "@
 import { useUserProfile, useUserSearch } from "@snort/system-react";
 
 import UnreadCount from "Element/UnreadCount";
-import ProfileImage, { getDisplayName } from "Element/User/ProfileImage";
+import ProfileImage from "Element/User/ProfileImage";
 import { appendDedupe, debounce, parseId } from "SnortUtils";
 import NoteToSelf from "Element/User/NoteToSelf";
 import useModeration from "Hooks/useModeration";
@@ -25,6 +25,7 @@ import { useEventFeed } from "Feed/EventFeed";
 import { LoginSession, LoginStore } from "Login";
 import { Nip28ChatSystem } from "chat/nip28";
 import { ChatParticipantProfile } from "Element/Chat/ChatParticipant";
+import { getDisplayName } from "Element/User/DisplayName";
 
 const TwoCol = 768;
 const ThreeCol = 1500;

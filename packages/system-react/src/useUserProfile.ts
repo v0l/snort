@@ -11,6 +11,24 @@ export function useUserProfile(pubKey?: HexKey): MetadataCache | undefined {
     h => {
       if (pubKey) {
         system.ProfileLoader.TrackMetadata(pubKey);
+        if (process.env.HTTP_CACHE && !system.ProfileLoader.Cache.getFromCache(pubKey)) {
+          fetch(`${process.env.HTTP_CACHE}/profile/${pubKey}`)
+            .then(async r => {
+              if (r.ok) {
+                try {
+                  const data = await r.json();
+                  if (data) {
+                    system.ProfileLoader.onProfileEvent(data);
+                  }
+                } catch (e) {
+                  console.error(e);
+                }
+              }
+            })
+            .catch(e => {
+              console.error(e);
+            });
+        }
       }
       const release = system.ProfileLoader.Cache.hook(h, pubKey);
       return () => {

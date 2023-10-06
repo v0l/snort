@@ -90,6 +90,8 @@ const config = {
       "process.env.APP_NAME": JSON.stringify(appConfig.get("appName")),
       "process.env.APP_NAME_CAPITALIZED": JSON.stringify(appConfig.get("appNameCapitalized")),
       "process.env.NIP05_DOMAIN": JSON.stringify(appConfig.get("nip05Domain")),
+      "process.env.HTTP_CACHE": JSON.stringify(appConfig.get("httpCache")),
+      "process.env.ANIMAL_NAME_PLACEHOLDERS": JSON.stringify(appConfig.get("animalNamePlaceholders")),
     }),
   ],
   module: {

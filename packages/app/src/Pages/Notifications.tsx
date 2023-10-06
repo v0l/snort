@@ -12,13 +12,14 @@ import { markNotificationsRead } from "Login";
 import { Notifications, UserCache } from "Cache";
 import { dedupe, findTag, orderDescending } from "SnortUtils";
 import Icon from "Icons/Icon";
-import ProfileImage, { getDisplayName } from "Element/User/ProfileImage";
+import ProfileImage from "Element/User/ProfileImage";
 import useModeration from "Hooks/useModeration";
 import { useEventFeed } from "Feed/EventFeed";
 import Text from "Element/Text";
 import { formatShort } from "Number";
 import { LiveEvent } from "Element/LiveEvent";
 import ProfilePreview from "Element/User/ProfilePreview";
+import { getDisplayName } from "Element/User/DisplayName";
 
 function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {
