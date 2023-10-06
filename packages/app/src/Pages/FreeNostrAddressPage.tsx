@@ -1,10 +1,5 @@
 import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
 
-/*
-import { IrisHost } from "Const";
-import Nip5Service from "Element/Nip5Service";
- */
-
 import messages from "./messages";
 import IrisAccount from "Element/IrisAccount/IrisAccount";
 
