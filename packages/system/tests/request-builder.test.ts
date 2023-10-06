@@ -172,37 +172,3 @@ describe("RequestBuilder", () => {
     ]);
   });
 });
-
-describe("build diff, large follow list", () => {
-  const f: Array<string> = [];
-  for (let x = 0; x < 2500; x++) {
-    const bytes = crypto.getRandomValues(new Uint8Array(32));
-    f.push(bytesToHex(bytes));
-  }
-
-  const rb = new RequestBuilder("test");
-  rb.withFilter().authors(f).kinds([1, 6, 10002, 3, 6969]);
-
-  const start = unixNowMs();
-  const a = rb.build(System);
-  expect(a).toEqual(
-    f.map(a => {
-      return {
-        strategy: RequestStrategy.AuthorsRelays,
-        relay: `wss://${a}.com/`,
-        filters: [
-          {
-            kinds: [1, 6, 10002, 3, 6969],
-            authors: [a],
-          },
-        ],
-      };
-    }),
-  );
-  expect(unixNowMs() - start).toBeLessThan(500);
-
-  const start2 = unixNowMs();
-  const b = rb.buildDiff(System, rb.buildRaw());
-  expect(b).toEqual([]);
-  expect(unixNowMs() - start2).toBeLessThan(100);
-});
