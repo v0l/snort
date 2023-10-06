@@ -7,7 +7,7 @@ import FollowListBase from "Element/User/FollowListBase";
 import AsyncButton from "Element/AsyncButton";
 import { useWallet } from "Wallet";
 import { Toastore } from "Toaster";
-import { getDisplayName } from "Element/User/ProfileImage";
+import { getDisplayName } from "Element/User/DisplayName";
 import { UserCache } from "Cache";
 import useLogin from "Hooks/useLogin";
 import useEventPublisher from "Hooks/useEventPublisher";

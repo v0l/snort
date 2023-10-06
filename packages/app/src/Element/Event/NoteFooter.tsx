@@ -18,7 +18,7 @@ import { useInteractionCache } from "Hooks/useInteractionCache";
 import { ZapPoolController } from "ZapPoolController";
 import { System } from "index";
 import { Zapper, ZapTarget } from "Zapper";
-import { getDisplayName } from "../User/ProfileImage";
+import { getDisplayName } from "Element/User/DisplayName";
 import { useNoteCreator } from "State/NoteCreator";
 
 import messages from "../messages";

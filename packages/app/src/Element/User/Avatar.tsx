@@ -4,7 +4,7 @@ import { CSSProperties, ReactNode, useEffect, useState } from "react";
 import type { UserMetadata } from "@snort/system";
 
 import useImgProxy from "Hooks/useImgProxy";
-import { getDisplayName } from "Element/User/ProfileImage";
+import { getDisplayName } from "Element/User/DisplayName";
 import { defaultAvatar } from "SnortUtils";
 
 interface AvatarProps {
