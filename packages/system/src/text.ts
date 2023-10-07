@@ -1,13 +1,31 @@
 import { unwrap } from "@snort/shared";
 
-import { CashuRegex, FileExtensionRegex, HashtagRegex, InvoiceRegex, MentionNostrEntityRegex } from "./const";
+import {
+  CashuRegex,
+  FileExtensionRegex,
+  HashtagRegex,
+  InvoiceRegex,
+  MarkdownCodeRegex,
+  MentionNostrEntityRegex,
+} from "./const";
 import { validateNostrLink } from "./nostr-link";
 import { splitByUrl } from "./utils";
 
 export interface ParsedFragment {
-  type: "text" | "link" | "mention" | "invoice" | "media" | "cashu" | "hashtag" | "custom_emoji" | "highlighted_text";
+  type:
+    | "text"
+    | "link"
+    | "mention"
+    | "invoice"
+    | "media"
+    | "cashu"
+    | "hashtag"
+    | "custom_emoji"
+    | "highlighted_text"
+    | "code_block";
   content: string;
   mimeType?: string;
+  language?: string;
 }
 
 export type Fragment = string | ParsedFragment;
@@ -179,6 +197,31 @@ function extractCustomEmoji(fragments: Fragment[], tags: Array<Array<string>>) {
     .flat();
 }
 
+function extractMarkdownCode(fragments: Fragment[]): (string | ParsedFragment)[] {
+  return fragments
+    .map(f => {
+      if (typeof f === "string") {
+        return f.split(MarkdownCodeRegex).map(i => {
+          if (i.startsWith("```") && i.endsWith("```")) {
+            const firstLineBreakIndex = i.indexOf("\n");
+            const lastLineBreakIndex = i.lastIndexOf("\n");
+
+            return {
+              type: "code_block",
+              content: i.substring(firstLineBreakIndex, lastLineBreakIndex),
+              language: i.substring(3, firstLineBreakIndex),
+            } as ParsedFragment;
+          } else {
+            return i;
+          }
+        });
+      }
+
+      return f;
+    })
+    .flat();
+}
+
 export function transformText(body: string, tags: Array<Array<string>>) {
   let fragments = extractLinks([body]);
   fragments = extractMentions(fragments);
@@ -186,6 +229,7 @@ export function transformText(body: string, tags: Array<Array<string>>) {
   fragments = extractInvoices(fragments);
   fragments = extractCashuTokens(fragments);
   fragments = extractCustomEmoji(fragments, tags);
+  fragments = extractMarkdownCode(fragments);
   fragments = fragments
     .map(a => {
       if (typeof a === "string") {

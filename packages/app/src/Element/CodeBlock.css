@@ -1,0 +1,14 @@
+.codeblock {
+  overflow: auto;
+  position: relative;
+}
+
+.codeblock pre {
+  overflow: auto;
+  line-height: 1.4;
+  font-size: var(--font-size);
+}
+
+.hljs {
+  background: #f6f8fa;
+}
