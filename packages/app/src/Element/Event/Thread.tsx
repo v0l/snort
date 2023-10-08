@@ -205,9 +205,10 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
   );
 };
 
-export function ThreadRoute() {
+export function ThreadRoute({ id }: { id?: string }) {
   const params = useParams();
-  const link = parseNostrLink(params.id ?? "", NostrPrefix.Note);
+  const resolvedId = id ?? params.id;
+  const link = parseNostrLink(resolvedId ?? "", NostrPrefix.Note);
 
   return (
     <ThreadContextWrapper link={link}>

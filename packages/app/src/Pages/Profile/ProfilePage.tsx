@@ -52,7 +52,11 @@ import ProfileTab, {
 } from "Pages/Profile/ProfileTab";
 import DisplayName from "../../Element/User/DisplayName";
 
-export default function ProfilePage() {
+interface ProfilePageProps {
+  id?: string;
+}
+
+export default function ProfilePage({ id: propId }: ProfilePageProps) {
   const params = useParams();
   const navigate = useNavigate();
   const [id, setId] = useState<string>();
@@ -95,21 +99,22 @@ export default function ProfilePage() {
   const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
-    if (params.id?.match(EmailRegex)) {
-      getNip05PubKey(params.id).then(a => {
+    const resolvedId = propId || params.id;
+    if (resolvedId?.match(EmailRegex)) {
+      getNip05PubKey(resolvedId).then(a => {
         setId(a);
       });
     } else {
-      const nav = tryParseNostrLink(params.id ?? "");
+      const nav = tryParseNostrLink(resolvedId ?? "");
       if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
         // todo: use relays if any for nprofile
         setId(nav.id);
       } else {
-        setId(parseId(params.id ?? ""));
+        setId(parseId(resolvedId ?? ""));
       }
     }
     setTab(ProfileTab.Notes);
-  }, [params]);
+  }, [propId, params]);
 
   function musicStatus() {
     if (!status.music) return;
