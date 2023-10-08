@@ -50,6 +50,7 @@ import ProfileTab, {
   RelaysTab,
   ZapsProfileTab,
 } from "Pages/Profile/ProfileTab";
+import DisplayName from "../../Element/User/DisplayName";
 
 export default function ProfilePage() {
   const params = useParams();
@@ -157,7 +158,7 @@ export default function ProfilePage() {
       <>
         <div className="flex-column g4">
           <h2 className="flex g4">
-            {user?.display_name || user?.name || "Nostrich"}
+            <DisplayName user={user} pubkey={user?.pubkey ?? ""} />
             <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
           </h2>
           {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
