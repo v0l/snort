@@ -170,6 +170,9 @@ export default function Text({
       }
 
       if (element.type === "media" && element.mimeType?.startsWith("image")) {
+        if (i > 0) {
+          chunks.push(<div className="mt10" />);
+        }
         if (disableMedia ?? false) {
           chunks.push(<DisableMedia content={element.content} />);
         } else {
@@ -231,6 +234,9 @@ export default function Text({
         element.type === "media" &&
         (element.mimeType?.startsWith("audio") || element.mimeType?.startsWith("video"))
       ) {
+        if (i > 0) {
+          chunks.push(<div className="mt10" />);
+        }
         if (disableMedia ?? false) {
           chunks.push(<DisableMedia content={element.content} />);
         } else {
@@ -247,6 +253,9 @@ export default function Text({
         chunks.push(<CashuNuts token={element.content} />);
       }
       if (element.type === "link" || (element.type === "media" && element.mimeType?.startsWith("unknown"))) {
+        if (i > 0 && !disableLinkPreview) {
+          chunks.push(<div className="mt10" />);
+        }
         chunks.push(
           <HyperText link={element.content} depth={depth} showLinkPreview={!(disableLinkPreview ?? false)} />,
         );
