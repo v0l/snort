@@ -2,7 +2,7 @@ import "./Nip05.css";
 import { HexKey } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
-export function useIsVerified(pubkey: HexKey, bypassCheck?: boolean) {
+export function useIsVerified(pubkey?: HexKey, bypassCheck?: boolean) {
   const profile = useUserProfile(pubkey);
   return { isVerified: bypassCheck || profile?.isNostrAddressValid };
 }
