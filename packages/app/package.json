@@ -16,6 +16,7 @@
     "@snort/system-web": "workspace:*",
     "@szhsin/react-menu": "^3.3.1",
     "@types/use-sync-external-store": "^0.0.4",
+    "@uidotdev/usehooks": "^2.3.1",
     "@void-cat/api": "^1.0.4",
     "debug": "^4.3.4",
     "dexie": "^3.2.4",

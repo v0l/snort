@@ -113,6 +113,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+a {
+  color: inherit;
+  line-height: 1.3em;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a.ext {
+  word-break: break-all;
+  white-space: initial;
+}
+
 #root {
   overflow-x: hidden;
 }
@@ -496,21 +511,6 @@ input:disabled {
   max-width: stretch;
   max-width: -webkit-fill-available;
   max-width: -moz-available;
-}
-
-a {
-  color: inherit;
-  line-height: 1.3em;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-a.ext {
-  word-break: break-all;
-  white-space: initial;
 }
 
 div.form {

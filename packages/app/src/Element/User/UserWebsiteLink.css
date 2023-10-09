@@ -1,0 +1,13 @@
+.user-profile-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-profile-link a {
+  text-decoration: none;
+}
+
+.user-profile-link a:hover {
+  text-decoration: underline;
+}

@@ -138,14 +138,6 @@
   gap: 8px;
 }
 
-.profile .website a {
-  text-decoration: none;
-}
-
-.profile .website a:hover {
-  text-decoration: underline;
-}
-
 .profile .link svg {
   color: var(--highlight);
 }

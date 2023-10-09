@@ -248,9 +248,13 @@ export default function Text({
         chunks.push(<CashuNuts token={element.content} />);
       }
       if (element.type === "link" || (element.type === "media" && element.mimeType?.startsWith("unknown"))) {
-        chunks.push(
-          <HyperText link={element.content} depth={depth} showLinkPreview={!(disableLinkPreview ?? false)} />,
-        );
+        if (disableMedia ?? false) {
+          chunks.push(<DisableMedia content={element.content} />);
+        } else {
+          chunks.push(
+            <HyperText link={element.content} depth={depth} showLinkPreview={!(disableLinkPreview ?? false)} />,
+          );
+        }
       }
       if (element.type === "custom_emoji") {
         chunks.push(<ProxyImg src={element.content} size={15} className="custom-emoji" />);

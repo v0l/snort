@@ -59,6 +59,7 @@ import { useStatusFeed } from "Feed/StatusFeed";
 
 import messages from "./messages";
 import { SpotlightMediaModal } from "Element/Deck/SpotlightMedia";
+import { UserWebsiteLink } from "Element/User/UserWebsiteLink";
 
 const NOTES = 0;
 const REACTIONS = 1;
@@ -135,8 +136,6 @@ export default function ProfilePage() {
   const showBadges = login.preferences.showBadges ?? false;
   const showStatus = login.preferences.showStatus ?? true;
 
-  const website_url =
-    user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
   // feeds
   const { blocked } = useModeration();
   const pinned = usePinnedFeed(id);
@@ -295,28 +294,10 @@ export default function ProfilePage() {
     );
   }
 
-  function tryFormatWebsite(url: string) {
-    try {
-      const u = new URL(url);
-      return `${u.hostname}${u.pathname !== "/" ? u.pathname : ""}`;
-    } catch {
-      // ignore
-    }
-    return url;
-  }
-
   function links() {
     return (
       <>
-        {user?.website && (
-          <div className="link website f-ellipsis">
-            <Icon name="link-02" size={16} />
-            <a href={website_url} target="_blank" rel="noreferrer">
-              {tryFormatWebsite(user.website)}
-            </a>
-          </div>
-        )}
-
+        <UserWebsiteLink user={user} />
         {lnurl && (
           <div className="link lnurl f-ellipsis" onClick={() => setShowLnQr(true)}>
             <Icon name="zapCircle" size={16} />
@@ -433,7 +414,7 @@ export default function ProfilePage() {
         <Avatar pubkey={id ?? ""} user={user} onClick={() => setModalImage(user?.picture || "")} className="pointer" />
         <div className="profile-actions">
           {renderIcons()}
-          {!isMe && id && <FollowButton className="primary" pubkey={id} />}
+          {!isMe && id && <FollowButton pubkey={id} />}
         </div>
       </div>
     );
