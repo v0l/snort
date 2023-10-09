@@ -2,36 +2,19 @@ import "./ProfilePage.css";
 import { useEffect, useState } from "react";
 import FormattedMessage from "Element/FormattedMessage";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  encodeTLV,
-  encodeTLVEntries,
-  EventKind,
-  HexKey,
-  NostrLink,
-  NostrPrefix,
-  TLVEntryType,
-  tryParseNostrLink,
-} from "@snort/system";
+import { encodeTLV, encodeTLVEntries, EventKind, NostrPrefix, TLVEntryType, tryParseNostrLink } from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
 import { findTag, getReactions, unwrap } from "SnortUtils";
-import { formatShort } from "Number";
 import Note from "Element/Event/Note";
-import Bookmarks from "Element/Bookmarks";
-import RelaysMetadata from "Element/Relay/RelaysMetadata";
 import { Tab, TabElement } from "Element/Tabs";
 import Icon from "Icons/Icon";
 import useMutedFeed from "Feed/MuteList";
-import useRelaysFeed from "Feed/RelaysFeed";
 import usePinnedFeed from "Feed/PinnedFeed";
-import useBookmarkFeed from "Feed/BookmarkFeed";
-import useFollowersFeed from "Feed/FollowersFeed";
 import useFollowsFeed from "Feed/FollowsFeed";
 import useProfileBadges from "Feed/BadgesFeed";
 import useModeration from "Hooks/useModeration";
-import useZapsFeed from "Feed/ZapsFeed";
-import { default as ZapElement } from "Element/Event/Zap";
 import FollowButton from "Element/User/FollowButton";
 import { parseId, hexToBech32 } from "SnortUtils";
 import Avatar from "Element/User/Avatar";
@@ -57,62 +40,24 @@ import useLogin from "Hooks/useLogin";
 import { ZapTarget } from "Zapper";
 import { useStatusFeed } from "Feed/StatusFeed";
 
-import messages from "./messages";
+import messages from "../messages";
 import { SpotlightMediaModal } from "Element/Deck/SpotlightMedia";
+import ProfileTab, {
+  BookMarksTab,
+  FollowersTab,
+  FollowsTab,
+  ProfileTabType,
+  RelaysTab,
+  ZapsProfileTab,
+} from "Pages/Profile/ProfileTab";
+import DisplayName from "../../Element/User/DisplayName";
 import { UserWebsiteLink } from "Element/User/UserWebsiteLink";
 
-const NOTES = 0;
-const REACTIONS = 1;
-const FOLLOWERS = 2;
-const FOLLOWS = 3;
-const ZAPS = 4;
-const MUTED = 5;
-const BLOCKED = 6;
-const RELAYS = 7;
-const BOOKMARKS = 8;
-
-function ZapsProfileTab({ id }: { id: HexKey }) {
-  const zaps = useZapsFeed(new NostrLink(NostrPrefix.PublicKey, id));
-  const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  return (
-    <div className="main-content">
-      <h2 className="p">
-        <FormattedMessage {...messages.Sats} values={{ n: formatShort(zapsTotal) }} />
-      </h2>
-      {zaps.map(z => (
-        <ZapElement showZapped={false} zap={z} />
-      ))}
-    </div>
-  );
+interface ProfilePageProps {
+  id?: string;
 }
 
-function FollowersTab({ id }: { id: HexKey }) {
-  const followers = useFollowersFeed(id);
-  return <FollowsList pubkeys={followers} showAbout={true} className="p" />;
-}
-
-function FollowsTab({ id }: { id: HexKey }) {
-  const follows = useFollowsFeed(id);
-  return <FollowsList pubkeys={follows} showAbout={true} className="p" />;
-}
-
-function RelaysTab({ id }: { id: HexKey }) {
-  const relays = useRelaysFeed(id);
-  return <RelaysMetadata relays={relays} />;
-}
-
-function BookMarksTab({ id }: { id: HexKey }) {
-  const bookmarks = useBookmarkFeed(id);
-  return (
-    <Bookmarks
-      pubkey={id}
-      bookmarks={bookmarks.filter(e => e.kind === EventKind.TextNote)}
-      related={bookmarks.filter(e => e.kind !== EventKind.TextNote)}
-    />
-  );
-}
-
-export default function ProfilePage() {
+export default function ProfilePage({ id: propId }: ProfilePageProps) {
   const params = useParams();
   const navigate = useNavigate();
   const [id, setId] = useState<string>();
@@ -145,89 +90,6 @@ export default function ProfilePage() {
   const status = useStatusFeed(showStatus ? id : undefined, true);
 
   // tabs
-  const ProfileTab = {
-    Notes: {
-      text: (
-        <>
-          <Icon name="pencil" size={16} />
-          <FormattedMessage defaultMessage="Notes" />
-        </>
-      ),
-      value: NOTES,
-    },
-    Reactions: {
-      text: (
-        <>
-          <Icon name="reaction" size={16} />
-          <FormattedMessage defaultMessage="Reactions" />
-        </>
-      ),
-      value: REACTIONS,
-    },
-    Followers: {
-      text: (
-        <>
-          <Icon name="user-v2" size={16} />
-          <FormattedMessage defaultMessage="Followers" />
-        </>
-      ),
-      value: FOLLOWERS,
-    },
-    Follows: {
-      text: (
-        <>
-          <Icon name="stars" size={16} />
-          <FormattedMessage defaultMessage="Follows" />
-        </>
-      ),
-      value: FOLLOWS,
-    },
-    Zaps: {
-      text: (
-        <>
-          <Icon name="zap-solid" size={16} />
-          <FormattedMessage defaultMessage="Zaps" />
-        </>
-      ),
-      value: ZAPS,
-    },
-    Muted: {
-      text: (
-        <>
-          <Icon name="mute" size={16} />
-          <FormattedMessage defaultMessage="Muted" />
-        </>
-      ),
-      value: MUTED,
-    },
-    Blocked: {
-      text: (
-        <>
-          <Icon name="block" size={16} />
-          <FormattedMessage defaultMessage="Blocked" />
-        </>
-      ),
-      value: BLOCKED,
-    },
-    Relays: {
-      text: (
-        <>
-          <Icon name="wifi" size={16} />
-          <FormattedMessage defaultMessage="Relays" />
-        </>
-      ),
-      value: RELAYS,
-    },
-    Bookmarks: {
-      text: (
-        <>
-          <Icon name="bookmark-solid" size={16} />
-          <FormattedMessage defaultMessage="Bookmarks" />
-        </>
-      ),
-      value: BOOKMARKS,
-    },
-  } as { [key: string]: Tab };
   const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
   const optionalTabs = [ProfileTab.Zaps, ProfileTab.Relays, ProfileTab.Bookmarks, ProfileTab.Muted].filter(a =>
     unwrap(a),
@@ -235,21 +97,22 @@ export default function ProfilePage() {
   const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
-    if (params.id?.match(EmailRegex)) {
-      getNip05PubKey(params.id).then(a => {
+    const resolvedId = propId || params.id;
+    if (resolvedId?.match(EmailRegex)) {
+      getNip05PubKey(resolvedId).then(a => {
         setId(a);
       });
     } else {
-      const nav = tryParseNostrLink(params.id ?? "");
+      const nav = tryParseNostrLink(resolvedId ?? "");
       if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
         // todo: use relays if any for nprofile
         setId(nav.id);
       } else {
-        setId(parseId(params.id ?? ""));
+        setId(parseId(resolvedId ?? ""));
       }
     }
     setTab(ProfileTab.Notes);
-  }, [params]);
+  }, [propId, params]);
 
   function musicStatus() {
     if (!status.music) return;
@@ -274,12 +137,21 @@ export default function ProfilePage() {
     return inner();
   }
 
+  useEffect(() => {
+    if (user?.nip05 && user?.isNostrAddressValid) {
+      if (user.nip05.endsWith(`@${process.env.NIP05_DOMAIN}`)) {
+        const username = user.nip05?.replace(`@${process.env.NIP05_DOMAIN}`, "");
+        navigate(`/${username}`, { replace: true });
+      }
+    }
+  }, [user?.isNostrAddressValid, user?.nip05]);
+
   function username() {
     return (
       <>
         <div className="flex-column g4">
           <h2 className="flex g4">
-            {user?.display_name || user?.name || "Nostrich"}
+            <DisplayName user={user} pubkey={user?.pubkey ?? ""} />
             <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
           </h2>
           {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
@@ -350,7 +222,7 @@ export default function ProfilePage() {
     if (!id) return null;
 
     switch (tab.value) {
-      case NOTES:
+      case ProfileTabType.NOTES:
         return (
           <>
             {pinned
@@ -380,29 +252,29 @@ export default function ProfilePage() {
             />
           </>
         );
-      case ZAPS: {
+      case ProfileTabType.ZAPS: {
         return <ZapsProfileTab id={id} />;
       }
-      case FOLLOWS: {
+      case ProfileTabType.FOLLOWS: {
         if (isMe) {
           return <FollowsList pubkeys={follows} showFollowAll={!isMe} showAbout={false} className="p" />;
         } else {
           return <FollowsTab id={id} />;
         }
       }
-      case FOLLOWERS: {
+      case ProfileTabType.FOLLOWERS: {
         return <FollowersTab id={id} />;
       }
-      case MUTED: {
+      case ProfileTabType.MUTED: {
         return <MutedList pubkeys={muted} />;
       }
-      case BLOCKED: {
+      case ProfileTabType.BLOCKED: {
         return <BlockList />;
       }
-      case RELAYS: {
+      case ProfileTabType.RELAYS: {
         return <RelaysTab id={id} />;
       }
-      case BOOKMARKS: {
+      case ProfileTabType.BOOKMARKS: {
         return <BookMarksTab id={id} />;
       }
     }

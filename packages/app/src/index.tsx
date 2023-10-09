@@ -24,7 +24,7 @@ import { IntlProvider } from "IntlProvider";
 import { unwrap } from "SnortUtils";
 import Layout from "Pages/Layout";
 import LoginPage from "Pages/LoginPage";
-import ProfilePage from "Pages/ProfilePage";
+import ProfilePage from "Pages/Profile/ProfilePage";
 import { RootRoutes, RootTabRoutes } from "Pages/Root";
 import NotificationsPage from "Pages/Notifications";
 import SettingsPage, { SettingsRoutes } from "Pages/SettingsPage";

@@ -107,6 +107,7 @@ body {
   color: var(--font-color);
   font-size: var(--font-size);
   overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 code {
