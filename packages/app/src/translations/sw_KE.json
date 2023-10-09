@@ -13,6 +13,7 @@
   "/PCavi": "Umma",
   "/RD0e2": "Nostr hutumia teknolojia ya sahihi ya dijiti kutoa madokezo ya uthibitisho ambayo yanaweza kuigwa kwa usalama kwenye relay nyingi ili kutoa uhifadhi mwingi wa maudhui yako.",
   "/Xf4UW": "Send anonymous usage metrics",
+  "/clOBU": "Weekly",
   "/d6vEc": "Rahisisha wasifu wako kupata na kushiriki",
   "/n5KSF": "{n} ms",
   "00LcfG": "Pakia zaidi",
@@ -231,6 +232,7 @@
   "P7FD0F": "Mfumo (Chaguo-msingi)",
   "P7nJT9": "Jumla ya leo (UTC): {amount} sats",
   "PCSt5T": "Preferences",
+  "PJeJFc": "Summary",
   "PLSbmL": "Maneno yako ya mnemonic",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "Kijajuu cha faili kisichojulikana: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Uko tayari!",
   "zonsdq": "Imeshindwa kupakia huduma ya LNURL",
   "zvCDao": "Onyesha madokezo mapya kiotomatiki",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }

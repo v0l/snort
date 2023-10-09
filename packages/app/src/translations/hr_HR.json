@@ -13,6 +13,7 @@
   "/PCavi": "Javno",
   "/RD0e2": "Nostr koristi tehnologiju digitalnog potpisa kako bi pružio bilješke o zaštiti od neovlaštenog mijenjanja koje se mogu sigurno replicirati na mnoge releje kako bi se osigurala nepotrebna pohrana vašeg sadržaja.",
   "/Xf4UW": "Send anonymous usage metrics",
+  "/clOBU": "Weekly",
   "/d6vEc": "Olakšajte pronalazak i dijeljenje svog profila",
   "/n5KSF": "{n} mikrosekundi",
   "00LcfG": "Load more",
@@ -231,6 +232,7 @@
   "P7FD0F": "Sustav (zadano)",
   "P7nJT9": "Ukupno danas (UTC): {amount} sati",
   "PCSt5T": "Postavke",
+  "PJeJFc": "Summary",
   "PLSbmL": "Vaša mnemotehnička fraza",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "Nepoznati header file-a: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Spremni ste!",
   "zonsdq": "Neuspješno učitavanje LNURL usluge",
   "zvCDao": "Automatski prikaži najnovije bilješke",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }

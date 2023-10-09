@@ -13,6 +13,7 @@
   "/PCavi": "Publik",
   "/RD0e2": "Nostr menggunakan teknologi tanda tangan digital untuk menyediakan catatan anti pengerusakan yang dapat dengan aman direplikasi ke banyak relai untuk menyediakan penyimpanan konten Anda yang berulang.",
   "/Xf4UW": "Send anonymous usage metrics",
+  "/clOBU": "Weekly",
   "/d6vEc": "Jadikan profil Anda lebih mudah untuk ditemukan dan dibagikan",
   "/n5KSF": "{n} ms",
   "00LcfG": "Load more",
@@ -231,6 +232,7 @@
   "P7FD0F": "Sistem (Bawaan)",
   "P7nJT9": "Total hari ini (UTC): {amount} sat",
   "PCSt5T": "Preferensi",
+  "PJeJFc": "Summary",
   "PLSbmL": "Your mnemonic phrase",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "Unknown file header: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Anda siap!",
   "zonsdq": "Gagal memuat layanan LNURL",
   "zvCDao": "Tampilkan catatan terbaru secara otomatis",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }

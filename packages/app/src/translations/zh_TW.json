@@ -13,6 +13,7 @@
   "/PCavi": "公開",
   "/RD0e2": "Nostr 利用數字簽名技術實現防篡改的筆記並可令其安全的複製到大量的中繼節點，給你的內容作為冗余存儲。",
   "/Xf4UW": "傳送匿名使用資料",
+  "/clOBU": "Weekly",
   "/d6vEc": "使你的帳號可更方便地被找到及分享",
   "/n5KSF": "{n} 毫秒",
   "00LcfG": "加載更多",
@@ -231,6 +232,7 @@
   "P7FD0F": "系統（默認）",
   "P7nJT9": "今天總計（UTC）：{amount} 聰",
   "PCSt5T": "選項",
+  "PJeJFc": "Summary",
   "PLSbmL": "你的助記詞句",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "未知文件標頭：{name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "你已經準備就緒！",
   "zonsdq": "加載 LNURL 服務失敗",
   "zvCDao": "自動顯示最新筆記",
-  "zwb6LR": "<b>鑄幣廠：</b> {url}"
+  "zwb6LR": "<b>鑄幣廠：</b> {url}",
+  "zxvhnE": "Daily"
 }
