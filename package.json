@@ -4,9 +4,9 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/system-react build && yarn workspace @snort/app build",
-    "start": "yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/system-react build && yarn workspace @snort/app start",
-    "test": "yarn workspace @snort/shared build && yarn workspace @snort/system build && yarn workspace @snort/app test && yarn workspace @snort/system test",
+    "build": "yarn workspace @snort/shared build && yarn workspace @snort/system-web build && yarn workspace @snort/system build && yarn workspace @snort/system-react build && yarn workspace @snort/app build",
+    "start": "yarn build && yarn workspace @snort/app start",
+    "test": "yarn build && yarn workspace @snort/app test && yarn workspace @snort/system test",
     "pre:commit": "yarn workspace @snort/app intl-extract && yarn workspace @snort/app intl-compile && yarn prettier --write ."
   },
   "prettier": {
