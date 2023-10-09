@@ -15,6 +15,8 @@
   --live: #f83838;
   --heart: #ef4444;
   --zap: #ff710a;
+  --mention: #961ee1;
+  --repost: #1ecbe1;
   --gray-superlight: #eee;
   --bg-secondary: #2a2a2a;
   --gray-light: #999;
@@ -137,6 +139,10 @@ code {
   border: 1px solid var(--border-color);
 }
 
+.bb {
+  border-bottom: 1px solid var(--border-color);
+}
+
 .bg-primary {
   background: var(--primary-gradient);
 }
@@ -147,6 +153,10 @@ code {
 
 .p {
   padding: 12px 16px;
+}
+
+.p4 {
+  padding: 4px;
 }
 
 .p24 {
@@ -619,6 +629,38 @@ div.form-col {
   background-color: var(--success);
 }
 
+.bg-zap {
+  background-color: var(--zap);
+}
+
+.bg-heart {
+  background-color: var(--heart);
+}
+
+.bg-mention {
+  background-color: var(--mention);
+}
+
+.bg-repost {
+  background-color: var(--repost);
+}
+
+.text-zap {
+  color: var(--zap);
+}
+
+.text-heart {
+  color: var(--heart);
+}
+
+.text-mention {
+  color: var(--mention);
+}
+
+.text-repost {
+  color: var(--repost);
+}
+
 .tweet {
   display: flex;
   align-items: center;
@@ -664,11 +706,6 @@ div.form-col {
   font-weight: 600;
   font-size: 26px;
   line-height: 36px;
-  margin: 12px 0 0 0;
-}
-
-.main-content .h4 {
-  margin-bottom: 25px;
 }
 
 .main-content .profile-preview {

@@ -13,6 +13,7 @@
   "/PCavi": "Public",
   "/RD0e2": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content.",
   "/Xf4UW": "Send anonymous usage metrics",
+  "/clOBU": "Weekly",
   "/d6vEc": "Make your profile easier to find and share",
   "/n5KSF": "{n} ms",
   "00LcfG": "Load more",
@@ -231,6 +232,7 @@
   "P7FD0F": "System (Default)",
   "P7nJT9": "Total today (UTC): {amount} sats",
   "PCSt5T": "Preferences",
+  "PJeJFc": "Summary",
   "PLSbmL": "Your mnemonic phrase",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "Unknown file header: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "You're ready!",
   "zonsdq": "Failed to load LNURL service",
   "zvCDao": "Automatically show latest notes",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }

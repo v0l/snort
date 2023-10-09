@@ -1,0 +1,25 @@
+{
+  "name": "@snort/system-web",
+  "version": "1.0.0",
+  "description": "Web based components @snort/system",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "https://git.v0l.io/Kieran/snort",
+  "author": "Kieran",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf dist && tsc"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "dependencies": {
+    "@snort/shared": "^1.0.6",
+    "@snort/system": "^1.0.21",
+    "dexie": "^3.2.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}

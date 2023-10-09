@@ -31,7 +31,7 @@ export const TabElement = ({ t, tab, setTab }: TabElementProps) => {
 const Tabs = ({ tabs, tab, setTab }: TabsProps) => {
   const horizontalScroll = useHorizontalScroll();
   return (
-    <div className="tabs p" ref={horizontalScroll}>
+    <div className="tabs" ref={horizontalScroll}>
       {tabs.map(t => (
         <TabElement tab={tab} setTab={setTab} t={t} />
       ))}

@@ -1,8 +1,5 @@
 import { FullRelaySettings, HexKey, NostrEvent, UserMetadata } from "..";
-import { hexToBech32, unixNowMs } from "@snort/shared";
-import { SnortSystemDb } from "./db";
-
-export const db = new SnortSystemDb();
+import { hexToBech32, unixNowMs, DexieTableLike } from "@snort/shared";
 
 export interface MetadataCache extends UserMetadata {
   /**
@@ -70,4 +67,13 @@ export function mapEventToProfile(ev: NostrEvent) {
   } catch (e) {
     console.error("Failed to parse JSON", ev, e);
   }
+}
+
+export interface SnortSystemDb {
+  users: DexieTableLike<MetadataCache>;
+  relayMetrics: DexieTableLike<RelayMetrics>;
+  userRelays: DexieTableLike<UsersRelays>;
+  events: DexieTableLike<NostrEvent>;
+
+  isAvailable(): Promise<boolean>;
 }
