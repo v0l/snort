@@ -29,6 +29,7 @@ if (appTitle === "iris") {
   copyPatterns.push({ from: "public/iris/.well-known", to: ".well-known" });
 } else {
   copyPatterns.push({ from: "public/manifest.json" });
+  copyPatterns.push({ from: "public/snort/.well-known", to: ".well-known" });
 }
 
 const config = {
