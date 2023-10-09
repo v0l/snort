@@ -1,12 +1,12 @@
-import { db, MetadataCache } from ".";
-import { fetchNip05Pubkey, FeedCache, LNURL } from "@snort/shared";
+import { MetadataCache } from ".";
+import { fetchNip05Pubkey, FeedCache, LNURL, DexieTableLike } from "@snort/shared";
 
 export class UserProfileCache extends FeedCache<MetadataCache> {
   #zapperQueue: Array<{ pubkey: string; lnurl: string }> = [];
   #nip5Queue: Array<{ pubkey: string; nip05: string }> = [];
 
-  constructor() {
-    super("UserCache", db.users);
+  constructor(table?: DexieTableLike<MetadataCache>) {
+    super("UserCache", table);
     this.#processZapperQueue();
     this.#processNip5Queue();
   }
@@ -24,10 +24,10 @@ export class UserProfileCache extends FeedCache<MetadataCache> {
   }
 
   async search(q: string): Promise<Array<MetadataCache>> {
-    if (db.ready) {
+    if (this.table) {
       // on-disk cache will always have more data
       return (
-        await db.users
+        await this.table
           .where("npub")
           .startsWithIgnoreCase(q)
           .or("name")

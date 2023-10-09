@@ -42,7 +42,7 @@ import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
 import DebugPage from "Pages/Debug";
 import { db } from "Db";
-import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
+import { preload, RelayMetrics, SystemDb, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
 import { SnortDeckLayout } from "Pages/DeckLayout";
 import FreeNostrAddressPage from "./Pages/FreeNostrAddressPage";
@@ -77,6 +77,7 @@ export const System = new NostrSystem({
   profileCache: UserCache,
   relayMetrics: RelayMetrics,
   queryOptimizer: WasmQueryOptimizer,
+  db: SystemDb,
   authHandler: async (c, r) => {
     const { id } = LoginStore.snapshot();
     const pub = LoginStore.getPublisher(id);

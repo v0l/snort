@@ -13,6 +13,7 @@
   "/PCavi": "公开",
   "/RD0e2": "Nostr 利用数字签名技术实现防篡改的笔记并可令其安全的复制到大量中继节点，给你的内容作为冗余存储。",
   "/Xf4UW": "发送匿名使用资料",
+  "/clOBU": "Weekly",
   "/d6vEc": "使你的帐号可更方便地被找到及分享",
   "/n5KSF": "{n} 毫秒",
   "00LcfG": "加载更多",
@@ -231,6 +232,7 @@
   "P7FD0F": "系统（默认）",
   "P7nJT9": "今天总计 (UTC)：{amount} 聪",
   "PCSt5T": "选项",
+  "PJeJFc": "Summary",
   "PLSbmL": "你的助记词句",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "未知文件标头：{name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "你已准备就绪！",
   "zonsdq": "加载 LNURL 服务失败",
   "zvCDao": "自动显示最新笔记",
-  "zwb6LR": "<b>铸币厂：</b> {url}"
+  "zwb6LR": "<b>铸币厂：</b> {url}",
+  "zxvhnE": "Daily"
 }

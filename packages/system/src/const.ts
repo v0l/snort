@@ -34,3 +34,8 @@ export const CashuRegex = /(cashuA[A-Za-z0-9_-]{0,10000}={0,3})/i;
  * Regex to match any npub/nevent/naddr/nprofile/note
  */
 export const MentionNostrEntityRegex = /@n(pub|profile|event|ote|addr|)1[acdefghjklmnpqrstuvwxyz023456789]+/g;
+
+/**
+ * Regex to match markdown code content
+ */
+export const MarkdownCodeRegex = /(```.+?```)/gms;

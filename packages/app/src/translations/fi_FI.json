@@ -13,6 +13,7 @@
   "/PCavi": "Julkinen",
   "/RD0e2": "Nostr käyttää digitaalista allekirjoitusteknologiaa tarjotakseen väärentämättömiä viestejä, joita voidaan turvallisesti replikoida monille välittäjille tarjoten näin varastointia sisällöllesi.",
   "/Xf4UW": "Lähetä nimettömiä käyttötietoja",
+  "/clOBU": "Weekly",
   "/d6vEc": "Tee profiilistasi helpompi löytää ja jakaa",
   "/n5KSF": "{n} ms",
   "00LcfG": "Lataa lisää",
@@ -231,6 +232,7 @@
   "P7FD0F": "Järjestelmä (oletus)",
   "P7nJT9": "Tänään yhteensä (UTC): {amount} satsia",
   "PCSt5T": "Asetukset",
+  "PJeJFc": "Summary",
   "PLSbmL": "Sinun mnemonic-lauseesi",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "Tuntematon tiedostotunniste: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Olet valmis!",
   "zonsdq": "Epäonnistunut LNURL-palvelun lataus",
   "zvCDao": "Näytä uusimmat viestit automaattisesti",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }

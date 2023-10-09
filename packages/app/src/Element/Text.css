@@ -114,6 +114,9 @@
   display: block;
 }
 
-.gallery:not(:first-child), img:not(:first-child), video:not(:first-child), .link-preview-container:not(:first-child) {
+.gallery:not(:first-child),
+img:not(:first-child),
+video:not(:first-child),
+.link-preview-container:not(:first-child) {
   margin-top: 10px;
 }

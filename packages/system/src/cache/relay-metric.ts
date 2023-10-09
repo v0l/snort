@@ -1,9 +1,9 @@
-import { db, RelayMetrics } from ".";
-import { FeedCache } from "@snort/shared";
+import { RelayMetrics } from ".";
+import { DexieTableLike, FeedCache } from "@snort/shared";
 
 export class RelayMetricCache extends FeedCache<RelayMetrics> {
-  constructor() {
-    super("RelayMetrics", db.relayMetrics);
+  constructor(table?: DexieTableLike<RelayMetrics>) {
+    super("RelayMetrics", table);
   }
 
   key(of: RelayMetrics): string {

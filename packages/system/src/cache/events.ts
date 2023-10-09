@@ -1,10 +1,9 @@
 import { NostrEvent } from "nostr";
-import { db } from ".";
-import { FeedCache } from "@snort/shared";
+import { DexieTableLike, FeedCache } from "@snort/shared";
 
 export class EventsCache extends FeedCache<NostrEvent> {
-  constructor() {
-    super("EventsCache", db.events);
+  constructor(table?: DexieTableLike<NostrEvent>) {
+    super("EventsCache", table);
   }
 
   key(of: NostrEvent): string {

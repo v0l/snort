@@ -13,6 +13,7 @@
   "/PCavi": "Openbaar",
   "/RD0e2": "Nostr maakt gebruik van digitale handtekeningentechnologie om manipulatiebeveiligde notes te realiseren. Zo kunnen de notes consistent naar veel relays tegelijk worden verzonden en wordt overbodige opslag voorkomen.",
   "/Xf4UW": "Send anonymous usage metrics",
+  "/clOBU": "Weekly",
   "/d6vEc": "Maak je profiel gemakkelijker om te vinden en te delen",
   "/n5KSF": "{n} ms",
   "00LcfG": "Meer laden",
@@ -231,6 +232,7 @@
   "P7FD0F": "Systeem (Standaard)",
   "P7nJT9": "Totaal vandaag (UTC): {amount} sats",
   "PCSt5T": "Voorkeuren",
+  "PJeJFc": "Summary",
   "PLSbmL": "Uw wachtwoord om te onthouden",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "Onbekende bestandsheader: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Je bent er klaar voor!",
   "zonsdq": "Laden van LNURL service mislukt",
   "zvCDao": "Recente notities automatisch weergeven",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }

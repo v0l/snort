@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "social.snort.app",
+      "sha256_cert_fingerprints": [
+        "78:CE:8A:F7:C1:E2:30:12:77:55:BF:0E:86:E4:5C:BA:99:93:A0:D7:D7:42:F8:27:8B:C9:1B:AC:FC:8A:85:05"
+      ]
+    }
+  }
+]

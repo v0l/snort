@@ -13,6 +13,7 @@
   "/PCavi": "Público",
   "/RD0e2": "Nostr usa tecnologia de assinatura digital para prover notas à prova de adulteração que podem ser repostadas em diferentes relays para que haja armazenamento redundante de seu conteúdo.",
   "/Xf4UW": "Send anonymous usage metrics",
+  "/clOBU": "Weekly",
   "/d6vEc": "Faça seu perfil seja mais fácil de achar e compartilhar",
   "/n5KSF": "{n} ms",
   "00LcfG": "Carregar mais",
@@ -231,6 +232,7 @@
   "P7FD0F": "Sistema (Padrão)",
   "P7nJT9": "Total hoje (UTC): {amount} sats",
   "PCSt5T": "Preferências",
+  "PJeJFc": "Summary",
   "PLSbmL": "A sua senha mnemônica",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "Cabeçalho de arquivo desconhecido: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Você está pronto!",
   "zonsdq": "Falha ao carregar o serviço LNURL",
   "zvCDao": "Mostrar automaticamente as últimas notas",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }

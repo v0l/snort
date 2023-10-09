@@ -1,9 +1,11 @@
 import "./ProfileImage.css";
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
+import { useHover } from "@uidotdev/usehooks";
+import { ControlledMenu } from "@szhsin/react-menu";
 
 import { profileLink } from "SnortUtils";
 import Avatar from "Element/User/Avatar";
@@ -11,6 +13,9 @@ import Nip05 from "Element/User/Nip05";
 import useLogin from "Hooks/useLogin";
 import Icon from "Icons/Icon";
 import DisplayName from "./DisplayName";
+import Text from "Element/Text";
+import FollowButton from "Element/User/FollowButton";
+import { UserWebsiteLink } from "Element/User/UserWebsiteLink";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -27,6 +32,7 @@ export interface ProfileImageProps {
   imageOverlay?: ReactNode;
   showFollowingMark?: boolean;
   icons?: ReactNode;
+  showProfileCard?: boolean;
 }
 
 export default function ProfileImage({
@@ -44,11 +50,29 @@ export default function ProfileImage({
   onClick,
   showFollowingMark = true,
   icons,
+  showProfileCard,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const nip05 = defaultNip ? defaultNip : user?.nip05;
   const { follows } = useLogin();
   const doesFollow = follows.item.includes(pubkey);
+  const [ref, hovering] = useHover<HTMLDivElement>();
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [t, setT] = useState<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => {
+    if (hovering) {
+      const tn = setTimeout(() => {
+        setShowProfileMenu(true);
+      }, 1000);
+      setT(tn);
+    } else {
+      if (t) {
+        clearTimeout(t);
+        setT(undefined);
+      }
+    }
+  }, [hovering]);
 
   function handleClick(e: React.MouseEvent) {
     if (link === "") {
@@ -60,7 +84,7 @@ export default function ProfileImage({
   function inner() {
     return (
       <>
-        <div className="avatar-wrapper">
+        <div className="avatar-wrapper" ref={ref}>
           <Avatar
             pubkey={pubkey}
             user={user}
@@ -93,20 +117,61 @@ export default function ProfileImage({
     );
   }
 
+  function profileCard() {
+    if (showProfileCard ?? true) {
+      return (
+        <ControlledMenu
+          state={showProfileMenu ? "open" : "closed"}
+          anchorRef={ref}
+          menuClassName="profile-card"
+          onClose={() => setShowProfileMenu(false)}>
+          <div className="flex-column g8">
+            <div className="flex f-space">
+              <ProfileImage pubkey={""} profile={user} showProfileCard={false} link="" />
+              <div className="flex g8">
+                {/*<button type="button">
+                <FormattedMessage defaultMessage="Stalk" />
+              </button>*/}
+                <FollowButton pubkey={pubkey} />
+              </div>
+            </div>
+            <Text
+              id={`profile-card-${pubkey}`}
+              content={user?.about ?? ""}
+              creator={pubkey}
+              tags={[]}
+              disableMedia={true}
+              disableLinkPreview={true}
+              truncate={250}
+            />
+            <UserWebsiteLink user={user} />
+          </div>
+        </ControlledMenu>
+      );
+    }
+    return null;
+  }
+
   if (link === "") {
     return (
-      <div className={`pfp${className ? ` ${className}` : ""}`} onClick={handleClick}>
-        {inner()}
-      </div>
+      <>
+        <div className={`pfp${className ? ` ${className}` : ""}`} onClick={handleClick}>
+          {inner()}
+        </div>
+        {profileCard()}
+      </>
     );
   } else {
     return (
-      <Link
-        className={`pfp${className ? ` ${className}` : ""}`}
-        to={link === undefined ? profileLink(pubkey) : link}
-        onClick={handleClick}>
-        {inner()}
-      </Link>
+      <>
+        <Link
+          className={`pfp${className ? ` ${className}` : ""}`}
+          to={link === undefined ? profileLink(pubkey) : link}
+          onClick={handleClick}>
+          {inner()}
+        </Link>
+        {profileCard()}
+      </>
     );
   }
 }

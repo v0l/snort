@@ -13,6 +13,7 @@
   "/PCavi": "Pubblica",
   "/RD0e2": "Nostr utilizza la tecnologia della firma digitale per fornire note a prova di manomissione che possono essere replicate in modo sicuro su molti relè per fornire l'archiviazione ridondante dei tuoi contenuti.",
   "/Xf4UW": "Send anonymous usage metrics",
+  "/clOBU": "Weekly",
   "/d6vEc": "Rendi il tuo profilo più facile da trovare e condividere",
   "/n5KSF": "{n} ms",
   "00LcfG": "Load more",
@@ -231,6 +232,7 @@
   "P7FD0F": "Sistema (Predefinito)",
   "P7nJT9": "Totale oggi (UTC): {amount} sat",
   "PCSt5T": "Preferenze",
+  "PJeJFc": "Summary",
   "PLSbmL": "La tua frase mnemonica",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "Intestazione del file sconosciuta: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Tutto fatto!",
   "zonsdq": "Caricamento del servizio LNURL fallito",
   "zvCDao": "Visualizza automaticamente le ultime note",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }

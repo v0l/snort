@@ -42,6 +42,9 @@
   "/Xf4UW": {
     "defaultMessage": "Send anonymous usage metrics"
   },
+  "/clOBU": {
+    "defaultMessage": "Weekly"
+  },
   "/d6vEc": {
     "defaultMessage": "Make your profile easier to find and share"
   },
@@ -703,6 +706,10 @@
   },
   "PCSt5T": {
     "defaultMessage": "Preferences"
+  },
+  "PJeJFc": {
+    "defaultMessage": "Summary",
+    "description": "Notifications summary"
   },
   "PLSbmL": {
     "defaultMessage": "Your mnemonic phrase"
@@ -1508,5 +1515,8 @@
   },
   "zwb6LR": {
     "defaultMessage": "<b>Mint:</b> {url}"
+  },
+  "zxvhnE": {
+    "defaultMessage": "Daily"
   }
 }

@@ -13,6 +13,7 @@
   "/PCavi": "公開",
   "/RD0e2": "Nostrはデジタル署名技術を使って投稿の改竄防止を図り、多数のリレーに安全に複製してコンテンツの冗長ストレージを提供しています。",
   "/Xf4UW": "匿名で利用状況を送信します",
+  "/clOBU": "Weekly",
   "/d6vEc": "プロフィールを見つけやすく、共有しやすくなる",
   "/n5KSF": "{n}ミリ秒",
   "00LcfG": "さらに読み込む",
@@ -231,6 +232,7 @@
   "P7FD0F": "システム (デフォルト)",
   "P7nJT9": "本日の合計額 (UTC): {amount} sats",
   "PCSt5T": "ユーザー設定",
+  "PJeJFc": "Summary",
   "PLSbmL": "ニーモニックフレーズ",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "不明なファイルヘッダー: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "準備完了！",
   "zonsdq": "LNURLサービスの読み込みに失敗しました",
   "zvCDao": "最新の記事を自動で表示する",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }
