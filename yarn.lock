@@ -2718,6 +2718,7 @@ __metadata:
     emojilib: ^3.0.10
     eslint: ^8.48.0
     eslint-webpack-plugin: ^4.0.1
+    highlight.js: ^11.8.0
     html-webpack-plugin: ^5.5.1
     jest: ^29.5.0
     jest-environment-jsdom: ^29.5.0
@@ -7275,6 +7276,13 @@ __metadata:
   bin:
     he: bin/he
   checksum: 3d4d6babccccd79c5c5a3f929a68af33360d6445587d628087f39a965079d84f18ce9c3d3f917ee1e3978916fc833bb8b29377c3b403f919426f91bc6965e7a7
+  languageName: node
+  linkType: hard
+
+"highlight.js@npm:^11.8.0":
+  version: 11.8.0
+  resolution: "highlight.js@npm:11.8.0"
+  checksum: d2578a57aee7315946ff19379053fd0a28b127baabf7617ab1d28d62cdc4eaf3d75053569cb8479a5afdc7a68f1ba9a6c1d612d8ae399b4b9aa43093b4fb6831
   languageName: node
   linkType: hard
 
