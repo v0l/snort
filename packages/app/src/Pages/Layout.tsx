@@ -22,10 +22,12 @@ import { useTheme } from "Hooks/useTheme";
 import { useLoginRelays } from "Hooks/useLoginRelays";
 import { useNoteCreator } from "State/NoteCreator";
 import { LoginUnlock } from "Element/PinPrompt";
+import { LoginStore } from "Login";
 
 export default function Layout() {
   const location = useLocation();
   const [pageClass, setPageClass] = useState("page");
+  const { id, stalker } = useLogin(s => ({ id: s.id, stalker: s.stalker ?? false }));
 
   useLoginFeed();
   useTheme();
@@ -60,6 +62,17 @@ export default function Layout() {
         <Toaster />
       </div>
       <LoginUnlock />
+      {stalker && (
+        <div
+          className="stalker"
+          onClick={() => {
+            LoginStore.removeSession(id);
+          }}>
+          <button type="button" className="btn btn-rnd">
+            <Icon name="close" />
+          </button>
+        </div>
+      )}
     </>
   );
 }

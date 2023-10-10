@@ -129,8 +129,10 @@ export default function ProfileImage({
             <div className="flex f-space">
               <ProfileImage pubkey={""} profile={user} showProfileCard={false} link="" />
               <div className="flex g8">
-                {/*<button type="button">
-                <FormattedMessage defaultMessage="Stalk" />
+                {/*<button type="button" onClick={() => {
+                  LoginStore.loginWithPubkey(pubkey, LoginSessionType.PublicKey, undefined, undefined, undefined, true);
+                }}>
+                  <FormattedMessage defaultMessage="Stalk" />
               </button>*/}
                 <FollowButton pubkey={pubkey} />
               </div>

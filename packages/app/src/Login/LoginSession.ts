@@ -128,4 +128,9 @@ export interface LoginSession {
    * A list of chats which we have joined (NIP-28/NIP-29)
    */
   extraChats: Array<string>;
+
+  /**
+   * Is login session in stalker mode
+   */
+  stalker: boolean;
 }

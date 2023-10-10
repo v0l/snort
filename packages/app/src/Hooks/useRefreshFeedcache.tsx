@@ -5,6 +5,7 @@ import { NoopStore, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { RefreshFeedCache } from "Cache/RefreshFeedCache";
 import useLogin from "./useLogin";
 import useEventPublisher from "./useEventPublisher";
+import { unwrap } from "@snort/shared";
 
 export function useRefreshFeedCache<T>(c: RefreshFeedCache<T>, leaveOpen = false) {
   const system = useContext(SnortContext);
@@ -33,7 +34,7 @@ export function useRefreshFeedCache<T>(c: RefreshFeedCache<T>, leaveOpen = false
           tBuf = [...evs];
           t = setTimeout(() => {
             t = undefined;
-            c.onEvent(tBuf, publisher);
+            c.onEvent(tBuf, unwrap(login.publicKey), publisher);
           }, 100);
         } else {
           tBuf.push(...evs);
@@ -46,8 +47,5 @@ export function useRefreshFeedCache<T>(c: RefreshFeedCache<T>, leaveOpen = false
         releaseOnEvent();
       };
     }
-    return () => {
-      // noop
-    };
   }, [sub]);
 }

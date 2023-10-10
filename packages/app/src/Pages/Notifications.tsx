@@ -80,23 +80,27 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
     return onHour.toString();
   };
 
+  const myNotifications = useMemo(() => {
+    return orderDescending([...notifications]).filter(
+      a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey),
+    );
+  }, [notifications, login.publicKey]);
+
   const timeGrouped = useMemo(() => {
-    return orderDescending([...notifications])
-      .filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey))
-      .reduce((acc, v) => {
-        const key = `${timeKey(v)}:${notificationContext(v as TaggedNostrEvent)?.encode()}:${v.kind}`;
-        if (acc.has(key)) {
-          unwrap(acc.get(key)).push(v as TaggedNostrEvent);
-        } else {
-          acc.set(key, [v as TaggedNostrEvent]);
-        }
-        return acc;
-      }, new Map<string, Array<TaggedNostrEvent>>());
-  }, [notifications]);
+    return myNotifications.reduce((acc, v) => {
+      const key = `${timeKey(v)}:${notificationContext(v as TaggedNostrEvent)?.encode()}:${v.kind}`;
+      if (acc.has(key)) {
+        unwrap(acc.get(key)).push(v as TaggedNostrEvent);
+      } else {
+        acc.set(key, [v as TaggedNostrEvent]);
+      }
+      return acc;
+    }, new Map<string, Array<TaggedNostrEvent>>());
+  }, [myNotifications]);
 
   return (
     <div className="main-content">
-      <NotificationSummary evs={notifications as TaggedNostrEvent[]} />
+      <NotificationSummary evs={myNotifications as TaggedNostrEvent[]} />
 
       {login.publicKey &&
         [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
