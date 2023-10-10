@@ -184,6 +184,8 @@ export default function Text({
             if (nextElement && nextElement.type === "media" && nextElement.mimeType?.startsWith("image")) {
               galleryImages.push(nextElement);
               i++;
+            } else if (nextElement && nextElement.type === "text" && nextElement.content.trim().length === 0) {
+              i++; //skip over empty space text
             } else {
               break;
             }
