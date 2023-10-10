@@ -24,7 +24,7 @@ export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
     return [...this.cache.values()];
   }
 
-  override async onEvent(evs: Array<TaggedNostrEvent>, pub?: EventPublisher) {
+  override async onEvent(evs: Array<TaggedNostrEvent>, _: string, pub?: EventPublisher) {
     if (!pub) return;
 
     const unwrapped = (

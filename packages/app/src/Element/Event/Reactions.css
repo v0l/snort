@@ -1,6 +1,6 @@
 .reactions-modal .modal-body {
   padding: 24px 32px;
-  background-color: #1b1b1b;
+  background-color: var(--gray-superdark);
   border-radius: 16px;
   position: relative;
   min-height: 33vh;

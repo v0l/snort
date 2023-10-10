@@ -90,3 +90,22 @@ header {
     display: none;
   }
 }
+
+.stalker {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  box-shadow: 0px 0px 26px 0px rgba(139, 92, 246, 0.7) inset;
+  pointer-events: none;
+}
+
+.stalker button {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  color: black;
+  background-color: var(--btn-color);
+  padding: 12px;
+  pointer-events: all !important;
+}

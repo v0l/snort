@@ -6,14 +6,18 @@ export type TWithCreated<T> = (T | Readonly<T>) & { created_at: number };
 
 export abstract class RefreshFeedCache<T> extends FeedCache<TWithCreated<T>> {
   abstract buildSub(session: LoginSession, rb: RequestBuilder): void;
-  abstract onEvent(evs: Readonly<Array<TaggedNostrEvent>>, pub?: EventPublisher): void;
+  abstract onEvent(evs: Readonly<Array<TaggedNostrEvent>>, pubKey: string, pub?: EventPublisher): void;
 
   /**
    * Get latest event
    */
-  protected newest() {
+  protected newest(filter?: (e: TWithCreated<T>) => boolean) {
     let ret = 0;
-    this.cache.forEach(v => (ret = v.created_at > ret ? v.created_at : ret));
+    this.cache.forEach(v => {
+      if (!filter || filter(v)) {
+        ret = v.created_at > ret ? v.created_at : ret;
+      }
+    });
     return ret;
   }
 

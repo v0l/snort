@@ -13,6 +13,7 @@
   "/PCavi": "İctimai",
   "/RD0e2": "Nostr, məzmununuzun lazımsız saxlanmasını təmin etmək üçün bir çox relelərə təhlükəsiz şəkildə təkrarlana bilən saxta qeydləri təmin etmək üçün rəqəmsal imza texnologiyasından istifadə edir.",
   "/Xf4UW": "Send anonymous usage metrics",
+  "/clOBU": "Weekly",
   "/d6vEc": "Profilinizi tapmağı və paylaşmağı asanlaşdırın",
   "/n5KSF": "{n} ms",
   "00LcfG": "Daha çox",
@@ -231,6 +232,7 @@
   "P7FD0F": "System (Default)",
   "P7nJT9": "Total today (UTC): {amount} sats",
   "PCSt5T": "Preferences",
+  "PJeJFc": "Summary",
   "PLSbmL": "Your mnemonic phrase",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "Unknown file header: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Hazırsan!",
   "zonsdq": "LNURL xidmətini yükləmək alınmadı",
   "zvCDao": "Ən son qeydləri avtomatik göstərin",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }

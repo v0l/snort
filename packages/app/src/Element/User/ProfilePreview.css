@@ -15,7 +15,3 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.profile-preview button {
-  min-width: 98px;
-}

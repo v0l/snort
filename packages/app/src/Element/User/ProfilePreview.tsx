@@ -12,6 +12,7 @@ export interface ProfilePreviewProps {
   options?: {
     about?: boolean;
     linkToProfile?: boolean;
+    profileCards?: boolean;
   };
   profile?: UserMetadata;
   actions?: ReactNode;
@@ -45,6 +46,7 @@ export default function ProfilePreview(props: ProfilePreviewProps) {
               profile={props.profile}
               link={options.linkToProfile ?? true ? undefined : ""}
               subHeader={options.about ? <div className="about">{user?.about}</div> : undefined}
+              showProfileCard={options.profileCards}
             />
             {props.actions ?? (
               <div className="follow-button-container">

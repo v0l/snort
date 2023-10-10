@@ -6,5 +6,8 @@
   "favicon": "public/favicon.ico",
   "appleTouchIconUrl": "/nostrich_512.png",
   "httpCache": "",
-  "animalNamePlaceholders": false
+  "animalNamePlaceholders": false,
+  "features": {
+    "subscriptions": true
+  }
 }

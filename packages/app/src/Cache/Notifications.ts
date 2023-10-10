@@ -1,11 +1,11 @@
 import { EventKind, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { RefreshFeedCache, TWithCreated } from "./RefreshFeedCache";
 import { LoginSession } from "Login";
-import { db } from "Db";
+import { NostrEventForSession, db } from "Db";
 import { Day } from "Const";
 import { unixNow } from "@snort/shared";
 
-export class NotificationsCache extends RefreshFeedCache<NostrEvent> {
+export class NotificationsCache extends RefreshFeedCache<NostrEventForSession> {
   #kinds = [EventKind.TextNote, EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt];
 
   constructor() {
@@ -14,7 +14,7 @@ export class NotificationsCache extends RefreshFeedCache<NostrEvent> {
 
   buildSub(session: LoginSession, rb: RequestBuilder) {
     if (session.publicKey) {
-      const newest = this.newest();
+      const newest = this.newest(v => v.tags.some(a => a[0] === "p" && a[1] === session.publicKey));
       rb.withFilter()
         .kinds(this.#kinds)
         .tag("p", [session.publicKey])
@@ -22,10 +22,15 @@ export class NotificationsCache extends RefreshFeedCache<NostrEvent> {
     }
   }
 
-  async onEvent(evs: readonly TaggedNostrEvent[]) {
+  async onEvent(evs: readonly TaggedNostrEvent[], pubKey: string) {
     const filtered = evs.filter(a => this.#kinds.includes(a.kind) && a.tags.some(b => b[0] === "p"));
     if (filtered.length > 0) {
-      await this.bulkSet(filtered);
+      await this.bulkSet(
+        filtered.map(v => ({
+          ...v,
+          forSession: pubKey,
+        })),
+      );
       this.notifyChange(filtered.map(v => this.key(v)));
     }
   }
@@ -34,7 +39,7 @@ export class NotificationsCache extends RefreshFeedCache<NostrEvent> {
     return of.id;
   }
 
-  takeSnapshot(): TWithCreated<NostrEvent>[] {
+  takeSnapshot() {
     return [...this.cache.values()];
   }
 }

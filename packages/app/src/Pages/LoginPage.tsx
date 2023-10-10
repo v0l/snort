@@ -143,7 +143,7 @@ export default function LoginPage() {
 
   function generateNip46() {
     const meta = {
-      name: process.env.APP_NAME_CAPITALIZED,
+      name: CONFIG.appNameCapitalized,
       url: window.location.href,
     };
 
@@ -287,7 +287,7 @@ export default function LoginPage() {
       <div>
         <div className="login-container">
           <h1 className="logo" onClick={() => navigate("/")}>
-            {process.env.APP_NAME}
+            {CONFIG.appName}
           </h1>
           <h1 dir="auto">
             <FormattedMessage defaultMessage="Login" description="Login header" />
@@ -342,7 +342,7 @@ export default function LoginPage() {
                       <FormattedMessage
                         defaultMessage="Secure your private key with a PIN, ensuring enhanced protection on {site}. You'll be prompted to enter this PIN each time you access the site."
                         values={{
-                          site: process.env.APP_NAME_CAPITALIZED,
+                          site: CONFIG.appNameCapitalized,
                         }}
                       />
                     </p>

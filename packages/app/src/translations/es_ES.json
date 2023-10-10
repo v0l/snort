@@ -13,6 +13,7 @@
   "/PCavi": "Público",
   "/RD0e2": "Nostr utiliza firmas digitales para proveer de notas inmutables que pueden ser replicadas a muchos relays para que tu contenido esté distribuido redundantemente.",
   "/Xf4UW": "Send anonymous usage metrics",
+  "/clOBU": "Weekly",
   "/d6vEc": "Haz tu perfil más fácil de encontrar y compartir",
   "/n5KSF": "{n} ms",
   "00LcfG": "Load more",
@@ -231,6 +232,7 @@
   "P7FD0F": "Sistema (por defecto)",
   "P7nJT9": "Total hoy (UTC): {amount} sáb",
   "PCSt5T": "Preferencias",
+  "PJeJFc": "Summary",
   "PLSbmL": "Frase mnemotécnica",
   "PaN7t3": "Preview on {site}",
   "PamNxw": "Encabezado de archivo desconocido: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Estás listo!",
   "zonsdq": "Error al contactar con el servicio LNURL",
   "zvCDao": "Mostrar notas nuevas automáticamente",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }

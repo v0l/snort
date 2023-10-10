@@ -16,8 +16,8 @@ import {
   UserProfileCache,
   UserRelaysCache,
   RelayMetricCache,
-  db,
   UsersRelays,
+  SnortSystemDb,
 } from ".";
 import { EventsCache } from "./cache/events";
 import { RelayCache } from "./gossip-model";
@@ -87,19 +87,21 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     relayMetrics?: FeedCache<RelayMetrics>;
     eventsCache?: FeedCache<NostrEvent>;
     queryOptimizer?: QueryOptimizer;
+    db?: SnortSystemDb;
   }) {
     super();
     this.#handleAuth = props.authHandler;
-    this.#relayCache = props.relayCache ?? new UserRelaysCache();
-    this.#profileCache = props.profileCache ?? new UserProfileCache();
-    this.#relayMetricsCache = props.relayMetrics ?? new RelayMetricCache();
-    this.#eventsCache = props.eventsCache ?? new EventsCache();
+    this.#relayCache = props.relayCache ?? new UserRelaysCache(props.db?.userRelays);
+    this.#profileCache = props.profileCache ?? new UserProfileCache(props.db?.users);
+    this.#relayMetricsCache = props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics);
+    this.#eventsCache = props.eventsCache ?? new EventsCache(props.db?.events);
     this.#queryOptimizer = props.queryOptimizer ?? DefaultQueryOptimizer;
 
     this.#profileLoader = new ProfileLoaderService(this, this.#profileCache);
     this.#relayMetrics = new RelayMetricHandler(this.#relayMetricsCache);
     this.#cleanup();
   }
+
   HandleAuth?: AuthHandler | undefined;
 
   get ProfileLoader() {
@@ -122,7 +124,6 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
    * Setup caches
    */
   async Init() {
-    db.ready = await db.isAvailable();
     const t = [
       this.#relayCache.preload(),
       this.#profileCache.preload(),

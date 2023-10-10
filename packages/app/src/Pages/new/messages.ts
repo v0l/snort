@@ -14,11 +14,11 @@ export default defineMessages({
   KeysSaved: { defaultMessage: "I have saved my keys, continue" },
   WhatIsSnort: {
     defaultMessage: "What is {site} and how does it work?",
-    values: { site: process.env.APP_NAME_CAPITALIZED },
+    values: { site: CONFIG.appNameCapitalized },
   },
   WhatIsSnortIntro: {
     defaultMessage: `{site} is a Nostr UI, nostr is a decentralised protocol for saving and distributing "notes".`,
-    values: { site: process.env.APP_NAME_CAPITALIZED },
+    values: { site: CONFIG.appNameCapitalized },
   },
   WhatIsSnortNotes: {
     defaultMessage: `Notes hold text content, the most popular usage of these notes is to store "tweet like" messages.`,
@@ -26,7 +26,7 @@ export default defineMessages({
 
   WhatIsSnortExperience: {
     defaultMessage: "{site} is designed to have a similar experience to Twitter.",
-    values: { site: process.env.APP_NAME_CAPITALIZED },
+    values: { site: CONFIG.appNameCapitalized },
   },
   HowKeysWork: { defaultMessage: "How do keys work?" },
   DigitalSignatures: {
@@ -70,9 +70,9 @@ export default defineMessages({
   NameSquatting: {
     defaultMessage:
       "Name-squatting and impersonation is not allowed. {site} and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule.",
-    values: { site: process.env.APP_NAME_CAPITALIZED },
+    values: { site: CONFIG.appNameCapitalized },
   },
-  PreviewOnSnort: { defaultMessage: "Preview on {site}", values: { site: process.env.APP_NAME_CAPITALIZED } },
+  PreviewOnSnort: { defaultMessage: "Preview on {site}", values: { site: CONFIG.appNameCapitalized } },
   GetSnortId: { defaultMessage: "Get a Snort identifier" },
   GetSnortIdHelp: {
     defaultMessage:

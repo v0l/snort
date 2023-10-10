@@ -12,7 +12,7 @@ const ExtendedFormattedMessage: FC<ExtendedProps> = props => {
   useEffect(() => {
     const translatedMessage = formatMessage({ id, defaultMessage }, values);
     if (typeof translatedMessage === "string") {
-      setProcessedMessage(translatedMessage.replace("Snort", process.env.APP_NAME_CAPITALIZED || "Snort"));
+      setProcessedMessage(translatedMessage.replace("Snort", CONFIG.appNameCapitalized || "Snort"));
     }
   }, [id, defaultMessage, values, formatMessage]);
 

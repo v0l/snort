@@ -13,6 +13,7 @@
   "/PCavi": "Öffentlich",
   "/RD0e2": "Nostr nutzt digitale Signaturen, um manipulationssichere Notes zu erstellen, welche sicher auf viele Relais repliziert werden können, um eine redundante Speicherung deiner Inhalte zu bieten.",
   "/Xf4UW": "Anonyme Nutzungsmetriken senden",
+  "/clOBU": "Wöchentlich",
   "/d6vEc": "Mach dein Profil leichter zu finden und zu teilen",
   "/n5KSF": "{n} ms",
   "00LcfG": "Mehr laden",
@@ -231,6 +232,7 @@
   "P7FD0F": "System (Standard)",
   "P7nJT9": "Gesamt heute (UTC): {amount} sats",
   "PCSt5T": "Einstellungen",
+  "PJeJFc": "Übersicht",
   "PLSbmL": "Ihre mnemonische Passphrase",
   "PaN7t3": "Vorschau auf {site}",
   "PamNxw": "Unbekannter Datei-Header: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Du bist bereit!",
   "zonsdq": "Fehler beim Laden des LNURL-Dienstes",
   "zvCDao": "Neueste Notes automatisch anzeigen",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Täglich"
 }

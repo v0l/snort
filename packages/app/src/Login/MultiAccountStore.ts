@@ -53,6 +53,7 @@ const LoggedOut = {
     timestamp: 0,
   },
   extraChats: [],
+  stalker: false,
 } as LoginSession;
 
 export class MultiAccountStore extends ExternalStore<LoginSession> {
@@ -125,6 +126,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     relays?: Record<string, RelaySettings>,
     remoteSignerRelays?: Array<string>,
     privateKey?: KeyStorage,
+    stalker?: boolean,
   ) {
     if (this.#accounts.has(key)) {
       throw new Error("Already logged in with this pubkey");
@@ -143,6 +145,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       preferences: deepClone(DefaultPreferences),
       remoteSignerRelays,
       privateKeyData: privateKey,
+      stalker: stalker ?? false,
     } as LoginSession;
 
     const pub = createPublisher(newSession);

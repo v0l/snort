@@ -34,3 +34,17 @@ declare module "emojilib" {
   const value: Record<string, string>;
   export default value;
 }
+
+declare const CONFIG: {
+  appName: string;
+  appNameCapitalized: string;
+  appTitle: string;
+  nip05Domain: string;
+  favicon: string;
+  appleTouchIconUrl: string;
+  httpCache: string;
+  animalNamePlaceholders: boolean;
+  features: {
+    subscriptions: boolean;
+  };
+};

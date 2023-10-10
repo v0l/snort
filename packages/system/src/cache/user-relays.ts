@@ -1,9 +1,9 @@
-import { db, UsersRelays } from ".";
-import { FeedCache } from "@snort/shared";
+import { UsersRelays } from ".";
+import { DexieTableLike, FeedCache } from "@snort/shared";
 
 export class UserRelaysCache extends FeedCache<UsersRelays> {
-  constructor() {
-    super("UserRelays", db.userRelays);
+  constructor(table?: DexieTableLike<UsersRelays>) {
+    super("UserRelays", table);
   }
 
   key(of: UsersRelays): string {

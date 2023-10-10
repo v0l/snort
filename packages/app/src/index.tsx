@@ -16,6 +16,7 @@ import {
   ReqFilter,
   PowMiner,
   NostrEvent,
+  mapEventToProfile,
 } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
@@ -24,7 +25,7 @@ import { IntlProvider } from "IntlProvider";
 import { unwrap } from "SnortUtils";
 import Layout from "Pages/Layout";
 import LoginPage from "Pages/LoginPage";
-import ProfilePage from "Pages/ProfilePage";
+import ProfilePage from "Pages/Profile/ProfilePage";
 import { RootRoutes, RootTabRoutes } from "Pages/Root";
 import NotificationsPage from "Pages/Notifications";
 import SettingsPage, { SettingsRoutes } from "Pages/SettingsPage";
@@ -42,7 +43,7 @@ import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
 import DebugPage from "Pages/Debug";
 import { db } from "Db";
-import { preload, RelayMetrics, UserCache, UserRelays } from "Cache";
+import { preload, RelayMetrics, SystemDb, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
 import { SnortDeckLayout } from "Pages/DeckLayout";
 import FreeNostrAddressPage from "./Pages/FreeNostrAddressPage";
@@ -77,6 +78,7 @@ export const System = new NostrSystem({
   profileCache: UserCache,
   relayMetrics: RelayMetrics,
   queryOptimizer: WasmQueryOptimizer,
+  db: SystemDb,
   authHandler: async (c, r) => {
     const { id } = LoginStore.snapshot();
     const pub = LoginStore.getPublisher(id);
@@ -85,6 +87,29 @@ export const System = new NostrSystem({
     }
   },
 });
+
+async function fetchProfile(key: string) {
+  const rsp = await fetch(`${CONFIG.httpCache}/profile/${key}`);
+  if (rsp.ok) {
+    try {
+      const data = (await rsp.json()) as NostrEvent;
+      if (data) {
+        return mapEventToProfile(data);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
+
+/**
+ * Add profile loader fn
+ */
+if (CONFIG.httpCache) {
+  System.ProfileLoader.loaderFn = async (keys: Array<string>) => {
+    return (await Promise.all(keys.map(a => fetchProfile(a)))).filter(a => a !== undefined).map(a => unwrap(a));
+  };
+}
 
 /**
  * Singleton user profile loader
@@ -190,7 +215,7 @@ export const router = createBrowserRouter([
       },
       ...NewUserRoutes,
       ...WalletRoutes,
-      ...SubscribeRoutes,
+      ...(CONFIG.features.subscriptions ? SubscribeRoutes : []),
       {
         path: "/debug",
         element: <DebugPage />,

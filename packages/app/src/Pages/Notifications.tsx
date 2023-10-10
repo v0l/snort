@@ -1,16 +1,17 @@
 import "./Notifications.css";
-import { useEffect, useMemo, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { EventExt, EventKind, NostrEvent, NostrLink, NostrPrefix, TaggedNostrEvent, parseZap } from "@snort/system";
-import { unwrap } from "@snort/shared";
+import { unixNow, unwrap } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
+import { Bar, BarChart, Tooltip, XAxis, YAxis } from "recharts";
 
 import useLogin from "Hooks/useLogin";
 import { markNotificationsRead } from "Login";
 import { Notifications, UserCache } from "Cache";
-import { dedupe, findTag, orderDescending } from "SnortUtils";
+import { dedupe, findTag, orderAscending, orderDescending } from "SnortUtils";
 import Icon from "Icons/Icon";
 import ProfileImage from "Element/User/ProfileImage";
 import useModeration from "Hooks/useModeration";
@@ -20,6 +21,8 @@ import { formatShort } from "Number";
 import { LiveEvent } from "Element/LiveEvent";
 import ProfilePreview from "Element/User/ProfilePreview";
 import { getDisplayName } from "Element/User/DisplayName";
+import { Day } from "Const";
+import Tabs, { Tab } from "Element/Tabs";
 
 function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {
@@ -77,24 +80,191 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
     return onHour.toString();
   };
 
+  const myNotifications = useMemo(() => {
+    return orderDescending([...notifications]).filter(
+      a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey),
+    );
+  }, [notifications, login.publicKey]);
+
   const timeGrouped = useMemo(() => {
-    return orderDescending([...notifications])
-      .filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey))
-      .reduce((acc, v) => {
-        const key = `${timeKey(v)}:${notificationContext(v as TaggedNostrEvent)?.encode()}:${v.kind}`;
-        if (acc.has(key)) {
-          unwrap(acc.get(key)).push(v as TaggedNostrEvent);
-        } else {
-          acc.set(key, [v as TaggedNostrEvent]);
-        }
-        return acc;
-      }, new Map<string, Array<TaggedNostrEvent>>());
-  }, [notifications]);
+    return myNotifications.reduce((acc, v) => {
+      const key = `${timeKey(v)}:${notificationContext(v as TaggedNostrEvent)?.encode()}:${v.kind}`;
+      if (acc.has(key)) {
+        unwrap(acc.get(key)).push(v as TaggedNostrEvent);
+      } else {
+        acc.set(key, [v as TaggedNostrEvent]);
+      }
+      return acc;
+    }, new Map<string, Array<TaggedNostrEvent>>());
+  }, [myNotifications]);
 
   return (
     <div className="main-content">
+      <NotificationSummary evs={myNotifications as TaggedNostrEvent[]} />
+
       {login.publicKey &&
         [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
+    </div>
+  );
+}
+
+interface StatSlot {
+  time: string;
+  reactions: number;
+  reposts: number;
+  quotes: number;
+  mentions: number;
+  zaps: number;
+}
+
+const enum NotificationSummaryPeriod {
+  Daily,
+  Weekly,
+}
+
+const enum NotificationSummaryFilter {
+  Reactions = 1,
+  Reposts = 2,
+  Mentions = 4,
+  Zaps = 8,
+  All = 255,
+}
+
+function NotificationSummary({ evs }: { evs: Array<TaggedNostrEvent> }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [period, setPeriod] = useState(NotificationSummaryPeriod.Daily);
+  const [filter, setFilter] = useState(NotificationSummaryFilter.All);
+
+  const periodTabs = [
+    {
+      value: NotificationSummaryPeriod.Daily,
+      text: <FormattedMessage defaultMessage="Daily" />,
+    },
+    {
+      value: NotificationSummaryPeriod.Weekly,
+      text: <FormattedMessage defaultMessage="Weekly" />,
+    },
+  ] as Array<Tab>;
+
+  const hasFlag = (v: number, f: NotificationSummaryFilter) => {
+    return (v & f) > 0;
+  };
+
+  const getWeek = (d: Date) => {
+    const onejan = new Date(d.getFullYear(), 0, 1);
+    const today = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const dayOfYear = (today.getTime() - onejan.getTime() + 86400000) / 86400000;
+    return Math.ceil(dayOfYear / 7);
+  };
+
+  const stats = useMemo(() => {
+    return orderAscending(evs)
+      .filter(a => (period === NotificationSummaryPeriod.Daily ? a.created_at > unixNow() - 14 * Day : true))
+      .reduce(
+        (acc, v) => {
+          const date = new Date(v.created_at * 1000);
+          const key =
+            period === NotificationSummaryPeriod.Daily
+              ? `${date.getMonth() + 1}/${date.getDate()}`
+              : getWeek(date).toString();
+          acc[key] ??= {
+            time: key,
+            reactions: 0,
+            reposts: 0,
+            quotes: 0,
+            mentions: 0,
+            zaps: 0,
+          };
+
+          if (v.kind === EventKind.Reaction) {
+            acc[key].reactions++;
+          } else if (v.kind === EventKind.Repost) {
+            acc[key].reposts++;
+          } else if (v.kind === EventKind.ZapReceipt) {
+            acc[key].zaps++;
+          }
+          if (v.kind === EventKind.TextNote) {
+            acc[key].mentions++;
+          }
+
+          return acc;
+        },
+        {} as Record<string, StatSlot>,
+      );
+  }, [evs, period]);
+
+  const filterIcon = (f: NotificationSummaryFilter, icon: string, iconActiveClass?: string) => {
+    const active = hasFlag(filter, f);
+    return (
+      <div className={`summary-icon${active ? " active" : ""}`} onClick={() => setFilter(v => v ^ f)}>
+        <Icon name={icon} className={active ? iconActiveClass : undefined} />
+      </div>
+    );
+  };
+
+  return (
+    <div className="flex-column g12 p bb">
+      <div className="flex f-space">
+        <h2>
+          <FormattedMessage defaultMessage="Summary" description="Notifications summary" />
+        </h2>
+        <div className="flex g8">
+          {filterIcon(NotificationSummaryFilter.Reactions, "heart-solid", "text-heart")}
+          {filterIcon(NotificationSummaryFilter.Zaps, "zap-solid", "text-zap")}
+          {filterIcon(NotificationSummaryFilter.Reposts, "reverse-left", "text-repost")}
+          {filterIcon(NotificationSummaryFilter.Mentions, "at-sign", "text-mention")}
+        </div>
+      </div>
+      <Tabs tabs={periodTabs} tab={unwrap(periodTabs.find(a => a.value === period))} setTab={t => setPeriod(t.value)} />
+      <div ref={ref}>
+        <BarChart
+          width={ref.current?.clientWidth}
+          height={200}
+          data={Object.values(stats)}
+          margin={{ left: 0, right: 0 }}
+          style={{ userSelect: "none" }}>
+          <XAxis dataKey="time" />
+          <YAxis />
+          {hasFlag(filter, NotificationSummaryFilter.Reactions) && (
+            <Bar dataKey="reactions" fill="var(--heart)" stackId="" />
+          )}
+          {hasFlag(filter, NotificationSummaryFilter.Reposts) && (
+            <Bar dataKey="reposts" fill="var(--repost)" stackId="" />
+          )}
+          {hasFlag(filter, NotificationSummaryFilter.Mentions) && (
+            <Bar dataKey="mentions" fill="var(--mention)" stackId="" />
+          )}
+          {hasFlag(filter, NotificationSummaryFilter.Zaps) && <Bar dataKey="zaps" fill="var(--zap)" stackId="" />}
+          <Tooltip
+            cursor={{ fill: "rgba(255,255,255,0.2)" }}
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div className="summary-tooltip">
+                    <div className="flex-column g12">
+                      <Icon name="heart-solid" className="text-heart" />
+                      {formatShort(payload.find(a => a.name === "reactions")?.value as number)}
+                    </div>
+                    <div className="flex-column g12">
+                      <Icon name="zap-solid" className="text-zap" />
+                      {formatShort(payload.find(a => a.name === "zaps")?.value as number)}
+                    </div>
+                    <div className="flex-column g12">
+                      <Icon name="reverse-left" className="text-repost" />
+                      {formatShort(payload.find(a => a.name === "reposts")?.value as number)}
+                    </div>
+                    <div className="flex-column g12">
+                      <Icon name="at-sign" className="text-mention" />
+                      {formatShort(payload.find(a => a.name === "mentions")?.value as number)}
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            }}
+          />
+        </BarChart>
+      </div>
     </div>
   );
 }

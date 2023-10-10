@@ -13,6 +13,7 @@
   "/PCavi": "Nyilvános",
   "/RD0e2": "A Nostr digitális aláírásokat használ, amivel megmásíthatatlan bejegyzéseket lehet létrehozni. Ezeket bárhány másolatban a különböző csomópontokra szétszórhatóak, ezzel biztosítva a tartalom redundanciáját.",
   "/Xf4UW": "Anonimizált használati adatok küldése",
+  "/clOBU": "Weekly",
   "/d6vEc": "Legyen a fiókod könnyebben megtalálható és megosztható",
   "/n5KSF": "{n} ms",
   "00LcfG": "Továbbiak betöltése",
@@ -231,6 +232,7 @@
   "P7FD0F": "Rendszer (Alapértelmezett)",
   "P7nJT9": "Összesen ma (UTC): {amount} sat",
   "PCSt5T": "Preferenciák",
+  "PJeJFc": "Summary",
   "PLSbmL": "Fiók helyreállító (mnemonikus) szavaid",
   "PaN7t3": "Előnézet a(z) {site}-n",
   "PamNxw": "Ismeretlen fejléc: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Készen vagy!",
   "zonsdq": "Az LNURL szolgáltatás betöltése nem sikerült",
   "zvCDao": "Automatikusan a legfrissebb bejegyzéseket mutassa",
-  "zwb6LR": "<b>Pénzverde:</b> {url}"
+  "zwb6LR": "<b>Pénzverde:</b> {url}",
+  "zxvhnE": "Daily"
 }

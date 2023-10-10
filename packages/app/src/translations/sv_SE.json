@@ -13,6 +13,7 @@
   "/PCavi": "Publik",
   "/RD0e2": "Nostr använder digital signatur teknik för att ge manipuleringssäkra anteckningar som säkert kan replikeras till många reläer för att ge redundant lagring av ditt innehåll.",
   "/Xf4UW": "Skicka anonyma användarvärden",
+  "/clOBU": "Veckovis",
   "/d6vEc": "Gör din profil enklare att hitta och dela",
   "/n5KSF": "{n} ms",
   "00LcfG": "Ladda fler",
@@ -231,6 +232,7 @@
   "P7FD0F": "System (standard)",
   "P7nJT9": "Totalt idag (UTC): {amount} sats",
   "PCSt5T": "Inställningar",
+  "PJeJFc": "Summary",
   "PLSbmL": "Din mnemoniska lösenfras",
   "PaN7t3": "Förhandsgranska på {site}",
   "PamNxw": "Okänd filrubrik: {name}",
@@ -493,5 +495,6 @@
   "zjJZBd": "Du är redo!",
   "zonsdq": "Det gick inte att ladda LNURL-tjänsten",
   "zvCDao": "Visa automatiskt de senaste anteckningarna",
-  "zwb6LR": "<b>Mint:</b> {url}"
+  "zwb6LR": "<b>Mint:</b> {url}",
+  "zxvhnE": "Daily"
 }
