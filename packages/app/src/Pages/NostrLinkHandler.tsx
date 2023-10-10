@@ -25,7 +25,7 @@ export default function NostrLinkHandler() {
       }
     } else {
       try {
-        const pubkey = await getNip05PubKey(`${link}@${process.env.NIP05_DOMAIN}`);
+        const pubkey = await getNip05PubKey(`${link}@${CONFIG.nip05Domain}`);
         if (pubkey) {
           setRenderComponent(<ProfilePage id={pubkey} />); // Directly render ProfilePage
         }

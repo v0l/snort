@@ -16,6 +16,7 @@ import {
   ReqFilter,
   PowMiner,
   NostrEvent,
+  mapEventToProfile,
 } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
@@ -86,6 +87,29 @@ export const System = new NostrSystem({
     }
   },
 });
+
+async function fetchProfile(key: string) {
+  const rsp = await fetch(`${CONFIG.httpCache}/profile/${key}`);
+  if (rsp.ok) {
+    try {
+      const data = (await rsp.json()) as NostrEvent;
+      if (data) {
+        return mapEventToProfile(data);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
+
+/**
+ * Add profile loader fn
+ */
+if (CONFIG.httpCache) {
+  System.ProfileLoader.loaderFn = async (keys: Array<string>) => {
+    return (await Promise.all(keys.map(a => fetchProfile(a)))).filter(a => a !== undefined).map(a => unwrap(a));
+  };
+}
 
 /**
  * Singleton user profile loader
@@ -191,7 +215,7 @@ export const router = createBrowserRouter([
       },
       ...NewUserRoutes,
       ...WalletRoutes,
-      ...SubscribeRoutes,
+      ...(CONFIG.features.subscriptions ? SubscribeRoutes : []),
       {
         path: "/debug",
         element: <DebugPage />,

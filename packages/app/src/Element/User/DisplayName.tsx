@@ -1,6 +1,6 @@
 import "./DisplayName.css";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { HexKey, UserMetadata, NostrPrefix } from "@snort/system";
 import AnimalName from "Element/User/AnimalName";
 import { hexToBech32 } from "SnortUtils";
@@ -22,7 +22,7 @@ export function getDisplayNameOrPlaceHolder(user: UserMetadata | undefined, pubk
     name = user.display_name;
   } else if (typeof user?.name === "string" && user.name.length > 0) {
     name = user.name;
-  } else if (pubkey && process.env.ANIMAL_NAME_PLACEHOLDERS) {
+  } else if (pubkey && CONFIG.animalNamePlaceholders) {
     name = AnimalName(pubkey);
     isPlaceHolder = true;
   }

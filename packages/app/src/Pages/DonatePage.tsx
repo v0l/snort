@@ -94,13 +94,13 @@ const DonatePage = () => {
       <h2>
         <FormattedMessage
           defaultMessage="Help fund the development of {site}"
-          values={{ site: process.env.APP_NAME_CAPITALIZED }}
+          values={{ site: CONFIG.appNameCapitalized }}
         />
       </h2>
       <p>
         <FormattedMessage
           defaultMessage="{site} is an open source project built by passionate people in their free time"
-          values={{ site: process.env.APP_NAME_CAPITALIZED }}
+          values={{ site: CONFIG.appNameCapitalized }}
         />
       </p>
       <p>

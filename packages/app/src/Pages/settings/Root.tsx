@@ -6,9 +6,9 @@ import Icon from "Icons/Icon";
 import { LoginStore, logout } from "Login";
 import useLogin from "Hooks/useLogin";
 import { getCurrentSubscription } from "Subscription";
+import usePageWidth from "Hooks/usePageWidth";
 
 import messages from "./messages";
-import usePageWidth from "Hooks/usePageWidth";
 
 const SettingsIndex = () => {
   const login = useLogin();
@@ -61,11 +61,13 @@ const SettingsIndex = () => {
             <FormattedMessage defaultMessage="Nostr Adddress" />
             <Icon name="arrowFront" size={16} />
           </div>
-          <div className="settings-row" onClick={() => navigate("/subscribe/manage")}>
-            <Icon name="diamond" size={24} />
-            <FormattedMessage defaultMessage="Subscription" />
-            <Icon name="arrowFront" size={16} />
-          </div>
+          {CONFIG.features.subscriptions && (
+            <div className="settings-row" onClick={() => navigate("/subscribe/manage")}>
+              <Icon name="diamond" size={24} />
+              <FormattedMessage defaultMessage="Subscription" />
+              <Icon name="arrowFront" size={16} />
+            </div>
+          )}
           {sub && (
             <div className="settings-row" onClick={() => navigate("accounts")}>
               <Icon name="code-circle" size={24} />

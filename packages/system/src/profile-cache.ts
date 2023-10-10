@@ -1,8 +1,9 @@
 import debug from "debug";
 import { unixNowMs, FeedCache } from "@snort/shared";
-import { EventKind, HexKey, SystemInterface, TaggedNostrEvent, NoteCollection, RequestBuilder } from ".";
+import { EventKind, HexKey, SystemInterface, TaggedNostrEvent, RequestBuilder } from ".";
 import { ProfileCacheExpire } from "./const";
 import { mapEventToProfile, MetadataCache } from "./cache";
+import { v4 as uuid } from "uuid";
 
 const MetadataRelays = ["wss://purplepag.es"];
 
@@ -22,6 +23,11 @@ export class ProfileLoaderService {
   #wantsMetadata: Set<HexKey> = new Set();
 
   readonly #log = debug("ProfileCache");
+
+  /**
+   * Custom loader function for fetching profiles from alternative sources
+   */
+  loaderFn?: (pubkeys: Array<string>) => Promise<Array<MetadataCache>>;
 
   constructor(system: SystemInterface, cache: FeedCache<MetadataCache>) {
     this.#system = system;
@@ -92,50 +98,8 @@ export class ProfileLoaderService {
     if (missing.size > 0) {
       this.#log("Wants profiles: %d missing, %d expired", missingFromCache.length, expired.length);
 
-      const sub = new RequestBuilder("profiles");
-      sub
-        .withOptions({
-          skipDiff: true,
-        })
-        .withFilter()
-        .kinds([EventKind.SetMetadata])
-        .authors([...missing]);
+      const results = await this.#loadProfiles([...missing]);
 
-      if (this.#missingLastRun.size > 0) {
-        const fMissing = sub
-          .withFilter()
-          .kinds([EventKind.SetMetadata])
-          .authors([...this.#missingLastRun]);
-        MetadataRelays.forEach(r => fMissing.relay(r));
-      }
-      const newProfiles = new Set<string>();
-      const q = this.#system.Query<NoteCollection>(NoteCollection, sub);
-      const feed = (q?.feed as NoteCollection) ?? new NoteCollection();
-      // never release this callback, it will stop firing anyway after eose
-      const releaseOnEvent = feed.onEvent(async e => {
-        for (const pe of e) {
-          newProfiles.add(pe.id);
-          await this.onProfileEvent(pe);
-        }
-      });
-      const results = await new Promise<Readonly<Array<TaggedNostrEvent>>>(resolve => {
-        let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
-        const release = feed.hook(() => {
-          if (!feed.loading) {
-            clearTimeout(timeout);
-            resolve(feed.getSnapshotData() ?? []);
-            this.#log("Profiles finished: %s", sub.id);
-            release();
-          }
-        });
-        timeout = setTimeout(() => {
-          release();
-          resolve(feed.getSnapshotData() ?? []);
-          this.#log("Profiles timeout: %s", sub.id);
-        }, 5_000);
-      });
-
-      releaseOnEvent();
       const couldNotFetch = [...missing].filter(a => !results.some(b => b.pubkey === a));
       this.#missingLastRun = new Set(couldNotFetch);
       if (couldNotFetch.length > 0) {
@@ -150,12 +114,43 @@ export class ProfileLoaderService {
         await Promise.all(empty);
       }
 
-      // When we fetch an expired profile and its the same as what we already have
+      /* When we fetch an expired profile and its the same as what we already have
       // onEvent is not fired and the loaded timestamp never gets updated
       const expiredSame = results.filter(a => !newProfiles.has(a.id) && expired.includes(a.pubkey));
-      await Promise.all(expiredSame.map(v => this.onProfileEvent(v)));
+      await Promise.all(expiredSame.map(v => this.onProfileEvent(v)));*/
     }
 
     setTimeout(() => this.#FetchMetadata(), 500);
+  }
+
+  async #loadProfiles(missing: Array<string>) {
+    if (this.loaderFn) {
+      const results = await this.loaderFn(missing);
+      await Promise.all(results.map(a => this.#cache.update(a)));
+      return results;
+    } else {
+      const sub = new RequestBuilder(`profiles-${uuid()}`);
+      sub
+        .withOptions({
+          skipDiff: true,
+        })
+        .withFilter()
+        .kinds([EventKind.SetMetadata])
+        .authors(missing);
+
+      if (this.#missingLastRun.size > 0) {
+        const fMissing = sub
+          .withFilter()
+          .kinds([EventKind.SetMetadata])
+          .authors([...this.#missingLastRun]);
+        MetadataRelays.forEach(r => fMissing.relay(r));
+      }
+      const results = (await this.#system.Fetch(sub, async e => {
+        for (const pe of e) {
+          await this.onProfileEvent(pe);
+        }
+      })) as ReadonlyArray<TaggedNostrEvent>;
+      return results;
+    }
   }
 }

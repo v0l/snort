@@ -49,7 +49,7 @@ export default function useLoginFeed() {
       leaveOpen: true,
     });
     b.withFilter().authors([pubKey]).kinds([EventKind.ContactList]);
-    if (!login.readonly) {
+    if (CONFIG.features.subscriptions && !login.readonly) {
       b.withFilter().authors([pubKey]).kinds([EventKind.AppData]).tag("d", ["snort"]);
       b.withFilter()
         .relay("wss://relay.snort.social")

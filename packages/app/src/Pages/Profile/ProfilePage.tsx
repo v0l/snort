@@ -139,8 +139,8 @@ export default function ProfilePage({ id: propId }: ProfilePageProps) {
 
   useEffect(() => {
     if (user?.nip05 && user?.isNostrAddressValid) {
-      if (user.nip05.endsWith(`@${process.env.NIP05_DOMAIN}`)) {
-        const username = user.nip05?.replace(`@${process.env.NIP05_DOMAIN}`, "");
+      if (user.nip05.endsWith(`@${CONFIG.nip05Domain}`)) {
+        const username = user.nip05?.replace(`@${CONFIG.nip05Domain}`, "");
         navigate(`/${username}`, { replace: true });
       }
     }
