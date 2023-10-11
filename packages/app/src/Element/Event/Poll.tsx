@@ -1,4 +1,4 @@
-import { TaggedNostrEvent, ParsedZap } from "@snort/system";
+import { TaggedNostrEvent, ParsedZap, NostrLink } from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
@@ -58,7 +58,7 @@ export default function Poll(props: PollProps) {
 
       setVoting(opt);
       const r = Object.keys(relays.item);
-      const zap = await publisher.zap(amount * 1000, props.ev.pubkey, r, props.ev.id, undefined, eb =>
+      const zap = await publisher.zap(amount * 1000, props.ev.pubkey, r, NostrLink.fromEvent(props.ev), undefined, eb =>
         eb.tag(["poll_option", opt.toString()]),
       );
 

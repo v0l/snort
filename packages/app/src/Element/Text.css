@@ -23,51 +23,9 @@
   text-decoration: underline;
 }
 
-.text h1 {
-  margin: 0;
-}
-.text h2 {
-  margin: 0;
-}
-.text h3 {
-  margin: 0;
-}
-.text h4 {
-  margin: 0;
-}
-.text h5 {
-  margin: 0;
-}
-.text h6 {
-  margin: 0;
-}
-
-.text p {
-  margin: 0;
-  margin-bottom: 4px;
-}
-
-.text p:last-child {
-  margin-bottom: 0;
-}
-
 .text pre {
   margin: 0;
   overflow: scroll;
-}
-
-.text li {
-  margin-top: -1em;
-}
-.text li:last-child {
-  margin-bottom: -2em;
-}
-
-.text hr {
-  border: 0;
-  height: 1px;
-  background-image: var(--gray-gradient);
-  margin: 20px;
 }
 
 .text img:not(.custom-emoji),
@@ -82,13 +40,6 @@
 .text video {
   width: -webkit-fill-available;
   aspect-ratio: 16 / 9;
-}
-
-.text blockquote {
-  margin: 0;
-  color: var(--font-secondary-color);
-  border-left: 2px solid var(--font-secondary-color);
-  padding-left: 12px;
 }
 
 .gallery {

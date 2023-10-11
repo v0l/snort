@@ -2734,6 +2734,8 @@ __metadata:
     jest: ^29.5.0
     jest-environment-jsdom: ^29.5.0
     light-bolt11-decoder: ^2.1.0
+    marked: ^9.1.0
+    marked-footnote: ^1.0.0
     match-sorter: ^6.3.1
     mini-css-extract-plugin: ^2.7.5
     prettier: 2.8.3
@@ -9477,6 +9479,24 @@ __metadata:
   dependencies:
     tmpl: 1.0.5
   checksum: b38a025a12c8146d6eeea5a7f2bf27d51d8ad6064da8ca9405fcf7bf9b54acd43e3b30ddd7abb9b1bfa4ddb266019133313482570ddb207de568f71ecfcf6060
+  languageName: node
+  linkType: hard
+
+"marked-footnote@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "marked-footnote@npm:1.0.0"
+  peerDependencies:
+    marked: ">=7.0.0"
+  checksum: 14f11592bf936ca32d1a43d55ef0df92e5319e8d3e9df517b5f41ed50d76e2b38f782ad475bd16933f026629c357da4c95e46aa0edf4cb196a8c475086fc2909
+  languageName: node
+  linkType: hard
+
+"marked@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "marked@npm:9.1.0"
+  bin:
+    marked: bin/marked.js
+  checksum: 452a5f564719c93a55136d77e6aa51852df9b24a4359c74d6b2c661bbb09fc8db1bb5ee0b9a8c0eb6d0ba22ec4a3af110bc97ba881e4ffae9f5e83c3ce2676d2
   languageName: node
   linkType: hard
 

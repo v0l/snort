@@ -9,6 +9,7 @@ import { ZapGoal } from "Element/Event/ZapGoal";
 import NoteReaction from "Element/Event/NoteReaction";
 import ProfilePreview from "Element/User/ProfilePreview";
 import { NoteInner } from "./NoteInner";
+import { LongFormText } from "./LongFormText";
 
 export interface NoteProps {
   data: TaggedNostrEvent;
@@ -32,6 +33,7 @@ export interface NoteProps {
     canUnbookmark?: boolean;
     canClick?: boolean;
     showMediaSpotlight?: boolean;
+    longFormPreview?: boolean;
   };
 }
 
@@ -57,6 +59,9 @@ export default function Note(props: NoteProps) {
   }
   if (ev.kind === (9041 as EventKind)) {
     return <ZapGoal ev={ev} />;
+  }
+  if (ev.kind === EventKind.LongFormTextNote) {
+    return <LongFormText ev={ev} related={props.related} isPreview={props.options?.longFormPreview ?? false} />;
   }
 
   return <NoteInner {...props} />;

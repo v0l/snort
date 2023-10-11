@@ -23,14 +23,16 @@ import WavlakeEmbed from "Element/Embed/WavlakeEmbed";
 import LinkPreview from "Element/Embed/LinkPreview";
 import NostrLink from "Element/Embed/NostrLink";
 import MagnetLink from "Element/Embed/MagnetLink";
+import { ReactNode } from "react";
 
 interface HypeTextProps {
   link: string;
+  children?: ReactNode | Array<ReactNode> | null;
   depth?: number;
   showLinkPreview?: boolean;
 }
 
-export default function HyperText({ link, depth, showLinkPreview }: HypeTextProps) {
+export default function HyperText({ link, depth, showLinkPreview, children }: HypeTextProps) {
   const a = link;
   try {
     const url = new URL(a);
@@ -78,7 +80,7 @@ export default function HyperText({ link, depth, showLinkPreview }: HypeTextProp
       return (
         <>
           <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-            {a}
+            {children ?? a}
           </a>
           {/*<NostrNestsEmbed link={a} />,*/}
         </>
@@ -100,7 +102,7 @@ export default function HyperText({ link, depth, showLinkPreview }: HypeTextProp
   }
   return (
     <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
-      {a}
+      {children ?? a}
     </a>
   );
 }

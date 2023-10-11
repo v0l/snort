@@ -11,7 +11,14 @@ export default function Articles() {
   return (
     <>
       {orderDescending(data.data ?? []).map(a => (
-        <Note data={a} key={a.id} related={related.data ?? []} />
+        <Note
+          data={a}
+          key={a.id}
+          related={related.data ?? []}
+          options={{
+            longFormPreview: true,
+          }}
+        />
       ))}
     </>
   );

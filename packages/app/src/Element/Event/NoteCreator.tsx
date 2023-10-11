@@ -359,6 +359,7 @@ export function NoteCreator() {
             showTime: false,
             canClick: false,
             showMedia: false,
+            longFormPreview: true,
           }}
         />
       )}

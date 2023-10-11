@@ -95,7 +95,7 @@ export const DefaultPreferences = {
   autoLoadMedia: "all",
   theme: "system",
   confirmReposts: false,
-  showDebugMenus: false,
+  showDebugMenus: true,
   autoShowLatest: false,
   fileUploader: "void.cat",
   imgProxyConfig: DefaultImgProxy,

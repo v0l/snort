@@ -13,6 +13,7 @@ import {
   NostrPrefix,
   NostrEvent,
   MetadataCache,
+  NostrLink,
 } from "@snort/system";
 
 export const sha256 = (str: string | Uint8Array): u256 => {
@@ -162,15 +163,20 @@ export function normalizeReaction(content: string) {
   }
 }
 
-/**
- * Get reactions to a specific event (#e + kind filter)
- */
-export function getReactions(notes: readonly TaggedNostrEvent[] | undefined, id: u256, kind?: EventKind) {
-  return notes?.filter(a => a.kind === (kind ?? a.kind) && a.tags.some(a => a[0] === "e" && a[1] === id)) || [];
+export function getLinkReactions(
+  notes: ReadonlyArray<TaggedNostrEvent> | undefined,
+  link: NostrLink,
+  kind?: EventKind,
+) {
+  return notes?.filter(a => a.kind === (kind ?? a.kind) && link.isReplyToThis(a)) || [];
 }
 
-export function getAllReactions(notes: readonly TaggedNostrEvent[] | undefined, ids: Array<u256>, kind?: EventKind) {
-  return notes?.filter(a => a.kind === (kind ?? a.kind) && a.tags.some(a => a[0] === "e" && ids.includes(a[1]))) || [];
+export function getAllLinkReactions(
+  notes: readonly TaggedNostrEvent[] | undefined,
+  links: Array<NostrLink>,
+  kind?: EventKind,
+) {
+  return notes?.filter(a => a.kind === (kind ?? a.kind) && links.some(b => b.isReplyToThis(a))) || [];
 }
 
 export function deepClone<T>(obj: T) {

@@ -2,9 +2,9 @@ import "./Thread.css";
 import { useMemo, useState, ReactNode, useContext } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
-import { TaggedNostrEvent, u256, NostrPrefix, EventExt, parseNostrLink } from "@snort/system";
+import { TaggedNostrEvent, u256, NostrPrefix, EventExt, parseNostrLink, NostrLink } from "@snort/system";
 
-import { getReactions, getAllReactions } from "SnortUtils";
+import { getAllLinkReactions, getLinkReactions } from "SnortUtils";
 import BackButton from "Element/BackButton";
 import Note from "Element/Event/Note";
 import NoteGhost from "Element/Event/NoteGhost";
@@ -248,7 +248,7 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
           className={className}
           key={note.id}
           data={note}
-          related={getReactions(thread.reactions, note.id)}
+          related={getLinkReactions(thread.reactions, NostrLink.fromEvent(note))}
           options={{ showReactionsLink: true, showMediaSpotlight: !props.disableSpotlight }}
           onClick={navigateThread}
         />
@@ -268,9 +268,9 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
         <Subthread
           active={thread.current}
           notes={replies}
-          related={getAllReactions(
+          related={getAllLinkReactions(
             thread.reactions,
-            replies.map(a => a.id),
+            replies.map(a => NostrLink.fromEvent(a)),
           )}
           chains={thread.chains}
           onNavigate={navigateThread}

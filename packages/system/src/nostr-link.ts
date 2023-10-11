@@ -1,5 +1,5 @@
 import { bech32ToHex, hexToBech32, unwrap } from "@snort/shared";
-import { NostrPrefix, decodeTLV, TLVEntryType, encodeTLV, NostrEvent, TaggedNostrEvent } from ".";
+import { NostrPrefix, decodeTLV, TLVEntryType, encodeTLV, NostrEvent, TaggedNostrEvent, EventExt, Tag } from ".";
 import { findTag } from "./utils";
 
 export class NostrLink {
@@ -41,6 +41,79 @@ export class NostrLink {
     }
 
     return false;
+  }
+
+  /**
+   * Is the supplied event a reply to this link
+   */
+  isReplyToThis(ev: NostrEvent) {
+    const thread = EventExt.extractThread(ev);
+    if (!thread) return false; // non-thread events are not replies
+
+    if (!thread.root) return false; // must have root marker or positional e/a tag in position 0
+
+    if (
+      thread.root.key === "e" &&
+      thread.root.value === this.id &&
+      (this.type === NostrPrefix.Event || this.type === NostrPrefix.Note)
+    ) {
+      return true;
+    }
+    if (thread.root.key === "a" && this.type === NostrPrefix.Address) {
+      const [kind, author, dTag] = unwrap(thread.root.value).split(":");
+      if (Number(kind) === this.kind && author === this.author && dTag === this.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Does the supplied event contain a tag matching this link
+   */
+  referencesThis(ev: NostrEvent) {
+    for (const t of ev.tags) {
+      if (t[0] === "e" && t[1] === this.id && (this.type === NostrPrefix.Event || this.type === NostrPrefix.Note)) {
+        return true;
+      }
+      if (t[0] === "a" && this.type === NostrPrefix.Address) {
+        const [kind, author, dTag] = t[1].split(":");
+        if (Number(kind) === this.kind && author === this.author && dTag === this.id) {
+          return true;
+        }
+      }
+      if (
+        t[0] === "p" &&
+        (this.type === NostrPrefix.Profile || this.type === NostrPrefix.PublicKey) &&
+        this.id === t[1]
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  equals(other: NostrLink) {
+    if (other.type === this.type && this.type === NostrPrefix.Address) {
+    }
+  }
+
+  static fromThreadTag(tag: Tag) {
+    const relay = tag.relay ? [tag.relay] : undefined;
+
+    switch (tag.key) {
+      case "e": {
+        return new NostrLink(NostrPrefix.Event, unwrap(tag.value), undefined, undefined, relay);
+      }
+      case "p": {
+        return new NostrLink(NostrPrefix.Profile, unwrap(tag.value), undefined, undefined, relay);
+      }
+      case "a": {
+        const [kind, author, dTag] = unwrap(tag.value).split(":");
+        return new NostrLink(NostrPrefix.Address, dTag, Number(kind), author, relay);
+      }
+    }
+    throw new Error(`Unknown tag kind ${tag.key}`);
   }
 
   static fromTag(tag: Array<string>) {

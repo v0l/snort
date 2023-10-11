@@ -94,13 +94,7 @@ export class Zapper {
         const pub = t.zap?.anon ?? false ? EventPublisher.privateKey(generateRandomKey().privateKey) : this.publisher;
         const zap =
           t.zap && svc.canZap
-            ? await pub?.zap(toSend * 1000, t.zap.pubkey, relays, undefined, t.memo, eb => {
-                if (t.zap?.event) {
-                  const tag = t.zap.event.toEventTag();
-                  if (tag) {
-                    eb.tag(tag);
-                  }
-                }
+            ? await pub?.zap(toSend * 1000, t.zap.pubkey, relays, t.zap?.event, t.memo, eb => {
                 if (t.zap?.anon) {
                   eb.tag(["anon", ""]);
                 }

@@ -105,7 +105,6 @@ export abstract class EventExt {
   }
 
   static extractThread(ev: NostrEvent) {
-    const shouldWriteMarkers = ev.kind === EventKind.TextNote;
     const ret = {
       mentions: [],
       pubKeys: [],
@@ -115,16 +114,14 @@ export abstract class EventExt {
       const marked = replyTags.some(a => a.marker);
       if (!marked) {
         ret.root = replyTags[0];
-        ret.root.marker = shouldWriteMarkers ? "root" : undefined;
+        ret.root.marker = "root";
         if (replyTags.length > 1) {
           ret.replyTo = replyTags[replyTags.length - 1];
-          ret.replyTo.marker = shouldWriteMarkers ? "reply" : undefined;
+          ret.replyTo.marker = "reply";
         }
         if (replyTags.length > 2) {
           ret.mentions = replyTags.slice(1, -1);
-          if (shouldWriteMarkers) {
-            ret.mentions.forEach(a => (a.marker = "mention"));
-          }
+          ret.mentions.forEach(a => (a.marker = "mention"));
         }
       } else {
         const root = replyTags.find(a => a.marker === "root");

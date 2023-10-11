@@ -1,27 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
-import React, { ReactNode, useMemo, useState } from "react";
-import {
-  dedupeByPubkey,
-  findTag,
-  getReactions,
-  hexToBech32,
-  normalizeReaction,
-  profileLink,
-  Reaction,
-  tagFilterOfTextRepost,
-} from "../../SnortUtils";
-import useModeration from "../../Hooks/useModeration";
+import React, { ReactNode, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import useLogin from "../../Hooks/useLogin";
-import useEventPublisher from "../../Hooks/useEventPublisher";
-import { NoteContextMenu, NoteTranslation } from "./NoteContextMenu";
 import { FormattedMessage, useIntl } from "react-intl";
+import { EventExt, EventKind, HexKey, Lists, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+import { findTag, hexToBech32, profileLink } from "SnortUtils";
+import useModeration from "Hooks/useModeration";
+import useLogin from "Hooks/useLogin";
+import useEventPublisher from "Hooks/useEventPublisher";
+import { NoteContextMenu, NoteTranslation } from "./NoteContextMenu";
 import { UserCache } from "../../Cache";
 import messages from "../messages";
 import { System } from "../../index";
 import { setBookmarked, setPinned } from "../../Login";
 import Text from "../Text";
-import { ProxyImg } from "../ProxyImg";
 import Reveal from "./Reveal";
 import Poll from "./Poll";
 import ProfileImage from "../User/ProfileImage";
@@ -31,7 +22,7 @@ import NoteFooter from "./NoteFooter";
 import Reactions from "./Reactions";
 import HiddenNote from "./HiddenNote";
 import { NoteProps } from "./Note";
-import { EventExt, EventKind, HexKey, Lists, NostrLink, NostrPrefix, parseZap, TaggedNostrEvent } from "@snort/system";
+import { useEventReactions } from "Hooks/useEventReactions";
 
 export function NoteInner(props: NoteProps) {
   const { data: ev, related, highlight, options: opt, ignoreModeration = false, className } = props;
@@ -39,50 +30,17 @@ export function NoteInner(props: NoteProps) {
   const baseClassName = `note card${className ? ` ${className}` : ""}`;
   const navigate = useNavigate();
   const [showReactions, setShowReactions] = useState(false);
-  const deletions = useMemo(() => getReactions(related, ev.id, EventKind.Deletion), [related]);
+
   const { isEventMuted } = useModeration();
   const { ref, inView } = useInView({ triggerOnce: true });
+  const { reactions, reposts, deletions, zaps } = useEventReactions(ev, related);
   const login = useLogin();
   const { pinned, bookmarked } = login;
   const publisher = useEventPublisher();
   const [translated, setTranslated] = useState<NoteTranslation>();
   const { formatMessage } = useIntl();
-  const reactions = useMemo(() => getReactions(related, ev.id, EventKind.Reaction), [related, ev]);
-  const groupReactions = useMemo(() => {
-    const result = reactions?.reduce(
-      (acc, reaction) => {
-        const kind = normalizeReaction(reaction.content);
-        const rs = acc[kind] || [];
-        return { ...acc, [kind]: [...rs, reaction] };
-      },
-      {
-        [Reaction.Positive]: [] as TaggedNostrEvent[],
-        [Reaction.Negative]: [] as TaggedNostrEvent[],
-      },
-    );
-    return {
-      [Reaction.Positive]: dedupeByPubkey(result[Reaction.Positive]),
-      [Reaction.Negative]: dedupeByPubkey(result[Reaction.Negative]),
-    };
-  }, [reactions]);
-  const positive = groupReactions[Reaction.Positive];
-  const negative = groupReactions[Reaction.Negative];
-  const reposts = useMemo(
-    () =>
-      dedupeByPubkey([
-        ...getReactions(related, ev.id, EventKind.TextNote).filter(e => e.tags.some(tagFilterOfTextRepost(e, ev.id))),
-        ...getReactions(related, ev.id, EventKind.Repost),
-      ]),
-    [related, ev],
-  );
-  const zaps = useMemo(() => {
-    const sortedZaps = getReactions(related, ev.id, EventKind.ZapReceipt)
-      .map(a => parseZap(a, UserCache, ev))
-      .filter(z => z.valid);
-    sortedZaps.sort((a, b) => b.amount - a.amount);
-    return sortedZaps;
-  }, [related]);
-  const totalReactions = positive.length + negative.length + reposts.length + zaps.length;
+
+  const totalReactions = reactions.positive.length + reactions.negative.length + reposts.length + zaps.length;
 
   const options = {
     showHeader: true,
@@ -117,45 +75,19 @@ export function NoteInner(props: NoteProps) {
   }
 
   const innerContent = () => {
-    if (ev.kind === EventKind.LongFormTextNote) {
-      const title = findTag(ev, "title");
-      const summary = findTag(ev, "simmary");
-      const image = findTag(ev, "image");
-      return (
-        <div className="long-form-note">
-          <h3>{title}</h3>
-          <div className="text">
-            <p>{summary}</p>
-            <Text
-              id={ev.id}
-              content={ev.content}
-              highlighText={props.searchedValue}
-              tags={ev.tags}
-              creator={ev.pubkey}
-              depth={props.depth}
-              truncate={255}
-              disableLinkPreview={true}
-              disableMediaSpotlight={!(props.options?.showMediaSpotlight ?? true)}
-            />
-            {image && <ProxyImg src={image} />}
-          </div>
-        </div>
-      );
-    } else {
-      const body = ev?.content ?? "";
-      return (
-        <Text
-          id={ev.id}
-          highlighText={props.searchedValue}
-          content={body}
-          tags={ev.tags}
-          creator={ev.pubkey}
-          depth={props.depth}
-          disableMedia={!(options.showMedia ?? true)}
-          disableMediaSpotlight={!(props.options?.showMediaSpotlight ?? true)}
-        />
-      );
-    }
+    const body = ev?.content ?? "";
+    return (
+      <Text
+        id={ev.id}
+        highlighText={props.searchedValue}
+        content={body}
+        tags={ev.tags}
+        creator={ev.pubkey}
+        depth={props.depth}
+        disableMedia={!(options.showMedia ?? true)}
+        disableMediaSpotlight={!(props.options?.showMediaSpotlight ?? true)}
+      />
+    );
   };
 
   const transformBody = () => {
@@ -278,7 +210,7 @@ export function NoteInner(props: NoteProps) {
     );
   }
 
-  const canRenderAsTextNote = [EventKind.TextNote, EventKind.Polls, EventKind.LongFormTextNote];
+  const canRenderAsTextNote = [EventKind.TextNote, EventKind.Polls];
   if (!canRenderAsTextNote.includes(ev.kind)) {
     const alt = findTag(ev, "alt");
     if (alt) {
@@ -374,12 +306,12 @@ export function NoteInner(props: NoteProps) {
             </div>
           )}
         </div>
-        {options.showFooter && <NoteFooter ev={ev} positive={positive} reposts={reposts} zaps={zaps} />}
+        {options.showFooter && <NoteFooter ev={ev} positive={reactions.positive} reposts={reposts} zaps={zaps} />}
         <Reactions
           show={showReactions}
           setShow={setShowReactions}
-          positive={positive}
-          negative={negative}
+          positive={reactions.positive}
+          negative={reactions.negative}
           reposts={reposts}
           zaps={zaps}
         />

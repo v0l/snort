@@ -2,11 +2,19 @@ import "./ProfilePage.css";
 import { useEffect, useState } from "react";
 import FormattedMessage from "Element/FormattedMessage";
 import { useNavigate, useParams } from "react-router-dom";
-import { encodeTLV, encodeTLVEntries, EventKind, NostrPrefix, TLVEntryType, tryParseNostrLink } from "@snort/system";
+import {
+  encodeTLV,
+  encodeTLVEntries,
+  EventKind,
+  NostrLink,
+  NostrPrefix,
+  TLVEntryType,
+  tryParseNostrLink,
+} from "@snort/system";
 import { LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
-import { findTag, getReactions, unwrap } from "SnortUtils";
+import { findTag, getLinkReactions, unwrap } from "SnortUtils";
 import Note from "Element/Event/Note";
 import { Tab, TabElement } from "Element/Tabs";
 import Icon from "Icons/Icon";
@@ -232,7 +240,7 @@ export default function ProfilePage({ id: propId }: ProfilePageProps) {
                   <Note
                     key={`pinned-${n.id}`}
                     data={n}
-                    related={getReactions(pinned, n.id)}
+                    related={getLinkReactions(pinned, NostrLink.fromEvent(n))}
                     options={{ showTime: false, showPinned: true, canUnpin: id === loginPubKey }}
                   />
                 );
