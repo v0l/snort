@@ -24,8 +24,8 @@ export default function FollowButton(props: FollowButtonProps) {
   async function follow(pubkey: HexKey) {
     if (publisher) {
       const ev = await publisher.contactList([pubkey, ...follows.item], relays.item);
-      await FollowsFeed.backFill(System, [pubkey]);
       System.BroadcastEvent(ev);
+      await FollowsFeed.backFill(System, [pubkey]);
     }
   }
 
@@ -43,9 +43,9 @@ export default function FollowButton(props: FollowButtonProps) {
     <AsyncButton
       className={isFollowing ? `${baseClassname} secondary` : `${baseClassname} primary`}
       disabled={readonly}
-      onClick={e => {
+      onClick={async e => {
         e.stopPropagation();
-        isFollowing ? unfollow(pubkey) : follow(pubkey);
+        await (isFollowing ? unfollow(pubkey) : follow(pubkey))
       }}>
       {isFollowing ? <FormattedMessage {...messages.Unfollow} /> : <FormattedMessage {...messages.Follow} />}
     </AsyncButton>
