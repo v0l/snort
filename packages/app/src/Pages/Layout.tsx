@@ -1,5 +1,5 @@
 import "./Layout.css";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
@@ -13,7 +13,7 @@ import { NoteCreator } from "Element/Event/NoteCreator";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
 import Avatar from "Element/User/Avatar";
-import { profileLink } from "SnortUtils";
+import { isFormElement, profileLink } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 import Toaster from "Toaster";
 import Spinner from "Icons/Spinner";
@@ -22,6 +22,7 @@ import { useTheme } from "Hooks/useTheme";
 import { useLoginRelays } from "Hooks/useLoginRelays";
 import { useNoteCreator } from "State/NoteCreator";
 import { LoginUnlock } from "Element/PinPrompt";
+import useKeyboardShortcut from "Hooks/useKeyboardShortcut";
 import { LoginStore } from "Login";
 
 export default function Layout() {
@@ -32,6 +33,16 @@ export default function Layout() {
   useLoginFeed();
   useTheme();
   useLoginRelays();
+  useKeyboardShortcut(".", event => {
+    // if event happened in a form element, do nothing, otherwise focus on search input
+    if (event.target && !isFormElement(event.target as HTMLElement)) {
+      event.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  });
 
   const shouldHideHeader = useMemo(() => {
     const hideOn = ["/login", "/new"];
@@ -78,9 +89,20 @@ export default function Layout() {
 }
 
 const NoteCreatorButton = () => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
   const { readonly } = useLogin(s => ({ readonly: s.readonly }));
   const { show, replyTo, update } = useNoteCreator(v => ({ show: v.show, replyTo: v.replyTo, update: v.update }));
+
+  useKeyboardShortcut("n", event => {
+    // if event happened in a form element, do nothing, otherwise focus on search input
+    if (event.target && !isFormElement(event.target as HTMLElement)) {
+      event.preventDefault();
+      if (buttonRef.current) {
+        buttonRef.current.click();
+      }
+    }
+  });
 
   const shouldHideNoteCreator = useMemo(() => {
     const isReplyNoteCreatorShowing = replyTo && show;
@@ -92,6 +114,7 @@ const NoteCreatorButton = () => {
   return (
     <>
       <button
+        ref={buttonRef}
         className="primary note-create-button"
         onClick={() =>
           update(v => {
@@ -109,6 +132,14 @@ const NoteCreatorButton = () => {
 const AccountHeader = () => {
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
+
+  useKeyboardShortcut("/", event => {
+    // if event happened in a form element, do nothing, otherwise focus on search input
+    if (event.target && !isFormElement(event.target as HTMLElement)) {
+      event.preventDefault();
+      document.querySelector<HTMLInputElement>(".search input")?.focus();
+    }
+  });
 
   const { publicKey, latestNotification, readNotifications, readonly } = useLogin(s => ({
     publicKey: s.publicKey,

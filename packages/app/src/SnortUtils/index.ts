@@ -504,3 +504,11 @@ export function kvToObject<T>(o: string, sep?: string) {
 export function defaultAvatar(input: string) {
   return `https://robohash.v0l.io/${input}.png`;
 }
+
+export function isFormElement(target: HTMLElement): boolean {
+  if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
+    return true;
+  }
+
+  return false;
+}
