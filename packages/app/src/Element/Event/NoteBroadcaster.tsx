@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { removeUndefined } from "@snort/shared";
+import { FormattedMessage, useIntl } from "react-intl";
+import { removeUndefined, unwrap } from "@snort/shared";
 import { NostrEvent, OkResponse } from "@snort/system";
 
 import AsyncButton from "Element/AsyncButton";
 import Icon from "Icons/Icon";
-import { getRelayName } from "SnortUtils";
+import { getRelayName, sanitizeRelayUrl } from "SnortUtils";
 import { System } from "index";
+import { removeRelay } from "Login";
+import useLogin from "Hooks/useLogin";
+import useEventPublisher from "Hooks/useEventPublisher";
 
 export function NoteBroadcaster({
   evs,
@@ -18,6 +21,9 @@ export function NoteBroadcaster({
   customRelays?: Array<string>;
 }) {
   const [results, setResults] = useState<Array<OkResponse>>([]);
+  const { formatMessage } = useIntl();
+  const login = useLogin();
+  const publisher = useEventPublisher();
 
   async function sendEventToRelays(ev: NostrEvent) {
     if (customRelays) {
@@ -48,8 +54,32 @@ export function NoteBroadcaster({
     sendNote().catch(console.error);
   }, []);
 
+  async function removeRelayFromResult(r: OkResponse) {
+    if (publisher) {
+      removeRelay(login, unwrap(sanitizeRelayUrl(r.relay)));
+      const ev = await publisher.contactList(login.follows.item, login.relays.item);
+      await System.BroadcastEvent(ev);
+      setResults(s => s.filter(a => a.relay !== r.relay));
+    }
+  }
+
+  async function retryPublish(r: OkResponse) {
+    const ev = evs.find(a => a.id === r.id);
+    if (ev) {
+      const rsp = await System.WriteOnceToRelay(unwrap(sanitizeRelayUrl(r.relay)), ev);
+      setResults(s =>
+        s.map(x => {
+          if (x.relay === r.relay && x.id === r.id) {
+            return rsp; //replace with new response
+          }
+          return x;
+        }),
+      );
+    }
+  }
+
   return (
-    <div className="flex-column g4">
+    <div className="flex-column g16">
       <h3>
         <FormattedMessage defaultMessage="Sending notes and other stuff" />
       </h3>
@@ -57,18 +87,28 @@ export function NoteBroadcaster({
         .filter(a => a.message !== "Duplicate request")
         .sort(a => (a.ok ? -1 : 1))
         .map(r => (
-          <div className="p-compact flex-row g16">
-            <Icon name={r.ok ? "check" : "x-close"} className={r.ok ? "success" : "error"} />
+          <div className="flex-row g16">
+            <Icon name={r.ok ? "check" : "x"} className={r.ok ? "success" : "error"} size={24} />
             <div className="flex-column f-grow g4">
               <b>{getRelayName(r.relay)}</b>
               {r.message && <small>{r.message}</small>}
             </div>
-            {!r.ok && false && (
+            {!r.ok && (
               <div className="flex g8">
-                <AsyncButton onClick={() => {}} className="p4 br-compact flex f-center secondary">
+                <AsyncButton
+                  onClick={() => retryPublish(r)}
+                  className="p4 br-compact flex f-center secondary"
+                  title={formatMessage({
+                    defaultMessage: "Retry publishing",
+                  })}>
                   <Icon name="refresh-ccw-01" />
                 </AsyncButton>
-                <AsyncButton onClick={() => {}} className="p4 br-compact flex f-center secondary">
+                <AsyncButton
+                  onClick={() => removeRelayFromResult(r)}
+                  className="p4 br-compact flex f-center secondary"
+                  title={formatMessage({
+                    defaultMessage: "Remove from my relays",
+                  })}>
                   <Icon name="trash-01" className="trash-icon" />
                 </AsyncButton>
               </div>

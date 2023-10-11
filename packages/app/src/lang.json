@@ -279,6 +279,9 @@
     "defaultMessage": "Login",
     "description": "Login button"
   },
+  "9kSari": {
+    "defaultMessage": "Retry publishing"
+  },
   "9pMqYs": {
     "defaultMessage": "Nostr Address"
   },
@@ -819,6 +822,9 @@
   },
   "UDYlxu": {
     "defaultMessage": "Pending Subscriptions"
+  },
+  "UJTWqI": {
+    "defaultMessage": "Remove from my relays"
   },
   "UT7Nkj": {
     "defaultMessage": "New Chat"
