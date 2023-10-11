@@ -73,7 +73,7 @@ jobs:
 
       - name: Copy files
         run: |-
-          git clone https://git.v0l.io/Kieran/snort_android.git
+          git clone --depth 1 --branch ${{ github.ref_name }} https://git.v0l.io/Kieran/snort_android.git
           mkdir -p snort_android/app/src/main/assets/
           cp packages/app/build/* snort_android/app/src/main/assets/
 
