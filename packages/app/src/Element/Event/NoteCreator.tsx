@@ -1,14 +1,6 @@
 import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
-import {
-  EventKind,
-  NostrPrefix,
-  TaggedNostrEvent,
-  EventBuilder,
-  tryParseNostrLink,
-  NostrLink,
-  NostrEvent,
-} from "@snort/system";
+import { EventKind, NostrPrefix, TaggedNostrEvent, EventBuilder, tryParseNostrLink, NostrLink } from "@snort/system";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Hooks/useEventPublisher";
@@ -21,12 +13,13 @@ import Note from "Element/Event/Note";
 
 import { ClipboardEventHandler } from "react";
 import useLogin from "Hooks/useLogin";
-import { System, WasmPowWorker } from "index";
+import { WasmPowWorker } from "index";
 import AsyncButton from "Element/AsyncButton";
 import { AsyncIcon } from "Element/AsyncIcon";
 import { fetchNip05Pubkey } from "@snort/shared";
 import { ZapTarget } from "Zapper";
 import { useNoteCreator } from "State/NoteCreator";
+import { NoteBroadcaster } from "./NoteBroadcaster";
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();
@@ -123,24 +116,11 @@ export function NoteCreator() {
     }
   }
 
-  async function sendEventToRelays(ev: NostrEvent) {
-    if (note.selectedCustomRelays) {
-      await Promise.all(note.selectedCustomRelays.map(r => System.WriteOnceToRelay(r, ev)));
-    } else {
-      System.BroadcastEvent(ev);
-    }
-  }
-
   async function sendNote() {
     const ev = await buildNote();
     if (ev) {
-      await sendEventToRelays(ev);
-      for (const oe of note.otherEvents ?? []) {
-        await sendEventToRelays(oe);
-      }
-      note.update(v => {
-        v.reset();
-        v.show = false;
+      note.update(n => {
+        n.sending = (note.otherEvents ?? []).concat(ev);
       });
     }
   }
@@ -327,60 +307,109 @@ export function NoteCreator() {
     ));
   }*/
 
-  const handlePaste: ClipboardEventHandler<HTMLDivElement> = evt => {
-    if (evt.clipboardData) {
-      const clipboardItems = evt.clipboardData.items;
-      const items: DataTransferItem[] = Array.from(clipboardItems).filter(function (item: DataTransferItem) {
-        // Filter the image items only
-        return /^image\//.test(item.type);
-      });
-      if (items.length === 0) {
-        return;
-      }
-
-      const item = items[0];
-      const blob = item.getAsFile();
-      if (blob) {
-        uploadFile(blob);
-      }
-    }
-  };
-
-  if (!note.show) return null;
-  return (
-    <Modal id="note-creator" className="note-creator-modal" onClose={() => note.update(v => (v.show = false))}>
-      {note.replyTo && (
-        <Note
-          data={note.replyTo}
-          related={[]}
-          options={{
-            showFooter: false,
-            showContextMenu: false,
-            showTime: false,
-            canClick: false,
-            showMedia: false,
-            longFormPreview: true,
-          }}
-        />
-      )}
-      {note.preview && getPreviewNote()}
-      {!note.preview && (
-        <div onPaste={handlePaste} className={`note-creator${note.pollOptions ? " poll" : ""}`}>
-          <Textarea
-            autoFocus
-            className={`textarea ${note.active ? "textarea--focused" : ""}`}
-            onChange={c => onChange(c)}
-            value={note.note}
-            onFocus={() => note.update(v => (v.active = true))}
-            onKeyDown={e => {
-              if (e.key === "Enter" && e.metaKey) {
-                sendNote().catch(console.warn);
-              }
-            }}
-          />
-          {renderPollOptions()}
+  function noteCreatorAdvanced() {
+    return (
+      <>
+        <button className="secondary" onClick={loadPreview}>
+          <FormattedMessage defaultMessage="Toggle Preview" />
+        </button>
+        <div>
+          <h4>
+            <FormattedMessage defaultMessage="Custom Relays" />
+          </h4>
+          <p>
+            <FormattedMessage defaultMessage="Send note to a subset of your write relays" />
+          </p>
+          {renderRelayCustomisation()}
         </div>
-      )}
+        <div className="flex-column g8">
+          <h4>
+            <FormattedMessage defaultMessage="Zap Splits" />
+          </h4>
+          <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." />
+          <div className="flex-column g8">
+            {[...(note.zapSplits ?? [])].map((v, i, arr) => (
+              <div className="flex f-center g8">
+                <div className="flex-column f-4 g4">
+                  <h4>
+                    <FormattedMessage defaultMessage="Recipient" />
+                  </h4>
+                  <input
+                    type="text"
+                    value={v.value}
+                    onChange={e =>
+                      note.update(
+                        v => (v.zapSplits = arr.map((vv, ii) => (ii === i ? { ...vv, value: e.target.value } : vv))),
+                      )
+                    }
+                    placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address" })}
+                  />
+                </div>
+                <div className="flex-column f-1 g4">
+                  <h4>
+                    <FormattedMessage defaultMessage="Weight" />
+                  </h4>
+                  <input
+                    type="number"
+                    min={0}
+                    value={v.weight}
+                    onChange={e =>
+                      note.update(
+                        v =>
+                          (v.zapSplits = arr.map((vv, ii) =>
+                            ii === i ? { ...vv, weight: Number(e.target.value) } : vv,
+                          )),
+                      )
+                    }
+                  />
+                </div>
+                <div className="flex-column f-shrink g4">
+                  <div>&nbsp;</div>
+                  <Icon
+                    name="close"
+                    onClick={() => note.update(v => (v.zapSplits = (v.zapSplits ?? []).filter((_v, ii) => ii !== i)))}
+                  />
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() =>
+                note.update(v => (v.zapSplits = [...(v.zapSplits ?? []), { type: "pubkey", value: "", weight: 1 }]))
+              }>
+              <FormattedMessage defaultMessage="Add" />
+            </button>
+          </div>
+          <span className="warning">
+            <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" />
+          </span>
+        </div>
+        <div className="flex-column g8">
+          <h4>
+            <FormattedMessage defaultMessage="Sensitive Content" />
+          </h4>
+          <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." />
+          <input
+            className="w-max"
+            type="text"
+            value={note.sensitive}
+            onChange={e => note.update(v => (v.sensitive = e.target.value))}
+            maxLength={50}
+            minLength={1}
+            placeholder={formatMessage({
+              defaultMessage: "Reason",
+            })}
+          />
+          <span className="warning">
+            <FormattedMessage defaultMessage="Not all clients support this yet" />
+          </span>
+        </div>
+      </>
+    );
+  }
+
+  function noteCreatorFooter() {
+    return (
       <div className="flex f-space">
         <div className="flex g8">
           <ProfileImage
@@ -409,105 +438,86 @@ export function NoteCreator() {
           </AsyncButton>
         </div>
       </div>
-      {note.error && <span className="error">{note.error}</span>}
-      {note.advanced && (
-        <>
-          <button className="secondary" onClick={loadPreview}>
-            <FormattedMessage defaultMessage="Toggle Preview" />
-          </button>
-          <div>
-            <h4>
-              <FormattedMessage defaultMessage="Custom Relays" />
-            </h4>
-            <p>
-              <FormattedMessage defaultMessage="Send note to a subset of your write relays" />
-            </p>
-            {renderRelayCustomisation()}
-          </div>
-          <div className="flex-column g8">
-            <h4>
-              <FormattedMessage defaultMessage="Zap Splits" />
-            </h4>
-            <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." />
-            <div className="flex-column g8">
-              {[...(note.zapSplits ?? [])].map((v, i, arr) => (
-                <div className="flex f-center g8">
-                  <div className="flex-column f-4 g4">
-                    <h4>
-                      <FormattedMessage defaultMessage="Recipient" />
-                    </h4>
-                    <input
-                      type="text"
-                      value={v.value}
-                      onChange={e =>
-                        note.update(
-                          v => (v.zapSplits = arr.map((vv, ii) => (ii === i ? { ...vv, value: e.target.value } : vv))),
-                        )
-                      }
-                      placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address" })}
-                    />
-                  </div>
-                  <div className="flex-column f-1 g4">
-                    <h4>
-                      <FormattedMessage defaultMessage="Weight" />
-                    </h4>
-                    <input
-                      type="number"
-                      min={0}
-                      value={v.weight}
-                      onChange={e =>
-                        note.update(
-                          v =>
-                            (v.zapSplits = arr.map((vv, ii) =>
-                              ii === i ? { ...vv, weight: Number(e.target.value) } : vv,
-                            )),
-                        )
-                      }
-                    />
-                  </div>
-                  <div className="flex-column f-shrink g4">
-                    <div>&nbsp;</div>
-                    <Icon
-                      name="close"
-                      onClick={() => note.update(v => (v.zapSplits = (v.zapSplits ?? []).filter((_v, ii) => ii !== i)))}
-                    />
-                  </div>
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={() =>
-                  note.update(v => (v.zapSplits = [...(v.zapSplits ?? []), { type: "pubkey", value: "", weight: 1 }]))
-                }>
-                <FormattedMessage defaultMessage="Add" />
-              </button>
-            </div>
-            <span className="warning">
-              <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" />
-            </span>
-          </div>
-          <div className="flex-column g8">
-            <h4>
-              <FormattedMessage defaultMessage="Sensitive Content" />
-            </h4>
-            <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." />
-            <input
-              className="w-max"
-              type="text"
-              value={note.sensitive}
-              onChange={e => note.update(v => (v.sensitive = e.target.value))}
-              maxLength={50}
-              minLength={1}
-              placeholder={formatMessage({
-                defaultMessage: "Reason",
-              })}
+    );
+  }
+
+  const handlePaste: ClipboardEventHandler<HTMLDivElement> = evt => {
+    if (evt.clipboardData) {
+      const clipboardItems = evt.clipboardData.items;
+      const items: DataTransferItem[] = Array.from(clipboardItems).filter(function (item: DataTransferItem) {
+        // Filter the image items only
+        return /^image\//.test(item.type);
+      });
+      if (items.length === 0) {
+        return;
+      }
+
+      const item = items[0];
+      const blob = item.getAsFile();
+      if (blob) {
+        uploadFile(blob);
+      }
+    }
+  };
+
+  function noteCreatorForm() {
+    return (
+      <>
+        {note.replyTo && (
+          <Note
+            data={note.replyTo}
+            related={[]}
+            options={{
+              showFooter: false,
+              showContextMenu: false,
+              showTime: false,
+              canClick: false,
+              showMedia: false,
+              longFormPreview: true,
+            }}
+          />
+        )}
+        {note.preview && getPreviewNote()}
+        {!note.preview && (
+          <div onPaste={handlePaste} className={`note-creator${note.pollOptions ? " poll" : ""}`}>
+            <Textarea
+              autoFocus
+              className={`textarea ${note.active ? "textarea--focused" : ""}`}
+              onChange={c => onChange(c)}
+              value={note.note}
+              onFocus={() => note.update(v => (v.active = true))}
+              onKeyDown={e => {
+                if (e.key === "Enter" && e.metaKey) {
+                  sendNote().catch(console.warn);
+                }
+              }}
             />
-            <span className="warning">
-              <FormattedMessage defaultMessage="Not all clients support this yet" />
-            </span>
+            {renderPollOptions()}
           </div>
-        </>
+        )}
+        {noteCreatorFooter()}
+        {note.error && <span className="error">{note.error}</span>}
+        {note.advanced && noteCreatorAdvanced()}
+      </>
+    );
+  }
+
+  if (!note.show) return null;
+  return (
+    <Modal id="note-creator" className="note-creator-modal" onClose={() => note.update(v => (v.show = false))}>
+      {note.sending && (
+        <NoteBroadcaster
+          evs={note.sending}
+          onClose={() => {
+            note.update(n => {
+              n.reset();
+              n.show = false;
+            });
+          }}
+          customRelays={note.selectedCustomRelays}
+        />
       )}
+      {!note.sending && noteCreatorForm()}
     </Modal>
   );
 }

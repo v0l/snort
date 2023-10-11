@@ -57,8 +57,3 @@
 .settings .actions {
   margin-top: 16px;
 }
-
-.settings small {
-  font-size: 14px;
-  color: var(--font-secondary-color);
-}

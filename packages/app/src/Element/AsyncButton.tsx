@@ -30,10 +30,10 @@ const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>((props
   return (
     <button
       ref={ref as ForwardedRef<HTMLButtonElement>}
-      className="spinner-button"
       type="button"
       disabled={loading || props.disabled}
       {...props}
+      className={`spinner-button${props.className ? ` ${props.className}` : ""}`}
       onClick={handle}>
       <span style={{ visibility: loading ? "hidden" : "visible" }}>{props.children}</span>
       {loading && (

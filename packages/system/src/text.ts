@@ -1,4 +1,4 @@
-import { unwrap } from "@snort/shared";
+import { removeUndefined } from "@snort/shared";
 
 import {
   CashuRegex,
@@ -230,8 +230,8 @@ export function transformText(body: string, tags: Array<Array<string>>) {
   fragments = extractCashuTokens(fragments);
   fragments = extractCustomEmoji(fragments, tags);
   fragments = extractMarkdownCode(fragments);
-  fragments = fragments
-    .map(a => {
+  fragments = removeUndefined(
+    fragments.map(a => {
       if (typeof a === "string") {
         if (a.length > 0) {
           return { type: "text", content: a } as ParsedFragment;
@@ -239,8 +239,7 @@ export function transformText(body: string, tags: Array<Array<string>>) {
       } else {
         return a;
       }
-    })
-    .filter(a => a)
-    .map(a => unwrap(a));
+    }),
+  );
   return fragments as Array<ParsedFragment>;
 }

@@ -1,7 +1,3 @@
-.preferences small {
-  color: var(--font-secondary-color);
-}
-
 .preferences select {
   min-width: 100px;
 }

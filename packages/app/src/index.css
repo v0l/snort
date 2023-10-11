@@ -167,8 +167,16 @@ a.ext {
   border-radius: 16px;
 }
 
+.br-compact {
+  border-radius: 8px;
+}
+
 .p {
   padding: 12px 16px;
+}
+
+.p-compact {
+  padding: 8px 12px;
 }
 
 .p4 {
@@ -212,7 +220,14 @@ a.ext {
   font-weight: bold;
 }
 
+small {
+  color: var(--font-secondary-color);
+  font-size: 14px;
+  line-height: 22px; /* 157.143% */
+}
+
 button {
+  position: relative;
   cursor: pointer;
   padding: 10px 16px;
   font-weight: 600;
@@ -406,6 +421,11 @@ input:disabled {
   display: flex;
   align-items: center;
   min-width: 0;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
 }
 
 .flex-column {
@@ -646,6 +666,18 @@ div.form-col {
   background-color: var(--repost);
 }
 
+.bg-dark {
+  background-color: var(--gray-dark);
+}
+
+.bg-superdark {
+  background-color: var(--gray-superdark);
+}
+
+.bg-ultradark {
+  background-color: var(--gray-ultradark);
+}
+
 .text-zap {
   color: var(--zap);
 }
@@ -863,17 +895,6 @@ svg.zap-solid {
 
 .light .subtier {
   border: 1px solid var(--border-color);
-}
-
-.light .spinner-button {
-  background: #fff;
-  border: 1px solid var(--border-color);
-  color: var(--font-secondary);
-  box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
-}
-
-.light .spinner-button:hover {
-  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
 }
 
 .main-content.p {

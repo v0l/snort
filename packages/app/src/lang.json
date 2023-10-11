@@ -1335,6 +1335,9 @@
   "rT14Ow": {
     "defaultMessage": "Add Relays"
   },
+  "rbrahO": {
+    "defaultMessage": "Close"
+  },
   "reJ6SM": {
     "defaultMessage": "It is recommended to use one of the following browser extensions if you are on a desktop computer to secure your key:"
   },
@@ -1388,6 +1391,9 @@
   },
   "uc0din": {
     "defaultMessage": "Send sats splits to"
+  },
+  "ugyJnE": {
+    "defaultMessage": "Sending notes and other stuff"
   },
   "usAvMr": {
     "defaultMessage": "Edit Profile"

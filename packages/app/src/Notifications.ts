@@ -1,9 +1,10 @@
 import { TaggedNostrEvent, EventKind, MetadataCache } from "@snort/system";
 import { getDisplayName } from "Element/User/DisplayName";
 import { MentionRegex } from "Const";
-import { defaultAvatar, tagFilterOfTextRepost, unwrap } from "SnortUtils";
+import { defaultAvatar, tagFilterOfTextRepost } from "SnortUtils";
 import { UserCache } from "Cache";
 import { LoginSession } from "Login";
+import { removeUndefined } from "@snort/shared";
 
 export interface NotificationRequest {
   title: string;
@@ -20,10 +21,7 @@ export async function makeNotification(ev: TaggedNostrEvent): Promise<Notificati
       }
       const pubkeys = new Set([ev.pubkey, ...ev.tags.filter(a => a[0] === "p").map(a => a[1])]);
       await UserCache.buffer([...pubkeys]);
-      const allUsers = [...pubkeys]
-        .map(a => UserCache.getFromCache(a))
-        .filter(a => a)
-        .map(a => unwrap(a));
+      const allUsers = removeUndefined([...pubkeys].map(a => UserCache.getFromCache(a)));
       const fromUser = UserCache.getFromCache(ev.pubkey);
       const name = getDisplayName(fromUser, ev.pubkey);
       const avatarUrl = fromUser?.picture || defaultAvatar(ev.pubkey);

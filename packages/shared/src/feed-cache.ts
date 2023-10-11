@@ -1,5 +1,5 @@
 import debug from "debug";
-import { unixNowMs, unwrap } from "./utils";
+import { removeUndefined, unixNowMs, unwrap } from "./utils";
 import { DexieTableLike } from "./dexie-like";
 
 type HookFn = () => void;
@@ -99,10 +99,7 @@ export abstract class FeedCache<TCached> {
         }
       });
     }
-    return keys
-      .map(a => this.cache.get(a))
-      .filter(a => a)
-      .map(a => unwrap(a));
+    return removeUndefined(keys.map(a => this.cache.get(a)));
   }
 
   async set(obj: TCached) {
@@ -176,18 +173,12 @@ export abstract class FeedCache<TCached> {
         key: a,
       }));
       const start = unixNowMs();
-      const fromCache = await this.table.bulkGet(mapped.filter(a => a.has).map(a => a.key));
-      const fromCacheFiltered = fromCache.filter(a => a !== undefined).map(a => unwrap(a));
-      fromCacheFiltered.forEach(a => {
+      const fromCache = removeUndefined(await this.table.bulkGet(mapped.filter(a => a.has).map(a => a.key)));
+      fromCache.forEach(a => {
         this.cache.set(this.key(a), a);
       });
-      this.notifyChange(fromCacheFiltered.map(a => this.key(a)));
-      debug(this.#name)(
-        `Loaded %d/%d in %d ms`,
-        fromCacheFiltered.length,
-        keys.length,
-        (unixNowMs() - start).toLocaleString(),
-      );
+      this.notifyChange(fromCache.map(a => this.key(a)));
+      debug(this.#name)(`Loaded %d/%d in %d ms`, fromCache.length, keys.length, (unixNowMs() - start).toLocaleString());
       return mapped.filter(a => !a.has).map(a => a.key);
     }
 

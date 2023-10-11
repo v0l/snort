@@ -47,6 +47,7 @@ import { preload, RelayMetrics, SystemDb, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
 import { SnortDeckLayout } from "Pages/DeckLayout";
 import FreeNostrAddressPage from "./Pages/FreeNostrAddressPage";
+import { removeUndefined } from "@snort/shared";
 
 const WasmQueryOptimizer = {
   expandFilter: (f: ReqFilter) => {
@@ -107,7 +108,7 @@ async function fetchProfile(key: string) {
  */
 if (CONFIG.httpCache) {
   System.ProfileLoader.loaderFn = async (keys: Array<string>) => {
-    return (await Promise.all(keys.map(a => fetchProfile(a)))).filter(a => a !== undefined).map(a => unwrap(a));
+    return removeUndefined(await Promise.all(keys.map(a => fetchProfile(a))));
   };
 }
 

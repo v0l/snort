@@ -18,6 +18,13 @@ export interface RelaySettings {
   write: boolean;
 }
 
+export interface OkResponse {
+  ok: boolean;
+  id: string;
+  relay: string;
+  message?: string;
+}
+
 /**
  * Snapshot of connection stats
  */
@@ -61,7 +68,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   HasStateChange: boolean = true;
   IsClosed: boolean;
   ReconnectTimer?: ReturnType<typeof setTimeout>;
-  EventsCallback: Map<u256, (msg: boolean[]) => void>;
+  EventsCallback: Map<u256, (msg: Array<string | boolean>) => void>;
   OnConnected?: (wasReconnect: boolean) => void;
   OnEvent?: (sub: string, e: TaggedNostrEvent) => void;
   OnEose?: (sub: string) => void;
@@ -175,11 +182,11 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   OnMessage(e: WebSocket.MessageEvent) {
     this.#activity = unixNowMs();
     if ((e.data as string).length > 0) {
-      const msg = JSON.parse(e.data as string);
-      const tag = msg[0];
+      const msg = JSON.parse(e.data as string) as Array<string | NostrEvent | boolean>;
+      const tag = msg[0] as string;
       switch (tag) {
         case "AUTH": {
-          this.#onAuthAsync(msg[1])
+          this.#onAuthAsync(msg[1] as string)
             .then(() => this.#sendPendingRaw())
             .catch(this.#log);
           this.Stats.EventsReceived++;
@@ -187,8 +194,8 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
           break;
         }
         case "EVENT": {
-          this.OnEvent?.(msg[1], {
-            ...msg[2],
+          this.OnEvent?.(msg[1] as string, {
+            ...(msg[2] as NostrEvent),
             relays: [this.Address],
           });
           this.Stats.EventsReceived++;
@@ -196,17 +203,17 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
           break;
         }
         case "EOSE": {
-          this.OnEose?.(msg[1]);
+          this.OnEose?.(msg[1] as string);
           break;
         }
         case "OK": {
           // feedback to broadcast call
           this.#log(`${this.Address} OK: %O`, msg);
-          const id = msg[1];
-          if (this.EventsCallback.has(id)) {
-            const cb = unwrap(this.EventsCallback.get(id));
+          const id = msg[1] as string;
+          const cb = this.EventsCallback.get(id);
+          if (cb) {
             this.EventsCallback.delete(id);
-            cb(msg);
+            cb(msg as Array<string | boolean>);
           }
           break;
         }
@@ -244,17 +251,40 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
    * Send event on this connection and wait for OK response
    */
   async SendAsync(e: NostrEvent, timeout = 5000) {
-    return new Promise<void>(resolve => {
+    return await new Promise<OkResponse>((resolve, reject) => {
       if (!this.Settings.write) {
-        resolve();
+        reject(new Error("Not a write relay"));
+        return;
+      }
+
+      if (this.EventsCallback.has(e.id)) {
+        resolve({
+          ok: false,
+          id: e.id,
+          relay: this.Address,
+          message: "Duplicate request",
+        });
         return;
       }
       const t = setTimeout(() => {
-        resolve();
+        this.EventsCallback.delete(e.id);
+        resolve({
+          ok: false,
+          id: e.id,
+          relay: this.Address,
+          message: "Timout waiting for OK response",
+        });
       }, timeout);
-      this.EventsCallback.set(e.id, () => {
+
+      this.EventsCallback.set(e.id, msg => {
         clearTimeout(t);
-        resolve();
+        const [_, id, accepted, message] = msg;
+        resolve({
+          ok: accepted as boolean,
+          id: id as string,
+          relay: this.Address,
+          message: message as string | undefined,
+        });
       });
 
       const req = ["EVENT", e];
@@ -395,7 +425,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
         resolve();
       }, 10_000);
 
-      this.EventsCallback.set(authEvent.id, (msg: boolean[]) => {
+      this.EventsCallback.set(authEvent.id, msg => {
         clearTimeout(t);
         authCleanup();
         if (msg.length > 3 && msg[2] === true) {

@@ -1,4 +1,4 @@
-import { AuthHandler, RelaySettings, ConnectionStateSnapshot } from "./connection";
+import { AuthHandler, RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
 import { RequestBuilder } from "./request-builder";
 import { NoteStore, NoteStoreSnapshotData } from "./note-collection";
 import { Query } from "./query";
@@ -87,15 +87,16 @@ export interface SystemInterface {
   /**
    * Send an event to all permanent connections
    * @param ev Event to broadcast
+   * @param cb Callback to handle OkResponse as they arrive
    */
-  BroadcastEvent(ev: NostrEvent): void;
+  BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<Array<OkResponse>>;
 
   /**
    * Connect to a specific relay and send an event and wait for the response
    * @param relay Relay URL
    * @param ev Event to send
    */
-  WriteOnceToRelay(relay: string, ev: NostrEvent): Promise<void>;
+  WriteOnceToRelay(relay: string, ev: NostrEvent): Promise<OkResponse>;
 
   /**
    * Profile cache/loader

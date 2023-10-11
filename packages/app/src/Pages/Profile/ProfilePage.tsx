@@ -131,7 +131,7 @@ export default function ProfilePage({ id: propId }: ProfilePageProps) {
       return (
         <div className="flex g8">
           {cover && <ProxyImg src={cover} size={40} />}
-          <small>🎵 {unwrap(status.music).content}</small>
+          🎵 {unwrap(status.music).content}
         </div>
       );
     };

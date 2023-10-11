@@ -189,3 +189,7 @@ export async function fetchNip05Pubkey(name: string, domain: string, timeout = 2
   }
   return undefined;
 }
+
+export function removeUndefined<T>(v: Array<T | undefined>) {
+  return v.filter(a => a != undefined).map(a => unwrap(a));
+}

@@ -1,7 +1,6 @@
-import { ExternalStore, FeedCache, dedupe } from "@snort/shared";
+import { ExternalStore, FeedCache, dedupe, removeUndefined } from "@snort/shared";
 import { RequestBuilder, NostrEvent, EventKind, SystemInterface, TaggedNostrEvent } from "@snort/system";
 import { LoginSession } from "Login";
-import { unwrap } from "SnortUtils";
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "chat";
 
 export class Nip29ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
@@ -45,11 +44,7 @@ export class Nip29ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
   listChats(): Chat[] {
     const allMessages = this.#nip29Chats();
     const groups = dedupe(
-      allMessages
-        .map(a => a.tags.find(b => b[0] === "g"))
-        .filter(a => a !== undefined)
-        .map(a => unwrap(a))
-        .map(a => `${a[2]}${a[1]}`),
+      removeUndefined(allMessages.map(a => a.tags.find(b => b[0] === "g"))).map(a => `${a[2]}${a[1]}`),
     );
     return groups.map(g => {
       const [relay, channel] = g.split("/", 2);
