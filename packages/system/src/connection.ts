@@ -272,7 +272,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
           ok: false,
           id: e.id,
           relay: this.Address,
-          message: "Timout waiting for OK response",
+          message: "Timeout waiting for OK response",
         });
       }, timeout);
 
