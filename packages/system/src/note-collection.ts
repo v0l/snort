@@ -1,5 +1,5 @@
 import { appendDedupe } from "@snort/shared";
-import { TaggedNostrEvent, u256 } from ".";
+import { EventExt, EventType, TaggedNostrEvent, u256 } from ".";
 import { findTag } from "./utils";
 
 export interface StoreSnapshot<TSnapshot> {
@@ -268,18 +268,13 @@ export class ReplaceableNoteStore extends HookedNoteStore<Readonly<TaggedNostrEv
 export class NoteCollection extends KeyedReplaceableNoteStore {
   constructor() {
     super(e => {
-      const legacyReplaceable = [0, 3, 41];
-      if (e.kind >= 30_000 && e.kind < 40_000) {
-        return `${e.kind}:${e.pubkey}:${findTag(e, "d")}`; // Parameterized replaceable
-      } else if (e.kind >= 10_000 && e.kind < 20_000) {
-        return `${e.kind}:${e.pubkey}`; // Replaceable event
-      } else if (legacyReplaceable.includes(e.kind)) {
-        return `${e.kind}:${e.pubkey}`; // Replaceable event
-      } else {
-        // Regular event
-        // ephemeral events are like regular events
-        // unknown kind
-        return e.id;
+      switch (EventExt.getType(e.kind)) {
+        case EventType.ParameterizedReplaceable:
+          return `${e.kind}:${e.pubkey}:${findTag(e, "d")}`;
+        case EventType.Replaceable:
+          return `${e.kind}:${e.pubkey}`;
+        default:
+          return e.id;
       }
     });
   }

@@ -4,6 +4,7 @@ import { getPublicKey, sha256, unixNow } from "@snort/shared";
 
 import { EventKind, HexKey, NostrEvent, NotSignedNostrEvent } from ".";
 import { minePow } from "./pow-util";
+import { findTag } from "./utils";
 
 export interface Tag {
   key: string;
@@ -17,6 +18,12 @@ export interface Thread {
   replyTo?: Tag;
   mentions: Array<Tag>;
   pubKeys: Array<HexKey>;
+}
+
+export const enum EventType {
+  Regular,
+  Replaceable,
+  ParameterizedReplaceable,
 }
 
 export abstract class EventExt {
@@ -148,5 +155,26 @@ export abstract class EventExt {
     e.kind ??= 0;
     e.pubkey ??= "";
     e.sig ??= "";
+  }
+
+  static getType(kind: number) {
+    const legacyReplaceable = [0, 3, 41];
+    if (kind >= 30_000 && kind < 40_000) {
+      return EventType.ParameterizedReplaceable;
+    } else if (kind >= 10_000 && kind < 20_000) {
+      return EventType.Replaceable;
+    } else if (legacyReplaceable.includes(kind)) {
+      return EventType.Replaceable;
+    } else {
+      return EventType.Regular;
+    }
+  }
+
+  static isValid(ev: NostrEvent) {
+    const type = EventExt.getType(ev.kind);
+    if (type === EventType.ParameterizedReplaceable) {
+      if (!findTag(ev, "d")) return false;
+    }
+    return true;
   }
 }
