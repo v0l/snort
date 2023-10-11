@@ -45,7 +45,7 @@ export default function FollowButton(props: FollowButtonProps) {
       disabled={readonly}
       onClick={async e => {
         e.stopPropagation();
-        await (isFollowing ? unfollow(pubkey) : follow(pubkey))
+        await (isFollowing ? unfollow(pubkey) : follow(pubkey));
       }}>
       {isFollowing ? <FormattedMessage {...messages.Unfollow} /> : <FormattedMessage {...messages.Follow} />}
     </AsyncButton>

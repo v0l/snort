@@ -232,7 +232,7 @@
   "P7FD0F": "System (standard)",
   "P7nJT9": "Totalt idag (UTC): {amount} sats",
   "PCSt5T": "Inställningar",
-  "PJeJFc": "Summary",
+  "PJeJFc": "Sammanfattning",
   "PLSbmL": "Din mnemoniska lösenfras",
   "PaN7t3": "Förhandsgranska på {site}",
   "PamNxw": "Okänd filrubrik: {name}",
@@ -496,5 +496,5 @@
   "zonsdq": "Det gick inte att ladda LNURL-tjänsten",
   "zvCDao": "Visa automatiskt de senaste anteckningarna",
   "zwb6LR": "<b>Mint:</b> {url}",
-  "zxvhnE": "Daily"
+  "zxvhnE": "Dagligen"
 }
