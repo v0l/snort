@@ -1,9 +1,13 @@
 import { FeedCache } from "@snort/shared";
-import { sha256, decodeInvoice, InvoiceDetails } from "@snort/shared";
-import { HexKey, NostrEvent } from "./nostr";
+import { decodeInvoice, InvoiceDetails } from "@snort/shared";
+import { NostrEvent } from "./nostr";
 import { findTag } from "./utils";
 import { MetadataCache } from "./cache";
+import { EventExt } from "./event-ext";
+import { NostrLink } from "./nostr-link";
+import debug from "debug";
 
+const Log = debug("zaps");
 const ParsedZapCache = new Map<string, ParsedZap>();
 
 function getInvoice(zap: NostrEvent): InvoiceDetails | undefined {
@@ -32,15 +36,17 @@ export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCa
         // old format, ignored
         throw new Error("deprecated zap format");
       }
+      const zapRequestThread = EventExt.extractThread(zapRequest);
+      const requestContext = zapRequestThread?.root;
+
       const isForwardedZap = refNote?.tags.some(a => a[0] === "zap") ?? false;
       const anonZap = zapRequest.tags.find(a => a[0] === "anon");
-      const metaHash = sha256(innerZapJson);
       const pollOpt = zapRequest.tags.find(a => a[0] === "poll_option")?.[1];
       const ret: ParsedZap = {
         id: zapReceipt.id,
         zapService: zapReceipt.pubkey,
         amount: (invoice?.amount ?? 0) / 1000,
-        event: findTag(zapRequest, "e"),
+        event: requestContext ? NostrLink.fromThreadTag(requestContext) : undefined,
         sender: zapRequest.pubkey,
         receiver: findTag(zapRequest, "p"),
         valid: true,
@@ -49,17 +55,9 @@ export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCa
         errors: [],
         pollOption: pollOpt ? Number(pollOpt) : undefined,
       };
-      if (invoice?.descriptionHash !== metaHash) {
-        ret.valid = false;
-        ret.errors.push("description_hash does not match zap request");
-      }
       if (findTag(zapRequest, "p") !== findTag(zapReceipt, "p")) {
         ret.valid = false;
         ret.errors.push("p tags dont match");
-      }
-      if (ret.event && ret.event !== findTag(zapReceipt, "e")) {
-        ret.valid = false;
-        ret.errors.push("e tags dont match");
       }
       if (findTag(zapRequest, "amount") === invoice?.amount) {
         ret.valid = false;
@@ -69,9 +67,13 @@ export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCa
         ret.valid = false;
         ret.errors.push("zap service pubkey doesn't match");
       }
+
+      if (!ret.valid) {
+        Log("Invalid zap %O", ret);
+      }
       return ret;
-    } catch (e) {
-      // ignored: console.debug("Invalid zap", zapReceipt, e);
+    } catch {
+      // ignored
     }
   }
   const ret = {
@@ -82,20 +84,24 @@ export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCa
     anonZap: false,
     errors: ["invalid zap, parsing failed"],
   };
+  if (!ret.valid) {
+    Log("Invalid zap %O", ret);
+  }
   ParsedZapCache.set(ret.id, ret);
   return ret;
 }
 
 export interface ParsedZap {
-  id: HexKey;
-  event?: HexKey;
-  receiver?: HexKey;
+  id: string;
   amount: number;
-  content?: string;
-  sender?: HexKey;
+  zapService: string;
   valid: boolean;
-  zapService: HexKey;
-  anonZap: boolean;
   errors: Array<string>;
+
+  anonZap: boolean;
+  event?: NostrLink;
+  receiver?: string;
+  content?: string;
+  sender?: string;
   pollOption?: number;
 }
