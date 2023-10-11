@@ -49,7 +49,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     function <T extends NostrEvent>(nts: Array<T>) {
       const a = nts.filter(a => a.kind !== EventKind.LiveEvent);
       return a
-        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
+        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true))
         .filter(a => !isMuted(a.pubkey) && login.follows.item.includes(a.pubkey) && (props.noteFilter?.(a) ?? true));
     },
     [props.postsOnly, muted, login.follows.timestamp],
