@@ -58,7 +58,7 @@ const SettingsIndex = () => {
           </div>
           <div className="settings-row" onClick={() => navigate("handle")}>
             <Icon name="badge" size={24} />
-            <FormattedMessage defaultMessage="Nostr Adddress" />
+            <FormattedMessage defaultMessage="Nostr Address" />
             <Icon name="arrowFront" size={16} />
           </div>
           {CONFIG.features.subscriptions && (
