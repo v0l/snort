@@ -200,7 +200,10 @@ export function useChatSystem() {
   const nip4 = useNip4Chat();
   //const nip24 = useNip24Chat();
   const nip28 = useNip28Chat();
-  const { muted, blocked } = useModeration();
+  const { isBlocked } = useModeration();
 
-  return [...nip4, ...nip28].filter(a => !(muted.includes(a.id) || blocked.includes(a.id)));
+  return [...nip4, ...nip28].filter(a => {
+    const authors = a.participants.filter(a => a.type === "pubkey").map(a => a.id);
+    return !authors.every(a => isBlocked(a));
+  });
 }
