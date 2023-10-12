@@ -48,7 +48,7 @@ export default function Note(props: NoteProps) {
   if (ev.kind === EventKind.ZapstrTrack) {
     return <ZapstrEmbed ev={ev} />;
   }
-  if (ev.kind === EventKind.PubkeyLists) {
+  if (ev.kind === EventKind.PubkeyLists || ev.kind === EventKind.ContactList) {
     return <PubkeyList ev={ev} className={className} />;
   }
   if (ev.kind === EventKind.LiveEvent) {

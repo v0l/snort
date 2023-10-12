@@ -292,9 +292,6 @@
     "defaultMessage": "Parent",
     "description": "Link to parent note in thread"
   },
-  "AGNz71": {
-    "defaultMessage": "Zap All {n} sats"
-  },
   "AN0Z7Q": {
     "defaultMessage": "Muted Words"
   },
@@ -527,6 +524,9 @@
   },
   "IUZC+0": {
     "defaultMessage": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you."
+  },
+  "IVbtTS": {
+    "defaultMessage": "Zap all {n} sats"
   },
   "Ig9/a1": {
     "defaultMessage": "Sent {n} sats to {name}"
