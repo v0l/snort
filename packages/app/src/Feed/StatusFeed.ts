@@ -1,3 +1,4 @@
+import { unixNow } from "@snort/shared";
 import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { findTag } from "SnortUtils";
@@ -18,8 +19,12 @@ export function useStatusFeed(id?: string, leaveOpen = false) {
 
   const status = useRequestBuilder(NoteCollection, sub);
 
-  const general = status.data?.find(a => findTag(a, "d") === "general");
-  const music = status.data?.find(a => findTag(a, "d") === "music");
+  const statusFiltered = status.data?.filter(a => {
+    const exp = Number(findTag(a, "expiration"));
+    return isNaN(exp) || exp >= unixNow();
+  });
+  const general = statusFiltered?.find(a => findTag(a, "d") === "general");
+  const music = statusFiltered?.find(a => findTag(a, "d") === "music");
 
   return {
     general,
