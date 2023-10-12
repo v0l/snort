@@ -1,12 +1,13 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
 import WebSocket from "isomorphic-ws";
-import { unwrap, ExternalStore, unixNowMs } from "@snort/shared";
+import { unwrap, ExternalStore, unixNowMs, dedupe } from "@snort/shared";
 
 import { DefaultConnectTimeout } from "./const";
 import { ConnectionStats } from "./connection-stats";
-import { NostrEvent, ReqCommand, TaggedNostrEvent, u256 } from "./nostr";
+import { NostrEvent, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";
 import { RelayInfo } from "./relay-info";
+import EventKind from "./event-kind";
 
 export type AuthHandler = (challenge: string, relay: string) => Promise<NostrEvent | undefined>;
 
@@ -46,9 +47,10 @@ export interface ConnectionStateSnapshot {
 }
 
 export class Connection extends ExternalStore<ConnectionStateSnapshot> {
-  #log = debug("Connection");
+  #log: debug.Debugger;
   #ephemeralCheck?: ReturnType<typeof setInterval>;
   #activity: number = unixNowMs();
+  #expectAuth = false;
 
   Id: string;
   Address: string;
@@ -89,6 +91,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     this.AwaitingAuth = new Map();
     this.Auth = auth;
     this.Ephemeral = ephemeral;
+    this.#log = debug("Connection").extend(addr);
   }
 
   async Connect() {
@@ -139,7 +142,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
 
   OnOpen(wasReconnect: boolean) {
     this.ConnectTimeout = DefaultConnectTimeout;
-    this.#log(`[${this.Address}] Open!`);
+    this.#log(`Open!`);
     this.Down = false;
     this.#setupEphemeral();
     this.OnConnected?.(wasReconnect);
@@ -155,27 +158,23 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     // remote server closed the connection, dont re-connect
     if (e.code === 4000) {
       this.IsClosed = true;
-      this.#log(`[${this.Address}] Closed! (Remote)`);
+      this.#log(`Closed! (Remote)`);
     } else if (!this.IsClosed) {
       this.ConnectTimeout = this.ConnectTimeout * 2;
       this.#log(
-        `[${this.Address}] Closed (code=${e.code}), trying again in ${(this.ConnectTimeout / 1000)
-          .toFixed(0)
-          .toLocaleString()} sec`,
+        `Closed (code=${e.code}), trying again in ${(this.ConnectTimeout / 1000).toFixed(0).toLocaleString()} sec`,
       );
       this.ReconnectTimer = setTimeout(() => {
         this.Connect();
       }, this.ConnectTimeout);
       this.Stats.Disconnects++;
     } else {
-      this.#log(`[${this.Address}] Closed!`);
+      this.#log(`Closed!`);
       this.ReconnectTimer = undefined;
     }
 
     this.OnDisconnect?.(e.code);
-    this.#resetQueues();
-    // reset connection Id on disconnect, for query-tracking
-    this.Id = uuid();
+    this.#reset();
     this.notifyChange();
   }
 
@@ -186,11 +185,15 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
       const tag = msg[0] as string;
       switch (tag) {
         case "AUTH": {
-          this.#onAuthAsync(msg[1] as string)
-            .then(() => this.#sendPendingRaw())
-            .catch(this.#log);
-          this.Stats.EventsReceived++;
-          this.notifyChange();
+          if (this.#expectAuth) {
+            this.#onAuthAsync(msg[1] as string)
+              .then(() => this.#sendPendingRaw())
+              .catch(this.#log);
+            this.Stats.EventsReceived++;
+            this.notifyChange();
+          } else {
+            this.#log("Ignoring unexpected AUTH request");
+          }
           break;
         }
         case "EVENT": {
@@ -208,7 +211,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
         }
         case "OK": {
           // feedback to broadcast call
-          this.#log(`${this.Address} OK: %O`, msg);
+          this.#log(`OK: %O`, msg);
           const id = msg[1] as string;
           const cb = this.EventsCallback.get(id);
           if (cb) {
@@ -218,7 +221,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
           break;
         }
         case "NOTICE": {
-          this.#log(`[${this.Address}] NOTICE: ${msg[1]}`);
+          this.#log(`NOTICE: ${msg[1]}`);
           break;
         }
         default: {
@@ -306,12 +309,23 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
    * @param cmd The REQ to send to the server
    */
   QueueReq(cmd: ReqCommand, cbSent: () => void) {
+    const requestKinds = dedupe(
+      cmd
+        .slice(2)
+        .map(a => (a as ReqFilter).kinds ?? [])
+        .flat(),
+    );
+    const ExpectAuth = [EventKind.DirectMessage, EventKind.GiftWrap];
+    if (ExpectAuth.some(a => requestKinds.includes(a)) && !this.#expectAuth) {
+      this.#expectAuth = true;
+      this.#log("Setting expectAuth flag %o", requestKinds);
+    }
     if (this.ActiveRequests.size >= this.#maxSubscriptions) {
       this.PendingRequests.push({
         cmd,
         cb: cbSent,
       });
-      this.#log("Queuing: %s %O", this.Address, cmd);
+      this.#log("Queuing: %O", cmd);
     } else {
       this.ActiveRequests.add(cmd[1]);
       this.#sendJson(cmd);
@@ -359,13 +373,16 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
           this.ActiveRequests.add(p.cmd[1]);
           this.#sendJson(p.cmd);
           p.cb();
-          this.#log("Sent pending REQ %s %O", this.Address, p.cmd);
+          this.#log("Sent pending REQ %O", p.cmd);
         }
       }
     }
   }
 
-  #resetQueues() {
+  #reset() {
+    // reset connection Id on disconnect, for query-tracking
+    this.Id = uuid();
+    this.#expectAuth = false;
     this.ActiveRequests.clear();
     this.PendingRequests = [];
     this.PendingRaw = [];
@@ -452,12 +469,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
         const lastActivity = unixNowMs() - this.#activity;
         if (lastActivity > 30_000 && !this.IsClosed) {
           if (this.ActiveRequests.size > 0) {
-            this.#log(
-              "%s Inactive connection has %d active requests! %O",
-              this.Address,
-              this.ActiveRequests.size,
-              this.ActiveRequests,
-            );
+            this.#log("Inactive connection has %d active requests! %O", this.ActiveRequests.size, this.ActiveRequests);
           } else {
             this.Close();
           }
