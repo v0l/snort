@@ -2,6 +2,7 @@
   "appName": "iris",
   "appNameCapitalized": "Iris",
   "appTitle": "iris",
+  "hostname": "iris.to",
   "nip05Domain": "iris.to",
   "favicon": "public/iris/favicon.ico",
   "appleTouchIconUrl": "/img/apple-touch-icon.png",

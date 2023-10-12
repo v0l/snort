@@ -39,6 +39,7 @@ declare const CONFIG: {
   appName: string;
   appNameCapitalized: string;
   appTitle: string;
+  hostname: string;
   nip05Domain: string;
   favicon: string;
   appleTouchIconUrl: string;

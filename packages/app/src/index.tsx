@@ -145,7 +145,7 @@ async function initSite() {
     const sc = document.createElement("script");
     sc.src = "https://analytics.v0l.io/js/script.js";
     sc.defer = true;
-    sc.setAttribute("data-domain", "snort.social");
+    sc.setAttribute("data-domain", CONFIG.hostname);
     document.head.appendChild(sc);
   }
   return null;
