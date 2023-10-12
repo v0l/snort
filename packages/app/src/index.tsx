@@ -20,6 +20,7 @@ import {
   PowWorker,
 } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
+import { removeUndefined } from "@snort/shared";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
@@ -48,7 +49,7 @@ import { preload, RelayMetrics, SystemDb, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
 import { SnortDeckLayout } from "Pages/DeckLayout";
 import FreeNostrAddressPage from "./Pages/FreeNostrAddressPage";
-import { removeUndefined } from "@snort/shared";
+import { ListFeedPage } from "Pages/ListFeedPage";
 
 const WasmQueryOptimizer = {
   expandFilter: (f: ReqFilter) => {
@@ -220,6 +221,10 @@ export const router = createBrowserRouter([
       {
         path: "/zap-pool",
         element: <ZapPoolPage />,
+      },
+      {
+        path: "/list-feed/:id",
+        element: <ListFeedPage />,
       },
       ...NewUserRoutes,
       ...WalletRoutes,

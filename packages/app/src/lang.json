@@ -1410,6 +1410,9 @@
   "v8lolG": {
     "defaultMessage": "Start chat"
   },
+  "vB3oQ/": {
+    "defaultMessage": "Must be a contact list or pubkey list"
+  },
   "vOKedj": {
     "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
   },
