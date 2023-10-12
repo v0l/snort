@@ -12,12 +12,9 @@
   text-fill-color: transparent;
 }
 
+.nip05 .domain[data-domain="iris.to"],
 .nip05 .domain[data-domain="snort.social"] {
   background-image: var(--snort-gradient);
-}
-
-.nip05 .domain[data-domain="strike.army"] {
-  background-image: var(--strike-army-gradient);
 }
 
 .nip05 .domain[data-domain="nostrplebs.com"] {

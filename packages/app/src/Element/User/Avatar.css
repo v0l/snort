@@ -11,12 +11,9 @@
   background-color: var(--gray);
 }
 
+.avatar[data-domain="iris.to"],
 .avatar[data-domain="snort.social"] {
   background-image: var(--img-url), var(--snort-gradient);
-}
-
-.avatar[data-domain="strike.army"] {
-  background-image: var(--img-url), var(--strike-army-gradient);
 }
 
 .avatar .overlay {
