@@ -9,7 +9,7 @@ import useEventPublisher from "Hooks/useEventPublisher";
 import { LoginStore, createPublisher, sessionNeedsPin } from "Login";
 import Modal from "./Modal";
 import AsyncButton from "./AsyncButton";
-import { WasmPowWorker } from "index";
+import { GetPowWorker } from "index";
 
 export function PinPrompt({
   onResult,
@@ -101,7 +101,7 @@ export function LoginUnlock() {
 
     const pub = EventPublisher.privateKey(k);
     if (login.preferences.pow) {
-      pub.pow(login.preferences.pow, new WasmPowWorker());
+      pub.pow(login.preferences.pow, GetPowWorker());
     }
     LoginStore.setPublisher(login.id, pub);
     LoginStore.updateSession({
@@ -118,7 +118,7 @@ export function LoginUnlock() {
     const pub = createPublisher(login);
     if (pub) {
       if (login.preferences.pow) {
-        pub.pow(login.preferences.pow, new WasmPowWorker());
+        pub.pow(login.preferences.pow, GetPowWorker());
       }
       LoginStore.setPublisher(login.id, pub);
       LoginStore.updateSession({

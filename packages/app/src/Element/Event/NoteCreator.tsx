@@ -13,7 +13,7 @@ import Note from "Element/Event/Note";
 
 import { ClipboardEventHandler } from "react";
 import useLogin from "Hooks/useLogin";
-import { WasmPowWorker } from "index";
+import { GetPowWorker } from "index";
 import AsyncButton from "Element/AsyncButton";
 import { AsyncIcon } from "Element/AsyncIcon";
 import { fetchNip05Pubkey } from "@snort/shared";
@@ -25,7 +25,7 @@ export function NoteCreator() {
   const { formatMessage } = useIntl();
   const uploader = useFileUpload();
   const login = useLogin(s => ({ relays: s.relays, publicKey: s.publicKey, pow: s.preferences.pow }));
-  const publisher = login.pow ? useEventPublisher()?.pow(login.pow, new WasmPowWorker()) : useEventPublisher();
+  const publisher = login.pow ? useEventPublisher()?.pow(login.pow, GetPowWorker()) : useEventPublisher();
   const note = useNoteCreator();
   const relays = login.relays;
 

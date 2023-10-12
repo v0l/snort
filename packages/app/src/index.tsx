@@ -17,6 +17,7 @@ import {
   PowMiner,
   NostrEvent,
   mapEventToProfile,
+  PowWorker,
 } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
@@ -71,6 +72,10 @@ export class WasmPowWorker implements PowMiner {
   }
 }
 
+const hasWasm = "WebAssembly" in globalThis;
+const DefaultPowWorker = hasWasm ? undefined : new PowWorker("/pow.js");
+export const GetPowWorker = () => (hasWasm ? new WasmPowWorker() : unwrap(DefaultPowWorker));
+
 /**
  * Singleton nostr system
  */
@@ -78,7 +83,7 @@ export const System = new NostrSystem({
   relayCache: UserRelays,
   profileCache: UserCache,
   relayMetrics: RelayMetrics,
-  queryOptimizer: WasmQueryOptimizer,
+  queryOptimizer: hasWasm ? WasmQueryOptimizer : undefined,
   db: SystemDb,
   authHandler: async (c, r) => {
     const { id } = LoginStore.snapshot();
@@ -120,7 +125,9 @@ export const ProfileLoader = new ProfileLoaderService(System, UserCache);
 serviceWorkerRegistration.register();
 
 async function initSite() {
-  await wasmInit(WasmPath);
+  if (hasWasm) {
+    await wasmInit(WasmPath);
+  }
   const login = LoginStore.takeSnapshot();
   db.ready = await db.isAvailable();
   if (db.ready) {

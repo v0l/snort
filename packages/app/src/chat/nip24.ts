@@ -3,7 +3,7 @@ import { EventKind, NostrPrefix, encodeTLVEntries, TLVEntryType, TLVEntry, decod
 import { GiftWrapCache } from "Cache/GiftWrapCache";
 import { UnwrappedGift } from "Db";
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "chat";
-import { WasmPowWorker } from "index";
+import { GetPowWorker } from "index";
 
 export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   #cache: GiftWrapCache;
@@ -105,9 +105,7 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
           const recvSealedN = pub.giftWrap(await pub.sealRumor(gossip, pt.id), pt.id, powTarget);
           messages.push(recvSealedN);
         }
-        messages.push(
-          pub.giftWrap(await pub.sealRumor(gossip, pub.pubKey), pub.pubKey, powTarget, new WasmPowWorker()),
-        );
+        messages.push(pub.giftWrap(await pub.sealRumor(gossip, pub.pubKey), pub.pubKey, powTarget, GetPowWorker()));
         return await Promise.all(messages);
       },
       sendMessage: (ev, system) => {
