@@ -262,7 +262,7 @@ export default function Text({
       }
       if (element.type === "code_block") {
         //chunks.push(<CodeBlock content={element.content} language={element.language} />);
-        chunks.push(<pre>{element.content}</pre>)
+        chunks.push(<pre>{element.content}</pre>);
       }
       if (element.type === "text") {
         chunks.push(
