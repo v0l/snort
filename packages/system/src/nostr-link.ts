@@ -1,5 +1,15 @@
 import { bech32ToHex, hexToBech32, unwrap } from "@snort/shared";
-import { NostrPrefix, decodeTLV, TLVEntryType, encodeTLV, NostrEvent, TaggedNostrEvent, EventExt, Tag } from ".";
+import {
+  NostrPrefix,
+  decodeTLV,
+  TLVEntryType,
+  encodeTLV,
+  NostrEvent,
+  TaggedNostrEvent,
+  EventExt,
+  Tag,
+  EventKind,
+} from ".";
 import { findTag } from "./utils";
 
 export class NostrLink {
@@ -47,22 +57,42 @@ export class NostrLink {
    * Is the supplied event a reply to this link
    */
   isReplyToThis(ev: NostrEvent) {
-    const thread = EventExt.extractThread(ev);
-    if (!thread) return false; // non-thread events are not replies
+    const NonNip10Kinds = [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt];
+    if (NonNip10Kinds.includes(ev.kind)) {
+      const lastRef = ev.tags.findLast(a => a[0] === "e" || a[1] === "a");
+      if (!lastRef) return false;
 
-    if (!thread.root) return false; // must have root marker or positional e/a tag in position 0
-
-    if (
-      thread.root.key === "e" &&
-      thread.root.value === this.id &&
-      (this.type === NostrPrefix.Event || this.type === NostrPrefix.Note)
-    ) {
-      return true;
-    }
-    if (thread.root.key === "a" && this.type === NostrPrefix.Address) {
-      const [kind, author, dTag] = unwrap(thread.root.value).split(":");
-      if (Number(kind) === this.kind && author === this.author && dTag === this.id) {
+      if (
+        lastRef[0] === "e" &&
+        lastRef[1] === this.id &&
+        (this.type === NostrPrefix.Event || this.type === NostrPrefix.Note)
+      ) {
         return true;
+      }
+      if (lastRef[0] === "a" && this.type === NostrPrefix.Address) {
+        const [kind, author, dTag] = lastRef[1].split(":");
+        if (Number(kind) === this.kind && author === this.author && dTag === this.id) {
+          return true;
+        }
+      }
+    } else {
+      const thread = EventExt.extractThread(ev);
+      if (!thread) return false; // non-thread events are not replies
+
+      if (!thread.root) return false; // must have root marker or positional e/a tag in position 0
+
+      if (
+        thread.root.key === "e" &&
+        thread.root.value === this.id &&
+        (this.type === NostrPrefix.Event || this.type === NostrPrefix.Note)
+      ) {
+        return true;
+      }
+      if (thread.root.key === "a" && this.type === NostrPrefix.Address) {
+        const [kind, author, dTag] = unwrap(thread.root.value).split(":");
+        if (Number(kind) === this.kind && author === this.author && dTag === this.id) {
+          return true;
+        }
       }
     }
     return false;
