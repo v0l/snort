@@ -11,7 +11,6 @@ import { ProxyImg } from "./ProxyImg";
 import { SpotlightMediaModal } from "./Deck/SpotlightMedia";
 import HighlightedText from "./HighlightedText";
 import { useTextTransformer } from "Hooks/useTextTransformCache";
-import CodeBlock from "./CodeBlock";
 
 export interface TextProps {
   id: string;
@@ -262,7 +261,8 @@ export default function Text({
         chunks.push(<ProxyImg src={element.content} size={15} className="custom-emoji" />);
       }
       if (element.type === "code_block") {
-        chunks.push(<CodeBlock content={element.content} language={element.language} />);
+        //chunks.push(<CodeBlock content={element.content} language={element.language} />);
+        chunks.push(<pre>{element.content}</pre>)
       }
       if (element.type === "text") {
         chunks.push(
