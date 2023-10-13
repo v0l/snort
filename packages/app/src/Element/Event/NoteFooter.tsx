@@ -1,8 +1,9 @@
 import React, { HTMLProps, useContext, useEffect, useState } from "react";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
 import { TaggedNostrEvent, ParsedZap, countLeadingZeros, NostrLink } from "@snort/system";
 import { SnortContext, useUserProfile } from "@snort/system-react";
+import { Menu, MenuItem } from "@szhsin/react-menu";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Hooks/useEventPublisher";
@@ -20,6 +21,7 @@ import { System } from "index";
 import { Zapper, ZapTarget } from "Zapper";
 import { getDisplayName } from "Element/User/DisplayName";
 import { useNoteCreator } from "State/NoteCreator";
+import Icon from "Icons/Icon";
 
 import messages from "../messages";
 
@@ -56,8 +58,8 @@ export default function NoteFooter(props: NoteFooterProps) {
   const author = useUserProfile(ev.pubkey);
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const publisher = useEventPublisher();
-  const note = useNoteCreator(n => ({ show: n.show, replyTo: n.replyTo, update: n.update }));
-  const willRenderNoteCreator = note.show && note.replyTo?.id === ev.id;
+  const note = useNoteCreator(n => ({ show: n.show, replyTo: n.replyTo, update: n.update, quote: n.quote }));
+  const willRenderNoteCreator = note.show && (note.replyTo?.id === ev.id || note.quote);
   const [tip, setTip] = useState(false);
   const [zapping, setZapping] = useState(false);
   const walletState = useWallet();
@@ -211,16 +213,40 @@ export default function NoteFooter(props: NoteFooterProps) {
   function repostIcon() {
     if (readonly) return;
     return (
-      <AsyncFooterIcon
-        className={hasReposted() ? "reacted" : ""}
-        iconName="repeat"
-        title={formatMessage({ defaultMessage: "Repost" })}
-        value={reposts.length}
-        onClick={async () => {
-          if (readonly) return;
-          await repost();
-        }}
-      />
+      <Menu
+        menuButton={
+          <AsyncFooterIcon
+            className={hasReposted() ? "reacted" : ""}
+            iconName="repeat"
+            title={formatMessage({ defaultMessage: "Repost" })}
+            value={reposts.length}
+          />
+        }
+        menuClassName="ctx-menu"
+        align="start">
+        <div className="close-menu-container">
+          {/* This menu item serves as a "close menu" button;
+          it allows the user to click anywhere nearby the menu to close it. */}
+          <MenuItem>
+            <div className="close-menu" />
+          </MenuItem>
+        </div>
+        <MenuItem onClick={() => repost()} disabled={hasReposted()}>
+          <Icon name="repeat" />
+          <FormattedMessage defaultMessage="Repost" />
+        </MenuItem>
+        <MenuItem
+          onClick={() =>
+            note.update(n => {
+              n.reset();
+              n.quote = ev;
+              n.show = true;
+            })
+          }>
+          <Icon name="edit" />
+          <FormattedMessage defaultMessage="Quote Repost" />
+        </MenuItem>
+      </Menu>
     );
   }
 

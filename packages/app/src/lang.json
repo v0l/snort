@@ -241,6 +241,9 @@
   "89q5wc": {
     "defaultMessage": "Confirm Reposts"
   },
+  "8ED/4u": {
+    "defaultMessage": "Reply To"
+  },
   "8Kboo2": {
     "defaultMessage": "Scan this QR code with your signer app to get started"
   },
@@ -343,6 +346,9 @@
   },
   "C5xzTC": {
     "defaultMessage": "Premium"
+  },
+  "C7642/": {
+    "defaultMessage": "Quote Repost"
   },
   "C81/uG": {
     "defaultMessage": "Logout"

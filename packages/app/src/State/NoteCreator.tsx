@@ -12,6 +12,7 @@ interface NoteCreatorDataSnapshot {
   advanced: boolean;
   preview?: NostrEvent;
   replyTo?: TaggedNostrEvent;
+  quote?: TaggedNostrEvent;
   selectedCustomRelays?: Array<string>;
   zapSplits?: Array<ZapTarget>;
   sensitive?: string;
@@ -55,6 +56,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
     d.sendStarted = false;
     d.preview = undefined;
     d.replyTo = undefined;
+    d.quote = undefined;
     d.selectedCustomRelays = undefined;
     d.zapSplits = undefined;
     d.sensitive = undefined;

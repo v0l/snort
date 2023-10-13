@@ -95,6 +95,22 @@ export function NoteCreator() {
           extraTags ??= [];
           extraTags.push(...note.pollOptions.map((a, i) => ["poll_option", i.toString(), a]));
         }
+        // add quote repost
+        if (note.quote) {
+          if (!note.note.endsWith("\n")) {
+            note.note += "\n";
+          }
+          const link = NostrLink.fromEvent(note.quote);
+          note.note += `nostr:${link.encode()}`;
+          const quoteTag = link.toEventTag();
+          if (quoteTag) {
+            extraTags ??= [];
+            if (quoteTag[0] === "e") {
+              quoteTag[0] = "q"; // how to 'q' tag replacable events?
+            }
+            extraTags.push(quoteTag);
+          }
+        }
         const hk = (eb: EventBuilder) => {
           extraTags?.forEach(t => eb.tag(t));
           eb.kind(kind);
@@ -464,18 +480,42 @@ export function NoteCreator() {
     return (
       <>
         {note.replyTo && (
-          <Note
-            data={note.replyTo}
-            related={[]}
-            options={{
-              showFooter: false,
-              showContextMenu: false,
-              showTime: false,
-              canClick: false,
-              showMedia: false,
-              longFormPreview: true,
-            }}
-          />
+          <>
+            <h4>
+              <FormattedMessage defaultMessage="Reply To" />
+            </h4>
+            <Note
+              data={note.replyTo}
+              related={[]}
+              options={{
+                showFooter: false,
+                showContextMenu: false,
+                showTime: false,
+                canClick: false,
+                showMedia: false,
+                longFormPreview: true,
+              }}
+            />
+          </>
+        )}
+        {note.quote && (
+          <>
+            <h4>
+              <FormattedMessage defaultMessage="Quote Repost" />
+            </h4>
+            <Note
+              data={note.quote}
+              related={[]}
+              options={{
+                showFooter: false,
+                showContextMenu: false,
+                showTime: false,
+                canClick: false,
+                showMedia: false,
+                longFormPreview: true,
+              }}
+            />
+          </>
         )}
         {note.preview && getPreviewNote()}
         {!note.preview && (
