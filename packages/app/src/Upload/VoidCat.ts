@@ -3,7 +3,7 @@ import { VoidApi } from "@void-cat/api";
 
 import { FileExtensionRegex, VoidCatHost } from "Const";
 import { UploadResult } from "Upload";
-import { magnetURIDecode } from "SnortUtils";
+import { base64 } from "@scure/base";
 
 /**
  * Upload file to void.cat
@@ -14,7 +14,15 @@ export default async function VoidCatUpload(
   filename: string,
   publisher?: EventPublisher,
 ): Promise<UploadResult> {
-  const api = new VoidApi(VoidCatHost);
+  const auth = publisher
+    ? async (url: string, method: string) => {
+        const auth = await publisher.generic(eb => {
+          return eb.kind(EventKind.HttpAuthentication).tag(["u", url]).tag(["method", method]);
+        });
+        return `Nostr ${base64.encode(new TextEncoder().encode(JSON.stringify(auth)))}`;
+      }
+    : undefined;
+  const api = new VoidApi(VoidCatHost, auth);
   const uploader = api.getUploader(file);
 
   const rsp = await uploader.upload({
@@ -32,7 +40,8 @@ export default async function VoidCatUpload(
     } as UploadResult;
 
     if (publisher) {
-      const tags = [
+      // NIP-94
+      /*const tags = [
         ["url", resultUrl],
         ["x", rsp.file?.metadata?.digest ?? ""],
         ["m", rsp.file?.metadata?.mimeType ?? "application/octet-stream"],
@@ -51,7 +60,7 @@ export default async function VoidCatUpload(
         eb.kind(EventKind.FileHeader).content(filename);
         tags.forEach(t => eb.tag(t));
         return eb;
-      });
+      });*/
     }
     return ret;
   } else {

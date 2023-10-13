@@ -6,6 +6,7 @@ import VoidCat from "Upload/VoidCat";
 import NostrImg from "Upload/NostrImg";
 import { KieranPubKey } from "Const";
 import { bech32ToHex } from "SnortUtils";
+import useEventPublisher from "Hooks/useEventPublisher";
 
 export interface UploadResult {
   url?: string;
@@ -41,11 +42,12 @@ export interface Uploader {
 
 export default function useFileUpload(): Uploader {
   const fileUploader = useLogin().preferences.fileUploader;
+  const { publisher } = useEventPublisher();
 
   switch (fileUploader) {
     case "nostr.build": {
       return {
-        upload: NostrBuild,
+        upload: f => NostrBuild(f, publisher),
       } as Uploader;
     }
     case "nostrimg.com": {
@@ -55,7 +57,7 @@ export default function useFileUpload(): Uploader {
     }
     default: {
       return {
-        upload: (f, n) => VoidCat(f, n, undefined),
+        upload: (f, n) => VoidCat(f, n, publisher),
       } as Uploader;
     }
   }

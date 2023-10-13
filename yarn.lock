@@ -2715,7 +2715,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^6.1.0
     "@typescript-eslint/parser": ^6.1.0
     "@uidotdev/usehooks": ^2.3.1
-    "@void-cat/api": ^1.0.4
+    "@void-cat/api": ^1.0.10
     "@webbtc/webln-types": ^1.0.10
     "@webpack-cli/generators": ^3.0.4
     "@webscopeio/react-textarea-autocomplete": ^4.9.2
@@ -3865,12 +3865,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@void-cat/api@npm:^1.0.4":
-  version: 1.0.7
-  resolution: "@void-cat/api@npm:1.0.7"
+"@void-cat/api@npm:^1.0.10":
+  version: 1.0.10
+  resolution: "@void-cat/api@npm:1.0.10"
   dependencies:
     sjcl: ^1.0.8
-  checksum: 208461ed5583e53d2dd96e8734569f84296faaf0a2af3151ec3119e723fb758d0a7c8e092b9dd7018aabf7fafec7c424383fab9e8dce4ead3142601ee91e0650
+  checksum: 8ec846aefa3fad3cfee018959a95fa93195112382b7d655098f3df8059555367166ee54c13900ff9f459baef44ffb39e5f5e44dc492a2f61477cbdae798d0cbb
   languageName: node
   linkType: hard
 
