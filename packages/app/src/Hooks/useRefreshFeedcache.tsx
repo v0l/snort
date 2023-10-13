@@ -1,5 +1,4 @@
-import { SnortContext } from "@snort/system-react";
-import { useContext, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { NoopStore, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 
 import { RefreshFeedCache } from "Cache/RefreshFeedCache";
@@ -8,9 +7,8 @@ import useEventPublisher from "./useEventPublisher";
 import { unwrap } from "@snort/shared";
 
 export function useRefreshFeedCache<T>(c: RefreshFeedCache<T>, leaveOpen = false) {
-  const system = useContext(SnortContext);
   const login = useLogin();
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
 
   const sub = useMemo(() => {
     if (login.publicKey) {

@@ -5,7 +5,6 @@ import { unixNowMs } from "@snort/shared";
 import { randomSample } from "SnortUtils";
 import Relay from "Element/Relay/Relay";
 import useEventPublisher from "Hooks/useEventPublisher";
-import { System } from "index";
 import useLogin from "Hooks/useLogin";
 import { setRelays } from "Login";
 import AsyncButton from "Element/AsyncButton";
@@ -13,25 +12,25 @@ import AsyncButton from "Element/AsyncButton";
 import messages from "./messages";
 
 const RelaySettingsPage = () => {
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const login = useLogin();
   const relays = login.relays;
   const [newRelay, setNewRelay] = useState<string>();
 
   const otherConnections = useMemo(() => {
-    return System.Sockets.filter(a => relays.item[a.address] === undefined);
+    return system.Sockets.filter(a => relays.item[a.address] === undefined);
   }, [relays]);
 
   async function saveRelays() {
     if (publisher) {
       const ev = await publisher.contactList(login.follows.item, login.relays.item);
-      System.BroadcastEvent(ev);
+      system.BroadcastEvent(ev);
       try {
         const onlineRelays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
         const relayList = await publisher.relayList(login.relays.item);
         const rs = Object.keys(relays.item).concat(randomSample(onlineRelays, 20));
         rs.forEach(r => {
-          System.WriteOnceToRelay(r, relayList);
+          system.WriteOnceToRelay(r, relayList);
         });
       } catch (error) {
         console.error(error);

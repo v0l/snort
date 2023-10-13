@@ -8,7 +8,7 @@ import SnortServiceProvider, { ManageHandle } from "Nip05/SnortServiceProvider";
 
 export default function ListHandles() {
   const navigate = useNavigate();
-  const publisher = useEventPublisher();
+  const { publisher } = useEventPublisher();
   const [handles, setHandles] = useState<Array<ManageHandle>>([]);
 
   useEffect(() => {

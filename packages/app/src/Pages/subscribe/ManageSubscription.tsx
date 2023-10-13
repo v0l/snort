@@ -9,7 +9,7 @@ import { mapSubscriptionErrorCode } from ".";
 import SubscriptionCard from "./SubscriptionCard";
 
 export default function ManageSubscriptionPage() {
-  const publisher = useEventPublisher();
+  const { publisher } = useEventPublisher();
   const api = new SnortApi(undefined, publisher);
   const navigate = useNavigate();
 

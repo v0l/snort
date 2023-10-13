@@ -21,7 +21,7 @@ type PollTally = "zaps" | "pubkeys";
 
 export default function Poll(props: PollProps) {
   const { formatMessage } = useIntl();
-  const publisher = useEventPublisher();
+  const { publisher } = useEventPublisher();
   const { wallet } = useWallet();
   const { preferences: prefs, publicKey: myPubKey, relays } = useLogin();
   const pollerProfile = useUserProfile(props.ev.pubkey);

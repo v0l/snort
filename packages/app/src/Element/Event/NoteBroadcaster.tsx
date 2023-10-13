@@ -6,7 +6,6 @@ import { NostrEvent, OkResponse } from "@snort/system";
 import AsyncButton from "Element/AsyncButton";
 import Icon from "Icons/Icon";
 import { getRelayName, sanitizeRelayUrl } from "SnortUtils";
-import { System } from "index";
 import { removeRelay } from "Login";
 import useLogin from "Hooks/useLogin";
 import useEventPublisher from "Hooks/useEventPublisher";
@@ -23,7 +22,7 @@ export function NoteBroadcaster({
   const [results, setResults] = useState<Array<OkResponse>>([]);
   const { formatMessage } = useIntl();
   const login = useLogin();
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
 
   async function sendEventToRelays(ev: NostrEvent) {
     if (customRelays) {
@@ -31,7 +30,7 @@ export function NoteBroadcaster({
         await Promise.all(
           customRelays.map(async r => {
             try {
-              return await System.WriteOnceToRelay(r, ev);
+              return await system.WriteOnceToRelay(r, ev);
             } catch (e) {
               console.error(e);
             }
@@ -39,7 +38,7 @@ export function NoteBroadcaster({
         ),
       );
     } else {
-      return await System.BroadcastEvent(ev, r => setResults(x => [...x, r]));
+      return await system.BroadcastEvent(ev, r => setResults(x => [...x, r]));
     }
   }
 
@@ -58,7 +57,7 @@ export function NoteBroadcaster({
     if (publisher) {
       removeRelay(login, unwrap(sanitizeRelayUrl(r.relay)));
       const ev = await publisher.contactList(login.follows.item, login.relays.item);
-      await System.BroadcastEvent(ev);
+      await system.BroadcastEvent(ev);
       setResults(s => s.filter(a => a.relay !== r.relay));
     }
   }
@@ -66,7 +65,7 @@ export function NoteBroadcaster({
   async function retryPublish(r: OkResponse) {
     const ev = evs.find(a => a.id === r.id);
     if (ev) {
-      const rsp = await System.WriteOnceToRelay(unwrap(sanitizeRelayUrl(r.relay)), ev);
+      const rsp = await system.WriteOnceToRelay(unwrap(sanitizeRelayUrl(r.relay)), ev);
       setResults(s =>
         s.map(x => {
           if (x.relay === r.relay && x.id === r.id) {

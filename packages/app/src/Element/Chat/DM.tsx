@@ -19,7 +19,7 @@ export interface DMProps {
 
 export default function DM(props: DMProps) {
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
-  const publisher = useEventPublisher();
+  const { publisher } = useEventPublisher();
   const msg = props.data;
   const [content, setContent] = useState<string>();
   const { ref, inView } = useInView({ triggerOnce: true });

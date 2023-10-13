@@ -74,11 +74,12 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     if (!this.#activeAccount) {
       this.#activeAccount = this.#accounts.keys().next().value;
     }
-    // reset readonly on load
     for (const [, v] of this.#accounts) {
+      // reset readonly on load
       if (v.type === LoginSessionType.PrivateKey && v.readonly) {
         v.readonly = false;
       }
+      // fill possibly undefined (migrate up)
       v.appData ??= {
         item: {
           mutedWords: [],
@@ -86,6 +87,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         timestamp: 0,
       };
       v.extraChats ??= [];
+      v.preferences.checkSigs ??= true;
       if (v.privateKeyData) {
         v.privateKeyData = KeyStorage.fromPayload(v.privateKeyData as object);
       }

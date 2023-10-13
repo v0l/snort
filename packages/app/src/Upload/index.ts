@@ -41,7 +41,6 @@ export interface Uploader {
 
 export default function useFileUpload(): Uploader {
   const fileUploader = useLogin().preferences.fileUploader;
-  //const publisher = useEventPublisher();
 
   switch (fileUploader) {
     case "nostr.build": {

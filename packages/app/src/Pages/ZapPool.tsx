@@ -12,7 +12,7 @@ import { bech32ToHex, getRelayName, unwrap } from "SnortUtils";
 import { ZapPoolController, ZapPoolRecipient, ZapPoolRecipientType } from "ZapPoolController";
 import AsyncButton from "Element/AsyncButton";
 import { useWallet } from "Wallet";
-import { System } from "index";
+import useEventPublisher from "Hooks/useEventPublisher";
 
 const DataProviders = [
   {
@@ -71,6 +71,7 @@ function ZapTarget({ target }: { target: ZapPoolRecipient }) {
 
 export default function ZapPoolPage() {
   const login = useLogin();
+  const { system } = useEventPublisher();
   const zapPool = useSyncExternalStore(
     c => ZapPoolController.hook(c),
     () => ZapPoolController.snapshot(),
@@ -78,7 +79,7 @@ export default function ZapPoolPage() {
   const { wallet } = useWallet();
 
   const relayConnections = useMemo(() => {
-    return System.Sockets.map(a => {
+    return system.Sockets.map(a => {
       if (a.info?.pubkey && !a.ephemeral) {
         return {
           address: a.address,

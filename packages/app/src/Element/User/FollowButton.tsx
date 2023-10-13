@@ -5,7 +5,6 @@ import useEventPublisher from "Hooks/useEventPublisher";
 import { parseId } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
 import AsyncButton from "Element/AsyncButton";
-import { System } from "index";
 
 import messages from "../messages";
 import { FollowsFeed } from "Cache";
@@ -16,7 +15,7 @@ export interface FollowButtonProps {
 }
 export default function FollowButton(props: FollowButtonProps) {
   const pubkey = parseId(props.pubkey);
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const { follows, relays, readonly } = useLogin(s => ({ follows: s.follows, relays: s.relays, readonly: s.readonly }));
   const isFollowing = follows.item.includes(pubkey);
   const baseClassname = props.className ? `${props.className} ` : "";
@@ -24,8 +23,8 @@ export default function FollowButton(props: FollowButtonProps) {
   async function follow(pubkey: HexKey) {
     if (publisher) {
       const ev = await publisher.contactList([pubkey, ...follows.item], relays.item);
-      System.BroadcastEvent(ev);
-      await FollowsFeed.backFill(System, [pubkey]);
+      system.BroadcastEvent(ev);
+      await FollowsFeed.backFill(system, [pubkey]);
     }
   }
 
@@ -35,7 +34,7 @@ export default function FollowButton(props: FollowButtonProps) {
         follows.item.filter(a => a !== pubkey),
         relays.item,
       );
-      System.BroadcastEvent(ev);
+      system.BroadcastEvent(ev);
     }
   }
 

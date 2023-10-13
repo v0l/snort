@@ -19,6 +19,7 @@ import QrCode from "Element/QrCode";
 import Copy from "Element/Copy";
 import { delay } from "SnortUtils";
 import { PinPrompt } from "Element/PinPrompt";
+import useEventPublisher from "Hooks/useEventPublisher";
 
 declare global {
   interface Window {
@@ -85,6 +86,7 @@ export default function LoginPage() {
   const { proxy } = useImgProxy();
   const loginHandler = useLoginHandler();
   const hasNip7 = "nostr" in window;
+  const { system } = useEventPublisher();
   const hasSubtleCrypto = window.crypto.subtle !== undefined;
   const [nostrConnect, setNostrConnect] = useState("");
 
@@ -123,7 +125,7 @@ export default function LoginPage() {
 
   async function makeRandomKey(pin?: string) {
     try {
-      await generateNewLogin(key => makeKeyStore(key, pin));
+      await generateNewLogin(system, key => makeKeyStore(key, pin));
       window.plausible?.("Generate Account");
       navigate("/new");
     } catch (e) {

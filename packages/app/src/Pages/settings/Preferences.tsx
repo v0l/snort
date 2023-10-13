@@ -179,6 +179,23 @@ const PreferencesPage = () => {
       <div className="flex f-space w-max">
         <div className="flex-column g8">
           <h4>
+            <FormattedMessage defaultMessage="Check Signatures" />
+          </h4>
+          <small>
+            <FormattedMessage defaultMessage="Check all event signatures received from relays" />
+          </small>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={perf.checkSigs}
+            onChange={e => updatePreferences(login, { ...perf, checkSigs: e.target.checked })}
+          />
+        </div>
+      </div>
+      <div className="flex f-space w-max">
+        <div className="flex-column g8">
+          <h4>
             <FormattedMessage defaultMessage="Proof of Work" />
           </h4>
           <small>

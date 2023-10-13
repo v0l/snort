@@ -93,7 +93,7 @@ export function PinPrompt({
 
 export function LoginUnlock() {
   const login = useLogin();
-  const publisher = useEventPublisher();
+  const { publisher } = useEventPublisher();
 
   async function encryptMigration(pin: string) {
     const k = unwrap(login.privateKey);

@@ -1,17 +1,16 @@
 import { ReactNode } from "react";
 import FormattedMessage from "Element/FormattedMessage";
 import { HexKey } from "@snort/system";
+import { dedupe } from "@snort/shared";
 
 import useEventPublisher from "Hooks/useEventPublisher";
 import ProfilePreview from "Element/User/ProfilePreview";
 import useLogin from "Hooks/useLogin";
-import { System } from "index";
 
 import messages from "../messages";
 import { FollowsFeed } from "Cache";
 import AsyncButton from "../AsyncButton";
 import { setFollows } from "Login";
-import { dedupe } from "@snort/shared";
 
 export interface FollowListBaseProps {
   pubkeys: HexKey[];
@@ -32,15 +31,15 @@ export default function FollowListBase({
   actions,
   profileActions,
 }: FollowListBaseProps) {
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const login = useLogin();
 
   async function followAll() {
     if (publisher) {
       const newFollows = dedupe([...pubkeys, ...login.follows.item]);
       const ev = await publisher.contactList(newFollows, login.relays.item);
-      System.BroadcastEvent(ev);
-      await FollowsFeed.backFill(System, pubkeys);
+      system.BroadcastEvent(ev);
+      await FollowsFeed.backFill(system, pubkeys);
       setFollows(login, newFollows, ev.created_at);
     }
   }

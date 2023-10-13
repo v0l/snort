@@ -12,7 +12,7 @@ import { SnortNostrAddressService } from "Pages/NostrAddressPage";
 import Nip05 from "Element/User/Nip05";
 
 export default function SubscriptionCard({ sub }: { sub: Subscription }) {
-  const publisher = useEventPublisher();
+  const { publisher } = useEventPublisher();
   const { formatMessage } = useIntl();
 
   const created = new Date(sub.created * 1000);

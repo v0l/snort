@@ -1,6 +1,8 @@
-import { System } from "index";
+import { useContext } from "react";
+import { SnortContext } from "@snort/system-react";
 
 export default function useRelayState(addr: string) {
-  const c = System.Sockets.find(a => a.address === addr);
+  const system = useContext(SnortContext);
+  const c = system.Sockets.find(a => a.address === addr);
   return c;
 }

@@ -1,10 +1,10 @@
+import { mapEventToProfile } from "@snort/system";
+import { useUserProfile } from "@snort/system-react";
+
 import AccountName from "./AccountName";
 import useLogin from "../../Hooks/useLogin";
-import { useUserProfile } from "@snort/system-react";
-import { System } from "../../index";
 import { UserCache } from "../../Cache";
 import useEventPublisher from "../../Hooks/useEventPublisher";
-import { mapEventToProfile } from "@snort/system";
 import FormattedMessage from "Element/FormattedMessage";
 
 export default function ActiveAccount({ name = "", setAsPrimary = () => {} }) {
@@ -13,7 +13,7 @@ export default function ActiveAccount({ name = "", setAsPrimary = () => {} }) {
     readonly: s.readonly,
   }));
   const profile = useUserProfile(publicKey);
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
 
   async function saveProfile(nip05: string) {
     if (readonly) {
@@ -35,7 +35,7 @@ export default function ActiveAccount({ name = "", setAsPrimary = () => {} }) {
 
     if (publisher) {
       const ev = await publisher.metadata(userCopy);
-      System.BroadcastEvent(ev);
+      system.BroadcastEvent(ev);
 
       const newProfile = mapEventToProfile(ev);
       if (newProfile) {

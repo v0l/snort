@@ -58,7 +58,7 @@ export function mapSubscriptionErrorCode(c: SubscriptionError) {
 }
 
 export function SubscribePage() {
-  const publisher = useEventPublisher();
+  const { publisher } = useEventPublisher();
   const api = new SnortApi(undefined, publisher);
   const [invoice, setInvoice] = useState("");
   const [error, setError] = useState<SubscriptionError>();

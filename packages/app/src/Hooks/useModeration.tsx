@@ -3,17 +3,16 @@ import useEventPublisher from "Hooks/useEventPublisher";
 import useLogin from "Hooks/useLogin";
 import { setBlocked, setMuted } from "Login";
 import { appendDedupe } from "SnortUtils";
-import { System } from "index";
 
 export default function useModeration() {
   const login = useLogin();
   const { muted, blocked, appData } = login;
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
 
   async function setMutedList(pub: HexKey[], priv: HexKey[]) {
     if (publisher) {
       const ev = await publisher.muted(pub, priv);
-      System.BroadcastEvent(ev);
+      system.BroadcastEvent(ev);
       return ev.created_at * 1000;
     }
     return 0;

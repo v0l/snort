@@ -3,18 +3,19 @@ import ProfilePreview from "Element/User/ProfilePreview";
 import useRelayState from "Feed/RelayState";
 import { useNavigate, useParams } from "react-router-dom";
 import { parseId, unwrap } from "SnortUtils";
-import { System } from "index";
 import { removeRelay } from "Login";
 import useLogin from "Hooks/useLogin";
 
 import messages from "./messages";
+import useEventPublisher from "Hooks/useEventPublisher";
 
 const RelayInfo = () => {
   const params = useParams();
   const navigate = useNavigate();
   const login = useLogin();
+  const { system } = useEventPublisher();
 
-  const conn = System.Sockets.find(a => a.id === params.id);
+  const conn = system.Sockets.find(a => a.id === params.id);
   const stats = useRelayState(conn?.address ?? "");
 
   return (

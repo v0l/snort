@@ -10,7 +10,6 @@ import useEventPublisher from "Hooks/useEventPublisher";
 import { NoteContextMenu, NoteTranslation } from "./NoteContextMenu";
 import { UserCache } from "../../Cache";
 import messages from "../messages";
-import { System } from "../../index";
 import { setBookmarked, setPinned } from "../../Login";
 import Text from "../Text";
 import Reveal from "./Reveal";
@@ -37,7 +36,7 @@ export function NoteInner(props: NoteProps) {
   const { reactions, reposts, deletions, zaps } = useEventReactions(ev, related);
   const login = useLogin();
   const { pinned, bookmarked } = login;
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const [translated, setTranslated] = useState<NoteTranslation>();
   const { formatMessage } = useIntl();
 
@@ -58,7 +57,7 @@ export function NoteInner(props: NoteProps) {
       if (window.confirm(formatMessage(messages.ConfirmUnpin))) {
         const es = pinned.item.filter(e => e !== id);
         const ev = await publisher.noteList(es, Lists.Pinned);
-        System.BroadcastEvent(ev);
+        system.BroadcastEvent(ev);
         setPinned(login, es, ev.created_at * 1000);
       }
     }
@@ -69,7 +68,7 @@ export function NoteInner(props: NoteProps) {
       if (window.confirm(formatMessage(messages.ConfirmUnbookmark))) {
         const es = bookmarked.item.filter(e => e !== id);
         const ev = await publisher.noteList(es, Lists.Bookmarked);
-        System.BroadcastEvent(ev);
+        system.BroadcastEvent(ev);
         setBookmarked(login, es, ev.created_at * 1000);
       }
     }

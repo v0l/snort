@@ -9,7 +9,7 @@ import SnortServiceProvider, { ManageHandle } from "Nip05/SnortServiceProvider";
 
 export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
   const { formatMessage } = useIntl();
-  const publisher = useEventPublisher();
+  const { publisher } = useEventPublisher();
 
   const [newAddress, setNewAddress] = useState(handle.lnAddress ?? "");
   const [error, setError] = useState("");

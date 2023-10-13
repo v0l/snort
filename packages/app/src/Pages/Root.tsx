@@ -3,9 +3,9 @@ import { Link, Outlet, RouteObject, useParams } from "react-router-dom";
 import FormattedMessage from "Element/FormattedMessage";
 import { unixNow } from "@snort/shared";
 import { NostrLink } from "@snort/system";
+import { SnortContext } from "@snort/system-react";
 
 import Timeline from "Element/Feed/Timeline";
-import { System } from "index";
 import { TimelineSubject } from "Feed/TimelineFeed";
 import { debounce, getRelayName, sha256 } from "SnortUtils";
 import useLogin from "Hooks/useLogin";
@@ -63,6 +63,7 @@ export const GlobalTab = () => {
   const [relay, setRelay] = useState<RelayOption>();
   const [allRelays, setAllRelays] = useState<RelayOption[]>();
   const [now] = useState(unixNow());
+  const system = useContext(SnortContext);
 
   const subject: TimelineSubject = {
     type: "global",
@@ -111,7 +112,7 @@ export const GlobalTab = () => {
   useEffect(() => {
     return debounce(500, () => {
       const ret: RelayOption[] = [];
-      System.Sockets.forEach(v => {
+      system.Sockets.forEach(v => {
         ret.push({
           url: v.address,
           paid: v.info?.limitation?.payment_required ?? false,

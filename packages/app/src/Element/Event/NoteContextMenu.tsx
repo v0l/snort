@@ -1,9 +1,9 @@
+import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { HexKey, Lists, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 
 import { TranslateHost } from "Const";
-import { System } from "index";
 import Icon from "Icons/Icon";
 import { setPinned, setBookmarked } from "Login";
 import messages from "Element/messages";
@@ -11,7 +11,6 @@ import useLogin from "Hooks/useLogin";
 import useModeration from "Hooks/useModeration";
 import useEventPublisher from "Hooks/useEventPublisher";
 import { ReBroadcaster } from "../ReBroadcaster";
-import { useState } from "react";
 
 export interface NoteTranslation {
   text: string;
@@ -30,7 +29,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   const { formatMessage } = useIntl();
   const login = useLogin();
   const { mute, block } = useModeration();
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const [showBroadcast, setShowBroadcast] = useState(false);
   const lang = window.navigator.language;
   const langNames = new Intl.DisplayNames([...window.navigator.languages], {
@@ -41,7 +40,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   async function deleteEvent() {
     if (window.confirm(formatMessage(messages.ConfirmDeletion, { id: ev.id.substring(0, 8) })) && publisher) {
       const evDelete = await publisher.delete(ev.id);
-      System.BroadcastEvent(evDelete);
+      system.BroadcastEvent(evDelete);
     }
   }
 
@@ -90,7 +89,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
     if (publisher) {
       const es = [...login.pinned.item, id];
       const ev = await publisher.noteList(es, Lists.Pinned);
-      System.BroadcastEvent(ev);
+      system.BroadcastEvent(ev);
       setPinned(login, es, ev.created_at * 1000);
     }
   }
@@ -99,7 +98,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
     if (publisher) {
       const es = [...login.bookmarked.item, id];
       const ev = await publisher.noteList(es, Lists.Bookmarked);
-      System.BroadcastEvent(ev);
+      system.BroadcastEvent(ev);
       setBookmarked(login, es, ev.created_at * 1000);
     }
   }

@@ -90,6 +90,9 @@
   "1nYUGC": {
     "defaultMessage": "{n} Following"
   },
+  "1o2BgB": {
+    "defaultMessage": "Check Signatures"
+  },
   "1udzha": {
     "defaultMessage": "Conversations"
   },
@@ -831,6 +834,9 @@
   },
   "UJTWqI": {
     "defaultMessage": "Remove from my relays"
+  },
+  "UNjfWJ": {
+    "defaultMessage": "Check all event signatures received from relays"
   },
   "UT7Nkj": {
     "defaultMessage": "New Chat"

@@ -16,7 +16,7 @@ import { WalletInvoiceState } from "Wallet";
 export default function PubkeyList({ ev, className }: { ev: NostrEvent; className?: string }) {
   const wallet = useWallet();
   const login = useLogin();
-  const publisher = useEventPublisher();
+  const { publisher } = useEventPublisher();
   const ids = dedupe(ev.tags.filter(a => a[0] === "p").map(a => a[1]));
 
   async function zapAll() {

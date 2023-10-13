@@ -25,7 +25,6 @@ import SnortServiceProvider from "Nip05/SnortServiceProvider";
 import { UserCache } from "Cache";
 
 import messages from "./messages";
-import { System } from "index";
 
 type Nip05ServiceProps = {
   name: string;
@@ -45,7 +44,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
   const { formatMessage } = useIntl();
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   const user = useUserProfile(publicKey);
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const svc = useMemo(() => new ServiceProvider(props.service), [props.service]);
   const [serviceConfig, setServiceConfig] = useState<ServiceConfig>();
   const [error, setError] = useState<ServiceError>();
@@ -216,7 +215,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         nip05,
       } as UserMetadata;
       const ev = await publisher.metadata(newProfile);
-      System.BroadcastEvent(ev);
+      system.BroadcastEvent(ev);
       if (props.onSuccess) {
         props.onSuccess(nip05);
       }

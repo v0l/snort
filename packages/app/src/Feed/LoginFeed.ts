@@ -24,7 +24,6 @@ import { SnortPubKey } from "Const";
 import { SubscriptionEvent } from "Subscription";
 import useRelaysFeedFollows from "./RelaysFeedFollows";
 import { FollowsFeed, GiftsCache, Notifications, UserRelays } from "Cache";
-import { System } from "index";
 import { Nip28Chats, Nip4Chats } from "chat";
 import { useRefreshFeedCache } from "Hooks/useRefreshFeedcache";
 
@@ -35,11 +34,15 @@ export default function useLoginFeed() {
   const login = useLogin();
   const { publicKey: pubKey, readNotifications, follows } = login;
   const { isMuted } = useModeration();
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
 
   useRefreshFeedCache(Notifications, true);
   useRefreshFeedCache(FollowsFeed, true);
   useRefreshFeedCache(GiftsCache, true);
+
+  useEffect(() => {
+    system.checkSigs = login.preferences.checkSigs;
+  }, [login]);
 
   const subLogin = useMemo(() => {
     if (!login || !pubKey) return null;
@@ -88,7 +91,7 @@ export default function useLoginFeed() {
         const pTags = contactList.tags.filter(a => a[0] === "p").map(a => a[1]);
         setFollows(login, pTags, contactList.created_at * 1000);
 
-        FollowsFeed.backFillIfMissing(System, pTags);
+        FollowsFeed.backFillIfMissing(system, pTags);
       }
 
       Nip4Chats.onEvent(loginFeed.data);
@@ -202,7 +205,7 @@ export default function useLoginFeed() {
 
   useEffect(() => {
     UserRelays.buffer(follows.item).catch(console.error);
-    System.ProfileLoader.TrackMetadata(follows.item); // always track follows profiles
+    system.ProfileLoader.TrackMetadata(follows.item); // always track follows profiles
   }, [follows.item]);
 
   const fRelays = useRelaysFeedFollows(follows.item);

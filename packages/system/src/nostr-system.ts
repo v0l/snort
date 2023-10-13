@@ -81,6 +81,11 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
    */
   #queryOptimizer: QueryOptimizer;
 
+  /**
+   * Check event signatures (reccomended)
+   */
+  checkSigs: boolean;
+
   constructor(props: {
     authHandler?: AuthHandler;
     relayCache?: FeedCache<UsersRelays>;
@@ -89,6 +94,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     eventsCache?: FeedCache<NostrEvent>;
     queryOptimizer?: QueryOptimizer;
     db?: SnortSystemDb;
+    checkSigs?: boolean;
   }) {
     super();
     this.#handleAuth = props.authHandler;
@@ -100,6 +106,7 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
 
     this.#profileLoader = new ProfileLoaderService(this, this.#profileCache);
     this.#relayMetrics = new RelayMetricHandler(this.#relayMetricsCache);
+    this.checkSigs = props.checkSigs ?? true;
     this.#cleanup();
   }
 
@@ -181,6 +188,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   #onEvent(sub: string, ev: TaggedNostrEvent) {
     if (!EventExt.isValid(ev)) {
       this.#log("Rejecting invalid event %O", ev);
+      return;
+    }
+    if (this.checkSigs && !EventExt.verify(ev)) {
+      this.#log("Invalid sig %O", ev);
       return;
     }
 

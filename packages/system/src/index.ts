@@ -42,6 +42,11 @@ export * from "./cache/relay-metric";
 
 export interface SystemInterface {
   /**
+   * Check event signatures (reccomended)
+   */
+  checkSigs: boolean;
+
+  /**
    * Handler function for NIP-42
    */
   HandleAuth?: AuthHandler;

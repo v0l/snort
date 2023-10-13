@@ -1,4 +1,12 @@
-import { RelaySettings, EventPublisher, Nip46Signer, Nip7Signer, PrivateKeySigner, KeyStorage } from "@snort/system";
+import {
+  RelaySettings,
+  EventPublisher,
+  Nip46Signer,
+  Nip7Signer,
+  PrivateKeySigner,
+  KeyStorage,
+  SystemInterface,
+} from "@snort/system";
 import { unixNowMs } from "@snort/shared";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
@@ -8,7 +16,6 @@ import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppDa
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unwrap } from "SnortUtils";
 import { SubscriptionEvent } from "Subscription";
-import { System } from "index";
 import { Chats, FollowsFeed, GiftsCache, Notifications } from "Cache";
 import { Nip7OsSigner } from "./Nip7OsSigner";
 
@@ -63,7 +70,7 @@ export function clearEntropy(state: LoginSession) {
 /**
  * Generate a new key and login with this generated key
  */
-export async function generateNewLogin(pin: (key: string) => Promise<KeyStorage>) {
+export async function generateNewLogin(system: SystemInterface, pin: (key: string) => Promise<KeyStorage>) {
   const ent = generateBip39Entropy();
   const entropy = utils.bytesToHex(ent);
   const privateKey = entropyToPrivateKey(ent);
@@ -87,7 +94,7 @@ export async function generateNewLogin(pin: (key: string) => Promise<KeyStorage>
   const publicKey = utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
   const publisher = EventPublisher.privateKey(privateKey);
   const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey], newRelays);
-  System.BroadcastEvent(ev);
+  system.BroadcastEvent(ev);
   LoginStore.loginWithPrivateKey(await pin(privateKey), entropy, newRelays);
 }
 

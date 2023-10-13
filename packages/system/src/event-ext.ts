@@ -176,6 +176,6 @@ export abstract class EventExt {
     if (type === EventType.ParameterizedReplaceable) {
       if (!findTag(ev, "d")) return false;
     }
-    return EventExt.verify(ev);
+    return true;
   }
 }

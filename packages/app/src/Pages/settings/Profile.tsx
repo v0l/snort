@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
-import { System } from "index";
 import useEventPublisher from "Hooks/useEventPublisher";
 import { openFile } from "SnortUtils";
 import useFileUpload from "Upload";
@@ -24,7 +23,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   const navigate = useNavigate();
   const { publicKey: id, readonly } = useLogin(s => ({ publicKey: s.publicKey, readonly: s.readonly }));
   const user = useUserProfile(id ?? "");
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const uploader = useFileUpload();
 
   const [name, setName] = useState<string>();
@@ -70,7 +69,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
     if (publisher) {
       const ev = await publisher.metadata(userCopy);
-      System.BroadcastEvent(ev);
+      system.BroadcastEvent(ev);
 
       const newProfile = mapEventToProfile(ev);
       if (newProfile) {

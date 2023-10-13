@@ -10,7 +10,6 @@ import useLogin from "Hooks/useLogin";
 import { UserCache } from "Cache";
 import AvatarEditor from "Element/User/AvatarEditor";
 import { DISCOVER } from ".";
-import { System } from "index";
 
 import messages from "./messages";
 
@@ -20,7 +19,7 @@ export default function ProfileSetup() {
   const [username, setUsername] = useState("");
   const [picture, setPicture] = useState("");
   const { formatMessage } = useIntl();
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,7 +36,7 @@ export default function ProfileSetup() {
         name: username,
         picture,
       });
-      System.BroadcastEvent(ev);
+      system.BroadcastEvent(ev);
       const profile = mapEventToProfile(ev);
       if (profile) {
         UserCache.set(profile);

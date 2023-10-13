@@ -1,8 +1,8 @@
-import React, { HTMLProps, useContext, useEffect, useState } from "react";
+import React, { HTMLProps, useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
 import { TaggedNostrEvent, ParsedZap, countLeadingZeros, NostrLink } from "@snort/system";
-import { SnortContext, useUserProfile } from "@snort/system-react";
+import { useUserProfile } from "@snort/system-react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 
 import { formatShort } from "Number";
@@ -17,7 +17,6 @@ import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
 import { useInteractionCache } from "Hooks/useInteractionCache";
 import { ZapPoolController } from "ZapPoolController";
-import { System } from "index";
 import { Zapper, ZapTarget } from "Zapper";
 import { getDisplayName } from "Element/User/DisplayName";
 import { useNoteCreator } from "State/NoteCreator";
@@ -48,7 +47,6 @@ export interface NoteFooterProps {
 
 export default function NoteFooter(props: NoteFooterProps) {
   const { ev, positive, reposts, zaps } = props;
-  const system = useContext(SnortContext);
   const { formatMessage } = useIntl();
   const {
     publicKey,
@@ -57,7 +55,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   } = useLogin(s => ({ preferences: s.preferences, publicKey: s.publicKey, readonly: s.readonly }));
   const author = useUserProfile(ev.pubkey);
   const interactionCache = useInteractionCache(publicKey, ev.id);
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const note = useNoteCreator(n => ({ show: n.show, replyTo: n.replyTo, update: n.update, quote: n.quote }));
   const willRenderNoteCreator = note.show && (note.replyTo?.id === ev.id || note.quote);
   const [tip, setTip] = useState(false);
@@ -93,7 +91,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   async function react(content: string) {
     if (!hasReacted(content) && publisher) {
       const evLike = await publisher.react(ev, content);
-      System.BroadcastEvent(evLike);
+      system.BroadcastEvent(evLike);
       await interactionCache.react();
     }
   }
@@ -102,7 +100,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (!hasReposted() && publisher) {
       if (!prefs.confirmReposts || window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.id }))) {
         const evRepost = await publisher.repost(ev);
-        System.BroadcastEvent(evRepost);
+        system.BroadcastEvent(evRepost);
         await interactionCache.repost();
       }
     }

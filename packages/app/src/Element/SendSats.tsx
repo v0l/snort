@@ -1,9 +1,8 @@
 import "./SendSats.css";
-import React, { ReactNode, useContext, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 
 import { HexKey } from "@snort/system";
-import { SnortContext } from "@snort/system-react";
 import { LNURLSuccessAction } from "@snort/shared";
 
 import { formatShort } from "Number";
@@ -48,8 +47,7 @@ export default function SendSats(props: SendSatsProps) {
   const [success, setSuccess] = useState<LNURLSuccessAction>();
   const [amount, setAmount] = useState<SendSatsInputSelection>();
 
-  const system = useContext(SnortContext);
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const walletState = useWallet();
   const wallet = walletState.wallet;
 

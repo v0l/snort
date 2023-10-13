@@ -86,6 +86,11 @@ export interface UserPreferences {
    * Show user status messages on profiles
    */
   showStatus?: boolean;
+
+  /**
+   * Check event signatures
+   */
+  checkSigs: boolean;
 }
 
 export const DefaultPreferences = {
@@ -105,4 +110,5 @@ export const DefaultPreferences = {
   telemetry: true,
   showBadges: false,
   showStatus: true,
+  checkSigs: true,
 } as UserPreferences;

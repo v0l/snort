@@ -43,7 +43,6 @@ import NostrLinkHandler from "Pages/NostrLinkHandler";
 import { ThreadRoute } from "Element/Event/Thread";
 import { SubscribeRoutes } from "Pages/subscribe";
 import ZapPoolPage from "Pages/ZapPool";
-import DebugPage from "Pages/Debug";
 import { db } from "Db";
 import { preload, RelayMetrics, SystemDb, UserCache, UserRelays } from "Cache";
 import { LoginStore } from "Login";
@@ -80,7 +79,7 @@ export const GetPowWorker = () => (hasWasm ? new WasmPowWorker() : unwrap(Defaul
 /**
  * Singleton nostr system
  */
-export const System = new NostrSystem({
+const System = new NostrSystem({
   relayCache: UserRelays,
   profileCache: UserCache,
   relayMetrics: RelayMetrics,
@@ -229,10 +228,6 @@ export const router = createBrowserRouter([
       ...NewUserRoutes,
       ...WalletRoutes,
       ...(CONFIG.features.subscriptions ? SubscribeRoutes : []),
-      {
-        path: "/debug",
-        element: <DebugPage />,
-      },
       {
         path: "/*",
         element: <NostrLinkHandler />,

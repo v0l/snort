@@ -6,7 +6,6 @@ import { useState } from "react";
 import useFileUpload from "Upload";
 import { openFile } from "SnortUtils";
 import Textarea from "../Textarea";
-import { System } from "index";
 import { Chat } from "chat";
 
 export default function WriteMessage({ chat }: { chat: Chat }) {
@@ -15,7 +14,7 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
   const [uploading, setUploading] = useState(false);
   const [otherEvents, setOtherEvents] = useState<Array<NostrEvent>>([]);
   const [error, setError] = useState("");
-  const publisher = useEventPublisher();
+  const { publisher, system } = useEventPublisher();
   const uploader = useFileUpload();
 
   async function attachFile() {
@@ -59,7 +58,7 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
     if (msg && publisher && chat) {
       setSending(true);
       const ev = await chat.createMessage(msg, publisher);
-      await chat.sendMessage(ev, System);
+      await chat.sendMessage(ev, system);
       setMsg("");
       setSending(false);
     }
