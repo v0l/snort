@@ -40,6 +40,7 @@ export interface NoteFooterProps {
   reposts: TaggedNostrEvent[];
   zaps: ParsedZap[];
   positive: TaggedNostrEvent[];
+  replies?: number;
   ev: TaggedNostrEvent;
 }
 
@@ -249,7 +250,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         className={note.show ? "reacted" : ""}
         iconName="reply"
         title={formatMessage({ defaultMessage: "Reply" })}
-        value={0}
+        value={props.replies ?? 0}
         onClick={async () => handleReplyButtonClick()}
       />
     );

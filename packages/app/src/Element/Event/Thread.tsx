@@ -50,6 +50,7 @@ const Subthread = ({ active, notes, related, chains, onNavigate }: SubthreadProp
             key={a.id}
             related={related}
             onClick={onNavigate}
+            threadChains={chains}
           />
           <div className="line-container"></div>
         </div>
@@ -94,6 +95,7 @@ const ThreadNote = ({ active, note, isLast, isLastSubthread, related, chains, on
           key={note.id}
           related={related}
           onClick={onNavigate}
+          threadChains={chains}
         />
         <div className="line-container"></div>
       </div>
@@ -164,6 +166,7 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
           data={first}
           key={first.id}
           related={related}
+          threadChains={chains}
         />
         <div className="line-container"></div>
       </div>
@@ -196,6 +199,7 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
               key={r.id}
               related={related}
               onClick={onNavigate}
+              threadChains={chains}
             />
             <div className="line-container"></div>
           </div>
@@ -251,6 +255,7 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
           related={getLinkReactions(thread.reactions, NostrLink.fromEvent(note))}
           options={{ showReactionsLink: true, showMediaSpotlight: !props.disableSpotlight }}
           onClick={navigateThread}
+          threadChains={thread.chains}
         />
       );
     } else {

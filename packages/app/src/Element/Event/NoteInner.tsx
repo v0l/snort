@@ -23,6 +23,7 @@ import Reactions from "./Reactions";
 import HiddenNote from "./HiddenNote";
 import { NoteProps } from "./Note";
 import { useEventReactions } from "Hooks/useEventReactions";
+import { chainKey } from "Hooks/useThreadContext";
 
 export function NoteInner(props: NoteProps) {
   const { data: ev, related, highlight, options: opt, ignoreModeration = false, className } = props;
@@ -306,7 +307,15 @@ export function NoteInner(props: NoteProps) {
             </div>
           )}
         </div>
-        {options.showFooter && <NoteFooter ev={ev} positive={reactions.positive} reposts={reposts} zaps={zaps} />}
+        {options.showFooter && (
+          <NoteFooter
+            ev={ev}
+            positive={reactions.positive}
+            reposts={reposts}
+            zaps={zaps}
+            replies={props.threadChains?.get(chainKey(ev))?.length}
+          />
+        )}
         <Reactions
           show={showReactions}
           setShow={setShowReactions}

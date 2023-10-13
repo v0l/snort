@@ -1,6 +1,6 @@
 import "./Note.css";
 import React from "react";
-import { EventKind, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
 import { NostrFileElement } from "Element/Event/NostrFileHeader";
 import ZapstrEmbed from "Element/Embed/ZapstrEmbed";
 import PubkeyList from "Element/Embed/PubkeyList";
@@ -20,6 +20,7 @@ export interface NoteProps {
   onClick?: (e: TaggedNostrEvent) => void;
   depth?: number;
   searchedValue?: string;
+  threadChains?: Map<string, Array<NostrEvent>>;
   options?: {
     showHeader?: boolean;
     showContextMenu?: boolean;
