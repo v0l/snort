@@ -59,6 +59,7 @@ export abstract class EventExt {
    * @returns True if valid signature
    */
   static verify(e: NostrEvent) {
+    if ((e.sig?.length ?? 0) < 64) return false;
     const id = this.createId(e);
     const result = secp.schnorr.verify(e.sig, id, e.pubkey);
     return result;
@@ -175,6 +176,6 @@ export abstract class EventExt {
     if (type === EventType.ParameterizedReplaceable) {
       if (!findTag(ev, "d")) return false;
     }
-    return true;
+    return EventExt.verify(ev);
   }
 }

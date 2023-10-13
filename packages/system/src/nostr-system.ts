@@ -179,7 +179,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   }
 
   #onEvent(sub: string, ev: TaggedNostrEvent) {
-    if (!EventExt.isValid(ev)) return;
+    if (!EventExt.isValid(ev)) {
+      this.#log("Rejecting invalid event %O", ev);
+      return;
+    }
 
     for (const [, v] of this.Queries) {
       v.handleEvent(sub, ev);
