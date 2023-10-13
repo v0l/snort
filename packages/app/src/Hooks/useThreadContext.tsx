@@ -4,6 +4,7 @@ import { EventExt, NostrLink, TaggedNostrEvent, u256 } from "@snort/system";
 import useThreadFeed from "Feed/ThreadFeed";
 import { ReactNode, createContext, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
+import useModeration from "./useModeration";
 
 export interface ThreadContext {
   current: string;
@@ -36,12 +37,14 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
   const location = useLocation();
   const [currentId, setCurrentId] = useState(unwrap(link.toEventTag())[1]);
   const feed = useThreadFeed(link);
+  const { isBlocked } = useModeration();
 
   const chains = useMemo(() => {
     const chains = new Map<u256, Array<TaggedNostrEvent>>();
     if (feed.thread) {
       feed.thread
         ?.sort((a, b) => b.created_at - a.created_at)
+        .filter(a => !isBlocked(a.pubkey))
         .forEach(v => {
           const replyTo = replyChainKey(v);
           if (replyTo) {
