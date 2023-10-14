@@ -87,7 +87,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         timestamp: 0,
       };
       v.extraChats ??= [];
-      v.preferences.checkSigs ??= true;
+      v.preferences.checkSigs ??= false;
       if (v.privateKeyData) {
         v.privateKeyData = KeyStorage.fromPayload(v.privateKeyData as object);
       }

@@ -110,5 +110,5 @@ export const DefaultPreferences = {
   telemetry: true,
   showBadges: false,
   showStatus: true,
-  checkSigs: true,
+  checkSigs: false,
 } as UserPreferences;
