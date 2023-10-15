@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --bg-color: #000;
   --font-color: #fff;
@@ -229,7 +233,10 @@ small {
   line-height: 22px; /* 157.143% */
 }
 
-button {
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
   position: relative;
   cursor: pointer;
   padding: 10px 16px;
@@ -240,6 +247,12 @@ button {
   border: none;
   border-radius: 100px;
   outline: none;
+}
+
+.btn,
+input,
+select {
+  @apply rounded-full;
 }
 
 button.primary {
@@ -388,6 +401,42 @@ button.icon-sm.active {
 
 textarea {
   font: inherit;
+}
+
+p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 32px;
+  line-height: 42px;
+}
+
+h2 {
+  font-size: 26px;
+  line-height: 36px;
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 30px;
+}
+
+h4 {
+  font-size: 18px;
+  line-height: 28px;
 }
 
 input[type="text"],
@@ -758,6 +807,16 @@ div.form-col {
   line-height: 36px;
 }
 
+.main-content .profile-preview {
+  margin: 8px 0;
+}
+
+.main-content h2 {
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 36px;
+}
+
 button.tall {
   height: 40px;
 }
@@ -912,6 +971,17 @@ svg.zap-solid {
 
 .light .subtier {
   border: 1px solid var(--border-color);
+}
+
+.light .spinner-button {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  color: var(--font-secondary);
+  box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
+}
+
+.light .spinner-button:hover {
+  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
 }
 
 .main-content.p {

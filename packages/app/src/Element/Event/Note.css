@@ -136,15 +136,6 @@
   gap: 5px;
 }
 
-.reaction-pill.reacted {
-  color: var(--highlight);
-}
-
-.reaction-pill:hover {
-  cursor: pointer;
-  color: var(--highlight);
-}
-
 .trash-icon {
   color: var(--error);
   margin-right: auto;

@@ -55,7 +55,7 @@ const RelaySettingsPage = () => {
         <div className="flex mb10">
           <input
             type="text"
-            className="f-grow"
+            className="grow"
             placeholder="wss://my-relay.com"
             value={newRelay}
             onChange={handleNewRelayChange}
@@ -84,13 +84,13 @@ const RelaySettingsPage = () => {
       <h3>
         <FormattedMessage {...messages.Relays} />
       </h3>
-      <div className="flex f-col mb10">
+      <div className="flex flex-col mb10">
         {Object.keys(relays.item || {}).map(a => (
           <Relay addr={a} key={a} />
         ))}
       </div>
       <div className="flex mt10">
-        <div className="f-grow"></div>
+        <div className="grow"></div>
         <AsyncButton type="button" onClick={() => saveRelays()} disabled={login.readonly}>
           <FormattedMessage {...messages.Save} />
         </AsyncButton>
@@ -99,7 +99,7 @@ const RelaySettingsPage = () => {
       <h3>
         <FormattedMessage defaultMessage="Other Connections" />
       </h3>
-      <div className="flex f-col mb10">
+      <div className="flex flex-col mb10">
         {otherConnections.map(a => (
           <Relay addr={a.address} key={a.id} />
         ))}

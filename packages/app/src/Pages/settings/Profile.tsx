@@ -107,8 +107,8 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
   function editor() {
     return (
-      <div className="flex f-col g24">
-        <div className="flex f-col w-max g8">
+      <div className="flex-column g24">
+        <div className="flex-column w-max g8">
           <h4>
             <FormattedMessage defaultMessage="Name" />
           </h4>
@@ -120,7 +120,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             disabled={readonly}
           />
         </div>
-        <div className="flex f-col w-max g8">
+        <div className="flex-column w-max g8">
           <h4>
             <FormattedMessage defaultMessage="About" />
           </h4>
@@ -130,7 +130,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             value={about}
             disabled={readonly}></textarea>
         </div>
-        <div className="flex f-col w-max g8">
+        <div className="flex-column w-max g8">
           <h4>
             <FormattedMessage defaultMessage="Website" />
           </h4>
@@ -142,11 +142,11 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             disabled={readonly}
           />
         </div>
-        <div className="flex f-col w-max g8">
+        <div className="flex-column w-max g8">
           <h4>
             <FormattedMessage defaultMessage="Nostr Address" />
           </h4>
-          <div className="flex f-col g8 w-max">
+          <div className="flex-column g8 w-max">
             <input
               type="text"
               className="w-max"
@@ -167,7 +167,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             </div>
           </div>
         </div>
-        <div className="flex f-col w-max g8">
+        <div className="flex-column w-max g8">
           <h4>
             <FormattedMessage defaultMessage="Lightning Address" />
           </h4>
@@ -190,7 +190,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     if (!id) return null;
     return (
       <>
-        <div className="flex f-center image-settings">
+        <div className="flex justify-center items-center image-settings">
           {(props.banner ?? true) && (
             <div
               style={{

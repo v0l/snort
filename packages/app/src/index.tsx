@@ -95,16 +95,16 @@ const System = new NostrSystem({
 });
 
 async function fetchProfile(key: string) {
-  const rsp = await fetch(`${CONFIG.httpCache}/profile/${key}`);
-  if (rsp.ok) {
-    try {
+  try {
+    const rsp = await fetch(`${CONFIG.httpCache}/profile/${key}`);
+    if (rsp.ok) {
       const data = (await rsp.json()) as NostrEvent;
       if (data) {
         return mapEventToProfile(data);
       }
-    } catch (e) {
-      console.error(e);
     }
+  } catch (e) {
+    console.error(e);
   }
 }
 
