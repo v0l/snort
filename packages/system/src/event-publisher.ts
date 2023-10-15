@@ -189,13 +189,14 @@ export class EventPublisher {
     const eb = this.#eb(EventKind.TextNote);
     eb.content(msg);
 
+    const link = NostrLink.fromEvent(replyTo);
     const thread = EventExt.extractThread(replyTo);
     if (thread) {
       const rootOrReplyAsRoot = thread.root || thread.replyTo;
       if (rootOrReplyAsRoot) {
         eb.tag([rootOrReplyAsRoot.key, rootOrReplyAsRoot.value ?? "", rootOrReplyAsRoot.relay ?? "", "root"]);
       }
-      eb.tag([...(NostrLink.fromEvent(replyTo).toEventTag() ?? []), "reply"]);
+      eb.tag([...unwrap(link.toEventTag()), "reply"]);
 
       eb.tag(["p", replyTo.pubkey]);
       for (const pk of thread.pubKeys) {
@@ -205,12 +206,14 @@ export class EventPublisher {
         eb.tag(["p", pk]);
       }
     } else {
-      eb.tag([...(NostrLink.fromEvent(replyTo).toEventTag() ?? []), "root"]);
+      eb.tag([...unwrap(link.toEventTag()), "root"]);
       // dont tag self in replies
       if (replyTo.pubkey !== this.#pubKey) {
         eb.tag(["p", replyTo.pubkey]);
       }
     }
+    // Big E/A tag
+    eb.tag(unwrap(link.toEventTag()).map((v, i) => (i === 0 ? v.toUpperCase() : v)));
     eb.processContent();
     fnExtra?.(eb);
     return await this.#sign(eb);
