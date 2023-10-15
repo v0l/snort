@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
 import { EventExt, EventKind, HexKey, Lists, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
@@ -74,7 +74,7 @@ export function NoteInner(props: NoteProps) {
     }
   }
 
-  const innerContent = () => {
+  const innerContent = useMemo(() => {
     const body = ev?.content ?? "";
     return (
       <Text
@@ -88,7 +88,7 @@ export function NoteInner(props: NoteProps) {
         disableMediaSpotlight={!(props.options?.showMediaSpotlight ?? true)}
       />
     );
-  };
+  }, [ev, props.searchedValue, props.depth, options.showMedia, props.options?.showMediaSpotlight]);
 
   const transformBody = () => {
     if (deletions?.length > 0) {
@@ -126,11 +126,11 @@ export function NoteInner(props: NoteProps) {
               <FormattedMessage defaultMessage="Click here to load anyway" />
             </>
           }>
-          {innerContent()}
+          {innerContent}
         </Reveal>
       );
     }
-    return innerContent();
+    return innerContent;
   };
 
   function goToEvent(
