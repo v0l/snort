@@ -140,29 +140,6 @@ export function hexToBech32(hrp: string, hex?: string) {
     return "";
   }
 }
-
-/**
- * Reaction types
- */
-export const Reaction = {
-  Positive: "+",
-  Negative: "-",
-};
-
-/**
- * Return normalized reaction content
- */
-export function normalizeReaction(content: string) {
-  switch (content) {
-    case "-":
-      return Reaction.Negative;
-    case "👎":
-      return Reaction.Negative;
-    default:
-      return Reaction.Positive;
-  }
-}
-
 export function getLinkReactions(
   notes: ReadonlyArray<TaggedNostrEvent> | undefined,
   link: NostrLink,

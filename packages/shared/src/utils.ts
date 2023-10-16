@@ -193,3 +193,25 @@ export async function fetchNip05Pubkey(name: string, domain: string, timeout = 2
 export function removeUndefined<T>(v: Array<T | undefined>) {
   return v.filter(a => a != undefined).map(a => unwrap(a));
 }
+
+/**
+ * Reaction types
+ */
+export const enum Reaction {
+  Positive = "+",
+  Negative = "-",
+}
+
+/**
+ * Return normalized reaction content
+ */
+export function normalizeReaction(content: string) {
+  switch (content) {
+    case "-":
+      return Reaction.Negative;
+    case "👎":
+      return Reaction.Negative;
+    default:
+      return Reaction.Positive;
+  }
+}
