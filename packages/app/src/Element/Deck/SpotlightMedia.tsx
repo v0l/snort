@@ -21,13 +21,17 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case "ArrowLeft":
-        case "ArrowUp":
+        case "ArrowUp": {
+          e.preventDefault();
           dec();
           break;
+        }
         case "ArrowRight":
-        case "ArrowDown":
+        case "ArrowDown": {
+          e.preventDefault();
           inc();
           break;
+        }
       }
     };
 
@@ -64,8 +68,24 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
       </div>
       {props.images.length > 1 && (
         <>
-          <Icon className="left" name="arrowFront" size={24} onClick={() => dec()} />
-          <Icon className="right" name="arrowFront" size={24} onClick={() => inc()} />
+          <Icon
+            className="left"
+            name="arrowFront"
+            size={24}
+            onClick={e => {
+              e.stopPropagation();
+              dec();
+            }}
+          />
+          <Icon
+            className="right"
+            name="arrowFront"
+            size={24}
+            onClick={e => {
+              e.stopPropagation();
+              inc();
+            }}
+          />
         </>
       )}
     </div>
