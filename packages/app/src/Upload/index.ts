@@ -56,12 +56,16 @@ export interface UploadProgress {
   id: string;
   file: File | Blob;
   progress: number;
+  stage: UploadStage;
 }
+
+export type UploadStage = "starting" | "hashing" | "uploading" | "done" | undefined;
 
 export default function useFileUpload(): Uploader {
   const fileUploader = useLogin().preferences.fileUploader;
   const { publisher } = useEventPublisher();
   const [progress, setProgress] = useState<Array<UploadProgress>>([]);
+  const [stage, setStage] = useState<UploadStage>();
 
   switch (fileUploader) {
     case "nostr.build": {
@@ -86,6 +90,7 @@ export default function useFileUpload(): Uploader {
               id,
               file: f,
               progress: 0,
+              stage: undefined,
             },
           ]);
           const px = (n: number) => {
@@ -100,11 +105,12 @@ export default function useFileUpload(): Uploader {
               ),
             );
           };
-          const ret = await VoidCat(f, n, publisher, px);
+          const ret = await VoidCat(f, n, publisher, px, s => setStage(s));
           setProgress(s => s.filter(a => a.id !== id));
           return ret;
         },
         progress,
+        stage,
       } as Uploader;
     }
   }

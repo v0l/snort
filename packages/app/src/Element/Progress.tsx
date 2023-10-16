@@ -1,8 +1,8 @@
-import { FormattedNumber } from "react-intl";
 import "./Progress.css";
-import { CSSProperties } from "react";
+import { FormattedNumber } from "react-intl";
+import { CSSProperties, ReactNode } from "react";
 
-export default function Progress({ value }: { value: number }) {
+export default function Progress({ value, status }: { value: number; status?: ReactNode }) {
   const v = Math.max(0.01, Math.min(1, value));
   return (
     <div className="progress">
@@ -13,6 +13,7 @@ export default function Progress({ value }: { value: number }) {
           } as CSSProperties
         }></div>
       <span>
+        {status}
         <FormattedNumber value={v} style="percent" />
       </span>
     </div>

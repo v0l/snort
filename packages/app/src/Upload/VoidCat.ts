@@ -1,5 +1,5 @@
 import { EventKind, EventPublisher } from "@snort/system";
-import { VoidApi } from "@void-cat/api";
+import { UploadState, VoidApi } from "@void-cat/api";
 
 import { FileExtensionRegex, VoidCatHost } from "Const";
 import { UploadResult } from "Upload";
@@ -14,6 +14,7 @@ export default async function VoidCatUpload(
   filename: string,
   publisher?: EventPublisher,
   progress?: (n: number) => void,
+  stage?: (n: "starting" | "hashing" | "uploading" | "done" | undefined) => void,
 ): Promise<UploadResult> {
   const auth = publisher
     ? async (url: string, method: string) => {
@@ -24,9 +25,28 @@ export default async function VoidCatUpload(
       }
     : undefined;
   const api = new VoidApi(VoidCatHost, auth);
-  const uploader = api.getUploader(file, undefined, px => {
-    progress?.(px / file.size);
-  });
+  const uploader = api.getUploader(
+    file,
+    sx => {
+      stage?.(
+        (() => {
+          switch (sx) {
+            case UploadState.Starting:
+              return "starting";
+            case UploadState.Hashing:
+              return "hashing";
+            case UploadState.Uploading:
+              return "uploading";
+            case UploadState.Done:
+              return "done";
+          }
+        })(),
+      );
+    },
+    px => {
+      progress?.(px / file.size);
+    },
+  );
 
   const rsp = await uploader.upload({
     "V-Strip-Metadata": "true",

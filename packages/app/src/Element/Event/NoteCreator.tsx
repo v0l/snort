@@ -1,6 +1,7 @@
 import "./NoteCreator.css";
 import { FormattedMessage, useIntl } from "react-intl";
 import { EventKind, NostrPrefix, TaggedNostrEvent, EventBuilder, tryParseNostrLink, NostrLink } from "@snort/system";
+import classNames from "classnames";
 
 import Icon from "Icons/Icon";
 import useEventPublisher from "Hooks/useEventPublisher";
@@ -454,7 +455,7 @@ export function NoteCreator() {
               iconName="pie-chart"
               iconSize={24}
               onClick={() => note.update(v => (v.pollOptions = ["A", "B"]))}
-              className="note-creator-icon"
+              className={classNames("note-creator-icon", { active: note.pollOptions !== undefined })}
             />
           )}
           <AsyncIcon iconName="image-plus" iconSize={24} onClick={attachFile} className="note-creator-icon" />
@@ -462,8 +463,9 @@ export function NoteCreator() {
             iconName="settings-04"
             iconSize={24}
             onClick={() => note.update(v => (v.advanced = !v.advanced))}
-            className="note-creator-icon"
+            className={classNames("note-creator-icon", { active: note.advanced })}
           />
+          <FormattedMessage defaultMessage="Preview" />
         </div>
         <div className="flex g8">
           <button className="secondary" onClick={cancel}>
