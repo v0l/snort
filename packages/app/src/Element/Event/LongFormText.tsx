@@ -2,6 +2,7 @@ import "./LongFormText.css";
 import { CSSProperties, useCallback, useRef, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { TaggedNostrEvent } from "@snort/system";
+import { useEventReactions } from "@snort/system-react";
 
 import { findTag } from "SnortUtils";
 import Text from "Element/Text";
@@ -9,7 +10,6 @@ import { Markdown } from "./Markdown";
 import useImgProxy from "Hooks/useImgProxy";
 import ProfilePreview from "Element/User/ProfilePreview";
 import NoteFooter from "./NoteFooter";
-import { useEventReactions } from "Hooks/useEventReactions";
 import NoteTime from "./NoteTime";
 
 interface LongFormTextProps {

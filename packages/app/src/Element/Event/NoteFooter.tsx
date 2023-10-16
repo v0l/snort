@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
 import { TaggedNostrEvent, ParsedZap, countLeadingZeros, NostrLink } from "@snort/system";
+import { normalizeReaction } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import classNames from "classnames";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Hooks/useEventPublisher";
-import { delay, findTag, normalizeReaction } from "SnortUtils";
+import { delay, findTag } from "SnortUtils";
 import { NoteCreator } from "Element/Event/NoteCreator";
 import SendSats from "Element/SendSats";
 import { ZapsSummary } from "Element/Event/Zap";

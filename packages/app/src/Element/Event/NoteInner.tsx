@@ -4,6 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
 import classNames from "classnames";
 import { EventExt, EventKind, HexKey, Lists, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+import { useEventReactions } from "@snort/system-react";
 
 import { findTag, hexToBech32, profileLink } from "SnortUtils";
 import useModeration from "Hooks/useModeration";
@@ -23,7 +24,6 @@ import NoteFooter from "./NoteFooter";
 import Reactions from "./Reactions";
 import HiddenNote from "./HiddenNote";
 import { NoteProps } from "./Note";
-import { useEventReactions } from "Hooks/useEventReactions";
 import { chainKey } from "Hooks/useThreadContext";
 
 export function NoteInner(props: NoteProps) {
