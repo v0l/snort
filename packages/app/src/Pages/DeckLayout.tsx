@@ -2,7 +2,7 @@ import "./Deck.css";
 import { CSSProperties, createContext, useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import FormattedMessage from "Element/FormattedMessage";
-import { NostrLink } from "@snort/system";
+import { NostrLink, TaggedNostrEvent } from "@snort/system";
 
 import { DeckNav } from "Element/Deck/Nav";
 import useLoginFeed from "Feed/LoginFeed";
@@ -21,12 +21,19 @@ import { SpotlightMedia } from "Element/Deck/SpotlightMedia";
 import { ThreadContext, ThreadContextWrapper } from "Hooks/useThreadContext";
 import Toaster from "Toaster";
 import useLogin from "Hooks/useLogin";
+import { LongFormText } from "Element/Event/LongFormText";
 
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 
-interface DeckScope {
+interface DeckState {
   thread?: NostrLink;
+  article?: TaggedNostrEvent;
+}
+
+interface DeckScope {
   setThread: (e?: NostrLink) => void;
+  setArticle: (e?: TaggedNostrEvent) => void;
+  reset: () => void;
 }
 
 export const DeckContext = createContext<DeckScope | undefined>(undefined);
@@ -34,8 +41,9 @@ export const DeckContext = createContext<DeckScope | undefined>(undefined);
 export function SnortDeckLayout() {
   const login = useLogin();
   const navigate = useNavigate();
-  const [deckScope, setDeckScope] = useState<DeckScope>({
-    setThread: (e?: NostrLink) => setDeckScope(s => ({ ...s, thread: e })),
+  const [deckState, setDeckState] = useState<DeckState>({
+    thread: undefined,
+    article: undefined,
   });
 
   useLoginFeed();
@@ -52,7 +60,13 @@ export function SnortDeckLayout() {
   const cols = ["notes", "media", "notifications", "articles"] as Array<Cols>;
   return (
     <div className="deck-layout">
-      <DeckContext.Provider value={deckScope}>
+      <DeckContext.Provider
+        value={{
+          ...deckState,
+          setThread: (e?: NostrLink) => setDeckState({ thread: e }),
+          setArticle: (e?: TaggedNostrEvent) => setDeckState({ article: e }),
+          reset: () => setDeckState({}),
+        }}>
         <DeckNav />
         <div className="deck-cols">
           {cols.map(c => {
@@ -60,23 +74,36 @@ export function SnortDeckLayout() {
               case "notes":
                 return <NotesCol />;
               case "media":
-                return <MediaCol setThread={deckScope.setThread} />;
+                return <MediaCol setThread={t => setDeckState({ thread: t })} />;
               case "articles":
                 return <ArticlesCol />;
               case "notifications":
-                return <NotificationsCol setThread={deckScope.setThread} />;
+                return <NotificationsCol setThread={t => setDeckState({ thread: t })} />;
             }
           })}
         </div>
-        {deckScope.thread && (
+        {deckState.thread && (
           <>
-            <Modal id="thread-overlay" onClose={() => deckScope.setThread(undefined)} className="thread-overlay">
-              <ThreadContextWrapper link={deckScope.thread}>
-                <SpotlightFromThread onClose={() => deckScope.setThread(undefined)} />
+            <Modal id="thread-overlay" onClose={() => setDeckState({})} className="thread-overlay thread">
+              <ThreadContextWrapper link={deckState.thread}>
+                <SpotlightFromThread onClose={() => setDeckState({})} />
                 <div>
-                  <Thread onBack={() => deckScope.setThread(undefined)} disableSpotlight={true} />
+                  <Thread onBack={() => setDeckState({})} disableSpotlight={true} />
                 </div>
               </ThreadContextWrapper>
+            </Modal>
+          </>
+        )}
+        {deckState.article && (
+          <>
+            <Modal
+              id="thread-overlay-article"
+              onClose={() => setDeckState({})}
+              className="thread-overlay long-form"
+              onClick={() => setDeckState({})}>
+              <div onClick={e => e.stopPropagation()}>
+                <LongFormText ev={deckState.article} isPreview={false} related={[]} />
+              </div>
             </Modal>
           </>
         )}

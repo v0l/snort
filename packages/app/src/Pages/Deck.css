@@ -68,10 +68,18 @@
   gap: 16px;
 }
 
-.modal.thread-overlay > .modal-body > div > div:last-of-type {
+.modal.thread-overlay.thread > .modal-body > div > div:last-of-type {
   width: 550px;
   min-width: 550px;
   height: 100vh;
+  overflow-y: auto;
+  background-color: var(--gray-superdark);
+}
+
+.modal.thread-overlay.long-form > .modal-body > div > div:last-of-type {
+  width: 660px;
+  height: calc(100vh - 48px);
+  padding: 48px 56px 0 56px;
   overflow-y: auto;
   background-color: var(--gray-superdark);
 }

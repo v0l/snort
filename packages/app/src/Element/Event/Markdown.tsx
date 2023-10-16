@@ -1,10 +1,13 @@
 import "./Markdown.css";
 
-import { ReactNode, useMemo } from "react";
+import { ReactNode, forwardRef, useMemo } from "react";
 import { marked, Token } from "marked";
 import { Link } from "react-router-dom";
 import markedFootnote, { Footnotes, Footnote, FootnoteRef } from "marked-footnote";
 import { ProxyImg } from "Element/ProxyImg";
+import { transformText } from "@snort/system";
+import Mention from "Element/Embed/Mention";
+import NostrLink from "Element/Embed/NostrLink";
 
 interface MarkdownProps {
   content: string;
@@ -92,7 +95,23 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef): ReactNode {
         if ("tokens" in t) {
           return (t.tokens as Array<Token>).map(renderToken);
         }
-        return t.raw;
+        return transformText(t.raw, []).map(v => {
+          switch (v.type) {
+            case "link": {
+              if (v.content.startsWith("nostr:")) {
+                return <NostrLink link={v.content} />;
+              } else {
+                return v.content;
+              }
+            }
+            case "mention": {
+              return <Mention pubkey={v.content} />;
+            }
+            default: {
+              return v.content;
+            }
+          }
+        });
       }
     }
   } catch (e) {
@@ -100,14 +119,14 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef): ReactNode {
   }
 }
 
-export function Markdown({ content, tags = [] }: MarkdownProps) {
+export const Markdown = forwardRef<HTMLDivElement, MarkdownProps>((props: MarkdownProps, ref) => {
   const parsed = useMemo(() => {
-    return marked.use(markedFootnote()).lexer(content);
-  }, [content, tags]);
+    return marked.use(markedFootnote()).lexer(props.content);
+  }, [props.content, props.tags]);
 
   return (
-    <div className="markdown">
+    <div className="markdown" ref={ref}>
       {parsed.filter(a => a.type !== "footnote" && a.type !== "footnotes").map(a => renderToken(a))}
     </div>
   );
-}
+});

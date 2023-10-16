@@ -125,8 +125,7 @@ a:hover {
 }
 
 a.ext {
-  word-break: break-all;
-  white-space: initial;
+  overflow-wrap: break-word;
 }
 
 #root {

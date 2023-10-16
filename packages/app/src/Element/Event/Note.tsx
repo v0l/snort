@@ -62,7 +62,14 @@ export default function Note(props: NoteProps) {
     return <ZapGoal ev={ev} />;
   }
   if (ev.kind === EventKind.LongFormTextNote) {
-    return <LongFormText ev={ev} related={props.related} isPreview={props.options?.longFormPreview ?? false} />;
+    return (
+      <LongFormText
+        ev={ev}
+        related={props.related}
+        isPreview={props.options?.longFormPreview ?? false}
+        onClick={() => props.onClick?.(ev)}
+      />
+    );
   }
 
   return <NoteInner {...props} />;

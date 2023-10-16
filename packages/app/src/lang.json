@@ -829,6 +829,9 @@
   "Tpy00S": {
     "defaultMessage": "People"
   },
+  "U1aPPi": {
+    "defaultMessage": "Stop listening"
+  },
   "UDYlxu": {
     "defaultMessage": "Pending Subscriptions"
   },
@@ -1267,6 +1270,9 @@
   "ncbgUU": {
     "defaultMessage": "{site} is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
   },
+  "nihgfo": {
+    "defaultMessage": "Listen to this article"
+  },
   "nn1qb3": {
     "defaultMessage": "Your donations are greatly appreciated"
   },
@@ -1373,9 +1379,6 @@
   },
   "rx1i0i": {
     "defaultMessage": "Short link"
-  },
-  "s5yJ8G": {
-    "defaultMessage": "Read full story"
   },
   "sKDn4e": {
     "defaultMessage": "Show Badges"
@@ -1533,6 +1536,9 @@
   },
   "zjJZBd": {
     "defaultMessage": "You're ready!"
+  },
+  "zm6qS1": {
+    "defaultMessage": "{n} mins to read"
   },
   "zonsdq": {
     "defaultMessage": "Failed to load LNURL service"

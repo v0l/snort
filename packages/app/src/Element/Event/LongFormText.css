@@ -1,3 +1,19 @@
+.long-form-note p {
+  font-family: Georgia;
+  line-height: 1.7;
+}
+
+.long-form-note hr {
+  border: 0;
+  height: 1px;
+  background-color: var(--gray);
+  margin: 5px 0px;
+}
+
+.long-form-note .reading {
+  border: 1px dashed var(--highlight);
+}
+
 .long-form-note .header-image {
   height: 360px;
   background: var(--img);
