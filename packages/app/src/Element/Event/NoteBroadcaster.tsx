@@ -42,15 +42,8 @@ export function NoteBroadcaster({
     }
   }
 
-  async function sendNote() {
-    const results = await Promise.all(evs.map(a => sendEventToRelays(a)).flat());
-    if (results.flat().every(a => a.ok)) {
-      onClose();
-    }
-  }
-
   useEffect(() => {
-    sendNote().catch(console.error);
+    Promise.all(evs.map(a => sendEventToRelays(a)).flat()).catch(console.error);
   }, []);
 
   async function removeRelayFromResult(r: OkResponse) {
