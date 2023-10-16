@@ -211,7 +211,7 @@ export function NoteCreator() {
     });
   }
 
-  async function onSubmit(ev: React.MouseEvent<HTMLButtonElement>) {
+  async function onSubmit(ev: React.MouseEvent) {
     ev.stopPropagation();
     await sendNote();
   }
@@ -450,14 +450,20 @@ export function NoteCreator() {
             showFollowingMark={false}
           />
           {note.pollOptions === undefined && !note.replyTo && (
-            <div className="note-creator-icon">
-              <Icon name="pie-chart" onClick={() => note.update(v => (v.pollOptions = ["A", "B"]))} size={24} />
-            </div>
+            <AsyncIcon
+              iconName="pie-chart"
+              iconSize={24}
+              onClick={() => note.update(v => (v.pollOptions = ["A", "B"]))}
+              className="note-creator-icon"
+            />
           )}
           <AsyncIcon iconName="image-plus" iconSize={24} onClick={attachFile} className="note-creator-icon" />
-          <button className="secondary" onClick={() => note.update(v => (v.advanced = !v.advanced))}>
-            <FormattedMessage defaultMessage="Advanced" />
-          </button>
+          <AsyncIcon
+            iconName="settings-04"
+            iconSize={24}
+            onClick={() => note.update(v => (v.advanced = !v.advanced))}
+            className="note-creator-icon"
+          />
         </div>
         <div className="flex g8">
           <button className="secondary" onClick={cancel}>

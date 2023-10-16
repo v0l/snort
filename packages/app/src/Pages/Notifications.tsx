@@ -24,6 +24,7 @@ import { getDisplayName } from "Element/User/DisplayName";
 import { Day } from "Const";
 import Tabs, { Tab } from "Element/Tabs";
 import classNames from "classnames";
+import { AsyncIcon } from "Element/AsyncIcon";
 
 function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {
@@ -194,15 +195,15 @@ function NotificationSummary({ evs }: { evs: Array<TaggedNostrEvent> }) {
       );
   }, [evs, period]);
 
-  const filterIcon = (f: NotificationSummaryFilter, icon: string, iconActiveClass?: string) => {
+  const filterIcon = (f: NotificationSummaryFilter, icon: string, iconActiveClass: string) => {
     const active = hasFlag(filter, f);
     return (
-      <button
-        type="button"
-        className={classNames("icon-sm transparent", { active: active })}
-        onClick={() => setFilter(v => v ^ f)}>
-        <Icon name={icon} className={active ? iconActiveClass : undefined} />
-      </button>
+      <AsyncIcon
+        className={classNames("button-icon-sm transparent", { active, [iconActiveClass]: active })}
+        onClick={() => setFilter(v => v ^ f)}
+        name={""}
+        iconName={icon}
+      />
     );
   };
 

@@ -1,31 +1,15 @@
 import "./AsyncButton.css";
-import React, { useState, ForwardedRef } from "react";
+import React, { ForwardedRef } from "react";
 import Spinner from "../Icons/Spinner";
+import useLoading from "Hooks/useLoading";
+import classNames from "classnames";
 
-interface AsyncButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  disabled?: boolean;
-  onClick(e: React.MouseEvent): Promise<void> | void;
-  children?: React.ReactNode;
+export interface AsyncButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  onClick?: (e: React.MouseEvent) => Promise<void> | void;
 }
 
 const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>((props, ref) => {
-  const [loading, setLoading] = useState<boolean>(false);
-
-  async function handle(e: React.MouseEvent) {
-    e.stopPropagation();
-    if (loading || props.disabled) return;
-    setLoading(true);
-    try {
-      if (typeof props.onClick === "function") {
-        const f = props.onClick(e);
-        if (f instanceof Promise) {
-          await f;
-        }
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
+  const { handle, loading } = useLoading(props.onClick, props.disabled);
 
   return (
     <button
@@ -33,7 +17,7 @@ const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>((props
       type="button"
       disabled={loading || props.disabled}
       {...props}
-      className={`spinner-button${props.className ? ` ${props.className}` : ""}`}
+      className={classNames("spinner-button", props.className)}
       onClick={handle}>
       <span style={{ visibility: loading ? "hidden" : "visible" }}>{props.children}</span>
       {loading && (

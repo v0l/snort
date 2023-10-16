@@ -337,20 +337,15 @@ button.icon:hover {
   color: var(--highlight);
 }
 
-button.icon-sm {
+.button-icon-sm {
   padding: 4px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: var(--gray-light) !important;
 }
 
-button.icon-sm:not(.active):hover {
-  background-color: var(--gray-dark);
-}
-
-button.icon-sm.active {
+.button-icon-sm.active {
   background: rgba(255, 255, 255, 0.1);
 }
 

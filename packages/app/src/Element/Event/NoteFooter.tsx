@@ -1,9 +1,10 @@
-import React, { HTMLProps, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
 import { TaggedNostrEvent, ParsedZap, countLeadingZeros, NostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
+import classNames from "classnames";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Hooks/useEventPublisher";
@@ -11,7 +12,7 @@ import { delay, findTag, normalizeReaction } from "SnortUtils";
 import { NoteCreator } from "Element/Event/NoteCreator";
 import SendSats from "Element/SendSats";
 import { ZapsSummary } from "Element/Event/Zap";
-import { AsyncIcon } from "Element/AsyncIcon";
+import { AsyncIcon, AsyncIconProps } from "Element/AsyncIcon";
 
 import { useWallet } from "Wallet";
 import useLogin from "Hooks/useLogin";
@@ -308,18 +309,11 @@ export default function NoteFooter(props: NoteFooterProps) {
   );
 }
 
-interface AsyncFooterIconProps extends HTMLProps<HTMLDivElement> {
-  iconName: string;
-  value: number;
-  loading?: boolean;
-  onClick?: (e: React.MouseEvent<HTMLDivElement>) => Promise<void>;
-}
-
-function AsyncFooterIcon(props: AsyncFooterIconProps) {
+function AsyncFooterIcon(props: AsyncIconProps & { value: number }) {
   const mergedProps = {
     ...props,
     iconSize: 18,
-    className: `transition duration-200 ease-in-out reaction-pill${props.className ? ` ${props.className}` : ""}`,
+    className: classNames("transition duration-200 ease-in-out reaction-pill", props.className),
   };
   return (
     <AsyncIcon {...mergedProps}>
