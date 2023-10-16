@@ -2,6 +2,7 @@ import "./NoteToSelf.css";
 import { Link, useNavigate } from "react-router-dom";
 import FormattedMessage from "Element/FormattedMessage";
 import { profileLink } from "SnortUtils";
+import classNames from "classnames";
 
 import messages from "../messages";
 import Icon from "Icons/Icon";
@@ -31,9 +32,9 @@ export default function NoteToSelf({ pubkey, clickable, className, link }: NoteT
   };
 
   return (
-    <div className={`nts${className ? ` ${className}` : ""}`}>
+    <div className={classNames("nts", className)}>
       <div className="avatar-wrapper">
-        <div className={`avatar${clickable ? " clickable" : ""}`}>
+        <div className={classNames("avatar", { clickable: clickable })}>
           <Icon onClick={clickLink} name="book-closed" size={20} />
         </div>
       </div>

@@ -1,15 +1,15 @@
 import { MouseEventHandler } from "react";
 import IconsSvg from "public/icons.svg";
 
-type Props = {
+export interface IconProps {
   name: string;
   size?: number;
   height?: number;
   className?: string;
   onClick?: MouseEventHandler<SVGSVGElement>;
-};
+}
 
-const Icon = (props: Props) => {
+const Icon = (props: IconProps) => {
   const size = props.size || 20;
   const href = `${IconsSvg}#` + props.name;
 

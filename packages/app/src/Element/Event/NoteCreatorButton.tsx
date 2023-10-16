@@ -8,6 +8,7 @@ import useLogin from "Hooks/useLogin";
 import Icon from "Icons/Icon";
 import { useNoteCreator } from "State/NoteCreator";
 import { NoteCreator } from "./NoteCreator";
+import classNames from "classnames";
 
 export const NoteCreatorButton = ({ className }: { className?: string }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -36,7 +37,7 @@ export const NoteCreatorButton = ({ className }: { className?: string }) => {
     <>
       <button
         ref={buttonRef}
-        className={`primary circle${className ? ` ${className}` : ""}`}
+        className={classNames("primary circle", className)}
         onClick={() =>
           update(v => {
             v.replyTo = undefined;

@@ -1,4 +1,5 @@
 import { useState, ReactNode } from "react";
+import classNames from "classnames";
 
 import Icon from "Icons/Icon";
 import ShowMore from "Element/Event/ShowMore";
@@ -38,15 +39,13 @@ interface CollapsedSectionProps {
 export const CollapsedSection = ({ title, children, className }: CollapsedSectionProps) => {
   const [collapsed, setCollapsed] = useState(true);
   const icon = (
-    <div className={`collapse-icon ${collapsed ? "" : "flip"}`}>
+    <div className={classNames("collapse-icon", { flip: !collapsed })}>
       <Icon name="arrowFront" />
     </div>
   );
   return (
     <>
-      <div
-        className={`collapsable-section${className ? ` ${className}` : ""}`}
-        onClick={() => setCollapsed(!collapsed)}>
+      <div className={classNames("collapsable-section", className)} onClick={() => setCollapsed(!collapsed)}>
         {title}
         <CollapsedIcon icon={icon} collapsed={collapsed} />
       </div>

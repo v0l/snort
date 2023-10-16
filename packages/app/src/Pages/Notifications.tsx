@@ -23,6 +23,7 @@ import ProfilePreview from "Element/User/ProfilePreview";
 import { getDisplayName } from "Element/User/DisplayName";
 import { Day } from "Const";
 import Tabs, { Tab } from "Element/Tabs";
+import classNames from "classnames";
 
 function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {
@@ -196,9 +197,12 @@ function NotificationSummary({ evs }: { evs: Array<TaggedNostrEvent> }) {
   const filterIcon = (f: NotificationSummaryFilter, icon: string, iconActiveClass?: string) => {
     const active = hasFlag(filter, f);
     return (
-      <div className={`summary-icon${active ? " active" : ""}`} onClick={() => setFilter(v => v ^ f)}>
+      <button
+        type="button"
+        className={classNames("icon-sm transparent", { active: active })}
+        onClick={() => setFilter(v => v ^ f)}>
         <Icon name={icon} className={active ? iconActiveClass : undefined} />
-      </div>
+      </button>
     );
   };
 

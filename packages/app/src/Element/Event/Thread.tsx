@@ -3,6 +3,7 @@ import { useMemo, useState, ReactNode, useContext } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 import { TaggedNostrEvent, u256, NostrPrefix, EventExt, parseNostrLink, NostrLink } from "@snort/system";
+import classNames from "classnames";
 
 import { getAllLinkReactions, getLinkReactions } from "SnortUtils";
 import BackButton from "Element/BackButton";
@@ -83,14 +84,17 @@ const ThreadNote = ({ active, note, isLast, isLastSubthread, related, chains, on
   const [collapsed, setCollapsed] = useState(!activeInReplies);
   const hasMultipleNotes = replies.length > 1;
   const isLastVisibleNote = isLastSubthread && isLast && !hasMultipleNotes;
-  const className = `subthread-container ${isLast && collapsed ? "subthread-last" : "subthread-multi subthread-mid"}`;
+  const className = classNames(
+    "subthread-container",
+    isLast && collapsed ? "subthread-last" : "subthread-multi subthread-mid",
+  );
   return (
     <>
       <div className={className}>
         <Divider variant="small" />
         <Note
           highlight={active === note.id}
-          className={`thread-note ${isLastVisibleNote ? "is-last-note" : ""}`}
+          className={classNames("thread-note", { "is-last-note": isLastVisibleNote })}
           data={note}
           key={note.id}
           related={related}
@@ -156,13 +160,15 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
   return (
     <>
       <div
-        className={`subthread-container ${hasMultipleNotes ? "subthread-multi" : ""} ${
-          isLast ? "subthread-last" : "subthread-mid"
-        }`}>
+        className={classNames("subthread-container", {
+          "subthread-multi": hasMultipleNotes,
+          "subthread-last": isLast,
+          "subthread-mid": !isLast,
+        })}>
         <Divider variant="small" />
         <Note
           highlight={active === first.id}
-          className={`thread-note ${isLastSubthread && isLast ? "is-last-note" : ""}`}
+          className={classNames("thread-note", { "is-last-note": isLastSubthread && isLast })}
           data={first}
           key={first.id}
           related={related}
@@ -188,12 +194,14 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
         return (
           <div
             key={r.id}
-            className={`subthread-container ${lastReply ? "" : "subthread-multi"} ${
-              lastReply ? "subthread-last" : "subthread-mid"
-            }`}>
+            className={classNames("subthread-container", {
+              "subthread-multi": !lastReply,
+              "subthread-last": !lastReply,
+              "subthread-mid": lastReply,
+            })}>
             <Divider variant="small" />
             <Note
-              className={`thread-note ${lastNote ? "is-last-note" : ""}`}
+              className={classNames("thread-note", { "is-last-note": lastNote })}
               highlight={active === r.id}
               data={r}
               key={r.id}

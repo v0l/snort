@@ -2,7 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { ReactNode, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
+import classNames from "classnames";
 import { EventExt, EventKind, HexKey, Lists, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+
 import { findTag, hexToBech32, profileLink } from "SnortUtils";
 import useModeration from "Hooks/useModeration";
 import useLogin from "Hooks/useLogin";
@@ -27,7 +29,7 @@ import { chainKey } from "Hooks/useThreadContext";
 export function NoteInner(props: NoteProps) {
   const { data: ev, related, highlight, options: opt, ignoreModeration = false, className } = props;
 
-  const baseClassName = `note card${className ? ` ${className}` : ""}`;
+  const baseClassName = classNames("note card", className);
   const navigate = useNavigate();
   const [showReactions, setShowReactions] = useState(false);
 
@@ -328,7 +330,7 @@ export function NoteInner(props: NoteProps) {
   }
 
   const note = (
-    <div className={`${baseClassName}${highlight ? " active " : " "}`} onClick={e => goToEvent(e, ev)} ref={ref}>
+    <div className={classNames(baseClassName, { active: highlight })} onClick={e => goToEvent(e, ev)} ref={ref}>
       {content()}
     </div>
   );

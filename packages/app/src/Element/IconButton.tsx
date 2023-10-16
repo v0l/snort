@@ -1,14 +1,19 @@
+import classNames from "classnames";
+import Icon, { IconProps } from "Icons/Icon";
 import type { ReactNode } from "react";
 
 interface IconButtonProps {
-  onClick(): void;
-  children: ReactNode;
+  onClick?: () => void;
+  icon: IconProps;
+  className?: string;
+  children?: ReactNode;
 }
 
-const IconButton = ({ onClick, children }: IconButtonProps) => {
+const IconButton = ({ onClick, icon, children, className }: IconButtonProps) => {
   return (
-    <button className="icon" type="button" onClick={onClick}>
-      <div className="icon-wrapper">{children}</div>
+    <button className={classNames("icon", className)} type="button" onClick={onClick}>
+      <Icon {...icon} />
+      {children}
     </button>
   );
 };

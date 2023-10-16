@@ -1,8 +1,6 @@
-import IconProps from "./IconProps";
-
-export const BlueWallet = (props: IconProps) => {
+export const BlueWallet = (props: { width?: number; height?: number }) => {
   return (
-    <svg width="58px" height="58px" viewBox="0 0 58 58" version="1.1" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg viewBox="0 0 58 58" version="1.1" xmlns="http://www.w3.org/2000/svg" {...props}>
       <title>logo-bluewallet</title>
       <defs>
         <filter x="-14.0%" y="-13.8%" width="128.1%" height="127.6%" filterUnits="objectBoundingBox" id="filter-1">

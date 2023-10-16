@@ -53,23 +53,6 @@
   max-height: 300px; /* Cap images in notifications to 300px height */
 }
 
-.summary-icon {
-  padding: 4px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  color: var(--gray-light) !important;
-}
-
-.summary-icon:not(.active):hover {
-  background-color: var(--gray-dark);
-}
-
-.summary-icon.active {
-  background: rgba(255, 255, 255, 0.1);
-}
-
 .summary-tooltip {
   display: flex;
   gap: 12px;

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useMemo } from "react";
 import { decodeInvoice } from "@snort/shared";
+import classNames from "classnames";
 
 import SendSats from "Element/SendSats";
 import Icon from "Icons/Icon";
@@ -60,7 +61,7 @@ export default function Invoice(props: InvoiceProps) {
 
   return (
     <>
-      <div className={`note-invoice flex ${isExpired ? "expired" : ""} ${isPaid ? "paid" : ""}`}>
+      <div className={classNames("note-invoice flex", { expired: isExpired, paid: isPaid })}>
         <div className="invoice-header">{header()}</div>
 
         <p className="invoice-amount">

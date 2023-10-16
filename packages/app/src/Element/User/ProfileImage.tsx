@@ -6,6 +6,7 @@ import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useHover } from "@uidotdev/usehooks";
 import { ControlledMenu } from "@szhsin/react-menu";
+import classNames from "classnames";
 
 import { profileLink } from "SnortUtils";
 import Avatar from "Element/User/Avatar";
@@ -157,7 +158,7 @@ export default function ProfileImage({
   if (link === "") {
     return (
       <>
-        <div className={`pfp${className ? ` ${className}` : ""}`} onClick={handleClick}>
+        <div className={classNames("pfp", className)} onClick={handleClick}>
           {inner()}
         </div>
         {profileCard()}
@@ -167,7 +168,7 @@ export default function ProfileImage({
     return (
       <>
         <Link
-          className={`pfp${className ? ` ${className}` : ""}`}
+          className={classNames("pfp", className)}
           to={link === undefined ? profileLink(pubkey) : link}
           onClick={handleClick}>
           {inner()}

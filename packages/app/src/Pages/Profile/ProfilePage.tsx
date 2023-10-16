@@ -305,10 +305,8 @@ export default function ProfilePage({ id: propId }: ProfilePageProps) {
 
     const link = encodeTLV(NostrPrefix.Profile, id);
     return (
-      <div className="icon-actions">
-        <IconButton onClick={() => setShowProfileQr(true)}>
-          <Icon name="qr" size={16} />
-        </IconButton>
+      <>
+        <IconButton onClick={() => setShowProfileQr(true)} icon={{ name: "qr", size: 16 }} />
         {showProfileQr && (
           <Modal id="profile-qr" className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id} />
@@ -324,11 +322,7 @@ export default function ProfilePage({ id: propId }: ProfilePageProps) {
           </>
         ) : (
           <>
-            {lnurl && (
-              <IconButton onClick={() => setShowLnQr(true)}>
-                <Icon name="zap" size={16} />
-              </IconButton>
-            )}
+            {lnurl && <IconButton onClick={() => setShowLnQr(true)} icon={{ name: "zap", size: 16 }} />}
             {loginPubKey && !login.readonly && (
               <>
                 <IconButton
@@ -340,14 +334,14 @@ export default function ProfilePage({ id: propId }: ProfilePageProps) {
                         value: id,
                       })}`,
                     )
-                  }>
-                  <Icon name="envelope" size={16} />
-                </IconButton>
+                  }
+                  icon={{ name: "envelope", size: 16 }}
+                />
               </>
             )}
           </>
         )}
-      </div>
+      </>
     );
   }
 

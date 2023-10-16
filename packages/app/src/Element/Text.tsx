@@ -1,6 +1,7 @@
 import "./Text.css";
 import { ReactNode, useState } from "react";
 import { HexKey, ParsedFragment } from "@snort/system";
+import classNames from "classnames";
 
 import Invoice from "Element/Embed/Invoice";
 import Hashtag from "Element/Embed/Hashtag";
@@ -276,7 +277,7 @@ export default function Text({
   };
 
   return (
-    <div dir="auto" className={`text${className ? ` ${className}` : ""}`} onClick={onClick}>
+    <div dir="auto" className={classNames("text", className)} onClick={onClick}>
       {renderContent()}
       {showSpotlight && <SpotlightMediaModal images={images} onClose={() => setShowSpotlight(false)} idx={imageIdx} />}
     </div>
