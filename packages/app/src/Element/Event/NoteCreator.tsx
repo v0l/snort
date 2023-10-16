@@ -11,7 +11,7 @@ import ProfileImage from "Element/User/ProfileImage";
 import useFileUpload from "Upload";
 import Note from "Element/Event/Note";
 
-import { ClipboardEventHandler } from "react";
+import { ClipboardEventHandler, useRef, useEffect } from "react";
 import useLogin from "Hooks/useLogin";
 import { GetPowWorker } from "index";
 import AsyncButton from "Element/AsyncButton";
@@ -29,7 +29,12 @@ export function NoteCreator() {
   const { publisher: pub } = useEventPublisher();
   const publisher = login.pow ? pub?.pow(login.pow, GetPowWorker()) : pub;
   const note = useNoteCreator();
+  const resetRef = useRef(setTimeout(() => {}, 1));
   const relays = login.relays;
+
+  useEffect(() => {
+    if (note.show) clearTimeout(resetRef.current)
+  }, [note.show])
 
   async function buildNote() {
     try {
@@ -559,7 +564,17 @@ export function NoteCreator() {
 
   if (!note.show) return null;
   return (
-    <Modal id="note-creator" className="note-creator-modal" onClose={() => note.update(v => (v.show = false))}>
+    <Modal
+      id="note-creator"
+      className="note-creator-modal"
+      onClose={() => {
+        note.update(v => {
+          v.show = false;
+          resetRef.current = setTimeout(() => {
+            if (v.show === false) v.reset();
+          }, 5000);
+        });
+      }}>
       {note.sending && (
         <NoteBroadcaster
           evs={note.sending}
