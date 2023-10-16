@@ -48,6 +48,7 @@ export function useEventReactions(ev: TaggedNostrEvent, related: ReadonlyArray<T
     return {
       deletions,
       reactions: {
+        all: reactions,
         positive: groupReactions[Reaction.Positive] ?? [],
         negative: groupReactions[Reaction.Negative] ?? [],
       },
