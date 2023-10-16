@@ -52,6 +52,7 @@ const config = {
   },
   devServer: {
     open: true,
+    https: true,
     host: "localhost",
     historyApiFallback: true,
   },

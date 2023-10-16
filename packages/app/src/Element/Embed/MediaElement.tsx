@@ -1,14 +1,6 @@
 import { ProxyImg } from "Element/ProxyImg";
 import React from "react";
 
-/*
-[
-  "imeta",
-  "url https://nostr.build/i/148e3e8cbe29ae268b0d6aad0065a086319d3c3b1fdf8b89f1e2327d973d2d05.jpg",
-  "blurhash e6A0%UE2t6D*R%?u?a9G?aM|~pM|%LR*RjR-%2NG%2t7_2R*%1IVWB",
-  "dim 3024x4032"
-],
-*/
 interface MediaElementProps {
   mime: string;
   url: string;

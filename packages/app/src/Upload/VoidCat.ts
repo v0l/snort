@@ -13,6 +13,7 @@ export default async function VoidCatUpload(
   file: File | Blob,
   filename: string,
   publisher?: EventPublisher,
+  progress?: (n: number) => void,
 ): Promise<UploadResult> {
   const auth = publisher
     ? async (url: string, method: string) => {
@@ -23,7 +24,9 @@ export default async function VoidCatUpload(
       }
     : undefined;
   const api = new VoidApi(VoidCatHost, auth);
-  const uploader = api.getUploader(file);
+  const uploader = api.getUploader(file, undefined, px => {
+    progress?.(px / file.size);
+  });
 
   const rsp = await uploader.upload({
     "V-Strip-Metadata": "true",

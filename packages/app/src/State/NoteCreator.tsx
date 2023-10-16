@@ -18,6 +18,7 @@ interface NoteCreatorDataSnapshot {
   sensitive?: string;
   pollOptions?: Array<string>;
   otherEvents?: Array<NostrEvent>;
+  extraTags?: Array<Array<string>>;
   sending?: Array<NostrEvent>;
   sendStarted: boolean;
   reset: () => void;
@@ -63,6 +64,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
     d.pollOptions = undefined;
     d.otherEvents = undefined;
     d.sending = undefined;
+    d.extraTags = undefined;
   }
 
   takeSnapshot(): NoteCreatorDataSnapshot {

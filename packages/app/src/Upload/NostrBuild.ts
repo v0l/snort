@@ -30,17 +30,38 @@ export default async function NostrBuild(file: File | Blob, publisher?: EventPub
     headers,
   });
   if (rsp.ok) {
-    const data = (await rsp.json()) as {
-      success: boolean;
-      data: Array<{
-        url: string;
-      }>;
-    };
+    const data = (await rsp.json()) as NostrBuildUploadResponse;
+    const res = data.data[0];
     return {
-      url: data.data[0].url,
+      url: res.url,
+      metadata: {
+        blurhash: res.blurhash,
+        width: res.dimensions.width,
+        height: res.dimensions.height,
+      },
     };
   }
   return {
     error: "Upload failed",
+  };
+}
+
+interface NostrBuildUploadResponse {
+  data: Array<NostrBuildUploadData>;
+}
+interface NostrBuildUploadData {
+  input_name: string;
+  name: string;
+  url: string;
+  thumbnail: string;
+  blurhash: string;
+  sha256: string;
+  type: string;
+  mime: string;
+  size: number;
+  metadata: Record<string, string>;
+  dimensions: {
+    width: number;
+    height: number;
   };
 }
