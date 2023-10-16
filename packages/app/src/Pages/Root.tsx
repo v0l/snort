@@ -212,7 +212,11 @@ export const RootTabRoutes = [
   },
   {
     path: "trending/people",
-    element: <TrendingUsers />,
+    element: (
+      <div className="p">
+        <TrendingUsers />
+      </div>
+    ),
   },
   {
     path: "suggested",

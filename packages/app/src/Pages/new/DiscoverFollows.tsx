@@ -1,8 +1,7 @@
-import { useMemo } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate, Link } from "react-router-dom";
 
-import { RecommendedFollows } from "Const";
+import { DeveloperAccounts } from "Const";
 import Logo from "Element/Logo";
 import FollowListBase from "Element/User/FollowListBase";
 import { clearEntropy } from "Login";
@@ -15,9 +14,6 @@ export default function DiscoverFollows() {
   const { formatMessage } = useIntl();
   const login = useLogin();
   const navigate = useNavigate();
-  const sortedReccomends = useMemo(() => {
-    return RecommendedFollows.sort(() => (Math.random() >= 0.5 ? -1 : 1)).map(a => a.toLowerCase());
-  }, []);
 
   async function clearEntropyAndGo() {
     clearEntropy(login);
@@ -42,9 +38,14 @@ export default function DiscoverFollows() {
         </button>
       </div>
       <h3>
-        <FormattedMessage {...messages.PopularAccounts} />
+        <FormattedMessage
+          defaultMessage="{site_name} Developers"
+          values={{
+            site_name: CONFIG.appNameCapitalized,
+          }}
+        />
       </h3>
-      {sortedReccomends.length > 0 && <FollowListBase pubkeys={sortedReccomends} showAbout={true} />}
+      {DeveloperAccounts.length > 0 && <FollowListBase pubkeys={DeveloperAccounts} showAbout={true} />}
       <h3>
         <FormattedMessage defaultMessage="Trending Users" />
       </h3>

@@ -21,9 +21,5 @@ export default function TrendingUsers() {
 
   if (!userList) return <PageSpinner />;
 
-  return (
-    <div className="p">
-      <FollowListBase pubkeys={userList} showAbout={true} />
-    </div>
-  );
+  return <FollowListBase pubkeys={userList} showAbout={true} />;
 }
