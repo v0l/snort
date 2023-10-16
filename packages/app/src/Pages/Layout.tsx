@@ -1,5 +1,5 @@
 import "./Layout.css";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
@@ -9,7 +9,6 @@ import messages from "./messages";
 
 import Icon from "Icons/Icon";
 import useLoginFeed from "Feed/LoginFeed";
-import { NoteCreator } from "Element/Event/NoteCreator";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
 import Avatar from "Element/User/Avatar";
@@ -20,10 +19,10 @@ import Spinner from "Icons/Spinner";
 import { fetchNip05Pubkey } from "Nip05/Verifier";
 import { useTheme } from "Hooks/useTheme";
 import { useLoginRelays } from "Hooks/useLoginRelays";
-import { useNoteCreator } from "State/NoteCreator";
 import { LoginUnlock } from "Element/PinPrompt";
 import useKeyboardShortcut from "Hooks/useKeyboardShortcut";
 import { LoginStore } from "Login";
+import { NoteCreatorButton } from "Element/Event/NoteCreatorButton";
 
 export default function Layout() {
   const location = useLocation();
@@ -69,7 +68,7 @@ export default function Layout() {
           </header>
         )}
         <Outlet />
-        <NoteCreatorButton />
+        <NoteCreatorButton className="note-create-button" />
         <Toaster />
       </div>
       <LoginUnlock />
@@ -79,7 +78,7 @@ export default function Layout() {
           onClick={() => {
             LoginStore.removeSession(id);
           }}>
-          <button type="button" className="btn btn-rnd">
+          <button type="button" className="circle flex flex-center">
             <Icon name="close" />
           </button>
         </div>
@@ -87,47 +86,6 @@ export default function Layout() {
     </>
   );
 }
-
-const NoteCreatorButton = () => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const location = useLocation();
-  const { readonly } = useLogin(s => ({ readonly: s.readonly }));
-  const { show, replyTo, update } = useNoteCreator(v => ({ show: v.show, replyTo: v.replyTo, update: v.update }));
-
-  useKeyboardShortcut("n", event => {
-    // if event happened in a form element, do nothing, otherwise focus on search input
-    if (event.target && !isFormElement(event.target as HTMLElement)) {
-      event.preventDefault();
-      if (buttonRef.current) {
-        buttonRef.current.click();
-      }
-    }
-  });
-
-  const shouldHideNoteCreator = useMemo(() => {
-    const isReplyNoteCreatorShowing = replyTo && show;
-    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/e", "/subscribe"];
-    return readonly || isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
-  }, [location, readonly]);
-
-  if (shouldHideNoteCreator) return;
-  return (
-    <>
-      <button
-        ref={buttonRef}
-        className="primary note-create-button"
-        onClick={() =>
-          update(v => {
-            v.replyTo = undefined;
-            v.show = true;
-          })
-        }>
-        <Icon name="plus" size={16} />
-      </button>
-      <NoteCreator key="global-note-creator" />
-    </>
-  );
-};
 
 const AccountHeader = () => {
   const navigate = useNavigate();

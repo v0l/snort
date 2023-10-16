@@ -84,27 +84,6 @@
   height: 32px;
 }
 
-.note-create-button {
-  width: 48px;
-  height: 48px;
-  color: white;
-  background: linear-gradient(90deg, rgba(239, 150, 68, 1) 0%, rgba(123, 65, 246, 1) 100%);
-  border: none;
-  border-radius: 100%;
-  position: fixed;
-  bottom: 40px;
-  right: calc(((100vw - 640px) / 2) - 75px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@media (max-width: 768px) {
-  .note-create-button {
-    right: 16px;
-  }
-}
-
 .light .note-creator textarea {
   background-color: #fff;
 }

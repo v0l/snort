@@ -33,7 +33,7 @@
   bottom: -32px;
 }
 
-.settings .image-settings .avatar-stack .btn-rnd {
+.settings .image-settings .avatar-stack button {
   position: absolute;
   padding: 0;
   width: 32px;
