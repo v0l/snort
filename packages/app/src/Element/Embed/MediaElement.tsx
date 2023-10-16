@@ -1,4 +1,5 @@
 import { ProxyImg } from "Element/ProxyImg";
+import useImgProxy from "Hooks/useImgProxy";
 import React from "react";
 
 interface MediaElementProps {
@@ -11,12 +12,14 @@ interface MediaElementProps {
 }
 
 export function MediaElement(props: MediaElementProps) {
+  const { proxy } = useImgProxy();
+
   if (props.mime.startsWith("image/")) {
     return <ProxyImg key={props.url} src={props.url} onClick={props.onMediaClick} />;
   } else if (props.mime.startsWith("audio/")) {
     return <audio key={props.url} src={props.url} controls />;
   } else if (props.mime.startsWith("video/")) {
-    return <video key={props.url} src={props.url} controls />;
+    return <video key={props.url} src={props.url} controls poster={proxy(props.url)} />;
   } else {
     return (
       <a
