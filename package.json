@@ -12,7 +12,8 @@
   "prettier": {
     "printWidth": 120,
     "bracketSameLine": true,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "trailingComma": "all"
   },
   "packageManager": "yarn@3.6.3",
   "dependencies": {
