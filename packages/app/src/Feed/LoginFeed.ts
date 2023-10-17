@@ -55,7 +55,7 @@ export default function useLoginFeed() {
     if (CONFIG.features.subscriptions && !login.readonly) {
       b.withFilter().authors([pubKey]).kinds([EventKind.AppData]).tag("d", ["snort"]);
       b.withFilter()
-        .relay("wss://relay.snort.social")
+        .relay("wss://relay.snort.social/")
         .kinds([EventKind.SnortSubscriptions])
         .authors([bech32ToHex(SnortPubKey)])
         .tag("p", [pubKey])

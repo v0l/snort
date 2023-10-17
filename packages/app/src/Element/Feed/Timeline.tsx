@@ -95,7 +95,7 @@ const Timeline = (props: TimelineProps) => {
           {!inView && (
             <div className="card latest-notes latest-notes-fixed pointer fade-in" onClick={() => onShowLatest(true)}>
               {latestAuthors.slice(0, 3).map(p => {
-                return <ProfileImage pubkey={p} showUsername={false} link={""} />;
+                return <ProfileImage pubkey={p} showUsername={false} link={""} showProfileCard={false} />;
               })}
               <FormattedMessage
                 defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
