@@ -36,7 +36,7 @@ function notificationContext(ev: TaggedNostrEvent) {
       }
       const eTag = findTag(ev, "e");
       if (eTag) {
-        return new NostrLink(NostrPrefix.Event, eTag);
+        return new NostrLink(CONFIG.eventLinkPrefix, eTag);
       }
       const pTag = ev.tags.filter(a => a[0] === "p").slice(-1)?.[0];
       if (pTag) {
@@ -49,7 +49,7 @@ function notificationContext(ev: TaggedNostrEvent) {
       const thread = EventExt.extractThread(ev);
       const tag = unwrap(thread?.replyTo ?? thread?.root ?? { value: ev.id, key: "e" });
       if (tag.key === "e") {
-        return new NostrLink(NostrPrefix.Event, unwrap(tag.value));
+        return new NostrLink(CONFIG.eventLinkPrefix, unwrap(tag.value));
       } else if (tag.key === "a") {
         const [kind, author, d] = unwrap(tag.value).split(":");
         return new NostrLink(NostrPrefix.Address, d, Number(kind), author);

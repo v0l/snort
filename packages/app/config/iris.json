@@ -13,5 +13,6 @@
     "subscriptions": false,
     "deck": true,
     "zapPool": true
-  }
+  },
+  "eventLinkPrefix": "note"
 }

@@ -56,7 +56,7 @@ export class Zapper {
             weight: Number(v[3] ?? 0),
             zap: {
               pubkey: v[1],
-              event: NostrLink.fromEvent(ev),
+              event: NostrLink.fromEvent(ev, CONFIG.eventLinkPrefix),
             },
           } as ZapTarget;
         } else {
@@ -67,7 +67,7 @@ export class Zapper {
             weight: 1,
             zap: {
               pubkey: ev.pubkey,
-              event: NostrLink.fromEvent(ev),
+              event: NostrLink.fromEvent(ev, CONFIG.eventLinkPrefix),
             },
           } as ZapTarget;
         }

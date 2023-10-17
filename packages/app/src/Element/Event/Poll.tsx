@@ -58,8 +58,13 @@ export default function Poll(props: PollProps) {
 
       setVoting(opt);
       const r = Object.keys(relays.item);
-      const zap = await publisher.zap(amount * 1000, props.ev.pubkey, r, NostrLink.fromEvent(props.ev), undefined, eb =>
-        eb.tag(["poll_option", opt.toString()]),
+      const zap = await publisher.zap(
+        amount * 1000,
+        props.ev.pubkey,
+        r,
+        NostrLink.fromEvent(props.ev, CONFIG.eventLinkPrefix),
+        undefined,
+        eb => eb.tag(["poll_option", opt.toString()]),
       );
 
       const lnurl = props.ev.tags.find(a => a[0] === "zap")?.[1] || pollerProfile?.lud16 || pollerProfile?.lud06;

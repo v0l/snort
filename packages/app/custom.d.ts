@@ -52,4 +52,5 @@ declare const CONFIG: {
     deck: boolean;
     zapPool: boolean;
   };
+  eventLinkPrefix: NostrPrefix;
 };

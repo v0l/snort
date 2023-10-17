@@ -3,7 +3,7 @@ import "./MessagesPage.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
-import { NostrLink, NostrPrefix, TLVEntryType, UserMetadata, decodeTLV } from "@snort/system";
+import { NostrLink, TLVEntryType, UserMetadata, decodeTLV } from "@snort/system";
 import { useUserProfile, useUserSearch } from "@snort/system-react";
 
 import UnreadCount from "Element/UnreadCount";
@@ -285,7 +285,7 @@ function NewChatWindow() {
 }
 
 export function Nip28ChatProfile({ id, onClick }: { id: string; onClick: (id: string) => void }) {
-  const channel = useEventFeed(new NostrLink(NostrPrefix.Event, id, 40));
+  const channel = useEventFeed(new NostrLink(CONFIG.eventLinkPrefix, id, 40));
   if (channel?.data) {
     const meta = JSON.parse(channel.data.content) as UserMetadata;
     return (

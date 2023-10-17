@@ -151,7 +151,7 @@ export function NoteInner(props: NoteProps) {
       return;
     }
 
-    const link = NostrLink.fromEvent(eTarget);
+    const link = NostrLink.fromEvent(eTarget, CONFIG.eventLinkPrefix);
     // detect cmd key and open in new tab
     if (e.metaKey) {
       window.open(`/${link.encode()}`, "_blank");

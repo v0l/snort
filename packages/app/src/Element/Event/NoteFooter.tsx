@@ -123,7 +123,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           name: getDisplayName(author, ev.pubkey),
           zap: {
             pubkey: ev.pubkey,
-            event: NostrLink.fromEvent(ev),
+            event: NostrLink.fromEvent(ev, CONFIG.eventLinkPrefix),
           },
         } as ZapTarget,
       ];

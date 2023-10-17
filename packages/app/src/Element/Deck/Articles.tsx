@@ -9,7 +9,10 @@ import { DeckContext } from "Pages/DeckLayout";
 export default function Articles() {
   const data = useArticles();
   const deck = useContext(DeckContext);
-  const related = useReactions("articles:reactions", data.data?.map(v => NostrLink.fromEvent(v)) ?? []);
+  const related = useReactions(
+    "articles:reactions",
+    data.data?.map(v => NostrLink.fromEvent(v, CONFIG.eventLinkPrefix)) ?? [],
+  );
 
   return (
     <>

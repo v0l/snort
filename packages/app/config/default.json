@@ -13,5 +13,6 @@
     "subscriptions": true,
     "deck": true,
     "zapPool": true
-  }
+  },
+  "eventLinkPrefix": "nevent"
 }
