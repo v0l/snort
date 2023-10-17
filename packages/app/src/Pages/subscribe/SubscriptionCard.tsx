@@ -26,11 +26,12 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
 
   const [invoice, setInvoice] = useState("");
   const [error, setError] = useState<SubscriptionError>();
+  const [months, setMonths] = useState(1);
 
-  async function renew(id: string) {
+  async function renew(id: string, months: number) {
     const api = new SnortApi(undefined, publisher);
     try {
-      const rsp = await api.renewSubscription(id);
+      const rsp = await api.renewSubscription(id, months);
       setInvoice(rsp.pr);
     } catch (e) {
       if (e instanceof SubscriptionError) {
@@ -115,10 +116,19 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
           )}
         </div>
         {(isExpired || isNew) && (
-          <div className="flex">
-            <AsyncButton onClick={() => renew(sub.id)}>
-              {isExpired ? <FormattedMessage defaultMessage="Renew" /> : <FormattedMessage defaultMessage="Pay Now" />}
-            </AsyncButton>
+          <div className="flex g8">
+            <div className="flex flex-col g4">
+              <span>&nbsp;</span>
+              <AsyncButton onClick={() => renew(sub.id, months)}>
+                {isExpired ? <FormattedMessage defaultMessage="Renew" /> : <FormattedMessage defaultMessage="Pay Now" />}
+              </AsyncButton>
+            </div>
+            <div className="flex flex-col g4">
+              <small>
+                <FormattedMessage defaultMessage="Months" />
+              </small>
+              <input type="number" value={months} onChange={e => setMonths(Number(e.target.value))} min={1} />
+            </div>
           </div>
         )}
         {isPaid && subFeatures()}

@@ -72,8 +72,8 @@ export default class SnortApi {
     return this.#getJsonAuthd<InvoiceResponse>(`api/v1/subscription?type=${type}`, "PUT");
   }
 
-  renewSubscription(id: string) {
-    return this.#getJsonAuthd<InvoiceResponse>(`api/v1/subscription/${id}/renew`, "GET");
+  renewSubscription(id: string, months = 1) {
+    return this.#getJsonAuthd<InvoiceResponse>(`api/v1/subscription/${id}/renew?months=${months}`, "GET");
   }
 
   listSubscriptions() {
