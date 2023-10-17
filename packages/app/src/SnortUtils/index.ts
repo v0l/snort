@@ -469,7 +469,7 @@ export function kvToObject<T>(o: string, sep?: string) {
 }
 
 export function defaultAvatar(input: string) {
-  return `https://robohash.v0l.io/${input}.png`;
+  return `https://robohash.v0l.io/${input}.png${IsHalloween() ? "?set=set2" : ""}`;
 }
 
 export function isFormElement(target: HTMLElement): boolean {
@@ -479,3 +479,8 @@ export function isFormElement(target: HTMLElement): boolean {
 
   return false;
 }
+
+export const IsHalloween = () => {
+  const now = new Date();
+  return now.getMonth() === 9 && now.getDate() >= 17;
+};
