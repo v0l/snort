@@ -1,10 +1,9 @@
 import "./ProfileImage.css";
 
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode } from "react";
 import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useHover } from "@uidotdev/usehooks";
-import { ControlledMenu } from "@szhsin/react-menu";
 import classNames from "classnames";
 
 import Avatar from "Element/User/Avatar";
@@ -12,10 +11,8 @@ import Nip05 from "Element/User/Nip05";
 import useLogin from "Hooks/useLogin";
 import Icon from "Icons/Icon";
 import DisplayName from "./DisplayName";
-import Text from "Element/Text";
-import FollowButton from "Element/User/FollowButton";
-import { UserWebsiteLink } from "Element/User/UserWebsiteLink";
 import { ProfileLink } from "./ProfileLink";
+import { ProfileCard } from "./ProfileCard";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -57,22 +54,6 @@ export default function ProfileImage({
   const { follows } = useLogin();
   const doesFollow = follows.item.includes(pubkey);
   const [ref, hovering] = useHover<HTMLDivElement>();
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [t, setT] = useState<ReturnType<typeof setTimeout>>();
-
-  useEffect(() => {
-    if (hovering) {
-      const tn = setTimeout(() => {
-        setShowProfileMenu(true);
-      }, 1000);
-      setT(tn);
-    } else {
-      if (t) {
-        clearTimeout(t);
-        setT(undefined);
-      }
-    }
-  }, [hovering]);
 
   function handleClick(e: React.MouseEvent) {
     if (link === "") {
@@ -118,38 +99,8 @@ export default function ProfileImage({
   }
 
   function profileCard() {
-    if (showProfileCard ?? true) {
-      return (
-        <ControlledMenu
-          state={showProfileMenu ? "open" : "closed"}
-          anchorRef={ref}
-          menuClassName="profile-card"
-          onClose={() => setShowProfileMenu(false)}>
-          <div className="flex flex-col g8">
-            <div className="flex justify-between">
-              <ProfileImage pubkey={""} profile={user} showProfileCard={false} link="" />
-              <div className="flex g8">
-                {/*<button type="button" onClick={() => {
-                  LoginStore.loginWithPubkey(pubkey, LoginSessionType.PublicKey, undefined, undefined, undefined, true);
-                }}>
-                  <FormattedMessage defaultMessage="Stalk" />
-              </button>*/}
-                <FollowButton pubkey={pubkey} />
-              </div>
-            </div>
-            <Text
-              id={`profile-card-${pubkey}`}
-              content={user?.about ?? ""}
-              creator={pubkey}
-              tags={[]}
-              disableMedia={true}
-              disableLinkPreview={true}
-              truncate={250}
-            />
-            <UserWebsiteLink user={user} />
-          </div>
-        </ControlledMenu>
-      );
+    if ((showProfileCard ?? true) && user) {
+      return <ProfileCard pubkey={pubkey} user={user} show={hovering} ref={ref} />;
     }
     return null;
   }

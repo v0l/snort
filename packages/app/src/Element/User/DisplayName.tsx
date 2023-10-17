@@ -33,7 +33,10 @@ export function getDisplayNameOrPlaceHolder(user: UserMetadata | undefined, pubk
 const DisplayName = ({ pubkey, user }: DisplayNameProps) => {
   const [name, isPlaceHolder] = useMemo(() => getDisplayNameOrPlaceHolder(user, pubkey), [user, pubkey]);
 
-  return <span className={isPlaceHolder ? "placeholder" : ""}>{name}</span>;
+  if (isPlaceHolder) {
+    return <span className="placeholder">{name}</span>;
+  }
+  return name;
 };
 
 export default DisplayName;
