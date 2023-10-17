@@ -44,7 +44,8 @@ export default function ListHandles() {
               {a.domain}
             </span>
           </h4>
-          <button type="button"
+          <button
+            type="button"
             onClick={() =>
               navigate("manage", {
                 state: a,
