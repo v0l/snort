@@ -45,8 +45,8 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   }
 
   async function share() {
-    const link = NostrLink.fromEvent(ev).encode();
-    const url = `${window.location.protocol}//${window.location.host}/e/${link}`;
+    const link = NostrLink.fromEvent(ev, CONFIG.eventLinkPrefix).encode();
+    const url = `${window.location.protocol}//${window.location.host}/${link}`;
     if ("share" in window.navigator) {
       await window.navigator.share({
         title: "Snort",
