@@ -53,4 +53,5 @@ declare const CONFIG: {
     zapPool: boolean;
   };
   eventLinkPrefix: NostrPrefix;
+  profileLinkPrefix: NostrPrefix;
 };

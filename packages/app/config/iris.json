@@ -14,5 +14,6 @@
     "deck": true,
     "zapPool": true
   },
-  "eventLinkPrefix": "note"
+  "eventLinkPrefix": "note",
+  "profileLinkPrefix": "npub"
 }

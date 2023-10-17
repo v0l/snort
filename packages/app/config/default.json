@@ -14,5 +14,6 @@
     "deck": true,
     "zapPool": true
   },
-  "eventLinkPrefix": "nevent"
+  "eventLinkPrefix": "nevent",
+  "profileLinkPrefix": "nprofile"
 }

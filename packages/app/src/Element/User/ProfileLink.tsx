@@ -37,7 +37,7 @@ export function ProfileLink({
         return `/${username}`;
       }
       return `/${new NostrLink(
-        NostrPrefix.Profile,
+        CONFIG.profileLinkPrefix,
         pubkey,
         undefined,
         undefined,
