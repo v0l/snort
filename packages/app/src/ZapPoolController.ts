@@ -168,4 +168,4 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
   }
 }
 
-export const ZapPoolController = new ZapPool();
+export const ZapPoolController = CONFIG.features.zapPool ? new ZapPool() : undefined;

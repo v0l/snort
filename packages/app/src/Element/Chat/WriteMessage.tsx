@@ -80,7 +80,7 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
 
   return (
     <>
-      <button className="circle flex flex-center" onClick={() => attachFile()}>
+      <button className="circle flex f-center" onClick={() => attachFile()}>
         {uploading ? <Spinner width={20} /> : <Icon name="attachment" size={20} />}
       </button>
       <div className="w-max">
@@ -97,7 +97,7 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
         />
         {error && <b className="error">{error}</b>}
       </div>
-      <button className="circle flex flex-center" onClick={() => sendMessage()}>
+      <button className="circle flex f-center" onClick={() => sendMessage()}>
         {sending ? <Spinner width={20} /> : <Icon name="arrow-right" size={20} />}
       </button>
     </>

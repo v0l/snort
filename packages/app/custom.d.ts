@@ -45,7 +45,11 @@ declare const CONFIG: {
   appleTouchIconUrl: string;
   httpCache: string;
   animalNamePlaceholders: boolean;
+  defaultZapPoolFee?: number;
   features: {
+    analytics: boolean;
     subscriptions: boolean;
+    deck: boolean;
+    zapPool: boolean;
   };
 };

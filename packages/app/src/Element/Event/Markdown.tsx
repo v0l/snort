@@ -1,11 +1,12 @@
 import "./Markdown.css";
 
 import { ReactNode, forwardRef, useMemo } from "react";
+import { transformText } from "@snort/system";
 import { marked, Token } from "marked";
 import { Link } from "react-router-dom";
 import markedFootnote, { Footnotes, Footnote, FootnoteRef } from "marked-footnote";
+
 import { ProxyImg } from "Element/ProxyImg";
-import { transformText } from "@snort/system";
 import Mention from "Element/Embed/Mention";
 import NostrLink from "Element/Embed/NostrLink";
 

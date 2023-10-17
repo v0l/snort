@@ -9,6 +9,9 @@
   "httpCache": "https://api.iris.to",
   "animalNamePlaceholders": true,
   "features": {
-    "subscriptions": false
+    "analytics": true,
+    "subscriptions": false,
+    "deck": true,
+    "zapPool": true
   }
 }

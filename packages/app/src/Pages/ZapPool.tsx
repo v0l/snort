@@ -34,6 +34,7 @@ const DataProviders = [
 ];
 
 function ZapTarget({ target }: { target: ZapPoolRecipient }) {
+  if (!ZapPoolController) return;
   const login = useLogin();
   const profile = useUserProfile(target.pubkey);
   const hasAddress = profile?.lud16 || profile?.lud06;
@@ -54,7 +55,7 @@ function ZapTarget({ target }: { target: ZapPoolRecipient }) {
               max={100}
               value={target.split}
               onChange={e =>
-                ZapPoolController.set({
+                ZapPoolController?.set({
                   ...target,
                   split: e.target.valueAsNumber,
                 })
@@ -70,11 +71,12 @@ function ZapTarget({ target }: { target: ZapPoolRecipient }) {
 }
 
 export default function ZapPoolPage() {
+  if (!ZapPoolController) return;
   const login = useLogin();
   const { system } = useEventPublisher();
   const zapPool = useSyncExternalStore(
-    c => ZapPoolController.hook(c),
-    () => ZapPoolController.snapshot(),
+    c => unwrap(ZapPoolController).hook(c),
+    () => unwrap(ZapPoolController).snapshot(),
   );
   const { wallet } = useWallet();
 
@@ -146,7 +148,7 @@ export default function ZapPoolPage() {
       </p>
       <p>
         {wallet && (
-          <AsyncButton onClick={() => ZapPoolController.payout(wallet)}>
+          <AsyncButton onClick={() => ZapPoolController?.payout(wallet)}>
             <FormattedMessage defaultMessage="Payout Now" />
           </AsyncButton>
         )}

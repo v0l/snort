@@ -78,7 +78,7 @@ export default function Layout() {
           onClick={() => {
             LoginStore.removeSession(id);
           }}>
-          <button type="button" className="circle flex flex-center">
+          <button type="button" className="circle flex f-center">
             <Icon name="close" />
           </button>
         </div>

@@ -207,7 +207,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               <Avatar pubkey={id} user={user} image={picture} />
               <AsyncButton
                 type="button"
-                className="circle flex flex-center"
+                className="circle flex f-center"
                 onClick={() => setNewAvatar()}
                 disabled={readonly}>
                 <Icon name="upload-01" />

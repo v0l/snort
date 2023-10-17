@@ -159,7 +159,9 @@ export default function NoteFooter(props: NoteFooterProps) {
         const result = await zapper.send(wallet, targets, amount);
         const totalSent = result.reduce((acc, v) => (acc += v.sent), 0);
         if (totalSent > 0) {
-          ZapPoolController.allocate(totalSent);
+          if (CONFIG.features.zapPool) {
+            ZapPoolController?.allocate(totalSent);
+          }
           await interactionCache.zap();
         }
       });

@@ -9,6 +9,9 @@
   "httpCache": "",
   "animalNamePlaceholders": false,
   "features": {
-    "subscriptions": true
+    "analytics": true,
+    "subscriptions": true,
+    "deck": true,
+    "zapPool": true
   }
 }

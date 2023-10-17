@@ -7,7 +7,7 @@ import WasmPath from "@snort/system-wasm/pkg/system_wasm_bg.wasm";
 
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 import {
   NostrSystem,
   ProfileLoaderService,
@@ -148,7 +148,7 @@ async function initSite() {
 
   // inject analytics script
   // <script defer data-domain="snort.social" src="http://analytics.v0l.io/js/script.js"></script>
-  if (login.preferences.telemetry ?? true) {
+  if (CONFIG.features.analytics && (login.preferences.telemetry ?? true)) {
     const sc = document.createElement("script");
     sc.src = "https://analytics.v0l.io/js/script.js";
     sc.defer = true;
@@ -159,7 +159,79 @@ async function initSite() {
 }
 
 let didInit = false;
-export const router = createBrowserRouter([
+const mainRoutes = [
+  ...RootRoutes,
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/help",
+    element: <HelpPage />,
+  },
+  {
+    path: "/e/:id",
+    element: <ThreadRoute />,
+  },
+  {
+    path: "/p/:id",
+    element: <ProfilePage />,
+  },
+  {
+    path: "/notifications",
+    element: <NotificationsPage />,
+  },
+  {
+    path: "/settings",
+    element: <SettingsPage />,
+    children: SettingsRoutes,
+  },
+  {
+    path: "/free-nostr-address",
+    element: <FreeNostrAddressPage />,
+  },
+  {
+    path: "/nostr-address",
+    element: <NostrAddressPage />,
+  },
+  {
+    path: "/messages/:id?",
+    element: <MessagesPage />,
+  },
+  {
+    path: "/donate",
+    element: <DonatePage />,
+  },
+  {
+    path: "/search/:keyword?",
+    element: <SearchPage />,
+  },
+  {
+    path: "/list-feed/:id",
+    element: <ListFeedPage />,
+  },
+  ...NewUserRoutes,
+  ...WalletRoutes,
+] as Array<RouteObject>;
+
+if (CONFIG.features.zapPool) {
+  mainRoutes.push({
+    path: "/zap-pool",
+    element: <ZapPoolPage />,
+  });
+}
+
+if (CONFIG.features.subscriptions) {
+  mainRoutes.push(...SubscribeRoutes);
+}
+
+// add catch all route
+mainRoutes.push({
+  path: "/*",
+  element: <NostrLinkHandler />,
+});
+
+const routes = [
   {
     element: <Layout />,
     errorElement: <ErrorPage />,
@@ -170,71 +242,12 @@ export const router = createBrowserRouter([
       }
       return null;
     },
-    children: [
-      ...RootRoutes,
-      {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/help",
-        element: <HelpPage />,
-      },
-      {
-        path: "/e/:id",
-        element: <ThreadRoute />,
-      },
-      {
-        path: "/p/:id",
-        element: <ProfilePage />,
-      },
-      {
-        path: "/notifications",
-        element: <NotificationsPage />,
-      },
-      {
-        path: "/settings",
-        element: <SettingsPage />,
-        children: SettingsRoutes,
-      },
-      {
-        path: "/free-nostr-address",
-        element: <FreeNostrAddressPage />,
-      },
-      {
-        path: "/nostr-address",
-        element: <NostrAddressPage />,
-      },
-      {
-        path: "/messages/:id?",
-        element: <MessagesPage />,
-      },
-      {
-        path: "/donate",
-        element: <DonatePage />,
-      },
-      {
-        path: "/search/:keyword?",
-        element: <SearchPage />,
-      },
-      {
-        path: "/zap-pool",
-        element: <ZapPoolPage />,
-      },
-      {
-        path: "/list-feed/:id",
-        element: <ListFeedPage />,
-      },
-      ...NewUserRoutes,
-      ...WalletRoutes,
-      ...(CONFIG.features.subscriptions ? SubscribeRoutes : []),
-      {
-        path: "/*",
-        element: <NostrLinkHandler />,
-      },
-    ],
+    children: mainRoutes,
   },
-  {
+] as Array<RouteObject>;
+
+if (CONFIG.features.deck) {
+  routes.push({
     path: "/deck",
     element: <SnortDeckLayout />,
     loader: async () => {
@@ -245,8 +258,10 @@ export const router = createBrowserRouter([
       return null;
     },
     children: RootTabRoutes,
-  },
-]);
+  } as RouteObject);
+}
+
+export const router = createBrowserRouter(routes);
 
 const root = ReactDOM.createRoot(unwrap(document.getElementById("root")));
 root.render(
