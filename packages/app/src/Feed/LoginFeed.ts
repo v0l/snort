@@ -59,7 +59,7 @@ export default function useLoginFeed() {
         .kinds([EventKind.SnortSubscriptions])
         .authors([bech32ToHex(SnortPubKey)])
         .tag("p", [pubKey])
-        .limit(1);
+        .limit(10);
     }
     b.withFilter()
       .authors([pubKey])
