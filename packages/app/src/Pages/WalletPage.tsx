@@ -86,7 +86,7 @@ export default function WalletPage() {
           <FormattedMessage defaultMessage="Enter wallet password" />
         </h3>
         <div className="flex w-max">
-          <div className="f-grow mr10">
+          <div className="grow mr10">
             <input
               type="password"
               placeholder={formatMessage({
@@ -140,7 +140,7 @@ export default function WalletPage() {
         </h3>
         {history?.map(a => (
           <div className="card flex wallet-history-item" key={a.timestamp}>
-            <div className="f-grow f-col">
+            <div className="grow flex-col">
               <NoteTime from={a.timestamp * 1000} fallback={formatMessage({ defaultMessage: "now" })} />
               <div>{(a.memo ?? "").length === 0 ? <>&nbsp;</> : a.memo}</div>
             </div>

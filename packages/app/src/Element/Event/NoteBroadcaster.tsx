@@ -71,7 +71,7 @@ export function NoteBroadcaster({
   }
 
   return (
-    <div className="flex-column g16">
+    <div className="flex flex-col g16">
       <h3>
         <FormattedMessage defaultMessage="Sending notes and other stuff" />
       </h3>
@@ -81,7 +81,7 @@ export function NoteBroadcaster({
         .map(r => (
           <div className="flex-row g16">
             <Icon name={r.ok ? "check" : "x"} className={r.ok ? "success" : "error"} size={24} />
-            <div className="flex-column f-grow g4">
+            <div className="flex flex-col grow g4">
               <b>{getRelayName(r.relay)}</b>
               {r.message && <small>{r.message}</small>}
             </div>
@@ -89,7 +89,7 @@ export function NoteBroadcaster({
               <div className="flex g8">
                 <AsyncButton
                   onClick={() => retryPublish(r)}
-                  className="p4 br-compact flex f-center secondary"
+                  className="p4 br-compact flex items-center secondary"
                   title={formatMessage({
                     defaultMessage: "Retry publishing",
                   })}>
@@ -97,7 +97,7 @@ export function NoteBroadcaster({
                 </AsyncButton>
                 <AsyncButton
                   onClick={() => removeRelayFromResult(r)}
-                  className="p4 br-compact flex f-center secondary"
+                  className="p4 br-compact flex items-center secondary"
                   title={formatMessage({
                     defaultMessage: "Remove from my relays",
                   })}>

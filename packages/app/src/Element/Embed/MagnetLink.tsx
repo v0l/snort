@@ -1,4 +1,4 @@
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 
 import { Magnet } from "SnortUtils";
 

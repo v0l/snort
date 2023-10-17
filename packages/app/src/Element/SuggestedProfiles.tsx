@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { HexKey, NostrPrefix } from "@snort/system";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 
 import FollowListBase from "Element/User/FollowListBase";
 import PageSpinner from "Element/PageSpinner";
@@ -55,7 +55,7 @@ export default function SuggestedProfiles() {
 
   return (
     <>
-      <div className="card flex f-space">
+      <div className="card flex justify-between">
         <FormattedMessage defaultMessage="Provider" />
         <select onChange={e => setProvider(Number(e.target.value))}>
           <option value={Provider.NostrBand}>nostr.band</option>

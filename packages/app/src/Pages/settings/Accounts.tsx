@@ -1,4 +1,4 @@
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
 import ProfilePreview from "Element/User/ProfilePreview";
@@ -10,7 +10,7 @@ export default function AccountsPage() {
   const sub = getActiveSubscriptions(LoginStore.allSubscriptions());
 
   return (
-    <div className="flex-column g12">
+    <div className="flex flex-col g12">
       <h3>
         <FormattedMessage defaultMessage="Logins" />
       </h3>

@@ -1,16 +1,17 @@
-import { Link } from "react-router-dom";
-import { HexKey } from "@snort/system";
-
+import { NostrLink, NostrPrefix } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { profileLink } from "SnortUtils";
-import DisplayName from "../User/DisplayName";
 
-export default function Mention({ pubkey, relays }: { pubkey: HexKey; relays?: Array<string> | string }) {
-  const user = useUserProfile(pubkey);
+import DisplayName from "Element/User/DisplayName";
+import { ProfileLink } from "Element/User/ProfileLink";
+
+export default function Mention({ link }: { link: NostrLink }) {
+  const profile = useUserProfile(link.id);
+
+  if (link.type !== NostrPrefix.Profile && link.type !== NostrPrefix.PublicKey) return;
 
   return (
-    <Link to={profileLink(pubkey, relays)} onClick={e => e.stopPropagation()}>
-      @<DisplayName user={user} pubkey={pubkey} />
-    </Link>
+    <ProfileLink pubkey={link.id} user={profile} onClick={e => e.stopPropagation()}>
+      @<DisplayName user={profile} pubkey={link.id} />
+    </ProfileLink>
   );
 }

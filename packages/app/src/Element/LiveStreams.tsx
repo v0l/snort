@@ -43,7 +43,7 @@ function LiveStreamEvent({ ev }: { ev: NostrEvent }) {
             "--img": `url(${imageProxy})`,
           } as CSSProperties
         }></div>
-      <div className="flex f-col details">
+      <div className="flex flex-col details">
         <div className="flex g2">
           <span className="live">{status}</span>
           <div className="reaction-pill">

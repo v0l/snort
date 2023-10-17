@@ -1,5 +1,5 @@
 import { NostrEvent, NostrLink } from "@snort/system";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
 import { findTag } from "SnortUtils";
@@ -70,7 +70,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
   }
 
   return (
-    <div className="flex f-space br p24 bg-primary">
+    <div className="flex justify-between br p24 bg-primary">
       <div className="flex g12">
         <ProfileImage pubkey={host} showUsername={false} size={56} />
         <div>

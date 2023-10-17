@@ -80,7 +80,7 @@ export default function ImportFollows() {
         <input
           type="text"
           placeholder={formatMessage(messages.TwitterPlaceholder)}
-          className="f-grow mr10"
+          className="grow mr10"
           value={twitterUsername}
           onChange={e => setTwitterUsername(e.target.value)}
         />

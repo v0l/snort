@@ -63,7 +63,7 @@ export function PinPrompt({
             submitButtonRef.current.click();
           }
         }}>
-        <div className="flex-column g12">
+        <div className="flex flex-col g12">
           <h2>
             <FormattedMessage defaultMessage="Enter Pin" />
           </h2>

@@ -208,12 +208,12 @@ function NotificationSummary({ evs }: { evs: Array<TaggedNostrEvent> }) {
   };
 
   return (
-    <div className="flex-column g12 p bb">
-      <div className="flex f-space">
+    <div className="flex flex-col g12 p bb">
+      <div className="flex justify-between">
         <h2>
           <FormattedMessage defaultMessage="Summary" description="Notifications summary" />
         </h2>
-        <div className="flex g8">
+        <div className="flex items-center g8">
           {filterIcon(NotificationSummaryFilter.Reactions, "heart-solid", "text-heart")}
           {filterIcon(NotificationSummaryFilter.Zaps, "zap-solid", "text-zap")}
           {filterIcon(NotificationSummaryFilter.Reposts, "reverse-left", "text-repost")}
@@ -246,19 +246,19 @@ function NotificationSummary({ evs }: { evs: Array<TaggedNostrEvent> }) {
               if (active && payload && payload.length) {
                 return (
                   <div className="summary-tooltip">
-                    <div className="flex-column g12">
+                    <div className="flex flex-col g12">
                       <Icon name="heart-solid" className="text-heart" />
                       {formatShort(payload.find(a => a.name === "reactions")?.value as number)}
                     </div>
-                    <div className="flex-column g12">
+                    <div className="flex flex-col g12">
                       <Icon name="zap-solid" className="text-zap" />
                       {formatShort(payload.find(a => a.name === "zaps")?.value as number)}
                     </div>
-                    <div className="flex-column g12">
+                    <div className="flex flex-col g12">
                       <Icon name="reverse-left" className="text-repost" />
                       {formatShort(payload.find(a => a.name === "reposts")?.value as number)}
                     </div>
-                    <div className="flex-column g12">
+                    <div className="flex flex-col g12">
                       <Icon name="at-sign" className="text-mention" />
                       {formatShort(payload.find(a => a.name === "mentions")?.value as number)}
                     </div>
@@ -357,13 +357,13 @@ function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onC
     <div className="card notification-group" ref={ref}>
       {inView && (
         <>
-          <div className="flex-column g12">
+          <div className="flex flex-col g12">
             <div>
               <Icon name={iconName()} size={24} className={iconName()} />
             </div>
             <div>{kind === EventKind.ZapReceipt && formatShort(totalZaps)}</div>
           </div>
-          <div className="flex-column w-max g12">
+          <div className="flex flex-col w-max g12">
             <div className="flex">
               {pubkeys
                 .filter(a => a !== "anon")

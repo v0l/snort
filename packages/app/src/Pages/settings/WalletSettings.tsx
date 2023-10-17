@@ -1,6 +1,6 @@
 import "./WalletSettings.css";
 import LndLogo from "lnd-logo.png";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { Link, RouteObject, useNavigate } from "react-router-dom";
 
 import BlueWallet from "Icons/BlueWallet";

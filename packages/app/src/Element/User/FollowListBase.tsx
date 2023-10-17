@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/system";
 import { dedupe } from "@snort/shared";
 
@@ -38,9 +38,9 @@ export default function FollowListBase({
     if (publisher) {
       const newFollows = dedupe([...pubkeys, ...login.follows.item]);
       const ev = await publisher.contactList(newFollows, login.relays.item);
-      system.BroadcastEvent(ev);
-      await FollowsFeed.backFill(system, pubkeys);
       setFollows(login, newFollows, ev.created_at);
+      await system.BroadcastEvent(ev);
+      await FollowsFeed.backFill(system, pubkeys);
     }
   }
 
@@ -48,7 +48,7 @@ export default function FollowListBase({
     <div className={className}>
       {(showFollowAll ?? true) && (
         <div className="flex mt10 mb10">
-          <div className="f-grow bold">{title}</div>
+          <div className="grow bold">{title}</div>
           {actions}
           <AsyncButton className="transparent" type="button" onClick={() => followAll()} disabled={login.readonly}>
             <FormattedMessage {...messages.FollowAll} />

@@ -1,18 +1,20 @@
-import useZapsFeed from "../../Feed/ZapsFeed";
-import FormattedMessage from "../../Element/FormattedMessage";
-import messages from "../messages";
-import { formatShort } from "../../Number";
-import useFollowersFeed from "../../Feed/FollowersFeed";
-import FollowsList from "../../Element/User/FollowListBase";
-import useFollowsFeed from "../../Feed/FollowsFeed";
-import useRelaysFeed from "../../Feed/RelaysFeed";
-import RelaysMetadata from "../../Element/Relay/RelaysMetadata";
-import useBookmarkFeed from "../../Feed/BookmarkFeed";
-import Bookmarks from "../../Element/Bookmarks";
-import Icon from "../../Icons/Icon";
-import { Tab } from "../../Element/Tabs";
+import { FormattedMessage } from "react-intl";
 import { EventKind, HexKey, NostrLink, NostrPrefix } from "@snort/system";
+
+import useZapsFeed from "Feed/ZapsFeed";
+import { formatShort } from "Number";
+import useFollowersFeed from "Feed/FollowersFeed";
+import FollowsList from "Element/User/FollowListBase";
+import useFollowsFeed from "Feed/FollowsFeed";
+import useRelaysFeed from "Feed/RelaysFeed";
+import RelaysMetadata from "Element/Relay/RelaysMetadata";
+import useBookmarkFeed from "Feed/BookmarkFeed";
+import Bookmarks from "Element/Bookmarks";
+import Icon from "Icons/Icon";
+import { Tab } from "Element/Tabs";
 import { default as ZapElement } from "Element/Event/Zap";
+
+import messages from "../messages";
 
 export enum ProfileTabType {
   NOTES = 0,

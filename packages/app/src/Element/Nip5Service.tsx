@@ -250,7 +250,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
       )}
       {error && <b className="error">{error.error}</b>}
       {!registerStatus && (
-        <div className="flex mb10">
+        <div className="flex items-center mb10">
           <input
             type="text"
             className="nip-handle"
@@ -305,7 +305,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
         title={formatMessage(messages.Buying, { item: `${handle}@${domain}` })}
       />
       {registerStatus?.paid && (
-        <div className="flex f-col">
+        <div className="flex flex-col">
           <h4>
             <FormattedMessage {...messages.OrderPaid} />
           </h4>

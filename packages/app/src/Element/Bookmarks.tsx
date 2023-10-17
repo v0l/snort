@@ -1,5 +1,5 @@
 import { useState, useMemo, ChangeEvent } from "react";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { HexKey, TaggedNostrEvent } from "@snort/system";
 
 import Note from "Element/Event/Note";

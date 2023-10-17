@@ -291,11 +291,11 @@ export function NoteCreator() {
 
   function renderRelayCustomisation() {
     return (
-      <div className="flex-column g8">
+      <div className="flex flex-col g8">
         {Object.keys(relays.item || {})
           .filter(el => relays.item[el].write)
           .map((r, i, a) => (
-            <div className="p flex f-space note-creator-relay">
+            <div className="p flex justify-between note-creator-relay">
               <div>{r}</div>
               <div>
                 <input
@@ -353,15 +353,15 @@ export function NoteCreator() {
           </p>
           {renderRelayCustomisation()}
         </div>
-        <div className="flex-column g8">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage defaultMessage="Zap Splits" />
           </h4>
           <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." />
-          <div className="flex-column g8">
+          <div className="flex flex-col g8">
             {[...(note.zapSplits ?? [])].map((v, i, arr) => (
-              <div className="flex f-center g8">
-                <div className="flex-column f-4 g4">
+              <div className="flex items-center g8">
+                <div className="flex flex-col f-4 g4">
                   <h4>
                     <FormattedMessage defaultMessage="Recipient" />
                   </h4>
@@ -376,7 +376,7 @@ export function NoteCreator() {
                     placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address" })}
                   />
                 </div>
-                <div className="flex-column f-1 g4">
+                <div className="flex flex-col f-1 g4">
                   <h4>
                     <FormattedMessage defaultMessage="Weight" />
                   </h4>
@@ -394,7 +394,7 @@ export function NoteCreator() {
                     }
                   />
                 </div>
-                <div className="flex-column f-shrink g4">
+                <div className="flex flex-col s g4">
                   <div>&nbsp;</div>
                   <Icon
                     name="close"
@@ -415,7 +415,7 @@ export function NoteCreator() {
             <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" />
           </span>
         </div>
-        <div className="flex-column g8">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage defaultMessage="Sensitive Content" />
           </h4>
@@ -441,7 +441,7 @@ export function NoteCreator() {
 
   function noteCreatorFooter() {
     return (
-      <div className="flex f-space">
+      <div className="flex justify-between">
         <div className="flex g8">
           <ProfileImage
             pubkey={login.publicKey ?? ""}

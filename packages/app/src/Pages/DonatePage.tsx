@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/system";
 
 import { ApiHost, DeveloperAccounts, SnortPubKey } from "Const";
@@ -114,9 +114,9 @@ const DonatePage = () => {
       <p>
         <FormattedMessage defaultMessage="Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below" />
       </p>
-      <div className="flex-column g12">
+      <div className="flex flex-col g12">
         <div className="b br p">
-          <div className="flex f-space">
+          <div className="flex justify-between">
             <FormattedMessage defaultMessage="Lightning Donation" />
             <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL}>
               <FormattedMessage defaultMessage="Donate" />
@@ -132,7 +132,7 @@ const DonatePage = () => {
           )}
         </div>
         <div className="b br p">
-          <div className="flex f-space">
+          <div className="flex justify-between">
             <FormattedMessage defaultMessage="On-chain Donation" />
             <AsyncButton type="button" onClick={getOnChainAddress}>
               <FormattedMessage defaultMessage="Get Address" />
@@ -142,7 +142,7 @@ const DonatePage = () => {
       </div>
       {onChain && (
         <Modal onClose={() => setOnChain("")} id="donate-on-chain">
-          <div className="flex-column f-center g12">
+          <div className="flex flex-col items-center g12">
             <h2>
               <FormattedMessage defaultMessage="On-chain Donation Address" />
             </h2>

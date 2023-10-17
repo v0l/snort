@@ -1,14 +1,12 @@
 import "./ProfileImage.css";
 
 import React, { ReactNode, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useHover } from "@uidotdev/usehooks";
 import { ControlledMenu } from "@szhsin/react-menu";
 import classNames from "classnames";
 
-import { profileLink } from "SnortUtils";
 import Avatar from "Element/User/Avatar";
 import Nip05 from "Element/User/Nip05";
 import useLogin from "Hooks/useLogin";
@@ -17,6 +15,7 @@ import DisplayName from "./DisplayName";
 import Text from "Element/Text";
 import FollowButton from "Element/User/FollowButton";
 import { UserWebsiteLink } from "Element/User/UserWebsiteLink";
+import { ProfileLink } from "./ProfileLink";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -126,8 +125,8 @@ export default function ProfileImage({
           anchorRef={ref}
           menuClassName="profile-card"
           onClose={() => setShowProfileMenu(false)}>
-          <div className="flex-column g8">
-            <div className="flex f-space">
+          <div className="flex flex-col g8">
+            <div className="flex justify-between">
               <ProfileImage pubkey={""} profile={user} showProfileCard={false} link="" />
               <div className="flex g8">
                 {/*<button type="button" onClick={() => {
@@ -167,12 +166,14 @@ export default function ProfileImage({
   } else {
     return (
       <>
-        <Link
+        <ProfileLink
+          pubkey={pubkey}
           className={classNames("pfp", className)}
-          to={link === undefined ? profileLink(pubkey) : link}
+          user={user}
+          explicitLink={link}
           onClick={handleClick}>
           {inner()}
-        </Link>
+        </ProfileLink>
         {profileCard()}
       </>
     );

@@ -11,6 +11,8 @@ export default function useLoading<T>(fn: ((e: React.MouseEvent) => Promise<T> |
       if (typeof fn === "function") {
         await fn(e);
       }
+    } catch (e) {
+      console.error(e);
     } finally {
       setLoading(false);
     }

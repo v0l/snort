@@ -325,9 +325,6 @@ button.icon {
   width: 40px;
   height: 40px;
   padding: 10px;
-}
-
-button.icon .icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -478,27 +475,6 @@ input:disabled {
   cursor: not-allowed;
 }
 
-.flex {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.flex-row {
-  display: flex;
-  flex-direction: row;
-}
-
-.flex-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.f-center {
-  justify-content: center;
-  align-items: center;
-}
-
 .f-1 {
   flex: 1;
 }
@@ -515,38 +491,11 @@ input:disabled {
   flex: 4;
 }
 
-.f-grow {
-  flex-grow: 1;
-  min-width: 0;
-}
-
-.f-shrink {
-  flex-shrink: 1;
-}
-
 .f-ellipsis {
   min-width: 0;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-}
-
-.f-col {
-  flex-direction: column;
-  align-items: flex-start !important;
-}
-
-.f-col-end {
-  flex-direction: column;
-  align-items: flex-end !important;
-}
-
-.f-end {
-  justify-content: flex-end;
-}
-
-.f-space {
-  justify-content: space-between;
 }
 
 .f-wrap {
@@ -796,20 +745,8 @@ div.form-col {
   white-space: nowrap;
 }
 
-.main-content h2 {
-  font-weight: 600;
-  font-size: 26px;
-  line-height: 36px;
-}
-
 .main-content .profile-preview {
   margin: 8px 0;
-}
-
-.main-content h2 {
-  font-weight: 600;
-  font-size: 26px;
-  line-height: 36px;
 }
 
 button.tall {
@@ -843,11 +780,6 @@ button.tall {
 
 .action-heading button {
   min-width: 98px;
-}
-
-.flex-end {
-  display: flex;
-  justify-content: flex-end;
 }
 
 .align-center {

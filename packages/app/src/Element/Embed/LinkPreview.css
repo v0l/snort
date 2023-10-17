@@ -21,6 +21,8 @@
   padding: 0;
   font-size: 16px;
   font-weight: 700;
+  line-height: initial;
+  margin: 0.5em 0;
 }
 
 .link-preview-container:hover .link-preview-title > h1 {

@@ -7,7 +7,7 @@ import Note from "Element/Event/Note";
 import { getDisplayName } from "Element/User/DisplayName";
 import { eventLink, hexToBech32 } from "SnortUtils";
 import useModeration from "Hooks/useModeration";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import Icon from "Icons/Icon";
 import { useUserProfile } from "@snort/system-react";
 import { useInView } from "react-intersection-observer";

@@ -1,6 +1,6 @@
 import { db } from "Db";
 import AsyncButton from "Element/AsyncButton";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { useRouteError } from "react-router-dom";
 
 const ErrorPage = () => {

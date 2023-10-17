@@ -49,7 +49,7 @@ const ConnectNostrWallet = () => {
         <FormattedMessage defaultMessage="Enter Nostr Wallet Connect config" />
       </h4>
       <div className="flex">
-        <div className="f-grow mr10">
+        <div className="grow mr10">
           <input
             type="text"
             placeholder="nostr+walletconnect:<pubkey>?relay=<relay>&secret=<secret>"

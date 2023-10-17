@@ -121,7 +121,7 @@ export function LongFormText(props: LongFormTextProps) {
 
   return (
     <div
-      className="long-form-note flex-column g16 p pointer"
+      className="long-form-note flex flex-col g16 p pointer"
       onClick={e => {
         e.stopPropagation();
         props.onClick?.();

@@ -1,12 +1,10 @@
 import "./Preferences.css";
 
 import { FormattedMessage, useIntl } from "react-intl";
-import { useEffect, useState } from "react";
 import useLogin from "Hooks/useLogin";
 import { DefaultPreferences, updatePreferences, UserPreferences } from "Login";
 import { DefaultImgProxy } from "Const";
 import { unwrap } from "SnortUtils";
-import searchEmoji from "emoji-search";
 
 import messages from "./messages";
 
@@ -37,24 +35,15 @@ export const AllLanguageCodes = [
 const PreferencesPage = () => {
   const { formatMessage } = useIntl();
   const login = useLogin();
-  console.debug(login);
   const perf = login.preferences;
-  const [emoji, setEmoji] = useState<Array<{ name: string; char: string }>>([]);
-
-  useEffect(() => {
-    (async () => {
-      const allEmoji = await searchEmoji("");
-      setEmoji(allEmoji.map(a => ({ name: a.name, char: a.char })));
-    })();
-  }, []);
 
   return (
-    <div className="preferences flex-column g24">
+    <div className="preferences flex flex-col g24">
       <h3>
         <FormattedMessage {...messages.Preferences} />
       </h3>
 
-      <div className="flex f-space w-max">
+      <div className="flex justify-between w-max">
         <h4>
           <FormattedMessage defaultMessage="Language" />
         </h4>
@@ -78,7 +67,7 @@ const PreferencesPage = () => {
           </select>
         </div>
       </div>
-      <div className="flex f-space w-max">
+      <div className="flex justify-between w-max">
         <h4>
           <FormattedMessage {...messages.Theme} />
         </h4>
@@ -103,7 +92,7 @@ const PreferencesPage = () => {
           </select>
         </div>
       </div>
-      <div className="flex f-space w-max">
+      <div className="flex justify-between w-max">
         <h4>
           <FormattedMessage {...messages.DefaultRootTab} />
         </h4>
@@ -128,8 +117,8 @@ const PreferencesPage = () => {
           </select>
         </div>
       </div>
-      <div className="flex f-space w-max">
-        <div className="flex-column g8">
+      <div className="flex justify-between w-max">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage defaultMessage="Send usage metrics" />
           </h4>
@@ -146,7 +135,7 @@ const PreferencesPage = () => {
         </div>
       </div>
       <div className="flex w-max">
-        <div className="flex-column g8">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage {...messages.AutoloadMedia} />
           </h4>
@@ -176,8 +165,8 @@ const PreferencesPage = () => {
           </div>
         </div>
       </div>
-      <div className="flex f-space w-max">
-        <div className="flex-column g8">
+      <div className="flex justify-between w-max">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage defaultMessage="Check Signatures" />
           </h4>
@@ -193,8 +182,8 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="flex f-space w-max">
-        <div className="flex-column g8">
+      <div className="flex justify-between w-max">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage defaultMessage="Proof of Work" />
           </h4>
@@ -211,7 +200,7 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="flex f-space w-max">
+      <div className="flex justify-between w-max">
         <h4>
           <FormattedMessage defaultMessage="Default Zap amount" />
         </h4>
@@ -224,8 +213,8 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="flex f-space w-max">
-        <div className="flex-column g8">
+      <div className="flex justify-between w-max">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage defaultMessage="Show Badges" />
           </h4>
@@ -241,8 +230,8 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="flex f-space w-max">
-        <div className="flex-column g8">
+      <div className="flex justify-between w-max">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage defaultMessage="Show Status" />
           </h4>
@@ -258,8 +247,8 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="flex f-space w-max">
-        <div className="flex-column g8">
+      <div className="flex justify-between w-max">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage defaultMessage="Auto Zap" />
           </h4>
@@ -275,9 +264,9 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="flex-column">
-        <div className="flex f-space">
-          <div className="flex-column g8">
+      <div className="flex flex-col">
+        <div className="flex justify-between">
+          <div className="flex flex-col g8">
             <h4>
               <FormattedMessage {...messages.ImgProxy} />
             </h4>
@@ -375,8 +364,8 @@ const PreferencesPage = () => {
           </div>
         )}
       </div>
-      <div className="flex f-space w-max">
-        <div className="flex-column g8">
+      <div className="flex justify-between w-max">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage {...messages.EnableReactions} />
           </h4>
@@ -392,36 +381,28 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="flex-column g8">
+      <div className="flex flex-col g8">
         <h4>
           <FormattedMessage {...messages.ReactionEmoji} />
         </h4>
         <small>
           <FormattedMessage {...messages.ReactionEmojiHelp} />
         </small>
-        <select
-          className="emoji-selector"
+        <input
+          type="text"
           value={perf.reactionEmoji}
-          onChange={e =>
+          onChange={e => {
+            const split = e.target.value.match(/[\p{L}\S]{1}/u);
+            console.debug(e.target.value, split);
             updatePreferences(login, {
               ...perf,
-              reactionEmoji: e.target.value,
-            })
-          }>
-          <option value="+">
-            + <FormattedMessage {...messages.Default} />
-          </option>
-          {emoji.map(({ name, char }) => {
-            return (
-              <option value={char}>
-                {name} {char}
-              </option>
-            );
-          })}
-        </select>
+              reactionEmoji: split?.[0] ?? "",
+            });
+          }}
+        />
       </div>
-      <div className="flex f-space">
-        <div className="flex-column g8">
+      <div className="flex justify-between">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage {...messages.ConfirmReposts} />
           </h4>
@@ -437,8 +418,8 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="flex f-space">
-        <div className="flex-column g8">
+      <div className="flex justify-between">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage {...messages.ShowLatest} />
           </h4>
@@ -454,7 +435,7 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
-      <div className="flex-column g8">
+      <div className="flex flex-col g8">
         <h4>
           <FormattedMessage {...messages.FileUpload} />
         </h4>
@@ -476,8 +457,8 @@ const PreferencesPage = () => {
           <option value="nostrimg.com">nostrimg.com</option>
         </select>
       </div>
-      <div className="flex f-space">
-        <div className="flex-column g8">
+      <div className="flex justify-between">
+        <div className="flex flex-col g8">
           <h4>
             <FormattedMessage {...messages.DebugMenus} />
           </h4>

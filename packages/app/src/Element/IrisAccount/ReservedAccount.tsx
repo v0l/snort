@@ -1,5 +1,5 @@
 import AccountName from "./AccountName";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 
 export default function ReservedAccount({ name = "", enableReserved = () => {}, declineReserved = () => {} }) {
   return (

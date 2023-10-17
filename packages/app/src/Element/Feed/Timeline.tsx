@@ -1,5 +1,5 @@
 import "./Timeline.css";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { useCallback, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import { TaggedNostrEvent, EventKind, u256 } from "@snort/system";
@@ -84,7 +84,7 @@ const Timeline = (props: TimelineProps) => {
         <>
           <div className="card latest-notes" onClick={() => onShowLatest()} ref={ref}>
             {latestAuthors.slice(0, 3).map(p => {
-              return <ProfileImage pubkey={p} showUsername={false} link={""} />;
+              return <ProfileImage pubkey={p} showUsername={false} link={""} showProfileCard={false} />;
             })}
             <FormattedMessage
               defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
@@ -117,7 +117,7 @@ const Timeline = (props: TimelineProps) => {
         />
       ))}
       {(props.loadMore === undefined || props.loadMore === true) && (
-        <div className="flex f-center">
+        <div className="flex items-center">
           <button type="button" onClick={() => feed.loadMore()}>
             <FormattedMessage defaultMessage="Load more" />
           </button>

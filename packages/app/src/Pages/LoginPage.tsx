@@ -196,7 +196,7 @@ export default function LoginPage() {
               <p>
                 <FormattedMessage defaultMessage="Scan this QR code with your signer app to get started" />
               </p>
-              <div className="flex-column f-center g12">
+              <div className="flex flex-col items-center g12">
                 <QrCode data={nostrConnect} />
                 <Copy text={nostrConnect} />
               </div>
@@ -297,14 +297,14 @@ export default function LoginPage() {
           <p dir="auto">
             <FormattedMessage defaultMessage="Your key" description="Label for key input" />
           </p>
-          <div className="flex f-center g8">
+          <div className="flex items-center g8">
             <input
               dir="auto"
               type={isMasking ? "password" : "text"}
               placeholder={formatMessage({
                 defaultMessage: "nsec, npub, nip-05, hex, mnemonic",
               })}
-              className="f-grow"
+              className="grow"
               onChange={e => setKey(e.target.value)}
             />
             <Icon

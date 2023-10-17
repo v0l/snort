@@ -1,6 +1,6 @@
 import "./Relay.css";
 import { useContext, useMemo } from "react";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { RelaySettings } from "@snort/system";
 import { unixNowMs } from "@snort/shared";
@@ -46,7 +46,7 @@ export default function Relay(props: RelayProps) {
         <div className={`flex ${state?.connected ? "bg-success" : "bg-error"}`}>
           <Icon name="wifi" />
         </div>
-        <div className="f-grow f-col">
+        <div className="grow flex-col">
           <div className="flex mb10">
             <b className="f-2">{name}</b>
             <div className="f-1">
@@ -77,7 +77,7 @@ export default function Relay(props: RelayProps) {
             </div>
           </div>
           <div className="flex">
-            <div className="f-grow"></div>
+            <div className="grow"></div>
             <div>
               <span className="icon-btn" onClick={() => navigate(state?.id ?? "")}>
                 <Icon name="gear" size={12} />

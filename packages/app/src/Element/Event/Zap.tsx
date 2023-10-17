@@ -17,7 +17,7 @@ const Zap = ({ zap, showZapped = true }: { zap: ParsedZap; showZapped?: boolean 
 
   return valid && sender ? (
     <div className="card">
-      <div className="flex f-space">
+      <div className="flex justify-between">
         <ProfileImage pubkey={sender} />
         {receiver !== pubKey && showZapped && <ProfileImage pubkey={unwrap(receiver)} />}
         <h3>

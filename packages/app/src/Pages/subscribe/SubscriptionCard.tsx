@@ -120,7 +120,11 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
             <div className="flex flex-col g4">
               <span>&nbsp;</span>
               <AsyncButton onClick={() => renew(sub.id, months)}>
-                {isExpired ? <FormattedMessage defaultMessage="Renew" /> : <FormattedMessage defaultMessage="Pay Now" />}
+                {isExpired ? (
+                  <FormattedMessage defaultMessage="Renew" />
+                ) : (
+                  <FormattedMessage defaultMessage="Pay Now" />
+                )}
               </AsyncButton>
             </div>
             <div className="flex flex-col g4">

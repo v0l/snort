@@ -1,11 +1,12 @@
 import "./ProfilePage.css";
 import { useEffect, useState } from "react";
-import FormattedMessage from "Element/FormattedMessage";
-import { useNavigate, useParams } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   encodeTLV,
   encodeTLVEntries,
   EventKind,
+  MetadataCache,
   NostrLink,
   NostrPrefix,
   TLVEntryType,
@@ -58,18 +59,22 @@ import ProfileTab, {
   RelaysTab,
   ZapsProfileTab,
 } from "Pages/Profile/ProfileTab";
-import DisplayName from "../../Element/User/DisplayName";
+import DisplayName from "Element/User/DisplayName";
 import { UserWebsiteLink } from "Element/User/UserWebsiteLink";
 
 interface ProfilePageProps {
   id?: string;
+  state?: MetadataCache;
 }
 
-export default function ProfilePage({ id: propId }: ProfilePageProps) {
+export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   const params = useParams();
+  const location = useLocation();
+  const profileState = (location.state as MetadataCache | undefined) || state;
   const navigate = useNavigate();
-  const [id, setId] = useState<string>();
-  const user = useUserProfile(id);
+  const [id, setId] = useState<string | undefined>(profileState?.pubkey);
+  const [relays, setRelays] = useState<Array<string>>();
+  const user = useUserProfile(profileState ? undefined : id) || profileState;
   const login = useLogin();
   const loginPubKey = login.publicKey;
   const isMe = loginPubKey === id;
@@ -105,22 +110,24 @@ export default function ProfilePage({ id: propId }: ProfilePageProps) {
   const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
-    const resolvedId = propId || params.id;
-    if (resolvedId?.match(EmailRegex)) {
-      getNip05PubKey(resolvedId).then(a => {
-        setId(a);
-      });
-    } else {
-      const nav = tryParseNostrLink(resolvedId ?? "");
-      if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
-        // todo: use relays if any for nprofile
-        setId(nav.id);
+    if (!id) {
+      const resolvedId = propId || params.id;
+      if (resolvedId?.match(EmailRegex)) {
+        getNip05PubKey(resolvedId).then(a => {
+          setId(a);
+        });
       } else {
-        setId(parseId(resolvedId ?? ""));
+        const nav = tryParseNostrLink(resolvedId ?? "");
+        if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
+          setId(nav.id);
+          setRelays(nav.relays);
+        } else {
+          setId(parseId(resolvedId ?? ""));
+        }
       }
     }
     setTab(ProfileTab.Notes);
-  }, [propId, params]);
+  }, [id, propId, params]);
 
   function musicStatus() {
     if (!status.music) return;
@@ -145,20 +152,11 @@ export default function ProfilePage({ id: propId }: ProfilePageProps) {
     return inner();
   }
 
-  useEffect(() => {
-    if (user?.nip05 && user?.isNostrAddressValid) {
-      if (user.nip05.endsWith(`@${CONFIG.nip05Domain}`)) {
-        const username = user.nip05?.replace(`@${CONFIG.nip05Domain}`, "");
-        navigate(`/${username}`, { replace: true });
-      }
-    }
-  }, [user?.isNostrAddressValid, user?.nip05]);
-
   function username() {
     return (
       <>
-        <div className="flex-column g4">
-          <h2 className="flex g4">
+        <div className="flex flex-col g4">
+          <h2 className="flex items-center g4">
             <DisplayName user={user} pubkey={user?.pubkey ?? ""} />
             <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
           </h2>
@@ -251,6 +249,7 @@ export default function ProfilePage({ id: propId }: ProfilePageProps) {
                 type: "pubkey",
                 items: [id],
                 discriminator: id.slice(0, 12),
+                relay: relays,
               }}
               postsOnly={false}
               method={"LIMIT_UNTIL"}

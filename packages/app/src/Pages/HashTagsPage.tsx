@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 
 import Timeline from "Element/Feed/Timeline";
 import useEventPublisher from "Hooks/useEventPublisher";

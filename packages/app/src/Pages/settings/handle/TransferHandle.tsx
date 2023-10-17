@@ -34,7 +34,7 @@ export default function TransferHandle({ handle }: { handle: ManageHandle }) {
         <FormattedMessage defaultMessage="Transfer to Pubkey" />
       </h4>
       <div className="flex">
-        <div className="f-grow">
+        <div className="grow">
           <input
             type="text"
             className="w-max mr10"

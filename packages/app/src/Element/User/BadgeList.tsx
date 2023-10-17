@@ -1,7 +1,7 @@
 import "./BadgeList.css";
 
 import { useState } from "react";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 
 import { TaggedNostrEvent } from "@snort/system";
 

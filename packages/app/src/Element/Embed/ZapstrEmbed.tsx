@@ -4,7 +4,7 @@ import { NostrEvent, NostrLink } from "@snort/system";
 
 import { ProxyImg } from "Element/ProxyImg";
 import ProfileImage from "Element/User/ProfileImage";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 
 export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
   const media = ev.tags.find(a => a[0] === "media");
@@ -17,7 +17,7 @@ export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
     <>
       <div className="flex zapstr mb10 card">
         <ProxyImg src={cover?.[1] ?? ""} size={100} />
-        <div className="flex f-col">
+        <div className="flex flex-col">
           <div>
             <h3>{subject?.[1] ?? ""}</h3>
           </div>

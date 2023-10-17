@@ -108,7 +108,7 @@ export default function Poll(props: PollProps) {
 
   return (
     <>
-      <div className="flex f-space p">
+      <div className="flex justify-between p">
         <small>
           <FormattedMessage
             defaultMessage="You are voting with {amount} sats"
@@ -147,7 +147,7 @@ export default function Poll(props: PollProps) {
           const weight = totalVotes === 0 ? 0 : total / totalVotes;
           return (
             <div key={a[1]} className="flex" onClick={e => zapVote(e, opt)}>
-              <div className="f-grow">{opt === voting ? <Spinner /> : <>{desc}</>}</div>
+              <div className="grow">{opt === voting ? <Spinner /> : <>{desc}</>}</div>
               {showResults && (
                 <>
                   <div className="flex">

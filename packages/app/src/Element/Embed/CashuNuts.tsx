@@ -52,9 +52,9 @@ export default function CashuNuts({ token }: { token: string }) {
 
   const amount = cashu.token[0].proofs.reduce((acc, v) => acc + v.amount, 0);
   return (
-    <div className="cashu flex f-space p24 br">
-      <div className="flex-column g8 f-ellipsis">
-        <div className="flex f-center g16">
+    <div className="cashu flex justify-between p24 br">
+      <div className="flex flex-col g8 f-ellipsis">
+        <div className="flex items-center g16">
           <svg width="30" height="39" viewBox="0 0 30 39" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="Group 47711">
               <path

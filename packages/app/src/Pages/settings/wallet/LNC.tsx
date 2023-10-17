@@ -57,7 +57,7 @@ const ConnectLNC = () => {
           <FormattedMessage defaultMessage="Enter pairing phrase" />
         </h4>
         <div className="flex">
-          <div className="f-grow mr10">
+          <div className="grow mr10">
             <input
               type="text"
               placeholder={formatMessage({ defaultMessage: "Pairing phrase" })}
@@ -78,7 +78,7 @@ const ConnectLNC = () => {
   function flowSetPassword() {
     if (!connectedLNC) return null;
     return (
-      <div className="flex f-col">
+      <div className="flex flex-col">
         <h3>
           <FormattedMessage
             defaultMessage="Connected to: {node} 🎉"
@@ -91,7 +91,7 @@ const ConnectLNC = () => {
           <FormattedMessage defaultMessage="Enter password" />
         </h4>
         <div className="flex w-max">
-          <div className="f-grow mr10">
+          <div className="grow mr10">
             <input
               type="password"
               placeholder={formatMessage({ defaultMessage: "Wallet password" })}

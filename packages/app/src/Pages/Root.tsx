@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, Outlet, RouteObject, useParams } from "react-router-dom";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { unixNow } from "@snort/shared";
 import { NostrLink } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
@@ -68,7 +68,7 @@ export const GlobalTab = () => {
   const subject: TimelineSubject = {
     type: "global",
     items: [],
-    relay: relay?.url,
+    relay: relay?.url ? [relay.url] : undefined,
     discriminator: `all-${sha256(relay?.url ?? "").slice(0, 12)}`,
   };
 
@@ -78,7 +78,7 @@ export const GlobalTab = () => {
     const paidRelays = allRelays.filter(a => a.paid);
     const publicRelays = allRelays.filter(a => !a.paid);
     return (
-      <div className="flex mb10 f-end nowrap">
+      <div className="flex items-center mb10 justify-end nowrap">
         <FormattedMessage
           defaultMessage="Read global from"
           description="Label for reading global feed from specific relays"

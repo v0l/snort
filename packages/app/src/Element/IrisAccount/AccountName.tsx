@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 
 export default function AccountName({ name = "", link = true }) {
   const navigate = useNavigate();

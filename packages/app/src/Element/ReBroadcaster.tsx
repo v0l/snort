@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
@@ -23,11 +23,11 @@ export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: Tagged
 
   function renderRelayCustomisation() {
     return (
-      <div className="flex-column g8">
+      <div className="flex flex-col g8">
         {Object.keys(relays.item || {})
           .filter(el => relays.item[el].write)
           .map((r, i, a) => (
-            <div className="card flex f-space">
+            <div className="card flex justify-between">
               <div>{r}</div>
               <div>
                 <input

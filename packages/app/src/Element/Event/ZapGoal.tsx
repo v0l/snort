@@ -19,7 +19,7 @@ export function ZapGoal({ ev }: { ev: NostrEvent }) {
 
   return (
     <div className="zap-goal card">
-      <div className="flex f-space">
+      <div className="flex justify-between">
         <h2>{ev.content}</h2>
         <div className="zap-button flex" onClick={() => setZap(true)}>
           <Icon name="zap" size={15} />
@@ -27,7 +27,7 @@ export function ZapGoal({ ev }: { ev: NostrEvent }) {
         <SendSats targets={Zapper.fromEvent(ev)} show={zap} onClose={() => setZap(false)} />
       </div>
 
-      <div className="flex f-space">
+      <div className="flex justify-between">
         <div>
           <FormattedNumber value={progress} style="percent" />
         </div>

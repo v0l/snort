@@ -51,7 +51,7 @@ const ConnectCashu = () => {
         <FormattedMessage defaultMessage="Enter mint URL" />
       </h4>
       <div className="flex">
-        <div className="f-grow mr10">
+        <div className="grow mr10">
           <input
             type="text"
             placeholder="Mint URL"

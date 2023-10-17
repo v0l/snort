@@ -1,7 +1,7 @@
 import "./index.css";
 
 import { useState } from "react";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { RouteObject } from "react-router-dom";
 
 import { formatShort } from "Number";
@@ -81,20 +81,21 @@ export function SubscribePage() {
         {Plans.map(a => {
           const lower = Plans.filter(b => b.id < a.id);
           return (
-            <div className={`p flex-column${a.disabled ? " disabled" : ""}`}>
-              <div className="f-grow">
+            <div className={`p flex flex-col${a.disabled ? " disabled" : ""}`}>
+              <div className="grow">
                 <h2>{mapPlanName(a.id)}</h2>
                 <p>
                   <FormattedMessage
-                    defaultMessage="Subscribe to Snort {plan} for {price} and receive the following rewards"
+                    defaultMessage="Subscribe to {site_name} {plan} for {price} and receive the following rewards"
                     values={{
+                      site_name: CONFIG.appNameCapitalized,
                       plan: mapPlanName(a.id),
                       price: <b>{formatShort(a.price)} sats/mo</b>,
                     }}
                   />
                   :
                 </p>
-                <ul>
+                <ul className="list-disc">
                   {a.unlocks.map(b => (
                     <li>{mapFeatureName(b)} </li>
                   ))}
@@ -110,7 +111,7 @@ export function SubscribePage() {
                   ))}
                 </ul>
               </div>
-              <div className="flex f-center w-max mb10">
+              <div className="flex items-center w-max mb10">
                 <AsyncButton className="button" disabled={a.disabled} onClick={() => subscribe(a.id)}>
                   {a.disabled ? (
                     <FormattedMessage defaultMessage="Coming soon" />

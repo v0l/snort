@@ -1,5 +1,5 @@
 import "./Keys.css";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { encodeTLV, KeyStorage, NostrPrefix } from "@snort/system";
 
 import Copy from "Element/Copy";
@@ -10,7 +10,7 @@ import { hexToBech32 } from "SnortUtils";
 export default function ExportKeys() {
   const { publicKey, privateKeyData, generatedEntropy } = useLogin();
   return (
-    <div className="flex-column g12">
+    <div className="flex flex-col g12">
       <h2>
         <FormattedMessage defaultMessage="Public Key" />
       </h2>
@@ -33,7 +33,7 @@ export default function ExportKeys() {
             {hexToMnemonic(generatedEntropy ?? "")
               .split(" ")
               .map((a, i) => (
-                <div className="flex word">
+                <div className="flex items-center word">
                   <div>{i + 1}</div>
                   <div>{a}</div>
                 </div>

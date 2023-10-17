@@ -1,4 +1,4 @@
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/system";
 import MuteButton from "Element/User/MuteButton";
 import ProfilePreview from "Element/User/ProfilePreview";
@@ -16,7 +16,7 @@ export default function MutedList({ pubkeys }: MutedListProps) {
 
   return (
     <div className="main-content p">
-      <div className="flex f-space">
+      <div className="flex justify-between">
         <div className="bold">
           <FormattedMessage {...messages.MuteCount} values={{ n: pubkeys?.length }} />
         </div>

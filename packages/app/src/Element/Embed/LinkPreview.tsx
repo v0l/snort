@@ -81,7 +81,7 @@ const LinkPreview = ({ url }: { url: string }) => {
           </div>
         </a>
       )}
-      {!preview && <Spinner className="f-center" />}
+      {!preview && <Spinner className="items-center" />}
     </div>
   );
 };

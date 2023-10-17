@@ -12,7 +12,7 @@ import useLoginFeed from "Feed/LoginFeed";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
 import Avatar from "Element/User/Avatar";
-import { isFormElement, profileLink } from "SnortUtils";
+import { isFormElement } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 import Toaster from "Toaster";
 import Spinner from "Icons/Spinner";
@@ -23,6 +23,7 @@ import { LoginUnlock } from "Element/PinPrompt";
 import useKeyboardShortcut from "Hooks/useKeyboardShortcut";
 import { LoginStore } from "Login";
 import { NoteCreatorButton } from "Element/Event/NoteCreatorButton";
+import { ProfileLink } from "Element/User/ProfileLink";
 
 export default function Layout() {
   const location = useLocation();
@@ -78,7 +79,7 @@ export default function Layout() {
           onClick={() => {
             LoginStore.removeSession(id);
           }}>
-          <button type="button" className="circle flex f-center">
+          <button type="button" className="circle flex items-center">
             <Icon name="close" />
           </button>
         </div>
@@ -192,15 +193,9 @@ const AccountHeader = () => {
         <Icon name="bell-02" size={24} />
         {hasNotifications && <span className="has-unread"></span>}
       </Link>
-      <Avatar
-        pubkey={publicKey ?? ""}
-        user={profile}
-        onClick={() => {
-          if (profile) {
-            navigate(profileLink(profile.pubkey));
-          }
-        }}
-      />
+      <ProfileLink pubkey={publicKey} user={profile}>
+        <Avatar pubkey={publicKey} user={profile} />
+      </ProfileLink>
     </div>
   );
 };

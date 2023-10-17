@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { useUserProfile } from "@snort/system-react";
 

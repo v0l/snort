@@ -314,6 +314,9 @@
     "defaultMessage": "Non-Zap",
     "description": "Non-Zap, Regular LN payment"
   },
+  "AxDOiG": {
+    "defaultMessage": "Months"
+  },
   "AyGauy": {
     "defaultMessage": "Login"
   },
@@ -557,6 +560,9 @@
   },
   "JPFYIM": {
     "defaultMessage": "No lightning address"
+  },
+  "JSx7y9": {
+    "defaultMessage": "Subscribe to {site_name} {plan} for {price} and receive the following rewards"
   },
   "JeoS4y": {
     "defaultMessage": "Repost"
@@ -925,9 +931,6 @@
   },
   "YXA3AH": {
     "defaultMessage": "Enable reactions"
-  },
-  "Z0FDj+": {
-    "defaultMessage": "Subscribe to Snort {plan} for {price} and receive the following rewards"
   },
   "Z4BMCZ": {
     "defaultMessage": "Enter pairing phrase"

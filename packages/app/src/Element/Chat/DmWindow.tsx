@@ -6,7 +6,7 @@ import DM from "Element/Chat/DM";
 import useLogin from "Hooks/useLogin";
 import WriteMessage from "Element/Chat/WriteMessage";
 import { Chat, createEmptyChatObject, useChatSystem } from "chat";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { ChatParticipantProfile } from "./ChatParticipant";
 
 export default function DmWindow({ id }: { id: string }) {
@@ -32,7 +32,7 @@ export default function DmWindow({ id }: { id: string }) {
     <div className="dm-window">
       <div>{sender()}</div>
       <div>
-        <div className="flex f-col">{chat && <DmChatSelected chat={chat} />}</div>
+        <div className="flex flex-col">{chat && <DmChatSelected chat={chat} />}</div>
       </div>
       <div>
         <WriteMessage chat={chat} />

@@ -1,6 +1,6 @@
 import "./Timeline.css";
 import { ReactNode, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { TaggedNostrEvent, EventKind, u256, NostrEvent, NostrLink } from "@snort/system";
 import { unixNow } from "@snort/shared";
 import { SnortContext } from "@snort/system-react";
@@ -126,7 +126,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
             />
           ),
       )}
-      <div className="flex f-center p">
+      <div className="flex items-center p">
         <AsyncButton
           onClick={async () => {
             await FollowsFeed.loadMore(system, login, sortedFeed[sortedFeed.length - 1].created_at);

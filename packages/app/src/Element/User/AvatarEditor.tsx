@@ -41,7 +41,7 @@ export default function AvatarEditor({ picture, onPictureChange }: AvatarEditorP
 
   return (
     <>
-      <div className="flex f-center">
+      <div className="flex justify-center items-center">
         <div style={{ backgroundImage: `url(${picture})` }} className="avatar">
           <div className={`edit${picture ? "" : " new"}`} onClick={() => uploadFile().catch(console.error)}>
             {loading ? <Spinner /> : <Icon name={picture ? "edit" : "camera-plus"} />}

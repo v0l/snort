@@ -1,7 +1,7 @@
-import FormattedMessage from "@snort/app/src/Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
+import IrisAccount from "Element/IrisAccount/IrisAccount";
 
 import messages from "./messages";
-import IrisAccount from "Element/IrisAccount/IrisAccount";
 
 export default function FreeNostrAddressPage() {
   return (

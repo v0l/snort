@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { useInView } from "react-intersection-observer";
 
 import messages from "../messages";

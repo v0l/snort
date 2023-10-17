@@ -1,7 +1,7 @@
 import "./Markdown.css";
 
 import { ReactNode, forwardRef, useMemo } from "react";
-import { transformText } from "@snort/system";
+import { parseNostrLink, transformText } from "@snort/system";
 import { marked, Token } from "marked";
 import { Link } from "react-router-dom";
 import markedFootnote, { Footnotes, Footnote, FootnoteRef } from "marked-footnote";
@@ -106,7 +106,7 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef): ReactNode {
               }
             }
             case "mention": {
-              return <Mention pubkey={v.content} />;
+              return <Mention link={parseNostrLink(v.content)} />;
             }
             default: {
               return v.content;

@@ -1,7 +1,7 @@
 import { NostrPrefix, tryParseNostrLink } from "@snort/system";
 import { useEffect, useState } from "react";
-import FormattedMessage from "Element/FormattedMessage";
-import { useParams } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
+import { useLocation, useParams } from "react-router-dom";
 
 import Spinner from "Icons/Spinner";
 import { getNip05PubKey } from "Pages/LoginPage";
@@ -10,8 +10,9 @@ import { ThreadRoute } from "Element/Event/Thread";
 
 export default function NostrLinkHandler() {
   const params = useParams();
+  const { state } = useLocation();
   const [loading, setLoading] = useState(true);
-  const [renderComponent, setRenderComponent] = useState<React.ReactNode | null>(null);
+  const [renderComponent, setRenderComponent] = useState<React.ReactNode>(null);
 
   const link = decodeURIComponent(params["*"] ?? "").toLowerCase();
 
@@ -21,16 +22,20 @@ export default function NostrLinkHandler() {
       if (nav.type === NostrPrefix.Event || nav.type === NostrPrefix.Note || nav.type === NostrPrefix.Address) {
         setRenderComponent(<ThreadRoute id={nav.encode()} />); // Directly render ThreadRoute
       } else if (nav.type === NostrPrefix.PublicKey || nav.type === NostrPrefix.Profile) {
-        setRenderComponent(<ProfilePage id={nav.encode()} />); // Directly render ProfilePage
+        setRenderComponent(<ProfilePage id={nav.encode()} state={state} />); // Directly render ProfilePage
       }
     } else {
-      try {
-        const pubkey = await getNip05PubKey(`${link}@${CONFIG.nip05Domain}`);
-        if (pubkey) {
-          setRenderComponent(<ProfilePage id={pubkey} />); // Directly render ProfilePage
+      if (state) {
+        setRenderComponent(<ProfilePage state={state} />); // Directly render ProfilePage from route state
+      } else {
+        try {
+          const pubkey = await getNip05PubKey(`${link}@${CONFIG.nip05Domain}`);
+          if (pubkey) {
+            setRenderComponent(<ProfilePage id={pubkey} state={state} />); // Directly render ProfilePage
+          }
+        } catch {
+          //ignored
         }
-      } catch {
-        //ignored
       }
     }
     setLoading(false);
@@ -47,7 +52,7 @@ export default function NostrLinkHandler() {
   }
 
   return (
-    <div className="flex f-center">
+    <div className="flex items-center">
       {loading ? (
         <Spinner width={50} height={50} />
       ) : (

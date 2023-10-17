@@ -1,4 +1,4 @@
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "Element/Logo";
@@ -102,7 +102,7 @@ export default function NewUserFlow() {
       <h1>
         <FormattedMessage {...messages.SaveKeys} />
       </h1>
-      <div className="flex f-space">
+      <div className="flex justify-between">
         <FormattedMessage defaultMessage="Language" />
         <select
           value={login.preferences.language || DefaultPreferences.language}

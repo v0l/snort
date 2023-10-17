@@ -1,24 +1,15 @@
-import { MouseEvent } from "react";
-import { useNavigate, Link } from "react-router-dom";
-
 import { HexKey } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
-import { profileLink } from "SnortUtils";
+import { ProfileLink } from "./ProfileLink";
+import DisplayName from "./DisplayName";
 
 export default function Username({ pubkey, onLinkVisit }: { pubkey: HexKey; onLinkVisit(): void }) {
   const user = useUserProfile(pubkey);
-  const navigate = useNavigate();
-
-  function onClick(ev: MouseEvent) {
-    ev.preventDefault();
-    onLinkVisit();
-    navigate(profileLink(pubkey));
-  }
 
   return user ? (
-    <Link to={profileLink(pubkey)} onClick={onClick}>
-      {user.name || pubkey.slice(0, 12)}
-    </Link>
+    <ProfileLink pubkey={pubkey} onClick={onLinkVisit} user={user}>
+      <DisplayName pubkey={pubkey} user={user} />
+    </ProfileLink>
   ) : null;
 }

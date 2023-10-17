@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import FormattedMessage from "Element/FormattedMessage";
+import { FormattedMessage } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
 import PageSpinner from "Element/PageSpinner";
@@ -33,7 +33,7 @@ export default function ManageSubscriptionPage() {
     return <PageSpinner />;
   }
   return (
-    <div className="main-content p flex-column g16">
+    <div className="main-content p flex flex-col g16">
       <h2>
         <FormattedMessage defaultMessage="Subscriptions" />
       </h2>

@@ -72,7 +72,7 @@ const SearchPage = () => {
   function sortOptions() {
     if (tab.value != PROFILES) return null;
     return (
-      <div className="flex mb10 f-end">
+      <div className="flex mb10 justify-end">
         <FormattedMessage defaultMessage="Sort" description="Label for sorting options for people search" />
         &nbsp;
         <select onChange={e => setSortPopular(e.target.value == "true")} value={sortPopular ? "true" : "false"}>
@@ -99,7 +99,7 @@ const SearchPage = () => {
       <div className="flex mb10">
         <input
           type="text"
-          className="f-grow mr10"
+          className="grow mr10"
           placeholder={formatMessage({ defaultMessage: "Search..." })}
           value={search}
           onChange={e => setSearch(e.target.value)}

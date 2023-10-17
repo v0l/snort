@@ -18,7 +18,7 @@ export interface TimelineSubject {
   type: "pubkey" | "hashtag" | "global" | "ptag" | "post_keyword" | "profile_keyword";
   discriminator: string;
   items: string[];
-  relay?: string;
+  relay?: Array<string>;
   streams?: boolean;
 }
 

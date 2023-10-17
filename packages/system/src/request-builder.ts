@@ -176,10 +176,13 @@ export class RequestFilterBuilder {
   /**
    * Use a specific relay for this request filter
    */
-  relay(u: string) {
-    const uClean = sanitizeRelayUrl(u);
-    if (uClean) {
-      this.#relays.add(uClean);
+  relay(u: string | Array<string>) {
+    const relays = Array.isArray(u) ? u : [u];
+    for (const r of relays) {
+      const uClean = sanitizeRelayUrl(r);
+      if (uClean) {
+        this.#relays.add(uClean);
+      }
     }
     return this;
   }

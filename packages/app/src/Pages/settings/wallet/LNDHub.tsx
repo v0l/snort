@@ -49,7 +49,7 @@ const ConnectLNDHub = () => {
         <FormattedMessage defaultMessage="Enter LNDHub config" />
       </h4>
       <div className="flex">
-        <div className="f-grow mr10">
+        <div className="grow mr10">
           <input
             type="text"
             placeholder="lndhub://username:password@lndhub.io"
