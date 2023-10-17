@@ -79,7 +79,7 @@ export function NoteBroadcaster({
         .filter(a => a.message !== "Duplicate request")
         .sort(a => (a.ok ? -1 : 1))
         .map(r => (
-          <div className="flex-row g16">
+          <div className="flex items-center g16">
             <Icon name={r.ok ? "check" : "x"} className={r.ok ? "success" : "error"} size={24} />
             <div className="flex flex-col grow g4">
               <b>{getRelayName(r.relay)}</b>

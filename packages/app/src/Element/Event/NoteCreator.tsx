@@ -441,8 +441,8 @@ export function NoteCreator() {
 
   function noteCreatorFooter() {
     return (
-      <div className="flex justify-between">
-        <div className="flex g8">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center g8">
           <ProfileImage
             pubkey={login.publicKey ?? ""}
             className="note-creator-icon"
