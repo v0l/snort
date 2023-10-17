@@ -238,7 +238,7 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
 
   function navigateThread(e: TaggedNostrEvent) {
     thread.setCurrent(e.id);
-    //router.navigate(`/e/${NostrLink.fromEvent(e).encode()}`, { replace: true })
+    //router.navigate(`/${NostrLink.fromEvent(e).encode()}`, { replace: true })
   }
 
   const parent = useMemo(() => {

@@ -395,7 +395,7 @@ function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onC
                   if (onClick) {
                     onClick(context);
                   } else {
-                    navigate(`/e/${context.encode()}`);
+                    navigate(`/${context.encode()}`);
                   }
                 }}
               />
