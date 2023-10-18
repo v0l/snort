@@ -37,12 +37,12 @@ export function ProfileLink({
         return `/${username}`;
       }
       return `/${new NostrLink(
-        CONFIG.profileLinkPrefix,
+        NostrPrefix.Profile,
         pubkey,
         undefined,
         undefined,
         relays ? randomSample(relays, 3) : undefined,
-      ).encode()}`;
+      ).encode(CONFIG.profileLinkPrefix)}`;
     }
     if (link && (link.type === NostrPrefix.Profile || link.type === NostrPrefix.PublicKey)) {
       return `/${link.encode()}`;

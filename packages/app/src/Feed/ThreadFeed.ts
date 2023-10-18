@@ -39,7 +39,7 @@ export default function useThreadFeed(link: NostrLink) {
       const links = store.data
         .map(a => [
           NostrLink.fromEvent(a),
-          ...a.tags.filter(a => a[0] === "e" || a[0] === "a").map(v => NostrLink.fromTag(v, CONFIG.eventLinkPrefix)),
+          ...a.tags.filter(a => a[0] === "e" || a[0] === "a").map(v => NostrLink.fromTag(v)),
         ])
         .flat();
       setAllEvents(links);
@@ -51,15 +51,12 @@ export default function useThreadFeed(link: NostrLink) {
           const rootOrReplyAsRoot = t?.root ?? t?.replyTo;
           if (rootOrReplyAsRoot) {
             setRoot(
-              NostrLink.fromTag(
-                [
-                  rootOrReplyAsRoot.key,
-                  rootOrReplyAsRoot.value ?? "",
-                  rootOrReplyAsRoot.relay ?? "",
-                  ...(rootOrReplyAsRoot.marker ?? []),
-                ],
-                CONFIG.eventLinkPrefix,
-              ),
+              NostrLink.fromTag([
+                rootOrReplyAsRoot.key,
+                rootOrReplyAsRoot.value ?? "",
+                rootOrReplyAsRoot.relay ?? "",
+                ...(rootOrReplyAsRoot.marker ?? []),
+              ]),
             );
           }
         }

@@ -203,6 +203,7 @@ export function NoteInner(props: NoteProps) {
     const pubMentions =
       mentions.length > maxMentions ? mentions?.slice(0, maxMentions).map(renderMention) : mentions?.map(renderMention);
     const others = mentions.length > maxMentions ? formatMessage(messages.Others, { n: othersLength }) : "";
+    const link = replyLink?.encode(CONFIG.eventLinkPrefix);
     return (
       <div className="reply">
         re:&nbsp;
@@ -211,7 +212,7 @@ export function NoteInner(props: NoteProps) {
             {pubMentions} {others}
           </>
         ) : (
-          replyLink && <Link to={`/${replyLink.encode()}`}>{replyLink.encode().substring(0, 12)}</Link>
+          replyLink && <Link to={`/${link}`}>{link?.substring(0, 12)}</Link>
         )}
       </div>
     );

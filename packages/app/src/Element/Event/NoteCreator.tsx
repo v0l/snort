@@ -168,7 +168,9 @@ export function NoteCreator() {
         const rx = await uploader.upload(file, file.name);
         note.update(v => {
           if (rx.header) {
-            const link = `nostr:${new NostrLink(CONFIG.eventLinkPrefix, rx.header.id, rx.header.kind).encode()}`;
+            const link = `nostr:${new NostrLink(NostrPrefix.Event, rx.header.id, rx.header.kind).encode(
+              CONFIG.eventLinkPrefix,
+            )}`;
             v.note = `${v.note ? `${v.note}\n` : ""}${link}`;
             v.otherEvents = [...(v.otherEvents ?? []), rx.header];
           } else if (rx.url) {

@@ -128,12 +128,12 @@ export class NostrLink {
     }
   }
 
-  static fromThreadTag(tag: Tag, eventLinkPrefix = NostrPrefix.Event) {
+  static fromThreadTag(tag: Tag) {
     const relay = tag.relay ? [tag.relay] : undefined;
 
     switch (tag.key) {
       case "e": {
-        return new NostrLink(eventLinkPrefix, unwrap(tag.value), undefined, undefined, relay);
+        return new NostrLink(NostrPrefix.Event, unwrap(tag.value), undefined, undefined, relay);
       }
       case "p": {
         return new NostrLink(NostrPrefix.Profile, unwrap(tag.value), undefined, undefined, relay);
@@ -146,11 +146,11 @@ export class NostrLink {
     throw new Error(`Unknown tag kind ${tag.key}`);
   }
 
-  static fromTag(tag: Array<string>, eventLinkPrefix = NostrPrefix.Event) {
+  static fromTag(tag: Array<string>) {
     const relays = tag.length > 2 ? [tag[2]] : undefined;
     switch (tag[0]) {
       case "e": {
-        return new NostrLink(eventLinkPrefix, tag[1], undefined, undefined, relays);
+        return new NostrLink(NostrPrefix.Event, tag[1], undefined, undefined, relays);
       }
       case "p": {
         return new NostrLink(NostrPrefix.Profile, tag[1], undefined, undefined, relays);
