@@ -32,14 +32,9 @@
 .text video,
 .text iframe,
 .text audio {
-  width: 100%;
+  max-width: 100%;
   display: block;
-}
-
-.text iframe,
-.text video {
-  width: -webkit-fill-available;
-  aspect-ratio: 16 / 9;
+  max-height: 800px;
 }
 
 .gallery {
