@@ -1,0 +1,31 @@
+.search {
+  flex-grow: 1;
+  display: flex;
+  padding: 9px 16px;
+  background: var(--gray-superdark);
+  border-radius: 1000px;
+}
+
+.light .search {
+  background: #fff;
+  border: 1px solid var(--border-color);
+}
+
+.search input {
+  border: none !important;
+  border-radius: 0 !important;
+  font-size: 15px;
+  line-height: 21px;
+  padding: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .search {
+    padding: unset;
+    background: unset;
+  }
+
+  .search input {
+    display: none;
+  }
+}

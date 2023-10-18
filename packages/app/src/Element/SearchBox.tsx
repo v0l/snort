@@ -1,3 +1,4 @@
+import "./SearchBox.css";
 import Spinner from "../Icons/Spinner";
 import Icon from "../Icons/Icon";
 import { useIntl } from "react-intl";
