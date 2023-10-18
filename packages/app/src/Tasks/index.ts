@@ -1,11 +1,12 @@
 import { MetadataCache } from "@snort/system";
+import { LoginSession } from "Login";
 
 export interface UITask {
   id: string;
   /**
    * Run checks to determine if this Task should be triggered for this user
    */
-  check(user: MetadataCache): boolean;
+  check(user: MetadataCache, session: LoginSession): boolean;
   mute(): void;
   load(): void;
   render(): JSX.Element;
@@ -21,7 +22,7 @@ export abstract class BaseUITask implements UITask {
   protected state: UITaskState;
 
   abstract id: string;
-  abstract check(user: MetadataCache): boolean;
+  abstract check(user: MetadataCache, session: LoginSession): boolean;
   abstract render(): JSX.Element;
 
   constructor() {

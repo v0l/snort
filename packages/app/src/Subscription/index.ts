@@ -58,3 +58,7 @@ export function getActiveSubscriptions(s: Array<SubscriptionEvent>) {
 export function getCurrentSubscription(s: Array<SubscriptionEvent>) {
   return getActiveSubscriptions(s)[0];
 }
+
+export function mostRecentSubscription(s: Array<SubscriptionEvent>) {
+  return [...s].sort((a, b) => (b.start > a.start ? -1 : 1)).at(0);
+}

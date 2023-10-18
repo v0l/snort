@@ -1157,6 +1157,9 @@
   "jA3OE/": {
     "defaultMessage": "{n,plural,=1{{n} sat} other{{n} sats}}"
   },
+  "jAmfGl": {
+    "defaultMessage": "Your {site_name} subscription is expired"
+  },
   "jMzO1S": {
     "defaultMessage": "Internal error: {msg}"
   },
@@ -1267,9 +1270,6 @@
   "nOaArs": {
     "defaultMessage": "Setup Profile"
   },
-  "nWQFic": {
-    "defaultMessage": "Renew"
-  },
   "ncbgUU": {
     "defaultMessage": "{site} is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
   },
@@ -1334,6 +1334,9 @@
   },
   "qUJTsT": {
     "defaultMessage": "Blocked"
+  },
+  "qZsKBR": {
+    "defaultMessage": "Renew {tier}"
   },
   "qdGuQo": {
     "defaultMessage": "Your Private Key Is (do not share this with anyone)"
