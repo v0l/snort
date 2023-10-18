@@ -44,14 +44,8 @@ export default function SearchBox() {
         setSearch("");
       }
     };
-    const inputElement = resultListRef.current?.previousSibling as HTMLElement;
 
-    inputElement?.addEventListener("focus", () => {
-      document.addEventListener("keydown", handleGlobalKeyDown);
-    });
-    inputElement?.addEventListener("blur", () => {
-      document.removeEventListener("keydown", handleGlobalKeyDown);
-    });
+    document.addEventListener("keydown", handleGlobalKeyDown);
 
     return () => {
       document.removeEventListener("keydown", handleGlobalKeyDown);
