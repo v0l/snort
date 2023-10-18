@@ -22,6 +22,7 @@ import { ZapTarget } from "Zapper";
 import { useNoteCreator } from "State/NoteCreator";
 import { NoteBroadcaster } from "./NoteBroadcaster";
 import FileUploadProgress from "./FileUpload";
+import { ToggleSwitch } from "Icons/Toggle";
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();
@@ -343,9 +344,6 @@ export function NoteCreator() {
   function noteCreatorAdvanced() {
     return (
       <>
-        <button className="secondary" onClick={loadPreview}>
-          <FormattedMessage defaultMessage="Toggle Preview" />
-        </button>
         <div>
           <h4>
             <FormattedMessage defaultMessage="Custom Relays" />
@@ -468,6 +466,11 @@ export function NoteCreator() {
             className={classNames("note-creator-icon", { active: note.advanced })}
           />
           <FormattedMessage defaultMessage="Preview" />
+          <ToggleSwitch
+            onClick={() => loadPreview()}
+            size={40}
+            className={classNames({ active: Boolean(note.preview) })}
+          />
         </div>
         <div className="flex g8">
           <button className="secondary" onClick={cancel}>

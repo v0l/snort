@@ -1,0 +1,16 @@
+svg#icon-toggle #bg {
+  fill: var(--gray);
+  transition: fill 0.5s;
+}
+svg#icon-toggle #toggle {
+  transform: translateX(0px);
+  transition: transform 0.5s;
+}
+svg#icon-toggle.active #toggle {
+  transform: translateX(12px);
+  transition: transform 0.5s;
+}
+svg#icon-toggle.active #bg {
+  fill: var(--success);
+  transition: fill 0.5s;
+}
