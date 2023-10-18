@@ -12,9 +12,9 @@
 
 .spotlight img,
 .spotlight video {
-  max-width: 100vw;
-  max-height: 99vh;
-  aspect-ratio: unset;
+  max-width: 100vw !important;
+  max-height: 99vh !important;
+  aspect-ratio: unset !important;
   width: unset !important;
 }
 

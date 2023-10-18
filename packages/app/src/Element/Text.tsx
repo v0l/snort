@@ -9,7 +9,7 @@ import HyperText from "Element/HyperText";
 import CashuNuts from "Element/Embed/CashuNuts";
 import RevealMedia from "./Event/RevealMedia";
 import { ProxyImg } from "./ProxyImg";
-import { SpotlightMediaModal } from "./Deck/SpotlightMedia";
+import { SpotlightMediaModal } from "./SpotlightMedia";
 import HighlightedText from "./HighlightedText";
 import { useTextTransformer } from "Hooks/useTextTransformCache";
 

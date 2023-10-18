@@ -17,7 +17,7 @@ import useImgProxy from "Hooks/useImgProxy";
 import Modal from "Element/Modal";
 import { Thread } from "Element/Event/Thread";
 import { RootTabs } from "Element/RootTabs";
-import { SpotlightMedia } from "Element/Deck/SpotlightMedia";
+import { SpotlightMedia } from "Element/SpotlightMedia";
 import { ThreadContext, ThreadContextWrapper } from "Hooks/useThreadContext";
 import Toaster from "Toaster";
 import useLogin from "Hooks/useLogin";
