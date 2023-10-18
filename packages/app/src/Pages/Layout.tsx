@@ -208,11 +208,14 @@ function LogoHeader() {
     if (isHalloween()) return "🎃";
     if (isStPatricksDay()) return "🍀";
     if (isChristmas()) return "🎄";
-  }
+  };
 
   return (
     <Link to="/" className="logo">
-      <h1>{extra()}{CONFIG.appName}</h1>
+      <h1>
+        {extra()}
+        {CONFIG.appName}
+      </h1>
       {currentSubscription && (
         <small className="flex items-center g4">
           <Icon name="diamond" size={10} />
