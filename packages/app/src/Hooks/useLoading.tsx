@@ -4,7 +4,7 @@ export default function useLoading<T>(fn: ((e: React.MouseEvent) => Promise<T> |
   const [loading, setLoading] = useState<boolean>(false);
 
   async function handle(e: React.MouseEvent) {
-    e.stopPropagation();
+    e.preventDefault();
     if (loading || disabled) return;
     setLoading(true);
     try {
