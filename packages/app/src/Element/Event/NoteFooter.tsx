@@ -200,7 +200,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (targets) {
       return (
         <AsyncFooterIcon
-          className={didZap ? "text-nostr-orange" : "hover:text-nostr-orange"}
+          className={didZap ? "reacted text-nostr-orange" : "hover:text-nostr-orange"}
           {...longPress()}
           title={formatMessage({ defaultMessage: "Zap" })}
           iconName={canFastZap ? "zapFast" : "zap"}
@@ -218,7 +218,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       <Menu
         menuButton={
           <AsyncFooterIcon
-            className={hasReposted() ? "text-nostr-blue" : "hover:text-nostr-blue"}
+            className={hasReposted() ? "reacted text-nostr-blue" : "hover:text-nostr-blue"}
             iconName="repeat"
             title={formatMessage({ defaultMessage: "Repost" })}
             value={reposts.length}
@@ -259,7 +259,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     const reacted = hasReacted("+");
     return (
       <AsyncFooterIcon
-        className={reacted ? "text-nostr-red" : "hover:text-nostr-red"}
+        className={reacted ? "reacted text-nostr-red" : "hover:text-nostr-red"}
         iconName={reacted ? "heart-solid" : "heart"}
         title={formatMessage({ defaultMessage: "Like" })}
         value={positive.length}
@@ -275,7 +275,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (readonly) return;
     return (
       <AsyncFooterIcon
-        className={note.show ? "text-nostr-purple" : "hover:text-nostr-purple"}
+        className={note.show ? "reacted text-nostr-purple" : "hover:text-nostr-purple"}
         iconName="reply"
         title={formatMessage({ defaultMessage: "Reply" })}
         value={props.replies ?? 0}

@@ -131,9 +131,12 @@
   align-items: center;
   justify-content: center;
   user-select: none;
-  color: var(--font-secondary-color);
   font-feature-settings: "tnum";
   gap: 5px;
+}
+
+.reaction-pill:not(.reacted) {
+  color: var(--font-secondary-color);
 }
 
 .trash-icon {
