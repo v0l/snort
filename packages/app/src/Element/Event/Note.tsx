@@ -56,7 +56,7 @@ export default function Note(props: NoteProps) {
     return <LiveEvent ev={ev} />;
   }
   if (ev.kind === EventKind.SetMetadata) {
-    return <ProfilePreview actions={<></>} pubkey={ev.pubkey} className="card" />;
+    return <ProfilePreview actions={<></>} pubkey={ev.pubkey} />;
   }
   if (ev.kind === (9041 as EventKind)) {
     return <ZapGoal ev={ev} />;
