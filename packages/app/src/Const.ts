@@ -1,5 +1,4 @@
 import { RelaySettings } from "@snort/system";
-import { bech32ToHex } from "SnortUtils";
 
 /**
  * 1 Hour in seconds
@@ -61,10 +60,10 @@ export const DefaultRelays = new Map<string, RelaySettings>([
 export const SearchRelays = ["wss://relay.nostr.band"];
 
 export const DeveloperAccounts = [
-  bech32ToHex(KieranPubKey), // kieran
-  bech32ToHex("npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk"), // Martti
-  bech32ToHex("npub107jk7htfv243u0x5ynn43scq9wrxtaasmrwwa8lfu2ydwag6cx2quqncxg"), // verbiricha
-  bech32ToHex("npub1r0rs5q2gk0e3dk3nlc7gnu378ec6cnlenqp8a3cjhyzu6f8k5sgs4sq9ac"), // Karnage
+  "63fe6318dc58583cfe16810f86dd09e18bfd76aabc24a0081ce2856f330504ed", // kieran
+  "4523be58d395b1b196a9b8c82b038b6895cb02b683d0c253a955068dba1facd0", // Martti
+  "7fa56f5d6962ab1e3cd424e758c3002b8665f7b0d8dcee9fe9e288d7751ac194", // verbiricha
+  "1bc70a0148b3f316da33fe3c89f23e3e71ac4ff998027ec712b905cd24f6a411", // Karnage
 ];
 
 /**
