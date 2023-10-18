@@ -21,11 +21,13 @@ export class NostrLink {
     readonly relays?: Array<string>,
   ) {}
 
-  encode(type: NostrPrefix = this.type): string {
-    if (type === NostrPrefix.Note || type === NostrPrefix.PrivateKey || type === NostrPrefix.PublicKey) {
-      return hexToBech32(type, this.id);
+  encode(type?: NostrPrefix): string {
+    // cant encode 'naddr' to 'note'/'nevent' because 'id' is not hex
+    let newType = this.type === NostrPrefix.Address ? this.type : type ?? this.type;
+    if (newType === NostrPrefix.Note || newType === NostrPrefix.PrivateKey || newType === NostrPrefix.PublicKey) {
+      return hexToBech32(newType, this.id);
     } else {
-      return encodeTLV(type, this.id, this.relays, this.kind, this.author);
+      return encodeTLV(newType, this.id, this.relays, this.kind, this.author);
     }
   }
 
