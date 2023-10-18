@@ -12,7 +12,7 @@ import useLoginFeed from "Feed/LoginFeed";
 import { mapPlanName } from "./subscribe";
 import useLogin from "Hooks/useLogin";
 import Avatar from "Element/User/Avatar";
-import { isFormElement } from "SnortUtils";
+import { isHalloween, isFormElement, isStPatricksDay, isChristmas } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 import Toaster from "Toaster";
 import Spinner from "Icons/Spinner";
@@ -204,9 +204,15 @@ function LogoHeader() {
   const { subscriptions } = useLogin();
   const currentSubscription = getCurrentSubscription(subscriptions);
 
+  const extra = () => {
+    if (isHalloween()) return "🎃";
+    if (isStPatricksDay()) return "🍀";
+    if (isChristmas()) return "🎄";
+  }
+
   return (
     <Link to="/" className="logo">
-      <h1>{CONFIG.appName}</h1>
+      <h1>{extra()}{CONFIG.appName}</h1>
       {currentSubscription && (
         <small className="flex items-center g4">
           <Icon name="diamond" size={10} />
