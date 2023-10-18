@@ -344,9 +344,6 @@
   "C1LjMx": {
     "defaultMessage": "Lightning Donation"
   },
-  "C5xzTC": {
-    "defaultMessage": "Premium"
-  },
   "C7642/": {
     "defaultMessage": "Quote Repost"
   },
@@ -1111,6 +1108,9 @@
   },
   "hMzcSq": {
     "defaultMessage": "Messages"
+  },
+  "hRTfTR": {
+    "defaultMessage": "PRO"
   },
   "hY4lzx": {
     "defaultMessage": "Supports"

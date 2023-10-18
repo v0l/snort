@@ -47,12 +47,12 @@
     rgba(255, 107, 175, 0.6) 108.33%
   );
   --expired-invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, var(--gray), var(--gray-superdark));
-  --strike-army-gradient: linear-gradient(to bottom right, #ccff00, #a1c900);
   --sub-bg: #111;
   --header-padding-tb: 10px;
   --btn-color: #fff;
   --primary-gradient: linear-gradient(90deg, rgba(239, 150, 68, 1) 0%, rgba(123, 65, 246, 1) 100%);
   --cashu-gradient: linear-gradient(90deg, #40b039, #adff2a);
+  --pro: #ffdd65;
 }
 
 ::-webkit-scrollbar {
@@ -164,6 +164,14 @@ a.ext {
 
 .bg-primary {
   background: var(--primary-gradient);
+}
+
+.primary {
+  color: var(--primary-gradient);
+}
+
+.text-pro {
+  color: var(--pro);
 }
 
 .br {

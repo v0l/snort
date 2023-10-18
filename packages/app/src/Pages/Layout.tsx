@@ -169,10 +169,10 @@ function LogoHeader() {
         {CONFIG.appName}
       </h1>
       {currentSubscription && (
-        <small className="flex items-center g4">
-          <Icon name="diamond" size={10} />
+        <div className="flex items-center g4 text-sm font-semibold tracking-wider">
+          <Icon name="diamond" size={16} className="text-pro" />
           {mapPlanName(currentSubscription.type)}
-        </small>
+        </div>
       )}
     </Link>
   );

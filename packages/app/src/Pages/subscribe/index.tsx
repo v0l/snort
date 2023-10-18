@@ -11,13 +11,14 @@ import AsyncButton from "Element/AsyncButton";
 import useEventPublisher from "Hooks/useEventPublisher";
 import SnortApi, { SubscriptionError, SubscriptionErrorCode } from "SnortApi";
 import SendSats from "Element/SendSats";
+import classNames from "classnames";
 
 export function mapPlanName(id: number) {
   switch (id) {
     case SubscriptionType.Supporter:
       return <FormattedMessage defaultMessage="Supporter" />;
     case SubscriptionType.Premium:
-      return <FormattedMessage defaultMessage="Premium" />;
+      return <FormattedMessage defaultMessage="PRO" />;
   }
 }
 
@@ -81,7 +82,7 @@ export function SubscribePage() {
         {Plans.map(a => {
           const lower = Plans.filter(b => b.id < a.id);
           return (
-            <div className={`p flex flex-col${a.disabled ? " disabled" : ""}`}>
+            <div className={classNames("p flex flex-col g8", { disabled: a.disabled })}>
               <div className="grow">
                 <h2>{mapPlanName(a.id)}</h2>
                 <p>
@@ -111,7 +112,7 @@ export function SubscribePage() {
                   ))}
                 </ul>
               </div>
-              <div className="flex items-center w-max mb10">
+              <div className="flex justify-center">
                 <AsyncButton className="button" disabled={a.disabled} onClick={() => subscribe(a.id)}>
                   {a.disabled ? (
                     <FormattedMessage defaultMessage="Coming soon" />
