@@ -36,8 +36,8 @@ export function ProfileLink({
         const [username] = user.nip05.split("@");
         return `/${username}`;
       }
-      return `/p/${new NostrLink(
-        NostrPrefix.Profile,
+      return `/${new NostrLink(
+        CONFIG.profileLinkPrefix,
         pubkey,
         undefined,
         undefined,
@@ -45,7 +45,7 @@ export function ProfileLink({
       ).encode()}`;
     }
     if (link && (link.type === NostrPrefix.Profile || link.type === NostrPrefix.PublicKey)) {
-      return `/p/${link.encode()}`;
+      return `/${link.encode()}`;
     }
     return "#";
   }

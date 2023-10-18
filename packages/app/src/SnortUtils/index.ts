@@ -107,7 +107,7 @@ export function eventLink(hex: u256, relays?: Array<string> | string) {
   const encoded = relays
     ? encodeTLV(NostrPrefix.Event, hex, Array.isArray(relays) ? relays : [relays])
     : hexToBech32(NostrPrefix.Note, hex);
-  return `/e/${encoded}`;
+  return `/${encoded}`;
 }
 
 /**

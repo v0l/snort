@@ -13,7 +13,7 @@ export default function NostrLink({ link, depth }: { link: string; depth?: numbe
     if ((depth ?? 0) > 0) {
       const evLink = nav.encode();
       return (
-        <Link to={`/e/${evLink}`} onClick={e => e.stopPropagation()} state={{ from: location.pathname }}>
+        <Link to={`/${evLink}`} onClick={e => e.stopPropagation()} state={{ from: location.pathname }}>
           #{evLink.substring(0, 12)}
         </Link>
       );

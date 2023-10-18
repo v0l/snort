@@ -44,7 +44,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
   }
 
   function cta() {
-    const link = `https://zap.stream/${NostrLink.fromEvent(ev).encode()}`;
+    const link = `https://zap.stream/${NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix)}`;
     switch (status) {
       case "live": {
         return (

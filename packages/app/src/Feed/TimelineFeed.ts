@@ -46,7 +46,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       );
 
     if (subject.relay) {
-      f.relay(subject.relay);
+      subject.relay.forEach(r => f.relay(r));
     }
     switch (subject.type) {
       case "pubkey": {

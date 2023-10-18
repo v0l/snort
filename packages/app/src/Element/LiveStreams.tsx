@@ -32,7 +32,7 @@ function LiveStreamEvent({ ev }: { ev: NostrEvent }) {
   const image = findTag(ev, "image");
   const status = findTag(ev, "status");
 
-  const link = NostrLink.fromEvent(ev).encode();
+  const link = NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix);
   const imageProxy = proxy(image ?? "");
 
   return (

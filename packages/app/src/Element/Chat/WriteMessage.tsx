@@ -1,4 +1,4 @@
-import { NostrPrefix, NostrEvent, NostrLink } from "@snort/system";
+import { NostrEvent, NostrLink } from "@snort/system";
 import useEventPublisher from "Hooks/useEventPublisher";
 import Icon from "Icons/Icon";
 import Spinner from "Icons/Spinner";
@@ -36,7 +36,7 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
       if (file) {
         const rx = await uploader.upload(file, file.name);
         if (rx.header) {
-          const link = `nostr:${new NostrLink(NostrPrefix.Event, rx.header.id, rx.header.kind).encode()}`;
+          const link = `nostr:${new NostrLink(CONFIG.eventLinkPrefix, rx.header.id, rx.header.kind).encode()}`;
           setMsg(`${msg ? `${msg}\n` : ""}${link}`);
           setOtherEvents([...otherEvents, rx.header]);
         } else if (rx.url) {
