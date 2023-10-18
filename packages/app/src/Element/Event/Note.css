@@ -135,7 +135,7 @@
   gap: 5px;
 }
 
-.reaction-pill:not(.reacted) {
+.reaction-pill:not(.reacted):not(:hover) {
   color: var(--font-secondary-color);
 }
 
