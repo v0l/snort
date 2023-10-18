@@ -1,9 +1,8 @@
 import "./Layout.css";
 import { useEffect, useMemo, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
-import { NostrLink, NostrPrefix, tryParseNostrLink } from "@snort/system";
 
 import messages from "./messages";
 
@@ -15,8 +14,6 @@ import Avatar from "Element/User/Avatar";
 import { isHalloween, isFormElement, isStPatricksDay, isChristmas } from "SnortUtils";
 import { getCurrentSubscription } from "Subscription";
 import Toaster from "Toaster";
-import Spinner from "Icons/Spinner";
-import { fetchNip05Pubkey } from "Nip05/Verifier";
 import { useTheme } from "Hooks/useTheme";
 import { useLoginRelays } from "Hooks/useLoginRelays";
 import { LoginUnlock } from "Element/PinPrompt";
@@ -24,6 +21,7 @@ import useKeyboardShortcut from "Hooks/useKeyboardShortcut";
 import { LoginStore } from "Login";
 import { NoteCreatorButton } from "Element/Event/NoteCreatorButton";
 import { ProfileLink } from "Element/User/ProfileLink";
+import SearchBox from "../Element/SearchBox";
 
 export default function Layout() {
   const location = useLocation();
@@ -90,7 +88,6 @@ export default function Layout() {
 
 const AccountHeader = () => {
   const navigate = useNavigate();
-  const { formatMessage } = useIntl();
 
   useKeyboardShortcut("/", event => {
     // if event happened in a form element, do nothing, otherwise focus on search input
@@ -107,31 +104,6 @@ const AccountHeader = () => {
     readonly: s.readonly,
   }));
   const profile = useUserProfile(publicKey);
-  const [search, setSearch] = useState("");
-  const [searching, setSearching] = useState(false);
-
-  async function searchThing() {
-    try {
-      setSearching(true);
-      const link = tryParseNostrLink(search);
-      if (link) {
-        navigate(`/${link.encode()}`);
-        return;
-      }
-      if (search.includes("@")) {
-        const [handle, domain] = search.split("@");
-        const pk = await fetchNip05Pubkey(handle, domain);
-        if (pk) {
-          navigate(`/${new NostrLink(NostrPrefix.PublicKey, pk).encode()}`);
-          return;
-        }
-      }
-      navigate(`/search/${encodeURIComponent(search)}`);
-    } finally {
-      setSearch("");
-      setSearching(false);
-    }
-  }
 
   const hasNotifications = useMemo(
     () => latestNotification > readNotifications,
@@ -162,27 +134,7 @@ const AccountHeader = () => {
   }
   return (
     <div className="header-actions">
-      {!location.pathname.startsWith("/search") && (
-        <div className="search">
-          <input
-            type="text"
-            placeholder={formatMessage({ defaultMessage: "Search" })}
-            className="w-max"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            onKeyDown={async e => {
-              if (e.key === "Enter") {
-                await searchThing();
-              }
-            }}
-          />
-          {searching ? (
-            <Spinner width={24} height={24} />
-          ) : (
-            <Icon name="search" size={24} onClick={() => navigate("/search")} />
-          )}
-        </div>
-      )}
+      {!location.pathname.startsWith("/search") && <SearchBox />}
       {!readonly && (
         <Link className="btn" to="/messages">
           <Icon name="mail" size={24} />
