@@ -12,17 +12,15 @@ export const SnortNostrAddressService = {
   supportLink: "https://snort.social/help",
   about: <FormattedMessage {...messages.SnortSocialNip} />,
 };
+export const NostrPlebsService = {
+  name: "Nostr Plebs",
+  service: "https://nostrplebs.com/api/v1",
+  link: "https://nostrplebs.com/",
+  supportLink: "https://nostrplebs.com/manage",
+  about: <FormattedMessage {...messages.NostrPlebsNip} />,
+};
 
-export const Nip5Services = [
-  SnortNostrAddressService,
-  {
-    name: "Nostr Plebs",
-    service: "https://nostrplebs.com/api/v1",
-    link: "https://nostrplebs.com/",
-    supportLink: "https://nostrplebs.com/manage",
-    about: <FormattedMessage {...messages.NostrPlebsNip} />,
-  },
-];
+export const Nip5Services = [SnortNostrAddressService];
 
 export default function NostrAddressPage() {
   return (

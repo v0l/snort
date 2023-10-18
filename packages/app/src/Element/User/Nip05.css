@@ -17,6 +17,7 @@
   background-image: var(--snort-gradient);
 }
 
+/* NO PAYMENTS MADE ~~ REMOVING
 .nip05 .domain[data-domain="nostrplebs.com"] {
   color: var(--highlight);
   background-color: var(--highlight);
@@ -37,6 +38,7 @@
   background-color: var(--highlight);
   text-overflow: ellipsis;
 }
+*/
 
 .nip05 .badge {
   color: var(--highlight);
