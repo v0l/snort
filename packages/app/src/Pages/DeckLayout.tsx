@@ -185,7 +185,7 @@ function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
                     "--img": `url(${proxy(images[0].content)})`,
                   } as CSSProperties
                 }
-                onClick={() => setThread(NostrLink.fromEvent(e, CONFIG.eventLinkPrefix))}></div>
+                onClick={() => setThread(NostrLink.fromEvent(e))}></div>
             );
           }}
         />

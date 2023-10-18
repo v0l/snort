@@ -12,7 +12,7 @@ export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
   const subject = ev.tags.find(a => a[0] === "subject");
   const refPersons = ev.tags.filter(a => a[0] === "p");
 
-  const link = NostrLink.fromEvent(ev, CONFIG.eventLinkPrefix).encode();
+  const link = NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix);
   return (
     <>
       <div className="flex zapstr mb10 card">

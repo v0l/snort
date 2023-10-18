@@ -283,7 +283,7 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
           notes={replies}
           related={getAllLinkReactions(
             thread.reactions,
-            replies.map(a => NostrLink.fromEvent(a, CONFIG.eventLinkPrefix)),
+            replies.map(a => NostrLink.fromEvent(a)),
           )}
           chains={thread.chains}
           onNavigate={navigateThread}

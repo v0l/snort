@@ -238,7 +238,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
                   <Note
                     key={`pinned-${n.id}`}
                     data={n}
-                    related={getLinkReactions(pinned, NostrLink.fromEvent(n, CONFIG.eventLinkPrefix))}
+                    related={getLinkReactions(pinned, NostrLink.fromEvent(n))}
                     options={{ showTime: false, showPinned: true, canUnpin: id === loginPubKey }}
                   />
                 );

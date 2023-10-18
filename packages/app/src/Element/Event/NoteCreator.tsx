@@ -104,7 +104,7 @@ export function NoteCreator() {
             note.note += "\n";
           }
           const link = NostrLink.fromEvent(note.quote);
-          note.note += `nostr:${link.encode()}`;
+          note.note += `nostr:${link.encode(CONFIG.eventLinkPrefix)}`;
           const quoteTag = link.toEventTag();
           if (quoteTag) {
             extraTags ??= [];

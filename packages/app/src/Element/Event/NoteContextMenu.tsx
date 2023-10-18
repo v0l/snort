@@ -45,7 +45,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   }
 
   async function share() {
-    const link = NostrLink.fromEvent(ev, CONFIG.eventLinkPrefix).encode();
+    const link = NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix);
     const url = `${window.location.protocol}//${window.location.host}/${link}`;
     if ("share" in window.navigator) {
       await window.navigator.share({
@@ -81,7 +81,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   }
 
   async function copyId() {
-    const link = NostrLink.fromEvent(ev).encode();
+    const link = NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix);
     await navigator.clipboard.writeText(link);
   }
 

@@ -12,7 +12,7 @@ import { FormattedNumber } from "react-intl";
 
 export function ZapGoal({ ev }: { ev: NostrEvent }) {
   const [zap, setZap] = useState(false);
-  const zaps = useZapsFeed(NostrLink.fromEvent(ev, CONFIG.eventLinkPrefix));
+  const zaps = useZapsFeed(NostrLink.fromEvent(ev));
   const target = Number(findTag(ev, "amount"));
   const amount = zaps.reduce((acc, v) => (acc += v.amount * 1000), 0);
   const progress = amount / target;

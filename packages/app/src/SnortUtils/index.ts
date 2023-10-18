@@ -111,16 +111,6 @@ export function eventLink(hex: u256, relays?: Array<string> | string) {
 }
 
 /**
- * Convert hex pubkey to bech32 link url
- */
-export function profileLink(hex: HexKey, relays?: Array<string> | string) {
-  const encoded = relays
-    ? encodeTLV(NostrPrefix.Profile, hex, Array.isArray(relays) ? relays : [relays])
-    : hexToBech32(NostrPrefix.PublicKey, hex);
-  return `/${encoded}`;
-}
-
-/**
  * Convert hex to bech32
  */
 export function hexToBech32(hrp: string, hex?: string) {

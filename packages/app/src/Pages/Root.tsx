@@ -148,7 +148,7 @@ export const NotesTab = () => {
         noteOnClick={
           deckContext
             ? ev => {
-                deckContext.setThread(NostrLink.fromEvent(ev, CONFIG.eventLinkPrefix));
+                deckContext.setThread(NostrLink.fromEvent(ev));
               }
             : undefined
         }
