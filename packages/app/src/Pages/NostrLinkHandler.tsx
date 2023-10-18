@@ -22,7 +22,8 @@ export default function NostrLinkHandler() {
       if (nav.type === NostrPrefix.Event || nav.type === NostrPrefix.Note || nav.type === NostrPrefix.Address) {
         setRenderComponent(<ThreadRoute id={nav.encode()} />); // Directly render ThreadRoute
       } else if (nav.type === NostrPrefix.PublicKey || nav.type === NostrPrefix.Profile) {
-        setRenderComponent(<ProfilePage id={nav.encode()} state={state} />); // Directly render ProfilePage
+        const id = nav.encode();
+        setRenderComponent(<ProfilePage key={id} id={id} state={state} />); // Directly render ProfilePage
       }
     } else {
       if (state) {

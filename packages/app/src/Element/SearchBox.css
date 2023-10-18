@@ -1,7 +1,6 @@
 .search {
   flex-grow: 1;
   display: flex;
-  padding: 9px 16px;
   background: var(--gray-superdark);
   border-radius: 1000px;
 }
@@ -16,7 +15,11 @@
   border-radius: 0 !important;
   font-size: 15px;
   line-height: 21px;
-  padding: 0 !important;
+  padding: 9px 16px;
+}
+
+.search > svg {
+  margin: 9px 16px;
 }
 
 @media (max-width: 768px) {
