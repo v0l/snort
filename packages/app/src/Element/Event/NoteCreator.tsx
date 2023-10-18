@@ -452,7 +452,7 @@ export function NoteCreator() {
           />
           {note.pollOptions === undefined && !note.replyTo && (
             <AsyncIcon
-              iconName="pie-chart"
+              iconName="list"
               iconSize={24}
               onClick={() => note.update(v => (v.pollOptions = ["A", "B"]))}
               className={classNames("note-creator-icon", { active: note.pollOptions !== undefined })}
@@ -476,7 +476,7 @@ export function NoteCreator() {
           <button className="secondary" onClick={cancel}>
             <FormattedMessage defaultMessage="Cancel" />
           </button>
-          <AsyncButton onClick={onSubmit}>
+          <AsyncButton onClick={onSubmit} className="primary">
             {note.replyTo ? <FormattedMessage defaultMessage="Reply" /> : <FormattedMessage defaultMessage="Send" />}
           </AsyncButton>
         </div>
