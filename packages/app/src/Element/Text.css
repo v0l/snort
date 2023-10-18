@@ -35,6 +35,8 @@
   max-width: 100%;
   display: block;
   max-height: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .gallery {
