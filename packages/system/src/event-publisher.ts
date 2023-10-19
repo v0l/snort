@@ -212,8 +212,6 @@ export class EventPublisher {
         eb.tag(["p", replyTo.pubkey]);
       }
     }
-    // Big E/A tag
-    eb.tag(unwrap(link.toEventTag()).map((v, i) => (i === 0 ? v.toUpperCase() : v)));
     eb.processContent();
     fnExtra?.(eb);
     return await this.#sign(eb);
