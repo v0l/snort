@@ -3,8 +3,8 @@ declare const self: ServiceWorkerGlobalScope & {
   __WB_MANIFEST: (string | PrecacheEntry)[];
 };
 
-import { NostrEvent, NostrLink, NostrPrefix, mapEventToProfile, tryParseNostrLink } from "@snort/system";
-import { defaultAvatar, getDisplayName } from "SnortUtils";
+import { NostrLink, NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { defaultAvatar, hexToBech32 } from "SnortUtils";
 import { clientsClaim } from "workbox-core";
 import { PrecacheEntry, precacheAndRoute } from "workbox-precaching";
 
@@ -26,9 +26,18 @@ interface PushNotification {
   data: object;
 }
 
-interface PushNotificationMention {
-  profiles: Array<NostrEvent>;
-  events: Array<NostrEvent>;
+interface CompactMention {
+  id: string;
+  created_at: number;
+  content: string;
+  author: CompactProfile;
+  mentions: Array<CompactProfile>;
+}
+
+interface CompactProfile {
+  pubkey: string;
+  name?: string;
+  avatar?: string;
 }
 
 self.addEventListener("notificationclick", event => {
@@ -52,20 +61,15 @@ self.addEventListener("push", async e => {
   if (data) {
     switch (data.type) {
       case PushType.Mention: {
-        const mention = data.data as PushNotificationMention;
-        for (const ev of mention.events) {
-          const userEvent = mention.profiles.find(a => a.pubkey === ev.pubkey);
-          const userProfile = userEvent ? mapEventToProfile(userEvent) : undefined;
-          const avatarUrl = userProfile?.picture ?? defaultAvatar(ev.pubkey);
+        const evx = data.data as CompactMention;
 
-          await self.registration.showNotification(`Reply from ${getDisplayName(userProfile, ev.pubkey)}`, {
-            body: replaceMentions(ev.content, mention.profiles).substring(0, 250),
-            icon: avatarUrl,
-            timestamp: ev.created_at * 1000,
-            tag: NostrLink.fromEvent(ev).encode(),
-            vibrate: [500],
-          });
-        }
+        await self.registration.showNotification(`Reply from ${displayNameOrDefault(evx.author)}`, {
+          body: replaceMentions(evx.content, evx.mentions).substring(0, 250),
+          icon: evx.author.avatar ?? defaultAvatar(evx.author.pubkey),
+          timestamp: evx.created_at * 1000,
+          tag: new NostrLink(NostrPrefix.Event, evx.id, undefined, evx.author.pubkey, undefined).encode(),
+          vibrate: [500],
+        });
         break;
       }
     }
@@ -74,7 +78,7 @@ self.addEventListener("push", async e => {
 
 const MentionNostrEntityRegex = /(nostr:n(?:pub|profile|event|ote|addr)1[acdefghjklmnpqrstuvwxyz023456789]+)/g;
 
-function replaceMentions(content: string, profiles: Array<NostrEvent>) {
+function replaceMentions(content: string, profiles: Array<CompactProfile>) {
   return content
     .split(MentionNostrEntityRegex)
     .map(i => {
@@ -82,11 +86,17 @@ function replaceMentions(content: string, profiles: Array<NostrEvent>) {
         const link = tryParseNostrLink(i);
         if (link?.type === NostrPrefix.PublicKey || link?.type === NostrPrefix.Profile) {
           const px = profiles.find(a => a.pubkey === link.id);
-          const profile = px && mapEventToProfile(px);
-          return `@${getDisplayName(profile, link.id)}`;
+          return `@${displayNameOrDefault(px ?? { pubkey: link.id })}`;
         }
       }
       return i;
     })
     .join();
+}
+
+function displayNameOrDefault(p: CompactProfile) {
+  if ((p.name?.length ?? 0) > 0) {
+    return p.name;
+  }
+  return hexToBech32("npub", p.pubkey).slice(0, 12);
 }
