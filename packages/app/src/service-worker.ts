@@ -32,7 +32,7 @@ interface PushNotificationMention {
 }
 
 self.addEventListener("notificationclick", event => {
-  const id = event.notification.data as string;
+  const id = event.notification.tag as string;
   event.waitUntil(
     (async () => {
       const windows = await self.clients.matchAll({ type: "window" });
@@ -62,13 +62,12 @@ self.addEventListener("push", async e => {
             title: `Reply from ${getDisplayName(userProfile, ev.pubkey)}`,
             body: replaceMentions(ev.content, mention.profiles).substring(0, 250),
             icon: avatarUrl,
-            timestamp: ev.created_at * 1000,
-            data: NostrLink.fromEvent(ev).encode(),
+            timestamp: ev.created_at * 1000
           };
 
           console.debug("Sending notification", notif);
           await self.registration.showNotification(notif.title, {
-            tag: "notification",
+            tag: NostrLink.fromEvent(ev).encode(),
             vibrate: [500],
             ...notif,
           });
