@@ -3,7 +3,7 @@ declare const self: ServiceWorkerGlobalScope & {
   __WB_MANIFEST: (string | PrecacheEntry)[];
 };
 
-import { NostrEvent, NostrPrefix, mapEventToProfile, tryParseNostrLink } from "@snort/system";
+import { NostrEvent, NostrLink, NostrPrefix, mapEventToProfile, tryParseNostrLink } from "@snort/system";
 import { defaultAvatar, getDisplayName } from "SnortUtils";
 import { clientsClaim } from "workbox-core";
 import { PrecacheEntry, precacheAndRoute } from "workbox-precaching";
@@ -31,6 +31,20 @@ interface PushNotificationMention {
   events: Array<NostrEvent>;
 }
 
+self.addEventListener("notificationclick", event => {
+  const id = event.notification.data as string;
+  event.waitUntil(
+    (async () => {
+      const windows = await self.clients.matchAll({ type: "window" });
+      const url = `/${id}`;
+      for (const client of windows) {
+        if (client.url === url && "focus" in client) return client.focus();
+      }
+      if (self.clients.openWindow) return self.clients.openWindow(url);
+    })(),
+  );
+});
+
 self.addEventListener("push", async e => {
   console.debug(e);
   const data = e.data?.json() as PushNotification | undefined;
@@ -49,6 +63,7 @@ self.addEventListener("push", async e => {
             body: replaceMentions(ev.content, mention.profiles).substring(0, 250),
             icon: avatarUrl,
             timestamp: ev.created_at * 1000,
+            data: NostrLink.fromEvent(ev).encode(),
           };
 
           console.debug("Sending notification", notif);
@@ -64,7 +79,7 @@ self.addEventListener("push", async e => {
   }
 });
 
-const MentionNostrEntityRegex = /@n(pub|profile|event|ote|addr|)1[acdefghjklmnpqrstuvwxyz023456789]+/g;
+const MentionNostrEntityRegex = /(nostr:n(?:pub|profile|event|ote|addr)1[acdefghjklmnpqrstuvwxyz023456789]+)/g;
 
 function replaceMentions(content: string, profiles: Array<NostrEvent>) {
   return content
@@ -80,5 +95,5 @@ function replaceMentions(content: string, profiles: Array<NostrEvent>) {
       }
       return i;
     })
-    .join("");
+    .join();
 }
