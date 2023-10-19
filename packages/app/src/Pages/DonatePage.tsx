@@ -6,7 +6,7 @@ import { ApiHost, DeveloperAccounts, SnortPubKey } from "Const";
 import ProfilePreview from "Element/User/ProfilePreview";
 import ZapButton from "Element/Event/ZapButton";
 import { bech32ToHex } from "SnortUtils";
-import SnortApi, { RevenueSplit, RevenueToday } from "SnortApi";
+import SnortApi, { RevenueSplit, RevenueToday } from "External/SnortApi";
 import Modal from "Element/Modal";
 import AsyncButton from "Element/AsyncButton";
 import QrCode from "Element/QrCode";

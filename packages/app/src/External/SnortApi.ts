@@ -47,6 +47,12 @@ export interface LinkPreviewData {
   og_tags?: Array<[name: string, value: string]>;
 }
 
+export interface PushNotifications {
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+}
+
 export default class SnortApi {
   #url: string;
   #publisher?: EventPublisher;
@@ -88,10 +94,18 @@ export default class SnortApi {
     return this.#getJson<{ address: string }>("p/on-chain");
   }
 
+  getPushNotificationInfo() {
+    return this.#getJson<{ publicKey: string }>("api/v1/notifications/info");
+  }
+
+  registerPushNotifications(sub: PushNotifications) {
+    return this.#getJsonAuthd<void>("api/v1/notifications/register", "POST", sub);
+  }
+
   async #getJsonAuthd<T>(
     path: string,
     method?: "GET" | string,
-    body?: { [key: string]: string },
+    body?: object,
     headers?: { [key: string]: string },
   ): Promise<T> {
     if (!this.#publisher) {
@@ -113,7 +127,7 @@ export default class SnortApi {
   async #getJson<T>(
     path: string,
     method?: "GET" | string,
-    body?: { [key: string]: string },
+    body?: object,
     headers?: { [key: string]: string },
   ): Promise<T> {
     const rsp = await fetch(`${this.#url}${path}`, {
@@ -126,10 +140,19 @@ export default class SnortApi {
       },
     });
 
-    const obj = await rsp.json();
-    if ("error" in obj) {
-      throw new SubscriptionError(obj.error, obj.code);
+    if (rsp.ok) {
+      const text = await rsp.text();
+      if (text.length > 0) {
+        const obj = JSON.parse(text);
+        if ("error" in obj) {
+          throw new SubscriptionError(obj.error, obj.code);
+        }
+        return obj as T;
+      } else {
+        return {} as T;
+      }
+    } else {
+      throw new Error("Invalid response");
     }
-    return obj as T;
   }
 }

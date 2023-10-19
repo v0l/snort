@@ -4,8 +4,7 @@ import { useMemo } from "react";
 import { EventKind, NostrEvent, TaggedNostrEvent, NostrPrefix, EventExt } from "@snort/system";
 
 import Note from "Element/Event/Note";
-import { getDisplayName } from "Element/User/DisplayName";
-import { eventLink, hexToBech32 } from "SnortUtils";
+import { eventLink, hexToBech32, getDisplayName } from "SnortUtils";
 import useModeration from "Hooks/useModeration";
 import { FormattedMessage } from "react-intl";
 import Icon from "Icons/Icon";

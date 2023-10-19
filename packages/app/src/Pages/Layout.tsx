@@ -22,6 +22,10 @@ import { LoginStore } from "Login";
 import { NoteCreatorButton } from "Element/Event/NoteCreatorButton";
 import { ProfileLink } from "Element/User/ProfileLink";
 import SearchBox from "../Element/SearchBox";
+import SnortApi from "External/SnortApi";
+import useEventPublisher from "Hooks/useEventPublisher";
+import { base64 } from "@scure/base";
+import { unwrap } from "@snort/shared";
 
 export default function Layout() {
   const location = useLocation();
@@ -104,6 +108,7 @@ const AccountHeader = () => {
     readonly: s.readonly,
   }));
   const profile = useUserProfile(publicKey);
+  const { publisher } = useEventPublisher();
 
   const hasNotifications = useMemo(
     () => latestNotification > readNotifications,
@@ -122,6 +127,25 @@ const AccountHeader = () => {
       } catch (e) {
         console.error(e);
       }
+    }
+    try {
+      if ("serviceWorker" in navigator) {
+        const reg = await navigator.serviceWorker.ready;
+        if (reg && publisher) {
+          const api = new SnortApi(undefined, publisher);
+          const sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: (await api.getPushNotificationInfo()).publicKey,
+          });
+          await api.registerPushNotifications({
+            endpoint: sub.endpoint,
+            p256dh: base64.encode(new Uint8Array(unwrap(sub.getKey("p256dh")))),
+            auth: base64.encode(new Uint8Array(unwrap(sub.getKey("auth")))),
+          });
+        }
+      }
+    } catch (e) {
+      console.error(e);
     }
   }
 

@@ -1,8 +1,8 @@
 import { UserCache } from "Cache";
-import { getDisplayName } from "Element/User/DisplayName";
 import { LNURL, ExternalStore, unixNow } from "@snort/shared";
 import { Toastore } from "Toaster";
 import { LNWallet, WalletInvoiceState, Wallets } from "Wallet";
+import { getDisplayName } from "SnortUtils";
 
 export enum ZapPoolRecipientType {
   Generic = 0,

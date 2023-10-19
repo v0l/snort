@@ -9,7 +9,7 @@ import { LockedFeatures, Plans, SubscriptionType } from "Subscription";
 import ManageSubscriptionPage from "Pages/subscribe/ManageSubscription";
 import AsyncButton from "Element/AsyncButton";
 import useEventPublisher from "Hooks/useEventPublisher";
-import SnortApi, { SubscriptionError, SubscriptionErrorCode } from "SnortApi";
+import SnortApi, { SubscriptionError, SubscriptionErrorCode } from "External/SnortApi";
 import SendSats from "Element/SendSats";
 import classNames from "classnames";
 

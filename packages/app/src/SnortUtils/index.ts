@@ -14,8 +14,10 @@ import {
   NostrEvent,
   MetadataCache,
   NostrLink,
+  UserMetadata,
 } from "@snort/system";
 import { Day } from "Const";
+import AnimalName from "Element/User/AnimalName";
 
 export const sha256 = (str: string | Uint8Array): u256 => {
   return utils.bytesToHex(hash(str));
@@ -495,3 +497,23 @@ export const isChristmas = () => {
   const event = new Date(ThisYear, 11, 25);
   return IsTheSeason(event);
 };
+
+export function getDisplayName(user: UserMetadata | undefined, pubkey: HexKey): string {
+  return getDisplayNameOrPlaceHolder(user, pubkey)[0];
+}
+
+export function getDisplayNameOrPlaceHolder(user: UserMetadata | undefined, pubkey: HexKey): [string, boolean] {
+  let name = hexToBech32(NostrPrefix.PublicKey, pubkey).substring(0, 12);
+  let isPlaceHolder = false;
+
+  if (typeof user?.display_name === "string" && user.display_name.length > 0) {
+    name = user.display_name;
+  } else if (typeof user?.name === "string" && user.name.length > 0) {
+    name = user.name;
+  } else if (pubkey && CONFIG.animalNamePlaceholders) {
+    name = AnimalName(pubkey);
+    isPlaceHolder = true;
+  }
+
+  return [name.trim(), isPlaceHolder];
+}

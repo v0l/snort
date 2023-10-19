@@ -8,7 +8,7 @@ import { useUserProfile, useUserSearch } from "@snort/system-react";
 
 import UnreadCount from "Element/UnreadCount";
 import ProfileImage from "Element/User/ProfileImage";
-import { appendDedupe, debounce, parseId } from "SnortUtils";
+import { appendDedupe, debounce, parseId, getDisplayName } from "SnortUtils";
 import NoteToSelf from "Element/User/NoteToSelf";
 import useModeration from "Hooks/useModeration";
 import useLogin from "Hooks/useLogin";
@@ -25,7 +25,6 @@ import { useEventFeed } from "Feed/EventFeed";
 import { LoginSession, LoginStore } from "Login";
 import { Nip28ChatSystem } from "chat/nip28";
 import { ChatParticipantProfile } from "Element/Chat/ChatParticipant";
-import { getDisplayName } from "Element/User/DisplayName";
 import classNames from "classnames";
 
 const TwoCol = 768;

@@ -5,8 +5,7 @@ import type { UserMetadata } from "@snort/system";
 import classNames from "classnames";
 
 import useImgProxy from "Hooks/useImgProxy";
-import { getDisplayName } from "Element/User/DisplayName";
-import { defaultAvatar } from "SnortUtils";
+import { defaultAvatar, getDisplayName } from "SnortUtils";
 
 interface AvatarProps {
   pubkey: string;

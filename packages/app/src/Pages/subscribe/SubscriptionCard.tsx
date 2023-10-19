@@ -1,6 +1,6 @@
 import { FormattedMessage, FormattedDate, FormattedNumber } from "react-intl";
 
-import { Subscription } from "SnortApi";
+import { Subscription } from "External/SnortApi";
 import { mapPlanName } from ".";
 import Icon from "Icons/Icon";
 import Nip5Service from "Element/Nip5Service";

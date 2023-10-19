@@ -2,12 +2,11 @@ import { NostrEvent } from "@snort/system";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { LNURL } from "@snort/shared";
 
-import { dedupe, findTag, hexToBech32 } from "SnortUtils";
+import { dedupe, findTag, hexToBech32, getDisplayName } from "SnortUtils";
 import FollowListBase from "Element/User/FollowListBase";
 import AsyncButton from "Element/AsyncButton";
 import { useWallet } from "Wallet";
 import { Toastore } from "Toaster";
-import { getDisplayName } from "Element/User/DisplayName";
 import { UserCache } from "Cache";
 import useLogin from "Hooks/useLogin";
 import useEventPublisher from "Hooks/useEventPublisher";

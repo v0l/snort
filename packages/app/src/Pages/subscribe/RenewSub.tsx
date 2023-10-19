@@ -5,7 +5,7 @@ import { unixNow, unwrap } from "@snort/shared";
 import AsyncButton from "Element/AsyncButton";
 import SendSats from "Element/SendSats";
 import useEventPublisher from "Hooks/useEventPublisher";
-import SnortApi, { Subscription, SubscriptionError } from "SnortApi";
+import SnortApi, { Subscription, SubscriptionError } from "External/SnortApi";
 import { mapPlanName, mapSubscriptionErrorCode } from ".";
 import useLogin from "Hooks/useLogin";
 import { mostRecentSubscription } from "Subscription";

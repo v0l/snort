@@ -9,7 +9,7 @@ import classNames from "classnames";
 
 import { formatShort } from "Number";
 import useEventPublisher from "Hooks/useEventPublisher";
-import { delay, findTag } from "SnortUtils";
+import { delay, findTag, getDisplayName } from "SnortUtils";
 import { NoteCreator } from "Element/Event/NoteCreator";
 import SendSats from "Element/SendSats";
 import { ZapsSummary } from "Element/Event/Zap";
@@ -20,7 +20,6 @@ import useLogin from "Hooks/useLogin";
 import { useInteractionCache } from "Hooks/useInteractionCache";
 import { ZapPoolController } from "ZapPoolController";
 import { Zapper, ZapTarget } from "Zapper";
-import { getDisplayName } from "Element/User/DisplayName";
 import { useNoteCreator } from "State/NoteCreator";
 import Icon from "Icons/Icon";
 
