@@ -99,6 +99,11 @@ const SettingsIndex = () => {
               <Icon name="arrowFront" size={16} />
             </div>
           )}
+          <div className="settings-row" onClick={() => navigate("cache")}>
+            <Icon name="hard-drive" size={24} />
+            <FormattedMessage defaultMessage="Cache" />
+            <Icon name="arrowFront" size={16} />
+          </div>
           <div className="settings-row" onClick={handleLogout}>
             <Icon name="logout" size={24} />
             <FormattedMessage {...messages.LogOut} />

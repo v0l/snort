@@ -46,6 +46,10 @@ export abstract class FeedCache<TCached> {
     this.onTable = new Set<string>(keys.map(a => a as string));
   }
 
+  keysOnTable() {
+    return [...this.onTable];
+  }
+
   hook(fn: HookFn, key: string | undefined) {
     if (!key) {
       return () => {
@@ -190,6 +194,8 @@ export abstract class FeedCache<TCached> {
     await this.table?.clear();
     this.cache.clear();
     this.onTable.clear();
+    this.#changed = true;
+    this.#hooks.forEach(h => h.fn());
   }
 
   snapshot() {

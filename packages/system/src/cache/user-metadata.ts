@@ -79,7 +79,7 @@ export class UserProfileCache extends FeedCache<MetadataCache> {
   }
 
   takeSnapshot(): MetadataCache[] {
-    return [];
+    return [...this.cache.values()];
   }
 
   async #processZapperQueue() {

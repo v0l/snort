@@ -29,6 +29,9 @@
   "/4tOwT": {
     "defaultMessage": "Skip"
   },
+  "/GCoTA": {
+    "defaultMessage": "Clear"
+  },
   "/JE/X+": {
     "defaultMessage": "Account Support"
   },
@@ -113,6 +116,9 @@
   },
   "2ukA4d": {
     "defaultMessage": "{n} hours"
+  },
+  "2zJXeA": {
+    "defaultMessage": "Profiles"
   },
   "3KNMbJ": {
     "defaultMessage": "Articles"
@@ -288,6 +294,9 @@
   "9wO4wJ": {
     "defaultMessage": "Lightning Invoice"
   },
+  "ABAQyo": {
+    "defaultMessage": "Chats"
+  },
   "ADmfQT": {
     "defaultMessage": "Parent",
     "description": "Link to parent note in thread"
@@ -376,6 +385,9 @@
   },
   "D3idYv": {
     "defaultMessage": "Settings"
+  },
+  "DBiVK1": {
+    "defaultMessage": "Cache"
   },
   "DKnriN": {
     "defaultMessage": "Send sats"
@@ -1067,6 +1079,9 @@
   "filwqD": {
     "defaultMessage": "Read"
   },
+  "fjAcWo": {
+    "defaultMessage": "Gift Wraps"
+  },
   "flnGvv": {
     "defaultMessage": "What's on your mind?"
   },
@@ -1093,6 +1108,9 @@
   },
   "gczcC5": {
     "defaultMessage": "Subscribe"
+  },
+  "geppt8": {
+    "defaultMessage": "{count} ({count2} in memory)"
   },
   "gjBiyj": {
     "defaultMessage": "Loading..."
@@ -1144,6 +1162,9 @@
   },
   "iXPL0Z": {
     "defaultMessage": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead"
+  },
+  "iYc3Ld": {
+    "defaultMessage": "Payments"
   },
   "ieGrWo": {
     "defaultMessage": "Follow"
@@ -1395,6 +1416,9 @@
   "sZQzjQ": {
     "defaultMessage": "Failed to parse zap split: {input}"
   },
+  "tGXF0Q": {
+    "defaultMessage": "Relay Lists"
+  },
   "tOdNiY": {
     "defaultMessage": "Dark"
   },
@@ -1404,14 +1428,23 @@
   "thnRpU": {
     "defaultMessage": "Getting NIP-05 verified can help:"
   },
+  "tjpYlr": {
+    "defaultMessage": "Relay Metrics"
+  },
   "ttxS0b": {
     "defaultMessage": "Supporter Badge"
+  },
+  "u+LyXc": {
+    "defaultMessage": "Interactions"
   },
   "u/vOPu": {
     "defaultMessage": "Paid"
   },
   "u4bHcR": {
     "defaultMessage": "Check out the code here: {link}"
+  },
+  "uKqSN+": {
+    "defaultMessage": "Follows Feed"
   },
   "uSV4Ti": {
     "defaultMessage": "Reposts need to be manually confirmed"
