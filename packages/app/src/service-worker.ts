@@ -58,18 +58,12 @@ self.addEventListener("push", async e => {
           const userProfile = userEvent ? mapEventToProfile(userEvent) : undefined;
           const avatarUrl = userProfile?.picture ?? defaultAvatar(ev.pubkey);
 
-          const notif = {
-            title: `Reply from ${getDisplayName(userProfile, ev.pubkey)}`,
+          await self.registration.showNotification(`Reply from ${getDisplayName(userProfile, ev.pubkey)}`, {
             body: replaceMentions(ev.content, mention.profiles).substring(0, 250),
             icon: avatarUrl,
-            timestamp: ev.created_at * 1000
-          };
-
-          console.debug("Sending notification", notif);
-          await self.registration.showNotification(notif.title, {
+            timestamp: ev.created_at * 1000,
             tag: NostrLink.fromEvent(ev).encode(),
             vibrate: [500],
-            ...notif,
           });
         }
         break;
