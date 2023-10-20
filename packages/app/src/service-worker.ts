@@ -66,19 +66,13 @@ self.addEventListener("notificationclick", event => {
         if (ev.type === PushType.Zap || ev.type === PushType.Reaction) {
           const mention = ev.data as CompactReaction;
           if (mention.event) {
-            return `/${new NostrLink(
-              NostrPrefix.Event,
-              mention.event,
-              undefined,
-              mention.author.pubkey,
-              undefined,
-            ).encode()}`;
+            return `/${new NostrLink(NostrPrefix.Note, mention.event).encode()}`;
           }
         } else if (ev.type == PushType.DirectMessage) {
           const reaction = ev.data as CompactReaction;
           return `/chat/${Nip4ChatSystem.makeChatId(reaction.author.pubkey)}`;
         }
-        return `/${id}`;
+        return `/${new NostrLink(NostrPrefix.Note, id).encode()}`;
       };
       for (const client of windows) {
         if (client.url === url() && "focus" in client) return client.focus();
@@ -179,7 +173,7 @@ function makeNotification(n: PushNotification) {
     icon: evx.author.avatar ?? defaultAvatar(evx.author.pubkey),
     badge: CONFIG.appleTouchIconUrl,
     timestamp: evx.created_at * 1000,
-    tag: new NostrLink(NostrPrefix.Event, evx.id, undefined, evx.author.pubkey, undefined).encode(),
+    tag: evx.id,
     data: JSON.stringify(n),
   };
 }
