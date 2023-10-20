@@ -64,16 +64,15 @@ export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSy
       {} as Record<string, Array<NostrEvent>>,
     );
 
-    return [...Object.entries(chats)].map(([k, v]) =>
-      Nip4ChatSystem.createChatObj(
-        encodeTLVEntries("chat4" as NostrPrefix, {
-          type: TLVEntryType.Author,
-          value: k,
-          length: 32,
-        }),
-        v,
-      ),
-    );
+    return [...Object.entries(chats)].map(([k, v]) => Nip4ChatSystem.createChatObj(Nip4ChatSystem.makeChatId(k), v));
+  }
+
+  static makeChatId(pubkey: string) {
+    return encodeTLVEntries("chat4" as NostrPrefix, {
+      type: TLVEntryType.Author,
+      value: pubkey,
+      length: 32,
+    });
   }
 
   static createChatObj(id: string, messages: Array<NostrEvent>) {
