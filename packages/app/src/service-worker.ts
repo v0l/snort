@@ -76,32 +76,41 @@ self.addEventListener("push", async e => {
     switch (data.type) {
       case PushType.Mention: {
         const evx = data.data as CompactMention;
-        await self.registration.showNotification(`${displayNameOrDefault(evx.author)} replied`, makeNotification(evx));
+        await self.registration.showNotification(
+          `${displayNameOrDefault(evx.author)} replied`,
+          makeNotification(data.type, evx),
+        );
         break;
       }
       case PushType.Reaction: {
         const evx = data.data as CompactReaction;
-        await self.registration.showNotification(`${displayNameOrDefault(evx.author)} reacted`, makeNotification(evx));
+        await self.registration.showNotification(
+          `${displayNameOrDefault(evx.author)} reacted`,
+          makeNotification(data.type, evx),
+        );
         break;
       }
       case PushType.Zap: {
         const evx = data.data as CompactReaction;
         await self.registration.showNotification(
           `${displayNameOrDefault(evx.author)} zapped${evx.amount ? ` ${formatShort(evx.amount)} sats` : ""}`,
-          makeNotification(evx),
+          makeNotification(data.type, evx),
         );
         break;
       }
       case PushType.Repost: {
         const evx = data.data as CompactReaction;
-        await self.registration.showNotification(`${displayNameOrDefault(evx.author)} reposted`, makeNotification(evx));
+        await self.registration.showNotification(
+          `${displayNameOrDefault(evx.author)} reposted`,
+          makeNotification(data.type, evx),
+        );
         break;
       }
       case PushType.DirectMessage: {
         const evx = data.data as CompactReaction;
         await self.registration.showNotification(
           `${displayNameOrDefault(evx.author)} sent you a DM`,
-          makeNotification(evx),
+          makeNotification(data.type, evx),
         );
         break;
       }
@@ -134,9 +143,22 @@ function displayNameOrDefault(p: CompactProfile) {
   return hexToBech32("npub", p.pubkey).slice(0, 12);
 }
 
-function makeNotification(evx: CompactMention | CompactReaction) {
+function makeNotification(type: PushType, evx: CompactMention | CompactReaction) {
   return {
-    body: "mentions" in evx ? replaceMentions(evx.content, evx.mentions).substring(0, 250) : evx.content,
+    body: (() => {
+      if (type === PushType.Mention) {
+        return ("mentions" in evx ? replaceMentions(evx.content, evx.mentions) : evx.content).substring(0, 250);
+      } else if (type === PushType.Reaction) {
+        if (evx.content === "+") return "💜";
+        if (evx.content === "-") return "👎";
+        return evx.content;
+      } else if (type === PushType.DirectMessage) {
+        return "";
+      } else if (type === PushType.Repost) {
+        return "";
+      }
+      return evx.content.substring(0, 250);
+    })(),
     icon: evx.author.avatar ?? defaultAvatar(evx.author.pubkey),
     badge: CONFIG.appleTouchIconUrl,
     timestamp: evx.created_at * 1000,
