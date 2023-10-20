@@ -174,7 +174,7 @@ function makeNotification(n: PushNotification) {
   return {
     body: body(),
     icon: evx.author.avatar ?? defaultAvatar(evx.author.pubkey),
-    badge: CONFIG.appleTouchIconUrl,
+    badge: `${location.protocol}//${location.hostname}${CONFIG.appleTouchIconUrl}`,
     timestamp: evx.created_at * 1000,
     tag: evx.id,
     data: JSON.stringify(n),
