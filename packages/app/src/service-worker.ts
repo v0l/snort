@@ -4,6 +4,7 @@ declare const self: ServiceWorkerGlobalScope & {
 };
 
 import { NostrLink, NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { formatShort } from "Number";
 import { defaultAvatar, hexToBech32 } from "SnortUtils";
 import { clientsClaim } from "workbox-core";
 import { PrecacheEntry, precacheAndRoute } from "workbox-precaching";
@@ -19,6 +20,10 @@ self.addEventListener("message", event => {
 
 const enum PushType {
   Mention = 1,
+  Reaction = 2,
+  Zap = 3,
+  Repost = 4,
+  DirectMessage = 5,
 }
 
 interface PushNotification {
@@ -32,6 +37,15 @@ interface CompactMention {
   content: string;
   author: CompactProfile;
   mentions: Array<CompactProfile>;
+}
+
+interface CompactReaction {
+  id: string;
+  created_at: number;
+  content: string;
+  author: CompactProfile;
+  event?: string;
+  amount?: number;
 }
 
 interface CompactProfile {
@@ -62,14 +76,27 @@ self.addEventListener("push", async e => {
     switch (data.type) {
       case PushType.Mention: {
         const evx = data.data as CompactMention;
-
-        await self.registration.showNotification(`Reply from ${displayNameOrDefault(evx.author)}`, {
-          body: replaceMentions(evx.content, evx.mentions).substring(0, 250),
-          icon: evx.author.avatar ?? defaultAvatar(evx.author.pubkey),
-          timestamp: evx.created_at * 1000,
-          tag: new NostrLink(NostrPrefix.Event, evx.id, undefined, evx.author.pubkey, undefined).encode(),
-          vibrate: [500],
-        });
+        await self.registration.showNotification(`${displayNameOrDefault(evx.author)} replied`, makeNotification(evx));
+        break;
+      }
+      case PushType.Reaction: {
+        const evx = data.data as CompactReaction;
+        await self.registration.showNotification(`${displayNameOrDefault(evx.author)} reacted`, makeNotification(evx));
+        break;
+      }
+      case PushType.Zap: {
+        const evx = data.data as CompactReaction;
+        await self.registration.showNotification(`${displayNameOrDefault(evx.author)} zapped${evx.amount ? ` ${formatShort(evx.amount)} sats` : ""}`, makeNotification(evx));
+        break;
+      }
+      case PushType.Repost: {
+        const evx = data.data as CompactReaction;
+        await self.registration.showNotification(`${displayNameOrDefault(evx.author)} reposted`, makeNotification(evx));
+        break;
+      }
+      case PushType.DirectMessage: {
+        const evx = data.data as CompactReaction;
+        await self.registration.showNotification(`${displayNameOrDefault(evx.author)} sent you a DM`, makeNotification(evx));
         break;
       }
     }
@@ -91,7 +118,7 @@ function replaceMentions(content: string, profiles: Array<CompactProfile>) {
       }
       return i;
     })
-    .join();
+    .join("");
 }
 
 function displayNameOrDefault(p: CompactProfile) {
@@ -99,4 +126,14 @@ function displayNameOrDefault(p: CompactProfile) {
     return p.name;
   }
   return hexToBech32("npub", p.pubkey).slice(0, 12);
+}
+
+function makeNotification(evx: CompactMention | CompactReaction) {
+  return {
+    body: "mentions" in evx ? replaceMentions(evx.content, evx.mentions).substring(0, 250) : evx.content,
+    icon: evx.author.avatar ?? defaultAvatar(evx.author.pubkey),
+    badge: CONFIG.appleTouchIconUrl,
+    timestamp: evx.created_at * 1000,
+    tag: new NostrLink(NostrPrefix.Event, evx.id, undefined, evx.author.pubkey, undefined).encode()
+  };
 }
