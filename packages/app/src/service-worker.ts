@@ -69,7 +69,7 @@ self.addEventListener("notificationclick", event => {
           }
         } else if (ev.type == PushType.DirectMessage) {
           const reaction = ev.data as CompactReaction;
-          return `/chat/${encodeTLVEntries("chat4" as NostrPrefix, {
+          return `/messages/${encodeTLVEntries("chat4" as NostrPrefix, {
             type: TLVEntryType.Author,
             value: reaction.author.pubkey,
             length: 32,
