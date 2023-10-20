@@ -51,6 +51,7 @@ export interface PushNotifications {
   endpoint: string;
   p256dh: string;
   auth: string;
+  scope: string;
 }
 
 export default class SnortApi {
