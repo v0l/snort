@@ -86,7 +86,10 @@ self.addEventListener("push", async e => {
       }
       case PushType.Zap: {
         const evx = data.data as CompactReaction;
-        await self.registration.showNotification(`${displayNameOrDefault(evx.author)} zapped${evx.amount ? ` ${formatShort(evx.amount)} sats` : ""}`, makeNotification(evx));
+        await self.registration.showNotification(
+          `${displayNameOrDefault(evx.author)} zapped${evx.amount ? ` ${formatShort(evx.amount)} sats` : ""}`,
+          makeNotification(evx),
+        );
         break;
       }
       case PushType.Repost: {
@@ -96,7 +99,10 @@ self.addEventListener("push", async e => {
       }
       case PushType.DirectMessage: {
         const evx = data.data as CompactReaction;
-        await self.registration.showNotification(`${displayNameOrDefault(evx.author)} sent you a DM`, makeNotification(evx));
+        await self.registration.showNotification(
+          `${displayNameOrDefault(evx.author)} sent you a DM`,
+          makeNotification(evx),
+        );
         break;
       }
     }
@@ -134,6 +140,6 @@ function makeNotification(evx: CompactMention | CompactReaction) {
     icon: evx.author.avatar ?? defaultAvatar(evx.author.pubkey),
     badge: CONFIG.appleTouchIconUrl,
     timestamp: evx.created_at * 1000,
-    tag: new NostrLink(NostrPrefix.Event, evx.id, undefined, evx.author.pubkey, undefined).encode()
+    tag: new NostrLink(NostrPrefix.Event, evx.id, undefined, evx.author.pubkey, undefined).encode(),
   };
 }
