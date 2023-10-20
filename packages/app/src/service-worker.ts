@@ -3,10 +3,9 @@ declare const self: ServiceWorkerGlobalScope & {
   __WB_MANIFEST: (string | PrecacheEntry)[];
 };
 
-import { NostrLink, NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { NostrLink, NostrPrefix, TLVEntryType, encodeTLVEntries, tryParseNostrLink } from "@snort/system";
 import { formatShort } from "Number";
 import { defaultAvatar, hexToBech32 } from "SnortUtils";
-import { Nip4ChatSystem } from "chat/nip4";
 import { clientsClaim } from "workbox-core";
 import { PrecacheEntry, precacheAndRoute } from "workbox-precaching";
 
@@ -70,7 +69,11 @@ self.addEventListener("notificationclick", event => {
           }
         } else if (ev.type == PushType.DirectMessage) {
           const reaction = ev.data as CompactReaction;
-          return `/chat/${Nip4ChatSystem.makeChatId(reaction.author.pubkey)}`;
+          return `/chat/${encodeTLVEntries("chat4" as NostrPrefix, {
+            type: TLVEntryType.Author,
+            value: reaction.author.pubkey,
+            length: 32,
+          })}`;
         }
         return `/${new NostrLink(NostrPrefix.Note, id).encode()}`;
       };
