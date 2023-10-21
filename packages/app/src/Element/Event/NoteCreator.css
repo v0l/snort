@@ -16,6 +16,7 @@
 .note-creator-modal .note.card {
   padding: 0;
   border: none;
+  min-height: unset;
 }
 
 .note-creator-modal .note.card.note-quote {

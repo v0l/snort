@@ -34,7 +34,7 @@ export default function DmWindow({ id }: { id: string }) {
       <div>
         <div className="flex flex-col">{chat && <DmChatSelected chat={chat} />}</div>
       </div>
-      <div>
+      <div className="flex g8">
         <WriteMessage chat={chat} />
       </div>
     </div>

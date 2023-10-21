@@ -241,10 +241,7 @@ small {
   line-height: 22px; /* 157.143% */
 }
 
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
+.button {
   position: relative;
   cursor: pointer;
   padding: 10px 16px;
@@ -255,6 +252,13 @@ button,
   border: none;
   border-radius: 100px;
   outline: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  @apply button;
 }
 
 .btn,
@@ -809,7 +813,7 @@ button.tall {
   }
 }
 
-.rta__textarea {
+.note-creator-modal .rta__textarea {
   /* Fix width calculation to account for 32px padding on input */
   width: calc(100% - 32px) !important;
   font-size: 15px !important;

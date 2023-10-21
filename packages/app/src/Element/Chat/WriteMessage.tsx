@@ -1,17 +1,14 @@
+import { useState } from "react";
 import { NostrEvent, NostrLink, NostrPrefix } from "@snort/system";
 import useEventPublisher from "Hooks/useEventPublisher";
-import Icon from "Icons/Icon";
-import Spinner from "Icons/Spinner";
-import { useState } from "react";
 import useFileUpload from "Upload";
 import { openFile } from "SnortUtils";
 import Textarea from "../Textarea";
 import { Chat } from "chat";
+import { AsyncIcon } from "Element/AsyncIcon";
 
 export default function WriteMessage({ chat }: { chat: Chat }) {
   const [msg, setMsg] = useState("");
-  const [sending, setSending] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [otherEvents, setOtherEvents] = useState<Array<NostrEvent>>([]);
   const [error, setError] = useState("");
   const { publisher, system } = useEventPublisher();
@@ -31,7 +28,6 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
   }
 
   async function uploadFile(file: File | Blob) {
-    setUploading(true);
     try {
       if (file) {
         const rx = await uploader.upload(file, file.name);
@@ -51,25 +47,19 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
       if (e instanceof Error) {
         setError(e.message);
       }
-    } finally {
-      setUploading(false);
     }
   }
 
   async function sendMessage() {
     if (msg && publisher && chat) {
-      setSending(true);
       const ev = await chat.createMessage(msg, publisher);
       await chat.sendMessage(ev, system);
       setMsg("");
-      setSending(false);
     }
   }
 
   function onChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    if (!sending) {
-      setMsg(e.target.value);
-    }
+    setMsg(e.target.value);
   }
 
   async function onEnter(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -82,10 +72,8 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
 
   return (
     <>
-      <button className="circle flex items-center" onClick={() => attachFile()}>
-        {uploading ? <Spinner width={20} /> : <Icon name="attachment" size={20} />}
-      </button>
-      <div className="w-max">
+      <AsyncIcon className="circle flex items-center button" iconName="attachment" onClick={() => attachFile()} />
+      <div className="grow">
         <Textarea
           autoFocus={true}
           placeholder=""
@@ -99,9 +87,7 @@ export default function WriteMessage({ chat }: { chat: Chat }) {
         />
         {error && <b className="error">{error}</b>}
       </div>
-      <button className="circle flex items-center" onClick={() => sendMessage()}>
-        {sending ? <Spinner width={20} /> : <Icon name="arrow-right" size={20} />}
-      </button>
+      <AsyncIcon className="circle flex items-center button" iconName="arrow-right" onClick={() => sendMessage()} />
     </>
   );
 }

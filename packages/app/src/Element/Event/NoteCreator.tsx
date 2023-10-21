@@ -465,7 +465,9 @@ export function NoteCreator() {
             onClick={() => note.update(v => (v.advanced = !v.advanced))}
             className={classNames("note-creator-icon", { active: note.advanced })}
           />
-          <FormattedMessage defaultMessage="Preview" />
+          <span className="sm:inline hidden">
+            <FormattedMessage defaultMessage="Preview" />
+          </span>
           <ToggleSwitch
             onClick={() => loadPreview()}
             size={40}
@@ -546,10 +548,10 @@ export function NoteCreator() {
         )}
         {note.preview && getPreviewNote()}
         {!note.preview && (
-          <div onPaste={handlePaste} className={`note-creator${note.pollOptions ? " poll" : ""}`}>
+          <div onPaste={handlePaste} className={classNames("note-creator", { poll: Boolean(note.pollOptions) })}>
             <Textarea
               autoFocus
-              className={`textarea ${note.active ? "textarea--focused" : ""}`}
+              className={classNames("textarea", { "textarea--focused": note.active })}
               onChange={c => onChange(c)}
               value={note.note}
               onFocus={() => note.update(v => (v.active = true))}
