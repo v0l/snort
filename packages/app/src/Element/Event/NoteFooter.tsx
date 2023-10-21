@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
 import { TaggedNostrEvent, ParsedZap, countLeadingZeros, NostrLink } from "@snort/system";
@@ -10,7 +10,6 @@ import classNames from "classnames";
 import { formatShort } from "Number";
 import useEventPublisher from "Hooks/useEventPublisher";
 import { delay, findTag, getDisplayName } from "SnortUtils";
-import { NoteCreator } from "Element/Event/NoteCreator";
 import SendSats from "Element/SendSats";
 import { ZapsSummary } from "Element/Event/Zap";
 import { AsyncIcon, AsyncIconProps } from "Element/AsyncIcon";
@@ -58,7 +57,6 @@ export default function NoteFooter(props: NoteFooterProps) {
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const { publisher, system } = useEventPublisher();
   const note = useNoteCreator(n => ({ show: n.show, replyTo: n.replyTo, update: n.update, quote: n.quote }));
-  const willRenderNoteCreator = note.show && (note.replyTo?.id === ev.id || note.quote);
   const [tip, setTip] = useState(false);
   const [zapping, setZapping] = useState(false);
   const walletState = useWallet();
@@ -303,7 +301,6 @@ export default function NoteFooter(props: NoteFooterProps) {
           {tipButton()}
           {powIcon()}
         </div>
-        {willRenderNoteCreator && <NoteCreator key={`note-creator-${ev.id}`} />}
         <SendSats targets={getZapTarget()} onClose={() => setTip(false)} show={tip} note={ev.id} allocatePool={true} />
       </div>
       <ZapsSummary zaps={zaps} />
@@ -311,7 +308,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   );
 }
 
-function AsyncFooterIcon(props: AsyncIconProps & { value: number }) {
+const AsyncFooterIcon = forwardRef((props: AsyncIconProps & { value: number }) => {
   const mergedProps = {
     ...props,
     iconSize: 18,
@@ -322,4 +319,4 @@ function AsyncFooterIcon(props: AsyncIconProps & { value: number }) {
       {props.value > 0 && <div className="reaction-pill-number">{formatShort(props.value)}</div>}
     </AsyncIcon>
   );
-}
+});

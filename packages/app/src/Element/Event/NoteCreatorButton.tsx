@@ -1,6 +1,7 @@
 import "./NoteCreatorButton.css";
 import { useRef, useMemo } from "react";
 import { useLocation } from "react-router-dom";
+import classNames from "classnames";
 
 import { isFormElement } from "SnortUtils";
 import useKeyboardShortcut from "Hooks/useKeyboardShortcut";
@@ -8,7 +9,6 @@ import useLogin from "Hooks/useLogin";
 import Icon from "Icons/Icon";
 import { useNoteCreator } from "State/NoteCreator";
 import { NoteCreator } from "./NoteCreator";
-import classNames from "classnames";
 
 export const NoteCreatorButton = ({ className }: { className?: string }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -27,15 +27,14 @@ export const NoteCreatorButton = ({ className }: { className?: string }) => {
   });
 
   const shouldHideNoteCreator = useMemo(() => {
-    const isReplyNoteCreatorShowing = replyTo && show;
-    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/e", "/subscribe"];
-    return readonly || isReplyNoteCreatorShowing || hideOn.some(a => location.pathname.startsWith(a));
+    const isReply = replyTo && show;
+    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/e", "/nevent", "/note1", "/naddr", "/subscribe"];
+    return (readonly || hideOn.some(a => location.pathname.startsWith(a))) && !isReply;
   }, [location, readonly]);
 
-  if (shouldHideNoteCreator) return null;
   return (
     <>
-      <button
+      {!shouldHideNoteCreator && <button
         ref={buttonRef}
         className={classNames("primary circle", className)}
         onClick={() =>
@@ -45,7 +44,7 @@ export const NoteCreatorButton = ({ className }: { className?: string }) => {
           })
         }>
         <Icon name="plus" size={16} />
-      </button>
+      </button>}
       <NoteCreator key="global-note-creator" />
     </>
   );

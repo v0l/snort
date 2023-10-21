@@ -1,4 +1,5 @@
 import { ReactNode, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { v4 as uuid } from "uuid";
 import { ExternalStore, unixNow } from "@snort/shared";
 
@@ -42,7 +43,7 @@ export default function Toaster() {
     () => Toastore.snapshot(),
   );
 
-  return (
+  return createPortal(
     <div className="toaster">
       {toast.map(a => (
         <div className="card flex" key={a.id}>
@@ -50,6 +51,5 @@ export default function Toaster() {
           {a.element}
         </div>
       ))}
-    </div>
-  );
+    </div>, document.body);
 }

@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import "./Modal.css";
 import { ReactNode, useEffect } from "react";
 
@@ -26,7 +27,7 @@ export default function Modal(props: ModalProps) {
     };
   }, []);
 
-  return (
+  return createPortal(
     <div className={`modal${props.className ? ` ${props.className}` : ""}`} onClick={props.onClose}>
       <div className="modal-body" onClick={props.onClose}>
         <div
@@ -37,6 +38,5 @@ export default function Modal(props: ModalProps) {
           {props.children}
         </div>
       </div>
-    </div>
-  );
+    </div>, document.body);
 }
