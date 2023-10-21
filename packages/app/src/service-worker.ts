@@ -171,7 +171,7 @@ function makeNotification(n: PushNotification) {
     }
     return evx.content.substring(0, 250);
   };
-  return {
+  const ret = {
     body: body(),
     icon: evx.author.avatar ?? defaultAvatar(evx.author.pubkey),
     badge: `${location.protocol}//${location.hostname}${CONFIG.appleTouchIconUrl}`,
@@ -179,4 +179,6 @@ function makeNotification(n: PushNotification) {
     tag: evx.id,
     data: JSON.stringify(n),
   };
+  console.debug(ret);
+  return ret;
 }
