@@ -28,23 +28,36 @@ export const NoteCreatorButton = ({ className }: { className?: string }) => {
 
   const shouldHideNoteCreator = useMemo(() => {
     const isReply = replyTo && show;
-    const hideOn = ["/settings", "/messages", "/new", "/login", "/donate", "/e", "/nevent", "/note1", "/naddr", "/subscribe"];
+    const hideOn = [
+      "/settings",
+      "/messages",
+      "/new",
+      "/login",
+      "/donate",
+      "/e",
+      "/nevent",
+      "/note1",
+      "/naddr",
+      "/subscribe",
+    ];
     return (readonly || hideOn.some(a => location.pathname.startsWith(a))) && !isReply;
   }, [location, readonly]);
 
   return (
     <>
-      {!shouldHideNoteCreator && <button
-        ref={buttonRef}
-        className={classNames("primary circle", className)}
-        onClick={() =>
-          update(v => {
-            v.replyTo = undefined;
-            v.show = true;
-          })
-        }>
-        <Icon name="plus" size={16} />
-      </button>}
+      {!shouldHideNoteCreator && (
+        <button
+          ref={buttonRef}
+          className={classNames("primary circle", className)}
+          onClick={() =>
+            update(v => {
+              v.replyTo = undefined;
+              v.show = true;
+            })
+          }>
+          <Icon name="plus" size={16} />
+        </button>
+      )}
       <NoteCreator key="global-note-creator" />
     </>
   );

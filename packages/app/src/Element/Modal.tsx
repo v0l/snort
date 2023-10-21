@@ -38,5 +38,7 @@ export default function Modal(props: ModalProps) {
           {props.children}
         </div>
       </div>
-    </div>, document.body);
+    </div>,
+    document.body,
+  );
 }
