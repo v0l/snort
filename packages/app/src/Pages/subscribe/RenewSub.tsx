@@ -21,7 +21,8 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
 
   const recentSub = mostRecentSubscription(subscriptions);
   const sub =
-    s ?? (recentSub
+    s ??
+    (recentSub
       ? ({
           id: unwrap(recentSub).id,
           type: unwrap(recentSub).type,
