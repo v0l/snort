@@ -22,7 +22,7 @@ interface RelaysMetadataProps {
 
 const RelaysMetadata = ({ relays }: RelaysMetadataProps) => {
   return (
-    <div className="main-content">
+    <>
       {relays?.map(({ url, settings }) => {
         return (
           <div key={url} className="card relay-card">
@@ -35,7 +35,7 @@ const RelaysMetadata = ({ relays }: RelaysMetadataProps) => {
           </div>
         );
       })}
-    </div>
+    </>
   );
 };
 

@@ -1,3 +1,5 @@
+import { throwIfOffline } from "@snort/shared";
+
 interface NostrJson {
   names: Record<string, string>;
 }
@@ -7,6 +9,7 @@ export async function fetchNip05Pubkey(name: string, domain: string, timeout = 2
     return undefined;
   }
   try {
+    throwIfOffline();
     const res = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`, {
       signal: AbortSignal.timeout(timeout),
     });

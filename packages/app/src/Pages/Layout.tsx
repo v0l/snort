@@ -159,7 +159,7 @@ const AccountHeader = () => {
   }
   return (
     <div className="header-actions">
-      {!location.pathname.startsWith("/search") && <SearchBox />}
+      {!location.pathname.startsWith("/search") ? <SearchBox /> : <div className="grow"></div>}
       {!readonly && (
         <Link className="btn" to="/messages">
           <Icon name="mail" size={24} />

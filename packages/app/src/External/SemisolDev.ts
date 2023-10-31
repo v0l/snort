@@ -1,3 +1,5 @@
+import { throwIfOffline } from "@snort/shared";
+
 export interface RecommendedProfilesResponse {
   quality: number;
   recommendations: Array<[pubkey: string, score: number]>;
@@ -26,6 +28,7 @@ export default class SemisolDevApi {
   }
 
   async #json<T>(method: string, path: string, body?: unknown) {
+    throwIfOffline();
     const url = `${this.#url}${path}`;
     const res = await fetch(url, {
       method: method ?? "GET",

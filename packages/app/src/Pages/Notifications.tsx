@@ -100,12 +100,20 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
   }, [myNotifications]);
 
   return (
-    <div className="main-content">
-      <NotificationSummary evs={myNotifications as TaggedNostrEvent[]} />
+    <>
+      <div className="main-content p flex g12 items-center">
+        <Icon name="bell" />
+        <h3 className="my-0">
+          <FormattedMessage defaultMessage="Notifications" />
+        </h3>
+      </div>
+      <div className="main-content">
+        <NotificationSummary evs={myNotifications as TaggedNostrEvent[]} />
 
-      {login.publicKey &&
-        [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
-    </div>
+        {login.publicKey &&
+          [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
+      </div>
+    </>
   );
 }
 
@@ -193,6 +201,8 @@ function NotificationSummary({ evs }: { evs: Array<TaggedNostrEvent> }) {
         {} as Record<string, StatSlot>,
       );
   }, [evs, period]);
+
+  if (evs.length === 0) return;
 
   const filterIcon = (f: NotificationSummaryFilter, icon: string, iconActiveClass: string) => {
     const active = hasFlag(filter, f);

@@ -12,7 +12,7 @@ import {
   TLVEntryType,
   tryParseNostrLink,
 } from "@snort/system";
-import { LNURL } from "@snort/shared";
+import { LNURL, fetchNip05Pubkey } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
 import { findTag, getLinkReactions, unwrap } from "SnortUtils";
@@ -44,7 +44,6 @@ import BadgeList from "Element/User/BadgeList";
 import { ProxyImg } from "Element/ProxyImg";
 import useHorizontalScroll from "Hooks/useHorizontalScroll";
 import { EmailRegex } from "Const";
-import { getNip05PubKey } from "Pages/LoginPage";
 import useLogin from "Hooks/useLogin";
 import { ZapTarget } from "Zapper";
 import { useStatusFeed } from "Feed/StatusFeed";
@@ -113,7 +112,8 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
     if (!id) {
       const resolvedId = propId || params.id;
       if (resolvedId?.match(EmailRegex)) {
-        getNip05PubKey(resolvedId).then(a => {
+        const [name, domain] = resolvedId.split("@");
+        fetchNip05Pubkey(name, domain).then(a => {
           setId(a);
         });
       } else {
@@ -187,14 +187,14 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
           targets={
             lnurl?.lnurl && id
               ? [
-                  {
-                    type: "lnurl",
-                    value: lnurl?.lnurl,
-                    weight: 1,
-                    name: user?.display_name || user?.name,
-                    zap: { pubkey: id },
-                  } as ZapTarget,
-                ]
+                {
+                  type: "lnurl",
+                  value: lnurl?.lnurl,
+                  weight: 1,
+                  name: user?.display_name || user?.name,
+                  zap: { pubkey: id },
+                } as ZapTarget,
+              ]
               : undefined
           }
           show={showLnQr}

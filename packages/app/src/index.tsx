@@ -20,7 +20,7 @@ import {
   PowWorker,
 } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { removeUndefined } from "@snort/shared";
+import { removeUndefined, throwIfOffline } from "@snort/shared";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
@@ -49,6 +49,7 @@ import { LoginStore } from "Login";
 import { SnortDeckLayout } from "Pages/DeckLayout";
 import FreeNostrAddressPage from "./Pages/FreeNostrAddressPage";
 import { ListFeedPage } from "Pages/ListFeedPage";
+import { updateRelayConnections } from "Hooks/useLoginRelays";
 
 const WasmQueryOptimizer = {
   expandFilter: (f: ReqFilter) => {
@@ -96,6 +97,7 @@ const System = new NostrSystem({
 
 async function fetchProfile(key: string) {
   try {
+    throwIfOffline();
     const rsp = await fetch(`${CONFIG.httpCache}/profile/${key}`);
     if (rsp.ok) {
       const data = (await rsp.json()) as NostrEvent;
@@ -134,9 +136,9 @@ async function initSite() {
     await preload(login.follows.item);
   }
 
-  for (const [k, v] of Object.entries(login.relays.item)) {
-    System.ConnectToRelay(k, v);
-  }
+  updateRelayConnections(System, login.relays.item)
+    .catch(console.error);
+
   try {
     if ("registerProtocolHandler" in window.navigator) {
       window.navigator.registerProtocolHandler("web+nostr", `${window.location.protocol}//${window.location.host}/%s`);

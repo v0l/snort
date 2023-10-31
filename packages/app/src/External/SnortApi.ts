@@ -1,3 +1,4 @@
+import { throwIfOffline } from "@snort/shared";
 import { EventKind, EventPublisher } from "@snort/system";
 import { ApiHost } from "Const";
 import { SubscriptionType } from "Subscription";
@@ -131,6 +132,7 @@ export default class SnortApi {
     body?: object,
     headers?: { [key: string]: string },
   ): Promise<T> {
+    throwIfOffline();
     const rsp = await fetch(`${this.#url}${path}`, {
       method: method,
       body: body ? JSON.stringify(body) : undefined,

@@ -15,7 +15,7 @@ export default function MutedList({ pubkeys }: MutedListProps) {
   const hasAllMuted = pubkeys.every(isMuted);
 
   return (
-    <div className="main-content p">
+    <div className="p">
       <div className="flex justify-between">
         <div className="bold">
           <FormattedMessage {...messages.MuteCount} values={{ n: pubkeys?.length }} />

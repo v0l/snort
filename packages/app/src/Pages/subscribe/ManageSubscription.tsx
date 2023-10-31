@@ -7,6 +7,7 @@ import useEventPublisher from "Hooks/useEventPublisher";
 import SnortApi, { Subscription, SubscriptionError } from "External/SnortApi";
 import { mapSubscriptionErrorCode } from ".";
 import SubscriptionCard from "./SubscriptionCard";
+import { ErrorOrOffline } from "Element/ErrorOrOffline";
 
 export default function ManageSubscriptionPage() {
   const { publisher } = useEventPublisher();
@@ -14,21 +15,25 @@ export default function ManageSubscriptionPage() {
   const navigate = useNavigate();
 
   const [subs, setSubs] = useState<Array<Subscription>>();
-  const [error, setError] = useState<SubscriptionError>();
+  const [error, setError] = useState<Error>();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const s = await api.listSubscriptions();
-        setSubs(s);
-      } catch (e) {
-        if (e instanceof SubscriptionError) {
-          setError(e);
-        }
+  async function loadSubs() {
+    setError(undefined);
+    try {
+      const s = await api.listSubscriptions();
+      setSubs(s);
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e);
       }
-    })();
+    }
+  }
+  useEffect(() => {
+    loadSubs();
   }, []);
 
+
+  if (!(error instanceof SubscriptionError) && error instanceof Error) return <ErrorOrOffline error={error} onRetry={loadSubs} className="main-content p" />;
   if (subs === undefined) {
     return <PageSpinner />;
   }
@@ -59,7 +64,7 @@ export default function ManageSubscriptionPage() {
           />
         </p>
       )}
-      {error && <b className="error">{mapSubscriptionErrorCode(error)}</b>}
+      {error instanceof SubscriptionError && <b className="error">{mapSubscriptionErrorCode(error)}</b>}
     </div>
   );
 }

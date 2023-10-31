@@ -1,3 +1,4 @@
+import { throwIfOffline } from "@snort/shared";
 import { NostrEvent } from "@snort/system";
 
 export interface TrendingUser {
@@ -52,6 +53,7 @@ export default class NostrBandApi {
   }
 
   async #json<T>(method: string, path: string) {
+    throwIfOffline();
     const res = await fetch(`${this.#url}${path}`, {
       method: method ?? "GET",
     });

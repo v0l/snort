@@ -90,6 +90,7 @@ const config = {
       : false,
     new DefinePlugin({
       CONFIG: JSON.stringify(appConfig),
+      SINGLE_RELAY: JSON.stringify(process.env.SINGLE_RELAY),
     }),
   ],
   module: {

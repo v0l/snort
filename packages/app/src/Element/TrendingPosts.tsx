@@ -5,9 +5,11 @@ import PageSpinner from "Element/PageSpinner";
 import Note from "Element/Event/Note";
 import NostrBandApi from "External/NostrBand";
 import { useReactions } from "Feed/Reactions";
+import { ErrorOrOffline } from "Element/ErrorOrOffline";
 
 export default function TrendingNotes() {
   const [posts, setPosts] = useState<Array<NostrEvent>>();
+  const [error, setError] = useState<Error>();
   const related = useReactions("trending", posts?.map(a => NostrLink.fromEvent(a)) ?? []);
 
   async function loadTrendingNotes() {
@@ -17,9 +19,14 @@ export default function TrendingNotes() {
   }
 
   useEffect(() => {
-    loadTrendingNotes().catch(console.error);
+    loadTrendingNotes().catch(e => {
+      if (e instanceof Error) {
+        setError(e);
+      }
+    });
   }, []);
 
+  if (error) return <ErrorOrOffline error={error} onRetry={loadTrendingNotes} className="p" />;
   if (!posts) return <PageSpinner />;
 
   return (

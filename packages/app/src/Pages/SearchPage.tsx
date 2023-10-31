@@ -1,13 +1,13 @@
 import { useIntl, FormattedMessage } from "react-intl";
 import { useParams } from "react-router-dom";
 import Timeline from "Element/Feed/Timeline";
-import { Tab, TabElement } from "Element/Tabs";
+import Tabs, { Tab } from "Element/Tabs";
 import { useEffect, useState } from "react";
 import { debounce } from "SnortUtils";
 import { router } from "index";
 import TrendingUsers from "Element/TrendingUsers";
 
-import TrendingNotes from "Element/Feed/TrendingPosts";
+import TrendingNotes from "Element/TrendingPosts";
 
 const NOTES = 0;
 const PROFILES = 1;
@@ -19,11 +19,11 @@ const SearchPage = () => {
   const [keyword, setKeyword] = useState<string | undefined>(params.keyword);
   const [sortPopular, setSortPopular] = useState<boolean>(true);
   // tabs
-  const SearchTab = {
-    Posts: { text: formatMessage({ defaultMessage: "Notes" }), value: NOTES },
-    Profiles: { text: formatMessage({ defaultMessage: "People" }), value: PROFILES },
-  };
-  const [tab, setTab] = useState<Tab>(SearchTab.Posts);
+  const SearchTab = [
+    { text: formatMessage({ defaultMessage: "Notes" }), value: NOTES },
+    { text: formatMessage({ defaultMessage: "People" }), value: PROFILES },
+  ];
+  const [tab, setTab] = useState<Tab>(SearchTab[0]);
 
   useEffect(() => {
     if (keyword) {
@@ -72,9 +72,8 @@ const SearchPage = () => {
   function sortOptions() {
     if (tab.value != PROFILES) return null;
     return (
-      <div className="flex mb10 justify-end">
+      <div className="flex items-center justify-end g8">
         <FormattedMessage defaultMessage="Sort" description="Label for sorting options for people search" />
-        &nbsp;
         <select onChange={e => setSortPopular(e.target.value == "true")} value={sortPopular ? "true" : "false"}>
           <option value={"true"}>
             <FormattedMessage defaultMessage="Popular" description="Sort order name" />
@@ -87,26 +86,22 @@ const SearchPage = () => {
     );
   }
 
-  function renderTab(v: Tab) {
-    return <TabElement key={v.value} t={v} tab={tab} setTab={setTab} />;
-  }
-
   return (
-    <div className="main-content p">
-      <h2>
-        <FormattedMessage defaultMessage="Search" />
-      </h2>
-      <div className="flex mb10">
+    <div className="main-content">
+      <div className="p flex flex-col g8">
+        <h2>
+          <FormattedMessage defaultMessage="Search" />
+        </h2>
         <input
           type="text"
-          className="grow mr10"
+          className="w-max"
           placeholder={formatMessage({ defaultMessage: "Search..." })}
           value={search}
           onChange={e => setSearch(e.target.value)}
           autoFocus={true}
         />
+        <Tabs tabs={SearchTab} tab={tab} setTab={setTab} />
       </div>
-      <div className="tabs p">{[SearchTab.Posts, SearchTab.Profiles].map(renderTab)}</div>
       {tabContent()}
     </div>
   );

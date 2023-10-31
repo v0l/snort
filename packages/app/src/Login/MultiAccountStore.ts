@@ -161,6 +161,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   }
 
   decideInitRelays(relays: Record<string, RelaySettings> | undefined): Record<string, RelaySettings> {
+    if (SINGLE_RELAY) return { [SINGLE_RELAY]: { read: true, write: true } };
     if (relays && Object.keys(relays).length > 0) {
       return relays;
     }
@@ -172,7 +173,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     if (this.#accounts.has(pubKey)) {
       throw new Error("Already logged in with this pubkey");
     }
-    const initRelays = relays ?? Object.fromEntries(DefaultRelays.entries());
+    const initRelays = this.decideInitRelays(relays);
     const newSession = {
       ...LoggedOut,
       id: uuid(),

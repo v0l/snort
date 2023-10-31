@@ -1,3 +1,4 @@
+import { throwIfOffline } from "@snort/shared";
 import {
   InvoiceRequest,
   LNWallet,
@@ -120,6 +121,7 @@ export default class LNDHubWallet implements LNWallet {
   }
 
   private async getJson<T>(method: "GET" | "POST", path: string, body?: unknown): Promise<T> {
+    throwIfOffline();
     const auth = `Bearer ${this.auth?.access_token}`;
     const url = `${this.url.pathname === "/" ? this.url.toString().slice(0, -1) : this.url.toString()}${path}`;
     const rsp = await fetch(url, {

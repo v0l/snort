@@ -1,5 +1,5 @@
 import { EmailRegex } from "./const";
-import { bech32ToText, unwrap } from "./utils";
+import { bech32ToText, throwIfOffline, unwrap } from "./utils";
 
 const PayServiceTag = "payRequest";
 
@@ -93,6 +93,7 @@ export class LNURL {
   }
 
   async load() {
+    throwIfOffline();
     const rsp = await fetch(this.#url);
     if (rsp.ok) {
       this.#service = await rsp.json();
@@ -108,6 +109,7 @@ export class LNURL {
    * @returns
    */
   async getInvoice(amount: number, comment?: string, zap?: object) {
+    throwIfOffline();
     const callback = new URL(unwrap(this.#service?.callback));
     const query = new Map<string, string>();
 

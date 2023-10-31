@@ -1,3 +1,4 @@
+import Nostrich from "../nostrich.webp";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 import { sha256 as hash } from "@noble/hashes/sha256";
@@ -18,6 +19,7 @@ import {
 } from "@snort/system";
 import { Day } from "Const";
 import AnimalName from "Element/User/AnimalName";
+import { isOffline } from "@snort/shared";
 
 export const sha256 = (str: string | Uint8Array): u256 => {
   return utils.bytesToHex(hash(str));
@@ -464,6 +466,7 @@ export function kvToObject<T>(o: string, sep?: string) {
 }
 
 export function defaultAvatar(input?: string) {
+  if (isOffline()) return Nostrich;
   return `https://robohash.v0l.io/${input ?? "missing"}.png${isHalloween() ? "?set=set2" : ""}`;
 }
 

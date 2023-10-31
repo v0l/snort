@@ -6,7 +6,7 @@ import Note from "Element/Event/Note";
 import useLogin from "Hooks/useLogin";
 import { UserCache } from "Cache";
 
-import messages from "./messages";
+import messages from "../messages";
 
 interface BookmarksProps {
   pubkey: HexKey;
@@ -27,7 +27,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
   }
 
   return (
-    <div className="main-content">
+    <>
       <div className="flex-end p">
         <select
           disabled={ps.length <= 1}
@@ -51,7 +51,7 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
             />
           );
         })}
-    </div>
+    </>
   );
 };
 

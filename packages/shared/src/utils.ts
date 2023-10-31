@@ -215,3 +215,15 @@ export function normalizeReaction(content: string) {
       return Reaction.Positive;
   }
 }
+
+export class OfflineError extends Error {}
+
+export function throwIfOffline() {
+  if (isOffline()) {
+    throw new OfflineError("Offline");
+  }
+}
+
+export function isOffline() {
+  return !("navigator" in globalThis && globalThis.navigator.onLine);
+}

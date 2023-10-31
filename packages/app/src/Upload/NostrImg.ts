@@ -1,6 +1,8 @@
+import { throwIfOffline } from "@snort/shared";
 import { UploadResult } from "Upload";
 
 export default async function NostrImg(file: File | Blob): Promise<UploadResult> {
+  throwIfOffline();
   const fd = new FormData();
   fd.append("image", file);
 

@@ -4,9 +4,11 @@ import { HexKey } from "@snort/system";
 import FollowListBase from "Element/User/FollowListBase";
 import PageSpinner from "Element/PageSpinner";
 import NostrBandApi from "External/NostrBand";
+import { ErrorOrOffline } from "./ErrorOrOffline";
 
 export default function TrendingUsers() {
   const [userList, setUserList] = useState<HexKey[]>();
+  const [error, setError] = useState<Error>();
 
   async function loadTrendingUsers() {
     const api = new NostrBandApi();
@@ -16,9 +18,14 @@ export default function TrendingUsers() {
   }
 
   useEffect(() => {
-    loadTrendingUsers().catch(console.error);
+    loadTrendingUsers().catch(e => {
+      if (e instanceof Error) {
+        setError(e);
+      }
+    });
   }, []);
 
+  if (error) return <ErrorOrOffline error={error} onRetry={loadTrendingUsers} className="p" />;
   if (!userList) return <PageSpinner />;
 
   return <FollowListBase pubkeys={userList} showAbout={true} />;

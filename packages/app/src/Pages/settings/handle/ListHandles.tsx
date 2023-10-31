@@ -5,14 +5,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { ApiHost } from "Const";
 import useEventPublisher from "Hooks/useEventPublisher";
 import SnortServiceProvider, { ManageHandle } from "Nip05/SnortServiceProvider";
+import { ErrorOrOffline } from "Element/ErrorOrOffline";
 
 export default function ListHandles() {
   const navigate = useNavigate();
   const { publisher } = useEventPublisher();
   const [handles, setHandles] = useState<Array<ManageHandle>>([]);
+  const [error, setError] = useState<Error>();
 
   useEffect(() => {
-    loadHandles().catch(console.error);
+    loadHandles().catch(e => {
+      if (e instanceof Error) {
+        setError(e);
+      }
+    });
   }, [publisher]);
 
   async function loadHandles() {
@@ -60,6 +66,7 @@ export default function ListHandles() {
           <FormattedMessage defaultMessage="Buy Handle" />
         </button>
       )}
+      {error && <ErrorOrOffline error={error} onRetry={loadHandles} />}
     </>
   );
 }

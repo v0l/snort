@@ -2,9 +2,9 @@ import { NostrPrefix, tryParseNostrLink } from "@snort/system";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useParams } from "react-router-dom";
+import { fetchNip05Pubkey } from "@snort/shared";
 
 import Spinner from "Icons/Spinner";
-import { getNip05PubKey } from "Pages/LoginPage";
 import ProfilePage from "Pages/Profile/ProfilePage";
 import { ThreadRoute } from "Element/Event/Thread";
 
@@ -30,7 +30,7 @@ export default function NostrLinkHandler() {
         setRenderComponent(<ProfilePage state={state} />); // Directly render ProfilePage from route state
       } else {
         try {
-          const pubkey = await getNip05PubKey(`${link}@${CONFIG.nip05Domain}`);
+          const pubkey = await fetchNip05Pubkey(link, CONFIG.nip05Domain);
           if (pubkey) {
             setRenderComponent(<ProfilePage id={pubkey} state={state} />); // Directly render ProfilePage
           }

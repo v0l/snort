@@ -92,8 +92,8 @@ html.light {
   --gray-superlight: #333;
   --gray-light: #555;
   --gray-dark: #ccc;
-  --gray-superdark: #fff;
-  --gray-ultradark: #fff;
+  --gray-superdark: #f0f0f0;
+  --gray-ultradark: #fefefe;
   --dm-gradient: var(--gray);
   --invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73333, #fc4a1a33);
   --paid-invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, #f7b73399, #fc4a1a99);
@@ -908,19 +908,12 @@ svg.zap-solid {
   border: 1px solid var(--border-color);
 }
 
-.light .spinner-button {
-  background: #fff;
-  border: 1px solid var(--border-color);
-  color: var(--font-secondary);
-  box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
-}
-
-.light .spinner-button:hover {
-  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
-}
-
-.main-content.p {
+.main-content.p:not(:last-of-type) {
   border-bottom: 0;
+  border-top: 0;
+}
+
+.main-content.p:last-of-type {
   border-top: 0;
 }
 

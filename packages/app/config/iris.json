@@ -15,5 +15,10 @@
     "zapPool": true
   },
   "eventLinkPrefix": "note",
-  "profileLinkPrefix": "npub"
+  "profileLinkPrefix": "npub",
+  "defaultRelays": {
+    "wss://relay.snort.social/": { "read": true, "write": true },
+    "wss://nostr.wine/": { "read": true, "write": false },
+    "wss://nos.lol/": { "read": true, "write": true }
+  }
 }

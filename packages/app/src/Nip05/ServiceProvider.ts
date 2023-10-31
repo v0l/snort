@@ -1,3 +1,5 @@
+import { throwIfOffline } from "@snort/shared";
+
 export type ServiceErrorCode =
   | "UNKNOWN_ERROR"
   | "INVALID_BODY"
@@ -99,6 +101,7 @@ export class ServiceProvider {
     body?: unknown,
     headers?: { [key: string]: string },
   ): Promise<T | ServiceError> {
+    throwIfOffline();
     try {
       const rsp = await fetch(`${this.url}${path}`, {
         method: method,

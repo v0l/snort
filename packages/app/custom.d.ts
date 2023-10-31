@@ -54,4 +54,10 @@ declare const CONFIG: {
   };
   eventLinkPrefix: NostrPrefix;
   profileLinkPrefix: NostrPrefix;
+  defaultRelays: Record<string, RelaySettings>;
 };
+
+/**
+ * Single relay (Debug)
+ */
+declare const SINGLE_RELAY: string | undefined;

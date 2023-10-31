@@ -9,7 +9,7 @@ import useFollowsFeed from "Feed/FollowsFeed";
 import useRelaysFeed from "Feed/RelaysFeed";
 import RelaysMetadata from "Element/Relay/RelaysMetadata";
 import useBookmarkFeed from "Feed/BookmarkFeed";
-import Bookmarks from "Element/Bookmarks";
+import Bookmarks from "Element/User/Bookmarks";
 import Icon from "Icons/Icon";
 import { Tab } from "Element/Tabs";
 import { default as ZapElement } from "Element/Event/Zap";
@@ -32,14 +32,14 @@ export function ZapsProfileTab({ id }: { id: HexKey }) {
   const zaps = useZapsFeed(new NostrLink(NostrPrefix.PublicKey, id));
   const zapsTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   return (
-    <div className="main-content">
+    <>
       <h2 className="p">
         <FormattedMessage {...messages.Sats} values={{ n: formatShort(zapsTotal) }} />
       </h2>
       {zaps.map(z => (
         <ZapElement showZapped={false} zap={z} />
       ))}
-    </div>
+    </>
   );
 }
 

@@ -20,6 +20,15 @@ import { Chats, FollowsFeed, GiftsCache, Notifications } from "Cache";
 import { Nip7OsSigner } from "./Nip7OsSigner";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
+  if (SINGLE_RELAY) {
+    state.relays.item = {
+      [SINGLE_RELAY]: { read: true, write: true },
+    };
+    state.relays.timestamp = 100;
+    LoginStore.updateSession(state);
+    return;
+  }
+
   if (state.relays.timestamp >= createdAt) {
     return;
   }

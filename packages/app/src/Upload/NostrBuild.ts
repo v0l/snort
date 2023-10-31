@@ -1,4 +1,5 @@
 import { base64 } from "@scure/base";
+import { throwIfOffline } from "@snort/shared";
 import { EventKind, EventPublisher } from "@snort/system";
 import { UploadResult } from "Upload";
 
@@ -30,6 +31,7 @@ export default async function NostrBuild(file: File | Blob, publisher?: EventPub
     headers,
   });
   if (rsp.ok) {
+    throwIfOffline();
     const data = (await rsp.json()) as NostrBuildUploadResponse;
     const res = data.data[0];
     return {

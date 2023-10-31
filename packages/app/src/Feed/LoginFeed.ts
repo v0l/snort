@@ -51,7 +51,7 @@ export default function useLoginFeed() {
     b.withOptions({
       leaveOpen: true,
     });
-    b.withFilter().authors([pubKey]).kinds([EventKind.ContactList]);
+    b.withFilter().authors([pubKey]).kinds([EventKind.ContactList, EventKind.Relays]);
     if (CONFIG.features.subscriptions && !login.readonly) {
       b.withFilter().authors([pubKey]).kinds([EventKind.AppData]).tag("d", ["snort"]);
       b.withFilter()
@@ -84,14 +84,26 @@ export default function useLoginFeed() {
     if (loginFeed.data) {
       const contactList = getNewest(loginFeed.data.filter(a => a.kind === EventKind.ContactList));
       if (contactList) {
-        if (contactList.content !== "" && contactList.content !== "{}") {
-          const relays = JSON.parse(contactList.content);
-          setRelays(login, relays, contactList.created_at * 1000);
-        }
         const pTags = contactList.tags.filter(a => a[0] === "p").map(a => a[1]);
         setFollows(login, pTags, contactList.created_at * 1000);
 
         FollowsFeed.backFillIfMissing(system, pTags);
+      }
+
+      const relays = getNewest(loginFeed.data.filter(a => a.kind === EventKind.Relays));
+      if (relays) {
+        const parsedRelays = relays.tags
+          .filter(a => a[0] === "r")
+          .map(a => {
+            return [
+              a[1],
+              {
+                read: a[2] === "read" || a[2] === undefined,
+                write: a[2] === "write" || a[2] === undefined,
+              },
+            ];
+          });
+        setRelays(login, Object.fromEntries(parsedRelays), relays.created_at * 1000);
       }
 
       Nip4Chats.onEvent(loginFeed.data);

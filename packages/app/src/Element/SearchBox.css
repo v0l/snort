@@ -5,11 +5,6 @@
   border-radius: 1000px;
 }
 
-.light .search {
-  background: #fff;
-  border: 1px solid var(--border-color);
-}
-
 .search input {
   border: none !important;
   border-radius: 0 !important;

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { EventKind, NostrLink, NoteCollection, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { unixNow } from "@snort/shared";
@@ -133,12 +133,6 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
   const latest = useRequestBuilder(NoteCollection, subRealtime);
   const reactions = useReactions(`${sub?.id}-reactions`, main.data?.map(a => NostrLink.fromEvent(a)) ?? []);
-
-  useEffect(() => {
-    // clear store if changing relays
-    main.clear();
-    latest.clear();
-  }, [subject.relay]);
 
   return {
     main: main.data,

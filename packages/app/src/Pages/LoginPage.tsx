@@ -59,21 +59,6 @@ const Artwork: Array<ArtworkEntry> = [
   },
 ];
 
-export async function getNip05PubKey(addr: string): Promise<string> {
-  const [username, domain] = addr.split("@");
-  const rsp = await fetch(
-    `https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(username.toLocaleLowerCase())}`,
-  );
-  if (rsp.ok) {
-    const data = await rsp.json();
-    const pKey = data.names[username.toLowerCase()];
-    if (pKey) {
-      return pKey;
-    }
-  }
-  throw new Error("User key not found");
-}
-
 export default function LoginPage() {
   const navigate = useNavigate();
   const [key, setKey] = useState("");

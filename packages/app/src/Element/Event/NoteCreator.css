@@ -86,7 +86,7 @@
 }
 
 .light .note-creator textarea {
-  background-color: #fff;
+  background-color: var(--gray-superdark);
 }
 
 .light .note-creator {

@@ -13,6 +13,7 @@ import useLogin from "Hooks/useLogin";
 import Icon from "Icons/Icon";
 import Avatar from "Element/User/Avatar";
 import { FormattedMessage } from "react-intl";
+import { ErrorOrOffline } from "Element/ErrorOrOffline";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -25,6 +26,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   const user = useUserProfile(id ?? "");
   const { publisher, system } = useEventPublisher();
   const uploader = useFileUpload();
+  const [error, setError] = useState<Error>();
 
   const [name, setName] = useState<string>();
   const [picture, setPicture] = useState<string>();
@@ -79,15 +81,20 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   }
 
   async function uploadFile() {
-    const file = await openFile();
-    if (file) {
-      console.log(file);
-      const rsp = await uploader.upload(file, file.name);
-      console.log(rsp);
-      if (typeof rsp?.error === "string") {
-        throw new Error(`Upload failed ${rsp.error}`);
+    try {
+      setError(undefined);
+      const file = await openFile();
+      if (file) {
+        const rsp = await uploader.upload(file, file.name);
+        if (typeof rsp?.error === "string") {
+          throw new Error(`Upload failed ${rsp.error}`);
+        }
+        return rsp.url;
       }
-      return rsp.url;
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e);
+      }
     }
   }
 
@@ -210,7 +217,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               <Avatar pubkey={id} user={user} image={picture} />
               <AsyncButton
                 type="button"
-                className="circle flex align-centerjustify-between"
+                className="circle flex align-center justify-between"
                 onClick={() => setNewAvatar()}
                 disabled={readonly}>
                 <Icon name="upload-01" />
@@ -218,6 +225,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             </div>
           )}
         </div>
+        {error && <ErrorOrOffline error={error} />}
         {editor()}
       </>
     );

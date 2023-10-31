@@ -4,6 +4,7 @@ import { UploadState, VoidApi } from "@void-cat/api";
 import { FileExtensionRegex, VoidCatHost } from "Const";
 import { UploadResult } from "Upload";
 import { base64 } from "@scure/base";
+import { throwIfOffline } from "@snort/shared";
 
 /**
  * Upload file to void.cat
@@ -16,6 +17,7 @@ export default async function VoidCatUpload(
   progress?: (n: number) => void,
   stage?: (n: "starting" | "hashing" | "uploading" | "done" | undefined) => void,
 ): Promise<UploadResult> {
+  throwIfOffline();
   const auth = publisher
     ? async (url: string, method: string) => {
         const auth = await publisher.generic(eb => {
