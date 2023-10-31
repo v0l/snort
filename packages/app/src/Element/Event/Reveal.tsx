@@ -10,9 +10,7 @@ export default function Reveal(props: RevealProps) {
   const [reveal, setReveal] = useState(false);
 
   if (!reveal) {
-    return <WarningNotice onClick={() => setReveal(true)}>
-      {props.message}
-    </WarningNotice>
+    return <WarningNotice onClick={() => setReveal(true)}>{props.message}</WarningNotice>;
   } else if (props.children) {
     return props.children;
   }

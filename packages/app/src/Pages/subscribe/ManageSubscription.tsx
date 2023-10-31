@@ -32,8 +32,8 @@ export default function ManageSubscriptionPage() {
     loadSubs();
   }, []);
 
-
-  if (!(error instanceof SubscriptionError) && error instanceof Error) return <ErrorOrOffline error={error} onRetry={loadSubs} className="main-content p" />;
+  if (!(error instanceof SubscriptionError) && error instanceof Error)
+    return <ErrorOrOffline error={error} onRetry={loadSubs} className="main-content p" />;
   if (subs === undefined) {
     return <PageSpinner />;
   }

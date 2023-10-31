@@ -205,6 +205,9 @@
   "6/hB3S": {
     "defaultMessage": "Watch Replay"
   },
+  "62nsdy": {
+    "defaultMessage": "Retry"
+  },
   "65BmHb": {
     "defaultMessage": "Failed to proxy image from {host}, click here to load directly"
   },
@@ -234,6 +237,9 @@
   },
   "7BX/yC": {
     "defaultMessage": "Account Switcher"
+  },
+  "7UOvbT": {
+    "defaultMessage": "Offline"
   },
   "7hp70g": {
     "defaultMessage": "NIP-05"
@@ -593,6 +599,10 @@
   },
   "KAhAcM": {
     "defaultMessage": "Enter LNDHub config"
+  },
+  "KHK8B9": {
+    "defaultMessage": "Relay",
+    "description": "Label for reading global feed from specific relays"
   },
   "KQvWvD": {
     "defaultMessage": "Deleted"
@@ -1553,10 +1563,6 @@
   },
   "yCLnBC": {
     "defaultMessage": "LNURL or Lightning Address"
-  },
-  "yCmnnm": {
-    "defaultMessage": "Read global from",
-    "description": "Label for reading global feed from specific relays"
   },
   "yNBPJp": {
     "defaultMessage": "Help fund the development of {site}"

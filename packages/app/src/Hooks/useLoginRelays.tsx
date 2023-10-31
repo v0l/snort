@@ -9,8 +9,7 @@ export function useLoginRelays() {
 
   useEffect(() => {
     if (relays) {
-      updateRelayConnections(system, relays.item)
-        .catch(console.error);
+      updateRelayConnections(system, relays.item).catch(console.error);
     }
   }, [relays]);
 }

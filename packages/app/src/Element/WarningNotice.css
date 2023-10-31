@@ -1,18 +1,17 @@
 .warning-notice {
-    color: var(--font-tertiary-color);
-    border: 1px solid var(--border-color);
-    padding: 8px 16px;
-    border-radius: 12px;
-    display: flex;
-    gap: 8px;
-  }
-  
-  .warning-notice i {
-    font-style: normal;
-    color: var(--font-color);
-  }
-  
-  .warning-notice > svg {
-    color: var(--warning);
-  }
-  
+  color: var(--font-tertiary-color);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.warning-notice i {
+  font-style: normal;
+  color: var(--font-color);
+}
+
+.warning-notice > svg {
+  color: var(--warning);
+}

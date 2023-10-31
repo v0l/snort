@@ -73,10 +73,7 @@ export const GlobalTab = () => {
     return (
       <div className="flex items-center g8 justify-end nowrap">
         <h3>
-          <FormattedMessage
-            defaultMessage="Relay"
-            description="Label for reading global feed from specific relays"
-          />
+          <FormattedMessage defaultMessage="Relay" description="Label for reading global feed from specific relays" />
         </h3>
         <select
           className="f-ellipsis"
@@ -126,14 +123,20 @@ export const GlobalTab = () => {
   return (
     <>
       {globalRelaySelector()}
-      {relay && <Timeline subject={
-        {
-          type: "global",
-          items: [],
-          relay: [relay.url],
-          discriminator: `all-${sha256(relay.url)}`,
-        }
-      } postsOnly={false} method={"TIME_RANGE"} window={600} now={now} />}
+      {relay && (
+        <Timeline
+          subject={{
+            type: "global",
+            items: [],
+            relay: [relay.url],
+            discriminator: `all-${sha256(relay.url)}`,
+          }}
+          postsOnly={false}
+          method={"TIME_RANGE"}
+          window={600}
+          now={now}
+        />
+      )}
     </>
   );
 };
@@ -151,8 +154,8 @@ export const NotesTab = () => {
         noteOnClick={
           deckContext
             ? ev => {
-              deckContext.setThread(NostrLink.fromEvent(ev));
-            }
+                deckContext.setThread(NostrLink.fromEvent(ev));
+              }
             : undefined
         }
       />

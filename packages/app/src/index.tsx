@@ -136,8 +136,7 @@ async function initSite() {
     await preload(login.follows.item);
   }
 
-  updateRelayConnections(System, login.relays.item)
-    .catch(console.error);
+  updateRelayConnections(System, login.relays.item).catch(console.error);
 
   try {
     if ("registerProtocolHandler" in window.navigator) {
