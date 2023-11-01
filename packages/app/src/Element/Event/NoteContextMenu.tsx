@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { HexKey, Lists, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 
-import { TranslateHost } from "Const";
 import Icon from "Icons/Icon";
 import { setPinned, setBookmarked } from "Login";
 import messages from "Element/messages";
@@ -11,6 +10,7 @@ import useLogin from "Hooks/useLogin";
 import useModeration from "Hooks/useModeration";
 import useEventPublisher from "Hooks/useEventPublisher";
 import { ReBroadcaster } from "../ReBroadcaster";
+import SnortApi from "External/SnortApi";
 
 export interface NoteTranslation {
   text: string;
@@ -58,25 +58,18 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   }
 
   async function translate() {
-    const res = await fetch(`${TranslateHost}/translate`, {
-      method: "POST",
-      body: JSON.stringify({
-        q: ev.content,
-        source: "auto",
-        target: lang.split("-")[0],
-      }),
-      headers: { "Content-Type": "application/json" },
+    const api = new SnortApi();
+    const result = await api.translate({
+      text: [ev.content],
+      target_lang: lang.split("-")[0].toUpperCase(),
     });
 
-    if (res.ok) {
-      const result = await res.json();
-      if (typeof props.onTranslated === "function" && result) {
-        props.onTranslated({
-          text: result.translatedText,
-          fromLanguage: langNames.of(result.detectedLanguage.language),
-          confidence: result.detectedLanguage.confidence,
-        } as NoteTranslation);
-      }
+    if (typeof props.onTranslated === "function" && result.translations.length > 0) {
+      props.onTranslated({
+        text: result.translations[0].text,
+        fromLanguage: langNames.of(result.translations[0].detected_source_language),
+        confidence: 1,
+      } as NoteTranslation);
     }
   }
 

@@ -55,6 +55,18 @@ export interface PushNotifications {
   scope: string;
 }
 
+export interface TranslationRequest {
+  text: Array<string>;
+  target_lang: string;
+}
+
+export interface TranslationResponse {
+  translations: Array<{
+    detected_source_language: string;
+    text: string;
+  }>;
+}
+
 export default class SnortApi {
   #url: string;
   #publisher?: EventPublisher;
@@ -102,6 +114,10 @@ export default class SnortApi {
 
   registerPushNotifications(sub: PushNotifications) {
     return this.#getJsonAuthd<void>("api/v1/notifications/register", "POST", sub);
+  }
+
+  translate(tx: TranslationRequest) {
+    return this.#getJson<TranslationResponse>("api/v1/translate", "POST", tx);
   }
 
   async #getJsonAuthd<T>(

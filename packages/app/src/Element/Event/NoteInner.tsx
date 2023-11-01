@@ -246,7 +246,9 @@ export function NoteInner(props: NoteProps) {
           <p className="highlight">
             <FormattedMessage {...messages.TranslatedFrom} values={{ lang: translated.fromLanguage }} />
           </p>
-          {translated.text}
+          <div className="card text">
+            <div className="text-frag">{translated.text}</div>
+          </div>
         </>
       );
     } else if (translated) {
