@@ -147,7 +147,8 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   async ConnectToRelay(address: string, options: RelaySettings) {
     try {
       const addr = unwrap(sanitizeRelayUrl(address));
-      if (!this.#sockets.has(addr)) {
+      const existing = this.#sockets.get(addr);
+      if (!existing) {
         const c = new Connection(addr, options, this.#handleAuth?.bind(this));
         this.#sockets.set(addr, c);
         c.OnEvent = (s, e) => this.#onEvent(s, e);
@@ -157,7 +158,8 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         await c.Connect();
       } else {
         // update settings if already connected
-        unwrap(this.#sockets.get(addr)).Settings = options;
+        existing.Settings = options;
+        existing.Ephemeral = false;
       }
     } catch (e) {
       console.error(e);

@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
 import WebSocket from "isomorphic-ws";
-import { unwrap, ExternalStore, unixNowMs, dedupe } from "@snort/shared";
+import { ExternalStore, unixNowMs, dedupe } from "@snort/shared";
 
 import { DefaultConnectTimeout } from "./const";
 import { ConnectionStats } from "./connection-stats";
@@ -51,6 +51,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   #ephemeralCheck?: ReturnType<typeof setInterval>;
   #activity: number = unixNowMs();
   #expectAuth = false;
+  #ephemeral: boolean;
 
   Id: string;
   Address: string;
@@ -78,7 +79,6 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   Auth?: AuthHandler;
   AwaitingAuth: Map<string, boolean>;
   Authed = false;
-  Ephemeral: boolean;
   Down = true;
 
   constructor(addr: string, options: RelaySettings, auth?: AuthHandler, ephemeral: boolean = false) {
@@ -90,8 +90,17 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     this.EventsCallback = new Map();
     this.AwaitingAuth = new Map();
     this.Auth = auth;
-    this.Ephemeral = ephemeral;
+    this.#ephemeral = ephemeral;
     this.#log = debug("Connection").extend(addr);
+  }
+
+  get Ephemeral() {
+    return this.#ephemeral;
+  }
+
+  set Ephemeral(v: boolean) {
+    this.#ephemeral = v;
+    this.#setupEphemeral();
   }
 
   async Connect() {
@@ -460,11 +469,11 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   }
 
   #setupEphemeral() {
+    if (this.#ephemeralCheck) {
+      clearInterval(this.#ephemeralCheck);
+      this.#ephemeralCheck = undefined;
+    }
     if (this.Ephemeral) {
-      if (this.#ephemeralCheck) {
-        clearInterval(this.#ephemeralCheck);
-        this.#ephemeralCheck = undefined;
-      }
       this.#ephemeralCheck = setInterval(() => {
         const lastActivity = unixNowMs() - this.#activity;
         if (lastActivity > 30_000 && !this.IsClosed) {
