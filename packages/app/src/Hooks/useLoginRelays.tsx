@@ -19,7 +19,8 @@ export async function updateRelayConnections(system: SystemInterface, relays: Re
     system.ConnectToRelay(SINGLE_RELAY, { read: true, write: true });
   } else {
     for (const [k, v] of Object.entries(relays)) {
-      await system.ConnectToRelay(k, v);
+      // note: don't awit this, causes race condition with sending requests to relays
+      system.ConnectToRelay(k, v);
     }
     for (const v of system.Sockets) {
       if (!relays[v.address] && !v.ephemeral) {
