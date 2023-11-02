@@ -172,7 +172,8 @@ export class EventPublisher {
     const eb = this.#eb(EventKind.ZapRequest);
     eb.content(msg ?? "");
     if (note) {
-      eb.tag(unwrap(note.toEventTag()));
+      // HACK: remove relay tag, some zap services dont like relay tags
+      eb.tag(unwrap(note.toEventTag()).slice(0, 2));
     }
     eb.tag(["p", author]);
     eb.tag(["relays", ...relays.map(a => a.trim())]);
