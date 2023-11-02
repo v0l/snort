@@ -50,6 +50,7 @@ import { SnortDeckLayout } from "Pages/DeckLayout";
 import FreeNostrAddressPage from "./Pages/FreeNostrAddressPage";
 import { ListFeedPage } from "Pages/ListFeedPage";
 import { updateRelayConnections } from "Hooks/useLoginRelays";
+import { AboutPage } from "Pages/About";
 
 const WasmQueryOptimizer = {
   expandFilter: (f: ReqFilter) => {
@@ -210,6 +211,10 @@ const mainRoutes = [
   {
     path: "/list-feed/:id",
     element: <ListFeedPage />,
+  },
+  {
+    path: "/about",
+    element: <AboutPage />,
   },
   ...NewUserRoutes,
   ...WalletRoutes,

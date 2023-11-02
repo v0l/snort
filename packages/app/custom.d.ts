@@ -30,6 +30,11 @@ declare module "translations/*.json" {
   export default value;
 }
 
+declare module "*.md" {
+  const value: string;
+  export default value;
+}
+
 declare module "emojilib" {
   const value: Record<string, string>;
   export default value;
@@ -61,3 +66,8 @@ declare const CONFIG: {
  * Single relay (Debug)
  */
 declare const SINGLE_RELAY: string | undefined;
+
+/**
+ * Build git hash
+ */
+declare const GIT_VERSION: string;

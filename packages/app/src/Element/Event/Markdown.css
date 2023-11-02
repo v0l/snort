@@ -29,3 +29,16 @@
   width: -webkit-fill-available;
   aspect-ratio: 16 / 9;
 }
+
+.markdown ul,
+.markdown ol {
+  padding-inline-start: 20px;
+}
+
+.markdown ul {
+  list-style: circle;
+}
+
+.markdown ol {
+  list-style: decimal;
+}

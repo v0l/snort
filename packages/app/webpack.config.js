@@ -16,6 +16,8 @@ const isProduction = process.env.NODE_ENV == "production";
 
 const appTitle = appConfig.get("appTitle");
 
+const gitVersion = require("child_process").execSync("git describe --always --tags").toString().trim();
+
 const copyPatterns = [
   { from: "public/robots.txt" },
   { from: "public/nostrich_512.png" },
@@ -91,6 +93,7 @@ const config = {
     new DefinePlugin({
       CONFIG: JSON.stringify(appConfig),
       SINGLE_RELAY: JSON.stringify(process.env.SINGLE_RELAY),
+      GIT_VERSION: JSON.stringify(gitVersion),
     }),
   ],
   module: {
@@ -155,7 +158,7 @@ const config = {
         ],
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|webp|wasm)$/i,
+        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|webp|wasm|md)$/i,
         type: "asset",
       },
     ],
