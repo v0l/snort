@@ -11,11 +11,13 @@ import AsyncButton from "Element/AsyncButton";
 
 import messages from "./messages";
 
-const Blasters = [
-  "wss://nostr.mutinywallet.com"
-];
+const Blasters = ["wss://nostr.mutinywallet.com"];
 
-export async function saveRelays(system: SystemInterface, publisher: EventPublisher | undefined, relays: Array<FullRelaySettings> | Record<string, RelaySettings>) {
+export async function saveRelays(
+  system: SystemInterface,
+  publisher: EventPublisher | undefined,
+  relays: Array<FullRelaySettings> | Record<string, RelaySettings>,
+) {
   if (publisher) {
     const ev = await publisher.relayList(relays);
     await system.BroadcastEvent(ev);
@@ -32,7 +34,6 @@ const RelaySettingsPage = () => {
   const otherConnections = useMemo(() => {
     return system.Sockets.filter(a => relays.item[a.address] === undefined);
   }, [relays]);
-
 
   const handleNewRelayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
