@@ -63,10 +63,10 @@ export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCa
         ret.valid = false;
         ret.errors.push("amount tag does not match invoice amount");
       }
-      if (userCache.getFromCache(ret.receiver)?.zapService !== ret.zapService && !isForwardedZap) {
+      /*if (userCache.getFromCache(ret.receiver)?.zapService !== ret.zapService && !isForwardedZap) {
         ret.valid = false;
         ret.errors.push("zap service pubkey doesn't match");
-      }
+      }*/
 
       if (!ret.valid) {
         Log("Invalid zap %O", ret);

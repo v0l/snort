@@ -45,33 +45,47 @@ export class Zapper {
    * Create targets from Event
    */
   static fromEvent(ev: NostrEvent) {
-    return ev.tags
-      .filter(a => a[0] === "zap")
-      .map(v => {
-        if (v[1].length === 64 && isHex(v[1]) && v.length === 4) {
-          // NIP-57.G
-          return {
-            type: "pubkey",
-            value: v[1],
-            weight: Number(v[3] ?? 0),
-            zap: {
-              pubkey: v[1],
-              event: NostrLink.fromEvent(ev),
-            },
-          } as ZapTarget;
-        } else {
-          // assume event specific zap target
-          return {
-            type: "lnurl",
-            value: v[1],
-            weight: 1,
-            zap: {
-              pubkey: ev.pubkey,
-              event: NostrLink.fromEvent(ev),
-            },
-          } as ZapTarget;
-        }
-      });
+    if (ev.tags.some(a => a[0] === "zap")) {
+      return ev.tags
+        .filter(a => a[0] === "zap")
+        .map(v => {
+          if (v[1].length === 64 && isHex(v[1]) && v.length === 4) {
+            // NIP-57.G
+            return {
+              type: "pubkey",
+              value: v[1],
+              weight: Number(v[3] ?? 0),
+              zap: {
+                pubkey: v[1],
+                event: NostrLink.fromEvent(ev),
+              },
+            } as ZapTarget;
+          } else {
+            // assume event specific zap target
+            return {
+              type: "lnurl",
+              value: v[1],
+              weight: 1,
+              zap: {
+                pubkey: ev.pubkey,
+                event: NostrLink.fromEvent(ev),
+              },
+            } as ZapTarget;
+          }
+        });
+    } else {
+      return [
+        {
+          type: "pubkey",
+          value: ev.pubkey,
+          weight: 1,
+          zap: {
+            pubkey: ev.pubkey,
+            event: NostrLink.fromEvent(ev),
+          },
+        } as ZapTarget,
+      ];
+    }
   }
 
   async send(wallet: LNWallet | undefined, targets: Array<ZapTarget>, amount: number) {
