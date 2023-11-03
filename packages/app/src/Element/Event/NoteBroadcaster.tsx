@@ -9,6 +9,7 @@ import { getRelayName, sanitizeRelayUrl } from "SnortUtils";
 import { removeRelay } from "Login";
 import useLogin from "Hooks/useLogin";
 import useEventPublisher from "Hooks/useEventPublisher";
+import { saveRelays } from "Pages/settings/Relays";
 
 export function NoteBroadcaster({
   evs,
@@ -49,8 +50,7 @@ export function NoteBroadcaster({
   async function removeRelayFromResult(r: OkResponse) {
     if (publisher) {
       removeRelay(login, unwrap(sanitizeRelayUrl(r.relay)));
-      const ev = await publisher.contactList(login.follows.item, login.relays.item);
-      await system.BroadcastEvent(ev);
+      await saveRelays(system, publisher, login.relays.item);
       setResults(s => s.filter(a => a.relay !== r.relay));
     }
   }

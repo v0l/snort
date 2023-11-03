@@ -100,10 +100,20 @@ export async function generateNewLogin(system: SystemInterface, pin: (key: strin
     console.warn(e);
   }
 
+  // connect to new relays
+  await Promise.all(Object.entries(newRelays).map(([k, v]) => system.ConnectToRelay(k, v)));
+
   const publicKey = utils.bytesToHex(secp.schnorr.getPublicKey(privateKey));
   const publisher = EventPublisher.privateKey(privateKey);
-  const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey], newRelays);
-  system.BroadcastEvent(ev);
+
+  // Create new contact list following self and site account
+  const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey].map(a => ["p", a]));
+  await system.BroadcastEvent(ev);
+
+  // Create relay metadata event
+  const ev2 = await publisher.relayList(newRelays);
+  await system.BroadcastEvent(ev2);
+
   LoginStore.loginWithPrivateKey(await pin(privateKey), entropy, newRelays);
 }
 

@@ -16,13 +16,13 @@ export interface FollowButtonProps {
 export default function FollowButton(props: FollowButtonProps) {
   const pubkey = parseId(props.pubkey);
   const { publisher, system } = useEventPublisher();
-  const { follows, relays, readonly } = useLogin(s => ({ follows: s.follows, relays: s.relays, readonly: s.readonly }));
+  const { follows, readonly } = useLogin(s => ({ follows: s.follows, readonly: s.readonly }));
   const isFollowing = follows.item.includes(pubkey);
   const baseClassname = props.className ? `${props.className} ` : "";
 
   async function follow(pubkey: HexKey) {
     if (publisher) {
-      const ev = await publisher.contactList([pubkey, ...follows.item], relays.item);
+      const ev = await publisher.contactList([pubkey, ...follows.item].map(a => ["p", a]));
       system.BroadcastEvent(ev);
       await FollowsFeed.backFill(system, [pubkey]);
     }
@@ -30,10 +30,7 @@ export default function FollowButton(props: FollowButtonProps) {
 
   async function unfollow(pubkey: HexKey) {
     if (publisher) {
-      const ev = await publisher.contactList(
-        follows.item.filter(a => a !== pubkey),
-        relays.item,
-      );
+      const ev = await publisher.contactList(follows.item.filter(a => a !== pubkey).map(a => ["p", a]));
       system.BroadcastEvent(ev);
     }
   }

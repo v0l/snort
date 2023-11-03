@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { unixNowMs } from "@snort/shared";
+import { EventPublisher, FullRelaySettings, RelaySettings, SystemInterface } from "@snort/system";
 
-import { randomSample } from "SnortUtils";
 import Relay from "Element/Relay/Relay";
 import useEventPublisher from "Hooks/useEventPublisher";
 import useLogin from "Hooks/useLogin";
@@ -10,6 +10,18 @@ import { setRelays } from "Login";
 import AsyncButton from "Element/AsyncButton";
 
 import messages from "./messages";
+
+const Blasters = [
+  "wss://nostr.mutinywallet.com"
+];
+
+export async function saveRelays(system: SystemInterface, publisher: EventPublisher | undefined, relays: Array<FullRelaySettings> | Record<string, RelaySettings>) {
+  if (publisher) {
+    const ev = await publisher.relayList(relays);
+    await system.BroadcastEvent(ev);
+    await Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev)));
+  }
+}
 
 const RelaySettingsPage = () => {
   const { publisher, system } = useEventPublisher();
@@ -21,22 +33,6 @@ const RelaySettingsPage = () => {
     return system.Sockets.filter(a => relays.item[a.address] === undefined);
   }, [relays]);
 
-  async function saveRelays() {
-    if (publisher) {
-      const ev = await publisher.contactList(login.follows.item, login.relays.item);
-      system.BroadcastEvent(ev);
-      try {
-        const onlineRelays = await fetch("https://api.nostr.watch/v1/online").then(r => r.json());
-        const relayList = await publisher.relayList(login.relays.item);
-        const rs = Object.keys(relays.item).concat(randomSample(onlineRelays, 20));
-        rs.forEach(r => {
-          system.WriteOnceToRelay(r, relayList);
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
 
   const handleNewRelayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
@@ -91,7 +87,7 @@ const RelaySettingsPage = () => {
       </div>
       <div className="flex mt10">
         <div className="grow"></div>
-        <AsyncButton type="button" onClick={() => saveRelays()} disabled={login.readonly}>
+        <AsyncButton type="button" onClick={() => saveRelays(system, publisher, relays.item)} disabled={login.readonly}>
           <FormattedMessage {...messages.Save} />
         </AsyncButton>
       </div>

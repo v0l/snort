@@ -249,12 +249,9 @@ export class EventPublisher {
     return await this.#sign(eb);
   }
 
-  async contactList(follows: Array<HexKey>, relays: Record<string, RelaySettings>) {
+  async contactList(tags: Array<[string, string]>) {
     const eb = this.#eb(EventKind.ContactList);
-    eb.content(JSON.stringify(relays));
-
-    const temp = new Set(follows.filter(a => a.length === 64).map(a => a.toLowerCase()));
-    temp.forEach(a => eb.tag(["p", a]));
+    tags.forEach(a => eb.tag(a));
     return await this.#sign(eb);
   }
 
