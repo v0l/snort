@@ -19,7 +19,7 @@ export function ZapGoal({ ev }: { ev: NostrEvent }) {
 
   return (
     <div className="zap-goal card">
-      <div className="flex justify-between">
+      <div className="flex items-center justify-between">
         <h2>{ev.content}</h2>
         <div className="zap-button flex" onClick={() => setZap(true)}>
           <Icon name="zap" size={15} />
