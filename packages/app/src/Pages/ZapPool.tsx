@@ -24,10 +24,6 @@ const DataProviders = [
     owner: bech32ToHex("npub12262qa4uhw7u8gdwlgmntqtv7aye8vdcmvszkqwgs0zchel6mz7s6cgrkj"),
   },
   {
-    name: "nostr.watch",
-    owner: bech32ToHex("npub1uac67zc9er54ln0kl6e4qp2y6ta3enfcg7ywnayshvlw9r5w6ehsqq99rx"),
-  },
-  {
     name: "nostr.directory",
     owner: bech32ToHex("npub1teawtzxh6y02cnp9jphxm2q8u6xxfx85nguwg6ftuksgjctvavvqnsgq5u"),
   },
