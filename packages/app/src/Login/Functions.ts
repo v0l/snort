@@ -14,7 +14,7 @@ import * as utils from "@noble/curves/abstract/utils";
 import { DefaultRelays, SnortPubKey } from "Const";
 import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
-import { bech32ToHex, dedupeById, randomSample, sanitizeRelayUrl, unwrap } from "SnortUtils";
+import { bech32ToHex, dedupeById, sanitizeRelayUrl, unwrap } from "SnortUtils";
 import { SubscriptionEvent } from "Subscription";
 import { Chats, FollowsFeed, GiftsCache, Notifications } from "Cache";
 import { Nip7OsSigner } from "./Nip7OsSigner";
