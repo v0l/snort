@@ -1,3 +1,4 @@
+import TZ from "../tz.json";
 import Nostrich from "../nostrich.webp";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
@@ -17,9 +18,9 @@ import {
   NostrLink,
   UserMetadata,
 } from "@snort/system";
+import { isOffline } from "@snort/shared";
 import { Day } from "Const";
 import AnimalName from "Element/User/AnimalName";
-import { isOffline } from "@snort/shared";
 
 export const sha256 = (str: string | Uint8Array): u256 => {
   return utils.bytesToHex(hash(str));
@@ -519,4 +520,16 @@ export function getDisplayNameOrPlaceHolder(user: UserMetadata | undefined, pubk
   }
 
   return [name.trim(), isPlaceHolder];
+}
+
+export function getCountry() {
+  const tz = Intl.DateTimeFormat().resolvedOptions();
+  const info = (TZ as Record<string, Array<string>>)[tz.timeZone];
+  const [,lat, lon] = info[1].split(/[-+]/);
+  return {
+    zone: tz.timeZone,
+    country: info[0],
+    lat: Number(lat) / Math.pow(10, lat.length - 2),
+    lon: Number(lon) / Math.pow(10, lon.length - 3),
+  };
 }

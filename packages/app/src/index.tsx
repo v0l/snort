@@ -24,7 +24,7 @@ import { removeUndefined, throwIfOffline } from "@snort/shared";
 
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
-import { unwrap } from "SnortUtils";
+import { getCountry, unwrap } from "SnortUtils";
 import Layout from "Pages/Layout";
 import LoginPage from "Pages/LoginPage";
 import ProfilePage from "Pages/Profile/ProfilePage";
@@ -128,6 +128,8 @@ export const ProfileLoader = new ProfileLoaderService(System, UserCache);
 serviceWorkerRegistration.register();
 
 async function initSite() {
+
+  console.debug(getCountry())
   if (hasWasm) {
     await wasmInit(WasmPath);
   }
