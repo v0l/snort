@@ -13,4 +13,8 @@ export interface RelayInfo {
     max_event_tags: number;
     auth_required: boolean;
   };
+  relay_countries?: Array<string>;
+  language_tags?: Array<string>;
+  tags?: Array<string>;
+  posting_policy?: string;
 }
