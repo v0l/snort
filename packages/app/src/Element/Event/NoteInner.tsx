@@ -93,7 +93,15 @@ export function NoteInner(props: NoteProps) {
         disableMediaSpotlight={!(props.options?.showMediaSpotlight ?? true)}
       />
     );
-  }, [ev, translated, showTranslation, props.searchedValue, props.depth, options.showMedia, props.options?.showMediaSpotlight]);
+  }, [
+    ev,
+    translated,
+    showTranslation,
+    props.searchedValue,
+    props.depth,
+    options.showMedia,
+    props.options?.showMediaSpotlight,
+  ]);
 
   const transformBody = () => {
     if (deletions?.length > 0) {
@@ -174,8 +182,8 @@ export function NoteInner(props: NoteProps) {
     const replyTo = thread?.replyTo ?? thread?.root;
     const replyLink = replyTo
       ? NostrLink.fromTag(
-        [replyTo.key, replyTo.value ?? "", replyTo.relay ?? "", replyTo.marker ?? ""].filter(a => a.length > 0),
-      )
+          [replyTo.key, replyTo.value ?? "", replyTo.relay ?? "", replyTo.marker ?? ""].filter(a => a.length > 0),
+        )
       : undefined;
     const mentions: { pk: string; name: string; link: ReactNode }[] = [];
     for (const pk of thread?.pubKeys ?? []) {
@@ -245,10 +253,12 @@ export function NoteInner(props: NoteProps) {
     if (translated && translated.confidence > 0.5) {
       return (
         <>
-          <span className="text-xs font-semibold text-gray-light select-none" onClick={(e) => {
-            e.stopPropagation();
-            setShowTranslation(s => !s)
-          }}>
+          <span
+            className="text-xs font-semibold text-gray-light select-none"
+            onClick={e => {
+              e.stopPropagation();
+              setShowTranslation(s => !s);
+            }}>
             <FormattedMessage {...messages.TranslatedFrom} values={{ lang: translated.fromLanguage }} />
           </span>
         </>
@@ -300,7 +310,7 @@ export function NoteInner(props: NoteProps) {
               {options.showContextMenu && (
                 <NoteContextMenu
                   ev={ev}
-                  react={async () => { }}
+                  react={async () => {}}
                   onTranslated={t => setTranslated(t)}
                   setShowReactions={setShowReactions}
                 />

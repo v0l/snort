@@ -128,8 +128,7 @@ export const ProfileLoader = new ProfileLoaderService(System, UserCache);
 serviceWorkerRegistration.register();
 
 async function initSite() {
-
-  console.debug(getCountry())
+  console.debug(getCountry());
   if (hasWasm) {
     await wasmInit(WasmPath);
   }

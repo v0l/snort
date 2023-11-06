@@ -66,7 +66,11 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
     });
 
     if ("translations" in result) {
-      if (typeof props.onTranslated === "function" && result.translations.length > 0 && targetLang != result.translations[0].detected_source_language) {
+      if (
+        typeof props.onTranslated === "function" &&
+        result.translations.length > 0 &&
+        targetLang != result.translations[0].detected_source_language
+      ) {
         props.onTranslated({
           text: result.translations[0].text,
           fromLanguage: langNames.of(result.translations[0].detected_source_language),
