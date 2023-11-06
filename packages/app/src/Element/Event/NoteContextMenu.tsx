@@ -11,6 +11,7 @@ import useModeration from "Hooks/useModeration";
 import useEventPublisher from "Hooks/useEventPublisher";
 import { ReBroadcaster } from "../ReBroadcaster";
 import SnortApi from "External/SnortApi";
+import { SubscriptionType, getCurrentSubscription } from "Subscription";
 
 export interface NoteTranslation {
   text: string;
@@ -81,7 +82,10 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   }
 
   useEffect(() => {
-    translate();
+    const sub = getCurrentSubscription(login.subscriptions);
+    if (sub.type === SubscriptionType.Premium) {
+      translate();
+    }
   }, []);
 
   async function copyId() {
