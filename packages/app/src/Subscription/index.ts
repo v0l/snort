@@ -56,7 +56,7 @@ export function getActiveSubscriptions(s: Array<SubscriptionEvent>) {
 }
 
 export function getCurrentSubscription(s: Array<SubscriptionEvent>) {
-  return getActiveSubscriptions(s)[0];
+  return getActiveSubscriptions(s).at(0);
 }
 
 export function mostRecentSubscription(s: Array<SubscriptionEvent>) {
