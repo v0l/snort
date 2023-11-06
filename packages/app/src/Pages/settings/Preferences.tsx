@@ -185,6 +185,23 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
+            <FormattedMessage defaultMessage="Auto Translate" />
+          </h4>
+          <small>
+            <FormattedMessage defaultMessage="Automatically translate notes to your local language" />
+          </small>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={perf.autoTranslate}
+            onChange={e => updatePreferences(login, { ...perf, autoTranslate: e.target.checked })}
+          />
+        </div>
+      </div>
+      <div className="flex justify-between w-max">
+        <div className="flex flex-col g8">
+          <h4>
             <FormattedMessage defaultMessage="Proof of Work" />
           </h4>
           <small>

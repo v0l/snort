@@ -552,6 +552,9 @@
   "IVbtTS": {
     "defaultMessage": "Zap all {n} sats"
   },
+  "IWz1ta": {
+    "defaultMessage": "Auto Translate"
+  },
   "Ig9/a1": {
     "defaultMessage": "Sent {n} sats to {name}"
   },
@@ -916,6 +919,9 @@
   },
   "WONP5O": {
     "defaultMessage": "Find your twitter follows on nostr (Data provided by {provider})"
+  },
+  "WmZhfL": {
+    "defaultMessage": "Automatically translate notes to your local language"
   },
   "WvGmZT": {
     "defaultMessage": "npub / nprofile / nostr address"

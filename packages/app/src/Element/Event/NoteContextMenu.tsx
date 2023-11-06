@@ -83,7 +83,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
 
   useEffect(() => {
     const sub = getCurrentSubscription(login.subscriptions);
-    if (sub?.type === SubscriptionType.Premium) {
+    if (sub?.type === SubscriptionType.Premium && (login.preferences.autoTranslate ?? true)) {
       translate();
     }
   }, []);

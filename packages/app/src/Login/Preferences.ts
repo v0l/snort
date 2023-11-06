@@ -91,6 +91,11 @@ export interface UserPreferences {
    * Check event signatures
    */
   checkSigs: boolean;
+
+  /**
+   * Auto-translate when available
+   */
+  autoTranslate?: boolean;
 }
 
 export const DefaultPreferences = {
@@ -110,4 +115,5 @@ export const DefaultPreferences = {
   showBadges: false,
   showStatus: true,
   checkSigs: false,
+  autoTranslate: true,
 } as UserPreferences;
