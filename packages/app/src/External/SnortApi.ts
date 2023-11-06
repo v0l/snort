@@ -1,6 +1,7 @@
 import { throwIfOffline } from "@snort/shared";
 import { EventKind, EventPublisher } from "@snort/system";
 import { ApiHost } from "Const";
+import { unwrap } from "SnortUtils";
 import { SubscriptionType } from "Subscription";
 
 export interface RevenueToday {
@@ -117,7 +118,7 @@ export default class SnortApi {
   }
 
   translate(tx: TranslationRequest) {
-    return this.#getJson<TranslationResponse>("api/v1/translate", "POST", tx);
+    return this.#getJson<TranslationResponse | object>("api/v1/translate", "POST", tx);
   }
 
   async #getJsonAuthd<T>(
@@ -160,9 +161,9 @@ export default class SnortApi {
     });
 
     if (rsp.ok) {
-      const text = await rsp.text();
-      if (text.length > 0) {
-        const obj = JSON.parse(text);
+      const text = (await rsp.text()) as string | null;
+      if ((text?.length ?? 0) > 0) {
+        const obj = JSON.parse(unwrap(text));
         if ("error" in obj) {
           throw new SubscriptionError(obj.error, obj.code);
         }

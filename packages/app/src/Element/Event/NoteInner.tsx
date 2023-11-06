@@ -41,6 +41,7 @@ export function NoteInner(props: NoteProps) {
   const { pinned, bookmarked } = login;
   const { publisher, system } = useEventPublisher();
   const [translated, setTranslated] = useState<NoteTranslation>();
+  const [showTranslation, setShowTranslation] = useState(true);
   const { formatMessage } = useIntl();
 
   const totalReactions = reactions.positive.length + reactions.negative.length + reposts.length + zaps.length;
@@ -78,10 +79,11 @@ export function NoteInner(props: NoteProps) {
   }
 
   const innerContent = useMemo(() => {
-    const body = ev?.content ?? "";
+    const body = translated && showTranslation ? translated.text : ev?.content ?? "";
+    const id = translated && showTranslation ? `${ev.id}-translated` : ev.id;
     return (
       <Text
-        id={ev.id}
+        id={id}
         highlighText={props.searchedValue}
         content={body}
         tags={ev.tags}
@@ -91,7 +93,7 @@ export function NoteInner(props: NoteProps) {
         disableMediaSpotlight={!(props.options?.showMediaSpotlight ?? true)}
       />
     );
-  }, [ev, props.searchedValue, props.depth, options.showMedia, props.options?.showMediaSpotlight]);
+  }, [ev, translated, showTranslation, props.searchedValue, props.depth, options.showMedia, props.options?.showMediaSpotlight]);
 
   const transformBody = () => {
     if (deletions?.length > 0) {
@@ -172,8 +174,8 @@ export function NoteInner(props: NoteProps) {
     const replyTo = thread?.replyTo ?? thread?.root;
     const replyLink = replyTo
       ? NostrLink.fromTag(
-          [replyTo.key, replyTo.value ?? "", replyTo.relay ?? "", replyTo.marker ?? ""].filter(a => a.length > 0),
-        )
+        [replyTo.key, replyTo.value ?? "", replyTo.relay ?? "", replyTo.marker ?? ""].filter(a => a.length > 0),
+      )
       : undefined;
     const mentions: { pk: string; name: string; link: ReactNode }[] = [];
     for (const pk of thread?.pubKeys ?? []) {
@@ -243,17 +245,17 @@ export function NoteInner(props: NoteProps) {
     if (translated && translated.confidence > 0.5) {
       return (
         <>
-          <p className="highlight">
+          <span className="text-xs font-semibold text-gray-light select-none" onClick={(e) => {
+            e.stopPropagation();
+            setShowTranslation(s => !s)
+          }}>
             <FormattedMessage {...messages.TranslatedFrom} values={{ lang: translated.fromLanguage }} />
-          </p>
-          <div className="card text">
-            <div className="text-frag">{translated.text}</div>
-          </div>
+          </span>
         </>
       );
     } else if (translated) {
       return (
-        <p className="highlight">
+        <p className="text-xs font-semibold text-gray-light">
           <FormattedMessage {...messages.TranslationFailed} />
         </p>
       );
@@ -298,7 +300,7 @@ export function NoteInner(props: NoteProps) {
               {options.showContextMenu && (
                 <NoteContextMenu
                   ev={ev}
-                  react={async () => {}}
+                  react={async () => { }}
                   onTranslated={t => setTranslated(t)}
                   setShowReactions={setShowReactions}
                 />

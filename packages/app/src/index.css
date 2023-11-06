@@ -716,6 +716,18 @@ div.form-col {
   color: var(--repost);
 }
 
+.text-gray {
+  color: var(--gray);
+}
+
+.text-gray-medium {
+  color: var(--gray-medium);
+}
+
+.text-gray-light {
+  color: var(--gray-light);
+}
+
 .tweet {
   display: flex;
   align-items: center;
