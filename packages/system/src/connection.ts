@@ -8,8 +8,7 @@ import { ConnectionStats } from "./connection-stats";
 import { NostrEvent, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
-
-export type AuthHandler = (challenge: string, relay: string) => Promise<NostrEvent | undefined>;
+import EventEmitter from "events";
 
 /**
  * Relay settings
@@ -46,7 +45,22 @@ export interface ConnectionStateSnapshot {
   address: string;
 }
 
-export class Connection extends ExternalStore<ConnectionStateSnapshot> {
+interface ConnectionEvents {
+  change: (snapshot: ConnectionStateSnapshot) => void;
+  connected: (wasReconnect: boolean) => void;
+  event: (sub: string, e: TaggedNostrEvent) => void;
+  eose: (sub: string) => void;
+  disconnect: (code: number) => void;
+  auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
+  notice: (msg: string) => void;
+}
+
+export declare interface Connection {
+  on<U extends keyof ConnectionEvents>(event: U, listener: ConnectionEvents[U]): this;
+  once<U extends keyof ConnectionEvents>(event: U, listener: ConnectionEvents[U]): this;
+}
+
+export class Connection extends EventEmitter {
   #log: debug.Debugger;
   #ephemeralCheck?: ReturnType<typeof setInterval>;
   #activity: number = unixNowMs();
@@ -72,16 +86,12 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   IsClosed: boolean;
   ReconnectTimer?: ReturnType<typeof setTimeout>;
   EventsCallback: Map<u256, (msg: Array<string | boolean>) => void>;
-  OnConnected?: (wasReconnect: boolean) => void;
-  OnEvent?: (sub: string, e: TaggedNostrEvent) => void;
-  OnEose?: (sub: string) => void;
-  OnDisconnect?: (code: number) => void;
-  Auth?: AuthHandler;
+
   AwaitingAuth: Map<string, boolean>;
   Authed = false;
   Down = true;
 
-  constructor(addr: string, options: RelaySettings, auth?: AuthHandler, ephemeral: boolean = false) {
+  constructor(addr: string, options: RelaySettings, ephemeral: boolean = false) {
     super();
     this.Id = uuid();
     this.Address = addr;
@@ -89,7 +99,6 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     this.IsClosed = false;
     this.EventsCallback = new Map();
     this.AwaitingAuth = new Map();
-    this.Auth = auth;
     this.#ephemeral = ephemeral;
     this.#log = debug("Connection").extend(addr);
   }
@@ -154,7 +163,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     this.#log(`Open!`);
     this.Down = false;
     this.#setupEphemeral();
-    this.OnConnected?.(wasReconnect);
+    this.emit("connected", wasReconnect);
     this.#sendPendingRaw();
   }
 
@@ -182,7 +191,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
       this.ReconnectTimer = undefined;
     }
 
-    this.OnDisconnect?.(e.code);
+    this.emit("disconnected", e.code);
     this.#reset();
     this.notifyChange();
   }
@@ -206,7 +215,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
           break;
         }
         case "EVENT": {
-          this.OnEvent?.(msg[1] as string, {
+          this.emit("event", msg[1] as string, {
             ...(msg[2] as NostrEvent),
             relays: [this.Address],
           });
@@ -215,7 +224,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
           break;
         }
         case "EOSE": {
-          this.OnEose?.(msg[1] as string);
+          this.emit("eose", msg[1] as string);
           break;
         }
         case "OK": {
@@ -230,6 +239,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
           break;
         }
         case "NOTICE": {
+          this.emit("notice", msg[1]);
           this.#log(`NOTICE: ${msg[1]}`);
           break;
         }
@@ -346,7 +356,7 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
   CloseReq(id: string) {
     if (this.ActiveRequests.delete(id)) {
       this.#sendJson(["CLOSE", id]);
-      this.OnEose?.(id);
+      this.emit("eose", id);
       this.#SendQueuedRequests();
     }
     this.notifyChange();
@@ -435,11 +445,11 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
     const authCleanup = () => {
       this.AwaitingAuth.delete(challenge);
     };
-    if (!this.Auth) {
-      throw new Error("Auth hook not registered");
-    }
     this.AwaitingAuth.set(challenge, true);
-    const authEvent = await this.Auth(challenge, this.Address);
+    const authEvent = await new Promise<NostrEvent>((resolve, reject) =>
+      this.emit("auth", challenge, this.Address, resolve),
+    );
+    this.#log("Auth result: %o", authEvent);
     if (!authEvent) {
       authCleanup();
       throw new Error("No auth event");
@@ -485,5 +495,9 @@ export class Connection extends ExternalStore<ConnectionStateSnapshot> {
         }
       }, 5_000);
     }
+  }
+
+  notifyChange() {
+    this.emit("change", this.takeSnapshot());
   }
 }

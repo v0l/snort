@@ -1,8 +1,9 @@
 import debug from "debug";
+import EventEmitter from "events";
 
-import { unwrap, sanitizeRelayUrl, ExternalStore, FeedCache, removeUndefined } from "@snort/shared";
+import { unwrap, sanitizeRelayUrl, FeedCache, removeUndefined } from "@snort/shared";
 import { NostrEvent, TaggedNostrEvent } from "./nostr";
-import { AuthHandler, Connection, RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
+import { Connection, RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
 import { Query } from "./query";
 import { NoteCollection, NoteStore, NoteStoreSnapshotData } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder, RequestStrategy } from "./request-builder";
@@ -25,10 +26,20 @@ import { RelayCache } from "./gossip-model";
 import { QueryOptimizer, DefaultQueryOptimizer } from "./query-optimizer";
 import { trimFilters } from "./request-trim";
 
+interface NostrSystemEvents {
+  change: (state: SystemSnapshot) => void;
+  auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
+}
+
+export declare interface NostrSystem {
+  on<U extends keyof NostrSystemEvents>(event: U, listener: NostrSystemEvents[U]): this;
+  once<U extends keyof NostrSystemEvents>(event: U, listener: NostrSystemEvents[U]): this;
+}
+
 /**
  * Manages nostr content retrieval system
  */
-export class NostrSystem extends ExternalStore<SystemSnapshot> implements SystemInterface {
+export class NostrSystem extends EventEmitter implements SystemInterface {
   #log = debug("System");
 
   /**
@@ -40,11 +51,6 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
    * All active queries
    */
   Queries: Map<string, Query> = new Map();
-
-  /**
-   * NIP-42 Auth handler
-   */
-  #handleAuth?: AuthHandler;
 
   /**
    * Storage class for user relay lists
@@ -87,7 +93,6 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
   checkSigs: boolean;
 
   constructor(props: {
-    authHandler?: AuthHandler;
     relayCache?: FeedCache<UsersRelays>;
     profileCache?: FeedCache<MetadataCache>;
     relayMetrics?: FeedCache<RelayMetrics>;
@@ -97,7 +102,6 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     checkSigs?: boolean;
   }) {
     super();
-    this.#handleAuth = props.authHandler;
     this.#relayCache = props.relayCache ?? new UserRelaysCache(props.db?.userRelays);
     this.#profileCache = props.profileCache ?? new UserProfileCache(props.db?.users);
     this.#relayMetricsCache = props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics);
@@ -110,14 +114,12 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     this.#cleanup();
   }
 
-  HandleAuth?: AuthHandler | undefined;
-
   get ProfileLoader() {
     return this.#profileLoader;
   }
 
   get Sockets(): ConnectionStateSnapshot[] {
-    return [...this.#sockets.values()].map(a => a.snapshot());
+    return [...this.#sockets.values()].map(a => a.takeSnapshot());
   }
 
   get RelayCache(): RelayCache {
@@ -149,12 +151,12 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       const addr = unwrap(sanitizeRelayUrl(address));
       const existing = this.#sockets.get(addr);
       if (!existing) {
-        const c = new Connection(addr, options, this.#handleAuth?.bind(this));
+        const c = new Connection(addr, options);
         this.#sockets.set(addr, c);
-        c.OnEvent = (s, e) => this.#onEvent(s, e);
-        c.OnEose = s => this.#onEndOfStoredEvents(c, s);
-        c.OnDisconnect = code => this.#onRelayDisconnect(c, code);
-        c.OnConnected = r => this.#onRelayConnected(c, r);
+        c.on("event", (s, e) => this.#onEvent(s, e));
+        c.on("eose", s => this.#onEndOfStoredEvents(c, s));
+        c.on("disconnect", code => this.#onRelayDisconnect(c, code));
+        c.on("connected", r => this.#onRelayConnected(c, r));
         await c.Connect();
       } else {
         // update settings if already connected
@@ -210,12 +212,12 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
     try {
       const addr = unwrap(sanitizeRelayUrl(address));
       if (!this.#sockets.has(addr)) {
-        const c = new Connection(addr, { read: true, write: true }, this.#handleAuth?.bind(this), true);
+        const c = new Connection(addr, { read: true, write: true }, true);
         this.#sockets.set(addr, c);
-        c.OnEvent = (s, e) => this.#onEvent(s, e);
-        c.OnEose = s => this.#onEndOfStoredEvents(c, s);
-        c.OnDisconnect = code => this.#onRelayDisconnect(c, code);
-        c.OnConnected = r => this.#onRelayConnected(c, r);
+        c.on("event", (s, e) => this.#onEvent(s, e));
+        c.on("eose", s => this.#onEndOfStoredEvents(c, s));
+        c.on("disconnect", code => this.#onRelayDisconnect(c, code));
+        c.on("connected", r => this.#onRelayConnected(c, r));
         await c.Connect();
         return c;
       }
@@ -404,15 +406,15 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
       return await existing.SendAsync(ev);
     } else {
       return await new Promise<OkResponse>((resolve, reject) => {
-        const c = new Connection(address, { write: true, read: true }, this.#handleAuth?.bind(this), true);
+        const c = new Connection(address, { write: true, read: true }, true);
 
         const t = setTimeout(reject, 10_000);
-        c.OnConnected = async () => {
+        c.once("connected", async () => {
           clearTimeout(t);
           const rsp = await c.SendAsync(ev);
           c.Close();
           resolve(rsp);
-        };
+        });
         c.Connect();
       });
     }
@@ -428,6 +430,10 @@ export class NostrSystem extends ExternalStore<SystemSnapshot> implements System
         };
       }),
     };
+  }
+
+  notifyChange() {
+    this.emit("change", this.takeSnapshot());
   }
 
   #cleanup() {

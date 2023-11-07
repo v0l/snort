@@ -1,4 +1,4 @@
-import { AuthHandler, RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
+import { RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
 import { RequestBuilder } from "./request-builder";
 import { NoteStore, NoteStoreSnapshotData } from "./note-collection";
 import { Query } from "./query";
@@ -45,11 +45,6 @@ export interface SystemInterface {
    * Check event signatures (reccomended)
    */
   checkSigs: boolean;
-
-  /**
-   * Handler function for NIP-42
-   */
-  HandleAuth?: AuthHandler;
 
   /**
    * Get a snapshot of the relay connections

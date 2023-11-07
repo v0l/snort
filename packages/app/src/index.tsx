@@ -87,13 +87,14 @@ const System = new NostrSystem({
   relayMetrics: RelayMetrics,
   queryOptimizer: hasWasm ? WasmQueryOptimizer : undefined,
   db: SystemDb,
-  authHandler: async (c, r) => {
-    const { id } = LoginStore.snapshot();
-    const pub = LoginStore.getPublisher(id);
-    if (pub) {
-      return await pub.nip42Auth(c, r);
-    }
-  },
+});
+
+System.on("auth", async (c, r, cb) => {
+  const { id } = LoginStore.snapshot();
+  const pub = LoginStore.getPublisher(id);
+  if (pub) {
+    cb(await pub.nip42Auth(c, r));
+  }
 });
 
 async function fetchProfile(key: string) {

@@ -85,10 +85,10 @@ export class Nip46Signer implements EventSigner {
     }
     return await new Promise<void>((resolve, reject) => {
       this.#conn = new Connection(this.#relay, { read: true, write: true });
-      this.#conn.OnEvent = async (sub, e) => {
+      this.#conn.on("event", async (sub, e) => {
         await this.#onReply(e);
-      };
-      this.#conn.OnConnected = async () => {
+      });
+      this.#conn.on("connected", async () => {
         this.#conn!.QueueReq(
           [
             "REQ",
@@ -110,7 +110,7 @@ export class Nip46Signer implements EventSigner {
             resolve,
           });
         }
-      };
+      });
       this.#conn.Connect();
       this.#didInit = true;
     });
