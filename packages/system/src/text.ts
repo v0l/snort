@@ -7,8 +7,9 @@ import {
   InvoiceRegex,
   MarkdownCodeRegex,
   MentionNostrEntityRegex,
+  TagRefRegex,
 } from "./const";
-import { validateNostrLink } from "./nostr-link";
+import { NostrLink, validateNostrLink } from "./nostr-link";
 import { splitByUrl } from "./utils";
 
 export interface ParsedFragment {
@@ -176,6 +177,28 @@ function extractHashtags(fragments: Fragment[]) {
     .flat();
 }
 
+function extractTagRefs(fragments: Fragment[], tags: Array<Array<string>>) {
+  return fragments
+    .map(f => {
+      if (typeof f === "string") {
+        return f.split(TagRefRegex).map(i => {
+          if (i.startsWith("#")) {
+            const tag = tags[Number(i.slice(2, -1))];
+            if (tag) {
+              return {
+                type: "mention",
+                content: `nostr:${NostrLink.fromTag(tag).encode()}`,
+              } as ParsedFragment;
+            }
+          }
+          return i;
+        });
+      }
+      return f;
+    })
+    .flat();
+}
+
 function extractCustomEmoji(fragments: Fragment[], tags: Array<Array<string>>) {
   return fragments
     .map(f => {
@@ -225,6 +248,7 @@ function extractMarkdownCode(fragments: Fragment[]): (string | ParsedFragment)[]
 export function transformText(body: string, tags: Array<Array<string>>) {
   let fragments = extractLinks([body]);
   fragments = extractMentions(fragments);
+  fragments = extractTagRefs(fragments, tags);
   fragments = extractHashtags(fragments);
   fragments = extractInvoices(fragments);
   fragments = extractCashuTokens(fragments);

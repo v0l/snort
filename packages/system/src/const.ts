@@ -10,6 +10,11 @@ export const DefaultConnectTimeout = 2000;
 export const HashtagRegex = /(#[^\s!@#$%^&*()=+.\/,\[{\]};:'"?><]+)/g;
 
 /**
+ * Legacy tag reference regex
+ */
+export const TagRefRegex = /(#\[\d+\])/gm;
+
+/**
  * How long profile cache should be considered valid for
  */
 export const ProfileCacheExpire = 1_000 * 60 * 60 * 6;
