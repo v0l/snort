@@ -26,9 +26,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
       return {
         pubkey: ev.pubkey,
         created_at: ev.created_at,
-        relays: ev.tags
-          .map(parseRelayTag)
-          .filter(a => a.url !== undefined),
+        relays: ev.tags.map(parseRelayTag).filter(a => a.url !== undefined),
       };
     });
   }

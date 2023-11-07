@@ -31,7 +31,9 @@ export function ShowMoreInView({ text, onClick, className }: ShowMoreProps) {
     }
   }, [inView]);
 
-  return <div className={classNames("show-more-container", className)} ref={ref}>
-    {text}
-  </div>
+  return (
+    <div className={classNames("show-more-container", className)} ref={ref}>
+      {text}
+    </div>
+  );
 }

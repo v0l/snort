@@ -113,7 +113,9 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
         <NotificationSummary evs={myNotifications as TaggedNostrEvent[]} />
 
         {login.publicKey &&
-          [...timeGrouped.entries()].slice(0, showN).map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
+          [...timeGrouped.entries()]
+            .slice(0, showN)
+            .map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
 
         <ShowMoreInView onClick={() => setShowN(s => Math.min(timeGrouped.size, s + 5))} />
       </div>
