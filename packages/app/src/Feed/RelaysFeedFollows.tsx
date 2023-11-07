@@ -27,15 +27,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
         pubkey: ev.pubkey,
         created_at: ev.created_at,
         relays: ev.tags
-          .map(a => {
-            return {
-              url: sanitizeRelayUrl(a[1]),
-              settings: {
-                read: a[2] === "read" || a[2] === undefined,
-                write: a[2] === "write" || a[2] === undefined,
-              },
-            } as FullRelaySettings;
-          })
+          .map(parseRelayTag)
           .filter(a => a.url !== undefined),
       };
     });
@@ -46,4 +38,14 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
   return useMemo(() => {
     return mapFromRelays(notesRelays);
   }, [relays]);
+}
+
+export function parseRelayTag(tag: Array<string>) {
+  return {
+    url: sanitizeRelayUrl(tag[1]),
+    settings: {
+      read: tag[2] === "read" || tag[2] === undefined,
+      write: tag[2] === "write" || tag[2] === undefined,
+    },
+  } as FullRelaySettings;
 }
