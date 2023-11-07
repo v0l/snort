@@ -8,6 +8,7 @@
   "appleTouchIconUrl": "/nostrich_512.png",
   "httpCache": "",
   "animalNamePlaceholders": false,
+  "defaultZapPoolFee": 0.5,
   "features": {
     "analytics": true,
     "subscriptions": true,

@@ -1,3 +1,4 @@
+import "./TaskList.css";
 import { useState } from "react";
 import { useUserProfile } from "@snort/system-react";
 
@@ -7,8 +8,9 @@ import { UITask } from "Tasks";
 import { DonateTask } from "./DonateTask";
 import { Nip5Task } from "./Nip5Task";
 import { RenewSubTask } from "./RenewSubscription";
+import { NoticeZapPoolDefault } from "./NoticeZapPool";
 
-const AllTasks: Array<UITask> = [new Nip5Task(), new DonateTask()];
+const AllTasks: Array<UITask> = [new Nip5Task(), new DonateTask(), new NoticeZapPoolDefault()];
 if (CONFIG.features.subscriptions) {
   AllTasks.push(new RenewSubTask());
 }
@@ -25,7 +27,7 @@ export const TaskList = () => {
   }
 
   return (
-    <>
+    <div className="task-list">
       {AllTasks.filter(a => (user ? a.check(user, session) : false)).map(a => {
         return (
           <div key={a.id} className="card">
@@ -39,6 +41,6 @@ export const TaskList = () => {
           </div>
         );
       })}
-    </>
+    </div>
   );
 };

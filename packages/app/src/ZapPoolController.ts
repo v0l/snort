@@ -2,7 +2,8 @@ import { UserCache } from "Cache";
 import { LNURL, ExternalStore, unixNow } from "@snort/shared";
 import { Toastore } from "Toaster";
 import { LNWallet, WalletInvoiceState, Wallets } from "Wallet";
-import { getDisplayName } from "SnortUtils";
+import { bech32ToHex, getDisplayName } from "SnortUtils";
+import { SnortPubKey } from "Const";
 
 export enum ZapPoolRecipientType {
   Generic = 0,
@@ -103,10 +104,11 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
     this.notifyChange();
   }
 
-  getOrDefault(rcpt: ZapPoolRecipient) {
+  getOrDefault(rcpt: ZapPoolRecipient): ZapPoolRecipient {
     const k = this.#key(rcpt);
-    if (this.#store.has(k)) {
-      return { ...this.#store.get(k) };
+    const existing = this.#store.get(k);
+    if (existing) {
+      return { ...existing };
     }
     return rcpt;
   }
@@ -137,6 +139,18 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
     if (existing) {
       const arr = JSON.parse(existing) as Array<ZapPoolRecipient>;
       this.#store = new Map(arr.map(a => [`${a.pubkey}-${a.type}`, a]));
+    } else if (CONFIG.defaultZapPoolFee) {
+      this.#store = new Map([
+        [
+          `${bech32ToHex(SnortPubKey)}-${ZapPoolRecipientType.Generic}`,
+          {
+            type: ZapPoolRecipientType.Generic,
+            split: CONFIG.defaultZapPoolFee,
+            pubkey: bech32ToHex(SnortPubKey),
+            sum: 0,
+          },
+        ],
+      ]);
     }
 
     const lastPayout = self.localStorage.getItem("zap-pool-last-payout");
