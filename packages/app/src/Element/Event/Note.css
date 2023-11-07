@@ -141,7 +141,6 @@
 
 .trash-icon {
   color: var(--error);
-  margin-right: auto;
 }
 
 .note-expand .body {

@@ -45,23 +45,21 @@ const RelaySettingsPage = () => {
 
   function addRelay() {
     return (
-      <>
+      <div className="flex flex-col g8">
         <h4>
           <FormattedMessage {...messages.AddRelays} />
         </h4>
-        <div className="flex mb10">
-          <input
-            type="text"
-            className="grow"
-            placeholder="wss://my-relay.com"
-            value={newRelay}
-            onChange={handleNewRelayChange}
-          />
-        </div>
-        <button className="secondary mb10" onClick={() => addNewRelay()}>
+        <input
+          type="text"
+          className="grow"
+          placeholder="wss://my-relay.com"
+          value={newRelay}
+          onChange={handleNewRelayChange}
+        />
+        <button className="secondary" onClick={() => addNewRelay()}>
           <FormattedMessage {...messages.Add} />
         </button>
-      </>
+      </div>
     );
   }
 
@@ -77,31 +75,28 @@ const RelaySettingsPage = () => {
   }
 
   return (
-    <>
+    <div className="flex flex-col g8">
       <h3>
         <FormattedMessage {...messages.Relays} />
       </h3>
-      <div className="flex flex-col mb10">
+      <div className="flex flex-col g8">
         {Object.keys(relays.item || {}).map(a => (
           <Relay addr={a} key={a} />
         ))}
       </div>
-      <div className="flex mt10">
-        <div className="grow"></div>
-        <AsyncButton type="button" onClick={() => saveRelays(system, publisher, relays.item)} disabled={login.readonly}>
-          <FormattedMessage {...messages.Save} />
-        </AsyncButton>
-      </div>
+      <AsyncButton type="button" onClick={() => saveRelays(system, publisher, relays.item)} disabled={login.readonly}>
+        <FormattedMessage {...messages.Save} />
+      </AsyncButton>
       {addRelay()}
       <h3>
         <FormattedMessage defaultMessage="Other Connections" />
       </h3>
-      <div className="flex flex-col mb10">
+      <div className="flex flex-col g8">
         {otherConnections.map(a => (
           <Relay addr={a.address} key={a.id} />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,8 +1,6 @@
 .relay {
-  margin-top: 10px;
   background-color: var(--gray-secondary);
   border-radius: 5px;
-  text-align: start;
   display: grid;
   grid-template-columns: min-content auto;
   overflow: hidden;
@@ -11,34 +9,4 @@
 
 .relay > div {
   padding: 5px;
-}
-
-.relay-extra {
-  padding: 5px;
-  margin: 0 5px;
-  background-color: var(--gray-tertiary);
-  border-radius: 0 0 5px 5px;
-  white-space: nowrap;
-  font-size: var(--font-size-small);
-}
-
-.icon-btn {
-  padding: 2px 10px;
-  border-radius: 10px;
-  background-color: var(--gray);
-  user-select: none;
-  color: var(--font-color);
-  display: inline-block;
-}
-
-.icon-btn:hover {
-  cursor: pointer;
-}
-
-.checkmark {
-  margin-left: 0.5em;
-  padding: 2px 10px;
-  background-color: var(--gray);
-  border-radius: 10px;
-  display: inline-block;
 }

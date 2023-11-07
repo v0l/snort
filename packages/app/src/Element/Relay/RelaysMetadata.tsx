@@ -5,14 +5,19 @@ import { useState } from "react";
 import { FullRelaySettings } from "@snort/system";
 import Icon from "Icons/Icon";
 
-const RelayFavicon = ({ url }: { url: string }) => {
+export const RelayFavicon = ({ url }: { url: string }) => {
   const cleanUrl = url
     .replace(/^wss:\/\//, "https://")
     .replace(/^ws:\/\//, "http://")
     .replace(/\/$/, "");
   const [faviconUrl, setFaviconUrl] = useState(`${cleanUrl}/favicon.ico`);
   return (
-    <img className="favicon" src={faviconUrl} onError={() => setFaviconUrl(Nostrich)} alt={`favicon for ${url}`} />
+    <img
+      className="circle favicon"
+      src={faviconUrl}
+      onError={() => setFaviconUrl(Nostrich)}
+      alt={`favicon for ${url}`}
+    />
   );
 };
 
@@ -25,12 +30,12 @@ const RelaysMetadata = ({ relays }: RelaysMetadataProps) => {
     <>
       {relays?.map(({ url, settings }) => {
         return (
-          <div key={url} className="card relay-card">
+          <div key={url} className="card flex g8">
             <RelayFavicon url={url} />
-            <code className="relay-url f-ellipsis">{url}</code>
-            <div className="relay-settings">
-              <Icon name="read" className={settings.read ? "enabled" : "disabled"} />
-              <Icon name="write" className={settings.write ? "enabled" : "disabled"} />
+            <code className="grow f-ellipsis">{url}</code>
+            <div className="flex g8">
+              <Icon name="read" className={settings.read ? "relay-active" : "disabled"} />
+              <Icon name="write" className={settings.write ? "relay-active" : "disabled"} />
             </div>
           </div>
         );
