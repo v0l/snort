@@ -235,6 +235,9 @@
   "7/h1jn": {
     "defaultMessage": "After submitting the pin there may be a slight delay as we encrypt the key."
   },
+  "712i26": {
+    "defaultMessage": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node"
+  },
   "7BX/yC": {
     "defaultMessage": "Account Switcher"
   },
@@ -469,6 +472,9 @@
   },
   "FSYL8G": {
     "defaultMessage": "Trending Users"
+  },
+  "FcNSft": {
+    "defaultMessage": "Redirect issues HTTP redirect to the supplied lightning address"
   },
   "FdhSU2": {
     "defaultMessage": "Claim Now"

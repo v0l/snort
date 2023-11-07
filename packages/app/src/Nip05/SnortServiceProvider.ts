@@ -8,6 +8,7 @@ export interface ManageHandle {
   pubkey: string;
   created: Date;
   lnAddress?: string;
+  forwardType?: ForwardType;
 }
 
 export enum ForwardType {
