@@ -12,3 +12,7 @@
   font-weight: normal;
   text-decoration: underline;
 }
+
+.show-more-container {
+  min-height: 40px;
+}

@@ -24,6 +24,7 @@ import { Day } from "Const";
 import Tabs, { Tab } from "Element/Tabs";
 import classNames from "classnames";
 import { AsyncIcon } from "Element/AsyncIcon";
+import { ShowMoreInView } from "Element/Event/ShowMore";
 
 function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {
@@ -66,6 +67,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
   const login = useLogin();
   const { isMuted } = useModeration();
   const groupInterval = 3600 * 3;
+  const [showN, setShowN] = useState(10);
 
   useEffect(() => {
     markNotificationsRead(login);
@@ -111,7 +113,9 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
         <NotificationSummary evs={myNotifications as TaggedNostrEvent[]} />
 
         {login.publicKey &&
-          [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
+          [...timeGrouped.entries()].slice(0, showN).map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
+
+        <ShowMoreInView onClick={() => setShowN(s => Math.min(timeGrouped.size, s + 5))} />
       </div>
     </>
   );

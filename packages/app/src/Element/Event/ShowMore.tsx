@@ -1,7 +1,8 @@
 import "./ShowMore.css";
-import { useIntl } from "react-intl";
-
-import messages from "../messages";
+import { FormattedMessage } from "react-intl";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
+import classNames from "classnames";
 
 interface ShowMoreProps {
   text?: string;
@@ -10,16 +11,27 @@ interface ShowMoreProps {
 }
 
 const ShowMore = ({ text, onClick, className = "" }: ShowMoreProps) => {
-  const { formatMessage } = useIntl();
-  const defaultText = formatMessage(messages.ShowMore);
-  const classNames = className ? `show-more ${className}` : "show-more";
   return (
     <div className="show-more-container">
-      <button className={classNames} onClick={onClick}>
-        {text || defaultText}
+      <button className={classNames("show-more", className)} onClick={onClick}>
+        {text || <FormattedMessage defaultMessage="Show More" />}
       </button>
     </div>
   );
 };
 
 export default ShowMore;
+
+export function ShowMoreInView({ text, onClick, className }: ShowMoreProps) {
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      onClick();
+    }
+  }, [inView]);
+
+  return <div className={classNames("show-more-container", className)} ref={ref}>
+    {text}
+  </div>
+}
