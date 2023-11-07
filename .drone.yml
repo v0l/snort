@@ -12,6 +12,10 @@ trigger:
 metadata:
   namespace: git
 steps:
+  - name: Fetch tags
+    image: alpine/git
+    commands:
+      - git fetch --tags
   - name: Build site
     image: node:current-bullseye
     volumes:
@@ -120,6 +124,10 @@ trigger:
 metadata:
   namespace: git
 steps:
+  - name: Fetch tags
+    image: alpine/git
+    commands:
+      - git fetch --tags
   - name: Build site
     image: node:current-bullseye
     volumes:
