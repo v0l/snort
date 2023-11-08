@@ -36,7 +36,7 @@
     "@snort/shared": "^1.0.7",
     "@stablelib/xchacha20": "^1.0.1",
     "debug": "^4.3.4",
-    "events": "^3.3.0",
+    "eventemitter3": "^5.0.1",
     "isomorphic-ws": "^5.0.0",
     "uuid": "^9.0.0",
     "ws": "^8.14.0"

@@ -26,7 +26,6 @@ import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
 import { getCountry, unwrap } from "SnortUtils";
 import Layout from "Pages/Layout";
-import LoginPage from "Pages/LoginPage";
 import ProfilePage from "Pages/Profile/ProfilePage";
 import { RootRoutes, RootTabRoutes } from "Pages/Root";
 import NotificationsPage from "Pages/Notifications";
@@ -37,7 +36,6 @@ import MessagesPage from "Pages/MessagesPage";
 import DonatePage from "Pages/DonatePage";
 import SearchPage from "Pages/SearchPage";
 import HelpPage from "Pages/HelpPage";
-import { NewUserRoutes } from "Pages/new";
 import { WalletRoutes } from "Pages/WalletPage";
 import NostrLinkHandler from "Pages/NostrLinkHandler";
 import { ThreadRoute } from "Element/Event/Thread";
@@ -51,6 +49,13 @@ import FreeNostrAddressPage from "./Pages/FreeNostrAddressPage";
 import { ListFeedPage } from "Pages/ListFeedPage";
 import { updateRelayConnections } from "Hooks/useLoginRelays";
 import { AboutPage } from "Pages/About";
+import { OnboardingRoutes } from "Pages/onboarding";
+
+declare global {
+  interface Window {
+    plausible?: (tag: string) => void;
+  }
+}
 
 const WasmQueryOptimizer = {
   expandFilter: (f: ReqFilter) => {
@@ -166,10 +171,6 @@ let didInit = false;
 const mainRoutes = [
   ...RootRoutes,
   {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
     path: "/help",
     element: <HelpPage />,
   },
@@ -218,7 +219,7 @@ const mainRoutes = [
     path: "/about",
     element: <AboutPage />,
   },
-  ...NewUserRoutes,
+  ...OnboardingRoutes,
   ...WalletRoutes,
 ] as Array<RouteObject>;
 

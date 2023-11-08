@@ -660,6 +660,10 @@ div.form-col {
   color: var(--warning);
 }
 
+.bg-warning {
+  background-color: var(--warning);
+}
+
 .bg-error {
   background-color: var(--error);
 }

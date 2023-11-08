@@ -49,7 +49,7 @@ export default function ProfilePreview(props: ProfilePreviewProps) {
               showProfileCard={options.profileCards}
             />
             {props.actions ?? (
-              <div className="follow-button-container">
+              <div className="whitespace-nowrap">
                 <FollowButton pubkey={pubkey} />
               </div>
             )}

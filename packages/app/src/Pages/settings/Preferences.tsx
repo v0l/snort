@@ -2,9 +2,10 @@ import "./Preferences.css";
 
 import { FormattedMessage, useIntl } from "react-intl";
 import useLogin from "Hooks/useLogin";
-import { DefaultPreferences, updatePreferences, UserPreferences } from "Login";
+import { updatePreferences, UserPreferences } from "Login";
 import { DefaultImgProxy } from "Const";
 import { unwrap } from "SnortUtils";
+import { useLocale } from "IntlProvider";
 
 import messages from "./messages";
 
@@ -36,6 +37,7 @@ const PreferencesPage = () => {
   const { formatMessage } = useIntl();
   const login = useLogin();
   const perf = login.preferences;
+  const { lang } = useLocale();
 
   return (
     <div className="preferences flex flex-col g24">
@@ -49,7 +51,7 @@ const PreferencesPage = () => {
         </h4>
         <div>
           <select
-            value={perf.language || DefaultPreferences.language}
+            value={lang}
             onChange={e =>
               updatePreferences(login, {
                 ...perf,

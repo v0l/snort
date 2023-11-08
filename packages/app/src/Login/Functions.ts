@@ -6,6 +6,7 @@ import {
   PrivateKeySigner,
   KeyStorage,
   SystemInterface,
+  UserMetadata,
 } from "@snort/system";
 import { unixNowMs } from "@snort/shared";
 import * as secp from "@noble/curves/secp256k1";
@@ -79,7 +80,11 @@ export function clearEntropy(state: LoginSession) {
 /**
  * Generate a new key and login with this generated key
  */
-export async function generateNewLogin(system: SystemInterface, pin: (key: string) => Promise<KeyStorage>) {
+export async function generateNewLogin(
+  system: SystemInterface,
+  pin: (key: string) => Promise<KeyStorage>,
+  profile: UserMetadata,
+) {
   const ent = generateBip39Entropy();
   const entropy = utils.bytesToHex(ent);
   const privateKey = entropyToPrivateKey(ent);
@@ -98,6 +103,10 @@ export async function generateNewLogin(system: SystemInterface, pin: (key: strin
   // Create relay metadata event
   const ev2 = await publisher.relayList(newRelays);
   await system.BroadcastEvent(ev2);
+
+  // Publish new profile
+  const ev3 = await publisher.metadata(profile);
+  await system.BroadcastEvent(ev3);
 
   LoginStore.loginWithPrivateKey(await pin(privateKey), entropy, newRelays);
 }

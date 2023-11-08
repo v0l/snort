@@ -23,11 +23,14 @@
   "+vVZ/G": {
     "defaultMessage": "Connect"
   },
+  "+vj0U3": {
+    "defaultMessage": "edit"
+  },
   "+xliwN": {
     "defaultMessage": "{name} reposted"
   },
-  "/4tOwT": {
-    "defaultMessage": "Skip"
+  "/B8zwF": {
+    "defaultMessage": "Your space the way you want it 😌"
   },
   "/GCoTA": {
     "defaultMessage": "Clear"
@@ -38,9 +41,6 @@
   "/PCavi": {
     "defaultMessage": "Public",
     "description": "Public Zap"
-  },
-  "/RD0e2": {
-    "defaultMessage": "Nostr uses digital signature technology to provide tamper proof notes which can safely be replicated to many relays to provide redundant storage of your content."
   },
   "/Xf4UW": {
     "defaultMessage": "Send anonymous usage metrics"
@@ -72,6 +72,9 @@
   "0mch2Y": {
     "defaultMessage": "name has disallowed characters"
   },
+  "0siT4z": {
+    "defaultMessage": "Politics"
+  },
   "0uoY11": {
     "defaultMessage": "Show Status"
   },
@@ -93,6 +96,9 @@
   "1o2BgB": {
     "defaultMessage": "Check Signatures"
   },
+  "1ozeyg": {
+    "defaultMessage": "Nature"
+  },
   "1udzha": {
     "defaultMessage": "Conversations"
   },
@@ -102,11 +108,17 @@
   "25V4l1": {
     "defaultMessage": "Banner"
   },
+  "25WwxF": {
+    "defaultMessage": "Don't have an account?"
+  },
   "2IFGap": {
     "defaultMessage": "Donate"
   },
   "2LbrkB": {
     "defaultMessage": "Enter password"
+  },
+  "2O2sfp": {
+    "defaultMessage": "Finish"
   },
   "2a2YiP": {
     "defaultMessage": "{n} Bookmarks"
@@ -119,6 +131,9 @@
   },
   "2zJXeA": {
     "defaultMessage": "Profiles"
+  },
+  "39AHJm": {
+    "defaultMessage": "Sign Up"
   },
   "3KNMbJ": {
     "defaultMessage": "Articles"
@@ -138,15 +153,8 @@
   "3tVy+Z": {
     "defaultMessage": "{n} Followers"
   },
-  "3xCwbZ": {
-    "defaultMessage": "OR",
-    "description": "Seperator text for Login / Generate Key"
-  },
   "3yk8fB": {
     "defaultMessage": "Wallet"
-  },
-  "40VR6s": {
-    "defaultMessage": "Nostr Connect"
   },
   "450Fty": {
     "defaultMessage": "None"
@@ -162,6 +170,9 @@
   },
   "4MBtMa": {
     "defaultMessage": "Name must be between 1 and 32 characters"
+  },
+  "4MjsHk": {
+    "defaultMessage": "Life"
   },
   "4OB335": {
     "defaultMessage": "Dislike"
@@ -181,14 +192,8 @@
   "5CB6zB": {
     "defaultMessage": "Zap Splits"
   },
-  "5JcXdV": {
-    "defaultMessage": "Create Account"
-  },
   "5oTnfy": {
     "defaultMessage": "Buy Handle"
-  },
-  "5rOdPG": {
-    "defaultMessage": "Once you setup your key manager extension and generated a key, you can follow our new users flow to setup your profile and help you find some interesting people on Nostr to follow."
   },
   "5u6iEc": {
     "defaultMessage": "Transfer to Pubkey"
@@ -217,9 +222,6 @@
   "6TfgXX": {
     "defaultMessage": "{site} is an open source project built by passionate people in their free time"
   },
-  "6Yfvvp": {
-    "defaultMessage": "Get an identifier"
-  },
   "6bgpn+": {
     "defaultMessage": "Not all clients support this, you may still receive some zaps as if zap splits was not configured"
   },
@@ -231,9 +233,6 @@
   },
   "7+Domh": {
     "defaultMessage": "Notes"
-  },
-  "7/h1jn": {
-    "defaultMessage": "After submitting the pin there may be a slight delay as we encrypt the key."
   },
   "712i26": {
     "defaultMessage": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node"
@@ -256,9 +255,6 @@
   "8ED/4u": {
     "defaultMessage": "Reply To"
   },
-  "8Kboo2": {
-    "defaultMessage": "Scan this QR code with your signer app to get started"
-  },
   "8QDesP": {
     "defaultMessage": "Zap {n} sats"
   },
@@ -274,10 +270,6 @@
   "8v1NN+": {
     "defaultMessage": "Pairing phrase"
   },
-  "8xNnhi": {
-    "defaultMessage": "Nostr Extension",
-    "description": "Login button for NIP7 key manager extension"
-  },
   "9+Ddtu": {
     "defaultMessage": "Next"
   },
@@ -289,10 +281,6 @@
   },
   "9WRlF4": {
     "defaultMessage": "Send"
-  },
-  "9gqH2W": {
-    "defaultMessage": "Login",
-    "description": "Login button"
   },
   "9kSari": {
     "defaultMessage": "Retry publishing"
@@ -316,14 +304,14 @@
   "ASRK0S": {
     "defaultMessage": "This author has been muted"
   },
-  "Adk34V": {
-    "defaultMessage": "Setup your Profile"
-  },
   "Ai8VHU": {
     "defaultMessage": "Unlimited note retention on Snort relay"
   },
   "AkCxS/": {
     "defaultMessage": "Reason"
+  },
+  "Am8glJ": {
+    "defaultMessage": "Game"
   },
   "AnLrRC": {
     "defaultMessage": "Non-Zap",
@@ -347,14 +335,8 @@
   "BGCM48": {
     "defaultMessage": "Write access to Snort relay, with 1 year of event retention"
   },
-  "BOUMjw": {
-    "defaultMessage": "No nostr users found for {twitterUsername}"
-  },
   "BWpuKl": {
     "defaultMessage": "Update"
-  },
-  "BcGMo+": {
-    "defaultMessage": "Notes hold text content, the most popular usage of these notes is to store \"tweet like\" messages."
   },
   "BjNwZW": {
     "defaultMessage": "Nostr address (nip05)"
@@ -379,9 +361,6 @@
   },
   "CmZ9ls": {
     "defaultMessage": "{n} Muted"
-  },
-  "CoVXRS": {
-    "defaultMessage": "Alternatively, you may choose to store your private key without a PIN by selecting 'Cancel.'"
   },
   "CsCUYo": {
     "defaultMessage": "{n} sats"
@@ -416,17 +395,14 @@
   "DtYelJ": {
     "defaultMessage": "Transfer"
   },
-  "E8a4yq": {
-    "defaultMessage": "Follow some popular accounts"
+  "Dx4ey3": {
+    "defaultMessage": "Toggle all"
   },
   "EJbFi7": {
     "defaultMessage": "Search notes"
   },
   "ELbg9p": {
     "defaultMessage": "Data Providers"
-  },
-  "EPYwm7": {
-    "defaultMessage": "Your private key is your password. If you lose this key, you will lose access to your account! Copy it and keep it in a safe place. There is no way to reset your private key."
   },
   "EQKRE4": {
     "defaultMessage": "Show badges on profile pages"
@@ -452,12 +428,6 @@
   "EnCOBJ": {
     "defaultMessage": "Buy"
   },
-  "Eqjl5K": {
-    "defaultMessage": "Only Snort and our integration partner identifier gives you a colorful domain name, but you are welcome to use other services too."
-  },
-  "F+B3x1": {
-    "defaultMessage": "We have also partnered with nostrplebs.com to give you more options"
-  },
   "F3l7xL": {
     "defaultMessage": "Add Account"
   },
@@ -466,9 +436,6 @@
   },
   "FMfjrl": {
     "defaultMessage": "Show status messages on profile pages"
-  },
-  "FS3b54": {
-    "defaultMessage": "Done!"
   },
   "FSYL8G": {
     "defaultMessage": "Trending Users"
@@ -549,12 +516,6 @@
   "IKKHqV": {
     "defaultMessage": "Follows"
   },
-  "INSqIz": {
-    "defaultMessage": "Twitter username..."
-  },
-  "IUZC+0": {
-    "defaultMessage": "This means that nobody can modify notes which you have created and everybody can easily verify that the notes they are reading are created by you."
-  },
   "IVbtTS": {
     "defaultMessage": "Zap all {n} sats"
   },
@@ -573,6 +534,9 @@
   "J+dIsA": {
     "defaultMessage": "Subscriptions"
   },
+  "J2HeQ+": {
+    "defaultMessage": "Use commas to separate words e.g. word1, word2, word3"
+  },
   "JCIgkj": {
     "defaultMessage": "Username"
   },
@@ -581,6 +545,9 @@
   },
   "JHEHCk": {
     "defaultMessage": "Zaps ({n})"
+  },
+  "JIVWWA": {
+    "defaultMessage": "Sport"
   },
   "JPFYIM": {
     "defaultMessage": "No lightning address"
@@ -616,9 +583,6 @@
   "KQvWvD": {
     "defaultMessage": "Deleted"
   },
-  "KWuDfz": {
-    "defaultMessage": "I have saved my keys, continue"
-  },
   "KahimY": {
     "defaultMessage": "Unknown event kind: {kind}"
   },
@@ -649,10 +613,6 @@
   "LwYmVi": {
     "defaultMessage": "Zaps on this note will be split to the following users."
   },
-  "M10zFV": {
-    "defaultMessage": "Nostr Connect",
-    "description": "Login button for NIP-46 signer app"
-  },
   "M3Oirc": {
     "defaultMessage": "Debug Menus"
   },
@@ -665,9 +625,6 @@
   "MP54GY": {
     "defaultMessage": "Wallet password",
     "description": "Wallet password input placeholder"
-  },
-  "MRp6Ly": {
-    "defaultMessage": "Twitter username"
   },
   "MWTx65": {
     "defaultMessage": "Default Page"
@@ -696,26 +653,17 @@
   "NAuFNH": {
     "defaultMessage": "You already have a subscription of this type, please renew or pay"
   },
-  "NNSu3d": {
-    "defaultMessage": "Import Twitter Follows"
-  },
   "NdOYJJ": {
     "defaultMessage": "Hmm nothing here.. Checkout {newUsersPage} to follow some recommended nostrich's!"
   },
   "NepkXH": {
     "defaultMessage": "Can't vote with {amount} sats, please set a different default zap amount"
   },
-  "NfNk2V": {
-    "defaultMessage": "Your private key"
-  },
   "NndBJE": {
     "defaultMessage": "New users page"
   },
   "O8Z8t9": {
     "defaultMessage": "Show More"
-  },
-  "O9GTIc": {
-    "defaultMessage": "Profile picture"
   },
   "OEW7yJ": {
     "defaultMessage": "Zaps"
@@ -735,12 +683,6 @@
   "ORGv1Q": {
     "defaultMessage": "Created"
   },
-  "Oq/kVn": {
-    "defaultMessage": "Name-squatting and impersonation is not allowed. {site} and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule."
-  },
-  "P/xrLk": {
-    "defaultMessage": "Secure your private key with a PIN, ensuring enhanced protection on {site}. You'll be prompted to enter this PIN each time you access the site."
-  },
   "P61BTu": {
     "defaultMessage": "Copy Event JSON"
   },
@@ -757,12 +699,6 @@
     "defaultMessage": "Summary",
     "description": "Notifications summary"
   },
-  "PLSbmL": {
-    "defaultMessage": "Your mnemonic phrase"
-  },
-  "PaN7t3": {
-    "defaultMessage": "Preview on {site}"
-  },
   "PamNxw": {
     "defaultMessage": "Unknown file header: {name}"
   },
@@ -778,13 +714,6 @@
   "QWhotP": {
     "defaultMessage": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)"
   },
-  "QawghE": {
-    "defaultMessage": "You can change your username at any point."
-  },
-  "QxCuTo": {
-    "defaultMessage": "Art by {name}",
-    "description": "Artwork attribution label"
-  },
   "Qxv0B2": {
     "defaultMessage": "You currently have {number} sats in your zap pool."
   },
@@ -793,9 +722,6 @@
   },
   "R81upa": {
     "defaultMessage": "People you follow"
-  },
-  "RDZVQL": {
-    "defaultMessage": "Check"
   },
   "RSr2uB": {
     "defaultMessage": "Username must only contain lowercase letters and numbers"
@@ -812,6 +738,9 @@
   "RjpoYG": {
     "defaultMessage": "Recent",
     "description": "Sort order name"
+  },
+  "RkW5we": {
+    "defaultMessage": "Bitcoin"
   },
   "RoOyAh": {
     "defaultMessage": "Relays"
@@ -844,6 +773,9 @@
   "Sjo1P4": {
     "defaultMessage": "Custom"
   },
+  "SmuYUd": {
+    "defaultMessage": "What should we call you?"
+  },
   "Ss0sWu": {
     "defaultMessage": "Pay Now"
   },
@@ -858,6 +790,12 @@
   },
   "TP/cMX": {
     "defaultMessage": "Ended"
+  },
+  "TaeBqw": {
+    "defaultMessage": "Sign in with Nostr Extension"
+  },
+  "TdtZQ5": {
+    "defaultMessage": "Crypto"
   },
   "TpgeGw": {
     "defaultMessage": "Hex Salt..",
@@ -884,14 +822,14 @@
   "UUPFlt": {
     "defaultMessage": "Users must accept the content warning to show the content of your note."
   },
+  "Ub+AGc": {
+    "defaultMessage": "Sign In"
+  },
   "Up5U7K": {
     "defaultMessage": "Block"
   },
   "UrKTqQ": {
     "defaultMessage": "You have an active iris.to account"
-  },
-  "VBadwB": {
-    "defaultMessage": "Hmm, can't find a key manager extension.. try reloading the page."
   },
   "VN0+Fz": {
     "defaultMessage": "Balance: {amount} sats"
@@ -914,9 +852,6 @@
   "VvaJst": {
     "defaultMessage": "View Wallets"
   },
-  "Vx7Zm2": {
-    "defaultMessage": "How do keys work?"
-  },
   "W1yoZY": {
     "defaultMessage": "It looks like you dont have any subscriptions, you can get one {link}"
   },
@@ -926,17 +861,14 @@
   "W9355R": {
     "defaultMessage": "Unmute"
   },
-  "WONP5O": {
-    "defaultMessage": "Find your twitter follows on nostr (Data provided by {provider})"
-  },
   "WmZhfL": {
     "defaultMessage": "Automatically translate notes to your local language"
   },
   "WvGmZT": {
     "defaultMessage": "npub / nprofile / nostr address"
   },
-  "WxthCV": {
-    "defaultMessage": "e.g. Jack"
+  "X6tipZ": {
+    "defaultMessage": "Sign in with key"
   },
   "X7xU8J": {
     "defaultMessage": "nsec, npub, nip-05, hex, mnemonic"
@@ -956,9 +888,6 @@
   "XrSk2j": {
     "defaultMessage": "Redeem",
     "description": "Button: Redeem Cashu token"
-  },
-  "XzF0aC": {
-    "defaultMessage": "Key manager extensions are more secure and allow you to easily login to any Nostr client, here are some well known extensions:"
   },
   "YDURw6": {
     "defaultMessage": "Service URL"
@@ -981,14 +910,20 @@
   "Zff6lu": {
     "defaultMessage": "Username iris.to/<b>{name}</b> is reserved for you!"
   },
-  "Zr5TMx": {
-    "defaultMessage": "Setup profile"
+  "a+6cHB": {
+    "defaultMessage": "Derogatory"
   },
   "a5UPxh": {
     "defaultMessage": "Fund developers and platforms providing NIP-05 verification services"
   },
   "a7TDNm": {
     "defaultMessage": "Notes will stream in real time into global and notes tab"
+  },
+  "aHje0o": {
+    "defaultMessage": "Name or nym"
+  },
+  "aMaLBK": {
+    "defaultMessage": "Supported Extensions"
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
@@ -1011,18 +946,11 @@
   "bfvyfs": {
     "defaultMessage": "Anon"
   },
-  "brAXSu": {
-    "defaultMessage": "Pick a username"
-  },
   "bxv59V": {
     "defaultMessage": "Just now"
   },
   "c+JYNI": {
     "defaultMessage": "No thanks"
-  },
-  "c+oiJe": {
-    "defaultMessage": "Install Extension",
-    "description": "Heading for install key manager extension"
   },
   "c35bj2": {
     "defaultMessage": "If you have an enquiry about your NIP-05 order please DM {link}"
@@ -1032,6 +960,9 @@
   },
   "cFbU1B": {
     "defaultMessage": "Using Alby? Go to {link} to get your NWC config!"
+  },
+  "cHCwbF": {
+    "defaultMessage": "Photography"
   },
   "cPIKU2": {
     "defaultMessage": "Following"
@@ -1054,6 +985,9 @@
   },
   "cyR7Kh": {
     "defaultMessage": "Back"
+  },
+  "d+6YsV": {
+    "defaultMessage": "Lists to mute:"
   },
   "d6CyG5": {
     "defaultMessage": "History",
@@ -1080,6 +1014,9 @@
   "e7qqly": {
     "defaultMessage": "Mark All Read"
   },
+  "eF0Re7": {
+    "defaultMessage": "Use a nostr signer extension to sign in"
+  },
   "eHAneD": {
     "defaultMessage": "Reaction emoji"
   },
@@ -1104,6 +1041,9 @@
   "fWZYP5": {
     "defaultMessage": "Pinned"
   },
+  "fX5RYm": {
+    "defaultMessage": "Pick a few topics of interest"
+  },
   "filwqD": {
     "defaultMessage": "Read"
   },
@@ -1125,9 +1065,6 @@
   "g985Wp": {
     "defaultMessage": "Failed to send vote"
   },
-  "gBdUXk": {
-    "defaultMessage": "Save your keys!"
-  },
   "gDzDRs": {
     "defaultMessage": "Emoji to send when reactiong to a note"
   },
@@ -1146,11 +1083,11 @@
   "grQ+mI": {
     "defaultMessage": "Proof of Work"
   },
+  "h7jvCs": {
+    "defaultMessage": "{site} is more fun together!"
+  },
   "h8XMJL": {
     "defaultMessage": "Badges"
-  },
-  "hK5ZDk": {
-    "defaultMessage": "the world"
   },
   "hMzcSq": {
     "defaultMessage": "Messages"
@@ -1175,9 +1112,6 @@
   },
   "iCqGww": {
     "defaultMessage": "Reactions ({n})"
-  },
-  "iDGAbc": {
-    "defaultMessage": "Get a Snort identifier"
   },
   "iEoXYx": {
     "defaultMessage": "DeepL translations"
@@ -1209,15 +1143,15 @@
   "jAmfGl": {
     "defaultMessage": "Your {site_name} subscription is expired"
   },
+  "jHa/ko": {
+    "defaultMessage": "Clean up your feed"
+  },
   "jMzO1S": {
     "defaultMessage": "Internal error: {msg}"
   },
   "jfV8Wr": {
     "defaultMessage": "Back",
     "description": "Navigate back button on threads view"
-  },
-  "juhqvW": {
-    "defaultMessage": "Improve login security with browser extensions"
   },
   "jvo0vs": {
     "defaultMessage": "Save"
@@ -1228,6 +1162,9 @@
   "k2veDA": {
     "defaultMessage": "Write"
   },
+  "k7+5Ny": {
+    "defaultMessage": "Hate Speech"
+  },
   "k7sKNy": {
     "defaultMessage": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
   },
@@ -1237,9 +1174,6 @@
   "kJYo0u": {
     "defaultMessage": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"
   },
-  "kTLGM2": {
-    "defaultMessage": "{site} is designed to have a similar experience to Twitter."
-  },
   "kaaf1E": {
     "defaultMessage": "now"
   },
@@ -1248,9 +1182,6 @@
   },
   "l+ikU1": {
     "defaultMessage": "Everything in {plan}"
-  },
-  "lBboHo": {
-    "defaultMessage": "If you want to try out some others, check out {link} for more!"
   },
   "lCILNz": {
     "defaultMessage": "Buy Now"
@@ -1263,9 +1194,6 @@
   },
   "lTbT3s": {
     "defaultMessage": "Wallet password"
-  },
-  "lVKH7C": {
-    "defaultMessage": "What is {site} and how does it work?"
   },
   "lgg1KN": {
     "defaultMessage": "account page"
@@ -1313,15 +1241,6 @@
   "nGBrvw": {
     "defaultMessage": "Bookmarks"
   },
-  "nN9XTz": {
-    "defaultMessage": "Share your thoughts with {link}"
-  },
-  "nOaArs": {
-    "defaultMessage": "Setup Profile"
-  },
-  "ncbgUU": {
-    "defaultMessage": "{site} is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\"."
-  },
   "nihgfo": {
     "defaultMessage": "Listen to this article"
   },
@@ -1330,10 +1249,6 @@
   },
   "nwZXeh": {
     "defaultMessage": "{n} blocked"
-  },
-  "o6Uy3d": {
-    "defaultMessage": "Only the secret key can be used to publish (sign events), everything else logs you in read-only mode.",
-    "description": "Explanation for public key only login is read-only"
   },
   "o7e+nJ": {
     "defaultMessage": "{n} followers"
@@ -1344,18 +1259,8 @@
   "odFwjL": {
     "defaultMessage": "Follows only"
   },
-  "odhABf": {
-    "defaultMessage": "Login",
-    "description": "Login header"
-  },
   "ojzbwv": {
     "defaultMessage": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}"
-  },
-  "osUr8O": {
-    "defaultMessage": "You can also use these extensions to login to most Nostr sites."
-  },
-  "oxCa4R": {
-    "defaultMessage": "Getting an identifier helps confirm the real you to people who know you. Many people can have a username @jack, but there is only one jack@cash.app."
   },
   "p4N05H": {
     "defaultMessage": "Upload"
@@ -1402,6 +1307,9 @@
   "qtWLmt": {
     "defaultMessage": "Like"
   },
+  "qydxOd": {
+    "defaultMessage": "Science"
+  },
   "qz9fty": {
     "defaultMessage": "Incorrect pin"
   },
@@ -1417,20 +1325,11 @@
   "rbrahO": {
     "defaultMessage": "Close"
   },
-  "reJ6SM": {
-    "defaultMessage": "It is recommended to use one of the following browser extensions if you are on a desktop computer to secure your key:"
-  },
   "rfuMjE": {
     "defaultMessage": "(Default)"
   },
   "rmdsT4": {
     "defaultMessage": "{n} days"
-  },
-  "rrfdTe": {
-    "defaultMessage": "This is the same technology which is used by Bitcoin and has been proven to be extremely secure."
-  },
-  "rudscU": {
-    "defaultMessage": "Failed to load follows, please try again later"
   },
   "rx1i0i": {
     "defaultMessage": "Short link"
@@ -1471,6 +1370,9 @@
   "u4bHcR": {
     "defaultMessage": "Check out the code here: {link}"
   },
+  "uCk8r+": {
+    "defaultMessage": "Already have an account?"
+  },
   "uKqSN+": {
     "defaultMessage": "Follows Feed"
   },
@@ -1486,14 +1388,14 @@
   "usAvMr": {
     "defaultMessage": "Edit Profile"
   },
-  "ut+2Cd": {
-    "defaultMessage": "Get a partner identifier"
-  },
   "v8lolG": {
     "defaultMessage": "Start chat"
   },
   "vB3oQ/": {
     "defaultMessage": "Must be a contact list or pubkey list"
+  },
+  "vN5UH8": {
+    "defaultMessage": "Profile Image"
   },
   "vOKedj": {
     "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
@@ -1513,12 +1415,14 @@
   "vxwnbh": {
     "defaultMessage": "Amount of work to apply to all published events"
   },
+  "w1Fanr": {
+    "defaultMessage": "Business"
+  },
+  "w6qrwX": {
+    "defaultMessage": "NSFW"
+  },
   "wEQDC6": {
     "defaultMessage": "Edit"
-  },
-  "wLtRCF": {
-    "defaultMessage": "Your key",
-    "description": "Label for key input"
   },
   "wSZR47": {
     "defaultMessage": "Submit"
@@ -1539,9 +1443,6 @@
   "wtLjP6": {
     "defaultMessage": "Copy ID"
   },
-  "wuMvI5": {
-    "defaultMessage": "{site_name} Developers"
-  },
   "x/Fx2P": {
     "defaultMessage": "Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"
   },
@@ -1553,12 +1454,6 @@
   },
   "xIoGG9": {
     "defaultMessage": "Go to"
-  },
-  "xJ9n2N": {
-    "defaultMessage": "Your public key"
-  },
-  "xKflGN": {
-    "defaultMessage": "{username}''s Follows on Nostr"
   },
   "xQtL3v": {
     "defaultMessage": "Unlock",
@@ -1572,6 +1467,9 @@
   },
   "xhQMeQ": {
     "defaultMessage": "Expires"
+  },
+  "xl4s/X": {
+    "defaultMessage": "Additional Terms:"
   },
   "xmcVZ0": {
     "defaultMessage": "Search"
@@ -1599,9 +1497,6 @@
   },
   "zcaOTs": {
     "defaultMessage": "Zap amount in sats"
-  },
-  "zjJZBd": {
-    "defaultMessage": "You're ready!"
   },
   "zm6qS1": {
     "defaultMessage": "{n} mins to read"

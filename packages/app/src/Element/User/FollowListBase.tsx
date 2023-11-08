@@ -45,19 +45,21 @@ export default function FollowListBase({
   }
 
   return (
-    <div className={className}>
+    <div className="flex flex-col g8">
       {(showFollowAll ?? true) && (
-        <div className="flex mt10 mb10">
-          <div className="grow bold">{title}</div>
+        <div className="flex items-center">
+          <div className="grow font-bold">{title}</div>
           {actions}
           <AsyncButton className="transparent" type="button" onClick={() => followAll()} disabled={login.readonly}>
             <FormattedMessage {...messages.FollowAll} />
           </AsyncButton>
         </div>
       )}
-      {pubkeys?.map(a => (
-        <ProfilePreview pubkey={a} key={a} options={{ about: showAbout }} actions={profileActions?.(a)} />
-      ))}
+      <div className={className}>
+        {pubkeys?.map(a => (
+          <ProfilePreview pubkey={a} key={a} options={{ about: showAbout }} actions={profileActions?.(a)} />
+        ))}
+      </div>
     </div>
   );
 }
