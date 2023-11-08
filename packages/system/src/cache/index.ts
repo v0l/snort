@@ -36,6 +36,8 @@ export interface MetadataCache extends UserMetadata {
 export interface RelayMetrics {
   addr: string;
   events: number;
+  connects: number;
+  lastSeen: number;
   disconnects: number;
   latency: number[];
 }

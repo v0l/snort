@@ -147,8 +147,8 @@ export class NostrSystem extends EventEmitter implements SystemInterface {
    * Connect to a NOSTR relay if not already connected
    */
   async ConnectToRelay(address: string, options: RelaySettings) {
+    const addr = unwrap(sanitizeRelayUrl(address));
     try {
-      const addr = unwrap(sanitizeRelayUrl(address));
       const existing = this.#sockets.get(addr);
       if (!existing) {
         const c = new Connection(addr, options);
@@ -165,10 +165,12 @@ export class NostrSystem extends EventEmitter implements SystemInterface {
       }
     } catch (e) {
       console.error(e);
+      this.#relayMetrics.onDisconnect(addr, 0);
     }
   }
 
   #onRelayConnected(c: Connection, wasReconnect: boolean) {
+    this.#relayMetrics.onConnect(c.Address);
     if (wasReconnect) {
       for (const [, q] of this.Queries) {
         q.connectionRestored(c);
@@ -177,7 +179,7 @@ export class NostrSystem extends EventEmitter implements SystemInterface {
   }
 
   #onRelayDisconnect(c: Connection, code: number) {
-    this.#relayMetrics.onDisconnect(c, code);
+    this.#relayMetrics.onDisconnect(c.Address, code);
     for (const [, q] of this.Queries) {
       q.connectionLost(c.Id);
     }
@@ -190,6 +192,7 @@ export class NostrSystem extends EventEmitter implements SystemInterface {
   }
 
   #onEvent(sub: string, ev: TaggedNostrEvent) {
+    this.#relayMetrics.onEvent(ev.relays[0]);
     if (!EventExt.isValid(ev)) {
       this.#log("Rejecting invalid event %O", ev);
       return;
@@ -292,6 +295,8 @@ export class NostrSystem extends EventEmitter implements SystemInterface {
 
       const filters = req.build(this);
       const q = new Query(req.id, req.instance, store, req.options?.leaveOpen);
+      q.on("trace", r => this.#relayMetrics.onTraceReport(r));
+
       if (filters.some(a => a.filters.some(b => b.ids))) {
         const expectIds = new Set(filters.flatMap(a => a.filters).flatMap(a => a.ids ?? []));
         q.feed.onEvent(async evs => {

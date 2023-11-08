@@ -6,53 +6,62 @@ import { Connection, ReqFilter, Nips, TaggedNostrEvent } from ".";
 import { NoteStore } from "./note-collection";
 import { BuiltRawReqFilter } from "./request-builder";
 import { eventMatchesFilter } from "./request-matcher";
+import EventEmitter from "events";
+
+interface QueryTraceEvents {
+  change: () => void;
+  close: (id: string) => void;
+  eose: (id: string, connId: string, wasForced: boolean) => void;
+}
+
+export declare interface QueryTrace {
+  on<U extends keyof QueryTraceEvents>(event: U, listener: QueryTraceEvents[U]): this;
+  once<U extends keyof QueryTraceEvents>(event: U, listener: QueryTraceEvents[U]): this;
+}
 
 /**
  * Tracing for relay query status
  */
-class QueryTrace {
+export class QueryTrace extends EventEmitter {
   readonly id: string;
   readonly start: number;
   sent?: number;
   eose?: number;
   close?: number;
   #wasForceClosed = false;
-  readonly #fnClose: (id: string) => void;
-  readonly #fnProgress: () => void;
 
   constructor(
     readonly relay: string,
     readonly filters: Array<ReqFilter>,
     readonly connId: string,
-    fnClose: (id: string) => void,
-    fnProgress: () => void,
   ) {
+    super();
     this.id = uuid();
     this.start = unixNowMs();
-    this.#fnClose = fnClose;
-    this.#fnProgress = fnProgress;
   }
 
   sentToRelay() {
     this.sent = unixNowMs();
-    this.#fnProgress();
+    this.emit("change");
   }
 
   gotEose() {
     this.eose = unixNowMs();
-    this.#fnProgress();
+    this.emit("change");
+    this.emit("eose", this.id, this.connId, false);
   }
 
   forceEose() {
     this.eose = unixNowMs();
     this.#wasForceClosed = true;
     this.sendClose();
+    this.emit("eose", this.id, this.connId, true);
   }
 
   sendClose() {
     this.close = unixNowMs();
-    this.#fnClose(this.id);
-    this.#fnProgress();
+    this.emit("close", this.id);
+    this.emit("change");
   }
 
   /**
@@ -101,10 +110,27 @@ export interface QueryBase {
   relays?: Array<string>;
 }
 
+export interface TraceReport {
+  id: string;
+  conn: Connection;
+  wasForced: boolean;
+  queued: number;
+  responseTime: number;
+}
+
+interface QueryEvents {
+  trace: (report: TraceReport) => void;
+}
+
+export declare interface Query {
+  on<U extends keyof QueryEvents>(event: U, listener: QueryEvents[U]): this;
+  once<U extends keyof QueryEvents>(event: U, listener: QueryEvents[U]): this;
+}
+
 /**
  * Active or queued query on the system
  */
-export class Query implements QueryBase {
+export class Query extends EventEmitter implements QueryBase {
   /**
    * Uniquie ID of this query
    */
@@ -143,6 +169,7 @@ export class Query implements QueryBase {
   #log = debug("Query");
 
   constructor(id: string, instance: string, feed: NoteStore, leaveOpen?: boolean) {
+    super();
     this.id = id;
     this.#feed = feed;
     this.fromInstance = instance;
@@ -201,17 +228,7 @@ export class Query implements QueryBase {
    * Insert a new trace as a placeholder
    */
   insertCompletedTrace(subq: BuiltRawReqFilter, data: Readonly<Array<TaggedNostrEvent>>) {
-    const qt = new QueryTrace(
-      subq.relay,
-      subq.filters,
-      "",
-      () => {
-        // nothing to close
-      },
-      () => {
-        // nothing to progress
-      },
-    );
+    const qt = new QueryTrace(subq.relay, subq.filters, "");
     qt.sentToRelay();
     qt.gotEose();
     this.#tracing.push(qt);
@@ -307,12 +324,17 @@ export class Query implements QueryBase {
   }
 
   #sendQueryInternal(c: Connection, q: BuiltRawReqFilter) {
-    const qt = new QueryTrace(
-      c.Address,
-      q.filters,
-      c.Id,
-      x => c.CloseReq(x),
-      () => this.#onProgress(),
+    const qt = new QueryTrace(c.Address, q.filters, c.Id);
+    qt.on("close", x => c.CloseReq(x));
+    qt.on("change", () => this.#onProgress());
+    qt.on("eose", (id, connId, forced) =>
+      this.emit("trace", {
+        id,
+        conn: c,
+        wasForced: forced,
+        queued: qt.queued,
+        responseTime: qt.responseTime,
+      } as TraceReport),
     );
     this.#tracing.push(qt);
     c.QueueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());

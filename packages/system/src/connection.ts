@@ -183,7 +183,11 @@ export class Connection extends EventEmitter {
         `Closed (code=${e.code}), trying again in ${(this.ConnectTimeout / 1000).toFixed(0).toLocaleString()} sec`,
       );
       this.ReconnectTimer = setTimeout(() => {
-        this.Connect();
+        try {
+          this.Connect();
+        } catch {
+          this.emit("disconnect", -1);
+        }
       }, this.ConnectTimeout);
       this.Stats.Disconnects++;
     } else {
@@ -191,7 +195,7 @@ export class Connection extends EventEmitter {
       this.ReconnectTimer = undefined;
     }
 
-    this.emit("disconnected", e.code);
+    this.emit("disconnect", e.code);
     this.#reset();
     this.notifyChange();
   }
