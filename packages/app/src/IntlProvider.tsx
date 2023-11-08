@@ -81,14 +81,14 @@ const getMessages = (locale: string) => {
   return matchLang(locale) ?? matchLang(truncatedLocale) ?? Promise.resolve(enMessages);
 };
 
-class LangStore extends ExternalStore<string> {
+class LangStore extends ExternalStore<string | null> {
   setLang(s: string) {
     localStorage.setItem("lang", s);
     this.notifyChange();
   }
 
-  takeSnapshot(): string {
-    return localStorage.getItem("lang") ?? DefaultLocale;
+  takeSnapshot() {
+    return localStorage.getItem("lang");
   }
 }
 
