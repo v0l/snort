@@ -7,12 +7,12 @@
   "+vA//S": "Logins",
   "+vIQlC": "يرجى التأكد من حفظ كلمة المرور لتتمكن من إدارة المعرّف الخاص بك في المستقبل",
   "+vVZ/G": "اتصال",
+  "+vj0U3": "edit",
   "+xliwN": "{name} reposted",
-  "/4tOwT": "تخطي",
+  "/B8zwF": "Your space the way you want it 😌",
   "/GCoTA": "Clear",
   "/JE/X+": "دعم الحساب",
   "/PCavi": "علنية",
-  "/RD0e2": "يستخدم نوستر تقنية التوقيع الرقمي لنشر المنشورات دون أي تلاعب ويمكن إرسالها بأمان إلى العديد من الموصلات لتكرار تخزينها وضمان استمرارية المحتوى الخاص بك.",
   "/Xf4UW": "Send anonymous usage metrics",
   "/clOBU": "Weekly",
   "/d6vEc": "اجعل ملفك الشخصي أسهل في العثور عليه ومشاركته",
@@ -23,6 +23,7 @@
   "0BUTMv": "بحث...",
   "0jOEtS": "عنوان LNURL غير صالح",
   "0mch2Y": "الاسم يحتوي على أحرف غير مسموح بها",
+  "0siT4z": "Politics",
   "0uoY11": "Show Status",
   "0yO7wF": "{n} ثانية",
   "1Mo59U": "هل أنت متأكد من حذف هذا المنشور من المنشورات المرجعية؟",
@@ -30,38 +31,39 @@
   "1c4YST": "متصل بـ: {node}🎉",
   "1nYUGC": "المتابَعون {n}",
   "1o2BgB": "Check Signatures",
+  "1ozeyg": "Nature",
   "1udzha": "المحادثات",
   "2/2yg+": "اضافة",
   "25V4l1": "الخلفية",
+  "25WwxF": "Don't have an account?",
   "2IFGap": "تبرع",
   "2LbrkB": "أدخل كلمة المرور",
+  "2O2sfp": "Finish",
   "2a2YiP": "المنشورات المرجعية {n}",
   "2k0Cv+": "الاستهجان ({n})",
   "2ukA4d": "{n} ساعات",
   "2zJXeA": "Profiles",
+  "39AHJm": "Sign Up",
   "3KNMbJ": "Articles",
   "3cc4Ct": "فاتح",
   "3gOsZq": "المترجمون",
   "3qnJlS": "أنت تصوت بـ {amount} ساتوشي",
   "3t3kok": "{n,plural,=1{{n} منشور جديد}other{{n} منشورات جديدة}}",
   "3tVy+Z": "المتابِعون {n}",
-  "3xCwbZ": "أو",
   "3yk8fB": "المحفظة",
-  "40VR6s": "Nostr Connect",
   "450Fty": "لا أحد",
   "47FYwb": "الغاء",
   "4IPzdn": "المطورون الأساسيون",
   "4L2vUY": "معرف NIP-05 الجديد الخاص بك هو:",
   "4MBtMa": "Name must be between 1 and 32 characters",
+  "4MjsHk": "Life",
   "4OB335": "استهجان",
   "4Vmpt4": "Nostr Plebs هي من أوائل مزودي NIP-05 وتقدم مجموعة من المعرفات بأسعار معقولة",
   "4Z3t5i": "استخدم imgproxy لضغط الصور",
   "4rYCjn": "ملاحظة خاصة",
   "5BVs2e": "zap",
   "5CB6zB": "Zap Splits",
-  "5JcXdV": "Create Account",
   "5oTnfy": "شراء معرف",
-  "5rOdPG": "بمجرد إعداد ملحق مدير المفاتيح الخاص بك وإنشاء مفتاح، يمكنك المضي لإعداد ملفك الشخصي وسنساعدك في العثور على بعض الحسابات التي قد تثير اهتمامك على نوستر.",
   "5u6iEc": "تحويل الى عنوان عام",
   "5vMmmR": "Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration.",
   "5ykRmX": "أرسل ومضة",
@@ -71,12 +73,10 @@
   "65BmHb": "Failed to proxy image from {host}, click here to load directly",
   "6OSOXl": "Reason: <i>{reason}</i>",
   "6TfgXX": "{site} is an open source project built by passionate people in their free time",
-  "6Yfvvp": "Get an identifier",
   "6bgpn+": "Not all clients support this, you may still receive some zaps as if zap splits was not configured",
   "6ewQqw": "الإعجابات ({n})",
   "6uMqL1": "غير مدفوع",
   "7+Domh": "منشورات",
-  "7/h1jn": "After submitting the pin there may be a slight delay as we encrypt the key.",
   "712i26": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node",
   "7BX/yC": "Account Switcher",
   "7UOvbT": "Offline",
@@ -84,18 +84,15 @@
   "8/vBbP": "إعادة النشر ({n})",
   "89q5wc": "تأكيد إعادة النشر",
   "8ED/4u": "Reply To",
-  "8Kboo2": "Scan this QR code with your signer app to get started",
   "8QDesP": "أومض {n} ساتوشي",
   "8Rkoyb": "Recipient",
   "8Y6bZQ": "Invalid zap split: {input}",
   "8g2vyB": "الاسم طويل جدا",
   "8v1NN+": "عبارة الاقتران",
-  "8xNnhi": "Nostr Extension",
   "9+Ddtu": "التالي",
   "9HU8vw": "رد",
   "9SvQep": "يتابع {n}",
   "9WRlF4": "ارسال",
-  "9gqH2W": "تسجيل الدخول",
   "9kSari": "Retry publishing",
   "9pMqYs": "عنوان نوستر",
   "9wO4wJ": "فاتورة البرق",
@@ -103,9 +100,9 @@
   "ADmfQT": "السياق",
   "AN0Z7Q": "Muted Words",
   "ASRK0S": "تم كتم هذا المستخدم",
-  "Adk34V": "قم بإعداد ملف التعريف الخاص بك",
   "Ai8VHU": "ابقاء المنشورات لمدة غير محدودة في موصل سنورت",
   "AkCxS/": "السبب",
+  "Am8glJ": "Game",
   "AnLrRC": "ليست ومضة",
   "AxDOiG": "Months",
   "AyGauy": "تسجيل الدخول",
@@ -113,9 +110,7 @@
   "B6+XJy": "وميض",
   "B6H7eJ": "nsec, npub, nip-05, hex",
   "BGCM48": "Write access to Snort relay, with 1 year of event retention",
-  "BOUMjw": "لم يتم العثور على مستخدمي نوستر لـ {twitterUsername}",
   "BWpuKl": "تحديث",
-  "BcGMo+": "تحتوي المنشورات على محتوى نصي ، والاستخدام الأكثر شيوعًا لهذه المنشورات هو تخزين رسائل تشابه التغريدات.",
   "BjNwZW": "Nostr address (nip05)",
   "C1LjMx": "Lightning Donation",
   "C7642/": "Quote Repost",
@@ -124,7 +119,6 @@
   "CHTbO3": "فشل تحميل البرقية",
   "CVWeJ6": "Trending People",
   "CmZ9ls": "المكتومون {n}",
-  "CoVXRS": "Alternatively, you may choose to store your private key without a PIN by selecting 'Cancel.'",
   "CsCUYo": "{n} sats",
   "Cu/K85": "مترجم من {lang}",
   "D+KzKd": "ومّض أي منشور يتم تحميله بشكل تلقائي",
@@ -136,10 +130,9 @@
   "Dh3hbq": "الومض التلقائي",
   "Dn82AL": "Live",
   "DtYelJ": "تحويل",
-  "E8a4yq": "تابع بعض الحسابات المشهورة",
+  "Dx4ey3": "Toggle all",
   "EJbFi7": "Search notes",
   "ELbg9p": "Data Providers",
-  "EPYwm7": "مفتاحك الخاص هو كلمة مرورك. إذا فقدت هذا المفتاح ، فستفقد الوصول إلى حسابك! انسخه واحتفظ به في مكان آمن. لا توجد طريقة لإعادة تعيين مفتاحك الخاص.",
   "EQKRE4": "Show badges on profile pages",
   "EWyQH5": "عام",
   "Ebl/B2": "ترجمة إلى {lang}",
@@ -148,12 +141,9 @@
   "EcglP9": "مفتاح",
   "EjFyoR": "On-chain Donation Address",
   "EnCOBJ": "شراء",
-  "Eqjl5K": "فقط سنورت وشركاؤنا المعتمدون يمنحون معرفات ملونة. ولكن يمكنك استخدام مقدمي خدمة آخرون.",
-  "F+B3x1": "لقد دخلنا أيضًا في شراكة مع nostrplebs.com لمنحك المزيد من الخيارات",
   "F3l7xL": "Add Account",
   "FDguSC": "وميض {n}",
   "FMfjrl": "Show status messages on profile pages",
-  "FS3b54": "تم!",
   "FSYL8G": "Trending Users",
   "FcNSft": "Redirect issues HTTP redirect to the supplied lightning address",
   "FdhSU2": "احجز الان",
@@ -180,17 +170,17 @@
   "HhcAVH": "You don't follow this person, click here to load media from <i>{link}</i>, or update <a><i>your preferences</i></a> to always load media from everybody.",
   "IEwZvs": "هل أنت متأكد من ازالة تثبيت هذا المنشور؟",
   "IKKHqV": "Follows",
-  "INSqIz": "اسم مستخدم تويتر...",
-  "IUZC+0": "هذا يعني أنه لا يمكن لأي شخص تعديل المنشورات التي قمت بإنشائها ويمكن للجميع بسهولة التحقق من أن المنشورات التي يقرؤونها تم انشاؤها من حسابك.",
   "IVbtTS": "Zap all {n} sats",
   "IWz1ta": "Auto Translate",
   "Ig9/a1": "Sent {n} sats to {name}",
   "IoQq+a": "Click here to load anyway",
   "Ix8l+B": "Trending Notes",
   "J+dIsA": "الإشتراكات",
+  "J2HeQ+": "Use commas to separate words e.g. word1, word2, word3",
   "JCIgkj": "اسم المستخدم",
   "JGrt9q": "Send sats to {name}",
   "JHEHCk": "وميض ({n})",
+  "JIVWWA": "Sport",
   "JPFYIM": "No lightning address",
   "JSx7y9": "Subscribe to {site_name} {plan} for {price} and receive the following rewards",
   "JeoS4y": "Repost",
@@ -202,7 +192,6 @@
   "KAhAcM": "أدخل معلومات التهيئة لـ LNDHub",
   "KHK8B9": "Relay",
   "KQvWvD": "تم الحذف",
-  "KWuDfz": "لقد حفظت مفاتيحي ، استمرار",
   "KahimY": "نوع الحدث غير معروف: {kind}",
   "KoFlZg": "Enter mint URL",
   "KtsyO0": "Enter Pin",
@@ -213,12 +202,10 @@
   "Lu5/Bj": "Open on Zapstr",
   "Lw+I+J": "{n,plural,=0{{name} zapped} other{{name} & {n} others zapped}}",
   "LwYmVi": "Zaps on this note will be split to the following users.",
-  "M10zFV": "Nostr Connect",
   "M3Oirc": "قوائم التصحيح",
   "MBAYRO": "عرض خيار \"نسخ المعرف\" و \"النسخ بصيغة JSON\" في قائمة الخيارات المنسدلة لكل منشور",
   "MI2jkA": "غير متاح:",
   "MP54GY": "كلمة مرور المحفظة",
-  "MRp6Ly": "اسم مستخدم تويتر",
   "MWTx65": "العرض الافتراضي",
   "MiMipu": "Set as primary Nostr address (nip05)",
   "Mrpkot": "الدفع للاشتراك",
@@ -228,44 +215,35 @@
   "N2IrpM": "تأكيد",
   "NAidKb": "Notifications",
   "NAuFNH": "لديك فعلا اشتراك من هذا النوع، يرجى التجديد أو الدفع",
-  "NNSu3d": "Import Twitter Follows",
   "NdOYJJ": "حسنًا ، لا شيء هنا .. ألق نظرة على {newUsersPage} لمتابعة بعض الحسابات الموصى بها!",
   "NepkXH": "لا يمكن التصويت بـ {amount} ساتوشي، يرجى تعيين مبلغ افتراضي مختلف",
-  "NfNk2V": "مفتاحك الخاص",
   "NndBJE": "صفحة المستخدمين الجدد",
   "O8Z8t9": "Show More",
-  "O9GTIc": "Profile picture",
   "OEW7yJ": "وميض",
   "OKhRC6": "مشاركة",
   "OLEm6z": "خطأ غير معروف أثناء تسجيل الدخول",
   "OQSOJF": "Get a free nostr address",
   "OQXnew": "اشتراكك لا يزال نشطا، لا يمكنك التجديد الآن",
   "ORGv1Q": "تم الإنشاء",
-  "Oq/kVn": "Name-squatting and impersonation is not allowed. {site} and our partners reserve the right to terminate your handle (not your account - nobody can take that away) for violating this rule.",
-  "P/xrLk": "Secure your private key with a PIN, ensuring enhanced protection on {site}. You'll be prompted to enter this PIN each time you access the site.",
   "P61BTu": "نسخ بصيغة JSON",
   "P7FD0F": "مطابق لاعدادات جهازك",
   "P7nJT9": "الإجمالي اليوم (بالتوقيت العالمي ): {amount} ساتوشي",
   "PCSt5T": "التفضيلات",
   "PJeJFc": "Summary",
-  "PLSbmL": "عبارة الاسترداد الخاصة بك",
-  "PaN7t3": "Preview on {site}",
   "PamNxw": "عنوان الملف غير معروف: {name}",
   "Pe0ogR": "الثيم",
   "PrsIg7": "سيتم عرض ردود الفعل في كل صفحة ، إذا تم تعطيلها فلن تظهر أي ردود فعل",
   "QDFTjG": "الموصّلات {n}",
   "QWhotP": "Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)",
-  "QawghE": "بإمكانك تغيير اسم المستخدم في أي وقت.",
-  "QxCuTo": "الفن بواسطة {name}",
   "Qxv0B2": "You currently have {number} sats in your zap pool.",
   "R/6nsx": "Subscription",
   "R81upa": "People you follow",
-  "RDZVQL": "فحص",
   "RSr2uB": "Username must only contain lowercase letters and numbers",
   "RahCRH": "منتهي الصلاحية",
   "RfhLwC": "لـ: {author}",
   "RhDAoS": "هل أنت متأكد أنك تريد حذف {id}",
   "RjpoYG": "Recent",
+  "RkW5we": "Bitcoin",
   "RoOyAh": "موصّلات",
   "Rs4kCE": "المنشورات المرجعية",
   "RwFaYs": "Sort",
@@ -276,11 +254,14 @@
   "SYQtZ7": "LN Address Proxy",
   "ShdEie": "Mark all read",
   "Sjo1P4": "مخصص",
+  "SmuYUd": "What should we call you?",
   "Ss0sWu": "ادفع الآن",
   "StKzTE": "The author has marked this note as a <i>sensitive topic</i>",
   "TDR5ge": "Media in notes will automatically be shown for selected people, otherwise only the link will show",
   "TJo5E6": "Preview",
   "TP/cMX": "Ended",
+  "TaeBqw": "Sign in with Nostr Extension",
+  "TdtZQ5": "Crypto",
   "TpgeGw": "Hex Salt..",
   "Tpy00S": "People",
   "U1aPPi": "Stop listening",
@@ -289,9 +270,9 @@
   "UNjfWJ": "Check all event signatures received from relays",
   "UT7Nkj": "New Chat",
   "UUPFlt": "سيضطر المستخدمون على قبول التحذير المعروض على منشورك قبل عرضه.",
+  "Ub+AGc": "Sign In",
   "Up5U7K": "حظر",
   "UrKTqQ": "You have an active iris.to account",
-  "VBadwB": "همم، لم نعثر على إضافة مدير المفاتيح... حاول إعادة تحميل الصفحة.",
   "VN0+Fz": "الرصيد: {amount} ساتوشي",
   "VOjC1i": "اختر خدمة التحميل التي تريد رفع المرفقات إليها",
   "VR5eHw": "مفتاح عام (npub/nprofile)",
@@ -299,21 +280,18 @@
   "VlJkSk": "تم كتم {n}",
   "VnXp8Z": "صورة الحساب ",
   "VvaJst": "View Wallets",
-  "Vx7Zm2": "كيف تعمل المفاتيح؟",
   "W1yoZY": "يبدو أنك غير مشترك، يمكنك الاشتراك من هنا {link}",
   "W2PiAr": "المحظورون {n}",
   "W9355R": "رفع الكتم",
-  "WONP5O": "ابحث عن من تتابع على تويتر هنا على نوستر (البيانات مقدمة من {provider})",
   "WmZhfL": "Automatically translate notes to your local language",
   "WvGmZT": "npub / nprofile / nostr address",
-  "WxthCV": "على سبيل المثال جاك",
+  "X6tipZ": "Sign in with key",
   "X7xU8J": "nsec, npub, nip-05, hex, mnemonic",
   "XECMfW": "Send usage metrics",
   "XICsE8": "File hosts",
   "XgWvGA": "تفاعل",
   "Xopqkl": "Your default zap amount is {number} sats, example values are calculated from this.",
   "XrSk2j": "Redeem",
-  "XzF0aC": "تعتبر إضافات إدارة المفاتيح أكثر أمانا، وتتيح تسجيل الدخول بسهولة. هنا أمثلة لإضافات مشهورة:",
   "YDURw6": "رابط الخدمة",
   "YXA3AH": "تمكين التفاعل",
   "Z4BMCZ": "أدخل عبارة الاقتران",
@@ -321,9 +299,11 @@
   "ZLmyG9": "المساهمون",
   "ZS+jRE": "Send zap splits to",
   "Zff6lu": "Username iris.to/<b>{name}</b> is reserved for you!",
-  "Zr5TMx": "Setup profile",
+  "a+6cHB": "Derogatory",
   "a5UPxh": "ادعم المطورين والمنصات التي تقدم خدمات التحقق من NIP-05",
   "a7TDNm": "Notes will stream in real time into global and notes tab",
+  "aHje0o": "Name or nym",
+  "aMaLBK": "Supported Extensions",
   "aWpBzj": "عرض المزيد",
   "b12Goz": "Mnemonic",
   "b5vAk0": "سيكون معرفك بمثابة عنوان برق وستتم اعادة التوجيه الى عنوان البرق أو LNURL الذي تختاره",
@@ -331,13 +311,12 @@
   "bQdA2k": "محتوى حساس",
   "bep9C3": "Public Key",
   "bfvyfs": "Anon",
-  "brAXSu": "اختر اسم مستخدم",
   "bxv59V": "الآن",
   "c+JYNI": "No thanks",
-  "c+oiJe": "تثبيت الإضافة",
   "c35bj2": "إذا كان لديك استفسار حول طلب NIP-05 الخاص بك ، فيرجى مراسلة {link} على الخاص",
   "c3g2hL": "Broadcast Again",
   "cFbU1B": "Using Alby? Go to {link} to get your NWC config!",
+  "cHCwbF": "Photography",
   "cPIKU2": "المتابَعون",
   "cQfLWb": "URL ..",
   "cWx9t8": "كتم الكل",
@@ -345,6 +324,7 @@
   "cuP16y": "دعم الحسابات المتعددة",
   "cuV2gK": "الاسم مسجل",
   "cyR7Kh": "الخلف",
+  "d+6YsV": "Lists to mute:",
   "d6CyG5": "التاريخ",
   "d7d0/x": "عنوان البرق",
   "dOQCL8": "اسم العرض",
@@ -353,6 +333,7 @@
   "e61Jf3": "قريباً",
   "e7VmYP": "Enter pin to unlock your private key",
   "e7qqly": "تمت قراءة الكل",
+  "eF0Re7": "Use a nostr signer extension to sign in",
   "eHAneD": "رد فعل تعبيري",
   "eJj8HD": "توثيق الحساب",
   "eSzf2G": "A single zap of {nIn} sats will allocate {nOut} sats to the zap pool.",
@@ -361,6 +342,7 @@
   "fBlba3": "Thanks for using {site}, please consider donating if you can.",
   "fOksnD": "لا يمكن التصويت لأن خدمة LNURL لا تدعم الوميض",
   "fWZYP5": "مثبّت",
+  "fX5RYm": "Pick a few topics of interest",
   "filwqD": "يقرأ",
   "fjAcWo": "Gift Wraps",
   "flnGvv": "ما الذي يدور في ذهنك؟",
@@ -368,15 +350,14 @@
   "fsB/4p": "تم الحفظ",
   "g5pX+a": "نبذة",
   "g985Wp": "فشل إرسال الصوت",
-  "gBdUXk": "احفظ مفاتيحك!",
   "gDzDRs": "يتم إرسال الرموز التعبيرية للتفاعل مع منشور",
   "gXgY3+": "قد لا يدعم بعض عملاء نوستر هذه الخاصية",
   "gczcC5": "اشتراك",
   "geppt8": "{count} ({count2} in memory)",
   "gjBiyj": "تحميل...",
   "grQ+mI": "Proof of Work",
+  "h7jvCs": "{site} is more fun together!",
   "h8XMJL": "الأوسمة",
-  "hK5ZDk": "العالم",
   "hMzcSq": "رسائل",
   "hRTfTR": "PRO",
   "hY4lzx": "يدعم",
@@ -385,7 +366,6 @@
   "hniz8Z": "هنا",
   "i/dBAR": "Zap Pool",
   "iCqGww": "التفاعل ({n})",
-  "iDGAbc": "احصل على معرف سنورت",
   "iEoXYx": "ترجمة DeepL",
   "iGT1eE": "منع الحسابات المزيفة من انتحال حسابك",
   "iNWbVV": "معرف",
@@ -396,25 +376,23 @@
   "izWS4J": "الغاء المتابعة",
   "jA3OE/": "{n,plural,=1{{n} ساتوشي}other{{n} ساتوشي}}",
   "jAmfGl": "Your {site_name} subscription is expired",
+  "jHa/ko": "Clean up your feed",
   "jMzO1S": "خطأ داخلي: {msg}",
   "jfV8Wr": "الخلف",
-  "juhqvW": "تحسين أمان تسجيل الدخول باستخدام ملحقات المتصفح",
   "jvo0vs": "حفظ",
   "jzgQ2z": "التفاعل {n}",
   "k2veDA": "يكتب",
+  "k7+5Ny": "Hate Speech",
   "k7sKNy": "تساعد خدمة التوثيق NIP-05 الخاصة بنا في دعم تطوير هذا الموقع والحصول على شارة خاصة لامعة على موقعنا!",
   "kEZUR8": "Register an Iris username",
   "kJYo0u": "{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}",
-  "kTLGM2": "{site} is designed to have a similar experience to Twitter.",
   "kaaf1E": "الآن",
   "kuPHYE": "{n,plural,=0{{name} liked} other{{name} & {n} others liked}}",
   "l+ikU1": "جميع ما في {plan}",
-  "lBboHo": "إذا كنت ترغب في تجربة أخرى، استعرض {link} للمزيد!",
   "lCILNz": "اشتر الآن",
   "lD3+8a": "دفع",
   "lPWASz": "عنوان سنورت لنوستر",
   "lTbT3s": "كلمة مرور المحفظة",
-  "lVKH7C": "What is {site} and how does it work?",
   "lgg1KN": "صفحة الحساب",
   "ll3xBp": "خدمة وكيل الصور",
   "lnaT9F": "المتابَعون {n}",
@@ -430,20 +408,13 @@
   "n1Whvj": "Switch",
   "nDejmx": "رفع الحظر",
   "nGBrvw": "المنشورات المرجعية",
-  "nN9XTz": "شارك أفكارك مع {link}",
-  "nOaArs": "إعداد الملف الشخصي",
-  "ncbgUU": "{site} is a Nostr UI, nostr is a decentralised protocol for saving and distributing \"notes\".",
   "nihgfo": "Listen to this article",
   "nn1qb3": "نقدر لكم سخاء تبرعاتكم",
   "nwZXeh": "محظور {n}",
-  "o6Uy3d": "يمكن استخدام المفتاح السري للنشر (وتوقيع الأحداث) ، كل شيء آخر يعمل في وضع القراءة فقط.",
   "o7e+nJ": "{n} المتابِعون",
   "oJ+JJN": "لم يتم العثور على شيء",
   "odFwjL": "المتابعون فقط",
-  "odhABf": "تسجيل الدخول",
   "ojzbwv": "Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}",
-  "osUr8O": "يمكنك أيضًا استخدام هذه الإضافات لتسجيل الدخول إلى معظم مواقع Nostr.",
-  "oxCa4R": "يساعد الحصول على معرّف في تأكيد هويتك للأشخاص الذين يعرفونك. يمكن أن يكون لدى العديد من الأشخاص اسم مستخدمjack ، ولكن لا يوجد سوى jack@cash.app.",
   "p4N05H": "Upload",
   "p85Uwy": "الاشتراكات النشطة",
   "pI+77w": "نسخ احتياطية قابلة للتنزيل من موصل سنورت",
@@ -459,16 +430,14 @@
   "qkvYUb": "أضف إلى الملف الشخصي",
   "qmJ8kD": "فشلت الترجمة",
   "qtWLmt": "Like",
+  "qydxOd": "Science",
   "qz9fty": "Incorrect pin",
   "r3C4x/": "برنامج",
   "r5srDR": "أدخل كلمة مرور المحفظة",
   "rT14Ow": "إضافة موصّلات",
   "rbrahO": "Close",
-  "reJ6SM": "يوصى باستخدام أحد ملحقات المستعرض التالية إذا كنت تستخدم جهاز كمبيوتر لتأمين مفتاحك:",
   "rfuMjE": "(افتراضي)",
   "rmdsT4": "{n} أيام",
-  "rrfdTe": "هذه نفس التقنية التي تستخدم في البتكوين وثبت أنها آمنة للغاية.",
-  "rudscU": "فشل تحميل ما يلي ، يرجى المحاولة مرة أخرى في وقت لاحق",
   "rx1i0i": "Short link",
   "sKDn4e": "Show Badges",
   "sUNhQE": "user",
@@ -482,39 +451,39 @@
   "u+LyXc": "Interactions",
   "u/vOPu": "مدفوع",
   "u4bHcR": "تحقق من الكود هنا: {link}",
+  "uCk8r+": "Already have an account?",
   "uKqSN+": "Follows Feed",
   "uSV4Ti": "إعادة النشر تحتاج إلى تأكيد يدويًا",
   "uc0din": "Send sats splits to",
   "ugyJnE": "Sending notes and other stuff",
   "usAvMr": "تعديل الملف الشخصي",
-  "ut+2Cd": "احصل على معرف الشريك",
   "v8lolG": "Start chat",
   "vB3oQ/": "Must be a contact list or pubkey list",
+  "vN5UH8": "Profile Image",
   "vOKedj": "{n,plural,=1{و{n} آخر}other{و{n} آخرون}}",
   "vZ4quW": "NIP-05 هو أحد طرق التحقق المستندة إلى DNS والتي تساعد في التحقق من هويتك كمستخدم حقيقي.",
   "vhlWFg": "خيارات الاستطلاع",
   "vlbWtt": "Get a free one",
   "vrTOHJ": "{amount} ساتوشي",
   "vxwnbh": "Amount of work to apply to all published events",
+  "w1Fanr": "Business",
+  "w6qrwX": "NSFW",
   "wEQDC6": "تحرير",
-  "wLtRCF": "مفتاحك",
   "wSZR47": "Submit",
   "wWLwvh": "هوية مخفية",
   "wih7iJ": "الاسم محظور",
   "wofVHy": "Moderation",
   "wqyN/i": "اكتشف المزيد من المعلومات حول {service} على {link}",
   "wtLjP6": "نسخ المعرف",
-  "wuMvI5": "{site_name} Developers",
   "x/Fx2P": "Fund the services that you use by splitting a portion of all your zaps into a pool of funds!",
   "x82IOl": "كتم",
   "xIcAOU": "Votes by {type}",
   "xIoGG9": "اذهب إلى",
-  "xJ9n2N": "مفتاحك العام",
-  "xKflGN": "يتابع {username} على نوستر",
   "xQtL3v": "فتح القفل",
   "xaj9Ba": "Provider",
   "xbVgIm": "تحميل الوسائط تلقائيًا",
   "xhQMeQ": "ينتهي",
+  "xl4s/X": "Additional Terms:",
   "xmcVZ0": "البحث",
   "y1Z3or": "اللغة",
   "yCLnBC": "LNURL أو عنوان برق",
@@ -524,7 +493,6 @@
   "zINlao": "مالك",
   "zQvVDJ": "الكل",
   "zcaOTs": "ومّض ساتوشي",
-  "zjJZBd": "انت جاهز!",
   "zm6qS1": "{n} mins to read",
   "zonsdq": "فشل تحميل خدمة LNURL",
   "zvCDao": "تظهر تلقائيا أحدث الملاحظات",
