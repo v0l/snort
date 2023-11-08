@@ -1,14 +1,14 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
 import WebSocket from "isomorphic-ws";
-import { ExternalStore, unixNowMs, dedupe } from "@snort/shared";
+import { unixNowMs, dedupe } from "@snort/shared";
+import EventEmitter from "eventemitter3";
 
 import { DefaultConnectTimeout } from "./const";
 import { ConnectionStats } from "./connection-stats";
 import { NostrEvent, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
-import EventEmitter from "events";
 
 /**
  * Relay settings
@@ -55,12 +55,7 @@ interface ConnectionEvents {
   notice: (msg: string) => void;
 }
 
-export declare interface Connection {
-  on<U extends keyof ConnectionEvents>(event: U, listener: ConnectionEvents[U]): this;
-  once<U extends keyof ConnectionEvents>(event: U, listener: ConnectionEvents[U]): this;
-}
-
-export class Connection extends EventEmitter {
+export class Connection extends EventEmitter<ConnectionEvents> {
   #log: debug.Debugger;
   #ephemeralCheck?: ReturnType<typeof setInterval>;
   #activity: number = unixNowMs();
@@ -243,7 +238,7 @@ export class Connection extends EventEmitter {
           break;
         }
         case "NOTICE": {
-          this.emit("notice", msg[1]);
+          this.emit("notice", msg[1] as string);
           this.#log(`NOTICE: ${msg[1]}`);
           break;
         }

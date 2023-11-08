@@ -1,5 +1,5 @@
 import debug from "debug";
-import EventEmitter from "events";
+import EventEmitter from "eventemitter3";
 
 import { unwrap, sanitizeRelayUrl, FeedCache, removeUndefined } from "@snort/shared";
 import { NostrEvent, TaggedNostrEvent } from "./nostr";
@@ -32,15 +32,10 @@ interface NostrSystemEvents {
   event: (ev: TaggedNostrEvent) => void;
 }
 
-export declare interface NostrSystem {
-  on<U extends keyof NostrSystemEvents>(event: U, listener: NostrSystemEvents[U]): this;
-  once<U extends keyof NostrSystemEvents>(event: U, listener: NostrSystemEvents[U]): this;
-}
-
 /**
  * Manages nostr content retrieval system
  */
-export class NostrSystem extends EventEmitter implements SystemInterface {
+export class NostrSystem extends EventEmitter<NostrSystemEvents> implements SystemInterface {
   #log = debug("System");
 
   /**

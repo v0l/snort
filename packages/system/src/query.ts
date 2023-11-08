@@ -1,12 +1,12 @@
 import { v4 as uuid } from "uuid";
 import debug from "debug";
+import EventEmitter from "eventemitter3";
 import { unixNowMs, unwrap } from "@snort/shared";
 
 import { Connection, ReqFilter, Nips, TaggedNostrEvent } from ".";
 import { NoteStore } from "./note-collection";
 import { BuiltRawReqFilter } from "./request-builder";
 import { eventMatchesFilter } from "./request-matcher";
-import EventEmitter from "events";
 
 interface QueryTraceEvents {
   change: () => void;
@@ -14,15 +14,10 @@ interface QueryTraceEvents {
   eose: (id: string, connId: string, wasForced: boolean) => void;
 }
 
-export declare interface QueryTrace {
-  on<U extends keyof QueryTraceEvents>(event: U, listener: QueryTraceEvents[U]): this;
-  once<U extends keyof QueryTraceEvents>(event: U, listener: QueryTraceEvents[U]): this;
-}
-
 /**
  * Tracing for relay query status
  */
-export class QueryTrace extends EventEmitter {
+export class QueryTrace extends EventEmitter<QueryTraceEvents> {
   readonly id: string;
   readonly start: number;
   sent?: number;
@@ -122,15 +117,10 @@ interface QueryEvents {
   trace: (report: TraceReport) => void;
 }
 
-export declare interface Query {
-  on<U extends keyof QueryEvents>(event: U, listener: QueryEvents[U]): this;
-  once<U extends keyof QueryEvents>(event: U, listener: QueryEvents[U]): this;
-}
-
 /**
  * Active or queued query on the system
  */
-export class Query extends EventEmitter implements QueryBase {
+export class Query extends EventEmitter<QueryEvents> implements QueryBase {
   /**
    * Uniquie ID of this query
    */
