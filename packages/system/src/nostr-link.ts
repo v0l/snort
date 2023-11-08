@@ -1,4 +1,4 @@
-import { bech32ToHex, hexToBech32, unwrap } from "@snort/shared";
+import { bech32ToHex, hexToBech32, isHex, unwrap } from "@snort/shared";
 import {
   decodeTLV,
   encodeTLV,
@@ -19,15 +19,24 @@ export class NostrLink {
     readonly kind?: number,
     readonly author?: string,
     readonly relays?: Array<string>,
-  ) {}
+  ) {
+    if (type !== NostrPrefix.Address && !isHex(id)) {
+      throw new Error("ID must be hex");
+    }
+  }
 
   encode(type?: NostrPrefix): string {
-    // cant encode 'naddr' to 'note'/'nevent' because 'id' is not hex
-    let newType = this.type === NostrPrefix.Address ? this.type : type ?? this.type;
-    if (newType === NostrPrefix.Note || newType === NostrPrefix.PrivateKey || newType === NostrPrefix.PublicKey) {
-      return hexToBech32(newType, this.id);
-    } else {
-      return encodeTLV(newType, this.id, this.relays, this.kind, this.author);
+    try {
+      // cant encode 'naddr' to 'note'/'nevent' because 'id' is not hex
+      let newType = this.type === NostrPrefix.Address ? this.type : type ?? this.type;
+      if (newType === NostrPrefix.Note || newType === NostrPrefix.PrivateKey || newType === NostrPrefix.PublicKey) {
+        return hexToBech32(newType, this.id);
+      } else {
+        return encodeTLV(newType, this.id, this.relays, this.kind, this.author);
+      }
+    } catch (e) {
+      console.error("Invalid data", this, e);
+      throw e;
     }
   }
 
@@ -201,7 +210,10 @@ export function tryParseNostrLink(link: string, prefixHint?: NostrPrefix): Nostr
 }
 
 export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLink {
-  const entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
+  let entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
+
+  // trim any non-bech32 chars
+  entity = entity.match(/(n(?:pub|profile|event|ote|addr)1[acdefghjklmnpqrstuvwxyz023456789]+)/)?.[0] ?? entity;
 
   const isPrefix = (prefix: NostrPrefix) => {
     return entity.startsWith(prefix);

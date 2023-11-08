@@ -18,7 +18,7 @@ import {
   NostrLink,
   UserMetadata,
 } from "@snort/system";
-import { isOffline } from "@snort/shared";
+import { isHex, isOffline } from "@snort/shared";
 import { Day } from "Const";
 import AnimalName from "Element/User/AnimalName";
 
@@ -152,14 +152,6 @@ export function deepClone<T>(obj: T) {
   }
 }
 
-export function isHex(s: string) {
-  // 48-57 = 0-9
-  // 65-90 = A-Z
-  // 97-122 = a-z
-  return [...s]
-    .map(v => v.charCodeAt(0))
-    .every(v => (v >= 48 && v <= 57) || (v >= 65 && v <= 90) || v >= 97 || v <= 122);
-}
 /**
  * Simple debounce
  */

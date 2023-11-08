@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useIntl, FormattedMessage } from "react-intl";
 import { HexKey, Nip46Signer, NotEncrypted, PinEncrypted, PrivateKeySigner } from "@snort/system";
 
-import { bech32ToHex, getPublicKey, isHex, unwrap } from "SnortUtils";
+import { bech32ToHex, getPublicKey, unwrap } from "SnortUtils";
 import ZapButton from "Element/Event/ZapButton";
 import useImgProxy from "Hooks/useImgProxy";
 import Icon from "Icons/Icon";
@@ -20,6 +20,7 @@ import Copy from "Element/Copy";
 import { delay } from "SnortUtils";
 import { PinPrompt } from "Element/PinPrompt";
 import useEventPublisher from "Hooks/useEventPublisher";
+import { isHex } from "@snort/shared";
 
 declare global {
   interface Window {
