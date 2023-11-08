@@ -29,6 +29,7 @@ import { trimFilters } from "./request-trim";
 interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
+  event: (ev: TaggedNostrEvent) => void;
 }
 
 export declare interface NostrSystem {
@@ -193,6 +194,8 @@ export class NostrSystem extends EventEmitter implements SystemInterface {
 
   #onEvent(sub: string, ev: TaggedNostrEvent) {
     this.#relayMetrics.onEvent(ev.relays[0]);
+    this.emit("event", ev);
+
     if (!EventExt.isValid(ev)) {
       this.#log("Rejecting invalid event %O", ev);
       return;
