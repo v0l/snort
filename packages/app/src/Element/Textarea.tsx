@@ -51,6 +51,9 @@ interface TextareaProps {
   value: string;
   onFocus(): void;
   onKeyDown(ev: React.KeyboardEvent<HTMLTextAreaElement>): void;
+  onDragOver?(ev: React.DragEvent<HTMLTextAreaElement>): void;
+  onDragLeave?(ev: React.DragEvent<HTMLTextAreaElement>): void;
+  onDrop?(ev: React.DragEvent<HTMLTextAreaElement>): void;
 }
 
 const Textarea = (props: TextareaProps) => {

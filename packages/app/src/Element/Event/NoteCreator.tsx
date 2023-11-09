@@ -12,7 +12,7 @@ import ProfileImage from "Element/User/ProfileImage";
 import useFileUpload from "Upload";
 import Note from "Element/Event/Note";
 
-import { ClipboardEventHandler } from "react";
+import { ClipboardEventHandler, DragEvent } from "react";
 import useLogin from "Hooks/useLogin";
 import { GetPowWorker } from "index";
 import AsyncButton from "Element/AsyncButton";
@@ -505,6 +505,24 @@ export function NoteCreator() {
     }
   };
 
+  const handleDragOver = (event: DragEvent<HTMLTextAreaElement>) => {
+    event.preventDefault();
+  };
+
+  const handleDragLeave = (event: DragEvent<HTMLTextAreaElement>) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event: DragEvent<HTMLTextAreaElement>) => {
+    event.preventDefault();
+
+    const droppedFiles = Array.from(event.dataTransfer.files);
+
+    droppedFiles.forEach(async file => {
+      await uploadFile(file);
+    })
+  };
+
   function noteCreatorForm() {
     return (
       <>
@@ -550,6 +568,9 @@ export function NoteCreator() {
         {!note.preview && (
           <div onPaste={handlePaste} className={classNames("note-creator", { poll: Boolean(note.pollOptions) })}>
             <Textarea
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
               autoFocus
               className={classNames("textarea", { "textarea--focused": note.active })}
               onChange={c => onChange(c)}
