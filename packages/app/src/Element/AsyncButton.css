@@ -22,3 +22,9 @@
 .light .spinner-button:hover {
   box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
 }
+
+@media (prefers-color-scheme: light) {
+  .spinner-button > span {
+    color: black;
+  }
+}

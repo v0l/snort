@@ -9,3 +9,9 @@
   color: white;
   padding: 8px 12px;
 }
+
+@media (prefers-color-scheme: light) {
+  .profile-card > div {
+    color: black;
+  }
+}
