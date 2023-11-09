@@ -520,7 +520,7 @@ export function NoteCreator() {
 
     droppedFiles.forEach(async file => {
       await uploadFile(file);
-    })
+    });
   };
 
   function noteCreatorForm() {
