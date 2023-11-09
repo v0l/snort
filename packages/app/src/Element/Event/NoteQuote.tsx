@@ -1,5 +1,6 @@
-import { useEventFeed } from "Feed/EventFeed";
 import { NostrLink } from "@snort/system";
+import { useEventFeed } from "@snort/system-react";
+
 import Note from "Element/Event/Note";
 import PageSpinner from "Element/PageSpinner";
 

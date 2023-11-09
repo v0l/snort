@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { RequestBuilder, ReplaceableNoteStore, NostrLink, NoteCollection } from "@snort/system";
-import { useRequestBuilder } from "@snort/system-react";
+import { useRequestBuilder } from "./useRequestBuilder";
 
 export function useEventFeed(link: NostrLink) {
   const sub = useMemo(() => {

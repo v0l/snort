@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { EventKind, NostrLink, RequestBuilder, NoteCollection, EventExt } from "@snort/system";
-import { useRequestBuilder } from "@snort/system-react";
-
-import { useReactions } from "./Reactions";
+import { useReactions, useRequestBuilder } from "@snort/system-react";
 
 export default function useThreadFeed(link: NostrLink) {
   const [root, setRoot] = useState<NostrLink>();

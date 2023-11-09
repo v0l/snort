@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 import { NostrLink, TLVEntryType, UserMetadata, decodeTLV } from "@snort/system";
-import { useUserProfile, useUserSearch } from "@snort/system-react";
+import { useEventFeed, useUserProfile, useUserSearch } from "@snort/system-react";
 
 import UnreadCount from "Element/UnreadCount";
 import ProfileImage from "Element/User/ProfileImage";
@@ -21,7 +21,6 @@ import Text from "Element/Text";
 import { Chat, ChatType, createChatLink, useChatSystem } from "chat";
 import Modal from "Element/Modal";
 import ProfilePreview from "Element/User/ProfilePreview";
-import { useEventFeed } from "Feed/EventFeed";
 import { LoginSession, LoginStore } from "Login";
 import { Nip28ChatSystem } from "chat/nip28";
 import { ChatParticipantProfile } from "Element/Chat/ChatParticipant";

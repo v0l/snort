@@ -1,21 +1,17 @@
 import "./Timeline.css";
 import { ReactNode, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
 import { FormattedMessage } from "react-intl";
-import { TaggedNostrEvent, EventKind, u256, NostrEvent, NostrLink } from "@snort/system";
+import { EventKind, NostrEvent, NostrLink } from "@snort/system";
 import { unixNow } from "@snort/shared";
-import { SnortContext } from "@snort/system-react";
-import { useInView } from "react-intersection-observer";
+import { SnortContext, useReactions } from "@snort/system-react";
 
 import { dedupeByPubkey, findTag, orderDescending } from "SnortUtils";
-import Note from "Element/Event/Note";
 import useModeration from "Hooks/useModeration";
 import { FollowsFeed } from "Cache";
 import { LiveStreams } from "Element/LiveStreams";
-import { useReactions } from "Feed/Reactions";
 import AsyncButton from "../AsyncButton";
 import useLogin from "Hooks/useLogin";
-import ProfileImage from "Element/User/ProfileImage";
-import Icon from "Icons/Icon";
+import { TimelineRenderer } from "./TimelineFragment";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;
@@ -37,11 +33,12 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const reactions = useReactions(
     "follows-feed-reactions",
     feed.map(a => NostrLink.fromEvent(a)),
+    undefined,
+    true,
   );
   const system = useContext(SnortContext);
   const login = useLogin();
   const { muted, isMuted } = useModeration();
-  const { ref, inView } = useInView();
 
   const sortedFeed = useMemo(() => orderDescending(feed), [feed]);
 
@@ -63,13 +60,6 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     return filterPosts((sortedFeed ?? []).filter(a => a.created_at > latest));
   }, [sortedFeed, latest]);
 
-  const relatedFeed = useCallback(
-    (id: u256) => {
-      return (reactions?.data ?? []).filter(a => findTag(a, "e") === id);
-    },
-    [reactions],
-  );
-
   const liveStreams = useMemo(() => {
     return (sortedFeed ?? []).filter(a => a.kind === EventKind.LiveEvent && findTag(a, "status") === "live");
   }, [sortedFeed]);
@@ -88,44 +78,18 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   return (
     <>
       {(props.liveStreams ?? true) && <LiveStreams evs={liveStreams} />}
-      {latestFeed.length > 0 && (
-        <>
-          <div className="card latest-notes" onClick={() => onShowLatest()} ref={ref}>
-            {latestAuthors.slice(0, 3).map(p => {
-              return <ProfileImage pubkey={p} showUsername={false} link={""} showFollowingMark={false} />;
-            })}
-            <FormattedMessage
-              defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
-              values={{ n: latestFeed.length }}
-            />
-            <Icon name="arrowUp" />
-          </div>
-          {!inView && (
-            <div className="card latest-notes latest-notes-fixed pointer fade-in" onClick={() => onShowLatest(true)}>
-              {latestAuthors.slice(0, 3).map(p => {
-                return <ProfileImage pubkey={p} showUsername={false} link={""} showFollowingMark={false} />;
-              })}
-              <FormattedMessage
-                defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
-                values={{ n: latestFeed.length }}
-              />
-              <Icon name="arrowUp" />
-            </div>
-          )}
-        </>
-      )}
-      {mainFeed.map(
-        a =>
-          props.noteRenderer?.(a) ?? (
-            <Note
-              data={a as TaggedNostrEvent}
-              related={relatedFeed(a.id)}
-              key={a.id}
-              depth={0}
-              onClick={props.noteOnClick}
-            />
-          ),
-      )}
+      <TimelineRenderer
+        frags={[
+          {
+            events: mainFeed,
+          },
+        ]}
+        related={reactions.data ?? []}
+        latest={latestAuthors}
+        showLatest={t => onShowLatest(t)}
+        noteOnClick={props.noteOnClick}
+        noteRenderer={props.noteRenderer}
+      />
       <div className="flex items-center p">
         <AsyncButton
           onClick={async () => {

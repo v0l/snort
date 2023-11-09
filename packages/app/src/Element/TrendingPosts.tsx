@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { useReactions } from "@snort/system-react";
 
 import PageSpinner from "Element/PageSpinner";
 import Note from "Element/Event/Note";
 import NostrBandApi from "External/NostrBand";
-import { useReactions } from "Feed/Reactions";
 import { ErrorOrOffline } from "Element/ErrorOrOffline";
 
 export default function TrendingNotes() {
   const [posts, setPosts] = useState<Array<NostrEvent>>();
   const [error, setError] = useState<Error>();
-  const related = useReactions("trending", posts?.map(a => NostrLink.fromEvent(a)) ?? []);
+  const related = useReactions("trending", posts?.map(a => NostrLink.fromEvent(a)) ?? [], undefined, true);
 
   async function loadTrendingNotes() {
     const api = new NostrBandApi();

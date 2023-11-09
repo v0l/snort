@@ -2,7 +2,7 @@ import "./Notifications.css";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { EventExt, EventKind, NostrEvent, NostrLink, NostrPrefix, TaggedNostrEvent, parseZap } from "@snort/system";
 import { unixNow, unwrap } from "@snort/shared";
-import { useUserProfile } from "@snort/system-react";
+import { useEventFeed, useUserProfile } from "@snort/system-react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,6 @@ import { dedupe, findTag, orderAscending, orderDescending, getDisplayName } from
 import Icon from "Icons/Icon";
 import ProfileImage from "Element/User/ProfileImage";
 import useModeration from "Hooks/useModeration";
-import { useEventFeed } from "Feed/EventFeed";
 import Text from "Element/Text";
 import { formatShort } from "Number";
 import { LiveEvent } from "Element/LiveEvent";
