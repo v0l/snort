@@ -24,7 +24,7 @@
 }
 
 @media (prefers-color-scheme: light) {
-  .spinner-button > span {
+.light .spinner-button > span {
     color: black;
   }
 }
