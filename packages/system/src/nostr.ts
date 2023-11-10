@@ -70,17 +70,6 @@ export type UserMetadata = {
   lud16?: string;
 };
 
-/**
- * NIP-51 list types
- */
-export enum Lists {
-  Muted = "mute",
-  Pinned = "pin",
-  Bookmarked = "bookmark",
-  Followed = "follow",
-  Badges = "profile_badges",
-}
-
 export interface FullRelaySettings {
   url: string;
   settings: RelaySettings;

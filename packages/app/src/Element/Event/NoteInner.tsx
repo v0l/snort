@@ -3,7 +3,7 @@ import React, { ReactNode, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
 import classNames from "classnames";
-import { EventExt, EventKind, HexKey, Lists, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+import { EventExt, EventKind, HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions } from "@snort/system-react";
 
 import { findTag, hexToBech32 } from "SnortUtils";
@@ -60,7 +60,7 @@ export function NoteInner(props: NoteProps) {
     if (options.canUnpin && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnpin))) {
         const es = pinned.item.filter(e => e !== id);
-        const ev = await publisher.noteList(es, Lists.Pinned);
+        const ev = await publisher.pinned(es.map(a => new NostrLink(NostrPrefix.Note, a)));
         system.BroadcastEvent(ev);
         setPinned(login, es, ev.created_at * 1000);
       }
@@ -71,7 +71,7 @@ export function NoteInner(props: NoteProps) {
     if (options.canUnbookmark && publisher) {
       if (window.confirm(formatMessage(messages.ConfirmUnbookmark))) {
         const es = bookmarked.item.filter(e => e !== id);
-        const ev = await publisher.noteList(es, Lists.Bookmarked);
+        const ev = await publisher.pinned(es.map(a => new NostrLink(NostrPrefix.Note, a)));
         system.BroadcastEvent(ev);
         setBookmarked(login, es, ev.created_at * 1000);
       }

@@ -1,11 +1,10 @@
 import { useEffect, useMemo } from "react";
-import { TaggedNostrEvent, Lists, EventKind, RequestBuilder, NoteCollection } from "@snort/system";
+import { TaggedNostrEvent, EventKind, RequestBuilder, NoteCollection, NostrLink } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
-import { bech32ToHex, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";
+import { bech32ToHex, findTag, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";
 import { makeNotification, sendNotification } from "Notifications";
 import useEventPublisher from "Hooks/useEventPublisher";
-import { getMutedKeys } from "Feed/MuteList";
 import useModeration from "Hooks/useModeration";
 import useLogin from "Hooks/useLogin";
 import {
@@ -51,7 +50,10 @@ export default function useLoginFeed() {
     b.withOptions({
       leaveOpen: true,
     });
-    b.withFilter().authors([pubKey]).kinds([EventKind.ContactList, EventKind.Relays]);
+    b.withFilter()
+      .authors([pubKey])
+      .kinds([EventKind.ContactList, EventKind.Relays, EventKind.MuteList, EventKind.PinList]);
+    b.withFilter().authors([pubKey]).kinds([EventKind.CategorizedBookmarks]).tag("d", ["follow", "bookmark"]);
     if (CONFIG.features.subscriptions && !login.readonly) {
       b.withFilter().authors([pubKey]).kinds([EventKind.AppData]).tag("d", ["snort"]);
       b.withFilter()
@@ -61,10 +63,6 @@ export default function useLoginFeed() {
         .tag("p", [pubKey])
         .limit(10);
     }
-    b.withFilter()
-      .authors([pubKey])
-      .kinds([EventKind.PubkeyLists])
-      .tag("d", [Lists.Muted, Lists.Followed, Lists.Pinned, Lists.Bookmarked]);
 
     const n4Sub = Nip4Chats.subscription(login);
     if (n4Sub) {
@@ -151,23 +149,26 @@ export default function useLoginFeed() {
     }
   }, [loginFeed, readNotifications]);
 
-  function handleMutedFeed(mutedFeed: TaggedNostrEvent[]) {
-    const muted = getMutedKeys(mutedFeed);
-    setMuted(login, muted.keys, muted.createdAt * 1000);
+  async function handleMutedFeed(mutedFeed: TaggedNostrEvent[]) {
+    const latest = getNewest(mutedFeed);
+    if (!latest) return;
 
-    if (muted.raw && (muted.raw?.content?.length ?? 0) > 0 && pubKey) {
-      publisher
-        ?.nip4Decrypt(muted.raw.content, pubKey)
-        .then(plaintext => {
-          try {
-            const blocked = JSON.parse(plaintext);
-            const keys = blocked.filter((p: string) => p && p.length === 2 && p[0] === "p").map((p: string) => p[1]);
-            setBlocked(login, keys, unwrap(muted.raw).created_at * 1000);
-          } catch (error) {
-            console.debug("Couldn't parse JSON");
-          }
-        })
-        .catch(error => console.warn(error));
+    const muted = NostrLink.fromTags(latest.tags);
+    setMuted(
+      login,
+      muted.map(a => a.id),
+      latest.created_at * 1000,
+    );
+
+    if (latest?.content && publisher && pubKey) {
+      try {
+        const privMutes = await publisher.nip4Decrypt(latest.content, pubKey);
+        const blocked = JSON.parse(privMutes) as Array<Array<string>>;
+        const keys = blocked.filter(a => a[0] === "p").map(a => a[1]);
+        setBlocked(login, keys, latest.created_at * 1000);
+      } catch (error) {
+        console.debug("Failed to parse mute list", error, latest);
+      }
     }
   }
 
@@ -194,23 +195,20 @@ export default function useLoginFeed() {
 
   useEffect(() => {
     if (loginFeed.data) {
-      const getList = (evs: readonly TaggedNostrEvent[], list: Lists) =>
-        evs
-          .filter(
-            a => a.kind === EventKind.TagLists || a.kind === EventKind.NoteLists || a.kind === EventKind.PubkeyLists,
-          )
-          .filter(a => unwrap(a.tags.find(b => b[0] === "d"))[1] === list);
-
-      const mutedFeed = getList(loginFeed.data, Lists.Muted);
+      const mutedFeed = loginFeed.data.filter(a => a.kind === EventKind.MuteList);
       handleMutedFeed(mutedFeed);
 
-      const pinnedFeed = getList(loginFeed.data, Lists.Pinned);
+      const pinnedFeed = loginFeed.data.filter(a => a.kind === EventKind.PinList);
       handlePinnedFeed(pinnedFeed);
 
-      const tagsFeed = getList(loginFeed.data, Lists.Followed);
+      const tagsFeed = loginFeed.data.filter(
+        a => a.kind === EventKind.CategorizedBookmarks && findTag(a, "d") === "follow",
+      );
       handleTagFeed(tagsFeed);
 
-      const bookmarkFeed = getList(loginFeed.data, Lists.Bookmarked);
+      const bookmarkFeed = loginFeed.data.filter(
+        a => a.kind === EventKind.CategorizedBookmarks && findTag(a, "d") === "bookmark",
+      );
       handleBookmarkFeed(bookmarkFeed);
     }
   }, [loginFeed]);

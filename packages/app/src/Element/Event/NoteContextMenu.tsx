@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { HexKey, Lists, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 
 import Icon from "Icons/Icon";
@@ -96,16 +96,19 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   async function pin(id: HexKey) {
     if (publisher) {
       const es = [...login.pinned.item, id];
-      const ev = await publisher.noteList(es, Lists.Pinned);
+      const ev = await publisher.pinned(es.map(a => new NostrLink(NostrPrefix.Note, a)));
       system.BroadcastEvent(ev);
       setPinned(login, es, ev.created_at * 1000);
     }
   }
 
-  async function bookmark(id: HexKey) {
+  async function bookmark(id: string) {
     if (publisher) {
       const es = [...login.bookmarked.item, id];
-      const ev = await publisher.noteList(es, Lists.Bookmarked);
+      const ev = await publisher.bookmarks(
+        es.map(a => new NostrLink(NostrPrefix.Note, a)),
+        "bookmark",
+      );
       system.BroadcastEvent(ev);
       setBookmarked(login, es, ev.created_at * 1000);
     }

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { EventKind, HexKey, Lists, RequestBuilder, ReplaceableNoteStore, NoteCollection } from "@snort/system";
+import { EventKind, HexKey, RequestBuilder, ReplaceableNoteStore, NoteCollection } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
 import { unwrap, findTag, chunks } from "SnortUtils";
@@ -13,7 +13,7 @@ export default function useProfileBadges(pubkey?: HexKey) {
   const sub = useMemo(() => {
     if (!pubkey) return null;
     const b = new RequestBuilder(`badges:${pubkey.slice(0, 12)}`);
-    b.withFilter().kinds([EventKind.ProfileBadges]).tag("d", [Lists.Badges]).authors([pubkey]);
+    b.withFilter().kinds([EventKind.ProfileBadges]).tag("d", ["profile_badges"]).authors([pubkey]);
     return b;
   }, [pubkey]);
 

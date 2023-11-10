@@ -14,7 +14,7 @@ export function ListFeedPage() {
   const { data } = useEventFeed(link);
 
   if (!data) return <PageSpinner />;
-  if (data.kind !== EventKind.ContactList && data.kind !== EventKind.PubkeyLists) {
+  if (data.kind !== EventKind.ContactList && data.kind !== EventKind.CategorizedPeople) {
     return (
       <b>
         <FormattedMessage defaultMessage="Must be a contact list or pubkey list" />
