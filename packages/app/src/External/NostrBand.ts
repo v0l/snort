@@ -44,7 +44,11 @@ export default class NostrBandApi {
     return await this.#json<TrendingUserResponse>("GET", "/v0/trending/profiles");
   }
 
-  async trendingNotes() {
+  async trendingNotes(lang?: string) {
+    const supportedLangs = ["en", "de", "ja", "zh", "th", "pt", "es", "fr"];
+    if (lang && supportedLangs.includes(lang)) {
+      return await this.#json<TrendingNoteResponse>("GET", `/v0/trending/notes?lang=${lang}`);
+    }
     return await this.#json<TrendingNoteResponse>("GET", "/v0/trending/notes");
   }
 

@@ -6,15 +6,17 @@ import PageSpinner from "Element/PageSpinner";
 import Note from "Element/Event/Note";
 import NostrBandApi from "External/NostrBand";
 import { ErrorOrOffline } from "Element/ErrorOrOffline";
+import { useLocale } from "IntlProvider";
 
 export default function TrendingNotes() {
   const [posts, setPosts] = useState<Array<NostrEvent>>();
   const [error, setError] = useState<Error>();
+  const { lang } = useLocale();
   const related = useReactions("trending", posts?.map(a => NostrLink.fromEvent(a)) ?? [], undefined, true);
 
   async function loadTrendingNotes() {
     const api = new NostrBandApi();
-    const trending = await api.trendingNotes();
+    const trending = await api.trendingNotes(lang);
     setPosts(trending.notes.map(a => a.event));
   }
 
