@@ -237,7 +237,7 @@ export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLin
   let entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
 
   // trim any non-bech32 chars
-  entity = entity.match(/(n(?:pub|profile|event|ote|addr)1[acdefghjklmnpqrstuvwxyz023456789]+)/)?.[0] ?? entity;
+  entity = entity.match(/(n(?:pub|profile|event|ote|addr|req)1[acdefghjklmnpqrstuvwxyz023456789]+)/)?.[0] ?? entity;
 
   const isPrefix = (prefix: NostrPrefix) => {
     return entity.startsWith(prefix);
@@ -251,7 +251,12 @@ export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLin
     const id = bech32ToHex(entity);
     if (id.length !== 64) throw new Error("Invalid nostr link, must contain 32 byte id");
     return new NostrLink(NostrPrefix.Note, id);
-  } else if (isPrefix(NostrPrefix.Profile) || isPrefix(NostrPrefix.Event) || isPrefix(NostrPrefix.Address)) {
+  } else if (
+    isPrefix(NostrPrefix.Profile) ||
+    isPrefix(NostrPrefix.Event) ||
+    isPrefix(NostrPrefix.Address) ||
+    isPrefix(NostrPrefix.Req)
+  ) {
     const decoded = decodeTLV(entity);
 
     const id = decoded.find(a => a.type === TLVEntryType.Special)?.value as string;
@@ -267,6 +272,8 @@ export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLin
       return new NostrLink(NostrPrefix.Event, id, kind, author, relays);
     } else if (isPrefix(NostrPrefix.Address)) {
       return new NostrLink(NostrPrefix.Address, id, kind, author, relays);
+    } else if (isPrefix(NostrPrefix.Req)) {
+      return new NostrLink(NostrPrefix.Req, id);
     }
   } else if (prefixHint) {
     return new NostrLink(prefixHint, link);

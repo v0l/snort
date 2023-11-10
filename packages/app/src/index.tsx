@@ -18,6 +18,7 @@ import {
   NostrEvent,
   mapEventToProfile,
   PowWorker,
+  encodeTLVEntries,
 } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { removeUndefined, throwIfOffline } from "@snort/shared";
@@ -286,3 +287,7 @@ root.render(
     </IntlProvider>
   </StrictMode>,
 );
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+window.encodeTLV = encodeTLVEntries;

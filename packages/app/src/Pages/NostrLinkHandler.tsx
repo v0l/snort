@@ -7,6 +7,7 @@ import { fetchNip05Pubkey } from "@snort/shared";
 import Spinner from "Icons/Spinner";
 import ProfilePage from "Pages/Profile/ProfilePage";
 import { ThreadRoute } from "Element/Event/Thread";
+import { GenericFeed } from "Element/Feed/Generic";
 
 export default function NostrLinkHandler() {
   const params = useParams();
@@ -24,6 +25,8 @@ export default function NostrLinkHandler() {
       } else if (nav.type === NostrPrefix.PublicKey || nav.type === NostrPrefix.Profile) {
         const id = nav.encode();
         setRenderComponent(<ProfilePage key={id} id={id} state={state} />); // Directly render ProfilePage
+      } else if (nav.type === NostrPrefix.Req) {
+        setRenderComponent(<GenericFeed link={nav} />);
       }
     } else {
       if (state) {
