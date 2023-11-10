@@ -8,6 +8,7 @@ import useTimelineFeed, { TimelineFeed, TimelineSubject } from "Feed/TimelineFee
 import useModeration from "Hooks/useModeration";
 import { LiveStreams } from "Element/LiveStreams";
 import { TimelineRenderer } from "./TimelineFragment";
+import { unixNow } from "@snort/shared";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -70,7 +71,10 @@ const Timeline = (props: TimelineProps) => {
     <>
       <LiveStreams evs={liveStreams} />
       <TimelineRenderer
-        frags={[{ events: mainFeed }]}
+        frags={[{
+          events: mainFeed,
+          refTime: mainFeed.at(0)?.created_at ?? unixNow()
+        }]}
         related={feed.related ?? []}
         latest={latestAuthors}
         showLatest={t => onShowLatest(t)}

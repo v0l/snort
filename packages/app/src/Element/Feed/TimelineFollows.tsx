@@ -1,7 +1,6 @@
 import "./Timeline.css";
 import { ReactNode, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
-import { FormattedMessage } from "react-intl";
-import { EventKind, NostrEvent, NostrLink } from "@snort/system";
+import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { unixNow } from "@snort/shared";
 import { SnortContext, useReactions } from "@snort/system-react";
 
@@ -9,9 +8,10 @@ import { dedupeByPubkey, findTag, orderDescending } from "SnortUtils";
 import useModeration from "Hooks/useModeration";
 import { FollowsFeed } from "Cache";
 import { LiveStreams } from "Element/LiveStreams";
-import AsyncButton from "../AsyncButton";
 import useLogin from "Hooks/useLogin";
-import { TimelineRenderer } from "./TimelineFragment";
+import { TimelineFragment, TimelineRenderer } from "./TimelineFragment";
+import useHashtagsFeed from "Feed/HashtagsFeed";
+import { ShowMoreInView } from "Element/Event/ShowMore";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;
@@ -42,19 +42,39 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
 
   const sortedFeed = useMemo(() => orderDescending(feed), [feed]);
 
+  const postsOnly = useCallback((a: NostrEvent) => props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true, [props.postsOnly]);
+
   const filterPosts = useCallback(
     function <T extends NostrEvent>(nts: Array<T>) {
       const a = nts.filter(a => a.kind !== EventKind.LiveEvent);
       return a
-        ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true))
+        ?.filter(postsOnly)
         .filter(a => !isMuted(a.pubkey) && login.follows.item.includes(a.pubkey) && (props.noteFilter?.(a) ?? true));
     },
-    [props.postsOnly, muted, login.follows.timestamp],
+    [postsOnly, muted, login.follows.timestamp],
   );
 
+
+  const mixin = useHashtagsFeed();
   const mainFeed = useMemo(() => {
     return filterPosts((sortedFeed ?? []).filter(a => a.created_at <= latest));
-  }, [sortedFeed, filterPosts, latest, login.follows.timestamp]);
+  }, [sortedFeed, filterPosts, latest, login.follows.timestamp, mixin]);
+
+  const hashTagsGroups = useMemo(() => {
+    const mainFeedIds = new Set(mainFeed.map(a => a.id));
+    const included = new Set<string>();
+    return (mixin.data.data ?? []).filter(a => !mainFeedIds.has(a.id) && postsOnly(a)).reduce((acc, v) => {
+      if (included.has(v.id)) return acc;
+      const tags = v.tags.filter(a => a[0] === "t").map(v => v[1].toLocaleLowerCase()).filter(a => mixin.hashtags.includes(a));
+      for (const t of tags) {
+        acc[t] ??= [];
+        acc[t].push(v);
+        break;
+      }
+      included.add(v.id);
+      return acc;
+    }, {} as Record<string, Array<TaggedNostrEvent>>)
+  }, [mixin, mainFeed, postsOnly]);
 
   const latestFeed = useMemo(() => {
     return filterPosts((sortedFeed ?? []).filter(a => a.created_at > latest));
@@ -79,26 +99,44 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     <>
       {(props.liveStreams ?? true) && <LiveStreams evs={liveStreams} />}
       <TimelineRenderer
-        frags={[
-          {
-            events: mainFeed,
-          },
-        ]}
+        frags={weaveTimeline(mainFeed, hashTagsGroups)}
         related={reactions.data ?? []}
         latest={latestAuthors}
         showLatest={t => onShowLatest(t)}
         noteOnClick={props.noteOnClick}
         noteRenderer={props.noteRenderer}
       />
-      <div className="flex items-center p">
-        <AsyncButton
-          onClick={async () => {
-            await FollowsFeed.loadMore(system, login, sortedFeed[sortedFeed.length - 1].created_at);
-          }}>
-          <FormattedMessage defaultMessage="Load more" />
-        </AsyncButton>
-      </div>
+      <ShowMoreInView onClick={async () => await FollowsFeed.loadMore(system, login, sortedFeed[sortedFeed.length - 1].created_at)} />
     </>
   );
 };
 export default TimelineFollows;
+
+
+function weaveTimeline(main: Array<TaggedNostrEvent>, hashtags: Record<string, Array<TaggedNostrEvent>>): Array<TimelineFragment> {
+  // always skip 5 posts from start to avoid heavy handed weaving
+  const skip = 5;
+
+  const frags = Object.entries(hashtags).map(([k, v]) => {
+    const take = v.slice(0, 5);
+    return {
+      title: <div className="flex bb p">
+        <h2>#{k}</h2>
+      </div>,
+      events: take,
+      refTime: Math.min(main[skip].created_at, take.reduce((acc, v) => acc > v.created_at ? acc : v.created_at, 0))
+    } as TimelineFragment;
+  });
+
+  return [
+    {
+      events: main.slice(0, skip),
+      refTime: main[0].created_at
+    },
+    ...frags,
+    {
+      events: main.slice(skip),
+      refTime: main[skip].created_at
+    }
+  ].sort((a, b) => a.refTime > b.refTime ? -1 : 1);
+}

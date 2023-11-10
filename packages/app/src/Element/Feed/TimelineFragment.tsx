@@ -9,6 +9,7 @@ import { FormattedMessage } from "react-intl";
 
 export interface TimelineFragment {
   events: Array<TaggedNostrEvent>;
+  refTime: number;
   title?: ReactNode;
 }
 
