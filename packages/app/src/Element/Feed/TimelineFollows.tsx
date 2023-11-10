@@ -132,11 +132,9 @@ function weaveTimeline(
   const skip = 5;
 
   if (main.length < skip) {
-    return [
-      { events: main, refTime: unixNow() }
-    ]
+    return [{ events: main, refTime: unixNow() }];
   }
-  
+
   const frags = Object.entries(hashtags).map(([k, v]) => {
     const take = v.slice(0, 5);
     return {
