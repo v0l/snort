@@ -131,6 +131,12 @@ function weaveTimeline(
   // always skip 5 posts from start to avoid heavy handed weaving
   const skip = 5;
 
+  if (main.length < skip) {
+    return [
+      { events: main, refTime: unixNow() }
+    ]
+  }
+  
   const frags = Object.entries(hashtags).map(([k, v]) => {
     const take = v.slice(0, 5);
     return {
