@@ -71,10 +71,12 @@ const Timeline = (props: TimelineProps) => {
     <>
       <LiveStreams evs={liveStreams} />
       <TimelineRenderer
-        frags={[{
-          events: mainFeed,
-          refTime: mainFeed.at(0)?.created_at ?? unixNow()
-        }]}
+        frags={[
+          {
+            events: mainFeed,
+            refTime: mainFeed.at(0)?.created_at ?? unixNow(),
+          },
+        ]}
         related={feed.related ?? []}
         latest={latestAuthors}
         showLatest={t => onShowLatest(t)}

@@ -42,7 +42,10 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
 
   const sortedFeed = useMemo(() => orderDescending(feed), [feed]);
 
-  const postsOnly = useCallback((a: NostrEvent) => props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true, [props.postsOnly]);
+  const postsOnly = useCallback(
+    (a: NostrEvent) => (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true),
+    [props.postsOnly],
+  );
 
   const filterPosts = useCallback(
     function <T extends NostrEvent>(nts: Array<T>) {
@@ -54,7 +57,6 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     [postsOnly, muted, login.follows.timestamp],
   );
 
-
   const mixin = useHashtagsFeed();
   const mainFeed = useMemo(() => {
     return filterPosts((sortedFeed ?? []).filter(a => a.created_at <= latest));
@@ -63,17 +65,25 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const hashTagsGroups = useMemo(() => {
     const mainFeedIds = new Set(mainFeed.map(a => a.id));
     const included = new Set<string>();
-    return (mixin.data.data ?? []).filter(a => !mainFeedIds.has(a.id) && postsOnly(a)).reduce((acc, v) => {
-      if (included.has(v.id)) return acc;
-      const tags = v.tags.filter(a => a[0] === "t").map(v => v[1].toLocaleLowerCase()).filter(a => mixin.hashtags.includes(a));
-      for (const t of tags) {
-        acc[t] ??= [];
-        acc[t].push(v);
-        break;
-      }
-      included.add(v.id);
-      return acc;
-    }, {} as Record<string, Array<TaggedNostrEvent>>)
+    return (mixin.data.data ?? [])
+      .filter(a => !mainFeedIds.has(a.id) && postsOnly(a))
+      .reduce(
+        (acc, v) => {
+          if (included.has(v.id)) return acc;
+          const tags = v.tags
+            .filter(a => a[0] === "t")
+            .map(v => v[1].toLocaleLowerCase())
+            .filter(a => mixin.hashtags.includes(a));
+          for (const t of tags) {
+            acc[t] ??= [];
+            acc[t].push(v);
+            break;
+          }
+          included.add(v.id);
+          return acc;
+        },
+        {} as Record<string, Array<TaggedNostrEvent>>,
+      );
   }, [mixin, mainFeed, postsOnly]);
 
   const latestFeed = useMemo(() => {
@@ -106,37 +116,46 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         noteOnClick={props.noteOnClick}
         noteRenderer={props.noteRenderer}
       />
-      <ShowMoreInView onClick={async () => await FollowsFeed.loadMore(system, login, sortedFeed[sortedFeed.length - 1].created_at)} />
+      <ShowMoreInView
+        onClick={async () => await FollowsFeed.loadMore(system, login, sortedFeed[sortedFeed.length - 1].created_at)}
+      />
     </>
   );
 };
 export default TimelineFollows;
 
-
-function weaveTimeline(main: Array<TaggedNostrEvent>, hashtags: Record<string, Array<TaggedNostrEvent>>): Array<TimelineFragment> {
+function weaveTimeline(
+  main: Array<TaggedNostrEvent>,
+  hashtags: Record<string, Array<TaggedNostrEvent>>,
+): Array<TimelineFragment> {
   // always skip 5 posts from start to avoid heavy handed weaving
   const skip = 5;
 
   const frags = Object.entries(hashtags).map(([k, v]) => {
     const take = v.slice(0, 5);
     return {
-      title: <div className="flex bb p">
-        <h2>#{k}</h2>
-      </div>,
+      title: (
+        <div className="flex bb p">
+          <h2>#{k}</h2>
+        </div>
+      ),
       events: take,
-      refTime: Math.min(main[skip].created_at, take.reduce((acc, v) => acc > v.created_at ? acc : v.created_at, 0))
+      refTime: Math.min(
+        main[skip].created_at,
+        take.reduce((acc, v) => (acc > v.created_at ? acc : v.created_at), 0),
+      ),
     } as TimelineFragment;
   });
 
   return [
     {
       events: main.slice(0, skip),
-      refTime: main[0].created_at
+      refTime: main[0].created_at,
     },
     ...frags,
     {
       events: main.slice(skip),
-      refTime: main[skip].created_at
-    }
-  ].sort((a, b) => a.refTime > b.refTime ? -1 : 1);
+      refTime: main[skip].created_at,
+    },
+  ].sort((a, b) => (a.refTime > b.refTime ? -1 : 1));
 }
