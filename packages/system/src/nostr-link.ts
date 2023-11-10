@@ -1,4 +1,4 @@
-import { bech32ToHex, hexToBech32, isHex, unwrap } from "@snort/shared";
+import { bech32ToHex, hexToBech32, isHex, removeUndefined, unwrap } from "@snort/shared";
 import {
   decodeTLV,
   encodeTLV,
@@ -12,7 +12,19 @@ import {
 } from ".";
 import { findTag } from "./utils";
 
-export class NostrLink {
+export interface ToNostrEventTag {
+  toEventTag(): Array<string> | undefined;
+}
+
+export class NostrHashtagLink implements ToNostrEventTag {
+  constructor(readonly tag: string) {}
+
+  toEventTag(): string[] | undefined {
+    return ["t", this.tag];
+  }
+}
+
+export class NostrLink implements ToNostrEventTag {
   constructor(
     readonly type: NostrPrefix,
     readonly id: string,
@@ -42,8 +54,8 @@ export class NostrLink {
 
   toEventTag() {
     const relayEntry = this.relays ? [this.relays[0]] : [];
-    if (this.type === NostrPrefix.PublicKey) {
-      return ["p", this.id];
+    if (this.type === NostrPrefix.PublicKey || this.type === NostrPrefix.Profile) {
+      return ["p", this.id, ...relayEntry];
     } else if (this.type === NostrPrefix.Note || this.type === NostrPrefix.Event) {
       return ["e", this.id, ...relayEntry];
     } else if (this.type === NostrPrefix.Address) {
@@ -174,6 +186,18 @@ export class NostrLink {
     throw new Error(`Unknown tag kind ${tag[0]}`);
   }
 
+  static fromTags(tags: Array<Array<string>>) {
+    return removeUndefined(
+      tags.map(a => {
+        try {
+          return NostrLink.fromTag(a);
+        } catch {
+          // ignored, cant be mapped
+        }
+      }),
+    );
+  }
+
   static fromEvent(ev: TaggedNostrEvent | NostrEvent) {
     const relays = "relays" in ev ? ev.relays : undefined;
 
@@ -213,7 +237,7 @@ export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLin
   let entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
 
   // trim any non-bech32 chars
-  entity = entity.match(/(n(?:pub|profile|event|ote|addr)1[acdefghjklmnpqrstuvwxyz023456789]+)/)?.[0] ?? entity;
+  entity = entity.match(/(n(?:pub|profile|event|ote|addr|req)1[acdefghjklmnpqrstuvwxyz023456789]+)/)?.[0] ?? entity;
 
   const isPrefix = (prefix: NostrPrefix) => {
     return entity.startsWith(prefix);
@@ -227,7 +251,12 @@ export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLin
     const id = bech32ToHex(entity);
     if (id.length !== 64) throw new Error("Invalid nostr link, must contain 32 byte id");
     return new NostrLink(NostrPrefix.Note, id);
-  } else if (isPrefix(NostrPrefix.Profile) || isPrefix(NostrPrefix.Event) || isPrefix(NostrPrefix.Address)) {
+  } else if (
+    isPrefix(NostrPrefix.Profile) ||
+    isPrefix(NostrPrefix.Event) ||
+    isPrefix(NostrPrefix.Address) ||
+    isPrefix(NostrPrefix.Req)
+  ) {
     const decoded = decodeTLV(entity);
 
     const id = decoded.find(a => a.type === TLVEntryType.Special)?.value as string;
@@ -243,6 +272,8 @@ export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLin
       return new NostrLink(NostrPrefix.Event, id, kind, author, relays);
     } else if (isPrefix(NostrPrefix.Address)) {
       return new NostrLink(NostrPrefix.Address, id, kind, author, relays);
+    } else if (isPrefix(NostrPrefix.Req)) {
+      return new NostrLink(NostrPrefix.Req, id);
     }
   } else if (prefixHint) {
     return new NostrLink(prefixHint, link);

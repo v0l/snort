@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
+import { NostrHashtagLink } from "@snort/system";
 
 import Timeline from "Element/Feed/Timeline";
 import useEventPublisher from "Hooks/useEventPublisher";
@@ -18,7 +19,10 @@ const HashTagsPage = () => {
 
   async function followTags(ts: string[]) {
     if (publisher) {
-      const ev = await publisher.tags(ts);
+      const ev = await publisher.bookmarks(
+        ts.map(a => new NostrHashtagLink(a)),
+        "follow",
+      );
       system.BroadcastEvent(ev);
       setTags(login, ts, ev.created_at * 1000);
     }

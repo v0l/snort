@@ -12,6 +12,7 @@ export const enum NostrPrefix {
   Event = "nevent",
   Relay = "nrelay",
   Address = "naddr",
+  Req = "nreq",
 }
 
 export enum TLVEntryType {
@@ -54,7 +55,9 @@ export function encodeTLVEntries(prefix: NostrPrefix, ...entries: Array<TLVEntry
     switch (v.type) {
       case TLVEntryType.Special: {
         const buf =
-          prefix === NostrPrefix.Address ? enc.encode(v.value as string) : utils.hexToBytes(v.value as string);
+          prefix === NostrPrefix.Address || prefix === NostrPrefix.Req
+            ? enc.encode(v.value as string)
+            : utils.hexToBytes(v.value as string);
         buffers.push(0, buf.length, ...buf);
         break;
       }
@@ -101,8 +104,8 @@ export function decodeTLV(str: string) {
 function decodeTLVEntry(type: TLVEntryType, prefix: string, data: Uint8Array) {
   switch (type) {
     case TLVEntryType.Special: {
-      if (prefix === NostrPrefix.Address) {
-        return new TextDecoder("ASCII").decode(data);
+      if (prefix === NostrPrefix.Address || prefix === NostrPrefix.Req) {
+        return new TextDecoder().decode(data);
       } else {
         return utils.bytesToHex(data);
       }
@@ -114,7 +117,7 @@ function decodeTLVEntry(type: TLVEntryType, prefix: string, data: Uint8Array) {
       return new Uint32Array(new Uint8Array(data.reverse()).buffer)[0];
     }
     case TLVEntryType.Relay: {
-      return new TextDecoder("ASCII").decode(data);
+      return new TextDecoder().decode(data);
     }
   }
 }

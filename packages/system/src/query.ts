@@ -47,6 +47,7 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
   }
 
   forceEose() {
+    this.sent ??= unixNowMs();
     this.eose = unixNowMs();
     this.#wasForceClosed = true;
     this.sendClose();

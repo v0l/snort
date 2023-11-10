@@ -18,6 +18,7 @@ import {
   NostrEvent,
   mapEventToProfile,
   PowWorker,
+  encodeTLVEntries,
 } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { removeUndefined, throwIfOffline } from "@snort/shared";
@@ -50,6 +51,8 @@ import { ListFeedPage } from "Pages/ListFeedPage";
 import { updateRelayConnections } from "Hooks/useLoginRelays";
 import { AboutPage } from "Pages/About";
 import { OnboardingRoutes } from "Pages/onboarding";
+import { setupWebLNWalletConfig } from "Wallet/WebLN";
+import { Wallets } from "Wallet";
 
 declare global {
   interface Window {
@@ -164,6 +167,8 @@ async function initSite() {
     sc.setAttribute("data-domain", CONFIG.hostname);
     document.head.appendChild(sc);
   }
+
+  setupWebLNWalletConfig(Wallets);
   return null;
 }
 
@@ -282,3 +287,7 @@ root.render(
     </IntlProvider>
   </StrictMode>,
 );
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+window.encodeTLV = encodeTLVEntries;

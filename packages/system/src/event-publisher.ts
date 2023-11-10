@@ -1,6 +1,6 @@
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
-import { unwrap, getPublicKey, unixNow } from "@snort/shared";
+import { unwrap } from "@snort/shared";
 
 import {
   decodeEncryptionPayload,
@@ -8,7 +8,6 @@ import {
   EventSigner,
   FullRelaySettings,
   HexKey,
-  Lists,
   MessageEncryptorVersion,
   NostrEvent,
   NostrLink,
@@ -18,6 +17,7 @@ import {
   RelaySettings,
   SignerSupports,
   TaggedNostrEvent,
+  ToNostrEventTag,
   u256,
   UserMetadata,
 } from ".";
@@ -104,11 +104,14 @@ export class EventPublisher {
     return await this.#sign(eb);
   }
 
-  async muted(keys: HexKey[], priv: HexKey[]) {
-    const eb = this.#eb(EventKind.PubkeyLists);
-
-    eb.tag(["d", Lists.Muted]);
-    keys.forEach(p => {
+  /**
+   * Build a mute list event using lists of pubkeys
+   * @param pub Public mute list
+   * @param priv Private mute list
+   */
+  async muted(pub: Array<string>, priv: Array<string>) {
+    const eb = this.#eb(EventKind.MuteList);
+    pub.forEach(p => {
       eb.tag(["p", p]);
     });
     if (priv.length > 0) {
@@ -119,20 +122,26 @@ export class EventPublisher {
     return await this.#sign(eb);
   }
 
-  async noteList(notes: u256[], list: Lists) {
-    const eb = this.#eb(EventKind.NoteLists);
-    eb.tag(["d", list]);
+  /**
+   * Build a pin list event using lists of event links
+   */
+  async pinned(notes: Array<ToNostrEventTag>) {
+    const eb = this.#eb(EventKind.PinList);
     notes.forEach(n => {
-      eb.tag(["e", n]);
+      eb.tag(unwrap(n.toEventTag()));
     });
     return await this.#sign(eb);
   }
 
-  async tags(tags: string[]) {
-    const eb = this.#eb(EventKind.TagLists);
-    eb.tag(["d", Lists.Followed]);
-    tags.forEach(t => {
-      eb.tag(["t", t]);
+  /**
+   * Build a categorized bookmarks event with a given label
+   * @param notes List of bookmarked links
+   */
+  async bookmarks(notes: Array<ToNostrEventTag>, list: "bookmark" | "follow") {
+    const eb = this.#eb(EventKind.CategorizedBookmarks);
+    eb.tag(["d", list]);
+    notes.forEach(n => {
+      eb.tag(unwrap(n.toEventTag()));
     });
     return await this.#sign(eb);
   }
@@ -263,6 +272,7 @@ export class EventPublisher {
     eb.tag(["e", id]);
     return await this.#sign(eb);
   }
+
   /**
    * Repost a note (NIP-18)
    */

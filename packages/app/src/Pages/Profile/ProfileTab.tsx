@@ -8,11 +8,11 @@ import FollowsList from "Element/User/FollowListBase";
 import useFollowsFeed from "Feed/FollowsFeed";
 import useRelaysFeed from "Feed/RelaysFeed";
 import RelaysMetadata from "Element/Relay/RelaysMetadata";
-import useBookmarkFeed from "Feed/BookmarkFeed";
 import Bookmarks from "Element/User/Bookmarks";
 import Icon from "Icons/Icon";
 import { Tab } from "Element/Tabs";
 import { default as ZapElement } from "Element/Event/Zap";
+import useCategorizedBookmarks from "Hooks/useLists";
 
 import messages from "../messages";
 
@@ -59,7 +59,7 @@ export function RelaysTab({ id }: { id: HexKey }) {
 }
 
 export function BookMarksTab({ id }: { id: HexKey }) {
-  const bookmarks = useBookmarkFeed(id);
+  const bookmarks = useCategorizedBookmarks(id, "bookmark");
   return (
     <Bookmarks
       pubkey={id}

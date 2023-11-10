@@ -19,8 +19,6 @@ import { findTag, getLinkReactions, unwrap } from "SnortUtils";
 import Note from "Element/Event/Note";
 import { Tab, TabElement } from "Element/Tabs";
 import Icon from "Icons/Icon";
-import useMutedFeed from "Feed/MuteList";
-import usePinnedFeed from "Feed/PinnedFeed";
 import useFollowsFeed from "Feed/FollowsFeed";
 import useProfileBadges from "Feed/BadgesFeed";
 import useModeration from "Hooks/useModeration";
@@ -47,8 +45,6 @@ import { EmailRegex } from "Const";
 import useLogin from "Hooks/useLogin";
 import { ZapTarget } from "Zapper";
 import { useStatusFeed } from "Feed/StatusFeed";
-
-import messages from "../messages";
 import { SpotlightMediaModal } from "Element/SpotlightMedia";
 import ProfileTab, {
   BookMarksTab,
@@ -60,6 +56,9 @@ import ProfileTab, {
 } from "Pages/Profile/ProfileTab";
 import DisplayName from "Element/User/DisplayName";
 import { UserWebsiteLink } from "Element/User/UserWebsiteLink";
+import { useMuteList, usePinList } from "Hooks/useLists";
+
+import messages from "../messages";
 
 interface ProfilePageProps {
   id?: string;
@@ -95,8 +94,8 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
 
   // feeds
   const { blocked } = useModeration();
-  const pinned = usePinnedFeed(id);
-  const muted = useMutedFeed(id);
+  const pinned = usePinList(id);
+  const muted = useMuteList(id);
   const badges = useProfileBadges(showBadges ? id : undefined);
   const follows = useFollowsFeed(id);
   const status = useStatusFeed(showStatus ? id : undefined, true);
@@ -273,7 +272,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         return <FollowersTab id={id} />;
       }
       case ProfileTabType.MUTED: {
-        return <MutedList pubkeys={muted} />;
+        return <MutedList pubkeys={muted.map(a => a.id)} />;
       }
       case ProfileTabType.BLOCKED: {
         return <BlockList />;

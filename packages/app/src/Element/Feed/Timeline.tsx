@@ -1,16 +1,14 @@
 import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
 import { useCallback, useMemo } from "react";
-import { useInView } from "react-intersection-observer";
-import { TaggedNostrEvent, EventKind, u256 } from "@snort/system";
+import { TaggedNostrEvent, EventKind } from "@snort/system";
 
-import Icon from "Icons/Icon";
 import { dedupeByPubkey, findTag } from "SnortUtils";
-import ProfileImage from "Element/User/ProfileImage";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "Feed/TimelineFeed";
-import Note from "Element/Event/Note";
 import useModeration from "Hooks/useModeration";
 import { LiveStreams } from "Element/LiveStreams";
+import { TimelineRenderer } from "./TimelineFragment";
+import { unixNow } from "@snort/shared";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -37,8 +35,6 @@ const Timeline = (props: TimelineProps) => {
   const feed: TimelineFeed = useTimelineFeed(props.subject, feedOptions);
 
   const { muted, isMuted } = useModeration();
-  const { ref, inView } = useInView();
-
   const filterPosts = useCallback(
     (nts: readonly TaggedNostrEvent[]) => {
       const a = [...nts.filter(a => a.kind !== EventKind.LiveEvent)];
@@ -56,12 +52,6 @@ const Timeline = (props: TimelineProps) => {
   const latestFeed = useMemo(() => {
     return filterPosts(feed.latest ?? []).filter(a => !mainFeed.some(b => b.id === a.id));
   }, [feed, filterPosts]);
-  const relatedFeed = useCallback(
-    (id: u256) => {
-      return (feed.related ?? []).filter(a => findTag(a, "e") === id);
-    },
-    [feed.related],
-  );
   const liveStreams = useMemo(() => {
     return (feed.main ?? []).filter(a => a.kind === EventKind.LiveEvent && findTag(a, "status") === "live");
   }, [feed]);
@@ -80,42 +70,17 @@ const Timeline = (props: TimelineProps) => {
   return (
     <>
       <LiveStreams evs={liveStreams} />
-      {latestFeed.length > 0 && (
-        <>
-          <div className="card latest-notes" onClick={() => onShowLatest()} ref={ref}>
-            {latestAuthors.slice(0, 3).map(p => {
-              return <ProfileImage pubkey={p} showUsername={false} link={""} showProfileCard={false} />;
-            })}
-            <FormattedMessage
-              defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
-              values={{ n: latestFeed.length }}
-            />
-            <Icon name="arrowUp" />
-          </div>
-          {!inView && (
-            <div className="card latest-notes latest-notes-fixed pointer fade-in" onClick={() => onShowLatest(true)}>
-              {latestAuthors.slice(0, 3).map(p => {
-                return <ProfileImage pubkey={p} showUsername={false} link={""} showProfileCard={false} />;
-              })}
-              <FormattedMessage
-                defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
-                values={{ n: latestFeed.length }}
-              />
-              <Icon name="arrowUp" />
-            </div>
-          )}
-        </>
-      )}
-      {mainFeed.map(e => (
-        <Note
-          key={e.id}
-          searchedValue={props.subject.discriminator}
-          data={e}
-          related={relatedFeed(e.id)}
-          ignoreModeration={props.ignoreModeration}
-          depth={0}
-        />
-      ))}
+      <TimelineRenderer
+        frags={[
+          {
+            events: mainFeed,
+            refTime: mainFeed.at(0)?.created_at ?? unixNow(),
+          },
+        ]}
+        related={feed.related ?? []}
+        latest={latestAuthors}
+        showLatest={t => onShowLatest(t)}
+      />
       {(props.loadMore === undefined || props.loadMore === true) && (
         <div className="flex items-center">
           <button type="button" onClick={() => feed.loadMore()}>

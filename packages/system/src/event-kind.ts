@@ -24,11 +24,17 @@ enum EventKind {
   Relays = 10002, // NIP-65
   Ephemeral = 20_000,
   Auth = 22242, // NIP-42
-  PubkeyLists = 30000, // NIP-51a
-  NoteLists = 30001, // NIP-51b
+
+  MuteList = 10_000, // NIP-51
+  PinList = 10_001, // NIP-51
+
+  CategorizedPeople = 30000, // NIP-51a
+  CategorizedBookmarks = 30001, // NIP-51b
+
   TagLists = 30002, // NIP-51c
   Badge = 30009, // NIP-58
   ProfileBadges = 30008, // NIP-58
+
   LongFormTextNote = 30023, // NIP-23
   AppData = 30_078, // NIP-78
   LiveEvent = 30311, // NIP-102
@@ -37,7 +43,7 @@ enum EventKind {
   SimpleChatMetadata = 39_000, // NIP-29
   ZapRequest = 9734, // NIP 57
   ZapReceipt = 9735, // NIP 57
-  HttpAuthentication = 27235, // NIP XX - HTTP Authentication
+  HttpAuthentication = 27235, // NIP 98 - HTTP Authentication
 }
 
 export default EventKind;

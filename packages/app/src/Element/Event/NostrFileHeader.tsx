@@ -1,8 +1,8 @@
 import { FormattedMessage } from "react-intl";
 import { NostrEvent, NostrLink } from "@snort/system";
+import { useEventFeed } from "@snort/system-react";
 
 import { findTag } from "SnortUtils";
-import { useEventFeed } from "Feed/EventFeed";
 import PageSpinner from "Element/PageSpinner";
 import Reveal from "Element/Event/Reveal";
 import { MediaElement } from "Element/Embed/MediaElement";

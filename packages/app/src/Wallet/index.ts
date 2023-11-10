@@ -4,7 +4,7 @@ import { ExternalStore, decodeInvoice } from "@snort/shared";
 import { unwrap } from "SnortUtils";
 import LNDHubWallet from "./LNDHub";
 import { NostrConnectWallet } from "./NostrWalletConnect";
-import { setupWebLNWalletConfig, WebLNWallet } from "./WebLN";
+import { WebLNWallet } from "./WebLN";
 
 export enum WalletKind {
   LNDHub = 1,
@@ -134,7 +134,6 @@ export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
     this.#configs = [];
     this.#instance = new Map();
     this.load(false);
-    setupWebLNWalletConfig(this);
     this.notifyChange();
   }
 

@@ -1,11 +1,12 @@
 import { dedupe, unwrap } from "@snort/shared";
 import { EventKind, parseNostrLink } from "@snort/system";
+import { useEventFeed } from "@snort/system-react";
+import { FormattedMessage } from "react-intl";
+import { useParams } from "react-router-dom";
+
 import { Hour } from "Const";
 import Timeline from "Element/Feed/Timeline";
 import PageSpinner from "Element/PageSpinner";
-import { useEventFeed } from "Feed/EventFeed";
-import { FormattedMessage } from "react-intl";
-import { useParams } from "react-router-dom";
 
 export function ListFeedPage() {
   const { id } = useParams();
@@ -13,7 +14,7 @@ export function ListFeedPage() {
   const { data } = useEventFeed(link);
 
   if (!data) return <PageSpinner />;
-  if (data.kind !== EventKind.ContactList && data.kind !== EventKind.PubkeyLists) {
+  if (data.kind !== EventKind.ContactList && data.kind !== EventKind.CategorizedPeople) {
     return (
       <b>
         <FormattedMessage defaultMessage="Must be a contact list or pubkey list" />
