@@ -178,7 +178,7 @@ export class EventPublisher {
     fnExtra?: EventBuilderHook,
   ) {
     const eb = this.#eb(EventKind.ZapRequest);
-    eb.content(msg ?? "");
+    eb.content(msg?.trim() ?? "");
     if (note) {
       // HACK: remove relay tag, some zap services dont like relay tags
       eb.tag(unwrap(note.toEventTag()).slice(0, 2));
