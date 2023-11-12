@@ -10,8 +10,6 @@
   padding: 8px 12px;
 }
 
-@media (prefers-color-scheme: light) {
 .light .profile-card > div {
     color: black;
-  }
 }
