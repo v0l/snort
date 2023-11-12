@@ -153,6 +153,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
         c.on("eose", s => this.#onEndOfStoredEvents(c, s));
         c.on("disconnect", code => this.#onRelayDisconnect(c, code));
         c.on("connected", r => this.#onRelayConnected(c, r));
+        c.on("auth", (c, r, cb) => this.emit("auth", c, r, cb));
         await c.Connect();
       } else {
         // update settings if already connected
@@ -219,6 +220,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
         c.on("eose", s => this.#onEndOfStoredEvents(c, s));
         c.on("disconnect", code => this.#onRelayDisconnect(c, code));
         c.on("connected", r => this.#onRelayConnected(c, r));
+        c.on("auth", (c, r, cb) => this.emit("auth", c, r, cb));
         await c.Connect();
         return c;
       }
