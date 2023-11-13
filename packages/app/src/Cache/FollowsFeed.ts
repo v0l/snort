@@ -47,7 +47,7 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
     const keys = (await this.table?.toCollection().primaryKeys()) ?? [];
     this.onTable = new Set<string>(keys.map(a => a as string));
 
-    // load only latest 10 posts, rest can be loaded on-demand
+    // load only latest 50 posts, rest can be loaded on-demand
     const latest = await this.table?.orderBy("created_at").reverse().limit(50).toArray();
     latest?.forEach(v => this.cache.set(this.key(v), v));
 

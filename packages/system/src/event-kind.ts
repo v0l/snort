@@ -31,7 +31,6 @@ enum EventKind {
   CategorizedPeople = 30000, // NIP-51a
   CategorizedBookmarks = 30001, // NIP-51b
 
-  TagLists = 30002, // NIP-51c
   Badge = 30009, // NIP-58
   ProfileBadges = 30008, // NIP-58
 

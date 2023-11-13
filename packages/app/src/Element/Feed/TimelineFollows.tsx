@@ -12,6 +12,7 @@ import useLogin from "Hooks/useLogin";
 import { TimelineFragment, TimelineRenderer } from "./TimelineFragment";
 import useHashtagsFeed from "Feed/HashtagsFeed";
 import { ShowMoreInView } from "Element/Event/ShowMore";
+import { HashTagHeader } from "Pages/HashTagsPage";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;
@@ -67,6 +68,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     const included = new Set<string>();
     return (mixin.data.data ?? [])
       .filter(a => !mainFeedIds.has(a.id) && postsOnly(a))
+      .filter(a => a.tags.filter(a => a[0] === "t").length < 5)
       .reduce(
         (acc, v) => {
           if (included.has(v.id)) return acc;
@@ -116,9 +118,9 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         noteOnClick={props.noteOnClick}
         noteRenderer={props.noteRenderer}
       />
-      <ShowMoreInView
+      {sortedFeed.length > 0 && <ShowMoreInView
         onClick={async () => await FollowsFeed.loadMore(system, login, sortedFeed[sortedFeed.length - 1].created_at)}
-      />
+      />}
     </>
   );
 };
@@ -129,27 +131,31 @@ function weaveTimeline(
   hashtags: Record<string, Array<TaggedNostrEvent>>,
 ): Array<TimelineFragment> {
   // always skip 5 posts from start to avoid heavy handed weaving
-  const skip = 5;
+  let skip = 5;
 
   if (main.length < skip) {
-    return [{ events: main, refTime: unixNow() }];
+    skip = Math.min(skip, main.length - 1);
   }
 
   const frags = Object.entries(hashtags).map(([k, v]) => {
     const take = v.slice(0, 5);
     return {
       title: (
-        <div className="flex bb p">
-          <h2>#{k}</h2>
+        <div className="bb p">
+          <HashTagHeader tag={k} />
         </div>
       ),
       events: take,
       refTime: Math.min(
-        main[skip].created_at,
+        main.at(skip)?.created_at ?? unixNow(),
         take.reduce((acc, v) => (acc > v.created_at ? acc : v.created_at), 0),
       ),
     } as TimelineFragment;
   });
+
+  if (main.length === 0) {
+    return frags;
+  }
 
   return [
     {

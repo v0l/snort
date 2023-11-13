@@ -39,6 +39,10 @@
   margin-right: auto;
 }
 
+.text iframe[src*="youtube.com"] {
+  aspect-ratio: 16/9;
+}
+
 .gallery {
   grid-template-columns: repeat(4, 1fr);
   gap: 2px;
