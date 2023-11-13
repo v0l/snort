@@ -1,16 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
+import { unixNowMs } from "@snort/shared";
+
 import AsyncButton from "Element/AsyncButton";
-import classNames from "classnames";
 import { appendDedupe } from "SnortUtils";
-import useEventPublisher from "Hooks/useEventPublisher";
-import { setMuted } from "Login";
 import { ToggleSwitch } from "Icons/Toggle";
+import { updateAppData } from "Login";
+import useLogin from "Hooks/useLogin";
 
 export const FixedModeration = {
-  hateSpeech: {
+  /*hateSpeech: {
     title: <FormattedMessage defaultMessage="Hate Speech" />,
     words: [],
     canEdit: false,
@@ -19,7 +19,7 @@ export const FixedModeration = {
     title: <FormattedMessage defaultMessage="Derogatory" />,
     words: [],
     canEdit: false,
-  },
+  },*/
   nsfw: {
     title: <FormattedMessage defaultMessage="NSFW" />,
     words: [
@@ -43,6 +43,7 @@ export const FixedModeration = {
       "explicit language",
       "adult-only",
       "mature language",
+      "sex"
     ],
     canEdit: false,
   },
@@ -72,18 +73,50 @@ export const FixedModeration = {
       "crypto wallet",
       "satoshi nakamoto",
     ],
-    canEdit: true,
+    canEdit: false,
   },
   politics: {
     title: <FormattedMessage defaultMessage="Politics" />,
-    words: [],
-    canEdit: true,
+    words: [
+      "politics",
+      "election",
+      "democrat",
+      "republican",
+      "senate",
+      "congress",
+      "parliament",
+      "president",
+      "prime minister",
+      "policy",
+      "legislation",
+      "vote",
+      "campaign",
+      "government",
+      "political party",
+      "lobbying",
+      "referendum",
+      "bill",
+      "conservative",
+      "liberal",
+      "left-wing",
+      "right-wing",
+      "socialist",
+      "capitalist",
+      "diplomacy",
+      "sanction",
+      "geopolitics",
+      "activism",
+      "protest",
+      "rally"
+    ],
+    canEdit: false,
   },
 };
 
 export function Moderation() {
-  const { publisher, system } = useEventPublisher();
+  const id = useLogin(s => s.id);
   const [topics, setTopics] = useState<Array<string>>(Object.keys(FixedModeration));
+  const [extraTerms, setExtraTerms] = useState("");
   const navigate = useNavigate();
 
   return (
@@ -135,7 +168,7 @@ export function Moderation() {
         <small className="font-medium">
           <FormattedMessage defaultMessage="Use commas to separate words e.g. word1, word2, word3" />
         </small>
-        <textarea></textarea>
+        <textarea onChange={e => setExtraTerms(e.target.value)} value={extraTerms}></textarea>
       </div>
       <AsyncButton
         className="primary"
@@ -143,9 +176,18 @@ export function Moderation() {
           const words = Object.entries(FixedModeration)
             .filter(([k]) => topics.includes(k))
             .map(([, v]) => v.words)
-            .flat();
+            .flat()
+            .concat(extraTerms.split(",").map(a => a.trim()));
           if (words.length > 0) {
-            // no
+            updateAppData(id, ad => {
+              return {
+                item: {
+                  ...ad,
+                  mutedWords: appendDedupe(ad.mutedWords, words)
+                },
+                timestamp: unixNowMs()
+              }
+            })
           }
           navigate("/");
         }}>

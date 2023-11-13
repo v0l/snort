@@ -39,7 +39,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   );
   const system = useContext(SnortContext);
   const login = useLogin();
-  const { muted, isMuted } = useModeration();
+  const { muted, isEventMuted } = useModeration();
 
   const sortedFeed = useMemo(() => orderDescending(feed), [feed]);
 
@@ -49,11 +49,11 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   );
 
   const filterPosts = useCallback(
-    function <T extends NostrEvent>(nts: Array<T>) {
+    (nts: Array<TaggedNostrEvent>) => {
       const a = nts.filter(a => a.kind !== EventKind.LiveEvent);
       return a
         ?.filter(postsOnly)
-        .filter(a => !isMuted(a.pubkey) && login.follows.item.includes(a.pubkey) && (props.noteFilter?.(a) ?? true));
+        .filter(a => !isEventMuted(a) && login.follows.item.includes(a.pubkey) && (props.noteFilter?.(a) ?? true));
     },
     [postsOnly, muted, login.follows.timestamp],
   );

@@ -34,14 +34,14 @@ const Timeline = (props: TimelineProps) => {
   }, [props]);
   const feed: TimelineFeed = useTimelineFeed(props.subject, feedOptions);
 
-  const { muted, isMuted } = useModeration();
+  const { muted, isEventMuted } = useModeration();
   const filterPosts = useCallback(
     (nts: readonly TaggedNostrEvent[]) => {
       const a = [...nts.filter(a => a.kind !== EventKind.LiveEvent)];
       props.noSort || a.sort((a, b) => b.created_at - a.created_at);
       return a
         ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
-        .filter(a => props.ignoreModeration || !isMuted(a.pubkey));
+        .filter(a => props.ignoreModeration || !isEventMuted(a));
     },
     [props.postsOnly, muted, props.ignoreModeration],
   );
