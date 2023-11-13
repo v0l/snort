@@ -34,7 +34,7 @@ function ZapTarget({ target }: { target: ZapPoolRecipient }) {
   const login = useLogin();
   const profile = useUserProfile(target.pubkey);
   const hasAddress = profile?.lud16 || profile?.lud06;
-  const defaultZapMount = Math.ceil(login.preferences.defaultZapAmount * (target.split / 100));
+  const defaultZapMount = Math.ceil(login.appData.item.preferences.defaultZapAmount * (target.split / 100));
   return (
     <ProfilePreview
       pubkey={target.pubkey}
@@ -107,7 +107,7 @@ export default function ZapPoolPage() {
           values={{
             number: (
               <b>
-                <FormattedNumber value={login.preferences.defaultZapAmount} />
+                <FormattedNumber value={login.appData.item.preferences.defaultZapAmount} />
               </b>
             ),
           }}
@@ -119,12 +119,14 @@ export default function ZapPoolPage() {
           values={{
             nIn: (
               <b>
-                <FormattedNumber value={login.preferences.defaultZapAmount} />
+                <FormattedNumber value={login.appData.item.preferences.defaultZapAmount} />
               </b>
             ),
             nOut: (
               <b>
-                <FormattedNumber value={ZapPoolController.calcAllocation(login.preferences.defaultZapAmount)} />
+                <FormattedNumber
+                  value={ZapPoolController.calcAllocation(login.appData.item.preferences.defaultZapAmount)}
+                />
               </b>
             ),
           }}

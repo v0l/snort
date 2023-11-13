@@ -33,8 +33,6 @@ const HashTagsPage = () => {
 
 export default HashTagsPage;
 
-
-
 export function HashTagHeader({ tag }: { tag: string }) {
   const login = useLogin();
   const isFollowing = useMemo(() => {
@@ -55,35 +53,36 @@ export function HashTagHeader({ tag }: { tag: string }) {
 
   const sub = useMemo(() => {
     const rb = new RequestBuilder(`hashtag-counts:${tag}`);
-    rb.withFilter()
-      .kinds([EventKind.CategorizedBookmarks])
-      .tag("d", ["follow"])
-      .tag("t", [tag.toLowerCase()]);
+    rb.withFilter().kinds([EventKind.CategorizedBookmarks]).tag("d", ["follow"]).tag("t", [tag.toLowerCase()]);
     return rb;
   }, [tag]);
   const followsTag = useRequestBuilder(NoteCollection, sub);
   const pubkeys = dedupe((followsTag.data ?? []).map(a => a.pubkey));
 
-  return <div className="flex items-center justify-between">
-    <div className="flex flex-col g8">
-      <h2>#{tag}</h2>
-      <div className="flex">
-        {pubkeys.slice(0, 5).map(a => <ProfileImage pubkey={a} showUsername={false} link={""} showFollowingMark={false} size={40} />)}
-        {pubkeys.length > 5 && <span>
-          +<FormattedNumber value={pubkeys.length - 5} />
-        </span>}
+  return (
+    <div className="flex items-center justify-between">
+      <div className="flex flex-col g8">
+        <h2>#{tag}</h2>
+        <div className="flex">
+          {pubkeys.slice(0, 5).map(a => (
+            <ProfileImage pubkey={a} showUsername={false} link={""} showFollowingMark={false} size={40} />
+          ))}
+          {pubkeys.length > 5 && (
+            <span>
+              +<FormattedNumber value={pubkeys.length - 5} />
+            </span>
+          )}
+        </div>
       </div>
+      {isFollowing ? (
+        <AsyncButton className="secondary" onClick={() => followTags(login.tags.item.filter(t => t !== tag))}>
+          <FormattedMessage defaultMessage="Unfollow" />
+        </AsyncButton>
+      ) : (
+        <AsyncButton onClick={() => followTags(login.tags.item.concat([tag]))}>
+          <FormattedMessage defaultMessage="Follow" />
+        </AsyncButton>
+      )}
     </div>
-    {isFollowing ? (
-      <AsyncButton
-        className="secondary"
-        onClick={() => followTags(login.tags.item.filter(t => t !== tag))}>
-        <FormattedMessage defaultMessage="Unfollow" />
-      </AsyncButton>
-    ) : (
-      <AsyncButton onClick={() => followTags(login.tags.item.concat([tag]))}>
-        <FormattedMessage defaultMessage="Follow" />
-      </AsyncButton>
-    )}
-  </div>
+  );
 }

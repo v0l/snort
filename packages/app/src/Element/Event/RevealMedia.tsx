@@ -13,12 +13,15 @@ interface RevealMediaProps {
 }
 
 export default function RevealMedia(props: RevealMediaProps) {
-  const login = useLogin();
-  const { preferences: pref, follows, publicKey } = login;
+  const { preferences, follows, publicKey } = useLogin(s => ({
+    preferences: s.appData.item.preferences,
+    follows: s.follows.item,
+    publicKey: s.publicKey,
+  }));
 
-  const hideNonFollows = pref.autoLoadMedia === "follows-only" && !follows.item.includes(props.creator);
+  const hideNonFollows = preferences.autoLoadMedia === "follows-only" && !follows.includes(props.creator);
   const isMine = props.creator === publicKey;
-  const hideMedia = pref.autoLoadMedia === "none" || (!isMine && hideNonFollows);
+  const hideMedia = preferences.autoLoadMedia === "none" || (!isMine && hideNonFollows);
   const hostname = new URL(props.link).hostname;
 
   const url = new URL(props.link);

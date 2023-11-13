@@ -1,6 +1,6 @@
 import { unixNowMs } from "@snort/shared";
 import useLogin from "Hooks/useLogin";
-import { setAppData } from "Login";
+import { updateAppData } from "Login";
 import { appendDedupe } from "SnortUtils";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
@@ -10,32 +10,24 @@ export function ModerationSettings() {
   const [muteWord, setMuteWord] = useState("");
 
   function addMutedWord() {
-    login.appData ??= {
+    updateAppData(login.id, ad => ({
       item: {
-        mutedWords: [],
-      },
-      timestamp: 0,
-    };
-    setAppData(
-      login,
-      {
-        ...login.appData.item,
+        ...ad,
         mutedWords: appendDedupe(login.appData.item.mutedWords, [muteWord]),
       },
-      unixNowMs(),
-    );
+      timestamp: unixNowMs(),
+    }));
     setMuteWord("");
   }
 
   function removeMutedWord(word: string) {
-    setAppData(
-      login,
-      {
-        ...login.appData.item,
+    updateAppData(login.id, ad => ({
+      item: {
+        ...ad,
         mutedWords: login.appData.item.mutedWords.filter(a => a !== word),
       },
-      unixNowMs(),
-    );
+      timestamp: unixNowMs(),
+    }));
     setMuteWord("");
   }
 

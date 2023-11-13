@@ -28,7 +28,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     window: options.window,
     now: options.now ?? unixNow(),
   });
-  const pref = useLogin().preferences;
+  const pref = useLogin(s => s.appData.item.preferences);
 
   const createBuilder = useCallback(() => {
     if (subject.type !== "global" && subject.items.length === 0) {

@@ -83,7 +83,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
 
   useEffect(() => {
     const sub = getCurrentSubscription(login.subscriptions);
-    if (sub?.type === SubscriptionType.Premium && (login.preferences.autoTranslate ?? true)) {
+    if (sub?.type === SubscriptionType.Premium && (login.appData.item.preferences.autoTranslate ?? true)) {
       translate();
     }
   }, []);
@@ -162,7 +162,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
             <FormattedMessage {...messages.Mute} />
           </MenuItem>
         )}
-        {login.preferences.enableReactions && !login.readonly && (
+        {login.appData.item.preferences.enableReactions && !login.readonly && (
           <MenuItem onClick={() => props.react("-")}>
             <Icon name="dislike" />
             <FormattedMessage {...messages.DislikeAction} />
@@ -182,12 +182,10 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
           <Icon name="translate" />
           <FormattedMessage {...messages.TranslateTo} values={{ lang: langNames.of(lang.split("-")[0]) }} />
         </MenuItem>
-        {login.preferences.showDebugMenus && (
-          <MenuItem onClick={() => copyEvent()}>
-            <Icon name="json" />
-            <FormattedMessage {...messages.CopyJSON} />
-          </MenuItem>
-        )}
+        <MenuItem onClick={() => copyEvent()}>
+          <Icon name="json" />
+          <FormattedMessage {...messages.CopyJSON} />
+        </MenuItem>
         {isMine && !login.readonly && (
           <MenuItem onClick={() => deleteEvent()}>
             <Icon name="trash" className="red" />

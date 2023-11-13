@@ -10,7 +10,7 @@ export interface ImgProxySettings {
 }
 
 export default function useImgProxy() {
-  const settings = useLogin().preferences.imgProxyConfig;
+  const settings = useLogin(s => s.appData.item.preferences.imgProxyConfig);
   const te = new TextEncoder();
 
   function urlSafe(s: string) {

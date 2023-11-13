@@ -89,8 +89,8 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       // ignored
     }
   })();
-  const showBadges = login.preferences.showBadges ?? false;
-  const showStatus = login.preferences.showStatus ?? true;
+  const showBadges = login.appData.item.preferences.showBadges ?? false;
+  const showStatus = login.appData.item.preferences.showStatus ?? true;
 
   // feeds
   const { blocked } = useModeration();

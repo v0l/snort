@@ -247,7 +247,7 @@ function SendSatsInput(props: {
   onNextStage: (v: SendSatsInputSelection) => Promise<void>;
 }) {
   const { defaultZapAmount, readonly } = useLogin(s => ({
-    defaultZapAmount: s.preferences.defaultZapAmount,
+    defaultZapAmount: s.appData.item.preferences.defaultZapAmount,
     readonly: s.readonly,
   }));
   const { formatMessage } = useIntl();

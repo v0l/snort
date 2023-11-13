@@ -52,7 +52,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     publicKey,
     preferences: prefs,
     readonly,
-  } = useLogin(s => ({ preferences: s.preferences, publicKey: s.publicKey, readonly: s.readonly }));
+  } = useLogin(s => ({ preferences: s.appData.item.preferences, publicKey: s.publicKey, readonly: s.readonly }));
   const author = useUserProfile(ev.pubkey);
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const { publisher, system } = useEventPublisher();

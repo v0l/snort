@@ -22,7 +22,7 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
     for (const pk of ids) {
       try {
         const profile = await UserCache.get(pk);
-        const amtSend = login.preferences.defaultZapAmount;
+        const amtSend = login.appData.item.preferences.defaultZapAmount;
         const lnurl = profile?.lud16 || profile?.lud06;
         if (lnurl) {
           const svc = new LNURL(lnurl);
@@ -72,7 +72,7 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
             <FormattedMessage
               defaultMessage="Zap all {n} sats"
               values={{
-                n: <FormattedNumber value={login.preferences.defaultZapAmount * ids.length} />,
+                n: <FormattedNumber value={login.appData.item.preferences.defaultZapAmount * ids.length} />,
               }}
             />
           </AsyncButton>

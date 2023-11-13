@@ -330,6 +330,13 @@ export class EventPublisher {
     return await this.#sign(eb);
   }
 
+  async appData(data: object, id: string) {
+    const eb = this.#eb(EventKind.AppData);
+    eb.content(await this.nip4Encrypt(JSON.stringify(data), this.#pubKey));
+    eb.tag(["d", id]);
+    return await this.#sign(eb);
+  }
+
   /**
    * NIP-59 Gift Wrap event with ephemeral key
    */

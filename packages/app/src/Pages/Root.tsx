@@ -181,7 +181,10 @@ export const TagsTab = (params: { tag?: string }) => {
 };
 
 const DefaultTab = () => {
-  const { preferences, publicKey } = useLogin();
+  const { preferences, publicKey } = useLogin(s => ({
+    preferences: s.appData.item.preferences,
+    publicKey: s.publicKey,
+  }));
   const tab = publicKey ? preferences.defaultRootTab ?? `notes` : `trending/notes`;
   const elm = RootTabRoutes.find(a => a.path === tab)?.element;
   return elm;

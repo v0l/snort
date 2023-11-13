@@ -5,7 +5,7 @@ import { SubscriptionEvent } from "Subscription";
 /**
  * Stores latest copy of an item
  */
-interface Newest<T> {
+export interface Newest<T> {
   item: T;
   timestamp: number;
 }
@@ -20,6 +20,7 @@ export const enum LoginSessionType {
 
 export interface SnortAppData {
   mutedWords: Array<string>;
+  preferences: UserPreferences;
 }
 
 export interface LoginSession {
@@ -103,11 +104,6 @@ export interface LoginSession {
    * Timestamp of last read notification
    */
   readNotifications: number;
-
-  /**
-   * Users cusom preferences
-   */
-  preferences: UserPreferences;
 
   /**
    * Snort subscriptions licences

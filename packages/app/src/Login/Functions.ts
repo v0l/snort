@@ -13,7 +13,7 @@ import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
 import { DefaultRelays, SnortPubKey } from "Const";
-import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData } from "Login";
+import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData, Newest } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import { bech32ToHex, dedupeById, sanitizeRelayUrl, unwrap } from "SnortUtils";
 import { SubscriptionEvent } from "Subscription";
@@ -54,9 +54,13 @@ export function removeRelay(state: LoginSession, addr: string) {
   LoginStore.updateSession(state);
 }
 
-export function updatePreferences(state: LoginSession, p: UserPreferences) {
-  state.preferences = p;
-  LoginStore.updateSession(state);
+export function updatePreferences(id: string, p: UserPreferences) {
+  updateAppData(id, d => {
+    return {
+      item: { ...d, preferences: p },
+      timestamp: unixNowMs(),
+    };
+  });
 }
 
 export function logout(id: string) {
@@ -181,6 +185,17 @@ export function setAppData(state: LoginSession, data: SnortAppData, ts: number) 
   state.appData.item = data;
   state.appData.timestamp = ts;
   LoginStore.updateSession(state);
+}
+
+export function updateAppData(id: string, fn: (data: SnortAppData) => Newest<SnortAppData>) {
+  const session = LoginStore.get(id);
+  if (session) {
+    const next = fn(session.appData.item);
+    if (next.timestamp > session.appData.timestamp) {
+      session.appData = next;
+      LoginStore.updateSession(session);
+    }
+  }
 }
 
 export function addSubscription(state: LoginSession, ...subs: SubscriptionEvent[]) {

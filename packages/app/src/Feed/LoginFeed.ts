@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { TaggedNostrEvent, EventKind, RequestBuilder, NoteCollection, NostrLink } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
-import { bech32ToHex, findTag, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";
+import { bech32ToHex, debounce, findTag, getNewest, getNewestEventTagsByKey, unwrap } from "SnortUtils";
 import { makeNotification, sendNotification } from "Notifications";
 import useEventPublisher from "Hooks/useEventPublisher";
 import useModeration from "Hooks/useModeration";
@@ -40,8 +40,18 @@ export default function useLoginFeed() {
   useRefreshFeedCache(GiftsCache, true);
 
   useEffect(() => {
-    system.checkSigs = login.preferences.checkSigs;
+    system.checkSigs = login.appData.item.preferences.checkSigs;
   }, [login]);
+
+  // write appdata after 10s of no changes
+  useEffect(() => {
+    return debounce(10_000, async () => {
+      if (publisher && login.appData.item) {
+        const ev = await publisher.appData(login.appData.item, "snort");
+        await system.BroadcastEvent(ev);
+      }
+    });
+  }, [login.appData.timestamp]);
 
   const subLogin = useMemo(() => {
     if (!login || !pubKey) return null;

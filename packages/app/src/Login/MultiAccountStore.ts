@@ -7,13 +7,12 @@ import { deepClone, sanitizeRelayUrl, unwrap, ExternalStore } from "@snort/share
 
 import { DefaultRelays } from "Const";
 import { LoginSession, LoginSessionType, createPublisher } from "Login";
-import { DefaultPreferences } from "./Preferences";
+import { DefaultPreferences, UserPreferences } from "./Preferences";
 
 const AccountStoreKey = "sessions";
 const LoggedOut = {
   id: "default",
   type: "public_key",
-  preferences: DefaultPreferences,
   readonly: true,
   tags: {
     item: [],
@@ -49,6 +48,7 @@ const LoggedOut = {
   appData: {
     item: {
       mutedWords: [],
+      preferences: DefaultPreferences,
     },
     timestamp: 0,
   },
@@ -83,11 +83,11 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       v.appData ??= {
         item: {
           mutedWords: [],
+          preferences: DefaultPreferences,
         },
         timestamp: 0,
       };
       v.extraChats ??= [];
-      v.preferences.checkSigs ??= false;
       if (v.privateKeyData) {
         v.privateKeyData = KeyStorage.fromPayload(v.privateKeyData as object);
       }
@@ -100,6 +100,13 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       pubkey: unwrap(v.publicKey),
       id: v.id,
     }));
+  }
+
+  get(id: string) {
+    const s = this.#accounts.get(id);
+    if (s) {
+      return { ...s };
+    }
   }
 
   allSubscriptions() {
@@ -246,14 +253,6 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   #migrate() {
     let didMigrate = false;
 
-    // replace default tab with notes
-    for (const [, v] of this.#accounts) {
-      if ((v.preferences.defaultRootTab as string) === "posts") {
-        v.preferences.defaultRootTab = "notes";
-        didMigrate = true;
-      }
-    }
-
     // update session types
     for (const [, v] of this.#accounts) {
       if (!v.type) {
@@ -279,6 +278,15 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       // reset readonly on load
       if (v.type === LoginSessionType.PrivateKey && v.readonly) {
         v.readonly = false;
+        didMigrate = true;
+      }
+    }
+
+    // move preferences to appdata
+    for (const [, v] of this.#accounts) {
+      if ("preferences" in v) {
+        v.appData.item.preferences = v.preferences as UserPreferences;
+        delete v["preferences"];
         didMigrate = true;
       }
     }

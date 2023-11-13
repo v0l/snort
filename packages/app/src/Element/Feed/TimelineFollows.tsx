@@ -118,9 +118,11 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         noteOnClick={props.noteOnClick}
         noteRenderer={props.noteRenderer}
       />
-      {sortedFeed.length > 0 && <ShowMoreInView
-        onClick={async () => await FollowsFeed.loadMore(system, login, sortedFeed[sortedFeed.length - 1].created_at)}
-      />}
+      {sortedFeed.length > 0 && (
+        <ShowMoreInView
+          onClick={async () => await FollowsFeed.loadMore(system, login, sortedFeed[sortedFeed.length - 1].created_at)}
+        />
+      )}
     </>
   );
 };

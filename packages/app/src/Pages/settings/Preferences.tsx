@@ -35,8 +35,7 @@ export const AllLanguageCodes = [
 
 const PreferencesPage = () => {
   const { formatMessage } = useIntl();
-  const login = useLogin();
-  const perf = login.preferences;
+  const { id, perf } = useLogin(s => ({ id: s.id, perf: s.appData.item.preferences }));
   const { lang } = useLocale();
 
   return (
@@ -53,7 +52,7 @@ const PreferencesPage = () => {
           <select
             value={lang}
             onChange={e =>
-              updatePreferences(login, {
+              updatePreferences(id, {
                 ...perf,
                 language: e.target.value,
               })
@@ -77,7 +76,7 @@ const PreferencesPage = () => {
           <select
             value={perf.theme}
             onChange={e =>
-              updatePreferences(login, {
+              updatePreferences(id, {
                 ...perf,
                 theme: e.target.value,
               } as UserPreferences)
@@ -102,7 +101,7 @@ const PreferencesPage = () => {
           <select
             value={perf.defaultRootTab}
             onChange={e =>
-              updatePreferences(login, {
+              updatePreferences(id, {
                 ...perf,
                 defaultRootTab: e.target.value,
               } as UserPreferences)
@@ -132,7 +131,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.telemetry ?? true}
-            onChange={e => updatePreferences(login, { ...perf, telemetry: e.target.checked })}
+            onChange={e => updatePreferences(id, { ...perf, telemetry: e.target.checked })}
           />
         </div>
       </div>
@@ -149,7 +148,7 @@ const PreferencesPage = () => {
               className="w-max"
               value={perf.autoLoadMedia}
               onChange={e =>
-                updatePreferences(login, {
+                updatePreferences(id, {
                   ...perf,
                   autoLoadMedia: e.target.value,
                 } as UserPreferences)
@@ -180,7 +179,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.checkSigs}
-            onChange={e => updatePreferences(login, { ...perf, checkSigs: e.target.checked })}
+            onChange={e => updatePreferences(id, { ...perf, checkSigs: e.target.checked })}
           />
         </div>
       </div>
@@ -197,7 +196,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.autoTranslate}
-            onChange={e => updatePreferences(login, { ...perf, autoTranslate: e.target.checked })}
+            onChange={e => updatePreferences(id, { ...perf, autoTranslate: e.target.checked })}
           />
         </div>
       </div>
@@ -215,7 +214,7 @@ const PreferencesPage = () => {
             type="number"
             defaultValue={perf.pow}
             min={0}
-            onChange={e => updatePreferences(login, { ...perf, pow: parseInt(e.target.value || "0") })}
+            onChange={e => updatePreferences(id, { ...perf, pow: parseInt(e.target.value || "0") })}
           />
         </div>
       </div>
@@ -228,7 +227,7 @@ const PreferencesPage = () => {
             type="number"
             defaultValue={perf.defaultZapAmount}
             min={1}
-            onChange={e => updatePreferences(login, { ...perf, defaultZapAmount: parseInt(e.target.value || "0") })}
+            onChange={e => updatePreferences(id, { ...perf, defaultZapAmount: parseInt(e.target.value || "0") })}
           />
         </div>
       </div>
@@ -245,7 +244,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.showBadges ?? false}
-            onChange={e => updatePreferences(login, { ...perf, showBadges: e.target.checked })}
+            onChange={e => updatePreferences(id, { ...perf, showBadges: e.target.checked })}
           />
         </div>
       </div>
@@ -262,7 +261,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.showStatus ?? true}
-            onChange={e => updatePreferences(login, { ...perf, showStatus: e.target.checked })}
+            onChange={e => updatePreferences(id, { ...perf, showStatus: e.target.checked })}
           />
         </div>
       </div>
@@ -279,7 +278,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.autoZap}
-            onChange={e => updatePreferences(login, { ...perf, autoZap: e.target.checked })}
+            onChange={e => updatePreferences(id, { ...perf, autoZap: e.target.checked })}
           />
         </div>
       </div>
@@ -298,7 +297,7 @@ const PreferencesPage = () => {
               type="checkbox"
               checked={perf.imgProxyConfig !== null}
               onChange={e =>
-                updatePreferences(login, {
+                updatePreferences(id, {
                   ...perf,
                   imgProxyConfig: e.target.checked ? DefaultImgProxy : null,
                 })
@@ -321,7 +320,7 @@ const PreferencesPage = () => {
                     description: "Placeholder text for imgproxy url textbox",
                   })}
                   onChange={e =>
-                    updatePreferences(login, {
+                    updatePreferences(id, {
                       ...perf,
                       imgProxyConfig: {
                         ...unwrap(perf.imgProxyConfig),
@@ -345,7 +344,7 @@ const PreferencesPage = () => {
                     description: "Hexidecimal 'key' input for improxy",
                   })}
                   onChange={e =>
-                    updatePreferences(login, {
+                    updatePreferences(id, {
                       ...perf,
                       imgProxyConfig: {
                         ...unwrap(perf.imgProxyConfig),
@@ -369,7 +368,7 @@ const PreferencesPage = () => {
                     description: "Hexidecimal 'salt' input for imgproxy",
                   })}
                   onChange={e =>
-                    updatePreferences(login, {
+                    updatePreferences(id, {
                       ...perf,
                       imgProxyConfig: {
                         ...unwrap(perf.imgProxyConfig),
@@ -396,7 +395,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.enableReactions}
-            onChange={e => updatePreferences(login, { ...perf, enableReactions: e.target.checked })}
+            onChange={e => updatePreferences(id, { ...perf, enableReactions: e.target.checked })}
           />
         </div>
       </div>
@@ -413,7 +412,7 @@ const PreferencesPage = () => {
           onChange={e => {
             const split = e.target.value.match(/[\p{L}\S]{1}/u);
             console.debug(e.target.value, split);
-            updatePreferences(login, {
+            updatePreferences(id, {
               ...perf,
               reactionEmoji: split?.[0] ?? "",
             });
@@ -433,7 +432,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.confirmReposts}
-            onChange={e => updatePreferences(login, { ...perf, confirmReposts: e.target.checked })}
+            onChange={e => updatePreferences(id, { ...perf, confirmReposts: e.target.checked })}
           />
         </div>
       </div>
@@ -450,7 +449,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.autoShowLatest}
-            onChange={e => updatePreferences(login, { ...perf, autoShowLatest: e.target.checked })}
+            onChange={e => updatePreferences(id, { ...perf, autoShowLatest: e.target.checked })}
           />
         </div>
       </div>
@@ -464,7 +463,7 @@ const PreferencesPage = () => {
         <select
           value={perf.fileUploader}
           onChange={e =>
-            updatePreferences(login, {
+            updatePreferences(id, {
               ...perf,
               fileUploader: e.target.value,
             } as UserPreferences)
@@ -489,7 +488,7 @@ const PreferencesPage = () => {
           <input
             type="checkbox"
             checked={perf.showDebugMenus}
-            onChange={e => updatePreferences(login, { ...perf, showDebugMenus: e.target.checked })}
+            onChange={e => updatePreferences(id, { ...perf, showDebugMenus: e.target.checked })}
           />
         </div>
       </div>

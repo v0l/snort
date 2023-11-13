@@ -139,21 +139,28 @@ export interface MessageEncryptor {
   decryptData(payload: MessageEncryptorPayload, sharedSecet: Uint8Array): Promise<string> | string;
 }
 
-export function decodeEncryptionPayload(p: string) {
+export function decodeEncryptionPayload(p: string): MessageEncryptorPayload {
   if (p.startsWith("{") && p.endsWith("}")) {
     const pj = JSON.parse(p) as { v: number; nonce: string; ciphertext: string };
     return {
       v: pj.v,
       nonce: base64.decode(pj.nonce),
       ciphertext: base64.decode(pj.ciphertext),
-    } as MessageEncryptorPayload;
+    };
+  } else if (p.includes("?iv=")) {
+    const [ciphertext, nonce] = p.split("?iv=");
+    return {
+      v: MessageEncryptorVersion.Nip4,
+      nonce: base64.decode(nonce),
+      ciphertext: base64.decode(ciphertext),
+    };
   } else {
     const buf = base64.decode(p);
     return {
       v: buf[0],
       nonce: buf.subarray(1, 25),
       ciphertext: buf.subarray(25),
-    } as MessageEncryptorPayload;
+    };
   }
 }
 
