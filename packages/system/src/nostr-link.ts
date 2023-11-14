@@ -82,7 +82,7 @@ export class NostrLink implements ToNostrEventTag {
   isReplyToThis(ev: NostrEvent) {
     const NonNip10Kinds = [EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt];
     if (NonNip10Kinds.includes(ev.kind)) {
-      const lastRef = ev.tags.findLast(a => a[0] === "e" || a[1] === "a");
+      const lastRef = ev.tags.findLast(a => a[0] === "e" || a[0] === "a");
       if (!lastRef) return false;
 
       if (
