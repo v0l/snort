@@ -1,5 +1,5 @@
 import "./Note.css";
-import React from "react";
+import { ReactNode } from "react";
 import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
 import { NostrFileElement } from "Element/Event/NostrFileHeader";
 import ZapstrEmbed from "Element/Embed/ZapstrEmbed";
@@ -21,6 +21,7 @@ export interface NoteProps {
   depth?: number;
   searchedValue?: string;
   threadChains?: Map<string, Array<NostrEvent>>;
+  context?: ReactNode;
   options?: {
     showHeader?: boolean;
     showContextMenu?: boolean;

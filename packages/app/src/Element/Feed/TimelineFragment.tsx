@@ -1,11 +1,12 @@
+import { ReactNode, useCallback } from "react";
+import { FormattedMessage } from "react-intl";
+import { useInView } from "react-intersection-observer";
 import { TaggedNostrEvent } from "@snort/system";
+
 import Note from "Element/Event/Note";
 import ProfileImage from "Element/User/ProfileImage";
 import Icon from "Icons/Icon";
 import { findTag } from "SnortUtils";
-import { ReactNode, useCallback } from "react";
-import { useInView } from "react-intersection-observer";
-import { FormattedMessage } from "react-intl";
 
 export interface TimelineFragment {
   events: Array<TaggedNostrEvent>;
@@ -13,7 +14,7 @@ export interface TimelineFragment {
   title?: ReactNode;
 }
 
-export interface TimelineFragmentProps {
+export interface TimelineRendererProps {
   frags: Array<TimelineFragment>;
   related: Array<TaggedNostrEvent>;
   /**
@@ -25,14 +26,8 @@ export interface TimelineFragmentProps {
   noteOnClick?: (ev: TaggedNostrEvent) => void;
 }
 
-export function TimelineRenderer(props: TimelineFragmentProps) {
+export function TimelineRenderer(props: TimelineRendererProps) {
   const { ref, inView } = useInView();
-  const relatedFeed = useCallback(
-    (id: string) => {
-      return props.related.filter(a => findTag(a, "e") === id);
-    },
-    [props.related],
-  );
 
   return (
     <>
@@ -64,19 +59,48 @@ export function TimelineRenderer(props: TimelineFragmentProps) {
           )}
         </>
       )}
-      {props.frags.map(f => {
-        return (
-          <>
-            {f.title}
-            {f.events.map(
-              e =>
-                props.noteRenderer?.(e) ?? (
-                  <Note data={e} related={relatedFeed(e.id)} key={e.id} depth={0} onClick={props.noteOnClick} />
-                ),
-            )}
-          </>
-        );
-      })}
+      {props.frags.map(f => (
+        <TimelineFragment
+          frag={f}
+          related={props.related}
+          noteRenderer={props.noteRenderer}
+          noteOnClick={props.noteOnClick}
+        />
+      ))}
+    </>
+  );
+}
+
+export interface TimelineFragProps {
+  frag: TimelineFragment;
+  related: Array<TaggedNostrEvent>;
+  noteRenderer?: (ev: TaggedNostrEvent) => ReactNode;
+  noteOnClick?: (ev: TaggedNostrEvent) => void;
+}
+
+export function TimelineFragment(props: TimelineFragProps) {
+  const relatedFeed = useCallback(
+    (id: string) => {
+      return props.related.filter(a => findTag(a, "e") === id);
+    },
+    [props.related],
+  );
+  return (
+    <>
+      {props.frag.title}
+      {props.frag.events.map(
+        e =>
+          props.noteRenderer?.(e) ?? (
+            <Note
+              data={e}
+              related={relatedFeed(e.id)}
+              key={e.id}
+              depth={0}
+              onClick={props.noteOnClick}
+              context={e.context}
+            />
+          ),
+      )}
     </>
   );
 }

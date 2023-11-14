@@ -290,6 +290,7 @@ export function NoteInner(props: NoteProps) {
               link={opt?.canClick === undefined ? undefined : ""}
             />
             <div className="info">
+              {props.context}
               {(options.showTime || options.showBookmarked) && (
                 <>
                   {options.showBookmarked && (

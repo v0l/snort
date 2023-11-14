@@ -1,5 +1,6 @@
 import "./Timeline.css";
 import { ReactNode, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
+import { Link } from "react-router-dom";
 import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { unixNow } from "@snort/shared";
 import { SnortContext, useReactions } from "@snort/system-react";
@@ -9,10 +10,9 @@ import useModeration from "Hooks/useModeration";
 import { FollowsFeed } from "Cache";
 import { LiveStreams } from "Element/LiveStreams";
 import useLogin from "Hooks/useLogin";
-import { TimelineFragment, TimelineRenderer } from "./TimelineFragment";
+import { TimelineRenderer } from "./TimelineFragment";
 import useHashtagsFeed from "Feed/HashtagsFeed";
 import { ShowMoreInView } from "Element/Event/ShowMore";
-import { HashTagHeader } from "Pages/HashTagsPage";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;
@@ -42,6 +42,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const { muted, isEventMuted } = useModeration();
 
   const sortedFeed = useMemo(() => orderDescending(feed), [feed]);
+  const oldest = useMemo(() => sortedFeed.at(-1)?.created_at, [sortedFeed]);
 
   const postsOnly = useCallback(
     (a: NostrEvent) => (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true),
@@ -61,32 +62,28 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const mixin = useHashtagsFeed();
   const mainFeed = useMemo(() => {
     return filterPosts((sortedFeed ?? []).filter(a => a.created_at <= latest));
-  }, [sortedFeed, filterPosts, latest, login.follows.timestamp, mixin]);
+  }, [sortedFeed, filterPosts, latest, login.follows.timestamp]);
 
-  const hashTagsGroups = useMemo(() => {
+  const findHashTagContext = (a: NostrEvent) => {
+    const tag = a.tags.filter(a => a[0] === "t").find(a => login.tags.item.includes(a[1].toLowerCase()))?.[1];
+    if (tag) {
+      return <Link to={`/t/${tag}`}>{`#${tag}`}</Link>;
+    }
+  };
+  const mixinFiltered = useMemo(() => {
     const mainFeedIds = new Set(mainFeed.map(a => a.id));
-    const included = new Set<string>();
     return (mixin.data.data ?? [])
-      .filter(a => !mainFeedIds.has(a.id) && postsOnly(a))
+      .filter(a => !mainFeedIds.has(a.id) && postsOnly(a) && !isEventMuted(a))
       .filter(a => a.tags.filter(a => a[0] === "t").length < 5)
-      .reduce(
-        (acc, v) => {
-          if (included.has(v.id)) return acc;
-          const tags = v.tags
-            .filter(a => a[0] === "t")
-            .map(v => v[1].toLocaleLowerCase())
-            .filter(a => mixin.hashtags.includes(a));
-          for (const t of tags) {
-            acc[t] ??= [];
-            acc[t].push(v);
-            break;
-          }
-          included.add(v.id);
-          return acc;
-        },
-        {} as Record<string, Array<TaggedNostrEvent>>,
+      .filter(a => a.created_at >= (oldest ?? unixNow()))
+      .map(
+        a =>
+          ({
+            ...a,
+            context: findHashTagContext(a),
+          }) as TaggedNostrEvent,
       );
-  }, [mixin, mainFeed, postsOnly]);
+  }, [mixin, mainFeed, postsOnly, isEventMuted]);
 
   const latestFeed = useMemo(() => {
     return filterPosts((sortedFeed ?? []).filter(a => a.created_at > latest));
@@ -111,7 +108,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     <>
       {(props.liveStreams ?? true) && <LiveStreams evs={liveStreams} />}
       <TimelineRenderer
-        frags={weaveTimeline(mainFeed, hashTagsGroups)}
+        frags={[{ events: orderDescending(mainFeed.concat(mixinFiltered)), refTime: latest }]}
         related={reactions.data ?? []}
         latest={latestAuthors}
         showLatest={t => onShowLatest(t)}
@@ -119,55 +116,9 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         noteRenderer={props.noteRenderer}
       />
       {sortedFeed.length > 0 && (
-        <ShowMoreInView
-          onClick={async () => await FollowsFeed.loadMore(system, login, sortedFeed[sortedFeed.length - 1].created_at)}
-        />
+        <ShowMoreInView onClick={async () => await FollowsFeed.loadMore(system, login, oldest ?? unixNow())} />
       )}
     </>
   );
 };
 export default TimelineFollows;
-
-function weaveTimeline(
-  main: Array<TaggedNostrEvent>,
-  hashtags: Record<string, Array<TaggedNostrEvent>>,
-): Array<TimelineFragment> {
-  // always skip 5 posts from start to avoid heavy handed weaving
-  let skip = 5;
-
-  if (main.length < skip) {
-    skip = Math.min(skip, main.length - 1);
-  }
-
-  const frags = Object.entries(hashtags).map(([k, v]) => {
-    const take = v.slice(0, 5);
-    return {
-      title: (
-        <div className="bb p">
-          <HashTagHeader tag={k} />
-        </div>
-      ),
-      events: take,
-      refTime: Math.min(
-        main.at(skip)?.created_at ?? unixNow(),
-        take.reduce((acc, v) => (acc > v.created_at ? acc : v.created_at), 0),
-      ),
-    } as TimelineFragment;
-  });
-
-  if (main.length === 0) {
-    return frags;
-  }
-
-  return [
-    {
-      events: main.slice(0, skip),
-      refTime: main[0].created_at,
-    },
-    ...frags,
-    {
-      events: main.slice(skip),
-      refTime: main[skip].created_at,
-    },
-  ].sort((a, b) => (a.refTime > b.refTime ? -1 : 1));
-}

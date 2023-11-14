@@ -739,9 +739,6 @@
     "defaultMessage": "Recent",
     "description": "Sort order name"
   },
-  "RkW5we": {
-    "defaultMessage": "Bitcoin"
-  },
   "RoOyAh": {
     "defaultMessage": "Relays"
   },
@@ -909,9 +906,6 @@
   },
   "Zff6lu": {
     "defaultMessage": "Username iris.to/<b>{name}</b> is reserved for you!"
-  },
-  "a+6cHB": {
-    "defaultMessage": "Derogatory"
   },
   "a5UPxh": {
     "defaultMessage": "Fund developers and platforms providing NIP-05 verification services"
@@ -1161,9 +1155,6 @@
   },
   "k2veDA": {
     "defaultMessage": "Write"
-  },
-  "k7+5Ny": {
-    "defaultMessage": "Hate Speech"
   },
   "k7sKNy": {
     "defaultMessage": "Our very own NIP-05 verification service, help support the development of this site and get a shiny special badge on our site!"
