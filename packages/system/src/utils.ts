@@ -46,7 +46,7 @@ export function flatFilterEq(a: FlatReqFilter, b: FlatReqFilter): boolean {
 
 export function splitByUrl(str: string) {
   const urlRegex =
-    /((?:http|ftp|https|nostr|web\+nostr|magnet):\/?\/?(?:[\w+?.\w+])+(?:[\p{L}\p{N}~!@#$%^&*()_\-=+\\/?.:;',]*)?(?:[-a-z0-9+&@#/%=~()_|]))/iu;
+    /((?:http|ftp|https|nostr|web\+nostr|magnet|lnurl[p|w]?):\/?\/?(?:[\w+?.\w+])+(?:[\p{L}\p{N}~!@#$%^&*()_\-=+\\/?.:;',]*)?(?:[-a-z0-9+&@#/%=~()_|]))/iu;
 
   return str.split(urlRegex);
 }
