@@ -40,7 +40,7 @@ export const FixedTopics = {
       "gratitude",
       "lifeadvice",
       "lifecoaching",
-      "lifelove"
+      "lifelove",
     ],
   },
   science: {
@@ -75,7 +75,7 @@ export const FixedTopics = {
       "nanotechnology",
       "pharmacology",
       "astrophysics",
-      "scientificmethod"
+      "scientificmethod",
     ],
   },
   nature: {
@@ -110,7 +110,7 @@ export const FixedTopics = {
       "birdwatching",
       "ecotourism",
       "photography",
-      "naturelovers"
+      "naturelovers",
     ],
   },
   business: {
@@ -145,7 +145,7 @@ export const FixedTopics = {
       "socialmedia",
       "sustainability",
       "entrepreneur",
-      "businessdevelopment"
+      "businessdevelopment",
     ],
   },
   game: {
@@ -180,7 +180,7 @@ export const FixedTopics = {
       "platformer",
       "mmorpg",
       "retrogaming",
-      "arcade"
+      "arcade",
     ],
   },
   sport: {
@@ -215,7 +215,7 @@ export const FixedTopics = {
       "motorsports",
       "equestrian",
       "fitness",
-      "yoga"
+      "yoga",
     ],
   },
   photography: {
@@ -250,7 +250,7 @@ export const FixedTopics = {
       "composition",
       "exposure",
       "photographyworkshop",
-      "photographyart"
+      "photographyart",
     ],
   },
 };

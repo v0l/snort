@@ -43,7 +43,7 @@ export const FixedModeration = {
       "explicit language",
       "adult-only",
       "mature language",
-      "sex"
+      "sex",
     ],
     canEdit: false,
   },
@@ -107,7 +107,7 @@ export const FixedModeration = {
       "geopolitics",
       "activism",
       "protest",
-      "rally"
+      "rally",
     ],
     canEdit: false,
   },
@@ -183,11 +183,11 @@ export function Moderation() {
               return {
                 item: {
                   ...ad,
-                  mutedWords: appendDedupe(ad.mutedWords, words)
+                  mutedWords: appendDedupe(ad.mutedWords, words),
                 },
-                timestamp: unixNowMs()
-              }
-            })
+                timestamp: unixNowMs(),
+              };
+            });
           }
           navigate("/");
         }}>
