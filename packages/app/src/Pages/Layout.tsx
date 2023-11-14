@@ -3,8 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
-
-import messages from "./messages";
+import { base64 } from "@scure/base";
+import { unwrap } from "@snort/shared";
 
 import Icon from "Icons/Icon";
 import useLoginFeed from "Feed/LoginFeed";
@@ -24,8 +24,6 @@ import { ProfileLink } from "Element/User/ProfileLink";
 import SearchBox from "../Element/SearchBox";
 import SnortApi from "External/SnortApi";
 import useEventPublisher from "Hooks/useEventPublisher";
-import { base64 } from "@scure/base";
-import { unwrap } from "@snort/shared";
 
 export default function Layout() {
   const location = useLocation();
@@ -152,8 +150,8 @@ const AccountHeader = () => {
 
   if (!publicKey) {
     return (
-      <button type="button" onClick={() => navigate("/login")}>
-        <FormattedMessage {...messages.Login} />
+      <button type="button" onClick={() => navigate("/login/sign-up")}>
+        <FormattedMessage defaultMessage="Sign Up" />
       </button>
     );
   }

@@ -11,9 +11,9 @@ export default function useHashtagsFeed() {
   const sub = useMemo(() => {
     const rb = new RequestBuilder("hashtags-feed");
     rb.withFilter()
-      .kinds([EventKind.TextNote])
+      .kinds([EventKind.TextNote, EventKind.LiveEvent, EventKind.LongFormTextNote, EventKind.Polls])
       .tag("t", hashtags)
-      .since(unixNow() - Hour * 4);
+      .since(unixNow() - Hour * 6);
     return rb;
   }, [hashtags]);
 

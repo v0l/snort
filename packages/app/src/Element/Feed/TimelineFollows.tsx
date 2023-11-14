@@ -75,7 +75,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     return (mixin.data.data ?? [])
       .filter(a => !mainFeedIds.has(a.id) && postsOnly(a) && !isEventMuted(a))
       .filter(a => a.tags.filter(a => a[0] === "t").length < 5)
-      .filter(a => a.created_at >= (oldest ?? unixNow()))
+      .filter(a => !oldest || a.created_at >= oldest)
       .map(
         a =>
           ({
