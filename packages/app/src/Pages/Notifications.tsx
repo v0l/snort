@@ -295,7 +295,7 @@ function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onC
   const navigate = useNavigate();
 
   const zaps = useMemo(() => {
-    return evs.filter(a => a.kind === EventKind.ZapReceipt).map(a => parseZap(a, UserCache));
+    return evs.filter(a => a.kind === EventKind.ZapReceipt).map(a => parseZap(a));
   }, [evs]);
   const pubkeys = dedupe(
     evs.map(a => {

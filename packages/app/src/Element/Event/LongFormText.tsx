@@ -1,7 +1,7 @@
 import "./LongFormText.css";
 import { CSSProperties, useCallback, useRef, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
-import { TaggedNostrEvent } from "@snort/system";
+import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions } from "@snort/system-react";
 
 import { findTag } from "SnortUtils";
@@ -26,7 +26,7 @@ export function LongFormText(props: LongFormTextProps) {
   const { proxy } = useImgProxy();
   const [reading, setReading] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const { reactions, reposts, zaps } = useEventReactions(props.ev, props.related);
+  const { reactions, reposts, zaps } = useEventReactions(NostrLink.fromEvent(props.ev), props.related);
 
   function previewText() {
     return (

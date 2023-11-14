@@ -1,8 +1,6 @@
-import { FeedCache } from "@snort/shared";
 import { decodeInvoice, InvoiceDetails } from "@snort/shared";
 import { NostrEvent } from "./nostr";
 import { findTag } from "./utils";
-import { MetadataCache } from "./cache";
 import { EventExt } from "./event-ext";
 import { NostrLink } from "./nostr-link";
 import debug from "debug";
@@ -18,7 +16,7 @@ function getInvoice(zap: NostrEvent): InvoiceDetails | undefined {
   return decodeInvoice(bolt11);
 }
 
-export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCache>, refNote?: NostrEvent): ParsedZap {
+export function parseZap(zapReceipt: NostrEvent): ParsedZap {
   const existing = ParsedZapCache.get(zapReceipt.id);
   if (existing) {
     return existing;
@@ -39,7 +37,6 @@ export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCa
       const zapRequestThread = EventExt.extractThread(zapRequest);
       const requestContext = zapRequestThread?.root;
 
-      const isForwardedZap = refNote?.tags.some(a => a[0] === "zap") ?? false;
       const anonZap = zapRequest.tags.find(a => a[0] === "anon");
       const pollOpt = zapRequest.tags.find(a => a[0] === "poll_option")?.[1];
       const ret: ParsedZap = {
@@ -63,11 +60,6 @@ export function parseZap(zapReceipt: NostrEvent, userCache: FeedCache<MetadataCa
         ret.valid = false;
         ret.errors.push("amount tag does not match invoice amount");
       }
-      /*if (userCache.getFromCache(ret.receiver)?.zapService !== ret.zapService && !isForwardedZap) {
-        ret.valid = false;
-        ret.errors.push("zap service pubkey doesn't match");
-      }*/
-
       if (!ret.valid) {
         Log("Invalid zap %O", ret);
       }

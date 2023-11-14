@@ -1,20 +1,15 @@
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { normalizeReaction, Reaction } from "@snort/shared";
 import { EventKind, NostrLink, parseZap, TaggedNostrEvent } from "@snort/system";
 
-import { SnortContext } from "./context";
-
 /**
  * Parse reactions to a given event from a set of related events
- * @param ev
+ * @param link Reactions to linked event
  * @param related
  * @returns
  */
-export function useEventReactions(ev: TaggedNostrEvent, related: ReadonlyArray<TaggedNostrEvent>) {
-  const system = useContext(SnortContext);
-
+export function useEventReactions(link: NostrLink, related: ReadonlyArray<TaggedNostrEvent>) {
   return useMemo(() => {
-    const link = NostrLink.fromEvent(ev);
     const reactionKinds = related.reduce(
       (acc, v) => {
         if (link.isReplyToThis(v)) {
@@ -41,7 +36,7 @@ export function useEventReactions(ev: TaggedNostrEvent, related: ReadonlyArray<T
     );
 
     const zaps = (reactionKinds[EventKind.ZapReceipt] ?? [])
-      .map(a => parseZap(a, system.ProfileLoader.Cache, ev))
+      .map(a => parseZap(a))
       .filter(a => a.valid)
       .sort((a, b) => b.amount - a.amount);
 
@@ -61,5 +56,5 @@ export function useEventReactions(ev: TaggedNostrEvent, related: ReadonlyArray<T
         ),
       ),
     };
-  }, [ev, related]);
+  }, [link, related]);
 }

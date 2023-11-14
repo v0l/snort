@@ -36,7 +36,7 @@ export function NoteInner(props: NoteProps) {
 
   const { isEventMuted } = useModeration();
   const { ref, inView } = useInView({ triggerOnce: true });
-  const { reactions, reposts, deletions, zaps } = useEventReactions(ev, related);
+  const { reactions, reposts, deletions, zaps } = useEventReactions(NostrLink.fromEvent(ev), related);
   const login = useLogin();
   const { pinned, bookmarked } = login;
   const { publisher, system } = useEventPublisher();
