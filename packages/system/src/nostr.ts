@@ -19,7 +19,7 @@ export interface TaggedNostrEvent extends NostrEvent {
   /**
    * Additional context
    */
-  context?: never;
+  context?: object;
 }
 
 /**

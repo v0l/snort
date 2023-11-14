@@ -66,9 +66,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
 
   const findHashTagContext = (a: NostrEvent) => {
     const tag = a.tags.filter(a => a[0] === "t").find(a => login.tags.item.includes(a[1].toLowerCase()))?.[1];
-    if (tag) {
-      return <Link to={`/t/${tag}`}>{`#${tag}`}</Link>;
-    }
+    return tag;
   };
   const mixinFiltered = useMemo(() => {
     const mainFeedIds = new Set(mainFeed.map(a => a.id));
@@ -114,6 +112,11 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         showLatest={t => onShowLatest(t)}
         noteOnClick={props.noteOnClick}
         noteRenderer={props.noteRenderer}
+        noteContext={e => {
+          if (typeof e.context === "string") {
+            return <Link to={`/t/${e.context}`}>{`#${e.context}`}</Link>;
+          }
+        }}
       />
       {sortedFeed.length > 0 && (
         <ShowMoreInView onClick={async () => await FollowsFeed.loadMore(system, login, oldest ?? unixNow())} />

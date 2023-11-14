@@ -24,6 +24,7 @@ export interface TimelineRendererProps {
   showLatest: (toTop: boolean) => void;
   noteRenderer?: (ev: TaggedNostrEvent) => ReactNode;
   noteOnClick?: (ev: TaggedNostrEvent) => void;
+  noteContext?: (ev: TaggedNostrEvent) => ReactNode;
 }
 
 export function TimelineRenderer(props: TimelineRendererProps) {
@@ -65,6 +66,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
           related={props.related}
           noteRenderer={props.noteRenderer}
           noteOnClick={props.noteOnClick}
+          noteContext={props.noteContext}
         />
       ))}
     </>
@@ -76,6 +78,7 @@ export interface TimelineFragProps {
   related: Array<TaggedNostrEvent>;
   noteRenderer?: (ev: TaggedNostrEvent) => ReactNode;
   noteOnClick?: (ev: TaggedNostrEvent) => void;
+  noteContext?: (ev: TaggedNostrEvent) => ReactNode;
 }
 
 export function TimelineFragment(props: TimelineFragProps) {
@@ -97,7 +100,7 @@ export function TimelineFragment(props: TimelineFragProps) {
               key={e.id}
               depth={0}
               onClick={props.noteOnClick}
-              context={e.context}
+              context={props.noteContext?.(e)}
             />
           ),
       )}
