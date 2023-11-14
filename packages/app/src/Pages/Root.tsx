@@ -18,6 +18,7 @@ import { TaskList } from "Tasks/TaskList";
 import TimelineFollows from "Element/Feed/TimelineFollows";
 import { RootTabs } from "Element/RootTabs";
 import { DeckContext } from "Pages/DeckLayout";
+import { TopicsPage } from "./TopicsPage";
 
 import messages from "./messages";
 
@@ -238,6 +239,10 @@ export const RootTabRoutes = [
   {
     path: "t/:tag",
     element: <HashTagsPage />,
+  },
+  {
+    path: "topics",
+    element: <TopicsPage />,
   },
 ];
 

@@ -89,6 +89,17 @@ export function RootTabs({ base }: { base?: string }) {
         </>
       ),
     },
+    {
+      tab: "tags",
+      path: `${base}/topics`,
+      show: tags.item.length > 0,
+      element: (
+        <>
+          <Icon name="hash" />
+          <FormattedMessage defaultMessage="Topics" />
+        </>
+      ),
+    },
   ] as Array<{
     tab: RootTab;
     path: string;
@@ -141,15 +152,6 @@ export function RootTabs({ base }: { base?: string }) {
               {a.element}
             </MenuItem>
           ))}
-        {tags.item.map(v => (
-          <MenuItem
-            onClick={() => {
-              navigate(`${base}/t/${v}`);
-            }}>
-            <Icon name="hash" />
-            {v}
-          </MenuItem>
-        ))}
       </Menu>
     </div>
   );
