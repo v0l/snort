@@ -1,4 +1,3 @@
-import { removeUndefined } from "@snort/shared";
 import { EventKind, NostrLink, NoteCollection, RequestBuilder } from "@snort/system";
 import { useEventsFeed, useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
@@ -16,19 +15,9 @@ export function useLinkList(id: string, fn: (rb: RequestBuilder) => void) {
   const listStore = useRequestBuilder(NoteCollection, sub);
   return useMemo(() => {
     if (listStore.data && listStore.data.length > 0) {
-      return removeUndefined(
-        listStore.data
-          .map(e =>
-            e.tags.map(a => {
-              try {
-                return NostrLink.fromTag(a);
-              } catch {
-                // ignored, skipped
-              }
-            }),
-          )
-          .flat(),
-      );
+      return listStore.data
+        .map(e => NostrLink.fromTags(e.tags))
+        .flat();
     }
     return [];
   }, [listStore.data]);

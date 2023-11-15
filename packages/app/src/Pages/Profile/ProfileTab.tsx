@@ -1,5 +1,6 @@
 import { FormattedMessage } from "react-intl";
-import { EventKind, HexKey, NostrLink, NostrPrefix } from "@snort/system";
+import { HexKey, NostrLink, NostrPrefix } from "@snort/system";
+import { useReactions } from "@snort/system-react";
 
 import useZapsFeed from "Feed/ZapsFeed";
 import { formatShort } from "Number";
@@ -60,11 +61,12 @@ export function RelaysTab({ id }: { id: HexKey }) {
 
 export function BookMarksTab({ id }: { id: HexKey }) {
   const bookmarks = useCategorizedBookmarks(id, "bookmark");
+  const reactions = useReactions(`bookmark:reactions:{id}`, bookmarks.map(NostrLink.fromEvent));
   return (
     <Bookmarks
       pubkey={id}
-      bookmarks={bookmarks.filter(e => e.kind === EventKind.TextNote)}
-      related={bookmarks.filter(e => e.kind !== EventKind.TextNote)}
+      bookmarks={bookmarks}
+      related={reactions.data ?? []}
     />
   );
 }
