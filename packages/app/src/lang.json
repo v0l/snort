@@ -298,6 +298,9 @@
     "defaultMessage": "Parent",
     "description": "Link to parent note in thread"
   },
+  "AIgmDy": {
+    "defaultMessage": "Add up to 4 hashtags"
+  },
   "AN0Z7Q": {
     "defaultMessage": "Muted Words"
   },
@@ -879,6 +882,9 @@
   "XICsE8": {
     "defaultMessage": "File hosts"
   },
+  "XXm7jJ": {
+    "defaultMessage": "Trending Hashtags"
+  },
   "XgWvGA": {
     "defaultMessage": "Reactions"
   },
@@ -993,8 +999,14 @@
   "d7d0/x": {
     "defaultMessage": "LN Address"
   },
+  "d8gpCh": {
+    "defaultMessage": "Try to use less than 5 hashtags to stay on topic 🙏"
+  },
   "dOQCL8": {
     "defaultMessage": "Display name"
+  },
+  "ddd3JX": {
+    "defaultMessage": "Popular Hashtags"
   },
   "deEeEI": {
     "defaultMessage": "Register"
@@ -1381,6 +1393,9 @@
   },
   "ugyJnE": {
     "defaultMessage": "Sending notes and other stuff"
+  },
+  "un1nGw": {
+    "defaultMessage": "{n} notes"
   },
   "usAvMr": {
     "defaultMessage": "Edit Profile"

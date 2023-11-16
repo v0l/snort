@@ -12,6 +12,7 @@ import { setTags } from "Login";
 import AsyncButton from "Element/AsyncButton";
 import ProfileImage from "Element/User/ProfileImage";
 import classNames from "classnames";
+import { formatShort } from "Number";
 
 const HashTagsPage = () => {
   const params = useParams();
@@ -34,7 +35,7 @@ const HashTagsPage = () => {
 
 export default HashTagsPage;
 
-export function HashTagHeader({ tag, className }: { tag: string, className?: string }) {
+export function HashTagHeader({ tag, events, className }: { tag: string; events?: number; className?: string }) {
   const login = useLogin();
   const isFollowing = useMemo(() => {
     return login.tags.item.includes(tag);
@@ -63,7 +64,19 @@ export function HashTagHeader({ tag, className }: { tag: string, className?: str
   return (
     <div className={classNames("flex flex-col", className)}>
       <div className="flex items-center justify-between">
-        <b className="text-lg">#{tag}</b>
+        <div className="flex g8 items-center">
+          <b className="text-xl">#{tag}</b>
+          {events && (
+            <small>
+              <FormattedMessage
+                defaultMessage="{n} notes"
+                values={{
+                  n: formatShort(events),
+                }}
+              />
+            </small>
+          )}
+        </div>
         {isFollowing ? (
           <AsyncButton className="secondary" onClick={() => followTags(login.tags.item.filter(t => t !== tag))}>
             <FormattedMessage defaultMessage="Unfollow" />

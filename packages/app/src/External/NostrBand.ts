@@ -20,9 +20,9 @@ export interface TrendingNoteResponse {
 
 export interface TrendingHashtagsResponse {
   hashtags: Array<{
-    hashtag: string,
-    posts: number
-  }>
+    hashtag: string;
+    posts: number;
+  }>;
 }
 
 export interface SuggestedFollow {

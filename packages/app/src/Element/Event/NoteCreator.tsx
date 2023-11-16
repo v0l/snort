@@ -314,18 +314,18 @@ export function NoteCreator() {
                   onChange={e => {
                     note.update(
                       v =>
-                      (v.selectedCustomRelays =
-                        // set false if all relays selected
-                        e.target.checked &&
+                        (v.selectedCustomRelays =
+                          // set false if all relays selected
+                          e.target.checked &&
                           note.selectedCustomRelays &&
                           note.selectedCustomRelays.length == a.length - 1
-                          ? undefined
-                          : // otherwise return selectedCustomRelays with target relay added / removed
-                          a.filter(el =>
-                            el === r
-                              ? e.target.checked
-                              : !note.selectedCustomRelays || note.selectedCustomRelays.includes(el),
-                          )),
+                            ? undefined
+                            : // otherwise return selectedCustomRelays with target relay added / removed
+                              a.filter(el =>
+                                el === r
+                                  ? e.target.checked
+                                  : !note.selectedCustomRelays || note.selectedCustomRelays.includes(el),
+                              )),
                     );
                   }}
                 />
@@ -394,9 +394,9 @@ export function NoteCreator() {
                     onChange={e =>
                       note.update(
                         v =>
-                        (v.zapSplits = arr.map((vv, ii) =>
-                          ii === i ? { ...vv, weight: Number(e.target.value) } : vv,
-                        )),
+                          (v.zapSplits = arr.map((vv, ii) =>
+                            ii === i ? { ...vv, weight: Number(e.target.value) } : vv,
+                          )),
                       )
                     }
                   />
@@ -572,35 +572,43 @@ export function NoteCreator() {
           </>
         )}
         {note.preview && getPreviewNote()}
-        {!note.preview && (<>
-          <div onPaste={handlePaste} className={classNames("note-creator", { poll: Boolean(note.pollOptions) })}>
-            <Textarea
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              autoFocus
-              className={classNames("textarea", { "textarea--focused": note.active })}
-              onChange={c => onChange(c)}
-              value={note.note}
-              onFocus={() => note.update(v => (v.active = true))}
-              onKeyDown={e => {
-                if (e.key === "Enter" && e.metaKey) {
-                  sendNote().catch(console.warn);
-                }
-              }}
-            />
-            {renderPollOptions()}
-          </div>
-          <div className="flex flex-col g4">
-            <TagsInput value={note.hashTags} onChange={e => note.update(s => s.hashTags = e)} placeHolder={formatMessage({
-              defaultMessage: "Add up to 4 hashtags"
-            })} separators={["Enter", ","]} />
-            {note.hashTags.length > 4 && <small className="warning">
-              <FormattedMessage defaultMessage="Try to use less than 4 hashtags to stay on topic 🙏" />
-            </small>}
-            <TrendingHashTagsLine onClick={t => note.update(s => s.hashTags = appendDedupe(s.hashTags, [t]))} />
-          </div>
-        </>
+        {!note.preview && (
+          <>
+            <div onPaste={handlePaste} className={classNames("note-creator", { poll: Boolean(note.pollOptions) })}>
+              <Textarea
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                autoFocus
+                className={classNames("textarea", { "textarea--focused": note.active })}
+                onChange={c => onChange(c)}
+                value={note.note}
+                onFocus={() => note.update(v => (v.active = true))}
+                onKeyDown={e => {
+                  if (e.key === "Enter" && e.metaKey) {
+                    sendNote().catch(console.warn);
+                  }
+                }}
+              />
+              {renderPollOptions()}
+            </div>
+            <div className="flex flex-col g4">
+              <TagsInput
+                value={note.hashTags}
+                onChange={e => note.update(s => (s.hashTags = e))}
+                placeHolder={formatMessage({
+                  defaultMessage: "Add up to 4 hashtags",
+                })}
+                separators={["Enter", ","]}
+              />
+              {note.hashTags.length > 4 && (
+                <small className="warning">
+                  <FormattedMessage defaultMessage="Try to use less than 5 hashtags to stay on topic 🙏" />
+                </small>
+              )}
+              <TrendingHashTagsLine onClick={t => note.update(s => (s.hashTags = appendDedupe(s.hashTags, [t])))} />
+            </div>
+          </>
         )}
         {uploader.progress.length > 0 && <FileUploadProgress progress={uploader.progress} />}
         {noteCreatorFooter()}
@@ -627,7 +635,7 @@ export function NoteCreator() {
 }
 
 function TrendingHashTagsLine(props: { onClick: (tag: string) => void }) {
-  const [hashtags, setHashtags] = useState<Array<{ hashtag: string, posts: number }>>();
+  const [hashtags, setHashtags] = useState<Array<{ hashtag: string; posts: number }>>();
   const { lang } = useLocale();
 
   async function loadTrendingHashtags() {
@@ -641,14 +649,18 @@ function TrendingHashTagsLine(props: { onClick: (tag: string) => void }) {
   }, []);
 
   if (!hashtags || hashtags.length === 0) return;
-  return <div className="flex flex-col g4">
-    <small>
-      <FormattedMessage defaultMessage="Popular Hashtags" />
-    </small>
-    <div className="flex g4 flex-wrap">
-      {hashtags.slice(0, 5).map(a => <span className="px-2 py-1 bg-dark rounded-full pointer nowrap" onClick={() => props.onClick(a.hashtag)}>
-        #{a.hashtag}
-      </span>)}
+  return (
+    <div className="flex flex-col g4">
+      <small>
+        <FormattedMessage defaultMessage="Popular Hashtags" />
+      </small>
+      <div className="flex g4 flex-wrap">
+        {hashtags.slice(0, 5).map(a => (
+          <span className="px-2 py-1 bg-dark rounded-full pointer nowrap" onClick={() => props.onClick(a.hashtag)}>
+            #{a.hashtag}
+          </span>
+        ))}
+      </div>
     </div>
-  </div>
+  );
 }
