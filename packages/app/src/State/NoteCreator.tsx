@@ -21,6 +21,7 @@ interface NoteCreatorDataSnapshot {
   extraTags?: Array<Array<string>>;
   sending?: Array<NostrEvent>;
   sendStarted: boolean;
+  hashTags: Array<string>;
   reset: () => void;
   update: (fn: (v: NoteCreatorDataSnapshot) => void) => void;
 }
@@ -37,6 +38,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
       active: false,
       advanced: false,
       sendStarted: false,
+      hashTags: [],
       reset: () => {
         this.#reset(this.#data);
         this.notifyChange(this.#data);
@@ -65,6 +67,7 @@ class NoteCreatorStore extends ExternalStore<NoteCreatorDataSnapshot> {
     d.otherEvents = undefined;
     d.sending = undefined;
     d.extraTags = undefined;
+    d.hashTags = [];
   }
 
   takeSnapshot(): NoteCreatorDataSnapshot {

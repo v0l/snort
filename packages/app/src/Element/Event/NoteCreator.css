@@ -95,3 +95,27 @@
     linear-gradient(var(--gray-superdark), var(--gray-superdark)) padding-box,
     linear-gradient(90deg, #ef9644, #fd7c49, #ff5e58, #ff3b70, #ff088e, #eb00b1, #c31ed5, #7b41f6) border-box;
 }
+
+.note-creator-modal .rti--container {
+  background-color: unset !important;
+  box-shadow: unset !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  padding: 4px 8px !important;
+}
+
+.note-creator-modal .rti--tag {
+  color: black !important;
+  padding: 4px 10px !important;
+  border-radius: 12px !important;
+  display: unset !important;
+}
+
+.note-creator-modal .rti--input {
+  width: 100% !important;
+  border: unset !important;
+}
+
+.note-creator-modal .rti--tag button {
+  padding: 0 0 0 var(--rti-s);
+}

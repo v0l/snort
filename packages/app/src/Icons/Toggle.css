@@ -1,3 +1,6 @@
+svg#icon-toggle {
+  cursor: pointer;
+}
 svg#icon-toggle #bg {
   fill: var(--gray);
   transition: fill 0.5s;

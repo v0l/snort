@@ -13,14 +13,20 @@
 
 .modal-body {
   background-color: var(--gray-superdark);
-  padding: 24px;
+  padding: 24px 12px;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
-  width: 500px;
   margin-top: auto;
   margin-bottom: auto;
   --border-color: var(--gray);
+}
+
+@media (min-width: 600px) {
+  .modal-body {
+    padding: 24px;
+    width: 600px;
+  }
 }
 
 .modal-body button.secondary:hover {

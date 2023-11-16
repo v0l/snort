@@ -3171,6 +3171,7 @@ __metadata:
     react-intersection-observer: ^9.4.1
     react-intl: ^6.4.4
     react-router-dom: ^6.5.0
+    react-tag-input-component: ^2.0.2
     react-textarea-autosize: ^8.4.0
     react-twitter-embed: ^4.0.4
     recharts: ^2.8.0
@@ -12838,6 +12839,16 @@ __metadata:
     react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: 21731e2f9ebc9594eae0f0d875526185392a87c00abf013c9769ed642a4077b62c04c1001b2527a196aabafb87af208f6c7107db674538c4bb95c253ed123447
+  languageName: node
+  linkType: hard
+
+"react-tag-input-component@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "react-tag-input-component@npm:2.0.2"
+  peerDependencies:
+    react: ^16 || ^17 || ^18
+    react-dom: ^16 || ^17 || ^18
+  checksum: b8d5c588a3bfe4c4a82b8a8e34e3d11c37cd467bbd92b31aeb7e3fbd4e3a4e62228811d3ce61b01115c7efa8b6ccb06c7a2688710d03bb8ed91f9e2e690a1775
   languageName: node
   linkType: hard
 

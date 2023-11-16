@@ -7,7 +7,7 @@ import { HashTagHeader } from "Pages/HashTagsPage";
 import { useLocale } from "IntlProvider";
 
 export default function TrendingHashtags({ title }: { title?: ReactNode }) {
-    const [hashtags, setHashtags] = useState<string[]>();
+    const [hashtags, setHashtags] = useState<Array<{ hashtag: string, posts: number }>>();
     const [error, setError] = useState<Error>();
     const { lang } = useLocale();
 
@@ -30,6 +30,6 @@ export default function TrendingHashtags({ title }: { title?: ReactNode }) {
 
     return <>
         {title}
-        {hashtags.map(a => <HashTagHeader tag={a} className="bb p" />)}
+        {hashtags.map(a => <HashTagHeader tag={a.hashtag} className="bb p" />)}
     </>
 }
