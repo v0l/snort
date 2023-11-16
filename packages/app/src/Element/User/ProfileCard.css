@@ -9,3 +9,7 @@
   color: white;
   padding: 8px 12px;
 }
+
+.light .profile-card > div {
+    color: black;
+}
