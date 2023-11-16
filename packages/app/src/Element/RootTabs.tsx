@@ -79,6 +79,17 @@ export function RootTabs({ base }: { base?: string }) {
       ),
     },
     {
+      tab: "trending-hashtags",
+      path: `${base}/trending/hashtags`,
+      show: true,
+      element: (
+        <>
+          <Icon name="hash" />
+          <FormattedMessage defaultMessage="Trending Hashtags" />
+        </>
+      ),
+    },
+    {
       tab: "global",
       path: `${base}/global`,
       show: true,

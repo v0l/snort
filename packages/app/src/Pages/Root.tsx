@@ -19,6 +19,7 @@ import TimelineFollows from "Element/Feed/TimelineFollows";
 import { RootTabs } from "Element/RootTabs";
 import { DeckContext } from "Pages/DeckLayout";
 import { TopicsPage } from "./TopicsPage";
+import TrendingHashtags from "Element/TrendingHashtags";
 
 import messages from "./messages";
 
@@ -227,6 +228,10 @@ export const RootTabRoutes = [
         <TrendingUsers />
       </div>
     ),
+  },
+  {
+    path: "trending/hashtags",
+    element: <TrendingHashtags />,
   },
   {
     path: "suggested",

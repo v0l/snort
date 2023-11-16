@@ -18,6 +18,10 @@ export interface TrendingNoteResponse {
   notes: Array<TrendingNote>;
 }
 
+export interface TrendingHashtagsResponse {
+  hashtags: Array<string>
+}
+
 export interface SuggestedFollow {
   pubkey: string;
 }
@@ -39,14 +43,13 @@ export class NostrBandError extends Error {
 
 export default class NostrBandApi {
   readonly #url = "https://api.nostr.band";
-
+  readonly #supportedLangs = ["en", "de", "ja", "zh", "th", "pt", "es", "fr"];
   async trendingProfiles() {
     return await this.#json<TrendingUserResponse>("GET", "/v0/trending/profiles");
   }
 
   async trendingNotes(lang?: string) {
-    const supportedLangs = ["en", "de", "ja", "zh", "th", "pt", "es", "fr"];
-    if (lang && supportedLangs.includes(lang)) {
+    if (lang && this.#supportedLangs.includes(lang)) {
       return await this.#json<TrendingNoteResponse>("GET", `/v0/trending/notes?lang=${lang}`);
     }
     return await this.#json<TrendingNoteResponse>("GET", "/v0/trending/notes");
@@ -54,6 +57,13 @@ export default class NostrBandApi {
 
   async sugguestedFollows(pubkey: string) {
     return await this.#json<SuggestedFollowsResponse>("GET", `/v0/suggested/profiles/${pubkey}`);
+  }
+
+  async trendingHashtags(lang?: string) {
+    if (lang && this.#supportedLangs.includes(lang)) {
+      return await this.#json<TrendingHashtagsResponse>("GET", `/v0/trending/hashtags?lang=${lang}`);
+    }
+    return await this.#json<TrendingHashtagsResponse>("GET", "/v0/trending/hashtags");
   }
 
   async #json<T>(method: string, path: string) {
