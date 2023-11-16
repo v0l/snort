@@ -16,6 +16,7 @@ export default function SearchBox() {
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState("");
   const [searching, setSearching] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -120,13 +121,15 @@ export default function SearchBox() {
         value={search}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setTimeout(() => setIsFocused(false), 150)}
       />
       {searching ? (
         <Spinner width={24} height={24} />
       ) : (
         <Icon name="search" size={24} onClick={() => navigate("/search")} />
       )}
-      {search && !searching && (
+      {search && !searching && isFocused && (
         <div
           className="absolute top-full mt-2 w-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-black shadow-lg rounded-lg z-10 overflow-hidden"
           ref={resultListRef}>

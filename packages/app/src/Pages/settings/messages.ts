@@ -60,4 +60,5 @@ export default defineMessages({
   Nip05: { defaultMessage: "NIP-05" },
   ReactionEmoji: { defaultMessage: "Reaction emoji" },
   ReactionEmojiHelp: { defaultMessage: "Emoji to send when reactiong to a note" },
+  SocialGraph: { defaultMessage: "Social Graph" },
 });

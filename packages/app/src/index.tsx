@@ -23,6 +23,10 @@ import {
 import { SnortContext } from "@snort/system-react";
 import { removeUndefined, throwIfOffline } from "@snort/shared";
 
+import React, { lazy, Suspense } from "react";
+
+const NetworkGraph = lazy(() => import("Pages/NetworkGraph"));
+
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import { IntlProvider } from "IntlProvider";
 import { getCountry, unwrap } from "SnortUtils";
@@ -224,6 +228,10 @@ const mainRoutes = [
     path: "/about",
     element: <AboutPage />,
   },
+  {
+    path: "/graph",
+    element: <NetworkGraph />,
+  },
   ...OnboardingRoutes,
   ...WalletRoutes,
 ] as Array<RouteObject>;
@@ -282,7 +290,9 @@ root.render(
   <StrictMode>
     <IntlProvider>
       <SnortContext.Provider value={System}>
-        <RouterProvider router={router} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <RouterProvider router={router} />
+        </Suspense>
       </SnortContext.Provider>
     </IntlProvider>
   </StrictMode>,

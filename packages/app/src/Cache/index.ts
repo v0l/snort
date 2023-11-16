@@ -7,6 +7,7 @@ import { Payments } from "./PaymentsCache";
 import { GiftWrapCache } from "./GiftWrapCache";
 import { NotificationsCache } from "./Notifications";
 import { FollowsFeedCache } from "./FollowsFeed";
+import { FollowListCache } from "./FollowListCache";
 
 export const SystemDb = new SnortSystemDb();
 export const UserCache = new UserProfileCache(SystemDb.users);
@@ -19,6 +20,7 @@ export const InteractionCache = new EventInteractionCache();
 export const GiftsCache = new GiftWrapCache();
 export const Notifications = new NotificationsCache();
 export const FollowsFeed = new FollowsFeedCache();
+export const FollowLists = new FollowListCache();
 
 export async function preload(follows?: Array<string>) {
   const preloads = [
@@ -30,6 +32,7 @@ export async function preload(follows?: Array<string>) {
     GiftsCache.preload(),
     Notifications.preload(),
     FollowsFeed.preload(),
+    FollowLists.preload(),
   ];
   await Promise.all(preloads);
 }

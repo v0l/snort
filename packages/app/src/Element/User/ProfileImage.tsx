@@ -8,11 +8,11 @@ import classNames from "classnames";
 
 import Avatar from "Element/User/Avatar";
 import Nip05 from "Element/User/Nip05";
-import useLogin from "Hooks/useLogin";
 import Icon from "Icons/Icon";
 import DisplayName from "./DisplayName";
 import { ProfileLink } from "./ProfileLink";
 import { ProfileCard } from "./ProfileCard";
+import SocialGraph from "../../SocialGraph/SocialGraph";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -27,7 +27,7 @@ export interface ProfileImageProps {
   size?: number;
   onClick?: (e: React.MouseEvent) => void;
   imageOverlay?: ReactNode;
-  showFollowingMark?: boolean;
+  showFollowDistance?: boolean;
   icons?: ReactNode;
   showProfileCard?: boolean;
 }
@@ -45,14 +45,13 @@ export default function ProfileImage({
   size,
   imageOverlay,
   onClick,
-  showFollowingMark = true,
+  showFollowDistance = true,
   icons,
   showProfileCard,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const nip05 = defaultNip ? defaultNip : user?.nip05;
-  const { follows } = useLogin();
-  const doesFollow = follows.item.includes(pubkey);
+  const followDistance = SocialGraph.getFollowDistance(pubkey);
   const [ref, hovering] = useHover<HTMLDivElement>();
 
   function handleClick(e: React.MouseEvent) {
@@ -63,6 +62,12 @@ export default function ProfileImage({
   }
 
   function inner() {
+    let followDistanceColor = "";
+    if (followDistance <= 1) {
+      followDistanceColor = "success";
+    } else if (followDistance === 2 && SocialGraph.followedByFriendsCount(pubkey) >= 10) {
+      followDistanceColor = "text-nostr-orange";
+    }
     return (
       <>
         <div className="avatar-wrapper" ref={ref}>
@@ -72,12 +77,12 @@ export default function ProfileImage({
             size={size}
             imageOverlay={imageOverlay}
             icons={
-              (doesFollow && showFollowingMark) || icons ? (
+              (followDistance <= 2 && showFollowDistance) || icons ? (
                 <>
                   {icons}
-                  {showFollowingMark && (
+                  {showFollowDistance && (
                     <div className="icon-circle">
-                      <Icon name="check" className="success" size={10} />
+                      <Icon name="check" className={followDistanceColor} size={10} />
                     </div>
                   )}
                 </>

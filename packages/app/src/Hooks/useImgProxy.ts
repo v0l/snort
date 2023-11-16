@@ -11,8 +11,14 @@ export interface ImgProxySettings {
 
 export default function useImgProxy() {
   const settings = useLogin(s => s.appData.item.preferences.imgProxyConfig);
-  const te = new TextEncoder();
 
+  return {
+    proxy: (url: string, resize?: number) => proxyImg(url, settings, resize),
+  };
+}
+
+export function proxyImg(url: string, settings?: ImgProxySettings, resize?: number) {
+  const te = new TextEncoder();
   function urlSafe(s: string) {
     return s.replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
   }
@@ -25,17 +31,12 @@ export default function useImgProxy() {
     );
     return urlSafe(base64.encode(result));
   }
-
-  return {
-    proxy: (url: string, resize?: number) => {
-      if (!settings) return url;
-      if (url.startsWith("data:") || url.startsWith("blob:")) return url;
-      const opt = resize ? `rs:fit:${resize}:${resize}/dpr:${window.devicePixelRatio}` : "";
-      const urlBytes = te.encode(url);
-      const urlEncoded = urlSafe(base64.encode(urlBytes));
-      const path = `/${opt}/${urlEncoded}`;
-      const sig = signUrl(path);
-      return `${new URL(settings.url).toString()}${sig}${path}`;
-    },
-  };
+  if (!settings) return url;
+  if (url.startsWith("data:") || url.startsWith("blob:")) return url;
+  const opt = resize ? `rs:fit:${resize}:${resize}/dpr:${window.devicePixelRatio}` : "";
+  const urlBytes = te.encode(url);
+  const urlEncoded = urlSafe(base64.encode(urlBytes));
+  const path = `/${opt}/${urlEncoded}`;
+  const sig = signUrl(path);
+  return `${new URL(settings.url).toString()}${sig}${path}`;
 }

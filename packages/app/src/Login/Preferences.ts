@@ -50,7 +50,7 @@ export interface UserPreferences {
   /**
    * Use imgproxy to optimize images
    */
-  imgProxyConfig: ImgProxySettings | null;
+  imgProxyConfig?: ImgProxySettings;
 
   /**
    * Default page to select on load

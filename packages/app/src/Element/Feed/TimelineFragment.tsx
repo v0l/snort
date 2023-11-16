@@ -36,7 +36,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
         <>
           <div className="card latest-notes" onClick={() => props.showLatest(false)} ref={ref}>
             {props.latest.slice(0, 3).map(p => {
-              return <ProfileImage pubkey={p} showUsername={false} link={""} showFollowingMark={false} />;
+              return <ProfileImage pubkey={p} showUsername={false} link={""} showFollowDistance={false} />;
             })}
             <FormattedMessage
               defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
@@ -49,7 +49,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
               className="card latest-notes latest-notes-fixed pointer fade-in"
               onClick={() => props.showLatest(true)}>
               {props.latest.slice(0, 3).map(p => {
-                return <ProfileImage pubkey={p} showUsername={false} link={""} showFollowingMark={false} />;
+                return <ProfileImage pubkey={p} showUsername={false} link={""} showFollowDistance={false} />;
               })}
               <FormattedMessage
                 defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"

@@ -22,7 +22,7 @@ import {
 import { SnortPubKey } from "Const";
 import { SubscriptionEvent } from "Subscription";
 import useRelaysFeedFollows from "./RelaysFeedFollows";
-import { FollowsFeed, GiftsCache, Notifications, UserRelays } from "Cache";
+import { FollowLists, FollowsFeed, GiftsCache, Notifications, UserRelays } from "Cache";
 import { Nip28Chats, Nip4Chats } from "chat";
 import { useRefreshFeedCache } from "Hooks/useRefreshFeedcache";
 
@@ -38,6 +38,7 @@ export default function useLoginFeed() {
   useRefreshFeedCache(Notifications, true);
   useRefreshFeedCache(FollowsFeed, true);
   useRefreshFeedCache(GiftsCache, true);
+  useRefreshFeedCache(FollowLists, false);
 
   useEffect(() => {
     system.checkSigs = login.appData.item.preferences.checkSigs;

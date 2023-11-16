@@ -62,13 +62,7 @@ export function RelaysTab({ id }: { id: HexKey }) {
 export function BookMarksTab({ id }: { id: HexKey }) {
   const bookmarks = useCategorizedBookmarks(id, "bookmark");
   const reactions = useReactions(`bookmark:reactions:{id}`, bookmarks.map(NostrLink.fromEvent));
-  return (
-    <Bookmarks
-      pubkey={id}
-      bookmarks={bookmarks}
-      related={reactions.data ?? []}
-    />
-  );
+  return <Bookmarks pubkey={id} bookmarks={bookmarks} related={reactions.data ?? []} />;
 }
 
 const ProfileTab = {

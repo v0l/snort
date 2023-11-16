@@ -104,6 +104,11 @@ const SettingsIndex = () => {
             <FormattedMessage defaultMessage="Cache" />
             <Icon name="arrowFront" size={16} />
           </div>
+          <div className="settings-row" onClick={() => navigate("/graph")}>
+            <Icon name="profile" size={24} />
+            <FormattedMessage {...messages.SocialGraph} />
+            <Icon name="arrowFront" size={16} />
+          </div>
           <div className="settings-row" onClick={handleLogout}>
             <Icon name="logout" size={24} />
             <FormattedMessage {...messages.LogOut} />

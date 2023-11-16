@@ -299,7 +299,7 @@ const PreferencesPage = () => {
               onChange={e =>
                 updatePreferences(id, {
                   ...perf,
-                  imgProxyConfig: e.target.checked ? DefaultImgProxy : null,
+                  imgProxyConfig: e.target.checked ? DefaultImgProxy : undefined,
                 })
               }
             />

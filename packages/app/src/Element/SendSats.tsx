@@ -166,7 +166,7 @@ export default function SendSats(props: SendSatsProps) {
               <ProfileImage
                 pubkey={v.value}
                 showUsername={false}
-                showFollowingMark={false}
+                showFollowDistance={false}
                 imageOverlay={formatShort(Math.floor((amount?.amount ?? 0) * (v.weight / total)))}
               />
             ))}

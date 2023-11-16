@@ -8,6 +8,7 @@ import ProfileImage from "./ProfileImage";
 import { UserWebsiteLink } from "./UserWebsiteLink";
 import Text from "Element/Text";
 import { useEffect, useState } from "react";
+import useLogin from "../../Hooks/useLogin";
 
 interface RectElement {
   getBoundingClientRect(): {
@@ -35,6 +36,7 @@ export function ProfileCard({
 }) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [t, setT] = useState<ReturnType<typeof setTimeout>>();
+  const { publicKey: myPublicKey } = useLogin(s => ({ publicKey: s.publicKey }));
 
   useEffect(() => {
     if (show) {
@@ -60,14 +62,14 @@ export function ProfileCard({
       align="end">
       <div className="flex flex-col g8">
         <div className="flex justify-between">
-          <ProfileImage pubkey={""} profile={user} showProfileCard={false} link="" />
+          <ProfileImage pubkey={pubkey} profile={user} showProfileCard={false} link="" />
           <div className="flex g8">
             {/*<button type="button" onClick={() => {
                         LoginStore.loginWithPubkey(pubkey, LoginSessionType.PublicKey, undefined, undefined, undefined, true);
                     }}>
                         <FormattedMessage defaultMessage="Stalk" />
                     </button>*/}
-            <FollowButton pubkey={pubkey} />
+            {myPublicKey !== pubkey && <FollowButton pubkey={pubkey} />}
           </div>
         </div>
         <Text

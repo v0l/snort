@@ -448,7 +448,7 @@ export function NoteCreator() {
             className="note-creator-icon"
             link=""
             showUsername={false}
-            showFollowingMark={false}
+            showFollowDistance={false}
           />
           {note.pollOptions === undefined && !note.replyTo && (
             <AsyncIcon
