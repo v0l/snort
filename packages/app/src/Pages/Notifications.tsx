@@ -10,7 +10,7 @@ import { Bar, BarChart, Tooltip, XAxis, YAxis } from "recharts";
 
 import useLogin from "Hooks/useLogin";
 import { markNotificationsRead } from "Login";
-import { Notifications, UserCache } from "Cache";
+import { Notifications } from "Cache";
 import { dedupe, findTag, orderAscending, orderDescending, getDisplayName } from "SnortUtils";
 import Icon from "Icons/Icon";
 import ProfileImage from "Element/User/ProfileImage";
