@@ -4,8 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { FormattedMessage } from "react-intl";
 
-import useLogin from "Hooks/useLogin";
-import Icon from "Icons/Icon";
+import useLogin from "@/Hooks/useLogin";
+import Icon from "@/Icons/Icon";
 
 export type RootTab =
   | "following"
@@ -157,6 +157,7 @@ export function RootTabs({ base }: { base?: string }) {
           .filter(a => a.show)
           .map(a => (
             <MenuItem
+              key={a.tab}
               onClick={() => {
                 navigate(a.path);
               }}>

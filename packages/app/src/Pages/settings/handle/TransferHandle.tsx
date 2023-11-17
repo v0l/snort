@@ -2,11 +2,11 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import { ApiHost } from "Const";
-import AsyncButton from "Element/AsyncButton";
-import useEventPublisher from "Hooks/useEventPublisher";
-import { ServiceError } from "Nip05/ServiceProvider";
-import SnortServiceProvider, { ManageHandle } from "Nip05/SnortServiceProvider";
+import { ApiHost } from "@/Const";
+import AsyncButton from "@/Element/AsyncButton";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { ServiceError } from "@/Nip05/ServiceProvider";
+import SnortServiceProvider, { ManageHandle } from "@/Nip05/SnortServiceProvider";
 
 export default function TransferHandle({ handle }: { handle: ManageHandle }) {
   const { publisher } = useEventPublisher();

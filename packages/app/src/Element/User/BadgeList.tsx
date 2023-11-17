@@ -5,11 +5,11 @@ import { FormattedMessage } from "react-intl";
 
 import { TaggedNostrEvent } from "@snort/system";
 
-import { ProxyImg } from "Element/ProxyImg";
-import Icon from "Icons/Icon";
-import Modal from "Element/Modal";
-import Username from "Element/User/Username";
-import { findTag } from "SnortUtils";
+import { ProxyImg } from "@/Element/ProxyImg";
+import Icon from "@/Icons/Icon";
+import Modal from "@/Element/Modal";
+import Username from "@/Element/User/Username";
+import { findTag } from "@/SnortUtils";
 
 export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
   const [showModal, setShowModal] = useState(false);

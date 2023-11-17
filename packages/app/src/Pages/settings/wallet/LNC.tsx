@@ -3,9 +3,9 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 
-import AsyncButton from "Element/AsyncButton";
-import { LNWallet, WalletInfo, WalletKind, Wallets } from "Wallet";
-import { unwrap } from "SnortUtils";
+import AsyncButton from "@/Element/AsyncButton";
+import { LNWallet, WalletInfo, WalletKind, Wallets } from "@/Wallet";
+import { unwrap } from "@/SnortUtils";
 
 const ConnectLNC = () => {
   const { formatMessage } = useIntl();
@@ -18,7 +18,7 @@ const ConnectLNC = () => {
 
   async function tryConnect(cfg: string) {
     try {
-      const { LNCWallet } = await import("Wallet/LNCWallet");
+      const { LNCWallet } = await import("@/Wallet/LNCWallet");
       const lnc = await LNCWallet.Initialize(cfg);
       const info = await lnc.getInfo();
 

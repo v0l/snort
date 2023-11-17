@@ -1,13 +1,13 @@
 import "./ZapGoal.css";
 import { useState } from "react";
 import { NostrEvent, NostrLink } from "@snort/system";
-import useZapsFeed from "Feed/ZapsFeed";
-import { formatShort } from "Number";
-import { findTag } from "SnortUtils";
-import Icon from "Icons/Icon";
+import useZapsFeed from "@/Feed/ZapsFeed";
+import { formatShort } from "@/Number";
+import { findTag } from "@/SnortUtils";
+import Icon from "@/Icons/Icon";
 import SendSats from "../SendSats";
-import { Zapper } from "Zapper";
-import Progress from "Element/Progress";
+import { Zapper } from "@/Zapper";
+import Progress from "@/Element/Progress";
 import { FormattedNumber } from "react-intl";
 
 export function ZapGoal({ ev }: { ev: NostrEvent }) {

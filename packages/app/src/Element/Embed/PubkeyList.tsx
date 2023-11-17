@@ -2,15 +2,15 @@ import { NostrEvent } from "@snort/system";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { LNURL } from "@snort/shared";
 
-import { dedupe, findTag, hexToBech32, getDisplayName } from "SnortUtils";
-import FollowListBase from "Element/User/FollowListBase";
-import AsyncButton from "Element/AsyncButton";
-import { useWallet } from "Wallet";
-import { Toastore } from "Toaster";
-import { UserCache } from "Cache";
-import useLogin from "Hooks/useLogin";
-import useEventPublisher from "Hooks/useEventPublisher";
-import { WalletInvoiceState } from "Wallet";
+import { dedupe, findTag, hexToBech32, getDisplayName } from "@/SnortUtils";
+import FollowListBase from "@/Element/User/FollowListBase";
+import AsyncButton from "@/Element/AsyncButton";
+import { useWallet } from "@/Wallet";
+import { Toastore } from "@/Toaster";
+import { UserCache } from "@/Cache";
+import useLogin from "@/Hooks/useLogin";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { WalletInvoiceState } from "@/Wallet";
 
 export default function PubkeyList({ ev, className }: { ev: NostrEvent; className?: string }) {
   const wallet = useWallet();

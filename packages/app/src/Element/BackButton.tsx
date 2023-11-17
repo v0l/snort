@@ -1,7 +1,7 @@
 import "./BackButton.css";
 import { useIntl } from "react-intl";
 
-import Icon from "Icons/Icon";
+import Icon from "@/Icons/Icon";
 
 import messages from "./messages";
 

@@ -6,26 +6,26 @@ import classNames from "classnames";
 import { EventExt, EventKind, HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions } from "@snort/system-react";
 
-import { findTag, hexToBech32 } from "SnortUtils";
-import useModeration from "Hooks/useModeration";
-import useLogin from "Hooks/useLogin";
-import useEventPublisher from "Hooks/useEventPublisher";
+import { findTag, hexToBech32 } from "@/SnortUtils";
+import useModeration from "@/Hooks/useModeration";
+import useLogin from "@/Hooks/useLogin";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 import { NoteContextMenu, NoteTranslation } from "./NoteContextMenu";
-import { UserCache } from "Cache";
+import { UserCache } from "@/Cache";
 import messages from "../messages";
-import { setBookmarked, setPinned } from "Login";
+import { setBookmarked, setPinned } from "@/Login";
 import Text from "../Text";
 import Reveal from "./Reveal";
 import Poll from "./Poll";
 import ProfileImage from "../User/ProfileImage";
-import Icon from "Icons/Icon";
+import Icon from "@/Icons/Icon";
 import NoteTime from "./NoteTime";
 import NoteFooter from "./NoteFooter";
 import Reactions from "./Reactions";
 import HiddenNote from "./HiddenNote";
 import { NoteProps } from "./Note";
-import { chainKey } from "Hooks/useThreadContext";
-import { ProfileLink } from "Element/User/ProfileLink";
+import { chainKey } from "@/Hooks/useThreadContext";
+import { ProfileLink } from "@/Element/User/ProfileLink";
 
 export function NoteInner(props: NoteProps) {
   const { data: ev, related, highlight, options: opt, ignoreModeration = false, className } = props;

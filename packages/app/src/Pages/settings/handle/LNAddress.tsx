@@ -2,10 +2,10 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { LNURL } from "@snort/shared";
 
-import { ApiHost } from "Const";
-import AsyncButton from "Element/AsyncButton";
-import useEventPublisher from "Hooks/useEventPublisher";
-import SnortServiceProvider, { ForwardType, ManageHandle } from "Nip05/SnortServiceProvider";
+import { ApiHost } from "@/Const";
+import AsyncButton from "@/Element/AsyncButton";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import SnortServiceProvider, { ForwardType, ManageHandle } from "@/Nip05/SnortServiceProvider";
 
 export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
   const { formatMessage } = useIntl();

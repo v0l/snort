@@ -5,8 +5,8 @@ import { v4 as uuid } from "uuid";
 import { HexKey, RelaySettings, EventPublisher, KeyStorage, NotEncrypted, socialGraphInstance } from "@snort/system";
 import { deepClone, sanitizeRelayUrl, unwrap, ExternalStore } from "@snort/shared";
 
-import { DefaultRelays } from "Const";
-import { LoginSession, LoginSessionType, createPublisher } from "Login";
+import { DefaultRelays } from "@/Const";
+import { LoginSession, LoginSessionType, createPublisher } from "@/Login";
 import { DefaultPreferences, UserPreferences } from "./Preferences";
 
 const AccountStoreKey = "sessions";

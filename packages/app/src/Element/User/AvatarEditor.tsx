@@ -1,9 +1,9 @@
 import "./AvatarEditor.css";
-import Icon from "Icons/Icon";
+import Icon from "@/Icons/Icon";
 import { useState } from "react";
-import useFileUpload from "Upload";
-import { openFile, unwrap } from "SnortUtils";
-import Spinner from "Icons/Spinner";
+import useFileUpload from "@/Upload";
+import { openFile, unwrap } from "@/SnortUtils";
+import Spinner from "@/Icons/Spinner";
 
 interface AvatarEditorProps {
   picture?: string;

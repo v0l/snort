@@ -4,12 +4,12 @@ import { useState, useMemo, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { TaggedNostrEvent, ParsedZap } from "@snort/system";
 
-import { formatShort } from "Number";
-import Icon from "Icons/Icon";
-import { Tab } from "Element/Tabs";
-import ProfileImage from "Element/User/ProfileImage";
-import Tabs from "Element/Tabs";
-import Modal from "Element/Modal";
+import { formatShort } from "@/Number";
+import Icon from "@/Icons/Icon";
+import { Tab } from "@/Element/Tabs";
+import ProfileImage from "@/Element/User/ProfileImage";
+import Tabs from "@/Element/Tabs";
+import Modal from "@/Element/Modal";
 
 import messages from "../messages";
 

@@ -5,18 +5,18 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/system";
 import { LNURLSuccessAction } from "@snort/shared";
 
-import { formatShort } from "Number";
-import Icon from "Icons/Icon";
-import useEventPublisher from "Hooks/useEventPublisher";
-import ProfileImage from "Element/User/ProfileImage";
-import Modal from "Element/Modal";
-import QrCode from "Element/QrCode";
-import Copy from "Element/Copy";
-import { debounce } from "SnortUtils";
-import { LNWallet, useWallet } from "Wallet";
-import useLogin from "Hooks/useLogin";
-import AsyncButton from "Element/AsyncButton";
-import { ZapTarget, ZapTargetResult, Zapper } from "Zapper";
+import { formatShort } from "@/Number";
+import Icon from "@/Icons/Icon";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import ProfileImage from "@/Element/User/ProfileImage";
+import Modal from "@/Element/Modal";
+import QrCode from "@/Element/QrCode";
+import Copy from "@/Element/Copy";
+import { debounce } from "@/SnortUtils";
+import { LNWallet, useWallet } from "@/Wallet";
+import useLogin from "@/Hooks/useLogin";
+import AsyncButton from "@/Element/AsyncButton";
+import { ZapTarget, ZapTargetResult, Zapper } from "@/Zapper";
 
 import messages from "./messages";
 

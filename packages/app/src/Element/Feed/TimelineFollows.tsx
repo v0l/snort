@@ -5,14 +5,14 @@ import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/syste
 import { unixNow } from "@snort/shared";
 import { SnortContext, useReactions } from "@snort/system-react";
 
-import { dedupeByPubkey, findTag, orderDescending } from "SnortUtils";
-import useModeration from "Hooks/useModeration";
-import { FollowsFeed } from "Cache";
-import { LiveStreams } from "Element/LiveStreams";
-import useLogin from "Hooks/useLogin";
+import { dedupeByPubkey, findTag, orderDescending } from "@/SnortUtils";
+import useModeration from "@/Hooks/useModeration";
+import { FollowsFeed } from "@/Cache";
+import { LiveStreams } from "@/Element/LiveStreams";
+import useLogin from "@/Hooks/useLogin";
 import { TimelineRenderer } from "./TimelineFragment";
-import useHashtagsFeed from "Feed/HashtagsFeed";
-import { ShowMoreInView } from "Element/Event/ShowMore";
+import useHashtagsFeed from "@/Feed/HashtagsFeed";
+import { ShowMoreInView } from "@/Element/Event/ShowMore";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;

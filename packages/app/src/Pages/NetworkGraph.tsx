@@ -4,8 +4,8 @@ import { MetadataCache, socialGraphInstance, STR, UID } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import * as THREE from "three";
 import { defaultAvatar } from "../SnortUtils";
-import { proxyImg } from "Hooks/useImgProxy";
-import { LoginStore } from "Login";
+import { proxyImg } from "@/Hooks/useImgProxy";
+import { LoginStore } from "@/Login";
 
 interface GraphNode {
   id: UID;

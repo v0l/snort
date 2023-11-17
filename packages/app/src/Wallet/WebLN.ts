@@ -11,7 +11,7 @@ import {
   WalletInvoiceState,
   WalletKind,
   WalletStore,
-} from "Wallet";
+} from "@/Wallet";
 import { barrierQueue, processWorkQueue, WorkQueueItem } from "@snort/shared";
 
 const WebLNQueue: Array<WorkQueueItem> = [];

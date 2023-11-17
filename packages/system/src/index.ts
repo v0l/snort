@@ -8,7 +8,7 @@ import { RelayCache } from "./gossip-model";
 import { QueryOptimizer } from "./query-optimizer";
 import { base64 } from "@scure/base";
 
-export * from "./nostr-system";
+export { NostrSystem } from "./nostr-system";
 export { default as EventKind } from "./event-kind";
 export { default as SocialGraph, socialGraphInstance } from "./SocialGraph/SocialGraph";
 export * from "./SocialGraph/UniqueIds";

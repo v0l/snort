@@ -3,9 +3,9 @@ import { FormattedMessage } from "react-intl";
 import { TaggedNostrEvent } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
-import Modal from "Element/Modal";
+import Modal from "@/Element/Modal";
 import messages from "./messages";
-import useLogin from "Hooks/useLogin";
+import useLogin from "@/Hooks/useLogin";
 import AsyncButton from "./AsyncButton";
 
 export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: TaggedNostrEvent }) {

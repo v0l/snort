@@ -5,9 +5,9 @@ import { useMemo } from "react";
 import { decodeInvoice } from "@snort/shared";
 import classNames from "classnames";
 
-import SendSats from "Element/SendSats";
-import Icon from "Icons/Icon";
-import { useWallet } from "Wallet";
+import SendSats from "@/Element/SendSats";
+import Icon from "@/Icons/Icon";
+import { useWallet } from "@/Wallet";
 
 import messages from "../messages";
 

@@ -3,10 +3,10 @@ import { FormattedMessage } from "react-intl";
 import { useCallback, useMemo } from "react";
 import { TaggedNostrEvent, EventKind } from "@snort/system";
 
-import { dedupeByPubkey, findTag } from "SnortUtils";
-import useTimelineFeed, { TimelineFeed, TimelineSubject } from "Feed/TimelineFeed";
-import useModeration from "Hooks/useModeration";
-import { LiveStreams } from "Element/LiveStreams";
+import { dedupeByPubkey, findTag } from "@/SnortUtils";
+import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";
+import useModeration from "@/Hooks/useModeration";
+import { LiveStreams } from "@/Element/LiveStreams";
 import { TimelineRenderer } from "./TimelineFragment";
 import { unixNow } from "@snort/shared";
 

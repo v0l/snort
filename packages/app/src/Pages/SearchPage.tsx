@@ -1,13 +1,13 @@
 import { useIntl, FormattedMessage } from "react-intl";
 import { useParams } from "react-router-dom";
-import Timeline from "Element/Feed/Timeline";
-import Tabs, { Tab } from "Element/Tabs";
+import Timeline from "@/Element/Feed/Timeline";
+import Tabs, { Tab } from "@/Element/Tabs";
 import { useEffect, useState } from "react";
-import { debounce } from "SnortUtils";
-import { router } from "index";
-import TrendingUsers from "Element/TrendingUsers";
+import { debounce } from "@/SnortUtils";
+import { router } from "@/index";
+import TrendingUsers from "@/Element/TrendingUsers";
 
-import TrendingNotes from "Element/TrendingPosts";
+import TrendingNotes from "@/Element/TrendingPosts";
 
 const NOTES = 0;
 const PROFILES = 1;

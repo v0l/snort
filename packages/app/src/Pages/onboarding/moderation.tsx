@@ -3,11 +3,11 @@ import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { unixNowMs } from "@snort/shared";
 
-import AsyncButton from "Element/AsyncButton";
-import { appendDedupe } from "SnortUtils";
-import { ToggleSwitch } from "Icons/Toggle";
-import { updateAppData } from "Login";
-import useLogin from "Hooks/useLogin";
+import AsyncButton from "@/Element/AsyncButton";
+import { appendDedupe } from "@/SnortUtils";
+import { ToggleSwitch } from "@/Icons/Toggle";
+import { updateAppData } from "@/Login";
+import useLogin from "@/Hooks/useLogin";
 
 export const FixedModeration = {
   /*hateSpeech: {

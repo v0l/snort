@@ -9,7 +9,7 @@ import {
   WalletInfo,
   WalletInvoice,
   WalletInvoiceState,
-} from "Wallet";
+} from "@/Wallet";
 
 const defaultHeaders = {
   Accept: "application/json",

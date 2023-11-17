@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { NostrEvent, NostrLink, NostrPrefix } from "@snort/system";
-import useEventPublisher from "Hooks/useEventPublisher";
-import useFileUpload from "Upload";
-import { openFile } from "SnortUtils";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import useFileUpload from "@/Upload";
+import { openFile } from "@/SnortUtils";
 import Textarea from "../Textarea";
-import { Chat } from "chat";
-import { AsyncIcon } from "Element/AsyncIcon";
+import { Chat } from "@/chat";
+import { AsyncIcon } from "@/Element/AsyncIcon";
 
 export default function WriteMessage({ chat }: { chat: Chat }) {
   const [msg, setMsg] = useState("");

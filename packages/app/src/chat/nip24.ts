@@ -1,9 +1,9 @@
 import { ExternalStore, dedupe } from "@snort/shared";
 import { EventKind, NostrPrefix, encodeTLVEntries, TLVEntryType, TLVEntry, decodeTLV, NostrEvent } from "@snort/system";
-import { GiftWrapCache } from "Cache/GiftWrapCache";
-import { UnwrappedGift } from "Db";
-import { Chat, ChatSystem, ChatType, lastReadInChat } from "chat";
-import { GetPowWorker } from "index";
+import { GiftWrapCache } from "@/Cache/GiftWrapCache";
+import { UnwrappedGift } from "@/Db";
+import { Chat, ChatSystem, ChatType, lastReadInChat } from "@/chat";
+import { GetPowWorker } from "@/index";
 
 export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   #cache: GiftWrapCache;

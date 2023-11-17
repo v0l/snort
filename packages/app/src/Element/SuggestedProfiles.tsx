@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { HexKey, NostrPrefix } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
-import FollowListBase from "Element/User/FollowListBase";
-import PageSpinner from "Element/PageSpinner";
-import NostrBandApi from "External/NostrBand";
-import SemisolDevApi from "External/SemisolDev";
-import useLogin from "Hooks/useLogin";
-import { hexToBech32 } from "SnortUtils";
+import FollowListBase from "@/Element/User/FollowListBase";
+import PageSpinner from "@/Element/PageSpinner";
+import NostrBandApi from "@/External/NostrBand";
+import SemisolDevApi from "@/External/SemisolDev";
+import useLogin from "@/Hooks/useLogin";
+import { hexToBech32 } from "@/SnortUtils";
 import { ErrorOrOffline } from "./ErrorOrOffline";
 
 enum Provider {

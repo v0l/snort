@@ -2,11 +2,11 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { v4 as uuid } from "uuid";
 
-import AsyncButton from "Element/AsyncButton";
-import { unwrap } from "SnortUtils";
-import { WalletConfig, WalletKind, Wallets } from "Wallet";
+import AsyncButton from "@/Element/AsyncButton";
+import { unwrap } from "@/SnortUtils";
+import { WalletConfig, WalletKind, Wallets } from "@/Wallet";
 import { Link, useNavigate } from "react-router-dom";
-import { NostrConnectWallet } from "Wallet/NostrWalletConnect";
+import { NostrConnectWallet } from "@/Wallet/NostrWalletConnect";
 
 const ConnectNostrWallet = () => {
   const navigate = useNavigate();

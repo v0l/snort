@@ -1,10 +1,10 @@
 import "./LiveStreams.css";
 import { NostrEvent, NostrLink } from "@snort/system";
-import { findTag } from "SnortUtils";
+import { findTag } from "@/SnortUtils";
 import { CSSProperties, useMemo } from "react";
 import { Link } from "react-router-dom";
-import useImgProxy from "Hooks/useImgProxy";
-import Icon from "Icons/Icon";
+import useImgProxy from "@/Hooks/useImgProxy";
+import Icon from "@/Icons/Icon";
 
 export function LiveStreams({ evs }: { evs: Array<NostrEvent> }) {
   const streams = useMemo(() => {

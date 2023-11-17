@@ -2,9 +2,9 @@ import "./TaskList.css";
 import { useState } from "react";
 import { useUserProfile } from "@snort/system-react";
 
-import useLogin from "Hooks/useLogin";
-import Icon from "Icons/Icon";
-import { UITask } from "Tasks";
+import useLogin from "@/Hooks/useLogin";
+import Icon from "@/Icons/Icon";
+import { UITask } from "@/Tasks";
 import { DonateTask } from "./DonateTask";
 import { Nip5Task } from "./Nip5Task";
 import { RenewSubTask } from "./RenewSubscription";

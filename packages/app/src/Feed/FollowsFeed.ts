@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { HexKey, TaggedNostrEvent, EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
-import useLogin from "Hooks/useLogin";
+import useLogin from "@/Hooks/useLogin";
 
 export default function useFollowsFeed(pubkey?: HexKey) {
   const { publicKey, follows } = useLogin();

@@ -2,6 +2,7 @@
   "name": "@snort/shared",
   "version": "1.0.9",
   "description": "Shared components for Snort",
+  "module": "src/index.ts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://git.v0l.io/Kieran/snort",

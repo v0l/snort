@@ -2,18 +2,18 @@ import { FormattedMessage } from "react-intl";
 import { HexKey, NostrLink, NostrPrefix } from "@snort/system";
 import { useReactions } from "@snort/system-react";
 
-import useZapsFeed from "Feed/ZapsFeed";
-import { formatShort } from "Number";
-import useFollowersFeed from "Feed/FollowersFeed";
-import FollowsList from "Element/User/FollowListBase";
-import useFollowsFeed from "Feed/FollowsFeed";
-import useRelaysFeed from "Feed/RelaysFeed";
-import RelaysMetadata from "Element/Relay/RelaysMetadata";
-import Bookmarks from "Element/User/Bookmarks";
-import Icon from "Icons/Icon";
-import { Tab } from "Element/Tabs";
-import { default as ZapElement } from "Element/Event/Zap";
-import useCategorizedBookmarks from "Hooks/useLists";
+import useZapsFeed from "@/Feed/ZapsFeed";
+import { formatShort } from "@/Number";
+import useFollowersFeed from "@/Feed/FollowersFeed";
+import FollowsList from "@/Element/User/FollowListBase";
+import useFollowsFeed from "@/Feed/FollowsFeed";
+import useRelaysFeed from "@/Feed/RelaysFeed";
+import RelaysMetadata from "@/Element/Relay/RelaysMetadata";
+import Bookmarks from "@/Element/User/Bookmarks";
+import Icon from "@/Icons/Icon";
+import { Tab } from "@/Element/Tabs";
+import { default as ZapElement } from "@/Element/Event/Zap";
+import useCategorizedBookmarks from "@/Hooks/useLists";
 
 import messages from "../messages";
 

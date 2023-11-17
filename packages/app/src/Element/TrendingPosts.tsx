@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useReactions } from "@snort/system-react";
 
-import PageSpinner from "Element/PageSpinner";
-import Note from "Element/Event/Note";
-import NostrBandApi from "External/NostrBand";
-import { ErrorOrOffline } from "Element/ErrorOrOffline";
-import { useLocale } from "IntlProvider";
-import useModeration from "Hooks/useModeration";
+import PageSpinner from "@/Element/PageSpinner";
+import Note from "@/Element/Event/Note";
+import NostrBandApi from "@/External/NostrBand";
+import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
+import { useLocale } from "@/IntlProvider";
+import useModeration from "@/Hooks/useModeration";
 
 export default function TrendingNotes() {
   const [posts, setPosts] = useState<Array<NostrEvent>>();

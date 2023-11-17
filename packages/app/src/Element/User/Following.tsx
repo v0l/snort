@@ -1,8 +1,8 @@
 import "./Following.css";
 import { FormattedMessage } from "react-intl";
 
-import useLogin from "Hooks/useLogin";
-import Icon from "Icons/Icon";
+import useLogin from "@/Hooks/useLogin";
+import Icon from "@/Icons/Icon";
 
 export function FollowingMark({ pubkey }: { pubkey: string }) {
   const { follows } = useLogin(s => ({ follows: s.follows }));

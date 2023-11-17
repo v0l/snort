@@ -3,9 +3,9 @@ import { useState } from "react";
 import { HexKey } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
-import SendSats from "Element/SendSats";
-import Icon from "Icons/Icon";
-import { ZapTarget } from "Zapper";
+import SendSats from "@/Element/SendSats";
+import Icon from "@/Icons/Icon";
+import { ZapTarget } from "@/Zapper";
 
 const ZapButton = ({
   pubkey,

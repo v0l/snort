@@ -1,7 +1,7 @@
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import { MetadataCache } from "@snort/system";
-import { BaseUITask } from "Tasks";
+import { BaseUITask } from "@/Tasks";
 
 export class Nip5Task extends BaseUITask {
   id = "buy-nip5";

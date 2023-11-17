@@ -9,8 +9,8 @@ import {
   RelayMetrics,
   UserCache,
   UserRelays,
-} from "Cache";
-import AsyncButton from "Element/AsyncButton";
+} from "@/Cache";
+import AsyncButton from "@/Element/AsyncButton";
 import { ReactNode, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 

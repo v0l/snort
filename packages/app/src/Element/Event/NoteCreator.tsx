@@ -4,28 +4,28 @@ import { EventKind, NostrPrefix, TaggedNostrEvent, EventBuilder, tryParseNostrLi
 import classNames from "classnames";
 import { TagsInput } from "react-tag-input-component";
 
-import Icon from "Icons/Icon";
-import useEventPublisher from "Hooks/useEventPublisher";
-import { appendDedupe, openFile } from "SnortUtils";
-import Textarea from "Element/Textarea";
-import Modal from "Element/Modal";
-import ProfileImage from "Element/User/ProfileImage";
-import useFileUpload from "Upload";
-import Note from "Element/Event/Note";
+import Icon from "@/Icons/Icon";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { appendDedupe, openFile } from "@/SnortUtils";
+import Textarea from "@/Element/Textarea";
+import Modal from "@/Element/Modal";
+import ProfileImage from "@/Element/User/ProfileImage";
+import useFileUpload from "@/Upload";
+import Note from "@/Element/Event/Note";
 
 import { ClipboardEventHandler, DragEvent, useEffect, useState } from "react";
-import useLogin from "Hooks/useLogin";
-import { GetPowWorker } from "index";
-import AsyncButton from "Element/AsyncButton";
-import { AsyncIcon } from "Element/AsyncIcon";
+import useLogin from "@/Hooks/useLogin";
+import { GetPowWorker } from "@/index";
+import AsyncButton from "@/Element/AsyncButton";
+import { AsyncIcon } from "@/Element/AsyncIcon";
 import { fetchNip05Pubkey } from "@snort/shared";
-import { ZapTarget } from "Zapper";
-import { useNoteCreator } from "State/NoteCreator";
+import { ZapTarget } from "@/Zapper";
+import { useNoteCreator } from "@/State/NoteCreator";
 import { NoteBroadcaster } from "./NoteBroadcaster";
 import FileUploadProgress from "./FileUpload";
-import { ToggleSwitch } from "Icons/Toggle";
-import NostrBandApi from "External/NostrBand";
-import { useLocale } from "IntlProvider";
+import { ToggleSwitch } from "@/Icons/Toggle";
+import NostrBandApi from "@/External/NostrBand";
+import { useLocale } from "@/IntlProvider";
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();

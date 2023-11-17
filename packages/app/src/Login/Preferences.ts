@@ -1,5 +1,5 @@
-import { DefaultImgProxy } from "Const";
-import { ImgProxySettings } from "Hooks/useImgProxy";
+import { DefaultImgProxy } from "@/Const";
+import { ImgProxySettings } from "@/Hooks/useImgProxy";
 
 export interface UserPreferences {
   /**

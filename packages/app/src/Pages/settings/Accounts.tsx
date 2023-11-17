@@ -1,9 +1,9 @@
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import ProfilePreview from "Element/User/ProfilePreview";
-import { LoginStore } from "Login";
-import { getActiveSubscriptions } from "Subscription";
+import ProfilePreview from "@/Element/User/ProfilePreview";
+import { LoginStore } from "@/Login";
+import { getActiveSubscriptions } from "@/Subscription";
 
 export default function AccountsPage() {
   const logins = LoginStore.getSessions();

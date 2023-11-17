@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
-import useLogin from "Hooks/useLogin";
-import Icon from "Icons/Icon";
+import useLogin from "@/Hooks/useLogin";
+import Icon from "@/Icons/Icon";
 
 interface Token {
   token: Array<{

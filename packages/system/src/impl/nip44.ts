@@ -1,4 +1,4 @@
-import { MessageEncryptor, MessageEncryptorPayload, MessageEncryptorVersion } from "index";
+import { MessageEncryptor, MessageEncryptorPayload, MessageEncryptorVersion } from "..";
 
 import { randomBytes } from "@noble/hashes/utils";
 import { streamXOR as xchacha20 } from "@stablelib/xchacha20";

@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { RouteObject, useNavigate } from "react-router-dom";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
-import NoteTime from "Element/Event/NoteTime";
-import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets } from "Wallet";
-import AsyncButton from "Element/AsyncButton";
-import { unwrap } from "SnortUtils";
-import { WebLNWallet } from "Wallet/WebLN";
-import Icon from "Icons/Icon";
+import NoteTime from "@/Element/Event/NoteTime";
+import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets } from "@/Wallet";
+import AsyncButton from "@/Element/AsyncButton";
+import { unwrap } from "@/SnortUtils";
+import { WebLNWallet } from "@/Wallet/WebLN";
+import Icon from "@/Icons/Icon";
 
 export const WalletRoutes: RouteObject[] = [
   {

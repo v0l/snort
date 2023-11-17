@@ -2,11 +2,11 @@ import "./Root.css";
 import { useEffect, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Icon from "Icons/Icon";
-import { LoginStore, logout } from "Login";
-import useLogin from "Hooks/useLogin";
-import { getCurrentSubscription } from "Subscription";
-import usePageWidth from "Hooks/usePageWidth";
+import Icon from "@/Icons/Icon";
+import { LoginStore, logout } from "@/Login";
+import useLogin from "@/Hooks/useLogin";
+import { getCurrentSubscription } from "@/Subscription";
+import usePageWidth from "@/Hooks/usePageWidth";
 
 import messages from "./messages";
 

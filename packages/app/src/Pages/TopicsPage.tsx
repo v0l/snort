@@ -1,5 +1,5 @@
-import Timeline from "Element/Feed/Timeline";
-import useLogin from "Hooks/useLogin";
+import Timeline from "@/Element/Feed/Timeline";
+import useLogin from "@/Hooks/useLogin";
 
 export function TopicsPage() {
   const { tags, pubKey } = useLogin(s => ({ tags: s.tags.item, pubKey: s.publicKey }));

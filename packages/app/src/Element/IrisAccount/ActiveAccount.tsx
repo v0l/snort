@@ -2,9 +2,9 @@ import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
 import AccountName from "./AccountName";
-import useLogin from "Hooks/useLogin";
-import { UserCache } from "Cache";
-import useEventPublisher from "Hooks/useEventPublisher";
+import useLogin from "@/Hooks/useLogin";
+import { UserCache } from "@/Cache";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 import { FormattedMessage } from "react-intl";
 
 export default function ActiveAccount({ name = "", setAsPrimary = () => {} }) {

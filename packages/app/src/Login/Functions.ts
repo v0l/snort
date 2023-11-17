@@ -12,14 +12,14 @@ import { unixNowMs } from "@snort/shared";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
-import { Blasters, SnortPubKey } from "Const";
-import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData, Newest } from "Login";
-import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
-import { bech32ToHex, dedupeById, getCountry, sanitizeRelayUrl, unwrap } from "SnortUtils";
-import { SubscriptionEvent } from "Subscription";
-import { Chats, FollowsFeed, GiftsCache, Notifications } from "Cache";
+import { Blasters, SnortPubKey } from "@/Const";
+import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData, Newest } from "@/Login";
+import { generateBip39Entropy, entropyToPrivateKey } from "@/nip6";
+import { bech32ToHex, dedupeById, getCountry, sanitizeRelayUrl, unwrap } from "@/SnortUtils";
+import { SubscriptionEvent } from "@/Subscription";
+import { Chats, FollowsFeed, GiftsCache, Notifications } from "@/Cache";
 import { Nip7OsSigner } from "./Nip7OsSigner";
-import SnortApi from "External/SnortApi";
+import SnortApi from "@/External/SnortApi";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
   if (SINGLE_RELAY) {

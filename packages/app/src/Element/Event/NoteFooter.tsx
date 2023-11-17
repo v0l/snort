@@ -7,20 +7,20 @@ import { useUserProfile } from "@snort/system-react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import classNames from "classnames";
 
-import { formatShort } from "Number";
-import useEventPublisher from "Hooks/useEventPublisher";
-import { delay, findTag, getDisplayName } from "SnortUtils";
-import SendSats from "Element/SendSats";
-import { ZapsSummary } from "Element/Event/Zap";
-import { AsyncIcon, AsyncIconProps } from "Element/AsyncIcon";
+import { formatShort } from "@/Number";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { delay, findTag, getDisplayName } from "@/SnortUtils";
+import SendSats from "@/Element/SendSats";
+import { ZapsSummary } from "@/Element/Event/Zap";
+import { AsyncIcon, AsyncIconProps } from "@/Element/AsyncIcon";
 
-import { useWallet } from "Wallet";
-import useLogin from "Hooks/useLogin";
-import { useInteractionCache } from "Hooks/useInteractionCache";
-import { ZapPoolController } from "ZapPoolController";
-import { Zapper, ZapTarget } from "Zapper";
-import { useNoteCreator } from "State/NoteCreator";
-import Icon from "Icons/Icon";
+import { useWallet } from "@/Wallet";
+import useLogin from "@/Hooks/useLogin";
+import { useInteractionCache } from "@/Hooks/useInteractionCache";
+import { ZapPoolController } from "@/ZapPoolController";
+import { Zapper, ZapTarget } from "@/Zapper";
+import { useNoteCreator } from "@/State/NoteCreator";
+import Icon from "@/Icons/Icon";
 
 import messages from "../messages";
 
@@ -308,14 +308,15 @@ export default function NoteFooter(props: NoteFooterProps) {
   );
 }
 
-const AsyncFooterIcon = forwardRef((props: AsyncIconProps & { value: number }) => {
+const AsyncFooterIcon = forwardRef((props: AsyncIconProps & { value: number }, ref) => {
   const mergedProps = {
     ...props,
     iconSize: 18,
     className: classNames("transition duration-200 ease-in-out reaction-pill", props.className),
   };
+
   return (
-    <AsyncIcon {...mergedProps}>
+    <AsyncIcon ref={ref} {...mergedProps}>
       {props.value > 0 && <div className="reaction-pill-number">{formatShort(props.value)}</div>}
     </AsyncIcon>
   );

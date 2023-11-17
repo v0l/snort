@@ -3,14 +3,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { unwrap } from "@snort/shared";
 
-import AsyncButton from "Element/AsyncButton";
-import Icon from "Icons/Icon";
+import AsyncButton from "@/Element/AsyncButton";
+import Icon from "@/Icons/Icon";
 import { NewUserState } from ".";
-import { LoginSessionType, LoginStore } from "Login";
-import useLoginHandler from "Hooks/useLoginHandler";
+import { LoginSessionType, LoginStore } from "@/Login";
+import useLoginHandler from "@/Hooks/useLoginHandler";
 import { NotEncrypted } from "@snort/system";
 import classNames from "classnames";
-import { trackEvent } from "SnortUtils";
+import { trackEvent } from "@/SnortUtils";
 
 export function SignIn() {
   const navigate = useNavigate();

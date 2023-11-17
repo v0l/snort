@@ -1,11 +1,11 @@
 import "./Preferences.css";
 
 import { FormattedMessage, useIntl } from "react-intl";
-import useLogin from "Hooks/useLogin";
-import { updatePreferences, UserPreferences } from "Login";
-import { DefaultImgProxy } from "Const";
-import { unwrap } from "SnortUtils";
-import { useLocale } from "IntlProvider";
+import useLogin from "@/Hooks/useLogin";
+import { updatePreferences, UserPreferences } from "@/Login";
+import { DefaultImgProxy } from "@/Const";
+import { unwrap } from "@/SnortUtils";
+import { useLocale } from "@/IntlProvider";
 
 import messages from "./messages";
 

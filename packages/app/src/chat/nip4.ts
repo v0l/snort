@@ -10,8 +10,8 @@ import {
   TaggedNostrEvent,
   decodeTLV,
 } from "@snort/system";
-import { LoginSession } from "Login";
-import { Chat, ChatSystem, ChatType, inChatWith, lastReadInChat } from "chat";
+import { LoginSession } from "@/Login";
+import { Chat, ChatSystem, ChatType, inChatWith, lastReadInChat } from "@/chat";
 import { debug } from "debug";
 
 export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {

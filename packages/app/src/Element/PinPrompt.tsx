@@ -1,15 +1,15 @@
-import useLogin from "Hooks/useLogin";
+import useLogin from "@/Hooks/useLogin";
 import "./PinPrompt.css";
 import { ReactNode, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { unwrap } from "@snort/shared";
 import { EventPublisher, InvalidPinError, PinEncrypted } from "@snort/system";
 
-import useEventPublisher from "Hooks/useEventPublisher";
-import { LoginStore, createPublisher, sessionNeedsPin } from "Login";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { LoginStore, createPublisher, sessionNeedsPin } from "@/Login";
 import Modal from "./Modal";
 import AsyncButton from "./AsyncButton";
-import { GetPowWorker } from "index";
+import { GetPowWorker } from "@/index";
 
 export function PinPrompt({
   onResult,

@@ -1,4 +1,4 @@
-import { WarningNotice } from "Element/WarningNotice";
+import { WarningNotice } from "@/Element/WarningNotice";
 import { useState } from "react";
 
 interface RevealProps {

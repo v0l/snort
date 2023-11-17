@@ -2,10 +2,10 @@ import { FormattedMessage } from "react-intl";
 import { NostrEvent, NostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 
-import { findTag } from "SnortUtils";
-import PageSpinner from "Element/PageSpinner";
-import Reveal from "Element/Event/Reveal";
-import { MediaElement } from "Element/Embed/MediaElement";
+import { findTag } from "@/SnortUtils";
+import PageSpinner from "@/Element/PageSpinner";
+import Reveal from "@/Element/Event/Reveal";
+import { MediaElement } from "@/Element/Embed/MediaElement";
 
 export default function NostrFileHeader({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);

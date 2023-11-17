@@ -1,5 +1,5 @@
 import "./Note.css";
-import ProfileImage from "Element/User/ProfileImage";
+import ProfileImage from "@/Element/User/ProfileImage";
 
 interface NoteGhostProps {
   className?: string;

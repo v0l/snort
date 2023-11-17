@@ -1,9 +1,9 @@
 import { FormattedMessage } from "react-intl";
 
-import { FileExtensionRegex } from "Const";
-import Reveal from "Element/Event/Reveal";
-import useLogin from "Hooks/useLogin";
-import { MediaElement } from "Element/Embed/MediaElement";
+import { FileExtensionRegex } from "@/Const";
+import Reveal from "@/Element/Event/Reveal";
+import useLogin from "@/Hooks/useLogin";
+import { MediaElement } from "@/Element/Embed/MediaElement";
 import { Link } from "react-router-dom";
 
 interface RevealMediaProps {

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import Icon, { IconProps } from "Icons/Icon";
+import Icon, { IconProps } from "@/Icons/Icon";
 import type { ReactNode } from "react";
 
 interface IconButtonProps {

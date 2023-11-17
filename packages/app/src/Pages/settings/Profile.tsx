@@ -4,16 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
-import useEventPublisher from "Hooks/useEventPublisher";
-import { openFile } from "SnortUtils";
-import useFileUpload from "Upload";
-import AsyncButton from "Element/AsyncButton";
-import { UserCache } from "Cache";
-import useLogin from "Hooks/useLogin";
-import Icon from "Icons/Icon";
-import Avatar from "Element/User/Avatar";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { openFile } from "@/SnortUtils";
+import useFileUpload from "@/Upload";
+import AsyncButton from "@/Element/AsyncButton";
+import { UserCache } from "@/Cache";
+import useLogin from "@/Hooks/useLogin";
+import Icon from "@/Icons/Icon";
+import Avatar from "@/Element/User/Avatar";
 import { FormattedMessage } from "react-intl";
-import { ErrorOrOffline } from "Element/ErrorOrOffline";
+import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;

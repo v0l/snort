@@ -1,7 +1,7 @@
 import { LNURL, isHex } from "@snort/shared";
 import { EventPublisher, NostrEvent, NostrLink, SystemInterface } from "@snort/system";
-import { generateRandomKey } from "Login";
-import { LNWallet, WalletInvoiceState } from "Wallet";
+import { generateRandomKey } from "@/Login";
+import { LNWallet, WalletInvoiceState } from "@/Wallet";
 
 export interface ZapTarget {
   type: "lnurl" | "pubkey";

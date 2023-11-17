@@ -1,8 +1,8 @@
 import { NostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 
-import Note from "Element/Event/Note";
-import PageSpinner from "Element/PageSpinner";
+import Note from "@/Element/Event/Note";
+import PageSpinner from "@/Element/PageSpinner";
 
 export default function NoteQuote({ link, depth }: { link: NostrLink; depth?: number }) {
   const ev = useEventFeed(link);

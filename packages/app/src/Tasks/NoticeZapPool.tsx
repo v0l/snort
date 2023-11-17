@@ -1,6 +1,6 @@
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { Link } from "react-router-dom";
-import { BaseUITask } from "Tasks";
+import { BaseUITask } from "@/Tasks";
 
 export class NoticeZapPoolDefault extends BaseUITask {
   id = "zap-pool-default";

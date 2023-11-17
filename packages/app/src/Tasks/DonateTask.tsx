@@ -1,6 +1,6 @@
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
-import { BaseUITask } from "Tasks";
+import { BaseUITask } from "@/Tasks";
 
 export class DonateTask extends BaseUITask {
   id = "donate";

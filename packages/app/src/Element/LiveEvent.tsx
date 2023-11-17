@@ -2,9 +2,9 @@ import { NostrEvent, NostrLink } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import { findTag } from "SnortUtils";
+import { findTag } from "@/SnortUtils";
 import ProfileImage from "./User/ProfileImage";
-import Icon from "Icons/Icon";
+import Icon from "@/Icons/Icon";
 
 export function LiveEvent({ ev }: { ev: NostrEvent }) {
   const title = findTag(ev, "title");

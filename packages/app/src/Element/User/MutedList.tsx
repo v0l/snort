@@ -1,8 +1,8 @@
 import { FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/system";
-import MuteButton from "Element/User/MuteButton";
-import ProfilePreview from "Element/User/ProfilePreview";
-import useModeration from "Hooks/useModeration";
+import MuteButton from "@/Element/User/MuteButton";
+import ProfilePreview from "@/Element/User/ProfilePreview";
+import useModeration from "@/Hooks/useModeration";
 
 import messages from "../messages";
 

@@ -1,8 +1,8 @@
 import "./SpotlightMedia.css";
 import { useEffect, useMemo, useState } from "react";
-import Modal from "Element/Modal";
-import Icon from "Icons/Icon";
-import { ProxyImg } from "Element/ProxyImg";
+import Modal from "@/Element/Modal";
+import Icon from "@/Icons/Icon";
+import { ProxyImg } from "@/Element/ProxyImg";
 
 interface SpotlightMediaProps {
   images: Array<string>;

@@ -8,6 +8,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { Bar, BarChart, Tooltip, XAxis, YAxis } from "recharts";
 
+<<<<<<< HEAD
 import useLogin from "Hooks/useLogin";
 import { markNotificationsRead } from "Login";
 import { Notifications } from "Cache";
@@ -21,9 +22,24 @@ import { LiveEvent } from "Element/LiveEvent";
 import ProfilePreview from "Element/User/ProfilePreview";
 import { Day } from "Const";
 import Tabs, { Tab } from "Element/Tabs";
+=======
+import useLogin from "@/Hooks/useLogin";
+import { markNotificationsRead } from "@/Login";
+import { Notifications } from "@/Cache";
+import { dedupe, findTag, orderAscending, orderDescending, getDisplayName } from "@/SnortUtils";
+import Icon from "@/Icons/Icon";
+import ProfileImage from "@/Element/User/ProfileImage";
+import useModeration from "@/Hooks/useModeration";
+import Text from "@/Element/Text";
+import { formatShort } from "@/Number";
+import { LiveEvent } from "@/Element/LiveEvent";
+import ProfilePreview from "@/Element/User/ProfilePreview";
+import { Day } from "@/Const";
+import Tabs, { Tab } from "@/Element/Tabs";
+>>>>>>> 7ec02f9b (wip vite)
 import classNames from "classnames";
-import { AsyncIcon } from "Element/AsyncIcon";
-import { ShowMoreInView } from "Element/Event/ShowMore";
+import { AsyncIcon } from "@/Element/AsyncIcon";
+import { ShowMoreInView } from "@/Element/Event/ShowMore";
 
 function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {

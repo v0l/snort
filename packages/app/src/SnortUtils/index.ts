@@ -19,8 +19,8 @@ import {
   UserMetadata,
 } from "@snort/system";
 import { isHex, isOffline } from "@snort/shared";
-import { Day } from "Const";
-import AnimalName from "Element/User/AnimalName";
+import { Day } from "@/Const";
+import AnimalName from "@/Element/User/AnimalName";
 
 export const sha256 = (str: string | Uint8Array): u256 => {
   return utils.bytesToHex(hash(str));

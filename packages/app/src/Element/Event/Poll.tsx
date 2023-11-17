@@ -4,13 +4,13 @@ import { useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
-import useEventPublisher from "Hooks/useEventPublisher";
-import { useWallet } from "Wallet";
-import { unwrap } from "SnortUtils";
-import { formatShort } from "Number";
-import Spinner from "Icons/Spinner";
-import SendSats from "Element/SendSats";
-import useLogin from "Hooks/useLogin";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { useWallet } from "@/Wallet";
+import { unwrap } from "@/SnortUtils";
+import { formatShort } from "@/Number";
+import Spinner from "@/Icons/Spinner";
+import SendSats from "@/Element/SendSats";
+import useLogin from "@/Hooks/useLogin";
 
 interface PollProps {
   ev: TaggedNostrEvent;

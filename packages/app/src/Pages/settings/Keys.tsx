@@ -2,10 +2,10 @@ import "./Keys.css";
 import { FormattedMessage } from "react-intl";
 import { encodeTLV, KeyStorage, NostrPrefix } from "@snort/system";
 
-import Copy from "Element/Copy";
-import useLogin from "Hooks/useLogin";
-import { hexToMnemonic } from "nip6";
-import { hexToBech32 } from "SnortUtils";
+import Copy from "@/Element/Copy";
+import useLogin from "@/Hooks/useLogin";
+import { hexToMnemonic } from "@/nip6";
+import { hexToBech32 } from "@/SnortUtils";
 
 export default function ExportKeys() {
   const { publicKey, privateKeyData, generatedEntropy } = useLogin();

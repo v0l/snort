@@ -6,8 +6,8 @@ import { marked, Token } from "marked";
 import { Link } from "react-router-dom";
 import markedFootnote, { Footnotes, Footnote, FootnoteRef } from "marked-footnote";
 
-import { ProxyImg } from "Element/ProxyImg";
-import NostrLink from "Element/Embed/NostrLink";
+import { ProxyImg } from "@/Element/ProxyImg";
+import NostrLink from "@/Element/Embed/NostrLink";
 
 interface MarkdownProps {
   content: string;

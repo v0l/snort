@@ -1,9 +1,9 @@
 import { ReactNode, useEffect, useState } from "react";
 import { HexKey } from "@snort/system";
 
-import FollowListBase from "Element/User/FollowListBase";
-import PageSpinner from "Element/PageSpinner";
-import NostrBandApi from "External/NostrBand";
+import FollowListBase from "@/Element/User/FollowListBase";
+import PageSpinner from "@/Element/PageSpinner";
+import NostrBandApi from "@/External/NostrBand";
 import { ErrorOrOffline } from "./ErrorOrOffline";
 
 export default function TrendingUsers({ title }: { title?: ReactNode }) {

@@ -1,9 +1,9 @@
-import { UserCache } from "Cache";
+import { UserCache } from "@/Cache";
 import { LNURL, ExternalStore, unixNow } from "@snort/shared";
-import { Toastore } from "Toaster";
-import { LNWallet, WalletInvoiceState, Wallets } from "Wallet";
-import { bech32ToHex, getDisplayName } from "SnortUtils";
-import { SnortPubKey } from "Const";
+import { Toastore } from "@/Toaster";
+import { LNWallet, WalletInvoiceState, Wallets } from "@/Wallet";
+import { bech32ToHex, getDisplayName } from "@/SnortUtils";
+import { SnortPubKey } from "@/Const";
 
 export enum ZapPoolRecipientType {
   Generic = 0,

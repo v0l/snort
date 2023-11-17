@@ -1,6 +1,6 @@
 import "./UserWebsiteLink.css";
 import { MetadataCache, UserMetadata } from "@snort/system";
-import Icon from "Icons/Icon";
+import Icon from "@/Icons/Icon";
 
 export function UserWebsiteLink({ user }: { user?: MetadataCache | UserMetadata }) {
   const website_url =

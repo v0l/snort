@@ -1,6 +1,6 @@
 import { ExternalStore } from "@snort/shared";
 import { NostrEvent, TaggedNostrEvent } from "@snort/system";
-import { ZapTarget } from "Zapper";
+import { ZapTarget } from "@/Zapper";
 import { useSyncExternalStore } from "react";
 import { useSyncExternalStoreWithSelector } from "use-sync-external-store/with-selector";
 

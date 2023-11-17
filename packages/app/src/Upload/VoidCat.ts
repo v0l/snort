@@ -1,8 +1,8 @@
 import { EventKind, EventPublisher } from "@snort/system";
 import { UploadState, VoidApi } from "@void-cat/api";
 
-import { FileExtensionRegex } from "Const";
-import { UploadResult } from "Upload";
+import { FileExtensionRegex } from "@/Const";
+import { UploadResult } from "@/Upload";
 import { base64 } from "@scure/base";
 import { throwIfOffline } from "@snort/shared";
 

@@ -3,8 +3,8 @@ import { HexKey, FullRelaySettings, TaggedNostrEvent, EventKind, NoteCollection,
 import { useRequestBuilder } from "@snort/system-react";
 import debug from "debug";
 
-import { sanitizeRelayUrl } from "SnortUtils";
-import { UserRelays } from "Cache";
+import { sanitizeRelayUrl } from "@/SnortUtils";
+import { UserRelays } from "@/Cache";
 
 interface RelayList {
   pubkey: string;

@@ -5,13 +5,13 @@ import { RelaySettings } from "@snort/system";
 import { unixNowMs } from "@snort/shared";
 import classNames from "classnames";
 
-import useRelayState from "Feed/RelayState";
+import useRelayState from "@/Feed/RelayState";
 import { SnortContext } from "@snort/system-react";
-import { getRelayName, unwrap } from "SnortUtils";
-import useLogin from "Hooks/useLogin";
-import { removeRelay, setRelays } from "Login";
+import { getRelayName, unwrap } from "@/SnortUtils";
+import useLogin from "@/Hooks/useLogin";
+import { removeRelay, setRelays } from "@/Login";
 import { RelayFavicon } from "./RelaysMetadata";
-import { AsyncIcon } from "Element/AsyncIcon";
+import { AsyncIcon } from "@/Element/AsyncIcon";
 
 export interface RelayProps {
   addr: string;

@@ -3,13 +3,13 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { removeUndefined, unwrap } from "@snort/shared";
 import { NostrEvent, OkResponse } from "@snort/system";
 
-import AsyncButton from "Element/AsyncButton";
-import Icon from "Icons/Icon";
-import { getRelayName, sanitizeRelayUrl } from "SnortUtils";
-import { removeRelay } from "Login";
-import useLogin from "Hooks/useLogin";
-import useEventPublisher from "Hooks/useEventPublisher";
-import { saveRelays } from "Pages/settings/Relays";
+import AsyncButton from "@/Element/AsyncButton";
+import Icon from "@/Icons/Icon";
+import { getRelayName, sanitizeRelayUrl } from "@/SnortUtils";
+import { removeRelay } from "@/Login";
+import useLogin from "@/Hooks/useLogin";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { saveRelays } from "@/Pages/settings/Relays";
 
 export function NoteBroadcaster({
   evs,

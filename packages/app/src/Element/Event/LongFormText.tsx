@@ -4,11 +4,11 @@ import { FormattedMessage, FormattedNumber } from "react-intl";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions } from "@snort/system-react";
 
-import { findTag } from "SnortUtils";
-import Text from "Element/Text";
+import { findTag } from "@/SnortUtils";
+import Text from "@/Element/Text";
 import { Markdown } from "./Markdown";
-import useImgProxy from "Hooks/useImgProxy";
-import ProfilePreview from "Element/User/ProfilePreview";
+import useImgProxy from "@/Hooks/useImgProxy";
+import ProfilePreview from "@/Element/User/ProfilePreview";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
 

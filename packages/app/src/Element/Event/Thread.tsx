@@ -5,12 +5,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { TaggedNostrEvent, u256, NostrPrefix, EventExt, parseNostrLink, NostrLink } from "@snort/system";
 import classNames from "classnames";
 
-import { getAllLinkReactions, getLinkReactions } from "SnortUtils";
-import BackButton from "Element/BackButton";
-import Note from "Element/Event/Note";
-import NoteGhost from "Element/Event/NoteGhost";
-import Collapsed from "Element/Collapsed";
-import { ThreadContext, ThreadContextWrapper, chainKey } from "Hooks/useThreadContext";
+import { getAllLinkReactions, getLinkReactions } from "@/SnortUtils";
+import BackButton from "@/Element/BackButton";
+import Note from "@/Element/Event/Note";
+import NoteGhost from "@/Element/Event/NoteGhost";
+import Collapsed from "@/Element/Collapsed";
+import { ThreadContext, ThreadContextWrapper, chainKey } from "@/Hooks/useThreadContext";
 
 import messages from "../messages";
 

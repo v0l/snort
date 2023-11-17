@@ -1,13 +1,13 @@
 import { FormattedMessage } from "react-intl";
-import ProfilePreview from "Element/User/ProfilePreview";
-import useRelayState from "Feed/RelayState";
+import ProfilePreview from "@/Element/User/ProfilePreview";
+import useRelayState from "@/Feed/RelayState";
 import { useNavigate, useParams } from "react-router-dom";
-import { parseId, unwrap } from "SnortUtils";
-import { removeRelay } from "Login";
-import useLogin from "Hooks/useLogin";
+import { parseId, unwrap } from "@/SnortUtils";
+import { removeRelay } from "@/Login";
+import useLogin from "@/Hooks/useLogin";
 
 import messages from "./messages";
-import useEventPublisher from "Hooks/useEventPublisher";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 
 const RelayInfo = () => {
   const params = useParams();

@@ -3,11 +3,11 @@ import { useMemo } from "react";
 import { ParsedZap } from "@snort/system";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { unwrap } from "SnortUtils";
-import { formatShort } from "Number";
-import Text from "Element/Text";
-import ProfileImage from "Element/User/ProfileImage";
-import useLogin from "Hooks/useLogin";
+import { unwrap } from "@/SnortUtils";
+import { formatShort } from "@/Number";
+import Text from "@/Element/Text";
+import ProfileImage from "@/Element/User/ProfileImage";
+import useLogin from "@/Hooks/useLogin";
 
 import messages from "../messages";
 
