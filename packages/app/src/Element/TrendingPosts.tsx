@@ -7,11 +7,13 @@ import Note from "Element/Event/Note";
 import NostrBandApi from "External/NostrBand";
 import { ErrorOrOffline } from "Element/ErrorOrOffline";
 import { useLocale } from "IntlProvider";
+import useModeration from "Hooks/useModeration";
 
 export default function TrendingNotes() {
   const [posts, setPosts] = useState<Array<NostrEvent>>();
   const [error, setError] = useState<Error>();
   const { lang } = useLocale();
+  const { isEventMuted } = useModeration();
   const related = useReactions("trending", posts?.map(a => NostrLink.fromEvent(a)) ?? [], undefined, true);
 
   async function loadTrendingNotes() {
@@ -33,7 +35,7 @@ export default function TrendingNotes() {
 
   return (
     <>
-      {posts.map(e => (
+      {posts.filter(a => !isEventMuted(a)).map(e => (
         <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} />
       ))}
     </>
