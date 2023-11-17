@@ -11,7 +11,7 @@ import { Bar, BarChart, Tooltip, XAxis, YAxis } from "recharts";
 import useLogin from "Hooks/useLogin";
 import { markNotificationsRead } from "Login";
 import { Notifications } from "Cache";
-import { dedupe, findTag, orderAscending, orderDescending, getDisplayName } from "SnortUtils";
+import { dedupe, orderAscending, orderDescending, getDisplayName } from "SnortUtils";
 import Icon from "Icons/Icon";
 import ProfileImage from "Element/User/ProfileImage";
 import useModeration from "Hooks/useModeration";
@@ -28,18 +28,17 @@ import { ShowMoreInView } from "Element/Event/ShowMore";
 function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {
     case EventKind.ZapReceipt: {
-      const aTag = findTag(ev, "a");
+      const aTag = ev.tags.find(a => a[0] === "a");
       if (aTag) {
-        const [kind, author, d] = aTag.split(":");
-        return new NostrLink(NostrPrefix.Address, d, Number(kind), author);
+        return NostrLink.fromTag(aTag);
       }
-      const eTag = findTag(ev, "e");
+      const eTag = ev.tags.find(a => a[0] === "e");
       if (eTag) {
-        return new NostrLink(CONFIG.eventLinkPrefix, eTag);
+        return NostrLink.fromTag(eTag);
       }
-      const pTag = ev.tags.filter(a => a[0] === "p").slice(-1)?.[0];
+      const pTag = ev.tags.find(a => a[0] === "p");
       if (pTag) {
-        return new NostrLink(NostrPrefix.PublicKey, pTag[1]);
+        return NostrLink.fromTag(pTag);
       }
       break;
     }
@@ -47,17 +46,14 @@ function notificationContext(ev: TaggedNostrEvent) {
     case EventKind.Reaction: {
       const thread = EventExt.extractThread(ev);
       const tag = unwrap(thread?.replyTo ?? thread?.root ?? { value: ev.id, key: "e" });
-      if (tag.key === "e") {
-        return new NostrLink(CONFIG.eventLinkPrefix, unwrap(tag.value));
-      } else if (tag.key === "a") {
-        const [kind, author, d] = unwrap(tag.value).split(":");
-        return new NostrLink(NostrPrefix.Address, d, Number(kind), author);
+      if (tag.key === "e" || tag.key === "a") {
+        return NostrLink.fromThreadTag(tag);
       } else {
         throw new Error("Unknown thread context");
       }
     }
     case EventKind.TextNote: {
-      return new NostrLink(NostrPrefix.Note, ev.id);
+      return NostrLink.fromEvent(ev);
     }
   }
 }
