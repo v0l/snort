@@ -7,6 +7,7 @@ import { generateNewLogin } from "Login";
 import { SnortContext } from "@snort/system-react";
 import { NotEncrypted } from "@snort/system";
 import { NewUserState } from ".";
+import { trackEvent } from "SnortUtils";
 
 export function Profile() {
   const system = useContext(SnortContext);
@@ -23,7 +24,7 @@ export function Profile() {
         name: state.name,
         picture,
       });
-      window.plausible?.("Generate Account");
+      trackEvent("Login:NewAccount");
       navigate("/login/sign-up/topics");
     } catch (e) {
       if (e instanceof Error) {

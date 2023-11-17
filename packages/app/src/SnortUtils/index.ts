@@ -525,3 +525,8 @@ export function getCountry() {
     lon: Number(lon) / Math.pow(10, lon.length - 3),
   };
 }
+
+
+export function trackEvent(event: string) {
+  window.plausible?.(event);
+}

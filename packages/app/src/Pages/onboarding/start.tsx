@@ -10,6 +10,7 @@ import { LoginSessionType, LoginStore } from "Login";
 import useLoginHandler from "Hooks/useLoginHandler";
 import { NotEncrypted } from "@snort/system";
 import classNames from "classnames";
+import { trackEvent } from "SnortUtils";
 
 export function SignIn() {
   const navigate = useNavigate();
@@ -21,10 +22,11 @@ export function SignIn() {
 
   const hasNip7 = "nostr" in window;
   async function doNip07Login() {
-    const relays =
-      "getRelays" in unwrap(window.nostr) ? await unwrap(window.nostr?.getRelays).call(window.nostr) : undefined;
+    /*const relays =
+      "getRelays" in unwrap(window.nostr) ? await unwrap(window.nostr?.getRelays).call(window.nostr) : undefined;*/
     const pubKey = await unwrap(window.nostr).getPublicKey();
-    LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip7, relays);
+    LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip7);
+    trackEvent("Login:NIP7");
     navigate("/");
   }
 
@@ -32,6 +34,8 @@ export function SignIn() {
     setError("");
     try {
       await loginHandler.doLogin(key, key => Promise.resolve(new NotEncrypted(key)));
+
+      trackEvent("Login:Key");
       navigate("/");
     } catch (e) {
       if (e instanceof Error) {

@@ -177,7 +177,7 @@ export function Moderation() {
             .filter(([k]) => topics.includes(k))
             .map(([, v]) => v.words)
             .flat()
-            .concat(extraTerms.split(",").map(a => a.trim()));
+            .concat(extraTerms.split(",").map(a => a.trim()).filter(a => a.length > 1));
           if (words.length > 0) {
             updateAppData(id, ad => {
               return {
