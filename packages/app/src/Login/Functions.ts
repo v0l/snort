@@ -12,7 +12,7 @@ import { unixNowMs } from "@snort/shared";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
-import { DefaultRelays, SnortPubKey } from "Const";
+import { SnortPubKey } from "Const";
 import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData, Newest } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import { bech32ToHex, dedupeById, getCountry, sanitizeRelayUrl, unwrap } from "SnortUtils";
@@ -93,13 +93,13 @@ export async function generateNewLogin(
   const ent = generateBip39Entropy();
   const entropy = utils.bytesToHex(ent);
   const privateKey = entropyToPrivateKey(ent);
-  const newRelays = Object.fromEntries(DefaultRelays.entries());
+  const newRelays = {} as Record<string, RelaySettings>;
 
   // Use current timezone info to determine approx location
   // use closest 5 relays
   const country = getCountry();
   const api = new SnortApi();
-  const closeRelays = await api.closeRelays(country.lat, country.lon, 10);
+  const closeRelays = await api.closeRelays(country.lat, country.lon, 20);
   for (const cr of closeRelays.sort((a, b) => (a.distance > b.distance ? 1 : -1)).filter(a => !a.is_paid)) {
     const rr = sanitizeRelayUrl(cr.url);
     if (rr) {

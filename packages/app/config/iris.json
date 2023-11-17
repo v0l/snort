@@ -19,6 +19,6 @@
   "defaultRelays": {
     "wss://relay.snort.social/": { "read": true, "write": true },
     "wss://nostr.wine/": { "read": true, "write": false },
-    "wss://nos.lol/": { "read": true, "write": true }
+    "wss://eden.nostr.land/": { "read": true, "write": false }
   }
 }
