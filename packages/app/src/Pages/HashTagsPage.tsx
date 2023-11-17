@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { EventKind, NostrHashtagLink, NoteCollection, RequestBuilder } from "@snort/system";
 import { dedupe } from "@snort/shared";
@@ -65,7 +65,11 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
     <div className={classNames("flex flex-col", className)}>
       <div className="flex items-center justify-between">
         <div className="flex g8 items-center">
-          <b className="text-xl">#{tag}</b>
+          <b className="text-xl">
+            <Link to={`/t/${tag}`}>
+              #{tag}
+            </Link>
+          </b>
           {events && (
             <small>
               <FormattedMessage
@@ -87,9 +91,9 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
           </AsyncButton>
         )}
       </div>
-      <div className="flex">
+      <div className="flex items-center">
         {pubkeys.slice(0, 5).map(a => (
-          <ProfileImage pubkey={a} showUsername={false} link={""} showFollowDistance={false} size={40} />
+          <ProfileImage pubkey={a} showUsername={false} showFollowDistance={false} size={40} />
         ))}
         {pubkeys.length > 5 && (
           <span>
