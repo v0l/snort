@@ -66,6 +66,9 @@
   "0BUTMv": {
     "defaultMessage": "Search..."
   },
+  "0HFX0T": {
+    "defaultMessage": "Use Exact Location"
+  },
   "0jOEtS": {
     "defaultMessage": "Invalid LNURL"
   },
@@ -80,6 +83,9 @@
   },
   "0yO7wF": {
     "defaultMessage": "{n} secs"
+  },
+  "1H4Keq": {
+    "defaultMessage": "{n} users"
   },
   "1Mo59U": {
     "defaultMessage": "Are you sure you want to remove this note from bookmarks?"
@@ -834,6 +840,9 @@
   "UrKTqQ": {
     "defaultMessage": "You have an active iris.to account"
   },
+  "VL900k": {
+    "defaultMessage": "Recommended Relays"
+  },
   "VN0+Fz": {
     "defaultMessage": "Balance: {amount} sats"
   },
@@ -1157,6 +1166,9 @@
   },
   "jMzO1S": {
     "defaultMessage": "Internal error: {msg}"
+  },
+  "jTrbGf": {
+    "defaultMessage": "{n} km - {location}"
   },
   "jfV8Wr": {
     "defaultMessage": "Back",

@@ -15,10 +15,11 @@ import * as utils from "@noble/curves/abstract/utils";
 import { DefaultRelays, SnortPubKey } from "Const";
 import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData, Newest } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
-import { bech32ToHex, dedupeById, sanitizeRelayUrl, unwrap } from "SnortUtils";
+import { bech32ToHex, dedupeById, getCountry, sanitizeRelayUrl, unwrap } from "SnortUtils";
 import { SubscriptionEvent } from "Subscription";
 import { Chats, FollowsFeed, GiftsCache, Notifications } from "Cache";
 import { Nip7OsSigner } from "./Nip7OsSigner";
+import SnortApi from "External/SnortApi";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
   if (SINGLE_RELAY) {
@@ -93,6 +94,21 @@ export async function generateNewLogin(
   const entropy = utils.bytesToHex(ent);
   const privateKey = entropyToPrivateKey(ent);
   const newRelays = Object.fromEntries(DefaultRelays.entries());
+
+  // Use current timezone info to determine approx location
+  // use closest 5 relays
+  const country = getCountry();
+  const api = new SnortApi();
+  const closeRelays = await api.closeRelays(country.lat, country.lon, 10);
+  for (const cr of closeRelays.sort((a, b) => (a.distance > b.distance ? 1 : -1)).filter(a => !a.is_paid)) {
+    const rr = sanitizeRelayUrl(cr.url);
+    if (rr) {
+      newRelays[rr] = { read: true, write: true };
+      if (Object.keys(newRelays).length >= 5) {
+        break;
+      }
+    }
+  }
 
   // connect to new relays
   await Promise.all(Object.entries(newRelays).map(([k, v]) => system.ConnectToRelay(k, v)));

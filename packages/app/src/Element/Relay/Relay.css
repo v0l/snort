@@ -1,5 +1,4 @@
 .relay {
-  background-color: var(--gray-secondary);
   border-radius: 5px;
   display: grid;
   grid-template-columns: min-content auto;

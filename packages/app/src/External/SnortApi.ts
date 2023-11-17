@@ -68,6 +68,16 @@ export interface TranslationResponse {
   }>;
 }
 
+export interface RelayDistance {
+  url: string;
+  distance: number;
+  users: number;
+  country?: string;
+  city?: string;
+  is_paid?: boolean;
+  description?: string;
+}
+
 export default class SnortApi {
   #url: string;
   #publisher?: EventPublisher;
@@ -119,6 +129,10 @@ export default class SnortApi {
 
   translate(tx: TranslationRequest) {
     return this.#getJson<TranslationResponse | object>("api/v1/translate", "POST", tx);
+  }
+
+  closeRelays(lat: number, lon: number, count = 5) {
+    return this.#getJson<Array<RelayDistance>>(`api/v1/relays?count=${count}`, "POST", { lat, lon });
   }
 
   async #getJsonAuthd<T>(

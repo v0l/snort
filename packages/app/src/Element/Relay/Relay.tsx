@@ -41,7 +41,7 @@ export default function Relay(props: RelayProps) {
 
   return (
     <>
-      <div className="relay">
+      <div className="relay bg-dark">
         <div className={classNames("flex items-center", state?.connected ? "bg-success" : "bg-error")}>
           <RelayFavicon url={props.addr} />
         </div>

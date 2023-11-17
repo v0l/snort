@@ -517,12 +517,15 @@ export function getDisplayNameOrPlaceHolder(user: UserMetadata | undefined, pubk
 export function getCountry() {
   const tz = Intl.DateTimeFormat().resolvedOptions();
   const info = (TZ as Record<string, Array<string> | undefined>)[tz.timeZone];
-  const [, lat, lon] = info?.[1].split(/[-+]/) ?? ["", "00", "000"];
+  const pos = info?.[1];
+  const sep = Number(pos?.slice(1).search(/[-+]/)) + 1;
+  const [lat, lon] = [pos?.slice(0, sep) ?? "00", pos?.slice(sep) ?? "000"];
   return {
     zone: tz.timeZone,
     country: info?.[0],
-    lat: Number(lat) / Math.pow(10, lat.length - 2),
-    lon: Number(lon) / Math.pow(10, lon.length - 3),
+    lat: Number(lat) / Math.pow(10, lat.length - 3),
+    lon: Number(lon) / Math.pow(10, lon.length - 4),
+    info,
   };
 }
 
