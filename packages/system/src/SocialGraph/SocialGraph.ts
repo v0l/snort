@@ -1,27 +1,53 @@
 import { ID, STR, UID } from "./UniqueIds";
-import { LoginStore } from "../Login";
-import { unwrap } from "../SnortUtils";
-import { HexKey, MetadataCache, NostrEvent } from "@snort/system";
+import { HexKey, NostrEvent } from "..";
 
-type Unsubscribe = () => void;
+export default class SocialGraph {
+  root: UID;
+  followDistanceByUser = new Map<UID, number>();
+  usersByFollowDistance = new Map<number, Set<UID>>();
+  followedByUser = new Map<UID, Set<UID>>();
+  followersByUser = new Map<UID, Set<UID>>();
+  latestFollowEventTimestamps = new Map<UID, number>();
 
-const Key = {
-  pubKey: null as HexKey | null,
-  getPubKey: () => {
-    return unwrap(LoginStore.snapshot().publicKey);
-  },
-  isMine: (user: HexKey) => user === Key.getPubKey(),
-};
+  constructor(root: HexKey) {
+    this.root = ID(root);
+    this.followDistanceByUser.set(this.root, 0);
+    this.usersByFollowDistance.set(0, new Set([this.root]));
+  }
 
-export default {
-  followDistanceByUser: new Map<UID, number>(),
-  usersByFollowDistance: new Map<number, Set<UID>>(),
-  profiles: new Map<UID, MetadataCache>(), // JSON.parsed event.content of profile events
-  followedByUser: new Map<UID, Set<UID>>(),
-  followersByUser: new Map<UID, Set<UID>>(),
-  latestFollowEventTimestamps: new Map<UID, number>(),
+  setRoot(root: HexKey) {
+    const rootId = ID(root);
+    if (rootId === this.root) {
+      return;
+    }
+    this.root = rootId;
+    this.followDistanceByUser.clear();
+    this.usersByFollowDistance.clear();
+    this.followDistanceByUser.set(this.root, 0);
+    this.usersByFollowDistance.set(0, new Set([this.root]));
 
-  handleFollowEvent: function (event: NostrEvent) {
+    const queue = [this.root];
+
+    while (queue.length > 0) {
+      const user = queue.shift()!;
+      const distance = this.followDistanceByUser.get(user)!;
+
+      const followers = this.followersByUser.get(user) || new Set<UID>();
+      for (const follower of followers) {
+        if (!this.followDistanceByUser.has(follower)) {
+          const newFollowDistance = distance + 1;
+          this.followDistanceByUser.set(follower, newFollowDistance);
+          if (!this.usersByFollowDistance.has(newFollowDistance)) {
+            this.usersByFollowDistance.set(newFollowDistance, new Set());
+          }
+          this.usersByFollowDistance.get(newFollowDistance)!.add(follower);
+          queue.push(follower);
+        }
+      }
+    }
+  }
+
+  handleFollowEvent(event: NostrEvent) {
     try {
       const author = ID(event.pubkey);
       const timestamp = event.created_at;
@@ -59,27 +85,27 @@ export default {
     } catch (e) {
       // might not be logged in or sth
     }
-  },
+  }
 
-  isFollowing: function (follower: HexKey, followedUser: HexKey): boolean {
+  isFollowing(follower: HexKey, followedUser: HexKey): boolean {
     const followedUserId = ID(followedUser);
     const followerId = ID(follower);
     return !!this.followedByUser.get(followerId)?.has(followedUserId);
-  },
+  }
 
-  getFollowDistance: function (user: HexKey): number {
+  getFollowDistance(user: HexKey): number {
     try {
-      if (Key.isMine(user)) {
+      const userId = ID(user);
+      if (userId === this.root) {
         return 0;
       }
-      const userId = ID(user);
       const distance = this.followDistanceByUser.get(userId);
       return distance === undefined ? 1000 : distance;
     } catch (e) {
       // might not be logged in or sth
       return 1000;
     }
-  },
+  }
 
   addUserByFollowDistance(distance: number, user: UID) {
     if (!this.usersByFollowDistance.has(distance)) {
@@ -101,21 +127,12 @@ export default {
         this.usersByFollowDistance.get(d)?.delete(user);
       }
     }
-  },
+  }
 
-  ensureRootUser: function () {
-    const myId = ID(Key.getPubKey());
-    if (myId && !this.followDistanceByUser.has(myId)) {
-      this.followDistanceByUser.set(myId, 0);
-      this.addUserByFollowDistance(0, myId);
-    }
-  },
-
-  addFollower: function (followedUser: UID, follower: UID) {
+  addFollower(followedUser: UID, follower: UID) {
     if (typeof followedUser !== "number" || typeof follower !== "number") {
       throw new Error("Invalid user id");
     }
-    this.ensureRootUser();
     if (!this.followersByUser.has(followedUser)) {
       this.followersByUser.set(followedUser, new Set<UID>());
     }
@@ -124,11 +141,10 @@ export default {
     if (!this.followedByUser.has(follower)) {
       this.followedByUser.set(follower, new Set<UID>());
     }
-    const myId = ID(Key.getPubKey());
 
-    if (followedUser !== myId) {
+    if (followedUser !== this.root) {
       let newFollowDistance;
-      if (follower === myId) {
+      if (follower === this.root) {
         // basically same as the next "else" block, but faster
         newFollowDistance = 1;
         this.addUserByFollowDistance(newFollowDistance, followedUser);
@@ -145,19 +161,20 @@ export default {
     }
 
     this.followedByUser.get(follower)?.add(followedUser);
-    if (this.followedByUser.get(myId)?.has(follower)) {
+    if (this.followedByUser.get(this.root)?.has(follower)) {
       /*
       setTimeout(() => {
           PubSub.subscribe({ authors: [STR(followedUser)], kinds: [0, 3] }, undefined, true);
         }, 0);
        */
     }
-  },
-  removeFollower: function (unfollowedUser: UID, follower: UID) {
+  }
+
+  removeFollower(unfollowedUser: UID, follower: UID) {
     this.followersByUser.get(unfollowedUser)?.delete(follower);
     this.followedByUser.get(follower)?.delete(unfollowedUser);
 
-    if (unfollowedUser === ID(Key.getPubKey())) {
+    if (unfollowedUser === this.root) {
       return;
     }
 
@@ -175,60 +192,47 @@ export default {
     } else {
       this.followDistanceByUser.set(unfollowedUser, smallest);
     }
-  },
+  }
+
   // TODO subscription methods for followersByUser and followedByUser. and maybe messagesByTime. and replies
-  followerCount: function (address: HexKey) {
+  followerCount(address: HexKey) {
     const id = ID(address);
     return this.followersByUser.get(id)?.size ?? 0;
-  },
-  followedByFriendsCount: function (address: HexKey) {
+  }
+
+  followedByFriendsCount(address: HexKey) {
     let count = 0;
-    const myId = ID(Key.getPubKey());
     const id = ID(address);
     for (const follower of this.followersByUser.get(id) ?? []) {
-      if (this.followedByUser.get(myId)?.has(follower)) {
+      if (this.followedByUser.get(this.root)?.has(follower)) {
         count++; // should we stop at 10?
       }
     }
     return count;
-  },
-  getFollowedByUser: function (
-    user: HexKey,
-    cb?: (followedUsers: Set<HexKey>) => void,
-    includeSelf = false,
-  ): Unsubscribe {
+  }
+
+  getFollowedByUser(user: HexKey, includeSelf = false): Set<HexKey> {
     const userId = ID(user);
-    const callback = () => {
-      if (cb) {
-        const set = new Set<HexKey>();
-        for (const id of this.followedByUser.get(userId) || []) {
-          set.add(STR(id));
-        }
-        if (includeSelf) {
-          set.add(user);
-        }
-        cb(set);
-      }
-    };
-    if (this.followedByUser.has(userId) || includeSelf) {
-      callback();
+    const set = new Set<HexKey>();
+    for (const id of this.followedByUser.get(userId) || []) {
+      set.add(STR(id));
+    }
+    if (includeSelf) {
+      set.add(user);
     }
     //return PubSub.subscribe({ kinds: [3], authors: [user] }, callback);
-    return () => {};
-  },
-  getFollowersByUser: function (address: HexKey, cb?: (followers: Set<HexKey>) => void): Unsubscribe {
+    return set;
+  }
+
+  getFollowersByUser(address: HexKey): Set<HexKey> {
     const userId = ID(address);
-    const callback = () => {
-      if (cb) {
-        const set = new Set<HexKey>();
-        for (const id of this.followersByUser.get(userId) || []) {
-          set.add(STR(id));
-        }
-        cb(set);
-      }
-    };
-    this.followersByUser.has(userId) && callback();
+    const set = new Set<HexKey>();
+    for (const id of this.followersByUser.get(userId) || []) {
+      set.add(STR(id));
+    }
     //return PubSub.subscribe({ kinds: [3], '#p': [address] }, callback); // TODO this doesn't fire when a user is unfollowed
-    return () => {};
-  },
-};
+    return set;
+  }
+}
+
+export const socialGraphInstance = new SocialGraph("");

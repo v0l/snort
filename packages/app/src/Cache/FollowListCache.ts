@@ -1,9 +1,8 @@
 import { db } from "Db";
 import { unixNowMs } from "@snort/shared";
-import { EventKind, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { EventKind, RequestBuilder, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
 import { RefreshFeedCache } from "./RefreshFeedCache";
 import { LoginSession } from "Login";
-import SocialGraph from "SocialGraph/SocialGraph";
 
 export class FollowListCache extends RefreshFeedCache<TaggedNostrEvent> {
   constructor() {
@@ -27,7 +26,7 @@ export class FollowListCache extends RefreshFeedCache<TaggedNostrEvent> {
           loaded: unixNowMs(),
         });
         if (update !== "no_change") {
-          SocialGraph.handleFollowEvent(e);
+          socialGraphInstance.handleFollowEvent(e);
         }
       }),
     );
@@ -43,6 +42,6 @@ export class FollowListCache extends RefreshFeedCache<TaggedNostrEvent> {
 
   override async preload() {
     await super.preload();
-    this.snapshot().forEach(e => SocialGraph.handleFollowEvent(e));
+    this.snapshot().forEach(e => socialGraphInstance.handleFollowEvent(e));
   }
 }

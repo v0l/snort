@@ -10,6 +10,8 @@ import { base64 } from "@scure/base";
 
 export * from "./nostr-system";
 export { default as EventKind } from "./event-kind";
+export { default as SocialGraph, socialGraphInstance } from "./SocialGraph/SocialGraph";
+export * from "./SocialGraph/UniqueIds";
 export * from "./nostr";
 export * from "./links";
 export * from "./nips";

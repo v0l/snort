@@ -1,8 +1,6 @@
 import ForceGraph3D, { NodeObject } from "react-force-graph-3d";
 import { useContext, useEffect, useState } from "react";
-import { STR, UID } from "../SocialGraph/UniqueIds";
-import SocialGraph from "../SocialGraph/SocialGraph";
-import { MetadataCache } from "@snort/system";
+import { MetadataCache, socialGraphInstance, STR, UID } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import * as THREE from "three";
 import { defaultAvatar } from "../SnortUtils";
@@ -96,17 +94,17 @@ const NetworkGraph = () => {
     const nodesVisited = new Set<UID>();
     const userCountByDistance = Array.from(
       { length: 6 },
-      (_, i) => SocialGraph.usersByFollowDistance.get(i)?.size || 0,
+      (_, i) => socialGraphInstance.usersByFollowDistance.get(i)?.size || 0,
     );
 
     // Go through all the nodes
     for (let distance = 0; distance <= showDistance; ++distance) {
-      const users = SocialGraph.usersByFollowDistance.get(distance);
+      const users = socialGraphInstance.usersByFollowDistance.get(distance);
       if (!users) break;
       for (const UID of users) {
         if (renderLimit && nodes.size >= renderLimit) break; // Temporary hack
-        const inboundCount = SocialGraph.followersByUser.get(UID)?.size || 0;
-        const outboundCount = SocialGraph.followedByUser.get(UID)?.size || 0;
+        const inboundCount = socialGraphInstance.followersByUser.get(UID)?.size || 0;
+        const outboundCount = socialGraphInstance.followedByUser.get(UID)?.size || 0;
         const pubkey = STR(UID);
         const node = {
           id: UID,
@@ -132,7 +130,7 @@ const NetworkGraph = () => {
     // Add links
     for (const node of nodes.values()) {
       if (direction === Direction.OUTBOUND || direction === Direction.BOTH) {
-        for (const followedID of SocialGraph.followedByUser.get(node.id) ?? []) {
+        for (const followedID of socialGraphInstance.followedByUser.get(node.id) ?? []) {
           if (!nodes.has(followedID)) continue; // Skip links to nodes that we're not rendering
           if (nodesVisited.has(followedID)) continue;
           links.push({
@@ -144,7 +142,7 @@ const NetworkGraph = () => {
       }
       // TODO: Fix filtering
       /*      if (direction === Direction.INBOUND || direction === Direction.BOTH) {
-        for (const followerID of SocialGraph.followersByUser.get(node.id) ?? []) {
+        for (const followerID of socialGraphInstance.followersByUser.get(node.id) ?? []) {
           if (nodesVisited.has(followerID)) continue;
           const follower = nodes.get(followerID);
           if (!follower) continue; // Skip links to nodes that we're not rendering
