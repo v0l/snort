@@ -60,6 +60,11 @@ export const DefaultImgProxy = {
 export const DerivationPath = "m/44'/1237'/0'/0/0";
 
 /**
+ * Blaster relays
+ */
+export const Blasters = ["wss://nostr.mutinywallet.com"];
+
+/**
  * Regex to match email address
  */
 export const EmailRegex =

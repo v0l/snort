@@ -12,7 +12,7 @@ import { unixNowMs } from "@snort/shared";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
-import { SnortPubKey } from "Const";
+import { Blasters, SnortPubKey } from "Const";
 import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData, Newest } from "Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
 import { bech32ToHex, dedupeById, getCountry, sanitizeRelayUrl, unwrap } from "SnortUtils";
@@ -123,10 +123,12 @@ export async function generateNewLogin(
   // Create relay metadata event
   const ev2 = await publisher.relayList(newRelays);
   await system.BroadcastEvent(ev2);
+  await Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev2)));
 
   // Publish new profile
   const ev3 = await publisher.metadata(profile);
   await system.BroadcastEvent(ev3);
+  await Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev3)));
 
   LoginStore.loginWithPrivateKey(await pin(privateKey), entropy, newRelays);
 }

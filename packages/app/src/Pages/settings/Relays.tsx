@@ -11,9 +11,9 @@ import AsyncButton from "Element/AsyncButton";
 import SnortApi, { RelayDistance } from "External/SnortApi";
 import { getCountry, getRelayName, sanitizeRelayUrl } from "SnortUtils";
 import { formatShort } from "Number";
+import { Blasters } from "Const";
 
 import messages from "./messages";
-const Blasters = ["wss://nostr.mutinywallet.com"];
 
 export async function saveRelays(
   system: SystemInterface,
