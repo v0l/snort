@@ -14,7 +14,7 @@ export default function Mention({ link }: { link: NostrLink }) {
 
   return (
     <>
-      <ProfileLink pubkey={link.id} user={profile} onClick={e => e.stopPropagation()}>
+      <ProfileLink pubkey={link.id} link={link} user={profile} onClick={e => e.stopPropagation()}>
         <span ref={ref}>
           @<DisplayName user={profile} pubkey={link.id} />
         </span>

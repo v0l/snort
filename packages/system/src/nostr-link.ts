@@ -233,11 +233,16 @@ export function tryParseNostrLink(link: string, prefixHint?: NostrPrefix): Nostr
   }
 }
 
-export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLink {
-  let entity = link.startsWith("web+nostr:") || link.startsWith("nostr:") ? link.split(":")[1] : link;
+export function trimNostrLink(link: string) {
+  let entity = (link.startsWith("web+nostr:") || link.startsWith("nostr:")) ? link.split(":")[1] : link;
 
   // trim any non-bech32 chars
   entity = entity.match(/(n(?:pub|profile|event|ote|addr|req)1[acdefghjklmnpqrstuvwxyz023456789]+)/)?.[0] ?? entity;
+  return entity;
+}
+
+export function parseNostrLink(link: string, prefixHint?: NostrPrefix): NostrLink {
+  const entity = trimNostrLink(link);
 
   const isPrefix = (prefix: NostrPrefix) => {
     return entity.startsWith(prefix);

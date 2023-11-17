@@ -144,13 +144,9 @@ export function getPublicKey(privKey: string) {
 }
 
 export function bech32ToHex(str: string) {
-  try {
-    const nKey = bech32.decode(str, 1_000);
-    const buff = bech32.fromWords(nKey.words);
-    return utils.bytesToHex(Uint8Array.from(buff));
-  } catch (e) {
-    return str;
-  }
+  const nKey = bech32.decode(str, 1_000);
+  const buff = bech32.fromWords(nKey.words);
+  return utils.bytesToHex(Uint8Array.from(buff));
 }
 
 /**
@@ -159,13 +155,9 @@ export function bech32ToHex(str: string) {
  * @returns
  */
 export function bech32ToText(str: string) {
-  try {
-    const decoded = bech32.decode(str, 1000);
-    const buf = bech32.fromWords(decoded.words);
-    return new TextDecoder().decode(Uint8Array.from(buf));
-  } catch {
-    return "";
-  }
+  const decoded = bech32.decode(str, 1000);
+  const buf = bech32.fromWords(decoded.words);
+  return new TextDecoder().decode(Uint8Array.from(buf));
 }
 
 export async function fetchNip05Pubkey(name: string, domain: string, timeout = 2_000): Promise<string | undefined> {
