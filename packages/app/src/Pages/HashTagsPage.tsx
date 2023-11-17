@@ -66,9 +66,7 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
       <div className="flex items-center justify-between">
         <div className="flex g8 items-center">
           <b className="text-xl">
-            <Link to={`/t/${tag}`}>
-              #{tag}
-            </Link>
+            <Link to={`/t/${tag}`}>#{tag}</Link>
           </b>
           {events && (
             <small>

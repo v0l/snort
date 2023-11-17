@@ -526,7 +526,6 @@ export function getCountry() {
   };
 }
 
-
 export function trackEvent(event: string) {
   window.plausible?.(event);
 }
