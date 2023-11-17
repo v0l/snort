@@ -35,9 +35,11 @@ export default function TrendingNotes() {
 
   return (
     <>
-      {posts.filter(a => !isEventMuted(a)).map(e => (
-        <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} />
-      ))}
+      {posts
+        .filter(a => !isEventMuted(a))
+        .map(e => (
+          <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} />
+        ))}
     </>
   );
 }
