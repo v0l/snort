@@ -8,7 +8,7 @@ export default function NostrLink({ link, depth }: { link: string; depth?: numbe
   const nav = tryParseNostrLink(link);
 
   if (nav?.type === NostrPrefix.PublicKey || nav?.type === NostrPrefix.Profile) {
-    if(nav.id.startsWith("npub")){
+    if (nav.id.startsWith("npub")) {
       // eslint-disable-next-line no-debugger
       debugger;
     }
