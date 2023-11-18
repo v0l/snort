@@ -19,6 +19,7 @@ import {
   mapEventToProfile,
   PowWorker,
   encodeTLVEntries,
+  socialGraphInstance,
 } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { removeUndefined, throwIfOffline } from "@snort/shared";
@@ -106,6 +107,12 @@ System.on("auth", async (c, r, cb) => {
   const pub = LoginStore.getPublisher(id);
   if (pub) {
     cb(await pub.nip42Auth(c, r));
+  }
+});
+
+System.on("event", ev => {
+  if (ev.kind === 3) {
+    socialGraphInstance.handleFollowEvent(ev);
   }
 });
 

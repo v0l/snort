@@ -1,7 +1,7 @@
 import "./ProfileImage.css";
 
 import React, { ReactNode } from "react";
-import { HexKey, UserMetadata } from "@snort/system";
+import { HexKey, socialGraphInstance, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useHover } from "@uidotdev/usehooks";
 import classNames from "classnames";
@@ -12,7 +12,6 @@ import Icon from "Icons/Icon";
 import DisplayName from "./DisplayName";
 import { ProfileLink } from "./ProfileLink";
 import { ProfileCard } from "./ProfileCard";
-import SocialGraph from "../../SocialGraph/SocialGraph";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -51,7 +50,7 @@ export default function ProfileImage({
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const nip05 = defaultNip ? defaultNip : user?.nip05;
-  const followDistance = SocialGraph.getFollowDistance(pubkey);
+  const followDistance = socialGraphInstance.getFollowDistance(pubkey);
   const [ref, hovering] = useHover<HTMLDivElement>();
 
   function handleClick(e: React.MouseEvent) {
@@ -65,7 +64,7 @@ export default function ProfileImage({
     let followDistanceColor = "";
     if (followDistance <= 1) {
       followDistanceColor = "success";
-    } else if (followDistance === 2 && SocialGraph.followedByFriendsCount(pubkey) >= 10) {
+    } else if (followDistance === 2 && socialGraphInstance.followedByFriendsCount(pubkey) >= 10) {
       followDistanceColor = "text-nostr-orange";
     }
     return (
