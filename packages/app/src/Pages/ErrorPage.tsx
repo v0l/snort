@@ -10,7 +10,7 @@ const ErrorPage = () => {
   return (
     <div className="main-content page">
       <h4>
-        <FormattedMessage defaultMessage="An error has occured!" />
+        <FormattedMessage defaultMessage="An error has occured!" id="error.title" />
       </h4>
       <AsyncButton
         onClick={async () => {
@@ -18,7 +18,7 @@ const ErrorPage = () => {
           globalThis.localStorage.clear();
           globalThis.location.href = "/";
         }}>
-        <FormattedMessage defaultMessage="Clear cache and reload" />
+        <FormattedMessage defaultMessage="Clear cache and reload" id="error.clear-cache" />
       </AsyncButton>
       {
         <pre>

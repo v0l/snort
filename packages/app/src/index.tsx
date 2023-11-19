@@ -21,7 +21,7 @@ import {
   encodeTLVEntries,
   socialGraphInstance,
 } from "@snort/system";
-import PowWorkerURL from '@snort/system/dist/pow-worker.js?worker&url';
+import PowWorkerURL from '@snort/system/src/pow-worker.ts?worker&url';
 import { SnortContext } from "@snort/system-react";
 import { removeUndefined, throwIfOffline } from "@snort/shared";
 
