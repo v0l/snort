@@ -23,9 +23,9 @@ export default defineConfig({
       filename: "dist/stats.html",
     }),
   ],
-  assetsInclude: ["**/*.md","**/*.wasm"],
+  assetsInclude: ["**/*.md", "**/*.wasm"],
   build: {
-    outDir: "build"
+    outDir: "build",
   },
   resolve: {
     alias: {
