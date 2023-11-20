@@ -3463,6 +3463,7 @@ __metadata:
     react-textarea-autosize: ^8.4.0
     react-twitter-embed: ^4.0.4
     recharts: ^2.8.0
+    rollup-plugin-visualizer: ^5.9.2
     source-map-loader: ^4.0.1
     tailwindcss: ^3.3.3
     terser-webpack-plugin: ^5.3.9
@@ -11744,7 +11745,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"open@npm:^8.0.9":
+"open@npm:^8.0.9, open@npm:^8.4.0":
   version: 8.4.2
   resolution: "open@npm:8.4.2"
   dependencies:
@@ -13885,6 +13886,25 @@ __metadata:
   peerDependencies:
     rollup: ^2.0.0
   checksum: af84bb7a7a894cd00852b6486528dfb8653cf94df4c126f95f389a346f401d054b08c46bee519a2ab6a22b33804d1d6ac6d8c90b1b2bf8fffb097eed73fc3c72
+  languageName: node
+  linkType: hard
+
+"rollup-plugin-visualizer@npm:^5.9.2":
+  version: 5.9.2
+  resolution: "rollup-plugin-visualizer@npm:5.9.2"
+  dependencies:
+    open: ^8.4.0
+    picomatch: ^2.3.1
+    source-map: ^0.7.4
+    yargs: ^17.5.1
+  peerDependencies:
+    rollup: 2.x || 3.x
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+  bin:
+    rollup-plugin-visualizer: dist/bin/cli.js
+  checksum: ab2adf322e3b20bffc94a8dc804f46be8840a9fcbab4f872dcc2dec205cdd7752e4d2d90cfcf00783bfb5209c5a8bb4e591984e8b61bca41fd048fb7deb0ed4e
   languageName: node
   linkType: hard
 
@@ -16905,7 +16925,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs@npm:^17.3.1":
+"yargs@npm:^17.3.1, yargs@npm:^17.5.1":
   version: 17.7.2
   resolution: "yargs@npm:17.7.2"
   dependencies:

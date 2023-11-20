@@ -1,6 +1,7 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { defineConfig, type PluginOption } from 'vite';
 
 import appConfig from "config";
 
@@ -15,7 +16,12 @@ export default defineConfig({
         enabled: true,
         type: 'module',
       }
-    })
+    }),
+    visualizer({
+      open: true,
+      gzipSize: true,
+      filename: 'dist/stats.html',
+    } as PluginOption),
   ],
   assetsInclude: ['**/*.md'],
   resolve: {
