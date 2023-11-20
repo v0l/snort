@@ -46,7 +46,7 @@ const PreferencesPage = () => {
 
       <div className="flex justify-between w-max">
         <h4>
-          <FormattedMessage defaultMessage="Language" />
+          <FormattedMessage defaultMessage="Language" id="y1Z3or" />
         </h4>
         <div>
           <select
@@ -107,7 +107,7 @@ const PreferencesPage = () => {
               } as UserPreferences)
             }>
             <option value="notes">
-              <FormattedMessage defaultMessage="Notes" />
+              <FormattedMessage defaultMessage="Notes" id="7+Domh" />
             </option>
             <option value="conversations">
               <FormattedMessage {...messages.Conversations} />
@@ -121,10 +121,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Send usage metrics" />
+            <FormattedMessage defaultMessage="Send usage metrics" id="XECMfW" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Send anonymous usage metrics" />
+            <FormattedMessage defaultMessage="Send anonymous usage metrics" id="/Xf4UW" />
           </small>
         </div>
         <div>
@@ -169,10 +169,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Check Signatures" />
+            <FormattedMessage defaultMessage="Check Signatures" id="1o2BgB" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Check all event signatures received from relays" />
+            <FormattedMessage defaultMessage="Check all event signatures received from relays" id="UNjfWJ" />
           </small>
         </div>
         <div>
@@ -186,10 +186,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Auto Translate" />
+            <FormattedMessage defaultMessage="Auto Translate" id="IWz1ta" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Automatically translate notes to your local language" />
+            <FormattedMessage defaultMessage="Automatically translate notes to your local language" id="WmZhfL" />
           </small>
         </div>
         <div>
@@ -203,10 +203,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Proof of Work" />
+            <FormattedMessage defaultMessage="Proof of Work" id="grQ+mI" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Amount of work to apply to all published events" />
+            <FormattedMessage defaultMessage="Amount of work to apply to all published events" id="vxwnbh" />
           </small>
         </div>
         <div>
@@ -220,7 +220,7 @@ const PreferencesPage = () => {
       </div>
       <div className="flex justify-between w-max">
         <h4>
-          <FormattedMessage defaultMessage="Default Zap amount" />
+          <FormattedMessage defaultMessage="Default Zap amount" id="qMx1sA" />
         </h4>
         <div>
           <input
@@ -234,10 +234,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Show Badges" />
+            <FormattedMessage defaultMessage="Show Badges" id="sKDn4e" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Show badges on profile pages" />
+            <FormattedMessage defaultMessage="Show badges on profile pages" id="EQKRE4" />
           </small>
         </div>
         <div>
@@ -251,10 +251,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Show Status" />
+            <FormattedMessage defaultMessage="Show Status" id="0uoY11" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Show status messages on profile pages" />
+            <FormattedMessage defaultMessage="Show status messages on profile pages" id="FMfjrl" />
           </small>
         </div>
         <div>
@@ -268,10 +268,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between w-max">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Auto Zap" />
+            <FormattedMessage defaultMessage="Auto Zap" id="Dh3hbq" />
           </h4>
           <small>
-            <FormattedMessage defaultMessage="Automatically zap every note when loaded" />
+            <FormattedMessage defaultMessage="Automatically zap every note when loaded" id="D+KzKd" />
           </small>
         </div>
         <div>
@@ -316,7 +316,7 @@ const PreferencesPage = () => {
                   type="text"
                   value={perf.imgProxyConfig?.url}
                   placeholder={formatMessage({
-                    defaultMessage: "URL..",
+                    defaultMessage: "URL..", id: 'cQfLWb',
                     description: "Placeholder text for imgproxy url textbox",
                   })}
                   onChange={e =>
@@ -340,7 +340,7 @@ const PreferencesPage = () => {
                   type="password"
                   value={perf.imgProxyConfig?.key}
                   placeholder={formatMessage({
-                    defaultMessage: "Hex Key..",
+                    defaultMessage: "Hex Key..", id: 'H+vHiz',
                     description: "Hexidecimal 'key' input for improxy",
                   })}
                   onChange={e =>
@@ -364,7 +364,7 @@ const PreferencesPage = () => {
                   type="password"
                   value={perf.imgProxyConfig?.salt}
                   placeholder={formatMessage({
-                    defaultMessage: "Hex Salt..",
+                    defaultMessage: "Hex Salt..", id: 'TpgeGw',
                     description: "Hexidecimal 'salt' input for imgproxy",
                   })}
                   onChange={e =>

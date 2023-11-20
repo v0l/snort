@@ -17,7 +17,7 @@ export function ListFeedPage() {
   if (data.kind !== EventKind.ContactList && data.kind !== EventKind.CategorizedPeople) {
     return (
       <b>
-        <FormattedMessage defaultMessage="Must be a contact list or pubkey list" />
+        <FormattedMessage defaultMessage="Must be a contact list or pubkey list" id="vB3oQ/" />
       </b>
     );
   }

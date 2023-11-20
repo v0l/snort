@@ -36,7 +36,7 @@ const ConnectLNDHub = () => {
       } else {
         setError(
           formatMessage({
-            defaultMessage: "Unknown error",
+            defaultMessage: "Unknown error", id: 'qDwvZ4',
           }),
         );
       }
@@ -46,7 +46,7 @@ const ConnectLNDHub = () => {
   return (
     <>
       <h4>
-        <FormattedMessage defaultMessage="Enter LNDHub config" />
+        <FormattedMessage defaultMessage="Enter LNDHub config" id="KAhAcM" />
       </h4>
       <div className="flex">
         <div className="grow mr10">
@@ -59,7 +59,7 @@ const ConnectLNDHub = () => {
           />
         </div>
         <AsyncButton onClick={() => tryConnect(unwrap(config))} disabled={!config}>
-          <FormattedMessage defaultMessage="Connect" />
+          <FormattedMessage defaultMessage="Connect" id="+vVZ/G" />
         </AsyncButton>
       </div>
       {error && <b className="error p10">{error}</b>}

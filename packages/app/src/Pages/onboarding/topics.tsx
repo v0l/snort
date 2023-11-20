@@ -9,7 +9,7 @@ import { NostrHashtagLink } from "@snort/system";
 
 export const FixedTopics = {
   life: {
-    text: <FormattedMessage defaultMessage="Life" />,
+    text: <FormattedMessage defaultMessage="Life" id="4MjsHk" />,
     tags: [
       "life",
       "lifestyle",
@@ -44,7 +44,7 @@ export const FixedTopics = {
     ],
   },
   science: {
-    text: <FormattedMessage defaultMessage="Science" />,
+    text: <FormattedMessage defaultMessage="Science" id="qydxOd" />,
     tags: [
       "science",
       "research",
@@ -79,7 +79,7 @@ export const FixedTopics = {
     ],
   },
   nature: {
-    text: <FormattedMessage defaultMessage="Nature" />,
+    text: <FormattedMessage defaultMessage="Nature" id="1ozeyg" />,
     tags: [
       "nature",
       "wildlife",
@@ -114,7 +114,7 @@ export const FixedTopics = {
     ],
   },
   business: {
-    text: <FormattedMessage defaultMessage="Business" />,
+    text: <FormattedMessage defaultMessage="Business" id="w1Fanr" />,
     tags: [
       "business",
       "entrepreneurship",
@@ -149,7 +149,7 @@ export const FixedTopics = {
     ],
   },
   game: {
-    text: <FormattedMessage defaultMessage="Game" />,
+    text: <FormattedMessage defaultMessage="Game" id="Am8glJ" />,
     tags: [
       "gaming",
       "videogames",
@@ -184,7 +184,7 @@ export const FixedTopics = {
     ],
   },
   sport: {
-    text: <FormattedMessage defaultMessage="Sport" />,
+    text: <FormattedMessage defaultMessage="Sport" id="JIVWWA" />,
     tags: [
       "sports",
       "athletics",
@@ -219,7 +219,7 @@ export const FixedTopics = {
     ],
   },
   photography: {
-    text: <FormattedMessage defaultMessage="Photography" />,
+    text: <FormattedMessage defaultMessage="Photography" id="cHCwbF" />,
     tags: [
       "photography",
       "landscape",
@@ -274,7 +274,7 @@ export function Topics() {
   return (
     <div className="flex flex-col g24 text-center">
       <h1>
-        <FormattedMessage defaultMessage="Pick a few topics of interest" />
+        <FormattedMessage defaultMessage="Pick a few topics of interest" id="fX5RYm" />
       </h1>
       <div className="tabs flex-wrap justify-center">{Object.entries(FixedTopics).map(([k, v]) => tab(k, v.text))}</div>
       <AsyncButton
@@ -294,7 +294,7 @@ export function Topics() {
           }
           navigate("/login/sign-up/discover");
         }}>
-        <FormattedMessage defaultMessage="Next" />
+        <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
       </AsyncButton>
     </div>
   );

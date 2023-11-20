@@ -10,7 +10,7 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
     <div className="card note hidden-note">
       <div className="header">
         <p>
-          <FormattedMessage defaultMessage="This note has been muted" />
+          <FormattedMessage defaultMessage="This note has been muted" id="qfmMQh" />
         </p>
         <button type="button" onClick={() => setShow(true)}>
           <FormattedMessage {...messages.Show} />

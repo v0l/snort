@@ -283,7 +283,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
                 : startBuy(handle, domain)
             }>
             {props.forSubscription ? (
-              <FormattedMessage defaultMessage="Claim Now" />
+              <FormattedMessage defaultMessage="Claim Now" id="FdhSU2" />
             ) : (
               <FormattedMessage {...messages.BuyNow} />
             )}

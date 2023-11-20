@@ -42,7 +42,7 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
             </div>
             <div className="reactions-header">
               <h2>
-                <FormattedMessage defaultMessage="Badges" />
+                <FormattedMessage defaultMessage="Badges" id="h8XMJL" />
               </h2>
             </div>
             <div className="body">
@@ -55,7 +55,7 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
                       <p>{description}</p>
                       <p>
                         <FormattedMessage
-                          defaultMessage="By: {author}"
+                          defaultMessage="By: {author}" id="RfhLwC"
                           values={{ author: <Username pubkey={pubkey} onLinkVisit={() => setShowModal(false)} /> }}
                         />
                       </p>

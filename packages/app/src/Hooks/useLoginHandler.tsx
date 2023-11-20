@@ -14,7 +14,7 @@ export default function useLoginHandler() {
   async function doLogin(key: string, pin: (key: string) => Promise<KeyStorage>) {
     const insecureMsg = formatMessage({
       defaultMessage:
-        "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead",
+        "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead", id: 'iXPL0Z',
     });
     // private key logins
     if (key.startsWith("nsec")) {

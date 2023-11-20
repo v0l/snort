@@ -50,7 +50,7 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
       <div className="flex g8">
         <div className="flex flex-col g4">
           <small>
-            <FormattedMessage defaultMessage="Months" />
+            <FormattedMessage defaultMessage="Months" id="AxDOiG" />
           </small>
           <input type="number" value={months} onChange={e => setMonths(Number(e.target.value))} min={1} />
         </div>
@@ -60,13 +60,13 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
           <AsyncButton onClick={() => renew(sub.id, months)}>
             {sub.state === "expired" ? (
               <FormattedMessage
-                defaultMessage="Renew {tier}"
+                defaultMessage="Renew {tier}" id="qZsKBR"
                 values={{
                   tier: mapPlanName(sub.type),
                 }}
               />
             ) : (
-              <FormattedMessage defaultMessage="Pay Now" />
+              <FormattedMessage defaultMessage="Pay Now" id="Ss0sWu" />
             )}
           </AsyncButton>
         </div>
@@ -76,7 +76,7 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
         show={invoice !== ""}
         onClose={() => setInvoice("")}
         title={formatMessage({
-          defaultMessage: "Pay for subscription",
+          defaultMessage: "Pay for subscription", id: 'Mrpkot',
         })}
       />
       {error && <b className="error">{mapSubscriptionErrorCode(error)}</b>}

@@ -36,7 +36,7 @@ const ConnectNostrWallet = () => {
       } else {
         setError(
           formatMessage({
-            defaultMessage: "Unknown error",
+            defaultMessage: "Unknown error", id: 'qDwvZ4',
           }),
         );
       }
@@ -46,7 +46,7 @@ const ConnectNostrWallet = () => {
   return (
     <>
       <h4>
-        <FormattedMessage defaultMessage="Enter Nostr Wallet Connect config" />
+        <FormattedMessage defaultMessage="Enter Nostr Wallet Connect config" id="1R43+L" />
       </h4>
       <div className="flex">
         <div className="grow mr10">
@@ -59,13 +59,13 @@ const ConnectNostrWallet = () => {
           />
         </div>
         <AsyncButton onClick={() => tryConnect(unwrap(config))} disabled={!config}>
-          <FormattedMessage defaultMessage="Connect" />
+          <FormattedMessage defaultMessage="Connect" id="+vVZ/G" />
         </AsyncButton>
       </div>
       {error && <b className="error p10">{error}</b>}
       <p>
         <FormattedMessage
-          defaultMessage="Using Alby? Go to {link} to get your NWC config!"
+          defaultMessage="Using Alby? Go to {link} to get your NWC config!" id="cFbU1B"
           values={{
             link: (
               <Link to="https://nwc.getalby.com/" target="_blank">

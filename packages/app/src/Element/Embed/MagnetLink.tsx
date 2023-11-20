@@ -10,7 +10,7 @@ const MagnetLink = ({ magnet }: MagnetLinkProps) => {
   return (
     <div className="note-invoice">
       <h4>
-        <FormattedMessage defaultMessage="Magnet Link" />
+        <FormattedMessage defaultMessage="Magnet Link" id="Gcn9NQ" />
       </h4>
       <a href={magnet.raw} rel="noreferrer">
         {magnet.dn ?? magnet.infoHash}

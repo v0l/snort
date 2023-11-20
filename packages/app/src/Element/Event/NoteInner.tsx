@@ -118,7 +118,7 @@ export function NoteInner(props: NoteProps) {
           message={
             <>
               <FormattedMessage
-                defaultMessage="The author has marked this note as a <i>sensitive topic</i>"
+                defaultMessage="The author has marked this note as a <i>sensitive topic</i>" id="StKzTE"
                 values={{
                   i: c => <i>{c}</i>,
                 }}
@@ -127,7 +127,7 @@ export function NoteInner(props: NoteProps) {
                 <>
                   &nbsp;
                   <FormattedMessage
-                    defaultMessage="Reason: <i>{reason}</i>"
+                    defaultMessage="Reason: <i>{reason}</i>" id="6OSOXl"
                     values={{
                       i: c => <i>{c}</i>,
                       reason: contentWarning[1],
@@ -136,7 +136,7 @@ export function NoteInner(props: NoteProps) {
                 </>
               )}
               &nbsp;
-              <FormattedMessage defaultMessage="Click here to load anyway" />
+              <FormattedMessage defaultMessage="Click here to load anyway" id="IoQq+a" />
             </>
           }>
           {innerContent}

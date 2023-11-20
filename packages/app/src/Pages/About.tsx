@@ -19,7 +19,7 @@ export function AboutPage() {
   return (
     <>
       <h1>
-        <FormattedMessage defaultMessage="About" />
+        <FormattedMessage defaultMessage="About" id="g5pX+a" />
       </h1>
       Version: <b>{GIT_VERSION}</b>
       <Markdown content={changelog} tags={[]} />

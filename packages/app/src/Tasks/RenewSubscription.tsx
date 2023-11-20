@@ -19,7 +19,7 @@ export class RenewSubTask extends BaseUITask {
       <>
         <p>
           <FormattedMessage
-            defaultMessage="Your {site_name} subscription is expired"
+            defaultMessage="Your {site_name} subscription is expired" id="jAmfGl"
             values={{
               site_name: CONFIG.appName,
             }}

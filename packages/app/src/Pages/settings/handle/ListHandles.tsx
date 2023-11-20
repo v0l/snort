@@ -32,11 +32,11 @@ export default function ListHandles() {
     <>
       {handles.length === 0 && (
         <FormattedMessage
-          defaultMessage="It looks like you dont have any, check {link} to buy one!"
+          defaultMessage="It looks like you dont have any, check {link} to buy one!" id="mErPop"
           values={{
             link: (
               <Link to="/nostr-address">
-                <FormattedMessage defaultMessage="Buy Handle" />
+                <FormattedMessage defaultMessage="Buy Handle" id="5oTnfy" />
               </Link>
             ),
           }}
@@ -57,13 +57,13 @@ export default function ListHandles() {
                 state: a,
               })
             }>
-            <FormattedMessage defaultMessage="Manage" />
+            <FormattedMessage defaultMessage="Manage" id="0Azlrb" />
           </button>
         </div>
       ))}
       {handles.length > 0 && (
         <button type="button" onClick={() => navigate("/nostr-address")}>
-          <FormattedMessage defaultMessage="Buy Handle" />
+          <FormattedMessage defaultMessage="Buy Handle" id="5oTnfy" />
         </button>
       )}
       {error && <ErrorOrOffline error={error} onRetry={loadHandles} />}

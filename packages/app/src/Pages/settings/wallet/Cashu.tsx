@@ -38,7 +38,7 @@ const ConnectCashu = () => {
       } else {
         setError(
           formatMessage({
-            defaultMessage: "Unknown error",
+            defaultMessage: "Unknown error", id: 'qDwvZ4',
           }),
         );
       }
@@ -48,7 +48,7 @@ const ConnectCashu = () => {
   return (
     <>
       <h4>
-        <FormattedMessage defaultMessage="Enter mint URL" />
+        <FormattedMessage defaultMessage="Enter mint URL" id="KoFlZg" />
       </h4>
       <div className="flex">
         <div className="grow mr10">
@@ -61,7 +61,7 @@ const ConnectCashu = () => {
           />
         </div>
         <AsyncButton onClick={() => tryConnect(unwrap(mintUrl))} disabled={!mintUrl}>
-          <FormattedMessage defaultMessage="Connect" />
+          <FormattedMessage defaultMessage="Connect" id="+vVZ/G" />
         </AsyncButton>
       </div>
       {error && <b className="error p10">{error}</b>}

@@ -151,7 +151,7 @@ const AccountHeader = () => {
   if (!publicKey) {
     return (
       <button type="button" onClick={() => navigate("/login/sign-up")}>
-        <FormattedMessage defaultMessage="Sign Up" />
+        <FormattedMessage defaultMessage="Sign Up" id="39AHJm" />
       </button>
     );
   }

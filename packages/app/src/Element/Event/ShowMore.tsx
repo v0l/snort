@@ -14,7 +14,7 @@ const ShowMore = ({ text, onClick, className = "" }: ShowMoreProps) => {
   return (
     <div className="show-more-container">
       <button className={classNames("show-more", className)} onClick={onClick}>
-        {text || <FormattedMessage defaultMessage="Show More" />}
+        {text || <FormattedMessage defaultMessage="Show More" id="O8Z8t9" />}
       </button>
     </div>
   );

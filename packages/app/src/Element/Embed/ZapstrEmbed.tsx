@@ -31,7 +31,7 @@ export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
       </div>
       <Link to={`https://zapstr.live/?track=${link}`} target="_blank">
         <button>
-          <FormattedMessage defaultMessage="Open on Zapstr" />
+          <FormattedMessage defaultMessage="Open on Zapstr" id="Lu5/Bj" />
         </button>
       </Link>
     </>

@@ -21,7 +21,7 @@ export const FixedModeration = {
     canEdit: false,
   },*/
   nsfw: {
-    title: <FormattedMessage defaultMessage="NSFW" />,
+    title: <FormattedMessage defaultMessage="NSFW" id="w6qrwX" />,
     words: [
       "adult content",
       "explicit",
@@ -48,7 +48,7 @@ export const FixedModeration = {
     canEdit: false,
   },
   crypto: {
-    title: <FormattedMessage defaultMessage="Crypto" />,
+    title: <FormattedMessage defaultMessage="Crypto" id="TdtZQ5" />,
     words: [
       "bitcoin",
       "btc",
@@ -76,7 +76,7 @@ export const FixedModeration = {
     canEdit: false,
   },
   politics: {
-    title: <FormattedMessage defaultMessage="Politics" />,
+    title: <FormattedMessage defaultMessage="Politics" id="0siT4z" />,
     words: [
       "politics",
       "election",
@@ -123,17 +123,17 @@ export function Moderation() {
     <div className="flex flex-col g24">
       <div className="flex flex-col g8 text-center">
         <h1>
-          <FormattedMessage defaultMessage="Clean up your feed" />
+          <FormattedMessage defaultMessage="Clean up your feed" id="jHa/ko" />
         </h1>
-        <FormattedMessage defaultMessage="Your space the way you want it 😌" />
+        <FormattedMessage defaultMessage="Your space the way you want it 😌" id="/B8zwF" />
       </div>
       <div className="flex flex-col g8">
         <div className="flex g8 items-center">
           <small className="grow uppercase font-semibold">
-            <FormattedMessage defaultMessage="Lists to mute:" />
+            <FormattedMessage defaultMessage="Lists to mute:" id="d+6YsV" />
           </small>
           <span className="font-medium">
-            <FormattedMessage defaultMessage="Toggle all" />
+            <FormattedMessage defaultMessage="Toggle all" id="Dx4ey3" />
           </span>
           <ToggleSwitch
             size={50}
@@ -150,7 +150,7 @@ export function Moderation() {
             <div className="font-semibold grow">{v.title}</div>
             {v.canEdit && (
               <div>
-                <FormattedMessage defaultMessage="edit" />
+                <FormattedMessage defaultMessage="edit" id="+vj0U3" />
               </div>
             )}
             <ToggleSwitch
@@ -163,10 +163,10 @@ export function Moderation() {
       </div>
       <div className="flex flex-col g8">
         <span className="font-semibold">
-          <FormattedMessage defaultMessage="Additional Terms:" />
+          <FormattedMessage defaultMessage="Additional Terms:" id="xl4s/X" />
         </span>
         <small className="font-medium">
-          <FormattedMessage defaultMessage="Use commas to separate words e.g. word1, word2, word3" />
+          <FormattedMessage defaultMessage="Use commas to separate words e.g. word1, word2, word3" id="J2HeQ+" />
         </small>
         <textarea onChange={e => setExtraTerms(e.target.value)} value={extraTerms}></textarea>
       </div>
@@ -196,7 +196,7 @@ export function Moderation() {
           }
           navigate("/");
         }}>
-        <FormattedMessage defaultMessage="Finish" />
+        <FormattedMessage defaultMessage="Finish" id="2O2sfp" />
       </AsyncButton>
     </div>
   );

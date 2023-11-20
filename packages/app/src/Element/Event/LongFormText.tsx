@@ -93,7 +93,7 @@ export function LongFormText(props: LongFormTextProps) {
         <div className="flex g8">
           <div>
             <FormattedMessage
-              defaultMessage="{n} mins to read"
+              defaultMessage="{n} mins to read" id="zm6qS1"
               values={{
                 n: <FormattedNumber value={readTime().mins} />,
               }}
@@ -102,12 +102,12 @@ export function LongFormText(props: LongFormTextProps) {
           <div>‧</div>
           {!reading && (
             <div className="pointer" onClick={() => readArticle()}>
-              <FormattedMessage defaultMessage="Listen to this article" />
+              <FormattedMessage defaultMessage="Listen to this article" id="nihgfo" />
             </div>
           )}
           {reading && (
             <div className="pointer" onClick={() => stopReading()}>
-              <FormattedMessage defaultMessage="Stop listening" />
+              <FormattedMessage defaultMessage="Stop listening" id="U1aPPi" />
             </div>
           )}
         </div>

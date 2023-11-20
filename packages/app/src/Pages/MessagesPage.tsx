@@ -68,7 +68,7 @@ export default function MessagesPage() {
           {cx.participants.map(v => (
             <ProfileImage pubkey={v.id} link="" showUsername={false} profile={v.profile} />
           ))}
-          {cx.title ?? <FormattedMessage defaultMessage="Group Chat" />}
+          {cx.title ?? <FormattedMessage defaultMessage="Group Chat" id="eXT2QQ" />}
         </div>
       );
     }
@@ -88,7 +88,7 @@ export default function MessagesPage() {
         {conversationIdent(cx)}
         <div className="nowrap">
           <small>
-            <NoteTime from={cx.lastMessage * 1000} fallback={formatMessage({ defaultMessage: "Just now" })} />
+            <NoteTime from={cx.lastMessage * 1000} fallback={formatMessage({ defaultMessage: "Just now", id: 'bxv59V' })} />
           </small>
           {cx.unread > 0 && <UnreadCount unread={cx.unread} />}
         </div>
@@ -102,7 +102,7 @@ export default function MessagesPage() {
         <div className="chat-list">
           <div className="flex items-center p justify-between">
             <button disabled={unreadCount <= 0} type="button">
-              <FormattedMessage defaultMessage="Mark all read" />
+              <FormattedMessage defaultMessage="Mark all read" id="ShdEie" />
             </button>
             <NewChatWindow />
           </div>
@@ -161,7 +161,7 @@ function ProfileDmActions({ id }: { id: string }) {
 
       <div className="settings-row" onClick={() => (blocked ? unblock(pubkey) : block(pubkey))}>
         <Icon name="block" />
-        {blocked ? <FormattedMessage defaultMessage="Unblock" /> : <FormattedMessage defaultMessage="Block" />}
+        {blocked ? <FormattedMessage defaultMessage="Unblock" id="nDejmx" /> : <FormattedMessage defaultMessage="Block" id="Up5U7K" />}
       </div>
     </>
   );
@@ -215,15 +215,15 @@ function NewChatWindow() {
           <div className="flex flex-col g16">
             <div className="flex justify-between">
               <h2>
-                <FormattedMessage defaultMessage="New Chat" />
+                <FormattedMessage defaultMessage="New Chat" id="UT7Nkj" />
               </h2>
               <button onClick={startChat}>
-                <FormattedMessage defaultMessage="Start chat" />
+                <FormattedMessage defaultMessage="Start chat" id="v8lolG" />
               </button>
             </div>
             <div className="flex flex-col g8">
               <h3>
-                <FormattedMessage defaultMessage="Search users" />
+                <FormattedMessage defaultMessage="Search users" id="JjGgXI" />
               </h3>
               <input
                 type="text"
@@ -245,7 +245,7 @@ function NewChatWindow() {
             </div>
             <div>
               <p>
-                <FormattedMessage defaultMessage="People you follow" />
+                <FormattedMessage defaultMessage="People you follow" id="R81upa" />
               </p>
               <div className="user-list flex flex-col g2">
                 {results.map(a => {

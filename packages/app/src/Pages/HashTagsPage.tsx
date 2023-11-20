@@ -71,7 +71,7 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
           {events && (
             <small>
               <FormattedMessage
-                defaultMessage="{n} notes"
+                defaultMessage="{n} notes" id="un1nGw"
                 values={{
                   n: formatShort(events),
                 }}
@@ -81,11 +81,11 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
         </div>
         {isFollowing ? (
           <AsyncButton className="secondary" onClick={() => followTags(login.tags.item.filter(t => t !== tag))}>
-            <FormattedMessage defaultMessage="Unfollow" />
+            <FormattedMessage defaultMessage="Unfollow" id="izWS4J" />
           </AsyncButton>
         ) : (
           <AsyncButton onClick={() => followTags(login.tags.item.concat([tag]))}>
-            <FormattedMessage defaultMessage="Follow" />
+            <FormattedMessage defaultMessage="Follow" id="ieGrWo" />
           </AsyncButton>
         )}
       </div>

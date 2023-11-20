@@ -117,7 +117,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
       <div className="main-content p flex g12 items-center">
         <Icon name="bell" />
         <h3 className="my-0">
-          <FormattedMessage defaultMessage="Notifications" />
+          <FormattedMessage defaultMessage="Notifications" id="NAidKb" />
         </h3>
       </div>
       <div className="main-content">
@@ -164,11 +164,11 @@ function NotificationSummary({ evs }: { evs: Array<TaggedNostrEvent> }) {
   const periodTabs = [
     {
       value: NotificationSummaryPeriod.Daily,
-      text: <FormattedMessage defaultMessage="Daily" />,
+      text: <FormattedMessage defaultMessage="Daily" id="zxvhnE" />,
     },
     {
       value: NotificationSummaryPeriod.Weekly,
-      text: <FormattedMessage defaultMessage="Weekly" />,
+      text: <FormattedMessage defaultMessage="Weekly" id="/clOBU" />,
     },
   ] as Array<Tab>;
 
@@ -237,7 +237,7 @@ function NotificationSummary({ evs }: { evs: Array<TaggedNostrEvent> }) {
     <div className="flex flex-col g12 p bb">
       <div className="flex justify-between">
         <h2>
-          <FormattedMessage defaultMessage="Summary" description="Notifications summary" />
+          <FormattedMessage defaultMessage="Summary" id="PJeJFc" description="Notifications summary" />
         </h2>
         <div className="flex items-center g8">
           {filterIcon(NotificationSummaryFilter.Reactions, "heart-solid", "text-heart")}
@@ -345,7 +345,7 @@ function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onC
       case EventKind.Reaction: {
         return (
           <FormattedMessage
-            defaultMessage={"{n,plural,=0{{name} liked} other{{name} & {n} others liked}}"}
+            defaultMessage="{n,plural,=0{{name} liked} other{{name} & {n} others liked}}" id="kuPHYE"
             values={{
               n,
               name,
@@ -356,7 +356,7 @@ function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onC
       case EventKind.Repost: {
         return (
           <FormattedMessage
-            defaultMessage={"{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}"}
+            defaultMessage="{n,plural,=0{{name} reposted} other{{name} & {n} others reposted}}" id="kJYo0u"
             values={{
               n,
               name,
@@ -367,7 +367,7 @@ function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onC
       case EventKind.ZapReceipt: {
         return (
           <FormattedMessage
-            defaultMessage={"{n,plural,=0{{name} zapped} other{{name} & {n} others zapped}}"}
+            defaultMessage="{n,plural,=0{{name} zapped} other{{name} & {n} others zapped}}" id="Lw+I+J"
             values={{
               n,
               name,
@@ -400,7 +400,7 @@ function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onC
                     showUsername={kind === EventKind.TextNote}
                     pubkey={v}
                     size={40}
-                    overrideUsername={v === "" ? formatMessage({ defaultMessage: "Anon" }) : undefined}
+                    overrideUsername={v === "" ? formatMessage({ defaultMessage: "Anon", id: 'bfvyfs' }) : undefined}
                   />
                 ))}
             </div>
@@ -409,7 +409,7 @@ function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onC
                 {actionName(
                   pubkeys.length - 1,
                   firstPubkey === "anon"
-                    ? formatMessage({ defaultMessage: "Anon" })
+                    ? formatMessage({ defaultMessage: "Anon", id: 'bfvyfs' })
                     : getDisplayName(firstPubkeyProfile, firstPubkey),
                 )}
               </div>

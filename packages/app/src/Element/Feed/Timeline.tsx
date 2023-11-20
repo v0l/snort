@@ -84,7 +84,7 @@ const Timeline = (props: TimelineProps) => {
       {(props.loadMore === undefined || props.loadMore === true) && (
         <div className="flex items-center">
           <button type="button" onClick={() => feed.loadMore()}>
-            <FormattedMessage defaultMessage="Load more" />
+            <FormattedMessage defaultMessage="Load more" id="00LcfG" />
           </button>
         </div>
       )}

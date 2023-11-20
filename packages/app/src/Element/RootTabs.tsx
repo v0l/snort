@@ -30,7 +30,7 @@ export function RootTabs({ base }: { base?: string }) {
       element: (
         <>
           <Icon name="user-v2" />
-          <FormattedMessage defaultMessage="Following" />
+          <FormattedMessage defaultMessage="Following" id="cPIKU2" />
         </>
       ),
     },
@@ -41,7 +41,7 @@ export function RootTabs({ base }: { base?: string }) {
       element: (
         <>
           <Icon name="fire" />
-          <FormattedMessage defaultMessage="Trending Notes" />
+          <FormattedMessage defaultMessage="Trending Notes" id="Ix8l+B" />
         </>
       ),
     },
@@ -52,7 +52,7 @@ export function RootTabs({ base }: { base?: string }) {
       element: (
         <>
           <Icon name="message-chat-circle" />
-          <FormattedMessage defaultMessage="Conversations" />
+          <FormattedMessage defaultMessage="Conversations" id="1udzha" />
         </>
       ),
     },
@@ -63,7 +63,7 @@ export function RootTabs({ base }: { base?: string }) {
       element: (
         <>
           <Icon name="user-up" />
-          <FormattedMessage defaultMessage="Trending People" />
+          <FormattedMessage defaultMessage="Trending People" id="CVWeJ6" />
         </>
       ),
     },
@@ -74,7 +74,7 @@ export function RootTabs({ base }: { base?: string }) {
       element: (
         <>
           <Icon name="thumbs-up" />
-          <FormattedMessage defaultMessage="Suggested Follows" />
+          <FormattedMessage defaultMessage="Suggested Follows" id="C8HhVE" />
         </>
       ),
     },
@@ -85,7 +85,7 @@ export function RootTabs({ base }: { base?: string }) {
       element: (
         <>
           <Icon name="hash" />
-          <FormattedMessage defaultMessage="Trending Hashtags" />
+          <FormattedMessage defaultMessage="Trending Hashtags" id="XXm7jJ" />
         </>
       ),
     },
@@ -96,7 +96,7 @@ export function RootTabs({ base }: { base?: string }) {
       element: (
         <>
           <Icon name="globe" />
-          <FormattedMessage defaultMessage="Global" />
+          <FormattedMessage defaultMessage="Global" id="EWyQH5" />
         </>
       ),
     },
@@ -107,7 +107,7 @@ export function RootTabs({ base }: { base?: string }) {
       element: (
         <>
           <Icon name="hash" />
-          <FormattedMessage defaultMessage="Topics" />
+          <FormattedMessage defaultMessage="Topics" id="kc79d3" />
         </>
       ),
     },

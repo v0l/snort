@@ -83,7 +83,7 @@ const RelayInfo = () => {
           </>
         )}
         <h4>
-          <FormattedMessage defaultMessage="Active Subscriptions" />
+          <FormattedMessage defaultMessage="Active Subscriptions" id="p85Uwy" />
         </h4>
         <div className="grow">
           {stats?.activeRequests.map(a => (
@@ -93,7 +93,7 @@ const RelayInfo = () => {
           ))}
         </div>
         <h4>
-          <FormattedMessage defaultMessage="Pending Subscriptions" />
+          <FormattedMessage defaultMessage="Pending Subscriptions" id="UDYlxu" />
         </h4>
         <div className="grow">
           {stats?.pendingRequests.map(a => (

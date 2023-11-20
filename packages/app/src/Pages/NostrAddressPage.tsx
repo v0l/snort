@@ -26,7 +26,7 @@ export default function NostrAddressPage() {
   return (
     <div className="main-content p">
       <h2>
-        <FormattedMessage defaultMessage="Buy nostr address" />
+        <FormattedMessage defaultMessage="Buy nostr address" id="MuVeKe" />
       </h2>
       <p>
         <FormattedMessage {...messages.Nip05} />

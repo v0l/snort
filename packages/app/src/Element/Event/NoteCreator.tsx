@@ -52,7 +52,7 @@ export function NoteCreator() {
                 throw new Error(
                   formatMessage(
                     {
-                      defaultMessage: "Failed to parse zap split: {input}",
+                      defaultMessage: "Failed to parse zap split: {input}", id: 'sZQzjQ',
                     },
                     {
                       input: s.value,
@@ -69,7 +69,7 @@ export function NoteCreator() {
                 throw new Error(
                   formatMessage(
                     {
-                      defaultMessage: "Failed to parse zap split: {input}",
+                      defaultMessage: "Failed to parse zap split: {input}", id: 'sZQzjQ',
                     },
                     {
                       input: s.value,
@@ -81,7 +81,7 @@ export function NoteCreator() {
               throw new Error(
                 formatMessage(
                   {
-                    defaultMessage: "Invalid zap split: {input}",
+                    defaultMessage: "Invalid zap split: {input}", id: '8Y6bZQ',
                   },
                   {
                     input: s.value,
@@ -258,12 +258,12 @@ export function NoteCreator() {
       return (
         <>
           <h4>
-            <FormattedMessage defaultMessage="Poll Options" />
+            <FormattedMessage defaultMessage="Poll Options" id="vhlWFg" />
           </h4>
           {note.pollOptions?.map((a, i) => (
             <div className="form-group w-max" key={`po-${i}`}>
               <div>
-                <FormattedMessage defaultMessage="Option: {n}" values={{ n: i + 1 }} />
+                <FormattedMessage defaultMessage="Option: {n}" id="mfe8RW" values={{ n: i + 1 }} />
               </div>
               <div>
                 <input type="text" value={a} onChange={e => changePollOption(i, e.target.value)} />
@@ -353,24 +353,24 @@ export function NoteCreator() {
       <>
         <div>
           <h4>
-            <FormattedMessage defaultMessage="Custom Relays" />
+            <FormattedMessage defaultMessage="Custom Relays" id="EcZF24" />
           </h4>
           <p>
-            <FormattedMessage defaultMessage="Send note to a subset of your write relays" />
+            <FormattedMessage defaultMessage="Send note to a subset of your write relays" id="th5lxp" />
           </p>
           {renderRelayCustomisation()}
         </div>
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Zap Splits" />
+            <FormattedMessage defaultMessage="Zap Splits" id="5CB6zB" />
           </h4>
-          <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." />
+          <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." id="LwYmVi" />
           <div className="flex flex-col g8">
             {[...(note.zapSplits ?? [])].map((v, i, arr) => (
               <div className="flex items-center g8">
                 <div className="flex flex-col f-4 g4">
                   <h4>
-                    <FormattedMessage defaultMessage="Recipient" />
+                    <FormattedMessage defaultMessage="Recipient" id="8Rkoyb" />
                   </h4>
                   <input
                     type="text"
@@ -380,12 +380,12 @@ export function NoteCreator() {
                         v => (v.zapSplits = arr.map((vv, ii) => (ii === i ? { ...vv, value: e.target.value } : vv))),
                       )
                     }
-                    placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address" })}
+                    placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address", id: 'WvGmZT' })}
                   />
                 </div>
                 <div className="flex flex-col f-1 g4">
                   <h4>
-                    <FormattedMessage defaultMessage="Weight" />
+                    <FormattedMessage defaultMessage="Weight" id="zCb8fX" />
                   </h4>
                   <input
                     type="number"
@@ -415,18 +415,18 @@ export function NoteCreator() {
               onClick={() =>
                 note.update(v => (v.zapSplits = [...(v.zapSplits ?? []), { type: "pubkey", value: "", weight: 1 }]))
               }>
-              <FormattedMessage defaultMessage="Add" />
+              <FormattedMessage defaultMessage="Add" id="2/2yg+" />
             </button>
           </div>
           <span className="warning">
-            <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" />
+            <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" id="6bgpn+" />
           </span>
         </div>
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage defaultMessage="Sensitive Content" />
+            <FormattedMessage defaultMessage="Sensitive Content" id="bQdA2k" />
           </h4>
-          <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." />
+          <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." id="UUPFlt" />
           <input
             className="w-max"
             type="text"
@@ -435,11 +435,11 @@ export function NoteCreator() {
             maxLength={50}
             minLength={1}
             placeholder={formatMessage({
-              defaultMessage: "Reason",
+              defaultMessage: "Reason", id: 'AkCxS/',
             })}
           />
           <span className="warning">
-            <FormattedMessage defaultMessage="Not all clients support this yet" />
+            <FormattedMessage defaultMessage="Not all clients support this yet" id="gXgY3+" />
           </span>
         </div>
       </>
@@ -473,7 +473,7 @@ export function NoteCreator() {
             className={classNames("note-creator-icon", { active: note.advanced })}
           />
           <span className="sm:inline hidden">
-            <FormattedMessage defaultMessage="Preview" />
+            <FormattedMessage defaultMessage="Preview" id="TJo5E6" />
           </span>
           <ToggleSwitch
             onClick={() => loadPreview()}
@@ -483,10 +483,10 @@ export function NoteCreator() {
         </div>
         <div className="flex g8">
           <button className="secondary" onClick={cancel}>
-            <FormattedMessage defaultMessage="Cancel" />
+            <FormattedMessage defaultMessage="Cancel" id="47FYwb" />
           </button>
           <AsyncButton onClick={onSubmit} className="primary">
-            {note.replyTo ? <FormattedMessage defaultMessage="Reply" /> : <FormattedMessage defaultMessage="Send" />}
+            {note.replyTo ? <FormattedMessage defaultMessage="Reply" id="9HU8vw" /> : <FormattedMessage defaultMessage="Send" id="9WRlF4" />}
           </AsyncButton>
         </div>
       </div>
@@ -536,7 +536,7 @@ export function NoteCreator() {
         {note.replyTo && (
           <>
             <h4>
-              <FormattedMessage defaultMessage="Reply To" />
+              <FormattedMessage defaultMessage="Reply To" id="8ED/4u" />
             </h4>
             <Note
               data={note.replyTo}
@@ -555,7 +555,7 @@ export function NoteCreator() {
         {note.quote && (
           <>
             <h4>
-              <FormattedMessage defaultMessage="Quote Repost" />
+              <FormattedMessage defaultMessage="Quote Repost" id="C7642/" />
             </h4>
             <Note
               data={note.quote}
@@ -597,13 +597,13 @@ export function NoteCreator() {
                 value={note.hashTags}
                 onChange={e => note.update(s => (s.hashTags = e))}
                 placeHolder={formatMessage({
-                  defaultMessage: "Add up to 4 hashtags",
+                  defaultMessage: "Add up to 4 hashtags", id: 'AIgmDy',
                 })}
                 separators={["Enter", ","]}
               />
               {note.hashTags.length > 4 && (
                 <small className="warning">
-                  <FormattedMessage defaultMessage="Try to use less than 5 hashtags to stay on topic 🙏" />
+                  <FormattedMessage defaultMessage="Try to use less than 5 hashtags to stay on topic 🙏" id="d8gpCh" />
                 </small>
               )}
               <TrendingHashTagsLine onClick={t => note.update(s => (s.hashTags = appendDedupe(s.hashTags, [t])))} />
@@ -652,7 +652,7 @@ function TrendingHashTagsLine(props: { onClick: (tag: string) => void }) {
   return (
     <div className="flex flex-col g4">
       <small>
-        <FormattedMessage defaultMessage="Popular Hashtags" />
+        <FormattedMessage defaultMessage="Popular Hashtags" id="ddd3JX" />
       </small>
       <div className="flex g4 flex-wrap">
         {hashtags.slice(0, 5).map(a => (

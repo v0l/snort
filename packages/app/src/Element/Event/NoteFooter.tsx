@@ -187,7 +187,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     const pow = findTag(ev, "nonce") ? countLeadingZeros(ev.id) : undefined;
     if (pow) {
       return (
-        <AsyncFooterIcon title={formatMessage({ defaultMessage: "Proof of Work" })} iconName="diamond" value={pow} />
+        <AsyncFooterIcon title={formatMessage({ defaultMessage: "Proof of Work", id: 'grQ+mI' })} iconName="diamond" value={pow} />
       );
     }
   }
@@ -199,7 +199,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         <AsyncFooterIcon
           className={didZap ? "reacted text-nostr-orange" : "hover:text-nostr-orange"}
           {...longPress()}
-          title={formatMessage({ defaultMessage: "Zap" })}
+          title={formatMessage({ defaultMessage: "Zap", id: 'fBI91o' })}
           iconName={canFastZap ? "zapFast" : "zap"}
           value={zapTotal}
           onClick={e => fastZap(e)}
@@ -217,7 +217,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           <AsyncFooterIcon
             className={hasReposted() ? "reacted text-nostr-blue" : "hover:text-nostr-blue"}
             iconName="repeat"
-            title={formatMessage({ defaultMessage: "Repost" })}
+            title={formatMessage({ defaultMessage: "Repost", id: 'JeoS4y' })}
             value={reposts.length}
           />
         }
@@ -232,7 +232,7 @@ export default function NoteFooter(props: NoteFooterProps) {
         </div>
         <MenuItem onClick={() => repost()} disabled={hasReposted()}>
           <Icon name="repeat" />
-          <FormattedMessage defaultMessage="Repost" />
+          <FormattedMessage defaultMessage="Repost" id="JeoS4y" />
         </MenuItem>
         <MenuItem
           onClick={() =>
@@ -243,7 +243,7 @@ export default function NoteFooter(props: NoteFooterProps) {
             })
           }>
           <Icon name="edit" />
-          <FormattedMessage defaultMessage="Quote Repost" />
+          <FormattedMessage defaultMessage="Quote Repost" id="C7642/" />
         </MenuItem>
       </Menu>
     );
@@ -258,7 +258,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       <AsyncFooterIcon
         className={reacted ? "reacted text-nostr-red" : "hover:text-nostr-red"}
         iconName={reacted ? "heart-solid" : "heart"}
-        title={formatMessage({ defaultMessage: "Like" })}
+        title={formatMessage({ defaultMessage: "Like", id: 'qtWLmt' })}
         value={positive.length}
         onClick={async () => {
           if (readonly) return;
@@ -274,7 +274,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       <AsyncFooterIcon
         className={note.show ? "reacted text-nostr-purple" : "hover:text-nostr-purple"}
         iconName="reply"
-        title={formatMessage({ defaultMessage: "Reply" })}
+        title={formatMessage({ defaultMessage: "Reply", id: '9HU8vw' })}
         value={props.replies ?? 0}
         onClick={async () => handleReplyButtonClick()}
       />

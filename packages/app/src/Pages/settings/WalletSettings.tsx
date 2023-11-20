@@ -17,11 +17,11 @@ const WalletSettings = () => {
     <>
       <Link to="/wallet">
         <button type="button">
-          <FormattedMessage defaultMessage="View Wallets" />
+          <FormattedMessage defaultMessage="View Wallets" id="VvaJst" />
         </button>
       </Link>
       <h3>
-        <FormattedMessage defaultMessage="Connect Wallet" />
+        <FormattedMessage defaultMessage="Connect Wallet" id="cg1VJ2" />
       </h3>
       <div className="wallet-grid">
         <div onClick={() => navigate("/settings/wallet/lnc")}>

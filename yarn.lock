@@ -2230,7 +2230,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@formatjs/ts-transformer@npm:^3.13.3":
+"@formatjs/ts-transformer@npm:3.13.9, @formatjs/ts-transformer@npm:^3.13.3":
   version: 3.13.9
   resolution: "@formatjs/ts-transformer@npm:3.13.9"
   dependencies:
@@ -3436,6 +3436,7 @@ __metadata:
     dexie: ^3.2.4
     emojilib: ^3.0.10
     eslint: ^8.48.0
+    eslint-plugin-formatjs: ^4.11.3
     eslint-webpack-plugin: ^4.0.1
     highlight.js: ^11.8.0
     html-webpack-plugin: ^5.5.1
@@ -4005,7 +4006,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:*, @types/eslint@npm:^8.37.0":
+"@types/eslint@npm:*, @types/eslint@npm:7 || 8, @types/eslint@npm:^8.37.0":
   version: 8.44.7
   resolution: "@types/eslint@npm:8.44.7"
   dependencies:
@@ -4255,6 +4256,13 @@ __metadata:
     "@types/node": "*"
     "@types/parse-torrent-file": "*"
   checksum: 14c3b128735b766d96f7f15469d1b62e3b33294bebaa615c919bd35b6de4b10173b3978c6f2ca1def90efdbf9e1fc462d57ba2202a1d71689d852bb9bfdb2c85
+  languageName: node
+  linkType: hard
+
+"@types/picomatch@npm:^2.3.0":
+  version: 2.3.3
+  resolution: "@types/picomatch@npm:2.3.3"
+  checksum: 1bf1a1d80296a585d3310c97be87e67e16da6f5c168e01ce27eef835abfc5bcca8e395afd6ae8b2b73eb72540d1587da7a468e4dfe7277ea208cf43cae096854
   languageName: node
   linkType: hard
 
@@ -4589,7 +4597,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:6.11.0":
+"@typescript-eslint/utils@npm:6.11.0, @typescript-eslint/utils@npm:^6.5.0":
   version: 6.11.0
   resolution: "@typescript-eslint/utils@npm:6.11.0"
   dependencies:
@@ -7335,6 +7343,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"emoji-regex@npm:10.3.0, emoji-regex@npm:^10.2.1":
+  version: 10.3.0
+  resolution: "emoji-regex@npm:10.3.0"
+  checksum: 5da48edfeb9462fb1ae5495cff2d79129974c696853fb0ce952cbf560f29a2756825433bf51cfd5157ec7b9f93f46f31d712e896d63e3d8ac9c3832bdb45ab73
+  languageName: node
+  linkType: hard
+
 "emoji-regex@npm:^8.0.0":
   version: 8.0.0
   resolution: "emoji-regex@npm:8.0.0"
@@ -7638,6 +7653,27 @@ __metadata:
     escodegen: bin/escodegen.js
     esgenerate: bin/esgenerate.js
   checksum: 096696407e161305cd05aebb95134ad176708bc5cb13d0dcc89a5fcbb959b8ed757e7f2591a5f8036f8f4952d4a724de0df14cd419e29212729fa6df5ce16bf6
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-formatjs@npm:^4.11.3":
+  version: 4.11.3
+  resolution: "eslint-plugin-formatjs@npm:4.11.3"
+  dependencies:
+    "@formatjs/icu-messageformat-parser": 2.7.3
+    "@formatjs/ts-transformer": 3.13.9
+    "@types/eslint": 7 || 8
+    "@types/picomatch": ^2.3.0
+    "@typescript-eslint/utils": ^6.5.0
+    emoji-regex: ^10.2.1
+    magic-string: ^0.30.0
+    picomatch: ^2.3.1
+    tslib: 2.6.2
+    typescript: 5
+    unicode-emoji-utils: ^1.1.1
+  peerDependencies:
+    eslint: 7 || 8
+  checksum: 2840fef201bb8b0ba1bc0a37a4e1748279c0810d2d827f8dabe777347414ff3a758584b2e1788fcbdc59266de52d7ea7cdaacf95b7348e670e0e4602e0be689e
   languageName: node
   linkType: hard
 
@@ -10603,7 +10639,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.30.4":
+"magic-string@npm:^0.30.0, magic-string@npm:^0.30.4":
   version: 0.30.5
   resolution: "magic-string@npm:0.30.5"
   dependencies:
@@ -15324,7 +15360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:^2.6.1, tslib@npm:^2.6.2":
+"tslib@npm:2.6.2, tslib@npm:^2.0.0, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:^2.6.1, tslib@npm:^2.6.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 329ea56123005922f39642318e3d1f0f8265d1e7fcb92c633e0809521da75eeaca28d2cf96d7248229deb40e5c19adf408259f4b9640afd20d13aecc1430f3ad
@@ -15493,6 +15529,15 @@ __metadata:
   version: 2.0.0
   resolution: "unicode-canonical-property-names-ecmascript@npm:2.0.0"
   checksum: 39be078afd014c14dcd957a7a46a60061bc37c4508ba146517f85f60361acf4c7539552645ece25de840e17e293baa5556268d091ca6762747fdd0c705001a45
+  languageName: node
+  linkType: hard
+
+"unicode-emoji-utils@npm:^1.1.1":
+  version: 1.2.0
+  resolution: "unicode-emoji-utils@npm:1.2.0"
+  dependencies:
+    emoji-regex: 10.3.0
+  checksum: a659831614f2d6c6942ff97ad63b8ba276af8b3e82c5aa07b8b4f42aa2428e7f2b4585750a0f10809f6bfa40514454463b491a6446078907c1160090fc1531b0
   languageName: node
   linkType: hard
 

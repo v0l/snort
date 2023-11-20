@@ -61,12 +61,12 @@ export default function ActiveAccount({ name = "", setAsPrimary = () => {} }) {
   return (
     <div>
       <div className="negative">
-        <FormattedMessage defaultMessage="You have an active iris.to account" />:
+        <FormattedMessage defaultMessage="You have an active iris.to account" id="UrKTqQ" />:
         <AccountName name={name} />
       </div>
       <p>
         <button type="button" onClick={onClick}>
-          <FormattedMessage defaultMessage="Set as primary Nostr address (nip05)" />
+          <FormattedMessage defaultMessage="Set as primary Nostr address (nip05)" id="MiMipu" />
         </button>
       </p>
     </div>

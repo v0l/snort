@@ -92,7 +92,7 @@ const RelaySettingsPage = () => {
       {addRelay()}
       <CloseRelays />
       <h3>
-        <FormattedMessage defaultMessage="Other Connections" />
+        <FormattedMessage defaultMessage="Other Connections" id="LF5kYT" />
       </h3>
       <div className="flex flex-col g8">
         {otherConnections.map(a => (

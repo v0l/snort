@@ -73,7 +73,7 @@ export function NoteBroadcaster({
   return (
     <div className="flex flex-col g16">
       <h3>
-        <FormattedMessage defaultMessage="Sending notes and other stuff" />
+        <FormattedMessage defaultMessage="Sending notes and other stuff" id="ugyJnE" />
       </h3>
       {results
         .filter(a => a.message !== "Duplicate request")
@@ -91,7 +91,7 @@ export function NoteBroadcaster({
                   onClick={() => retryPublish(r)}
                   className="p4 br-compact flex items-center secondary"
                   title={formatMessage({
-                    defaultMessage: "Retry publishing",
+                    defaultMessage: "Retry publishing", id: '9kSari',
                   })}>
                   <Icon name="refresh-ccw-01" />
                 </AsyncButton>
@@ -99,7 +99,7 @@ export function NoteBroadcaster({
                   onClick={() => removeRelayFromResult(r)}
                   className="p4 br-compact flex items-center secondary"
                   title={formatMessage({
-                    defaultMessage: "Remove from my relays",
+                    defaultMessage: "Remove from my relays", id: 'UJTWqI',
                   })}>
                   <Icon name="trash-01" className="trash-icon" />
                 </AsyncButton>
@@ -109,7 +109,7 @@ export function NoteBroadcaster({
         ))}
       <div className="flex-row g8">
         <button type="button" onClick={() => onClose()}>
-          <FormattedMessage defaultMessage="Close" />
+          <FormattedMessage defaultMessage="Close" id="rbrahO" />
         </button>
       </div>
     </div>

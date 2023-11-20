@@ -105,7 +105,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                     pubkey={z.anonZap ? "" : z.sender}
                     subHeader={<div title={z.content}>{z.content}</div>}
                     link={z.anonZap ? "" : undefined}
-                    overrideUsername={z.anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
+                    overrideUsername={z.anonZap ? formatMessage({ defaultMessage: "Anonymous", id: 'LXxsbk' }) : undefined}
                   />
                 </div>
               )

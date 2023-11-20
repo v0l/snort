@@ -170,7 +170,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
         )}
         <MenuItem onClick={handleReBroadcastButtonClick}>
           <Icon name="relay" />
-          <FormattedMessage defaultMessage="Broadcast Event" />
+          <FormattedMessage defaultMessage="Broadcast Event" id="Gxcr08" />
         </MenuItem>
         {ev.pubkey !== login.publicKey && !login.readonly && (
           <MenuItem onClick={() => block(ev.pubkey)}>

@@ -39,7 +39,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
               return <ProfileImage pubkey={p} showUsername={false} link={""} showFollowDistance={false} />;
             })}
             <FormattedMessage
-              defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
+              defaultMessage="{n} new {n, plural, =1 {note} other {notes}}" id="3t3kok"
               values={{ n: props.latest.length }}
             />
             <Icon name="arrowUp" />
@@ -52,7 +52,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
                 return <ProfileImage pubkey={p} showUsername={false} link={""} showFollowDistance={false} />;
               })}
               <FormattedMessage
-                defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
+                defaultMessage="{n} new {n, plural, =1 {note} other {notes}}" id="3t3kok"
                 values={{ n: props.latest.length }}
               />
               <Icon name="arrowUp" />

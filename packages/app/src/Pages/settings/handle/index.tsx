@@ -10,7 +10,7 @@ export default function ManageHandlePage() {
   return (
     <>
       <h3 onClick={() => navigate("/settings/handle")} className="pointer">
-        <FormattedMessage defaultMessage="Nostr Address" />
+        <FormattedMessage defaultMessage="Nostr Address" id="9pMqYs" />
       </h3>
       <Outlet />
     </>

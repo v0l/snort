@@ -8,11 +8,11 @@ export default function HelpPage() {
   return (
     <>
       <h2>
-        <FormattedMessage defaultMessage="NIP-05" />
+        <FormattedMessage defaultMessage="NIP-05" id="7hp70g" />
       </h2>
       <p>
         <FormattedMessage
-          defaultMessage="If you have an enquiry about your NIP-05 order please DM {link}"
+          defaultMessage="If you have an enquiry about your NIP-05 order please DM {link}" id="c35bj2"
           values={{
             link: (
               <Link

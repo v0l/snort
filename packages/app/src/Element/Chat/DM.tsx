@@ -61,7 +61,7 @@ export default function DM(props: DMProps) {
         {content ? (
           <Text id={msg.id} content={content} tags={[]} creator={otherPubkey} />
         ) : (
-          <FormattedMessage defaultMessage="Loading..." />
+          <FormattedMessage defaultMessage="Loading..." id="gjBiyj" />
         )}
       </div>
       <div>

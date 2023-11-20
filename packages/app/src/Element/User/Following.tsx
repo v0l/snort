@@ -12,7 +12,7 @@ export function FollowingMark({ pubkey }: { pubkey: string }) {
   return (
     <span className="following flex g4">
       <Icon name="check" className="success" size={12} />
-      <FormattedMessage defaultMessage="following" />
+      <FormattedMessage defaultMessage="following" id="+tShPg" />
     </span>
   );
 }

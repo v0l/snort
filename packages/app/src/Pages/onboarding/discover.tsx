@@ -13,7 +13,7 @@ export function Discover() {
     <div className="flex flex-col g24">
       <h1 className="text-center">
         <FormattedMessage
-          defaultMessage="{site} is more fun together!"
+          defaultMessage="{site} is more fun together!" id="h7jvCs"
           values={{
             site: CONFIG.appNameCapitalized,
           }}
@@ -23,7 +23,7 @@ export function Discover() {
         <TrendingUsers
           title={
             <h3>
-              <FormattedMessage defaultMessage="Trending Users" />
+              <FormattedMessage defaultMessage="Trending Users" id="FSYL8G" />
             </h3>
           }
         />
@@ -35,7 +35,7 @@ export function Discover() {
             state,
           })
         }>
-        <FormattedMessage defaultMessage="Next" />
+        <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
       </AsyncButton>
     </div>
   );
