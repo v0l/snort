@@ -15,6 +15,7 @@ import Avatar from "Element/User/Avatar";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ErrorOrOffline } from "Element/ErrorOrOffline";
 import messages from "Element/messages";
+import { MaxAboutLength, MaxUsernameLength } from "Const";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -39,7 +40,10 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   const [lud16, setLud16] = useState<string>();
   const [nip05AddressValid, setNip05AddressValid] = useState<boolean>();
   const [invalidNip05AddressMessage, setInvalidNip05AddressMessage] = useState<null | string>();
-
+  const [usernameValid, setUsernameValid] = useState<boolean>();
+  const [invalidUsernameMessage, setInvalidUsernameMessage] = useState<null | string>();
+  const [aboutValid, setAboutValid] = useState<boolean>();
+  const [invalidAboutMessage, setInvalidAboutMessage] = useState<null | string>();
 
   useEffect(() => {
     if (user) {
@@ -124,7 +128,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         setNip05AddressValid(false)
         setInvalidNip05AddressMessage("")
     }else if(Nip05AddressElements.length < 2){
-      setNip05AddressValid(false)
+        setNip05AddressValid(false)
         setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
     }
     else if(Nip05AddressElements.length === 2){
@@ -134,6 +138,29 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       setNip05AddressValid(false)
     }
     setNip05(Nip05Address)
+  }
+
+  async function onLimitCheck(val:string, field:string){
+    if(field === "username"){
+      setName(val);
+      if(val?.length >= MaxUsernameLength){
+        setUsernameValid(false)
+        setInvalidUsernameMessage(formatMessage(messages.UserNameLengthError))
+      }else{
+        setUsernameValid(true)
+        setInvalidUsernameMessage("")
+      }
+    }
+    else if(field === "about"){
+      setAbout(val);
+      if(val?.length >= MaxAboutLength){
+        setAboutValid(false)
+        setInvalidAboutMessage(formatMessage(messages.AboutLengthError))
+      }else{
+        setAboutValid(true)
+        setInvalidAboutMessage("")
+      }
+    }
   }
 
   async function nip05NostrAddressVerification(nip05Domain: string | undefined, nip05Name: string| undefined) {
@@ -170,9 +197,17 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             className="w-max"
             type="text"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={e => onLimitCheck(e.target.value,"username")}
             disabled={readonly}
+            maxLength={MaxUsernameLength}
           />
+          <div>
+            {usernameValid === false ? (
+              <span className="error">{invalidUsernameMessage}</span>
+              )
+              : (<></>) 
+            }
+          </div>
         </div>
         <div className="flex flex-col w-max g8">
           <h4>
@@ -180,9 +215,16 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </h4>
           <textarea
             className="w-max"
-            onChange={e => setAbout(e.target.value)}
+            onChange={e => onLimitCheck(e.target.value,"about")}
             value={about}
-            disabled={readonly}></textarea>
+            disabled={readonly} maxLength={MaxAboutLength}></textarea>
+            <div>
+            {aboutValid === false ? (
+              <span className="error">{invalidAboutMessage}</span>
+              )
+              :  (<></>) 
+            }
+          </div>
         </div>
         <div className="flex flex-col w-max g8">
           <h4>
