@@ -88,7 +88,10 @@ export default function MessagesPage() {
         {conversationIdent(cx)}
         <div className="nowrap">
           <small>
-            <NoteTime from={cx.lastMessage * 1000} fallback={formatMessage({ defaultMessage: "Just now", id: 'bxv59V' })} />
+            <NoteTime
+              from={cx.lastMessage * 1000}
+              fallback={formatMessage({ defaultMessage: "Just now", id: "bxv59V" })}
+            />
           </small>
           {cx.unread > 0 && <UnreadCount unread={cx.unread} />}
         </div>
@@ -161,7 +164,11 @@ function ProfileDmActions({ id }: { id: string }) {
 
       <div className="settings-row" onClick={() => (blocked ? unblock(pubkey) : block(pubkey))}>
         <Icon name="block" />
-        {blocked ? <FormattedMessage defaultMessage="Unblock" id="nDejmx" /> : <FormattedMessage defaultMessage="Block" id="Up5U7K" />}
+        {blocked ? (
+          <FormattedMessage defaultMessage="Unblock" id="nDejmx" />
+        ) : (
+          <FormattedMessage defaultMessage="Block" id="Up5U7K" />
+        )}
       </div>
     </>
   );

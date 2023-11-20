@@ -14,7 +14,8 @@ export class NoticeZapPoolDefault extends BaseUITask {
       <>
         <p>
           <FormattedMessage
-            defaultMessage="A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}" id="dmsiLv"
+            defaultMessage="A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}"
+            id="dmsiLv"
             values={{
               site: CONFIG.appNameCapitalized,
               n: (

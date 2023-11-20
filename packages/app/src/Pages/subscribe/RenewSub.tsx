@@ -60,7 +60,8 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
           <AsyncButton onClick={() => renew(sub.id, months)}>
             {sub.state === "expired" ? (
               <FormattedMessage
-                defaultMessage="Renew {tier}" id="qZsKBR"
+                defaultMessage="Renew {tier}"
+                id="qZsKBR"
                 values={{
                   tier: mapPlanName(sub.type),
                 }}
@@ -76,7 +77,8 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
         show={invoice !== ""}
         onClose={() => setInvoice("")}
         title={formatMessage({
-          defaultMessage: "Pay for subscription", id: 'Mrpkot',
+          defaultMessage: "Pay for subscription",
+          id: "Mrpkot",
         })}
       />
       {error && <b className="error">{mapSubscriptionErrorCode(error)}</b>}

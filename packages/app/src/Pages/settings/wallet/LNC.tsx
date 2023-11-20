@@ -31,7 +31,8 @@ const ConnectLNC = () => {
       } else {
         setError(
           formatMessage({
-            defaultMessage: "Unknown error", id: 'qDwvZ4',
+            defaultMessage: "Unknown error",
+            id: "qDwvZ4",
           }),
         );
       }
@@ -60,7 +61,7 @@ const ConnectLNC = () => {
           <div className="grow mr10">
             <input
               type="text"
-              placeholder={formatMessage({ defaultMessage: "Pairing phrase", id: '8v1NN+' })}
+              placeholder={formatMessage({ defaultMessage: "Pairing phrase", id: "8v1NN+" })}
               className="w-max"
               value={pairingPhrase}
               onChange={e => setPairingPhrase(e.target.value)}
@@ -81,7 +82,8 @@ const ConnectLNC = () => {
       <div className="flex flex-col">
         <h3>
           <FormattedMessage
-            defaultMessage="Connected to: {node} 🎉" id="1c4YST"
+            defaultMessage="Connected to: {node} 🎉"
+            id="1c4YST"
             values={{
               node: walletInfo?.alias,
             }}
@@ -94,7 +96,7 @@ const ConnectLNC = () => {
           <div className="grow mr10">
             <input
               type="password"
-              placeholder={formatMessage({ defaultMessage: "Wallet password", id: 'lTbT3s' })}
+              placeholder={formatMessage({ defaultMessage: "Wallet password", id: "lTbT3s" })}
               className="w-max"
               value={walletPassword}
               onChange={e => setWalletPassword(e.target.value)}

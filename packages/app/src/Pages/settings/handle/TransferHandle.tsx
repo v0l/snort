@@ -39,7 +39,8 @@ export default function TransferHandle({ handle }: { handle: ManageHandle }) {
             type="text"
             className="w-max mr10"
             placeholder={formatMessage({
-              defaultMessage: "Public key (npub/nprofile)", id: 'VR5eHw',
+              defaultMessage: "Public key (npub/nprofile)",
+              id: "VR5eHw",
             })}
             value={newKey}
             onChange={e => setNewKey(e.target.value)}

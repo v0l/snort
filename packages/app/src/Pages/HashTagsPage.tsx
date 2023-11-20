@@ -71,7 +71,8 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
           {events && (
             <small>
               <FormattedMessage
-                defaultMessage="{n} notes" id="un1nGw"
+                defaultMessage="{n} notes"
+                id="un1nGw"
                 values={{
                   n: formatShort(events),
                 }}

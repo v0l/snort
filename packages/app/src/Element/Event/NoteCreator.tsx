@@ -52,7 +52,8 @@ export function NoteCreator() {
                 throw new Error(
                   formatMessage(
                     {
-                      defaultMessage: "Failed to parse zap split: {input}", id: 'sZQzjQ',
+                      defaultMessage: "Failed to parse zap split: {input}",
+                      id: "sZQzjQ",
                     },
                     {
                       input: s.value,
@@ -69,7 +70,8 @@ export function NoteCreator() {
                 throw new Error(
                   formatMessage(
                     {
-                      defaultMessage: "Failed to parse zap split: {input}", id: 'sZQzjQ',
+                      defaultMessage: "Failed to parse zap split: {input}",
+                      id: "sZQzjQ",
                     },
                     {
                       input: s.value,
@@ -81,7 +83,8 @@ export function NoteCreator() {
               throw new Error(
                 formatMessage(
                   {
-                    defaultMessage: "Invalid zap split: {input}", id: '8Y6bZQ',
+                    defaultMessage: "Invalid zap split: {input}",
+                    id: "8Y6bZQ",
                   },
                   {
                     input: s.value,
@@ -380,7 +383,7 @@ export function NoteCreator() {
                         v => (v.zapSplits = arr.map((vv, ii) => (ii === i ? { ...vv, value: e.target.value } : vv))),
                       )
                     }
-                    placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address", id: 'WvGmZT' })}
+                    placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address", id: "WvGmZT" })}
                   />
                 </div>
                 <div className="flex flex-col f-1 g4">
@@ -419,14 +422,20 @@ export function NoteCreator() {
             </button>
           </div>
           <span className="warning">
-            <FormattedMessage defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured" id="6bgpn+" />
+            <FormattedMessage
+              defaultMessage="Not all clients support this, you may still receive some zaps as if zap splits was not configured"
+              id="6bgpn+"
+            />
           </span>
         </div>
         <div className="flex flex-col g8">
           <h4>
             <FormattedMessage defaultMessage="Sensitive Content" id="bQdA2k" />
           </h4>
-          <FormattedMessage defaultMessage="Users must accept the content warning to show the content of your note." id="UUPFlt" />
+          <FormattedMessage
+            defaultMessage="Users must accept the content warning to show the content of your note."
+            id="UUPFlt"
+          />
           <input
             className="w-max"
             type="text"
@@ -435,7 +444,8 @@ export function NoteCreator() {
             maxLength={50}
             minLength={1}
             placeholder={formatMessage({
-              defaultMessage: "Reason", id: 'AkCxS/',
+              defaultMessage: "Reason",
+              id: "AkCxS/",
             })}
           />
           <span className="warning">
@@ -486,7 +496,11 @@ export function NoteCreator() {
             <FormattedMessage defaultMessage="Cancel" id="47FYwb" />
           </button>
           <AsyncButton onClick={onSubmit} className="primary">
-            {note.replyTo ? <FormattedMessage defaultMessage="Reply" id="9HU8vw" /> : <FormattedMessage defaultMessage="Send" id="9WRlF4" />}
+            {note.replyTo ? (
+              <FormattedMessage defaultMessage="Reply" id="9HU8vw" />
+            ) : (
+              <FormattedMessage defaultMessage="Send" id="9WRlF4" />
+            )}
           </AsyncButton>
         </div>
       </div>
@@ -597,7 +611,8 @@ export function NoteCreator() {
                 value={note.hashTags}
                 onChange={e => note.update(s => (s.hashTags = e))}
                 placeHolder={formatMessage({
-                  defaultMessage: "Add up to 4 hashtags", id: 'AIgmDy',
+                  defaultMessage: "Add up to 4 hashtags",
+                  id: "AIgmDy",
                 })}
                 separators={["Enter", ","]}
               />

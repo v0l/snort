@@ -316,7 +316,8 @@ const PreferencesPage = () => {
                   type="text"
                   value={perf.imgProxyConfig?.url}
                   placeholder={formatMessage({
-                    defaultMessage: "URL..", id: 'cQfLWb',
+                    defaultMessage: "URL..",
+                    id: "cQfLWb",
                     description: "Placeholder text for imgproxy url textbox",
                   })}
                   onChange={e =>
@@ -340,7 +341,8 @@ const PreferencesPage = () => {
                   type="password"
                   value={perf.imgProxyConfig?.key}
                   placeholder={formatMessage({
-                    defaultMessage: "Hex Key..", id: 'H+vHiz',
+                    defaultMessage: "Hex Key..",
+                    id: "H+vHiz",
                     description: "Hexidecimal 'key' input for improxy",
                   })}
                   onChange={e =>
@@ -364,7 +366,8 @@ const PreferencesPage = () => {
                   type="password"
                   value={perf.imgProxyConfig?.salt}
                   placeholder={formatMessage({
-                    defaultMessage: "Hex Salt..", id: 'TpgeGw',
+                    defaultMessage: "Hex Salt..",
+                    id: "TpgeGw",
                     description: "Hexidecimal 'salt' input for imgproxy",
                   })}
                   onChange={e =>

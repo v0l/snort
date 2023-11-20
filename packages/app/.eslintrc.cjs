@@ -6,9 +6,9 @@ module.exports = {
     "formatjs/enforce-id": [
       "error",
       {
-        "idInterpolationPattern": "[sha512:contenthash:base64:6]"
-      }
-    ]
+        idInterpolationPattern: "[sha512:contenthash:base64:6]",
+      },
+    ],
   },
   root: true,
   ignorePatterns: ["build/", "*.test.ts", "*.js"],

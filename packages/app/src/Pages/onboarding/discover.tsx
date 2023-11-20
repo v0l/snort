@@ -13,7 +13,8 @@ export function Discover() {
     <div className="flex flex-col g24">
       <h1 className="text-center">
         <FormattedMessage
-          defaultMessage="{site} is more fun together!" id="h7jvCs"
+          defaultMessage="{site} is more fun together!"
+          id="h7jvCs"
           values={{
             site: CONFIG.appNameCapitalized,
           }}

@@ -1047,6 +1047,9 @@
   "eXT2QQ": {
     "defaultMessage": "Group Chat"
   },
+  "egib+2": {
+    "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
+  },
   "fBI91o": {
     "defaultMessage": "Zap"
   },
@@ -1420,9 +1423,6 @@
   },
   "vN5UH8": {
     "defaultMessage": "Profile Image"
-  },
-  "vOKedj": {
-    "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
   },
   "vZ4quW": {
     "defaultMessage": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."

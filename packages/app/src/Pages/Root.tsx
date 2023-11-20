@@ -75,7 +75,11 @@ export const GlobalTab = () => {
     return (
       <div className="flex items-center g8 justify-end nowrap">
         <h3>
-          <FormattedMessage defaultMessage="Relay" id="KHK8B9" description="Label for reading global feed from specific relays" />
+          <FormattedMessage
+            defaultMessage="Relay"
+            id="KHK8B9"
+            description="Label for reading global feed from specific relays"
+          />
         </h3>
         <select
           className="f-ellipsis"

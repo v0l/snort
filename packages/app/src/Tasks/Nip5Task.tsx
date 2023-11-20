@@ -14,7 +14,8 @@ export class Nip5Task extends BaseUITask {
     return (
       <p>
         <FormattedMessage
-          defaultMessage="Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}" id="ojzbwv"
+          defaultMessage="Hey, it looks like you dont have a Nostr Address yet, you should get one! Check out {link}"
+          id="ojzbwv"
           values={{
             link: (
               <Link to="/nostr-address">

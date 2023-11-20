@@ -20,8 +20,8 @@ const SearchPage = () => {
   const [sortPopular, setSortPopular] = useState<boolean>(true);
   // tabs
   const SearchTab = [
-    { text: formatMessage({ defaultMessage: "Notes", id: '7+Domh' }), value: NOTES },
-    { text: formatMessage({ defaultMessage: "People", id: 'Tpy00S' }), value: PROFILES },
+    { text: formatMessage({ defaultMessage: "Notes", id: "7+Domh" }), value: NOTES },
+    { text: formatMessage({ defaultMessage: "People", id: "Tpy00S" }), value: PROFILES },
   ];
   const [tab, setTab] = useState<Tab>(SearchTab[0]);
 
@@ -95,7 +95,7 @@ const SearchPage = () => {
         <input
           type="text"
           className="w-max"
-          placeholder={formatMessage({ defaultMessage: "Search...", id: '0BUTMv' })}
+          placeholder={formatMessage({ defaultMessage: "Search...", id: "0BUTMv" })}
           value={search}
           onChange={e => setSearch(e.target.value)}
           autoFocus={true}

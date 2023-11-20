@@ -107,7 +107,8 @@ export default function CashuNuts({ token }: { token: string }) {
             </defs>
           </svg>
           <FormattedMessage
-            defaultMessage="<h1>{n}</h1> Cashu sats" id="6/SF6e"
+            defaultMessage="<h1>{n}</h1> Cashu sats"
+            id="6/SF6e"
             values={{
               h1: c => <h1>{c}</h1>,
               n: <FormattedNumber value={amount} />,
@@ -116,7 +117,8 @@ export default function CashuNuts({ token }: { token: string }) {
         </div>
         <small className="xs w-max">
           <FormattedMessage
-            defaultMessage="<b>Mint:</b> {url}" id="zwb6LR"
+            defaultMessage="<b>Mint:</b> {url}"
+            id="zwb6LR"
             values={{
               b: c => <b>{c}</b>,
               url: new URL(cashu.token[0].mint).hostname,

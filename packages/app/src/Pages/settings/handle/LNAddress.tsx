@@ -30,7 +30,8 @@ export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
     } catch {
       setError(
         formatMessage({
-          defaultMessage: "Invalid LNURL", id: '0jOEtS',
+          defaultMessage: "Invalid LNURL",
+          id: "0jOEtS",
         }),
       );
       return;
@@ -49,14 +50,23 @@ export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
         <FormattedMessage defaultMessage="Update Lightning Address" id="SOqbe9" />
       </h4>
       <p>
-        <FormattedMessage defaultMessage="Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address" id="b5vAk0" />
+        <FormattedMessage
+          defaultMessage="Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address"
+          id="b5vAk0"
+        />
       </p>
 
       <p>
         <small>
-          <FormattedMessage defaultMessage="Redirect issues HTTP redirect to the supplied lightning address" id="FcNSft" />
+          <FormattedMessage
+            defaultMessage="Redirect issues HTTP redirect to the supplied lightning address"
+            id="FcNSft"
+          />
           <br />
-          <FormattedMessage defaultMessage="Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node" id="712i26" />
+          <FormattedMessage
+            defaultMessage="Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node"
+            id="712i26"
+          />
         </small>
       </p>
       <div className="flex g8">
@@ -64,7 +74,8 @@ export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {
           type="text"
           className="w-max"
           placeholder={formatMessage({
-            defaultMessage: "LNURL or Lightning Address", id: 'yCLnBC',
+            defaultMessage: "LNURL or Lightning Address",
+            id: "yCLnBC",
           })}
           value={newAddress}
           onChange={e => setNewAddress(e.target.value)}

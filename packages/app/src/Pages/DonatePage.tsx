@@ -87,13 +87,15 @@ const DonatePage = () => {
     <div className="main-content p">
       <h2>
         <FormattedMessage
-          defaultMessage="Help fund the development of {site}" id="yNBPJp"
+          defaultMessage="Help fund the development of {site}"
+          id="yNBPJp"
           values={{ site: CONFIG.appNameCapitalized }}
         />
       </h2>
       <p>
         <FormattedMessage
-          defaultMessage="{site} is an open source project built by passionate people in their free time" id="6TfgXX"
+          defaultMessage="{site} is an open source project built by passionate people in their free time"
+          id="6TfgXX"
           values={{ site: CONFIG.appNameCapitalized }}
         />
       </p>
@@ -102,7 +104,8 @@ const DonatePage = () => {
       </p>
       <p>
         <FormattedMessage
-          defaultMessage="Check out the code here: {link}" id="u4bHcR"
+          defaultMessage="Check out the code here: {link}"
+          id="u4bHcR"
           values={{
             link: (
               <a className="highlight" href="https://git.v0l.io/Kieran/snort" rel="noreferrer" target="_blank">
@@ -113,7 +116,10 @@ const DonatePage = () => {
         />
       </p>
       <p>
-        <FormattedMessage defaultMessage="Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below" id="mH91FY" />
+        <FormattedMessage
+          defaultMessage="Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below"
+          id="mH91FY"
+        />
       </p>
       <div className="flex flex-col g12">
         <div className="b br p">
@@ -126,7 +132,8 @@ const DonatePage = () => {
           {today && (
             <small>
               <FormattedMessage
-                defaultMessage="Total today (UTC): {amount} sats" id="P7nJT9"
+                defaultMessage="Total today (UTC): {amount} sats"
+                id="P7nJT9"
                 values={{ amount: today.donations.toLocaleString() }}
               />
             </small>

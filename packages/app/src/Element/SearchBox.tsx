@@ -116,7 +116,7 @@ export default function SearchBox() {
     <div className="search relative">
       <input
         type="text"
-        placeholder={formatMessage({ defaultMessage: "Search", id: 'xmcVZ0' })}
+        placeholder={formatMessage({ defaultMessage: "Search", id: "xmcVZ0" })}
         className="w-max"
         value={search}
         onChange={handleChange}

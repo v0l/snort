@@ -6,7 +6,8 @@ export default function ReservedAccount({ name = "", enableReserved = () => {}, 
     <div>
       <p className="success">
         <FormattedMessage
-          defaultMessage="Username iris.to/<b>{name}</b> is reserved for you!" id="Zff6lu"
+          defaultMessage="Username iris.to/<b>{name}</b> is reserved for you!"
+          id="Zff6lu"
           values={{ name, b: s => <b>{s}</b> }}
         />
       </p>

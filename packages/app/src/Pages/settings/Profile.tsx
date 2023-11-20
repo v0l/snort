@@ -162,7 +162,10 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               disabled={readonly}
             />
             <small>
-              <FormattedMessage defaultMessage="Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration." id="5vMmmR" />
+              <FormattedMessage
+                defaultMessage="Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration."
+                id="5vMmmR"
+              />
             </small>
             <div className="flex g12">
               <button className="flex items-center" type="button" onClick={() => navigate("/nostr-address")}>

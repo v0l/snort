@@ -1,7 +1,7 @@
-import react from '@vitejs/plugin-react';
-import { VitePWA } from 'vite-plugin-pwa';
-import { visualizer } from 'rollup-plugin-visualizer';
-import { defineConfig, type PluginOption } from 'vite';
+import react from "@vitejs/plugin-react";
+import { VitePWA } from "vite-plugin-pwa";
+import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from "vite";
 
 import appConfig from "config";
 
@@ -9,24 +9,24 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      strategies: 'injectManifest',
-      srcDir: 'src',
-      filename: 'service-worker.ts',
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "service-worker.ts",
       devOptions: {
         enabled: true,
-        type: 'module',
-      }
+        type: "module",
+      },
     }),
     visualizer({
       open: true,
       gzipSize: true,
-      filename: 'dist/stats.html',
-    } as PluginOption),
+      filename: "dist/stats.html",
+    }),
   ],
-  assetsInclude: ['**/*.md'],
+  assetsInclude: ["**/*.md"],
   resolve: {
     alias: {
-      '@': '/src',
+      "@": "/src",
     },
   },
   define: {

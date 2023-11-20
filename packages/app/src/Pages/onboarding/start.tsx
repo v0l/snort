@@ -43,7 +43,8 @@ export function SignIn() {
       } else {
         setError(
           formatMessage({
-            defaultMessage: "Unknown login error", id: 'OLEm6z',
+            defaultMessage: "Unknown login error",
+            id: "OLEm6z",
           }),
         );
       }
@@ -83,7 +84,8 @@ export function SignIn() {
             <input
               type="text"
               placeholder={formatMessage({
-                defaultMessage: "nsec, npub, nip-05, hex, mnemonic", id: 'X7xU8J',
+                defaultMessage: "nsec, npub, nip-05, hex, mnemonic",
+                id: "X7xU8J",
               })}
               value={key}
               onChange={e => setKey(e.target.value)}
@@ -125,7 +127,8 @@ export function SignUp() {
           type="text"
           autoFocus={true}
           placeholder={formatMessage({
-            defaultMessage: "Name or nym", id: 'aHje0o',
+            defaultMessage: "Name or nym",
+            id: "aHje0o",
           })}
           value={name}
           onChange={e => setName(e.target.value)}

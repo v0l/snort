@@ -99,8 +99,8 @@ export default class LNDHubWallet implements LNWallet {
       state: pRsp.payment_error
         ? WalletInvoiceState.Failed
         : pRsp.payment_preimage
-        ? WalletInvoiceState.Paid
-        : WalletInvoiceState.Pending,
+          ? WalletInvoiceState.Paid
+          : WalletInvoiceState.Pending,
     } as WalletInvoice;
   }
 

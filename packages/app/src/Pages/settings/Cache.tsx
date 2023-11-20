@@ -45,7 +45,8 @@ function CacheDetails<T>({ cache, name }: { cache: FeedCache<T>; name: ReactNode
         {name}
         <small>
           <FormattedMessage
-            defaultMessage="{count} ({count2} in memory)" id="geppt8"
+            defaultMessage="{count} ({count2} in memory)"
+            id="geppt8"
             values={{
               count: <FormattedNumber value={cache.keysOnTable().length} />,
               count2: <FormattedNumber value={snapshot.length} />,

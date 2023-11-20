@@ -37,7 +37,9 @@ export function mapFeatureName(k: LockedFeatures) {
     case LockedFeatures.RelayBackup:
       return <FormattedMessage defaultMessage="Downloadable backups from Snort relay" id="pI+77w" />;
     case LockedFeatures.RelayAccess:
-      return <FormattedMessage defaultMessage="Write access to Snort relay, with 1 year of event retention" id="BGCM48" />;
+      return (
+        <FormattedMessage defaultMessage="Write access to Snort relay, with 1 year of event retention" id="BGCM48" />
+      );
     case LockedFeatures.LNProxy:
       return <FormattedMessage defaultMessage="LN Address Proxy" id="SYQtZ7" />;
     case LockedFeatures.EmailBridge:
@@ -52,7 +54,12 @@ export function mapSubscriptionErrorCode(c: SubscriptionError) {
     case SubscriptionErrorCode.SubscriptionActive:
       return <FormattedMessage defaultMessage="You subscription is still active, you can't renew yet" id="OQXnew" />;
     case SubscriptionErrorCode.Duplicate:
-      return <FormattedMessage defaultMessage="You already have a subscription of this type, please renew or pay" id="NAuFNH" />;
+      return (
+        <FormattedMessage
+          defaultMessage="You already have a subscription of this type, please renew or pay"
+          id="NAuFNH"
+        />
+      );
     default:
       return c.message;
   }
@@ -87,7 +94,8 @@ export function SubscribePage() {
                 <h2>{mapPlanName(a.id)}</h2>
                 <p>
                   <FormattedMessage
-                    defaultMessage="Subscribe to {site_name} {plan} for {price} and receive the following rewards" id="JSx7y9"
+                    defaultMessage="Subscribe to {site_name} {plan} for {price} and receive the following rewards"
+                    id="JSx7y9"
                     values={{
                       site_name: CONFIG.appNameCapitalized,
                       plan: mapPlanName(a.id),
@@ -103,7 +111,8 @@ export function SubscribePage() {
                   {lower.map(b => (
                     <li>
                       <FormattedMessage
-                        defaultMessage="Everything in {plan}" id="l+ikU1"
+                        defaultMessage="Everything in {plan}"
+                        id="l+ikU1"
                         values={{
                           plan: mapPlanName(b.id),
                         }}

@@ -91,7 +91,8 @@ export function NoteBroadcaster({
                   onClick={() => retryPublish(r)}
                   className="p4 br-compact flex items-center secondary"
                   title={formatMessage({
-                    defaultMessage: "Retry publishing", id: '9kSari',
+                    defaultMessage: "Retry publishing",
+                    id: "9kSari",
                   })}>
                   <Icon name="refresh-ccw-01" />
                 </AsyncButton>
@@ -99,7 +100,8 @@ export function NoteBroadcaster({
                   onClick={() => removeRelayFromResult(r)}
                   className="p4 br-compact flex items-center secondary"
                   title={formatMessage({
-                    defaultMessage: "Remove from my relays", id: 'UJTWqI',
+                    defaultMessage: "Remove from my relays",
+                    id: "UJTWqI",
                   })}>
                   <Icon name="trash-01" className="trash-icon" />
                 </AsyncButton>

@@ -42,7 +42,8 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
               Toastore.push({
                 element: (
                   <FormattedMessage
-                    defaultMessage="Sent {n} sats to {name}" id="Ig9/a1"
+                    defaultMessage="Sent {n} sats to {name}"
+                    id="Ig9/a1"
                     values={{
                       n: amtSend,
                       name: getDisplayName(profile, pk),
@@ -70,7 +71,8 @@ export default function PubkeyList({ ev, className }: { ev: NostrEvent; classNam
         <>
           <AsyncButton className="mr5 secondary" onClick={() => zapAll()}>
             <FormattedMessage
-              defaultMessage="Zap all {n} sats" id="IVbtTS"
+              defaultMessage="Zap all {n} sats"
+              id="IVbtTS"
               values={{
                 n: <FormattedNumber value={login.appData.item.preferences.defaultZapAmount * ids.length} />,
               }}

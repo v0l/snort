@@ -21,7 +21,7 @@ import {
   encodeTLVEntries,
   socialGraphInstance,
 } from "@snort/system";
-import PowWorkerURL from '@snort/system/src/pow-worker.ts?worker&url';
+import PowWorkerURL from "@snort/system/src/pow-worker.ts?worker&url";
 import { SnortContext } from "@snort/system-react";
 import { removeUndefined, throwIfOffline } from "@snort/shared";
 
@@ -313,4 +313,4 @@ window.encodeTLV = encodeTLVEntries;
 
 // Use react-helmet instead?
 document.title = CONFIG.appTitle;
-document.querySelector('link[rel="apple-touch-icon"]')?.setAttribute('href', CONFIG.appleTouchIconUrl);
+document.querySelector('link[rel="apple-touch-icon"]')?.setAttribute("href", CONFIG.appleTouchIconUrl);

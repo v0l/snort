@@ -60,7 +60,8 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
               :&nbsp;
               <time dateTime={expires.toISOString()}>
                 <FormattedMessage
-                  defaultMessage="{n} days" id="rmdsT4"
+                  defaultMessage="{n} days"
+                  id="rmdsT4"
                   values={{
                     n: <FormattedNumber value={daysToExpire} maximumFractionDigits={0} />,
                   }}
@@ -74,7 +75,8 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
               :&nbsp;
               <time dateTime={expires.toISOString()}>
                 <FormattedMessage
-                  defaultMessage="{n} hours" id="2ukA4d"
+                  defaultMessage="{n} hours"
+                  id="2ukA4d"
                   values={{
                     n: <FormattedNumber value={hoursToExpire} maximumFractionDigits={0} />,
                   }}

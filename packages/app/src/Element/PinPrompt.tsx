@@ -29,7 +29,8 @@ export function PinPrompt({
     if (pin.length < 4) {
       setError(
         formatMessage({
-          defaultMessage: "Pin too short", id: 'LR1XjT',
+          defaultMessage: "Pin too short",
+          id: "LR1XjT",
         }),
       );
       return;
@@ -43,7 +44,8 @@ export function PinPrompt({
       if (e instanceof InvalidPinError) {
         setError(
           formatMessage({
-            defaultMessage: "Incorrect pin", id: 'qz9fty',
+            defaultMessage: "Incorrect pin",
+            id: "qz9fty",
           }),
         );
       } else if (e instanceof Error) {
@@ -143,7 +145,8 @@ export function LoginUnlock() {
           subTitle={
             <p>
               <FormattedMessage
-                defaultMessage="Enter a pin to encrypt your private key, you must enter this pin every time you open {site}." id="SLZGPn"
+                defaultMessage="Enter a pin to encrypt your private key, you must enter this pin every time you open {site}."
+                id="SLZGPn"
                 values={{
                   site: CONFIG.appNameCapitalized,
                 }}

@@ -51,7 +51,8 @@ export default function Poll(props: PollProps) {
         throw new Error(
           formatMessage(
             {
-              defaultMessage: "Can't vote with {amount} sats, please set a different default zap amount", id: 'NepkXH',
+              defaultMessage: "Can't vote with {amount} sats, please set a different default zap amount",
+              id: "NepkXH",
             },
             {
               amount,
@@ -75,7 +76,8 @@ export default function Poll(props: PollProps) {
       if (!svc.canZap) {
         throw new Error(
           formatMessage({
-            defaultMessage: "Can't vote because LNURL service does not support zaps", id: 'fOksnD',
+            defaultMessage: "Can't vote because LNURL service does not support zaps",
+            id: "fOksnD",
           }),
         );
       }
@@ -92,7 +94,8 @@ export default function Poll(props: PollProps) {
       } else {
         setError(
           formatMessage({
-            defaultMessage: "Failed to send vote", id: 'g985Wp',
+            defaultMessage: "Failed to send vote",
+            id: "g985Wp",
           }),
         );
       }
@@ -115,7 +118,8 @@ export default function Poll(props: PollProps) {
       <div className="flex justify-between p">
         <small>
           <FormattedMessage
-            defaultMessage="You are voting with {amount} sats" id="3qnJlS"
+            defaultMessage="You are voting with {amount} sats"
+            id="3qnJlS"
             values={{
               amount: formatShort(prefs.defaultZapAmount),
             }}
@@ -123,7 +127,8 @@ export default function Poll(props: PollProps) {
         </small>
         <button type="button" onClick={() => setTallyBy(s => (s !== "zaps" ? "zaps" : "pubkeys"))}>
           <FormattedMessage
-            defaultMessage="Votes by {type}" id="xIcAOU"
+            defaultMessage="Votes by {type}"
+            id="xIcAOU"
             values={{
               type:
                 tallyBy === "zaps" ? (

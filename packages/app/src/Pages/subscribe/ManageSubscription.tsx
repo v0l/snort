@@ -53,7 +53,8 @@ export default function ManageSubscriptionPage() {
       {subs.length === 0 && (
         <p>
           <FormattedMessage
-            defaultMessage="It looks like you dont have any subscriptions, you can get one {link}" id="W1yoZY"
+            defaultMessage="It looks like you dont have any subscriptions, you can get one {link}"
+            id="W1yoZY"
             values={{
               link: (
                 <Link to="/subscribe">

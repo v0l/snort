@@ -368,7 +368,8 @@ function SendSatsZapTypeSelector({ zapType, setZapType }: { zapType: ZapType; se
         <FormattedMessage defaultMessage="Zap Type" id="+aZY2h" />
       </h3>
       <div className="flex g8">
-        {!readonly && makeTab(ZapType.PublicZap, <FormattedMessage defaultMessage="Public" id="/PCavi" description="Public Zap" />)}
+        {!readonly &&
+          makeTab(ZapType.PublicZap, <FormattedMessage defaultMessage="Public" id="/PCavi" description="Public Zap" />)}
         {/*makeTab(ZapType.PrivateZap, "Private")*/}
         {makeTab(ZapType.AnonZap, <FormattedMessage defaultMessage="Anon" id="wWLwvh" description="Anonymous Zap" />)}
         {makeTab(

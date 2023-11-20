@@ -9,9 +9,9 @@ export default function Discover() {
   const { formatMessage } = useIntl();
   // tabs
   const Tabs = {
-    Follows: { text: formatMessage({ defaultMessage: "Suggested Follows", id: 'C8HhVE' }), value: 0 },
-    Posts: { text: formatMessage({ defaultMessage: "Trending Notes", id: 'Ix8l+B' }), value: 1 },
-    Profiles: { text: formatMessage({ defaultMessage: "Trending People", id: 'CVWeJ6' }), value: 2 },
+    Follows: { text: formatMessage({ defaultMessage: "Suggested Follows", id: "C8HhVE" }), value: 0 },
+    Posts: { text: formatMessage({ defaultMessage: "Trending Notes", id: "Ix8l+B" }), value: 1 },
+    Profiles: { text: formatMessage({ defaultMessage: "Trending People", id: "CVWeJ6" }), value: 2 },
   };
   const [tab, setTab] = useState<Tab>(Tabs.Follows);
 

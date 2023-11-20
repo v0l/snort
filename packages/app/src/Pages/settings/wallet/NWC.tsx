@@ -36,7 +36,8 @@ const ConnectNostrWallet = () => {
       } else {
         setError(
           formatMessage({
-            defaultMessage: "Unknown error", id: 'qDwvZ4',
+            defaultMessage: "Unknown error",
+            id: "qDwvZ4",
           }),
         );
       }
@@ -65,7 +66,8 @@ const ConnectNostrWallet = () => {
       {error && <b className="error p10">{error}</b>}
       <p>
         <FormattedMessage
-          defaultMessage="Using Alby? Go to {link} to get your NWC config!" id="cFbU1B"
+          defaultMessage="Using Alby? Go to {link} to get your NWC config!"
+          id="cFbU1B"
           values={{
             link: (
               <Link to="https://nwc.getalby.com/" target="_blank">

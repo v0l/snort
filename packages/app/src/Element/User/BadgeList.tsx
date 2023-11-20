@@ -55,7 +55,8 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
                       <p>{description}</p>
                       <p>
                         <FormattedMessage
-                          defaultMessage="By: {author}" id="RfhLwC"
+                          defaultMessage="By: {author}"
+                          id="RfhLwC"
                           values={{ author: <Username pubkey={pubkey} onLinkVisit={() => setShowModal(false)} /> }}
                         />
                       </p>

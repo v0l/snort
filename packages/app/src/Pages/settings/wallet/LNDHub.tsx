@@ -36,7 +36,8 @@ const ConnectLNDHub = () => {
       } else {
         setError(
           formatMessage({
-            defaultMessage: "Unknown error", id: 'qDwvZ4',
+            defaultMessage: "Unknown error",
+            id: "qDwvZ4",
           }),
         );
       }

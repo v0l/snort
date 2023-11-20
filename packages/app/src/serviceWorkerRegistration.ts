@@ -2,8 +2,8 @@
 //import ServiceWorkerURL from "./service-worker?worker&url";
 
 export function register() {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
       //registerValidSW(ServiceWorkerURL);
     });
   }
@@ -37,7 +37,7 @@ async function registerValidSW(swUrl: string) {
  */
 
 export async function unregister() {
-  if ('serviceWorker' in navigator) {
+  if ("serviceWorker" in navigator) {
     const registration = await navigator.serviceWorker.ready;
     await registration.unregister();
   }

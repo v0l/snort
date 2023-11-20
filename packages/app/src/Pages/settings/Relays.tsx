@@ -124,7 +124,7 @@ export function CloseRelays() {
   return (
     <>
       <h3>
-        <FormattedMessage defaultMessage="Recommended Relays" />
+        <FormattedMessage defaultMessage="Recommended Relays" id="VL900k" />
       </h3>
       {"geolocation" in navigator && (
         <AsyncButton
@@ -141,7 +141,7 @@ export function CloseRelays() {
               console.error(e);
             }
           }}>
-          <FormattedMessage defaultMessage="Use Exact Location" />
+          <FormattedMessage defaultMessage="Use Exact Location" id="0HFX0T" />
         </AsyncButton>
       )}
       {relays
@@ -162,7 +162,7 @@ export function CloseRelays() {
                     unixNowMs(),
                   );
                 }}>
-                <FormattedMessage defaultMessage="Add" />
+                <FormattedMessage defaultMessage="Add" id="2/2yg+" />
               </AsyncButton>
             </div>
             <div className="flex flex-col g8">
@@ -170,6 +170,7 @@ export function CloseRelays() {
               <small>
                 <FormattedMessage
                   defaultMessage="{n} km - {location}"
+                  id="jTrbGf"
                   values={{
                     n: (a.distance / 1000).toFixed(0),
                     location: a.city ? `${a.city}, ${a.country}` : a.country,
@@ -179,6 +180,7 @@ export function CloseRelays() {
               <small>
                 <FormattedMessage
                   defaultMessage="{n} users"
+                  id="1H4Keq"
                   values={{
                     n: formatShort(a.users),
                   }}

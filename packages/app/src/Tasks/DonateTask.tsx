@@ -14,7 +14,8 @@ export class DonateTask extends BaseUITask {
       <>
         <p>
           <FormattedMessage
-            defaultMessage="Thanks for using {site}, please consider donating if you can." id="fBlba3"
+            defaultMessage="Thanks for using {site}, please consider donating if you can."
+            id="fBlba3"
             values={{ site: CONFIG.appNameCapitalized }}
           />
         </p>

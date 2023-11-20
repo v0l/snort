@@ -18,8 +18,8 @@ export class PowWorker implements PowMiner {
 
   constructor(workerPath: string) {
     this.#worker = new Worker(workerPath, {
-      type: 'module',
-      name: 'POW',
+      type: "module",
+      name: "POW",
     });
     this.#worker.onerror = ev => {
       console.error(ev);

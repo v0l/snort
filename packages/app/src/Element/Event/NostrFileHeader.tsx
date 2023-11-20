@@ -26,7 +26,10 @@ export function NostrFileElement({ ev }: { ev: NostrEvent }) {
 
   if (u && m) {
     return (
-      <Reveal message={<FormattedMessage defaultMessage="Click to load content from {link}" id="lsNFM1" values={{ link: u }} />}>
+      <Reveal
+        message={
+          <FormattedMessage defaultMessage="Click to load content from {link}" id="lsNFM1" values={{ link: u }} />
+        }>
         <MediaElement mime={m} url={u} sha256={x} magnet={magnet} blurHash={blurHash} />
       </Reveal>
     );

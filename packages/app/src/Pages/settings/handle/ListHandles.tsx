@@ -32,7 +32,8 @@ export default function ListHandles() {
     <>
       {handles.length === 0 && (
         <FormattedMessage
-          defaultMessage="It looks like you dont have any, check {link} to buy one!" id="mErPop"
+          defaultMessage="It looks like you dont have any, check {link} to buy one!"
+          id="mErPop"
           values={{
             link: (
               <Link to="/nostr-address">

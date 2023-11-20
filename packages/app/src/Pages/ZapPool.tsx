@@ -96,14 +96,21 @@ export default function ZapPoolPage() {
         <FormattedMessage defaultMessage="Zap Pool" id="i/dBAR" />
       </h1>
       <p>
-        <FormattedMessage defaultMessage="Fund the services that you use by splitting a portion of all your zaps into a pool of funds!" id="x/Fx2P" />
-      </p>
-      <p>
-        <FormattedMessage defaultMessage="Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)" id="QWhotP" />
+        <FormattedMessage
+          defaultMessage="Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"
+          id="x/Fx2P"
+        />
       </p>
       <p>
         <FormattedMessage
-          defaultMessage="Your default zap amount is {number} sats, example values are calculated from this." id="Xopqkl"
+          defaultMessage="Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)"
+          id="QWhotP"
+        />
+      </p>
+      <p>
+        <FormattedMessage
+          defaultMessage="Your default zap amount is {number} sats, example values are calculated from this."
+          id="Xopqkl"
           values={{
             number: (
               <b>
@@ -115,7 +122,8 @@ export default function ZapPoolPage() {
       </p>
       <p>
         <FormattedMessage
-          defaultMessage="A single zap of {nIn} sats will allocate {nOut} sats to the zap pool." id="eSzf2G"
+          defaultMessage="A single zap of {nIn} sats will allocate {nOut} sats to the zap pool."
+          id="eSzf2G"
           values={{
             nIn: (
               <b>
@@ -134,7 +142,8 @@ export default function ZapPoolPage() {
       </p>
       <p>
         <FormattedMessage
-          defaultMessage="You currently have {number} sats in your zap pool." id="Qxv0B2"
+          defaultMessage="You currently have {number} sats in your zap pool."
+          id="Qxv0B2"
           values={{
             number: (
               <b>

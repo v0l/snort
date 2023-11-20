@@ -41,7 +41,7 @@ export default function WalletPage() {
       if (e instanceof Error) {
         setError((e as Error).message);
       } else {
-        setError(formatMessage({ defaultMessage: "Unknown error", id: 'qDwvZ4' }));
+        setError(formatMessage({ defaultMessage: "Unknown error", id: "qDwvZ4" }));
       }
     }
   }
@@ -90,7 +90,8 @@ export default function WalletPage() {
             <input
               type="password"
               placeholder={formatMessage({
-                defaultMessage: "Wallet password", id: 'MP54GY',
+                defaultMessage: "Wallet password",
+                id: "MP54GY",
                 description: "Wallet password input placeholder",
               })}
               className="w-max"
@@ -141,7 +142,7 @@ export default function WalletPage() {
         {history?.map(a => (
           <div className="card flex wallet-history-item" key={a.timestamp}>
             <div className="grow flex-col">
-              <NoteTime from={a.timestamp * 1000} fallback={formatMessage({ defaultMessage: "now", id: 'kaaf1E' })} />
+              <NoteTime from={a.timestamp * 1000} fallback={formatMessage({ defaultMessage: "now", id: "kaaf1E" })} />
               <div>{(a.memo ?? "").length === 0 ? <>&nbsp;</> : a.memo}</div>
             </div>
             <div
@@ -159,7 +160,8 @@ export default function WalletPage() {
               })()}`}>
               {stateIcon(a.state)}
               <FormattedMessage
-                defaultMessage="{amount} sats" id="vrTOHJ"
+                defaultMessage="{amount} sats"
+                id="vrTOHJ"
                 values={{
                   amount: <FormattedNumber value={a.amount / 1e3} />,
                 }}
@@ -176,7 +178,8 @@ export default function WalletPage() {
     return (
       <small>
         <FormattedMessage
-          defaultMessage="Balance: {amount} sats" id="VN0+Fz"
+          defaultMessage="Balance: {amount} sats"
+          id="VN0+Fz"
           values={{
             amount: <FormattedNumber value={balance ?? 0} />,
           }}

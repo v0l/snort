@@ -24,7 +24,8 @@ export const ProxyImg = (props: ProxyImgProps) => {
           setBypass(true);
         }}>
         <FormattedMessage
-          defaultMessage="Failed to proxy image from {host}, click here to load directly" id="65BmHb"
+          defaultMessage="Failed to proxy image from {host}, click here to load directly"
+          id="65BmHb"
           values={{
             host: getUrlHostname(props.src),
           }}

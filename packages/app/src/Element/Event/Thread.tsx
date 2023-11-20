@@ -303,11 +303,13 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
   }
 
   const parentText = formatMessage({
-    defaultMessage: "Parent", id: 'ADmfQT',
+    defaultMessage: "Parent",
+    id: "ADmfQT",
     description: "Link to parent note in thread",
   });
   const backText = formatMessage({
-    defaultMessage: "Back", id: 'jfV8Wr',
+    defaultMessage: "Back",
+    id: "jfV8Wr",
     description: "Navigate back button on threads view",
   });
 

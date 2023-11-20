@@ -79,7 +79,8 @@ export default function NoteReaction(props: NoteReactionProps) {
       <div className="flex g4">
         <Icon name="repeat" size={18} />
         <FormattedMessage
-          defaultMessage="{name} reposted" id="+xliwN"
+          defaultMessage="{name} reposted"
+          id="+xliwN"
           values={{
             name: getDisplayName(profile, ev.pubkey),
           }}

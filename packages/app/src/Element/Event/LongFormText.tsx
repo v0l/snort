@@ -93,7 +93,8 @@ export function LongFormText(props: LongFormTextProps) {
         <div className="flex g8">
           <div>
             <FormattedMessage
-              defaultMessage="{n} mins to read" id="zm6qS1"
+              defaultMessage="{n} mins to read"
+              id="zm6qS1"
               values={{
                 n: <FormattedNumber value={readTime().mins} />,
               }}
