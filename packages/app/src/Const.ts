@@ -14,11 +14,6 @@ export const Day = Hour * 24;
 export const ApiHost = "https://api.snort.social";
 
 /**
- * Void.cat file upload service url
- */
-export const VoidCatHost = "https://void.cat";
-
-/**
  * Kierans pubkey
  */
 export const KieranPubKey = "npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49";

@@ -45,7 +45,7 @@ export interface UserPreferences {
   /**
    * File uploading service to upload attachments to
    */
-  fileUploader: "void.cat" | "nostr.build" | "nostrimg.com";
+  fileUploader: "void.cat" | "nostr.build" | "nostrimg.com" | "void.cat-NIP96";
 
   /**
    * Use imgproxy to optimize images

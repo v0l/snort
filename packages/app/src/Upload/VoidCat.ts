@@ -1,7 +1,7 @@
 import { EventKind, EventPublisher } from "@snort/system";
 import { UploadState, VoidApi } from "@void-cat/api";
 
-import { FileExtensionRegex, VoidCatHost } from "Const";
+import { FileExtensionRegex } from "Const";
 import { UploadResult } from "Upload";
 import { base64 } from "@scure/base";
 import { throwIfOffline } from "@snort/shared";
@@ -26,7 +26,7 @@ export default async function VoidCatUpload(
         return `Nostr ${base64.encode(new TextEncoder().encode(JSON.stringify(auth)))}`;
       }
     : undefined;
-  const api = new VoidApi(VoidCatHost, auth);
+  const api = new VoidApi("https://void.cat", auth);
   const uploader = api.getUploader(
     file,
     sx => {
@@ -58,7 +58,7 @@ export default async function VoidCatUpload(
     if (rsp.file?.metadata?.mimeType === "image/webp") {
       ext = ["", "webp"];
     }
-    const resultUrl = rsp.file?.metadata?.url ?? `${VoidCatHost}/d/${rsp.file?.id}${ext ? `.${ext[1]}` : ""}`;
+    const resultUrl = rsp.file?.metadata?.url ?? `https://void.cat/d/${rsp.file?.id}${ext ? `.${ext[1]}` : ""}`;
 
     const ret = {
       url: resultUrl,

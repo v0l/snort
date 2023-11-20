@@ -471,6 +471,7 @@ const PreferencesPage = () => {
           <option value="void.cat">
             void.cat <FormattedMessage {...messages.Default} />
           </option>
+          <option value="void.cat-NIP96">void.cat (NIP-96)</option>
           <option value="nostr.build">nostr.build</option>
           <option value="nostrimg.com">nostrimg.com</option>
         </select>

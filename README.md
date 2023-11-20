@@ -46,6 +46,7 @@ Snort supports the following NIP's:
 - [x] NIP-78: App specific data
 - [ ] NIP-89: App handlers
 - [x] NIP-94: File Metadata
+- [x] NIP-96: HTTP File Storage Integration (Draft)
 - [x] NIP-98: HTTP Auth
 
 ### Running

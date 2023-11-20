@@ -7,8 +7,9 @@ import NostrBuild from "Upload/NostrBuild";
 import VoidCat from "Upload/VoidCat";
 import NostrImg from "Upload/NostrImg";
 import { KieranPubKey } from "Const";
-import { bech32ToHex } from "SnortUtils";
+import { bech32ToHex, unwrap } from "SnortUtils";
 import useEventPublisher from "Hooks/useEventPublisher";
+import { Nip96Uploader } from "./Nip96";
 
 export interface UploadResult {
   url?: string;
@@ -73,6 +74,9 @@ export default function useFileUpload(): Uploader {
         upload: f => NostrBuild(f, publisher),
         progress: [],
       } as Uploader;
+    }
+    case "void.cat-NIP96": {
+      return new Nip96Uploader("https://void.cat/nostr", unwrap(publisher));
     }
     case "nostrimg.com": {
       return {
