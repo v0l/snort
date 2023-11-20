@@ -1,14 +1,15 @@
 // Import the service worker with Vite's special syntax
-import ServiceWorkerURL from "./service-worker?worker&url";
+//import ServiceWorkerURL from "./service-worker?worker&url";
 
 export function register() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      registerValidSW(ServiceWorkerURL);
+      //registerValidSW(ServiceWorkerURL);
     });
   }
 }
 
+/*
 async function registerValidSW(swUrl: string) {
   try {
     const registration = await navigator.serviceWorker.register(swUrl,
@@ -32,6 +33,8 @@ async function registerValidSW(swUrl: string) {
     console.error('Error during service worker registration:', e);
   }
 }
+
+ */
 
 export async function unregister() {
   if ('serviceWorker' in navigator) {
