@@ -78,6 +78,9 @@ export default function useFileUpload(): Uploader {
     case "void.cat-NIP96": {
       return new Nip96Uploader("https://void.cat/nostr", unwrap(publisher));
     }
+    case "nostrcheck.me": {
+      return new Nip96Uploader("https://nostrcheck.me/api/v2/nip96", unwrap(publisher));
+    }
     case "nostrimg.com": {
       return {
         upload: NostrImg,

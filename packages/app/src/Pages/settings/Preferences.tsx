@@ -474,6 +474,7 @@ const PreferencesPage = () => {
           <option value="void.cat-NIP96">void.cat (NIP-96)</option>
           <option value="nostr.build">nostr.build</option>
           <option value="nostrimg.com">nostrimg.com</option>
+          <option value="nostrcheck.me">nostrcheck.me (NIP-96)</option>
         </select>
       </div>
       <div className="flex justify-between">

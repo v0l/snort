@@ -13,6 +13,11 @@ export class Nip96Uploader implements Uploader {
     return [];
   }
 
+  async loadInfo() {
+    const rsp = await fetch(this.url);
+    return (await rsp.json()) as Nip96Info;
+  }
+
   async upload(file: File | Blob, filename: string): Promise<UploadResult> {
     throwIfOffline();
     const auth = async (url: string, method: string) => {
@@ -22,18 +27,19 @@ export class Nip96Uploader implements Uploader {
       return `Nostr ${base64.encode(new TextEncoder().encode(JSON.stringify(auth)))}`;
     };
 
+    const info = await this.loadInfo();
     const fd = new FormData();
     fd.append("size", file.size.toString());
     fd.append("alt", filename);
     fd.append("media_type", file.type);
     fd.append("file", file);
 
-    const rsp = await fetch(this.url, {
+    const rsp = await fetch(info.api_url, {
       body: fd,
       method: "POST",
       headers: {
         accept: "application/json",
-        authorization: await auth(this.url, "POST"),
+        authorization: await auth(info.api_url, "POST"),
       },
     });
     if (rsp.ok) {
@@ -60,6 +66,11 @@ export class Nip96Uploader implements Uploader {
       error: "Upload failed",
     };
   }
+}
+
+export interface Nip96Info {
+  api_url: string;
+  download_url?: string;
 }
 
 export interface Nip96Result {
