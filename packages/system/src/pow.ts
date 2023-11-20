@@ -17,7 +17,7 @@ export class PowWorker implements PowMiner {
   #queue: Map<string, PowQueue> = new Map();
 
   constructor(workerPath: string) {
-    this.#worker = new Worker(new URL(workerPath, import.meta.url), {
+    this.#worker = new Worker(workerPath, {
       type: 'module',
       name: 'POW',
     });
