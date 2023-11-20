@@ -12,8 +12,9 @@ import { UserCache } from "Cache";
 import useLogin from "Hooks/useLogin";
 import Icon from "Icons/Icon";
 import Avatar from "Element/User/Avatar";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { ErrorOrOffline } from "Element/ErrorOrOffline";
+import messages from "Element/messages";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -22,6 +23,7 @@ export interface ProfileSettingsProps {
 
 export default function ProfileSettings(props: ProfileSettingsProps) {
   const navigate = useNavigate();
+  const { formatMessage } = useIntl();
   const { publicKey: id, readonly } = useLogin(s => ({ publicKey: s.publicKey, readonly: s.readonly }));
   const user = useUserProfile(id ?? "");
   const { publisher, system } = useEventPublisher();
@@ -35,6 +37,9 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   const [website, setWebsite] = useState<string>();
   const [nip05, setNip05] = useState<string>();
   const [lud16, setLud16] = useState<string>();
+  const [nip05AddressValid, setNip05AddressValid] = useState<boolean>();
+  const [invalidNip05AddressMessage, setInvalidNip05AddressMessage] = useState<null | string>();
+
 
   useEffect(() => {
     if (user) {
@@ -112,6 +117,48 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     }
   }
 
+  async function onNip05Change(e: React.ChangeEvent<HTMLInputElement>){
+    const Nip05Address = e.target.value;
+    const Nip05AddressElements = Nip05Address?.split('@') ?? [];
+    if (Nip05Address.length === 0) {
+        setNip05AddressValid(false)
+        setInvalidNip05AddressMessage("")
+    }else if(Nip05AddressElements.length < 2){
+      setNip05AddressValid(false)
+        setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
+    }
+    else if(Nip05AddressElements.length === 2){
+      nip05NostrAddressVerification(Nip05AddressElements.pop(), Nip05AddressElements.pop());
+    }
+    else{
+      setNip05AddressValid(false)
+    }
+    setNip05(Nip05Address)
+  }
+
+  async function nip05NostrAddressVerification(nip05Domain: string | undefined, nip05Name: string| undefined) {
+    const verificationEndpoint = `https://${nip05Domain}/.well-known/nostr.json?name=${nip05Name}`;
+    const res = await fetch(`${verificationEndpoint}`);
+
+    if(res.status === 200){
+      const json = await res.json();
+      const hexKeyFromRemote = json['names'][`${nip05Name}`]
+
+      if (json['names'] && hexKeyFromRemote) {
+        if (id === hexKeyFromRemote) {
+          setNip05AddressValid(true);
+        }else{
+          setNip05AddressValid(false);
+          setInvalidNip05AddressMessage(formatMessage(messages.FailureValidatingNip05Address))
+        }
+      }
+    }
+    else {
+        setNip05AddressValid(false)
+        setInvalidNip05AddressMessage(formatMessage(messages.ErrorValidatingNip05Address))
+    }
+  }
+
   function editor() {
     return (
       <div className="flex flex-col g24">
@@ -158,9 +205,20 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               type="text"
               className="w-max"
               value={nip05}
-              onChange={e => setNip05(e.target.value)}
+              onChange={e => onNip05Change(e)}
               disabled={readonly}
             />
+            <div>
+            {nip05AddressValid ? (
+              <>
+                <span className="success">
+                  <FormattedMessage defaultMessage="NIP05 Verified" />
+                </span>
+              </>
+            ) : (
+              <span className="error">{invalidNip05AddressMessage}</span>
+            )}
+          </div>
             <small>
               <FormattedMessage defaultMessage="Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration." />
             </small>

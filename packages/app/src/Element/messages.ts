@@ -100,4 +100,7 @@ export default defineMessages({
   ReBroadcast: { defaultMessage: "Broadcast Again" },
   IrisUserNameLengthError: { defaultMessage: "Name must be between 1 and 32 characters" },
   IrisUserNameFormatError: { defaultMessage: "Username must only contain lowercase letters and numbers" },
+  InvalidNip05Address:  { defaultMessage: "Invalid Nostr Address(nip05)" },
+  ErrorValidatingNip05Address:  { defaultMessage: "Error verified Nostr Address(nip05)"},
+  FailureValidatingNip05Address:  { defaultMessage: "Failed to verify Nostr Address(nip05)"}
 });
