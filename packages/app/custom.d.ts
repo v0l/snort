@@ -70,4 +70,4 @@ declare const SINGLE_RELAY: string | undefined;
 /**
  * Build git hash
  */
-declare const GIT_VERSION: string;
+declare const __SNORT_VERSION__: string;

@@ -17,12 +17,12 @@ export function AboutPage() {
   }, []);
 
   return (
-    <>
+    <div className="main-content p">
       <h1>
         <FormattedMessage defaultMessage="About" id="g5pX+a" />
       </h1>
-      Version: <b>{GIT_VERSION}</b>
+      Version: <b>{__SNORT_VERSION__}</b>
       <Markdown content={changelog} tags={[]} />
-    </>
+    </div>
   );
 }

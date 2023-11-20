@@ -2,6 +2,7 @@ import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
+import { vitePluginVersionMark } from "vite-plugin-version-mark";
 
 import appConfig from "config";
 
@@ -21,6 +22,11 @@ export default defineConfig({
       open: true,
       gzipSize: true,
       filename: "dist/stats.html",
+    }),
+    vitePluginVersionMark({
+      name: "snort",
+      ifGitSHA: true,
+      command: "git describe --always --tags",
     }),
   ],
   assetsInclude: ["**/*.md", "**/*.wasm"],
