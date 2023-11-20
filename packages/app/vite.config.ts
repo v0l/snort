@@ -23,7 +23,7 @@ export default defineConfig({
       filename: "dist/stats.html",
     }),
   ],
-  assetsInclude: ["**/*.md","**/*.wasm"],
+  assetsInclude: ["**/*.md", "**/*.wasm"],
   resolve: {
     alias: {
       "@": "/src",
