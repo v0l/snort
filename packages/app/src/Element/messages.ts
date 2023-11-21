@@ -101,8 +101,8 @@ export default defineMessages({
   IrisUserNameLengthError: { defaultMessage: "Name must be between 1 and 32 characters" },
   IrisUserNameFormatError: { defaultMessage: "Username must only contain lowercase letters and numbers" },
   InvalidNip05Address:  { defaultMessage: "Invalid Nostr Address(nip05)" },
-  ErrorValidatingNip05Address:  { defaultMessage: "Error verified Nostr Address(nip05)"},
-  FailureValidatingNip05Address:  { defaultMessage: "Failed to verify Nostr Address(nip05)"},
+  ErrorValidatingNip05Address:  { defaultMessage: "Cannot verify Nostr Address(nip05)"},
   UserNameLengthError: { defaultMessage: "Name must be less than 100 characters" },
   AboutLengthError: { defaultMessage: "About must be less than 1000 characters" },
+  InvalidLud16:{ defaultMessage: "Invalid Lightning Address" }
 });

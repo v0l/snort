@@ -16,6 +16,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { ErrorOrOffline } from "Element/ErrorOrOffline";
 import messages from "Element/messages";
 import { MaxAboutLength, MaxUsernameLength } from "Const";
+import { LNURL, LNURLError } from '../../../../shared/src/lnurl';
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -44,7 +45,10 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   const [invalidUsernameMessage, setInvalidUsernameMessage] = useState<null | string>();
   const [aboutValid, setAboutValid] = useState<boolean>();
   const [invalidAboutMessage, setInvalidAboutMessage] = useState<null | string>();
-
+  const [lud16Valid, setLud16Valid] = useState<boolean>();
+  const [invalidLud16Message, setInvalidLud16Message] = useState<null | string>();
+  const [lud16Timer,setLud16Timer] = useState<number | undefined>();
+  
   useEffect(() => {
     if (user) {
       setName(user.name);
@@ -123,6 +127,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
   async function onNip05Change(e: React.ChangeEvent<HTMLInputElement>){
     const Nip05Address = e.target.value;
+    setNip05(Nip05Address)
     const Nip05AddressElements = Nip05Address?.split('@') ?? [];
     if (Nip05Address.length === 0) {
         setNip05AddressValid(false)
@@ -137,7 +142,6 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     else{
       setNip05AddressValid(false)
     }
-    setNip05(Nip05Address)
   }
 
   async function onLimitCheck(val:string, field:string){
@@ -164,25 +168,57 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   }
 
   async function nip05NostrAddressVerification(nip05Domain: string | undefined, nip05Name: string| undefined) {
-    const verificationEndpoint = `https://${nip05Domain}/.well-known/nostr.json?name=${nip05Name}`;
-    const res = await fetch(`${verificationEndpoint}`);
+    if(!nip05Domain || !nip05Name)
+      return; 
 
-    if(res.status === 200){
-      const json = await res.json();
-      const hexKeyFromRemote = json['names'][`${nip05Name}`]
+    try{
+      const res = await fetch(`https://${nip05Domain}/.well-known/nostr.json?name=${nip05Name}`);
 
-      if (json['names'] && hexKeyFromRemote) {
-        if (id === hexKeyFromRemote) {
-          setNip05AddressValid(true);
-        }else{
-          setNip05AddressValid(false);
-          setInvalidNip05AddressMessage(formatMessage(messages.FailureValidatingNip05Address))
+      if(res.status === 200){
+        const json = await res.json();
+        const hexKeyFromRemote = json['names'][`${nip05Name}`]
+
+        if (json['names'] && hexKeyFromRemote) {
+          if (id === hexKeyFromRemote) {
+            setNip05AddressValid(true);
+          }else{
+            setNip05AddressValid(false);
+            setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
+          }
         }
       }
+      else {
+          setNip05AddressValid(false)
+          setInvalidNip05AddressMessage(formatMessage(messages.ErrorValidatingNip05Address))
+      }
+    }catch(e){
+      setNip05AddressValid(false)
+      setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
     }
-    else {
-        setNip05AddressValid(false)
-        setInvalidNip05AddressMessage(formatMessage(messages.ErrorValidatingNip05Address))
+  }
+
+  async function onLud16Change(address:string){
+    setLud16(address)
+    clearTimeout(lud16Timer)
+
+    if(address){
+      const timeout = window.setTimeout(async () => {
+        try {
+            await new LNURL(address).load();
+            setLud16Valid(true);
+            setInvalidLud16Message("")
+        }catch(e){
+          setLud16Valid(false);
+          if(e instanceof LNURLError)
+            setInvalidLud16Message(e.message);
+          else
+            setInvalidLud16Message(formatMessage(messages.InvalidLud16));
+        }
+      }, 100);
+  
+      setLud16Timer(timeout);
+    }else{
+      setInvalidLud16Message("")
     }
   }
 
@@ -285,9 +321,16 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             className="w-max"
             type="text"
             value={lud16}
-            onChange={e => setLud16(e.target.value)}
+            onChange={e => onLud16Change(e.target.value)}
             disabled={readonly}
           />
+          <div>
+            {lud16Valid === false ? (
+              <span className="error">{invalidLud16Message}</span>
+              )
+              :  (<></>) 
+            }
+          </div>
         </div>
         <AsyncButton className="primary" onClick={() => saveProfile()} disabled={readonly}>
           <FormattedMessage defaultMessage="Save" />
