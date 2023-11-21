@@ -24,5 +24,14 @@
       "protocol": "web+nostr",
       "url": "/%s"
     }
+  ],
+  "screenshots": [],
+  "display_override": ["fullscreen"],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=social.snort.app",
+      "id": "social.snort.app"
+    }
   ]
 }
