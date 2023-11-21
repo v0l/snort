@@ -1,5 +1,5 @@
 import "./Deck.css";
-import { CSSProperties, createContext, useContext, useEffect, useState } from "react";
+import { CSSProperties, createContext, useContext, useEffect, useState, lazy } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
@@ -12,7 +12,6 @@ import Articles from "@/Element/Deck/Articles";
 import TimelineFollows from "@/Element/Feed/TimelineFollows";
 import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import Icon from "@/Icons/Icon";
-import NotificationsPage from "./Notifications";
 import useImgProxy from "@/Hooks/useImgProxy";
 import Modal from "@/Element/Modal";
 import { Thread } from "@/Element/Event/Thread";
@@ -22,6 +21,8 @@ import { ThreadContext, ThreadContextWrapper } from "@/Hooks/useThreadContext";
 import Toaster from "@/Toaster";
 import useLogin from "@/Hooks/useLogin";
 import { LongFormText } from "@/Element/Event/LongFormText";
+
+const NotificationsPage = lazy(() => import("@/Pages/Notifications"));
 
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 

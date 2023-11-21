@@ -28,6 +28,7 @@ import { removeUndefined, throwIfOffline } from "@snort/shared";
 import { lazy, Suspense } from "react";
 
 const NetworkGraph = lazy(() => import("@/Pages/NetworkGraph"));
+const NotificationsPage = lazy(() => import("@/Pages/Notifications"));
 
 import * as serviceWorkerRegistration from "@/serviceWorkerRegistration";
 import { IntlProvider } from "@/IntlProvider";
@@ -35,7 +36,6 @@ import { getCountry, unwrap } from "@/SnortUtils";
 import Layout from "@/Pages/Layout";
 import ProfilePage from "@/Pages/Profile/ProfilePage";
 import { RootRoutes, RootTabRoutes } from "@/Pages/Root";
-import NotificationsPage from "@/Pages/Notifications";
 import SettingsPage, { SettingsRoutes } from "@/Pages/SettingsPage";
 import ErrorPage from "@/Pages/ErrorPage";
 import NostrAddressPage from "@/Pages/NostrAddressPage";
