@@ -6,6 +6,7 @@
   "nip05Domain": "iris.to",
   "favicon": "public/iris/favicon.ico",
   "appleTouchIconUrl": "/img/apple-touch-icon.png",
+  "publicDir": "public/iris",
   "httpCache": "https://api.iris.to",
   "animalNamePlaceholders": true,
   "features": {

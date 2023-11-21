@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react";
-import IconsSvg from "/icons.svg?url";
+import IconsSvg from "@/icons.svg";
 
 export interface IconProps {
   name: string;
