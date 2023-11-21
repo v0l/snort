@@ -8,8 +8,8 @@ import {useUserProfile} from "@snort/system-react";
 
 const MENU_ITEMS = [
   {
-    label: "Home",
-    icon: "home",
+    label: "Notes",
+    icon: "notes",
     link: "/",
   },
   {
@@ -24,7 +24,7 @@ const MENU_ITEMS = [
   },
   {
     label: "Settings",
-    icon: "cog",
+    icon: "settings",
     link: "/settings",
   },
 ];
