@@ -10,7 +10,7 @@ import {NoteCreatorButton} from "../../Element/Event/NoteCreatorButton";
 const MENU_ITEMS = [
   {
     label: "Home",
-    icon: "notes",
+    icon: "home",
     link: "/",
   },
   {
