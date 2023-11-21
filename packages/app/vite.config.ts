@@ -21,7 +21,7 @@ export default defineConfig({
     visualizer({
       open: true,
       gzipSize: true,
-      filename: "dist/stats.html",
+      filename: "build/stats.html",
     }),
     vitePluginVersionMark({
       name: "snort",
