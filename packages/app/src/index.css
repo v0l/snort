@@ -136,19 +136,7 @@ a.ext {
   overflow-x: hidden;
 }
 
-.page {
-  width: 100vw;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 @media (min-width: 768px) {
-  .page {
-    width: 640px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   .main-content {
     border: 1px solid var(--border-color);
   }
