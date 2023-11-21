@@ -49,7 +49,7 @@ const FollowsHint = () => {
         {...messages.NoFollows}
         values={{
           newUsersPage: (
-            <Link to={"/new/discover"}>
+            <Link to={"/discover"}>
               <FormattedMessage {...messages.NewUsers} />
             </Link>
           ),
