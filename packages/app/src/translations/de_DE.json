@@ -344,7 +344,7 @@
   "eJj8HD": "Verifiziert werden",
   "eSzf2G": "Ein einzelner Zap von {nIn} sats wird {nOut} sats dem Zap Pool zuweisen.",
   "eXT2QQ": "Gruppenchat",
-  "egib+2": "{n,plural,=1{& {n} other} other{& {n} others}}",
+  "egib+2": "{n,plural,one {}=1{& {n} anderer} other{& {n} andere}}",
   "fBI91o": "Zap",
   "fBlba3": "Danke für die Verwendung von {site}. Wir würden uns über eine Spende freuen.",
   "fOksnD": "Abstimmung nicht möglich, da der LNURL-Dienst keine Zaps unterstützt",
