@@ -1,5 +1,5 @@
 import { magnetURIDecode, getRelayName } from ".";
-import { describe, expect } from "@jest/globals";
+import { describe, it, expect } from 'vitest';
 
 describe("magnet", () => {
   it("should parse magnet link", () => {
