@@ -4,11 +4,11 @@ import { FormattedMessage, FormattedNumber } from "react-intl";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions } from "@snort/system-react";
 
-import { findTag } from "SnortUtils";
-import Text from "Element/Text";
+import { findTag } from "@/SnortUtils";
+import Text from "@/Element/Text";
 import { Markdown } from "./Markdown";
-import useImgProxy from "Hooks/useImgProxy";
-import ProfilePreview from "Element/User/ProfilePreview";
+import useImgProxy from "@/Hooks/useImgProxy";
+import ProfilePreview from "@/Element/User/ProfilePreview";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
 
@@ -94,6 +94,7 @@ export function LongFormText(props: LongFormTextProps) {
           <div>
             <FormattedMessage
               defaultMessage="{n} mins to read"
+              id="zm6qS1"
               values={{
                 n: <FormattedNumber value={readTime().mins} />,
               }}
@@ -102,12 +103,12 @@ export function LongFormText(props: LongFormTextProps) {
           <div>‧</div>
           {!reading && (
             <div className="pointer" onClick={() => readArticle()}>
-              <FormattedMessage defaultMessage="Listen to this article" />
+              <FormattedMessage defaultMessage="Listen to this article" id="nihgfo" />
             </div>
           )}
           {reading && (
             <div className="pointer" onClick={() => stopReading()}>
-              <FormattedMessage defaultMessage="Stop listening" />
+              <FormattedMessage defaultMessage="Stop listening" id="U1aPPi" />
             </div>
           )}
         </div>

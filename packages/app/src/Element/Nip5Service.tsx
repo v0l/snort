@@ -3,8 +3,8 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { UserMetadata, mapEventToProfile } from "@snort/system";
 
-import { unwrap } from "SnortUtils";
-import { formatShort } from "Number";
+import { unwrap } from "@/SnortUtils";
+import { formatShort } from "@/Number";
 import {
   ServiceProvider,
   ServiceConfig,
@@ -13,16 +13,16 @@ import {
   ServiceErrorCode,
   HandleRegisterResponse,
   CheckRegisterResponse,
-} from "Nip05/ServiceProvider";
-import AsyncButton from "Element/AsyncButton";
-import SendSats from "Element/SendSats";
-import Copy from "Element/Copy";
+} from "@/Nip05/ServiceProvider";
+import AsyncButton from "@/Element/AsyncButton";
+import SendSats from "@/Element/SendSats";
+import Copy from "@/Element/Copy";
 import { useUserProfile } from "@snort/system-react";
-import useEventPublisher from "Hooks/useEventPublisher";
-import { debounce } from "SnortUtils";
-import useLogin from "Hooks/useLogin";
-import SnortServiceProvider from "Nip05/SnortServiceProvider";
-import { UserCache } from "Cache";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { debounce } from "@/SnortUtils";
+import useLogin from "@/Hooks/useLogin";
+import SnortServiceProvider from "@/Nip05/SnortServiceProvider";
+import { UserCache } from "@/Cache";
 
 import messages from "./messages";
 
@@ -283,7 +283,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
                 : startBuy(handle, domain)
             }>
             {props.forSubscription ? (
-              <FormattedMessage defaultMessage="Claim Now" />
+              <FormattedMessage defaultMessage="Claim Now" id="FdhSU2" />
             ) : (
               <FormattedMessage {...messages.BuyNow} />
             )}

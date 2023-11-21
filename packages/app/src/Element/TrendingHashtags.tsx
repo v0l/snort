@@ -1,10 +1,10 @@
 import { ReactNode, useEffect, useState } from "react";
 
-import PageSpinner from "Element/PageSpinner";
-import NostrBandApi from "External/NostrBand";
+import PageSpinner from "@/Element/PageSpinner";
+import NostrBandApi from "@/External/NostrBand";
 import { ErrorOrOffline } from "./ErrorOrOffline";
-import { HashTagHeader } from "Pages/HashTagsPage";
-import { useLocale } from "IntlProvider";
+import { HashTagHeader } from "@/Pages/HashTagsPage";
+import { useLocale } from "@/IntlProvider";
 
 export default function TrendingHashtags({ title }: { title?: ReactNode }) {
   const [hashtags, setHashtags] = useState<Array<{ hashtag: string; posts: number }>>();

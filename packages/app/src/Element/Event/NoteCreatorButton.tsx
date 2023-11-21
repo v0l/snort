@@ -3,11 +3,11 @@ import { useRef, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import classNames from "classnames";
 
-import { isFormElement } from "SnortUtils";
-import useKeyboardShortcut from "Hooks/useKeyboardShortcut";
-import useLogin from "Hooks/useLogin";
-import Icon from "Icons/Icon";
-import { useNoteCreator } from "State/NoteCreator";
+import { isFormElement } from "@/SnortUtils";
+import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
+import useLogin from "@/Hooks/useLogin";
+import Icon from "@/Icons/Icon";
+import { useNoteCreator } from "@/State/NoteCreator";
 import { NoteCreator } from "./NoteCreator";
 
 export const NoteCreatorButton = ({ className }: { className?: string }) => {

@@ -1,7 +1,7 @@
 import { unixNowMs } from "@snort/shared";
-import useLogin from "Hooks/useLogin";
-import { updateAppData } from "Login";
-import { appendDedupe } from "SnortUtils";
+import useLogin from "@/Hooks/useLogin";
+import { updateAppData } from "@/Login";
+import { appendDedupe } from "@/SnortUtils";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -34,7 +34,7 @@ export function ModerationSettings() {
   return (
     <>
       <h2>
-        <FormattedMessage defaultMessage="Muted Words" />
+        <FormattedMessage defaultMessage="Muted Words" id="AN0Z7Q" />
       </h2>
       <div className="flex flex-col g12">
         <div className="flex g8">
@@ -46,14 +46,14 @@ export function ModerationSettings() {
             onChange={e => setMuteWord(e.target.value.toLowerCase())}
           />
           <button type="button" onClick={addMutedWord}>
-            <FormattedMessage defaultMessage="Add" />
+            <FormattedMessage defaultMessage="Add" id="2/2yg+" />
           </button>
         </div>
         {login.appData.item.mutedWords.map(v => (
           <div className="p br b flex items-center justify-between">
             <div>{v}</div>
             <button type="button" onClick={() => removeMutedWord(v)}>
-              <FormattedMessage defaultMessage="Delete" />
+              <FormattedMessage defaultMessage="Delete" id="K3r6DQ" />
             </button>
           </div>
         ))}

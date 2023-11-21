@@ -1,5 +1,5 @@
-import { MixCloudRegex } from "Const";
-import useLogin from "Hooks/useLogin";
+import { MixCloudRegex } from "@/Const";
+import useLogin from "@/Hooks/useLogin";
 
 const MixCloudEmbed = ({ link }: { link: string }) => {
   const feedPath = (MixCloudRegex.test(link) && RegExp.$1) + "%2F" + (MixCloudRegex.test(link) && RegExp.$2);

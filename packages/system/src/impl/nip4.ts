@@ -1,4 +1,4 @@
-import { MessageEncryptor, MessageEncryptorPayload, MessageEncryptorVersion } from "index";
+import { MessageEncryptor, MessageEncryptorPayload, MessageEncryptorVersion } from "..";
 import { secp256k1 } from "@noble/curves/secp256k1";
 
 export class Nip4WebCryptoEncryptor implements MessageEncryptor {

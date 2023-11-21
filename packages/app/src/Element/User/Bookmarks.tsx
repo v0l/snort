@@ -2,9 +2,9 @@ import { useState, useMemo, ChangeEvent } from "react";
 import { FormattedMessage } from "react-intl";
 import { HexKey, TaggedNostrEvent } from "@snort/system";
 
-import Note from "Element/Event/Note";
-import useLogin from "Hooks/useLogin";
-import { UserCache } from "Cache";
+import Note from "@/Element/Event/Note";
+import useLogin from "@/Hooks/useLogin";
+import { UserCache } from "@/Cache";
 
 import messages from "../messages";
 

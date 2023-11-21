@@ -1,6 +1,6 @@
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { Link } from "react-router-dom";
-import { BaseUITask } from "Tasks";
+import { BaseUITask } from "@/Tasks";
 
 export class NoticeZapPoolDefault extends BaseUITask {
   id = "zap-pool-default";
@@ -15,6 +15,7 @@ export class NoticeZapPoolDefault extends BaseUITask {
         <p>
           <FormattedMessage
             defaultMessage="A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}"
+            id="dmsiLv"
             values={{
               site: CONFIG.appNameCapitalized,
               n: (
@@ -26,7 +27,7 @@ export class NoticeZapPoolDefault extends BaseUITask {
               ),
               link: (
                 <Link to="/zap-pool">
-                  <FormattedMessage defaultMessage="Zap Pool" />
+                  <FormattedMessage defaultMessage="Zap Pool" id="i/dBAR" />
                 </Link>
               ),
             }}

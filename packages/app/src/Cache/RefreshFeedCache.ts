@@ -1,6 +1,6 @@
 import { FeedCache } from "@snort/shared";
 import { EventPublisher, RequestBuilder, TaggedNostrEvent } from "@snort/system";
-import { LoginSession } from "Login";
+import { LoginSession } from "@/Login";
 
 export type TWithCreated<T> = (T | Readonly<T>) & { created_at: number };
 

@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useInView } from "react-intersection-observer";
 
-import useEventPublisher from "Hooks/useEventPublisher";
-import NoteTime from "Element/Event/NoteTime";
-import Text from "Element/Text";
-import useLogin from "Hooks/useLogin";
-import { Chat, ChatMessage, ChatType, setLastReadIn } from "chat";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import NoteTime from "@/Element/Event/NoteTime";
+import Text from "@/Element/Text";
+import useLogin from "@/Hooks/useLogin";
+import { Chat, ChatMessage, ChatType, setLastReadIn } from "@/chat";
 import ProfileImage from "../User/ProfileImage";
 
 import messages from "../messages";
@@ -61,7 +61,7 @@ export default function DM(props: DMProps) {
         {content ? (
           <Text id={msg.id} content={content} tags={[]} creator={otherPubkey} />
         ) : (
-          <FormattedMessage defaultMessage="Loading..." />
+          <FormattedMessage defaultMessage="Loading..." id="gjBiyj" />
         )}
       </div>
       <div>

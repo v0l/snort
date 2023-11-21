@@ -13,10 +13,10 @@ import {
   encodeTLVEntries,
 } from "@snort/system";
 
-import { LoginSession } from "Login";
-import { findTag } from "SnortUtils";
-import { Chat, ChatParticipant, ChatSystem, ChatType, lastReadInChat } from "chat";
-import { Day } from "Const";
+import { LoginSession } from "@/Login";
+import { findTag } from "@/SnortUtils";
+import { Chat, ChatParticipant, ChatSystem, ChatType, lastReadInChat } from "@/chat";
+import { Day } from "@/Const";
 
 export class Nip28ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   #cache: FeedCache<NostrEvent>;

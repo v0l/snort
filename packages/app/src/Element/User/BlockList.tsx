@@ -1,6 +1,6 @@
-import BlockButton from "Element/User/BlockButton";
-import ProfilePreview from "Element/User/ProfilePreview";
-import useModeration from "Hooks/useModeration";
+import BlockButton from "@/Element/User/BlockButton";
+import ProfilePreview from "@/Element/User/ProfilePreview";
+import useModeration from "@/Hooks/useModeration";
 
 export default function BlockList() {
   const { blocked } = useModeration();

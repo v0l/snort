@@ -6,7 +6,7 @@ import { UserMetadata } from "@snort/system";
 import FollowButton from "./FollowButton";
 import ProfileImage from "./ProfileImage";
 import { UserWebsiteLink } from "./UserWebsiteLink";
-import Text from "Element/Text";
+import Text from "@/Element/Text";
 import { useEffect, useState } from "react";
 import useLogin from "../../Hooks/useLogin";
 

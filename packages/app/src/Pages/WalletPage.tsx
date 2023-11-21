@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { RouteObject, useNavigate } from "react-router-dom";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
-import NoteTime from "Element/Event/NoteTime";
-import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets } from "Wallet";
-import AsyncButton from "Element/AsyncButton";
-import { unwrap } from "SnortUtils";
-import { WebLNWallet } from "Wallet/WebLN";
-import Icon from "Icons/Icon";
+import NoteTime from "@/Element/Event/NoteTime";
+import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets } from "@/Wallet";
+import AsyncButton from "@/Element/AsyncButton";
+import { unwrap } from "@/SnortUtils";
+import { WebLNWallet } from "@/Wallet/WebLN";
+import Icon from "@/Icons/Icon";
 
 export const WalletRoutes: RouteObject[] = [
   {
@@ -41,7 +41,7 @@ export default function WalletPage() {
       if (e instanceof Error) {
         setError((e as Error).message);
       } else {
-        setError(formatMessage({ defaultMessage: "Unknown error" }));
+        setError(formatMessage({ defaultMessage: "Unknown error", id: "qDwvZ4" }));
       }
     }
   }
@@ -83,7 +83,7 @@ export default function WalletPage() {
     return (
       <>
         <h3>
-          <FormattedMessage defaultMessage="Enter wallet password" />
+          <FormattedMessage defaultMessage="Enter wallet password" id="r5srDR" />
         </h3>
         <div className="flex w-max">
           <div className="grow mr10">
@@ -91,6 +91,7 @@ export default function WalletPage() {
               type="password"
               placeholder={formatMessage({
                 defaultMessage: "Wallet password",
+                id: "MP54GY",
                 description: "Wallet password input placeholder",
               })}
               className="w-max"
@@ -99,7 +100,7 @@ export default function WalletPage() {
             />
           </div>
           <AsyncButton onClick={() => loginWallet(unwrap(walletPassword))} disabled={(walletPassword?.length ?? 0) < 8}>
-            <FormattedMessage defaultMessage="Unlock" description="Unlock wallet" />
+            <FormattedMessage defaultMessage="Unlock" id="xQtL3v" description="Unlock wallet" />
           </AsyncButton>
         </div>
       </>
@@ -110,14 +111,14 @@ export default function WalletPage() {
     if (walletState.configs.length === 0) {
       return (
         <button onClick={() => navigate("/settings/wallet")}>
-          <FormattedMessage defaultMessage="Connect Wallet" />
+          <FormattedMessage defaultMessage="Connect Wallet" id="cg1VJ2" />
         </button>
       );
     }
     return (
       <div className="flex w-max">
         <h4 className="f-1">
-          <FormattedMessage defaultMessage="Select Wallet" />
+          <FormattedMessage defaultMessage="Select Wallet" id="G1BGCg" />
         </h4>
         <div className="f-1">
           <select className="w-max" onChange={e => Wallets.switch(e.target.value)} value={walletState.config?.id}>
@@ -136,12 +137,12 @@ export default function WalletPage() {
     return (
       <>
         <h3>
-          <FormattedMessage defaultMessage="History" description="Wallet transation history" />
+          <FormattedMessage defaultMessage="History" id="d6CyG5" description="Wallet transation history" />
         </h3>
         {history?.map(a => (
           <div className="card flex wallet-history-item" key={a.timestamp}>
             <div className="grow flex-col">
-              <NoteTime from={a.timestamp * 1000} fallback={formatMessage({ defaultMessage: "now" })} />
+              <NoteTime from={a.timestamp * 1000} fallback={formatMessage({ defaultMessage: "now", id: "kaaf1E" })} />
               <div>{(a.memo ?? "").length === 0 ? <>&nbsp;</> : a.memo}</div>
             </div>
             <div
@@ -160,6 +161,7 @@ export default function WalletPage() {
               {stateIcon(a.state)}
               <FormattedMessage
                 defaultMessage="{amount} sats"
+                id="vrTOHJ"
                 values={{
                   amount: <FormattedNumber value={a.amount / 1e3} />,
                 }}
@@ -177,6 +179,7 @@ export default function WalletPage() {
       <small>
         <FormattedMessage
           defaultMessage="Balance: {amount} sats"
+          id="VN0+Fz"
           values={{
             amount: <FormattedNumber value={balance ?? 0} />,
           }}

@@ -2,10 +2,10 @@ import { useIntl } from "react-intl";
 import { Nip46Signer, KeyStorage } from "@snort/system";
 import { fetchNip05Pubkey, unwrap } from "@snort/shared";
 
-import { EmailRegex, MnemonicRegex } from "Const";
-import { LoginSessionType, LoginStore } from "Login";
-import { generateBip39Entropy, entropyToPrivateKey } from "nip6";
-import { bech32ToHex } from "SnortUtils";
+import { EmailRegex, MnemonicRegex } from "@/Const";
+import { LoginSessionType, LoginStore } from "@/Login";
+import { generateBip39Entropy, entropyToPrivateKey } from "@/nip6";
+import { bech32ToHex } from "@/SnortUtils";
 
 export default function useLoginHandler() {
   const { formatMessage } = useIntl();
@@ -15,6 +15,7 @@ export default function useLoginHandler() {
     const insecureMsg = formatMessage({
       defaultMessage:
         "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead",
+      id: "iXPL0Z",
     });
     // private key logins
     if (key.startsWith("nsec")) {

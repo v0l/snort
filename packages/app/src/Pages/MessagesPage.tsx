@@ -6,24 +6,24 @@ import { useNavigate, useParams } from "react-router-dom";
 import { NostrLink, TLVEntryType, UserMetadata, decodeTLV } from "@snort/system";
 import { useEventFeed, useUserProfile, useUserSearch } from "@snort/system-react";
 
-import UnreadCount from "Element/UnreadCount";
-import ProfileImage from "Element/User/ProfileImage";
-import { appendDedupe, debounce, parseId, getDisplayName } from "SnortUtils";
-import NoteToSelf from "Element/User/NoteToSelf";
-import useModeration from "Hooks/useModeration";
-import useLogin from "Hooks/useLogin";
-import usePageWidth from "Hooks/usePageWidth";
-import NoteTime from "Element/Event/NoteTime";
-import DmWindow from "Element/Chat/DmWindow";
-import Avatar from "Element/User/Avatar";
-import Icon from "Icons/Icon";
-import Text from "Element/Text";
-import { Chat, ChatType, createChatLink, useChatSystem } from "chat";
-import Modal from "Element/Modal";
-import ProfilePreview from "Element/User/ProfilePreview";
-import { LoginSession, LoginStore } from "Login";
-import { Nip28ChatSystem } from "chat/nip28";
-import { ChatParticipantProfile } from "Element/Chat/ChatParticipant";
+import UnreadCount from "@/Element/UnreadCount";
+import ProfileImage from "@/Element/User/ProfileImage";
+import { appendDedupe, debounce, parseId, getDisplayName } from "@/SnortUtils";
+import NoteToSelf from "@/Element/User/NoteToSelf";
+import useModeration from "@/Hooks/useModeration";
+import useLogin from "@/Hooks/useLogin";
+import usePageWidth from "@/Hooks/usePageWidth";
+import NoteTime from "@/Element/Event/NoteTime";
+import DmWindow from "@/Element/Chat/DmWindow";
+import Avatar from "@/Element/User/Avatar";
+import Icon from "@/Icons/Icon";
+import Text from "@/Element/Text";
+import { Chat, ChatType, createChatLink, useChatSystem } from "@/chat";
+import Modal from "@/Element/Modal";
+import ProfilePreview from "@/Element/User/ProfilePreview";
+import { LoginSession, LoginStore } from "@/Login";
+import { Nip28ChatSystem } from "@/chat/nip28";
+import { ChatParticipantProfile } from "@/Element/Chat/ChatParticipant";
 import classNames from "classnames";
 
 const TwoCol = 768;
@@ -68,7 +68,7 @@ export default function MessagesPage() {
           {cx.participants.map(v => (
             <ProfileImage pubkey={v.id} link="" showUsername={false} profile={v.profile} />
           ))}
-          {cx.title ?? <FormattedMessage defaultMessage="Group Chat" />}
+          {cx.title ?? <FormattedMessage defaultMessage="Group Chat" id="eXT2QQ" />}
         </div>
       );
     }
@@ -88,7 +88,10 @@ export default function MessagesPage() {
         {conversationIdent(cx)}
         <div className="nowrap">
           <small>
-            <NoteTime from={cx.lastMessage * 1000} fallback={formatMessage({ defaultMessage: "Just now" })} />
+            <NoteTime
+              from={cx.lastMessage * 1000}
+              fallback={formatMessage({ defaultMessage: "Just now", id: "bxv59V" })}
+            />
           </small>
           {cx.unread > 0 && <UnreadCount unread={cx.unread} />}
         </div>
@@ -102,7 +105,7 @@ export default function MessagesPage() {
         <div className="chat-list">
           <div className="flex items-center p justify-between">
             <button disabled={unreadCount <= 0} type="button">
-              <FormattedMessage defaultMessage="Mark all read" />
+              <FormattedMessage defaultMessage="Mark all read" id="ShdEie" />
             </button>
             <NewChatWindow />
           </div>
@@ -161,7 +164,11 @@ function ProfileDmActions({ id }: { id: string }) {
 
       <div className="settings-row" onClick={() => (blocked ? unblock(pubkey) : block(pubkey))}>
         <Icon name="block" />
-        {blocked ? <FormattedMessage defaultMessage="Unblock" /> : <FormattedMessage defaultMessage="Block" />}
+        {blocked ? (
+          <FormattedMessage defaultMessage="Unblock" id="nDejmx" />
+        ) : (
+          <FormattedMessage defaultMessage="Block" id="Up5U7K" />
+        )}
       </div>
     </>
   );
@@ -215,15 +222,15 @@ function NewChatWindow() {
           <div className="flex flex-col g16">
             <div className="flex justify-between">
               <h2>
-                <FormattedMessage defaultMessage="New Chat" />
+                <FormattedMessage defaultMessage="New Chat" id="UT7Nkj" />
               </h2>
               <button onClick={startChat}>
-                <FormattedMessage defaultMessage="Start chat" />
+                <FormattedMessage defaultMessage="Start chat" id="v8lolG" />
               </button>
             </div>
             <div className="flex flex-col g8">
               <h3>
-                <FormattedMessage defaultMessage="Search users" />
+                <FormattedMessage defaultMessage="Search users" id="JjGgXI" />
               </h3>
               <input
                 type="text"
@@ -245,7 +252,7 @@ function NewChatWindow() {
             </div>
             <div>
               <p>
-                <FormattedMessage defaultMessage="People you follow" />
+                <FormattedMessage defaultMessage="People you follow" id="R81upa" />
               </p>
               <div className="user-list flex flex-col g2">
                 {results.map(a => {

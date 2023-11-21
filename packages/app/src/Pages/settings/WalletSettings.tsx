@@ -1,15 +1,15 @@
 import "./WalletSettings.css";
-import LndLogo from "lnd-logo.png";
+import LndLogo from "@/lnd-logo.png";
 import { FormattedMessage } from "react-intl";
 import { Link, RouteObject, useNavigate } from "react-router-dom";
 
-import BlueWallet from "Icons/BlueWallet";
-import ConnectLNC from "Pages/settings/wallet/LNC";
-import ConnectLNDHub from "Pages/settings/wallet/LNDHub";
-import ConnectNostrWallet from "Pages/settings/wallet/NWC";
-import ConnectCashu from "Pages/settings/wallet/Cashu";
+import BlueWallet from "@/Icons/BlueWallet";
+import ConnectLNC from "@/Pages/settings/wallet/LNC";
+import ConnectLNDHub from "@/Pages/settings/wallet/LNDHub";
+import ConnectNostrWallet from "@/Pages/settings/wallet/NWC";
+import ConnectCashu from "@/Pages/settings/wallet/Cashu";
 
-import NostrIcon from "Icons/Nostrich";
+import NostrIcon from "@/Icons/Nostrich";
 
 const WalletSettings = () => {
   const navigate = useNavigate();
@@ -17,11 +17,11 @@ const WalletSettings = () => {
     <>
       <Link to="/wallet">
         <button type="button">
-          <FormattedMessage defaultMessage="View Wallets" />
+          <FormattedMessage defaultMessage="View Wallets" id="VvaJst" />
         </button>
       </Link>
       <h3>
-        <FormattedMessage defaultMessage="Connect Wallet" />
+        <FormattedMessage defaultMessage="Connect Wallet" id="cg1VJ2" />
       </h3>
       <div className="wallet-grid">
         <div onClick={() => navigate("/settings/wallet/lnc")}>

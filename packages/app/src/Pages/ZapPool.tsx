@@ -4,15 +4,15 @@ import { useMemo, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
-import { SnortPubKey } from "Const";
-import ProfilePreview from "Element/User/ProfilePreview";
-import useLogin from "Hooks/useLogin";
-import { UploaderServices } from "Upload";
-import { bech32ToHex, getRelayName, unwrap } from "SnortUtils";
-import { ZapPoolController, ZapPoolRecipient, ZapPoolRecipientType } from "ZapPoolController";
-import AsyncButton from "Element/AsyncButton";
-import { useWallet } from "Wallet";
-import useEventPublisher from "Hooks/useEventPublisher";
+import { SnortPubKey } from "@/Const";
+import ProfilePreview from "@/Element/User/ProfilePreview";
+import useLogin from "@/Hooks/useLogin";
+import { UploaderServices } from "@/Upload";
+import { bech32ToHex, getRelayName, unwrap } from "@/SnortUtils";
+import { ZapPoolController, ZapPoolRecipient, ZapPoolRecipientType } from "@/ZapPoolController";
+import AsyncButton from "@/Element/AsyncButton";
+import { useWallet } from "@/Wallet";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 
 const DataProviders = [
   {
@@ -43,7 +43,7 @@ function ZapTarget({ target }: { target: ZapPoolRecipient }) {
           <div>
             <div>
               <FormattedNumber value={target.split} />% (
-              <FormattedMessage defaultMessage="{n} sats" values={{ n: defaultZapMount }} />)
+              <FormattedMessage defaultMessage="{n} sats" id="CsCUYo" values={{ n: defaultZapMount }} />)
             </div>
             <input
               type="range"
@@ -59,7 +59,7 @@ function ZapTarget({ target }: { target: ZapPoolRecipient }) {
             />
           </div>
         ) : (
-          <FormattedMessage defaultMessage="No lightning address" />
+          <FormattedMessage defaultMessage="No lightning address" id="JPFYIM" />
         )
       }
     />
@@ -93,17 +93,24 @@ export default function ZapPoolPage() {
   return (
     <div className="zap-pool main-content p">
       <h1>
-        <FormattedMessage defaultMessage="Zap Pool" />
+        <FormattedMessage defaultMessage="Zap Pool" id="i/dBAR" />
       </h1>
       <p>
-        <FormattedMessage defaultMessage="Fund the services that you use by splitting a portion of all your zaps into a pool of funds!" />
+        <FormattedMessage
+          defaultMessage="Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"
+          id="x/Fx2P"
+        />
       </p>
       <p>
-        <FormattedMessage defaultMessage="Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)" />
+        <FormattedMessage
+          defaultMessage="Zap Pool only works if you use one of the supported wallet connections (WebLN, LNC, LNDHub or Nostr Wallet Connect)"
+          id="QWhotP"
+        />
       </p>
       <p>
         <FormattedMessage
           defaultMessage="Your default zap amount is {number} sats, example values are calculated from this."
+          id="Xopqkl"
           values={{
             number: (
               <b>
@@ -116,6 +123,7 @@ export default function ZapPoolPage() {
       <p>
         <FormattedMessage
           defaultMessage="A single zap of {nIn} sats will allocate {nOut} sats to the zap pool."
+          id="eSzf2G"
           values={{
             nIn: (
               <b>
@@ -135,6 +143,7 @@ export default function ZapPoolPage() {
       <p>
         <FormattedMessage
           defaultMessage="You currently have {number} sats in your zap pool."
+          id="Qxv0B2"
           values={{
             number: (
               <b>
@@ -147,7 +156,7 @@ export default function ZapPoolPage() {
       <p>
         {wallet && (
           <AsyncButton onClick={() => ZapPoolController?.payout(wallet)}>
-            <FormattedMessage defaultMessage="Payout Now" />
+            <FormattedMessage defaultMessage="Payout Now" id="+PzQ9Y" />
           </AsyncButton>
         )}
       </p>
@@ -164,7 +173,7 @@ export default function ZapPoolPage() {
         />
       </div>
       <h3>
-        <FormattedMessage defaultMessage="Relays" />
+        <FormattedMessage defaultMessage="Relays" id="RoOyAh" />
       </h3>
       {relayConnections.map(a => (
         <div>
@@ -182,7 +191,7 @@ export default function ZapPoolPage() {
         </div>
       ))}
       <h3>
-        <FormattedMessage defaultMessage="File hosts" />
+        <FormattedMessage defaultMessage="File hosts" id="XICsE8" />
       </h3>
       {UploaderServices.map(a => (
         <div>
@@ -200,7 +209,7 @@ export default function ZapPoolPage() {
         </div>
       ))}
       <h3>
-        <FormattedMessage defaultMessage="Data Providers" />
+        <FormattedMessage defaultMessage="Data Providers" id="ELbg9p" />
       </h3>
       {DataProviders.map(a => (
         <div>

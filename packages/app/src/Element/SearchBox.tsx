@@ -116,7 +116,7 @@ export default function SearchBox() {
     <div className="search relative">
       <input
         type="text"
-        placeholder={formatMessage({ defaultMessage: "Search" })}
+        placeholder={formatMessage({ defaultMessage: "Search", id: "xmcVZ0" })}
         className="w-max"
         value={search}
         onChange={handleChange}
@@ -141,7 +141,7 @@ export default function SearchBox() {
             }`}
             onMouseEnter={() => setActiveIndex(0)}
             onClick={() => navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })}>
-            <FormattedMessage defaultMessage="Search notes" />: <b>{search}</b>
+            <FormattedMessage defaultMessage="Search notes" id="EJbFi7" />: <b>{search}</b>
           </div>
           {main?.slice(0, MAX_RESULTS).map((result, idx) => (
             <div

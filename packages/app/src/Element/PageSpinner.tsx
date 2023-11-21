@@ -1,4 +1,4 @@
-import Spinner from "Icons/Spinner";
+import Spinner from "@/Icons/Spinner";
 
 export default function PageSpinner() {
   return (

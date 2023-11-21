@@ -1,6 +1,6 @@
 import { HexKey, RelaySettings, u256, KeyStorage } from "@snort/system";
-import { UserPreferences } from "Login";
-import { SubscriptionEvent } from "Subscription";
+import { UserPreferences } from "@/Login";
+import { SubscriptionEvent } from "@/Subscription";
 
 /**
  * Stores latest copy of an item

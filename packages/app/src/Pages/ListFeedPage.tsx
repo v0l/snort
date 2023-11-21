@@ -4,9 +4,9 @@ import { useEventFeed } from "@snort/system-react";
 import { FormattedMessage } from "react-intl";
 import { useParams } from "react-router-dom";
 
-import { Hour } from "Const";
-import Timeline from "Element/Feed/Timeline";
-import PageSpinner from "Element/PageSpinner";
+import { Hour } from "@/Const";
+import Timeline from "@/Element/Feed/Timeline";
+import PageSpinner from "@/Element/PageSpinner";
 
 export function ListFeedPage() {
   const { id } = useParams();
@@ -17,7 +17,7 @@ export function ListFeedPage() {
   if (data.kind !== EventKind.ContactList && data.kind !== EventKind.CategorizedPeople) {
     return (
       <b>
-        <FormattedMessage defaultMessage="Must be a contact list or pubkey list" />
+        <FormattedMessage defaultMessage="Must be a contact list or pubkey list" id="vB3oQ/" />
       </b>
     );
   }

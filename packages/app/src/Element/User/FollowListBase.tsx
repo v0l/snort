@@ -3,14 +3,14 @@ import { FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/system";
 import { dedupe } from "@snort/shared";
 
-import useEventPublisher from "Hooks/useEventPublisher";
-import ProfilePreview from "Element/User/ProfilePreview";
-import useLogin from "Hooks/useLogin";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import ProfilePreview from "@/Element/User/ProfilePreview";
+import useLogin from "@/Hooks/useLogin";
 
 import messages from "../messages";
-import { FollowsFeed } from "Cache";
+import { FollowsFeed } from "@/Cache";
 import AsyncButton from "../AsyncButton";
-import { setFollows } from "Login";
+import { setFollows } from "@/Login";
 
 export interface FollowListBaseProps {
   pubkeys: HexKey[];

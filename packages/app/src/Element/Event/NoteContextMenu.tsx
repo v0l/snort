@@ -3,15 +3,15 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 
-import Icon from "Icons/Icon";
-import { setPinned, setBookmarked } from "Login";
-import messages from "Element/messages";
-import useLogin from "Hooks/useLogin";
-import useModeration from "Hooks/useModeration";
-import useEventPublisher from "Hooks/useEventPublisher";
+import Icon from "@/Icons/Icon";
+import { setPinned, setBookmarked } from "@/Login";
+import messages from "@/Element/messages";
+import useLogin from "@/Hooks/useLogin";
+import useModeration from "@/Hooks/useModeration";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 import { ReBroadcaster } from "../ReBroadcaster";
-import SnortApi from "External/SnortApi";
-import { SubscriptionType, getCurrentSubscription } from "Subscription";
+import SnortApi from "@/External/SnortApi";
+import { SubscriptionType, getCurrentSubscription } from "@/Subscription";
 
 export interface NoteTranslation {
   text: string;
@@ -170,7 +170,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
         )}
         <MenuItem onClick={handleReBroadcastButtonClick}>
           <Icon name="relay" />
-          <FormattedMessage defaultMessage="Broadcast Event" />
+          <FormattedMessage defaultMessage="Broadcast Event" id="Gxcr08" />
         </MenuItem>
         {ev.pubkey !== login.publicKey && !login.readonly && (
           <MenuItem onClick={() => block(ev.pubkey)}>

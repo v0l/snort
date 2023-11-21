@@ -1,7 +1,7 @@
-import Changelog from "CHANGELOG.md";
+import Changelog from "@/../CHANGELOG.md";
 import { FormattedMessage } from "react-intl";
 import { useEffect, useState } from "react";
-import { Markdown } from "Element/Event/Markdown";
+import { Markdown } from "@/Element/Event/Markdown";
 
 export function AboutPage() {
   const [changelog, setChangelog] = useState("");
@@ -17,12 +17,12 @@ export function AboutPage() {
   }, []);
 
   return (
-    <>
+    <div className="main-content p">
       <h1>
-        <FormattedMessage defaultMessage="About" />
+        <FormattedMessage defaultMessage="About" id="g5pX+a" />
       </h1>
-      Version: <b>{GIT_VERSION}</b>
+      Version: <b>{__SNORT_VERSION__}</b>
       <Markdown content={changelog} tags={[]} />
-    </>
+    </div>
   );
 }

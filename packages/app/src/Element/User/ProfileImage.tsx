@@ -6,9 +6,9 @@ import { useUserProfile } from "@snort/system-react";
 import { useHover } from "@uidotdev/usehooks";
 import classNames from "classnames";
 
-import Avatar from "Element/User/Avatar";
-import Nip05 from "Element/User/Nip05";
-import Icon from "Icons/Icon";
+import Avatar from "@/Element/User/Avatar";
+import Nip05 from "@/Element/User/Nip05";
+import Icon from "@/Icons/Icon";
 import DisplayName from "./DisplayName";
 import { ProfileLink } from "./ProfileLink";
 import { ProfileCard } from "./ProfileCard";

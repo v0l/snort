@@ -4,19 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
-import useEventPublisher from "Hooks/useEventPublisher";
-import { openFile } from "SnortUtils";
-import useFileUpload from "Upload";
-import AsyncButton from "Element/AsyncButton";
-import { UserCache } from "Cache";
-import useLogin from "Hooks/useLogin";
-import Icon from "Icons/Icon";
-import Avatar from "Element/User/Avatar";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { openFile } from "@/SnortUtils";
+import useFileUpload from "@/Upload";
+import AsyncButton from "@/Element/AsyncButton";
+import { UserCache } from "@/Cache";
+import useLogin from "@/Hooks/useLogin";
+import Icon from "@/Icons/Icon";
+import Avatar from "@/Element/User/Avatar";
 import { FormattedMessage, useIntl } from "react-intl";
-import { ErrorOrOffline } from "Element/ErrorOrOffline";
-import messages from "Element/messages";
-import { MaxAboutLength, MaxUsernameLength } from "Const";
+import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
 import { LNURL, LNURLError } from '../../../../shared/src/lnurl';
+import messages from "@/Element/messages";
+import { MaxAboutLength, MaxUsernameLength } from "@/Const";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -227,7 +227,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       <div className="flex flex-col g24">
         <div className="flex flex-col w-max g8">
           <h4>
-            <FormattedMessage defaultMessage="Name" />
+            <FormattedMessage defaultMessage="Name" id="HAlOn1" />
           </h4>
           <input
             className="w-max"
@@ -247,7 +247,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         </div>
         <div className="flex flex-col w-max g8">
           <h4>
-            <FormattedMessage defaultMessage="About" />
+            <FormattedMessage defaultMessage="About" id="g5pX+a" />
           </h4>
           <textarea
             className="w-max"
@@ -264,7 +264,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         </div>
         <div className="flex flex-col w-max g8">
           <h4>
-            <FormattedMessage defaultMessage="Website" />
+            <FormattedMessage defaultMessage="Website" id="JkLHGw" />
           </h4>
           <input
             className="w-max"
@@ -276,7 +276,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
         </div>
         <div className="flex flex-col w-max g8">
           <h4>
-            <FormattedMessage defaultMessage="Nostr Address" />
+            <FormattedMessage defaultMessage="Nostr Address" id="9pMqYs" />
           </h4>
           <div className="flex flex-col g8 w-max">
             <input
@@ -290,7 +290,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             {nip05AddressValid ? (
               <>
                 <span className="success">
-                  <FormattedMessage defaultMessage="NIP05 Verified" />
+                  <FormattedMessage defaultMessage="NIP05 Verified" id="vw95kf" />
                 </span>
               </>
             ) : (
@@ -298,24 +298,27 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             )}
           </div>
             <small>
-              <FormattedMessage defaultMessage="Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration." />
+              <FormattedMessage
+                defaultMessage="Usernames are not unique on Nostr. The nostr address is your unique human-readable address that is unique to you upon registration."
+                id="5vMmmR"
+              />
             </small>
             <div className="flex g12">
               <button className="flex items-center" type="button" onClick={() => navigate("/nostr-address")}>
-                <FormattedMessage defaultMessage="Buy nostr address" />
+                <FormattedMessage defaultMessage="Buy nostr address" id="MuVeKe" />
               </button>
               <button
                 className="flex items-center secondary"
                 type="button"
                 onClick={() => navigate("/free-nostr-address")}>
-                <FormattedMessage defaultMessage="Get a free one" />
+                <FormattedMessage defaultMessage="Get a free one" id="vlbWtt" />
               </button>
             </div>
           </div>
         </div>
         <div className="flex flex-col w-max g8">
           <h4>
-            <FormattedMessage defaultMessage="Lightning Address" />
+            <FormattedMessage defaultMessage="Lightning Address" id="GSye7T" />
           </h4>
           <input
             className="w-max"
@@ -333,7 +336,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
           </div>
         </div>
         <AsyncButton className="primary" onClick={() => saveProfile()} disabled={readonly}>
-          <FormattedMessage defaultMessage="Save" />
+          <FormattedMessage defaultMessage="Save" id="jvo0vs" />
         </AsyncButton>
       </div>
     );
@@ -351,7 +354,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
               }}
               className="banner">
               <AsyncButton type="button" onClick={() => setNewBanner()} disabled={readonly}>
-                <FormattedMessage defaultMessage="Upload" />
+                <FormattedMessage defaultMessage="Upload" id="p4N05H" />
               </AsyncButton>
             </div>
           )}

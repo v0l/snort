@@ -3,10 +3,10 @@ import { FormattedMessage } from "react-intl";
 import { useCallback, useMemo } from "react";
 import { TaggedNostrEvent, EventKind } from "@snort/system";
 
-import { dedupeByPubkey, findTag } from "SnortUtils";
-import useTimelineFeed, { TimelineFeed, TimelineSubject } from "Feed/TimelineFeed";
-import useModeration from "Hooks/useModeration";
-import { LiveStreams } from "Element/LiveStreams";
+import { dedupeByPubkey, findTag } from "@/SnortUtils";
+import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";
+import useModeration from "@/Hooks/useModeration";
+import { LiveStreams } from "@/Element/LiveStreams";
 import { TimelineRenderer } from "./TimelineFragment";
 import { unixNow } from "@snort/shared";
 
@@ -84,7 +84,7 @@ const Timeline = (props: TimelineProps) => {
       {(props.loadMore === undefined || props.loadMore === true) && (
         <div className="flex items-center">
           <button type="button" onClick={() => feed.loadMore()}>
-            <FormattedMessage defaultMessage="Load more" />
+            <FormattedMessage defaultMessage="Load more" id="00LcfG" />
           </button>
         </div>
       )}

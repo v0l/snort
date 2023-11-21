@@ -1,5 +1,5 @@
-import { ProxyImg } from "Element/ProxyImg";
-import useImgProxy from "Hooks/useImgProxy";
+import { ProxyImg } from "@/Element/ProxyImg";
+import useImgProxy from "@/Hooks/useImgProxy";
 import React from "react";
 
 interface MediaElementProps {

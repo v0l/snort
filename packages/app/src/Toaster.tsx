@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { v4 as uuid } from "uuid";
 import { ExternalStore, unixNow } from "@snort/shared";
 
-import Icon from "Icons/Icon";
+import Icon from "@/Icons/Icon";
 import "./Toaster.css";
 
 interface ToastNotification {

@@ -3,13 +3,13 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { removeUndefined, unwrap } from "@snort/shared";
 import { NostrEvent, OkResponse } from "@snort/system";
 
-import AsyncButton from "Element/AsyncButton";
-import Icon from "Icons/Icon";
-import { getRelayName, sanitizeRelayUrl } from "SnortUtils";
-import { removeRelay } from "Login";
-import useLogin from "Hooks/useLogin";
-import useEventPublisher from "Hooks/useEventPublisher";
-import { saveRelays } from "Pages/settings/Relays";
+import AsyncButton from "@/Element/AsyncButton";
+import Icon from "@/Icons/Icon";
+import { getRelayName, sanitizeRelayUrl } from "@/SnortUtils";
+import { removeRelay } from "@/Login";
+import useLogin from "@/Hooks/useLogin";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { saveRelays } from "@/Pages/settings/Relays";
 
 export function NoteBroadcaster({
   evs,
@@ -73,7 +73,7 @@ export function NoteBroadcaster({
   return (
     <div className="flex flex-col g16">
       <h3>
-        <FormattedMessage defaultMessage="Sending notes and other stuff" />
+        <FormattedMessage defaultMessage="Sending notes and other stuff" id="ugyJnE" />
       </h3>
       {results
         .filter(a => a.message !== "Duplicate request")
@@ -92,6 +92,7 @@ export function NoteBroadcaster({
                   className="p4 br-compact flex items-center secondary"
                   title={formatMessage({
                     defaultMessage: "Retry publishing",
+                    id: "9kSari",
                   })}>
                   <Icon name="refresh-ccw-01" />
                 </AsyncButton>
@@ -100,6 +101,7 @@ export function NoteBroadcaster({
                   className="p4 br-compact flex items-center secondary"
                   title={formatMessage({
                     defaultMessage: "Remove from my relays",
+                    id: "UJTWqI",
                   })}>
                   <Icon name="trash-01" className="trash-icon" />
                 </AsyncButton>
@@ -109,7 +111,7 @@ export function NoteBroadcaster({
         ))}
       <div className="flex-row g8">
         <button type="button" onClick={() => onClose()}>
-          <FormattedMessage defaultMessage="Close" />
+          <FormattedMessage defaultMessage="Close" id="rbrahO" />
         </button>
       </div>
     </div>

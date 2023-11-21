@@ -1,7 +1,7 @@
 import "./AsyncButton.css";
 import React, { ForwardedRef } from "react";
 import Spinner from "../Icons/Spinner";
-import useLoading from "Hooks/useLoading";
+import useLoading from "@/Hooks/useLoading";
 import classNames from "classnames";
 
 export interface AsyncButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

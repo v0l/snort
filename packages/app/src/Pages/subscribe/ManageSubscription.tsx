@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
-import PageSpinner from "Element/PageSpinner";
-import useEventPublisher from "Hooks/useEventPublisher";
-import SnortApi, { Subscription, SubscriptionError } from "External/SnortApi";
+import PageSpinner from "@/Element/PageSpinner";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import SnortApi, { Subscription, SubscriptionError } from "@/External/SnortApi";
 import { mapSubscriptionErrorCode } from ".";
 import SubscriptionCard from "./SubscriptionCard";
-import { ErrorOrOffline } from "Element/ErrorOrOffline";
+import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
 
 export default function ManageSubscriptionPage() {
   const { publisher } = useEventPublisher();
@@ -40,24 +40,25 @@ export default function ManageSubscriptionPage() {
   return (
     <div className="main-content p flex flex-col g16">
       <h2>
-        <FormattedMessage defaultMessage="Subscriptions" />
+        <FormattedMessage defaultMessage="Subscriptions" id="J+dIsA" />
       </h2>
       {subs.map(a => (
         <SubscriptionCard sub={a} key={a.id} />
       ))}
       {subs.length !== 0 && (
         <button className="primary" onClick={() => navigate("/subscribe")}>
-          <FormattedMessage defaultMessage="Buy Subscription" />
+          <FormattedMessage defaultMessage="Buy Subscription" id="SP0+yi" />
         </button>
       )}
       {subs.length === 0 && (
         <p>
           <FormattedMessage
             defaultMessage="It looks like you dont have any subscriptions, you can get one {link}"
+            id="W1yoZY"
             values={{
               link: (
                 <Link to="/subscribe">
-                  <FormattedMessage defaultMessage="here" />
+                  <FormattedMessage defaultMessage="here" id="hniz8Z" />
                 </Link>
               ),
             }}

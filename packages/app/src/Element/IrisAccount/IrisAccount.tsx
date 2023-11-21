@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any  */
 import { Component, FormEvent } from "react";
-import { LoginStore } from "Login";
+import { LoginStore } from "@/Login";
 
 import AccountName from "./AccountName";
 import ActiveAccount from "./ActiveAccount";
 import ReservedAccount from "./ReservedAccount";
-import { ProfileLoader } from "index";
+import { ProfileLoader } from "@/index";
 import { FormattedMessage } from "react-intl";
 import { injectIntl } from "react-intl";
-import messages from "Element/messages";
+import messages from "@/Element/messages";
 
 declare global {
   interface Window {
@@ -71,7 +71,7 @@ class IrisAccount extends Component<Props> {
       view = (
         <div>
           <p>
-            <FormattedMessage defaultMessage="Register an Iris username" /> (iris.to/username)
+            <FormattedMessage defaultMessage="Register an Iris username" id="kEZUR8" /> (iris.to/username)
           </p>
           <form onSubmit={e => this.showChallenge(e)}>
             <div className="flex g8">
@@ -83,14 +83,14 @@ class IrisAccount extends Component<Props> {
                 onInput={e => this.onNewUserNameChange(e)}
               />
               <button type="submit">
-                <FormattedMessage defaultMessage="Register" />
+                <FormattedMessage defaultMessage="Register" id="deEeEI" />
               </button>
             </div>
             <div>
               {this.state.newUserNameValid ? (
                 <>
                   <span className="success">
-                    <FormattedMessage defaultMessage="Username is available" />
+                    <FormattedMessage defaultMessage="Username is available" id="EcfIwB" />
                   </span>
                   <AccountName name={this.state.newUserName} link={false} />
                 </>
@@ -106,7 +106,7 @@ class IrisAccount extends Component<Props> {
     return (
       <>
         <h3>
-          <FormattedMessage defaultMessage="Iris.to account" />
+          <FormattedMessage defaultMessage="Iris.to account" id="Mzizei" />
         </h3>
         {view}
         <p>

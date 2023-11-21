@@ -1,15 +1,15 @@
-import useLogin from "Hooks/useLogin";
+import useLogin from "@/Hooks/useLogin";
 import "./PinPrompt.css";
 import { ReactNode, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { unwrap } from "@snort/shared";
 import { EventPublisher, InvalidPinError, PinEncrypted } from "@snort/system";
 
-import useEventPublisher from "Hooks/useEventPublisher";
-import { LoginStore, createPublisher, sessionNeedsPin } from "Login";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { LoginStore, createPublisher, sessionNeedsPin } from "@/Login";
 import Modal from "./Modal";
 import AsyncButton from "./AsyncButton";
-import { GetPowWorker } from "index";
+import { GetPowWorker } from "@/index";
 
 export function PinPrompt({
   onResult,
@@ -30,6 +30,7 @@ export function PinPrompt({
       setError(
         formatMessage({
           defaultMessage: "Pin too short",
+          id: "LR1XjT",
         }),
       );
       return;
@@ -44,6 +45,7 @@ export function PinPrompt({
         setError(
           formatMessage({
             defaultMessage: "Incorrect pin",
+            id: "qz9fty",
           }),
         );
       } else if (e instanceof Error) {
@@ -65,7 +67,7 @@ export function PinPrompt({
         }}>
         <div className="flex flex-col g12">
           <h2>
-            <FormattedMessage defaultMessage="Enter Pin" />
+            <FormattedMessage defaultMessage="Enter Pin" id="KtsyO0" />
           </h2>
           {subTitle ? <div>{subTitle}</div> : null}
           <input
@@ -79,10 +81,10 @@ export function PinPrompt({
           {error && <b className="error">{error}</b>}
           <div className="flex g8">
             <button type="button" onClick={() => onCancel()}>
-              <FormattedMessage defaultMessage="Cancel" />
+              <FormattedMessage defaultMessage="Cancel" id="47FYwb" />
             </button>
             <AsyncButton ref={submitButtonRef} onClick={() => submitPin()} type="submit">
-              <FormattedMessage defaultMessage="Submit" />
+              <FormattedMessage defaultMessage="Submit" id="wSZR47" />
             </AsyncButton>
           </div>
         </div>
@@ -144,6 +146,7 @@ export function LoginUnlock() {
             <p>
               <FormattedMessage
                 defaultMessage="Enter a pin to encrypt your private key, you must enter this pin every time you open {site}."
+                id="SLZGPn"
                 values={{
                   site: CONFIG.appNameCapitalized,
                 }}
@@ -161,7 +164,7 @@ export function LoginUnlock() {
       <PinPrompt
         subTitle={
           <p>
-            <FormattedMessage defaultMessage="Enter pin to unlock your private key" />
+            <FormattedMessage defaultMessage="Enter pin to unlock your private key" id="e7VmYP" />
           </p>
         }
         onResult={unlockSession}

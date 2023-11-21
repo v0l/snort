@@ -2,9 +2,9 @@ import { NostrLink, NostrPrefix } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useHover } from "@uidotdev/usehooks";
 
-import DisplayName from "Element/User/DisplayName";
-import { ProfileCard } from "Element/User/ProfileCard";
-import { ProfileLink } from "Element/User/ProfileLink";
+import DisplayName from "@/Element/User/DisplayName";
+import { ProfileCard } from "@/Element/User/ProfileCard";
+import { ProfileLink } from "@/Element/User/ProfileLink";
 
 export default function Mention({ link }: { link: NostrLink }) {
   const [ref, hovering] = useHover<HTMLAnchorElement>();

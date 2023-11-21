@@ -4,8 +4,8 @@ declare const self: ServiceWorkerGlobalScope & {
 };
 
 import { NostrLink, NostrPrefix, TLVEntryType, encodeTLVEntries, tryParseNostrLink } from "@snort/system";
-import { formatShort } from "Number";
-import { defaultAvatar, hexToBech32 } from "SnortUtils";
+import { formatShort } from "@/Number";
+import { defaultAvatar, hexToBech32 } from "@/SnortUtils";
 import { clientsClaim } from "workbox-core";
 import { PrecacheEntry, precacheAndRoute } from "workbox-precaching";
 

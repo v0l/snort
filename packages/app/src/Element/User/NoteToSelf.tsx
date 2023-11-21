@@ -1,7 +1,7 @@
 import "./NoteToSelf.css";
 import classNames from "classnames";
 import { FormattedMessage } from "react-intl";
-import Icon from "Icons/Icon";
+import Icon from "@/Icons/Icon";
 
 import messages from "../messages";
 

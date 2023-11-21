@@ -1,4 +1,4 @@
-import { LoginSession, LoginStore } from "Login";
+import { LoginSession, LoginStore } from "@/Login";
 import { useSyncExternalStore } from "react";
 import { useSyncExternalStoreWithSelector } from "use-sync-external-store/with-selector";
 

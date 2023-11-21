@@ -1,11 +1,11 @@
 import { FormattedMessage, FormattedDate, FormattedNumber } from "react-intl";
 
-import { Subscription } from "External/SnortApi";
+import { Subscription } from "@/External/SnortApi";
 import { mapPlanName } from ".";
-import Icon from "Icons/Icon";
-import Nip5Service from "Element/Nip5Service";
-import { SnortNostrAddressService } from "Pages/NostrAddressPage";
-import Nip05 from "Element/User/Nip05";
+import Icon from "@/Icons/Icon";
+import Nip5Service from "@/Element/Nip5Service";
+import { SnortNostrAddressService } from "@/Pages/NostrAddressPage";
+import Nip05 from "@/Element/User/Nip05";
 import { RenewSub } from "./RenewSub";
 
 export default function SubscriptionCard({ sub }: { sub: Subscription }) {
@@ -24,7 +24,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
         {!sub.handle && (
           <>
             <h3>
-              <FormattedMessage defaultMessage="Claim your included Snort nostr address" />
+              <FormattedMessage defaultMessage="Claim your included Snort nostr address" id="GUlSVG" />
             </h3>
             <Nip5Service
               {...SnortNostrAddressService}
@@ -48,7 +48,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
         </div>
         <div className="flex">
           <p className="f-1">
-            <FormattedMessage defaultMessage="Created" />
+            <FormattedMessage defaultMessage="Created" id="ORGv1Q" />
             :&nbsp;
             <time dateTime={created.toISOString()}>
               <FormattedDate value={created} dateStyle="full" />
@@ -56,11 +56,12 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
           </p>
           {daysToExpire >= 1 && (
             <p className="f-1">
-              <FormattedMessage defaultMessage="Expires" />
+              <FormattedMessage defaultMessage="Expires" id="xhQMeQ" />
               :&nbsp;
               <time dateTime={expires.toISOString()}>
                 <FormattedMessage
                   defaultMessage="{n} days"
+                  id="rmdsT4"
                   values={{
                     n: <FormattedNumber value={daysToExpire} maximumFractionDigits={0} />,
                   }}
@@ -70,11 +71,12 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
           )}
           {daysToExpire >= 0 && daysToExpire < 1 && (
             <p className="f-1">
-              <FormattedMessage defaultMessage="Expires" />
+              <FormattedMessage defaultMessage="Expires" id="xhQMeQ" />
               :&nbsp;
               <time dateTime={expires.toISOString()}>
                 <FormattedMessage
                   defaultMessage="{n} hours"
+                  id="2ukA4d"
                   values={{
                     n: <FormattedNumber value={hoursToExpire} maximumFractionDigits={0} />,
                   }}
@@ -84,12 +86,12 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
           )}
           {isExpired && (
             <p className="f-1 error">
-              <FormattedMessage defaultMessage="Expired" />
+              <FormattedMessage defaultMessage="Expired" id="RahCRH" />
             </p>
           )}
           {isNew && (
             <p className="f-1">
-              <FormattedMessage defaultMessage="Unpaid" />
+              <FormattedMessage defaultMessage="Unpaid" id="6uMqL1" />
             </p>
           )}
         </div>

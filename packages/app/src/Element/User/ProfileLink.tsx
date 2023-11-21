@@ -2,7 +2,7 @@ import { ReactNode, useContext } from "react";
 import { Link, LinkProps } from "react-router-dom";
 import { UserMetadata, NostrLink, NostrPrefix, MetadataCache } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { randomSample } from "SnortUtils";
+import { randomSample } from "@/SnortUtils";
 
 export function ProfileLink({
   pubkey,

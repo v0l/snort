@@ -3,14 +3,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { unwrap } from "@snort/shared";
 
-import AsyncButton from "Element/AsyncButton";
-import Icon from "Icons/Icon";
+import AsyncButton from "@/Element/AsyncButton";
+import Icon from "@/Icons/Icon";
 import { NewUserState } from ".";
-import { LoginSessionType, LoginStore } from "Login";
-import useLoginHandler from "Hooks/useLoginHandler";
+import { LoginSessionType, LoginStore } from "@/Login";
+import useLoginHandler from "@/Hooks/useLoginHandler";
 import { NotEncrypted } from "@snort/system";
 import classNames from "classnames";
-import { trackEvent } from "SnortUtils";
+import { trackEvent } from "@/SnortUtils";
 
 export function SignIn() {
   const navigate = useNavigate();
@@ -44,6 +44,7 @@ export function SignIn() {
         setError(
           formatMessage({
             defaultMessage: "Unknown login error",
+            id: "OLEm6z",
           }),
         );
       }
@@ -57,9 +58,9 @@ export function SignIn() {
       <img src={CONFIG.appleTouchIconUrl} width={48} height={48} className="br mr-auto ml-auto" />
       <div className="flex flex-col g16 items-center">
         <h1>
-          <FormattedMessage defaultMessage="Sign In" />
+          <FormattedMessage defaultMessage="Sign In" id="Ub+AGc" />
         </h1>
-        {nip7Login && <FormattedMessage defaultMessage="Use a nostr signer extension to sign in" />}
+        {nip7Login && <FormattedMessage defaultMessage="Use a nostr signer extension to sign in" id="eF0Re7" />}
       </div>
       <div className={classNames("flex flex-col g16", { "items-center": nip7Login })}>
         {hasNip7 && !useKey && (
@@ -68,13 +69,13 @@ export function SignIn() {
               <div className="circle bg-warning p12 text-white">
                 <Icon name="key" />
               </div>
-              <FormattedMessage defaultMessage="Sign in with Nostr Extension" />
+              <FormattedMessage defaultMessage="Sign in with Nostr Extension" id="TaeBqw" />
             </AsyncButton>
             <Link to="" className="highlight">
-              <FormattedMessage defaultMessage="Supported Extensions" />
+              <FormattedMessage defaultMessage="Supported Extensions" id="aMaLBK" />
             </Link>
             <AsyncButton onClick={() => setUseKey(true)}>
-              <FormattedMessage defaultMessage="Sign in with key" />
+              <FormattedMessage defaultMessage="Sign in with key" id="X6tipZ" />
             </AsyncButton>
           </>
         )}
@@ -84,6 +85,7 @@ export function SignIn() {
               type="text"
               placeholder={formatMessage({
                 defaultMessage: "nsec, npub, nip-05, hex, mnemonic",
+                id: "X7xU8J",
               })}
               value={key}
               onChange={e => setKey(e.target.value)}
@@ -91,15 +93,15 @@ export function SignIn() {
             />
             {error && <b className="error">{error}</b>}
             <AsyncButton onClick={doLogin} className="primary">
-              <FormattedMessage defaultMessage="Login" />
+              <FormattedMessage defaultMessage="Login" id="AyGauy" />
             </AsyncButton>
           </>
         )}
       </div>
       <div className="flex flex-col g16 items-center">
-        <FormattedMessage defaultMessage="Don't have an account?" />
+        <FormattedMessage defaultMessage="Don't have an account?" id="25WwxF" />
         <AsyncButton className="secondary" onClick={() => navigate("/login/sign-up")}>
-          <FormattedMessage defaultMessage="Sign Up" />
+          <FormattedMessage defaultMessage="Sign Up" id="39AHJm" />
         </AsyncButton>
       </div>
     </div>
@@ -116,9 +118,9 @@ export function SignUp() {
       <img src={CONFIG.appleTouchIconUrl} width={48} height={48} className="br mr-auto ml-auto" />
       <div className="flex flex-col g16 items-center">
         <h1>
-          <FormattedMessage defaultMessage="Sign Up" />
+          <FormattedMessage defaultMessage="Sign Up" id="39AHJm" />
         </h1>
-        <FormattedMessage defaultMessage="What should we call you?" />
+        <FormattedMessage defaultMessage="What should we call you?" id="SmuYUd" />
       </div>
       <div className="flex flex-col g16">
         <input
@@ -126,6 +128,7 @@ export function SignUp() {
           autoFocus={true}
           placeholder={formatMessage({
             defaultMessage: "Name or nym",
+            id: "aHje0o",
           })}
           value={name}
           onChange={e => setName(e.target.value)}
@@ -141,13 +144,13 @@ export function SignUp() {
               } as NewUserState,
             })
           }>
-          <FormattedMessage defaultMessage="Next" />
+          <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
         </AsyncButton>
       </div>
       <div className="flex flex-col g16 items-center">
-        <FormattedMessage defaultMessage="Already have an account?" />
+        <FormattedMessage defaultMessage="Already have an account?" id="uCk8r+" />
         <AsyncButton className="secondary" onClick={() => navigate("/login")}>
-          <FormattedMessage defaultMessage="Sign In" />
+          <FormattedMessage defaultMessage="Sign In" id="Ub+AGc" />
         </AsyncButton>
       </div>
     </div>

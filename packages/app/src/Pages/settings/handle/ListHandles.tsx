@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
-import { ApiHost } from "Const";
-import useEventPublisher from "Hooks/useEventPublisher";
-import SnortServiceProvider, { ManageHandle } from "Nip05/SnortServiceProvider";
-import { ErrorOrOffline } from "Element/ErrorOrOffline";
+import { ApiHost } from "@/Const";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import SnortServiceProvider, { ManageHandle } from "@/Nip05/SnortServiceProvider";
+import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
 
 export default function ListHandles() {
   const navigate = useNavigate();
@@ -33,10 +33,11 @@ export default function ListHandles() {
       {handles.length === 0 && (
         <FormattedMessage
           defaultMessage="It looks like you dont have any, check {link} to buy one!"
+          id="mErPop"
           values={{
             link: (
               <Link to="/nostr-address">
-                <FormattedMessage defaultMessage="Buy Handle" />
+                <FormattedMessage defaultMessage="Buy Handle" id="5oTnfy" />
               </Link>
             ),
           }}
@@ -57,13 +58,13 @@ export default function ListHandles() {
                 state: a,
               })
             }>
-            <FormattedMessage defaultMessage="Manage" />
+            <FormattedMessage defaultMessage="Manage" id="0Azlrb" />
           </button>
         </div>
       ))}
       {handles.length > 0 && (
         <button type="button" onClick={() => navigate("/nostr-address")}>
-          <FormattedMessage defaultMessage="Buy Handle" />
+          <FormattedMessage defaultMessage="Buy Handle" id="5oTnfy" />
         </button>
       )}
       {error && <ErrorOrOffline error={error} onRetry={loadHandles} />}

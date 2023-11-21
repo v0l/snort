@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import { EventKind, NostrEvent, TaggedNostrEvent, NostrPrefix, EventExt } from "@snort/system";
 
-import Note from "Element/Event/Note";
-import { eventLink, hexToBech32, getDisplayName } from "SnortUtils";
-import useModeration from "Hooks/useModeration";
+import Note from "@/Element/Event/Note";
+import { eventLink, hexToBech32, getDisplayName } from "@/SnortUtils";
+import useModeration from "@/Hooks/useModeration";
 import { FormattedMessage } from "react-intl";
-import Icon from "Icons/Icon";
+import Icon from "@/Icons/Icon";
 import { useUserProfile } from "@snort/system-react";
 import { useInView } from "react-intersection-observer";
 
@@ -80,6 +80,7 @@ export default function NoteReaction(props: NoteReactionProps) {
         <Icon name="repeat" size={18} />
         <FormattedMessage
           defaultMessage="{name} reposted"
+          id="+xliwN"
           values={{
             name: getDisplayName(profile, ev.pubkey),
           }}

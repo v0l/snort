@@ -1,13 +1,13 @@
 import { useIntl, FormattedMessage } from "react-intl";
 import { useParams } from "react-router-dom";
-import Timeline from "Element/Feed/Timeline";
-import Tabs, { Tab } from "Element/Tabs";
+import Timeline from "@/Element/Feed/Timeline";
+import Tabs, { Tab } from "@/Element/Tabs";
 import { useEffect, useState } from "react";
-import { debounce } from "SnortUtils";
-import { router } from "index";
-import TrendingUsers from "Element/TrendingUsers";
+import { debounce } from "@/SnortUtils";
+import { router } from "@/index";
+import TrendingUsers from "@/Element/TrendingUsers";
 
-import TrendingNotes from "Element/TrendingPosts";
+import TrendingNotes from "@/Element/TrendingPosts";
 
 const NOTES = 0;
 const PROFILES = 1;
@@ -20,8 +20,8 @@ const SearchPage = () => {
   const [sortPopular, setSortPopular] = useState<boolean>(true);
   // tabs
   const SearchTab = [
-    { text: formatMessage({ defaultMessage: "Notes" }), value: NOTES },
-    { text: formatMessage({ defaultMessage: "People" }), value: PROFILES },
+    { text: formatMessage({ defaultMessage: "Notes", id: "7+Domh" }), value: NOTES },
+    { text: formatMessage({ defaultMessage: "People", id: "Tpy00S" }), value: PROFILES },
   ];
   const [tab, setTab] = useState<Tab>(SearchTab[0]);
 
@@ -73,13 +73,13 @@ const SearchPage = () => {
     if (tab.value != PROFILES) return null;
     return (
       <div className="flex items-center justify-end g8">
-        <FormattedMessage defaultMessage="Sort" description="Label for sorting options for people search" />
+        <FormattedMessage defaultMessage="Sort" id="RwFaYs" description="Label for sorting options for people search" />
         <select onChange={e => setSortPopular(e.target.value == "true")} value={sortPopular ? "true" : "false"}>
           <option value={"true"}>
-            <FormattedMessage defaultMessage="Popular" description="Sort order name" />
+            <FormattedMessage defaultMessage="Popular" id="mTJFgF" description="Sort order name" />
           </option>
           <option value={"false"}>
-            <FormattedMessage defaultMessage="Recent" description="Sort order name" />
+            <FormattedMessage defaultMessage="Recent" id="RjpoYG" description="Sort order name" />
           </option>
         </select>
       </div>
@@ -90,12 +90,12 @@ const SearchPage = () => {
     <div className="main-content">
       <div className="p flex flex-col g8">
         <h2>
-          <FormattedMessage defaultMessage="Search" />
+          <FormattedMessage defaultMessage="Search" id="xmcVZ0" />
         </h2>
         <input
           type="text"
           className="w-max"
-          placeholder={formatMessage({ defaultMessage: "Search..." })}
+          placeholder={formatMessage({ defaultMessage: "Search...", id: "0BUTMv" })}
           value={search}
           onChange={e => setSearch(e.target.value)}
           autoFocus={true}

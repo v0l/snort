@@ -1,11 +1,11 @@
 import "./DmWindow.css";
 import { useMemo } from "react";
 
-import ProfileImage from "Element/User/ProfileImage";
-import DM from "Element/Chat/DM";
-import useLogin from "Hooks/useLogin";
-import WriteMessage from "Element/Chat/WriteMessage";
-import { Chat, createEmptyChatObject, useChatSystem } from "chat";
+import ProfileImage from "@/Element/User/ProfileImage";
+import DM from "@/Element/Chat/DM";
+import useLogin from "@/Hooks/useLogin";
+import WriteMessage from "@/Element/Chat/WriteMessage";
+import { Chat, createEmptyChatObject, useChatSystem } from "@/chat";
 import { FormattedMessage } from "react-intl";
 import { ChatParticipantProfile } from "./ChatParticipant";
 
@@ -22,7 +22,7 @@ export default function DmWindow({ id }: { id: string }) {
           {chat.participants.map(v => (
             <ProfileImage pubkey={v.id} showUsername={false} />
           ))}
-          {chat.title ?? <FormattedMessage defaultMessage="Secret Group Chat" />}
+          {chat.title ?? <FormattedMessage defaultMessage="Secret Group Chat" id="+Vxixo" />}
         </div>
       );
     }

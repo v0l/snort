@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import { appendDedupe, dedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
 
 import EventKind from "./event-kind";
-import { NostrLink, NostrPrefix, SystemInterface } from "index";
+import { NostrLink, NostrPrefix, SystemInterface } from ".";
 import { ReqFilter, u256, HexKey } from "./nostr";
 import { RelayCache, splitByWriteRelays, splitFlatByWriteRelays } from "./gossip-model";
 

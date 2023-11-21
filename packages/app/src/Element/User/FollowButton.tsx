@@ -1,13 +1,13 @@
 import { FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/system";
 
-import useEventPublisher from "Hooks/useEventPublisher";
-import { parseId } from "SnortUtils";
-import useLogin from "Hooks/useLogin";
-import AsyncButton from "Element/AsyncButton";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { parseId } from "@/SnortUtils";
+import useLogin from "@/Hooks/useLogin";
+import AsyncButton from "@/Element/AsyncButton";
 
 import messages from "../messages";
-import { FollowsFeed } from "Cache";
+import { FollowsFeed } from "@/Cache";
 
 export interface FollowButtonProps {
   pubkey: HexKey;

@@ -1,5 +1,5 @@
-import { DefaultImgProxy } from "Const";
-import { ImgProxySettings } from "Hooks/useImgProxy";
+import { DefaultImgProxy } from "@/Const";
+import { ImgProxySettings } from "@/Hooks/useImgProxy";
 
 export interface UserPreferences {
   /**
@@ -45,7 +45,7 @@ export interface UserPreferences {
   /**
    * File uploading service to upload attachments to
    */
-  fileUploader: "void.cat" | "nostr.build" | "nostrimg.com";
+  fileUploader: "void.cat" | "nostr.build" | "nostrimg.com" | "void.cat-NIP96" | "nostrcheck.me";
 
   /**
    * Use imgproxy to optimize images

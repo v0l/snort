@@ -1,7 +1,7 @@
 import { FormattedMessage } from "react-intl";
 
-import { ApiHost } from "Const";
-import Nip5Service from "Element/Nip5Service";
+import { ApiHost } from "@/Const";
+import Nip5Service from "@/Element/Nip5Service";
 
 import messages from "./messages";
 
@@ -26,7 +26,7 @@ export default function NostrAddressPage() {
   return (
     <div className="main-content p">
       <h2>
-        <FormattedMessage defaultMessage="Buy nostr address" />
+        <FormattedMessage defaultMessage="Buy nostr address" id="MuVeKe" />
       </h2>
       <p>
         <FormattedMessage {...messages.Nip05} />

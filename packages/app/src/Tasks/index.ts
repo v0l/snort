@@ -1,5 +1,5 @@
 import { MetadataCache } from "@snort/system";
-import { LoginSession } from "Login";
+import { LoginSession } from "@/Login";
 
 export interface UITask {
   id: string;

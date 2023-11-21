@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { NoopStore, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 
-import { RefreshFeedCache } from "Cache/RefreshFeedCache";
+import { RefreshFeedCache } from "@/Cache/RefreshFeedCache";
 import useLogin from "./useLogin";
 import useEventPublisher from "./useEventPublisher";
 import { unwrap } from "@snort/shared";

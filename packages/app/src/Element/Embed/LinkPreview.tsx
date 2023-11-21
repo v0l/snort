@@ -1,10 +1,10 @@
 import "./LinkPreview.css";
 import { CSSProperties, useEffect, useState } from "react";
 
-import Spinner from "Icons/Spinner";
-import SnortApi, { LinkPreviewData } from "External/SnortApi";
-import useImgProxy from "Hooks/useImgProxy";
-import { MediaElement } from "Element/Embed/MediaElement";
+import Spinner from "@/Icons/Spinner";
+import SnortApi, { LinkPreviewData } from "@/External/SnortApi";
+import useImgProxy from "@/Hooks/useImgProxy";
+import { MediaElement } from "@/Element/Embed/MediaElement";
 
 async function fetchUrlPreviewInfo(url: string) {
   const api = new SnortApi();

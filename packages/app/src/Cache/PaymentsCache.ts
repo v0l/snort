@@ -1,4 +1,4 @@
-import { Payment, db } from "Db";
+import { Payment, db } from "@/Db";
 import { FeedCache } from "@snort/shared";
 
 export class Payments extends FeedCache<Payment> {

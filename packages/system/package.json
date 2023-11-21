@@ -4,6 +4,7 @@
   "description": "Snort nostr system package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "module": "src/index.ts",
   "repository": "https://git.v0l.io/Kieran/snort",
   "author": "v0l",
   "license": "MIT",

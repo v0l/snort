@@ -5,14 +5,14 @@ import { EventKind, NostrHashtagLink, NoteCollection, RequestBuilder } from "@sn
 import { dedupe } from "@snort/shared";
 import { useRequestBuilder } from "@snort/system-react";
 
-import Timeline from "Element/Feed/Timeline";
-import useEventPublisher from "Hooks/useEventPublisher";
-import useLogin from "Hooks/useLogin";
-import { setTags } from "Login";
-import AsyncButton from "Element/AsyncButton";
-import ProfileImage from "Element/User/ProfileImage";
+import Timeline from "@/Element/Feed/Timeline";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import useLogin from "@/Hooks/useLogin";
+import { setTags } from "@/Login";
+import AsyncButton from "@/Element/AsyncButton";
+import ProfileImage from "@/Element/User/ProfileImage";
 import classNames from "classnames";
-import { formatShort } from "Number";
+import { formatShort } from "@/Number";
 
 const HashTagsPage = () => {
   const params = useParams();
@@ -72,6 +72,7 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
             <small>
               <FormattedMessage
                 defaultMessage="{n} notes"
+                id="un1nGw"
                 values={{
                   n: formatShort(events),
                 }}
@@ -81,11 +82,11 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
         </div>
         {isFollowing ? (
           <AsyncButton className="secondary" onClick={() => followTags(login.tags.item.filter(t => t !== tag))}>
-            <FormattedMessage defaultMessage="Unfollow" />
+            <FormattedMessage defaultMessage="Unfollow" id="izWS4J" />
           </AsyncButton>
         ) : (
           <AsyncButton onClick={() => followTags(login.tags.item.concat([tag]))}>
-            <FormattedMessage defaultMessage="Follow" />
+            <FormattedMessage defaultMessage="Follow" id="ieGrWo" />
           </AsyncButton>
         )}
       </div>

@@ -1,13 +1,13 @@
 import { FormattedMessage } from "react-intl";
-import ProfilePreview from "Element/User/ProfilePreview";
-import useRelayState from "Feed/RelayState";
+import ProfilePreview from "@/Element/User/ProfilePreview";
+import useRelayState from "@/Feed/RelayState";
 import { useNavigate, useParams } from "react-router-dom";
-import { parseId, unwrap } from "SnortUtils";
-import { removeRelay } from "Login";
-import useLogin from "Hooks/useLogin";
+import { parseId, unwrap } from "@/SnortUtils";
+import { removeRelay } from "@/Login";
+import useLogin from "@/Hooks/useLogin";
 
 import messages from "./messages";
-import useEventPublisher from "Hooks/useEventPublisher";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 
 const RelayInfo = () => {
   const params = useParams();
@@ -83,7 +83,7 @@ const RelayInfo = () => {
           </>
         )}
         <h4>
-          <FormattedMessage defaultMessage="Active Subscriptions" />
+          <FormattedMessage defaultMessage="Active Subscriptions" id="p85Uwy" />
         </h4>
         <div className="grow">
           {stats?.activeRequests.map(a => (
@@ -93,7 +93,7 @@ const RelayInfo = () => {
           ))}
         </div>
         <h4>
-          <FormattedMessage defaultMessage="Pending Subscriptions" />
+          <FormattedMessage defaultMessage="Pending Subscriptions" id="UDYlxu" />
         </h4>
         <div className="grow">
           {stats?.pendingRequests.map(a => (

@@ -1,11 +1,11 @@
 import { useUserProfile } from "@snort/system-react";
-import Avatar from "Element/User/Avatar";
-import useLogin from "Hooks/useLogin";
+import Avatar from "@/Element/User/Avatar";
+import useLogin from "@/Hooks/useLogin";
 import "./Nav.css";
-import Icon from "Icons/Icon";
+import Icon from "@/Icons/Icon";
 import { Link } from "react-router-dom";
-import { NoteCreatorButton } from "Element/Event/NoteCreatorButton";
-import { ProfileLink } from "Element/User/ProfileLink";
+import { NoteCreatorButton } from "@/Element/Event/NoteCreatorButton";
+import { ProfileLink } from "@/Element/User/ProfileLink";
 
 export function DeckNav() {
   const { publicKey } = useLogin();

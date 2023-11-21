@@ -5,18 +5,18 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/system";
 import { LNURLSuccessAction } from "@snort/shared";
 
-import { formatShort } from "Number";
-import Icon from "Icons/Icon";
-import useEventPublisher from "Hooks/useEventPublisher";
-import ProfileImage from "Element/User/ProfileImage";
-import Modal from "Element/Modal";
-import QrCode from "Element/QrCode";
-import Copy from "Element/Copy";
-import { debounce } from "SnortUtils";
-import { LNWallet, useWallet } from "Wallet";
-import useLogin from "Hooks/useLogin";
-import AsyncButton from "Element/AsyncButton";
-import { ZapTarget, ZapTargetResult, Zapper } from "Zapper";
+import { formatShort } from "@/Number";
+import Icon from "@/Icons/Icon";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import ProfileImage from "@/Element/User/ProfileImage";
+import Modal from "@/Element/Modal";
+import QrCode from "@/Element/QrCode";
+import Copy from "@/Element/Copy";
+import { debounce } from "@/SnortUtils";
+import { LNWallet, useWallet } from "@/Wallet";
+import useLogin from "@/Hooks/useLogin";
+import AsyncButton from "@/Element/AsyncButton";
+import { ZapTarget, ZapTargetResult, Zapper } from "@/Zapper";
 
 import messages from "./messages";
 
@@ -104,7 +104,7 @@ export default function SendSats(props: SendSatsProps) {
       <div className="flex items-center">
         <p className="flex g12">
           <Icon name="check" className="success" />
-          {success?.description ?? <FormattedMessage defaultMessage="Paid" />}
+          {success?.description ?? <FormattedMessage defaultMessage="Paid" id="u/vOPu" />}
         </p>
         {success.url && (
           <p>
@@ -123,9 +123,9 @@ export default function SendSats(props: SendSatsProps) {
         <>
           <h2>
             {zapper?.canZap() ? (
-              <FormattedMessage defaultMessage="Send zap" />
+              <FormattedMessage defaultMessage="Send zap" id="5ykRmX" />
             ) : (
-              <FormattedMessage defaultMessage="Send sats" />
+              <FormattedMessage defaultMessage="Send sats" id="DKnriN" />
             )}
           </h2>
         </>
@@ -141,9 +141,9 @@ export default function SendSats(props: SendSatsProps) {
           {t.zap?.pubkey && <ProfileImage pubkey={t.zap.pubkey} showUsername={false} />}
           <h2>
             {zapper?.canZap() ? (
-              <FormattedMessage defaultMessage="Send zap to {name}" values={values} />
+              <FormattedMessage defaultMessage="Send zap to {name}" id="SMO+on" values={values} />
             ) : (
-              <FormattedMessage defaultMessage="Send sats to {name}" values={values} />
+              <FormattedMessage defaultMessage="Send sats to {name}" id="JGrt9q" values={values} />
             )}
           </h2>
         </>
@@ -156,9 +156,9 @@ export default function SendSats(props: SendSatsProps) {
         <div className="flex flex-col g12">
           <h2>
             {zapper?.canZap() ? (
-              <FormattedMessage defaultMessage="Send zap splits to" />
+              <FormattedMessage defaultMessage="Send zap splits to" id="ZS+jRE" />
             ) : (
-              <FormattedMessage defaultMessage="Send sats splits to" />
+              <FormattedMessage defaultMessage="Send sats splits to" id="uc0din" />
             )}
           </h2>
           <div className="flex g4 f-wrap">
@@ -330,7 +330,7 @@ function SendSatsInput(props: {
     <div className="flex flex-col g24">
       <div className="flex flex-col g8">
         <h3>
-          <FormattedMessage defaultMessage="Zap amount in sats" />
+          <FormattedMessage defaultMessage="Zap amount in sats" id="zcaOTs" />
         </h3>
         {renderAmounts()}
         {custom()}
@@ -348,7 +348,7 @@ function SendSatsInput(props: {
       {(amount ?? 0) > 0 && (
         <AsyncButton onClick={() => props.onNextStage(getValue())}>
           <Icon name="zap" />
-          <FormattedMessage defaultMessage="Zap {n} sats" values={{ n: formatShort(amount) }} />
+          <FormattedMessage defaultMessage="Zap {n} sats" id="8QDesP" values={{ n: formatShort(amount) }} />
         </AsyncButton>
       )}
     </div>
@@ -365,15 +365,16 @@ function SendSatsZapTypeSelector({ zapType, setZapType }: { zapType: ZapType; se
   return (
     <div className="flex flex-col g8">
       <h3>
-        <FormattedMessage defaultMessage="Zap Type" />
+        <FormattedMessage defaultMessage="Zap Type" id="+aZY2h" />
       </h3>
       <div className="flex g8">
-        {!readonly && makeTab(ZapType.PublicZap, <FormattedMessage defaultMessage="Public" description="Public Zap" />)}
+        {!readonly &&
+          makeTab(ZapType.PublicZap, <FormattedMessage defaultMessage="Public" id="/PCavi" description="Public Zap" />)}
         {/*makeTab(ZapType.PrivateZap, "Private")*/}
-        {makeTab(ZapType.AnonZap, <FormattedMessage defaultMessage="Anon" description="Anonymous Zap" />)}
+        {makeTab(ZapType.AnonZap, <FormattedMessage defaultMessage="Anon" id="wWLwvh" description="Anonymous Zap" />)}
         {makeTab(
           ZapType.NonZap,
-          <FormattedMessage defaultMessage="Non-Zap" description="Non-Zap, Regular LN payment" />,
+          <FormattedMessage defaultMessage="Non-Zap" id="AnLrRC" description="Non-Zap, Regular LN payment" />,
         )}
       </div>
     </div>
@@ -396,7 +397,7 @@ function SendSatsInvoice(props: {
             <Copy text={v.pr} maxSize={26} className="items-center" />
             <a href={`lightning:${v.pr}`}>
               <button type="button">
-                <FormattedMessage defaultMessage="Open Wallet" />
+                <FormattedMessage defaultMessage="Open Wallet" id="HbefNb" />
               </button>
             </a>
           </div>

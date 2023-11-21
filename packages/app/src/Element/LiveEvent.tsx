@@ -2,9 +2,9 @@ import { NostrEvent, NostrLink } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import { findTag } from "SnortUtils";
+import { findTag } from "@/SnortUtils";
 import ProfileImage from "./User/ProfileImage";
-import Icon from "Icons/Icon";
+import Icon from "@/Icons/Icon";
 
 export function LiveEvent({ ev }: { ev: NostrEvent }) {
   const title = findTag(ev, "title");
@@ -19,7 +19,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
           <div className="flex g4">
             <Icon name="signal-01" />
             <b className="uppercase">
-              <FormattedMessage defaultMessage="Live" />
+              <FormattedMessage defaultMessage="Live" id="Dn82AL" />
             </b>
           </div>
         );
@@ -27,7 +27,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
       case "ended": {
         return (
           <b className="uppercase">
-            <FormattedMessage defaultMessage="Ended" />
+            <FormattedMessage defaultMessage="Ended" id="TP/cMX" />
           </b>
         );
       }
@@ -50,7 +50,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
         return (
           <Link to={link} target="_blank">
             <button type="button">
-              <FormattedMessage defaultMessage="Join Stream" />
+              <FormattedMessage defaultMessage="Join Stream" id="GQPtfk" />
             </button>
           </Link>
         );
@@ -60,7 +60,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
           return (
             <Link to={link} target="_blank">
               <button type="button">
-                <FormattedMessage defaultMessage="Watch Replay" />
+                <FormattedMessage defaultMessage="Watch Replay" id="6/hB3S" />
               </button>
             </Link>
           );

@@ -1,5 +1,5 @@
 import LNC from "@lightninglabs/lnc-web";
-import { unwrap } from "SnortUtils";
+import { unwrap } from "@/SnortUtils";
 import {
   InvoiceRequest,
   LNWallet,
@@ -10,7 +10,7 @@ import {
   WalletInfo,
   WalletInvoice,
   WalletInvoiceState,
-} from "Wallet";
+} from "@/Wallet";
 import debug from "debug";
 
 enum Payment_PaymentStatus {

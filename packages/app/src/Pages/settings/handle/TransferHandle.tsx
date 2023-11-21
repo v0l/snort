@@ -2,11 +2,11 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import { ApiHost } from "Const";
-import AsyncButton from "Element/AsyncButton";
-import useEventPublisher from "Hooks/useEventPublisher";
-import { ServiceError } from "Nip05/ServiceProvider";
-import SnortServiceProvider, { ManageHandle } from "Nip05/SnortServiceProvider";
+import { ApiHost } from "@/Const";
+import AsyncButton from "@/Element/AsyncButton";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { ServiceError } from "@/Nip05/ServiceProvider";
+import SnortServiceProvider, { ManageHandle } from "@/Nip05/SnortServiceProvider";
 
 export default function TransferHandle({ handle }: { handle: ManageHandle }) {
   const { publisher } = useEventPublisher();
@@ -31,7 +31,7 @@ export default function TransferHandle({ handle }: { handle: ManageHandle }) {
   return (
     <div>
       <h4>
-        <FormattedMessage defaultMessage="Transfer to Pubkey" />
+        <FormattedMessage defaultMessage="Transfer to Pubkey" id="5u6iEc" />
       </h4>
       <div className="flex">
         <div className="grow">
@@ -40,13 +40,14 @@ export default function TransferHandle({ handle }: { handle: ManageHandle }) {
             className="w-max mr10"
             placeholder={formatMessage({
               defaultMessage: "Public key (npub/nprofile)",
+              id: "VR5eHw",
             })}
             value={newKey}
             onChange={e => setNewKey(e.target.value)}
           />
         </div>
         <AsyncButton onClick={() => startTransfer()}>
-          <FormattedMessage defaultMessage="Transfer" />
+          <FormattedMessage defaultMessage="Transfer" id="DtYelJ" />
         </AsyncButton>
       </div>
       {error && <b className="error">{error}</b>}

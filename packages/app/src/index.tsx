@@ -21,43 +21,44 @@ import {
   encodeTLVEntries,
   socialGraphInstance,
 } from "@snort/system";
+import PowWorkerURL from "@snort/system/src/pow-worker.ts?worker&url";
 import { SnortContext } from "@snort/system-react";
 import { removeUndefined, throwIfOffline } from "@snort/shared";
 
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
-const NetworkGraph = lazy(() => import("Pages/NetworkGraph"));
+const NetworkGraph = lazy(() => import("@/Pages/NetworkGraph"));
 
-import * as serviceWorkerRegistration from "serviceWorkerRegistration";
-import { IntlProvider } from "IntlProvider";
-import { getCountry, unwrap } from "SnortUtils";
-import Layout from "Pages/Layout";
-import ProfilePage from "Pages/Profile/ProfilePage";
-import { RootRoutes, RootTabRoutes } from "Pages/Root";
-import NotificationsPage from "Pages/Notifications";
-import SettingsPage, { SettingsRoutes } from "Pages/SettingsPage";
-import ErrorPage from "Pages/ErrorPage";
-import NostrAddressPage from "Pages/NostrAddressPage";
-import MessagesPage from "Pages/MessagesPage";
-import DonatePage from "Pages/DonatePage";
-import SearchPage from "Pages/SearchPage";
-import HelpPage from "Pages/HelpPage";
-import { WalletRoutes } from "Pages/WalletPage";
-import NostrLinkHandler from "Pages/NostrLinkHandler";
-import { ThreadRoute } from "Element/Event/Thread";
-import { SubscribeRoutes } from "Pages/subscribe";
-import ZapPoolPage from "Pages/ZapPool";
-import { db } from "Db";
-import { preload, RelayMetrics, SystemDb, UserCache, UserRelays } from "Cache";
-import { LoginStore } from "Login";
-import { SnortDeckLayout } from "Pages/DeckLayout";
-import FreeNostrAddressPage from "./Pages/FreeNostrAddressPage";
-import { ListFeedPage } from "Pages/ListFeedPage";
-import { updateRelayConnections } from "Hooks/useLoginRelays";
-import { AboutPage } from "Pages/About";
-import { OnboardingRoutes } from "Pages/onboarding";
-import { setupWebLNWalletConfig } from "Wallet/WebLN";
-import { Wallets } from "Wallet";
+import * as serviceWorkerRegistration from "@/serviceWorkerRegistration";
+import { IntlProvider } from "@/IntlProvider";
+import { getCountry, unwrap } from "@/SnortUtils";
+import Layout from "@/Pages/Layout";
+import ProfilePage from "@/Pages/Profile/ProfilePage";
+import { RootRoutes, RootTabRoutes } from "@/Pages/Root";
+import NotificationsPage from "@/Pages/Notifications";
+import SettingsPage, { SettingsRoutes } from "@/Pages/SettingsPage";
+import ErrorPage from "@/Pages/ErrorPage";
+import NostrAddressPage from "@/Pages/NostrAddressPage";
+import MessagesPage from "@/Pages/MessagesPage";
+import DonatePage from "@/Pages/DonatePage";
+import SearchPage from "@/Pages/SearchPage";
+import HelpPage from "@/Pages/HelpPage";
+import { WalletRoutes } from "@/Pages/WalletPage";
+import NostrLinkHandler from "@/Pages/NostrLinkHandler";
+import { ThreadRoute } from "@/Element/Event/Thread";
+import { SubscribeRoutes } from "@/Pages/subscribe";
+import ZapPoolPage from "@/Pages/ZapPool";
+import { db } from "@/Db";
+import { preload, RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
+import { LoginStore } from "@/Login";
+import { SnortDeckLayout } from "@/Pages/DeckLayout";
+import FreeNostrAddressPage from "@/Pages/FreeNostrAddressPage";
+import { ListFeedPage } from "@/Pages/ListFeedPage";
+import { updateRelayConnections } from "@/Hooks/useLoginRelays";
+import { AboutPage } from "@/Pages/About";
+import { OnboardingRoutes } from "@/Pages/onboarding";
+import { setupWebLNWalletConfig } from "@/Wallet/WebLN";
+import { Wallets } from "@/Wallet";
 
 declare global {
   interface Window {
@@ -88,7 +89,7 @@ export class WasmPowWorker implements PowMiner {
 }
 
 const hasWasm = "WebAssembly" in globalThis;
-const DefaultPowWorker = hasWasm ? undefined : new PowWorker("/pow.js");
+const DefaultPowWorker = hasWasm ? undefined : new PowWorker(PowWorkerURL);
 export const GetPowWorker = () => (hasWasm ? new WasmPowWorker() : unwrap(DefaultPowWorker));
 
 /**
@@ -308,3 +309,7 @@ root.render(
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 window.encodeTLV = encodeTLVEntries;
+
+// Use react-helmet instead?
+document.title = CONFIG.appTitle;
+document.querySelector('link[rel="apple-touch-icon"]')?.setAttribute("href", CONFIG.appleTouchIconUrl);

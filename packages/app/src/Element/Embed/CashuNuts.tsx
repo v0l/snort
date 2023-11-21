@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
-import useLogin from "Hooks/useLogin";
-import Icon from "Icons/Icon";
+import useLogin from "@/Hooks/useLogin";
+import Icon from "@/Icons/Icon";
 
 interface Token {
   token: Array<{
@@ -108,6 +108,7 @@ export default function CashuNuts({ token }: { token: string }) {
           </svg>
           <FormattedMessage
             defaultMessage="<h1>{n}</h1> Cashu sats"
+            id="6/SF6e"
             values={{
               h1: c => <h1>{c}</h1>,
               n: <FormattedNumber value={amount} />,
@@ -117,6 +118,7 @@ export default function CashuNuts({ token }: { token: string }) {
         <small className="xs w-max">
           <FormattedMessage
             defaultMessage="<b>Mint:</b> {url}"
+            id="zwb6LR"
             values={{
               b: c => <b>{c}</b>,
               url: new URL(cashu.token[0].mint).hostname,
@@ -129,7 +131,7 @@ export default function CashuNuts({ token }: { token: string }) {
           <Icon name="copy" />
         </button>
         <button onClick={e => redeemToken(e, token)}>
-          <FormattedMessage defaultMessage="Redeem" description="Button: Redeem Cashu token" />
+          <FormattedMessage defaultMessage="Redeem" id="XrSk2j" description="Button: Redeem Cashu token" />
         </button>
       </div>
     </div>

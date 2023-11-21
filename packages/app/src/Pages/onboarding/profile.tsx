@@ -1,13 +1,13 @@
-import AsyncButton from "Element/AsyncButton";
-import AvatarEditor from "Element/User/AvatarEditor";
+import AsyncButton from "@/Element/AsyncButton";
+import AvatarEditor from "@/Element/User/AvatarEditor";
 import { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
-import { generateNewLogin } from "Login";
+import { generateNewLogin } from "@/Login";
 import { SnortContext } from "@snort/system-react";
 import { NotEncrypted } from "@snort/system";
 import { NewUserState } from ".";
-import { trackEvent } from "SnortUtils";
+import { trackEvent } from "@/SnortUtils";
 
 export function Profile() {
   const system = useContext(SnortContext);
@@ -36,11 +36,11 @@ export function Profile() {
   return (
     <div className="flex flex-col g24 text-center">
       <h1>
-        <FormattedMessage defaultMessage="Profile Image" />
+        <FormattedMessage defaultMessage="Profile Image" id="vN5UH8" />
       </h1>
       <AvatarEditor picture={picture} onPictureChange={p => setPicture(p)} />
       <AsyncButton className="primary" onClick={() => makeRandomKey()}>
-        <FormattedMessage defaultMessage="Next" />
+        <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
       </AsyncButton>
       {error && <b className="error">{error}</b>}
     </div>

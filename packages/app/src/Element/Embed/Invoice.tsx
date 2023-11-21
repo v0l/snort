@@ -5,9 +5,9 @@ import { useMemo } from "react";
 import { decodeInvoice } from "@snort/shared";
 import classNames from "classnames";
 
-import SendSats from "Element/SendSats";
-import Icon from "Icons/Icon";
-import { useWallet } from "Wallet";
+import SendSats from "@/Element/SendSats";
+import Icon from "@/Icons/Icon";
+import { useWallet } from "@/Wallet";
 
 import messages from "../messages";
 
@@ -76,7 +76,7 @@ export default function Invoice(props: InvoiceProps) {
           {description && <p>{description}</p>}
           {isPaid ? (
             <div className="paid">
-              <FormattedMessage defaultMessage="Paid" />
+              <FormattedMessage defaultMessage="Paid" id="u/vOPu" />
             </div>
           ) : (
             <button disabled={isExpired} type="button" onClick={payInvoice}>

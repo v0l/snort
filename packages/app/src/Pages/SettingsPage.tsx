@@ -1,15 +1,15 @@
 import { FormattedMessage } from "react-intl";
 import { Outlet, RouteObject, useNavigate } from "react-router-dom";
-import SettingsIndex from "Pages/settings/Root";
-import Profile from "Pages/settings/Profile";
-import Relay from "Pages/settings/Relays";
-import Preferences from "Pages/settings/Preferences";
-import RelayInfo from "Pages/settings/RelayInfo";
-import AccountsPage from "Pages/settings/Accounts";
-import { WalletSettingsRoutes } from "Pages/settings/WalletSettings";
-import { ManageHandleRoutes } from "Pages/settings/handle";
-import ExportKeys from "Pages/settings/Keys";
-import { ModerationSettings } from "Pages/settings/Moderation";
+import SettingsIndex from "@/Pages/settings/Root";
+import Profile from "@/Pages/settings/Profile";
+import Relay from "@/Pages/settings/Relays";
+import Preferences from "@/Pages/settings/Preferences";
+import RelayInfo from "@/Pages/settings/RelayInfo";
+import AccountsPage from "@/Pages/settings/Accounts";
+import { WalletSettingsRoutes } from "@/Pages/settings/WalletSettings";
+import { ManageHandleRoutes } from "@/Pages/settings/handle";
+import ExportKeys from "@/Pages/settings/Keys";
+import { ModerationSettings } from "@/Pages/settings/Moderation";
 import { CacheSettings } from "./settings/Cache";
 
 import messages from "./messages";

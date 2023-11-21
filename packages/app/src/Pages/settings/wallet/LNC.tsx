@@ -3,9 +3,9 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 
-import AsyncButton from "Element/AsyncButton";
-import { LNWallet, WalletInfo, WalletKind, Wallets } from "Wallet";
-import { unwrap } from "SnortUtils";
+import AsyncButton from "@/Element/AsyncButton";
+import { LNWallet, WalletInfo, WalletKind, Wallets } from "@/Wallet";
+import { unwrap } from "@/SnortUtils";
 
 const ConnectLNC = () => {
   const { formatMessage } = useIntl();
@@ -18,7 +18,7 @@ const ConnectLNC = () => {
 
   async function tryConnect(cfg: string) {
     try {
-      const { LNCWallet } = await import("Wallet/LNCWallet");
+      const { LNCWallet } = await import("@/Wallet/LNCWallet");
       const lnc = await LNCWallet.Initialize(cfg);
       const info = await lnc.getInfo();
 
@@ -32,6 +32,7 @@ const ConnectLNC = () => {
         setError(
           formatMessage({
             defaultMessage: "Unknown error",
+            id: "qDwvZ4",
           }),
         );
       }
@@ -54,20 +55,20 @@ const ConnectLNC = () => {
     return (
       <>
         <h4>
-          <FormattedMessage defaultMessage="Enter pairing phrase" />
+          <FormattedMessage defaultMessage="Enter pairing phrase" id="Z4BMCZ" />
         </h4>
         <div className="flex">
           <div className="grow mr10">
             <input
               type="text"
-              placeholder={formatMessage({ defaultMessage: "Pairing phrase" })}
+              placeholder={formatMessage({ defaultMessage: "Pairing phrase", id: "8v1NN+" })}
               className="w-max"
               value={pairingPhrase}
               onChange={e => setPairingPhrase(e.target.value)}
             />
           </div>
           <AsyncButton onClick={() => tryConnect(unwrap(pairingPhrase))} disabled={!pairingPhrase}>
-            <FormattedMessage defaultMessage="Connect" />
+            <FormattedMessage defaultMessage="Connect" id="+vVZ/G" />
           </AsyncButton>
         </div>
         {error && <b className="error p10">{error}</b>}
@@ -82,19 +83,20 @@ const ConnectLNC = () => {
         <h3>
           <FormattedMessage
             defaultMessage="Connected to: {node} 🎉"
+            id="1c4YST"
             values={{
               node: walletInfo?.alias,
             }}
           />
         </h3>
         <h4>
-          <FormattedMessage defaultMessage="Enter password" />
+          <FormattedMessage defaultMessage="Enter password" id="2LbrkB" />
         </h4>
         <div className="flex w-max">
           <div className="grow mr10">
             <input
               type="password"
-              placeholder={formatMessage({ defaultMessage: "Wallet password" })}
+              placeholder={formatMessage({ defaultMessage: "Wallet password", id: "lTbT3s" })}
               className="w-max"
               value={walletPassword}
               onChange={e => setWalletPassword(e.target.value)}
@@ -103,7 +105,7 @@ const ConnectLNC = () => {
           <AsyncButton
             onClick={() => setLNCPassword(unwrap(walletPassword))}
             disabled={(walletPassword?.length ?? 0) < 8}>
-            <FormattedMessage defaultMessage="Save" />
+            <FormattedMessage defaultMessage="Save" id="jvo0vs" />
           </AsyncButton>
         </div>
       </div>

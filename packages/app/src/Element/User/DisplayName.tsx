@@ -2,7 +2,7 @@ import "./DisplayName.css";
 
 import { useMemo } from "react";
 import { HexKey, UserMetadata } from "@snort/system";
-import { getDisplayNameOrPlaceHolder } from "SnortUtils";
+import { getDisplayNameOrPlaceHolder } from "@/SnortUtils";
 
 interface DisplayNameProps {
   pubkey: HexKey;

@@ -4,12 +4,12 @@ import { useState, useMemo, useEffect } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import { TaggedNostrEvent, ParsedZap } from "@snort/system";
 
-import { formatShort } from "Number";
-import Icon from "Icons/Icon";
-import { Tab } from "Element/Tabs";
-import ProfileImage from "Element/User/ProfileImage";
-import Tabs from "Element/Tabs";
-import Modal from "Element/Modal";
+import { formatShort } from "@/Number";
+import Icon from "@/Icons/Icon";
+import { Tab } from "@/Element/Tabs";
+import ProfileImage from "@/Element/User/ProfileImage";
+import Tabs from "@/Element/Tabs";
+import Modal from "@/Element/Modal";
 
 import messages from "../messages";
 
@@ -105,7 +105,9 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
                     pubkey={z.anonZap ? "" : z.sender}
                     subHeader={<div title={z.content}>{z.content}</div>}
                     link={z.anonZap ? "" : undefined}
-                    overrideUsername={z.anonZap ? formatMessage({ defaultMessage: "Anonymous" }) : undefined}
+                    overrideUsername={
+                      z.anonZap ? formatMessage({ defaultMessage: "Anonymous", id: "LXxsbk" }) : undefined
+                    }
                   />
                 </div>
               )

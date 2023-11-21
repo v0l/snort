@@ -4,10 +4,10 @@ import { FormattedMessage } from "react-intl";
 import { useLocation, useParams } from "react-router-dom";
 import { fetchNip05Pubkey } from "@snort/shared";
 
-import Spinner from "Icons/Spinner";
-import ProfilePage from "Pages/Profile/ProfilePage";
-import { ThreadRoute } from "Element/Event/Thread";
-import { GenericFeed } from "Element/Feed/Generic";
+import Spinner from "@/Icons/Spinner";
+import ProfilePage from "@/Pages/Profile/ProfilePage";
+import { ThreadRoute } from "@/Element/Event/Thread";
+import { GenericFeed } from "@/Element/Feed/Generic";
 
 export default function NostrLinkHandler() {
   const params = useParams();
@@ -61,7 +61,7 @@ export default function NostrLinkHandler() {
         <Spinner width={50} height={50} />
       ) : (
         <b className="error">
-          <FormattedMessage defaultMessage="Nothing found :/" />
+          <FormattedMessage defaultMessage="Nothing found :/" id="oJ+JJN" />
         </b>
       )}
     </div>

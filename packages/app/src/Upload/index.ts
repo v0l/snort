@@ -1,14 +1,15 @@
 import { useState } from "react";
-import useLogin from "Hooks/useLogin";
+import useLogin from "@/Hooks/useLogin";
 import { NostrEvent } from "@snort/system";
 import { v4 as uuid } from "uuid";
 
-import NostrBuild from "Upload/NostrBuild";
-import VoidCat from "Upload/VoidCat";
-import NostrImg from "Upload/NostrImg";
-import { KieranPubKey } from "Const";
-import { bech32ToHex } from "SnortUtils";
-import useEventPublisher from "Hooks/useEventPublisher";
+import NostrBuild from "@/Upload/NostrBuild";
+import VoidCat from "@/Upload/VoidCat";
+import NostrImg from "@/Upload/NostrImg";
+import { KieranPubKey } from "@/Const";
+import { bech32ToHex, unwrap } from "@/SnortUtils";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { Nip96Uploader } from "./Nip96";
 
 export interface UploadResult {
   url?: string;
@@ -73,6 +74,12 @@ export default function useFileUpload(): Uploader {
         upload: f => NostrBuild(f, publisher),
         progress: [],
       } as Uploader;
+    }
+    case "void.cat-NIP96": {
+      return new Nip96Uploader("https://void.cat/nostr", unwrap(publisher));
+    }
+    case "nostrcheck.me": {
+      return new Nip96Uploader("https://nostrcheck.me/api/v2/nip96", unwrap(publisher));
     }
     case "nostrimg.com": {
       return {

@@ -1,13 +1,13 @@
 import "./Note.css";
 import { ReactNode } from "react";
 import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
-import { NostrFileElement } from "Element/Event/NostrFileHeader";
-import ZapstrEmbed from "Element/Embed/ZapstrEmbed";
-import PubkeyList from "Element/Embed/PubkeyList";
-import { LiveEvent } from "Element/LiveEvent";
-import { ZapGoal } from "Element/Event/ZapGoal";
-import NoteReaction from "Element/Event/NoteReaction";
-import ProfilePreview from "Element/User/ProfilePreview";
+import { NostrFileElement } from "@/Element/Event/NostrFileHeader";
+import ZapstrEmbed from "@/Element/Embed/ZapstrEmbed";
+import PubkeyList from "@/Element/Embed/PubkeyList";
+import { LiveEvent } from "@/Element/LiveEvent";
+import { ZapGoal } from "@/Element/Event/ZapGoal";
+import NoteReaction from "@/Element/Event/NoteReaction";
+import ProfilePreview from "@/Element/User/ProfilePreview";
 import { NoteInner } from "./NoteInner";
 import { LongFormText } from "./LongFormText";
 

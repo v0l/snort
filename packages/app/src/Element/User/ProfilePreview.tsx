@@ -4,8 +4,8 @@ import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useInView } from "react-intersection-observer";
 
-import ProfileImage from "Element/User/ProfileImage";
-import FollowButton from "Element/User/FollowButton";
+import ProfileImage from "@/Element/User/ProfileImage";
+import FollowButton from "@/Element/User/FollowButton";
 
 export interface ProfilePreviewProps {
   pubkey: HexKey;

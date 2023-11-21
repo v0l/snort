@@ -3,9 +3,9 @@ import { EventKind, NostrLink, NoteCollection, RequestBuilder } from "@snort/sys
 import { useReactions, useRequestBuilder } from "@snort/system-react";
 import { unixNow } from "@snort/shared";
 
-import useTimelineWindow from "Hooks/useTimelineWindow";
-import useLogin from "Hooks/useLogin";
-import { SearchRelays } from "Const";
+import useTimelineWindow from "@/Hooks/useTimelineWindow";
+import useLogin from "@/Hooks/useLogin";
+import { SearchRelays } from "@/Const";
 
 export interface TimelineFeedOptions {
   method: "TIME_RANGE" | "LIMIT_UNTIL";

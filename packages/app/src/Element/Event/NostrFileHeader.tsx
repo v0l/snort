@@ -2,10 +2,10 @@ import { FormattedMessage } from "react-intl";
 import { NostrEvent, NostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 
-import { findTag } from "SnortUtils";
-import PageSpinner from "Element/PageSpinner";
-import Reveal from "Element/Event/Reveal";
-import { MediaElement } from "Element/Embed/MediaElement";
+import { findTag } from "@/SnortUtils";
+import PageSpinner from "@/Element/PageSpinner";
+import Reveal from "@/Element/Event/Reveal";
+import { MediaElement } from "@/Element/Embed/MediaElement";
 
 export default function NostrFileHeader({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);
@@ -26,14 +26,17 @@ export function NostrFileElement({ ev }: { ev: NostrEvent }) {
 
   if (u && m) {
     return (
-      <Reveal message={<FormattedMessage defaultMessage="Click to load content from {link}" values={{ link: u }} />}>
+      <Reveal
+        message={
+          <FormattedMessage defaultMessage="Click to load content from {link}" id="lsNFM1" values={{ link: u }} />
+        }>
         <MediaElement mime={m} url={u} sha256={x} magnet={magnet} blurHash={blurHash} />
       </Reveal>
     );
   } else {
     return (
       <b className="error">
-        <FormattedMessage defaultMessage="Unknown file header: {name}" values={{ name: ev.content }} />
+        <FormattedMessage defaultMessage="Unknown file header: {name}" id="PamNxw" values={{ name: ev.content }} />
       </b>
     );
   }

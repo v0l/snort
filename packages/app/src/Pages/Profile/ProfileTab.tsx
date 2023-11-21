@@ -2,18 +2,18 @@ import { FormattedMessage } from "react-intl";
 import { HexKey, NostrLink, NostrPrefix } from "@snort/system";
 import { useReactions } from "@snort/system-react";
 
-import useZapsFeed from "Feed/ZapsFeed";
-import { formatShort } from "Number";
-import useFollowersFeed from "Feed/FollowersFeed";
-import FollowsList from "Element/User/FollowListBase";
-import useFollowsFeed from "Feed/FollowsFeed";
-import useRelaysFeed from "Feed/RelaysFeed";
-import RelaysMetadata from "Element/Relay/RelaysMetadata";
-import Bookmarks from "Element/User/Bookmarks";
-import Icon from "Icons/Icon";
-import { Tab } from "Element/Tabs";
-import { default as ZapElement } from "Element/Event/Zap";
-import useCategorizedBookmarks from "Hooks/useLists";
+import useZapsFeed from "@/Feed/ZapsFeed";
+import { formatShort } from "@/Number";
+import useFollowersFeed from "@/Feed/FollowersFeed";
+import FollowsList from "@/Element/User/FollowListBase";
+import useFollowsFeed from "@/Feed/FollowsFeed";
+import useRelaysFeed from "@/Feed/RelaysFeed";
+import RelaysMetadata from "@/Element/Relay/RelaysMetadata";
+import Bookmarks from "@/Element/User/Bookmarks";
+import Icon from "@/Icons/Icon";
+import { Tab } from "@/Element/Tabs";
+import { default as ZapElement } from "@/Element/Event/Zap";
+import useCategorizedBookmarks from "@/Hooks/useLists";
 
 import messages from "../messages";
 
@@ -70,7 +70,7 @@ const ProfileTab = {
     text: (
       <>
         <Icon name="pencil" size={16} />
-        <FormattedMessage defaultMessage="Notes" />
+        <FormattedMessage defaultMessage="Notes" id="7+Domh" />
       </>
     ),
     value: ProfileTabType.NOTES,
@@ -79,7 +79,7 @@ const ProfileTab = {
     text: (
       <>
         <Icon name="reaction" size={16} />
-        <FormattedMessage defaultMessage="Reactions" />
+        <FormattedMessage defaultMessage="Reactions" id="XgWvGA" />
       </>
     ),
     value: ProfileTabType.REACTIONS,
@@ -88,7 +88,7 @@ const ProfileTab = {
     text: (
       <>
         <Icon name="user-v2" size={16} />
-        <FormattedMessage defaultMessage="Followers" />
+        <FormattedMessage defaultMessage="Followers" id="pzTOmv" />
       </>
     ),
     value: ProfileTabType.FOLLOWERS,
@@ -97,7 +97,7 @@ const ProfileTab = {
     text: (
       <>
         <Icon name="stars" size={16} />
-        <FormattedMessage defaultMessage="Follows" />
+        <FormattedMessage defaultMessage="Follows" id="IKKHqV" />
       </>
     ),
     value: ProfileTabType.FOLLOWS,
@@ -106,7 +106,7 @@ const ProfileTab = {
     text: (
       <>
         <Icon name="zap-solid" size={16} />
-        <FormattedMessage defaultMessage="Zaps" />
+        <FormattedMessage defaultMessage="Zaps" id="OEW7yJ" />
       </>
     ),
     value: ProfileTabType.ZAPS,
@@ -115,7 +115,7 @@ const ProfileTab = {
     text: (
       <>
         <Icon name="mute" size={16} />
-        <FormattedMessage defaultMessage="Muted" />
+        <FormattedMessage defaultMessage="Muted" id="HOzFdo" />
       </>
     ),
     value: ProfileTabType.MUTED,
@@ -124,7 +124,7 @@ const ProfileTab = {
     text: (
       <>
         <Icon name="block" size={16} />
-        <FormattedMessage defaultMessage="Blocked" />
+        <FormattedMessage defaultMessage="Blocked" id="qUJTsT" />
       </>
     ),
     value: ProfileTabType.BLOCKED,
@@ -133,7 +133,7 @@ const ProfileTab = {
     text: (
       <>
         <Icon name="wifi" size={16} />
-        <FormattedMessage defaultMessage="Relays" />
+        <FormattedMessage defaultMessage="Relays" id="RoOyAh" />
       </>
     ),
     value: ProfileTabType.RELAYS,
@@ -142,7 +142,7 @@ const ProfileTab = {
     text: (
       <>
         <Icon name="bookmark-solid" size={16} />
-        <FormattedMessage defaultMessage="Bookmarks" />
+        <FormattedMessage defaultMessage="Bookmarks" id="nGBrvw" />
       </>
     ),
     value: ProfileTabType.BOOKMARKS,

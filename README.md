@@ -24,7 +24,7 @@ Snort supports the following NIP's:
 - [x] NIP-25: Reactions
 - [x] NIP-26: Delegated Event Signing (Display delegated signings only)
 - [x] NIP-27: Text note references
-- [ ] NIP-28: Public Chat
+- [x] NIP-28: Public Chat
 - [x] NIP-30: Custom Emoji
 - [x] NIP-31: Alt tag for unknown events
 - [x] NIP-36: Sensitive Content
@@ -43,9 +43,10 @@ Snort supports the following NIP's:
 - [x] NIP-59: Gift Wrap
 - [x] NIP-65: Relay List Metadata
 - [x] NIP-75: Zap Goals
-- [ ] NIP-78: App specific data
+- [x] NIP-78: App specific data
 - [ ] NIP-89: App handlers
 - [x] NIP-94: File Metadata
+- [x] NIP-96: HTTP File Storage Integration (Draft)
 - [x] NIP-98: HTTP Auth
 
 ### Running
@@ -58,7 +59,7 @@ To run the application, use
 $ yarn start
 ```
 
-To build the application and nostr package, use
+To build the application and system packages, use
 
 ```
 $ yarn build
@@ -73,8 +74,7 @@ Translations are managed on [Crowdin](https://crowdin.com/project/snort)
 To extract translations run:
 
 ```bash
-yarn workspace @snort/app intl-extract
-yarn workspace @snort/app intl-compile
+yarn pre:commit
 ```
 
 This will create the source file `packages/app/src/translations/en.json`

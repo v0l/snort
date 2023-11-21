@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { HexKey, NostrPrefix } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
-import FollowListBase from "Element/User/FollowListBase";
-import PageSpinner from "Element/PageSpinner";
-import NostrBandApi from "External/NostrBand";
-import SemisolDevApi from "External/SemisolDev";
-import useLogin from "Hooks/useLogin";
-import { hexToBech32 } from "SnortUtils";
+import FollowListBase from "@/Element/User/FollowListBase";
+import PageSpinner from "@/Element/PageSpinner";
+import NostrBandApi from "@/External/NostrBand";
+import SemisolDevApi from "@/External/SemisolDev";
+import useLogin from "@/Hooks/useLogin";
+import { hexToBech32 } from "@/SnortUtils";
 import { ErrorOrOffline } from "./ErrorOrOffline";
 
 enum Provider {
@@ -57,7 +57,7 @@ export default function SuggestedProfiles() {
   return (
     <>
       <div className="flex items-center justify-between bg-superdark p br">
-        <FormattedMessage defaultMessage="Provider" />
+        <FormattedMessage defaultMessage="Provider" id="xaj9Ba" />
         <select onChange={e => setProvider(Number(e.target.value))}>
           <option value={Provider.NostrBand}>nostr.band</option>
           {/*<option value={Provider.SemisolDev}>semisol.dev</option>*/}

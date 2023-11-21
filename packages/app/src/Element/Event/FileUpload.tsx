@@ -1,5 +1,5 @@
-import Progress from "Element/Progress";
-import { UploadProgress } from "Upload";
+import Progress from "@/Element/Progress";
+import { UploadProgress } from "@/Upload";
 
 export default function FileUploadProgress({ progress }: { progress: Array<UploadProgress> }) {
   return (

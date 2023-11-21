@@ -1,7 +1,7 @@
 import "./Copy.css";
 import classNames from "classnames";
-import Icon from "Icons/Icon";
-import { useCopy } from "useCopy";
+import Icon from "@/Icons/Icon";
+import { useCopy } from "@/useCopy";
 
 export interface CopyProps {
   text: string;

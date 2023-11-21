@@ -1,8 +1,8 @@
 import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
-import AsyncButton from "Element/AsyncButton";
+import AsyncButton from "@/Element/AsyncButton";
 import { NewUserState } from ".";
-import TrendingUsers from "Element/TrendingUsers";
+import TrendingUsers from "@/Element/TrendingUsers";
 
 export function Discover() {
   const location = useLocation();
@@ -14,6 +14,7 @@ export function Discover() {
       <h1 className="text-center">
         <FormattedMessage
           defaultMessage="{site} is more fun together!"
+          id="h7jvCs"
           values={{
             site: CONFIG.appNameCapitalized,
           }}
@@ -23,7 +24,7 @@ export function Discover() {
         <TrendingUsers
           title={
             <h3>
-              <FormattedMessage defaultMessage="Trending Users" />
+              <FormattedMessage defaultMessage="Trending Users" id="FSYL8G" />
             </h3>
           }
         />
@@ -35,7 +36,7 @@ export function Discover() {
             state,
           })
         }>
-        <FormattedMessage defaultMessage="Next" />
+        <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
       </AsyncButton>
     </div>
   );
