@@ -61,7 +61,9 @@ export default function Index() {
           <MainContent shouldHideHeader={shouldHideHeader} />
           <RightColumn className="w-1/4 flex-shrink-0" />
         </div>
-        <NoteCreatorButton className="note-create-button" />
+        <div className="md:hidden">
+          <NoteCreatorButton className="note-create-button" />
+        </div>
         <Toaster />
       </div>
       <LoginUnlock />

@@ -5,10 +5,11 @@ import {ProfileLink} from "../../Element/User/ProfileLink";
 import Avatar from "../../Element/User/Avatar";
 import useLogin from "../../Hooks/useLogin";
 import {useUserProfile} from "@snort/system-react";
+import {NoteCreatorButton} from "../../Element/Event/NoteCreatorButton";
 
 const MENU_ITEMS = [
   {
-    label: "Notes",
+    label: "Home",
     icon: "notes",
     link: "/",
   },
@@ -39,29 +40,34 @@ export default function NavSidebar() {
   const profile = useUserProfile(publicKey);
 
   return (
-    <div className="sticky border-r border-neutral-900 top-0 z-20 h-screen max-h-screen hidden md:flex xl:w-56 flex-col px-2 py-4 flex-shrink-0 gap-2">
+    <div className="sticky items-center xl:items-start border-r border-neutral-900 top-0 z-20 h-screen max-h-screen hidden md:flex xl:w-56 flex-col px-2 py-4 flex-shrink-0 gap-4">
       <LogoHeader />
       <div className="flex-grow flex flex-col justify-between">
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center xl:items-start font-bold text-lg">
           {MENU_ITEMS.map(item => (
             <NavLink
               key={item.link}
               to={item.link}
-              className="settings-row hover:no-underline"
+              className="py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center"
               activeClassName="bg-neutral-800 text-neutral-200">
               <Icon name={item.icon} size={24} />
               <span className="hidden xl:inline ml-2">{item.label}</span>
             </NavLink>
           ))}
+          <div className="mt-2">
+            <NoteCreatorButton alwaysShow={true} />
+          </div>
         </div>
       </div>
       {publicKey ? (
-        <ProfileLink pubkey={publicKey} user={profile}>
-          <div className="flex flex-row items-center">
-            <Avatar pubkey={publicKey} user={profile} size={40} />
-            <span className="hidden xl:inline ml-2">{profile?.name}</span>
-          </div>
-        </ProfileLink>
+        <>
+          <ProfileLink pubkey={publicKey} user={profile}>
+            <div className="flex flex-row items-center font-bold text-md">
+              <Avatar pubkey={publicKey} user={profile} size={40} />
+              <span className="hidden xl:inline ml-2">{profile?.name}</span>
+            </div>
+          </ProfileLink>
+        </>
       ) : ''}
     </div>
   );
