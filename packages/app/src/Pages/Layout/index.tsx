@@ -56,9 +56,12 @@ export default function Index() {
   return (
     <div className="h-screen flex justify-center">
       <div className={`${pageClass} w-full max-w-screen-xl overflow-x-hidden`}>
+        {!shouldHideHeader && <Header />}
         <div className="flex flex-row w-full">
           <NavSidebar className="w-1/4 flex-shrink-0" />
-          <MainContent shouldHideHeader={shouldHideHeader} />
+          <div className="flex flex-1 flex-col overflow-x-hidden">
+            <Outlet />
+          </div>
           <RightColumn className="w-1/4 flex-shrink-0" />
         </div>
         <div className="md:hidden">
@@ -72,18 +75,9 @@ export default function Index() {
   );
 }
 
-function MainContent({ shouldHideHeader }) {
-  return (
-    <div className="flex flex-1 flex-col overflow-x-hidden">
-      {!shouldHideHeader && <Header />}
-      <Outlet />
-    </div>
-  );
-}
-
 function Header() {
   return (
-    <header className="sticky top-0 md:hidden">
+    <header className="sticky top-0 md:hidden z-10 backdrop-blur-lg">
       <LogoHeader />
       <AccountHeader />
     </header>
