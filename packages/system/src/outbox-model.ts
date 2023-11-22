@@ -1,12 +1,4 @@
-import {
-  EventKind,
-  FullRelaySettings,
-  NostrEvent,
-  ReqFilter,
-  RequestBuilder,
-  SystemInterface,
-  UsersRelays,
-} from ".";
+import { EventKind, FullRelaySettings, NostrEvent, ReqFilter, RequestBuilder, SystemInterface, UsersRelays } from ".";
 import { dedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
 import debug from "debug";
 import { FlatReqFilter } from "./query-optimizer";

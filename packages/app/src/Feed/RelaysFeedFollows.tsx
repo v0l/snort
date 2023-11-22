@@ -1,5 +1,13 @@
 import { useMemo } from "react";
-import { HexKey, FullRelaySettings, TaggedNostrEvent, EventKind, NoteCollection, RequestBuilder, parseRelayTags } from "@snort/system";
+import {
+  HexKey,
+  FullRelaySettings,
+  TaggedNostrEvent,
+  EventKind,
+  NoteCollection,
+  RequestBuilder,
+  parseRelayTags,
+} from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import debug from "debug";
 
