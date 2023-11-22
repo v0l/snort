@@ -14,7 +14,7 @@ export function LogoHeader() {
   };
 
   const handleLogoClick = () => {
-    window.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0, behavior: "instant" });
   };
 
   return (

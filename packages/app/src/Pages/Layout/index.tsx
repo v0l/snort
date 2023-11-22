@@ -47,7 +47,7 @@ export default function Index() {
   const handleKeyboardShortcut = useCallback(event => {
     if (event.target && !isFormElement(event.target as HTMLElement)) {
       event.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: "instant" });
     }
   }, []);
 
@@ -56,15 +56,15 @@ export default function Index() {
   const isStalker = !!stalker;
 
   return (
-    <div className="h-screen flex justify-center">
-      <div className={`${pageClass} w-full max-w-screen-xl overflow-x-hidden`}>
+    <div className="flex justify-center">
+      <div className={`${pageClass} w-full max-w-screen-xl`}>
         {!shouldHideHeader && <Header />}
         <div className="flex flex-row w-full">
-          <NavSidebar className="w-1/4 flex-shrink-0" />
+          <NavSidebar />
           <div className="flex flex-1 flex-col overflow-x-hidden">
             <Outlet />
           </div>
-          <RightColumn className="w-1/4 flex-shrink-0" />
+          <RightColumn />
         </div>
         <div className="md:hidden">
           <NoteCreatorButton className="note-create-button" />

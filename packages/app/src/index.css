@@ -132,10 +132,6 @@ a.ext {
   overflow-wrap: break-word;
 }
 
-#root {
-  overflow-x: hidden;
-}
-
 .b {
   border: 1px solid var(--border-color);
 }
