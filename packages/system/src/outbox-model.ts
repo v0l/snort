@@ -1,5 +1,14 @@
-import { EventKind, FullRelaySettings, NostrEvent, ReqFilter, RequestBuilder, SystemInterface, UsersRelays } from ".";
-import { dedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
+import {
+  EventKind,
+  FullRelaySettings,
+  NostrEvent,
+  ReqFilter,
+  RequestBuilder,
+  SystemInterface,
+  TaggedNostrEvent,
+  UsersRelays,
+} from ".";
+import { dedupe, removeUndefined, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
 import debug from "debug";
 import { FlatReqFilter } from "./query-optimizer";
 import { RelayListCacheExpire } from "./const";
@@ -193,7 +202,7 @@ export async function pickRelaysForReply(ev: NostrEvent, system: SystemInterface
   const recipients = dedupe(ev.tags.filter(a => a[0] === "p").map(a => a[1]));
   await updateRelayLists(recipients, system);
   const relays = pickTopRelays(system.RelayCache, recipients, 2, "read");
-  const ret = dedupe(relays.map(a => a.relays).flat());
+  const ret = removeUndefined(dedupe(relays.map(a => a.relays).flat()));
   logger("Picked %O from authors %O", ret, recipients);
   return ret;
 }

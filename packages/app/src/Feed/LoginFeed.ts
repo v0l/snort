@@ -1,11 +1,9 @@
 import { useEffect, useMemo } from "react";
-import { TaggedNostrEvent, EventKind, RequestBuilder, NoteCollection, NostrLink } from "@snort/system";
+import { TaggedNostrEvent, EventKind, RequestBuilder, NoteCollection, NostrLink, parseRelayTags } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
-import { bech32ToHex, debounce, findTag, getNewest, getNewestEventTagsByKey, unwrap } from "@/SnortUtils";
-import { makeNotification, sendNotification } from "@/Notifications";
+import { bech32ToHex, debounce, getNewest, getNewestEventTagsByKey, unwrap } from "@/SnortUtils";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import useModeration from "@/Hooks/useModeration";
 import useLogin from "@/Hooks/useLogin";
 import {
   SnortAppData,
@@ -24,14 +22,14 @@ import { SubscriptionEvent } from "@/Subscription";
 import { FollowLists, FollowsFeed, GiftsCache, Notifications, UserRelays } from "@/Cache";
 import { Nip28Chats, Nip4Chats } from "@/chat";
 import { useRefreshFeedCache } from "@/Hooks/useRefreshFeedcache";
+import { usePrevious } from "@uidotdev/usehooks";
 
 /**
  * Managed loading data for the current logged in user
  */
 export default function useLoginFeed() {
   const login = useLogin();
-  const { publicKey: pubKey, readNotifications, follows } = login;
-  const { isMuted } = useModeration();
+  const { publicKey: pubKey, follows } = login;
   const { publisher, system } = useEventPublisher();
 
   useRefreshFeedCache(Notifications, true);
@@ -43,15 +41,19 @@ export default function useLoginFeed() {
     system.checkSigs = login.appData.item.preferences.checkSigs;
   }, [login]);
 
+  const previous = usePrevious(login.appData.item);
   // write appdata after 10s of no changes
   useEffect(() => {
+    if (!previous || JSON.stringify(previous) === JSON.stringify(login.appData.item)) {
+      return;
+    }
     return debounce(10_000, async () => {
       if (publisher && login.appData.item) {
         const ev = await publisher.appData(login.appData.item, "snort");
         await system.BroadcastEvent(ev);
       }
     });
-  }, [login.appData.timestamp]);
+  }, [previous]);
 
   const subLogin = useMemo(() => {
     if (!login || !pubKey) return null;
@@ -62,8 +64,16 @@ export default function useLoginFeed() {
     });
     b.withFilter()
       .authors([pubKey])
-      .kinds([EventKind.ContactList, EventKind.Relays, EventKind.MuteList, EventKind.PinList]);
-    b.withFilter().authors([pubKey]).kinds([EventKind.CategorizedBookmarks]).tag("d", ["follow", "bookmark"]);
+      .kinds([
+        EventKind.ContactList,
+        EventKind.Relays,
+        EventKind.MuteList,
+        EventKind.PinList,
+        EventKind.BookmarksList,
+        EventKind.InterestsList,
+        EventKind.PublicChatsList,
+      ]);
+    b.withFilter().authors([pubKey]).kinds([]);
     if (CONFIG.features.subscriptions && !login.readonly) {
       b.withFilter().authors([pubKey]).kinds([EventKind.AppData]).tag("d", ["snort"]);
       b.withFilter()
@@ -100,17 +110,7 @@ export default function useLoginFeed() {
 
       const relays = getNewest(loginFeed.data.filter(a => a.kind === EventKind.Relays));
       if (relays) {
-        const parsedRelays = relays.tags
-          .filter(a => a[0] === "r")
-          .map(a => {
-            return [
-              a[1],
-              {
-                read: a[2] === "read" || a[2] === undefined,
-                write: a[2] === "write" || a[2] === undefined,
-              },
-            ];
-          });
+        const parsedRelays = parseRelayTags(relays.tags.filter(a => a[0] === "r")).map(a => [a.url, a.settings]);
         setRelays(login, Object.fromEntries(parsedRelays), relays.created_at * 1000);
       }
 
@@ -143,21 +143,6 @@ export default function useLoginFeed() {
       }
     }
   }, [loginFeed, publisher]);
-
-  // send out notifications
-  useEffect(() => {
-    if (loginFeed.data) {
-      const replies = loginFeed.data.filter(
-        a => a.kind === EventKind.TextNote && !isMuted(a.pubkey) && a.created_at > readNotifications,
-      );
-      replies.forEach(async nx => {
-        const n = await makeNotification(nx);
-        if (n) {
-          sendNotification(login, n);
-        }
-      });
-    }
-  }, [loginFeed, readNotifications]);
 
   async function handleMutedFeed(mutedFeed: TaggedNostrEvent[]) {
     const latest = getNewest(mutedFeed);
@@ -211,14 +196,10 @@ export default function useLoginFeed() {
       const pinnedFeed = loginFeed.data.filter(a => a.kind === EventKind.PinList);
       handlePinnedFeed(pinnedFeed);
 
-      const tagsFeed = loginFeed.data.filter(
-        a => a.kind === EventKind.CategorizedBookmarks && findTag(a, "d") === "follow",
-      );
+      const tagsFeed = loginFeed.data.filter(a => a.kind === EventKind.InterestsList);
       handleTagFeed(tagsFeed);
 
-      const bookmarkFeed = loginFeed.data.filter(
-        a => a.kind === EventKind.CategorizedBookmarks && findTag(a, "d") === "bookmark",
-      );
+      const bookmarkFeed = loginFeed.data.filter(a => a.kind === EventKind.BookmarksList);
       handleBookmarkFeed(bookmarkFeed);
     }
   }, [loginFeed]);

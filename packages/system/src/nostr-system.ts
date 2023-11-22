@@ -400,7 +400,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
         }
         return;
       }),
-      ...replyRelays.filter(a => !socks.some(b => b.Address === a)).map(a => this.WriteOnceToRelay(a, ev)),
+      ...replyRelays.filter(a => !this.#sockets.has(a)).map(a => this.WriteOnceToRelay(a, ev)),
     ]);
     return removeUndefined(oks);
   }

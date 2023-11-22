@@ -27,9 +27,20 @@ enum EventKind {
 
   MuteList = 10_000, // NIP-51
   PinList = 10_001, // NIP-51
+  BookmarksList = 10_003, // NIP-51
+  CommunitiesList = 10_004, // NIP-51
+  PublicChatsList = 10_005, // NIP-51
+  BlockedRelaysList = 10_006, // NIP-51
+  SearchRelaysList = 10_007, // NIP-51
+  InterestsList = 10_015, // NIP-51
+  EmojisList = 10_030, // NIP-51
 
-  CategorizedPeople = 30000, // NIP-51a
-  CategorizedBookmarks = 30001, // NIP-51b
+  FollowSet = 30_000, // NIP-51
+  RelaySet = 30_002, // NIP-51
+  BookmarkSet = 30_003, // NIP-51
+  CurationSet = 30_004, // NIP-51
+  InterestSet = 30_015, // NIP-15
+  EmojiSet = 30_030, // NIP-51
 
   Badge = 30009, // NIP-58
   ProfileBadges = 30008, // NIP-58

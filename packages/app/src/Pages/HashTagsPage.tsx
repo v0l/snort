@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FormattedMessage, FormattedNumber } from "react-intl";
-import { EventKind, NostrHashtagLink, NoteCollection, RequestBuilder } from "@snort/system";
+import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { dedupe } from "@snort/shared";
 import { useRequestBuilder } from "@snort/system-react";
 
@@ -44,10 +44,11 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
 
   async function followTags(ts: string[]) {
     if (publisher) {
-      const ev = await publisher.bookmarks(
-        ts.map(a => new NostrHashtagLink(a)),
-        "follow",
-      );
+      const ev = await publisher.generic(eb => {
+        eb.kind(EventKind.InterestsList);
+        ts.forEach(a => eb.tag(["t", a]));
+        return eb;
+      });
       setTags(login, ts, ev.created_at * 1000);
       await system.BroadcastEvent(ev);
     }
@@ -55,7 +56,7 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
 
   const sub = useMemo(() => {
     const rb = new RequestBuilder(`hashtag-counts:${tag}`);
-    rb.withFilter().kinds([EventKind.CategorizedBookmarks]).tag("d", ["follow"]).tag("t", [tag.toLowerCase()]);
+    rb.withFilter().kinds([EventKind.InterestsList]).tag("t", [tag.toLowerCase()]);
     return rb;
   }, [tag]);
   const followsTag = useRequestBuilder(NoteCollection, sub);
