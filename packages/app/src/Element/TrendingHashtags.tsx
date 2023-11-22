@@ -6,7 +6,7 @@ import { ErrorOrOffline } from "./ErrorOrOffline";
 import { HashTagHeader } from "@/Pages/HashTagsPage";
 import { useLocale } from "@/IntlProvider";
 
-export default function TrendingHashtags({ title }: { title?: ReactNode }) {
+export default function TrendingHashtags({ title, count = 5 }: { title?: ReactNode; count?: number }) {
   const [hashtags, setHashtags] = useState<Array<{ hashtag: string; posts: number }>>();
   const [error, setError] = useState<Error>();
   const { lang } = useLocale();
@@ -14,7 +14,7 @@ export default function TrendingHashtags({ title }: { title?: ReactNode }) {
   async function loadTrendingHashtags() {
     const api = new NostrBandApi();
     const rsp = await api.trendingHashtags(lang);
-    setHashtags(rsp.hashtags);
+    setHashtags(rsp.hashtags.slice(0, count)); // Limit the number of hashtags to the count
   }
 
   useEffect(() => {

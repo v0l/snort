@@ -9,7 +9,8 @@ import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
 import { useLocale } from "@/IntlProvider";
 import useModeration from "@/Hooks/useModeration";
 
-export default function TrendingNotes() {
+export default function TrendingNotes({ count = Infinity }) {
+  // Added count prop with a default value
   const [posts, setPosts] = useState<Array<NostrEvent>>();
   const [error, setError] = useState<Error>();
   const { lang } = useLocale();
@@ -37,6 +38,7 @@ export default function TrendingNotes() {
     <>
       {posts
         .filter(a => !isEventMuted(a))
+        .slice(0, count) // Limit the number of posts displayed
         .map(e => (
           <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} />
         ))}

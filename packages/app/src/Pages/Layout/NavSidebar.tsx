@@ -1,12 +1,12 @@
 import { LogoHeader } from "./LogoHeader";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Icon from "@/Icons/Icon";
-import {ProfileLink} from "../../Element/User/ProfileLink";
+import { ProfileLink } from "../../Element/User/ProfileLink";
 import Avatar from "../../Element/User/Avatar";
 import useLogin from "../../Hooks/useLogin";
-import {useUserProfile} from "@snort/system-react";
-import {NoteCreatorButton} from "../../Element/Event/NoteCreatorButton";
-import {FormattedMessage} from "react-intl";
+import { useUserProfile } from "@snort/system-react";
+import { NoteCreatorButton } from "../../Element/Event/NoteCreatorButton";
+import { FormattedMessage } from "react-intl";
 
 const MENU_ITEMS = [
   {
@@ -49,7 +49,7 @@ export default function NavSidebar() {
         <div className="flex flex-col items-center xl:items-start font-bold text-lg">
           {MENU_ITEMS.map(item => {
             if (!item.nonLoggedIn && !publicKey) {
-              return '';
+              return "";
             }
             return (
               <NavLink
@@ -87,7 +87,9 @@ export default function NavSidebar() {
             </div>
           </ProfileLink>
         </>
-      ) : ''}
+      ) : (
+        ""
+      )}
     </div>
   );
 }

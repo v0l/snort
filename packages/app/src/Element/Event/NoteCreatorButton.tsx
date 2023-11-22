@@ -10,7 +10,7 @@ import Icon from "@/Icons/Icon";
 import { useNoteCreator } from "@/State/NoteCreator";
 import { NoteCreator } from "./NoteCreator";
 
-export const NoteCreatorButton = ({ className, alwaysShow }: { className?: string, alwaysShow?: boolean }) => {
+export const NoteCreatorButton = ({ className, alwaysShow }: { className?: string; alwaysShow?: boolean }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
   const { readonly } = useLogin(s => ({ readonly: s.readonly }));

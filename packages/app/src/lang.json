@@ -57,9 +57,6 @@
   "00LcfG": {
     "defaultMessage": "Load more"
   },
-  "08zn6O": {
-    "defaultMessage": "Export Keys"
-  },
   "0Azlrb": {
     "defaultMessage": "Manage"
   },
@@ -159,9 +156,6 @@
   "3tVy+Z": {
     "defaultMessage": "{n} Followers"
   },
-  "3yk8fB": {
-    "defaultMessage": "Wallet"
-  },
   "450Fty": {
     "defaultMessage": "None"
   },
@@ -234,6 +228,9 @@
   "6ewQqw": {
     "defaultMessage": "Likes ({n})"
   },
+  "6k7xfM": {
+    "defaultMessage": "Trending notes"
+  },
   "6uMqL1": {
     "defaultMessage": "Unpaid"
   },
@@ -242,9 +239,6 @@
   },
   "712i26": {
     "defaultMessage": "Proxy uses HODL invoices to forward the payment, which hides the pubkey of your node"
-  },
-  "7BX/yC": {
-    "defaultMessage": "Account Switcher"
   },
   "7UOvbT": {
     "defaultMessage": "Offline"
@@ -260,6 +254,9 @@
   },
   "8ED/4u": {
     "defaultMessage": "Reply To"
+  },
+  "8HJxXG": {
+    "defaultMessage": "Sign up"
   },
   "8QDesP": {
     "defaultMessage": "Zap {n} sats"
@@ -367,6 +364,9 @@
   },
   "CVWeJ6": {
     "defaultMessage": "Trending People"
+  },
+  "CbM2hK": {
+    "defaultMessage": "Trending hashtags"
   },
   "CmZ9ls": {
     "defaultMessage": "{n} Muted"
@@ -729,9 +729,6 @@
   "Qxv0B2": {
     "defaultMessage": "You currently have {number} sats in your zap pool."
   },
-  "R/6nsx": {
-    "defaultMessage": "Subscription"
-  },
   "R81upa": {
     "defaultMessage": "People you follow"
   },
@@ -939,6 +936,9 @@
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
+  },
+  "arZnG2": {
+    "defaultMessage": "Trending users"
   },
   "b12Goz": {
     "defaultMessage": "Mnemonic"
@@ -1457,9 +1457,6 @@
   },
   "wih7iJ": {
     "defaultMessage": "name is blocked"
-  },
-  "wofVHy": {
-    "defaultMessage": "Moderation"
   },
   "wqyN/i": {
     "defaultMessage": "Find out more info about {service} at {link}"

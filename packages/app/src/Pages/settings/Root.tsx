@@ -16,9 +16,12 @@ const SettingsIndex = () => {
   const pageWidth = usePageWidth();
   const sub = getCurrentSubscription(LoginStore.allSubscriptions());
 
-  const handleNavigate = useCallback((path) => {
-    navigate(path);
-  }, [navigate]);
+  const handleNavigate = useCallback(
+    path => {
+      navigate(path);
+    },
+    [navigate],
+  );
 
   const handleLogout = useCallback(() => {
     logout(login.id);
@@ -31,7 +34,10 @@ const SettingsIndex = () => {
     }
   }, [location, navigate, pageWidth]);
 
-  const [hideMenu, hideContent] = [location.pathname !== "/settings" && pageWidth < 768, location.pathname === "/settings" && pageWidth < 768];
+  const [hideMenu, hideContent] = [
+    location.pathname !== "/settings" && pageWidth < 768,
+    location.pathname === "/settings" && pageWidth < 768,
+  ];
 
   const menuItems = [
     { icon: "profile", message: messages.Profile, path: "profile" },
@@ -43,7 +49,7 @@ const SettingsIndex = () => {
     { icon: "wallet", message: "Wallet", id: "3yk8fB", path: "wallet" },
     { icon: "heart", message: messages.Donate, path: "/donate" },
     { icon: "hard-drive", message: "Cache", id: "DBiVK1", path: "cache" },
-    { icon: "profile", message: messages.SocialGraph, path: "/graph" }
+    { icon: "profile", message: messages.SocialGraph, path: "/graph" },
   ];
 
   if (CONFIG.features.subscriptions) {
