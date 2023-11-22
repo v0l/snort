@@ -204,6 +204,6 @@ export function useChatSystem() {
 
   return [...nip4, ...nip28].filter(a => {
     const authors = a.participants.filter(a => a.type === "pubkey").map(a => a.id);
-    return !authors.every(a => isBlocked(a));
+    return authors.length === 0 || !authors.every(a => isBlocked(a));
   });
 }
