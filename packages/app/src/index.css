@@ -136,12 +136,6 @@ a.ext {
   overflow-x: hidden;
 }
 
-@media (min-width: 768px) {
-  .main-content {
-    border: 1px solid var(--border-color);
-  }
-}
-
 .b {
   border: 1px solid var(--border-color);
 }
