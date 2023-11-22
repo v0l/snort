@@ -3,6 +3,7 @@ import { dedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
 import debug from "debug";
 import { FlatReqFilter } from "./query-optimizer";
 import { RelayListCacheExpire } from "./const";
+import { BackgroundLoader } from "./background-loader";
 
 const PickNRelays = 2;
 
@@ -224,9 +225,44 @@ export async function updateRelayLists(authors: Array<string>, system: SystemInt
       relayLists.map(a => ({
         relays: parseRelayTags(a.tags),
         pubkey: a.pubkey,
-        created_at: a.created_at,
+        created: a.created_at,
         loaded: unixNowMs(),
       })),
     );
+  }
+}
+
+export class RelayMetadataLoader extends BackgroundLoader<UsersRelays> {
+  override name(): string {
+    return "RelayMetadataLoader";
+  }
+
+  override onEvent(e: Readonly<TaggedNostrEvent>): UsersRelays | undefined {
+    return {
+      relays: parseRelayTags(e.tags),
+      pubkey: e.pubkey,
+      created: e.created_at,
+      loaded: unixNowMs(),
+    };
+  }
+
+  override getExpireCutoff(): number {
+    return unixNowMs() - RelayListCacheExpire;
+  }
+
+  protected override buildSub(missing: string[]): RequestBuilder {
+    const rb = new RequestBuilder("relay-loader");
+    rb.withOptions({ skipDiff: true });
+    rb.withFilter().authors(missing).kinds([EventKind.Relays]);
+    return rb;
+  }
+
+  protected override makePlaceholder(key: string): UsersRelays | undefined {
+    return {
+      relays: [],
+      pubkey: key,
+      created: 0,
+      loaded: this.getExpireCutoff() + 300_000,
+    };
   }
 }

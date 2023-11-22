@@ -5,7 +5,7 @@ import { unwrap, sanitizeRelayUrl, FeedCache, removeUndefined } from "@snort/sha
 import { NostrEvent, TaggedNostrEvent } from "./nostr";
 import { Connection, RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
 import { Query } from "./query";
-import { NoteCollection, NoteStore, NoteStoreSnapshotData } from "./note-collection";
+import { NoteCollection, NoteStore } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder, RequestStrategy } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
@@ -22,7 +22,7 @@ import {
   EventExt,
 } from ".";
 import { EventsCache } from "./cache/events";
-import { RelayCache, pickRelaysForReply } from "./outbox-model";
+import { RelayCache, RelayMetadataLoader, pickRelaysForReply } from "./outbox-model";
 import { QueryOptimizer, DefaultQueryOptimizer } from "./query-optimizer";
 import { trimFilters } from "./request-trim";
 
@@ -88,6 +88,8 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
    */
   checkSigs: boolean;
 
+  #relayLoader: RelayMetadataLoader;
+
   constructor(props: {
     relayCache?: FeedCache<UsersRelays>;
     profileCache?: FeedCache<MetadataCache>;
@@ -106,6 +108,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
 
     this.#profileLoader = new ProfileLoaderService(this, this.#profileCache);
     this.#relayMetrics = new RelayMetricHandler(this.#relayMetricsCache);
+    this.#relayLoader = new RelayMetadataLoader(this, this.#relayCache);
     this.checkSigs = props.checkSigs ?? true;
     this.#cleanup();
   }
@@ -332,6 +335,9 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
             cacheResults as Array<TaggedNostrEvent>,
           );
         }
+      }
+      if (f.authors) {
+        this.#relayLoader.TrackKeys(f.authors);
       }
     }
 

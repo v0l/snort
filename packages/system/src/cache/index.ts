@@ -44,8 +44,8 @@ export interface RelayMetrics {
 
 export interface UsersRelays {
   pubkey: string;
-  created_at: number;
   relays: FullRelaySettings[];
+  created: number;
   loaded: number;
 }
 

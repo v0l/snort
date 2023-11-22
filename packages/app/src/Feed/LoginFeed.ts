@@ -21,7 +21,6 @@ import {
 } from "@/Login";
 import { SnortPubKey } from "@/Const";
 import { SubscriptionEvent } from "@/Subscription";
-import useRelaysFeedFollows from "./RelaysFeedFollows";
 import { FollowLists, FollowsFeed, GiftsCache, Notifications, UserRelays } from "@/Cache";
 import { Nip28Chats, Nip4Chats } from "@/chat";
 import { useRefreshFeedCache } from "@/Hooks/useRefreshFeedcache";
@@ -226,11 +225,6 @@ export default function useLoginFeed() {
 
   useEffect(() => {
     UserRelays.buffer(follows.item).catch(console.error);
-    system.ProfileLoader.TrackMetadata(follows.item); // always track follows profiles
+    system.ProfileLoader.TrackKeys(follows.item); // always track follows profiles
   }, [follows.item]);
-
-  const fRelays = useRelaysFeedFollows(follows.item);
-  useEffect(() => {
-    UserRelays.bulkSet(fRelays).catch(console.error);
-  }, [fRelays]);
 }

@@ -10,13 +10,13 @@ export function useUserProfile(pubKey?: HexKey): MetadataCache | undefined {
   return useSyncExternalStore<MetadataCache | undefined>(
     h => {
       if (pubKey) {
-        system.ProfileLoader.TrackMetadata(pubKey);
+        system.ProfileLoader.TrackKeys(pubKey);
       }
       const release = system.ProfileLoader.Cache.hook(h, pubKey);
       return () => {
         release();
         if (pubKey) {
-          system.ProfileLoader.UntrackMetadata(pubKey);
+          system.ProfileLoader.UntrackKeys(pubKey);
         }
       };
     },

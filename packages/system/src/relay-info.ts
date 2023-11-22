@@ -7,11 +7,12 @@ export interface RelayInfo {
   software?: string;
   version?: string;
   limitation?: {
-    payment_required: boolean;
-    max_subscriptions: number;
-    max_filters: number;
-    max_event_tags: number;
-    auth_required: boolean;
+    payment_required?: boolean;
+    max_subscriptions?: number;
+    max_filters?: number;
+    max_event_tags?: number;
+    auth_required?: boolean;
+    write_restricted?: boolean;
   };
   relay_countries?: Array<string>;
   language_tags?: Array<string>;
