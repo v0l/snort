@@ -6,11 +6,11 @@ import { FormattedMessage } from "react-intl";
 
 export default function RightColumn() {
   return (
-    <div className="flex-col hidden lg:flex lg:w-1/3 h-screen p-2 border-l border-neutral-900 gap-8">
-      <div className="sticky top-0">
+    <div className="flex-col hidden lg:flex lg:w-1/3 sticky top-0 h-screen p-2 border-l border-neutral-900 gap-8">
+      <div>
         <SearchBox />
       </div>
-      <div className="overflow-y-auto flex-grow">
+      <div className="overflow-y-auto h-[calc(100vh-4rem)]"> {/* Adjusted for scrollbar and spacing */}
         <div>
           <div className="font-bold">
             <FormattedMessage defaultMessage="Trending hashtags" id="CbM2hK" />
