@@ -1,9 +1,8 @@
 import { useMemo } from "react";
-import { HexKey, FullRelaySettings, TaggedNostrEvent, EventKind, NoteCollection, RequestBuilder } from "@snort/system";
+import { HexKey, FullRelaySettings, TaggedNostrEvent, EventKind, NoteCollection, RequestBuilder, parseRelayTags } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import debug from "debug";
 
-import { sanitizeRelayUrl } from "@/SnortUtils";
 import { UserRelays } from "@/Cache";
 
 interface RelayList {
@@ -26,7 +25,7 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
       return {
         pubkey: ev.pubkey,
         created_at: ev.created_at,
-        relays: ev.tags.map(parseRelayTag).filter(a => a.url !== undefined),
+        relays: parseRelayTags(ev.tags),
       };
     });
   }
@@ -36,14 +35,4 @@ export default function useRelaysFeedFollows(pubkeys: HexKey[]): Array<RelayList
   return useMemo(() => {
     return mapFromRelays(notesRelays);
   }, [relays]);
-}
-
-export function parseRelayTag(tag: Array<string>) {
-  return {
-    url: sanitizeRelayUrl(tag[1]),
-    settings: {
-      read: tag[2] === "read" || tag[2] === undefined,
-      write: tag[2] === "write" || tag[2] === undefined,
-    },
-  } as FullRelaySettings;
 }

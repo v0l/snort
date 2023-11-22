@@ -22,7 +22,7 @@ import {
   EventExt,
 } from ".";
 import { EventsCache } from "./cache/events";
-import { RelayCache } from "./gossip-model";
+import { RelayCache, pickRelaysForReply } from "./outbox-model";
 import { QueryOptimizer, DefaultQueryOptimizer } from "./query-optimizer";
 import { trimFilters } from "./request-trim";
 
@@ -246,7 +246,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
 
   Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
     const q = this.Query(NoteCollection, req);
-    return new Promise<NoteStoreSnapshotData>(resolve => {
+    return new Promise<Array<TaggedNostrEvent>>(resolve => {
       let t: ReturnType<typeof setTimeout> | undefined;
       let tBuf: Array<TaggedNostrEvent> = [];
       const releaseOnEvent = cb
@@ -267,7 +267,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
           releaseOnEvent?.();
           releaseFeedHook();
           q.cancel();
-          resolve(unwrap(q.feed.snapshot.data));
+          resolve(unwrap((q.feed as NoteCollection).snapshot.data));
         }
       });
     });
@@ -382,8 +382,9 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
    */
   async BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void) {
     const socks = [...this.#sockets.values()].filter(a => !a.Ephemeral && a.Settings.write);
-    const oks = await Promise.all(
-      socks.map(async s => {
+    const replyRelays = await pickRelaysForReply(ev, this);
+    const oks = await Promise.all([
+      ...socks.map(async s => {
         try {
           const rsp = await s.SendAsync(ev);
           cb?.(rsp);
@@ -393,7 +394,8 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
         }
         return;
       }),
-    );
+      ...replyRelays.filter(a => !socks.some(b => b.Address === a)).map(a => this.WriteOnceToRelay(a, ev)),
+    ]);
     return removeUndefined(oks);
   }
 

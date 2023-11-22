@@ -46,6 +46,7 @@ export interface UsersRelays {
   pubkey: string;
   created_at: number;
   relays: FullRelaySettings[];
+  loaded: number;
 }
 
 export function mapEventToProfile(ev: NostrEvent) {
