@@ -16,6 +16,7 @@ import NavSidebar from "./NavSidebar";
 import AccountHeader from "./AccountHeader";
 import RightColumn from "./RightColumn";
 import { LogoHeader } from "./LogoHeader";
+import useLoginFeed from "@/Feed/LoginFeed";
 
 export default function Index() {
   const location = useLocation();
@@ -24,6 +25,7 @@ export default function Index() {
 
   useTheme();
   useLoginRelays();
+  useLoginFeed();
 
   const hideHeaderPaths = ["/login", "/new"];
   const shouldHideHeader = hideHeaderPaths.some(path => location.pathname.startsWith(path));
