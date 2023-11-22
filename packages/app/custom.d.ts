@@ -48,6 +48,7 @@ declare const CONFIG: {
   nip05Domain: string;
   favicon: string;
   appleTouchIconUrl: string;
+  navLogo: string;
   httpCache: string;
   animalNamePlaceholders: boolean;
   defaultZapPoolFee?: number;
