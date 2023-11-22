@@ -26,6 +26,11 @@ const MENU_ITEMS = [
     link: "/notifications",
   },
   {
+    label: "Deck",
+    icon: "deck",
+    link: "/deck",
+  },
+  {
     label: "Settings",
     icon: "settings",
     link: "/settings",

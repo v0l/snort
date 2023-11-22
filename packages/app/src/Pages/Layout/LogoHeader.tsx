@@ -13,8 +13,12 @@ export function LogoHeader() {
     if (isChristmas()) return "🎄";
   };
 
+  const handleLogoClick = () => {
+    window.scrollTo({ top: 0 });
+  };
+
   return (
-    <Link to="/" className="logo">
+    <Link to="/" className="logo" onClick={handleLogoClick}>
       <h1 className="flex flex-row items-center">
         <img src={CONFIG.navLogo} className="w-8 h-8" />
         <div className="md:hidden xl:inline ml-2">
