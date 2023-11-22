@@ -64,7 +64,7 @@ export default function NavSidebar() {
           })}
           {publicKey ? (
             <div className="mt-2">
-              <NoteCreatorButton alwaysShow={true} />
+              <NoteCreatorButton alwaysShow={true} showText={true} />
             </div>
           ) : (
             <div className="mt-2">

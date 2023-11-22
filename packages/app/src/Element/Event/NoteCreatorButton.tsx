@@ -9,8 +9,17 @@ import useLogin from "@/Hooks/useLogin";
 import Icon from "@/Icons/Icon";
 import { useNoteCreator } from "@/State/NoteCreator";
 import { NoteCreator } from "./NoteCreator";
+import { FormattedMessage } from "react-intl";
 
-export const NoteCreatorButton = ({ className, alwaysShow }: { className?: string; alwaysShow?: boolean }) => {
+export const NoteCreatorButton = ({
+  className,
+  alwaysShow,
+  showText,
+}: {
+  className?: string;
+  alwaysShow?: boolean;
+  showText?: boolean;
+}) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
   const { readonly } = useLogin(s => ({ readonly: s.readonly }));
@@ -51,7 +60,7 @@ export const NoteCreatorButton = ({ className, alwaysShow }: { className?: strin
       {!shouldHideNoteCreator && (
         <button
           ref={buttonRef}
-          className={classNames("primary circle", className)}
+          className={classNames("flex flex-row items-center primary rounded-full", { "circle": !showText }, className)}
           onClick={() =>
             update(v => {
               v.replyTo = undefined;
@@ -59,6 +68,11 @@ export const NoteCreatorButton = ({ className, alwaysShow }: { className?: strin
             })
           }>
           <Icon name="plus" size={16} />
+          {showText && (
+            <span className="ml-2 hidden xl:inline">
+              <FormattedMessage defaultMessage="New Note" id="2mcwT8" />
+            </span>
+          )}
         </button>
       )}
       <NoteCreator key="global-note-creator" />
