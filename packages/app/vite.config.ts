@@ -33,6 +33,7 @@ export default defineConfig({
   build: {
     outDir: "build",
   },
+  base: "",
   publicDir: appConfig.get("publicDir"),
   resolve: {
     alias: {
