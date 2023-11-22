@@ -1,17 +1,19 @@
 import { LogoHeader } from "./LogoHeader";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Icon from "@/Icons/Icon";
 import {ProfileLink} from "../../Element/User/ProfileLink";
 import Avatar from "../../Element/User/Avatar";
 import useLogin from "../../Hooks/useLogin";
 import {useUserProfile} from "@snort/system-react";
 import {NoteCreatorButton} from "../../Element/Event/NoteCreatorButton";
+import {FormattedMessage} from "react-intl";
 
 const MENU_ITEMS = [
   {
     label: "Home",
     icon: "home",
     link: "/",
+    nonLoggedIn: true,
   },
   {
     label: "Messages",
@@ -38,25 +40,42 @@ export default function NavSidebar() {
     readonly: s.readonly,
   }));
   const profile = useUserProfile(publicKey);
+  const navigate = useNavigate();
 
   return (
     <div className="sticky items-center xl:items-start border-r border-neutral-900 top-0 z-20 h-screen max-h-screen hidden md:flex xl:w-56 flex-col px-2 py-4 flex-shrink-0 gap-4">
       <LogoHeader />
       <div className="flex-grow flex flex-col justify-between">
         <div className="flex flex-col items-center xl:items-start font-bold text-lg">
-          {MENU_ITEMS.map(item => (
-            <NavLink
-              key={item.link}
-              to={item.link}
-              className="py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center"
-              activeClassName="bg-neutral-800 text-neutral-200">
-              <Icon name={item.icon} size={24} />
-              <span className="hidden xl:inline ml-2">{item.label}</span>
-            </NavLink>
-          ))}
-          <div className="mt-2">
-            <NoteCreatorButton alwaysShow={true} />
-          </div>
+          {MENU_ITEMS.map(item => {
+            if (!item.nonLoggedIn && !publicKey) {
+              return '';
+            }
+            return (
+              <NavLink
+                key={item.link}
+                to={item.link}
+                className="py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center"
+                activeClassName="bg-neutral-800 text-neutral-200">
+                <Icon name={item.icon} size={24} />
+                <span className="hidden xl:inline ml-2">{item.label}</span>
+              </NavLink>
+            );
+          })}
+          {publicKey ? (
+            <div className="mt-2">
+              <NoteCreatorButton alwaysShow={true} />
+            </div>
+          ) : (
+            <div className="mt-2">
+              <button onClick={() => navigate("/login/sign-up")} className="flex flex-row items-center primary">
+                <Icon name="sign-in" size={24} />
+                <span className="hidden xl:inline ml-2">
+                  <FormattedMessage defaultMessage="Sign up" id="8HJxXG" />
+                </span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
       {publicKey ? (
