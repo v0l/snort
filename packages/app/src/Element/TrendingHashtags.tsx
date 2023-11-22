@@ -6,7 +6,7 @@ import { ErrorOrOffline } from "./ErrorOrOffline";
 import { HashTagHeader } from "@/Pages/HashTagsPage";
 import { useLocale } from "@/IntlProvider";
 
-export default function TrendingHashtags({ title, count = 5 }: { title?: ReactNode; count?: number }) {
+export default function TrendingHashtags({ title, count = Infinity }: { title?: ReactNode; count?: number }) {
   const [hashtags, setHashtags] = useState<Array<{ hashtag: string; posts: number }>>();
   const [error, setError] = useState<Error>();
   const { lang } = useLocale();

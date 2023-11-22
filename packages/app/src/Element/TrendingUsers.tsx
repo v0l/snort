@@ -6,7 +6,7 @@ import PageSpinner from "@/Element/PageSpinner";
 import NostrBandApi from "@/External/NostrBand";
 import { ErrorOrOffline } from "./ErrorOrOffline";
 
-export default function TrendingUsers({ title, count = 5 }: { title?: ReactNode; count?: number }) {
+export default function TrendingUsers({ title, count = Infinity }: { title?: ReactNode; count?: number }) {
   const [userList, setUserList] = useState<HexKey[]>();
   const [error, setError] = useState<Error>();
 
