@@ -6,6 +6,7 @@ import { bech32ToHex, debounce, getNewest, getNewestEventTagsByKey, unwrap } fro
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import {
+  LoginStore,
   SnortAppData,
   addSubscription,
   setAppData,
@@ -23,6 +24,7 @@ import { FollowLists, FollowsFeed, GiftsCache, Notifications, UserRelays } from 
 import { Nip28Chats, Nip4Chats } from "@/chat";
 import { useRefreshFeedCache } from "@/Hooks/useRefreshFeedcache";
 import { usePrevious } from "@uidotdev/usehooks";
+import { Nip28ChatSystem } from "@/chat/nip28";
 
 /**
  * Managed loading data for the current logged in user
@@ -188,6 +190,16 @@ export default function useLoginFeed() {
     }
   }
 
+  function handlePublicChatsListFeed(bookmarkFeed: TaggedNostrEvent[]) {
+    const newest = getNewestEventTagsByKey(bookmarkFeed, "e");
+    if (newest) {
+      LoginStore.updateSession({
+        ...login,
+        extraChats: newest.keys.map(Nip28ChatSystem.chatId),
+      });
+    }
+  }
+
   useEffect(() => {
     if (loginFeed.data) {
       const mutedFeed = loginFeed.data.filter(a => a.kind === EventKind.MuteList);
@@ -201,6 +213,9 @@ export default function useLoginFeed() {
 
       const bookmarkFeed = loginFeed.data.filter(a => a.kind === EventKind.BookmarksList);
       handleBookmarkFeed(bookmarkFeed);
+
+      const publicChatsFeed = loginFeed.data.filter(a => a.kind === EventKind.PublicChatsList);
+      handlePublicChatsListFeed(publicChatsFeed);
     }
   }, [loginFeed]);
 
