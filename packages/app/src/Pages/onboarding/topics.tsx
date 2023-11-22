@@ -5,7 +5,7 @@ import AsyncButton from "@/Element/AsyncButton";
 import classNames from "classnames";
 import { appendDedupe } from "@/SnortUtils";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import { NostrHashtagLink } from "@snort/system";
+import { EventKind } from "@snort/system";
 
 export const FixedTopics = {
   life: {
@@ -283,11 +283,14 @@ export function Topics() {
           const tags = Object.entries(FixedTopics)
             .filter(([k]) => topics.includes(k))
             .map(([, v]) => v.tags)
-            .flat()
-            .map(a => new NostrHashtagLink(a));
+            .flat();
 
           if (tags.length > 0) {
-            const ev = await publisher?.bookmarks(tags, "follow");
+            const ev = await publisher?.generic(eb => {
+              eb.kind(EventKind.InterestsList);
+              tags.forEach(a => eb.tag(["t", a]));
+              return eb;
+            });
             if (ev) {
               await system.BroadcastEvent(ev);
             }
