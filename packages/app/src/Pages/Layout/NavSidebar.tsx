@@ -43,7 +43,7 @@ export default function NavSidebar() {
   const navigate = useNavigate();
 
   return (
-    <div className="sticky items-center xl:items-start border-r border-neutral-900 top-0 z-20 h-screen max-h-screen hidden md:flex xl:w-56 flex-col px-2 py-4 flex-shrink-0 gap-4">
+    <div className="sticky items-center xl:items-start border-r border-neutral-900 top-0 z-20 h-screen max-h-screen hidden md:flex xl:w-56 flex-col px-2 py-4 flex-shrink-0 gap-2 xl:gap-3">
       <LogoHeader />
       <div className="flex-grow flex flex-col justify-between">
         <div className="flex flex-col items-center xl:items-start font-bold text-lg">
@@ -55,10 +55,10 @@ export default function NavSidebar() {
               <NavLink
                 key={item.link}
                 to={item.link}
-                className="py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center"
+                className="xl:ml-1 py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center"
                 activeClassName="bg-neutral-800 text-neutral-200">
                 <Icon name={item.icon} size={24} />
-                <span className="hidden xl:inline ml-2">{item.label}</span>
+                <span className="hidden xl:inline ml-3">{item.label}</span>
               </NavLink>
             );
           })}
@@ -70,7 +70,7 @@ export default function NavSidebar() {
             <div className="mt-2">
               <button onClick={() => navigate("/login/sign-up")} className="flex flex-row items-center primary">
                 <Icon name="sign-in" size={24} />
-                <span className="hidden xl:inline ml-2">
+                <span className="hidden xl:inline ml-3">
                   <FormattedMessage defaultMessage="Sign up" id="8HJxXG" />
                 </span>
               </button>
@@ -83,7 +83,7 @@ export default function NavSidebar() {
           <ProfileLink pubkey={publicKey} user={profile}>
             <div className="flex flex-row items-center font-bold text-md">
               <Avatar pubkey={publicKey} user={profile} size={40} />
-              <span className="hidden xl:inline ml-2">{profile?.name}</span>
+              <span className="hidden xl:inline ml-3">{profile?.name}</span>
             </div>
           </ProfileLink>
         </>
