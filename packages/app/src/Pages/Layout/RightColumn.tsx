@@ -10,7 +10,7 @@ export default function RightColumn() {
       <div>
         <SearchBox />
       </div>
-      <div className="overflow-y-auto">
+      <div className="overflow-y-auto hide-scrollbar">
         <div className="bg-superdark rounded-lg p-2 mt-8">
           <div className="font-bold text-lg">
             <FormattedMessage defaultMessage="Trending hashtags" id="CbM2hK" />
