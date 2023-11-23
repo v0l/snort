@@ -1,5 +1,5 @@
 import { LogoHeader } from "./LogoHeader";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Icon from "@/Icons/Icon";
 import { ProfileLink } from "../../Element/User/ProfileLink";
 import Avatar from "../../Element/User/Avatar";
@@ -42,6 +42,12 @@ const MENU_ITEMS = [
   },
 ];
 
+const getNavLinkClass = (isActive: boolean) => {
+  return isActive ?
+    "xl:ml-1 py-4 hover:no-underline flex flex-row items-center text-nostr-purple" :
+    "xl:ml-1 py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center";
+};
+
 export default function NavSidebar() {
   const { publicKey } = useLogin(s => ({
     publicKey: s.publicKey,
@@ -65,8 +71,7 @@ export default function NavSidebar() {
               <NavLink
                 key={item.link}
                 to={item.link}
-                className="xl:ml-1 py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center"
-                activeClassName="bg-neutral-800 text-neutral-200">
+                className={({ isActive }) => getNavLinkClass(isActive)}>
                 <Icon name={item.icon} size={24} />
                 <span className="hidden xl:inline ml-3">{item.label}</span>
               </NavLink>
@@ -101,13 +106,5 @@ export default function NavSidebar() {
         ""
       )}
     </div>
-  );
-}
-
-function NavLink({ children, ...props }) {
-  return (
-    <Link to={""} {...props}>
-      {children}
-    </Link>
   );
 }
