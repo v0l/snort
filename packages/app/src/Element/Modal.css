@@ -20,12 +20,18 @@
   margin-top: auto;
   margin-bottom: auto;
   --border-color: var(--gray);
+  max-width: 100%;
 }
 
 @media (min-width: 600px) {
   .modal-body {
     padding: 24px;
     width: 600px;
+  }
+}
+@media (max-width: 600px) {
+  .modal-body {
+    min-width: 100%;
   }
 }
 
