@@ -239,7 +239,7 @@ const NetworkGraph = () => {
             nodeLabel={node => `${node.profile?.name || node.address}`}
             nodeAutoColorBy="distance"
             linkAutoColorBy="distance"
-            linkDirectionalParticles={1}
+            linkDirectionalParticles={0}
             nodeVisibility="visible"
             numDimensions={3}
             linkDirectionalArrowLength={0}
