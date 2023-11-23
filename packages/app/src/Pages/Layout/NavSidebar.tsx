@@ -16,14 +16,19 @@ const MENU_ITEMS = [
     nonLoggedIn: true,
   },
   {
-    label: "Messages",
-    icon: "mail",
-    link: "/messages",
+    label: "Search",
+    icon: "search",
+    link: "/search",
   },
   {
     label: "Notifications",
     icon: "bell-02",
     link: "/notifications",
+  },
+  {
+    label: "Messages",
+    icon: "mail",
+    link: "/messages",
   },
   {
     label: "Deck",
