@@ -1,7 +1,7 @@
 import "./Root.css";
 import { useCallback, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import {Outlet, NavLink, useNavigate, useLocation} from "react-router-dom";
 import Icon from "@/Icons/Icon";
 import { LoginStore, logout } from "@/Login";
 import useLogin from "@/Hooks/useLogin";
@@ -15,13 +15,6 @@ const SettingsIndex = () => {
   const location = useLocation();
   const pageWidth = usePageWidth();
   const sub = getCurrentSubscription(LoginStore.allSubscriptions());
-
-  const handleNavigate = useCallback(
-    path => {
-      navigate(path);
-    },
-    [navigate],
-  );
 
   const handleLogout = useCallback(() => {
     logout(login.id);
@@ -64,16 +57,25 @@ const SettingsIndex = () => {
     menuItems.push({ icon: "code-circle", message: "Account Switcher", id: "7BX/yC", path: "accounts" });
   }
 
+  const getNavLinkClass = ({ isActive }: { isActive: boolean }) => {
+    return isActive ? "settings-row active" : "settings-row";
+  };
+
   return (
     <div className="settings-nav">
       {!hideMenu && (
         <div>
           {menuItems.map(({ icon, message, id, path }) => (
-            <div className="settings-row" onClick={() => handleNavigate(path)} key={path}>
+            <NavLink
+              to={path}
+              key={path}
+              className={getNavLinkClass}
+              end
+            >
               <Icon name={icon} size={24} />
               <FormattedMessage {...(id ? { defaultMessage: message, id } : message)} />
               <Icon name="arrowFront" size={16} />
-            </div>
+            </NavLink>
           ))}
           <div className="settings-row" onClick={handleLogout}>
             <Icon name="logout" size={24} />
