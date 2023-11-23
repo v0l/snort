@@ -42,7 +42,6 @@ const SettingsIndex = () => {
     { icon: "wallet", message: "Wallet", id: "3yk8fB", path: "wallet" },
     { icon: "heart", message: messages.Donate, path: "/donate" },
     { icon: "hard-drive", message: "Cache", id: "DBiVK1", path: "cache" },
-    { icon: "profile", message: messages.SocialGraph, path: "/graph" },
   ];
 
   if (CONFIG.features.subscriptions) {

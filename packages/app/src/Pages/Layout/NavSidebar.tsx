@@ -37,6 +37,11 @@ const MENU_ITEMS = [
     link: "/deck",
   },
   {
+    label: "Social Graph",
+    icon: "graph",
+    link: "/graph",
+  },
+  {
     label: "Settings",
     icon: "settings",
     link: "/settings",
