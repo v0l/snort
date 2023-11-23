@@ -1,5 +1,5 @@
 import "./Layout.css";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
@@ -24,6 +24,7 @@ import { ProfileLink } from "@/Element/User/ProfileLink";
 import SearchBox from "../Element/SearchBox";
 import SnortApi from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
+import { Notifications } from "@/Cache";
 
 export default function Layout() {
   const location = useLocation();
@@ -99,19 +100,13 @@ const AccountHeader = () => {
     }
   });
 
-  const { publicKey, latestNotification, readNotifications, readonly } = useLogin(s => ({
+  const { publicKey, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
-    latestNotification: s.latestNotification,
-    readNotifications: s.readNotifications,
     readonly: s.readonly,
   }));
   const profile = useUserProfile(publicKey);
   const { publisher } = useEventPublisher();
 
-  const hasNotifications = useMemo(
-    () => latestNotification > readNotifications,
-    [latestNotification, readNotifications],
-  );
   const unreadDms = useMemo(() => (publicKey ? 0 : 0), [publicKey]);
 
   async function goToNotifications() {
@@ -166,7 +161,7 @@ const AccountHeader = () => {
       )}
       <Link className="btn" to="/notifications" onClick={goToNotifications}>
         <Icon name="bell-02" size={24} />
-        {hasNotifications && <span className="has-unread"></span>}
+        <HasNotificationsMarker />
       </Link>
       <ProfileLink pubkey={publicKey} user={profile}>
         <Avatar pubkey={publicKey} user={profile} />
@@ -199,4 +194,24 @@ function LogoHeader() {
       )}
     </Link>
   );
+}
+
+function HasNotificationsMarker() {
+  const readNotifications = useLogin(s => s.readNotifications);
+  const notifications = useSyncExternalStore(
+    c => Notifications.hook(c, "*"),
+    () => Notifications.snapshot(),
+  );
+  const latestNotification = useMemo(
+    () => notifications.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0),
+    [notifications],
+  );
+  const hasNotifications = useMemo(
+    () => latestNotification * 1000 > readNotifications,
+    [notifications, readNotifications],
+  );
+
+  if (hasNotifications) {
+    return <span className="has-unread"></span>;
+  }
 }
