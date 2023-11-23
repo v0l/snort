@@ -26,7 +26,7 @@ export default defineConfig({
       name: "snort",
       ifGitSHA: true,
       command: "git describe --always --tags",
-    })
+    }),
   ],
   assetsInclude: ["**/*.md", "**/*.wasm"],
   build: {
