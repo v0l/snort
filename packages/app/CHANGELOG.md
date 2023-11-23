@@ -1,6 +1,7 @@
 # v0.1.23
 
 ## Added
+
 - DeepL translate api (Automatic for PRO subscribers)
 - Add nostr:nprofile1qqsydl97xpj74udw0qg5vkfyujyjxd3l706jd0t0w0turp93d0vvungfgfewr to contributors
 - Proxy LN address type enabled on Nostr Address settings pages
@@ -24,6 +25,7 @@
 - Sync joined public chats (`NIP-28`) using `PublicChatList` kind `10_005`
 
 ## Changed
+
 - Read/Write relays only on kind `10_002` (NIP-65)
 - Removed `nostr.watch` code for adding new users to random relays
 - Render kind `10_002` on profile relays tab
@@ -34,6 +36,7 @@
 - `@snort/system` automated outbox model (automatic fetching of relay metadata)
 
 ## Fixes
+
 - Upgrade ephermal connection to non-ephemeral
 - Remove relay tag from zaps (Some zap services dont support it)
 - Fix zap parsing for goals
@@ -41,7 +44,7 @@
 - CSS Fixes for profile card on light theme
 - Zap counting on replacable events
 - `NIP-28` chats loading
-- Overflowing modal UI 
+- Overflowing modal UI
 - Live stream widget layout with long titles
 - Notifications marker has returned from its long slumber
 
