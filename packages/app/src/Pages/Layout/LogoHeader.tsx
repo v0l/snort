@@ -3,7 +3,7 @@ import { getCurrentSubscription } from "../../Subscription";
 import { isChristmas, isHalloween, isStPatricksDay } from "../../SnortUtils";
 import { Link } from "react-router-dom";
 import { mapPlanName } from "../subscribe";
-export function LogoHeader() {
+export function LogoHeader({ showText = false }) {
   const { subscriptions } = useLogin();
   const currentSubscription = getCurrentSubscription(subscriptions);
 
@@ -21,10 +21,10 @@ export function LogoHeader() {
     <Link to="/" className="logo" onClick={handleLogoClick}>
       <h1 className="flex flex-row items-center">
         <img src={CONFIG.navLogo} className="w-8 h-8" />
-        <div className="md:hidden xl:inline ml-2">
+        {showText && <div className="md:hidden xl:inline ml-2">
           {extra()}
           {CONFIG.appName}
-        </div>
+        </div>}
       </h1>
       {currentSubscription && (
         <div className="flex items-center g4 text-sm font-semibold tracking-wider">

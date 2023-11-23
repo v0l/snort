@@ -67,7 +67,7 @@ export function SnortDeckLayout() {
           setArticle: (e?: TaggedNostrEvent) => setDeckState({ article: e }),
           reset: () => setDeckState({}),
         }}>
-        <NavSidebar />
+        <NavSidebar narrow={true} />
         <div className="deck-cols">
           {cols.map(c => {
             switch (c) {
