@@ -16,7 +16,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
     switch (status) {
       case "live": {
         return (
-          <div className="flex g4">
+          <div className="flex g4 items-center">
             <Icon name="signal-01" />
             <b className="uppercase">
               <FormattedMessage defaultMessage="Live" id="Dn82AL" />
@@ -49,7 +49,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
       case "live": {
         return (
           <Link to={link} target="_blank">
-            <button type="button">
+            <button className="nowrap">
               <FormattedMessage defaultMessage="Join Stream" id="GQPtfk" />
             </button>
           </Link>
@@ -59,7 +59,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
         if (findTag(ev, "recording")) {
           return (
             <Link to={link} target="_blank">
-              <button type="button">
+              <button className="nowrap">
                 <FormattedMessage defaultMessage="Watch Replay" id="6/hB3S" />
               </button>
             </Link>
@@ -70,13 +70,13 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
   }
 
   return (
-    <div className="flex justify-between br p24 bg-primary">
-      <div className="flex g12">
+    <div className="sm:flex g12 br p24 bg-primary items-center">
+      <div>
         <ProfileImage pubkey={host} showUsername={false} size={56} />
-        <div>
-          <h2>{title}</h2>
-          {statusLine()}
-        </div>
+      </div>
+      <div className="flex flex-col g8 grow">
+        <div className="font-semibold text-3xl">{title}</div>
+        <div>{statusLine()}</div>
       </div>
       <div>{cta()}</div>
     </div>
