@@ -1,7 +1,7 @@
 import "./Root.css";
 import { useCallback, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
-import {Outlet, NavLink, useNavigate, useLocation} from "react-router-dom";
+import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import Icon from "@/Icons/Icon";
 import { LoginStore, logout } from "@/Login";
 import useLogin from "@/Hooks/useLogin";
@@ -66,12 +66,7 @@ const SettingsIndex = () => {
       {!hideMenu && (
         <div>
           {menuItems.map(({ icon, message, id, path }) => (
-            <NavLink
-              to={path}
-              key={path}
-              className={getNavLinkClass}
-              end
-            >
+            <NavLink to={path} key={path} className={getNavLinkClass} end>
               <Icon name={icon} size={24} />
               <FormattedMessage {...(id ? { defaultMessage: message, id } : message)} />
               <Icon name="arrowFront" size={16} />

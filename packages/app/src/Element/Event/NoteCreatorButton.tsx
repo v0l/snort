@@ -60,7 +60,7 @@ export const NoteCreatorButton = ({
       {!shouldHideNoteCreator && (
         <button
           ref={buttonRef}
-          className={classNames("flex flex-row items-center primary rounded-full", { "circle": !showText }, className)}
+          className={classNames("flex flex-row items-center primary rounded-full", { circle: !showText }, className)}
           onClick={() =>
             update(v => {
               v.replyTo = undefined;

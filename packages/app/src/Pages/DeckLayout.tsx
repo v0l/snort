@@ -4,11 +4,10 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 
-import { DeckNav } from "@/Element/Deck/Nav";
 import useLoginFeed from "@/Feed/LoginFeed";
 import { useLoginRelays } from "@/Hooks/useLoginRelays";
 import { useTheme } from "@/Hooks/useTheme";
-import Articles from "@/Element/Deck/Articles";
+import Articles from "@/Element/Articles";
 import TimelineFollows from "@/Element/Feed/TimelineFollows";
 import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import Icon from "@/Icons/Icon";
@@ -22,6 +21,7 @@ import { ThreadContext, ThreadContextWrapper } from "@/Hooks/useThreadContext";
 import Toaster from "@/Toaster";
 import useLogin from "@/Hooks/useLogin";
 import { LongFormText } from "@/Element/Event/LongFormText";
+import NavSidebar from "@/Pages/Layout/NavSidebar";
 
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 
@@ -67,7 +67,7 @@ export function SnortDeckLayout() {
           setArticle: (e?: TaggedNostrEvent) => setDeckState({ article: e }),
           reset: () => setDeckState({}),
         }}>
-        <DeckNav />
+        <NavSidebar />
         <div className="deck-cols">
           {cols.map(c => {
             switch (c) {

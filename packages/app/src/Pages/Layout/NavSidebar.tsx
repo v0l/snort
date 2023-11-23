@@ -43,9 +43,9 @@ const MENU_ITEMS = [
 ];
 
 const getNavLinkClass = (isActive: boolean) => {
-  return isActive ?
-    "xl:ml-1 py-4 hover:no-underline flex flex-row items-center text-nostr-purple" :
-    "xl:ml-1 py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center";
+  return isActive
+    ? "xl:ml-1 py-4 hover:no-underline flex flex-row items-center text-nostr-purple"
+    : "xl:ml-1 py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center";
 };
 
 export default function NavSidebar() {
@@ -68,10 +68,7 @@ export default function NavSidebar() {
               return "";
             }
             return (
-              <NavLink
-                key={item.link}
-                to={item.link}
-                className={({ isActive }) => getNavLinkClass(isActive)}>
+              <NavLink key={item.link} to={item.link} className={({ isActive }) => getNavLinkClass(isActive)}>
                 <Icon name={item.icon} size={24} />
                 <span className="hidden xl:inline ml-3">{item.label}</span>
               </NavLink>

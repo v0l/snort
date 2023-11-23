@@ -3,7 +3,7 @@ import { useReactions } from "@snort/system-react";
 
 import { useArticles } from "@/Feed/ArticlesFeed";
 import { orderDescending } from "@/SnortUtils";
-import Note from "../Event/Note";
+import Note from "./Event/Note";
 import { useContext } from "react";
 import { DeckContext } from "@/Pages/DeckLayout";
 
