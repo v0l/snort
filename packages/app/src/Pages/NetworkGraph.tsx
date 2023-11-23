@@ -6,6 +6,8 @@ import * as THREE from "three";
 import { defaultAvatar } from "../SnortUtils";
 import { proxyImg } from "@/Hooks/useImgProxy";
 import { LoginStore } from "@/Login";
+import { FormattedMessage } from "react-intl";
+import Icon from "@/Icons/Icon";
 
 interface GraphNode {
   id: UID;
@@ -70,6 +72,27 @@ const NetworkGraph = () => {
   // const [showDistance, setShowDistance] = useState(2);
   // const [direction, setDirection] = useState(Direction.OUTBOUND);
   // const [renderLimit, setRenderLimit] = useState(NODE_LIMIT);
+
+  const handleCloseGraph = () => {
+    setOpen(false);
+  };
+
+  const handleKeyDown = (event: { key: string; }) => {
+    if (event.key === "Escape") {
+      handleCloseGraph();
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+
+    // Cleanup function to remove the event listener
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
 
   const updateConfig = async (changes: Partial<GraphConfig>) => {
     setGraphConfig(old => {
@@ -197,13 +220,13 @@ const NetworkGraph = () => {
             setOpen(true);
             refreshData();
           }}>
-          Show graph
+          <FormattedMessage defaultMessage="Show graph" id="ha8JKG" />
         </button>
       )}
       {open && graphData && (
         <div className="fixed top-0 left-0 right-0 bottom-0 z-20">
-          <button className="absolute top-6 right-6 z-30 btn hover:bg-gray-900" onClick={() => setOpen(false)}>
-            X
+          <button className="absolute top-6 right-6 z-30 btn hover:bg-gray-900" onClick={handleCloseGraph}>
+            <Icon name="x" size={24} />
           </button>
           <div className="absolute top-6 right-0 left-0 z-20 flex flex-col content-center justify-center text-center">
             <div className="text-center pb-2">Degrees of separation</div>

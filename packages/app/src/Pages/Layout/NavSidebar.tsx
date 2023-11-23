@@ -52,7 +52,7 @@ const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
   const c = isActive
     ? "py-4 hover:no-underline flex flex-row items-center text-nostr-purple"
     : "py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center";
-  return classNames(c, { "xl:ml-1": !narrow })
+  return classNames(c, { "xl:ml-1": !narrow });
 };
 
 export default function NavSidebar({ narrow = false }) {
@@ -65,13 +65,16 @@ export default function NavSidebar({ narrow = false }) {
   const profile = useUserProfile(publicKey);
   const navigate = useNavigate();
 
-  const className = classNames({"xl:w-56 xl:gap-3 xl:items-start": !narrow}, "sticky items-center border-r border-neutral-900 top-0 z-20 h-screen max-h-screen hidden md:flex flex-col px-2 py-4 flex-shrink-0 gap-2")
+  const className = classNames(
+    { "xl:w-56 xl:gap-3 xl:items-start": !narrow },
+    "sticky items-center border-r border-neutral-900 top-0 z-20 h-screen max-h-screen hidden md:flex flex-col px-2 py-4 flex-shrink-0 gap-2",
+  );
 
   return (
     <div className={className}>
       <LogoHeader showText={!narrow} />
       <div className="flex-grow flex flex-col justify-between">
-        <div className={classNames({"xl:items-start": !narrow }, "flex flex-col items-center font-bold text-lg")}>
+        <div className={classNames({ "xl:items-start": !narrow }, "flex flex-col items-center font-bold text-lg")}>
           {MENU_ITEMS.map(item => {
             if (!item.nonLoggedIn && !publicKey) {
               return "";
@@ -91,9 +94,11 @@ export default function NavSidebar({ narrow = false }) {
             <div className="mt-2">
               <button onClick={() => navigate("/login/sign-up")} className="flex flex-row items-center primary">
                 <Icon name="sign-in" size={24} />
-                {!narrow && <span className="hidden xl:inline ml-3">
-                  <FormattedMessage defaultMessage="Sign up" id="8HJxXG"/>
-                </span>}
+                {!narrow && (
+                  <span className="hidden xl:inline ml-3">
+                    <FormattedMessage defaultMessage="Sign up" id="8HJxXG" />
+                  </span>
+                )}
               </button>
             </div>
           )}

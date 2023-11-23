@@ -21,10 +21,12 @@ export function LogoHeader({ showText = false }) {
     <Link to="/" className="logo" onClick={handleLogoClick}>
       <h1 className="flex flex-row items-center">
         <img src={CONFIG.navLogo} className="w-8 h-8" />
-        {showText && <div className="md:hidden xl:inline ml-2">
-          {extra()}
-          {CONFIG.appName}
-        </div>}
+        {showText && (
+          <div className="md:hidden xl:inline ml-2">
+            {extra()}
+            {CONFIG.appName}
+          </div>
+        )}
       </h1>
       {currentSubscription && (
         <div className="flex items-center g4 text-sm font-semibold tracking-wider">
