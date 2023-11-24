@@ -15,7 +15,7 @@ export default function RightColumn() {
           <div className="font-bold text-lg">
             <FormattedMessage defaultMessage="Trending hashtags" id="CbM2hK" />
           </div>
-          <TrendingHashtags count={5} />
+          <TrendingHashtags short={true} count={5} />
         </div>
         <div className="bg-superdark rounded-lg p-2 mt-8">
           <div className="font-bold text-lg">
