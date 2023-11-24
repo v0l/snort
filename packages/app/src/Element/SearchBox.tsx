@@ -50,10 +50,12 @@ export default function SearchBox() {
 
     const combinedResults = fuseResults.map(result => {
       const fuseScore = result.score === undefined ? 1 : result.score;
-      const followDistance = socialGraphInstance.getFollowDistance(result.item.pubkey) / followDistanceNormalizationFactor;
+      const followDistance =
+        socialGraphInstance.getFollowDistance(result.item.pubkey) / followDistanceNormalizationFactor;
 
-      const startsWithSearchString = [result.item.name, result.item.display_name, result.item.nip05]
-        .some(field => field && field.toLowerCase?.().startsWith(searchString.toLowerCase()));
+      const startsWithSearchString = [result.item.name, result.item.display_name, result.item.nip05].some(
+        field => field && field.toLowerCase?.().startsWith(searchString.toLowerCase()),
+      );
 
       const boostFactor = startsWithSearchString ? 0.25 : 1;
 
@@ -65,12 +67,11 @@ export default function SearchBox() {
       return { ...result, combinedScore };
     });
 
-  // Sort by combined score, lower is better
-  combinedResults.sort((a, b) => a.combinedScore - b.combinedScore);
+    // Sort by combined score, lower is better
+    combinedResults.sort((a, b) => a.combinedScore - b.combinedScore);
 
-  setResults(combinedResults.map(r => r.item));
-}, [search, main]);
-
+    setResults(combinedResults.map(r => r.item));
+  }, [search, main]);
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {

@@ -234,6 +234,9 @@
   "6k7xfM": {
     "defaultMessage": "Trending notes"
   },
+  "6mr8WU": {
+    "defaultMessage": "Followed by"
+  },
   "6uMqL1": {
     "defaultMessage": "Unpaid"
   },
@@ -367,6 +370,9 @@
   },
   "CVWeJ6": {
     "defaultMessage": "Trending People"
+  },
+  "CYkOCI": {
+    "defaultMessage": "and {count} others you follow"
   },
   "CbM2hK": {
     "defaultMessage": "Trending hashtags"
