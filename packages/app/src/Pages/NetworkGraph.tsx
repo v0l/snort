@@ -77,7 +77,7 @@ const NetworkGraph = () => {
     setOpen(false);
   };
 
-  const handleKeyDown = (event: { key: string; }) => {
+  const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Escape") {
       handleCloseGraph();
     }

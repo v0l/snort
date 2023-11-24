@@ -8,7 +8,9 @@ import { NostrLink, tryParseNostrLink } from "@snort/system";
 import { useLocation, useNavigate } from "react-router-dom";
 import { unixNow } from "@snort/shared";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "../Feed/TimelineFeed";
-import Note from "./Event/Note";
+import { fuzzySearch, FuzzySearchResult } from "@/index";
+import ProfileImage from "@/Element/User/ProfileImage";
+import { socialGraphInstance } from "@snort/system";
 
 const MAX_RESULTS = 3;
 
@@ -38,6 +40,37 @@ export default function SearchBox() {
   };
 
   const { main } = useTimelineFeed(subject, options);
+
+  const [results, setResults] = useState<FuzzySearchResult[]>([]);
+  useEffect(() => {
+    const searchString = search.trim();
+    const fuseResults = fuzzySearch.search(searchString);
+
+    const followDistanceNormalizationFactor = 3;
+
+    const combinedResults = fuseResults.map(result => {
+      const fuseScore = result.score === undefined ? 1 : result.score;
+      const followDistance = socialGraphInstance.getFollowDistance(result.item.pubkey) / followDistanceNormalizationFactor;
+
+      const startsWithSearchString = [result.item.name, result.item.display_name, result.item.nip05]
+        .some(field => field && field.toLowerCase?.().startsWith(searchString.toLowerCase()));
+
+      const boostFactor = startsWithSearchString ? 0.25 : 1;
+
+      const weightForFuseScore = 0.8;
+      const weightForFollowDistance = 0.2;
+
+      const combinedScore = (fuseScore * weightForFuseScore + followDistance * weightForFollowDistance) * boostFactor;
+
+      return { ...result, combinedScore };
+    });
+
+  // Sort by combined score, lower is better
+  combinedResults.sort((a, b) => a.combinedScore - b.combinedScore);
+
+  setResults(combinedResults.map(r => r.item));
+}, [search, main]);
+
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -92,8 +125,8 @@ export default function SearchBox() {
       case "Enter":
         if (activeIndex === 0) {
           navigate(`/search/${encodeURIComponent(search)}`);
-        } else if (activeIndex > 0 && main) {
-          const selectedResult = main[activeIndex - 1];
+        } else if (activeIndex > 0 && results) {
+          const selectedResult = results[activeIndex - 1];
           navigate(`/${new NostrLink(CONFIG.profileLinkPrefix, selectedResult.pubkey).encode()}`);
         } else {
           executeSearch();
@@ -101,7 +134,7 @@ export default function SearchBox() {
         break;
       case "ArrowDown":
         e.preventDefault();
-        setActiveIndex(prev => Math.min(prev + 1, Math.min(MAX_RESULTS, main ? main.length : 0)));
+        setActiveIndex(prev => Math.min(prev + 1, Math.min(MAX_RESULTS, results ? results.length : 0)));
         break;
       case "ArrowUp":
         e.preventDefault();
@@ -143,7 +176,7 @@ export default function SearchBox() {
             onClick={() => navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })}>
             <FormattedMessage defaultMessage="Search notes" id="EJbFi7" />: <b>{search}</b>
           </div>
-          {main?.slice(0, MAX_RESULTS).map((result, idx) => (
+          {results?.slice(0, MAX_RESULTS).map((result, idx) => (
             <div
               key={idx}
               className={`p-2 cursor-pointer ${
@@ -152,7 +185,7 @@ export default function SearchBox() {
                   : "hover:bg-neutral-200 dark:hover:bg-neutral-800"
               }`}
               onMouseEnter={() => setActiveIndex(idx + 1)}>
-              <Note data={result} depth={0} related={[]} />
+              <ProfileImage pubkey={result.pubkey} />
             </div>
           ))}
         </div>

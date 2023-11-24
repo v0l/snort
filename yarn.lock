@@ -2921,6 +2921,7 @@ __metadata:
     emojilib: ^3.0.10
     eslint: ^8.48.0
     eslint-plugin-formatjs: ^4.11.3
+    fuse.js: ^7.0.0
     highlight.js: ^11.8.0
     light-bolt11-decoder: ^2.1.0
     marked: ^9.1.0
@@ -6117,6 +6118,13 @@ __metadata:
   version: 1.2.3
   resolution: "functions-have-names@npm:1.2.3"
   checksum: c3f1f5ba20f4e962efb71344ce0a40722163e85bee2101ce25f88214e78182d2d2476aa85ef37950c579eb6cf6ee811c17b3101bb84004bb75655f3e33f3fdb5
+  languageName: node
+  linkType: hard
+
+"fuse.js@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "fuse.js@npm:7.0.0"
+  checksum: d15750efec1808370c0cae92ec9473aa7261c59bca1f15f1cf60039ba6f804b8f95340b5cabd83a4ef55839c1034764856e0128e443921f072aa0d8a20e4cacf
   languageName: node
   linkType: hard
 
