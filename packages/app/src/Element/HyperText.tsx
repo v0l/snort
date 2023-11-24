@@ -1,8 +1,8 @@
-import { TwitterTweetEmbed } from "react-twitter-embed";
+// import { TwitterTweetEmbed } from "react-twitter-embed";
 
 import {
   YoutubeUrlRegex,
-  TweetUrlRegex,
+  //TweetUrlRegex,
   TidalRegex,
   SoundCloudRegex,
   MixCloudRegex,
@@ -37,7 +37,7 @@ export default function HyperText({ link, depth, showLinkPreview, children }: Hy
   try {
     const url = new URL(a);
     const youtubeId = YoutubeUrlRegex.test(a) && RegExp.$1;
-    const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
+    //const tweetId = TweetUrlRegex.test(a) && RegExp.$2;
     const tidalId = TidalRegex.test(a) && RegExp.$1;
     const soundcloundId = SoundCloudRegex.test(a) && RegExp.$1;
     const mixcloudId = MixCloudRegex.test(a) && RegExp.$1;
@@ -46,13 +46,13 @@ export default function HyperText({ link, depth, showLinkPreview, children }: Hy
     const isAppleMusicLink = AppleMusicRegex.test(a);
     const isNostrNestsLink = NostrNestsRegex.test(a);
     const isWavlakeLink = WavlakeRegex.test(a);
-    if (tweetId) {
+    /*if (tweetId) { // tmp disabled, react-twitter-embed causes "require is not defined" error
       return (
         <div className="tweet" key={tweetId}>
           <TwitterTweetEmbed tweetId={tweetId} />
         </div>
       );
-    } else if (youtubeId) {
+    } else*/ if (youtubeId) {
       return (
         <iframe
           className="w-max"
