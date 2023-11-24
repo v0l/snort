@@ -342,7 +342,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         )}
         {isMe ? (
           <>
-            <button type="button" onClick={() => navigate("/settings")}>
+            <button className="md:hidden" type="button" onClick={() => navigate("/settings")}>
               <FormattedMessage {...messages.Settings} />
             </button>
           </>
