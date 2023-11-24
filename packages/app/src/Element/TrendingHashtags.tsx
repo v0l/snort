@@ -6,9 +6,17 @@ import { ErrorOrOffline } from "./ErrorOrOffline";
 import { HashTagHeader } from "@/Pages/HashTagsPage";
 import { useLocale } from "@/IntlProvider";
 import classNames from "classnames";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function TrendingHashtags({ title, count = Infinity, short }: { title?: ReactNode; count?: number, short?: boolean }) {
+export default function TrendingHashtags({
+  title,
+  count = Infinity,
+  short,
+}: {
+  title?: ReactNode;
+  count?: number;
+  short?: boolean;
+}) {
   const [hashtags, setHashtags] = useState<Array<{ hashtag: string; posts: number }>>();
   const [error, setError] = useState<Error>();
   const { lang } = useLocale();
@@ -44,9 +52,7 @@ export default function TrendingHashtags({ title, count = Infinity, short }: { t
             </div>
           );
         } else {
-          return (
-            <HashTagHeader tag={a.hashtag} events={a.posts} className={classNames("bb", { p: !short })} />
-          );
+          return <HashTagHeader tag={a.hashtag} events={a.posts} className={classNames("bb", { p: !short })} />;
         }
       })}
     </>

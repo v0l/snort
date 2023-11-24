@@ -27,10 +27,12 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
   }
 
   buildSub(session: LoginSession, rb: RequestBuilder): void {
+    const authors = session.follows.item;
+    authors.push(session.publicKey);
     const since = this.newest();
     rb.withFilter()
       .kinds(this.#kinds)
-      .authors(session.follows.item)
+      .authors(authors)
       .since(since === 0 ? unixNow() - WindowSize : since);
   }
 
@@ -67,9 +69,11 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
   async loadMore(system: SystemInterface, session: LoginSession, before: number) {
     if (this.#oldest && before <= this.#oldest) {
       const rb = new RequestBuilder(`${this.name}-loadmore`);
+      const authors = session.follows.item;
+      authors.push(session.publicKey);
       rb.withFilter()
         .kinds(this.#kinds)
-        .authors(session.follows.item)
+        .authors(authors)
         .until(before)
         .since(before - WindowSize);
       await system.Fetch(rb, async evs => {
