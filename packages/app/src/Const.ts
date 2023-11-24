@@ -94,11 +94,6 @@ export const YoutubeUrlRegex =
   /(?:https?:\/\/)?(?:www|m\.)?(?:youtu\.be\/|youtube\.com\/(?:live\/|shorts\/|embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/;
 
 /**
- * Tweet Regex
- */
-export const TweetUrlRegex = /https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+)/;
-
-/**
  * Hashtag regex
  */
 // eslint-disable-next-line no-useless-escape
