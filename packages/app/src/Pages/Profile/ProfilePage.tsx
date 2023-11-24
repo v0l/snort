@@ -153,7 +153,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   }
 
   function username() {
-    const followedByFriends = user.pubkey ? socialGraphInstance.followedByFriends(user.pubkey) : new Set<string>();
+    const followedByFriends = user?.pubkey ? socialGraphInstance.followedByFriends(user.pubkey) : new Set<string>();
     const MAX_FOLLOWED_BY_FRIENDS = 3;
     return (
       <>
