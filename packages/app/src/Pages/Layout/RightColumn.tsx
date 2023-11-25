@@ -21,7 +21,7 @@ export default function RightColumn() {
           <div className="font-bold text-lg">
             <FormattedMessage defaultMessage="Trending notes" id="6k7xfM" />
           </div>
-          <TrendingNotes count={5} />
+          <TrendingNotes small={true} count={5} />
         </div>
         <div className="bg-superdark rounded-lg p-2 mt-8">
           <div className="font-bold text-lg">

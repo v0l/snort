@@ -9,7 +9,7 @@ import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
 import { useLocale } from "@/IntlProvider";
 import useModeration from "@/Hooks/useModeration";
 
-export default function TrendingNotes({ count = Infinity }) {
+export default function TrendingNotes({ count = Infinity, small = false }) {
   // Added count prop with a default value
   const [posts, setPosts] = useState<Array<NostrEvent>>();
   const [error, setError] = useState<Error>();
@@ -34,14 +34,24 @@ export default function TrendingNotes({ count = Infinity }) {
   if (error) return <ErrorOrOffline error={error} onRetry={loadTrendingNotes} className="p" />;
   if (!posts) return <PageSpinner />;
 
+  // if small, render less stuff
+  const options = {
+    showFooter: !small,
+    showReactionsLink: !small,
+    showMedia: !small,
+    longFormPreview: !small,
+    truncate: small,
+    showContextMenu: !small,
+  };
+
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {posts
         .filter(a => !isEventMuted(a))
         .slice(0, count) // Limit the number of posts displayed
         .map(e => (
-          <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} />
+          <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} options={options} />
         ))}
-    </>
+    </div>
   );
 }
