@@ -1,9 +1,8 @@
 import "./ProfileImage.css";
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useCallback, useRef, useState } from "react";
 import { HexKey, socialGraphInstance, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { useHover } from "@uidotdev/usehooks";
 import classNames from "classnames";
 
 import Avatar from "@/Element/User/Avatar";
@@ -51,7 +50,19 @@ export default function ProfileImage({
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const nip05 = defaultNip ? defaultNip : user?.nip05;
   const followDistance = socialGraphInstance.getFollowDistance(pubkey);
-  const [ref, hovering] = useHover<HTMLDivElement>();
+  const [isHovering, setIsHovering] = useState(false);
+
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = useCallback(() => {
+    hoverTimeoutRef.current && clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => setIsHovering(true), 100); // Adjust timeout as needed
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    hoverTimeoutRef.current && clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => setIsHovering(false), 300); // Adjust timeout as needed
+  }, []);
 
   function handleClick(e: React.MouseEvent) {
     if (link === "") {
@@ -69,7 +80,7 @@ export default function ProfileImage({
     }
     return (
       <>
-        <div className="avatar-wrapper" ref={ref}>
+        <div className="avatar-wrapper" onMouseEnter={handleMouseEnter}>
           <Avatar
             pubkey={pubkey}
             user={user}
@@ -103,8 +114,12 @@ export default function ProfileImage({
   }
 
   function profileCard() {
-    if ((showProfileCard ?? true) && user) {
-      return <ProfileCard pubkey={pubkey} user={user} show={hovering} ref={ref} />;
+    if ((showProfileCard ?? true) && user && isHovering) {
+      return (
+        <div className="absolute shadow-lg z-10">
+          <ProfileCard pubkey={pubkey} user={user} show={true} />
+        </div>
+      );
     }
     return null;
   }
@@ -120,7 +135,7 @@ export default function ProfileImage({
     );
   } else {
     return (
-      <>
+      <div className="relative" onMouseLeave={handleMouseLeave}>
         <ProfileLink
           pubkey={pubkey}
           className={classNames("pfp", className)}
@@ -130,7 +145,7 @@ export default function ProfileImage({
           {inner()}
         </ProfileLink>
         {profileCard()}
-      </>
+      </div>
     );
   }
 }
