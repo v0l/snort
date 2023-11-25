@@ -36,6 +36,7 @@ export interface NoteProps {
     canClick?: boolean;
     showMediaSpotlight?: boolean;
     longFormPreview?: boolean;
+    truncate?: boolean;
   };
 }
 
