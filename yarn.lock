@@ -2908,7 +2908,6 @@ __metadata:
     "@types/webtorrent": ^0.109.3
     "@typescript-eslint/eslint-plugin": ^6.1.0
     "@typescript-eslint/parser": ^6.1.0
-    "@uidotdev/usehooks": ^2.3.1
     "@vitejs/plugin-react": ^4.2.0
     "@void-cat/api": ^1.0.10
     "@webbtc/webln-types": ^1.0.10
@@ -3863,16 +3862,6 @@ __metadata:
     "@typescript-eslint/types": 6.11.0
     eslint-visitor-keys: ^3.4.1
   checksum: 6aae9dd79963bbefbf2e310015b909627da541a13ab4d8359eea3c86c34fdbb91e583f65b5a99dee1959f7c5d67b21b45e5a05c63ddb4b82dacd60c890ce8b25
-  languageName: node
-  linkType: hard
-
-"@uidotdev/usehooks@npm:^2.3.1":
-  version: 2.4.1
-  resolution: "@uidotdev/usehooks@npm:2.4.1"
-  peerDependencies:
-    react: ">=18.0.0"
-    react-dom: ">=18.0.0"
-  checksum: d381ce7d4853abe53127b70b0734935d1cfba97bfd2314e67aa42d4f35cd5b955712c6e968f435d8818bd51bea9cf7688b60eeb0db19bae2a6666a37ceee8b5f
   languageName: node
   linkType: hard
 
