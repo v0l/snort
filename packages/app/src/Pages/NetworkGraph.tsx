@@ -1,8 +1,7 @@
-import ForceGraph3D, { NodeObject } from "react-force-graph-3d";
+import { NodeObject } from "react-force-graph-3d";
 import { useContext, useEffect, useState } from "react";
 import { MetadataCache, socialGraphInstance, STR, UID } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import * as THREE from "three";
 import { defaultAvatar } from "../SnortUtils";
 import { proxyImg } from "@/Hooks/useImgProxy";
 import { LoginStore } from "@/Login";
@@ -72,6 +71,19 @@ const NetworkGraph = () => {
   // const [showDistance, setShowDistance] = useState(2);
   // const [direction, setDirection] = useState(Direction.OUTBOUND);
   // const [renderLimit, setRenderLimit] = useState(NODE_LIMIT);
+
+  const [ForceGraph3D, setForceGraph3D] = useState(null);
+  const [THREE, setTHREE] = useState(null);
+
+  useEffect(() => {
+    // Dynamically import the modules
+    import("react-force-graph-3d").then(module => {
+      setForceGraph3D(module.default);
+    });
+    import("three").then(module => {
+      setTHREE(module);
+    });
+  }, []);
 
   const handleCloseGraph = () => {
     setOpen(false);
@@ -210,6 +222,8 @@ const NetworkGraph = () => {
   useEffect(() => {
     refreshData();
   }, []);
+
+  if (!ForceGraph3D || !THREE) return null;
 
   return (
     <div>

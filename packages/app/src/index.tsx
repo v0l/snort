@@ -25,10 +25,6 @@ import PowWorkerURL from "@snort/system/src/pow-worker.ts?worker&url";
 import { SnortContext } from "@snort/system-react";
 import { removeUndefined, throwIfOffline } from "@snort/shared";
 
-import { lazy, Suspense } from "react";
-
-const NetworkGraph = lazy(() => import("@/Pages/NetworkGraph"));
-
 import * as serviceWorkerRegistration from "@/serviceWorkerRegistration";
 import { IntlProvider } from "@/IntlProvider";
 import { getCountry, unwrap } from "@/SnortUtils";
@@ -60,6 +56,7 @@ import { OnboardingRoutes } from "@/Pages/onboarding";
 import { setupWebLNWalletConfig } from "@/Wallet/WebLN";
 import { Wallets } from "@/Wallet";
 import Fuse from "fuse.js";
+import NetworkGraph from "@/Pages/NetworkGraph";
 
 declare global {
   interface Window {
@@ -334,9 +331,7 @@ root.render(
   <StrictMode>
     <IntlProvider>
       <SnortContext.Provider value={System}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <RouterProvider router={router} />
-        </Suspense>
+        <RouterProvider router={router} />
       </SnortContext.Provider>
     </IntlProvider>
   </StrictMode>,
