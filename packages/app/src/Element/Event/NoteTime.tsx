@@ -1,44 +1,50 @@
-import { useEffect, useState } from "react";
-
-const MinuteInMs = 1_000 * 60;
-const HourInMs = MinuteInMs * 60;
-const DayInMs = HourInMs * 24;
+import { useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 export interface NoteTimeProps {
   from: number;
   fallback?: string;
 }
 
+const secondsInAMinute = 60;
+const secondsInAnHour = secondsInAMinute * 60;
+const secondsInADay = secondsInAnHour * 24;
+
 export default function NoteTime(props: NoteTimeProps) {
-  const [time, setTime] = useState<string>();
+  const [time, setTime] = useState<string | JSX.Element>();
   const { from, fallback } = props;
+
   const absoluteTime = new Intl.DateTimeFormat(undefined, {
-    dateStyle: "medium",
-    timeStyle: "long",
+    dateStyle: 'medium',
+    timeStyle: 'long',
   }).format(from);
-  const fromDate = new Date(from);
-  const isoDate = fromDate.toISOString();
+
+  const isoDate = new Date(from).toISOString();
 
   function calcTime() {
     const fromDate = new Date(from);
-    const ago = new Date().getTime() - from;
-    const absAgo = Math.abs(ago);
-    if (absAgo > DayInMs) {
-      return fromDate.toLocaleDateString(undefined, {
-        year: "2-digit",
-        month: "short",
-        day: "2-digit",
-      });
-    } else if (absAgo > HourInMs) {
-      return `${fromDate.getHours().toString().padStart(2, "0")}:${fromDate.getMinutes().toString().padStart(2, "0")}`;
-    } else if (absAgo < MinuteInMs) {
-      return fallback;
+    const currentTime = new Date();
+    const timeDifference = Math.floor((currentTime.getTime() - fromDate.getTime()) / 1000);
+
+    if (timeDifference < secondsInAMinute) {
+      return <FormattedMessage defaultMessage="now" id="kaaf1E" />;
+    } else if (timeDifference < secondsInAnHour) {
+      return `${Math.floor(timeDifference / secondsInAMinute)}m`;
+    } else if (timeDifference < secondsInADay) {
+      return `${Math.floor(timeDifference / secondsInAnHour)}h`;
     } else {
-      const mins = Math.floor(absAgo / MinuteInMs);
-      if (ago < 0) {
-        return `in ${mins}m`;
+      if (fromDate.getFullYear() === currentTime.getFullYear()) {
+        return fromDate.toLocaleDateString(undefined, {
+          month: 'short',
+          day: 'numeric',
+        });
+      } else {
+        return fromDate.toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
       }
-      return `${mins}m`;
     }
   }
 
@@ -52,13 +58,13 @@ export default function NoteTime(props: NoteTimeProps) {
         }
         return s;
       });
-    }, MinuteInMs);
+    }, 60_000); // update every minute
     return () => clearInterval(t);
   }, [from]);
 
   return (
     <time dateTime={isoDate} title={absoluteTime}>
-      {time}
+      {time || fallback}
     </time>
   );
 }
