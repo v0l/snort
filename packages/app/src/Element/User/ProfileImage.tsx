@@ -11,6 +11,7 @@ import Icon from "@/Icons/Icon";
 import DisplayName from "./DisplayName";
 import { ProfileLink } from "./ProfileLink";
 import { ProfileCard } from "./ProfileCard";
+import FollowDistanceIndicator from "@/Element/User/FollowDistanceIndicator";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -49,7 +50,6 @@ export default function ProfileImage({
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const nip05 = defaultNip ? defaultNip : user?.nip05;
-  const followDistance = socialGraphInstance.getFollowDistance(pubkey);
   const [isHovering, setIsHovering] = useState(false);
 
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -72,12 +72,6 @@ export default function ProfileImage({
   }
 
   function inner() {
-    let followDistanceColor = "";
-    if (followDistance <= 1) {
-      followDistanceColor = "success";
-    } else if (followDistance === 2 && socialGraphInstance.followedByFriendsCount(pubkey) >= 10) {
-      followDistanceColor = "text-nostr-orange";
-    }
     return (
       <>
         <div className="avatar-wrapper" onMouseEnter={handleMouseEnter}>
@@ -87,14 +81,10 @@ export default function ProfileImage({
             size={size}
             imageOverlay={imageOverlay}
             icons={
-              (followDistance <= 2 && showFollowDistance) || icons ? (
+              showFollowDistance || icons ? (
                 <>
                   {icons}
-                  {showFollowDistance && (
-                    <div className="icon-circle">
-                      <Icon name="check" className={followDistanceColor} size={10} />
-                    </div>
-                  )}
+                  {showFollowDistance && <FollowDistanceIndicator pubkey={pubkey} />}
                 </>
               ) : undefined
             }
