@@ -22,6 +22,7 @@ import Toaster from "@/Toaster";
 import useLogin from "@/Hooks/useLogin";
 import { LongFormText } from "@/Element/Event/LongFormText";
 import NavSidebar from "@/Pages/Layout/NavSidebar";
+import ErrorBoundary from "@/Element/ErrorBoundary";
 
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 
@@ -68,46 +69,48 @@ export function SnortDeckLayout() {
           reset: () => setDeckState({}),
         }}>
         <NavSidebar narrow={true} />
-        <div className="deck-cols">
-          {cols.map(c => {
-            switch (c) {
-              case "notes":
-                return <NotesCol />;
-              case "media":
-                return <MediaCol setThread={t => setDeckState({ thread: t })} />;
-              case "articles":
-                return <ArticlesCol />;
-              case "notifications":
-                return <NotificationsCol setThread={t => setDeckState({ thread: t })} />;
-            }
-          })}
-        </div>
-        {deckState.thread && (
-          <>
-            <Modal id="thread-overlay" onClose={() => setDeckState({})} className="thread-overlay thread">
-              <ThreadContextWrapper link={deckState.thread}>
-                <SpotlightFromThread onClose={() => setDeckState({})} />
-                <div>
-                  <Thread onBack={() => setDeckState({})} disableSpotlight={true} />
+        <ErrorBoundary>
+          <div className="deck-cols">
+            {cols.map(c => {
+              switch (c) {
+                case "notes":
+                  return <NotesCol />;
+                case "media":
+                  return <MediaCol setThread={t => setDeckState({ thread: t })} />;
+                case "articles":
+                  return <ArticlesCol />;
+                case "notifications":
+                  return <NotificationsCol setThread={t => setDeckState({ thread: t })} />;
+              }
+            })}
+          </div>
+          {deckState.thread && (
+            <>
+              <Modal id="thread-overlay" onClose={() => setDeckState({})} className="thread-overlay thread">
+                <ThreadContextWrapper link={deckState.thread}>
+                  <SpotlightFromThread onClose={() => setDeckState({})} />
+                  <div>
+                    <Thread onBack={() => setDeckState({})} disableSpotlight={true} />
+                  </div>
+                </ThreadContextWrapper>
+              </Modal>
+            </>
+          )}
+          {deckState.article && (
+            <>
+              <Modal
+                id="thread-overlay-article"
+                onClose={() => setDeckState({})}
+                className="thread-overlay long-form"
+                onClick={() => setDeckState({})}>
+                <div onClick={e => e.stopPropagation()}>
+                  <LongFormText ev={deckState.article} isPreview={false} related={[]} />
                 </div>
-              </ThreadContextWrapper>
-            </Modal>
-          </>
-        )}
-        {deckState.article && (
-          <>
-            <Modal
-              id="thread-overlay-article"
-              onClose={() => setDeckState({})}
-              className="thread-overlay long-form"
-              onClick={() => setDeckState({})}>
-              <div onClick={e => e.stopPropagation()}>
-                <LongFormText ev={deckState.article} isPreview={false} related={[]} />
-              </div>
-            </Modal>
-          </>
-        )}
-        <Toaster />
+              </Modal>
+            </>
+          )}
+          <Toaster />
+        </ErrorBoundary>
       </DeckContext.Provider>
     </div>
   );

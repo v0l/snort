@@ -17,6 +17,7 @@ import AccountHeader from "./AccountHeader";
 import RightColumn from "./RightColumn";
 import { LogoHeader } from "./LogoHeader";
 import useLoginFeed from "@/Feed/LoginFeed";
+import ErrorBoundary from "@/Element/ErrorBoundary";
 
 export default function Index() {
   const location = useLocation();
@@ -62,7 +63,9 @@ export default function Index() {
         <div className="flex flex-row w-full">
           <NavSidebar />
           <div className="flex flex-1 flex-col overflow-x-hidden">
-            <Outlet />
+            <ErrorBoundary>
+              <Outlet />
+            </ErrorBoundary>
           </div>
           <RightColumn />
         </div>
