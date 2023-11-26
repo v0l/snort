@@ -74,7 +74,7 @@ export default function MessagesPage() {
     const isActive = cx.id === chat;
     return (
       <div
-        className={classNames("flex items-center p", { active: isActive })}
+        className={classNames("flex items-center p cursor-pointer", { active: isActive })}
         key={cx.id}
         onClick={e => openChat(e, cx.type, cx.id)}>
         {conversationIdent(cx)}
