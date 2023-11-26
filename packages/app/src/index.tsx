@@ -35,7 +35,7 @@ import NotificationsPage from "@/Pages/Notifications";
 import SettingsPage, { SettingsRoutes } from "@/Pages/SettingsPage";
 import ErrorPage from "@/Pages/ErrorPage";
 import NostrAddressPage from "@/Pages/NostrAddressPage";
-import MessagesPage from "@/Pages/MessagesPage";
+import MessagesPage from "@/Pages/Messages/MessagesPage";
 import DonatePage from "@/Pages/DonatePage";
 import SearchPage from "@/Pages/SearchPage";
 import HelpPage from "@/Pages/HelpPage";

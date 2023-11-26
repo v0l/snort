@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 
 export interface NoteTimeProps {
   from: number;
@@ -15,8 +15,8 @@ export default function NoteTime(props: NoteTimeProps) {
   const { from, fallback } = props;
 
   const absoluteTime = new Intl.DateTimeFormat(undefined, {
-    dateStyle: 'medium',
-    timeStyle: 'long',
+    dateStyle: "medium",
+    timeStyle: "long",
   }).format(from);
 
   const isoDate = new Date(from).toISOString();
@@ -35,14 +35,14 @@ export default function NoteTime(props: NoteTimeProps) {
     } else {
       if (fromDate.getFullYear() === currentTime.getFullYear()) {
         return fromDate.toLocaleDateString(undefined, {
-          month: 'short',
-          day: 'numeric',
+          month: "short",
+          day: "numeric",
         });
       } else {
         return fromDate.toLocaleDateString(undefined, {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
+          year: "numeric",
+          month: "short",
+          day: "numeric",
         });
       }
     }
