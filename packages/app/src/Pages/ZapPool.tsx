@@ -49,6 +49,7 @@ function ZapTarget({ target }: { target: ZapPoolRecipient }) {
               type="range"
               min={0}
               max={100}
+              step={0.5}
               value={target.split}
               onChange={e =>
                 ZapPoolController?.set({
