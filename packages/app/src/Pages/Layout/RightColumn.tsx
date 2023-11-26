@@ -3,10 +3,14 @@ import TrendingUsers from "@/Element/TrendingUsers";
 import TrendingHashtags from "@/Element/TrendingHashtags";
 import TrendingNotes from "@/Element/TrendingPosts";
 import { FormattedMessage } from "react-intl";
+import classNames from "classnames";
 
-export default function RightColumn() {
+export default function RightColumn({ show = true }) {
   return (
-    <div className="flex-col hidden lg:flex lg:w-1/3 sticky top-0 h-screen p-2 border-l border-neutral-900">
+    <div
+      className={classNames("flex-col hidden lg:w-1/3 sticky top-0 h-screen p-2 border-l border-neutral-900", {
+        "lg:flex": show,
+      })}>
       <div>
         <SearchBox />
       </div>

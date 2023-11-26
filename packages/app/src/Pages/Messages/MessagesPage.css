@@ -1,8 +1,7 @@
 .dm-page {
-  --full-height: calc(100vh - 42px - var(--header-padding-tb) - var(--header-padding-tb) - 16px);
   display: grid;
   grid-template-columns: 350px auto;
-  height: var(--full-height);
+  height: 100vh;
   /* 100vh - header - padding */
   overflow: hidden;
   padding: 4px;
@@ -16,6 +15,7 @@
 @media (max-width: 768px) {
   .dm-page {
     grid-template-columns: 100vw;
+    height: calc(100vh - 62px);
   }
 
   .dm-page > div:nth-child(1) {

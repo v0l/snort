@@ -29,7 +29,9 @@ export default function Index() {
   useLoginFeed();
 
   const hideHeaderPaths = ["/login", "/new"];
+  const hideRightColumnPaths = ["/login", "/new", "/messages", "/settings"];
   const shouldHideHeader = hideHeaderPaths.some(path => location.pathname.startsWith(path));
+  const shouldHideRightColumn = hideRightColumnPaths.some(path => location.pathname.startsWith(path));
 
   const pageClassPaths = useMemo(
     () => ({
@@ -67,7 +69,7 @@ export default function Index() {
               <Outlet />
             </ErrorBoundary>
           </div>
-          <RightColumn />
+          <RightColumn show={!shouldHideRightColumn} />
         </div>
         <div className="md:hidden">
           <NoteCreatorButton className="note-create-button" />
