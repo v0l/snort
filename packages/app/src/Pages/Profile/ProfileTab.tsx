@@ -13,7 +13,7 @@ import Bookmarks from "@/Element/User/Bookmarks";
 import Icon from "@/Icons/Icon";
 import { Tab } from "@/Element/Tabs";
 import { default as ZapElement } from "@/Element/Event/Zap";
-import useCategorizedBookmarks from "@/Hooks/useLists";
+import { useBookmarkList } from "@/Hooks/useLists";
 
 import messages from "../messages";
 
@@ -60,7 +60,7 @@ export function RelaysTab({ id }: { id: HexKey }) {
 }
 
 export function BookMarksTab({ id }: { id: HexKey }) {
-  const bookmarks = useCategorizedBookmarks(id, "bookmark");
+  const bookmarks = useBookmarkList(id);
   const reactions = useReactions(`bookmark:reactions:{id}`, bookmarks.map(NostrLink.fromEvent));
   return <Bookmarks pubkey={id} bookmarks={bookmarks} related={reactions.data ?? []} />;
 }

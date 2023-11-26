@@ -1,13 +1,12 @@
 import "./ProfileImage.css";
 
 import React, { ReactNode, useCallback, useRef, useState } from "react";
-import { HexKey, socialGraphInstance, UserMetadata } from "@snort/system";
+import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
 
 import Avatar from "@/Element/User/Avatar";
 import Nip05 from "@/Element/User/Nip05";
-import Icon from "@/Icons/Icon";
 import DisplayName from "./DisplayName";
 import { ProfileLink } from "./ProfileLink";
 import { ProfileCard } from "./ProfileCard";

@@ -4,7 +4,7 @@ import { NoteStore, NoteStoreSnapshotData } from "./note-collection";
 import { Query } from "./query";
 import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { ProfileLoaderService } from "./profile-cache";
-import { RelayCache } from "./gossip-model";
+import { RelayCache } from "./outbox-model";
 import { QueryOptimizer } from "./query-optimizer";
 import { base64 } from "@scure/base";
 
@@ -31,6 +31,7 @@ export * from "./pow";
 export * from "./pow-util";
 export * from "./query-optimizer";
 export * from "./encrypted";
+export * from "./outbox-model";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";
@@ -71,7 +72,7 @@ export interface SystemInterface {
    * @param req Request to send to relays
    * @param cb A callback which will fire every 100ms when new data is received
    */
-  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void): Promise<NoteStoreSnapshotData>;
+  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void): Promise<Array<TaggedNostrEvent>>;
 
   /**
    * Create a new permanent connection to a relay

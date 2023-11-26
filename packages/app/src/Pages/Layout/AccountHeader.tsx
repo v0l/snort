@@ -1,18 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useUserProfile } from "@snort/system-react";
-import { useMemo } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { base64 } from "@scure/base";
 import { unwrap } from "@snort/shared";
 import { FormattedMessage } from "react-intl";
-import SearchBox from "../../Element/SearchBox";
-import { ProfileLink } from "../../Element/User/ProfileLink";
-import Avatar from "../../Element/User/Avatar";
-import Icon from "../../Icons/Icon";
-import useKeyboardShortcut from "../../Hooks/useKeyboardShortcut";
-import { isFormElement } from "../../SnortUtils";
-import useLogin from "../../Hooks/useLogin";
-import useEventPublisher from "../../Hooks/useEventPublisher";
-import SnortApi from "../../External/SnortApi";
+import SearchBox from "@/Element/SearchBox";
+import { ProfileLink } from "@/Element/User/ProfileLink";
+import Avatar from "@/Element/User/Avatar";
+import Icon from "@/Icons/Icon";
+import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
+import { isFormElement } from "@/SnortUtils";
+import useLogin from "@/Hooks/useLogin";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import SnortApi from "@/External/SnortApi";
+import { Notifications } from "@/Cache";
 
 const AccountHeader = () => {
   const navigate = useNavigate();
@@ -25,19 +26,13 @@ const AccountHeader = () => {
     }
   });
 
-  const { publicKey, latestNotification, readNotifications, readonly } = useLogin(s => ({
+  const { publicKey, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
-    latestNotification: s.latestNotification,
-    readNotifications: s.readNotifications,
     readonly: s.readonly,
   }));
   const profile = useUserProfile(publicKey);
   const { publisher } = useEventPublisher();
 
-  const hasNotifications = useMemo(
-    () => latestNotification > readNotifications,
-    [latestNotification, readNotifications],
-  );
   const unreadDms = useMemo(() => (publicKey ? 0 : 0), [publicKey]);
 
   async function goToNotifications() {
@@ -92,7 +87,7 @@ const AccountHeader = () => {
       )}
       <Link className="btn" to="/notifications" onClick={goToNotifications}>
         <Icon name="bell-02" size={24} />
-        {hasNotifications && <span className="has-unread"></span>}
+        <HasNotificationsMarker />
       </Link>
       <ProfileLink pubkey={publicKey} user={profile}>
         <Avatar pubkey={publicKey} user={profile} />
@@ -100,5 +95,25 @@ const AccountHeader = () => {
     </div>
   );
 };
+
+function HasNotificationsMarker() {
+  const readNotifications = useLogin(s => s.readNotifications);
+  const notifications = useSyncExternalStore(
+    c => Notifications.hook(c, "*"),
+    () => Notifications.snapshot(),
+  );
+  const latestNotification = useMemo(
+    () => notifications.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0),
+    [notifications],
+  );
+  const hasNotifications = useMemo(
+    () => latestNotification * 1000 > readNotifications,
+    [notifications, readNotifications],
+  );
+
+  if (hasNotifications) {
+    return <span className="has-unread"></span>;
+  }
+}
 
 export default AccountHeader;

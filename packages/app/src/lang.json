@@ -90,6 +90,9 @@
   "1R43+L": {
     "defaultMessage": "Enter Nostr Wallet Connect config"
   },
+  "1UWegE": {
+    "defaultMessage": "Be sure to back up your keys!"
+  },
   "1c4YST": {
     "defaultMessage": "Connected to: {node} 🎉"
   },
@@ -913,6 +916,9 @@
   "YDURw6": {
     "defaultMessage": "Service URL"
   },
+  "YR2I9M": {
+    "defaultMessage": "No keys, no {app}, There is no way to reset it if you don't back up. It only takes a minute."
+  },
   "YXA3AH": {
     "defaultMessage": "Enable reactions"
   },
@@ -1170,6 +1176,9 @@
   "izWS4J": {
     "defaultMessage": "Unfollow"
   },
+  "j9xbzF": {
+    "defaultMessage": "Already backed up"
+  },
   "jA3OE/": {
     "defaultMessage": "{n,plural,=1{{n} sat} other{{n} sats}}"
   },
@@ -1357,6 +1366,9 @@
   },
   "r5srDR": {
     "defaultMessage": "Enter wallet password"
+  },
+  "rMgF34": {
+    "defaultMessage": "Back up now"
   },
   "rT14Ow": {
     "defaultMessage": "Add Relays"

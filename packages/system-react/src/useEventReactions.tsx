@@ -21,9 +21,9 @@ export function useEventReactions(link: NostrLink, related: ReadonlyArray<Tagged
       {} as Record<string, Array<TaggedNostrEvent>>,
     );
 
-    const deletions = reactionKinds[EventKind.Deletion.toString()] ?? [];
-    const reactions = reactionKinds[EventKind.Reaction.toString()] ?? [];
-    const reposts = reactionKinds[EventKind.Repost.toString()] ?? [];
+    const deletions = reactionKinds[String(EventKind.Deletion)] ?? [];
+    const reactions = reactionKinds[String(EventKind.Reaction)] ?? [];
+    const reposts = reactionKinds[String(EventKind.Repost)] ?? [];
 
     const groupReactions = reactions?.reduce(
       (acc, reaction) => {
@@ -35,7 +35,7 @@ export function useEventReactions(link: NostrLink, related: ReadonlyArray<Tagged
       {} as Record<Reaction, Array<TaggedNostrEvent>>,
     );
 
-    const zaps = (reactionKinds[EventKind.ZapReceipt] ?? [])
+    const zaps = (reactionKinds[String(EventKind.ZapReceipt)] ?? [])
       .map(a => parseZap(a))
       .filter(a => a.valid)
       .sort((a, b) => b.amount - a.amount);

@@ -710,24 +710,6 @@ div.form-col {
   color: var(--gray-light);
 }
 
-.tweet {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.tweet div {
-  width: 100%;
-}
-
-.tweet div .twitter-tweet {
-  margin: 0 auto;
-}
-
-.tweet div .twitter-tweet > iframe {
-  max-height: unset;
-}
-
 @media (max-width: 720px) {
   div.form {
     grid-auto-flow: dense;

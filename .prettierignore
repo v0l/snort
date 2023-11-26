@@ -5,3 +5,4 @@ build/
 transifex.yml
 dist/
 src-tauri/
+target/

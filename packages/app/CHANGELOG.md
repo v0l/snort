@@ -1,3 +1,55 @@
+# v0.1.23
+
+## Added
+
+- DeepL translate api (Automatic for PRO subscribers)
+- Add nostr:nprofile1qqsydl97xpj74udw0qg5vkfyujyjxd3l706jd0t0w0turp93d0vvungfgfewr to contributors
+- Proxy LN address type enabled on Nostr Address settings pages
+- Infinite scrol on notifications page
+- Default 0.5% ZapPool rate for Snort donation address
+- Collect relay metrics in `@snort/system` for better relay selection algo in Outbox Model (NIP-65)
+- New sign up / login flow!
+  - Topics / Mute words on sign up for easier onboarding
+- Drag & Drop for uploads on note creator - nostr:nprofile1qqs8tchhwf5smv3r2g0vkswz58c837uu456x59m3dh380gtrhqzydeqz4wlka
+- Mixin topics (hashtags) into timeline feed
+- Language specific trending posts
+- Show following info for hashtags
+- Sync preferences to network (`NIP-78` support)
+- Trending hashtags page
+- Note creator hashtag input
+- Top trending hashtags on note creator
+- Social Graph - nostr:nprofile1qqsy2ga7trfetvd3j65m3jptqw9k39wtq2mg85xz2w542p5dhg06e5qpr9mhxue69uhhyetvv9ujuumwdae8gtnnda3kjctv9uh8am0r
+- New users relay list based off "close" relays
+- `NIP-96` support for nostr native image/file uploaders
+- Write replies/reactions to `p` tagged users read relays (Outbox model)
+- Sync joined public chats (`NIP-28`) using `PublicChatList` kind `10_005`
+
+## Changed
+
+- Read/Write relays only on kind `10_002` (NIP-65)
+- Removed `nostr.watch` code for adding new users to random relays
+- Render kind `10_002` on profile relays tab
+- `@snort/system` using eventemitter3 for triggering events
+- Use latest `NIP-51` spec (Bookmarks/Interests/`NIP-28` PublicChatList)
+- `nreq` support (Demo)
+- Write profile/relays to blasters
+- `@snort/system` automated outbox model (automatic fetching of relay metadata)
+
+## Fixes
+
+- Upgrade ephermal connection to non-ephemeral
+- Remove relay tag from zaps (Some zap services dont support it)
+- Fix zap parsing for goals
+- Remove extra chars from quoted events to fix loading (`'s` etc)
+- CSS Fixes for profile card on light theme
+- Zap counting on replacable events
+- `NIP-28` chats loading
+- Overflowing modal UI
+- Live stream widget layout with long titles
+- Notifications marker has returned from its long slumber
+
+---
+
 # v0.1.22
 
 ## Fixes

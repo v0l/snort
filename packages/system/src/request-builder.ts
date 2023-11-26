@@ -5,7 +5,7 @@ import { appendDedupe, dedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snor
 import EventKind from "./event-kind";
 import { NostrLink, NostrPrefix, SystemInterface } from ".";
 import { ReqFilter, u256, HexKey } from "./nostr";
-import { RelayCache, splitByWriteRelays, splitFlatByWriteRelays } from "./gossip-model";
+import { RelayCache, splitByWriteRelays, splitFlatByWriteRelays } from "./outbox-model";
 
 /**
  * Which strategy is used when building REQ filters

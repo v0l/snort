@@ -96,11 +96,6 @@ export interface LoginSession {
   blocked: Newest<Array<HexKey>>;
 
   /**
-   * Latest notification
-   */
-  latestNotification: number;
-
-  /**
    * Timestamp of last read notification
    */
   readNotifications: number;

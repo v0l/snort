@@ -1,5 +1,5 @@
 import debug from "debug";
-import { ExternalStore, FeedCache, unixNow, unwrap } from "@snort/shared";
+import { ExternalStore, FeedCache, unwrap } from "@snort/shared";
 import {
   EventKind,
   NostrEvent,
@@ -16,7 +16,6 @@ import {
 import { LoginSession } from "@/Login";
 import { findTag } from "@/SnortUtils";
 import { Chat, ChatParticipant, ChatSystem, ChatType, lastReadInChat } from "@/chat";
-import { Day } from "@/Const";
 
 export class Nip28ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   #cache: FeedCache<NostrEvent>;
@@ -50,7 +49,7 @@ export class Nip28ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
       const lastMessage = messages[id]?.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0) ?? 0;
       rb.withFilter()
         .tag("e", [id])
-        .since(lastMessage === 0 ? unixNow() - 2 * Day : lastMessage)
+        .since(lastMessage === 0 ? undefined : lastMessage)
         .kinds(this.ChannelKinds);
     }
 
@@ -67,9 +66,10 @@ export class Nip28ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
 
   listChats(): Chat[] {
     const chats = this.#chatChannels();
-    return Object.entries(chats).map(([k, v]) => {
+    const ret = Object.entries(chats).map(([k, v]) => {
       return Nip28ChatSystem.createChatObj(Nip28ChatSystem.chatId(k), v);
     });
+    return ret;
   }
 
   static chatId(id: string) {

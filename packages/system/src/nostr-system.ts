@@ -5,7 +5,7 @@ import { unwrap, sanitizeRelayUrl, FeedCache, removeUndefined } from "@snort/sha
 import { NostrEvent, TaggedNostrEvent } from "./nostr";
 import { Connection, RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
 import { Query } from "./query";
-import { NoteCollection, NoteStore, NoteStoreSnapshotData } from "./note-collection";
+import { NoteCollection, NoteStore } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder, RequestStrategy } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
@@ -22,7 +22,7 @@ import {
   EventExt,
 } from ".";
 import { EventsCache } from "./cache/events";
-import { RelayCache } from "./gossip-model";
+import { RelayCache, RelayMetadataLoader, pickRelaysForReply } from "./outbox-model";
 import { QueryOptimizer, DefaultQueryOptimizer } from "./query-optimizer";
 import { trimFilters } from "./request-trim";
 
@@ -88,6 +88,8 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
    */
   checkSigs: boolean;
 
+  #relayLoader: RelayMetadataLoader;
+
   constructor(props: {
     relayCache?: FeedCache<UsersRelays>;
     profileCache?: FeedCache<MetadataCache>;
@@ -106,6 +108,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
 
     this.#profileLoader = new ProfileLoaderService(this, this.#profileCache);
     this.#relayMetrics = new RelayMetricHandler(this.#relayMetricsCache);
+    this.#relayLoader = new RelayMetadataLoader(this, this.#relayCache);
     this.checkSigs = props.checkSigs ?? true;
     this.#cleanup();
   }
@@ -246,7 +249,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
 
   Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
     const q = this.Query(NoteCollection, req);
-    return new Promise<NoteStoreSnapshotData>(resolve => {
+    return new Promise<Array<TaggedNostrEvent>>(resolve => {
       let t: ReturnType<typeof setTimeout> | undefined;
       let tBuf: Array<TaggedNostrEvent> = [];
       const releaseOnEvent = cb
@@ -267,7 +270,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
           releaseOnEvent?.();
           releaseFeedHook();
           q.cancel();
-          resolve(unwrap(q.feed.snapshot.data));
+          resolve(unwrap((q.feed as NoteCollection).snapshot.data));
         }
       });
     });
@@ -333,6 +336,9 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
           );
         }
       }
+      if (f.authors) {
+        this.#relayLoader.TrackKeys(f.authors);
+      }
     }
 
     // check for empty filters
@@ -382,8 +388,9 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
    */
   async BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void) {
     const socks = [...this.#sockets.values()].filter(a => !a.Ephemeral && a.Settings.write);
-    const oks = await Promise.all(
-      socks.map(async s => {
+    const replyRelays = await pickRelaysForReply(ev, this);
+    const oks = await Promise.all([
+      ...socks.map(async s => {
         try {
           const rsp = await s.SendAsync(ev);
           cb?.(rsp);
@@ -393,7 +400,8 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
         }
         return;
       }),
-    );
+      ...replyRelays.filter(a => !this.#sockets.has(a)).map(a => this.WriteOnceToRelay(a, ev)),
+    ]);
     return removeUndefined(oks);
   }
 

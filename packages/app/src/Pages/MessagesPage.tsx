@@ -3,7 +3,7 @@ import "./MessagesPage.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
-import { NostrLink, TLVEntryType, UserMetadata, decodeTLV } from "@snort/system";
+import { EventKind, NostrLink, TLVEntryType, UserMetadata, decodeTLV } from "@snort/system";
 import { useEventFeed, useUserProfile, useUserSearch } from "@snort/system-react";
 
 import UnreadCount from "@/Element/UnreadCount";
@@ -25,6 +25,7 @@ import { LoginSession, LoginStore } from "@/Login";
 import { Nip28ChatSystem } from "@/chat/nip28";
 import { ChatParticipantProfile } from "@/Element/Chat/ChatParticipant";
 import classNames from "classnames";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 
 const TwoCol = 768;
 const ThreeCol = 1500;
@@ -182,6 +183,7 @@ function NewChatWindow() {
   const navigate = useNavigate();
   const search = useUserSearch();
   const login = useLogin();
+  const { system, publisher } = useEventPublisher();
 
   useEffect(() => {
     setNewChat([]);
@@ -270,12 +272,25 @@ function NewChatWindow() {
                 {results.length === 1 && (
                   <Nip28ChatProfile
                     id={results[0]}
-                    onClick={id => {
+                    onClick={async id => {
                       setShow(false);
+                      const chats = appendDedupe(login.extraChats, [Nip28ChatSystem.chatId(id)]);
                       LoginStore.updateSession({
                         ...login,
-                        extraChats: appendDedupe(login.extraChats, [Nip28ChatSystem.chatId(id)]),
+                        extraChats: chats,
                       } as LoginSession);
+                      const evList = await publisher?.generic(eb => {
+                        eb.kind(EventKind.PublicChatsList);
+                        chats.forEach(c => {
+                          if (c.startsWith("chat281")) {
+                            eb.tag(["e", decodeTLV(c)[0].value as string]);
+                          }
+                        });
+                        return eb;
+                      });
+                      if (evList) {
+                        await system.BroadcastEvent(evList);
+                      }
                       navigate(createChatLink(ChatType.PublicGroupChat, id));
                     }}
                   />

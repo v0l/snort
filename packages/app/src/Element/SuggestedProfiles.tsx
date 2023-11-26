@@ -16,7 +16,7 @@ enum Provider {
 }
 
 export default function SuggestedProfiles() {
-  const login = useLogin();
+  const login = useLogin(s => ({ publicKey: s.publicKey, follows: s.follows.item }));
   const [userList, setUserList] = useState<HexKey[]>();
   const [provider, setProvider] = useState(Provider.NostrBand);
   const [error, setError] = useState<Error>();
@@ -37,7 +37,7 @@ export default function SuggestedProfiles() {
         }
         case Provider.SemisolDev: {
           const api = new SemisolDevApi();
-          const users = await api.sugguestedFollows(login.publicKey, login.follows.item);
+          const users = await api.sugguestedFollows(login.publicKey, login.follows);
           const keys = users.recommendations.sort(a => a[1]).map(a => a[0]);
           setUserList(keys);
           break;
@@ -52,7 +52,7 @@ export default function SuggestedProfiles() {
 
   useEffect(() => {
     loadSuggestedProfiles();
-  }, [login, provider]);
+  }, [login.publicKey, login.follows, provider]);
 
   return (
     <>

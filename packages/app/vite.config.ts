@@ -3,7 +3,6 @@ import { VitePWA } from "vite-plugin-pwa";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import { vitePluginVersionMark } from "vite-plugin-version-mark";
-
 import appConfig from "config";
 
 export default defineConfig({
@@ -33,7 +32,7 @@ export default defineConfig({
   build: {
     outDir: "build",
   },
-  base: "",
+  clearScreen: false,
   publicDir: appConfig.get("publicDir"),
   resolve: {
     alias: {

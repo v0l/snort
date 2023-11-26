@@ -20,6 +20,11 @@ export const TagRefRegex = /(#\[\d+\])/gm;
 export const ProfileCacheExpire = 1_000 * 60 * 60 * 6;
 
 /**
+ * How long before relay lists should be refreshed
+ */
+export const RelayListCacheExpire = 1_000 * 60 * 60 * 12;
+
+/**
  * Extract file extensions regex
  */
 // eslint-disable-next-line no-useless-escape

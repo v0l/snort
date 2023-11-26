@@ -1,7 +1,18 @@
-import { ReqFilter, UsersRelays } from ".";
-import { dedupe, unwrap } from "@snort/shared";
+import {
+  EventKind,
+  FullRelaySettings,
+  NostrEvent,
+  ReqFilter,
+  RequestBuilder,
+  SystemInterface,
+  TaggedNostrEvent,
+  UsersRelays,
+} from ".";
+import { dedupe, removeUndefined, sanitizeRelayUrl, unixNowMs, unwrap } from "@snort/shared";
 import debug from "debug";
 import { FlatReqFilter } from "./query-optimizer";
+import { RelayListCacheExpire } from "./const";
+import { BackgroundLoader } from "./background-loader";
 
 const PickNRelays = 2;
 
@@ -20,8 +31,13 @@ export interface RelayTaggedFilters {
   filters: Array<ReqFilter>;
 }
 
+const logger = debug("OutboxModel");
+
 export interface RelayCache {
   getFromCache(pubkey?: string): UsersRelays | undefined;
+  update(obj: UsersRelays): Promise<"new" | "updated" | "refresh" | "no_change">;
+  buffer(keys: Array<string>): Promise<Array<string>>;
+  bulkSet(objs: Array<UsersRelays>): Promise<void>;
 }
 
 export function splitAllByWriteRelays(cache: RelayCache, filters: Array<ReqFilter>) {
@@ -61,7 +77,7 @@ export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter): Array<
     ];
   }
 
-  const topRelays = pickTopRelays(cache, unwrap(authors), PickNRelays);
+  const topRelays = pickTopRelays(cache, unwrap(authors), PickNRelays, "write");
   const pickedRelays = dedupe(topRelays.flatMap(a => a.relays));
 
   const picked = pickedRelays.map(a => {
@@ -84,7 +100,7 @@ export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter): Array<
       },
     });
   }
-  debug("GOSSIP")("Picked %O => %O", filter, picked);
+  logger("Picked %O => %O", filter, picked);
   return picked;
 }
 
@@ -101,7 +117,7 @@ export function splitFlatByWriteRelays(cache: RelayCache, input: Array<FlatReqFi
       },
     ];
   }
-  const topRelays = pickTopRelays(cache, authors, PickNRelays);
+  const topRelays = pickTopRelays(cache, authors, PickNRelays, "write");
   const pickedRelays = dedupe(topRelays.flatMap(a => a.relays));
 
   const picked = pickedRelays.map(a => {
@@ -119,21 +135,21 @@ export function splitFlatByWriteRelays(cache: RelayCache, input: Array<FlatReqFi
     } as RelayTaggedFlatFilters);
   }
 
-  debug("GOSSIP")("Picked %d relays from %d filters", picked.length, input.length);
+  logger("Picked %d relays from %d filters", picked.length, input.length);
   return picked;
 }
 
 /**
  * Pick most popular relays for each authors
  */
-function pickTopRelays(cache: RelayCache, authors: Array<string>, n: number) {
+function pickTopRelays(cache: RelayCache, authors: Array<string>, n: number, type: "write" | "read") {
   // map of pubkey -> [write relays]
   const allRelays = authors.map(a => {
     return {
       key: a,
       relays: cache
         .getFromCache(a)
-        ?.relays?.filter(a => a.settings.write)
+        ?.relays?.filter(a => (type === "write" ? a.settings.write : a.settings.read))
         .sort(() => (Math.random() < 0.5 ? 1 : -1)),
     };
   });
@@ -177,4 +193,85 @@ function pickTopRelays(cache: RelayCache, authors: Array<string>, n: number) {
         };
       }),
     );
+}
+
+/**
+ * Pick read relays for sending reply events
+ */
+export async function pickRelaysForReply(ev: NostrEvent, system: SystemInterface) {
+  const recipients = dedupe(ev.tags.filter(a => a[0] === "p").map(a => a[1]));
+  await updateRelayLists(recipients, system);
+  const relays = pickTopRelays(system.RelayCache, recipients, 2, "read");
+  const ret = removeUndefined(dedupe(relays.map(a => a.relays).flat()));
+  logger("Picked %O from authors %O", ret, recipients);
+  return ret;
+}
+
+export function parseRelayTag(tag: Array<string>) {
+  return {
+    url: sanitizeRelayUrl(tag[1]),
+    settings: {
+      read: tag[2] === "read" || tag[2] === undefined,
+      write: tag[2] === "write" || tag[2] === undefined,
+    },
+  } as FullRelaySettings;
+}
+
+export function parseRelayTags(tag: Array<Array<string>>) {
+  return tag.map(parseRelayTag).filter(a => a !== null);
+}
+
+export async function updateRelayLists(authors: Array<string>, system: SystemInterface) {
+  await system.RelayCache.buffer(authors);
+  const expire = unixNowMs() - RelayListCacheExpire;
+  const expired = authors.filter(a => (system.RelayCache.getFromCache(a)?.loaded ?? 0) < expire);
+  if (expired.length > 0) {
+    logger("Updating relays for authors: %O", expired);
+    const rb = new RequestBuilder("system-update-relays-for-outbox");
+    rb.withFilter().authors(expired).kinds([EventKind.Relays]);
+    const relayLists = await system.Fetch(rb);
+    await system.RelayCache.bulkSet(
+      relayLists.map(a => ({
+        relays: parseRelayTags(a.tags),
+        pubkey: a.pubkey,
+        created: a.created_at,
+        loaded: unixNowMs(),
+      })),
+    );
+  }
+}
+
+export class RelayMetadataLoader extends BackgroundLoader<UsersRelays> {
+  override name(): string {
+    return "RelayMetadataLoader";
+  }
+
+  override onEvent(e: Readonly<TaggedNostrEvent>): UsersRelays | undefined {
+    return {
+      relays: parseRelayTags(e.tags),
+      pubkey: e.pubkey,
+      created: e.created_at,
+      loaded: unixNowMs(),
+    };
+  }
+
+  override getExpireCutoff(): number {
+    return unixNowMs() - RelayListCacheExpire;
+  }
+
+  protected override buildSub(missing: string[]): RequestBuilder {
+    const rb = new RequestBuilder("relay-loader");
+    rb.withOptions({ skipDiff: true });
+    rb.withFilter().authors(missing).kinds([EventKind.Relays]);
+    return rb;
+  }
+
+  protected override makePlaceholder(key: string): UsersRelays | undefined {
+    return {
+      relays: [],
+      pubkey: key,
+      created: 0,
+      loaded: this.getExpireCutoff() + 300_000,
+    };
+  }
 }

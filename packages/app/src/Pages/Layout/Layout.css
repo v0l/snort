@@ -48,9 +48,9 @@ header {
   border-radius: 100%;
   width: 9px;
   height: 9px;
-  position: absolute;
-  top: 8px;
-  right: 8px;
+  position: relative;
+  top: -4px;
+  right: 7px;
 }
 
 @media (max-width: 520px) {

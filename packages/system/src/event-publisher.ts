@@ -137,9 +137,8 @@ export class EventPublisher {
    * Build a categorized bookmarks event with a given label
    * @param notes List of bookmarked links
    */
-  async bookmarks(notes: Array<ToNostrEventTag>, list: "bookmark" | "follow") {
-    const eb = this.#eb(EventKind.CategorizedBookmarks);
-    eb.tag(["d", list]);
+  async bookmarks(notes: Array<ToNostrEventTag>) {
+    const eb = this.#eb(EventKind.BookmarksList);
     notes.forEach(n => {
       eb.tag(unwrap(n.toEventTag()));
     });

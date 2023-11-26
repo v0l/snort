@@ -27,7 +27,7 @@ export function useLinkListEvents(id: string, fn: (rb: RequestBuilder) => void) 
 }
 
 export function usePinList(pubkey: string | undefined) {
-  return useLinkListEvents(`pins:${pubkey?.slice(0, 12)}`, rb => {
+  return useLinkListEvents(`list:pins:${pubkey?.slice(0, 12)}`, rb => {
     if (pubkey) {
       rb.withFilter().kinds([EventKind.PinList]).authors([pubkey]);
     }
@@ -35,17 +35,25 @@ export function usePinList(pubkey: string | undefined) {
 }
 
 export function useMuteList(pubkey: string | undefined) {
-  return useLinkList(`pins:${pubkey?.slice(0, 12)}`, rb => {
+  return useLinkList(`list:mute:${pubkey?.slice(0, 12)}`, rb => {
     if (pubkey) {
       rb.withFilter().kinds([EventKind.MuteList]).authors([pubkey]);
     }
   });
 }
 
-export default function useCategorizedBookmarks(pubkey: string | undefined, list: string) {
-  return useLinkListEvents(`categorized-bookmarks:${list}:${pubkey?.slice(0, 12)}`, rb => {
+export function useBookmarkList(pubkey: string | undefined) {
+  return useLinkListEvents(`list:bookmark:${pubkey?.slice(0, 12)}`, rb => {
     if (pubkey) {
-      rb.withFilter().kinds([EventKind.CategorizedBookmarks]).authors([pubkey]).tag("d", [list]);
+      rb.withFilter().kinds([EventKind.BookmarksList]).authors([pubkey]);
+    }
+  });
+}
+
+export function useInterestsList(pubkey: string | undefined) {
+  return useLinkList(`list:interest:${pubkey?.slice(0, 12)}`, rb => {
+    if (pubkey) {
+      rb.withFilter().kinds([EventKind.InterestsList]).authors([pubkey]);
     }
   });
 }

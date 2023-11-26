@@ -19,7 +19,7 @@ export class UserRelaysCache extends FeedCache<UsersRelays> {
 
   newest(): number {
     let ret = 0;
-    this.cache.forEach(v => (ret = v.created_at > ret ? v.created_at : ret));
+    this.cache.forEach(v => (ret = v.created > ret ? v.created : ret));
     return ret;
   }
 

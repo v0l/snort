@@ -3,12 +3,13 @@ import { LoginSession } from "@/Login";
 
 export interface UITask {
   id: string;
+  noBaseStyle: boolean;
   /**
    * Run checks to determine if this Task should be triggered for this user
    */
   check(user: MetadataCache, session: LoginSession): boolean;
   mute(): void;
-  load(): void;
+  load(cb: () => void): void;
   render(): JSX.Element;
 }
 
@@ -19,9 +20,11 @@ export interface UITaskState {
 }
 
 export abstract class BaseUITask implements UITask {
+  #cb?: () => void;
   protected state: UITaskState;
 
   abstract id: string;
+  noBaseStyle = false;
   abstract check(user: MetadataCache, session: LoginSession): boolean;
   abstract render(): JSX.Element;
 
@@ -34,7 +37,8 @@ export abstract class BaseUITask implements UITask {
     this.#save();
   }
 
-  load() {
+  load(cb: () => void) {
+    this.#cb = cb;
     const state = window.localStorage.getItem(`task:${this.id}`);
     if (state) {
       this.state = JSON.parse(state);
@@ -43,5 +47,6 @@ export abstract class BaseUITask implements UITask {
 
   #save() {
     window.localStorage.setItem(`task:${this.id}`, JSON.stringify(this.state));
+    this.#cb?.();
   }
 }
