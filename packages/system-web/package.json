@@ -1,6 +1,6 @@
 {
   "name": "@snort/system-web",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Web based components @snort/system",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,8 +15,8 @@
     "dist"
   ],
   "dependencies": {
-    "@snort/shared": "^1.0.9",
-    "@snort/system": "^1.1.1",
+    "@snort/shared": "^1.0.10",
+    "@snort/system": "^1.1.5",
     "dexie": "^3.2.4"
   },
   "devDependencies": {
