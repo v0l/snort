@@ -20,7 +20,7 @@ export default defineConfig({
     visualizer({
       open: true,
       gzipSize: true,
-      filename: "dist/stats.html",
+      filename: "build/stats.html",
     }),
     vitePluginVersionMark({
       name: "snort",
@@ -43,5 +43,9 @@ export default defineConfig({
     CONFIG: JSON.stringify(appConfig),
     global: {}, // needed for custom-event lib
     SINGLE_RELAY: JSON.stringify(process.env.SINGLE_RELAY),
+  },
+  test: {
+    globals: true,
+    environment: "jsdom",
   },
 });

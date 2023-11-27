@@ -39,8 +39,6 @@
 
 @media (min-width: 520px) {
   .profile .banner {
-    width: 100%;
-    max-width: 720px;
     height: 280px;
   }
 

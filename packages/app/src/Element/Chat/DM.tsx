@@ -1,4 +1,5 @@
 import "./DM.css";
+
 import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useInView } from "react-intersection-observer";
@@ -55,8 +56,19 @@ export default function DM(props: DMProps) {
   }, [inView]);
 
   return (
-    <div className={isMe ? "dm me" : "dm other"} ref={ref}>
-      <div>
+    <div
+      className={
+        isMe
+          ? "self-end mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap align-self-end"
+          : "mt-4 min-w-[100px] max-w-[90%] whitespace-pre-wrap"
+      }
+      ref={ref}>
+      <div
+        className={
+          isMe
+            ? "p-3 dm-gradient rounded-tl-lg rounded-tr-lg rounded-bl-lg rounded-br-none"
+            : "p-3 bg-gray-300 rounded-tl-lg rounded-tr-lg rounded-br-lg rounded-bl-none other"
+        }>
         {sender()}
         {content ? (
           <Text id={msg.id} content={content} tags={[]} creator={otherPubkey} />
@@ -64,7 +76,7 @@ export default function DM(props: DMProps) {
           <FormattedMessage defaultMessage="Loading..." id="gjBiyj" />
         )}
       </div>
-      <div>
+      <div className={isMe ? "text-end text-gray-400 text-sm mt-1" : "text-gray-400 text-sm mt-1"}>
         <NoteTime from={msg.created_at * 1000} fallback={formatMessage(messages.JustNow)} />
       </div>
     </div>

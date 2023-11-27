@@ -1,93 +1,19 @@
-import "./Layout.css";
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
+import { Link, useNavigate } from "react-router-dom";
 import { useUserProfile } from "@snort/system-react";
+import { useMemo, useSyncExternalStore } from "react";
 import { base64 } from "@scure/base";
 import { unwrap } from "@snort/shared";
-
-import Icon from "@/Icons/Icon";
-import useLoginFeed from "@/Feed/LoginFeed";
-import { mapPlanName } from "./subscribe";
-import useLogin from "@/Hooks/useLogin";
-import Avatar from "@/Element/User/Avatar";
-import { isHalloween, isFormElement, isStPatricksDay, isChristmas } from "@/SnortUtils";
-import { getCurrentSubscription } from "@/Subscription";
-import Toaster from "@/Toaster";
-import { useTheme } from "@/Hooks/useTheme";
-import { useLoginRelays } from "@/Hooks/useLoginRelays";
-import { LoginUnlock } from "@/Element/PinPrompt";
-import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
-import { LoginStore } from "@/Login";
-import { NoteCreatorButton } from "@/Element/Event/NoteCreatorButton";
+import { FormattedMessage } from "react-intl";
+import SearchBox from "@/Element/SearchBox";
 import { ProfileLink } from "@/Element/User/ProfileLink";
-import SearchBox from "../Element/SearchBox";
-import SnortApi from "@/External/SnortApi";
+import Avatar from "@/Element/User/Avatar";
+import Icon from "@/Icons/Icon";
+import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
+import { isFormElement } from "@/SnortUtils";
+import useLogin from "@/Hooks/useLogin";
 import useEventPublisher from "@/Hooks/useEventPublisher";
+import SnortApi from "@/External/SnortApi";
 import { Notifications } from "@/Cache";
-
-export default function Layout() {
-  const location = useLocation();
-  const [pageClass, setPageClass] = useState("page");
-  const { id, stalker } = useLogin(s => ({ id: s.id, stalker: s.stalker ?? false }));
-
-  useLoginFeed();
-  useTheme();
-  useLoginRelays();
-  useKeyboardShortcut(".", event => {
-    // if event happened in a form element, do nothing, otherwise focus on search input
-    if (event.target && !isFormElement(event.target as HTMLElement)) {
-      event.preventDefault();
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }
-  });
-
-  const shouldHideHeader = useMemo(() => {
-    const hideOn = ["/login", "/new"];
-    return hideOn.some(a => location.pathname.startsWith(a));
-  }, [location]);
-
-  useEffect(() => {
-    const widePage = ["/login", "/messages"];
-    const noScroll = ["/messages"];
-    if (widePage.some(a => location.pathname.startsWith(a))) {
-      setPageClass(noScroll.some(a => location.pathname.startsWith(a)) ? "scroll-lock" : "");
-    } else {
-      setPageClass("page");
-    }
-  }, [location]);
-
-  return (
-    <>
-      <div className={pageClass}>
-        {!shouldHideHeader && (
-          <header className="main-content">
-            <LogoHeader />
-            <AccountHeader />
-          </header>
-        )}
-        <Outlet />
-        <NoteCreatorButton className="note-create-button" />
-        <Toaster />
-      </div>
-      <LoginUnlock />
-      {stalker && (
-        <div
-          className="stalker"
-          onClick={() => {
-            LoginStore.removeSession(id);
-          }}>
-          <button type="button" className="circle flex items-center">
-            <Icon name="close" />
-          </button>
-        </div>
-      )}
-    </>
-  );
-}
 
 const AccountHeader = () => {
   const navigate = useNavigate();
@@ -170,32 +96,6 @@ const AccountHeader = () => {
   );
 };
 
-function LogoHeader() {
-  const { subscriptions } = useLogin();
-  const currentSubscription = getCurrentSubscription(subscriptions);
-
-  const extra = () => {
-    if (isHalloween()) return "🎃";
-    if (isStPatricksDay()) return "🍀";
-    if (isChristmas()) return "🎄";
-  };
-
-  return (
-    <Link to="/" className="logo">
-      <h1>
-        {extra()}
-        {CONFIG.appName}
-      </h1>
-      {currentSubscription && (
-        <div className="flex items-center g4 text-sm font-semibold tracking-wider">
-          <Icon name="diamond" size={16} className="text-pro" />
-          {mapPlanName(currentSubscription.type)}
-        </div>
-      )}
-    </Link>
-  );
-}
-
 function HasNotificationsMarker() {
   const readNotifications = useLogin(s => s.readNotifications);
   const notifications = useSyncExternalStore(
@@ -215,3 +115,5 @@ function HasNotificationsMarker() {
     return <span className="has-unread"></span>;
   }
 }
+
+export default AccountHeader;

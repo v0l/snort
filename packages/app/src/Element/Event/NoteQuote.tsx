@@ -15,6 +15,7 @@ export default function NoteQuote({ link, depth }: { link: NostrLink; depth?: nu
       depth={(depth ?? 0) + 1}
       options={{
         showFooter: false,
+        truncate: true,
       }}
     />
   );

@@ -103,6 +103,9 @@ export function TimelineFragment(props: TimelineFragProps) {
               depth={0}
               onClick={props.noteOnClick}
               context={props.noteContext?.(e)}
+              options={{
+                truncate: true,
+              }}
             />
           ),
       )}

@@ -10,28 +10,15 @@ import Text from "@/Element/Text";
 import { useEffect, useState } from "react";
 import useLogin from "../../Hooks/useLogin";
 
-interface RectElement {
-  getBoundingClientRect(): {
-    left: number;
-    right: number;
-    top: number;
-    bottom: number;
-    width: number;
-    height: number;
-  };
-}
-
 export function ProfileCard({
   pubkey,
   user,
   show,
-  ref,
   delay,
 }: {
   pubkey: string;
   user?: UserMetadata;
   show: boolean;
-  ref: React.RefObject<Element | RectElement>;
   delay?: number;
 }) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -56,7 +43,6 @@ export function ProfileCard({
   return (
     <ControlledMenu
       state={showProfileMenu ? "open" : "closed"}
-      anchorRef={ref}
       menuClassName="profile-card"
       onClose={() => setShowProfileMenu(false)}
       align="end">

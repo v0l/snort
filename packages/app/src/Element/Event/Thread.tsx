@@ -261,7 +261,7 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
           key={note.id}
           data={note}
           related={getLinkReactions(thread.reactions, NostrLink.fromEvent(note))}
-          options={{ showReactionsLink: true, showMediaSpotlight: !props.disableSpotlight }}
+          options={{ showReactionsLink: true, showMediaSpotlight: !props.disableSpotlight, isRoot: true }}
           onClick={navigateThread}
           threadChains={thread.chains}
         />

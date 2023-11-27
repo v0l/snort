@@ -9,6 +9,7 @@ import {
   MetadataCache,
   NostrLink,
   NostrPrefix,
+  socialGraphInstance,
   TLVEntryType,
   tryParseNostrLink,
 } from "@snort/system";
@@ -59,6 +60,7 @@ import { UserWebsiteLink } from "@/Element/User/UserWebsiteLink";
 import { useMuteList, usePinList } from "@/Hooks/useLists";
 
 import messages from "../messages";
+import FollowDistanceIndicator from "@/Element/User/FollowDistanceIndicator";
 
 interface ProfilePageProps {
   id?: string;
@@ -152,6 +154,8 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   }
 
   function username() {
+    const followedByFriends = user?.pubkey ? socialGraphInstance.followedByFriends(user.pubkey) : new Set<string>();
+    const MAX_FOLLOWED_BY_FRIENDS = 3;
     return (
       <>
         <div className="flex flex-col g4">
@@ -160,6 +164,34 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
             <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
           </h2>
           {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
+          <div className="flex flex-row items-center">
+            {user?.pubkey && <FollowDistanceIndicator className="p-2" pubkey={user.pubkey} />}
+            {followedByFriends.size > 0 && (
+              <div className="text-gray-light">
+                <span className="mr-1">
+                  <FormattedMessage defaultMessage="Followed by" id="6mr8WU" />
+                </span>
+                {Array.from(followedByFriends)
+                  .slice(0, MAX_FOLLOWED_BY_FRIENDS)
+                  .map(a => {
+                    return (
+                      <span className="inline-block" key={a}>
+                        <ProfileImage showFollowDistance={false} pubkey={a} size={24} showUsername={false} />
+                      </span>
+                    );
+                  })}
+                {followedByFriends.size > MAX_FOLLOWED_BY_FRIENDS && (
+                  <span>
+                    <FormattedMessage
+                      defaultMessage="and {count} others you follow"
+                      id="CYkOCI"
+                      values={{ count: followedByFriends.size - MAX_FOLLOWED_BY_FRIENDS }}
+                    />
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
         </div>
         {showBadges && <BadgeList badges={badges} />}
         {showStatus && <>{musicStatus()}</>}
@@ -314,7 +346,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         )}
         {isMe ? (
           <>
-            <button type="button" onClick={() => navigate("/settings")}>
+            <button className="md:hidden" type="button" onClick={() => navigate("/settings")}>
               <FormattedMessage {...messages.Settings} />
             </button>
           </>

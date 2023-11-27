@@ -49,6 +49,7 @@
 }
 
 .settings-row:hover,
+.settings-row.active,
 .settings-group-header:hover {
   color: var(--highlight);
 }

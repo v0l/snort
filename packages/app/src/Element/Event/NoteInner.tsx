@@ -27,6 +27,8 @@ import { NoteProps } from "./Note";
 import { chainKey } from "@/Hooks/useThreadContext";
 import { ProfileLink } from "@/Element/User/ProfileLink";
 
+const TEXT_TRUNCATE_LENGTH = 400;
+
 export function NoteInner(props: NoteProps) {
   const { data: ev, related, highlight, options: opt, ignoreModeration = false, className } = props;
 
@@ -43,6 +45,7 @@ export function NoteInner(props: NoteProps) {
   const [translated, setTranslated] = useState<NoteTranslation>();
   const [showTranslation, setShowTranslation] = useState(true);
   const { formatMessage } = useIntl();
+  const [showMore, setShowMore] = useState(false);
 
   const totalReactions = reactions.positive.length + reactions.negative.length + reposts.length + zaps.length;
 
@@ -78,22 +81,46 @@ export function NoteInner(props: NoteProps) {
     }
   }
 
+  const ToggleShowMore = () => (
+    <a
+      className="highlight"
+      onClick={e => {
+        e.preventDefault();
+        e.stopPropagation();
+        setShowMore(!showMore);
+      }}>
+      {showMore ? (
+        <FormattedMessage defaultMessage="Show less" id="qyJtWy" />
+      ) : (
+        <FormattedMessage defaultMessage="Show more" id="aWpBzj" />
+      )}
+    </a>
+  );
+
   const innerContent = useMemo(() => {
     const body = translated && showTranslation ? translated.text : ev?.content ?? "";
     const id = translated && showTranslation ? `${ev.id}-translated` : ev.id;
+    const shouldTruncate = opt?.truncate && body.length > TEXT_TRUNCATE_LENGTH;
+
     return (
-      <Text
-        id={id}
-        highlighText={props.searchedValue}
-        content={body}
-        tags={ev.tags}
-        creator={ev.pubkey}
-        depth={props.depth}
-        disableMedia={!(options.showMedia ?? true)}
-        disableMediaSpotlight={!(props.options?.showMediaSpotlight ?? true)}
-      />
+      <>
+        {shouldTruncate && showMore && <ToggleShowMore />}
+        <Text
+          id={id}
+          highlighText={props.searchedValue}
+          content={body}
+          tags={ev.tags}
+          creator={ev.pubkey}
+          depth={props.depth}
+          disableMedia={!(options.showMedia ?? true)}
+          disableMediaSpotlight={!(props.options?.showMediaSpotlight ?? true)}
+          truncate={shouldTruncate && !showMore ? TEXT_TRUNCATE_LENGTH : undefined}
+        />
+        {shouldTruncate && !showMore && <ToggleShowMore />}
+      </>
     );
   }, [
+    showMore,
     ev,
     translated,
     showTranslation,
@@ -101,6 +128,8 @@ export function NoteInner(props: NoteProps) {
     props.depth,
     options.showMedia,
     props.options?.showMediaSpotlight,
+    opt?.truncate,
+    TEXT_TRUNCATE_LENGTH,
   ]);
 
   const transformBody = () => {
@@ -148,13 +177,22 @@ export function NoteInner(props: NoteProps) {
     return innerContent;
   };
 
-  function goToEvent(
-    e: React.MouseEvent,
-    eTarget: TaggedNostrEvent,
-    isTargetAllowed: boolean = e.target === e.currentTarget,
-  ) {
-    if (!isTargetAllowed || opt?.canClick === false) {
+  function goToEvent(e: React.MouseEvent, eTarget: TaggedNostrEvent) {
+    if (opt?.canClick === false) {
       return;
+    }
+
+    let target = e.target as HTMLElement | null;
+    while (target) {
+      if (
+        target.tagName === "A" ||
+        target.tagName === "BUTTON" ||
+        target.classList.contains("reaction-pill") ||
+        target.classList.contains("szh-menu-container")
+      ) {
+        return; // is there a better way to do this?
+      }
+      target = target.parentElement;
     }
 
     e.stopPropagation();
@@ -326,7 +364,7 @@ export function NoteInner(props: NoteProps) {
           {translation()}
           {pollOptions()}
           {options.showReactionsLink && (
-            <div className="reactions-link" onClick={() => setShowReactions(true)}>
+            <div className="reactions-link cursor-pointer" onClick={() => setShowReactions(true)}>
               <FormattedMessage {...messages.ReactionsLink} values={{ n: totalReactions }} />
             </div>
           )}
@@ -353,7 +391,13 @@ export function NoteInner(props: NoteProps) {
   }
 
   const note = (
-    <div className={classNames(baseClassName, { active: highlight })} onClick={e => goToEvent(e, ev)} ref={ref}>
+    <div
+      className={classNames(baseClassName, {
+        active: highlight,
+        "hover:bg-nearly-bg-color cursor-pointer": !opt?.isRoot,
+      })}
+      onClick={e => goToEvent(e, ev)}
+      ref={ref}>
       {content()}
     </div>
   );

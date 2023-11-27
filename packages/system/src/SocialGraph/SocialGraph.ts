@@ -211,6 +211,17 @@ export default class SocialGraph {
     return count;
   }
 
+  followedByFriends(address: HexKey) {
+    const id = ID(address);
+    const set = new Set<HexKey>();
+    for (const follower of this.followersByUser.get(id) ?? []) {
+      if (this.followedByUser.get(this.root)?.has(follower)) {
+        set.add(STR(follower));
+      }
+    }
+    return set;
+  }
+
   getFollowedByUser(user: HexKey, includeSelf = false): Set<HexKey> {
     const userId = ID(user);
     const set = new Set<HexKey>();

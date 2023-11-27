@@ -4,6 +4,7 @@
 
 :root {
   --bg-color: #000;
+  --nearly-bg-color: #090909;
   --font-color: #fff;
   --font-secondary-color: #a7a7a7;
   --font-tertiary-color: #a3a3a3;
@@ -80,6 +81,7 @@ html {
 
 html.light {
   --bg-color: #fff;
+  --nearly-bg-color: #f9f9f9;
   --font-color: #2f3f64;
   --font-secondary-color: #5c6c92;
   --font-tertiary-color: #52525b;
@@ -130,28 +132,6 @@ a:hover {
 
 a.ext {
   overflow-wrap: break-word;
-}
-
-#root {
-  overflow-x: hidden;
-}
-
-.page {
-  width: 100vw;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media (min-width: 768px) {
-  .page {
-    width: 640px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .main-content {
-    border: 1px solid var(--border-color);
-  }
 }
 
 .b {
@@ -939,4 +919,13 @@ svg.zap-solid {
 
 .light .modal button.secondary:hover {
   background: #fff !important;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
