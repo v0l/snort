@@ -13,11 +13,9 @@ import DmWindow from "@/Element/Chat/DmWindow";
 import { Chat, ChatType, useChatSystem } from "@/chat";
 import { ChatParticipantProfile } from "@/Element/Chat/ChatParticipant";
 import classNames from "classnames";
-import ProfileDmActions from "@/Pages/Messages/ProfileDmActions";
 import NewChatWindow from "@/Pages/Messages/NewChatWindow";
 
 const TwoCol = 768;
-const ThreeCol = 1500;
 
 export default function MessagesPage() {
   const login = useLogin();
@@ -112,11 +110,6 @@ export default function MessagesPage() {
         </div>
       )}
       {chat ? <DmWindow id={chat} /> : pageWidth >= TwoCol && <div className="flex-1"></div>}
-      {pageWidth >= ThreeCol && chat && (
-        <div className="m-4">
-          <ProfileDmActions id={chat} />
-        </div>
-      )}
     </div>
   );
 }
