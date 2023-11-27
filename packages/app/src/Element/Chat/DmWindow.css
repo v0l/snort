@@ -1,7 +1,7 @@
 .dm-window {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100vh - 62px);
 }
 .dm-window > div:nth-child(1) {
   padding: 12px 0;

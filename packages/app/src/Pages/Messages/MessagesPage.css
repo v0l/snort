@@ -39,7 +39,7 @@
 .dm-page > div:nth-child(2) {
   padding: 0 12px;
   margin: 0 4px;
-  height: var(--full-height);
+  height: 100vh;
   background-color: var(--gray-superdark);
   border-radius: 16px;
 }
