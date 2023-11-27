@@ -43,21 +43,11 @@ header {
   padding: 5px;
 }
 
-.header-actions .btn .has-unread {
+.has-unread {
   background: var(--highlight);
   border-radius: 100%;
   width: 9px;
   height: 9px;
-  position: relative;
-  top: -4px;
-  right: 7px;
-}
-
-@media (max-width: 520px) {
-  .header-actions .btn .has-unread {
-    top: 2px;
-    right: 2px;
-  }
 }
 
 .stalker {

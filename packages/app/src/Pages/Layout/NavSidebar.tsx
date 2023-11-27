@@ -8,6 +8,7 @@ import { useUserProfile } from "@snort/system-react";
 import { NoteCreatorButton } from "../../Element/Event/NoteCreatorButton";
 import { FormattedMessage } from "react-intl";
 import classNames from "classnames";
+import { HasNotificationsMarker } from "@/Pages/Layout/AccountHeader";
 
 const MENU_ITEMS = [
   {
@@ -58,9 +59,6 @@ const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
 export default function NavSidebar({ narrow = false }) {
   const { publicKey } = useLogin(s => ({
     publicKey: s.publicKey,
-    latestNotification: s.latestNotification,
-    readNotifications: s.readNotifications,
-    readonly: s.readonly,
   }));
   const profile = useUserProfile(publicKey);
   const navigate = useNavigate();
@@ -82,6 +80,7 @@ export default function NavSidebar({ narrow = false }) {
             return (
               <NavLink key={item.link} to={item.link} className={({ isActive }) => getNavLinkClass(isActive, narrow)}>
                 <Icon name={item.icon} size={24} />
+                {item.label === "Notifications" && <HasNotificationsMarker />}
                 {!narrow && <span className="hidden xl:inline ml-3">{item.label}</span>}
               </NavLink>
             );

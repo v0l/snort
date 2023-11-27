@@ -96,7 +96,7 @@ const AccountHeader = () => {
   );
 };
 
-function HasNotificationsMarker() {
+export function HasNotificationsMarker() {
   const readNotifications = useLogin(s => s.readNotifications);
   const notifications = useSyncExternalStore(
     c => Notifications.hook(c, "*"),
@@ -112,7 +112,11 @@ function HasNotificationsMarker() {
   );
 
   if (hasNotifications) {
-    return <span className="has-unread"></span>;
+    return (
+      <div className="relative">
+        <span className="has-unread absolute top-0 right-0 rounded-full "></span>
+      </div>
+    );
   }
 }
 
