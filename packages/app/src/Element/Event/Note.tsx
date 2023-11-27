@@ -23,6 +23,7 @@ export interface NoteProps {
   threadChains?: Map<string, Array<NostrEvent>>;
   context?: ReactNode;
   options?: {
+    isRoot?: boolean;
     showHeader?: boolean;
     showContextMenu?: boolean;
     showTime?: boolean;

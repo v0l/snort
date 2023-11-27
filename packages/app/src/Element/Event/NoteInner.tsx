@@ -382,7 +382,13 @@ export function NoteInner(props: NoteProps) {
   }
 
   const note = (
-    <div className={classNames(baseClassName, { active: highlight })} onClick={e => goToEvent(e, ev)} ref={ref}>
+    <div
+      className={classNames(baseClassName, {
+        active: highlight,
+        "hover:bg-nearly-bg-color cursor-pointer": !opt?.isRoot,
+      })}
+      onClick={e => goToEvent(e, ev)}
+      ref={ref}>
       {content()}
     </div>
   );

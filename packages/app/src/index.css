@@ -4,6 +4,7 @@
 
 :root {
   --bg-color: #000;
+  --nearly-bg-color: #090909;
   --font-color: #fff;
   --font-secondary-color: #a7a7a7;
   --font-tertiary-color: #a3a3a3;
@@ -80,6 +81,7 @@ html {
 
 html.light {
   --bg-color: #fff;
+  --nearly-bg-color: #f9f9f9;
   --font-color: #2f3f64;
   --font-secondary-color: #5c6c92;
   --font-tertiary-color: #52525b;

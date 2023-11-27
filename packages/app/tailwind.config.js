@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "neutral-999": "#090909",
+        "nearly-bg-color": "var(--nearly-bg-color)",
       },
       textColor: {
         "nostr-blue": "var(--repost)",
