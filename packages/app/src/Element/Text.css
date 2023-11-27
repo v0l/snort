@@ -7,7 +7,7 @@
   text-overflow: ellipsis;
   white-space: pre-wrap;
   display: inline;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 .text .text-frag > a {

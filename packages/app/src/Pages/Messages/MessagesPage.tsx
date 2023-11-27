@@ -1,5 +1,3 @@
-import "./MessagesPage.css";
-
 import React, { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
@@ -74,7 +72,7 @@ export default function MessagesPage() {
     const isActive = cx.id === chat;
     return (
       <div
-        className={classNames("flex items-center p cursor-pointer", { active: isActive })}
+        className={classNames("flex items-center p cursor-pointer justify-between", { active: isActive })}
         key={cx.id}
         onClick={e => openChat(e, cx.type, cx.id)}>
         {conversationIdent(cx)}
@@ -92,11 +90,11 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="dm-page">
+    <div className="flex flex-1 h-screen overflow-hidden">
       {(pageWidth >= TwoCol || !chat) && (
-        <div className="chat-list">
-          <div className="flex items-center p justify-between">
-            <button disabled={unreadCount <= 0} type="button">
+        <div className="overflow-y-auto h-screen p-1 w-full md:w-1/3 flex-shrink-0">
+          <div className="flex items-center justify-between p-2">
+            <button disabled={unreadCount <= 0} type="button" className="text-sm font-semibold">
               <FormattedMessage defaultMessage="Mark all read" id="ShdEie" />
             </button>
             <NewChatWindow />
@@ -113,9 +111,9 @@ export default function MessagesPage() {
             .map(conversation)}
         </div>
       )}
-      {chat ? <DmWindow id={chat} /> : pageWidth >= TwoCol && <div></div>}
+      {chat ? <DmWindow id={chat} /> : pageWidth >= TwoCol && <div className="flex-1"></div>}
       {pageWidth >= ThreeCol && chat && (
-        <div>
+        <div className="m-4">
           <ProfileDmActions id={chat} />
         </div>
       )}

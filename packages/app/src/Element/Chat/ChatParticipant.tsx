@@ -10,5 +10,12 @@ export function ChatParticipantProfile({ participant }: { participant: ChatParti
   if (participant.id === publicKey) {
     return <NoteToSelf className="grow" />;
   }
-  return <ProfileImage pubkey={participant.id} className="grow" profile={participant.profile as MetadataCache} />;
+  return (
+    <ProfileImage
+      showNip05={false}
+      pubkey={participant.id}
+      className="grow"
+      profile={participant.profile as MetadataCache}
+    />
+  );
 }

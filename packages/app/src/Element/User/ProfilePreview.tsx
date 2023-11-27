@@ -38,7 +38,10 @@ export default function ProfilePreview(props: ProfilePreviewProps) {
 
   return (
     <>
-      <div className={`profile-preview${props.className ? ` ${props.className}` : ""}`} ref={ref} onClick={handleClick}>
+      <div
+        className={`justify-between profile-preview${props.className ? ` ${props.className}` : ""}`}
+        ref={ref}
+        onClick={handleClick}>
         {inView && (
           <>
             <ProfileImage

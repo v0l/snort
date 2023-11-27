@@ -1,37 +1,7 @@
-.dm {
-  margin-top: 16px;
-  min-width: 100px;
-  max-width: 90%;
-  white-space: pre-wrap;
-  color: var(--font-color);
-}
-
-.dm a {
-  color: var(--font-color) !important;
-}
-
-.dm > div:last-child {
-  color: var(--gray-light);
-  font-size: small;
-  margin-top: 3px;
-}
-
-.dm.other > div:first-child {
-  padding: 12px 16px;
-  background: var(--gray-secondary);
-  border-radius: 16px 16px 16px 0px;
-}
-
-.dm.me {
-  align-self: flex-end;
-}
-
-.dm.me > div:first-child {
-  padding: 12px 16px;
+.dm-gradient {
   background: var(--dm-gradient);
-  border-radius: 16px 16px 0px 16px;
 }
 
-.dm.me > div:last-child {
-  text-align: end;
+.other {
+  background: var(--gray-superdark);
 }
