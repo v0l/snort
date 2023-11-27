@@ -177,13 +177,22 @@ export function NoteInner(props: NoteProps) {
     return innerContent;
   };
 
-  function goToEvent(
-    e: React.MouseEvent,
-    eTarget: TaggedNostrEvent,
-    isTargetAllowed: boolean = e.target === e.currentTarget,
-  ) {
-    if (!isTargetAllowed || opt?.canClick === false) {
+  function goToEvent(e: React.MouseEvent, eTarget: TaggedNostrEvent) {
+    if (opt?.canClick === false) {
       return;
+    }
+
+    let target = e.target as HTMLElement | null;
+    while (target) {
+      if (
+        target.tagName === "A" ||
+        target.tagName === "BUTTON" ||
+        target.classList.contains("reaction-pill") ||
+        target.classList.contains("szh-menu-container")
+      ) {
+        return; // is there a better way to do this?
+      }
+      target = target.parentElement;
     }
 
     e.stopPropagation();
@@ -355,7 +364,7 @@ export function NoteInner(props: NoteProps) {
           {translation()}
           {pollOptions()}
           {options.showReactionsLink && (
-            <div className="reactions-link" onClick={() => setShowReactions(true)}>
+            <div className="reactions-link cursor-pointer" onClick={() => setShowReactions(true)}>
               <FormattedMessage {...messages.ReactionsLink} values={{ n: totalReactions }} />
             </div>
           )}

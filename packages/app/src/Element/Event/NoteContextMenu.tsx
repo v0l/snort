@@ -200,7 +200,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
     <>
       <Menu
         menuButton={
-          <div className="reaction-pill">
+          <div className="reaction-pill cursor-pointer">
             <Icon name="dots" size={15} />
           </div>
         }

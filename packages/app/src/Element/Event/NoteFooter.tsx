@@ -316,7 +316,7 @@ const AsyncFooterIcon = forwardRef((props: AsyncIconProps & { value: number }, r
   const mergedProps = {
     ...props,
     iconSize: 18,
-    className: classNames("transition duration-200 ease-in-out reaction-pill", props.className),
+    className: classNames("transition duration-200 ease-in-out reaction-pill cursor-pointer", props.className),
   };
 
   return (
