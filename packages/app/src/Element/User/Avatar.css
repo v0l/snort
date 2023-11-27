@@ -10,6 +10,7 @@
   box-sizing: border-box;
   background-position: center;
   background-color: var(--gray);
+  z-index: 2;
 }
 
 .avatar[data-domain="iris.to"],
