@@ -66,7 +66,7 @@ export default function DM(props: DMProps) {
       <div
         className={
           isMe
-            ? "p-3 dm-gradient rounded-tl-lg rounded-tr-lg rounded-br-none"
+            ? "p-3 dm-gradient rounded-tl-lg rounded-tr-lg rounded-bl-lg rounded-br-none"
             : "p-3 bg-gray-300 rounded-tl-lg rounded-tr-lg rounded-br-lg rounded-bl-none other"
         }>
         {sender()}
