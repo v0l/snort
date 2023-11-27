@@ -118,17 +118,17 @@ export async function generateNewLogin(
 
   // Create new contact list following self and site account
   const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey].map(a => ["p", a]));
-  await system.BroadcastEvent(ev);
+  system.BroadcastEvent(ev);
 
   // Create relay metadata event
   const ev2 = await publisher.relayList(newRelays);
-  await system.BroadcastEvent(ev2);
-  await Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev2)));
+  system.BroadcastEvent(ev2);
+  Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev2)));
 
   // Publish new profile
   const ev3 = await publisher.metadata(profile);
-  await system.BroadcastEvent(ev3);
-  await Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev3)));
+  system.BroadcastEvent(ev3);
+  Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev3)));
 
   LoginStore.loginWithPrivateKey(await pin(privateKey), entropy, newRelays);
 }
