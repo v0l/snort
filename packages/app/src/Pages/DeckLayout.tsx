@@ -162,11 +162,11 @@ function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
   const { proxy } = useImgProxy();
   return (
     <div>
-      <div className="flex items-center gap-2 p-2 border-b border-gray-300">
+      <div className="flex items-center gap-2 p-2 border-b border-border-color">
         <Icon name="camera-lens" size={24} />
         <FormattedMessage defaultMessage="Media" id="hmZ3Bz" />
       </div>
-      <div className="grid grid-cols-3 gap-px p-1">
+      <div className="grid grid-cols-3 gap-1 p-1">
         <TimelineFollows
           postsOnly={true}
           liveStreams={false}

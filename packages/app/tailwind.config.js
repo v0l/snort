@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       colors: {
         "nearly-bg-color": "var(--nearly-bg-color)",
+        "border-color": "var(--border-color)",
       },
       textColor: {
         "nostr-blue": "var(--repost)",

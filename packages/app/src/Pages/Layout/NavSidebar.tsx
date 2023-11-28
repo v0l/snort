@@ -21,6 +21,7 @@ const MENU_ITEMS = [
     label: "Search",
     icon: "search",
     link: "/search",
+    nonLoggedIn: true,
   },
   {
     label: "Notifications",
