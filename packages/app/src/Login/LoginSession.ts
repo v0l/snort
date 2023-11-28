@@ -20,6 +20,7 @@ export const enum LoginSessionType {
 
 export interface SnortAppData {
   mutedWords: Array<string>;
+  showContentWarningPosts: boolean;
   preferences: UserPreferences;
 }
 

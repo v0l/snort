@@ -40,7 +40,7 @@ export function NoteInner(props: NoteProps) {
   const { ref, inView } = useInView({ triggerOnce: true });
   const { reactions, reposts, deletions, zaps } = useEventReactions(NostrLink.fromEvent(ev), related);
   const login = useLogin();
-  const { pinned, bookmarked } = login;
+  const { pinned, bookmarked } = useLogin();
   const { publisher, system } = useEventPublisher();
   const [translated, setTranslated] = useState<NoteTranslation>();
   const [showTranslation, setShowTranslation] = useState(true);
@@ -140,39 +140,45 @@ export function NoteInner(props: NoteProps) {
         </b>
       );
     }
-    const contentWarning = ev.tags.find(a => a[0] === "content-warning");
-    if (contentWarning) {
-      return (
-        <Reveal
-          message={
-            <>
-              <FormattedMessage
-                defaultMessage="The author has marked this note as a <i>sensitive topic</i>"
-                id="StKzTE"
-                values={{
-                  i: c => <i>{c}</i>,
-                }}
-              />
-              {contentWarning[1] && (
-                <>
-                  &nbsp;
-                  <FormattedMessage
-                    defaultMessage="Reason: <i>{reason}</i>"
-                    id="6OSOXl"
-                    values={{
-                      i: c => <i>{c}</i>,
-                      reason: contentWarning[1],
-                    }}
-                  />
-                </>
-              )}
-              &nbsp;
-              <FormattedMessage defaultMessage="Click here to load anyway" id="IoQq+a" />
-            </>
-          }>
-          {innerContent}
-        </Reveal>
-      );
+    if (!login.appData.item.showContentWarningPosts) {
+      const contentWarning = ev.tags.find(a => a[0] === "content-warning");
+      if (contentWarning) {
+        return (
+          <Reveal
+            message={
+              <>
+                <FormattedMessage
+                  defaultMessage="The author has marked this note as a <i>sensitive topic</i>"
+                  id="StKzTE"
+                  values={{
+                    i: c => <i>{c}</i>,
+                  }}
+                />
+                {contentWarning[1] && (
+                  <>
+                    &nbsp;
+                    <FormattedMessage
+                      defaultMessage="Reason: <i>{reason}</i>"
+                      id="6OSOXl"
+                      values={{
+                        i: c => <i>{c}</i>,
+                        reason: contentWarning[1],
+                      }}
+                    />
+                  </>
+                )}
+                . <FormattedMessage defaultMessage="Click here to load anyway" id="IoQq+a" />.{" "}
+                <Link to="/settings/moderation">
+                  <i>
+                    <FormattedMessage defaultMessage="Settings" id="D3idYv" />
+                  </i>
+                </Link>
+              </>
+            }>
+            {innerContent}
+          </Reveal>
+        );
+      }
     }
     return innerContent;
   };

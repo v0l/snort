@@ -1,30 +1,41 @@
 import { unixNowMs } from "@snort/shared";
 import useLogin from "@/Hooks/useLogin";
-import { updateAppData } from "@/Login";
+import { SnortAppData, updateAppData } from "@/Login";
 import { appendDedupe } from "@/SnortUtils";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-export function ModerationSettings() {
+export default function ModerationSettingsPage() {
   const login = useLogin();
   const [muteWord, setMuteWord] = useState("");
+  const appData = login.appData.item;
 
   function addMutedWord() {
     updateAppData(login.id, ad => ({
       item: {
         ...ad,
-        mutedWords: appendDedupe(login.appData.item.mutedWords, [muteWord]),
+        mutedWords: appendDedupe(appData.mutedWords, [muteWord]),
       },
       timestamp: unixNowMs(),
     }));
     setMuteWord("");
   }
 
+  const handleToggle = (setting: keyof SnortAppData) => {
+    updateAppData(login.id, ad => ({
+      item: {
+        ...ad,
+        [setting]: !appData[setting],
+      },
+      timestamp: unixNowMs(),
+    }));
+  };
+
   function removeMutedWord(word: string) {
     updateAppData(login.id, ad => ({
       item: {
         ...ad,
-        mutedWords: login.appData.item.mutedWords.filter(a => a !== word),
+        mutedWords: appData.mutedWords.filter(a => a !== word),
       },
       timestamp: unixNowMs(),
     }));
@@ -34,8 +45,27 @@ export function ModerationSettings() {
   return (
     <>
       <h2>
-        <FormattedMessage defaultMessage="Muted Words" id="AN0Z7Q" />
+        <FormattedMessage defaultMessage="Moderation" id="wofVHy" />
       </h2>
+
+      <div className="py-4 flex flex-col gap-2">
+        <div className="flex items-center mb-2">
+          <input
+            type="checkbox"
+            checked={appData.showContentWarningPosts}
+            onChange={() => handleToggle("showContentWarningPosts")}
+            className="mr-2"
+            id="showContentWarningPosts"
+          />
+          <label htmlFor="showContentWarningPosts">
+            <FormattedMessage defaultMessage="Show posts that have a content warning tag" id="fQN+tq" />
+          </label>
+        </div>
+      </div>
+
+      <h3>
+        <FormattedMessage defaultMessage="Muted Words" id="AN0Z7Q" />
+      </h3>
       <div className="flex flex-col g12">
         <div className="flex g8">
           <input
@@ -49,7 +79,7 @@ export function ModerationSettings() {
             <FormattedMessage defaultMessage="Add" id="2/2yg+" />
           </button>
         </div>
-        {login.appData.item.mutedWords.map(v => (
+        {appData.mutedWords.map(v => (
           <div className="p br b flex items-center justify-between">
             <div>{v}</div>
             <button type="button" onClick={() => removeMutedWord(v)}>

@@ -1074,6 +1074,9 @@
   "fOksnD": {
     "defaultMessage": "Can't vote because LNURL service does not support zaps"
   },
+  "fQN+tq": {
+    "defaultMessage": "Show posts that have a content warning tag"
+  },
   "fWZYP5": {
     "defaultMessage": "Pinned"
   },
@@ -1484,6 +1487,9 @@
   },
   "wih7iJ": {
     "defaultMessage": "name is blocked"
+  },
+  "wofVHy": {
+    "defaultMessage": "Moderation"
   },
   "wqyN/i": {
     "defaultMessage": "Find out more info about {service} at {link}"

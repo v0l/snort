@@ -9,7 +9,7 @@ import AccountsPage from "@/Pages/settings/Accounts";
 import { WalletSettingsRoutes } from "@/Pages/settings/WalletSettings";
 import { ManageHandleRoutes } from "@/Pages/settings/handle";
 import ExportKeys from "@/Pages/settings/Keys";
-import { ModerationSettings } from "@/Pages/settings/Moderation";
+import ModerationSettings from "@/Pages/settings/Moderation";
 import { CacheSettings } from "./settings/Cache";
 
 import messages from "./messages";
