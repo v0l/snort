@@ -11,17 +11,26 @@ interface FollowDistanceIndicatorProps {
 export default function FollowDistanceIndicator({ pubkey, className }: FollowDistanceIndicatorProps) {
   const followDistance = socialGraphInstance.getFollowDistance(pubkey);
   let followDistanceColor = "";
+  let title = "";
 
-  if (followDistance <= 1) {
+  if (followDistance === 0) {
+    title = "You";
     followDistanceColor = "success";
-  } else if (followDistance === 2 && socialGraphInstance.followedByFriendsCount(pubkey) >= 10) {
-    followDistanceColor = "text-nostr-orange";
+  } else if (followDistance <= 1) {
+    followDistanceColor = "success";
+    title = "Following";
+  } else if (followDistance === 2) {
+    const followedByFriendsCount = socialGraphInstance.followedByFriendsCount(pubkey);
+    if (followedByFriendsCount > 10) {
+      followDistanceColor = "text-nostr-orange";
+    }
+    title = `Followed by ${followedByFriendsCount} friends`;
   } else if (followDistance > 2) {
     return null;
   }
 
   return (
-    <span className={classNames("icon-circle", className)}>
+    <span className={classNames("icon-circle", className)} title={title}>
       <Icon name="check" className={followDistanceColor} size={10} />
     </span>
   );
