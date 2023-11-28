@@ -2,9 +2,11 @@ import { useInView } from "react-intersection-observer";
 import ProfileImage from "@/Element/User/ProfileImage";
 import { FormattedMessage } from "react-intl";
 import Icon from "@/Icons/Icon";
-import { TaggedNostrEvent } from "@snort/system";
+import {TaggedNostrEvent} from "@snort/system";
 import { ReactNode } from "react";
 import { TimelineFragment } from "@/Element/Feed/TimelineFragment";
+import {transformTextCached} from "@/Hooks/useTextTransformCache";
+import useImgProxy from "@/Hooks/useImgProxy";
 
 export interface TimelineRendererProps {
   frags: Array<TimelineFragment>;
@@ -17,10 +19,49 @@ export interface TimelineRendererProps {
   noteRenderer?: (ev: TaggedNostrEvent) => ReactNode;
   noteOnClick?: (ev: TaggedNostrEvent) => void;
   noteContext?: (ev: TaggedNostrEvent) => ReactNode;
+  displayAs?: "grid" | "feed";
 }
 
 export function TimelineRenderer(props: TimelineRendererProps) {
   const { ref, inView } = useInView();
+  const { proxy } = useImgProxy();
+
+  const renderNotes = () => {
+    return props.frags.map(frag => (
+      <TimelineFragment
+        frag={frag}
+        related={props.related}
+        noteRenderer={props.noteRenderer}
+        noteOnClick={props.noteOnClick}
+        noteContext={props.noteContext}
+      />
+    ));
+  };
+
+  const renderGrid = () => {
+    const noteImageRenderer = (e: TaggedNostrEvent) => {
+      const parsed = transformTextCached(e.id, e.content, e.tags);
+      const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
+      if (images.length === 0) return null;
+
+      return (
+        <div
+          className="aspect-square bg-center bg-cover cursor-pointer"
+          key={e.id}
+          style={{ backgroundImage: `url(${proxy(images[0].content)})` }}
+          onClick={() => props.noteOnClick?.(e)}
+        ></div>
+      );
+    };
+
+    const noteRenderer = props.noteRenderer || noteImageRenderer;
+
+    return props.frags.map(frag => (
+      <div className="grid grid-cols-3 gap-1 p-1">
+        {frag.events.map(event => noteRenderer(event))}
+      </div>
+    ));
+  };
 
   return (
     <>
@@ -54,15 +95,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
           )}
         </>
       )}
-      {props.frags.map(f => (
-        <TimelineFragment
-          frag={f}
-          related={props.related}
-          noteRenderer={props.noteRenderer}
-          noteOnClick={props.noteOnClick}
-          noteContext={props.noteContext}
-        />
-      ))}
+      {props.displayAs === "grid" ? renderGrid() : renderNotes()}
     </>
   );
 }
