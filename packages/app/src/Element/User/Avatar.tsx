@@ -40,7 +40,7 @@ const Avatar = ({ pubkey, user, size, onClick, image, imageOverlay, icons, class
       className={classNames("avatar relative", { "with-overlay": imageOverlay }, className)}
       data-domain={domain?.toLowerCase()}
       title={getDisplayName(user, "")}>
-      <ProxyImg className="rounded-full" src={url} size={s} alt={getDisplayName(user, "")} />
+      <ProxyImg className="rounded-full object-cover aspect-square" src={url} size={s} alt={getDisplayName(user, "")} />
       {icons && <div className="icons">{icons}</div>}
       {imageOverlay && <div className="overlay">{imageOverlay}</div>}
     </div>
