@@ -51,7 +51,8 @@ declare const CONFIG: {
   navLogo: string | null;
   httpCache: string;
   animalNamePlaceholders: boolean;
-  defaultZapPoolFee?: number;
+  showNoteBroadcaster: boolean;
+  defaultZapPoolFee: number;
   features: {
     analytics: boolean;
     subscriptions: boolean;

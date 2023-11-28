@@ -10,6 +10,7 @@ import { removeRelay } from "@/Login";
 import useLogin from "@/Hooks/useLogin";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { saveRelays } from "@/Pages/settings/Relays";
+import {sendEventToRelays} from "@/Element/Event/NoteBroadcaster/util";
 
 export function NoteBroadcaster({
   evs,
@@ -25,26 +26,8 @@ export function NoteBroadcaster({
   const login = useLogin();
   const { publisher, system } = useEventPublisher();
 
-  async function sendEventToRelays(ev: NostrEvent) {
-    if (customRelays) {
-      return removeUndefined(
-        await Promise.all(
-          customRelays.map(async r => {
-            try {
-              return await system.WriteOnceToRelay(r, ev);
-            } catch (e) {
-              console.error(e);
-            }
-          }),
-        ),
-      );
-    } else {
-      return await system.BroadcastEvent(ev, r => setResults(x => [...x, r]));
-    }
-  }
-
   useEffect(() => {
-    Promise.all(evs.map(a => sendEventToRelays(a)).flat()).catch(console.error);
+    Promise.all(evs.map(a => sendEventToRelays(system, a, customRelays, setResults)).flat()).catch(console.error);
   }, []);
 
   async function removeRelayFromResult(r: OkResponse) {

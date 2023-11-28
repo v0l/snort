@@ -21,17 +21,18 @@ import { AsyncIcon } from "@/Element/AsyncIcon";
 import { fetchNip05Pubkey } from "@snort/shared";
 import { ZapTarget } from "@/Zapper";
 import { useNoteCreator } from "@/State/NoteCreator";
-import { NoteBroadcaster } from "./NoteBroadcaster";
+import { NoteBroadcaster } from "./NoteBroadcaster/NoteBroadcaster";
 import FileUploadProgress from "./FileUpload";
 import { ToggleSwitch } from "@/Icons/Toggle";
 import NostrBandApi from "@/External/NostrBand";
 import { useLocale } from "@/IntlProvider";
+import {sendEventToRelays} from "@/Element/Event/NoteBroadcaster/util";
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();
   const uploader = useFileUpload();
   const login = useLogin(s => ({ relays: s.relays, publicKey: s.publicKey, pow: s.appData.item.preferences.pow }));
-  const { publisher: pub } = useEventPublisher();
+  const { system, publisher: pub } = useEventPublisher();
   const publisher = login.pow ? pub?.pow(login.pow, GetPowWorker()) : pub;
   const note = useNoteCreator();
   const relays = login.relays;
@@ -150,9 +151,14 @@ export function NoteCreator() {
   async function sendNote() {
     const ev = await buildNote();
     if (ev) {
+      const events = (note.otherEvents ?? []).concat(ev);
       note.update(n => {
-        n.sending = (note.otherEvents ?? []).concat(ev);
+        n.sending = events;
       });
+      if (!CONFIG.showNoteBroadcaster) {
+        Promise.all(events.map(a => sendEventToRelays(system, a, note.selectedCustomRelays)).flat()).catch(console.error);
+        reset();
+      }
     }
   }
 

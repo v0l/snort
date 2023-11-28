@@ -10,6 +10,8 @@
   "publicDir": "public/iris",
   "httpCache": "https://api.iris.to",
   "animalNamePlaceholders": true,
+  "showNoteBroadcaster": false,
+  "defaultZapPoolFee": 0.5,
   "features": {
     "analytics": true,
     "subscriptions": false,
