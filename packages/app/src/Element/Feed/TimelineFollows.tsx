@@ -22,6 +22,7 @@ export interface TimelineFollowsProps {
   noteRenderer?: (ev: NostrEvent) => ReactNode;
   noteOnClick?: (ev: NostrEvent) => void;
   displayAs?: DisplayAs;
+  showDisplayAsSelector?: boolean;
 }
 
 /**
@@ -108,7 +109,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   return (
     <>
       {(props.liveStreams ?? true) && <LiveStreams evs={liveStreams} />}
-      <DisplayAsSelector activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
+      <DisplayAsSelector show={props.showDisplayAsSelector} activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
       <TimelineRenderer
         frags={[{ events: orderDescending(mainFeed.concat(mixinFiltered)), refTime: latest }]}
         related={reactions.data ?? []}

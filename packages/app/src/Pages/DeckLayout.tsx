@@ -173,6 +173,7 @@ function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
           return images.length > 0;
         }}
         displayAs="grid"
+        showDisplayAsSelector={false}
         noteOnClick={e => setThread(NostrLink.fromEvent(e))}
       />
     </div>

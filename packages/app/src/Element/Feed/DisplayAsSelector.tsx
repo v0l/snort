@@ -5,9 +5,11 @@ export type DisplayAs = "grid" | "feed";
 type DisplaySelectorProps = {
   activeSelection: DisplayAs;
   onSelect: (display: DisplayAs) => void;
+  show?: boolean;
 };
 
-export const DisplayAsSelector = ({ activeSelection, onSelect }: DisplaySelectorProps) => {
+export const DisplayAsSelector = ({ activeSelection, onSelect, show }: DisplaySelectorProps) => {
+  if (show === false) return null;
   return (
     <div className="flex mb-4">
       <div

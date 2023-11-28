@@ -21,6 +21,7 @@ export interface TimelineProps {
   loadMore?: boolean;
   noSort?: boolean;
   displayAs?: DisplayAs;
+  showDisplayAsSelector?: boolean;
 }
 
 /**
@@ -73,7 +74,7 @@ const Timeline = (props: TimelineProps) => {
   return (
     <>
       <LiveStreams evs={liveStreams} />
-      <DisplayAsSelector activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
+      <DisplayAsSelector show={props.showDisplayAsSelector} activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
       <TimelineRenderer
         frags={[
           {
