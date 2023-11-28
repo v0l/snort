@@ -32,7 +32,7 @@ export function Discover() {
       <AsyncButton
         className="primary"
         onClick={() =>
-          navigate("/login/sign-up/moderation", {
+          navigate(CONFIG.signUp.moderation ? "/login/sign-up/moderation" : "/", {
             state,
           })
         }>

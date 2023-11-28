@@ -18,6 +18,9 @@
     "deck": true,
     "zapPool": true
   },
+  "signUp": {
+    "moderation": false
+  },
   "eventLinkPrefix": "note",
   "profileLinkPrefix": "npub",
   "defaultRelays": {

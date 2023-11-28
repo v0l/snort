@@ -59,6 +59,9 @@ declare const CONFIG: {
     deck: boolean;
     zapPool: boolean;
   };
+  signUp: {
+    moderation: boolean;
+  };
   eventLinkPrefix: NostrPrefix;
   profileLinkPrefix: NostrPrefix;
   defaultRelays: Record<string, RelaySettings>;
