@@ -27,7 +27,7 @@ export interface TimelineFollowsProps {
  * A list of notes by "subject"
  */
 const TimelineFollows = (props: TimelineFollowsProps) => {
-  const [displayAs, setDisplayAs] = useState<"feed" | "grid">("feed");
+  const [displayAs, setDisplayAs] = useState<"feed" | "grid">(props.displayAs ?? "feed");
   const [latest, setLatest] = useState(unixNow());
   const feed = useSyncExternalStore(
     cb => FollowsFeed.hook(cb, "*"),

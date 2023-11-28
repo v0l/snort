@@ -34,7 +34,7 @@ const Timeline = (props: TimelineProps) => {
     };
   }, [props]);
   const feed: TimelineFeed = useTimelineFeed(props.subject, feedOptions);
-  const [displayAs, setDisplayAs] = useState<DisplayAs>("feed");
+  const [displayAs, setDisplayAs] = useState<DisplayAs>(props.displayAs ?? "feed");
 
   const { muted, isEventMuted } = useModeration();
   const filterPosts = useCallback(
