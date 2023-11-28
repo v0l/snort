@@ -58,7 +58,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
         <div
           className="aspect-square bg-center bg-cover cursor-pointer"
           key={e.id}
-          style={{ backgroundImage: `url(${proxy(images[0].content, 512)})` }}
+          style={{ backgroundImage: `url(${proxy(images[0].content, 256)})` }}
           onClick={() => noteOnClick(e)}></div>
       );
     };
