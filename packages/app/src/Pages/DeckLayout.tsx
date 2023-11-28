@@ -162,11 +162,11 @@ function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
   const { proxy } = useImgProxy();
   return (
     <div>
-      <div className="deck-col-header flex g8">
+      <div className="flex items-center gap-2 p-2 border-b border-gray-300">
         <Icon name="camera-lens" size={24} />
         <FormattedMessage defaultMessage="Media" id="hmZ3Bz" />
       </div>
-      <div className="image-grid p">
+      <div className="grid grid-cols-3 gap-px p-1">
         <TimelineFollows
           postsOnly={true}
           liveStreams={false}
@@ -181,13 +181,9 @@ function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
 
             return (
               <div
-                className="media-note"
+                className="aspect-square bg-center bg-cover cursor-pointer"
                 key={e.id}
-                style={
-                  {
-                    "--img": `url(${proxy(images[0].content)})`,
-                  } as CSSProperties
-                }
+                style={{ backgroundImage: `url(${proxy(images[0].content)})` }}
                 onClick={() => setThread(NostrLink.fromEvent(e))}></div>
             );
           }}

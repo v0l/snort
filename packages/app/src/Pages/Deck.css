@@ -37,21 +37,6 @@
   overflow-y: scroll;
 }
 
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-}
-
-.image-grid > .media-note {
-  border: 1px solid var(--border-color);
-  background-image: var(--img);
-  background-position: center;
-  background-size: cover;
-  aspect-ratio: 1;
-  cursor: pointer;
-}
-
 .modal.thread-overlay > .modal-body {
   background-color: unset;
   padding: 0;
