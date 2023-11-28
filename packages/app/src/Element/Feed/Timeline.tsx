@@ -74,7 +74,11 @@ const Timeline = (props: TimelineProps) => {
   return (
     <>
       <LiveStreams evs={liveStreams} />
-      <DisplayAsSelector show={props.showDisplayAsSelector} activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
+      <DisplayAsSelector
+        show={props.showDisplayAsSelector}
+        activeSelection={displayAs}
+        onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)}
+      />
       <TimelineRenderer
         frags={[
           {

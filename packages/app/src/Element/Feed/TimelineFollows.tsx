@@ -109,7 +109,11 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   return (
     <>
       {(props.liveStreams ?? true) && <LiveStreams evs={liveStreams} />}
-      <DisplayAsSelector show={props.showDisplayAsSelector} activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
+      <DisplayAsSelector
+        show={props.showDisplayAsSelector}
+        activeSelection={displayAs}
+        onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)}
+      />
       <TimelineRenderer
         frags={[{ events: orderDescending(mainFeed.concat(mixinFiltered)), refTime: latest }]}
         related={reactions.data ?? []}
