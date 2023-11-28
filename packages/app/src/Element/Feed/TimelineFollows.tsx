@@ -12,7 +12,8 @@ import { LiveStreams } from "@/Element/LiveStreams";
 import useLogin from "@/Hooks/useLogin";
 import useHashtagsFeed from "@/Feed/HashtagsFeed";
 import { ShowMoreInView } from "@/Element/Event/ShowMore";
-import { DisplayAs, DisplayAsSelector, TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
+import { TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
+import { DisplayAs, DisplayAsSelector } from "@/Element/Feed/DisplayAsSelector";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;

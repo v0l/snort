@@ -8,7 +8,8 @@ import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineF
 import useModeration from "@/Hooks/useModeration";
 import { LiveStreams } from "@/Element/LiveStreams";
 import { unixNow } from "@snort/shared";
-import { DisplayAs, DisplayAsSelector, TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
+import { TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
+import { DisplayAs, DisplayAsSelector } from "@/Element/Feed/DisplayAsSelector";
 
 export interface TimelineProps {
   postsOnly: boolean;
