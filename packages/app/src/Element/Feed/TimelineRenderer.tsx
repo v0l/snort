@@ -2,11 +2,12 @@ import { useInView } from "react-intersection-observer";
 import ProfileImage from "@/Element/User/ProfileImage";
 import { FormattedMessage } from "react-intl";
 import Icon from "@/Icons/Icon";
-import { TaggedNostrEvent } from "@snort/system";
+import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { ReactNode } from "react";
 import { TimelineFragment } from "@/Element/Feed/TimelineFragment";
 import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import useImgProxy from "@/Hooks/useImgProxy";
+import { useNavigate } from "react-router-dom";
 
 export type DisplayAs = "grid" | "feed";
 
@@ -27,6 +28,7 @@ export interface TimelineRendererProps {
 export function TimelineRenderer(props: TimelineRendererProps) {
   const { ref, inView } = useInView();
   const { proxy } = useImgProxy();
+  const navigate = useNavigate();
 
   const renderNotes = () => {
     return props.frags.map(frag => (
@@ -40,7 +42,14 @@ export function TimelineRenderer(props: TimelineRendererProps) {
     ));
   };
 
+  const noteOnClick =
+    props.noteOnClick ||
+    ((ev: TaggedNostrEvent) => {
+      navigate(NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix));
+    });
+
   const renderGrid = () => {
+    // TODO Hide images from notes with a content warning, unless otherwise configured
     const noteImageRenderer = (e: TaggedNostrEvent) => {
       const parsed = transformTextCached(e.id, e.content, e.tags);
       const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
@@ -50,8 +59,8 @@ export function TimelineRenderer(props: TimelineRendererProps) {
         <div
           className="aspect-square bg-center bg-cover cursor-pointer"
           key={e.id}
-          style={{ backgroundImage: `url(${proxy(images[0].content)})` }}
-          onClick={() => props.noteOnClick?.(e)}></div>
+          style={{ backgroundImage: `url(${proxy(images[0].content, 512)})` }}
+          onClick={() => noteOnClick(e)}></div>
       );
     };
 
