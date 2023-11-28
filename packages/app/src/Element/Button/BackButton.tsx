@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 
 import Icon from "@/Icons/Icon";
 
-import messages from "./messages";
+import messages from "../messages";
 
 interface BackButtonProps {
   text?: string;

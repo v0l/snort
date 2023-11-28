@@ -6,7 +6,7 @@ import { SnortContext } from "@snort/system-react";
 import Modal from "@/Element/Modal";
 import messages from "./messages";
 import useLogin from "@/Hooks/useLogin";
-import AsyncButton from "./AsyncButton";
+import AsyncButton from "./Button/AsyncButton";
 
 export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: TaggedNostrEvent }) {
   const [selected, setSelected] = useState<Array<string>>();

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { unixNow, unwrap } from "@snort/shared";
 
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import SendSats from "@/Element/SendSats";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import SnortApi, { Subscription, SubscriptionError } from "@/External/SnortApi";

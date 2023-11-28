@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 
 import PageSpinner from "@/Element/PageSpinner";
 import NostrBandApi from "@/External/NostrBand";
-import { ErrorOrOffline } from "./ErrorOrOffline";
+import { ErrorOrOffline } from "../ErrorOrOffline";
 import { HashTagHeader } from "@/Pages/HashTagsPage";
 import { useLocale } from "@/IntlProvider";
 import classNames from "classnames";

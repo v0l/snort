@@ -20,7 +20,7 @@ import { LiveEvent } from "@/Element/LiveEvent";
 import ProfilePreview from "@/Element/User/ProfilePreview";
 import { ShowMoreInView } from "@/Element/Event/ShowMore";
 import PageSpinner from "@/Element/PageSpinner";
-const NotificationGraph = lazy(() => import("@/Element/NotificationChart"));
+const NotificationGraph = lazy(() => import("@/Pages/Notifications/NotificationChart"));
 
 function notificationContext(ev: TaggedNostrEvent) {
   switch (ev.kind) {

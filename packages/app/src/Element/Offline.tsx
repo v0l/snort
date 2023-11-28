@@ -1,5 +1,5 @@
 import Icon from "@/Icons/Icon";
-import AsyncButton from "./AsyncButton";
+import AsyncButton from "./Button/AsyncButton";
 import { FormattedMessage } from "react-intl";
 import classNames from "classnames";
 

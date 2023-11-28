@@ -35,7 +35,7 @@ import ProfileImage from "@/Element/User/ProfileImage";
 import BlockList from "@/Element/User/BlockList";
 import MutedList from "@/Element/User/MutedList";
 import FollowsList from "@/Element/User/FollowListBase";
-import IconButton from "@/Element/IconButton";
+import IconButton from "@/Element/Button/IconButton";
 import FollowsYou from "@/Element/User/FollowsYou";
 import QrCode from "@/Element/QrCode";
 import Modal from "@/Element/Modal";

@@ -8,7 +8,7 @@ import ZapButton from "@/Element/Event/ZapButton";
 import { bech32ToHex } from "@/SnortUtils";
 import SnortApi, { RevenueSplit, RevenueToday } from "@/External/SnortApi";
 import Modal from "@/Element/Modal";
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import QrCode from "@/Element/QrCode";
 import Copy from "@/Element/Copy";
 

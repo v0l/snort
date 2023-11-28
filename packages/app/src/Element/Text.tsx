@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 import Invoice from "@/Element/Embed/Invoice";
 import Hashtag from "@/Element/Embed/Hashtag";
-import HyperText from "@/Element/HyperText";
+import HyperText from "@/Element/Embed/HyperText";
 import CashuNuts from "@/Element/Embed/CashuNuts";
 import RevealMedia from "./Event/RevealMedia";
 import { ProxyImg } from "./ProxyImg";
@@ -262,7 +262,6 @@ export default function Text({
         chunks.push(<ProxyImg src={element.content} size={15} className="custom-emoji" />);
       }
       if (element.type === "code_block") {
-        //chunks.push(<CodeBlock content={element.content} language={element.language} />);
         chunks.push(<pre>{element.content}</pre>);
       }
       if (element.type === "text") {

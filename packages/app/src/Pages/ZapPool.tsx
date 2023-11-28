@@ -10,7 +10,7 @@ import useLogin from "@/Hooks/useLogin";
 import { UploaderServices } from "@/Upload";
 import { bech32ToHex, getRelayName, unwrap } from "@/SnortUtils";
 import { ZapPoolController, ZapPoolRecipient, ZapPoolRecipientType } from "@/ZapPoolController";
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import { useWallet } from "@/Wallet";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 

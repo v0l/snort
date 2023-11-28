@@ -15,7 +15,7 @@ import Copy from "@/Element/Copy";
 import { debounce } from "@/SnortUtils";
 import { LNWallet, useWallet } from "@/Wallet";
 import useLogin from "@/Hooks/useLogin";
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import { ZapTarget, ZapTargetResult, Zapper } from "@/Zapper";
 
 import messages from "./messages";

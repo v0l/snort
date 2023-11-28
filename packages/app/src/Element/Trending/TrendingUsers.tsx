@@ -4,7 +4,7 @@ import { HexKey } from "@snort/system";
 import FollowListBase from "@/Element/User/FollowListBase";
 import PageSpinner from "@/Element/PageSpinner";
 import NostrBandApi from "@/External/NostrBand";
-import { ErrorOrOffline } from "./ErrorOrOffline";
+import { ErrorOrOffline } from "../ErrorOrOffline";
 
 export default function TrendingUsers({ title, count = Infinity }: { title?: ReactNode; count?: number }) {
   const [userList, setUserList] = useState<HexKey[]>();

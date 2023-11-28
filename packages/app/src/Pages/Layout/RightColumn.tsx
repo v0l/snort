@@ -1,7 +1,7 @@
 import SearchBox from "@/Element/SearchBox";
-import TrendingUsers from "@/Element/TrendingUsers";
-import TrendingHashtags from "@/Element/TrendingHashtags";
-import TrendingNotes from "@/Element/TrendingPosts";
+import TrendingUsers from "@/Element/Trending/TrendingUsers";
+import TrendingHashtags from "@/Element/Trending/TrendingHashtags";
+import TrendingNotes from "@/Element/Trending/TrendingPosts";
 import { FormattedMessage } from "react-intl";
 import classNames from "classnames";
 

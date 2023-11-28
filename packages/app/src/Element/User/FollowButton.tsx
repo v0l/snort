@@ -4,7 +4,7 @@ import { HexKey } from "@snort/system";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { parseId } from "@/SnortUtils";
 import useLogin from "@/Hooks/useLogin";
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 
 import messages from "../messages";
 import { FollowsFeed } from "@/Cache";

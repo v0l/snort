@@ -5,9 +5,9 @@ import Tabs, { Tab } from "@/Element/Tabs";
 import { useEffect, useState } from "react";
 import { debounce } from "@/SnortUtils";
 import { router } from "@/index";
-import TrendingUsers from "@/Element/TrendingUsers";
+import TrendingUsers from "@/Element/Trending/TrendingUsers";
 
-import TrendingNotes from "@/Element/TrendingPosts";
+import TrendingNotes from "@/Element/Trending/TrendingPosts";
 
 const NOTES = 0;
 const PROFILES = 1;

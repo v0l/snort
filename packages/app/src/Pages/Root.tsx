@@ -10,16 +10,16 @@ import { TimelineSubject } from "@/Feed/TimelineFeed";
 import { debounce, getRelayName, sha256 } from "@/SnortUtils";
 import useLogin from "@/Hooks/useLogin";
 import Discover from "@/Pages/Discover";
-import TrendingUsers from "@/Element/TrendingUsers";
-import TrendingNotes from "@/Element/TrendingPosts";
+import TrendingUsers from "@/Element/Trending/TrendingUsers";
+import TrendingNotes from "@/Element/Trending/TrendingPosts";
 import HashTagsPage from "@/Pages/HashTagsPage";
 import SuggestedProfiles from "@/Element/SuggestedProfiles";
 import { TaskList } from "@/Tasks/TaskList";
 import TimelineFollows from "@/Element/Feed/TimelineFollows";
-import { RootTabs } from "@/Element/RootTabs";
+import { RootTabs } from "@/Element/Feed/RootTabs";
 import { DeckContext } from "@/Pages/DeckLayout";
 import { TopicsPage } from "./TopicsPage";
-import TrendingHashtags from "@/Element/TrendingHashtags";
+import TrendingHashtags from "@/Element/Trending/TrendingHashtags";
 
 import messages from "./messages";
 

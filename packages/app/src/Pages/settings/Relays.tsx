@@ -7,7 +7,7 @@ import Relay from "@/Element/Relay/Relay";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { setRelays } from "@/Login";
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import SnortApi, { RelayDistance } from "@/External/SnortApi";
 import { getCountry, getRelayName, sanitizeRelayUrl } from "@/SnortUtils";
 import { formatShort } from "@/Number";

@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { LNURL } from "@snort/shared";
 
 import { ApiHost } from "@/Const";
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import SnortServiceProvider, { ForwardType, ManageHandle } from "@/Nip05/SnortServiceProvider";
 

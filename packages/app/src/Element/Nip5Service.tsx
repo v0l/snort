@@ -14,7 +14,7 @@ import {
   HandleRegisterResponse,
   CheckRegisterResponse,
 } from "@/Nip05/ServiceProvider";
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import SendSats from "@/Element/SendSats";
 import Copy from "@/Element/Copy";
 import { useUserProfile } from "@snort/system-react";

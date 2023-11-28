@@ -7,7 +7,7 @@ import { RouteObject } from "react-router-dom";
 import { formatShort } from "@/Number";
 import { LockedFeatures, Plans, SubscriptionType } from "@/Subscription";
 import ManageSubscriptionPage from "@/Pages/subscribe/ManageSubscription";
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import SnortApi, { SubscriptionError, SubscriptionErrorCode } from "@/External/SnortApi";
 import SendSats from "@/Element/SendSats";

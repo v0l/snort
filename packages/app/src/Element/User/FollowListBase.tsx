@@ -9,7 +9,7 @@ import useLogin from "@/Hooks/useLogin";
 
 import messages from "../messages";
 import { FollowsFeed } from "@/Cache";
-import AsyncButton from "../AsyncButton";
+import AsyncButton from "../Button/AsyncButton";
 import { setFollows } from "@/Login";
 
 export interface FollowListBaseProps {

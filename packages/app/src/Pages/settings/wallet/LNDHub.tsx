@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { v4 as uuid } from "uuid";
 
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import { unwrap } from "@/SnortUtils";
 import LNDHubWallet from "@/Wallet/LNDHub";
 import { WalletConfig, WalletKind, Wallets } from "@/Wallet";

@@ -12,7 +12,7 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import { delay, findTag, getDisplayName } from "@/SnortUtils";
 import SendSats from "@/Element/SendSats";
 import { ZapsSummary } from "@/Element/Event/Zap";
-import { AsyncIcon, AsyncIconProps } from "@/Element/AsyncIcon";
+import { AsyncIcon, AsyncIconProps } from "@/Element/Button/AsyncIcon";
 
 import { useWallet } from "@/Wallet";
 import useLogin from "@/Hooks/useLogin";

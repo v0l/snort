@@ -6,7 +6,7 @@ import { TaggedNostrEvent, u256, NostrPrefix, EventExt, parseNostrLink, NostrLin
 import classNames from "classnames";
 
 import { getAllLinkReactions, getLinkReactions } from "@/SnortUtils";
-import BackButton from "@/Element/BackButton";
+import BackButton from "@/Element/Button/BackButton";
 import Note from "@/Element/Event/Note";
 import NoteGhost from "@/Element/Event/NoteGhost";
 import Collapsed from "@/Element/Collapsed";

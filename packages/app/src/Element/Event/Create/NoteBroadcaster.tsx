@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { unwrap } from "@snort/shared";
 import { NostrEvent, OkResponse } from "@snort/system";
 
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import Icon from "@/Icons/Icon";
 import { getRelayName, sanitizeRelayUrl } from "@/SnortUtils";
 import { removeRelay } from "@/Login";

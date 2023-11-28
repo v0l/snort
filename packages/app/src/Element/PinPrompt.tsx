@@ -8,7 +8,7 @@ import { EventPublisher, InvalidPinError, PinEncrypted } from "@snort/system";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { LoginStore, createPublisher, sessionNeedsPin } from "@/Login";
 import Modal from "./Modal";
-import AsyncButton from "./AsyncButton";
+import AsyncButton from "./Button/AsyncButton";
 import { GetPowWorker } from "@/index";
 
 export function PinPrompt({

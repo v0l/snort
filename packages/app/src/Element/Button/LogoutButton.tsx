@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { logout } from "@/Login";
 import useLogin from "@/Hooks/useLogin";
-import messages from "./messages";
+import messages from "../messages";
 
 export default function LogoutButton() {
   const navigate = useNavigate();

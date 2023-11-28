@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import classNames from "classnames";
 import { appendDedupe } from "@/SnortUtils";
 import useEventPublisher from "@/Hooks/useEventPublisher";

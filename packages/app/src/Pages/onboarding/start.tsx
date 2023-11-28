@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { unwrap } from "@snort/shared";
 
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import Icon from "@/Icons/Icon";
 import { NewUserState } from ".";
 import { LoginSessionType, LoginStore } from "@/Login";

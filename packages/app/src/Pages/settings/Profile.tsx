@@ -7,7 +7,7 @@ import { useUserProfile } from "@snort/system-react";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { openFile } from "@/SnortUtils";
 import useFileUpload from "@/Upload";
-import AsyncButton from "@/Element/AsyncButton";
+import AsyncButton from "@/Element/Button/AsyncButton";
 import { UserCache } from "@/Cache";
 import useLogin from "@/Hooks/useLogin";
 import Icon from "@/Icons/Icon";

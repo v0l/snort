@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
-import UnreadCount from "@/Element/UnreadCount";
+import UnreadCount from "@/Pages/Messages/UnreadCount";
 import ProfileImage from "@/Element/User/ProfileImage";
 import { parseId } from "@/SnortUtils";
 import NoteToSelf from "@/Element/User/NoteToSelf";

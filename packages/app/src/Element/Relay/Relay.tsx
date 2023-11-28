@@ -11,7 +11,7 @@ import { getRelayName, unwrap } from "@/SnortUtils";
 import useLogin from "@/Hooks/useLogin";
 import { removeRelay, setRelays } from "@/Login";
 import { RelayFavicon } from "./RelaysMetadata";
-import { AsyncIcon } from "@/Element/AsyncIcon";
+import { AsyncIcon } from "@/Element/Button/AsyncIcon";
 
 export interface RelayProps {
   addr: string;

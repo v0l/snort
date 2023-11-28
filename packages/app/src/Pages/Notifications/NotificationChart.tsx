@@ -7,8 +7,8 @@ import { TaggedNostrEvent, EventKind } from "@snort/system";
 import classNames from "classnames";
 import { useState, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
-import { AsyncIcon } from "./AsyncIcon";
-import Tabs, { Tab } from "./Tabs";
+import { AsyncIcon } from "../../Element/Button/AsyncIcon";
+import Tabs, { Tab } from "../../Element/Tabs";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 interface StatSlot {
