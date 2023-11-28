@@ -5,7 +5,7 @@ import { ProfileLink } from "../../Element/User/ProfileLink";
 import Avatar from "../../Element/User/Avatar";
 import useLogin from "../../Hooks/useLogin";
 import { useUserProfile } from "@snort/system-react";
-import { NoteCreatorButton } from "../../Element/Event/NoteCreatorButton";
+import { NoteCreatorButton } from "../../Element/Event/Create/NoteCreatorButton";
 import { FormattedMessage } from "react-intl";
 import classNames from "classnames";
 import { HasNotificationsMarker } from "@/Pages/Layout/AccountHeader";

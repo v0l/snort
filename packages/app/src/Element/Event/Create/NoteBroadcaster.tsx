@@ -10,7 +10,7 @@ import { removeRelay } from "@/Login";
 import useLogin from "@/Hooks/useLogin";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { saveRelays } from "@/Pages/settings/Relays";
-import { sendEventToRelays } from "@/Element/Event/NoteBroadcaster/util";
+import { sendEventToRelays } from "@/Element/Event/Create/util";
 
 export function NoteBroadcaster({
   evs,

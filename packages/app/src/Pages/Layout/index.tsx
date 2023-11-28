@@ -11,7 +11,7 @@ import { useLoginRelays } from "@/Hooks/useLoginRelays";
 import { LoginUnlock } from "@/Element/PinPrompt";
 import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
 import { LoginStore } from "@/Login";
-import { NoteCreatorButton } from "@/Element/Event/NoteCreatorButton";
+import { NoteCreatorButton } from "@/Element/Event/Create/NoteCreatorButton";
 import NavSidebar from "./NavSidebar";
 import AccountHeader from "./AccountHeader";
 import RightColumn from "./RightColumn";
