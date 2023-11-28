@@ -12,7 +12,7 @@ import { LiveStreams } from "@/Element/LiveStreams";
 import useLogin from "@/Hooks/useLogin";
 import useHashtagsFeed from "@/Feed/HashtagsFeed";
 import { ShowMoreInView } from "@/Element/Event/ShowMore";
-import { TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
+import { DisplayAs, DisplayAsSelector, TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;
@@ -20,12 +20,14 @@ export interface TimelineFollowsProps {
   noteFilter?: (ev: NostrEvent) => boolean;
   noteRenderer?: (ev: NostrEvent) => ReactNode;
   noteOnClick?: (ev: NostrEvent) => void;
+  displayAs?: DisplayAs;
 }
 
 /**
  * A list of notes by "subject"
  */
 const TimelineFollows = (props: TimelineFollowsProps) => {
+  const [displayAs, setDisplayAs] = useState<"feed" | "grid">("feed");
   const [latest, setLatest] = useState(unixNow());
   const feed = useSyncExternalStore(
     cb => FollowsFeed.hook(cb, "*"),
@@ -105,6 +107,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   return (
     <>
       {(props.liveStreams ?? true) && <LiveStreams evs={liveStreams} />}
+      <DisplayAsSelector activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
       <TimelineRenderer
         frags={[{ events: orderDescending(mainFeed.concat(mixinFiltered)), refTime: latest }]}
         related={reactions.data ?? []}
@@ -117,6 +120,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
             return <Link to={`/t/${e.context}`}>{`#${e.context}`}</Link>;
           }
         }}
+        displayAs={displayAs}
       />
       {sortedFeed.length > 0 && (
         <ShowMoreInView onClick={async () => await FollowsFeed.loadMore(system, login, oldest ?? unixNow())} />
@@ -124,4 +128,5 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     </>
   );
 };
+
 export default TimelineFollows;

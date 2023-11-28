@@ -12,7 +12,6 @@ import TimelineFollows from "@/Element/Feed/TimelineFollows";
 import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import Icon from "@/Icons/Icon";
 import NotificationsPage from "./Notifications/Notifications";
-import useImgProxy from "@/Hooks/useImgProxy";
 import Modal from "@/Element/Modal";
 import { Thread } from "@/Element/Event/Thread";
 import { RootTabs } from "@/Element/Feed/RootTabs";
@@ -159,36 +158,23 @@ function ArticlesCol() {
 }
 
 function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
-  const { proxy } = useImgProxy();
   return (
     <div>
       <div className="flex items-center gap-2 p-2 border-b border-border-color">
         <Icon name="camera-lens" size={24} />
         <FormattedMessage defaultMessage="Media" id="hmZ3Bz" />
       </div>
-      <div className="grid grid-cols-3 gap-1 p-1">
-        <TimelineFollows
-          postsOnly={true}
-          liveStreams={false}
-          noteFilter={e => {
-            const parsed = transformTextCached(e.id, e.content, e.tags);
-            const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
-            return images.length > 0;
-          }}
-          noteRenderer={e => {
-            const parsed = transformTextCached(e.id, e.content, e.tags);
-            const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
-
-            return (
-              <div
-                className="aspect-square bg-center bg-cover cursor-pointer"
-                key={e.id}
-                style={{ backgroundImage: `url(${proxy(images[0].content)})` }}
-                onClick={() => setThread(NostrLink.fromEvent(e))}></div>
-            );
-          }}
-        />
-      </div>
+      <TimelineFollows
+        postsOnly={true}
+        liveStreams={false}
+        noteFilter={e => {
+          const parsed = transformTextCached(e.id, e.content, e.tags);
+          const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
+          return images.length > 0;
+        }}
+        displayAs="grid"
+        noteOnClick={e => setThread(NostrLink.fromEvent(e))}
+      />
     </div>
   );
 }

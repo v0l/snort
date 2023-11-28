@@ -1,6 +1,6 @@
 import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { TaggedNostrEvent, EventKind } from "@snort/system";
 
 import { dedupeByPubkey, findTag } from "@/SnortUtils";
@@ -8,7 +8,7 @@ import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineF
 import useModeration from "@/Hooks/useModeration";
 import { LiveStreams } from "@/Element/LiveStreams";
 import { unixNow } from "@snort/shared";
-import { TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
+import { DisplayAs, DisplayAsSelector, TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -19,6 +19,7 @@ export interface TimelineProps {
   now?: number;
   loadMore?: boolean;
   noSort?: boolean;
+  displayAs?: DisplayAs;
 }
 
 /**
@@ -33,6 +34,7 @@ const Timeline = (props: TimelineProps) => {
     };
   }, [props]);
   const feed: TimelineFeed = useTimelineFeed(props.subject, feedOptions);
+  const [displayAs, setDisplayAs] = useState<DisplayAs>("feed");
 
   const { muted, isEventMuted } = useModeration();
   const filterPosts = useCallback(
@@ -70,6 +72,7 @@ const Timeline = (props: TimelineProps) => {
   return (
     <>
       <LiveStreams evs={liveStreams} />
+      <DisplayAsSelector activeSelection={displayAs} onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)} />
       <TimelineRenderer
         frags={[
           {
@@ -80,6 +83,7 @@ const Timeline = (props: TimelineProps) => {
         related={feed.related ?? []}
         latest={latestAuthors}
         showLatest={t => onShowLatest(t)}
+        displayAs={displayAs}
       />
       {(props.loadMore === undefined || props.loadMore === true) && (
         <div className="flex items-center">

@@ -7,6 +7,7 @@ module.exports = {
       colors: {
         "nearly-bg-color": "var(--nearly-bg-color)",
         "border-color": "var(--border-color)",
+        highlight: "var(--highlight)",
       },
       textColor: {
         "nostr-blue": "var(--repost)",
@@ -14,6 +15,7 @@ module.exports = {
         "nostr-orange": "var(--zap)",
         "nostr-red": "var(--heart)",
         "nostr-purple": "var(--highlight)",
+        secondary: "var(--font-secondary-color)",
       },
       spacing: {
         px: "1px",

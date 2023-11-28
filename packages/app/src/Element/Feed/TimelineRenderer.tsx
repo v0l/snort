@@ -2,11 +2,13 @@ import { useInView } from "react-intersection-observer";
 import ProfileImage from "@/Element/User/ProfileImage";
 import { FormattedMessage } from "react-intl";
 import Icon from "@/Icons/Icon";
-import {TaggedNostrEvent} from "@snort/system";
+import { TaggedNostrEvent } from "@snort/system";
 import { ReactNode } from "react";
 import { TimelineFragment } from "@/Element/Feed/TimelineFragment";
-import {transformTextCached} from "@/Hooks/useTextTransformCache";
+import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import useImgProxy from "@/Hooks/useImgProxy";
+
+export type DisplayAs = "grid" | "feed";
 
 export interface TimelineRendererProps {
   frags: Array<TimelineFragment>;
@@ -19,7 +21,7 @@ export interface TimelineRendererProps {
   noteRenderer?: (ev: TaggedNostrEvent) => ReactNode;
   noteOnClick?: (ev: TaggedNostrEvent) => void;
   noteContext?: (ev: TaggedNostrEvent) => ReactNode;
-  displayAs?: "grid" | "feed";
+  displayAs?: DisplayAs;
 }
 
 export function TimelineRenderer(props: TimelineRendererProps) {
@@ -49,17 +51,14 @@ export function TimelineRenderer(props: TimelineRendererProps) {
           className="aspect-square bg-center bg-cover cursor-pointer"
           key={e.id}
           style={{ backgroundImage: `url(${proxy(images[0].content)})` }}
-          onClick={() => props.noteOnClick?.(e)}
-        ></div>
+          onClick={() => props.noteOnClick?.(e)}></div>
       );
     };
 
     const noteRenderer = props.noteRenderer || noteImageRenderer;
 
     return props.frags.map(frag => (
-      <div className="grid grid-cols-3 gap-1 p-1">
-        {frag.events.map(event => noteRenderer(event))}
-      </div>
+      <div className="grid grid-cols-3 gap-1 p-1">{frag.events.map(event => noteRenderer(event))}</div>
     ));
   };
 
@@ -99,3 +98,29 @@ export function TimelineRenderer(props: TimelineRendererProps) {
     </>
   );
 }
+
+type DisplaySelectorProps = {
+  activeSelection: DisplayAs;
+  onSelect: (display: DisplayAs) => void;
+};
+
+export const DisplayAsSelector = ({ activeSelection, onSelect }: DisplaySelectorProps) => {
+  return (
+    <div className="flex mb-4">
+      <div
+        className={`border-highlight cursor-pointer flex justify-center flex-1 p-3 ${
+          activeSelection === "feed" ? "border-b border-1" : "hover:bg-nearly-bg-color text-secondary"
+        }`}
+        onClick={() => onSelect("feed")}>
+        <FormattedMessage defaultMessage="Feed" id="eW/Bj9" />
+      </div>
+      <div
+        className={`border-highlight cursor-pointer flex justify-center flex-1 p-3 ${
+          activeSelection === "grid" ? "border-b border-1" : "hover:bg-nearly-bg-color text-secondary"
+        }`}
+        onClick={() => onSelect("grid")}>
+        <FormattedMessage defaultMessage="Grid" id="HzfrYu" />
+      </div>
+    </div>
+  );
+};
