@@ -109,6 +109,11 @@ export async function generateNewLogin(
       }
     }
   }
+  for (const [k, v] of Object.entries(CONFIG.defaultRelays)) {
+    if (!newRelays[k]) {
+      newRelays[k] = v;
+    }
+  }
 
   // connect to new relays
   await Promise.all(Object.entries(newRelays).map(([k, v]) => system.ConnectToRelay(k, v)));

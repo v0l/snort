@@ -26,7 +26,7 @@ import FileUploadProgress from "./FileUpload";
 import { ToggleSwitch } from "@/Icons/Toggle";
 import NostrBandApi from "@/External/NostrBand";
 import { useLocale } from "@/IntlProvider";
-import {sendEventToRelays} from "@/Element/Event/NoteBroadcaster/util";
+import { sendEventToRelays } from "@/Element/Event/NoteBroadcaster/util";
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();
@@ -156,7 +156,9 @@ export function NoteCreator() {
         n.sending = events;
       });
       if (!CONFIG.showNoteBroadcaster) {
-        Promise.all(events.map(a => sendEventToRelays(system, a, note.selectedCustomRelays)).flat()).catch(console.error);
+        Promise.all(events.map(a => sendEventToRelays(system, a, note.selectedCustomRelays)).flat()).catch(
+          console.error,
+        );
         reset();
       }
     }
