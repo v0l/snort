@@ -44,7 +44,8 @@ export function TimelineRenderer(props: TimelineRendererProps) {
   const noteOnClick =
     props.noteOnClick ||
     ((ev: TaggedNostrEvent) => {
-      navigate(NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix));
+      const noteId = NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix);
+      navigate(`/${noteId}`);
     });
 
   const renderGrid = () => {
