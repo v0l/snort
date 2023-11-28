@@ -7,8 +7,8 @@ import { dedupeByPubkey, findTag } from "@/SnortUtils";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";
 import useModeration from "@/Hooks/useModeration";
 import { LiveStreams } from "@/Element/LiveStreams";
-import { TimelineRenderer } from "./TimelineFragment";
 import { unixNow } from "@snort/shared";
+import { TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
 
 export interface TimelineProps {
   postsOnly: boolean;

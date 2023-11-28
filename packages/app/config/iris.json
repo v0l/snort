@@ -12,6 +12,7 @@
   "animalNamePlaceholders": true,
   "showNoteBroadcaster": false,
   "defaultZapPoolFee": 0.5,
+  "bypassImgProxyError": true,
   "features": {
     "analytics": true,
     "subscriptions": false,

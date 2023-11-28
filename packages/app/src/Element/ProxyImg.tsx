@@ -5,12 +5,13 @@ import { getUrlHostname } from "@/SnortUtils";
 
 interface ProxyImgProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
   size?: number;
+  className?: string;
 }
 
 export const ProxyImg = (props: ProxyImgProps) => {
   const { proxy } = useImgProxy();
   const [loadFailed, setLoadFailed] = useState(false);
-  const [bypass, setBypass] = useState(false);
+  const [bypass, setBypass] = useState(CONFIG.bypassImgProxyError);
 
   if (loadFailed) {
     if (bypass) {

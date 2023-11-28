@@ -1,7 +1,8 @@
 import { NostrLink, NoteCollection, ReqFilter, RequestBuilder } from "@snort/system";
 import { useReactions, useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
-import { TimelineRenderer } from "./TimelineFragment";
+
+import { TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
 
 export function GenericFeed({ link }: { link: NostrLink }) {
   const sub = useMemo(() => {

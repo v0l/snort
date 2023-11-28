@@ -10,9 +10,9 @@ import useModeration from "@/Hooks/useModeration";
 import { FollowsFeed } from "@/Cache";
 import { LiveStreams } from "@/Element/LiveStreams";
 import useLogin from "@/Hooks/useLogin";
-import { TimelineRenderer } from "./TimelineFragment";
 import useHashtagsFeed from "@/Feed/HashtagsFeed";
 import { ShowMoreInView } from "@/Element/Event/ShowMore";
+import { TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;

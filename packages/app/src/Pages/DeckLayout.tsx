@@ -1,5 +1,5 @@
 import "./Deck.css";
-import { CSSProperties, createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";

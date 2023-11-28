@@ -53,6 +53,7 @@ declare const CONFIG: {
   animalNamePlaceholders: boolean;
   showNoteBroadcaster: boolean;
   defaultZapPoolFee: number;
+  bypassImgProxyError: boolean;
   features: {
     analytics: boolean;
     subscriptions: boolean;
