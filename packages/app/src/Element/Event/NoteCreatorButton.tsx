@@ -60,7 +60,11 @@ export const NoteCreatorButton = ({
       {!shouldHideNoteCreator && (
         <button
           ref={buttonRef}
-          className={classNames("flex flex-row items-center primary rounded-full", { circle: !showText }, className)}
+          className={classNames(
+            "aspect-square flex flex-row items-center primary rounded-full",
+            { "xl:aspect-auto": showText },
+            className,
+          )}
           onClick={() =>
             update(v => {
               v.replyTo = undefined;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { removeUndefined, unwrap } from "@snort/shared";
+import { unwrap } from "@snort/shared";
 import { NostrEvent, OkResponse } from "@snort/system";
 
 import AsyncButton from "@/Element/AsyncButton";
