@@ -9,6 +9,11 @@ export const Hour = 60 * 60;
 export const Day = Hour * 24;
 
 /**
+ * Day this project started
+ */
+export const Birthday = new Date(2022, 11, 17);
+
+/**
  * Add-on api for snort features
  */
 export const ApiHost = "https://api.snort.social";

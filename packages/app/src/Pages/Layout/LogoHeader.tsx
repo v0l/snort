@@ -1,14 +1,20 @@
 import useLogin from "../../Hooks/useLogin";
 import { getCurrentSubscription } from "../../Subscription";
-import { isChristmas, isHalloween, isStPatricksDay } from "../../SnortUtils";
+import { isBirthday, isChristmas, isHalloween, isStPatricksDay } from "../../SnortUtils";
 import { Link } from "react-router-dom";
 import { mapPlanName } from "../subscribe";
 import Icon from "@/Icons/Icon";
+import { unixNowMs } from "@snort/shared";
+import { Birthday, Day } from "@/Const";
 export function LogoHeader({ showText = false }) {
   const { subscriptions } = useLogin();
   const currentSubscription = getCurrentSubscription(subscriptions);
 
   const extra = () => {
+    if (isBirthday()) {
+      const age = (unixNowMs() - Birthday.getTime()) / (Day * 365_000);
+      return <span className="text-xs">{age.toFixed(0)}st 🎂</span>;
+    }
     if (isHalloween()) return "🎃";
     if (isStPatricksDay()) return "🍀";
     if (isChristmas()) return "🎄";
@@ -29,8 +35,8 @@ export function LogoHeader({ showText = false }) {
         )}
         {showText && (
           <div className="md:hidden xl:inline ml-2">
-            {extra()}
             {CONFIG.appName}
+            {extra()}
           </div>
         )}
       </h1>

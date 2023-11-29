@@ -19,7 +19,7 @@ import {
   UserMetadata,
 } from "@snort/system";
 import { isHex, isOffline } from "@snort/shared";
-import { Day } from "@/Const";
+import { Birthday, Day } from "@/Const";
 import AnimalName from "@/Element/User/AnimalName";
 
 export const sha256 = (str: string | Uint8Array): u256 => {
@@ -472,26 +472,30 @@ export function isFormElement(target: HTMLElement): boolean {
 }
 
 const ThisYear = new Date().getFullYear();
-const SeasonalEventsWindow = 7; // n days before
-const IsTheSeason = (target: Date) => {
+const IsTheSeason = (target: Date, window: number) => {
   const now = new Date();
   const days = (target.getTime() - now.getTime()) / (Day * 1000);
-  return days > 0 && days <= SeasonalEventsWindow;
+  return (days >= 0 && days <= window) || (now.getDate() === target.getDate() && now.getMonth() === target.getMonth());
 };
 
 export const isHalloween = () => {
   const event = new Date(ThisYear, 9, 31);
-  return IsTheSeason(event);
+  return IsTheSeason(event, 7);
 };
 
 export const isStPatricksDay = () => {
   const event = new Date(ThisYear, 2, 17);
-  return IsTheSeason(event);
+  return IsTheSeason(event, 7);
 };
 
 export const isChristmas = () => {
   const event = new Date(ThisYear, 11, 25);
-  return IsTheSeason(event);
+  return IsTheSeason(event, 30);
+};
+
+export const isBirthday = () => {
+  const event = new Date(ThisYear, Birthday.getMonth(), Birthday.getDate());
+  return IsTheSeason(event, 1);
 };
 
 export function getDisplayName(user: UserMetadata | undefined, pubkey: HexKey): string {
