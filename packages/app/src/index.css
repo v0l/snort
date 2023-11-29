@@ -81,7 +81,7 @@ html {
 html.light {
   --bg-color: #fff;
   --nearly-bg-color: #f9f9f9;
-  --font-color: #2f3f64;
+  --font-color: #0f0f0f;
   --font-secondary-color: #5c6c92;
   --font-tertiary-color: #52525b;
   --border-color: #dee1e8;
