@@ -22,6 +22,7 @@
   "signUp": {
     "moderation": true
   },
+  "hideFromNavbar": ["/graph"],
   "eventLinkPrefix": "nevent",
   "profileLinkPrefix": "nprofile",
   "defaultRelays": {

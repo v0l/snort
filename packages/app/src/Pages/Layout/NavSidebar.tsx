@@ -80,7 +80,7 @@ export default function NavSidebar({ narrow = false }) {
       <LogoHeader showText={!narrow} />
       <div className="flex-grow flex flex-col justify-between">
         <div className={classNames({ "xl:items-start": !narrow }, "flex flex-col items-center font-bold text-lg")}>
-          {MENU_ITEMS.map(item => {
+          {MENU_ITEMS.filter(a => !(CONFIG.hideFromNavbar ?? []).includes(a.link)).map(item => {
             if (!item.nonLoggedIn && !publicKey) {
               return "";
             }

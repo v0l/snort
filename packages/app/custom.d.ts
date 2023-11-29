@@ -63,6 +63,7 @@ declare const CONFIG: {
   signUp: {
     moderation: boolean;
   };
+  hideFromNavbar?: Array<string>;
   eventLinkPrefix: NostrPrefix;
   profileLinkPrefix: NostrPrefix;
   defaultRelays: Record<string, RelaySettings>;
