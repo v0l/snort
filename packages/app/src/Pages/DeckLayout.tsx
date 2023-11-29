@@ -61,26 +61,32 @@ export function SnortDeckLayout() {
 
   if (!login.publicKey) return null;
   if (CONFIG.deckSubKind !== undefined && (sub?.type ?? -1) < CONFIG.deckSubKind) {
-    return <div className="deck-layout">
-      <NavSidebar narrow={true} />
-      <div>
-        <div className="flex flex-col gap-2 m-2 bg-dark p br">
-          <div className="text-xl font-bold">
-            <FormattedMessage defaultMessage="You must be a {tier} subscriber to access {app} deck" id="IOu4Xh" values={{
-              app: CONFIG.appNameCapitalized,
-              tier: mapPlanName(CONFIG.deckSubKind)
-            }} />
-          </div>
-          <div>
-            <Link to="/subscribe">
-              <button>
-                <FormattedMessage defaultMessage="Subscribe" id="gczcC5" />
-              </button>
-            </Link>
+    return (
+      <div className="deck-layout">
+        <NavSidebar narrow={true} />
+        <div>
+          <div className="flex flex-col gap-2 m-2 bg-dark p br">
+            <div className="text-xl font-bold">
+              <FormattedMessage
+                defaultMessage="You must be a {tier} subscriber to access {app} deck"
+                id="IOu4Xh"
+                values={{
+                  app: CONFIG.appNameCapitalized,
+                  tier: mapPlanName(CONFIG.deckSubKind),
+                }}
+              />
+            </div>
+            <div>
+              <Link to="/subscribe">
+                <button>
+                  <FormattedMessage defaultMessage="Subscribe" id="gczcC5" />
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    );
   }
   const cols = ["notes", "media", "notifications", "articles"] as Array<Cols>;
   return (

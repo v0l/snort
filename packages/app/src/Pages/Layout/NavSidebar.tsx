@@ -67,7 +67,7 @@ const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
 export default function NavSidebar({ narrow = false }) {
   const { publicKey, subscriptions } = useLogin(s => ({
     publicKey: s.publicKey,
-    subscriptions: s.subscriptions
+    subscriptions: s.subscriptions,
   }));
   const profile = useUserProfile(publicKey);
   const navigate = useNavigate();
