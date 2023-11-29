@@ -29,7 +29,9 @@ export interface TimelineFollowsProps {
  * A list of notes by "subject"
  */
 const TimelineFollows = (props: TimelineFollowsProps) => {
-  const [displayAs, setDisplayAs] = useState<"feed" | "grid">(props.displayAs ?? "feed");
+  const login = useLogin();
+  const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
+  const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const [latest, setLatest] = useState(unixNow());
   const feed = useSyncExternalStore(
     cb => FollowsFeed.hook(cb, "*"),
@@ -42,7 +44,6 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
     true,
   );
   const system = useContext(SnortContext);
-  const login = useLogin();
   const { muted, isEventMuted } = useModeration();
 
   const sortedFeed = useMemo(() => orderDescending(feed), [feed]);

@@ -377,9 +377,6 @@
   "CYkOCI": {
     "defaultMessage": "and {count} others you follow"
   },
-  "CbM2hK": {
-    "defaultMessage": "Trending hashtags"
-  },
   "CmZ9ls": {
     "defaultMessage": "{n} Muted"
   },
@@ -951,9 +948,6 @@
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
-  },
-  "arZnG2": {
-    "defaultMessage": "Trending users"
   },
   "b12Goz": {
     "defaultMessage": "Mnemonic"

@@ -1,6 +1,7 @@
 import { HexKey, RelaySettings, u256, KeyStorage } from "@snort/system";
 import { UserPreferences } from "@/Login";
 import { SubscriptionEvent } from "@/Subscription";
+import { DisplayAs } from "@/Element/Feed/DisplayAsSelector";
 
 /**
  * Stores latest copy of an item
@@ -125,4 +126,9 @@ export interface LoginSession {
    * Is login session in stalker mode
    */
   stalker: boolean;
+
+  /**
+   * Display feed as list or grid
+   */
+  feedDisplayAs?: DisplayAs;
 }

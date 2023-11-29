@@ -10,6 +10,7 @@ import { LiveStreams } from "@/Element/LiveStreams";
 import { unixNow } from "@snort/shared";
 import { TimelineRenderer } from "@/Element/Feed/TimelineRenderer";
 import { DisplayAs, DisplayAsSelector } from "@/Element/Feed/DisplayAsSelector";
+import useLogin from "@/Hooks/useLogin";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -28,6 +29,7 @@ export interface TimelineProps {
  * A list of notes by "subject"
  */
 const Timeline = (props: TimelineProps) => {
+  const login = useLogin();
   const feedOptions = useMemo(() => {
     return {
       method: props.method,
@@ -36,7 +38,8 @@ const Timeline = (props: TimelineProps) => {
     };
   }, [props]);
   const feed: TimelineFeed = useTimelineFeed(props.subject, feedOptions);
-  const [displayAs, setDisplayAs] = useState<DisplayAs>(props.displayAs ?? "feed");
+  const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
+  const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
 
   const { muted, isEventMuted } = useModeration();
   const filterPosts = useCallback(
