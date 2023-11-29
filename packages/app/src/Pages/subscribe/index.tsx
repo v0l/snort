@@ -16,7 +16,7 @@ import classNames from "classnames";
 export function mapPlanName(id: number) {
   switch (id) {
     case SubscriptionType.Supporter:
-      return <FormattedMessage defaultMessage="Supporter" id="DcL8P+" />;
+      return <FormattedMessage defaultMessage="FAN" id="xybOUv" />;
     case SubscriptionType.Premium:
       return <FormattedMessage defaultMessage="PRO" id="hRTfTR" />;
   }

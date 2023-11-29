@@ -51,7 +51,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
             <FormattedMessage defaultMessage="Created" id="ORGv1Q" />
             :&nbsp;
             <time dateTime={created.toISOString()}>
-              <FormattedDate value={created} dateStyle="full" />
+              <FormattedDate value={created} dateStyle="medium" />
             </time>
           </p>
           {daysToExpire >= 1 && (

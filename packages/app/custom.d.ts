@@ -63,7 +63,10 @@ declare const CONFIG: {
   signUp: {
     moderation: boolean;
   };
+  // Filter urls from nav sidebar
   hideFromNavbar?: Array<string>;
+  // Limit deck to certain subvscriber tier
+  deckSubKind?: number;
   eventLinkPrefix: NostrPrefix;
   profileLinkPrefix: NostrPrefix;
   defaultRelays: Record<string, RelaySettings>;

@@ -9,6 +9,7 @@ import { NoteCreatorButton } from "../../Element/Event/Create/NoteCreatorButton"
 import { FormattedMessage } from "react-intl";
 import classNames from "classnames";
 import { HasNotificationsMarker } from "@/Pages/Layout/AccountHeader";
+import { getCurrentSubscription } from "@/Subscription";
 
 const MENU_ITEMS = [
   {
@@ -64,11 +65,13 @@ const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
 };
 
 export default function NavSidebar({ narrow = false }) {
-  const { publicKey } = useLogin(s => ({
+  const { publicKey, subscriptions } = useLogin(s => ({
     publicKey: s.publicKey,
+    subscriptions: s.subscriptions
   }));
   const profile = useUserProfile(publicKey);
   const navigate = useNavigate();
+  const sub = getCurrentSubscription(subscriptions);
 
   const className = classNames(
     { "xl:w-56 xl:gap-3 xl:items-start": !narrow },
@@ -80,7 +83,15 @@ export default function NavSidebar({ narrow = false }) {
       <LogoHeader showText={!narrow} />
       <div className="flex-grow flex flex-col justify-between">
         <div className={classNames({ "xl:items-start": !narrow }, "flex flex-col items-center font-bold text-lg")}>
-          {MENU_ITEMS.filter(a => !(CONFIG.hideFromNavbar ?? []).includes(a.link)).map(item => {
+          {MENU_ITEMS.filter(a => {
+            if ((CONFIG.hideFromNavbar ?? []).includes(a.link)) {
+              return false;
+            }
+            if (a.link == "/deck" && CONFIG.deckSubKind !== undefined && (sub?.type ?? -1) < CONFIG.deckSubKind) {
+              return false;
+            }
+            return true;
+          }).map(item => {
             if (!item.nonLoggedIn && !publicKey) {
               return "";
             }
