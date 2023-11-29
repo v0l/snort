@@ -15,8 +15,8 @@ export default function RightColumn() {
         <SearchBox />
       </div>
       <div className="overflow-y-auto hide-scrollbar">
-        <div className="bg-superdark rounded-lg py-3 px-4 mt-8">
-          <div className="font-bold text-lg">
+        <div className="bg-superdark rounded-lg py-4 px-2 mt-8">
+          <div className="font-bold text-lg px-[12px]">
             <FormattedMessage defaultMessage="Trending notes" id="6k7xfM" />
           </div>
           <TrendingNotes small={true} count={5} />
