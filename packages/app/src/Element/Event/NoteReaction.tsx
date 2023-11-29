@@ -86,7 +86,7 @@ export default function NoteReaction(props: NoteReactionProps) {
           }}
         />
       </div>
-      {root ? <Note data={root} options={opt} related={[]} depth={props.depth} /> : null}
+      {root ? <Note truncate={true} data={root} options={opt} related={[]} depth={props.depth} /> : null}
       {!root && refEvent ? (
         <p>
           <Link to={eventLink(refEvent[1] ?? "", refEvent[2])}>

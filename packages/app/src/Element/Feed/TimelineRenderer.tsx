@@ -67,7 +67,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
     const noteRenderer = props.noteRenderer || noteImageRenderer;
 
     return props.frags.map(frag => (
-      <div className="grid grid-cols-3 gap-px md:gap-1 p-0 md:p-1">{frag.events.map(event => noteRenderer(event))}</div>
+      <div className="grid grid-cols-3 gap-px md:gap-1">{frag.events.map(event => noteRenderer(event))}</div>
     ));
   };
 
