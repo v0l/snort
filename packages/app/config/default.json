@@ -23,6 +23,7 @@
     "moderation": true
   },
   "hideFromNavbar": ["/graph"],
+  "deckSubKind": 1,
   "eventLinkPrefix": "nevent",
   "profileLinkPrefix": "nprofile",
   "defaultRelays": {
