@@ -83,7 +83,9 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
 
   const timeGrouped = useMemo(() => {
     return myNotifications.reduce((acc, v) => {
-      const key = `${timeKey(v)}:${notificationContext(v as TaggedNostrEvent)?.encode()}:${v.kind}`;
+      const key = `${timeKey(v)}:${notificationContext(v as TaggedNostrEvent)?.encode(CONFIG.eventLinkPrefix)}:${
+        v.kind
+      }`;
       if (acc.has(key)) {
         unwrap(acc.get(key)).push(v as TaggedNostrEvent);
       } else {
@@ -240,7 +242,7 @@ function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onC
                   if (onClick) {
                     onClick(context);
                   } else {
-                    navigate(`/${context.encode()}`);
+                    navigate(`/${context.encode(CONFIG.eventLinkPrefix)}`);
                   }
                 }}
               />

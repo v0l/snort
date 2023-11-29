@@ -299,7 +299,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   function renderIcons() {
     if (!id) return;
 
-    const link = encodeTLV(NostrPrefix.Profile, id);
+    const link = encodeTLV(CONFIG.profileLinkPrefix, id);
     return (
       <>
         <IconButton onClick={() => setShowProfileQr(true)} icon={{ name: "qr", size: 16 }} />
