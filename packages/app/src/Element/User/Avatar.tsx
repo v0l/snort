@@ -6,6 +6,7 @@ import classNames from "classnames";
 
 import { defaultAvatar, getDisplayName } from "@/SnortUtils";
 import { ProxyImg } from "@/Element/ProxyImg";
+import Icon from "@/Icons/Icon";
 
 interface AvatarProps {
   pubkey: string;
@@ -37,10 +38,17 @@ const Avatar = ({ pubkey, user, size, onClick, image, imageOverlay, icons, class
     <div
       onClick={onClick}
       style={style}
-      className={classNames("avatar relative", { "with-overlay": imageOverlay }, className)}
+      className={classNames("avatar relative flex items-center justify-center", { "with-overlay": imageOverlay }, className)}
       data-domain={domain?.toLowerCase()}
       title={getDisplayName(user, "")}>
-      <ProxyImg className="rounded-full object-cover aspect-square" src={url} size={s} alt={getDisplayName(user, "")} />
+      <ProxyImg
+        className="rounded-full object-cover aspect-square"
+        src={url}
+        size={s}
+        alt={getDisplayName(user, "")}
+        promptToLoadDirectly={false}
+        missingImageElement={<Icon name="x" className="warning" />}
+      />
       {icons && <div className="icons">{icons}</div>}
       {imageOverlay && <div className="overlay">{imageOverlay}</div>}
     </div>

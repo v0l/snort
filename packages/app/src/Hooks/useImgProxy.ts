@@ -32,7 +32,7 @@ export function proxyImg(url: string, settings?: ImgProxySettings, resize?: numb
     return urlSafe(base64.encode(result));
   }
   if (!settings) return url;
-  if (url.startsWith("data:") || url.startsWith("blob:")) return url;
+  if (url.startsWith("data:") || url.startsWith("blob:") || url.length == 0) return url;
   const opt = resize ? `rs:fit:${resize}:${resize}/dpr:${window.devicePixelRatio}` : "";
   const urlBytes = te.encode(url);
   const urlEncoded = urlSafe(base64.encode(urlBytes));
