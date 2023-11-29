@@ -160,7 +160,6 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
             <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
           </h2>
           {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
-          {user?.pubkey && <FollowedBy pubkey={user.pubkey} />}
         </div>
         {showBadges && <BadgeList badges={badges} />}
         {showStatus && <>{musicStatus()}</>}
@@ -347,6 +346,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       <div className="details-wrapper w-max">
         {username()}
         {bio()}
+        {user?.pubkey && <FollowedBy pubkey={user.pubkey} />}
       </div>
     );
   }
