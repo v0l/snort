@@ -65,7 +65,7 @@ declare const CONFIG: {
   };
   // Filter urls from nav sidebar
   hideFromNavbar?: Array<string>;
-  // Limit deck to certain subvscriber tier
+  // Limit deck to certain subscriber tier
   deckSubKind?: number;
   eventLinkPrefix: NostrPrefix;
   profileLinkPrefix: NostrPrefix;
