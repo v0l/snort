@@ -35,7 +35,7 @@ export function LogoHeader({ showText = false }) {
         )}
       </h1>
       {currentSubscription && (
-        <div className="flex items-center g4 text-sm font-semibold tracking-wider">
+        <div className="flex items-center g4 text-sm font-semibold tracking-wider ml-2">
           <Icon name="diamond" size={16} className="text-pro" />
           {mapPlanName(currentSubscription.type)}
         </div>
