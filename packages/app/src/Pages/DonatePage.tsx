@@ -118,12 +118,16 @@ const DonatePage = () => {
       </p>
       <p>
         <FormattedMessage
-          defaultMessage="To see a full list of changes you can view the changelog {here}" id="VfhYxG"
+          defaultMessage="To see a full list of changes you can view the changelog {here}"
+          id="VfhYxG"
           values={{
-            here: <Link to="/about" className="underline">
-              <FormattedMessage defaultMessage="here" id="hniz8Z" />
-            </Link>
-          }} />
+            here: (
+              <Link to="/about" className="underline">
+                <FormattedMessage defaultMessage="here" id="hniz8Z" />
+              </Link>
+            ),
+          }}
+        />
       </p>
       <p>
         <FormattedMessage

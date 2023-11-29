@@ -8,7 +8,7 @@ type ProxyImgProps = HTMLProps<HTMLImageElement> & {
   className?: string;
   promptToLoadDirectly?: boolean;
   missingImageElement?: ReactNode;
-}
+};
 
 export const ProxyImg = ({ size, className, promptToLoadDirectly, missingImageElement, ...props }: ProxyImgProps) => {
   const { proxy } = useImgProxy();

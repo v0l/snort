@@ -38,7 +38,11 @@ const Avatar = ({ pubkey, user, size, onClick, image, imageOverlay, icons, class
     <div
       onClick={onClick}
       style={style}
-      className={classNames("avatar relative flex items-center justify-center", { "with-overlay": imageOverlay }, className)}
+      className={classNames(
+        "avatar relative flex items-center justify-center",
+        { "with-overlay": imageOverlay },
+        className,
+      )}
       data-domain={domain?.toLowerCase()}
       title={getDisplayName(user, "")}>
       <ProxyImg
