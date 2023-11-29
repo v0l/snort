@@ -24,7 +24,7 @@ import useFollowsFeed from "@/Feed/FollowsFeed";
 import useProfileBadges from "@/Feed/BadgesFeed";
 import useModeration from "@/Hooks/useModeration";
 import FollowButton from "@/Element/User/FollowButton";
-import { parseId, hexToBech32 } from "@/SnortUtils";
+import { parseId } from "@/SnortUtils";
 import Avatar from "@/Element/User/Avatar";
 import Timeline from "@/Element/Feed/Timeline";
 import Text from "@/Element/Text";
@@ -61,7 +61,6 @@ import { useMuteList, usePinList } from "@/Hooks/useLists";
 
 import messages from "../messages";
 import FollowDistanceIndicator from "@/Element/User/FollowDistanceIndicator";
-import classNames from "classnames";
 import { ProfileLink } from "@/Element/User/ProfileLink";
 
 interface ProfilePageProps {
@@ -84,7 +83,6 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
   const [modalImage, setModalImage] = useState<string>("");
   const aboutText = user?.about || "";
-  const npub = !id?.startsWith(NostrPrefix.PublicKey) ? hexToBech32(NostrPrefix.PublicKey, id || undefined) : id;
 
   const lnurl = (() => {
     try {
@@ -168,22 +166,26 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
           </h2>
           {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
           <div className="flex flex-row items-center">
-            {user?.pubkey && <FollowDistanceIndicator className="p-2" pubkey={user.pubkey} />}
+            <div className="flex flex-row items-center">
+              {user?.pubkey && <FollowDistanceIndicator className="p-2" pubkey={user.pubkey} />}
+              {followedByFriendsArray.map((a, index) => {
+                const zIndex = followedByFriendsArray.length - index;
+
+                return (
+                  <div className={`inline-block ${index > 0 ? "-ml-5" : ""}`} key={a} style={{ zIndex }}>
+                    <ProfileImage showFollowDistance={false} pubkey={a} size={24} showUsername={false} />
+                  </div>
+                );
+              })}
+            </div>
             {followedByFriends.size > 0 && (
               <div className="text-gray-light">
-                {followedByFriendsArray.map((a, index) => {
-                  return (
-                    <span className={classNames({ "-ml-4": index > 0 }, "inline-block")} key={a}>
-                      <ProfileImage showFollowDistance={false} pubkey={a} size={24} showUsername={false} />
-                    </span>
-                  );
-                })}
                 <span className="mr-1">
                   <FormattedMessage defaultMessage="Followed by" id="6mr8WU" />
                 </span>
                 {followedByFriendsArray.map((a, index) => (
                   <Fragment key={a}>
-                    <ProfileLink pubkey={a} user={undefined} className="link inline">
+                    <ProfileLink pubkey={a} className="link inline">
                       <DisplayName user={undefined} pubkey={a} />
                     </ProfileLink>
                     {index < followedByFriendsArray.length - 1 && ","}{" "}
@@ -204,9 +206,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         </div>
         {showBadges && <BadgeList badges={badges} />}
         {showStatus && <>{musicStatus()}</>}
-        <div className="link-section">
-          {links()}
-        </div>
+        <div className="link-section">{links()}</div>
       </>
     );
   }

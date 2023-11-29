@@ -7,14 +7,12 @@ import { randomSample } from "@/SnortUtils";
 export function ProfileLink({
   pubkey,
   user,
-  link,
   explicitLink,
   children,
   ...others
 }: {
   pubkey: string;
   user?: UserMetadata | MetadataCache;
-  link?: NostrLink;
   explicitLink?: string;
   children?: ReactNode;
 } & Omit<LinkProps, "to">) {
@@ -27,27 +25,21 @@ export function ProfileLink({
     if (explicitLink) {
       return explicitLink;
     }
-    if (user) {
-      if (
-        user.nip05 &&
-        user.nip05.endsWith(`@${CONFIG.nip05Domain}`) &&
-        (!("isNostrAddressValid" in user) || user.isNostrAddressValid)
-      ) {
-        const [username] = user.nip05.split("@");
-        return `/${username}`;
-      }
-      return `/${new NostrLink(
-        NostrPrefix.Profile,
-        pubkey,
-        undefined,
-        undefined,
-        relays ? randomSample(relays, 3) : undefined,
-      ).encode(CONFIG.profileLinkPrefix)}`;
+    if (
+      user?.nip05 &&
+      user.nip05.endsWith(`@${CONFIG.nip05Domain}`) &&
+      (!("isNostrAddressValid" in user) || user.isNostrAddressValid)
+    ) {
+      const [username] = user.nip05.split("@");
+      return `/${username}`;
     }
-    if (link && (link.type === NostrPrefix.Profile || link.type === NostrPrefix.PublicKey)) {
-      return `/${link.encode()}`;
-    }
-    return "#";
+    return `/${new NostrLink(
+      NostrPrefix.Profile,
+      pubkey,
+      undefined,
+      undefined,
+      relays ? randomSample(relays, 3) : undefined,
+    ).encode(CONFIG.profileLinkPrefix)}`;
   }
 
   const oFiltered = others as Record<string, unknown>;

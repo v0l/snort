@@ -404,9 +404,6 @@
   "DZzCem": {
     "defaultMessage": "Show latest {n} notes"
   },
-  "DcL8P+": {
-    "defaultMessage": "Supporter"
-  },
   "Dh3hbq": {
     "defaultMessage": "Auto Zap"
   },
@@ -536,6 +533,9 @@
   },
   "IKKHqV": {
     "defaultMessage": "Follows"
+  },
+  "IOu4Xh": {
+    "defaultMessage": "You must be a {tier} subscriber to access {app} deck"
   },
   "IVbtTS": {
     "defaultMessage": "Zap all {n} sats"
@@ -1524,6 +1524,9 @@
   },
   "xmcVZ0": {
     "defaultMessage": "Search"
+  },
+  "xybOUv": {
+    "defaultMessage": "FAN"
   },
   "y1Z3or": {
     "defaultMessage": "Language"
