@@ -44,6 +44,12 @@ const MENU_ITEMS = [
     link: "/graph",
   },
   {
+    label: "About",
+    icon: "info",
+    link: "/donate",
+    nonLoggedIn: true,
+  },
+  {
     label: "Settings",
     icon: "settings",
     link: "/settings",
