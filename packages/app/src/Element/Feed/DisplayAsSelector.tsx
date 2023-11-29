@@ -1,4 +1,3 @@
-import { FormattedMessage } from "react-intl";
 import Icon from "@/Icons/Icon";
 
 export type DisplayAs = "grid" | "feed";
