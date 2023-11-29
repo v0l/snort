@@ -31,7 +31,7 @@ interface RelayOption {
 export default function RootPage() {
   return (
     <>
-      <div className="main-content p sticky top-0">
+      <div className="main-content p">
         <RootTabs base="" />
       </div>
       <div className="main-content">

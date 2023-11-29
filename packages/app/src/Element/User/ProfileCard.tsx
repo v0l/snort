@@ -9,6 +9,7 @@ import { UserWebsiteLink } from "./UserWebsiteLink";
 import Text from "@/Element/Text";
 import { useEffect, useState } from "react";
 import useLogin from "../../Hooks/useLogin";
+import FollowedBy from "@/Element/User/FollowedBy";
 
 export function ProfileCard({
   pubkey,
@@ -68,6 +69,7 @@ export function ProfileCard({
           truncate={250}
         />
         <UserWebsiteLink user={user} />
+        <FollowedBy pubkey={pubkey} />
       </div>
     </ControlledMenu>
   );

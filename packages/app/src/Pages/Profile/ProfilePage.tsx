@@ -1,5 +1,5 @@
 import "./ProfilePage.css";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
@@ -9,7 +9,6 @@ import {
   MetadataCache,
   NostrLink,
   NostrPrefix,
-  socialGraphInstance,
   TLVEntryType,
   tryParseNostrLink,
 } from "@snort/system";
@@ -60,8 +59,7 @@ import { UserWebsiteLink } from "@/Element/User/UserWebsiteLink";
 import { useMuteList, usePinList } from "@/Hooks/useLists";
 
 import messages from "../messages";
-import FollowDistanceIndicator from "@/Element/User/FollowDistanceIndicator";
-import { ProfileLink } from "@/Element/User/ProfileLink";
+import FollowedBy from "@/Element/User/FollowedBy";
 
 interface ProfilePageProps {
   id?: string;
@@ -154,9 +152,6 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   }
 
   function username() {
-    const followedByFriends = user?.pubkey ? socialGraphInstance.followedByFriends(user.pubkey) : new Set<string>();
-    const MAX_FOLLOWED_BY_FRIENDS = 3;
-    const followedByFriendsArray = Array.from(followedByFriends).slice(0, MAX_FOLLOWED_BY_FRIENDS);
     return (
       <>
         <div className="flex flex-col g4">
@@ -165,44 +160,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
             <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
           </h2>
           {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
-          <div className="flex flex-row items-center">
-            <div className="flex flex-row items-center">
-              {user?.pubkey && <FollowDistanceIndicator className="p-2" pubkey={user.pubkey} />}
-              {followedByFriendsArray.map((a, index) => {
-                const zIndex = followedByFriendsArray.length - index;
-
-                return (
-                  <div className={`inline-block ${index > 0 ? "-ml-5" : ""}`} key={a} style={{ zIndex }}>
-                    <ProfileImage showFollowDistance={false} pubkey={a} size={24} showUsername={false} />
-                  </div>
-                );
-              })}
-            </div>
-            {followedByFriends.size > 0 && (
-              <div className="text-gray-light">
-                <span className="mr-1">
-                  <FormattedMessage defaultMessage="Followed by" id="6mr8WU" />
-                </span>
-                {followedByFriendsArray.map((a, index) => (
-                  <Fragment key={a}>
-                    <ProfileLink pubkey={a} className="link inline">
-                      <DisplayName user={undefined} pubkey={a} />
-                    </ProfileLink>
-                    {index < followedByFriendsArray.length - 1 && ","}{" "}
-                  </Fragment>
-                ))}
-                {followedByFriends.size > MAX_FOLLOWED_BY_FRIENDS && (
-                  <span>
-                    <FormattedMessage
-                      defaultMessage="and {count} others you follow"
-                      id="CYkOCI"
-                      values={{ count: followedByFriends.size - MAX_FOLLOWED_BY_FRIENDS }}
-                    />
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
+          {user?.pubkey && <FollowedBy pubkey={user.pubkey} />}
         </div>
         {showBadges && <BadgeList badges={badges} />}
         {showStatus && <>{musicStatus()}</>}
