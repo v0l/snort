@@ -47,7 +47,7 @@ export default function ProfileImage({
   onClick,
   showFollowDistance = true,
   icons,
-  showProfileCard,
+  showProfileCard = true,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const nip05 = defaultNip ? defaultNip : user?.nip05;
@@ -81,6 +81,7 @@ export default function ProfileImage({
             user={user}
             size={size}
             imageOverlay={imageOverlay}
+            showTitle={!showProfileCard}
             icons={
               showFollowDistance || icons ? (
                 <>
@@ -105,7 +106,7 @@ export default function ProfileImage({
   }
 
   function profileCard() {
-    if ((showProfileCard ?? true) && user && isHovering) {
+    if (showProfileCard && user && isHovering) {
       return (
         <div className="absolute shadow-lg z-10">
           <ProfileCard pubkey={pubkey} user={user} show={true} />

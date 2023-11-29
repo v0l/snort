@@ -16,10 +16,21 @@ interface AvatarProps {
   image?: string;
   imageOverlay?: ReactNode;
   icons?: ReactNode;
+  showTitle?: boolean;
   className?: string;
 }
 
-const Avatar = ({ pubkey, user, size, onClick, image, imageOverlay, icons, className }: AvatarProps) => {
+const Avatar = ({
+  pubkey,
+  user,
+  size,
+  onClick,
+  image,
+  imageOverlay,
+  icons,
+  className,
+  showTitle = true,
+}: AvatarProps) => {
   const [url, setUrl] = useState("");
 
   useEffect(() => {
@@ -44,7 +55,7 @@ const Avatar = ({ pubkey, user, size, onClick, image, imageOverlay, icons, class
         className,
       )}
       data-domain={domain?.toLowerCase()}
-      title={getDisplayName(user, "")}>
+      title={showTitle ? getDisplayName(user, "") : undefined}>
       <ProxyImg
         className="rounded-full object-cover aspect-square"
         src={url}
