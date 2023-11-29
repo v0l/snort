@@ -205,7 +205,6 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         {showBadges && <BadgeList badges={badges} />}
         {showStatus && <>{musicStatus()}</>}
         <div className="link-section">
-          <Copy text={npub} />
           {links()}
         </div>
       </>
