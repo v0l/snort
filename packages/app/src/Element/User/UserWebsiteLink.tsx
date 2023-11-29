@@ -18,7 +18,7 @@ export function UserWebsiteLink({ user }: { user?: MetadataCache | UserMetadata 
 
   if (user?.website) {
     return (
-      <div className="user-profile-link f-ellipsis">
+      <div className="user-profile-link f-ellipsis flex gap-2 items-center">
         <Icon name="link-02" size={16} />
         <a href={website_url} target="_blank" rel="noreferrer">
           {tryFormatWebsite(user.website)}

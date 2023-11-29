@@ -1,5 +1,5 @@
 import "./ProfilePage.css";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
@@ -61,6 +61,8 @@ import { useMuteList, usePinList } from "@/Hooks/useLists";
 
 import messages from "../messages";
 import FollowDistanceIndicator from "@/Element/User/FollowDistanceIndicator";
+import classNames from "classnames";
+import { ProfileLink } from "@/Element/User/ProfileLink";
 
 interface ProfilePageProps {
   id?: string;
@@ -156,6 +158,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   function username() {
     const followedByFriends = user?.pubkey ? socialGraphInstance.followedByFriends(user.pubkey) : new Set<string>();
     const MAX_FOLLOWED_BY_FRIENDS = 3;
+    const followedByFriendsArray = Array.from(followedByFriends).slice(0, MAX_FOLLOWED_BY_FRIENDS);
     return (
       <>
         <div className="flex flex-col g4">
@@ -168,18 +171,24 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
             {user?.pubkey && <FollowDistanceIndicator className="p-2" pubkey={user.pubkey} />}
             {followedByFriends.size > 0 && (
               <div className="text-gray-light">
+                {followedByFriendsArray.map((a, index) => {
+                  return (
+                    <span className={classNames({ "-ml-4": index > 0 }, "inline-block")} key={a}>
+                      <ProfileImage showFollowDistance={false} pubkey={a} size={24} showUsername={false} />
+                    </span>
+                  );
+                })}
                 <span className="mr-1">
                   <FormattedMessage defaultMessage="Followed by" id="6mr8WU" />
                 </span>
-                {Array.from(followedByFriends)
-                  .slice(0, MAX_FOLLOWED_BY_FRIENDS)
-                  .map(a => {
-                    return (
-                      <span className="inline-block" key={a}>
-                        <ProfileImage showFollowDistance={false} pubkey={a} size={24} showUsername={false} />
-                      </span>
-                    );
-                  })}
+                {followedByFriendsArray.map((a, index) => (
+                  <Fragment key={a}>
+                    <ProfileLink pubkey={a} user={undefined} className="link inline">
+                      <DisplayName user={undefined} pubkey={a} />
+                    </ProfileLink>
+                    {index < followedByFriendsArray.length - 1 && ","}{" "}
+                  </Fragment>
+                ))}
                 {followedByFriends.size > MAX_FOLLOWED_BY_FRIENDS && (
                   <span>
                     <FormattedMessage
@@ -208,7 +217,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       <>
         <UserWebsiteLink user={user} />
         {lnurl && (
-          <div className="link lnurl f-ellipsis" onClick={() => setShowLnQr(true)}>
+          <div className="link lnurl f-ellipsis flex gap-2 items-center" onClick={() => setShowLnQr(true)}>
             <Icon name="zapCircle" size={16} />
             {lnurl.name}
           </div>
