@@ -1,4 +1,5 @@
 import { FormattedMessage } from "react-intl";
+import Icon from "@/Icons/Icon";
 
 export type DisplayAs = "grid" | "feed";
 
@@ -17,14 +18,16 @@ export const DisplayAsSelector = ({ activeSelection, onSelect, show }: DisplaySe
           activeSelection === "feed" ? "border-b border-1" : "hover:bg-nearly-bg-color text-secondary"
         }`}
         onClick={() => onSelect("feed")}>
-        <FormattedMessage defaultMessage="Feed" id="eW/Bj9" />
+        <span className="rotate-90">
+          <Icon name="deck" />
+        </span>
       </div>
       <div
         className={`border-highlight cursor-pointer flex justify-center flex-1 p-3 ${
           activeSelection === "grid" ? "border-b border-1" : "hover:bg-nearly-bg-color text-secondary"
         }`}
         onClick={() => onSelect("grid")}>
-        <FormattedMessage defaultMessage="Grid" id="HzfrYu" />
+        <Icon name="media" />
       </div>
     </div>
   );
