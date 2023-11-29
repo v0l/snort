@@ -70,6 +70,7 @@ declare const CONFIG: {
   eventLinkPrefix: NostrPrefix;
   profileLinkPrefix: NostrPrefix;
   defaultRelays: Record<string, RelaySettings>;
+  showNip05InNotes: boolean;
 };
 
 /**

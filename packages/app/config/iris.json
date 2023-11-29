@@ -30,5 +30,6 @@
     "wss://eden.nostr.land/": { "read": true, "write": false },
     "wss://relay.nostr.band/": { "read": true, "write": true },
     "wss://relay.damus.io/": { "read": true, "write": true }
-  }
+  },
+  "showNip05InNotes": false
 }

@@ -30,5 +30,6 @@
     "wss://relay.snort.social/": { "read": true, "write": true },
     "wss://nostr.wine/": { "read": true, "write": false },
     "wss://eden.nostr.land/": { "read": true, "write": false }
-  }
+  },
+  "showNip05InNotes": true
 }
