@@ -82,7 +82,7 @@ export default function Index() {
 
 function Header() {
   return (
-    <header className="sticky top-0 md:hidden z-10 backdrop-blur-lg">
+    <header className="flex justify-between items-center self-stretch px-4 gap-6 sticky top-0 md:hidden z-10 bg-bg-color py-1">
       <LogoHeader />
       <AccountHeader />
     </header>

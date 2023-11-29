@@ -15,15 +15,6 @@
   text-decoration: none;
 }
 
-header {
-  display: flex;
-  padding: var(--header-padding-tb) 16px;
-  justify-content: space-between;
-  align-items: center;
-  align-self: stretch;
-  gap: 24px;
-}
-
 .header-actions .avatar {
   width: 40px;
   height: 40px;

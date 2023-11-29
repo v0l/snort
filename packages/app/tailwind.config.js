@@ -8,6 +8,7 @@ module.exports = {
         "nearly-bg-color": "var(--nearly-bg-color)",
         "border-color": "var(--border-color)",
         highlight: "var(--highlight)",
+        "bg-color": "var(--bg-color)",
       },
       textColor: {
         "nostr-blue": "var(--repost)",
