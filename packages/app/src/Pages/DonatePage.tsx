@@ -11,6 +11,7 @@ import Modal from "@/Element/Modal";
 import AsyncButton from "@/Element/Button/AsyncButton";
 import QrCode from "@/Element/QrCode";
 import Copy from "@/Element/Copy";
+import { Link } from "react-router-dom";
 
 const Contributors = [
   bech32ToHex("npub10djxr5pvdu97rjkde7tgcsjxzpdzmdguwacfjwlchvj7t88dl7nsdl54nf"), // ivan
@@ -117,13 +118,22 @@ const DonatePage = () => {
       </p>
       <p>
         <FormattedMessage
+          defaultMessage="To see a full list of changes you can view the changelog {here}" id="VfhYxG"
+          values={{
+            here: <Link to="/about" className="underline">
+              <FormattedMessage defaultMessage="here" id="hniz8Z" />
+            </Link>
+          }} />
+      </p>
+      <p>
+        <FormattedMessage
           defaultMessage="Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below"
           id="mH91FY"
         />
       </p>
       <div className="flex flex-col g12">
         <div className="b br p">
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between">
             <FormattedMessage defaultMessage="Lightning Donation" id="C1LjMx" />
             <ZapButton pubkey={bech32ToHex(SnortPubKey)} lnurl={DonateLNURL}>
               <FormattedMessage defaultMessage="Donate" id="2IFGap" />
@@ -140,7 +150,7 @@ const DonatePage = () => {
           )}
         </div>
         <div className="b br p">
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between">
             <FormattedMessage defaultMessage="On-chain Donation" id="fqwcJ1" />
             <AsyncButton type="button" onClick={getOnChainAddress}>
               <FormattedMessage defaultMessage="Get Address" id="bLZL5a" />
