@@ -62,7 +62,7 @@ export default function Index() {
         {!shouldHideHeader && <Header />}
         <div className="flex flex-row w-full">
           <NavSidebar />
-          <div className="flex flex-1 flex-col overflow-x-hidden">
+          <div className="flex flex-1 flex-col">
             <ErrorBoundary>
               <Outlet />
             </ErrorBoundary>
