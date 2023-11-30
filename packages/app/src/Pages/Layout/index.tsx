@@ -11,13 +11,13 @@ import { useLoginRelays } from "@/Hooks/useLoginRelays";
 import { LoginUnlock } from "@/Element/PinPrompt";
 import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
 import { LoginStore } from "@/Login";
-import { NoteCreatorButton } from "@/Element/Event/Create/NoteCreatorButton";
 import NavSidebar from "./NavSidebar";
-import AccountHeader from "./AccountHeader";
+import NotificationsHeader from "./NotificationsHeader";
 import RightColumn from "./RightColumn";
 import { LogoHeader } from "./LogoHeader";
 import useLoginFeed from "@/Feed/LoginFeed";
 import ErrorBoundary from "@/Element/ErrorBoundary";
+import Footer from "@/Pages/Layout/Footer";
 
 export default function Index() {
   const location = useLocation();
@@ -69,13 +69,11 @@ export default function Index() {
           </div>
           <RightColumn />
         </div>
-        <div className="md:hidden">
-          <NoteCreatorButton className="note-create-button" />
-        </div>
         <Toaster />
       </div>
       <LoginUnlock />
       {isStalker && <StalkerModal id={id} />}
+      <Footer />
     </div>
   );
 }
@@ -83,8 +81,8 @@ export default function Index() {
 function Header() {
   return (
     <header className="flex justify-between items-center self-stretch px-4 gap-6 sticky top-0 md:hidden z-10 bg-bg-color py-1">
-      <LogoHeader />
-      <AccountHeader />
+      <LogoHeader showText={true} />
+      <NotificationsHeader />
     </header>
   );
 }

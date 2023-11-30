@@ -294,9 +294,6 @@
   "9WRlF4": {
     "defaultMessage": "Send"
   },
-  "9X9Q2t": {
-    "defaultMessage": "Not followed by anyone you follow"
-  },
   "9kSari": {
     "defaultMessage": "Retry publishing"
   },
@@ -548,6 +545,9 @@
   },
   "Ig9/a1": {
     "defaultMessage": "Sent {n} sats to {name}"
+  },
+  "IgsWFG": {
+    "defaultMessage": "Not followed by anyone you follow"
   },
   "IoQq+a": {
     "defaultMessage": "Click here to load anyway"

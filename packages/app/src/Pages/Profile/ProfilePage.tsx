@@ -305,8 +305,10 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         {showProfileQr && (
           <Modal id="profile-qr" className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id} />
-            <QrCode data={link} className="m10 align-center" />
-            <Copy text={link} className="align-center" />
+            <div className="flex flex-col items-center">
+              <QrCode data={link} className="m10" />
+              <Copy text={link} className="py-3" />
+            </div>
           </Modal>
         )}
         {isMe ? (

@@ -1,4 +1,3 @@
-import "./NoteCreatorButton.css";
 import { useRef, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import classNames from "classnames";

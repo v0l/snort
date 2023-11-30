@@ -8,8 +8,8 @@ import { useUserProfile } from "@snort/system-react";
 import { NoteCreatorButton } from "../../Element/Event/Create/NoteCreatorButton";
 import { FormattedMessage, useIntl } from "react-intl";
 import classNames from "classnames";
-import { HasNotificationsMarker } from "@/Pages/Layout/AccountHeader";
 import { getCurrentSubscription } from "@/Subscription";
+import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
 
 const MENU_ITEMS = [
   {
