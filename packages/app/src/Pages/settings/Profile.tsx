@@ -5,7 +5,7 @@ import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import { openFile } from "@/SnortUtils";
+import { openFile, debounce } from "@/SnortUtils";
 import useFileUpload from "@/Upload";
 import AsyncButton from "@/Element/AsyncButton";
 import { UserCache } from "@/Cache";
@@ -14,9 +14,10 @@ import Icon from "@/Icons/Icon";
 import Avatar from "@/Element/User/Avatar";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
-import { LNURL, LNURLError } from '../../../../shared/src/lnurl';
+import { LNURL, LNURLError } from '@snort/shared';
 import messages from "@/Element/messages";
 import { MaxAboutLength, MaxUsernameLength } from "@/Const";
+import { fetchNip05Pubkey  } from "../../Nip05/Verifier";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;
@@ -47,7 +48,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   const [invalidAboutMessage, setInvalidAboutMessage] = useState<null | string>();
   const [lud16Valid, setLud16Valid] = useState<boolean>();
   const [invalidLud16Message, setInvalidLud16Message] = useState<null | string>();
-  const [lud16Timer,setLud16Timer] = useState<number | undefined>();
+
   
   useEffect(() => {
     if (user) {
@@ -60,6 +61,26 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
       setLud16(user.lud16);
     }
   }, [user]);
+
+  useEffect(() => {
+    return debounce(500,async () => {
+      if(lud16){
+          try {
+              await new LNURL(lud16).load();
+              setLud16Valid(true);
+              setInvalidLud16Message("")
+          }catch(e){
+            setLud16Valid(false);
+            if(e instanceof LNURLError)
+              setInvalidLud16Message((e as LNURLError).message);
+            else
+              setInvalidLud16Message(formatMessage(messages.InvalidLud16));
+          }
+      }else{
+        setInvalidLud16Message("")
+      }
+    })
+  }, [lud16]);
 
   async function saveProfile() {
     // copy user object and delete internal fields
@@ -168,28 +189,13 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   }
 
   async function nip05NostrAddressVerification(nip05Domain: string | undefined, nip05Name: string| undefined) {
-    if(!nip05Domain || !nip05Name)
-      return; 
-
     try{
-      const res = await fetch(`https://${nip05Domain}/.well-known/nostr.json?name=${nip05Name}`);
-
-      if(res.status === 200){
-        const json = await res.json();
-        const hexKeyFromRemote = json['names'][`${nip05Name}`]
-
-        if (json['names'] && hexKeyFromRemote) {
-          if (id === hexKeyFromRemote) {
-            setNip05AddressValid(true);
-          }else{
-            setNip05AddressValid(false);
-            setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
-          }
-        }
-      }
-      else {
-          setNip05AddressValid(false)
-          setInvalidNip05AddressMessage(formatMessage(messages.ErrorValidatingNip05Address))
+      const result = await fetchNip05Pubkey(nip05Name!,nip05Domain!);
+      if(result){
+        setNip05AddressValid(true);
+      }else{
+        setNip05AddressValid(false);
+        setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
       }
     }catch(e){
       setNip05AddressValid(false)
@@ -199,27 +205,6 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 
   async function onLud16Change(address:string){
     setLud16(address)
-    clearTimeout(lud16Timer)
-
-    if(address){
-      const timeout = window.setTimeout(async () => {
-        try {
-            await new LNURL(address).load();
-            setLud16Valid(true);
-            setInvalidLud16Message("")
-        }catch(e){
-          setLud16Valid(false);
-          if(e instanceof LNURLError)
-            setInvalidLud16Message(e.message);
-          else
-            setInvalidLud16Message(formatMessage(messages.InvalidLud16));
-        }
-      }, 100);
-  
-      setLud16Timer(timeout);
-    }else{
-      setInvalidLud16Message("")
-    }
   }
 
   function editor() {
@@ -324,7 +309,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
             className="w-max"
             type="text"
             value={lud16}
-            onChange={e => onLud16Change(e.target.value)}
+            onChange={e => onLud16Change(e.target.value.toLowerCase())}
             disabled={readonly}
           />
           <div>
