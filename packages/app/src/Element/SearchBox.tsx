@@ -186,7 +186,7 @@ export default function SearchBox() {
                   : "hover:bg-neutral-200 dark:hover:bg-neutral-800"
               }`}
               onMouseEnter={() => setActiveIndex(idx + 1)}>
-              <ProfileImage pubkey={result.pubkey} />
+              <ProfileImage pubkey={result.pubkey} showProfileCard={false} />
             </div>
           ))}
         </div>
