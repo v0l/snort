@@ -21,21 +21,21 @@ export default function NostrLinkHandler() {
     const nav = tryParseNostrLink(link);
     if (nav) {
       if (nav.type === NostrPrefix.Event || nav.type === NostrPrefix.Note || nav.type === NostrPrefix.Address) {
-        setRenderComponent(<ThreadRoute id={nav.encode()} />); // Directly render ThreadRoute
+        setRenderComponent(<ThreadRoute key={link} id={nav.encode()} />); // Directly render ThreadRoute
       } else if (nav.type === NostrPrefix.PublicKey || nav.type === NostrPrefix.Profile) {
         const id = nav.encode();
         setRenderComponent(<ProfilePage key={id} id={id} state={state} />); // Directly render ProfilePage
       } else if (nav.type === NostrPrefix.Req) {
-        setRenderComponent(<GenericFeed link={nav} />);
+        setRenderComponent(<GenericFeed key={link} link={nav} />);
       }
     } else {
       if (state) {
-        setRenderComponent(<ProfilePage state={state} />); // Directly render ProfilePage from route state
+        setRenderComponent(<ProfilePage key={link} state={state} />); // Directly render ProfilePage from route state
       } else {
         try {
           const pubkey = await fetchNip05Pubkey(link, CONFIG.nip05Domain);
           if (pubkey) {
-            setRenderComponent(<ProfilePage id={pubkey} state={state} />); // Directly render ProfilePage
+            setRenderComponent(<ProfilePage key={link} id={pubkey} state={state} />); // Directly render ProfilePage
           }
         } catch {
           //ignored
