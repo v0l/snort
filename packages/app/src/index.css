@@ -982,3 +982,9 @@ svg.repeat {
 .close-button:hover {
   background: rgba(255, 255, 255, 0.15); /* 15% opacity white background on hover */
 }
+@media (min-width: 768px) {
+  .rt-border{
+    border-right-width: 1px;
+    border-right-color: red;
+  }
+}
