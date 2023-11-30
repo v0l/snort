@@ -109,7 +109,7 @@ export default function MessagesPage() {
             .map(conversation)}
         </div>
       )}
-      {chat ? <DmWindow id={chat} /> : pageWidth >= TwoCol && <div className="flex-1"></div>}
+      {chat ? <DmWindow id={chat} /> : pageWidth >= TwoCol && <div className="flex-1 rt-border"></div>}
     </div>
   );
 }

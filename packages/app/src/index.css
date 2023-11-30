@@ -928,3 +928,10 @@ svg.zap-solid {
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
+
+@media (min-width: 768px) {
+  .rt-border{
+    border-right-width: 1px;
+    border-right-color: red;
+  }
+}
