@@ -8,6 +8,8 @@ import NostrBandApi from "@/External/NostrBand";
 import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
 import { useLocale } from "@/IntlProvider";
 import useModeration from "@/Hooks/useModeration";
+import ShortNote from "@/Element/Trending/ShortNote";
+import classNames from "classnames";
 
 export default function TrendingNotes({ count = Infinity, small = false }) {
   // Added count prop with a default value
@@ -45,13 +47,17 @@ export default function TrendingNotes({ count = Infinity, small = false }) {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className={classNames("flex flex-col", { "gap-4": small, "py-4": small })}>
       {posts
         .filter(a => !isEventMuted(a))
         .slice(0, count) // Limit the number of posts displayed
-        .map(e => (
-          <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} options={options} />
-        ))}
+        .map(e =>
+          small ? (
+            <ShortNote key={e.id} event={e as TaggedNostrEvent} />
+          ) : (
+            <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} options={options} />
+          ),
+        )}
     </div>
   );
 }
