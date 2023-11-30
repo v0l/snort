@@ -78,6 +78,10 @@ export interface RelayDistance {
   description?: string;
 }
 
+export interface RefCodeResponse {
+  code: string
+}
+
 export default class SnortApi {
   #url: string;
   #publisher?: EventPublisher;
@@ -99,8 +103,8 @@ export default class SnortApi {
     return this.#getJson<Array<string>>(`api/v1/twitter/follows-for-nostr?username=${encodeURIComponent(username)}`);
   }
 
-  createSubscription(type: number) {
-    return this.#getJsonAuthd<InvoiceResponse>(`api/v1/subscription?type=${type}`, "PUT");
+  createSubscription(type: number, refCode?: string) {
+    return this.#getJsonAuthd<InvoiceResponse>(`api/v1/subscription?type=${type}&refCode=${refCode}`, "PUT");
   }
 
   renewSubscription(id: string, months = 1) {
@@ -133,6 +137,10 @@ export default class SnortApi {
 
   closeRelays(lat: number, lon: number, count = 5) {
     return this.#getJson<Array<RelayDistance>>(`api/v1/relays?count=${count}`, "POST", { lat, lon });
+  }
+
+  getRefCode() {
+    return this.#getJsonAuthd<RefCodeResponse>("api/v1/referral", "GET");
   }
 
   async #getJsonAuthd<T>(
