@@ -876,6 +876,10 @@ svg.zap-solid {
   color: var(--zap);
 }
 
+svg.repeat {
+  color: var(--repost);
+}
+
 .subtier {
   background: var(--sub-bg);
   border-radius: 16px;
