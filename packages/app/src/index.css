@@ -985,6 +985,6 @@ svg.repeat {
 @media (min-width: 768px) {
   .rt-border{
     border-right-width: 1px;
-    border-right-color: red;
+    border-right-color: var(--border-color);
   }
 }
