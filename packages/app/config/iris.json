@@ -22,6 +22,7 @@
   "signUp": {
     "moderation": false
   },
+  "hideFromNavbar": [],
   "eventLinkPrefix": "note",
   "profileLinkPrefix": "npub",
   "defaultRelays": {

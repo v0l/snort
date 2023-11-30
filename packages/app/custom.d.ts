@@ -64,7 +64,7 @@ declare const CONFIG: {
     moderation: boolean;
   };
   // Filter urls from nav sidebar
-  hideFromNavbar?: Array<string>;
+  hideFromNavbar: Array<string>;
   // Limit deck to certain subscriber tier
   deckSubKind?: number;
   eventLinkPrefix: NostrPrefix;
