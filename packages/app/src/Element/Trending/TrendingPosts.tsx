@@ -47,7 +47,7 @@ export default function TrendingNotes({ count = Infinity, small = false }) {
   };
 
   return (
-    <div className={classNames("flex flex-col", { "gap-4": small, "py-4": small })}>
+    <div className={classNames("flex flex-col", { "gap-6": small, "py-4": small })}>
       {posts
         .filter(a => !isEventMuted(a))
         .slice(0, count) // Limit the number of posts displayed
