@@ -82,6 +82,25 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
     })
   }, [lud16]);
 
+  useEffect(()=>{
+    return debounce(500,async () => {
+      const Nip05AddressElements = nip05?.split('@') ?? [];
+      if (nip05.length === 0) {
+          setNip05AddressValid(false)
+          setInvalidNip05AddressMessage("")
+      }else if(Nip05AddressElements.length < 2){
+          setNip05AddressValid(false)
+          setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
+      }
+      else if(Nip05AddressElements.length === 2){
+        nip05NostrAddressVerification(Nip05AddressElements.pop(), Nip05AddressElements.pop());
+      }
+      else{
+        setNip05AddressValid(false)
+      }
+    })
+  },[nip05])
+
   async function saveProfile() {
     // copy user object and delete internal fields
     const userCopy = {
@@ -147,22 +166,8 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   }
 
   async function onNip05Change(e: React.ChangeEvent<HTMLInputElement>){
-    const Nip05Address = e.target.value;
+    const Nip05Address = e.target.value.toLowerCase();
     setNip05(Nip05Address)
-    const Nip05AddressElements = Nip05Address?.split('@') ?? [];
-    if (Nip05Address.length === 0) {
-        setNip05AddressValid(false)
-        setInvalidNip05AddressMessage("")
-    }else if(Nip05AddressElements.length < 2){
-        setNip05AddressValid(false)
-        setInvalidNip05AddressMessage(formatMessage(messages.InvalidNip05Address))
-    }
-    else if(Nip05AddressElements.length === 2){
-      nip05NostrAddressVerification(Nip05AddressElements.pop(), Nip05AddressElements.pop());
-    }
-    else{
-      setNip05AddressValid(false)
-    }
   }
 
   async function onLimitCheck(val:string, field:string){
