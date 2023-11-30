@@ -1032,6 +1032,9 @@
   "deEeEI": {
     "defaultMessage": "Register"
   },
+  "djNL6D": {
+    "defaultMessage": "Read-only"
+  },
   "dmsiLv": {
     "defaultMessage": "A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}"
   },

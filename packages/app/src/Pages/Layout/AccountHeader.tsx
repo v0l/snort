@@ -3,7 +3,7 @@ import { useUserProfile } from "@snort/system-react";
 import { useMemo, useSyncExternalStore } from "react";
 import { base64 } from "@scure/base";
 import { unwrap } from "@snort/shared";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import SearchBox from "@/Element/SearchBox";
 import { ProfileLink } from "@/Element/User/ProfileLink";
 import Avatar from "@/Element/User/Avatar";
@@ -17,6 +17,7 @@ import { Notifications } from "@/Cache";
 
 const AccountHeader = () => {
   const navigate = useNavigate();
+  const { formatMessage } = useIntl();
 
   useKeyboardShortcut("/", event => {
     // if event happened in a form element, do nothing, otherwise focus on search input
@@ -76,6 +77,13 @@ const AccountHeader = () => {
       </button>
     );
   }
+
+  const readOnlyIcon = readonly && (
+    <span style={{ transform: "rotate(135deg)" }} title={formatMessage({ defaultMessage: "Read-only", id: "djNL6D" })}>
+      <Icon name="openeye" className="text-nostr-red" size={20} />
+    </span>
+  );
+
   return (
     <div className="header-actions">
       {!location.pathname.startsWith("/search") ? <SearchBox /> : <div className="grow"></div>}
@@ -90,7 +98,7 @@ const AccountHeader = () => {
         <HasNotificationsMarker />
       </Link>
       <ProfileLink pubkey={publicKey} user={profile}>
-        <Avatar pubkey={publicKey} user={profile} />
+        <Avatar pubkey={publicKey} user={profile} icons={readOnlyIcon} />
       </ProfileLink>
     </div>
   );

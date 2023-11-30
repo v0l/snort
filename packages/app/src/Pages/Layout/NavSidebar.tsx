@@ -6,7 +6,7 @@ import Avatar from "../../Element/User/Avatar";
 import useLogin from "../../Hooks/useLogin";
 import { useUserProfile } from "@snort/system-react";
 import { NoteCreatorButton } from "../../Element/Event/Create/NoteCreatorButton";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import classNames from "classnames";
 import { HasNotificationsMarker } from "@/Pages/Layout/AccountHeader";
 import { getCurrentSubscription } from "@/Subscription";
@@ -65,17 +65,25 @@ const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
 };
 
 export default function NavSidebar({ narrow = false }) {
-  const { publicKey, subscriptions } = useLogin(s => ({
+  const { publicKey, subscriptions, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
     subscriptions: s.subscriptions,
+    readonly: s.readonly,
   }));
   const profile = useUserProfile(publicKey);
   const navigate = useNavigate();
   const sub = getCurrentSubscription(subscriptions);
+  const { formatMessage } = useIntl();
 
   const className = classNames(
     { "xl:w-56 xl:gap-3 xl:items-start": !narrow },
     "overflow-y-auto hide-scrollbar sticky items-center border-r border-neutral-900 top-0 z-20 h-screen max-h-screen hidden md:flex flex-col px-2 py-4 flex-shrink-0 gap-2",
+  );
+
+  const readOnlyIcon = readonly && (
+    <span style={{ transform: "rotate(135deg)" }} title={formatMessage({ defaultMessage: "Read-only", id: "djNL6D" })}>
+      <Icon name="openeye" className="text-nostr-red" size={20} />
+    </span>
   );
 
   return (
@@ -121,17 +129,20 @@ export default function NavSidebar({ narrow = false }) {
           )}
         </div>
       </div>
-      {publicKey ? (
+      {publicKey && (
         <>
           <ProfileLink pubkey={publicKey} user={profile}>
             <div className="flex flex-row items-center font-bold text-md">
-              <Avatar pubkey={publicKey} user={profile} size={40} />
+              <Avatar pubkey={publicKey} user={profile} size={40} icons={readOnlyIcon} />
               {!narrow && <span className="hidden xl:inline ml-3">{profile?.name}</span>}
             </div>
           </ProfileLink>
+          {readonly && (
+            <div className="hidden xl:block text-nostr-red text-sm">
+              <FormattedMessage defaultMessage="Read-only" id="djNL6D" />
+            </div>
+          )}
         </>
-      ) : (
-        ""
       )}
     </div>
   );
