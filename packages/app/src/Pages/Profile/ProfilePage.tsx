@@ -346,7 +346,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       <div className="details-wrapper w-max">
         {username()}
         {bio()}
-        {user?.pubkey && <FollowedBy pubkey={user.pubkey} />}
+        {user?.pubkey && loginPubKey && <FollowedBy pubkey={user.pubkey} />}
       </div>
     );
   }

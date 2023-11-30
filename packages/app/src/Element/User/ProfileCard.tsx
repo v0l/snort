@@ -69,7 +69,7 @@ export function ProfileCard({
           truncate={250}
         />
         <UserWebsiteLink user={user} />
-        <FollowedBy pubkey={pubkey} />
+        {myPublicKey && <FollowedBy pubkey={pubkey} />}
       </div>
     </ControlledMenu>
   );

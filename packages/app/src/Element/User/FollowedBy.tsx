@@ -49,6 +49,11 @@ export default function FollowedBy({ pubkey }: { pubkey: string }) {
           )}
         </div>
       )}
+      {followedByFriends.size === 0 && (
+        <div className="text-gray-light">
+          <FormattedMessage defaultMessage="Not followed by anyone you follow" id="IgsWFG" />
+        </div>
+      )}
     </div>
   );
 }
