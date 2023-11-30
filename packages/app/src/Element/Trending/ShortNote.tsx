@@ -14,7 +14,14 @@ export default function ShortNote({ event }: { event: TaggedNostrEvent }) {
         <NoteTime from={event.created_at * 1000} />
       </div>
       <div className="ml-10">
-        <Text {...event} content={content} truncate={75} disableMedia={true} />
+        <Text
+          id={event.id + "short"}
+          tags={event.tags}
+          creator={event.pubkey}
+          content={content}
+          truncate={75}
+          disableMedia={true}
+        />
       </div>
     </Link>
   );
