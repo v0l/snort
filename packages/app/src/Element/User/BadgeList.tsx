@@ -6,7 +6,6 @@ import { FormattedMessage } from "react-intl";
 import { TaggedNostrEvent } from "@snort/system";
 
 import { ProxyImg } from "@/Element/ProxyImg";
-import Icon from "@/Icons/Icon";
 import Modal from "@/Element/Modal";
 import Username from "@/Element/User/Username";
 import { findTag } from "@/SnortUtils";
@@ -37,9 +36,7 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
       {showModal && (
         <Modal id="badges" className="reactions-modal" onClose={() => setShowModal(false)}>
           <div className="reactions-view">
-            <div className="close" onClick={() => setShowModal(false)}>
-              <Icon name="close" />
-            </div>
+          <div className="close-button close" onClick={() => setShowModal(false)}></div>
             <div className="reactions-header">
               <h2>
                 <FormattedMessage defaultMessage="Badges" id="h8XMJL" />

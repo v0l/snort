@@ -2,7 +2,6 @@ import "./Layout.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
-import Icon from "@/Icons/Icon";
 import useLogin from "@/Hooks/useLogin";
 import { isFormElement } from "@/SnortUtils";
 import Toaster from "@/Toaster";
@@ -92,9 +91,7 @@ function Header() {
 function StalkerModal({ id }) {
   return (
     <div className="stalker" onClick={() => LoginStore.removeSession(id)}>
-      <button type="button" className="circle flex items-center">
-        <Icon name="close" />
-      </button>
+      <div className="close-button circle flex items-center"></div>
     </div>
   );
 }

@@ -182,9 +182,7 @@ export default function SendSats(props: SendSatsProps) {
       <div className="p flex flex-col g12">
         <div className="flex g12">
           <div className="flex items-center grow">{props.title || title()}</div>
-          <div onClick={onClose}>
-            <Icon name="close" />
-          </div>
+          <div className="close-button" onClick={onClose}></div>
         </div>
         {zapper && !invoice && (
           <SendSatsInput
