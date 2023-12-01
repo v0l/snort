@@ -22,7 +22,7 @@ module.exports = {
         px: "1px",
       },
       padding: {
-        'footer-height': 'calc(56px + env(safe-area-inset-bottom))',
+        "footer-height": "calc(56px + env(safe-area-inset-bottom))",
       },
     },
   },
