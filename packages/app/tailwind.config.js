@@ -21,6 +21,9 @@ module.exports = {
       spacing: {
         px: "1px",
       },
+      padding: {
+        'footer-height': 'calc(56px + env(safe-area-inset-bottom))',
+      },
     },
   },
   plugins: [],
