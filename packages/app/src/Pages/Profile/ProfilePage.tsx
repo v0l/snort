@@ -357,6 +357,8 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
     return <TabElement key={v.value} t={v} tab={tab} setTab={setTab} />;
   }
 
+  const bannerWidth = Math.min(window.innerWidth, 940);
+
   return (
     <>
       <div className="profile">
@@ -365,7 +367,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
             alt="banner"
             className="banner pointer"
             src={user.banner}
-            size={940}
+            size={bannerWidth}
             onClick={() => setModalImage(user.banner || "")}
           />
         )}

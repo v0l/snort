@@ -1,5 +1,5 @@
 import "./Layout.css";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 import Icon from "@/Icons/Icon";
@@ -59,7 +59,7 @@ export default function Index() {
       </div>
       <LoginUnlock />
       {isStalker && <StalkerModal id={id} />}
-      {!shouldHideFooter && <Footer/>}
+      {!shouldHideFooter && <Footer />}
     </div>
   );
 }

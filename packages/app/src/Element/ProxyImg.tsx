@@ -33,7 +33,7 @@ export const ProxyImg = ({ size, className, promptToLoadDirectly, missingImageEl
       </div>
     );
   }
-  const src = bypass ? props.src : proxy(props.src ?? "", size);
+  const src = loadFailed && bypass ? props.src : proxy(props.src ?? "", size);
   if (!src || (loadFailed && !bypass)) return missingImageElement;
   return (
     <img

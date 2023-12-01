@@ -6,7 +6,7 @@ export default function NavLink(props: NavLinkProps) {
 
   const isActive = location.pathname === to.toString();
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     if (onClick) {
       onClick(event);
     }
