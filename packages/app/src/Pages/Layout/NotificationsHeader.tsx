@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { base64 } from "@scure/base";
 import { unwrap } from "@snort/shared";
 import { FormattedMessage } from "react-intl";
@@ -9,6 +9,7 @@ import useLogin from "@/Hooks/useLogin";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import SnortApi from "@/External/SnortApi";
 import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
+import NavLink from "@/Element/Button/NavLink";
 
 const NotificationsHeader = () => {
   const navigate = useNavigate();
@@ -70,10 +71,10 @@ const NotificationsHeader = () => {
 
   return (
     <div className="flex justify-between">
-      <Link className="btn" to="/notifications" onClick={goToNotifications}>
+      <NavLink className="btn" to="/notifications" onClick={goToNotifications}>
         <Icon name="bell-02" size={24} />
         <HasNotificationsMarker />
-      </Link>
+      </NavLink>
     </div>
   );
 };

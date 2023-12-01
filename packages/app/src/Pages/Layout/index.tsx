@@ -21,7 +21,6 @@ import Footer from "@/Pages/Layout/Footer";
 
 export default function Index() {
   const location = useLocation();
-  const [pageClass, setPageClass] = useState("page");
   const { id, stalker } = useLogin(s => ({ id: s.id, stalker: s.stalker ?? false }));
 
   useTheme();
@@ -29,21 +28,8 @@ export default function Index() {
   useLoginFeed();
 
   const hideHeaderPaths = ["/login", "/new"];
+  const shouldHideFooter = location.pathname.startsWith("/messages/");
   const shouldHideHeader = hideHeaderPaths.some(path => location.pathname.startsWith(path));
-
-  const pageClassPaths = useMemo(
-    () => ({
-      widePage: ["/login", "/messages"],
-      noScroll: ["/messages"],
-    }),
-    [],
-  );
-
-  useEffect(() => {
-    const isWidePage = pageClassPaths.widePage.some(path => location.pathname.startsWith(path));
-    const isNoScroll = pageClassPaths.noScroll.some(path => location.pathname.startsWith(path));
-    setPageClass(isWidePage ? (isNoScroll ? "scroll-lock" : "") : "page");
-  }, [location, pageClassPaths]);
 
   const handleKeyboardShortcut = useCallback(event => {
     if (event.target && !isFormElement(event.target as HTMLElement)) {
@@ -58,7 +44,7 @@ export default function Index() {
 
   return (
     <div className="flex justify-center">
-      <div className={`${pageClass} w-full max-w-screen-xl`}>
+      <div className="w-full max-w-screen-xl">
         {!shouldHideHeader && <Header />}
         <div className="flex flex-row w-full">
           <NavSidebar />
@@ -73,7 +59,7 @@ export default function Index() {
       </div>
       <LoginUnlock />
       {isStalker && <StalkerModal id={id} />}
-      <Footer />
+      {!shouldHideFooter && <Footer/>}
     </div>
   );
 }

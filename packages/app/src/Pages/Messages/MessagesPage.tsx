@@ -88,9 +88,9 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="flex flex-1 h-screen overflow-hidden">
+    <div className="flex flex-1 md:h-screen md:overflow-hidden">
       {(pageWidth >= TwoCol || !chat) && (
-        <div className="overflow-y-auto h-screen p-1 w-full md:w-1/3 flex-shrink-0">
+        <div className="overflow-y-auto md:h-screen p-1 w-full md:w-1/3 flex-shrink-0">
           <div className="flex items-center justify-between p-2">
             <button disabled={unreadCount <= 0} type="button" className="text-sm font-semibold">
               <FormattedMessage defaultMessage="Mark all read" id="ShdEie" />
