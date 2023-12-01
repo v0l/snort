@@ -157,7 +157,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         <div className="flex flex-col g4">
           <h2 className="flex items-center g4">
             <DisplayName user={user} pubkey={user?.pubkey ?? ""} />
-            <FollowsYou followsMe={follows.includes(loginPubKey ?? "")} />
+            <FollowsYou followsMe={user?.pubkey !== loginPubKey && follows.includes(loginPubKey ?? "")} />
           </h2>
           {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
         </div>
