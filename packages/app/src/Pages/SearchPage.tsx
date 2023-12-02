@@ -50,7 +50,7 @@ const SearchPage = () => {
       return null;
     }
 
-    if (tab.value == PROFILES ) {
+    if (tab.value == PROFILES) {
       // render UsersFeed
       return <UsersFeed keyword={keyword} />;
     }
