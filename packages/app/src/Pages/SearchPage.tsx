@@ -8,6 +8,7 @@ import { router } from "@/index";
 import TrendingUsers from "@/Element/Trending/TrendingUsers";
 
 import TrendingNotes from "@/Element/Trending/TrendingPosts";
+import UsersFeed from "@/Element/Feed/UsersFeed";
 
 const NOTES = 0;
 const PROFILES = 1;
@@ -47,6 +48,11 @@ const SearchPage = () => {
           return <TrendingNotes />;
       }
       return null;
+    }
+
+    if (tab.value == PROFILES ) {
+      // render UsersFeed
+      return <UsersFeed keyword={keyword} />;
     }
 
     const pf = tab.value == PROFILES;
