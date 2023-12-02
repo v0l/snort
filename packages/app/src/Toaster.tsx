@@ -18,7 +18,7 @@ class ToasterSlots extends ExternalStore<Array<ToastNotification>> {
   #cleanup = setInterval(() => this.#eatToast(), 1000);
 
   push(n: ToastNotification) {
-    n.expire ??= unixNow() + 3;
+    n.expire ??= unixNow() + 10;
     n.id ??= uuid();
     this.#stack.push(n);
     this.notifyChange();
@@ -46,8 +46,8 @@ export default function Toaster() {
   return createPortal(
     <div className="toaster">
       {toast.map(a => (
-        <div className="card flex" key={a.id}>
-          <Icon name={a.icon ?? "bell"} className="mr5" />
+        <div className="p br b flex bg-dark g8 fade-in" key={a.id}>
+          {a.icon && <Icon name={a.icon} />}
           {a.element}
         </div>
       ))}

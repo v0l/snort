@@ -75,7 +75,6 @@ export default function useLoginFeed() {
         EventKind.InterestsList,
         EventKind.PublicChatsList,
       ]);
-    b.withFilter().authors([pubKey]).kinds([]);
     if (CONFIG.features.subscriptions && !login.readonly) {
       b.withFilter().authors([pubKey]).kinds([EventKind.AppData]).tag("d", ["snort"]);
       b.withFilter()

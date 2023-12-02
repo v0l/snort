@@ -10,7 +10,6 @@
   "publicDir": "public/snort",
   "httpCache": "",
   "animalNamePlaceholders": false,
-  "showNoteBroadcaster": true,
   "defaultZapPoolFee": 0.5,
   "bypassImgProxyError": false,
   "features": {
@@ -22,6 +21,7 @@
   "signUp": {
     "moderation": true
   },
+  "noteCreatorToast": true,
   "hideFromNavbar": ["/graph"],
   "deckSubKind": 1,
   "eventLinkPrefix": "nevent",

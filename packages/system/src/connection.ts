@@ -23,6 +23,7 @@ export interface OkResponse {
   id: string;
   relay: string;
   message?: string;
+  event: NostrEvent;
 }
 
 /**
@@ -284,6 +285,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           id: e.id,
           relay: this.Address,
           message: "Duplicate request",
+          event: e,
         });
         return;
       }
@@ -294,6 +296,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           id: e.id,
           relay: this.Address,
           message: "Timeout waiting for OK response",
+          event: e,
         });
       }, timeout);
 
@@ -305,6 +308,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           id: id as string,
           relay: this.Address,
           message: message as string | undefined,
+          event: e,
         });
       });
 

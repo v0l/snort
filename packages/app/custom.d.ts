@@ -51,7 +51,6 @@ declare const CONFIG: {
   navLogo: string | null;
   httpCache: string;
   animalNamePlaceholders: boolean;
-  showNoteBroadcaster: boolean;
   defaultZapPoolFee: number;
   bypassImgProxyError: boolean;
   features: {
@@ -67,6 +66,8 @@ declare const CONFIG: {
   hideFromNavbar: Array<string>;
   // Limit deck to certain subscriber tier
   deckSubKind?: number;
+  // Create toast notifications when publishing notes
+  noteCreatorToast?: boolean;
   eventLinkPrefix: NostrPrefix;
   profileLinkPrefix: NostrPrefix;
   defaultRelays: Record<string, RelaySettings>;
