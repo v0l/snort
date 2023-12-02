@@ -79,7 +79,8 @@ export interface RelayDistance {
 }
 
 export interface RefCodeResponse {
-  code: string
+  code: string;
+  pubkey: string;
 }
 
 export default class SnortApi {
@@ -141,6 +142,10 @@ export default class SnortApi {
 
   getRefCode() {
     return this.#getJsonAuthd<RefCodeResponse>("api/v1/referral", "GET");
+  }
+
+  getRefCodeInfo(code: string) {
+    return this.#getJson<RefCodeResponse>(`api/v1/referral/${code}`, "GET");
   }
 
   async #getJsonAuthd<T>(

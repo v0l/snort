@@ -27,7 +27,7 @@ import { removeUndefined, throwIfOffline } from "@snort/shared";
 
 import * as serviceWorkerRegistration from "@/serviceWorkerRegistration";
 import { IntlProvider } from "@/IntlProvider";
-import { getCountry, unwrap } from "@/SnortUtils";
+import { getCountry, storeRefCode, unwrap } from "@/SnortUtils";
 import Layout from "@/Pages/Layout";
 import ProfilePage from "@/Pages/Profile/ProfilePage";
 import { RootRoutes, RootTabRoutes } from "@/Pages/Root";
@@ -183,6 +183,7 @@ serviceWorkerRegistration.register();
 
 async function initSite() {
   console.debug(getCountry());
+  storeRefCode();
   if (hasWasm) {
     await wasmInit(WasmPath);
   }

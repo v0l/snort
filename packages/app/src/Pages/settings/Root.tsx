@@ -33,27 +33,40 @@ const SettingsIndex = () => {
   ];
 
   const menuItems = [
-    { icon: "profile", message: messages.Profile, path: "profile" },
-    { icon: "relay", message: messages.Relays, path: "relays" },
-    { icon: "key", message: "Export Keys", id: "08zn6O", path: "keys" },
-    { icon: "shield-tick", message: "Moderation", id: "wofVHy", path: "moderation" },
-    { icon: "badge", message: "Nostr Address", id: "9pMqYs", path: "handle" },
-    { icon: "gear", message: messages.Preferences, path: "preferences" },
-    { icon: "wallet", message: "Wallet", id: "3yk8fB", path: "wallet" },
-    { icon: "heart", message: messages.Donate, path: "/donate" },
-    { icon: "hard-drive", message: "Cache", id: "DBiVK1", path: "cache" },
+    { icon: "profile", message: <FormattedMessage defaultMessage="Profile" id="itPgxd" />, path: "profile" },
+    { icon: "relay", message: <FormattedMessage defaultMessage="Relays" id="RoOyAh" />, path: "relays" },
+    { icon: "key", message: <FormattedMessage defaultMessage="Export Keys" id="08zn6O" />, path: "keys" },
+    { icon: "shield-tick", message: <FormattedMessage defaultMessage="Moderation" id="wofVHy" />, path: "moderation" },
+    { icon: "badge", message: <FormattedMessage defaultMessage="Nostr Address" id="9pMqYs" />, path: "handle" },
+    { icon: "gear", message: <FormattedMessage defaultMessage="Preferences" id="PCSt5T" />, path: "preferences" },
+    { icon: "wallet", message: <FormattedMessage defaultMessage="Wallet" id="3yk8fB" />, path: "wallet" },
+    { icon: "heart", message: <FormattedMessage defaultMessage="Donate" id="2IFGap" />, path: "/donate" },
+    { icon: "hard-drive", message: <FormattedMessage defaultMessage="Cache" id="DBiVK1" />, path: "cache" },
+    { icon: "link", message: <FormattedMessage defaultMessage="Invite" id="hYOE+U" />, path: "invite" },
   ];
 
   if (CONFIG.features.subscriptions) {
-    menuItems.push({ icon: "diamond", message: "Subscription", id: "R/6nsx", path: "/subscribe/manage" });
+    menuItems.push({
+      icon: "diamond",
+      message: <FormattedMessage defaultMessage="Subscription" id="R/6nsx" />,
+      path: "/subscribe/manage",
+    });
   }
 
   if (CONFIG.features.zapPool) {
-    menuItems.push({ icon: "piggy-bank", message: "Zap Pool", id: "i/dBAR", path: "/zap-pool" });
+    menuItems.push({
+      icon: "piggy-bank",
+      message: <FormattedMessage defaultMessage="Zap Pool" id="i/dBAR" />,
+      path: "/zap-pool",
+    });
   }
 
   if (sub) {
-    menuItems.push({ icon: "code-circle", message: "Account Switcher", id: "7BX/yC", path: "accounts" });
+    menuItems.push({
+      icon: "code-circle",
+      message: <FormattedMessage defaultMessage="Accounts" id="FvanT6" />,
+      path: "accounts",
+    });
   }
 
   const getNavLinkClass = ({ isActive }: { isActive: boolean }) => {
@@ -64,10 +77,10 @@ const SettingsIndex = () => {
     <div className="settings-nav">
       {!hideMenu && (
         <div>
-          {menuItems.map(({ icon, message, id, path }) => (
+          {menuItems.map(({ icon, message, path }) => (
             <NavLink to={path} key={path} className={getNavLinkClass} end>
               <Icon name={icon} size={24} />
-              <FormattedMessage {...(id ? { defaultMessage: message, id } : message)} />
+              {message}
               <Icon name="arrowFront" size={16} />
             </NavLink>
           ))}

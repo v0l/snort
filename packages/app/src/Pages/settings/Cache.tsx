@@ -1,6 +1,7 @@
 import { FeedCache } from "@snort/shared";
 import {
   Chats,
+  FollowLists,
   FollowsFeed,
   GiftsCache,
   InteractionCache,
@@ -29,6 +30,7 @@ export function CacheSettings() {
       <CacheDetails cache={PaymentsCache} name={<FormattedMessage defaultMessage="Payments" id="iYc3Ld" />} />
       <CacheDetails cache={InteractionCache} name={<FormattedMessage defaultMessage="Interactions" id="u+LyXc" />} />
       <CacheDetails cache={GiftsCache} name={<FormattedMessage defaultMessage="Gift Wraps" id="fjAcWo" />} />
+      <CacheDetails cache={FollowLists} name={<FormattedMessage defaultMessage="Social Graph" id="CzHZoc" />} />
     </div>
   );
 }

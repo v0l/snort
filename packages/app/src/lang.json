@@ -57,6 +57,9 @@
   "00LcfG": {
     "defaultMessage": "Load more"
   },
+  "08zn6O": {
+    "defaultMessage": "Export Keys"
+  },
   "0Azlrb": {
     "defaultMessage": "Manage"
   },
@@ -161,6 +164,9 @@
   },
   "3tVy+Z": {
     "defaultMessage": "{n} Followers"
+  },
+  "3yk8fB": {
+    "defaultMessage": "Wallet"
   },
   "450Fty": {
     "defaultMessage": "None"
@@ -470,6 +476,9 @@
   "FmXUJg": {
     "defaultMessage": "follows you"
   },
+  "FvanT6": {
+    "defaultMessage": "Accounts"
+  },
   "G/yZLu": {
     "defaultMessage": "Remove"
   },
@@ -656,6 +665,9 @@
   "MiMipu": {
     "defaultMessage": "Set as primary Nostr address (nip05)"
   },
+  "Ml7+RS": {
+    "defaultMessage": "Send this link to your friends and share the magic of the nostr."
+  },
   "Mrpkot": {
     "defaultMessage": "Pay for subscription"
   },
@@ -740,6 +752,9 @@
   },
   "Qxv0B2": {
     "defaultMessage": "You currently have {number} sats in your zap pool."
+  },
+  "R/6nsx": {
+    "defaultMessage": "Subscription"
   },
   "R81upa": {
     "defaultMessage": "People you follow"
@@ -849,6 +864,9 @@
   "UrKTqQ": {
     "defaultMessage": "You have an active iris.to account"
   },
+  "UxgyeY": {
+    "defaultMessage": "Your referral code is {code}"
+  },
   "VL900k": {
     "defaultMessage": "Recommended Relays"
   },
@@ -939,6 +957,9 @@
   },
   "Zff6lu": {
     "defaultMessage": "Username iris.to/<b>{name}</b> is reserved for you!"
+  },
+  "ZlmK/p": {
+    "defaultMessage": "{name} invited you to {app}"
   },
   "a5UPxh": {
     "defaultMessage": "Fund developers and platforms providing NIP-05 verification services"
@@ -1140,6 +1161,9 @@
   "hY4lzx": {
     "defaultMessage": "Supports"
   },
+  "hYOE+U": {
+    "defaultMessage": "Invite"
+  },
   "ha8JKG": {
     "defaultMessage": "Show graph"
   },
@@ -1233,6 +1257,9 @@
   },
   "l+ikU1": {
     "defaultMessage": "Everything in {plan}"
+  },
+  "l3H1EK": {
+    "defaultMessage": "Invite your friends"
   },
   "lCILNz": {
     "defaultMessage": "Buy Now"

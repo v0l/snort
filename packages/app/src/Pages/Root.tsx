@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { lazy, useContext, useEffect, useState } from "react";
 import { Link, Outlet, RouteObject, useParams } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { unixNow } from "@snort/shared";
@@ -7,7 +7,7 @@ import { SnortContext } from "@snort/system-react";
 
 import Timeline from "@/Element/Feed/Timeline";
 import { TimelineSubject } from "@/Feed/TimelineFeed";
-import { debounce, getRelayName, sha256 } from "@/SnortUtils";
+import { debounce, getCurrentRefCode, getRelayName, sha256 } from "@/SnortUtils";
 import useLogin from "@/Hooks/useLogin";
 import Discover from "@/Pages/Discover";
 import TrendingUsers from "@/Element/Trending/TrendingUsers";
@@ -20,6 +20,7 @@ import { RootTabs } from "@/Element/Feed/RootTabs";
 import { DeckContext } from "@/Pages/DeckLayout";
 import { TopicsPage } from "./TopicsPage";
 import TrendingHashtags from "@/Element/Trending/TrendingHashtags";
+const InviteModal = lazy(() => import("@/Element/Invite"));
 
 import messages from "./messages";
 
@@ -29,6 +30,7 @@ interface RelayOption {
 }
 
 export default function RootPage() {
+  const code = getCurrentRefCode();
   return (
     <>
       <div className="main-content p">
@@ -37,6 +39,7 @@ export default function RootPage() {
       <div className="main-content">
         <Outlet />
       </div>
+      {code && <InviteModal />}
     </>
   );
 }

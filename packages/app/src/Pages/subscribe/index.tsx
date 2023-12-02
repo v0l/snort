@@ -12,6 +12,7 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import SnortApi, { SubscriptionError, SubscriptionErrorCode } from "@/External/SnortApi";
 import SendSats from "@/Element/SendSats";
 import classNames from "classnames";
+import { getRefCode } from "@/SnortUtils";
 
 export function mapPlanName(id: number) {
   switch (id) {
@@ -74,7 +75,8 @@ export function SubscribePage() {
   async function subscribe(type: number) {
     setError(undefined);
     try {
-      const rsp = await api.createSubscription(type);
+      const ref = getRefCode();
+      const rsp = await api.createSubscription(type, ref);
       setInvoice(rsp.pr);
     } catch (e) {
       if (e instanceof SubscriptionError) {

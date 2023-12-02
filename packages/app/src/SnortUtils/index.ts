@@ -536,3 +536,29 @@ export function getCountry() {
 export function trackEvent(event: string) {
   window.plausible?.(event);
 }
+
+export function storeRefCode() {
+  const ref = getCurrentRefCode();
+  if (ref) {
+    window.localStorage.setItem("ref", ref);
+  }
+}
+
+export function getCurrentRefCode() {
+  if (window.location.search) {
+    const q = new URLSearchParams(window.location.search);
+    const ref = q.get("ref");
+    if (ref) {
+      return ref;
+    }
+  }
+}
+
+export function getRefCode() {
+  const r = window.localStorage.getItem("ref");
+  if (r) return r;
+}
+
+export function deleteRefCode() {
+  window.localStorage.removeItem("ref");
+}

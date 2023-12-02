@@ -13,6 +13,7 @@ import ModerationSettings from "@/Pages/settings/Moderation";
 import { CacheSettings } from "./settings/Cache";
 
 import messages from "./messages";
+import { ReferralsPage } from "./settings/Referrals";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -65,6 +66,10 @@ export const SettingsRoutes: RouteObject[] = [
       {
         path: "cache",
         element: <CacheSettings />,
+      },
+      {
+        path: "invite",
+        element: <ReferralsPage />,
       },
       ...ManageHandleRoutes,
       ...WalletSettingsRoutes,

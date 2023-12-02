@@ -24,6 +24,7 @@
     "fuse.js": "^7.0.0",
     "highlight.js": "^11.8.0",
     "light-bolt11-decoder": "^2.1.0",
+    "lottie-react": "^2.4.0",
     "marked": "^9.1.0",
     "marked-footnote": "^1.0.0",
     "match-sorter": "^6.3.1",

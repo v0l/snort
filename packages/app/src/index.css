@@ -50,7 +50,7 @@
   --expired-invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, var(--gray), var(--gray-superdark));
   --sub-bg: #111;
   --btn-color: #fff;
-  --primary-gradient: linear-gradient(90deg, rgba(239, 150, 68, 1) 0%, rgba(123, 65, 246, 1) 100%);
+  --primary-gradient: linear-gradient(90deg, #ef9644 0%, #7b41f6 100%);
   --cashu-gradient: linear-gradient(90deg, #40b039, #adff2a);
   --pro: #ffdd65;
 }
@@ -151,6 +151,20 @@ a.ext {
 
 .text-pro {
   color: var(--pro);
+}
+
+.text-snort-gradient {
+  background: var(--snort-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-primary {
+  background: var(--primary-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .br {
