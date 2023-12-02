@@ -9,6 +9,7 @@ module.exports = {
         "border-color": "var(--border-color)",
         highlight: "var(--highlight)",
         "bg-color": "var(--bg-color)",
+        "bg-secondary": "var(--bg-secondary)",
       },
       textColor: {
         "nostr-blue": "var(--repost)",
