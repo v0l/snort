@@ -169,9 +169,7 @@ export default function SearchBox() {
           ref={resultListRef}>
           <div
             className={`p-2 cursor-pointer ${
-              activeIndex === 0
-                  ? "bg-bg-secondary"
-                  : "bg-bg-color hover:bg-bg-secondary"
+              activeIndex === 0 ? "bg-bg-secondary" : "bg-bg-color hover:bg-bg-secondary"
             }`}
             onMouseEnter={() => setActiveIndex(0)}
             onClick={() => navigate(`/search/${encodeURIComponent(search)}`, { state: { forceRefresh: true } })}>
@@ -181,9 +179,7 @@ export default function SearchBox() {
             <div
               key={idx}
               className={`p-2 cursor-pointer ${
-                activeIndex === idx + 1
-                  ? "bg-bg-secondary"
-                  : "bg-bg-color hover:bg-bg-secondary"
+                activeIndex === idx + 1 ? "bg-bg-secondary" : "bg-bg-color hover:bg-bg-secondary"
               }`}
               onMouseEnter={() => setActiveIndex(idx + 1)}>
               <ProfileImage pubkey={result.pubkey} showProfileCard={false} />

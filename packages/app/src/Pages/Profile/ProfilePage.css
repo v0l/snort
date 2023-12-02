@@ -2,9 +2,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border: 1px solid var(--border-color);
-  border-bottom: none;
-  border-top: none;
 }
 
 .profile .banner {

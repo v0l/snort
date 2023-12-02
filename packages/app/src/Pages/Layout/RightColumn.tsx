@@ -8,7 +8,7 @@ export default function RightColumn() {
   const show = !hideRightColumnPaths.some(path => location.pathname.startsWith(path));
   return (
     <div
-      className={classNames("flex-col hidden lg:w-1/3 sticky top-0 h-screen py-3 px-4 border-l border-neutral-900", {
+      className={classNames("flex-col hidden lg:w-1/3 sticky top-0 h-screen py-3 px-4 border-l border-border-color", {
         "lg:flex": show,
       })}>
       <div>
