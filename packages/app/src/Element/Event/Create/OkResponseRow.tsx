@@ -1,4 +1,5 @@
 import AsyncButton from "@/Element/Button/AsyncButton";
+import IconButton from "@/Element/Button/IconButton";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import Icon from "@/Icons/Icon";
@@ -10,7 +11,7 @@ import { OkResponse } from "@snort/system";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 
-export function OkResponseRow({ rsp }: { rsp: OkResponse }) {
+export function OkResponseRow({ rsp, close }: { rsp: OkResponse, close: () => void }) {
   const [r, setResult] = useState(rsp);
   const { formatMessage } = useIntl();
   const { publisher, system } = useEventPublisher();
@@ -21,6 +22,7 @@ export function OkResponseRow({ rsp }: { rsp: OkResponse }) {
       removeRelay(login, unwrap(sanitizeRelayUrl(r.relay)));
       await saveRelays(system, publisher, login.relays.item);
     }
+    close();
   }
 
   async function retryPublish(r: OkResponse) {
@@ -57,6 +59,7 @@ export function OkResponseRow({ rsp }: { rsp: OkResponse }) {
           </AsyncButton>
         </div>
       )}
+      <IconButton icon={{name: "x"}} onClick={close} />
     </div>
   );
 }

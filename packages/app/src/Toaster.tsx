@@ -1,13 +1,12 @@
+import "./Toaster.css";
 import { ReactNode, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { v4 as uuid } from "uuid";
 import { ExternalStore, unixNow } from "@snort/shared";
-
 import Icon from "@/Icons/Icon";
-import "./Toaster.css";
 
 interface ToastNotification {
-  element: ReactNode;
+  element: ReactNode | ((remove: () => void) => ReactNode);
   expire?: number;
   icon?: string;
   id?: string;
@@ -26,6 +25,11 @@ class ToasterSlots extends ExternalStore<Array<ToastNotification>> {
 
   takeSnapshot(): ToastNotification[] {
     return [...this.#stack];
+  }
+
+  remove(id?: string) {
+    this.#stack = this.#stack.filter(a => a.id !== id);
+    this.notifyChange();
   }
 
   #eatToast() {
@@ -48,7 +52,7 @@ export default function Toaster() {
       {toast.map(a => (
         <div className="p br b flex bg-dark g8 fade-in" key={a.id}>
           {a.icon && <Icon name={a.icon} />}
-          {a.element}
+          {typeof a.element === "function" ? a.element(() => Toastore.remove(a.id)) : a.element}
         </div>
       ))}
     </div>,

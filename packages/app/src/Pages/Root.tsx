@@ -33,7 +33,7 @@ export default function RootPage() {
   const code = getCurrentRefCode();
   return (
     <>
-      <div className="main-content p">
+      <div className="main-content sm:px-4 sm:py-3">
         <RootTabs base="" />
       </div>
       <div className="main-content">

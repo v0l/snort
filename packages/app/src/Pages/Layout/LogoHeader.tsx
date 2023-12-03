@@ -6,6 +6,7 @@ import { mapPlanName } from "../subscribe";
 import Icon from "@/Icons/Icon";
 import { unixNowMs } from "@snort/shared";
 import { Birthday, Day } from "@/Const";
+
 export function LogoHeader({ showText = false }) {
   const { subscriptions } = useLogin();
   const currentSubscription = getCurrentSubscription(subscriptions);
@@ -26,7 +27,7 @@ export function LogoHeader({ showText = false }) {
 
   return (
     <Link to="/" className="logo" onClick={handleLogoClick}>
-      <h1 className="flex flex-row items-center">
+      <h1 className="flex flex-row items-center md:justify-center">
         {CONFIG.navLogo && <img src={CONFIG.navLogo} className="w-8" />}
         {!CONFIG.navLogo && (
           <span className="text-2xl p-5 hidden md:flex xl:hidden w-8 h-8 rounded-xl bg-dark text-xl font-bold flex items-center justify-center">
@@ -41,7 +42,7 @@ export function LogoHeader({ showText = false }) {
         )}
       </h1>
       {currentSubscription && (
-        <div className="flex items-center g4 text-sm font-semibold tracking-wider ml-2">
+        <div className="flex items-center g4 text-sm font-semibold tracking-wider xl:ml-2">
           <Icon name="diamond" size={16} className="text-pro" />
           {mapPlanName(currentSubscription.type)}
         </div>
