@@ -11,7 +11,7 @@ import { OkResponse } from "@snort/system";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 
-export function OkResponseRow({ rsp, close }: { rsp: OkResponse, close: () => void }) {
+export function OkResponseRow({ rsp, close }: { rsp: OkResponse; close: () => void }) {
   const [r, setResult] = useState(rsp);
   const { formatMessage } = useIntl();
   const { publisher, system } = useEventPublisher();
@@ -59,7 +59,7 @@ export function OkResponseRow({ rsp, close }: { rsp: OkResponse, close: () => vo
           </AsyncButton>
         </div>
       )}
-      <IconButton icon={{name: "x"}} onClick={close} />
+      <IconButton icon={{ name: "x" }} onClick={close} />
     </div>
   );
 }
