@@ -1,11 +1,12 @@
 import "./RootTabs.css";
-import { useState, ReactNode, useEffect } from "react";
+import { useState, ReactNode, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import { FormattedMessage } from "react-intl";
 
 import useLogin from "@/Hooks/useLogin";
 import Icon from "@/Icons/Icon";
+import { Newest } from "@/Login";
 
 export type RootTab =
   | "following"
@@ -16,12 +17,7 @@ export type RootTab =
   | "tags"
   | "global";
 
-export function RootTabs({ base }: { base?: string }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { publicKey: pubKey, tags } = useLogin();
-  const [rootType, setRootType] = useState<RootTab>("following");
-
+export function rootTabItems(base: string, pubKey: string | undefined, tags: Newest<Array<string>>) {
   const menuItems = [
     {
       tab: "following",
@@ -117,13 +113,24 @@ export function RootTabs({ base }: { base?: string }) {
     show: boolean;
     element: ReactNode;
   }>;
+  return menuItems;
+}
+
+export function RootTabs({ base }: { base?: string }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { publicKey: pubKey, tags } = useLogin();
+  const [rootType, setRootType] = useState<RootTab>("following");
+
+  const menuItems = useMemo(() => rootTabItems(base, pubKey, tags), [base, pubKey, tags]);
 
   useEffect(() => {
-    const currentTab = menuItems.find(a => a.path === location.pathname)?.tab;
+    const pathname = location.pathname === "/" ? `${base}/notes` : location.pathname;
+    const currentTab = menuItems.find(a => a.path === pathname)?.tab;
     if (currentTab) {
       setRootType(currentTab);
     }
-  }, [location]);
+  }, [location, menuItems]);
 
   function currentMenuItem() {
     if (location.pathname.startsWith(`${base}/t/`)) {
@@ -160,6 +167,7 @@ export function RootTabs({ base }: { base?: string }) {
               key={a.tab}
               onClick={() => {
                 navigate(a.path);
+                window.scrollTo({ top: 0, behavior: "instant" });
               }}>
               {a.element}
             </MenuItem>

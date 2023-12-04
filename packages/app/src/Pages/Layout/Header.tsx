@@ -1,20 +1,25 @@
 import { useLocation } from "react-router-dom";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import { LogoHeader } from "@/Pages/Layout/LogoHeader";
-import { RootTabs } from "@/Element/Feed/RootTabs";
+import { rootTabItems, RootTabs } from "@/Element/Feed/RootTabs";
 import NotificationsHeader from "@/Pages/Layout/NotificationsHeader";
 import { NostrLink, NostrPrefix, parseNostrLink } from "@snort/system";
 import { bech32ToHex } from "@/SnortUtils";
 import { useEventFeed } from "@snort/system-react";
 import { FormattedMessage } from "react-intl";
 import DisplayName from "@/Element/User/DisplayName";
+import useLogin from "@/Hooks/useLogin";
 
 export function Header() {
   const location = useLocation();
-  const showRootTabs = location.pathname === "/";
   const pageName = location.pathname.split("/")[1];
   const [nostrLink, setNostrLink] = useState<NostrLink | undefined>();
+  const { publicKey, tags } = useLogin();
+
+  const isRootTab = useMemo(() => {
+    return location.pathname === "/" || rootTabItems("", publicKey, tags).some(item => item.path === location.pathname);
+  }, [location.pathname, publicKey, tags]);
 
   const scrollUp = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -46,8 +51,8 @@ export function Header() {
       <div className="md:hidden">
         <LogoHeader showText={false} />
       </div>
-      {showRootTabs && <RootTabs base="" />}
-      {!showRootTabs && (
+      {isRootTab && <RootTabs base="" />}
+      {!isRootTab && (
         <div
           onClick={scrollUp}
           className="cursor-pointer flex-1 text-center p-2 overflow-hidden whitespace-nowrap truncate">
