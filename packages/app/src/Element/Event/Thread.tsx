@@ -307,11 +307,6 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
     id: "ADmfQT",
     description: "Link to parent note in thread",
   });
-  const backText = formatMessage({
-    defaultMessage: "Back",
-    id: "jfV8Wr",
-    description: "Navigate back button on threads view",
-  });
 
   const debug = window.location.search.includes("debug=true");
   return (
@@ -336,9 +331,11 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
           <pre>{JSON.stringify(thread.reactions, undefined, "  ")}</pre>
         </div>
       )}
-      <div className="main-content p">
-        <BackButton onClick={goBack} text={parent ? parentText : backText} />
-      </div>
+      {parent && (
+        <div className="main-content p">
+          <BackButton onClick={goBack} text={parentText} />
+        </div>
+      )}
       <div className="main-content">
         {thread.root && renderRoot(thread.root)}
         {thread.root && renderChain(chainKey(thread.root))}
