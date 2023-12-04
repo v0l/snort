@@ -40,6 +40,8 @@ export function Header() {
     } else if (nostrLink.type === NostrPrefix.PublicKey || nostrLink.type === NostrPrefix.Profile) {
       title = <DisplayName pubkey={bech32ToHex(pageName)} />;
     }
+  } else if (location.pathname.startsWith("/t/")) {
+    title = <span>#{location.pathname.split("/").slice(-1)}</span>;
   }
 
   return (
