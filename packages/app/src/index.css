@@ -4,6 +4,7 @@
 
 :root {
   --bg-color: #000;
+  --header-bg-color: rgba(0, 0, 0, 0.3);
   --nearly-bg-color: #090909;
   --font-color: #fff;
   --font-secondary-color: #a7a7a7;
@@ -80,6 +81,7 @@ html {
 
 html.light {
   --bg-color: #fff;
+  --header-bg-color: rgba(255, 255, 255, 0.3);
   --nearly-bg-color: #f9f9f9;
   --font-color: #0f0f0f;
   --font-secondary-color: #5c6c92;

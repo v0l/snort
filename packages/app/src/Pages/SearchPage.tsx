@@ -95,9 +95,6 @@ const SearchPage = () => {
   return (
     <div className="main-content">
       <div className="p flex flex-col g8">
-        <h2>
-          <FormattedMessage defaultMessage="Search" id="xmcVZ0" />
-        </h2>
         <input
           type="text"
           className="w-max"

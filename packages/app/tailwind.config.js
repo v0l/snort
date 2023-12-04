@@ -25,6 +25,9 @@ module.exports = {
       padding: {
         "footer-height": "calc(56px + env(safe-area-inset-bottom))",
       },
+      backgroundColor: {
+        header: "var(--header-bg-color)",
+      },
     },
   },
   plugins: [],

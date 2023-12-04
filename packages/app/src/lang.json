@@ -1406,9 +1406,6 @@
   "rT14Ow": {
     "defaultMessage": "Add Relays"
   },
-  "rbrahO": {
-    "defaultMessage": "Close"
-  },
   "rfuMjE": {
     "defaultMessage": "(Default)"
   },
@@ -1465,9 +1462,6 @@
   },
   "uc0din": {
     "defaultMessage": "Send sats splits to"
-  },
-  "ugyJnE": {
-    "defaultMessage": "Sending notes and other stuff"
   },
   "un1nGw": {
     "defaultMessage": "{n} notes"

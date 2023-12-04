@@ -16,7 +16,6 @@ import HashTagsPage from "@/Pages/HashTagsPage";
 import SuggestedProfiles from "@/Element/SuggestedProfiles";
 import { TaskList } from "@/Tasks/TaskList";
 import TimelineFollows from "@/Element/Feed/TimelineFollows";
-import { RootTabs } from "@/Element/Feed/RootTabs";
 import { DeckContext } from "@/Pages/DeckLayout";
 import { TopicsPage } from "./TopicsPage";
 import TrendingHashtags from "@/Element/Trending/TrendingHashtags";
@@ -33,9 +32,6 @@ export default function RootPage() {
   const code = getCurrentRefCode();
   return (
     <>
-      <div className="main-content sm:px-4 sm:py-3">
-        <RootTabs base="" />
-      </div>
       <div className="main-content">
         <Outlet />
       </div>

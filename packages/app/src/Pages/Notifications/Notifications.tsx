@@ -97,12 +97,6 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
 
   return (
     <>
-      <div className="main-content p flex g12 items-center">
-        <Icon name="bell" />
-        <h3 className="my-0">
-          <FormattedMessage defaultMessage="Notifications" id="NAidKb" />
-        </h3>
-      </div>
       <div className="main-content">
         <Suspense fallback={<PageSpinner />}>
           <NotificationGraph evs={myNotifications} />

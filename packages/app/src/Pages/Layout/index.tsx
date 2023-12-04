@@ -18,6 +18,8 @@ import { LogoHeader } from "./LogoHeader";
 import useLoginFeed from "@/Feed/LoginFeed";
 import ErrorBoundary from "@/Element/ErrorBoundary";
 import Footer from "@/Pages/Layout/Footer";
+import { RootTabs } from "@/Element/Feed/RootTabs";
+import classNames from "classnames";
 
 export default function Index() {
   const location = useLocation();
@@ -45,10 +47,10 @@ export default function Index() {
   return (
     <div className="flex justify-center">
       <div className="w-full max-w-screen-xl">
-        {!shouldHideHeader && <Header />}
-        <div className="flex flex-row w-full">
+        <div className="flex flex-row">
           <NavSidebar />
-          <div className="flex flex-1 flex-col overflow-x-hidden pb-footer-height md:pb-0">
+          <div className="flex flex-1 flex-col pb-footer-height md:pb-0 w-full md:w-1/3">
+            {!shouldHideHeader && <Header />}
             <ErrorBoundary>
               <Outlet />
             </ErrorBoundary>
@@ -65,10 +67,32 @@ export default function Index() {
 }
 
 function Header() {
+  const location = useLocation();
+  const showRootTabs = location.pathname === "/";
+  const pageName = location.pathname.split("/")[1];
+  const scrollUp = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
   return (
-    <header className="flex justify-between items-center self-stretch px-4 gap-6 sticky top-0 md:hidden z-10 bg-bg-color py-1">
-      <LogoHeader showText={true} />
-      <NotificationsHeader />
+    <header
+      className={classNames(
+        { "md:hidden": pageName === "messages" },
+        "flex justify-between items-center self-stretch px-4 gap-6 sticky top-0 z-10 bg-bg-color py-1 md:bg-header md:bg-opacity-50 md:shadow-lg md:backdrop-blur-lg",
+      )}>
+      <div className="md:hidden">
+        <LogoHeader showText={false} />
+      </div>
+      {showRootTabs && <RootTabs base="" />}
+      {!showRootTabs && (
+        <div
+          onClick={scrollUp}
+          className="capitalize cursor-pointer flex-1 text-center p-2 overflow-hidden whitespace-nowrap truncate">
+          {pageName}
+        </div>
+      )}
+      <div className="md:hidden">
+        <NotificationsHeader />
+      </div>
     </header>
   );
 }

@@ -1,5 +1,4 @@
-import { FormattedMessage } from "react-intl";
-import { Outlet, RouteObject, useNavigate } from "react-router-dom";
+import { Outlet, RouteObject } from "react-router-dom";
 import SettingsIndex from "@/Pages/settings/Root";
 import Profile from "@/Pages/settings/Profile";
 import Relay from "@/Pages/settings/Relays";
@@ -12,19 +11,11 @@ import ExportKeys from "@/Pages/settings/Keys";
 import ModerationSettings from "@/Pages/settings/Moderation";
 import { CacheSettings } from "./settings/Cache";
 
-import messages from "./messages";
 import { ReferralsPage } from "./settings/Referrals";
 
 export default function SettingsPage() {
-  const navigate = useNavigate();
-
   return (
     <>
-      <div className="main-content p">
-        <h2 onClick={() => navigate("/settings")} className="pointer">
-          <FormattedMessage {...messages.Settings} />
-        </h2>
-      </div>
       <Outlet />
     </>
   );
