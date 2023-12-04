@@ -319,6 +319,9 @@
   "AIgmDy": {
     "defaultMessage": "Add up to 4 hashtags"
   },
+  "ALdW69": {
+    "defaultMessage": "Note by {name}"
+  },
   "AN0Z7Q": {
     "defaultMessage": "Muted Words"
   },
@@ -1360,6 +1363,9 @@
   },
   "qDwvZ4": {
     "defaultMessage": "Unknown error"
+  },
+  "qMePPG": {
+    "defaultMessage": "Note"
   },
   "qMx1sA": {
     "defaultMessage": "Default Zap amount"
