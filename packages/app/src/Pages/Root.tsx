@@ -22,6 +22,7 @@ import TrendingHashtags from "@/Element/Trending/TrendingHashtags";
 const InviteModal = lazy(() => import("@/Element/Invite"));
 
 import messages from "./messages";
+import useHistoryState from "@/Hooks/useHistoryState";
 
 interface RelayOption {
   url: string;
@@ -61,8 +62,8 @@ const FollowsHint = () => {
 
 export const GlobalTab = () => {
   const { relays } = useLogin();
-  const [relay, setRelay] = useState<RelayOption>();
-  const [allRelays, setAllRelays] = useState<RelayOption[]>();
+  const [relay, setRelay] = useHistoryState<RelayOption>(undefined, "global-relay");
+  const [allRelays, setAllRelays] = useHistoryState<RelayOption[]>(undefined, "global-relay-options");
   const [now] = useState(unixNow());
   const system = useContext(SnortContext);
 
