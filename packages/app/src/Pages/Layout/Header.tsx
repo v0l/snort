@@ -38,7 +38,11 @@ export function Header() {
     if (nostrLink.type === NostrPrefix.Event || nostrLink.type === NostrPrefix.Note) {
       title = <NoteTitle link={nostrLink} />;
     } else if (nostrLink.type === NostrPrefix.PublicKey || nostrLink.type === NostrPrefix.Profile) {
-      title = <DisplayName pubkey={bech32ToHex(pageName)} />;
+      try {
+        title = <DisplayName pubkey={bech32ToHex(pageName)} />;
+      } catch (e) {
+        console.error(e);
+      }
     }
   } else if (location.pathname.startsWith("/t/")) {
     title = <span>#{location.pathname.split("/").slice(-1)}</span>;
