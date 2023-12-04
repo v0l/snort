@@ -101,7 +101,6 @@ const SearchPage = () => {
           placeholder={formatMessage({ defaultMessage: "Search...", id: "0BUTMv" })}
           value={search}
           onChange={e => setSearch(e.target.value)}
-          autoFocus={true}
         />
         <Tabs tabs={SearchTab} tab={tab} setTab={setTab} />
       </div>

@@ -34,7 +34,14 @@ export function Header() {
   }, [pageName]);
 
   let title: React.ReactNode = <span className="capitalize">{pageName}</span>;
-  if (nostrLink) {
+  if (location.pathname.startsWith("/search/")) {
+    const searchTerm = location.pathname.split("/search/")[1];
+    title = (
+      <>
+        <FormattedMessage defaultMessage="Search" id="xmcVZ0" />: {searchTerm}
+      </>
+    );
+  } else if (nostrLink) {
     if (nostrLink.type === NostrPrefix.Event || nostrLink.type === NostrPrefix.Note) {
       title = <NoteTitle link={nostrLink} />;
     } else if (nostrLink.type === NostrPrefix.PublicKey || nostrLink.type === NostrPrefix.Profile) {
