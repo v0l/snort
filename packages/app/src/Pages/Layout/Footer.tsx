@@ -11,13 +11,14 @@ import { useIntl } from "react-intl";
 
 const MENU_ITEMS = [
   { url: "/", icon: "home" },
-  { url: "/messages", icon: "mail" },
+  { url: "/messages", icon: "mail", hideReadOnly: true },
   {
     el: (
       <div className="flex flex-grow items-center justify-center">
         <NoteCreatorButton alwaysShow={true} />
       </div>
     ),
+    hideReadOnly: true,
   },
   { url: "/search", icon: "search" },
 ];
@@ -31,6 +32,9 @@ const Footer = () => {
   const { formatMessage } = useIntl();
 
   const renderButton = item => {
+    if (readonly && item.hideReadOnly) {
+      return null;
+    }
     if (item.el) {
       return item.el;
     }
@@ -40,7 +44,7 @@ const Footer = () => {
         className={({ isActive }) =>
           classNames(
             { "text-nostr-purple": isActive, "hover:text-nostr-purple": !isActive },
-            "flex flex-grow p-2 justify-center items-center cursor-pointer",
+            "flex flex-grow p-4 justify-center items-center cursor-pointer",
           )
         }>
         <Icon name={item.icon} width={24} />
