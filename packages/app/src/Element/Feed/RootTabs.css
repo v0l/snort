@@ -14,4 +14,10 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
+  border: none;
+  box-shadow: none;
+}
+
+.root-type > button:hover {
+  box-shadow: none !important;
 }
