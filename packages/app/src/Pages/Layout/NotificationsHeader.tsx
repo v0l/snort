@@ -63,7 +63,7 @@ const NotificationsHeader = () => {
 
   if (!publicKey) {
     return (
-      <button type="button" onClick={() => navigate("/login/sign-up")}>
+      <button type="button" className="mr-3" onClick={() => navigate("/login/sign-up")}>
         <FormattedMessage defaultMessage="Sign Up" id="39AHJm" />
       </button>
     );
