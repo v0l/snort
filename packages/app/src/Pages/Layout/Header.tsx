@@ -73,7 +73,9 @@ export function Header() {
         { "md:hidden": pageName === "messages" },
         "flex justify-between items-center self-stretch gap-6 sticky top-0 z-10 bg-bg-color md:bg-header md:bg-opacity-50 md:shadow-lg md:backdrop-blur-lg",
       )}>
-      <div onClick={handleBackButtonClick} className={classNames({"hidden": !showBackButton}, "p-2 md:p-3 cursor-pointer")}>
+      <div
+        onClick={handleBackButtonClick}
+        className={classNames({ hidden: !showBackButton }, "p-2 md:p-3 cursor-pointer")}>
         <Icon name="arrowBack" />
       </div>
       {!showBackButton && (
