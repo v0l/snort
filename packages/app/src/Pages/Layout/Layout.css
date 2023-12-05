@@ -1,20 +1,3 @@
-.logo {
-  cursor: pointer;
-  text-wrap: nowrap;
-}
-
-.logo h1 {
-  font-weight: 700;
-  font-size: 29px;
-  line-height: 23px;
-  padding: 0;
-  margin: 0;
-}
-
-.logo:hover {
-  text-decoration: none;
-}
-
 .has-unread {
   background: var(--highlight);
   border-radius: 100%;

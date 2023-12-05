@@ -26,11 +26,11 @@ export function LogoHeader({ showText = false }) {
   };
 
   return (
-    <Link to="/" className="logo" onClick={handleLogoClick}>
-      <h1 className="flex flex-row items-center md:justify-center">
+    <Link to="/" className="logo hover:no-underline" onClick={handleLogoClick}>
+      <h1 className="flex flex-row items-center md:justify-center font-bold my-0 p-0 md:mx-3 font-bold text-3xl">
         {CONFIG.navLogo && <img src={CONFIG.navLogo} className="w-8" />}
         {!CONFIG.navLogo && (
-          <span className="text-2xl p-5 hidden md:flex xl:hidden w-8 h-8 rounded-xl bg-dark text-xl font-bold flex items-center justify-center">
+          <span className="p-5 hidden md:flex xl:hidden w-8 h-8 rounded-xl bg-dark flex items-center justify-center">
             {CONFIG.appName[0]}
           </span>
         )}

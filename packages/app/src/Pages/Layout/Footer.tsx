@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NavLink from "@/Element/Button/NavLink";
 import useLogin from "@/Hooks/useLogin";
 import Icon from "@/Icons/Icon";
@@ -9,9 +9,18 @@ import { useUserProfile } from "@snort/system-react";
 import Avatar from "@/Element/User/Avatar";
 import { useIntl } from "react-intl";
 
-const MENU_ITEMS = [
-  { url: "/", icon: "home" },
-  { url: "/messages", icon: "mail", hideReadOnly: true },
+type MenuItem = {
+  label?: string;
+  icon?: string;
+  link?: string;
+  nonLoggedIn?: boolean;
+  el?: React.ReactNode;
+  hideReadOnly?: boolean;
+};
+
+const MENU_ITEMS: MenuItem[] = [
+  { link: "/", icon: "home" },
+  { link: "/messages", icon: "mail", hideReadOnly: true },
   {
     el: (
       <div className="flex flex-grow items-center justify-center">
@@ -20,7 +29,7 @@ const MENU_ITEMS = [
     ),
     hideReadOnly: true,
   },
-  { url: "/search", icon: "search" },
+  { link: "/search", icon: "search" },
 ];
 
 const Footer = () => {
@@ -31,28 +40,6 @@ const Footer = () => {
   const profile = useUserProfile(publicKey);
   const { formatMessage } = useIntl();
 
-  const renderButton = item => {
-    if (readonly && item.hideReadOnly) {
-      return null;
-    }
-    if (item.el) {
-      return item.el;
-    }
-    return (
-      <NavLink
-        to={item.url}
-        className={({ isActive }) =>
-          classNames(
-            { active: isActive, "hover:text-nostr-purple": !isActive },
-            "flex flex-grow p-4 justify-center items-center cursor-pointer",
-          )
-        }>
-        <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
-        <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
-      </NavLink>
-    );
-  };
-
   const readOnlyIcon = readonly && (
     <span style={{ transform: "rotate(135deg)" }} title={formatMessage({ defaultMessage: "Read-only", id: "djNL6D" })}>
       <Icon name="openeye" className="text-nostr-red" size={20} />
@@ -62,7 +49,9 @@ const Footer = () => {
   return (
     <footer className="md:hidden fixed bottom-0 z-10 w-full bg-base-200 pb-safe-area bg-bg-color">
       <div className="flex">
-        {MENU_ITEMS.map(item => renderButton(item))}
+        {MENU_ITEMS.map(item => (
+          <FooterNavItem item={item} readonly={readonly} />
+        ))}
         {publicKey && (
           <ProfileLink
             className="flex flex-grow p-2 justify-center items-center cursor-pointer"
@@ -73,6 +62,31 @@ const Footer = () => {
         )}
       </div>
     </footer>
+  );
+};
+
+const FooterNavItem = ({ item, readonly }: { item: MenuItem; readonly: boolean }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  if (readonly && item.hideReadOnly) {
+    return null;
+  }
+
+  if (item.el) {
+    return item.el;
+  }
+
+  return (
+    <NavLink
+      to={item.link ?? "/"}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={({ isActive }) =>
+        classNames({ active: isActive || isHovered }, "flex flex-grow p-4 justify-center items-center cursor-pointer")
+      }>
+      <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
+      <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
+    </NavLink>
   );
 };
 

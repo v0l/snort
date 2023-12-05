@@ -60,9 +60,9 @@ const MENU_ITEMS = [
 
 const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
   const c = isActive
-    ? "active font-bold py-4 hover:no-underline flex flex-row items-center"
-    : "py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center";
-  return classNames(c, { "xl:ml-1": !narrow });
+    ? "rounded-full p-3 active font-bold my-2 hover:bg-bg-secondary hover:no-underline flex flex-row items-center"
+    : "rounded-full p-3 my-2 hover:no-underline hover:bg-bg-secondary flex flex-row items-center";
+  return classNames(c, { "xl:px-4": !narrow });
 };
 
 export default function NavSidebar({ narrow = false }) {
@@ -134,13 +134,13 @@ export default function NavSidebar({ narrow = false }) {
       {publicKey && (
         <>
           <ProfileLink pubkey={publicKey} user={profile}>
-            <div className="flex flex-row items-center font-bold text-md">
+            <div className="flex flex-row items-center font-bold text-md p-1 xl:px-4 xl:py-3 hover:bg-bg-secondary rounded-full cursor-pointer hover:no-underline">
               <Avatar pubkey={publicKey} user={profile} size={40} icons={readOnlyIcon} />
               {!narrow && <span className="hidden xl:inline ml-3">{profile?.name}</span>}
             </div>
           </ProfileLink>
           {readonly && (
-            <div className="hidden xl:block text-nostr-red text-sm">
+            <div className="hidden xl:block text-nostr-red text-sm m-3">
               <FormattedMessage defaultMessage="Read-only" id="djNL6D" />
             </div>
           )}
