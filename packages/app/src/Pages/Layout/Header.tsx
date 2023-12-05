@@ -15,7 +15,7 @@ import Icon from "@/Icons/Icon";
 export function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const pageName = location.pathname.split("/")[1];
+  const pageName = decodeURIComponent(location.pathname.split("/")[1]);
   const [nostrLink, setNostrLink] = useState<NostrLink | undefined>();
   const { publicKey, tags } = useLogin();
 
@@ -47,7 +47,7 @@ export function Header() {
 
   let title: React.ReactNode = <span className="capitalize">{pageName}</span>;
   if (location.pathname.startsWith("/search/")) {
-    const searchTerm = location.pathname.split("/search/")[1];
+    const searchTerm = decodeURIComponent(location.pathname.split("/search/")[1]);
     title = (
       <>
         <FormattedMessage defaultMessage="Search" id="xmcVZ0" />: {searchTerm}
