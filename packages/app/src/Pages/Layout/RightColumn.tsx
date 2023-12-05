@@ -1,27 +1,40 @@
 import SearchBox from "@/Element/SearchBox";
 import TrendingNotes from "@/Element/Trending/TrendingPosts";
+import TrendingHashtags from "@/Element/Trending/TrendingHashtags";
 import { FormattedMessage } from "react-intl";
 import classNames from "classnames";
+import useLogin from "@/Hooks/useLogin";
 
 export default function RightColumn() {
+  const { pubkey } = useLogin(s => ({ pubkey: s.publicKey }));
   const hideRightColumnPaths = ["/login", "/new", "/messages", "/settings"];
   const show = !hideRightColumnPaths.some(path => location.pathname.startsWith(path));
+
+  const getTitleMessage = () => {
+    return pubkey ? (
+      <FormattedMessage defaultMessage="Trending notes" id="6k7xfM" />
+    ) : (
+      <FormattedMessage defaultMessage="Trending hashtags" id="CbM2hK" />
+    );
+  };
+
+  const getContent = () => {
+    return pubkey ? <TrendingNotes small={true} count={100} /> : <TrendingHashtags short={true} />;
+  };
+
   return (
     <div
-      className={classNames("flex-col hidden lg:w-1/3 sticky top-0 h-screen py-3 px-4 border-l border-border-color", {
-        "lg:flex": show,
-      })}>
+      className={classNames(
+        "text-secondary flex-col hidden lg:w-1/3 sticky top-0 h-screen py-3 px-4 border-l border-border-color",
+        {
+          "lg:flex": show,
+        },
+      )}>
       <div>
         <SearchBox />
       </div>
-      <div className="overflow-y-auto hide-scrollbar">
-        <div className="rounded-lg mt-8 text-gray-light">
-          <div className="font-bold text-lg">
-            <FormattedMessage defaultMessage="Trending notes" id="6k7xfM" />
-          </div>
-          <TrendingNotes small={true} count={100} />
-        </div>
-      </div>
+      <div className="font-bold text-lg mt-4 mb-2">{getTitleMessage()}</div>
+      <div className="overflow-y-auto hide-scrollbar flex-grow rounded-lg">{getContent()}</div>
     </div>
   );
 }
