@@ -52,15 +52,22 @@ export function TimelineRenderer(props: TimelineRendererProps) {
     // TODO Hide images from notes with a content warning, unless otherwise configured
     const noteImageRenderer = (e: TaggedNostrEvent) => {
       const parsed = transformTextCached(e.id, e.content, e.tags);
-      const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
-      if (images.length === 0) return null;
+      const media = parsed.filter(
+        a => a.type === "media" && (a.mimeType?.startsWith("image/") || a.mimeType?.startsWith("video/")),
+      );
+
+      if (media.length === 0) return null;
+
+      const isVideo = media[0].mimeType?.startsWith("video/");
 
       return (
         <div
-          className="aspect-square bg-center bg-cover cursor-pointer hover:opacity-80"
+          className="aspect-square bg-center bg-cover cursor-pointer hover:opacity-80 relative"
           key={e.id}
-          style={{ backgroundImage: `url(${proxy(images[0].content, 256)})` }}
-          onClick={() => noteOnClick(e)}></div>
+          style={{ backgroundImage: `url(${proxy(media[0].content, 256)})` }}
+          onClick={() => noteOnClick(e)}>
+          {isVideo && <Icon name="play-square-outline" className="absolute right-2 top-2 text-white opacity-80" />}
+        </div>
       );
     };
 
