@@ -215,7 +215,7 @@ function NotificationsCol({ setThread }: { setThread: (e: NostrLink) => void }) 
   return (
     <div>
       <div className="deck-col-header flex g8">
-        <Icon name="bell-02" size={24} />
+        <Icon name="bell-solid" size={24} />
         <FormattedMessage defaultMessage="Notifications" id="NAidKb" />
       </div>
       <div>

@@ -43,11 +43,12 @@ const Footer = () => {
         to={item.url}
         className={({ isActive }) =>
           classNames(
-            { "text-nostr-purple": isActive, "hover:text-nostr-purple": !isActive },
+            { active: isActive, "hover:text-nostr-purple": !isActive },
             "flex flex-grow p-4 justify-center items-center cursor-pointer",
           )
         }>
-        <Icon name={item.icon} width={24} />
+        <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
+        <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
       </NavLink>
     );
   };

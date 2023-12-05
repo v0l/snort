@@ -161,7 +161,7 @@ export default function SearchBox() {
       {searching ? (
         <Spinner width={24} height={24} />
       ) : (
-        <Icon name="search" size={24} onClick={() => navigate("/search")} />
+        <Icon className="text-secondary" name="search-outline" size={24} onClick={() => navigate("/search")} />
       )}
       {search && !searching && isFocused && (
         <div

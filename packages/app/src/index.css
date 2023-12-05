@@ -942,3 +942,15 @@ svg.repeat {
 .pb-safe-area {
   padding-bottom: env(safe-area-inset-bottom);
 }
+
+.active > .icon-outline {
+  display: none;
+}
+
+.active > .icon-solid {
+  display: inline-block;
+}
+
+.icon-solid {
+  display: none;
+}

@@ -27,7 +27,7 @@ const MENU_ITEMS = [
   },
   {
     label: "Notifications",
-    icon: "bell-02",
+    icon: "bell",
     link: "/notifications",
   },
   {
@@ -60,7 +60,7 @@ const MENU_ITEMS = [
 
 const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
   const c = isActive
-    ? "py-4 hover:no-underline flex flex-row items-center text-nostr-purple"
+    ? "active font-bold py-4 hover:no-underline flex flex-row items-center"
     : "py-4 hover:no-underline hover:text-nostr-purple flex flex-row items-center";
   return classNames(c, { "xl:ml-1": !narrow });
 };
@@ -91,7 +91,7 @@ export default function NavSidebar({ narrow = false }) {
     <div className={className}>
       <LogoHeader showText={!narrow} />
       <div className="flex-grow flex flex-col justify-between">
-        <div className={classNames({ "xl:items-start": !narrow }, "flex flex-col items-center font-bold text-lg")}>
+        <div className={classNames({ "xl:items-start": !narrow }, "flex flex-col items-center text-lg")}>
           {MENU_ITEMS.filter(a => {
             if ((CONFIG.hideFromNavbar ?? []).includes(a.link)) {
               return false;
@@ -106,7 +106,8 @@ export default function NavSidebar({ narrow = false }) {
             }
             return (
               <NavLink key={item.link} to={item.link} className={({ isActive }) => getNavLinkClass(isActive, narrow)}>
-                <Icon name={item.icon} size={24} />
+                <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
+                <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
                 {item.label === "Notifications" && <HasNotificationsMarker />}
                 {!narrow && <span className="hidden xl:inline ml-3">{item.label}</span>}
               </NavLink>

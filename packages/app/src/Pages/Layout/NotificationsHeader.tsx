@@ -9,6 +9,7 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import SnortApi from "@/External/SnortApi";
 import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
 import NavLink from "@/Element/Button/NavLink";
+import classNames from "classnames";
 
 const NotificationsHeader = () => {
   const navigate = useNavigate();
@@ -69,12 +70,14 @@ const NotificationsHeader = () => {
   }
 
   return (
-    <div className="flex justify-between">
-      <NavLink className="btn" to="/notifications" onClick={goToNotifications}>
-        <Icon name="bell-02" size={24} />
-        <HasNotificationsMarker />
-      </NavLink>
-    </div>
+    <NavLink
+      className={({ isActive }) => classNames({ active: isActive }, "px-2 py-3 flex")}
+      to="/notifications"
+      onClick={goToNotifications}>
+      <Icon name="bell-solid" className="icon-solid" size={24} />
+      <Icon name="bell-outline" className="icon-outline" size={24} />
+      <HasNotificationsMarker />
+    </NavLink>
   );
 };
 
