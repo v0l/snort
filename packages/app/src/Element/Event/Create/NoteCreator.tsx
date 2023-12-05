@@ -13,7 +13,7 @@ import ProfileImage from "@/Element/User/ProfileImage";
 import useFileUpload from "@/Upload";
 import Note from "@/Element/Event/Note";
 
-import { ClipboardEventHandler, DragEvent } from "react";
+import { ClipboardEventHandler, DragEvent, useEffect } from "react";
 import useLogin from "@/Hooks/useLogin";
 import { GetPowWorker } from "@/index";
 import AsyncButton from "@/Element/Button/AsyncButton";
@@ -36,6 +36,13 @@ export function NoteCreator() {
   const publisher = login.pow ? pub?.pow(login.pow, GetPowWorker()) : pub;
   const note = useNoteCreator();
   const relays = login.relays;
+
+  useEffect(() => {
+    const draft = localStorage.getItem("msgDraft");
+    if (draft) {
+      note.update(n => (n.note = draft));
+    }
+  }, []);
 
   async function buildNote() {
     try {
@@ -165,6 +172,7 @@ export function NoteCreator() {
         }),
       );
       note.update(n => n.reset());
+      localStorage.removeItem("msgDraft");
     }
   }
 
@@ -228,6 +236,7 @@ export function NoteCreator() {
   function onChange(ev: React.ChangeEvent<HTMLTextAreaElement>) {
     const { value } = ev.target;
     note.update(n => (n.note = value));
+    localStorage.setItem("msgDraft", value);
   }
 
   function cancel() {
@@ -647,7 +656,6 @@ export function NoteCreator() {
 
   function reset() {
     note.update(v => {
-      v.reset();
       v.show = false;
     });
   }

@@ -647,10 +647,6 @@ div.form-col {
   gap: 10px;
 }
 
-.error {
-  color: var(--error);
-}
-
 .warning {
   color: var(--warning);
 }

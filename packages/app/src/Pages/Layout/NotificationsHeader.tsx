@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { base64 } from "@scure/base";
 import { unwrap } from "@snort/shared";
-import { FormattedMessage } from "react-intl";
 import Icon from "@/Icons/Icon";
 import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
 import { isFormElement } from "@/SnortUtils";
@@ -63,8 +62,8 @@ const NotificationsHeader = () => {
 
   if (!publicKey) {
     return (
-      <button type="button" className="mr-3" onClick={() => navigate("/login/sign-up")}>
-        <FormattedMessage defaultMessage="Sign Up" id="39AHJm" />
+      <button onClick={() => navigate("/login/sign-up")} className="mr-3 primary p-2">
+        <Icon name="sign-in" size={20} className="md:hidden" />
       </button>
     );
   }

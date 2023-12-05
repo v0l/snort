@@ -71,6 +71,7 @@ export function logout(id: string) {
   FollowsFeed.clear();
   Chats.clear();
   deleteRefCode();
+  localStorage.clear();
 }
 
 export function markNotificationsRead(state: LoginSession) {
