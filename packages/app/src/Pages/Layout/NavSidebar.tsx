@@ -60,8 +60,8 @@ const MENU_ITEMS = [
 
 const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
   const c = isActive
-    ? "rounded-full p-3 active font-bold my-2 hover:bg-bg-secondary hover:no-underline flex flex-row items-center"
-    : "rounded-full p-3 my-2 hover:no-underline hover:bg-bg-secondary flex flex-row items-center";
+    ? "rounded-full p-3 active font-bold hover:bg-bg-secondary hover:no-underline flex flex-1 flex-row items-center"
+    : "rounded-full p-3 hover:no-underline hover:bg-bg-secondary flex flex-row items-center";
   return classNames(c, { "xl:px-4": !narrow });
 };
 
@@ -90,8 +90,8 @@ export default function NavSidebar({ narrow = false }) {
   return (
     <div className={className}>
       <LogoHeader showText={!narrow} />
-      <div className="flex-grow flex flex-col justify-between">
-        <div className={classNames({ "xl:items-start": !narrow }, "flex flex-col items-center text-lg")}>
+      <div className="mt-1 flex-grow flex flex-col justify-between">
+        <div className={classNames({ "xl:items-start": !narrow, "xl:gap-3": !narrow }, "gap-2 flex flex-col items-center text-lg")}>
           {MENU_ITEMS.filter(a => {
             if ((CONFIG.hideFromNavbar ?? []).includes(a.link)) {
               return false;
@@ -134,7 +134,7 @@ export default function NavSidebar({ narrow = false }) {
       {publicKey && (
         <>
           <ProfileLink pubkey={publicKey} user={profile}>
-            <div className="flex flex-row items-center font-bold text-md p-1 xl:px-4 xl:py-3 hover:bg-bg-secondary rounded-full cursor-pointer hover:no-underline">
+            <div className="mt-2 flex flex-row items-center font-bold text-md p-1 xl:px-4 xl:py-3 hover:bg-bg-secondary rounded-full cursor-pointer hover:no-underline">
               <Avatar pubkey={publicKey} user={profile} size={40} icons={readOnlyIcon} />
               {!narrow && <span className="hidden xl:inline ml-3">{profile?.name}</span>}
             </div>
