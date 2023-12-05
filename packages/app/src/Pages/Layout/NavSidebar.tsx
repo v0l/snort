@@ -91,7 +91,11 @@ export default function NavSidebar({ narrow = false }) {
     <div className={className}>
       <LogoHeader showText={!narrow} />
       <div className="mt-1 flex-grow flex flex-col justify-between">
-        <div className={classNames({ "xl:items-start": !narrow, "xl:gap-3": !narrow }, "gap-2 flex flex-col items-center text-lg")}>
+        <div
+          className={classNames(
+            { "xl:items-start": !narrow, "xl:gap-3": !narrow },
+            "gap-2 flex flex-col items-center text-lg",
+          )}>
           {MENU_ITEMS.filter(a => {
             if ((CONFIG.hideFromNavbar ?? []).includes(a.link)) {
               return false;
