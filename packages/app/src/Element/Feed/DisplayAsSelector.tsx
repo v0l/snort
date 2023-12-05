@@ -1,6 +1,7 @@
 import Icon from "@/Icons/Icon";
 import { LoginStore } from "@/Login";
 import useLogin from "@/Hooks/useLogin";
+import { useCallback } from "react";
 
 export type DisplayAs = "list" | "grid";
 
@@ -13,29 +14,32 @@ type DisplaySelectorProps = {
 export const DisplayAsSelector = ({ activeSelection, onSelect, show }: DisplaySelectorProps) => {
   const state = useLogin();
 
-  const myOnSelect = (display: DisplayAs) => {
-    onSelect(display);
-    state.feedDisplayAs = display;
-    LoginStore.updateSession(state);
+  const getClasses = (displayType: DisplayAs) => {
+    const baseClasses = "border-highlight cursor-pointer flex justify-center flex-1 p-3";
+    return activeSelection === displayType
+      ? `${baseClasses} border-b border-1`
+      : `${baseClasses} hover:bg-nearly-bg-color text-secondary`;
   };
 
+  const myOnSelect = useCallback(
+    (display: DisplayAs) => {
+      onSelect(display);
+      const updatedState = { ...state, feedDisplayAs: display };
+      LoginStore.updateSession(updatedState);
+    },
+    [onSelect, state],
+  );
+
   if (show === false) return null;
+
   return (
     <div className="flex mb-px md:mb-1">
-      <div
-        className={`cursor-pointer flex justify-center flex-1 p-3 ${
-          activeSelection === "list" ? "border-b border-1" : "hover:bg-nearly-bg-color text-secondary"
-        }`}
-        onClick={() => myOnSelect("list")}>
+      <div className={getClasses("list")} onClick={() => myOnSelect("list")}>
         <span className="rotate-90">
           <Icon name="deck" />
         </span>
       </div>
-      <div
-        className={`cursor-pointer flex justify-center flex-1 p-3 ${
-          activeSelection === "grid" ? "border-b border-1" : "hover:bg-nearly-bg-color text-secondary"
-        }`}
-        onClick={() => myOnSelect("grid")}>
+      <div className={getClasses("grid")} onClick={() => myOnSelect("grid")}>
         <Icon name="media" />
       </div>
     </div>
