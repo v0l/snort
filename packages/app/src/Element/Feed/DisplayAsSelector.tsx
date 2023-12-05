@@ -23,7 +23,7 @@ export const DisplayAsSelector = ({ activeSelection, onSelect, show }: DisplaySe
   return (
     <div className="flex mb-px md:mb-1">
       <div
-        className={`border-highlight cursor-pointer flex justify-center flex-1 p-3 ${
+        className={`cursor-pointer flex justify-center flex-1 p-3 ${
           activeSelection === "list" ? "border-b border-1" : "hover:bg-nearly-bg-color text-secondary"
         }`}
         onClick={() => myOnSelect("list")}>
@@ -32,7 +32,7 @@ export const DisplayAsSelector = ({ activeSelection, onSelect, show }: DisplaySe
         </span>
       </div>
       <div
-        className={`border-highlight cursor-pointer flex justify-center flex-1 p-3 ${
+        className={`cursor-pointer flex justify-center flex-1 p-3 ${
           activeSelection === "grid" ? "border-b border-1" : "hover:bg-nearly-bg-color text-secondary"
         }`}
         onClick={() => myOnSelect("grid")}>
