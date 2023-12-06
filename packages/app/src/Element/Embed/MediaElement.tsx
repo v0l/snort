@@ -30,6 +30,7 @@ export function MediaElement(props: MediaElementProps) {
       <div className="-mx-4 md:mx-0 my-3 md:h-80 flex items-center justify-center">
         <video
           autoPlay={autoplay}
+          loop={true}
           muted={autoplay}
           key={props.url}
           src={props.url}

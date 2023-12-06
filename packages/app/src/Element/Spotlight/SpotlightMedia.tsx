@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import Modal from "@/Element/Modal";
 import Icon from "@/Icons/Icon";
 import { ProxyImg } from "@/Element/ProxyImg";
+import useImgProxy from "@/Hooks/useImgProxy";
 
 interface SpotlightMediaProps {
   images: Array<string>;
@@ -9,7 +10,10 @@ interface SpotlightMediaProps {
   onClose: () => void;
 }
 
+const videoSuffixes = ["mp4", "webm", "ogg", "mov", "avi", "mkv"];
+
 export function SpotlightMedia(props: SpotlightMediaProps) {
+  const { proxy } = useImgProxy();
   const [idx, setIdx] = useState(props.idx);
 
   const image = useMemo(() => {
@@ -58,9 +62,30 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
     });
   }
 
+  const isVideo = useMemo(() => {
+    return image && videoSuffixes.some(suffix => image.endsWith(suffix));
+  }, [image]);
+
+  const mediaEl = useMemo(() => {
+    if (image && isVideo) {
+      return (
+        <video
+          src={image}
+          poster={proxy(image)}
+          autoPlay={true}
+          loop={true}
+          controls={true}
+          className="max-h-screen max-w-full"
+        />
+      );
+    } else {
+      return <ProxyImg src={image} className="max-h-screen max-w-full" />;
+    }
+  }, [image, isVideo]);
+
   return (
     <>
-      <ProxyImg src={image} className="max-h-screen max-w-full" />
+      {mediaEl}
       <div className="select-none absolute flex flex-row items-center gap-4 cursor-pointer left-0 top-0 p-4">
         <Icon name="x-close" size={24} onClick={props.onClose} />
         {props.images.length > 1 && `${idx + 1}/${props.images.length}`}

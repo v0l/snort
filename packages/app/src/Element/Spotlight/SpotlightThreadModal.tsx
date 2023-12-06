@@ -30,7 +30,9 @@ function SpotlightFromThread({ onClose }: { onClose: () => void }) {
   const thread = useContext(ThreadContext);
 
   const parsed = thread.root ? transformTextCached(thread.root.id, thread.root.content, thread.root.tags) : [];
-  const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
+  const images = parsed.filter(
+    a => a.type === "media" && (a.mimeType?.startsWith("image/") || a.mimeType?.startsWith("video/")),
+  );
   if (images.length === 0) return;
   return <SpotlightMedia images={images.map(a => a.content)} idx={0} onClose={onClose} />;
 }
