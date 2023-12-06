@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 import { TimelineFragment } from "@/Element/Feed/TimelineFragment";
 import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import useImgProxy from "@/Hooks/useImgProxy";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { DisplayAs } from "@/Element/Feed/DisplayAsSelector";
 
 export interface TimelineRendererProps {
@@ -27,7 +27,6 @@ export interface TimelineRendererProps {
 export function TimelineRenderer(props: TimelineRendererProps) {
   const { ref, inView } = useInView();
   const { proxy } = useImgProxy();
-  const navigate = useNavigate();
 
   const renderNotes = () => {
     return props.frags.map(frag => (
@@ -41,13 +40,6 @@ export function TimelineRenderer(props: TimelineRendererProps) {
     ));
   };
 
-  const noteOnClick =
-    props.noteOnClick ||
-    ((ev: TaggedNostrEvent) => {
-      const noteId = NostrLink.fromEvent(ev).encode(CONFIG.eventLinkPrefix);
-      navigate(`/${noteId}`);
-    });
-
   const renderGrid = () => {
     // TODO Hide images from notes with a content warning, unless otherwise configured
     const noteImageRenderer = (e: TaggedNostrEvent) => {
@@ -59,15 +51,16 @@ export function TimelineRenderer(props: TimelineRendererProps) {
       if (media.length === 0) return null;
 
       const isVideo = media[0].mimeType?.startsWith("video/");
+      const noteId = NostrLink.fromEvent(e).encode(CONFIG.eventLinkPrefix);
 
       return (
-        <div
-          className="aspect-square bg-center bg-cover cursor-pointer hover:opacity-80 relative"
-          key={e.id}
-          style={{ backgroundImage: `url(${proxy(media[0].content, 256)})` }}
-          onClick={() => noteOnClick(e)}>
+        <Link
+          to={`/${noteId}`}
+          className="aspect-square cursor-pointer hover:opacity-80 relative"
+          onClick={() => props.noteOnClick?.(e)}>
+          <img src={proxy(media[0].content, 256)} alt="Note Media" className="w-full h-full object-cover" />
           {isVideo && <Icon name="play-square-outline" className="absolute right-2 top-2 text-white opacity-80" />}
-        </div>
+        </Link>
       );
     };
 
