@@ -9,12 +9,17 @@ import { NostrLink } from "@snort/system";
 export function SpotlightThreadModal(props: { thread: NostrLink; onClose?: () => void; onBack?: () => void }) {
   const onClose = () => props.onClose?.();
   const onBack = () => props.onBack?.();
+  const onClickBg = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  }
 
   return (
     <Modal id="thread-overlay" onClose={onClose} bodyClassName={"flex flex-1"}>
       <ThreadContextWrapper link={props.thread}>
         <div className="flex flex-row h-screen w-screen">
-          <div className="flex w-full md:w-2/3 items-center justify-center overflow-hidden">
+          <div className="flex w-full md:w-2/3 items-center justify-center overflow-hidden" onClick={onClickBg}>
             <SpotlightFromThread onClose={onClose} />
           </div>
           <div className="hidden md:flex w-1/3 min-w-[400px] flex-shrink-0 overflow-y-auto bg-bg-color">
