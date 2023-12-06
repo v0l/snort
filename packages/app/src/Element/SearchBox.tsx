@@ -21,6 +21,7 @@ export default function SearchBox() {
   const [isFocused, setIsFocused] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const resultListRef = useRef<HTMLDivElement | null>(null);
@@ -78,6 +79,10 @@ export default function SearchBox() {
       if (e.key === "Escape") {
         setSearch("");
       }
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
     };
 
     document.addEventListener("keydown", handleGlobalKeyDown);
@@ -129,6 +134,7 @@ export default function SearchBox() {
         } else if (activeIndex > 0 && results) {
           const selectedResult = results[activeIndex - 1];
           navigate(`/${new NostrLink(CONFIG.profileLinkPrefix, selectedResult.pubkey).encode()}`);
+          inputRef.current?.blur();
         } else {
           executeSearch();
         }
@@ -149,6 +155,7 @@ export default function SearchBox() {
   return (
     <div className="search relative">
       <input
+        ref={inputRef}
         type="text"
         placeholder={formatMessage({ defaultMessage: "Search", id: "xmcVZ0" })}
         className="w-max"

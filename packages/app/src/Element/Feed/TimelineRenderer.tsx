@@ -63,7 +63,9 @@ export function TimelineRenderer(props: TimelineRendererProps) {
       return (
         <Link to={`/${noteId}`} className="aspect-square cursor-pointer hover:opacity-80 relative" onClick={onClick}>
           <img src={proxy(media[0].content, 256)} alt="Note Media" className="w-full h-full object-cover" />
-          {isVideo && <Icon name="play-square-outline" className="absolute right-2 top-2 text-white opacity-80" />}
+          {isVideo && (
+            <Icon name="play-square-outline" className="absolute right-2 top-2 text-white opacity-80 drop-shadow-md" />
+          )}
         </Link>
       );
     };
