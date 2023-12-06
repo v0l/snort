@@ -14,10 +14,10 @@ export function SpotlightThreadModal(props: { thread: NostrLink; onClose?: () =>
     <Modal id="thread-overlay" onClose={onClose} bodyClassName={"flex flex-1"}>
       <ThreadContextWrapper link={props.thread}>
         <div className="flex flex-row h-screen w-screen">
-          <div className="flex w-2/3 items-center justify-center overflow-hidden">
+          <div className="flex w-full md:w-2/3 items-center justify-center overflow-hidden">
             <SpotlightFromThread onClose={onClose} />
           </div>
-          <div className="flex w-1/3 flex-shrink-0 overflow-y-auto bg-bg-color">
+          <div className="hidden md:flex w-1/3 min-w-[400px] flex-shrink-0 overflow-y-auto bg-bg-color">
             <Thread onBack={onBack} disableSpotlight={true} />
           </div>
         </div>
