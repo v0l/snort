@@ -53,11 +53,15 @@ export function TimelineRenderer(props: TimelineRendererProps) {
       const isVideo = media[0].mimeType?.startsWith("video/");
       const noteId = NostrLink.fromEvent(e).encode(CONFIG.eventLinkPrefix);
 
+      const onClick = (clickEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        if (props.noteOnClick) {
+          props.noteOnClick(e);
+          clickEvent.preventDefault();
+        }
+      };
+
       return (
-        <Link
-          to={`/${noteId}`}
-          className="aspect-square cursor-pointer hover:opacity-80 relative"
-          onClick={() => props.noteOnClick?.(e)}>
+        <Link to={`/${noteId}`} className="aspect-square cursor-pointer hover:opacity-80 relative" onClick={onClick}>
           <img src={proxy(media[0].content, 256)} alt="Note Media" className="w-full h-full object-cover" />
           {isVideo && <Icon name="play-square-outline" className="absolute right-2 top-2 text-white opacity-80" />}
         </Link>

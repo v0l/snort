@@ -66,6 +66,7 @@ declare const CONFIG: {
   hideFromNavbar: Array<string>;
   // Limit deck to certain subscriber tier
   deckSubKind?: number;
+  showDeck?: boolean;
   // Create toast notifications when publishing notes
   noteCreatorToast?: boolean;
   eventLinkPrefix: NostrPrefix;

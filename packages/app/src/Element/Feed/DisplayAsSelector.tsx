@@ -36,7 +36,7 @@ export const DisplayAsSelector = ({ activeSelection, onSelect, show }: DisplaySe
     <div className="flex mb-px md:mb-1">
       <div className={getClasses("list")} onClick={() => myOnSelect("list")}>
         <span className="rotate-90">
-          <Icon name="deck" />
+          <Icon name="deck-solid" />
         </span>
       </div>
       <div className={getClasses("grid")} onClick={() => myOnSelect("grid")}>

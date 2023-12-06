@@ -45,7 +45,7 @@ import { EmailRegex } from "@/Const";
 import useLogin from "@/Hooks/useLogin";
 import { ZapTarget } from "@/Zapper";
 import { useStatusFeed } from "@/Feed/StatusFeed";
-import { SpotlightMediaModal } from "@/Element/SpotlightMedia";
+import { SpotlightMediaModal } from "@/Element/Spotlight/SpotlightMedia";
 import ProfileTab, {
   BookMarksTab,
   FollowersTab,

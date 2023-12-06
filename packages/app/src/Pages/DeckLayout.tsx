@@ -1,5 +1,5 @@
 import "./Deck.css";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
@@ -13,10 +13,7 @@ import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import Icon from "@/Icons/Icon";
 import NotificationsPage from "./Notifications/Notifications";
 import Modal from "@/Element/Modal";
-import { Thread } from "@/Element/Event/Thread";
 import { RootTabs } from "@/Element/Feed/RootTabs";
-import { SpotlightMedia } from "@/Element/SpotlightMedia";
-import { ThreadContext, ThreadContextWrapper } from "@/Hooks/useThreadContext";
 import Toaster from "@/Toaster";
 import useLogin from "@/Hooks/useLogin";
 import { LongFormText } from "@/Element/Event/LongFormText";
@@ -24,6 +21,7 @@ import NavSidebar from "@/Pages/Layout/NavSidebar";
 import ErrorBoundary from "@/Element/ErrorBoundary";
 import { getCurrentSubscription } from "@/Subscription";
 import { mapPlanName } from "./subscribe";
+import { SpotlightThreadModal } from "@/Element/Spotlight/SpotlightThreadModal";
 
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 
@@ -60,7 +58,8 @@ export function SnortDeckLayout() {
   }, [login]);
 
   if (!login.publicKey) return null;
-  if (CONFIG.deckSubKind !== undefined && (sub?.type ?? -1) < CONFIG.deckSubKind) {
+  const showDeck = CONFIG.showDeck || !(CONFIG.deckSubKind !== undefined && (sub?.type ?? -1) < CONFIG.deckSubKind);
+  if (!showDeck) {
     return (
       <div className="deck-layout">
         <NavSidebar narrow={true} />
@@ -115,16 +114,11 @@ export function SnortDeckLayout() {
             })}
           </div>
           {deckState.thread && (
-            <>
-              <Modal id="thread-overlay" onClose={() => setDeckState({})} className="thread-overlay thread">
-                <ThreadContextWrapper link={deckState.thread}>
-                  <SpotlightFromThread onClose={() => setDeckState({})} />
-                  <div>
-                    <Thread onBack={() => setDeckState({})} disableSpotlight={true} />
-                  </div>
-                </ThreadContextWrapper>
-              </Modal>
-            </>
+            <SpotlightThreadModal
+              thread={deckState.thread}
+              onClose={() => setDeckState({})}
+              onBack={() => setDeckState({})}
+            />
           )}
           {deckState.article && (
             <>
@@ -144,15 +138,6 @@ export function SnortDeckLayout() {
       </DeckContext.Provider>
     </div>
   );
-}
-
-function SpotlightFromThread({ onClose }: { onClose: () => void }) {
-  const thread = useContext(ThreadContext);
-
-  const parsed = thread.root ? transformTextCached(thread.root.id, thread.root.content, thread.root.tags) : [];
-  const images = parsed.filter(a => a.type === "media" && a.mimeType?.startsWith("image/"));
-  if (images.length === 0) return;
-  return <SpotlightMedia images={images.map(a => a.content)} idx={0} onClose={onClose} />;
 }
 
 function NotesCol() {
