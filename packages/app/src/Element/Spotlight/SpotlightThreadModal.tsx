@@ -11,11 +11,15 @@ export function SpotlightThreadModal(props: { thread: NostrLink; onClose?: () =>
   const onBack = () => props.onBack?.();
 
   return (
-    <Modal id="thread-overlay" onClose={onClose} className="thread-overlay thread">
+    <Modal id="thread-overlay" onClose={onClose} bodyClassName={"flex flex-1"}>
       <ThreadContextWrapper link={props.thread}>
-        <SpotlightFromThread onClose={onClose} />
-        <div>
-          <Thread onBack={onBack} disableSpotlight={true} />
+        <div className="flex flex-row h-screen w-screen">
+          <div className="flex w-2/3 items-center justify-center overflow-hidden">
+            <SpotlightFromThread onClose={onClose} />
+          </div>
+          <div className="flex w-1/3 flex-shrink-0 overflow-y-auto bg-bg-color">
+            <Thread onBack={onBack} disableSpotlight={true} />
+          </div>
         </div>
       </ThreadContextWrapper>
     </Modal>

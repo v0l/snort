@@ -5,6 +5,7 @@ import { ReactNode, useEffect } from "react";
 export interface ModalProps {
   id: string;
   className?: string;
+  bodyClassName?: string;
   onClose?: (e: React.MouseEvent | KeyboardEvent) => void;
   onClick?: (e: React.MouseEvent) => void;
   children: ReactNode;
@@ -60,7 +61,7 @@ export default function Modal(props: ModalProps) {
 
   return createPortal(
     <div className={`modal${props.className ? ` ${props.className}` : ""}`} onClick={props.onClose}>
-      <div className="modal-body" onClick={props.onClose}>
+      <div className={props.bodyClassName || "modal-body"} onClick={props.onClose}>
         <div
           onClick={e => {
             e.stopPropagation();

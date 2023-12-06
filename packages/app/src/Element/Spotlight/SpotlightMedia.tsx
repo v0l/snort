@@ -1,4 +1,3 @@
-import "./SpotlightMedia.css";
 import { useEffect, useMemo, useState } from "react";
 import Modal from "@/Element/Modal";
 import Icon from "@/Icons/Icon";
@@ -60,16 +59,16 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
   }
 
   return (
-    <div className="spotlight">
-      <ProxyImg src={image} />
-      <div className="details">
-        {props.images.length > 1 && `${idx + 1}/${props.images.length}`}
+    <>
+      <ProxyImg src={image} className="max-h-screen max-w-full" />
+      <div className="select-none absolute flex flex-row items-center gap-4 cursor-pointer left-0 top-0 p-4">
         <Icon name="x-close" size={24} onClick={props.onClose} />
+        {props.images.length > 1 && `${idx + 1}/${props.images.length}`}
       </div>
       {props.images.length > 1 && (
         <>
           <Icon
-            className="left"
+            className="absolute left-2 top-1/2 rotate-180 cursor-pointer"
             name="arrowFront"
             size={24}
             onClick={e => {
@@ -78,7 +77,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
             }}
           />
           <Icon
-            className="right"
+            className="absolute right-2 top-1/2 cursor-pointer"
             name="arrowFront"
             size={24}
             onClick={e => {
@@ -88,13 +87,18 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
           />
         </>
       )}
-    </div>
+    </>
   );
 }
 
 export function SpotlightMediaModal(props: SpotlightMediaProps) {
   return (
-    <Modal id="spotlight" onClick={props.onClose} onClose={props.onClose} className="spotlight">
+    <Modal
+      id="spotlight"
+      onClick={props.onClose}
+      onClose={props.onClose}
+      className="spotlight"
+      bodyClassName="h-screen w-screen flex items-center justify-center">
       <SpotlightMedia {...props} />
     </Modal>
   );

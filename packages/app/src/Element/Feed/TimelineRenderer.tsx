@@ -3,12 +3,13 @@ import ProfileImage from "@/Element/User/ProfileImage";
 import { FormattedMessage } from "react-intl";
 import Icon from "@/Icons/Icon";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { TimelineFragment } from "@/Element/Feed/TimelineFragment";
 import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import useImgProxy from "@/Hooks/useImgProxy";
 import { Link } from "react-router-dom";
 import { DisplayAs } from "@/Element/Feed/DisplayAsSelector";
+import { SpotlightThreadModal } from "@/Element/Spotlight/SpotlightThreadModal";
 
 export interface TimelineRendererProps {
   frags: Array<TimelineFragment>;
@@ -27,6 +28,7 @@ export interface TimelineRendererProps {
 export function TimelineRenderer(props: TimelineRendererProps) {
   const { ref, inView } = useInView();
   const { proxy } = useImgProxy();
+  const [modalThread, setModalThread] = useState<NostrLink | undefined>(undefined);
 
   const renderNotes = () => {
     return props.frags.map(frag => (
@@ -56,6 +58,9 @@ export function TimelineRenderer(props: TimelineRendererProps) {
       const onClick = (clickEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         if (props.noteOnClick) {
           props.noteOnClick(e);
+          clickEvent.preventDefault();
+        } else if (window.innerWidth >= 768) {
+          setModalThread(NostrLink.fromEvent(e));
           clickEvent.preventDefault();
         }
       };
@@ -118,6 +123,13 @@ export function TimelineRenderer(props: TimelineRendererProps) {
         </>
       )}
       {props.displayAs === "grid" ? renderGrid() : renderNotes()}
+      {modalThread && (
+        <SpotlightThreadModal
+          thread={modalThread}
+          onClose={() => setModalThread(undefined)}
+          onBack={() => setModalThread(undefined)}
+        />
+      )}
     </>
   );
 }
