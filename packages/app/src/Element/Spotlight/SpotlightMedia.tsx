@@ -86,8 +86,12 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
   return (
     <>
       {mediaEl}
-      <div className="select-none absolute flex flex-row items-center gap-4 cursor-pointer left-0 top-0 p-4">
-        <Icon name="x-close" size={24} onClick={props.onClose} />
+      <div className="select-none absolute flex flex-row items-center gap-4 left-0 top-0 p-4">
+        <span
+          className="p-2 bg-bg-color rounded-full cursor-pointer opacity-80 hover:opacity-70"
+          onClick={props.onClose}>
+          <Icon name="x-close" size={24} />
+        </span>
         {props.images.length > 1 && `${idx + 1}/${props.images.length}`}
       </div>
       {props.images.length > 1 && (
