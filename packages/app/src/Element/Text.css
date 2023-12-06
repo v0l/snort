@@ -28,17 +28,6 @@
   overflow: scroll;
 }
 
-.text img:not(.custom-emoji),
-.text video,
-.text iframe,
-.text audio {
-  max-width: 100%;
-  display: block;
-  max-height: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .text iframe[src*="youtube.com"] {
   aspect-ratio: 16/9;
 }

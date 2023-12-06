@@ -14,12 +14,31 @@ interface MediaElementProps {
 export function MediaElement(props: MediaElementProps) {
   const { proxy } = useImgProxy();
 
+  const autoplay = window.innerWidth >= 768;
+
   if (props.mime.startsWith("image/")) {
-    return <ProxyImg key={props.url} src={props.url} onClick={props.onMediaClick} />;
+    return (
+      // constant height container avoids layout shift when images load
+      <div className="-mx-4 md:mx-0 my-3 md:h-80 flex items-center justify-center">
+        <ProxyImg key={props.url} src={props.url} onClick={props.onMediaClick} className="md:max-h-80" />
+      </div>
+    );
   } else if (props.mime.startsWith("audio/")) {
     return <audio key={props.url} src={props.url} controls />;
   } else if (props.mime.startsWith("video/")) {
-    return <video key={props.url} src={props.url} controls poster={proxy(props.url)} />;
+    return (
+      <div className="-mx-4 md:mx-0 my-3 md:h-80 flex items-center justify-center">
+        <video
+          autoPlay={autoplay}
+          muted={autoplay}
+          key={props.url}
+          src={props.url}
+          controls
+          poster={proxy(props.url)}
+          className="md:max-h-80"
+        />
+      </div>
+    );
   } else {
     return (
       <a
