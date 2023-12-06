@@ -13,7 +13,7 @@ export function SpotlightThreadModal(props: { thread: NostrLink; onClose?: () =>
     if (e.target === e.currentTarget) {
       onClose();
     }
-  }
+  };
 
   return (
     <Modal id="thread-overlay" onClose={onClose} bodyClassName={"flex flex-1"}>
