@@ -121,11 +121,15 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
 }
 
 export function SpotlightMediaModal(props: SpotlightMediaProps) {
+  const onClose = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    props.onClose();
+  };
   return (
     <Modal
       id="spotlight"
       onClick={props.onClose}
-      onClose={props.onClose}
+      onClose={onClose}
       className="spotlight"
       bodyClassName="h-screen w-screen flex items-center justify-center">
       <SpotlightMedia {...props} />
