@@ -26,6 +26,7 @@ import HiddenNote from "./HiddenNote";
 import { NoteProps } from "./Note";
 import { chainKey } from "@/Hooks/useThreadContext";
 import { ProfileLink } from "@/Element/User/ProfileLink";
+import DisplayName from "@/Element/User/DisplayName";
 
 const TEXT_TRUNCATE_LENGTH = 400;
 
@@ -241,7 +242,7 @@ export function NoteInner(props: NoteProps) {
         name: u?.name ?? shortNpub,
         link: (
           <ProfileLink pubkey={pk} user={u}>
-            {u?.name ? `@${u.name}` : shortNpub}
+            <DisplayName pubkey={pk} user={u} />{" "}
           </ProfileLink>
         ),
       });
