@@ -90,38 +90,36 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
   };
 
   return (
-    <div className="relative h-screen flex items-center flex-1 justify-center" onClick={onClickBg}>
+    <div className="select-none relative h-screen flex items-center flex-1 justify-center" onClick={onClickBg}>
       {mediaEl}
-      <div className="select-none absolute flex flex-row items-center gap-4 left-0 top-0 p-4">
+      <div className="absolute flex flex-row items-center gap-4 left-0 top-0 p-4">
         <span
           className="p-2 bg-bg-color rounded-full cursor-pointer opacity-80 hover:opacity-70"
           onClick={props.onClose}>
           <Icon name="x-close" size={24} />
         </span>
       </div>
-      <div className="select-none absolute flex flex-row items-center gap-4 right-0 top-0 p-4">
+      <div className="absolute flex flex-row items-center gap-4 right-0 top-0 p-4">
         {props.images.length > 1 && `${idx + 1}/${props.images.length}`}
       </div>
       {props.images.length > 1 && (
         <>
-          <Icon
-            className="absolute left-2 top-1/2 rotate-180 cursor-pointer"
-            name="arrowFront"
-            size={24}
+          <span
+            className="absolute left-0 p-2 top-1/2 rotate-180 cursor-pointer opacity-80 hover:opacity-60"
             onClick={e => {
               e.stopPropagation();
               dec();
-            }}
-          />
-          <Icon
-            className="absolute right-2 top-1/2 cursor-pointer"
-            name="arrowFront"
-            size={24}
+            }}>
+            <Icon name="arrowFront" size={24} />
+          </span>
+          <span
+            className="absolute right-0 p-2 top-1/2 cursor-pointer opacity-80 hover:opacity-60"
             onClick={e => {
               e.stopPropagation();
               inc();
-            }}
-          />
+            }}>
+            <Icon name="arrowFront" size={24} />
+          </span>
         </>
       )}
     </div>
