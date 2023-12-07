@@ -52,6 +52,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
 
       if (media.length === 0) return null;
 
+      const multiple = media.length > 1;
       const isVideo = media[0].mimeType?.startsWith("video/");
       const noteId = NostrLink.fromEvent(e).encode(CONFIG.eventLinkPrefix);
 
@@ -68,9 +69,10 @@ export function TimelineRenderer(props: TimelineRendererProps) {
       return (
         <Link to={`/${noteId}`} className="aspect-square cursor-pointer hover:opacity-80 relative" onClick={onClick}>
           <img src={proxy(media[0].content, 256)} alt="Note Media" className="w-full h-full object-cover" />
-          {isVideo && (
-            <Icon name="play-square-outline" className="absolute right-2 top-2 text-white opacity-80 drop-shadow-md" />
-          )}
+          <div className="absolute right-2 top-2 flex flex-col gap-2">
+            {multiple && <Icon name="copy-solid" className="text-white opacity-80 drop-shadow-md" />}
+            {isVideo && <Icon name="play-square-outline" className="text-white opacity-80 drop-shadow-md" />}
+          </div>
         </Link>
       );
     };
