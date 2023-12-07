@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
-  encodeTLV,
   encodeTLVEntries,
   EventKind,
   MetadataCache,
@@ -12,10 +11,10 @@ import {
   TLVEntryType,
   tryParseNostrLink,
 } from "@snort/system";
-import { LNURL, fetchNip05Pubkey } from "@snort/shared";
+import { fetchNip05Pubkey, LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
-import { findTag, getLinkReactions, unwrap } from "@/SnortUtils";
+import { findTag, getLinkReactions, hexToBech32, parseId, unwrap } from "@/SnortUtils";
 import Note from "@/Element/Event/Note";
 import { Tab, TabElement } from "@/Element/Tabs";
 import Icon from "@/Icons/Icon";
@@ -23,7 +22,6 @@ import useFollowsFeed from "@/Feed/FollowsFeed";
 import useProfileBadges from "@/Feed/BadgesFeed";
 import useModeration from "@/Hooks/useModeration";
 import FollowButton from "@/Element/User/FollowButton";
-import { parseId } from "@/SnortUtils";
 import Avatar from "@/Element/User/Avatar";
 import Timeline from "@/Element/Feed/Timeline";
 import Text from "@/Element/Text";
@@ -298,7 +296,8 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   function renderIcons() {
     if (!id) return;
 
-    const link = encodeTLV(CONFIG.profileLinkPrefix, id);
+    const profileId = hexToBech32(CONFIG.profileLinkPrefix, id);
+
     return (
       <>
         <IconButton onClick={() => setShowProfileQr(true)} icon={{ name: "qr", size: 16 }} />
@@ -306,8 +305,8 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
           <Modal id="profile-qr" className="qr-modal" onClose={() => setShowProfileQr(false)}>
             <ProfileImage pubkey={id} />
             <div className="flex flex-col items-center">
-              <QrCode data={link} className="m10" />
-              <Copy text={link} className="py-3" />
+              <QrCode data={`nostr:${profileId}`} className="m10" />
+              <Copy text={profileId} className="py-3" />
             </div>
           </Modal>
         )}
