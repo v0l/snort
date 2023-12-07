@@ -119,7 +119,11 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
 export function RootTabs({ base = "/" }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { publicKey: pubKey, tags, preferences } = useLogin(s => ({
+  const {
+    publicKey: pubKey,
+    tags,
+    preferences,
+  } = useLogin(s => ({
     publicKey: s.publicKey,
     tags: s.tags,
     preferences: s.appData.item.preferences,
