@@ -485,17 +485,17 @@ export const isHalloween = () => {
 
 export const isStPatricksDay = () => {
   const event = new Date(ThisYear, 2, 17);
-  return IsTheSeason(event, 7);
+  return IsTheSeason(event, 1);
 };
 
 export const isChristmas = () => {
   const event = new Date(ThisYear, 11, 25);
-  return IsTheSeason(event, 30);
+  return IsTheSeason(event, 7);
 };
 
 export const isBirthday = () => {
   const event = new Date(ThisYear, Birthday.getMonth(), Birthday.getDate());
-  return IsTheSeason(event, 1);
+  return CONFIG.appName === "Snort" && IsTheSeason(event, 1);
 };
 
 export function getDisplayName(user: UserMetadata | undefined, pubkey: HexKey): string {
