@@ -52,6 +52,7 @@ export function parseZap(zapReceipt: NostrEvent): ParsedZap {
         errors: [],
         pollOption: pollOpt ? Number(pollOpt) : undefined,
         targetEvents: NostrLink.fromTags(zapRequest.tags),
+        created_at: zapRequest.created_at,
       };
       if (findTag(zapRequest, "p") !== findTag(zapReceipt, "p")) {
         ret.valid = false;
@@ -77,6 +78,7 @@ export function parseZap(zapReceipt: NostrEvent): ParsedZap {
     anonZap: false,
     errors: ["invalid zap, parsing failed"],
     targetEvents: [],
+    created_at: zapReceipt.created_at,
   } as ParsedZap;
   if (!ret.valid) {
     Log("Invalid zap %O", ret);
@@ -98,6 +100,7 @@ export interface ParsedZap {
   content?: string;
   sender?: string;
   pollOption?: number;
+  created_at: number;
 
   /**
    * A list of targets this zap is zapping
