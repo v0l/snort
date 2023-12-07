@@ -48,6 +48,10 @@
   margin: 0;
 }
 
+.gallery-item div {
+  height: 100%;
+}
+
 .gallery-item img {
   object-fit: cover;
   width: 100%;

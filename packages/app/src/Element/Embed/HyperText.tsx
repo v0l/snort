@@ -46,7 +46,7 @@ export default function HyperText({ link, depth, showLinkPreview, children }: Hy
     if (youtubeId) {
       return (
         <iframe
-          className="w-max"
+          className="-mx-4 md:mx-0 w-max"
           src={`https://www.youtube.com/embed/${youtubeId}`}
           title="YouTube video player"
           key={youtubeId}
