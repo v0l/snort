@@ -21,7 +21,7 @@ const ImageGridItem = (props: { event: TaggedNostrEvent; onClick: (e: MouseEvent
   const noteId = NostrLink.fromEvent(event).encode(CONFIG.eventLinkPrefix);
 
   const myOnClick = (clickEvent: MouseEvent) => {
-    if (onClick) {
+    if (onClick && window.innerWidth >= 768) {
       onClick(clickEvent);
       clickEvent.preventDefault();
     }
