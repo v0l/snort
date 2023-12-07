@@ -87,7 +87,7 @@ export function Header() {
       {!isRootTab && (
         <div
           onClick={scrollUp}
-          className="cursor-pointer flex-1 text-center p-2 overflow-hidden whitespace-nowrap truncate">
+          className="cursor-pointer flex-1 text-center p-2 overflow-hidden whitespace-nowrap truncate text-lg">
           {title}
         </div>
       )}

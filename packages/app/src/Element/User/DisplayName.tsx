@@ -7,7 +7,7 @@ import classNames from "classnames";
 
 interface DisplayNameProps {
   pubkey: HexKey;
-  user: UserMetadata | undefined;
+  user?: UserMetadata | undefined;
 }
 
 const DisplayName = ({ pubkey }: DisplayNameProps) => {
