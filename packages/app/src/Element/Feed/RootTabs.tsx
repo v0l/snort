@@ -142,7 +142,7 @@ export function RootTabs({ base = "/" }) {
     if (currentTab && currentTab !== rootType) {
       setRootType(currentTab);
     }
-  }, [location, menuItems, rootType]);
+  }, [location.pathname, menuItems, rootType]);
 
   function currentMenuItem() {
     if (location.pathname.startsWith(`${base}/t/`)) {

@@ -5,11 +5,9 @@ import Icon from "@/Icons/Icon";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { ReactNode, useState } from "react";
 import { TimelineFragment } from "@/Element/Feed/TimelineFragment";
-import { transformTextCached } from "@/Hooks/useTextTransformCache";
-import useImgProxy from "@/Hooks/useImgProxy";
-import { Link } from "react-router-dom";
 import { DisplayAs } from "@/Element/Feed/DisplayAsSelector";
 import { SpotlightThreadModal } from "@/Element/Spotlight/SpotlightThreadModal";
+import ImageGridItem from "@/Element/Feed/ImageGridItem";
 
 export interface TimelineRendererProps {
   frags: Array<TimelineFragment>;
@@ -27,7 +25,6 @@ export interface TimelineRendererProps {
 
 export function TimelineRenderer(props: TimelineRendererProps) {
   const { ref, inView } = useInView();
-  const { proxy } = useImgProxy();
   const [modalThread, setModalThread] = useState<NostrLink | undefined>(undefined);
 
   const renderNotes = () => {
@@ -44,43 +41,13 @@ export function TimelineRenderer(props: TimelineRendererProps) {
 
   const renderGrid = () => {
     // TODO Hide images from notes with a content warning, unless otherwise configured
-    const noteImageRenderer = (e: TaggedNostrEvent) => {
-      const parsed = transformTextCached(e.id, e.content, e.tags);
-      const media = parsed.filter(
-        a => a.type === "media" && (a.mimeType?.startsWith("image/") || a.mimeType?.startsWith("video/")),
-      );
-
-      if (media.length === 0) return null;
-
-      const multiple = media.length > 1;
-      const isVideo = media[0].mimeType?.startsWith("video/");
-      const noteId = NostrLink.fromEvent(e).encode(CONFIG.eventLinkPrefix);
-
-      const onClick = (clickEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        if (props.noteOnClick) {
-          props.noteOnClick(e);
-          clickEvent.preventDefault();
-        } else if (window.innerWidth >= 768) {
-          setModalThread(NostrLink.fromEvent(e));
-          clickEvent.preventDefault();
-        }
-      };
-
-      return (
-        <Link to={`/${noteId}`} className="aspect-square cursor-pointer hover:opacity-80 relative" onClick={onClick}>
-          <img src={proxy(media[0].content, 256)} alt="Note Media" className="w-full h-full object-cover" />
-          <div className="absolute right-2 top-2 flex flex-col gap-2">
-            {multiple && <Icon name="copy-solid" className="text-white opacity-80 drop-shadow-md" />}
-            {isVideo && <Icon name="play-square-outline" className="text-white opacity-80 drop-shadow-md" />}
-          </div>
-        </Link>
-      );
-    };
-
-    const noteRenderer = props.noteRenderer || noteImageRenderer;
 
     return props.frags.map(frag => (
-      <div className="grid grid-cols-3 gap-px md:gap-1">{frag.events.map(event => noteRenderer(event))}</div>
+      <div className="grid grid-cols-3 gap-px md:gap-1">
+        {frag.events.map(event => (
+          <ImageGridItem event={event} onClick={() => setModalThread(NostrLink.fromEvent(event))} />
+        ))}
+      </div>
     ));
   };
 

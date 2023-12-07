@@ -10,6 +10,8 @@ import { useLocale } from "@/IntlProvider";
 import useModeration from "@/Hooks/useModeration";
 import ShortNote from "@/Element/Trending/ShortNote";
 import classNames from "classnames";
+import { DisplayAs, DisplayAsSelector } from "@/Element/Feed/DisplayAsSelector";
+import ImageGridItem from "@/Element/Feed/ImageGridItem";
 
 export default function TrendingNotes({ count = Infinity, small = false }) {
   // Added count prop with a default value
@@ -17,6 +19,7 @@ export default function TrendingNotes({ count = Infinity, small = false }) {
   const [error, setError] = useState<Error>();
   const { lang } = useLocale();
   const { isEventMuted } = useModeration();
+  const [displayAs, setDisplayAs] = useState<DisplayAs>("list");
   const related = useReactions("trending", posts?.map(a => NostrLink.fromEvent(a)) ?? [], undefined, true);
 
   async function loadTrendingNotes() {
@@ -46,18 +49,34 @@ export default function TrendingNotes({ count = Infinity, small = false }) {
     showContextMenu: !small,
   };
 
+  const filteredAndLimitedPosts = () => {
+    return posts.filter(a => !isEventMuted(a)).slice(0, count);
+  };
+
+  const renderGrid = () => {
+    return (
+      <div className="grid grid-cols-3 gap-px md:gap-1">
+        {filteredAndLimitedPosts().map(e => (
+          <ImageGridItem event={e as TaggedNostrEvent} onClick={() => {}} />
+        ))}
+      </div>
+    );
+  };
+
+  const renderList = () => {
+    return filteredAndLimitedPosts().map(e =>
+      small ? (
+        <ShortNote event={e as TaggedNostrEvent} />
+      ) : (
+        <Note data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} options={options} />
+      ),
+    );
+  };
+
   return (
     <div className={classNames("flex flex-col", { "gap-6": small, "py-4": small })}>
-      {posts
-        .filter(a => !isEventMuted(a))
-        .slice(0, count) // Limit the number of posts displayed
-        .map(e =>
-          small ? (
-            <ShortNote key={e.id} event={e as TaggedNostrEvent} />
-          ) : (
-            <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} options={options} />
-          ),
-        )}
+      {!small && <DisplayAsSelector activeSelection={displayAs} onSelect={a => setDisplayAs(a)} />}
+      {displayAs === "grid" ? renderGrid() : renderList()}
     </div>
   );
 }
