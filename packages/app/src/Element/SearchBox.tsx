@@ -121,8 +121,14 @@ export default function SearchBox() {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.value.match(/nsec1[a-zA-Z0-9]{20,65}/gi)) {
-      setSearch(e.target.value);
+    const val = e.target.value;
+    if (val.match(/nsec1[a-zA-Z0-9]{20,65}/gi)) {
+      e.preventDefault();
+    } else if (val.trim().match(/^(npub|note|nevent|nprofile)1[a-zA-Z0-9]{20,200}$/gi)) {
+      navigate(`/${val.trim()}`);
+      e.preventDefault();
+    } else {
+      setSearch(val);
     }
   };
 
