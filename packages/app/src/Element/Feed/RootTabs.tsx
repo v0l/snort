@@ -128,18 +128,21 @@ export function RootTabs({ base = "/" }) {
     tags: s.tags,
     preferences: s.appData.item.preferences,
   }));
-  const [rootType, setRootType] = useState<RootTab>("following");
 
   const menuItems = useMemo(() => rootTabItems(base, pubKey, tags), [base, pubKey, tags]);
 
+  const defaultTab = pubKey ? preferences.defaultRootTab ?? `${base}/notes` : `${base}/trending/notes`;
+  const initialPathname = location.pathname === "/" ? defaultTab : location.pathname;
+  const initialRootType = menuItems.find(a => a.path === initialPathname)?.tab || "following";
+
+  const [rootType, setRootType] = useState<RootTab>(initialRootType);
+
   useEffect(() => {
-    const defaultTab = pubKey ? preferences.defaultRootTab ?? `${base}/notes` : `${base}/trending/notes`;
-    const pathname = location.pathname === "/" ? defaultTab : location.pathname;
-    const currentTab = menuItems.find(a => a.path === pathname)?.tab;
-    if (currentTab) {
+    const currentTab = menuItems.find(a => a.path === location.pathname)?.tab;
+    if (currentTab && currentTab !== rootType) {
       setRootType(currentTab);
     }
-  }, [location, menuItems]);
+  }, [location, menuItems, rootType]);
 
   function currentMenuItem() {
     if (location.pathname.startsWith(`${base}/t/`)) {
