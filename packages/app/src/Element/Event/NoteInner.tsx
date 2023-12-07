@@ -335,7 +335,6 @@ export function NoteInner(props: NoteProps) {
               pubkey={ev.pubkey}
               subHeader={replyTag() ?? undefined}
               link={opt?.canClick === undefined ? undefined : ""}
-              showNip05={CONFIG.showNip05InNotes}
             />
             <div className="info">
               {props.context}

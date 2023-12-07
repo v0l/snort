@@ -6,7 +6,6 @@ import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
 
 import Avatar from "@/Element/User/Avatar";
-import Nip05 from "@/Element/User/Nip05";
 import DisplayName from "./DisplayName";
 import { ProfileLink } from "./ProfileLink";
 import { ProfileCard } from "./ProfileCard";
@@ -20,7 +19,6 @@ export interface ProfileImageProps {
   link?: string;
   defaultNip?: string;
   verifyNip?: boolean;
-  showNip05?: boolean;
   overrideUsername?: string;
   profile?: UserMetadata;
   size?: number;
@@ -37,9 +35,6 @@ export default function ProfileImage({
   showUsername = true,
   className,
   link,
-  defaultNip,
-  verifyNip,
-  showNip05 = true,
   overrideUsername,
   profile,
   size,
@@ -50,7 +45,6 @@ export default function ProfileImage({
   showProfileCard = true,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
-  const nip05 = defaultNip ? defaultNip : user?.nip05;
   const [isHovering, setIsHovering] = useState(false);
 
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -96,7 +90,6 @@ export default function ProfileImage({
           <div className="f-ellipsis">
             <div className="flex g4 username">
               {overrideUsername ? overrideUsername : <DisplayName pubkey={pubkey} user={user} />}
-              {showNip05 && nip05 && <Nip05 nip05={nip05} pubkey={pubkey} verifyNip={verifyNip} />}
             </div>
             <div className="subheader">{subHeader}</div>
           </div>

@@ -49,7 +49,7 @@ export function ProfileCard({
       align="end">
       <div className="flex flex-col g8">
         <div className="flex justify-between">
-          <ProfileImage pubkey={pubkey} profile={user} showProfileCard={false} link="" showNip05={false} />
+          <ProfileImage pubkey={pubkey} profile={user} showProfileCard={false} link="" />
           <div className="flex g8">
             {/*<button type="button" onClick={() => {
                         LoginStore.loginWithPubkey(pubkey, LoginSessionType.PublicKey, undefined, undefined, undefined, true);
