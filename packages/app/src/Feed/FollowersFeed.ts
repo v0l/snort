@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { HexKey, EventKind, NoteCollection, RequestBuilder } from "@snort/system";
+import { HexKey, EventKind, NoteCollection, RequestBuilder, socialGraphInstance } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
 export default function useFollowersFeed(pubkey?: HexKey) {
@@ -16,7 +16,9 @@ export default function useFollowersFeed(pubkey?: HexKey) {
     const contactLists = followersFeed.data?.filter(
       a => a.kind === EventKind.ContactList && a.tags.some(b => b[0] === "p" && b[1] === pubkey),
     );
-    return [...new Set(contactLists?.map(a => a.pubkey))];
+    return [...new Set(contactLists?.map(a => a.pubkey))].sort((a, b) => {
+      return socialGraphInstance.getFollowDistance(a) - socialGraphInstance.getFollowDistance(b);
+    });
   }, [followersFeed, pubkey]);
 
   return followers;
