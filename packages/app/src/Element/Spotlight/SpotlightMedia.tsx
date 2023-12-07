@@ -75,11 +75,11 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
           autoPlay={true}
           loop={true}
           controls={true}
-          className="max-h-screen max-w-full min-w-[600px]"
+          className="max-h-screen max-w-full"
         />
       );
     } else {
-      return <ProxyImg src={image} className="max-h-screen max-w-full min-w-[600px]" />;
+      return <ProxyImg src={image} className="max-h-screen max-w-full" />;
     }
   }, [image, isVideo]);
 
