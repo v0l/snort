@@ -50,6 +50,7 @@
 
 .gallery-item div {
   height: 100%;
+  margin: 0;
 }
 
 .gallery-item img {
