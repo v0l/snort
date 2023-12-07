@@ -12,6 +12,8 @@ import { NotEncrypted } from "@snort/system";
 import classNames from "classnames";
 import { trackEvent } from "@/SnortUtils";
 
+const NSEC_NPUB_REGEX = /(nsec1|npub1)[a-zA-Z0-9]{20,65}/gi;
+
 export function SignIn() {
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
@@ -30,7 +32,12 @@ export function SignIn() {
     navigate("/");
   }
 
-  async function doLogin() {
+  async function onSubmit(e) {
+    e.preventDefault();
+    doLogin(key);
+  }
+
+  async function doLogin(key: string) {
     setError("");
     try {
       await loginHandler.doLogin(key, key => Promise.resolve(new NotEncrypted(key)));
@@ -51,6 +58,15 @@ export function SignIn() {
       console.error(e);
     }
   }
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (val.match(NSEC_NPUB_REGEX)) {
+      doLogin(val);
+    } else {
+      setKey(val);
+    }
+  };
 
   const nip7Login = hasNip7 && !useKey;
   return (
@@ -80,7 +96,7 @@ export function SignIn() {
           </>
         )}
         {(!hasNip7 || useKey) && (
-          <>
+          <form onSubmit={onSubmit} className="flex flex-col gap-4">
             <input
               type="text"
               placeholder={formatMessage({
@@ -88,18 +104,22 @@ export function SignIn() {
                 id: "X7xU8J",
               })}
               value={key}
-              onChange={e => setKey(e.target.value)}
+              onChange={onChange} // TODO should log in directly if nsec or npub is pasted
               className="new-username"
             />
             {error && <b className="error">{error}</b>}
-            <AsyncButton onClick={doLogin} className="primary">
-              <FormattedMessage defaultMessage="Login" id="AyGauy" />
-            </AsyncButton>
-          </>
+            <div className="flex justify-center">
+              <AsyncButton onClick={onSubmit} className="primary">
+                <FormattedMessage defaultMessage="Login" id="AyGauy" />
+              </AsyncButton>
+            </div>
+          </form>
         )}
       </div>
       <div className="flex flex-col g16 items-center">
-        <FormattedMessage defaultMessage="Don't have an account?" id="25WwxF" />
+        <Link to={"/login/sign-up"}>
+          <FormattedMessage defaultMessage="Don't have an account?" id="25WwxF" />
+        </Link>
         <AsyncButton className="secondary" onClick={() => navigate("/login/sign-up")}>
           <FormattedMessage defaultMessage="Sign Up" id="39AHJm" />
         </AsyncButton>
@@ -113,6 +133,23 @@ export function SignUp() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
 
+  const onSubmit = () => {
+    navigate("/login/sign-up/profile", {
+      state: {
+        name: name,
+      } as NewUserState,
+    });
+  };
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (val.match(NSEC_NPUB_REGEX)) {
+      e.preventDefault();
+    } else {
+      setName(val);
+    }
+  };
+
   return (
     <div className="flex flex-col g24">
       <img src={CONFIG.appleTouchIconUrl} width={48} height={48} className="br mr-auto ml-auto" />
@@ -122,7 +159,7 @@ export function SignUp() {
         </h1>
         <FormattedMessage defaultMessage="What should we call you?" id="SmuYUd" />
       </div>
-      <div className="flex flex-col g16">
+      <form onSubmit={onSubmit} className="flex flex-col g16">
         <input
           type="text"
           autoFocus={true}
@@ -131,24 +168,17 @@ export function SignUp() {
             id: "aHje0o",
           })}
           value={name}
-          onChange={e => setName(e.target.value)}
+          onChange={onChange}
           className="new-username"
         />
-        <AsyncButton
-          className="primary"
-          disabled={name.length === 0}
-          onClick={() =>
-            navigate("/login/sign-up/profile", {
-              state: {
-                name: name,
-              } as NewUserState,
-            })
-          }>
+        <AsyncButton className="primary" disabled={name.length === 0} onClick={onSubmit}>
           <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
         </AsyncButton>
-      </div>
+      </form>
       <div className="flex flex-col g16 items-center">
-        <FormattedMessage defaultMessage="Already have an account?" id="uCk8r+" />
+        <Link to={"/login"}>
+          <FormattedMessage defaultMessage="Already have an account?" id="uCk8r+" />
+        </Link>
         <AsyncButton className="secondary" onClick={() => navigate("/login")}>
           <FormattedMessage defaultMessage="Sign In" id="Ub+AGc" />
         </AsyncButton>
