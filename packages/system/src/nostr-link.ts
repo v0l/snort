@@ -52,8 +52,16 @@ export class NostrLink implements ToNostrEventTag {
     }
   }
 
-  toEventTag() {
+  toEventTag(marker?: string) {
     const relayEntry = this.relays ? [this.relays[0]] : [];
+    
+    if (marker) {
+      if (relayEntry.length === 0) {
+        relayEntry.push("");
+      }
+      relayEntry.push(marker);
+    }
+
     if (this.type === NostrPrefix.PublicKey || this.type === NostrPrefix.Profile) {
       return ["p", this.id, ...relayEntry];
     } else if (this.type === NostrPrefix.Note || this.type === NostrPrefix.Event) {
