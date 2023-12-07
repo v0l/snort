@@ -116,16 +116,21 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
   return menuItems;
 }
 
-export function RootTabs({ base }: { base?: string }) {
+export function RootTabs({ base = "/" }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { publicKey: pubKey, tags } = useLogin();
+  const { publicKey: pubKey, tags, preferences } = useLogin(s => ({
+    publicKey: s.publicKey,
+    tags: s.tags,
+    preferences: s.appData.item.preferences,
+  }));
   const [rootType, setRootType] = useState<RootTab>("following");
 
   const menuItems = useMemo(() => rootTabItems(base, pubKey, tags), [base, pubKey, tags]);
 
   useEffect(() => {
-    const pathname = location.pathname === "/" ? `${base}/notes` : location.pathname;
+    const defaultTab = pubKey ? preferences.defaultRootTab ?? `${base}/notes` : `${base}/trending/notes`;
+    const pathname = location.pathname === "/" ? defaultTab : location.pathname;
     const currentTab = menuItems.find(a => a.path === pathname)?.tab;
     if (currentTab) {
       setRootType(currentTab);
