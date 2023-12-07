@@ -61,14 +61,13 @@ export default function Modal(props: ModalProps) {
 
   return createPortal(
     <div className={`modal${props.className ? ` ${props.className}` : ""}`} onClick={props.onClose}>
-      <div className={props.bodyClassName || "modal-body"} onClick={props.onClose}>
-        <div
-          onClick={e => {
-            e.stopPropagation();
-            props.onClick?.(e);
-          }}>
-          {props.children}
-        </div>
+      <div
+        className={props.bodyClassName || "modal-body"}
+        onClick={e => {
+          e.stopPropagation();
+          props.onClick?.(e);
+        }}>
+        {props.children}
       </div>
     </div>,
     document.body,
