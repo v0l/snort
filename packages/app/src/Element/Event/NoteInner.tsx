@@ -371,9 +371,9 @@ export function NoteInner(props: NoteProps) {
           {translation()}
           {pollOptions()}
           {options.showReactionsLink && (
-            <div className="reactions-link cursor-pointer" onClick={() => setShowReactions(true)}>
+            <span className="reactions-link cursor-pointer" onClick={() => setShowReactions(true)}>
               <FormattedMessage {...messages.ReactionsLink} values={{ n: totalReactions }} />
-            </div>
+            </span>
           )}
         </div>
         {options.showFooter && (

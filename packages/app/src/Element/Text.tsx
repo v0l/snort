@@ -210,7 +210,7 @@ export default function Text({
               };
             });
             const gallery = (
-              <div className="gallery">
+              <div className="-mx-4 md:mx-0 my-2 gallery">
                 {imagesWithGridConfig.map(img => (
                   <div
                     key={img.content}
