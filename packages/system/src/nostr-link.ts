@@ -54,7 +54,7 @@ export class NostrLink implements ToNostrEventTag {
 
   toEventTag(marker?: string) {
     const relayEntry = this.relays ? [this.relays[0]] : [];
-    
+
     if (marker) {
       if (relayEntry.length === 0) {
         relayEntry.push("");
