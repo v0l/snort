@@ -21,6 +21,9 @@
   "signUp": {
     "moderation": true
   },
+  "defaultPreferences": {
+    "checkSigs": false
+  },
   "noteCreatorToast": true,
   "hideFromNavbar": ["/graph"],
   "deckSubKind": 1,

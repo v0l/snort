@@ -21,6 +21,9 @@
   "signUp": {
     "moderation": false
   },
+  "defaultPreferences": {
+    "checkSigs": true
+  },
   "hideFromNavbar": [],
   "eventLinkPrefix": "note",
   "profileLinkPrefix": "npub",

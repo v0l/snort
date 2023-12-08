@@ -114,6 +114,6 @@ export const DefaultPreferences = {
   telemetry: true,
   showBadges: false,
   showStatus: true,
-  checkSigs: false,
+  checkSigs: CONFIG.defaultPreferences.checkSigs,
   autoTranslate: true,
 } as UserPreferences;
