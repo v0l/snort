@@ -76,4 +76,9 @@ export default defineMessages({
   ServiceWorkerNotRunning: { defaultMessage: "Service Worker Not Running", id: "RDha9y" },
   SubscribedToPush: { defaultMessage: "Subscribed to Push", id: "G3A56c" },
   NotSubscribedToPush: { defaultMessage: "Not Subscribed to Push", id: "d2ebEu" },
+  HideMutedNotes: { defaultMessage: "Hide Muted Notes", id: "M3Oira" },
+  HideMutedNotesHelp: {
+    defaultMessage: "Muted notes will not be shown",
+    id: "MBAYRA",
+  },
 });

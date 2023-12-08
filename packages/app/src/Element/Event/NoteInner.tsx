@@ -47,6 +47,9 @@ export function NoteInner(props: NoteProps) {
   const [showTranslation, setShowTranslation] = useState(true);
   const { formatMessage } = useIntl();
   const [showMore, setShowMore] = useState(false);
+  const { hideMutedNotes } = useLogin(s => ({
+    hideMutedNotes: s.appData.item.preferences.hideMutedNotes,
+  }));
 
   const totalReactions = reactions.positive.length + reactions.negative.length + reposts.length + zaps.length;
 
@@ -410,5 +413,5 @@ export function NoteInner(props: NoteProps) {
     </div>
   );
 
-  return !ignoreModeration && isEventMuted(ev) ? <HiddenNote>{note}</HiddenNote> : note;
+  return !ignoreModeration && isEventMuted(ev) ? hideMutedNotes ? <></> : <HiddenNote>{note}</HiddenNote> : note;
 }

@@ -497,6 +497,23 @@ const PreferencesPage = () => {
           />
         </div>
       </div>
+      <div className="flex justify-between">
+        <div className="flex flex-col g8">
+          <h4>
+            <FormattedMessage {...messages.HideMutedNotes} />
+          </h4>
+          <small>
+            <FormattedMessage {...messages.HideMutedNotesHelp} />
+          </small>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={perf.hideMutedNotes}
+            onChange={e => updatePreferences(id, { ...perf, hideMutedNotes: e.target.checked })}
+          />
+        </div>
+      </div>
     </div>
   );
 };
