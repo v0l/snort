@@ -61,7 +61,7 @@ declare const CONFIG: {
   };
   defaultPreferences: {
     checkSigs: boolean;
-  }
+  };
   signUp: {
     moderation: boolean;
   };
