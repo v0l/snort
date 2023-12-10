@@ -60,7 +60,7 @@ import NetworkGraph from "@/Pages/NetworkGraph";
 
 declare global {
   interface Window {
-    plausible?: (tag: string) => void;
+    plausible?: (tag: string, e?: object) => void;
   }
 }
 

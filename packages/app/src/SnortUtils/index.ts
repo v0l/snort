@@ -533,8 +533,8 @@ export function getCountry() {
   };
 }
 
-export function trackEvent(event: string) {
-  window.plausible?.(event);
+export function trackEvent(event: string, props?: Record<string, string | boolean>) {
+  window.plausible?.(event, props ? { props } : undefined);
 }
 
 export function storeRefCode() {

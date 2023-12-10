@@ -28,7 +28,7 @@ export function SignIn() {
       "getRelays" in unwrap(window.nostr) ? await unwrap(window.nostr?.getRelays).call(window.nostr) : undefined;*/
     const pubKey = await unwrap(window.nostr).getPublicKey();
     LoginStore.loginWithPubkey(pubKey, LoginSessionType.Nip7);
-    trackEvent("Login:NIP7");
+    trackEvent("Login", { type: "NIP7" });
     navigate("/");
   }
 
@@ -41,8 +41,7 @@ export function SignIn() {
     setError("");
     try {
       await loginHandler.doLogin(key, key => Promise.resolve(new NotEncrypted(key)));
-
-      trackEvent("Login:Key");
+      trackEvent("Login", { type: "Key" });
       navigate("/");
     } catch (e) {
       if (e instanceof Error) {

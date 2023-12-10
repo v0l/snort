@@ -24,7 +24,7 @@ export function Profile() {
         name: state.name,
         picture,
       });
-      trackEvent("Login:NewAccount");
+      trackEvent("Login", { newAccount: true });
       navigate("/login/sign-up/topics");
     } catch (e) {
       if (e instanceof Error) {

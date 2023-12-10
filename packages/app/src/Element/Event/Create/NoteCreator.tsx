@@ -158,16 +158,21 @@ export function NoteCreator() {
   async function sendNote() {
     const ev = await buildNote();
     if (ev) {
-      trackEvent("PostNote");
+      let props: Record<string, boolean> | undefined = undefined;
       if (ev.tags.find(a => a[0] === "content-warning")) {
-        trackEvent("PostNote:WithContentWarning");
+        props ??= {};
+        props["content-warning"] = true;
       }
       if (ev.tags.find(a => a[0] === "poll_option")) {
-        trackEvent("PostNote:WithPoll");
+        props ??= {};
+        props["poll"] = true;
       }
       if (ev.tags.find(a => a[0] === "zap")) {
-        trackEvent("PostNote:WithZapSplit");
+        props ??= {};
+        props["zap-split"] = true;
       }
+      trackEvent("PostNote", props);
+
       const events = (note.otherEvents ?? []).concat(ev);
       events.map(a =>
         sendEventToRelays(system, a, note.selectedCustomRelays, r => {
@@ -269,7 +274,7 @@ export function NoteCreator() {
       note.update(v => (v.preview = undefined));
     } else if (publisher) {
       const tmpNote = await buildNote();
-      trackEvent("PostNote:Preview");
+      trackEvent("PostNotePreview");
       note.update(v => (v.preview = tmpNote));
     }
   }
@@ -352,18 +357,18 @@ export function NoteCreator() {
                   onChange={e => {
                     note.update(
                       v =>
-                        (v.selectedCustomRelays =
-                          // set false if all relays selected
-                          e.target.checked &&
+                      (v.selectedCustomRelays =
+                        // set false if all relays selected
+                        e.target.checked &&
                           note.selectedCustomRelays &&
                           note.selectedCustomRelays.length == a.length - 1
-                            ? undefined
-                            : // otherwise return selectedCustomRelays with target relay added / removed
-                              a.filter(el =>
-                                el === r
-                                  ? e.target.checked
-                                  : !note.selectedCustomRelays || note.selectedCustomRelays.includes(el),
-                              )),
+                          ? undefined
+                          : // otherwise return selectedCustomRelays with target relay added / removed
+                          a.filter(el =>
+                            el === r
+                              ? e.target.checked
+                              : !note.selectedCustomRelays || note.selectedCustomRelays.includes(el),
+                          )),
                     );
                   }}
                 />
@@ -432,9 +437,9 @@ export function NoteCreator() {
                     onChange={e =>
                       note.update(
                         v =>
-                          (v.zapSplits = arr.map((vv, ii) =>
-                            ii === i ? { ...vv, weight: Number(e.target.value) } : vv,
-                          )),
+                        (v.zapSplits = arr.map((vv, ii) =>
+                          ii === i ? { ...vv, weight: Number(e.target.value) } : vv,
+                        )),
                       )
                     }
                   />

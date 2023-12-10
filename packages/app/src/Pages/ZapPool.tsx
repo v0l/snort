@@ -150,7 +150,7 @@ export default function ZapPoolPage() {
         {wallet && (
           <AsyncButton
             onClick={async () => {
-              trackEvent("ZapPool:Manual");
+              trackEvent("ZapPool", { manual: true });
               await ZapPoolController?.payout(wallet);
             }}>
             <FormattedMessage defaultMessage="Payout Now" id="+PzQ9Y" />
