@@ -357,18 +357,18 @@ export function NoteCreator() {
                   onChange={e => {
                     note.update(
                       v =>
-                      (v.selectedCustomRelays =
-                        // set false if all relays selected
-                        e.target.checked &&
+                        (v.selectedCustomRelays =
+                          // set false if all relays selected
+                          e.target.checked &&
                           note.selectedCustomRelays &&
                           note.selectedCustomRelays.length == a.length - 1
-                          ? undefined
-                          : // otherwise return selectedCustomRelays with target relay added / removed
-                          a.filter(el =>
-                            el === r
-                              ? e.target.checked
-                              : !note.selectedCustomRelays || note.selectedCustomRelays.includes(el),
-                          )),
+                            ? undefined
+                            : // otherwise return selectedCustomRelays with target relay added / removed
+                              a.filter(el =>
+                                el === r
+                                  ? e.target.checked
+                                  : !note.selectedCustomRelays || note.selectedCustomRelays.includes(el),
+                              )),
                     );
                   }}
                 />
@@ -437,9 +437,9 @@ export function NoteCreator() {
                     onChange={e =>
                       note.update(
                         v =>
-                        (v.zapSplits = arr.map((vv, ii) =>
-                          ii === i ? { ...vv, weight: Number(e.target.value) } : vv,
-                        )),
+                          (v.zapSplits = arr.map((vv, ii) =>
+                            ii === i ? { ...vv, weight: Number(e.target.value) } : vv,
+                          )),
                       )
                     }
                   />
