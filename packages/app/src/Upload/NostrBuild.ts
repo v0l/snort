@@ -40,6 +40,7 @@ export default async function NostrBuild(file: File | Blob, publisher?: EventPub
         blurhash: res.blurhash,
         width: res.dimensions.width,
         height: res.dimensions.height,
+        hash: res.sha256
       },
     };
   }
