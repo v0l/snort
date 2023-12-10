@@ -2,7 +2,7 @@ import { UserCache } from "@/Cache";
 import { LNURL, ExternalStore, unixNow } from "@snort/shared";
 import { Toastore } from "@/Toaster";
 import { LNWallet, WalletInvoiceState, Wallets } from "@/Wallet";
-import { bech32ToHex, getDisplayName } from "@/SnortUtils";
+import { bech32ToHex, getDisplayName, trackEvent } from "@/SnortUtils";
 import { SnortPubKey } from "@/Const";
 
 export enum ZapPoolRecipientType {
@@ -168,6 +168,7 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
           if (wallet.canAutoLogin()) {
             await wallet.login();
           }
+          trackEvent("ZapPool:Automatic")
           await this.payout(wallet);
         }
       }

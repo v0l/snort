@@ -8,7 +8,7 @@ import { SnortPubKey } from "@/Const";
 import ProfilePreview from "@/Element/User/ProfilePreview";
 import useLogin from "@/Hooks/useLogin";
 import { UploaderServices } from "@/Upload";
-import { bech32ToHex, getRelayName, unwrap } from "@/SnortUtils";
+import { bech32ToHex, getRelayName, trackEvent, unwrap } from "@/SnortUtils";
 import { ZapPoolController, ZapPoolRecipient, ZapPoolRecipientType } from "@/ZapPoolController";
 import AsyncButton from "@/Element/Button/AsyncButton";
 import { useWallet } from "@/Wallet";
@@ -18,14 +18,6 @@ const DataProviders = [
   {
     name: "nostr.band",
     owner: bech32ToHex("npub1sx9rnd03vs34lp39fvfv5krwlnxpl90f3dzuk8y3cuwutk2gdhdqjz6g8m"),
-  },
-  {
-    name: "semisol.dev",
-    owner: bech32ToHex("npub12262qa4uhw7u8gdwlgmntqtv7aye8vdcmvszkqwgs0zchel6mz7s6cgrkj"),
-  },
-  {
-    name: "nostr.directory",
-    owner: bech32ToHex("npub1teawtzxh6y02cnp9jphxm2q8u6xxfx85nguwg6ftuksgjctvavvqnsgq5u"),
   },
 ];
 
@@ -156,7 +148,10 @@ export default function ZapPoolPage() {
       </p>
       <p>
         {wallet && (
-          <AsyncButton onClick={() => ZapPoolController?.payout(wallet)}>
+          <AsyncButton onClick={async () => {
+            trackEvent("ZapPool:Manual")
+            await ZapPoolController?.payout(wallet);
+          }}>
             <FormattedMessage defaultMessage="Payout Now" id="+PzQ9Y" />
           </AsyncButton>
         )}
