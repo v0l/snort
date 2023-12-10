@@ -168,7 +168,7 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
           if (wallet.canAutoLogin()) {
             await wallet.login();
           }
-          trackEvent("ZapPool:Automatic")
+          trackEvent("ZapPool:Automatic");
           await this.payout(wallet);
         }
       }
