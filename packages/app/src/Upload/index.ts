@@ -27,6 +27,7 @@ export interface UploadResult {
     blurhash?: string;
     width?: number;
     height?: number;
+    hash?: string;
   };
 }
 

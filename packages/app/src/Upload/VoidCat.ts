@@ -62,6 +62,9 @@ export default async function VoidCatUpload(
 
     const ret = {
       url: resultUrl,
+      metadata: {
+        hash: rsp.file?.metadata?.digest,
+      },
     } as UploadResult;
 
     if (publisher) {
