@@ -18,27 +18,22 @@ export function MediaElement(props: MediaElementProps) {
 
   if (props.mime.startsWith("image/")) {
     return (
-      // constant height container avoids layout shift when images load
-      <div className="-mx-4 md:mx-0 my-3 md:h-80 flex items-center justify-center">
-        <ProxyImg key={props.url} src={props.url} onClick={props.onMediaClick} className="max-h-[80vh] md:max-h-80" />
-      </div>
+      <ProxyImg key={props.url} src={props.url} onClick={props.onMediaClick} className="max-h-[80vh] mx-auto" />
     );
   } else if (props.mime.startsWith("audio/")) {
     return <audio key={props.url} src={props.url} controls />;
   } else if (props.mime.startsWith("video/")) {
     return (
-      <div className="-mx-4 md:mx-0 my-3 md:h-80 flex items-center justify-center">
-        <video
-          autoPlay={autoplay}
-          loop={true}
-          muted={autoplay}
-          key={props.url}
-          src={props.url}
-          controls
-          poster={proxy(props.url)}
-          className="max-h-[80vh] md:max-h-80"
-        />
-      </div>
+      <video
+        autoPlay={autoplay}
+        loop={true}
+        muted={autoplay}
+        key={props.url}
+        src={props.url}
+        controls
+        poster={proxy(props.url)}
+        className="max-h-[80vh] mx-auto"
+      />
     );
   } else {
     return (

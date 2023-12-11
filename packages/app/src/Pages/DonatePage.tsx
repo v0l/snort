@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage } from "react-intl";
 import { HexKey } from "@snort/system";
 
 import { ApiHost, DeveloperAccounts, SnortPubKey } from "@/Const";
 import ProfilePreview from "@/Element/User/ProfilePreview";
 import ZapButton from "@/Element/Event/ZapButton";
-import { bech32ToHex } from "@/SnortUtils";
+import { bech32ToHex, unwrap } from "@/SnortUtils";
 import SnortApi, { RevenueSplit, RevenueToday } from "@/External/SnortApi";
 import Modal from "@/Element/Modal";
 import AsyncButton from "@/Element/Button/AsyncButton";
 import QrCode from "@/Element/QrCode";
 import Copy from "@/Element/Copy";
 import { Link } from "react-router-dom";
+import { ZapPoolController, ZapPoolRecipientType } from "@/ZapPoolController";
+import { ZapPoolTarget } from "./ZapPool";
 
 const Contributors = [
   bech32ToHex("npub10djxr5pvdu97rjkde7tgcsjxzpdzmdguwacfjwlchvj7t88dl7nsdl54nf"), // ivan
@@ -59,6 +61,10 @@ const DonatePage = () => {
   const [today, setSumToday] = useState<RevenueToday>();
   const [onChain, setOnChain] = useState("");
   const api = new SnortApi(ApiHost);
+  const zapPool = useSyncExternalStore(
+    c => unwrap(ZapPoolController).hook(c),
+    () => unwrap(ZapPoolController).snapshot(),
+  );
 
   async function getOnChainAddress() {
     const { address } = await api.onChainDonation();
@@ -95,13 +101,10 @@ const DonatePage = () => {
       </h2>
       <p>
         <FormattedMessage
-          defaultMessage="{site} is an open source project built by passionate people in their free time"
-          id="6TfgXX"
+          defaultMessage="{site} is an open source project built by passionate people in their free time, your donations are greatly appreciated"
+          id="XhpBfA"
           values={{ site: CONFIG.appNameCapitalized }}
         />
-      </p>
-      <p>
-        <FormattedMessage defaultMessage="Your donations are greatly appreciated" id="nn1qb3" />
       </p>
       <p>
         <FormattedMessage
@@ -127,12 +130,6 @@ const DonatePage = () => {
               </Link>
             ),
           }}
-        />
-      </p>
-      <p>
-        <FormattedMessage
-          defaultMessage="Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below"
-          id="mH91FY"
         />
       </p>
       <div className="flex flex-col g12">
@@ -173,6 +170,29 @@ const DonatePage = () => {
           </div>
         </Modal>
       )}
+      {CONFIG.features.zapPool && <>
+        <h3>
+          <FormattedMessage defaultMessage="ZapPool" id="pRess9" />
+        </h3>
+        <p>
+          <FormattedMessage defaultMessage="Fund the services that you use by splitting a portion of all your zaps into a pool of funds!" id="x/Fx2P" />
+        </p>
+        <p>
+          <Link to="/zap-pool" className="underline">
+            <FormattedMessage defaultMessage="Configure zap pool" id="kqPQJD" />
+          </Link>
+        </p>
+        <ZapPoolTarget
+          target={
+            zapPool.find(b => b.pubkey === bech32ToHex(SnortPubKey) && b.type === ZapPoolRecipientType.Generic) ?? {
+              type: ZapPoolRecipientType.Generic,
+              pubkey: bech32ToHex(SnortPubKey),
+              split: 0,
+              sum: 0,
+            }
+          }
+        />
+      </>}
       <h3>
         <FormattedMessage defaultMessage="Primary Developers" id="4IPzdn" />
       </h3>

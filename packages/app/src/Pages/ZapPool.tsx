@@ -21,7 +21,7 @@ const DataProviders = [
   },
 ];
 
-function ZapTarget({ target }: { target: ZapPoolRecipient }) {
+export function ZapPoolTarget({ target }: { target: ZapPoolRecipient }) {
   if (!ZapPoolController) return;
   const login = useLogin();
   const profile = useUserProfile(target.pubkey);
@@ -158,7 +158,7 @@ export default function ZapPoolPage() {
         )}
       </p>
       <div>
-        <ZapTarget
+        <ZapPoolTarget
           target={
             zapPool.find(b => b.pubkey === bech32ToHex(SnortPubKey) && b.type === ZapPoolRecipientType.Generic) ?? {
               type: ZapPoolRecipientType.Generic,
@@ -175,7 +175,7 @@ export default function ZapPoolPage() {
       {relayConnections.map(a => (
         <div>
           <h4>{getRelayName(a.address)}</h4>
-          <ZapTarget
+          <ZapPoolTarget
             target={
               zapPool.find(b => b.pubkey === a.pubkey && b.type === ZapPoolRecipientType.Relay) ?? {
                 type: ZapPoolRecipientType.Relay,
@@ -193,7 +193,7 @@ export default function ZapPoolPage() {
       {UploaderServices.map(a => (
         <div>
           <h4>{a.name}</h4>
-          <ZapTarget
+          <ZapPoolTarget
             target={
               zapPool.find(b => b.pubkey === a.owner && b.type === ZapPoolRecipientType.FileHost) ?? {
                 type: ZapPoolRecipientType.FileHost,
@@ -211,7 +211,7 @@ export default function ZapPoolPage() {
       {DataProviders.map(a => (
         <div>
           <h4>{a.name}</h4>
-          <ZapTarget
+          <ZapPoolTarget
             target={
               zapPool.find(b => b.pubkey === a.owner && b.type === ZapPoolRecipientType.DataProvider) ?? {
                 type: ZapPoolRecipientType.DataProvider,
