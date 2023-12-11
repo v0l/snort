@@ -1,6 +1,6 @@
 import "./Text.css";
 import { ReactNode, useState } from "react";
-import { HexKey, ParsedFragment } from "@snort/system";
+import { HexKey, ParsedFragment, parseIMeta } from "@snort/system";
 import classNames from "classnames";
 
 import Invoice from "@/Element/Embed/Invoice";
@@ -100,6 +100,7 @@ export default function Text({
   const elements = useTextTransformer(id, content, tags);
 
   const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content);
+  const iMeta = parseIMeta(tags);
 
   function renderContentWithHighlightedText(content: string, textToHighlight: string) {
     const textToHighlightArray = textToHighlight.trim().toLowerCase().split(" ");
@@ -136,22 +137,26 @@ export default function Text({
     </a>
   );
 
-  const RevealMediaInstance = ({ content }: { content: string }) => (
-    <RevealMedia
-      key={content}
-      link={content}
-      creator={creator}
-      onMediaClick={e => {
-        if (!disableMediaSpotlight) {
-          e.stopPropagation();
-          e.preventDefault();
-          setShowSpotlight(true);
-          const selected = images.findIndex(b => b === content);
-          setImageIdx(selected === -1 ? 0 : selected);
-        }
-      }}
-    />
-  );
+  const RevealMediaInstance = ({ content }: { content: string }) => {
+    const imeta = iMeta?.[content];
+    return (
+      <RevealMedia
+        key={content}
+        link={content}
+        creator={creator}
+        meta={imeta}
+        onMediaClick={e => {
+          if (!disableMediaSpotlight) {
+            e.stopPropagation();
+            e.preventDefault();
+            setShowSpotlight(true);
+            const selected = images.findIndex(b => b === content);
+            setImageIdx(selected === -1 ? 0 : selected);
+          }
+        }}
+      />
+    );
+  };
 
   const renderContent = () => {
     let lenCtr = 0;

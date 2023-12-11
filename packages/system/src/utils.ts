@@ -1,6 +1,6 @@
 import { equalProp } from "@snort/shared";
 import { FlatReqFilter } from "./query-optimizer";
-import { NostrEvent, ReqFilter } from "./nostr";
+import { IMeta, NostrEvent, ReqFilter } from "./nostr";
 
 export function findTag(e: NostrEvent, tag: string) {
   const maybeTag = e.tags.find(evTag => {
@@ -49,4 +49,36 @@ export function splitByUrl(str: string) {
     /((?:http|ftp|https|nostr|web\+nostr|magnet|lnurl[p|w]?):\/?\/?(?:[\w+?.\w+])+(?:[\p{L}\p{N}~!@#$%^&*()_\-=+\\/?.:;',]*)?(?:[-a-z0-9+&@#/%=~()_|]))/iu;
 
   return str.split(urlRegex);
+}
+
+export function parseIMeta(tags: Array<Array<string>>) {
+  let ret: Record<string, IMeta> | undefined;
+  const imetaTags = tags.filter(a => a[0] === "imeta");
+  for (const imetaTag of imetaTags) {
+    ret ??= {};
+    let imeta: IMeta = {};
+    let url = "";
+    for (const t of imetaTag.slice(1)) {
+      const [k, v] = t.split(" ");
+      if (k === "url") {
+        url = v;
+      }
+      if (k === "dim") {
+        const [w, h] = v.split("x");
+        imeta.height = Number(h);
+        imeta.width = Number(w);
+      }
+      if (k === "blurhash") {
+        imeta.blurHash = v;
+      }
+      if (k === "x") {
+        imeta.sha256 = v;
+      }
+      if (k === "alt") {
+        imeta.alt = v;
+      }
+    }
+    ret[url] = imeta;
+  }
+  return ret;
 }

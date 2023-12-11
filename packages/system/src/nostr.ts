@@ -81,3 +81,13 @@ export interface FullRelaySettings {
 }
 
 export type NotSignedNostrEvent = Omit<NostrEvent, "sig">;
+
+export interface IMeta {
+  magnet?: string;
+  sha256?: string;
+  blurHash?: string;
+  height?: number;
+  width?: number;
+  alt?: string;
+  fallback?: Array<string>;
+}

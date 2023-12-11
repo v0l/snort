@@ -5,11 +5,13 @@ import Reveal from "@/Element/Event/Reveal";
 import useLogin from "@/Hooks/useLogin";
 import { MediaElement } from "@/Element/Embed/MediaElement";
 import { Link } from "react-router-dom";
+import { IMeta } from "@snort/system";
 
 interface RevealMediaProps {
   creator: string;
   link: string;
   onMediaClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
+  meta?: IMeta;
 }
 
 export default function RevealMedia(props: RevealMediaProps) {
@@ -66,10 +68,22 @@ export default function RevealMedia(props: RevealMediaProps) {
             }}
           />
         }>
-        <MediaElement mime={`${type}/${extension}`} url={url.toString()} onMediaClick={props.onMediaClick} />
+        <MediaElement
+          mime={`${type}/${extension}`}
+          url={url.toString()}
+          onMediaClick={props.onMediaClick}
+          meta={props.meta}
+        />
       </Reveal>
     );
   } else {
-    return <MediaElement mime={`${type}/${extension}`} url={url.toString()} onMediaClick={props.onMediaClick} />;
+    return (
+      <MediaElement
+        mime={`${type}/${extension}`}
+        url={url.toString()}
+        onMediaClick={props.onMediaClick}
+        meta={props.meta}
+      />
+    );
   }
 }
