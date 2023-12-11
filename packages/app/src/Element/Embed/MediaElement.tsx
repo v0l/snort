@@ -17,9 +17,7 @@ export function MediaElement(props: MediaElementProps) {
   const autoplay = window.innerWidth >= 768;
 
   if (props.mime.startsWith("image/")) {
-    return (
-      <ProxyImg key={props.url} src={props.url} onClick={props.onMediaClick} className="max-h-[80vh] mx-auto" />
-    );
+    return <ProxyImg key={props.url} src={props.url} onClick={props.onMediaClick} className="max-h-[80vh] mx-auto" />;
   } else if (props.mime.startsWith("audio/")) {
     return <audio key={props.url} src={props.url} controls />;
   } else if (props.mime.startsWith("video/")) {

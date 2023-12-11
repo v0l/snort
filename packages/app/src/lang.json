@@ -231,9 +231,6 @@
   "6OSOXl": {
     "defaultMessage": "Reason: <i>{reason}</i>"
   },
-  "6TfgXX": {
-    "defaultMessage": "{site} is an open source project built by passionate people in their free time"
-  },
   "6bgpn+": {
     "defaultMessage": "Not all clients support this, you may still receive some zaps as if zap splits was not configured"
   },
@@ -933,6 +930,9 @@
   "XgWvGA": {
     "defaultMessage": "Reactions"
   },
+  "XhpBfA": {
+    "defaultMessage": "{site} is an open source project built by passionate people in their free time, your donations are greatly appreciated"
+  },
   "Xopqkl": {
     "defaultMessage": "Your default zap amount is {number} sats, example values are calculated from this."
   },
@@ -1254,6 +1254,9 @@
   "kc79d3": {
     "defaultMessage": "Topics"
   },
+  "kqPQJD": {
+    "defaultMessage": "Configure zap pool"
+  },
   "kuPHYE": {
     "defaultMessage": "{n,plural,=0{{name} liked} other{{name} & {n} others liked}}"
   },
@@ -1293,9 +1296,6 @@
   "mErPop": {
     "defaultMessage": "It looks like you dont have any, check {link} to buy one!"
   },
-  "mH91FY": {
-    "defaultMessage": "Each contributor will get paid a percentage of all donations and NIP-05 orders, you can see the split amounts below"
-  },
   "mKAr6h": {
     "defaultMessage": "Follow all"
   },
@@ -1324,9 +1324,6 @@
   "nihgfo": {
     "defaultMessage": "Listen to this article"
   },
-  "nn1qb3": {
-    "defaultMessage": "Your donations are greatly appreciated"
-  },
   "nwZXeh": {
     "defaultMessage": "{n} blocked"
   },
@@ -1350,6 +1347,9 @@
   },
   "pI+77w": {
     "defaultMessage": "Downloadable backups from Snort relay"
+  },
+  "pRess9": {
+    "defaultMessage": "ZapPool"
   },
   "puLNUJ": {
     "defaultMessage": "Pin"

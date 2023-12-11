@@ -193,14 +193,14 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
           targets={
             lnurl?.lnurl && id
               ? [
-                {
-                  type: "lnurl",
-                  value: lnurl?.lnurl,
-                  weight: 1,
-                  name: user?.display_name || user?.name,
-                  zap: { pubkey: id },
-                } as ZapTarget,
-              ]
+                  {
+                    type: "lnurl",
+                    value: lnurl?.lnurl,
+                    weight: 1,
+                    name: user?.display_name || user?.name,
+                    zap: { pubkey: id },
+                  } as ZapTarget,
+                ]
               : undefined
           }
           show={showLnQr}
@@ -300,9 +300,11 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         <div className="profile-actions">
           {renderIcons()}
           {!isMe && id && <FollowButton pubkey={id} />}
-          {isMe && id && <AsyncButton className="secondary">
-            <FormattedMessage defaultMessage="Edit" id="wEQDC6" />
-          </AsyncButton>}
+          {isMe && id && (
+            <AsyncButton className="secondary">
+              <FormattedMessage defaultMessage="Edit" id="wEQDC6" />
+            </AsyncButton>
+          )}
         </div>
       </div>
     );

@@ -170,29 +170,34 @@ const DonatePage = () => {
           </div>
         </Modal>
       )}
-      {CONFIG.features.zapPool && <>
-        <h3>
-          <FormattedMessage defaultMessage="ZapPool" id="pRess9" />
-        </h3>
-        <p>
-          <FormattedMessage defaultMessage="Fund the services that you use by splitting a portion of all your zaps into a pool of funds!" id="x/Fx2P" />
-        </p>
-        <p>
-          <Link to="/zap-pool" className="underline">
-            <FormattedMessage defaultMessage="Configure zap pool" id="kqPQJD" />
-          </Link>
-        </p>
-        <ZapPoolTarget
-          target={
-            zapPool.find(b => b.pubkey === bech32ToHex(SnortPubKey) && b.type === ZapPoolRecipientType.Generic) ?? {
-              type: ZapPoolRecipientType.Generic,
-              pubkey: bech32ToHex(SnortPubKey),
-              split: 0,
-              sum: 0,
+      {CONFIG.features.zapPool && (
+        <>
+          <h3>
+            <FormattedMessage defaultMessage="ZapPool" id="pRess9" />
+          </h3>
+          <p>
+            <FormattedMessage
+              defaultMessage="Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"
+              id="x/Fx2P"
+            />
+          </p>
+          <p>
+            <Link to="/zap-pool" className="underline">
+              <FormattedMessage defaultMessage="Configure zap pool" id="kqPQJD" />
+            </Link>
+          </p>
+          <ZapPoolTarget
+            target={
+              zapPool.find(b => b.pubkey === bech32ToHex(SnortPubKey) && b.type === ZapPoolRecipientType.Generic) ?? {
+                type: ZapPoolRecipientType.Generic,
+                pubkey: bech32ToHex(SnortPubKey),
+                split: 0,
+                sum: 0,
+              }
             }
-          }
-        />
-      </>}
+          />
+        </>
+      )}
       <h3>
         <FormattedMessage defaultMessage="Primary Developers" id="4IPzdn" />
       </h3>
