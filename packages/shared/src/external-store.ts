@@ -1,27 +1,19 @@
-export type HookFn<TSnapshot> = (e?: TSnapshot) => void;
+import EventEmitter from "eventemitter3";
 
-export interface HookFilter<TSnapshot> {
-  fn: HookFn<TSnapshot>;
+interface ExternalStoreEvents {
+  change: () => void;
 }
 
 /**
- * Simple React hookable store with manual change notifications
+ * Simple hookable store with manual change notifications
  */
-export abstract class ExternalStore<TSnapshot> {
-  #hooks: Array<HookFilter<TSnapshot>> = [];
+export abstract class ExternalStore<TSnapshot> extends EventEmitter<ExternalStoreEvents> {
   #snapshot: TSnapshot = {} as TSnapshot;
   #changed = true;
 
-  hook(fn: HookFn<TSnapshot>) {
-    this.#hooks.push({
-      fn,
-    });
-    return () => {
-      const idx = this.#hooks.findIndex(a => a.fn === fn);
-      if (idx >= 0) {
-        this.#hooks.splice(idx, 1);
-      }
-    };
+  hook(cb: () => void) {
+    this.on("change", cb);
+    return () => this.off("change", cb);
   }
 
   snapshot(p?: any) {
@@ -34,9 +26,7 @@ export abstract class ExternalStore<TSnapshot> {
 
   protected notifyChange(sn?: TSnapshot) {
     this.#changed = true;
-    if (this.#hooks.length > 0) {
-      this.#hooks.forEach(h => h.fn(sn));
-    }
+    this.emit("change");
   }
 
   abstract takeSnapshot(p?: any): TSnapshot;
