@@ -235,9 +235,6 @@ export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
       case WalletKind.NWC: {
         return new NostrConnectWallet(unwrap(cfg.data));
       }
-      case WalletKind.Cashu: {
-        return import("./Cashu").then(({ CashuWallet }) => new CashuWallet(unwrap(cfg.data)));
-      }
     }
   }
 }

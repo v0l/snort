@@ -190,9 +190,18 @@ export default function WalletPage() {
     if (!wallet?.isReady()) return;
     return (
       <>
-        <div className="p br b">
-          <div>{info?.alias}</div>
-          {walletBalance()}
+        <div className="p br b flex justify-between">
+          <div>
+            <div>{info?.alias}</div>
+            {walletBalance()}
+          </div>
+          <div>
+            {walletState.config?.id && (
+              <AsyncButton onClick={() => Wallets.remove(unwrap(walletState.config?.id))}>
+                <FormattedMessage defaultMessage="Remove" id="G/yZLu" />
+              </AsyncButton>
+            )}
+          </div>
         </div>
         {walletHistory()}
       </>
