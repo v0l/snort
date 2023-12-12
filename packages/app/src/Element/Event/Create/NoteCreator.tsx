@@ -683,7 +683,11 @@ export function NoteCreator() {
 
   if (!note.show) return null;
   return (
-    <Modal id="note-creator" bodyClassName="modal-body flex flex-col gap-4" className="note-creator-modal" onClose={reset}>
+    <Modal
+      id="note-creator"
+      bodyClassName="modal-body flex flex-col gap-4"
+      className="note-creator-modal"
+      onClose={reset}>
       {noteCreatorForm()}
     </Modal>
   );
