@@ -32,7 +32,7 @@ export function MediaElement(props: MediaElementProps) {
           key={props.url}
           src={props.url}
           onClick={props.onMediaClick}
-          className={classNames("w-full h-auto object-cover max-w-none max-h-[80vh]", { "md:max-h-80": !props.meta })}
+          className={classNames("max-h-[80vh]", { "md:max-h-80": !props.meta })}
           style={style}
           ref={ref}
         />
