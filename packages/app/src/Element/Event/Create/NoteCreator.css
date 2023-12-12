@@ -78,6 +78,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
+  cursor: pointer;
 }
 
 .note-creator-icon.pfp .avatar {

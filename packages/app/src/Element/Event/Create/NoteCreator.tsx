@@ -498,7 +498,7 @@ export function NoteCreator() {
 
   function noteCreatorFooter() {
     return (
-      <div className="flex items-center justify-between">
+      <div className="flex justify-between">
         <div className="flex items-center g8">
           <ProfileImage
             pubkey={login.publicKey ?? ""}
@@ -506,6 +506,7 @@ export function NoteCreator() {
             link=""
             showUsername={false}
             showFollowDistance={false}
+            showProfileCard={false}
           />
           {note.pollOptions === undefined && !note.replyTo && (
             <AsyncIcon
@@ -598,6 +599,7 @@ export function NoteCreator() {
               options={{
                 showFooter: false,
                 showContextMenu: false,
+                showProfileCard: false,
                 showTime: false,
                 canClick: false,
                 showMedia: false,
@@ -681,7 +683,7 @@ export function NoteCreator() {
 
   if (!note.show) return null;
   return (
-    <Modal id="note-creator" className="note-creator-modal" onClose={reset}>
+    <Modal id="note-creator" bodyClassName="modal-body flex flex-col gap-4" className="note-creator-modal" onClose={reset}>
       {noteCreatorForm()}
     </Modal>
   );

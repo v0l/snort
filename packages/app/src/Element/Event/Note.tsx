@@ -26,6 +26,7 @@ export interface NoteProps {
     isRoot?: boolean;
     showHeader?: boolean;
     showContextMenu?: boolean;
+    showProfileCard?: boolean;
     showTime?: boolean;
     showPinned?: boolean;
     showBookmarked?: boolean;

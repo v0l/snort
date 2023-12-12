@@ -335,6 +335,7 @@ export function NoteInner(props: NoteProps) {
               pubkey={ev.pubkey}
               subHeader={replyTag() ?? undefined}
               link={opt?.canClick === undefined ? undefined : ""}
+              showProfileCard={options.showProfileCard ?? true}
             />
             <div className="info">
               {props.context}
