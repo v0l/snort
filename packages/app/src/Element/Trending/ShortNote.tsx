@@ -10,7 +10,7 @@ export default function ShortNote({ event }: { event: TaggedNostrEvent }) {
   return (
     <Link to={`/${NostrLink.fromEvent(event).encode(CONFIG.eventLinkPrefix)}`} className="flex flex-col">
       <div className="flex flex-row justify-between">
-        <ProfileImage pubkey={event.pubkey} size={32} />
+        <ProfileImage pubkey={event.pubkey} size={32} showProfileCard={true} />
         <NoteTime from={event.created_at * 1000} />
       </div>
       <div className="ml-10">

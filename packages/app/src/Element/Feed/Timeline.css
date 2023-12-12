@@ -11,8 +11,6 @@
 .latest-notes-fixed {
   position: fixed;
   top: 50px;
-  left: 50%;
-  transform: translateX(-50%);
   width: auto;
   z-index: 42;
   opacity: 0.9;

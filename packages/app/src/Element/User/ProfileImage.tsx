@@ -42,7 +42,7 @@ export default function ProfileImage({
   onClick,
   showFollowDistance = true,
   icons,
-  showProfileCard = true,
+  showProfileCard = false,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const [isHovering, setIsHovering] = useState(false);
