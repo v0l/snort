@@ -32,8 +32,16 @@ export class LNCWallet implements LNWallet {
     });
   }
 
-  canAutoLogin(): boolean {
+  canAutoLogin() {
     return false;
+  }
+
+  canGetInvoices() {
+    return true;
+  }
+
+  canGetBalance() {
+    return true;
   }
 
   isReady(): boolean {

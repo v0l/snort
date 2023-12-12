@@ -101,7 +101,6 @@ export type MilliSats = number;
 
 export interface LNWallet {
   isReady(): boolean;
-  canAutoLogin(): boolean;
   getInfo: () => Promise<WalletInfo>;
   login: (password?: string) => Promise<boolean>;
   close: () => Promise<boolean>;
@@ -109,6 +108,10 @@ export interface LNWallet {
   createInvoice: (req: InvoiceRequest) => Promise<WalletInvoice>;
   payInvoice: (pr: string) => Promise<WalletInvoice>;
   getInvoices: () => Promise<WalletInvoice[]>;
+
+  canAutoLogin: () => boolean;
+  canGetInvoices: () => boolean;
+  canGetBalance: () => boolean;
 }
 
 export interface WalletConfig {

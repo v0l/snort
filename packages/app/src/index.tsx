@@ -39,7 +39,6 @@ import MessagesPage from "@/Pages/Messages/MessagesPage";
 import DonatePage from "@/Pages/DonatePage";
 import SearchPage from "@/Pages/SearchPage";
 import HelpPage from "@/Pages/HelpPage";
-import { WalletRoutes } from "@/Pages/WalletPage";
 import NostrLinkHandler from "@/Pages/NostrLinkHandler";
 import { ThreadRoute } from "@/Element/Event/Thread";
 import { SubscribeRoutes } from "@/Pages/subscribe";
@@ -275,7 +274,6 @@ const mainRoutes = [
     element: <NetworkGraph />,
   },
   ...OnboardingRoutes,
-  ...WalletRoutes,
 ] as Array<RouteObject>;
 
 if (CONFIG.features.zapPool) {

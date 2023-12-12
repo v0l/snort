@@ -43,7 +43,15 @@ export default class LNDHubWallet implements LNWallet {
     return this.auth !== undefined;
   }
 
-  canAutoLogin(): boolean {
+  canAutoLogin() {
+    return true;
+  }
+
+  canGetInvoices() {
+    return true;
+  }
+
+  canGetBalance() {
     return true;
   }
 
@@ -106,18 +114,21 @@ export default class LNDHubWallet implements LNWallet {
 
   async getInvoices(): Promise<WalletInvoice[]> {
     const rsp = await this.getJson<UserInvoicesResponse[]>("GET", "/getuserinvoices");
-    return (rsp as UserInvoicesResponse[]).map(a => {
-      const decodedInvoice = prToWalletInvoice(a.payment_request);
-      if (!decodedInvoice) {
-        throw new WalletError(WalletErrorCode.InvalidInvoice, "Failed to parse invoice");
-      }
-      return {
-        ...decodedInvoice,
-        state: a.ispaid ? WalletInvoiceState.Paid : decodedInvoice.state,
-        paymentHash: a.payment_hash,
-        memo: a.description,
-      } as WalletInvoice;
-    });
+    return (rsp as UserInvoicesResponse[])
+      .sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1))
+      .slice(0, 50)
+      .map(a => {
+        const decodedInvoice = prToWalletInvoice(a.payment_request);
+        if (!decodedInvoice) {
+          throw new WalletError(WalletErrorCode.InvalidInvoice, "Failed to parse invoice");
+        }
+        return {
+          ...decodedInvoice,
+          state: a.ispaid ? WalletInvoiceState.Paid : decodedInvoice.state,
+          paymentHash: a.payment_hash,
+          memo: a.description,
+        } as WalletInvoice;
+      });
   }
 
   private async getJson<T>(method: "GET" | "POST", path: string, body?: unknown): Promise<T> {

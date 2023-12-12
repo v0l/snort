@@ -2911,7 +2911,7 @@ __metadata:
     "@uidotdev/usehooks": ^2.4.1
     "@vitejs/plugin-react": ^4.2.0
     "@void-cat/api": ^1.0.10
-    "@webbtc/webln-types": ^1.0.10
+    "@webbtc/webln-types": ^2.1.0
     "@webscopeio/react-textarea-autocomplete": ^4.9.2
     autoprefixer: ^10.4.16
     classnames: ^2.3.2
@@ -3961,10 +3961,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@webbtc/webln-types@npm:^1.0.10":
-  version: 1.0.14
-  resolution: "@webbtc/webln-types@npm:1.0.14"
-  checksum: eaa363bf3a9c278be51c93487904c04518e8812d97449d8d7866089aae74756451a48245a31b1a0fd591bc4798a96a29516ad395b8828c9f2af920cf65a305ac
+"@webbtc/webln-types@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@webbtc/webln-types@npm:2.1.0"
+  checksum: 71c8ae3fc4e163dfa2271f19216b603f53a6910e65fdb115b1920ef9be4b7fa990d9c1c644900a7e88c69e8a8a8cc2e273aa490903e6064e2f296498cdca53ff
   languageName: node
   linkType: hard
 

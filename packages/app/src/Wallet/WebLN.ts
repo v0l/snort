@@ -12,7 +12,7 @@ import {
   WalletKind,
   WalletStore,
 } from "@/Wallet";
-import { barrierQueue, processWorkQueue, WorkQueueItem } from "@snort/shared";
+import { barrierQueue, processWorkQueue, unwrap, WorkQueueItem } from "@snort/shared";
 
 const WebLNQueue: Array<WorkQueueItem> = [];
 processWorkQueue(WebLNQueue);
@@ -75,8 +75,12 @@ export class WebLNWallet implements LNWallet {
     return Promise.resolve(true);
   }
 
-  getBalance(): Promise<Sats> {
-    return Promise.resolve(0);
+  async getBalance(): Promise<Sats> {
+    if (window.webln?.getBalance) {
+      const rsp = await barrierQueue(WebLNQueue, async () => await unwrap(window.webln?.getBalance).call(window.webln));
+      return rsp.balance;
+    }
+    return 0;
   }
 
   async createInvoice(req: InvoiceRequest): Promise<WalletInvoice> {
@@ -123,5 +127,13 @@ export class WebLNWallet implements LNWallet {
 
   getInvoices(): Promise<WalletInvoice[]> {
     return Promise.resolve([]);
+  }
+
+  canGetInvoices() {
+    return false;
+  }
+
+  canGetBalance() {
+    return window.webln?.getBalance !== undefined;
   }
 }

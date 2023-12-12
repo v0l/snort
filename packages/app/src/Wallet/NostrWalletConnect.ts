@@ -1,6 +1,15 @@
 import { Connection, EventKind, NostrEvent, EventBuilder, PrivateKeySigner } from "@snort/system";
-import { LNWallet, WalletError, WalletErrorCode, WalletInfo, WalletInvoice, WalletInvoiceState } from "@/Wallet";
+import {
+  InvoiceRequest,
+  LNWallet,
+  WalletError,
+  WalletErrorCode,
+  WalletInfo,
+  WalletInvoice,
+  WalletInvoiceState,
+} from "@/Wallet";
 import debug from "debug";
+import { dedupe } from "@snort/shared";
 
 interface WalletConnectConfig {
   relayUrl: string;
@@ -30,10 +39,45 @@ interface WalletConnectResponse<T> {
   };
 }
 
+interface GetInfoResponse {
+  alias?: string;
+  color?: string;
+  pubkey?: string;
+  network?: string;
+  block_height?: number;
+  block_hash?: string;
+  methods?: Array<string>;
+}
+
+interface ListTransactionsResponse {
+  transactions: Array<{
+    type: "incoming" | "outgoing";
+    invoice: string;
+    description?: string;
+    description_hash?: string;
+    preimage?: string;
+    payment_hash?: string;
+    amount: number;
+    feed_paid: number;
+    settled_at?: number;
+    metadata?: object;
+  }>;
+}
+
+interface MakeInvoiceResponse {
+  invoice: string;
+  payment_hash: string;
+}
+
+const DefaultSupported = ["get_info", "pay_invoice"];
+
 export class NostrConnectWallet implements LNWallet {
+  #log = debug("NWC");
   #config: WalletConnectConfig;
   #conn?: Connection;
   #commandQueue: Map<string, QueueObj>;
+  #info?: WalletInfo;
+  #supported_methods: Array<string> = DefaultSupported;
 
   constructor(cfg: string) {
     this.#config = NostrConnectWallet.parseConfigUrl(cfg);
@@ -59,20 +103,43 @@ export class NostrConnectWallet implements LNWallet {
 
   async getInfo() {
     await this.login();
-    return await new Promise<WalletInfo>((resolve, reject) => {
-      this.#commandQueue.set("info", {
-        resolve: (o: string) => {
-          resolve({
-            alias: "NWC",
-            chains: o.split(" "),
-          } as WalletInfo);
-        },
-        reject,
+    if (this.#info) return this.#info;
+
+    const rsp = await this.#rpc<WalletConnectResponse<GetInfoResponse>>("get_info", {});
+    if (!rsp.error) {
+      this.#supported_methods = dedupe(["get_info", ...(rsp.result?.methods ?? DefaultSupported)]);
+      this.#log("Supported methods: %o", this.#supported_methods);
+      const info = {
+        nodePubKey: rsp.result?.pubkey,
+        alias: rsp.result?.alias,
+        blockHeight: rsp.result?.block_height,
+        blockHash: rsp.result?.block_hash,
+        chains: rsp.result?.network ? [rsp.result.network] : undefined,
+      } as WalletInfo;
+      this.#info = info;
+      return info;
+    } else if (rsp.error.code === "NOT_IMPLEMENTED") {
+      // legacy get_info uses event kind 13_194
+      return await new Promise<WalletInfo>((resolve, reject) => {
+        this.#commandQueue.set("info", {
+          resolve: (o: string) => {
+            this.#supported_methods = dedupe(["get_info", ...o.split(",")]);
+            this.#log("Supported methods: %o", this.#supported_methods);
+            const info = {
+              alias: "NWC",
+            } as WalletInfo;
+            this.#info = info;
+            resolve(info);
+          },
+          reject,
+        });
+        this.#conn?.QueueReq(["REQ", "info", { kinds: [13194], limit: 1 }], () => {
+          // ignored
+        });
       });
-      this.#conn?.QueueReq(["REQ", "info", { kinds: [13194], limit: 1 }], () => {
-        // ignored
-      });
-    });
+    } else {
+      throw new WalletError(WalletErrorCode.GeneralError, rsp.error.message);
+    }
   }
 
   async login() {
@@ -100,11 +167,33 @@ export class NostrConnectWallet implements LNWallet {
   }
 
   async getBalance() {
-    return 0;
+    await this.login();
+    const rsp = await this.#rpc<WalletConnectResponse<{ balance: number }>>("get_balance", {});
+    if (!rsp.error) {
+      return (rsp.result?.balance ?? 0) / 1000;
+    } else {
+      throw new WalletError(WalletErrorCode.GeneralError, rsp.error.message);
+    }
   }
 
-  createInvoice() {
-    return Promise.reject(new WalletError(WalletErrorCode.GeneralError, "Not implemented"));
+  async createInvoice(req: InvoiceRequest) {
+    await this.login();
+    const rsp = await this.#rpc<WalletConnectResponse<MakeInvoiceResponse>>("make_invoice", {
+      amount: req.amount * 1000,
+      description: req.memo,
+      expiry: req.expiry,
+    });
+    if (!rsp.error) {
+      return {
+        pr: rsp.result?.invoice,
+        paymentHash: rsp.result?.payment_hash,
+        memo: req.memo,
+        amount: req.amount * 1000,
+        state: WalletInvoiceState.Pending,
+      } as WalletInvoice;
+    } else {
+      throw new WalletError(WalletErrorCode.GeneralError, rsp.error.message);
+    }
   }
 
   async payInvoice(pr: string) {
@@ -123,8 +212,38 @@ export class NostrConnectWallet implements LNWallet {
     }
   }
 
-  getInvoices() {
-    return Promise.resolve([]);
+  async getInvoices() {
+    await this.login();
+    const rsp = await this.#rpc<WalletConnectResponse<ListTransactionsResponse>>("list_transactions", {
+      limit: 50,
+    });
+    if (!rsp.error) {
+      return (
+        rsp.result?.transactions.map(
+          a =>
+            ({
+              pr: a.invoice,
+              paymentHash: a.payment_hash,
+              memo: a.description,
+              amount: a.amount,
+              fees: a.feed_paid,
+              timestamp: a.settled_at,
+              preimage: a.preimage,
+              state: WalletInvoiceState.Paid,
+            }) as WalletInvoice,
+        ) ?? []
+      );
+    } else {
+      throw new WalletError(WalletErrorCode.GeneralError, rsp.error.message);
+    }
+  }
+
+  canGetInvoices() {
+    return this.#supported_methods.includes("list_transactions");
+  }
+
+  canGetBalance() {
+    return this.#supported_methods.includes("get_balance");
   }
 
   async #onReply(sub: string, e: NostrEvent) {
@@ -157,8 +276,19 @@ export class NostrConnectWallet implements LNWallet {
     this.#conn?.CloseReq(sub);
   }
 
-  async #rpc<T>(method: string, params: Record<string, string>) {
+  async #rpc<T>(method: string, params: Record<string, string | number | undefined>) {
     if (!this.#conn) throw new WalletError(WalletErrorCode.GeneralError, "Not implemented");
+    this.#log("> %o", { method, params });
+    if (!this.#supported_methods.includes(method)) {
+      const ret = {
+        error: {
+          code: "NOT_IMPLEMENTED",
+          message: `get_info claims the method "${method}" is not supported`,
+        },
+      } as T;
+      this.#log("< %o", ret);
+      return ret;
+    }
 
     const payload = JSON.stringify({
       method,
@@ -190,7 +320,7 @@ export class NostrConnectWallet implements LNWallet {
       this.#commandQueue.set(evCommand.id, {
         resolve: async (o: string) => {
           const reply = JSON.parse(await signer.nip4Decrypt(o, this.#config.walletPubkey));
-          debug("NWC")("%o", reply);
+          this.#log("< %o", reply);
           resolve(reply);
         },
         reject,

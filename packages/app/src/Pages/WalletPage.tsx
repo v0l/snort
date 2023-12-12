@@ -1,22 +1,14 @@
 import "./WalletPage.css";
 
 import { useEffect, useState } from "react";
-import { RouteObject, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
 import NoteTime from "@/Element/Event/NoteTime";
 import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets } from "@/Wallet";
 import AsyncButton from "@/Element/Button/AsyncButton";
 import { unwrap } from "@/SnortUtils";
-import { WebLNWallet } from "@/Wallet/WebLN";
 import Icon from "@/Icons/Icon";
-
-export const WalletRoutes: RouteObject[] = [
-  {
-    path: "/wallet",
-    element: <WalletPage />,
-  },
-];
 
 export default function WalletPage() {
   const navigate = useNavigate();
@@ -33,10 +25,14 @@ export default function WalletPage() {
     try {
       const i = await wallet.getInfo();
       setInfo(i);
-      const b = await wallet.getBalance();
-      setBalance(b as Sats);
-      const h = await wallet.getInvoices();
-      setHistory((h as WalletInvoice[]).sort((a, b) => b.timestamp - a.timestamp));
+      if (wallet.canGetBalance()) {
+        const b = await wallet.getBalance();
+        setBalance(b as Sats);
+      }
+      if (wallet.canGetInvoices()) {
+        const h = await wallet.getInvoices();
+        setHistory((h as WalletInvoice[]).sort((a, b) => b.timestamp - a.timestamp));
+      }
     } catch (e) {
       if (e instanceof Error) {
         setError((e as Error).message);
@@ -62,11 +58,11 @@ export default function WalletPage() {
   function stateIcon(s: WalletInvoiceState) {
     switch (s) {
       case WalletInvoiceState.Pending:
-        return <Icon name="clock" className="mr5" size={15} />;
+        return <Icon name="clock" size={15} />;
       case WalletInvoiceState.Paid:
-        return <Icon name="check" className="mr5" size={15} />;
+        return <Icon name="check" size={15} />;
       case WalletInvoiceState.Expired:
-        return <Icon name="close" className="mr5" size={15} />;
+        return <Icon name="close" size={15} />;
     }
   }
 
@@ -132,7 +128,7 @@ export default function WalletPage() {
   }
 
   function walletHistory() {
-    if (wallet instanceof WebLNWallet) return null;
+    if (!wallet?.canGetInvoices()) return;
 
     return (
       <>
@@ -141,12 +137,12 @@ export default function WalletPage() {
         </h3>
         {history?.map(a => (
           <div className="card flex wallet-history-item" key={a.timestamp}>
-            <div className="grow flex-col">
+            <div className="grow">
               <NoteTime from={a.timestamp * 1000} fallback={formatMessage({ defaultMessage: "now", id: "kaaf1E" })} />
               <div>{(a.memo ?? "").length === 0 ? <>&nbsp;</> : a.memo}</div>
             </div>
             <div
-              className={`nowrap ${(() => {
+              className={`flex gap-2 items-center ${(() => {
                 switch (a.state) {
                   case WalletInvoiceState.Paid:
                     return "success";
@@ -158,14 +154,16 @@ export default function WalletPage() {
                     return "pending";
                 }
               })()}`}>
-              {stateIcon(a.state)}
-              <FormattedMessage
-                defaultMessage="{amount} sats"
-                id="vrTOHJ"
-                values={{
-                  amount: <FormattedNumber value={a.amount / 1e3} />,
-                }}
-              />
+              <div>{stateIcon(a.state)}</div>
+              <div>
+                <FormattedMessage
+                  defaultMessage="{amount} sats"
+                  id="vrTOHJ"
+                  values={{
+                    amount: <FormattedNumber value={a.amount / 1e3} />,
+                  }}
+                />
+              </div>
             </div>
           </div>
         ))}
@@ -174,7 +172,7 @@ export default function WalletPage() {
   }
 
   function walletBalance() {
-    if (wallet instanceof WebLNWallet) return null;
+    if (!wallet?.canGetBalance()) return;
     return (
       <small>
         <FormattedMessage
@@ -189,18 +187,13 @@ export default function WalletPage() {
   }
 
   function walletInfo() {
-    if (!wallet?.isReady()) return null;
+    if (!wallet?.isReady()) return;
     return (
       <>
-        <div className="card">
-          <h3>{info?.alias}</h3>
+        <div className="p br b">
+          <div>{info?.alias}</div>
           {walletBalance()}
         </div>
-        {/*<div className="flex wallet-buttons">
-          <AsyncButton onClick={createInvoice}>
-            <FormattedMessage defaultMessage="Receive" description="Receive sats by generating LN invoice" />
-          </AsyncButton>
-        </div>*/}
         {walletHistory()}
       </>
     );
@@ -208,8 +201,8 @@ export default function WalletPage() {
 
   return (
     <div className="main-content p">
-      {error && <b className="error">{error}</b>}
       {walletList()}
+      {error && <b className="warning">{error}</b>}
       {unlockWallet()}
       {walletInfo()}
     </div>
