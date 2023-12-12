@@ -2,7 +2,15 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "./fonts/inter.css";
 
-import { compress, expand_filter, flat_merge, get_diff, pow, default as wasmInit } from "@snort/system-wasm";
+import {
+  compress,
+  expand_filter,
+  flat_merge,
+  get_diff,
+  pow,
+  schnorr_verify,
+  default as wasmInit,
+} from "@snort/system-wasm";
 import WasmPath from "@snort/system-wasm/pkg/system_wasm_bg.wasm";
 
 import { StrictMode } from "react";
@@ -75,6 +83,9 @@ const WasmQueryOptimizer = {
   },
   compress: (all: Array<ReqFilter>) => {
     return compress(all) as Array<ReqFilter>;
+  },
+  schnorrVerify: (id, sig, pubkey) => {
+    return schnorr_verify(id, sig, pubkey);
   },
 } as QueryOptimizer;
 

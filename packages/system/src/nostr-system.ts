@@ -199,9 +199,12 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
       this.#log("Rejecting invalid event %O", ev);
       return;
     }
-    if (this.checkSigs && !EventExt.verify(ev)) {
-      this.#log("Invalid sig %O", ev);
-      return;
+    if (this.checkSigs) {
+      const id = EventExt.createId(ev);
+      if (!this.#queryOptimizer.schnorrVerify(id, ev.sig, ev.pubkey)) {
+        this.#log("Invalid sig %O", ev);
+        return;
+      }
     }
 
     for (const [, v] of this.Queries) {

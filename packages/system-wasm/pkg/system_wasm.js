@@ -361,6 +361,28 @@ export function argon2(password, salt) {
   }
 }
 
+/**
+ * @param {any} hash
+ * @param {any} sig
+ * @param {any} pub_key
+ * @returns {boolean}
+ */
+export function schnorr_verify(hash, sig, pub_key) {
+  try {
+    const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+    wasm.schnorr_verify(retptr, addHeapObject(hash), addHeapObject(sig), addHeapObject(pub_key));
+    var r0 = getInt32Memory0()[retptr / 4 + 0];
+    var r1 = getInt32Memory0()[retptr / 4 + 1];
+    var r2 = getInt32Memory0()[retptr / 4 + 2];
+    if (r2) {
+      throw takeObject(r1);
+    }
+    return r0 !== 0;
+  } finally {
+    wasm.__wbindgen_add_to_stack_pointer(16);
+  }
+}
+
 function handleError(f, args) {
   try {
     return f.apply(this, args);

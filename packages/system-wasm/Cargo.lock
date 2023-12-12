@@ -645,6 +645,24 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 
 [[package]]
+name = "secp256k1"
+version = "0.28.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2acea373acb8c21ecb5a23741452acd2593ed44ee3d343e72baaa143bc89d0d5"
+dependencies = [
+ "secp256k1-sys",
+]
+
+[[package]]
+name = "secp256k1-sys"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4dd97a086ec737e30053fd5c46f097465d25bb81dd3608825f65298c4c98be83"
+dependencies = [
+ "cc",
+]
+
+[[package]]
 name = "serde"
 version = "1.0.188"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -736,6 +754,7 @@ dependencies = [
  "hex",
  "itertools 0.11.0",
  "rand",
+ "secp256k1",
  "serde",
  "serde-wasm-bindgen",
  "serde_json",

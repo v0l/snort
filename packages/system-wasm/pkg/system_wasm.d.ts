@@ -39,6 +39,13 @@ export function pow(val: any, target: any): any;
  * @returns {any}
  */
 export function argon2(password: any, salt: any): any;
+/**
+ * @param {any} hash
+ * @param {any} sig
+ * @param {any} pub_key
+ * @returns {boolean}
+ */
+export function schnorr_verify(hash: any, sig: any, pub_key: any): boolean;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
@@ -51,6 +58,11 @@ export interface InitOutput {
   readonly compress: (a: number, b: number) => void;
   readonly pow: (a: number, b: number, c: number) => void;
   readonly argon2: (a: number, b: number, c: number) => void;
+  readonly schnorr_verify: (a: number, b: number, c: number, d: number) => void;
+  readonly rustsecp256k1_v0_9_1_context_create: (a: number) => number;
+  readonly rustsecp256k1_v0_9_1_context_destroy: (a: number) => void;
+  readonly rustsecp256k1_v0_9_1_default_illegal_callback_fn: (a: number, b: number) => void;
+  readonly rustsecp256k1_v0_9_1_default_error_callback_fn: (a: number, b: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;

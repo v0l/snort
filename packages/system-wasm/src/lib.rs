@@ -1,6 +1,7 @@
 extern crate console_error_panic_hook;
 
 use argon2::{Argon2};
+use secp256k1::{Message, Secp256k1, XOnlyPublicKey};
 use serde::{Deserialize, Serialize};
 use crate::filter::{FlatReqFilter, ReqFilter};
 use wasm_bindgen::prelude::*;
@@ -96,6 +97,20 @@ pub fn argon2(password: JsValue, salt: JsValue) -> Result<JsValue, JsValue> {
     let mut key = [0u8; 32];
     Argon2::default().hash_password_into(password_parsed.as_bytes(), salt_parsed.as_bytes(), &mut key).expect("Failed to generate key");
     Ok(serde_wasm_bindgen::to_value(&hex::encode(key))?)
+}
+
+#[wasm_bindgen]
+pub fn schnorr_verify(hash: JsValue, sig: JsValue, pub_key: JsValue) -> Result<bool, JsValue> {
+    console_error_panic_hook::set_once();
+    let msg_hex: String = serde_wasm_bindgen::from_value(hash)?;
+    let sig_hex: String = serde_wasm_bindgen::from_value(sig)?;
+    let pub_key_hex: String = serde_wasm_bindgen::from_value(pub_key)?;
+
+    let secp = Secp256k1::new();
+    let msg = Message::from_digest_slice(&hex::decode(msg_hex).unwrap()).unwrap();
+    let key = XOnlyPublicKey::from_slice(&hex::decode(pub_key_hex).unwrap()).unwrap();
+    let sig = secp256k1::schnorr::Signature::from_slice(&hex::decode(sig_hex).unwrap()).unwrap();
+    Ok(secp.verify_schnorr(&sig, &msg, &key).is_ok())
 }
 
 #[cfg(test)]

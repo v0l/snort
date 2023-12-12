@@ -1,3 +1,4 @@
+import { schnorr } from "@noble/curves/secp256k1";
 import { ReqFilter } from "../nostr";
 import { expandFilter } from "./request-expander";
 import { flatMerge, mergeSimilar } from "./request-merger";
@@ -24,6 +25,7 @@ export interface QueryOptimizer {
   getDiff(prev: Array<ReqFilter>, next: Array<ReqFilter>): Array<FlatReqFilter>;
   flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter>;
   compress(all: Array<ReqFilter>): Array<ReqFilter>;
+  schnorrVerify(hash: string, sig: string, pubkey: string): boolean;
 }
 
 export const DefaultQueryOptimizer = {
@@ -42,5 +44,8 @@ export const DefaultQueryOptimizer = {
   },
   compress: (all: Array<ReqFilter>) => {
     return mergeSimilar(all);
+  },
+  schnorrVerify: (hash, sig, pubkey) => {
+    return schnorr.verify(sig, hash, pubkey);
   },
 } as QueryOptimizer;
