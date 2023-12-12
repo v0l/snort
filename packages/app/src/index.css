@@ -210,7 +210,6 @@ a.ext {
 .card .card {
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  min-height: 0;
 }
 
 .card .header {
