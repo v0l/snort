@@ -2,6 +2,7 @@ import { ProxyImg } from "@/Element/ProxyImg";
 import useImgProxy from "@/Hooks/useImgProxy";
 import { IMeta } from "@snort/system";
 import React, { CSSProperties, useMemo, useRef } from "react";
+import classNames from "classnames";
 
 interface MediaElementProps {
   mime: string;
@@ -26,30 +27,34 @@ export function MediaElement(props: MediaElementProps) {
 
   if (props.mime.startsWith("image/")) {
     return (
-      <ProxyImg
-        key={props.url}
-        src={props.url}
-        onClick={props.onMediaClick}
-        className="max-h-[80vh] mx-auto"
-        style={style}
-        ref={ref}
-      />
+      <div className={classNames("flex justify-center items-center -mx-4 md:mx-0 my-2", { "md:h-80": !props.meta })}>
+        <ProxyImg
+          key={props.url}
+          src={props.url}
+          onClick={props.onMediaClick}
+          className={classNames("w-full h-auto object-cover max-w-none max-h-[80vh]", { "md:max-h-80": !props.meta })}
+          style={style}
+          ref={ref}
+        />
+      </div>
     );
   } else if (props.mime.startsWith("audio/")) {
     return <audio key={props.url} src={props.url} controls />;
   } else if (props.mime.startsWith("video/")) {
     return (
-      <video
-        autoPlay={autoplay}
-        loop={true}
-        muted={autoplay}
-        key={props.url}
-        src={props.url}
-        controls
-        poster={proxy(props.url)}
-        className="max-h-[80vh] mx-auto"
-        style={style}
-      />
+      <div className="flex justify-center items-center -mx-4 md:mx-0 md:h-80 my-2">
+        <video
+          autoPlay={autoplay}
+          loop={true}
+          muted={autoplay}
+          key={props.url}
+          src={props.url}
+          controls
+          poster={proxy(props.url)}
+          className="max-h-[80vh] md:max-h-80"
+          style={style}
+        />
+      </div>
     );
   } else {
     return (
