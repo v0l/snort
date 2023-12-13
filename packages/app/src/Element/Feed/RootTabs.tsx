@@ -10,6 +10,7 @@ import { Newest } from "@/Login";
 
 export type RootTab =
   | "following"
+  | "followed-by-friends"
   | "conversations"
   | "trending-notes"
   | "trending-people"
@@ -53,13 +54,13 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
       ),
     },
     {
-      tab: "trending-people",
-      path: `${base}/trending/people`,
-      show: true,
+      tab: "followed-by-friends",
+      path: `${base}/followed-by-friends`,
+      show: Boolean(pubKey),
       element: (
         <>
-          <Icon name="user-up" />
-          <FormattedMessage defaultMessage="Trending People" id="CVWeJ6" />
+          <Icon name="user-v2" />
+          <FormattedMessage defaultMessage="Followed by friends" id="voxBKC" />
         </>
       ),
     },

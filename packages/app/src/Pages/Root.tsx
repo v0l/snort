@@ -10,7 +10,6 @@ import { TimelineSubject } from "@/Feed/TimelineFeed";
 import { debounce, getCurrentRefCode, getRelayName, sha256 } from "@/SnortUtils";
 import useLogin from "@/Hooks/useLogin";
 import Discover from "@/Pages/Discover";
-import TrendingUsers from "@/Element/Trending/TrendingUsers";
 import TrendingNotes from "@/Element/Trending/TrendingPosts";
 import HashTagsPage from "@/Pages/HashTagsPage";
 import SuggestedProfiles from "@/Element/SuggestedProfiles";
@@ -147,6 +146,18 @@ export const GlobalTab = () => {
   );
 };
 
+export const FollowedByFriendsTab = () => {
+  const { publicKey } = useLogin();
+  const subject: TimelineSubject = {
+    type: "global",
+    items: [],
+    discriminator: `followed-by-friends-${publicKey}`,
+    streams: true,
+  };
+
+  return <Timeline followDistance={2} subject={subject} postsOnly={false} method={"TIME_RANGE"} />;
+};
+
 export const NotesTab = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const deckContext = useContext(DeckContext);
@@ -210,6 +221,10 @@ export const RootTabRoutes = [
     element: <NotesTab />,
   },
   {
+    path: "followed-by-friends",
+    element: <FollowedByFriendsTab />,
+  },
+  {
     path: "conversations",
     element: <ConversationsTab />,
   },
@@ -224,14 +239,6 @@ export const RootTabRoutes = [
   {
     path: "trending/notes",
     element: <TrendingNotes />,
-  },
-  {
-    path: "trending/people",
-    element: (
-      <div className="p">
-        <TrendingUsers />
-      </div>
-    ),
   },
   {
     path: "trending/hashtags",

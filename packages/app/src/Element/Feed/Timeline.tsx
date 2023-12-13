@@ -1,7 +1,7 @@
 import "./Timeline.css";
 import { FormattedMessage } from "react-intl";
 import { useCallback, useMemo, useState } from "react";
-import { TaggedNostrEvent, EventKind } from "@snort/system";
+import { TaggedNostrEvent, EventKind, socialGraphInstance } from "@snort/system";
 
 import { dedupeByPubkey, findTag } from "@/SnortUtils";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";
@@ -16,6 +16,7 @@ export interface TimelineProps {
   postsOnly: boolean;
   subject: TimelineSubject;
   method: "TIME_RANGE" | "LIMIT_UNTIL";
+  followDistance?: number;
   ignoreModeration?: boolean;
   window?: number;
   now?: number;
@@ -44,13 +45,20 @@ const Timeline = (props: TimelineProps) => {
   const { muted, isEventMuted } = useModeration();
   const filterPosts = useCallback(
     (nts: readonly TaggedNostrEvent[]) => {
+      const checkFollowDistance = (a: TaggedNostrEvent) => {
+        if (props.followDistance === undefined) {
+          return true;
+        }
+        const followDistance = socialGraphInstance.getFollowDistance(a.pubkey);
+        return followDistance === props.followDistance;
+      };
       const a = [...nts.filter(a => a.kind !== EventKind.LiveEvent)];
       props.noSort || a.sort((a, b) => b.created_at - a.created_at);
       return a
         ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
-        .filter(a => props.ignoreModeration || !isEventMuted(a));
+        .filter(a => (props.ignoreModeration || !isEventMuted(a)) && checkFollowDistance(a));
     },
-    [props.postsOnly, muted, props.ignoreModeration],
+    [props.postsOnly, muted, props.ignoreModeration, props.followDistance],
   );
 
   const mainFeed = useMemo(() => {
