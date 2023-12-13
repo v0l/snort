@@ -72,6 +72,7 @@ export default function Note(props: NoteProps) {
         related={props.related}
         isPreview={props.options?.longFormPreview ?? false}
         onClick={() => props.onClick?.(ev)}
+        truncate={props.options?.truncate}
       />
     );
   }

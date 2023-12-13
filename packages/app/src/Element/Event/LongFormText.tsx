@@ -1,5 +1,5 @@
 import "./LongFormText.css";
-import { CSSProperties, useCallback, useRef, useState } from "react";
+import React, { CSSProperties, useCallback, useRef, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions } from "@snort/system-react";
@@ -11,13 +11,17 @@ import useImgProxy from "@/Hooks/useImgProxy";
 import ProfilePreview from "@/Element/User/ProfilePreview";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
+import classNames from "classnames";
 
 interface LongFormTextProps {
   ev: TaggedNostrEvent;
   isPreview: boolean;
   related: ReadonlyArray<TaggedNostrEvent>;
   onClick?: () => void;
+  truncate?: boolean;
 }
+
+const TEXT_TRUNCATE_LENGTH = 400;
 
 export function LongFormText(props: LongFormTextProps) {
   const title = findTag(props.ev, "title");
@@ -25,6 +29,7 @@ export function LongFormText(props: LongFormTextProps) {
   const image = findTag(props.ev, "image");
   const { proxy } = useImgProxy();
   const [reading, setReading] = useState(false);
+  const [showMore, setShowMore] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const { reactions, reposts, zaps } = useEventReactions(NostrLink.fromEvent(props.ev), props.related);
 
@@ -85,6 +90,25 @@ export function LongFormText(props: LongFormTextProps) {
     }
   };
 
+  const ToggleShowMore = () => (
+    <a
+      className="highlight cursor-pointer"
+      onClick={e => {
+        e.preventDefault();
+        e.stopPropagation();
+        setShowMore(!showMore);
+      }}>
+      {showMore ? (
+        <FormattedMessage defaultMessage="Show less" id="qyJtWy" />
+      ) : (
+        <FormattedMessage defaultMessage="Show more" id="aWpBzj" />
+      )}
+    </a>
+  );
+
+  const shouldTruncate = props.truncate && props.ev.content.length > TEXT_TRUNCATE_LENGTH;
+  const content = shouldTruncate && !showMore ? props.ev.content.slice(0, TEXT_TRUNCATE_LENGTH) : props.ev.content;
+
   function fullText() {
     return (
       <>
@@ -113,7 +137,9 @@ export function LongFormText(props: LongFormTextProps) {
           )}
         </div>
         <hr />
-        <Markdown content={props.ev.content} tags={props.ev.tags} ref={ref} />
+        {shouldTruncate && showMore && <ToggleShowMore />}
+        <Markdown content={content} tags={props.ev.tags} ref={ref} />
+        {shouldTruncate && !showMore && <ToggleShowMore />}
         <hr />
         <NoteFooter ev={props.ev} reposts={reposts} zaps={zaps} positive={reactions.positive} />
       </>
@@ -121,12 +147,7 @@ export function LongFormText(props: LongFormTextProps) {
   }
 
   return (
-    <div
-      className="long-form-note flex flex-col g16 p pointer"
-      onClick={e => {
-        e.stopPropagation();
-        props.onClick?.();
-      }}>
+    <div className={classNames("long-form-note flex flex-col g16 p break-words")}>
       <ProfilePreview
         pubkey={props.ev.pubkey}
         actions={
