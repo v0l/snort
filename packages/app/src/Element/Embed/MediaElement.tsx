@@ -48,7 +48,7 @@ const ImageElement = ({ url, meta, onMediaClick }: ImageElementProps) => {
         key={url}
         src={url}
         onClick={onMediaClick}
-        className={classNames("max-h-[80vh] w-full h-full object-contain object-left", {
+        className={classNames("max-h-[80vh] w-full h-full object-contain object-center md:object-left", {
           "md:max-h-[510px]": !meta,
         })}
         style={style}
