@@ -1,8 +1,9 @@
 import { ProxyImg } from "@/Element/ProxyImg";
 import useImgProxy from "@/Hooks/useImgProxy";
 import { IMeta } from "@snort/system";
-import React, { CSSProperties, useMemo, useRef } from "react";
+import React, { CSSProperties, useEffect, useMemo, useRef } from "react";
 import classNames from "classnames";
+import { useInView } from "react-intersection-observer";
 
 interface MediaElementProps {
   mime: string;
@@ -13,17 +14,30 @@ interface MediaElementProps {
 
 export function MediaElement(props: MediaElementProps) {
   const { proxy } = useImgProxy();
-  const ref = useRef<HTMLImageElement | null>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
+  const { ref: videoContainerRef, inView } = useInView({ threshold: 1 });
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const autoplay = window.innerWidth >= 768;
+
+  useEffect(() => {
+    if (!autoplay || !videoRef.current) {
+      return;
+    }
+    if (inView) {
+      videoRef.current.play();
+    } else {
+      videoRef.current.pause();
+    }
+  }, [inView]);
 
   const style = useMemo(() => {
     const style = {} as CSSProperties;
-    if (props.meta?.height && props.meta.width && ref.current) {
-      const scale = ref.current.offsetWidth / props.meta.width;
+    if (props.meta?.height && props.meta.width && imageRef.current) {
+      const scale = imageRef.current.offsetWidth / props.meta.width;
       style.height = `${props.meta.height * scale}px`;
     }
     return style;
-  }, [ref.current]);
+  }, [imageRef.current]);
 
   if (props.mime.startsWith("image/")) {
     return (
@@ -34,7 +48,7 @@ export function MediaElement(props: MediaElementProps) {
           onClick={props.onMediaClick}
           className={classNames("max-h-[80vh]", { "md:max-h-80": !props.meta })}
           style={style}
-          ref={ref}
+          ref={imageRef}
         />
       </div>
     );
@@ -42,9 +56,9 @@ export function MediaElement(props: MediaElementProps) {
     return <audio key={props.url} src={props.url} controls />;
   } else if (props.mime.startsWith("video/")) {
     return (
-      <div className="flex justify-center items-center -mx-4 md:mx-0 md:h-80 my-2">
+      <div ref={videoContainerRef} className="flex justify-center items-center -mx-4 md:mx-0 md:h-80 my-2">
         <video
-          autoPlay={autoplay}
+          ref={videoRef}
           loop={true}
           muted={autoplay}
           key={props.url}
