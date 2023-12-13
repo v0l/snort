@@ -1,7 +1,7 @@
 import { ProxyImg } from "@/Element/ProxyImg";
 import useImgProxy from "@/Hooks/useImgProxy";
 import { IMeta } from "@snort/system";
-import React, { CSSProperties, useEffect, useMemo, useRef, useState } from "react";
+import React, { CSSProperties, useEffect, useMemo, useRef } from "react";
 import classNames from "classnames";
 import { useInView } from "react-intersection-observer";
 
@@ -43,12 +43,12 @@ const ImageElement = ({ url, meta, onMediaClick }: ImageElementProps) => {
   }, [imageRef.current]);
 
   return (
-    <div className={classNames("flex justify-center items-center -mx-4 md:mx-0 my-2", { "md:h-80": !meta })}>
+    <div className={classNames("flex items-center -mx-4 md:mx-0 my-2", { "md:h-[510px]": !meta })}>
       <ProxyImg
         key={url}
         src={url}
         onClick={onMediaClick}
-        className={classNames("max-h-[80vh]", { "md:max-h-80": !meta })}
+        className={classNames("max-h-[80vh] md:rounded-sm", { "md:max-h-[510px]": !meta })}
         style={style}
         ref={imageRef}
       />
@@ -59,9 +59,8 @@ const ImageElement = ({ url, meta, onMediaClick }: ImageElementProps) => {
 const VideoElement = ({ url }: VideoElementProps) => {
   const { proxy } = useImgProxy();
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const { ref: videoContainerRef, inView } = useInView({ threshold: 1 });
+  const { ref: videoContainerRef, inView } = useInView({ threshold: 0.33 });
   const isMobile = window.innerWidth < 768;
-  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     if (isMobile || !videoRef.current) {
@@ -75,19 +74,15 @@ const VideoElement = ({ url }: VideoElementProps) => {
   }, [inView]);
 
   return (
-    <div
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-      ref={videoContainerRef}
-      className="flex justify-center items-center -mx-4 md:mx-0 md:h-80 my-2">
+    <div ref={videoContainerRef} className="flex justify-center items-center -mx-4 md:mx-0 md:h-[510px] my-2">
       <video
         ref={videoRef}
         loop={true}
         muted={!isMobile}
         src={url}
-        controls={isMobile || isHovering}
+        controls
         poster={proxy(url)}
-        className="max-h-[80vh] md:max-h-80"
+        className="max-h-[80vh] md:max-h-[510px] md:rounded-sm"
       />
     </div>
   );
