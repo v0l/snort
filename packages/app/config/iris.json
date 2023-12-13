@@ -8,7 +8,7 @@
   "appleTouchIconUrl": "/img/apple-touch-icon.png",
   "navLogo": "/img/icon128.png",
   "publicDir": "public/iris",
-  "httpCache": "https://api.iris.to",
+  "httpCache": "",
   "animalNamePlaceholders": true,
   "defaultZapPoolFee": 0.5,
   "bypassImgProxyError": true,
