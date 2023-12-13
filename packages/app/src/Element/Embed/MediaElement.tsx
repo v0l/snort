@@ -48,7 +48,9 @@ const ImageElement = ({ url, meta, onMediaClick }: ImageElementProps) => {
         key={url}
         src={url}
         onClick={onMediaClick}
-        className={classNames("max-h-[80vh] md:rounded-sm", { "md:max-h-[510px]": !meta })}
+        className={classNames("max-h-[80vh] w-full h-full object-contain object-left md:rounded-sm", {
+          "md:max-h-[510px]": !meta,
+        })}
         style={style}
         ref={imageRef}
       />
@@ -83,6 +85,7 @@ const VideoElement = ({ url }: VideoElementProps) => {
         controls
         poster={proxy(url)}
         className="max-h-[80vh] md:max-h-[510px] md:rounded-sm"
+        onClick={e => e.stopPropagation()}
       />
     </div>
   );
