@@ -19,7 +19,7 @@ export interface NoteReactionProps {
 export default function NoteReaction(props: NoteReactionProps) {
   const { data: ev } = props;
   const { isMuted } = useModeration();
-  const { inView, ref } = useInView({ triggerOnce: true });
+  const { inView, ref } = useInView({ triggerOnce: true, rootMargin: "2000px" });
   const profile = useUserProfile(inView ? ev.pubkey : "");
 
   const refEvent = useMemo(() => {

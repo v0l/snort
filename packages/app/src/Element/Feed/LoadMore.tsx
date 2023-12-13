@@ -13,7 +13,7 @@ export default function LoadMore({
   shouldLoadMore: boolean;
   children?: React.ReactNode;
 }) {
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({ rootMargin: "2000px" });
   const [tick, setTick] = useState<number>(0);
 
   useEffect(() => {

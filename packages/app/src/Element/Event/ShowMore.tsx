@@ -23,7 +23,7 @@ const ShowMore = ({ text, onClick, className = "" }: ShowMoreProps) => {
 export default ShowMore;
 
 export function ShowMoreInView({ text, onClick, className }: ShowMoreProps) {
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({ rootMargin: "2000px" });
 
   useEffect(() => {
     if (inView) {
