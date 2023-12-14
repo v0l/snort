@@ -36,7 +36,7 @@
 - Updated French translations - nostr:npub1x8dzy9xegwmdk2vy30l8u08caspcqq2yzncxehdsa6kvnte9pr3qnt8pg4 & nostr:npub13w02l37gkjwv90lnklfet5653jj0p5ueu976v3dpda5afvxgw3uslcqdnv
 - Updated German translations - nostr:npub19a6x8frkkn2660fw0flz74a7qg8c2jxk5v9p2rsh7tv5e6ftsq3sav63vp
 - Updated Hungarian translations - nostr:npub1ww8kjxz2akn82qptdpl7glywnchhkx3x04hez3d3rye397turrhssenvtp
-- Updated Sweedish translations - nostr:npub19jk45jz45gczwfm22y9z69xhaex3nwg47dz84zw096xl6z62amkqj99rv7
+- Updated Swedish translations - nostr:npub19jk45jz45gczwfm22y9z69xhaex3nwg47dz84zw096xl6z62amkqj99rv7
 - Updated Japanese translations - nostr:npub1wh69w45awqnlsxw7jt5tkymets87h6t4phplkx6ug2ht2qkssswswntjk0
 
 ## Fixed
