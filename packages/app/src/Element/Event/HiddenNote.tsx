@@ -7,7 +7,7 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
   return show ? (
     children
   ) : (
-    <div className="card note hidden-note p0">
+    <div className="card note hidden-note p-0">
       <div className="header">
         <p>
           <FormattedMessage defaultMessage="This note has been muted" id="qfmMQh" />
