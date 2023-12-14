@@ -310,9 +310,7 @@ export function NoteCreator() {
               </div>
               <div>
                 <input type="text" value={a} onChange={e => changePollOption(i, e.target.value)} />
-                {i > 1 && (
-                  <div className="close-button ml5" onClick={() => removePollOption(i)}></div>
-                )}
+                {i > 1 && <div className="close-button ml5" onClick={() => removePollOption(i)}></div>}
               </div>
             </div>
           ))}
