@@ -73,9 +73,8 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
 
   return show ? (
     <Modal id="reactions" className="reactions-modal" onClose={onClose}>
-      <div className="close" onClick={onClose}>
-        <Icon name="close" />
-      </div>
+      <div className="close-button close" onClick={onClose}></div>
+
       <div className="reactions-header">
         <h2>
           <FormattedMessage {...messages.ReactionsCount} values={{ n: total }} />

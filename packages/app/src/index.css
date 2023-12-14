@@ -953,3 +953,32 @@ svg.repeat {
 .icon-solid {
   display: none;
 }
+
+/* Basic styling for the close button */
+.close-button {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1); /* 10% opacity white background */
+  cursor: pointer;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+/* Styling for the X icon */
+.close-button::before {
+  content: "x";
+  color: #fff;
+  font-size: 16px;
+  line-height: 30px; /* Adjust to the height of the container */
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Hover effect */
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.15); /* 15% opacity white background on hover */
+}

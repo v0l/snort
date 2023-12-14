@@ -59,9 +59,7 @@ export const TaskList = () => {
               <div key={a.id} className="card">
                 <div className="header">
                   <Icon name="lightbulb" />
-                  <div className="close" onClick={() => muteTask(a)}>
-                    <Icon name="close" size={14} />
-                  </div>
+                  <div className="close-button close" onClick={() => muteTask(a)}></div>
                 </div>
                 {a.render()}
               </div>
