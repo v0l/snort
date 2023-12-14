@@ -10,7 +10,7 @@
   "publicDir": "public/snort",
   "httpCache": "",
   "animalNamePlaceholders": false,
-  "defaultZapPoolFee": 0.5,
+  "defaultZapPoolFee": 1,
   "bypassImgProxyError": false,
   "features": {
     "analytics": true,
@@ -22,7 +22,7 @@
     "moderation": true
   },
   "defaultPreferences": {
-    "checkSigs": false
+    "checkSigs": true
   },
   "noteCreatorToast": true,
   "hideFromNavbar": ["/graph"],

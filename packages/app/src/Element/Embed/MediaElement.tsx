@@ -47,6 +47,7 @@ const ImageElement = ({ url, meta, onMediaClick }: ImageElementProps) => {
       <ProxyImg
         key={url}
         src={url}
+        sha256={meta?.sha256}
         onClick={onMediaClick}
         className={classNames("max-h-[80vh] w-full h-full object-contain object-center md:object-left", {
           "md:max-h-[510px]": !meta,
