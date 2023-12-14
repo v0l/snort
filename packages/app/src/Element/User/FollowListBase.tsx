@@ -57,7 +57,12 @@ export default function FollowListBase({
       )}
       <div className={className}>
         {pubkeys?.map(a => (
-          <ProfilePreview pubkey={a} key={a} options={{ about: showAbout }} actions={profileActions?.(a)} />
+          <ProfilePreview
+            pubkey={a}
+            key={a}
+            options={{ about: showAbout, profileCards: true }}
+            actions={profileActions?.(a)}
+          />
         ))}
       </div>
     </div>
