@@ -1,7 +1,7 @@
 import "./ProfilePage.css";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   encodeTLVEntries,
   EventKind,
@@ -193,14 +193,14 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
           targets={
             lnurl?.lnurl && id
               ? [
-                  {
-                    type: "lnurl",
-                    value: lnurl?.lnurl,
-                    weight: 1,
-                    name: user?.display_name || user?.name,
-                    zap: { pubkey: id },
-                  } as ZapTarget,
-                ]
+                {
+                  type: "lnurl",
+                  value: lnurl?.lnurl,
+                  weight: 1,
+                  name: user?.display_name || user?.name,
+                  zap: { pubkey: id },
+                } as ZapTarget,
+              ]
               : undefined
           }
           show={showLnQr}
@@ -300,11 +300,6 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         <div className="profile-actions">
           {renderIcons()}
           {!isMe && id && <FollowButton pubkey={id} />}
-          {isMe && id && (
-            <AsyncButton className="secondary">
-              <FormattedMessage defaultMessage="Edit" id="wEQDC6" />
-            </AsyncButton>
-          )}
         </div>
       </div>
     );
@@ -329,9 +324,11 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         )}
         {isMe ? (
           <>
-            <button className="md:hidden" type="button" onClick={() => navigate("/settings")}>
-              <FormattedMessage {...messages.Settings} />
-            </button>
+            <Link to="/settings">
+              <button>
+                <FormattedMessage defaultMessage="Edit" id="wEQDC6" />
+              </button>
+            </Link>
           </>
         ) : (
           <>
