@@ -101,4 +101,9 @@ export default defineMessages({
   ReBroadcast: { defaultMessage: "Broadcast Again", id: "c3g2hL" },
   IrisUserNameLengthError: { defaultMessage: "Name must be between 1 and 32 characters", id: "4MBtMa" },
   IrisUserNameFormatError: { defaultMessage: "Username must only contain lowercase letters and numbers", id: "RSr2uB" },
+  InvalidNip05Address:  { defaultMessage: "Invalid Nostr Address(nip05)", id: 'X6TK3B' },
+  ErrorValidatingNip05Address:  { defaultMessage: "Cannot verify Nostr Address(nip05)", id: 'I32UtP'},
+  UserNameLengthError: { defaultMessage: "Name must be less than 100 characters", id: 'X/GZY6' },
+  AboutLengthError: { defaultMessage: "About must be less than 1000 characters", id: 'vCanok' },
+  InvalidLud16:{ defaultMessage: "Invalid Lightning Address", id: 'GqQeu/' }
 });

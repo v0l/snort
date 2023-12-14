@@ -155,3 +155,13 @@ export const WavlakeRegex =
  * Regex to match any base64 string
  */
 export const CashuRegex = /(cashuA[A-Za-z0-9_-]{0,10000}={0,3})/i;
+
+/*
+* Max username length - profile/settings
+*/
+export const MaxUsernameLength = 100;
+
+/*
+* Max about length - profile/settings
+*/
+export const MaxAboutLength = 1000;
