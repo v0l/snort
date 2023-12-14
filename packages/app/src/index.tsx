@@ -40,7 +40,7 @@ import Layout from "@/Pages/Layout";
 import ProfilePage from "@/Pages/Profile/ProfilePage";
 import { RootRoutes, RootTabRoutes } from "@/Pages/Root";
 import NotificationsPage from "@/Pages/Notifications/Notifications";
-import SettingsPage, { SettingsRoutes } from "@/Pages/SettingsPage";
+import SettingsPage, { SettingsRoutes } from "@/Pages/settings/SettingsPage";
 import ErrorPage from "@/Pages/ErrorPage";
 import NostrAddressPage from "@/Pages/NostrAddressPage";
 import MessagesPage from "@/Pages/Messages/MessagesPage";

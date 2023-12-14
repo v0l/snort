@@ -7,6 +7,7 @@ import useImgProxy from "@/Hooks/useImgProxy";
 interface SpotlightMediaProps {
   images: Array<string>;
   idx: number;
+  className: string;
   onClose: () => void;
 }
 

@@ -39,5 +39,5 @@ function SpotlightFromThread({ onClose }: { onClose: () => void }) {
     a => a.type === "media" && (a.mimeType?.startsWith("image/") || a.mimeType?.startsWith("video/")),
   );
   if (images.length === 0) return;
-  return <SpotlightMedia images={images.map(a => a.content)} idx={0} onClose={onClose} />;
+  return <SpotlightMedia className="w-full" images={images.map(a => a.content)} idx={0} onClose={onClose} />;
 }

@@ -10,6 +10,7 @@ import NoteReaction from "@/Element/Event/NoteReaction";
 import ProfilePreview from "@/Element/User/ProfilePreview";
 import { NoteInner } from "./NoteInner";
 import { LongFormText } from "./LongFormText";
+import ErrorBoundary from "@/Element/ErrorBoundary";
 
 export interface NoteProps {
   data: TaggedNostrEvent;
@@ -44,29 +45,30 @@ export interface NoteProps {
 
 export default function Note(props: NoteProps) {
   const { data: ev, className } = props;
+  let content;
   if (ev.kind === EventKind.Repost) {
-    return <NoteReaction data={ev} key={ev.id} root={undefined} depth={(props.depth ?? 0) + 1} />;
+    content = <NoteReaction data={ev} key={ev.id} root={undefined} depth={(props.depth ?? 0) + 1} />;
   }
   if (ev.kind === EventKind.FileHeader) {
-    return <NostrFileElement ev={ev} />;
+    content = <NostrFileElement ev={ev} />;
   }
   if (ev.kind === EventKind.ZapstrTrack) {
-    return <ZapstrEmbed ev={ev} />;
+    content = <ZapstrEmbed ev={ev} />;
   }
   if (ev.kind === EventKind.FollowSet || ev.kind === EventKind.ContactList) {
-    return <PubkeyList ev={ev} className={className} />;
+    content = <PubkeyList ev={ev} className={className} />;
   }
   if (ev.kind === EventKind.LiveEvent) {
-    return <LiveEvent ev={ev} />;
+    content = <LiveEvent ev={ev} />;
   }
   if (ev.kind === EventKind.SetMetadata) {
-    return <ProfilePreview actions={<></>} pubkey={ev.pubkey} />;
+    content = <ProfilePreview actions={<></>} pubkey={ev.pubkey} />;
   }
   if (ev.kind === (9041 as EventKind)) {
-    return <ZapGoal ev={ev} />;
+    content = <ZapGoal ev={ev} />;
   }
   if (ev.kind === EventKind.LongFormTextNote) {
-    return (
+    content = (
       <LongFormText
         ev={ev}
         related={props.related}
@@ -77,5 +79,6 @@ export default function Note(props: NoteProps) {
     );
   }
 
-  return <NoteInner {...props} />;
+  content = <NoteInner {...props} />;
+  return <ErrorBoundary>{content}</ErrorBoundary>;
 }

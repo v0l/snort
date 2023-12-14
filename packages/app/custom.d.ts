@@ -60,6 +60,7 @@ declare const CONFIG: {
   };
   defaultPreferences: {
     checkSigs: boolean;
+    sentToRelayNotifications: "none" | "all" | "failures";
   };
   signUp: {
     moderation: boolean;

@@ -8,6 +8,7 @@ import { TimelineFragment } from "@/Element/Feed/TimelineFragment";
 import { DisplayAs } from "@/Element/Feed/DisplayAsSelector";
 import { SpotlightThreadModal } from "@/Element/Spotlight/SpotlightThreadModal";
 import ImageGridItem from "@/Element/Feed/ImageGridItem";
+import ErrorBoundary from "@/Element/ErrorBoundary";
 
 export interface TimelineRendererProps {
   frags: Array<TimelineFragment>;
@@ -50,13 +51,15 @@ export function TimelineRenderer(props: TimelineRendererProps) {
 
   const renderNotes = () => {
     return props.frags.map(frag => (
-      <TimelineFragment
-        frag={frag}
-        related={props.related}
-        noteRenderer={props.noteRenderer}
-        noteOnClick={props.noteOnClick}
-        noteContext={props.noteContext}
-      />
+      <ErrorBoundary>
+        <TimelineFragment
+          frag={frag}
+          related={props.related}
+          noteRenderer={props.noteRenderer}
+          noteOnClick={props.noteOnClick}
+          noteContext={props.noteContext}
+        />
+      </ErrorBoundary>
     ));
   };
 

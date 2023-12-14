@@ -32,7 +32,6 @@ export function OkResponseRow({ rsp, close }: { rsp: OkResponse; close: () => vo
 
   return (
     <div className="flex items-center g16">
-      <Icon name={r.ok ? "check" : "x"} className={r.ok ? "success" : "error"} size={24} />
       <div className="flex flex-col grow g4">
         <b>{getRelayName(r.relay)}</b>
         {r.message && <small>{r.message}</small>}

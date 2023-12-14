@@ -21,7 +21,8 @@
     "moderation": true
   },
   "defaultPreferences": {
-    "checkSigs": true
+    "checkSigs": true,
+    "sentToRelayNotifications": "all"
   },
   "media": {
     "bypassImgProxyError": false,
