@@ -1,15 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { base64 } from "@scure/base";
-import { unwrap } from "@snort/shared";
 import Icon from "@/Icons/Icon";
 import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
 import { isFormElement } from "@/SnortUtils";
 import useLogin from "@/Hooks/useLogin";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import SnortApi from "@/External/SnortApi";
 import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
 import NavLink from "@/Element/Button/NavLink";
 import classNames from "classnames";
+import { subscribeToNotifications } from "@/Notifications";
 
 const NotificationsHeader = () => {
   const navigate = useNavigate();
@@ -27,40 +25,6 @@ const NotificationsHeader = () => {
   }));
   const { publisher } = useEventPublisher();
 
-  async function goToNotifications() {
-    // request permissions to send notifications
-    if ("Notification" in window) {
-      try {
-        if (Notification.permission !== "granted") {
-          const res = await Notification.requestPermission();
-          console.debug(res);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    try {
-      if ("serviceWorker" in navigator) {
-        const reg = await navigator.serviceWorker.ready;
-        if (reg && publisher) {
-          const api = new SnortApi(undefined, publisher);
-          const sub = await reg.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: (await api.getPushNotificationInfo()).publicKey,
-          });
-          await api.registerPushNotifications({
-            endpoint: sub.endpoint,
-            p256dh: base64.encode(new Uint8Array(unwrap(sub.getKey("p256dh")))),
-            auth: base64.encode(new Uint8Array(unwrap(sub.getKey("auth")))),
-            scope: `${location.protocol}//${location.hostname}`,
-          });
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
   if (!publicKey) {
     return (
       <button onClick={() => navigate("/login/sign-up")} className="mr-3 primary p-2">
@@ -73,7 +37,7 @@ const NotificationsHeader = () => {
     <NavLink
       className={({ isActive }) => classNames({ active: isActive }, "px-2 py-3 flex")}
       to="/notifications"
-      onClick={goToNotifications}>
+      onClick={() => subscribeToNotifications(publisher)}>
       <Icon name="bell-solid" className="icon-solid" size={24} />
       <Icon name="bell-outline" className="icon-outline" size={24} />
       <HasNotificationsMarker />

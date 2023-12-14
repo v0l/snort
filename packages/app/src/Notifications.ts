@@ -1,9 +1,11 @@
-import { TaggedNostrEvent, EventKind, MetadataCache } from "@snort/system";
+import { TaggedNostrEvent, EventKind, MetadataCache, EventPublisher } from "@snort/system";
 import { MentionRegex } from "@/Const";
 import { defaultAvatar, tagFilterOfTextRepost, getDisplayName } from "@/SnortUtils";
 import { UserCache } from "@/Cache";
 import { LoginSession } from "@/Login";
-import { removeUndefined } from "@snort/shared";
+import { removeUndefined, unwrap } from "@snort/shared";
+import SnortApi from "@/External/SnortApi";
+import { base64 } from "@scure/base";
 
 export interface NotificationRequest {
   title: string;
@@ -67,5 +69,39 @@ export async function sendNotification(state: LoginSession, req: NotificationReq
     } catch (error) {
       console.warn(error);
     }
+  }
+}
+
+export async function subscribeToNotifications(publisher: EventPublisher) {
+  // request permissions to send notifications
+  if ("Notification" in window) {
+    try {
+      if (Notification.permission !== "granted") {
+        const res = await Notification.requestPermission();
+        console.debug(res);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  try {
+    if ("serviceWorker" in navigator) {
+      const reg = await navigator.serviceWorker.ready;
+      if (reg && publisher) {
+        const api = new SnortApi(undefined, publisher);
+        const sub = await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: (await api.getPushNotificationInfo()).publicKey,
+        });
+        await api.registerPushNotifications({
+          endpoint: sub.endpoint,
+          p256dh: base64.encode(new Uint8Array(unwrap(sub.getKey("p256dh")))),
+          auth: base64.encode(new Uint8Array(unwrap(sub.getKey("auth")))),
+          scope: `${location.protocol}//${location.hostname}`,
+        });
+      }
+    }
+  } catch (e) {
+    console.error(e);
   }
 }

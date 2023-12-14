@@ -11,6 +11,8 @@ import classNames from "classnames";
 import { getCurrentSubscription } from "@/Subscription";
 import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
 import NavLink from "@/Element/Button/NavLink";
+import { subscribeToNotifications } from "@/Notifications";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 
 const MENU_ITEMS = [
   {
@@ -77,6 +79,7 @@ export default function NavSidebar({ narrow = false }) {
   }));
   const profile = useUserProfile(publicKey);
   const navigate = useNavigate();
+  const { publisher } = useEventPublisher();
   const sub = getCurrentSubscription(subscriptions);
   const { formatMessage } = useIntl();
 
@@ -114,8 +117,17 @@ export default function NavSidebar({ narrow = false }) {
             if (!item.nonLoggedIn && !publicKey) {
               return "";
             }
+            const onClick = () => {
+              if (item.label === "Notifications") {
+                subscribeToNotifications(publisher);
+              }
+            };
             return (
-              <NavLink key={item.link} to={item.link} className={({ isActive }) => getNavLinkClass(isActive, narrow)}>
+              <NavLink
+                onClick={onClick}
+                key={item.link}
+                to={item.link}
+                className={({ isActive }) => getNavLinkClass(isActive, narrow)}>
                 <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
                 <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
                 {item.label === "Notifications" && <HasNotificationsMarker />}
