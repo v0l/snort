@@ -43,7 +43,10 @@ const ImageElement = ({ url, meta, onMediaClick }: ImageElementProps) => {
   }, [imageRef.current, meta]);
 
   return (
-    <div className={classNames("flex items-center -mx-4 md:mx-0 my-2", { "md:h-[510px]": !meta && !CONFIG.media.preferLargeMedia })}>
+    <div
+      className={classNames("flex items-center -mx-4 md:mx-0 my-2", {
+        "md:h-[510px]": !meta && !CONFIG.media.preferLargeMedia,
+      })}>
       <ProxyImg
         key={url}
         src={url}
@@ -77,7 +80,11 @@ const VideoElement = ({ url }: VideoElementProps) => {
   }, [inView]);
 
   return (
-    <div ref={videoContainerRef} className={classNames("flex justify-center items-center -mx-4 md:mx-0 my-2", { "md:h-[510px]": !CONFIG.media.preferLargeMedia })}>
+    <div
+      ref={videoContainerRef}
+      className={classNames("flex justify-center items-center -mx-4 md:mx-0 my-2", {
+        "md:h-[510px]": !CONFIG.media.preferLargeMedia,
+      })}>
       <video
         ref={videoRef}
         loop={true}
