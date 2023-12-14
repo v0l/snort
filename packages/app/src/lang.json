@@ -57,6 +57,9 @@
   "00LcfG": {
     "defaultMessage": "Load more"
   },
+  "01iNut": {
+    "defaultMessage": "Nostr address does not belong to you"
+  },
   "08zn6O": {
     "defaultMessage": "Export Keys"
   },
@@ -419,6 +422,9 @@
   "Dn82AL": {
     "defaultMessage": "Live"
   },
+  "DrZqav": {
+    "defaultMessage": "About must be less than {limit} characters"
+  },
   "DtYelJ": {
     "defaultMessage": "Transfer"
   },
@@ -505,6 +511,9 @@
   },
   "Gcn9NQ": {
     "defaultMessage": "Magnet Link"
+  },
+  "GqQeu/": {
+    "defaultMessage": "Invalid Lightning Address"
   },
   "GspYR7": {
     "defaultMessage": "{n} Dislike"
@@ -640,6 +649,9 @@
   "LgbKvU": {
     "defaultMessage": "Comment"
   },
+  "LmdPXO": {
+    "defaultMessage": "Cannot verify Nostr Address"
+  },
   "Lu5/Bj": {
     "defaultMessage": "Open on Zapstr"
   },
@@ -721,6 +733,9 @@
   },
   "ORGv1Q": {
     "defaultMessage": "Created"
+  },
+  "P2o+ZZ": {
+    "defaultMessage": "Invalid Nostr Address"
   },
   "P61BTu": {
     "defaultMessage": "Copy Event JSON"
@@ -1452,6 +1467,9 @@
   },
   "u4bHcR": {
     "defaultMessage": "Check out the code here: {link}"
+  },
+  "u9NoC1": {
+    "defaultMessage": "Name must be less than {limit} characters"
   },
   "uCk8r+": {
     "defaultMessage": "Already have an account?"
