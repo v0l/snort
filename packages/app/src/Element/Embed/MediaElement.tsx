@@ -37,20 +37,20 @@ const ImageElement = ({ url, meta, onMediaClick }: ImageElementProps) => {
     const style = {} as CSSProperties;
     if (meta?.height && meta.width && imageRef.current) {
       const scale = imageRef.current.offsetWidth / meta.width;
-      style.height = `${meta.height * scale}px`;
+      style.height = `${Math.min(document.body.clientHeight * 0.8, meta.height * scale)}px`;
     }
     return style;
-  }, [imageRef.current]);
+  }, [imageRef.current, meta]);
 
   return (
-    <div className={classNames("flex items-center -mx-4 md:mx-0 my-2", { "md:h-[510px]": !meta })}>
+    <div className={classNames("flex items-center -mx-4 md:mx-0 my-2", { "md:h-[510px]": !meta && !CONFIG.media.preferLargeMedia })}>
       <ProxyImg
         key={url}
         src={url}
         sha256={meta?.sha256}
         onClick={onMediaClick}
-        className={classNames("max-h-[80vh] w-full h-full object-contain object-center md:object-left", {
-          "md:max-h-[510px]": !meta,
+        className={classNames("max-h-[80vh] w-full h-full object-contain object-center", {
+          "md:max-h-[510px]": !meta && !CONFIG.media.preferLargeMedia,
         })}
         style={style}
         ref={imageRef}
@@ -77,7 +77,7 @@ const VideoElement = ({ url }: VideoElementProps) => {
   }, [inView]);
 
   return (
-    <div ref={videoContainerRef} className="flex justify-center items-center -mx-4 md:mx-0 md:h-[510px] my-2">
+    <div ref={videoContainerRef} className={classNames("flex justify-center items-center -mx-4 md:mx-0 my-2", { "md:h-[510px]": !CONFIG.media.preferLargeMedia })}>
       <video
         ref={videoRef}
         loop={true}
@@ -85,7 +85,7 @@ const VideoElement = ({ url }: VideoElementProps) => {
         src={url}
         controls
         poster={proxy(url)}
-        className="max-h-[80vh] md:max-h-[510px]"
+        className={classNames("max-h-[80vh]", { "md:max-h-[510px]": !CONFIG.media.preferLargeMedia })}
         onClick={e => e.stopPropagation()}
       />
     </div>

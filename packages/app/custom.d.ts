@@ -52,7 +52,6 @@ declare const CONFIG: {
   httpCache: string;
   animalNamePlaceholders: boolean;
   defaultZapPoolFee: number;
-  bypassImgProxyError: boolean;
   features: {
     analytics: boolean;
     subscriptions: boolean;
@@ -64,6 +63,10 @@ declare const CONFIG: {
   };
   signUp: {
     moderation: boolean;
+  };
+  media: {
+    bypassImgProxyError: boolean;
+    preferLargeMedia: boolean;
   };
   // Filter urls from nav sidebar
   hideFromNavbar: Array<string>;

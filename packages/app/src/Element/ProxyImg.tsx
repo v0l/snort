@@ -15,7 +15,7 @@ export const ProxyImg = forwardRef<HTMLImageElement, ProxyImgProps>(
   ({ size, className, promptToLoadDirectly, missingImageElement, sha256, ...props }: ProxyImgProps, ref) => {
     const { proxy } = useImgProxy();
     const [loadFailed, setLoadFailed] = useState(false);
-    const [bypass, setBypass] = useState(CONFIG.bypassImgProxyError);
+    const [bypass, setBypass] = useState(CONFIG.media.bypassImgProxyError);
 
     if (loadFailed && !bypass && (promptToLoadDirectly ?? true)) {
       return (
