@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "Snort",
-    "version": "0.1.10"
+    "version": "0.1.24"
   },
   "tauri": {
     "allowlist": {

@@ -1,3 +1,51 @@
+# v0.1.24
+
+`+11,573,-3,010`
+
+## Added
+
+- 3 Column layout - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Fuzzy cache search - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Followed by on profile pages - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Show more on long notes - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Better error message page - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Media grid feed - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Mobile fixed footer - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Follow button on profile search results - nostr:npub17q5n2z8naw0xl6vu9lvt560lg33pdpe29k0k09umlfxm3vc4tqrq466f2y
+- Invite codes (WIP Community Program) - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- `imeta` tag insertion for images - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Wallet settings page improvements - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Nostr Wallet Connect upgrade (balance + history) - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Schnorr sig check in WASM binary - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Autoplay videos in feed (muted) - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Followed by friends feed (a feed of your 2nd degree follows posts) - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- imgproxy image integrity check (sha256 from `imeta` passed to imgproxy) - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+
+## Changed
+
+- Removed Twitter embed - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Removed attachment button on DM's - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Note broadcaster dialog changed to toast notification - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Removed npub link from profile (use QR button) - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Render image size from `imeta` tags - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Style fixes - nostr:npub1cz2ve34nk0ukn0ph4yq2qx3ud8rfy5e0ak4epx42dn8gha0sdgpsgra9kv
+- Zap pool slider tweak - nostr:npub1ltx67888tz7lqnxlrg06x234vjnq349tcfyp52r0lstclp548mcqnuz40t
+- New Malay translations - nostr:npub1cjtt3nywuflj65ftld4v7zzpg0qh3ergycjcym0956vf9eftv7esekxpmn
+- Updated Persian translations - nostr:npub1cpazafytvafazxkjn43zjfwtfzatfz508r54f6z6a3rf2ws8223qc3xxpk
+- Updated Finnish translations - nostr:npub1ust7u0v3qffejwhqee45r49zgcyewrcn99vdwkednd356c9resyqtnn3mj
+- Updated French translations - nostr:npub1x8dzy9xegwmdk2vy30l8u08caspcqq2yzncxehdsa6kvnte9pr3qnt8pg4 & nostr:npub13w02l37gkjwv90lnklfet5653jj0p5ueu976v3dpda5afvxgw3uslcqdnv
+- Updated German translations - nostr:npub19a6x8frkkn2660fw0flz74a7qg8c2jxk5v9p2rsh7tv5e6ftsq3sav63vp
+- Updated Hungarian translations - nostr:npub1ww8kjxz2akn82qptdpl7glywnchhkx3x04hez3d3rye397turrhssenvtp
+- Updated Sweedish translations - nostr:npub19jk45jz45gczwfm22y9z69xhaex3nwg47dz84zw096xl6z62amkqj99rv7
+- Updated Japanese translations - nostr:npub1wh69w45awqnlsxw7jt5tkymets87h6t4phplkx6ug2ht2qkssswswntjk0
+
+## Fixed
+
+- Longform note overlfow-x - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Trim zap content - nostr:npub1u8lnhlw5usp3t9vmpz60ejpyt649z33hu82wc2hpv6m5xdqmuxhs46turz
+
+---
+
 # v0.1.23
 
 ## Added
