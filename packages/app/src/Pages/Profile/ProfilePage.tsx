@@ -55,10 +55,7 @@ import ProfileTab, {
 import DisplayName from "@/Element/User/DisplayName";
 import { UserWebsiteLink } from "@/Element/User/UserWebsiteLink";
 import { useMuteList, usePinList } from "@/Hooks/useLists";
-
-import messages from "../messages";
 import FollowedBy from "@/Element/User/FollowedBy";
-import AsyncButton from "@/Element/Button/AsyncButton";
 
 interface ProfilePageProps {
   id?: string;
