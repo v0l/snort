@@ -74,6 +74,6 @@ export default defineMessages({
   NotificationsNotAllowed: { defaultMessage: "Notifications Not Allowed", id: "J1iLmb" },
   ServiceWorkerRunning: { defaultMessage: "Service Worker Running", id: "bG00/W" },
   ServiceWorkerNotRunning: { defaultMessage: "Service Worker Not Running", id: "RDha9y" },
-  SubscribedToPush: { defaultMessage: "Subscribed to Push", id: 'G3A56c' },
-  NotSubscribedToPush: { defaultMessage: "Not Subscribed to Push", id: 'd2ebEu' },
+  SubscribedToPush: { defaultMessage: "Subscribed to Push", id: "G3A56c" },
+  NotSubscribedToPush: { defaultMessage: "Not Subscribed to Push", id: "d2ebEu" },
 });
