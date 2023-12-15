@@ -5,6 +5,9 @@
   "+PzQ9Y": {
     "defaultMessage": "Payout Now"
   },
+  "+UjDmN": {
+    "defaultMessage": "Logged in with write access"
+  },
   "+Vxixo": {
     "defaultMessage": "Secret Group Chat"
   },
@@ -206,6 +209,9 @@
   },
   "5CB6zB": {
     "defaultMessage": "Zap Splits"
+  },
+  "5PRWs7": {
+    "defaultMessage": "Notifications API Enabled"
   },
   "5oTnfy": {
     "defaultMessage": "Buy Handle"
@@ -494,6 +500,9 @@
   "G1BGCg": {
     "defaultMessage": "Select Wallet"
   },
+  "G3A56c": {
+    "defaultMessage": "Subscribed to Push"
+  },
   "GFOoEE": {
     "defaultMessage": "Salt"
   },
@@ -578,6 +587,9 @@
   },
   "J+dIsA": {
     "defaultMessage": "Subscriptions"
+  },
+  "J1iLmb": {
+    "defaultMessage": "Notifications Not Allowed"
   },
   "J2HeQ+": {
     "defaultMessage": "Use commas to separate words e.g. word1, word2, word3"
@@ -776,6 +788,9 @@
   },
   "R81upa": {
     "defaultMessage": "People you follow"
+  },
+  "RDha9y": {
+    "defaultMessage": "Service Worker Not Running"
   },
   "RSr2uB": {
     "defaultMessage": "Username must only contain lowercase letters and numbers"
@@ -1000,8 +1015,14 @@
   "b5vAk0": {
     "defaultMessage": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address"
   },
+  "bG00/W": {
+    "defaultMessage": "Service Worker Running"
+  },
   "bLZL5a": {
     "defaultMessage": "Get Address"
+  },
+  "bMphls": {
+    "defaultMessage": "Logged in with read-only access"
   },
   "bQdA2k": {
     "defaultMessage": "Sensitive Content"
@@ -1054,6 +1075,9 @@
   },
   "d+6YsV": {
     "defaultMessage": "Lists to mute:"
+  },
+  "d2ebEu": {
+    "defaultMessage": "Not Subscribed to Push"
   },
   "d6CyG5": {
     "defaultMessage": "History",
@@ -1333,6 +1357,9 @@
   "nGBrvw": {
     "defaultMessage": "Bookmarks"
   },
+  "nGGDsi": {
+    "defaultMessage": "Notifications Allowed"
+  },
   "nihgfo": {
     "defaultMessage": "Listen to this article"
   },
@@ -1386,6 +1413,9 @@
   },
   "qZsKBR": {
     "defaultMessage": "Renew {tier}"
+  },
+  "qcJFEJ": {
+    "defaultMessage": "Notifications API Disabled"
   },
   "qdGuQo": {
     "defaultMessage": "Your Private Key Is (do not share this with anyone)"
@@ -1458,6 +1488,9 @@
   },
   "ttxS0b": {
     "defaultMessage": "Supporter Badge"
+  },
+  "tzMNF3": {
+    "defaultMessage": "Status"
   },
   "u+LyXc": {
     "defaultMessage": "Interactions"
@@ -1577,6 +1610,9 @@
   },
   "xybOUv": {
     "defaultMessage": "FAN"
+  },
+  "y/bmsG": {
+    "defaultMessage": "Subscribe"
   },
   "y1Z3or": {
     "defaultMessage": "Language"

@@ -1,39 +1,128 @@
-import "./Preferences.css";
-
 import { FormattedMessage } from "react-intl";
+import { useEffect, useState } from "react";
+import Icon from "@/Icons/Icon";
 import useLogin from "@/Hooks/useLogin";
-import { updatePreferences } from "@/Login";
-import { useLocale } from "@/IntlProvider";
+import { subscribeToNotifications } from "@/Notifications";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import messages from "./messages";
+
+const StatusIndicator = ({ status, enabledMessage, disabledMessage }) => {
+  return status ? (
+    <div className="flex items-center">
+      <Icon name="check" size={20} className="text-green-500 mr-2" />
+      <FormattedMessage {...enabledMessage} />
+    </div>
+  ) : (
+    <div className="flex items-center">
+      <Icon name="close" size={20} className="text-red-500 mr-2" />
+      <FormattedMessage {...disabledMessage} />
+    </div>
+  );
+};
 
 const PreferencesPage = () => {
-  const { id, perf } = useLogin(s => ({ id: s.id, perf: s.appData.item.preferences }));
-  const { lang } = useLocale();
+  const login = useLogin();
+  const { publisher } = useEventPublisher();
+  const [serviceWorkerReady, setServiceWorkerReady] = useState(false);
+  const hasNotificationsApi = "Notification" in window;
+  const [notificationsAllowed, setNotificationsAllowed] = useState(
+    hasNotificationsApi && Notification.permission === "granted",
+  );
+  const [subscribedToPush, setSubscribedToPush] = useState(false);
+  const allGood = !login.readonly && hasNotificationsApi && notificationsAllowed && serviceWorkerReady;
+
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.ready.then(registration => {
+        if (registration.active) {
+          setServiceWorkerReady(true);
+        }
+      });
+    }
+  }, []);
+
+  const trySubscribePush = async () => {
+    try {
+      if (allGood && publisher && !subscribedToPush) {
+        await subscribeToNotifications(publisher);
+        setSubscribedToPush(true);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    trySubscribePush();
+  }, [allGood, publisher]);
+
+  const requestNotificationPermission = () => {
+    Notification.requestPermission().then(permission => {
+      const allowed = permission === "granted";
+      setNotificationsAllowed(allowed);
+      if (!allowed) {
+        alert("Please allow notifications in your browser settings and try again.");
+      }
+    });
+  };
+
+  if (!login.publicKey) {
+    return null;
+  }
 
   return (
-    <div className="preferences flex flex-col g24">
+    <div className="flex flex-col">
       <h3>
         <FormattedMessage defaultMessage="Notifications" id="NAidKb" />
       </h3>
 
-      <div className="flex justify-between w-max">
-        <h4>
-          <FormattedMessage defaultMessage="Language" id="y1Z3or" />
-        </h4>
-        <div>
-          <select
-            value={lang}
-            onChange={e =>
-              updatePreferences(id, {
-                ...perf,
-                language: e.target.value,
-              })
-            }
-            style={{ textTransform: "capitalize" }}>
-            <option value={1}>asdf</option>
-          </select>
+      <h4>
+        <FormattedMessage defaultMessage="Status" id="tzMNF3" />
+      </h4>
+
+      <div className="flex flex-col space-y-4">
+        <StatusIndicator
+          status={!login.readonly}
+          enabledMessage={messages.HasWriteAccess}
+          disabledMessage={messages.NoWriteAccess}
+        />
+        <StatusIndicator
+          status={hasNotificationsApi}
+          enabledMessage={messages.NotificationsApiEnabled}
+          disabledMessage={messages.NotificationsApiDisabled}
+        />
+        <div className="flex items-center gap-2">
+          <StatusIndicator
+            status={notificationsAllowed}
+            enabledMessage={messages.NotificationsAllowed}
+            disabledMessage={messages.NotificationsNotAllowed}
+          />
+          {hasNotificationsApi && !notificationsAllowed && (
+            <button onClick={requestNotificationPermission}>
+              <FormattedMessage defaultMessage="Allow" id="y/bmsG" />
+            </button>
+          )}
+        </div>
+        <StatusIndicator
+          status={serviceWorkerReady}
+          enabledMessage={messages.ServiceWorkerRunning}
+          disabledMessage={messages.ServiceWorkerNotRunning}
+        />
+        <div className="flex items-center gap-2">
+          <StatusIndicator
+            status={subscribedToPush}
+            enabledMessage={messages.SubscribedToPush}
+            disabledMessage={messages.NotSubscribedToPush}
+          />
+          {allGood && !subscribedToPush && (
+            <button onClick={trySubscribePush}>
+              <FormattedMessage defaultMessage="Subscribe" id="gczcC5" />
+            </button>
+          )}
         </div>
       </div>
     </div>
   );
 };
+
 export default PreferencesPage;
