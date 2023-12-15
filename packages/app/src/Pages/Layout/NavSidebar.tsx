@@ -36,6 +36,7 @@ const MENU_ITEMS = [
     label: "Messages",
     icon: "mail",
     link: "/messages",
+    hideReadOnly: true,
   },
   {
     label: "Deck",
@@ -110,6 +111,9 @@ export default function NavSidebar({ narrow = false }) {
               return false;
             }
             if (a.link == "/deck" && !showDeck) {
+              return false;
+            }
+            if (readonly && a.hideReadOnly) {
               return false;
             }
             return true;

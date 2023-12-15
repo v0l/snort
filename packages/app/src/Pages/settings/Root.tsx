@@ -39,11 +39,13 @@ const SettingsIndex = () => {
     { icon: "shield-tick", message: <FormattedMessage defaultMessage="Moderation" id="wofVHy" />, path: "moderation" },
     { icon: "badge", message: <FormattedMessage defaultMessage="Nostr Address" id="9pMqYs" />, path: "handle" },
     { icon: "gear", message: <FormattedMessage defaultMessage="Preferences" id="PCSt5T" />, path: "preferences" },
+    /*
     {
       icon: "bell-outline",
       message: <FormattedMessage defaultMessage="Notifications" id="NAidKb" />,
       path: "notifications",
     },
+     */
     { icon: "wallet", message: <FormattedMessage defaultMessage="Wallet" id="3yk8fB" />, path: "wallet" },
     { icon: "heart", message: <FormattedMessage defaultMessage="Donate" id="2IFGap" />, path: "/donate" },
     { icon: "hard-drive", message: <FormattedMessage defaultMessage="Cache" id="DBiVK1" />, path: "cache" },

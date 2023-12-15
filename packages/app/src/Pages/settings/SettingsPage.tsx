@@ -3,7 +3,7 @@ import SettingsIndex from "@/Pages/settings/Root";
 import Profile from "@/Pages/settings/Profile";
 import Relay from "@/Pages/settings/Relays";
 import Preferences from "@/Pages/settings/Preferences";
-//import Notifications from "@/Pages/settings/Notifications";
+import Notifications from "@/Pages/settings/Notifications";
 import RelayInfo from "@/Pages/settings/RelayInfo";
 import AccountsPage from "@/Pages/settings/Accounts";
 import { WalletSettingsRoutes } from "@/Pages/settings/WalletSettings";
@@ -43,12 +43,10 @@ export const SettingsRoutes: RouteObject[] = [
         path: "preferences",
         element: <Preferences />,
       },
-      /*
       {
         path: "notifications",
         element: <Notifications />,
       },
-       */
       {
         path: "accounts",
         element: <AccountsPage />,
