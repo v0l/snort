@@ -16,6 +16,7 @@ import useLoginFeed from "@/Feed/LoginFeed";
 import ErrorBoundary from "@/Element/ErrorBoundary";
 import Footer from "@/Pages/Layout/Footer";
 import { Header } from "@/Pages/Layout/Header";
+import CloseButton from "@/Element/Button/CloseButton";
 
 export default function Index() {
   const location = useLocation();
@@ -65,7 +66,7 @@ export default function Index() {
 function StalkerModal({ id }) {
   return (
     <div className="stalker" onClick={() => LoginStore.removeSession(id)}>
-      <div className="close-button circle flex items-center"></div>
+      <CloseButton />
     </div>
   );
 }

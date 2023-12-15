@@ -11,6 +11,7 @@ import { RenewSubTask } from "./RenewSubscription";
 import { NoticeZapPoolDefault } from "./NoticeZapPool";
 import { BackupKeyTask } from "./BackupKey";
 import { ExternalStore } from "@snort/shared";
+import CloseButton from "@/Element/Button/CloseButton";
 
 class TaskStore extends ExternalStore<Array<UITask>> {
   #tasks: Array<UITask>;
@@ -59,7 +60,7 @@ export const TaskList = () => {
               <div key={a.id} className="card">
                 <div className="header">
                   <Icon name="lightbulb" />
-                  <div className="close-button close" onClick={() => muteTask(a)}></div>
+                  <CloseButton onClick={() => muteTask(a)} />
                 </div>
                 {a.render()}
               </div>

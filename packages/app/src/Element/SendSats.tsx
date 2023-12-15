@@ -19,6 +19,7 @@ import AsyncButton from "@/Element/Button/AsyncButton";
 import { ZapTarget, ZapTargetResult, Zapper } from "@/Zapper";
 
 import messages from "./messages";
+import CloseButton from "@/Element/Button/CloseButton";
 
 enum ZapType {
   PublicZap = 1,
@@ -182,7 +183,7 @@ export default function SendSats(props: SendSatsProps) {
       <div className="p flex flex-col g12">
         <div className="flex g12">
           <div className="flex items-center grow">{props.title || title()}</div>
-          <div className="close-button" onClick={onClose}></div>
+          <CloseButton onClick={onClose} />
         </div>
         {zapper && !invoice && (
           <SendSatsInput

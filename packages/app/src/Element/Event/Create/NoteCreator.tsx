@@ -27,6 +27,7 @@ import { sendEventToRelays } from "@/Element/Event/Create/util";
 import { TrendingHashTagsLine } from "@/Element/Event/Create/TrendingHashTagsLine";
 import { Toastore } from "@/Toaster";
 import { OkResponseRow } from "./OkResponseRow";
+import CloseButton from "@/Element/Button/CloseButton";
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();
@@ -310,7 +311,7 @@ export function NoteCreator() {
               </div>
               <div>
                 <input type="text" value={a} onChange={e => changePollOption(i, e.target.value)} />
-                {i > 1 && <div className="close-button ml5" onClick={() => removePollOption(i)}></div>}
+                {i > 1 && <CloseButton className="ml5" onClick={() => removePollOption(i)} />}
               </div>
             </div>
           ))}

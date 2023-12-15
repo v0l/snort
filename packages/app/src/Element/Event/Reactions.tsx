@@ -12,6 +12,7 @@ import Tabs from "@/Element/Tabs";
 import Modal from "@/Element/Modal";
 
 import messages from "../messages";
+import CloseButton from "@/Element/Button/CloseButton";
 
 interface ReactionsProps {
   show: boolean;
@@ -73,7 +74,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
 
   return show ? (
     <Modal id="reactions" className="reactions-modal" onClose={onClose}>
-      <div className="close-button close" onClick={onClose}></div>
+      <CloseButton onClick={onClose} className="absolute right-4 top-3" />
 
       <div className="reactions-header">
         <h2>

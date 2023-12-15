@@ -36,7 +36,7 @@ export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
       {showModal && (
         <Modal id="badges" className="reactions-modal" onClose={() => setShowModal(false)}>
           <div className="reactions-view">
-            <div className="close-button close" onClick={() => setShowModal(false)}></div>
+            <CloseButton onClick={() => setShowModal(false)} />
             <div className="reactions-header">
               <h2>
                 <FormattedMessage defaultMessage="Badges" id="h8XMJL" />
