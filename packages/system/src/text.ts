@@ -185,10 +185,14 @@ function extractTagRefs(fragments: Fragment[], tags: Array<Array<string>>) {
           if (i.startsWith("#")) {
             const tag = tags[Number(i.slice(2, -1))];
             if (tag) {
-              return {
-                type: "mention",
-                content: `nostr:${NostrLink.fromTag(tag).encode()}`,
-              } as ParsedFragment;
+              try {
+                return {
+                  type: "mention",
+                  content: `nostr:${NostrLink.fromTag(tag).encode()}`,
+                } as ParsedFragment;
+              } catch (e) {
+                // ignore
+              }
             }
           }
           return i;
