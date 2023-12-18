@@ -60,7 +60,6 @@ declare const CONFIG: {
   };
   defaultPreferences: {
     checkSigs: boolean;
-    sentToRelayNotifications: "none" | "all" | "failures";
   };
   signUp: {
     moderation: boolean;
@@ -76,7 +75,7 @@ declare const CONFIG: {
   deckSubKind?: number;
   showDeck?: boolean;
   // Create toast notifications when publishing notes
-  noteCreatorToast?: boolean;
+  noteCreatorToast: boolean;
   eventLinkPrefix: NostrPrefix;
   profileLinkPrefix: NostrPrefix;
   defaultRelays: Record<string, RelaySettings>;

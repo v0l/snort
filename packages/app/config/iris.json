@@ -29,6 +29,7 @@
     "bypassImgProxyError": true,
     "preferLargeMedia": true
   },
+  "noteCreatorToast": false,
   "hideFromNavbar": [],
   "eventLinkPrefix": "note",
   "profileLinkPrefix": "npub",
