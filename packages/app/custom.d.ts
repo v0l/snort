@@ -58,9 +58,6 @@ declare const CONFIG: {
     deck: boolean;
     zapPool: boolean;
   };
-  defaultPreferences: {
-    checkSigs: boolean;
-  };
   signUp: {
     moderation: boolean;
     defaultFollows: Array<string>;

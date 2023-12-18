@@ -21,10 +21,6 @@
     "moderation": false,
     "defaultFollows": ["npub1wnwwcv0a8wx0m9stck34ajlwhzuua68ts8mw3kjvspn42dcfyjxs4n95l8"]
   },
-  "defaultPreferences": {
-    "checkSigs": true,
-    "sentToRelayNotifications": "none"
-  },
   "media": {
     "bypassImgProxyError": true,
     "preferLargeMedia": true
