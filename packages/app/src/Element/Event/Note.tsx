@@ -45,40 +45,45 @@ export interface NoteProps {
 
 export default function Note(props: NoteProps) {
   const { data: ev, className } = props;
+
   let content;
-  if (ev.kind === EventKind.Repost) {
-    content = <NoteReaction data={ev} key={ev.id} root={undefined} depth={(props.depth ?? 0) + 1} />;
-  }
-  if (ev.kind === EventKind.FileHeader) {
-    content = <NostrFileElement ev={ev} />;
-  }
-  if (ev.kind === EventKind.ZapstrTrack) {
-    content = <ZapstrEmbed ev={ev} />;
-  }
-  if (ev.kind === EventKind.FollowSet || ev.kind === EventKind.ContactList) {
-    content = <PubkeyList ev={ev} className={className} />;
-  }
-  if (ev.kind === EventKind.LiveEvent) {
-    content = <LiveEvent ev={ev} />;
-  }
-  if (ev.kind === EventKind.SetMetadata) {
-    content = <ProfilePreview actions={<></>} pubkey={ev.pubkey} />;
-  }
-  if (ev.kind === (9041 as EventKind)) {
-    content = <ZapGoal ev={ev} />;
-  }
-  if (ev.kind === EventKind.LongFormTextNote) {
-    content = (
-      <LongFormText
-        ev={ev}
-        related={props.related}
-        isPreview={props.options?.longFormPreview ?? false}
-        onClick={() => props.onClick?.(ev)}
-        truncate={props.options?.truncate}
-      />
-    );
+  switch (ev.kind) {
+    case EventKind.Repost:
+      content = <NoteReaction data={ev} key={ev.id} root={undefined} depth={(props.depth ?? 0) + 1} />;
+      break;
+    case EventKind.FileHeader:
+      content = <NostrFileElement ev={ev} />;
+      break;
+    case EventKind.ZapstrTrack:
+      content = <ZapstrEmbed ev={ev} />;
+      break;
+    case EventKind.FollowSet:
+    case EventKind.ContactList:
+      content = <PubkeyList ev={ev} className={className} />;
+      break;
+    case EventKind.LiveEvent:
+      content = <LiveEvent ev={ev} />;
+      break;
+    case EventKind.SetMetadata:
+      content = <ProfilePreview actions={<></>} pubkey={ev.pubkey} />;
+      break;
+    case 9041: // Assuming 9041 is a valid EventKind
+      content = <ZapGoal ev={ev} />;
+      break;
+    case EventKind.LongFormTextNote:
+      content = (
+        <LongFormText
+          ev={ev}
+          related={props.related}
+          isPreview={props.options?.longFormPreview ?? false}
+          onClick={() => props.onClick?.(ev)}
+          truncate={props.options?.truncate}
+        />
+      );
+      break;
+    default:
+      content = <NoteInner {...props} />;
   }
 
-  content = <NoteInner {...props} />;
   return <ErrorBoundary>{content}</ErrorBoundary>;
 }
