@@ -57,6 +57,7 @@ declare const CONFIG: {
     subscriptions: boolean;
     deck: boolean;
     zapPool: boolean;
+    notificationGraph: boolean;
   };
   signUp: {
     moderation: boolean;

@@ -98,9 +98,11 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
   return (
     <>
       <div className="main-content">
-        <Suspense fallback={<PageSpinner />}>
-          <NotificationGraph evs={myNotifications} />
-        </Suspense>
+        {CONFIG.features.notificationGraph && (
+          <Suspense fallback={<PageSpinner />}>
+            <NotificationGraph evs={myNotifications} />
+          </Suspense>
+        )}
         {login.publicKey &&
           [...timeGrouped.entries()]
             .slice(0, showN)

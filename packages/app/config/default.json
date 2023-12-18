@@ -15,7 +15,8 @@
     "analytics": true,
     "subscriptions": true,
     "deck": true,
-    "zapPool": true
+    "zapPool": true,
+    "notificationGraph": true
   },
   "signUp": {
     "moderation": true,
