@@ -91,7 +91,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (!hasReacted(content) && publisher) {
       const evLike = await publisher.react(ev, content);
       system.BroadcastEvent(evLike);
-      await interactionCache.react();
+      interactionCache.react();
     }
   }
 
