@@ -16,7 +16,8 @@
     "subscriptions": false,
     "deck": true,
     "zapPool": true,
-    "notificationGraph": false
+    "notificationGraph": false,
+    "communityLeaders": false
   },
   "signUp": {
     "moderation": false,

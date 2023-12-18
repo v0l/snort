@@ -10,6 +10,8 @@ import DisplayName from "./DisplayName";
 import { ProfileLink } from "./ProfileLink";
 import { ProfileCard } from "./ProfileCard";
 import FollowDistanceIndicator from "@/Element/User/FollowDistanceIndicator";
+import { useCommunityLeader } from "@/Hooks/useCommunityLeaders";
+import { LeaderBadge } from "@/Element/CommunityLeaders/LeaderBadge";
 
 export interface ProfileImageProps {
   pubkey: HexKey;
@@ -27,6 +29,7 @@ export interface ProfileImageProps {
   showFollowDistance?: boolean;
   icons?: ReactNode;
   showProfileCard?: boolean;
+  showBadges?: boolean;
 }
 
 export default function ProfileImage({
@@ -43,9 +46,11 @@ export default function ProfileImage({
   showFollowDistance = true,
   icons,
   showProfileCard = false,
+  showBadges = false,
 }: ProfileImageProps) {
   const user = useUserProfile(profile ? "" : pubkey) ?? profile;
   const [isHovering, setIsHovering] = useState(false);
+  const leader = useCommunityLeader(pubkey);
 
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -88,8 +93,9 @@ export default function ProfileImage({
         </div>
         {showUsername && (
           <div className="f-ellipsis">
-            <div className="flex g4 username">
+            <div className="flex gap-2 items-center font-medium">
               {overrideUsername ? overrideUsername : <DisplayName pubkey={pubkey} user={user} />}
+              {leader && showBadges && CONFIG.features.communityLeaders && <LeaderBadge />}
             </div>
             <div className="subheader">{subHeader}</div>
           </div>

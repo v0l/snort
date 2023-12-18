@@ -17,6 +17,7 @@ import ErrorBoundary from "@/Element/ErrorBoundary";
 import Footer from "@/Pages/Layout/Footer";
 import { Header } from "@/Pages/Layout/Header";
 import CloseButton from "@/Element/Button/CloseButton";
+import { useCommunityLeaders } from "@/Hooks/useCommunityLeaders";
 
 export default function Index() {
   const location = useLocation();
@@ -25,6 +26,9 @@ export default function Index() {
   useTheme();
   useLoginRelays();
   useLoginFeed();
+  if (CONFIG.features.communityLeaders) {
+    useCommunityLeaders();
+  }
 
   const hideHeaderPaths = ["/login", "/new"];
   const shouldHideFooter = location.pathname.startsWith("/messages/");

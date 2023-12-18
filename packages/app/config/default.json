@@ -16,7 +16,8 @@
     "subscriptions": true,
     "deck": true,
     "zapPool": true,
-    "notificationGraph": true
+    "notificationGraph": true,
+    "communityLeaders": true
   },
   "signUp": {
     "moderation": true,
@@ -25,6 +26,9 @@
   "media": {
     "bypassImgProxyError": false,
     "preferLargeMedia": true
+  },
+  "communityLeaders": {
+    "list": "naddr1qq4xc6tnw3ez6vp58y6rywpjxckngdtyxukngwr9vckkze33vcknzcnrxcenje35xqmn2cczyp3lucccm3v9s087z6qslpkap8schltk427zfgqgrn3g2menq5zw6qcyqqq82vqprpmhxue69uhhyetvv9ujuumwdae8gtnnda3kjctv7rajfl"
   },
   "noteCreatorToast": true,
   "hideFromNavbar": ["/graph"],

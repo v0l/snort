@@ -58,6 +58,10 @@ declare const CONFIG: {
     deck: boolean;
     zapPool: boolean;
     notificationGraph: boolean;
+    communityLeaders: boolean;
+  };
+  defaultPreferences: {
+    checkSigs: boolean;
   };
   signUp: {
     moderation: boolean;
@@ -66,6 +70,9 @@ declare const CONFIG: {
   media: {
     bypassImgProxyError: boolean;
     preferLargeMedia: boolean;
+  };
+  communityLeaders?: {
+    list: string;
   };
   // Filter urls from nav sidebar
   hideFromNavbar: Array<string>;

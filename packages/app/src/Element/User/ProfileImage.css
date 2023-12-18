@@ -19,10 +19,6 @@ a.pfp {
   text-decoration: none;
 }
 
-.pfp .username {
-  font-weight: 600;
-}
-
 .pfp .profile-name {
   max-width: stretch;
   max-width: -webkit-fill-available;

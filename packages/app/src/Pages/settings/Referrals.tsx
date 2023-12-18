@@ -1,3 +1,4 @@
+import { LeaderBadge } from "@/Element/CommunityLeaders/LeaderBadge";
 import Copy from "@/Element/Copy";
 import SnortApi from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
@@ -37,6 +38,16 @@ export function ReferralsPage() {
       <div className="border border-zinc-900 rounded-2xl px-3 py-2">
         <Copy text={`https://${window.location.host}?ref=${refCode}`} maxSize={Number.MAX_VALUE} />
       </div>
+
+      <h2>
+        <FormattedMessage defaultMessage="Become a leader" id="M6C/px" />
+      </h2>
+      <div className="flex">
+        <LeaderBadge />
+      </div>
+      <p>
+        <FormattedMessage defaultMessage="Coming soon" id="e61Jf3" />
+      </p>
     </>
   );
 }

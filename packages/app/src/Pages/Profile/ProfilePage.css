@@ -166,10 +166,6 @@
   border: none;
 }
 
-.qr-modal .pfp .username {
-  align-items: center;
-}
-
 .qr-modal canvas {
   border-radius: 10px;
 }
