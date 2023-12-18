@@ -321,7 +321,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         )}
         {isMe ? (
           <>
-            <Link to="/settings">
+            <Link to="/settings/profile">
               <button>
                 <FormattedMessage defaultMessage="Edit" id="wEQDC6" />
               </button>
