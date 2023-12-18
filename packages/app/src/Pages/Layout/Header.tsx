@@ -71,7 +71,7 @@ export function Header() {
     <header
       className={classNames(
         { "md:hidden": pageName === "messages" },
-        "flex justify-between items-center self-stretch gap-6 sticky top-0 z-10 bg-bg-color md:bg-header md:bg-opacity-50 md:shadow-lg md:backdrop-blur-lg",
+        "flex justify-between items-center self-stretch gap-6 sticky top-0 z-10 bg-bg-color md:bg-header md:bg-opacity-50 md:backdrop-blur-lg",
       )}>
       <div
         onClick={handleBackButtonClick}

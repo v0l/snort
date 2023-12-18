@@ -40,7 +40,7 @@ import Layout from "@/Pages/Layout";
 import ProfilePage from "@/Pages/Profile/ProfilePage";
 import { RootRoutes, RootTabRoutes } from "@/Pages/Root";
 import NotificationsPage from "@/Pages/Notifications/Notifications";
-import SettingsPage, { SettingsRoutes } from "@/Pages/settings/SettingsPage";
+import SettingsRoutes from "@/Pages/settings/Routes";
 import ErrorPage from "@/Pages/ErrorPage";
 import NostrAddressPage from "@/Pages/NostrAddressPage";
 import MessagesPage from "@/Pages/Messages/MessagesPage";
@@ -248,11 +248,6 @@ const mainRoutes = [
     element: <NotificationsPage />,
   },
   {
-    path: "/settings",
-    element: <SettingsPage />,
-    children: SettingsRoutes,
-  },
-  {
     path: "/free-nostr-address",
     element: <FreeNostrAddressPage />,
   },
@@ -285,6 +280,7 @@ const mainRoutes = [
     element: <NetworkGraph />,
   },
   ...OnboardingRoutes,
+  ...SettingsRoutes,
 ] as Array<RouteObject>;
 
 if (CONFIG.features.zapPool) {

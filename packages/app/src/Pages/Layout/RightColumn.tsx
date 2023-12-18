@@ -7,7 +7,7 @@ import useLogin from "@/Hooks/useLogin";
 
 export default function RightColumn() {
   const { pubkey } = useLogin(s => ({ pubkey: s.publicKey }));
-  const hideRightColumnPaths = ["/login", "/new", "/messages", "/settings"];
+  const hideRightColumnPaths = ["/login", "/new", "/messages"];
   const show = !hideRightColumnPaths.some(path => location.pathname.startsWith(path));
 
   const getTitleMessage = () => {

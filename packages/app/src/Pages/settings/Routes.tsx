@@ -1,5 +1,4 @@
-import { Outlet, RouteObject } from "react-router-dom";
-import SettingsIndex from "@/Pages/settings/Root";
+import Menu from "@/Pages/settings/Menu";
 import Profile from "@/Pages/settings/Profile";
 import Relay from "@/Pages/settings/Relays";
 import Preferences from "@/Pages/settings/Preferences";
@@ -10,23 +9,27 @@ import { WalletSettingsRoutes } from "@/Pages/settings/WalletSettings";
 import { ManageHandleRoutes } from "@/Pages/settings/handle";
 import ExportKeys from "@/Pages/settings/Keys";
 import ModerationSettings from "@/Pages/settings/Moderation";
-import { CacheSettings } from "./Cache";
+import { CacheSettings } from "@/Pages/settings/Cache";
+import { ReferralsPage } from "@/Pages/settings/Referrals";
+import { Outlet } from "react-router-dom";
 
-import { ReferralsPage } from "./Referrals";
-
-export default function SettingsPage() {
+const SettingsPage = () => {
   return (
-    <>
+    <div className="px-3">
       <Outlet />
-    </>
+    </div>
   );
-}
+};
 
-export const SettingsRoutes: RouteObject[] = [
+export default [
   {
-    path: "",
-    element: <SettingsIndex />,
+    path: "/settings",
+    element: <SettingsPage />,
     children: [
+      {
+        path: "",
+        element: <Menu />,
+      },
       {
         path: "profile",
         element: <Profile />,
