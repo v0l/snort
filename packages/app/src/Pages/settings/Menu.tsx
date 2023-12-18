@@ -19,7 +19,7 @@ const SettingsIndex = () => {
 
   const settingsGroups = [
     {
-      title: "Account",
+      title: <FormattedMessage id="TwyMau" defaultMessage="Account" />,
       items: [
         {
           icon: "profile",
@@ -64,7 +64,7 @@ const SettingsIndex = () => {
       ],
     },
     {
-      title: "Interaction",
+      title: <FormattedMessage id="hvFRBo" defaultMessage="Interaction" />,
       items: [
         {
           icon: "relay",
@@ -99,7 +99,7 @@ const SettingsIndex = () => {
       ],
     },
     {
-      title: "Support",
+      title: <FormattedMessage id="HqRNN8" defaultMessage="Support" />,
       items: [
         {
           icon: "heart",
@@ -130,7 +130,7 @@ const SettingsIndex = () => {
       ],
     },
     {
-      title: "Log Out",
+      title: <FormattedMessage id="H0JBH6" defaultMessage="Log Out" />,
       items: [
         {
           icon: "logout",
