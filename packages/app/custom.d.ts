@@ -64,6 +64,7 @@ declare const CONFIG: {
   };
   signUp: {
     moderation: boolean;
+    defaultFollows: Array<string>;
   };
   media: {
     bypassImgProxyError: boolean;

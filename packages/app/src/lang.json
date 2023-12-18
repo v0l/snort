@@ -347,6 +347,9 @@
     "defaultMessage": "Non-Zap",
     "description": "Non-Zap, Regular LN payment"
   },
+  "Awq32I": {
+    "defaultMessage": "Push notifications"
+  },
   "AxDOiG": {
     "defaultMessage": "Months"
   },
@@ -1488,9 +1491,6 @@
   },
   "ttxS0b": {
     "defaultMessage": "Supporter Badge"
-  },
-  "tzMNF3": {
-    "defaultMessage": "Push notifications"
   },
   "u+LyXc": {
     "defaultMessage": "Interactions"

@@ -12,7 +12,7 @@ import { unixNowMs } from "@snort/shared";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 
-import { Blasters, SnortPubKey } from "@/Const";
+import { Blasters } from "@/Const";
 import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData, Newest } from "@/Login";
 import { generateBip39Entropy, entropyToPrivateKey } from "@/nip6";
 import { bech32ToHex, dedupeById, deleteRefCode, getCountry, sanitizeRelayUrl, unwrap } from "@/SnortUtils";
@@ -124,7 +124,8 @@ export async function generateNewLogin(
   const publisher = EventPublisher.privateKey(privateKey);
 
   // Create new contact list following self and site account
-  const ev = await publisher.contactList([bech32ToHex(SnortPubKey), publicKey].map(a => ["p", a]));
+  const contactList = [publicKey, ...CONFIG.signUp.defaultFollows.map(a => bech32ToHex(a))].map(a => ["p", a]);
+  const ev = await publisher.contactList(contactList);
   system.BroadcastEvent(ev);
 
   // Create relay metadata event
