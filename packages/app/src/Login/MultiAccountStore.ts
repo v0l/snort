@@ -3,9 +3,8 @@ import * as utils from "@noble/curves/abstract/utils";
 import { v4 as uuid } from "uuid";
 
 import { HexKey, RelaySettings, EventPublisher, KeyStorage, NotEncrypted, socialGraphInstance } from "@snort/system";
-import { deepClone, sanitizeRelayUrl, unwrap, ExternalStore } from "@snort/shared";
+import { deepClone, unwrap, ExternalStore } from "@snort/shared";
 
-import { DefaultRelays } from "@/Const";
 import { LoginSession, LoginSessionType, createPublisher } from "@/Login";
 import { DefaultPreferences, UserPreferences } from "./Preferences";
 
@@ -39,7 +38,7 @@ const LoggedOut = {
     timestamp: 0,
   },
   relays: {
-    item: Object.fromEntries([...DefaultRelays.entries()].map(a => [unwrap(sanitizeRelayUrl(a[0])), a[1]])),
+    item: CONFIG.defaultRelays,
     timestamp: 0,
   },
   latestNotification: 0,
@@ -49,6 +48,7 @@ const LoggedOut = {
     item: {
       mutedWords: [],
       preferences: DefaultPreferences,
+      showContentWarningPosts: false,
     },
     timestamp: 0,
   },
@@ -179,7 +179,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
     if (relays && Object.keys(relays).length > 0) {
       return relays;
     }
-    return Object.fromEntries(DefaultRelays.entries());
+    return CONFIG.defaultRelays;
   }
 
   loginWithPrivateKey(key: KeyStorage, entropy?: string, relays?: Record<string, RelaySettings>) {

@@ -543,6 +543,9 @@
   "H0JBH6": {
     "defaultMessage": "Log Out"
   },
+  "H0OG3T": {
+    "defaultMessage": "Leader Info"
+  },
   "H6/kLh": {
     "defaultMessage": "Order Paid!"
   },
@@ -737,6 +740,9 @@
   "NndBJE": {
     "defaultMessage": "New users page"
   },
+  "O3Jz4E": {
+    "defaultMessage": "Use your invite code to earn sats!"
+  },
   "O8Z8t9": {
     "defaultMessage": "Show More"
   },
@@ -872,6 +878,9 @@
   "TaeBqw": {
     "defaultMessage": "Sign in with Nostr Extension"
   },
+  "TdTXXf": {
+    "defaultMessage": "Learn more"
+  },
   "TdtZQ5": {
     "defaultMessage": "Crypto"
   },
@@ -908,6 +917,9 @@
   },
   "Up5U7K": {
     "defaultMessage": "Block"
+  },
+  "Ups2/p": {
+    "defaultMessage": "Your application is pending"
   },
   "UrKTqQ": {
     "defaultMessage": "You have an active iris.to account"
@@ -1029,6 +1041,9 @@
   },
   "b5vAk0": {
     "defaultMessage": "Your handle will act like a lightning address and will redirect to your chosen LNURL or Lightning address"
+  },
+  "bF1MYT": {
+    "defaultMessage": "You are a community leader and are earning <b>{percent}</b> of referred users subscriptions!"
   },
   "bG00/W": {
     "defaultMessage": "Service Worker Running"
@@ -1292,6 +1307,9 @@
   },
   "jzgQ2z": {
     "defaultMessage": "{n} Reactions"
+  },
+  "k0kCJp": {
+    "defaultMessage": "Apply Now"
   },
   "k2veDA": {
     "defaultMessage": "Write"

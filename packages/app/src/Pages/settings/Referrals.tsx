@@ -1,19 +1,99 @@
+import AsyncButton from "@/Element/Button/AsyncButton";
 import { LeaderBadge } from "@/Element/CommunityLeaders/LeaderBadge";
 import Copy from "@/Element/Copy";
-import SnortApi from "@/External/SnortApi";
+import SnortApi, { RefCodeResponse } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, FormattedNumber } from "react-intl";
+import { Link } from "react-router-dom";
 
 export function ReferralsPage() {
-  const [refCode, setRefCode] = useState("");
+  const [refCode, setRefCode] = useState<RefCodeResponse>();
   const { publisher } = useEventPublisher();
+  const api = new SnortApi(undefined, publisher);
+
+  async function loadRefCode() {
+    const c = await api.getRefCode();
+    setRefCode(c);
+  }
 
   useEffect(() => {
-    const api = new SnortApi(undefined, publisher);
-
-    api.getRefCode().then(v => setRefCode(v.code));
+    loadRefCode();
   }, [publisher]);
+
+  async function applyNow() {
+    await api.applyForLeader();
+    await loadRefCode();
+  }
+
+  function becomeLeader() {
+    return (
+      <>
+        <h2>
+          <FormattedMessage defaultMessage="Become a leader" id="M6C/px" />
+        </h2>
+        <div className="flex items-center justify-between">
+          <Link to="https://community.snort.social/" target="_blank">
+            <button>
+              <FormattedMessage defaultMessage="Learn more" id="TdTXXf" />
+            </button>
+          </Link>
+
+          <LeaderBadge />
+        </div>
+        <p>
+          <AsyncButton className="primary" onClick={applyNow}>
+            <FormattedMessage defaultMessage="Apply Now" id="k0kCJp" />
+          </AsyncButton>
+        </p>
+      </>
+    );
+  }
+
+  function leaderPending() {
+    return (
+      <>
+        <h2>
+          <FormattedMessage defaultMessage="Become a leader" id="M6C/px" />
+        </h2>
+        <div className="flex items-center justify-between">
+          <Link to="https://community.snort.social/" target="_blank">
+            <button>
+              <FormattedMessage defaultMessage="Learn more" id="TdTXXf" />
+            </button>
+          </Link>
+
+          <LeaderBadge />
+        </div>
+        <h3>
+          <FormattedMessage defaultMessage="Your application is pending" id="Ups2/p" />
+        </h3>
+      </>
+    );
+  }
+
+  function leaderInfo() {
+    return (
+      <>
+        <h2>
+          <FormattedMessage defaultMessage="Leader Info" id="H0OG3T" />
+        </h2>
+        <p>
+          <FormattedMessage
+            defaultMessage="You are a community leader and are earning <b>{percent}</b> of referred users subscriptions!"
+            id="bF1MYT"
+            values={{
+              b: c => <b>{c}</b>,
+              percent: <FormattedNumber style="percent" value={refCode?.revShare ?? 0} />,
+            }}
+          />
+        </p>
+        <p>
+          <FormattedMessage defaultMessage="Use your invite code to earn sats!" id="O3Jz4E" />
+        </p>
+      </>
+    );
+  }
 
   return (
     <>
@@ -25,7 +105,7 @@ export function ReferralsPage() {
           defaultMessage="Your referral code is {code}"
           id="UxgyeY"
           values={{
-            code: <span className="font-mono text-highlight select-all">{refCode}</span>,
+            code: <span className="font-mono text-highlight select-all">{refCode?.code}</span>,
           }}
         />
       </p>
@@ -36,18 +116,11 @@ export function ReferralsPage() {
         />
       </p>
       <div className="border border-zinc-900 rounded-2xl px-3 py-2">
-        <Copy text={`https://${window.location.host}?ref=${refCode}`} maxSize={Number.MAX_VALUE} />
+        <Copy text={`https://${window.location.host}?ref=${refCode?.code}`} maxSize={Number.MAX_VALUE} />
       </div>
-
-      <h2>
-        <FormattedMessage defaultMessage="Become a leader" id="M6C/px" />
-      </h2>
-      <div className="flex">
-        <LeaderBadge />
-      </div>
-      <p>
-        <FormattedMessage defaultMessage="Coming soon" id="e61Jf3" />
-      </p>
+      {refCode?.leaderState === undefined && becomeLeader()}
+      {refCode?.leaderState === "pending" && leaderPending()}
+      {refCode?.leaderState === "approved" && leaderInfo()}
     </>
   );
 }

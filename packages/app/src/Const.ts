@@ -29,11 +29,6 @@ export const KieranPubKey = "npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7v
 export const SnortPubKey = "npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x6802npjqhjjtws";
 
 /**
- * Default bootstrap relays
- */
-export const DefaultRelays = new Map(Object.entries(CONFIG.defaultRelays));
-
-/**
  * Default search relays
  */
 export const SearchRelays = ["wss://relay.nostr.band"];
