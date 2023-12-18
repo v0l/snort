@@ -77,7 +77,7 @@ const PreferencesPage = () => {
       </h3>
 
       <h4>
-        <FormattedMessage defaultMessage="Status" id="tzMNF3" />
+        <FormattedMessage defaultMessage="Push notifications" id="Awq32I" />
       </h4>
 
       <div className="flex flex-col space-y-4">
