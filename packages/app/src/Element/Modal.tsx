@@ -60,7 +60,7 @@ export default function Modal(props: ModalProps) {
   }, []);
 
   return createPortal(
-    <div className={`modal${props.className ? ` ${props.className}` : ""}`} onClick={props.onClose}>
+    <div className={props.className === "hidden" ? props.className : `modal ${props.className || ""}`} onClick={props.onClose}>
       <div
         className={props.bodyClassName || "modal-body"}
         onClick={e => {

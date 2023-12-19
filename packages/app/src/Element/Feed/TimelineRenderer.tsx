@@ -36,6 +36,8 @@ function Grid({ frags }: { frags: Array<TimelineFragment> }) {
   }, [allEvents]);
 
   const modalThread = modalThreadIndex !== undefined ? mediaEvents[modalThreadIndex] : undefined;
+  const nextModalThread = modalThreadIndex !== undefined ? mediaEvents[modalThreadIndex + 1] : undefined;
+  const prevModalThread = modalThreadIndex !== undefined ? mediaEvents[modalThreadIndex - 1] : undefined;
 
   return (
     <>
@@ -46,12 +48,26 @@ function Grid({ frags }: { frags: Array<TimelineFragment> }) {
       </div>
       {modalThread && (
         <SpotlightThreadModal
-          key={modalThreadIndex}
+          key={modalThread.id}
           thread={NostrLink.fromEvent(modalThread)}
           onClose={() => setModalThreadIndex(undefined)}
           onBack={() => setModalThreadIndex(undefined)}
           onNext={() => setModalThreadIndex(Math.min(modalThreadIndex + 1, mediaEvents.length - 1))}
           onPrev={() => setModalThreadIndex(Math.max(modalThreadIndex - 1, 0))}
+        />
+      )}
+      {nextModalThread && ( // preload next
+        <SpotlightThreadModal
+          className="hidden"
+          key={`${nextModalThread.id}-next`}
+          thread={NostrLink.fromEvent(nextModalThread)}
+        />
+      )}
+      {prevModalThread && ( // preload previous
+        <SpotlightThreadModal
+          className="hidden"
+          key={`${prevModalThread.id}-prev`}
+          thread={NostrLink.fromEvent(prevModalThread)}
         />
       )}
     </>

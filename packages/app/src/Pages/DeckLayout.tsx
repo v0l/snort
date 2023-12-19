@@ -123,9 +123,8 @@ export function SnortDeckLayout() {
           {deckState.article && (
             <>
               <Modal
-                id="thread-overlay-article"
                 onClose={() => setDeckState({})}
-                className="thread-overlay long-form"
+                className="long-form"
                 onClick={() => setDeckState({})}>
                 <div onClick={e => e.stopPropagation()}>
                   <LongFormText ev={deckState.article} isPreview={false} related={[]} />

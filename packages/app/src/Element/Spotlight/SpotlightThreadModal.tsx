@@ -8,6 +8,7 @@ import getEventMedia from "@/Element/Event/getEventMedia";
 
 interface SpotlightThreadModalProps {
   thread: NostrLink;
+  className?: string;
   onClose?: () => void;
   onBack?: () => void;
   onNext?: () => void;
@@ -24,7 +25,7 @@ export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
   };
 
   return (
-    <Modal id="thread-overlay" onClose={onClose} bodyClassName={"flex flex-1"}>
+    <Modal className={props.className} onClose={onClose} bodyClassName={"flex flex-1"}>
       <ThreadContextWrapper link={props.thread}>
         <div className="flex flex-row h-screen w-screen">
           <div className="flex w-full md:w-2/3 items-center justify-center overflow-hidden" onClick={onClickBg}>
