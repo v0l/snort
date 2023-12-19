@@ -1,13 +1,12 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { MouseEvent } from "react";
-import useImgProxy from "@/Hooks/useImgProxy";
 import { Link } from "react-router-dom";
 import Icon from "@/Icons/Icon";
 import getEventMedia from "@/Element/Event/getEventMedia";
+import { ProxyImg } from "@/Element/ProxyImg";
 
 const ImageGridItem = (props: { event: TaggedNostrEvent; onClick: (e: MouseEvent) => void }) => {
   const { event, onClick } = props;
-  const { proxy } = useImgProxy();
 
   const media = getEventMedia(event);
 
@@ -26,7 +25,7 @@ const ImageGridItem = (props: { event: TaggedNostrEvent; onClick: (e: MouseEvent
 
   return (
     <Link to={`/${noteId}`} className="aspect-square cursor-pointer hover:opacity-80 relative" onClick={myOnClick}>
-      <img src={proxy(media[0].content, 256)} alt="Note Media" className="w-full h-full object-cover" />
+      <ProxyImg src={media[0].content} alt="Note Media" className="w-full h-full object-cover" />
       <div className="absolute right-2 top-2 flex flex-col gap-2">
         {multiple && <Icon name="copy-solid" className="text-white opacity-80 drop-shadow-md" />}
         {isVideo && <Icon name="play-square-outline" className="text-white opacity-80 drop-shadow-md" />}
