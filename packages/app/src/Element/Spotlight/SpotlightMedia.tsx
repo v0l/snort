@@ -74,7 +74,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
           autoPlay={true}
           loop={true}
           controls={true}
-          className="max-h-screen max-w-full"
+          className="max-h-screen max-w-full w-full"
         />
       );
     } else {
