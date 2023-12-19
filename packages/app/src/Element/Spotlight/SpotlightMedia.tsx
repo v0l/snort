@@ -1,14 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Modal from "@/Element/Modal";
 import Icon from "@/Icons/Icon";
 import { ProxyImg } from "@/Element/ProxyImg";
 import useImgProxy from "@/Hooks/useImgProxy";
 
 interface SpotlightMediaProps {
-  images: Array<string>;
+  media: Array<string>;
   idx: number;
   className: string;
   onClose: () => void;
+  onNext?: () => void;
+  onPrev?: () => void;
 }
 
 const videoSuffixes = ["mp4", "webm", "ogg", "mov", "avi", "mkv"];
@@ -18,8 +20,24 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
   const [idx, setIdx] = useState(props.idx);
 
   const image = useMemo(() => {
-    return props.images.at(idx % props.images.length);
+    return props.media.at(idx % props.media.length);
   }, [idx, props]);
+
+  const dec = useCallback(() => {
+    if (idx === 0 && props.onPrev) {
+      props.onPrev();
+    } else {
+      setIdx(s => (s - 1 + props.media.length) % props.media.length);
+    }
+  }, [idx, props.onPrev, props.media.length]); // Add dependencies
+
+  const inc = useCallback(() => {
+    if (idx === props.media.length - 1 && props.onNext) {
+      props.onNext();
+    } else {
+      setIdx(s => (s + 1) % props.media.length);
+    }
+  }, [idx, props.onNext, props.media.length]); // Add dependencies
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -41,27 +59,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
-  function dec() {
-    setIdx(s => {
-      if (s - 1 === -1) {
-        return props.images.length - 1;
-      } else {
-        return s - 1;
-      }
-    });
-  }
-
-  function inc() {
-    setIdx(s => {
-      if (s + 1 === props.images.length) {
-        return 0;
-      } else {
-        return s + 1;
-      }
-    });
-  }
+  }, [dec, inc]); // Now dec and inc are stable
 
   const isVideo = useMemo(() => {
     return image && videoSuffixes.some(suffix => image.endsWith(suffix));
@@ -90,6 +88,10 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
     }
   };
 
+  const hasMultiple = props.media.length > 1;
+  const hasPrev = hasMultiple || props.onPrev;
+  const hasNext = hasMultiple || props.onNext;
+
   return (
     <div className="select-none relative h-screen flex items-center flex-1 justify-center" onClick={onClickBg}>
       {mediaEl}
@@ -101,27 +103,27 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
         </span>
       </div>
       <div className="absolute flex flex-row items-center gap-4 right-0 top-0 p-4">
-        {props.images.length > 1 && `${idx + 1}/${props.images.length}`}
+        {props.media.length > 1 && `${idx + 1}/${props.media.length}`}
       </div>
-      {props.images.length > 1 && (
-        <>
-          <span
-            className="absolute left-0 p-2 top-1/2 rotate-180 cursor-pointer opacity-80 hover:opacity-60"
-            onClick={e => {
-              e.stopPropagation();
-              dec();
-            }}>
-            <Icon name="arrowFront" size={24} />
-          </span>
-          <span
-            className="absolute right-0 p-2 top-1/2 cursor-pointer opacity-80 hover:opacity-60"
-            onClick={e => {
-              e.stopPropagation();
-              inc();
-            }}>
-            <Icon name="arrowFront" size={24} />
-          </span>
-        </>
+      {hasPrev && (
+        <span
+          className="absolute left-0 p-2 top-1/2 rotate-180 cursor-pointer opacity-80 hover:opacity-60"
+          onClick={e => {
+            e.stopPropagation();
+            dec();
+          }}>
+          <Icon name="arrowFront" size={24} />
+        </span>
+      )}
+      {hasNext && (
+        <span
+          className="absolute right-0 p-2 top-1/2 cursor-pointer opacity-80 hover:opacity-60"
+          onClick={e => {
+            e.stopPropagation();
+            inc();
+          }}>
+          <Icon name="arrowFront" size={24} />
+        </span>
       )}
     </div>
   );

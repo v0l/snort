@@ -1,18 +1,15 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { MouseEvent } from "react";
 import useImgProxy from "@/Hooks/useImgProxy";
-import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import { Link } from "react-router-dom";
 import Icon from "@/Icons/Icon";
+import getEventMedia from "@/Element/Event/getEventMedia";
 
 const ImageGridItem = (props: { event: TaggedNostrEvent; onClick: (e: MouseEvent) => void }) => {
   const { event, onClick } = props;
   const { proxy } = useImgProxy();
 
-  const parsed = transformTextCached(event.id, event.content, event.tags);
-  const media = parsed.filter(
-    a => a.type === "media" && (a.mimeType?.startsWith("image/") || a.mimeType?.startsWith("video/")),
-  );
+  const media = getEventMedia(event);
 
   if (media.length === 0) return null;
 

@@ -3,12 +3,13 @@ import ProfileImage from "@/Element/User/ProfileImage";
 import { FormattedMessage } from "react-intl";
 import Icon from "@/Icons/Icon";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { TimelineFragment } from "@/Element/Feed/TimelineFragment";
 import { DisplayAs } from "@/Element/Feed/DisplayAsSelector";
 import { SpotlightThreadModal } from "@/Element/Spotlight/SpotlightThreadModal";
 import ImageGridItem from "@/Element/Feed/ImageGridItem";
 import ErrorBoundary from "@/Element/ErrorBoundary";
+import getEventMedia from "@/Element/Event/getEventMedia";
 
 export interface TimelineRendererProps {
   frags: Array<TimelineFragment>;
@@ -24,11 +25,43 @@ export interface TimelineRendererProps {
   displayAs?: DisplayAs;
 }
 
+// filter frags[0].events that have media
+function Grid({ frags }: { frags: Array<TimelineFragment> }) {
+  const [modalThreadIndex, setModalThreadIndex] = useState<number | undefined>(undefined);
+  const allEvents = useMemo(() => {
+    return frags.flatMap(frag => frag.events);
+  }, [frags]);
+  const mediaEvents = useMemo(() => {
+    return allEvents.filter(event => getEventMedia(event).length > 0);
+  }, [allEvents]);
+
+  const modalThread = modalThreadIndex !== undefined ? mediaEvents[modalThreadIndex] : undefined;
+
+  return (
+    <>
+      <div className="grid grid-cols-3 gap-px md:gap-1">
+        {mediaEvents.map((event, index) => (
+          <ImageGridItem key={event.id} event={event} onClick={() => setModalThreadIndex(index)} />
+        ))}
+      </div>
+      {modalThread && (
+        <SpotlightThreadModal
+          key={modalThreadIndex}
+          thread={NostrLink.fromEvent(modalThread)}
+          onClose={() => setModalThreadIndex(undefined)}
+          onBack={() => setModalThreadIndex(undefined)}
+          onNext={() => setModalThreadIndex(Math.min(modalThreadIndex + 1, mediaEvents.length - 1))}
+          onPrev={() => setModalThreadIndex(Math.max(modalThreadIndex - 1, 0))}
+        />
+      )}
+    </>
+  );
+}
+
 export function TimelineRenderer(props: TimelineRendererProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const latestNotesFixedRef = useRef<HTMLDivElement | null>(null);
   const { ref, inView } = useInView();
-  const [modalThread, setModalThread] = useState<NostrLink | undefined>(undefined);
 
   const updateLatestNotesPosition = () => {
     if (containerRef.current && latestNotesFixedRef.current) {
@@ -60,18 +93,6 @@ export function TimelineRenderer(props: TimelineRendererProps) {
           noteContext={props.noteContext}
         />
       </ErrorBoundary>
-    ));
-  };
-
-  const renderGrid = () => {
-    // TODO Hide images from notes with a content warning, unless otherwise configured
-
-    return props.frags.map(frag => (
-      <div className="grid grid-cols-3 gap-px md:gap-1">
-        {frag.events.map(event => (
-          <ImageGridItem event={event} onClick={() => setModalThread(NostrLink.fromEvent(event))} />
-        ))}
-      </div>
     ));
   };
 
@@ -116,14 +137,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
           )}
         </>
       )}
-      {props.displayAs === "grid" ? renderGrid() : renderNotes()}
-      {modalThread && (
-        <SpotlightThreadModal
-          thread={modalThread}
-          onClose={() => setModalThread(undefined)}
-          onBack={() => setModalThread(undefined)}
-        />
-      )}
+      {props.displayAs === "grid" ? <Grid frags={props.frags} /> : renderNotes()}
     </div>
   );
 }

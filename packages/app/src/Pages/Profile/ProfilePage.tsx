@@ -399,7 +399,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         </div>
       </div>
       <div className="main-content">{tabContent()}</div>
-      {modalImage && <SpotlightMediaModal onClose={() => setModalImage("")} images={[modalImage]} idx={0} />}
+      {modalImage && <SpotlightMediaModal onClose={() => setModalImage("")} media={[modalImage]} idx={0} />}
     </>
   );
 }

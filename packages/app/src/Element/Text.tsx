@@ -283,7 +283,7 @@ export default function Text({
   return (
     <div dir="auto" className={classNames("text", className)} onClick={onClick}>
       {renderContent()}
-      {showSpotlight && <SpotlightMediaModal images={images} onClose={() => setShowSpotlight(false)} idx={imageIdx} />}
+      {showSpotlight && <SpotlightMediaModal media={images} onClose={() => setShowSpotlight(false)} idx={imageIdx} />}
     </div>
   );
 }

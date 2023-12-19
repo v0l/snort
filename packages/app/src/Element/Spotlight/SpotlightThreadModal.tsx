@@ -2,11 +2,19 @@ import Modal from "@/Element/Modal";
 import { ThreadContext, ThreadContextWrapper } from "@/Hooks/useThreadContext";
 import { Thread } from "@/Element/Event/Thread";
 import { useContext } from "react";
-import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import { SpotlightMedia } from "@/Element/Spotlight/SpotlightMedia";
 import { NostrLink } from "@snort/system";
+import getEventMedia from "@/Element/Event/getEventMedia";
 
-export function SpotlightThreadModal(props: { thread: NostrLink; onClose?: () => void; onBack?: () => void }) {
+interface SpotlightThreadModalProps {
+  thread: NostrLink;
+  onClose?: () => void;
+  onBack?: () => void;
+  onNext?: () => void;
+  onPrev?: () => void;
+}
+
+export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
   const onClose = () => props.onClose?.();
   const onBack = () => props.onBack?.();
   const onClickBg = (e: React.MouseEvent) => {
@@ -20,7 +28,7 @@ export function SpotlightThreadModal(props: { thread: NostrLink; onClose?: () =>
       <ThreadContextWrapper link={props.thread}>
         <div className="flex flex-row h-screen w-screen">
           <div className="flex w-full md:w-2/3 items-center justify-center overflow-hidden" onClick={onClickBg}>
-            <SpotlightFromThread onClose={onClose} />
+            <SpotlightFromThread onClose={onClose} onNext={props.onNext} onPrev={props.onPrev} />
           </div>
           <div className="hidden md:flex w-1/3 min-w-[400px] flex-shrink-0 overflow-y-auto bg-bg-color">
             <Thread onBack={onBack} disableSpotlight={true} />
@@ -31,13 +39,26 @@ export function SpotlightThreadModal(props: { thread: NostrLink; onClose?: () =>
   );
 }
 
-function SpotlightFromThread({ onClose }: { onClose: () => void }) {
+interface SpotlightFromThreadProps {
+  onClose: () => void;
+  onNext?: () => void;
+  onPrev?: () => void;
+}
+
+function SpotlightFromThread({ onClose, onNext, onPrev }: SpotlightFromThreadProps) {
   const thread = useContext(ThreadContext);
 
-  const parsed = thread.root ? transformTextCached(thread.root.id, thread.root.content, thread.root.tags) : [];
-  const images = parsed.filter(
-    a => a.type === "media" && (a.mimeType?.startsWith("image/") || a.mimeType?.startsWith("video/")),
+  if (!thread?.root) return null;
+  const media = getEventMedia(thread.root);
+  if (media.length === 0) return;
+  return (
+    <SpotlightMedia
+      className="w-full"
+      media={media.map(a => a.content)}
+      idx={0}
+      onClose={onClose}
+      onNext={onNext}
+      onPrev={onPrev}
+    />
   );
-  if (images.length === 0) return;
-  return <SpotlightMedia className="w-full" images={images.map(a => a.content)} idx={0} onClose={onClose} />;
 }
