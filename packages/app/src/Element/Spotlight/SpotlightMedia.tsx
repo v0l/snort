@@ -78,7 +78,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
         />
       );
     } else {
-      return <ProxyImg src={image} className="max-h-screen max-w-full" />;
+      return <ProxyImg src={image} className="max-h-screen max-w-full w-full object-contain" />;
     }
   }, [image, isVideo]);
 
