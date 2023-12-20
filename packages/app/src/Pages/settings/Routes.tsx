@@ -12,6 +12,7 @@ import ModerationSettings from "@/Pages/settings/Moderation";
 import { CacheSettings } from "@/Pages/settings/Cache";
 import { ReferralsPage } from "@/Pages/settings/Referrals";
 import { Outlet } from "react-router-dom";
+import { ToolsPage, ToolsPages } from "./tools";
 
 const SettingsPage = () => {
   return (
@@ -69,6 +70,11 @@ export default [
       {
         path: "invite",
         element: <ReferralsPage />,
+      },
+      {
+        path: "tools",
+        element: <ToolsPage />,
+        children: ToolsPages,
       },
       ...ManageHandleRoutes,
       ...WalletSettingsRoutes,

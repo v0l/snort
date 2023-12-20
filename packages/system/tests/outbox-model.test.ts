@@ -1,16 +1,26 @@
-import { splitAllByWriteRelays } from "../src/gossip-model";
+import { splitAllByWriteRelays } from "../src/outbox-model";
 
-describe("GossipModel", () => {
+describe("OutboxModel", () => {
   it("should not output empty", () => {
     const Relays = {
       getFromCache: (pk?: string) => {
         if (pk) {
           return {
             pubkey: pk,
-            created_at: 0,
+            created: 0,
+            loaded: 0,
             relays: [],
           };
         }
+      },
+      update: () => {
+        return Promise.resolve<"new" | "updated" | "refresh" | "no_change">("new");
+      },
+      buffer: () => {
+        return Promise.resolve<Array<string>>([]);
+      },
+      bulkSet: () => {
+        return Promise.resolve();
       },
     };
     const a = [

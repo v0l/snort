@@ -81,25 +81,27 @@ describe("RequestMerger", () => {
 describe("flatMerge", () => {
   it("should flat merge simple", () => {
     const input = [
-      { ids: 0, authors: "a" },
-      { ids: 0, authors: "b" },
-      { kinds: 1 },
-      { kinds: 2 },
-      { kinds: 2 },
-      { ids: 0, authors: "c" },
-      { authors: "c", kinds: 1 },
-      { authors: "c", limit: 100 },
-      { ids: 1, authors: "c" },
+      { ids: "0", authors: "a", resultSetId: "" },
+      { ids: "0", authors: "b", resultSetId: "" },
+      { kinds: 1, resultSetId: "" },
+      { kinds: 2, resultSetId: "" },
+      { kinds: 2, resultSetId: "" },
+      { ids: "0", authors: "c", resultSetId: "" },
+      { authors: "c", kinds: 1, resultSetId: "" },
+      { authors: "c", limit: 100, resultSetId: "limit-c-100" },
+      { authors: "b", limit: 100, resultSetId: "limit-b-100" },
+      { ids: "1", authors: "c", resultSetId: "" },
     ] as Array<FlatReqFilter>;
     const output = [
-      { ids: [0], authors: ["a", "b", "c"] },
+      { ids: ["0"], authors: ["a", "b", "c"] },
       { kinds: [1, 2] },
       { authors: ["c"], kinds: [1] },
       { authors: ["c"], limit: 100 },
-      { ids: [1], authors: ["c"] },
+      { authors: ["b"], limit: 100 },
+      { ids: ["1"], authors: ["c"] },
     ] as Array<ReqFilter>;
 
-    expect(flatMerge(input)).toEqual(output);
+    expect(flatMerge(input)).toMatchObject(output);
   });
 
   it("should expand and flat merge complex same", () => {
@@ -119,47 +121,47 @@ describe("canMerge", () => {
   it("should have 0 distance", () => {
     const a = {
       ids: "a",
-      keys: 1,
-    };
+      resultSetId: "",
+    } as FlatReqFilter;
     const b = {
       ids: "a",
-      keys: 1,
-    };
+      resultSetId: "",
+    } as FlatReqFilter;
     expect(canMergeFilters(a, b)).toEqual(true);
   });
   it("should have 1 distance", () => {
     const a = {
       ids: "a",
-      keys: 1,
-    };
+      resultSetId: "",
+    } as FlatReqFilter;
     const b = {
       ids: "b",
-      keys: 1,
-    };
+      resultSetId: "",
+    } as FlatReqFilter;
     expect(canMergeFilters(a, b)).toEqual(true);
   });
   it("should have 10 distance", () => {
     const a = {
       ids: "a",
-      keys: 1,
-    };
+      resultSetId: "",
+    } as FlatReqFilter;
     const b = {
       ids: "a",
       kinds: 1,
-      keys: 2,
-    };
+      resultSetId: "",
+    } as FlatReqFilter;
     expect(canMergeFilters(a, b)).toEqual(false);
   });
   it("should have 11 distance", () => {
     const a = {
       ids: "a",
-      keys: 1,
-    };
+      resultSetId: "",
+    } as FlatReqFilter;
     const b = {
       ids: "b",
       kinds: 1,
-      keys: 2,
-    };
+      resultSetId: "",
+    } as FlatReqFilter;
     expect(canMergeFilters(a, b)).toEqual(false);
   });
   it("should have 1 distance, arrays", () => {

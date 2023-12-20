@@ -14,7 +14,7 @@ import { FlatReqFilter } from "./query-optimizer";
 import { RelayListCacheExpire } from "./const";
 import { BackgroundLoader } from "./background-loader";
 
-const PickNRelays = 2;
+const DefaultPickNRelays = 2;
 
 export interface RelayTaggedFilter {
   relay: string;
@@ -66,7 +66,7 @@ export function splitAllByWriteRelays(cache: RelayCache, filters: Array<ReqFilte
 /**
  * Split filters by authors
  */
-export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter): Array<RelayTaggedFilter> {
+export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter, pickN?: number): Array<RelayTaggedFilter> {
   const authors = filter.authors;
   if ((authors?.length ?? 0) === 0) {
     return [
@@ -77,7 +77,7 @@ export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter): Array<
     ];
   }
 
-  const topRelays = pickTopRelays(cache, unwrap(authors), PickNRelays, "write");
+  const topRelays = pickTopRelays(cache, unwrap(authors), pickN ?? DefaultPickNRelays, "write");
   const pickedRelays = dedupe(topRelays.flatMap(a => a.relays));
 
   const picked = pickedRelays.map(a => {
@@ -107,7 +107,11 @@ export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter): Array<
 /**
  * Split filters by author
  */
-export function splitFlatByWriteRelays(cache: RelayCache, input: Array<FlatReqFilter>): Array<RelayTaggedFlatFilters> {
+export function splitFlatByWriteRelays(
+  cache: RelayCache,
+  input: Array<FlatReqFilter>,
+  pickN?: number,
+): Array<RelayTaggedFlatFilters> {
   const authors = input.filter(a => a.authors).map(a => unwrap(a.authors));
   if (authors.length === 0) {
     return [
@@ -117,7 +121,7 @@ export function splitFlatByWriteRelays(cache: RelayCache, input: Array<FlatReqFi
       },
     ];
   }
-  const topRelays = pickTopRelays(cache, authors, PickNRelays, "write");
+  const topRelays = pickTopRelays(cache, authors, pickN ?? DefaultPickNRelays, "write");
   const pickedRelays = dedupe(topRelays.flatMap(a => a.relays));
 
   const picked = pickedRelays.map(a => {
@@ -142,7 +146,7 @@ export function splitFlatByWriteRelays(cache: RelayCache, input: Array<FlatReqFi
 /**
  * Pick most popular relays for each authors
  */
-function pickTopRelays(cache: RelayCache, authors: Array<string>, n: number, type: "write" | "read") {
+export function pickTopRelays(cache: RelayCache, authors: Array<string>, n: number, type: "write" | "read") {
   // map of pubkey -> [write relays]
   const allRelays = authors.map(a => {
     return {
@@ -198,10 +202,10 @@ function pickTopRelays(cache: RelayCache, authors: Array<string>, n: number, typ
 /**
  * Pick read relays for sending reply events
  */
-export async function pickRelaysForReply(ev: NostrEvent, system: SystemInterface) {
+export async function pickRelaysForReply(ev: NostrEvent, system: SystemInterface, pickN?: number) {
   const recipients = dedupe(ev.tags.filter(a => a[0] === "p").map(a => a[1]));
   await updateRelayLists(recipients, system);
-  const relays = pickTopRelays(system.RelayCache, recipients, 2, "read");
+  const relays = pickTopRelays(system.RelayCache, recipients, pickN ?? DefaultPickNRelays, "read");
   const ret = removeUndefined(dedupe(relays.map(a => a.relays).flat()));
   logger("Picked %O from authors %O", ret, recipients);
   return ret;
@@ -221,6 +225,27 @@ export function parseRelayTags(tag: Array<Array<string>>) {
   return tag.map(parseRelayTag).filter(a => a !== null);
 }
 
+export function parseRelaysFromKind(ev: NostrEvent) {
+  if (ev.kind === EventKind.ContactList) {
+    const relaysInContent =
+      ev.content.length > 0 ? (JSON.parse(ev.content) as Record<string, { read: boolean; write: boolean }>) : undefined;
+    if (relaysInContent) {
+      return Object.entries(relaysInContent).map(
+        ([k, v]) =>
+          ({
+            url: sanitizeRelayUrl(k),
+            settings: {
+              read: v.read,
+              write: v.write,
+            },
+          }) as FullRelaySettings,
+      );
+    }
+  } else if (ev.kind === EventKind.Relays) {
+    return parseRelayTags(ev.tags);
+  }
+}
+
 export async function updateRelayLists(authors: Array<string>, system: SystemInterface) {
   await system.RelayCache.buffer(authors);
   const expire = unixNowMs() - RelayListCacheExpire;
@@ -228,15 +253,21 @@ export async function updateRelayLists(authors: Array<string>, system: SystemInt
   if (expired.length > 0) {
     logger("Updating relays for authors: %O", expired);
     const rb = new RequestBuilder("system-update-relays-for-outbox");
-    rb.withFilter().authors(expired).kinds([EventKind.Relays]);
+    rb.withFilter().authors(expired).kinds([EventKind.Relays, EventKind.ContactList]);
     const relayLists = await system.Fetch(rb);
     await system.RelayCache.bulkSet(
-      relayLists.map(a => ({
-        relays: parseRelayTags(a.tags),
-        pubkey: a.pubkey,
-        created: a.created_at,
-        loaded: unixNowMs(),
-      })),
+      removeUndefined(
+        relayLists.map(a => {
+          const relays = parseRelaysFromKind(a);
+          if (!relays) return;
+          return {
+            relays: relays,
+            pubkey: a.pubkey,
+            created: a.created_at,
+            loaded: unixNowMs(),
+          };
+        }),
+      ),
     );
   }
 }
@@ -247,8 +278,10 @@ export class RelayMetadataLoader extends BackgroundLoader<UsersRelays> {
   }
 
   override onEvent(e: Readonly<TaggedNostrEvent>): UsersRelays | undefined {
+    const relays = parseRelaysFromKind(e);
+    if (!relays) return;
     return {
-      relays: parseRelayTags(e.tags),
+      relays: relays,
       pubkey: e.pubkey,
       created: e.created_at,
       loaded: unixNowMs(),
@@ -261,8 +294,12 @@ export class RelayMetadataLoader extends BackgroundLoader<UsersRelays> {
 
   protected override buildSub(missing: string[]): RequestBuilder {
     const rb = new RequestBuilder("relay-loader");
-    rb.withOptions({ skipDiff: true });
-    rb.withFilter().authors(missing).kinds([EventKind.Relays]);
+    rb.withOptions({
+      skipDiff: true,
+      timeout: 10_000,
+      outboxPickN: 4,
+    });
+    rb.withFilter().authors(missing).kinds([EventKind.Relays, EventKind.ContactList]);
     return rb;
   }
 

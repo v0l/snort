@@ -157,14 +157,20 @@ export class Query extends EventEmitter<QueryEvents> implements QueryBase {
    */
   #feed: NoteStore;
 
+  /**
+   * Maximum waiting time for this query
+   */
+  #timeout: number;
+
   #log = debug("Query");
 
-  constructor(id: string, instance: string, feed: NoteStore, leaveOpen?: boolean) {
+  constructor(id: string, instance: string, feed: NoteStore, leaveOpen?: boolean, timeout?: number) {
     super();
     this.id = id;
     this.#feed = feed;
     this.fromInstance = instance;
     this.#leaveOpen = leaveOpen ?? false;
+    this.#timeout = timeout ?? 5_000;
     this.#checkTraces();
   }
 
@@ -292,7 +298,7 @@ export class Query extends EventEmitter<QueryEvents> implements QueryBase {
     this.#stopCheckTraces();
     this.#checkTrace = setInterval(() => {
       for (const v of this.#tracing) {
-        if (v.runtime > 5_000 && !v.finished) {
+        if (v.runtime > this.#timeout && !v.finished) {
           v.forceEose();
         }
       }

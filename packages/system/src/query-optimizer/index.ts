@@ -18,6 +18,7 @@ export interface FlatReqFilter {
   since?: number;
   until?: number;
   limit?: number;
+  resultSetId: string;
 }
 
 export interface QueryOptimizer {

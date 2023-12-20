@@ -104,7 +104,7 @@ export default function useLoginFeed() {
       const contactList = getNewest(loginFeed.data.filter(a => a.kind === EventKind.ContactList));
       if (contactList) {
         const pTags = contactList.tags.filter(a => a[0] === "p").map(a => a[1]);
-        setFollows(login, pTags, contactList.created_at * 1000);
+        setFollows(login.id, pTags, contactList.created_at * 1000);
 
         FollowsFeed.backFillIfMissing(system, pTags);
       }

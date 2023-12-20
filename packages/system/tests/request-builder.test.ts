@@ -1,4 +1,4 @@
-import { RelayCache } from "../src/gossip-model";
+import { RelayCache } from "../src/outbox-model";
 import { RequestBuilder, RequestStrategy } from "../src/request-builder";
 import { describe, expect } from "@jest/globals";
 import { bytesToHex } from "@noble/curves/abstract/utils";
@@ -23,7 +23,16 @@ const DummyCache = {
       ],
     };
   },
-} as FeedCache<UsersRelays>;
+  update: () => {
+    return Promise.resolve<"new" | "updated" | "refresh" | "no_change">("new");
+  },
+  buffer: () => {
+    return Promise.resolve<Array<string>>([]);
+  },
+  bulkSet: () => {
+    return Promise.resolve();
+  },
+} as unknown as FeedCache<UsersRelays>;
 
 const System = new NostrSystem({
   relayCache: DummyCache,
@@ -112,7 +121,7 @@ describe("RequestBuilder", () => {
     rb.withFilter().authors(["a", "b"]).kinds([0]);
 
     const a = rb.build(System);
-    expect(a).toEqual([
+    expect(a).toMatchObject([
       {
         strategy: RequestStrategy.AuthorsRelays,
         relay: "wss://a.com/",
@@ -143,7 +152,7 @@ describe("RequestBuilder", () => {
     rb.withFilter().authors(["a"]).limit(10).kinds([4]);
 
     const a = rb.build(System);
-    expect(a).toEqual([
+    expect(a).toMatchObject([
       {
         strategy: RequestStrategy.AuthorsRelays,
         relay: "wss://a.com/",

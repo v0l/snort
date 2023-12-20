@@ -300,7 +300,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
       const store = new type();
 
       const filters = req.build(this);
-      const q = new Query(req.id, req.instance, store, req.options?.leaveOpen);
+      const q = new Query(req.id, req.instance, store, req.options?.leaveOpen, req.options?.timeout);
       q.on("trace", r => this.#relayMetrics.onTraceReport(r));
 
       if (filters.some(a => a.filters.some(b => b.ids))) {

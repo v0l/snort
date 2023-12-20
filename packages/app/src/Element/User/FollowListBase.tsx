@@ -32,13 +32,13 @@ export default function FollowListBase({
   profileActions,
 }: FollowListBaseProps) {
   const { publisher, system } = useEventPublisher();
-  const login = useLogin();
+  const { id, follows } = useLogin(s => ({ id: s.id, follows: s.follows }));
 
   async function followAll() {
     if (publisher) {
-      const newFollows = dedupe([...pubkeys, ...login.follows.item]);
+      const newFollows = dedupe([...pubkeys, ...follows.item]);
       const ev = await publisher.contactList(newFollows.map(a => ["p", a]));
-      setFollows(login, newFollows, ev.created_at);
+      setFollows(id, newFollows, ev.created_at);
       await system.BroadcastEvent(ev);
       await FollowsFeed.backFill(system, pubkeys);
     }

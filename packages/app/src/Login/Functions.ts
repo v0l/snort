@@ -177,13 +177,15 @@ export function setBlocked(state: LoginSession, blocked: Array<string>, ts: numb
   LoginStore.updateSession(state);
 }
 
-export function setFollows(state: LoginSession, follows: Array<string>, ts: number) {
-  if (state.follows.timestamp >= ts) {
-    return;
+export function setFollows(id: string, follows: Array<string>, ts: number) {
+  const session = LoginStore.get(id);
+  if (session) {
+    if (ts > session.follows.timestamp) {
+      session.follows.item = follows;
+      session.follows.timestamp = ts;
+      LoginStore.updateSession(session);
+    }
   }
-  state.follows.item = follows;
-  state.follows.timestamp = ts;
-  LoginStore.updateSession(state);
 }
 
 export function setPinned(state: LoginSession, pinned: Array<string>, ts: number) {

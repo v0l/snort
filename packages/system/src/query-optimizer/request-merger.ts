@@ -2,18 +2,9 @@ import { distance } from "@snort/shared";
 import { ReqFilter } from "..";
 import { FlatReqFilter } from ".";
 
-/**
- * Keys which can change the entire meaning of the filter outside the array types
- */
-const DiscriminatorKeys = ["since", "until", "limit", "search"];
-
 export function canMergeFilters(a: FlatReqFilter | ReqFilter, b: FlatReqFilter | ReqFilter): boolean {
-  const aObj = a as Record<string, string | number | undefined>;
-  const bObj = b as Record<string, string | number | undefined>;
-  for (const key of DiscriminatorKeys) {
-    if (aObj[key] !== bObj[key]) {
-      return false;
-    }
+  if (a.resultSetId !== b.resultSetId) {
+    return false;
   }
   return distance(a, b) <= 1;
 }
@@ -101,12 +92,11 @@ export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
 
   // to compute filters which can be merged we need to calucate the distance change between each filter
   // then we can merge filters which are exactly 1 change diff from each other
-
   function mergeFiltersInSet(filters: Array<FlatReqFilter>) {
     return filters.reduce((acc, a) => {
       Object.entries(a).forEach(([k, v]) => {
-        if (k === "keys" || v === undefined) return;
-        if (DiscriminatorKeys.includes(k)) {
+        if (v === undefined) return;
+        if (k === "since" || k === "until" || k === "limit" || k === "search" || k === "resultSetId") {
           acc[k] = v;
         } else {
           acc[k] ??= [];
@@ -142,5 +132,6 @@ export function flatMerge(all: Array<FlatReqFilter>): Array<ReqFilter> {
     }
     ret = n;
   }
+  ret.forEach(a => delete a["resultSetId"]);
   return ret;
 }

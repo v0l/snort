@@ -43,6 +43,16 @@ export interface RequestBuilderOptions {
    * Do not apply diff logic and always use full filters for query
    */
   skipDiff?: boolean;
+
+  /**
+   * Pick N relays per pubkey when using outbox strategy
+   */
+  outboxPickN?: number;
+
+  /**
+   * Max wait time for this request
+   */
+  timeout?: number;
 }
 
 /**
@@ -101,7 +111,7 @@ export class RequestBuilder {
   }
 
   build(system: SystemInterface): Array<BuiltRawReqFilter> {
-    const expanded = this.#builders.flatMap(a => a.build(system.RelayCache, this.id));
+    const expanded = this.#builders.flatMap(a => a.build(system.RelayCache, this.#options));
     return this.#groupByRelay(system, expanded);
   }
 
@@ -130,11 +140,9 @@ export class RequestBuilder {
 
   /**
    * Merge a set of expanded filters into the smallest number of subscriptions by merging similar requests
-   * @param expanded
-   * @returns
    */
-  #groupByRelay(system: SystemInterface, expanded: Array<BuiltRawReqFilter>) {
-    const relayMerged = expanded.reduce((acc, v) => {
+  #groupByRelay(system: SystemInterface, filters: Array<BuiltRawReqFilter>) {
+    const relayMerged = filters.reduce((acc, v) => {
       const existing = acc.get(v.relay);
       if (existing) {
         existing.push(v);
@@ -267,7 +275,7 @@ export class RequestFilterBuilder {
   /**
    * Build/expand this filter into a set of relay specific queries
    */
-  build(relays: RelayCache, id: string): Array<BuiltRawReqFilter> {
+  build(relays: RelayCache, options?: RequestBuilderOptions): Array<BuiltRawReqFilter> {
     // use the explicit relay list first
     if (this.#relays.size > 0) {
       return [...this.#relays].map(r => {
@@ -281,7 +289,7 @@ export class RequestFilterBuilder {
 
     // If any authors are set use the gossip model to fetch data for each author
     if (this.#filter.authors) {
-      const split = splitByWriteRelays(relays, this.#filter);
+      const split = splitByWriteRelays(relays, this.#filter, options?.outboxPickN);
       return split.map(a => {
         return {
           filters: [a.filter],
