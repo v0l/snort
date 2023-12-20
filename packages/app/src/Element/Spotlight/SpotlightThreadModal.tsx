@@ -1,13 +1,14 @@
 import Modal from "@/Element/Modal";
-import { ThreadContext, ThreadContextWrapper } from "@/Hooks/useThreadContext";
+import { ThreadContextWrapper } from "@/Hooks/useThreadContext";
 import { Thread } from "@/Element/Event/Thread";
 import { useContext } from "react";
 import { SpotlightMedia } from "@/Element/Spotlight/SpotlightMedia";
-import { NostrLink } from "@snort/system";
+import {NostrLink, TaggedNostrEvent} from "@snort/system";
 import getEventMedia from "@/Element/Event/getEventMedia";
 
 interface SpotlightThreadModalProps {
-  thread: NostrLink;
+  thread?: NostrLink;
+  event?: TaggedNostrEvent;
   className?: string;
   onClose?: () => void;
   onBack?: () => void;
@@ -24,12 +25,18 @@ export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
     }
   };
 
+  if (!props.thread && !props.event) {
+    throw new Error("SpotlightThreadModal requires either thread or event");
+  }
+
+  const link = props.event ? NostrLink.fromEvent(props.event) : props.thread;
+
   return (
     <Modal className={props.className} onClose={onClose} bodyClassName={"flex flex-1"}>
-      <ThreadContextWrapper link={props.thread}>
+      <ThreadContextWrapper link={link!}>
         <div className="flex flex-row h-screen w-screen">
           <div className="flex w-full md:w-2/3 items-center justify-center overflow-hidden" onClick={onClickBg}>
-            <SpotlightFromThread onClose={onClose} onNext={props.onNext} onPrev={props.onPrev} />
+            <SpotlightFromEvent event={props.event || thread.root} onClose={onClose} onNext={props.onNext} onPrev={props.onPrev} />
           </div>
           <div className="hidden md:flex w-1/3 min-w-[400px] flex-shrink-0 overflow-y-auto bg-bg-color">
             <Thread onBack={onBack} disableSpotlight={true} />
@@ -40,16 +47,15 @@ export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
   );
 }
 
-interface SpotlightFromThreadProps {
+interface SpotlightFromEventProps {
+  event: TaggedNostrEvent;
   onClose: () => void;
   onNext?: () => void;
   onPrev?: () => void;
 }
 
-function SpotlightFromThread({ onClose, onNext, onPrev }: SpotlightFromThreadProps) {
-  const thread = useContext(ThreadContext);
-
-  const media = (thread.root && getEventMedia(thread.root)) || [];
+function SpotlightFromEvent({ event, onClose, onNext, onPrev }: SpotlightFromEventProps) {
+  const media = getEventMedia(event);
   return (
     <SpotlightMedia
       className="w-full"
