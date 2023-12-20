@@ -56,7 +56,7 @@ function extractLinks(fragments: Fragment[]) {
 
             if (extension && extension.length > 1) {
               const mediaType = (() => {
-                switch (extension[1]) {
+                switch (extension[1].toLowerCase()) {
                   case "gif":
                   case "jpg":
                   case "jpeg":
