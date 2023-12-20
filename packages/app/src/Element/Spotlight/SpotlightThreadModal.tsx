@@ -49,9 +49,7 @@ interface SpotlightFromThreadProps {
 function SpotlightFromThread({ onClose, onNext, onPrev }: SpotlightFromThreadProps) {
   const thread = useContext(ThreadContext);
 
-  if (!thread?.root) return null;
-  const media = getEventMedia(thread.root);
-  if (media.length === 0) return;
+  const media = (thread.root && getEventMedia(thread.root)) || [];
   return (
     <SpotlightMedia
       className="w-full"
