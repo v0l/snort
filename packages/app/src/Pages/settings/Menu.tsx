@@ -8,14 +8,14 @@ import classNames from "classnames";
 import { getCurrentSubscription } from "@/Subscription";
 
 export type SettingsMenuItems = Array<{
-  title: ReactNode,
+  title: ReactNode;
   items: Array<{
     icon: string;
     iconBg: string;
-    message: ReactNode,
+    message: ReactNode;
     path?: string;
     action?: () => void;
-  }>
+  }>;
 }>;
 
 const SettingsIndex = () => {
@@ -64,20 +64,20 @@ const SettingsIndex = () => {
         },
         ...(sub
           ? [
-            {
-              icon: "code-circle",
-              iconBg: "bg-indigo-500",
-              message: <FormattedMessage id="FvanT6" defaultMessage="Accounts" />,
-              path: "accounts",
-            },
-          ]
+              {
+                icon: "code-circle",
+                iconBg: "bg-indigo-500",
+                message: <FormattedMessage id="FvanT6" defaultMessage="Accounts" />,
+                path: "accounts",
+              },
+            ]
           : []),
         {
           icon: "tool",
           iconBg: "bg-slate-800",
           message: <FormattedMessage defaultMessage="Tools" id="nUT0Lv" />,
-          path: "tools"
-        }
+          path: "tools",
+        },
       ],
     },
     {
@@ -126,23 +126,23 @@ const SettingsIndex = () => {
         },
         ...(CONFIG.features.subscriptions
           ? [
-            {
-              icon: "diamond",
-              iconBg: "bg-violet-500",
-              message: <FormattedMessage id="R/6nsx" defaultMessage="Subscription" />,
-              path: "/subscribe/manage",
-            },
-          ]
+              {
+                icon: "diamond",
+                iconBg: "bg-violet-500",
+                message: <FormattedMessage id="R/6nsx" defaultMessage="Subscription" />,
+                path: "/subscribe/manage",
+              },
+            ]
           : []),
         ...(CONFIG.features.zapPool
           ? [
-            {
-              icon: "piggy-bank",
-              iconBg: "bg-rose-500",
-              message: <FormattedMessage id="i/dBAR" defaultMessage="Zap Pool" />,
-              path: "/zap-pool",
-            },
-          ]
+              {
+                icon: "piggy-bank",
+                iconBg: "bg-rose-500",
+                message: <FormattedMessage id="i/dBAR" defaultMessage="Zap Pool" />,
+                path: "/zap-pool",
+              },
+            ]
           : []),
       ],
     },
@@ -159,7 +159,7 @@ const SettingsIndex = () => {
     },
   ] as SettingsMenuItems;
 
-  return <SettingsMenuComponent menu={settingsGroups} />
+  return <SettingsMenuComponent menu={settingsGroups} />;
 };
 
 export function SettingsMenuComponent({ menu }: { menu: SettingsMenuItems }) {
