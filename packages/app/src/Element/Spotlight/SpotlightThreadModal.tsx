@@ -1,7 +1,6 @@
 import Modal from "@/Element/Modal";
 import { ThreadContextWrapper } from "@/Hooks/useThreadContext";
 import { Thread } from "@/Element/Event/Thread";
-import { useContext } from "react";
 import { SpotlightMedia } from "@/Element/Spotlight/SpotlightMedia";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import getEventMedia from "@/Element/Event/getEventMedia";

@@ -2,7 +2,7 @@ import { useInView } from "react-intersection-observer";
 import ProfileImage from "@/Element/User/ProfileImage";
 import { FormattedMessage } from "react-intl";
 import Icon from "@/Icons/Icon";
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { TaggedNostrEvent } from "@snort/system";
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { TimelineFragment } from "@/Element/Feed/TimelineFragment";
 import { DisplayAs } from "@/Element/Feed/DisplayAsSelector";
