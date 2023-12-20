@@ -57,18 +57,10 @@ function Grid({ frags }: { frags: Array<TimelineFragment> }) {
         />
       )}
       {nextModalEvent && ( // preload next
-        <SpotlightThreadModal
-          className="hidden"
-          key={`${nextModalEvent.id}-next`}
-          event={nextModalEvent}
-        />
+        <SpotlightThreadModal className="hidden" key={`${nextModalEvent.id}-next`} event={nextModalEvent} />
       )}
       {prevModalEvent && ( // preload previous
-        <SpotlightThreadModal
-          className="hidden"
-          key={`${prevModalEvent.id}-prev`}
-          event={prevModalEvent}
-        />
+        <SpotlightThreadModal className="hidden" key={`${prevModalEvent.id}-prev`} event={prevModalEvent} />
       )}
     </>
   );

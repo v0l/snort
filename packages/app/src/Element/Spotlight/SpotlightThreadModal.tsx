@@ -3,7 +3,7 @@ import { ThreadContextWrapper } from "@/Hooks/useThreadContext";
 import { Thread } from "@/Element/Event/Thread";
 import { useContext } from "react";
 import { SpotlightMedia } from "@/Element/Spotlight/SpotlightMedia";
-import {NostrLink, TaggedNostrEvent} from "@snort/system";
+import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import getEventMedia from "@/Element/Event/getEventMedia";
 
 interface SpotlightThreadModalProps {
@@ -36,7 +36,12 @@ export function SpotlightThreadModal(props: SpotlightThreadModalProps) {
       <ThreadContextWrapper link={link!}>
         <div className="flex flex-row h-screen w-screen">
           <div className="flex w-full md:w-2/3 items-center justify-center overflow-hidden" onClick={onClickBg}>
-            <SpotlightFromEvent event={props.event || thread.root} onClose={onClose} onNext={props.onNext} onPrev={props.onPrev} />
+            <SpotlightFromEvent
+              event={props.event || thread.root}
+              onClose={onClose}
+              onNext={props.onNext}
+              onPrev={props.onPrev}
+            />
           </div>
           <div className="hidden md:flex w-1/3 min-w-[400px] flex-shrink-0 overflow-y-auto bg-bg-color">
             <Thread onBack={onBack} disableSpotlight={true} />
