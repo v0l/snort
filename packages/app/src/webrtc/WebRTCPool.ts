@@ -1,6 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import { WebRTCConnection } from "@/webrtc/WebRTCConnection";
 import EventEmitter from "eventemitter3";
+import { TaggedNostrEvent } from "@snort/system";
 
 const MAX_CONNECTIONS = 5;
 
@@ -22,7 +23,7 @@ class WebRTCPool extends EventEmitter {
     this.signalingServer.emit("hello", this.peerId);
   }
 
-  public send(data: any, recipients?: string[]): void {
+  public send(data: TaggedNostrEvent | string, recipients?: string[]): void {
     this.peers.forEach(conn => {
       if (!recipients || recipients.includes(conn.peerId)) {
         try {
@@ -39,7 +40,7 @@ class WebRTCPool extends EventEmitter {
       throw new Error("Maximum connections reached");
     }
     const connection = new WebRTCConnection(this.signalingServer, this.configuration, peerId);
-    connection.on("event", (event: any) => this.emit("event", event));
+    connection.on("event", (event: TaggedNostrEvent | string) => this.emit("event", event));
     this.peers.set(peerId, connection);
     return connection;
   }

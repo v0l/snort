@@ -104,7 +104,7 @@ export const GetPowWorker = () => (hasWasm ? new WasmPowWorker() : unwrap(Defaul
 /**
  * Singleton nostr system
  */
-const System = new NostrSystem({
+export const System = new NostrSystem({
   relayCache: UserRelays,
   profileCache: UserCache,
   relayMetrics: RelayMetrics,

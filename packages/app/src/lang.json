@@ -201,6 +201,9 @@
   "4Z3t5i": {
     "defaultMessage": "Use imgproxy to compress images"
   },
+  "4emo2p": {
+    "defaultMessage": "Missing Relays"
+  },
   "4rYCjn": {
     "defaultMessage": "Note to Self"
   },
@@ -233,6 +236,9 @@
   },
   "62nsdy": {
     "defaultMessage": "Retry"
+  },
+  "6559gb": {
+    "defaultMessage": "New follow list length {length}"
   },
   "65BmHb": {
     "defaultMessage": "Failed to proxy image from {host}, click here to load directly"
@@ -391,6 +397,12 @@
   },
   "CHTbO3": {
     "defaultMessage": "Failed to load invoice"
+  },
+  "CM+Cfj": {
+    "defaultMessage": "Follow List"
+  },
+  "CM0k0d": {
+    "defaultMessage": "Prune follow list"
   },
   "CVWeJ6": {
     "defaultMessage": "Trending People"
@@ -569,6 +581,9 @@
   },
   "HqRNN8": {
     "defaultMessage": "Support"
+  },
+  "I1AoOu": {
+    "defaultMessage": "Last post {time}"
   },
   "IEwZvs": {
     "defaultMessage": "Are you sure you want to unpin this note?"
@@ -978,6 +993,9 @@
   "XICsE8": {
     "defaultMessage": "File hosts"
   },
+  "XQiFEl": {
+    "defaultMessage": "Follows Relay Health"
+  },
   "XXm7jJ": {
     "defaultMessage": "Trending Hashtags"
   },
@@ -1047,6 +1065,9 @@
   },
   "bG00/W": {
     "defaultMessage": "Service Worker Running"
+  },
+  "bJ+wrA": {
+    "defaultMessage": "Compute prune list"
   },
   "bLZL5a": {
     "defaultMessage": "Get Address"
@@ -1227,6 +1248,9 @@
   "h8XMJL": {
     "defaultMessage": "Badges"
   },
+  "hF6IN2": {
+    "defaultMessage": "Prune Follow List"
+  },
   "hMzcSq": {
     "defaultMessage": "Messages"
   },
@@ -1265,6 +1289,9 @@
   },
   "iGT1eE": {
     "defaultMessage": "Prevent fake accounts from imitating you"
+  },
+  "iICVoL": {
+    "defaultMessage": "{x} follows ({y} duplicates)"
   },
   "iNWbVV": {
     "defaultMessage": "Handle"
@@ -1399,6 +1426,12 @@
   "nGGDsi": {
     "defaultMessage": "Notifications Allowed"
   },
+  "nIchMQ": {
+    "defaultMessage": "Searching for account activity ({progress})"
+  },
+  "nUT0Lv": {
+    "defaultMessage": "Tools"
+  },
   "nihgfo": {
     "defaultMessage": "Listen to this article"
   },
@@ -1422,6 +1455,9 @@
   },
   "p85Uwy": {
     "defaultMessage": "Active Subscriptions"
+  },
+  "p9Ps2l": {
+    "defaultMessage": "{x}/{y} have relays ({percent})"
   },
   "pI+77w": {
     "defaultMessage": "Downloadable backups from Snort relay"
@@ -1566,6 +1602,9 @@
   },
   "vN5UH8": {
     "defaultMessage": "Profile Image"
+  },
+  "vU/Q5i": {
+    "defaultMessage": "This tool will search for the last event published by all of your follows and remove those who have not posted in 6 months"
   },
   "vZ4quW": {
     "defaultMessage": "NIP-05 is a DNS based verification spec which helps to validate you as a real user."

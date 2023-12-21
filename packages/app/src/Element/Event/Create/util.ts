@@ -8,7 +8,6 @@ export async function sendEventToRelays(
   customRelays?: Array<string>,
   setResults?: (x: Array<OkResponse>) => void,
 ) {
-  console.log("sendEventToRelays", ev, customRelays);
   getWebRtcPool()?.send(ev);
   if (customRelays) {
     return removeUndefined(

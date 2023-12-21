@@ -88,6 +88,8 @@ export interface SystemInterface {
    */
   DisconnectRelay(address: string): void;
 
+  HandleEvent(ev: TaggedNostrEvent): void;
+
   /**
    * Send an event to all permanent connections
    * @param ev Event to broadcast

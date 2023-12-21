@@ -195,7 +195,7 @@ export class Query extends EventEmitter<QueryEvents> implements QueryBase {
 
   handleEvent(sub: string, e: TaggedNostrEvent) {
     for (const t of this.#tracing) {
-      if (t.id === sub) {
+      if (t.id === sub || sub === "*") {
         if (t.filters.some(v => eventMatchesFilter(e, v))) {
           this.feed.add(e);
         } else {

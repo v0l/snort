@@ -387,10 +387,15 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     return [];
   }
 
+  HandleEvent(ev: TaggedNostrEvent) {
+    this.#onEvent("*", ev);
+  }
+
   /**
    * Send events to writable relays
    */
   async BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void) {
+    this.HandleEvent({ ...ev, relays: [] });
     const socks = [...this.#sockets.values()].filter(a => !a.Ephemeral && a.Settings.write);
     const replyRelays = await pickRelaysForReply(ev, this);
     const oks = await Promise.all([

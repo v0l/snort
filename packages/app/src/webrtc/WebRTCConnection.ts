@@ -17,7 +17,7 @@ export class WebRTCConnection extends EventEmitter {
     this.setupDataChannel();
   }
 
-  private log(...args: any[]): void {
+  private log<T extends unknown[]>(...args: T): void {
     console.log(this.peerId, ...args);
   }
 
@@ -69,7 +69,7 @@ export class WebRTCConnection extends EventEmitter {
     }
   }
 
-  public send(data: any): void {
+  public send(data: string): void {
     if (this.dataChannel.readyState === "open") {
       this.log(`<- "${data}"`);
       this.dataChannel.send(data);
