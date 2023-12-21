@@ -91,8 +91,8 @@ export function TimelineRenderer(props: TimelineRendererProps) {
   }, [inView, props.latest]);
 
   const renderNotes = () => {
-    return props.frags.map(frag => (
-      <ErrorBoundary>
+    return props.frags.map((frag, index) => (
+      <ErrorBoundary key={frag.events[0]?.id + index}>
         <TimelineFragment
           frag={frag}
           related={props.related}

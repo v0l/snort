@@ -49,8 +49,8 @@ const Footer = () => {
   return (
     <footer className="md:hidden fixed bottom-0 z-10 w-full bg-base-200 pb-safe-area bg-bg-color">
       <div className="flex">
-        {MENU_ITEMS.map(item => (
-          <FooterNavItem item={item} readonly={readonly} />
+        {MENU_ITEMS.map((item, index) => (
+          <FooterNavItem key={index} item={item} readonly={readonly} />
         ))}
         {publicKey && (
           <ProfileLink

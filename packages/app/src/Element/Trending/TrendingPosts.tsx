@@ -62,7 +62,7 @@ export default function TrendingNotes({ count = Infinity, small = false }) {
     return (
       <div className="grid grid-cols-3 gap-px md:gap-1">
         {filteredAndLimitedPosts().map(e => (
-          <ImageGridItem event={e as TaggedNostrEvent} onClick={() => setModalThread(NostrLink.fromEvent(e))} />
+          <ImageGridItem key={e.id} event={e as TaggedNostrEvent} onClick={() => setModalThread(NostrLink.fromEvent(e))} />
         ))}
       </div>
     );
@@ -71,9 +71,9 @@ export default function TrendingNotes({ count = Infinity, small = false }) {
   const renderList = () => {
     return filteredAndLimitedPosts().map(e =>
       small ? (
-        <ShortNote event={e as TaggedNostrEvent} />
+        <ShortNote key={e.id} event={e as TaggedNostrEvent} />
       ) : (
-        <Note data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} options={options} />
+        <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} options={options} />
       ),
     );
   };

@@ -120,12 +120,12 @@ export default function Text({
 
     return (
       <>
-        {fragments.map(f => {
+        {fragments.map((f, index) => {
           if (typeof f === "string") {
             return f;
           }
 
-          return <HighlightedText content={f.content} />;
+          return <HighlightedText key={index} content={f.content} />;
         })}
       </>
     );

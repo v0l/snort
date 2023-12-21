@@ -192,7 +192,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
   }
 
   #onEvent(sub: string, ev: TaggedNostrEvent) {
-    this.#relayMetrics.onEvent(ev.relays[0]);
+    ev.relays?.length && this.#relayMetrics.onEvent(ev.relays[0]);
 
     if (!EventExt.isValid(ev)) {
       this.#log("Rejecting invalid event %O", ev);
