@@ -62,7 +62,7 @@ export class WebRTCConnection extends EventEmitter {
     } else {
       try {
         const data = JSON.parse(event.data);
-        this.emit("event", data);
+        this.emit("event", { ...data, relays: [`webrtc:${this.peerId}`] });
       } catch (e) {
         // Ignore
       }

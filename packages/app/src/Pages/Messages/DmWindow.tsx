@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef } from "react";
 import ProfileImage from "@/Element/User/ProfileImage";
-import DM from "@/Element/Chat/DM";
+import DM from "@/Pages/Messages/DM";
 import useLogin from "@/Hooks/useLogin";
-import WriteMessage from "@/Element/Chat/WriteMessage";
+import WriteMessage from "@/Pages/Messages/WriteMessage";
 import { Chat, createEmptyChatObject, useChatSystem } from "@/chat";
 import { FormattedMessage } from "react-intl";
 import { ChatParticipantProfile } from "./ChatParticipant";

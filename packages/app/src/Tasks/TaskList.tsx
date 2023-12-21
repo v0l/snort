@@ -1,5 +1,5 @@
 import "./TaskList.css";
-import {Fragment, useSyncExternalStore} from "react";
+import { Fragment, useSyncExternalStore } from "react";
 import { useUserProfile } from "@snort/system-react";
 
 import useLogin from "@/Hooks/useLogin";
@@ -54,11 +54,7 @@ export const TaskList = () => {
         .filter(a => (user ? a.check(user, session) : false))
         .map(a => {
           if (a.noBaseStyle) {
-            return (
-              <Fragment key={a.id}>
-                {a.render()}
-              </Fragment>
-            );
+            return <Fragment key={a.id}>{a.render()}</Fragment>;
           } else {
             return (
               <div key={a.id} className="card">

@@ -9,9 +9,9 @@ import NoteTime from "@/Element/Event/NoteTime";
 import Text from "@/Element/Text";
 import useLogin from "@/Hooks/useLogin";
 import { Chat, ChatMessage, ChatType, setLastReadIn } from "@/chat";
-import ProfileImage from "../User/ProfileImage";
+import ProfileImage from "../../Element/User/ProfileImage";
 
-import messages from "../messages";
+import messages from "../../Element/messages";
 
 export interface DMProps {
   chat: Chat;

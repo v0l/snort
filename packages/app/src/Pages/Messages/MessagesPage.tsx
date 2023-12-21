@@ -9,9 +9,9 @@ import NoteToSelf from "@/Element/User/NoteToSelf";
 import useLogin from "@/Hooks/useLogin";
 import usePageWidth from "@/Hooks/usePageWidth";
 import NoteTime from "@/Element/Event/NoteTime";
-import DmWindow from "@/Element/Chat/DmWindow";
+import DmWindow from "@/Pages/Messages/DmWindow";
 import { Chat, ChatType, useChatSystem } from "@/chat";
-import { ChatParticipantProfile } from "@/Element/Chat/ChatParticipant";
+import { ChatParticipantProfile } from "@/Pages/Messages/ChatParticipant";
 import classNames from "classnames";
 import NewChatWindow from "@/Pages/Messages/NewChatWindow";
 

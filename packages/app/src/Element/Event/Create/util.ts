@@ -10,7 +10,7 @@ export async function sendEventToRelays(
 ) {
   getWebRtcPool()?.send(ev);
   if (customRelays) {
-    system.HandleEvent({...ev, relays: []});
+    system.HandleEvent({ ...ev, relays: [] });
     return removeUndefined(
       await Promise.all(
         customRelays.map(async r => {

@@ -25,7 +25,10 @@ export function TrendingHashTagsLine(props: { onClick: (tag: string) => void }) 
       </small>
       <div className="flex g4 flex-wrap">
         {hashtags.slice(0, 5).map(a => (
-          <span key={a.hashtag} className="px-2 py-1 bg-dark rounded-full pointer nowrap" onClick={() => props.onClick(a.hashtag)}>
+          <span
+            key={a.hashtag}
+            className="px-2 py-1 bg-dark rounded-full pointer nowrap"
+            onClick={() => props.onClick(a.hashtag)}>
             #{a.hashtag}
           </span>
         ))}

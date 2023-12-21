@@ -62,7 +62,11 @@ export default function TrendingNotes({ count = Infinity, small = false }) {
     return (
       <div className="grid grid-cols-3 gap-px md:gap-1">
         {filteredAndLimitedPosts().map(e => (
-          <ImageGridItem key={e.id} event={e as TaggedNostrEvent} onClick={() => setModalThread(NostrLink.fromEvent(e))} />
+          <ImageGridItem
+            key={e.id}
+            event={e as TaggedNostrEvent}
+            onClick={() => setModalThread(NostrLink.fromEvent(e))}
+          />
         ))}
       </div>
     );
