@@ -193,7 +193,6 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
 
   #onEvent(sub: string, ev: TaggedNostrEvent) {
     this.#relayMetrics.onEvent(ev.relays[0]);
-    this.emit("event", ev);
 
     if (!EventExt.isValid(ev)) {
       this.#log("Rejecting invalid event %O", ev);
@@ -206,6 +205,8 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
         return;
       }
     }
+
+    this.emit("event", ev);
 
     for (const [, v] of this.Queries) {
       v.handleEvent(sub, ev);

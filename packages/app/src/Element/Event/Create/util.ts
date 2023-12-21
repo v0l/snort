@@ -1,5 +1,6 @@
 import { NostrEvent, OkResponse, SystemInterface } from "@snort/system";
 import { removeUndefined } from "@snort/shared";
+import {getWebRtcPool} from "@/webrtc";
 
 export async function sendEventToRelays(
   system: SystemInterface,
@@ -8,6 +9,7 @@ export async function sendEventToRelays(
   setResults?: (x: Array<OkResponse>) => void,
 ) {
   console.log("sendEventToRelays", ev, customRelays);
+  getWebRtcPool()?.send(ev);
   if (customRelays) {
     return removeUndefined(
       await Promise.all(

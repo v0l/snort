@@ -1,6 +1,7 @@
 import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "./fonts/inter.css";
+import "./webrtc";
 
 import {
   compress,
