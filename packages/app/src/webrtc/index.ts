@@ -1,4 +1,4 @@
-import {LoginStore} from "@/Login";
+import { LoginStore } from "@/Login";
 import WebRTCPool from "@/webrtc/WebRTCPool";
 
 let publicKey: string | undefined;
@@ -9,13 +9,17 @@ LoginStore.hook(() => {
   const login = LoginStore.takeSnapshot();
   if (login.publicKey && !login.readonly && login.publicKey !== publicKey) {
     publicKey = login.publicKey;
-    if (location.hostname === 'localhost') {
+    if (location.hostname === "localhost") {
       pool?.close();
       interval && clearInterval(interval);
-      pool = new WebRTCPool('http://localhost:3000', {
-        iceServers: [{ urls: 'stun:localhost:3478' }],
-      }, login.publicKey);
-      interval = setInterval(() => pool?.send('ping'), 10000);
+      pool = new WebRTCPool(
+        "http://localhost:3000",
+        {
+          iceServers: [{ urls: "stun:localhost:3478" }],
+        },
+        login.publicKey,
+      );
+      interval = setInterval(() => pool?.send("ping"), 10000);
     }
   }
 });

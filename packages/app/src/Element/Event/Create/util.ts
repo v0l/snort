@@ -1,6 +1,6 @@
 import { NostrEvent, OkResponse, SystemInterface } from "@snort/system";
 import { removeUndefined } from "@snort/shared";
-import {getWebRtcPool} from "@/webrtc";
+import { getWebRtcPool } from "@/webrtc";
 
 export async function sendEventToRelays(
   system: SystemInterface,
