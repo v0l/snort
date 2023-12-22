@@ -132,6 +132,11 @@ const DonatePage = () => {
           }}
         />
       </p>
+      <p>
+        <a href="https://t.me/irismessenger" target="_blank" rel="noreferrer" className="underline">
+          Telegram
+        </a>
+      </p>
       <div className="flex flex-col g12">
         <div className="b br p">
           <div className="flex items-center justify-between">
