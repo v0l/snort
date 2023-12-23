@@ -33,6 +33,7 @@ export default function FollowListBase({
 }: FollowListBaseProps) {
   const { publisher, system } = useEventPublisher();
   const { id, follows } = useLogin(s => ({ id: s.id, follows: s.follows }));
+  const login = useLogin();
 
   async function followAll() {
     if (publisher) {
