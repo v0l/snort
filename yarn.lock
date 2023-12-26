@@ -2996,6 +2996,7 @@ __metadata:
     vite-plugin-version-mark: ^0.0.10
     vitest: ^0.34.6
     workbox-core: ^6.4.2
+    workbox-expiration: ^7.0.0
     workbox-precaching: ^7.0.0
     workbox-routing: ^6.4.2
     workbox-strategies: ^6.4.2
@@ -11583,7 +11584,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workbox-expiration@npm:7.0.0":
+"workbox-expiration@npm:7.0.0, workbox-expiration@npm:^7.0.0":
   version: 7.0.0
   resolution: "workbox-expiration@npm:7.0.0"
   dependencies:

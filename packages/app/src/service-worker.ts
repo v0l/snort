@@ -7,10 +7,34 @@ import { NostrLink, NostrPrefix, TLVEntryType, encodeTLVEntries, tryParseNostrLi
 import { formatShort } from "@/Number";
 import { defaultAvatar, hexToBech32 } from "@/SnortUtils";
 import { clientsClaim } from "workbox-core";
+import { registerRoute } from "workbox-routing";
+import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
 import { PrecacheEntry, precacheAndRoute } from "workbox-precaching";
+import { ExpirationPlugin } from "workbox-expiration";
 
 precacheAndRoute(self.__WB_MANIFEST);
 clientsClaim();
+registerRoute(
+  ({ url }) => url.pathname.endsWith("/.well-known/nostr.json"),
+  new StaleWhileRevalidate({
+    cacheName: "nostr-json-cache",
+    plugins: [new ExpirationPlugin({ maxAgeSeconds: 4 * 60 * 60 })],
+  }),
+);
+
+// Cache images from any domain
+registerRoute(
+  // Match any image request regardless of the origin
+  ({ request }) => request.destination === "image",
+  new CacheFirst({
+    cacheName: "image-cache",
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 100,
+      }),
+    ],
+  }),
+);
 
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") {

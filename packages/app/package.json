@@ -43,6 +43,7 @@
     "use-sync-external-store": "^1.2.0",
     "uuid": "^9.0.0",
     "workbox-core": "^6.4.2",
+    "workbox-expiration": "^7.0.0",
     "workbox-precaching": "^7.0.0",
     "workbox-routing": "^6.4.2",
     "workbox-strategies": "^6.4.2"
