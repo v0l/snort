@@ -38,7 +38,7 @@ const useCachedFetch = (url, storageKey, dataProcessor = data => data) => {
     if (!cachedData || (new Date().getTime() - cachedData.timestamp) / 1000 / 60 >= 15) {
       fetchData();
     }
-  }, [url, storageKey, dataProcessor]);
+  }, [url, storageKey]);
 
   return { data, isLoading, error };
 };
