@@ -69,7 +69,7 @@ export default class NostrBandApi {
     return await this.#json<TrendingHashtagsResponse>("GET", "/v0/trending/hashtags");
   }
 
-async #json<T>(method: string, path: string, storageKey: string) {
+  async #json<T>(method: string, path: string, storageKey: string) {
     throwIfOffline();
 
     // Try to get cached data first
