@@ -69,15 +69,41 @@ export default class NostrBandApi {
     return await this.#json<TrendingHashtagsResponse>("GET", "/v0/trending/hashtags");
   }
 
-  async #json<T>(method: string, path: string) {
+async #json<T>(method: string, path: string, storageKey: string) {
     throwIfOffline();
-    const res = await fetch(`${this.#url}${path}`, {
-      method: method ?? "GET",
-    });
-    if (res.ok) {
-      return (await res.json()) as T;
-    } else {
-      throw new NostrBandError("Failed to load content from nostr.band", await res.text(), res.status);
+
+    // Try to get cached data first
+    const cachedData = localStorage.getItem(storageKey);
+    if (cachedData) {
+      const parsedData = JSON.parse(cachedData);
+      const { timestamp, data } = parsedData;
+
+      const ageInMinutes = (new Date().getTime() - timestamp) / 1000 / 60;
+      if (ageInMinutes < 15) {
+        // Use cached data if it's not older than 15 minutes
+        return data as T;
+      }
+    }
+
+    // Fetch new data if no valid cache is found
+    try {
+      const res = await fetch(`${this.#url}${path}`, { method: method ?? "GET" });
+      if (res.ok) {
+        const data = (await res.json()) as T;
+        // Cache the new data with a timestamp
+        localStorage.setItem(storageKey, JSON.stringify({ data, timestamp: new Date().getTime() }));
+        return data;
+      } else {
+        throw new NostrBandError("Failed to load content from nostr.band", await res.text(), res.status);
+      }
+    } catch (error) {
+      if (cachedData) {
+        // If an error occurs and there is cached data, return the cached data
+        return JSON.parse(cachedData).data as T;
+      } else {
+        // If no cache is available, rethrow the error
+        throw error;
+      }
     }
   }
 }
