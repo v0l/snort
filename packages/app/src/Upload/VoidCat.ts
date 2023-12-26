@@ -60,10 +60,13 @@ export default async function VoidCatUpload(
     }
     const resultUrl = rsp.file?.metadata?.url ?? `https://void.cat/d/${rsp.file?.id}${ext ? `.${ext[1]}` : ""}`;
 
+    const dim = rsp.file?.metadata?.mediaDimensions ? rsp.file.metadata.mediaDimensions.split("x") : undefined;
     const ret = {
       url: resultUrl,
       metadata: {
         hash: rsp.file?.metadata?.digest,
+        width: dim ? Number(dim[0]) : undefined,
+        height: dim ? Number(dim[1]) : undefined,
       },
     } as UploadResult;
 

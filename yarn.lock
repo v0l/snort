@@ -2951,7 +2951,7 @@ __metadata:
     "@typescript-eslint/parser": ^6.1.0
     "@uidotdev/usehooks": ^2.4.1
     "@vitejs/plugin-react": ^4.2.0
-    "@void-cat/api": ^1.0.10
+    "@void-cat/api": ^1.0.12
     "@webbtc/webln-types": ^2.1.0
     "@webscopeio/react-textarea-autocomplete": ^4.9.2
     autoprefixer: ^10.4.16
@@ -4026,12 +4026,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@void-cat/api@npm:^1.0.10":
-  version: 1.0.10
-  resolution: "@void-cat/api@npm:1.0.10"
+"@void-cat/api@npm:^1.0.12":
+  version: 1.0.12
+  resolution: "@void-cat/api@npm:1.0.12"
   dependencies:
     sjcl: ^1.0.8
-  checksum: 8ec846aefa3fad3cfee018959a95fa93195112382b7d655098f3df8059555367166ee54c13900ff9f459baef44ffb39e5f5e44dc492a2f61477cbdae798d0cbb
+  checksum: a41f129829a1d896da733bd89febe0545396d25bd6c9adc78e97277eac273f7f69e801b50ddeb914a350f081158a28cc6c82abecef25aa640c023169458c9a34
   languageName: node
   linkType: hard
 
