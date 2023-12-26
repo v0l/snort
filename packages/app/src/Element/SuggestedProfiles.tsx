@@ -10,6 +10,7 @@ import useLogin from "@/Hooks/useLogin";
 import { hexToBech32 } from "@/SnortUtils";
 import { ErrorOrOffline } from "./ErrorOrOffline";
 import useCachedFetch from "@/Hooks/useCachedFetch";
+import TrendingUsers from "@/Element/Trending/TrendingUsers";
 
 enum Provider {
   NostrBand = 1,
@@ -39,7 +40,11 @@ export default function SuggestedProfiles() {
   };
 
   const { url, key } = getUrlAndKey();
-  const { data: userList, error } = useCachedFetch(url, key, data => {
+  const {
+    data: userList,
+    error,
+    isLoading,
+  } = useCachedFetch(url, key, data => {
     switch (provider) {
       case Provider.NostrBand:
         return data.profiles.map(a => a.pubkey);
@@ -51,7 +56,8 @@ export default function SuggestedProfiles() {
   });
 
   if (error) return <ErrorOrOffline error={error} onRetry={() => {}} />;
-  if (!userList) return <PageSpinner />;
+  if (isLoading) return <PageSpinner />;
+  if (userList.length === 0) return <TrendingUsers title={""} />;
 
   return (
     <>
