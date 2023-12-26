@@ -1,32 +1,29 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { HexKey } from "@snort/system";
-
 import FollowListBase from "@/Element/User/FollowListBase";
 import PageSpinner from "@/Element/PageSpinner";
 import NostrBandApi from "@/External/NostrBand";
 import { ErrorOrOffline } from "../ErrorOrOffline";
+import useCachedFetch from "@/Hooks/useCachedFetch";
 
 export default function TrendingUsers({ title, count = Infinity }: { title?: ReactNode; count?: number }) {
-  const [userList, setUserList] = useState<HexKey[]>();
-  const [error, setError] = useState<Error>();
+  const api = new NostrBandApi();
+  const trendingProfilesUrl = api.trendingProfilesUrl();
+  const storageKey = `nostr-band-${trendingProfilesUrl}`;
 
-  async function loadTrendingUsers() {
-    const api = new NostrBandApi();
-    const users = await api.trendingProfiles();
-    const keys = users.profiles.map(a => a.pubkey).slice(0, count); // Limit the user list to the count
-    setUserList(keys);
+  const {
+    data: trendingUsersData,
+    isLoading,
+    error,
+  } = useCachedFetch(trendingProfilesUrl, storageKey, data => data.profiles.map(a => a.pubkey));
+
+  if (error) {
+    return <ErrorOrOffline error={error} onRetry={() => {}} className="p" />;
   }
 
-  useEffect(() => {
-    loadTrendingUsers().catch(e => {
-      if (e instanceof Error) {
-        setError(e);
-      }
-    });
-  }, []);
+  if (isLoading || !trendingUsersData) {
+    return <PageSpinner />;
+  }
 
-  if (error) return <ErrorOrOffline error={error} onRetry={loadTrendingUsers} className="p" />;
-  if (!userList) return <PageSpinner />;
-
-  return <FollowListBase pubkeys={userList} showAbout={true} title={title} />;
+  return <FollowListBase pubkeys={trendingUsersData.slice(0, count) as HexKey[]} showAbout={true} title={title} />;
 }

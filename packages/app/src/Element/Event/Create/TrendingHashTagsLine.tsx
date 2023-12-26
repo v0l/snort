@@ -1,23 +1,18 @@
-import { useEffect, useState } from "react";
 import { useLocale } from "@/IntlProvider";
 import NostrBandApi from "@/External/NostrBand";
 import { FormattedMessage } from "react-intl";
+import useCachedFetch from "@/Hooks/useCachedFetch";
 
 export function TrendingHashTagsLine(props: { onClick: (tag: string) => void }) {
-  const [hashtags, setHashtags] = useState<Array<{ hashtag: string; posts: number }>>();
   const { lang } = useLocale();
+  const api = new NostrBandApi();
+  const trendingHashtagsUrl = api.trendingHashtagsUrl(lang);
+  const storageKey = `nostr-band-${trendingHashtagsUrl}`;
 
-  async function loadTrendingHashtags() {
-    const api = new NostrBandApi();
-    const rsp = await api.trendingHashtags(lang);
-    setHashtags(rsp.hashtags);
-  }
+  const { data: hashtags, isLoading, error } = useCachedFetch(trendingHashtagsUrl, storageKey, data => data.hashtags);
 
-  useEffect(() => {
-    loadTrendingHashtags().catch(console.error);
-  }, []);
+  if (isLoading || error || !hashtags || hashtags.length === 0) return null;
 
-  if (!hashtags || hashtags.length === 0) return;
   return (
     <div className="flex flex-col g4">
       <small>

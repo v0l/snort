@@ -1,12 +1,12 @@
-import { ReactNode, useEffect, useState } from "react";
-
-import PageSpinner from "@/Element/PageSpinner";
+import { ReactNode } from "react";
 import NostrBandApi from "@/External/NostrBand";
 import { ErrorOrOffline } from "../ErrorOrOffline";
 import { HashTagHeader } from "@/Pages/HashTagsPage";
 import { useLocale } from "@/IntlProvider";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
+import useCachedFetch from "@/Hooks/useCachedFetch";
+import PageSpinner from "@/Element/PageSpinner";
 
 export default function TrendingHashtags({
   title,
@@ -17,38 +17,28 @@ export default function TrendingHashtags({
   count?: number;
   short?: boolean;
 }) {
-  const [hashtags, setHashtags] = useState<Array<{ hashtag: string; posts: number }>>();
-  const [error, setError] = useState<Error>();
   const { lang } = useLocale();
+  const api = new NostrBandApi();
+  const trendingHashtagsUrl = api.trendingHashtagsUrl(lang);
+  const storageKey = `nostr-band-${trendingHashtagsUrl}`;
 
-  async function loadTrendingHashtags() {
-    const api = new NostrBandApi();
-    const rsp = await api.trendingHashtags(lang);
-    setHashtags(rsp.hashtags.slice(0, count)); // Limit the number of hashtags to the count
-  }
+  const {
+    data: hashtags,
+    error,
+    isLoading,
+  } = useCachedFetch(trendingHashtagsUrl, storageKey, data => data.hashtags.slice(0, count));
 
-  useEffect(() => {
-    loadTrendingHashtags().catch(e => {
-      if (e instanceof Error) {
-        setError(e);
-      }
-    });
-  }, []);
-
-  if (error) return <ErrorOrOffline error={error} onRetry={loadTrendingHashtags} className="p" />;
-  if (!hashtags) return <PageSpinner />;
+  if (error) return <ErrorOrOffline error={error} onRetry={() => {}} className="p" />;
+  if (isLoading) return <PageSpinner />;
 
   return (
     <>
       {title}
       {hashtags.map(a => {
         if (short) {
-          // return just the hashtag (not HashTagHeader) and post count
           return (
             <div className="my-1 font-bold" key={a.hashtag}>
-              <Link to={`/t/${a.hashtag}`} key={a.hashtag}>
-                #{a.hashtag}
-              </Link>
+              <Link to={`/t/${a.hashtag}`}>#{a.hashtag}</Link>
             </div>
           );
         } else {

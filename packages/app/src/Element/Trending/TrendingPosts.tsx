@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { useState } from "react";
+import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useReactions } from "@snort/system-react";
 
 import PageSpinner from "@/Element/PageSpinner";
@@ -14,54 +14,42 @@ import { DisplayAs, DisplayAsSelector } from "@/Element/Feed/DisplayAsSelector";
 import ImageGridItem from "@/Element/Feed/ImageGridItem";
 import { SpotlightThreadModal } from "@/Element/Spotlight/SpotlightThreadModal";
 import useLogin from "@/Hooks/useLogin";
+import useCachedFetch from "@/Hooks/useCachedFetch";
 
 export default function TrendingNotes({ count = Infinity, small = false }) {
+  const api = new NostrBandApi();
+  const { lang } = useLocale();
+  const trendingNotesUrl = api.trendingNotesUrl(lang); // Get the URL for trending notes
+  const storageKey = `nostr-band-${trendingNotesUrl}`;
+
+  const {
+    data: trendingNotesData,
+    isLoading,
+    error,
+  } = useCachedFetch(
+    trendingNotesUrl,
+    storageKey,
+    data => data.notes.map(a => a.event), // Process the data as needed
+  );
+
   const login = useLogin();
   const displayAsInitial = small ? "list" : login.feedDisplayAs ?? "list";
-  // Added count prop with a default value
-  const [posts, setPosts] = useState<Array<NostrEvent>>();
-  const [error, setError] = useState<Error>();
-  const { lang } = useLocale();
-  const { isEventMuted } = useModeration();
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
-  const related = useReactions("trending", posts?.map(a => NostrLink.fromEvent(a)) ?? [], undefined, true);
+  const { isEventMuted } = useModeration();
+  const related = useReactions("trending", trendingNotesData?.map(a => NostrLink.fromEvent(a)) ?? [], undefined, true);
   const [modalThread, setModalThread] = useState<NostrLink | undefined>(undefined);
 
-  async function loadTrendingNotes() {
-    const api = new NostrBandApi();
-    const trending = await api.trendingNotes(lang);
-    setPosts(trending.notes.map(a => a.event));
-  }
+  if (error) return <ErrorOrOffline error={error} className="p" />;
+  if (isLoading) return <PageSpinner />;
 
-  useEffect(() => {
-    loadTrendingNotes().catch(e => {
-      if (e instanceof Error) {
-        setError(e);
-      }
-    });
-  }, []);
-
-  if (error) return <ErrorOrOffline error={error} onRetry={loadTrendingNotes} className="p" />;
-  if (!posts) return <PageSpinner />;
-
-  // if small, render less stuff
-  const options = {
-    showFooter: !small,
-    showReactionsLink: !small,
-    showMedia: !small,
-    longFormPreview: !small,
-    truncate: small,
-    showContextMenu: !small,
-  };
-
-  const filteredAndLimitedPosts = () => {
-    return posts.filter(a => !isEventMuted(a)).slice(0, count);
-  };
+  const filteredAndLimitedPosts = trendingNotesData
+    ? trendingNotesData.filter(a => !isEventMuted(a)).slice(0, count)
+    : [];
 
   const renderGrid = () => {
     return (
       <div className="grid grid-cols-3 gap-px md:gap-1">
-        {filteredAndLimitedPosts().map(e => (
+        {filteredAndLimitedPosts.map(e => (
           <ImageGridItem
             key={e.id}
             event={e as TaggedNostrEvent}
@@ -73,11 +61,24 @@ export default function TrendingNotes({ count = Infinity, small = false }) {
   };
 
   const renderList = () => {
-    return filteredAndLimitedPosts().map(e =>
+    return filteredAndLimitedPosts.map(e =>
       small ? (
         <ShortNote key={e.id} event={e as TaggedNostrEvent} />
       ) : (
-        <Note key={e.id} data={e as TaggedNostrEvent} related={related?.data ?? []} depth={0} options={options} />
+        <Note
+          key={e.id}
+          data={e as TaggedNostrEvent}
+          related={related?.data ?? []}
+          depth={0}
+          options={{
+            showFooter: !small,
+            showReactionsLink: !small,
+            showMedia: !small,
+            longFormPreview: !small,
+            truncate: small,
+            showContextMenu: !small,
+          }}
+        />
       ),
     );
   };

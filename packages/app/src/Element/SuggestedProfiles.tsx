@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { HexKey, NostrPrefix } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
@@ -9,6 +9,7 @@ import SemisolDevApi from "@/External/SemisolDev";
 import useLogin from "@/Hooks/useLogin";
 import { hexToBech32 } from "@/SnortUtils";
 import { ErrorOrOffline } from "./ErrorOrOffline";
+import useCachedFetch from "@/Hooks/useCachedFetch";
 
 enum Provider {
   NostrBand = 1,
@@ -17,42 +18,40 @@ enum Provider {
 
 export default function SuggestedProfiles() {
   const login = useLogin(s => ({ publicKey: s.publicKey, follows: s.follows.item }));
-  const [userList, setUserList] = useState<HexKey[]>();
   const [provider, setProvider] = useState(Provider.NostrBand);
-  const [error, setError] = useState<Error>();
 
-  async function loadSuggestedProfiles() {
-    if (!login.publicKey) return;
-    setUserList(undefined);
-    setError(undefined);
-
-    try {
-      switch (provider) {
-        case Provider.NostrBand: {
-          const api = new NostrBandApi();
-          const users = await api.sugguestedFollows(hexToBech32(NostrPrefix.PublicKey, login.publicKey));
-          const keys = users.profiles.map(a => a.pubkey);
-          setUserList(keys);
-          break;
-        }
-        case Provider.SemisolDev: {
-          const api = new SemisolDevApi();
-          const users = await api.sugguestedFollows(login.publicKey, login.follows);
-          const keys = users.recommendations.sort(a => a[1]).map(a => a[0]);
-          setUserList(keys);
-          break;
-        }
+  const getUrlAndKey = () => {
+    if (!login.publicKey) return { url: null, key: null };
+    switch (provider) {
+      case Provider.NostrBand: {
+        const api = new NostrBandApi();
+        const url = api.suggestedFollowsUrl(hexToBech32(NostrPrefix.PublicKey, login.publicKey));
+        return { url, key: `nostr-band-${url}` };
       }
-    } catch (e) {
-      if (e instanceof Error) {
-        setError(e);
+      case Provider.SemisolDev: {
+        const api = new SemisolDevApi();
+        const url = api.suggestedFollowsUrl(login.publicKey, login.follows);
+        return { url, key: `semisol-dev-${url}` };
       }
+      default:
+        return { url: null, key: null };
     }
-  }
+  };
 
-  useEffect(() => {
-    loadSuggestedProfiles();
-  }, [login.publicKey, login.follows, provider]);
+  const { url, key } = getUrlAndKey();
+  const { data: userList, error } = useCachedFetch(url, key, data => {
+    switch (provider) {
+      case Provider.NostrBand:
+        return data.profiles.map(a => a.pubkey);
+      case Provider.SemisolDev:
+        return data.recommendations.sort(a => a[1]).map(a => a[0]);
+      default:
+        return [];
+    }
+  });
+
+  if (error) return <ErrorOrOffline error={error} onRetry={() => {}} />;
+  if (!userList) return <PageSpinner />;
 
   return (
     <>
@@ -63,9 +62,7 @@ export default function SuggestedProfiles() {
           {/*<option value={Provider.SemisolDev}>semisol.dev</option>*/}
         </select>
       </div>
-      {error && <ErrorOrOffline error={error} onRetry={loadSuggestedProfiles} />}
-      {userList && <FollowListBase pubkeys={userList} showAbout={true} />}
-      {!userList && !error && <PageSpinner />}
+      <FollowListBase pubkeys={userList as HexKey[]} showAbout={true} />
     </>
   );
 }
