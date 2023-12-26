@@ -69,10 +69,10 @@ export default class NostrBandApi {
     return await this.#json<TrendingHashtagsResponse>("GET", "/v0/trending/hashtags");
   }
 
-  async #json<T>(method: string, path: string, storageKey: string) {
+  async #json<T>(method: string, path: string) {
     throwIfOffline();
 
-    // Try to get cached data first
+    const storageKey = `nostr-band-${path}`;
     const cachedData = localStorage.getItem(storageKey);
     if (cachedData) {
       const parsedData = JSON.parse(cachedData);
@@ -80,12 +80,10 @@ export default class NostrBandApi {
 
       const ageInMinutes = (new Date().getTime() - timestamp) / 1000 / 60;
       if (ageInMinutes < 15) {
-        // Use cached data if it's not older than 15 minutes
         return data as T;
       }
     }
 
-    // Fetch new data if no valid cache is found
     try {
       const res = await fetch(`${this.#url}${path}`, { method: method ?? "GET" });
       if (res.ok) {
@@ -98,10 +96,8 @@ export default class NostrBandApi {
       }
     } catch (error) {
       if (cachedData) {
-        // If an error occurs and there is cached data, return the cached data
         return JSON.parse(cachedData).data as T;
       } else {
-        // If no cache is available, rethrow the error
         throw error;
       }
     }
