@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import classNames from "classnames";
 import { LogoHeader } from "@/Pages/Layout/LogoHeader";
 import { rootTabItems, RootTabs } from "@/Element/Feed/RootTabs";
@@ -16,7 +16,15 @@ export function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const pageName = decodeURIComponent(location.pathname.split("/")[1]);
-  const [nostrLink, setNostrLink] = useState<NostrLink | undefined>();
+
+  const nostrLink = useMemo(() => {
+    try {
+      return parseNostrLink(pageName);
+    } catch (e) {
+      return undefined;
+    }
+  }, [pageName]);
+
   const { publicKey, tags } = useLogin();
 
   const isRootTab = useMemo(() => {
@@ -26,14 +34,6 @@ export function Header() {
   const scrollUp = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
-
-  useEffect(() => {
-    try {
-      setNostrLink(parseNostrLink(pageName));
-    } catch (e) {
-      setNostrLink(undefined);
-    }
-  }, [pageName]);
 
   const handleBackButtonClick = () => {
     const idx = window.history.state?.idx;

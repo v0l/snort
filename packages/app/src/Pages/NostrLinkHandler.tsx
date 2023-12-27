@@ -12,7 +12,7 @@ export default function NostrLinkHandler() {
   const { state } = useLocation();
   const { link } = useParams();
 
-  const determineInitialComponent = (link) => {
+  const determineInitialComponent = link => {
     const nav = tryParseNostrLink(link);
     if (nav) {
       switch (nav.type) {
