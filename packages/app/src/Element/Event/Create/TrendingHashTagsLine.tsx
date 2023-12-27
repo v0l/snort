@@ -2,7 +2,7 @@ import { useLocale } from "@/IntlProvider";
 import NostrBandApi from "@/External/NostrBand";
 import { FormattedMessage } from "react-intl";
 import useCachedFetch from "@/Hooks/useCachedFetch";
-import {ErrorOrOffline} from "@/Element/ErrorOrOffline";
+import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
 
 export function TrendingHashTagsLine(props: { onClick: (tag: string) => void }) {
   const { lang } = useLocale();

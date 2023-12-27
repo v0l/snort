@@ -26,11 +26,7 @@ export default function TrendingNotes({ count = Infinity, small = false }) {
     data: trendingNotesData,
     isLoading,
     error,
-  } = useCachedFetch(
-    trendingNotesUrl,
-    storageKey,
-    data => data.notes.map(a => a.event),
-  );
+  } = useCachedFetch(trendingNotesUrl, storageKey, data => data.notes.map(a => a.event));
 
   const login = useLogin();
   const displayAsInitial = small ? "list" : login.feedDisplayAs ?? "list";
