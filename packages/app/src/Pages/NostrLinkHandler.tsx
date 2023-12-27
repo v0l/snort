@@ -1,55 +1,60 @@
-import { NostrPrefix, tryParseNostrLink } from "@snort/system";
-import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { useLocation, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import { fetchNip05Pubkey } from "@snort/shared";
-
 import Spinner from "@/Icons/Spinner";
 import ProfilePage from "@/Pages/Profile/ProfilePage";
 import { ThreadRoute } from "@/Element/Event/Thread";
 import { GenericFeed } from "@/Element/Feed/Generic";
+import { NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { FormattedMessage } from "react-intl";
 
 export default function NostrLinkHandler() {
-  const params = useParams();
   const { state } = useLocation();
-  const [loading, setLoading] = useState(true);
-  const [renderComponent, setRenderComponent] = useState<React.ReactNode>(null);
+  const { link } = useParams();
 
-  const link = decodeURIComponent(params["*"] ?? "").toLowerCase();
-
-  async function handleLink(link: string) {
+  const determineInitialComponent = (link) => {
     const nav = tryParseNostrLink(link);
     if (nav) {
-      if (nav.type === NostrPrefix.Event || nav.type === NostrPrefix.Note || nav.type === NostrPrefix.Address) {
-        setRenderComponent(<ThreadRoute key={link} id={nav.encode()} />); // Directly render ThreadRoute
-      } else if (nav.type === NostrPrefix.PublicKey || nav.type === NostrPrefix.Profile) {
-        const id = nav.encode();
-        setRenderComponent(<ProfilePage key={id} id={id} state={state} />); // Directly render ProfilePage
-      } else if (nav.type === NostrPrefix.Req) {
-        setRenderComponent(<GenericFeed key={link} link={nav} />);
+      switch (nav.type) {
+        case NostrPrefix.Event:
+        case NostrPrefix.Note:
+        case NostrPrefix.Address:
+          return <ThreadRoute key={link} id={nav.encode()} />;
+        case NostrPrefix.PublicKey:
+        case NostrPrefix.Profile:
+          return <ProfilePage key={link} id={nav.encode()} state={state} />;
+        case NostrPrefix.Req:
+          return <GenericFeed key={link} link={nav} />;
+        default:
+          return null;
       }
     } else {
-      if (state) {
-        setRenderComponent(<ProfilePage key={link} state={state} />); // Directly render ProfilePage from route state
-      } else {
-        try {
-          const pubkey = await fetchNip05Pubkey(link, CONFIG.nip05Domain);
-          if (pubkey) {
-            setRenderComponent(<ProfilePage key={link} id={pubkey} state={state} />); // Directly render ProfilePage
-          }
-        } catch {
-          //ignored
-        }
-      }
+      return state ? <ProfilePage key={link} state={state} /> : null;
     }
-    setLoading(false);
+  };
+
+  const initialRenderComponent = determineInitialComponent(link);
+  const [loading, setLoading] = useState(initialRenderComponent ? false : true);
+  const [renderComponent, setRenderComponent] = useState(initialRenderComponent);
+
+  async function handleLink(link) {
+    if (!tryParseNostrLink(link)) {
+      try {
+        const pubkey = await fetchNip05Pubkey(link, CONFIG.nip05Domain);
+        if (pubkey) {
+          setRenderComponent(<ProfilePage key={link} id={pubkey} state={state} />);
+        }
+      } catch {
+        // Ignored
+      }
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
-    if (link.length > 0) {
-      handleLink(link).catch(console.error);
-    }
-  }, [link]);
+    setRenderComponent(determineInitialComponent(link));
+    handleLink(link);
+  }, [link]); // Depend only on 'link'
 
   if (renderComponent) {
     return renderComponent;
