@@ -28,7 +28,7 @@ export default function TrendingHashtags({
     isLoading,
   } = useCachedFetch(trendingHashtagsUrl, storageKey, data => data.hashtags.slice(0, count));
 
-  if (error) return <ErrorOrOffline error={error} onRetry={() => {}} className="p" />;
+  if (error && !hashtags) return <ErrorOrOffline error={error} onRetry={() => {}} className="p" />;
   if (isLoading) return <PageSpinner />;
 
   return (

@@ -2,6 +2,7 @@ import { useLocale } from "@/IntlProvider";
 import NostrBandApi from "@/External/NostrBand";
 import { FormattedMessage } from "react-intl";
 import useCachedFetch from "@/Hooks/useCachedFetch";
+import {ErrorOrOffline} from "@/Element/ErrorOrOffline";
 
 export function TrendingHashTagsLine(props: { onClick: (tag: string) => void }) {
   const { lang } = useLocale();
@@ -11,7 +12,9 @@ export function TrendingHashTagsLine(props: { onClick: (tag: string) => void }) 
 
   const { data: hashtags, isLoading, error } = useCachedFetch(trendingHashtagsUrl, storageKey, data => data.hashtags);
 
-  if (isLoading || error || !hashtags || hashtags.length === 0) return null;
+  if (error && !hashtags) return <ErrorOrOffline error={error} className="p" />;
+
+  if (isLoading || hashtags.length === 0) return null;
 
   return (
     <div className="flex flex-col g4">

@@ -17,11 +17,11 @@ export default function TrendingUsers({ title, count = Infinity }: { title?: Rea
     error,
   } = useCachedFetch(trendingProfilesUrl, storageKey, data => data.profiles.map(a => a.pubkey));
 
-  if (error) {
+  if (error && !trendingUsersData) {
     return <ErrorOrOffline error={error} onRetry={() => {}} className="p" />;
   }
 
-  if (isLoading || !trendingUsersData) {
+  if (isLoading) {
     return <PageSpinner />;
   }
 
