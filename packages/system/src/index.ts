@@ -44,6 +44,8 @@ export * from "./cache/user-relays";
 export * from "./cache/user-metadata";
 export * from "./cache/relay-metric";
 
+export * from "./worker/system-worker";
+
 export interface SystemInterface {
   /**
    * Check event signatures (reccomended)
@@ -54,6 +56,11 @@ export interface SystemInterface {
    * Get a snapshot of the relay connections
    */
   get Sockets(): Array<ConnectionStateSnapshot>;
+
+  /**
+   * Do some initialization
+   */
+  Init(): Promise<void>;
 
   /**
    * Get an active query by ID
@@ -88,6 +95,9 @@ export interface SystemInterface {
    */
   DisconnectRelay(address: string): void;
 
+  /**
+   * Push an event into the system from external source
+   */
   HandleEvent(ev: TaggedNostrEvent): void;
 
   /**

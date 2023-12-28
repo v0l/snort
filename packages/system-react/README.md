@@ -2,7 +2,32 @@
 
 React hooks for @snort/system
 
-Sample:
+### Available hooks
+
+#### `useRequestBuilder(NoteStore, RequestBuilder)`
+
+The main hook which allows you to subscribe to nostr relays and returns a reactive store.
+
+#### `useUserProfile(pubkey: string | undefined)`
+
+Profile hook, profile loading is automated, this hook will return the profile from cache and also refresh the cache in the background (`stale-while-revalidate`)
+
+#### `useEventFeed(NostrLink)` / `useEventsFeed(Array<NostrLink>)`
+A simple hook which can load events using the `NostrLink` class, this class contains one NIP-19 entity `nevent/naddr` etc.
+
+#### `useReactions(id, Array<NostrLink>)`
+Loads reactions for a set of events, this can be a set of posts on a profile or an arbitary list of events.
+
+#### `useEventReactions(NostrLink, Array<NostrEvent>)`
+Process a set of related events (usually results from `useReactions`) and return likes/dislikes/reposts/zaps
+
+#### `useUserSearch()`
+Search for profiles in the profile cache, this also returns exact links if they match
+
+#### `useSystemState(System)`
+Hook state of the nostr system
+
+## Example:
 
 ```js
 import { useMemo } from "react";
