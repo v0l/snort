@@ -41,7 +41,7 @@ globalThis.onmessage = async ev => {
       }
       case NostrSystemCommand.ConnectRelay: {
         checkInitialized();
-        const cmd = ev.data as NostrSystemMessage<[string, {read: boolean, write: boolean}]>;
+        const cmd = ev.data as NostrSystemMessage<[string, { read: boolean; write: boolean }]>;
         await system?.ConnectToRelay(cmd.data[0], cmd.data[1]);
         okReply(data.id, "Connected");
         break;

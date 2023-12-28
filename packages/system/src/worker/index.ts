@@ -1,10 +1,9 @@
-
 export const enum NostrSystemCommand {
-    OkResponse,
-    ErrorResponse,
-    Init,
-    ConnectRelay,
-    DisconnectRelay
+  OkResponse,
+  ErrorResponse,
+  Init,
+  ConnectRelay,
+  DisconnectRelay,
 }
 
 export interface NostrSystemMessage<T> {
