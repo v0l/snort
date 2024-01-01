@@ -1,6 +1,6 @@
 import "./Avatar.css";
 
-import { ReactNode, useEffect, useState } from "react";
+import {ReactNode, useMemo} from "react";
 import type { UserMetadata } from "@snort/system";
 import classNames from "classnames";
 
@@ -31,10 +31,8 @@ const Avatar = ({
   className,
   showTitle = true,
 }: AvatarProps) => {
-  const [url, setUrl] = useState("");
-
-  useEffect(() => {
-    setUrl(image ?? user?.picture ?? defaultAvatar(pubkey));
+  const url = useMemo(() => {
+    return image ?? user?.picture ?? defaultAvatar(pubkey);
   }, [user, image, pubkey]);
 
   const s = size ?? 120;
