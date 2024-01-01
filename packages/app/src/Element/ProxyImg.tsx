@@ -1,5 +1,5 @@
 import useImgProxy from "@/Hooks/useImgProxy";
-import React, { HTMLProps, ReactNode, forwardRef, useState } from "react";
+import React, {HTMLProps, ReactNode, forwardRef, useState, useMemo} from "react";
 import { FormattedMessage } from "react-intl";
 import { getUrlHostname } from "@/SnortUtils";
 
@@ -16,6 +16,8 @@ export const ProxyImg = forwardRef<HTMLImageElement, ProxyImgProps>(
     const { proxy } = useImgProxy();
     const [loadFailed, setLoadFailed] = useState(false);
     const [bypass, setBypass] = useState(CONFIG.media.bypassImgProxyError);
+    const proxiedSrc = useMemo(() => proxy(props.src ?? "", size, sha256), [props.src, size, sha256]);
+    const [src, setSrc] = useState(proxiedSrc);
 
     if (loadFailed && !bypass && (promptToLoadDirectly ?? true)) {
       return (
@@ -35,8 +37,22 @@ export const ProxyImg = forwardRef<HTMLImageElement, ProxyImgProps>(
         </div>
       );
     }
-    const src = loadFailed && bypass ? props.src : proxy(props.src ?? "", size, sha256);
-    if (!src || (loadFailed && !bypass)) return missingImageElement;
+
+    const handleImageError = (e) => {
+      if (props.onError) {
+        props.onError(e);
+      } else {
+        console.error("Failed to load image: ", props.src, e);
+        if (bypass && src === proxiedSrc) {
+          setSrc(props.src ?? "");
+        } else {
+          setLoadFailed(true);
+        }
+      }
+    };
+
+    if (!src || loadFailed) return missingImageElement ?? <div>Image not available</div>;
+
     return (
       <img
         {...props}
@@ -45,14 +61,7 @@ export const ProxyImg = forwardRef<HTMLImageElement, ProxyImgProps>(
         width={size}
         height={size}
         className={className}
-        onError={e => {
-          if (props.onError) {
-            props.onError(e);
-          } else {
-            console.error("Failed to proxy image: ", props.src, e);
-            setLoadFailed(true);
-          }
-        }}
+        onError={handleImageError}
       />
     );
   },
