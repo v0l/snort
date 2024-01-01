@@ -11,8 +11,8 @@ const secondsInAnHour = secondsInAMinute * 60;
 const secondsInADay = secondsInAnHour * 24;
 
 export default function NoteTime(props: NoteTimeProps) {
-  const [time, setTime] = useState<string | JSX.Element>();
   const { from, fallback } = props;
+  const [time, setTime] = useState<string | JSX.Element>(calcTime());
 
   const absoluteTime = new Intl.DateTimeFormat(undefined, {
     dateStyle: "medium",
