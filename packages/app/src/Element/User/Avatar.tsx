@@ -1,6 +1,6 @@
 import "./Avatar.css";
 
-import {ReactNode, useMemo} from "react";
+import { ReactNode, useMemo } from "react";
 import type { UserMetadata } from "@snort/system";
 import classNames from "classnames";
 
