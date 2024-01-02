@@ -71,7 +71,7 @@ export function SnortDeckLayout() {
                 id="IOu4Xh"
                 values={{
                   app: CONFIG.appNameCapitalized,
-                  tier: mapPlanName(CONFIG.deckSubKind),
+                  tier: mapPlanName(CONFIG.deckSubKind ?? -1),
                 }}
               />
             </div>
@@ -122,7 +122,11 @@ export function SnortDeckLayout() {
           )}
           {deckState.article && (
             <>
-              <Modal onClose={() => setDeckState({})} className="long-form" onClick={() => setDeckState({})}>
+              <Modal
+                id="deck-article"
+                onClose={() => setDeckState({})}
+                className="long-form"
+                onClick={() => setDeckState({})}>
                 <div onClick={e => e.stopPropagation()}>
                   <LongFormText ev={deckState.article} isPreview={false} related={[]} />
                 </div>
@@ -140,11 +144,11 @@ function NotesCol() {
   return (
     <div>
       <div className="deck-col-header flex">
-        <div className="flex f-1 g8">
+        <div className="flex flex-1 g8">
           <Icon name="rows-01" size={24} />
           <FormattedMessage defaultMessage="Notes" id="7+Domh" />
         </div>
-        <div className="f-1">
+        <div className="flex-1">
           <RootTabs base="/deck" />
         </div>
       </div>

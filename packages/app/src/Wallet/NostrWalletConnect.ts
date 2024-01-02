@@ -81,7 +81,10 @@ export class NostrConnectWallet implements LNWallet {
   #info?: WalletInfo;
   #supported_methods: Array<string> = DefaultSupported;
 
-  constructor(cfg: string) {
+  constructor(
+    cfg: string,
+    readonly changed: () => void,
+  ) {
     this.#config = NostrConnectWallet.parseConfigUrl(cfg);
     this.#commandQueue = new Map();
   }
@@ -147,9 +150,9 @@ export class NostrConnectWallet implements LNWallet {
   async login() {
     if (this.#conn) return true;
 
-    return await new Promise<boolean>(resolve => {
+    await new Promise<void>(resolve => {
       this.#conn = new Connection(this.#config.relayUrl, { read: true, write: true });
-      this.#conn.on("connected", () => resolve(true));
+      this.#conn.on("connected", () => resolve());
       this.#conn.on("auth", async (c, r, cb) => {
         const eb = new EventBuilder();
         eb.kind(EventKind.Auth).tag(["relay", r]).tag(["challenge", c]);
@@ -161,6 +164,9 @@ export class NostrConnectWallet implements LNWallet {
       });
       this.#conn.Connect();
     });
+    await this.getInfo();
+    this.changed();
+    return true;
   }
 
   async close() {
@@ -232,6 +238,7 @@ export class NostrConnectWallet implements LNWallet {
               timestamp: typeof a.created_at === "string" ? new Date(a.created_at).getTime() / 1000 : a.created_at,
               preimage: a.preimage,
               state: WalletInvoiceState.Paid,
+              direction: a.type === "incoming" ? "in" : "out",
             }) as WalletInvoice,
         ) ?? []
       );

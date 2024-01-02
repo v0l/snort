@@ -80,6 +80,7 @@ export interface WalletInvoice {
   timestamp: number;
   preimage?: string;
   state: WalletInvoiceState;
+  direction: "in" | "out";
 }
 
 export function prToWalletInvoice(pr: string) {
@@ -92,6 +93,7 @@ export function prToWalletInvoice(pr: string) {
       timestamp: parsedInvoice.timestamp ?? 0,
       state: parsedInvoice.expired ? WalletInvoiceState.Expired : WalletInvoiceState.Pending,
       pr,
+      direction: "in",
     } as WalletInvoice;
   }
 }
@@ -163,6 +165,9 @@ export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
             this.notifyChange();
           });
           return undefined;
+        } else {
+          this.#instance.set(activeConfig.id, w);
+          this.notifyChange();
         }
         return w;
       } else {
@@ -230,10 +235,10 @@ export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
         return new WebLNWallet();
       }
       case WalletKind.LNDHub: {
-        return new LNDHubWallet(unwrap(cfg.data));
+        return new LNDHubWallet(unwrap(cfg.data), () => this.notifyChange());
       }
       case WalletKind.NWC: {
-        return new NostrConnectWallet(unwrap(cfg.data));
+        return new NostrConnectWallet(unwrap(cfg.data), () => this.notifyChange());
       }
     }
   }

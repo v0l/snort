@@ -47,7 +47,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
           {mapPlanName(sub.type)}
         </div>
         <div className="flex">
-          <p className="f-1">
+          <p className="flex-1">
             <FormattedMessage defaultMessage="Created" id="ORGv1Q" />
             :&nbsp;
             <time dateTime={created.toISOString()}>
@@ -55,7 +55,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
             </time>
           </p>
           {daysToExpire >= 1 && (
-            <p className="f-1">
+            <p className="flex-1">
               <FormattedMessage defaultMessage="Expires" id="xhQMeQ" />
               :&nbsp;
               <time dateTime={expires.toISOString()}>
@@ -70,7 +70,7 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
             </p>
           )}
           {daysToExpire >= 0 && daysToExpire < 1 && (
-            <p className="f-1">
+            <p className="flex-1">
               <FormattedMessage defaultMessage="Expires" id="xhQMeQ" />
               :&nbsp;
               <time dateTime={expires.toISOString()}>
@@ -85,12 +85,12 @@ export default function SubscriptionCard({ sub }: { sub: Subscription }) {
             </p>
           )}
           {isExpired && (
-            <p className="f-1 error">
+            <p className="flex-1 error">
               <FormattedMessage defaultMessage="Expired" id="RahCRH" />
             </p>
           )}
           {isNew && (
-            <p className="f-1">
+            <p className="flex-1">
               <FormattedMessage defaultMessage="Unpaid" id="6uMqL1" />
             </p>
           )}

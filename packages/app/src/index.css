@@ -480,22 +480,6 @@ input:disabled {
   cursor: not-allowed;
 }
 
-.f-1 {
-  flex: 1;
-}
-
-.f-2 {
-  flex: 2;
-}
-
-.f-3 {
-  flex: 3;
-}
-
-.f-4 {
-  flex: 4;
-}
-
 .f-ellipsis {
   min-width: 0;
   white-space: nowrap;

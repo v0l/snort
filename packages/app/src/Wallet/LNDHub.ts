@@ -23,7 +23,10 @@ export default class LNDHubWallet implements LNWallet {
   password: string;
   auth?: AuthResponse;
 
-  constructor(url: string) {
+  constructor(
+    url: string,
+    readonly changed: () => void,
+  ) {
     if (url.startsWith("lndhub://")) {
       const regex = /^lndhub:\/\/([\S-]+):([\S-]+)@(.*)$/i;
       const parsedUrl = url.match(regex);
@@ -60,25 +63,31 @@ export default class LNDHubWallet implements LNWallet {
   }
 
   async getInfo() {
+    await this.login();
     return await this.getJson<WalletInfo>("GET", "/getinfo");
   }
 
   async login() {
+    if (this.auth) return true;
+
     const rsp = await this.getJson<AuthResponse>("POST", "/auth?type=auth", {
       login: this.user,
       password: this.password,
     });
     this.auth = rsp as AuthResponse;
+    this.changed();
     return true;
   }
 
   async getBalance(): Promise<Sats> {
+    await this.login();
     const rsp = await this.getJson<GetBalanceResponse>("GET", "/balance");
     const bal = Math.floor((rsp as GetBalanceResponse).BTC.AvailableBalance);
     return bal as Sats;
   }
 
   async createInvoice(req: InvoiceRequest) {
+    await this.login();
     const rsp = await this.getJson<UserInvoicesResponse>("POST", "/addinvoice", {
       amt: req.amount,
       memo: req.memo,
@@ -95,6 +104,7 @@ export default class LNDHubWallet implements LNWallet {
   }
 
   async payInvoice(pr: string) {
+    await this.login();
     const rsp = await this.getJson<PayInvoiceResponse>("POST", "/payinvoice", {
       invoice: pr,
     });
@@ -113,6 +123,7 @@ export default class LNDHubWallet implements LNWallet {
   }
 
   async getInvoices(): Promise<WalletInvoice[]> {
+    await this.login();
     const rsp = await this.getJson<UserInvoicesResponse[]>("GET", "/getuserinvoices");
     return (rsp as UserInvoicesResponse[])
       .sort((a, b) => (a.timestamp > b.timestamp ? -1 : 1))

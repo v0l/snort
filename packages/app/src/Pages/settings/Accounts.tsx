@@ -22,7 +22,7 @@ export default function AccountsPage() {
               about: false,
             }}
             actions={
-              <div className="f-1">
+              <div className="flex-1">
                 <button className="mb10" onClick={() => LoginStore.switchAccount(a.id)}>
                   <FormattedMessage defaultMessage="Switch" id="n1Whvj" />
                 </button>

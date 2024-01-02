@@ -408,7 +408,7 @@ export function NoteCreator() {
           <div className="flex flex-col g8">
             {[...(note.zapSplits ?? [])].map((v, i, arr) => (
               <div className="flex items-center g8">
-                <div className="flex flex-col f-4 g4">
+                <div className="flex flex-col flex-4 g4">
                   <h4>
                     <FormattedMessage defaultMessage="Recipient" id="8Rkoyb" />
                   </h4>
@@ -423,7 +423,7 @@ export function NoteCreator() {
                     placeholder={formatMessage({ defaultMessage: "npub / nprofile / nostr address", id: "WvGmZT" })}
                   />
                 </div>
-                <div className="flex flex-col f-1 g4">
+                <div className="flex flex-col flex-1 g4">
                   <h4>
                     <FormattedMessage defaultMessage="Weight" id="zCb8fX" />
                   </h4>

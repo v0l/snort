@@ -5,31 +5,35 @@ import { useNavigate } from "react-router-dom";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
 import NoteTime from "@/Element/Event/NoteTime";
-import { WalletInvoice, Sats, WalletInfo, WalletInvoiceState, useWallet, LNWallet, Wallets } from "@/Wallet";
+import { WalletInvoice, Sats, useWallet, LNWallet, Wallets } from "@/Wallet";
 import AsyncButton from "@/Element/Button/AsyncButton";
 import { unwrap } from "@/SnortUtils";
 import Icon from "@/Icons/Icon";
+import { useRates } from "@/Hooks/useRates";
+import { AsyncIcon } from "@/Element/Button/AsyncIcon";
+import classNames from "classnames";
 
-export default function WalletPage() {
+export default function WalletPage(props: { showHistory: boolean }) {
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
-  const [info, setInfo] = useState<WalletInfo>();
   const [balance, setBalance] = useState<Sats>();
   const [history, setHistory] = useState<WalletInvoice[]>();
   const [walletPassword, setWalletPassword] = useState<string>();
   const [error, setError] = useState<string>();
   const walletState = useWallet();
   const wallet = walletState.wallet;
+  const rates = useRates("BTCUSD");
 
   async function loadWallet(wallet: LNWallet) {
     try {
-      const i = await wallet.getInfo();
-      setInfo(i);
+      setError(undefined);
+      setBalance(0);
+      setHistory(undefined);
       if (wallet.canGetBalance()) {
         const b = await wallet.getBalance();
         setBalance(b as Sats);
       }
-      if (wallet.canGetInvoices()) {
+      if (wallet.canGetInvoices() && (props.showHistory ?? true)) {
         const h = await wallet.getInvoices();
         setHistory((h as WalletInvoice[]).sort((a, b) => b.timestamp - a.timestamp));
       }
@@ -43,28 +47,10 @@ export default function WalletPage() {
   }
 
   useEffect(() => {
-    if (wallet) {
-      if (wallet.isReady()) {
-        loadWallet(wallet).catch(console.warn);
-      } else if (wallet.canAutoLogin()) {
-        wallet
-          .login()
-          .then(async () => await loadWallet(wallet))
-          .catch(console.warn);
-      }
+    if (wallet && wallet.isReady()) {
+      loadWallet(wallet).catch(console.warn);
     }
   }, [wallet]);
-
-  function stateIcon(s: WalletInvoiceState) {
-    switch (s) {
-      case WalletInvoiceState.Pending:
-        return <Icon name="clock" size={15} />;
-      case WalletInvoiceState.Paid:
-        return <Icon name="check" size={15} />;
-      case WalletInvoiceState.Expired:
-        return <Icon name="close" size={15} />;
-    }
-  }
 
   async function loginWallet(pw: string) {
     if (wallet) {
@@ -112,11 +98,11 @@ export default function WalletPage() {
       );
     }
     return (
-      <div className="flex w-max">
-        <h4 className="f-1">
+      <div className="flex items-center">
+        <h4 className="grow">
           <FormattedMessage defaultMessage="Select Wallet" id="G1BGCg" />
         </h4>
-        <div className="f-1">
+        <div>
           <select className="w-max" onChange={e => Wallets.switch(e.target.value)} value={walletState.config?.id}>
             {Wallets.list().map(a => {
               return <option value={a.id}>{a.info.alias}</option>;
@@ -128,79 +114,108 @@ export default function WalletPage() {
   }
 
   function walletHistory() {
-    if (!wallet?.canGetInvoices()) return;
+    if (!wallet?.canGetInvoices() || !(props.showHistory ?? true)) return;
 
     return (
-      <>
+      <div className="flex flex-col gap-1">
         <h3>
-          <FormattedMessage defaultMessage="History" id="d6CyG5" description="Wallet transation history" />
+          <FormattedMessage defaultMessage="Payments" id="pukxg/" description="Wallet transation history" />
         </h3>
-        {history?.map(a => (
-          <div className="card flex wallet-history-item" key={a.timestamp}>
-            <div className="grow">
-              <NoteTime from={a.timestamp * 1000} fallback={formatMessage({ defaultMessage: "now", id: "kaaf1E" })} />
-              <div>{(a.memo ?? "").length === 0 ? <>&nbsp;</> : a.memo}</div>
-            </div>
-            <div
-              className={`flex gap-2 items-center ${(() => {
-                switch (a.state) {
-                  case WalletInvoiceState.Paid:
-                    return "success";
-                  case WalletInvoiceState.Expired:
-                    return "expired";
-                  case WalletInvoiceState.Failed:
-                    return "failed";
-                  default:
-                    return "pending";
-                }
-              })()}`}>
-              <div>{stateIcon(a.state)}</div>
+        {history?.map(a => {
+          const dirClassname = {
+            "text-[--success]": a.direction === "in",
+            "text-[--error]": a.direction === "out",
+          };
+          return (
+            <div className="flex gap-4 p-2 hover:bg-[--gray-superdark] rounded-xl items-center" key={a.timestamp}>
               <div>
-                <FormattedMessage
-                  defaultMessage="{amount} sats"
-                  id="vrTOHJ"
-                  values={{
-                    amount: <FormattedNumber value={a.amount / 1e3} />,
-                  }}
-                />
+                <div className="rounded-full aspect-square p-2 bg-[--gray-dark]">
+                  <Icon
+                    name="arrow-up-right"
+                    className={classNames(dirClassname, {
+                      "rotate-180": a.direction === "in",
+                    })}
+                  />
+                </div>
+              </div>
+              <div className="grow flex justify-between">
+                <div className="flex flex-col gap-1">
+                  <div>{a.memo?.length === 0 ? CONFIG.appNameCapitalized : a.memo}</div>
+                  <div className="text-secondary text-sm">
+                    <NoteTime
+                      from={a.timestamp * 1000}
+                      fallback={formatMessage({ defaultMessage: "now", id: "kaaf1E" })}
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1 text-right">
+                  <div className={classNames(dirClassname)}>
+                    <FormattedMessage
+                      defaultMessage="{sign} {amount} sats"
+                      id="tj6kdX"
+                      values={{
+                        sign: a.direction === "in" ? "+" : "-",
+                        amount: <FormattedNumber value={a.amount / 1e3} />,
+                      }}
+                    />
+                  </div>
+                  <div className="text-secondary text-sm">
+                    <FormattedMessage
+                      defaultMessage="~{amount}"
+                      id="3QwfJR"
+                      values={{
+                        amount: (
+                          <FormattedNumber
+                            style="currency"
+                            currency="USD"
+                            value={(rates?.ask ?? 0) * a.amount * 1e-11}
+                          />
+                        ),
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </>
+          );
+        })}
+      </div>
     );
   }
 
   function walletBalance() {
     if (!wallet?.canGetBalance()) return;
     return (
-      <small>
+      <div className="flex items-center gap-2">
         <FormattedMessage
-          defaultMessage="Balance: {amount} sats"
-          id="VN0+Fz"
+          defaultMessage="<big>{amount}</big> <small>sats</small>"
+          id="E5ZIPD"
           values={{
+            big: c => <span className="text-3xl font-bold">{c}</span>,
+            small: c => <span className="text-secondary">{c}</span>,
             amount: <FormattedNumber value={balance ?? 0} />,
           }}
         />
-      </small>
+        <AsyncIcon size={20} className="text-secondary cursor-pointer" iconName="closedeye" />
+      </div>
     );
   }
 
   function walletInfo() {
-    if (!wallet?.isReady()) return;
     return (
       <>
-        <div className="p br b flex justify-between">
-          <div>
-            <div>{info?.alias}</div>
-            {walletBalance()}
-          </div>
-          <div>
-            {walletState.config?.id && (
-              <AsyncButton onClick={() => Wallets.remove(unwrap(walletState.config?.id))}>
-                <FormattedMessage defaultMessage="Remove" id="G/yZLu" />
-              </AsyncButton>
-            )}
+        <div className="flex flex-col items-center px-6 py-4 bg-[--gray-superdark] rounded-2xl gap-1">
+          {walletBalance()}
+          <div className="text-secondary">
+            <FormattedMessage
+              defaultMessage="~{amount}"
+              id="3QwfJR"
+              values={{
+                amount: (
+                  <FormattedNumber style="currency" currency="USD" value={(rates?.ask ?? 0) * (balance ?? 0) * 1e-8} />
+                ),
+              }}
+            />
           </div>
         </div>
         {walletHistory()}
@@ -209,7 +224,7 @@ export default function WalletPage() {
   }
 
   return (
-    <div className="main-content p">
+    <div className="main-content">
       {walletList()}
       {error && <b className="warning">{error}</b>}
       {unlockWallet()}

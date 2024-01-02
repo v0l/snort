@@ -64,6 +64,7 @@ import { setupWebLNWalletConfig } from "@/Wallet/WebLN";
 import { Wallets } from "@/Wallet";
 import Fuse from "fuse.js";
 import NetworkGraph from "@/Pages/NetworkGraph";
+import WalletPage from "./Pages/WalletPage";
 
 declare global {
   interface Window {
@@ -278,6 +279,14 @@ const mainRoutes = [
   {
     path: "/graph",
     element: <NetworkGraph />,
+  },
+  {
+    path: "/wallet",
+    element: (
+      <div className="p">
+        <WalletPage showHistory={true} />
+      </div>
+    ),
   },
   ...OnboardingRoutes,
   ...SettingsRoutes,

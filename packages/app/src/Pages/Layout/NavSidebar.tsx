@@ -1,18 +1,21 @@
 import { LogoHeader } from "./LogoHeader";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Icon from "@/Icons/Icon";
 import { ProfileLink } from "../../Element/User/ProfileLink";
 import Avatar from "../../Element/User/Avatar";
 import useLogin from "../../Hooks/useLogin";
 import { useUserProfile } from "@snort/system-react";
 import { NoteCreatorButton } from "../../Element/Event/Create/NoteCreatorButton";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import classNames from "classnames";
 import { getCurrentSubscription } from "@/Subscription";
 import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
 import NavLink from "@/Element/Button/NavLink";
 import { subscribeToNotifications } from "@/Notifications";
 import useEventPublisher from "@/Hooks/useEventPublisher";
+import { Sats, useWallet } from "@/Wallet";
+import { useEffect, useState } from "react";
+import { useRates } from "@/Hooks/useRates";
 
 const MENU_ITEMS = [
   {
@@ -72,6 +75,44 @@ const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
   });
 };
 
+const WalletBalance = () => {
+  const [balance, setBalance] = useState<Sats>();
+  const wallet = useWallet();
+  const rates = useRates("BTCUSD");
+
+  useEffect(() => {
+    setBalance(undefined);
+    if (wallet.wallet && wallet.wallet.canGetBalance()) {
+      wallet.wallet.getBalance().then(setBalance);
+    }
+  }, [wallet]);
+
+  return (
+    <div className="w-max flex flex-col max-xl:hidden">
+      <div className="grow flex items-center justify-between">
+        <div className="flex gap-1 items-center">
+          <Icon name="sats" size={24} />
+          <FormattedNumber value={balance ?? 0} />
+        </div>
+        <Link to="/wallet">
+          <Icon name="dots" className="text-secondary" />
+        </Link>
+      </div>
+      <div className="text-secondary text-sm">
+        <FormattedMessage
+          defaultMessage="~{amount}"
+          id="3QwfJR"
+          values={{
+            amount: (
+              <FormattedNumber style="currency" currency="USD" value={(rates?.ask ?? 0) * (balance ?? 0) * 1e-8} />
+            ),
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
 export default function NavSidebar({ narrow = false }) {
   const { publicKey, subscriptions, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
@@ -106,6 +147,7 @@ export default function NavSidebar({ narrow = false }) {
             { "xl:items-start": !narrow, "xl:gap-2": !narrow },
             "gap-1 flex flex-col items-center text-lg font-bold",
           )}>
+          <WalletBalance narrow={narrow} />
           {MENU_ITEMS.filter(a => {
             if ((CONFIG.hideFromNavbar ?? []).includes(a.link)) {
               return false;
@@ -122,7 +164,7 @@ export default function NavSidebar({ narrow = false }) {
               return "";
             }
             const onClick = () => {
-              if (item.label === "Notifications") {
+              if (item.label === "Notifications" && publisher) {
                 subscribeToNotifications(publisher);
               }
             };

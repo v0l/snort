@@ -16,7 +16,7 @@ const WalletSettings = () => {
   const navigate = useNavigate();
   return (
     <>
-      <WalletPage />
+      <WalletPage showHistory={false} />
       <h3>
         <FormattedMessage defaultMessage="Connect Wallet" id="cg1VJ2" />
       </h3>
