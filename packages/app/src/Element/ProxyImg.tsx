@@ -22,7 +22,7 @@ export const ProxyImg = forwardRef<HTMLImageElement, ProxyImgProps>(
     useEffect(() => {
       setLoadFailed(false);
       setSrc(proxy(props.src, size, sha256));
-    }, [props.src, size, sha256, proxy]);
+    }, [props.src, size, sha256]);
 
     if (loadFailed && !bypass && (promptToLoadDirectly ?? true)) {
       return (
