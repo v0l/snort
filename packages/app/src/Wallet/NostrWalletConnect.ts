@@ -60,6 +60,8 @@ interface ListTransactionsResponse {
     amount: number;
     feed_paid: number;
     settled_at?: number;
+    created_at: number;
+    expires_at: number;
     metadata?: object;
   }>;
 }
@@ -227,7 +229,7 @@ export class NostrConnectWallet implements LNWallet {
               memo: a.description,
               amount: a.amount,
               fees: a.feed_paid,
-              timestamp: a.settled_at,
+              timestamp: typeof a.created_at === "string" ? new Date(a.created_at).getTime() / 1000 : a.created_at,
               preimage: a.preimage,
               state: WalletInvoiceState.Paid,
             }) as WalletInvoice,
