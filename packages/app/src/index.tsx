@@ -135,7 +135,7 @@ export const fuzzySearch = new Fuse<FuzzySearchResult>([], {
 const profileTimestamps = new Map<string, number>();
 
 // how to also add entries from ProfileCache?
-System.on("event", ev => {
+System.on("event", (_, ev) => {
   if (ev.kind === 0) {
     const existing = profileTimestamps.get(ev.pubkey);
     if (existing) {
