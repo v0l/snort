@@ -31,7 +31,7 @@ import DisplayName from "@/Element/User/DisplayName";
 const TEXT_TRUNCATE_LENGTH = 400;
 
 export function NoteInner(props: NoteProps) {
-  const { data: ev, related, highlight, options: opt, ignoreModeration = false, className } = props;
+  const { data: ev, related, highlight, options: opt, ignoreModeration = false, className , waitUntilInView } = props;
 
   const baseClassName = classNames("note min-h-[110px] flex flex-col gap-4 card", className);
   const navigate = useNavigate();
@@ -326,7 +326,7 @@ export function NoteInner(props: NoteProps) {
   }
 
   function content() {
-    if (!inView) return undefined;
+    if (waitUntilInView && !inView) return undefined;
     return (
       <>
         {options.showHeader && (

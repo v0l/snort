@@ -99,6 +99,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
           noteRenderer={props.noteRenderer}
           noteOnClick={props.noteOnClick}
           noteContext={props.noteContext}
+          index={index}
         />
       </ErrorBoundary>
     ));

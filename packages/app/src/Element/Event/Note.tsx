@@ -41,6 +41,7 @@ export interface NoteProps {
     longFormPreview?: boolean;
     truncate?: boolean;
   };
+  waitUntilInView?: boolean;
 }
 
 export default function Note(props: NoteProps) {
