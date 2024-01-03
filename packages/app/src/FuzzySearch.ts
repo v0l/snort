@@ -3,12 +3,12 @@ import Fuse from "fuse.js";
 export type FuzzySearchResult = {
   pubkey: string;
   name?: string;
-  username?: string;
+  display_name?: string;
   nip05?: string;
 };
 
 const fuzzySearch = new Fuse<FuzzySearchResult>([], {
-  keys: ["name", "username", { name: "nip05", weight: 0.5 }],
+  keys: ["name", "display_name", { name: "nip05", weight: 0.5 }],
   threshold: 0.3,
   // sortFn here?
 });
@@ -29,7 +29,7 @@ export const addEventToFuzzySearch = ev => {
   profileTimestamps.set(ev.pubkey, ev.created_at);
   try {
     const data = JSON.parse(ev.content);
-    if (ev.pubkey && (data.name || data.username || data.nip05)) {
+    if (ev.pubkey && (data.name || data.display_name || data.nip05)) {
       data.pubkey = ev.pubkey;
       fuzzySearch.add(data);
     }
