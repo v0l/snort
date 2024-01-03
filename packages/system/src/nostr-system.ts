@@ -30,7 +30,7 @@ import { NostrConnectionPool } from "./nostr-connection-pool";
 export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
-  event: (id: string, ev: TaggedNostrEvent) => void;
+  event: (subId: string, ev: TaggedNostrEvent) => void;
 }
 
 export interface NostrsystemProps {
