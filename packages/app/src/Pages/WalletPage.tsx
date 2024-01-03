@@ -191,8 +191,8 @@ export default function WalletPage(props: { showHistory: boolean }) {
           defaultMessage="<big>{amount}</big> <small>sats</small>"
           id="E5ZIPD"
           values={{
-            big: c => <span className="text-3xl font-bold">{c}</span>,
-            small: c => <span className="text-secondary">{c}</span>,
+            big: c => <span className="text-5xl font-bold">{c}</span>,
+            small: c => <span className="text-secondary text-sm">{c}</span>,
             amount: <FormattedNumber value={balance ?? 0} />,
           }}
         />

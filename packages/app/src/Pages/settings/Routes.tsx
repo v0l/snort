@@ -5,7 +5,6 @@ import Preferences from "@/Pages/settings/Preferences";
 import Notifications from "@/Pages/settings/Notifications";
 import RelayInfo from "@/Pages/settings/RelayInfo";
 import AccountsPage from "@/Pages/settings/Accounts";
-import { WalletSettingsRoutes } from "@/Pages/settings/WalletSettings";
 import { ManageHandleRoutes } from "@/Pages/settings/handle";
 import ExportKeys from "@/Pages/settings/Keys";
 import ModerationSettings from "@/Pages/settings/Moderation";
@@ -13,6 +12,7 @@ import { CacheSettings } from "@/Pages/settings/Cache";
 import { ReferralsPage } from "@/Pages/settings/Referrals";
 import { Outlet } from "react-router-dom";
 import { ToolsPage, ToolsPages } from "./tools";
+import { WalletSettingsRoutes } from "./wallet";
 
 const SettingsPage = () => {
   return (
