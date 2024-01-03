@@ -20,6 +20,7 @@ class IndexedDB extends Dexie {
   private subscribedEventIds = new Set<string>();
   private subscribedAuthors = new Set<string>();
   private subscribedTags = new Set<string>();
+  private subscribedAuthorsAndKinds = new Set<string>();
 
   constructor() {
     super("EventDB");
@@ -112,13 +113,13 @@ class IndexedDB extends Dexie {
       .anyOf(authors)
       .limit(limit || 1000)
       .each(callback);
-  }, 100);
+  }, 200);
 
   subscribeToEventIds = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
     const ids = [...this.subscribedEventIds];
     this.subscribedEventIds.clear();
     await this.events.where("id").anyOf(ids).each(callback);
-  }, 100);
+  }, 200);
 
   subscribeToTags = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
     const tagPairs = [...this.subscribedTags].map(tag => tag.split("|"));
@@ -129,13 +130,30 @@ class IndexedDB extends Dexie {
       .each(tag => this.subscribedEventIds.add(tag.eventId));
 
     await this.subscribeToEventIds(callback);
-  }, 100);
+  }, 200);
+
+  subscribeToAuthorsAndKinds = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
+    const authorsAndKinds = [...this.subscribedAuthorsAndKinds];
+    this.subscribedAuthorsAndKinds.clear();
+    // parse pair[1] as int
+    const pairs = authorsAndKinds.map(pair => {
+      const [author, kind] = pair.split("|");
+      return [author, parseInt(kind)];
+    });
+    await this.events
+      .where("[pubkey+kind]")
+      .anyOf(pairs)
+      .each(callback);
+  }, 200);
 
   async find(filter: Filter, callback: (event: TaggedNostrEvent) => void): Promise<void> {
     if (!filter) return;
 
     // make sure only 1 argument is passed
-    const cb = e => callback(e);
+    const cb = e => {
+      this.seenEvents.add(e.id);
+      callback(e);
+    }
 
     if (filter["#p"] && Array.isArray(filter["#p"])) {
       for (const eventId of filter["#p"]) {
@@ -170,6 +188,13 @@ class IndexedDB extends Dexie {
       return;
     }
 
+    if (filter.authors?.length && filter.kinds?.length) {
+      const permutations = filter.authors.flatMap(author => filter.kinds!.map(kind => author + "|" + kind));
+      permutations.forEach(permutation => this.subscribedAuthorsAndKinds.add(permutation));
+      await this.subscribeToAuthorsAndKinds(cb);
+      return;
+    }
+
     if (filter.authors?.length) {
       filter.authors.forEach(author => this.subscribedAuthors.add(author));
       await this.subscribeToAuthors(cb);
@@ -189,7 +214,6 @@ class IndexedDB extends Dexie {
     }
     // TODO test that the sort is actually working
     await query.each(e => {
-      this.seenEvents.add(e.id);
       cb(e);
     });
   }
