@@ -76,10 +76,11 @@ class IndexedDB extends Dexie {
                 return true;
               }
               // we're only interested in p tags where we are mentioned
+              /*
               if (tag[0] === "p") {
-                // && Key.isMine(tag[1])) {
+                Key.isMine(tag[1])) { // TODO
                 return true;
-              }
+              }*/
               return false;
             })
             .map(tag => ({
@@ -140,10 +141,7 @@ class IndexedDB extends Dexie {
       const [author, kind] = pair.split("|");
       return [author, parseInt(kind)];
     });
-    await this.events
-      .where("[pubkey+kind]")
-      .anyOf(pairs)
-      .each(callback);
+    await this.events.where("[pubkey+kind]").anyOf(pairs).each(callback);
   }, 200);
 
   async find(filter: Filter, callback: (event: TaggedNostrEvent) => void): Promise<void> {
@@ -153,7 +151,7 @@ class IndexedDB extends Dexie {
     const cb = e => {
       this.seenEvents.add(e.id);
       callback(e);
-    }
+    };
 
     if (filter["#p"] && Array.isArray(filter["#p"])) {
       for (const eventId of filter["#p"]) {
