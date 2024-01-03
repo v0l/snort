@@ -129,7 +129,7 @@ System.on("auth", async (c, r, cb) => {
 System.on("event", (_, ev) => {
   addEventToFuzzySearch(ev);
   socialGraphInstance.handleEvent(ev);
-  if (CONFIG.useIndexedDBEvents) {
+  if (CONFIG.useIndexedDBEvents && socialGraphInstance.getFollowDistance(ev.pubkey) <= 2) {
     indexedDB.handleEvent(ev);
   }
 });
