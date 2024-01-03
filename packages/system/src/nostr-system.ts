@@ -2,7 +2,7 @@ import debug from "debug";
 import EventEmitter from "eventemitter3";
 
 import { unwrap, FeedCache } from "@snort/shared";
-import { NostrEvent, TaggedNostrEvent } from "./nostr";
+import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
 import { Query } from "./query";
 import { NoteCollection, NoteStore } from "./note-collection";
@@ -31,6 +31,7 @@ export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
   event: (subId: string, ev: TaggedNostrEvent) => void;
+  request: (filter: ReqFilter) => void;
 }
 
 export interface NostrsystemProps {
@@ -315,6 +316,10 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
       return;
     }
     qSend.filters = fNew;
+
+    fNew.forEach(f => {
+      this.emit("request", f);
+    });
 
     if (qSend.relay) {
       this.#log("Sending query to %s %O", qSend.relay, qSend);

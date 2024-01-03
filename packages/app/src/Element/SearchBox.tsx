@@ -8,9 +8,9 @@ import { NostrLink, tryParseNostrLink } from "@snort/system";
 import { useLocation, useNavigate } from "react-router-dom";
 import { unixNow } from "@snort/shared";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "../Feed/TimelineFeed";
-import { fuzzySearch, FuzzySearchResult } from "@/index";
 import ProfileImage from "@/Element/User/ProfileImage";
 import { socialGraphInstance } from "@snort/system";
+import fuzzySearch, { FuzzySearchResult } from "@/FuzzySearch";
 
 const MAX_RESULTS = 3;
 

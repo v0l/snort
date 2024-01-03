@@ -47,7 +47,10 @@ export default class SocialGraph {
     }
   }
 
-  handleFollowEvent(event: NostrEvent) {
+  handleEvent(event: NostrEvent) {
+    if (event.kind !== 3) {
+      return;
+    }
     try {
       const author = ID(event.pubkey);
       const timestamp = event.created_at;

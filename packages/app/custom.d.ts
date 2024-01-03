@@ -84,6 +84,7 @@ declare const CONFIG: {
   eventLinkPrefix: NostrPrefix;
   profileLinkPrefix: NostrPrefix;
   defaultRelays: Record<string, RelaySettings>;
+  useIndexedDBEvents: boolean;
 };
 
 /**

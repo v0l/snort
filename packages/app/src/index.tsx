@@ -28,6 +28,7 @@ import {
   PowWorker,
   encodeTLVEntries,
   socialGraphInstance,
+  TaggedNostrEvent,
 } from "@snort/system";
 import PowWorkerURL from "@snort/system/src/pow-worker.ts?worker&url";
 import { SnortContext } from "@snort/system-react";
@@ -62,9 +63,12 @@ import { AboutPage } from "@/Pages/About";
 import { OnboardingRoutes } from "@/Pages/onboarding";
 import { setupWebLNWalletConfig } from "@/Wallet/WebLN";
 import { Wallets } from "@/Wallet";
-import Fuse from "fuse.js";
 import NetworkGraph from "@/Pages/NetworkGraph";
 import WalletPage from "./Pages/WalletPage";
+
+import IndexedDBWorker from "./Cache/IndexedDB?worker";
+import * as Comlink from "comlink";
+import { addEventToFuzzySearch } from "@/FuzzySearch";
 
 declare global {
   interface Window {
@@ -101,6 +105,8 @@ const hasWasm = "WebAssembly" in globalThis;
 const DefaultPowWorker = hasWasm ? undefined : new PowWorker(PowWorkerURL);
 export const GetPowWorker = () => (hasWasm ? new WasmPowWorker() : unwrap(DefaultPowWorker));
 
+const indexedDB = Comlink.wrap(new IndexedDBWorker());
+
 /**
  * Singleton nostr system
  */
@@ -120,46 +126,24 @@ System.on("auth", async (c, r, cb) => {
   }
 });
 
-export type FuzzySearchResult = {
-  pubkey: string;
-  name?: string;
-  display_name?: string;
-  nip05?: string;
-};
-
-export const fuzzySearch = new Fuse<FuzzySearchResult>([], {
-  keys: ["name", "display_name", { name: "nip05", weight: 0.5 }],
-  threshold: 0.3,
-  // sortFn here?
-});
-
-const profileTimestamps = new Map<string, number>();
-
-// how to also add entries from ProfileCache?
 System.on("event", (_, ev) => {
-  if (ev.kind === 0) {
-    const existing = profileTimestamps.get(ev.pubkey);
-    if (existing) {
-      if (existing > ev.created_at) {
-        return;
-      }
-      fuzzySearch.remove(doc => doc.pubkey === ev.pubkey);
-    }
-    profileTimestamps.set(ev.pubkey, ev.created_at);
-    try {
-      const data = JSON.parse(ev.content);
-      if (ev.pubkey && (data.name || data.display_name || data.nip05)) {
-        data.pubkey = ev.pubkey;
-        fuzzySearch.add(data);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-  if (ev.kind === 3) {
-    socialGraphInstance.handleFollowEvent(ev);
+  addEventToFuzzySearch(ev);
+  socialGraphInstance.handleEvent(ev);
+  if (CONFIG.useIndexedDBEvents) {
+    indexedDB.handleEvent(ev);
   }
 });
+
+if (CONFIG.useIndexedDBEvents) {
+  System.on("request", (filter: ReqFilter) => {
+    indexedDB.find(
+      filter,
+      Comlink.proxy((e: TaggedNostrEvent) => {
+        System.HandleEvent(e);
+      }),
+    );
+  });
+}
 
 async function fetchProfile(key: string) {
   try {

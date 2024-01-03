@@ -26,7 +26,7 @@ export class FollowListCache extends RefreshFeedCache<TaggedNostrEvent> {
           loaded: unixNowMs(),
         });
         if (update !== "no_change") {
-          socialGraphInstance.handleFollowEvent(e);
+          socialGraphInstance.handleEvent(e);
         }
       }),
     );
@@ -42,6 +42,6 @@ export class FollowListCache extends RefreshFeedCache<TaggedNostrEvent> {
 
   override async preload() {
     await super.preload();
-    this.snapshot().forEach(e => socialGraphInstance.handleFollowEvent(e));
+    this.snapshot().forEach(e => socialGraphInstance.handleEvent(e));
   }
 }
