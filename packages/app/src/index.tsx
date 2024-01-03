@@ -135,6 +135,9 @@ System.on("event", (_, ev) => {
 });
 
 if (CONFIG.useIndexedDBEvents) {
+  // load all profiles
+  indexedDB.find({ kinds: [0] }, Comlink.proxy((e: TaggedNostrEvent) => System.HandleEvent(e)));
+
   System.on("request", (filter: ReqFilter) => {
     indexedDB.find(
       filter,
