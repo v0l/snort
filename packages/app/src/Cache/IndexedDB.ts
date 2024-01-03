@@ -1,7 +1,6 @@
 import Dexie, { Table } from "dexie";
 import { TaggedNostrEvent, ReqFilter as Filter } from "@snort/system";
 import * as Comlink from "comlink";
-import { eventMatchesFilter } from "@snort/system/src/request-matcher";
 
 type Tag = {
   id: string;
@@ -137,18 +136,12 @@ class IndexedDB extends Dexie {
     // make sure only 1 argument is passed
     const cb = e => callback(e);
 
-    const filterCb = e => {
-      if (eventMatchesFilter(e, filter)) {
-        callback(e);
-      }
-    };
-
     if (filter["#p"] && Array.isArray(filter["#p"])) {
       for (const eventId of filter["#p"]) {
         this.subscribedTags.add("p|" + eventId);
       }
 
-      await this.subscribeToTags(filterCb);
+      await this.subscribeToTags(cb);
       return;
     }
 
@@ -157,7 +150,7 @@ class IndexedDB extends Dexie {
         this.subscribedTags.add("e|" + eventId);
       }
 
-      await this.subscribeToTags(filterCb);
+      await this.subscribeToTags(cb);
       return;
     }
 
@@ -166,7 +159,7 @@ class IndexedDB extends Dexie {
         this.subscribedTags.add("d|" + eventId);
       }
 
-      await this.subscribeToTags(filterCb);
+      await this.subscribeToTags(cb);
       return;
     }
 
@@ -178,7 +171,7 @@ class IndexedDB extends Dexie {
 
     if (filter.authors?.length) {
       filter.authors.forEach(author => this.subscribedAuthors.add(author));
-      await this.subscribeToAuthors(filterCb);
+      await this.subscribeToAuthors(cb);
       return;
     }
 
@@ -196,7 +189,7 @@ class IndexedDB extends Dexie {
     // TODO test that the sort is actually working
     await query.each(e => {
       this.seenEvents.add(e.id);
-      filterCb(e);
+      cb(e);
     });
   }
 }
