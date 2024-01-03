@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { EventExt, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useReactions } from "@snort/system-react";
 
 import PageSpinner from "@/Element/PageSpinner";
@@ -15,6 +15,7 @@ import ImageGridItem from "@/Element/Feed/ImageGridItem";
 import { SpotlightThreadModal } from "@/Element/Spotlight/SpotlightThreadModal";
 import useLogin from "@/Hooks/useLogin";
 import useCachedFetch from "@/Hooks/useCachedFetch";
+import { System } from "@/index";
 
 export default function TrendingNotes({ count = Infinity, small = false }) {
   const api = new NostrBandApi();
@@ -26,7 +27,18 @@ export default function TrendingNotes({ count = Infinity, small = false }) {
     data: trendingNotesData,
     isLoading,
     error,
-  } = useCachedFetch(trendingNotesUrl, storageKey, data => data.notes.map(a => a.event));
+  } = useCachedFetch(trendingNotesUrl, storageKey, data => {
+    return data.notes.map(a => {
+      const ev = a.event;
+      const id = EventExt.createId(ev);
+      if (!System.QueryOptimizer.schnorrVerify(id, ev.sig, ev.pubkey)) {
+        console.error(`Event with invalid sig\n\n${ev}\n\nfrom ${trendingNotesUrl}`);
+        return;
+      }
+      System.HandleEvent(ev);
+      return ev;
+    });
+  });
 
   const login = useLogin();
   const displayAsInitial = small ? "list" : login.feedDisplayAs ?? "list";

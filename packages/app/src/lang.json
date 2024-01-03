@@ -75,6 +75,9 @@
   "0HFX0T": {
     "defaultMessage": "Use Exact Location"
   },
+  "0MndVW": {
+    "defaultMessage": "Generic LNDHub wallet (BTCPayServer / Alby / LNBits)"
+  },
   "0jOEtS": {
     "defaultMessage": "Invalid LNURL"
   },
@@ -164,6 +167,9 @@
   },
   "3gOsZq": {
     "defaultMessage": "Translators"
+  },
+  "3natuV": {
+    "defaultMessage": "Cashu mint wallet"
   },
   "3qnJlS": {
     "defaultMessage": "You are voting with {amount} sats"
@@ -996,6 +1002,9 @@
   "XICsE8": {
     "defaultMessage": "File hosts"
   },
+  "XPB8VV": {
+    "defaultMessage": "Alby wallet connection"
+  },
   "XQiFEl": {
     "defaultMessage": "Follows Relay Health"
   },
@@ -1054,6 +1063,9 @@
   "aMaLBK": {
     "defaultMessage": "Supported Extensions"
   },
+  "aSGz4J": {
+    "defaultMessage": "Connect to your own LND node with Lightning Node Connect"
+  },
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
@@ -1101,6 +1113,9 @@
   },
   "cFbU1B": {
     "defaultMessage": "Using Alby? Go to {link} to get your NWC config!"
+  },
+  "cG/bKQ": {
+    "defaultMessage": "Native nostr wallet connection"
   },
   "cHCwbF": {
     "defaultMessage": "Photography"
