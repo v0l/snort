@@ -1,6 +1,7 @@
 import Dexie, { Table } from "dexie";
 import { TaggedNostrEvent, ReqFilter as Filter } from "@snort/system";
 import * as Comlink from "comlink";
+import LRUSet from "@/Cache/LRUSet";
 
 type Tag = {
   id: string;
@@ -15,7 +16,7 @@ class IndexedDB extends Dexie {
   events!: Table<TaggedNostrEvent>;
   tags!: Table<Tag>;
   private saveQueue: SaveQueueEntry[] = [];
-  private seenEvents = new Set<string>(); // LRU set maybe?
+  private seenEvents = new LRUSet<string>(1000);
   private subscribedEventIds = new Set<string>();
   private subscribedAuthors = new Set<string>();
   private subscribedTags = new Set<string>();
