@@ -121,14 +121,14 @@ export class RequestBuilder {
   buildDiff(system: SystemInterface, prev: Array<ReqFilter>): Array<BuiltRawReqFilter> {
     const start = unixNowMs();
 
-    const diff = system.QueryOptimizer.getDiff(prev, this.buildRaw());
+    const diff = system.Optimizer.getDiff(prev, this.buildRaw());
     const ts = unixNowMs() - start;
     this.#log("buildDiff %s %d ms +%d", this.id, ts, diff.length);
     if (diff.length > 0) {
       return splitFlatByWriteRelays(system.RelayCache, diff).map(a => {
         return {
           strategy: RequestStrategy.AuthorsRelays,
-          filters: system.QueryOptimizer.flatMerge(a.filters),
+          filters: system.Optimizer.flatMerge(a.filters),
           relay: a.relay,
         };
       });
@@ -154,9 +154,7 @@ export class RequestBuilder {
 
     const filtersSquashed = [...relayMerged.values()].map(a => {
       return {
-        filters: system.QueryOptimizer.flatMerge(
-          a.flatMap(b => b.filters.flatMap(c => system.QueryOptimizer.expandFilter(c))),
-        ),
+        filters: system.Optimizer.flatMerge(a.flatMap(b => b.filters.flatMap(c => system.Optimizer.expandFilter(c)))),
         relay: a[0].relay,
         strategy: a[0].strategy,
       } as BuiltRawReqFilter;

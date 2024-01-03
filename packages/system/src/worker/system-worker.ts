@@ -6,7 +6,7 @@ import {
   NoteStore,
   OkResponse,
   ProfileLoaderService,
-  QueryOptimizer,
+  Optimizer,
   RelayCache,
   RelaySettings,
   RequestBuilder,
@@ -79,7 +79,7 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
     throw new Error("Method not implemented.");
   }
 
-  get QueryOptimizer(): QueryOptimizer {
+  get Optimizer(): Optimizer {
     throw new Error("Method not implemented.");
   }
 

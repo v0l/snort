@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 export interface NoteTimeProps {
@@ -14,10 +14,14 @@ export default function NoteTime(props: NoteTimeProps) {
   const { from, fallback } = props;
   const [time, setTime] = useState<string | JSX.Element>(calcTime());
 
-  const absoluteTime = new Intl.DateTimeFormat(undefined, {
-    dateStyle: "medium",
-    timeStyle: "long",
-  }).format(from);
+  const absoluteTime = useMemo(
+    () =>
+      new Intl.DateTimeFormat(undefined, {
+        dateStyle: "medium",
+        timeStyle: "long",
+      }).format(from),
+    [from],
+  );
 
   const isoDate = new Date(from).toISOString();
 

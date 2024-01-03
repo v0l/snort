@@ -8,7 +8,7 @@ import {
   flat_merge,
   get_diff,
   pow,
-  schnorr_verify,
+  schnorr_verify_event,
   default as wasmInit,
 } from "@snort/system-wasm";
 import WasmPath from "@snort/system-wasm/pkg/system_wasm_bg.wasm";
@@ -19,7 +19,7 @@ import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-d
 import {
   NostrSystem,
   ProfileLoaderService,
-  QueryOptimizer,
+  Optimizer,
   FlatReqFilter,
   ReqFilter,
   PowMiner,
@@ -76,7 +76,7 @@ declare global {
   }
 }
 
-const WasmQueryOptimizer = {
+const WasmOptimizer = {
   expandFilter: (f: ReqFilter) => {
     return expand_filter(f) as Array<FlatReqFilter>;
   },
@@ -89,10 +89,10 @@ const WasmQueryOptimizer = {
   compress: (all: Array<ReqFilter>) => {
     return compress(all) as Array<ReqFilter>;
   },
-  schnorrVerify: (id, sig, pubkey) => {
-    return schnorr_verify(id, sig, pubkey);
+  schnorrVerify: ev => {
+    return schnorr_verify_event(ev);
   },
-} as QueryOptimizer;
+} as Optimizer;
 
 export class WasmPowWorker implements PowMiner {
   minePow(ev: NostrEvent, target: number): Promise<NostrEvent> {
@@ -114,7 +114,7 @@ export const System = new NostrSystem({
   relayCache: UserRelays,
   profileCache: UserCache,
   relayMetrics: RelayMetrics,
-  queryOptimizer: hasWasm ? WasmQueryOptimizer : undefined,
+  optimizer: hasWasm ? WasmOptimizer : undefined,
   db: SystemDb,
 });
 

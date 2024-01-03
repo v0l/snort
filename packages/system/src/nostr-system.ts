@@ -23,7 +23,7 @@ import {
 } from ".";
 import { EventsCache } from "./cache/events";
 import { RelayCache, RelayMetadataLoader } from "./outbox-model";
-import { QueryOptimizer, DefaultQueryOptimizer } from "./query-optimizer";
+import { Optimizer, DefaultOptimizer } from "./query-optimizer";
 import { trimFilters } from "./request-trim";
 import { NostrConnectionPool } from "./nostr-connection-pool";
 
@@ -39,7 +39,7 @@ export interface NostrsystemProps {
   profileCache?: FeedCache<MetadataCache>;
   relayMetrics?: FeedCache<RelayMetrics>;
   eventsCache?: FeedCache<NostrEvent>;
-  queryOptimizer?: QueryOptimizer;
+  optimizer?: Optimizer;
   db?: SnortSystemDb;
   checkSigs?: boolean;
 }
@@ -87,9 +87,9 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
   #eventsCache: FeedCache<NostrEvent>;
 
   /**
-   * Query optimizer instance
+   * Optimizer instance, contains optimized functions for processing data
    */
-  #queryOptimizer: QueryOptimizer;
+  #optimizer: Optimizer;
 
   /**
    * Check event signatures (reccomended)
@@ -104,7 +104,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.#profileCache = props.profileCache ?? new UserProfileCache(props.db?.users);
     this.#relayMetricsCache = props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics);
     this.#eventsCache = props.eventsCache ?? new EventsCache(props.db?.events);
-    this.#queryOptimizer = props.queryOptimizer ?? DefaultQueryOptimizer;
+    this.#optimizer = props.optimizer ?? DefaultOptimizer;
 
     this.#profileLoader = new ProfileLoaderService(this, this.#profileCache);
     this.#relayMetrics = new RelayMetricHandler(this.#relayMetricsCache);
@@ -135,8 +135,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
         return;
       }
       if (this.checkSigs) {
-        const id = EventExt.createId(ev);
-        if (!this.#queryOptimizer.schnorrVerify(id, ev.sig, ev.pubkey)) {
+        if (!this.#optimizer.schnorrVerify(ev)) {
           this.#log("Invalid sig %O", ev);
           return;
         }
@@ -186,8 +185,8 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     return this.#relayCache;
   }
 
-  get QueryOptimizer(): QueryOptimizer {
-    return this.#queryOptimizer;
+  get Optimizer(): Optimizer {
+    return this.#optimizer;
   }
 
   async Init() {

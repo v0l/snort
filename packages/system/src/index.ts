@@ -5,7 +5,7 @@ import { Query } from "./query";
 import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { ProfileLoaderService } from "./profile-cache";
 import { RelayCache } from "./outbox-model";
-import { QueryOptimizer } from "./query-optimizer";
+import { Optimizer } from "./query-optimizer";
 import { base64 } from "@scure/base";
 
 export { NostrSystem } from "./nostr-system";
@@ -127,7 +127,7 @@ export interface SystemInterface {
   /**
    * Query optimizer
    */
-  get QueryOptimizer(): QueryOptimizer;
+  get Optimizer(): Optimizer;
 }
 
 export interface SystemSnapshot {

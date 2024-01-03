@@ -46,6 +46,11 @@ export function argon2(password: any, salt: any): any;
  * @returns {boolean}
  */
 export function schnorr_verify(hash: any, sig: any, pub_key: any): boolean;
+/**
+ * @param {any} event
+ * @returns {boolean}
+ */
+export function schnorr_verify_event(event: any): boolean;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
@@ -59,6 +64,7 @@ export interface InitOutput {
   readonly pow: (a: number, b: number, c: number) => void;
   readonly argon2: (a: number, b: number, c: number) => void;
   readonly schnorr_verify: (a: number, b: number, c: number, d: number) => void;
+  readonly schnorr_verify_event: (a: number, b: number) => void;
   readonly rustsecp256k1_v0_9_1_context_create: (a: number) => number;
   readonly rustsecp256k1_v0_9_1_context_destroy: (a: number) => void;
   readonly rustsecp256k1_v0_9_1_default_illegal_callback_fn: (a: number, b: number) => void;

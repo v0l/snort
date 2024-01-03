@@ -9,6 +9,7 @@ export function compress(a: number, b: number): void;
 export function pow(a: number, b: number, c: number): void;
 export function argon2(a: number, b: number, c: number): void;
 export function schnorr_verify(a: number, b: number, c: number, d: number): void;
+export function schnorr_verify_event(a: number, b: number): void;
 export function rustsecp256k1_v0_9_1_context_create(a: number): number;
 export function rustsecp256k1_v0_9_1_context_destroy(a: number): void;
 export function rustsecp256k1_v0_9_1_default_illegal_callback_fn(a: number, b: number): void;
