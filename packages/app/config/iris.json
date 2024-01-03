@@ -38,5 +38,5 @@
     "wss://relay.nostr.band/": { "read": true, "write": true },
     "wss://relay.damus.io/": { "read": true, "write": true }
   },
-  "useIndexedDBEvents": true
+  "useIndexedDBEvents": false
 }
