@@ -30,5 +30,5 @@ export const WalletSettingsRoutes = [
   {
     path: "/settings/wallet/alby",
     element: <AlbyOAuth />,
-  }
+  },
 ] as Array<RouteObject>;
