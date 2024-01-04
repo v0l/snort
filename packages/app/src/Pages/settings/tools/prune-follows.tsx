@@ -1,14 +1,14 @@
-import { Day } from "@/Const";
-import AsyncButton from "@/Element/Button/AsyncButton";
+import { Day } from "@/Utils/Const";
+import AsyncButton from "@/Components/Button/AsyncButton";
 import useLogin from "@/Hooks/useLogin";
 import { dedupe, unixNow } from "@snort/shared";
 import { RequestBuilder } from "@snort/system";
 import { useMemo, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { FollowsRelayHealth } from "./follows-relay-health";
-import ProfileImage from "@/Element/User/ProfileImage";
+import ProfileImage from "@/Components/User/ProfileImage";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import { setFollows } from "@/Login";
+import { setFollows } from "@/Utils/Login";
 
 const enum PruneStage {
   FetchLastPostTimestamp,

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import NavLink from "@/Element/Button/NavLink";
+import NavLink from "@/Components/Button/NavLink";
 import useLogin from "@/Hooks/useLogin";
-import Icon from "@/Icons/Icon";
-import { ProfileLink } from "@/Element/User/ProfileLink";
-import { NoteCreatorButton } from "@/Element/Event/Create/NoteCreatorButton";
+import Icon from "@/Components/Icons/Icon";
+import { ProfileLink } from "@/Components/User/ProfileLink";
+import { NoteCreatorButton } from "@/Components/Event/Create/NoteCreatorButton";
 import classNames from "classnames";
 import { useUserProfile } from "@snort/system-react";
-import Avatar from "@/Element/User/Avatar";
+import Avatar from "@/Components/User/Avatar";
 import { useIntl } from "react-intl";
 
 type MenuItem = {

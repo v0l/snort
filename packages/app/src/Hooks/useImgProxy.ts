@@ -1,6 +1,6 @@
 import * as utils from "@noble/curves/abstract/utils";
 import { base64 } from "@scure/base";
-import { hmacSha256, unwrap } from "@/SnortUtils";
+import { hmacSha256, unwrap } from "@/Utils";
 import useLogin from "@/Hooks/useLogin";
 
 export interface ImgProxySettings {

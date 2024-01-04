@@ -1,7 +1,7 @@
 import { unixNowMs } from "@snort/shared";
 import useLogin from "@/Hooks/useLogin";
-import { SnortAppData, updateAppData } from "@/Login";
-import { appendDedupe } from "@/SnortUtils";
+import { SnortAppData, updateAppData } from "@/Utils/Login";
+import { appendDedupe } from "@/Utils";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 

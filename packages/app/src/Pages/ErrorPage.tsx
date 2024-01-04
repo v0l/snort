@@ -1,5 +1,5 @@
 import { db } from "@/Db";
-import AsyncButton from "@/Element/Button/AsyncButton";
+import AsyncButton from "@/Components/Button/AsyncButton";
 import { FormattedMessage } from "react-intl";
 import { useRouteError } from "react-router-dom";
 

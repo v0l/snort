@@ -1,0 +1,408 @@
+import "./SendSats.css";
+import React, { ReactNode, useEffect, useState } from "react";
+import { useIntl, FormattedMessage } from "react-intl";
+
+import { HexKey } from "@snort/system";
+import { LNURLSuccessAction } from "@snort/shared";
+
+import { formatShort } from "@/Utils/Number";
+import Icon from "@/Components/Icons/Icon";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import ProfileImage from "@/Components/User/ProfileImage";
+import Modal from "@/Components/Modal/Modal";
+import QrCode from "@/Components/QrCode";
+import Copy from "@/Components/Copy/Copy";
+import { debounce } from "@/Utils";
+import { LNWallet, useWallet } from "@/Wallet";
+import useLogin from "@/Hooks/useLogin";
+import AsyncButton from "@/Components/Button/AsyncButton";
+import { ZapTarget, ZapTargetResult, Zapper } from "@/Utils/Zapper";
+
+import messages from "../messages";
+import CloseButton from "@/Components/Button/CloseButton";
+
+enum ZapType {
+  PublicZap = 1,
+  AnonZap = 2,
+  PrivateZap = 3,
+  NonZap = 4,
+}
+
+export interface SendSatsProps {
+  onClose?: () => void;
+  targets?: Array<ZapTarget>;
+  show?: boolean;
+  invoice?: string; // shortcut to invoice qr tab
+  title?: ReactNode;
+  notice?: string;
+  note?: HexKey;
+  allocatePool?: boolean;
+}
+
+export default function SendSats(props: SendSatsProps) {
+  const onClose = props.onClose || (() => undefined);
+
+  const [zapper, setZapper] = useState<Zapper>();
+  const [invoice, setInvoice] = useState<Array<ZapTargetResult>>();
+  const [error, setError] = useState<string>();
+  const [success, setSuccess] = useState<LNURLSuccessAction>();
+  const [amount, setAmount] = useState<SendSatsInputSelection>();
+
+  const { publisher, system } = useEventPublisher();
+  const walletState = useWallet();
+  const wallet = walletState.wallet;
+
+  useEffect(() => {
+    if (props.show) {
+      const invoiceTarget = {
+        target: {
+          type: "lnurl",
+          value: "",
+          weight: 1,
+        },
+        pr: props.invoice,
+        paid: false,
+        sent: 0,
+        fee: 0,
+      } as ZapTargetResult;
+
+      setError(undefined);
+      setInvoice(props.invoice ? [invoiceTarget] : undefined);
+      setSuccess(undefined);
+    }
+  }, [props.show]);
+
+  useEffect(() => {
+    if (success && !success.url) {
+      // Fire onClose when success is set with no URL action
+      return debounce(1_000, () => {
+        onClose();
+      });
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (props.targets && props.show) {
+      try {
+        console.debug("loading zapper");
+        const zapper = new Zapper(system, publisher);
+        zapper.load(props.targets).then(() => {
+          console.debug(zapper);
+          setZapper(zapper);
+        });
+      } catch (e) {
+        console.error(e);
+        if (e instanceof Error) {
+          setError(e.message);
+        }
+      }
+    }
+  }, [props.targets, props.show]);
+
+  function successAction() {
+    if (!success) return null;
+    return (
+      <div className="flex items-center">
+        <p className="flex g12">
+          <Icon name="check" className="success" />
+          {success?.description ?? <FormattedMessage defaultMessage="Paid" id="u/vOPu" />}
+        </p>
+        {success.url && (
+          <p>
+            <a href={success.url} rel="noreferrer" target="_blank">
+              {success.url}
+            </a>
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  function title() {
+    if (!props.targets) {
+      return (
+        <>
+          <h2>
+            {zapper?.canZap() ? (
+              <FormattedMessage defaultMessage="Send zap" id="5ykRmX" />
+            ) : (
+              <FormattedMessage defaultMessage="Send sats" id="DKnriN" />
+            )}
+          </h2>
+        </>
+      );
+    }
+    if (props.targets.length === 1 && props.targets[0].name) {
+      const t = props.targets[0];
+      const values = {
+        name: t.name,
+      };
+      return (
+        <>
+          {t.zap?.pubkey && <ProfileImage pubkey={t.zap.pubkey} showUsername={false} />}
+          <h2>
+            {zapper?.canZap() ? (
+              <FormattedMessage defaultMessage="Send zap to {name}" id="SMO+on" values={values} />
+            ) : (
+              <FormattedMessage defaultMessage="Send sats to {name}" id="JGrt9q" values={values} />
+            )}
+          </h2>
+        </>
+      );
+    }
+    if (props.targets.length > 1) {
+      const total = props.targets.reduce((acc, v) => (acc += v.weight), 0);
+
+      return (
+        <div className="flex flex-col g12">
+          <h2>
+            {zapper?.canZap() ? (
+              <FormattedMessage defaultMessage="Send zap splits to" id="ZS+jRE" />
+            ) : (
+              <FormattedMessage defaultMessage="Send sats splits to" id="uc0din" />
+            )}
+          </h2>
+          <div className="flex g4 f-wrap">
+            {props.targets.map(v => (
+              <ProfileImage
+                key={v.value}
+                pubkey={v.value}
+                showUsername={false}
+                showFollowDistance={false}
+                imageOverlay={formatShort(Math.floor((amount?.amount ?? 0) * (v.weight / total)))}
+              />
+            ))}
+          </div>
+        </div>
+      );
+    }
+  }
+
+  if (!(props.show ?? false)) return null;
+  return (
+    <Modal id="send-sats" className="lnurl-modal" onClose={onClose}>
+      <div className="p flex flex-col g12">
+        <div className="flex g12">
+          <div className="flex items-center grow">{props.title || title()}</div>
+          <CloseButton onClick={onClose} />
+        </div>
+        {zapper && !invoice && (
+          <SendSatsInput
+            zapper={zapper}
+            onChange={v => setAmount(v)}
+            onNextStage={async p => {
+              const targetsWithComments = (props.targets ?? []).map(v => {
+                if (p.comment) {
+                  v.memo = p.comment;
+                }
+                if (p.type === ZapType.AnonZap && v.zap) {
+                  v.zap = {
+                    ...v.zap,
+                    anon: true,
+                  };
+                } else if (p.type === ZapType.NonZap) {
+                  v.zap = undefined;
+                }
+                return v;
+              });
+              if (targetsWithComments.length > 0) {
+                const sends = await zapper.send(wallet, targetsWithComments, p.amount);
+                if (sends[0].error) {
+                  setError(sends[0].error.message);
+                } else if (sends.every(a => a.paid)) {
+                  setSuccess({});
+                } else {
+                  setInvoice(sends);
+                }
+              }
+            }}
+          />
+        )}
+        {error && <p className="error">{error}</p>}
+        {invoice && !success && (
+          <SendSatsInvoice
+            invoice={invoice}
+            wallet={wallet}
+            notice={props.notice}
+            onInvoicePaid={() => {
+              setSuccess({});
+            }}
+          />
+        )}
+        {successAction()}
+      </div>
+    </Modal>
+  );
+}
+
+interface SendSatsInputSelection {
+  amount: number;
+  comment?: string;
+  type: ZapType;
+}
+
+function SendSatsInput(props: {
+  zapper: Zapper;
+  onChange?: (v: SendSatsInputSelection) => void;
+  onNextStage: (v: SendSatsInputSelection) => Promise<void>;
+}) {
+  const { defaultZapAmount, readonly } = useLogin(s => ({
+    defaultZapAmount: s.appData.item.preferences.defaultZapAmount,
+    readonly: s.readonly,
+  }));
+  const { formatMessage } = useIntl();
+  const amounts: Record<string, string> = {
+    [defaultZapAmount.toString()]: "",
+    "1000": "👍",
+    "5000": "💜",
+    "10000": "😍",
+    "20000": "🤩",
+    "50000": "🔥",
+    "100000": "🚀",
+    "1000000": "🤯",
+  };
+  const [comment, setComment] = useState<string>();
+  const [amount, setAmount] = useState<number>(defaultZapAmount);
+  const [customAmount, setCustomAmount] = useState<number>(defaultZapAmount);
+  const [zapType, setZapType] = useState(readonly ? ZapType.AnonZap : ZapType.PublicZap);
+
+  function getValue() {
+    return {
+      amount,
+      comment,
+      type: zapType,
+    } as SendSatsInputSelection;
+  }
+
+  useEffect(() => {
+    if (props.onChange) {
+      props.onChange(getValue());
+    }
+  }, [amount, comment, zapType]);
+
+  function renderAmounts() {
+    const min = props.zapper.minAmount() / 1000;
+    const max = props.zapper.maxAmount() / 1000;
+    const filteredAmounts = Object.entries(amounts).filter(([k]) => Number(k) >= min && Number(k) <= max);
+
+    return (
+      <div className="amounts">
+        {filteredAmounts.map(([k, v]) => (
+          <span
+            className={`sat-amount ${amount === Number(k) ? "active" : ""}`}
+            key={k}
+            onClick={() => setAmount(Number(k))}>
+            {v}&nbsp;
+            {k === "1000" ? "1K" : formatShort(Number(k))}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  function custom() {
+    const min = props.zapper.minAmount() / 1000;
+    const max = props.zapper.maxAmount() / 1000;
+
+    return (
+      <div className="flex g8">
+        <input
+          type="number"
+          min={min}
+          max={max}
+          className="grow"
+          placeholder={formatMessage(messages.Custom)}
+          value={customAmount}
+          onChange={e => setCustomAmount(parseInt(e.target.value))}
+        />
+        <button
+          className="secondary"
+          type="button"
+          disabled={!customAmount}
+          onClick={() => setAmount(customAmount ?? 0)}>
+          <FormattedMessage {...messages.Confirm} />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col g24">
+      <div className="flex flex-col g8">
+        <h3>
+          <FormattedMessage defaultMessage="Zap amount in sats" id="zcaOTs" />
+        </h3>
+        {renderAmounts()}
+        {custom()}
+        {props.zapper.maxComment() > 0 && (
+          <input
+            type="text"
+            placeholder={formatMessage(messages.Comment)}
+            className="grow"
+            maxLength={props.zapper.maxComment()}
+            onChange={e => setComment(e.target.value)}
+          />
+        )}
+      </div>
+      <SendSatsZapTypeSelector zapType={zapType} setZapType={setZapType} />
+      {(amount ?? 0) > 0 && (
+        <AsyncButton onClick={() => props.onNextStage(getValue())}>
+          <Icon name="zap" />
+          <FormattedMessage defaultMessage="Zap {n} sats" id="8QDesP" values={{ n: formatShort(amount) }} />
+        </AsyncButton>
+      )}
+    </div>
+  );
+}
+
+function SendSatsZapTypeSelector({ zapType, setZapType }: { zapType: ZapType; setZapType: (t: ZapType) => void }) {
+  const { readonly } = useLogin(s => ({ readonly: s.readonly }));
+  const makeTab = (t: ZapType, n: React.ReactNode) => (
+    <button type="button" className={zapType === t ? "" : "secondary"} onClick={() => setZapType(t)}>
+      {n}
+    </button>
+  );
+  return (
+    <div className="flex flex-col g8">
+      <h3>
+        <FormattedMessage defaultMessage="Zap Type" id="+aZY2h" />
+      </h3>
+      <div className="flex g8">
+        {!readonly &&
+          makeTab(ZapType.PublicZap, <FormattedMessage defaultMessage="Public" id="/PCavi" description="Public Zap" />)}
+        {/*makeTab(ZapType.PrivateZap, "Private")*/}
+        {makeTab(ZapType.AnonZap, <FormattedMessage defaultMessage="Anon" id="wWLwvh" description="Anonymous Zap" />)}
+        {makeTab(
+          ZapType.NonZap,
+          <FormattedMessage defaultMessage="Non-Zap" id="AnLrRC" description="Non-Zap, Regular LN payment" />,
+        )}
+      </div>
+    </div>
+  );
+}
+
+function SendSatsInvoice(props: {
+  invoice: Array<ZapTargetResult>;
+  wallet?: LNWallet;
+  notice?: ReactNode;
+  onInvoicePaid: () => void;
+}) {
+  return (
+    <div className="flex flex-col items-center g12 txt-center">
+      {props.notice && <b className="error">{props.notice}</b>}
+      {props.invoice.map(v => (
+        <>
+          <QrCode data={v.pr} link={`lightning:${v.pr}`} />
+          <div className="flex flex-col g12">
+            <Copy text={v.pr} maxSize={26} className="items-center" />
+            <a href={`lightning:${v.pr}`}>
+              <button type="button">
+                <FormattedMessage defaultMessage="Open Wallet" id="HbefNb" />
+              </button>
+            </a>
+          </div>
+        </>
+      ))}
+    </div>
+  );
+}

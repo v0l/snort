@@ -1,6 +1,6 @@
 import { useEventFeed } from "@snort/system-react";
 import { NostrLink, UserMetadata } from "@snort/system";
-import ProfilePreview from "@/Element/User/ProfilePreview";
+import ProfilePreview from "@/Components/User/ProfilePreview";
 import React from "react";
 
 export default function Nip28ChatProfile({ id, onClick }: { id: string; onClick: (id: string) => void }) {

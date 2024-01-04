@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import ProfileImage from "@/Element/User/ProfileImage";
+import ProfileImage from "@/Components/User/ProfileImage";
 import DM from "@/Pages/Messages/DM";
 import useLogin from "@/Hooks/useLogin";
 import WriteMessage from "@/Pages/Messages/WriteMessage";

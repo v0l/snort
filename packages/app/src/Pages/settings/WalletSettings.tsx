@@ -1,13 +1,13 @@
-import LndLogo from "@/lnd-logo.png";
+import LndLogo from "@/img/lnd-logo.png";
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import BlueWallet from "@/Icons/BlueWallet";
-import NostrIcon from "@/Icons/Nostrich";
-import CashuIcon from "@/Icons/Cashu";
-import AlbyIcon from "@/Icons/Alby";
-import Icon from "@/Icons/Icon";
+import BlueWallet from "@/Components/Icons/BlueWallet";
+import NostrIcon from "@/Components/Icons/Nostrich";
+import CashuIcon from "@/Components/Icons/Cashu";
+import AlbyIcon from "@/Components/Icons/Alby";
+import Icon from "@/Components/Icons/Icon";
 import { getAlbyOAuth } from "./wallet/Alby";
 
 const WalletRow = (props: {

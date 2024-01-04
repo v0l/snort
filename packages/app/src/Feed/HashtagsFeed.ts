@@ -4,7 +4,7 @@ import { unixNow } from "@snort/shared";
 import { useRequestBuilder } from "@snort/system-react";
 
 import useLogin from "@/Hooks/useLogin";
-import { Hour } from "@/Const";
+import { Hour } from "@/Utils/Const";
 
 export default function useHashtagsFeed() {
   const { hashtags } = useLogin(s => ({ hashtags: s.tags.item }));

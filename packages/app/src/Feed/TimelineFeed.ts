@@ -5,7 +5,7 @@ import { unixNow } from "@snort/shared";
 
 import useTimelineWindow from "@/Hooks/useTimelineWindow";
 import useLogin from "@/Hooks/useLogin";
-import { SearchRelays } from "@/Const";
+import { SearchRelays } from "@/Utils/Const";
 
 export interface TimelineFeedOptions {
   method: "TIME_RANGE" | "LIMIT_UNTIL";

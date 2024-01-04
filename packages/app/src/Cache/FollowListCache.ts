@@ -2,7 +2,7 @@ import { db } from "@/Db";
 import { unixNowMs } from "@snort/shared";
 import { EventKind, RequestBuilder, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
 import { RefreshFeedCache } from "./RefreshFeedCache";
-import { LoginSession } from "@/Login";
+import { LoginSession } from "@/Utils/Login";
 
 export class FollowListCache extends RefreshFeedCache<TaggedNostrEvent> {
   constructor() {

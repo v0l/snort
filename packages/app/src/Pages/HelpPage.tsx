@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { KieranPubKey } from "@/Const";
+import { KieranPubKey } from "@/Utils/Const";
 import { FormattedMessage } from "react-intl";
 import { TLVEntryType, encodeTLVEntries, NostrPrefix } from "@snort/system";
-import { bech32ToHex } from "@/SnortUtils";
+import { bech32ToHex } from "@/Utils";
 
 export default function HelpPage() {
   return (

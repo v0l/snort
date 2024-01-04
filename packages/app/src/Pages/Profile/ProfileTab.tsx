@@ -3,16 +3,16 @@ import { HexKey, NostrLink, NostrPrefix } from "@snort/system";
 import { useReactions } from "@snort/system-react";
 
 import useZapsFeed from "@/Feed/ZapsFeed";
-import { formatShort } from "@/Number";
+import { formatShort } from "@/Utils/Number";
 import useFollowersFeed from "@/Feed/FollowersFeed";
-import FollowsList from "@/Element/User/FollowListBase";
+import FollowsList from "@/Components/User/FollowListBase";
 import useFollowsFeed from "@/Feed/FollowsFeed";
 import useRelaysFeed from "@/Feed/RelaysFeed";
-import RelaysMetadata from "@/Element/Relay/RelaysMetadata";
-import Bookmarks from "@/Element/User/Bookmarks";
-import Icon from "@/Icons/Icon";
-import { Tab } from "@/Element/Tabs";
-import { default as ZapElement } from "@/Element/Event/Zap";
+import RelaysMetadata from "@/Components/Relay/RelaysMetadata";
+import Bookmarks from "@/Components/User/Bookmarks";
+import Icon from "@/Components/Icons/Icon";
+import { Tab } from "@/Components/Tabs/Tabs";
+import { default as ZapElement } from "@/Components/Event/Zap";
 import { useBookmarkList } from "@/Hooks/useLists";
 
 import messages from "../messages";

@@ -1,6 +1,6 @@
-import AsyncButton from "@/Element/Button/AsyncButton";
-import { LeaderBadge } from "@/Element/CommunityLeaders/LeaderBadge";
-import Copy from "@/Element/Copy";
+import AsyncButton from "@/Components/Button/AsyncButton";
+import { LeaderBadge } from "@/Components/CommunityLeaders/LeaderBadge";
+import Copy from "@/Components/Copy/Copy";
 import SnortApi, { RefCodeResponse } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { useEffect, useState } from "react";

@@ -14,36 +14,36 @@ import {
 import { fetchNip05Pubkey, LNURL } from "@snort/shared";
 import { useUserProfile } from "@snort/system-react";
 
-import { findTag, getLinkReactions, hexToBech32, parseId, unwrap } from "@/SnortUtils";
-import Note from "@/Element/Event/Note";
-import { Tab, TabElement } from "@/Element/Tabs";
-import Icon from "@/Icons/Icon";
+import { findTag, getLinkReactions, hexToBech32, parseId, unwrap } from "@/Utils";
+import Note from "@/Components/Event/Note";
+import { Tab, TabElement } from "@/Components/Tabs/Tabs";
+import Icon from "@/Components/Icons/Icon";
 import useFollowsFeed from "@/Feed/FollowsFeed";
 import useProfileBadges from "@/Feed/BadgesFeed";
 import useModeration from "@/Hooks/useModeration";
-import FollowButton from "@/Element/User/FollowButton";
-import Avatar from "@/Element/User/Avatar";
-import Timeline from "@/Element/Feed/Timeline";
-import Text from "@/Element/Text";
-import SendSats from "@/Element/SendSats";
-import Nip05 from "@/Element/User/Nip05";
-import Copy from "@/Element/Copy";
-import ProfileImage from "@/Element/User/ProfileImage";
-import BlockList from "@/Element/User/BlockList";
-import MutedList from "@/Element/User/MutedList";
-import FollowsList from "@/Element/User/FollowListBase";
-import IconButton from "@/Element/Button/IconButton";
-import FollowsYou from "@/Element/User/FollowsYou";
-import QrCode from "@/Element/QrCode";
-import Modal from "@/Element/Modal";
-import BadgeList from "@/Element/User/BadgeList";
-import { ProxyImg } from "@/Element/ProxyImg";
+import FollowButton from "@/Components/User/FollowButton";
+import Avatar from "@/Components/User/Avatar";
+import Timeline from "@/Components/Feed/Timeline";
+import Text from "@/Components/Text/Text";
+import SendSats from "@/Components/SendSats/SendSats";
+import Nip05 from "@/Components/User/Nip05";
+import Copy from "@/Components/Copy/Copy";
+import ProfileImage from "@/Components/User/ProfileImage";
+import BlockList from "@/Components/User/BlockList";
+import MutedList from "@/Components/User/MutedList";
+import FollowsList from "@/Components/User/FollowListBase";
+import IconButton from "@/Components/Button/IconButton";
+import FollowsYou from "@/Components/User/FollowsYou";
+import QrCode from "@/Components/QrCode";
+import Modal from "@/Components/Modal/Modal";
+import BadgeList from "@/Components/User/BadgeList";
+import { ProxyImg } from "@/Components/ProxyImg";
 import useHorizontalScroll from "@/Hooks/useHorizontalScroll";
-import { EmailRegex } from "@/Const";
+import { EmailRegex } from "@/Utils/Const";
 import useLogin from "@/Hooks/useLogin";
-import { ZapTarget } from "@/Zapper";
+import { ZapTarget } from "@/Utils/Zapper";
 import { useStatusFeed } from "@/Feed/StatusFeed";
-import { SpotlightMediaModal } from "@/Element/Spotlight/SpotlightMedia";
+import { SpotlightMediaModal } from "@/Components/Spotlight/SpotlightMedia";
 import ProfileTab, {
   BookMarksTab,
   FollowersTab,
@@ -52,10 +52,10 @@ import ProfileTab, {
   RelaysTab,
   ZapsProfileTab,
 } from "@/Pages/Profile/ProfileTab";
-import DisplayName from "@/Element/User/DisplayName";
-import { UserWebsiteLink } from "@/Element/User/UserWebsiteLink";
+import DisplayName from "@/Components/User/DisplayName";
+import { UserWebsiteLink } from "@/Components/User/UserWebsiteLink";
 import { useMuteList, usePinList } from "@/Hooks/useLists";
-import FollowedBy from "@/Element/User/FollowedBy";
+import FollowedBy from "@/Components/User/FollowedBy";
 
 interface ProfilePageProps {
   id?: string;

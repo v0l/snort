@@ -8,18 +8,18 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import useLogin from "@/Hooks/useLogin";
-import { markNotificationsRead } from "@/Login";
+import { markNotificationsRead } from "@/Utils/Login";
 import { Notifications } from "@/Cache";
-import { dedupe, orderDescending, getDisplayName } from "@/SnortUtils";
-import Icon from "@/Icons/Icon";
-import ProfileImage from "@/Element/User/ProfileImage";
+import { dedupe, orderDescending, getDisplayName } from "@/Utils";
+import Icon from "@/Components/Icons/Icon";
+import ProfileImage from "@/Components/User/ProfileImage";
 import useModeration from "@/Hooks/useModeration";
-import Text from "@/Element/Text";
-import { formatShort } from "@/Number";
-import { LiveEvent } from "@/Element/LiveEvent";
-import ProfilePreview from "@/Element/User/ProfilePreview";
-import { ShowMoreInView } from "@/Element/Event/ShowMore";
-import PageSpinner from "@/Element/PageSpinner";
+import Text from "@/Components/Text/Text";
+import { formatShort } from "@/Utils/Number";
+import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
+import ProfilePreview from "@/Components/User/ProfilePreview";
+import { ShowMoreInView } from "@/Components/Event/ShowMore";
+import PageSpinner from "@/Components/PageSpinner";
 const NotificationGraph = lazy(() => import("@/Pages/Notifications/NotificationChart"));
 
 function notificationContext(ev: TaggedNostrEvent) {

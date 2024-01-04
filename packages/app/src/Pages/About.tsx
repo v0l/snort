@@ -1,7 +1,7 @@
 import Changelog from "@/../CHANGELOG.md";
 import { FormattedMessage } from "react-intl";
 import { useEffect, useState } from "react";
-import { Markdown } from "@/Element/Event/Markdown";
+import { Markdown } from "@/Components/Event/Markdown";
 
 export function AboutPage() {
   const [changelog, setChangelog] = useState("");

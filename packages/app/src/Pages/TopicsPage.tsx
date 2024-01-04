@@ -1,4 +1,4 @@
-import Timeline from "@/Element/Feed/Timeline";
+import Timeline from "@/Components/Feed/Timeline";
 import useLogin from "@/Hooks/useLogin";
 
 export function TopicsPage() {

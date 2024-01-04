@@ -2,11 +2,11 @@ import { NodeObject } from "react-force-graph-3d";
 import { useContext, useEffect, useState } from "react";
 import { MetadataCache, socialGraphInstance, STR, UID } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { defaultAvatar } from "../SnortUtils";
+import { defaultAvatar } from "../Utils";
 import { proxyImg } from "@/Hooks/useImgProxy";
-import { LoginStore } from "@/Login";
+import { LoginStore } from "@/Utils/Login";
 import { FormattedMessage } from "react-intl";
-import Icon from "@/Icons/Icon";
+import Icon from "@/Components/Icons/Icon";
 
 interface GraphNode {
   id: UID;

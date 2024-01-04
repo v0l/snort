@@ -4,9 +4,9 @@ import { useEventFeed } from "@snort/system-react";
 import { FormattedMessage } from "react-intl";
 import { useParams } from "react-router-dom";
 
-import { Hour } from "@/Const";
-import Timeline from "@/Element/Feed/Timeline";
-import PageSpinner from "@/Element/PageSpinner";
+import { Hour } from "@/Utils/Const";
+import Timeline from "@/Components/Feed/Timeline";
+import PageSpinner from "@/Components/PageSpinner";
 
 export function ListFeedPage() {
   const { id } = useParams();

@@ -3,20 +3,20 @@ import { useCallback } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 import useLogin from "@/Hooks/useLogin";
-import { isFormElement } from "@/SnortUtils";
-import Toaster from "@/Toaster";
+import { isFormElement } from "@/Utils";
+import Toaster from "@/Components/Toaster/Toaster";
 import { useTheme } from "@/Hooks/useTheme";
 import { useLoginRelays } from "@/Hooks/useLoginRelays";
-import { LoginUnlock } from "@/Element/PinPrompt";
+import { LoginUnlock } from "@/Components/PinPrompt/PinPrompt";
 import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
-import { LoginStore } from "@/Login";
+import { LoginStore } from "@/Utils/Login";
 import NavSidebar from "./NavSidebar";
 import RightColumn from "./RightColumn";
 import useLoginFeed from "@/Feed/LoginFeed";
-import ErrorBoundary from "@/Element/ErrorBoundary";
+import ErrorBoundary from "@/Components/ErrorBoundary";
 import Footer from "@/Pages/Layout/Footer";
 import { Header } from "@/Pages/Layout/Header";
-import CloseButton from "@/Element/Button/CloseButton";
+import CloseButton from "@/Components/Button/CloseButton";
 import { useCommunityLeaders } from "@/Hooks/useCommunityLeaders";
 
 export default function Index() {

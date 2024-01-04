@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { TaggedNostrEvent, EventKind, RequestBuilder, NoteCollection, NostrLink, parseRelayTags } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 
-import { bech32ToHex, debounce, getNewest, getNewestEventTagsByKey, unwrap } from "@/SnortUtils";
+import { bech32ToHex, debounce, getNewest, getNewestEventTagsByKey, unwrap } from "@/Utils";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import {
@@ -17,9 +17,9 @@ import {
   setPinned,
   setRelays,
   setTags,
-} from "@/Login";
-import { SnortPubKey } from "@/Const";
-import { SubscriptionEvent } from "@/Subscription";
+} from "@/Utils/Login";
+import { SnortPubKey } from "@/Utils/Const";
+import { SubscriptionEvent } from "@/Utils/Subscription";
 import { FollowLists, FollowsFeed, GiftsCache, Notifications, UserRelays } from "@/Cache";
 import { Nip28Chats, Nip4Chats } from "@/chat";
 import { useRefreshFeedCache } from "@/Hooks/useRefreshFeedcache";

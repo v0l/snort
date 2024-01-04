@@ -5,14 +5,14 @@ import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { dedupe } from "@snort/shared";
 import { useRequestBuilder } from "@snort/system-react";
 
-import Timeline from "@/Element/Feed/Timeline";
+import Timeline from "@/Components/Feed/Timeline";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
-import { setTags } from "@/Login";
-import AsyncButton from "@/Element/Button/AsyncButton";
-import ProfileImage from "@/Element/User/ProfileImage";
+import { setTags } from "@/Utils/Login";
+import AsyncButton from "@/Components/Button/AsyncButton";
+import ProfileImage from "@/Components/User/ProfileImage";
 import classNames from "classnames";
-import { formatShort } from "@/Number";
+import { formatShort } from "@/Utils/Number";
 
 const HashTagsPage = () => {
   const params = useParams();

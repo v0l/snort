@@ -1,8 +1,8 @@
 import { MetadataCache } from "@snort/system";
 
 import { ChatParticipant } from "@/chat";
-import NoteToSelf from "../../Element/User/NoteToSelf";
-import ProfileImage from "../../Element/User/ProfileImage";
+import NoteToSelf from "@/Components/User/NoteToSelf";
+import ProfileImage from "@/Components/User/ProfileImage";
 import useLogin from "@/Hooks/useLogin";
 
 export function ChatParticipantProfile({ participant }: { participant: ChatParticipant }) {

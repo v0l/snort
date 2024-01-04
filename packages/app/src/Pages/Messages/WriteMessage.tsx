@@ -1,8 +1,8 @@
 import { useState } from "react";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import Textarea from "../../Element/Textarea";
+import Textarea from "@/Components/Textarea/Textarea";
 import { Chat } from "@/chat";
-import { AsyncIcon } from "@/Element/Button/AsyncIcon";
+import { AsyncIcon } from "@/Components/Button/AsyncIcon";
 
 export default function WriteMessage({ chat }: { chat: Chat }) {
   const [msg, setMsg] = useState("");

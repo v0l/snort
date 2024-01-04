@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
-import { ApiHost } from "@/Const";
+import { ApiHost } from "@/Utils/Const";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import SnortServiceProvider, { ManageHandle } from "@/Nip05/SnortServiceProvider";
-import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
+import SnortServiceProvider, { ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
+import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 
 export default function ListHandles() {
   const navigate = useNavigate();

@@ -3,15 +3,15 @@ import { FormattedMessage } from "react-intl";
 import { unixNowMs, unwrap } from "@snort/shared";
 import { EventPublisher, FullRelaySettings, RelaySettings, SystemInterface } from "@snort/system";
 
-import Relay from "@/Element/Relay/Relay";
+import Relay from "@/Components/Relay/Relay";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
-import { setRelays } from "@/Login";
-import AsyncButton from "@/Element/Button/AsyncButton";
+import { setRelays } from "@/Utils/Login";
+import AsyncButton from "@/Components/Button/AsyncButton";
 import SnortApi, { RelayDistance } from "@/External/SnortApi";
-import { getCountry, getRelayName, sanitizeRelayUrl } from "@/SnortUtils";
-import { formatShort } from "@/Number";
-import { Blasters } from "@/Const";
+import { getCountry, getRelayName, sanitizeRelayUrl } from "@/Utils";
+import { formatShort } from "@/Utils/Number";
+import { Blasters } from "@/Utils/Const";
 
 import messages from "./messages";
 

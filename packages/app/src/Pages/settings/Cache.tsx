@@ -11,7 +11,7 @@ import {
   UserCache,
   UserRelays,
 } from "@/Cache";
-import AsyncButton from "@/Element/Button/AsyncButton";
+import AsyncButton from "@/Components/Button/AsyncButton";
 import { ReactNode, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 

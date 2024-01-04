@@ -1,4 +1,4 @@
-import PageSpinner from "@/Element/PageSpinner";
+import PageSpinner from "@/Components/PageSpinner";
 import { WalletConfig, WalletKind, Wallets } from "@/Wallet";
 import AlbyWallet from "@/Wallet/AlbyWallet";
 import { sha256 } from "@noble/hashes/sha256";

@@ -1,4 +1,4 @@
-import { LoginSession, LoginStore } from "@/Login";
+import { LoginSession, LoginStore } from "@/Utils/Login";
 import { useSyncExternalStoreWithSelector } from "use-sync-external-store/with-selector";
 
 export default function useLogin<T = LoginSession>(selector?: (v: LoginSession) => T) {

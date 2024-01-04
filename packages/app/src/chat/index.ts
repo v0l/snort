@@ -15,12 +15,12 @@ import {
 } from "@snort/system";
 import { unwrap, unixNow } from "@snort/shared";
 import { Chats, GiftsCache } from "@/Cache";
-import { findTag } from "@/SnortUtils";
+import { findTag } from "@/Utils";
 import { Nip29ChatSystem } from "./nip29";
 import useModeration from "@/Hooks/useModeration";
 import useLogin from "@/Hooks/useLogin";
 import { Nip24ChatSystem } from "./nip24";
-import { LoginSession } from "@/Login";
+import { LoginSession } from "@/Utils/Login";
 import { Nip28ChatSystem } from "./nip28";
 
 export enum ChatType {

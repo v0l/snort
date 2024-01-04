@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import Icon from "@/Icons/Icon";
+import Icon from "@/Components/Icons/Icon";
 import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
-import { isFormElement } from "@/SnortUtils";
+import { isFormElement } from "@/Utils";
 import useLogin from "@/Hooks/useLogin";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
-import NavLink from "@/Element/Button/NavLink";
+import NavLink from "@/Components/Button/NavLink";
 import classNames from "classnames";
-import { subscribeToNotifications } from "@/Notifications";
+import { subscribeToNotifications } from "@/Utils/Notifications";
 
 const NotificationsHeader = () => {
   const navigate = useNavigate();

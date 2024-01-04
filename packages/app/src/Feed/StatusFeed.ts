@@ -1,7 +1,7 @@
 import { unixNow } from "@snort/shared";
 import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
-import { findTag } from "@/SnortUtils";
+import { findTag } from "@/Utils";
 import { useMemo } from "react";
 
 export function useStatusFeed(id?: string, leaveOpen = false) {

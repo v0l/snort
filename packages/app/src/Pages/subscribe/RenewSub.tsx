@@ -2,13 +2,13 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { unixNow, unwrap } from "@snort/shared";
 
-import AsyncButton from "@/Element/Button/AsyncButton";
-import SendSats from "@/Element/SendSats";
+import AsyncButton from "@/Components/Button/AsyncButton";
+import SendSats from "@/Components/SendSats/SendSats";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import SnortApi, { Subscription, SubscriptionError } from "@/External/SnortApi";
 import { mapPlanName, mapSubscriptionErrorCode } from ".";
 import useLogin from "@/Hooks/useLogin";
-import { mostRecentSubscription } from "@/Subscription";
+import { mostRecentSubscription } from "@/Utils/Subscription";
 
 export function RenewSub({ sub: s }: { sub?: Subscription }) {
   const { subscriptions } = useLogin(s => ({ subscriptions: s.subscriptions }));

@@ -4,15 +4,15 @@ import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { RouteObject } from "react-router-dom";
 
-import { formatShort } from "@/Number";
-import { LockedFeatures, Plans, SubscriptionType } from "@/Subscription";
+import { formatShort } from "@/Utils/Number";
+import { LockedFeatures, Plans, SubscriptionType } from "@/Utils/Subscription";
 import ManageSubscriptionPage from "@/Pages/subscribe/ManageSubscription";
-import AsyncButton from "@/Element/Button/AsyncButton";
+import AsyncButton from "@/Components/Button/AsyncButton";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import SnortApi, { SubscriptionError, SubscriptionErrorCode } from "@/External/SnortApi";
-import SendSats from "@/Element/SendSats";
+import SendSats from "@/Components/SendSats/SendSats";
 import classNames from "classnames";
-import { getRefCode } from "@/SnortUtils";
+import { getRefCode } from "@/Utils";
 
 export function mapPlanName(id: number) {
   switch (id) {

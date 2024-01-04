@@ -1,7 +1,7 @@
-import { CollapsedSection } from "@/Element/Collapsed";
-import ProfilePreview from "@/Element/User/ProfilePreview";
+import { CollapsedSection } from "@/Components/Collapsed";
+import ProfilePreview from "@/Components/User/ProfilePreview";
 import useLogin from "@/Hooks/useLogin";
-import { getRelayName } from "@/SnortUtils";
+import { getRelayName } from "@/Utils";
 import { dedupe } from "@snort/shared";
 import { pickTopRelays } from "@snort/system";
 import { SnortContext } from "@snort/system-react";

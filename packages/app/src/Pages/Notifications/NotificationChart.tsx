@@ -1,14 +1,14 @@
-import { Day } from "@/Const";
-import Icon from "@/Icons/Icon";
-import { formatShort } from "@/Number";
-import { orderAscending } from "@/SnortUtils";
+import { Day } from "@/Utils/Const";
+import Icon from "@/Components/Icons/Icon";
+import { formatShort } from "@/Utils/Number";
+import { orderAscending } from "@/Utils";
 import { unixNow, unwrap } from "@snort/shared";
 import { TaggedNostrEvent, EventKind } from "@snort/system";
 import classNames from "classnames";
 import { useState, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
-import { AsyncIcon } from "../../Element/Button/AsyncIcon";
-import Tabs, { Tab } from "../../Element/Tabs";
+import { AsyncIcon } from "@/Components/Button/AsyncIcon";
+import Tabs, { Tab } from "@/Components/Tabs/Tabs";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 interface StatSlot {

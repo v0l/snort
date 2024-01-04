@@ -1,7 +1,7 @@
 import { FeedCache } from "@snort/shared";
 import { db, EventInteraction } from "@/Db";
-import { LoginStore } from "@/Login";
-import { sha256 } from "@/SnortUtils";
+import { LoginStore } from "@/Utils/Login";
+import { sha256 } from "@/Utils";
 
 export class EventInteractionCache extends FeedCache<EventInteraction> {
   constructor() {

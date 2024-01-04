@@ -8,12 +8,12 @@ import {
   TaggedNostrEvent,
 } from "@snort/system";
 import { RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
-import { hasWasm, WasmOptimizer } from "@/wasm";
+import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
 import * as Comlink from "comlink";
-import IndexedDBWorker from "@/Cache/IndexedDB?worker";
+import IndexedDBWorker from "@/Db/IndexedDB?worker";
 import { removeUndefined, throwIfOffline } from "@snort/shared";
-import { LoginStore } from "@/Login";
-import { addEventToFuzzySearch } from "@/FuzzySearch";
+import { LoginStore } from "@/Utils/Login";
+import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
 
 export const indexedDB = Comlink.wrap(new IndexedDBWorker());
 /**

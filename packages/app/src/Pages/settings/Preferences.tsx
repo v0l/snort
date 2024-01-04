@@ -2,9 +2,9 @@ import "./Preferences.css";
 
 import { FormattedMessage, useIntl } from "react-intl";
 import useLogin from "@/Hooks/useLogin";
-import { updatePreferences, UserPreferences } from "@/Login";
-import { DefaultImgProxy } from "@/Const";
-import { unwrap } from "@/SnortUtils";
+import { updatePreferences, UserPreferences } from "@/Utils/Login";
+import { DefaultImgProxy } from "@/Utils/Const";
+import { unwrap } from "@/Utils";
 import { useLocale } from "@/IntlProvider";
 
 import messages from "./messages";

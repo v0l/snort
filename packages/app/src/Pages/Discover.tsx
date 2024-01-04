@@ -1,7 +1,7 @@
-import SuggestedProfiles from "@/Element/SuggestedProfiles";
-import { Tab, TabElement } from "@/Element/Tabs";
-import TrendingNotes from "@/Element/Trending/TrendingPosts";
-import TrendingUsers from "@/Element/Trending/TrendingUsers";
+import SuggestedProfiles from "@/Components/SuggestedProfiles";
+import { Tab, TabElement } from "@/Components/Tabs/Tabs";
+import TrendingNotes from "@/Components/Trending/TrendingPosts";
+import TrendingUsers from "@/Components/Trending/TrendingUsers";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 

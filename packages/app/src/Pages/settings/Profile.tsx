@@ -5,18 +5,18 @@ import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import { openFile, debounce } from "@/SnortUtils";
-import useFileUpload from "@/Upload";
-import AsyncButton from "@/Element/Button/AsyncButton";
+import { openFile, debounce } from "@/Utils";
+import useFileUpload from "@/Utils/Upload";
+import AsyncButton from "@/Components/Button/AsyncButton";
 import { UserCache } from "@/Cache";
 import useLogin from "@/Hooks/useLogin";
-import Icon from "@/Icons/Icon";
-import Avatar from "@/Element/User/Avatar";
+import Icon from "@/Components/Icons/Icon";
+import Avatar from "@/Components/User/Avatar";
 import { FormattedMessage, useIntl } from "react-intl";
-import { ErrorOrOffline } from "@/Element/ErrorOrOffline";
+import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 import { LNURL, fetchNip05Pubkey } from "@snort/shared";
-import messages from "@/Element/messages";
-import { MaxAboutLength, MaxUsernameLength } from "@/Const";
+import messages from "@/Components/messages";
+import { MaxAboutLength, MaxUsernameLength } from "@/Utils/Const";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;

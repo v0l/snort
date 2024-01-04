@@ -5,13 +5,13 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useInView } from "react-intersection-observer";
 
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import NoteTime from "@/Element/Event/NoteTime";
-import Text from "@/Element/Text";
+import NoteTime from "@/Components/Event/NoteTime";
+import Text from "@/Components/Text/Text";
 import useLogin from "@/Hooks/useLogin";
 import { Chat, ChatMessage, ChatType, setLastReadIn } from "@/chat";
-import ProfileImage from "../../Element/User/ProfileImage";
+import ProfileImage from "@/Components/User/ProfileImage";
 
-import messages from "../../Element/messages";
+import messages from "@/Components/messages";
 
 export interface DMProps {
   chat: Chat;

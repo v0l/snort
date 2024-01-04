@@ -1,8 +1,8 @@
 import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
-import AsyncButton from "@/Element/Button/AsyncButton";
+import AsyncButton from "@/Components/Button/AsyncButton";
 import { NewUserState } from ".";
-import TrendingUsers from "@/Element/Trending/TrendingUsers";
+import TrendingUsers from "@/Components/Trending/TrendingUsers";
 
 export function Discover() {
   const location = useLocation();

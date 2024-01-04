@@ -5,20 +5,20 @@ import { unixNow } from "@snort/shared";
 import { NostrLink } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 
-import Timeline from "@/Element/Feed/Timeline";
+import Timeline from "@/Components/Feed/Timeline";
 import { TimelineSubject } from "@/Feed/TimelineFeed";
-import { debounce, getCurrentRefCode, getRelayName, sha256 } from "@/SnortUtils";
+import { debounce, getCurrentRefCode, getRelayName, sha256 } from "@/Utils";
 import useLogin from "@/Hooks/useLogin";
 import Discover from "@/Pages/Discover";
-import TrendingNotes from "@/Element/Trending/TrendingPosts";
+import TrendingNotes from "@/Components/Trending/TrendingPosts";
 import HashTagsPage from "@/Pages/HashTagsPage";
-import SuggestedProfiles from "@/Element/SuggestedProfiles";
-import { TaskList } from "@/Tasks/TaskList";
-import TimelineFollows from "@/Element/Feed/TimelineFollows";
+import SuggestedProfiles from "@/Components/SuggestedProfiles";
+import { TaskList } from "@/Components/Tasks/TaskList";
+import TimelineFollows from "@/Components/Feed/TimelineFollows";
 import { DeckContext } from "@/Pages/DeckLayout";
 import { TopicsPage } from "./TopicsPage";
-import TrendingHashtags from "@/Element/Trending/TrendingHashtags";
-const InviteModal = lazy(() => import("@/Element/Invite"));
+import TrendingHashtags from "@/Components/Trending/TrendingHashtags";
+const InviteModal = lazy(() => import("@/Components/Invite"));
 
 import messages from "./messages";
 import useHistoryState from "@/Hooks/useHistoryState";

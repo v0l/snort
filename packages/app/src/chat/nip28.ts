@@ -13,8 +13,8 @@ import {
   encodeTLVEntries,
 } from "@snort/system";
 
-import { LoginSession } from "@/Login";
-import { findTag } from "@/SnortUtils";
+import { LoginSession } from "@/Utils/Login";
+import { findTag } from "@/Utils";
 import { Chat, ChatParticipant, ChatSystem, ChatType, lastReadInChat } from "@/chat";
 
 export class Nip28ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {

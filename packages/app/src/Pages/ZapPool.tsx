@@ -4,13 +4,13 @@ import { useMemo, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 import { useUserProfile } from "@snort/system-react";
 
-import { SnortPubKey } from "@/Const";
-import ProfilePreview from "@/Element/User/ProfilePreview";
+import { SnortPubKey } from "@/Utils/Const";
+import ProfilePreview from "@/Components/User/ProfilePreview";
 import useLogin from "@/Hooks/useLogin";
-import { UploaderServices } from "@/Upload";
-import { bech32ToHex, getRelayName, trackEvent, unwrap } from "@/SnortUtils";
-import { ZapPoolController, ZapPoolRecipient, ZapPoolRecipientType } from "@/ZapPoolController";
-import AsyncButton from "@/Element/Button/AsyncButton";
+import { UploaderServices } from "@/Utils/Upload";
+import { bech32ToHex, getRelayName, trackEvent, unwrap } from "@/Utils";
+import { ZapPoolController, ZapPoolRecipient, ZapPoolRecipientType } from "@/Utils/ZapPoolController";
+import AsyncButton from "@/Components/Button/AsyncButton";
 import { useWallet } from "@/Wallet";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 

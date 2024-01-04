@@ -1,8 +1,8 @@
 import { FormattedMessage } from "react-intl";
 import { useEffect, useState } from "react";
-import Icon from "@/Icons/Icon";
+import Icon from "@/Components/Icons/Icon";
 import useLogin from "@/Hooks/useLogin";
-import { subscribeToNotifications } from "@/Notifications";
+import { subscribeToNotifications } from "@/Utils/Notifications";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import messages from "./messages";
 

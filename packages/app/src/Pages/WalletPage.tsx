@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
-import NoteTime from "@/Element/Event/NoteTime";
+import NoteTime from "@/Components/Event/NoteTime";
 import { WalletInvoice, Sats, useWallet, LNWallet, Wallets } from "@/Wallet";
-import AsyncButton from "@/Element/Button/AsyncButton";
-import { unwrap } from "@/SnortUtils";
-import Icon from "@/Icons/Icon";
+import AsyncButton from "@/Components/Button/AsyncButton";
+import { unwrap } from "@/Utils";
+import Icon from "@/Components/Icons/Icon";
 import { useRates } from "@/Hooks/useRates";
-import { AsyncIcon } from "@/Element/Button/AsyncIcon";
+import { AsyncIcon } from "@/Components/Button/AsyncIcon";
 import classNames from "classnames";
 
 export default function WalletPage(props: { showHistory: boolean }) {

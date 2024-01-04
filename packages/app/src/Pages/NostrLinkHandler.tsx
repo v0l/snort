@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { fetchNip05Pubkey } from "@snort/shared";
-import Spinner from "@/Icons/Spinner";
+import Spinner from "@/Components/Icons/Spinner";
 import ProfilePage from "@/Pages/Profile/ProfilePage";
-import { ThreadRoute } from "@/Element/Event/Thread";
-import { GenericFeed } from "@/Element/Feed/Generic";
+import { ThreadRoute } from "@/Components/Event/Thread";
+import { GenericFeed } from "@/Components/Feed/Generic";
 import { NostrPrefix, tryParseNostrLink } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 

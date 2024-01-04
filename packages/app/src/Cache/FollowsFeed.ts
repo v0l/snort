@@ -4,8 +4,8 @@ import { unixNow, unixNowMs } from "@snort/shared";
 
 import { db } from "@/Db";
 import { RefreshFeedCache, TWithCreated } from "./RefreshFeedCache";
-import { LoginSession } from "@/Login";
-import { Day, Hour } from "@/Const";
+import { LoginSession } from "@/Utils/Login";
+import { Day, Hour } from "@/Utils/Const";
 
 const WindowSize = Hour * 6;
 const MaxCacheWindow = Day * 7;

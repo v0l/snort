@@ -10,7 +10,7 @@ import {
   TaggedNostrEvent,
   decodeTLV,
 } from "@snort/system";
-import { LoginSession } from "@/Login";
+import { LoginSession } from "@/Utils/Login";
 import { Chat, ChatSystem, ChatType, inChatWith, lastReadInChat } from "@/chat";
 import { debug } from "debug";
 

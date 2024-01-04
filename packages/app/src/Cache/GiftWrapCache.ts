@@ -1,8 +1,8 @@
 import { EventKind, EventPublisher, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { UnwrappedGift, db } from "@/Db";
-import { findTag, unwrap } from "@/SnortUtils";
+import { findTag, unwrap } from "@/Utils";
 import { RefreshFeedCache } from "./RefreshFeedCache";
-import { LoginSession, LoginSessionType } from "@/Login";
+import { LoginSession, LoginSessionType } from "@/Utils/Login";
 
 export class GiftWrapCache extends RefreshFeedCache<UnwrappedGift> {
   constructor() {

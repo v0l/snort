@@ -3,12 +3,12 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import UnreadCount from "@/Pages/Messages/UnreadCount";
-import ProfileImage from "@/Element/User/ProfileImage";
-import { parseId } from "@/SnortUtils";
-import NoteToSelf from "@/Element/User/NoteToSelf";
+import ProfileImage from "@/Components/User/ProfileImage";
+import { parseId } from "@/Utils";
+import NoteToSelf from "@/Components/User/NoteToSelf";
 import useLogin from "@/Hooks/useLogin";
 import usePageWidth from "@/Hooks/usePageWidth";
-import NoteTime from "@/Element/Event/NoteTime";
+import NoteTime from "@/Components/Event/NoteTime";
 import DmWindow from "@/Pages/Messages/DmWindow";
 import { Chat, ChatType, useChatSystem } from "@/chat";
 import { ChatParticipantProfile } from "@/Pages/Messages/ChatParticipant";

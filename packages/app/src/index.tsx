@@ -10,7 +10,7 @@ import { SnortContext } from "@snort/system-react";
 
 import * as serviceWorkerRegistration from "@/serviceWorkerRegistration";
 import { IntlProvider } from "@/IntlProvider";
-import { getCountry, storeRefCode, unwrap } from "@/SnortUtils";
+import { getCountry, storeRefCode, unwrap } from "@/Utils";
 import Layout from "@/Pages/Layout";
 import ProfilePage from "@/Pages/Profile/ProfilePage";
 import { RootRoutes, RootTabRoutes } from "@/Pages/Root";
@@ -23,12 +23,12 @@ import DonatePage from "@/Pages/DonatePage";
 import SearchPage from "@/Pages/SearchPage";
 import HelpPage from "@/Pages/HelpPage";
 import NostrLinkHandler from "@/Pages/NostrLinkHandler";
-import { ThreadRoute } from "@/Element/Event/Thread";
+import { ThreadRoute } from "@/Components/Event/Thread";
 import { SubscribeRoutes } from "@/Pages/subscribe";
 import ZapPoolPage from "@/Pages/ZapPool";
 import { db } from "@/Db";
 import { preload } from "@/Cache";
-import { LoginStore } from "@/Login";
+import { LoginStore } from "@/Utils/Login";
 import { SnortDeckLayout } from "@/Pages/DeckLayout";
 import FreeNostrAddressPage from "@/Pages/FreeNostrAddressPage";
 import { ListFeedPage } from "@/Pages/ListFeedPage";
@@ -39,7 +39,7 @@ import { setupWebLNWalletConfig } from "@/Wallet/WebLN";
 import { Wallets } from "@/Wallet";
 import NetworkGraph from "@/Pages/NetworkGraph";
 import WalletPage from "./Pages/WalletPage";
-import { hasWasm, wasmInit, WasmPath } from "@/wasm";
+import { hasWasm, wasmInit, WasmPath } from "@/Utils/wasm";
 import { System } from "@/system";
 
 declare global {

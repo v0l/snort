@@ -1,8 +1,8 @@
 import { EventKind, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { RefreshFeedCache, TWithCreated } from "./RefreshFeedCache";
-import { LoginSession } from "@/Login";
+import { LoginSession } from "@/Utils/Login";
 import { NostrEventForSession, db } from "@/Db";
-import { Day } from "@/Const";
+import { Day } from "@/Utils/Const";
 import { unixNow } from "@snort/shared";
 
 export class NotificationsCache extends RefreshFeedCache<NostrEventForSession> {
