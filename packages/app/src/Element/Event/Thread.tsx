@@ -1,5 +1,5 @@
 import "./Thread.css";
-import { useMemo, useState, ReactNode, useContext } from "react";
+import { useMemo, useState, ReactNode, useContext, Fragment } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 import { TaggedNostrEvent, u256, NostrPrefix, EventExt, parseNostrLink, NostrLink } from "@snort/system";
@@ -41,7 +41,7 @@ const Subthread = ({ active, notes, related, chains, onNavigate }: SubthreadProp
     const isLastSubthread = idx === notes.length - 1;
     const replies = getReplies(a.id, chains);
     return (
-      <>
+      <Fragment key={a.id}>
         <div className={`subthread-container ${replies.length > 0 ? "subthread-multi" : ""}`}>
           <Divider />
           <Note
@@ -65,7 +65,7 @@ const Subthread = ({ active, notes, related, chains, onNavigate }: SubthreadProp
             onNavigate={onNavigate}
           />
         )}
-      </>
+      </Fragment>
     );
   };
 
@@ -138,6 +138,7 @@ const TierTwo = ({ active, isLastSubthread, notes, related, chains, onNavigate }
         const lastReply = idx === rest.length - 1;
         return (
           <ThreadNote
+            key={r.id}
             active={active}
             onNavigate={onNavigate}
             note={r}

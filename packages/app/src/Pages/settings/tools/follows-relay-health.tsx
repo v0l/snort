@@ -62,6 +62,7 @@ export function FollowsRelayHealth({
           <div>
             {missingRelays.map(a => (
               <ProfilePreview
+                key={a}
                 pubkey={a}
                 options={{
                   about: false,
@@ -80,7 +81,7 @@ export function FollowsRelayHealth({
             .sort((a, b) => (a.count > b.count ? -1 : 1))
             .slice(0, 10)
             .map(a => (
-              <div className="flex justify-between">
+              <div key={a.relay} className="flex justify-between">
                 <div>{getRelayName(a.relay)}</div>
                 <div>
                   {a.count} (<FormattedNumber style="percent" value={a.count / uniqueFollows.length} />)

@@ -345,7 +345,7 @@ export function NoteCreator() {
         {Object.keys(relays.item || {})
           .filter(el => relays.item[el].write)
           .map((r, i, a) => (
-            <div className="p flex justify-between note-creator-relay">
+            <div className="p flex justify-between note-creator-relay" key={r}>
               <div>{r}</div>
               <div>
                 <input
@@ -406,8 +406,8 @@ export function NoteCreator() {
           </h4>
           <FormattedMessage defaultMessage="Zaps on this note will be split to the following users." id="LwYmVi" />
           <div className="flex flex-col g8">
-            {[...(note.zapSplits ?? [])].map((v, i, arr) => (
-              <div className="flex items-center g8">
+            {[...(note.zapSplits ?? [])].map((v: ZapTarget, i, arr) => (
+              <div className="flex items-center g8" key={`${v.name}-${v.value}`}>
                 <div className="flex flex-col flex-4 g4">
                   <h4>
                     <FormattedMessage defaultMessage="Recipient" id="8Rkoyb" />

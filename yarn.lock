@@ -2964,6 +2964,8 @@ __metadata:
     eslint: ^8.48.0
     eslint-plugin-formatjs: ^4.11.3
     eslint-plugin-react: ^7.33.2
+    eslint-plugin-react-hooks: ^4.6.0
+    eslint-plugin-react-refresh: ^0.4.5
     fuse.js: ^7.0.0
     highlight.js: ^11.8.0
     light-bolt11-decoder: ^2.1.0
@@ -5901,6 +5903,24 @@ __metadata:
   peerDependencies:
     eslint: 7 || 8
   checksum: 2840fef201bb8b0ba1bc0a37a4e1748279c0810d2d827f8dabe777347414ff3a758584b2e1788fcbdc59266de52d7ea7cdaacf95b7348e670e0e4602e0be689e
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-react-hooks@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "eslint-plugin-react-hooks@npm:4.6.0"
+  peerDependencies:
+    eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+  checksum: 23001801f14c1d16bf0a837ca7970d9dd94e7b560384b41db378b49b6e32dc43d6e2790de1bd737a652a86f81a08d6a91f402525061b47719328f586a57e86c3
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-react-refresh@npm:^0.4.5":
+  version: 0.4.5
+  resolution: "eslint-plugin-react-refresh@npm:0.4.5"
+  peerDependencies:
+    eslint: ">=7"
+  checksum: 953e665f6aaf097291a2bb07fde05466338aecd169bcd6faa708b50166912e3a757f45a45252cf7738b5e0d986224d363cc227864e98c979fe9978770b2b9f42
   languageName: node
   linkType: hard
 

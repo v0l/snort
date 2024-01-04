@@ -93,7 +93,7 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
       </div>
       <div className="flex items-center">
         {pubkeys.slice(0, 5).map(a => (
-          <ProfileImage pubkey={a} showUsername={false} showFollowDistance={false} size={40} />
+          <ProfileImage key={a} pubkey={a} showUsername={false} showFollowDistance={false} size={40} />
         ))}
         {pubkeys.length > 5 && (
           <span>

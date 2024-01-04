@@ -111,7 +111,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
         <>
           <div className="card latest-notes" onClick={() => props.showLatest(false)} ref={ref}>
             {props.latest.slice(0, 3).map(p => {
-              return <ProfileImage pubkey={p} showUsername={false} link={""} showFollowDistance={false} />;
+              return <ProfileImage key={p} pubkey={p} showUsername={false} link={""} showFollowDistance={false} />;
             })}
             <FormattedMessage
               defaultMessage="{n} new {n, plural, =1 {note} other {notes}}"
@@ -128,6 +128,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
               {props.latest.slice(0, 3).map(p => {
                 return (
                   <ProfileImage
+                    key={p}
                     pubkey={p}
                     showProfileCard={false}
                     showUsername={false}

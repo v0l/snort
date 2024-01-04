@@ -148,7 +148,7 @@ export function CloseRelays() {
         ?.filter(a => !relayUrls.includes(unwrap(sanitizeRelayUrl(a.url))) && !a.is_paid)
         .sort((a, b) => (a.distance > b.distance ? 1 : -1))
         .map(a => (
-          <div className="bg-dark p br flex flex-col g8">
+          <div key={a.url} className="bg-dark p br flex flex-col g8">
             <div className="flex justify-between items-center">
               <div className="bold">{getRelayName(a.url)}</div>
               <AsyncButton

@@ -5,7 +5,7 @@ export default function FileUploadProgress({ progress }: { progress: Array<Uploa
   return (
     <div className="flex flex-col g8">
       {progress.map(p => (
-        <div className="flex flex-col g2" id={p.id}>
+        <div key={p.id} className="flex flex-col g2" id={p.id}>
           {p.file.name}
           <Progress value={p.progress} status={p.stage} />
         </div>

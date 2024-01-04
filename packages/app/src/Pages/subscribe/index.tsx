@@ -91,7 +91,7 @@ export function SubscribePage() {
         {Plans.map(a => {
           const lower = Plans.filter(b => b.id < a.id);
           return (
-            <div className={classNames("p flex flex-col g8", { disabled: a.disabled })}>
+            <div key={a.id} className={classNames("p flex flex-col g8", { disabled: a.disabled })}>
               <div className="grow">
                 <h2>{mapPlanName(a.id)}</h2>
                 <p>
@@ -108,10 +108,10 @@ export function SubscribePage() {
                 </p>
                 <ul className="list-disc">
                   {a.unlocks.map(b => (
-                    <li>{mapFeatureName(b)} </li>
+                    <li key={`unlocks-${b}`}>{mapFeatureName(b)} </li>
                   ))}
                   {lower.map(b => (
-                    <li>
+                    <li key={`lower-${b}`}>
                       <FormattedMessage
                         defaultMessage="Everything in {plan}"
                         id="l+ikU1"

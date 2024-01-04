@@ -80,7 +80,7 @@ export default function ModerationSettingsPage() {
           </button>
         </div>
         {appData.mutedWords.map(v => (
-          <div className="p br b flex items-center justify-between">
+          <div key={v} className="p br b flex items-center justify-between">
             <div>{v}</div>
             <button type="button" onClick={() => removeMutedWord(v)}>
               <FormattedMessage defaultMessage="Delete" id="K3r6DQ" />

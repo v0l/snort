@@ -29,4 +29,6 @@ const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>((props
   );
 });
 
+AsyncButton.displayName = "AsyncButton";
+
 export default AsyncButton;

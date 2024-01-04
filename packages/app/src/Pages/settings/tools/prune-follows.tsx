@@ -141,7 +141,7 @@ export function PruneFollowList() {
             .sort(([, a], [, b]) => (a > b ? -1 : 1))
             .map(([k, v]) => {
               return (
-                <div className="flex justify-between">
+                <div key={k} className="flex justify-between">
                   <ProfileImage pubkey={k} />
                   <div className="flex flex-col gap-1">
                     <FormattedMessage

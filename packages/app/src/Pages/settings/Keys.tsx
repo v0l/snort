@@ -33,7 +33,7 @@ export default function ExportKeys() {
             {hexToMnemonic(generatedEntropy ?? "")
               .split(" ")
               .map((a, i) => (
-                <div className="flex items-center word">
+                <div key={a} className="flex items-center word">
                   <div>{i + 1}</div>
                   <div>{a}</div>
                 </div>

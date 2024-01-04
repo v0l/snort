@@ -25,7 +25,7 @@ function OnboardingLayout() {
         <Icon name="translate" />
         <select value={lang} onChange={e => setOverride(e.target.value)} className="capitalize">
           {AllLanguageCodes.sort().map(a => (
-            <option value={a}>
+            <option key={a} value={a}>
               {new Intl.DisplayNames([a], {
                 type: "language",
               }).of(a)}

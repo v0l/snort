@@ -75,7 +75,7 @@ const RelayInfo = () => {
             </h4>
             <div className="grow">
               {stats.info.supported_nips.map(a => (
-                <a target="_blank" rel="noreferrer" href={`https://nips.be/${a}`} className="pill">
+                <a key={a} target="_blank" rel="noreferrer" href={`https://nips.be/${a}`} className="pill">
                   NIP-{a.toString().padStart(2, "0")}
                 </a>
               ))}

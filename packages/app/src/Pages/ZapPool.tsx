@@ -173,7 +173,7 @@ export default function ZapPoolPage() {
         <FormattedMessage defaultMessage="Relays" id="RoOyAh" />
       </h3>
       {relayConnections.map(a => (
-        <div>
+        <div key={a.address}>
           <h4>{getRelayName(a.address)}</h4>
           <ZapPoolTarget
             target={
@@ -191,7 +191,7 @@ export default function ZapPoolPage() {
         <FormattedMessage defaultMessage="File hosts" id="XICsE8" />
       </h3>
       {UploaderServices.map(a => (
-        <div>
+        <div key={a.name}>
           <h4>{a.name}</h4>
           <ZapPoolTarget
             target={
@@ -209,7 +209,7 @@ export default function ZapPoolPage() {
         <FormattedMessage defaultMessage="Data Providers" id="ELbg9p" />
       </h3>
       {DataProviders.map(a => (
-        <div>
+        <div key={a.name}>
           <h4>{a.name}</h4>
           <ZapPoolTarget
             target={

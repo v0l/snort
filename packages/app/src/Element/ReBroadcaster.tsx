@@ -27,7 +27,7 @@ export function ReBroadcaster({ onClose, ev }: { onClose: () => void; ev: Tagged
         {Object.keys(relays.item || {})
           .filter(el => relays.item[el].write)
           .map((r, i, a) => (
-            <div className="card flex justify-between">
+            <div key={r} className="card flex justify-between">
               <div>{r}</div>
               <div>
                 <input

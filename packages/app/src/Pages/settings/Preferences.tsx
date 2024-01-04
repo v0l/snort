@@ -59,7 +59,7 @@ const PreferencesPage = () => {
             }
             style={{ textTransform: "capitalize" }}>
             {AllLanguageCodes.sort().map(a => (
-              <option value={a}>
+              <option key={a} value={a}>
                 {new Intl.DisplayNames([a], {
                   type: "language",
                 }).of(a)}

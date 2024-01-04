@@ -165,6 +165,7 @@ export default function SendSats(props: SendSatsProps) {
           <div className="flex g4 f-wrap">
             {props.targets.map(v => (
               <ProfileImage
+                key={v.value}
                 pubkey={v.value}
                 showUsername={false}
                 showFollowDistance={false}
