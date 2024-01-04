@@ -1,8 +1,9 @@
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import { logout } from "@/Utils/Login";
 import useLogin from "@/Hooks/useLogin";
+import { logout } from "@/Utils/Login";
+
 import messages from "../messages";
 
 export default function LogoutButton() {

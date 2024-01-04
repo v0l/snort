@@ -1,15 +1,16 @@
-import { useInView } from "react-intersection-observer";
-import ProfileImage from "@/Components/User/ProfileImage";
-import { FormattedMessage } from "react-intl";
-import Icon from "@/Components/Icons/Icon";
 import { TaggedNostrEvent } from "@snort/system";
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import { TimelineFragment } from "@/Components/Feed/TimelineFragment";
-import { DisplayAs } from "@/Components/Feed/DisplayAsSelector";
-import { SpotlightThreadModal } from "@/Components/Spotlight/SpotlightThreadModal";
-import ImageGridItem from "@/Components/Feed/ImageGridItem";
+import { useInView } from "react-intersection-observer";
+import { FormattedMessage } from "react-intl";
+
 import ErrorBoundary from "@/Components/ErrorBoundary";
 import getEventMedia from "@/Components/Event/getEventMedia";
+import { DisplayAs } from "@/Components/Feed/DisplayAsSelector";
+import ImageGridItem from "@/Components/Feed/ImageGridItem";
+import { TimelineFragment } from "@/Components/Feed/TimelineFragment";
+import Icon from "@/Components/Icons/Icon";
+import { SpotlightThreadModal } from "@/Components/Spotlight/SpotlightThreadModal";
+import ProfileImage from "@/Components/User/ProfileImage";
 
 export interface TimelineRendererProps {
   frags: Array<TimelineFragment>;

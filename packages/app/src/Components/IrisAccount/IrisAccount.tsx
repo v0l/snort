@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any  */
 import { Component, FormEvent } from "react";
+import { FormattedMessage } from "react-intl";
+import { injectIntl } from "react-intl";
+
+import messages from "@/Components/messages";
+import { ProfileLoader } from "@/system";
 import { LoginStore } from "@/Utils/Login";
 
 import AccountName from "./AccountName";
 import ActiveAccount from "./ActiveAccount";
 import ReservedAccount from "./ReservedAccount";
-import { FormattedMessage } from "react-intl";
-import { injectIntl } from "react-intl";
-import messages from "@/Components/messages";
-import { ProfileLoader } from "@/system";
 
 declare global {
   interface Window {

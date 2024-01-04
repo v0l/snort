@@ -1,10 +1,11 @@
+import classNames from "classnames";
 import { ReactNode, useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
+
 import Icon from "@/Components/Icons/Icon";
-import { LoginStore, logout } from "@/Utils/Login";
 import useLogin from "@/Hooks/useLogin";
-import classNames from "classnames";
+import { LoginStore, logout } from "@/Utils/Login";
 import { getCurrentSubscription } from "@/Utils/Subscription";
 
 export type SettingsMenuItems = Array<{

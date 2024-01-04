@@ -1,6 +1,6 @@
-import { useMemo } from "react";
-import { EventKind, RequestBuilder, parseZap, NostrLink, NoteCollection } from "@snort/system";
+import { EventKind, NostrLink, NoteCollection,parseZap, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
+import { useMemo } from "react";
 
 export default function useZapsFeed(link?: NostrLink) {
   const sub = useMemo(() => {

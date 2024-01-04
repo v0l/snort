@@ -1,6 +1,6 @@
 import Icon from "@/Components/Icons/Icon";
-import useLoading from "@/Hooks/useLoading";
 import Spinner from "@/Components/Icons/Spinner";
+import useLoading from "@/Hooks/useLoading";
 
 export type AsyncIconProps = React.HTMLProps<HTMLDivElement> & {
   iconName: string;

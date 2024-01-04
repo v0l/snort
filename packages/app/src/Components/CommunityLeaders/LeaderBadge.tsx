@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
-import AwardIcon from "./Award";
-import Modal from "../Modal/Modal";
 import { Link } from "react-router-dom";
+
 import CloseButton from "../Button/CloseButton";
+import Modal from "../Modal/Modal";
+import AwardIcon from "./Award";
 
 export function LeaderBadge() {
   const [showModal, setShowModal] = useState(false);

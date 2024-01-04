@@ -1,4 +1,5 @@
 import { throwIfOffline } from "@snort/shared";
+
 import {
   InvoiceRequest,
   LNWallet,

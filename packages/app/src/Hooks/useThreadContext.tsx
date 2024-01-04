@@ -1,9 +1,11 @@
 /* eslint-disable no-debugger */
 import { unwrap } from "@snort/shared";
 import { EventExt, NostrLink, TaggedNostrEvent, u256 } from "@snort/system";
-import useThreadFeed from "@/Feed/ThreadFeed";
-import { ReactNode, createContext, useMemo, useState } from "react";
+import { createContext, ReactNode, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
+
+import useThreadFeed from "@/Feed/ThreadFeed";
+
 import useModeration from "./useModeration";
 
 export interface ThreadContext {

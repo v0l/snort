@@ -1,6 +1,7 @@
 import { base64 } from "@scure/base";
 import { throwIfOffline } from "@snort/shared";
 import { EventKind, EventPublisher } from "@snort/system";
+
 import { UploadResult } from "@/Utils/Upload/index";
 
 export default async function NostrBuild(file: File | Blob, publisher?: EventPublisher): Promise<UploadResult> {

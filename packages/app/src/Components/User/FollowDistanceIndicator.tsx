@@ -1,7 +1,8 @@
-import React from "react";
 import { HexKey, socialGraphInstance } from "@snort/system";
-import Icon from "@/Components/Icons/Icon";
 import classNames from "classnames";
+import React from "react";
+
+import Icon from "@/Components/Icons/Icon";
 
 interface FollowDistanceIndicatorProps {
   pubkey: HexKey;

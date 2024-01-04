@@ -1,10 +1,12 @@
-import { ReactNode } from "react";
 import { HexKey } from "@snort/system";
-import FollowListBase from "@/Components/User/FollowListBase";
+import { ReactNode } from "react";
+
 import PageSpinner from "@/Components/PageSpinner";
+import FollowListBase from "@/Components/User/FollowListBase";
 import NostrBandApi from "@/External/NostrBand";
-import { ErrorOrOffline } from "../ErrorOrOffline";
 import useCachedFetch from "@/Hooks/useCachedFetch";
+
+import { ErrorOrOffline } from "../ErrorOrOffline";
 
 export default function TrendingUsers({ title, count = Infinity }: { title?: ReactNode; count?: number }) {
   const api = new NostrBandApi();

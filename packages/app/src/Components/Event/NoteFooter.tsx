@@ -1,26 +1,25 @@
-import React, { forwardRef, useEffect, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-import { useLongPress } from "use-long-press";
-import { TaggedNostrEvent, ParsedZap, countLeadingZeros, NostrLink } from "@snort/system";
 import { normalizeReaction } from "@snort/shared";
+import { countLeadingZeros, NostrLink,ParsedZap, TaggedNostrEvent } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import classNames from "classnames";
+import React, { forwardRef, useEffect, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
+import { useLongPress } from "use-long-press";
 
-import { formatShort } from "@/Utils/Number";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { delay, findTag, getDisplayName } from "@/Utils";
-import SendSats from "@/Components/SendSats/SendSats";
-import { ZapsSummary } from "@/Components/Event/Zap";
 import { AsyncIcon, AsyncIconProps } from "@/Components/Button/AsyncIcon";
-
-import { useWallet } from "@/Wallet";
-import useLogin from "@/Hooks/useLogin";
-import { useInteractionCache } from "@/Hooks/useInteractionCache";
-import { ZapPoolController } from "@/Utils/ZapPoolController";
-import { Zapper, ZapTarget } from "@/Utils/Zapper";
-import { useNoteCreator } from "@/State/NoteCreator";
+import { ZapsSummary } from "@/Components/Event/Zap";
 import Icon from "@/Components/Icons/Icon";
+import SendSats from "@/Components/SendSats/SendSats";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import { useInteractionCache } from "@/Hooks/useInteractionCache";
+import useLogin from "@/Hooks/useLogin";
+import { useNoteCreator } from "@/State/NoteCreator";
+import { delay, findTag, getDisplayName } from "@/Utils";
+import { formatShort } from "@/Utils/Number";
+import { Zapper, ZapTarget } from "@/Utils/Zapper";
+import { ZapPoolController } from "@/Utils/ZapPoolController";
+import { useWallet } from "@/Wallet";
 
 import messages from "../messages";
 

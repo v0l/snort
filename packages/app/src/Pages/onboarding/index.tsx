@@ -1,13 +1,16 @@
 import "./index.css";
+
 import { Outlet, RouteObject } from "react-router-dom";
-import { SignIn, SignUp } from "./start";
-import { AllLanguageCodes } from "@/Pages/settings/Preferences";
+
 import Icon from "@/Components/Icons/Icon";
-import { Profile } from "./profile";
-import { Topics } from "./topics";
-import { Discover } from "./discover";
 import { useLocale } from "@/IntlProvider";
+import { AllLanguageCodes } from "@/Pages/settings/Preferences";
+
+import { Discover } from "./discover";
 import { Moderation } from "./moderation";
+import { Profile } from "./profile";
+import { SignIn, SignUp } from "./start";
+import { Topics } from "./topics";
 
 export interface NewUserState {
   name?: string;

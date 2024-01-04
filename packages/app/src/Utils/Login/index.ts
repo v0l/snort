@@ -16,6 +16,6 @@ declare global {
   }
 }
 
-export * from "./Preferences";
-export * from "./LoginSession";
 export * from "./Functions";
+export * from "./LoginSession";
+export * from "./Preferences";

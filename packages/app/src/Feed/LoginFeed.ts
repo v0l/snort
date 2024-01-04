@@ -1,14 +1,19 @@
-import { useEffect, useMemo } from "react";
-import { TaggedNostrEvent, EventKind, RequestBuilder, NoteCollection, NostrLink, parseRelayTags } from "@snort/system";
+import { EventKind, NostrLink, NoteCollection, parseRelayTags,RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
+import { usePrevious } from "@uidotdev/usehooks";
+import { useEffect, useMemo } from "react";
 
-import { bech32ToHex, debounce, getNewest, getNewestEventTagsByKey, unwrap } from "@/Utils";
+import { FollowLists, FollowsFeed, GiftsCache, Notifications, UserRelays } from "@/Cache";
+import { Nip4Chats,Nip28Chats } from "@/chat";
+import { Nip28ChatSystem } from "@/chat/nip28";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import { useRefreshFeedCache } from "@/Hooks/useRefreshFeedcache";
+import { bech32ToHex, debounce, getNewest, getNewestEventTagsByKey, unwrap } from "@/Utils";
+import { SnortPubKey } from "@/Utils/Const";
 import {
-  LoginStore,
-  SnortAppData,
   addSubscription,
+  LoginStore,
   setAppData,
   setBlocked,
   setBookmarked,
@@ -17,14 +22,9 @@ import {
   setPinned,
   setRelays,
   setTags,
+  SnortAppData,
 } from "@/Utils/Login";
-import { SnortPubKey } from "@/Utils/Const";
 import { SubscriptionEvent } from "@/Utils/Subscription";
-import { FollowLists, FollowsFeed, GiftsCache, Notifications, UserRelays } from "@/Cache";
-import { Nip28Chats, Nip4Chats } from "@/chat";
-import { useRefreshFeedCache } from "@/Hooks/useRefreshFeedcache";
-import { usePrevious } from "@uidotdev/usehooks";
-import { Nip28ChatSystem } from "@/chat/nip28";
 
 /**
  * Managed loading data for the current logged in user

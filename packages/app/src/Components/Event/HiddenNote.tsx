@@ -1,6 +1,7 @@
-import messages from "../messages";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
+
+import messages from "../messages";
 
 const HiddenNote = ({ children }: { children: React.ReactNode }) => {
   const [show, setShow] = useState(false);

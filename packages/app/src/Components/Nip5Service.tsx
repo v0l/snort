@@ -1,28 +1,28 @@
-import { useEffect, useMemo, useState, ChangeEvent } from "react";
-import { useIntl, FormattedMessage } from "react-intl";
+import { mapEventToProfile,UserMetadata } from "@snort/system";
+import { useUserProfile } from "@snort/system-react";
+import { ChangeEvent,useEffect, useMemo, useState } from "react";
+import { FormattedMessage,useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
-import { UserMetadata, mapEventToProfile } from "@snort/system";
 
+import { UserCache } from "@/Cache";
+import AsyncButton from "@/Components/Button/AsyncButton";
+import Copy from "@/Components/Copy/Copy";
+import SendSats from "@/Components/SendSats/SendSats";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import useLogin from "@/Hooks/useLogin";
 import { unwrap } from "@/Utils";
-import { formatShort } from "@/Utils/Number";
+import { debounce } from "@/Utils";
 import {
-  ServiceProvider,
+  CheckRegisterResponse,
+  HandleAvailability,
+  HandleRegisterResponse,
   ServiceConfig,
   ServiceError,
-  HandleAvailability,
   ServiceErrorCode,
-  HandleRegisterResponse,
-  CheckRegisterResponse,
+  ServiceProvider,
 } from "@/Utils/Nip05/ServiceProvider";
-import AsyncButton from "@/Components/Button/AsyncButton";
-import SendSats from "@/Components/SendSats/SendSats";
-import Copy from "@/Components/Copy/Copy";
-import { useUserProfile } from "@snort/system-react";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { debounce } from "@/Utils";
-import useLogin from "@/Hooks/useLogin";
 import SnortServiceProvider from "@/Utils/Nip05/SnortServiceProvider";
-import { UserCache } from "@/Cache";
+import { formatShort } from "@/Utils/Number";
 
 import messages from "./messages";
 

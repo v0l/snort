@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { Link } from "react-router-dom";
 
 import Mention from "@/Components/Embed/Mention";
 import NoteQuote from "@/Components/Event/NoteQuote";

@@ -1,13 +1,13 @@
-import { UserProfileCache, UserRelaysCache, RelayMetricCache } from "@snort/system";
+import { RelayMetricCache,UserProfileCache, UserRelaysCache } from "@snort/system";
 import { SnortSystemDb } from "@snort/system-web";
 
-import { EventInteractionCache } from "./EventInteractionCache";
 import { ChatCache } from "./ChatCache";
-import { Payments } from "./PaymentsCache";
+import { EventInteractionCache } from "./EventInteractionCache";
+import { FollowListCache } from "./FollowListCache";
+import { FollowsFeedCache } from "./FollowsFeed";
 import { GiftWrapCache } from "./GiftWrapCache";
 import { NotificationsCache } from "./Notifications";
-import { FollowsFeedCache } from "./FollowsFeed";
-import { FollowListCache } from "./FollowListCache";
+import { Payments } from "./PaymentsCache";
 
 export const SystemDb = new SnortSystemDb();
 export const UserCache = new UserProfileCache(SystemDb.users);

@@ -1,15 +1,14 @@
 import "./BadgeList.css";
 
+import { TaggedNostrEvent } from "@snort/system";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { TaggedNostrEvent } from "@snort/system";
-
-import { ProxyImg } from "@/Components/ProxyImg";
+import CloseButton from "@/Components/Button/CloseButton";
 import Modal from "@/Components/Modal/Modal";
+import { ProxyImg } from "@/Components/ProxyImg";
 import Username from "@/Components/User/Username";
 import { findTag } from "@/Utils";
-import CloseButton from "@/Components/Button/CloseButton";
 
 export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
   const [showModal, setShowModal] = useState(false);

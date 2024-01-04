@@ -1,15 +1,16 @@
 import "./ProfileCard.css";
 
-import { ControlledMenu } from "@szhsin/react-menu";
 import { UserMetadata } from "@snort/system";
+import { ControlledMenu } from "@szhsin/react-menu";
+import { useEffect, useState } from "react";
 
+import Text from "@/Components/Text/Text";
+import FollowedBy from "@/Components/User/FollowedBy";
+
+import useLogin from "../../Hooks/useLogin";
 import FollowButton from "./FollowButton";
 import ProfileImage from "./ProfileImage";
 import { UserWebsiteLink } from "./UserWebsiteLink";
-import Text from "@/Components/Text/Text";
-import { useEffect, useState } from "react";
-import useLogin from "../../Hooks/useLogin";
-import FollowedBy from "@/Components/User/FollowedBy";
 
 export function ProfileCard({
   pubkey,

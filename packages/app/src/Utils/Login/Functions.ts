@@ -1,25 +1,26 @@
+import * as utils from "@noble/curves/abstract/utils";
+import * as secp from "@noble/curves/secp256k1";
+import { unixNowMs } from "@snort/shared";
 import {
-  RelaySettings,
   EventPublisher,
-  Nip46Signer,
-  Nip7Signer,
-  PrivateKeySigner,
   KeyStorage,
+  Nip7Signer,
+  Nip46Signer,
+  PrivateKeySigner,
+  RelaySettings,
   SystemInterface,
   UserMetadata,
 } from "@snort/system";
-import { unixNowMs } from "@snort/shared";
-import * as secp from "@noble/curves/secp256k1";
-import * as utils from "@noble/curves/abstract/utils";
 
-import { Blasters } from "@/Utils/Const";
-import { LoginStore, UserPreferences, LoginSession, LoginSessionType, SnortAppData, Newest } from "@/Utils/Login/index";
-import { generateBip39Entropy, entropyToPrivateKey } from "@/Utils/nip6";
-import { bech32ToHex, dedupeById, deleteRefCode, getCountry, sanitizeRelayUrl, unwrap } from "@/Utils";
-import { SubscriptionEvent } from "@/Utils/Subscription";
 import { Chats, FollowsFeed, GiftsCache, Notifications } from "@/Cache";
-import { Nip7OsSigner } from "./Nip7OsSigner";
 import SnortApi from "@/External/SnortApi";
+import { bech32ToHex, dedupeById, deleteRefCode, getCountry, sanitizeRelayUrl, unwrap } from "@/Utils";
+import { Blasters } from "@/Utils/Const";
+import { LoginSession, LoginSessionType, LoginStore, Newest,SnortAppData, UserPreferences } from "@/Utils/Login/index";
+import { entropyToPrivateKey,generateBip39Entropy } from "@/Utils/nip6";
+import { SubscriptionEvent } from "@/Utils/Subscription";
+
+import { Nip7OsSigner } from "./Nip7OsSigner";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
   if (SINGLE_RELAY) {

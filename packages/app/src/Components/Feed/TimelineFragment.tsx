@@ -1,5 +1,5 @@
-import { ReactNode, useCallback } from "react";
 import { TaggedNostrEvent } from "@snort/system";
+import { ReactNode, useCallback } from "react";
 
 import Note from "@/Components/Event/Note";
 import { findTag } from "@/Utils";

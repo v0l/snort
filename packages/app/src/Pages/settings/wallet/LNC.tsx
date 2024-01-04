@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
-import { LNWallet, WalletInfo, WalletKind, Wallets } from "@/Wallet";
 import { unwrap } from "@/Utils";
+import { LNWallet, WalletInfo, WalletKind, Wallets } from "@/Wallet";
 
 const ConnectLNC = () => {
   const { formatMessage } = useIntl();

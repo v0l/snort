@@ -1,10 +1,10 @@
+import { LNURL } from "@snort/shared";
 import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { LNURL } from "@snort/shared";
 
-import { ApiHost } from "@/Utils/Const";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import useEventPublisher from "@/Hooks/useEventPublisher";
+import { ApiHost } from "@/Utils/Const";
 import SnortServiceProvider, { ForwardType, ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
 
 export default function LNForwardAddress({ handle }: { handle: ManageHandle }) {

@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
+import { useNavigate } from "react-router-dom";
 
 interface AccountNameProps {
   name?: string;

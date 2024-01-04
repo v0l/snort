@@ -1,5 +1,7 @@
-import { ReactNode } from "react";
 import "./Tabs.css";
+
+import { ReactNode } from "react";
+
 import useHorizontalScroll from "@/Hooks/useHorizontalScroll";
 
 export interface Tab {

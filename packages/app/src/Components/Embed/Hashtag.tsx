@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
 import "./Hashtag.css";
+
+import { Link } from "react-router-dom";
 
 const Hashtag = ({ tag }: { tag: string }) => {
   return (

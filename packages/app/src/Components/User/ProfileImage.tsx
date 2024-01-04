@@ -1,17 +1,18 @@
 import "./ProfileImage.css";
 
-import React, { ReactNode, useCallback, useRef, useState } from "react";
 import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
+import React, { ReactNode, useCallback, useRef, useState } from "react";
 
+import { LeaderBadge } from "@/Components/CommunityLeaders/LeaderBadge";
 import Avatar from "@/Components/User/Avatar";
-import DisplayName from "./DisplayName";
-import { ProfileLink } from "./ProfileLink";
-import { ProfileCard } from "./ProfileCard";
 import FollowDistanceIndicator from "@/Components/User/FollowDistanceIndicator";
 import { useCommunityLeader } from "@/Hooks/useCommunityLeaders";
-import { LeaderBadge } from "@/Components/CommunityLeaders/LeaderBadge";
+
+import DisplayName from "./DisplayName";
+import { ProfileCard } from "./ProfileCard";
+import { ProfileLink } from "./ProfileLink";
 
 export interface ProfileImageProps {
   pubkey: HexKey;

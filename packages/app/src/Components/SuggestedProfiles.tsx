@@ -1,16 +1,17 @@
-import { useState } from "react";
 import { HexKey, NostrPrefix } from "@snort/system";
+import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import FollowListBase from "@/Components/User/FollowListBase";
 import PageSpinner from "@/Components/PageSpinner";
+import TrendingUsers from "@/Components/Trending/TrendingUsers";
+import FollowListBase from "@/Components/User/FollowListBase";
 import NostrBandApi from "@/External/NostrBand";
 import SemisolDevApi from "@/External/SemisolDev";
+import useCachedFetch from "@/Hooks/useCachedFetch";
 import useLogin from "@/Hooks/useLogin";
 import { hexToBech32 } from "@/Utils";
+
 import { ErrorOrOffline } from "./ErrorOrOffline";
-import useCachedFetch from "@/Hooks/useCachedFetch";
-import TrendingUsers from "@/Components/Trending/TrendingUsers";
 
 enum Provider {
   NostrBand = 1,

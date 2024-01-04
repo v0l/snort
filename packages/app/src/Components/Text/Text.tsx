@@ -1,17 +1,19 @@
 import "./Text.css";
-import { ReactNode, useState } from "react";
+
 import { HexKey, ParsedFragment, parseIMeta } from "@snort/system";
 import classNames from "classnames";
+import { ReactNode, useState } from "react";
 
-import Invoice from "@/Components/Embed/Invoice";
+import CashuNuts from "@/Components/Embed/CashuNuts";
 import Hashtag from "@/Components/Embed/Hashtag";
 import HyperText from "@/Components/Embed/HyperText";
-import CashuNuts from "@/Components/Embed/CashuNuts";
+import Invoice from "@/Components/Embed/Invoice";
+import { useTextTransformer } from "@/Hooks/useTextTransformCache";
+
 import RevealMedia from "../Event/RevealMedia";
+import HighlightedText from "../HighlightedText";
 import { ProxyImg } from "../ProxyImg";
 import { SpotlightMediaModal } from "../Spotlight/SpotlightMedia";
-import HighlightedText from "../HighlightedText";
-import { useTextTransformer } from "@/Hooks/useTextTransformCache";
 
 export interface TextProps {
   id: string;

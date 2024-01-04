@@ -1,16 +1,16 @@
+import { dedupe } from "@snort/shared";
+import { HexKey } from "@snort/system";
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
-import { HexKey } from "@snort/system";
-import { dedupe } from "@snort/shared";
 
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import ProfilePreview from "@/Components/User/ProfilePreview";
-import useLogin from "@/Hooks/useLogin";
-
-import messages from "../messages";
 import { FollowsFeed } from "@/Cache";
-import AsyncButton from "../Button/AsyncButton";
+import ProfilePreview from "@/Components/User/ProfilePreview";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import useLogin from "@/Hooks/useLogin";
 import { setFollows } from "@/Utils/Login";
+
+import AsyncButton from "../Button/AsyncButton";
+import messages from "../messages";
 
 export interface FollowListBaseProps {
   pubkeys: HexKey[];

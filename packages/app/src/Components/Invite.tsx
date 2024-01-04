@@ -1,12 +1,14 @@
-import SnortApi from "@/External/SnortApi";
-import { getCurrentRefCode, getDisplayName } from "@/Utils";
 import { useUserProfile } from "@snort/system-react";
 import Lottie from "lottie-react";
-import { useState, useEffect } from "react";
+import { useEffect,useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
-import Modal from "./Modal/Modal";
+
+import SnortApi from "@/External/SnortApi";
 import Hugs from "@/hug.json";
+import { getCurrentRefCode, getDisplayName } from "@/Utils";
+
+import Modal from "./Modal/Modal";
 
 const InviteModal = () => {
   const [pubkey, setPubkey] = useState("");

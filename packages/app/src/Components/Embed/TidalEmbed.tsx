@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { TidalRegex } from "@/Utils/Const";
 
 // Re-use dom parser across instances of TidalEmbed

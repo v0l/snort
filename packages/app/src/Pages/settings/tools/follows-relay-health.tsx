@@ -1,12 +1,13 @@
-import { CollapsedSection } from "@/Components/Collapsed";
-import ProfilePreview from "@/Components/User/ProfilePreview";
-import useLogin from "@/Hooks/useLogin";
-import { getRelayName } from "@/Utils";
 import { dedupe } from "@snort/shared";
 import { pickTopRelays } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { ReactNode, useContext, useMemo } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
+
+import { CollapsedSection } from "@/Components/Collapsed";
+import ProfilePreview from "@/Components/User/ProfilePreview";
+import useLogin from "@/Hooks/useLogin";
+import { getRelayName } from "@/Utils";
 
 export function FollowsRelayHealth({
   withTitle,

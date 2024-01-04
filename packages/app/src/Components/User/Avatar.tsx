@@ -1,12 +1,12 @@
 import "./Avatar.css";
 
-import { ReactNode, useMemo } from "react";
 import type { UserMetadata } from "@snort/system";
 import classNames from "classnames";
+import { ReactNode, useMemo } from "react";
 
-import { defaultAvatar, getDisplayName } from "@/Utils";
-import { ProxyImg } from "@/Components/ProxyImg";
 import Icon from "@/Components/Icons/Icon";
+import { ProxyImg } from "@/Components/ProxyImg";
+import { defaultAvatar, getDisplayName } from "@/Utils";
 
 interface AvatarProps {
   pubkey: string;

@@ -1,11 +1,12 @@
 import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
+import { FormattedMessage } from "react-intl";
 
-import AccountName from "./AccountName";
-import useLogin from "@/Hooks/useLogin";
 import { UserCache } from "@/Cache";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import { FormattedMessage } from "react-intl";
+import useLogin from "@/Hooks/useLogin";
+
+import AccountName from "./AccountName";
 
 interface ActiveAccountProps {
   name?: string;

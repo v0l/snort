@@ -1,7 +1,8 @@
 import { ExternalStore, unwrap } from "@snort/shared";
 import { EventKind, parseNostrLink } from "@snort/system";
-import { useLinkList } from "./useLists";
 import { useEffect, useSyncExternalStore } from "react";
+
+import { useLinkList } from "./useLists";
 
 class CommunityLeadersStore extends ExternalStore<Array<string>> {
   #leaders: Array<string> = [];

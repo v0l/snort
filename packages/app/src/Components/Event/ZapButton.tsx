@@ -1,10 +1,11 @@
 import "./ZapButton.css";
-import { useState } from "react";
+
 import { HexKey } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
+import { useState } from "react";
 
-import SendSats from "@/Components/SendSats/SendSats";
 import Icon from "@/Components/Icons/Icon";
+import SendSats from "@/Components/SendSats/SendSats";
 import { ZapTarget } from "@/Utils/Zapper";
 
 const ZapButton = ({

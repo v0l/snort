@@ -1,17 +1,19 @@
 import "./LongFormText.css";
-import React, { CSSProperties, useCallback, useRef, useState } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
+
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions } from "@snort/system-react";
+import classNames from "classnames";
+import React, { CSSProperties, useCallback, useRef, useState } from "react";
+import { FormattedMessage, FormattedNumber } from "react-intl";
 
-import { findTag } from "@/Utils";
 import Text from "@/Components/Text/Text";
-import { Markdown } from "./Markdown";
-import useImgProxy from "@/Hooks/useImgProxy";
 import ProfilePreview from "@/Components/User/ProfilePreview";
+import useImgProxy from "@/Hooks/useImgProxy";
+import { findTag } from "@/Utils";
+
+import { Markdown } from "./Markdown";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
-import classNames from "classnames";
 
 interface LongFormTextProps {
   ev: TaggedNostrEvent;

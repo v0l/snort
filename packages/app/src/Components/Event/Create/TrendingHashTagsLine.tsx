@@ -1,8 +1,9 @@
-import { useLocale } from "@/IntlProvider";
-import NostrBandApi from "@/External/NostrBand";
 import { FormattedMessage } from "react-intl";
-import useCachedFetch from "@/Hooks/useCachedFetch";
+
 import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
+import NostrBandApi from "@/External/NostrBand";
+import useCachedFetch from "@/Hooks/useCachedFetch";
+import { useLocale } from "@/IntlProvider";
 
 export function TrendingHashTagsLine(props: { onClick: (tag: string) => void }) {
   const { lang } = useLocale();

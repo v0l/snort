@@ -1,14 +1,17 @@
 import "./ZapGoal.css";
-import { useState } from "react";
+
 import { NostrEvent, NostrLink } from "@snort/system";
-import useZapsFeed from "@/Feed/ZapsFeed";
-import { formatShort } from "@/Utils/Number";
-import { findTag } from "@/Utils";
-import Icon from "@/Components/Icons/Icon";
-import SendSats from "../SendSats/SendSats";
-import { Zapper } from "@/Utils/Zapper";
-import Progress from "@/Components/Progress/Progress";
+import { useState } from "react";
 import { FormattedNumber } from "react-intl";
+
+import Icon from "@/Components/Icons/Icon";
+import Progress from "@/Components/Progress/Progress";
+import useZapsFeed from "@/Feed/ZapsFeed";
+import { findTag } from "@/Utils";
+import { formatShort } from "@/Utils/Number";
+import { Zapper } from "@/Utils/Zapper";
+
+import SendSats from "../SendSats/SendSats";
 
 export function ZapGoal({ ev }: { ev: NostrEvent }) {
   const [zap, setZap] = useState(false);

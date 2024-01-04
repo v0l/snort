@@ -1,11 +1,12 @@
 import { NostrLink } from "@snort/system";
 import { useReactions } from "@snort/system-react";
+import { useContext } from "react";
 
 import { useArticles } from "@/Feed/ArticlesFeed";
-import { orderDescending } from "@/Utils";
-import Note from "../Event/Note";
-import { useContext } from "react";
 import { DeckContext } from "@/Pages/DeckLayout";
+import { orderDescending } from "@/Utils";
+
+import Note from "../Event/Note";
 
 export default function Articles() {
   const data = useArticles();

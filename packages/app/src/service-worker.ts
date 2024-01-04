@@ -3,14 +3,15 @@ declare const self: ServiceWorkerGlobalScope & {
   __WB_MANIFEST: (string | PrecacheEntry)[];
 };
 
-import { NostrLink, NostrPrefix, TLVEntryType, encodeTLVEntries, tryParseNostrLink } from "@snort/system";
-import { formatShort } from "@/Utils/Number";
-import { defaultAvatar, hexToBech32 } from "@/Utils";
+import { encodeTLVEntries, NostrLink, NostrPrefix, TLVEntryType, tryParseNostrLink } from "@snort/system";
 import { clientsClaim } from "workbox-core";
+import { ExpirationPlugin } from "workbox-expiration";
+import { precacheAndRoute,PrecacheEntry } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
-import { PrecacheEntry, precacheAndRoute } from "workbox-precaching";
-import { ExpirationPlugin } from "workbox-expiration";
+
+import { defaultAvatar, hexToBech32 } from "@/Utils";
+import { formatShort } from "@/Utils/Number";
 
 precacheAndRoute(self.__WB_MANIFEST);
 clientsClaim();

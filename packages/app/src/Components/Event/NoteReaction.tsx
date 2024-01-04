@@ -1,15 +1,16 @@
 import "./NoteReaction.css";
-import { Link } from "react-router-dom";
+
+import { EventExt,EventKind, NostrEvent, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+import { useUserProfile } from "@snort/system-react";
 import { useMemo } from "react";
-import { EventKind, NostrEvent, TaggedNostrEvent, NostrPrefix, EventExt } from "@snort/system";
+import { useInView } from "react-intersection-observer";
+import { FormattedMessage } from "react-intl";
+import { Link } from "react-router-dom";
 
 import Note from "@/Components/Event/Note";
-import { eventLink, hexToBech32, getDisplayName } from "@/Utils";
-import useModeration from "@/Hooks/useModeration";
-import { FormattedMessage } from "react-intl";
 import Icon from "@/Components/Icons/Icon";
-import { useUserProfile } from "@snort/system-react";
-import { useInView } from "react-intersection-observer";
+import useModeration from "@/Hooks/useModeration";
+import { eventLink, getDisplayName,hexToBech32 } from "@/Utils";
 
 export interface NoteReactionProps {
   data: TaggedNostrEvent;

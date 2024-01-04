@@ -1,9 +1,10 @@
 import { unixNowMs } from "@snort/shared";
-import useLogin from "@/Hooks/useLogin";
-import { SnortAppData, updateAppData } from "@/Utils/Login";
-import { appendDedupe } from "@/Utils";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
+
+import useLogin from "@/Hooks/useLogin";
+import { appendDedupe } from "@/Utils";
+import { SnortAppData, updateAppData } from "@/Utils/Login";
 
 export default function ModerationSettingsPage() {
   const login = useLogin();

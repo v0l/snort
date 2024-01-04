@@ -1,16 +1,19 @@
 import "./Note.css";
-import { ReactNode } from "react";
+
 import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
-import { NostrFileElement } from "@/Components/Event/NostrFileHeader";
-import ZapstrEmbed from "@/Components/Embed/ZapstrEmbed";
+import { ReactNode } from "react";
+
 import PubkeyList from "@/Components/Embed/PubkeyList";
-import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
-import { ZapGoal } from "@/Components/Event/ZapGoal";
-import NoteReaction from "@/Components/Event/NoteReaction";
-import ProfilePreview from "@/Components/User/ProfilePreview";
-import { NoteInner } from "./NoteInner";
-import { LongFormText } from "./LongFormText";
+import ZapstrEmbed from "@/Components/Embed/ZapstrEmbed";
 import ErrorBoundary from "@/Components/ErrorBoundary";
+import { NostrFileElement } from "@/Components/Event/NostrFileHeader";
+import NoteReaction from "@/Components/Event/NoteReaction";
+import { ZapGoal } from "@/Components/Event/ZapGoal";
+import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
+import ProfilePreview from "@/Components/User/ProfilePreview";
+
+import { LongFormText } from "./LongFormText";
+import { NoteInner } from "./NoteInner";
 
 export interface NoteProps {
   data: TaggedNostrEvent;

@@ -1,18 +1,19 @@
 import { ExternalStore, FeedCache } from "@snort/shared";
 import {
+  decodeTLV,
+  encodeTLVEntries,
   EventKind,
   NostrEvent,
   NostrPrefix,
   RequestBuilder,
   SystemInterface,
-  TLVEntryType,
-  encodeTLVEntries,
   TaggedNostrEvent,
-  decodeTLV,
+  TLVEntryType,
 } from "@snort/system";
-import { LoginSession } from "@/Utils/Login";
-import { Chat, ChatSystem, ChatType, inChatWith, lastReadInChat } from "@/chat";
 import { debug } from "debug";
+
+import { Chat, ChatSystem, ChatType, inChatWith, lastReadInChat } from "@/chat";
+import { LoginSession } from "@/Utils/Login";
 
 export class Nip4ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   #cache: FeedCache<NostrEvent>;

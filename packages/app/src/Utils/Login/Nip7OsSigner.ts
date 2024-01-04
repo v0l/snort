@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { EventSigner, NostrEvent } from "@snort/system";
+
 import { Nip7os } from "@/Utils/Login/index";
 
 export class Nip7OsSigner implements EventSigner {

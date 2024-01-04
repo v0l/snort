@@ -1,17 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
-import { FormattedMessage } from "react-intl";
 import { unixNowMs, unwrap } from "@snort/shared";
 import { EventPublisher, FullRelaySettings, RelaySettings, SystemInterface } from "@snort/system";
+import { useEffect, useMemo, useState } from "react";
+import { FormattedMessage } from "react-intl";
 
+import AsyncButton from "@/Components/Button/AsyncButton";
 import Relay from "@/Components/Relay/Relay";
+import SnortApi, { RelayDistance } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
-import { setRelays } from "@/Utils/Login";
-import AsyncButton from "@/Components/Button/AsyncButton";
-import SnortApi, { RelayDistance } from "@/External/SnortApi";
 import { getCountry, getRelayName, sanitizeRelayUrl } from "@/Utils";
-import { formatShort } from "@/Utils/Number";
 import { Blasters } from "@/Utils/Const";
+import { setRelays } from "@/Utils/Login";
+import { formatShort } from "@/Utils/Number";
 
 import messages from "./messages";
 

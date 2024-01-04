@@ -1,4 +1,5 @@
 import { throwIfOffline } from "@snort/shared";
+
 import { UploadResult } from "@/Utils/Upload/index";
 
 export default async function NostrImg(file: File | Blob): Promise<UploadResult> {

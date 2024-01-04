@@ -1,9 +1,10 @@
+import { MetadataCache } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
-import { BaseUITask } from "@/Components/Tasks/index";
-import { MetadataCache } from "@snort/system";
-import { LoginSession } from "@/Utils/Login";
+
 import Icon from "@/Components/Icons/Icon";
+import { BaseUITask } from "@/Components/Tasks/index";
+import { LoginSession } from "@/Utils/Login";
 
 export class BackupKeyTask extends BaseUITask {
   id = "backup-key";

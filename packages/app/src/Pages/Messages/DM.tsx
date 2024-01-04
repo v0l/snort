@@ -1,17 +1,16 @@
 import "./DM.css";
 
 import { useEffect, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
 import { useInView } from "react-intersection-observer";
+import { FormattedMessage, useIntl } from "react-intl";
 
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import NoteTime from "@/Components/Event/NoteTime";
-import Text from "@/Components/Text/Text";
-import useLogin from "@/Hooks/useLogin";
 import { Chat, ChatMessage, ChatType, setLastReadIn } from "@/chat";
-import ProfileImage from "@/Components/User/ProfileImage";
-
+import NoteTime from "@/Components/Event/NoteTime";
 import messages from "@/Components/messages";
+import Text from "@/Components/Text/Text";
+import ProfileImage from "@/Components/User/ProfileImage";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import useLogin from "@/Hooks/useLogin";
 
 export interface DMProps {
   chat: Chat;

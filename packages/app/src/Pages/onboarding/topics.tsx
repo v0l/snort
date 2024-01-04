@@ -1,11 +1,12 @@
+import { EventKind } from "@snort/system";
+import classNames from "classnames";
 import { ReactNode, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
+
 import AsyncButton from "@/Components/Button/AsyncButton";
-import classNames from "classnames";
-import { appendDedupe } from "@/Utils";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import { EventKind } from "@snort/system";
+import { appendDedupe } from "@/Utils";
 
 export const FixedTopics = {
   life: {

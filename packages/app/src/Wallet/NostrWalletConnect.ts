@@ -1,4 +1,7 @@
-import { Connection, EventKind, NostrEvent, EventBuilder, PrivateKeySigner } from "@snort/system";
+import { dedupe } from "@snort/shared";
+import { Connection, EventBuilder, EventKind, NostrEvent, PrivateKeySigner } from "@snort/system";
+import debug from "debug";
+
 import {
   InvoiceRequest,
   LNWallet,
@@ -8,8 +11,6 @@ import {
   WalletInvoice,
   WalletInvoiceState,
 } from "@/Wallet";
-import debug from "debug";
-import { dedupe } from "@snort/shared";
 
 interface WalletConnectConfig {
   relayUrl: string;

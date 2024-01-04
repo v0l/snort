@@ -1,9 +1,10 @@
+import { IMeta } from "@snort/system";
+import classNames from "classnames";
+import React, { CSSProperties, useEffect, useMemo, useRef } from "react";
+import { useInView } from "react-intersection-observer";
+
 import { ProxyImg } from "@/Components/ProxyImg";
 import useImgProxy from "@/Hooks/useImgProxy";
-import { IMeta } from "@snort/system";
-import React, { CSSProperties, useEffect, useMemo, useRef } from "react";
-import classNames from "classnames";
-import { useInView } from "react-intersection-observer";
 
 interface MediaElementProps {
   mime: string;

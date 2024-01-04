@@ -1,17 +1,18 @@
+import { FlatReqFilter, NostrEvent, Optimizer, PowMiner, PowWorker, ReqFilter } from "@snort/system";
+import PowWorkerURL from "@snort/system/src/pow-worker.ts?worker&url";
+
+import { unwrap } from "@/Utils/index";
+
 import {
   compress,
+  default as wasmInit,
   expand_filter,
   flat_merge,
   get_diff,
   pow,
   schnorr_verify_event,
-  default as wasmInit,
 } from "../../../system-wasm/pkg/system_wasm";
 import WasmPath from "../../../system-wasm/pkg/system_wasm_bg.wasm";
-
-import { FlatReqFilter, NostrEvent, Optimizer, PowMiner, PowWorker, ReqFilter } from "@snort/system";
-import PowWorkerURL from "@snort/system/src/pow-worker.ts?worker&url";
-import { unwrap } from "@/Utils/index";
 
 export const WasmOptimizer = {
   expandFilter: (f: ReqFilter) => {

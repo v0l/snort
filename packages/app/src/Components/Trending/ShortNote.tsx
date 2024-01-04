@@ -1,8 +1,9 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
-import ProfileImage from "@/Components/User/ProfileImage";
-import Text from "@/Components/Text/Text";
 import { Link } from "react-router-dom";
+
 import NoteTime from "@/Components/Event/NoteTime";
+import Text from "@/Components/Text/Text";
+import ProfileImage from "@/Components/User/ProfileImage";
 
 export default function ShortNote({ event }: { event: TaggedNostrEvent }) {
   // replace newlines with spaces, replace double spaces with single spaces

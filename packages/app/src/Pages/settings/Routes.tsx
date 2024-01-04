@@ -1,16 +1,18 @@
-import Menu from "@/Pages/settings/Menu";
-import Profile from "@/Pages/settings/Profile";
-import Relay from "@/Pages/settings/Relays";
-import Preferences from "@/Pages/settings/Preferences";
-import Notifications from "@/Pages/settings/Notifications";
-import RelayInfo from "@/Pages/settings/RelayInfo";
+import { Outlet } from "react-router-dom";
+
 import AccountsPage from "@/Pages/settings/Accounts";
+import { CacheSettings } from "@/Pages/settings/Cache";
 import { ManageHandleRoutes } from "@/Pages/settings/handle";
 import ExportKeys from "@/Pages/settings/Keys";
+import Menu from "@/Pages/settings/Menu";
 import ModerationSettings from "@/Pages/settings/Moderation";
-import { CacheSettings } from "@/Pages/settings/Cache";
+import Notifications from "@/Pages/settings/Notifications";
+import Preferences from "@/Pages/settings/Preferences";
+import Profile from "@/Pages/settings/Profile";
 import { ReferralsPage } from "@/Pages/settings/Referrals";
-import { Outlet } from "react-router-dom";
+import RelayInfo from "@/Pages/settings/RelayInfo";
+import Relay from "@/Pages/settings/Relays";
+
 import { ToolsPage, ToolsPages } from "./tools";
 import { WalletSettingsRoutes } from "./wallet";
 

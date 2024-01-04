@@ -1,4 +1,6 @@
 import LNC from "@lightninglabs/lnc-web";
+import debug from "debug";
+
 import { unwrap } from "@/Utils";
 import {
   InvoiceRequest,
@@ -11,7 +13,6 @@ import {
   WalletInvoice,
   WalletInvoiceState,
 } from "@/Wallet";
-import debug from "debug";
 
 enum Payment_PaymentStatus {
   UNKNOWN = "UNKNOWN",

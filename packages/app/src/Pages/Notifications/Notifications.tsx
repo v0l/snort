@@ -1,25 +1,26 @@
 import "./Notifications.css";
-import { Suspense, lazy, useEffect, useMemo, useState, useSyncExternalStore } from "react";
-import { EventExt, EventKind, NostrEvent, NostrLink, NostrPrefix, TaggedNostrEvent, parseZap } from "@snort/system";
+
 import { unwrap } from "@snort/shared";
+import { EventExt, EventKind, NostrEvent, NostrLink, NostrPrefix, parseZap,TaggedNostrEvent } from "@snort/system";
 import { useEventFeed, useUserProfile } from "@snort/system-react";
+import { lazy, Suspense, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import useLogin from "@/Hooks/useLogin";
-import { markNotificationsRead } from "@/Utils/Login";
 import { Notifications } from "@/Cache";
-import { dedupe, orderDescending, getDisplayName } from "@/Utils";
-import Icon from "@/Components/Icons/Icon";
-import ProfileImage from "@/Components/User/ProfileImage";
-import useModeration from "@/Hooks/useModeration";
-import Text from "@/Components/Text/Text";
-import { formatShort } from "@/Utils/Number";
-import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
-import ProfilePreview from "@/Components/User/ProfilePreview";
 import { ShowMoreInView } from "@/Components/Event/ShowMore";
+import Icon from "@/Components/Icons/Icon";
+import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
 import PageSpinner from "@/Components/PageSpinner";
+import Text from "@/Components/Text/Text";
+import ProfileImage from "@/Components/User/ProfileImage";
+import ProfilePreview from "@/Components/User/ProfilePreview";
+import useLogin from "@/Hooks/useLogin";
+import useModeration from "@/Hooks/useModeration";
+import { dedupe, getDisplayName,orderDescending } from "@/Utils";
+import { markNotificationsRead } from "@/Utils/Login";
+import { formatShort } from "@/Utils/Number";
 const NotificationGraph = lazy(() => import("@/Pages/Notifications/NotificationChart"));
 
 function notificationContext(ev: TaggedNostrEvent) {

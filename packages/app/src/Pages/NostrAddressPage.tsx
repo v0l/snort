@@ -1,7 +1,7 @@
 import { FormattedMessage } from "react-intl";
 
-import { ApiHost } from "@/Utils/Const";
 import Nip5Service from "@/Components/Nip5Service";
+import { ApiHost } from "@/Utils/Const";
 
 import messages from "./messages";
 

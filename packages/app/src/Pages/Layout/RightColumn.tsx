@@ -1,8 +1,9 @@
-import SearchBox from "@/Components/SearchBox/SearchBox";
-import TrendingNotes from "@/Components/Trending/TrendingPosts";
-import TrendingHashtags from "@/Components/Trending/TrendingHashtags";
-import { FormattedMessage } from "react-intl";
 import classNames from "classnames";
+import { FormattedMessage } from "react-intl";
+
+import SearchBox from "@/Components/SearchBox/SearchBox";
+import TrendingHashtags from "@/Components/Trending/TrendingHashtags";
+import TrendingNotes from "@/Components/Trending/TrendingPosts";
 import useLogin from "@/Hooks/useLogin";
 
 export default function RightColumn() {

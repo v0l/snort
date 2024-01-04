@@ -1,6 +1,7 @@
-import useImgProxy from "@/Hooks/useImgProxy";
-import { HTMLProps, ReactNode, forwardRef, useState, useMemo, useEffect } from "react";
+import { forwardRef, HTMLProps, ReactNode, useEffect,useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
+
+import useImgProxy from "@/Hooks/useImgProxy";
 import { getUrlHostname } from "@/Utils";
 
 type ProxyImgProps = HTMLProps<HTMLImageElement> & {

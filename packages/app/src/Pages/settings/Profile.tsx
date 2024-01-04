@@ -1,22 +1,23 @@
 import "./Profile.css";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
+import { fetchNip05Pubkey,LNURL } from "@snort/shared";
 import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { openFile, debounce } from "@/Utils";
-import useFileUpload from "@/Utils/Upload";
-import AsyncButton from "@/Components/Button/AsyncButton";
-import { UserCache } from "@/Cache";
-import useLogin from "@/Hooks/useLogin";
-import Icon from "@/Components/Icons/Icon";
-import Avatar from "@/Components/User/Avatar";
+import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
+
+import { UserCache } from "@/Cache";
+import AsyncButton from "@/Components/Button/AsyncButton";
 import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
-import { LNURL, fetchNip05Pubkey } from "@snort/shared";
+import Icon from "@/Components/Icons/Icon";
 import messages from "@/Components/messages";
+import Avatar from "@/Components/User/Avatar";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import useLogin from "@/Hooks/useLogin";
+import { debounce,openFile } from "@/Utils";
 import { MaxAboutLength, MaxUsernameLength } from "@/Utils/Const";
+import useFileUpload from "@/Utils/Upload";
 
 export interface ProfileSettingsProps {
   avatar?: boolean;

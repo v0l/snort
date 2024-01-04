@@ -1,9 +1,9 @@
 import react from "@vitejs/plugin-react";
-import { VitePWA } from "vite-plugin-pwa";
+import appConfig from "config";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
 import { vitePluginVersionMark } from "vite-plugin-version-mark";
-import appConfig from "config";
 
 export default defineConfig({
   plugins: [

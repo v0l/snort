@@ -1,7 +1,8 @@
-import { HexKey, RelaySettings, u256, KeyStorage } from "@snort/system";
+import { HexKey, KeyStorage,RelaySettings, u256 } from "@snort/system";
+
+import { DisplayAs } from "@/Components/Feed/DisplayAsSelector";
 import { UserPreferences } from "@/Utils/Login/index";
 import { SubscriptionEvent } from "@/Utils/Subscription";
-import { DisplayAs } from "@/Components/Feed/DisplayAsSelector";
 
 /**
  * Stores latest copy of an item

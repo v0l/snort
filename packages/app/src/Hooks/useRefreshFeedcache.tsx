@@ -1,10 +1,11 @@
-import { useEffect, useMemo } from "react";
+import { unwrap } from "@snort/shared";
 import { NoopStore, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { useEffect, useMemo } from "react";
 
 import { RefreshFeedCache } from "@/Cache/RefreshFeedCache";
-import useLogin from "./useLogin";
+
 import useEventPublisher from "./useEventPublisher";
-import { unwrap } from "@snort/shared";
+import useLogin from "./useLogin";
 
 export function useRefreshFeedCache<T>(c: RefreshFeedCache<T>, leaveOpen = false) {
   const login = useLogin();

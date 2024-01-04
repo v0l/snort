@@ -1,8 +1,9 @@
 import "./ShowMore.css";
-import { FormattedMessage } from "react-intl";
-import { useInView } from "react-intersection-observer";
-import { useEffect } from "react";
+
 import classNames from "classnames";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import { FormattedMessage } from "react-intl";
 
 interface ShowMoreProps {
   text?: string;

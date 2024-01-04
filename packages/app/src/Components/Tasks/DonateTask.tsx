@@ -1,5 +1,6 @@
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
+
 import { BaseUITask } from "@/Components/Tasks/index";
 
 export class DonateTask extends BaseUITask {

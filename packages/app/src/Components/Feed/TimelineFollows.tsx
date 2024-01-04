@@ -1,19 +1,20 @@
 import "./Timeline.css";
+
+import { unixNow } from "@snort/shared";
+import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { SnortContext, useReactions } from "@snort/system-react";
 import { ReactNode, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
 import { Link } from "react-router-dom";
-import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
-import { unixNow } from "@snort/shared";
-import { SnortContext, useReactions } from "@snort/system-react";
 
-import { dedupeByPubkey, findTag, orderDescending } from "@/Utils";
-import useModeration from "@/Hooks/useModeration";
 import { FollowsFeed } from "@/Cache";
-import { LiveStreams } from "@/Components/LiveStream/LiveStreams";
-import useLogin from "@/Hooks/useLogin";
-import useHashtagsFeed from "@/Feed/HashtagsFeed";
 import { ShowMoreInView } from "@/Components/Event/ShowMore";
-import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
+import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
+import { LiveStreams } from "@/Components/LiveStream/LiveStreams";
+import useHashtagsFeed from "@/Feed/HashtagsFeed";
+import useLogin from "@/Hooks/useLogin";
+import useModeration from "@/Hooks/useModeration";
+import { dedupeByPubkey, findTag, orderDescending } from "@/Utils";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;

@@ -1,10 +1,10 @@
 import { NostrLink, NostrPrefix } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
+import { useCallback, useRef, useState } from "react";
 
 import DisplayName from "@/Components/User/DisplayName";
 import { ProfileCard } from "@/Components/User/ProfileCard";
 import { ProfileLink } from "@/Components/User/ProfileLink";
-import { useCallback, useRef, useState } from "react";
 
 export default function Mention({ link }: { link: NostrLink }) {
   const profile = useUserProfile(link.id);

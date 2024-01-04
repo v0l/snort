@@ -1,8 +1,10 @@
-import { db } from "@/Db";
 import { unixNowMs } from "@snort/shared";
 import { EventKind, RequestBuilder, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
-import { RefreshFeedCache } from "./RefreshFeedCache";
+
+import { db } from "@/Db";
 import { LoginSession } from "@/Utils/Login";
+
+import { RefreshFeedCache } from "./RefreshFeedCache";
 
 export class FollowListCache extends RefreshFeedCache<TaggedNostrEvent> {
   constructor() {

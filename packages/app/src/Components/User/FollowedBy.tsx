@@ -1,10 +1,11 @@
+import { socialGraphInstance } from "@snort/system";
+import { Fragment } from "react";
+import { FormattedMessage } from "react-intl";
+
+import DisplayName from "@/Components/User/DisplayName";
 import FollowDistanceIndicator from "@/Components/User/FollowDistanceIndicator";
 import ProfileImage from "@/Components/User/ProfileImage";
-import { FormattedMessage } from "react-intl";
-import { Fragment } from "react";
 import { ProfileLink } from "@/Components/User/ProfileLink";
-import DisplayName from "@/Components/User/DisplayName";
-import { socialGraphInstance } from "@snort/system";
 
 const MAX_FOLLOWED_BY_FRIENDS = 3;
 

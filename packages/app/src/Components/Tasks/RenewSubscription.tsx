@@ -1,10 +1,10 @@
-import { FormattedMessage } from "react-intl";
 import { MetadataCache } from "@snort/system";
+import { FormattedMessage } from "react-intl";
 
 import { BaseUITask } from "@/Components/Tasks/index";
+import { RenewSub } from "@/Pages/subscribe/RenewSub";
 import { LoginSession } from "@/Utils/Login";
 import { getCurrentSubscription } from "@/Utils/Subscription";
-import { RenewSub } from "@/Pages/subscribe/RenewSub";
 
 export class RenewSubTask extends BaseUITask {
   id = "renew-sub";

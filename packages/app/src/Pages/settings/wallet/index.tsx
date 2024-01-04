@@ -1,10 +1,11 @@
 import { RouteObject } from "react-router-dom";
+
 import WalletSettings from "../WalletSettings";
+import AlbyOAuth from "./Alby";
 import ConnectCashu from "./Cashu";
 import ConnectLNC from "./LNC";
 import ConnectLNDHub from "./LNDHub";
 import ConnectNostrWallet from "./NWC";
-import AlbyOAuth from "./Alby";
 
 export const WalletSettingsRoutes = [
   {

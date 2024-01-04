@@ -1,6 +1,6 @@
-import { useMemo } from "react";
-import { HexKey, EventKind, NoteCollection, RequestBuilder, socialGraphInstance } from "@snort/system";
+import { EventKind, HexKey, NoteCollection, RequestBuilder, socialGraphInstance } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
+import { useMemo } from "react";
 
 export default function useFollowersFeed(pubkey?: HexKey) {
   const sub = useMemo(() => {

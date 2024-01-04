@@ -1,9 +1,9 @@
-import { useCallback, useMemo } from "react";
 import { TaggedNostrEvent } from "@snort/system";
+import { useCallback, useMemo } from "react";
 
-import useTimelineFeed, { TimelineFeed } from "@/Feed/TimelineFeed";
-import FollowListBase from "@/Components/User/FollowListBase";
 import PageSpinner from "@/Components/PageSpinner";
+import FollowListBase from "@/Components/User/FollowListBase";
+import useTimelineFeed, { TimelineFeed } from "@/Feed/TimelineFeed";
 import useModeration from "@/Hooks/useModeration";
 
 export default function UsersFeed({ keyword, sortPopular = true }: { keyword: string; sortPopular?: boolean }) {

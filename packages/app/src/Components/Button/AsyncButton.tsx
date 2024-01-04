@@ -1,8 +1,10 @@
 import "./AsyncButton.css";
+
+import classNames from "classnames";
 import React, { ForwardedRef } from "react";
+
 import Spinner from "@/Components/Icons/Spinner";
 import useLoading from "@/Hooks/useLoading";
-import classNames from "classnames";
 
 export interface AsyncButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   onClick?: (e: React.MouseEvent) => Promise<void> | void;

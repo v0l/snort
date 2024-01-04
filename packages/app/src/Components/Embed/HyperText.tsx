@@ -1,26 +1,27 @@
-import {
-  YoutubeUrlRegex,
-  TidalRegex,
-  SoundCloudRegex,
-  MixCloudRegex,
-  SpotifyRegex,
-  TwitchRegex,
-  AppleMusicRegex,
-  NostrNestsRegex,
-  WavlakeRegex,
-} from "@/Utils/Const";
-import { magnetURIDecode } from "@/Utils";
-import SoundCloudEmbed from "@/Components/Embed/SoundCloudEmded";
+import { ReactNode } from "react";
+
+import AppleMusicEmbed from "@/Components/Embed/AppleMusicEmbed";
+import LinkPreview from "@/Components/Embed/LinkPreview";
+import MagnetLink from "@/Components/Embed/MagnetLink";
 import MixCloudEmbed from "@/Components/Embed/MixCloudEmbed";
+import NostrLink from "@/Components/Embed/NostrLink";
+import SoundCloudEmbed from "@/Components/Embed/SoundCloudEmded";
 import SpotifyEmbed from "@/Components/Embed/SpotifyEmbed";
 import TidalEmbed from "@/Components/Embed/TidalEmbed";
 import TwitchEmbed from "@/Components/Embed/TwitchEmbed";
-import AppleMusicEmbed from "@/Components/Embed/AppleMusicEmbed";
 import WavlakeEmbed from "@/Components/Embed/WavlakeEmbed";
-import LinkPreview from "@/Components/Embed/LinkPreview";
-import NostrLink from "@/Components/Embed/NostrLink";
-import MagnetLink from "@/Components/Embed/MagnetLink";
-import { ReactNode } from "react";
+import { magnetURIDecode } from "@/Utils";
+import {
+  AppleMusicRegex,
+  MixCloudRegex,
+  NostrNestsRegex,
+  SoundCloudRegex,
+  SpotifyRegex,
+  TidalRegex,
+  TwitchRegex,
+  WavlakeRegex,
+  YoutubeUrlRegex,
+} from "@/Utils/Const";
 
 interface HypeTextProps {
   link: string;

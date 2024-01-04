@@ -1,6 +1,7 @@
 import "./Progress.css";
-import { FormattedNumber } from "react-intl";
+
 import { CSSProperties, ReactNode } from "react";
+import { FormattedNumber } from "react-intl";
 
 export default function Progress({ value, status }: { value: number; status?: ReactNode }) {
   const v = Math.max(0.01, Math.min(1, value));

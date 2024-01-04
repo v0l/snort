@@ -1,16 +1,19 @@
 import "./SearchBox.css";
-import Spinner from "@/Components/Icons/Spinner";
-import Icon from "@/Components/Icons/Icon";
-import { FormattedMessage, useIntl } from "react-intl";
-import { fetchNip05Pubkey } from "@/Utils/Nip05/Verifier";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { NostrLink, tryParseNostrLink } from "@snort/system";
-import { useLocation, useNavigate } from "react-router-dom";
+
 import { unixNow } from "@snort/shared";
-import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "../../Feed/TimelineFeed";
-import ProfileImage from "@/Components/User/ProfileImage";
+import { NostrLink, tryParseNostrLink } from "@snort/system";
 import { socialGraphInstance } from "@snort/system";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import Icon from "@/Components/Icons/Icon";
+import Spinner from "@/Components/Icons/Spinner";
+import ProfileImage from "@/Components/User/ProfileImage";
 import fuzzySearch, { FuzzySearchResult } from "@/Db/FuzzySearch";
+import { fetchNip05Pubkey } from "@/Utils/Nip05/Verifier";
+
+import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "../../Feed/TimelineFeed";
 
 const MAX_RESULTS = 3;
 

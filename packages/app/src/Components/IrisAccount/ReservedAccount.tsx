@@ -1,5 +1,6 @@
-import AccountName from "./AccountName";
 import { FormattedMessage } from "react-intl";
+
+import AccountName from "./AccountName";
 
 interface ReservedAccountProps {
   name?: string;

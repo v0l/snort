@@ -1,17 +1,19 @@
 import "./Relay.css";
+
+import { unixNowMs } from "@snort/shared";
+import { RelaySettings } from "@snort/system";
+import { SnortContext } from "@snort/system-react";
+import classNames from "classnames";
 import { useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { RelaySettings } from "@snort/system";
-import { unixNowMs } from "@snort/shared";
-import classNames from "classnames";
 
-import useRelayState from "@/Feed/RelayState";
-import { SnortContext } from "@snort/system-react";
-import { getRelayName, unwrap } from "@/Utils";
-import useLogin from "@/Hooks/useLogin";
-import { removeRelay, setRelays } from "@/Utils/Login";
-import { RelayFavicon } from "./RelaysMetadata";
 import { AsyncIcon } from "@/Components/Button/AsyncIcon";
+import useRelayState from "@/Feed/RelayState";
+import useLogin from "@/Hooks/useLogin";
+import { getRelayName, unwrap } from "@/Utils";
+import { removeRelay, setRelays } from "@/Utils/Login";
+
+import { RelayFavicon } from "./RelaysMetadata";
 
 export interface RelayProps {
   addr: string;

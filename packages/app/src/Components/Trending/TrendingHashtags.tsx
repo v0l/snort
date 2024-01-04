@@ -1,12 +1,14 @@
-import { ReactNode } from "react";
-import NostrBandApi from "@/External/NostrBand";
-import { ErrorOrOffline } from "../ErrorOrOffline";
-import { HashTagHeader } from "@/Pages/HashTagsPage";
-import { useLocale } from "@/IntlProvider";
 import classNames from "classnames";
+import { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import useCachedFetch from "@/Hooks/useCachedFetch";
+
 import PageSpinner from "@/Components/PageSpinner";
+import NostrBandApi from "@/External/NostrBand";
+import useCachedFetch from "@/Hooks/useCachedFetch";
+import { useLocale } from "@/IntlProvider";
+import { HashTagHeader } from "@/Pages/HashTagsPage";
+
+import { ErrorOrOffline } from "../ErrorOrOffline";
 
 export default function TrendingHashtags({
   title,

@@ -1,5 +1,6 @@
-import { InvoiceRequest, LNWallet, WalletInfo, WalletInvoice } from "@/Wallet";
 import { CashuMint, Proof } from "@cashu/cashu-ts";
+
+import { InvoiceRequest, LNWallet, WalletInfo, WalletInvoice } from "@/Wallet";
 
 export type CashuWalletConfig = {
   url: string;

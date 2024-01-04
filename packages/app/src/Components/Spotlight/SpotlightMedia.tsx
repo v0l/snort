@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Modal from "@/Components/Modal/Modal";
+
 import Icon from "@/Components/Icons/Icon";
+import Modal from "@/Components/Modal/Modal";
 import { ProxyImg } from "@/Components/ProxyImg";
 import useImgProxy from "@/Hooks/useImgProxy";
 

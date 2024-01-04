@@ -1,6 +1,3 @@
-import PageSpinner from "@/Components/PageSpinner";
-import { WalletConfig, WalletKind, Wallets } from "@/Wallet";
-import AlbyWallet from "@/Wallet/AlbyWallet";
 import { sha256 } from "@noble/hashes/sha256";
 import { randomBytes } from "@noble/hashes/utils";
 import { base64, base64urlnopad, hex } from "@scure/base";
@@ -8,6 +5,10 @@ import { unixNow } from "@snort/shared";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
+
+import PageSpinner from "@/Components/PageSpinner";
+import { WalletConfig, WalletKind, Wallets } from "@/Wallet";
+import AlbyWallet from "@/Wallet/AlbyWallet";
 
 export default function AlbyOAuth() {
   const navigate = useNavigate();

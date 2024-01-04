@@ -1,5 +1,6 @@
-import { Payment, db } from "@/Db";
 import { FeedCache } from "@snort/shared";
+
+import { db,Payment } from "@/Db";
 
 export class Payments extends FeedCache<Payment> {
   constructor() {

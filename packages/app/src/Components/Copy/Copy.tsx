@@ -1,5 +1,7 @@
 import "./Copy.css";
+
 import classNames from "classnames";
+
 import Icon from "@/Components/Icons/Icon";
 import { useCopy } from "@/Hooks/useCopy";
 

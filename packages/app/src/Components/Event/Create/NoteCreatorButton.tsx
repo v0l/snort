@@ -1,14 +1,15 @@
-import { useRef, useMemo } from "react";
-import { useLocation } from "react-router-dom";
 import classNames from "classnames";
+import { useMemo,useRef } from "react";
+import { FormattedMessage } from "react-intl";
+import { useLocation } from "react-router-dom";
 
-import { isFormElement } from "@/Utils";
+import Icon from "@/Components/Icons/Icon";
 import useKeyboardShortcut from "@/Hooks/useKeyboardShortcut";
 import useLogin from "@/Hooks/useLogin";
-import Icon from "@/Components/Icons/Icon";
 import { useNoteCreator } from "@/State/NoteCreator";
+import { isFormElement } from "@/Utils";
+
 import { NoteCreator } from "./NoteCreator";
-import { FormattedMessage } from "react-intl";
 
 export const NoteCreatorButton = ({
   className,

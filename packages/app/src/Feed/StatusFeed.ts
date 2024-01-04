@@ -1,8 +1,9 @@
 import { unixNow } from "@snort/shared";
 import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
-import { findTag } from "@/Utils";
 import { useMemo } from "react";
+
+import { findTag } from "@/Utils";
 
 export function useStatusFeed(id?: string, leaveOpen = false) {
   const sub = useMemo(() => {

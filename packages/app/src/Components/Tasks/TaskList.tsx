@@ -1,17 +1,19 @@
 import "./TaskList.css";
-import { Fragment, useSyncExternalStore } from "react";
-import { useUserProfile } from "@snort/system-react";
 
-import useLogin from "@/Hooks/useLogin";
+import { ExternalStore } from "@snort/shared";
+import { useUserProfile } from "@snort/system-react";
+import { Fragment, useSyncExternalStore } from "react";
+
+import CloseButton from "@/Components/Button/CloseButton";
 import Icon from "@/Components/Icons/Icon";
 import { UITask } from "@/Components/Tasks/index";
+import useLogin from "@/Hooks/useLogin";
+
+import { BackupKeyTask } from "./BackupKey";
 import { DonateTask } from "./DonateTask";
 import { Nip5Task } from "./Nip5Task";
-import { RenewSubTask } from "./RenewSubscription";
 import { NoticeZapPoolDefault } from "./NoticeZapPool";
-import { BackupKeyTask } from "./BackupKey";
-import { ExternalStore } from "@snort/shared";
-import CloseButton from "@/Components/Button/CloseButton";
+import { RenewSubTask } from "./RenewSubscription";
 
 class TaskStore extends ExternalStore<Array<UITask>> {
   #tasks: Array<UITask>;

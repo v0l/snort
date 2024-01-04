@@ -1,9 +1,10 @@
+import { useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
+
 import AsyncButton from "@/Components/Button/AsyncButton";
 import Copy from "@/Components/Copy/Copy";
 import QrCode from "@/Components/QrCode";
 import { useWallet } from "@/Wallet";
-import { useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
 
 export function WalletReceivePage() {
   const wallets = useWallet();

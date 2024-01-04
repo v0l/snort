@@ -1,9 +1,9 @@
-import { useEffect, useState, type ReactNode, useSyncExternalStore } from "react";
+import { ExternalStore } from "@snort/shared";
+import { type ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
 
-import enMessages from "@/translations/en.json";
 import useLogin from "@/Hooks/useLogin";
-import { ExternalStore } from "@snort/shared";
+import enMessages from "@/translations/en.json";
 
 const DefaultLocale = "en-US";
 

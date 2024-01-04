@@ -1,15 +1,17 @@
+import { unixNow, unwrap } from "@snort/shared";
+
 import { OAuthToken } from "@/Pages/settings/wallet/Alby";
+
 import {
   InvoiceRequest,
   LNWallet,
+  prToWalletInvoice,
   WalletError,
   WalletErrorCode,
   WalletInfo,
   WalletInvoice,
   WalletInvoiceState,
-  prToWalletInvoice,
 } from ".";
-import { unixNow, unwrap } from "@snort/shared";
 
 export default class AlbyWallet implements LNWallet {
   #token: OAuthToken;

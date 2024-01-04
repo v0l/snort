@@ -1,15 +1,15 @@
 import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
 
-import { useIntl } from "react-intl";
+import { MetadataCache,NostrPrefix } from "@snort/system";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
+import { useIntl } from "react-intl";
 import TextareaAutosize from "react-textarea-autosize";
-import { NostrPrefix, MetadataCache } from "@snort/system";
 
+import { UserCache } from "@/Cache";
 import Avatar from "@/Components/User/Avatar";
 import Nip05 from "@/Components/User/Nip05";
 import { hexToBech32 } from "@/Utils";
-import { UserCache } from "@/Cache";
 import searchEmoji from "@/Utils/emoji-search";
 
 import messages from "../messages";

@@ -1,5 +1,6 @@
-import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import { TaggedNostrEvent } from "@snort/system";
+
+import { transformTextCached } from "@/Hooks/useTextTransformCache";
 
 export default function getEventMedia(event: TaggedNostrEvent) {
   const parsed = transformTextCached(event.id, event.content, event.tags);

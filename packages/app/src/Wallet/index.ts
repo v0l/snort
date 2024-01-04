@@ -1,11 +1,12 @@
+import { decodeInvoice,ExternalStore } from "@snort/shared";
 import { useEffect, useSyncExternalStore } from "react";
 
-import { ExternalStore, decodeInvoice } from "@snort/shared";
 import { unwrap } from "@/Utils";
+
+import AlbyWallet from "./AlbyWallet";
 import LNDHubWallet from "./LNDHub";
 import { NostrConnectWallet } from "./NostrWalletConnect";
 import { WebLNWallet } from "./WebLN";
-import AlbyWallet from "./AlbyWallet";
 
 export enum WalletKind {
   LNDHub = 1,

@@ -1,27 +1,29 @@
 import "./Deck.css";
-import { createContext, useEffect, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
-import { NostrLink, TaggedNostrEvent } from "@snort/system";
 
-import useLoginFeed from "@/Feed/LoginFeed";
-import { useLoginRelays } from "@/Hooks/useLoginRelays";
-import { useTheme } from "@/Hooks/useTheme";
-import Articles from "@/Components/Feed/Articles";
-import TimelineFollows from "@/Components/Feed/TimelineFollows";
-import { transformTextCached } from "@/Hooks/useTextTransformCache";
-import Icon from "@/Components/Icons/Icon";
-import NotificationsPage from "./Notifications/Notifications";
-import Modal from "@/Components/Modal/Modal";
-import { RootTabs } from "@/Components/Feed/RootTabs";
-import Toaster from "@/Components/Toaster/Toaster";
-import useLogin from "@/Hooks/useLogin";
-import { LongFormText } from "@/Components/Event/LongFormText";
-import NavSidebar from "@/Pages/Layout/NavSidebar";
+import { NostrLink, TaggedNostrEvent } from "@snort/system";
+import { createContext, useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+
 import ErrorBoundary from "@/Components/ErrorBoundary";
-import { getCurrentSubscription } from "@/Utils/Subscription";
-import { mapPlanName } from "./subscribe";
+import { LongFormText } from "@/Components/Event/LongFormText";
+import Articles from "@/Components/Feed/Articles";
+import { RootTabs } from "@/Components/Feed/RootTabs";
+import TimelineFollows from "@/Components/Feed/TimelineFollows";
+import Icon from "@/Components/Icons/Icon";
+import Modal from "@/Components/Modal/Modal";
 import { SpotlightThreadModal } from "@/Components/Spotlight/SpotlightThreadModal";
+import Toaster from "@/Components/Toaster/Toaster";
+import useLoginFeed from "@/Feed/LoginFeed";
+import useLogin from "@/Hooks/useLogin";
+import { useLoginRelays } from "@/Hooks/useLoginRelays";
+import { transformTextCached } from "@/Hooks/useTextTransformCache";
+import { useTheme } from "@/Hooks/useTheme";
+import NavSidebar from "@/Pages/Layout/NavSidebar";
+import { getCurrentSubscription } from "@/Utils/Subscription";
+
+import NotificationsPage from "./Notifications/Notifications";
+import { mapPlanName } from "./subscribe";
 
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 

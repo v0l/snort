@@ -1,32 +1,33 @@
-import { Link, useNavigate } from "react-router-dom";
+import { EventExt, EventKind, HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+import { useEventReactions } from "@snort/system-react";
+import classNames from "classnames";
 import React, { ReactNode, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
-import classNames from "classnames";
-import { EventExt, EventKind, HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
-import { useEventReactions } from "@snort/system-react";
+import { Link, useNavigate } from "react-router-dom";
 
-import { findTag, hexToBech32 } from "@/Utils";
-import useModeration from "@/Hooks/useModeration";
-import useLogin from "@/Hooks/useLogin";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { NoteContextMenu, NoteTranslation } from "./NoteContextMenu";
 import { UserCache } from "@/Cache";
-import messages from "../messages";
-import { setBookmarked, setPinned } from "@/Utils/Login";
-import Text from "../Text/Text";
-import Reveal from "./Reveal";
-import Poll from "./Poll";
-import ProfileImage from "../User/ProfileImage";
 import Icon from "@/Components/Icons/Icon";
-import NoteTime from "./NoteTime";
-import NoteFooter from "./NoteFooter";
-import Reactions from "./Reactions";
+import DisplayName from "@/Components/User/DisplayName";
+import { ProfileLink } from "@/Components/User/ProfileLink";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import useLogin from "@/Hooks/useLogin";
+import useModeration from "@/Hooks/useModeration";
+import { chainKey } from "@/Hooks/useThreadContext";
+import { findTag, hexToBech32 } from "@/Utils";
+import { setBookmarked, setPinned } from "@/Utils/Login";
+
+import messages from "../messages";
+import Text from "../Text/Text";
+import ProfileImage from "../User/ProfileImage";
 import HiddenNote from "./HiddenNote";
 import { NoteProps } from "./Note";
-import { chainKey } from "@/Hooks/useThreadContext";
-import { ProfileLink } from "@/Components/User/ProfileLink";
-import DisplayName from "@/Components/User/DisplayName";
+import { NoteContextMenu, NoteTranslation } from "./NoteContextMenu";
+import NoteFooter from "./NoteFooter";
+import NoteTime from "./NoteTime";
+import Poll from "./Poll";
+import Reactions from "./Reactions";
+import Reveal from "./Reveal";
 
 const TEXT_TRUNCATE_LENGTH = 400;
 

@@ -1,8 +1,8 @@
-import { useMemo } from "react";
-import { EventKind, HexKey, RequestBuilder, ReplaceableNoteStore, NoteCollection } from "@snort/system";
+import { EventKind, HexKey, NoteCollection,ReplaceableNoteStore, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
+import { useMemo } from "react";
 
-import { unwrap, findTag, chunks } from "@/Utils";
+import { chunks,findTag, unwrap } from "@/Utils";
 
 type BadgeAwards = {
   pubkeys: string[];

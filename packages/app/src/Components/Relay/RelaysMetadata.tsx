@@ -1,8 +1,9 @@
 import "./RelaysMetadata.css";
-import Nostrich from "@/assets/img/nostrich.webp";
-import { useState } from "react";
 
 import { FullRelaySettings } from "@snort/system";
+import { useState } from "react";
+
+import Nostrich from "@/assets/img/nostrich.webp";
 import Icon from "@/Components/Icons/Icon";
 
 export const RelayFavicon = ({ url }: { url: string }) => {

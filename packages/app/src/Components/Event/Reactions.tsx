@@ -1,18 +1,18 @@
 import "./Reactions.css";
 
-import { useState, useMemo, useEffect } from "react";
-import { useIntl, FormattedMessage } from "react-intl";
-import { TaggedNostrEvent, ParsedZap } from "@snort/system";
+import { ParsedZap,TaggedNostrEvent } from "@snort/system";
+import { useEffect,useMemo, useState } from "react";
+import { FormattedMessage,useIntl } from "react-intl";
 
-import { formatShort } from "@/Utils/Number";
+import CloseButton from "@/Components/Button/CloseButton";
 import Icon from "@/Components/Icons/Icon";
-import { Tab } from "@/Components/Tabs/Tabs";
-import ProfileImage from "@/Components/User/ProfileImage";
-import Tabs from "@/Components/Tabs/Tabs";
 import Modal from "@/Components/Modal/Modal";
+import { Tab } from "@/Components/Tabs/Tabs";
+import Tabs from "@/Components/Tabs/Tabs";
+import ProfileImage from "@/Components/User/ProfileImage";
+import { formatShort } from "@/Utils/Number";
 
 import messages from "../messages";
-import CloseButton from "@/Components/Button/CloseButton";
 
 interface ReactionsProps {
   show: boolean;

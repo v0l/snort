@@ -1,5 +1,5 @@
-import { NostrEvent, OkResponse, SystemInterface } from "@snort/system";
 import { removeUndefined } from "@snort/shared";
+import { NostrEvent, OkResponse, SystemInterface } from "@snort/system";
 
 export async function sendEventToRelays(
   system: SystemInterface,

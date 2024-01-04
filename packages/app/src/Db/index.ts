@@ -1,5 +1,5 @@
-import Dexie, { Table } from "dexie";
 import { HexKey, NostrEvent, TaggedNostrEvent, u256 } from "@snort/system";
+import Dexie, { Table } from "dexie";
 
 export const NAME = "snortDB";
 export const VERSION = 16;

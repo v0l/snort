@@ -1,15 +1,16 @@
-import AsyncButton from "@/Components/Button/AsyncButton";
-import IconButton from "@/Components/Button/IconButton";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
-import Icon from "@/Components/Icons/Icon";
-import { removeRelay } from "@/Utils/Login";
-import { saveRelays } from "@/Pages/settings/Relays";
-import { getRelayName } from "@/Utils";
-import { unwrap, sanitizeRelayUrl } from "@snort/shared";
+import { sanitizeRelayUrl,unwrap } from "@snort/shared";
 import { OkResponse } from "@snort/system";
 import { useState } from "react";
 import { useIntl } from "react-intl";
+
+import AsyncButton from "@/Components/Button/AsyncButton";
+import IconButton from "@/Components/Button/IconButton";
+import Icon from "@/Components/Icons/Icon";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import useLogin from "@/Hooks/useLogin";
+import { saveRelays } from "@/Pages/settings/Relays";
+import { getRelayName } from "@/Utils";
+import { removeRelay } from "@/Utils/Login";
 
 export function OkResponseRow({ rsp, close }: { rsp: OkResponse; close: () => void }) {
   const [r, setResult] = useState(rsp);

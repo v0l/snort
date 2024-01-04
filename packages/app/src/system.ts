@@ -1,3 +1,4 @@
+import { removeUndefined, throwIfOffline } from "@snort/shared";
 import {
   mapEventToProfile,
   NostrEvent,
@@ -7,13 +8,13 @@ import {
   socialGraphInstance,
   TaggedNostrEvent,
 } from "@snort/system";
-import { RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
-import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
 import * as Comlink from "comlink";
-import IndexedDBWorker from "@/Db/IndexedDB?worker";
-import { removeUndefined, throwIfOffline } from "@snort/shared";
-import { LoginStore } from "@/Utils/Login";
+
+import { RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
 import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
+import IndexedDBWorker from "@/Db/IndexedDB?worker";
+import { LoginStore } from "@/Utils/Login";
+import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
 
 export const indexedDB = Comlink.wrap(new IndexedDBWorker());
 /**

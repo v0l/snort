@@ -1,10 +1,11 @@
 import "./ZapstrEmbed.css";
-import { Link } from "react-router-dom";
+
 import { NostrEvent, NostrLink } from "@snort/system";
+import { FormattedMessage } from "react-intl";
+import { Link } from "react-router-dom";
 
 import { ProxyImg } from "@/Components/ProxyImg";
 import ProfileImage from "@/Components/User/ProfileImage";
-import { FormattedMessage } from "react-intl";
 
 export default function ZapstrEmbed({ ev }: { ev: NostrEvent }) {
   const media = ev.tags.find(a => a[0] === "media");

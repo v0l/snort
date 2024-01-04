@@ -1,11 +1,12 @@
 import "./ProfilePreview.css";
-import { ReactNode } from "react";
+
 import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
+import { ReactNode } from "react";
 import { useInView } from "react-intersection-observer";
 
-import ProfileImage from "@/Components/User/ProfileImage";
 import FollowButton from "@/Components/User/FollowButton";
+import ProfileImage from "@/Components/User/ProfileImage";
 
 export interface ProfilePreviewProps {
   pubkey: HexKey;

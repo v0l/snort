@@ -2,9 +2,9 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
-import { ApiHost } from "@/Utils/Const";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import useEventPublisher from "@/Hooks/useEventPublisher";
+import { ApiHost } from "@/Utils/Const";
 import { ServiceError } from "@/Utils/Nip05/ServiceProvider";
 import SnortServiceProvider, { ManageHandle } from "@/Utils/Nip05/SnortServiceProvider";
 

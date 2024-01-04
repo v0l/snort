@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
+import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 import PageSpinner from "@/Components/PageSpinner";
-import useEventPublisher from "@/Hooks/useEventPublisher";
 import SnortApi, { Subscription, SubscriptionError } from "@/External/SnortApi";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+
 import { mapSubscriptionErrorCode } from ".";
 import SubscriptionCard from "./SubscriptionCard";
-import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 
 export default function ManageSubscriptionPage() {
   const { publisher } = useEventPublisher();

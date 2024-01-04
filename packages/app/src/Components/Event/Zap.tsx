@@ -1,13 +1,14 @@
 import "./Zap.css";
-import { useMemo } from "react";
+
 import { ParsedZap } from "@snort/system";
+import { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { unwrap } from "@/Utils";
-import { formatShort } from "@/Utils/Number";
 import Text from "@/Components/Text/Text";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useLogin from "@/Hooks/useLogin";
+import { unwrap } from "@/Utils";
+import { formatShort } from "@/Utils/Number";
 
 import messages from "../messages";
 

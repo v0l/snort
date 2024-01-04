@@ -1,13 +1,13 @@
 import "./Markdown.css";
 
-import { ReactNode, forwardRef, useMemo } from "react";
 import { transformText } from "@snort/system";
 import { marked, Token } from "marked";
+import markedFootnote, { Footnote, FootnoteRef,Footnotes } from "marked-footnote";
+import { forwardRef, ReactNode, useMemo } from "react";
 import { Link } from "react-router-dom";
-import markedFootnote, { Footnotes, Footnote, FootnoteRef } from "marked-footnote";
 
-import { ProxyImg } from "@/Components/ProxyImg";
 import NostrLink from "@/Components/Embed/NostrLink";
+import { ProxyImg } from "@/Components/ProxyImg";
 
 interface MarkdownProps {
   content: string;

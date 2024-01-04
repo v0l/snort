@@ -1,6 +1,7 @@
-import useLogin from "@/Hooks/useLogin";
 import { useMemo, useSyncExternalStore } from "react";
+
 import { Notifications } from "@/Cache";
+import useLogin from "@/Hooks/useLogin";
 
 export function HasNotificationsMarker() {
   const readNotifications = useLogin(s => s.readNotifications);

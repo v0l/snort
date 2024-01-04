@@ -1,7 +1,8 @@
-import { ExternalStore, FeedCache, dedupe, removeUndefined } from "@snort/shared";
-import { RequestBuilder, NostrEvent, EventKind, SystemInterface, TaggedNostrEvent } from "@snort/system";
-import { LoginSession } from "@/Utils/Login";
+import { dedupe, ExternalStore, FeedCache, removeUndefined } from "@snort/shared";
+import { EventKind, NostrEvent, RequestBuilder, SystemInterface, TaggedNostrEvent } from "@snort/system";
+
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "@/chat";
+import { LoginSession } from "@/Utils/Login";
 
 export class Nip29ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   readonly #cache: FeedCache<NostrEvent>;

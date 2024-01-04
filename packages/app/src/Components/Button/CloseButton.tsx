@@ -1,5 +1,6 @@
-import Icon from "@/Components/Icons/Icon";
 import classNames from "classnames";
+
+import Icon from "@/Components/Icons/Icon";
 
 export default function CloseButton({ onClick, className }: { onClick?: () => void; className?: string }) {
   return (

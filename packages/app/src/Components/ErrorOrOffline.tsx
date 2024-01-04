@@ -1,7 +1,9 @@
 import { OfflineError } from "@snort/shared";
-import { Offline } from "./Offline";
 import classNames from "classnames";
+
 import Icon from "@/Components/Icons/Icon";
+
+import { Offline } from "./Offline";
 
 export function ErrorOrOffline({
   error,

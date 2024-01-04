@@ -1,15 +1,15 @@
+import classNames from "classnames";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 
-import NoteTime from "@/Components/Event/NoteTime";
-import { WalletInvoice, Sats, useWallet, LNWallet, Wallets } from "@/Wallet";
 import AsyncButton from "@/Components/Button/AsyncButton";
-import { unwrap } from "@/Utils";
+import { AsyncIcon } from "@/Components/Button/AsyncIcon";
+import NoteTime from "@/Components/Event/NoteTime";
 import Icon from "@/Components/Icons/Icon";
 import { useRates } from "@/Hooks/useRates";
-import { AsyncIcon } from "@/Components/Button/AsyncIcon";
-import classNames from "classnames";
+import { unwrap } from "@/Utils";
+import { LNWallet, Sats, useWallet, WalletInvoice, Wallets } from "@/Wallet";
 
 export default function WalletPage(props: { showHistory: boolean }) {
   const navigate = useNavigate();

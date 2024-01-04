@@ -1,11 +1,11 @@
+import { IMeta } from "@snort/system";
 import { FormattedMessage } from "react-intl";
+import { Link } from "react-router-dom";
 
-import { FileExtensionRegex } from "@/Utils/Const";
+import { MediaElement } from "@/Components/Embed/MediaElement";
 import Reveal from "@/Components/Event/Reveal";
 import useLogin from "@/Hooks/useLogin";
-import { MediaElement } from "@/Components/Embed/MediaElement";
-import { Link } from "react-router-dom";
-import { IMeta } from "@snort/system";
+import { FileExtensionRegex } from "@/Utils/Const";
 
 interface RevealMediaProps {
   creator: string;

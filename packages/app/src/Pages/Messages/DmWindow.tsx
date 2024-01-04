@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef } from "react";
-import ProfileImage from "@/Components/User/ProfileImage";
-import DM from "@/Pages/Messages/DM";
-import useLogin from "@/Hooks/useLogin";
-import WriteMessage from "@/Pages/Messages/WriteMessage";
-import { Chat, createEmptyChatObject, useChatSystem } from "@/chat";
 import { FormattedMessage } from "react-intl";
+
+import { Chat, createEmptyChatObject, useChatSystem } from "@/chat";
+import ProfileImage from "@/Components/User/ProfileImage";
+import useLogin from "@/Hooks/useLogin";
+import DM from "@/Pages/Messages/DM";
+import WriteMessage from "@/Pages/Messages/WriteMessage";
+
 import { ChatParticipantProfile } from "./ChatParticipant";
 
 export default function DmWindow({ id }: { id: string }) {

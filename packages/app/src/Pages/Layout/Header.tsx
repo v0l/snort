@@ -1,16 +1,17 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import React, { useCallback, useMemo } from "react";
-import classNames from "classnames";
-import { LogoHeader } from "@/Pages/Layout/LogoHeader";
-import { rootTabItems, RootTabs } from "@/Components/Feed/RootTabs";
-import NotificationsHeader from "@/Pages/Layout/NotificationsHeader";
 import { NostrLink, NostrPrefix, parseNostrLink } from "@snort/system";
-import { bech32ToHex } from "@/Utils";
 import { useEventFeed } from "@snort/system-react";
+import classNames from "classnames";
+import React, { useCallback, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { rootTabItems, RootTabs } from "@/Components/Feed/RootTabs";
+import Icon from "@/Components/Icons/Icon";
 import DisplayName from "@/Components/User/DisplayName";
 import useLogin from "@/Hooks/useLogin";
-import Icon from "@/Components/Icons/Icon";
+import { LogoHeader } from "@/Pages/Layout/LogoHeader";
+import NotificationsHeader from "@/Pages/Layout/NotificationsHeader";
+import { bech32ToHex } from "@/Utils";
 
 export function Header() {
   const navigate = useNavigate();

@@ -1,9 +1,10 @@
+import { useState } from "react";
+import { useIntl } from "react-intl";
+
 import SuggestedProfiles from "@/Components/SuggestedProfiles";
 import { Tab, TabElement } from "@/Components/Tabs/Tabs";
 import TrendingNotes from "@/Components/Trending/TrendingPosts";
 import TrendingUsers from "@/Components/Trending/TrendingUsers";
-import { useState } from "react";
-import { useIntl } from "react-intl";
 
 export default function Discover() {
   const { formatMessage } = useIntl();

@@ -1,9 +1,11 @@
 import "./DisplayName.css";
-import { useMemo } from "react";
+
 import { HexKey, UserMetadata } from "@snort/system";
-import { getDisplayNameOrPlaceHolder } from "@/Utils";
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
+import { useMemo } from "react";
+
+import { getDisplayNameOrPlaceHolder } from "@/Utils";
 
 interface DisplayNameProps {
   pubkey: HexKey;

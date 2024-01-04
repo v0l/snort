@@ -1,33 +1,34 @@
 import "./NoteCreator.css";
-import { FormattedMessage, useIntl } from "react-intl";
+
+import { fetchNip05Pubkey, unixNow } from "@snort/shared";
 import { EventBuilder, EventKind, NostrLink, NostrPrefix, TaggedNostrEvent, tryParseNostrLink } from "@snort/system";
 import classNames from "classnames";
+import { ClipboardEventHandler, DragEvent, useEffect } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { TagsInput } from "react-tag-input-component";
 
-import Icon from "@/Components/Icons/Icon";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { appendDedupe, openFile, trackEvent } from "@/Utils";
-import Textarea from "@/Components/Textarea/Textarea";
-import Modal from "@/Components/Modal/Modal";
-import ProfileImage from "@/Components/User/ProfileImage";
-import useFileUpload from "@/Utils/Upload";
-import Note from "@/Components/Event/Note";
-
-import { ClipboardEventHandler, DragEvent, useEffect } from "react";
-import useLogin from "@/Hooks/useLogin";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { AsyncIcon } from "@/Components/Button/AsyncIcon";
-import { fetchNip05Pubkey, unixNow } from "@snort/shared";
-import { ZapTarget } from "@/Utils/Zapper";
-import { useNoteCreator } from "@/State/NoteCreator";
-import FileUploadProgress from "../FileUpload";
-import { ToggleSwitch } from "@/Components/Icons/Toggle";
-import { sendEventToRelays } from "@/Components/Event/Create/util";
-import { TrendingHashTagsLine } from "@/Components/Event/Create/TrendingHashTagsLine";
-import { Toastore } from "@/Components/Toaster/Toaster";
-import { OkResponseRow } from "./OkResponseRow";
 import CloseButton from "@/Components/Button/CloseButton";
+import { TrendingHashTagsLine } from "@/Components/Event/Create/TrendingHashTagsLine";
+import { sendEventToRelays } from "@/Components/Event/Create/util";
+import Note from "@/Components/Event/Note";
+import Icon from "@/Components/Icons/Icon";
+import { ToggleSwitch } from "@/Components/Icons/Toggle";
+import Modal from "@/Components/Modal/Modal";
+import Textarea from "@/Components/Textarea/Textarea";
+import { Toastore } from "@/Components/Toaster/Toaster";
+import ProfileImage from "@/Components/User/ProfileImage";
+import useEventPublisher from "@/Hooks/useEventPublisher";
+import useLogin from "@/Hooks/useLogin";
+import { useNoteCreator } from "@/State/NoteCreator";
+import { appendDedupe, openFile, trackEvent } from "@/Utils";
+import useFileUpload from "@/Utils/Upload";
 import { GetPowWorker } from "@/Utils/wasm";
+import { ZapTarget } from "@/Utils/Zapper";
+
+import FileUploadProgress from "../FileUpload";
+import { OkResponseRow } from "./OkResponseRow";
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();

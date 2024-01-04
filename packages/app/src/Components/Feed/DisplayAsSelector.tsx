@@ -1,7 +1,8 @@
-import Icon from "@/Components/Icons/Icon";
-import { LoginStore } from "@/Utils/Login";
-import useLogin from "@/Hooks/useLogin";
 import { useCallback } from "react";
+
+import Icon from "@/Components/Icons/Icon";
+import useLogin from "@/Hooks/useLogin";
+import { LoginStore } from "@/Utils/Login";
 
 export type DisplayAs = "list" | "grid";
 

@@ -1,4 +1,5 @@
 import "./Note.css";
+
 import ProfileImage from "@/Components/User/ProfileImage";
 
 interface NoteGhostProps {

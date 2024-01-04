@@ -1,4 +1,4 @@
-import { useEffect, useRef, LegacyRef } from "react";
+import { LegacyRef,useEffect, useRef } from "react";
 
 function useHorizontalScroll() {
   const elRef = useRef<HTMLDivElement>();

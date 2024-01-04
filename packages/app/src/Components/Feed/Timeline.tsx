@@ -1,16 +1,17 @@
 import "./Timeline.css";
-import { FormattedMessage } from "react-intl";
-import { useCallback, useMemo, useState } from "react";
-import { TaggedNostrEvent, EventKind, socialGraphInstance } from "@snort/system";
 
-import { dedupeByPubkey, findTag } from "@/Utils";
-import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";
-import useModeration from "@/Hooks/useModeration";
-import { LiveStreams } from "@/Components/LiveStream/LiveStreams";
 import { unixNow } from "@snort/shared";
-import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
+import { EventKind, socialGraphInstance,TaggedNostrEvent } from "@snort/system";
+import { useCallback, useMemo, useState } from "react";
+import { FormattedMessage } from "react-intl";
+
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
+import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
+import { LiveStreams } from "@/Components/LiveStream/LiveStreams";
+import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";
 import useLogin from "@/Hooks/useLogin";
+import useModeration from "@/Hooks/useModeration";
+import { dedupeByPubkey, findTag } from "@/Utils";
 
 export interface TimelineProps {
   postsOnly: boolean;

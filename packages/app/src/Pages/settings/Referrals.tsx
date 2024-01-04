@@ -1,11 +1,12 @@
+import { useEffect, useState } from "react";
+import { FormattedMessage, FormattedNumber } from "react-intl";
+import { Link } from "react-router-dom";
+
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { LeaderBadge } from "@/Components/CommunityLeaders/LeaderBadge";
 import Copy from "@/Components/Copy/Copy";
 import SnortApi, { RefCodeResponse } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import { useEffect, useState } from "react";
-import { FormattedMessage, FormattedNumber } from "react-intl";
-import { Link } from "react-router-dom";
 
 export function ReferralsPage() {
   const [refCode, setRefCode] = useState<RefCodeResponse>();

@@ -1,21 +1,23 @@
-import { LogoHeader } from "./LogoHeader";
-import { Link, useNavigate } from "react-router-dom";
-import Icon from "@/Components/Icons/Icon";
-import { ProfileLink } from "@/Components/User/ProfileLink";
-import Avatar from "@/Components/User/Avatar";
-import useLogin from "../../Hooks/useLogin";
 import { useUserProfile } from "@snort/system-react";
-import { NoteCreatorButton } from "@/Components/Event/Create/NoteCreatorButton";
-import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import classNames from "classnames";
-import { getCurrentSubscription } from "@/Utils/Subscription";
-import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
-import NavLink from "@/Components/Button/NavLink";
-import { subscribeToNotifications } from "@/Utils/Notifications";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import { Sats, useWallet } from "@/Wallet";
 import { useEffect, useState } from "react";
+import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
+import { Link, useNavigate } from "react-router-dom";
+
+import NavLink from "@/Components/Button/NavLink";
+import { NoteCreatorButton } from "@/Components/Event/Create/NoteCreatorButton";
+import Icon from "@/Components/Icons/Icon";
+import Avatar from "@/Components/User/Avatar";
+import { ProfileLink } from "@/Components/User/ProfileLink";
+import useEventPublisher from "@/Hooks/useEventPublisher";
 import { useRates } from "@/Hooks/useRates";
+import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
+import { subscribeToNotifications } from "@/Utils/Notifications";
+import { getCurrentSubscription } from "@/Utils/Subscription";
+import { Sats, useWallet } from "@/Wallet";
+
+import useLogin from "../../Hooks/useLogin";
+import { LogoHeader } from "./LogoHeader";
 
 const MENU_ITEMS = [
   {

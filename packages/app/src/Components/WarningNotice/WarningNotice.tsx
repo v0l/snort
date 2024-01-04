@@ -1,4 +1,5 @@
 import "./WarningNotice.css";
+
 import Icon from "@/Components/Icons/Icon";
 
 export function WarningNotice({ children, onClick }: { children: React.ReactNode; onClick?: () => void }) {

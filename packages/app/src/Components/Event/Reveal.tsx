@@ -1,5 +1,6 @@
-import { WarningNotice } from "@/Components/WarningNotice/WarningNotice";
 import { useState } from "react";
+
+import { WarningNotice } from "@/Components/WarningNotice/WarningNotice";
 
 interface RevealProps {
   message: React.ReactNode;

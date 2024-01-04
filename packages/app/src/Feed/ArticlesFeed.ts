@@ -1,7 +1,8 @@
 import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
-import useLogin from "@/Hooks/useLogin";
 import { useMemo } from "react";
+
+import useLogin from "@/Hooks/useLogin";
 
 export function useArticles() {
   const { publicKey, follows } = useLogin();
