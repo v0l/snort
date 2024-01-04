@@ -27,9 +27,10 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
   const { formatMessage } = useIntl();
   const onClose = () => setShow(false);
 
-  const sortEvents = (events) => events.sort(
-    (a, b) => socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey)
-  );
+  const sortEvents = events =>
+    events.sort(
+      (a, b) => socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey),
+    );
 
   const likes = useMemo(() => sortEvents([...positive]), [positive]);
   const dislikes = useMemo(() => sortEvents([...negative]), [negative]);
@@ -81,21 +82,27 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
       <Tabs tabs={tabs} tab={tab} setTab={setTab} />
       <div className="reactions-body" key={tab.value}>
         {tab.value === 0 && likes.map(ev => renderReactionItem(ev, "heart"))}
-        {tab.value === 1 && zaps.map(z => z.sender && (
-          <div key={z.id} className="reactions-item">
-            <div className="zap-reaction-icon">
-              <Icon name="zap" size={20} />
-              <span className="zap-amount">{formatShort(z.amount)}</span>
-            </div>
-            <ProfileImage
-              showProfileCard={true}
-              pubkey={z.anonZap ? "" : z.sender}
-              subHeader={<div title={z.content}>{z.content}</div>}
-              link={z.anonZap ? "" : undefined}
-              overrideUsername={z.anonZap ? formatMessage({ defaultMessage: "Anonymous", id: "LXxsbk" }) : undefined}
-            />
-          </div>
-        ))}
+        {tab.value === 1 &&
+          zaps.map(
+            z =>
+              z.sender && (
+                <div key={z.id} className="reactions-item">
+                  <div className="zap-reaction-icon">
+                    <Icon name="zap" size={20} />
+                    <span className="zap-amount">{formatShort(z.amount)}</span>
+                  </div>
+                  <ProfileImage
+                    showProfileCard={true}
+                    pubkey={z.anonZap ? "" : z.sender}
+                    subHeader={<div title={z.content}>{z.content}</div>}
+                    link={z.anonZap ? "" : undefined}
+                    overrideUsername={
+                      z.anonZap ? formatMessage({ defaultMessage: "Anonymous", id: "LXxsbk" }) : undefined
+                    }
+                  />
+                </div>
+              ),
+          )}
         {tab.value === 2 && sortedReposts.map(ev => renderReactionItem(ev, "repost", 16))}
         {tab.value === 3 && dislikes.map(ev => renderReactionItem(ev, "dislike"))}
       </div>
