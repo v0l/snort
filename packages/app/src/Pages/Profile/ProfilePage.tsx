@@ -385,6 +385,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
             src={user.banner}
             size={bannerWidth}
             onClick={() => setModalImage(user.banner || "")}
+            missingImageElement={<></>}
           />
         )}
         <div className="profile-wrapper w-max">
