@@ -1,4 +1,4 @@
-import { EventKind, HexKey, NoteCollection, RequestBuilder,TaggedNostrEvent } from "@snort/system";
+import { EventKind, HexKey, NoteCollection, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 

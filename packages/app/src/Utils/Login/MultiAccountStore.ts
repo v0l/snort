@@ -1,10 +1,10 @@
 import * as utils from "@noble/curves/abstract/utils";
 import * as secp from "@noble/curves/secp256k1";
-import { deepClone, ExternalStore,unwrap } from "@snort/shared";
+import { deepClone, ExternalStore, unwrap } from "@snort/shared";
 import { EventPublisher, HexKey, KeyStorage, NotEncrypted, RelaySettings, socialGraphInstance } from "@snort/system";
 import { v4 as uuid } from "uuid";
 
-import { createPublisher,LoginSession, LoginSessionType } from "@/Utils/Login/index";
+import { createPublisher, LoginSession, LoginSessionType } from "@/Utils/Login/index";
 
 import { DefaultPreferences, UserPreferences } from "./Preferences";
 

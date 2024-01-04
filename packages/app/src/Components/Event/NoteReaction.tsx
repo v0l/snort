@@ -1,6 +1,6 @@
 import "./NoteReaction.css";
 
-import { EventExt,EventKind, NostrEvent, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+import { EventExt, EventKind, NostrEvent, NostrPrefix, TaggedNostrEvent } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useMemo } from "react";
 import { useInView } from "react-intersection-observer";
@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import Note from "@/Components/Event/Note";
 import Icon from "@/Components/Icons/Icon";
 import useModeration from "@/Hooks/useModeration";
-import { eventLink, getDisplayName,hexToBech32 } from "@/Utils";
+import { eventLink, getDisplayName, hexToBech32 } from "@/Utils";
 
 export interface NoteReactionProps {
   data: TaggedNostrEvent;

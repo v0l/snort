@@ -1,4 +1,4 @@
-import { EventKind, HexKey, parseRelayTags,ReplaceableNoteStore, RequestBuilder } from "@snort/system";
+import { EventKind, HexKey, parseRelayTags, ReplaceableNoteStore, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 

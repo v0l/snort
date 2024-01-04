@@ -1,7 +1,7 @@
-import { mapEventToProfile,UserMetadata } from "@snort/system";
+import { mapEventToProfile, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { ChangeEvent,useEffect, useMemo, useState } from "react";
-import { FormattedMessage,useIntl } from "react-intl";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
 import { UserCache } from "@/Cache";

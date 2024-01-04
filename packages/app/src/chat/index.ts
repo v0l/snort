@@ -1,4 +1,4 @@
-import { unixNow,unwrap } from "@snort/shared";
+import { unixNow, unwrap } from "@snort/shared";
 import {
   encodeTLVEntries,
   EventKind,

@@ -6,7 +6,7 @@ declare const self: ServiceWorkerGlobalScope & {
 import { encodeTLVEntries, NostrLink, NostrPrefix, TLVEntryType, tryParseNostrLink } from "@snort/system";
 import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
-import { precacheAndRoute,PrecacheEntry } from "workbox-precaching";
+import { precacheAndRoute, PrecacheEntry } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
 

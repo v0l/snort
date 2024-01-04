@@ -1,4 +1,4 @@
-import { RelayMetricCache,UserProfileCache, UserRelaysCache } from "@snort/system";
+import { RelayMetricCache, UserProfileCache, UserRelaysCache } from "@snort/system";
 import { SnortSystemDb } from "@snort/system-web";
 
 import { ChatCache } from "./ChatCache";

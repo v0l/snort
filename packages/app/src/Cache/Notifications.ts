@@ -1,7 +1,7 @@
 import { unixNow } from "@snort/shared";
 import { EventKind, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 
-import { db,NostrEventForSession } from "@/Db";
+import { db, NostrEventForSession } from "@/Db";
 import { Day } from "@/Utils/Const";
 import { LoginSession } from "@/Utils/Login";
 

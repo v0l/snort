@@ -1,5 +1,5 @@
 import { HexKey, TaggedNostrEvent } from "@snort/system";
-import { ChangeEvent,useMemo, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { UserCache } from "@/Cache";

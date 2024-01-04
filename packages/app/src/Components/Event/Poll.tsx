@@ -1,5 +1,5 @@
 import { LNURL } from "@snort/shared";
-import { NostrLink,ParsedZap, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, ParsedZap, TaggedNostrEvent } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";

@@ -16,8 +16,8 @@ import { Chats, FollowsFeed, GiftsCache, Notifications } from "@/Cache";
 import SnortApi from "@/External/SnortApi";
 import { bech32ToHex, dedupeById, deleteRefCode, getCountry, sanitizeRelayUrl, unwrap } from "@/Utils";
 import { Blasters } from "@/Utils/Const";
-import { LoginSession, LoginSessionType, LoginStore, Newest,SnortAppData, UserPreferences } from "@/Utils/Login/index";
-import { entropyToPrivateKey,generateBip39Entropy } from "@/Utils/nip6";
+import { LoginSession, LoginSessionType, LoginStore, Newest, SnortAppData, UserPreferences } from "@/Utils/Login/index";
+import { entropyToPrivateKey, generateBip39Entropy } from "@/Utils/nip6";
 import { SubscriptionEvent } from "@/Utils/Subscription";
 
 import { Nip7OsSigner } from "./Nip7OsSigner";

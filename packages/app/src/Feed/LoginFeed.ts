@@ -1,10 +1,10 @@
-import { EventKind, NostrLink, NoteCollection, parseRelayTags,RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrLink, NoteCollection, parseRelayTags, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { usePrevious } from "@uidotdev/usehooks";
 import { useEffect, useMemo } from "react";
 
 import { FollowLists, FollowsFeed, GiftsCache, Notifications, UserRelays } from "@/Cache";
-import { Nip4Chats,Nip28Chats } from "@/chat";
+import { Nip4Chats, Nip28Chats } from "@/chat";
 import { Nip28ChatSystem } from "@/chat/nip28";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";

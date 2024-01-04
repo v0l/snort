@@ -1,4 +1,4 @@
-import { ReqFilter as Filter,TaggedNostrEvent } from "@snort/system";
+import { ReqFilter as Filter, TaggedNostrEvent } from "@snort/system";
 import { seenEvents } from "@snort/system";
 import * as Comlink from "comlink";
 import Dexie, { Table } from "dexie";

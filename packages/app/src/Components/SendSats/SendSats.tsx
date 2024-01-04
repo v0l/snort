@@ -3,7 +3,7 @@ import "./SendSats.css";
 import { LNURLSuccessAction } from "@snort/shared";
 import { HexKey } from "@snort/system";
 import React, { ReactNode, useEffect, useState } from "react";
-import { FormattedMessage,useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import CloseButton from "@/Components/Button/CloseButton";
@@ -16,7 +16,7 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { debounce } from "@/Utils";
 import { formatShort } from "@/Utils/Number";
-import { Zapper,ZapTarget, ZapTargetResult } from "@/Utils/Zapper";
+import { Zapper, ZapTarget, ZapTargetResult } from "@/Utils/Zapper";
 import { LNWallet, useWallet } from "@/Wallet";
 
 import messages from "../messages";

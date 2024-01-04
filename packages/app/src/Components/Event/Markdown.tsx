@@ -2,7 +2,7 @@ import "./Markdown.css";
 
 import { transformText } from "@snort/system";
 import { marked, Token } from "marked";
-import markedFootnote, { Footnote, FootnoteRef,Footnotes } from "marked-footnote";
+import markedFootnote, { Footnote, FootnoteRef, Footnotes } from "marked-footnote";
 import { forwardRef, ReactNode, useMemo } from "react";
 import { Link } from "react-router-dom";
 

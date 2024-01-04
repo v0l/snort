@@ -1,7 +1,7 @@
 import { base64 } from "@scure/base";
 import { throwIfOffline } from "@snort/shared";
-import { EventKind,EventPublisher } from "@snort/system";
-import { Uploader,UploadResult } from "Upload";
+import { EventKind, EventPublisher } from "@snort/system";
+import { Uploader, UploadResult } from "Upload";
 
 export class Nip96Uploader implements Uploader {
   constructor(

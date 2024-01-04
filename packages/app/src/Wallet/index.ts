@@ -1,4 +1,4 @@
-import { decodeInvoice,ExternalStore } from "@snort/shared";
+import { decodeInvoice, ExternalStore } from "@snort/shared";
 import { useEffect, useSyncExternalStore } from "react";
 
 import { unwrap } from "@/Utils";

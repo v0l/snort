@@ -1,6 +1,6 @@
 import { EventKind, EventPublisher, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 
-import { db,UnwrappedGift } from "@/Db";
+import { db, UnwrappedGift } from "@/Db";
 import { findTag, unwrap } from "@/Utils";
 import { LoginSession, LoginSessionType } from "@/Utils/Login";
 

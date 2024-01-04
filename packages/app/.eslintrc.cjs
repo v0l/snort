@@ -18,7 +18,7 @@ module.exports = {
     "react-hooks/exhaustive-deps": "off",
     "react-refresh/only-export-components": "warn",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
+    "simple-import-sort/exports": "error",
   },
   root: true,
   ignorePatterns: ["build/", "*.test.ts", "*.js"],

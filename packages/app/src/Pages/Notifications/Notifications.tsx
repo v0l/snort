@@ -1,7 +1,7 @@
 import "./Notifications.css";
 
 import { unwrap } from "@snort/shared";
-import { EventExt, EventKind, NostrEvent, NostrLink, NostrPrefix, parseZap,TaggedNostrEvent } from "@snort/system";
+import { EventExt, EventKind, NostrEvent, NostrLink, NostrPrefix, parseZap, TaggedNostrEvent } from "@snort/system";
 import { useEventFeed, useUserProfile } from "@snort/system-react";
 import { lazy, Suspense, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useInView } from "react-intersection-observer";
@@ -18,7 +18,7 @@ import ProfileImage from "@/Components/User/ProfileImage";
 import ProfilePreview from "@/Components/User/ProfilePreview";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
-import { dedupe, getDisplayName,orderDescending } from "@/Utils";
+import { dedupe, getDisplayName, orderDescending } from "@/Utils";
 import { markNotificationsRead } from "@/Utils/Login";
 import { formatShort } from "@/Utils/Number";
 const NotificationGraph = lazy(() => import("@/Pages/Notifications/NotificationChart"));

@@ -1,5 +1,5 @@
 import { normalizeReaction } from "@snort/shared";
-import { countLeadingZeros, NostrLink,ParsedZap, TaggedNostrEvent } from "@snort/system";
+import { countLeadingZeros, NostrLink, ParsedZap, TaggedNostrEvent } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import classNames from "classnames";

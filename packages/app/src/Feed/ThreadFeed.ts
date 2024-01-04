@@ -1,4 +1,4 @@
-import { EventExt,EventKind, NostrLink, NoteCollection, RequestBuilder } from "@snort/system";
+import { EventExt, EventKind, NostrLink, NoteCollection, RequestBuilder } from "@snort/system";
 import { useReactions, useRequestBuilder } from "@snort/system-react";
 import { useEffect, useMemo, useState } from "react";
 

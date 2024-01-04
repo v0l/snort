@@ -1,6 +1,6 @@
 import { useUserProfile } from "@snort/system-react";
 import Lottie from "lottie-react";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 

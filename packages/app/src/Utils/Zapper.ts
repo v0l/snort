@@ -1,4 +1,4 @@
-import { isHex,LNURL } from "@snort/shared";
+import { isHex, LNURL } from "@snort/shared";
 import { EventPublisher, NostrEvent, NostrLink, SystemInterface } from "@snort/system";
 
 import { generateRandomKey } from "@/Utils/Login";

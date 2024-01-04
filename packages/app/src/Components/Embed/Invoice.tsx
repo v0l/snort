@@ -4,7 +4,7 @@ import { decodeInvoice } from "@snort/shared";
 import classNames from "classnames";
 import { useState } from "react";
 import { useMemo } from "react";
-import { FormattedMessage,useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
 import SendSats from "@/Components/SendSats/SendSats";

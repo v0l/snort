@@ -8,7 +8,7 @@ import { Toastore } from "@/Components/Toaster/Toaster";
 import FollowListBase from "@/Components/User/FollowListBase";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
-import { dedupe, findTag, getDisplayName,hexToBech32 } from "@/Utils";
+import { dedupe, findTag, getDisplayName, hexToBech32 } from "@/Utils";
 import { useWallet } from "@/Wallet";
 import { WalletInvoiceState } from "@/Wallet";
 

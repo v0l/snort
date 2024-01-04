@@ -1,4 +1,4 @@
-import { encodeTLVEntries, NostrPrefix,TLVEntryType } from "@snort/system";
+import { encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 

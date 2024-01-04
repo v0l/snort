@@ -3,7 +3,7 @@ import * as secp from "@noble/curves/secp256k1";
 import { hmac } from "@noble/hashes/hmac";
 import { sha256 as hash } from "@noble/hashes/sha256";
 import { bytesToHex } from "@noble/hashes/utils";
-import { base32hex,bech32 } from "@scure/base";
+import { base32hex, bech32 } from "@scure/base";
 import { isHex, isOffline } from "@snort/shared";
 import {
   encodeTLV,

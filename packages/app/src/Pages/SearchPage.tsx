@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FormattedMessage,useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useParams } from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";

@@ -1,7 +1,7 @@
 import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
 
-import { MetadataCache,NostrPrefix } from "@snort/system";
+import { MetadataCache, NostrPrefix } from "@snort/system";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import { useIntl } from "react-intl";
 import TextareaAutosize from "react-textarea-autosize";

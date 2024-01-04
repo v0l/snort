@@ -1,4 +1,4 @@
-import { EventKind, NostrLink, NoteCollection,parseZap, RequestBuilder } from "@snort/system";
+import { EventKind, NostrLink, NoteCollection, parseZap, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 

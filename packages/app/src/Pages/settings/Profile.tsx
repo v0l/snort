@@ -1,6 +1,6 @@
 import "./Profile.css";
 
-import { fetchNip05Pubkey,LNURL } from "@snort/shared";
+import { fetchNip05Pubkey, LNURL } from "@snort/shared";
 import { mapEventToProfile } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ import messages from "@/Components/messages";
 import Avatar from "@/Components/User/Avatar";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
-import { debounce,openFile } from "@/Utils";
+import { debounce, openFile } from "@/Utils";
 import { MaxAboutLength, MaxUsernameLength } from "@/Utils/Const";
 import useFileUpload from "@/Utils/Upload";
 

@@ -1,7 +1,7 @@
 import "./RootTabs.css";
 
 import { Menu, MenuItem } from "@szhsin/react-menu";
-import { ReactNode, useEffect, useMemo,useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
 

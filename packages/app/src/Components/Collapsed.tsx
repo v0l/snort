@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { ReactNode,useState } from "react";
+import { ReactNode, useState } from "react";
 
 import ShowMore from "@/Components/Event/ShowMore";
 import Icon from "@/Components/Icons/Icon";

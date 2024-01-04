@@ -1,11 +1,11 @@
 import { fetchNip05Pubkey, unwrap } from "@snort/shared";
-import { KeyStorage,Nip46Signer } from "@snort/system";
+import { KeyStorage, Nip46Signer } from "@snort/system";
 import { useIntl } from "react-intl";
 
 import { bech32ToHex } from "@/Utils";
 import { EmailRegex, MnemonicRegex } from "@/Utils/Const";
 import { LoginSessionType, LoginStore } from "@/Utils/Login";
-import { entropyToPrivateKey,generateBip39Entropy } from "@/Utils/nip6";
+import { entropyToPrivateKey, generateBip39Entropy } from "@/Utils/nip6";
 
 export default function useLoginHandler() {
   const { formatMessage } = useIntl();

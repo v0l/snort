@@ -1,7 +1,7 @@
 import "./Timeline.css";
 
 import { unixNow } from "@snort/shared";
-import { EventKind, socialGraphInstance,TaggedNostrEvent } from "@snort/system";
+import { EventKind, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
 import { useCallback, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 

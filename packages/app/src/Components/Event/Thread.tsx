@@ -1,8 +1,8 @@
 import "./Thread.css";
 
-import { EventExt, NostrLink,NostrPrefix, parseNostrLink, TaggedNostrEvent, u256 } from "@snort/system";
+import { EventExt, NostrLink, NostrPrefix, parseNostrLink, TaggedNostrEvent, u256 } from "@snort/system";
 import classNames from "classnames";
-import { Fragment,ReactNode, useContext, useMemo, useState } from "react";
+import { Fragment, ReactNode, useContext, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -10,7 +10,7 @@ import BackButton from "@/Components/Button/BackButton";
 import Collapsed from "@/Components/Collapsed";
 import Note from "@/Components/Event/Note";
 import NoteGhost from "@/Components/Event/NoteGhost";
-import { chainKey,ThreadContext, ThreadContextWrapper } from "@/Hooks/useThreadContext";
+import { chainKey, ThreadContext, ThreadContextWrapper } from "@/Hooks/useThreadContext";
 import { getAllLinkReactions, getLinkReactions } from "@/Utils";
 
 import messages from "../messages";

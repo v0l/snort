@@ -2,7 +2,7 @@ import { fetchNip05Pubkey } from "@snort/shared";
 import { NostrPrefix, tryParseNostrLink } from "@snort/system";
 import React, { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useLocation,useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import { ThreadRoute } from "@/Components/Event/Thread";
 import { GenericFeed } from "@/Components/Feed/Generic";

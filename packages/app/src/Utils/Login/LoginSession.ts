@@ -1,4 +1,4 @@
-import { HexKey, KeyStorage,RelaySettings, u256 } from "@snort/system";
+import { HexKey, KeyStorage, RelaySettings, u256 } from "@snort/system";
 
 import { DisplayAs } from "@/Components/Feed/DisplayAsSelector";
 import { UserPreferences } from "@/Utils/Login/index";

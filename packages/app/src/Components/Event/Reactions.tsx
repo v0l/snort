@@ -1,8 +1,8 @@
 import "./Reactions.css";
 
-import { ParsedZap,TaggedNostrEvent } from "@snort/system";
-import { useEffect,useMemo, useState } from "react";
-import { FormattedMessage,useIntl } from "react-intl";
+import { ParsedZap, TaggedNostrEvent } from "@snort/system";
+import { useEffect, useMemo, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import CloseButton from "@/Components/Button/CloseButton";
 import Icon from "@/Components/Icons/Icon";

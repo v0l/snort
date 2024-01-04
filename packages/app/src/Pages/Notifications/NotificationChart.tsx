@@ -1,7 +1,7 @@
 import { unixNow, unwrap } from "@snort/shared";
-import { EventKind,TaggedNostrEvent } from "@snort/system";
+import { EventKind, TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
-import { useMemo,useState } from "react";
+import { useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
