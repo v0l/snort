@@ -171,29 +171,21 @@ class IndexedDB extends Dexie {
       callback(e);
     };
 
-    if (filter["#p"] && Array.isArray(filter["#p"])) {
-      for (const eventId of filter["#p"]) {
-        this.subscribedTags.add("p|" + eventId);
+    let hasTags = false;
+    for (const key in filter) {
+      if (filter.hasOwnProperty(key) && key.startsWith("#")) {
+        hasTags = true;
+        const tagName = key.slice(1); // Remove the hash to get the tag name
+        const values = filter[key];
+        if (Array.isArray(values)) {
+          for (const value of values) {
+            this.subscribedTags.add(tagName + "|" + value);
+          }
+        }
       }
-
-      await this.getByTags(cb);
-      return;
     }
 
-    if (filter["#e"] && Array.isArray(filter["#e"])) {
-      for (const eventId of filter["#e"]) {
-        this.subscribedTags.add("e|" + eventId);
-      }
-
-      await this.getByTags(cb);
-      return;
-    }
-
-    if (filter["#d"] && Array.isArray(filter["#d"])) {
-      for (const eventId of filter["#d"]) {
-        this.subscribedTags.add("d|" + eventId);
-      }
-
+    if (hasTags) {
       await this.getByTags(cb);
       return;
     }
@@ -225,7 +217,6 @@ class IndexedDB extends Dexie {
       const term = filter.search.replace(" sort:popular", "");
       const regexp = new RegExp(term, "i");
       query = query.filter((event: Event) => event.content?.match(regexp));
-      filter.limit = filter.limit || 100;
     }
     if (filter.limit) {
       query = query.limit(filter.limit);
