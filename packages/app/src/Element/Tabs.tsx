@@ -33,7 +33,7 @@ const Tabs = ({ tabs, tab, setTab }: TabsProps) => {
   return (
     <div className="tabs" ref={horizontalScroll}>
       {tabs.map(t => (
-        <TabElement tab={tab} setTab={setTab} t={t} />
+        <TabElement key={tab.value} tab={tab} setTab={setTab} t={t} />
       ))}
     </div>
   );

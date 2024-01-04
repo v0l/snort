@@ -9,6 +9,7 @@ import { ProxyImg } from "@/Element/ProxyImg";
 import Modal from "@/Element/Modal";
 import Username from "@/Element/User/Username";
 import { findTag } from "@/SnortUtils";
+import CloseButton from "@/Element/Button/CloseButton";
 
 export default function BadgeList({ badges }: { badges: TaggedNostrEvent[] }) {
   const [showModal, setShowModal] = useState(false);

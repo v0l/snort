@@ -113,7 +113,7 @@ const WalletBalance = () => {
   );
 };
 
-export default function NavSidebar({ narrow = false }) {
+export default function NavSidebar({ narrow = false }: { narrow: boolean }) {
   const { publicKey, subscriptions, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
     subscriptions: s.subscriptions,
@@ -147,7 +147,7 @@ export default function NavSidebar({ narrow = false }) {
             { "xl:items-start": !narrow, "xl:gap-2": !narrow },
             "gap-1 flex flex-col items-center text-lg font-bold",
           )}>
-          <WalletBalance narrow={narrow} />
+          <WalletBalance />
           {MENU_ITEMS.filter(a => {
             if ((CONFIG.hideFromNavbar ?? []).includes(a.link)) {
               return false;

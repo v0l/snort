@@ -117,7 +117,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
   return menuItems;
 }
 
-export function RootTabs({ base = "/" }) {
+export function RootTabs({ base = "/" }: { base: string }) {
   const navigate = useNavigate();
   const location = useLocation();
   const {

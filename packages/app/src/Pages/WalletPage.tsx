@@ -105,7 +105,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
         <div>
           <select className="w-max" onChange={e => Wallets.switch(e.target.value)} value={walletState.config?.id}>
             {Wallets.list().map(a => {
-              return <option value={a.id}>{a.info.alias}</option>;
+              return <option value={a.id} key={a.id}>{a.info.alias}</option>;
             })}
           </select>
         </div>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-const useCachedFetch = (url, storageKey, dataProcessor = data => data) => {
+const useCachedFetch = <T, R>(url: string, storageKey: string, dataProcessor?: (data: T) => R) => {
   const cachedData = useMemo(() => {
     const cached = localStorage.getItem(storageKey);
     return cached ? JSON.parse(cached) : null;
@@ -9,24 +9,24 @@ const useCachedFetch = (url, storageKey, dataProcessor = data => data) => {
   const initialData = cachedData ? cachedData.data : null;
   const [data, setData] = useState(initialData);
   const [isLoading, setIsLoading] = useState(!cachedData);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error>();
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      setError(null);
+      setError(undefined);
 
       try {
         const res = await fetch(url);
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
-        const fetchedData = await res.json();
-        const processedData = dataProcessor(fetchedData);
+        const fetchedData: T = await res.json();
+        const processedData: R = dataProcessor ? dataProcessor(fetchedData) : (fetchedData as unknown as R);
         setData(processedData);
         localStorage.setItem(storageKey, JSON.stringify({ data: processedData, timestamp: new Date().getTime() }));
       } catch (e) {
-        setError(e);
+        setError(e as Error);
         if (cachedData?.data) {
           setData(cachedData.data);
         }

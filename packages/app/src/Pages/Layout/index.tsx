@@ -67,7 +67,7 @@ export default function Index() {
   );
 }
 
-function StalkerModal({ id }) {
+function StalkerModal({ id }: { id: string }) {
   return (
     <div className="stalker" onClick={() => LoginStore.removeSession(id)}>
       <CloseButton />

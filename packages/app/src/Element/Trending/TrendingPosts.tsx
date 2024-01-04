@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { EventExt, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { EventExt, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useReactions } from "@snort/system-react";
 
 import PageSpinner from "@/Element/PageSpinner";
@@ -17,7 +17,7 @@ import useLogin from "@/Hooks/useLogin";
 import useCachedFetch from "@/Hooks/useCachedFetch";
 import { System } from "@/index";
 
-export default function TrendingNotes({ count = Infinity, small = false }) {
+export default function TrendingNotes({ count = Infinity, small = false }: { count: number, small: boolean }) {
   const api = new NostrBandApi();
   const { lang } = useLocale();
   const trendingNotesUrl = api.trendingNotesUrl(lang);
@@ -27,15 +27,14 @@ export default function TrendingNotes({ count = Infinity, small = false }) {
     data: trendingNotesData,
     isLoading,
     error,
-  } = useCachedFetch(trendingNotesUrl, storageKey, data => {
+  } = useCachedFetch<{ notes: Array<{ event: NostrEvent }> }, Array<NostrEvent>>(trendingNotesUrl, storageKey, data => {
     return data.notes.map(a => {
       const ev = a.event;
-      const id = EventExt.createId(ev);
-      if (!System.QueryOptimizer.schnorrVerify(id, ev.sig, ev.pubkey)) {
+      if (!System.Optimizer.schnorrVerify(ev)) {
         console.error(`Event with invalid sig\n\n${ev}\n\nfrom ${trendingNotesUrl}`);
         return;
       }
-      System.HandleEvent(ev);
+      System.HandleEvent(ev as TaggedNostrEvent);
       return ev;
     });
   });

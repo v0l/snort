@@ -38,7 +38,7 @@ export function ZapsProfileTab({ id }: { id: HexKey }) {
         <FormattedMessage {...messages.Sats} values={{ n: formatShort(zapsTotal) }} />
       </h2>
       {zaps.map(z => (
-        <ZapElement showZapped={false} zap={z} />
+        <ZapElement key={z.id} showZapped={false} zap={z} />
       ))}
     </>
   );

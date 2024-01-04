@@ -54,7 +54,7 @@ export default function MessagesPage() {
       return (
         <div className="flex items-center grow pfp-overlap">
           {cx.participants.map(v => (
-            <ProfileImage pubkey={v.id} link="" showUsername={false} profile={v.profile} />
+            <ProfileImage key={v.id} pubkey={v.id} link="" showUsername={false} profile={v.profile} />
           ))}
           {cx.title ?? <FormattedMessage defaultMessage="Group Chat" id="eXT2QQ" />}
         </div>

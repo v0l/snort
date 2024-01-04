@@ -18,7 +18,7 @@ export default function DmWindow({ id }: { id: string }) {
       return (
         <div className="flex -space-x-5 mb-2.5">
           {chat.participants.map(v => (
-            <ProfileImage pubkey={v.id} showUsername={false} />
+            <ProfileImage key={v.id} pubkey={v.id} showUsername={false} />
           ))}
           {chat.title ?? <FormattedMessage defaultMessage="Secret Group Chat" id="+Vxixo" />}
         </div>

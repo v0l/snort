@@ -17,7 +17,7 @@ const getExtra = () => {
   if (isChristmas()) return <span title="Merry Christmas!">🎄</span>;
 };
 
-export function LogoHeader({ showText = false }) {
+export function LogoHeader({ showText = false }: { showText: boolean }) {
   const { subscriptions } = useLogin();
   const currentSubscription = getCurrentSubscription(subscriptions);
 
