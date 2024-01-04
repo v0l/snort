@@ -9,8 +9,8 @@ export default function AwardIcon({ size }: { size?: number }) {
           x2="31"
           y2="58.4286"
           gradientUnits="userSpaceOnUse">
-          <stop stop-color="#5B2CB3" />
-          <stop offset="1" stop-color="#811EFF" />
+          <stop stopColor="#5B2CB3" />
+          <stop offset="1" stopColor="#811EFF" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_2660_40043"
@@ -19,12 +19,12 @@ export default function AwardIcon({ size }: { size?: number }) {
           x2="46.433"
           y2="24.305"
           gradientUnits="userSpaceOnUse">
-          <stop stop-color="#AC88FF" />
-          <stop offset="1" stop-color="#7234FF" />
+          <stop stopColor="#AC88FF" />
+          <stop offset="1" stopColor="#7234FF" />
         </linearGradient>
       </defs>
       <g id="award-02">
-        <rect x="1.85713" y="1.85714" width="58.2857" height="58.2857" rx="29.1429" fill="#AC88FF" fill-opacity="0.2" />
+        <rect x="1.85713" y="1.85714" width="58.2857" height="58.2857" rx="29.1429" fill="#AC88FF" fillOpacity="0.2" />
         <rect
           x="1.85713"
           y="1.85714"
@@ -46,7 +46,7 @@ export default function AwardIcon({ size }: { size?: number }) {
           id="Ellipse 1595"
           d="M24.2557 14.6002C17.7766 18.3409 15.5567 26.6257 19.2974 33.1049L42.7604 19.5585C39.0196 13.0794 30.7348 10.8595 24.2557 14.6002Z"
           fill="white"
-          fill-opacity="0.1"
+          fillOpacity="0.1"
         />
       </g>
     </svg>

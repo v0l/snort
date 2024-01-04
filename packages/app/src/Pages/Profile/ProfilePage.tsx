@@ -150,7 +150,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
     };
     if (link) {
       return (
-        <a href={link} rel="noreferer" target="_blank" className="ext">
+        <a href={link} rel="noreferer noreferrer" target="_blank" className="ext">
           {inner()}
         </a>
       );

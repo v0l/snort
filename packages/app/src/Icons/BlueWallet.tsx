@@ -17,16 +17,16 @@ export const BlueWallet = (props: { width?: number; height?: number }) => {
           </feMerge>
         </filter>
         <linearGradient x1="50%" y1="2.83824061%" x2="50%" y2="100%" id="linearGradient-2">
-          <stop stop-color="#174697" offset="0%"></stop>
-          <stop stop-color="#0C2550" offset="100%"></stop>
+          <stop stopColor="#174697" offset="0%"></stop>
+          <stop stopColor="#0C2550" offset="100%"></stop>
         </linearGradient>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="97.8843027%" id="linearGradient-3">
-          <stop stop-color="#3F78DC" offset="0%"></stop>
-          <stop stop-color="#2F5FB3" offset="100%"></stop>
+          <stop stopColor="#3F78DC" offset="0%"></stop>
+          <stop stopColor="#2F5FB3" offset="100%"></stop>
         </linearGradient>
         <linearGradient x1="50%" y1="2.72534321%" x2="50%" y2="100%" id="linearGradient-4">
-          <stop stop-color="#8BD7F9" offset="0%"></stop>
-          <stop stop-color="#68BBE1" offset="100%"></stop>
+          <stop stopColor="#8BD7F9" offset="0%"></stop>
+          <stop stopColor="#68BBE1" offset="100%"></stop>
         </linearGradient>
       </defs>
       <g id="bluewallet" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">

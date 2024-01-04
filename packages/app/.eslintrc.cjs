@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:react/recommended"],
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint", "formatjs"],
   rules: {
@@ -9,6 +9,7 @@ module.exports = {
         idInterpolationPattern: "[sha512:contenthash:base64:6]",
       },
     ],
+    "react/react-in-jsx-scope": "off",
   },
   root: true,
   ignorePatterns: ["build/", "*.test.ts", "*.js"],
