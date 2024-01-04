@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { EventExt, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useReactions } from "@snort/system-react";
 
 import PageSpinner from "@/Element/PageSpinner";
@@ -16,6 +16,7 @@ import { SpotlightThreadModal } from "@/Element/Spotlight/SpotlightThreadModal";
 import useLogin from "@/Hooks/useLogin";
 import useCachedFetch from "@/Hooks/useCachedFetch";
 import { System } from "@/index";
+import { removeUndefined } from "@snort/shared";
 
 export default function TrendingNotes({ count = Infinity, small = false }: { count: number, small: boolean }) {
   const api = new NostrBandApi();
@@ -28,7 +29,7 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
     isLoading,
     error,
   } = useCachedFetch<{ notes: Array<{ event: NostrEvent }> }, Array<NostrEvent>>(trendingNotesUrl, storageKey, data => {
-    return data.notes.map(a => {
+    return removeUndefined(data.notes.map(a => {
       const ev = a.event;
       if (!System.Optimizer.schnorrVerify(ev)) {
         console.error(`Event with invalid sig\n\n${ev}\n\nfrom ${trendingNotesUrl}`);
@@ -36,7 +37,7 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
       }
       System.HandleEvent(ev as TaggedNostrEvent);
       return ev;
-    });
+    }));
   });
 
   const login = useLogin();

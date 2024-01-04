@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 const useCachedFetch = <T, R>(url: string, storageKey: string, dataProcessor?: (data: T) => R) => {
-  const cachedData = useMemo(() => {
+  const cachedData = useMemo<{ data: R; timestamp: number }>(() => {
     const cached = localStorage.getItem(storageKey);
     return cached ? JSON.parse(cached) : null;
   }, [storageKey]);

@@ -1,5 +1,5 @@
 import useImgProxy from "@/Hooks/useImgProxy";
-import React, { HTMLProps, ReactNode, forwardRef, useState, useMemo, useEffect } from "react";
+import { HTMLProps, ReactNode, forwardRef, useState, useMemo, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import { getUrlHostname } from "@/SnortUtils";
 
@@ -12,7 +12,7 @@ type ProxyImgProps = HTMLProps<HTMLImageElement> & {
 };
 
 export const ProxyImg = forwardRef<HTMLImageElement, ProxyImgProps>(
-  ({ size, className, promptToLoadDirectly, missingImageElement, sha256, ...props }: ProxyImgProps, ref) => {
+  function ProxyImg({ size, className, promptToLoadDirectly, missingImageElement, sha256, ...props }: ProxyImgProps, ref) {
     const { proxy } = useImgProxy();
     const [loadFailed, setLoadFailed] = useState(false);
     const [bypass, setBypass] = useState(CONFIG.media.bypassImgProxyError);

@@ -130,3 +130,4 @@ export const Markdown = forwardRef<HTMLDivElement, MarkdownProps>((props: Markdo
     </div>
   );
 });
+Markdown.displayName = "Markdown";

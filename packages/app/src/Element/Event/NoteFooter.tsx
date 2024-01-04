@@ -325,3 +325,4 @@ const AsyncFooterIcon = forwardRef((props: AsyncIconProps & { value: number }, r
     </AsyncIcon>
   );
 });
+AsyncFooterIcon.displayName = "AsyncFooterIcon";

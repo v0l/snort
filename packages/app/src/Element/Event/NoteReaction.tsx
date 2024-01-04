@@ -21,6 +21,7 @@ export default function NoteReaction(props: NoteReactionProps) {
   const { isMuted } = useModeration();
   const { inView, ref } = useInView({ triggerOnce: true, rootMargin: "2000px" });
   const profile = useUserProfile(inView ? ev.pubkey : "");
+  const root = useMemo(() => extractRoot(), [ev, props.root, inView]);
 
   const refEvent = useMemo(() => {
     if (ev) {
@@ -62,8 +63,6 @@ export default function NoteReaction(props: NoteReactionProps) {
     return props.root;
   }
 
-  const root = useMemo(() => extractRoot(), [ev, props.root, inView]);
-
   if (!inView) {
     return <div className="card reaction" ref={ref}></div>;
   }
@@ -72,6 +71,7 @@ export default function NoteReaction(props: NoteReactionProps) {
   const opt = {
     showHeader: ev?.kind === EventKind.Repost || ev?.kind === EventKind.TextNote,
     showFooter: false,
+    truncate: true
   };
 
   return shouldNotBeRendered ? null : (
@@ -86,7 +86,7 @@ export default function NoteReaction(props: NoteReactionProps) {
           }}
         />
       </div>
-      {root ? <Note truncate={true} data={root} options={opt} related={[]} depth={props.depth} /> : null}
+      {root ? <Note data={root} options={opt} related={[]} depth={props.depth} /> : null}
       {!root && refEvent ? (
         <p>
           <Link to={eventLink(refEvent[1] ?? "", refEvent[2])}>
