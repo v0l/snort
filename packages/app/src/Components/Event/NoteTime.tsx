@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useCallback, useMemo, ReactNode} from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, { ReactNode,useCallback, useEffect, useMemo, useState } from "react";
+import { FormattedMessage } from "react-intl";
 
 export interface NoteTimeProps {
   from: number;
@@ -25,14 +25,14 @@ const NoteTime: React.FC<NoteTimeProps> = ({ from, fallback }) => {
       const fromDate = new Date(fromTime);
       if (fromDate.getFullYear() === currentTime.getFullYear()) {
         return fromDate.toLocaleDateString(undefined, {
-          month: 'short',
-          day: 'numeric',
+          month: "short",
+          day: "numeric",
         });
       } else {
         return fromDate.toLocaleDateString(undefined, {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
+          year: "numeric",
+          month: "short",
+          day: "numeric",
         });
       }
     }
@@ -41,11 +41,12 @@ const NoteTime: React.FC<NoteTimeProps> = ({ from, fallback }) => {
   const [time, setTime] = useState<string | ReactNode>(calcTime(from));
 
   const absoluteTime = useMemo(
-    () => new Intl.DateTimeFormat(undefined, {
-      dateStyle: 'medium',
-      timeStyle: 'long',
-    }).format(from),
-    [from]
+    () =>
+      new Intl.DateTimeFormat(undefined, {
+        dateStyle: "medium",
+        timeStyle: "long",
+      }).format(from),
+    [from],
   );
 
   const isoDate = useMemo(() => new Date(from).toISOString(), [from]);
@@ -53,17 +54,17 @@ const NoteTime: React.FC<NoteTimeProps> = ({ from, fallback }) => {
   useEffect(() => {
     const t = setInterval(() => {
       const newTime = calcTime(from);
-      setTime(s => s !== newTime ? newTime : s);
+      setTime(s => (s !== newTime ? newTime : s));
     }, 60_000); // update every minute
 
     return () => clearInterval(t);
-  }, [calcTime, from]);
+  }, [from]);
 
   return (
     <time dateTime={isoDate} title={absoluteTime}>
       {time || fallback}
     </time>
   );
-}
+};
 
 export default NoteTime;
