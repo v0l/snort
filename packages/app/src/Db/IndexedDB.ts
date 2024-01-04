@@ -99,10 +99,10 @@ class IndexedDB extends Dexie {
     if (!this.isProcessingQueue && this.readQueue.size > 0) {
       this.isProcessingQueue = true;
       for (const [key, task] of this.readQueue.entries()) {
+        this.readQueue.delete(key); // allow to re-queue right away
         console.log("starting idb task", key);
         console.time(key);
         await task();
-        this.readQueue.delete(key);
         console.timeEnd(key);
       }
       this.isProcessingQueue = false;
