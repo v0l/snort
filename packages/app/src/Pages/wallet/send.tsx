@@ -1,11 +1,9 @@
 import AsyncButton from "@/Components/Button/AsyncButton";
 import Icon from "@/Components/Icons/Icon";
-import { formatShort } from "@/Utils/Number";
 import { WalletInvoice, useWallet } from "@/Wallet";
 import { LNURL } from "@snort/shared";
 import { useEffect, useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
-import { useNavigate } from "react-router-dom";
 
 export function WalletSendPage() {
   const wallets = useWallet();
