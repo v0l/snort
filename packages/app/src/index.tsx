@@ -150,11 +150,11 @@ const mainRoutes = [
   },
   {
     path: "/wallet/send",
-    element: <WalletSendPage />
+    element: <WalletSendPage />,
   },
   {
     path: "/wallet/receive",
-    element: <WalletReceivePage />
+    element: <WalletReceivePage />,
   },
   ...OnboardingRoutes,
   ...SettingsRoutes,

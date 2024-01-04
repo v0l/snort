@@ -467,6 +467,9 @@
   "E5ZIPD": {
     "defaultMessage": "<big>{amount}</big> <small>sats</small>"
   },
+  "EHqHsu": {
+    "defaultMessage": "Invoice / Lightning Address"
+  },
   "EJbFi7": {
     "defaultMessage": "Search notes"
   },
@@ -810,6 +813,9 @@
     "defaultMessage": "Summary",
     "description": "Notifications summary"
   },
+  "PXQ0z0": {
+    "defaultMessage": "Receiving to <b>{wallet}</b>"
+  },
   "PamNxw": {
     "defaultMessage": "Unknown file header: {name}"
   },
@@ -930,6 +936,9 @@
   "UJTWqI": {
     "defaultMessage": "Remove from my relays"
   },
+  "ULXFfP": {
+    "defaultMessage": "Receive"
+  },
   "UNjfWJ": {
     "defaultMessage": "Check all event signatures received from relays"
   },
@@ -1017,6 +1026,9 @@
   "XhpBfA": {
     "defaultMessage": "{site} is an open source project built by passionate people in their free time, your donations are greatly appreciated"
   },
+  "Xnimz0": {
+    "defaultMessage": "Sending from <b>{wallet}</b>"
+  },
   "Xopqkl": {
     "defaultMessage": "Your default zap amount is {number} sats, example values are calculated from this."
   },
@@ -1032,6 +1044,9 @@
   },
   "YXA3AH": {
     "defaultMessage": "Enable reactions"
+  },
+  "Yf3DwC": {
+    "defaultMessage": "Connect a wallet to send instant payments"
   },
   "Z4BMCZ": {
     "defaultMessage": "Enter pairing phrase"
@@ -1062,6 +1077,9 @@
   },
   "aMaLBK": {
     "defaultMessage": "Supported Extensions"
+  },
+  "aRex7h": {
+    "defaultMessage": "Paid {amount} sats, fee {fee} sats"
   },
   "aSGz4J": {
     "defaultMessage": "Connect to your own LND node with Lightning Node Connect"
@@ -1162,6 +1180,9 @@
   },
   "deEeEI": {
     "defaultMessage": "Register"
+  },
+  "djLctd": {
+    "defaultMessage": "Amount in sats"
   },
   "djNL6D": {
     "defaultMessage": "Read-only"
@@ -1295,6 +1316,9 @@
   "i/dBAR": {
     "defaultMessage": "Zap Pool"
   },
+  "i5gBFz": {
+    "defaultMessage": "Your sent and received payments will show up here."
+  },
   "iCqGww": {
     "defaultMessage": "Reactions ({n})"
   },
@@ -1318,6 +1342,9 @@
   },
   "ieGrWo": {
     "defaultMessage": "Follow"
+  },
+  "ipHVx5": {
+    "defaultMessage": "Generate Invoice"
   },
   "itPgxd": {
     "defaultMessage": "Profile"

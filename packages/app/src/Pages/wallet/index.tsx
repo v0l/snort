@@ -89,16 +89,17 @@ export default function WalletPage(props: { showHistory: boolean }) {
 
   function walletList() {
     if (walletState.configs.length === 0) {
-      return (<div className="flex flex-col gap-4">
-        <div>
-          <button onClick={() => navigate("/settings/wallet")}>
-            <FormattedMessage defaultMessage="Connect Wallet" id="cg1VJ2" />
-          </button>
+      return (
+        <div className="flex flex-col gap-4">
+          <div>
+            <button onClick={() => navigate("/settings/wallet")}>
+              <FormattedMessage defaultMessage="Connect Wallet" id="cg1VJ2" />
+            </button>
+          </div>
+          <small>
+            <FormattedMessage defaultMessage="Connect a wallet to send instant payments" id="Yf3DwC" />
+          </small>
         </div>
-        <small>
-          <FormattedMessage defaultMessage="Connect a wallet to send instant payments" id="Yf3DwC" />
-        </small>
-      </div>
       );
     }
     return (
@@ -129,9 +130,11 @@ export default function WalletPage(props: { showHistory: boolean }) {
         <h3>
           <FormattedMessage defaultMessage="Payments" id="pukxg/" description="Wallet transation history" />
         </h3>
-        {history === undefined && <small>
-          <FormattedMessage defaultMessage="Your sent and received payments will show up here." id="i5gBFz" />
-        </small>}
+        {history === undefined && (
+          <small>
+            <FormattedMessage defaultMessage="Your sent and received payments will show up here." id="i5gBFz" />
+          </small>
+        )}
         {history?.map(a => {
           const dirClassname = {
             "text-[--success]": a.direction === "in",
@@ -231,14 +234,18 @@ export default function WalletPage(props: { showHistory: boolean }) {
             />
           </div>
           <div className="flex gap-2">
-            {wallet?.canCreateInvoice() && <AsyncButton className="secondary" onClick={() => navigate("/wallet/receive")}>
-              <FormattedMessage defaultMessage="Receive" id="ULXFfP" />
-              <Icon name="arrow-up-right" className="rotate-180" />
-            </AsyncButton>}
-            {wallet?.canPayInvoice() && <AsyncButton onClick={() => navigate("/wallet/send")}>
-              <FormattedMessage defaultMessage="Send" id="9WRlF4" />
-              <Icon name="arrow-up-right" />
-            </AsyncButton>}
+            {wallet?.canCreateInvoice() && (
+              <AsyncButton className="secondary" onClick={() => navigate("/wallet/receive")}>
+                <FormattedMessage defaultMessage="Receive" id="ULXFfP" />
+                <Icon name="arrow-up-right" className="rotate-180" />
+              </AsyncButton>
+            )}
+            {wallet?.canPayInvoice() && (
+              <AsyncButton onClick={() => navigate("/wallet/send")}>
+                <FormattedMessage defaultMessage="Send" id="9WRlF4" />
+                <Icon name="arrow-up-right" />
+              </AsyncButton>
+            )}
           </div>
         </div>
         {walletHistory()}

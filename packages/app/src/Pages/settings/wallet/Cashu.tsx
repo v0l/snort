@@ -20,12 +20,15 @@ const ConnectCashu = () => {
       }
 
       const { CashuWallet } = await import("@/Wallet/Cashu");
-      const connection = new CashuWallet({
-        url: config,
-        keys: {},
-        proofs: [],
-        keysets: []
-      }, () => { });
+      const connection = new CashuWallet(
+        {
+          url: config,
+          keys: {},
+          proofs: [],
+          keysets: [],
+        },
+        () => {},
+      );
       await connection.login();
       const info = await connection.getInfo();
       const newWallet = {

@@ -35,7 +35,7 @@ export default class AlbyWallet implements LNWallet {
   canGetBalance() {
     return this.#token.scope.includes("balance:read");
   }
-  
+
   canCreateInvoice() {
     return true;
   }
