@@ -21,8 +21,7 @@ const DataProviders = [
   },
 ];
 
-export function ZapPoolTarget({ target }: { target: ZapPoolRecipient }) {
-  if (!ZapPoolController) return;
+function ZapPoolTargetInner({ target }: { target: ZapPoolRecipient }) {
   const login = useLogin();
   const profile = useUserProfile(target.pubkey);
   const hasAddress = profile?.lud16 || profile?.lud06;
@@ -59,8 +58,14 @@ export function ZapPoolTarget({ target }: { target: ZapPoolRecipient }) {
   );
 }
 
-export default function ZapPoolPage() {
-  if (!ZapPoolController) return;
+export function ZapPoolTarget({ target }: { target: ZapPoolRecipient }) {
+  if (!ZapPoolController) {
+    return null;
+  }
+  return <ZapPoolTargetInner target={target} />;
+}
+
+function ZapPoolPageInner() {
   const login = useLogin();
   const { system } = useEventPublisher();
   const zapPool = useSyncExternalStore(
@@ -225,4 +230,11 @@ export default function ZapPoolPage() {
       ))}
     </div>
   );
+}
+
+export default function ZapPoolPage() {
+  if (!ZapPoolController) {
+    return null;
+  }
+  return <ZapPoolPageInner />;
 }
