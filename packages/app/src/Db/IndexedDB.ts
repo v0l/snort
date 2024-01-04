@@ -95,12 +95,12 @@ class IndexedDB extends Dexie {
 
     this.saveQueue.push({ event, tags });
   }
-  
+
   private async startReadQueue() {
     if (!this.isProcessingQueue && this.readQueue.size > 0) {
       this.isProcessingQueue = true;
       for (const [key, task] of this.readQueue.entries()) {
-        console.log('starting idb task', key);
+        console.log("starting idb task", key);
         console.time(key);
         await task();
         this.readQueue.delete(key);
@@ -116,7 +116,7 @@ class IndexedDB extends Dexie {
   }
 
   getByAuthors = async (callback: (event: TaggedNostrEvent) => void, limit?: number) => {
-    this.enqueueRead('getByAuthors', async () => {
+    this.enqueueRead("getByAuthors", async () => {
       const authors = [...this.subscribedAuthors];
       this.subscribedAuthors.clear();
 
@@ -129,7 +129,7 @@ class IndexedDB extends Dexie {
   };
 
   getByEventIds = async (callback: (event: TaggedNostrEvent) => void) => {
-    this.enqueueRead('getByEventIds', async () => {
+    this.enqueueRead("getByEventIds", async () => {
       const ids = [...this.subscribedEventIds];
       this.subscribedEventIds.clear();
       await this.events.where("id").anyOf(ids).each(callback);
@@ -137,7 +137,7 @@ class IndexedDB extends Dexie {
   };
 
   getByTags = async (callback: (event: TaggedNostrEvent) => void) => {
-    this.enqueueRead('getByTags', async () => {
+    this.enqueueRead("getByTags", async () => {
       const tagPairs = [...this.subscribedTags].map(tag => tag.split("|"));
       this.subscribedTags.clear();
 
@@ -151,7 +151,7 @@ class IndexedDB extends Dexie {
   };
 
   getByAuthorsAndKinds = async (callback: (event: TaggedNostrEvent) => void) => {
-    this.enqueueRead('authorsAndKinds', async () => {
+    this.enqueueRead("authorsAndKinds", async () => {
       const authorsAndKinds = [...this.subscribedAuthorsAndKinds];
       this.subscribedAuthorsAndKinds.clear();
       const pairs = authorsAndKinds.map(pair => {

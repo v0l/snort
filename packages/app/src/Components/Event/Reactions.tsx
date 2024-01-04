@@ -7,7 +7,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import CloseButton from "@/Components/Button/CloseButton";
 import Icon from "@/Components/Icons/Icon";
 import Modal from "@/Components/Modal/Modal";
-import { Tab } from "@/Components/Tabs/Tabs";
 import Tabs from "@/Components/Tabs/Tabs";
 import ProfileImage from "@/Components/User/ProfileImage";
 import { formatShort } from "@/Utils/Number";
