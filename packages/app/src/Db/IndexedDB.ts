@@ -27,10 +27,10 @@ class IndexedDB extends Dexie {
   constructor() {
     super("EventDB");
 
-    this.version(5).stores({
+    this.version(6).stores({
       // TODO use multientry index for *tags
-      events: "id, pubkey, kind, created_at, [pubkey+kind]",
-      tags: "id, eventId, [type+value]",
+      events: "++id, pubkey, kind, created_at, [pubkey+kind]",
+      tags: "&[type+value+eventId], [type+value], eventId",
     });
 
     this.startInterval();
@@ -87,7 +87,6 @@ class IndexedDB extends Dexie {
               return false;
             })
             .map(tag => ({
-              id: event.id.slice(0, 16) + "-" + tag[0].slice(0, 16) + "-" + tag[1].slice(0, 16),
               eventId: event.id,
               type: tag[0],
               value: tag[1],
@@ -173,7 +172,7 @@ class IndexedDB extends Dexie {
 
     let hasTags = false;
     for (const key in filter) {
-      if (filter.hasOwnProperty(key) && key.startsWith("#")) {
+      if (key.startsWith("#")) {
         hasTags = true;
         const tagName = key.slice(1); // Remove the hash to get the tag name
         const values = filter[key];
@@ -215,6 +214,9 @@ class IndexedDB extends Dexie {
     }
     if (filter.search) {
       const term = filter.search.replace(" sort:popular", "");
+      if (term === "") {
+        return;
+      }
       const regexp = new RegExp(term, "i");
       query = query.filter((event: Event) => event.content?.match(regexp));
     }

@@ -1,3 +1,4 @@
+import { base64 } from "@scure/base";
 import { unixNow, unwrap } from "@snort/shared";
 
 import { OAuthToken } from "@/Pages/settings/wallet/Alby";
@@ -12,7 +13,6 @@ import {
   WalletInvoice,
   WalletInvoiceState,
 } from ".";
-import { base64 } from "@scure/base";
 
 export default class AlbyWallet implements LNWallet {
   #token: OAuthToken;
