@@ -7,7 +7,11 @@ interface ReservedAccountProps {
   declineReserved: () => void;
 }
 
-export default function ReservedAccount({ name = "", enableReserved = () => {}, declineReserved = () => {} }: ReservedAccountProps) {
+export default function ReservedAccount({
+  name = "",
+  enableReserved = () => {},
+  declineReserved = () => {},
+}: ReservedAccountProps) {
   return (
     <div>
       <p className="success">

@@ -121,9 +121,9 @@ class IndexedDB extends Dexie {
 
     // End timing and log the elapsed time
     console.timeEnd("subscribeToAuthors");
-}, 200);
+  }, 200);
 
-subscribeToEventIds = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
+  subscribeToEventIds = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
     const ids = [...this.subscribedEventIds];
     this.subscribedEventIds.clear();
 
@@ -132,9 +132,9 @@ subscribeToEventIds = this._throttle(async function (callback: (event: TaggedNos
     await this.events.where("id").anyOf(ids).each(callback);
 
     console.timeEnd("subscribeToEventIds");
-}, 200);
+  }, 200);
 
-subscribeToTags = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
+  subscribeToTags = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
     const tagPairs = [...this.subscribedTags].map(tag => tag.split("|"));
     this.subscribedTags.clear();
 
@@ -148,9 +148,9 @@ subscribeToTags = this._throttle(async function (callback: (event: TaggedNostrEv
     await this.subscribeToEventIds(callback);
 
     console.timeEnd("subscribeToTags");
-}, 200);
+  }, 200);
 
-subscribeToAuthorsAndKinds = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
+  subscribeToAuthorsAndKinds = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
     const authorsAndKinds = [...this.subscribedAuthorsAndKinds];
     this.subscribedAuthorsAndKinds.clear();
 
@@ -164,8 +164,7 @@ subscribeToAuthorsAndKinds = this._throttle(async function (callback: (event: Ta
     await this.events.where("[pubkey+kind]").anyOf(pairs).each(callback);
 
     console.timeEnd("subscribeToAuthorsAndKinds");
-}, 200);
-
+  }, 200);
 
   async find(filter: Filter, callback: (event: TaggedNostrEvent) => void): Promise<void> {
     if (!filter) return;
