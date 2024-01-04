@@ -42,7 +42,14 @@ export default function TrendingHashtags({
             </div>
           );
         } else {
-          return <HashTagHeader key={a.hashtag} tag={a.hashtag} events={a.posts} className={classNames("bb", { p: !short })} />;
+          return (
+            <HashTagHeader
+              key={a.hashtag}
+              tag={a.hashtag}
+              events={a.posts}
+              className={classNames("bb", { p: !short })}
+            />
+          );
         }
       })}
     </>

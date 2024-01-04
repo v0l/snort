@@ -5,6 +5,7 @@ import { unwrap } from "@/SnortUtils";
 import LNDHubWallet from "./LNDHub";
 import { NostrConnectWallet } from "./NostrWalletConnect";
 import { WebLNWallet } from "./WebLN";
+import AlbyWallet from "./AlbyWallet";
 
 export enum WalletKind {
   LNDHub = 1,
@@ -12,6 +13,7 @@ export enum WalletKind {
   WebLN = 3,
   NWC = 4,
   Cashu = 5,
+  Alby = 6,
 }
 
 export enum WalletErrorCode {
@@ -239,6 +241,9 @@ export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
       }
       case WalletKind.NWC: {
         return new NostrConnectWallet(unwrap(cfg.data), () => this.notifyChange());
+      }
+      case WalletKind.Alby: {
+        return new AlbyWallet(JSON.parse(unwrap(cfg.data)), () => this.notifyChange());
       }
     }
   }

@@ -10,16 +10,26 @@ import AlbyIcon from "@/Icons/Alby";
 import Icon from "@/Icons/Icon";
 import { getAlbyOAuth } from "./wallet/Alby";
 
-const WalletRow = (props: { logo: ReactNode; name: ReactNode; url: string; desc?: ReactNode }) => {
+const WalletRow = (props: {
+  logo: ReactNode;
+  name: ReactNode;
+  url: string;
+  desc?: ReactNode;
+  onClick?: () => void;
+}) => {
   const navigate = useNavigate();
   return (
     <div
       className="flex items-center gap-4 px-4 py-2 bg-[--gray-superdark] rounded-xl hover:bg-[--gray-ultradark]"
       onClick={() => {
-        if (props.url.startsWith("http")) {
-          window.location.href = props.url;
+        if (props.onClick) {
+          props.onClick();
         } else {
-          navigate(props.url);
+          if (props.url.startsWith("http")) {
+            window.location.href = props.url;
+          } else {
+            navigate(props.url);
+          }
         }
       }}>
       <div className="rounded-xl aspect-square h-[4rem] bg-[--gray-dark] p-3 flex items-center justify-center">
@@ -35,7 +45,6 @@ const WalletRow = (props: { logo: ReactNode; name: ReactNode; url: string; desc?
 };
 
 const WalletSettings = () => {
-  const alby = getAlbyOAuth();
   return (
     <>
       <h3>
@@ -68,12 +77,18 @@ const WalletSettings = () => {
           url="/settings/wallet/cashu"
           desc={<FormattedMessage defaultMessage="Cashu mint wallet" id="3natuV" />}
         />
-        <WalletRow
-          logo={<AlbyIcon size={64} />}
-          name="Alby"
-          url={alby.authUrl}
-          desc={<FormattedMessage defaultMessage="Alby wallet connection" id="XPB8VV" />}
-        />
+        {CONFIG.alby && (
+          <WalletRow
+            logo={<AlbyIcon size={64} />}
+            name="Alby"
+            url={""}
+            onClick={() => {
+              const alby = getAlbyOAuth();
+              window.location.href = alby.getAuthUrl();
+            }}
+            desc={<FormattedMessage defaultMessage="Alby wallet connection" id="XPB8VV" />}
+          />
+        )}
       </div>
     </>
   );

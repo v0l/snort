@@ -71,7 +71,7 @@ export default function NoteReaction(props: NoteReactionProps) {
   const opt = {
     showHeader: ev?.kind === EventKind.Repost || ev?.kind === EventKind.TextNote,
     showFooter: false,
-    truncate: true
+    truncate: true,
   };
 
   return shouldNotBeRendered ? null : (

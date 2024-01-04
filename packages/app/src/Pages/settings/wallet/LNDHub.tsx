@@ -16,7 +16,7 @@ const ConnectLNDHub = () => {
 
   async function tryConnect(config: string) {
     try {
-      const connection = new LNDHubWallet(config);
+      const connection = new LNDHubWallet(config, () => {});
       await connection.login();
       const info = await connection.getInfo();
 

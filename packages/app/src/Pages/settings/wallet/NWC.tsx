@@ -16,7 +16,7 @@ const ConnectNostrWallet = () => {
 
   async function tryConnect(config: string) {
     try {
-      const connection = new NostrConnectWallet(config);
+      const connection = new NostrConnectWallet(config, () => {});
       await connection.login();
       const info = await connection.getInfo();
 

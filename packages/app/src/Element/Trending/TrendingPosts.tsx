@@ -18,7 +18,7 @@ import useCachedFetch from "@/Hooks/useCachedFetch";
 import { System } from "@/index";
 import { removeUndefined } from "@snort/shared";
 
-export default function TrendingNotes({ count = Infinity, small = false }: { count: number, small: boolean }) {
+export default function TrendingNotes({ count = Infinity, small = false }: { count: number; small: boolean }) {
   const api = new NostrBandApi();
   const { lang } = useLocale();
   const trendingNotesUrl = api.trendingNotesUrl(lang);
@@ -29,15 +29,17 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
     isLoading,
     error,
   } = useCachedFetch<{ notes: Array<{ event: NostrEvent }> }, Array<NostrEvent>>(trendingNotesUrl, storageKey, data => {
-    return removeUndefined(data.notes.map(a => {
-      const ev = a.event;
-      if (!System.Optimizer.schnorrVerify(ev)) {
-        console.error(`Event with invalid sig\n\n${ev}\n\nfrom ${trendingNotesUrl}`);
-        return;
-      }
-      System.HandleEvent(ev as TaggedNostrEvent);
-      return ev;
-    }));
+    return removeUndefined(
+      data.notes.map(a => {
+        const ev = a.event;
+        if (!System.Optimizer.schnorrVerify(ev)) {
+          console.error(`Event with invalid sig\n\n${ev}\n\nfrom ${trendingNotesUrl}`);
+          return;
+        }
+        System.HandleEvent(ev as TaggedNostrEvent);
+        return ev;
+      }),
+    );
   });
 
   const login = useLogin();

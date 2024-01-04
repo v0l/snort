@@ -85,6 +85,11 @@ declare const CONFIG: {
   profileLinkPrefix: NostrPrefix;
   defaultRelays: Record<string, RelaySettings>;
   useIndexedDBEvents: boolean;
+  // Alby wallet oAuth config
+  alby?: {
+    clientId: string;
+    clientSecret: string;
+  };
 };
 
 /**
