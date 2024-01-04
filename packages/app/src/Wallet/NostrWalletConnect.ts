@@ -83,7 +83,7 @@ export class NostrConnectWallet implements LNWallet {
 
   constructor(
     cfg: string,
-    readonly changed: () => void,
+    readonly changed: (data?: object) => void,
   ) {
     this.#config = NostrConnectWallet.parseConfigUrl(cfg);
     this.#commandQueue = new Map();
@@ -104,6 +104,22 @@ export class NostrConnectWallet implements LNWallet {
 
   isReady(): boolean {
     return this.#conn !== undefined;
+  }
+
+  canGetInvoices() {
+    return this.#supported_methods.includes("list_transactions");
+  }
+
+  canGetBalance() {
+    return this.#supported_methods.includes("get_balance");
+  }
+
+  canCreateInvoice() {
+    return this.#supported_methods.includes("make_invoice");
+  }
+
+  canPayInvoice() {
+    return this.#supported_methods.includes("pay_invoice");
   }
 
   async getInfo() {
@@ -245,14 +261,6 @@ export class NostrConnectWallet implements LNWallet {
     } else {
       throw new WalletError(WalletErrorCode.GeneralError, rsp.error.message);
     }
-  }
-
-  canGetInvoices() {
-    return this.#supported_methods.includes("list_transactions");
-  }
-
-  canGetBalance() {
-    return this.#supported_methods.includes("get_balance");
   }
 
   async #onReply(sub: string, e: NostrEvent) {

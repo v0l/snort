@@ -116,6 +116,8 @@ export interface LNWallet {
   canAutoLogin: () => boolean;
   canGetInvoices: () => boolean;
   canGetBalance: () => boolean;
+  canCreateInvoice: () => boolean;
+  canPayInvoice: () => boolean;
 }
 
 export interface WalletConfig {
@@ -237,15 +239,30 @@ export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
         return new WebLNWallet();
       }
       case WalletKind.LNDHub: {
-        return new LNDHubWallet(unwrap(cfg.data), () => this.notifyChange());
+        return new LNDHubWallet(unwrap(cfg.data), d => this.#onWalletChange(cfg, d));
       }
       case WalletKind.NWC: {
-        return new NostrConnectWallet(unwrap(cfg.data), () => this.notifyChange());
+        return new NostrConnectWallet(unwrap(cfg.data), d => this.#onWalletChange(cfg, d));
       }
       case WalletKind.Alby: {
-        return new AlbyWallet(JSON.parse(unwrap(cfg.data)), () => this.notifyChange());
+        return new AlbyWallet(JSON.parse(unwrap(cfg.data)), d => this.#onWalletChange(cfg, d));
+      }
+      case WalletKind.Cashu: {
+        return import("./Cashu").then(
+          ({ CashuWallet }) => new CashuWallet(JSON.parse(unwrap(cfg.data)), d => this.#onWalletChange(cfg, d)),
+        );
       }
     }
+  }
+
+  #onWalletChange(cfg: WalletConfig, data?: object) {
+    if (data) {
+      const activeConfig = this.#configs.find(a => a.id === cfg.id);
+      if (activeConfig) {
+        activeConfig.data = JSON.stringify(data);
+      }
+    }
+    this.notifyChange();
   }
 }
 

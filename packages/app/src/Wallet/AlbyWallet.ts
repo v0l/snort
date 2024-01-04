@@ -15,7 +15,7 @@ export default class AlbyWallet implements LNWallet {
   #token: OAuthToken;
   constructor(
     token: OAuthToken,
-    readonly onChange: () => void,
+    readonly onChange: (data?: object) => void,
   ) {
     this.#token = token;
   }
@@ -23,14 +23,25 @@ export default class AlbyWallet implements LNWallet {
   isReady() {
     return true;
   }
+
   canAutoLogin() {
     return true;
   }
+
   canGetInvoices() {
     return this.#token.scope.includes("invoices:read");
   }
+
   canGetBalance() {
     return this.#token.scope.includes("balance:read");
+  }
+  
+  canCreateInvoice() {
+    return true;
+  }
+
+  canPayInvoice() {
+    return true;
   }
 
   async getInfo() {

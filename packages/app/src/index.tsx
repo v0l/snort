@@ -38,9 +38,11 @@ import { OnboardingRoutes } from "@/Pages/onboarding";
 import { setupWebLNWalletConfig } from "@/Wallet/WebLN";
 import { Wallets } from "@/Wallet";
 import NetworkGraph from "@/Pages/NetworkGraph";
-import WalletPage from "./Pages/WalletPage";
+import WalletPage from "./Pages/wallet";
 import { hasWasm, wasmInit, WasmPath } from "@/Utils/wasm";
 import { System } from "@/system";
+import { WalletSendPage } from "./Pages/wallet/send";
+import { WalletReceivePage } from "./Pages/wallet/receive";
 
 declare global {
   interface Window {
@@ -145,6 +147,14 @@ const mainRoutes = [
         <WalletPage showHistory={true} />
       </div>
     ),
+  },
+  {
+    path: "/wallet/send",
+    element: <WalletSendPage />
+  },
+  {
+    path: "/wallet/receive",
+    element: <WalletReceivePage />
   },
   ...OnboardingRoutes,
   ...SettingsRoutes,

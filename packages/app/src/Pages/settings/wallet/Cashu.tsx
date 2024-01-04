@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 const ConnectCashu = () => {
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
-  const [mintUrl, setMintUrl] = useState<string>();
+  const [mintUrl, setMintUrl] = useState<string>("https://8333.space:3338");
   const [error, setError] = useState<string>();
 
   async function tryConnect(config: string) {
@@ -20,7 +20,12 @@ const ConnectCashu = () => {
       }
 
       const { CashuWallet } = await import("@/Wallet/Cashu");
-      const connection = new CashuWallet(config);
+      const connection = new CashuWallet({
+        url: config,
+        keys: {},
+        proofs: [],
+        keysets: []
+      }, () => { });
       await connection.login();
       const info = await connection.getInfo();
       const newWallet = {
@@ -28,7 +33,7 @@ const ConnectCashu = () => {
         kind: WalletKind.Cashu,
         active: true,
         info,
-        data: mintUrl,
+        data: JSON.stringify(connection.getConfig()),
       } as WalletConfig;
       Wallets.add(newWallet);
       navigate("/settings/wallet");

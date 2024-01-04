@@ -44,6 +44,22 @@ export class WebLNWallet implements LNWallet {
     return window.webln !== undefined && window.webln !== null;
   }
 
+  canCreateInvoice() {
+    return true;
+  }
+
+  canPayInvoice() {
+    return true;
+  }
+
+  canGetInvoices() {
+    return false;
+  }
+
+  canGetBalance() {
+    return window.webln?.getBalance !== undefined;
+  }
+
   canAutoLogin(): boolean {
     return true;
   }
@@ -76,6 +92,7 @@ export class WebLNWallet implements LNWallet {
   }
 
   async getBalance(): Promise<Sats> {
+    await this.login();
     if (window.webln?.getBalance) {
       const rsp = await barrierQueue(WebLNQueue, async () => await unwrap(window.webln?.getBalance).call(window.webln));
       return rsp.balance;
@@ -116,6 +133,7 @@ export class WebLNWallet implements LNWallet {
       if (rsp) {
         invoice.state = WalletInvoiceState.Paid;
         invoice.preimage = rsp.preimage;
+        invoice.fees = "route" in rsp ? (rsp.route as { total_fees: number }).total_fees : 0;
         return invoice;
       } else {
         invoice.state = WalletInvoiceState.Failed;
@@ -127,13 +145,5 @@ export class WebLNWallet implements LNWallet {
 
   getInvoices(): Promise<WalletInvoice[]> {
     return Promise.resolve([]);
-  }
-
-  canGetInvoices() {
-    return false;
-  }
-
-  canGetBalance() {
-    return window.webln?.getBalance !== undefined;
   }
 }

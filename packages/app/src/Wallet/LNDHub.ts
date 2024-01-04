@@ -25,7 +25,7 @@ export default class LNDHubWallet implements LNWallet {
 
   constructor(
     url: string,
-    readonly changed: () => void,
+    readonly changed: (data?: object) => void,
   ) {
     if (url.startsWith("lndhub://")) {
       const regex = /^lndhub:\/\/([\S-]+):([\S-]+)@(.*)$/i;
@@ -55,6 +55,14 @@ export default class LNDHubWallet implements LNWallet {
   }
 
   canGetBalance() {
+    return true;
+  }
+
+  canCreateInvoice() {
+    return true;
+  }
+
+  canPayInvoice() {
     return true;
   }
 

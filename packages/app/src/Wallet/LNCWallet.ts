@@ -44,6 +44,14 @@ export class LNCWallet implements LNWallet {
     return true;
   }
 
+  canCreateInvoice() {
+    return true;
+  }
+
+  canPayInvoice() {
+    return true;
+  }
+
   isReady(): boolean {
     return this.#lnc.isReady;
   }

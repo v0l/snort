@@ -1,36 +1,67 @@
-import { LNWallet, Sats, WalletError, WalletErrorCode, WalletInfo, WalletInvoice } from "@/Wallet";
-import { CashuMint, CashuWallet as TheCashuWallet, Proof } from "@cashu/cashu-ts";
+import { InvoiceRequest, LNWallet, WalletInfo, WalletInvoice } from "@/Wallet";
+import { CashuMint, Proof } from "@cashu/cashu-ts";
+
+export type CashuWalletConfig = {
+  url: string;
+  keys: Record<string, string>;
+  keysets: Array<string>;
+  proofs: Array<Proof>;
+};
 
 export class CashuWallet implements LNWallet {
-  #mint: string;
-  #wallet?: TheCashuWallet;
+  #wallet: CashuWalletConfig;
+  #mint: CashuMint;
 
-  constructor(mint: string) {
-    this.#mint = mint;
+  constructor(
+    wallet: CashuWalletConfig,
+    readonly onChange: (data?: object) => void,
+  ) {
+    this.#wallet = wallet;
+    this.#mint = new CashuMint(this.#wallet.url);
   }
 
-  canAutoLogin(): boolean {
+  getConfig() {
+    return { ...this.#wallet };
+  }
+
+  canGetInvoices() {
+    return false;
+  }
+
+  canGetBalance() {
     return true;
   }
 
-  isReady(): boolean {
-    return this.#wallet !== undefined;
+  canAutoLogin() {
+    return true;
   }
 
-  async getInfo(): Promise<WalletInfo> {
-    if (!this.#wallet) {
-      throw new WalletError(WalletErrorCode.GeneralError, "Wallet not initialized");
-    }
+  isReady() {
+    return true;
+  }
+
+  canCreateInvoice() {
+    return true;
+  }
+
+  canPayInvoice() {
+    return true;
+  }
+
+  async getInfo() {
     return {
-      nodePubKey: "asdd",
-      alias: "Cashu  mint: " + this.#mint,
+      alias: "Cashu mint: " + this.#wallet.url,
     } as WalletInfo;
   }
 
   async login(): Promise<boolean> {
-    const m = new CashuMint(this.#mint);
-    const keys = await m.getKeys();
-    this.#wallet = new TheCashuWallet(keys, m);
+    if (this.#wallet.keysets.length === 0) {
+      const keys = await this.#mint.getKeys();
+      this.#wallet.keys = keys;
+      this.#wallet.keysets = [""];
+      this.onChange(this.#wallet);
+    }
+    await this.#checkProofs();
     return true;
   }
 
@@ -38,25 +69,36 @@ export class CashuWallet implements LNWallet {
     return Promise.resolve(true);
   }
 
-  getBalance(): Promise<Sats> {
-    throw new Error("Method not implemented.");
+  async getBalance() {
+    return this.#wallet.proofs.reduce((acc, v) => (acc += v.amount), 0);
   }
-  createInvoice(): Promise<WalletInvoice> {
-    throw new Error("Method not implemented.");
+
+  async createInvoice(req: InvoiceRequest) {
+    const rsp = await this.#mint.requestMint(req.amount);
+    return {
+      pr: rsp.pr,
+    } as WalletInvoice;
   }
+
   payInvoice(): Promise<WalletInvoice> {
     throw new Error("Method not implemented.");
   }
+
   getInvoices(): Promise<WalletInvoice[]> {
     return Promise.resolve([]);
   }
-}
 
-export interface NutStashBackup {
-  proofs: Array<Proof>;
-  mints: [
-    {
-      mintURL: string;
-    },
-  ];
+  async #checkProofs() {
+    if (this.#wallet.proofs.length == 0) return;
+
+    const checks = await this.#mint.check({
+      proofs: this.#wallet.proofs.map(a => ({ secret: a.secret })),
+    });
+
+    const filteredProofs = this.#wallet.proofs.filter((_, i) => checks.spendable[i]);
+    this.#wallet.proofs = filteredProofs;
+    if (filteredProofs.length !== checks.spendable.length) {
+      this.onChange(this.#wallet);
+    }
+  }
 }
