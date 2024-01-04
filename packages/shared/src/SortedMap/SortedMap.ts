@@ -1,6 +1,6 @@
 type Comparator<K, V> = (a: [K, V], b: [K, V]) => number;
 
-export class SortedMap<K, V> {
+export class SortedMap<K, V extends Record<string, any>> {
   private map: Map<K, V>;
   private sortedKeys: K[];
   private compare: Comparator<K, V>;
@@ -149,11 +149,12 @@ export class SortedMap<K, V> {
     return false;
   }
 
-  get size(): number {
-    return this.map.size;
+  clear(): void {
+    this.map.clear();
+    this.sortedKeys = [];
   }
 
-  clear() {
-    this.map.clear();
+  get size(): number {
+    return this.map.size;
   }
 }
