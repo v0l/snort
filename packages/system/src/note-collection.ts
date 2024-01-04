@@ -1,4 +1,4 @@
-import { appendDedupe } from "@snort/shared";
+import { appendDedupe, SortedMap } from "@snort/shared";
 import { EventExt, EventType, TaggedNostrEvent, u256 } from ".";
 import { findTag } from "./utils";
 
@@ -196,7 +196,7 @@ export class FlatNoteStore extends HookedNoteStore<Array<TaggedNostrEvent>> {
  */
 export class KeyedReplaceableNoteStore extends HookedNoteStore<Array<TaggedNostrEvent>> {
   #keyFn: (ev: TaggedNostrEvent) => string;
-  #events: Map<string, TaggedNostrEvent> = new Map();
+  #events: SortedMap<string, TaggedNostrEvent> = new SortedMap([], (a, b) => b[1].created_at - a[1].created_at);
 
   constructor(fn: (ev: TaggedNostrEvent) => string) {
     super();

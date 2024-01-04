@@ -43,8 +43,7 @@ export function ThreadContextWrapper({ link, children }: { link: NostrLink; chil
     const chains = new Map<u256, Array<TaggedNostrEvent>>();
     if (feed.thread) {
       feed.thread
-        ?.sort((a, b) => b.created_at - a.created_at)
-        .filter(a => !isBlocked(a.pubkey))
+        ?.filter(a => !isBlocked(a.pubkey))
         .forEach(v => {
           const replyTo = replyChainKey(v);
           if (replyTo) {

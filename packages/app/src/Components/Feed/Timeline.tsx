@@ -53,7 +53,6 @@ const Timeline = (props: TimelineProps) => {
         return followDistance === props.followDistance;
       };
       const a = [...nts.filter(a => a.kind !== EventKind.LiveEvent)];
-      props.noSort || a.sort((a, b) => b.created_at - a.created_at);
       return a
         ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
         .filter(a => (props.ignoreModeration || !isEventMuted(a)) && checkFollowDistance(a));
