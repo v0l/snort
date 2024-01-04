@@ -15,8 +15,8 @@ import ImageGridItem from "@/Element/Feed/ImageGridItem";
 import { SpotlightThreadModal } from "@/Element/Spotlight/SpotlightThreadModal";
 import useLogin from "@/Hooks/useLogin";
 import useCachedFetch from "@/Hooks/useCachedFetch";
-import { System } from "@/index";
 import { removeUndefined } from "@snort/shared";
+import { System } from "@/system";
 
 export default function TrendingNotes({ count = Infinity, small = false }: { count: number; small: boolean }) {
   const api = new NostrBandApi();

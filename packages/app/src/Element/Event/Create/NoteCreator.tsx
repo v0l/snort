@@ -15,7 +15,6 @@ import Note from "@/Element/Event/Note";
 
 import { ClipboardEventHandler, DragEvent, useEffect } from "react";
 import useLogin from "@/Hooks/useLogin";
-import { GetPowWorker } from "@/index";
 import AsyncButton from "@/Element/Button/AsyncButton";
 import { AsyncIcon } from "@/Element/Button/AsyncIcon";
 import { fetchNip05Pubkey, unixNow } from "@snort/shared";
@@ -28,6 +27,7 @@ import { TrendingHashTagsLine } from "@/Element/Event/Create/TrendingHashTagsLin
 import { Toastore } from "@/Toaster";
 import { OkResponseRow } from "./OkResponseRow";
 import CloseButton from "@/Element/Button/CloseButton";
+import { GetPowWorker } from "@/wasm";
 
 export function NoteCreator() {
   const { formatMessage } = useIntl();

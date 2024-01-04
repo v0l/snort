@@ -2,37 +2,11 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "./fonts/inter.css";
 
-import {
-  compress,
-  expand_filter,
-  flat_merge,
-  get_diff,
-  pow,
-  schnorr_verify_event,
-  default as wasmInit,
-} from "@snort/system-wasm";
-import WasmPath from "@snort/system-wasm/pkg/system_wasm_bg.wasm";
-
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
-import {
-  NostrSystem,
-  ProfileLoaderService,
-  Optimizer,
-  FlatReqFilter,
-  ReqFilter,
-  PowMiner,
-  NostrEvent,
-  mapEventToProfile,
-  PowWorker,
-  encodeTLVEntries,
-  socialGraphInstance,
-  TaggedNostrEvent,
-} from "@snort/system";
-import PowWorkerURL from "@snort/system/src/pow-worker.ts?worker&url";
+import { encodeTLVEntries } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { removeUndefined, throwIfOffline } from "@snort/shared";
 
 import * as serviceWorkerRegistration from "@/serviceWorkerRegistration";
 import { IntlProvider } from "@/IntlProvider";
@@ -53,7 +27,7 @@ import { ThreadRoute } from "@/Element/Event/Thread";
 import { SubscribeRoutes } from "@/Pages/subscribe";
 import ZapPoolPage from "@/Pages/ZapPool";
 import { db } from "@/Db";
-import { preload, RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
+import { preload } from "@/Cache";
 import { LoginStore } from "@/Login";
 import { SnortDeckLayout } from "@/Pages/DeckLayout";
 import FreeNostrAddressPage from "@/Pages/FreeNostrAddressPage";
@@ -65,120 +39,14 @@ import { setupWebLNWalletConfig } from "@/Wallet/WebLN";
 import { Wallets } from "@/Wallet";
 import NetworkGraph from "@/Pages/NetworkGraph";
 import WalletPage from "./Pages/WalletPage";
-
-import IndexedDBWorker from "./Cache/IndexedDB?worker";
-import * as Comlink from "comlink";
-import { addEventToFuzzySearch } from "@/FuzzySearch";
+import { hasWasm, wasmInit, WasmPath } from "@/wasm";
+import { System } from "@/system";
 
 declare global {
   interface Window {
     plausible?: (tag: string, e?: object) => void;
   }
 }
-
-const WasmOptimizer = {
-  expandFilter: (f: ReqFilter) => {
-    return expand_filter(f) as Array<FlatReqFilter>;
-  },
-  getDiff: (prev: Array<ReqFilter>, next: Array<ReqFilter>) => {
-    return get_diff(prev, next) as Array<FlatReqFilter>;
-  },
-  flatMerge: (all: Array<FlatReqFilter>) => {
-    return flat_merge(all) as Array<ReqFilter>;
-  },
-  compress: (all: Array<ReqFilter>) => {
-    return compress(all) as Array<ReqFilter>;
-  },
-  schnorrVerify: ev => {
-    return schnorr_verify_event(ev);
-  },
-} as Optimizer;
-
-export class WasmPowWorker implements PowMiner {
-  minePow(ev: NostrEvent, target: number): Promise<NostrEvent> {
-    const res = pow(ev, target);
-    return Promise.resolve(res);
-  }
-}
-
-const hasWasm = "WebAssembly" in globalThis;
-const DefaultPowWorker = hasWasm ? undefined : new PowWorker(PowWorkerURL);
-export const GetPowWorker = () => (hasWasm ? new WasmPowWorker() : unwrap(DefaultPowWorker));
-
-const indexedDB = Comlink.wrap(new IndexedDBWorker());
-
-/**
- * Singleton nostr system
- */
-export const System = new NostrSystem({
-  relayCache: UserRelays,
-  profileCache: UserCache,
-  relayMetrics: RelayMetrics,
-  optimizer: hasWasm ? WasmOptimizer : undefined,
-  db: SystemDb,
-});
-
-System.on("auth", async (c, r, cb) => {
-  const { id } = LoginStore.snapshot();
-  const pub = LoginStore.getPublisher(id);
-  if (pub) {
-    cb(await pub.nip42Auth(c, r));
-  }
-});
-
-System.on("event", (_, ev) => {
-  addEventToFuzzySearch(ev);
-  socialGraphInstance.handleEvent(ev);
-  if (CONFIG.useIndexedDBEvents && socialGraphInstance.getFollowDistance(ev.pubkey) <= 2) {
-    indexedDB.handleEvent(ev);
-  }
-});
-
-if (CONFIG.useIndexedDBEvents) {
-  // load all profiles
-  indexedDB.find(
-    { kinds: [0] },
-    Comlink.proxy((e: TaggedNostrEvent) => System.HandleEvent(e)),
-  );
-
-  System.on("request", (filter: ReqFilter) => {
-    indexedDB.find(
-      filter,
-      Comlink.proxy((e: TaggedNostrEvent) => {
-        System.HandleEvent(e);
-      }),
-    );
-  });
-}
-
-async function fetchProfile(key: string) {
-  try {
-    throwIfOffline();
-    const rsp = await fetch(`${CONFIG.httpCache}/profile/${key}`);
-    if (rsp.ok) {
-      const data = (await rsp.json()) as NostrEvent;
-      if (data) {
-        return mapEventToProfile(data);
-      }
-    }
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-/**
- * Add profile loader fn
- */
-if (CONFIG.httpCache) {
-  System.ProfileLoader.loaderFn = async (keys: Array<string>) => {
-    return removeUndefined(await Promise.all(keys.map(a => fetchProfile(a))));
-  };
-}
-
-/**
- * Singleton user profile loader
- */
-export const ProfileLoader = new ProfileLoaderService(System, UserCache);
 
 serviceWorkerRegistration.register();
 

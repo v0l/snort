@@ -5,10 +5,10 @@ import { LoginStore } from "@/Login";
 import AccountName from "./AccountName";
 import ActiveAccount from "./ActiveAccount";
 import ReservedAccount from "./ReservedAccount";
-import { ProfileLoader } from "@/index";
 import { FormattedMessage } from "react-intl";
 import { injectIntl } from "react-intl";
 import messages from "@/Element/messages";
+import { ProfileLoader } from "@/system";
 
 declare global {
   interface Window {

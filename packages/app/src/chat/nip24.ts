@@ -3,7 +3,8 @@ import { EventKind, NostrPrefix, encodeTLVEntries, TLVEntryType, TLVEntry, decod
 import { GiftWrapCache } from "@/Cache/GiftWrapCache";
 import { UnwrappedGift } from "@/Db";
 import { Chat, ChatSystem, ChatType, lastReadInChat } from "@/chat";
-import { GetPowWorker } from "@/index";
+
+import { GetPowWorker } from "@/wasm";
 
 export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   #cache: GiftWrapCache;

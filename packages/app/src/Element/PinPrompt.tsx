@@ -9,7 +9,8 @@ import useEventPublisher from "@/Hooks/useEventPublisher";
 import { LoginStore, createPublisher, sessionNeedsPin } from "@/Login";
 import Modal from "./Modal";
 import AsyncButton from "./Button/AsyncButton";
-import { GetPowWorker } from "@/index";
+
+import { GetPowWorker } from "@/wasm";
 
 export function PinPrompt({
   onResult,
