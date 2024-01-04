@@ -6,7 +6,13 @@ import { subscribeToNotifications } from "@/Notifications";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import messages from "./messages";
 
-const StatusIndicator = ({ status, enabledMessage, disabledMessage }) => {
+interface StatusIndicatorProps {
+  status: boolean;
+  enabledMessage: React.ComponentProps<typeof FormattedMessage>;
+  disabledMessage: React.ComponentProps<typeof FormattedMessage>;
+}
+
+const StatusIndicator = ({ status, enabledMessage, disabledMessage }: StatusIndicatorProps) => {
   return status ? (
     <div className="flex items-center">
       <Icon name="check" size={20} className="text-green-500 mr-2" />

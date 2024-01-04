@@ -1,7 +1,13 @@
 import AccountName from "./AccountName";
 import { FormattedMessage } from "react-intl";
 
-export default function ReservedAccount({ name = "", enableReserved = () => {}, declineReserved = () => {} }) {
+interface ReservedAccountProps {
+  name?: string;
+  enableReserved: () => void;
+  declineReserved: () => void;
+}
+
+export default function ReservedAccount({ name = "", enableReserved = () => {}, declineReserved = () => {} }: ReservedAccountProps) {
   return (
     <div>
       <p className="success">

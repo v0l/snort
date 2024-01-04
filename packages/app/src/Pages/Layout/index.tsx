@@ -26,9 +26,7 @@ export default function Index() {
   useTheme();
   useLoginRelays();
   useLoginFeed();
-  if (CONFIG.features.communityLeaders) {
-    useCommunityLeaders();
-  }
+  useCommunityLeaders();
 
   const hideHeaderPaths = ["/login", "/new"];
   const shouldHideFooter = location.pathname.startsWith("/messages/");

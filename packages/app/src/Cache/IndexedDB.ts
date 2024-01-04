@@ -25,6 +25,7 @@ class IndexedDB extends Dexie {
     super("EventDB");
 
     this.version(5).stores({
+      // TODO use multientry index for *tags
       events: "id, pubkey, kind, created_at, [pubkey+kind]",
       tags: "id, eventId, [type+value]",
     });
@@ -108,40 +109,63 @@ class IndexedDB extends Dexie {
   subscribeToAuthors = this._throttle(async function (callback: (event: TaggedNostrEvent) => void, limit?: number) {
     const authors = [...this.subscribedAuthors];
     this.subscribedAuthors.clear();
+
+    // Start timing
+    console.time("subscribeToAuthors");
+
     await this.events
       .where("pubkey")
       .anyOf(authors)
       .limit(limit || 1000)
       .each(callback);
-  }, 200);
 
-  subscribeToEventIds = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
+    // End timing and log the elapsed time
+    console.timeEnd("subscribeToAuthors");
+}, 200);
+
+subscribeToEventIds = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
     const ids = [...this.subscribedEventIds];
     this.subscribedEventIds.clear();
-    await this.events.where("id").anyOf(ids).each(callback);
-  }, 200);
 
-  subscribeToTags = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
+    console.time("subscribeToEventIds");
+
+    await this.events.where("id").anyOf(ids).each(callback);
+
+    console.timeEnd("subscribeToEventIds");
+}, 200);
+
+subscribeToTags = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
     const tagPairs = [...this.subscribedTags].map(tag => tag.split("|"));
     this.subscribedTags.clear();
+
+    console.time("subscribeToTags");
+
     await this.tags
       .where("[type+value]")
       .anyOf(tagPairs)
       .each(tag => this.subscribedEventIds.add(tag.eventId));
 
     await this.subscribeToEventIds(callback);
-  }, 200);
 
-  subscribeToAuthorsAndKinds = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
+    console.timeEnd("subscribeToTags");
+}, 200);
+
+subscribeToAuthorsAndKinds = this._throttle(async function (callback: (event: TaggedNostrEvent) => void) {
     const authorsAndKinds = [...this.subscribedAuthorsAndKinds];
     this.subscribedAuthorsAndKinds.clear();
+
+    console.time("subscribeToAuthorsAndKinds");
+
     // parse pair[1] as int
     const pairs = authorsAndKinds.map(pair => {
       const [author, kind] = pair.split("|");
       return [author, parseInt(kind)];
     });
     await this.events.where("[pubkey+kind]").anyOf(pairs).each(callback);
-  }, 200);
+
+    console.timeEnd("subscribeToAuthorsAndKinds");
+}, 200);
+
 
   async find(filter: Filter, callback: (event: TaggedNostrEvent) => void): Promise<void> {
     if (!filter) return;

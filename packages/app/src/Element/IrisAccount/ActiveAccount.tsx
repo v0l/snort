@@ -7,7 +7,12 @@ import { UserCache } from "@/Cache";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { FormattedMessage } from "react-intl";
 
-export default function ActiveAccount({ name = "", setAsPrimary = () => {} }) {
+interface ActiveAccountProps {
+  name?: string;
+  setAsPrimary: () => void;
+}
+
+export default function ActiveAccount({ name = "", setAsPrimary = () => {} }: ActiveAccountProps) {
   const { publicKey, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
     readonly: s.readonly,

@@ -33,15 +33,6 @@ export default function NoteReaction(props: NoteReactionProps) {
     return null;
   }, [ev]);
 
-  if (
-    ev.kind !== EventKind.Reaction &&
-    ev.kind !== EventKind.Repost &&
-    (ev.kind !== EventKind.TextNote ||
-      ev.tags.every((a, i) => a[1] !== refEvent?.[1] || a[3] !== "mention" || ev.content !== `#[${i}]`))
-  ) {
-    return null;
-  }
-
   /**
    * Some clients embed the reposted note in the content
    */
@@ -61,6 +52,15 @@ export default function NoteReaction(props: NoteReactionProps) {
       }
     }
     return props.root;
+  }
+
+  if (
+    ev.kind !== EventKind.Reaction &&
+    ev.kind !== EventKind.Repost &&
+    (ev.kind !== EventKind.TextNote ||
+      ev.tags.every((a, i) => a[1] !== refEvent?.[1] || a[3] !== "mention" || ev.content !== `#[${i}]`))
+  ) {
+    return null;
   }
 
   if (!inView) {

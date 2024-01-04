@@ -1,7 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 
-export default function AccountName({ name = "", link = true }) {
+interface AccountNameProps {
+  name?: string;
+  link?: boolean;
+}
+
+export default function AccountName({ name = "", link = true }: AccountNameProps) {
   const navigate = useNavigate();
   return (
     <>

@@ -119,7 +119,7 @@ function renderToken(t: Token | Footnotes | Footnote | FootnoteRef, tags: Array<
   }
 }
 
-export const Markdown = forwardRef<HTMLDivElement, MarkdownProps>((props: MarkdownProps, ref) => {
+const Markdown = forwardRef<HTMLDivElement, MarkdownProps>((props: MarkdownProps, ref) => {
   const parsed = useMemo(() => {
     return marked.use(markedFootnote()).lexer(props.content);
   }, [props.content, props.tags]);
@@ -130,4 +130,7 @@ export const Markdown = forwardRef<HTMLDivElement, MarkdownProps>((props: Markdo
     </div>
   );
 });
+
 Markdown.displayName = "Markdown";
+
+export { Markdown };
