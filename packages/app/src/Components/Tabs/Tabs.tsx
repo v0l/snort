@@ -34,8 +34,8 @@ const Tabs = ({ tabs, tab, setTab }: TabsProps) => {
   const horizontalScroll = useHorizontalScroll();
   return (
     <div className="tabs" ref={horizontalScroll}>
-      {tabs.map(t => (
-        <TabElement key={tab.value} tab={tab} setTab={setTab} t={t} />
+      {tabs.map((t, index) => (
+        <TabElement key={index} tab={tab} setTab={setTab} t={t} />
       ))}
     </div>
   );

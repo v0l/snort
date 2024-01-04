@@ -1,6 +1,6 @@
 import "./Reactions.css";
 
-import {ParsedZap, socialGraphInstance, TaggedNostrEvent} from "@snort/system";
+import { ParsedZap, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
 import { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -26,54 +26,32 @@ interface ReactionsProps {
 const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: ReactionsProps) => {
   const { formatMessage } = useIntl();
   const onClose = () => setShow(false);
-  const likes = useMemo(() => {
-    const sorted = [...positive];
-    sorted.sort((a, b) =>
-      socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey),
-    );
-    return sorted;
-  }, [positive]);
-  const dislikes = useMemo(() => {
-    const sorted = [...negative];
-    sorted.sort((a, b) =>
-      socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey),
-    );
-    return sorted;
-  }, [negative]);
-  const sortedReposts = useMemo(() => {
-    const sorted = [...reposts];
-    sorted.sort((a, b) =>
-      socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey),
-    );
-    return sorted;
-  }, [reposts]);
-  const total = positive.length + negative.length + zaps.length + reposts.length;
-  const defaultTabs: Tab[] = [
-    {
-      text: formatMessage(messages.Likes, { n: likes.length }),
-      value: 0,
-    },
-    {
-      text: formatMessage(messages.Zaps, { n: zaps.length }),
-      value: 1,
-      disabled: zaps.length === 0,
-    },
-    {
-      text: formatMessage(messages.Reposts, { n: reposts.length }),
-      value: 2,
-      disabled: reposts.length === 0,
-    },
-  ];
-  const tabs = defaultTabs.concat(
-    dislikes.length !== 0
-      ? [
-          {
-            text: formatMessage(messages.Dislikes, { n: dislikes.length }),
-            value: 3,
-          },
-        ]
-      : [],
+
+  const sortEvents = (events) => events.sort(
+    (a, b) => socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey)
   );
+
+  const likes = useMemo(() => sortEvents([...positive]), [positive]);
+  const dislikes = useMemo(() => sortEvents([...negative]), [negative]);
+  const sortedReposts = useMemo(() => sortEvents([...reposts]), [reposts]);
+
+  const total = positive.length + negative.length + zaps.length + reposts.length;
+
+  const createTab = (message, count, value, disabled = false) => ({
+    text: formatMessage(message, { n: count }),
+    value,
+    disabled,
+  });
+
+  const tabs = useMemo(() => {
+    const baseTabs = [
+      createTab(messages.Likes, likes.length, 0),
+      createTab(messages.Zaps, zaps.length, 1, zaps.length === 0),
+      createTab(messages.Reposts, reposts.length, 2, reposts.length === 0),
+    ];
+
+    return dislikes.length !== 0 ? baseTabs.concat(createTab(messages.Dislikes, dislikes.length, 3)) : baseTabs;
+  }, [likes.length, zaps.length, reposts.length, dislikes.length, formatMessage]);
 
   const [tab, setTab] = useState(tabs[0]);
 
@@ -81,12 +59,20 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
     if (!show) {
       setTab(tabs[0]);
     }
-  }, [show]);
+  }, [show, tabs]);
+
+  const renderReactionItem = (ev, icon, size) => (
+    <div key={ev.id} className="reactions-item">
+      <div className="reaction-icon">
+        <Icon name={icon} size={size} />
+      </div>
+      <ProfileImage pubkey={ev.pubkey} showProfileCard={true} />
+    </div>
+  );
 
   return show ? (
     <Modal id="reactions" className="reactions-modal" onClose={onClose}>
       <CloseButton onClick={onClose} className="absolute right-4 top-3" />
-
       <div className="reactions-header">
         <h2>
           <FormattedMessage {...messages.ReactionsCount} values={{ n: total }} />
@@ -94,59 +80,24 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
       </div>
       <Tabs tabs={tabs} tab={tab} setTab={setTab} />
       <div className="reactions-body" key={tab.value}>
-        {tab.value === 0 &&
-          likes.map(ev => {
-            return (
-              <div key={ev.id} className="reactions-item">
-                <div className="reaction-icon">{ev.content === "+" ? <Icon name="heart" /> : ev.content}</div>
-                <ProfileImage pubkey={ev.pubkey} showProfileCard={true} />
-              </div>
-            );
-          })}
-        {tab.value === 1 &&
-          zaps.map(z => {
-            return (
-              z.sender && (
-                <div key={z.id} className="reactions-item">
-                  <div className="zap-reaction-icon">
-                    <Icon name="zap" size={20} />
-                    <span className="zap-amount">{formatShort(z.amount)}</span>
-                  </div>
-                  <ProfileImage
-                    showProfileCard={true}
-                    pubkey={z.anonZap ? "" : z.sender}
-                    subHeader={<div title={z.content}>{z.content}</div>}
-                    link={z.anonZap ? "" : undefined}
-                    overrideUsername={
-                      z.anonZap ? formatMessage({ defaultMessage: "Anonymous", id: "LXxsbk" }) : undefined
-                    }
-                  />
-                </div>
-              )
-            );
-          })}
-        {tab.value === 2 &&
-          sortedReposts.map(ev => {
-            return (
-              <div key={ev.id} className="reactions-item">
-                <div className="reaction-icon">
-                  <Icon name="repost" size={16} />
-                </div>
-                <ProfileImage pubkey={ev.pubkey} showProfileCard={true} />
-              </div>
-            );
-          })}
-        {tab.value === 3 &&
-          dislikes.map(ev => {
-            return (
-              <div key={ev.id} className="reactions-item f-ellipsis">
-                <div className="reaction-icon">
-                  <Icon name="dislike" />
-                </div>
-                <ProfileImage pubkey={ev.pubkey} showProfileCard={true} />
-              </div>
-            );
-          })}
+        {tab.value === 0 && likes.map(ev => renderReactionItem(ev, "heart"))}
+        {tab.value === 1 && zaps.map(z => z.sender && (
+          <div key={z.id} className="reactions-item">
+            <div className="zap-reaction-icon">
+              <Icon name="zap" size={20} />
+              <span className="zap-amount">{formatShort(z.amount)}</span>
+            </div>
+            <ProfileImage
+              showProfileCard={true}
+              pubkey={z.anonZap ? "" : z.sender}
+              subHeader={<div title={z.content}>{z.content}</div>}
+              link={z.anonZap ? "" : undefined}
+              overrideUsername={z.anonZap ? formatMessage({ defaultMessage: "Anonymous", id: "LXxsbk" }) : undefined}
+            />
+          </div>
+        ))}
+        {tab.value === 2 && sortedReposts.map(ev => renderReactionItem(ev, "repost", 16))}
+        {tab.value === 3 && dislikes.map(ev => renderReactionItem(ev, "dislike"))}
       </div>
     </Modal>
   ) : null;
