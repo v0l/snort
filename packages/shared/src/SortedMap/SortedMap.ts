@@ -13,7 +13,7 @@ export class SortedMap<K, V> {
         this.compare = (a, b) =>
           (a[1] as any)[compare] > (b[1] as any)[compare]
             ? 1
-            : (a[1] as any)[compare] < (a[1] as any)[compare]
+            : (a[1] as any)[compare] < (b[1] as any)[compare]
               ? -1
               : 0;
       } else {
