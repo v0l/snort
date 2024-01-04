@@ -64,7 +64,7 @@ export function getAlbyOAuth() {
   const clientId = CONFIG.alby?.clientId ?? "";
   const clientSecret = CONFIG.alby?.clientSecret ?? "";
   const redirectUrl = `${window.location.protocol}//${window.location.host}/settings/wallet/alby`;
-  const scopes = ["invoices:create", "invoices:read", "transactions:read", "balance:read", "payments:send"];
+  const scopes = ["invoices:create", "invoices:read", "transactions:read", "balance:read", "payments:send", "account:read"];
 
   const ec = new TextEncoder();
   const tokenUrl = "https://api.getalby.com/oauth/token";
