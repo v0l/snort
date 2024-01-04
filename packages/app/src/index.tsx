@@ -1,6 +1,6 @@
 import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
-import "./fonts/inter.css";
+import "@/assets/fonts/inter.css";
 
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";

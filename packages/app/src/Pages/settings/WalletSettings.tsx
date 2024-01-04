@@ -1,4 +1,4 @@
-import LndLogo from "@/img/lnd-logo.png";
+import LndLogo from "@/assets/img/lnd-logo.png";
 import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";

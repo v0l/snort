@@ -1,5 +1,5 @@
 import TZ from "../tz.json";
-import Nostrich from "../img/nostrich.webp";
+import Nostrich from "@/assets/img/nostrich.webp";
 import * as secp from "@noble/curves/secp256k1";
 import * as utils from "@noble/curves/abstract/utils";
 import { sha256 as hash } from "@noble/hashes/sha256";
