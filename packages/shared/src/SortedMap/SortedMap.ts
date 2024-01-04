@@ -152,4 +152,8 @@ export class SortedMap<K, V> {
   get size(): number {
     return this.map.size;
   }
+
+  clear() {
+    this.map.clear();
+  }
 }
