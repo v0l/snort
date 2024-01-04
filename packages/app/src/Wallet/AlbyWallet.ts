@@ -12,6 +12,7 @@ import {
   WalletInvoice,
   WalletInvoiceState,
 } from ".";
+import { base64 } from "@scure/base";
 
 export default class AlbyWallet implements LNWallet {
   #token: OAuthToken;
@@ -125,6 +126,26 @@ export default class AlbyWallet implements LNWallet {
   async #refreshToken() {
     if (this.#token.created_at + this.#token.expires_in < unixNow()) {
       // refresh
+      const params = new URLSearchParams();
+      params.set("refresh_token", this.#token.refresh_token);
+      params.set("grant_type", "refresh_token");
+
+      const req = await fetch("https://api.getalby.com/oauth/token", {
+        method: "POST",
+        body: params,
+        headers: {
+          accept: "application/json",
+          "content-type": "application/x-www-form-urlencoded",
+          authorization: `Basic ${base64.encode(
+            new TextEncoder().encode(`${CONFIG.alby?.clientId}:${CONFIG.alby?.clientSecret}`),
+          )}`,
+        },
+      });
+      const json = await req.json();
+      if (req.ok) {
+        this.#token = json as OAuthToken;
+        this.onChange(this.#token);
+      }
     }
   }
 }
