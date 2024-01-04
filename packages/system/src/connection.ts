@@ -203,9 +203,11 @@ export class Connection extends EventEmitter<ConnectionEvents> {
     if ((e.data as string).length > 0) {
       // skip message processing if we've already seen it
       const msgId = getHex64(e.data as string, "id");
+      /* Disabled in absence of local db
       if (seenEvents.has(msgId)) {
         return;
       }
+       */
       seenEvents.add(msgId); // TODO only do after msg validation
 
       const msg = JSON.parse(e.data as string) as Array<string | NostrEvent | boolean>;
