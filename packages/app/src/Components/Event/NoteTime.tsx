@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import React, {useEffect, useState, useCallback, useMemo, ReactNode} from 'react';
+import { FormattedMessage } from 'react-intl';
 
 export interface NoteTimeProps {
   from: number;
@@ -10,25 +10,10 @@ const secondsInAMinute = 60;
 const secondsInAnHour = secondsInAMinute * 60;
 const secondsInADay = secondsInAnHour * 24;
 
-export default function NoteTime(props: NoteTimeProps) {
-  const { from, fallback } = props;
-  const [time, setTime] = useState<string | JSX.Element>(calcTime());
-
-  const absoluteTime = useMemo(
-    () =>
-      new Intl.DateTimeFormat(undefined, {
-        dateStyle: "medium",
-        timeStyle: "long",
-      }).format(from),
-    [from],
-  );
-
-  const isoDate = new Date(from).toISOString();
-
-  function calcTime() {
-    const fromDate = new Date(from);
+const NoteTime: React.FC<NoteTimeProps> = ({ from, fallback }) => {
+  const calcTime = useCallback((fromTime: number) => {
     const currentTime = new Date();
-    const timeDifference = Math.floor((currentTime.getTime() - fromDate.getTime()) / 1000);
+    const timeDifference = Math.floor((currentTime.getTime() - fromTime) / 1000);
 
     if (timeDifference < secondsInAMinute) {
       return <FormattedMessage defaultMessage="now" id="kaaf1E" />;
@@ -37,34 +22,42 @@ export default function NoteTime(props: NoteTimeProps) {
     } else if (timeDifference < secondsInADay) {
       return `${Math.floor(timeDifference / secondsInAnHour)}h`;
     } else {
+      const fromDate = new Date(fromTime);
       if (fromDate.getFullYear() === currentTime.getFullYear()) {
         return fromDate.toLocaleDateString(undefined, {
-          month: "short",
-          day: "numeric",
+          month: 'short',
+          day: 'numeric',
         });
       } else {
         return fromDate.toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
         });
       }
     }
-  }
+  }, []);
+
+  const [time, setTime] = useState<string | ReactNode>(calcTime(from));
+
+  const absoluteTime = useMemo(
+    () => new Intl.DateTimeFormat(undefined, {
+      dateStyle: 'medium',
+      timeStyle: 'long',
+    }).format(from),
+    [from]
+  );
+
+  const isoDate = useMemo(() => new Date(from).toISOString(), [from]);
 
   useEffect(() => {
-    setTime(calcTime());
     const t = setInterval(() => {
-      setTime(s => {
-        const newTime = calcTime();
-        if (newTime !== s) {
-          return newTime;
-        }
-        return s;
-      });
+      const newTime = calcTime(from);
+      setTime(s => s !== newTime ? newTime : s);
     }, 60_000); // update every minute
+
     return () => clearInterval(t);
-  }, [from]);
+  }, [calcTime, from]);
 
   return (
     <time dateTime={isoDate} title={absoluteTime}>
@@ -72,3 +65,5 @@ export default function NoteTime(props: NoteTimeProps) {
     </time>
   );
 }
+
+export default NoteTime;
