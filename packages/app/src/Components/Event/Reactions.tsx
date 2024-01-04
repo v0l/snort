@@ -1,6 +1,6 @@
 import "./Reactions.css";
 
-import { ParsedZap, TaggedNostrEvent } from "@snort/system";
+import {ParsedZap, socialGraphInstance, TaggedNostrEvent} from "@snort/system";
 import { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -28,14 +28,25 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
   const onClose = () => setShow(false);
   const likes = useMemo(() => {
     const sorted = [...positive];
-    sorted.sort((a, b) => b.created_at - a.created_at);
+    sorted.sort((a, b) =>
+      socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey),
+    );
     return sorted;
   }, [positive]);
   const dislikes = useMemo(() => {
     const sorted = [...negative];
-    sorted.sort((a, b) => b.created_at - a.created_at);
+    sorted.sort((a, b) =>
+      socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey),
+    );
     return sorted;
   }, [negative]);
+  const sortedReposts = useMemo(() => {
+    const sorted = [...reposts];
+    sorted.sort((a, b) =>
+      socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey),
+    );
+    return sorted;
+  }, [reposts]);
   const total = positive.length + negative.length + zaps.length + reposts.length;
   const defaultTabs: Tab[] = [
     {
@@ -115,7 +126,7 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
             );
           })}
         {tab.value === 2 &&
-          reposts.map(ev => {
+          sortedReposts.map(ev => {
             return (
               <div key={ev.id} className="reactions-item">
                 <div className="reaction-icon">
