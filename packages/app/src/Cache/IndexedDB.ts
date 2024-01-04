@@ -1,7 +1,7 @@
 import Dexie, { Table } from "dexie";
 import { TaggedNostrEvent, ReqFilter as Filter } from "@snort/system";
 import * as Comlink from "comlink";
-import LRUSet from "@/Cache/LRUSet";
+import LRUSet from "@snort/shared/src/LRUSet";
 
 type Tag = {
   id: string;

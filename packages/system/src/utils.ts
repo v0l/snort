@@ -82,3 +82,10 @@ export function parseIMeta(tags: Array<Array<string>>) {
   }
   return ret;
 }
+
+export function getHex64(json: string, field: string): string {
+  let len = field.length + 3
+  let idx = json.indexOf(`"${field}":`) + len
+  let s = json.slice(idx).indexOf(`"`) + idx + 1
+  return json.slice(s, s + 64)
+}
