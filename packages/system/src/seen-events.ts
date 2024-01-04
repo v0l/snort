@@ -1,3 +1,3 @@
 import LRUSet from "@snort/shared/src/LRUSet";
 
-export default new LRUSet<string>(2000);
+export const seenEvents = new LRUSet<string>(2000);

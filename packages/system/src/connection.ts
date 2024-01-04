@@ -9,7 +9,7 @@ import { ConnectionStats } from "./connection-stats";
 import { NostrEvent, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
-import seenEvents from "./seen-events";
+import { seenEvents } from "./seen-events";
 import {getHex64} from "./utils";
 
 /**
@@ -204,7 +204,6 @@ export class Connection extends EventEmitter<ConnectionEvents> {
       // skip message processing if we've already seen it
       const msgId = getHex64(e.data as string, "id");
       if (seenEvents.has(msgId)) {
-        console.log('already seen');
         return;
       }
       seenEvents.add(msgId); // TODO only do after msg validation

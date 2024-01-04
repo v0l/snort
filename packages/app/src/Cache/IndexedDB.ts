@@ -1,7 +1,7 @@
 import Dexie, { Table } from "dexie";
 import { TaggedNostrEvent, ReqFilter as Filter } from "@snort/system";
 import * as Comlink from "comlink";
-import LRUSet from "@snort/shared/src/LRUSet";
+import { seenEvents } from "@snort/system";
 
 type Tag = {
   id: string;
@@ -16,7 +16,6 @@ class IndexedDB extends Dexie {
   events!: Table<TaggedNostrEvent>;
   tags!: Table<Tag>;
   private saveQueue: SaveQueueEntry[] = [];
-  private seenEvents = new LRUSet<string>(1000);
   private subscribedEventIds = new Set<string>();
   private subscribedAuthors = new Set<string>();
   private subscribedTags = new Set<string>();
@@ -58,10 +57,10 @@ class IndexedDB extends Dexie {
   }
 
   handleEvent(event: TaggedNostrEvent) {
-    if (this.seenEvents.has(event.id)) {
+    if (seenEvents.has(event.id)) {
       return;
     }
-    this.seenEvents.add(event.id);
+    seenEvents.add(event.id);
 
     // maybe we don't want event.kind 3 tags
     const tags =
@@ -149,7 +148,7 @@ class IndexedDB extends Dexie {
 
     // make sure only 1 argument is passed
     const cb = e => {
-      this.seenEvents.add(e.id);
+      seenEvents.add(e.id);
       callback(e);
     };
 
