@@ -10,7 +10,12 @@ export class SortedMap<K, V> {
 
     if (compare) {
       if (typeof compare === "string") {
-        this.compare = (a, b) => (a[1][compare] > b[1][compare] ? 1 : a[1][compare] < b[1][compare] ? -1 : 0);
+        this.compare = (a, b) =>
+          (a[1] as any)[compare] > (b[1] as any)[compare]
+            ? 1
+            : (a[1] as any)[compare] < (a[1] as any)[compare]
+              ? -1
+              : 0;
       } else {
         this.compare = compare;
       }

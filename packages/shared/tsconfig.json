@@ -13,6 +13,7 @@
     "outDir": "dist",
     "skipLibCheck": true
   },
+  "exclude": ["src/**/*.test.ts"],
   "include": ["src/**/*.ts", "src/.d.ts"],
   "files": ["src/index.ts"]
 }
