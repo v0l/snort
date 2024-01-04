@@ -10,7 +10,7 @@ import { NostrEvent, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nos
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
 import { seenEvents } from "./seen-events";
-import {getHex64} from "./utils";
+import { getHex64 } from "./utils";
 
 /**
  * Relay settings
