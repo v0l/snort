@@ -57,7 +57,8 @@ export interface ReqFilter {
   since?: number;
   until?: number;
   limit?: number;
-  [key: string]: Array<string> | Array<number> | string | number | undefined;
+  not?: ReqFilter;
+  [key: string]: Array<string> | Array<number> | string | number | undefined | ReqFilter;
 }
 
 /**

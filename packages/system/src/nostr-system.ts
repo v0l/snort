@@ -319,8 +319,21 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     qSend.filters = fNew;
 
     fNew.forEach(f => {
-      inMemoryDB.find(f, e => this.emit("event", "*", e));
-      this.emit("request", f);
+      const alreadyHave = inMemoryDB.findArray(f).map(e => {
+        console.log("got from inMemoryDB", e);
+        this.HandleEvent(e);
+        return e.id;
+      });
+      let fCopy = { ...f }; // some relays reject the query if it contains an unknown key. only send locally.
+      if (alreadyHave.length) {
+        fCopy.not = fCopy.not ?? {};
+        if (fCopy.not.ids) {
+          fCopy.not.ids.push(...alreadyHave);
+        } else {
+          fCopy.not.ids = alreadyHave;
+        }
+      }
+      this.emit("request", fCopy);
     });
 
     if (qSend.relay) {

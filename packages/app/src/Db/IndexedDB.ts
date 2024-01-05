@@ -165,9 +165,18 @@ class IndexedDB extends Dexie {
   async find(filter: Filter, callback: (event: TaggedNostrEvent) => void): Promise<void> {
     if (!filter) return;
 
+    const filterString = JSON.stringify(filter);
+    if (this.readQueue.has(filterString)) {
+      return;
+    }
+
     // make sure only 1 argument is passed
     const cb = e => {
       this.seenEvents.add(e.id);
+      if (filter.not?.ids?.includes(e.id)) {
+        console.log("skipping", e.id);
+        return;
+      }
       callback(e);
     };
 
@@ -225,7 +234,6 @@ class IndexedDB extends Dexie {
       query = query.limit(filter.limit);
     }
     // TODO test that the sort is actually working
-    const filterString = JSON.stringify(filter);
     this.enqueueRead(filterString, async () => {
       await query.each(cb);
     });
