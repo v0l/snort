@@ -53,7 +53,6 @@ export default class AlbyWallet implements LNWallet {
   }
 
   async login() {
-    await this.#refreshToken();
     return true;
   }
 
@@ -62,6 +61,7 @@ export default class AlbyWallet implements LNWallet {
   }
 
   async getBalance() {
+    await this.#refreshToken();
     const bal = await this.#fetch<GetBalanceResponse>("/balance");
     return bal.balance;
   }
@@ -125,7 +125,6 @@ export default class AlbyWallet implements LNWallet {
   }
   async #refreshToken() {
     if (this.#token.created_at + this.#token.expires_in < unixNow()) {
-      // refresh
       const params = new URLSearchParams();
       params.set("refresh_token", this.#token.refresh_token);
       params.set("grant_type", "refresh_token");
