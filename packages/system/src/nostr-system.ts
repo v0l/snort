@@ -324,16 +324,15 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
         this.HandleEvent(e);
         return e.id;
       });
-      let fCopy = { ...f }; // some relays reject the query if it contains an unknown key. only send locally.
       if (alreadyHave.length) {
-        fCopy.not = fCopy.not ?? {};
-        if (fCopy.not.ids) {
-          fCopy.not.ids.push(...alreadyHave);
+        f.not = f.not ?? {};
+        if (f.not.ids) {
+          f.not.ids.push(...alreadyHave);
         } else {
-          fCopy.not.ids = alreadyHave;
+          f.not.ids = alreadyHave;
         }
       }
-      this.emit("request", fCopy);
+      this.emit("request", f);
     });
 
     if (qSend.relay) {
