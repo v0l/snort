@@ -1,4 +1,4 @@
-import { ID, ReqFilter as Filter, STR, TaggedNostrEvent, UID } from "@snort/system";
+import { ID, ReqFilter as Filter, STR, TaggedNostrEvent, UID } from ".";
 import loki from "lokijs";
 
 type PackedNostrEvent = {
@@ -116,13 +116,6 @@ class InMemoryDB {
   remove(eventId: string): void {
     const id = ID(eventId);
     this.eventsCollection.findAndRemove({ id });
-    if (this.idb) {
-      try {
-        this.idb.events.where({ id: eventId }).delete();
-      } catch (e) {
-        console.error(e);
-      }
-    }
   }
 
   removeOldest(): void {

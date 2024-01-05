@@ -3076,6 +3076,7 @@ __metadata:
     "@stablelib/xchacha20": ^1.0.1
     "@types/debug": ^4.1.8
     "@types/jest": ^29.5.1
+    "@types/lokijs": ^1.5.14
     "@types/node": ^20.5.9
     "@types/uuid": ^9.0.2
     "@types/ws": ^8.5.5
@@ -3084,6 +3085,7 @@ __metadata:
     isomorphic-ws: ^5.0.0
     jest: ^29.5.0
     jest-environment-jsdom: ^29.5.0
+    lokijs: ^1.5.12
     ts-jest: ^29.1.0
     ts-node: ^10.9.1
     typescript: ^5.2.2
@@ -3588,6 +3590,13 @@ __metadata:
   version: 1.0.36
   resolution: "@types/json-stable-stringify@npm:1.0.36"
   checksum: 765b07589e11a3896c3d06bb9e3a9be681e7edd95adf27370df0647a91bd2bfcfaf0e091fd4a13729343b388973f73f7e789d6cc62ab988240518a2d27c4a4e2
+  languageName: node
+  linkType: hard
+
+"@types/lokijs@npm:^1.5.14":
+  version: 1.5.14
+  resolution: "@types/lokijs@npm:1.5.14"
+  checksum: e5601952d19f5d6ace6e2b5d06771de0b4319bcb211f30f094c954e445b335a42e6e2de73561b837868f0b25a18e17333f1e7ff84b5523c0ef324c4650a549d6
   languageName: node
   linkType: hard
 
@@ -8167,6 +8176,13 @@ __metadata:
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
+  languageName: node
+  linkType: hard
+
+"lokijs@npm:^1.5.12":
+  version: 1.5.12
+  resolution: "lokijs@npm:1.5.12"
+  checksum: 5cd45facb890048e83977de1451a7b70e1f9e4cfe41c40d2212dfc160df7919b821072f95b10d692f6932c1080193e0715e8fe18dee332f04da4fda0f08984b6
   languageName: node
   linkType: hard
 
