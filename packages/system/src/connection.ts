@@ -204,7 +204,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
       // skip message processing if we've already seen it
       const msgId = getHex64(e.data as string, "id");
       if (inMemoryDB.has(msgId)) {
-        console.log('already have');
+        console.log("already have");
         return;
       }
 
