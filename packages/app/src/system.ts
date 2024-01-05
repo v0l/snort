@@ -15,7 +15,6 @@ import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
 import IndexedDBWorker from "@/Db/IndexedDB?worker";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
-import inMemoryDB from "@/Cache/InMemoryDB"; // move to system or pass alreadyHave fn to system?
 
 export const indexedDB = Comlink.wrap(new IndexedDBWorker());
 /**
@@ -38,7 +37,6 @@ System.on("auth", async (c, r, cb) => {
 });
 
 System.on("event", (_, ev) => {
-  inMemoryDB.handleEvent(ev);
   addEventToFuzzySearch(ev);
   socialGraphInstance.handleEvent(ev);
   if (CONFIG.useIndexedDBEvents && socialGraphInstance.getFollowDistance(ev.pubkey) <= 2) {
@@ -47,7 +45,6 @@ System.on("event", (_, ev) => {
 });
 
 System.on("request", (filter: ReqFilter) => {
-  inMemoryDB.find(filter, e => System.HandleEvent(e));
   if (CONFIG.useIndexedDBEvents) {
     indexedDB.find(
       filter,

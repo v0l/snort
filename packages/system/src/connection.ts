@@ -10,7 +10,7 @@ import { NostrEvent, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nos
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
 import { getHex64 } from "./utils";
-import inMemoryDB from "@snort/app/src/Cache/InMemoryDB";
+import inMemoryDB from "./InMemoryDB";
 
 /**
  * Relay settings
