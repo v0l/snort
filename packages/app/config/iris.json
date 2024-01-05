@@ -35,6 +35,7 @@
   "eventLinkPrefix": "note",
   "profileLinkPrefix": "npub",
   "defaultRelays": {
+    "ws://localhost:7777": { "read": true, "write": true },
     "wss://relay.snort.social/": { "read": true, "write": true },
     "wss://nostr.wine/": { "read": true, "write": false },
     "wss://eden.nostr.land/": { "read": true, "write": false },
