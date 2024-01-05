@@ -319,7 +319,17 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     qSend.filters = fNew;
 
     fNew.forEach(f => {
-      inMemoryDB.find(f, e => this.HandleEvent(e));
+      const alreadyHave = inMemoryDB.findArray(f).map(e => {
+        console.log('got from inMemoryDB', e);
+        this.HandleEvent(e);
+        return e.id;
+      });
+      f.not = f.not ?? {};
+      if (f.not.ids) {
+        f.not.ids.push(...alreadyHave);
+      } else {
+        f.not.ids = alreadyHave;
+      }
       this.emit("request", f);
     });
 
