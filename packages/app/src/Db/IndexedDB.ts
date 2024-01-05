@@ -1,5 +1,5 @@
+import LRUSet from "@snort/shared/src/LRUSet";
 import { ReqFilter as Filter, TaggedNostrEvent } from "@snort/system";
-import { seenEvents } from "@snort/system";
 import * as Comlink from "comlink";
 import Dexie, { Table } from "dexie";
 
@@ -23,6 +23,7 @@ class IndexedDB extends Dexie {
   private subscribedAuthorsAndKinds = new Set<string>();
   private readQueue: Map<string, Task> = new Map();
   private isProcessingQueue = false;
+  private seenEvents = new LRUSet(2000);
 
   constructor() {
     super("EventDB");
@@ -61,10 +62,10 @@ class IndexedDB extends Dexie {
   }
 
   handleEvent(event: TaggedNostrEvent) {
-    if (seenEvents.has(event.id)) {
+    if (this.seenEvents.has(event.id)) {
       return;
     }
-    seenEvents.add(event.id);
+    this.seenEvents.add(event.id);
 
     // maybe we don't want event.kind 3 tags
     const tags =
@@ -166,7 +167,7 @@ class IndexedDB extends Dexie {
 
     // make sure only 1 argument is passed
     const cb = e => {
-      seenEvents.add(e.id);
+      this.seenEvents.add(e.id);
       callback(e);
     };
 

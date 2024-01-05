@@ -9,8 +9,8 @@ import { ConnectionStats } from "./connection-stats";
 import { NostrEvent, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
-import { seenEvents } from "./seen-events";
 import { getHex64 } from "./utils";
+import inMemoryDB from "@snort/app/src/Cache/InMemoryDB";
 
 /**
  * Relay settings
@@ -203,12 +203,10 @@ export class Connection extends EventEmitter<ConnectionEvents> {
     if ((e.data as string).length > 0) {
       // skip message processing if we've already seen it
       const msgId = getHex64(e.data as string, "id");
-      /* Disabled in absence of local db
-      if (seenEvents.has(msgId)) {
+      if (inMemoryDB.has(msgId)) {
+        console.log('already have');
         return;
       }
-       */
-      seenEvents.add(msgId); // TODO only do after msg validation
 
       const msg = JSON.parse(e.data as string) as Array<string | NostrEvent | boolean>;
       const tag = msg[0] as string;
