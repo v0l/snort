@@ -262,8 +262,10 @@ export class WalletStore extends ExternalStore<WalletStoreSnapshot> {
       if (activeConfig) {
         activeConfig.data = JSON.stringify(data);
       }
+      this.save();
+    } else {
+      this.notifyChange();
     }
-    this.notifyChange();
   }
 }
 
