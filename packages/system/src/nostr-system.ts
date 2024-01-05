@@ -319,7 +319,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     qSend.filters = fNew;
 
     fNew.forEach(f => {
-      inMemoryDB.find(f, e => this.emit("event", "*", e));
+      inMemoryDB.find(f, e => this.HandleEvent(e));
       this.emit("request", f);
     });
 
