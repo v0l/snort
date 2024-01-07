@@ -142,7 +142,10 @@ export default class AlbyWallet implements LNWallet {
       });
       const json = await req.json();
       if (req.ok) {
-        this.#token = json as OAuthToken;
+        this.#token = {
+          ...(json as OAuthToken),
+          created_at: unixNow()
+        };
         this.onChange(this.#token);
       }
     }
