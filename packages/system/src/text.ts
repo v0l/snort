@@ -11,6 +11,7 @@ import {
 } from "./const";
 import { NostrLink, validateNostrLink } from "./nostr-link";
 import { splitByUrl } from "./utils";
+import { IMeta } from "./nostr";
 
 export interface ParsedFragment {
   type:
@@ -27,6 +28,7 @@ export interface ParsedFragment {
   content: string;
   mimeType?: string;
   language?: string;
+  data?: object;
 }
 
 export type Fragment = string | ParsedFragment;
@@ -81,10 +83,12 @@ function extractLinks(fragments: Fragment[]) {
                     return "unknown";
                 }
               })();
+              const data = parseInlineMetaHack(url);
               return {
                 type: "media",
-                content: a,
+                content: data ? `${url.protocol}//${url.host}${url.pathname}${url.search}` : a,
                 mimeType: `${mediaType}/${extension[1]}`,
+                data,
               } as ParsedFragment;
             } else {
               return {
@@ -249,6 +253,57 @@ function extractMarkdownCode(fragments: Fragment[]): (string | ParsedFragment)[]
     .flat();
 }
 
+export function parseIMeta(tags: Array<Array<string>>) {
+  let ret: Record<string, IMeta> | undefined;
+  const imetaTags = tags.filter(a => a[0] === "imeta");
+  for (const imetaTag of imetaTags) {
+    ret ??= {};
+    let imeta: IMeta = {};
+    let url = "";
+    for (const t of imetaTag.slice(1)) {
+      const [k, v] = t.split(" ");
+      if (k === "url") {
+        url = v;
+      }
+      if (k === "dim") {
+        const [w, h] = v.split("x");
+        imeta.height = Number(h);
+        imeta.width = Number(w);
+      }
+      if (k === "blurhash") {
+        imeta.blurHash = v;
+      }
+      if (k === "x") {
+        imeta.sha256 = v;
+      }
+      if (k === "alt") {
+        imeta.alt = v;
+      }
+    }
+    ret[url] = imeta;
+  }
+  return ret;
+}
+
+export function parseInlineMetaHack(u: URL) {
+  if (u.hash) {
+    const params = new URLSearchParams(u.hash.substring(1));
+
+    let imeta: IMeta = {};
+    const dim = params.get("dim");
+    if (dim) {
+      const [w, h] = dim.split("x");
+      imeta.height = Number(h);
+      imeta.width = Number(w);
+    }
+    imeta.blurHash = params.get("blurhash") ?? undefined;
+    imeta.sha256 = params.get("x") ?? undefined;
+    imeta.alt = params.get("alt") ?? undefined;
+
+    return imeta;
+  }
+}
+
 export function transformText(body: string, tags: Array<Array<string>>) {
   let fragments = extractLinks([body]);
   fragments = extractMentions(fragments);
@@ -258,7 +313,7 @@ export function transformText(body: string, tags: Array<Array<string>>) {
   fragments = extractCashuTokens(fragments);
   fragments = extractCustomEmoji(fragments, tags);
   fragments = extractMarkdownCode(fragments);
-  fragments = removeUndefined(
+  const frags = removeUndefined(
     fragments.map(a => {
       if (typeof a === "string") {
         if (a.length > 0) {
@@ -269,5 +324,17 @@ export function transformText(body: string, tags: Array<Array<string>>) {
       }
     }),
   );
-  return fragments as Array<ParsedFragment>;
+
+  const imeta = parseIMeta(tags);
+  if (imeta) {
+    for (const f of frags) {
+      if (f.type === "media") {
+        const ix = imeta[f.content];
+        if (ix) {
+          f.data = ix;
+        }
+      }
+    }
+  }
+  return frags;
 }

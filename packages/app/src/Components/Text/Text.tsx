@@ -1,6 +1,6 @@
 import "./Text.css";
 
-import { HexKey, ParsedFragment, parseIMeta } from "@snort/system";
+import { HexKey, IMeta, ParsedFragment } from "@snort/system";
 import classNames from "classnames";
 import { ReactNode, useState } from "react";
 
@@ -100,9 +100,7 @@ export default function Text({
   const [imageIdx, setImageIdx] = useState(0);
 
   const elements = useTextTransformer(id, content, tags);
-
   const images = elements.filter(a => a.type === "media" && a.mimeType?.startsWith("image")).map(a => a.content);
-  const iMeta = parseIMeta(tags);
 
   function renderContentWithHighlightedText(content: string, textToHighlight: string) {
     const textToHighlightArray = textToHighlight.trim().toLowerCase().split(" ");
@@ -139,8 +137,8 @@ export default function Text({
     </a>
   );
 
-  const RevealMediaInstance = ({ content }: { content: string }) => {
-    const imeta = iMeta?.[content];
+  const RevealMediaInstance = ({ content, data }: { content: string, data?: object }) => {
+    const imeta = data as IMeta;
     return (
       <RevealMedia
         key={content}
@@ -198,7 +196,7 @@ export default function Text({
             }
           }
           if (galleryImages.length === 1) {
-            chunks.push(<RevealMediaInstance content={galleryImages[0].content} />);
+            chunks.push(<RevealMediaInstance content={galleryImages[0].content} data={galleryImages[0]} />);
           } else {
             // We build a grid layout to render the grouped images
             const imagesWithGridConfig = galleryImages.map((gi, index) => {
@@ -211,6 +209,7 @@ export default function Text({
 
               return {
                 content: gi.content,
+                data: gi.data,
                 gridColumn: config ? config[index][0] : 1,
                 gridRow: config ? config[index][1] : 1,
                 height,
@@ -227,7 +226,7 @@ export default function Text({
                       gridColumn: `span ${img.gridColumn}`,
                       gridRow: `span ${img.gridRow}`,
                     }}>
-                    <RevealMediaInstance content={img.content} />
+                    <RevealMediaInstance content={img.content} data={img.data} />
                   </div>
                 ))}
               </div>

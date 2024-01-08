@@ -32,7 +32,6 @@ export * from "./pow-util";
 export * from "./query-optimizer";
 export * from "./encrypted";
 export * from "./outbox-model";
-export { parseIMeta } from "./utils";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";

@@ -51,38 +51,6 @@ export function splitByUrl(str: string) {
   return str.split(urlRegex);
 }
 
-export function parseIMeta(tags: Array<Array<string>>) {
-  let ret: Record<string, IMeta> | undefined;
-  const imetaTags = tags.filter(a => a[0] === "imeta");
-  for (const imetaTag of imetaTags) {
-    ret ??= {};
-    let imeta: IMeta = {};
-    let url = "";
-    for (const t of imetaTag.slice(1)) {
-      const [k, v] = t.split(" ");
-      if (k === "url") {
-        url = v;
-      }
-      if (k === "dim") {
-        const [w, h] = v.split("x");
-        imeta.height = Number(h);
-        imeta.width = Number(w);
-      }
-      if (k === "blurhash") {
-        imeta.blurHash = v;
-      }
-      if (k === "x") {
-        imeta.sha256 = v;
-      }
-      if (k === "alt") {
-        imeta.alt = v;
-      }
-    }
-    ret[url] = imeta;
-  }
-  return ret;
-}
-
 export function getHex64(json: string, field: string): string {
   let len = field.length + 3;
   let idx = json.indexOf(`"${field}":`) + len;

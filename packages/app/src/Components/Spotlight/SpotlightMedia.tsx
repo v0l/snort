@@ -8,7 +8,7 @@ import useImgProxy from "@/Hooks/useImgProxy";
 interface SpotlightMediaProps {
   media: Array<string>;
   idx: number;
-  className: string;
+  className?: string;
   onClose: () => void;
   onNext?: () => void;
   onPrev?: () => void;
