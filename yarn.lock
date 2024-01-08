@@ -2540,20 +2540,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lightninglabs/lnc-core@npm:0.2.3-alpha":
-  version: 0.2.3-alpha
-  resolution: "@lightninglabs/lnc-core@npm:0.2.3-alpha"
-  checksum: 072bc3a3d09569df99cbdc8e584e96ccce6c073086ced35f7bf7861c31e26f10ae7b5e83a2d56566b05c699160d258dddf1fcacf500b5445a24fde387934e7c1
+"@lightninglabs/lnc-core@npm:0.2.8-alpha":
+  version: 0.2.8-alpha
+  resolution: "@lightninglabs/lnc-core@npm:0.2.8-alpha"
+  checksum: 0c604094613187e7f733408028802af7effcd1f2f889c398340313930c39eeab9bf59cf591836ec137e98f0c7fe1d540225be94841d6fe77b5ae87661aa7bd10
   languageName: node
   linkType: hard
 
-"@lightninglabs/lnc-web@npm:^0.2.3-alpha":
-  version: 0.2.3-alpha
-  resolution: "@lightninglabs/lnc-web@npm:0.2.3-alpha"
+"@lightninglabs/lnc-web@npm:^0.2.8-alpha":
+  version: 0.2.8-alpha
+  resolution: "@lightninglabs/lnc-web@npm:0.2.8-alpha"
   dependencies:
-    "@lightninglabs/lnc-core": 0.2.3-alpha
+    "@lightninglabs/lnc-core": 0.2.8-alpha
     crypto-js: 4.1.1
-  checksum: 427523286de75983c3d84495d24704fac661349a78ea4cb30aafc9f025f24ff7c2e92f22f395a5807db8ebad54a0fb9f943686606c1f52b995ccd4496bc339fe
+  checksum: 1476a92056652ef14690fb31dc7380bc20d287c8ce2ff077674411023948e17761ece0d29d682c2251d943211e0033f685f728aff059464cb1fa1cc5e0b72de2
   languageName: node
   linkType: hard
 
@@ -2925,7 +2925,7 @@ __metadata:
   dependencies:
     "@cashu/cashu-ts": 0.6.1
     "@formatjs/cli": ^6.1.3
-    "@lightninglabs/lnc-web": ^0.2.3-alpha
+    "@lightninglabs/lnc-web": ^0.2.8-alpha
     "@noble/curves": ^1.0.0
     "@noble/hashes": ^1.3.3
     "@scure/base": ^1.1.1
