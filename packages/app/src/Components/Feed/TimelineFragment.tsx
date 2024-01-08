@@ -35,7 +35,7 @@ export function TimelineFragment(props: TimelineFragProps) {
               onClick={props.noteOnClick}
               context={props.noteContext?.(e)}
               options={options}
-              waitUntilInView={props.index > 10}
+              waitUntilInView={props.index > 5}
             />
           ),
       )}
