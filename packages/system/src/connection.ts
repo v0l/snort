@@ -51,6 +51,7 @@ interface ConnectionEvents {
   connected: (wasReconnect: boolean) => void;
   event: (sub: string, e: TaggedNostrEvent) => void;
   eose: (sub: string) => void;
+  closed: (sub: string, reason: string) => void;
   disconnect: (code: number) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
   notice: (msg: string) => void;
@@ -251,6 +252,10 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           this.emit("notice", msg[1] as string);
           this.#log(`NOTICE: ${msg[1]}`);
           break;
+        }
+        case "CLOSED": {
+          this.emit("closed", msg[1] as string, msg[2] as string);
+          this.#log(`CLOSED: ${msg.slice(1)}`);
         }
         default: {
           this.#log(`Unknown tag: ${tag}`);
