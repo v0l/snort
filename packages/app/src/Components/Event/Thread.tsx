@@ -50,6 +50,7 @@ const Subthread = ({ active, notes, chains, onNavigate }: SubthreadProps) => {
             key={a.id}
             onClick={onNavigate}
             threadChains={chains}
+            waitUntilInView={idx > 5}
           />
           <div className="line-container"></div>
         </div>

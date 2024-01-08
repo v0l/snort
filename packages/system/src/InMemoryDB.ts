@@ -14,7 +14,7 @@ type PackedNostrEvent = {
   saved_at: number;
 };
 
-const DEFAULT_MAX_SIZE = 10000;
+const DEFAULT_MAX_SIZE = 5000;
 
 class InMemoryDB {
   private loki = new loki("EventDB");
