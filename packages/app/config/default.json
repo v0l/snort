@@ -40,7 +40,6 @@
     "wss://nostr.wine/": { "read": true, "write": false },
     "wss://eden.nostr.land/": { "read": true, "write": false }
   },
-  "useIndexedDBEvents": false,
   "alby": {
     "clientId": "pohiJjPhQR",
     "clientSecret": "GAl1YKLA3FveK1gLBYok"

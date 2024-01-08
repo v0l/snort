@@ -74,17 +74,22 @@ declare const CONFIG: {
   communityLeaders?: {
     list: string;
   };
+  
   // Filter urls from nav sidebar
   hideFromNavbar: Array<string>;
+
   // Limit deck to certain subscriber tier
   deckSubKind?: number;
+
   showDeck?: boolean;
+
   // Create toast notifications when publishing notes
   noteCreatorToast: boolean;
+
   eventLinkPrefix: NostrPrefix;
   profileLinkPrefix: NostrPrefix;
   defaultRelays: Record<string, RelaySettings>;
-  useIndexedDBEvents: boolean;
+
   // Alby wallet oAuth config
   alby?: {
     clientId: string;
