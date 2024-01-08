@@ -1,20 +1,18 @@
-import { EventExt, EventKind, HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+import { EventKind, HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
-import React, { ReactNode, useState } from "react";
+import React, { useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { UserCache } from "@/Cache";
 import { NoteText } from "@/Components/Event/Note/NoteText";
+import ReplyTag from "@/Components/Event/Note/ReplyTag";
 import Icon from "@/Components/Icons/Icon";
-import DisplayName from "@/Components/User/DisplayName";
-import { ProfileLink } from "@/Components/User/ProfileLink";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
 import { chainKey } from "@/Hooks/useThreadContext";
-import { findTag, hexToBech32 } from "@/Utils";
+import { findTag } from "@/Utils";
 import { setBookmarked, setPinned } from "@/Utils/Login";
 
 import messages from "../../messages";
@@ -111,62 +109,6 @@ export function NoteInner(props: NoteProps) {
     }
   }
 
-  function replyTag() {
-    const thread = EventExt.extractThread(ev);
-    if (thread === undefined) {
-      return undefined;
-    }
-
-    const maxMentions = 2;
-    const replyTo = thread?.replyTo ?? thread?.root;
-    const replyLink = replyTo
-      ? NostrLink.fromTag(
-          [replyTo.key, replyTo.value ?? "", replyTo.relay ?? "", replyTo.marker ?? ""].filter(a => a.length > 0),
-        )
-      : undefined;
-    const mentions: { pk: string; name: string; link: ReactNode }[] = [];
-    for (const pk of thread?.pubKeys ?? []) {
-      const u = UserCache.getFromCache(pk);
-      const npub = hexToBech32(NostrPrefix.PublicKey, pk);
-      const shortNpub = npub.substring(0, 12);
-      mentions.push({
-        pk,
-        name: u?.name ?? shortNpub,
-        link: (
-          <ProfileLink pubkey={pk} user={u}>
-            <DisplayName pubkey={pk} user={u} />{" "}
-          </ProfileLink>
-        ),
-      });
-    }
-    mentions.sort(a => (a.name.startsWith(NostrPrefix.PublicKey) ? 1 : -1));
-    const othersLength = mentions.length - maxMentions;
-    const renderMention = (m: { link: React.ReactNode; pk: string; name: string }, idx: number) => {
-      return (
-        <React.Fragment key={m.pk}>
-          {idx > 0 && ", "}
-          {m.link}
-        </React.Fragment>
-      );
-    };
-    const pubMentions =
-      mentions.length > maxMentions ? mentions?.slice(0, maxMentions).map(renderMention) : mentions?.map(renderMention);
-    const others = mentions.length > maxMentions ? formatMessage(messages.Others, { n: othersLength }) : "";
-    const link = replyLink?.encode(CONFIG.eventLinkPrefix);
-    return (
-      <div className="reply">
-        re:&nbsp;
-        {(mentions?.length ?? 0) > 0 ? (
-          <>
-            {pubMentions} {others}
-          </>
-        ) : (
-          replyLink && <Link to={`/${link}`}>{link?.substring(0, 12)}</Link>
-        )}
-      </div>
-    );
-  }
-
   const canRenderAsTextNote = [EventKind.TextNote, EventKind.Polls];
   if (!canRenderAsTextNote.includes(ev.kind)) {
     const alt = findTag(ev, "alt");
@@ -225,7 +167,7 @@ export function NoteInner(props: NoteProps) {
           <div className="header flex">
             <ProfileImage
               pubkey={ev.pubkey}
-              subHeader={replyTag() ?? undefined}
+              subHeader={<ReplyTag ev={ev} />}
               link={opt?.canClick === undefined ? undefined : ""}
               showProfileCard={options.showProfileCard ?? true}
               showBadges={true}
