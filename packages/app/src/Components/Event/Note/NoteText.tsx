@@ -6,13 +6,14 @@ import { NoteProps } from "@/Components/Event/EventComponent";
 import { NoteTranslation } from "@/Components/Event/Note/NoteContextMenu";
 import Reveal from "@/Components/Event/Reveal";
 import Text from "@/Components/Text/Text";
-import { LoginSession } from "@/Utils/Login";
+import useLogin from "@/Hooks/useLogin";
 
 const TEXT_TRUNCATE_LENGTH = 400;
 export const NoteText = function InnerContent(
-  props: NoteProps & { translated: NoteTranslation; showTranslation?: boolean; login: LoginSession },
+  props: NoteProps & { translated: NoteTranslation; showTranslation?: boolean },
 ) {
-  const { data: ev, options, translated, showTranslation, login } = props;
+  const { data: ev, options, translated, showTranslation } = props;
+  const appData = useLogin(s => s.appData);
   const [showMore, setShowMore] = useState(false);
   const body = translated && showTranslation ? translated.text : ev?.content ?? "";
   const id = translated && showTranslation ? `${ev.id}-translated` : ev.id;
@@ -52,7 +53,7 @@ export const NoteText = function InnerContent(
     </>
   );
 
-  if (!login.appData.item.showContentWarningPosts) {
+  if (!appData.item.showContentWarningPosts) {
     const contentWarning = ev.tags.find(a => a[0] === "content-warning");
     if (contentWarning) {
       return (

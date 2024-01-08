@@ -1,46 +1,34 @@
-import { EventKind, HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
 import React, { useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
+import NoteHeader from "@/Components/Event/Note/NoteHeader";
 import { NoteText } from "@/Components/Event/Note/NoteText";
-import ReplyTag from "@/Components/Event/Note/ReplyTag";
-import Icon from "@/Components/Icons/Icon";
-import useEventPublisher from "@/Hooks/useEventPublisher";
-import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
 import { chainKey } from "@/Hooks/useThreadContext";
 import { findTag } from "@/Utils";
-import { setBookmarked, setPinned } from "@/Utils/Login";
 
 import messages from "../../messages";
 import Text from "../../Text/Text";
-import ProfileImage from "../../User/ProfileImage";
 import { NoteProps } from "../EventComponent";
 import HiddenNote from "../HiddenNote";
 import Poll from "../Poll";
-import { NoteContextMenu, NoteTranslation } from "./NoteContextMenu";
+import { NoteTranslation } from "./NoteContextMenu";
 import NoteFooter from "./NoteFooter";
-import NoteTime from "./NoteTime";
-import ReactionsModal from "./ReactionsModal";
 
-export function NoteInner(props: NoteProps) {
+export function Note(props: NoteProps) {
   const { data: ev, highlight, options: opt, ignoreModeration = false, className, waitUntilInView } = props;
 
   const baseClassName = classNames("note min-h-[110px] flex flex-col gap-4 card", className);
   const navigate = useNavigate();
-  const [showReactions, setShowReactions] = useState(false);
 
   const { isEventMuted } = useModeration();
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "2000px" });
-  const login = useLogin();
-  const { pinned, bookmarked } = useLogin();
-  const { publisher, system } = useEventPublisher();
   const [showTranslation, setShowTranslation] = useState(true);
   const [translated, setTranslated] = useState<NoteTranslation>();
-  const { formatMessage } = useIntl();
 
   const options = {
     showHeader: true,
@@ -51,28 +39,6 @@ export function NoteInner(props: NoteProps) {
     showContextMenu: true,
     ...opt,
   };
-
-  async function unpin(id: HexKey) {
-    if (options.canUnpin && publisher) {
-      if (window.confirm(formatMessage(messages.ConfirmUnpin))) {
-        const es = pinned.item.filter(e => e !== id);
-        const ev = await publisher.pinned(es.map(a => new NostrLink(NostrPrefix.Note, a)));
-        system.BroadcastEvent(ev);
-        setPinned(login, es, ev.created_at * 1000);
-      }
-    }
-  }
-
-  async function unbookmark(id: HexKey) {
-    if (options.canUnbookmark && publisher) {
-      if (window.confirm(formatMessage(messages.ConfirmUnbookmark))) {
-        const es = bookmarked.item.filter(e => e !== id);
-        const ev = await publisher.pinned(es.map(a => new NostrLink(NostrPrefix.Note, a)));
-        system.BroadcastEvent(ev);
-        setBookmarked(login, es, ev.created_at * 1000);
-      }
-    }
-  }
 
   function goToEvent(e: React.MouseEvent, eTarget: TaggedNostrEvent) {
     if (opt?.canClick === false) {
@@ -163,52 +129,13 @@ export function NoteInner(props: NoteProps) {
     if (waitUntilInView && !inView) return undefined;
     return (
       <>
-        {options.showHeader && (
-          <div className="header flex">
-            <ProfileImage
-              pubkey={ev.pubkey}
-              subHeader={<ReplyTag ev={ev} />}
-              link={opt?.canClick === undefined ? undefined : ""}
-              showProfileCard={options.showProfileCard ?? true}
-              showBadges={true}
-            />
-            <div className="info">
-              {props.context}
-              {(options.showTime || options.showBookmarked) && (
-                <>
-                  {options.showBookmarked && (
-                    <div
-                      className={`saved ${options.canUnbookmark ? "pointer" : ""}`}
-                      onClick={() => unbookmark(ev.id)}>
-                      <Icon name="bookmark" /> <FormattedMessage {...messages.Bookmarked} />
-                    </div>
-                  )}
-                  {!options.showBookmarked && <NoteTime from={ev.created_at * 1000} />}
-                </>
-              )}
-              {options.showPinned && (
-                <div className={`pinned ${options.canUnpin ? "pointer" : ""}`} onClick={() => unpin(ev.id)}>
-                  <Icon name="pin" /> <FormattedMessage {...messages.Pinned} />
-                </div>
-              )}
-              {options.showContextMenu && (
-                <NoteContextMenu
-                  ev={ev}
-                  react={async () => {}}
-                  onTranslated={t => setTranslated(t)}
-                  setShowReactions={setShowReactions}
-                />
-              )}
-            </div>
-          </div>
-        )}
+        {options.showHeader && <NoteHeader ev={ev} options={options} setTranslated={setTranslated} />}
         <div className="body" onClick={e => goToEvent(e, ev, true)}>
-          <NoteText {...props} translated={translated} showTranslation={showTranslation} login={login} />
+          <NoteText {...props} translated={translated} showTranslation={showTranslation} />
           {translation()}
           {pollOptions()}
         </div>
         {options.showFooter && <NoteFooter ev={ev} replies={props.threadChains?.get(chainKey(ev))?.length} />}
-        <ReactionsModal show={showReactions} setShow={setShowReactions} event={ev} />
       </>
     );
   }

@@ -13,7 +13,26 @@ import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
 import ProfilePreview from "@/Components/User/ProfilePreview";
 
 import { LongFormText } from "./LongFormText";
-import { NoteInner } from "./Note/NoteInner";
+import { Note } from "./Note/Note";
+
+export interface NotePropsOptions {
+  isRoot?: boolean;
+  showHeader?: boolean;
+  showContextMenu?: boolean;
+  showProfileCard?: boolean;
+  showTime?: boolean;
+  showPinned?: boolean;
+  showBookmarked?: boolean;
+  showFooter?: boolean;
+  showReactionsLink?: boolean;
+  showMedia?: boolean;
+  canUnpin?: boolean;
+  canUnbookmark?: boolean;
+  canClick?: boolean;
+  showMediaSpotlight?: boolean;
+  longFormPreview?: boolean;
+  truncate?: boolean;
+}
 
 export interface NoteProps {
   data: TaggedNostrEvent;
@@ -25,28 +44,11 @@ export interface NoteProps {
   searchedValue?: string;
   threadChains?: Map<string, Array<NostrEvent>>;
   context?: ReactNode;
-  options?: {
-    isRoot?: boolean;
-    showHeader?: boolean;
-    showContextMenu?: boolean;
-    showProfileCard?: boolean;
-    showTime?: boolean;
-    showPinned?: boolean;
-    showBookmarked?: boolean;
-    showFooter?: boolean;
-    showReactionsLink?: boolean;
-    showMedia?: boolean;
-    canUnpin?: boolean;
-    canUnbookmark?: boolean;
-    canClick?: boolean;
-    showMediaSpotlight?: boolean;
-    longFormPreview?: boolean;
-    truncate?: boolean;
-  };
+  options?: NotePropsOptions;
   waitUntilInView?: boolean;
 }
 
-export default memo(function Note(props: NoteProps) {
+export default memo(function EventComponent(props: NoteProps) {
   const { data: ev, className } = props;
 
   let content;
@@ -84,7 +86,7 @@ export default memo(function Note(props: NoteProps) {
       );
       break;
     default:
-      content = <NoteInner {...props} />;
+      content = <Note {...props} />;
   }
 
   return <ErrorBoundary>{content}</ErrorBoundary>;

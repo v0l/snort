@@ -228,6 +228,11 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
   const isSingleNote = thread.chains?.size === 1 && [thread.chains.values].every(v => v.length === 0);
   const { formatMessage } = useIntl();
 
+  const rootOptions = useMemo(
+    () => ({ showReactionsLink: true, showMediaSpotlight: !props.disableSpotlight, isRoot: true }),
+    [props.disableSpotlight],
+  );
+
   function navigateThread(e: TaggedNostrEvent) {
     thread.setCurrent(e.id);
     //router.navigate(`/${NostrLink.fromEvent(e).encode()}`, { replace: true })
@@ -252,7 +257,7 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
           className={className}
           key={note.id}
           data={note}
-          options={{ showReactionsLink: true, showMediaSpotlight: !props.disableSpotlight, isRoot: true }}
+          options={rootOptions}
           onClick={navigateThread}
           threadChains={thread.chains}
         />
