@@ -24,12 +24,6 @@ const options = {
 };
 
 export function TimelineFragment(props: TimelineFragProps) {
-  const relatedFeed = useCallback(
-    (id: string) => {
-      return props.related.filter(a => findTag(a, "e") === id);
-    },
-    [props.related],
-  );
   return (
     <>
       {props.frag.title}
@@ -38,7 +32,6 @@ export function TimelineFragment(props: TimelineFragProps) {
           props.noteRenderer?.(e) ?? (
             <Note
               data={e}
-              related={relatedFeed(e.id)}
               key={e.id}
               depth={0}
               onClick={props.noteOnClick}

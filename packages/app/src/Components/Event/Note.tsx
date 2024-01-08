@@ -18,7 +18,6 @@ import { NoteInner } from "./NoteInner";
 export interface NoteProps {
   data: TaggedNostrEvent;
   className?: string;
-  related: readonly TaggedNostrEvent[];
   highlight?: boolean;
   ignoreModeration?: boolean;
   onClick?: (e: TaggedNostrEvent) => void;
@@ -78,7 +77,6 @@ export default memo(function Note(props: NoteProps) {
       content = (
         <LongFormText
           ev={ev}
-          related={props.related}
           isPreview={props.options?.longFormPreview ?? false}
           onClick={() => props.onClick?.(ev)}
           truncate={props.options?.truncate}

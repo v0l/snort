@@ -1,6 +1,7 @@
 import "./Reactions.css";
 
-import { ParsedZap, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, ParsedZap, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
+import { useEventReactions, useReactions } from "@snort/system-react";
 import { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -13,18 +14,21 @@ import { formatShort } from "@/Utils/Number";
 
 import messages from "../messages";
 
-interface ReactionsProps {
+interface ReactionsModalProps {
   show: boolean;
   setShow(b: boolean): void;
-  positive: TaggedNostrEvent[];
-  negative: TaggedNostrEvent[];
-  reposts: TaggedNostrEvent[];
-  zaps: ParsedZap[];
+  event: TaggedNostrEvent;
 }
 
-const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: ReactionsProps) => {
+const ReactionsModal = ({ show, setShow, event }: ReactionsModalProps) => {
   const { formatMessage } = useIntl();
   const onClose = () => setShow(false);
+
+  const link = NostrLink.fromEvent(event);
+
+  const related = useReactions(link.id + "related", [link], undefined, true);
+  const { reactions, zaps, reposts } = useEventReactions(link, related.data ?? []);
+  const { positive, negative } = reactions;
 
   const sortEvents = events =>
     events.sort(
@@ -109,4 +113,4 @@ const Reactions = ({ show, setShow, positive, negative, reposts, zaps }: Reactio
   ) : null;
 };
 
-export default Reactions;
+export default ReactionsModal;

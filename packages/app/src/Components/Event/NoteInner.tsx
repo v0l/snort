@@ -1,5 +1,4 @@
 import { EventExt, EventKind, HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
-import { useEventReactions } from "@snort/system-react";
 import classNames from "classnames";
 import React, { ReactNode, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -40,7 +39,6 @@ export function NoteInner(props: NoteProps) {
 
   const { isEventMuted } = useModeration();
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "2000px" });
-  const { reactions, reposts, deletions, zaps } = useEventReactions(NostrLink.fromEvent(ev), related);
   const login = useLogin();
   const { pinned, bookmarked } = useLogin();
   const { publisher, system } = useEventPublisher();
@@ -48,8 +46,6 @@ export function NoteInner(props: NoteProps) {
   const [showTranslation, setShowTranslation] = useState(true);
   const { formatMessage } = useIntl();
   const [showMore, setShowMore] = useState(false);
-
-  const totalReactions = reactions.positive.length + reactions.negative.length + reposts.length + zaps.length;
 
   const options = {
     showHeader: true,
@@ -135,13 +131,6 @@ export function NoteInner(props: NoteProps) {
   ]);
 
   const transformBody = () => {
-    if (deletions?.length > 0) {
-      return (
-        <b className="error">
-          <FormattedMessage {...messages.Deleted} />
-        </b>
-      );
-    }
     if (!login.appData.item.showContentWarningPosts) {
       const contentWarning = ev.tags.find(a => a[0] === "content-warning");
       if (contentWarning) {
@@ -323,7 +312,7 @@ export function NoteInner(props: NoteProps) {
   function pollOptions() {
     if (ev.kind !== EventKind.Polls) return;
 
-    return <Poll ev={ev} zaps={zaps} />;
+    return <Poll ev={ev} />;
   }
 
   function content() {
@@ -373,29 +362,9 @@ export function NoteInner(props: NoteProps) {
           {transformBody()}
           {translation()}
           {pollOptions()}
-          {options.showReactionsLink && (
-            <span className="reactions-link cursor-pointer" onClick={() => setShowReactions(true)}>
-              <FormattedMessage {...messages.ReactionsLink} values={{ n: totalReactions }} />
-            </span>
-          )}
         </div>
-        {options.showFooter && (
-          <NoteFooter
-            ev={ev}
-            positive={reactions.positive}
-            reposts={reposts}
-            zaps={zaps}
-            replies={props.threadChains?.get(chainKey(ev))?.length}
-          />
-        )}
-        <ReactionsModal
-          show={showReactions}
-          setShow={setShowReactions}
-          positive={reactions.positive}
-          negative={reactions.negative}
-          reposts={reposts}
-          zaps={zaps}
-        />
+        {options.showFooter && <NoteFooter ev={ev} replies={props.threadChains?.get(chainKey(ev))?.length} />}
+        <ReactionsModal show={showReactions} setShow={setShowReactions} event={ev} />
       </>
     );
   }

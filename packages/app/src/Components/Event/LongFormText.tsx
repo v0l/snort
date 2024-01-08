@@ -1,7 +1,7 @@
 import "./LongFormText.css";
 
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
-import { useEventReactions } from "@snort/system-react";
+import {useEventReactions, useReactions} from "@snort/system-react";
 import classNames from "classnames";
 import React, { CSSProperties, useCallback, useRef, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
@@ -18,7 +18,6 @@ import NoteTime from "./NoteTime";
 interface LongFormTextProps {
   ev: TaggedNostrEvent;
   isPreview: boolean;
-  related: ReadonlyArray<TaggedNostrEvent>;
   onClick?: () => void;
   truncate?: boolean;
 }
@@ -33,7 +32,13 @@ export function LongFormText(props: LongFormTextProps) {
   const [reading, setReading] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const { reactions, reposts, zaps } = useEventReactions(NostrLink.fromEvent(props.ev), props.related);
+  const related = useReactions(
+    NostrLink.fromEvent(props.ev).id + "related",
+    [NostrLink.fromEvent(props.ev)],
+    undefined,
+    true,
+  );
+  const { reactions, reposts, zaps } = useEventReactions(NostrLink.fromEvent(props.ev), related.data ?? []);
 
   function previewText() {
     return (

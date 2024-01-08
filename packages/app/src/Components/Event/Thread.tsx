@@ -11,7 +11,7 @@ import Collapsed from "@/Components/Collapsed";
 import Note from "@/Components/Event/Note";
 import NoteGhost from "@/Components/Event/NoteGhost";
 import { chainKey, ThreadContext, ThreadContextWrapper } from "@/Hooks/useThreadContext";
-import { getAllLinkReactions, getLinkReactions } from "@/Utils";
+import { getAllLinkReactions } from "@/Utils";
 
 import messages from "../messages";
 
@@ -50,7 +50,6 @@ const Subthread = ({ active, notes, related, chains, onNavigate }: SubthreadProp
             className={`thread-note ${isLastSubthread && replies.length === 0 ? "is-last-note" : ""}`}
             data={a}
             key={a.id}
-            related={related}
             onClick={onNavigate}
             threadChains={chains}
           />
@@ -98,7 +97,6 @@ const ThreadNote = ({ active, note, isLast, isLastSubthread, related, chains, on
           className={classNames("thread-note", { "is-last-note": isLastVisibleNote })}
           data={note}
           key={note.id}
-          related={related}
           onClick={onNavigate}
           threadChains={chains}
         />
@@ -207,7 +205,6 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
               highlight={active === r.id}
               data={r}
               key={r.id}
-              related={related}
               onClick={onNavigate}
               threadChains={chains}
             />
@@ -262,7 +259,6 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
           className={className}
           key={note.id}
           data={note}
-          related={getLinkReactions(thread.reactions, NostrLink.fromEvent(note))}
           options={{ showReactionsLink: true, showMediaSpotlight: !props.disableSpotlight, isRoot: true }}
           onClick={navigateThread}
           threadChains={thread.chains}

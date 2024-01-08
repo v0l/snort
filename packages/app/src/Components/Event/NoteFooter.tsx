@@ -1,6 +1,6 @@
 import { normalizeReaction } from "@snort/shared";
 import { countLeadingZeros, NostrLink, ParsedZap, TaggedNostrEvent } from "@snort/system";
-import { useUserProfile } from "@snort/system-react";
+import { useEventReactions, useReactions, useUserProfile } from "@snort/system-react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import classNames from "classnames";
 import React, { forwardRef, useEffect, useState } from "react";
@@ -37,15 +37,18 @@ const barrierZapper = async <T,>(then: () => Promise<T>): Promise<T> => {
 };
 
 export interface NoteFooterProps {
-  reposts: TaggedNostrEvent[];
-  zaps: ParsedZap[];
-  positive: TaggedNostrEvent[];
   replies?: number;
   ev: TaggedNostrEvent;
 }
 
 export default function NoteFooter(props: NoteFooterProps) {
-  const { ev, positive, reposts, zaps } = props;
+  const { ev } = props;
+  const link = NostrLink.fromEvent(ev);
+
+  const related = useReactions(link.id + "related", [link], undefined, true);
+  const { reactions, zaps, reposts } = useEventReactions(link, related.data ?? []);
+  const { positive } = reactions;
+
   const { formatMessage } = useIntl();
   const {
     publicKey,
@@ -119,7 +122,7 @@ export default function NoteFooter(props: NoteFooterProps) {
           name: getDisplayName(author, ev.pubkey),
           zap: {
             pubkey: ev.pubkey,
-            event: NostrLink.fromEvent(ev),
+            event: link,
           },
         } as ZapTarget,
       ];
