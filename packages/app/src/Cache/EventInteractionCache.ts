@@ -1,7 +1,6 @@
 import { FeedCache } from "@snort/shared";
 
 import { db, EventInteraction } from "@/Db";
-import { sha256 } from "@/Utils";
 import { LoginStore } from "@/Utils/Login";
 
 export class EventInteractionCache extends FeedCache<EventInteraction> {
@@ -10,7 +9,7 @@ export class EventInteractionCache extends FeedCache<EventInteraction> {
   }
 
   key(of: EventInteraction): string {
-    return sha256(of.event + of.by);
+    return `${of.event}:${of.by}`;
   }
 
   override async preload(): Promise<void> {
