@@ -256,6 +256,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
         case "CLOSED": {
           this.emit("closed", msg[1] as string, msg[2] as string);
           this.#log(`CLOSED: ${msg.slice(1)}`);
+          break;
         }
         default: {
           this.#log(`Unknown tag: ${tag}`);

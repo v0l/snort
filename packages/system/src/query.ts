@@ -198,6 +198,7 @@ export class Query extends EventEmitter<QueryEvents> implements QueryBase {
       if (t.id === sub || sub === "*") {
         if (t.filters.some(v => eventMatchesFilter(e, v))) {
           this.feed.add(e);
+          return t;
         } else {
           this.#log("Event did not match filter, rejecting %O %O", e, t);
         }
