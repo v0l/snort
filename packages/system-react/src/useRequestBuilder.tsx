@@ -14,11 +14,11 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
   const subscribe = (onChanged: () => void) => {
     if (rb) {
       const q = system.Query<TStore>(type, rb);
-      const release = q.feed.hook(onChanged);
+      q.feed.on("event", onChanged);
       q.uncancel();
       return () => {
+        q.feed.off("event", onChanged);
         q.cancel();
-        release();
       };
     }
     return () => {

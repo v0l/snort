@@ -1,6 +1,7 @@
 import { appendDedupe, SortedMap } from "@snort/shared";
 import { EventExt, EventType, TaggedNostrEvent, u256 } from ".";
 import { findTag } from "./utils";
+import EventEmitter from "eventemitter3";
 
 export interface StoreSnapshot<TSnapshot> {
   data: TSnapshot | undefined;
@@ -28,28 +29,25 @@ export type OnEventCallbackRelease = () => void;
 export type OnEoseCallback = (c: string) => void;
 export type OnEoseCallbackRelease = () => void;
 
+export interface NostrStoreEvents {
+  progress: (loading: boolean) => void;
+  event: (evs: Readonly<Array<TaggedNostrEvent>>) => void;
+}
+
 /**
  * Generic note store interface
  */
-export abstract class NoteStore {
+export abstract class NoteStore extends EventEmitter<NostrStoreEvents> {
   abstract add(ev: Readonly<TaggedNostrEvent> | Readonly<Array<TaggedNostrEvent>>): void;
   abstract clear(): void;
-
-  // react hooks
-  abstract hook(cb: NoteStoreHook): NoteStoreHookRelease;
   abstract getSnapshotData(): NoteStoreSnapshotData | undefined;
-
-  // events
-  abstract onEvent(cb: OnEventCallback): OnEventCallbackRelease;
 
   abstract get snapshot(): StoreSnapshot<NoteStoreSnapshotData>;
   abstract get loading(): boolean;
   abstract set loading(v: boolean);
 }
 
-export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> implements NoteStore {
-  #hooks: Array<NoteStoreHook> = [];
-  #eventHooks: Array<OnEventCallback> = [];
+export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> extends NoteStore {
   #loading = true;
   #storeSnapshot: StoreSnapshot<TSnapshot> = {
     clear: () => this.clear(),
@@ -59,6 +57,7 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
   };
   #needsSnapshot = true;
   #nextNotifyTimer?: ReturnType<typeof setTimeout>;
+  #bufEmit: Array<TaggedNostrEvent> = [];
 
   get snapshot() {
     this.#updateSnapshot();
@@ -71,55 +70,28 @@ export abstract class HookedNoteStore<TSnapshot extends NoteStoreSnapshotData> i
 
   set loading(v: boolean) {
     this.#loading = v;
-    this.onChange([]);
+    this.emit("progress", v);
   }
 
-  abstract add(ev: Readonly<TaggedNostrEvent> | Readonly<Array<TaggedNostrEvent>>): void;
-  abstract clear(): void;
-
-  hook(cb: NoteStoreHook): NoteStoreHookRelease {
-    this.#hooks.push(cb);
-    return () => {
-      const idx = this.#hooks.findIndex(a => a === cb);
-      this.#hooks.splice(idx, 1);
-    };
-  }
+  abstract override add(ev: Readonly<TaggedNostrEvent> | Readonly<Array<TaggedNostrEvent>>): void;
+  abstract override clear(): void;
 
   getSnapshotData() {
     this.#updateSnapshot();
     return this.#storeSnapshot.data;
   }
 
-  onEvent(cb: OnEventCallback): OnEventCallbackRelease {
-    const existing = this.#eventHooks.find(a => a === cb);
-    if (!existing) {
-      this.#eventHooks.push(cb);
-      return () => {
-        const idx = this.#eventHooks.findIndex(a => a === cb);
-        this.#eventHooks.splice(idx, 1);
-      };
-    }
-    return () => {
-      //noop
-    };
-  }
-
   protected abstract takeSnapshot(): TSnapshot | undefined;
 
   protected onChange(changes: Readonly<Array<TaggedNostrEvent>>): void {
     this.#needsSnapshot = true;
+    this.#bufEmit.push(...changes);
     if (!this.#nextNotifyTimer) {
       this.#nextNotifyTimer = setTimeout(() => {
         this.#nextNotifyTimer = undefined;
-        for (const hk of this.#hooks) {
-          hk();
-        }
+        this.emit("event", this.#bufEmit);
+        this.#bufEmit = [];
       }, 500);
-    }
-    if (changes.length > 0) {
-      for (const hkE of this.#eventHooks) {
-        hkE(changes);
-      }
     }
   }
 

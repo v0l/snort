@@ -15,7 +15,7 @@ import {
 } from "..";
 import { NostrSystemEvents, NostrsystemProps } from "../nostr-system";
 import { Query } from "../query";
-import { NostrSystemCommand, NostrSystemMessage } from ".";
+import { WorkerCommand, WorkerMessage } from ".";
 
 export class SystemWorker extends EventEmitter<NostrSystemEvents> implements SystemInterface {
   #worker: Worker;
@@ -36,7 +36,7 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
   }
 
   async Init() {
-    await this.#workerRpc<void, string>(NostrSystemCommand.Init, undefined);
+    await this.#workerRpc<void, string>(WorkerCommand.Init, undefined);
   }
 
   GetQuery(id: string): Query | undefined {
@@ -83,19 +83,19 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
     throw new Error("Method not implemented.");
   }
 
-  #workerRpc<T, R>(type: NostrSystemCommand, data: T, timeout = 5_000) {
+  #workerRpc<T, R>(type: WorkerCommand, data: T, timeout = 5_000) {
     const id = uuid();
     this.#worker.postMessage({
       id,
       type,
       data,
-    } as NostrSystemMessage<T>);
+    } as WorkerMessage<T>);
     return new Promise<R>((resolve, reject) => {
       let t: ReturnType<typeof setTimeout>;
       this.#commandQueue.set(id, v => {
         clearTimeout(t);
-        const cmdReply = v as NostrSystemMessage<R>;
-        if (cmdReply.type === NostrSystemCommand.OkResponse) {
+        const cmdReply = v as WorkerMessage<R>;
+        if (cmdReply.type === WorkerCommand.OkResponse) {
           resolve(cmdReply.data);
         } else {
           reject(cmdReply.data);

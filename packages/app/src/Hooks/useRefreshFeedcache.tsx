@@ -28,7 +28,7 @@ export function useRefreshFeedCache<T>(c: RefreshFeedCache<T>, leaveOpen = false
       const q = system.Query(NoopStore, sub);
       let t: ReturnType<typeof setTimeout> | undefined;
       let tBuf: Array<TaggedNostrEvent> = [];
-      const releaseOnEvent = q.feed.onEvent(evs => {
+      q.feed.on("event", evs => {
         if (!t) {
           tBuf = [...evs];
           t = setTimeout(() => {
@@ -41,9 +41,9 @@ export function useRefreshFeedCache<T>(c: RefreshFeedCache<T>, leaveOpen = false
       });
       q.uncancel();
       return () => {
+        q.feed.off("event");
         q.cancel();
         q.sendClose();
-        releaseOnEvent();
       };
     }
   }, [sub]);

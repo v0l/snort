@@ -228,7 +228,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     return this.#queryManager.get(id);
   }
 
-  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
+  Fetch(req: RequestBuilder, cb?: (evs: ReadonlyArray<TaggedNostrEvent>) => void) {
     return this.#queryManager.fetch(req, cb);
   }
 

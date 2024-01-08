@@ -17,10 +17,19 @@ export interface NostrConnectionPoolEvents {
   notice: (address: string, msg: string) => void;
 }
 
+export type ConnectionPool = {
+  getState(): ConnectionStateSnapshot[];
+  getConnection(id: string): Connection | undefined;
+  connect(address: string, options: RelaySettings, ephemeral: boolean): Promise<Connection | undefined>;
+  disconnect(address: string): void;
+  broadcast(system: SystemInterface, ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]>;
+  broadcastTo(address: string, ev: NostrEvent): Promise<OkResponse>;
+} & EventEmitter<NostrConnectionPoolEvents>;
+
 /**
  * Simple connection pool containing connections to multiple nostr relays
  */
-export class NostrConnectionPool extends EventEmitter<NostrConnectionPoolEvents> {
+export class NostrConnectionPool extends EventEmitter<NostrConnectionPoolEvents> implements ConnectionPool {
   #log = debug("NostrConnectionPool");
 
   /**

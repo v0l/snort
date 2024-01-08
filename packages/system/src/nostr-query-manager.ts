@@ -73,28 +73,17 @@ export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
   /**
    * Async fetch results
    */
-  fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
+  fetch(req: RequestBuilder, cb?: (evs: ReadonlyArray<TaggedNostrEvent>) => void) {
     const q = this.query(NoteCollection, req);
     return new Promise<Array<TaggedNostrEvent>>(resolve => {
       let t: ReturnType<typeof setTimeout> | undefined;
       let tBuf: Array<TaggedNostrEvent> = [];
-      const releaseOnEvent = cb
-        ? q.feed.onEvent(evs => {
-            if (!t) {
-              tBuf = [...evs];
-              t = setTimeout(() => {
-                t = undefined;
-                cb(tBuf);
-              }, 100);
-            } else {
-              tBuf.push(...evs);
-            }
-          })
-        : undefined;
-      const releaseFeedHook = q.feed.hook(() => {
-        if (q.progress === 1) {
-          releaseOnEvent?.();
-          releaseFeedHook();
+      if (cb) {
+        q.feed.on("event", cb);
+      }
+      q.feed.on("progress", loading => {
+        if (!loading) {
+          q.feed.off("event");
           q.cancel();
           resolve(unwrap((q.feed as NoteCollection).snapshot.data));
         }

@@ -1,4 +1,4 @@
-export const enum NostrSystemCommand {
+export const enum WorkerCommand {
   OkResponse,
   ErrorResponse,
   Init,
@@ -6,8 +6,8 @@ export const enum NostrSystemCommand {
   DisconnectRelay,
 }
 
-export interface NostrSystemMessage<T> {
+export interface WorkerMessage<T> {
   id: string;
-  type: NostrSystemCommand;
+  type: WorkerCommand;
   data: T;
 }
