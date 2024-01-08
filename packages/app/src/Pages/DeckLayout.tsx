@@ -1,7 +1,7 @@
 import "./Deck.css";
 
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
@@ -176,6 +176,13 @@ function ArticlesCol() {
 }
 
 function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
+  const noteOnClick = useCallback(
+    e => {
+      setThread(NostrLink.fromEvent(e));
+    },
+    [setThread],
+  );
+
   return (
     <div>
       <div className="flex items-center gap-2 p-2 border-b border-border-color">
@@ -192,7 +199,7 @@ function MediaCol({ setThread }: { setThread: (e: NostrLink) => void }) {
         }}
         displayAs="grid"
         showDisplayAsSelector={false}
-        noteOnClick={e => setThread(NostrLink.fromEvent(e))}
+        noteOnClick={noteOnClick}
       />
     </div>
   );

@@ -2,9 +2,9 @@ import "./ProfilePage.css";
 
 import { fetchNip05Pubkey, LNURL } from "@snort/shared";
 import {
+  CachedMetadata,
   encodeTLVEntries,
   EventKind,
-  CachedMetadata,
   NostrPrefix,
   TLVEntryType,
   tryParseNostrLink,

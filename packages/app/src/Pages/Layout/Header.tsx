@@ -102,17 +102,17 @@ export function Header() {
 function NoteTitle({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);
 
+  const values = useMemo(() => {
+    return { name: <DisplayName pubkey={ev.data?.pubkey ?? ""} /> };
+  }, [ev.data?.pubkey]);
+
   if (!ev.data?.pubkey) {
     return <FormattedMessage defaultMessage="Note" id="qMePPG" />;
   }
 
   return (
     <>
-      <FormattedMessage
-        defaultMessage="Note by {name}"
-        id="ALdW69"
-        values={{ name: <DisplayName pubkey={ev.data.pubkey} /> }}
-      />
+      <FormattedMessage defaultMessage="Note by {name}" id="ALdW69" values={values} />
     </>
   );
 }

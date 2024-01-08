@@ -6,10 +6,10 @@ import { bytesToHex } from "@noble/hashes/utils";
 import { base32hex, bech32 } from "@scure/base";
 import { isHex, isOffline } from "@snort/shared";
 import {
+  CachedMetadata,
   encodeTLV,
   EventKind,
   HexKey,
-  CachedMetadata,
   NostrEvent,
   NostrLink,
   NostrPrefix,

@@ -1,7 +1,7 @@
 import { unixNow } from "@snort/shared";
 import { NostrLink } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
-import { lazy, useContext, useEffect, useState } from "react";
+import { lazy, useContext, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link, Outlet, RouteObject, useParams } from "react-router-dom";
 
@@ -164,20 +164,20 @@ export const NotesTab = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const deckContext = useContext(DeckContext);
 
+  const noteOnClick = useMemo(() => {
+    if (deckContext) {
+      return ev => {
+        deckContext.setThread(NostrLink.fromEvent(ev));
+      };
+    }
+    return undefined;
+  }, [deckContext]);
+
   return (
     <>
       <FollowsHint />
       <TaskList />
-      <TimelineFollows
-        postsOnly={true}
-        noteOnClick={
-          deckContext
-            ? ev => {
-                deckContext.setThread(NostrLink.fromEvent(ev));
-              }
-            : undefined
-        }
-      />
+      <TimelineFollows postsOnly={true} noteOnClick={noteOnClick} />
     </>
   );
 };

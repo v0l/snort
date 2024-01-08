@@ -1,5 +1,5 @@
-import Fuse from "fuse.js";
 import { CachedMetadata } from "@snort/system";
+import Fuse from "fuse.js";
 
 export type FuzzySearchResult = {
   pubkey: string;

@@ -1,6 +1,6 @@
 import { base64 } from "@scure/base";
 import { removeUndefined, unwrap } from "@snort/shared";
-import { EventKind, EventPublisher, CachedMetadata, TaggedNostrEvent } from "@snort/system";
+import { CachedMetadata, EventKind, EventPublisher, TaggedNostrEvent } from "@snort/system";
 
 import { UserCache } from "@/Cache";
 import SnortApi from "@/External/SnortApi";

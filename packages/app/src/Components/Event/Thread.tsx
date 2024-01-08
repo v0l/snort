@@ -2,7 +2,7 @@ import "./Thread.css";
 
 import { EventExt, NostrPrefix, parseNostrLink, TaggedNostrEvent, u256 } from "@snort/system";
 import classNames from "classnames";
-import { Fragment, ReactNode, useContext, useMemo, useState } from "react";
+import { Fragment, ReactNode, useCallback, useContext, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -233,10 +233,13 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
     [props.disableSpotlight],
   );
 
-  function navigateThread(e: TaggedNostrEvent) {
-    thread.setCurrent(e.id);
-    //router.navigate(`/${NostrLink.fromEvent(e).encode()}`, { replace: true })
-  }
+  const navigateThread = useCallback(
+    (e: TaggedNostrEvent) => {
+      thread.setCurrent(e.id);
+      // navigate(`/${NostrLink.fromEvent(e).encode()}`, { replace: true });
+    },
+    [thread],
+  );
 
   const parent = useMemo(() => {
     if (thread.root) {
