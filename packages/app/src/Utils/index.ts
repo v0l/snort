@@ -462,7 +462,8 @@ export function kvToObject<T>(o: string, sep?: string) {
 
 export function defaultAvatar(input?: string) {
   if (isOffline()) return Nostrich;
-  return `https://robohash.v0l.io/${input ?? "missing"}.png${isHalloween() ? "?set=set2" : ""}`;
+  const key = (input?.length ?? 0) === 0 ? "missing" : input;
+  return `https://robohash.v0l.io/${key}.png${isHalloween() ? "?set=set2" : ""}`;
 }
 
 export function isFormElement(target: HTMLElement): boolean {

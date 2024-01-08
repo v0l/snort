@@ -138,7 +138,7 @@ export default function Text({
   );
 
   const RevealMediaInstance = ({ content, data }: { content: string; data?: object }) => {
-    const imeta = data as IMeta;
+    const imeta = data as IMeta | undefined;
     return (
       <RevealMedia
         key={content}
@@ -196,7 +196,7 @@ export default function Text({
             }
           }
           if (galleryImages.length === 1) {
-            chunks.push(<RevealMediaInstance content={galleryImages[0].content} data={galleryImages[0]} />);
+            chunks.push(<RevealMediaInstance content={galleryImages[0].content} data={galleryImages[0].data} />);
           } else {
             // We build a grid layout to render the grouped images
             const imagesWithGridConfig = galleryImages.map((gi, index) => {
@@ -243,7 +243,7 @@ export default function Text({
         if (disableMedia ?? false) {
           chunks.push(<DisableMedia content={element.content} />);
         } else {
-          chunks.push(<RevealMediaInstance content={element.content} />);
+          chunks.push(<RevealMediaInstance content={element.content} data={element.data} />);
         }
       }
       if (element.type === "invoice") {

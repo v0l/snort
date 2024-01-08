@@ -41,7 +41,7 @@ const ImageElement = ({ url, meta, onMediaClick }: ImageElementProps) => {
       style.height = `${Math.min(document.body.clientHeight * 0.8, meta.height * scale)}px`;
     }
     return style;
-  }, [imageRef.current, meta]);
+  }, [imageRef?.current, meta]);
 
   return (
     <div
