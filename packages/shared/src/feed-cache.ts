@@ -42,8 +42,11 @@ export abstract class FeedCache<TCached> {
   }
 
   async preload() {
-    const keys = (await this.table?.toCollection().primaryKeys()) ?? [];
-    this.onTable = new Set<string>(keys.map(a => a as string));
+    // assume already preloaded if keys exist on table in memory
+    if (this.onTable.size === 0) {
+      const keys = (await this.table?.toCollection().primaryKeys()) ?? [];
+      this.onTable = new Set<string>(keys.map(a => a as string));
+    }
   }
 
   keysOnTable() {
