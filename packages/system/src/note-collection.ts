@@ -29,7 +29,7 @@ export type OnEventCallbackRelease = () => void;
 export type OnEoseCallback = (c: string) => void;
 export type OnEoseCallbackRelease = () => void;
 
-export interface NostrStoreEvents {
+export interface NosteStoreEvents {
   progress: (loading: boolean) => void;
   event: (evs: Readonly<Array<TaggedNostrEvent>>) => void;
 }
@@ -37,7 +37,7 @@ export interface NostrStoreEvents {
 /**
  * Generic note store interface
  */
-export abstract class NoteStore extends EventEmitter<NostrStoreEvents> {
+export abstract class NoteStore extends EventEmitter<NosteStoreEvents> {
   abstract add(ev: Readonly<TaggedNostrEvent> | Readonly<Array<TaggedNostrEvent>>): void;
   abstract clear(): void;
   abstract getSnapshotData(): NoteStoreSnapshotData | undefined;
