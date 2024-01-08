@@ -505,19 +505,15 @@ export function getDisplayName(user: UserMetadata | undefined, pubkey: HexKey): 
 }
 
 export function getDisplayNameOrPlaceHolder(user: UserMetadata | undefined, pubkey: HexKey): [string, boolean] {
-  let name = hexToBech32(NostrPrefix.PublicKey, pubkey).substring(0, 12);
-  let isPlaceHolder = false;
-
   if (typeof user?.display_name === "string" && user.display_name.length > 0) {
-    name = user.display_name;
+    return [user.display_name.trim(), false];
   } else if (typeof user?.name === "string" && user.name.length > 0) {
-    name = user.name;
+    return [user.name.trim(), false];
   } else if (pubkey && CONFIG.animalNamePlaceholders) {
-    name = AnimalName(pubkey);
-    isPlaceHolder = true;
+    return [AnimalName(pubkey), true];
   }
 
-  return [name.trim(), isPlaceHolder];
+  return [hexToBech32(NostrPrefix.PublicKey, pubkey).substring(0, 12), false];
 }
 
 export function getCountry() {
