@@ -60,11 +60,24 @@ export const ProxyImg = forwardRef<HTMLImageElement, ProxyImgProps>(function Pro
     }
   };
 
-  if (!imgSrc || loadFailed) return missingImageElement ?? <div>
-    <FormattedMessage defaultMessage="Image not available" id="Y7FG5M" />
-  </div>;
+  if (!imgSrc || loadFailed)
+    return (
+      missingImageElement ?? (
+        <div>
+          <FormattedMessage defaultMessage="Image not available" id="Y7FG5M" />
+        </div>
+      )
+    );
 
   return (
-    <img {...props} ref={ref} src={imgSrc} width={size} height={size} className={className} onError={handleImageError} />
+    <img
+      {...props}
+      ref={ref}
+      src={imgSrc}
+      width={size}
+      height={size}
+      className={className}
+      onError={handleImageError}
+    />
   );
 });
