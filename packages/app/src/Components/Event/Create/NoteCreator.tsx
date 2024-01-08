@@ -296,7 +296,6 @@ export function NoteCreator() {
       return (
         <Note
           data={note.preview as TaggedNostrEvent}
-          related={[]}
           options={{
             showContextMenu: false,
             showFooter: false,
@@ -603,7 +602,6 @@ export function NoteCreator() {
             </h4>
             <Note
               data={note.replyTo}
-              related={[]}
               options={{
                 showFooter: false,
                 showContextMenu: false,
@@ -623,7 +621,6 @@ export function NoteCreator() {
             </h4>
             <Note
               data={note.quote}
-              related={[]}
               options={{
                 showFooter: false,
                 showContextMenu: false,

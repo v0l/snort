@@ -1,7 +1,7 @@
 import "./LongFormText.css";
 
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
-import {useEventReactions, useReactions} from "@snort/system-react";
+import { useEventReactions, useReactions } from "@snort/system-react";
 import classNames from "classnames";
 import React, { CSSProperties, useCallback, useRef, useState } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";

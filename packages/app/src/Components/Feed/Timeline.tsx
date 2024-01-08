@@ -97,7 +97,6 @@ const Timeline = (props: TimelineProps) => {
             refTime: mainFeed.at(0)?.created_at ?? unixNow(),
           },
         ]}
-        related={feed.related ?? []}
         latest={latestAuthors}
         showLatest={t => onShowLatest(t)}
         displayAs={displayAs}

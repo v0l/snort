@@ -1,6 +1,6 @@
 import "./Thread.css";
 
-import { EventExt, NostrLink, NostrPrefix, parseNostrLink, TaggedNostrEvent, u256 } from "@snort/system";
+import { EventExt, NostrPrefix, parseNostrLink, TaggedNostrEvent, u256 } from "@snort/system";
 import classNames from "classnames";
 import { Fragment, ReactNode, useContext, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
@@ -11,7 +11,6 @@ import Collapsed from "@/Components/Collapsed";
 import Note from "@/Components/Event/Note";
 import NoteGhost from "@/Components/Event/NoteGhost";
 import { chainKey, ThreadContext, ThreadContextWrapper } from "@/Hooks/useThreadContext";
-import { getAllLinkReactions } from "@/Utils";
 
 import messages from "../messages";
 
@@ -32,12 +31,11 @@ interface SubthreadProps {
   isLastSubthread?: boolean;
   active: u256;
   notes: readonly TaggedNostrEvent[];
-  related: readonly TaggedNostrEvent[];
   chains: Map<u256, Array<TaggedNostrEvent>>;
   onNavigate: (e: TaggedNostrEvent) => void;
 }
 
-const Subthread = ({ active, notes, related, chains, onNavigate }: SubthreadProps) => {
+const Subthread = ({ active, notes, chains, onNavigate }: SubthreadProps) => {
   const renderSubthread = (a: TaggedNostrEvent, idx: number) => {
     const isLastSubthread = idx === notes.length - 1;
     const replies = getReplies(a.id, chains);
@@ -60,7 +58,6 @@ const Subthread = ({ active, notes, related, chains, onNavigate }: SubthreadProp
             active={active}
             isLastSubthread={isLastSubthread}
             notes={replies}
-            related={related}
             chains={chains}
             onNavigate={onNavigate}
           />
@@ -77,7 +74,7 @@ interface ThreadNoteProps extends Omit<SubthreadProps, "notes"> {
   isLast: boolean;
 }
 
-const ThreadNote = ({ active, note, isLast, isLastSubthread, related, chains, onNavigate }: ThreadNoteProps) => {
+const ThreadNote = ({ active, note, isLast, isLastSubthread, chains, onNavigate }: ThreadNoteProps) => {
   const { formatMessage } = useIntl();
   const replies = getReplies(note.id, chains);
   const activeInReplies = replies.map(r => r.id).includes(active);
@@ -108,7 +105,6 @@ const ThreadNote = ({ active, note, isLast, isLastSubthread, related, chains, on
             active={active}
             isLastSubthread={isLastSubthread}
             notes={replies}
-            related={related}
             chains={chains}
             onNavigate={onNavigate}
           />
@@ -118,7 +114,7 @@ const ThreadNote = ({ active, note, isLast, isLastSubthread, related, chains, on
   );
 };
 
-const TierTwo = ({ active, isLastSubthread, notes, related, chains, onNavigate }: SubthreadProps) => {
+const TierTwo = ({ active, isLastSubthread, notes, chains, onNavigate }: SubthreadProps) => {
   const [first, ...rest] = notes;
 
   return (
@@ -128,7 +124,6 @@ const TierTwo = ({ active, isLastSubthread, notes, related, chains, onNavigate }
         onNavigate={onNavigate}
         note={first}
         chains={chains}
-        related={related}
         isLastSubthread={isLastSubthread}
         isLast={rest.length === 0}
       />
@@ -142,7 +137,6 @@ const TierTwo = ({ active, isLastSubthread, notes, related, chains, onNavigate }
             onNavigate={onNavigate}
             note={r}
             chains={chains}
-            related={related}
             isLastSubthread={isLastSubthread}
             isLast={lastReply}
           />
@@ -152,7 +146,7 @@ const TierTwo = ({ active, isLastSubthread, notes, related, chains, onNavigate }
   );
 };
 
-const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate }: SubthreadProps) => {
+const TierThree = ({ active, isLastSubthread, notes, chains, onNavigate }: SubthreadProps) => {
   const [first, ...rest] = notes;
   const replies = getReplies(first.id, chains);
   const hasMultipleNotes = rest.length > 0 || replies.length > 0;
@@ -171,7 +165,6 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
           className={classNames("thread-note", { "is-last-note": isLastSubthread && isLast })}
           data={first}
           key={first.id}
-          related={related}
           threadChains={chains}
         />
         <div className="line-container"></div>
@@ -182,7 +175,6 @@ const TierThree = ({ active, isLastSubthread, notes, related, chains, onNavigate
           active={active}
           isLastSubthread={isLastSubthread}
           notes={replies}
-          related={related}
           chains={chains}
           onNavigate={onNavigate}
         />
@@ -275,18 +267,7 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
     }
     const replies = thread.chains.get(from);
     if (replies && thread.current) {
-      return (
-        <Subthread
-          active={thread.current}
-          notes={replies}
-          related={getAllLinkReactions(
-            thread.reactions,
-            replies.map(a => NostrLink.fromEvent(a)),
-          )}
-          chains={thread.chains}
-          onNavigate={navigateThread}
-        />
-      );
+      return <Subthread active={thread.current} notes={replies} chains={thread.chains} onNavigate={navigateThread} />;
     }
   }
 

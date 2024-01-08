@@ -1,6 +1,5 @@
 import { removeUndefined } from "@snort/shared";
 import { NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
-import { useReactions } from "@snort/system-react";
 import classNames from "classnames";
 import { useState } from "react";
 
@@ -46,7 +45,6 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
   const displayAsInitial = small ? "list" : login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const { isEventMuted } = useModeration();
-  const related = useReactions("trending", trendingNotesData?.map(a => NostrLink.fromEvent(a)) ?? [], undefined, true);
   const [modalThread, setModalThread] = useState<NostrLink | undefined>(undefined);
 
   if (error && !trendingNotesData) return <ErrorOrOffline error={error} className="p" />;
@@ -78,7 +76,6 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
         <Note
           key={e.id}
           data={e as TaggedNostrEvent}
-          related={related?.data ?? []}
           depth={0}
           options={{
             showFooter: !small,

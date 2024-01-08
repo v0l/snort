@@ -14,7 +14,6 @@ import ProfileImage from "@/Components/User/ProfileImage";
 
 export interface TimelineRendererProps {
   frags: Array<TimelineFragment>;
-  related: Array<TaggedNostrEvent>;
   /**
    * List of pubkeys who have posted recently
    */
@@ -96,7 +95,6 @@ export function TimelineRenderer(props: TimelineRendererProps) {
       <ErrorBoundary key={frag.events[0]?.id + index}>
         <TimelineFragment
           frag={frag}
-          related={props.related}
           noteRenderer={props.noteRenderer}
           noteOnClick={props.noteOnClick}
           noteContext={props.noteContext}

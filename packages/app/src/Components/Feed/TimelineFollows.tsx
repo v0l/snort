@@ -1,8 +1,8 @@
 import "./Timeline.css";
 
 import { unixNow } from "@snort/shared";
-import { EventKind, NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
-import { SnortContext, useReactions } from "@snort/system-react";
+import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
+import { SnortContext } from "@snort/system-react";
 import { ReactNode, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
 import { Link } from "react-router-dom";
 
@@ -37,12 +37,6 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const feed = useSyncExternalStore(
     cb => FollowsFeed.hook(cb, "*"),
     () => FollowsFeed.snapshot(),
-  );
-  const reactions = useReactions(
-    "follows-feed-reactions",
-    feed.map(a => NostrLink.fromEvent(a)),
-    undefined,
-    true,
   );
   const system = useContext(SnortContext);
   const { muted, isEventMuted } = useModeration();
@@ -118,7 +112,6 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
       />
       <TimelineRenderer
         frags={[{ events: orderDescending(mainFeed.concat(mixinFiltered)), refTime: latest }]}
-        related={reactions.data ?? []}
         latest={latestAuthors}
         showLatest={t => onShowLatest(t)}
         noteOnClick={props.noteOnClick}

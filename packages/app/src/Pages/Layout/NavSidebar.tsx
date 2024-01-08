@@ -1,6 +1,6 @@
 import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -89,6 +89,12 @@ const WalletBalance = () => {
     }
   }, [wallet]);
 
+  const msgValues = useMemo(() => {
+    return {
+      amount: <FormattedNumber style="currency" currency="USD" value={(rates?.ask ?? 0) * (balance ?? 0) * 1e-8} />,
+    };
+  }, [balance, rates]);
+
   return (
     <div className="w-max flex flex-col max-xl:hidden">
       <div className="grow flex items-center justify-between">
@@ -101,15 +107,7 @@ const WalletBalance = () => {
         </Link>
       </div>
       <div className="text-secondary text-sm">
-        <FormattedMessage
-          defaultMessage="~{amount}"
-          id="3QwfJR"
-          values={{
-            amount: (
-              <FormattedNumber style="currency" currency="USD" value={(rates?.ask ?? 0) * (balance ?? 0) * 1e-8} />
-            ),
-          }}
-        />
+        <FormattedMessage defaultMessage="~{amount}" id="3QwfJR" values={msgValues} />
       </div>
     </div>
   );

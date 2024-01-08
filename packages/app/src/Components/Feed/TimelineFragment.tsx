@@ -1,8 +1,7 @@
 import { TaggedNostrEvent } from "@snort/system";
-import { ReactNode, useCallback } from "react";
+import { ReactNode } from "react";
 
 import Note from "@/Components/Event/Note";
-import { findTag } from "@/Utils";
 
 export interface TimelineFragment {
   events: Array<TaggedNostrEvent>;
@@ -12,7 +11,6 @@ export interface TimelineFragment {
 
 export interface TimelineFragProps {
   frag: TimelineFragment;
-  related: Array<TaggedNostrEvent>;
   index: number;
   noteRenderer?: (ev: TaggedNostrEvent) => ReactNode;
   noteOnClick?: (ev: TaggedNostrEvent) => void;

@@ -5,7 +5,6 @@ import {
   encodeTLVEntries,
   EventKind,
   MetadataCache,
-  NostrLink,
   NostrPrefix,
   TLVEntryType,
   tryParseNostrLink,
@@ -54,7 +53,7 @@ import ProfileTab, {
   RelaysTab,
   ZapsProfileTab,
 } from "@/Pages/Profile/ProfileTab";
-import { findTag, getLinkReactions, hexToBech32, parseId, unwrap } from "@/Utils";
+import { findTag, hexToBech32, parseId, unwrap } from "@/Utils";
 import { EmailRegex } from "@/Utils/Const";
 import { ZapTarget } from "@/Utils/Zapper";
 

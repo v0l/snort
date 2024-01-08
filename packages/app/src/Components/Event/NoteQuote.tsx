@@ -15,7 +15,6 @@ export default function NoteQuote({ link, depth }: { link: NostrLink; depth?: nu
   return (
     <Note
       data={ev.data}
-      related={[]}
       className="note-quote"
       depth={(depth ?? 0) + 1}
       options={{

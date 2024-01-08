@@ -11,10 +11,9 @@ import messages from "../messages";
 interface BookmarksProps {
   pubkey: HexKey;
   bookmarks: readonly TaggedNostrEvent[];
-  related: readonly TaggedNostrEvent[];
 }
 
-const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
+const Bookmarks = ({ pubkey, bookmarks }: BookmarksProps) => {
   const [onlyPubkey, setOnlyPubkey] = useState<HexKey | "all">("all");
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
   const ps = useMemo(() => {
@@ -46,7 +45,6 @@ const Bookmarks = ({ pubkey, bookmarks, related }: BookmarksProps) => {
             <Note
               key={n.id}
               data={n}
-              related={related}
               options={{ showTime: false, showBookmarked: true, canUnbookmark: publicKey === pubkey }}
             />
           );

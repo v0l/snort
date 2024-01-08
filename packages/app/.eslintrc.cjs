@@ -19,7 +19,7 @@ module.exports = {
     "react-refresh/only-export-components": "warn",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "error",
   },
   root: true,
   ignorePatterns: ["build/", "*.test.ts", "*.js"],

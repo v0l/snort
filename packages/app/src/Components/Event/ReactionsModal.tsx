@@ -1,6 +1,6 @@
 import "./Reactions.css";
 
-import { NostrLink, ParsedZap, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
+import { NostrLink, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions, useReactions } from "@snort/system-react";
 import { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";

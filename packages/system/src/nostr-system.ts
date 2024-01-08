@@ -320,7 +320,6 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
 
     fNew.forEach(f => {
       const alreadyHave = inMemoryDB.findArray(f).map(e => {
-        console.log("got from inMemoryDB", e);
         this.HandleEvent(e);
         return e.id;
       });

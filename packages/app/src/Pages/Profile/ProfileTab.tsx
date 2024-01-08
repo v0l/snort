@@ -1,5 +1,4 @@
 import { HexKey, NostrLink, NostrPrefix } from "@snort/system";
-import { useReactions } from "@snort/system-react";
 import { FormattedMessage } from "react-intl";
 
 import { default as ZapElement } from "@/Components/Event/Zap";
@@ -61,8 +60,7 @@ export function RelaysTab({ id }: { id: HexKey }) {
 
 export function BookMarksTab({ id }: { id: HexKey }) {
   const bookmarks = useBookmarkList(id);
-  const reactions = useReactions(`bookmark:reactions:{id}`, bookmarks.map(NostrLink.fromEvent));
-  return <Bookmarks pubkey={id} bookmarks={bookmarks} related={reactions.data ?? []} />;
+  return <Bookmarks pubkey={id} bookmarks={bookmarks} />;
 }
 
 const ProfileTab = {

@@ -2954,6 +2954,7 @@ __metadata:
     "@void-cat/api": ^1.0.12
     "@webbtc/webln-types": ^2.1.0
     "@webscopeio/react-textarea-autocomplete": ^4.9.2
+    "@welldone-software/why-did-you-render": ^8.0.1
     autoprefixer: ^10.4.16
     classnames: ^2.3.2
     comlink: ^4.4.1
@@ -3080,7 +3081,6 @@ __metadata:
     "@types/node": ^20.5.9
     "@types/uuid": ^9.0.2
     "@types/ws": ^8.5.5
-    "@welldone-software/why-did-you-render": ^8.0.1
     debug: ^4.3.4
     eventemitter3: ^5.0.1
     isomorphic-ws: ^5.0.0

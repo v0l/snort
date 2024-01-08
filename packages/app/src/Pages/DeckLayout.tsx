@@ -130,7 +130,7 @@ export function SnortDeckLayout() {
                 className="long-form"
                 onClick={() => setDeckState({})}>
                 <div onClick={e => e.stopPropagation()}>
-                  <LongFormText ev={deckState.article} isPreview={false} related={[]} />
+                  <LongFormText ev={deckState.article} isPreview={false} />
                 </div>
               </Modal>
             </>

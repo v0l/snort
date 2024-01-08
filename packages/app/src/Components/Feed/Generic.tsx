@@ -1,5 +1,5 @@
 import { NostrLink, NoteCollection, ReqFilter, RequestBuilder } from "@snort/system";
-import { useReactions, useRequestBuilder } from "@snort/system-react";
+import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
@@ -18,12 +18,10 @@ export function GenericFeed({ link }: { link: NostrLink }) {
   }, [link]);
 
   const evs = useRequestBuilder(NoteCollection, sub);
-  const reactions = useReactions("generic:reactions", evs.data?.map(a => NostrLink.fromEvent(a)) ?? []);
 
   return (
     <TimelineRenderer
       frags={[{ events: evs.data ?? [], refTime: 0 }]}
-      related={reactions.data ?? []}
       latest={[]}
       showLatest={() => {
         //nothing

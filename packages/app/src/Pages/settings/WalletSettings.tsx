@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import LndLogo from "@/assets/img/lnd-logo.png";
 import AlbyIcon from "@/Components/Icons/Alby";
 import BlueWallet from "@/Components/Icons/BlueWallet";
-import CashuIcon from "@/Components/Icons/Cashu";
 import Icon from "@/Components/Icons/Icon";
 import NostrIcon from "@/Components/Icons/Nostrich";
 

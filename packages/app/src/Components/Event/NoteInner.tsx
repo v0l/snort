@@ -31,7 +31,7 @@ import Reveal from "./Reveal";
 const TEXT_TRUNCATE_LENGTH = 400;
 
 export function NoteInner(props: NoteProps) {
-  const { data: ev, related, highlight, options: opt, ignoreModeration = false, className, waitUntilInView } = props;
+  const { data: ev, highlight, options: opt, ignoreModeration = false, className, waitUntilInView } = props;
 
   const baseClassName = classNames("note min-h-[110px] flex flex-col gap-4 card", className);
   const navigate = useNavigate();

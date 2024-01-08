@@ -95,6 +95,7 @@
     "@vitejs/plugin-react": "^4.2.0",
     "@webbtc/webln-types": "^2.1.0",
     "@webscopeio/react-textarea-autocomplete": "^4.9.2",
+    "@welldone-software/why-did-you-render": "^8.0.1",
     "autoprefixer": "^10.4.16",
     "config": "^3.3.9",
     "eslint": "^8.48.0",
