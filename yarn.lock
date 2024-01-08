@@ -3080,6 +3080,7 @@ __metadata:
     "@types/node": ^20.5.9
     "@types/uuid": ^9.0.2
     "@types/ws": ^8.5.5
+    "@welldone-software/why-did-you-render": ^8.0.1
     debug: ^4.3.4
     eventemitter3: ^5.0.1
     isomorphic-ws: ^5.0.0
@@ -4068,6 +4069,17 @@ __metadata:
     react: ^16.0.0 || ^17 || ^18
     react-dom: ^16.0.0 || ^17 || ^18
   checksum: b30661fc5a57347df6d378f5ea922657183e07dd00178dd12b0f135bc3c93d78a45dff5e8077090fd1ddf78310b394e4d79c17d3a7448e4e94b9d33a2925b82f
+  languageName: node
+  linkType: hard
+
+"@welldone-software/why-did-you-render@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "@welldone-software/why-did-you-render@npm:8.0.1"
+  dependencies:
+    lodash: ^4
+  peerDependencies:
+    react: ^18
+  checksum: cabb08e49a241b44208fc2acc60c34af2885b98feaa3e80c21b34d45c77cac72c83fc914645cc1cfa253b4a6272ac6d21327ec76d4c54b5b9387d8be576240c9
   languageName: node
   linkType: hard
 
@@ -8172,7 +8184,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21":
+"lodash@npm:^4, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7

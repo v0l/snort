@@ -7,7 +7,9 @@ import { vitePluginVersionMark } from "vite-plugin-version-mark";
 
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      jsxImportSource: "@welldone-software/why-did-you-render",
+    }),
     VitePWA({
       strategies: "injectManifest",
       srcDir: "src",

@@ -1,7 +1,7 @@
 import "./Note.css";
 
 import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 
 import PubkeyList from "@/Components/Embed/PubkeyList";
 import ZapstrEmbed from "@/Components/Embed/ZapstrEmbed";
@@ -47,7 +47,7 @@ export interface NoteProps {
   waitUntilInView?: boolean;
 }
 
-export default function Note(props: NoteProps) {
+export default memo(function Note(props: NoteProps) {
   const { data: ev, className } = props;
 
   let content;
@@ -90,4 +90,4 @@ export default function Note(props: NoteProps) {
   }
 
   return <ErrorBoundary>{content}</ErrorBoundary>;
-}
+});

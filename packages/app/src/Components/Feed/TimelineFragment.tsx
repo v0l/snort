@@ -19,6 +19,10 @@ export interface TimelineFragProps {
   noteContext?: (ev: TaggedNostrEvent) => ReactNode;
 }
 
+const options = {
+  truncate: true,
+};
+
 export function TimelineFragment(props: TimelineFragProps) {
   const relatedFeed = useCallback(
     (id: string) => {
@@ -39,9 +43,7 @@ export function TimelineFragment(props: TimelineFragProps) {
               depth={0}
               onClick={props.noteOnClick}
               context={props.noteContext?.(e)}
-              options={{
-                truncate: true,
-              }}
+              options={options}
               waitUntilInView={props.index > 10}
             />
           ),

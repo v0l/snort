@@ -26,7 +26,7 @@ import { NoteContextMenu, NoteTranslation } from "./NoteContextMenu";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
 import Poll from "./Poll";
-import Reactions from "./Reactions";
+import ReactionsModal from "./ReactionsModal";
 import Reveal from "./Reveal";
 
 const TEXT_TRUNCATE_LENGTH = 400;
@@ -388,7 +388,7 @@ export function NoteInner(props: NoteProps) {
             replies={props.threadChains?.get(chainKey(ev))?.length}
           />
         )}
-        <Reactions
+        <ReactionsModal
           show={showReactions}
           setShow={setShowReactions}
           positive={reactions.positive}
