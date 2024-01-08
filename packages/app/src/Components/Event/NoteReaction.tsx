@@ -7,7 +7,7 @@ import { useInView } from "react-intersection-observer";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import Note from "@/Components/Event/Note";
+import Note from "@/Components/Event/EventComponent";
 import Icon from "@/Components/Icons/Icon";
 import useModeration from "@/Hooks/useModeration";
 import { eventLink, getDisplayName, hexToBech32 } from "@/Utils";

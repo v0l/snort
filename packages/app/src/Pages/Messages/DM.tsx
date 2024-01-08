@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { Chat, ChatMessage, ChatType, setLastReadIn } from "@/chat";
-import NoteTime from "@/Components/Event/NoteTime";
+import NoteTime from "@/Components/Event/Note/NoteTime";
 import messages from "@/Components/messages";
 import Text from "@/Components/Text/Text";
 import ProfileImage from "@/Components/User/ProfileImage";

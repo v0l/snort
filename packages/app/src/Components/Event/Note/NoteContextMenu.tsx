@@ -12,7 +12,7 @@ import useModeration from "@/Hooks/useModeration";
 import { setBookmarked, setPinned } from "@/Utils/Login";
 import { getCurrentSubscription, SubscriptionType } from "@/Utils/Subscription";
 
-import { ReBroadcaster } from "../ReBroadcaster";
+import { ReBroadcaster } from "../../ReBroadcaster";
 
 export interface NoteTranslation {
   text: string;

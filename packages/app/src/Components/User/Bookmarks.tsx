@@ -3,7 +3,7 @@ import { ChangeEvent, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { UserCache } from "@/Cache";
-import Note from "@/Components/Event/Note";
+import Note from "@/Components/Event/EventComponent";
 import useLogin from "@/Hooks/useLogin";
 
 import messages from "../messages";

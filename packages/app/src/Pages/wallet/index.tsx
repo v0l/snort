@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { AsyncIcon } from "@/Components/Button/AsyncIcon";
-import NoteTime from "@/Components/Event/NoteTime";
+import NoteTime from "@/Components/Event/Note/NoteTime";
 import Icon from "@/Components/Icons/Icon";
 import { useRates } from "@/Hooks/useRates";
 import { unwrap } from "@/Utils";

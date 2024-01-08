@@ -4,7 +4,7 @@ import { useArticles } from "@/Feed/ArticlesFeed";
 import { DeckContext } from "@/Pages/DeckLayout";
 import { orderDescending } from "@/Utils";
 
-import Note from "../Event/Note";
+import Note from "../Event/EventComponent";
 
 export default function Articles() {
   const data = useArticles();

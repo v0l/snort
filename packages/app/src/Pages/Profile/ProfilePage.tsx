@@ -16,7 +16,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import IconButton from "@/Components/Button/IconButton";
 import Copy from "@/Components/Copy/Copy";
-import Note from "@/Components/Event/Note";
+import Note from "@/Components/Event/EventComponent";
 import Timeline from "@/Components/Feed/Timeline";
 import Icon from "@/Components/Icons/Icon";
 import Modal from "@/Components/Modal/Modal";

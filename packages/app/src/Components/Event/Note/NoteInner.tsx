@@ -1,11 +1,12 @@
 import { EventExt, EventKind, HexKey, NostrLink, NostrPrefix, TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
-import React, { ReactNode, useMemo, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
 import { UserCache } from "@/Cache";
+import { NoteText } from "@/Components/Event/Note/NoteText";
 import Icon from "@/Components/Icons/Icon";
 import DisplayName from "@/Components/User/DisplayName";
 import { ProfileLink } from "@/Components/User/ProfileLink";
@@ -16,19 +17,16 @@ import { chainKey } from "@/Hooks/useThreadContext";
 import { findTag, hexToBech32 } from "@/Utils";
 import { setBookmarked, setPinned } from "@/Utils/Login";
 
-import messages from "../messages";
-import Text from "../Text/Text";
-import ProfileImage from "../User/ProfileImage";
-import HiddenNote from "./HiddenNote";
-import { NoteProps } from "./Note";
+import messages from "../../messages";
+import Text from "../../Text/Text";
+import ProfileImage from "../../User/ProfileImage";
+import { NoteProps } from "../EventComponent";
+import HiddenNote from "../HiddenNote";
+import Poll from "../Poll";
 import { NoteContextMenu, NoteTranslation } from "./NoteContextMenu";
 import NoteFooter from "./NoteFooter";
 import NoteTime from "./NoteTime";
-import Poll from "./Poll";
 import ReactionsModal from "./ReactionsModal";
-import Reveal from "./Reveal";
-
-const TEXT_TRUNCATE_LENGTH = 400;
 
 export function NoteInner(props: NoteProps) {
   const { data: ev, highlight, options: opt, ignoreModeration = false, className, waitUntilInView } = props;
@@ -42,10 +40,9 @@ export function NoteInner(props: NoteProps) {
   const login = useLogin();
   const { pinned, bookmarked } = useLogin();
   const { publisher, system } = useEventPublisher();
-  const [translated, setTranslated] = useState<NoteTranslation>();
   const [showTranslation, setShowTranslation] = useState(true);
+  const [translated, setTranslated] = useState<NoteTranslation>();
   const { formatMessage } = useIntl();
-  const [showMore, setShowMore] = useState(false);
 
   const options = {
     showHeader: true,
@@ -78,101 +75,6 @@ export function NoteInner(props: NoteProps) {
       }
     }
   }
-
-  const ToggleShowMore = () => (
-    <a
-      className="highlight"
-      onClick={e => {
-        e.preventDefault();
-        e.stopPropagation();
-        setShowMore(!showMore);
-      }}>
-      {showMore ? (
-        <FormattedMessage defaultMessage="Show less" id="qyJtWy" />
-      ) : (
-        <FormattedMessage defaultMessage="Show more" id="aWpBzj" />
-      )}
-    </a>
-  );
-
-  const innerContent = useMemo(() => {
-    const body = translated && showTranslation ? translated.text : ev?.content ?? "";
-    const id = translated && showTranslation ? `${ev.id}-translated` : ev.id;
-    const shouldTruncate = opt?.truncate && body.length > TEXT_TRUNCATE_LENGTH;
-
-    return (
-      <>
-        {shouldTruncate && showMore && <ToggleShowMore />}
-        <Text
-          id={id}
-          highlighText={props.searchedValue}
-          content={body}
-          tags={ev.tags}
-          creator={ev.pubkey}
-          depth={props.depth}
-          disableMedia={!(options.showMedia ?? true)}
-          disableMediaSpotlight={!(props.options?.showMediaSpotlight ?? true)}
-          truncate={shouldTruncate && !showMore ? TEXT_TRUNCATE_LENGTH : undefined}
-        />
-        {shouldTruncate && !showMore && <ToggleShowMore />}
-      </>
-    );
-  }, [
-    showMore,
-    ev,
-    translated,
-    showTranslation,
-    props.searchedValue,
-    props.depth,
-    options.showMedia,
-    props.options?.showMediaSpotlight,
-    opt?.truncate,
-    TEXT_TRUNCATE_LENGTH,
-  ]);
-
-  const transformBody = () => {
-    if (!login.appData.item.showContentWarningPosts) {
-      const contentWarning = ev.tags.find(a => a[0] === "content-warning");
-      if (contentWarning) {
-        return (
-          <Reveal
-            message={
-              <>
-                <FormattedMessage
-                  defaultMessage="The author has marked this note as a <i>sensitive topic</i>"
-                  id="StKzTE"
-                  values={{
-                    i: c => <i>{c}</i>,
-                  }}
-                />
-                {contentWarning[1] && (
-                  <>
-                    &nbsp;
-                    <FormattedMessage
-                      defaultMessage="Reason: <i>{reason}</i>"
-                      id="6OSOXl"
-                      values={{
-                        i: c => <i>{c}</i>,
-                        reason: contentWarning[1],
-                      }}
-                    />
-                  </>
-                )}
-                . <FormattedMessage defaultMessage="Click here to load anyway" id="IoQq+a" />.{" "}
-                <Link to="/settings/moderation">
-                  <i>
-                    <FormattedMessage defaultMessage="Settings" id="D3idYv" />
-                  </i>
-                </Link>
-              </>
-            }>
-            {innerContent}
-          </Reveal>
-        );
-      }
-    }
-    return innerContent;
-  };
 
   function goToEvent(e: React.MouseEvent, eTarget: TaggedNostrEvent) {
     if (opt?.canClick === false) {
@@ -359,7 +261,7 @@ export function NoteInner(props: NoteProps) {
           </div>
         )}
         <div className="body" onClick={e => goToEvent(e, ev, true)}>
-          {transformBody()}
+          <NoteText {...props} translated={translated} showTranslation={showTranslation} login={login} />
           {translation()}
           {pollOptions()}
         </div>

@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Chat, ChatType, useChatSystem } from "@/chat";
-import NoteTime from "@/Components/Event/NoteTime";
+import NoteTime from "@/Components/Event/Note/NoteTime";
 import NoteToSelf from "@/Components/User/NoteToSelf";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useLogin from "@/Hooks/useLogin";

@@ -2,9 +2,9 @@ import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { MouseEvent } from "react";
 import { Link } from "react-router-dom";
 
-import getEventMedia from "@/Components/Event/getEventMedia";
 import Icon from "@/Components/Icons/Icon";
 import { ProxyImg } from "@/Components/ProxyImg";
+import getEventMedia from "@/Utils/getEventMedia";
 
 const ImageGridItem = (props: { event: TaggedNostrEvent; onClick: (e: MouseEvent) => void }) => {
   const { event, onClick } = props;

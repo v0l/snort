@@ -1,7 +1,7 @@
 import { TaggedNostrEvent } from "@snort/system";
 import { ReactNode } from "react";
 
-import Note from "@/Components/Event/Note";
+import Note from "@/Components/Event/EventComponent";
 
 export interface TimelineFragment {
   events: Array<TaggedNostrEvent>;

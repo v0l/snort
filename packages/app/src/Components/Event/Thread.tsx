@@ -8,8 +8,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import BackButton from "@/Components/Button/BackButton";
 import Collapsed from "@/Components/Collapsed";
-import Note from "@/Components/Event/Note";
-import NoteGhost from "@/Components/Event/NoteGhost";
+import Note from "@/Components/Event/EventComponent";
+import NoteGhost from "@/Components/Event/Note/NoteGhost";
 import { chainKey, ThreadContext, ThreadContextWrapper } from "@/Hooks/useThreadContext";
 
 import messages from "../messages";

@@ -1,7 +1,7 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { Link } from "react-router-dom";
 
-import NoteTime from "@/Components/Event/NoteTime";
+import NoteTime from "@/Components/Event/Note/NoteTime";
 import Text from "@/Components/Text/Text";
 import ProfileImage from "@/Components/User/ProfileImage";
 

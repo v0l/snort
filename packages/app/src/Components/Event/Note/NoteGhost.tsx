@@ -1,4 +1,4 @@
-import "./Note.css";
+import "../EventComponent.css";
 
 import ProfileImage from "@/Components/User/ProfileImage";
 

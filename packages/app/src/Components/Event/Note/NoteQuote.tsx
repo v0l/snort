@@ -1,7 +1,7 @@
 import { NostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
 
-import Note from "@/Components/Event/Note";
+import Note from "@/Components/Event/EventComponent";
 import PageSpinner from "@/Components/PageSpinner";
 
 export default function NoteQuote({ link, depth }: { link: NostrLink; depth?: number }) {

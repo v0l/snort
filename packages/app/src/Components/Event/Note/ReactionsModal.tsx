@@ -1,4 +1,4 @@
-import "./Reactions.css";
+import "./ReactionsModal.css";
 
 import { NostrLink, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions, useReactions } from "@snort/system-react";
@@ -12,7 +12,7 @@ import Tabs from "@/Components/Tabs/Tabs";
 import ProfileImage from "@/Components/User/ProfileImage";
 import { formatShort } from "@/Utils/Number";
 
-import messages from "../messages";
+import messages from "../../messages";
 
 interface ReactionsModalProps {
   show: boolean;

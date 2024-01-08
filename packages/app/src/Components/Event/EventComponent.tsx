@@ -1,4 +1,4 @@
-import "./Note.css";
+import "./EventComponent.css";
 
 import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
 import { memo, ReactNode } from "react";
@@ -13,7 +13,7 @@ import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
 import ProfilePreview from "@/Components/User/ProfilePreview";
 
 import { LongFormText } from "./LongFormText";
-import { NoteInner } from "./NoteInner";
+import { NoteInner } from "./Note/NoteInner";
 
 export interface NoteProps {
   data: TaggedNostrEvent;

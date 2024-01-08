@@ -12,8 +12,8 @@ import useImgProxy from "@/Hooks/useImgProxy";
 import { findTag } from "@/Utils";
 
 import { Markdown } from "./Markdown";
-import NoteFooter from "./NoteFooter";
-import NoteTime from "./NoteTime";
+import NoteFooter from "./Note/NoteFooter";
+import NoteTime from "./Note/NoteTime";
 
 interface LongFormTextProps {
   ev: TaggedNostrEvent;

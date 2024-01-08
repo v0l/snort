@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { useState } from "react";
 
 import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
-import Note from "@/Components/Event/Note";
+import Note from "@/Components/Event/EventComponent";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import ImageGridItem from "@/Components/Feed/ImageGridItem";
 import PageSpinner from "@/Components/PageSpinner";

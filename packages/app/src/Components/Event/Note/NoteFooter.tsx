@@ -21,7 +21,7 @@ import { Zapper, ZapTarget } from "@/Utils/Zapper";
 import { ZapPoolController } from "@/Utils/ZapPoolController";
 import { useWallet } from "@/Wallet";
 
-import messages from "../messages";
+import messages from "../../messages";
 
 let isZapperBusy = false;
 const barrierZapper = async <T,>(then: () => Promise<T>): Promise<T> => {

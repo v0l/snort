@@ -12,7 +12,7 @@ import { AsyncIcon } from "@/Components/Button/AsyncIcon";
 import CloseButton from "@/Components/Button/CloseButton";
 import { TrendingHashTagsLine } from "@/Components/Event/Create/TrendingHashTagsLine";
 import { sendEventToRelays } from "@/Components/Event/Create/util";
-import Note from "@/Components/Event/Note";
+import Note from "@/Components/Event/EventComponent";
 import Icon from "@/Components/Icons/Icon";
 import { ToggleSwitch } from "@/Components/Icons/Toggle";
 import Modal from "@/Components/Modal/Modal";
