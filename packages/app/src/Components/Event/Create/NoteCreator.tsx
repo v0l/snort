@@ -30,6 +30,32 @@ import { ZapTarget } from "@/Utils/Zapper";
 import FileUploadProgress from "../FileUpload";
 import { OkResponseRow } from "./OkResponseRow";
 
+const previewNoteOptions = {
+  showContextMenu: false,
+  showFooter: false,
+  canClick: false,
+  showTime: false,
+};
+
+const replyToNoteOptions = {
+  showFooter: false,
+  showContextMenu: false,
+  showProfileCard: false,
+  showTime: false,
+  canClick: false,
+  showMedia: false,
+  longFormPreview: true,
+};
+
+const quoteNoteOptions = {
+  showFooter: false,
+  showContextMenu: false,
+  showTime: false,
+  canClick: false,
+  showMedia: false,
+  longFormPreview: true,
+};
+
 export function NoteCreator() {
   const { formatMessage } = useIntl();
   const uploader = useFileUpload();
@@ -293,17 +319,7 @@ export function NoteCreator() {
 
   function getPreviewNote() {
     if (note.preview) {
-      return (
-        <Note
-          data={note.preview as TaggedNostrEvent}
-          options={{
-            showContextMenu: false,
-            showFooter: false,
-            canClick: false,
-            showTime: false,
-          }}
-        />
-      );
+      return <Note data={note.preview as TaggedNostrEvent} options={previewNoteOptions} />;
     }
   }
 
@@ -600,18 +616,7 @@ export function NoteCreator() {
             <h4>
               <FormattedMessage defaultMessage="Reply To" id="8ED/4u" />
             </h4>
-            <Note
-              data={note.replyTo}
-              options={{
-                showFooter: false,
-                showContextMenu: false,
-                showProfileCard: false,
-                showTime: false,
-                canClick: false,
-                showMedia: false,
-                longFormPreview: true,
-              }}
-            />
+            <Note data={note.replyTo} options={replyToNoteOptions} />
           </>
         )}
         {note.quote && (
@@ -619,17 +624,7 @@ export function NoteCreator() {
             <h4>
               <FormattedMessage defaultMessage="Quote Repost" id="C7642/" />
             </h4>
-            <Note
-              data={note.quote}
-              options={{
-                showFooter: false,
-                showContextMenu: false,
-                showTime: false,
-                canClick: false,
-                showMedia: false,
-                longFormPreview: true,
-              }}
-            />
+            <Note data={note.quote} options={quoteNoteOptions} />
           </>
         )}
         {note.preview && getPreviewNote()}

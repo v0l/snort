@@ -19,6 +19,10 @@ const Bookmarks = ({ pubkey, bookmarks }: BookmarksProps) => {
   const ps = useMemo(() => {
     return [...new Set(bookmarks.map(ev => ev.pubkey))];
   }, [bookmarks]);
+  const options = useMemo(
+    () => ({ showTime: false, showBookmarked: true, canUnbookmark: publicKey === pubkey }),
+    [publicKey, pubkey],
+  );
 
   function renderOption(p: HexKey) {
     const profile = UserCache.getFromCache(p);
@@ -41,13 +45,7 @@ const Bookmarks = ({ pubkey, bookmarks }: BookmarksProps) => {
       {bookmarks
         .filter(b => (onlyPubkey === "all" ? true : b.pubkey === onlyPubkey))
         .map(n => {
-          return (
-            <Note
-              key={n.id}
-              data={n}
-              options={{ showTime: false, showBookmarked: true, canUnbookmark: publicKey === pubkey }}
-            />
-          );
+          return <Note key={n.id} data={n} options={options} />;
         })}
     </>
   );

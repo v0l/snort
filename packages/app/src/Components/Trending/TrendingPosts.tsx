@@ -1,7 +1,7 @@
 import { removeUndefined } from "@snort/shared";
 import { NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 import Note from "@/Components/Event/EventComponent";
@@ -41,6 +41,18 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
     );
   });
 
+  const options = useMemo(
+    () => ({
+      showFooter: !small,
+      showReactionsLink: !small,
+      showMedia: !small,
+      longFormPreview: !small,
+      truncate: small,
+      showContextMenu: !small,
+    }),
+    [small],
+  );
+
   const login = useLogin();
   const displayAsInitial = small ? "list" : login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
@@ -69,23 +81,11 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
   };
 
   const renderList = () => {
-    return filteredAndLimitedPosts.map(e =>
+    return filteredAndLimitedPosts.map((e, index) =>
       small ? (
         <ShortNote key={e.id} event={e as TaggedNostrEvent} />
       ) : (
-        <Note
-          key={e.id}
-          data={e as TaggedNostrEvent}
-          depth={0}
-          options={{
-            showFooter: !small,
-            showReactionsLink: !small,
-            showMedia: !small,
-            longFormPreview: !small,
-            truncate: small,
-            showContextMenu: !small,
-          }}
-        />
+        <Note key={e.id} data={e as TaggedNostrEvent} depth={0} options={options} waitUntilInView={index > 5} />
       ),
     );
   };

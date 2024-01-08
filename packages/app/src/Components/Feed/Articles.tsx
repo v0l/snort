@@ -6,6 +6,10 @@ import { orderDescending } from "@/Utils";
 
 import Note from "../Event/EventComponent";
 
+const options = {
+  longFormPreview: true,
+};
+
 export default function Articles() {
   const data = useArticles();
   const deck = useContext(DeckContext);
@@ -16,9 +20,7 @@ export default function Articles() {
         <Note
           data={a}
           key={a.id}
-          options={{
-            longFormPreview: true,
-          }}
+          options={options}
           onClick={ev => {
             deck?.setArticle(ev);
           }}
