@@ -45,7 +45,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { ev } = props;
   const link = NostrLink.fromEvent(ev);
 
-  const related = useReactions(link.id + "related", [link], undefined, true);
+  const related = useReactions(link.id + "related", [link], undefined, false);
   const { reactions, zaps, reposts } = useEventReactions(link, related.data ?? []);
   const { positive } = reactions;
 

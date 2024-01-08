@@ -26,7 +26,7 @@ const ReactionsModal = ({ show, setShow, event }: ReactionsModalProps) => {
 
   const link = NostrLink.fromEvent(event);
 
-  const related = useReactions(link.id + "related", [link], undefined, true);
+  const related = useReactions(link.id + "related", [link], undefined, false);
   const { reactions, zaps, reposts } = useEventReactions(link, related.data ?? []);
   const { positive, negative } = reactions;
 

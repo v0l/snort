@@ -36,7 +36,7 @@ export function LongFormText(props: LongFormTextProps) {
     NostrLink.fromEvent(props.ev).id + "related",
     [NostrLink.fromEvent(props.ev)],
     undefined,
-    true,
+    false,
   );
   const { reactions, reposts, zaps } = useEventReactions(NostrLink.fromEvent(props.ev), related.data ?? []);
 
