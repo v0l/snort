@@ -137,7 +137,7 @@ export default function Text({
     </a>
   );
 
-  const RevealMediaInstance = ({ content, data }: { content: string, data?: object }) => {
+  const RevealMediaInstance = ({ content, data }: { content: string; data?: object }) => {
     const imeta = data as IMeta;
     return (
       <RevealMedia

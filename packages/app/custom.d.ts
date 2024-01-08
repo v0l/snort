@@ -74,7 +74,7 @@ declare const CONFIG: {
   communityLeaders?: {
     list: string;
   };
-  
+
   // Filter urls from nav sidebar
   hideFromNavbar: Array<string>;
 
