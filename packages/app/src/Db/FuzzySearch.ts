@@ -1,5 +1,5 @@
 import Fuse from "fuse.js";
-import {CachedMetadata} from "@snort/system";
+import { CachedMetadata } from "@snort/system";
 
 export type FuzzySearchResult = {
   pubkey: string;
@@ -54,9 +54,9 @@ export const addCachedMetadataToFuzzySearch = (profile: CachedMetadata) => {
     profileTimestamps.set(profile.pubkey, profile.created);
     if (profile.pubkey && (profile.name || profile.display_name || profile.nip05)) {
       fuzzySearch.add(profile);
-      console.log('added profile to fuzzy search', profile);
+      console.log("added profile to fuzzy search", profile);
     }
   });
-}
+};
 
 export default fuzzySearch;
