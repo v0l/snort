@@ -26,7 +26,6 @@ import { RelayCache, RelayMetadataLoader } from "./outbox-model";
 import { Optimizer, DefaultOptimizer } from "./query-optimizer";
 import { trimFilters } from "./request-trim";
 import { NostrConnectionPool } from "./nostr-connection-pool";
-import inMemoryDB from "./InMemoryDB";
 
 export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
@@ -168,7 +167,6 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
 
     // internal handler for on-event
     this.on("event", (sub, ev) => {
-      inMemoryDB.handleEvent(ev);
       for (const [, v] of this.Queries) {
         v.handleEvent(sub, ev);
       }
@@ -317,22 +315,6 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
       return;
     }
     qSend.filters = fNew;
-
-    fNew.forEach(f => {
-      const alreadyHave = inMemoryDB.findArray(f).map(e => {
-        this.HandleEvent(e);
-        return e.id;
-      });
-      if (alreadyHave.length) {
-        f.not = f.not ?? {};
-        if (f.not.ids) {
-          f.not.ids.push(...alreadyHave);
-        } else {
-          f.not.ids = alreadyHave;
-        }
-      }
-      this.emit("request", f);
-    });
 
     if (qSend.relay) {
       this.#log("Sending query to %s %O", qSend.relay, qSend);
