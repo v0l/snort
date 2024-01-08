@@ -1,4 +1,4 @@
-import { MetadataCache } from "@snort/system";
+import { CachedMetadata } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export class BackupKeyTask extends BaseUITask {
   id = "backup-key";
   noBaseStyle = true;
 
-  check(_: MetadataCache, session: LoginSession): boolean {
+  check(_: CachedMetadata, session: LoginSession): boolean {
     return !this.state.muted && session.type == "private_key";
   }
 

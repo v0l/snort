@@ -1,4 +1,4 @@
-import { MetadataCache } from "@snort/system";
+import { CachedMetadata } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import { BaseUITask } from "@/Components/Tasks/index";
@@ -9,7 +9,7 @@ import { getCurrentSubscription } from "@/Utils/Subscription";
 export class RenewSubTask extends BaseUITask {
   id = "renew-sub";
 
-  check(user: MetadataCache, session: LoginSession): boolean {
+  check(user: CachedMetadata, session: LoginSession): boolean {
     const sub = getCurrentSubscription(session.subscriptions);
     return !sub && session.subscriptions.length > 0;
   }

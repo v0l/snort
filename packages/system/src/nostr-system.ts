@@ -9,7 +9,7 @@ import { NoteStore } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
-  MetadataCache,
+  CachedMetadata,
   ProfileLoaderService,
   RelayMetrics,
   SystemInterface,
@@ -38,7 +38,7 @@ export interface NostrSystemEvents {
 
 export interface NostrsystemProps {
   relayCache?: FeedCache<UsersRelays>;
-  profileCache?: FeedCache<MetadataCache>;
+  profileCache?: FeedCache<CachedMetadata>;
   relayMetrics?: FeedCache<RelayMetrics>;
   eventsCache?: FeedCache<NostrEvent>;
   optimizer?: Optimizer;
@@ -62,7 +62,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
   /**
    * Storage class for user profiles
    */
-  #profileCache: FeedCache<MetadataCache>;
+  #profileCache: FeedCache<CachedMetadata>;
 
   /**
    * Storage class for relay metrics (connects/disconnects)

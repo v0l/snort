@@ -1,4 +1,4 @@
-import { MetadataCache, NostrLink, NostrPrefix, UserMetadata } from "@snort/system";
+import { CachedMetadata, NostrLink, NostrPrefix, UserMetadata } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { ReactNode, useContext } from "react";
 import { Link, LinkProps } from "react-router-dom";
@@ -13,7 +13,7 @@ export function ProfileLink({
   ...others
 }: {
   pubkey: string;
-  user?: UserMetadata | MetadataCache;
+  user?: UserMetadata | CachedMetadata;
   explicitLink?: string;
   children?: ReactNode;
 } & Omit<LinkProps, "to">) {

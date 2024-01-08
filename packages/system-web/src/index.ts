@@ -1,4 +1,4 @@
-import { NostrEvent, MetadataCache, RelayMetrics, UsersRelays } from "@snort/system";
+import { NostrEvent, CachedMetadata, RelayMetrics, UsersRelays } from "@snort/system";
 import Dexie, { Table } from "dexie";
 
 const NAME = "snort-system";
@@ -13,7 +13,7 @@ const STORES = {
 
 export class SnortSystemDb extends Dexie {
   ready = false;
-  users!: Table<MetadataCache>;
+  users!: Table<CachedMetadata>;
   relayMetrics!: Table<RelayMetrics>;
   userRelays!: Table<UsersRelays>;
   events!: Table<NostrEvent>;

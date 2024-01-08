@@ -1,16 +1,16 @@
 import { unixNowMs } from "@snort/shared";
 import { EventKind, TaggedNostrEvent, RequestBuilder } from ".";
 import { ProfileCacheExpire } from "./const";
-import { mapEventToProfile, MetadataCache } from "./cache";
+import { mapEventToProfile, CachedMetadata } from "./cache";
 import { v4 as uuid } from "uuid";
 import { BackgroundLoader } from "./background-loader";
 
-export class ProfileLoaderService extends BackgroundLoader<MetadataCache> {
+export class ProfileLoaderService extends BackgroundLoader<CachedMetadata> {
   override name(): string {
     return "ProfileLoaderService";
   }
 
-  override onEvent(e: Readonly<TaggedNostrEvent>): MetadataCache | undefined {
+  override onEvent(e: Readonly<TaggedNostrEvent>): CachedMetadata | undefined {
     return mapEventToProfile(e);
   }
 
@@ -30,11 +30,11 @@ export class ProfileLoaderService extends BackgroundLoader<MetadataCache> {
     return sub;
   }
 
-  protected override makePlaceholder(key: string): MetadataCache | undefined {
+  protected override makePlaceholder(key: string): CachedMetadata | undefined {
     return {
       pubkey: key,
       loaded: unixNowMs() - ProfileCacheExpire + 30_000,
       created: 0,
-    } as MetadataCache;
+    } as CachedMetadata;
   }
 }

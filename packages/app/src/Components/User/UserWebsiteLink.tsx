@@ -1,10 +1,10 @@
 import "./UserWebsiteLink.css";
 
-import { MetadataCache, UserMetadata } from "@snort/system";
+import { CachedMetadata, UserMetadata } from "@snort/system";
 
 import Icon from "@/Components/Icons/Icon";
 
-export function UserWebsiteLink({ user }: { user?: MetadataCache | UserMetadata }) {
+export function UserWebsiteLink({ user }: { user?: CachedMetadata | UserMetadata }) {
   const website_url =
     user?.website && !user.website.startsWith("http") ? "https://" + user.website : user?.website || "";
 

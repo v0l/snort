@@ -1,17 +1,17 @@
-import { MetadataCache } from ".";
+import { CachedMetadata } from ".";
 import { fetchNip05Pubkey, FeedCache, LNURL, DexieTableLike } from "@snort/shared";
 
-export class UserProfileCache extends FeedCache<MetadataCache> {
+export class UserProfileCache extends FeedCache<CachedMetadata> {
   #zapperQueue: Array<{ pubkey: string; lnurl: string }> = [];
   #nip5Queue: Array<{ pubkey: string; nip05: string }> = [];
 
-  constructor(table?: DexieTableLike<MetadataCache>) {
+  constructor(table?: DexieTableLike<CachedMetadata>) {
     super("UserCache", table);
     this.#processZapperQueue();
     this.#processNip5Queue();
   }
 
-  key(of: MetadataCache): string {
+  key(of: CachedMetadata): string {
     return of.pubkey;
   }
 
@@ -23,7 +23,7 @@ export class UserProfileCache extends FeedCache<MetadataCache> {
     }
   }
 
-  async search(q: string): Promise<Array<MetadataCache>> {
+  async search(q: string): Promise<Array<CachedMetadata>> {
     if (this.table) {
       // on-disk cache will always have more data
       return (
@@ -41,7 +41,7 @@ export class UserProfileCache extends FeedCache<MetadataCache> {
     } else {
       return [...this.cache.values()]
         .filter(user => {
-          const profile = user as MetadataCache;
+          const profile = user as CachedMetadata;
           return (
             profile.name?.includes(q) ||
             profile.npub?.includes(q) ||
@@ -58,7 +58,7 @@ export class UserProfileCache extends FeedCache<MetadataCache> {
    * @param m Profile metadata
    * @returns
    */
-  override async update(m: MetadataCache) {
+  override async update(m: CachedMetadata) {
     const updateType = await super.update(m);
     if (updateType !== "refresh") {
       const lnurl = m.lud16 ?? m.lud06;
@@ -78,7 +78,7 @@ export class UserProfileCache extends FeedCache<MetadataCache> {
     return updateType;
   }
 
-  takeSnapshot(): MetadataCache[] {
+  takeSnapshot(): CachedMetadata[] {
     return [...this.cache.values()];
   }
 

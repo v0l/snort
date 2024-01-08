@@ -1,4 +1,4 @@
-import { MetadataCache } from "@snort/system";
+import { CachedMetadata } from "@snort/system";
 
 import { ChatParticipant } from "@/chat";
 import NoteToSelf from "@/Components/User/NoteToSelf";
@@ -10,5 +10,5 @@ export function ChatParticipantProfile({ participant }: { participant: ChatParti
   if (participant.id === publicKey) {
     return <NoteToSelf className="grow" />;
   }
-  return <ProfileImage pubkey={participant.id} className="grow" profile={participant.profile as MetadataCache} />;
+  return <ProfileImage pubkey={participant.id} className="grow" profile={participant.profile as CachedMetadata} />;
 }

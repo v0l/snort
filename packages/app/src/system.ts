@@ -2,7 +2,7 @@ import { removeUndefined, throwIfOffline } from "@snort/shared";
 import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService, socialGraphInstance } from "@snort/system";
 
 import { RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
-import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
+import { addEventToFuzzySearch, addProfileToFuzzySearch } from "@/Db/FuzzySearch";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
 

@@ -1,4 +1,4 @@
-import { MetadataCache } from "@snort/system";
+import { CachedMetadata } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
@@ -7,7 +7,7 @@ import { BaseUITask } from "@/Components/Tasks/index";
 export class Nip5Task extends BaseUITask {
   id = "buy-nip5";
 
-  check(user: MetadataCache): boolean {
+  check(user: CachedMetadata): boolean {
     return !this.state.muted && !user.nip05;
   }
 

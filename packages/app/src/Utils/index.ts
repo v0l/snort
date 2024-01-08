@@ -9,7 +9,7 @@ import {
   encodeTLV,
   EventKind,
   HexKey,
-  MetadataCache,
+  CachedMetadata,
   NostrEvent,
   NostrLink,
   NostrPrefix,
@@ -214,8 +214,8 @@ export function getLatestByPubkey(events: TaggedNostrEvent[]): Map<HexKey, Tagge
   return deduped;
 }
 
-export function getLatestProfileByPubkey(profiles: MetadataCache[]): Map<HexKey, MetadataCache> {
-  const deduped = profiles.reduce((results: Map<HexKey, MetadataCache>, ev) => {
+export function getLatestProfileByPubkey(profiles: CachedMetadata[]): Map<HexKey, CachedMetadata> {
+  const deduped = profiles.reduce((results: Map<HexKey, CachedMetadata>, ev) => {
     if (!results.has(ev.pubkey)) {
       const latest = getNewestProfile(profiles.filter(a => a.pubkey === ev.pubkey));
       if (latest) {
@@ -223,7 +223,7 @@ export function getLatestProfileByPubkey(profiles: MetadataCache[]): Map<HexKey,
       }
     }
     return results;
-  }, new Map<HexKey, MetadataCache>());
+  }, new Map<HexKey, CachedMetadata>());
   return deduped;
 }
 
@@ -255,7 +255,7 @@ export function getNewest(rawNotes: readonly TaggedNostrEvent[]) {
   }
 }
 
-export function getNewestProfile(rawNotes: MetadataCache[]) {
+export function getNewestProfile(rawNotes: CachedMetadata[]) {
   const notes = [...rawNotes];
   notes.sort((a, b) => b.created - a.created);
   if (notes.length > 0) {
@@ -279,7 +279,7 @@ export function tagFilterOfTextRepost(note: TaggedNostrEvent, id?: u256): (tag: 
     tag[0] === "e" && tag[3] === "mention" && note.content === `#[${i}]` && (id ? tag[1] === id : true);
 }
 
-export function groupByPubkey(acc: Record<HexKey, MetadataCache>, user: MetadataCache) {
+export function groupByPubkey(acc: Record<HexKey, CachedMetadata>, user: CachedMetadata) {
   return { ...acc, [user.pubkey]: user };
 }
 

@@ -4,7 +4,7 @@ import { fetchNip05Pubkey, LNURL } from "@snort/shared";
 import {
   encodeTLVEntries,
   EventKind,
-  MetadataCache,
+  CachedMetadata,
   NostrPrefix,
   TLVEntryType,
   tryParseNostrLink,
@@ -59,13 +59,13 @@ import { ZapTarget } from "@/Utils/Zapper";
 
 interface ProfilePageProps {
   id?: string;
-  state?: MetadataCache;
+  state?: CachedMetadata;
 }
 
 export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   const params = useParams();
   const location = useLocation();
-  const profileState = (location.state as MetadataCache | undefined) || state;
+  const profileState = (location.state as CachedMetadata | undefined) || state;
   const navigate = useNavigate();
   const [id, setId] = useState<string | undefined>(profileState?.pubkey);
   const [relays, setRelays] = useState<Array<string>>();

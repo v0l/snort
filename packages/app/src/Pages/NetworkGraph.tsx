@@ -1,4 +1,4 @@
-import { MetadataCache, socialGraphInstance, STR, UID } from "@snort/system";
+import { CachedMetadata, socialGraphInstance, STR, UID } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { useContext, useEffect, useState } from "react";
 import { NodeObject } from "react-force-graph-3d";
@@ -12,7 +12,7 @@ import { defaultAvatar } from "../Utils";
 
 interface GraphNode {
   id: UID;
-  profile?: MetadataCache;
+  profile?: CachedMetadata;
   distance: number;
   val: number;
   inboundCount: number;

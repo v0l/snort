@@ -1,6 +1,6 @@
 import { base64 } from "@scure/base";
 import { removeUndefined, unwrap } from "@snort/shared";
-import { EventKind, EventPublisher, MetadataCache, TaggedNostrEvent } from "@snort/system";
+import { EventKind, EventPublisher, CachedMetadata, TaggedNostrEvent } from "@snort/system";
 
 import { UserCache } from "@/Cache";
 import SnortApi from "@/External/SnortApi";
@@ -38,7 +38,7 @@ export async function makeNotification(ev: TaggedNostrEvent): Promise<Notificati
   return null;
 }
 
-function replaceTagsWithUser(ev: TaggedNostrEvent, users: MetadataCache[]) {
+function replaceTagsWithUser(ev: TaggedNostrEvent, users: CachedMetadata[]) {
   return ev.content
     .split(MentionRegex)
     .map(match => {

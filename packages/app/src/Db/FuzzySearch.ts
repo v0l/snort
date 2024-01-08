@@ -1,4 +1,5 @@
 import Fuse from "fuse.js";
+import {CachedMetadata} from "@snort/system";
 
 export type FuzzySearchResult = {
   pubkey: string;
@@ -19,23 +20,43 @@ export const addEventToFuzzySearch = ev => {
   if (ev.kind !== 0) {
     return;
   }
-  const existing = profileTimestamps.get(ev.pubkey);
-  if (existing) {
-    if (existing > ev.created_at) {
-      return;
+  requestAnimationFrame(() => {
+    const existing = profileTimestamps.get(ev.pubkey);
+    if (existing) {
+      if (existing > ev.created_at) {
+        return;
+      }
+      fuzzySearch.remove(doc => doc.pubkey === ev.pubkey);
     }
-    fuzzySearch.remove(doc => doc.pubkey === ev.pubkey);
-  }
-  profileTimestamps.set(ev.pubkey, ev.created_at);
-  try {
-    const data = JSON.parse(ev.content);
-    if (ev.pubkey && (data.name || data.display_name || data.nip05)) {
-      data.pubkey = ev.pubkey;
-      fuzzySearch.add(data);
+    profileTimestamps.set(ev.pubkey, ev.created_at);
+    try {
+      const data = JSON.parse(ev.content);
+      if (ev.pubkey && (data.name || data.display_name || data.nip05)) {
+        data.pubkey = ev.pubkey;
+        fuzzySearch.add(data);
+      }
+    } catch (e) {
+      console.error(e);
     }
-  } catch (e) {
-    console.error(e);
-  }
+  });
 };
+
+export const addCachedMetadataToFuzzySearch = (profile: CachedMetadata) => {
+  // TODO add profiles from Cache
+  requestAnimationFrame(() => {
+    const existing = profileTimestamps.get(profile.pubkey);
+    if (existing) {
+      if (existing > profile.created) {
+        return;
+      }
+      fuzzySearch.remove(doc => doc.pubkey === profile.pubkey);
+    }
+    profileTimestamps.set(profile.pubkey, profile.created);
+    if (profile.pubkey && (profile.name || profile.display_name || profile.nip05)) {
+      fuzzySearch.add(profile);
+      console.log('added profile to fuzzy search', profile);
+    }
+  });
+}
 
 export default fuzzySearch;

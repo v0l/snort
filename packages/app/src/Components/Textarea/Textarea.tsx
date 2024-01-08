@@ -1,7 +1,7 @@
 import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
 
-import { MetadataCache, NostrPrefix } from "@snort/system";
+import { CachedMetadata, NostrPrefix } from "@snort/system";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import { useIntl } from "react-intl";
 import TextareaAutosize from "react-textarea-autosize";
@@ -28,7 +28,7 @@ const EmojiItem = ({ entity: { name, char } }: { entity: EmojiItemProps }) => {
   );
 };
 
-const UserItem = (metadata: MetadataCache) => {
+const UserItem = (metadata: CachedMetadata) => {
   const { pubkey, display_name, nip05, ...rest } = metadata;
   return (
     <div key={pubkey} className="user-item">
@@ -84,7 +84,7 @@ const Textarea = (props: TextareaProps) => {
         "@": {
           afterWhitespace: true,
           dataProvider: userDataProvider,
-          component: (props: { entity: MetadataCache }) => <UserItem {...props.entity} />,
+          component: (props: { entity: CachedMetadata }) => <UserItem {...props.entity} />,
           output: (item: { pubkey: string }) => `@${hexToBech32(NostrPrefix.PublicKey, item.pubkey)}`,
         },
       }}
