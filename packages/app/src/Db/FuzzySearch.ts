@@ -42,7 +42,6 @@ export const addEventToFuzzySearch = ev => {
 };
 
 export const addCachedMetadataToFuzzySearch = (profile: CachedMetadata) => {
-  // TODO add profiles from Cache
   requestAnimationFrame(() => {
     const existing = profileTimestamps.get(profile.pubkey);
     if (existing) {

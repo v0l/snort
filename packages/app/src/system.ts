@@ -39,6 +39,12 @@ if (CONFIG.httpCache) {
   };
 }
 
+System.ProfileLoader.Cache.hook(() => {
+  System.ProfileLoader.Cache.takeSnapshot().forEach(a => {
+    console.log("Profile: %O", a);
+  });
+}, "profiles");
+
 export async function fetchProfile(key: string) {
   try {
     throwIfOffline();
