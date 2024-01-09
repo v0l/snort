@@ -51,7 +51,7 @@ export default class SocialGraph {
     if (event.kind !== 3) {
       return;
     }
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       try {
         const author = ID(event.pubkey);
         const timestamp = event.created_at;

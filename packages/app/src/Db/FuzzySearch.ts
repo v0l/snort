@@ -20,7 +20,7 @@ export const addEventToFuzzySearch = ev => {
   if (ev.kind !== 0) {
     return;
   }
-  requestAnimationFrame(() => {
+  setTimeout(() => {
     const existing = profileTimestamps.get(ev.pubkey);
     if (existing) {
       if (existing > ev.created_at) {
@@ -42,7 +42,7 @@ export const addEventToFuzzySearch = ev => {
 };
 
 export const addCachedMetadataToFuzzySearch = (profile: CachedMetadata) => {
-  requestAnimationFrame(() => {
+  setTimeout(() => {
     const existing = profileTimestamps.get(profile.pubkey);
     if (existing) {
       if (existing > profile.created) {
