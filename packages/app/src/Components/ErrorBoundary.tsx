@@ -1,6 +1,6 @@
 import React from "react";
 
-import {trackEvent} from "@/Utils";
+import { trackEvent } from "@/Utils";
 
 interface ErrorBoundaryState {
   hasError: boolean;
