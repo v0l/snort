@@ -3,7 +3,7 @@ import { countLeadingZeros, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions, useReactions, useUserProfile } from "@snort/system-react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import classNames from "classnames";
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
 
@@ -43,9 +43,10 @@ export interface NoteFooterProps {
 
 export default function NoteFooter(props: NoteFooterProps) {
   const { ev } = props;
-  const link = NostrLink.fromEvent(ev);
+  const link = useMemo(() => NostrLink.fromEvent(ev), [ev.id]);
+  const ids = useMemo(() => [link], [link]);
 
-  const related = useReactions(link.id + "related", [link], undefined, false);
+  const related = useReactions(link.id + "related", ids, undefined, false);
   const { reactions, zaps, reposts } = useEventReactions(link, related.data ?? []);
   const { positive } = reactions;
 

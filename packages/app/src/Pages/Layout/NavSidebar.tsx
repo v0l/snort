@@ -10,12 +10,12 @@ import Avatar from "@/Components/User/Avatar";
 import { ProfileLink } from "@/Components/User/ProfileLink";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
+import { WalletBalance } from "@/Pages/Layout/WalletBalance";
 import { subscribeToNotifications } from "@/Utils/Notifications";
 import { getCurrentSubscription } from "@/Utils/Subscription";
 
 import useLogin from "../../Hooks/useLogin";
 import { LogoHeader } from "./LogoHeader";
-import { WalletBalance } from "@/Pages/Layout/WalletBalance";
 
 const MENU_ITEMS = [
   {

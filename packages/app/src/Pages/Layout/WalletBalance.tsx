@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { Sats, useWallet } from "@/Wallet";
-import { useRates } from "@/Hooks/useRates";
 import { FormattedMessage, FormattedNumber } from "react-intl";
-import Icon from "@/Components/Icons/Icon";
 import { useNavigate } from "react-router-dom";
+
+import Icon from "@/Components/Icons/Icon";
+import { useRates } from "@/Hooks/useRates";
+import { Sats, useWallet } from "@/Wallet";
 
 export const WalletBalance = () => {
   const [balance, setBalance] = useState<Sats | null>(null);

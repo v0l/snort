@@ -24,6 +24,15 @@ export default function NoteReaction(props: NoteReactionProps) {
   const profile = useUserProfile(inView ? ev.pubkey : "");
   const root = useMemo(() => extractRoot(), [ev, props.root, inView]);
 
+  const opt = useMemo(
+    () => ({
+      showHeader: ev?.kind === EventKind.Repost || ev?.kind === EventKind.TextNote,
+      showFooter: false,
+      truncate: true,
+    }),
+    [ev],
+  );
+
   const refEvent = useMemo(() => {
     if (ev) {
       const eTags = ev.tags.filter(a => a[0] === "e");
@@ -69,11 +78,6 @@ export default function NoteReaction(props: NoteReactionProps) {
   }
   const isOpMuted = root && isMuted(root.pubkey);
   const shouldNotBeRendered = isOpMuted || root?.kind !== EventKind.TextNote;
-  const opt = {
-    showHeader: ev?.kind === EventKind.Repost || ev?.kind === EventKind.TextNote,
-    showFooter: false,
-    truncate: true,
-  };
 
   return shouldNotBeRendered ? null : (
     <div className="card reaction">

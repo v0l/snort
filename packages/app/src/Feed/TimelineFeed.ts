@@ -1,6 +1,6 @@
 import { unixNow } from "@snort/shared";
-import { EventKind, NostrLink, NoteCollection, RequestBuilder } from "@snort/system";
-import { useReactions, useRequestBuilder } from "@snort/system-react";
+import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
+import { useRequestBuilder } from "@snort/system-react";
 import { useCallback, useMemo } from "react";
 
 import useLogin from "@/Hooks/useLogin";
@@ -131,11 +131,9 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
   }, [pref.autoShowLatest, createBuilder]);
 
   const latest = useRequestBuilder(NoteCollection, subRealtime);
-  const reactions = useReactions(`${sub?.id}-reactions`, main.data?.map(a => NostrLink.fromEvent(a)) ?? []);
 
   return {
     main: main.data,
-    related: reactions.data,
     latest: latest.data,
     loading: main.loading(),
     loadMore: () => {
