@@ -3,7 +3,7 @@ import "./Deck.css";
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import ErrorBoundary from "@/Components/ErrorBoundary";
 import { LongFormText } from "@/Components/Event/LongFormText";
@@ -20,6 +20,7 @@ import { useLoginRelays } from "@/Hooks/useLoginRelays";
 import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import { useTheme } from "@/Hooks/useTheme";
 import NavSidebar from "@/Pages/Layout/NavSidebar";
+import { trackEvent } from "@/Utils";
 import { getCurrentSubscription } from "@/Utils/Subscription";
 
 import NotificationsPage from "./Notifications/Notifications";
@@ -41,7 +42,12 @@ interface DeckScope {
 export const DeckContext = createContext<DeckScope | undefined>(undefined);
 
 export function SnortDeckLayout() {
-  const login = useLogin(s => ({ publicKey: s.publicKey, subscriptions: s.subscriptions }));
+  const location = useLocation();
+  const login = useLogin(s => ({
+    publicKey: s.publicKey,
+    subscriptions: s.subscriptions,
+    telemetry: s.appData.item.preferences.telemetry,
+  }));
   const navigate = useNavigate();
   const [deckState, setDeckState] = useState<DeckState>({
     thread: undefined,
@@ -58,6 +64,12 @@ export function SnortDeckLayout() {
       navigate("/");
     }
   }, [login]);
+
+  useEffect(() => {
+    if (CONFIG.features.analytics && (login.telemetry ?? true)) {
+      trackEvent("pageview");
+    }
+  }, [location]);
 
   if (!login.publicKey) return null;
   const showDeck = CONFIG.showDeck || !(CONFIG.deckSubKind !== undefined && (sub?.type ?? -1) < CONFIG.deckSubKind);

@@ -46,12 +46,6 @@ import WalletPage from "./Pages/wallet";
 import { WalletReceivePage } from "./Pages/wallet/receive";
 import { WalletSendPage } from "./Pages/wallet/send";
 
-declare global {
-  interface Window {
-    plausible?: (tag: string, e?: object) => void;
-  }
-}
-
 serviceWorkerRegistration.register();
 
 async function initSite() {
@@ -75,16 +69,6 @@ async function initSite() {
     }
   } catch (e) {
     console.error("Failed to register protocol handler", e);
-  }
-
-  // inject analytics script
-  // <script defer data-domain="snort.social" src="http://analytics.v0l.io/js/script.js"></script>
-  if (CONFIG.features.analytics && (login.appData.item.preferences.telemetry ?? true)) {
-    const sc = document.createElement("script");
-    sc.src = "https://analytics.v0l.io/js/script.js";
-    sc.defer = true;
-    sc.setAttribute("data-domain", CONFIG.hostname);
-    document.head.appendChild(sc);
   }
 
   setupWebLNWalletConfig(Wallets);

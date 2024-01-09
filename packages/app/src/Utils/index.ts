@@ -23,6 +23,7 @@ import AnimalName from "@/Components/User/AnimalName";
 import { Birthday, Day } from "@/Utils/Const";
 
 import TZ from "../tz.json";
+import { LoginStore } from "./Login";
 
 export const sha256 = (str: string | Uint8Array): u256 => {
   return utils.bytesToHex(hash(str));
@@ -532,8 +533,26 @@ export function getCountry() {
   };
 }
 
-export function trackEvent(event: string, props?: Record<string, string | boolean>) {
-  window.plausible?.(event, props ? { props } : undefined);
+export function trackEvent(
+  event: string,
+  props?: Record<string, string | boolean>,
+  e?: { destination?: { url: string } },
+) {
+  if (CONFIG.features.analytics && (LoginStore.snapshot().appData.item.preferences.telemetry ?? true)) {
+    fetch("https://analytics.v0l.io/api/event", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        d: CONFIG.hostname,
+        n: event,
+        r: document.referrer === location.href ? null : document.referrer,
+        p: props,
+        u: e?.destination?.url ?? `${location.protocol}//${location.host}${location.pathname}`,
+      }),
+    });
+  }
 }
 
 export function storeRefCode() {
