@@ -20,7 +20,7 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
   const { proxy } = useImgProxy();
   const [idx, setIdx] = useState(props.idx);
 
-  const image = useMemo(() => {
+  const media = useMemo(() => {
     return props.media.at(idx % props.media.length);
   }, [idx, props]);
 
@@ -63,15 +63,15 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
   }, [dec, inc]); // Now dec and inc are stable
 
   const isVideo = useMemo(() => {
-    return image && videoSuffixes.some(suffix => image.endsWith(suffix));
-  }, [image]);
+    return media && videoSuffixes.some(suffix => media.endsWith(suffix));
+  }, [media]);
 
   const mediaEl = useMemo(() => {
-    if (image && isVideo) {
+    if (media && isVideo) {
       return (
         <video
-          src={image}
-          poster={proxy(image)}
+          src={media}
+          poster={proxy(media)}
           autoPlay={true}
           loop={true}
           controls={true}
@@ -79,9 +79,9 @@ export function SpotlightMedia(props: SpotlightMediaProps) {
         />
       );
     } else {
-      return <ProxyImg src={image} className="max-h-screen max-w-full w-full object-contain" />;
+      return <ProxyImg src={media} className="max-h-screen max-w-full w-full object-contain" />;
     }
-  }, [image, isVideo]);
+  }, [media, isVideo]);
 
   const onClickBg = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {

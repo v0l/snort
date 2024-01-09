@@ -11,7 +11,6 @@ export interface TimelineFragment {
 
 export interface TimelineFragProps {
   frag: TimelineFragment;
-  index: number;
   noteRenderer?: (ev: TaggedNostrEvent) => ReactNode;
   noteOnClick?: (ev: TaggedNostrEvent) => void;
   noteContext?: (ev: TaggedNostrEvent) => ReactNode;
@@ -26,7 +25,7 @@ export function TimelineFragment(props: TimelineFragProps) {
     <>
       {props.frag.title}
       {props.frag.events.map(
-        e =>
+        (e, index) =>
           props.noteRenderer?.(e) ?? (
             <Note
               data={e}
@@ -35,7 +34,7 @@ export function TimelineFragment(props: TimelineFragProps) {
               onClick={props.noteOnClick}
               context={props.noteContext?.(e)}
               options={options}
-              waitUntilInView={props.index > 5}
+              waitUntilInView={index > 5}
             />
           ),
       )}
