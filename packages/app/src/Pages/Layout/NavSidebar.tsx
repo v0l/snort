@@ -1,21 +1,21 @@
-import {useUserProfile} from "@snort/system-react";
+import { useUserProfile } from "@snort/system-react";
 import classNames from "classnames";
-import {FormattedMessage, useIntl} from "react-intl";
-import {useNavigate} from "react-router-dom";
+import { FormattedMessage, useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 
 import NavLink from "@/Components/Button/NavLink";
-import {NoteCreatorButton} from "@/Components/Event/Create/NoteCreatorButton";
+import { NoteCreatorButton } from "@/Components/Event/Create/NoteCreatorButton";
 import Icon from "@/Components/Icons/Icon";
 import Avatar from "@/Components/User/Avatar";
-import {ProfileLink} from "@/Components/User/ProfileLink";
+import { ProfileLink } from "@/Components/User/ProfileLink";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import {HasNotificationsMarker} from "@/Pages/Layout/HasNotificationsMarker";
-import {subscribeToNotifications} from "@/Utils/Notifications";
-import {getCurrentSubscription} from "@/Utils/Subscription";
+import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
+import { subscribeToNotifications } from "@/Utils/Notifications";
+import { getCurrentSubscription } from "@/Utils/Subscription";
 
 import useLogin from "../../Hooks/useLogin";
-import {LogoHeader} from "./LogoHeader";
-import {WalletBalance} from "@/Pages/Layout/WalletBalance";
+import { LogoHeader } from "./LogoHeader";
+import { WalletBalance } from "@/Pages/Layout/WalletBalance";
 
 const MENU_ITEMS = [
   {
