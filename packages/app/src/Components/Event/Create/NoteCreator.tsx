@@ -5,12 +5,10 @@ import { EventBuilder, EventKind, NostrLink, NostrPrefix, TaggedNostrEvent, tryP
 import classNames from "classnames";
 import { ClipboardEventHandler, DragEvent, useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { TagsInput } from "react-tag-input-component";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { AsyncIcon } from "@/Components/Button/AsyncIcon";
 import CloseButton from "@/Components/Button/CloseButton";
-import { TrendingHashTagsLine } from "@/Components/Event/Create/TrendingHashTagsLine";
 import { sendEventToRelays } from "@/Components/Event/Create/util";
 import Note from "@/Components/Event/EventComponent";
 import Icon from "@/Components/Icons/Icon";
@@ -22,7 +20,7 @@ import ProfileImage from "@/Components/User/ProfileImage";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { useNoteCreator } from "@/State/NoteCreator";
-import { appendDedupe, openFile, trackEvent } from "@/Utils";
+import { openFile, trackEvent } from "@/Utils";
 import useFileUpload from "@/Utils/Upload";
 import { GetPowWorker } from "@/Utils/wasm";
 import { ZapTarget } from "@/Utils/Zapper";
@@ -636,7 +634,6 @@ export function NoteCreator() {
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
                 autoFocus
-                className={classNames("textarea", { "textarea--focused": note.active })}
                 onChange={c => onChange(c)}
                 value={note.note}
                 onFocus={() => note.update(v => (v.active = true))}
@@ -647,23 +644,6 @@ export function NoteCreator() {
                 }}
               />
               {renderPollOptions()}
-            </div>
-            <div className="flex flex-col g4">
-              <TagsInput
-                value={note.hashTags}
-                onChange={e => note.update(s => (s.hashTags = e))}
-                placeHolder={formatMessage({
-                  defaultMessage: "Add up to 4 hashtags",
-                  id: "AIgmDy",
-                })}
-                separators={["Enter", ","]}
-              />
-              {note.hashTags.length > 4 && (
-                <small className="warning">
-                  <FormattedMessage defaultMessage="Try to use less than 5 hashtags to stay on topic 🙏" id="d8gpCh" />
-                </small>
-              )}
-              <TrendingHashTagsLine onClick={t => note.update(s => (s.hashTags = appendDedupe(s.hashTags, [t])))} />
             </div>
           </>
         )}
