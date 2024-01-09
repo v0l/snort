@@ -269,7 +269,7 @@ button.primary {
 }
 
 button.primary:hover {
-  box-shadow: 0px 0px 10px #FF3F15 !important;
+  box-shadow: 0px 0px 10px #ff3f15 !important;
   background: var(--primary-bg) !important;
 }
 
