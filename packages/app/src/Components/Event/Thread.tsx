@@ -73,9 +73,10 @@ const Subthread = ({ active, notes, chains, onNavigate }: SubthreadProps) => {
 interface ThreadNoteProps extends Omit<SubthreadProps, "notes"> {
   note: TaggedNostrEvent;
   isLast: boolean;
+  idx: number;
 }
 
-const ThreadNote = ({ active, note, isLast, isLastSubthread, chains, onNavigate }: ThreadNoteProps) => {
+const ThreadNote = ({ active, note, isLast, isLastSubthread, chains, onNavigate, idx }: ThreadNoteProps) => {
   const { formatMessage } = useIntl();
   const replies = getReplies(note.id, chains);
   const activeInReplies = replies.map(r => r.id).includes(active);
@@ -97,6 +98,7 @@ const ThreadNote = ({ active, note, isLast, isLastSubthread, chains, onNavigate 
           key={note.id}
           onClick={onNavigate}
           threadChains={chains}
+          waitUntilInView={idx > 5}
         />
         <div className="line-container"></div>
       </div>
@@ -127,6 +129,7 @@ const TierTwo = ({ active, isLastSubthread, notes, chains, onNavigate }: Subthre
         chains={chains}
         isLastSubthread={isLastSubthread}
         isLast={rest.length === 0}
+        idx={0}
       />
 
       {rest.map((r: TaggedNostrEvent, idx: number) => {
@@ -140,6 +143,7 @@ const TierTwo = ({ active, isLastSubthread, notes, chains, onNavigate }: Subthre
             chains={chains}
             isLastSubthread={isLastSubthread}
             isLast={lastReply}
+            idx={idx}
           />
         );
       })}
@@ -167,6 +171,7 @@ const TierThree = ({ active, isLastSubthread, notes, chains, onNavigate }: Subth
           data={first}
           key={first.id}
           threadChains={chains}
+          waitUntilInView={true}
         />
         <div className="line-container"></div>
       </div>
@@ -200,6 +205,7 @@ const TierThree = ({ active, isLastSubthread, notes, chains, onNavigate }: Subth
               key={r.id}
               onClick={onNavigate}
               threadChains={chains}
+              waitUntilInView={idx > 5}
             />
             <div className="line-container"></div>
           </div>
@@ -263,6 +269,7 @@ export function Thread(props: { onBack?: () => void; disableSpotlight?: boolean 
           options={rootOptions}
           onClick={navigateThread}
           threadChains={thread.chains}
+          waitUntilInView={false}
         />
       );
     } else {
