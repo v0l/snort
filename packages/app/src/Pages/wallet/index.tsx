@@ -241,7 +241,7 @@ export default function WalletPage(props: { showHistory: boolean }) {
               </AsyncButton>
             )}
             {wallet?.canPayInvoice() && (
-              <AsyncButton onClick={() => navigate("/wallet/send")}>
+              <AsyncButton onClick={() => navigate("/wallet/send")} className="primary">
                 <FormattedMessage defaultMessage="Send" id="9WRlF4" />
                 <Icon name="arrow-up-right" />
               </AsyncButton>

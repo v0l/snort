@@ -51,7 +51,7 @@
   --expired-invoice-gradient: linear-gradient(45deg, var(--gray-superdark) 50%, var(--gray), var(--gray-superdark));
   --sub-bg: #111;
   --btn-color: #fff;
-  --primary-gradient: linear-gradient(90deg, #ef9644 0%, #7b41f6 100%);
+  --primary-bg: #ff3f15;
   --cashu-gradient: linear-gradient(90deg, #40b039, #adff2a);
   --pro: #ffdd65;
 }
@@ -143,11 +143,11 @@ a.ext {
 }
 
 .bg-primary {
-  background: var(--primary-gradient);
+  background: var(--primary-bg);
 }
 
 .primary {
-  color: var(--primary-gradient);
+  color: var(--primary-bg);
 }
 
 .text-pro {
@@ -162,7 +162,7 @@ a.ext {
 }
 
 .text-primary {
-  background: var(--primary-gradient);
+  background: var(--primary-bg);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -252,6 +252,7 @@ button,
 [type="reset"],
 [type="submit"] {
   @apply button;
+  user-select: none;
 }
 
 .btn,
@@ -262,14 +263,14 @@ select {
 
 button.primary {
   background: rgb(239, 150, 68);
-  background: var(--primary-gradient);
+  background: var(--primary-bg);
   color: #fff !important;
   border: none !important;
 }
 
 button.primary:hover {
-  box-shadow: 0px 1px 4px rgba(128, 29, 255, 1) !important;
-  background: var(--primary-gradient) !important;
+  box-shadow: 0px 0px 10px #FF3F15 !important;
+  background: var(--primary-bg) !important;
 }
 
 button:disabled {
