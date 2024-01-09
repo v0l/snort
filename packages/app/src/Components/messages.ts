@@ -99,7 +99,7 @@ export default defineMessages({
   ConfirmUnpin: { defaultMessage: "Are you sure you want to unpin this note?", id: "IEwZvs" },
   ReactionsLink: { defaultMessage: "{n} Reactions", id: "jzgQ2z" },
   ReBroadcast: { defaultMessage: "Broadcast Again", id: "c3g2hL" },
-  IrisUserNameLengthError: { defaultMessage: "Name must be between 1 and 32 characters", id: "4MBtMa" },
+  IrisUserNameLengthError: { defaultMessage: "Name must be between 8 and 15 characters", id: "LhLvRx" },
   IrisUserNameFormatError: { defaultMessage: "Username must only contain lowercase letters and numbers", id: "RSr2uB" },
   InvalidNip05Address: { defaultMessage: "Invalid Nostr Address", id: "P2o+ZZ" },
   ErrorValidatingNip05Address: { defaultMessage: "Cannot verify Nostr Address", id: "LmdPXO" },

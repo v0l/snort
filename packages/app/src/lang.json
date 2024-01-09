@@ -192,9 +192,6 @@
   "4L2vUY": {
     "defaultMessage": "Your new NIP-05 handle is:"
   },
-  "4MBtMa": {
-    "defaultMessage": "Name must be between 1 and 32 characters"
-  },
   "4MjsHk": {
     "defaultMessage": "Life"
   },
@@ -699,6 +696,9 @@
   },
   "LgbKvU": {
     "defaultMessage": "Comment"
+  },
+  "LhLvRx": {
+    "defaultMessage": "Name must be between 8 and 15 characters"
   },
   "LmdPXO": {
     "defaultMessage": "Cannot verify Nostr Address"
