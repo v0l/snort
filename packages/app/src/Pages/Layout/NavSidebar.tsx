@@ -1,23 +1,21 @@
-import { useUserProfile } from "@snort/system-react";
+import {useUserProfile} from "@snort/system-react";
 import classNames from "classnames";
-import { useEffect, useMemo, useState } from "react";
-import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
-import { Link, useNavigate } from "react-router-dom";
+import {FormattedMessage, useIntl} from "react-intl";
+import {useNavigate} from "react-router-dom";
 
 import NavLink from "@/Components/Button/NavLink";
-import { NoteCreatorButton } from "@/Components/Event/Create/NoteCreatorButton";
+import {NoteCreatorButton} from "@/Components/Event/Create/NoteCreatorButton";
 import Icon from "@/Components/Icons/Icon";
 import Avatar from "@/Components/User/Avatar";
-import { ProfileLink } from "@/Components/User/ProfileLink";
+import {ProfileLink} from "@/Components/User/ProfileLink";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import { useRates } from "@/Hooks/useRates";
-import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
-import { subscribeToNotifications } from "@/Utils/Notifications";
-import { getCurrentSubscription } from "@/Utils/Subscription";
-import { Sats, useWallet } from "@/Wallet";
+import {HasNotificationsMarker} from "@/Pages/Layout/HasNotificationsMarker";
+import {subscribeToNotifications} from "@/Utils/Notifications";
+import {getCurrentSubscription} from "@/Utils/Subscription";
 
 import useLogin from "../../Hooks/useLogin";
-import { LogoHeader } from "./LogoHeader";
+import {LogoHeader} from "./LogoHeader";
+import {WalletBalance} from "@/Pages/Layout/WalletBalance";
 
 const MENU_ITEMS = [
   {
@@ -77,42 +75,6 @@ const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
   });
 };
 
-const WalletBalance = () => {
-  const [balance, setBalance] = useState<Sats>();
-  const wallet = useWallet();
-  const rates = useRates("BTCUSD");
-
-  useEffect(() => {
-    setBalance(undefined);
-    if (wallet.wallet && wallet.wallet.canGetBalance()) {
-      wallet.wallet.getBalance().then(setBalance);
-    }
-  }, [wallet]);
-
-  const msgValues = useMemo(() => {
-    return {
-      amount: <FormattedNumber style="currency" currency="USD" value={(rates?.ask ?? 0) * (balance ?? 0) * 1e-8} />,
-    };
-  }, [balance, rates]);
-
-  return (
-    <div className="w-max flex flex-col max-xl:hidden">
-      <div className="grow flex items-center justify-between">
-        <div className="flex gap-1 items-center">
-          <Icon name="sats" size={24} />
-          <FormattedNumber value={balance ?? 0} />
-        </div>
-        <Link to="/wallet">
-          <Icon name="dots" className="text-secondary" />
-        </Link>
-      </div>
-      <div className="text-secondary text-sm">
-        <FormattedMessage defaultMessage="~{amount}" id="3QwfJR" values={msgValues} />
-      </div>
-    </div>
-  );
-};
-
 export default function NavSidebar({ narrow = false }: { narrow: boolean }) {
   const { publicKey, subscriptions, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
@@ -141,7 +103,7 @@ export default function NavSidebar({ narrow = false }: { narrow: boolean }) {
   return (
     <div className={className}>
       <LogoHeader showText={!narrow} />
-      <div className="mt-1 flex-grow flex flex-col justify-between">
+      <div className="mt-1 flex-grow flex flex-col justify-between w-full">
         <div
           className={classNames(
             { "xl:items-start": !narrow, "xl:gap-2": !narrow },
