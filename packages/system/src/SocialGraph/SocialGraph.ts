@@ -51,7 +51,7 @@ export default class SocialGraph {
     if (event.kind !== 3) {
       return;
     }
-    setTimeout(() => {
+    queueMicrotask(() => {
       try {
         const author = ID(event.pubkey);
         const timestamp = event.created_at;
@@ -116,15 +116,6 @@ export default class SocialGraph {
     if (!this.usersByFollowDistance.has(distance)) {
       this.usersByFollowDistance.set(distance, new Set());
     }
-    if (distance <= 2) {
-      /*
-      let unsub;
-      // get also profile events for profile search indexing
-      // eslint-disable-next-line prefer-const
-      unsub = PubSub.subscribe({ authors: [STR(user)], kinds: [0] }, () => unsub?.(), true);
-      // TODO subscribe once param?
-       */
-    }
     this.usersByFollowDistance.get(distance)?.add(user);
     // remove from higher distances
     for (const d of this.usersByFollowDistance.keys()) {
@@ -166,13 +157,6 @@ export default class SocialGraph {
     }
 
     this.followedByUser.get(follower)?.add(followedUser);
-    if (this.followedByUser.get(this.root)?.has(follower)) {
-      /*
-      setTimeout(() => {
-          PubSub.subscribe({ authors: [STR(followedUser)], kinds: [0, 3] }, undefined, true);
-        }, 0);
-       */
-    }
   }
 
   removeFollower(unfollowedUser: UID, follower: UID) {
@@ -236,7 +220,6 @@ export default class SocialGraph {
     if (includeSelf) {
       set.add(user);
     }
-    //return PubSub.subscribe({ kinds: [3], authors: [user] }, callback);
     return set;
   }
 
@@ -246,7 +229,6 @@ export default class SocialGraph {
     for (const id of this.followersByUser.get(userId) || []) {
       set.add(STR(id));
     }
-    //return PubSub.subscribe({ kinds: [3], '#p': [address] }, callback); // TODO this doesn't fire when a user is unfollowed
     return set;
   }
 }

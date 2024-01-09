@@ -537,7 +537,11 @@ export function trackEvent(
   props?: Record<string, string | boolean>,
   e?: { destination?: { url: string } },
 ) {
-  if (CONFIG.features.analytics && (LoginStore.snapshot().appData.item.preferences.telemetry ?? true)) {
+  if (
+    !import.meta.env.DEV &&
+    CONFIG.features.analytics &&
+    (LoginStore.snapshot().appData.item.preferences.telemetry ?? true)
+  ) {
     fetch("https://analytics.v0l.io/api/event", {
       method: "POST",
       headers: {
