@@ -199,6 +199,10 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     return this.#relayCache;
   }
 
+  get UserProfileCache(): FeedCache<CachedMetadata> {
+    return this.#profileCache;
+  }
+
   get Optimizer(): Optimizer {
     return this.#optimizer;
   }

@@ -1,6 +1,5 @@
 import { CachedMetadata } from ".";
 import { fetchNip05Pubkey, FeedCache, LNURL, DexieTableLike } from "@snort/shared";
-import { addCachedMetadataToFuzzySearch } from "@snort/app/src/Db/FuzzySearch";
 
 export class UserProfileCache extends FeedCache<CachedMetadata> {
   #zapperQueue: Array<{ pubkey: string; lnurl: string }> = [];
@@ -22,7 +21,6 @@ export class UserProfileCache extends FeedCache<CachedMetadata> {
     if (follows) {
       await this.buffer(follows);
     }
-    this.snapshot().forEach(p => addCachedMetadataToFuzzySearch(p));
   }
 
   async search(q: string): Promise<Array<CachedMetadata>> {

@@ -2,7 +2,7 @@ import { removeUndefined, throwIfOffline } from "@snort/shared";
 import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService, socialGraphInstance } from "@snort/system";
 
 import { RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
-import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
+import { addCachedMetadataToFuzzySearch, addEventToFuzzySearch } from "@/Db/FuzzySearch";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
 
@@ -39,11 +39,11 @@ if (CONFIG.httpCache) {
   };
 }
 
-System.ProfileLoader.Cache.hook(() => {
-  System.ProfileLoader.Cache.takeSnapshot().forEach(a => {
-    console.log("Profile: %O", a);
+setTimeout(() => {
+  System.UserProfileCache.snapshot().forEach(a => {
+    addCachedMetadataToFuzzySearch(a);
   });
-}, "profiles");
+}, 2000);
 
 export async function fetchProfile(key: string) {
   try {

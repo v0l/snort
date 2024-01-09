@@ -53,7 +53,6 @@ export const addCachedMetadataToFuzzySearch = (profile: CachedMetadata) => {
     profileTimestamps.set(profile.pubkey, profile.created);
     if (profile.pubkey && (profile.name || profile.display_name || profile.nip05)) {
       fuzzySearch.add(profile);
-      console.log("added profile to fuzzy search", profile);
     }
   });
 };
