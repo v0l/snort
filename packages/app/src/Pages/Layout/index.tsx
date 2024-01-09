@@ -56,24 +56,26 @@ export default function Index() {
   const isStalker = !!stalker;
 
   return (
-    <div className="flex justify-center">
-      <div className="w-full max-w-screen-xl">
-        <div className="flex flex-row">
-          <NavSidebar />
-          <div className="flex flex-1 flex-col pb-footer-height md:pb-0 w-full md:w-1/3">
-            {!shouldHideHeader && <Header />}
-            <ErrorBoundary>
-              <Outlet />
-            </ErrorBoundary>
+    <ErrorBoundary>
+      <div className="flex justify-center">
+        <div className="w-full max-w-screen-xl">
+          <div className="flex flex-row">
+            <NavSidebar />
+            <div className="flex flex-1 flex-col pb-footer-height md:pb-0 w-full md:w-1/3">
+              {!shouldHideHeader && <Header />}
+              <ErrorBoundary>
+                <Outlet />
+              </ErrorBoundary>
+            </div>
+            <RightColumn />
           </div>
-          <RightColumn />
+          <Toaster />
         </div>
-        <Toaster />
+        <LoginUnlock />
+        {isStalker && <StalkerModal id={id} />}
+        {!shouldHideFooter && <Footer />}
       </div>
-      <LoginUnlock />
-      {isStalker && <StalkerModal id={id} />}
-      {!shouldHideFooter && <Footer />}
-    </div>
+    </ErrorBoundary>
   );
 }
 

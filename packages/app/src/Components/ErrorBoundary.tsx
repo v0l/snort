@@ -1,5 +1,7 @@
 import React from "react";
 
+import {trackEvent} from "@/Utils";
+
 interface ErrorBoundaryState {
   hasError: boolean;
   errorMessage?: string;
@@ -21,6 +23,7 @@ export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, E
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error("Caught an error:", error, errorInfo);
+    trackEvent("error", { error: error.message, errorInfo: JSON.stringify(errorInfo) });
   }
 
   render() {
