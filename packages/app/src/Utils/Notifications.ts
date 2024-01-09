@@ -78,8 +78,7 @@ export async function subscribeToNotifications(publisher: EventPublisher) {
   if ("Notification" in window) {
     try {
       if (Notification.permission !== "granted") {
-        const res = await Notification.requestPermission();
-        console.debug(res);
+        await Notification.requestPermission();
       }
     } catch (e) {
       console.error(e);

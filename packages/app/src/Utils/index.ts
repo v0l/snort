@@ -55,7 +55,6 @@ export async function openFile(): Promise<File | undefined> {
       () => {
         setTimeout(() => {
           if (!lock) {
-            console.debug("FOCUS WINDOW UPLOAD");
             resolve(undefined);
           }
         }, 300);

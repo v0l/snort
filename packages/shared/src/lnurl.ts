@@ -136,7 +136,6 @@ export class LNURL {
       const rsp = await fetch(`${baseUrl}?${queryJoined}`);
       if (rsp.ok) {
         const data: LNURLInvoice = await rsp.json();
-        console.debug("[LNURL]: ", data);
         if (data.status === "ERROR") {
           throw new Error(data.reason);
         } else {

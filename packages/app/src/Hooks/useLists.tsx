@@ -1,4 +1,4 @@
-import { EventKind, NostrLink, NoteCollection, RequestBuilder } from "@snort/system";
+import { EventKind, NostrLink, RequestBuilder } from "@snort/system";
 import { useEventsFeed, useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
@@ -12,18 +12,18 @@ export function useLinkList(id: string, fn: (rb: RequestBuilder) => void) {
     return rb;
   }, [id, fn]);
 
-  const listStore = useRequestBuilder(NoteCollection, sub);
+  const listStore = useRequestBuilder(sub);
   return useMemo(() => {
-    if (listStore.data && listStore.data.length > 0) {
-      return listStore.data.map(e => NostrLink.fromTags(e.tags)).flat();
+    if (listStore && listStore.length > 0) {
+      return listStore.map(e => NostrLink.fromTags(e.tags)).flat();
     }
     return [];
-  }, [listStore.data]);
+  }, [listStore]);
 }
 
 export function useLinkListEvents(id: string, fn: (rb: RequestBuilder) => void) {
   const links = useLinkList(id, fn);
-  return useEventsFeed(`${id}:events`, links).data ?? [];
+  return useEventsFeed(`${id}:events`, links);
 }
 
 export function usePinList(pubkey: string | undefined) {

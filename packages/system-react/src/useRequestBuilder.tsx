@@ -1,40 +1,55 @@
-import { useContext, useSyncExternalStore } from "react";
-import { RequestBuilder, EmptySnapshot, NoteStore, StoreSnapshot } from "@snort/system";
-import { unwrap } from "@snort/shared";
+import { useCallback, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
+import { EmptySnapshot, RequestBuilder } from "@snort/system";
 import { SnortContext } from "./context";
 
 /**
  * Send a query to the relays and wait for data
  */
-const useRequestBuilder = (
-  rb: RequestBuilder | null,
-) => {
+export function useRequestBuilder(rb: RequestBuilder | null | undefined) {
   const system = useContext(SnortContext);
-  const subscribe = (onChanged: () => void) => {
+  return useSyncExternalStore(
+    v => {
+      if (rb) {
+        const q = system.Query(rb);
+        q.on("event", v);
+        q.uncancel();
+        return () => {
+          q.off("event", v);
+          q.cancel();
+        };
+      }
+      return () => {
+        // noop
+      };
+    },
+    () => {
+      const q = system.GetQuery(rb?.id ?? "");
+      if (q) {
+        return q.snapshot;
+      } else {
+        return EmptySnapshot;
+      }
+    },
+  );
+}
+
+/**
+ * More advanced hook which returns the Query object
+ */
+export function useRequestBuilderAdvanced(rb: RequestBuilder | null | undefined) {
+  const system = useContext(SnortContext);
+  const q = useMemo(() => {
     if (rb) {
       const q = system.Query(rb);
-      q.on("event", onChanged);
       q.uncancel();
-      return () => {
-        q.off("event", onChanged);
-        q.cancel();
-      };
+      return q;
     }
+  }, [rb]);
+  useEffect(() => {
     return () => {
-      // noop
+      q?.cancel();
     };
-  };
-  const getState = () => {
-    const q = system.GetQuery(rb?.id ?? "");
-    if (q) {
-      return q.snapshot;
-    }
-    return EmptySnapshot;
-  };
-  return useSyncExternalStore(
-    v => subscribe(v),
-    () => getState(),
-  );
-};
+  }, [q]);
 
-export { useRequestBuilder };
+  return q;
+}

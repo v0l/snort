@@ -1,4 +1,5 @@
 import { ExternalStore, LNURL, unixNow } from "@snort/shared";
+import debug from "debug";
 
 import { UserCache } from "@/Cache";
 import { Toastore } from "@/Components/Toaster/Toaster";
@@ -21,6 +22,7 @@ export interface ZapPoolRecipient {
 }
 
 class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
+  #log = debug("ZapPool");
   #store = new Map<string, ZapPoolRecipient>();
   #isPayoutInProgress = false;
   #lastPayout = 0;
@@ -50,7 +52,7 @@ class ZapPool extends ExternalStore<Array<ZapPoolRecipient>> {
         const invoice = await svc.getInvoice(amtSend, `SnortZapPool: ${x.split}%`);
         if (invoice.pr) {
           const result = await wallet.payInvoice(invoice.pr);
-          console.debug("ZPC", invoice, result);
+          this.#log("%o %o", invoice, result);
           if (result.state === WalletInvoiceState.Paid) {
             x.sum -= amtSend;
             Toastore.push({

@@ -252,7 +252,7 @@ function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onC
 }
 
 function NotificationContext({ link, onClick }: { link: NostrLink; onClick: () => void }) {
-  const { data: ev } = useEventFeed(link);
+  const ev = useEventFeed(link);
   if (link.type === NostrPrefix.PublicKey) {
     return <ProfilePreview pubkey={link.id} actions={<></>} />;
   }

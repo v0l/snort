@@ -70,7 +70,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   };
   const mixinFiltered = useMemo(() => {
     const mainFeedIds = new Set(mainFeed.map(a => a.id));
-    return (mixin.data.data ?? [])
+    return (mixin.data ?? [])
       .filter(a => !mainFeedIds.has(a.id) && postsOnly(a) && !isEventMuted(a))
       .filter(a => a.tags.filter(a => a[0] === "t").length < 5)
       .filter(a => !oldest || a.created_at >= oldest)

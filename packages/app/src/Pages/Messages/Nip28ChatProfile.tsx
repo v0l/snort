@@ -6,8 +6,8 @@ import ProfilePreview from "@/Components/User/ProfilePreview";
 
 export default function Nip28ChatProfile({ id, onClick }: { id: string; onClick: (id: string) => void }) {
   const channel = useEventFeed(new NostrLink(CONFIG.eventLinkPrefix, id, 40));
-  if (channel?.data) {
-    const meta = JSON.parse(channel.data.content) as UserMetadata;
+  if (channel) {
+    const meta = JSON.parse(channel.content) as UserMetadata;
     return (
       <ProfilePreview
         pubkey=""

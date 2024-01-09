@@ -19,7 +19,6 @@ export default function AlbyOAuth() {
   async function setupWallet(token: string) {
     try {
       const auth = await alby.getToken(token);
-      console.debug(auth);
       const connection = new AlbyWallet(auth, () => {});
       const info = await connection.getInfo();
 

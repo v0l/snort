@@ -9,7 +9,7 @@ export function useEventFeed(link: NostrLink) {
     return b;
   }, [link]);
 
-  return useRequestBuilder(sub);
+  return useRequestBuilder(sub).at(0);
 }
 
 export function useEventsFeed(id: string, links: Array<NostrLink>) {

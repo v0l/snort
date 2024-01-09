@@ -11,5 +11,5 @@ export default function useRelaysFeed(pubkey?: HexKey) {
   }, [pubkey]);
 
   const relays = useRequestBuilder(sub);
-  return parseRelayTags(relays.data?.[0].tags.filter(a => a[0] === "r") ?? []);
+  return parseRelayTags(relays[0]?.tags.filter(a => a[0] === "r") ?? []);
 }

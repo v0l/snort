@@ -30,7 +30,6 @@ export class EventInteractionCache extends FeedCache<EventInteraction> {
       });
       await this.bulkSet(toImport);
 
-      console.debug(`Imported dumb-zap-cache events: `, toImport.length);
       window.localStorage.removeItem("zap-cache");
     }
     await this.buffer([...this.onTable]);

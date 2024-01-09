@@ -18,24 +18,10 @@ const System = new NostrSystem({});
     .kinds([1])
     .limit(10);
 
-  const q = System.Query(NoteCollection, rb);
+  const q = System.Query(rb);
   // basic usage using "onEvent", fired every 100ms
-  q.feed.onEvent(evs => {
+  q.on("event", evs => {
     console.log(evs);
     // something else..
   });
-
-  // Hookable type using change notification, limited to every 500ms
-  const release = q.feed.hook(() => {
-    // since we use the FlatNoteStore we expect NostrEvent[]
-    // other stores provide different data, like a single event instead of an array (latest version)
-    const state = q.feed.snapshot as StoreSnapshot<ReturnType<NoteCollection["getSnapshotData"]>>;
-
-    // do something with snapshot of store
-    console.log(`We have ${state.data?.length} events now!`);
-  });
-
-  // release the hook when its not needed anymore
-  // these patterns will be managed in @snort/system-react to make it easier to use react or other UI frameworks
-  release();
 })();

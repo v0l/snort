@@ -2,11 +2,10 @@ import debug from "debug";
 import EventEmitter from "eventemitter3";
 import { BuiltRawReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from ".";
 import { Query, TraceReport } from "./query";
-import { unwrap } from "@snort/shared";
 import { FilterCacheLayer, IdsFilterCacheLayer } from "./filter-cache-layer";
 import { trimFilters } from "./request-trim";
 
-interface NostrQueryManagerEvents {
+interface QueryManagerEvents {
   change: () => void;
   trace: (report: TraceReport) => void;
 }
@@ -14,8 +13,8 @@ interface NostrQueryManagerEvents {
 /**
  * Query manager handles sending requests to the nostr network
  */
-export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
-  #log = debug("NostrQueryManager");
+export class QueryManager extends EventEmitter<QueryManagerEvents> {
+  #log = debug("QueryManager");
 
   /**
    * All active queries
@@ -70,20 +69,27 @@ export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
   /**
    * Async fetch results
    */
-  fetch(req: RequestBuilder, cb?: (evs: ReadonlyArray<TaggedNostrEvent>) => void) {
-    const q = this.query(req);
-    return new Promise<Array<TaggedNostrEvent>>(resolve => {
-      if (cb) {
-        q.feed.on("event", cb);
-      }
-      q.feed.on("progress", loading => {
+  async fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
+    const q = new Query(this.#system, req);
+    q.on("trace", r => this.emit("trace", r));
+    q.on("filters", fx => {
+      this.#send(q, fx);
+    });
+    if (cb) {
+      q.on("event", evs => cb(evs));
+    }
+    await new Promise<void>(resolve => {
+      q.on("loading", loading => {
+        this.#log("loading %s %o", q.id, loading);
         if (!loading) {
-          q.feed.off("event");
-          q.cancel();
-          resolve(unwrap(q.snapshot.data));
+          resolve();
         }
       });
     });
+    const results = q.feed.takeSnapshot();
+    q.cleanup();
+    this.#log("Fetch results for %s %o", q.id, results);
+    return results;
   }
 
   *[Symbol.iterator]() {
@@ -105,12 +111,13 @@ export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
     // check for empty filters
     const fNew = trimFilters(qSend.filters);
     if (fNew.length === 0) {
+      this.#log("Dropping %s %o", q.id, qSend);
       return;
     }
     qSend.filters = fNew;
 
     if (qSend.relay) {
-      this.#log("Sending query to %s %O", qSend.relay, qSend);
+      this.#log("Sending query to %s %s %O", qSend.relay, q.id, qSend);
       const s = this.#system.pool.getConnection(qSend.relay);
       if (s) {
         const qt = q.sendToRelay(s, qSend);
@@ -132,7 +139,7 @@ export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
       const ret = [];
       for (const [a, s] of this.#system.pool) {
         if (!s.Ephemeral) {
-          this.#log("Sending query to %s %O", a, qSend);
+          this.#log("Sending query to %s %s %O", a, q.id, qSend);
           const qt = q.sendToRelay(s, qSend);
           if (qt) {
             ret.push(qt);
@@ -142,6 +149,7 @@ export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
       return ret;
     }
   }
+
   #cleanup() {
     let changed = false;
     for (const [k, v] of this.#queries) {

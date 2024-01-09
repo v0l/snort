@@ -23,8 +23,8 @@ import {
 import { EventsCache } from "./cache/events";
 import { RelayMetadataLoader } from "./outbox-model";
 import { Optimizer, DefaultOptimizer } from "./query-optimizer";
-import { NostrConnectionPool } from "./nostr-connection-pool";
-import { NostrQueryManager } from "./nostr-query-manager";
+import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
+import { QueryManager } from "./query-manager";
 
 export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
@@ -48,7 +48,7 @@ export interface NostrsystemProps {
  */
 export class NostrSystem extends EventEmitter<NostrSystemEvents> implements SystemInterface {
   #log = debug("System");
-  #queryManager: NostrQueryManager;
+  #queryManager: QueryManager;
 
   /**
    * Storage class for user relay lists
@@ -80,7 +80,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
    */
   readonly optimizer: Optimizer;
 
-  readonly pool = new NostrConnectionPool();
+  readonly pool: ConnectionPool;
   readonly eventsCache: FeedCache<NostrEvent>;
   readonly relayLoader: RelayMetadataLoader;
 
@@ -102,7 +102,8 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.relayLoader = new RelayMetadataLoader(this, this.relayCache);
     this.checkSigs = props.checkSigs ?? true;
 
-    this.#queryManager = new NostrQueryManager(this);
+    this.pool = new DefaultConnectionPool(this);
+    this.#queryManager = new QueryManager(this);
 
     // hook connection pool
     this.pool.on("connected", (id, wasReconnect) => {
@@ -121,18 +122,6 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     });
     this.pool.on("event", (_, sub, ev) => {
       ev.relays?.length && this.relayMetricsHandler.onEvent(ev.relays[0]);
-
-      if (!EventExt.isValid(ev)) {
-        this.#log("Rejecting invalid event %O", ev);
-        return;
-      }
-      if (this.checkSigs) {
-        if (!this.optimizer.schnorrVerify(ev)) {
-          this.#log("Invalid sig %O", ev);
-          return;
-        }
-      }
-
       this.emit("event", sub, ev);
     });
     this.pool.on("disconnect", (id, code) => {
@@ -159,17 +148,6 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.#queryManager.on("change", () => this.emit("change", this.takeSnapshot()));
     this.#queryManager.on("trace", t => {
       this.relayMetricsHandler.onTraceReport(t);
-    });
-
-    // internal handler for on-event
-    this.on("event", (sub, ev) => {
-      for (const [, v] of this.#queryManager) {
-        const trace = v.handleEvent(sub, ev);
-        // inject events to cache if query by id
-        if (trace && trace.filters.some(a => a.ids)) {
-          this.eventsCache.set(ev);
-        }
-      }
     });
   }
 
@@ -200,15 +178,15 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
   }
 
   GetQuery(id: string): QueryLike | undefined {
-    return this.#queryManager.get(id) as QueryLike;
+    return this.#queryManager.get(id);
   }
 
-  Fetch(req: RequestBuilder, cb?: (evs: ReadonlyArray<TaggedNostrEvent>) => void) {
+  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
     return this.#queryManager.fetch(req, cb);
   }
 
   Query(req: RequestBuilder): QueryLike {
-    return this.#queryManager.query(req) as QueryLike;
+    return this.#queryManager.query(req);
   }
 
   HandleEvent(ev: TaggedNostrEvent) {

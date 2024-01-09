@@ -1,7 +1,7 @@
 import { unixNow } from "@snort/shared";
 import { EventKind, RequestBuilder } from "@snort/system";
-import { useRequestBuilder } from "@snort/system-react";
-import { useCallback, useMemo } from "react";
+import { useRequestBuilderAdvanced } from "@snort/system-react";
+import { useCallback, useMemo, useSyncExternalStore } from "react";
 
 import useLogin from "@/Hooks/useLogin";
 import useTimelineWindow from "@/Hooks/useTimelineWindow";
@@ -116,7 +116,16 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb?.builder ?? null;
   }, [until, since, options.method, pref, createBuilder]);
 
-  const main = useRequestBuilder(sub);
+  const mainQuery = useRequestBuilderAdvanced(sub);
+  const main = useSyncExternalStore(
+    h => {
+      mainQuery?.on("event", h);
+      return () => {
+        mainQuery?.off("event", h);
+      };
+    },
+    () => mainQuery?.snapshot,
+  );
 
   const subRealtime = useMemo(() => {
     const rb = createBuilder();
@@ -130,17 +139,25 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb?.builder ?? null;
   }, [pref.autoShowLatest, createBuilder]);
 
-  const latest = useRequestBuilder(subRealtime);
+  const latestQuery = useRequestBuilderAdvanced(subRealtime);
+  const latest = useSyncExternalStore(
+    h => {
+      latestQuery?.on("event", h);
+      return () => {
+        latestQuery?.off("event", h);
+      };
+    },
+    () => latestQuery?.snapshot,
+  );
 
   return {
-    main: main.data,
-    latest: latest.data,
-    loading: main.loading(),
+    main: main,
+    latest: latest,
     loadMore: () => {
-      if (main.data) {
+      if (main) {
         console.debug("Timeline load more!");
         if (options.method === "LIMIT_UNTIL") {
-          const oldest = main.data.reduce((acc, v) => (acc = v.created_at < acc ? v.created_at : acc), unixNow());
+          const oldest = main.reduce((acc, v) => (acc = v.created_at < acc ? v.created_at : acc), unixNow());
           setUntil(oldest);
         } else {
           older();
@@ -148,9 +165,9 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       }
     },
     showLatest: () => {
-      if (latest.data) {
-        main.add(latest.data);
-        latest.clear();
+      if (latest) {
+        mainQuery?.feed.add(latest);
+        latestQuery?.feed.clear();
       }
     },
   };

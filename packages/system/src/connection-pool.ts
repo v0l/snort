@@ -30,13 +30,20 @@ export type ConnectionPool = {
 /**
  * Simple connection pool containing connections to multiple nostr relays
  */
-export class NostrConnectionPool extends EventEmitter<NostrConnectionPoolEvents> implements ConnectionPool {
+export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvents> implements ConnectionPool {
+  #system: SystemInterface;
+
   #log = debug("NostrConnectionPool");
 
   /**
    * All currently connected websockets
    */
   #sockets = new Map<string, Connection>();
+
+  constructor(system: SystemInterface) {
+    super();
+    this.#system = system;
+  }
 
   /**
    * Get basic state information from the pool
@@ -63,7 +70,13 @@ export class NostrConnectionPool extends EventEmitter<NostrConnectionPoolEvents>
         const c = new Connection(addr, options, ephemeral);
         this.#sockets.set(addr, c);
 
-        c.on("event", (s, e) => this.emit("event", addr, s, e));
+        c.on("event", (s, e) => {
+          if (this.#system.checkSigs && !this.#system.optimizer.schnorrVerify(e)) {
+            this.#log("Reject invalid event %o", e);
+            return;
+          }
+          this.emit("event", addr, s, e);
+        });
         c.on("eose", s => this.emit("eose", addr, s));
         c.on("disconnect", code => this.emit("disconnect", addr, code));
         c.on("connected", r => this.emit("connected", addr, r));

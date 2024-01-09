@@ -415,7 +415,6 @@ const PreferencesPage = () => {
           value={perf.reactionEmoji}
           onChange={e => {
             const split = e.target.value.match(/[\p{L}\S]{1}/u);
-            console.debug(e.target.value, split);
             updatePreferences(id, {
               ...perf,
               reactionEmoji: split?.[0] ?? "",

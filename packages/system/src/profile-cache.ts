@@ -2,7 +2,6 @@ import { unixNowMs } from "@snort/shared";
 import { EventKind, TaggedNostrEvent, RequestBuilder } from ".";
 import { ProfileCacheExpire } from "./const";
 import { mapEventToProfile, CachedMetadata } from "./cache";
-import { v4 as uuid } from "uuid";
 import { BackgroundLoader } from "./background-loader";
 
 export class ProfileLoaderService extends BackgroundLoader<CachedMetadata> {
@@ -19,14 +18,8 @@ export class ProfileLoaderService extends BackgroundLoader<CachedMetadata> {
   }
 
   override buildSub(missing: string[]): RequestBuilder {
-    const sub = new RequestBuilder(`profiles-${uuid()}`);
-    sub
-      .withOptions({
-        skipDiff: true,
-      })
-      .withFilter()
-      .kinds([EventKind.SetMetadata])
-      .authors(missing);
+    const sub = new RequestBuilder(`profiles`);
+    sub.withFilter().kinds([EventKind.SetMetadata]).authors(missing);
     return sub;
   }
 

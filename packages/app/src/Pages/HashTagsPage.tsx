@@ -1,5 +1,5 @@
 import { dedupe } from "@snort/shared";
-import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
+import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import classNames from "classnames";
 import { useMemo } from "react";
@@ -59,8 +59,8 @@ export function HashTagHeader({ tag, events, className }: { tag: string; events?
     rb.withFilter().kinds([EventKind.InterestsList]).tag("t", [tag.toLowerCase()]);
     return rb;
   }, [tag]);
-  const followsTag = useRequestBuilder(NoteCollection, sub);
-  const pubkeys = dedupe((followsTag.data ?? []).map(a => a.pubkey));
+  const followsTag = useRequestBuilder(sub);
+  const pubkeys = dedupe(followsTag.map(a => a.pubkey));
 
   return (
     <div className={classNames("flex flex-col", className)}>

@@ -103,10 +103,10 @@ function NoteTitle({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);
 
   const values = useMemo(() => {
-    return { name: <DisplayName pubkey={ev.data?.pubkey ?? ""} /> };
-  }, [ev.data?.pubkey]);
+    return { name: <DisplayName pubkey={ev?.pubkey ?? ""} /> };
+  }, [ev?.pubkey]);
 
-  if (!ev.data?.pubkey) {
+  if (!ev?.pubkey) {
     return <FormattedMessage defaultMessage="Note" id="qMePPG" />;
   }
 

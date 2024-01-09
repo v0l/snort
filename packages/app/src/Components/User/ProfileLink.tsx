@@ -18,7 +18,8 @@ export function ProfileLink({
   children?: ReactNode;
 } & Omit<LinkProps, "to">) {
   const system = useContext(SnortContext);
-  const relays = system.relayCache.getFromCache(pubkey)
+  const relays = system.relayCache
+    .getFromCache(pubkey)
     ?.relays?.filter(a => a.settings.write)
     ?.map(a => a.url);
 

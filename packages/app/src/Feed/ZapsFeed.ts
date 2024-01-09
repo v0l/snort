@@ -13,8 +13,8 @@ export default function useZapsFeed(link?: NostrLink) {
   const zapsFeed = useRequestBuilder(sub);
 
   const zaps = useMemo(() => {
-    if (zapsFeed.data) {
-      const profileZaps = zapsFeed.data.map(a => parseZap(a)).filter(z => z.valid);
+    if (zapsFeed) {
+      const profileZaps = zapsFeed.map(a => parseZap(a)).filter(z => z.valid);
       profileZaps.sort((a, b) => b.amount - a.amount);
       return profileZaps;
     }

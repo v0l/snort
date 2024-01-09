@@ -50,6 +50,7 @@ export interface UsersRelays {
 }
 
 export function mapEventToProfile(ev: NostrEvent) {
+  if (ev.kind !== 0) return;
   try {
     const data: UserMetadata = JSON.parse(ev.content);
     let ret = {

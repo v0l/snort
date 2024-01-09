@@ -33,8 +33,8 @@ export default function useThreadFeed(link: NostrLink) {
   const store = useRequestBuilder(sub);
 
   useEffect(() => {
-    if (store.data) {
-      const links = store.data
+    if (store) {
+      const links = store
         .map(a => [
           NostrLink.fromEvent(a),
           ...a.tags.filter(a => a[0] === "e" || a[0] === "a").map(v => NostrLink.fromTag(v)),
@@ -42,7 +42,7 @@ export default function useThreadFeed(link: NostrLink) {
         .flat();
       setAllEvents(links);
 
-      const current = store.data.find(a => link.matchesEvent(a));
+      const current = store.find(a => link.matchesEvent(a));
       if (current) {
         const t = EventExt.extractThread(current);
         if (t) {
@@ -60,12 +60,12 @@ export default function useThreadFeed(link: NostrLink) {
         }
       }
     }
-  }, [store.data?.length]);
+  }, [store?.length]);
 
   const reactions = useReactions(`thread:${link.id.slice(0, 12)}:reactions`, [link, ...allEvents]);
 
   return {
-    thread: store.data ?? [],
-    reactions: reactions.data ?? [],
+    thread: store ?? [],
+    reactions: reactions ?? [],
   };
 }

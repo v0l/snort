@@ -20,7 +20,7 @@ export interface FeedCacheEvents {
 export abstract class FeedCache<TCached> extends EventEmitter<FeedCacheEvents> {
   readonly name: string;
   #snapshot: Array<TCached> = [];
-  #log: ReturnType<typeof debug>;
+  protected log: ReturnType<typeof debug>;
   #hits = 0;
   #miss = 0;
   protected table?: DexieTableLike<TCached>;
@@ -31,9 +31,9 @@ export abstract class FeedCache<TCached> extends EventEmitter<FeedCacheEvents> {
     super();
     this.name = name;
     this.table = table;
-    this.#log = debug(name);
+    this.log = debug(name);
     setInterval(() => {
-      this.#log(
+      this.log(
         "%d loaded, %d on-disk, %d hooks, %d% hit",
         this.cache.size,
         this.onTable.size,
@@ -55,21 +55,15 @@ export abstract class FeedCache<TCached> extends EventEmitter<FeedCacheEvents> {
   }
 
   hook(fn: HookFn, key: string | undefined) {
-    if (key) {
-      const handle = (keys: Array<string>) => {
-        if (keys.includes(key)) {
-          fn();
-        }
-      };
-      this.on("change", handle);
-      return () => this.off("change", handle);
-    }
-
-    return () => {
-      // noop
+    const handle = (keys: Array<string>) => {
+      if (!key || keys.includes(key)) {
+        fn();
+      }
     };
+    this.on("change", handle);
+    return () => this.off("change", handle);
   }
-  
+
   keysOnTable() {
     return [...this.onTable];
   }
@@ -161,7 +155,7 @@ export abstract class FeedCache<TCached> extends EventEmitter<FeedCacheEvents> {
       }
       return "no_change";
     })();
-    this.#log("Updating %s %s %o", k, updateType, m);
+    this.log("Updating %s %s %o", k, updateType, m);
     if (updateType !== "no_change") {
       const updated = {
         ...existing,
@@ -193,7 +187,7 @@ export abstract class FeedCache<TCached> extends EventEmitter<FeedCacheEvents> {
         "change",
         fromCache.map(a => this.key(a)),
       );
-      this.#log(`Loaded %d/%d in %d ms`, fromCache.length, keys.length, (unixNowMs() - start).toLocaleString());
+      this.log(`Loaded %d/%d in %d ms`, fromCache.length, keys.length, (unixNowMs() - start).toLocaleString());
       return mapped.filter(a => !a.has).map(a => a.key);
     }
 

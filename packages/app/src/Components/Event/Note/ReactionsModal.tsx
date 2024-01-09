@@ -26,11 +26,11 @@ const ReactionsModal = ({ show, setShow, event }: ReactionsModalProps) => {
 
   const link = NostrLink.fromEvent(event);
 
-  const related = useReactions(link.id + "related", [link], undefined, false);
-  const { reactions, zaps, reposts } = useEventReactions(link, related.data ?? []);
+  const related = useReactions("note:reactions", [link], undefined, false);
+  const { reactions, zaps, reposts } = useEventReactions(link, related);
   const { positive, negative } = reactions;
 
-  const sortEvents = events =>
+  const sortEvents = (events: Array<TaggedNostrEvent>) =>
     events.sort(
       (a, b) => socialGraphInstance.getFollowDistance(a.pubkey) - socialGraphInstance.getFollowDistance(b.pubkey),
     );

@@ -1,13 +1,14 @@
 import { RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
 import { RequestBuilder } from "./request-builder";
-import { NoteCollection, NoteStore, NoteStoreSnapshotData, StoreSnapshot } from "./note-collection";
 import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { ProfileLoaderService } from "./profile-cache";
 import { RelayCache, RelayMetadataLoader } from "./outbox-model";
 import { Optimizer } from "./query-optimizer";
 import { base64 } from "@scure/base";
 import { FeedCache } from "@snort/shared";
-import { ConnectionPool } from "nostr-connection-pool";
+import { ConnectionPool } from "./connection-pool";
+import EventEmitter from "eventemitter3";
+import { QueryEvents } from "./query";
 
 export { NostrSystem } from "./nostr-system";
 export { default as EventKind } from "./event-kind";
@@ -46,13 +47,16 @@ export * from "./cache/relay-metric";
 
 export * from "./worker/system-worker";
 
-export interface QueryLike {
-  on: (event: "event", fn?: (evs: Array<TaggedNostrEvent>) => void) => void;
-  off: (event: "event", fn?: (evs: Array<TaggedNostrEvent>) => void) => void;
+export type QueryLike = {
+  get progress(): number;
+  feed: {
+    add: (evs: Array<TaggedNostrEvent>) => void;
+    clear: () => void;
+  };
   cancel: () => void;
   uncancel: () => void;
-  get snapshot(): StoreSnapshot<Array<TaggedNostrEvent>>;
-}
+  get snapshot(): Array<TaggedNostrEvent>;
+} & EventEmitter<QueryEvents>;
 
 export interface SystemInterface {
   /**
@@ -87,7 +91,7 @@ export interface SystemInterface {
    * @param req Request to send to relays
    * @param cb A callback which will fire every 100ms when new data is received
    */
-  Fetch(req: RequestBuilder, cb?: (evs: ReadonlyArray<TaggedNostrEvent>) => void): Promise<Array<TaggedNostrEvent>>;
+  Fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void): Promise<Array<TaggedNostrEvent>>;
 
   /**
    * Create a new permanent connection to a relay

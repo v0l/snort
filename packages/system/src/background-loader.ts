@@ -76,16 +76,17 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
     } else {
       return await new Promise<T>((resolve, reject) => {
         this.TrackKeys(key);
-        this.cache.on("change", keys => {
+        const handler = (keys: Array<string>) => {
           if (keys.includes(key)) {
             const existing = this.cache.getFromCache(key);
             if (existing) {
               resolve(existing);
               this.UntrackKeys(key);
-              this.cache.off("change");
+              this.cache.off("change", handler);
             }
           }
-        });
+        };
+        this.cache.on("change", handler);
       });
     }
   }
@@ -103,6 +104,7 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
           missing.filter(a => !found.some(b => a === this.cache.key(b))).map(a => this.makePlaceholder(a)),
         );
         if (noResult.length > 0) {
+          this.#log("Adding placeholders for %O", noResult);
           await Promise.all(noResult.map(a => this.cache.update(a)));
         }
       } catch (e) {
@@ -115,19 +117,24 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
   }
 
   async #loadData(missing: Array<string>) {
+    this.#log("Loading data", missing);
     if (this.loaderFn) {
       const results = await this.loaderFn(missing);
       await Promise.all(results.map(a => this.cache.update(a)));
       return results;
     } else {
+      const hookHandled = new Set<string>();
       const v = await this.#system.Fetch(this.buildSub(missing), async e => {
+        this.#log("Callback handled %o", e);
         for (const pe of e) {
           const m = this.onEvent(pe);
           if (m) {
             await this.cache.update(m);
+            hookHandled.add(pe.id);
           }
         }
       });
+      this.#log("Got data", v);
       return removeUndefined(v.map(this.onEvent));
     }
   }

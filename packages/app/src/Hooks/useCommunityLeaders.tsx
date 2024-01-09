@@ -27,7 +27,6 @@ export function useCommunityLeaders() {
   });
 
   useEffect(() => {
-    console.debug("CommunityLeaders", list);
     LeadersStore.setLeaders(list.map(a => a.id));
   }, [list]);
 }

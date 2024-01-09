@@ -1,5 +1,5 @@
 import { unwrap } from "@snort/shared";
-import { NoopStore, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { useEffect, useMemo } from "react";
 
 import { RefreshFeedCache } from "@/Cache/RefreshFeedCache";
@@ -25,23 +25,14 @@ export function useRefreshFeedCache<T>(c: RefreshFeedCache<T>, leaveOpen = false
 
   useEffect(() => {
     if (sub) {
-      const q = system.Query(NoopStore, sub);
-      let t: ReturnType<typeof setTimeout> | undefined;
-      let tBuf: Array<TaggedNostrEvent> = [];
-      q.on("event", evs => {
-        if (!t) {
-          tBuf = [...evs];
-          t = setTimeout(() => {
-            t = undefined;
-            c.onEvent(tBuf, unwrap(login.publicKey), publisher);
-          }, 100);
-        } else {
-          tBuf.push(...evs);
-        }
-      });
+      const q = system.Query(sub);
+      const handler = (evs: Array<TaggedNostrEvent>) => {
+        c.onEvent(evs, unwrap(login.publicKey), publisher);
+      };
+      q.on("event", handler);
       q.uncancel();
       return () => {
-        q.off("event");
+        q.off("event", handler);
         q.cancel();
       };
     }

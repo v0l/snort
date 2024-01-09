@@ -1,7 +1,9 @@
 import { bech32ToHex } from "@snort/shared";
-import { EventKind, ReplaceableNoteStore, RequestBuilder } from "@snort/system";
+import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
+
+import { getNewest } from "@/Utils";
 
 // Snort backend publishes rates
 const SnortPubkey = "npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x6802npjqhjjtws";
@@ -20,12 +22,13 @@ export function useRates(symbol: string, leaveOpen = true) {
     return rb;
   }, [symbol]);
 
-  const data = useRequestBuilder(ReplaceableNoteStore, sub);
+  const feed = useRequestBuilder(sub);
+  const ev = getNewest(feed);
 
-  const tag = data?.data?.tags.find(a => a[0] === "d" && a[1] === symbol);
+  const tag = ev?.tags.find(a => a[0] === "d" && a[1] === symbol);
   if (!tag) return undefined;
   return {
-    time: data.data?.created_at,
+    time: ev?.created_at,
     ask: Number(tag[2]),
     bid: Number(tag[3]),
     low: Number(tag[4]),

@@ -10,8 +10,8 @@ import { findTag } from "@/Utils";
 export default function NostrFileHeader({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);
 
-  if (!ev.data) return <PageSpinner />;
-  return <NostrFileElement ev={ev.data} />;
+  if (!ev) return <PageSpinner />;
+  return <NostrFileElement ev={ev} />;
 }
 
 export function NostrFileElement({ ev }: { ev: NostrEvent }) {

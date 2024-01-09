@@ -84,10 +84,8 @@ export default function SendSats(props: SendSatsProps) {
   useEffect(() => {
     if (props.targets && props.show) {
       try {
-        console.debug("loading zapper");
         const zapper = new Zapper(system, publisher);
         zapper.load(props.targets).then(() => {
-          console.debug(zapper);
           setZapper(zapper);
         });
       } catch (e) {

@@ -221,7 +221,6 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   updateSession(s: LoginSession) {
     if (this.#accounts.has(s.id)) {
       this.#accounts.set(s.id, s);
-      console.debug("SET SESSION", s);
       this.#save();
     }
   }

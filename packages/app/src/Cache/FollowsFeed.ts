@@ -1,6 +1,5 @@
 import { unixNow, unixNowMs } from "@snort/shared";
 import { EventKind, RequestBuilder, SystemInterface, TaggedNostrEvent } from "@snort/system";
-import debug from "debug";
 
 import { db } from "@/Db";
 import { Day, Hour } from "@/Utils/Const";
@@ -68,8 +67,7 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
     const oldest = await this.table?.orderBy("created_at").first();
     this.#oldest = oldest?.created_at;
     this.emit("change", latest?.map(a => this.key(a)) ?? []);
-
-    debug(this.name)(`Loaded %d/%d in %d ms`, latest?.length ?? 0, keys.length, (unixNowMs() - start).toLocaleString());
+    this.log(`Loaded %d/%d in %d ms`, latest?.length ?? 0, keys.length, (unixNowMs() - start).toLocaleString());
   }
 
   async loadMore(system: SystemInterface, session: LoginSession, before: number) {
@@ -132,7 +130,7 @@ export class FollowsFeedCache extends RefreshFeedCache<TaggedNostrEvent> {
       const allKeys = new Set(everything?.map(a => a.pubkey));
       const missingKeys = keys.filter(a => !allKeys.has(a));
       await this.backFill(system, missingKeys);
-      debug(this.name)(`Backfilled %d keys in %d ms`, missingKeys.length, (unixNowMs() - start).toLocaleString());
+      this.log(`Backfilled %d keys in %d ms`, missingKeys.length, (unixNowMs() - start).toLocaleString());
     }
   }
 }

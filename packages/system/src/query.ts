@@ -4,7 +4,7 @@ import EventEmitter from "eventemitter3";
 import { unixNowMs, unwrap } from "@snort/shared";
 
 import { Connection, ReqFilter, Nips, TaggedNostrEvent, SystemInterface } from ".";
-import { NoteCollection, NoteStore } from "./note-collection";
+import { NoteCollection } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { eventMatchesFilter } from "./request-matcher";
 
@@ -97,25 +97,26 @@ export interface TraceReport {
   responseTime: number;
 }
 
-interface QueryEvents {
+export interface QueryEvents {
+  loading: (v: boolean) => void;
   trace: (report: TraceReport) => void;
   filters: (req: BuiltRawReqFilter) => void;
-  event: (evs: ReadonlyArray<TaggedNostrEvent>) => void;
+  event: (evs: Array<TaggedNostrEvent>) => void;
+  end: () => void;
 }
 
 /**
  * Active or queued query on the system
  */
 export class Query extends EventEmitter<QueryEvents> {
-  /**
-   * Unique id of this query
-   */
-  readonly id: string;
+  get id() {
+    return this.request.id;
+  }
 
   /**
    * RequestBuilder instance
    */
-  requests: Array<RequestBuilder> = [];
+  request: RequestBuilder;
 
   /**
    * Nostr system interface
@@ -166,8 +167,7 @@ export class Query extends EventEmitter<QueryEvents> {
 
   constructor(system: SystemInterface, req: RequestBuilder) {
     super();
-    this.id = uuid();
-    this.requests.push(req);
+    this.request = req;
     this.#system = system;
     this.#feed = new NoteCollection();
     this.#leaveOpen = req.options?.leaveOpen ?? false;
@@ -176,32 +176,21 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#checkTraces();
 
     this.feed.on("event", evs => this.emit("event", evs));
+    this.#start();
   }
 
   /**
    * Adds another request to this one
    */
   addRequest(req: RequestBuilder) {
-    if (this.#groupTimeout) {
-      clearTimeout(this.#groupTimeout);
-      this.#groupTimeout = undefined;
+    if (req.instance === this.request.instance) {
+      // same requst, do nothing
+      this.#log("Same query %O === %O", req, this.request);
+      return;
     }
-    if (this.requests.some(a => a.instance === req.instance)) {
-      // already exists, nothing to add
-      return false;
-    }
-    if (this.requests.some(a => a.options?.skipDiff !== req.options?.skipDiff)) {
-      throw new Error("Mixing skipDiff option is not supported");
-    }
-    this.requests.push(req);
-
-    if (this.#groupingDelay) {
-      this.#groupTimeout = setTimeout(() => {
-        this.#emitFilters();
-      }, this.#groupingDelay);
-    } else {
-      this.#emitFilters();
-    }
+    this.#log("Add query %O to %s", req, this.id);
+    this.request.add(req);
+    this.#start();
     return true;
   }
 
@@ -228,12 +217,11 @@ export class Query extends EventEmitter<QueryEvents> {
     return this.#feed.snapshot;
   }
 
-  handleEvent(sub: string, e: TaggedNostrEvent) {
+  #handleEvent(sub: string, e: TaggedNostrEvent) {
     for (const t of this.#tracing) {
       if (t.id === sub || sub === "*") {
         if (t.filters.some(v => eventMatchesFilter(e, v))) {
           this.feed.add(e);
-          return t;
         } else {
           this.#log("Event did not match filter, rejecting %O %O", e, t);
         }
@@ -254,7 +242,12 @@ export class Query extends EventEmitter<QueryEvents> {
   }
 
   cleanup() {
+    if (this.#groupTimeout) {
+      clearTimeout(this.#groupTimeout);
+      this.#groupTimeout = undefined;
+    }
     this.#stopCheckTraces();
+    this.emit("end");
   }
 
   /**
@@ -316,35 +309,46 @@ export class Query extends EventEmitter<QueryEvents> {
     return thisProgress;
   }
 
-  #emitFilters() {
-    if (this.requests.every(a => !!a.options?.skipDiff)) {
-      const existing = this.filters;
-      const rb = new RequestBuilder(this.id);
-      this.requests.forEach(a => rb.add(a));
-      const filters = rb.buildDiff(this.#system, existing);
-      filters.forEach(f => this.emit("filters", f));
-      this.requests = [];
+  #start() {
+    if (this.#groupTimeout) {
+      clearTimeout(this.#groupTimeout);
+      this.#groupTimeout = undefined;
+    }
+    if (this.#groupingDelay) {
+      this.#groupTimeout = setTimeout(() => {
+        this.#emitFilters();
+      }, this.#groupingDelay);
     } else {
-      // send without diff
-      const rb = new RequestBuilder(this.id);
-      this.requests.forEach(a => rb.add(a));
-      const filters = rb.build(this.#system);
+      this.#emitFilters();
+    }
+  }
+
+  #emitFilters() {
+    this.#log("Starting emit of %s", this.id);
+    const existing = this.filters;
+    if (!(this.request.options?.skipDiff ?? false) && existing.length > 0) {
+      const filters = this.request.buildDiff(this.#system, existing);
+      this.#log("Build %s %O", this.id, filters);
       filters.forEach(f => this.emit("filters", f));
-      this.requests = [];
+    } else {
+      const filters = this.request.build(this.#system);
+      this.#log("Build %s %O", this.id, filters);
+      filters.forEach(f => this.emit("filters", f));
     }
   }
 
   #onProgress() {
     const isFinished = this.progress === 1;
-    if (this.feed.loading !== isFinished) {
-      this.#log("%s loading=%s, progress=%d, traces=%O", this.id, this.feed.loading, this.progress, this.#tracing);
-      this.feed.loading = isFinished;
+    if (isFinished) {
+      this.#log("%s loading=%s, progress=%d, traces=%O", this.id, !isFinished, this.progress, this.#tracing);
+      this.emit("loading", !isFinished);
     }
   }
 
   #stopCheckTraces() {
     if (this.#checkTrace) {
       clearInterval(this.#checkTrace);
+      this.#checkTrace = undefined;
     }
   }
 
@@ -398,6 +402,9 @@ export class Query extends EventEmitter<QueryEvents> {
         responseTime: qt.responseTime,
       } as TraceReport),
     );
+    const handler = (sub: string, ev: TaggedNostrEvent) => this.#handleEvent(sub, ev);
+    c.on("event", handler);
+    this.on("end", () => c.off("event", handler));
     this.#tracing.push(qt);
     c.QueueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
     return qt;

@@ -31,7 +31,7 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
     return removeUndefined(
       data.notes.map(a => {
         const ev = a.event;
-        if (!System.Optimizer.schnorrVerify(ev)) {
+        if (!System.optimizer.schnorrVerify(ev)) {
           console.error(`Event with invalid sig\n\n${ev}\n\nfrom ${trendingNotesUrl}`);
           return;
         }

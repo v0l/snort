@@ -9,6 +9,7 @@ import { ConnectionStats } from "./connection-stats";
 import { NostrEvent, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
+import { EventExt } from "./event-ext";
 
 /**
  * Relay settings
@@ -225,10 +226,16 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           break;
         }
         case "EVENT": {
-          this.emit("event", msg[1] as string, {
+          const ev = {
             ...(msg[2] as NostrEvent),
             relays: [this.Address],
-          });
+          } as TaggedNostrEvent;
+
+          if (!EventExt.isValid(ev)) {
+            //this.#log("Rejecting invalid event %O", ev);
+            return;
+          }
+          this.emit("event", msg[1] as string, ev);
           this.Stats.EventsReceived++;
           this.notifyChange();
           break;

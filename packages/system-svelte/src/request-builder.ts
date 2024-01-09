@@ -1,19 +1,19 @@
-import { type NoteStore, type RequestBuilder, type StoreSnapshot, type SystemInterface } from "@snort/system";
+import { TaggedNostrEvent, type RequestBuilder, type SystemInterface } from "@snort/system";
 import { getContext } from "svelte";
 
-export function useRequestBuilder<T extends NoteStore>(type: new () => T, rb: RequestBuilder) {
+export function useRequestBuilder(rb: RequestBuilder) {
   const system = getContext("snort") as SystemInterface;
-  type TSnap = StoreSnapshot<ReturnType<T["getSnapshotData"]>>;
   return {
-    subscribe: (set: (value: TSnap) => void) => {
-      const q = system.Query(type, rb);
+    subscribe: (set: (value: Array<TaggedNostrEvent>) => void) => {
+      const q = system.Query(rb);
+      const handle = () => {
+        set(q.snapshot);
+      };
       q.uncancel();
-      const release = q.feed.hook(() => {
-        set(q.feed.snapshot as TSnap);
-      });
+      q.on("event", handle);
       return () => {
+        q.off("event", handle);
         q.cancel();
-        release();
       };
     },
   };

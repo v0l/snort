@@ -4,7 +4,7 @@ React hooks for @snort/system
 
 ### Available hooks
 
-#### `useRequestBuilder(NoteStore, RequestBuilder)`
+#### `useRequestBuilder(RequestBuilder)`
 
 The main hook which allows you to subscribe to nostr relays and returns a reactive store.
 
@@ -63,10 +63,10 @@ export function UserPosts(props: { pubkey: string }) {
     return rb;
   }, [props.pubkey]);
 
-  const data = useRequestBuilder(NoteCollection, sub);
+  const data = useRequestBuilder(sub);
   return (
     <>
-      {data.data.map(a => (
+      {data.map(a => (
         <Note ev={a} />
       ))}
     </>

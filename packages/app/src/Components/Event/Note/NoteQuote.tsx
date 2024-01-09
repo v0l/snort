@@ -11,11 +11,11 @@ const options = {
 
 export default function NoteQuote({ link, depth }: { link: NostrLink; depth?: number }) {
   const ev = useEventFeed(link);
-  if (!ev.data)
+  if (!ev)
     return (
       <div className="note-quote flex items-center justify-center h-[110px]">
         <PageSpinner />
       </div>
     );
-  return <Note data={ev.data} className="note-quote" depth={(depth ?? 0) + 1} options={options} />;
+  return <Note data={ev} className="note-quote" depth={(depth ?? 0) + 1} options={options} />;
 }

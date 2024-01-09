@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { SnortContext, useRequestBuilder, useUserProfile } from "../src";
 
-import { NostrSystem, NoteCollection, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { NostrSystem, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 
 const System = new NostrSystem({});
 
@@ -13,7 +13,7 @@ export function Note({ ev }: { ev: TaggedNostrEvent }) {
 
   return (
     <div>
-      Post by: {profile.name ?? profile.display_name}
+      Post by: {profile?.name ?? profile?.display_name}
       <p>{ev.content}</p>
     </div>
   );
@@ -27,10 +27,10 @@ export function UserPosts(props: { pubkey: string }) {
     return rb;
   }, [props.pubkey]);
 
-  const data = useRequestBuilder(NoteCollection, sub);
+  const data = useRequestBuilder(sub);
   return (
     <>
-      {data.data.map(a => (
+      {data.map(a => (
         <Note ev={a} />
       ))}
     </>

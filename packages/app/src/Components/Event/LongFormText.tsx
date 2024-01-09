@@ -32,13 +32,8 @@ export function LongFormText(props: LongFormTextProps) {
   const [reading, setReading] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const related = useReactions(
-    NostrLink.fromEvent(props.ev).id + "related",
-    [NostrLink.fromEvent(props.ev)],
-    undefined,
-    false,
-  );
-  const { reactions, reposts, zaps } = useEventReactions(NostrLink.fromEvent(props.ev), related.data ?? []);
+  const related = useReactions("note:reactions", [NostrLink.fromEvent(props.ev)], undefined, false);
+  const { reactions, reposts, zaps } = useEventReactions(NostrLink.fromEvent(props.ev), related);
 
   function previewText() {
     return (

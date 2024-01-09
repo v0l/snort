@@ -36,8 +36,8 @@ export default function NoteFooter(props: NoteFooterProps) {
   const link = useMemo(() => NostrLink.fromEvent(ev), [ev.id]);
   const ids = useMemo(() => [link], [link]);
 
-  const related = useReactions(link.id + "related", ids, undefined, false);
-  const { reactions, zaps, reposts } = useEventReactions(link, related.data ?? []);
+  const related = useReactions("note:reactions", ids, undefined, false);
+  const { reactions, zaps, reposts } = useEventReactions(link, related);
   const { positive } = reactions;
 
   const { formatMessage } = useIntl();

@@ -100,8 +100,8 @@ export default function useLoginFeed() {
 
   // update relays and follow lists
   useEffect(() => {
-    if (loginFeed.data) {
-      const contactList = getNewest(loginFeed.data.filter(a => a.kind === EventKind.ContactList));
+    if (loginFeed) {
+      const contactList = getNewest(loginFeed.filter(a => a.kind === EventKind.ContactList));
       if (contactList) {
         const pTags = contactList.tags.filter(a => a[0] === "p").map(a => a[1]);
         setFollows(login.id, pTags, contactList.created_at * 1000);
@@ -109,17 +109,17 @@ export default function useLoginFeed() {
         FollowsFeed.backFillIfMissing(system, pTags);
       }
 
-      const relays = getNewest(loginFeed.data.filter(a => a.kind === EventKind.Relays));
+      const relays = getNewest(loginFeed.filter(a => a.kind === EventKind.Relays));
       if (relays) {
         const parsedRelays = parseRelayTags(relays.tags.filter(a => a[0] === "r")).map(a => [a.url, a.settings]);
         setRelays(login, Object.fromEntries(parsedRelays), relays.created_at * 1000);
       }
 
-      Nip4Chats.onEvent(loginFeed.data);
-      Nip28Chats.onEvent(loginFeed.data);
+      Nip4Chats.onEvent(loginFeed);
+      Nip28Chats.onEvent(loginFeed);
 
       if (publisher) {
-        const subs = loginFeed.data.filter(
+        const subs = loginFeed.filter(
           a => a.kind === EventKind.SnortSubscriptions && a.pubkey === bech32ToHex(SnortPubKey),
         );
         Promise.all(
@@ -135,7 +135,7 @@ export default function useLoginFeed() {
           }),
         ).then(a => addSubscription(login, ...a.filter(a => a !== undefined).map(unwrap)));
 
-        const appData = getNewest(loginFeed.data.filter(a => a.kind === EventKind.AppData));
+        const appData = getNewest(loginFeed.filter(a => a.kind === EventKind.AppData));
         if (appData) {
           publisher.decryptGeneric(appData.content, appData.pubkey).then(d => {
             setAppData(login, JSON.parse(d) as SnortAppData, appData.created_at * 1000);
@@ -200,20 +200,20 @@ export default function useLoginFeed() {
   }
 
   useEffect(() => {
-    if (loginFeed.data) {
-      const mutedFeed = loginFeed.data.filter(a => a.kind === EventKind.MuteList);
+    if (loginFeed) {
+      const mutedFeed = loginFeed.filter(a => a.kind === EventKind.MuteList);
       handleMutedFeed(mutedFeed);
 
-      const pinnedFeed = loginFeed.data.filter(a => a.kind === EventKind.PinList);
+      const pinnedFeed = loginFeed.filter(a => a.kind === EventKind.PinList);
       handlePinnedFeed(pinnedFeed);
 
-      const tagsFeed = loginFeed.data.filter(a => a.kind === EventKind.InterestsList);
+      const tagsFeed = loginFeed.filter(a => a.kind === EventKind.InterestsList);
       handleTagFeed(tagsFeed);
 
-      const bookmarkFeed = loginFeed.data.filter(a => a.kind === EventKind.BookmarksList);
+      const bookmarkFeed = loginFeed.filter(a => a.kind === EventKind.BookmarksList);
       handleBookmarkFeed(bookmarkFeed);
 
-      const publicChatsFeed = loginFeed.data.filter(a => a.kind === EventKind.PublicChatsList);
+      const publicChatsFeed = loginFeed.filter(a => a.kind === EventKind.PublicChatsList);
       handlePublicChatsListFeed(publicChatsFeed);
     }
   }, [loginFeed]);

@@ -20,7 +20,7 @@ export function useStatusFeed(id?: string, leaveOpen = false) {
 
   const status = useRequestBuilder(sub);
 
-  const statusFiltered = status.data?.filter(a => {
+  const statusFiltered = status.filter(a => {
     const exp = Number(findTag(a, "expiration"));
     return isNaN(exp) || exp >= unixNow();
   });

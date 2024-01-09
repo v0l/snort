@@ -38,7 +38,7 @@ export default function SearchBox() {
   const subject: TimelineSubject = {
     type: "profile_keyword",
     discriminator: search,
-    items: [search],
+    items: search ? [search] : [],
     relay: undefined,
     streams: false,
   };

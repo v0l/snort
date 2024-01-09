@@ -16,7 +16,7 @@ export default function Articles() {
 
   return (
     <>
-      {orderDescending(data.data ?? []).map(a => (
+      {orderDescending(data).map(a => (
         <Note
           data={a}
           key={a.id}
