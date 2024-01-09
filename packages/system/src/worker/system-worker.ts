@@ -3,11 +3,8 @@ import EventEmitter from "eventemitter3";
 import {
   ConnectionStateSnapshot,
   NostrEvent,
-  NoteStore,
   OkResponse,
   ProfileLoaderService,
-  Optimizer,
-  RelayCache,
   RelaySettings,
   RequestBuilder,
   SystemInterface,
@@ -28,18 +25,19 @@ import { FeedCache } from "@snort/shared";
 import { EventsCache } from "../cache/events";
 import { RelayMetricHandler } from "../relay-metric-handler";
 import debug from "debug";
+import { ConnectionPool } from "nostr-connection-pool";
 
 export class SystemWorker extends EventEmitter<NostrSystemEvents> implements SystemInterface {
   #log = debug("SystemWorker");
   #worker: Worker;
   #commandQueue: Map<string, (v: unknown) => void> = new Map();
-  #relayCache: FeedCache<UsersRelays>;
-  #profileCache: FeedCache<CachedMetadata>;
-  #relayMetricsCache: FeedCache<RelayMetrics>;
-  #profileLoader: ProfileLoaderService;
-  #relayMetrics: RelayMetricHandler;
-  #eventsCache: FeedCache<NostrEvent>;
-  #relayLoader: RelayMetadataLoader;
+  readonly relayCache: FeedCache<UsersRelays>;
+  readonly profileCache: FeedCache<CachedMetadata>;
+  readonly relayMetricsCache: FeedCache<RelayMetrics>;
+  readonly profileLoader: ProfileLoaderService;
+  readonly relayMetricsHandler: RelayMetricHandler;
+  readonly eventsCache: FeedCache<NostrEvent>;
+  readonly relayLoader: RelayMetadataLoader;
 
   get checkSigs() {
     return true;
@@ -49,17 +47,25 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
     // not used
   }
 
+  get optimizer() {
+    return DefaultOptimizer;
+  }
+
+  get pool() {
+    return {} as ConnectionPool;
+  }
+
   constructor(scriptPath: string, props: NostrsystemProps) {
     super();
 
-    this.#relayCache = props.relayCache ?? new UserRelaysCache(props.db?.userRelays);
-    this.#profileCache = props.profileCache ?? new UserProfileCache(props.db?.users);
-    this.#relayMetricsCache = props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics);
-    this.#eventsCache = props.eventsCache ?? new EventsCache(props.db?.events);
+    this.relayCache = props.relayCache ?? new UserRelaysCache(props.db?.userRelays);
+    this.profileCache = props.profileCache ?? new UserProfileCache(props.db?.users);
+    this.relayMetricsCache = props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics);
+    this.eventsCache = props.eventsCache ?? new EventsCache(props.db?.events);
 
-    this.#profileLoader = new ProfileLoaderService(this, this.#profileCache);
-    this.#relayMetrics = new RelayMetricHandler(this.#relayMetricsCache);
-    this.#relayLoader = new RelayMetadataLoader(this, this.#relayCache);
+    this.profileLoader = new ProfileLoaderService(this, this.profileCache);
+    this.relayMetricsHandler = new RelayMetricHandler(this.relayMetricsCache);
+    this.relayLoader = new RelayMetadataLoader(this, this.relayCache);
     this.#worker = new Worker(scriptPath, {
       name: "SystemWorker",
       type: "module",
@@ -86,7 +92,7 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
     return undefined;
   }
 
-  Query<T extends NoteStore>(type: new () => T, req: RequestBuilder): QueryLike {
+  Query(req: RequestBuilder): QueryLike {
     const chan = this.#workerRpc<[RequestBuilder], { id: string; port: MessagePort }>(WorkerCommand.Query, [req]);
     return {
       on: (_: "event", cb) => {
@@ -128,18 +134,6 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
 
   WriteOnceToRelay(relay: string, ev: NostrEvent): Promise<OkResponse> {
     throw new Error("Method not implemented.");
-  }
-
-  get ProfileLoader(): ProfileLoaderService {
-    return this.#profileLoader;
-  }
-
-  get RelayCache(): RelayCache {
-    return this.#relayCache;
-  }
-
-  get Optimizer(): Optimizer {
-    return DefaultOptimizer;
   }
 
   #workerRpc<T, R>(type: WorkerCommand, data?: T, timeout = 5_000) {

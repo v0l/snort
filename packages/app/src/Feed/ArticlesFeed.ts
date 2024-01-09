@@ -1,4 +1,4 @@
-import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
+import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
@@ -15,5 +15,5 @@ export function useArticles() {
     return rb;
   }, [follows.timestamp]);
 
-  return useRequestBuilder(NoteCollection, sub);
+  return useRequestBuilder(sub);
 }

@@ -23,7 +23,7 @@ export function FollowsRelayHealth({
   const uniqueFollows = dedupe(follows.item);
 
   const hasRelays = useMemo(() => {
-    return uniqueFollows.filter(a => (system.RelayCache.getFromCache(a)?.relays.length ?? 0) > 0);
+    return uniqueFollows.filter(a => (system.relayCache.getFromCache(a)?.relays.length ?? 0) > 0);
   }, [uniqueFollows]);
 
   const missingRelays = useMemo(() => {
@@ -31,7 +31,7 @@ export function FollowsRelayHealth({
   }, [hasRelays]);
 
   const topWriteRelays = useMemo(() => {
-    return pickTopRelays(system.RelayCache, uniqueFollows, 1e31, "write");
+    return pickTopRelays(system.relayCache, uniqueFollows, 1e31, "write");
   }, [uniqueFollows]);
 
   return (

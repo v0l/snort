@@ -6,14 +6,13 @@ import { SnortContext } from "./context";
 /**
  * Send a query to the relays and wait for data
  */
-const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TStore["getSnapshotData"]>>(
-  type: { new (): TStore },
+const useRequestBuilder = (
   rb: RequestBuilder | null,
 ) => {
   const system = useContext(SnortContext);
   const subscribe = (onChanged: () => void) => {
     if (rb) {
-      const q = system.Query<TStore>(type, rb);
+      const q = system.Query(rb);
       q.on("event", onChanged);
       q.uncancel();
       return () => {
@@ -25,14 +24,14 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
       // noop
     };
   };
-  const getState = (): StoreSnapshot<TSnapshot> => {
+  const getState = () => {
     const q = system.GetQuery(rb?.id ?? "");
     if (q) {
-      return q.snapshot as StoreSnapshot<TSnapshot>;
+      return q.snapshot;
     }
-    return EmptySnapshot as StoreSnapshot<TSnapshot>;
+    return EmptySnapshot;
   };
-  return useSyncExternalStore<StoreSnapshot<TSnapshot>>(
+  return useSyncExternalStore(
     v => subscribe(v),
     () => getState(),
   );

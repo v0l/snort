@@ -30,5 +30,5 @@ export function useReactions(
     return rb.numFilters > 0 ? rb : null;
   }, [ids]);
 
-  return useRequestBuilder(NoteCollection, sub);
+  return useRequestBuilder(sub);
 }

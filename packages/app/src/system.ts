@@ -30,20 +30,19 @@ System.on("event", (_, ev) => {
   socialGraphInstance.handleEvent(ev);
 });
 
+System.profileCache.on("change", keys => {
+  const changed = removeUndefined(keys.map(a => System.profileCache.getFromCache(a)));
+  changed.forEach(addCachedMetadataToFuzzySearch);
+});
+
 /**
  * Add profile loader fn
  */
 if (CONFIG.httpCache) {
-  System.ProfileLoader.loaderFn = async (keys: Array<string>) => {
+  System.profileLoader.loaderFn = async (keys: Array<string>) => {
     return removeUndefined(await Promise.all(keys.map(a => fetchProfile(a))));
   };
 }
-
-setTimeout(() => {
-  System.UserProfileCache.snapshot().forEach(a => {
-    addCachedMetadataToFuzzySearch(a);
-  });
-}, 2000);
 
 export async function fetchProfile(key: string) {
   try {

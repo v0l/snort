@@ -205,7 +205,7 @@ export function pickTopRelays(cache: RelayCache, authors: Array<string>, n: numb
 export async function pickRelaysForReply(ev: NostrEvent, system: SystemInterface, pickN?: number) {
   const recipients = dedupe(ev.tags.filter(a => a[0] === "p").map(a => a[1]));
   await updateRelayLists(recipients, system);
-  const relays = pickTopRelays(system.RelayCache, recipients, pickN ?? DefaultPickNRelays, "read");
+  const relays = pickTopRelays(system.relayCache, recipients, pickN ?? DefaultPickNRelays, "read");
   const ret = removeUndefined(dedupe(relays.map(a => a.relays).flat()));
   logger("Picked %O from authors %O", ret, recipients);
   return ret;
@@ -247,15 +247,15 @@ export function parseRelaysFromKind(ev: NostrEvent) {
 }
 
 export async function updateRelayLists(authors: Array<string>, system: SystemInterface) {
-  await system.RelayCache.buffer(authors);
+  await system.relayCache.buffer(authors);
   const expire = unixNowMs() - RelayListCacheExpire;
-  const expired = authors.filter(a => (system.RelayCache.getFromCache(a)?.loaded ?? 0) < expire);
+  const expired = authors.filter(a => (system.relayCache.getFromCache(a)?.loaded ?? 0) < expire);
   if (expired.length > 0) {
     logger("Updating relays for authors: %O", expired);
     const rb = new RequestBuilder("system-update-relays-for-outbox");
     rb.withFilter().authors(expired).kinds([EventKind.Relays, EventKind.ContactList]);
     const relayLists = await system.Fetch(rb);
-    await system.RelayCache.bulkSet(
+    await system.relayCache.bulkSet(
       removeUndefined(
         relayLists.map(a => {
           const relays = parseRelaysFromKind(a);

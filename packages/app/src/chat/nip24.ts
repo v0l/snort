@@ -12,7 +12,7 @@ export class Nip24ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
   constructor(cache: GiftWrapCache) {
     super();
     this.#cache = cache;
-    this.#cache.hook(() => this.notifyChange(), "*");
+    this.#cache.on("change", () => this.notifyChange());
   }
 
   subscription() {

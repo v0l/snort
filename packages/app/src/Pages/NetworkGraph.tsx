@@ -146,7 +146,7 @@ const NetworkGraph = () => {
         const node = {
           id: UID,
           address: pubkey,
-          profile: system.ProfileLoader.Cache.getFromCache(pubkey),
+          profile: system.profileLoader.cache.getFromCache(pubkey),
           distance,
           inboundCount,
           outboundCount,

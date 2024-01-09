@@ -1,15 +1,19 @@
 import debug from "debug";
 import EventEmitter from "eventemitter3";
-import { BuiltRawReqFilter, NoteCollection, NoteStore, RequestBuilder, SystemInterface, TaggedNostrEvent } from ".";
+import { BuiltRawReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from ".";
 import { Query, TraceReport } from "./query";
 import { unwrap } from "@snort/shared";
+import { FilterCacheLayer, IdsFilterCacheLayer } from "./filter-cache-layer";
+import { trimFilters } from "./request-trim";
 
 interface NostrQueryManagerEvents {
   change: () => void;
   trace: (report: TraceReport) => void;
-  sendQuery: (q: Query, filter: BuiltRawReqFilter) => void;
 }
 
+/**
+ * Query manager handles sending requests to the nostr network
+ */
 export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
   #log = debug("NostrQueryManager");
 
@@ -23,9 +27,15 @@ export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
    */
   #system: SystemInterface;
 
+  /**
+   * Query cache processing layers which can take data from a cache
+   */
+  #queryCacheLayers: Array<FilterCacheLayer> = [];
+
   constructor(system: SystemInterface) {
     super();
     this.#system = system;
+    this.#queryCacheLayers.push(new IdsFilterCacheLayer(system.eventsCache));
 
     setInterval(() => this.#cleanup(), 1_000);
   }
@@ -37,34 +47,21 @@ export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
   /**
    * Compute query to send to relays
    */
-  query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): Query {
+  query(req: RequestBuilder): Query {
     const existing = this.#queries.get(req.id);
     if (existing) {
-      // if same instance, just return query
-      if (existing.fromInstance === req.instance) {
-        return existing;
-      }
-      const filters = !req.options?.skipDiff ? req.buildDiff(this.#system, existing.filters) : req.build(this.#system);
-      if (filters.length === 0 && !!req.options?.skipDiff) {
-        return existing;
-      } else {
-        for (const subQ of filters) {
-          this.emit("sendQuery", existing, subQ);
-        }
+      if (existing.addRequest(req)) {
         this.emit("change");
-        return existing;
       }
+      return existing;
     } else {
-      const store = new type();
-
-      const filters = req.build(this.#system);
-      const q = new Query(req.id, req.instance, store, req.options?.leaveOpen, req.options?.timeout);
+      const q = new Query(this.#system, req);
       q.on("trace", r => this.emit("trace", r));
+      q.on("filters", fx => {
+        this.#send(q, fx);
+      });
 
       this.#queries.set(req.id, q);
-      for (const subQ of filters) {
-        this.emit("sendQuery", q, subQ);
-      }
       this.emit("change");
       return q;
     }
@@ -74,10 +71,8 @@ export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
    * Async fetch results
    */
   fetch(req: RequestBuilder, cb?: (evs: ReadonlyArray<TaggedNostrEvent>) => void) {
-    const q = this.query(NoteCollection, req);
+    const q = this.query(req);
     return new Promise<Array<TaggedNostrEvent>>(resolve => {
-      let t: ReturnType<typeof setTimeout> | undefined;
-      let tBuf: Array<TaggedNostrEvent> = [];
       if (cb) {
         q.feed.on("event", cb);
       }
@@ -85,7 +80,7 @@ export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
         if (!loading) {
           q.feed.off("event");
           q.cancel();
-          resolve(unwrap((q.feed as NoteCollection).snapshot.data));
+          resolve(unwrap(q.snapshot.data));
         }
       });
     });
@@ -97,6 +92,56 @@ export class NostrQueryManager extends EventEmitter<NostrQueryManagerEvents> {
     }
   }
 
+  async #send(q: Query, qSend: BuiltRawReqFilter) {
+    for (const qfl of this.#queryCacheLayers) {
+      qSend = await qfl.processFilter(q, qSend);
+    }
+    for (const f of qSend.filters) {
+      if (f.authors) {
+        this.#system.relayLoader.TrackKeys(f.authors);
+      }
+    }
+
+    // check for empty filters
+    const fNew = trimFilters(qSend.filters);
+    if (fNew.length === 0) {
+      return;
+    }
+    qSend.filters = fNew;
+
+    if (qSend.relay) {
+      this.#log("Sending query to %s %O", qSend.relay, qSend);
+      const s = this.#system.pool.getConnection(qSend.relay);
+      if (s) {
+        const qt = q.sendToRelay(s, qSend);
+        if (qt) {
+          return [qt];
+        }
+      } else {
+        const nc = await this.#system.pool.connect(qSend.relay, { read: true, write: true }, true);
+        if (nc) {
+          const qt = q.sendToRelay(nc, qSend);
+          if (qt) {
+            return [qt];
+          }
+        } else {
+          console.warn("Failed to connect to new relay for:", qSend.relay, q);
+        }
+      }
+    } else {
+      const ret = [];
+      for (const [a, s] of this.#system.pool) {
+        if (!s.Ephemeral) {
+          this.#log("Sending query to %s %O", a, qSend);
+          const qt = q.sendToRelay(s, qSend);
+          if (qt) {
+            ret.push(qt);
+          }
+        }
+      }
+      return ret;
+    }
+  }
   #cleanup() {
     let changed = false;
     for (const [k, v] of this.#queries) {

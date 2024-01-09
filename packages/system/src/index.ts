@@ -1,11 +1,13 @@
 import { RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
 import { RequestBuilder } from "./request-builder";
-import { NoteStore, NoteStoreSnapshotData, StoreSnapshot } from "./note-collection";
+import { NoteCollection, NoteStore, NoteStoreSnapshotData, StoreSnapshot } from "./note-collection";
 import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { ProfileLoaderService } from "./profile-cache";
-import { RelayCache } from "./outbox-model";
+import { RelayCache, RelayMetadataLoader } from "./outbox-model";
 import { Optimizer } from "./query-optimizer";
 import { base64 } from "@scure/base";
+import { FeedCache } from "@snort/shared";
+import { ConnectionPool } from "nostr-connection-pool";
 
 export { NostrSystem } from "./nostr-system";
 export { default as EventKind } from "./event-kind";
@@ -49,7 +51,7 @@ export interface QueryLike {
   off: (event: "event", fn?: (evs: Array<TaggedNostrEvent>) => void) => void;
   cancel: () => void;
   uncancel: () => void;
-  get snapshot(): StoreSnapshot<NoteStoreSnapshotData>;
+  get snapshot(): StoreSnapshot<Array<TaggedNostrEvent>>;
 }
 
 export interface SystemInterface {
@@ -76,10 +78,9 @@ export interface SystemInterface {
 
   /**
    * Open a new query to relays
-   * @param type Store type
    * @param req Request to send to relays
    */
-  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): QueryLike;
+  Query(req: RequestBuilder): QueryLike;
 
   /**
    * Fetch data from nostr relays asynchronously
@@ -123,17 +124,32 @@ export interface SystemInterface {
   /**
    * Profile cache/loader
    */
-  get ProfileLoader(): ProfileLoaderService;
+  get profileLoader(): ProfileLoaderService;
 
   /**
    * Relay cache for "Gossip" model
    */
-  get RelayCache(): RelayCache;
+  get relayCache(): RelayCache;
 
   /**
    * Query optimizer
    */
-  get Optimizer(): Optimizer;
+  get optimizer(): Optimizer;
+
+  /**
+   * Generic cache store for events
+   */
+  get eventsCache(): FeedCache<NostrEvent>;
+
+  /**
+   * Relay loader loads relay metadata for a set of profiles
+   */
+  get relayLoader(): RelayMetadataLoader;
+
+  /**
+   * Main connection pool
+   */
+  get pool(): ConnectionPool;
 }
 
 export interface SystemSnapshot {

@@ -44,6 +44,6 @@ export class FollowListCache extends RefreshFeedCache<TaggedNostrEvent> {
 
   override async preload() {
     await super.preload();
-    this.snapshot().forEach(e => socialGraphInstance.handleEvent(e));
+    this.cache.forEach(e => socialGraphInstance.handleEvent(e));
   }
 }

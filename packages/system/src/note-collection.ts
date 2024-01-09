@@ -3,7 +3,7 @@ import { EventExt, EventType, TaggedNostrEvent, u256 } from ".";
 import { findTag } from "./utils";
 import EventEmitter from "eventemitter3";
 
-export interface StoreSnapshot<TSnapshot> {
+export interface StoreSnapshot<TSnapshot extends NoteStoreSnapshotData> {
   data: TSnapshot | undefined;
   clear: () => void;
   loading: () => boolean;
@@ -19,7 +19,7 @@ export const EmptySnapshot = {
   add: () => {
     // empty
   },
-} as StoreSnapshot<FlatNoteStore>;
+} as StoreSnapshot<Array<TaggedNostrEvent>>;
 
 export type NoteStoreSnapshotData = Array<TaggedNostrEvent> | TaggedNostrEvent;
 export type NoteStoreHook = () => void;

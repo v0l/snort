@@ -24,7 +24,8 @@ export type ConnectionPool = {
   disconnect(address: string): void;
   broadcast(system: SystemInterface, ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]>;
   broadcastTo(address: string, ev: NostrEvent): Promise<OkResponse>;
-} & EventEmitter<NostrConnectionPoolEvents>;
+} & EventEmitter<NostrConnectionPoolEvents> &
+  Iterable<[string, Connection]>;
 
 /**
  * Simple connection pool containing connections to multiple nostr relays

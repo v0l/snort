@@ -1,5 +1,5 @@
 import { unixNow } from "@snort/shared";
-import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
+import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useCallback, useMemo } from "react";
 
@@ -116,7 +116,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb?.builder ?? null;
   }, [until, since, options.method, pref, createBuilder]);
 
-  const main = useRequestBuilder(NoteCollection, sub);
+  const main = useRequestBuilder(sub);
 
   const subRealtime = useMemo(() => {
     const rb = createBuilder();
@@ -130,7 +130,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     return rb?.builder ?? null;
   }, [pref.autoShowLatest, createBuilder]);
 
-  const latest = useRequestBuilder(NoteCollection, subRealtime);
+  const latest = useRequestBuilder(subRealtime);
 
   return {
     main: main.data,

@@ -10,16 +10,23 @@ export function useUserProfile(pubKey?: HexKey): CachedMetadata | undefined {
   return useSyncExternalStore<CachedMetadata | undefined>(
     h => {
       if (pubKey) {
-        system.ProfileLoader.TrackKeys(pubKey);
+        const handler = (keys: Array<string>) => {
+          if (keys.includes(pubKey)) {
+            h();
+          }
+        };
+        system.profileLoader.cache.on("change", handler);
+        system.profileLoader.TrackKeys(pubKey);
+
+        return () => {
+          system.profileLoader.cache.off("change", handler);
+          system.profileLoader.UntrackKeys(pubKey);
+        };
       }
-      const release = system.ProfileLoader.Cache.hook(h, pubKey);
       return () => {
-        release();
-        if (pubKey) {
-          system.ProfileLoader.UntrackKeys(pubKey);
-        }
+        // noop
       };
     },
-    () => system.ProfileLoader.Cache.getFromCache(pubKey),
+    () => system.profileLoader.cache.getFromCache(pubKey),
   );
 }

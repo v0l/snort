@@ -1,5 +1,5 @@
 import { unixNow } from "@snort/shared";
-import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
+import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
@@ -18,7 +18,7 @@ export default function useHashtagsFeed() {
   }, [hashtags]);
 
   return {
-    data: useRequestBuilder(NoteCollection, sub),
+    data: useRequestBuilder(sub),
     hashtags,
   };
 }

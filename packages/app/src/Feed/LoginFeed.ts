@@ -1,9 +1,9 @@
-import { EventKind, NostrLink, NoteCollection, parseRelayTags, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrLink, parseRelayTags, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { usePrevious } from "@uidotdev/usehooks";
 import { useEffect, useMemo } from "react";
 
-import { FollowLists, FollowsFeed, GiftsCache, Notifications, UserRelays } from "@/Cache";
+import { FollowLists, FollowsFeed, GiftsCache, Notifications } from "@/Cache";
 import { Nip4Chats, Nip28Chats } from "@/chat";
 import { Nip28ChatSystem } from "@/chat/nip28";
 import useEventPublisher from "@/Hooks/useEventPublisher";
@@ -96,7 +96,7 @@ export default function useLoginFeed() {
     return b;
   }, [login]);
 
-  const loginFeed = useRequestBuilder(NoteCollection, subLogin);
+  const loginFeed = useRequestBuilder(subLogin);
 
   // update relays and follow lists
   useEffect(() => {
@@ -219,7 +219,6 @@ export default function useLoginFeed() {
   }, [loginFeed]);
 
   useEffect(() => {
-    UserRelays.buffer(follows.item).catch(console.error);
-    system.ProfileLoader.TrackKeys(follows.item); // always track follows profiles
+    system.profileLoader.TrackKeys(follows.item); // always track follows profiles
   }, [follows.item]);
 }

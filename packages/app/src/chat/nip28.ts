@@ -19,7 +19,7 @@ import { LoginSession } from "@/Utils/Login";
 
 export class Nip28ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
   #cache: FeedCache<NostrEvent>;
-  #log = debug("NIP-04");
+  #log = debug("NIP-28");
   readonly ChannelKinds = [
     EventKind.PublicChatChannel,
     EventKind.PublicChatMessage,

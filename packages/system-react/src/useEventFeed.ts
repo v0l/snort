@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { RequestBuilder, ReplaceableNoteStore, NostrLink, NoteCollection } from "@snort/system";
+import { RequestBuilder, NostrLink } from "@snort/system";
 import { useRequestBuilder } from "./useRequestBuilder";
 
 export function useEventFeed(link: NostrLink) {
@@ -9,7 +9,7 @@ export function useEventFeed(link: NostrLink) {
     return b;
   }, [link]);
 
-  return useRequestBuilder(ReplaceableNoteStore, sub);
+  return useRequestBuilder(sub);
 }
 
 export function useEventsFeed(id: string, links: Array<NostrLink>) {
@@ -19,5 +19,5 @@ export function useEventsFeed(id: string, links: Array<NostrLink>) {
     return b;
   }, [id, links]);
 
-  return useRequestBuilder(NoteCollection, sub);
+  return useRequestBuilder(sub);
 }

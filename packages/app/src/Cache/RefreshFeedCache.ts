@@ -24,7 +24,6 @@ export abstract class RefreshFeedCache<T> extends FeedCache<TWithCreated<T>> {
 
   override async preload(): Promise<void> {
     await super.preload();
-    // load all dms to memory
     await this.buffer([...this.onTable]);
   }
 }

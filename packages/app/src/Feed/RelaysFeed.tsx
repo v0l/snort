@@ -1,4 +1,4 @@
-import { EventKind, HexKey, parseRelayTags, ReplaceableNoteStore, RequestBuilder } from "@snort/system";
+import { EventKind, HexKey, parseRelayTags, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
@@ -10,6 +10,6 @@ export default function useRelaysFeed(pubkey?: HexKey) {
     return b;
   }, [pubkey]);
 
-  const relays = useRequestBuilder(ReplaceableNoteStore, sub);
-  return parseRelayTags(relays.data?.tags.filter(a => a[0] === "r") ?? []);
+  const relays = useRequestBuilder(sub);
+  return parseRelayTags(relays.data?.[0].tags.filter(a => a[0] === "r") ?? []);
 }

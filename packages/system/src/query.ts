@@ -3,9 +3,9 @@ import debug from "debug";
 import EventEmitter from "eventemitter3";
 import { unixNowMs, unwrap } from "@snort/shared";
 
-import { Connection, ReqFilter, Nips, TaggedNostrEvent } from ".";
-import { NoteStore } from "./note-collection";
-import { BuiltRawReqFilter } from "./request-builder";
+import { Connection, ReqFilter, Nips, TaggedNostrEvent, SystemInterface } from ".";
+import { NoteCollection, NoteStore } from "./note-collection";
+import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { eventMatchesFilter } from "./request-matcher";
 
 interface QueryTraceEvents {
@@ -89,23 +89,6 @@ export class QueryTrace extends EventEmitter<QueryTraceEvents> {
   }
 }
 
-export interface QueryBase {
-  /**
-   * Uniquie ID of this query
-   */
-  id: string;
-
-  /**
-   * The query payload (REQ filters)
-   */
-  filters: Array<ReqFilter>;
-
-  /**
-   * List of relays to send this query to
-   */
-  relays?: Array<string>;
-}
-
 export interface TraceReport {
   id: string;
   conn: Connection;
@@ -116,22 +99,28 @@ export interface TraceReport {
 
 interface QueryEvents {
   trace: (report: TraceReport) => void;
+  filters: (req: BuiltRawReqFilter) => void;
   event: (evs: ReadonlyArray<TaggedNostrEvent>) => void;
 }
 
 /**
  * Active or queued query on the system
  */
-export class Query extends EventEmitter<QueryEvents> implements QueryBase {
+export class Query extends EventEmitter<QueryEvents> {
   /**
-   * Uniquie ID of this query
+   * Unique id of this query
    */
-  id: string;
+  readonly id: string;
 
   /**
    * RequestBuilder instance
    */
-  fromInstance: string;
+  requests: Array<RequestBuilder> = [];
+
+  /**
+   * Nostr system interface
+   */
+  #system: SystemInterface;
 
   /**
    * Which relays this query has already been executed on
@@ -156,25 +145,64 @@ export class Query extends EventEmitter<QueryEvents> implements QueryBase {
   /**
    * Feed object which collects events
    */
-  #feed: NoteStore;
+  #feed: NoteCollection;
 
   /**
    * Maximum waiting time for this query
    */
   #timeout: number;
 
+  /**
+   * Milliseconds to wait before sending query (debounce)
+   */
+  #groupingDelay?: number;
+
+  /**
+   * Timer which waits for no-change before emitting filters
+   */
+  #groupTimeout?: ReturnType<typeof setTimeout>;
+
   #log = debug("Query");
 
-  constructor(id: string, instance: string, feed: NoteStore, leaveOpen?: boolean, timeout?: number) {
+  constructor(system: SystemInterface, req: RequestBuilder) {
     super();
-    this.id = id;
-    this.#feed = feed;
-    this.fromInstance = instance;
-    this.#leaveOpen = leaveOpen ?? false;
-    this.#timeout = timeout ?? 5_000;
+    this.id = uuid();
+    this.requests.push(req);
+    this.#system = system;
+    this.#feed = new NoteCollection();
+    this.#leaveOpen = req.options?.leaveOpen ?? false;
+    this.#timeout = req.options?.timeout ?? 5_000;
+    this.#groupingDelay = req.options?.groupingDelay ?? 100;
     this.#checkTraces();
 
     this.feed.on("event", evs => this.emit("event", evs));
+  }
+
+  /**
+   * Adds another request to this one
+   */
+  addRequest(req: RequestBuilder) {
+    if (this.#groupTimeout) {
+      clearTimeout(this.#groupTimeout);
+      this.#groupTimeout = undefined;
+    }
+    if (this.requests.some(a => a.instance === req.instance)) {
+      // already exists, nothing to add
+      return false;
+    }
+    if (this.requests.some(a => a.options?.skipDiff !== req.options?.skipDiff)) {
+      throw new Error("Mixing skipDiff option is not supported");
+    }
+    this.requests.push(req);
+
+    if (this.#groupingDelay) {
+      this.#groupTimeout = setTimeout(() => {
+        this.#emitFilters();
+      }, this.#groupingDelay);
+    } else {
+      this.#emitFilters();
+    }
+    return true;
   }
 
   isOpen() {
@@ -232,7 +260,7 @@ export class Query extends EventEmitter<QueryEvents> implements QueryBase {
   /**
    * Insert a new trace as a placeholder
    */
-  insertCompletedTrace(subq: BuiltRawReqFilter, data: Readonly<Array<TaggedNostrEvent>>) {
+  insertCompletedTrace(subq: BuiltRawReqFilter, data: Array<TaggedNostrEvent>) {
     const qt = new QueryTrace(subq.relay, subq.filters, "");
     qt.sentToRelay();
     qt.gotEose();
@@ -286,6 +314,24 @@ export class Query extends EventEmitter<QueryEvents> implements QueryBase {
       return 0;
     }
     return thisProgress;
+  }
+
+  #emitFilters() {
+    if (this.requests.every(a => !!a.options?.skipDiff)) {
+      const existing = this.filters;
+      const rb = new RequestBuilder(this.id);
+      this.requests.forEach(a => rb.add(a));
+      const filters = rb.buildDiff(this.#system, existing);
+      filters.forEach(f => this.emit("filters", f));
+      this.requests = [];
+    } else {
+      // send without diff
+      const rb = new RequestBuilder(this.id);
+      this.requests.forEach(a => rb.add(a));
+      const filters = rb.build(this.#system);
+      filters.forEach(f => this.emit("filters", f));
+      this.requests = [];
+    }
   }
 
   #onProgress() {

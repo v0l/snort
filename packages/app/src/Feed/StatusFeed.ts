@@ -1,5 +1,5 @@
 import { unixNow } from "@snort/shared";
-import { EventKind, NoteCollection, RequestBuilder } from "@snort/system";
+import { EventKind, RequestBuilder } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { useMemo } from "react";
 
@@ -18,7 +18,7 @@ export function useStatusFeed(id?: string, leaveOpen = false) {
     return rb;
   }, [id]);
 
-  const status = useRequestBuilder(NoteCollection, sub);
+  const status = useRequestBuilder(sub);
 
   const statusFiltered = status.data?.filter(a => {
     const exp = Number(findTag(a, "expiration"));

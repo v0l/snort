@@ -33,7 +33,10 @@ export class NotificationsCache extends RefreshFeedCache<NostrEventForSession> {
           forSession: pubKey,
         })),
       );
-      this.notifyChange(filtered.map(v => this.key(v)));
+      this.emit(
+        "change",
+        filtered.map(v => this.key(v)),
+      );
     }
   }
 

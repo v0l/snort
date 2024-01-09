@@ -1,7 +1,6 @@
 import { FeedCache, unixNowMs } from "@snort/shared";
-import { Connection } from "connection";
-import { RelayMetrics } from "cache";
-import { TraceReport } from "query";
+import { RelayMetrics } from "./cache";
+import { TraceReport } from "./query";
 
 export class RelayMetricHandler {
   readonly #cache: FeedCache<RelayMetrics>;
