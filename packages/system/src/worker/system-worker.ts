@@ -98,7 +98,7 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
       on: (_: "event", cb) => {
         chan.then(c => {
           c.port.onmessage = e => {
-            cb?.(e.data as Array<TaggedNostrEvent>);
+            //cb(e.data as Array<TaggedNostrEvent>);
           };
         });
       },
