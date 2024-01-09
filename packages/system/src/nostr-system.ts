@@ -20,6 +20,7 @@ import {
   UsersRelays,
   SnortSystemDb,
   EventExt,
+  QueryLike,
 } from ".";
 import { EventsCache } from "./cache/events";
 import { RelayCache, RelayMetadataLoader } from "./outbox-model";
@@ -224,16 +225,16 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.#pool.disconnect(address);
   }
 
-  GetQuery(id: string): Query | undefined {
-    return this.#queryManager.get(id);
+  GetQuery(id: string): QueryLike | undefined {
+    return this.#queryManager.get(id) as QueryLike;
   }
 
   Fetch(req: RequestBuilder, cb?: (evs: ReadonlyArray<TaggedNostrEvent>) => void) {
     return this.#queryManager.fetch(req, cb);
   }
 
-  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): Query {
-    return this.#queryManager.query(type, req);
+  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): QueryLike {
+    return this.#queryManager.query(type, req) as QueryLike;
   }
 
   async #sendQuery(q: Query, qSend: BuiltRawReqFilter) {

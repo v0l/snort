@@ -14,10 +14,10 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
   const subscribe = (onChanged: () => void) => {
     if (rb) {
       const q = system.Query<TStore>(type, rb);
-      q.feed.on("event", onChanged);
+      q.on("event", onChanged);
       q.uncancel();
       return () => {
-        q.feed.off("event", onChanged);
+        q.off("event", onChanged);
         q.cancel();
       };
     }
@@ -28,7 +28,7 @@ const useRequestBuilder = <TStore extends NoteStore, TSnapshot = ReturnType<TSto
   const getState = (): StoreSnapshot<TSnapshot> => {
     const q = system.GetQuery(rb?.id ?? "");
     if (q) {
-      return unwrap(q).feed?.snapshot as StoreSnapshot<TSnapshot>;
+      return q.snapshot as StoreSnapshot<TSnapshot>;
     }
     return EmptySnapshot as StoreSnapshot<TSnapshot>;
   };

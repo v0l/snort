@@ -116,6 +116,7 @@ export interface TraceReport {
 
 interface QueryEvents {
   trace: (report: TraceReport) => void;
+  event: (evs: ReadonlyArray<TaggedNostrEvent>) => void;
 }
 
 /**
@@ -172,6 +173,8 @@ export class Query extends EventEmitter<QueryEvents> implements QueryBase {
     this.#leaveOpen = leaveOpen ?? false;
     this.#timeout = timeout ?? 5_000;
     this.#checkTraces();
+
+    this.feed.on("event", evs => this.emit("event", evs));
   }
 
   isOpen() {
@@ -191,6 +194,10 @@ export class Query extends EventEmitter<QueryEvents> implements QueryBase {
 
   get feed() {
     return this.#feed;
+  }
+
+  get snapshot() {
+    return this.#feed.snapshot;
   }
 
   handleEvent(sub: string, e: TaggedNostrEvent) {

@@ -1,7 +1,6 @@
 import { RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
 import { RequestBuilder } from "./request-builder";
-import { NoteStore, NoteStoreSnapshotData } from "./note-collection";
-import { Query } from "./query";
+import { NoteStore, NoteStoreSnapshotData, StoreSnapshot } from "./note-collection";
 import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { ProfileLoaderService } from "./profile-cache";
 import { RelayCache } from "./outbox-model";
@@ -43,7 +42,15 @@ export * from "./cache/user-relays";
 export * from "./cache/user-metadata";
 export * from "./cache/relay-metric";
 
-export * from "./worker";
+export * from "./worker/system-worker";
+
+export interface QueryLike {
+  on: (event: "event", fn?: (evs: Array<TaggedNostrEvent>) => void) => void;
+  off: (event: "event", fn?: (evs: Array<TaggedNostrEvent>) => void) => void;
+  cancel: () => void;
+  uncancel: () => void;
+  get snapshot(): StoreSnapshot<NoteStoreSnapshotData>;
+}
 
 export interface SystemInterface {
   /**
@@ -65,14 +72,14 @@ export interface SystemInterface {
    * Get an active query by ID
    * @param id Query ID
    */
-  GetQuery(id: string): Query | undefined;
+  GetQuery(id: string): QueryLike | undefined;
 
   /**
    * Open a new query to relays
    * @param type Store type
    * @param req Request to send to relays
    */
-  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): Query;
+  Query<T extends NoteStore>(type: { new (): T }, req: RequestBuilder): QueryLike;
 
   /**
    * Fetch data from nostr relays asynchronously

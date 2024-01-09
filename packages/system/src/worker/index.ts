@@ -4,6 +4,8 @@ export const enum WorkerCommand {
   Init,
   ConnectRelay,
   DisconnectRelay,
+  Query,
+  QueryResult,
 }
 
 export interface WorkerMessage<T> {

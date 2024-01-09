@@ -34,6 +34,7 @@ export default defineConfig({
   assetsInclude: ["**/*.md", "**/*.wasm"],
   build: {
     outDir: "build",
+    commonjsOptions: { transformMixedEsModules: true },
   },
   clearScreen: false,
   publicDir: appConfig.get("publicDir"),
@@ -50,5 +51,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
+  },
+  worker: {
+    format: "es",
   },
 });
