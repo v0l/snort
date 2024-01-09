@@ -334,9 +334,6 @@
     "defaultMessage": "Parent",
     "description": "Link to parent note in thread"
   },
-  "AIgmDy": {
-    "defaultMessage": "Add up to 4 hashtags"
-  },
   "ALdW69": {
     "defaultMessage": "Note by {name}"
   },
@@ -1169,14 +1166,8 @@
   "d7d0/x": {
     "defaultMessage": "LN Address"
   },
-  "d8gpCh": {
-    "defaultMessage": "Try to use less than 5 hashtags to stay on topic 🙏"
-  },
   "dOQCL8": {
     "defaultMessage": "Display name"
-  },
-  "ddd3JX": {
-    "defaultMessage": "Popular Hashtags"
   },
   "deEeEI": {
     "defaultMessage": "Register"

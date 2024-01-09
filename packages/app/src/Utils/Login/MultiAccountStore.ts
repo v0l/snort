@@ -63,6 +63,10 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
 
   constructor() {
     super();
+    if (typeof ServiceWorkerGlobalScope !== "undefined" && self instanceof ServiceWorkerGlobalScope) {
+      // return if sw. we might want to use localForage (idb) to share keys between sw and app
+      return;
+    }
     const existing = window.localStorage.getItem(AccountStoreKey);
     if (existing) {
       const logins = JSON.parse(existing);
@@ -204,8 +208,8 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       preferences: deepClone(DefaultPreferences),
     } as LoginSession;
 
-    if ("nostr_os" in window && window.nostr_os) {
-      window.nostr_os.saveKey(key.value);
+    if ("nostr_os" in window && window?.nostr_os) {
+      window?.nostr_os.saveKey(key.value);
       newSession.type = LoginSessionType.Nip7os;
       newSession.privateKeyData = undefined;
     }

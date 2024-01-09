@@ -31,9 +31,17 @@ registerRoute(
     cacheName: "image-cache",
     plugins: [
       new ExpirationPlugin({
-        maxEntries: 100,
+        maxEntries: 200,
       }),
     ],
+  }),
+);
+
+registerRoute(
+  ({ url }) => url.pathname.endsWith("api/v1/preview"),
+  new StaleWhileRevalidate({
+    cacheName: "preview-cache",
+    plugins: [new ExpirationPlugin({ maxAgeSeconds: 4 * 60 * 60 })],
   }),
 );
 
