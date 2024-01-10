@@ -3,7 +3,7 @@ import "./index.css";
 import { Outlet, RouteObject } from "react-router-dom";
 
 import Icon from "@/Components/Icons/Icon";
-import { useLocale } from "@/IntlProvider";
+import { useLocale } from "@/Components/IntlProvider/IntlProviderUtils";
 import { AllLanguageCodes } from "@/Pages/settings/Preferences";
 
 import { Discover } from "./discover";

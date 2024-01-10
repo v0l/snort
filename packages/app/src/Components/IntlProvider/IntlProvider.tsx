@@ -1,11 +1,8 @@
-import { ExternalStore } from "@snort/shared";
-import { type ReactNode, useEffect, useState, useSyncExternalStore } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
 
-import useLogin from "@/Hooks/useLogin";
+import { DefaultLocale, useLocale } from "@/Components/IntlProvider/IntlProviderUtils";
 import enMessages from "@/translations/en.json";
-
-const DefaultLocale = "en-US";
 
 const getMessages = (locale: string) => {
   const truncatedLocale = locale.toLowerCase().split(/[_-]+/)[0];
@@ -80,34 +77,6 @@ const getMessages = (locale: string) => {
 
   return matchLang(locale) ?? matchLang(truncatedLocale) ?? Promise.resolve(enMessages);
 };
-
-class LangStore extends ExternalStore<string | null> {
-  setLang(s: string) {
-    localStorage.setItem("lang", s);
-    this.notifyChange();
-  }
-
-  takeSnapshot() {
-    return localStorage.getItem("lang");
-  }
-}
-
-const LangOverride = new LangStore();
-
-export function useLocale() {
-  const { language } = useLogin(s => ({ language: s.appData.item.preferences.language }));
-  const loggedOutLang = useSyncExternalStore(
-    c => LangOverride.hook(c),
-    () => LangOverride.snapshot(),
-  );
-  const locale = language ?? loggedOutLang ?? getLocale();
-  return {
-    locale,
-    lang: locale.toLowerCase().split(/[_-]+/)[0],
-    setOverride: (s: string) => LangOverride.setLang(s),
-  };
-}
-
 export const IntlProvider = ({ children }: { children: ReactNode }) => {
   const { locale } = useLocale();
   const [messages, setMessages] = useState<Record<string, string>>(enMessages);
@@ -127,8 +96,4 @@ export const IntlProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </ReactIntlProvider>
   );
-};
-
-export const getLocale = () => {
-  return (navigator.languages && navigator.languages[0]) ?? navigator.language ?? DefaultLocale;
 };

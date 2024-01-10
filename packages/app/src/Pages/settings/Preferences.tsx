@@ -2,8 +2,8 @@ import "./Preferences.css";
 
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { useLocale } from "@/Components/IntlProvider/IntlProviderUtils";
 import useLogin from "@/Hooks/useLogin";
-import { useLocale } from "@/IntlProvider";
 import { unwrap } from "@/Utils";
 import { DefaultImgProxy } from "@/Utils/Const";
 import { updatePreferences, UserPreferences } from "@/Utils/Login";

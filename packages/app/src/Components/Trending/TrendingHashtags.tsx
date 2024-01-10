@@ -2,10 +2,10 @@ import classNames from "classnames";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
+import { useLocale } from "@/Components/IntlProvider/IntlProviderUtils";
 import PageSpinner from "@/Components/PageSpinner";
 import NostrBandApi from "@/External/NostrBand";
 import useCachedFetch from "@/Hooks/useCachedFetch";
-import { useLocale } from "@/IntlProvider";
 import { HashTagHeader } from "@/Pages/HashTagsPage";
 
 import { ErrorOrOffline } from "../ErrorOrOffline";

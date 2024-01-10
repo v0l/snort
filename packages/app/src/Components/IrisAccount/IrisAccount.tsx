@@ -310,4 +310,6 @@ class IrisAccount extends Component<Props> {
   }
 }
 
-export default injectIntl(IrisAccount);
+const IntlIrisAccount = injectIntl(IrisAccount);
+IntlIrisAccount.displayName = "IrisAccount";
+export default IntlIrisAccount;

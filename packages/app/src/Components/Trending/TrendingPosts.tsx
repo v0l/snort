@@ -7,6 +7,7 @@ import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 import Note from "@/Components/Event/EventComponent";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import ImageGridItem from "@/Components/Feed/ImageGridItem";
+import { useLocale } from "@/Components/IntlProvider/IntlProviderUtils";
 import PageSpinner from "@/Components/PageSpinner";
 import { SpotlightThreadModal } from "@/Components/Spotlight/SpotlightThreadModal";
 import ShortNote from "@/Components/Trending/ShortNote";
@@ -14,7 +15,6 @@ import NostrBandApi from "@/External/NostrBand";
 import useCachedFetch from "@/Hooks/useCachedFetch";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
-import { useLocale } from "@/IntlProvider";
 import { System } from "@/system";
 
 export default function TrendingNotes({ count = Infinity, small = false }: { count: number; small: boolean }) {

@@ -11,9 +11,9 @@ import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-d
 
 import { preload } from "@/Cache";
 import { ThreadRoute } from "@/Components/Event/Thread";
+import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
 import { db } from "@/Db";
 import { updateRelayConnections } from "@/Hooks/useLoginRelays";
-import { IntlProvider } from "@/IntlProvider";
 import { AboutPage } from "@/Pages/About";
 import { SnortDeckLayout } from "@/Pages/DeckLayout";
 import DonatePage from "@/Pages/DonatePage";
