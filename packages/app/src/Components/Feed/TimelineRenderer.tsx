@@ -43,7 +43,12 @@ function Grid({ frags }: { frags: Array<TimelineFragment> }) {
     <>
       <div className="grid grid-cols-3 gap-px md:gap-1">
         {mediaEvents.map((event, index) => (
-          <ImageGridItem key={event.id} event={event} onClick={() => setModalEventIndex(index)} />
+          <ImageGridItem
+            key={event.id}
+            event={event}
+            onClick={() => setModalEventIndex(index)}
+            waitUntilInView={index > 15}
+          />
         ))}
       </div>
       {modalEvent && (

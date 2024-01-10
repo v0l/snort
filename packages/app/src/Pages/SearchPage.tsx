@@ -27,6 +27,7 @@ const SearchPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (keyword === params.keyword) return;
     if (keyword) {
       // "navigate" changing only url
       navigate(`/search/${encodeURIComponent(keyword)}`);
