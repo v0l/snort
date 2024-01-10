@@ -52,7 +52,7 @@ export const ProxyImg = forwardRef<HTMLImageElement, ProxyImgProps>(function Pro
     if (props.onError) {
       props.onError(e);
     } else {
-      if (bypass) {
+      if (bypass && imgSrc !== src) {
         setImgSrc(src ?? "");
       } else {
         setLoadFailed(true);
