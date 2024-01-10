@@ -615,6 +615,7 @@ export function NoteCreator() {
               <FormattedMessage defaultMessage="Reply To" id="8ED/4u" />
             </h4>
             <Note data={note.replyTo} options={replyToNoteOptions} />
+            <hr className="border-border-color border-1 -mx-6" />
           </>
         )}
         {note.quote && (
@@ -623,6 +624,7 @@ export function NoteCreator() {
               <FormattedMessage defaultMessage="Quote Repost" id="C7642/" />
             </h4>
             <Note data={note.quote} options={quoteNoteOptions} />
+            <hr className="border-border-color border-1 -mx-6" />
           </>
         )}
         {note.preview && getPreviewNote()}
