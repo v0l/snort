@@ -1,6 +1,6 @@
-import { ParsedFragment, transformText } from "@snort/system";
+import {transformText} from "@snort/system";
 
-const TextCache = new Map<string, Array<ParsedFragment>>();
+import {TextCache} from "@/Cache/TextCache";
 
 export function transformTextCached(id: string, content: string, tags: Array<Array<string>>) {
   if (content.length > 0) {

@@ -1,23 +1,10 @@
-import { ExternalStore, unwrap } from "@snort/shared";
-import { EventKind, parseNostrLink } from "@snort/system";
-import { useEffect, useSyncExternalStore } from "react";
+import {unwrap} from "@snort/shared";
+import {EventKind, parseNostrLink} from "@snort/system";
+import {useEffect, useSyncExternalStore} from "react";
 
-import { useLinkList } from "./useLists";
+import {LeadersStore} from "@/Cache/CommunityLeadersStore";
 
-class CommunityLeadersStore extends ExternalStore<Array<string>> {
-  #leaders: Array<string> = [];
-
-  setLeaders(arr: Array<string>) {
-    this.#leaders = arr;
-    this.notifyChange();
-  }
-
-  takeSnapshot(): string[] {
-    return [...this.#leaders];
-  }
-}
-
-const LeadersStore = new CommunityLeadersStore();
+import {useLinkList} from "./useLists";
 
 export function useCommunityLeaders() {
   const link = parseNostrLink(unwrap(CONFIG.communityLeaders).list);

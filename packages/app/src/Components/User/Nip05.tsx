@@ -3,12 +3,12 @@ import "./Nip05.css";
 import { HexKey } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 
-export function useIsVerified(pubkey?: HexKey, bypassCheck?: boolean) {
+function useIsVerified(pubkey?: HexKey, bypassCheck?: boolean) {
   const profile = useUserProfile(pubkey);
   return { isVerified: bypassCheck || profile?.isNostrAddressValid };
 }
 
-export interface Nip05Params {
+interface Nip05Params {
   nip05?: string;
   pubkey: HexKey;
   verifyNip?: boolean;

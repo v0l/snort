@@ -5,7 +5,8 @@ import React, { useCallback, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { rootTabItems, RootTabs } from "@/Components/Feed/RootTabs";
+import {rootTabItems} from "@/Components/Feed/RootTabItems";
+import { RootTabs } from "@/Components/Feed/RootTabs";
 import Icon from "@/Components/Icons/Icon";
 import DisplayName from "@/Components/User/DisplayName";
 import useLogin from "@/Hooks/useLogin";

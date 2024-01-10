@@ -1,12 +1,10 @@
-import { bech32ToHex } from "@snort/shared";
-import { EventKind, RequestBuilder } from "@snort/system";
-import { useRequestBuilder } from "@snort/system-react";
-import { useMemo } from "react";
+import {bech32ToHex} from "@snort/shared";
+import {EventKind, RequestBuilder} from "@snort/system";
+import {useRequestBuilder} from "@snort/system-react";
+import {useMemo} from "react";
 
-import { getNewest } from "@/Utils";
-
-// Snort backend publishes rates
-const SnortPubkey = "npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x6802npjqhjjtws";
+import {getNewest} from "@/Utils";
+import {SnortPubkey} from "@/Utils/Const";
 
 export function useRates(symbol: string, leaveOpen = true) {
   const sub = useMemo(() => {
