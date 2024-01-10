@@ -28,19 +28,16 @@ export const onRequest: PagesFunction<Env> = async context => {
   const u = new URL(context.request.url);
 
   const prefixes = ["npub1", "nprofile1", "naddr1", "nevent1", "note1"];
-  const isEntityPath = () => {
-    return prefixes.some(
-      a => u.pathname.startsWith(`/${a}`) || u.pathname.startsWith(`/e/${a}`) || u.pathname.startsWith(`/p/${a}`),
-    );
-  };
-
+  const isEntityPath = prefixes.some(
+    a => u.pathname.startsWith(`/${a}`) || u.pathname.startsWith(`/e/${a}`) || u.pathname.startsWith(`/p/${a}`),
+  );
   const nostrAddress = u.pathname.match(/^\/([a-zA-Z0-9_]+)$/i);
-
   const next = await context.next();
-  if (u.pathname != "/" && (isEntityPath() || nostrAddress)) {
+  if (u.pathname != "/" && (isEntityPath || nostrAddress)) {
+    //console.log("Handeling path: ", u.pathname, isEntityPath, nostrAddress[1]);
     try {
-      let id = nostrAddress ? nostrAddress[1] : u.pathname.split("/").at(-1);
-      if (nostrAddress) {
+      let id = u.pathname.split("/").at(-1);
+      if (!isEntityPath && nostrAddress) {
         const pubkey = await fetchNostrAddress(id, HOST);
         if (pubkey) {
           id = bech32.encode("npub", bech32.toWords(fromHex(pubkey)));
@@ -48,18 +45,19 @@ export const onRequest: PagesFunction<Env> = async context => {
           return next;
         }
       }
-      const rsp = await fetch(
-        `http://nostr.api.v0l.io/api/v1/opengraph/${id}?canonical=${encodeURIComponent(`https://${HOST}/%s`)}`,
-        {
-          method: "POST",
-          body: await next.arrayBuffer(),
-          headers: {
-            "user-agent": `SnortFunctions/1.0 (https://${HOST})`,
-            "content-type": "text/html",
-            accept: "text/html",
-          },
+      const fetchApi = `http://nostr.api.v0l.io/api/v1/opengraph/${id}?canonical=${encodeURIComponent(
+        `https://${HOST}/%s`,
+      )}`;
+      console.log("Fetching tags from: ", fetchApi);
+      const rsp = await fetch(fetchApi, {
+        method: "POST",
+        body: await next.arrayBuffer(),
+        headers: {
+          "user-agent": `SnortFunctions/1.0 (https://${HOST})`,
+          "content-type": "text/html",
+          accept: "text/html",
         },
-      );
+      });
       if (rsp.ok) {
         const body = await rsp.text();
         if (body.length > 0) {
@@ -70,8 +68,8 @@ export const onRequest: PagesFunction<Env> = async context => {
           });
         }
       }
-    } catch {
-      // ignore
+    } catch (e) {
+      console.error(e);
     }
   }
   return next;
