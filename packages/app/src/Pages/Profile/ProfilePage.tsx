@@ -45,14 +45,9 @@ import useHorizontalScroll from "@/Hooks/useHorizontalScroll";
 import { useMuteList, usePinList } from "@/Hooks/useLists";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
-import ProfileTab, {
-  BookMarksTab,
-  FollowersTab,
-  FollowsTab,
-  ProfileTabType,
-  RelaysTab,
-  ZapsProfileTab,
-} from "@/Pages/Profile/ProfileTab";
+import ProfileTab from "@/Pages/Profile/ProfileTab";
+import { BookMarksTab, FollowersTab, FollowsTab, RelaysTab, ZapsProfileTab } from "@/Pages/Profile/ProfileTabs";
+import { ProfileTabType } from "@/Pages/Profile/ProfileTabType";
 import { findTag, hexToBech32, parseId, unwrap } from "@/Utils";
 import { EmailRegex } from "@/Utils/Const";
 import { ZapTarget } from "@/Utils/Zapper";

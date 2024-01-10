@@ -7,14 +7,14 @@ import Icon from "@/Components/Icons/Icon";
 import { ProxyImg } from "@/Components/ProxyImg";
 import getEventMedia from "@/Utils/getEventMedia";
 
-export interface ImageGridItemProps {
+interface ImageGridItemProps {
   event: TaggedNostrEvent;
   onClick?: (event: MouseEvent) => void;
   waitUntilInView?: boolean;
 }
 
-function ImageGridItem(props: ImageGridItemProps) {
-  const { event, onClick } = props;
+const ImageGridItem = memo((props: ImageGridItemProps) => {
+  const { event, onClick, waitUntilInView } = props;
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "0px 0px 3000px 0px" });
 
   const media = getEventMedia(event);
@@ -33,7 +33,7 @@ function ImageGridItem(props: ImageGridItemProps) {
   };
 
   const renderContent = (): ReactNode | undefined => {
-    if (props.waitUntilInView && !inView) return undefined;
+    if (waitUntilInView && !inView) return undefined;
     return (
       <>
         <ProxyImg src={media[0].content} alt="Note Media" size={311} className="w-full h-full object-cover" />
@@ -54,6 +54,8 @@ function ImageGridItem(props: ImageGridItemProps) {
       {renderContent()}
     </Link>
   );
-}
+});
 
-export default memo(ImageGridItem);
+ImageGridItem.displayName = "ImageGridItem";
+
+export default ImageGridItem;

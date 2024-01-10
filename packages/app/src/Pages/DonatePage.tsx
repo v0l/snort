@@ -55,7 +55,7 @@ const Translators = [
   bech32ToHex("npub1ust7u0v3qffejwhqee45r49zgcyewrcn99vdwkednd356c9resyqtnn3mj"), // Petri - FI
 ];
 
-export const DonateLNURL = "donate@snort.social";
+const DonateLNURL = "donate@snort.social";
 
 const DonatePage = () => {
   const [splits, setSplits] = useState<RevenueSplit[]>([]);
