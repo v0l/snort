@@ -1,28 +1,6 @@
 interface Env {}
 
-import { bech32 } from "./bech32";
-import { fromHex } from "./hex";
-
-interface NostrJson {
-  names: Record<string, string>;
-}
-
 const HOST = "snort.social";
-
-async function fetchNostrAddress(name: string, domain: string) {
-  try {
-    const res = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`, {
-      signal: AbortSignal.timeout(1000),
-    });
-    const data: NostrJson = await res.json();
-    const match = Object.keys(data.names).find(n => {
-      return n.toLowerCase() === name.toLowerCase();
-    });
-    return match ? data.names[match] : undefined;
-  } catch {
-    // ignored
-  }
-}
 
 export const onRequest: PagesFunction<Env> = async context => {
   const u = new URL(context.request.url);
@@ -38,12 +16,7 @@ export const onRequest: PagesFunction<Env> = async context => {
     try {
       let id = u.pathname.split("/").at(-1);
       if (!isEntityPath && nostrAddress) {
-        const pubkey = await fetchNostrAddress(id, HOST);
-        if (pubkey) {
-          id = bech32.encode("npub", bech32.toWords(fromHex(pubkey)));
-        } else {
-          return next;
-        }
+        id = `${id}@${HOST}`;
       }
       const fetchApi = `http://nostr.api.v0l.io/api/v1/opengraph/${id}?canonical=${encodeURIComponent(
         `https://${HOST}/%s`,
