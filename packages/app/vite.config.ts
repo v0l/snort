@@ -19,9 +19,9 @@ export default defineConfig({
         type: "module",
       },
       workbox: {
-        globPatterns: ['**/*.{js,html,wasm,woff,woff2,ttf,svg,png,jpg,jpeg,webp,ico,json}'],
+        globPatterns: ["**/*.{js,html,wasm,woff,woff2,ttf,svg,png,jpg,jpeg,webp,ico,json}"],
         sourcemap: true,
-      }
+      },
     }),
     visualizer({
       open: true,

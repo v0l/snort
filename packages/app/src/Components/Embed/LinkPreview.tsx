@@ -1,7 +1,7 @@
 import "./LinkPreview.css";
 
 import { CSSProperties, useEffect, useState } from "react";
-import { LRUCache } from 'typescript-lru-cache';
+import { LRUCache } from "typescript-lru-cache";
 
 import { MediaElement } from "@/Components/Embed/MediaElement";
 import Spinner from "@/Components/Icons/Spinner";

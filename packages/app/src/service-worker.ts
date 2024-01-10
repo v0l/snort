@@ -26,7 +26,7 @@ registerRoute(
         maxEntries: 200,
         matchOptions: {
           ignoreVary: true,
-        }
+        },
       }),
     ],
   }),
@@ -51,7 +51,7 @@ registerRoute(
         maxEntries: 200,
         matchOptions: {
           ignoreVary: true,
-        }
+        },
       }),
     ],
   }),

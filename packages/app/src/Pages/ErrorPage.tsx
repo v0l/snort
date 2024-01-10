@@ -23,9 +23,7 @@ const ErrorPage = () => {
       </AsyncButton>
       <h5>{error.message}</h5>
       <div className="my-2">{error.message}</div>
-      <pre className="my-2 whitespace-pre-wrap">
-        {error.stack}
-      </pre>
+      <pre className="my-2 whitespace-pre-wrap">{error.stack}</pre>
     </div>
   );
 };
