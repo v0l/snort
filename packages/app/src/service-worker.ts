@@ -42,6 +42,31 @@ registerRoute(
   }),
 );
 
+// Avatars
+registerRoute(
+  ({ request, url }) => {
+    return (
+      request.destination === "image" &&
+      url.href.startsWith("https://imgproxy.snort.social/") &&
+      (url.pathname.includes("rs:fit:32:32") || url.pathname.includes("rs:fit:120:120"))
+    );
+  },
+  new CacheFirst({
+    cacheName: "avatar-cache",
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 1000,
+        matchOptions: {
+          ignoreVary: true,
+        },
+      }),
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+    ],
+  }),
+);
+
 // Cache images from any domain
 registerRoute(
   // Match any image request regardless of the origin
@@ -50,7 +75,7 @@ registerRoute(
     cacheName: "image-cache",
     plugins: [
       new ExpirationPlugin({
-        maxEntries: 200,
+        maxEntries: 100,
         matchOptions: {
           ignoreVary: true,
         },
