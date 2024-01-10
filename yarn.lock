@@ -2994,6 +2994,7 @@ __metadata:
     three: ^0.157.0
     tinybench: ^2.5.1
     typescript: ^5.2.2
+    typescript-lru-cache: ^2.0.0
     use-long-press: ^3.2.0
     use-sync-external-store: ^1.2.0
     uuid: ^9.0.0
@@ -11287,6 +11288,13 @@ __metadata:
     for-each: ^0.3.3
     is-typed-array: ^1.1.9
   checksum: 2228febc93c7feff142b8c96a58d4a0d7623ecde6c7a24b2b98eb3170e99f7c7eff8c114f9b283085cd59dcd2bd43aadf20e25bba4b034a53c5bb292f71f8956
+  languageName: node
+  linkType: hard
+
+"typescript-lru-cache@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "typescript-lru-cache@npm:2.0.0"
+  checksum: 50948bb62cfe928f0baf4dcc09634cc2456520c0abf2ad726483039371eb523ee6b9c4f45210704f3c1fb30dc6ae5e5ffb27127a34d626848db9d80bcb3057d1
   languageName: node
   linkType: hard
 

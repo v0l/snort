@@ -1,6 +1,7 @@
 import "./LinkPreview.css";
 
 import { CSSProperties, useEffect, useState } from "react";
+import { LRUCache } from 'typescript-lru-cache';
 
 import { MediaElement } from "@/Components/Embed/MediaElement";
 import Spinner from "@/Components/Icons/Spinner";
@@ -16,18 +17,24 @@ async function fetchUrlPreviewInfo(url: string) {
   }
 }
 
+const cache = new LRUCache<string, LinkPreviewData>({
+  maxSize: 100,
+});
+
 const LinkPreview = ({ url }: { url: string }) => {
-  const [preview, setPreview] = useState<LinkPreviewData | null>();
+  const [preview, setPreview] = useState<LinkPreviewData | null>(cache.get(url));
   const { proxy } = useImgProxy();
 
   useEffect(() => {
     (async () => {
+      if (preview) return;
       const data = await fetchUrlPreviewInfo(url);
       if (data) {
         const type = data.og_tags?.find(a => a[0].toLowerCase() === "og:type");
         const canPreviewType = type?.[1].startsWith("image") || type?.[1].startsWith("video") || false;
         if (canPreviewType || data.image) {
           setPreview(data);
+          cache.set(url, data);
           return;
         }
       }
