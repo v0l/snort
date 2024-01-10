@@ -1,5 +1,5 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
-import { MouseEvent, ReactNode } from "react";
+import {memo, MouseEvent, ReactNode} from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 
@@ -13,9 +13,9 @@ export interface ImageGridItemProps {
   waitUntilInView?: boolean;
 }
 
-const ImageGridItem = (props: ImageGridItemProps) => {
+function ImageGridItem(props: ImageGridItemProps) {
   const { event, onClick } = props;
-  const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "2000px" });
+  const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "0px 0px 3000px 0px" });
 
   const media = getEventMedia(event);
 
@@ -56,4 +56,4 @@ const ImageGridItem = (props: ImageGridItemProps) => {
   );
 };
 
-export default ImageGridItem;
+export default memo(ImageGridItem);
