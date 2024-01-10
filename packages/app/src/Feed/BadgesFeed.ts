@@ -21,7 +21,7 @@ export default function useProfileBadges(pubkey?: HexKey) {
 
   const profile = useMemo(() => {
     if (profileBadges) {
-      return chunks(profileBadges[0]?.tags.filter(t => t[0] === "a" || t[0] === "e"), 2).reduce((acc, [a, e]) => {
+      return chunks(profileBadges[0]?.tags.filter(t => t[0] === "a" || t[0] === "e") ?? [], 2).reduce((acc, [a, e]) => {
         return {
           ...acc,
           [e[1]]: a[1],
