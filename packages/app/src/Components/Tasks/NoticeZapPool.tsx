@@ -2,12 +2,13 @@ import { FormattedMessage, FormattedNumber } from "react-intl";
 import { Link } from "react-router-dom";
 
 import { BaseUITask } from "@/Components/Tasks/index";
+import { Wallets } from "@/Wallet";
 
 export class NoticeZapPoolDefault extends BaseUITask {
   id = "zap-pool-default";
 
   check(): boolean {
-    return !this.state.muted && CONFIG.defaultZapPoolFee !== undefined;
+    return !this.state.muted && CONFIG.defaultZapPoolFee !== 0 && !!Wallets.snapshot().wallet?.isReady();
   }
 
   render() {
