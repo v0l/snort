@@ -9,7 +9,7 @@ const ErrorPage = () => {
 
   console.error(error);
   return (
-    <div className="main-content page">
+    <div className="p-2">
       <h4>
         <FormattedMessage defaultMessage="An error has occured!" id="FfYsOb" />
       </h4>
@@ -21,15 +21,11 @@ const ErrorPage = () => {
         }}>
         <FormattedMessage defaultMessage="Clear cache and reload" id="HWbkEK" />
       </AsyncButton>
-      {
-        <pre>
-          {JSON.stringify(
-            error instanceof Error ? { name: error.name, message: error.message, stack: error.stack } : error,
-            undefined,
-            "  ",
-          )}
-        </pre>
-      }
+      <h5>{error.message}</h5>
+      <div className="my-2">{error.message}</div>
+      <pre className="my-2 whitespace-pre-wrap">
+        {error.stack}
+      </pre>
     </div>
   );
 };
