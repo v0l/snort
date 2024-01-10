@@ -1,5 +1,5 @@
-'use strict';
-const ALPHABET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
+"use strict";
+const ALPHABET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
 
 const ALPHABET_MAP: { [key: string]: number } = {};
 for (let z = 0; z < ALPHABET.length; z++) {
@@ -23,7 +23,7 @@ function prefixChk(prefix: string): number | string {
   let chk = 1;
   for (let i = 0; i < prefix.length; ++i) {
     const c = prefix.charCodeAt(i);
-    if (c < 33 || c > 126) return 'Invalid prefix (' + prefix + ')';
+    if (c < 33 || c > 126) return "Invalid prefix (" + prefix + ")";
 
     chk = polymodStep(chk) ^ (c >> 5);
   }
@@ -37,18 +37,8 @@ function prefixChk(prefix: string): number | string {
 }
 
 function convert(data: ArrayLike<number>, inBits: number, outBits: number, pad: true): number[];
-function convert(
-  data: ArrayLike<number>,
-  inBits: number,
-  outBits: number,
-  pad: false,
-): number[] | string;
-function convert(
-  data: ArrayLike<number>,
-  inBits: number,
-  outBits: number,
-  pad: boolean,
-): number[] | string {
+function convert(data: ArrayLike<number>, inBits: number, outBits: number, pad: false): number[] | string;
+function convert(data: ArrayLike<number>, inBits: number, outBits: number, pad: boolean): number[] | string {
   let value = 0;
   let bits = 0;
   const maxV = (1 << outBits) - 1;
@@ -69,8 +59,8 @@ function convert(
       result.push((value << (outBits - bits)) & maxV);
     }
   } else {
-    if (bits >= inBits) return 'Excess padding';
-    if ((value << (outBits - bits)) & maxV) return 'Non-zero padding';
+    if (bits >= inBits) return "Excess padding";
+    if ((value << (outBits - bits)) & maxV) return "Non-zero padding";
   }
 
   return result;
@@ -92,9 +82,9 @@ function fromWords(words: ArrayLike<number>): number[] {
   throw new Error(res);
 }
 
-function getLibraryFromEncoding(encoding: 'bech32' | 'bech32m'): BechLib {
+function getLibraryFromEncoding(encoding: "bech32" | "bech32m"): BechLib {
   let ENCODING_CONST: number;
-  if (encoding === 'bech32') {
+  if (encoding === "bech32") {
     ENCODING_CONST = 1;
   } else {
     ENCODING_CONST = 0x2bc830a3;
@@ -102,18 +92,18 @@ function getLibraryFromEncoding(encoding: 'bech32' | 'bech32m'): BechLib {
 
   function encode(prefix: string, words: ArrayLike<number>, LIMIT?: number): string {
     LIMIT = LIMIT || 90;
-    if (prefix.length + 7 + words.length > LIMIT) throw new TypeError('Exceeds length limit');
+    if (prefix.length + 7 + words.length > LIMIT) throw new TypeError("Exceeds length limit");
 
     prefix = prefix.toLowerCase();
 
     // determine chk mod
     let chk = prefixChk(prefix);
-    if (typeof chk === 'string') throw new Error(chk);
+    if (typeof chk === "string") throw new Error(chk);
 
-    let result = prefix + '1';
+    let result = prefix + "1";
     for (let i = 0; i < words.length; ++i) {
       const x = words[i];
-      if (x >> 5 !== 0) throw new Error('Non 5-bit word');
+      if (x >> 5 !== 0) throw new Error("Non 5-bit word");
 
       chk = polymodStep(chk) ^ x;
       result += ALPHABET.charAt(x);
@@ -134,31 +124,31 @@ function getLibraryFromEncoding(encoding: 'bech32' | 'bech32m'): BechLib {
 
   function __decode(str: string, LIMIT?: number): Decoded | string {
     LIMIT = LIMIT || 90;
-    if (str.length < 8) return str + ' too short';
-    if (str.length > LIMIT) return 'Exceeds length limit';
+    if (str.length < 8) return str + " too short";
+    if (str.length > LIMIT) return "Exceeds length limit";
 
     // don't allow mixed case
     const lowered = str.toLowerCase();
     const uppered = str.toUpperCase();
-    if (str !== lowered && str !== uppered) return 'Mixed-case string ' + str;
+    if (str !== lowered && str !== uppered) return "Mixed-case string " + str;
     str = lowered;
 
-    const split = str.lastIndexOf('1');
-    if (split === -1) return 'No separator character for ' + str;
-    if (split === 0) return 'Missing prefix for ' + str;
+    const split = str.lastIndexOf("1");
+    if (split === -1) return "No separator character for " + str;
+    if (split === 0) return "Missing prefix for " + str;
 
     const prefix = str.slice(0, split);
     const wordChars = str.slice(split + 1);
-    if (wordChars.length < 6) return 'Data too short';
+    if (wordChars.length < 6) return "Data too short";
 
     let chk = prefixChk(prefix);
-    if (typeof chk === 'string') return chk;
+    if (typeof chk === "string") return chk;
 
     const words = [];
     for (let i = 0; i < wordChars.length; ++i) {
       const c = wordChars.charAt(i);
       const v = ALPHABET_MAP[c];
-      if (v === undefined) return 'Unknown character ' + c;
+      if (v === undefined) return "Unknown character " + c;
       chk = polymodStep(chk) ^ v;
 
       // not in the checksum?
@@ -166,18 +156,18 @@ function getLibraryFromEncoding(encoding: 'bech32' | 'bech32m'): BechLib {
       words.push(v);
     }
 
-    if (chk !== ENCODING_CONST) return 'Invalid checksum for ' + str;
+    if (chk !== ENCODING_CONST) return "Invalid checksum for " + str;
     return { prefix, words };
   }
 
   function decodeUnsafe(str: string, LIMIT?: number): Decoded | undefined {
     const res = __decode(str, LIMIT);
-    if (typeof res === 'object') return res;
+    if (typeof res === "object") return res;
   }
 
   function decode(str: string, LIMIT?: number): Decoded {
     const res = __decode(str, LIMIT);
-    if (typeof res === 'object') return res;
+    if (typeof res === "object") return res;
 
     throw new Error(res);
   }
@@ -192,8 +182,8 @@ function getLibraryFromEncoding(encoding: 'bech32' | 'bech32m'): BechLib {
   };
 }
 
-export const bech32 = getLibraryFromEncoding('bech32');
-export const bech32m = getLibraryFromEncoding('bech32m');
+export const bech32 = getLibraryFromEncoding("bech32");
+export const bech32m = getLibraryFromEncoding("bech32m");
 export interface Decoded {
   prefix: string;
   words: number[];
