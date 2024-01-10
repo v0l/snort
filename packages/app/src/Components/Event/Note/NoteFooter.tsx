@@ -8,7 +8,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
 
 import { AsyncIcon, AsyncIconProps } from "@/Components/Button/AsyncIcon";
-import { ZapsSummary } from "@/Components/Event/Zap";
+import { ZapsSummary } from "@/Components/Event/ZapsSummary";
 import Icon from "@/Components/Icons/Icon";
 import SendSats from "@/Components/SendSats/SendSats";
 import useEventPublisher from "@/Hooks/useEventPublisher";

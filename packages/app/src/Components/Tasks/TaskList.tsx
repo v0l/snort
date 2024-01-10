@@ -54,6 +54,7 @@ export const TaskList = () => {
     <div className="task-list">
       {tasks
         .filter(a => (user ? a.check(user, session) : false))
+        .slice(0, 1)
         .map(a => {
           if (a.noBaseStyle) {
             return <Fragment key={a.id}>{a.render()}</Fragment>;
