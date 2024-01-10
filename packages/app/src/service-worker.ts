@@ -55,7 +55,7 @@ registerRoute(
     cacheName: "avatar-cache",
     plugins: [
       new ExpirationPlugin({
-        maxEntries: 1000,
+        maxEntries: 200, // gif avatars can still be large
         matchOptions: {
           ignoreVary: true,
         },
@@ -69,8 +69,8 @@ registerRoute(
 
 // Cache images from any domain
 registerRoute(
-  // Match any image request regardless of the origin
-  ({ request }) => request.destination === "image",
+  // match images except gif
+  ({ request, url }) => request.destination === "image" && !url.pathname.endsWith(".gif"),
   new CacheFirst({
     cacheName: "image-cache",
     plugins: [
