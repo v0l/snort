@@ -1,5 +1,5 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
-import {memo, MouseEvent, ReactNode} from "react";
+import { memo, MouseEvent, ReactNode } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 
@@ -54,6 +54,6 @@ function ImageGridItem(props: ImageGridItemProps) {
       {renderContent()}
     </Link>
   );
-};
+}
 
 export default memo(ImageGridItem);
