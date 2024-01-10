@@ -46,7 +46,7 @@ function Grid({ frags }: { frags: Array<TimelineFragment> }) {
           <ImageGridItem
             key={event.id}
             event={event}
-            onClick={() => setModalEventIndex(index)}
+            onClick={() => setModalEventIndex(index)} // TODO use constant function
             waitUntilInView={index > 15}
           />
         ))}

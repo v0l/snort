@@ -614,7 +614,9 @@ export function NoteCreator() {
             <h4>
               <FormattedMessage defaultMessage="Reply To" id="8ED/4u" />
             </h4>
-            <Note data={note.replyTo} options={replyToNoteOptions} />
+            <div className="h-48 overflow-y-auto">
+              <Note data={note.replyTo} options={replyToNoteOptions} />
+            </div>
             <hr className="border-border-color border-1 -mx-6" />
           </>
         )}
@@ -623,7 +625,9 @@ export function NoteCreator() {
             <h4>
               <FormattedMessage defaultMessage="Quote Repost" id="C7642/" />
             </h4>
-            <Note data={note.quote} options={quoteNoteOptions} />
+            <div className="h-48 overflow-y-auto">
+              <Note data={note.quote} options={quoteNoteOptions} />
+            </div>
             <hr className="border-border-color border-1 -mx-6" />
           </>
         )}
