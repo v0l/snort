@@ -190,7 +190,7 @@ if (CONFIG.features.deck) {
   } as RouteObject);
 }
 
-export const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes);
 
 const root = ReactDOM.createRoot(unwrap(document.getElementById("root")));
 root.render(

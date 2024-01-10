@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";
 import UsersFeed from "@/Components/Feed/UsersFeed";
 import Tabs, { Tab } from "@/Components/Tabs/Tabs";
 import TrendingNotes from "@/Components/Trending/TrendingPosts";
 import TrendingUsers from "@/Components/Trending/TrendingUsers";
-import { router } from "@/index";
 import { debounce } from "@/Utils";
 
 const NOTES = 0;
@@ -16,8 +15,8 @@ const PROFILES = 1;
 const SearchPage = () => {
   const params = useParams();
   const { formatMessage } = useIntl();
-  const [search, setSearch] = useState<string | undefined>(params.keyword);
-  const [keyword, setKeyword] = useState<string | undefined>(params.keyword);
+  const [search, setSearch] = useState<string>(params.keyword ?? "");
+  const [keyword, setKeyword] = useState<string>(params.keyword ?? "");
   const [sortPopular, setSortPopular] = useState<boolean>(true);
   // tabs
   const SearchTab = [
@@ -25,15 +24,21 @@ const SearchPage = () => {
     { text: formatMessage({ defaultMessage: "People", id: "Tpy00S" }), value: PROFILES },
   ];
   const [tab, setTab] = useState<Tab>(SearchTab[0]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (keyword) {
       // "navigate" changing only url
-      router.navigate(`/search/${encodeURIComponent(keyword)}`);
+      navigate(`/search/${encodeURIComponent(keyword)}`);
     } else {
-      router.navigate(`/search`);
+      navigate(`/search`);
     }
   }, [keyword]);
+
+  useEffect(() => {
+    setKeyword(params.keyword);
+    setSearch(params.keyword); // Also update the search input field
+  }, [params.keyword]);
 
   useEffect(() => {
     return debounce(500, () => setKeyword(search));
