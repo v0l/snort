@@ -1,4 +1,6 @@
 /// <reference lib="webworker" />
+import { CacheableResponsePlugin } from "workbox-cacheable-response";
+
 declare const self: ServiceWorkerGlobalScope & {
   __WB_MANIFEST: (string | PrecacheEntry)[];
 };
@@ -53,6 +55,9 @@ registerRoute(
           ignoreVary: true,
         },
       }),
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
     ],
   }),
 );
@@ -61,7 +66,7 @@ registerRoute(
   ({ url }) => url.origin === "https://api.snort.social" && url.pathname.startsWith("/api/v1/preview"),
   new StaleWhileRevalidate({
     cacheName: "preview-cache",
-    plugins: [new ExpirationPlugin({ maxAgeSeconds: 4 * 60 * 60 })],
+    plugins: [new ExpirationPlugin({ maxAgeSeconds: 24 * 60 * 60 })],
   }),
 );
 

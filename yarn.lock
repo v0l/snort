@@ -3002,6 +3002,7 @@ __metadata:
     vite-plugin-pwa: ^0.17.0
     vite-plugin-version-mark: ^0.0.10
     vitest: ^0.34.6
+    workbox-cacheable-response: ^7.0.0
     workbox-core: ^6.4.2
     workbox-expiration: ^7.0.0
     workbox-precaching: ^7.0.0
@@ -11959,7 +11960,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workbox-cacheable-response@npm:7.0.0":
+"workbox-cacheable-response@npm:7.0.0, workbox-cacheable-response@npm:^7.0.0":
   version: 7.0.0
   resolution: "workbox-cacheable-response@npm:7.0.0"
   dependencies:
