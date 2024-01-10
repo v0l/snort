@@ -2,12 +2,12 @@ import { unixNowMs } from "@snort/shared";
 import { Link } from "react-router-dom";
 
 import Icon from "@/Components/Icons/Icon";
+import { mapPlanName } from "@/Pages/subscribe/utils";
 import { Birthday, Day } from "@/Utils/Const";
 
 import useLogin from "../../Hooks/useLogin";
 import { isBirthday, isChristmas, isHalloween, isStPatricksDay } from "../../Utils";
 import { getCurrentSubscription } from "../../Utils/Subscription";
-import { mapPlanName } from "../subscribe";
 
 const getExtra = () => {
   if (isBirthday()) {

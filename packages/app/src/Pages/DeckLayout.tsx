@@ -20,11 +20,11 @@ import { useLoginRelays } from "@/Hooks/useLoginRelays";
 import { transformTextCached } from "@/Hooks/useTextTransformCache";
 import { useTheme } from "@/Hooks/useTheme";
 import NavSidebar from "@/Pages/Layout/NavSidebar";
+import { mapPlanName } from "@/Pages/subscribe/utils";
 import { trackEvent } from "@/Utils";
 import { getCurrentSubscription } from "@/Utils/Subscription";
 
 import NotificationsPage from "./Notifications/Notifications";
-import { mapPlanName } from "./subscribe";
 
 type Cols = "notes" | "articles" | "media" | "streams" | "notifications";
 

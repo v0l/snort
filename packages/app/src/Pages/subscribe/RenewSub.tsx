@@ -7,9 +7,8 @@ import SendSats from "@/Components/SendSats/SendSats";
 import SnortApi, { Subscription, SubscriptionError } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import { mapPlanName, mapSubscriptionErrorCode } from "@/Pages/subscribe/utils";
 import { mostRecentSubscription } from "@/Utils/Subscription";
-
-import { mapPlanName, mapSubscriptionErrorCode } from ".";
 
 export function RenewSub({ sub: s }: { sub?: Subscription }) {
   const { subscriptions } = useLogin(s => ({ subscriptions: s.subscriptions }));

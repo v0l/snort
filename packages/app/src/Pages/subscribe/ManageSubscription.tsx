@@ -6,8 +6,8 @@ import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 import PageSpinner from "@/Components/PageSpinner";
 import SnortApi, { Subscription, SubscriptionError } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
+import { mapSubscriptionErrorCode } from "@/Pages/subscribe/utils";
 
-import { mapSubscriptionErrorCode } from ".";
 import SubscriptionCard from "./SubscriptionCard";
 
 export default function ManageSubscriptionPage() {

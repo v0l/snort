@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";
 import UsersFeed from "@/Components/Feed/UsersFeed";

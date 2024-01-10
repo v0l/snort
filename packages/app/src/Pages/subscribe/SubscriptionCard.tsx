@@ -5,8 +5,8 @@ import Nip5Service from "@/Components/Nip5Service";
 import Nip05 from "@/Components/User/Nip05";
 import { Subscription } from "@/External/SnortApi";
 import { SnortNostrAddressService } from "@/Pages/NostrAddressPage";
+import { mapPlanName } from "@/Pages/subscribe/utils";
 
-import { mapPlanName } from ".";
 import { RenewSub } from "./RenewSub";
 
 export default function SubscriptionCard({ sub }: { sub: Subscription }) {

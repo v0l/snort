@@ -7,8 +7,7 @@ import AlbyIcon from "@/Components/Icons/Alby";
 import BlueWallet from "@/Components/Icons/BlueWallet";
 import Icon from "@/Components/Icons/Icon";
 import NostrIcon from "@/Components/Icons/Nostrich";
-
-import { getAlbyOAuth } from "./wallet/Alby";
+import { getAlbyOAuth } from "@/Pages/settings/wallet/utils";
 
 const WalletRow = (props: {
   logo: ReactNode;

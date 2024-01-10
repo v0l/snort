@@ -1,7 +1,7 @@
 import { base64 } from "@scure/base";
 import { unixNow, unwrap } from "@snort/shared";
 
-import { OAuthToken } from "@/Pages/settings/wallet/Alby";
+import { OAuthToken } from "@/Pages/settings/wallet/utils";
 
 import {
   InvoiceRequest,
