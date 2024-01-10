@@ -34,7 +34,6 @@ import SearchPage from "@/Pages/SearchPage";
 import SettingsRoutes from "@/Pages/settings/Routes";
 import { SubscribeRoutes } from "@/Pages/subscribe";
 import ZapPoolPage from "@/Pages/ZapPool";
-import * as serviceWorkerRegistration from "@/serviceWorkerRegistration";
 import { System } from "@/system";
 import { getCountry, storeRefCode, unwrap } from "@/Utils";
 import { LoginStore } from "@/Utils/Login";
@@ -45,8 +44,6 @@ import { setupWebLNWalletConfig } from "@/Wallet/WebLN";
 import WalletPage from "./Pages/wallet";
 import { WalletReceivePage } from "./Pages/wallet/receive";
 import { WalletSendPage } from "./Pages/wallet/send";
-
-serviceWorkerRegistration.register();
 
 async function initSite() {
   console.debug(getCountry());
