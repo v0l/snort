@@ -16,18 +16,14 @@ import Relay from "@/Pages/settings/Relays";
 import { ToolsPage, ToolsPages } from "./tools";
 import { WalletSettingsRoutes } from "./wallet";
 
-const SettingsPage = () => {
-  return (
-    <div className="px-3">
-      <Outlet />
-    </div>
-  );
-};
-
 export default [
   {
     path: "/settings",
-    element: <SettingsPage />,
+    element: (
+      <div className="px-3">
+        <Outlet />
+      </div>
+    ),
     children: [
       {
         path: "",

@@ -1,10 +1,10 @@
 import "./RootTabs.css";
 
-import {Menu, MenuItem} from "@szhsin/react-menu";
-import {useEffect, useMemo, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import { Menu, MenuItem } from "@szhsin/react-menu";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import {RootTab, rootTabItems} from "@/Components/Feed/RootTabItems";
+import { RootTab, rootTabItems } from "@/Components/Feed/RootTabItems";
 import Icon from "@/Components/Icons/Icon";
 import useLogin from "@/Hooks/useLogin";
 

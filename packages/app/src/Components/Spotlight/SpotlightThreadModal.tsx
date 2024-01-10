@@ -3,8 +3,8 @@ import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { Thread } from "@/Components/Event/Thread";
 import Modal from "@/Components/Modal/Modal";
 import { SpotlightMedia } from "@/Components/Spotlight/SpotlightMedia";
-import { ThreadContextWrapper } from "@/Hooks/useThreadContext";
 import getEventMedia from "@/Utils/getEventMedia";
+import { ThreadContextWrapper } from "@/Utils/Thread/ThreadContextWrapper";
 
 interface SpotlightThreadModalProps {
   thread?: NostrLink;

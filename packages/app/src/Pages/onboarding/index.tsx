@@ -4,7 +4,7 @@ import { Outlet, RouteObject } from "react-router-dom";
 
 import Icon from "@/Components/Icons/Icon";
 import { AllLanguageCodes } from "@/Components/IntlProvider/IntlProviderUtils";
-import {useLocale} from "@/Components/IntlProvider/useLocale";
+import { useLocale } from "@/Components/IntlProvider/useLocale";
 
 import { Discover } from "./discover";
 import { Moderation } from "./moderation";

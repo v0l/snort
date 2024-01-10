@@ -7,7 +7,7 @@ import { ErrorOrOffline } from "@/Components/ErrorOrOffline";
 import Note from "@/Components/Event/EventComponent";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import ImageGridItem from "@/Components/Feed/ImageGridItem";
-import {useLocale} from "@/Components/IntlProvider/useLocale";
+import { useLocale } from "@/Components/IntlProvider/useLocale";
 import PageSpinner from "@/Components/PageSpinner";
 import { SpotlightThreadModal } from "@/Components/Spotlight/SpotlightThreadModal";
 import ShortNote from "@/Components/Trending/ShortNote";

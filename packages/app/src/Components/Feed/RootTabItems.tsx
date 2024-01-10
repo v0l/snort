@@ -1,8 +1,8 @@
-import {ReactNode} from "react";
-import {FormattedMessage} from "react-intl";
+import { ReactNode } from "react";
+import { FormattedMessage } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
-import {Newest} from "@/Utils/Login";
+import { Newest } from "@/Utils/Login";
 
 export type RootTab =
   | "following"
@@ -22,8 +22,8 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
       show: Boolean(pubKey),
       element: (
         <>
-          <Icon name="user-v2"/>
-          <FormattedMessage defaultMessage="Following" id="cPIKU2"/>
+          <Icon name="user-v2" />
+          <FormattedMessage defaultMessage="Following" id="cPIKU2" />
         </>
       ),
     },
@@ -33,8 +33,8 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
       show: true,
       element: (
         <>
-          <Icon name="fire"/>
-          <FormattedMessage defaultMessage="Trending Notes" id="Ix8l+B"/>
+          <Icon name="fire" />
+          <FormattedMessage defaultMessage="Trending Notes" id="Ix8l+B" />
         </>
       ),
     },
@@ -44,8 +44,8 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
       show: Boolean(pubKey),
       element: (
         <>
-          <Icon name="message-chat-circle"/>
-          <FormattedMessage defaultMessage="Conversations" id="1udzha"/>
+          <Icon name="message-chat-circle" />
+          <FormattedMessage defaultMessage="Conversations" id="1udzha" />
         </>
       ),
     },
@@ -55,8 +55,8 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
       show: Boolean(pubKey),
       element: (
         <>
-          <Icon name="user-v2"/>
-          <FormattedMessage defaultMessage="Followed by friends" id="voxBKC"/>
+          <Icon name="user-v2" />
+          <FormattedMessage defaultMessage="Followed by friends" id="voxBKC" />
         </>
       ),
     },
@@ -66,8 +66,8 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
       show: Boolean(pubKey),
       element: (
         <>
-          <Icon name="thumbs-up"/>
-          <FormattedMessage defaultMessage="Suggested Follows" id="C8HhVE"/>
+          <Icon name="thumbs-up" />
+          <FormattedMessage defaultMessage="Suggested Follows" id="C8HhVE" />
         </>
       ),
     },
@@ -77,8 +77,8 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
       show: true,
       element: (
         <>
-          <Icon name="hash"/>
-          <FormattedMessage defaultMessage="Trending Hashtags" id="XXm7jJ"/>
+          <Icon name="hash" />
+          <FormattedMessage defaultMessage="Trending Hashtags" id="XXm7jJ" />
         </>
       ),
     },
@@ -88,8 +88,8 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
       show: true,
       element: (
         <>
-          <Icon name="globe"/>
-          <FormattedMessage defaultMessage="Global" id="EWyQH5"/>
+          <Icon name="globe" />
+          <FormattedMessage defaultMessage="Global" id="EWyQH5" />
         </>
       ),
     },
@@ -99,8 +99,8 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
       show: tags.item.length > 0,
       element: (
         <>
-          <Icon name="hash"/>
-          <FormattedMessage defaultMessage="Topics" id="kc79d3"/>
+          <Icon name="hash" />
+          <FormattedMessage defaultMessage="Topics" id="kc79d3" />
         </>
       ),
     },

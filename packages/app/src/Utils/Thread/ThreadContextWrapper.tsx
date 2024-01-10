@@ -1,39 +1,12 @@
-/* eslint-disable no-debugger */
 import { unwrap } from "@snort/shared";
-import { EventExt, NostrLink, TaggedNostrEvent, u256 } from "@snort/system";
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { NostrLink, TaggedNostrEvent, u256 } from "@snort/system";
+import { ReactNode, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import useThreadFeed from "@/Feed/ThreadFeed";
-
-import useModeration from "./useModeration";
-
-export interface ThreadContext {
-  current: string;
-  root?: TaggedNostrEvent;
-  chains: Map<string, Array<TaggedNostrEvent>>;
-  data: Array<TaggedNostrEvent>;
-  reactions: Array<TaggedNostrEvent>;
-  setCurrent: (i: string) => void;
-}
-
-export const ThreadContext = createContext({} as ThreadContext);
-
-/**
- * Get the chain key as a reply event
- */
-export function replyChainKey(ev: TaggedNostrEvent) {
-  const t = EventExt.extractThread(ev);
-  return t?.replyTo?.value ?? t?.root?.value;
-}
-
-/**
- * Get the chain key of this event
- */
-export function chainKey(ev: TaggedNostrEvent) {
-  const link = NostrLink.fromEvent(ev);
-  return unwrap(link.toEventTag())[1];
-}
+import useModeration from "@/Hooks/useModeration";
+import { chainKey, replyChainKey } from "@/Utils/Thread/ChainKey";
+import { ThreadContext } from "@/Utils/Thread/ThreadContext";
 
 export function ThreadContextWrapper({ link, children }: { link: NostrLink; children?: ReactNode }) {
   const location = useLocation();

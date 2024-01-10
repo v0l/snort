@@ -9,8 +9,8 @@ import NoteHeader from "@/Components/Event/Note/NoteHeader";
 import { NoteText } from "@/Components/Event/Note/NoteText";
 import { TranslationInfo } from "@/Components/Event/Note/TranslationInfo";
 import useModeration from "@/Hooks/useModeration";
-import { chainKey } from "@/Hooks/useThreadContext";
 import { findTag } from "@/Utils";
+import { chainKey } from "@/Utils/Thread/ChainKey";
 
 import messages from "../../messages";
 import Text from "../../Text/Text";

@@ -1,4 +1,4 @@
-import {ExternalStore} from "@snort/shared";
+import { ExternalStore } from "@snort/shared";
 
 class CommunityLeadersStore extends ExternalStore<Array<string>> {
   #leaders: Array<string> = [];

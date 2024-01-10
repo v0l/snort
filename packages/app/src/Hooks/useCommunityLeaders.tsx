@@ -1,10 +1,10 @@
-import {unwrap} from "@snort/shared";
-import {EventKind, parseNostrLink} from "@snort/system";
-import {useEffect, useSyncExternalStore} from "react";
+import { unwrap } from "@snort/shared";
+import { EventKind, parseNostrLink } from "@snort/system";
+import { useEffect, useSyncExternalStore } from "react";
 
-import {LeadersStore} from "@/Cache/CommunityLeadersStore";
+import { LeadersStore } from "@/Cache/CommunityLeadersStore";
 
-import {useLinkList} from "./useLists";
+import { useLinkList } from "./useLists";
 
 export function useCommunityLeaders() {
   const link = parseNostrLink(unwrap(CONFIG.communityLeaders).list);

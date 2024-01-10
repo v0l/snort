@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
 
 import { DefaultLocale } from "@/Components/IntlProvider/IntlProviderUtils";
-import {useLocale} from "@/Components/IntlProvider/useLocale";
+import { useLocale } from "@/Components/IntlProvider/useLocale";
 import enMessages from "@/translations/en.json";
 
 const getMessages = (locale: string) => {

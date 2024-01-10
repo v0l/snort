@@ -8,7 +8,7 @@ import IconButton from "@/Components/Button/IconButton";
 import Icon from "@/Components/Icons/Icon";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
-import { saveRelays } from "@/Pages/settings/Relays";
+import { saveRelays } from "@/Pages/settings/saveRelays";
 import { getRelayName } from "@/Utils";
 import { removeRelay } from "@/Utils/Login";
 

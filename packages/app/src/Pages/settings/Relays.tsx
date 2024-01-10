@@ -1,5 +1,4 @@
 import { unixNowMs, unwrap } from "@snort/shared";
-import { EventPublisher, FullRelaySettings, RelaySettings, SystemInterface } from "@snort/system";
 import { useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -8,24 +7,12 @@ import Relay from "@/Components/Relay/Relay";
 import SnortApi, { RelayDistance } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
+import { saveRelays } from "@/Pages/settings/saveRelays";
 import { getCountry, getRelayName, sanitizeRelayUrl } from "@/Utils";
-import { Blasters } from "@/Utils/Const";
 import { setRelays } from "@/Utils/Login";
 import { formatShort } from "@/Utils/Number";
 
 import messages from "./messages";
-
-export async function saveRelays(
-  system: SystemInterface,
-  publisher: EventPublisher | undefined,
-  relays: Array<FullRelaySettings> | Record<string, RelaySettings>,
-) {
-  if (publisher) {
-    const ev = await publisher.relayList(relays);
-    await system.BroadcastEvent(ev);
-    await Promise.all(Blasters.map(a => system.WriteOnceToRelay(a, ev)));
-  }
-}
 
 const RelaySettingsPage = () => {
   const { publisher, system } = useEventPublisher();

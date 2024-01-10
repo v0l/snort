@@ -1,4 +1,4 @@
-import {ExternalStore} from "@snort/shared";
+import { ExternalStore } from "@snort/shared";
 
 class LangStore extends ExternalStore<string | null> {
   setLang(s: string) {
