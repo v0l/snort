@@ -18,7 +18,7 @@ import { NoteProps } from "../EventComponent";
 import HiddenNote from "../HiddenNote";
 import Poll from "../Poll";
 import { NoteTranslation } from "./NoteContextMenu";
-import NoteFooter from "./NoteFooter";
+import NoteFooter from "./NoteFooter/NoteFooter";
 
 const defaultOptions = {
   showHeader: true,

@@ -12,7 +12,7 @@ import useImgProxy from "@/Hooks/useImgProxy";
 import { findTag } from "@/Utils";
 
 import { Markdown } from "./Markdown";
-import NoteFooter from "./Note/NoteFooter";
+import NoteFooter from "./Note/NoteFooter/NoteFooter";
 import NoteTime from "./Note/NoteTime";
 
 interface LongFormTextProps {

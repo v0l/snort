@@ -321,6 +321,9 @@
   "9WRlF4": {
     "defaultMessage": "Send"
   },
+  "9kO0VQ": {
+    "defaultMessage": "Hide muted notes"
+  },
   "9kSari": {
     "defaultMessage": "Retry publishing"
   },
@@ -1581,6 +1584,9 @@
   },
   "sZQzjQ": {
     "defaultMessage": "Failed to parse zap split: {input}"
+  },
+  "sfL/O+": {
+    "defaultMessage": "Muted notes will not be shown"
   },
   "tGXF0Q": {
     "defaultMessage": "Relay Lists"

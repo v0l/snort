@@ -1,29 +1,21 @@
-import { barrierQueue, normalizeReaction, processWorkQueue, WorkQueueItem } from "@snort/shared";
+import { normalizeReaction } from "@snort/shared";
 import { countLeadingZeros, NostrLink, TaggedNostrEvent } from "@snort/system";
-import { useEventReactions, useReactions, useUserProfile } from "@snort/system-react";
+import { useEventReactions, useReactions } from "@snort/system-react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import classNames from "classnames";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useLongPress } from "use-long-press";
 
-import { AsyncFooterIcon } from "@/Components/Event/Note/AsyncFooterIcon";
-import { ZapsSummary } from "@/Components/Event/ZapsSummary";
+import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon";
+import { FooterZapButton } from "@/Components/Event/Note/NoteFooter/FooterZapButton";
 import Icon from "@/Components/Icons/Icon";
-import SendSats from "@/Components/SendSats/SendSats";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { useInteractionCache } from "@/Hooks/useInteractionCache";
 import useLogin from "@/Hooks/useLogin";
 import { useNoteCreator } from "@/State/NoteCreator";
-import { findTag, getDisplayName } from "@/Utils";
-import { Zapper, ZapTarget } from "@/Utils/Zapper";
-import { ZapPoolController } from "@/Utils/ZapPoolController";
-import { useWallet } from "@/Wallet";
+import { findTag } from "@/Utils";
 
-import messages from "../../messages";
-
-const ZapperQueue: Array<WorkQueueItem> = [];
-processWorkQueue(ZapperQueue);
+import messages from "../../../messages";
 
 export interface NoteFooterProps {
   replies?: number;
@@ -45,28 +37,9 @@ export default function NoteFooter(props: NoteFooterProps) {
     preferences: prefs,
     readonly,
   } = useLogin(s => ({ preferences: s.appData.item.preferences, publicKey: s.publicKey, readonly: s.readonly }));
-  const author = useUserProfile(ev.pubkey);
   const interactionCache = useInteractionCache(publicKey, ev.id);
   const { publisher, system } = useEventPublisher();
   const note = useNoteCreator(n => ({ show: n.show, replyTo: n.replyTo, update: n.update, quote: n.quote }));
-  const [tip, setTip] = useState(false);
-  const [zapping, setZapping] = useState(false);
-  const walletState = useWallet();
-  const wallet = walletState.wallet;
-
-  const canFastZap = wallet?.isReady() && !readonly;
-  const isMine = ev.pubkey === publicKey;
-  const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  const didZap = interactionCache.data.zapped || zaps.some(a => a.sender === publicKey);
-  const longPress = useLongPress(
-    e => {
-      e.stopPropagation();
-      setTip(true);
-    },
-    {
-      captureEvent: true,
-    },
-  );
 
   function hasReacted(emoji: string) {
     return (
@@ -97,84 +70,6 @@ export default function NoteFooter(props: NoteFooterProps) {
     }
   }
 
-  function getZapTarget(): Array<ZapTarget> | undefined {
-    if (ev.tags.some(v => v[0] === "zap")) {
-      return Zapper.fromEvent(ev);
-    }
-
-    const authorTarget = author?.lud16 || author?.lud06;
-    if (authorTarget) {
-      return [
-        {
-          type: "lnurl",
-          value: authorTarget,
-          weight: 1,
-          name: getDisplayName(author, ev.pubkey),
-          zap: {
-            pubkey: ev.pubkey,
-            event: link,
-          },
-        } as ZapTarget,
-      ];
-    }
-  }
-
-  async function fastZap(e?: React.MouseEvent) {
-    if (zapping || e?.isPropagationStopped()) return;
-
-    const lnurl = getZapTarget();
-    if (canFastZap && lnurl) {
-      setZapping(true);
-      try {
-        await fastZapInner(lnurl, prefs.defaultZapAmount);
-      } catch (e) {
-        console.warn("Fast zap failed", e);
-        if (!(e instanceof Error) || e.message !== "User rejected") {
-          setTip(true);
-        }
-      } finally {
-        setZapping(false);
-      }
-    } else {
-      setTip(true);
-    }
-  }
-
-  async function fastZapInner(targets: Array<ZapTarget>, amount: number) {
-    if (wallet) {
-      // only allow 1 invoice req/payment at a time to avoid hitting rate limits
-      await barrierQueue(ZapperQueue, async () => {
-        const zapper = new Zapper(system, publisher);
-        const result = await zapper.send(wallet, targets, amount);
-        const totalSent = result.reduce((acc, v) => (acc += v.sent), 0);
-        if (totalSent > 0) {
-          if (CONFIG.features.zapPool) {
-            ZapPoolController?.allocate(totalSent);
-          }
-          await interactionCache.zap();
-        }
-      });
-    }
-  }
-
-  useEffect(() => {
-    if (prefs.autoZap && !didZap && !isMine && !zapping) {
-      const lnurl = getZapTarget();
-      if (wallet?.isReady() && lnurl) {
-        setZapping(true);
-        queueMicrotask(async () => {
-          try {
-            await fastZapInner(lnurl, prefs.defaultZapAmount);
-          } catch {
-            // ignored
-          } finally {
-            setZapping(false);
-          }
-        });
-      }
-    }
-  }, [prefs.autoZap, author, zapping]);
-
   function powIcon() {
     const pow = findTag(ev, "nonce") ? countLeadingZeros(ev.id) : undefined;
     if (pow) {
@@ -187,26 +82,6 @@ export default function NoteFooter(props: NoteFooterProps) {
         />
       );
     }
-  }
-
-  function tipButton() {
-    const targets = getZapTarget();
-    if (targets) {
-      return (
-        <div className="flex flex-row flex-none min-w-[50px] md:min-w-[80px] gap-4 items-center">
-          <AsyncFooterIcon
-            className={didZap ? "reacted text-nostr-orange" : "hover:text-nostr-orange"}
-            {...longPress()}
-            title={formatMessage({ defaultMessage: "Zap", id: "fBI91o" })}
-            iconName={canFastZap ? "zapFast" : "zap"}
-            value={zapTotal}
-            onClick={e => fastZap(e)}
-          />
-          <ZapsSummary zaps={zaps} />
-        </div>
-      );
-    }
-    return <div className="w-[18px]"></div>;
   }
 
   function repostIcon() {
@@ -306,8 +181,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       {repostIcon()}
       {reactionIcon()}
       {powIcon()}
-      {tipButton()}
-      <SendSats targets={getZapTarget()} onClose={() => setTip(false)} show={tip} note={ev.id} allocatePool={true} />
+      <FooterZapButton ev={ev} zaps={zaps} />
     </div>
   );
 }
