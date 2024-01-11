@@ -225,7 +225,7 @@ export default function Text({
                 height,
               };
             });
-            const size = Math.floor(baseImageWidth / Math.min(4, Math.floor(Math.sqrt(galleryImages.length))));
+            const size = Math.floor(baseImageWidth / Math.min(4, Math.ceil(Math.sqrt(galleryImages.length))));
             const gallery = (
               <div className="-mx-4 md:mx-0 my-2 gallery">
                 {imagesWithGridConfig.map(img => (
