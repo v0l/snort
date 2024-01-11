@@ -3,11 +3,11 @@ import { countLeadingZeros, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions, useReactions, useUserProfile } from "@snort/system-react";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import classNames from "classnames";
-import React, { forwardRef, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLongPress } from "use-long-press";
 
-import { AsyncIcon, AsyncIconProps } from "@/Components/Button/AsyncIcon";
+import { AsyncFooterIcon } from "@/Components/Event/Note/AsyncFooterIcon";
 import { ZapsSummary } from "@/Components/Event/ZapsSummary";
 import Icon from "@/Components/Icons/Icon";
 import SendSats from "@/Components/SendSats/SendSats";
@@ -16,7 +16,6 @@ import { useInteractionCache } from "@/Hooks/useInteractionCache";
 import useLogin from "@/Hooks/useLogin";
 import { useNoteCreator } from "@/State/NoteCreator";
 import { findTag, getDisplayName } from "@/Utils";
-import { formatShort } from "@/Utils/Number";
 import { Zapper, ZapTarget } from "@/Utils/Zapper";
 import { ZapPoolController } from "@/Utils/ZapPoolController";
 import { useWallet } from "@/Wallet";
@@ -181,6 +180,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (pow) {
       return (
         <AsyncFooterIcon
+          className={"hidden md:flex flex-none min-w-[50px] md:min-w-[80px]"}
           title={formatMessage({ defaultMessage: "Proof of Work", id: "grQ+mI" })}
           iconName="diamond"
           value={pow}
@@ -193,7 +193,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     const targets = getZapTarget();
     if (targets) {
       return (
-        <div className="flex flex-row gap-4 items-center">
+        <div className="flex flex-row flex-none min-w-[50px] md:min-w-[80px] gap-4 items-center">
           <AsyncFooterIcon
             className={didZap ? "reacted text-nostr-orange" : "hover:text-nostr-orange"}
             {...longPress()}
@@ -215,7 +215,10 @@ export default function NoteFooter(props: NoteFooterProps) {
       <Menu
         menuButton={
           <AsyncFooterIcon
-            className={hasReposted() ? "reacted text-nostr-blue" : "hover:text-nostr-blue"}
+            className={classNames(
+              "flex-none min-w-[50px] md:min-w-[80px]",
+              hasReposted() ? "reacted text-nostr-blue" : "hover:text-nostr-blue",
+            )}
             iconName="repeat"
             title={formatMessage({ defaultMessage: "Repost", id: "JeoS4y" })}
             value={reposts.length}
@@ -256,7 +259,10 @@ export default function NoteFooter(props: NoteFooterProps) {
     const reacted = hasReacted("+");
     return (
       <AsyncFooterIcon
-        className={reacted ? "reacted text-nostr-red" : "hover:text-nostr-red"}
+        className={classNames(
+          "flex-none min-w-[50px] md:min-w-[80px]",
+          reacted ? "reacted text-nostr-red" : "hover:text-nostr-red",
+        )}
         iconName={reacted ? "heart-solid" : "heart"}
         title={formatMessage({ defaultMessage: "Like", id: "qtWLmt" })}
         value={positive.length}
@@ -272,7 +278,10 @@ export default function NoteFooter(props: NoteFooterProps) {
     if (readonly) return;
     return (
       <AsyncFooterIcon
-        className={note.show ? "reacted text-nostr-purple" : "hover:text-nostr-purple"}
+        className={classNames(
+          "flex-none min-w-[50px] md:min-w-[80px]",
+          note.show ? "reacted text-nostr-purple" : "hover:text-nostr-purple",
+        )}
         iconName="reply"
         title={formatMessage({ defaultMessage: "Reply", id: "9HU8vw" })}
         value={props.replies ?? 0}
@@ -292,7 +301,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   };
 
   return (
-    <div className="flex flex-row justify-between gap-2 overflow-hidden w-[360px] flex-grow max-w-full h-6">
+    <div className="flex flex-row gap-4 overflow-hidden max-w-full h-6 items-center">
       {replyIcon()}
       {repostIcon()}
       {reactionIcon()}
@@ -302,19 +311,3 @@ export default function NoteFooter(props: NoteFooterProps) {
     </div>
   );
 }
-
-const AsyncFooterIcon = forwardRef((props: AsyncIconProps & { value: number }, ref) => {
-  const mergedProps = {
-    ...props,
-    iconSize: 18,
-    className: classNames("transition duration-200 ease-in-out reaction-pill cursor-pointer", props.className),
-  };
-
-  return (
-    <AsyncIcon ref={ref} {...mergedProps}>
-      {props.value > 0 && <div className="reaction-pill-number">{formatShort(props.value)}</div>}
-    </AsyncIcon>
-  );
-});
-
-AsyncFooterIcon.displayName = "AsyncFooterIcon";

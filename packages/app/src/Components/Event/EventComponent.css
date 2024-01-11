@@ -99,16 +99,6 @@
   z-index: 1;
 }
 
-.reaction-pill {
-  display: flex;
-  min-width: 1rem;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  font-feature-settings: "tnum";
-  gap: 5px;
-}
-
 .reaction-pill:not(.reacted):not(:hover) {
   color: var(--font-secondary-color);
 }
