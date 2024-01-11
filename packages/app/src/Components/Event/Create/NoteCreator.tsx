@@ -315,7 +315,9 @@ export function NoteCreator() {
 
   function getPreviewNote() {
     if (note.preview) {
-      return <Note data={note.preview as TaggedNostrEvent} options={previewNoteOptions} />;
+      return (
+        <Note className="hover:bg-transparent" data={note.preview as TaggedNostrEvent} options={previewNoteOptions} />
+      );
     }
   }
 
@@ -613,7 +615,7 @@ export function NoteCreator() {
               <FormattedMessage defaultMessage="Reply To" id="8ED/4u" />
             </h4>
             <div className="max-h-64 overflow-y-auto">
-              <Note data={note.replyTo} options={replyToNoteOptions} />
+              <Note className="hover:bg-transparent" data={note.replyTo} options={replyToNoteOptions} />
             </div>
             <hr className="border-border-color border-1 -mx-6" />
           </>
@@ -624,7 +626,7 @@ export function NoteCreator() {
               <FormattedMessage defaultMessage="Quote Repost" id="C7642/" />
             </h4>
             <div className="max-h-64 overflow-y-auto">
-              <Note data={note.quote} options={quoteNoteOptions} />
+              <Note className="hover:bg-transparent" data={note.quote} options={quoteNoteOptions} />
             </div>
             <hr className="border-border-color border-1 -mx-6" />
           </>
