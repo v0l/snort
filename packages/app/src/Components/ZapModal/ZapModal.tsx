@@ -7,7 +7,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import CloseButton from "@/Components/Button/CloseButton";
 import Modal from "@/Components/Modal/Modal";
 import { SuccessAction } from "@/Components/ZapModal/SuccessAction";
-import { SendSatsInputSelection,ZapModalInput } from "@/Components/ZapModal/ZapModalInput";
+import { SendSatsInputSelection, ZapModalInput } from "@/Components/ZapModal/ZapModalInput";
 import { ZapModalInvoice } from "@/Components/ZapModal/ZapModalInvoice";
 import { ZapModalTitle } from "@/Components/ZapModal/ZapModalTitle";
 import { ZapType } from "@/Components/ZapModal/ZapType";
