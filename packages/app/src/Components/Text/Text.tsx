@@ -30,6 +30,8 @@ export interface TextProps {
   onClick?: (e: React.MouseEvent) => void;
 }
 
+const baseImageWidth = 910;
+
 const gridConfigMap = new Map<number, number[][]>([
   [1, [[4, 3]]],
   [
@@ -137,14 +139,16 @@ export default function Text({
     </a>
   );
 
-  const RevealMediaInstance = ({ content, data }: { content: string; data?: object }) => {
+  const RevealMediaInstance = ({ content, data, size }: { content: string; data?: object; size?: number }) => {
     const imeta = data as IMeta | undefined;
+
     return (
       <RevealMedia
         key={content}
         link={content}
         creator={creator}
         meta={imeta}
+        size={size}
         onMediaClick={e => {
           if (!disableMediaSpotlight) {
             e.stopPropagation();
@@ -196,7 +200,13 @@ export default function Text({
             }
           }
           if (galleryImages.length === 1) {
-            chunks.push(<RevealMediaInstance content={galleryImages[0].content} data={galleryImages[0].data} />);
+            chunks.push(
+              <RevealMediaInstance
+                content={galleryImages[0].content}
+                data={galleryImages[0].data}
+                size={baseImageWidth}
+              />,
+            );
           } else {
             // We build a grid layout to render the grouped images
             const imagesWithGridConfig = galleryImages.map((gi, index) => {
@@ -215,6 +225,7 @@ export default function Text({
                 height,
               };
             });
+            const size = Math.floor(baseImageWidth / Math.min(4, Math.floor(Math.sqrt(galleryImages.length))));
             const gallery = (
               <div className="-mx-4 md:mx-0 my-2 gallery">
                 {imagesWithGridConfig.map(img => (
@@ -226,7 +237,7 @@ export default function Text({
                       gridColumn: `span ${img.gridColumn}`,
                       gridRow: `span ${img.gridRow}`,
                     }}>
-                    <RevealMediaInstance content={img.content} data={img.data} />
+                    <RevealMediaInstance content={img.content} data={img.data} size={size} />
                   </div>
                 ))}
               </div>
@@ -243,7 +254,7 @@ export default function Text({
         if (disableMedia ?? false) {
           chunks.push(<DisableMedia content={element.content} />);
         } else {
-          chunks.push(<RevealMediaInstance content={element.content} data={element.data} />);
+          chunks.push(<RevealMediaInstance content={element.content} data={element.data} size={baseImageWidth} />);
         }
       }
       if (element.type === "invoice") {

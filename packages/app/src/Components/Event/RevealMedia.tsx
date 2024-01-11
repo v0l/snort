@@ -12,6 +12,7 @@ interface RevealMediaProps {
   link: string;
   onMediaClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
   meta?: IMeta;
+  size?: number;
 }
 
 export default function RevealMedia(props: RevealMediaProps) {
@@ -73,6 +74,7 @@ export default function RevealMedia(props: RevealMediaProps) {
           url={url.toString()}
           onMediaClick={props.onMediaClick}
           meta={props.meta}
+          size={props.size}
         />
       </Reveal>
     );
@@ -83,6 +85,7 @@ export default function RevealMedia(props: RevealMediaProps) {
         url={url.toString()}
         onMediaClick={props.onMediaClick}
         meta={props.meta}
+        size={props.size}
       />
     );
   }

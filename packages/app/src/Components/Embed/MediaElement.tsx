@@ -11,6 +11,7 @@ interface MediaElementProps {
   url: string;
   meta?: IMeta;
   onMediaClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
+  size?: number;
 }
 
 interface AudioElementProps {
@@ -25,6 +26,7 @@ interface VideoElementProps {
 interface ImageElementProps {
   url: string;
   meta?: IMeta;
+  size?: number;
   onMediaClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
 }
 
@@ -32,7 +34,7 @@ const AudioElement = ({ url }: AudioElementProps) => {
   return <audio key={url} src={url} controls />;
 };
 
-const ImageElement = ({ url, meta, onMediaClick }: ImageElementProps) => {
+const ImageElement = ({ url, meta, onMediaClick, size }: ImageElementProps) => {
   const imageRef = useRef<HTMLImageElement | null>(null);
   const style = useMemo(() => {
     const style = {} as CSSProperties;
@@ -51,6 +53,7 @@ const ImageElement = ({ url, meta, onMediaClick }: ImageElementProps) => {
       <ProxyImg
         key={url}
         src={url}
+        size={size}
         sha256={meta?.sha256}
         onClick={onMediaClick}
         className={classNames("max-h-[80vh] w-full h-full object-contain object-center", {
@@ -102,7 +105,7 @@ const VideoElement = ({ url }: VideoElementProps) => {
 
 export function MediaElement(props: MediaElementProps) {
   if (props.mime.startsWith("image/")) {
-    return <ImageElement url={props.url} meta={props.meta} onMediaClick={props.onMediaClick} />;
+    return <ImageElement url={props.url} meta={props.meta} onMediaClick={props.onMediaClick} size={props.size} />;
   } else if (props.mime.startsWith("audio/")) {
     return <AudioElement url={props.url} />;
   } else if (props.mime.startsWith("video/")) {

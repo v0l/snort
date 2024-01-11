@@ -69,7 +69,7 @@ export default function FollowedBy({ pubkey }: { pubkey: HexKey }) {
           <FormattedMessage defaultMessage="Not followed by anyone you follow" id="IgsWFG" />
         </div>
       )}
-      {followDistance === 3 && (
+      {followDistance === 3 && ( // TODO "followed by friends of {n} friends"
         <div className="text-gray-light">
           <FormattedMessage defaultMessage="Followed by friends of friends" id="2oCF7O" />
         </div>
