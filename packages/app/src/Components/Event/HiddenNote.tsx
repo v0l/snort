@@ -8,12 +8,12 @@ const HiddenNote = ({ children }: { children: React.ReactNode }) => {
   return show ? (
     children
   ) : (
-    <div className="card note hidden-note">
+    <div className="card note hidden-note p-0">
       <div className="header">
         <p>
           <FormattedMessage defaultMessage="This note has been muted" id="qfmMQh" />
         </p>
-        <button type="button" onClick={() => setShow(true)}>
+        <button className="btn btn-sm btn-neutral" onClick={() => setShow(true)}>
           <FormattedMessage {...messages.Show} />
         </button>
       </div>

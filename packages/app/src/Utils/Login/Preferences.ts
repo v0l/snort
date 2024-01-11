@@ -96,6 +96,12 @@ export interface UserPreferences {
    * Auto-translate when available
    */
   autoTranslate?: boolean;
+
+  /**
+   * Hides muted notes when selected
+   */
+  hideMutedNotes: boolean;
+
 }
 
 export const DefaultPreferences = {
@@ -116,4 +122,5 @@ export const DefaultPreferences = {
   showStatus: true,
   checkSigs: true,
   autoTranslate: true,
+  hideMutedNotes:false
 } as UserPreferences;
