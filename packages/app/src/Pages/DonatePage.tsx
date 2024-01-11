@@ -53,6 +53,8 @@ const Translators = [
   bech32ToHex("npub1wh30wunfpkezx5s7edqu9g0s0raeetf5dgthzm0zw7sk8wqygmjqqfljgh"), // Fernando Porazzi - pt-BR
 
   bech32ToHex("npub1ust7u0v3qffejwhqee45r49zgcyewrcn99vdwkednd356c9resyqtnn3mj"), // Petri - FI
+
+  bech32ToHex("npub1p94p6d4p04mhjt2hdpkhhvkl93v7j7ada4w9lztj0y0fzg2m959sux5h5k"), // Jeremy - SV
 ];
 
 const DonateLNURL = "donate@snort.social";
