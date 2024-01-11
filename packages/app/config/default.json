@@ -33,6 +33,7 @@
   "noteCreatorToast": false,
   "hideFromNavbar": ["/graph"],
   "deckSubKind": 1,
+  "showPowIcon": true,
   "eventLinkPrefix": "nevent",
   "profileLinkPrefix": "nprofile",
   "defaultRelays": {

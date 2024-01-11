@@ -89,6 +89,7 @@ declare const CONFIG: {
   eventLinkPrefix: NostrPrefix;
   profileLinkPrefix: NostrPrefix;
   defaultRelays: Record<string, RelaySettings>;
+  showPowIcon: boolean;
 
   // Alby wallet oAuth config
   alby?: {

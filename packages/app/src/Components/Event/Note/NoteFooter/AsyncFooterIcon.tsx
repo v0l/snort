@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import React from "react";
 
 import { AsyncIcon, AsyncIconProps } from "@/Components/Button/AsyncIcon";
 import { formatShort } from "@/Utils/Number";
