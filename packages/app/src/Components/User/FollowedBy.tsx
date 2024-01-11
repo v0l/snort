@@ -2,9 +2,9 @@ import { HexKey, socialGraphInstance } from "@snort/system";
 import React, { Fragment, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
+import { AvatarGroup } from "@/Components/User/AvatarGroup";
 import DisplayName from "@/Components/User/DisplayName";
 import FollowDistanceIndicator from "@/Components/User/FollowDistanceIndicator";
-import ProfileImage from "@/Components/User/ProfileImage";
 import { ProfileLink } from "@/Components/User/ProfileLink";
 
 const MAX_FOLLOWED_BY_FRIENDS = 3;
@@ -18,17 +18,6 @@ export default function FollowedBy({ pubkey }: { pubkey: HexKey }) {
       totalFollowedByFriends: followedByFriends.size,
     };
   }, [pubkey, followDistance]);
-
-  const renderFollowedByFriends = () => {
-    return followedByFriendsArray.map((a, index) => (
-      <div
-        className={`inline-block ${index > 0 ? "-ml-5" : ""}`}
-        key={a}
-        style={{ zIndex: followedByFriendsArray.length - index }}>
-        <ProfileImage showFollowDistance={false} pubkey={a} size={24} showUsername={false} />
-      </div>
-    ));
-  };
 
   const renderFollowedByFriendsLinks = () => {
     return followedByFriendsArray.map((a, index) => (
@@ -45,7 +34,7 @@ export default function FollowedBy({ pubkey }: { pubkey: HexKey }) {
     <div className="flex flex-row items-center">
       <div className="flex flex-row items-center">
         <FollowDistanceIndicator className="p-2" pubkey={pubkey} />
-        {renderFollowedByFriends()}
+        <AvatarGroup ids={followedByFriendsArray} />
       </div>
       {totalFollowedByFriends > 0 && (
         <div className="text-gray-light">

@@ -55,8 +55,12 @@ export function Note(props: NoteProps) {
           <NoteText {...props} translated={translated} showTranslation={showTranslation} />
           {translated && <TranslationInfo translated={translated} setShowTranslation={setShowTranslation} />}
           {ev.kind === EventKind.Polls && <Poll ev={ev} />}
+          {optionsMerged.showFooter && (
+            <div className="mt-4">
+              <NoteFooter ev={ev} replies={props.threadChains?.get(chainKey(ev))?.length} />
+            </div>
+          )}
         </div>
-        {optionsMerged.showFooter && <NoteFooter ev={ev} replies={props.threadChains?.get(chainKey(ev))?.length} />}
       </>
     );
   }

@@ -57,21 +57,6 @@
   margin-top: 16px;
 }
 
-.note .footer .footer-reactions {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-left: auto;
-  gap: 48px;
-}
-
-@media (min-width: 720px) {
-  .note .footer .footer-reactions {
-    margin-left: 0;
-  }
-}
-
 .note > .header img:hover,
 .note > .header .name > .reply:hover {
   cursor: pointer;

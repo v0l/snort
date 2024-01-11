@@ -44,15 +44,6 @@
   color: var(--font-secondary-color);
 }
 
-.zaps-summary {
-  display: flex;
-  flex-direction: row;
-}
-
-.note.thread-root .zaps-summary {
-  margin-left: 14px;
-}
-
 .top-zap {
   font-size: 14px;
   border: none;

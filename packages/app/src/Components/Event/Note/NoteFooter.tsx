@@ -193,17 +193,20 @@ export default function NoteFooter(props: NoteFooterProps) {
     const targets = getZapTarget();
     if (targets) {
       return (
-        <AsyncFooterIcon
-          className={didZap ? "reacted text-nostr-orange" : "hover:text-nostr-orange"}
-          {...longPress()}
-          title={formatMessage({ defaultMessage: "Zap", id: "fBI91o" })}
-          iconName={canFastZap ? "zapFast" : "zap"}
-          value={zapTotal}
-          onClick={e => fastZap(e)}
-        />
+        <div className="flex flex-row gap-4 items-center">
+          <AsyncFooterIcon
+            className={didZap ? "reacted text-nostr-orange" : "hover:text-nostr-orange"}
+            {...longPress()}
+            title={formatMessage({ defaultMessage: "Zap", id: "fBI91o" })}
+            iconName={canFastZap ? "zapFast" : "zap"}
+            value={zapTotal}
+            onClick={e => fastZap(e)}
+          />
+          <ZapsSummary zaps={zaps} />
+        </div>
       );
     }
-    return null;
+    return <div className="w-[18px]"></div>;
   }
 
   function repostIcon() {
@@ -289,19 +292,14 @@ export default function NoteFooter(props: NoteFooterProps) {
   };
 
   return (
-    <>
-      <div className="footer">
-        <div className="footer-reactions">
-          {replyIcon()}
-          {repostIcon()}
-          {reactionIcon()}
-          {tipButton()}
-          {powIcon()}
-        </div>
-        <SendSats targets={getZapTarget()} onClose={() => setTip(false)} show={tip} note={ev.id} allocatePool={true} />
-      </div>
-      <ZapsSummary zaps={zaps} />
-    </>
+    <div className="flex flex-row justify-between gap-2 overflow-hidden w-[360px] flex-grow max-w-full h-6">
+      {replyIcon()}
+      {repostIcon()}
+      {reactionIcon()}
+      {powIcon()}
+      {tipButton()}
+      <SendSats targets={getZapTarget()} onClose={() => setTip(false)} show={tip} note={ev.id} allocatePool={true} />
+    </div>
   );
 }
 

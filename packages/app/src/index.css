@@ -218,11 +218,6 @@ a.ext {
   margin-bottom: -8px;
 }
 
-.card > .footer {
-  display: flex;
-  flex-direction: row;
-}
-
 .card .card-title {
   font-size: x-large;
   font-weight: bold;

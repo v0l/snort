@@ -12,10 +12,6 @@
   line-height: 27px;
 }
 
-.thread-root.note > .footer {
-  padding-left: 0;
-}
-
 .thread-root.note {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -26,8 +22,6 @@
   border: 0;
 }
 
-.thread-note.note .zaps-summary,
-.thread-note.note .footer,
 .thread-note.note .body {
   margin-left: 61px;
 }
