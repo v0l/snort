@@ -24,11 +24,7 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
       <div className={`top-zap`}>
         <div className="summary">
           <AvatarGroup ids={sortedZappers} />
-          {zaps.length > 3 && (
-            <div className="hidden md:flex -ml-2">
-              +{zaps.length - 3}
-            </div>
-          )}
+          {zaps.length > 3 && <div className="hidden md:flex -ml-2">+{zaps.length - 3}</div>}
         </div>
       </div>
     </div>
