@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+
 import { sha256 } from "@noble/hashes/sha256";
 
 const animals = [
