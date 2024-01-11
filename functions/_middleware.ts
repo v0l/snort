@@ -18,7 +18,7 @@ export const onRequest: PagesFunction<Env> = async context => {
       if (!isEntityPath && nostrAddress) {
         id = `${id}@${HOST}`;
       }
-      const fetchApi = `http://nostr.api.v0l.io/api/v1/opengraph/${id}?canonical=${encodeURIComponent(
+      const fetchApi = `https://nostr.api.v0l.io/api/v1/opengraph/${id}?canonical=${encodeURIComponent(
         `https://${HOST}/%s`,
       )}`;
       console.log("Fetching tags from: ", fetchApi);
@@ -36,7 +36,8 @@ export const onRequest: PagesFunction<Env> = async context => {
         if (body.length > 0) {
           return new Response(body, {
             headers: {
-              "content-type": "text/html",
+              ...Object.fromEntries(rsp.headers.entries()),
+              "cache-control": "public, max-age=60",
             },
           });
         }
