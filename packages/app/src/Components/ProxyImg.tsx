@@ -1,6 +1,7 @@
-import { forwardRef, HTMLProps, ReactNode, useEffect, useState } from "react";
+import { forwardRef, HTMLProps, memo, ReactNode, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
+import Icon from "@/Components/Icons/Icon";
 import useImgProxy from "@/Hooks/useImgProxy";
 import { getUrlHostname } from "@/Utils";
 
@@ -12,7 +13,9 @@ type ProxyImgProps = HTMLProps<HTMLImageElement> & {
   missingImageElement?: ReactNode;
 };
 
-export const ProxyImg = forwardRef<HTMLImageElement, ProxyImgProps>(function ProxyImg(
+const defaultMissingImageElement = <Icon name="x" className="warning" />;
+
+const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function ProxyImg(
   { src, size, className, promptToLoadDirectly, missingImageElement, sha256, ...props }: ProxyImgProps,
   ref,
 ) {
@@ -60,14 +63,9 @@ export const ProxyImg = forwardRef<HTMLImageElement, ProxyImgProps>(function Pro
     }
   };
 
-  if (!imgSrc || loadFailed)
-    return (
-      missingImageElement ?? (
-        <div>
-          <FormattedMessage defaultMessage="Image not available" id="Y7FG5M" />
-        </div>
-      )
-    );
+  if (!imgSrc || loadFailed) {
+    return missingImageElement ?? defaultMissingImageElement;
+  }
 
   return (
     <img
@@ -81,3 +79,8 @@ export const ProxyImg = forwardRef<HTMLImageElement, ProxyImgProps>(function Pro
     />
   );
 });
+
+const ProxyImg = memo(ProxyImgComponent);
+ProxyImg.displayName = "ProxyImg";
+
+export { ProxyImg };

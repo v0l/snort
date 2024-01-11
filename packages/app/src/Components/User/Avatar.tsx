@@ -4,7 +4,6 @@ import type { UserMetadata } from "@snort/system";
 import classNames from "classnames";
 import { ReactNode, useMemo } from "react";
 
-import Icon from "@/Components/Icons/Icon";
 import { ProxyImg } from "@/Components/ProxyImg";
 import { defaultAvatar, getDisplayName } from "@/Utils";
 
@@ -60,7 +59,6 @@ const Avatar = ({
         size={s}
         alt={getDisplayName(user, "")}
         promptToLoadDirectly={false}
-        missingImageElement={<Icon name="x" className="warning" />}
       />
       {icons && <div className="icons">{icons}</div>}
       {imageOverlay && <div className="overlay">{imageOverlay}</div>}
