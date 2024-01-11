@@ -13,7 +13,7 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
     const priv = [...zaps.filter(z => !z.sender && z.valid)];
     pub.sort((a, b) => b.amount - a.amount);
     return dedupe(pub.concat(priv).map(z => z.sender)).slice(0, 3);
-  }, [zaps]);
+  }, [zaps]) as string[];
 
   if (zaps.length === 0) {
     return null;
@@ -24,6 +24,11 @@ export const ZapsSummary = ({ zaps }: ZapsSummaryProps) => {
       <div className={`top-zap`}>
         <div className="summary">
           <AvatarGroup ids={sortedZappers} />
+          {zaps.length > 3 && (
+            <div className="hidden md:flex -ml-2">
+              +{zaps.length - 3}
+            </div>
+          )}
         </div>
       </div>
     </div>
