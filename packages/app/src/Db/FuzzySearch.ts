@@ -1,4 +1,4 @@
-import { CachedMetadata } from "@snort/system";
+import { CachedMetadata, NostrEvent } from "@snort/system";
 import Fuse from "fuse.js";
 
 export type FuzzySearchResult = {
@@ -16,7 +16,7 @@ const fuzzySearch = new Fuse<FuzzySearchResult>([], {
 
 const profileTimestamps = new Map<string, number>(); // is this somewhere in cache?
 
-export const addEventToFuzzySearch = ev => {
+export const addEventToFuzzySearch = (ev: NostrEvent) => {
   if (ev.kind !== 0) {
     return;
   }
@@ -26,6 +26,7 @@ export const addEventToFuzzySearch = ev => {
       if (existing > ev.created_at) {
         return;
       }
+      // for some reason we get duplicates even though this should be removing existing profile on update
       fuzzySearch.remove(doc => doc.pubkey === ev.pubkey);
     }
     profileTimestamps.set(ev.pubkey, ev.created_at);

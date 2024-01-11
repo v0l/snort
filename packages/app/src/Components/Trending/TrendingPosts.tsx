@@ -17,7 +17,7 @@ import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
 import { System } from "@/system";
 
-export default function TrendingNotes({ count = Infinity, small = false }: { count: number; small: boolean }) {
+export default function TrendingNotes({ count = Infinity, small = false }: { count?: number; small?: boolean }) {
   const api = new NostrBandApi();
   const { lang } = useLocale();
   const trendingNotesUrl = api.trendingNotesUrl(lang);

@@ -1,8 +1,6 @@
 import "./SearchBox.css";
 
-import { unixNow } from "@snort/shared";
 import { NostrLink, tryParseNostrLink } from "@snort/system";
-import { socialGraphInstance } from "@snort/system";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -10,10 +8,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Icon from "@/Components/Icons/Icon";
 import Spinner from "@/Components/Icons/Spinner";
 import ProfileImage from "@/Components/User/ProfileImage";
-import fuzzySearch, { FuzzySearchResult } from "@/Db/FuzzySearch";
+import useProfileSearch from "@/Hooks/useProfileSearch";
 import { fetchNip05Pubkey } from "@/Utils/Nip05/Verifier";
-
-import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "../../Feed/TimelineFeed";
 
 const MAX_RESULTS = 3;
 
@@ -29,53 +25,7 @@ export default function SearchBox() {
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const resultListRef = useRef<HTMLDivElement | null>(null);
 
-  const options: TimelineFeedOptions = {
-    method: "LIMIT_UNTIL",
-    window: undefined,
-    now: unixNow(),
-  };
-
-  const subject: TimelineSubject = {
-    type: "profile_keyword",
-    discriminator: search,
-    items: search ? [search] : [],
-    relay: undefined,
-    streams: false,
-  };
-
-  const { main } = useTimelineFeed(subject, options);
-
-  const [results, setResults] = useState<FuzzySearchResult[]>([]);
-  useEffect(() => {
-    const searchString = search.trim();
-    const fuseResults = fuzzySearch.search(searchString);
-
-    const followDistanceNormalizationFactor = 3;
-
-    const combinedResults = fuseResults.map(result => {
-      const fuseScore = result.score === undefined ? 1 : result.score;
-      const followDistance =
-        socialGraphInstance.getFollowDistance(result.item.pubkey) / followDistanceNormalizationFactor;
-
-      const startsWithSearchString = [result.item.name, result.item.display_name, result.item.nip05].some(
-        field => field && field.toLowerCase?.().startsWith(searchString.toLowerCase()),
-      );
-
-      const boostFactor = startsWithSearchString ? 0.25 : 1;
-
-      const weightForFuseScore = 0.8;
-      const weightForFollowDistance = 0.2;
-
-      const combinedScore = (fuseScore * weightForFuseScore + followDistance * weightForFollowDistance) * boostFactor;
-
-      return { ...result, combinedScore };
-    });
-
-    // Sort by combined score, lower is better
-    combinedResults.sort((a, b) => a.combinedScore - b.combinedScore);
-
-    setResults(combinedResults.map(r => r.item));
-  }, [search, main]);
+  const results = useProfileSearch(search);
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {

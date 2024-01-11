@@ -1,16 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";
-import UsersFeed from "@/Components/Feed/UsersFeed";
 import Tabs, { Tab } from "@/Components/Tabs/Tabs";
 import TrendingNotes from "@/Components/Trending/TrendingPosts";
 import TrendingUsers from "@/Components/Trending/TrendingUsers";
+import FollowListBase from "@/Components/User/FollowListBase";
+import useProfileSearch from "@/Hooks/useProfileSearch";
 import { debounce } from "@/Utils";
 
 const NOTES = 0;
 const PROFILES = 1;
+
+const Profiles = ({ keyword }: { keyword: string }) => {
+  const results = useProfileSearch(keyword);
+  const ids = useMemo(() => results.map(r => r.pubkey), [results]);
+  const content = keyword ? <FollowListBase pubkeys={ids} showAbout={true} /> : <TrendingUsers />;
+  return <div className="px-3">{content}</div>;
+};
 
 const SearchPage = () => {
   const params = useParams();
@@ -37,8 +45,8 @@ const SearchPage = () => {
   }, [keyword]);
 
   useEffect(() => {
-    setKeyword(params.keyword);
-    setSearch(params.keyword); // Also update the search input field
+    setKeyword(params.keyword ?? "");
+    setSearch(params.keyword ?? ""); // Also update the search input field
   }, [params.keyword]);
 
   useEffect(() => {
@@ -46,34 +54,25 @@ const SearchPage = () => {
   }, [search]);
 
   function tabContent() {
+    if (tab.value === PROFILES) {
+      return <Profiles keyword={search} />;
+    }
+
     if (!keyword) {
-      switch (tab.value) {
-        case PROFILES:
-          return <TrendingUsers />;
-        case NOTES:
-          return <TrendingNotes />;
-      }
-      return null;
+      return <TrendingNotes />;
     }
 
-    if (tab.value == PROFILES) {
-      // render UsersFeed
-      return <UsersFeed keyword={keyword} />;
-    }
-
-    const pf = tab.value == PROFILES;
     return (
       <>
         {sortOptions()}
         <Timeline
-          key={keyword + (pf ? "_p" : "")}
+          key={keyword}
           subject={{
-            type: pf ? "profile_keyword" : "post_keyword",
+            type: "post_keyword",
             items: [keyword + (sortPopular ? " sort:popular" : "")],
             discriminator: keyword,
           }}
           postsOnly={false}
-          noSort={pf && sortPopular}
           method={"LIMIT_UNTIL"}
           loadMore={false}
         />

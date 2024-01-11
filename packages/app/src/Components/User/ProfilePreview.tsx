@@ -2,7 +2,7 @@ import "./ProfilePreview.css";
 
 import { HexKey, UserMetadata } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 import { useInView } from "react-intersection-observer";
 
 import FollowButton from "@/Components/User/FollowButton";
@@ -19,10 +19,11 @@ export interface ProfilePreviewProps {
   actions?: ReactNode;
   className?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  waitUntilInView?: boolean;
 }
-export default function ProfilePreview(props: ProfilePreviewProps) {
+export default memo(function ProfilePreview(props: ProfilePreviewProps) {
   const pubkey = props.pubkey;
-  const { ref, inView } = useInView({ triggerOnce: true });
+  const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "500px" });
   const user = useUserProfile(inView ? pubkey : undefined);
   const options = {
     about: true,
@@ -43,7 +44,7 @@ export default function ProfilePreview(props: ProfilePreviewProps) {
         className={`justify-between profile-preview${props.className ? ` ${props.className}` : ""}`}
         ref={ref}
         onClick={handleClick}>
-        {inView && (
+        {(!props.waitUntilInView || inView) && (
           <>
             <ProfileImage
               pubkey={pubkey}
@@ -62,4 +63,4 @@ export default function ProfilePreview(props: ProfilePreviewProps) {
       </div>
     </>
   );
-}
+});

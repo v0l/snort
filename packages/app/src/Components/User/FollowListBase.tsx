@@ -1,6 +1,6 @@
 import { dedupe } from "@snort/shared";
 import { HexKey } from "@snort/system";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { FollowsFeed } from "@/Cache";
@@ -35,6 +35,8 @@ export default function FollowListBase({
   const { id, follows } = useLogin(s => ({ id: s.id, follows: s.follows }));
   const login = useLogin();
 
+  const profilePreviewOptions = useMemo(() => ({ about: showAbout, profileCards: true }), [showAbout]);
+
   async function followAll() {
     if (publisher) {
       const newFollows = dedupe([...pubkeys, ...follows.item]);
@@ -57,12 +59,13 @@ export default function FollowListBase({
         </div>
       )}
       <div className={className}>
-        {pubkeys?.map(a => (
+        {pubkeys?.map((a, index) => (
           <ProfilePreview
             pubkey={a}
             key={a}
-            options={{ about: showAbout, profileCards: true }}
+            options={profilePreviewOptions}
             actions={profileActions?.(a)}
+            waitUntilInView={index > 10}
           />
         ))}
       </div>
