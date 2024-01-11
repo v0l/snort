@@ -477,10 +477,10 @@ const PreferencesPage = () => {
       <div className="flex justify-between">
         <div className="flex flex-col g8">
           <h4>
-            <FormattedMessage {...messages.HideMutedNotes} />
+            <FormattedMessage defaultMessage="Hide muted notes" id="9kO0VQ" />
           </h4>
           <small>
-            <FormattedMessage {...messages.HideMutedNotesHelp} />
+            <FormattedMessage defaultMessage="Muted notes will not be shown" id="sfL/O+" />
           </small>
         </div>
         <div>

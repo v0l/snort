@@ -1,22 +1,23 @@
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import messages from "../messages";
+import useLogin from "@/Hooks/useLogin";
 
 const HiddenNote = ({ children }: { children: React.ReactNode }) => {
+  const hideMutedNotes = useLogin(s => s.appData.item.preferences.hideMutedNotes);
   const [show, setShow] = useState(false);
+  if (hideMutedNotes) return;
+
   return show ? (
     children
   ) : (
-    <div className="card note hidden-note p-0">
-      <div className="header">
-        <p>
-          <FormattedMessage defaultMessage="This note has been muted" id="qfmMQh" />
-        </p>
-        <button className="btn btn-sm btn-neutral" onClick={() => setShow(true)}>
-          <FormattedMessage {...messages.Show} />
-        </button>
+    <div className="bb p flex items-center justify-between">
+      <div className="text-sm text-secondary">
+        <FormattedMessage defaultMessage="This note has been muted" id="qfmMQh" />
       </div>
+      <button className="btn btn-sm btn-neutral" onClick={() => setShow(true)}>
+        <FormattedMessage defaultMessage="Show" id="K7AkdL" />
+      </button>
     </div>
   );
 };

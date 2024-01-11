@@ -137,15 +137,6 @@
   overflow-y: hidden;
 }
 
-.hidden-note .header {
-  display: flex;
-  align-items: center;
-}
-
-.card.note.hidden-note {
-  min-height: unset;
-}
-
 .expand-note {
   padding: 0 0 16px 0;
   font-weight: 400;
