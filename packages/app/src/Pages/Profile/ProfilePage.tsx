@@ -22,7 +22,6 @@ import Icon from "@/Components/Icons/Icon";
 import Modal from "@/Components/Modal/Modal";
 import { ProxyImg } from "@/Components/ProxyImg";
 import QrCode from "@/Components/QrCode";
-import SendSats from "@/Components/SendSats/SendSats";
 import { SpotlightMediaModal } from "@/Components/Spotlight/SpotlightMedia";
 import { Tab, TabElement } from "@/Components/Tabs/Tabs";
 import Text from "@/Components/Text/Text";
@@ -38,6 +37,7 @@ import MutedList from "@/Components/User/MutedList";
 import Nip05 from "@/Components/User/Nip05";
 import ProfileImage from "@/Components/User/ProfileImage";
 import { UserWebsiteLink } from "@/Components/User/UserWebsiteLink";
+import ZapModal from "@/Components/ZapModal/ZapModal";
 import useProfileBadges from "@/Feed/BadgesFeed";
 import useFollowsFeed from "@/Feed/FollowsFeed";
 import { useStatusFeed } from "@/Feed/StatusFeed";
@@ -181,7 +181,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
           </div>
         )}
 
-        <SendSats
+        <ZapModal
           targets={
             lnurl?.lnurl && id
               ? [

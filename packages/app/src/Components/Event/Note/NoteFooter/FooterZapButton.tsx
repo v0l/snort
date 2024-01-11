@@ -8,7 +8,7 @@ import { useLongPress } from "use-long-press";
 import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon";
 import { ZapperQueue } from "@/Components/Event/Note/NoteFooter/ZapperQueue";
 import { ZapsSummary } from "@/Components/Event/ZapsSummary";
-import SendSats from "@/Components/SendSats/SendSats";
+import ZapModal from "@/Components/ZapModal/ZapModal";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { useInteractionCache } from "@/Hooks/useInteractionCache";
 import useLogin from "@/Hooks/useLogin";
@@ -38,14 +38,14 @@ export const FooterZapButton = ({ ev, zaps }: ZapIconProps) => {
   const link = NostrLink.fromEvent(ev);
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
   const didZap = interactionCache.data.zapped || zaps.some(a => a.sender === publicKey);
-  const [tip, setTip] = useState(false);
+  const [showZapModal, setShowZapModal] = useState(false);
   const { formatMessage } = useIntl();
   const [zapping, setZapping] = useState(false);
   const { publisher, system } = useEventPublisher();
   const author = useUserProfile(ev.pubkey);
   const isMine = ev.pubkey === publicKey;
 
-  const longPress = useLongPress(() => setTip(true), { captureEvent: true });
+  const longPress = useLongPress(() => setShowZapModal(true), { captureEvent: true });
 
   const getZapTarget = (): Array<ZapTarget> | undefined => {
     if (ev.tags.some(v => v[0] === "zap")) {
@@ -80,13 +80,13 @@ export const FooterZapButton = ({ ev, zaps }: ZapIconProps) => {
       } catch (e) {
         console.warn("Fast zap failed", e);
         if (!(e instanceof Error) || e.message !== "User rejected") {
-          setTip(true);
+          setShowZapModal(true);
         }
       } finally {
         setZapping(false);
       }
     } else {
-      setTip(true);
+      setShowZapModal(true);
     }
   };
 
@@ -144,13 +144,15 @@ export const FooterZapButton = ({ ev, zaps }: ZapIconProps) => {
             />
             <ZapsSummary zaps={zaps} />
           </div>
-          <SendSats
-            targets={getZapTarget()}
-            onClose={() => setTip(false)}
-            show={tip}
-            note={ev.id}
-            allocatePool={true}
-          />
+          {showZapModal && (
+            <ZapModal
+              targets={getZapTarget()}
+              onClose={() => setShowZapModal(false)}
+              note={ev.id}
+              show={true}
+              allocatePool={true}
+            />
+          )}
         </>
       )}
     </>

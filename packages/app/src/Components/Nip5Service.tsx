@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { UserCache } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import Copy from "@/Components/Copy/Copy";
-import SendSats from "@/Components/SendSats/SendSats";
+import ZapModal from "@/Components/ZapModal/ZapModal";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { unwrap } from "@/Utils";
@@ -298,7 +298,7 @@ export default function Nip5Service(props: Nip05ServiceProps) {
           </b>
         </div>
       )}
-      <SendSats
+      <ZapModal
         invoice={registerResponse?.invoice}
         show={showInvoice}
         onClose={() => setShowInvoice(false)}

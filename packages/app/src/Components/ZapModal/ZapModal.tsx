@@ -1,4 +1,4 @@
-import "./SendSats.css";
+import "./ZapModal.css";
 
 import { LNURLSuccessAction } from "@snort/shared";
 import { HexKey } from "@snort/system";
@@ -6,11 +6,11 @@ import React, { ReactNode, useEffect, useState } from "react";
 
 import CloseButton from "@/Components/Button/CloseButton";
 import Modal from "@/Components/Modal/Modal";
-import { SendSatsInput, SendSatsInputSelection } from "@/Components/SendSats/SendSatsInput";
-import { SendSatsInvoice } from "@/Components/SendSats/SendSatsInvoice";
-import { SendSatsTitle } from "@/Components/SendSats/SendSatsTitle";
-import { SuccessAction } from "@/Components/SendSats/SuccessAction";
-import { ZapType } from "@/Components/SendSats/ZapType";
+import { SuccessAction } from "@/Components/ZapModal/SuccessAction";
+import { SendSatsInputSelection,ZapModalInput } from "@/Components/ZapModal/ZapModalInput";
+import { ZapModalInvoice } from "@/Components/ZapModal/ZapModalInvoice";
+import { ZapModalTitle } from "@/Components/ZapModal/ZapModalTitle";
+import { ZapType } from "@/Components/ZapModal/ZapType";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import { debounce } from "@/Utils";
 import { Zapper, ZapTarget, ZapTargetResult } from "@/Utils/Zapper";
@@ -27,7 +27,7 @@ export interface SendSatsProps {
   allocatePool?: boolean;
 }
 
-export default function SendSats(props: SendSatsProps) {
+export default function ZapModal(props: SendSatsProps) {
   const onClose = props.onClose || (() => undefined);
 
   const [zapper, setZapper] = useState<Zapper>();
@@ -91,12 +91,12 @@ export default function SendSats(props: SendSatsProps) {
       <div className="p flex flex-col g12">
         <div className="flex g12">
           <div className="flex items-center grow">
-            {props.title || <SendSatsTitle amount={amount} targets={props.targets} zapper={zapper} />}
+            {props.title || <ZapModalTitle amount={amount} targets={props.targets} zapper={zapper} />}
           </div>
           <CloseButton onClick={onClose} />
         </div>
         {zapper && !invoice && (
-          <SendSatsInput
+          <ZapModalInput
             zapper={zapper}
             onChange={v => setAmount(v)}
             onNextStage={async p => {
@@ -129,7 +129,7 @@ export default function SendSats(props: SendSatsProps) {
         )}
         {error && <p className="error">{error}</p>}
         {invoice && !success && (
-          <SendSatsInvoice
+          <ZapModalInvoice
             invoice={invoice}
             wallet={wallet}
             notice={props.notice}

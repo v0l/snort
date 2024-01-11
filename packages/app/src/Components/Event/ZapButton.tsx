@@ -5,7 +5,7 @@ import { useUserProfile } from "@snort/system-react";
 import { useState } from "react";
 
 import Icon from "@/Components/Icons/Icon";
-import SendSats from "@/Components/SendSats/SendSats";
+import ZapModal from "@/Components/ZapModal/ZapModal";
 import { ZapTarget } from "@/Utils/Zapper";
 
 const ZapButton = ({
@@ -30,7 +30,7 @@ const ZapButton = ({
         <Icon name="zap-solid" />
         {children}
       </button>
-      <SendSats
+      <ZapModal
         targets={[
           {
             type: "lnurl",

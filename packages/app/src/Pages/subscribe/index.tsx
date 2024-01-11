@@ -6,7 +6,7 @@ import { FormattedMessage } from "react-intl";
 import { RouteObject } from "react-router-dom";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
-import SendSats from "@/Components/SendSats/SendSats";
+import ZapModal from "@/Components/ZapModal/ZapModal";
 import SnortApi, { SubscriptionError } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import ManageSubscriptionPage from "@/Pages/subscribe/ManageSubscription";
@@ -86,7 +86,7 @@ export function SubscribePage() {
         })}
       </div>
       {error && <b className="error">{mapSubscriptionErrorCode(error)}</b>}
-      <SendSats invoice={invoice} show={invoice !== ""} onClose={() => setInvoice("")} />
+      <ZapModal invoice={invoice} show={invoice !== ""} onClose={() => setInvoice("")} />
     </>
   );
 }

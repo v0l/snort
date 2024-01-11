@@ -6,12 +6,11 @@ import { FormattedNumber } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
 import Progress from "@/Components/Progress/Progress";
+import ZapModal from "@/Components/ZapModal/ZapModal";
 import useZapsFeed from "@/Feed/ZapsFeed";
 import { findTag } from "@/Utils";
 import { formatShort } from "@/Utils/Number";
 import { Zapper } from "@/Utils/Zapper";
-
-import SendSats from "../SendSats/SendSats";
 
 export function ZapGoal({ ev }: { ev: NostrEvent }) {
   const [zap, setZap] = useState(false);
@@ -27,7 +26,7 @@ export function ZapGoal({ ev }: { ev: NostrEvent }) {
         <div className="zap-button flex" onClick={() => setZap(true)}>
           <Icon name="zap" size={15} />
         </div>
-        <SendSats targets={Zapper.fromEvent(ev)} show={zap} onClose={() => setZap(false)} />
+        <ZapModal targets={Zapper.fromEvent(ev)} show={zap} onClose={() => setZap(false)} />
       </div>
 
       <div className="flex justify-between">

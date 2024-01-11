@@ -4,8 +4,8 @@ import { FormattedMessage, useIntl } from "react-intl";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import Icon from "@/Components/Icons/Icon";
 import messages from "@/Components/messages";
-import { SendSatsZapTypeSelector } from "@/Components/SendSats/SendSatsZapTypeSelector";
-import { ZapType } from "@/Components/SendSats/ZapType";
+import { ZapType } from "@/Components/ZapModal/ZapType";
+import { ZapTypeSelector } from "@/Components/ZapModal/ZapTypeSelector";
 import useLogin from "@/Hooks/useLogin";
 import { formatShort } from "@/Utils/Number";
 import { Zapper } from "@/Utils/Zapper";
@@ -16,7 +16,7 @@ export interface SendSatsInputSelection {
   type: ZapType;
 }
 
-export function SendSatsInput(props: {
+export function ZapModalInput(props: {
   zapper: Zapper;
   onChange?: (v: SendSatsInputSelection) => void;
   onNextStage: (v: SendSatsInputSelection) => Promise<void>;
@@ -119,7 +119,7 @@ export function SendSatsInput(props: {
           />
         )}
       </div>
-      <SendSatsZapTypeSelector zapType={zapType} setZapType={setZapType} />
+      <ZapTypeSelector zapType={zapType} setZapType={setZapType} />
       {(amount ?? 0) > 0 && (
         <AsyncButton onClick={() => props.onNextStage(getValue())}>
           <Icon name="zap" />

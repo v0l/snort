@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
-import SendSats from "@/Components/SendSats/SendSats";
+import ZapModal from "@/Components/ZapModal/ZapModal";
 import SnortApi, { Subscription, SubscriptionError } from "@/External/SnortApi";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
@@ -72,7 +72,7 @@ export function RenewSub({ sub: s }: { sub?: Subscription }) {
           </AsyncButton>
         </div>
       </div>
-      <SendSats
+      <ZapModal
         invoice={invoice}
         show={invoice !== ""}
         onClose={() => setInvoice("")}

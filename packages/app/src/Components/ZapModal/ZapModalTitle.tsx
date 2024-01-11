@@ -1,12 +1,12 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { SendSatsInputSelection } from "@/Components/SendSats/SendSatsInput";
 import ProfileImage from "@/Components/User/ProfileImage";
+import { SendSatsInputSelection } from "@/Components/ZapModal/ZapModalInput";
 import { formatShort } from "@/Utils/Number";
 import { Zapper, ZapTarget } from "@/Utils/Zapper";
 
-export function SendSatsTitle({
+export function ZapModalTitle({
   targets,
   zapper,
   amount,

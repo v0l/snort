@@ -1,16 +1,10 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-import { ZapType } from "@/Components/SendSats/ZapType";
+import { ZapType } from "@/Components/ZapModal/ZapType";
 import useLogin from "@/Hooks/useLogin";
 
-export function SendSatsZapTypeSelector({
-  zapType,
-  setZapType,
-}: {
-  zapType: ZapType;
-  setZapType: (t: ZapType) => void;
-}) {
+export function ZapTypeSelector({ zapType, setZapType }: { zapType: ZapType; setZapType: (t: ZapType) => void }) {
   const { readonly } = useLogin(s => ({ readonly: s.readonly }));
   const makeTab = (t: ZapType, n: React.ReactNode) => (
     <button type="button" className={zapType === t ? "" : "secondary"} onClick={() => setZapType(t)}>

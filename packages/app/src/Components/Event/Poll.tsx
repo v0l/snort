@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";
 
 import Spinner from "@/Components/Icons/Spinner";
-import SendSats from "@/Components/SendSats/SendSats";
+import ZapModal from "@/Components/ZapModal/ZapModal";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
 import { unwrap } from "@/Utils";
@@ -172,7 +172,7 @@ export default function Poll(props: PollProps) {
         {error && <b className="error">{error}</b>}
       </div>
 
-      <SendSats show={invoice !== ""} onClose={() => setInvoice("")} invoice={invoice} />
+      <ZapModal show={invoice !== ""} onClose={() => setInvoice("")} invoice={invoice} />
     </>
   );
 }

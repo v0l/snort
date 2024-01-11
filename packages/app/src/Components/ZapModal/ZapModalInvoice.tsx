@@ -6,7 +6,7 @@ import QrCode from "@/Components/QrCode";
 import { ZapTargetResult } from "@/Utils/Zapper";
 import { LNWallet } from "@/Wallet";
 
-export function SendSatsInvoice(props: {
+export function ZapModalInvoice(props: {
   invoice: Array<ZapTargetResult>;
   wallet?: LNWallet;
   notice?: ReactNode;

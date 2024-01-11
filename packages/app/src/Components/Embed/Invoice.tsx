@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import Icon from "@/Components/Icons/Icon";
-import SendSats from "@/Components/SendSats/SendSats";
+import ZapModal from "@/Components/ZapModal/ZapModal";
 import { useWallet } from "@/Wallet";
 
 import messages from "../messages";
@@ -36,7 +36,7 @@ export default function Invoice(props: InvoiceProps) {
           <FormattedMessage {...messages.Invoice} />
         </h4>
         <Icon name="zapCircle" className="zap-circle" />
-        <SendSats
+        <ZapModal
           title={formatMessage(messages.PayInvoice)}
           invoice={invoice}
           show={showInvoice}
