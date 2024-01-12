@@ -1,29 +1,34 @@
 import "./ProfilePage.css";
 
 import { fetchNip05Pubkey, LNURL } from "@snort/shared";
-import { CachedMetadata, EventKind, NostrPrefix, tryParseNostrLink } from "@snort/system";
+import { CachedMetadata, NostrPrefix, tryParseNostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import Note from "@/Components/Event/EventComponent";
-import Timeline from "@/Components/Feed/Timeline";
 import { ProxyImg } from "@/Components/ProxyImg";
 import { SpotlightMediaModal } from "@/Components/Spotlight/SpotlightMedia";
-import { Tab, TabElement } from "@/Components/Tabs/Tabs";
+import { Tab, TabSelector } from "@/Components/TabSelectors/TabSelectors";
 import BlockList from "@/Components/User/BlockList";
 import FollowsList from "@/Components/User/FollowListBase";
 import MutedList from "@/Components/User/MutedList";
 import useFollowsFeed from "@/Feed/FollowsFeed";
 import useHorizontalScroll from "@/Hooks/useHorizontalScroll";
-import { useMuteList, usePinList } from "@/Hooks/useLists";
+import { useMuteList } from "@/Hooks/useLists";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
 import AvatarSection from "@/Pages/Profile/AvatarSection";
 import ProfileDetails from "@/Pages/Profile/ProfileDetails";
-import ProfileTab from "@/Pages/Profile/ProfileTab";
-import { BookMarksTab, FollowersTab, FollowsTab, RelaysTab, ZapsProfileTab } from "@/Pages/Profile/ProfileTabs";
+import {
+  BookMarksTab,
+  FollowersTab,
+  FollowsTab,
+  RelaysTab,
+  ZapsProfileTab,
+} from "@/Pages/Profile/ProfileTabComponents";
+import ProfileTabSelectors from "@/Pages/Profile/ProfileTabSelectors";
 import { ProfileTabType } from "@/Pages/Profile/ProfileTabType";
+import { NotesTab } from "@/Pages/Root/NotesTab";
 import { parseId, unwrap } from "@/Utils";
 import { EmailRegex } from "@/Utils/Const";
 
@@ -58,15 +63,17 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
 
   // feeds
   const { blocked } = useModeration();
-  const pinned = usePinList(id);
   const muted = useMuteList(id);
   const follows = useFollowsFeed(id);
 
   // tabs
-  const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
-  const optionalTabs = [ProfileTab.Zaps, ProfileTab.Relays, ProfileTab.Bookmarks, ProfileTab.Muted].filter(a =>
-    unwrap(a),
-  ) as Tab[];
+  const [tab, setTab] = useState<Tab>(ProfileTabSelectors.Notes);
+  const optionalTabs = [
+    ProfileTabSelectors.Zaps,
+    ProfileTabSelectors.Relays,
+    ProfileTabSelectors.Bookmarks,
+    ProfileTabSelectors.Muted,
+  ].filter(a => unwrap(a)) as Tab[];
   const horizontalScroll = useHorizontalScroll();
 
   useEffect(() => {
@@ -98,7 +105,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         }
       }
     }
-    setTab(ProfileTab.Notes);
+    setTab(ProfileTabSelectors.Notes);
   }, [id, propId, params]);
 
   function tabContent() {
@@ -106,35 +113,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
 
     switch (tab.value) {
       case ProfileTabType.NOTES:
-        return (
-          <>
-            {pinned
-              .filter(a => a.kind === EventKind.TextNote)
-              .map(n => {
-                return (
-                  <Note
-                    key={`pinned-${n.id}`}
-                    data={n}
-                    options={{ showTime: false, showPinned: true, canUnpin: isMe }}
-                  />
-                );
-              })}
-            <Timeline
-              key={id}
-              subject={{
-                type: "pubkey",
-                items: [id],
-                discriminator: id.slice(0, 12),
-                relay: relays,
-              }}
-              postsOnly={false}
-              method={"LIMIT_UNTIL"}
-              loadMore={false}
-              ignoreModeration={true}
-              window={60 * 60 * 6}
-            />
-          </>
-        );
+        return <NotesTab id={id} relays={relays} isMe={isMe} />;
       case ProfileTabType.ZAPS: {
         return <ZapsProfileTab id={id} />;
       }
@@ -163,8 +142,8 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
     }
   }
 
-  function renderTab(v: Tab) {
-    return <TabElement key={v.value} t={v} tab={tab} setTab={setTab} />;
+  function renderTabSelector(v: Tab) {
+    return <TabSelector key={v.value} t={v} tab={tab} setTab={setTab} />;
   }
 
   const bannerWidth = Math.min(window.innerWidth, 940);
@@ -189,9 +168,11 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       </div>
       <div className="main-content">
         <div className="tabs p" ref={horizontalScroll}>
-          {[ProfileTab.Notes, ProfileTab.Followers, ProfileTab.Follows].map(renderTab)}
-          {optionalTabs.map(renderTab)}
-          {isMe && blocked.length > 0 && renderTab(ProfileTab.Blocked)}
+          {[ProfileTabSelectors.Notes, ProfileTabSelectors.Followers, ProfileTabSelectors.Follows].map(
+            renderTabSelector,
+          )}
+          {optionalTabs.map(renderTabSelector)}
+          {isMe && blocked.length > 0 && renderTabSelector(ProfileTabSelectors.Blocked)}
         </div>
       </div>
       <div className="main-content">{tabContent()}</div>

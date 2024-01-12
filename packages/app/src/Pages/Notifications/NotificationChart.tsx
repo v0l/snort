@@ -7,7 +7,7 @@ import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recha
 
 import { AsyncIcon } from "@/Components/Button/AsyncIcon";
 import Icon from "@/Components/Icons/Icon";
-import Tabs, { Tab } from "@/Components/Tabs/Tabs";
+import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
 import { orderAscending } from "@/Utils";
 import { Day } from "@/Utils/Const";
 import { formatShort } from "@/Utils/Number";
@@ -123,7 +123,11 @@ export default function NotificationSummary({ evs }: { evs: Array<TaggedNostrEve
           {filterIcon(NotificationSummaryFilter.Mentions, "at-sign", "text-mention")}
         </div>
       </div>
-      <Tabs tabs={periodTabs} tab={unwrap(periodTabs.find(a => a.value === period))} setTab={t => setPeriod(t.value)} />
+      <TabSelectors
+        tabs={periodTabs}
+        tab={unwrap(periodTabs.find(a => a.value === period))}
+        setTab={t => setPeriod(t.value)}
+      />
       <div>
         <ResponsiveContainer height={200}>
           <BarChart data={Object.values(stats)} margin={{ left: 0, right: 0 }} style={{ userSelect: "none" }}>

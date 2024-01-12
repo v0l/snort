@@ -1,4 +1,4 @@
-import "./Tabs.css";
+import "./TabSelectors.css";
 
 import { ReactNode } from "react";
 
@@ -20,7 +20,7 @@ interface TabElementProps extends Omit<TabsProps, "tabs"> {
   t: Tab;
 }
 
-export const TabElement = ({ t, tab, setTab }: TabElementProps) => {
+export const TabSelector = ({ t, tab, setTab }: TabElementProps) => {
   return (
     <div
       className={`tab${tab.value === t.value ? " active" : ""}${t.disabled ? " disabled" : ""}`}
@@ -30,15 +30,15 @@ export const TabElement = ({ t, tab, setTab }: TabElementProps) => {
   );
 };
 
-const Tabs = ({ tabs, tab, setTab }: TabsProps) => {
+const TabSelectors = ({ tabs, tab, setTab }: TabsProps) => {
   const horizontalScroll = useHorizontalScroll();
   return (
     <div className="tabs" ref={horizontalScroll}>
       {tabs.map((t, index) => (
-        <TabElement key={index} tab={tab} setTab={setTab} t={t} />
+        <TabSelector key={index} tab={tab} setTab={setTab} t={t} />
       ))}
     </div>
   );
 };
 
-export default Tabs;
+export default TabSelectors;

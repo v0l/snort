@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";
-import Tabs, { Tab } from "@/Components/Tabs/Tabs";
+import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
 import TrendingNotes from "@/Components/Trending/TrendingPosts";
 import TrendingUsers from "@/Components/Trending/TrendingUsers";
 import FollowListBase from "@/Components/User/FollowListBase";
@@ -107,7 +107,7 @@ const SearchPage = () => {
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
-        <Tabs tabs={SearchTab} tab={tab} setTab={setTab} />
+        <TabSelectors tabs={SearchTab} tab={tab} setTab={setTab} />
       </div>
       {tabContent()}
     </div>

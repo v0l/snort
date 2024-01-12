@@ -1,7 +1,10 @@
-import { HexKey, NostrLink, NostrPrefix } from "@snort/system";
+import { EventKind, HexKey, NostrLink, NostrPrefix } from "@snort/system";
+import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
+import { Note } from "@/Components/Event/Note/Note";
 import Zap from "@/Components/Event/Zap";
+import Timeline from "@/Components/Feed/Timeline";
 import RelaysMetadata from "@/Components/Relay/RelaysMetadata";
 import Bookmarks from "@/Components/User/Bookmarks";
 import FollowsList from "@/Components/User/FollowListBase";
@@ -9,7 +12,7 @@ import useFollowersFeed from "@/Feed/FollowersFeed";
 import useFollowsFeed from "@/Feed/FollowsFeed";
 import useRelaysFeed from "@/Feed/RelaysFeed";
 import useZapsFeed from "@/Feed/ZapsFeed";
-import { useBookmarkList } from "@/Hooks/useLists";
+import { useBookmarkList, usePinList } from "@/Hooks/useLists";
 import messages from "@/Pages/messages";
 import { formatShort } from "@/Utils/Number";
 
@@ -46,4 +49,32 @@ export function RelaysTab({ id }: { id: HexKey }) {
 export function BookMarksTab({ id }: { id: HexKey }) {
   const bookmarks = useBookmarkList(id);
   return <Bookmarks pubkey={id} bookmarks={bookmarks} />;
+}
+
+export function NotesTab({ id, relays, isMe }: { id: HexKey; relays?: Array<string>; isMe: boolean }) {
+  const pinned = usePinList(id);
+  const options = useMemo(() => ({ showTime: false, showPinned: true, canUnpin: isMe }), [isMe]);
+  return (
+    <>
+      {pinned
+        .filter(a => a.kind === EventKind.TextNote)
+        .map(n => {
+          return <Note key={`pinned-${n.id}`} data={n} options={options} />;
+        })}
+      <Timeline
+        key={id}
+        subject={{
+          type: "pubkey",
+          items: [id],
+          discriminator: id.slice(0, 12),
+          relay: relays,
+        }}
+        postsOnly={false}
+        method={"LIMIT_UNTIL"}
+        loadMore={false}
+        ignoreModeration={true}
+        window={60 * 60 * 6}
+      />
+    </>
+  );
 }

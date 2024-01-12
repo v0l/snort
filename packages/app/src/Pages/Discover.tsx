@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useIntl } from "react-intl";
 
 import SuggestedProfiles from "@/Components/SuggestedProfiles";
-import { Tab, TabElement } from "@/Components/Tabs/Tabs";
+import { Tab, TabSelector } from "@/Components/TabSelectors/TabSelectors";
 import TrendingNotes from "@/Components/Trending/TrendingPosts";
 import TrendingUsers from "@/Components/Trending/TrendingUsers";
 
@@ -32,7 +32,7 @@ export default function Discover() {
     <>
       <div className="tabs p">
         {[Tabs.Follows, Tabs.Posts, Tabs.Profiles].map(a => (
-          <TabElement key={a.value} tab={tab} setTab={setTab} t={a} />
+          <TabSelector key={a.value} tab={tab} setTab={setTab} t={a} />
         ))}
       </div>
       {renderTab()}

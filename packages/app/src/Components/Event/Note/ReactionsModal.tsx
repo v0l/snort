@@ -8,7 +8,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import CloseButton from "@/Components/Button/CloseButton";
 import Icon from "@/Components/Icons/Icon";
 import Modal from "@/Components/Modal/Modal";
-import Tabs from "@/Components/Tabs/Tabs";
+import TabSelectors from "@/Components/TabSelectors/TabSelectors";
 import ProfileImage from "@/Components/User/ProfileImage";
 import { formatShort } from "@/Utils/Number";
 
@@ -75,7 +75,7 @@ const ReactionsModal = ({ onClose, event, initialTab = 0 }: ReactionsModalProps)
           <FormattedMessage {...messages.ReactionsCount} values={{ n: total }} />
         </h2>
       </div>
-      <Tabs tabs={tabs} tab={tab} setTab={setTab} />
+      <TabSelectors tabs={tabs} tab={tab} setTab={setTab} />
       <div className="reactions-body" key={tab.value}>
         {tab.value === 0 && likes.map(ev => renderReactionItem(ev, "heart"))}
         {tab.value === 1 &&

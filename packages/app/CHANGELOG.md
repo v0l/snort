@@ -583,7 +583,7 @@ https://git.v0l.io/Kieran/snort/compare/v0.1.9...v0.1.10
 - Fix event mention bug by @SamSamskies in https://github.com/v0l/snort/pull/421
 - fix NaN when parsing empty string by @SamSamskies in https://github.com/v0l/snort/pull/422
 - NIP06 support by @w3irdrobot in https://github.com/v0l/snort/pull/425
-- Added key attr to Tabs to remove React warning by @w3irdrobot in https://github.com/v0l/snort/pull/424
+- Added key attr to TabSelectors to remove React warning by @w3irdrobot in https://github.com/v0l/snort/pull/424
 - New Crowdin updates by @v0l in https://github.com/v0l/snort/pull/426
 - New Crowdin updates by @v0l in https://github.com/v0l/snort/pull/436
 - Update Wavlake embed URL, add support for album & artist links by @blastshielddown in https://github.com/v0l/snort/pull/439
