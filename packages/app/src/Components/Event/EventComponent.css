@@ -99,6 +99,10 @@
   z-index: 1;
 }
 
+.reaction-pill {
+  user-select: none;
+}
+
 .reaction-pill:not(.reacted):not(:hover) {
   color: var(--font-secondary-color);
 }

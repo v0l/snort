@@ -19,6 +19,9 @@
     "notificationGraph": false,
     "communityLeaders": true
   },
+  "defaultPreferences": {
+    "hideMutedNotes": true
+  },
   "signUp": {
     "moderation": false,
     "defaultFollows": ["npub1wnwwcv0a8wx0m9stck34ajlwhzuua68ts8mw3kjvspn42dcfyjxs4n95l8"]

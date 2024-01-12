@@ -61,7 +61,7 @@ declare const CONFIG: {
     communityLeaders: boolean;
   };
   defaultPreferences: {
-    checkSigs: boolean;
+    hideMutedNotes: boolean;
   };
   signUp: {
     moderation: boolean;

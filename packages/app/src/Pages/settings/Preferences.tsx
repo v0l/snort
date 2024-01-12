@@ -13,7 +13,7 @@ import messages from "./messages";
 
 const PreferencesPage = () => {
   const { formatMessage } = useIntl();
-  const { id, perf } = useLogin(s => ({ id: s.id, perf: s.appData.item.preferences }));
+  const { id, pref } = useLogin(s => ({ id: s.id, pref: s.appData.item.preferences }));
   const { lang } = useLocale();
 
   return (
@@ -31,7 +31,7 @@ const PreferencesPage = () => {
             value={lang}
             onChange={e =>
               updatePreferences(id, {
-                ...perf,
+                ...pref,
                 language: e.target.value,
               })
             }
@@ -52,10 +52,10 @@ const PreferencesPage = () => {
         </h4>
         <div>
           <select
-            value={perf.theme}
+            value={pref.theme}
             onChange={e =>
               updatePreferences(id, {
-                ...perf,
+                ...pref,
                 theme: e.target.value,
               } as UserPreferences)
             }>
@@ -77,10 +77,10 @@ const PreferencesPage = () => {
         </h4>
         <div>
           <select
-            value={perf.defaultRootTab}
+            value={pref.defaultRootTab}
             onChange={e =>
               updatePreferences(id, {
-                ...perf,
+                ...pref,
                 defaultRootTab: e.target.value,
               } as UserPreferences)
             }>
@@ -108,8 +108,8 @@ const PreferencesPage = () => {
         <div>
           <input
             type="checkbox"
-            checked={perf.telemetry ?? true}
-            onChange={e => updatePreferences(id, { ...perf, telemetry: e.target.checked })}
+            checked={pref.telemetry ?? true}
+            onChange={e => updatePreferences(id, { ...pref, telemetry: e.target.checked })}
           />
         </div>
       </div>
@@ -124,10 +124,10 @@ const PreferencesPage = () => {
           <div className="w-max">
             <select
               className="w-max"
-              value={perf.autoLoadMedia}
+              value={pref.autoLoadMedia}
               onChange={e =>
                 updatePreferences(id, {
-                  ...perf,
+                  ...pref,
                   autoLoadMedia: e.target.value,
                 } as UserPreferences)
               }>
@@ -156,8 +156,8 @@ const PreferencesPage = () => {
         <div>
           <input
             type="checkbox"
-            checked={perf.checkSigs}
-            onChange={e => updatePreferences(id, { ...perf, checkSigs: e.target.checked })}
+            checked={pref.checkSigs}
+            onChange={e => updatePreferences(id, { ...pref, checkSigs: e.target.checked })}
           />
         </div>
       </div>
@@ -173,8 +173,8 @@ const PreferencesPage = () => {
         <div>
           <input
             type="checkbox"
-            checked={perf.autoTranslate}
-            onChange={e => updatePreferences(id, { ...perf, autoTranslate: e.target.checked })}
+            checked={pref.autoTranslate}
+            onChange={e => updatePreferences(id, { ...pref, autoTranslate: e.target.checked })}
           />
         </div>
       </div>
@@ -190,9 +190,9 @@ const PreferencesPage = () => {
         <div>
           <input
             type="number"
-            defaultValue={perf.pow}
+            defaultValue={pref.pow}
             min={0}
-            onChange={e => updatePreferences(id, { ...perf, pow: parseInt(e.target.value || "0") })}
+            onChange={e => updatePreferences(id, { ...pref, pow: parseInt(e.target.value || "0") })}
           />
         </div>
       </div>
@@ -203,9 +203,9 @@ const PreferencesPage = () => {
         <div>
           <input
             type="number"
-            defaultValue={perf.defaultZapAmount}
+            defaultValue={pref.defaultZapAmount}
             min={1}
-            onChange={e => updatePreferences(id, { ...perf, defaultZapAmount: parseInt(e.target.value || "0") })}
+            onChange={e => updatePreferences(id, { ...pref, defaultZapAmount: parseInt(e.target.value || "0") })}
           />
         </div>
       </div>
@@ -221,8 +221,8 @@ const PreferencesPage = () => {
         <div>
           <input
             type="checkbox"
-            checked={perf.showBadges ?? false}
-            onChange={e => updatePreferences(id, { ...perf, showBadges: e.target.checked })}
+            checked={pref.showBadges ?? false}
+            onChange={e => updatePreferences(id, { ...pref, showBadges: e.target.checked })}
           />
         </div>
       </div>
@@ -238,8 +238,8 @@ const PreferencesPage = () => {
         <div>
           <input
             type="checkbox"
-            checked={perf.showStatus ?? true}
-            onChange={e => updatePreferences(id, { ...perf, showStatus: e.target.checked })}
+            checked={pref.showStatus ?? true}
+            onChange={e => updatePreferences(id, { ...pref, showStatus: e.target.checked })}
           />
         </div>
       </div>
@@ -255,8 +255,8 @@ const PreferencesPage = () => {
         <div>
           <input
             type="checkbox"
-            checked={perf.autoZap}
-            onChange={e => updatePreferences(id, { ...perf, autoZap: e.target.checked })}
+            checked={pref.autoZap}
+            onChange={e => updatePreferences(id, { ...pref, autoZap: e.target.checked })}
           />
         </div>
       </div>
@@ -273,17 +273,17 @@ const PreferencesPage = () => {
           <div>
             <input
               type="checkbox"
-              checked={perf.imgProxyConfig !== null}
+              checked={pref.imgProxyConfig !== null}
               onChange={e =>
                 updatePreferences(id, {
-                  ...perf,
+                  ...pref,
                   imgProxyConfig: e.target.checked ? DefaultImgProxy : undefined,
                 })
               }
             />
           </div>
         </div>
-        {perf.imgProxyConfig && (
+        {pref.imgProxyConfig && (
           <div className="w-max form">
             <div className="form-group">
               <div>
@@ -292,7 +292,7 @@ const PreferencesPage = () => {
               <div className="w-max">
                 <input
                   type="text"
-                  value={perf.imgProxyConfig?.url}
+                  value={pref.imgProxyConfig?.url}
                   placeholder={formatMessage({
                     defaultMessage: "URL..",
                     id: "cQfLWb",
@@ -300,9 +300,9 @@ const PreferencesPage = () => {
                   })}
                   onChange={e =>
                     updatePreferences(id, {
-                      ...perf,
+                      ...pref,
                       imgProxyConfig: {
-                        ...unwrap(perf.imgProxyConfig),
+                        ...unwrap(pref.imgProxyConfig),
                         url: e.target.value,
                       },
                     })
@@ -317,7 +317,7 @@ const PreferencesPage = () => {
               <div className="w-max">
                 <input
                   type="password"
-                  value={perf.imgProxyConfig?.key}
+                  value={pref.imgProxyConfig?.key}
                   placeholder={formatMessage({
                     defaultMessage: "Hex Key..",
                     id: "H+vHiz",
@@ -325,9 +325,9 @@ const PreferencesPage = () => {
                   })}
                   onChange={e =>
                     updatePreferences(id, {
-                      ...perf,
+                      ...pref,
                       imgProxyConfig: {
-                        ...unwrap(perf.imgProxyConfig),
+                        ...unwrap(pref.imgProxyConfig),
                         key: e.target.value,
                       },
                     })
@@ -342,7 +342,7 @@ const PreferencesPage = () => {
               <div className="w-max">
                 <input
                   type="password"
-                  value={perf.imgProxyConfig?.salt}
+                  value={pref.imgProxyConfig?.salt}
                   placeholder={formatMessage({
                     defaultMessage: "Hex Salt..",
                     id: "TpgeGw",
@@ -350,9 +350,9 @@ const PreferencesPage = () => {
                   })}
                   onChange={e =>
                     updatePreferences(id, {
-                      ...perf,
+                      ...pref,
                       imgProxyConfig: {
-                        ...unwrap(perf.imgProxyConfig),
+                        ...unwrap(pref.imgProxyConfig),
                         salt: e.target.value,
                       },
                     })
@@ -375,8 +375,8 @@ const PreferencesPage = () => {
         <div>
           <input
             type="checkbox"
-            checked={perf.enableReactions}
-            onChange={e => updatePreferences(id, { ...perf, enableReactions: e.target.checked })}
+            checked={pref.enableReactions}
+            onChange={e => updatePreferences(id, { ...pref, enableReactions: e.target.checked })}
           />
         </div>
       </div>
@@ -389,11 +389,11 @@ const PreferencesPage = () => {
         </small>
         <input
           type="text"
-          value={perf.reactionEmoji}
+          value={pref.reactionEmoji}
           onChange={e => {
             const split = e.target.value.match(/[\p{L}\S]{1}/u);
             updatePreferences(id, {
-              ...perf,
+              ...pref,
               reactionEmoji: split?.[0] ?? "",
             });
           }}
@@ -411,8 +411,8 @@ const PreferencesPage = () => {
         <div>
           <input
             type="checkbox"
-            checked={perf.confirmReposts}
-            onChange={e => updatePreferences(id, { ...perf, confirmReposts: e.target.checked })}
+            checked={pref.confirmReposts}
+            onChange={e => updatePreferences(id, { ...pref, confirmReposts: e.target.checked })}
           />
         </div>
       </div>
@@ -428,8 +428,8 @@ const PreferencesPage = () => {
         <div>
           <input
             type="checkbox"
-            checked={perf.autoShowLatest}
-            onChange={e => updatePreferences(id, { ...perf, autoShowLatest: e.target.checked })}
+            checked={pref.autoShowLatest}
+            onChange={e => updatePreferences(id, { ...pref, autoShowLatest: e.target.checked })}
           />
         </div>
       </div>
@@ -441,10 +441,10 @@ const PreferencesPage = () => {
           <FormattedMessage {...messages.FileUploadHelp} />
         </small>
         <select
-          value={perf.fileUploader}
+          value={pref.fileUploader}
           onChange={e =>
             updatePreferences(id, {
-              ...perf,
+              ...pref,
               fileUploader: e.target.value,
             } as UserPreferences)
           }>
@@ -469,8 +469,8 @@ const PreferencesPage = () => {
         <div>
           <input
             type="checkbox"
-            checked={perf.showDebugMenus}
-            onChange={e => updatePreferences(id, { ...perf, showDebugMenus: e.target.checked })}
+            checked={pref.showDebugMenus}
+            onChange={e => updatePreferences(id, { ...pref, showDebugMenus: e.target.checked })}
           />
         </div>
       </div>
@@ -486,8 +486,8 @@ const PreferencesPage = () => {
         <div>
           <input
             type="checkbox"
-            checked={perf.hideMutedNotes}
-            onChange={e => updatePreferences(id, { ...perf, hideMutedNotes: e.target.checked })}
+            checked={pref.hideMutedNotes}
+            onChange={e => updatePreferences(id, { ...pref, hideMutedNotes: e.target.checked })}
           />
         </div>
       </div>
