@@ -51,7 +51,7 @@ export function BookMarksTab({ id }: { id: HexKey }) {
   return <Bookmarks pubkey={id} bookmarks={bookmarks} />;
 }
 
-export function NotesTab({ id, relays, isMe }: { id: HexKey; relays?: Array<string>; isMe: boolean }) {
+export function ProfileNotesTab({ id, relays, isMe }: { id: HexKey; relays?: Array<string>; isMe: boolean }) {
   const pinned = usePinList(id);
   const options = useMemo(() => ({ showTime: false, showPinned: true, canUnpin: isMe }), [isMe]);
   return (

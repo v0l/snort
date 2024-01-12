@@ -23,12 +23,12 @@ import {
   BookMarksTab,
   FollowersTab,
   FollowsTab,
+  ProfileNotesTab,
   RelaysTab,
   ZapsProfileTab,
 } from "@/Pages/Profile/ProfileTabComponents";
 import ProfileTabSelectors from "@/Pages/Profile/ProfileTabSelectors";
 import { ProfileTabType } from "@/Pages/Profile/ProfileTabType";
-import { NotesTab } from "@/Pages/Root/NotesTab";
 import { parseId, unwrap } from "@/Utils";
 import { EmailRegex } from "@/Utils/Const";
 
@@ -113,7 +113,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
 
     switch (tab.value) {
       case ProfileTabType.NOTES:
-        return <NotesTab id={id} relays={relays} isMe={isMe} />;
+        return <ProfileNotesTab id={id} relays={relays} isMe={isMe} />;
       case ProfileTabType.ZAPS: {
         return <ZapsProfileTab id={id} />;
       }
