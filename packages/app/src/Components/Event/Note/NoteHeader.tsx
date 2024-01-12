@@ -84,7 +84,7 @@ export default function NoteHeader(props: {
           />
         )}
       </div>
-      <ReactionsModal show={showReactions} setShow={setShowReactions} event={ev} />
+      {showReactions && <ReactionsModal onClose={() => setShowReactions(false)} event={ev} />}
     </div>
   );
 }

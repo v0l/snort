@@ -2,7 +2,7 @@ import "./ReactionsModal.css";
 
 import { NostrLink, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions, useReactions } from "@snort/system-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import CloseButton from "@/Components/Button/CloseButton";
@@ -15,14 +15,12 @@ import { formatShort } from "@/Utils/Number";
 import messages from "../../messages";
 
 interface ReactionsModalProps {
-  show: boolean;
-  setShow(b: boolean): void;
+  onClose(): void;
   event: TaggedNostrEvent;
 }
 
-const ReactionsModal = ({ show, setShow, event }: ReactionsModalProps) => {
+const ReactionsModal = ({ onClose, event }: ReactionsModalProps) => {
   const { formatMessage } = useIntl();
-  const onClose = () => setShow(false);
 
   const link = NostrLink.fromEvent(event);
 
@@ -59,12 +57,6 @@ const ReactionsModal = ({ show, setShow, event }: ReactionsModalProps) => {
 
   const [tab, setTab] = useState(tabs[0]);
 
-  useEffect(() => {
-    if (!show) {
-      setTab(tabs[0]);
-    }
-  }, [show, tabs]);
-
   const renderReactionItem = (ev, icon, size) => (
     <div key={ev.id} className="reactions-item">
       <div className="reaction-icon">
@@ -74,7 +66,7 @@ const ReactionsModal = ({ show, setShow, event }: ReactionsModalProps) => {
     </div>
   );
 
-  return show ? (
+  return (
     <Modal id="reactions" className="reactions-modal" onClose={onClose}>
       <CloseButton onClick={onClose} className="absolute right-4 top-3" />
       <div className="reactions-header">
@@ -110,7 +102,7 @@ const ReactionsModal = ({ show, setShow, event }: ReactionsModalProps) => {
         {tab.value === 3 && dislikes.map(ev => renderReactionItem(ev, "dislike"))}
       </div>
     </Modal>
-  ) : null;
+  );
 };
 
 export default ReactionsModal;

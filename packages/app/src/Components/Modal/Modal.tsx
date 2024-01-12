@@ -1,6 +1,6 @@
 import "./Modal.css";
 
-import { ReactNode, useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 
 export interface ModalProps {
@@ -60,12 +60,21 @@ export default function Modal(props: ModalProps) {
     };
   }, []);
 
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    props.onClose?.(e);
+  };
+
   return createPortal(
     <div
       className={props.className === "hidden" ? props.className : `modal ${props.className || ""}`}
-      onClick={props.onClose}>
+      onMouseDown={handleBackdropClick}
+      onClick={e => {
+        e.stopPropagation();
+      }}>
       <div
         className={props.bodyClassName || "modal-body"}
+        onMouseDown={e => e.stopPropagation()}
         onClick={e => {
           e.stopPropagation();
           props.onClick?.(e);

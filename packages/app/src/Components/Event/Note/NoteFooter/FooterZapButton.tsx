@@ -20,9 +20,10 @@ import { useWallet } from "@/Wallet";
 export interface ZapIconProps {
   ev: TaggedNostrEvent;
   zaps: Array<ParsedZap>;
+  onClickZappers?: () => void;
 }
 
-export const FooterZapButton = ({ ev, zaps }: ZapIconProps) => {
+export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
   const {
     publicKey,
     readonly,
@@ -142,7 +143,7 @@ export const FooterZapButton = ({ ev, zaps }: ZapIconProps) => {
               value={zapTotal}
               onClick={fastZap}
             />
-            <ZapsSummary zaps={zaps} />
+            <ZapsSummary zaps={zaps} onClick={onClickZappers} />
           </div>
           {showZapModal && (
             <ZapModal

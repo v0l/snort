@@ -1,12 +1,13 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
 import { useEventReactions, useReactions } from "@snort/system-react";
-import { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 
 import { FooterZapButton } from "@/Components/Event/Note/NoteFooter/FooterZapButton";
 import { LikeButton } from "@/Components/Event/Note/NoteFooter/LikeButton";
 import { PowIcon } from "@/Components/Event/Note/NoteFooter/PowIcon";
 import { ReplyButton } from "@/Components/Event/Note/NoteFooter/ReplyButton";
 import { RepostButton } from "@/Components/Event/Note/NoteFooter/RepostButton";
+import ReactionsModal from "@/Components/Event/Note/ReactionsModal";
 import useLogin from "@/Hooks/useLogin";
 
 export interface NoteFooterProps {
@@ -18,6 +19,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const { ev } = props;
   const link = useMemo(() => NostrLink.fromEvent(ev), [ev.id]);
   const ids = useMemo(() => [link], [link]);
+  const [showReactions, setShowReactions] = useState(false);
 
   const related = useReactions("note:reactions", ids, undefined, false);
   const { reactions, zaps, reposts } = useEventReactions(link, related);
@@ -35,7 +37,8 @@ export default function NoteFooter(props: NoteFooterProps) {
       {!readonly && <RepostButton ev={ev} reposts={reposts} />}
       {prefs.enableReactions && <LikeButton ev={ev} positiveReactions={positive} />}
       {CONFIG.showPowIcon && <PowIcon ev={ev} />}
-      <FooterZapButton ev={ev} zaps={zaps} />
+      <FooterZapButton ev={ev} zaps={zaps} onClickZappers={() => setShowReactions(true)} />
+      {showReactions && <ReactionsModal onClose={() => setShowReactions(false)} event={ev} />}
     </div>
   );
 }
