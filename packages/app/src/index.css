@@ -102,6 +102,7 @@ html.light {
   --bg-secondary: #f5f5f5;
   --sub-bg: #fff;
   --btn-color: #fff;
+  --primary-bg: #ff3f15;
 }
 
 body {
@@ -264,7 +265,7 @@ button.primary {
 }
 
 button.primary:hover {
-  box-shadow: 0px 0px 10px #ff3f15 !important;
+  box-shadow: 0px 0px 10px var(--primary-bg) !important;
   background: var(--primary-bg) !important;
 }
 
@@ -898,10 +899,19 @@ svg.repeat {
   border: 1px solid var(--border-color);
   box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
 }
+.light button.primary {
+  background: var(--primary-bg);
+  color: #fff;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.08) 0 1px 1px;
+}
 
 .light button:hover,
 .light button.secondary:hover {
   box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px !important;
+}
+.light button.primary:hover {
+  box-shadow: 0px 0px 10px var(--primary-bg) !important;
 }
 
 .light .modal button.secondary:hover {
