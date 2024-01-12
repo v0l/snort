@@ -17,9 +17,10 @@ import messages from "../../messages";
 interface ReactionsModalProps {
   onClose(): void;
   event: TaggedNostrEvent;
+  initialTab?: number;
 }
 
-const ReactionsModal = ({ onClose, event }: ReactionsModalProps) => {
+const ReactionsModal = ({ onClose, event, initialTab = 0 }: ReactionsModalProps) => {
   const { formatMessage } = useIntl();
 
   const link = NostrLink.fromEvent(event);
@@ -55,7 +56,7 @@ const ReactionsModal = ({ onClose, event }: ReactionsModalProps) => {
     return dislikes.length !== 0 ? baseTabs.concat(createTab(messages.Dislikes, dislikes.length, 3)) : baseTabs;
   }, [likes.length, zaps.length, reposts.length, dislikes.length, formatMessage]);
 
-  const [tab, setTab] = useState(tabs[0]);
+  const [tab, setTab] = useState(tabs[initialTab]);
 
   const renderReactionItem = (ev, icon, size) => (
     <div key={ev.id} className="reactions-item">

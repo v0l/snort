@@ -38,7 +38,7 @@ export default function NoteFooter(props: NoteFooterProps) {
       {prefs.enableReactions && <LikeButton ev={ev} positiveReactions={positive} />}
       {CONFIG.showPowIcon && <PowIcon ev={ev} />}
       <FooterZapButton ev={ev} zaps={zaps} onClickZappers={() => setShowReactions(true)} />
-      {showReactions && <ReactionsModal onClose={() => setShowReactions(false)} event={ev} />}
+      {showReactions && <ReactionsModal initialTab={1} onClose={() => setShowReactions(false)} event={ev} />}
     </div>
   );
 }
