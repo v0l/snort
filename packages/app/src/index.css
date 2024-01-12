@@ -930,10 +930,6 @@ svg.repeat {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-.pb-safe-area-plus {
-  padding-bottom: calc(10vh + env(safe-area-inset-bottom));
-}
-
 .active > .icon-outline {
   display: none;
 }

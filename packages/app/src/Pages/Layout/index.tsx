@@ -61,7 +61,7 @@ export default function Index() {
         <div className="w-full max-w-screen-xl">
           <div className="flex flex-row">
             <NavSidebar />
-            <div className="flex flex-1 flex-col pb-safe-area-plus w-full md:w-1/3">
+            <div className="flex flex-1 flex-col pb-safe-area w-full md:w-1/3">
               {!shouldHideHeader && <Header />}
               <ErrorBoundary>
                 <Outlet />
