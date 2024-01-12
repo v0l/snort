@@ -1,56 +1,31 @@
 import "./ProfilePage.css";
 
 import { fetchNip05Pubkey, LNURL } from "@snort/shared";
-import {
-  CachedMetadata,
-  encodeTLVEntries,
-  EventKind,
-  NostrPrefix,
-  TLVEntryType,
-  tryParseNostrLink,
-} from "@snort/system";
+import { CachedMetadata, EventKind, NostrPrefix, tryParseNostrLink } from "@snort/system";
 import { useUserProfile } from "@snort/system-react";
-import { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import IconButton from "@/Components/Button/IconButton";
-import Copy from "@/Components/Copy/Copy";
 import Note from "@/Components/Event/EventComponent";
 import Timeline from "@/Components/Feed/Timeline";
-import Icon from "@/Components/Icons/Icon";
-import Modal from "@/Components/Modal/Modal";
 import { ProxyImg } from "@/Components/ProxyImg";
-import QrCode from "@/Components/QrCode";
 import { SpotlightMediaModal } from "@/Components/Spotlight/SpotlightMedia";
 import { Tab, TabElement } from "@/Components/Tabs/Tabs";
-import Text from "@/Components/Text/Text";
-import Avatar from "@/Components/User/Avatar";
-import BadgeList from "@/Components/User/BadgeList";
 import BlockList from "@/Components/User/BlockList";
-import DisplayName from "@/Components/User/DisplayName";
-import FollowButton from "@/Components/User/FollowButton";
-import FollowedBy from "@/Components/User/FollowedBy";
 import FollowsList from "@/Components/User/FollowListBase";
-import FollowsYou from "@/Components/User/FollowsYou";
 import MutedList from "@/Components/User/MutedList";
-import Nip05 from "@/Components/User/Nip05";
-import ProfileImage from "@/Components/User/ProfileImage";
-import { UserWebsiteLink } from "@/Components/User/UserWebsiteLink";
-import ZapModal from "@/Components/ZapModal/ZapModal";
-import useProfileBadges from "@/Feed/BadgesFeed";
 import useFollowsFeed from "@/Feed/FollowsFeed";
-import { useStatusFeed } from "@/Feed/StatusFeed";
 import useHorizontalScroll from "@/Hooks/useHorizontalScroll";
 import { useMuteList, usePinList } from "@/Hooks/useLists";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
+import AvatarSection from "@/Pages/Profile/AvatarSection";
+import ProfileDetails from "@/Pages/Profile/ProfileDetails";
 import ProfileTab from "@/Pages/Profile/ProfileTab";
 import { BookMarksTab, FollowersTab, FollowsTab, RelaysTab, ZapsProfileTab } from "@/Pages/Profile/ProfileTabs";
 import { ProfileTabType } from "@/Pages/Profile/ProfileTabType";
-import { findTag, hexToBech32, parseId, unwrap } from "@/Utils";
+import { parseId, unwrap } from "@/Utils";
 import { EmailRegex } from "@/Utils/Const";
-import { ZapTarget } from "@/Utils/Zapper";
 
 interface ProfilePageProps {
   id?: string;
@@ -65,31 +40,27 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
   const [id, setId] = useState<string | undefined>(profileState?.pubkey);
   const [relays, setRelays] = useState<Array<string>>();
   const user = useUserProfile(profileState ? undefined : id) || profileState;
-  const login = useLogin();
-  const loginPubKey = login.publicKey;
+  const { loginPubKey, readonly } = useLogin(s => ({
+    loginPubKey: s.publicKey,
+    readonly: s.readonly,
+  }));
   const isMe = loginPubKey === id;
-  const [showLnQr, setShowLnQr] = useState<boolean>(false);
-  const [showProfileQr, setShowProfileQr] = useState<boolean>(false);
   const [modalImage, setModalImage] = useState<string>("");
   const aboutText = user?.about || "";
 
-  const lnurl = (() => {
+  const lnurl = useMemo(() => {
     try {
       return new LNURL(user?.lud16 || user?.lud06 || "");
     } catch {
       // ignored
     }
-  })();
-  const showBadges = login.appData.item.preferences.showBadges ?? false;
-  const showStatus = login.appData.item.preferences.showStatus ?? true;
+  }, [user]);
 
   // feeds
   const { blocked } = useModeration();
   const pinned = usePinList(id);
   const muted = useMuteList(id);
-  const badges = useProfileBadges(showBadges ? id : undefined);
   const follows = useFollowsFeed(id);
-  const status = useStatusFeed(showStatus ? id : undefined, true);
 
   // tabs
   const [tab, setTab] = useState<Tab>(ProfileTab.Notes);
@@ -130,98 +101,6 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
     setTab(ProfileTab.Notes);
   }, [id, propId, params]);
 
-  function musicStatus() {
-    if (!status.music) return;
-
-    const link = findTag(status.music, "r");
-    const cover = findTag(status.music, "cover");
-    const inner = () => {
-      return (
-        <div className="flex g8">
-          {cover && <ProxyImg src={cover} size={40} />}
-          🎵 {unwrap(status.music).content}
-        </div>
-      );
-    };
-    if (link) {
-      return (
-        <a href={link} rel="noreferer noreferrer" target="_blank" className="ext">
-          {inner()}
-        </a>
-      );
-    }
-    return inner();
-  }
-
-  function username() {
-    return (
-      <>
-        <div className="flex flex-col g4">
-          <h2 className="flex items-center g4">
-            <DisplayName user={user} pubkey={user?.pubkey ?? ""} />
-            <FollowsYou followsMe={user?.pubkey !== loginPubKey && follows.includes(loginPubKey ?? "")} />
-          </h2>
-          {user?.nip05 && <Nip05 nip05={user.nip05} pubkey={user.pubkey} />}
-        </div>
-        {showBadges && <BadgeList badges={badges} />}
-        {showStatus && <>{musicStatus()}</>}
-        <div className="link-section">{links()}</div>
-      </>
-    );
-  }
-
-  function links() {
-    return (
-      <>
-        <UserWebsiteLink user={user} />
-        {lnurl && (
-          <div className="link lnurl f-ellipsis flex gap-2 items-center" onClick={() => setShowLnQr(true)}>
-            <Icon name="zapCircle" size={16} />
-            {lnurl.name}
-          </div>
-        )}
-
-        <ZapModal
-          targets={
-            lnurl?.lnurl && id
-              ? [
-                  {
-                    type: "lnurl",
-                    value: lnurl?.lnurl,
-                    weight: 1,
-                    name: user?.display_name || user?.name,
-                    zap: { pubkey: id },
-                  } as ZapTarget,
-                ]
-              : undefined
-          }
-          show={showLnQr}
-          onClose={() => setShowLnQr(false)}
-        />
-      </>
-    );
-  }
-
-  function bio() {
-    if (!id) return null;
-
-    return (
-      aboutText.length > 0 && (
-        <div dir="auto" className="about">
-          <Text
-            id={id}
-            content={aboutText}
-            tags={[]}
-            creator={id}
-            disableMedia={true}
-            disableLinkPreview={true}
-            disableMediaSpotlight={true}
-          />
-        </div>
-      )
-    );
-  }
-
   function tabContent() {
     if (!id) return null;
 
@@ -236,7 +115,7 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
                   <Note
                     key={`pinned-${n.id}`}
                     data={n}
-                    options={{ showTime: false, showPinned: true, canUnpin: id === loginPubKey }}
+                    options={{ showTime: false, showPinned: true, canUnpin: isMe }}
                   />
                 );
               })}
@@ -284,84 +163,6 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
     }
   }
 
-  function avatar() {
-    return (
-      <div className="avatar-wrapper w-max">
-        <Avatar pubkey={id ?? ""} user={user} onClick={() => setModalImage(user?.picture || "")} className="pointer" />
-        <div className="profile-actions">
-          {renderIcons()}
-          {!isMe && id && <FollowButton pubkey={id} />}
-        </div>
-      </div>
-    );
-  }
-
-  function renderIcons() {
-    if (!id) return;
-
-    const profileId = hexToBech32(CONFIG.profileLinkPrefix, id);
-
-    return (
-      <>
-        <IconButton onClick={() => setShowProfileQr(true)} icon={{ name: "qr", size: 16 }} />
-        {showProfileQr && (
-          <Modal id="profile-qr" className="qr-modal" onClose={() => setShowProfileQr(false)}>
-            <ProfileImage pubkey={id} />
-            <div className="flex flex-col items-center">
-              <QrCode data={`nostr:${profileId}`} className="m10" />
-              <Copy text={profileId} className="py-3" />
-            </div>
-          </Modal>
-        )}
-        {isMe ? (
-          <>
-            <Link className="md:hidden" to="/settings">
-              <button>
-                <FormattedMessage defaultMessage="Settings" id="D3idYv" />
-              </button>
-            </Link>
-            <Link className="hidden md:inline" to="/settings/profile">
-              <button>
-                <FormattedMessage defaultMessage="Edit" id="wEQDC6" />
-              </button>
-            </Link>
-          </>
-        ) : (
-          <>
-            {lnurl && <IconButton onClick={() => setShowLnQr(true)} icon={{ name: "zap", size: 16 }} />}
-            {loginPubKey && !login.readonly && (
-              <>
-                <IconButton
-                  onClick={() =>
-                    navigate(
-                      `/messages/${encodeTLVEntries("chat4" as NostrPrefix, {
-                        type: TLVEntryType.Author,
-                        length: 32,
-                        value: id,
-                      })}`,
-                    )
-                  }
-                  icon={{ name: "envelope", size: 16 }}
-                />
-              </>
-            )}
-          </>
-        )}
-      </>
-    );
-  }
-
-  function userDetails() {
-    if (!id) return;
-    return (
-      <div className="details-wrapper w-max">
-        {username()}
-        {bio()}
-        {user?.pubkey && loginPubKey && <FollowedBy pubkey={user.pubkey} />}
-      </div>
-    );
-  }
-
   function renderTab(v: Tab) {
     return <TabElement key={v.value} t={v} tab={tab} setTab={setTab} />;
   }
@@ -377,13 +178,13 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
             className="banner pointer"
             src={user.banner}
             size={bannerWidth}
-            onClick={() => setModalImage(user.banner || "")}
+            onClick={() => setModalImage(user?.banner || "")}
             missingImageElement={<></>}
           />
         )}
         <div className="profile-wrapper w-max">
-          {avatar()}
-          {userDetails()}
+          <AvatarSection id={id} loginPubKey={loginPubKey} user={user} readonly={readonly} lnurl={lnurl} />
+          <ProfileDetails user={user} loginPubKey={loginPubKey} id={id} aboutText={aboutText} lnurl={lnurl} />
         </div>
       </div>
       <div className="main-content">

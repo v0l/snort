@@ -5,6 +5,7 @@ import { trackEvent } from "@/Utils";
 interface ErrorBoundaryState {
   hasError: boolean;
   errorMessage?: string;
+  stack?: string;
 }
 
 interface ErrorBoundaryProps {
@@ -18,7 +19,7 @@ export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, E
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return { hasError: true, errorMessage: error.message };
+    return { hasError: true, errorMessage: error.message, stack: error.stack };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -33,6 +34,7 @@ export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, E
         <div className="p-2">
           <h1>Something went wrong.</h1>
           <p>Error: {this.state.errorMessage}</p>
+          <pre className="text-xs overflow-auto mt-8">{this.state.stack}</pre>
         </div>
       );
     }
