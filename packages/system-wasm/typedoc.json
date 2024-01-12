@@ -1,0 +1,5 @@
+{
+  "entryPoints": [
+    "pkg/system_wasm.d.ts",
+  ]
+}

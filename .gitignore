@@ -12,3 +12,4 @@ dist/
 *.log
 .DS_Store
 .pnp*
+docs/
