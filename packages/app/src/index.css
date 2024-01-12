@@ -452,8 +452,7 @@ textarea {
 .light input[type="text"],
 .light input[type="password"],
 .light input[type="number"],
-.light select,
-.light textarea {
+.light select {
   border: 2px solid var(--border-color);
 }
 
