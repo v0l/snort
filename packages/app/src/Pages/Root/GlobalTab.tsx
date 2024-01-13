@@ -1,6 +1,6 @@
 import { unixNow } from "@snort/shared";
 import { SnortContext } from "@snort/system-react";
-import { useContext, useEffect, useState } from "react";
+import {useContext, useEffect, useMemo, useState} from "react";
 import { FormattedMessage } from "react-intl";
 
 import Timeline from "@/Components/Feed/Timeline";
@@ -79,17 +79,19 @@ export const GlobalTab = () => {
     });
   }, [relays, relay]);
 
+  const subject = useMemo(() => ({
+    type: "global",
+    items: [],
+    relay: [relay.url],
+    discriminator: `all-${sha256(relay.url)}`,
+  }), [relay.url]);
+
   return (
     <>
       {globalRelaySelector()}
       {relay && (
         <Timeline
-          subject={{
-            type: "global",
-            items: [],
-            relay: [relay.url],
-            discriminator: `all-${sha256(relay.url)}`,
-          }}
+          subject={subject}
           postsOnly={false}
           method={"TIME_RANGE"}
           window={600}

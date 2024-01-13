@@ -17,6 +17,7 @@ import { formatShort } from "@/Utils/Number";
 const HashTagsPage = () => {
   const params = useParams();
   const tag = (params.tag ?? "").toLowerCase();
+  const subject = useMemo(() => ({ type: "hashtag", items: [tag], discriminator: tag }), [tag]);
 
   return (
     <>
@@ -25,7 +26,7 @@ const HashTagsPage = () => {
       </div>
       <Timeline
         key={tag}
-        subject={{ type: "hashtag", items: [tag], discriminator: tag }}
+        subject={subject}
         postsOnly={false}
         method={"TIME_RANGE"}
       />

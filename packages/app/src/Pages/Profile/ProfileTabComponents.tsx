@@ -52,8 +52,18 @@ export function BookMarksTab({ id }: { id: HexKey }) {
 }
 
 export function ProfileNotesTab({ id, relays, isMe }: { id: HexKey; relays?: Array<string>; isMe: boolean }) {
+  console.count("ProfileNotesTab");
   const pinned = usePinList(id);
   const options = useMemo(() => ({ showTime: false, showPinned: true, canUnpin: isMe }), [isMe]);
+  const subject = useMemo(
+    () => ({
+      type: "pubkey",
+      items: [id],
+      discriminator: id.slice(0, 12),
+      relay: relays,
+    }),
+    [id, relays],
+  );
   return (
     <>
       {pinned
@@ -63,12 +73,7 @@ export function ProfileNotesTab({ id, relays, isMe }: { id: HexKey; relays?: Arr
         })}
       <Timeline
         key={id}
-        subject={{
-          type: "pubkey",
-          items: [id],
-          discriminator: id.slice(0, 12),
-          relay: relays,
-        }}
+        subject={subject}
         postsOnly={false}
         method={"LIMIT_UNTIL"}
         loadMore={false}
