@@ -1,8 +1,8 @@
+import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";
 import { TimelineSubject } from "@/Feed/TimelineFeed";
-import { useMemo } from "react";
 
 export const TagsTab = (params: { tag?: string }) => {
   const { tag } = useParams();

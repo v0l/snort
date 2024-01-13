@@ -1,6 +1,7 @@
+import { useMemo } from "react";
+
 import Timeline from "@/Components/Feed/Timeline";
 import useLogin from "@/Hooks/useLogin";
-import { useMemo } from "react";
 
 export function TopicsPage() {
   const { tags, pubKey } = useLogin(s => ({ tags: s.tags.item, pubKey: s.publicKey }));

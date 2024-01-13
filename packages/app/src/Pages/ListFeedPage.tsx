@@ -1,13 +1,13 @@
 import { dedupe, unwrap } from "@snort/shared";
 import { EventKind, parseNostrLink } from "@snort/system";
 import { useEventFeed } from "@snort/system-react";
+import { useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useParams } from "react-router-dom";
 
 import Timeline from "@/Components/Feed/Timeline";
 import PageSpinner from "@/Components/PageSpinner";
 import { Hour } from "@/Utils/Const";
-import { useMemo } from "react";
 
 export function ListFeedPage() {
   const { id } = useParams();
