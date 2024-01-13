@@ -1,5 +1,6 @@
 import debug from "debug";
 import EventEmitter from "eventemitter3";
+import inMemoryDB from "./InMemoryDB";
 
 import { FeedCache } from "@snort/shared";
 import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
@@ -122,6 +123,9 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     });
     this.pool.on("event", (_, sub, ev) => {
       ev.relays?.length && this.relayMetricsHandler.onEvent(ev.relays[0]);
+      queueMicrotask(() => {
+        inMemoryDB.handleEvent(ev);
+      })
       this.emit("event", sub, ev);
     });
     this.pool.on("disconnect", (id, code) => {
@@ -149,7 +153,17 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.#queryManager.on("trace", t => {
       this.relayMetricsHandler.onTraceReport(t);
     });
-    this.#queryManager.on("filters", (f: BuiltRawReqFilter) => this.emit("filters", f));
+    this.#queryManager.on("filters", (f: BuiltRawReqFilter) => {
+      f.filters.forEach(filter => {
+        queueMicrotask(() => {
+          inMemoryDB.find(filter, e => {
+            console.log('got from inmemorydb', e);
+            this.HandleEvent(e);
+          });
+        })
+      });
+      this.emit("filters", f);
+    });
   }
 
   get Sockets(): ConnectionStateSnapshot[] {
@@ -191,8 +205,11 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
   }
 
   HandleEvent(ev: TaggedNostrEvent) {
-    this.emit("event", "*", ev);
-    this.#queryManager.handleEvent(ev);
+    queueMicrotask(() => {
+      inMemoryDB.handleEvent(ev);
+      this.emit("event", "*", ev);
+      this.#queryManager.handleEvent(ev);
+    });
   }
 
   async BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]> {

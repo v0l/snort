@@ -41,7 +41,9 @@ System.on("event", (_, ev) => {
   addEventToFuzzySearch(ev);
   socialGraphInstance.handleEvent(ev);
   if (CONFIG.useIndexedDBEvents) {
-    indexedDB.handleEvent(ev);
+    queueMicrotask(() => {
+      indexedDB.handleEvent(ev);
+    });
   }
 });
 
