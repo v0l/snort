@@ -8,6 +8,7 @@ import { trimFilters } from "./request-trim";
 interface QueryManagerEvents {
   change: () => void;
   trace: (report: TraceReport) => void;
+  filters: (req: BuiltRawReqFilter) => void;
 }
 
 /**
@@ -58,12 +59,17 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       q.on("trace", r => this.emit("trace", r));
       q.on("filters", fx => {
         this.#send(q, fx);
+        this.emit("filters", fx);
       });
 
       this.#queries.set(req.id, q);
       this.emit("change");
       return q;
     }
+  }
+
+  handleEvent(ev: TaggedNostrEvent) {
+    this.#queries.forEach(q => q.handleEvent("*", ev));
   }
 
   /**
