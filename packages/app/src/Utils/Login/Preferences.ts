@@ -55,7 +55,7 @@ export interface UserPreferences {
   /**
    * Default page to select on load
    */
-  defaultRootTab: "notes" | "conversations" | "global";
+  defaultRootTab: "for-you" | "notes" | "conversations" | "global";
 
   /**
    * Default zap amount
@@ -113,7 +113,7 @@ export const DefaultPreferences = {
   autoShowLatest: false,
   fileUploader: "void.cat",
   imgProxyConfig: DefaultImgProxy,
-  defaultRootTab: "notes",
+  defaultRootTab: CONFIG.features.forYouFeed ? "for-you" : "notes",
   defaultZapAmount: 50,
   autoZap: false,
   telemetry: true,

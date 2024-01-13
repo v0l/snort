@@ -16,7 +16,8 @@
     "deck": true,
     "zapPool": true,
     "notificationGraph": false,
-    "communityLeaders": true
+    "communityLeaders": true,
+    "forYouFeed": true
   },
   "defaultPreferences": {
     "hideMutedNotes": true
@@ -45,7 +46,10 @@
     "wss://relay.nostr.band/": { "read": true, "write": true },
     "wss://relay.damus.io/": { "read": true, "write": true }
   },
-  "chatChannels": [{ "type": "telegram", "value": "https://t.me/irismessenger" }],
+  "chatChannels": [
+    { "type": "telegram", "value": "https://t.me/irismessenger" },
+    { "type": "nip28", "value": "23286a4602ada10cc10200553bff62a110e8dc0eacddf73277395a89ddf26a09" }
+  ],
   "alby": {
     "clientId": "5rYcHDrlDb",
     "clientSecret": "QAI3QmgiaPH3BfTMzzFd"

@@ -18,7 +18,8 @@
     "notificationGraph": true,
     "communityLeaders": true,
     "nostrAddress": true,
-    "pushNotifications": true
+    "pushNotifications": true,
+    "forYouFeed": false
   },
   "signUp": {
     "moderation": true,

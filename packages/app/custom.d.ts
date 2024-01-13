@@ -61,6 +61,7 @@ declare const CONFIG: {
     communityLeaders: boolean;
     nostrAddress: boolean;
     pushNotifications: boolean;
+    forYouFeed: boolean;
   };
   defaultPreferences: {
     hideMutedNotes: boolean;

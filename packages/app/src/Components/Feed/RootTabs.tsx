@@ -25,7 +25,7 @@ export function RootTabs({ base = "/" }: { base: string }) {
 
   const defaultTab = pubKey ? preferences.defaultRootTab ?? `${base}/notes` : `${base}/trending/notes`;
   const initialPathname = location.pathname === "/" ? defaultTab : location.pathname;
-  const initialRootType = menuItems.find(a => a.path === initialPathname)?.tab || "following";
+  const initialRootType = menuItems.find(a => a.path === initialPathname)?.tab || "for-you";
 
   const [rootType, setRootType] = useState<RootTab>(initialRootType);
 

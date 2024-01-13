@@ -5,6 +5,7 @@ import Icon from "@/Components/Icons/Icon";
 import { Newest } from "@/Utils/Login";
 
 export type RootTab =
+  | "for-you"
   | "following"
   | "followed-by-friends"
   | "conversations"
@@ -16,6 +17,17 @@ export type RootTab =
 
 export function rootTabItems(base: string, pubKey: string | undefined, tags: Newest<Array<string>>) {
   const menuItems = [
+    {
+      tab: "for-you",
+      path: `${base}/for-you`,
+      show: Boolean(pubKey) && CONFIG.features.forYouFeed,
+      element: (
+        <>
+          <Icon name="user-v2" />
+          <FormattedMessage defaultMessage="For you" id="xEjBS7" />
+        </>
+      ),
+    },
     {
       tab: "following",
       path: `${base}/notes`,
