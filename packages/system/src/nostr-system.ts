@@ -4,7 +4,7 @@ import EventEmitter from "eventemitter3";
 import { FeedCache } from "@snort/shared";
 import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
-import { RequestBuilder } from "./request-builder";
+import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
   CachedMetadata,
@@ -30,7 +30,7 @@ export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
   event: (subId: string, ev: TaggedNostrEvent) => void;
-  request: (filter: ReqFilter) => void;
+  filters: (filter: BuiltRawReqFilter) => void;
 }
 
 export interface NostrsystemProps {
@@ -149,6 +149,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.#queryManager.on("trace", t => {
       this.relayMetricsHandler.onTraceReport(t);
     });
+    this.#queryManager.on("filters", (f: BuiltRawReqFilter) => this.emit("filters", f));
   }
 
   get Sockets(): ConnectionStateSnapshot[] {
@@ -191,6 +192,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
 
   HandleEvent(ev: TaggedNostrEvent) {
     this.emit("event", "*", ev);
+    this.#queryManager.handleEvent(ev);
   }
 
   async BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]> {
