@@ -47,5 +47,6 @@
   "alby": {
     "clientId": "pohiJjPhQR",
     "clientSecret": "GAl1YKLA3FveK1gLBYok"
-  }
+  },
+  "useIndexedDBWorker": false
 }

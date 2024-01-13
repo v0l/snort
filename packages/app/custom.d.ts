@@ -96,6 +96,8 @@ declare const CONFIG: {
     clientId: string;
     clientSecret: string;
   };
+
+  useIndexedDBEvents: boolean;
 };
 
 /**

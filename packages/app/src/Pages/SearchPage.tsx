@@ -53,11 +53,14 @@ const SearchPage = () => {
     return debounce(500, () => setKeyword(search));
   }, [search]);
 
-  const subject = useMemo(() => ({
-    type: "post_keyword",
-    items: [keyword + (sortPopular ? " sort:popular" : "")],
-    discriminator: keyword,
-  }), [keyword, sortPopular]);
+  const subject = useMemo(
+    () => ({
+      type: "post_keyword",
+      items: [keyword + (sortPopular ? " sort:popular" : "")],
+      discriminator: keyword,
+    }),
+    [keyword, sortPopular],
+  );
 
   function tabContent() {
     if (tab.value === PROFILES) {
@@ -71,13 +74,7 @@ const SearchPage = () => {
     return (
       <>
         {sortOptions()}
-        <Timeline
-          key={keyword}
-          subject={subject}
-          postsOnly={false}
-          method={"LIMIT_UNTIL"}
-          loadMore={false}
-        />
+        <Timeline key={keyword} subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} loadMore={false} />
       </>
     );
   }

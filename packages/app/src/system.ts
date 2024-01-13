@@ -1,10 +1,22 @@
 import { removeUndefined, throwIfOffline } from "@snort/shared";
-import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService, socialGraphInstance } from "@snort/system";
+import {
+  BuiltRawReqFilter,
+  mapEventToProfile,
+  NostrEvent,
+  NostrSystem,
+  ProfileLoaderService,
+  socialGraphInstance,
+  TaggedNostrEvent,
+} from "@snort/system";
+import * as Comlink from "comlink";
 
 import { RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
 import { addCachedMetadataToFuzzySearch, addEventToFuzzySearch } from "@/Db/FuzzySearch";
+import IndexedDBWorker from "@/Db/IndexedDB?worker";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
+
+export const indexedDB = Comlink.wrap(new IndexedDBWorker());
 
 /**
  * Singleton nostr system
@@ -28,6 +40,24 @@ System.on("auth", async (c, r, cb) => {
 System.on("event", (_, ev) => {
   addEventToFuzzySearch(ev);
   socialGraphInstance.handleEvent(ev);
+  if (CONFIG.useIndexedDBEvents) {
+    indexedDB.handleEvent(ev);
+  }
+});
+
+System.on("filters", (req: BuiltRawReqFilter) => {
+  if (CONFIG.useIndexedDBEvents) {
+    req.filters.forEach(filter => {
+      indexedDB.find(
+        filter,
+        Comlink.proxy((e: TaggedNostrEvent) => {
+          queueMicrotask(() => {
+            System.HandleEvent(e);
+          });
+        }),
+      );
+    });
+  }
 });
 
 System.profileCache.on("change", keys => {

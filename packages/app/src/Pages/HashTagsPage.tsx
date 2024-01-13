@@ -24,12 +24,7 @@ const HashTagsPage = () => {
       <div className="bb p">
         <HashTagHeader tag={tag} />
       </div>
-      <Timeline
-        key={tag}
-        subject={subject}
-        postsOnly={false}
-        method={"TIME_RANGE"}
-      />
+      <Timeline key={tag} subject={subject} postsOnly={false} method={"TIME_RANGE"} />
     </>
   );
 };
