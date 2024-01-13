@@ -33,12 +33,12 @@ export default function Poll(props: PollProps) {
   const [error, setError] = useState("");
   const [invoice, setInvoice] = useState("");
   const [voting, setVoting] = useState<number>();
-  const didVote = props.zaps.some(a => a.sender === myPubKey);
+  const didVote = props.zaps?.some(a => a.sender === myPubKey);
   const isMyPoll = props.ev.pubkey === myPubKey;
   const showResults = didVote || isMyPoll;
 
   const options = props.ev.tags
-    .filter(a => a[0] === "poll_option")
+    ?.filter(a => a[0] === "poll_option")
     .sort((a, b) => (Number(a[1]) > Number(b[1]) ? 1 : -1));
 
   async function zapVote(ev: React.MouseEvent, opt: number) {
@@ -107,9 +107,9 @@ export default function Poll(props: PollProps) {
   const totalVotes = (() => {
     switch (tallyBy) {
       case "zaps":
-        return props.zaps.filter(a => a.pollOption !== undefined).reduce((acc, v) => (acc += v.amount), 0);
+        return props.zaps?.filter(a => a.pollOption !== undefined).reduce((acc, v) => (acc += v.amount), 0) ?? 0;
       case "pubkeys":
-        return new Set(props.zaps.filter(a => a.pollOption !== undefined).map(a => unwrap(a.sender))).size;
+        return new Set(props.zaps?.filter(a => a.pollOption !== undefined).map(a => unwrap(a.sender)) ?? []).size;
     }
   })();
 
@@ -141,10 +141,10 @@ export default function Poll(props: PollProps) {
         </button>
       </div>
       <div className="poll-body">
-        {options.map(a => {
+        {options?.map(a => {
           const opt = Number(a[1]);
           const desc = a[2];
-          const zapsOnOption = props.zaps.filter(b => b.pollOption === opt);
+          const zapsOnOption = props.zaps?.filter(b => b.pollOption === opt) ?? [];
           const total = (() => {
             switch (tallyBy) {
               case "zaps":
