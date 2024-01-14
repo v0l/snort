@@ -39,52 +39,54 @@ class IndexedDB extends Dexie {
   }
 
   async getForYouFeed(pubkey: string): Promise<TaggedNostrEvent[]> {
-    console.log("getForYouFeed", pubkey);
     // get ids of events where pubkey is pubkey and kind is 7
-    const myLikedEvents = new Set<string>();
+    const myReactedEvents = new Set<string>();
     await this.events
-      .where("[pubkey+kind]")
-      .equals([pubkey, 7])
+      .where("pubkey")
+      .equals(pubkey)
       .each(e => {
         e.tags.forEach(tag => {
           if (tag[0] === "e") {
-            myLikedEvents.add(tag[1]);
+            myReactedEvents.add(tag[1]);
           }
         });
       });
-    console.log("myLikedEvents", myLikedEvents);
-    const othersWhoLiked = new Set<string>();
-    for (const id of myLikedEvents) {
+    console.log("myReactedEvents", myReactedEvents);
+    const othersWhoReacted = new Set<string>();
+    for (const id of myReactedEvents) {
       await this.events
         .where("flatTags")
         .equals("e_" + id)
         .each(e => {
           if (e.pubkey !== pubkey) {
-            othersWhoLiked.add(e.pubkey);
+            othersWhoReacted.add(e.pubkey);
           }
         });
     }
-    console.log("othersWhoLiked.length", othersWhoLiked.size);
-    const likedByOthers = new Set<string>();
-    for (const pubkey of othersWhoLiked) {
+    console.log("othersWhoReacted.length", othersWhoReacted.size);
+    const reactedByOthers = new Set<string>();
+    for (const pubkey of othersWhoReacted) {
       await this.events
-        .where("[pubkey+kind]")
-        .equals([pubkey, 7])
+        .where("pubkey")
+        .equals(pubkey)
         .each(e => {
           e.tags.forEach(tag => {
             if (tag[0] === "e") {
-              likedByOthers.add(tag[1]);
+              reactedByOthers.add(tag[1]);
             }
           });
         });
     }
-    const ids = [...likedByOthers].filter(id => !myLikedEvents.has(id));
+    const ids = [...reactedByOthers].filter(id => !myReactedEvents.has(id));
     const events: TaggedNostrEvent[] = [];
     for (const id of ids) {
       await this.events
         .where("id")
         .equals(id)
         .each(e => {
+          if (e.tags.some(t => t[0] === "e")) {
+            return; // no replies
+          }
           events.push(this.unpack(e));
           this.seenEvents.add(e.id);
         });

@@ -42,7 +42,7 @@ export const ForYouTab = () => {
         queueMicrotask(() => {
           System.HandleEvent(note);
         });
-      })
+      });
     });
   }, []);
 
