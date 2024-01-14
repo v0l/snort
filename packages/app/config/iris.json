@@ -13,7 +13,7 @@
   "defaultZapPoolFee": 0.5,
   "features": {
     "analytics": true,
-    "subscriptions": false,
+    "subscriptions": true,
     "deck": true,
     "zapPool": true,
     "notificationGraph": false,
