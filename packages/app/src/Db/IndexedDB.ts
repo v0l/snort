@@ -84,7 +84,10 @@ class IndexedDB extends Dexie {
       await this.events
         .where("id")
         .equals(id)
-        .each(e => events.push(this.unpack(e)));
+        .each(e => {
+          events.push(this.unpack(e));
+          this.seenEvents.add(e.id);
+        });
     }
 
     return events.sort((a, b) => b.created_at - a.created_at);

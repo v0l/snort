@@ -8,7 +8,7 @@ import { TaskList } from "@/Components/Tasks/TaskList";
 import useLogin from "@/Hooks/useLogin";
 import { DeckContext } from "@/Pages/DeckLayout";
 import messages from "@/Pages/messages";
-import { indexedDBWorker } from "@/system";
+import { indexedDBWorker, System } from "@/system";
 
 const FollowsHint = () => {
   const { publicKey: pubKey, follows } = useLogin();
@@ -36,7 +36,14 @@ export const ForYouTab = () => {
   const deckContext = useContext(DeckContext);
 
   useEffect(() => {
-    indexedDBWorker.getForYouFeed(publicKey).then(setNotes);
+    indexedDBWorker.getForYouFeed(publicKey).then(notes => {
+      setNotes(notes);
+      notes.forEach(note => {
+        queueMicrotask(() => {
+          System.HandleEvent(note);
+        });
+      })
+    });
   }, []);
 
   const frags = useMemo(() => {
