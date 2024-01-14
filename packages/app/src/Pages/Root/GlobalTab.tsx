@@ -83,10 +83,10 @@ export const GlobalTab = () => {
     () => ({
       type: "global",
       items: [],
-      relay: [relay.url],
-      discriminator: `all-${sha256(relay.url)}`,
+      relay: [relay?.url],
+      discriminator: `all-${sha256(relay?.url ?? "")}`,
     }),
-    [relay.url],
+    [relay?.url],
   );
 
   return (
