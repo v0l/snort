@@ -28,6 +28,17 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
       ),
     },
     {
+      tab: "for-you",
+      path: `${base}/for-you`,
+      show: Boolean(pubKey) && CONFIG.useIndexedDBEvents,
+      element: (
+        <>
+          <Icon name="user-v2" />
+          <FormattedMessage defaultMessage="For you" id="xEjBS7" />
+        </>
+      ),
+    },
+    {
       tab: "trending-notes",
       path: `${base}/trending/notes`,
       show: true,

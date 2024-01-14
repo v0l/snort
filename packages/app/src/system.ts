@@ -1,13 +1,5 @@
 import { removeUndefined, throwIfOffline } from "@snort/shared";
-import {
-  BuiltRawReqFilter,
-  mapEventToProfile,
-  NostrEvent,
-  NostrSystem,
-  ProfileLoaderService,
-  socialGraphInstance,
-  TaggedNostrEvent,
-} from "@snort/system";
+import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService, socialGraphInstance } from "@snort/system";
 import * as Comlink from "comlink";
 
 import { RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
@@ -16,7 +8,7 @@ import IndexedDBWorker from "@/Db/IndexedDB?worker";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
 
-export const indexedDB = Comlink.wrap(new IndexedDBWorker());
+export const indexedDBWorker = Comlink.wrap(new IndexedDBWorker());
 
 /**
  * Singleton nostr system
@@ -42,11 +34,12 @@ System.on("event", (_, ev) => {
   socialGraphInstance.handleEvent(ev);
   if (CONFIG.useIndexedDBEvents) {
     queueMicrotask(() => {
-      indexedDB.handleEvent(ev);
+      indexedDBWorker.handleEvent(ev);
     });
   }
 });
 
+/* disabled idb querying for now
 System.on("filters", (req: BuiltRawReqFilter) => {
   if (CONFIG.useIndexedDBEvents) {
     req.filters.forEach(filter => {
@@ -61,6 +54,7 @@ System.on("filters", (req: BuiltRawReqFilter) => {
     });
   }
 });
+ */
 
 System.profileCache.on("change", keys => {
   const changed = removeUndefined(keys.map(a => System.profileCache.getFromCache(a)));

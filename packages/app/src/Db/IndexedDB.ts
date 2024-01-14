@@ -3,20 +3,23 @@ import { ReqFilter as Filter, TaggedNostrEvent } from "@snort/system";
 import * as Comlink from "comlink";
 import Dexie, { Table } from "dexie";
 
-type Tag = {
+type PackedNostrEvent = {
   id: string;
-  eventId: string;
-  type: string;
-  value: string;
+  pubkey: string;
+  kind: number;
+  tags: Array<Array<string>>;
+  flatTags: string[];
+  sig: string;
+  created_at: number;
+  content: string;
+  relays: string[];
 };
 
-type SaveQueueEntry = { event: TaggedNostrEvent; tags: Tag[] };
 type Task = () => Promise<void>;
 
 class IndexedDB extends Dexie {
-  events!: Table<TaggedNostrEvent>;
-  tags!: Table<Tag>;
-  private saveQueue: SaveQueueEntry[] = [];
+  events!: Table<PackedNostrEvent>;
+  private saveQueue: PackedNostrEvent[] = [];
   private subscribedEventIds = new Set<string>();
   private subscribedAuthors = new Set<string>();
   private subscribedTags = new Set<string>();
@@ -28,27 +31,74 @@ class IndexedDB extends Dexie {
   constructor() {
     super("EventDB");
 
-    this.version(6).stores({
-      // TODO use multientry index for *tags
-      events: "++id, pubkey, kind, created_at, [pubkey+kind]",
-      tags: "&[type+value+eventId], [type+value], eventId",
+    this.version(7).stores({
+      events: "++id, pubkey, kind, created_at, [pubkey+kind], *flatTags",
     });
 
     this.startInterval();
+  }
+
+  async getForYouFeed(pubkey: string): Promise<TaggedNostrEvent[]> {
+    console.log("getForYouFeed", pubkey);
+    // get ids of events where pubkey is pubkey and kind is 7
+    const myLikedEvents = new Set<string>();
+    await this.events
+      .where("[pubkey+kind]")
+      .equals([pubkey, 7])
+      .each(e => {
+        e.tags.forEach(tag => {
+          if (tag[0] === "e") {
+            myLikedEvents.add(tag[1]);
+          }
+        });
+      });
+    console.log("myLikedEvents", myLikedEvents);
+    const othersWhoLiked = new Set<string>();
+    for (const id of myLikedEvents) {
+      await this.events
+        .where("flatTags")
+        .equals("e_" + id)
+        .each(e => {
+          if (e.pubkey !== pubkey) {
+            othersWhoLiked.add(e.pubkey);
+          }
+        });
+    }
+    console.log("othersWhoLiked.length", othersWhoLiked.size);
+    const likedByOthers = new Set<string>();
+    for (const pubkey of othersWhoLiked) {
+      await this.events
+        .where("[pubkey+kind]")
+        .equals([pubkey, 7])
+        .each(e => {
+          e.tags.forEach(tag => {
+            if (tag[0] === "e") {
+              likedByOthers.add(tag[1]);
+            }
+          });
+        });
+    }
+    const ids = [...likedByOthers].filter(id => !myLikedEvents.has(id));
+    const events: TaggedNostrEvent[] = [];
+    for (const id of ids) {
+      await this.events
+        .where("id")
+        .equals(id)
+        .each(e => events.push(this.unpack(e)));
+    }
+
+    return events.sort((a, b) => b.created_at - a.created_at);
   }
 
   private startInterval() {
     const processQueue = async () => {
       if (this.saveQueue.length > 0) {
         try {
-          const eventsToSave: TaggedNostrEvent[] = [];
-          const tagsToSave: Tag[] = [];
-          for (const item of this.saveQueue) {
-            eventsToSave.push(item.event);
-            tagsToSave.push(...item.tags);
+          const eventsToSave: PackedNostrEvent[] = [];
+          for (const event of this.saveQueue) {
+            eventsToSave.push(event);
           }
           await this.events.bulkPut(eventsToSave);
-          await this.tags.bulkPut(tagsToSave);
         } catch (e) {
           console.error(e);
         } finally {
@@ -61,39 +111,46 @@ class IndexedDB extends Dexie {
     setTimeout(() => processQueue(), 3000);
   }
 
+  pack(event: TaggedNostrEvent): PackedNostrEvent {
+    const flatTags =
+      event.kind === 3
+        ? []
+        : event.tags.filter(tag => ["e", "p", "d"].includes(tag[0])).map(tag => `${tag[0]}_${tag[1]}`);
+    return {
+      id: event.id,
+      pubkey: event.pubkey,
+      kind: event.kind,
+      tags: event.tags,
+      flatTags,
+      sig: event.sig,
+      created_at: event.created_at,
+      content: event.content,
+      relays: event.relays,
+    };
+  }
+
+  unpack(event: PackedNostrEvent): TaggedNostrEvent {
+    return {
+      id: event.id,
+      pubkey: event.pubkey,
+      kind: event.kind,
+      tags: event.tags,
+      sig: event.sig,
+      created_at: event.created_at,
+      content: event.content,
+      relays: event.relays,
+    };
+  }
+
   handleEvent(event: TaggedNostrEvent) {
     if (this.seenEvents.has(event.id)) {
       return;
     }
     this.seenEvents.add(event.id);
 
-    // maybe we don't want event.kind 3 tags
-    const tags =
-      event.kind === 3
-        ? []
-        : event.tags
-            ?.filter(tag => {
-              if (tag[0] === "d") {
-                return true;
-              }
-              if (tag[0] === "e") {
-                return true;
-              }
-              // we're only interested in p tags where we are mentioned
-              /*
-              if (tag[0] === "p") {
-                Key.isMine(tag[1])) { // TODO
-                return true;
-              }*/
-              return false;
-            })
-            .map(tag => ({
-              eventId: event.id,
-              type: tag[0],
-              value: tag[1],
-            })) || [];
+    const packedEvent = this.pack(event);
 
-    this.saveQueue.push({ event, tags });
+    this.saveQueue.push(packedEvent);
   }
 
   private async startReadQueue() {
@@ -124,7 +181,7 @@ class IndexedDB extends Dexie {
         .where("pubkey")
         .anyOf(authors)
         .limit(limit || 1000)
-        .each(callback);
+        .each(e => callback(this.unpack(e)));
     });
   };
 
@@ -132,21 +189,25 @@ class IndexedDB extends Dexie {
     this.enqueueRead("getByEventIds", async () => {
       const ids = [...this.subscribedEventIds];
       this.subscribedEventIds.clear();
-      await this.events.where("id").anyOf(ids).each(callback);
+      await this.events
+        .where("id")
+        .anyOf(ids)
+        .each(e => callback(this.unpack(e)));
     });
   };
 
   getByTags = async (callback: (event: TaggedNostrEvent) => void) => {
     this.enqueueRead("getByTags", async () => {
-      const tagPairs = [...this.subscribedTags].map(tag => tag.split("|"));
+      const tags = [...this.subscribedTags];
       this.subscribedTags.clear();
-
-      await this.tags
-        .where("[type+value]")
-        .anyOf(tagPairs)
-        .each(tag => this.subscribedEventIds.add(tag.eventId));
-
-      await this.getByEventIds(callback);
+      const flatTags = tags.map(tag => {
+        const [type, value] = tag.split("_");
+        return [type, value];
+      });
+      await this.events
+        .where("flatTags")
+        .anyOf(flatTags)
+        .each(e => callback(this.unpack(e)));
     });
   };
 
@@ -188,7 +249,7 @@ class IndexedDB extends Dexie {
         const values = filter[key];
         if (Array.isArray(values)) {
           for (const value of values) {
-            this.subscribedTags.add(tagName + "|" + value);
+            this.subscribedTags.add(`${tagName}_${value}`);
           }
         }
       }

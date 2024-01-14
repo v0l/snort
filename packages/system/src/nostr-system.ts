@@ -125,7 +125,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
       ev.relays?.length && this.relayMetricsHandler.onEvent(ev.relays[0]);
       queueMicrotask(() => {
         inMemoryDB.handleEvent(ev);
-      })
+      });
       this.emit("event", sub, ev);
     });
     this.pool.on("disconnect", (id, code) => {
@@ -157,10 +157,10 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
       f.filters.forEach(filter => {
         queueMicrotask(() => {
           inMemoryDB.find(filter, e => {
-            console.log('got from inmemorydb', e);
+            console.log("got from inmemorydb", e);
             this.HandleEvent(e);
           });
-        })
+        });
       });
       this.emit("filters", f);
     });
