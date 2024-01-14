@@ -61,7 +61,7 @@ export function WalletSendPage() {
         onClick={async () => {
           try {
             if (wallets.wallet) {
-              if (!isLnurl) {
+              if (!lnurl) {
                 const res = await wallets.wallet.payInvoice(invoice);
                 setResult(res);
               } else {
