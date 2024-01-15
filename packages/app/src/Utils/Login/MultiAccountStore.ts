@@ -165,7 +165,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       },
       preferences: {
         ...DefaultPreferences,
-        ...CONFIG.defaultPreferences
+        ...CONFIG.defaultPreferences,
       },
       remoteSignerRelays,
       privateKeyData: privateKey,
@@ -211,7 +211,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       },
       preferences: {
         ...DefaultPreferences,
-        ...CONFIG.defaultPreferences
+        ...CONFIG.defaultPreferences,
       },
     } as LoginSession;
 
