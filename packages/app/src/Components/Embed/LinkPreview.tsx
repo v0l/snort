@@ -5,11 +5,11 @@ import { LRUCache } from "typescript-lru-cache";
 
 import { MediaElement } from "@/Components/Embed/MediaElement";
 import Spinner from "@/Components/Icons/Spinner";
-import SnortApi, { LinkPreviewData } from "@/External/SnortApi";
+import { LinkPreviewData, NostrServices } from "@/External/NostrServices";
 import useImgProxy from "@/Hooks/useImgProxy";
 
 async function fetchUrlPreviewInfo(url: string) {
-  const api = new SnortApi();
+  const api = new NostrServices("https://nostr.api.v0l.io");
   try {
     return await api.linkPreview(url.endsWith(")") ? url.slice(0, -1) : url);
   } catch (e) {
