@@ -1,6 +1,6 @@
 import * as utils from "@noble/curves/abstract/utils";
 import * as secp from "@noble/curves/secp256k1";
-import { deepClone, ExternalStore, unwrap } from "@snort/shared";
+import { ExternalStore, unwrap } from "@snort/shared";
 import { EventPublisher, HexKey, KeyStorage, NotEncrypted, RelaySettings, socialGraphInstance } from "@snort/system";
 import { v4 as uuid } from "uuid";
 
@@ -58,7 +58,7 @@ const LoggedOut = {
 
 export class MultiAccountStore extends ExternalStore<LoginSession> {
   #activeAccount?: HexKey;
-  #accounts: Map<string, LoginSession>;
+  #accounts: Map<string, LoginSession> = new Map();
   #publishers = new Map<string, EventPublisher>();
 
   constructor() {
@@ -91,6 +91,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
       v.appData ??= {
         item: {
           mutedWords: [],
+          showContentWarningPosts: false,
           preferences: DefaultPreferences,
         },
         timestamp: 0,
@@ -162,7 +163,10 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         item: initRelays,
         timestamp: 1,
       },
-      preferences: deepClone(DefaultPreferences),
+      preferences: {
+        ...DefaultPreferences,
+        ...CONFIG.defaultPreferences
+      },
       remoteSignerRelays,
       privateKeyData: privateKey,
       stalker: stalker ?? false,
@@ -205,7 +209,10 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
         item: initRelays,
         timestamp: 1,
       },
-      preferences: deepClone(DefaultPreferences),
+      preferences: {
+        ...DefaultPreferences,
+        ...CONFIG.defaultPreferences
+      },
     } as LoginSession;
 
     if ("nostr_os" in window && window?.nostr_os) {

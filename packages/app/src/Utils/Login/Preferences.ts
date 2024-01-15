@@ -122,5 +122,4 @@ export const DefaultPreferences = {
   checkSigs: true,
   autoTranslate: true,
   hideMutedNotes: false,
-  ...(CONFIG ?? {})?.defaultPreferences,
 } as UserPreferences;
