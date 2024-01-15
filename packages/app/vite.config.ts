@@ -47,6 +47,16 @@ export default defineConfig({
       "@": "/src",
     },
   },
+  server: {
+    headers: {
+      "Cross-Origin-Resource-Policy": "corss-origin",
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Embedder-Policy": "credentialless",
+    },
+  },
+  optimizeDeps: {
+    exclude: ["@sqlite.org/sqlite-wasm"],
+  },
   define: {
     CONFIG: JSON.stringify(appConfig),
     global: {}, // needed for custom-event lib
