@@ -380,16 +380,7 @@ export class Query extends EventEmitter<QueryEvents> {
 
   #sendQueryInternal(c: Connection, q: BuiltRawReqFilter) {
     let filters = q.filters;
-    if (!c.SupportsNip(Nips.NotFilter)) {
-      filters = filters.map(f => {
-        if (f.not) {
-          const copy = { ...f };
-          delete copy.not;
-          return copy;
-        }
-        return f;
-      });
-    }
+
     const qt = new QueryTrace(c.Address, filters, c.Id);
     qt.on("close", x => c.CloseReq(x));
     qt.on("change", () => this.#onProgress());

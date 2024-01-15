@@ -122,20 +122,6 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     }
     qSend.filters = fNew;
 
-    const alreadyHave = new Set<string>();
-    qSend.filters.forEach(f => {
-      // check what we already have locally
-      q.feed.takeSnapshot().forEach(e => alreadyHave.add(e.id));
-      if (alreadyHave.size) {
-        f.not = f.not || {};
-        f.not.ids = f.not.ids || [];
-        // if there's multiple filters in the query, should we only add alreadyHave events that actually match the filter?
-        f.not.ids.push(...alreadyHave);
-        console.log("already have", f, alreadyHave);
-      }
-      // query relays one at a time at intervals, updating alreadyHave in between?
-    });
-
     if (qSend.relay) {
       this.#log("Sending query to %s %s %O", qSend.relay, q.id, qSend);
       const s = this.#system.pool.getConnection(qSend.relay);
