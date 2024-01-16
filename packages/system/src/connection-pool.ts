@@ -6,6 +6,7 @@ import { Connection, RelaySettings } from "./connection";
 import { NostrEvent, OkResponse, TaggedNostrEvent } from "./nostr";
 import { pickRelaysForReply } from "./outbox-model";
 import { SystemInterface } from ".";
+import LRUSet from "@snort/shared/src/LRUSet";
 
 export interface NostrConnectionPoolEvents {
   connected: (address: string, wasReconnect: boolean) => void;
@@ -38,6 +39,7 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
    * All currently connected websockets
    */
   #sockets = new Map<string, Connection>();
+  #requestedIds = new LRUSet<string>(1000);
 
   constructor(system: SystemInterface) {
     super();
@@ -68,6 +70,20 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
             return;
           }
           this.emit("event", addr, s, e);
+        });
+        c.on("have", async (s, id) => {
+          this.#log("%s have: %s %o", c.Address, s, id);
+          if (this.#requestedIds.has(id)) {
+            // already requested from this or another relay
+            return;
+          }
+          this.#requestedIds.add(id);
+          if (await this.#system.eventsCache.get(id)) {
+            // already have it locally
+            // TODO better local cache / db
+            return;
+          }
+          c.QueueReq(["REQ", "*", { ids: [id] }], () => {});
         });
         c.on("eose", s => this.emit("eose", addr, s));
         c.on("disconnect", code => this.emit("disconnect", addr, code));

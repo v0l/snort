@@ -28,6 +28,7 @@ interface ConnectionEvents {
   disconnect: (code: number) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
   notice: (msg: string) => void;
+  have: (sub: string, ids: u256) => void; // NIP-114
   unknownMessage: (obj: Array<any>) => void;
 }
 
@@ -208,6 +209,11 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           }
           this.emit("event", msg[1] as string, ev);
           // todo: stats events received
+          break;
+        }
+        // NIP-114: GetMatchingEventIds
+        case "HAVE": {
+          this.emit("have", msg[1] as string, msg[2] as u256);
           break;
         }
         case "EOSE": {
