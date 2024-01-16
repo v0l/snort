@@ -930,6 +930,12 @@ svg.repeat {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+@media (max-width: 768px) {
+  .pb-safe-area-plus-footer {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 56px);
+  }
+}
+
 .active > .icon-outline {
   display: none;
 }
