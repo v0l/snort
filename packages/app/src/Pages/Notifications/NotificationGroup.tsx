@@ -14,7 +14,13 @@ import { formatShort } from "@/Utils/Number";
 import { notificationContext } from "./notificationContext";
 import { NotificationContext } from "./Notifications";
 
-export function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEvent>; onClick?: (link: NostrLink) => void; }) {
+export function NotificationGroup({
+  evs,
+  onClick,
+}: {
+  evs: Array<TaggedNostrEvent>;
+  onClick?: (link: NostrLink) => void;
+}) {
   const { ref, inView } = useInView({ triggerOnce: true });
   const { formatMessage } = useIntl();
   const kind = evs[0].kind;
@@ -30,7 +36,7 @@ export function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEven
         return zap.anonZap ? "anon" : zap.sender ?? a.pubkey;
       }
       return a.pubkey;
-    })
+    }),
   );
   const firstPubkey = pubkeys[0];
   const firstPubkeyProfile = useUserProfile(inView ? (firstPubkey === "anon" ? "" : firstPubkey) : "");
@@ -64,7 +70,8 @@ export function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEven
             values={{
               n,
               name,
-            }} />
+            }}
+          />
         );
       }
       case EventKind.Repost: {
@@ -75,7 +82,8 @@ export function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEven
             values={{
               n,
               name,
-            }} />
+            }}
+          />
         );
       }
       case EventKind.ZapReceipt: {
@@ -86,7 +94,8 @@ export function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEven
             values={{
               n,
               name,
-            }} />
+            }}
+          />
         );
       }
     }
@@ -114,7 +123,8 @@ export function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEven
                     showUsername={kind === EventKind.TextNote}
                     pubkey={v}
                     size={40}
-                    overrideUsername={v === "" ? formatMessage({ defaultMessage: "Anon", id: "bfvyfs" }) : undefined} />
+                    overrideUsername={v === "" ? formatMessage({ defaultMessage: "Anon", id: "bfvyfs" }) : undefined}
+                  />
                 ))}
             </div>
             {kind !== EventKind.TextNote && (
@@ -123,7 +133,7 @@ export function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEven
                   pubkeys.length - 1,
                   firstPubkey === "anon"
                     ? formatMessage({ defaultMessage: "Anon", id: "bfvyfs" })
-                    : getDisplayName(firstPubkeyProfile, firstPubkey)
+                    : getDisplayName(firstPubkeyProfile, firstPubkey),
                 )}
               </div>
             )}
@@ -136,7 +146,8 @@ export function NotificationGroup({ evs, onClick }: { evs: Array<TaggedNostrEven
                   } else {
                     navigate(`/${context.encode(CONFIG.eventLinkPrefix)}`);
                   }
-                }} />
+                }}
+              />
             )}
           </div>
         </>

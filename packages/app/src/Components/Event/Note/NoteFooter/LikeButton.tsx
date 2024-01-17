@@ -19,8 +19,8 @@ export const LikeButton = ({
   const { publisher, system } = useEventPublisher();
 
   const hasReacted = (emoji: string) => {
-    return (
-      positiveReactions?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === publicKey)
+    return positiveReactions?.some(
+      ({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === publicKey,
     );
   };
 

@@ -597,6 +597,9 @@
   "I1AoOu": {
     "defaultMessage": "Last post {time}"
   },
+  "I97cCX": {
+    "defaultMessage": "{n} kind {k} events"
+  },
   "IEwZvs": {
     "defaultMessage": "Are you sure you want to unpin this note?"
   },
@@ -1588,9 +1591,6 @@
   "sfL/O+": {
     "defaultMessage": "Muted notes will not be shown"
   },
-  "tGXF0Q": {
-    "defaultMessage": "Relay Lists"
-  },
   "tOdNiY": {
     "defaultMessage": "Dark"
   },
@@ -1609,9 +1609,6 @@
   "ttxS0b": {
     "defaultMessage": "Supporter Badge"
   },
-  "u+LyXc": {
-    "defaultMessage": "Interactions"
-  },
   "u/vOPu": {
     "defaultMessage": "Paid"
   },
@@ -1623,9 +1620,6 @@
   },
   "uCk8r+": {
     "defaultMessage": "Already have an account?"
-  },
-  "uKqSN+": {
-    "defaultMessage": "Follows Feed"
   },
   "uSV4Ti": {
     "defaultMessage": "Reposts need to be manually confirmed"
@@ -1709,6 +1703,9 @@
   "xQtL3v": {
     "defaultMessage": "Unlock",
     "description": "Unlock wallet"
+  },
+  "xSoIUU": {
+    "defaultMessage": "Worker Relay"
   },
   "xaj9Ba": {
     "defaultMessage": "Provider"

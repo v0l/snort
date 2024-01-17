@@ -2,13 +2,7 @@ import { FeedCache } from "@snort/shared";
 import { ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
-import {
-  Chats,
-  GiftsCache,
-  PaymentsCache,
-  RelayMetrics,
-  UserCache,
-} from "@/Cache";
+import { Chats, GiftsCache, PaymentsCache, RelayMetrics, UserCache } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { Relay } from "@/system";
 
@@ -70,23 +64,22 @@ function RelayCacheStats() {
       <div className="flex flex-col g4">
         <FormattedMessage defaultMessage="Worker Relay" id="xSoIUU" />
         {Object.entries(counts).map(([k, v]) => {
-          return <small key={k}>
-            <FormattedMessage
-              defaultMessage="{n} kind {k} events"
-              id="I97cCX"
-              values={{
-                n: <FormattedNumber value={v} />,
-                k: k
-              }}
-            />
-          </small>
+          return (
+            <small key={k}>
+              <FormattedMessage
+                defaultMessage="{n} kind {k} events"
+                id="I97cCX"
+                values={{
+                  n: <FormattedNumber value={v} />,
+                  k: k,
+                }}
+              />
+            </small>
+          );
         })}
-
       </div>
       <div>
-        <AsyncButton onClick={() => {
-
-        }}>
+        <AsyncButton onClick={() => {}}>
           <FormattedMessage defaultMessage="Clear" id="/GCoTA" />
         </AsyncButton>
       </div>

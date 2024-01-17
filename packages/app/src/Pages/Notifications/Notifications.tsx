@@ -44,8 +44,9 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
 
   const timeGrouped = useMemo(() => {
     return myNotifications.reduce((acc, v) => {
-      const key = `${timeKey(v)}:${notificationContext(v as TaggedNostrEvent)?.encode(CONFIG.eventLinkPrefix)}:${v.kind
-        }`;
+      const key = `${timeKey(v)}:${notificationContext(v as TaggedNostrEvent)?.encode(CONFIG.eventLinkPrefix)}:${
+        v.kind
+      }`;
       if (acc.has(key)) {
         unwrap(acc.get(key)).push(v as TaggedNostrEvent);
       } else {
@@ -64,8 +65,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
           </Suspense>
         )}
         {login.publicKey &&
-          [...timeGrouped.entries()]
-            .map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
+          [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
 
         <ShowMoreInView onClick={() => {}} />
       </div>

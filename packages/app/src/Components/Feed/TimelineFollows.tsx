@@ -121,9 +121,11 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         displayAs={displayAs}
       />
       {sortedFeed.length > 0 && (
-        <ShowMoreInView onClick={() => {
-          setLimit(s => s + 20);
-        }} />
+        <ShowMoreInView
+          onClick={() => {
+            setLimit(s => s + 20);
+          }}
+        />
       )}
     </>
   );

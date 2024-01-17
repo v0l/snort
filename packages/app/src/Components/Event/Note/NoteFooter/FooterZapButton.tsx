@@ -140,7 +140,7 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
               value={zapTotal}
               onClick={fastZap}
             />
-            <ZapsSummary zaps={zaps} onClick={onClickZappers ?? (() => { })} />
+            <ZapsSummary zaps={zaps} onClick={onClickZappers ?? (() => {})} />
           </div>
           {showZapModal && (
             <ZapModal
