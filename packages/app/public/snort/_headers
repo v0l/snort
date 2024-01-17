@@ -1,5 +1,5 @@
 /*
   Content-Security-Policy: default-src 'self'; manifest-src *; child-src 'none'; worker-src 'self'; frame-src youtube.com www.youtube.com https://platform.twitter.com https://embed.tidal.com https://w.soundcloud.com https://www.mixcloud.com https://open.spotify.com https://player.twitch.tv https://embed.music.apple.com https://nostrnests.com https://embed.wavlake.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; connect-src *; img-src * data: blob:; font-src 'self'; media-src * blob:; script-src 'self' 'wasm-unsafe-eval' https://analytics.v0l.io https://platform.twitter.com https://embed.tidal.com https://challenges.cloudflare.com;
-  Cross-Origin-Resource-Policy: "corss-origin;
-  Cross-Origin-Opener-Policy: "same-origin";
-  Cross-Origin-Embedder-Policy: "credentialless";
+  Cross-Origin-Resource-Policy: corss-origin;
+  Cross-Origin-Opener-Policy: same-origin;
+  Cross-Origin-Embedder-Policy: credentialless;
