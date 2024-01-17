@@ -35,8 +35,8 @@ import SearchPage from "@/Pages/SearchPage";
 import SettingsRoutes from "@/Pages/settings/Routes";
 import { SubscribeRoutes } from "@/Pages/subscribe";
 import ZapPoolPage from "@/Pages/ZapPool";
-import { System } from "@/system";
-import { getCountry, storeRefCode, unwrap } from "@/Utils";
+import { initRelayWorker, System } from "@/system";
+import { storeRefCode, unwrap } from "@/Utils";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, wasmInit, WasmPath } from "@/Utils/wasm";
 import { Wallets } from "@/Wallet";
@@ -47,10 +47,10 @@ import { WalletReceivePage } from "./Pages/wallet/receive";
 import { WalletSendPage } from "./Pages/wallet/send";
 
 async function initSite() {
-  console.debug(getCountry());
   storeRefCode();
   if (hasWasm) {
     await wasmInit(WasmPath);
+    await initRelayWorker();
   }
   const login = LoginStore.takeSnapshot();
   db.ready = await db.isAvailable();

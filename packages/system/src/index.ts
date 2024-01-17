@@ -5,7 +5,7 @@ import { ProfileLoaderService } from "./profile-cache";
 import { RelayCache, RelayMetadataLoader } from "./outbox-model";
 import { Optimizer } from "./query-optimizer";
 import { base64 } from "@scure/base";
-import { FeedCache } from "@snort/shared";
+import { CachedTable } from "@snort/shared";
 import { ConnectionPool } from "./connection-pool";
 import EventEmitter from "eventemitter3";
 import { QueryEvents } from "./query";
@@ -143,7 +143,7 @@ export interface SystemInterface {
   /**
    * Generic cache store for events
    */
-  get eventsCache(): FeedCache<NostrEvent>;
+  get eventsCache(): CachedTable<NostrEvent>;
 
   /**
    * Relay loader loads relay metadata for a set of profiles

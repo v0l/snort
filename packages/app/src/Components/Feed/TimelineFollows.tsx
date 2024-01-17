@@ -2,16 +2,15 @@ import "./Timeline.css";
 
 import { unixNow } from "@snort/shared";
 import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
-import { SnortContext } from "@snort/system-react";
-import { ReactNode, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { FollowsFeed } from "@/Cache";
 import { ShowMoreInView } from "@/Components/Event/ShowMore";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import { LiveStreams } from "@/Components/LiveStream/LiveStreams";
 import useHashtagsFeed from "@/Feed/HashtagsFeed";
+import { useFollowsTimelineView } from "@/Feed/WorkerRelayView";
 import useHistoryState from "@/Hooks/useHistoryState";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
@@ -35,11 +34,8 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const [latest, setLatest] = useHistoryState(unixNow(), "TimelineFollowsLatest");
-  const feed = useSyncExternalStore(
-    cb => FollowsFeed.hook(cb, "*"),
-    () => FollowsFeed.snapshot(),
-  );
-  const system = useContext(SnortContext);
+  const [limit, setLimit] = useState(50);
+  const feed = useFollowsTimelineView(limit);
   const { muted, isEventMuted } = useModeration();
 
   const sortedFeed = useMemo(() => orderDescending(feed), [feed]);
@@ -125,7 +121,9 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         displayAs={displayAs}
       />
       {sortedFeed.length > 0 && (
-        <ShowMoreInView onClick={async () => await FollowsFeed.loadMore(system, login, oldest ?? unixNow())} />
+        <ShowMoreInView onClick={() => {
+          setLimit(s => s + 20);
+        }} />
       )}
     </>
   );

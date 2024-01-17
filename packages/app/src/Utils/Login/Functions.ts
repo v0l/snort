@@ -12,7 +12,7 @@ import {
   UserMetadata,
 } from "@snort/system";
 
-import { Chats, FollowsFeed, GiftsCache, Notifications } from "@/Cache";
+import { Chats, GiftsCache } from "@/Cache";
 import SnortApi from "@/External/SnortApi";
 import { bech32ToHex, dedupeById, deleteRefCode, getCountry, sanitizeRelayUrl, unwrap } from "@/Utils";
 import { Blasters } from "@/Utils/Const";
@@ -68,8 +68,6 @@ export function updatePreferences(id: string, p: UserPreferences) {
 export function logout(id: string) {
   LoginStore.removeSession(id);
   GiftsCache.clear();
-  Notifications.clear();
-  FollowsFeed.clear();
   Chats.clear();
   deleteRefCode();
   localStorage.clear();

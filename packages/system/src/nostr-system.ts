@@ -1,8 +1,8 @@
 import debug from "debug";
 import EventEmitter from "eventemitter3";
 
-import { FeedCache } from "@snort/shared";
-import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
+import { CachedTable } from "@snort/shared";
+import { NostrEvent, TaggedNostrEvent } from "./nostr";
 import { RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
@@ -17,7 +17,6 @@ import {
   RelayMetricCache,
   UsersRelays,
   SnortSystemDb,
-  EventExt,
   QueryLike,
 } from ".";
 import { EventsCache } from "./cache/events";
@@ -34,10 +33,10 @@ export interface NostrSystemEvents {
 }
 
 export interface NostrsystemProps {
-  relayCache?: FeedCache<UsersRelays>;
-  profileCache?: FeedCache<CachedMetadata>;
-  relayMetrics?: FeedCache<RelayMetrics>;
-  eventsCache?: FeedCache<NostrEvent>;
+  relayCache?: CachedTable<UsersRelays>;
+  profileCache?: CachedTable<CachedMetadata>;
+  relayMetrics?: CachedTable<RelayMetrics>;
+  eventsCache?: CachedTable<NostrEvent>;
   optimizer?: Optimizer;
   db?: SnortSystemDb;
   checkSigs?: boolean;
@@ -53,17 +52,17 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
   /**
    * Storage class for user relay lists
    */
-  readonly relayCache: FeedCache<UsersRelays>;
+  readonly relayCache: CachedTable<UsersRelays>;
 
   /**
    * Storage class for user profiles
    */
-  readonly profileCache: FeedCache<CachedMetadata>;
+  readonly profileCache: CachedTable<CachedMetadata>;
 
   /**
    * Storage class for relay metrics (connects/disconnects)
    */
-  readonly relayMetricsCache: FeedCache<RelayMetrics>;
+  readonly relayMetricsCache: CachedTable<RelayMetrics>;
 
   /**
    * Profile loading service
@@ -81,7 +80,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
   readonly optimizer: Optimizer;
 
   readonly pool: ConnectionPool;
-  readonly eventsCache: FeedCache<NostrEvent>;
+  readonly eventsCache: CachedTable<NostrEvent>;
   readonly relayLoader: RelayMetadataLoader;
 
   /**

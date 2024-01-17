@@ -1,20 +1,16 @@
 import { FeedCache } from "@snort/shared";
-import { ReactNode, useSyncExternalStore } from "react";
+import { ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
 import {
   Chats,
-  FollowLists,
-  FollowsFeed,
   GiftsCache,
-  InteractionCache,
-  Notifications,
   PaymentsCache,
   RelayMetrics,
   UserCache,
-  UserRelays,
 } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
+import { Relay } from "@/system";
 
 export function CacheSettings() {
   return (
@@ -22,16 +18,12 @@ export function CacheSettings() {
       <h3>
         <FormattedMessage defaultMessage="Cache" id="DBiVK1" />
       </h3>
+      <RelayCacheStats />
       <CacheDetails cache={UserCache} name={<FormattedMessage defaultMessage="Profiles" id="2zJXeA" />} />
-      <CacheDetails cache={UserRelays} name={<FormattedMessage defaultMessage="Relay Lists" id="tGXF0Q" />} />
-      <CacheDetails cache={Notifications} name={<FormattedMessage defaultMessage="Notifications" id="NAidKb" />} />
-      <CacheDetails cache={FollowsFeed} name={<FormattedMessage defaultMessage="Follows Feed" id="uKqSN+" />} />
       <CacheDetails cache={Chats} name={<FormattedMessage defaultMessage="Chats" id="ABAQyo" />} />
       <CacheDetails cache={RelayMetrics} name={<FormattedMessage defaultMessage="Relay Metrics" id="tjpYlr" />} />
       <CacheDetails cache={PaymentsCache} name={<FormattedMessage defaultMessage="Payments" id="iYc3Ld" />} />
-      <CacheDetails cache={InteractionCache} name={<FormattedMessage defaultMessage="Interactions" id="u+LyXc" />} />
       <CacheDetails cache={GiftsCache} name={<FormattedMessage defaultMessage="Gift Wraps" id="fjAcWo" />} />
-      <CacheDetails cache={FollowLists} name={<FormattedMessage defaultMessage="Social Graph" id="CzHZoc" />} />
     </div>
   );
 }
@@ -59,6 +51,42 @@ function CacheDetails<T>({ cache, name }: { cache: FeedCache<T>; name: ReactNode
       </div>
       <div>
         <AsyncButton onClick={() => cache.clear()}>
+          <FormattedMessage defaultMessage="Clear" id="/GCoTA" />
+        </AsyncButton>
+      </div>
+    </div>
+  );
+}
+
+function RelayCacheStats() {
+  const [counts, setCounts] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    Relay.summary().then(setCounts);
+  }, []);
+
+  return (
+    <div className="flex justify-between br p bg-superdark">
+      <div className="flex flex-col g4">
+        <FormattedMessage defaultMessage="Worker Relay" id="xSoIUU" />
+        {Object.entries(counts).map(([k, v]) => {
+          return <small key={k}>
+            <FormattedMessage
+              defaultMessage="{n} kind {k} events"
+              id="I97cCX"
+              values={{
+                n: <FormattedNumber value={v} />,
+                k: k
+              }}
+            />
+          </small>
+        })}
+
+      </div>
+      <div>
+        <AsyncButton onClick={() => {
+
+        }}>
           <FormattedMessage defaultMessage="Clear" id="/GCoTA" />
         </AsyncButton>
       </div>

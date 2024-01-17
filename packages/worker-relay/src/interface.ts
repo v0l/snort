@@ -40,7 +40,15 @@ export class WorkerRelayInterface {
     return await this.#workerRpc<ReqCommand, Array<NostrEvent>>("req", req);
   }
 
-  #workerRpc<T, R>(cmd: string, args?: T, timeout = 5_000) {
+  async count(req: ReqCommand) {
+    return await this.#workerRpc<ReqCommand, number>("count", req);
+  }
+
+  async summary() {
+    return await this.#workerRpc<void, Record<string, number>>("summary");
+  }
+  
+  #workerRpc<T, R>(cmd: string, args?: T, timeout = 30_000) {
     const id = uuid();
     const msg = {
       id,

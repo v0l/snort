@@ -1,14 +1,19 @@
-import { EventKind, NostrLink, parseRelayTags, RequestBuilder, TaggedNostrEvent } from "@snort/system";
+import {
+  EventKind,
+  NostrLink,
+  parseRelayTags,
+  RequestBuilder,
+  socialGraphInstance,
+  TaggedNostrEvent,
+} from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { usePrevious } from "@uidotdev/usehooks";
 import { useEffect, useMemo } from "react";
 
-import { FollowLists, FollowsFeed, GiftsCache, Notifications } from "@/Cache";
 import { Nip4Chats, Nip28Chats } from "@/chat";
 import { Nip28ChatSystem } from "@/chat/nip28";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
-import { useRefreshFeedCache } from "@/Hooks/useRefreshFeedcache";
 import { bech32ToHex, debounce, getNewest, getNewestEventTagsByKey, unwrap } from "@/Utils";
 import { SnortPubKey } from "@/Utils/Const";
 import {
@@ -26,6 +31,8 @@ import {
 } from "@/Utils/Login";
 import { SubscriptionEvent } from "@/Utils/Subscription";
 
+import { useFollowsContactListView } from "./WorkerRelayView";
+
 /**
  * Managed loading data for the current logged in user
  */
@@ -34,10 +41,10 @@ export default function useLoginFeed() {
   const { publicKey: pubKey, follows } = login;
   const { publisher, system } = useEventPublisher();
 
-  useRefreshFeedCache(Notifications, true);
-  useRefreshFeedCache(FollowsFeed, true);
-  useRefreshFeedCache(GiftsCache, true);
-  useRefreshFeedCache(FollowLists, false);
+  const followLists = useFollowsContactListView();
+  useEffect(() => {
+    followLists.forEach(e => socialGraphInstance.handleEvent(e));
+  }, followLists);
 
   useEffect(() => {
     system.checkSigs = login.appData.item.preferences.checkSigs;
@@ -106,7 +113,8 @@ export default function useLoginFeed() {
         const pTags = contactList.tags.filter(a => a[0] === "p").map(a => a[1]);
         setFollows(login.id, pTags, contactList.created_at * 1000);
 
-        FollowsFeed.backFillIfMissing(system, pTags);
+        // TODO: fixup
+        //        FollowsFeed.backFillIfMissing(system, pTags);
       }
 
       const relays = getNewest(loginFeed.filter(a => a.kind === EventKind.Relays));

@@ -1,5 +1,7 @@
 import { removeUndefined, throwIfOffline } from "@snort/shared";
 import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService, socialGraphInstance } from "@snort/system";
+import { WorkerRelayInterface } from "@snort/worker-relay";
+import WorkerRelayPath from "@snort/worker-relay/dist/worker?worker&url";
 
 import { RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
 import { addCachedMetadataToFuzzySearch, addEventToFuzzySearch } from "@/Db/FuzzySearch";
@@ -52,6 +54,25 @@ export async function fetchProfile(key: string) {
       const data = (await rsp.json()) as NostrEvent;
       if (data) {
         return mapEventToProfile(data);
+      }
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export const Relay = new WorkerRelayInterface(WorkerRelayPath);
+let relayInitStarted = false;
+export async function initRelayWorker() {
+  if (relayInitStarted) return;
+  relayInitStarted = true;
+  try {
+    if (await Relay.init()) {
+      if (await Relay.open()) {
+        await Relay.migrate();
+        System.on("event", async (_, ev) => {
+          await Relay.event(ev);
+        });
       }
     }
   } catch (e) {

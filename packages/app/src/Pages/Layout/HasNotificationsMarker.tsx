@@ -1,14 +1,11 @@
-import { useMemo, useSyncExternalStore } from "react";
+import { useMemo } from "react";
 
-import { Notifications } from "@/Cache";
+import { useNotificationsView } from "@/Feed/WorkerRelayView";
 import useLogin from "@/Hooks/useLogin";
 
 export function HasNotificationsMarker() {
   const readNotifications = useLogin(s => s.readNotifications);
-  const notifications = useSyncExternalStore(
-    c => Notifications.hook(c, "*"),
-    () => Notifications.snapshot(),
-  );
+  const notifications = useNotificationsView();
   const latestNotification = useMemo(
     () => notifications.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0),
     [notifications],

@@ -3,7 +3,6 @@ import { HexKey } from "@snort/system";
 import { ReactNode, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { FollowsFeed } from "@/Cache";
 import ProfilePreview from "@/Components/User/ProfilePreview";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
@@ -43,7 +42,6 @@ export default function FollowListBase({
       const ev = await publisher.contactList(newFollows.map(a => ["p", a]));
       setFollows(id, newFollows, ev.created_at);
       await system.BroadcastEvent(ev);
-      await FollowsFeed.backFill(system, pubkeys);
     }
   }
 

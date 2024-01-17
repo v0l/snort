@@ -1,5 +1,5 @@
 import { NostrLink, TaggedNostrEvent } from "@snort/system";
-import { useEventReactions, useReactions } from "@snort/system-react";
+import { useEventReactions } from "@snort/system-react";
 import React, { useMemo, useState } from "react";
 
 import { FooterZapButton } from "@/Components/Event/Note/NoteFooter/FooterZapButton";
@@ -8,6 +8,7 @@ import { PowIcon } from "@/Components/Event/Note/NoteFooter/PowIcon";
 import { ReplyButton } from "@/Components/Event/Note/NoteFooter/ReplyButton";
 import { RepostButton } from "@/Components/Event/Note/NoteFooter/RepostButton";
 import ReactionsModal from "@/Components/Event/Note/ReactionsModal";
+import { useReactionsView } from "@/Feed/WorkerRelayView";
 import useLogin from "@/Hooks/useLogin";
 
 export interface NoteFooterProps {
@@ -21,7 +22,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const ids = useMemo(() => [link], [link]);
   const [showReactions, setShowReactions] = useState(false);
 
-  const related = useReactions("note:reactions", ids, undefined, false);
+  const related = useReactionsView(ids, false);
   const { reactions, zaps, reposts } = useEventReactions(link, related);
   const { positive } = reactions;
 

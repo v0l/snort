@@ -5,7 +5,6 @@ import { useIntl } from "react-intl";
 
 import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterIcon";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import { useInteractionCache } from "@/Hooks/useInteractionCache";
 import useLogin from "@/Hooks/useLogin";
 
 export const LikeButton = ({
@@ -17,12 +16,10 @@ export const LikeButton = ({
 }) => {
   const { formatMessage } = useIntl();
   const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
-  const interactionCache = useInteractionCache(publicKey, ev.id);
   const { publisher, system } = useEventPublisher();
 
   const hasReacted = (emoji: string) => {
     return (
-      interactionCache.data.reacted ||
       positiveReactions?.some(({ pubkey, content }) => normalizeReaction(content) === emoji && pubkey === publicKey)
     );
   };
@@ -31,7 +28,6 @@ export const LikeButton = ({
     if (!hasReacted(content) && publisher) {
       const evLike = await publisher.react(ev, content);
       system.BroadcastEvent(evLike);
-      interactionCache.react();
     }
   };
 

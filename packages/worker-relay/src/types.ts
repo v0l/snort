@@ -1,6 +1,6 @@
 export interface WorkerMessage<T> {
   id: string;
-  cmd: "reply" | "init" | "open" | "migrate" | "event" | "req";
+  cmd: "reply" | "init" | "open" | "migrate" | "event" | "req" | "count" | "summary";
   args: T;
 }
 
@@ -26,4 +26,8 @@ export interface ReqFilter {
   limit?: number;
   not?: ReqFilter;
   [key: string]: Array<string> | Array<number> | string | number | undefined | ReqFilter;
+}
+
+export function unixNowMs() {
+  return new Date().getTime();
 }

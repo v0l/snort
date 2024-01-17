@@ -21,7 +21,7 @@ import {
 } from "..";
 import { NostrSystemEvents, NostrsystemProps } from "../nostr-system";
 import { WorkerCommand, WorkerMessage } from ".";
-import { FeedCache } from "@snort/shared";
+import { CachedTable } from "@snort/shared";
 import { EventsCache } from "../cache/events";
 import { RelayMetricHandler } from "../relay-metric-handler";
 import debug from "debug";
@@ -31,12 +31,12 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
   #log = debug("SystemWorker");
   #worker: Worker;
   #commandQueue: Map<string, (v: unknown) => void> = new Map();
-  readonly relayCache: FeedCache<UsersRelays>;
-  readonly profileCache: FeedCache<CachedMetadata>;
-  readonly relayMetricsCache: FeedCache<RelayMetrics>;
+  readonly relayCache: CachedTable<UsersRelays>;
+  readonly profileCache: CachedTable<CachedMetadata>;
+  readonly relayMetricsCache: CachedTable<RelayMetrics>;
   readonly profileLoader: ProfileLoaderService;
   readonly relayMetricsHandler: RelayMetricHandler;
-  readonly eventsCache: FeedCache<NostrEvent>;
+  readonly eventsCache: CachedTable<NostrEvent>;
   readonly relayLoader: RelayMetadataLoader;
 
   get checkSigs() {

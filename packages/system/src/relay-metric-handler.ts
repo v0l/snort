@@ -1,11 +1,11 @@
-import { FeedCache, unixNowMs } from "@snort/shared";
+import { CachedTable, unixNowMs } from "@snort/shared";
 import { RelayMetrics } from "./cache";
 import { TraceReport } from "./query";
 
 export class RelayMetricHandler {
-  readonly #cache: FeedCache<RelayMetrics>;
+  readonly #cache: CachedTable<RelayMetrics>;
 
-  constructor(cache: FeedCache<RelayMetrics>) {
+  constructor(cache: CachedTable<RelayMetrics>) {
     this.#cache = cache;
 
     setInterval(() => {

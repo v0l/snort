@@ -1,7 +1,6 @@
 import { HexKey } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
-import { FollowsFeed } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
@@ -24,7 +23,6 @@ export default function FollowButton(props: FollowButtonProps) {
     if (publisher) {
       const ev = await publisher.contactList([pubkey, ...follows.item].map(a => ["p", a]));
       system.BroadcastEvent(ev);
-      await FollowsFeed.backFill(system, [pubkey]);
     }
   }
 

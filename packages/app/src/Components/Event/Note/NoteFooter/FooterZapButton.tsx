@@ -10,7 +10,6 @@ import { ZapperQueue } from "@/Components/Event/Note/NoteFooter/ZapperQueue";
 import { ZapsSummary } from "@/Components/Event/ZapsSummary";
 import ZapModal from "@/Components/ZapModal/ZapModal";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import { useInteractionCache } from "@/Hooks/useInteractionCache";
 import useLogin from "@/Hooks/useLogin";
 import { getDisplayName } from "@/Utils";
 import { Zapper, ZapTarget } from "@/Utils/Zapper";
@@ -35,10 +34,9 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
   }));
   const walletState = useWallet();
   const wallet = walletState.wallet;
-  const interactionCache = useInteractionCache(publicKey, ev.id);
   const link = NostrLink.fromEvent(ev);
   const zapTotal = zaps.reduce((acc, z) => acc + z.amount, 0);
-  const didZap = interactionCache.data.zapped || zaps.some(a => a.sender === publicKey);
+  const didZap = zaps.some(a => a.sender === publicKey);
   const [showZapModal, setShowZapModal] = useState(false);
   const { formatMessage } = useIntl();
   const [zapping, setZapping] = useState(false);
@@ -102,7 +100,6 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
           if (CONFIG.features.zapPool) {
             ZapPoolController?.allocate(totalSent);
           }
-          await interactionCache.zap();
         }
       });
     }
@@ -143,7 +140,7 @@ export const FooterZapButton = ({ ev, zaps, onClickZappers }: ZapIconProps) => {
               value={zapTotal}
               onClick={fastZap}
             />
-            <ZapsSummary zaps={zaps} onClick={onClickZappers} />
+            <ZapsSummary zaps={zaps} onClick={onClickZappers ?? (() => { })} />
           </div>
           {showZapModal && (
             <ZapModal

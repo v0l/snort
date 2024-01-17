@@ -7,7 +7,6 @@ import { AsyncFooterIcon } from "@/Components/Event/Note/NoteFooter/AsyncFooterI
 import Icon from "@/Components/Icons/Icon";
 import messages from "@/Components/messages";
 import useEventPublisher from "@/Hooks/useEventPublisher";
-import { useInteractionCache } from "@/Hooks/useInteractionCache";
 import useLogin from "@/Hooks/useLogin";
 import { useNoteCreator } from "@/State/NoteCreator";
 
@@ -18,11 +17,10 @@ export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: T
     preferences: s.appData.item.preferences,
     publicKey: s.publicKey,
   }));
-  const interactionCache = useInteractionCache(publicKey, ev.id);
   const note = useNoteCreator(n => ({ show: n.show, replyTo: n.replyTo, update: n.update, quote: n.quote }));
 
   const hasReposted = () => {
-    return interactionCache.data.reposted || reposts.some(a => a.pubkey === publicKey);
+    return reposts.some(a => a.pubkey === publicKey);
   };
 
   const repost = async () => {
@@ -30,7 +28,6 @@ export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: T
       if (!prefs.confirmReposts || window.confirm(formatMessage(messages.ConfirmRepost, { id: ev.id }))) {
         const evRepost = await publisher.repost(ev);
         system.BroadcastEvent(evRepost);
-        await interactionCache.repost();
       }
     }
   };

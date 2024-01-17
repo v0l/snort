@@ -1,10 +1,10 @@
 import debug from "debug";
-import { FeedCache, removeUndefined } from "@snort/shared";
+import { CachedTable, removeUndefined } from "@snort/shared";
 import { SystemInterface, TaggedNostrEvent, RequestBuilder } from ".";
 
 export abstract class BackgroundLoader<T extends { loaded: number; created: number }> {
   #system: SystemInterface;
-  readonly cache: FeedCache<T>;
+  readonly cache: CachedTable<T>;
   #log = debug(this.name());
 
   /**
@@ -17,7 +17,7 @@ export abstract class BackgroundLoader<T extends { loaded: number; created: numb
    */
   loaderFn?: (pubkeys: Array<string>) => Promise<Array<T>>;
 
-  constructor(system: SystemInterface, cache: FeedCache<T>) {
+  constructor(system: SystemInterface, cache: CachedTable<T>) {
     this.#system = system;
     this.cache = cache;
     this.#FetchMetadata();

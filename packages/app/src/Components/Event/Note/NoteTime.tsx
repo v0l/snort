@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 export interface NoteTimeProps {
@@ -38,7 +38,7 @@ const NoteTime: React.FC<NoteTimeProps> = ({ from, fallback }) => {
     }
   }, []);
 
-  const [time, setTime] = useState<string | ReactNode>(calcTime(from));
+  const [time] = useState<string | ReactNode>(calcTime(from));
 
   const absoluteTime = useMemo(
     () =>
@@ -50,15 +50,6 @@ const NoteTime: React.FC<NoteTimeProps> = ({ from, fallback }) => {
   );
 
   const isoDate = useMemo(() => new Date(from).toISOString(), [from]);
-
-  useEffect(() => {
-    const t = setInterval(() => {
-      const newTime = calcTime(from);
-      setTime(s => (s !== newTime ? newTime : s));
-    }, 60_000); // update every minute
-
-    return () => clearInterval(t);
-  }, [from]);
 
   return (
     <time dateTime={isoDate} title={absoluteTime}>

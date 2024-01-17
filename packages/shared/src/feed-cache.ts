@@ -10,14 +10,30 @@ export interface KeyedHookFilter {
   fn: HookFn;
 }
 
-export interface FeedCacheEvents {
+export interface CacheEvents {
   change: (keys: Array<string>) => void;
 }
+
+export type CachedTable<T> = {
+  preload(): Promise<void>;
+  keysOnTable(): Array<string>;
+  getFromCache(key?: string): T | undefined;
+  get(key?: string): Promise<T | undefined>;
+  bulkGet(keys: Array<string>): Promise<Array<T>>;
+  set(obj: T): Promise<void>;
+  bulkSet(obj: Array<T> | Readonly<Array<T>>): Promise<void>;
+  update<TWithCreated extends T & { created: number; loaded: number }>(
+    m: TWithCreated,
+  ): Promise<"new" | "refresh" | "updated" | "no_change">;
+  buffer(keys: Array<string>): Promise<Array<string>>;
+  key(of: T): string;
+  snapshot(): Array<T>;
+} & EventEmitter<CacheEvents>;
 
 /**
  * Dexie backed generic hookable store
  */
-export abstract class FeedCache<TCached> extends EventEmitter<FeedCacheEvents> {
+export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents> implements CachedTable<TCached> {
   readonly name: string;
   #snapshot: Array<TCached> = [];
   protected log: ReturnType<typeof debug>;
