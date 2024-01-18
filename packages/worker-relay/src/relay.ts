@@ -157,11 +157,13 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
     });
     let eventInserted = (this.#db?.changes() as number) > 0;
     if (eventInserted) {
-      for (const t of ev.tags.filter(a => a[0].length === 1)) {
-        db.exec("insert into tags(event_id, key, value) values(?, ?, ?)", {
-          bind: [ev.id, t[0], t[1]],
-        });
-      }
+      db.transaction(db => {
+        for (const t of ev.tags.filter(a => a[0].length === 1)) {
+          db.exec("insert into tags(event_id, key, value) values(?, ?, ?)", {
+            bind: [ev.id, t[0], t[1]],
+          });
+        }
+      });
     }
     this.#seenInserts.add(ev.id);
     return eventInserted;

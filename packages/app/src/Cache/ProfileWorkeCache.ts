@@ -81,9 +81,7 @@ export class ProfileCacheRelayWorker extends EventEmitter<CacheEvents> implement
     this.emit("change", mapped);
   }
 
-  async update<TWithCreated extends CachedMetadata & { created: number; loaded: number }>(
-    m: TWithCreated,
-  ): Promise<"new" | "refresh" | "updated" | "no_change"> {
+  async update(): Promise<"new" | "refresh" | "updated" | "no_change"> {
     // do nothing
     return "refresh";
   }
