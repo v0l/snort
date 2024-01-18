@@ -1,5 +1,4 @@
 import { removeUndefined, throwIfOffline } from "@snort/shared";
-import LRUSet from "@snort/shared/src/LRUSet";
 import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService, socialGraphInstance } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
 import WorkerRelayPath from "@snort/worker-relay/dist/worker?worker&url";
@@ -63,28 +62,13 @@ export async function fetchProfile(key: string) {
 }
 
 export const Relay = new WorkerRelayInterface(WorkerRelayPath);
-let relayInitStarted = false;
 export async function initRelayWorker() {
-  if (relayInitStarted) return;
-  relayInitStarted = true;
   try {
     if (await Relay.init()) {
       if (await Relay.open()) {
         await Relay.migrate();
-        const seen = new LRUSet<string>(100);
-        System.on("event", async (_, ev) => {
-          if (seen.has(ev.id)) return;
-          seen.add(ev.id);
-          await Relay.event(ev);
-        });
-        System.on("request", async (subId, f) => {
-          const evs = await Relay.req(["REQ", "", ...f.filters]);
-          evs.forEach(ev => {
-            seen.add(ev.id);
-            queueMicrotask(() => {
-              System.HandleEvent(subId, { ...ev, relays: [] });
-            });
-          });
+        System.on("event", (_, ev) => {
+          Relay.event(ev);
         });
       }
     }

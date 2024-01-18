@@ -74,26 +74,34 @@ function RelayCacheStats() {
             </tr>
           </thead>
           <tbody>
-            {Object.entries(counts)
-              .sort(([, a], [, b]) => (a > b ? -1 : 1))
-              .map(([k, v]) => {
-                return (
-                  <tr key={k}>
-                    <td>{k}</td>
-                    <td>
-                      <FormattedNumber value={v} />
-                    </td>
-                  </tr>
-                );
-              })}
+            {Object.entries(counts).sort(([, a], [, b]) => a > b ? -1 : 1).map(([k, v]) => {
+              return (
+                <tr key={k}>
+                  <td><FormattedNumber value={Number(k)} /></td>
+                  <td><FormattedNumber value={v} /></td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
-      <div>
-        <AsyncButton onClick={() => {}}>
+      <div className="flex flex-col gap-2">
+        <AsyncButton onClick={() => { }}>
           <FormattedMessage defaultMessage="Clear" id="/GCoTA" />
         </AsyncButton>
+        <AsyncButton onClick={async () => {
+          const data = await Relay.dump();
+          const url = URL.createObjectURL(new File([data], "snort.db", {
+            type: "application/octet-stream"
+          }));
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "snort.db";
+          a.click();
+        }}>
+          <FormattedMessage defaultMessage="Dump" id="f2CAxA" />
+        </AsyncButton>
       </div>
-    </div>
+    </div >
   );
 }

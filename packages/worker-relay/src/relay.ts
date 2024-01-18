@@ -9,8 +9,9 @@ export interface WorkerRelayEvents {
 
 export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
   #sqlite?: Sqlite3Static;
-  #log = debug("WorkerRelay");
+  #log = (...args: any[]) => console.debug(...args);
   #db?: Database;
+  #seenInserts = new Set<string>();
 
   /**
    * Initialize the SQLite driver
@@ -101,27 +102,45 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
     return eventsInserted.length > 0;
   }
 
+  #deleteById(db: Database, ids: Array<string>) {
+    db.exec(`delete from events where id in (${this.#repeatParams(ids.length)})`, {
+      bind: ids,
+    });
+  }
+
   #insertEvent(db: Database, ev: NostrEvent) {
+    if (this.#seenInserts.has(ev.id)) return false;
+
     const legacyReplacable = [0, 3, 41];
     if (legacyReplacable.includes(ev.kind) || (ev.kind >= 10_000 && ev.kind < 20_000)) {
-      db.exec("delete from events where kind = ? and pubkey = ? and created < ?", {
-        bind: [ev.kind, ev.pubkey, ev.created_at],
-      });
-      const oldDeleted = db.changes();
-      if (oldDeleted === 0) {
+      const oldEvents = db.selectValues("select id from events where kind = ? and pubkey = ? and created <= ?", [
+        ev.kind,
+        ev.pubkey,
+        ev.created_at,
+      ]) as Array<string>;
+      if (oldEvents.includes(ev.id)) {
+        // we already have this event, return
+        this.#seenInserts.add(ev.id);
+        if (oldEvents.length > 1) {
+          const toDelete = oldEvents.filter(a => a !== ev.id);
+          this.#deleteById(db, toDelete);
+        }
         return false;
       }
     }
     if (ev.kind >= 30_000 && ev.kind < 40_000) {
       const dTag = ev.tags.find(a => a[0] === "d")![1];
-      db.exec(
-        "delete from events where id in (select id from events, tags where events.id = tags.event_id and tags.key = ? and tags.value = ?)",
-        {
-          bind: ["d", dTag],
-        },
-      );
-      const oldDeleted = db.changes();
-      if (oldDeleted === 0) {
+      const oldEvents = db.selectValues(
+        "select id from events where id in (select id from events, tags where events.id = tags.event_id and tags.key = ? and tags.value = ?)",
+        ["d", dTag],
+      ) as Array<string>;
+      if (oldEvents.includes(ev.id)) {
+        // we have this version
+        this.#seenInserts.add(ev.id);
+        if (oldEvents.length > 1) {
+          const toDelete = oldEvents.filter(a => a !== ev.id);
+          this.#deleteById(db, toDelete);
+        }
         return false;
       }
     }
@@ -136,23 +155,21 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
         });
       }
     }
+    this.#seenInserts.add(ev.id);
     return eventInserted;
   }
 
   /**
    * Query relay by nostr filter
    */
-  req(req: ReqFilter) {
+  req(id: string, req: ReqFilter) {
     const start = unixNowMs();
 
     const [sql, params] = this.#buildQuery(req);
-    const rows = this.#db?.exec(sql, {
-      bind: params,
-      returnValue: "resultRows",
-    });
-    const results = rows?.map(a => JSON.parse(a[0] as string) as NostrEvent) ?? [];
+    const res = this.#db?.selectArrays(sql, params);
+    const results = res?.map(a => JSON.parse(a[0] as string) as NostrEvent) ?? [];
     const time = unixNowMs() - start;
-    this.#log(`Query results took ${time.toLocaleString()}ms`);
+    //this.#log(`Query ${id} results took ${time.toLocaleString()}ms`);
     return results;
   }
 
@@ -182,38 +199,55 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
     return Object.fromEntries(res?.map(a => [String(a[0]), a[1] as number]) ?? []);
   }
 
-  #buildQuery(req: ReqFilter, count = false) {
+  /**
+   * Dump the database file
+   */
+  async dump() {
+    const filePath = String(this.#db?.filename ?? "");
+    try {
+      this.#db?.close();
+      this.#db = undefined;
+      const dir = await navigator.storage.getDirectory();
+      // @ts-expect-error
+      for await (const [name, file] of dir) {
+        if (`/${name}` === filePath) {
+          const fh = await (file as FileSystemFileHandle).getFile();
+          const ret = new Uint8Array(await fh.arrayBuffer());
+          return ret;
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.open(filePath);
+    }
+    return new Uint8Array();
+  }
+
+  #buildQuery(req: ReqFilter, count = false): [string, Array<any>] {
     const conditions: Array<string> = [];
     const params: Array<any> = [];
-
-    const repeatParams = (n: number) => {
-      const ret: Array<string> = [];
-      for (let x = 0; x < n; x++) {
-        ret.push("?");
-      }
-      return ret.join(", ");
-    };
 
     let sql = `select ${count ? "count(json)" : "json"} from events`;
     const tags = Object.entries(req).filter(([k]) => k.startsWith("#"));
     for (const [key, values] of tags) {
       const vArray = values as Array<string>;
-      sql += ` inner join tags on events.id = tags.event_id and tags.key = ? and tags.value in (${repeatParams(
+      sql += ` inner join tags on events.id = tags.event_id and tags.key = ? and tags.value in (${this.#repeatParams(
         vArray.length,
       )})`;
       params.push(key.slice(1));
       params.push(...vArray);
     }
     if (req.ids) {
-      conditions.push(`id in (${repeatParams(req.ids.length)})`);
+      conditions.push(`id in (${this.#repeatParams(req.ids.length)})`);
       params.push(...req.ids);
     }
     if (req.authors) {
-      conditions.push(`pubkey in (${repeatParams(req.authors.length)})`);
+      conditions.push(`pubkey in (${this.#repeatParams(req.authors.length)})`);
       params.push(...req.authors);
     }
     if (req.kinds) {
-      conditions.push(`kind in (${repeatParams(req.kinds.length)})`);
+      conditions.push(`kind in (${this.#repeatParams(req.kinds.length)})`);
       params.push(...req.kinds);
     }
     if (req.since) {
@@ -231,6 +265,32 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
       sql += ` order by created desc limit ${req.limit}`;
     }
     return [sql, params];
+  }
+
+  #repeatParams(n: number) {
+    const ret: Array<string> = [];
+    for (let x = 0; x < n; x++) {
+      ret.push("?");
+    }
+    return ret.join(", ");
+  }
+
+  #replaceParamsDebug(sql: string, params: Array<number | string>) {
+    let res = "";
+    let cIdx = 0;
+    for (const chr of sql) {
+      if (chr === "?") {
+        const px = params[cIdx++];
+        if (typeof px === "number") {
+          res += px.toString();
+        } else if (typeof px === "string") {
+          res += `'${px}'`;
+        }
+      } else {
+        res += chr;
+      }
+    }
+    return res;
   }
 
   #migrate_v1() {

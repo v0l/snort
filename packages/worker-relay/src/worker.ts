@@ -60,8 +60,6 @@ globalThis.onclose = () => {
 };
 
 globalThis.onmessage = ev => {
-  //console.debug(ev);
-
   const msg = ev.data as WorkerMessage<any>;
   try {
     switch (msg.cmd) {
@@ -108,9 +106,9 @@ globalThis.onmessage = ev => {
           }
           const results = [];
           for (const r of req.filters) {
-            results.push(...relay.req(r as ReqFilter));
+            results.push(...relay.req(req.id, r as ReqFilter));
           }
-          reply(msg.id, { results }, req.leaveOpen ? [chan.port2] : undefined);
+          reply(msg.id, results, req.leaveOpen ? [chan.port2] : undefined);
         });
         break;
       }
@@ -133,12 +131,20 @@ globalThis.onmessage = ev => {
         });
         break;
       }
+      case "dumpDb": {
+        barrierQueue(cmdQueue, async () => {
+          const res = await relay.dump();
+          reply(msg.id, res);
+        });
+        break;
+      }
       default: {
         reply(msg.id, { error: "Unknown command" });
         break;
       }
     }
   } catch (e) {
+    console.error(e);
     reply(msg.id, { error: e });
   }
 };

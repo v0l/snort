@@ -41,11 +41,7 @@ export default function useLoginFeed() {
   const { publicKey: pubKey, follows } = login;
   const { publisher, system } = useEventPublisher();
 
-  const followLists = useFollowsContactListView();
-  useEffect(() => {
-    followLists.forEach(e => socialGraphInstance.handleEvent(e));
-  }, followLists);
-
+  useFollowsContactListView();
   useEffect(() => {
     system.checkSigs = login.appData.item.preferences.checkSigs;
   }, [login]);

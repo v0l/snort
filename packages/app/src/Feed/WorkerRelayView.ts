@@ -36,13 +36,13 @@ export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveO
           ...f,
           limit: undefined,
           until: undefined,
-          since: latest.results?.at(i)?.created_at ?? (maxWindow ? unixNow() - maxWindow : undefined),
+          since: latest.result?.at(i)?.created_at ?? (maxWindow ? unixNow() - maxWindow : undefined),
         }))
         .forEach(f => rb.withBareFilter(f));
       setRb(rb);
     });
     Relay.req({ id, filters, leaveOpen }).then(res => {
-      setEvents(res.results);
+      setEvents(res.result);
       if (res.port) {
         res.port.addEventListener("message", ev => {
           const evs = ev.data as Array<NostrEvent>;
@@ -82,7 +82,7 @@ export function useWorkerRelayViewCount(id: string, filters: Array<ReqFilter>, m
           ...f,
           limit: undefined,
           until: undefined,
-          since: latest.results?.at(i)?.created_at ?? (maxWindow ? unixNow() - maxWindow : undefined),
+          since: latest.result?.at(i)?.created_at ?? (maxWindow ? unixNow() - maxWindow : undefined),
         }))
         .forEach(f => rb.withBareFilter(f));
       setRb(rb);
