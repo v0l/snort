@@ -4,7 +4,6 @@ import { useRequestBuilder } from "@snort/system-react";
 import { useEffect, useMemo, useState } from "react";
 
 import useLogin from "@/Hooks/useLogin";
-import useSubscribe from "@/Hooks/useSubscribe";
 import { Relay } from "@/system";
 import { Day } from "@/Utils/Const";
 
