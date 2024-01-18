@@ -1,16 +1,28 @@
 import { unixNow } from "@snort/shared";
 import { EventKind, NostrEvent, NostrLink, ReqFilter, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { SnortContext, useRequestBuilder } from "@snort/system-react";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { LRUCache } from "typescript-lru-cache";
 
 import { Relay } from "@/Cache";
 import useLogin from "@/Hooks/useLogin";
 import { Day } from "@/Utils/Const";
 
+const cache = new LRUCache<string, NostrEvent[]>(20);
+
 export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveOpen?: boolean, maxWindow?: number) {
-  const [events, setEvents] = useState<Array<NostrEvent>>([]);
+  const cacheKey = useMemo(() => JSON.stringify(filters), [filters]);
+  const [events, setEvents] = useState<Array<NostrEvent>>(cache.get(cacheKey) ?? []);
   const [rb, setRb] = useState<RequestBuilder>();
   const system = useContext(SnortContext);
+
+  const cacheAndSetEvents = useCallback(
+    (evs: Array<NostrEvent>) => {
+      cache.set(cacheKey, evs);
+      setEvents(evs);
+    },
+    [cacheKey],
+  );
 
   useEffect(() => {
     if (rb) {
@@ -46,12 +58,12 @@ export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveO
       setRb(rb);
     });
     Relay.req({ id, filters, leaveOpen }).then(res => {
-      setEvents(res.result);
+      cacheAndSetEvents(res.result);
       if (res.port) {
         res.port.addEventListener("message", ev => {
           const evs = ev.data as Array<NostrEvent>;
           if (evs.length > 0) {
-            setEvents(x => [...x, ...evs]);
+            cacheAndSetEvents(x => [...x, ...evs]);
           }
         });
         res.port.start();
