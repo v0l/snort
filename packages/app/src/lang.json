@@ -362,6 +362,9 @@
     "defaultMessage": "Non-Zap",
     "description": "Non-Zap, Regular LN payment"
   },
+  "Aujn2T": {
+    "defaultMessage": "Count"
+  },
   "Awq32I": {
     "defaultMessage": "Push notifications"
   },
@@ -596,9 +599,6 @@
   },
   "I1AoOu": {
     "defaultMessage": "Last post {time}"
-  },
-  "I97cCX": {
-    "defaultMessage": "{n} kind {k} events"
   },
   "IEwZvs": {
     "defaultMessage": "Are you sure you want to unpin this note?"
@@ -1187,6 +1187,9 @@
   "dmsiLv": {
     "defaultMessage": "A default Zap Pool split of {n} has been configured for {site} developers, you can disable it at any time in {link}"
   },
+  "e5x8FT": {
+    "defaultMessage": "Kind"
+  },
   "e61Jf3": {
     "defaultMessage": "Coming soon"
   },
@@ -1216,6 +1219,9 @@
   },
   "f1OxTe": {
     "defaultMessage": "Community leaders are individuals who grow the nostr ecosystem by being active in their local communities and helping onboard new users. Anyone can become a community leader, but few hold the current honorary title."
+  },
+  "f2CAxA": {
+    "defaultMessage": "Dump"
   },
   "fBI91o": {
     "defaultMessage": "Zap"
@@ -1333,9 +1339,6 @@
   },
   "iXPL0Z": {
     "defaultMessage": "Can't login with private key on an insecure connection, please use a Nostr key manager extension instead"
-  },
-  "iYc3Ld": {
-    "defaultMessage": "Payments"
   },
   "ieGrWo": {
     "defaultMessage": "Follow"
