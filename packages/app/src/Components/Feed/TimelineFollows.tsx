@@ -36,7 +36,6 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const [latest, setLatest] = useHistoryState(unixNow(), "TimelineFollowsLatest");
   const [limit, setLimit] = useState(50);
   const feed = useFollowsTimelineView(limit);
-  console.log("feed", feed);
   const { muted, isEventMuted } = useModeration();
 
   const oldest = useMemo(() => feed.at(-1)?.created_at, [feed]);
