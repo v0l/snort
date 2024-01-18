@@ -65,25 +65,32 @@ function RelayCacheStats() {
         <table className="text-secondary">
           <thead>
             <tr>
-              <th className="text-left"><FormattedMessage defaultMessage="Kind" id="e5x8FT" /></th>
-              <th className="text-left"><FormattedMessage defaultMessage="Count" id="Aujn2T" /></th>
+              <th className="text-left">
+                <FormattedMessage defaultMessage="Kind" id="e5x8FT" />
+              </th>
+              <th className="text-left">
+                <FormattedMessage defaultMessage="Count" id="Aujn2T" />
+              </th>
             </tr>
           </thead>
           <tbody>
-            {Object.entries(counts).sort(([, a], [, b]) => a > b ? -1 : 1).map(([k, v]) => {
-              return (
-                <tr key={k}>
-                  <td>{k}</td>
-                  <td><FormattedNumber value={v} /></td>
-                </tr>
-              );
-            })}
+            {Object.entries(counts)
+              .sort(([, a], [, b]) => (a > b ? -1 : 1))
+              .map(([k, v]) => {
+                return (
+                  <tr key={k}>
+                    <td>{k}</td>
+                    <td>
+                      <FormattedNumber value={v} />
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
-
       </div>
       <div>
-        <AsyncButton onClick={() => { }}>
+        <AsyncButton onClick={() => {}}>
           <FormattedMessage defaultMessage="Clear" id="/GCoTA" />
         </AsyncButton>
       </div>
