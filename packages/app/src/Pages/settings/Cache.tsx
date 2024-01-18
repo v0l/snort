@@ -2,7 +2,7 @@ import { FeedCache } from "@snort/shared";
 import { ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
-import { Chats, GiftsCache, PaymentsCache, RelayMetrics, UserCache } from "@/Cache";
+import { Chats, GiftsCache, RelayMetrics, UserCache } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { Relay } from "@/system";
 
@@ -16,7 +16,6 @@ export function CacheSettings() {
       <CacheDetails cache={UserCache} name={<FormattedMessage defaultMessage="Profiles" id="2zJXeA" />} />
       <CacheDetails cache={Chats} name={<FormattedMessage defaultMessage="Chats" id="ABAQyo" />} />
       <CacheDetails cache={RelayMetrics} name={<FormattedMessage defaultMessage="Relay Metrics" id="tjpYlr" />} />
-      <CacheDetails cache={PaymentsCache} name={<FormattedMessage defaultMessage="Payments" id="iYc3Ld" />} />
       <CacheDetails cache={GiftsCache} name={<FormattedMessage defaultMessage="Gift Wraps" id="fjAcWo" />} />
     </div>
   );
@@ -61,25 +60,30 @@ function RelayCacheStats() {
 
   return (
     <div className="flex justify-between br p bg-superdark">
-      <div className="flex flex-col g4">
+      <div className="flex flex-col g4 w-64">
         <FormattedMessage defaultMessage="Worker Relay" id="xSoIUU" />
-        {Object.entries(counts).map(([k, v]) => {
-          return (
-            <small key={k}>
-              <FormattedMessage
-                defaultMessage="{n} kind {k} events"
-                id="I97cCX"
-                values={{
-                  n: <FormattedNumber value={v} />,
-                  k: k,
-                }}
-              />
-            </small>
-          );
-        })}
+        <table className="text-secondary">
+          <thead>
+            <tr>
+              <th className="text-left"><FormattedMessage defaultMessage="Kind" id="e5x8FT" /></th>
+              <th className="text-left"><FormattedMessage defaultMessage="Count" id="Aujn2T" /></th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.entries(counts).sort(([, a], [, b]) => a > b ? -1 : 1).map(([k, v]) => {
+              return (
+                <tr key={k}>
+                  <td>{k}</td>
+                  <td><FormattedNumber value={v} /></td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
       </div>
       <div>
-        <AsyncButton onClick={() => {}}>
+        <AsyncButton onClick={() => { }}>
           <FormattedMessage defaultMessage="Clear" id="/GCoTA" />
         </AsyncButton>
       </div>

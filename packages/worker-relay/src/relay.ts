@@ -4,7 +4,7 @@ import { NostrEvent, ReqFilter, unixNowMs } from "./types";
 
 export class WorkerRelay {
   #sqlite?: Sqlite3Static;
-  #log = (...msg: Array<any>) => console.debug(...msg);
+  #log = debug("WorkerRelay");
   #db?: Database;
 
   /**
@@ -169,7 +169,7 @@ export class WorkerRelay {
    * Get a summary about events table
    */
   summary() {
-    const res = this.#db?.exec("select kind, count(*) from events group by kind order by 2 desc", {
+    const res = this.#db?.exec("select kind, count(*) from events group by kind", {
       returnValue: "resultRows",
     });
     return Object.fromEntries(res?.map(a => [String(a[0]), a[1] as number]) ?? []);

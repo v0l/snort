@@ -1,7 +1,6 @@
 import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
-import "./wdyr";
 
 import { encodeTLVEntries } from "@snort/system";
 import { SnortContext } from "@snort/system-react";

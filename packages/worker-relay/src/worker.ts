@@ -1,5 +1,6 @@
 /// <reference lib="webworker" />
 
+import { WorkQueueItem, barrierQueue, processWorkQueue } from "./queue";
 import { WorkerRelay } from "./relay";
 import { NostrEvent, ReqCommand, ReqFilter, WorkerMessage } from "./types";
 
@@ -24,29 +25,38 @@ async function insertBatch() {
 }
 setTimeout(() => insertBatch(), 100);
 
+let cmdQueue: Array<WorkQueueItem> = [];
+processWorkQueue(cmdQueue, 50);
+
 globalThis.onclose = () => {
   relay.close();
 };
 
-globalThis.onmessage = async ev => {
+globalThis.onmessage = ev => {
   //console.debug(ev);
 
   const msg = ev.data as WorkerMessage<any>;
   try {
     switch (msg.cmd) {
       case "init": {
-        await relay.init();
-        reply(msg.id, true);
+        barrierQueue(cmdQueue, async () => {
+          await relay.init();
+          reply(msg.id, true);
+        });
         break;
       }
       case "open": {
-        await relay.open("/relay.db");
-        reply(msg.id, true);
+        barrierQueue(cmdQueue, async () => {
+          await relay.open("/relay.db");
+          reply(msg.id, true);
+        });
         break;
       }
       case "migrate": {
-        relay.migrate();
-        reply(msg.id, true);
+        barrierQueue(cmdQueue, async () => {
+          relay.migrate();
+          reply(msg.id, true);
+        });
         break;
       }
       case "event": {
@@ -55,27 +65,33 @@ globalThis.onmessage = async ev => {
         break;
       }
       case "req": {
-        const req = msg.args as ReqCommand;
-        const results = [];
-        for (const r of req.slice(2)) {
-          results.push(...relay.req(r as ReqFilter));
-        }
-        reply(msg.id, results);
+        barrierQueue(cmdQueue, async () => {
+          const req = msg.args as ReqCommand;
+          const results = [];
+          for (const r of req.slice(2)) {
+            results.push(...relay.req(r as ReqFilter));
+          }
+          reply(msg.id, results);
+        });
         break;
       }
       case "count": {
-        const req = msg.args as ReqCommand;
-        let results = 0;
-        for (const r of req.slice(2)) {
-          const c = relay.count(r as ReqFilter);
-          results += c;
-        }
-        reply(msg.id, results);
+        barrierQueue(cmdQueue, async () => {
+          const req = msg.args as ReqCommand;
+          let results = 0;
+          for (const r of req.slice(2)) {
+            const c = relay.count(r as ReqFilter);
+            results += c;
+          }
+          reply(msg.id, results);
+        });
         break;
       }
       case "summary": {
-        const res = relay.summary();
-        reply(msg.id, res);
+        barrierQueue(cmdQueue, async () => {
+          const res = relay.summary();
+          reply(msg.id, res);
+        });
         break;
       }
       default: {
