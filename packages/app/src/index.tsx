@@ -2,13 +2,13 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
 
-import { encodeTLVEntries } from "@snort/system";
+import { encodeTLVEntries, socialGraphInstance } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 
-import { initRelayWorker, preload } from "@/Cache";
+import { initRelayWorker, preload, Relay } from "@/Cache";
 import { ThreadRoute } from "@/Components/Event/Thread";
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
 import { db } from "@/Db";
@@ -69,6 +69,11 @@ async function initSite() {
   }
 
   setupWebLNWalletConfig(Wallets);
+  Relay.sql("select json from events where kind = ?", [3]).then(res => {
+    for (const [json] of res) {
+      socialGraphInstance.handleEvent(JSON.parse(json as string));
+    }
+  });
   return null;
 }
 

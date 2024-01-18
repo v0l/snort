@@ -1,5 +1,5 @@
 import { removeUndefined, throwIfOffline } from "@snort/shared";
-import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService } from "@snort/system";
+import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService, socialGraphInstance } from "@snort/system";
 
 import { EventsCache, Relay, RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
 import { LoginStore } from "@/Utils/Login";
@@ -29,6 +29,7 @@ System.on("event", (_, ev) => {
   Relay.event(ev);
   EventsCache.discover(ev);
   UserCache.discover(ev);
+  socialGraphInstance.handleEvent(ev);
 });
 
 /**

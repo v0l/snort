@@ -60,7 +60,7 @@ export class WorkerRelayInterface {
     return (await this.#workerRpc<object, Array<Array<any>>>("sql", { sql, params })).result;
   }
 
-  #workerRpc<T, R>(cmd: string, args?: T, timeout = 30_000) {
+  #workerRpc<T, R>(cmd: string, args?: T) {
     const id = uuid();
     const msg = {
       id,
@@ -71,20 +71,14 @@ export class WorkerRelayInterface {
     return new Promise<{
       result: R;
       port: MessagePort | undefined;
-    }>((resolve, reject) => {
-      let t: ReturnType<typeof setTimeout>;
+    }>(resolve => {
       this.#commandQueue.set(id, (v, port) => {
-        clearTimeout(t);
         const cmdReply = v as WorkerMessage<R>;
         resolve({
           result: cmdReply.args,
           port: port.length > 0 ? port[0] : undefined,
         });
       });
-      t = setTimeout(() => {
-        reject("timeout");
-        this.#commandQueue.delete(id);
-      }, timeout);
     });
   }
 }
