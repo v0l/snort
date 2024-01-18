@@ -91,7 +91,7 @@ function RelayCacheStats() {
         </table>
       </div>
       <div className="flex flex-col gap-2">
-        <AsyncButton onClick={() => { }}>
+        <AsyncButton onClick={() => {}}>
           <FormattedMessage defaultMessage="Clear" id="/GCoTA" />
         </AsyncButton>
         <AsyncButton

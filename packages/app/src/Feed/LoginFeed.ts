@@ -1,10 +1,4 @@
-import {
-  EventKind,
-  NostrLink,
-  parseRelayTags,
-  RequestBuilder,
-  TaggedNostrEvent,
-} from "@snort/system";
+import { EventKind, NostrLink, parseRelayTags, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";
 import { usePrevious } from "@uidotdev/usehooks";
 import { useEffect, useMemo } from "react";
