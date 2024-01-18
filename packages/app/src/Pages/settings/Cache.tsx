@@ -2,7 +2,7 @@ import { FeedCache } from "@snort/shared";
 import { ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
-import { Chats, GiftsCache, Relay, RelayMetrics, UserCache } from "@/Cache";
+import { Chats, GiftsCache, Relay, RelayMetrics } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
 
 export function CacheSettings() {
@@ -12,7 +12,6 @@ export function CacheSettings() {
         <FormattedMessage defaultMessage="Cache" id="DBiVK1" />
       </h3>
       <RelayCacheStats />
-      <CacheDetails cache={UserCache} name={<FormattedMessage defaultMessage="Profiles" id="2zJXeA" />} />
       <CacheDetails cache={Chats} name={<FormattedMessage defaultMessage="Chats" id="ABAQyo" />} />
       <CacheDetails cache={RelayMetrics} name={<FormattedMessage defaultMessage="Relay Metrics" id="tjpYlr" />} />
       <CacheDetails cache={GiftsCache} name={<FormattedMessage defaultMessage="Gift Wraps" id="fjAcWo" />} />
