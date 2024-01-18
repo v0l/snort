@@ -1,7 +1,7 @@
 import { unixNow } from "@snort/shared";
 import { EventKind, NostrEvent, NostrLink, ReqFilter, RequestBuilder, TaggedNostrEvent } from "@snort/system";
-import { useRequestBuilder } from "@snort/system-react";
-import { useEffect, useMemo, useState } from "react";
+import { SnortContext, useRequestBuilder } from "@snort/system-react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
 import useLogin from "@/Hooks/useLogin";
 import { Relay } from "@/system";
@@ -10,8 +10,15 @@ import { Day } from "@/Utils/Const";
 export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveOpen?: boolean, maxWindow?: number) {
   const [events, setEvents] = useState<Array<NostrEvent>>([]);
   const [rb, setRb] = useState<RequestBuilder>();
-  useRequestBuilder(rb);
+  const system = useContext(SnortContext);
 
+  useEffect(() => {
+    if (rb) {
+      const q = system.Query(rb);
+      q.uncancel();
+      return () => q.cancel();
+    }
+  }, [rb, system]);
   useEffect(() => {
     Relay.req({
       id: `${id}+latest`,
@@ -23,6 +30,7 @@ export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveO
       })),
     }).then(latest => {
       const rb = new RequestBuilder(id);
+      rb.withOptions({ fillStore: false });
       filters
         .map((f, i) => ({
           ...f,
