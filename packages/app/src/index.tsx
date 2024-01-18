@@ -8,7 +8,7 @@ import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 
-import { preload } from "@/Cache";
+import { initRelayWorker, preload } from "@/Cache";
 import { ThreadRoute } from "@/Components/Event/Thread";
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
 import { db } from "@/Db";
@@ -34,7 +34,7 @@ import SearchPage from "@/Pages/SearchPage";
 import SettingsRoutes from "@/Pages/settings/Routes";
 import { SubscribeRoutes } from "@/Pages/subscribe";
 import ZapPoolPage from "@/Pages/ZapPool";
-import { initRelayWorker, System } from "@/system";
+import { System } from "@/system";
 import { storeRefCode, unwrap } from "@/Utils";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, wasmInit, WasmPath } from "@/Utils/wasm";

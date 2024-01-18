@@ -2,9 +2,8 @@ import { FeedCache } from "@snort/shared";
 import { ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
 
-import { Chats, GiftsCache, RelayMetrics, UserCache } from "@/Cache";
+import { Chats, GiftsCache, Relay, RelayMetrics, UserCache } from "@/Cache";
 import AsyncButton from "@/Components/Button/AsyncButton";
-import { Relay } from "@/system";
 
 export function CacheSettings() {
   return (
@@ -92,7 +91,7 @@ function RelayCacheStats() {
         </table>
       </div>
       <div className="flex flex-col gap-2">
-        <AsyncButton onClick={() => {}}>
+        <AsyncButton onClick={() => { }}>
           <FormattedMessage defaultMessage="Clear" id="/GCoTA" />
         </AsyncButton>
         <AsyncButton

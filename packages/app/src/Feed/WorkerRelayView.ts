@@ -3,8 +3,8 @@ import { EventKind, NostrEvent, NostrLink, ReqFilter, RequestBuilder, TaggedNost
 import { SnortContext, useRequestBuilder } from "@snort/system-react";
 import { useContext, useEffect, useMemo, useState } from "react";
 
+import { Relay } from "@/Cache";
 import useLogin from "@/Hooks/useLogin";
-import { Relay } from "@/system";
 import { Day } from "@/Utils/Const";
 
 export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveOpen?: boolean, maxWindow?: number) {
@@ -20,6 +20,7 @@ export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveO
     }
   }, [rb, system]);
   useEffect(() => {
+    setRb(undefined);
     Relay.req({
       id: `${id}+latest`,
       filters: filters.map(f => ({
@@ -32,12 +33,15 @@ export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveO
       const rb = new RequestBuilder(id);
       rb.withOptions({ fillStore: false });
       filters
-        .map((f, i) => ({
-          ...f,
-          limit: undefined,
-          until: undefined,
-          since: latest.result?.at(i)?.created_at ?? (maxWindow ? unixNow() - maxWindow : undefined),
-        }))
+        .map((f, i) => {
+          const since = latest.result?.at(i)?.created_at;
+          return {
+            ...f,
+            limit: undefined,
+            until: undefined,
+            since: since ? since + 1 : maxWindow ? unixNow() - maxWindow : f.since,
+          };
+        })
         .forEach(f => rb.withBareFilter(f));
       setRb(rb);
     });

@@ -56,6 +56,10 @@ export class WorkerRelayInterface {
     return (await this.#workerRpc<void, Uint8Array>("dumpDb")).result;
   }
 
+  async sql(sql: string, params: Array<string | number>) {
+    return (await this.#workerRpc<object, Array<Array<any>>>("sql", { sql, params })).result;
+  }
+
   #workerRpc<T, R>(cmd: string, args?: T, timeout = 30_000) {
     const id = uuid();
     const msg = {

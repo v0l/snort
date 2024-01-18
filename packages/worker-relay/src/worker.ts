@@ -138,6 +138,17 @@ globalThis.onmessage = ev => {
         });
         break;
       }
+      case "sql": {
+        barrierQueue(cmdQueue, async () => {
+          const req = msg.args as {
+            sql: string;
+            params: Array<any>;
+          };
+          const res = relay.sql(req.sql, req.params);
+          reply(msg.id, res);
+        });
+        break;
+      }
       default: {
         reply(msg.id, { error: "Unknown command" });
         break;

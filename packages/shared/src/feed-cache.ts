@@ -22,9 +22,21 @@ export type CachedTable<T> = {
   bulkGet(keys: Array<string>): Promise<Array<T>>;
   set(obj: T): Promise<void>;
   bulkSet(obj: Array<T> | Readonly<Array<T>>): Promise<void>;
+
+  /**
+   * Try to update an entry where created values exists
+   * @param m Profile metadata
+   * @returns
+   */
   update<TWithCreated extends T & { created: number; loaded: number }>(
     m: TWithCreated,
   ): Promise<"new" | "refresh" | "updated" | "no_change">;
+
+  /**
+   * Loads a list of rows from disk cache
+   * @param keys List of ids to load
+   * @returns Keys that do not exist on disk cache
+   */
   buffer(keys: Array<string>): Promise<Array<string>>;
   key(of: T): string;
   snapshot(): Array<T>;
@@ -151,11 +163,6 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents> imple
     );
   }
 
-  /**
-   * Try to update an entry where created values exists
-   * @param m Profile metadata
-   * @returns
-   */
   async update<TCachedWithCreated extends TCached & { created: number; loaded: number }>(m: TCachedWithCreated) {
     const k = this.key(m);
     const existing = this.getFromCache(k) as TCachedWithCreated;
@@ -182,11 +189,6 @@ export abstract class FeedCache<TCached> extends EventEmitter<CacheEvents> imple
     return updateType;
   }
 
-  /**
-   * Loads a list of rows from disk cache
-   * @param keys List of ids to load
-   * @returns Keys that do not exist on disk cache
-   */
   async buffer(keys: Array<string>): Promise<Array<string>> {
     const needsBuffer = keys.filter(a => !this.cache.has(a));
     if (this.table && needsBuffer.length > 0) {

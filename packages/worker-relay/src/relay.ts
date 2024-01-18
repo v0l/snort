@@ -84,9 +84,17 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
   }
 
   /**
+   * Run any SQL command
+   */
+  sql(sql: string, params: Array<any>) {
+    return this.#db?.selectArrays(sql, params);
+  }
+
+  /**
    * Write multiple events
    */
   eventBatch(evs: Array<NostrEvent>) {
+    const start = unixNowMs();
     let eventsInserted: Array<NostrEvent> = [];
     this.#db?.transaction(db => {
       for (const ev of evs) {
@@ -96,7 +104,7 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
       }
     });
     if (eventsInserted.length > 0) {
-      this.#log(`Inserted Batch: ${eventsInserted.length}/${evs.length}`);
+      this.#log(`Inserted Batch: ${eventsInserted.length}/${evs.length}, ${(unixNowMs() - start).toLocaleString()}ms`);
       this.emit("event", eventsInserted);
     }
     return eventsInserted.length > 0;
@@ -169,7 +177,7 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
     const res = this.#db?.selectArrays(sql, params);
     const results = res?.map(a => JSON.parse(a[0] as string) as NostrEvent) ?? [];
     const time = unixNowMs() - start;
-    //this.#log(`Query ${id} results took ${time.toLocaleString()}ms`);
+    this.#log(`Query ${id} results took ${time.toLocaleString()}ms`);
     return results;
   }
 

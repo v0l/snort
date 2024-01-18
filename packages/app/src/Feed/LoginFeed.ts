@@ -3,7 +3,6 @@ import {
   NostrLink,
   parseRelayTags,
   RequestBuilder,
-  socialGraphInstance,
   TaggedNostrEvent,
 } from "@snort/system";
 import { useRequestBuilder } from "@snort/system-react";

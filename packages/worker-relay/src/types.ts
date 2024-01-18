@@ -1,6 +1,6 @@
 export interface WorkerMessage<T> {
   id: string;
-  cmd: "reply" | "init" | "open" | "migrate" | "event" | "req" | "count" | "summary" | "close" | "dumpDb";
+  cmd: "reply" | "init" | "open" | "migrate" | "event" | "req" | "count" | "summary" | "close" | "dumpDb" | "sql";
   args: T;
 }
 

@@ -1,10 +1,7 @@
 import { removeUndefined, throwIfOffline } from "@snort/shared";
-import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService, socialGraphInstance } from "@snort/system";
-import { WorkerRelayInterface } from "@snort/worker-relay";
-import WorkerRelayPath from "@snort/worker-relay/dist/worker?worker&url";
+import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService } from "@snort/system";
 
-import { RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
-import { addCachedMetadataToFuzzySearch, addEventToFuzzySearch } from "@/Db/FuzzySearch";
+import { EventsCache, Relay, RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
 
@@ -13,6 +10,7 @@ import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
  */
 export const System = new NostrSystem({
   relayCache: UserRelays,
+  eventsCache: EventsCache,
   profileCache: UserCache,
   relayMetrics: RelayMetrics,
   optimizer: hasWasm ? WasmOptimizer : undefined,
@@ -28,13 +26,8 @@ System.on("auth", async (c, r, cb) => {
 });
 
 System.on("event", (_, ev) => {
-  addEventToFuzzySearch(ev);
-  socialGraphInstance.handleEvent(ev);
-});
-
-System.profileCache.on("change", keys => {
-  const changed = removeUndefined(keys.map(a => System.profileCache.getFromCache(a)));
-  changed.forEach(addCachedMetadataToFuzzySearch);
+  Relay.event(ev);
+  EventsCache.discover(ev);
 });
 
 /**
@@ -54,22 +47,6 @@ export async function fetchProfile(key: string) {
       const data = (await rsp.json()) as NostrEvent;
       if (data) {
         return mapEventToProfile(data);
-      }
-    }
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-export const Relay = new WorkerRelayInterface(WorkerRelayPath);
-export async function initRelayWorker() {
-  try {
-    if (await Relay.init()) {
-      if (await Relay.open()) {
-        await Relay.migrate();
-        System.on("event", (_, ev) => {
-          Relay.event(ev);
-        });
       }
     }
   } catch (e) {
