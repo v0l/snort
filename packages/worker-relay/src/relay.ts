@@ -1,8 +1,13 @@
 import sqlite3InitModule, { Database, Sqlite3Static } from "@sqlite.org/sqlite-wasm";
 import debug from "debug";
+import { EventEmitter } from "eventemitter3";
 import { NostrEvent, ReqFilter, unixNowMs } from "./types";
 
-export class WorkerRelay {
+export interface WorkerRelayEvents {
+  event: (evs: Array<NostrEvent>) => void;
+}
+
+export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
   #sqlite?: Sqlite3Static;
   #log = debug("WorkerRelay");
   #db?: Database;
@@ -72,6 +77,7 @@ export class WorkerRelay {
     });
     if (eventInserted) {
       this.#log(`Inserted: kind=${ev.kind},authors=${ev.pubkey},id=${ev.id}`);
+      this.emit("event", [ev]);
     }
     return eventInserted;
   }
@@ -90,6 +96,7 @@ export class WorkerRelay {
     });
     if (eventsInserted.length > 0) {
       this.#log(`Inserted Batch: ${eventsInserted.length}/${evs.length}`);
+      this.emit("event", eventsInserted);
     }
     return eventsInserted.length > 0;
   }

@@ -8,34 +8,47 @@ import useSubscribe from "@/Hooks/useSubscribe";
 import { Relay } from "@/system";
 import { Day } from "@/Utils/Const";
 
-export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, maxWindow?: number) {
+export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveOpen?: boolean, maxWindow?: number) {
   const [events, setEvents] = useState<Array<NostrEvent>>([]);
   const [rb, setRb] = useState<RequestBuilder>();
   useRequestBuilder(rb);
 
   useEffect(() => {
-    Relay.req([
-      "REQ",
-      `${id}+latest`,
-      ...filters.map(f => ({
+    Relay.req({
+      id: `${id}+latest`,
+      filters: filters.map(f => ({
         ...f,
         until: undefined,
         since: undefined,
         limit: 1,
       })),
-    ]).then(latest => {
+    }).then(latest => {
       const rb = new RequestBuilder(id);
       filters
         .map((f, i) => ({
           ...f,
           limit: undefined,
           until: undefined,
-          since: latest?.at(i)?.created_at ?? (maxWindow ? unixNow() - maxWindow : undefined),
+          since: latest.results?.at(i)?.created_at ?? (maxWindow ? unixNow() - maxWindow : undefined),
         }))
         .forEach(f => rb.withBareFilter(f));
       setRb(rb);
     });
-    Relay.req(["REQ", id, ...filters]).then(setEvents);
+    Relay.req({ id, filters, leaveOpen }).then(res => {
+      setEvents(res.results);
+      if (res.port) {
+        res.port.addEventListener("message", ev => {
+          const evs = ev.data as Array<NostrEvent>;
+          if (evs.length > 0) {
+            setEvents(x => [...x, ...evs]);
+          }
+        });
+        res.port.start();
+      }
+    });
+    return () => {
+      Relay.close(id);
+    };
   }, [id, filters, maxWindow]);
 
   return events as Array<TaggedNostrEvent>;
@@ -47,28 +60,27 @@ export function useWorkerRelayViewCount(id: string, filters: Array<ReqFilter>, m
   useRequestBuilder(rb);
 
   useEffect(() => {
-    Relay.req([
-      "REQ",
-      `${id}+latest`,
-      ...filters.map(f => ({
+    Relay.req({
+      id: `${id}+latest`,
+      filters: filters.map(f => ({
         ...f,
         until: undefined,
         since: undefined,
         limit: 1,
       })),
-    ]).then(latest => {
+    }).then(latest => {
       const rb = new RequestBuilder(id);
       filters
         .map((f, i) => ({
           ...f,
           limit: undefined,
           until: undefined,
-          since: latest?.at(i)?.created_at ?? (maxWindow ? unixNow() - maxWindow : undefined),
+          since: latest.results?.at(i)?.created_at ?? (maxWindow ? unixNow() - maxWindow : undefined),
         }))
         .forEach(f => rb.withBareFilter(f));
       setRb(rb);
     });
-    Relay.count(["REQ", id, ...filters]).then(setCount);
+    Relay.count({ id, filters }).then(setCount);
   }, [id, filters, maxWindow]);
 
   return count;
@@ -78,15 +90,16 @@ export function useFollowsTimelineView(limit = 20) {
   const follows = useLogin(s => s.follows.item);
   const kinds = [EventKind.TextNote, EventKind.Repost, EventKind.Polls];
 
-  const filter = useMemo(
-    () => ({
-      authors: follows,
-      kinds,
-      limit,
-    }),
-    [follows, limit],
-  );
-  return useSubscribe("follows-timeline", filter);
+  const filter = useMemo(() => {
+    return [
+      {
+        authors: follows,
+        kinds,
+        limit,
+      },
+    ];
+  }, [follows, limit]);
+  return useWorkerRelayView("follows-timeline", filter, true, Day * 7);
 }
 
 export function useNotificationsView() {
@@ -101,7 +114,7 @@ export function useNotificationsView() {
       },
     ];
   }, [publicKey]);
-  return useSubscribe("notifications", req[0]);
+  return useWorkerRelayView("notifications", req, true, Day * 30);
 }
 
 export function useReactionsView(ids: Array<NostrLink>, leaveOpen = true) {
@@ -123,7 +136,7 @@ export function useReactionsView(ids: Array<NostrLink>, leaveOpen = true) {
     return rb.buildRaw();
   }, [ids]);
 
-  return useSubscribe("reactions", req[0]);
+  return useWorkerRelayView("reactions", req, leaveOpen, undefined);
 }
 
 export function useReactionsViewCount(ids: Array<NostrLink>, leaveOpen = true) {
@@ -160,5 +173,5 @@ export function useFollowsContactListView() {
       },
     ];
   }, [follows]);
-  return useSubscribe("follows-contacts-relays", filter[0]);
+  return useWorkerRelayView("follows-contacts-relays", filter, undefined, undefined);
 }

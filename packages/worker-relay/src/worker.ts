@@ -4,14 +4,41 @@ import { WorkQueueItem, barrierQueue, processWorkQueue } from "./queue";
 import { WorkerRelay } from "./relay";
 import { NostrEvent, ReqCommand, ReqFilter, WorkerMessage } from "./types";
 
-const relay = new WorkerRelay();
+interface PortedFilter {
+  filters: Array<ReqFilter>;
+  port: MessagePort;
+}
 
-async function reply<T>(id: string, obj?: T) {
-  globalThis.postMessage({
-    id,
-    cmd: "reply",
-    args: obj,
-  } as WorkerMessage<T>);
+// Active open subscriptions awaiting new events
+const ActiveSubscriptions = new Map<string, PortedFilter>();
+
+const relay = new WorkerRelay();
+relay.on("event", evs => {
+  for (const pf of ActiveSubscriptions.values()) {
+    const pfSend = [];
+    for (const ev of evs) {
+      for (const fx of pf.filters) {
+        if (eventMatchesFilter(ev, fx)) {
+          pfSend.push(ev);
+          continue;
+        }
+      }
+    }
+    if (pfSend.length > 0) {
+      pf.port.postMessage(pfSend);
+    }
+  }
+});
+
+async function reply<T>(id: string, obj?: T, transferables?: Transferable[]) {
+  globalThis.postMessage(
+    {
+      id,
+      cmd: "reply",
+      args: obj,
+    } as WorkerMessage<T>,
+    transferables ?? [],
+  );
 }
 
 // Event inserter queue
@@ -25,7 +52,7 @@ async function insertBatch() {
 }
 setTimeout(() => insertBatch(), 100);
 
-let cmdQueue: Array<WorkQueueItem> = [];
+const cmdQueue: Array<WorkQueueItem> = [];
 processWorkQueue(cmdQueue, 50);
 
 globalThis.onclose = () => {
@@ -64,14 +91,26 @@ globalThis.onmessage = ev => {
         reply(msg.id, true);
         break;
       }
+      case "close": {
+        ActiveSubscriptions.delete(msg.args as string);
+        reply(msg.id, true);
+        break;
+      }
       case "req": {
         barrierQueue(cmdQueue, async () => {
           const req = msg.args as ReqCommand;
+          const chan = new MessageChannel();
+          if (req.leaveOpen) {
+            ActiveSubscriptions.set(req.id, {
+              filters: req.filters,
+              port: chan.port1,
+            });
+          }
           const results = [];
-          for (const r of req.slice(2)) {
+          for (const r of req.filters) {
             results.push(...relay.req(r as ReqFilter));
           }
-          reply(msg.id, results);
+          reply(msg.id, { results }, req.leaveOpen ? [chan.port2] : undefined);
         });
         break;
       }
@@ -79,7 +118,7 @@ globalThis.onmessage = ev => {
         barrierQueue(cmdQueue, async () => {
           const req = msg.args as ReqCommand;
           let results = 0;
-          for (const r of req.slice(2)) {
+          for (const r of req.filters) {
             const c = relay.count(r as ReqFilter);
             results += c;
           }
@@ -103,3 +142,22 @@ globalThis.onmessage = ev => {
     reply(msg.id, { error: e });
   }
 };
+
+export function eventMatchesFilter(ev: NostrEvent, filter: ReqFilter) {
+  if (filter.since && ev.created_at < filter.since) {
+    return false;
+  }
+  if (filter.until && ev.created_at > filter.until) {
+    return false;
+  }
+  if (!(filter.ids?.includes(ev.id) ?? true)) {
+    return false;
+  }
+  if (!(filter.authors?.includes(ev.pubkey) ?? true)) {
+    return false;
+  }
+  if (!(filter.kinds?.includes(ev.kind) ?? true)) {
+    return false;
+  }
+  return true;
+}

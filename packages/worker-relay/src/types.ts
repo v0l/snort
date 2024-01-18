@@ -1,6 +1,6 @@
 export interface WorkerMessage<T> {
   id: string;
-  cmd: "reply" | "init" | "open" | "migrate" | "event" | "req" | "count" | "summary";
+  cmd: "reply" | "init" | "open" | "migrate" | "event" | "req" | "count" | "summary" | "close";
   args: T;
 }
 
@@ -14,7 +14,11 @@ export interface NostrEvent {
   sig: string;
 }
 
-export type ReqCommand = [cmd: "REQ", id: string, ...filters: Array<ReqFilter>];
+export interface ReqCommand {
+  id: string;
+  filters: Array<ReqFilter>;
+  leaveOpen?: boolean;
+}
 
 export interface ReqFilter {
   ids?: string[];

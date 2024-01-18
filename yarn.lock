@@ -3107,6 +3107,7 @@ __metadata:
     "@types/debug": ^4.1.12
     "@types/uuid": ^9.0.7
     debug: ^4.3.4
+    eventemitter3: ^5.0.1
     typescript: ^5.2.2
     uuid: ^9.0.1
   languageName: unknown
