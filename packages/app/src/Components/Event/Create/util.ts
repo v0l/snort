@@ -8,7 +8,7 @@ export async function sendEventToRelays(
   setResults?: (x: Array<OkResponse>) => void,
 ) {
   if (customRelays) {
-    system.HandleEvent({ ...ev, relays: [] });
+    system.HandleEvent("*", { ...ev, relays: [] });
     return removeUndefined(
       await Promise.all(
         customRelays.map(async r => {

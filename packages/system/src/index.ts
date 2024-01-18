@@ -109,7 +109,7 @@ export interface SystemInterface {
   /**
    * Push an event into the system from external source
    */
-  HandleEvent(ev: TaggedNostrEvent): void;
+  HandleEvent(subId: string, ev: TaggedNostrEvent): void;
 
   /**
    * Send an event to all permanent connections

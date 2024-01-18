@@ -124,7 +124,7 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
     this.#workerRpc(WorkerCommand.DisconnectRelay, address);
   }
 
-  HandleEvent(ev: TaggedNostrEvent): void {
+  HandleEvent(subId: string, ev: TaggedNostrEvent): void {
     throw new Error("Method not implemented.");
   }
 

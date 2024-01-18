@@ -8,7 +8,7 @@ import { trimFilters } from "./request-trim";
 interface QueryManagerEvents {
   change: () => void;
   trace: (report: TraceReport) => void;
-  filters: (req: BuiltRawReqFilter) => void;
+  request: (subId: string, req: BuiltRawReqFilter) => void;
 }
 
 /**
@@ -57,9 +57,9 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     } else {
       const q = new Query(this.#system, req);
       q.on("trace", r => this.emit("trace", r));
-      q.on("filters", fx => {
+      q.on("request", (id, fx) => {
         this.#send(q, fx);
-        this.emit("filters", fx);
+        this.emit("request", id, fx);
       });
 
       this.#queries.set(req.id, q);
@@ -78,7 +78,7 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
   async fetch(req: RequestBuilder, cb?: (evs: Array<TaggedNostrEvent>) => void) {
     const q = new Query(this.#system, req);
     q.on("trace", r => this.emit("trace", r));
-    q.on("filters", fx => {
+    q.on("request", (subId, fx) => {
       this.#send(q, fx);
     });
     if (cb) {

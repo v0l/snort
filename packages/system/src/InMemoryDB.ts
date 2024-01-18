@@ -131,6 +131,10 @@ class InMemoryDB {
     }
   }
 
+  count(filter: Filter): number {
+    return this.findArray(filter).length;
+  }
+
   find(filter: Filter, callback: (event: TaggedNostrEvent) => void): void {
     this.findArray(filter).forEach(event => {
       callback(event);

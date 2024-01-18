@@ -36,10 +36,10 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const [latest, setLatest] = useHistoryState(unixNow(), "TimelineFollowsLatest");
   const [limit, setLimit] = useState(50);
   const feed = useFollowsTimelineView(limit);
+  console.log("feed", feed);
   const { muted, isEventMuted } = useModeration();
 
-  const sortedFeed = useMemo(() => orderDescending(feed), [feed]);
-  const oldest = useMemo(() => sortedFeed.at(-1)?.created_at, [sortedFeed]);
+  const oldest = useMemo(() => feed.at(-1)?.created_at, [feed]);
 
   const postsOnly = useCallback(
     (a: NostrEvent) => (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true),
@@ -58,8 +58,8 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
 
   const mixin = useHashtagsFeed();
   const mainFeed = useMemo(() => {
-    return filterPosts((sortedFeed ?? []).filter(a => a.created_at <= latest));
-  }, [sortedFeed, filterPosts, latest, login.follows.timestamp]);
+    return filterPosts((feed ?? []).filter(a => a.created_at <= latest));
+  }, [feed, filterPosts, latest, login.follows.timestamp]);
 
   const findHashTagContext = (a: NostrEvent) => {
     const tag = a.tags.filter(a => a[0] === "t").find(a => login.tags.item.includes(a[1].toLowerCase()))?.[1];
@@ -81,12 +81,12 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   }, [mixin, mainFeed, postsOnly, isEventMuted]);
 
   const latestFeed = useMemo(() => {
-    return filterPosts((sortedFeed ?? []).filter(a => a.created_at > latest));
-  }, [sortedFeed, latest]);
+    return filterPosts((feed ?? []).filter(a => a.created_at > latest));
+  }, [feed, latest]);
 
   const liveStreams = useMemo(() => {
-    return (sortedFeed ?? []).filter(a => a.kind === EventKind.LiveEvent && findTag(a, "status") === "live");
-  }, [sortedFeed]);
+    return (feed ?? []).filter(a => a.kind === EventKind.LiveEvent && findTag(a, "status") === "live");
+  }, [feed]);
 
   const latestAuthors = useMemo(() => {
     return dedupeByPubkey(latestFeed).map(e => e.pubkey);
@@ -120,7 +120,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         }}
         displayAs={displayAs}
       />
-      {sortedFeed.length > 0 && (
+      {feed.length > 0 && (
         <ShowMoreInView
           onClick={() => {
             setLimit(s => s + 20);

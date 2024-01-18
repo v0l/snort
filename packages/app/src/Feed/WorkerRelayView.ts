@@ -4,6 +4,7 @@ import { useRequestBuilder } from "@snort/system-react";
 import { useEffect, useMemo, useState } from "react";
 
 import useLogin from "@/Hooks/useLogin";
+import useSubscribe from "@/Hooks/useSubscribe";
 import { Relay } from "@/system";
 import { Day } from "@/Utils/Const";
 
@@ -77,16 +78,15 @@ export function useFollowsTimelineView(limit = 20) {
   const follows = useLogin(s => s.follows.item);
   const kinds = [EventKind.TextNote, EventKind.Repost, EventKind.Polls];
 
-  const filter = useMemo(() => {
-    return [
-      {
-        authors: follows,
-        kinds,
-        limit,
-      },
-    ];
-  }, [follows, limit]);
-  return useWorkerRelayView("follows-timeline", filter, Day * 7);
+  const filter = useMemo(
+    () => ({
+      authors: follows,
+      kinds,
+      limit,
+    }),
+    [follows, limit],
+  );
+  return useSubscribe("follows-timeline", filter);
 }
 
 export function useNotificationsView() {
@@ -101,7 +101,7 @@ export function useNotificationsView() {
       },
     ];
   }, [publicKey]);
-  return useWorkerRelayView("notifications", req, Day * 30);
+  return useSubscribe("notifications", req[0]);
 }
 
 export function useReactionsView(ids: Array<NostrLink>, leaveOpen = true) {
@@ -123,7 +123,7 @@ export function useReactionsView(ids: Array<NostrLink>, leaveOpen = true) {
     return rb.buildRaw();
   }, [ids]);
 
-  return useWorkerRelayView("reactions", req, undefined);
+  return useSubscribe("reactions", req[0]);
 }
 
 export function useReactionsViewCount(ids: Array<NostrLink>, leaveOpen = true) {
@@ -160,5 +160,5 @@ export function useFollowsContactListView() {
       },
     ];
   }, [follows]);
-  return useWorkerRelayView("follows-contacts-relays", filter, undefined);
+  return useSubscribe("follows-contacts-relays", filter[0]);
 }

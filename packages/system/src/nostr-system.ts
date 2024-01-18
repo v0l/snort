@@ -24,12 +24,13 @@ import { RelayMetadataLoader } from "./outbox-model";
 import { Optimizer, DefaultOptimizer } from "./query-optimizer";
 import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
 import { QueryManager } from "./query-manager";
+import inMemoryDB from "./InMemoryDB";
 
 export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
   event: (subId: string, ev: TaggedNostrEvent) => void;
-  filters: (filter: BuiltRawReqFilter) => void;
+  request: (subId: string, filter: BuiltRawReqFilter) => void;
 }
 
 export interface NostrsystemProps {
@@ -122,6 +123,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.pool.on("event", (_, sub, ev) => {
       ev.relays?.length && this.relayMetricsHandler.onEvent(ev.relays[0]);
       this.emit("event", sub, ev);
+      inMemoryDB.handleEvent(ev);
     });
     this.pool.on("disconnect", (id, code) => {
       const c = this.pool.getConnection(id);
@@ -148,7 +150,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.#queryManager.on("trace", t => {
       this.relayMetricsHandler.onTraceReport(t);
     });
-    this.#queryManager.on("filters", (f: BuiltRawReqFilter) => this.emit("filters", f));
+    this.#queryManager.on("request", (subId: string, f: BuiltRawReqFilter) => this.emit("request", subId, f));
   }
 
   get Sockets(): ConnectionStateSnapshot[] {
@@ -189,13 +191,14 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     return this.#queryManager.query(req);
   }
 
-  HandleEvent(ev: TaggedNostrEvent) {
-    this.emit("event", "*", ev);
+  HandleEvent(subId: string, ev: TaggedNostrEvent) {
+    inMemoryDB.handleEvent(ev);
+    this.emit("event", subId, ev);
     this.#queryManager.handleEvent(ev);
   }
 
   async BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]> {
-    this.HandleEvent({ ...ev, relays: [] });
+    this.HandleEvent("*", { ...ev, relays: [] });
     return await this.pool.broadcast(this, ev, cb);
   }
 

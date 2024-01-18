@@ -35,7 +35,7 @@ export default function TrendingNotes({ count = Infinity, small = false }: { cou
           console.error(`Event with invalid sig\n\n${ev}\n\nfrom ${trendingNotesUrl}`);
           return;
         }
-        System.HandleEvent(ev as TaggedNostrEvent);
+        System.HandleEvent("*", ev as TaggedNostrEvent);
         return ev;
       }),
     );

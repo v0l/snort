@@ -10,6 +10,8 @@ import { NostrEvent, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nos
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
 import { EventExt } from "./event-ext";
+import { getHex64 } from "./utils";
+import inMemoryDB from "./InMemoryDB";
 
 /**
  * Relay settings
@@ -210,6 +212,12 @@ export class Connection extends EventEmitter<ConnectionEvents> {
       }
        */
 
+      const id = getHex64(e.data as string, "id");
+      if (inMemoryDB.has(id)) {
+        this.#log("Already have, skip processing %s", id);
+        return;
+      }
+
       const msg = JSON.parse(e.data as string) as Array<string | NostrEvent | boolean>;
       const tag = msg[0] as string;
       switch (tag) {
@@ -232,7 +240,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           } as TaggedNostrEvent;
 
           if (!EventExt.isValid(ev)) {
-            //this.#log("Rejecting invalid event %O", ev);
+            this.#log("Rejecting invalid event %O", ev);
             return;
           }
           this.emit("event", msg[1] as string, ev);
