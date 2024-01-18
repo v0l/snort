@@ -58,6 +58,12 @@ export interface RequestBuilderOptions {
    * How many milli-seconds to wait to allow grouping
    */
   groupingDelay?: number;
+
+  /**
+   * If events should be added automatically to the internal NoteCollection
+   * default=true
+   */
+  fillStore?: boolean;
 }
 
 /**

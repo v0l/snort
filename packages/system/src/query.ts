@@ -393,7 +393,11 @@ export class Query extends EventEmitter<QueryEvents> {
         responseTime: qt.responseTime,
       } as TraceReport),
     );
-    const handler = (sub: string, ev: TaggedNostrEvent) => this.handleEvent(sub, ev);
+    const handler = (sub: string, ev: TaggedNostrEvent) => {
+      if (this.request.options?.fillStore ?? true) {
+        this.handleEvent(sub, ev);
+      }
+    };
     c.on("event", handler);
     this.on("end", () => c.off("event", handler));
     this.#tracing.push(qt);
