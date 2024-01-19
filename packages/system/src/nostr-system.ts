@@ -24,7 +24,6 @@ import { RelayMetadataLoader } from "./outbox-model";
 import { Optimizer, DefaultOptimizer } from "./query-optimizer";
 import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
 import { QueryManager } from "./query-manager";
-import inMemoryDB from "./InMemoryDB";
 
 export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
@@ -123,7 +122,6 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.pool.on("event", (_, sub, ev) => {
       ev.relays?.length && this.relayMetricsHandler.onEvent(ev.relays[0]);
       this.emit("event", sub, ev);
-      inMemoryDB.handleEvent(ev);
     });
     this.pool.on("disconnect", (id, code) => {
       const c = this.pool.getConnection(id);
@@ -192,7 +190,6 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
   }
 
   HandleEvent(subId: string, ev: TaggedNostrEvent) {
-    inMemoryDB.handleEvent(ev);
     this.emit("event", subId, ev);
     this.#queryManager.handleEvent(ev);
   }

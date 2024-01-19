@@ -10,8 +10,6 @@ import { NostrEvent, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nos
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
 import { EventExt } from "./event-ext";
-import { getHex64 } from "./utils";
-import inMemoryDB from "./InMemoryDB";
 
 /**
  * Relay settings
@@ -203,21 +201,6 @@ export class Connection extends EventEmitter<ConnectionEvents> {
   OnMessage(e: WebSocket.MessageEvent) {
     this.#activity = unixNowMs();
     if ((e.data as string).length > 0) {
-      // skip message processing if we've already seen it
-      /* there's some problem in retrieval from inMemoryDB? try disabling for now
-      const msgId = getHex64(e.data as string, "id");
-      if (inMemoryDB.has(msgId)) {
-        console.log("already have");
-        return;
-      }
-       */
-
-      const id = getHex64(e.data as string, "id");
-      if (inMemoryDB.has(id)) {
-        this.#log("Already have, skip processing %s", id);
-        return;
-      }
-
       const msg = JSON.parse(e.data as string) as Array<string | NostrEvent | boolean>;
       const tag = msg[0] as string;
       switch (tag) {
