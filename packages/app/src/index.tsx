@@ -12,6 +12,7 @@ import { initRelayWorker, preload, Relay } from "@/Cache";
 import { ThreadRoute } from "@/Components/Event/Thread";
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
 import { db } from "@/Db";
+import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
 import { updateRelayConnections } from "@/Hooks/useLoginRelays";
 import { AboutPage } from "@/Pages/About";
 import { SnortDeckLayout } from "@/Pages/DeckLayout";
@@ -71,7 +72,20 @@ async function initSite() {
   setupWebLNWalletConfig(Wallets);
   Relay.sql("select json from events where kind = ?", [3]).then(res => {
     for (const [json] of res) {
-      socialGraphInstance.handleEvent(JSON.parse(json as string));
+      try {
+        socialGraphInstance.handleEvent(JSON.parse(json as string));
+      } catch (e) {
+        console.error("Failed to handle contact list event from sql db", e);
+      }
+    }
+  });
+  Relay.sql("select json from events where kind = ?", [0]).then(res => {
+    for (const [json] of res) {
+      try {
+        addEventToFuzzySearch(JSON.parse(json as string));
+      } catch (e) {
+        console.error("Failed to handle metadata event from sql db", e);
+      }
     }
   });
   return null;

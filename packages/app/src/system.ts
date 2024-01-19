@@ -3,6 +3,7 @@ import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService, socia
 import inMemoryDB from "@snort/system/src/InMemoryDB";
 
 import { EventsCache, Relay, RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
+import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
 import { LoginStore } from "@/Utils/Login";
 import { hasWasm, WasmOptimizer } from "@/Utils/wasm";
 
@@ -32,6 +33,7 @@ System.on("event", (_, ev) => {
   UserCache.discover(ev);
   inMemoryDB.handleEvent(ev);
   socialGraphInstance.handleEvent(ev);
+  addEventToFuzzySearch(ev);
 });
 
 /**
