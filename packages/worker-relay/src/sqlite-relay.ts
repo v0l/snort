@@ -113,6 +113,9 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     db.exec(`delete from events where id in (${this.#repeatParams(ids.length)})`, {
       bind: ids,
     });
+    db.exec(`delete from search_content where id in (${this.#repeatParams(ids.length)})`, {
+      bind: ids,
+    });
     this.#log("Deleted", ids, db.changes());
   }
 
