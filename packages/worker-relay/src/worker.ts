@@ -31,9 +31,14 @@ let eventWriteQueue: Array<NostrEvent> = [];
 async function insertBatch() {
   // Only insert event batches when the command queue is empty
   // This is to make req's execute first and not block them
-  if (relay && eventWriteQueue.length > 0 && cmdQueue.length === 0) {
-    relay.eventBatch(eventWriteQueue);
-    eventWriteQueue = [];
+  if (eventWriteQueue.length > 0 && cmdQueue.length === 0) {
+    await barrierQueue(cmdQueue, async () => {
+      if (relay) {
+        const toWrite = [...eventWriteQueue];
+        eventWriteQueue = [];
+        relay.eventBatch(toWrite);
+      }
+    });
   }
   setTimeout(() => insertBatch(), 100);
 }
