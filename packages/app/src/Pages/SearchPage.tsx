@@ -1,24 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
-import Timeline from "@/Components/Feed/Timeline";
+import { LocalSearch } from "@/Components/Feed/LocalSearch";
 import TabSelectors, { Tab } from "@/Components/TabSelectors/TabSelectors";
 import TrendingNotes from "@/Components/Trending/TrendingPosts";
-import TrendingUsers from "@/Components/Trending/TrendingUsers";
-import FollowListBase from "@/Components/User/FollowListBase";
-import useProfileSearch from "@/Hooks/useProfileSearch";
 import { debounce } from "@/Utils";
 
 const NOTES = 0;
 const PROFILES = 1;
-
-const Profiles = ({ keyword }: { keyword: string }) => {
-  const results = useProfileSearch(keyword);
-  const ids = useMemo(() => results.map(r => r.pubkey), [results]);
-  const content = keyword ? <FollowListBase pubkeys={ids} showAbout={true} /> : <TrendingUsers />;
-  return <div className="px-3">{content}</div>;
-};
 
 const SearchPage = () => {
   const params = useParams();
@@ -53,18 +43,9 @@ const SearchPage = () => {
     return debounce(500, () => setKeyword(search));
   }, [search]);
 
-  const subject = useMemo(
-    () => ({
-      type: "post_keyword",
-      items: [keyword + (sortPopular ? " sort:popular" : "")],
-      discriminator: keyword,
-    }),
-    [keyword, sortPopular],
-  );
-
   function tabContent() {
     if (tab.value === PROFILES) {
-      return <Profiles keyword={search} />;
+      return <LocalSearch term={keyword} kind={0} />;
     }
 
     if (!keyword) {
@@ -74,7 +55,7 @@ const SearchPage = () => {
     return (
       <>
         {sortOptions()}
-        <Timeline key={keyword} subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} loadMore={false} />
+        <LocalSearch term={keyword} kind={1} />
       </>
     );
   }

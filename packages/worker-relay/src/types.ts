@@ -50,6 +50,10 @@ export interface RelayHandler extends EventEmitter<RelayHandlerEvents> {
   close(): void;
   event(ev: NostrEvent): boolean;
   eventBatch(evs: Array<NostrEvent>): boolean;
+
+  /**
+   * Run any SQL command
+   */
   sql(sql: string, params: Array<string | number>): Array<Array<string | number>>;
   req(id: string, req: ReqFilter): Array<NostrEvent>;
   count(req: ReqFilter): number;

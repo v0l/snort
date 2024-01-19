@@ -1,33 +1,9 @@
-import { unixNow } from "@snort/shared";
 import { socialGraphInstance } from "@snort/system";
 import { useMemo } from "react";
 
 import fuzzySearch from "@/Db/FuzzySearch";
-import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
 
 export default function useProfileSearch(search: string) {
-  const options: TimelineFeedOptions = useMemo(
-    () => ({
-      method: "LIMIT_UNTIL",
-      window: undefined,
-      now: unixNow(),
-    }),
-    [],
-  );
-
-  const subject: TimelineSubject = useMemo(
-    () => ({
-      type: "profile_keyword",
-      discriminator: search,
-      items: search ? [search] : [],
-      relay: undefined,
-      streams: false,
-    }),
-    [search],
-  );
-
-  const { main } = useTimelineFeed(subject, options);
-
   const results = useMemo(() => {
     const searchString = search.trim();
     const fuseResults = fuzzySearch.search(searchString);
@@ -66,7 +42,7 @@ export default function useProfileSearch(search: string) {
       });
 
     return combinedResults.map(r => r.item);
-  }, [search, main]);
+  }, [search]);
 
   return results;
 }

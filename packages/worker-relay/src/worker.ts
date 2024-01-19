@@ -2,8 +2,8 @@
 
 import { InMemoryRelay } from "./memory-relay";
 import { WorkQueueItem, barrierQueue, processWorkQueue } from "./queue";
-import { WorkerRelay } from "./relay";
-import { NostrEvent, RelayHandler, ReqCommand, ReqFilter, WorkerMessage, eventMatchesFilter } from "./types";
+import { SqliteRelay } from "./sqlite-relay";
+import { NostrEvent, RelayHandler, ReqCommand, ReqFilter, WorkerMessage, eventMatchesFilter, unixNowMs } from "./types";
 
 interface PortedFilter {
   filters: Array<ReqFilter>;
@@ -33,10 +33,18 @@ async function insertBatch() {
   // This is to make req's execute first and not block them
   if (eventWriteQueue.length > 0 && cmdQueue.length === 0) {
     await barrierQueue(cmdQueue, async () => {
+      const start = unixNowMs();
+      const timeLimit = 1000;
       if (relay) {
-        const toWrite = [...eventWriteQueue];
-        eventWriteQueue = [];
-        relay.eventBatch(toWrite);
+        while (eventWriteQueue.length > 0) {
+          if (unixNowMs() - start >= timeLimit) {
+            console.debug("Yield insert, queue length: ", eventWriteQueue.length, ", cmds: ", cmdQueue.length);
+            break;
+          }
+          const batch = eventWriteQueue.splice(0, 10);
+          eventWriteQueue = eventWriteQueue.slice(batch.length);
+          relay.eventBatch(batch);
+        }
       }
     });
   }
@@ -68,7 +76,7 @@ globalThis.onmessage = async ev => {
       case "init": {
         await barrierQueue(cmdQueue, async () => {
           if ("WebAssembly" in globalThis && (await tryOpfs())) {
-            relay = new WorkerRelay();
+            relay = new SqliteRelay();
           } else {
             relay = new InMemoryRelay();
           }
