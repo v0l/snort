@@ -44,7 +44,9 @@ async function reply<T>(id: string, obj?: T, transferables?: Transferable[]) {
 // Event inserter queue
 let eventWriteQueue: Array<NostrEvent> = [];
 async function insertBatch() {
-  if (eventWriteQueue.length > 0) {
+  // Only insert event batches when the command queue is empty
+  // This is to make req's execute first and not block them
+  if (eventWriteQueue.length > 0 && cmdQueue.length === 0) {
     relay.eventBatch(eventWriteQueue);
     eventWriteQueue = [];
   }
