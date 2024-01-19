@@ -12,7 +12,7 @@ const cache = new LRUCache<string, NostrEvent[]>({ maxSize: 100 });
 
 export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveOpen?: boolean, maxWindow?: number) {
   const cacheKey = useMemo(() => JSON.stringify(filters), [filters]);
-  const [events, setEvents] = useState<Array<NostrEvent>>(cache.get(cacheKey) || []);
+  const [events, setEvents] = useState<Array<NostrEvent>>(cache.get(cacheKey) ?? []);
   const [rb, setRb] = useState<RequestBuilder>();
   const system = useContext(SnortContext);
 
@@ -63,7 +63,7 @@ export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveO
         res.port.addEventListener("message", ev => {
           const evs = ev.data as Array<NostrEvent>;
           if (evs.length > 0) {
-            cacheAndSetEvents(x => [...x, ...evs]);
+            cacheAndSetEvents([...events, ...evs]);
           }
         });
         res.port.start();
