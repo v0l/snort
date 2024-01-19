@@ -1,13 +1,8 @@
 import sqlite3InitModule, { Database, Sqlite3Static } from "@sqlite.org/sqlite-wasm";
-import debug from "debug";
 import { EventEmitter } from "eventemitter3";
-import { NostrEvent, ReqFilter, unixNowMs } from "./types";
+import { NostrEvent, RelayHandler, RelayHandlerEvents, ReqFilter, unixNowMs } from "./types";
 
-export interface WorkerRelayEvents {
-  event: (evs: Array<NostrEvent>) => void;
-}
-
-export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
+export class WorkerRelay extends EventEmitter<RelayHandlerEvents> implements RelayHandler {
   #sqlite?: Sqlite3Static;
   #log = (...args: any[]) => console.debug(...args);
   #db?: Database;
@@ -16,16 +11,18 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
   /**
    * Initialize the SQLite driver
    */
-  async init() {
+  async init(path: string) {
     if (this.#sqlite) return;
     this.#sqlite = await sqlite3InitModule();
     this.#log(`Got SQLite version: ${this.#sqlite.version.libVersion}`);
+    await this.#open(path);
+    this.#migrate();
   }
 
   /**
    * Open the database from its path
    */
-  async open(path: string) {
+  async #open(path: string) {
     if (!this.#sqlite) throw new Error("Must call init first");
     if (this.#db) return;
 
@@ -50,7 +47,7 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
   /**
    * Do database migration
    */
-  migrate() {
+  #migrate() {
     if (!this.#db) throw new Error("DB must be open");
 
     this.#db.exec(
@@ -88,7 +85,7 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
    * Run any SQL command
    */
   sql(sql: string, params: Array<any>) {
-    return this.#db?.selectArrays(sql, params);
+    return this.#db?.selectArrays(sql, params) as Array<Array<string | number>>;
   }
 
   /**
@@ -229,7 +226,7 @@ export class WorkerRelay extends EventEmitter<WorkerRelayEvents> {
     } catch (e) {
       console.error(e);
     } finally {
-      this.open(filePath);
+      await this.#open(filePath);
     }
     return new Uint8Array();
   }

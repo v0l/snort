@@ -1,14 +1,11 @@
-import debug from "debug";
-import { NostrEvent, ReqCommand, WorkerMessage } from "./types";
+import { NostrEvent, ReqCommand, WorkerMessage, WorkerMessageCommand } from "./types";
 import { v4 as uuid } from "uuid";
 
 export class WorkerRelayInterface {
   #worker: Worker;
-  #log = (msg: any) => console.debug(msg);
   #commandQueue: Map<string, (v: unknown, ports: ReadonlyArray<MessagePort>) => void> = new Map();
 
   constructor(path: string) {
-    this.#log(`Module path: ${path}`);
     this.#worker = new Worker(path, { type: "module" });
     this.#worker.onmessage = e => {
       const cmd = e.data as WorkerMessage<any>;
@@ -20,16 +17,8 @@ export class WorkerRelayInterface {
     };
   }
 
-  async init() {
-    return (await this.#workerRpc<void, boolean>("init")).result;
-  }
-
-  async open() {
-    return (await this.#workerRpc<void, boolean>("open")).result;
-  }
-
-  async migrate() {
-    return (await this.#workerRpc<void, boolean>("migrate")).result;
+  async init(path: string) {
+    return (await this.#workerRpc<string, boolean>("init", path)).result;
   }
 
   async event(ev: NostrEvent) {
@@ -60,7 +49,7 @@ export class WorkerRelayInterface {
     return (await this.#workerRpc<object, Array<Array<any>>>("sql", { sql, params })).result;
   }
 
-  #workerRpc<T, R>(cmd: string, args?: T) {
+  #workerRpc<T, R>(cmd: WorkerMessageCommand, args?: T) {
     const id = uuid();
     const msg = {
       id,

@@ -11,11 +11,7 @@ import { ProfileCacheRelayWorker } from "./ProfileWorkeCache";
 export const Relay = new WorkerRelayInterface(WorkerRelayPath);
 export async function initRelayWorker() {
   try {
-    if (await Relay.init()) {
-      if (await Relay.open()) {
-        await Relay.migrate();
-      }
-    }
+    await Relay.init("relay.db");
   } catch (e) {
     console.error(e);
   }
