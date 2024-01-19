@@ -45,5 +45,9 @@
     "wss://relay.nostr.band/": { "read": true, "write": true },
     "wss://relay.damus.io/": { "read": true, "write": true }
   },
-  "chatChannels": [{ "type": "telegram", "value": "https://t.me/irismessenger" }]
+  "chatChannels": [{ "type": "telegram", "value": "https://t.me/irismessenger" }],
+  "alby": {
+    "clientId": "5rYcHDrlDb",
+    "clientSecret": "QAI3QmgiaPH3BfTMzzFd"
+  }
 }
