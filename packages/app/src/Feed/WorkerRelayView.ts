@@ -8,7 +8,7 @@ import { Relay } from "@/Cache";
 import useLogin from "@/Hooks/useLogin";
 import { Day } from "@/Utils/Const";
 
-const cache = new LRUCache<string, NostrEvent[]>(20);
+const cache = new LRUCache<string, NostrEvent[]>({ maxSize: 100 });
 
 export function useWorkerRelayView(id: string, filters: Array<ReqFilter>, leaveOpen?: boolean, maxWindow?: number) {
   const cacheKey = useMemo(() => JSON.stringify(filters), [filters]);
