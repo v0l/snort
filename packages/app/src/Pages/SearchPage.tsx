@@ -55,7 +55,7 @@ const SearchPage = () => {
 
   function tabContent() {
     if (tab.value === PROFILES) {
-      return <Profiles keyword={keyword} />
+      return <Profiles keyword={keyword} />;
     }
 
     if (!keyword) {
