@@ -10,6 +10,7 @@ const MixCloudEmbed = ({ link }: { link: string }) => {
     <>
       <br />
       <iframe
+        credentialless=""
         title="SoundCloud player"
         width="100%"
         height="120"

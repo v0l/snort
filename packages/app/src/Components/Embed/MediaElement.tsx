@@ -90,6 +90,7 @@ const VideoElement = ({ url }: VideoElementProps) => {
         "md:h-[510px]": !CONFIG.media.preferLargeMedia,
       })}>
       <video
+        crossOrigin="anonymous"
         ref={videoRef}
         loop={true}
         muted={!isMobile}

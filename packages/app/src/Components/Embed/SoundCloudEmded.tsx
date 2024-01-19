@@ -1,6 +1,7 @@
 const SoundCloudEmbed = ({ link }: { link: string }) => {
   return (
     <iframe
+      credentialless=""
       width="100%"
       height="166"
       scrolling="no"

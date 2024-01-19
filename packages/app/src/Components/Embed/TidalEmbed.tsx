@@ -52,7 +52,7 @@ const TidalEmbed = ({ link }: { link: string }) => {
         {link}
       </a>
     );
-  return <iframe src={source} style={extraStyles} width="100%" title="TIDAL Embed" frameBorder={0} />;
+  return <iframe src={source} style={extraStyles} width="100%" title="TIDAL Embed" frameBorder={0} credentialless="" />;
 };
 
 export default TidalEmbed;
