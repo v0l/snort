@@ -39,6 +39,7 @@ export default defineConfig({
   build: {
     outDir: "build",
     commonjsOptions: { transformMixedEsModules: true },
+    sourcemap: true,
   },
   clearScreen: false,
   publicDir: appConfig.get("publicDir"),
