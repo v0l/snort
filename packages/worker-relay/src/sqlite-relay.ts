@@ -30,7 +30,11 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
       try {
         this.#db = new this.#sqlite.oo1.OpfsDb(path, "cw");
         this.#log(`Opened ${this.#db.filename}`);
-        this.#db.exec(`PRAGMA cache_size=${32 * 1024}; PRAGMA page_size=8192; PRAGMA journal_mode=MEMORY; PRAGMA temp_store=MEMORY;`);
+        this.#db.exec(
+          `PRAGMA cache_size=${
+            32 * 1024
+          }; PRAGMA page_size=8192; PRAGMA journal_mode=MEMORY; PRAGMA temp_store=MEMORY;`,
+        );
       } catch (e) {
         // wipe db
         console.error(e);
