@@ -38,6 +38,8 @@ export const onRequest: PagesFunction<Env> = async context => {
             headers: {
               ...Object.fromEntries(rsp.headers.entries()),
               "cache-control": "public, max-age=60",
+              "Cross-Origin-Opener-Policy": "same-origin",
+              "Cross-Origin-Embedder-Policy": "require-corp",
             },
           });
         }
