@@ -1,7 +1,7 @@
 import { LNURL } from "@snort/shared";
 import { CachedMetadata, encodeTLVEntries, NostrPrefix, TLVEntryType } from "@snort/system";
 import React, { useMemo, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
 import IconButton from "@/Components/Button/IconButton";
@@ -14,6 +14,7 @@ import FollowButton from "@/Components/User/FollowButton";
 import ProfileImage from "@/Components/User/ProfileImage";
 import ZapModal from "@/Components/ZapModal/ZapModal";
 import { hexToBech32 } from "@/Utils";
+import { LoginSessionType, LoginStore } from "@/Utils/Login";
 
 const AvatarSection = ({
   user,
@@ -34,6 +35,8 @@ const AvatarSection = ({
   const profileId = useMemo(() => hexToBech32(CONFIG.profileLinkPrefix, id), [id]);
   const navigate = useNavigate();
   const isMe = loginPubKey === id;
+  const canWrite = !!loginPubKey && !readonly;
+  const intl = useIntl();
 
   const renderButtons = () => {
     if (!id) return null;
@@ -66,7 +69,7 @@ const AvatarSection = ({
         ) : (
           <>
             {lnurl && <IconButton onClick={() => setShowLnQr(true)} icon={{ name: "zap", size: 16 }} />}
-            {loginPubKey && !readonly && (
+            {canWrite && (
               <IconButton
                 onClick={() =>
                   navigate(
@@ -78,6 +81,16 @@ const AvatarSection = ({
                   )
                 }
                 icon={{ name: "envelope", size: 16 }}
+              />
+            )}
+            {!canWrite && !isMe && (
+              <IconButton
+                onClick={() => {
+                  if (confirm(intl.formatMessage({ defaultMessage: "View as user?", id: "LBAnc7" }))) {
+                    LoginStore.loginWithPubkey(id, LoginSessionType.PublicKey);
+                  }
+                }}
+                icon={{ name: "openeye", size: 16, className: "translate-y-0.5" }}
               />
             )}
           </>
