@@ -539,9 +539,6 @@
   "GL8aXW": {
     "defaultMessage": "Bookmarks ({n})"
   },
-  "GQPtfk": {
-    "defaultMessage": "Join Stream"
-  },
   "GSye7T": {
     "defaultMessage": "Lightning Address"
   },
@@ -1255,6 +1252,9 @@
   },
   "fsB/4p": {
     "defaultMessage": "Saved"
+  },
+  "furjvW": {
+    "defaultMessage": "Watch Stream"
   },
   "g5pX+a": {
     "defaultMessage": "About"

@@ -3,6 +3,7 @@ const WavlakeEmbed = ({ link }: { link: string }) => {
 
   return (
     <iframe
+      // eslint-disable-next-line react/no-unknown-property
       credentialless=""
       style={{ borderRadius: 12 }}
       src={convertedUrl}

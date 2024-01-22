@@ -46,12 +46,14 @@ const TidalEmbed = ({ link }: { link: string }) => {
       .catch(console.error);
   }, [link]);
 
-  if (!source)
+  if (!source) {
     return (
       <a href={link} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="ext">
         {link}
       </a>
     );
+  }
+  // eslint-disable-next-line react/no-unknown-property
   return <iframe src={source} style={extraStyles} width="100%" title="TIDAL Embed" frameBorder={0} credentialless="" />;
 };
 

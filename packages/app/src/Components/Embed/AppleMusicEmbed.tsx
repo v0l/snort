@@ -6,6 +6,7 @@ const AppleMusicEmbed = ({ link }: { link: string }) => {
     <iframe
       allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
       frameBorder="0"
+      // eslint-disable-next-line react/no-unknown-property
       credentialless=""
       height={isSongLink ? 175 : 450}
       style={{ width: "100%", maxWidth: 660, overflow: "hidden", background: "transparent" }}

@@ -1,4 +1,5 @@
 import { NostrEvent, NostrLink } from "@snort/system";
+import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
@@ -12,6 +13,7 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
   const status = findTag(ev, "status");
   const starts = Number(findTag(ev, "starts"));
   const host = ev.tags.find(a => a[0] === "p" && a[3] === "host")?.[1] ?? ev.pubkey;
+  const [play, setPlay] = useState(false);
 
   function statusLine() {
     switch (status) {
@@ -49,11 +51,9 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
     switch (status) {
       case "live": {
         return (
-          <Link to={link} target="_blank">
-            <button className="nowrap">
-              <FormattedMessage defaultMessage="Join Stream" id="GQPtfk" />
-            </button>
-          </Link>
+          <button className="nowrap" onClick={() => setPlay(true)}>
+            <FormattedMessage defaultMessage="Watch Stream" id="furjvW" />
+          </button>
         );
       }
       case "ended": {
@@ -69,7 +69,20 @@ export function LiveEvent({ ev }: { ev: NostrEvent }) {
       }
     }
   }
-
+  if (play) {
+    const link = `https://zap.stream/embed/${NostrLink.fromEvent(ev).encode()}`;
+    return (
+      <iframe
+        // eslint-disable-next-line react/no-unknown-property
+        credentialless=""
+        src={link}
+        width="100%"
+        style={{
+          aspectRatio: "16/9",
+        }}
+      />
+    );
+  }
   return (
     <div className="sm:flex g12 br p24 bg-primary items-center">
       <div>

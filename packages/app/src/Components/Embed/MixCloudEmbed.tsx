@@ -10,6 +10,7 @@ const MixCloudEmbed = ({ link }: { link: string }) => {
     <>
       <br />
       <iframe
+        // eslint-disable-next-line react/no-unknown-property
         credentialless=""
         title="SoundCloud player"
         width="100%"

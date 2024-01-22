@@ -7,7 +7,9 @@ const TwitchEmbed = ({ link }: { link: string }) => {
       src={`https://player.twitch.tv/${args}`}
       className="w-max"
       allowFullScreen={true}
-      credentialless=""></iframe>
+      // eslint-disable-next-line react/no-unknown-property
+      credentialless=""
+    />
   );
 };
 
