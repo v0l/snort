@@ -1,0 +1,43 @@
+{
+  "appName": "Nostr",
+  "appNameCapitalized": "Nostr",
+  "appTitle": "Nostr",
+  "hostname": "nostr.com",
+  "nip05Domain": "nostr.com",
+  "favicon": "public/favicon.ico",
+  "appleTouchIconUrl": "/nostrich_512.png",
+  "navLogo": null,
+  "publicDir": "public/snort",
+  "httpCache": "",
+  "animalNamePlaceholders": false,
+  "features": {
+    "analytics": false,
+    "subscriptions": false,
+    "deck": false,
+    "zapPool": false,
+    "notificationGraph": true,
+    "communityLeaders": false
+  },
+  "signUp": {
+    "moderation": true,
+    "defaultFollows": []
+  },
+  "defaultPreferences": {
+    "hideMutedNotes": false
+  },
+  "media": {
+    "bypassImgProxyError": false,
+    "preferLargeMedia": true
+  },
+  "noteCreatorToast": true,
+  "hideFromNavbar": ["/graph"],
+  "deckSubKind": 1,
+  "showPowIcon": true,
+  "eventLinkPrefix": "nevent",
+  "profileLinkPrefix": "nprofile",
+  "defaultRelays": {
+    "wss://relay.snort.social/": { "read": true, "write": true },
+    "wss://nostr.wine/": { "read": true, "write": false },
+    "wss://eden.nostr.land/": { "read": true, "write": false }
+  }
+}

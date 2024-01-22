@@ -64,10 +64,6 @@ const DonatePage = () => {
   const [today, setSumToday] = useState<RevenueToday>();
   const [onChain, setOnChain] = useState("");
   const api = new SnortApi(ApiHost);
-  const zapPool = useSyncExternalStore(
-    c => unwrap(ZapPoolController).hook(c),
-    () => unwrap(ZapPoolController).snapshot(),
-  );
 
   async function getOnChainAddress() {
     const { address } = await api.onChainDonation();
@@ -178,34 +174,7 @@ const DonatePage = () => {
           </div>
         </Modal>
       )}
-      {CONFIG.features.zapPool && (
-        <>
-          <h3>
-            <FormattedMessage defaultMessage="ZapPool" id="pRess9" />
-          </h3>
-          <p>
-            <FormattedMessage
-              defaultMessage="Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"
-              id="x/Fx2P"
-            />
-          </p>
-          <p>
-            <Link to="/zap-pool" className="underline">
-              <FormattedMessage defaultMessage="Configure zap pool" id="kqPQJD" />
-            </Link>
-          </p>
-          <ZapPoolTarget
-            target={
-              zapPool.find(b => b.pubkey === bech32ToHex(SnortPubKey) && b.type === ZapPoolRecipientType.Generic) ?? {
-                type: ZapPoolRecipientType.Generic,
-                pubkey: bech32ToHex(SnortPubKey),
-                split: 0,
-                sum: 0,
-              }
-            }
-          />
-        </>
-      )}
+      <ZapPoolDonateSection />
       <h3>
         <FormattedMessage defaultMessage="Primary Developers" id="4IPzdn" />
       </h3>
@@ -227,5 +196,45 @@ const DonatePage = () => {
     </div>
   );
 };
+
+function ZapPoolDonateSection() {
+  if (!CONFIG.features.zapPool) {
+    return;
+  }
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const zapPool = useSyncExternalStore(
+    c => unwrap(ZapPoolController).hook(c),
+    () => unwrap(ZapPoolController).snapshot(),
+  );
+
+  return (
+    <>
+      <h3>
+        <FormattedMessage defaultMessage="ZapPool" id="pRess9" />
+      </h3>
+      <p>
+        <FormattedMessage
+          defaultMessage="Fund the services that you use by splitting a portion of all your zaps into a pool of funds!"
+          id="x/Fx2P"
+        />
+      </p>
+      <p>
+        <Link to="/zap-pool" className="underline">
+          <FormattedMessage defaultMessage="Configure zap pool" id="kqPQJD" />
+        </Link>
+      </p>
+      <ZapPoolTarget
+        target={
+          zapPool.find(b => b.pubkey === bech32ToHex(SnortPubKey) && b.type === ZapPoolRecipientType.Generic) ?? {
+            type: ZapPoolRecipientType.Generic,
+            pubkey: bech32ToHex(SnortPubKey),
+            split: 0,
+            sum: 0,
+          }
+        }
+      />
+    </>
+  );
+}
 
 export default DonatePage;
