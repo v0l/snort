@@ -691,6 +691,9 @@
   "LF5kYT": {
     "defaultMessage": "Other Connections"
   },
+  "LKw/ue": {
+    "defaultMessage": "Check out the code {link}"
+  },
   "LR1XjT": {
     "defaultMessage": "Pin too short"
   },
@@ -902,6 +905,9 @@
   "TDR5ge": {
     "defaultMessage": "Media in notes will automatically be shown for selected people, otherwise only the link will show"
   },
+  "TH1fFo": {
+    "defaultMessage": "Telegram"
+  },
   "TJo5E6": {
     "defaultMessage": "Preview"
   },
@@ -1022,9 +1028,6 @@
   },
   "XgWvGA": {
     "defaultMessage": "Reactions"
-  },
-  "XhpBfA": {
-    "defaultMessage": "{site} is an open source project built by passionate people in their free time, your donations are greatly appreciated"
   },
   "Xnimz0": {
     "defaultMessage": "Sending from <b>{wallet}</b>"
@@ -1225,6 +1228,9 @@
   },
   "fBlba3": {
     "defaultMessage": "Thanks for using {site}, please consider donating if you can."
+  },
+  "fLIvbC": {
+    "defaultMessage": "Snort is an open source project built by passionate people in their free time, your donations are greatly appreciated"
   },
   "fOksnD": {
     "defaultMessage": "Can't vote because LNURL service does not support zaps"
@@ -1579,6 +1585,9 @@
   "rmdsT4": {
     "defaultMessage": "{n} days"
   },
+  "rn52n9": {
+    "defaultMessage": "Public Chat Channels"
+  },
   "rx1i0i": {
     "defaultMessage": "Short link"
   },
@@ -1614,9 +1623,6 @@
   },
   "u/vOPu": {
     "defaultMessage": "Paid"
-  },
-  "u4bHcR": {
-    "defaultMessage": "Check out the code here: {link}"
   },
   "u9NoC1": {
     "defaultMessage": "Name must be less than {limit} characters"
@@ -1679,6 +1685,9 @@
     "defaultMessage": "Anon",
     "description": "Anonymous Zap"
   },
+  "whSrs+": {
+    "defaultMessage": "Nostr Public Chat"
+  },
   "wih7iJ": {
     "defaultMessage": "name is blocked"
   },
@@ -1736,9 +1745,6 @@
   },
   "yCLnBC": {
     "defaultMessage": "LNURL or Lightning Address"
-  },
-  "yNBPJp": {
-    "defaultMessage": "Help fund the development of {site}"
   },
   "zCb8fX": {
     "defaultMessage": "Weight"

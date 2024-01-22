@@ -45,12 +45,16 @@ const SettingsIndex = () => {
           message: <FormattedMessage id="08zn6O" defaultMessage="Export Keys" />,
           path: "keys",
         },
-        {
-          icon: "badge",
-          iconBg: "bg-pink-500",
-          message: <FormattedMessage id="9pMqYs" defaultMessage="Nostr Address" />,
-          path: "handle",
-        },
+        ...(CONFIG.features.nostrAddress
+          ? [
+              {
+                icon: "badge",
+                iconBg: "bg-pink-500",
+                message: <FormattedMessage id="9pMqYs" defaultMessage="Nostr Address" />,
+                path: "handle",
+              },
+            ]
+          : []),
         {
           icon: "gear",
           iconBg: "bg-slate-500",
@@ -96,18 +100,26 @@ const SettingsIndex = () => {
           message: <FormattedMessage id="wofVHy" defaultMessage="Moderation" />,
           path: "moderation",
         },
-        {
-          icon: "bell-outline",
-          iconBg: "bg-red-500",
-          message: <FormattedMessage id="NAidKb" defaultMessage="Notifications" />,
-          path: "notifications",
-        },
-        {
-          icon: "link",
-          iconBg: "bg-blue-500",
-          message: <FormattedMessage id="hYOE+U" defaultMessage="Invite" />,
-          path: "invite",
-        },
+        ...(CONFIG.features.pushNotifications
+          ? [
+              {
+                icon: "bell-outline",
+                iconBg: "bg-red-500",
+                message: <FormattedMessage id="NAidKb" defaultMessage="Notifications" />,
+                path: "notifications",
+              },
+            ]
+          : []),
+        ...(CONFIG.features.communityLeaders
+          ? [
+              {
+                icon: "link",
+                iconBg: "bg-blue-500",
+                message: <FormattedMessage id="hYOE+U" defaultMessage="Invite" />,
+                path: "invite",
+              },
+            ]
+          : []),
         {
           icon: "hard-drive",
           iconBg: "bg-cyan-500",

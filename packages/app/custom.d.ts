@@ -1,4 +1,5 @@
 /// <reference types="@webbtc/webln-types" />
+/// <reference types="vite/client" />
 
 declare module "*.jpg" {
   const value: unknown;
@@ -59,6 +60,8 @@ declare const CONFIG: {
     zapPool: boolean;
     notificationGraph: boolean;
     communityLeaders: boolean;
+    nostrAddress: boolean;
+    pushNotifications: boolean;
   };
   defaultPreferences: {
     hideMutedNotes: boolean;
@@ -96,6 +99,12 @@ declare const CONFIG: {
     clientId: string;
     clientSecret: string;
   };
+
+  // public chat channels for site
+  chatChannels?: Array<{
+    type: "nip28" | "telegram";
+    value: string;
+  }>;
 };
 
 /**

@@ -74,6 +74,9 @@ export async function sendNotification(state: LoginSession, req: NotificationReq
 }
 
 export async function subscribeToNotifications(publisher: EventPublisher) {
+  if (!CONFIG.features.pushNotifications) {
+    return;
+  }
   // request permissions to send notifications
   if ("Notification" in window) {
     try {

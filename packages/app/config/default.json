@@ -17,7 +17,9 @@
     "deck": true,
     "zapPool": true,
     "notificationGraph": true,
-    "communityLeaders": true
+    "communityLeaders": true,
+    "nostrAddress": true,
+    "pushNotifications": true
   },
   "signUp": {
     "moderation": true,
@@ -47,5 +49,9 @@
   "alby": {
     "clientId": "pohiJjPhQR",
     "clientSecret": "GAl1YKLA3FveK1gLBYok"
-  }
+  },
+  "chatChannels": [
+    { "type": "telegram", "value": "https://t.me/irismessenger" },
+    { "type": "nip28", "value": "23286a4602ada10cc10200553bff62a110e8dc0eacddf73277395a89ddf26a09" }
+  ]
 }
