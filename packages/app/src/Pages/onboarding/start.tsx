@@ -71,7 +71,7 @@ export function SignIn() {
   const nip7Login = hasNip7 && !useKey;
   return (
     <div className="flex flex-col g24">
-      <img src={CONFIG.appleTouchIconUrl} width={48} height={48} className="br mr-auto ml-auto" />
+      <img src={CONFIG.icon} width={48} height={48} className="br mr-auto ml-auto" />
       <div className="flex flex-col g16 items-center">
         <h1>
           <FormattedMessage defaultMessage="Sign In" id="Ub+AGc" />
@@ -152,7 +152,7 @@ export function SignUp() {
 
   return (
     <div className="flex flex-col g24">
-      <img src={CONFIG.appleTouchIconUrl} width={48} height={48} className="br mr-auto ml-auto" />
+      <img src={CONFIG.icon} width={48} height={48} className="br mr-auto ml-auto" />
       <div className="flex flex-col g16 items-center">
         <h1>
           <FormattedMessage defaultMessage="Sign Up" id="39AHJm" />

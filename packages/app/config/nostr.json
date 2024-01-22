@@ -4,10 +4,9 @@
   "appTitle": "Nostr",
   "hostname": "nostr.com",
   "nip05Domain": "nostr.com",
-  "favicon": "public/favicon.ico",
-  "appleTouchIconUrl": "/nostrich_512.png",
+  "icon": "/nostr.jpg",
   "navLogo": null,
-  "publicDir": "public/snort",
+  "publicDir": "public/nostr",
   "httpCache": "",
   "animalNamePlaceholders": false,
   "features": {
@@ -40,6 +39,7 @@
   "defaultRelays": {
     "wss://relay.snort.social/": { "read": true, "write": true },
     "wss://nostr.wine/": { "read": true, "write": false },
-    "wss://eden.nostr.land/": { "read": true, "write": false }
+    "wss://eden.nostr.land/": { "read": true, "write": false },
+    "wss://nos.lol/": { "read": true, "write": true }
   }
 }

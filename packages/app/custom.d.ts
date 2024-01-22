@@ -47,8 +47,7 @@ declare const CONFIG: {
   appTitle: string;
   hostname: string;
   nip05Domain: string;
-  favicon: string;
-  appleTouchIconUrl: string;
+  icon: string;
   navLogo: string | null;
   httpCache: string;
   animalNamePlaceholders: boolean;

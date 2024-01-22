@@ -12,6 +12,7 @@ import Modal from "@/Components/Modal/Modal";
 import QrCode from "@/Components/QrCode";
 import ProfilePreview from "@/Components/User/ProfilePreview";
 import SnortApi, { RevenueSplit, RevenueToday } from "@/External/SnortApi";
+import useLogin from "@/Hooks/useLogin";
 import { bech32ToHex, unwrap } from "@/Utils";
 import { ApiHost, DeveloperAccounts, SnortPubKey } from "@/Utils/Const";
 import { ZapPoolController, ZapPoolRecipientType } from "@/Utils/ZapPoolController";
@@ -67,6 +68,7 @@ const DonatePage = () => {
   const [onChain, setOnChain] = useState("");
   const api = new SnortApi(ApiHost);
   const navigate = useNavigate();
+  const login = useLogin();
 
   async function getOnChainAddress() {
     const { address } = await api.onChainDonation();
@@ -153,9 +155,10 @@ const DonatePage = () => {
                   return (
                     <AsyncButton
                       onClick={() => {
-                        navigate(`/messages/${Nip28ChatSystem.chatId(a.value)}`);
+                        const id = Nip28ChatSystem.chatId(a.value);
+                        navigate(`/messages/${id}`);
                       }}>
-                      <img src={CONFIG.appleTouchIconUrl} width={24} height={24} className="rounded-full" />
+                      <img src={CONFIG.icon} width={24} height={24} className="rounded-full" />
                       <FormattedMessage defaultMessage="Nostr Public Chat" id="whSrs+" />
                     </AsyncButton>
                   );

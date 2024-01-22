@@ -15,6 +15,7 @@ import {
 import { useSyncExternalStore } from "react";
 
 import { Chats, GiftsCache } from "@/Cache";
+import { useEmptyChatSystem } from "@/Hooks/useEmptyChatSystem";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
 import { findTag } from "@/Utils";
@@ -155,15 +156,15 @@ export function createChatLink(type: ChatType, ...params: Array<string>) {
   throw new Error("Unknown chat type");
 }
 
-export function createEmptyChatObject(id: string) {
+export function createEmptyChatObject(id: string, messages?: Array<TaggedNostrEvent>) {
   if (id.startsWith("chat41")) {
-    return Nip4ChatSystem.createChatObj(id, []);
+    return Nip4ChatSystem.createChatObj(id, messages ?? []);
   }
   if (id.startsWith("chat241")) {
     return Nip24ChatSystem.createChatObj(id, []);
   }
   if (id.startsWith("chat281")) {
-    return Nip28ChatSystem.createChatObj(id, []);
+    return Nip28ChatSystem.createChatObj(id, messages ?? []);
   }
   throw new Error("Cant create new empty chat, unknown id");
 }
@@ -208,4 +209,25 @@ export function useChatSystem() {
     const authors = a.participants.filter(a => a.type === "pubkey").map(a => a.id);
     return authors.length === 0 || !authors.every(a => isBlocked(a));
   });
+}
+
+export function useChat(id: string) {
+  const getStore = () => {
+    if (id.startsWith("chat41")) {
+      return Nip4Chats;
+    }
+    if (id.startsWith("chat281")) {
+      return Nip28Chats;
+    }
+    throw new Error("Unsupported chat system");
+  };
+  const store = getStore();
+  const ret = useSyncExternalStore(
+    c => store.hook(c),
+    () => {
+      return store.snapshot().find(a => a.id === id);
+    },
+  );
+  const emptyChat = useEmptyChatSystem(ret === undefined ? id : undefined);
+  return ret ?? emptyChat;
 }

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,7 +13,6 @@ import { ChatParticipantProfile } from "@/Pages/Messages/ChatParticipant";
 import DmWindow from "@/Pages/Messages/DmWindow";
 import NewChatWindow from "@/Pages/Messages/NewChatWindow";
 import UnreadCount from "@/Pages/Messages/UnreadCount";
-import { parseId } from "@/Utils";
 
 const TwoCol = 768;
 
@@ -22,13 +21,8 @@ export default function MessagesPage() {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const { id } = useParams();
-  const [chat, setChat] = useState<string>();
   const pageWidth = usePageWidth();
 
-  useEffect(() => {
-    const parsedId = parseId(id ?? "");
-    setChat(id ? parsedId : undefined);
-  }, [id]);
   const chats = useChatSystem();
 
   const unreadCount = useMemo(() => chats.reduce((p, c) => p + c.unread, 0), [chats]);
@@ -67,7 +61,7 @@ export default function MessagesPage() {
     const participants = cx.participants.map(a => a.id);
     if (participants.length === 1 && participants[0] === login.publicKey) return noteToSelf(cx);
 
-    const isActive = cx.id === chat;
+    const isActive = cx.id === id;
     return (
       <div
         className={classNames("flex items-center p cursor-pointer justify-between", { active: isActive })}
@@ -89,7 +83,7 @@ export default function MessagesPage() {
 
   return (
     <div className="flex flex-1 md:h-screen md:overflow-hidden">
-      {(pageWidth >= TwoCol || !chat) && (
+      {pageWidth >= TwoCol && !id && (
         <div className="overflow-y-auto md:h-screen p-1 w-full md:w-1/3 flex-shrink-0">
           <div className="flex items-center justify-between p-2">
             <button disabled={unreadCount <= 0} type="button" className="text-sm font-semibold">
@@ -109,7 +103,7 @@ export default function MessagesPage() {
             .map(conversation)}
         </div>
       )}
-      {chat ? <DmWindow id={chat} /> : pageWidth >= TwoCol && <div className="flex-1 rt-border"></div>}
+      {id ? <DmWindow id={id} /> : pageWidth >= TwoCol && <div className="flex-1 rt-border"></div>}
     </div>
   );
 }

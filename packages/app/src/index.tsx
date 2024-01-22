@@ -2,7 +2,7 @@ import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
 import "@/assets/fonts/inter.css";
 
-import { encodeTLVEntries, socialGraphInstance } from "@snort/system";
+import { socialGraphInstance } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
@@ -34,6 +34,9 @@ import { RootTabRoutes } from "@/Pages/Root/RootTabRoutes";
 import SearchPage from "@/Pages/SearchPage";
 import SettingsRoutes from "@/Pages/settings/Routes";
 import { SubscribeRoutes } from "@/Pages/subscribe";
+import WalletPage from "@/Pages/wallet";
+import { WalletReceivePage } from "@/Pages/wallet/receive";
+import { WalletSendPage } from "@/Pages/wallet/send";
 import ZapPoolPage from "@/Pages/ZapPool";
 import { System } from "@/system";
 import { storeRefCode, unwrap } from "@/Utils";
@@ -41,10 +44,6 @@ import { LoginStore } from "@/Utils/Login";
 import { hasWasm, wasmInit, WasmPath } from "@/Utils/wasm";
 import { Wallets } from "@/Wallet";
 import { setupWebLNWalletConfig } from "@/Wallet/WebLN";
-
-import WalletPage from "./Pages/wallet";
-import { WalletReceivePage } from "./Pages/wallet/receive";
-import { WalletSendPage } from "./Pages/wallet/send";
 
 async function initSite() {
   storeRefCode();
@@ -222,10 +221,5 @@ root.render(
   </StrictMode>,
 );
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-ignore
-window.encodeTLV = encodeTLVEntries;
-
 // Use react-helmet instead?
 document.title = CONFIG.appTitle;
-document.querySelector('link[rel="apple-touch-icon"]')?.setAttribute("href", CONFIG.appleTouchIconUrl);
