@@ -542,7 +542,7 @@ export function trackEvent(
     CONFIG.features.analytics &&
     (LoginStore.snapshot().appData.item.preferences.telemetry ?? true)
   ) {
-    fetch("https://analytics.v0l.io/api/event", {
+    fetch("https://pa.v0l.io/api/event", {
       method: "POST",
       headers: {
         "content-type": "application/json",
