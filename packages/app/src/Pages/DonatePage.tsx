@@ -12,7 +12,6 @@ import Modal from "@/Components/Modal/Modal";
 import QrCode from "@/Components/QrCode";
 import ProfilePreview from "@/Components/User/ProfilePreview";
 import SnortApi, { RevenueSplit, RevenueToday } from "@/External/SnortApi";
-import useLogin from "@/Hooks/useLogin";
 import { bech32ToHex, unwrap } from "@/Utils";
 import { ApiHost, DeveloperAccounts, SnortPubKey } from "@/Utils/Const";
 import { ZapPoolController, ZapPoolRecipientType } from "@/Utils/ZapPoolController";
@@ -68,7 +67,6 @@ const DonatePage = () => {
   const [onChain, setOnChain] = useState("");
   const api = new SnortApi(ApiHost);
   const navigate = useNavigate();
-  const login = useLogin();
 
   async function getOnChainAddress() {
     const { address } = await api.onChainDonation();
