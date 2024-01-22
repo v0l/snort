@@ -7,10 +7,12 @@ import { LeadersStore } from "@/Cache/CommunityLeadersStore";
 import { useLinkList } from "./useLists";
 
 export function useCommunityLeaders() {
-  const link = parseNostrLink(unwrap(CONFIG.communityLeaders).list);
+  const link = CONFIG.communityLeaders ? parseNostrLink(unwrap(CONFIG.communityLeaders).list) : undefined;
 
   const list = useLinkList("leaders", rb => {
-    rb.withFilter().kinds([EventKind.FollowSet]).link(link);
+    if (link) {
+      rb.withFilter().kinds([EventKind.FollowSet]).link(link);
+    }
   });
 
   useEffect(() => {
