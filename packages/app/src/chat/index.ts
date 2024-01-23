@@ -12,19 +12,18 @@ import {
   TLVEntryType,
   UserMetadata,
 } from "@snort/system";
-import { useSyncExternalStore } from "react";
+import { useRequestBuilder } from "@snort/system-react";
+import { useMemo } from "react";
 
-import { Chats, GiftsCache } from "@/Cache";
 import { useEmptyChatSystem } from "@/Hooks/useEmptyChatSystem";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
 import { findTag } from "@/Utils";
 import { LoginSession } from "@/Utils/Login";
 
-import { Nip4ChatSystem } from "./nip4";
+import { Nip4Chats, Nip4ChatSystem } from "./nip4";
 import { Nip24ChatSystem } from "./nip24";
-import { Nip28ChatSystem } from "./nip28";
-import { Nip29ChatSystem } from "./nip29";
+import { Nip28Chats, Nip28ChatSystem } from "./nip28";
 
 export enum ChatType {
   DirectMessage = 1,
@@ -66,15 +65,12 @@ export interface ChatSystem {
    * Create a request for this system to get updates
    */
   subscription(session: LoginSession): RequestBuilder | undefined;
-  onEvent(evs: readonly TaggedNostrEvent[]): Promise<void> | void;
 
-  listChats(pk: string): Array<Chat>;
+  /**
+   * Create a list of chats for a given pubkey and set of events
+   */
+  listChats(pk: string, evs: Array<TaggedNostrEvent>): Array<Chat>;
 }
-
-export const Nip4Chats = new Nip4ChatSystem(Chats);
-export const Nip29Chats = new Nip29ChatSystem(Chats);
-export const Nip24Chats = new Nip24ChatSystem(GiftsCache);
-export const Nip28Chats = new Nip28ChatSystem(Chats);
 
 /**
  * Extract the P tag of the event
@@ -169,46 +165,30 @@ export function createEmptyChatObject(id: string, messages?: Array<TaggedNostrEv
   throw new Error("Cant create new empty chat, unknown id");
 }
 
-export function useNip4Chat() {
-  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
-  return useSyncExternalStore(
-    c => Nip4Chats.hook(c),
-    () => Nip4Chats.snapshot(publicKey),
-  );
-}
-
-export function useNip29Chat() {
-  return useSyncExternalStore(
-    c => Nip29Chats.hook(c),
-    () => Nip29Chats.snapshot(),
-  );
-}
-
-export function useNip24Chat() {
-  const { publicKey } = useLogin(s => ({ publicKey: s.publicKey }));
-  return useSyncExternalStore(
-    c => Nip24Chats.hook(c),
-    () => Nip24Chats.snapshot(publicKey),
-  );
-}
-
-export function useNip28Chat() {
-  return useSyncExternalStore(
-    c => Nip28Chats.hook(c),
-    () => Nip28Chats.snapshot(),
-  );
-}
-
-export function useChatSystem() {
-  const nip4 = useNip4Chat();
-  //const nip24 = useNip24Chat();
-  const nip28 = useNip28Chat();
+export function useChatSystem(chat: ChatSystem) {
+  const login = useLogin();
+  const sub = useMemo(() => {
+    return chat.subscription(login);
+  }, [login.publicKey]);
+  const data = useRequestBuilder(sub);
   const { isBlocked } = useModeration();
 
-  return [...nip4, ...nip28].filter(a => {
-    const authors = a.participants.filter(a => a.type === "pubkey").map(a => a.id);
-    return authors.length === 0 || !authors.every(a => isBlocked(a));
-  });
+  return useMemo(() => {
+    if (login.publicKey) {
+      return chat.listChats(
+        login.publicKey,
+        data.filter(a => !isBlocked(a.pubkey)),
+      );
+    }
+    return [];
+  }, [login.publicKey, data]);
+}
+
+export function useChatSystems() {
+  const nip4 = useChatSystem(Nip4Chats);
+  const nip28 = useChatSystem(Nip28Chats);
+
+  return [...nip4, ...nip28];
 }
 
 export function useChat(id: string) {
@@ -221,13 +201,7 @@ export function useChat(id: string) {
     }
     throw new Error("Unsupported chat system");
   };
-  const store = getStore();
-  const ret = useSyncExternalStore(
-    c => store.hook(c),
-    () => {
-      return store.snapshot().find(a => a.id === id);
-    },
-  );
+  const ret = useChatSystem(getStore()).find(a => a.id === id);
   const emptyChat = useEmptyChatSystem(ret === undefined ? id : undefined);
   return ret ?? emptyChat;
 }

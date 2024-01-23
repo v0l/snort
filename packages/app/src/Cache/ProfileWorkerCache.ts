@@ -88,6 +88,7 @@ export class ProfileCacheRelayWorker extends EventEmitter<CacheEvents> implement
   async bulkSet(obj: CachedMetadata[] | readonly CachedMetadata[]) {
     const mapped = obj.map(a => this.key(a));
     mapped.forEach(a => this.#keys.add(a));
+    // todo: store in cache
     this.emit("change", mapped);
   }
 

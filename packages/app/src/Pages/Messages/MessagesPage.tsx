@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Chat, ChatType, useChatSystem } from "@/chat";
+import { Chat, ChatType, useChatSystems } from "@/chat";
 import NoteTime from "@/Components/Event/Note/NoteTime";
 import NoteToSelf from "@/Components/User/NoteToSelf";
 import ProfileImage from "@/Components/User/ProfileImage";
@@ -23,7 +23,7 @@ export default function MessagesPage() {
   const { id } = useParams();
   const pageWidth = usePageWidth();
 
-  const chats = useChatSystem();
+  const chats = useChatSystems();
 
   const unreadCount = useMemo(() => chats.reduce((p, c) => p + c.unread, 0), [chats]);
 
@@ -83,7 +83,7 @@ export default function MessagesPage() {
 
   return (
     <div className="flex flex-1 md:h-screen md:overflow-hidden">
-      {pageWidth >= TwoCol && !id && (
+      {pageWidth >= TwoCol && (
         <div className="overflow-y-auto md:h-screen p-1 w-full md:w-1/3 flex-shrink-0">
           <div className="flex items-center justify-between p-2">
             <button disabled={unreadCount <= 0} type="button" className="text-sm font-semibold">

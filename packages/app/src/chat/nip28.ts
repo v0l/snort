@@ -1,4 +1,4 @@
-import { ExternalStore, FeedCache, unwrap } from "@snort/shared";
+import { unwrap } from "@snort/shared";
 import {
   decodeTLV,
   encodeTLVEntries,
@@ -11,15 +11,12 @@ import {
   TLVEntryType,
   UserMetadata,
 } from "@snort/system";
-import debug from "debug";
 
 import { Chat, ChatParticipant, ChatSystem, ChatType, lastReadInChat } from "@/chat";
 import { findTag } from "@/Utils";
 import { LoginSession } from "@/Utils/Login";
 
-export class Nip28ChatSystem extends ExternalStore<Array<Chat>> implements ChatSystem {
-  #cache: FeedCache<NostrEvent>;
-  #log = debug("NIP-28");
+export class Nip28ChatSystem implements ChatSystem {
   readonly ChannelKinds = [
     EventKind.PublicChatChannel,
     EventKind.PublicChatMessage,
@@ -28,44 +25,26 @@ export class Nip28ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     EventKind.PublicChatMuteUser,
   ];
 
-  constructor(cache: FeedCache<NostrEvent>) {
-    super();
-    this.#cache = cache;
-  }
-
   subscription(session: LoginSession): RequestBuilder | undefined {
     const chats = (session.extraChats ?? []).filter(a => a.startsWith("chat281"));
     if (chats.length === 0) return;
 
     const chatId = (v: string) => unwrap(decodeTLV(v).find(a => a.type === TLVEntryType.Special)).value as string;
 
-    const messages = this.#chatChannels();
     const rb = new RequestBuilder(`nip28:${session.id}`);
     rb.withFilter()
       .ids(chats.map(v => chatId(v)))
       .kinds([EventKind.PublicChatChannel, EventKind.PublicChatMetadata]);
     for (const c of chats) {
       const id = chatId(c);
-      const lastMessage = messages[id]?.reduce((acc, v) => (v.created_at > acc ? v.created_at : acc), 0) ?? 0;
-      rb.withFilter()
-        .tag("e", [id])
-        .since(lastMessage === 0 ? undefined : lastMessage)
-        .kinds(this.ChannelKinds);
+      rb.withFilter().tag("e", [id]).kinds(this.ChannelKinds);
     }
 
     return rb;
   }
 
-  async onEvent(evs: readonly TaggedNostrEvent[]) {
-    const dms = evs.filter(a => this.ChannelKinds.includes(a.kind));
-    if (dms.length > 0) {
-      await this.#cache.bulkSet(dms);
-      this.notifyChange();
-    }
-  }
-
-  listChats(): Chat[] {
-    const chats = this.#chatChannels();
+  listChats(pk: string, evs: Array<TaggedNostrEvent>): Chat[] {
+    const chats = this.#chatChannels(evs);
     const ret = Object.entries(chats).map(([k, v]) => {
       return Nip28ChatSystem.createChatObj(Nip28ChatSystem.chatId(k), v);
     });
@@ -121,10 +100,6 @@ export class Nip28ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     } as Chat;
   }
 
-  takeSnapshot(): Chat[] {
-    return this.listChats();
-  }
-
   static #chatProfileFromMessages(messages: Array<NostrEvent>) {
     const chatDefs = messages.filter(
       a => a.kind === EventKind.PublicChatChannel || a.kind === EventKind.PublicChatMetadata,
@@ -136,9 +111,8 @@ export class Nip28ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     return chatDef ? (JSON.parse(chatDef.content) as UserMetadata) : undefined;
   }
 
-  #chatChannels() {
-    const messages = this.#cache.snapshot();
-    const chats = messages.reduce(
+  #chatChannels(evs: Array<TaggedNostrEvent>) {
+    const chats = evs.reduce(
       (acc, v) => {
         const k = this.#chatId(v);
         if (k) {
@@ -162,3 +136,5 @@ export class Nip28ChatSystem extends ExternalStore<Array<Chat>> implements ChatS
     }
   }
 }
+
+export const Nip28Chats = new Nip28ChatSystem();

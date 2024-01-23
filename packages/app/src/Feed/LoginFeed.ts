@@ -3,7 +3,6 @@ import { useRequestBuilder } from "@snort/system-react";
 import { usePrevious } from "@uidotdev/usehooks";
 import { useEffect, useMemo } from "react";
 
-import { Nip4Chats, Nip28Chats } from "@/chat";
 import { Nip28ChatSystem } from "@/chat/nip28";
 import useEventPublisher from "@/Hooks/useEventPublisher";
 import useLogin from "@/Hooks/useLogin";
@@ -77,14 +76,6 @@ export default function useLoginFeed() {
         .limit(10);
     }
 
-    const n4Sub = Nip4Chats.subscription(login);
-    if (n4Sub) {
-      b.add(n4Sub);
-    }
-    const n28Sub = Nip28Chats.subscription(login);
-    if (n28Sub) {
-      b.add(n28Sub);
-    }
     return b;
   }, [login]);
 
@@ -104,9 +95,6 @@ export default function useLoginFeed() {
         const parsedRelays = parseRelayTags(relays.tags.filter(a => a[0] === "r")).map(a => [a.url, a.settings]);
         setRelays(login, Object.fromEntries(parsedRelays), relays.created_at * 1000);
       }
-
-      Nip4Chats.onEvent(loginFeed);
-      Nip28Chats.onEvent(loginFeed);
 
       if (publisher) {
         const subs = loginFeed.filter(
