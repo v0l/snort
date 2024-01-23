@@ -21,19 +21,18 @@ export function LocalSearch({ term, kind }: { term: string; kind: EventKind }) {
   useEffect(() => {
     setFrag(undefined);
     if (term) {
-      Relay.req({
-        id: "local-search",
-        filters: [
-          {
-            kinds: [kind],
-            limit: 100,
-            search: term,
-          },
-        ],
-      }).then(res => {
+      Relay.query([
+        "REQ",
+        "local-search",
+        {
+          kinds: [kind],
+          limit: 100,
+          search: term,
+        },
+      ]).then(res => {
         setFrag({
           refTime: 0,
-          events: res.result as Array<TaggedNostrEvent>,
+          events: res as Array<TaggedNostrEvent>,
         });
       });
     }

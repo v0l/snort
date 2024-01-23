@@ -57,8 +57,8 @@ export interface ReqFilter {
   since?: number;
   until?: number;
   limit?: number;
-  not?: ReqFilter;
-  [key: string]: Array<string> | Array<number> | string | number | undefined | ReqFilter;
+  ids_only?: boolean;
+  [key: string]: Array<string> | Array<number> | string | number | undefined | boolean;
 }
 
 /**
@@ -91,4 +91,12 @@ export interface IMeta {
   width?: number;
   alt?: string;
   fallback?: Array<string>;
+}
+
+export interface OkResponse {
+  ok: boolean;
+  id: string;
+  relay: string;
+  message?: string;
+  event: NostrEvent;
 }

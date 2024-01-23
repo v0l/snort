@@ -1,12 +1,14 @@
-import { CachedTable, CacheEvents, removeUndefined } from "@snort/shared";
+import { CachedTable, CacheEvents, removeUndefined, unixNowMs, unwrap } from "@snort/shared";
 import { CachedMetadata, mapEventToProfile, NostrEvent } from "@snort/system";
 import { WorkerRelayInterface } from "@snort/worker-relay";
+import debug from "debug";
 import EventEmitter from "eventemitter3";
 
 export class ProfileCacheRelayWorker extends EventEmitter<CacheEvents> implements CachedTable<CachedMetadata> {
   #relay: WorkerRelayInterface;
   #keys = new Set<string>();
   #cache = new Map<string, CachedMetadata>();
+  #log = debug("ProfileCacheRelayWorker");
 
   constructor(relay: WorkerRelayInterface) {
     super();
@@ -14,8 +16,17 @@ export class ProfileCacheRelayWorker extends EventEmitter<CacheEvents> implement
   }
 
   async preload() {
-    const ids = await this.#relay.sql("select distinct(pubkey) from events where kind = ?", [0]);
-    this.#keys = new Set<string>(ids.map(a => a[0] as string));
+    const start = unixNowMs();
+    const profiles = await this.#relay.query([
+      "REQ",
+      "profiles-preload",
+      {
+        kinds: [0],
+      },
+    ]);
+    this.#cache = new Map<string, CachedMetadata>(profiles.map(a => [a.pubkey, unwrap(mapEventToProfile(a))]));
+    this.#keys = new Set<string>(this.#cache.keys());
+    this.#log(`Loaded %d/%d in %d ms`, this.#cache.size, this.#keys.size, (unixNowMs() - start).toLocaleString());
   }
 
   keysOnTable(): string[] {
@@ -50,16 +61,15 @@ export class ProfileCacheRelayWorker extends EventEmitter<CacheEvents> implement
   async bulkGet(keys: string[]) {
     if (keys.length === 0) return [];
 
-    const results = await this.#relay.req({
-      id: "ProfileCacheRelayWorker.bulkGet",
-      filters: [
-        {
-          authors: keys,
-          kinds: [0],
-        },
-      ],
-    });
-    const mapped = removeUndefined(results.result.map(a => mapEventToProfile(a)));
+    const results = await this.#relay.query([
+      "REQ",
+      "ProfileCacheRelayWorker.bulkGet",
+      {
+        authors: keys,
+        kinds: [0],
+      },
+    ]);
+    const mapped = removeUndefined(results.map(a => mapEventToProfile(a)));
     for (const pf of mapped) {
       this.#cache.set(this.key(pf), pf);
     }

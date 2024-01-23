@@ -9,7 +9,7 @@ export type WorkerMessageCommand =
   | "summary"
   | "close"
   | "dumpDb"
-  | "sql";
+  | "emit-event";
 
 export interface WorkerMessage<T> {
   id: string;
@@ -27,11 +27,7 @@ export interface NostrEvent {
   sig: string;
 }
 
-export interface ReqCommand {
-  id: string;
-  filters: Array<ReqFilter>;
-  leaveOpen?: boolean;
-}
+export type ReqCommand = ["REQ", id: string, ...filters: Array<ReqFilter>];
 
 export interface ReqFilter {
   ids?: string[];
@@ -41,8 +37,16 @@ export interface ReqFilter {
   since?: number;
   until?: number;
   limit?: number;
-  not?: ReqFilter;
-  [key: string]: Array<string> | Array<number> | string | number | undefined | ReqFilter;
+  ids_only?: boolean;
+  [key: string]: Array<string> | Array<number> | string | number | undefined | boolean;
+}
+
+export interface OkResponse {
+  ok: boolean;
+  id: string;
+  relay: string;
+  message?: string;
+  event: NostrEvent;
 }
 
 export interface RelayHandler extends EventEmitter<RelayHandlerEvents> {
@@ -55,7 +59,7 @@ export interface RelayHandler extends EventEmitter<RelayHandlerEvents> {
    * Run any SQL command
    */
   sql(sql: string, params: Array<string | number>): Array<Array<string | number>>;
-  req(id: string, req: ReqFilter): Array<NostrEvent>;
+  req(id: string, req: ReqFilter): Array<NostrEvent | string>;
   count(req: ReqFilter): number;
   summary(): Record<string, number>;
   dump(): Promise<Uint8Array>;

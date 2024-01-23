@@ -26,6 +26,7 @@ import { EventsCache } from "../cache/events";
 import { RelayMetricHandler } from "../relay-metric-handler";
 import debug from "debug";
 import { ConnectionPool } from "connection-pool";
+import { CacheRelay } from "cache-relay";
 
 export class SystemWorker extends EventEmitter<NostrSystemEvents> implements SystemInterface {
   #log = debug("SystemWorker");
@@ -38,6 +39,7 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
   readonly relayMetricsHandler: RelayMetricHandler;
   readonly eventsCache: CachedTable<NostrEvent>;
   readonly relayLoader: RelayMetadataLoader;
+  readonly cacheRelay: CacheRelay | undefined;
 
   get checkSigs() {
     return true;

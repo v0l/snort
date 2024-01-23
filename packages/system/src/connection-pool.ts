@@ -2,8 +2,8 @@ import { removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
 import debug from "debug";
 import EventEmitter from "eventemitter3";
 
-import { Connection, ConnectionStateSnapshot, OkResponse, RelaySettings } from "./connection";
-import { NostrEvent, TaggedNostrEvent } from "./nostr";
+import { Connection, ConnectionStateSnapshot, RelaySettings } from "./connection";
+import { NostrEvent, OkResponse, TaggedNostrEvent } from "./nostr";
 import { pickRelaysForReply } from "./outbox-model";
 import { SystemInterface } from ".";
 

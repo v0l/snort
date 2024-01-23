@@ -86,9 +86,10 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
 
   const sub = useMemo(() => {
     const rb = createBuilder();
+    console.debug(rb?.builder.id, options);
     if (rb) {
       if (options.method === "LIMIT_UNTIL") {
-        rb.filter.until(until).limit(100);
+        rb.filter.until(until).limit(50);
       } else {
         rb.filter.since(since).until(until);
         if (since === undefined) {
@@ -112,8 +113,8 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
           .limit(1)
           .since(now);
       }
+      return rb.builder;
     }
-    return rb?.builder ?? null;
   }, [until, since, options.method, pref, createBuilder]);
 
   const mainQuery = useRequestBuilderAdvanced(sub);
@@ -135,8 +136,8 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       });
       rb.builder.id = `${rb.builder.id}:latest`;
       rb.filter.limit(1).since(now);
+      return rb.builder;
     }
-    return rb?.builder ?? null;
   }, [pref.autoShowLatest, createBuilder]);
 
   const latestQuery = useRequestBuilderAdvanced(subRealtime);

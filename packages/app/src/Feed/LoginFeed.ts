@@ -23,9 +23,6 @@ import {
   SnortAppData,
 } from "@/Utils/Login";
 import { SubscriptionEvent } from "@/Utils/Subscription";
-
-import { useFollowsContactListView } from "./WorkerRelayView";
-
 /**
  * Managed loading data for the current logged in user
  */
@@ -34,7 +31,6 @@ export default function useLoginFeed() {
   const { publicKey: pubKey, follows } = login;
   const { publisher, system } = useEventPublisher();
 
-  useFollowsContactListView();
   useEffect(() => {
     system.checkSigs = login.appData.item.preferences.checkSigs;
   }, [login]);

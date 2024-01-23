@@ -1,5 +1,5 @@
 import { removeUndefined, throwIfOffline } from "@snort/shared";
-import { mapEventToProfile, NostrEvent, NostrSystem, ProfileLoaderService, socialGraphInstance } from "@snort/system";
+import { mapEventToProfile, NostrEvent, NostrSystem, socialGraphInstance } from "@snort/system";
 import inMemoryDB from "@snort/system/src/InMemoryDB";
 
 import { EventsCache, Relay, RelayMetrics, SystemDb, UserCache, UserRelays } from "@/Cache";
@@ -15,6 +15,7 @@ export const System = new NostrSystem({
   eventsCache: EventsCache,
   profileCache: UserCache,
   relayMetrics: RelayMetrics,
+  cacheRelay: Relay,
   optimizer: hasWasm ? WasmOptimizer : undefined,
   db: SystemDb,
 });
@@ -59,8 +60,3 @@ export async function fetchProfile(key: string) {
     console.error(e);
   }
 }
-
-/**
- * Singleton user profile loader
- */
-export const ProfileLoader = new ProfileLoaderService(System, UserCache);

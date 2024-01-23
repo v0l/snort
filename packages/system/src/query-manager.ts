@@ -1,6 +1,6 @@
 import debug from "debug";
 import EventEmitter from "eventemitter3";
-import { BuiltRawReqFilter, RequestBuilder, SystemInterface, TaggedNostrEvent } from ".";
+import { BuiltRawReqFilter, RequestBuilder, RequestStrategy, SystemInterface, TaggedNostrEvent } from ".";
 import { Query, TraceReport } from "./query";
 import { FilterCacheLayer, IdsFilterCacheLayer } from "./filter-cache-layer";
 import { trimFilters } from "./request-trim";
@@ -105,9 +105,17 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
   }
 
   async #send(q: Query, qSend: BuiltRawReqFilter) {
+    if (qSend.strategy === RequestStrategy.CacheRelay && this.#system.cacheRelay) {
+      const qt = q.insertCompletedTrace(qSend, []);
+      const res = await this.#system.cacheRelay.query(["REQ", qt.id, ...qSend.filters]);
+      q.feed.add(res?.map(a => ({ ...a, relays: [] }) as TaggedNostrEvent));
+      return;
+    }
     for (const qfl of this.#queryCacheLayers) {
       qSend = await qfl.processFilter(q, qSend);
     }
+
+    // automated outbox model, load relays for queried authors
     for (const f of qSend.filters) {
       if (f.authors) {
         this.#system.relayLoader.TrackKeys(f.authors);
@@ -155,6 +163,13 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
       return ret;
     }
   }
+
+  /**
+   * Split request into 2 branches.
+   * 1. Request cache for results
+   * 2. Send query to relays
+   */
+  #splitSyncRequest(req: BuiltRawReqFilter) {}
 
   #cleanup() {
     let changed = false;

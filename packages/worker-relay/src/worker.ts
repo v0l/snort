@@ -15,15 +15,12 @@ const ActiveSubscriptions = new Map<string, PortedFilter>();
 
 let relay: RelayHandler | undefined;
 
-async function reply<T>(id: string, obj?: T, transferables?: Transferable[]) {
-  globalThis.postMessage(
-    {
-      id,
-      cmd: "reply",
-      args: obj,
-    } as WorkerMessage<T>,
-    transferables ?? [],
-  );
+async function reply<T>(id: string, obj?: T) {
+  globalThis.postMessage({
+    id,
+    cmd: "reply",
+    args: obj,
+  } as WorkerMessage<T>);
 }
 
 // Event inserter queue
@@ -108,25 +105,18 @@ globalThis.onmessage = async ev => {
         break;
       }
       case "close": {
-        ActiveSubscriptions.delete(msg.args as string);
         reply(msg.id, true);
         break;
       }
       case "req": {
         await barrierQueue(cmdQueue, async () => {
           const req = msg.args as ReqCommand;
-          const chan = new MessageChannel();
-          if (req.leaveOpen) {
-            ActiveSubscriptions.set(req.id, {
-              filters: req.filters,
-              port: chan.port1,
-            });
-          }
+          const filters = req.slice(2) as Array<ReqFilter>;
           const results = [];
-          for (const r of req.filters) {
-            results.push(...relay!.req(req.id, r as ReqFilter));
+          for (const r of filters) {
+            results.push(...relay!.req(req[1], r));
           }
-          reply(msg.id, results, req.leaveOpen ? [chan.port2] : undefined);
+          reply(msg.id, results);
         });
         break;
       }
@@ -134,8 +124,9 @@ globalThis.onmessage = async ev => {
         await barrierQueue(cmdQueue, async () => {
           const req = msg.args as ReqCommand;
           let results = 0;
-          for (const r of req.filters) {
-            const c = relay!.count(r as ReqFilter);
+          const filters = req.slice(2) as Array<ReqFilter>;
+          for (const r of filters) {
+            const c = relay!.count(r);
             results += c;
           }
           reply(msg.id, results);
@@ -152,17 +143,6 @@ globalThis.onmessage = async ev => {
       case "dumpDb": {
         await barrierQueue(cmdQueue, async () => {
           const res = await relay!.dump();
-          reply(msg.id, res);
-        });
-        break;
-      }
-      case "sql": {
-        await barrierQueue(cmdQueue, async () => {
-          const req = msg.args as {
-            sql: string;
-            params: Array<any>;
-          };
-          const res = relay!.sql(req.sql, req.params);
           reply(msg.id, res);
         });
         break;

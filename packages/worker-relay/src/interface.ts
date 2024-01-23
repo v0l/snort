@@ -1,4 +1,4 @@
-import { NostrEvent, ReqCommand, WorkerMessage, WorkerMessageCommand } from "./types";
+import { NostrEvent, OkResponse, ReqCommand, ReqFilter, WorkerMessage, WorkerMessageCommand } from "./types";
 import { v4 as uuid } from "uuid";
 
 export class WorkerRelayInterface {
@@ -18,35 +18,31 @@ export class WorkerRelayInterface {
   }
 
   async init(path: string) {
-    return (await this.#workerRpc<string, boolean>("init", path)).result;
+    return await this.#workerRpc<string, boolean>("init", path);
   }
 
   async event(ev: NostrEvent) {
-    return (await this.#workerRpc<NostrEvent, boolean>("event", ev)).result;
+    return await this.#workerRpc<NostrEvent, OkResponse>("event", ev);
   }
 
-  async req(req: ReqCommand) {
+  async query(req: ReqCommand) {
     return await this.#workerRpc<ReqCommand, Array<NostrEvent>>("req", req);
   }
 
   async count(req: ReqCommand) {
-    return (await this.#workerRpc<ReqCommand, number>("count", req)).result;
+    return await this.#workerRpc<ReqCommand, number>("count", req);
   }
 
   async summary() {
-    return (await this.#workerRpc<void, Record<string, number>>("summary")).result;
+    return await this.#workerRpc<void, Record<string, number>>("summary");
   }
 
   async close(id: string) {
-    return (await this.#workerRpc<string, boolean>("close", id)).result;
+    return await this.#workerRpc<string, boolean>("close", id);
   }
 
   async dump() {
-    return (await this.#workerRpc<void, Uint8Array>("dumpDb")).result;
-  }
-
-  async sql(sql: string, params: Array<string | number>) {
-    return (await this.#workerRpc<object, Array<Array<any>>>("sql", { sql, params })).result;
+    return await this.#workerRpc<void, Uint8Array>("dumpDb");
   }
 
   #workerRpc<T, R>(cmd: WorkerMessageCommand, args?: T) {
@@ -57,16 +53,10 @@ export class WorkerRelayInterface {
       args,
     } as WorkerMessage<T>;
     this.#worker.postMessage(msg);
-    return new Promise<{
-      result: R;
-      port: MessagePort | undefined;
-    }>(resolve => {
+    return new Promise<R>(resolve => {
       this.#commandQueue.set(id, (v, port) => {
         const cmdReply = v as WorkerMessage<R>;
-        resolve({
-          result: cmdReply.args,
-          port: port.length > 0 ? port[0] : undefined,
-        });
+        resolve(cmdReply.args);
       });
     });
   }

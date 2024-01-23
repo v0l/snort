@@ -2,8 +2,8 @@ import debug from "debug";
 import EventEmitter from "eventemitter3";
 
 import { CachedTable } from "@snort/shared";
-import { NostrEvent, TaggedNostrEvent } from "./nostr";
-import { RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
+import { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr";
+import { RelaySettings, ConnectionStateSnapshot } from "./connection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
@@ -24,6 +24,7 @@ import { RelayMetadataLoader } from "./outbox-model";
 import { Optimizer, DefaultOptimizer } from "./query-optimizer";
 import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
 import { QueryManager } from "./query-manager";
+import { CacheRelay } from "./cache-relay";
 
 export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
@@ -37,6 +38,7 @@ export interface NostrsystemProps {
   profileCache?: CachedTable<CachedMetadata>;
   relayMetrics?: CachedTable<RelayMetrics>;
   eventsCache?: CachedTable<NostrEvent>;
+  cacheRelay?: CacheRelay;
   optimizer?: Optimizer;
   db?: SnortSystemDb;
   checkSigs?: boolean;
@@ -82,6 +84,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
   readonly pool: ConnectionPool;
   readonly eventsCache: CachedTable<NostrEvent>;
   readonly relayLoader: RelayMetadataLoader;
+  readonly cacheRelay: CacheRelay | undefined;
 
   /**
    * Check event signatures (reccomended)
@@ -95,6 +98,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.relayMetricsCache = props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics);
     this.eventsCache = props.eventsCache ?? new EventsCache(props.db?.events);
     this.optimizer = props.optimizer ?? DefaultOptimizer;
+    this.cacheRelay = props.cacheRelay;
 
     this.profileLoader = new ProfileLoaderService(this, this.profileCache);
     this.relayMetricsHandler = new RelayMetricHandler(this.relayMetricsCache);

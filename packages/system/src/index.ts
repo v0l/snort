@@ -1,14 +1,15 @@
-import { RelaySettings, ConnectionStateSnapshot, OkResponse } from "./connection";
+import { RelaySettings, ConnectionStateSnapshot } from "./connection";
 import { RequestBuilder } from "./request-builder";
-import { NostrEvent, ReqFilter, TaggedNostrEvent } from "./nostr";
+import { NostrEvent, OkResponse, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { ProfileLoaderService } from "./profile-cache";
-import { RelayCache, RelayMetadataLoader } from "./outbox-model";
+import { AuthorsRelaysCache, RelayMetadataLoader } from "./outbox-model";
 import { Optimizer } from "./query-optimizer";
 import { base64 } from "@scure/base";
 import { CachedTable } from "@snort/shared";
 import { ConnectionPool } from "./connection-pool";
 import EventEmitter from "eventemitter3";
 import { QueryEvents } from "./query";
+import { CacheRelay } from "./cache-relay";
 
 export { NostrSystem } from "./nostr-system";
 export { default as EventKind } from "./event-kind";
@@ -133,7 +134,7 @@ export interface SystemInterface {
   /**
    * Relay cache for "Gossip" model
    */
-  get relayCache(): RelayCache;
+  get relayCache(): AuthorsRelaysCache;
 
   /**
    * Query optimizer
@@ -154,6 +155,11 @@ export interface SystemInterface {
    * Main connection pool
    */
   get pool(): ConnectionPool;
+
+  /**
+   * Local relay cache service
+   */
+  get cacheRelay(): CacheRelay | undefined;
 }
 
 export interface SystemSnapshot {

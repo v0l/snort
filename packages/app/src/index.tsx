@@ -8,11 +8,11 @@ import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 
-import { initRelayWorker, preload, Relay } from "@/Cache";
+import { initRelayWorker, preload, Relay, UserCache } from "@/Cache";
 import { ThreadRoute } from "@/Components/Event/Thread";
 import { IntlProvider } from "@/Components/IntlProvider/IntlProvider";
 import { db } from "@/Db";
-import { addEventToFuzzySearch } from "@/Db/FuzzySearch";
+import { addCachedMetadataToFuzzySearch } from "@/Db/FuzzySearch";
 import { updateRelayConnections } from "@/Hooks/useLoginRelays";
 import { AboutPage } from "@/Pages/About";
 import { SnortDeckLayout } from "@/Pages/DeckLayout";
@@ -54,39 +54,34 @@ async function initSite() {
   const login = LoginStore.takeSnapshot();
   db.ready = await db.isAvailable();
   if (db.ready) {
-    await preload(login.follows.item);
+    preload(login.follows.item);
   }
 
   updateRelayConnections(System, login.relays.item).catch(console.error);
 
-  try {
-    if ("registerProtocolHandler" in window.navigator) {
-      window.navigator.registerProtocolHandler("web+nostr", `${window.location.protocol}//${window.location.host}/%s`);
-      console.info("Registered protocol handler for 'web+nostr'");
-    }
-  } catch (e) {
-    console.error("Failed to register protocol handler", e);
-  }
-
   setupWebLNWalletConfig(Wallets);
-  Relay.sql("select json from events where kind = ?", [3]).then(res => {
-    for (const [json] of res) {
+  Relay.query(["REQ", "preload-social-graph", {
+    kinds: [3]
+  }]).then(res => {
+    for (const ev of res) {
       try {
-        socialGraphInstance.handleEvent(JSON.parse(json as string));
+        socialGraphInstance.handleEvent(ev);
       } catch (e) {
         console.error("Failed to handle contact list event from sql db", e);
       }
     }
   });
-  Relay.sql("select json from events where kind = ?", [0]).then(res => {
-    for (const [json] of res) {
+
+  queueMicrotask(() => {
+    for (const ev of UserCache.snapshot()) {
       try {
-        addEventToFuzzySearch(JSON.parse(json as string));
+        addCachedMetadataToFuzzySearch(ev);
       } catch (e) {
         console.error("Failed to handle metadata event from sql db", e);
       }
     }
   });
+
   return null;
 }
 

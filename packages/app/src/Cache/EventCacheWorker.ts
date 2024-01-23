@@ -14,9 +14,14 @@ export class EventCacheWorker extends EventEmitter<CacheEvents> implements Cache
   }
 
   async preload() {
-    const ids = await this.#relay.sql("select id from events", []);
-    this.#keys = new Set<string>(ids.map(a => a[0] as string));
-    return Promise.resolve();
+    const ids = await this.#relay.query([
+      "REQ",
+      "preload-event-cache",
+      {
+        ids_only: true,
+      },
+    ]);
+    this.#keys = new Set<string>(ids as unknown as Array<string>);
   }
 
   keysOnTable(): string[] {
@@ -43,18 +48,17 @@ export class EventCacheWorker extends EventEmitter<CacheEvents> implements Cache
   }
 
   async bulkGet(keys: string[]): Promise<NostrEvent[]> {
-    const results = await this.#relay.req({
-      id: "EventCacheWorker.bulkGet",
-      filters: [
-        {
-          ids: keys,
-        },
-      ],
-    });
-    for (const ev of results.result) {
+    const results = await this.#relay.query([
+      "REQ",
+      "EventCacheWorker.bulkGet",
+      {
+        ids: keys,
+      },
+    ]);
+    for (const ev of results) {
       this.#cache.set(ev.id, ev);
     }
-    return results.result;
+    return results;
   }
 
   async set(obj: NostrEvent): Promise<void> {

@@ -9,7 +9,9 @@ export function useLinkList(id: string, fn: (rb: RequestBuilder) => void) {
   const sub = useMemo(() => {
     const rb = new RequestBuilder(id);
     fn(rb);
-    return rb;
+    if (rb.numFilters > 0) {
+      return rb;
+    }
   }, [id, fn]);
 
   const listStore = useRequestBuilder(sub);

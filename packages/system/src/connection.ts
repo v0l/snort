@@ -6,7 +6,7 @@ import EventEmitter from "eventemitter3";
 
 import { DefaultConnectTimeout } from "./const";
 import { ConnectionStats } from "./connection-stats";
-import { NostrEvent, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";
+import { NostrEvent, OkResponse, ReqCommand, ReqFilter, TaggedNostrEvent, u256 } from "./nostr";
 import { RelayInfo } from "./relay-info";
 import EventKind from "./event-kind";
 import { EventExt } from "./event-ext";
@@ -17,14 +17,6 @@ import { EventExt } from "./event-ext";
 export interface RelaySettings {
   read: boolean;
   write: boolean;
-}
-
-export interface OkResponse {
-  ok: boolean;
-  id: string;
-  relay: string;
-  message?: string;
-  event: NostrEvent;
 }
 
 /**

@@ -184,7 +184,13 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
 
     const [sql, params] = this.#buildQuery(req);
     const res = this.#db?.selectArrays(sql, params);
-    const results = res?.map(a => JSON.parse(a[0] as string) as NostrEvent) ?? [];
+    const results =
+      res?.map(a => {
+        if (req.ids_only === true) {
+          return a[0] as string;
+        }
+        return JSON.parse(a[0] as string) as NostrEvent;
+      }) ?? [];
     const time = unixNowMs() - start;
     this.#log(`Query ${id} results took ${time.toLocaleString()}ms`);
     return results;
@@ -245,7 +251,13 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
     const conditions: Array<string> = [];
     const params: Array<any> = [];
 
-    let sql = `select ${count ? "count(json)" : "json"} from events`;
+    let resultType = "json";
+    if (count) {
+      resultType = "count(json)";
+    } else if (req.ids_only === true) {
+      resultType = "id";
+    }
+    let sql = `select ${resultType} from events`;
     const tags = Object.entries(req).filter(([k]) => k.startsWith("#"));
     for (const [key, values] of tags) {
       const vArray = values as Array<string>;

@@ -33,14 +33,14 @@ export interface RelayTaggedFilters {
 
 const logger = debug("OutboxModel");
 
-export interface RelayCache {
+export interface AuthorsRelaysCache {
   getFromCache(pubkey?: string): UsersRelays | undefined;
   update(obj: UsersRelays): Promise<"new" | "updated" | "refresh" | "no_change">;
   buffer(keys: Array<string>): Promise<Array<string>>;
   bulkSet(objs: Array<UsersRelays>): Promise<void>;
 }
 
-export function splitAllByWriteRelays(cache: RelayCache, filters: Array<ReqFilter>) {
+export function splitAllByWriteRelays(cache: AuthorsRelaysCache, filters: Array<ReqFilter>) {
   const allSplit = filters
     .map(a => splitByWriteRelays(cache, a))
     .reduce((acc, v) => {
@@ -66,7 +66,7 @@ export function splitAllByWriteRelays(cache: RelayCache, filters: Array<ReqFilte
 /**
  * Split filters by authors
  */
-export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter, pickN?: number): Array<RelayTaggedFilter> {
+export function splitByWriteRelays(cache: AuthorsRelaysCache, filter: ReqFilter, pickN?: number): Array<RelayTaggedFilter> {
   const authors = filter.authors;
   if ((authors?.length ?? 0) === 0) {
     return [
@@ -108,7 +108,7 @@ export function splitByWriteRelays(cache: RelayCache, filter: ReqFilter, pickN?:
  * Split filters by author
  */
 export function splitFlatByWriteRelays(
-  cache: RelayCache,
+  cache: AuthorsRelaysCache,
   input: Array<FlatReqFilter>,
   pickN?: number,
 ): Array<RelayTaggedFlatFilters> {
@@ -146,7 +146,7 @@ export function splitFlatByWriteRelays(
 /**
  * Pick most popular relays for each authors
  */
-export function pickTopRelays(cache: RelayCache, authors: Array<string>, n: number, type: "write" | "read") {
+export function pickTopRelays(cache: AuthorsRelaysCache, authors: Array<string>, n: number, type: "write" | "read") {
   // map of pubkey -> [write relays]
   const allRelays = authors.map(a => {
     return {

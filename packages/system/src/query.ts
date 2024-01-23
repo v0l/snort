@@ -323,15 +323,15 @@ export class Query extends EventEmitter<QueryEvents> {
     }
   }
 
-  #emitFilters() {
+  async #emitFilters() {
     this.#log("Starting emit of %s", this.id);
     const existing = this.filters;
     if (!(this.request.options?.skipDiff ?? false) && existing.length > 0) {
-      const filters = this.request.buildDiff(this.#system, existing);
+      const filters = await this.request.buildDiff(this.#system, existing);
       this.#log("Build %s %O", this.id, filters);
       filters.forEach(f => this.emit("request", this.id, f));
     } else {
-      const filters = this.request.build(this.#system);
+      const filters = await this.request.build(this.#system);
       this.#log("Build %s %O", this.id, filters);
       filters.forEach(f => this.emit("request", this.id, f));
     }

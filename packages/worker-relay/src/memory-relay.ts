@@ -69,7 +69,11 @@ export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements R
     const ret = [];
     for (const [, e] of this.#events) {
       if (eventMatchesFilter(e, filter)) {
-        ret.push(e);
+        if (filter.ids_only === true) {
+          ret.push(e.id);
+        } else {
+          ret.push(e);
+        }
       }
     }
     return ret;

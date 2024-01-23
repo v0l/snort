@@ -43,19 +43,17 @@ export const addEventToFuzzySearch = (ev: NostrEvent) => {
 };
 
 export const addCachedMetadataToFuzzySearch = (profile: CachedMetadata) => {
-  queueMicrotask(() => {
-    const existing = profileTimestamps.get(profile.pubkey);
-    if (existing) {
-      if (existing > profile.created) {
-        return;
-      }
-      fuzzySearch.remove(doc => doc.pubkey === profile.pubkey);
+  const existing = profileTimestamps.get(profile.pubkey);
+  if (existing) {
+    if (existing > profile.created) {
+      return;
     }
-    profileTimestamps.set(profile.pubkey, profile.created);
-    if (profile.pubkey && (profile.name || profile.display_name || profile.nip05)) {
-      fuzzySearch.add(profile);
-    }
-  });
+    fuzzySearch.remove(doc => doc.pubkey === profile.pubkey);
+  }
+  profileTimestamps.set(profile.pubkey, profile.created);
+  if (profile.pubkey && (profile.name || profile.display_name || profile.nip05)) {
+    fuzzySearch.add(profile);
+  }
 };
 
 export default fuzzySearch;
