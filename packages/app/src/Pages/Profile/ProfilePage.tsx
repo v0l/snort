@@ -163,7 +163,14 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
         )}
         <div className="profile-wrapper w-max">
           <AvatarSection id={id} loginPubKey={loginPubKey} user={user} readonly={readonly} lnurl={lnurl} />
-          <ProfileDetails user={user} loginPubKey={loginPubKey} id={id} aboutText={aboutText} lnurl={lnurl} showLnQr={true} />
+          <ProfileDetails
+            user={user}
+            loginPubKey={loginPubKey}
+            id={id}
+            aboutText={aboutText}
+            lnurl={lnurl}
+            showLnQr={true}
+          />
         </div>
       </div>
       <div className="main-content">

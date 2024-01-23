@@ -66,7 +66,11 @@ export function splitAllByWriteRelays(cache: AuthorsRelaysCache, filters: Array<
 /**
  * Split filters by authors
  */
-export function splitByWriteRelays(cache: AuthorsRelaysCache, filter: ReqFilter, pickN?: number): Array<RelayTaggedFilter> {
+export function splitByWriteRelays(
+  cache: AuthorsRelaysCache,
+  filter: ReqFilter,
+  pickN?: number,
+): Array<RelayTaggedFilter> {
   const authors = filter.authors;
   if ((authors?.length ?? 0) === 0) {
     return [

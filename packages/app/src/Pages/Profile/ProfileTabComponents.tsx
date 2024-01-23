@@ -56,12 +56,13 @@ export function ProfileNotesTab({ id, relays, isMe }: { id: HexKey; relays?: Arr
   const pinned = usePinList(id);
   const options = useMemo(() => ({ showTime: false, showPinned: true, canUnpin: isMe }), [isMe]);
   const subject = useMemo(
-    () => ({
-      type: "pubkey",
-      items: [id],
-      discriminator: id.slice(0, 12),
-      relay: relays,
-    } as TimelineSubject),
+    () =>
+      ({
+        type: "pubkey",
+        items: [id],
+        discriminator: id.slice(0, 12),
+        relay: relays,
+      }) as TimelineSubject,
     [id, relays],
   );
   return (

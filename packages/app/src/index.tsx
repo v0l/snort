@@ -60,9 +60,13 @@ async function initSite() {
   updateRelayConnections(System, login.relays.item).catch(console.error);
 
   setupWebLNWalletConfig(Wallets);
-  Relay.query(["REQ", "preload-social-graph", {
-    kinds: [3]
-  }]).then(res => {
+  Relay.query([
+    "REQ",
+    "preload-social-graph",
+    {
+      kinds: [3],
+    },
+  ]).then(res => {
     for (const ev of res) {
       try {
         socialGraphInstance.handleEvent(ev);
