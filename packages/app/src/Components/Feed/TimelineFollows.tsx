@@ -1,6 +1,5 @@
 import "./Timeline.css";
 
-import { unixNow } from "@snort/shared";
 import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -9,12 +8,9 @@ import { ShowMoreInView } from "@/Components/Event/ShowMore";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import { LiveStreams } from "@/Components/LiveStream/LiveStreams";
-import useHashtagsFeed from "@/Feed/HashtagsFeed";
-import { useFollowsTimelineView } from "@/Feed/WorkerRelayView";
-import useHistoryState from "@/Hooks/useHistoryState";
+import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
 import useLogin from "@/Hooks/useLogin";
-import useModeration from "@/Hooks/useModeration";
-import { dedupeByPubkey, findTag, orderDescending } from "@/Utils";
+import { dedupeByPubkey } from "@/Utils";
 
 export interface TimelineFollowsProps {
   postsOnly: boolean;
@@ -33,12 +29,21 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const login = useLogin();
   const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
-  const [latest, setLatest] = useHistoryState(unixNow(), "TimelineFollowsLatest");
-  const [limit, setLimit] = useState(50);
-  const feed = useFollowsTimelineView(limit);
-  const { muted, isEventMuted } = useModeration();
-
-  const oldest = useMemo(() => feed.at(-1)?.created_at, [feed]);
+  const subject = useMemo(
+    () =>
+      ({
+        type: "pubkey",
+        items: login.follows.item,
+        discriminator: login.publicKey?.slice(0, 12),
+        extra: rb => {
+          if (login.tags.item.length > 0) {
+            rb.withFilter().kinds([EventKind.TextNote]).tag("t", login.tags.item);
+          }
+        },
+      }) as TimelineSubject,
+    [login.follows.item, login.tags.item],
+  );
+  const feed = useTimelineFeed(subject, { method: "TIME_RANGE" } as TimelineFeedOptions);
 
   const postsOnly = useCallback(
     (a: NostrEvent) => (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true),
@@ -50,49 +55,26 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
       const a = nts.filter(a => a.kind !== EventKind.LiveEvent);
       return a
         ?.filter(postsOnly)
-        .filter(a => !isEventMuted(a) && login.follows.item.includes(a.pubkey) && (props.noteFilter?.(a) ?? true));
+        .filter(a => props.noteFilter?.(a) ?? true)
+        .filter(a => login.follows.item.includes(a.pubkey) || a.tags.filter(a => a[0] === "t").length < 5);
     },
-    [postsOnly, muted, login.follows.timestamp],
+    [postsOnly, props.noteFilter, login.follows.timestamp],
   );
 
-  const mixin = useHashtagsFeed();
   const mainFeed = useMemo(() => {
-    return filterPosts((feed ?? []).filter(a => a.created_at <= latest));
-  }, [feed, filterPosts, latest, login.follows.timestamp]);
-
-  const findHashTagContext = (a: NostrEvent) => {
-    const tag = a.tags.filter(a => a[0] === "t").find(a => login.tags.item.includes(a[1].toLowerCase()))?.[1];
-    return tag;
-  };
-  const mixinFiltered = useMemo(() => {
-    const mainFeedIds = new Set(mainFeed.map(a => a.id));
-    return (mixin.data ?? [])
-      .filter(a => !mainFeedIds.has(a.id) && postsOnly(a) && !isEventMuted(a))
-      .filter(a => a.tags.filter(a => a[0] === "t").length < 5)
-      .filter(a => !oldest || a.created_at >= oldest)
-      .map(
-        a =>
-          ({
-            ...a,
-            context: findHashTagContext(a),
-          }) as TaggedNostrEvent,
-      );
-  }, [mixin, mainFeed, postsOnly, isEventMuted]);
+    return filterPosts(feed.main ?? []);
+  }, [feed.main, filterPosts]);
 
   const latestFeed = useMemo(() => {
-    return filterPosts((feed ?? []).filter(a => a.created_at > latest));
-  }, [feed, latest]);
-
-  const liveStreams = useMemo(() => {
-    return (feed ?? []).filter(a => a.kind === EventKind.LiveEvent && findTag(a, "status") === "live");
-  }, [feed]);
+    return filterPosts(feed.latest ?? []);
+  }, [feed.latest]);
 
   const latestAuthors = useMemo(() => {
     return dedupeByPubkey(latestFeed).map(e => e.pubkey);
   }, [latestFeed]);
 
   function onShowLatest(scrollToTop = false) {
-    setLatest(unixNow());
+    feed.showLatest();
     if (scrollToTop) {
       window.scrollTo(0, 0);
     }
@@ -100,14 +82,14 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
 
   return (
     <>
-      {(props.liveStreams ?? true) && <LiveStreams evs={liveStreams} />}
+      {(props.liveStreams ?? true) && <LiveStreams />}
       <DisplayAsSelector
         show={props.showDisplayAsSelector}
         activeSelection={displayAs}
         onSelect={(displayAs: DisplayAs) => setDisplayAs(displayAs)}
       />
       <TimelineRenderer
-        frags={[{ events: orderDescending(mainFeed.concat(mixinFiltered)), refTime: latest }]}
+        frags={[{ events: mainFeed, refTime: 0 }]}
         latest={latestAuthors}
         showLatest={t => onShowLatest(t)}
         noteOnClick={props.noteOnClick}
@@ -119,10 +101,10 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         }}
         displayAs={displayAs}
       />
-      {feed.length > 0 && (
+      {(feed.main?.length ?? 0) > 0 && (
         <ShowMoreInView
           onClick={() => {
-            setLimit(s => s + 20);
+            onShowLatest(false);
           }}
         />
       )}

@@ -92,6 +92,10 @@ export class RequestBuilder {
     return this.#builders.length;
   }
 
+  get filterBuilders() {
+    return this.#builders;
+  }
+
   get options() {
     return this.#options;
   }

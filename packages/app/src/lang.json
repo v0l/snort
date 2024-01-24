@@ -1214,6 +1214,9 @@
   "egib+2": {
     "defaultMessage": "{n,plural,=1{& {n} other} other{& {n} others}}"
   },
+  "ejEGdx": {
+    "defaultMessage": "Home"
+  },
   "f1OxTe": {
     "defaultMessage": "Community leaders are individuals who grow the nostr ecosystem by being active in their local communities and helping onboard new users. Anyone can become a community leader, but few hold the current honorary title."
   },
@@ -1481,6 +1484,9 @@
   },
   "nwZXeh": {
     "defaultMessage": "{n} blocked"
+  },
+  "o/gK53": {
+    "defaultMessage": "Deck"
   },
   "o7e+nJ": {
     "defaultMessage": "{n} followers"

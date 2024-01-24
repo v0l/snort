@@ -1,22 +1,27 @@
 import "./LiveStreams.css";
 
-import { NostrEvent, NostrLink } from "@snort/system";
+import { unixNow } from "@snort/shared";
+import { EventKind, NostrEvent, NostrLink, RequestBuilder } from "@snort/system";
+import { useRequestBuilder } from "@snort/system-react";
 import { CSSProperties, useMemo } from "react";
 import { Link } from "react-router-dom";
 
 import Icon from "@/Components/Icons/Icon";
 import useImgProxy from "@/Hooks/useImgProxy";
+import useLogin from "@/Hooks/useLogin";
 import { findTag } from "@/Utils";
 
-export function LiveStreams({ evs }: { evs: Array<NostrEvent> }) {
-  const streams = useMemo(() => {
-    return [...evs].sort((a, b) => {
-      const aStarts = Number(findTag(a, "starts") ?? a.created_at);
-      const bStarts = Number(findTag(b, "starts") ?? b.created_at);
-      return aStarts > bStarts ? -1 : 1;
-    });
-  }, [evs]);
+export function LiveStreams() {
+  const follows = useLogin(s => s.follows.item);
+  const sub = useMemo(() => {
+    const since = unixNow() - 60 * 60 * 24;
+    const rb = new RequestBuilder("follows:streams");
+    rb.withFilter().kinds([EventKind.LiveEvent]).authors(follows).since(since);
+    rb.withFilter().kinds([EventKind.LiveEvent]).tag("p", follows).since(since);
+    return rb;
+  }, [follows]);
 
+  const streams = useRequestBuilder(sub);
   if (streams.length === 0) return null;
 
   return (

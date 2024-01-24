@@ -9,56 +9,56 @@ import Icon from "@/Components/Icons/Icon";
 import Avatar from "@/Components/User/Avatar";
 import { ProfileLink } from "@/Components/User/ProfileLink";
 import useEventPublisher from "@/Hooks/useEventPublisher";
+import useLogin from "@/Hooks/useLogin";
 import { HasNotificationsMarker } from "@/Pages/Layout/HasNotificationsMarker";
 import { WalletBalance } from "@/Pages/Layout/WalletBalance";
 import { subscribeToNotifications } from "@/Utils/Notifications";
 import { getCurrentSubscription } from "@/Utils/Subscription";
 
-import useLogin from "../../Hooks/useLogin";
 import { LogoHeader } from "./LogoHeader";
 
 const MENU_ITEMS = [
   {
-    label: "Home",
+    label: <FormattedMessage defaultMessage="Home" id="ejEGdx" />,
     icon: "home",
     link: "/",
     nonLoggedIn: true,
   },
   {
-    label: "Search",
+    label: <FormattedMessage defaultMessage="Search" id="xmcVZ0" />,
     icon: "search",
     link: "/search",
     nonLoggedIn: true,
   },
   {
-    label: "Notifications",
+    label: <FormattedMessage defaultMessage="Notifications" id="NAidKb" />,
     icon: "bell",
     link: "/notifications",
   },
   {
-    label: "Messages",
+    label: <FormattedMessage defaultMessage="Messages" id="hMzcSq" />,
     icon: "mail",
     link: "/messages",
     hideReadOnly: true,
   },
   {
-    label: "Deck",
+    label: <FormattedMessage defaultMessage="Deck" id="o/gK53" />,
     icon: "deck",
     link: "/deck",
   },
   {
-    label: "Social Graph",
+    label: <FormattedMessage defaultMessage="Social Graph" id="CzHZoc" />,
     icon: "graph",
     link: "/graph",
   },
   {
-    label: "About",
+    label: <FormattedMessage defaultMessage="About" id="g5pX+a" />,
     icon: "info",
     link: "/donate",
     nonLoggedIn: true,
   },
   {
-    label: "Settings",
+    label: <FormattedMessage defaultMessage="Settings" id="D3idYv" />,
     icon: "settings",
     link: "/settings",
   },
@@ -126,7 +126,7 @@ export default function NavSidebar({ narrow = false }: { narrow: boolean }) {
               return "";
             }
             const onClick = () => {
-              if (item.label === "Notifications" && publisher) {
+              if (item.link === "/notifications" && publisher) {
                 subscribeToNotifications(publisher);
               }
             };
@@ -138,7 +138,7 @@ export default function NavSidebar({ narrow = false }: { narrow: boolean }) {
                 className={({ isActive }) => getNavLinkClass(isActive, narrow)}>
                 <Icon name={`${item.icon}-outline`} className="icon-outline" size={24} />
                 <Icon name={`${item.icon}-solid`} className="icon-solid" size={24} />
-                {item.label === "Notifications" && <HasNotificationsMarker />}
+                {item.link === "/notifications" && <HasNotificationsMarker />}
                 {!narrow && <span className="hidden xl:inline ml-3">{item.label}</span>}
               </NavLink>
             );

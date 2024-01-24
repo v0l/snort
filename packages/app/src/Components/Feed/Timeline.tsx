@@ -7,11 +7,9 @@ import { FormattedMessage } from "react-intl";
 
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
-import { LiveStreams } from "@/Components/LiveStream/LiveStreams";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";
 import useLogin from "@/Hooks/useLogin";
-import useModeration from "@/Hooks/useModeration";
-import { dedupeByPubkey, findTag } from "@/Utils";
+import { dedupeByPubkey } from "@/Utils";
 
 export interface TimelineProps {
   postsOnly: boolean;
@@ -43,7 +41,6 @@ const Timeline = (props: TimelineProps) => {
   const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
 
-  const { muted, isEventMuted } = useModeration();
   const filterPosts = useCallback(
     (nts: readonly TaggedNostrEvent[]) => {
       const checkFollowDistance = (a: TaggedNostrEvent) => {
@@ -56,9 +53,9 @@ const Timeline = (props: TimelineProps) => {
       const a = [...nts.filter(a => a.kind !== EventKind.LiveEvent)];
       return a
         ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
-        .filter(a => (props.ignoreModeration || !isEventMuted(a)) && checkFollowDistance(a));
+        .filter(a => props.ignoreModeration && checkFollowDistance(a));
     },
-    [props.postsOnly, muted, props.ignoreModeration, props.followDistance],
+    [props.postsOnly, props.ignoreModeration, props.followDistance],
   );
 
   const mainFeed = useMemo(() => {
@@ -67,9 +64,6 @@ const Timeline = (props: TimelineProps) => {
   const latestFeed = useMemo(() => {
     return filterPosts(feed.latest ?? []).filter(a => !mainFeed.some(b => b.id === a.id));
   }, [feed, filterPosts]);
-  const liveStreams = useMemo(() => {
-    return (feed.main ?? []).filter(a => a.kind === EventKind.LiveEvent && findTag(a, "status") === "live");
-  }, [feed]);
 
   const latestAuthors = useMemo(() => {
     return dedupeByPubkey(latestFeed).map(e => e.pubkey);
@@ -84,7 +78,6 @@ const Timeline = (props: TimelineProps) => {
 
   return (
     <>
-      <LiveStreams evs={liveStreams} />
       <DisplayAsSelector
         show={props.showDisplayAsSelector}
         activeSelection={displayAs}
