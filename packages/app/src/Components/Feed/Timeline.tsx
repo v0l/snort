@@ -1,7 +1,6 @@
 import "./Timeline.css";
 
-import { unixNow } from "@snort/shared";
-import { EventKind, socialGraphInstance, TaggedNostrEvent } from "@snort/system";
+import { socialGraphInstance, TaggedNostrEvent } from "@snort/system";
 import { useCallback, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -50,20 +49,20 @@ const Timeline = (props: TimelineProps) => {
         const followDistance = socialGraphInstance.getFollowDistance(a.pubkey);
         return followDistance === props.followDistance;
       };
-      const a = [...nts.filter(a => a.kind !== EventKind.LiveEvent)];
-      return a
+      return nts
         ?.filter(a => (props.postsOnly ? !a.tags.some(b => b[0] === "e") : true))
-        .filter(a => props.ignoreModeration && checkFollowDistance(a));
+        .filter(a => props.ignoreModeration || checkFollowDistance(a));
     },
     [props.postsOnly, props.ignoreModeration, props.followDistance],
   );
 
+
   const mainFeed = useMemo(() => {
     return filterPosts(feed.main ?? []);
-  }, [feed, filterPosts]);
+  }, [feed.main, filterPosts]);
   const latestFeed = useMemo(() => {
     return filterPosts(feed.latest ?? []).filter(a => !mainFeed.some(b => b.id === a.id));
-  }, [feed, filterPosts]);
+  }, [feed.latest, feed.main, filterPosts]);
 
   const latestAuthors = useMemo(() => {
     return dedupeByPubkey(latestFeed).map(e => e.pubkey);
@@ -87,7 +86,7 @@ const Timeline = (props: TimelineProps) => {
         frags={[
           {
             events: mainFeed,
-            refTime: mainFeed.at(0)?.created_at ?? unixNow(),
+            refTime: 0,
           },
         ]}
         latest={latestAuthors}
