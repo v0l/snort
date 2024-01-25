@@ -31,7 +31,15 @@ interface ConnectionEvents {
   unknownMessage: (obj: Array<any>) => void;
 }
 
+/**
+ * SYNC command is an internal command that requests the connection to devise a strategy
+ * to synchronize based on a set of existing cached events and a filter set.
+ */
 export type SyncCommand = ["SYNC", id: string, fromSet: Array<TaggedNostrEvent>, ...filters: Array<ReqFilter>];
+
+/**
+ * Pending REQ queue
+ */
 interface ConnectionQueueItem {
   obj: ReqCommand | SyncCommand;
   cb: () => void;
@@ -228,7 +236,6 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           break;
         }
         default: {
-          this.#log(`Unknown tag: ${tag}`);
           this.emit("unknownMessage", msg);
           break;
         }
@@ -333,7 +340,10 @@ export class Connection extends EventEmitter<ConnectionEvents> {
       this.#log("Queuing: %O", cmd);
     } else {
       this.ActiveRequests.add(cmd[1]);
-      this.#sendRequestCommand(cmd);
+      this.#sendRequestCommand({
+        obj: cmd,
+        cb: cbSent,
+      });
       cbSent();
     }
     this.emit("change");
@@ -354,30 +364,42 @@ export class Connection extends EventEmitter<ConnectionEvents> {
       for (let x = 0; x < canSend; x++) {
         const p = this.PendingRequests.shift();
         if (p) {
-          this.#sendRequestCommand(p.obj);
-          p.cb();
+          this.#sendRequestCommand(p);
           this.#log("Sent pending REQ %O", p.obj);
         }
       }
     }
   }
 
-  #sendRequestCommand(cmd: ReqCommand | SyncCommand) {
+  #sendRequestCommand(item: ConnectionQueueItem) {
     try {
+      const cmd = item.obj;
       if (cmd[0] === "REQ") {
         this.ActiveRequests.add(cmd[1]);
         this.send(cmd);
       } else if (cmd[0] === "SYNC") {
+        const [_, id, eventSet, ...filters] = cmd;
+        const lastResortSync = () => {
+          const latest = eventSet.reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
+          const newFilters = filters.map(a => ({
+            ...a,
+            since: latest,
+          }));
+          this.queueReq(["REQ", id, ...newFilters], item.cb);
+        };
         if (this.Info?.software?.includes("strfry")) {
-          const neg = new NegentropyFlow(cmd[1], this, cmd[2], cmd.slice(3) as Array<ReqFilter>);
+          const neg = new NegentropyFlow(id, this, eventSet, filters);
           neg.once("finish", filters => {
             if (filters.length > 0) {
-              this.queueReq(["REQ", cmd[1], ...filters], () => {});
+              this.queueReq(["REQ", cmd[1], ...filters], item.cb);
             }
+          });
+          neg.once("error", () => {
+            lastResortSync();
           });
           neg.start();
         } else {
-          throw new Error("SYNC not supported");
+          lastResortSync();
         }
       }
     } catch (e) {

@@ -147,7 +147,7 @@ export class RequestBuilder {
     const ts = unixNowMs() - start;
     this.#log("buildDiff %s %d ms +%d", this.id, ts, diff.length);
     if (diff.length > 0) {
-      // todo: fix
+      // todo: fix for explicit relays
       return splitFlatByWriteRelays(system.relayCache, diff).map(a => {
         return {
           strategy: RequestStrategy.AuthorsRelays,

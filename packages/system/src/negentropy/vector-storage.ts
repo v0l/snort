@@ -39,7 +39,6 @@ export class NegentropyStorageVector {
 
     for (let i = 1; i < this.#items.length; i++) {
       if (itemCompare(this.#items[i - 1], this.#items[i]) === 0) {
-        debugger;
         throw Error("duplicate item inserted");
       }
     }

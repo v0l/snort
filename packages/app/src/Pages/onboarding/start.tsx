@@ -104,7 +104,7 @@ export function SignIn() {
                 id: "X7xU8J",
               })}
               value={key}
-              onChange={onChange} // TODO should log in directly if nsec or npub is pasted
+              onChange={onChange}
               className="new-username"
             />
             {error && <b className="error">{error}</b>}
