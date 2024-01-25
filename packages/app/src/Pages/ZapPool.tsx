@@ -75,14 +75,15 @@ function ZapPoolPageInner() {
   const { wallet } = useWallet();
 
   const relayConnections = useMemo(() => {
-    return system.Sockets.map(a => {
-      if (a.info?.pubkey && !a.ephemeral) {
-        return {
-          address: a.address,
-          pubkey: a.info.pubkey,
-        };
-      }
-    })
+    return [...system.pool]
+      .map(([, a]) => {
+        if (a.Info?.pubkey && !a.Ephemeral) {
+          return {
+            address: a.Address,
+            pubkey: a.Info.pubkey,
+          };
+        }
+      })
       .filter(a => a !== undefined)
       .map(unwrap);
   }, [login.relays]);
@@ -131,7 +132,7 @@ function ZapPoolPageInner() {
             nOut: (
               <b>
                 <FormattedNumber
-                  value={ZapPoolController.calcAllocation(login.appData.item.preferences.defaultZapAmount)}
+                  value={ZapPoolController?.calcAllocation(login.appData.item.preferences.defaultZapAmount) ?? 0}
                 />
               </b>
             ),

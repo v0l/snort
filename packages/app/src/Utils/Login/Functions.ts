@@ -23,9 +23,9 @@ import { SubscriptionEvent } from "@/Utils/Subscription";
 import { Nip7OsSigner } from "./Nip7OsSigner";
 
 export function setRelays(state: LoginSession, relays: Record<string, RelaySettings>, createdAt: number) {
-  if (SINGLE_RELAY) {
+  if (import.meta.env.VITE_SINGLE_RELAY) {
     state.relays.item = {
-      [SINGLE_RELAY]: { read: true, write: true },
+      [import.meta.env.VITE_SINGLE_RELAY]: { read: true, write: true },
     };
     state.relays.timestamp = 100;
     LoginStore.updateSession(state);

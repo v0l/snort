@@ -89,7 +89,7 @@ export class Nip46Signer implements EventSigner {
         await this.#onReply(e);
       });
       this.#conn.on("connected", async () => {
-        this.#conn!.QueueReq(
+        this.#conn!.queueReq(
           [
             "REQ",
             "reply",
@@ -111,7 +111,7 @@ export class Nip46Signer implements EventSigner {
           });
         }
       });
-      this.#conn.Connect();
+      this.#conn.connect();
       this.#didInit = true;
     });
   }
@@ -119,8 +119,8 @@ export class Nip46Signer implements EventSigner {
   async close() {
     if (this.#conn) {
       await this.#disconnect();
-      this.#conn.CloseReq("reply");
-      this.#conn.Close();
+      this.#conn.closeReq("reply");
+      this.#conn.close();
       this.#conn = undefined;
       this.#didInit = false;
     }
@@ -236,6 +236,6 @@ export class Nip46Signer implements EventSigner {
 
     this.#log("Send: %O", payload);
     const evCommand = await eb.buildAndSign(this.#insideSigner);
-    await this.#conn.SendAsync(evCommand);
+    await this.#conn.sendEventAsync(evCommand);
   }
 }

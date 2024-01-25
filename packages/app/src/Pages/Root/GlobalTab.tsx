@@ -4,6 +4,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import Timeline from "@/Components/Feed/Timeline";
+import { TimelineSubject } from "@/Feed/TimelineFeed";
 import useHistoryState from "@/Hooks/useHistoryState";
 import useLogin from "@/Hooks/useLogin";
 import { debounce, getRelayName, sha256 } from "@/Utils";
@@ -15,8 +16,8 @@ interface RelayOption {
 
 export const GlobalTab = () => {
   const { relays } = useLogin();
-  const [relay, setRelay] = useHistoryState<RelayOption>(undefined, "global-relay");
-  const [allRelays, setAllRelays] = useHistoryState<RelayOption[]>(undefined, "global-relay-options");
+  const [relay, setRelay] = useHistoryState(undefined, "global-relay");
+  const [allRelays, setAllRelays] = useHistoryState(undefined, "global-relay-options");
   const [now] = useState(unixNow());
   const system = useContext(SnortContext);
 
@@ -62,11 +63,11 @@ export const GlobalTab = () => {
   useEffect(() => {
     return debounce(500, () => {
       const ret: RelayOption[] = [];
-      system.Sockets.forEach(v => {
-        if (v.connected) {
+      [...system.pool].forEach(([, v]) => {
+        if (!v.IsClosed) {
           ret.push({
-            url: v.address,
-            paid: v.info?.limitation?.payment_required ?? false,
+            url: v.Address,
+            paid: v.Info?.limitation?.payment_required ?? false,
           });
         }
       });
@@ -80,12 +81,13 @@ export const GlobalTab = () => {
   }, [relays, relay]);
 
   const subject = useMemo(
-    () => ({
-      type: "global",
-      items: [],
-      relay: [relay?.url],
-      discriminator: `all-${sha256(relay?.url ?? "")}`,
-    }),
+    () =>
+      ({
+        type: "global",
+        items: [],
+        relay: [relay?.url],
+        discriminator: `all-${sha256(relay?.url ?? "")}`,
+      }) as TimelineSubject,
     [relay?.url],
   );
 

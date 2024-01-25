@@ -104,7 +104,7 @@ export class Zapper {
         if (!svc) {
           throw new Error(`Failed to get invoice from ${t.value}`);
         }
-        const relays = this.system.Sockets.filter(a => !a.ephemeral).map(v => v.address);
+        const relays = [...this.system.pool].filter(([, v]) => !v.Ephemeral).map(([k]) => k);
         const pub = t.zap?.anon ?? false ? EventPublisher.privateKey(generateRandomKey().privateKey) : this.publisher;
         const zap =
           t.zap && svc.canZap
@@ -199,7 +199,7 @@ export class Zapper {
         await svc.load();
         return svc;
       } else if (t.type === "pubkey") {
-        const profile = await this.system.ProfileLoader.fetchProfile(t.value);
+        const profile = await this.system.profileLoader.fetch(t.value);
         if (profile) {
           const svc = new LNURL(profile.lud16 ?? profile.lud06 ?? "");
           await svc.load();

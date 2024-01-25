@@ -2,7 +2,7 @@ import { removeUndefined, sanitizeRelayUrl, unwrap } from "@snort/shared";
 import debug from "debug";
 import EventEmitter from "eventemitter3";
 
-import { Connection, ConnectionStateSnapshot, RelaySettings } from "./connection";
+import { Connection, RelaySettings } from "./connection";
 import { NostrEvent, OkResponse, TaggedNostrEvent } from "./nostr";
 import { pickRelaysForReply } from "./outbox-model";
 import { SystemInterface } from ".";
@@ -18,7 +18,6 @@ export interface NostrConnectionPoolEvents {
 }
 
 export type ConnectionPool = {
-  getState(): ConnectionStateSnapshot[];
   getConnection(id: string): Connection | undefined;
   connect(address: string, options: RelaySettings, ephemeral: boolean): Promise<Connection | undefined>;
   disconnect(address: string): void;
@@ -43,13 +42,6 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
   constructor(system: SystemInterface) {
     super();
     this.#system = system;
-  }
-
-  /**
-   * Get basic state information from the pool
-   */
-  getState(): ConnectionStateSnapshot[] {
-    return [...this.#sockets.values()].map(a => a.takeSnapshot());
   }
 
   /**
@@ -81,7 +73,7 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
         c.on("disconnect", code => this.emit("disconnect", addr, code));
         c.on("connected", r => this.emit("connected", addr, r));
         c.on("auth", (cx, r, cb) => this.emit("auth", addr, cx, r, cb));
-        await c.Connect();
+        await c.connect();
         return c;
       } else {
         // update settings if already connected
@@ -107,7 +99,7 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
     const c = this.#sockets.get(addr);
     if (c) {
       this.#sockets.delete(addr);
-      c.Close();
+      c.close();
     }
   }
 
@@ -121,7 +113,7 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
     const oks = await Promise.all([
       ...writeRelays.map(async s => {
         try {
-          const rsp = await s.SendAsync(ev);
+          const rsp = await s.sendEventAsync(ev);
           cb?.(rsp);
           return rsp;
         } catch (e) {
@@ -145,7 +137,7 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
 
     const existing = this.#sockets.get(addrClean);
     if (existing) {
-      return await existing.SendAsync(ev);
+      return await existing.sendEventAsync(ev);
     } else {
       return await new Promise<OkResponse>((resolve, reject) => {
         const c = new Connection(address, { write: true, read: true }, true);
@@ -153,11 +145,11 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
         const t = setTimeout(reject, 10_000);
         c.once("connected", async () => {
           clearTimeout(t);
-          const rsp = await c.SendAsync(ev);
-          c.Close();
+          const rsp = await c.sendEventAsync(ev);
+          c.close();
           resolve(rsp);
         });
-        c.Connect();
+        c.connect();
       });
     }
   }

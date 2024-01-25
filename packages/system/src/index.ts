@@ -1,4 +1,4 @@
-import { RelaySettings, ConnectionStateSnapshot } from "./connection";
+import { RelaySettings } from "./connection";
 import { RequestBuilder } from "./request-builder";
 import { NostrEvent, OkResponse, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { ProfileLoaderService } from "./profile-cache";
@@ -64,11 +64,6 @@ export interface SystemInterface {
    * Check event signatures (reccomended)
    */
   checkSigs: boolean;
-
-  /**
-   * Get a snapshot of the relay connections
-   */
-  get Sockets(): Array<ConnectionStateSnapshot>;
 
   /**
    * Do some initialization

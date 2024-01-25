@@ -60,7 +60,6 @@ export default defineConfig({
   define: {
     CONFIG: JSON.stringify(appConfig),
     global: {}, // needed for custom-event lib
-    SINGLE_RELAY: JSON.stringify(process.env.SINGLE_RELAY),
   },
   test: {
     globals: true,

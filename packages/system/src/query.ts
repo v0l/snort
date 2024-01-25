@@ -277,7 +277,8 @@ export class Query extends EventEmitter<QueryEvents> {
     if (this.isOpen()) {
       for (const qt of this.#tracing) {
         if (qt.relay === c.Address) {
-          c.QueueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
+          // todo: queue sync?
+          c.queueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
         }
       }
     }
@@ -371,7 +372,7 @@ export class Query extends EventEmitter<QueryEvents> {
       this.#log("Cant send non-specific REQ to ephemeral connection %O %O %O", q, q.relay, c);
       return false;
     }
-    if (q.filters.some(a => a.search) && !c.SupportsNip(Nips.Search)) {
+    if (q.filters.some(a => a.search) && !c.supportsNip(Nips.Search)) {
       this.#log("Cant send REQ to non-search relay", c.Address);
       return false;
     }
@@ -382,7 +383,7 @@ export class Query extends EventEmitter<QueryEvents> {
     let filters = q.filters;
 
     const qt = new QueryTrace(c.Address, filters, c.Id);
-    qt.on("close", x => c.CloseReq(x));
+    qt.on("close", x => c.closeReq(x));
     qt.on("change", () => this.#onProgress());
     qt.on("eose", (id, connId, forced) =>
       this.emit("trace", {
@@ -401,7 +402,12 @@ export class Query extends EventEmitter<QueryEvents> {
     c.on("event", handler);
     this.on("end", () => c.off("event", handler));
     this.#tracing.push(qt);
-    c.QueueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
+
+    if (q.syncFrom !== undefined) {
+      c.queueReq(["SYNC", qt.id, q.syncFrom, ...qt.filters], () => qt.sentToRelay());
+    } else {
+      c.queueReq(["REQ", qt.id, ...qt.filters], () => qt.sentToRelay());
+    }
     return qt;
   }
 }

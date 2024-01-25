@@ -107,11 +107,6 @@ declare const CONFIG: {
 };
 
 /**
- * Single relay (Debug)
- */
-declare const SINGLE_RELAY: string | undefined;
-
-/**
  * Build git hash
  */
 declare const __SNORT_VERSION__: string;

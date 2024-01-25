@@ -183,7 +183,7 @@ export class MultiAccountStore extends ExternalStore<LoginSession> {
   }
 
   decideInitRelays(relays: Record<string, RelaySettings> | undefined): Record<string, RelaySettings> {
-    if (SINGLE_RELAY) return { [SINGLE_RELAY]: { read: true, write: true } };
+    if (import.meta.env.VITE_SINGLE_RELAY) return { [import.meta.env.VITE_SINGLE_RELAY]: { read: true, write: true } };
     if (relays && Object.keys(relays).length > 0) {
       return relays;
     }

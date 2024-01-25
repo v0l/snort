@@ -24,9 +24,7 @@ export default function Relay(props: RelayProps) {
   const system = useContext(SnortContext);
   const login = useLogin();
 
-  const relaySettings = unwrap(
-    login.relays.item[props.addr] ?? system.Sockets.find(a => a.address === props.addr)?.settings ?? {},
-  );
+  const relaySettings = unwrap(login.relays.item[props.addr] ?? system.pool.getConnection(props.addr)?.Settings ?? {});
   const state = useRelayState(props.addr);
   const name = useMemo(() => getRelayName(props.addr), [props.addr]);
 
@@ -44,14 +42,14 @@ export default function Relay(props: RelayProps) {
   return (
     <>
       <div className="relay bg-dark">
-        <div className={classNames("flex items-center", state?.connected ? "bg-success" : "bg-error")}>
+        <div className={classNames("flex items-center", state?.IsClosed === false ? "bg-success" : "bg-error")}>
           <RelayFavicon url={props.addr} />
         </div>
         <div className="flex flex-col g8">
           <div>
             <b>{name}</b>
           </div>
-          {!state?.ephemeral && (
+          {!state?.Ephemeral && (
             <div className="flex g8">
               <AsyncIcon
                 iconName="write"
@@ -85,7 +83,7 @@ export default function Relay(props: RelayProps) {
                 iconName="gear"
                 iconSize={16}
                 className="button-icon-sm transparent"
-                onClick={() => navigate(state?.id ?? "")}
+                onClick={() => navigate(state?.Id ?? "")}
               />
             </div>
           )}

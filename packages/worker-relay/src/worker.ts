@@ -112,9 +112,17 @@ globalThis.onmessage = async ev => {
         await barrierQueue(cmdQueue, async () => {
           const req = msg.args as ReqCommand;
           const filters = req.slice(2) as Array<ReqFilter>;
-          const results = [];
+          const results: Array<string | NostrEvent> = [];
+          const ids = new Set<string>();
           for (const r of filters) {
-            results.push(...relay!.req(req[1], r));
+            const rx = relay!.req(req[1], r);
+            for (const x of rx) {
+              if ((typeof x === "string" && ids.has(x)) || ids.has((x as NostrEvent).id)) {
+                continue;
+              }
+              ids.add(typeof x === "string" ? x : (x as NostrEvent).id);
+              results.push(x);
+            }
           }
           reply(msg.id, results);
         });

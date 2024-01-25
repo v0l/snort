@@ -3,7 +3,7 @@ import EventEmitter from "eventemitter3";
 
 import { CachedTable } from "@snort/shared";
 import { NostrEvent, TaggedNostrEvent, OkResponse } from "./nostr";
-import { RelaySettings, ConnectionStateSnapshot } from "./connection";
+import { Connection, RelaySettings } from "./connection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { RelayMetricHandler } from "./relay-metric-handler";
 import {
@@ -153,10 +153,6 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
       this.relayMetricsHandler.onTraceReport(t);
     });
     this.#queryManager.on("request", (subId: string, f: BuiltRawReqFilter) => this.emit("request", subId, f));
-  }
-
-  get Sockets(): ConnectionStateSnapshot[] {
-    return this.pool.getState();
   }
 
   async Init() {

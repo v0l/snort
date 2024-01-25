@@ -4,9 +4,8 @@ import { appendDedupe, dedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snor
 
 import EventKind from "./event-kind";
 import { NostrLink, NostrPrefix, SystemInterface } from ".";
-import { ReqFilter, u256, HexKey } from "./nostr";
+import { ReqFilter, u256, HexKey, TaggedNostrEvent } from "./nostr";
 import { AuthorsRelaysCache, splitByWriteRelays, splitFlatByWriteRelays } from "./outbox-model";
-import { CacheRelay } from "cache-relay";
 
 /**
  * Which strategy is used when building REQ filters
@@ -27,11 +26,6 @@ export const enum RequestStrategy {
    * Use pre-determined relays for query
    */
   ExplicitRelays = "explicit-relays",
-
-  /**
-   * Query the cache relay
-   */
-  CacheRelay = "cache-relay",
 }
 
 /**
@@ -41,10 +35,17 @@ export interface BuiltRawReqFilter {
   filters: Array<ReqFilter>;
   relay: string;
   strategy: RequestStrategy;
+
+  // Use set sync from an existing set of events
+  syncFrom?: Array<TaggedNostrEvent>;
 }
 
 export interface RequestBuilderOptions {
+  /**
+   * Dont send CLOSE directly after EOSE and allow events to stream in
+   */
   leaveOpen?: boolean;
+
   /**
    * Do not apply diff logic and always use full filters for query
    */
@@ -131,10 +132,8 @@ export class RequestBuilder {
     return this.#builders.map(f => f.filter);
   }
 
-  async build(system: SystemInterface): Promise<Array<BuiltRawReqFilter>> {
-    const expanded = (
-      await Promise.all(this.#builders.map(a => a.build(system.relayCache, system.cacheRelay, this.#options)))
-    ).flat();
+  build(system: SystemInterface): Array<BuiltRawReqFilter> {
+    const expanded = this.#builders.flatMap(a => a.build(system.relayCache, this.#options));
     return this.#groupByRelay(system, expanded);
   }
 
@@ -295,39 +294,7 @@ export class RequestFilterBuilder {
   /**
    * Build/expand this filter into a set of relay specific queries
    */
-  async build(
-    relays: AuthorsRelaysCache,
-    cacheRelay?: CacheRelay,
-    options?: RequestBuilderOptions,
-  ): Promise<Array<BuiltRawReqFilter>> {
-    // if since/until are set ignore sync split, cache relay wont be used
-    if (cacheRelay && this.#filter.since === undefined && this.#filter.until === undefined) {
-      const latest = await cacheRelay.query([
-        "REQ",
-        uuid(),
-        {
-          ...this.#filter,
-          since: undefined,
-          until: undefined,
-          limit: 1,
-        },
-      ]);
-      if (latest.length === 1) {
-        return [
-          ...this.#buildFromFilter(relays, {
-            ...this.#filter,
-            since: latest[0].created_at,
-            until: undefined,
-            limit: undefined,
-          }),
-          {
-            filters: [this.#filter],
-            relay: "==CACHE==",
-            strategy: RequestStrategy.CacheRelay,
-          },
-        ];
-      }
-    }
+  build(relays: AuthorsRelaysCache, options?: RequestBuilderOptions): Array<BuiltRawReqFilter> {
     return this.#buildFromFilter(relays, this.#filter, options);
   }
 

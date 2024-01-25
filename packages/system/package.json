@@ -20,7 +20,7 @@
     "@jest/globals": "^29.5.0",
     "@peculiar/webcrypto": "^1.4.3",
     "@types/debug": "^4.1.8",
-    "@types/jest": "^29.5.1",
+    "@types/jest": "^29.5.11",
     "@types/lokijs": "^1.5.14",
     "@types/node": "^20.5.9",
     "@types/uuid": "^9.0.2",

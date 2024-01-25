@@ -21,7 +21,7 @@ const RelaySettingsPage = () => {
   const [newRelay, setNewRelay] = useState<string>();
 
   const otherConnections = useMemo(() => {
-    return system.Sockets.filter(a => relays.item[a.address] === undefined);
+    return [...system.pool].filter(([k]) => relays.item[k] === undefined).map(([, v]) => v);
   }, [relays]);
 
   const handleNewRelayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +83,7 @@ const RelaySettingsPage = () => {
       </h3>
       <div className="flex flex-col g8">
         {otherConnections.map(a => (
-          <Relay addr={a.address} key={a.id} />
+          <Relay addr={a.Address} key={a.Id} />
         ))}
       </div>
     </div>

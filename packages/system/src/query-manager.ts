@@ -105,14 +105,16 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
   }
 
   async #send(q: Query, qSend: BuiltRawReqFilter) {
-    if (qSend.strategy === RequestStrategy.CacheRelay && this.#system.cacheRelay) {
-      const qt = q.insertCompletedTrace(qSend, []);
-      const res = await this.#system.cacheRelay.query(["REQ", qt.id, ...qSend.filters]);
-      q.feed.add(res?.map(a => ({ ...a, relays: [] }) as TaggedNostrEvent));
-      return;
-    }
     for (const qfl of this.#queryCacheLayers) {
       qSend = await qfl.processFilter(q, qSend);
+    }
+    if (this.#system.cacheRelay) {
+      // fetch results from cache first, flag qSend for sync
+      const data = await this.#system.cacheRelay.query(["REQ", q.id, ...qSend.filters]);
+      if (data.length > 0) {
+        qSend.syncFrom = data as Array<TaggedNostrEvent>;
+        q.feed.add(data as Array<TaggedNostrEvent>);
+      }
     }
 
     // automated outbox model, load relays for queried authors

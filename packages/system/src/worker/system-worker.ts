@@ -1,7 +1,6 @@
 import { v4 as uuid } from "uuid";
 import EventEmitter from "eventemitter3";
 import {
-  ConnectionStateSnapshot,
   NostrEvent,
   OkResponse,
   ProfileLoaderService,
@@ -82,7 +81,7 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
     };
   }
 
-  get Sockets(): ConnectionStateSnapshot[] {
+  get Sockets(): never[] {
     return [];
   }
 
