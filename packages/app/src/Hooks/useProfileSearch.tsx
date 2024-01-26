@@ -2,11 +2,16 @@ import { socialGraphInstance } from "@snort/system";
 import { useMemo } from "react";
 
 import fuzzySearch from "@/Db/FuzzySearch";
+import useTimelineFeed from "@/Feed/TimelineFeed";
+
+const options = { method: "LIMIT_UNTIL" };
 
 export default function useProfileSearch(search: string) {
+  const subject = useMemo(() => ({ type: "profile_keyword", items: [search], discriminator: search }), [search]);
+  const feed = useTimelineFeed(subject, options);
   const results = useMemo(() => {
     return userSearch(search);
-  }, [search]);
+  }, [search, feed]);
 
   return results;
 }

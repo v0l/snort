@@ -63,7 +63,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
         break;
       }
       case "profile_keyword": {
-        f.search(subject.items[0] + " sort:popular");
+        f.search(subject.items[0]);
         SearchRelays.forEach(r => f.relay(r));
         break;
       }
