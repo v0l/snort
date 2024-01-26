@@ -39,7 +39,7 @@ steps:
     commands:
       - dockerd &
       - docker login -u voidic -p $TOKEN
-      - docker build -t voidic/snort:latest --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
+      - docker buildx build -t voidic/snort:latest --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
       - docker push voidic/snort:latest
       - kill $(cat /var/run/docker.pid)
 volumes:
