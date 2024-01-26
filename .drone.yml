@@ -17,7 +17,7 @@ steps:
     commands:
       - git fetch --tags
   - name: Build site
-    image: node:current-bullseye
+    image: node:current
     volumes:
       - name: cache
         path: /cache
@@ -56,7 +56,7 @@ metadata:
   namespace: git
 steps:
   - name: Test/Lint
-    image: node:current-bullseye
+    image: node:current
     volumes:
       - name: cache
         path: /cache
@@ -88,7 +88,7 @@ metadata:
   namespace: git
 steps:
   - name: Push/Pull translations
-    image: node:current-bullseye
+    image: node:current
     volumes:
       - name: cache
         path: /cache
@@ -134,7 +134,7 @@ steps:
     commands:
       - git fetch --tags
   - name: Build site
-    image: node:current-bullseye
+    image: node:current
     volumes:
       - name: cache
         path: /cache
