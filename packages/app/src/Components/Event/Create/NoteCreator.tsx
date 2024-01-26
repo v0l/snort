@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import "./NoteCreator.css";
 
 import { fetchNip05Pubkey, unixNow } from "@snort/shared";

@@ -1,14 +1,15 @@
 import "@webscopeio/react-textarea-autocomplete/style.css";
 import "./Textarea.css";
 
-import { CachedMetadata, NostrPrefix } from "@snort/system";
+import { NostrPrefix } from "@snort/system";
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete";
 import { useIntl } from "react-intl";
 import TextareaAutosize from "react-textarea-autosize";
 
-import { UserCache } from "@/Cache";
 import Avatar from "@/Components/User/Avatar";
 import Nip05 from "@/Components/User/Nip05";
+import { FuzzySearchResult } from "@/Db/FuzzySearch";
+import { userSearch } from "@/Hooks/useProfileSearch";
 import { hexToBech32 } from "@/Utils";
 import searchEmoji from "@/Utils/emoji-search";
 
@@ -28,7 +29,7 @@ const EmojiItem = ({ entity: { name, char } }: { entity: EmojiItemProps }) => {
   );
 };
 
-const UserItem = (metadata: CachedMetadata) => {
+const UserItem = (metadata: FuzzySearchResult) => {
   const { pubkey, display_name, nip05, ...rest } = metadata;
   return (
     <div key={pubkey} className="user-item">
@@ -45,7 +46,7 @@ const UserItem = (metadata: CachedMetadata) => {
 
 interface TextareaProps {
   autoFocus: boolean;
-  className: string;
+  className?: string;
   placeholder?: string;
   onChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void;
   value: string;
@@ -59,8 +60,8 @@ interface TextareaProps {
 const Textarea = (props: TextareaProps) => {
   const { formatMessage } = useIntl();
 
-  const userDataProvider = async (token: string) => {
-    return await UserCache.search(token);
+  const userDataProvider = (token: string) => {
+    return userSearch(token).slice(0, 10);
   };
 
   const emojiDataProvider = async (token: string) => {
@@ -84,7 +85,7 @@ const Textarea = (props: TextareaProps) => {
         "@": {
           afterWhitespace: true,
           dataProvider: userDataProvider,
-          component: (props: { entity: CachedMetadata }) => <UserItem {...props.entity} />,
+          component: (props: { entity: FuzzySearchResult }) => <UserItem {...props.entity} />,
           output: (item: { pubkey: string }) => `@${hexToBech32(NostrPrefix.PublicKey, item.pubkey)}`,
         },
       }}
