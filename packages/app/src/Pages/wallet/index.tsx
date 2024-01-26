@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { FormattedMessage, FormattedNumber, useIntl } from "react-intl";

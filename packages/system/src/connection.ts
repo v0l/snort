@@ -380,12 +380,16 @@ export class Connection extends EventEmitter<ConnectionEvents> {
       } else if (cmd[0] === "SYNC") {
         const [_, id, eventSet, ...filters] = cmd;
         const lastResortSync = () => {
-          const latest = eventSet.reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
-          const newFilters = filters.map(a => ({
-            ...a,
-            since: latest,
-          }));
-          this.queueReq(["REQ", id, ...newFilters], item.cb);
+          if (filters.some(a => a.since || a.until)) {
+            this.queueReq(["REQ", id, ...filters], item.cb);
+          } else {
+            const latest = eventSet.reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
+            const newFilters = filters.map(a => ({
+              ...a,
+              since: latest,
+            }));
+            this.queueReq(["REQ", id, ...newFilters], item.cb);
+          }
         };
         if (this.Info?.software?.includes("strfry")) {
           const neg = new NegentropyFlow(id, this, eventSet, filters);
