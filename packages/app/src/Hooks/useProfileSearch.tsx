@@ -21,8 +21,8 @@ export function userSearch(search: string) {
   const combinedResults = fuseResults
     .map(result => {
       const fuseScore = result.score === undefined ? 1 : result.score;
-      const followDistance =
-        socialGraphInstance.getFollowDistance(result.item.pubkey) / followDistanceNormalizationFactor;
+
+      const followDistance = wotScore(result.item.pubkey) / followDistanceNormalizationFactor;
 
       const startsWithSearchString = [result.item.name, result.item.display_name, result.item.nip05].some(
         field => field && field.toLowerCase?.().startsWith(searchString.toLowerCase()),
@@ -49,4 +49,12 @@ export function userSearch(search: string) {
     });
 
   return combinedResults.map(r => r.item);
+}
+
+export function wotScore(pubkey: string) {
+  return socialGraphInstance.getFollowDistance(pubkey);
+}
+
+export function sortByWoT(pubkeys: Array<string>) {
+  return pubkeys.sort((a, b) => wotScore(a) > wotScore(b) ? 1 : -1);
 }

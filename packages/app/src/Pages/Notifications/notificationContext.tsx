@@ -1,35 +1,29 @@
-import { unwrap } from "@snort/shared";
-import { EventExt, EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
+import { EventKind, NostrLink, NostrPrefix } from "@snort/system";
+import { useEventFeed } from "@snort/system-react";
 
-export function notificationContext(ev: TaggedNostrEvent) {
-  switch (ev.kind) {
-    case EventKind.ZapReceipt: {
-      const aTag = ev.tags.find(a => a[0] === "a");
-      if (aTag) {
-        return NostrLink.fromTag(aTag);
-      }
-      const eTag = ev.tags.find(a => a[0] === "e");
-      if (eTag) {
-        return NostrLink.fromTag(eTag);
-      }
-      const pTag = ev.tags.find(a => a[0] === "p");
-      if (pTag) {
-        return NostrLink.fromTag(pTag);
-      }
-      break;
-    }
-    case EventKind.Repost:
-    case EventKind.Reaction: {
-      const thread = EventExt.extractThread(ev);
-      const tag = unwrap(thread?.replyTo ?? thread?.root ?? { value: ev.id, key: "e" });
-      if (tag.key === "e" || tag.key === "a") {
-        return NostrLink.fromThreadTag(tag);
-      } else {
-        throw new Error("Unknown thread context");
-      }
-    }
-    case EventKind.TextNote: {
-      return NostrLink.fromEvent(ev);
-    }
+import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
+import Text from "@/Components/Text/Text";
+import ProfilePreview from "@/Components/User/ProfilePreview";
+
+export function NotificationContext({ link, onClick }: { link: NostrLink; onClick: () => void }) {
+  const ev = useEventFeed(link);
+  if (link.type === NostrPrefix.PublicKey) {
+    return <ProfilePreview pubkey={link.id} actions={<></>} />;
   }
+  if (!ev) return;
+  if (ev.kind === EventKind.LiveEvent) {
+    return <LiveEvent ev={ev} />;
+  }
+  return (
+    <Text
+      id={ev.id}
+      content={ev.content}
+      tags={ev.tags}
+      creator={ev.pubkey}
+      truncate={120}
+      disableLinkPreview={true}
+      className="content"
+      onClick={onClick}
+    />
+  );
 }

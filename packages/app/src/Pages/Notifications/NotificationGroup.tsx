@@ -8,11 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 import Icon from "@/Components/Icons/Icon";
 import ProfileImage from "@/Components/User/ProfileImage";
+import { sortByWoT } from "@/Hooks/useProfileSearch";
 import { dedupe, getDisplayName } from "@/Utils";
 import { formatShort } from "@/Utils/Number";
 
-import { notificationContext } from "./notificationContext";
-import { NotificationContext } from "./Notifications";
+import { getNotificationContext } from "./getNotificationContext";
+import { NotificationContext } from "./notificationContext";
 
 export function NotificationGroup({
   evs,
@@ -40,7 +41,7 @@ export function NotificationGroup({
   );
   const firstPubkey = pubkeys[0];
   const firstPubkeyProfile = useUserProfile(inView ? (firstPubkey === "anon" ? "" : firstPubkey) : "");
-  const context = notificationContext(evs[0]);
+  const context = getNotificationContext(evs[0]);
   const totalZaps = zaps.reduce((acc, v) => acc + v.amount, 0);
 
   const iconName = () => {
@@ -113,9 +114,9 @@ export function NotificationGroup({
             <div>{kind === EventKind.ZapReceipt && formatShort(totalZaps)}</div>
           </div>
           <div className="flex flex-col w-max g12">
-            <div className="flex">
-              {pubkeys
-                .filter(a => a !== "anon")
+            <div className="flex w-max overflow-hidden">
+              {sortByWoT(pubkeys
+                .filter(a => a !== "anon"))
                 .slice(0, 12)
                 .map(v => (
                   <ProfileImage
