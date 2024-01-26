@@ -1,6 +1,6 @@
 {
   "name": "@snort/app",
-  "version": "0.1.24",
+  "version": "0.2.0",
   "dependencies": {
     "@cashu/cashu-ts": "0.6.1",
     "@lightninglabs/lnc-web": "^0.2.8-alpha",

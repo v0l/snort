@@ -1,3 +1,44 @@
+# v0.2.0
+
+`+16,990,-9,649`
+
+## Added
+- Check notification settings page
+- New settings page layout - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Community Leaders / Invite system - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Settings->Tools pages (Check follows relay health etc) - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- New wallet pages design - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Alby OAuth wallet connection - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Cashu wallet support (WIP) - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Followed by friends feed page - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Fuzzysearch profiles everywhere - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Worker Relay package `@snort/worker-relay` - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+  - Replaces all previous caching objects, all caches are handled inside `@snort/system` via worker relay
+- "View as user" button - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Play live streams directly in feed with embed iframe - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Negentropy v1 support - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+
+## Changed
+- Hidden note styles & preferences - nostr:npub1cz2ve34nk0ukn0ph4yq2qx3ud8rfy5e0ak4epx42dn8gha0sdgpsgra9kv
+- Keybinds for grid modal navigation - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Cache trending sections in browser - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Cache images / nostr.json in service worker - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Add dimensions to `imeta` tag for void.cat uploads - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Check event sigs in `@snort/system-wasm` - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+- Primary color scheme - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Note creator styles (removed hashtags input) - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Cache link preview results in memory - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Show only 1 task at a time in task list - nostr:
+- Render media in reply to note creator - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Show top zappers inline with footer icons on notes - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Add more search relays - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Moved link previews and opengraph tagging to https://nostr.api.v0l.io - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+
+## Fixed
+- Iris account error mesage - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Light theme color fixes - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
+- Notifications page overflow - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
+
 # v0.1.24
 
 `+11,573,-3,010`
