@@ -25,6 +25,7 @@ export interface NostrEvent {
   tags: Array<Array<string>>;
   content: string;
   sig: string;
+  relays?: Array<string>;
 }
 
 export type ReqCommand = ["REQ", id: string, ...filters: Array<ReqFilter>];
