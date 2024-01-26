@@ -98,8 +98,6 @@ export default function NavSidebar({ narrow = false }: { narrow: boolean }) {
     </span>
   );
 
-  const showDeck = CONFIG.showDeck || !(CONFIG.deckSubKind !== undefined && (sub?.type ?? -1) < CONFIG.deckSubKind);
-
   return (
     <div className={className}>
       <LogoHeader showText={!narrow} />
@@ -112,9 +110,6 @@ export default function NavSidebar({ narrow = false }: { narrow: boolean }) {
           {!narrow && <WalletBalance />}
           {MENU_ITEMS.filter(a => {
             if ((CONFIG.hideFromNavbar ?? []).includes(a.link)) {
-              return false;
-            }
-            if (a.link == "/deck" && !showDeck) {
               return false;
             }
             if (readonly && a.hideReadOnly) {
