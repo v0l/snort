@@ -99,10 +99,10 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         }}
         displayAs={displayAs}
       />
-      {(feed.main?.length ?? 0) > 0 && (
+      {mainFeed.length > 0 && (
         <ShowMoreInView
           onClick={() => {
-            onShowLatest(false);
+            feed.loadMore();
           }}
         />
       )}
