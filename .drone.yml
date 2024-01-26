@@ -23,11 +23,12 @@ steps:
         path: /cache
     environment:
       YARN_CACHE_FOLDER: /cache/.yarn-docker
+      NODE_CONFIG_ENV: default
     commands:
       - yarn install
       - yarn build
   - name: build docker image
-    image: r.j3ss.co/img
+    image: docker
     privileged: true
     volumes:
       - name: cache
@@ -36,9 +37,11 @@ steps:
       TOKEN:
         from_secret: docker_hub
     commands:
-      - img login -u voidic -p $TOKEN
-      - img build -t voidic/snort:latest --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
-      - img push voidic/snort:latest
+      - dockerd &
+      - docker login -u voidic -p $TOKEN
+      - docker build -t voidic/snort:latest --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
+      - docker push voidic/snort:latest
+      - kill $(cat /var/run/docker.pid)
 volumes:
   - name: cache
     claim:
@@ -59,6 +62,7 @@ steps:
         path: /cache
     environment:
       YARN_CACHE_FOLDER: /cache/.yarn-test
+      NODE_CONFIG_ENV: default
     commands:
       - yarn install
       - yarn build
@@ -90,6 +94,7 @@ steps:
         path: /cache
     environment:
       YARN_CACHE_FOLDER: /cache/.yarn-translations
+      NODE_CONFIG_ENV: default
       TOKEN:
         from_secret: gitea
       CTOKEN:
@@ -134,12 +139,13 @@ steps:
       - name: cache
         path: /cache
     environment:
-      YARN_CACHE_FOLDER: /cache/.yarn-docker-release
+      YARN_CACHE_FOLDER: /cache/.yarn-docker-
+      NODE_CONFIG_ENV: default
     commands:
       - yarn install
       - yarn build
   - name: build docker image
-    image: r.j3ss.co/img
+    image: docker
     privileged: true
     volumes:
       - name: cache
@@ -148,9 +154,11 @@ steps:
       TOKEN:
         from_secret: docker_hub
     commands:
-      - img login -u voidic -p $TOKEN
-      - img build -t voidic/snort:$DRONE_TAG --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
-      - img push voidic/snort:$DRONE_TAG
+      - dockerd &
+      - docker login -u voidic -p $TOKEN
+      - docker buildx build -t voidic/snort:$DRONE_TAG --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
+      - docker push voidic/snort:$DRONE_TAG
+      - kill $(cat /var/run/docker.pid)
 volumes:
   - name: cache
     claim:
