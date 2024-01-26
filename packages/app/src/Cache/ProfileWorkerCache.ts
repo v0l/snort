@@ -77,7 +77,6 @@ export class ProfileCacheRelayWorker extends EventEmitter<CacheEvents> implement
       "change",
       mapped.map(a => this.key(a)),
     );
-    console.debug("ProfileCacheRelayWorker", keys, results);
     return mapped;
   }
 

@@ -1,10 +1,11 @@
 import sqlite3InitModule, { Database, Sqlite3Static } from "@sqlite.org/sqlite-wasm";
 import { EventEmitter } from "eventemitter3";
 import { NostrEvent, RelayHandler, RelayHandlerEvents, ReqFilter, unixNowMs } from "./types";
+import debug from "debug";
 
 export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements RelayHandler {
   #sqlite?: Sqlite3Static;
-  #log = (...args: any[]) => console.debug(...args);
+  #log = debug("SqliteRelay");
   #db?: Database;
   #seenInserts = new Set<string>();
 

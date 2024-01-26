@@ -35,7 +35,7 @@ async function insertBatch() {
       if (relay) {
         while (eventWriteQueue.length > 0) {
           if (unixNowMs() - start >= timeLimit) {
-            console.debug("Yield insert, queue length: ", eventWriteQueue.length, ", cmds: ", cmdQueue.length);
+            //console.debug("Yield insert, queue length: ", eventWriteQueue.length, ", cmds: ", cmdQueue.length);
             break;
           }
           const batch = eventWriteQueue.splice(0, 10);

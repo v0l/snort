@@ -1,12 +1,13 @@
 import EventEmitter from "eventemitter3";
 import { NostrEvent, RelayHandler, RelayHandlerEvents, ReqFilter, eventMatchesFilter } from "./types";
+import debug from "debug";
 
 /**
  * A very simple dumb fallback relay using a flat table
  */
 export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements RelayHandler {
   #events: Map<string, NostrEvent> = new Map();
-  #log = (...args: any[]) => console.debug(...args);
+  #log = debug("InMemoryRelay");
 
   init(path: string): Promise<void> {
     this.#log("Using in-memory relay");
