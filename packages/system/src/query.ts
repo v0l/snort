@@ -3,10 +3,11 @@ import debug from "debug";
 import EventEmitter from "eventemitter3";
 import { unixNowMs, unwrap } from "@snort/shared";
 
-import { Connection, ReqFilter, Nips, TaggedNostrEvent, SystemInterface } from ".";
+import { Connection, ReqFilter, Nips, TaggedNostrEvent, SystemInterface, ParsedFragment } from ".";
 import { NoteCollection } from "./note-collection";
 import { BuiltRawReqFilter, RequestBuilder } from "./request-builder";
 import { eventMatchesFilter } from "./request-matcher";
+import { LRUCache } from "lru-cache";
 
 interface QueryTraceEvents {
   change: () => void;
@@ -105,6 +106,11 @@ export interface QueryEvents {
   end: () => void;
 }
 
+const QueryCache = new LRUCache<string, Array<TaggedNostrEvent>>({
+  ttl: 60_000 * 3,
+  ttlAutopurge: true,
+});
+
 /**
  * Active or queued query on the system
  */
@@ -175,6 +181,11 @@ export class Query extends EventEmitter<QueryEvents> {
     this.#groupingDelay = req.options?.groupingDelay ?? 100;
     this.#checkTraces();
 
+    const cached = QueryCache.get(this.request.id);
+    if (cached) {
+      this.#log("Restored %o for %s", cached, this.request.id);
+      this.feed.add(cached);
+    }
     this.feed.on("event", evs => this.emit("event", evs));
     this.#start();
   }
@@ -234,7 +245,7 @@ export class Query extends EventEmitter<QueryEvents> {
    * This function should be called when this Query object and FeedStore is no longer needed
    */
   cancel() {
-    this.#cancelAt = unixNowMs() + 5_000;
+    this.#cancelAt = unixNowMs() + 1_000;
   }
 
   uncancel() {
@@ -248,6 +259,8 @@ export class Query extends EventEmitter<QueryEvents> {
     }
     this.#stopCheckTraces();
     this.emit("end");
+    QueryCache.set(this.request.id, this.feed.snapshot);
+    this.#log("Saved %O for %s", this.feed.snapshot, this.request.id);
   }
 
   /**

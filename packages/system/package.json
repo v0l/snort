@@ -41,6 +41,7 @@
     "eventemitter3": "^5.0.1",
     "isomorphic-ws": "^5.0.0",
     "lokijs": "^1.5.12",
+    "lru-cache": "^10.2.0",
     "uuid": "^9.0.0",
     "ws": "^8.14.0"
   }

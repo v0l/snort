@@ -166,13 +166,6 @@ export class QueryManager extends EventEmitter<QueryManagerEvents> {
     }
   }
 
-  /**
-   * Split request into 2 branches.
-   * 1. Request cache for results
-   * 2. Send query to relays
-   */
-  #splitSyncRequest(req: BuiltRawReqFilter) {}
-
   #cleanup() {
     let changed = false;
     for (const [k, v] of this.#queries) {

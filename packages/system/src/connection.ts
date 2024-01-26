@@ -386,7 +386,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
             const latest = eventSet.reduce((acc, v) => (acc = v.created_at > acc ? v.created_at : acc), 0);
             const newFilters = filters.map(a => ({
               ...a,
-              since: latest,
+              since: latest + 1,
             }));
             this.queueReq(["REQ", id, ...newFilters], item.cb);
           }
