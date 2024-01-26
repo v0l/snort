@@ -52,14 +52,9 @@ async function initSite() {
     await initRelayWorker();
   }
   const login = LoginStore.takeSnapshot();
-  db.ready = await db.isAvailable();
-  if (db.ready) {
-    preload(login.follows.item);
-  }
-
   updateRelayConnections(System, login.relays.item).catch(console.error);
-
   setupWebLNWalletConfig(Wallets);
+
   Relay.query([
     "REQ",
     "preload-social-graph",
@@ -75,6 +70,11 @@ async function initSite() {
       }
     }
   });
+
+  db.ready = await db.isAvailable();
+  if (db.ready) {
+    await preload(login.follows.item);
+  }
 
   queueMicrotask(() => {
     for (const ev of UserCache.snapshot()) {
