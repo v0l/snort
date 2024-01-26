@@ -3,6 +3,7 @@
 `+16,990,-9,649`
 
 ## Added
+
 - Check notification settings page
 - New settings page layout - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
 - Community Leaders / Invite system - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
@@ -19,6 +20,7 @@
 - Negentropy v1 support - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
 
 ## Changed
+
 - Hidden note styles & preferences - nostr:npub1cz2ve34nk0ukn0ph4yq2qx3ud8rfy5e0ak4epx42dn8gha0sdgpsgra9kv
 - Keybinds for grid modal navigation - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
 - Cache trending sections in browser - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
@@ -35,6 +37,7 @@
 - Moved link previews and opengraph tagging to https://nostr.api.v0l.io - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
 
 ## Fixed
+
 - Iris account error mesage - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
 - Light theme color fixes - nostr:npub1g53mukxnjkcmr94fhryzkqutdz2ukq4ks0gvy5af25rgmwsl4ngq43drvk
 - Notifications page overflow - nostr:npub1v0lxxxxutpvrelsksy8cdhgfux9l6a42hsj2qzquu2zk7vc9qnkszrqj49
