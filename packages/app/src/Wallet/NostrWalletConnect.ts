@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { dedupe } from "@snort/shared";
 import { Connection, EventBuilder, EventKind, NostrEvent, PrivateKeySigner } from "@snort/system";
 import debug from "debug";
@@ -155,7 +156,7 @@ export class NostrConnectWallet implements LNWallet {
           },
           reject,
         });
-        this.#conn?.QueueReq(["REQ", "info", { kinds: [13194], limit: 1 }], () => {
+        this.#conn?.queueReq(["REQ", "info", { kinds: [13194], limit: 1 }], () => {
           // ignored
         });
       });
@@ -179,7 +180,7 @@ export class NostrConnectWallet implements LNWallet {
       this.#conn.on("event", (s, e) => {
         this.#onReply(s, e);
       });
-      this.#conn.Connect();
+      this.#conn.connect();
     });
     await this.getInfo();
     this.changed();
@@ -187,7 +188,7 @@ export class NostrConnectWallet implements LNWallet {
   }
 
   async close() {
-    this.#conn?.Close();
+    this.#conn?.close();
     return true;
   }
 
@@ -291,7 +292,7 @@ export class NostrConnectWallet implements LNWallet {
 
     pending.resolve(e.content);
     this.#commandQueue.delete(replyTo[1]);
-    this.#conn?.CloseReq(sub);
+    this.#conn?.closeReq(sub);
   }
 
   async #rpc<T>(method: string, params: Record<string, string | number | undefined>) {
@@ -319,7 +320,7 @@ export class NostrConnectWallet implements LNWallet {
       .tag(["p", this.#config.walletPubkey]);
 
     const evCommand = await eb.buildAndSign(this.#config.secret);
-    this.#conn.QueueReq(
+    this.#conn.queueReq(
       [
         "REQ",
         evCommand.id.slice(0, 12),
@@ -333,7 +334,7 @@ export class NostrConnectWallet implements LNWallet {
         // ignored
       },
     );
-    await this.#conn.SendAsync(evCommand);
+    await this.#conn.sendEventAsync(evCommand);
     return await new Promise<T>((resolve, reject) => {
       this.#commandQueue.set(evCommand.id, {
         resolve: async (o: string) => {
