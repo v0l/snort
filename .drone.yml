@@ -40,8 +40,7 @@ steps:
       - dockerd &
       - docker login -u voidic -p $TOKEN
       - docker buildx create --name mybuilder --bootstrap --use
-      - docker buildx build -t voidic/snort:latest --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
-      - docker push voidic/snort:latest
+      - docker buildx build -t voidic/snort:latest --platform linux/amd64,linux/arm64 --push -f Dockerfile.prebuilt .
       - kill $(cat /var/run/docker.pid)
 volumes:
   - name: cache
@@ -158,8 +157,7 @@ steps:
       - dockerd &
       - docker login -u voidic -p $TOKEN
       - docker buildx create --name mybuilder --bootstrap --use
-      - docker buildx build -t voidic/snort:$DRONE_TAG --platform linux/amd64,linux/arm64 -f Dockerfile.prebuilt .
-      - docker push voidic/snort:$DRONE_TAG
+      - docker buildx build -t voidic/snort:$DRONE_TAG --platform linux/amd64,linux/arm64 --push -f Dockerfile.prebuilt .
       - kill $(cat /var/run/docker.pid)
 volumes:
   - name: cache
