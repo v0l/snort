@@ -48,15 +48,17 @@ export function useRateHistory(symbol: string, size: number, leaveOpen = false) 
 
   const feed = useRequestBuilder(sub);
 
-  return removeUndefined(feed.map(a => {
-    const tag = a.tags.find(a => a[0] === "d" && a[1] === symbol);
-    if (!tag) return undefined;
-    return {
-      time: a?.created_at,
-      ask: Number(tag[2]),
-      bid: Number(tag[3]),
-      low: Number(tag[4]),
-      hight: Number(tag[5]),
-    };
-  }));
+  return removeUndefined(
+    feed.map(a => {
+      const tag = a.tags.find(a => a[0] === "d" && a[1] === symbol);
+      if (!tag) return undefined;
+      return {
+        time: a?.created_at,
+        ask: Number(tag[2]),
+        bid: Number(tag[3]),
+        low: Number(tag[4]),
+        hight: Number(tag[5]),
+      };
+    }),
+  );
 }

@@ -56,5 +56,5 @@ export function wotScore(pubkey: string) {
 }
 
 export function sortByWoT(pubkeys: Array<string>) {
-  return pubkeys.sort((a, b) => wotScore(a) > wotScore(b) ? 1 : -1);
+  return pubkeys.sort((a, b) => (wotScore(a) > wotScore(b) ? 1 : -1));
 }

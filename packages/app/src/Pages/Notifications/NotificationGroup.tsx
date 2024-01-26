@@ -115,8 +115,7 @@ export function NotificationGroup({
           </div>
           <div className="flex flex-col w-max g12">
             <div className="flex w-max overflow-hidden">
-              {sortByWoT(pubkeys
-                .filter(a => a !== "anon"))
+              {sortByWoT(pubkeys.filter(a => a !== "anon"))
                 .slice(0, 12)
                 .map(v => (
                   <ProfileImage

@@ -58,7 +58,7 @@ const SearchPage = () => {
     return {
       type: "post_keyword",
       discriminator: keyword,
-      items: [keyword]
+      items: [keyword],
     } as TimelineSubject;
   }, [keyword]);
 

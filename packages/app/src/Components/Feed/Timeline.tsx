@@ -56,7 +56,6 @@ const Timeline = (props: TimelineProps) => {
     [props.postsOnly, props.ignoreModeration, props.followDistance],
   );
 
-
   const mainFeed = useMemo(() => {
     return filterPosts(feed.main ?? []);
   }, [feed.main, filterPosts]);
