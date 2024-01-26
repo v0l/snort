@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { ShowMoreInView } from "@/Components/Event/ShowMore";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
-import { LiveStreams } from "@/Components/LiveStream/LiveStreams";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
 import useLogin from "@/Hooks/useLogin";
 import { dedupeByPubkey } from "@/Utils";
@@ -82,7 +81,6 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
 
   return (
     <>
-      {(props.liveStreams ?? true) && <LiveStreams />}
       <DisplayAsSelector
         show={props.showDisplayAsSelector}
         activeSelection={displayAs}
