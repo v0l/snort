@@ -25,6 +25,7 @@ steps:
       YARN_CACHE_FOLDER: /cache/.yarn-docker
       NODE_CONFIG_ENV: default
     commands:
+      - apt update && apt install -y git
       - yarn install
       - yarn build
   - name: build docker image
@@ -142,6 +143,7 @@ steps:
       YARN_CACHE_FOLDER: /cache/.yarn-docker-
       NODE_CONFIG_ENV: default
     commands:
+      - apt update && apt install -y git
       - yarn install
       - yarn build
   - name: build docker image

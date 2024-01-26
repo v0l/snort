@@ -1,12 +1,12 @@
-FROM node:19 as build
-WORKDIR /app
-
-COPY package.json yarn.lock .yarnrc.yml .
-COPY .yarn .yarn
-COPY packages packages
-RUN yarn --network-timeout 1000000
-RUN yarn build
+FROM node:current as build
+WORKDIR /src
+RUN apt update \
+    && apt install -y --no-install-recommends git \
+    && git clone --single-branch -b main https://git.v0l.io/Kieran/snort \
+    && cd snort \
+    && yarn --network-timeout 1000000 \
+    && yarn build
 
 FROM nginxinc/nginx-unprivileged:mainline-alpine
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/packages/app/build /usr/share/nginx/html
+COPY --from=build /src/snort/packages/app/build /usr/share/nginx/html
