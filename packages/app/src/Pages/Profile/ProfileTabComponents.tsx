@@ -60,7 +60,7 @@ export function ProfileNotesTab({ id, relays, isMe }: { id: HexKey; relays?: Arr
       ({
         type: "pubkey",
         items: [id],
-        discriminator: id.slice(0, 12),
+        discriminator: `profile:${id.slice(0, 12)}`,
         relay: relays,
       }) as TimelineSubject,
     [id, relays],
