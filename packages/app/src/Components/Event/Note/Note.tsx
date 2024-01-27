@@ -4,6 +4,7 @@ import React, { useCallback, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
+import { LRUCache } from "typescript-lru-cache";
 
 import NoteHeader from "@/Components/Event/Note/NoteHeader";
 import { NoteText } from "@/Components/Event/Note/NoteText";
@@ -30,6 +31,7 @@ const defaultOptions = {
 };
 
 const canRenderAsTextNote = [EventKind.TextNote, EventKind.Polls];
+const translationCache = new LRUCache<string, NoteTranslation>({ maxSize: 300 });
 
 export function Note(props: NoteProps) {
   const { data: ev, highlight, options: opt, ignoreModeration = false, className, waitUntilInView } = props;
@@ -37,7 +39,14 @@ export function Note(props: NoteProps) {
   const { isEventMuted } = useModeration();
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "2000px" });
   const [showTranslation, setShowTranslation] = useState(true);
-  const [translated, setTranslated] = useState<NoteTranslation>();
+  const [translated, setTranslated] = useState<NoteTranslation>(translationCache.get(ev.id));
+  const cachedSetTranslated = useCallback(
+    (translation: NoteTranslation) => {
+      translationCache.set(ev.id, translation);
+      setTranslated(translation);
+    },
+    [ev.id],
+  );
 
   const optionsMerged = { ...defaultOptions, ...opt };
   const goToEvent = useGoToEvent(props, optionsMerged);
@@ -50,7 +59,13 @@ export function Note(props: NoteProps) {
     if (waitUntilInView && !inView) return null;
     return (
       <>
-        {optionsMerged.showHeader && <NoteHeader ev={ev} options={optionsMerged} setTranslated={setTranslated} />}
+        {optionsMerged.showHeader && (
+          <NoteHeader
+            ev={ev}
+            options={optionsMerged}
+            setTranslated={translated === null ? cachedSetTranslated : undefined}
+          />
+        )}
         <div className="body" onClick={e => goToEvent(e, ev)}>
           <NoteText {...props} translated={translated} showTranslation={showTranslation} />
           {translated && <TranslationInfo translated={translated} setShowTranslation={setShowTranslation} />}

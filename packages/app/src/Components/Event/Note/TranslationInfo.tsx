@@ -23,7 +23,7 @@ export function TranslationInfo({ translated, setShowTranslation }: TranslationI
         </span>
       </>
     );
-  } else if (translated) {
+  } else if (translated && !translated.skipped) {
     return (
       <p className="text-xs font-semibold text-gray-light">
         <FormattedMessage {...messages.TranslationFailed} />

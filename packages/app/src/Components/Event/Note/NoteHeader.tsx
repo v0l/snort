@@ -17,7 +17,7 @@ import { setBookmarked, setPinned } from "@/Utils/Login";
 export default function NoteHeader(props: {
   ev: TaggedNostrEvent;
   options: NotePropsOptions;
-  setTranslated: (t: NoteTranslation) => void;
+  setTranslated?: (t: NoteTranslation) => void;
   context?: React.ReactNode;
 }) {
   const [showReactions, setShowReactions] = useState(false);
@@ -49,6 +49,8 @@ export default function NoteHeader(props: {
     }
   }
 
+  const onTranslated = setTranslated ? (t: NoteTranslation) => setTranslated(t) : undefined;
+
   return (
     <div className="header flex">
       <ProfileImage
@@ -79,7 +81,7 @@ export default function NoteHeader(props: {
           <NoteContextMenu
             ev={ev}
             react={async () => {}}
-            onTranslated={t => setTranslated(t)}
+            onTranslated={onTranslated}
             setShowReactions={setShowReactions}
           />
         )}

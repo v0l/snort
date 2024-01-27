@@ -89,9 +89,25 @@ registerRoute(
 
 registerRoute(
   ({ url }) => url.origin === "https://api.snort.social" && url.pathname.startsWith("/api/v1/preview"),
-  new StaleWhileRevalidate({
+  new CacheFirst({
     cacheName: "preview-cache",
-    plugins: [new ExpirationPlugin({ maxAgeSeconds: 24 * 60 * 60 })],
+    plugins: [
+      new ExpirationPlugin({ maxAgeSeconds: 24 * 60 * 60 }),
+      new CacheableResponsePlugin({ statuses: [0, 200] }),
+    ],
+  }),
+);
+
+registerRoute(
+  ({ url }) => url.origin === "https://api.snort.social" && url.pathname.startsWith("/api/v1/translate"),
+  new CacheFirst({
+    cacheName: "translate-cache",
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 1000 }),
+      new CacheableResponsePlugin({
+        statuses: [0, 200, 204],
+      }),
+    ],
   }),
 );
 

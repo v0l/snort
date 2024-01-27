@@ -18,6 +18,7 @@ export interface NoteTranslation {
   text: string;
   fromLanguage: string;
   confidence: number;
+  skipped?: boolean;
 }
 
 interface NosteContextMenuProps {
@@ -60,6 +61,7 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
   }
 
   async function translate() {
+    if (!props.onTranslated) return;
     const api = new SnortApi();
     const targetLang = lang.split("-")[0].toUpperCase();
     const result = await api.translate({
@@ -67,18 +69,23 @@ export function NoteContextMenu({ ev, ...props }: NosteContextMenuProps) {
       target_lang: targetLang,
     });
 
-    if ("translations" in result) {
-      if (
-        typeof props.onTranslated === "function" &&
-        result.translations.length > 0 &&
-        targetLang != result.translations[0].detected_source_language
-      ) {
-        props.onTranslated({
-          text: result.translations[0].text,
-          fromLanguage: langNames.of(result.translations[0].detected_source_language),
-          confidence: 1,
-        } as NoteTranslation);
-      }
+    if (
+      "translations" in result &&
+      result.translations.length > 0 &&
+      targetLang != result.translations[0].detected_source_language
+    ) {
+      props.onTranslated({
+        text: result.translations[0].text,
+        fromLanguage: langNames.of(result.translations[0].detected_source_language),
+        confidence: 1,
+      } as NoteTranslation);
+    } else {
+      props.onTranslated({
+        text: "",
+        fromLanguage: "",
+        confidence: 0,
+        skipped: true,
+      });
     }
   }
 

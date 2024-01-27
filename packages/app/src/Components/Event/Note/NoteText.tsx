@@ -15,8 +15,8 @@ export const NoteText = function InnerContent(
   const { data: ev, options, translated, showTranslation } = props;
   const appData = useLogin(s => s.appData);
   const [showMore, setShowMore] = useState(false);
-  const body = translated && showTranslation ? translated.text : ev?.content ?? "";
-  const id = translated && showTranslation ? `${ev.id}-translated` : ev.id;
+  const body = translated && !translated.skipped && showTranslation ? translated.text : ev?.content ?? "";
+  const id = translated && !translated.skipped && showTranslation ? `${ev.id}-translated` : ev.id;
   const shouldTruncate = options?.truncate && body.length > TEXT_TRUNCATE_LENGTH;
 
   const ToggleShowMore = () => (
