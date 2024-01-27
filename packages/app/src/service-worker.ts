@@ -88,7 +88,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url }) => url.origin === "https://api.snort.social" && url.pathname.startsWith("/api/v1/preview"),
+  ({ url }) => url.origin === "https://nostr.api.v0l.io" && url.pathname.startsWith("/api/v1/preview"),
   new CacheFirst({
     cacheName: "preview-cache",
     plugins: [
