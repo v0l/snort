@@ -2189,6 +2189,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@here/maps-api-for-javascript@npm:^1.50.0":
+  version: 1.50.0
+  resolution: "@here/maps-api-for-javascript@npm:1.50.0::__archiveUrl=https%3A%2F%2Frepo.platform.here.com%2Fartifactory%2Fapi%2Fnpm%2Fmaps-api-for-javascript%2F-%2F%40here%2Fmaps-api-for-javascript-1.50.0.tgz"
+  checksum: d0e09651b886a69ea1504c02436bfa3e06bd1c93f2f361402bd279ccabfa43cc57fe1e31c3365c9170ff2b22cbb05ff44ead0c6cf55d118c7e279f8f7c180102
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.13":
   version: 0.11.13
   resolution: "@humanwhocodes/config-array@npm:0.11.13"
@@ -2925,6 +2932,7 @@ __metadata:
   dependencies:
     "@cashu/cashu-ts": 0.6.1
     "@formatjs/cli": ^6.1.3
+    "@here/maps-api-for-javascript": ^1.50.0
     "@lightninglabs/lnc-web": ^0.2.8-alpha
     "@noble/curves": ^1.0.0
     "@noble/hashes": ^1.3.3
@@ -2940,6 +2948,7 @@ __metadata:
     "@szhsin/react-menu": ^3.3.1
     "@types/config": ^3.3.3
     "@types/debug": ^4.1.8
+    "@types/latlon-geohash": ^2.0.3
     "@types/node": ^20.4.1
     "@types/react": ^18.0.26
     "@types/react-dom": ^18.0.10
@@ -2972,6 +2981,7 @@ __metadata:
     eventemitter3: ^5.0.1
     fuse.js: ^7.0.0
     highlight.js: ^11.8.0
+    latlon-geohash: ^2.0.0
     light-bolt11-decoder: ^2.1.0
     lottie-react: ^2.4.0
     marked: ^9.1.0
@@ -3619,6 +3629,13 @@ __metadata:
   version: 1.0.36
   resolution: "@types/json-stable-stringify@npm:1.0.36"
   checksum: 765b07589e11a3896c3d06bb9e3a9be681e7edd95adf27370df0647a91bd2bfcfaf0e091fd4a13729343b388973f73f7e789d6cc62ab988240518a2d27c4a4e2
+  languageName: node
+  linkType: hard
+
+"@types/latlon-geohash@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@types/latlon-geohash@npm:2.0.3"
+  checksum: dd238573da1057bf1a458211bc65d9b05da3eb2ac11340702902c68bd85d41731789d4b1ebab1c82813a6b73ec9e57a4f0f13e4d7b7a5cb14b0d640d66901ba0
   languageName: node
   linkType: hard
 
@@ -8098,6 +8115,13 @@ __metadata:
   version: 3.0.3
   resolution: "kleur@npm:3.0.3"
   checksum: df82cd1e172f957bae9c536286265a5cdbd5eeca487cb0a3b2a7b41ef959fc61f8e7c0e9aeea9c114ccf2c166b6a8dd45a46fd619c1c569d210ecd2765ad5169
+  languageName: node
+  linkType: hard
+
+"latlon-geohash@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "latlon-geohash@npm:2.0.0"
+  checksum: e3eae428a979326c576e3f0b5fc7505cb2a57abb7f72bb6b005d37d8a35baa90f48f009d4167c15b6470060fc826eb8ebf2a5d8d0eb35e1b6e4ff35bbc82b02b
   languageName: node
   linkType: hard
 
