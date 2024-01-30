@@ -5,14 +5,14 @@
     "moduleResolution": "Bundler",
     "esModuleInterop": true,
     "noImplicitOverride": true,
+    "module": "ESNext",
     "jsx": "react-jsx",
     "strict": true,
     "declaration": true,
-    "declarationMap": true,
     "inlineSourceMap": true,
     "outDir": "dist",
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"],
-  "files": ["src/index.ts"]
+  "include": ["./src/**/*.ts*"],
+  "exclude": ["**/*.test.ts"]
 }

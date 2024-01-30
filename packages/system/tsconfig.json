@@ -2,18 +2,16 @@
   "compilerOptions": {
     "baseUrl": "src",
     "target": "ESNext",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Bundler",
     "esModuleInterop": true,
     "noImplicitOverride": true,
-    "module": "NodeNext",
+    "module": "ESNext",
     "strict": true,
     "declaration": true,
-    "declarationMap": true,
     "inlineSourceMap": true,
     "outDir": "dist",
-    "skipLibCheck": true,
-    "allowJs": true
+    "skipLibCheck": true
   },
   "include": ["./src/**/*.ts"],
-  "files": ["./src/index.ts"]
+  "exclude": ["**/*.test.ts"]
 }
