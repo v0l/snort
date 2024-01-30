@@ -14,11 +14,13 @@ Cross-Origin-Embedder-Policy: require-corp
 ```
 
 ### Usage (Vite)
+
 ```typescript
 import WorkerRelayPath from "@snort/worker-relay/dist/worker?worker&url";
 ```
 
 ### Example
+
 ```typescript
 const relay = new WorkerRelayInterface(WorkerRelayPath);
 
