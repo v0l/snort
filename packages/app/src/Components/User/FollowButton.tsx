@@ -2,7 +2,7 @@ import { HexKey } from "@snort/system";
 import { FormattedMessage } from "react-intl";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
-import useEventPublisher from "@/Hooks/useEventPublisher";
+import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
 import { parseId } from "@/Utils";
 
@@ -14,24 +14,10 @@ export interface FollowButtonProps {
 }
 export default function FollowButton(props: FollowButtonProps) {
   const pubkey = parseId(props.pubkey);
-  const { publisher, system } = useEventPublisher();
-  const { follows, readonly } = useLogin(s => ({ follows: s.follows, readonly: s.readonly }));
-  const isFollowing = follows.item.includes(pubkey);
+  const readonly = useLogin(s => s.readonly);
+  const control = useFollowsControls();
+  const isFollowing = control.isFollowing(pubkey);
   const baseClassname = props.className ? `${props.className} ` : "";
-
-  async function follow(pubkey: HexKey) {
-    if (publisher) {
-      const ev = await publisher.contactList([pubkey, ...follows.item].map(a => ["p", a]));
-      system.BroadcastEvent(ev);
-    }
-  }
-
-  async function unfollow(pubkey: HexKey) {
-    if (publisher) {
-      const ev = await publisher.contactList(follows.item.filter(a => a !== pubkey).map(a => ["p", a]));
-      system.BroadcastEvent(ev);
-    }
-  }
 
   return (
     <AsyncButton
@@ -39,7 +25,7 @@ export default function FollowButton(props: FollowButtonProps) {
       disabled={readonly}
       onClick={async e => {
         e.stopPropagation();
-        await (isFollowing ? unfollow(pubkey) : follow(pubkey));
+        await (isFollowing ? control.removeFollow([pubkey]) : control.addFollow([pubkey]));
       }}>
       {isFollowing ? <FormattedMessage {...messages.Unfollow} /> : <FormattedMessage {...messages.Follow} />}
     </AsyncButton>

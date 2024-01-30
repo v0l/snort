@@ -257,9 +257,12 @@ export class EventPublisher {
     return await this.#sign(eb);
   }
 
-  async contactList(tags: Array<[string, string]>) {
+  async contactList(tags: Array<[string, string]>, relays?: Record<string, RelaySettings>) {
     const eb = this.#eb(EventKind.ContactList);
     tags.forEach(a => eb.tag(a));
+    if (relays) {
+      eb.content(JSON.stringify(relays));
+    }
     return await this.#sign(eb);
   }
 

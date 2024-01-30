@@ -122,8 +122,10 @@ export async function generateNewLogin(
   const publisher = EventPublisher.privateKey(privateKey);
 
   // Create new contact list following self and site account
-  const contactList = [publicKey, ...CONFIG.signUp.defaultFollows.map(a => bech32ToHex(a))].map(a => ["p", a]);
-  const ev = await publisher.contactList(contactList);
+  const contactList = [publicKey, ...CONFIG.signUp.defaultFollows.map(a => bech32ToHex(a))].map(a => ["p", a]) as Array<
+    [string, string]
+  >;
+  const ev = await publisher.contactList(contactList, newRelays);
   system.BroadcastEvent(ev);
 
   // Create relay metadata event

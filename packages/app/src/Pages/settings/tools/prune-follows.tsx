@@ -6,9 +6,9 @@ import { FormattedMessage, FormattedNumber } from "react-intl";
 import AsyncButton from "@/Components/Button/AsyncButton";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useEventPublisher from "@/Hooks/useEventPublisher";
+import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
 import { Day } from "@/Utils/Const";
-import { setFollows } from "@/Utils/Login";
 
 import { FollowsRelayHealth } from "./follows-relay-health";
 
@@ -18,13 +18,14 @@ const enum PruneStage {
 }
 
 export function PruneFollowList() {
-  const { id, follows } = useLogin(s => ({ id: s.id, follows: s.follows }));
-  const { publisher, system } = useEventPublisher();
+  const { follows } = useLogin(s => ({ id: s.id, follows: s.follows }));
+  const { system } = useEventPublisher();
   const uniqueFollows = dedupe(follows.item);
   const [status, setStatus] = useState<PruneStage>();
   const [progress, setProgress] = useState(0);
   const [lastPost, setLastPosts] = useState<Record<string, number>>();
   const [unfollow, setUnfollow] = useState<Array<string>>([]);
+  const followControls = useFollowsControls();
 
   async function fetchLastPosts() {
     setStatus(PruneStage.FetchLastPostTimestamp);
@@ -74,12 +75,7 @@ export function PruneFollowList() {
   }, [uniqueFollows, unfollow]);
 
   async function publishFollowList() {
-    const newFollows = newFollowList.map(a => ["p", a]) as Array<[string, string]>;
-    if (publisher) {
-      const ev = await publisher.contactList(newFollows);
-      await system.BroadcastEvent(ev);
-      setFollows(id, newFollowList, ev.created_at * 1000);
-    }
+    await followControls.setFollows(newFollowList);
   }
 
   function getStatus() {

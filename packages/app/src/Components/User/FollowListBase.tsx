@@ -1,12 +1,10 @@
-import { dedupe } from "@snort/shared";
 import { HexKey } from "@snort/system";
 import { ReactNode, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 
 import ProfilePreview from "@/Components/User/ProfilePreview";
-import useEventPublisher from "@/Hooks/useEventPublisher";
+import useFollowsControls from "@/Hooks/useFollowControls";
 import useLogin from "@/Hooks/useLogin";
-import { setFollows } from "@/Utils/Login";
 
 import AsyncButton from "../Button/AsyncButton";
 import messages from "../messages";
@@ -30,19 +28,13 @@ export default function FollowListBase({
   actions,
   profileActions,
 }: FollowListBaseProps) {
-  const { publisher, system } = useEventPublisher();
-  const { id, follows } = useLogin(s => ({ id: s.id, follows: s.follows }));
+  const control = useFollowsControls();
   const login = useLogin();
 
   const profilePreviewOptions = useMemo(() => ({ about: showAbout, profileCards: true }), [showAbout]);
 
   async function followAll() {
-    if (publisher) {
-      const newFollows = dedupe([...pubkeys, ...follows.item]);
-      const ev = await publisher.contactList(newFollows.map(a => ["p", a]));
-      setFollows(id, newFollows, ev.created_at);
-      await system.BroadcastEvent(ev);
-    }
+    await control.addFollow(pubkeys);
   }
 
   return (
