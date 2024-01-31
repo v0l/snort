@@ -74,16 +74,17 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
         c.on("have", async (s, id) => {
           this.#log("%s have: %s %o", c.Address, s, id);
           if (this.#requestedIds.has(id)) {
-            // already requested from this or another relay
+            this.#log("HAVE: Already requested from another relay %s", id);
             return;
           }
           this.#requestedIds.add(id);
           if (await this.#system.eventsCache.get(id)) {
-            // already have it locally
-            // TODO better local cache / db
+            // TODO better local cache / db check
+            this.#log("HAVE: Already have %s", id);
             return;
           }
-          c.QueueReq(["REQ", "*", { ids: [id] }], () => {});
+          this.#log("HAVE: GET requesting %s", id);
+          c.queueReq(["GET", id], () => {});
         });
         c.on("eose", s => this.emit("eose", addr, s));
         c.on("disconnect", code => this.emit("disconnect", addr, code));

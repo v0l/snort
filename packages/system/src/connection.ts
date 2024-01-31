@@ -380,7 +380,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
   #sendRequestCommand(item: ConnectionQueueItem) {
     try {
       const cmd = item.obj;
-      if (cmd[0] === "REQ") {
+      if (cmd[0] === "REQ" || cmd[0] === "GET") {
         this.ActiveRequests.add(cmd[1]);
         this.send(cmd);
       } else if (cmd[0] === "SYNC") {
@@ -398,10 +398,18 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           }
         };
         if (this.Info?.software?.includes("strfry")) {
-          const neg = new NegentropyFlow(id, this, eventSet, filters);
+          const newFilters = filters.map(a => {
+            if (a.ids_only) {
+              const copy = { ...a };
+              delete copy.ids_only;
+              return copy;
+            }
+            return a;
+          });
+          const neg = new NegentropyFlow(id, this, eventSet, newFilters);
           neg.once("finish", filters => {
             if (filters.length > 0) {
-              this.queueReq(["REQ", cmd[1], ...filters], item.cb);
+              this.queueReq(["REQ", cmd[1], ...newFilters], item.cb);
             }
           });
           neg.once("error", () => {

@@ -37,7 +37,7 @@ export type MaybeHexKey = HexKey | undefined;
  */
 export type u256 = string;
 
-export type ReqCommand = [cmd: "REQ" | "IDS", id: string, ...filters: Array<ReqFilter>];
+export type ReqCommand = [cmd: "REQ" | "IDS" | "GET", id: string, ...filters: Array<ReqFilter>];
 
 /**
  * Raw REQ filter object

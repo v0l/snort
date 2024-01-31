@@ -394,7 +394,7 @@ export class Query extends EventEmitter<QueryEvents> {
 
   #sendQueryInternal(c: Connection, q: BuiltRawReqFilter) {
     let filters = q.filters;
-    if (c.SupportsNip(Nips.GetMatchingEventIds)) {
+    if (c.supportsNip(Nips.GetMatchingEventIds)) {
       filters = filters.map(f => ({ ...f, ids_only: true }));
     }
 
