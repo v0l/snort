@@ -28,6 +28,7 @@ const Contributors = [
   bech32ToHex("npub1ltx67888tz7lqnxlrg06x234vjnq349tcfyp52r0lstclp548mcqnuz40t"), // Vivek
   bech32ToHex("npub1wh30wunfpkezx5s7edqu9g0s0raeetf5dgthzm0zw7sk8wqygmjqqfljgh"), // Fernando Porazzi
   bech32ToHex("npub1gm7tuvr9atc6u7q3gevjfeyfyvmrlul4y67k7u7hcxztz67ceexs078rf6"), // Giszmo - Master of bug reports
+  bech32ToHex("npub1cz2ve34nk0ukn0ph4yq2qx3ud8rfy5e0ak4epx42dn8gha0sdgpsgra9kv"), // Kamal
 ];
 
 const Translators = [
