@@ -75,11 +75,13 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
           this.#log("%s have: %s %o", c.Address, s, id);
           if (this.#requestedIds.has(id)) {
             this.#log("HAVE: Already requested from another relay %s", id);
+            // TODO if request to a relay fails, try another relay. otherwise malicious relays can block content.
             return;
           }
           this.#requestedIds.add(id);
-          if (await this.#system.eventsCache.get(id)) {
-            // TODO better local cache / db check
+          // is this performant? should it be batched?
+          const alreadyHave = await this.#system.cacheRelay?.query(["REQ", id, {ids: [id]}]);
+          if (alreadyHave?.length) {
             this.#log("HAVE: Already have %s", id);
             return;
           }
