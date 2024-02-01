@@ -80,7 +80,7 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
           }
           this.#requestedIds.add(id);
           // is this performant? should it be batched?
-          const alreadyHave = await this.#system.cacheRelay?.query(["REQ", id, {ids: [id]}]);
+          const alreadyHave = await this.#system.cacheRelay?.query(["REQ", id, { ids: [id] }]);
           if (alreadyHave?.length) {
             this.#log("HAVE: Already have %s", id);
             return;
