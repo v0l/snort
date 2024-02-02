@@ -6,6 +6,7 @@ import { useInView } from "react-intersection-observer";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 
+import NoteTime from "@/Components/Event/Note/NoteTime";
 import Icon from "@/Components/Icons/Icon";
 import ProfileImage from "@/Components/User/ProfileImage";
 import { sortByWoT } from "@/Hooks/useProfileSearch";
@@ -124,18 +125,23 @@ export function NotificationGroup({
             <div>{kind === EventKind.ZapReceipt && formatShort(totalZaps)}</div>
           </div>
           <div className="flex flex-col w-max g12">
-            <div className="flex w-max overflow-hidden">
-              {sortByWoT(pubkeys.filter(a => a !== "anon"))
-                .slice(0, 12)
-                .map(v => (
-                  <ProfileImage
-                    key={v}
-                    showUsername={kind === EventKind.TextNote}
-                    pubkey={v}
-                    size={40}
-                    overrideUsername={v === "" ? formatMessage({ defaultMessage: "Anon", id: "bfvyfs" }) : undefined}
-                  />
-                ))}
+            <div className="flex flex-row w-max overflow-hidden justify-between items-center">
+              <div className="flex flex-row">
+                {sortByWoT(pubkeys.filter(a => a !== "anon"))
+                  .slice(0, 12)
+                  .map(v => (
+                    <ProfileImage
+                      key={v}
+                      showUsername={kind === EventKind.TextNote}
+                      pubkey={v}
+                      size={40}
+                      overrideUsername={v === "" ? formatMessage({ defaultMessage: "Anon", id: "bfvyfs" }) : undefined}
+                    />
+                  ))}
+              </div>
+              <div className="text-gray-medium">
+                <NoteTime from={evs[0].created_at * 1000} />
+              </div>
             </div>
             {kind !== EventKind.TextNote && (
               <div className="names">
