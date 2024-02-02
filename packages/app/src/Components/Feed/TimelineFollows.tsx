@@ -4,7 +4,7 @@ import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { ShowMoreInView } from "@/Components/Event/ShowMore";
+import { AutoShowMore } from "@/Components/Event/ShowMore";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
@@ -100,10 +100,11 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         displayAs={displayAs}
       />
       {mainFeed.length > 0 && (
-        <ShowMoreInView
+        <AutoShowMore
           onClick={() => {
             feed.loadMore();
           }}
+          className="mx-3 my-4"
         />
       )}
     </>

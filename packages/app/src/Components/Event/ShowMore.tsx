@@ -1,5 +1,3 @@
-import "./ShowMore.css";
-
 import classNames from "classnames";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
@@ -14,7 +12,7 @@ interface ShowMoreProps {
 const ShowMore = ({ text, onClick, className = "" }: ShowMoreProps) => {
   return (
     <div className="show-more-container">
-      <button className={classNames("show-more", className)} onClick={onClick}>
+      <button type="button" className={classNames("show-more", className)} onClick={onClick}>
         {text || <FormattedMessage defaultMessage="Show More" id="O8Z8t9" />}
       </button>
     </div>
@@ -23,7 +21,7 @@ const ShowMore = ({ text, onClick, className = "" }: ShowMoreProps) => {
 
 export default ShowMore;
 
-export function ShowMoreInView({ text, onClick, className }: ShowMoreProps) {
+export function AutoShowMore({ text, onClick, className }: ShowMoreProps) {
   const { ref, inView } = useInView({ rootMargin: "2000px" });
 
   useEffect(() => {
@@ -33,8 +31,8 @@ export function ShowMoreInView({ text, onClick, className }: ShowMoreProps) {
   }, [inView]);
 
   return (
-    <div className={classNames("show-more-container", className)} ref={ref}>
-      {text}
+    <div ref={ref}>
+      <ShowMore onClick={onClick} text={text} className={className} />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { ReactNode, useState } from "react";
 
-import ShowMore from "@/Components/Event/ShowMore";
 import Icon from "@/Components/Icons/Icon";
 
 interface CollapsedProps {
@@ -13,8 +12,8 @@ interface CollapsedProps {
 
 const Collapsed = ({ text, children, collapsed, setCollapsed }: CollapsedProps) => {
   return collapsed ? (
-    <div className="collapsed">
-      <ShowMore text={text} onClick={() => setCollapsed(false)} />
+    <div className="text-nostr-purple px-4 pb-3 cursor-pointer hover:underline" onClick={() => setCollapsed(false)}>
+      {text}
     </div>
   ) : (
     <div className="uncollapsed">{children}</div>

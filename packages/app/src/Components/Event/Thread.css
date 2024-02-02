@@ -85,11 +85,6 @@
   margin-right: 16px;
 }
 
-.thread-container .collapsed,
-.thread-container .show-more-container {
-  min-height: 48px;
-}
-
 .thread-container .hidden-note {
   padding-left: 48px;
 }

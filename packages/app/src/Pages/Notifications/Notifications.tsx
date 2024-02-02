@@ -4,7 +4,7 @@ import { unwrap } from "@snort/shared";
 import { NostrEvent, NostrLink, TaggedNostrEvent } from "@snort/system";
 import { lazy, Suspense, useEffect, useMemo } from "react";
 
-import { ShowMoreInView } from "@/Components/Event/ShowMore";
+import { AutoShowMore } from "@/Components/Event/ShowMore";
 import PageSpinner from "@/Components/PageSpinner";
 import { useNotificationsView } from "@/Feed/WorkerRelayView";
 import useLogin from "@/Hooks/useLogin";
@@ -63,7 +63,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
         {login.publicKey &&
           [...timeGrouped.entries()].map(([k, g]) => <NotificationGroup key={k} evs={g} onClick={onClick} />)}
 
-        <ShowMoreInView onClick={() => {}} />
+        <AutoShowMore onClick={() => {}} />
       </div>
     </>
   );
