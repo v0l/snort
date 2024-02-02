@@ -28,7 +28,7 @@ interface ConnectionEvents {
   disconnect: (code: number) => void;
   auth: (challenge: string, relay: string, cb: (ev: NostrEvent) => void) => void;
   notice: (msg: string) => void;
-  have: (sub: string, ids: u256) => void; // NIP-114
+  have: (sub: string, id: u256) => void; // NIP-114
   unknownMessage: (obj: Array<any>) => void;
 }
 
@@ -409,7 +409,7 @@ export class Connection extends EventEmitter<ConnectionEvents> {
           const neg = new NegentropyFlow(id, this, eventSet, newFilters);
           neg.once("finish", filters => {
             if (filters.length > 0) {
-              this.queueReq(["REQ", cmd[1], ...newFilters], item.cb);
+              this.queueReq(["REQ", cmd[1], ...filters], item.cb);
             }
           });
           neg.once("error", () => {
