@@ -49,6 +49,7 @@ const ImageElement = ({ url, meta, onMediaClick, size }: ImageElementProps) => {
     <div
       className={classNames("flex items-center -mx-4 md:mx-0 my-2", {
         "md:h-[510px]": !meta && !CONFIG.media.preferLargeMedia,
+        "cursor-pointer": onMediaClick,
       })}>
       <ProxyImg
         key={url}
