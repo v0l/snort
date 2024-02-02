@@ -76,6 +76,7 @@ async function getEventIdsReactedByOthers(othersWhoReacted: string[], myReactedE
     "getEventIdsReactedByOthers",
     {
       authors: othersWhoReacted,
+      kinds: [1, 6, 7, 9735],
     },
   ]);
 
@@ -107,15 +108,17 @@ async function getFeedEvents(reactedToIds: Map<string, number>) {
   ]);
 
   // Filter out replies
-  const filteredEvents = events.filter((ev) => !ev.tags.some((tag) => tag[0] === "e"));
+  const filteredEvents = events.filter(ev => !ev.tags.some(tag => tag[0] === "e"));
 
   // Define constants for normalization
   // const recentnessWeight = -1;
   const currentTime = new Date().getTime();
 
   // Calculate min and max for normalization
-  let minReactions = Infinity, maxReactions = -Infinity;
-  let minAge = Infinity, maxAge = -Infinity;
+  let minReactions = Infinity,
+    maxReactions = -Infinity;
+  let minAge = Infinity,
+    maxAge = -Infinity;
 
   filteredEvents.forEach(event => {
     const reactions = reactedToIds.get(event.id) || 0;
@@ -139,8 +142,8 @@ async function getFeedEvents(reactedToIds: Map<string, number>) {
 
     // randomly big or small weight for recentness
     const recentnessWeight = Math.random() > 0.5 ? -0.1 : -10;
-    const aScore = aReactions + (recentnessWeight * aAge);
-    const bScore = bReactions + (recentnessWeight * bAge);
+    const aScore = aReactions + recentnessWeight * aAge;
+    const bScore = bReactions + recentnessWeight * bAge;
 
     // Sort by descending score
     return bScore - aScore;
@@ -148,5 +151,3 @@ async function getFeedEvents(reactedToIds: Map<string, number>) {
 
   return filteredEvents;
 }
-
-
