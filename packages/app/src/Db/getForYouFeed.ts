@@ -17,15 +17,11 @@ export async function getForYouFeed(pubkey: string): Promise<NostrEvent[]> {
   console.log("others who reacted", othersWhoReacted);
 
   // Get event ids reacted to by those others
-  const reactedByOthers = await getEventIdsReactedByOthers(othersWhoReacted);
+  const reactedByOthers = await getEventIdsReactedByOthers(othersWhoReacted, myReactedEvents);
   console.log("reacted by others", reactedByOthers);
 
-  // Get events reacted to by others that I haven't reacted to
-  const idsToFetch = Array.from(reactedByOthers).filter(id => !myReactedEvents.has(id));
-  console.log("ids to fetch", idsToFetch);
-
   // Get full events in sorted order
-  const feed = await getFeedEvents(idsToFetch);
+  const feed = await getFeedEvents(reactedByOthers);
   console.log("feed.length", feed.length);
 
   console.timeEnd("For You feed generation time");
@@ -72,8 +68,8 @@ async function getOthersWhoReacted(myReactedEventIds: Set<string>, myPubkey: str
   return [...othersWhoReacted];
 }
 
-async function getEventIdsReactedByOthers(othersWhoReacted: string[]) {
-  const eventIdsReactedByOthers = new Set<string>();
+async function getEventIdsReactedByOthers(othersWhoReacted: string[], myReactedEvents: Set<string>) {
+  const eventIdsReactedByOthers = new Map<string, number>();
 
   const events = await Relay.query([
     "REQ",
@@ -84,24 +80,73 @@ async function getEventIdsReactedByOthers(othersWhoReacted: string[]) {
   ]);
 
   events.forEach(event => {
+    if (myReactedEvents.has(event.id)) {
+      // NIP-113 NOT filter could improve performance by not selecting these events in the first place
+      return;
+    }
     event.tags.forEach(tag => {
-      if (tag[0] === "e") eventIdsReactedByOthers.add(tag[1]);
+      if (tag[0] === "e") {
+        eventIdsReactedByOthers.set(tag[1], (eventIdsReactedByOthers.get(tag[1]) || 0) + 1);
+      }
     });
   });
 
-  return [...eventIdsReactedByOthers];
+  return eventIdsReactedByOthers;
 }
 
-async function getFeedEvents(ids: string[]) {
-  return (await Relay.query([
+async function getFeedEvents(reactedToIds: Map<string, number>) {
+  const events = await Relay.query([
     "REQ",
     "getFeedEvents",
     {
-      ids,
+      ids: Array.from(reactedToIds.keys()),
       kinds: [1],
+      // max 24h old
+      since: Math.floor(Date.now() / 1000) - 60 * 60 * 24 * 7,
     },
-  ])).filter((ev) => {
-    // no replies
-    return !ev.tags.some((tag) => tag[0] === "e");
-  }).sort((a, b) => b.created_at - a.created_at);
+  ]);
+
+  // Filter out replies
+  const filteredEvents = events.filter((ev) => !ev.tags.some((tag) => tag[0] === "e"));
+
+  // Define constants for normalization
+  // const recentnessWeight = -1;
+  const currentTime = new Date().getTime();
+
+  // Calculate min and max for normalization
+  let minReactions = Infinity, maxReactions = -Infinity;
+  let minAge = Infinity, maxAge = -Infinity;
+
+  filteredEvents.forEach(event => {
+    const reactions = reactedToIds.get(event.id) || 0;
+    minReactions = Math.min(minReactions, reactions);
+    maxReactions = Math.max(maxReactions, reactions);
+
+    const age = currentTime - new Date(event.created_at).getTime();
+    minAge = Math.min(minAge, age);
+    maxAge = Math.max(maxAge, age);
+  });
+
+  const normalize = (value: number, min: number, max: number) => (value - min) / (max - min);
+
+  // Normalize and sort events by calculated score
+  filteredEvents.sort((a, b) => {
+    const aReactions = normalize(reactedToIds.get(a.id) || 0, minReactions, maxReactions);
+    const bReactions = normalize(reactedToIds.get(b.id) || 0, minReactions, maxReactions);
+
+    const aAge = normalize(currentTime - new Date(a.created_at).getTime(), minAge, maxAge);
+    const bAge = normalize(currentTime - new Date(b.created_at).getTime(), minAge, maxAge);
+
+    // randomly big or small weight for recentness
+    const recentnessWeight = Math.random() > 0.5 ? -0.1 : -10;
+    const aScore = aReactions + (recentnessWeight * aAge);
+    const bScore = bReactions + (recentnessWeight * bAge);
+
+    // Sort by descending score
+    return bScore - aScore;
+  });
+
+  return filteredEvents;
 }
+
+
