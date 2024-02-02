@@ -4,6 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { FormattedMessage } from "react-intl";
 
 import ErrorBoundary from "@/Components/ErrorBoundary";
+import { AutoLoadMore } from "@/Components/Event/LoadMore";
 import { DisplayAs } from "@/Components/Feed/DisplayAsSelector";
 import ImageGridItem from "@/Components/Feed/ImageGridItem";
 import { TimelineFragment } from "@/Components/Feed/TimelineFragment";
@@ -23,6 +24,7 @@ export interface TimelineRendererProps {
   noteOnClick?: (ev: TaggedNostrEvent) => void;
   noteContext?: (ev: TaggedNostrEvent) => ReactNode;
   displayAs?: DisplayAs;
+  loadMore?: () => void;
 }
 
 // filter frags[0].events that have media
@@ -151,6 +153,7 @@ export function TimelineRenderer(props: TimelineRendererProps) {
         </>
       )}
       {props.displayAs === "grid" ? <Grid frags={props.frags} /> : renderNotes()}
+      {props.loadMore && <AutoLoadMore className="mx-3 my-4" onClick={props.loadMore} />}
     </div>
   );
 }

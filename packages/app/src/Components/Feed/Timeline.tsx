@@ -2,7 +2,6 @@ import "./Timeline.css";
 
 import { socialGraphInstance, TaggedNostrEvent } from "@snort/system";
 import { useCallback, useMemo, useState } from "react";
-import { FormattedMessage } from "react-intl";
 
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
@@ -18,7 +17,6 @@ export interface TimelineProps {
   ignoreModeration?: boolean;
   window?: number;
   now?: number;
-  loadMore?: boolean;
   noSort?: boolean;
   displayAs?: DisplayAs;
   showDisplayAsSelector?: boolean;
@@ -91,14 +89,8 @@ const Timeline = (props: TimelineProps) => {
         latest={latestAuthors}
         showLatest={t => onShowLatest(t)}
         displayAs={displayAs}
+        loadMore={() => feed.loadMore()}
       />
-      {(props.loadMore === undefined || props.loadMore === true) && (
-        <div className="flex items-center px-3 py-4">
-          <button type="button" onClick={() => feed.loadMore()}>
-            <FormattedMessage defaultMessage="Load more" id="00LcfG" />
-          </button>
-        </div>
-      )}
     </>
   );
 };

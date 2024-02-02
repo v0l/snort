@@ -4,7 +4,6 @@ import { EventKind, NostrEvent, TaggedNostrEvent } from "@snort/system";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { AutoShowMore } from "@/Components/Event/ShowMore";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
@@ -98,15 +97,8 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
           }
         }}
         displayAs={displayAs}
+        loadMore={() => feed.loadMore()}
       />
-      {mainFeed.length > 0 && (
-        <AutoShowMore
-          onClick={() => {
-            feed.loadMore();
-          }}
-          className="mx-3 my-4"
-        />
-      )}
     </>
   );
 };

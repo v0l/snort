@@ -14,5 +14,5 @@ export function TopicsPage() {
     [tags, pubKey],
   );
 
-  return <Timeline subject={subject} postsOnly={true} method="TIME_RANGE" loadMore={true} window={60 * 60 * 6} />;
+  return <Timeline subject={subject} postsOnly={true} method="TIME_RANGE" showLoadMore={true} window={60 * 60 * 6} />;
 }

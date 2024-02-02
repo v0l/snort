@@ -8,7 +8,7 @@ import NoteTime from "@/Components/Event/Note/NoteTime";
 import NoteToSelf from "@/Components/User/NoteToSelf";
 import ProfileImage from "@/Components/User/ProfileImage";
 import useLogin from "@/Hooks/useLogin";
-import usePageWidth from "@/Hooks/usePageWidth";
+import usePageDimensions from "@/Hooks/usePageDimensions";
 import { ChatParticipantProfile } from "@/Pages/Messages/ChatParticipant";
 import DmWindow from "@/Pages/Messages/DmWindow";
 import NewChatWindow from "@/Pages/Messages/NewChatWindow";
@@ -21,7 +21,7 @@ export default function MessagesPage() {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const { id } = useParams();
-  const pageWidth = usePageWidth();
+  const { width: pageWidth } = usePageDimensions();
 
   const chats = useChatSystems();
 

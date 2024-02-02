@@ -77,7 +77,6 @@ export function ProfileNotesTab({ id, relays, isMe }: { id: HexKey; relays?: Arr
         subject={subject}
         postsOnly={false}
         method={"LIMIT_UNTIL"}
-        loadMore={true}
         ignoreModeration={true}
         window={60 * 60 * 6}
       />

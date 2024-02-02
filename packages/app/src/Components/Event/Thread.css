@@ -31,16 +31,6 @@
   border-radius: 0;
 }
 
-.thread-container .show-more {
-  background: var(--gray-superdark);
-  padding-left: 76px;
-  width: 100%;
-  text-align: left;
-  border-radius: 0;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .subthread-container {
   position: relative;
 }
