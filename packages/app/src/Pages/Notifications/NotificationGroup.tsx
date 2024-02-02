@@ -104,7 +104,17 @@ export function NotificationGroup({
   };
 
   return (
-    <div className="card notification-group" ref={ref}>
+    <div
+      className="card notification-group cursor-pointer hover:bg-nearly-bg-color"
+      ref={ref}
+      onClick={() => {
+        if (!context) return;
+        if (onClick) {
+          onClick(context);
+        } else {
+          navigate(`/${context.encode(CONFIG.eventLinkPrefix)}`);
+        }
+      }}>
       {inView && (
         <>
           <div className="flex flex-col g12">
@@ -137,18 +147,7 @@ export function NotificationGroup({
                 )}
               </div>
             )}
-            {context && (
-              <NotificationContext
-                link={context}
-                onClick={() => {
-                  if (onClick) {
-                    onClick(context);
-                  } else {
-                    navigate(`/${context.encode(CONFIG.eventLinkPrefix)}`);
-                  }
-                }}
-              />
-            )}
+            {context && <NotificationContext link={context} />}
           </div>
         </>
       )}

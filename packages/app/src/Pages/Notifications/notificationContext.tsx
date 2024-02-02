@@ -5,7 +5,7 @@ import { LiveEvent } from "@/Components/LiveStream/LiveEvent";
 import Text from "@/Components/Text/Text";
 import ProfilePreview from "@/Components/User/ProfilePreview";
 
-export function NotificationContext({ link, onClick }: { link: NostrLink; onClick: () => void }) {
+export function NotificationContext({ link }: { link: NostrLink }) {
   const ev = useEventFeed(link);
   if (link.type === NostrPrefix.PublicKey) {
     return <ProfilePreview pubkey={link.id} actions={<></>} />;
@@ -23,7 +23,6 @@ export function NotificationContext({ link, onClick }: { link: NostrLink; onClic
       truncate={120}
       disableLinkPreview={true}
       className="content"
-      onClick={onClick}
     />
   );
 }

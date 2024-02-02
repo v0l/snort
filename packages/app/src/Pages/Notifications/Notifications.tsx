@@ -32,9 +32,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
   };
 
   const myNotifications = useMemo(() => {
-    return notifications.filter(
-      a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey),
-    );
+    return notifications.filter(a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey));
   }, [notifications, login.publicKey]);
 
   const timeGrouped = useMemo(() => {
