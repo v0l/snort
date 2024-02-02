@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage } from "react-intl";
+
 import usePageDimensions from "@/Hooks/usePageDimensions";
 import { debounce } from "@/Utils";
 

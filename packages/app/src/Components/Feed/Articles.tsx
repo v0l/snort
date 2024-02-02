@@ -2,7 +2,6 @@ import { useContext } from "react";
 
 import { useArticles } from "@/Feed/ArticlesFeed";
 import { DeckContext } from "@/Pages/DeckLayout";
-import { orderDescending } from "@/Utils";
 
 import Note from "../Event/EventComponent";
 
@@ -16,7 +15,7 @@ export default function Articles() {
 
   return (
     <>
-      {orderDescending(data).map(a => (
+      {data.map(a => (
         <Note
           data={a}
           key={a.id}

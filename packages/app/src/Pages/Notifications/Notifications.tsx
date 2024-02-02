@@ -9,7 +9,6 @@ import PageSpinner from "@/Components/PageSpinner";
 import { useNotificationsView } from "@/Feed/WorkerRelayView";
 import useLogin from "@/Hooks/useLogin";
 import useModeration from "@/Hooks/useModeration";
-import { orderDescending } from "@/Utils";
 import { markNotificationsRead } from "@/Utils/Login";
 
 import { getNotificationContext } from "./getNotificationContext";
@@ -33,7 +32,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
   };
 
   const myNotifications = useMemo(() => {
-    return orderDescending([...notifications]).filter(
+    return notifications.filter(
       a => !isMuted(a.pubkey) && a.tags.some(b => b[0] === "p" && b[1] === login.publicKey),
     );
   }, [notifications, login.publicKey]);
