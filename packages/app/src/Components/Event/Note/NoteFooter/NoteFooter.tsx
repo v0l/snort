@@ -34,7 +34,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   return (
     <div className="flex flex-row gap-4 overflow-hidden max-w-full h-6 items-center">
       <ReplyButton ev={ev} replyCount={props.replyCount} readonly={readonly} />
-      {!readonly && <RepostButton ev={ev} reposts={reposts} />}
+      <RepostButton ev={ev} reposts={reposts} />
       {prefs.enableReactions && <LikeButton ev={ev} positiveReactions={positive} />}
       {CONFIG.showPowIcon && <PowIcon ev={ev} />}
       <FooterZapButton ev={ev} zaps={zaps} onClickZappers={() => setShowReactions(true)} />

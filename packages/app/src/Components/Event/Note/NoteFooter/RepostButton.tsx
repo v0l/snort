@@ -36,6 +36,7 @@ export const RepostButton = ({ ev, reposts }: { ev: TaggedNostrEvent; reposts: T
     <Menu
       menuButton={
         <AsyncFooterIcon
+          disabled={!publisher}
           className={classNames(
             "flex-none min-w-[50px] md:min-w-[80px]",
             hasReposted() ? "reacted text-nostr-blue" : "hover:text-nostr-blue",
