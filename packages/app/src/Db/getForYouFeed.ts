@@ -68,7 +68,11 @@ async function getOthersWhoReacted(myReactedEventIds: Set<string>, myPubkey: str
   return othersWhoReacted;
 }
 
-async function getEventIdsReactedByOthers(othersWhoReacted: Map<string, number>, myReactedEvents: Set<string>, myPub: string) {
+async function getEventIdsReactedByOthers(
+  othersWhoReacted: Map<string, number>,
+  myReactedEvents: Set<string>,
+  myPub: string,
+) {
   const eventIdsReactedByOthers = new Map<string, number>();
 
   const events = await Relay.query([
