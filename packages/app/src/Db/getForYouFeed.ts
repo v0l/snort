@@ -202,7 +202,7 @@ async function getFeedEvents(reactedToIds: Map<string, number>, reactedToAuthors
     const bFavoriteness = normalize(reactedToAuthors.get(b.pubkey) || 0, 0, maxFavoriteness);
 
     // randomly big or small weight for recentness
-    const recentnessWeight = Math.random() > 0.5 ? -0.1 : -10;
+    const recentnessWeight = Math.random() > 0.75 ? -0.1 : -10;
     const aScore = aReactions + recentnessWeight * aAge + aFavoriteness * favoritenessWeight;
     const bScore = bReactions + recentnessWeight * bAge + bFavoriteness * favoritenessWeight;
 
