@@ -49,7 +49,7 @@ async function getMyReactedEventIds(pubkey: string) {
 }
 
 async function getOthersWhoReacted(myReactedEventIds: Set<string>, myPubkey: string) {
-  const othersWhoReacted = new Set<string>();
+  const othersWhoReacted = new Map<string, number>();
 
   const otherReactions = await Relay.query([
     "REQ",
@@ -61,21 +61,21 @@ async function getOthersWhoReacted(myReactedEventIds: Set<string>, myPubkey: str
 
   otherReactions.forEach(reaction => {
     if (reaction.pubkey !== myPubkey) {
-      othersWhoReacted.add(reaction.pubkey);
+      othersWhoReacted.set(reaction.pubkey, (othersWhoReacted.get(reaction.pubkey) || 0) + 1);
     }
   });
 
-  return [...othersWhoReacted];
+  return othersWhoReacted;
 }
 
-async function getEventIdsReactedByOthers(othersWhoReacted: string[], myReactedEvents: Set<string>, myPub: string) {
+async function getEventIdsReactedByOthers(othersWhoReacted: Map<string, number>, myReactedEvents: Set<string>, myPub: string) {
   const eventIdsReactedByOthers = new Map<string, number>();
 
   const events = await Relay.query([
     "REQ",
     "getEventIdsReactedByOthers",
     {
-      authors: othersWhoReacted,
+      authors: [...othersWhoReacted.keys()],
       kinds: [1, 6, 7, 9735],
     },
   ]);
@@ -87,7 +87,8 @@ async function getEventIdsReactedByOthers(othersWhoReacted: string[], myReactedE
     }
     event.tags.forEach(tag => {
       if (tag[0] === "e") {
-        eventIdsReactedByOthers.set(tag[1], (eventIdsReactedByOthers.get(tag[1]) || 0) + 1);
+        const score = Math.ceil(Math.sqrt(othersWhoReacted.get(event.pubkey) || 0));
+        eventIdsReactedByOthers.set(tag[1], (eventIdsReactedByOthers.get(tag[1]) || 0) + score);
       }
     });
   });
