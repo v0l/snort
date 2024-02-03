@@ -139,7 +139,7 @@ async function getFeedEvents(reactedToIds: Map<string, number>, reactedToAuthors
   ]);
   const seen = new Set<string>(events.map(ev => ev.id));
 
-  log('reactedToAuthors', reactedToAuthors);
+  log("reactedToAuthors", reactedToAuthors);
 
   const favoriteAuthors = Array.from(reactedToAuthors.keys())
     .sort((a, b) => reactedToAuthors.get(b)! - reactedToAuthors.get(a)!)
