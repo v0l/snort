@@ -17,7 +17,7 @@ export async function getForYouFeed(pubkey: string): Promise<NostrEvent[]> {
   console.log("others who reacted", othersWhoReacted);
 
   // Get event ids reacted to by those others
-  const reactedByOthers = await getEventIdsReactedByOthers(othersWhoReacted, myReactedEvents);
+  const reactedByOthers = await getEventIdsReactedByOthers(othersWhoReacted, myReactedEvents, pubkey);
   console.log("reacted by others", reactedByOthers);
 
   // Get full events in sorted order
@@ -68,7 +68,7 @@ async function getOthersWhoReacted(myReactedEventIds: Set<string>, myPubkey: str
   return [...othersWhoReacted];
 }
 
-async function getEventIdsReactedByOthers(othersWhoReacted: string[], myReactedEvents: Set<string>) {
+async function getEventIdsReactedByOthers(othersWhoReacted: string[], myReactedEvents: Set<string>, myPub: string) {
   const eventIdsReactedByOthers = new Map<string, number>();
 
   const events = await Relay.query([
@@ -81,7 +81,7 @@ async function getEventIdsReactedByOthers(othersWhoReacted: string[], myReactedE
   ]);
 
   events.forEach(event => {
-    if (myReactedEvents.has(event.id)) {
+    if (event.pubkey === myPub || myReactedEvents.has(event.id)) {
       // NIP-113 NOT filter could improve performance by not selecting these events in the first place
       return;
     }
