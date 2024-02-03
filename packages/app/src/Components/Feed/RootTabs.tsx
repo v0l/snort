@@ -4,9 +4,10 @@ import { Menu, MenuItem } from "@szhsin/react-menu";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { RootTab, rootTabItems } from "@/Components/Feed/RootTabItems";
+import { rootTabItems } from "@/Components/Feed/RootTabItems";
 import Icon from "@/Components/Icons/Icon";
 import useLogin from "@/Hooks/useLogin";
+import { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes";
 
 export function RootTabs({ base = "/" }: { base: string }) {
   const navigate = useNavigate();
@@ -23,11 +24,16 @@ export function RootTabs({ base = "/" }: { base: string }) {
 
   const menuItems = useMemo(() => rootTabItems(base, pubKey, tags), [base, pubKey, tags]);
 
-  const defaultTab = pubKey ? preferences.defaultRootTab ?? `${base}/notes` : `${base}/trending/notes`;
+  let defaultTab: RootTabRoutePath;
+  if (pubKey) {
+    defaultTab = preferences.defaultRootTab ?? (CONFIG.features.forYouFeed ? "for-you" : "following");
+  } else {
+    defaultTab = `trending/notes`;
+  }
   const initialPathname = location.pathname === "/" ? defaultTab : location.pathname;
-  const initialRootType = menuItems.find(a => a.path === initialPathname)?.tab || "for-you";
+  const initialRootType = menuItems.find(a => a.path === initialPathname)?.tab || defaultTab;
 
-  const [rootType, setRootType] = useState<RootTab>(initialRootType);
+  const [rootType, setRootType] = useState<RootTabRoutePath>(initialRootType);
 
   useEffect(() => {
     const currentTab = menuItems.find(a => a.path === location.pathname)?.tab;
@@ -45,7 +51,7 @@ export function RootTabs({ base = "/" }: { base: string }) {
         </>
       );
     }
-    return menuItems.find(a => a.tab === rootType)?.element;
+    return menuItems.find(a => a.tab === rootType)?.element ?? menuItems[0].element;
   }
 
   return (

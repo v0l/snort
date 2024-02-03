@@ -12,7 +12,27 @@ import { NotesTab } from "@/Pages/Root/NotesTab";
 import { TagsTab } from "@/Pages/Root/TagsTab";
 import { TopicsPage } from "@/Pages/TopicsPage";
 
-export const RootTabRoutes = [
+export type RootTabRoutePath =
+  | ""
+  | "for-you"
+  | "global"
+  | "following"
+  | "followed-by-friends"
+  | "conversations"
+  | "discover"
+  | "tag/:tag"
+  | "trending/notes"
+  | "trending/hashtags"
+  | "suggested"
+  | "t/:tag"
+  | "topics";
+
+export type RootTabRoute = {
+  path: RootTabRoutePath;
+  element: JSX.Element;
+};
+
+export const RootTabRoutes: RootTabRoute[] = [
   {
     path: "",
     element: <DefaultTab />,
@@ -26,7 +46,7 @@ export const RootTabRoutes = [
     element: <GlobalTab />,
   },
   {
-    path: "notes",
+    path: "following",
     element: <NotesTab />,
   },
   {

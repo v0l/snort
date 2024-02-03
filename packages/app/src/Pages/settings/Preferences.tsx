@@ -89,7 +89,7 @@ const PreferencesPage = () => {
                 <FormattedMessage defaultMessage="For you" id="xEjBS7" />
               </option>
             )}
-            <option value="notes">
+            <option value="following">
               <FormattedMessage defaultMessage="Notes" id="7+Domh" />
             </option>
             <option value="conversations">

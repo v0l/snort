@@ -1,4 +1,5 @@
 import { ImgProxySettings } from "@/Hooks/useImgProxy";
+import { RootTabRoutePath } from "@/Pages/Root/RootTabRoutes";
 import { DefaultImgProxy } from "@/Utils/Const";
 
 export interface UserPreferences {
@@ -55,7 +56,7 @@ export interface UserPreferences {
   /**
    * Default page to select on load
    */
-  defaultRootTab: "for-you" | "notes" | "conversations" | "global";
+  defaultRootTab: RootTabRoutePath;
 
   /**
    * Default zap amount
@@ -113,7 +114,7 @@ export const DefaultPreferences = {
   autoShowLatest: false,
   fileUploader: "void.cat",
   imgProxyConfig: DefaultImgProxy,
-  defaultRootTab: CONFIG.features.forYouFeed ? "for-you" : "notes",
+  defaultRootTab: CONFIG.features.forYouFeed ? "for-you" : "following",
   defaultZapAmount: 50,
   autoZap: false,
   telemetry: true,
