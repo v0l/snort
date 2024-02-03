@@ -60,8 +60,12 @@ export const ForYouTab = memo(function ForYouTab() {
       }) as TimelineSubject,
     [login.follows.item, login.tags.item],
   );
-  // also get "follows" feed so data is loaded
+  // also get "follows" feed so data is loaded from relays and there's a fallback if "for you" feed is empty
   const latestFeed = useTimelineFeed(subject, { method: "TIME_RANGE" } as TimelineFeedOptions);
+  const filteredLatestFeed = useMemo(() => {
+    // no replies
+    return latestFeed.main?.filter((ev: TaggedNostrEvent) => !ev.tags.some((tag: string[]) => tag[0] === "e")) ?? [];
+  }, [latestFeed.main]);
 
   const getFeed = () => {
     if (!publicKey) {
@@ -71,10 +75,10 @@ export const ForYouTab = memo(function ForYouTab() {
       getForYouFeedPromise = getForYouFeed(publicKey);
     }
     getForYouFeedPromise!.then(notes => {
+      getForYouFeedPromise = null;
       if (notes.length < 10) {
         setTimeout(() => {
-          getForYouFeedPromise = null;
-          getForYouFeed();
+          getForYouFeed(publicKey);
         }, 1000);
       }
       forYouFeed = {
@@ -91,7 +95,7 @@ export const ForYouTab = memo(function ForYouTab() {
   };
 
   useEffect(() => {
-    if (forYouFeed.events.length < 10 || Date.now() - forYouFeed.created_at > 1000 * 60 * 1) {
+    if (forYouFeed.events.length < 10 || Date.now() - forYouFeed.created_at > 1000 * 60 * 2) {
       getFeed();
     }
   }, []);
@@ -103,10 +107,10 @@ export const ForYouTab = memo(function ForYouTab() {
     let j = 0; // Index for `latestFeed.main`
     let count = 0; // Combined feed count to decide when to insert from `latestFeed`
 
-    while (i < notes.length || j < (latestFeed.main?.length ?? 0)) {
+    while (i < notes.length || j < (filteredLatestFeed.length ?? 0)) {
       // Insert approximately 1 event from `latestFeed` for every 4 events from `notes`
-      if (count % 5 === 0 && j < (latestFeed.main?.length ?? 0)) {
-        const ev = latestFeed.main[j];
+      if (count % 5 === 0 && j < (filteredLatestFeed.length ?? 0)) {
+        const ev = filteredLatestFeed[j];
         if (!seen.has(ev.id) && !ev.tags.some((a: string[]) => a[0] === "e")) {
           seen.add(ev.id);
           combined.push(ev);
@@ -124,7 +128,7 @@ export const ForYouTab = memo(function ForYouTab() {
       count++;
     }
     return combined;
-  }, [notes, latestFeed.main]);
+  }, [notes, filteredLatestFeed]);
 
   const frags = useMemo(() => {
     return [
@@ -140,7 +144,7 @@ export const ForYouTab = memo(function ForYouTab() {
       <DisplayAsSelector activeSelection={displayAs} onSelect={a => setDisplayAs(a)} />
       <FollowsHint />
       <TaskList />
-      <TimelineRenderer frags={frags} latest={[]} displayAs={displayAs} />
+      <TimelineRenderer frags={frags} latest={[]} displayAs={displayAs} loadMore={() => latestFeed.loadMore()} />
     </>
   );
 });
