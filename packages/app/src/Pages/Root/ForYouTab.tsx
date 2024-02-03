@@ -1,4 +1,4 @@
-import {EventKind, TaggedNostrEvent} from "@snort/system";
+import { EventKind, TaggedNostrEvent } from "@snort/system";
 import { memo, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
@@ -7,10 +7,10 @@ import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelecto
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import { TaskList } from "@/Components/Tasks/TaskList";
 import { getForYouFeed } from "@/Db/getForYouFeed";
+import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
 import useLogin from "@/Hooks/useLogin";
 import messages from "@/Pages/messages";
 import { System } from "@/system";
-import useTimelineFeed, {TimelineFeedOptions, TimelineSubject} from "@/Feed/TimelineFeed";
 
 const FollowsHint = () => {
   const { publicKey: pubKey, follows } = useLogin();
@@ -71,7 +71,6 @@ export const ForYouTab = memo(function ForYouTab() {
       getForYouFeedPromise = getForYouFeed(publicKey);
     }
     getForYouFeedPromise!.then(notes => {
-      console.log("for you feed", notes);
       if (notes.length < 10) {
         setTimeout(() => {
           getForYouFeedPromise = null;
@@ -98,13 +97,23 @@ export const ForYouTab = memo(function ForYouTab() {
   }, []);
 
   const combinedFeed = useMemo(() => {
-    // combine feeds: intermittently pick from both feeds
     const seen = new Set<string>();
     const combined = [];
-    let i = 0;
-    let j = 0;
-    while (i < notes.length || j < latestFeed.main?.length) {
-      if (i < notes.length) {
+    let i = 0; // Index for `notes`
+    let j = 0; // Index for `latestFeed.main`
+    let count = 0; // Combined feed count to decide when to insert from `latestFeed`
+
+    while (i < notes.length || j < (latestFeed.main?.length ?? 0)) {
+      // Insert approximately 1 event from `latestFeed` for every 4 events from `notes`
+      if (count % 5 === 0 && j < (latestFeed.main?.length ?? 0)) {
+        const ev = latestFeed.main[j];
+        if (!seen.has(ev.id) && !ev.tags.some((a: string[]) => a[0] === "e")) {
+          seen.add(ev.id);
+          combined.push(ev);
+        }
+        j++;
+      } else if (i < notes.length) {
+        // Add from `notes` otherwise
         const ev = notes[i];
         if (!seen.has(ev.id)) {
           seen.add(ev.id);
@@ -112,14 +121,7 @@ export const ForYouTab = memo(function ForYouTab() {
         }
         i++;
       }
-      if (j < latestFeed.main?.length) {
-        const ev = latestFeed.main[j];
-        if (!seen.has(ev.id) && !ev.tags?.some((tag: string[]) => tag[0] === "e")) {
-          seen.add(ev.id);
-          combined.push(ev);
-        }
-        j++;
-      }
+      count++;
     }
     return combined;
   }, [notes, latestFeed.main]);
