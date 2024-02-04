@@ -65,6 +65,19 @@ To build the application and system packages, use
 $ yarn build
 ```
 
+Tauri desktop application:
+
+```
+# install dependencies
+yarn
+
+# develop
+yarn tauri dev
+
+# build
+yarn tauri build
+```
+
 ### Translations
 
 [![Crowdin](https://badges.crowdin.net/snort/localized.svg)](https://crowdin.com/project/snort)
