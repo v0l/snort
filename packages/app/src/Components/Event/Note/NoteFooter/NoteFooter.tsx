@@ -22,7 +22,7 @@ export default function NoteFooter(props: NoteFooterProps) {
   const [showReactions, setShowReactions] = useState(false);
 
   const related = useReactions("reactions", ids, undefined, false);
-  const { reactions, zaps, reposts } = useEventReactions(link, related);
+  const { replies, reactions, zaps, reposts } = useEventReactions(link, related);
   const { positive } = reactions;
 
   const { preferences: prefs, readonly } = useLogin(s => ({
@@ -33,7 +33,7 @@ export default function NoteFooter(props: NoteFooterProps) {
 
   return (
     <div className="flex flex-row gap-4 overflow-hidden max-w-full h-6 items-center">
-      <ReplyButton ev={ev} replyCount={props.replyCount} readonly={readonly} />
+      <ReplyButton ev={ev} replyCount={props.replyCount ?? replies.length} readonly={readonly} />
       <RepostButton ev={ev} reposts={reposts} />
       {prefs.enableReactions && <LikeButton ev={ev} positiveReactions={positive} />}
       {CONFIG.showPowIcon && <PowIcon ev={ev} />}

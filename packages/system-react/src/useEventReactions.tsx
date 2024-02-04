@@ -47,6 +47,7 @@ export function useEventReactions(link: NostrLink, related: ReadonlyArray<Tagged
         positive: groupReactions[Reaction.Positive] ?? [],
         negative: groupReactions[Reaction.Negative] ?? [],
       },
+      replies: reactionKinds[String(EventKind.TextNote)] ?? [],
       reposts,
       zaps,
       others: Object.fromEntries(
