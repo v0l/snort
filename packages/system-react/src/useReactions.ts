@@ -23,7 +23,9 @@ export function useReactions(
       );
 
       for (const [, v] of Object.entries(grouped)) {
-        rb.withFilter().kinds([EventKind.TextNote, EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt]).replyToLink(v);
+        rb.withFilter()
+          .kinds([EventKind.TextNote, EventKind.Reaction, EventKind.Repost, EventKind.ZapReceipt])
+          .replyToLink(v);
       }
     }
     others?.(rb);
