@@ -24,8 +24,8 @@ import { CachedTable } from "@snort/shared";
 import { EventsCache } from "../cache/events";
 import { RelayMetricHandler } from "../relay-metric-handler";
 import debug from "debug";
-import { ConnectionPool } from "connection-pool";
-import { CacheRelay } from "cache-relay";
+import { ConnectionPool } from "../connection-pool";
+import { CacheRelay } from "../cache-relay";
 
 export class SystemWorker extends EventEmitter<NostrSystemEvents> implements SystemInterface {
   #log = debug("SystemWorker");

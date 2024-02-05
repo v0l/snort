@@ -1,7 +1,12 @@
-import { NostrEvent, parseZap } from "@snort/system";
 import debug from "debug";
 
-import { RelayHandler } from "./types";
+import { RelayHandler, NostrEvent } from "./types";
+
+// import { parseZap } from "../../system/src/zaps";
+// placeholder:
+const parseZap = (_zap: NostrEvent) => {
+  return { event: null } as { event: null | NostrEvent };
+}
 
 const log = debug("getForYouFeed");
 
@@ -58,7 +63,7 @@ async function getMyReactedEvents(relay: RelayHandler, pubkey: string) {
     kinds: [1, 6, 7, 9735],
   }) as NostrEvent[];
   myEvents.forEach(ev => {
-    const targetEventId = ev.kind === 9735 ? parseZap(ev).event?.id : ev.tags.find(tag => tag[0] === "e")?.[1];
+    const targetEventId = ev.kind === 9735 ? parseZap(ev).event?.id : ev.tags.find((tag: string[]) => tag[0] === "e")?.[1];
     if (targetEventId) {
       myReactedEventIds.add(targetEventId);
     }
@@ -101,7 +106,7 @@ async function getEventIdsReactedByOthers(
       // NIP-113 NOT filter could improve performance by not selecting these events in the first place
       return;
     }
-    event.tags.forEach(tag => {
+    event.tags.forEach((tag: string[]) => {
       if (tag[0] === "e") {
         const score = Math.ceil(Math.sqrt(othersWhoReacted.get(event.pubkey) || 0));
         eventIdsReactedByOthers.set(tag[1], (eventIdsReactedByOthers.get(tag[1]) || 0) + score);
@@ -150,7 +155,7 @@ async function getFeedEvents(
   });
 
   // Filter out replies
-  const filteredEvents = events.filter(ev => !ev.tags.some(tag => tag[0] === "e"));
+  const filteredEvents = events.filter(ev => !ev.tags.some((tag: string[]) => tag[0] === "e"));
 
   // Define constants for normalization
   // const recentnessWeight = -1;

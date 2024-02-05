@@ -1,4 +1,4 @@
-import { ReqFilter } from "nostr";
+import { ReqFilter } from "./nostr";
 
 /**
  * Remove empty filters, filters which would result in no results

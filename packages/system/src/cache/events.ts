@@ -1,4 +1,4 @@
-import { NostrEvent } from "nostr";
+import { NostrEvent } from "../nostr";
 import { DexieTableLike, FeedCache } from "@snort/shared";
 
 export class EventsCache extends FeedCache<NostrEvent> {
