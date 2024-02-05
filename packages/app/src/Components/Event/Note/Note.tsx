@@ -55,7 +55,7 @@ export function Note(props: NoteProps) {
     if (setSeenAtInView) {
       timeout = setTimeout(() => {
         Relay.setEventMetadata(ev.id, { seen_at: Math.round(Date.now() / 1000) });
-      }, 2000);
+      }, 1000);
     }
     return () => clearTimeout(timeout);
   }, [setSeenAtInView]);
