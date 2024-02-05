@@ -1,9 +1,9 @@
-import {EventKind, NostrEvent} from "@snort/system";
+import { EventKind, NostrEvent } from "@snort/system";
 import { memo, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
-import {Relay} from "@/Cache";
+import { Relay } from "@/Cache";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import { TaskList } from "@/Components/Tasks/TaskList";

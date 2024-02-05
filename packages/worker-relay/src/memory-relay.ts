@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import { NostrEvent, RelayHandler, RelayHandlerEvents, ReqFilter, eventMatchesFilter } from "./types";
+import { NostrEvent, RelayHandler, RelayHandlerEvents, ReqFilter, eventMatchesFilter, EventMetadata } from "./types";
 import debug from "debug";
 
 /**
@@ -78,5 +78,9 @@ export class InMemoryRelay extends EventEmitter<RelayHandlerEvents> implements R
       }
     }
     return ret;
+  }
+
+  setEventMetadata(_id: string, _meta: EventMetadata) {
+    return;
   }
 }

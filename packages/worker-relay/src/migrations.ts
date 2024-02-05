@@ -1,8 +1,8 @@
-import {NostrEvent} from "./types";
-import {SqliteRelay} from "./sqlite-relay";
+import { NostrEvent } from "./types";
+import { SqliteRelay } from "./sqlite-relay";
 import debug from "debug";
 
-const log = debug('SqliteRelay:migrations');
+const log = debug("SqliteRelay:migrations");
 
 /**
  * Do database migration

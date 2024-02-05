@@ -1,11 +1,12 @@
 import { EventKind, NostrLink } from "@snort/system";
 import classNames from "classnames";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { FormattedMessage } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { LRUCache } from "typescript-lru-cache";
 
+import { Relay } from "@/Cache";
 import NoteHeader from "@/Components/Event/Note/NoteHeader";
 import { NoteText } from "@/Components/Event/Note/NoteText";
 import { TranslationInfo } from "@/Components/Event/Note/TranslationInfo";
@@ -38,6 +39,7 @@ export function Note(props: NoteProps) {
   const baseClassName = classNames("note min-h-[110px] flex flex-col gap-4 card", className ?? "");
   const { isEventMuted } = useModeration();
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "2000px" });
+  const { ref: setSeenAtRef, inView: setSeenAtInView } = useInView({ rootMargin: "0px", threshold: 1 });
   const [showTranslation, setShowTranslation] = useState(true);
   const [translated, setTranslated] = useState<NoteTranslation>(translationCache.get(ev.id));
   const cachedSetTranslated = useCallback(
@@ -47,6 +49,16 @@ export function Note(props: NoteProps) {
     },
     [ev.id],
   );
+
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+    if (setSeenAtInView) {
+      timeout = setTimeout(() => {
+        Relay.setEventMetadata(ev.id, { seen_at: Math.round(Date.now() / 1000) });
+      }, 5000);
+    }
+    return () => clearTimeout(timeout);
+  }, [setSeenAtInView]);
 
   const optionsMerged = { ...defaultOptions, ...opt };
   const goToEvent = useGoToEvent(props, optionsMerged);
@@ -71,7 +83,7 @@ export function Note(props: NoteProps) {
           {translated && <TranslationInfo translated={translated} setShowTranslation={setShowTranslation} />}
           {ev.kind === EventKind.Polls && <Poll ev={ev} />}
           {optionsMerged.showFooter && (
-            <div className="mt-4">
+            <div className="mt-4" ref={setSeenAtRef}>
               <NoteFooter ev={ev} replyCount={props.threadChains?.get(chainKey(ev))?.length} />
             </div>
           )}

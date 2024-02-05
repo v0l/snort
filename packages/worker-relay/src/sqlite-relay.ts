@@ -1,6 +1,6 @@
 import sqlite3InitModule, { Database, Sqlite3Static } from "@sqlite.org/sqlite-wasm";
 import { EventEmitter } from "eventemitter3";
-import { NostrEvent, RelayHandler, RelayHandlerEvents, ReqFilter, unixNowMs } from "./types";
+import { EventMetadata, NostrEvent, RelayHandler, RelayHandlerEvents, ReqFilter, unixNowMs } from "./types";
 import debug from "debug";
 import migrate from "./migrations";
 
@@ -85,6 +85,15 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
       this.emit("event", eventsInserted);
     }
     return eventsInserted.length > 0;
+  }
+
+  setEventMetadata(id: string, meta: EventMetadata) {
+    if (meta.seen_at) {
+      console.log("update seen_at", id, meta.seen_at);
+      this.db?.exec("update events set seen_at = ? where id = ?", {
+        bind: [meta.seen_at, id],
+      });
+    }
   }
 
   #deleteById(db: Database, ids: Array<string>) {

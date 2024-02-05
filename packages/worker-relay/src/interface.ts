@@ -1,4 +1,12 @@
-import { NostrEvent, OkResponse, ReqCommand, ReqFilter, WorkerMessage, WorkerMessageCommand } from "./types";
+import {
+  EventMetadata,
+  NostrEvent,
+  OkResponse,
+  ReqCommand,
+  ReqFilter,
+  WorkerMessage,
+  WorkerMessageCommand,
+} from "./types";
 import { v4 as uuid } from "uuid";
 
 export class WorkerRelayInterface {
@@ -47,6 +55,10 @@ export class WorkerRelayInterface {
 
   async forYouFeed(pubkey: string) {
     return await this.#workerRpc<string, Array<NostrEvent>>("forYouFeed", pubkey);
+  }
+
+  setEventMetadata(id: string, meta: EventMetadata) {
+    return this.#workerRpc<[string, EventMetadata], void>("setEventMetadata", [id, meta]);
   }
 
   #workerRpc<T, R>(cmd: WorkerMessageCommand, args?: T) {

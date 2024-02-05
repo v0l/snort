@@ -1,7 +1,7 @@
 import { NostrEvent, parseZap } from "@snort/system";
 import debug from "debug";
 
-import {RelayHandler} from "./types";
+import { RelayHandler } from "./types";
 
 const log = debug("getForYouFeed");
 
@@ -37,12 +37,9 @@ export async function getForYouFeed(relay: RelayHandler, pubkey: string): Promis
 async function getMyReactedAuthors(relay: RelayHandler, myReactedEventIds: Set<string>, myPubkey: string) {
   const myReactedAuthors = new Map<string, number>();
 
-  const myReactions = relay.req(
-    "getMyReactedAuthors",
-    {
-      "#e": Array.from(myReactedEventIds),
-    },
-  ) as NostrEvent[];
+  const myReactions = relay.req("getMyReactedAuthors", {
+    "#e": Array.from(myReactedEventIds),
+  }) as NostrEvent[];
 
   myReactions.forEach(reaction => {
     if (reaction.pubkey !== myPubkey) {
@@ -56,13 +53,10 @@ async function getMyReactedAuthors(relay: RelayHandler, myReactedEventIds: Set<s
 async function getMyReactedEvents(relay: RelayHandler, pubkey: string) {
   const myReactedEventIds = new Set<string>();
 
-  const myEvents = relay.req(
-    "getMyReactedEventIds",
-    {
-      authors: [pubkey],
-      kinds: [1, 6, 7, 9735],
-    },
-  ) as NostrEvent[];
+  const myEvents = relay.req("getMyReactedEventIds", {
+    authors: [pubkey],
+    kinds: [1, 6, 7, 9735],
+  }) as NostrEvent[];
   myEvents.forEach(ev => {
     const targetEventId = ev.kind === 9735 ? parseZap(ev).event?.id : ev.tags.find(tag => tag[0] === "e")?.[1];
     if (targetEventId) {
@@ -76,12 +70,9 @@ async function getMyReactedEvents(relay: RelayHandler, pubkey: string) {
 async function getOthersWhoReacted(relay: RelayHandler, myReactedEventIds: Set<string>, myPubkey: string) {
   const othersWhoReacted = new Map<string, number>();
 
-  const otherReactions = relay.req(
-    "getOthersWhoReacted",
-    {
-      "#e": Array.from(myReactedEventIds),
-    },
-  ) as NostrEvent[];
+  const otherReactions = relay.req("getOthersWhoReacted", {
+    "#e": Array.from(myReactedEventIds),
+  }) as NostrEvent[];
 
   otherReactions.forEach(reaction => {
     if (reaction.pubkey !== myPubkey) {
@@ -100,13 +91,10 @@ async function getEventIdsReactedByOthers(
 ) {
   const eventIdsReactedByOthers = new Map<string, number>();
 
-  const events = relay.req(
-    "getEventIdsReactedByOthers",
-    {
-      authors: [...othersWhoReacted.keys()],
-      kinds: [1, 6, 7, 9735],
-    },
-  ) as NostrEvent[];
+  const events = relay.req("getEventIdsReactedByOthers", {
+    authors: [...othersWhoReacted.keys()],
+    kinds: [1, 6, 7, 9735],
+  }) as NostrEvent[];
 
   events.forEach(event => {
     if (event.pubkey === myPub || myReactedEvents.has(event.id)) {
@@ -124,11 +112,19 @@ async function getEventIdsReactedByOthers(
   return eventIdsReactedByOthers;
 }
 
-async function getFeedEvents(relay: RelayHandler, reactedToIds: Map<string, number>, reactedToAuthors: Map<string, number>) {
-  const events = relay.sql(
-    `select json from events where id in (${Array.from(reactedToIds.keys()).map(() => "?").join(", ")}) and kind = 1 order by seen_at ASC, created DESC limit 1000`,
-    Array.from(reactedToIds.keys()),
-  ).map(row => JSON.parse(row[0] as string) as NostrEvent);
+async function getFeedEvents(
+  relay: RelayHandler,
+  reactedToIds: Map<string, number>,
+  reactedToAuthors: Map<string, number>,
+) {
+  const events = relay
+    .sql(
+      `select json from events where id in (${Array.from(reactedToIds.keys())
+        .map(() => "?")
+        .join(", ")}) and kind = 1 order by seen_at ASC, created DESC limit 1000`,
+      Array.from(reactedToIds.keys()),
+    )
+    .map(row => JSON.parse(row[0] as string) as NostrEvent);
 
   const seen = new Set<string>(events.map(ev => ev.id));
 
@@ -138,11 +134,14 @@ async function getFeedEvents(relay: RelayHandler, reactedToIds: Map<string, numb
     .sort((a, b) => reactedToAuthors.get(b)! - reactedToAuthors.get(a)!)
     .slice(20);
 
-  const eventsByFavoriteAuthors = relay.sql(
-    `select json from events where pubkey in (${favoriteAuthors.map(() => "?").join(", ")}) and kind = 1 order by seen_at ASC, created DESC limit 100`,
-    favoriteAuthors,
-  ).map(row => JSON.parse(row[0] as string) as NostrEvent);
-
+  const eventsByFavoriteAuthors = relay
+    .sql(
+      `select json from events where pubkey in (${favoriteAuthors
+        .map(() => "?")
+        .join(", ")}) and kind = 1 order by seen_at ASC, created DESC limit 100`,
+      favoriteAuthors,
+    )
+    .map(row => JSON.parse(row[0] as string) as NostrEvent);
 
   eventsByFavoriteAuthors.forEach(ev => {
     if (!seen.has(ev.id)) {

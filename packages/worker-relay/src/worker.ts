@@ -3,8 +3,8 @@
 import { InMemoryRelay } from "./memory-relay";
 import { WorkQueueItem, barrierQueue, processWorkQueue } from "./queue";
 import { SqliteRelay } from "./sqlite-relay";
-import { NostrEvent, RelayHandler, ReqCommand, ReqFilter, WorkerMessage, unixNowMs } from "./types";
-import {getForYouFeed} from "./forYouFeed";
+import { NostrEvent, RelayHandler, ReqCommand, ReqFilter, WorkerMessage, unixNowMs, EventMetadata } from "./types";
+import { getForYouFeed } from "./forYouFeed";
 
 let relay: RelayHandler | undefined;
 
@@ -135,6 +135,13 @@ globalThis.onmessage = async ev => {
         await barrierQueue(cmdQueue, async () => {
           const res = await getForYouFeed(relay!, msg.args as string);
           reply(msg.id, res);
+        });
+        break;
+      }
+      case "setEventMetadata": {
+        await barrierQueue(cmdQueue, async () => {
+          const [id, metadata] = msg.args as [string, EventMetadata];
+          relay!.setEventMetadata(id, metadata);
         });
         break;
       }
