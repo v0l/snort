@@ -1,49 +1,48 @@
 import { NostrEvent, parseZap } from "@snort/system";
 import debug from "debug";
 
-import { Relay } from "@/Cache";
+import {RelayHandler} from "./types";
 
 const log = debug("getForYouFeed");
 
-export async function getForYouFeed(pubkey: string): Promise<NostrEvent[]> {
+export async function getForYouFeed(relay: RelayHandler, pubkey: string): Promise<NostrEvent[]> {
   console.time("For You feed generation time");
 
   log("pubkey", pubkey);
 
   // Get events reacted to by me
-  const myReactedEventIds = await getMyReactedEvents(pubkey);
+  const myReactedEventIds = await getMyReactedEvents(relay, pubkey);
   log("my reacted events", myReactedEventIds);
 
-  const myReactedAuthors = await getMyReactedAuthors(myReactedEventIds, pubkey);
+  const myReactedAuthors = await getMyReactedAuthors(relay, myReactedEventIds, pubkey);
   log("my reacted authors", myReactedAuthors);
 
   // Get others who reacted to the same events as me
-  const othersWhoReacted = await getOthersWhoReacted(myReactedEventIds, pubkey);
+  const othersWhoReacted = await getOthersWhoReacted(relay, myReactedEventIds, pubkey);
   // this tends to be small when the user has just logged in, we should maybe subscribe for more from relays
   log("others who reacted", othersWhoReacted);
 
   // Get event ids reacted to by those others
-  const reactedByOthers = await getEventIdsReactedByOthers(othersWhoReacted, myReactedEventIds, pubkey);
+  const reactedByOthers = await getEventIdsReactedByOthers(relay, othersWhoReacted, myReactedEventIds, pubkey);
   log("reacted by others", reactedByOthers);
 
   // Get full events in sorted order
-  const feed = await getFeedEvents(reactedByOthers, myReactedAuthors);
+  const feed = await getFeedEvents(relay, reactedByOthers, myReactedAuthors);
   log("feed.length", feed.length);
 
   console.timeEnd("For You feed generation time");
   return feed;
 }
 
-async function getMyReactedAuthors(myReactedEventIds: Set<string>, myPubkey: string) {
+async function getMyReactedAuthors(relay: RelayHandler, myReactedEventIds: Set<string>, myPubkey: string) {
   const myReactedAuthors = new Map<string, number>();
 
-  const myReactions = await Relay.query([
-    "REQ",
+  const myReactions = relay.req(
     "getMyReactedAuthors",
     {
       "#e": Array.from(myReactedEventIds),
     },
-  ]);
+  ) as NostrEvent[];
 
   myReactions.forEach(reaction => {
     if (reaction.pubkey !== myPubkey) {
@@ -54,17 +53,16 @@ async function getMyReactedAuthors(myReactedEventIds: Set<string>, myPubkey: str
   return myReactedAuthors;
 }
 
-async function getMyReactedEvents(pubkey: string) {
+async function getMyReactedEvents(relay: RelayHandler, pubkey: string) {
   const myReactedEventIds = new Set<string>();
 
-  const myEvents = await Relay.query([
-    "REQ",
+  const myEvents = relay.req(
     "getMyReactedEventIds",
     {
       authors: [pubkey],
       kinds: [1, 6, 7, 9735],
     },
-  ]);
+  ) as NostrEvent[];
   myEvents.forEach(ev => {
     const targetEventId = ev.kind === 9735 ? parseZap(ev).event?.id : ev.tags.find(tag => tag[0] === "e")?.[1];
     if (targetEventId) {
@@ -75,16 +73,15 @@ async function getMyReactedEvents(pubkey: string) {
   return myReactedEventIds;
 }
 
-async function getOthersWhoReacted(myReactedEventIds: Set<string>, myPubkey: string) {
+async function getOthersWhoReacted(relay: RelayHandler, myReactedEventIds: Set<string>, myPubkey: string) {
   const othersWhoReacted = new Map<string, number>();
 
-  const otherReactions = await Relay.query([
-    "REQ",
+  const otherReactions = relay.req(
     "getOthersWhoReacted",
     {
       "#e": Array.from(myReactedEventIds),
     },
-  ]);
+  ) as NostrEvent[];
 
   otherReactions.forEach(reaction => {
     if (reaction.pubkey !== myPubkey) {
@@ -96,20 +93,20 @@ async function getOthersWhoReacted(myReactedEventIds: Set<string>, myPubkey: str
 }
 
 async function getEventIdsReactedByOthers(
+  relay: RelayHandler,
   othersWhoReacted: Map<string, number>,
   myReactedEvents: Set<string>,
   myPub: string,
 ) {
   const eventIdsReactedByOthers = new Map<string, number>();
 
-  const events = await Relay.query([
-    "REQ",
+  const events = relay.req(
     "getEventIdsReactedByOthers",
     {
       authors: [...othersWhoReacted.keys()],
       kinds: [1, 6, 7, 9735],
     },
-  ]);
+  ) as NostrEvent[];
 
   events.forEach(event => {
     if (event.pubkey === myPub || myReactedEvents.has(event.id)) {
@@ -127,16 +124,12 @@ async function getEventIdsReactedByOthers(
   return eventIdsReactedByOthers;
 }
 
-async function getFeedEvents(reactedToIds: Map<string, number>, reactedToAuthors: Map<string, number>) {
-  const events = await Relay.query([
-    "REQ",
-    "getFeedEvents",
-    {
-      ids: Array.from(reactedToIds.keys()),
-      kinds: [1],
-      since: Math.floor(Date.now() / 1000) - 60 * 60 * 24 * 7,
-    },
-  ]);
+async function getFeedEvents(relay: RelayHandler, reactedToIds: Map<string, number>, reactedToAuthors: Map<string, number>) {
+  const events = relay.sql(
+    `select json from events where id in (${Array.from(reactedToIds.keys()).map(() => "?").join(", ")}) and kind = 1 order by seen_at ASC, created DESC limit 1000`,
+    Array.from(reactedToIds.keys()),
+  ).map(row => JSON.parse(row[0] as string) as NostrEvent);
+
   const seen = new Set<string>(events.map(ev => ev.id));
 
   log("reactedToAuthors", reactedToAuthors);
@@ -145,16 +138,11 @@ async function getFeedEvents(reactedToIds: Map<string, number>, reactedToAuthors
     .sort((a, b) => reactedToAuthors.get(b)! - reactedToAuthors.get(a)!)
     .slice(20);
 
-  const eventsByFavoriteAuthors = await Relay.query([
-    "REQ",
-    "getFeedEvents",
-    {
-      authors: favoriteAuthors,
-      kinds: [1],
-      since: Math.floor(Date.now() / 1000) - 60 * 60 * 24,
-      limit: 100,
-    },
-  ]);
+  const eventsByFavoriteAuthors = relay.sql(
+    `select json from events where pubkey in (${favoriteAuthors.map(() => "?").join(", ")}) and kind = 1 order by seen_at ASC, created DESC limit 100`,
+    favoriteAuthors,
+  ).map(row => JSON.parse(row[0] as string) as NostrEvent);
+
 
   eventsByFavoriteAuthors.forEach(ev => {
     if (!seen.has(ev.id)) {

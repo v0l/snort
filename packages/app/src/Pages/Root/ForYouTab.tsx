@@ -1,16 +1,15 @@
-import { EventKind, TaggedNostrEvent } from "@snort/system";
+import {EventKind, NostrEvent} from "@snort/system";
 import { memo, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
+import {Relay} from "@/Cache";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import { TaskList } from "@/Components/Tasks/TaskList";
-import { getForYouFeed } from "@/Db/getForYouFeed";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
 import useLogin from "@/Hooks/useLogin";
 import messages from "@/Pages/messages";
-import { System } from "@/system";
 
 const FollowsHint = () => {
   const { publicKey: pubKey, follows } = useLogin();
@@ -32,14 +31,14 @@ const FollowsHint = () => {
 };
 
 let forYouFeed = {
-  events: [] as TaggedNostrEvent[],
+  events: [] as NostrEvent[],
   created_at: 0,
 };
 
-let getForYouFeedPromise: Promise<TaggedNostrEvent[]> | null = null;
+let getForYouFeedPromise: Promise<NostrEvent[]> | null = null;
 
 export const ForYouTab = memo(function ForYouTab() {
-  const [notes, setNotes] = useState<TaggedNostrEvent[]>(forYouFeed.events);
+  const [notes, setNotes] = useState<NostrEvent[]>(forYouFeed.events);
   const { feedDisplayAs } = useLogin();
   const displayAsInitial = feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
@@ -64,7 +63,7 @@ export const ForYouTab = memo(function ForYouTab() {
   const latestFeed = useTimelineFeed(subject, { method: "TIME_RANGE" } as TimelineFeedOptions);
   const filteredLatestFeed = useMemo(() => {
     // no replies
-    return latestFeed.main?.filter((ev: TaggedNostrEvent) => !ev.tags.some((tag: string[]) => tag[0] === "e")) ?? [];
+    return latestFeed.main?.filter((ev: NostrEvent) => !ev.tags.some((tag: string[]) => tag[0] === "e")) ?? [];
   }, [latestFeed.main]);
 
   const getFeed = () => {
@@ -72,13 +71,13 @@ export const ForYouTab = memo(function ForYouTab() {
       return [];
     }
     if (!getForYouFeedPromise) {
-      getForYouFeedPromise = getForYouFeed(publicKey);
+      getForYouFeedPromise = Relay.forYouFeed(publicKey);
     }
     getForYouFeedPromise!.then(notes => {
       getForYouFeedPromise = null;
       if (notes.length < 10) {
         setTimeout(() => {
-          getForYouFeed(publicKey);
+          getForYouFeedPromise = Relay.forYouFeed(publicKey);
         }, 1000);
       }
       forYouFeed = {
@@ -86,11 +85,6 @@ export const ForYouTab = memo(function ForYouTab() {
         created_at: Date.now(),
       };
       setNotes(notes);
-      notes.forEach(note => {
-        queueMicrotask(() => {
-          System.HandleEvent(note);
-        });
-      });
     });
   };
 

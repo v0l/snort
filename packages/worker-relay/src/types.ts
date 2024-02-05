@@ -9,7 +9,8 @@ export type WorkerMessageCommand =
   | "summary"
   | "close"
   | "dumpDb"
-  | "emit-event";
+  | "emit-event"
+  | "forYouFeed";
 
 export interface WorkerMessage<T> {
   id: string;

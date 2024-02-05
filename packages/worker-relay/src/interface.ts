@@ -45,6 +45,10 @@ export class WorkerRelayInterface {
     return await this.#workerRpc<void, Uint8Array>("dumpDb");
   }
 
+  async forYouFeed(pubkey: string) {
+    return await this.#workerRpc<string, Array<NostrEvent>>("forYouFeed", pubkey);
+  }
+
   #workerRpc<T, R>(cmd: WorkerMessageCommand, args?: T) {
     const id = uuid();
     const msg = {
