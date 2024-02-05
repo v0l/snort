@@ -55,7 +55,7 @@ export function Note(props: NoteProps) {
     if (setSeenAtInView) {
       timeout = setTimeout(() => {
         Relay.setEventMetadata(ev.id, { seen_at: Math.round(Date.now() / 1000) });
-      }, 5000);
+      }, 2000);
     }
     return () => clearTimeout(timeout);
   }, [setSeenAtInView]);
@@ -83,11 +83,12 @@ export function Note(props: NoteProps) {
           {translated && <TranslationInfo translated={translated} setShowTranslation={setShowTranslation} />}
           {ev.kind === EventKind.Polls && <Poll ev={ev} />}
           {optionsMerged.showFooter && (
-            <div className="mt-4" ref={setSeenAtRef}>
+            <div className="mt-4">
               <NoteFooter ev={ev} replyCount={props.threadChains?.get(chainKey(ev))?.length} />
             </div>
           )}
         </div>
+        <div ref={setSeenAtRef} />
       </>
     );
   }

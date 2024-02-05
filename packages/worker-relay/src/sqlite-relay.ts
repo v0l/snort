@@ -89,7 +89,6 @@ export class SqliteRelay extends EventEmitter<RelayHandlerEvents> implements Rel
 
   setEventMetadata(id: string, meta: EventMetadata) {
     if (meta.seen_at) {
-      console.log("update seen_at", id, meta.seen_at);
       this.db?.exec("update events set seen_at = ? where id = ?", {
         bind: [meta.seen_at, id],
       });
