@@ -4,7 +4,7 @@ import { findTag } from "./utils";
 import { EventExt } from "./event-ext";
 import { NostrLink } from "./nostr-link";
 import debug from "debug";
-import {LRUCache} from "lru-cache";
+import { LRUCache } from "lru-cache";
 
 const Log = debug("zaps");
 const ParsedZapCache = new LRUCache<string, ParsedZap>({ max: 1000 });

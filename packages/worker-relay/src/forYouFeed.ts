@@ -6,7 +6,7 @@ import { RelayHandler, NostrEvent } from "./types";
 // placeholder:
 const parseZap = (_zap: NostrEvent) => {
   return { event: null } as { event: null | NostrEvent };
-}
+};
 
 const log = debug("getForYouFeed");
 
@@ -63,7 +63,8 @@ async function getMyReactedEvents(relay: RelayHandler, pubkey: string) {
     kinds: [1, 6, 7, 9735],
   }) as NostrEvent[];
   myEvents.forEach(ev => {
-    const targetEventId = ev.kind === 9735 ? parseZap(ev).event?.id : ev.tags.find((tag: string[]) => tag[0] === "e")?.[1];
+    const targetEventId =
+      ev.kind === 9735 ? parseZap(ev).event?.id : ev.tags.find((tag: string[]) => tag[0] === "e")?.[1];
     if (targetEventId) {
       myReactedEventIds.add(targetEventId);
     }
