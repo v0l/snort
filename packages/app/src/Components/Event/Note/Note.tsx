@@ -87,8 +87,8 @@ export function Note(props: NoteProps) {
               <NoteFooter ev={ev} replyCount={props.threadChains?.get(chainKey(ev))?.length} />
             </div>
           )}
+          <div ref={setSeenAtRef} />
         </div>
-        <div ref={setSeenAtRef} />
       </>
     );
   }
