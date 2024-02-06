@@ -1,4 +1,4 @@
-import { EventKind, NostrEvent } from "@snort/system";
+import { EventKind, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { memo, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
@@ -10,6 +10,7 @@ import { TaskList } from "@/Components/Tasks/TaskList";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
 import useLogin from "@/Hooks/useLogin";
 import messages from "@/Pages/messages";
+import { System } from "@/system";
 
 const FollowsHint = () => {
   const { publicKey: pubKey, follows } = useLogin();
@@ -36,13 +37,38 @@ let forYouFeed = {
 };
 
 let getForYouFeedPromise: Promise<NostrEvent[]> | null = null;
+let reactionsRequested = false;
+
+const getReactedByFollows = (follows: string[]) => {
+  const rb1 = new RequestBuilder("follows:reactions");
+  rb1.withFilter().kinds([EventKind.Reaction, EventKind.ZapReceipt]).authors(follows).limit(100);
+  const q = System.Query(rb1);
+  setTimeout(() => {
+    q.cancel();
+    const reactedIds = new Set<string>();
+    q.snapshot.forEach((ev: TaggedNostrEvent) => {
+      const reactedTo = ev.tags.find((t: string[]) => t[0] === "e")?.[1];
+      if (reactedTo) {
+        reactedIds.add(reactedTo);
+      }
+    });
+    const rb2 = new RequestBuilder("follows:reactedEvents");
+    rb2.withFilter().ids(Array.from(reactedIds));
+    System.Query(rb2);
+  }, 500);
+};
 
 export const ForYouTab = memo(function ForYouTab() {
   const [notes, setNotes] = useState<NostrEvent[]>(forYouFeed.events);
-  const { feedDisplayAs } = useLogin();
+  const { feedDisplayAs, follows } = useLogin();
   const displayAsInitial = feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const { publicKey } = useLogin();
+
+  if (!reactionsRequested && publicKey) {
+    reactionsRequested = true;
+    getReactedByFollows(follows.item);
+  }
 
   const login = useLogin();
   const subject = useMemo(
