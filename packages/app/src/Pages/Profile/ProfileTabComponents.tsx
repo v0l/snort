@@ -52,6 +52,22 @@ export function BookMarksTab({ id }: { id: HexKey }) {
   return <Bookmarks pubkey={id} bookmarks={bookmarks} />;
 }
 
+export function ReactionsTab({ id }: { id: HexKey }) {
+  const subject = useMemo(
+    () =>
+      ({
+        type: "pubkey",
+        items: [id],
+        discriminator: `reactions:${id.slice(0, 12)}`,
+        kinds: [EventKind.Reaction],
+      }) as TimelineSubject,
+    [id],
+  );
+  return (
+    <Timeline subject={subject} postsOnly={false} method={"LIMIT_UNTIL"} ignoreModeration={true} window={60 * 60 * 6} />
+  );
+}
+
 export function ProfileNotesTab({ id, relays, isMe }: { id: HexKey; relays?: Array<string>; isMe: boolean }) {
   const pinned = usePinList(id);
   const options = useMemo(() => ({ showTime: false, showPinned: true, canUnpin: isMe }), [isMe]);

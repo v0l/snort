@@ -20,6 +20,7 @@ export interface TimelineSubject {
   items: string[];
   relay?: Array<string>;
   extra?: (rb: RequestBuilder) => void;
+  kinds?: EventKind[];
 }
 
 export type TimelineFeed = ReturnType<typeof useTimelineFeed>;
@@ -37,14 +38,14 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
       return null;
     }
 
+    const kinds =
+      subject.kinds ??
+      (subject.type === "profile_keyword"
+        ? [EventKind.SetMetadata]
+        : [EventKind.TextNote, EventKind.Repost, EventKind.Polls]);
+
     const b = new RequestBuilder(`timeline:${subject.type}:${subject.discriminator}`);
-    const f = b
-      .withFilter()
-      .kinds(
-        subject.type === "profile_keyword"
-          ? [EventKind.SetMetadata]
-          : [EventKind.TextNote, EventKind.Repost, EventKind.Polls],
-      );
+    const f = b.withFilter().kinds(kinds);
 
     if (subject.relay) {
       subject.relay.forEach(r => f.relay(r));
@@ -75,7 +76,7 @@ export default function useTimelineFeed(subject: TimelineSubject, options: Timel
     }
     subject.extra?.(b);
     return b;
-  }, [subject.type, subject.items, subject.discriminator, subject.extra]);
+  }, [subject]);
 
   const sub = useMemo(() => {
     const rb = createBuilder();

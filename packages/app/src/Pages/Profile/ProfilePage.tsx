@@ -24,6 +24,7 @@ import {
   FollowersTab,
   FollowsTab,
   ProfileNotesTab,
+  ReactionsTab,
   RelaysTab,
   ZapsProfileTab,
 } from "@/Pages/Profile/ProfileTabComponents";
@@ -139,6 +140,9 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       case ProfileTabType.BOOKMARKS: {
         return <BookMarksTab id={id} />;
       }
+      case ProfileTabType.REACTIONS: {
+        return <ReactionsTab id={id} />;
+      }
     }
   }
 
@@ -175,9 +179,12 @@ export default function ProfilePage({ id: propId, state }: ProfilePageProps) {
       </div>
       <div className="main-content">
         <div className="tabs p" ref={horizontalScroll}>
-          {[ProfileTabSelectors.Notes, ProfileTabSelectors.Followers, ProfileTabSelectors.Follows].map(
-            renderTabSelector,
-          )}
+          {[
+            ProfileTabSelectors.Notes,
+            ProfileTabSelectors.Reactions,
+            ProfileTabSelectors.Followers,
+            ProfileTabSelectors.Follows,
+          ].map(renderTabSelector)}
           {optionalTabs.map(renderTabSelector)}
           {isMe && blocked.length > 0 && renderTabSelector(ProfileTabSelectors.Blocked)}
         </div>

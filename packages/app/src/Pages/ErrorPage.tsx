@@ -1,9 +1,9 @@
+import debug from "debug";
 import { FormattedMessage } from "react-intl";
 import { useRouteError } from "react-router-dom";
 
 import AsyncButton from "@/Components/Button/AsyncButton";
 import { db } from "@/Db";
-import debug from "debug";
 
 const log = debug("ErrorPage");
 

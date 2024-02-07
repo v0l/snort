@@ -17,7 +17,7 @@ const ProfileTabSelectors = {
   Reactions: {
     text: (
       <>
-        <Icon name="reaction" size={16} />
+        <Icon name="heart-solid" size={16} />
         <FormattedMessage defaultMessage="Reactions" id="XgWvGA" />
       </>
     ),

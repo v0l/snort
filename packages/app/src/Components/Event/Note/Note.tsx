@@ -1,4 +1,4 @@
-import { EventKind, NostrLink } from "@snort/system";
+import { EventKind, NostrLink, TaggedNostrEvent } from "@snort/system";
 import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -8,8 +8,10 @@ import { LRUCache } from "typescript-lru-cache";
 
 import { Relay } from "@/Cache";
 import NoteHeader from "@/Components/Event/Note/NoteHeader";
+import NoteQuote from "@/Components/Event/Note/NoteQuote";
 import { NoteText } from "@/Components/Event/Note/NoteText";
 import { TranslationInfo } from "@/Components/Event/Note/TranslationInfo";
+import Username from "@/Components/User/Username";
 import useModeration from "@/Hooks/useModeration";
 import { findTag } from "@/Utils";
 import { chainKey } from "@/Utils/Thread/ChainKey";
@@ -146,7 +148,25 @@ function useGoToEvent(props, options) {
   );
 }
 
-function handleNonTextNote(ev) {
+function Reaction({ ev }: { ev: TaggedNostrEvent }) {
+  const reactedToTag = ev.tags.find((tag: string[]) => tag[0] === "e");
+  const link = NostrLink.fromTag(reactedToTag);
+  if (!reactedToTag) {
+    return null;
+  }
+  return (
+    <div className="note card">
+      <div className="text-gray-medium font-bold">
+        <Username pubkey={ev.pubkey} onLinkVisit={() => {}} />
+        <span> </span>
+        <FormattedMessage defaultMessage="liked" id="TvKqBp" />
+      </div>
+      <NoteQuote link={link} />
+    </div>
+  );
+}
+
+function handleNonTextNote(ev: TaggedNostrEvent) {
   const alt = findTag(ev, "alt");
   if (alt) {
     return (
@@ -154,6 +174,8 @@ function handleNonTextNote(ev) {
         <Text id={ev.id} content={alt} tags={[]} creator={ev.pubkey} />
       </div>
     );
+  } else if (ev.kind === EventKind.Reaction) {
+    return <Reaction ev={ev} />;
   } else {
     return (
       <>
