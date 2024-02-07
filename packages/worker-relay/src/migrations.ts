@@ -15,6 +15,12 @@ const migrations = [
 async function migrate(relay: SqliteRelay) {
   if (!relay.db) throw new Error("DB must be open");
 
+  relay.db.exec(
+    "CREATE TABLE IF NOT EXISTS __migration (\
+    version INTEGER PRIMARY KEY, \
+    migrated_at INTEGER \
+  )",
+  );
   const res = relay.db.exec("SELECT MAX(version) FROM __migration", { returnValue: "resultRows" });
   let currentVersion = (res[0][0] as number | undefined) ?? 0;
 
