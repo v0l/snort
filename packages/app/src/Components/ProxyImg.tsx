@@ -76,6 +76,7 @@ const ProxyImgComponent = forwardRef<HTMLImageElement, ProxyImgProps>(function P
       height={size}
       className={className}
       onError={handleImageError}
+      crossOrigin={props.crossOrigin ?? "anonymous"}
     />
   );
 });

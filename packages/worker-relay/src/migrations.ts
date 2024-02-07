@@ -4,41 +4,31 @@ import debug from "debug";
 
 const log = debug("SqliteRelay:migrations");
 
-/**
- * Do database migration
- */
-function migrate(relay: SqliteRelay) {
+const migrations = [
+  { version: 1, script: migrate_v1 },
+  { version: 2, script: migrate_v2 },
+  { version: 3, script: migrate_v3 },
+  { version: 4, script: migrate_v4 },
+  { version: 5, script: migrate_v5 },
+];
+
+async function migrate(relay: SqliteRelay) {
   if (!relay.db) throw new Error("DB must be open");
 
-  relay.db.exec(
-    'CREATE TABLE IF NOT EXISTS "__migration" (version INTEGER,migrated NUMERIC, CONSTRAINT "__migration_PK" PRIMARY KEY (version))',
-  );
-  const res = relay.db.exec("select max(version) from __migration", {
-    returnValue: "resultRows",
-  });
+  const res = relay.db.exec("SELECT MAX(version) FROM __migration", { returnValue: "resultRows" });
+  let currentVersion = (res[0][0] as number | undefined) ?? 0;
 
-  const version = (res[0][0] as number | undefined) ?? 0;
-  log(`Starting migration from: v${version}`);
-  if (version < 1) {
-    migrate_v1(relay);
-    log("Migrated to v1");
-  }
-  if (version < 2) {
-    migrate_v2(relay);
-    log("Migrated to v2");
-  }
-  if (version < 3) {
-    migrate_v3(relay);
-    log("Migrated to v3");
-  }
-  if (version < 4) {
-    migrate_v4(relay);
-    log("Migrated to v4");
+  for (const { version, script } of migrations) {
+    if (currentVersion < version) {
+      log(`Migrating to v${version}`);
+      await script(relay);
+      currentVersion = version;
+    }
   }
 }
 
 function migrate_v1(relay: SqliteRelay) {
-  relay.db?.transaction(db => {
+  return relay.db?.transaction(db => {
     db.exec(
       "CREATE TABLE events (\
       id TEXT(64) PRIMARY KEY, \
@@ -93,6 +83,15 @@ async function migrate_v4(relay: SqliteRelay) {
   relay.db?.transaction(db => {
     db.exec("ALTER TABLE events ADD COLUMN seen_at INTEGER");
     db.exec("insert into __migration values(4, ?)", {
+      bind: [new Date().getTime() / 1000],
+    });
+  });
+}
+
+async function migrate_v5(relay: SqliteRelay) {
+  relay.db?.transaction(db => {
+    db.exec("CREATE INDEX seen_at_IDX ON events (seen_at)");
+    db.exec("insert into __migration values(5, ?)", {
       bind: [new Date().getTime() / 1000],
     });
   });
