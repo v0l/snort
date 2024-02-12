@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 
@@ -9,7 +9,7 @@ import Text from "@/Components/Text/Text";
 import useLogin from "@/Hooks/useLogin";
 
 const TEXT_TRUNCATE_LENGTH = 400;
-export const NoteText = function InnerContent(
+export const NoteText = memo(function InnerContent(
   props: NoteProps & { translated: NoteTranslation; showTranslation?: boolean },
 ) {
   const { data: ev, options, translated, showTranslation } = props;
@@ -94,4 +94,4 @@ export const NoteText = function InnerContent(
     }
   }
   return innerContent;
-};
+});

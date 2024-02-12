@@ -43,6 +43,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   );
   const feed = useTimelineFeed(subject, { method: "TIME_RANGE" } as TimelineFeedOptions);
 
+  // TODO allow reposts:
   const postsOnly = useCallback(
     (a: NostrEvent) => (props.postsOnly ? !a.tags.some(b => b[0] === "e" || b[0] === "a") : true),
     [props.postsOnly],
