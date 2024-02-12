@@ -21,7 +21,7 @@
     "pushNotifications": false
   },
   "signUp": {
-    "moderation": true,
+    "quickStart": false,
     "defaultFollows": []
   },
   "defaultPreferences": {

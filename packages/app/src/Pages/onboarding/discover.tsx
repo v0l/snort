@@ -34,7 +34,7 @@ export function Discover() {
       <AsyncButton
         className="primary"
         onClick={() =>
-          navigate(CONFIG.signUp.moderation ? "/login/sign-up/moderation" : "/", {
+          navigate("/login/sign-up/moderation", {
             state,
           })
         }>

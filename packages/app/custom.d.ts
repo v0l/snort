@@ -67,7 +67,7 @@ declare const CONFIG: {
     hideMutedNotes: boolean;
   };
   signUp: {
-    moderation: boolean;
+    quickStart: boolean;
     defaultFollows: Array<string>;
   };
   media: {

@@ -93,6 +93,10 @@
   "0yO7wF": {
     "defaultMessage": "{n} secs"
   },
+  "0zASjL": {
+    "defaultMessage": "Go",
+    "description": "Button text after entering username in quick signup"
+  },
   "1H4Keq": {
     "defaultMessage": "{n} users"
   },

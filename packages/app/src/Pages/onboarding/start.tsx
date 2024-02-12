@@ -1,7 +1,7 @@
 import { unwrap } from "@snort/shared";
 import { NotEncrypted } from "@snort/system";
 import classNames from "classnames";
-import { useState } from "react";
+import {FormEvent, useContext, useState} from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -9,9 +9,10 @@ import AsyncButton from "@/Components/Button/AsyncButton";
 import Icon from "@/Components/Icons/Icon";
 import useLoginHandler from "@/Hooks/useLoginHandler";
 import { trackEvent } from "@/Utils";
-import { LoginSessionType, LoginStore } from "@/Utils/Login";
+import { generateNewLogin, LoginSessionType, LoginStore } from "@/Utils/Login";
 
 import { NewUserState } from ".";
+import { SnortContext } from "@snort/system-react";
 
 const NSEC_NPUB_REGEX = /(nsec1|npub1)[a-zA-Z0-9]{20,65}/gi;
 
@@ -132,8 +133,18 @@ export function SignUp() {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const [name, setName] = useState("");
+  const system = useContext(SnortContext);
 
-  const onSubmit = () => {
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (CONFIG.signUp.quickStart) {
+      return generateNewLogin(system, key => Promise.resolve(new NotEncrypted(key)), {
+        name,
+      }).then(() => {
+        trackEvent("Login", { newAccount: true });
+        navigate("/trending/notes");
+      });
+    }
     navigate("/login/sign-up/profile", {
       state: {
         name: name,
@@ -172,7 +183,15 @@ export function SignUp() {
           className="new-username"
         />
         <AsyncButton className="primary" disabled={name.length === 0} onClick={onSubmit}>
-          <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
+          {CONFIG.signUp.quickStart ? (
+            <FormattedMessage
+              description="Button text after entering username in quick signup"
+              defaultMessage="Go"
+              id="0zASjL"
+            />
+          ) : (
+            <FormattedMessage defaultMessage="Next" id="9+Ddtu" />
+          )}
         </AsyncButton>
       </form>
       <div className="flex flex-col g16 items-center">
