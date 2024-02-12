@@ -15,6 +15,8 @@ import { getNotificationContext } from "./getNotificationContext";
 import { NotificationGroup } from "./NotificationGroup";
 const NotificationGraph = lazy(() => import("@/Pages/Notifications/NotificationChart"));
 
+import ScrollToTop from "@/Components/ScrollToTop";
+
 export default function NotificationsPage({ onClick }: { onClick?: (link: NostrLink) => void }) {
   const login = useLogin();
   const { isMuted } = useModeration();
@@ -51,6 +53,7 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
 
   return (
     <>
+      <ScrollToTop />
       <div className="main-content">
         {CONFIG.features.notificationGraph && (
           <Suspense fallback={<PageSpinner />}>

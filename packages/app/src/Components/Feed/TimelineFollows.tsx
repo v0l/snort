@@ -35,7 +35,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
         discriminator: login.publicKey?.slice(0, 12),
         extra: rb => {
           if (login.tags.item.length > 0) {
-            rb.withFilter().kinds([EventKind.TextNote]).tag("t", login.tags.item);
+            rb.withFilter().kinds([EventKind.TextNote, EventKind.Repost]).tag("t", login.tags.item);
           }
         },
       }) as TimelineSubject,
