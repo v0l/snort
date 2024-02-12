@@ -84,11 +84,9 @@ const PreferencesPage = () => {
                 defaultRootTab: e.target.value,
               } as UserPreferences)
             }>
-            {CONFIG.features.forYouFeed && (
-              <option value="for-you">
-                <FormattedMessage defaultMessage="For you" id="xEjBS7" />
-              </option>
-            )}
+            <option value="for-you">
+              <FormattedMessage defaultMessage="For you" id="xEjBS7" />
+            </option>
             <option value="following">
               <FormattedMessage defaultMessage="Notes" id="7+Domh" />
             </option>

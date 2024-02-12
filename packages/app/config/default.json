@@ -18,15 +18,15 @@
     "notificationGraph": true,
     "communityLeaders": true,
     "nostrAddress": true,
-    "pushNotifications": true,
-    "forYouFeed": false
+    "pushNotifications": true
   },
   "signUp": {
     "quickStart": false,
     "defaultFollows": ["npub1sn0rtcjcf543gj4wsg7fa59s700d5ztys5ctj0g69g2x6802npjqhjjtws"]
   },
   "defaultPreferences": {
-    "hideMutedNotes": false
+    "hideMutedNotes": false,
+    "defaultRootTab": "following"
   },
   "media": {
     "bypassImgProxyError": false,

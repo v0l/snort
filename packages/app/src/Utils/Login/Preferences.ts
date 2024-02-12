@@ -114,7 +114,7 @@ export const DefaultPreferences = {
   autoShowLatest: false,
   fileUploader: "void.cat",
   imgProxyConfig: DefaultImgProxy,
-  defaultRootTab: CONFIG.features.forYouFeed ? "for-you" : "following",
+  defaultRootTab: "following",
   defaultZapAmount: 50,
   autoZap: false,
   telemetry: true,

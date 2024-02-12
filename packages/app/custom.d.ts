@@ -61,10 +61,10 @@ declare const CONFIG: {
     communityLeaders: boolean;
     nostrAddress: boolean;
     pushNotifications: boolean;
-    forYouFeed: boolean;
   };
   defaultPreferences: {
     hideMutedNotes: boolean;
+    defaultRootTab: "following" | "for-you";
   };
   signUp: {
     quickStart: boolean;

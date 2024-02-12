@@ -25,7 +25,8 @@
     "defaultFollows": []
   },
   "defaultPreferences": {
-    "hideMutedNotes": false
+    "hideMutedNotes": false,
+    "defaultRootTab": "following"
   },
   "media": {
     "bypassImgProxyError": false,

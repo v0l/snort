@@ -10,7 +10,7 @@ export function rootTabItems(base: string, pubKey: string | undefined, tags: New
     {
       tab: "for-you",
       path: `${base}/for-you`,
-      show: Boolean(pubKey) && CONFIG.features.forYouFeed,
+      show: Boolean(pubKey),
       element: (
         <>
           <Icon name="user-v2" />

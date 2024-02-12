@@ -1,5 +1,6 @@
 import { unwrap } from "@snort/shared";
 import { NotEncrypted } from "@snort/system";
+import { SnortContext } from "@snort/system-react";
 import classNames from "classnames";
 import { FormEvent, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -12,7 +13,6 @@ import { trackEvent } from "@/Utils";
 import { generateNewLogin, LoginSessionType, LoginStore } from "@/Utils/Login";
 
 import { NewUserState } from ".";
-import { SnortContext } from "@snort/system-react";
 
 const NSEC_NPUB_REGEX = /(nsec1|npub1)[a-zA-Z0-9]{20,65}/gi;
 

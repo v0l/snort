@@ -8,5 +8,5 @@ export const DefaultTab = () => {
   }));
   const tab = publicKey ? preferences.defaultRootTab : `trending/notes`;
   const elm = RootTabRoutes.find(a => a.path === tab)?.element;
-  return elm ?? RootTabRoutes.find(a => a.path === (CONFIG.features.forYouFeed ? "for-you" : "following"))?.element;
+  return elm ?? RootTabRoutes.find(a => a.path === preferences.defaultRootTab)?.element;
 };

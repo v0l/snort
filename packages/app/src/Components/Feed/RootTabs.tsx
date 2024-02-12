@@ -26,7 +26,7 @@ export function RootTabs({ base = "/" }: { base: string }) {
 
   let defaultTab: RootTabRoutePath;
   if (pubKey) {
-    defaultTab = preferences.defaultRootTab ?? (CONFIG.features.forYouFeed ? "for-you" : "following");
+    defaultTab = preferences.defaultRootTab;
   } else {
     defaultTab = `trending/notes`;
   }
