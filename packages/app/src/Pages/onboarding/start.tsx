@@ -1,7 +1,7 @@
 import { unwrap } from "@snort/shared";
 import { NotEncrypted } from "@snort/system";
 import classNames from "classnames";
-import {FormEvent, useContext, useState} from "react";
+import { FormEvent, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Link, useNavigate } from "react-router-dom";
 
