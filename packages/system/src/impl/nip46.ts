@@ -50,7 +50,7 @@ export class Nip46Signer implements EventSigner {
   constructor(config: string, insideSigner?: EventSigner) {
     const u = new URL(config);
     this.#proto = u.protocol;
-    this.#localPubkey = u.pathname.substring(2);
+    this.#localPubkey = u.hostname || u.pathname.substring(2);
 
     if (u.hash.length > 1) {
       this.#token = u.hash.substring(1);
@@ -199,8 +199,12 @@ export class Nip46Signer implements EventSigner {
       throw new Error("No pending command found");
     }
 
-    pending.resolve(reply);
-    this.#commandQueue.delete(reply.id);
+    if ("result" in reply && reply.result === "auth_url") {
+      window.open(reply.error, "Snort", "width=600,height=800,popup=yes")
+    } else {
+      pending.resolve(reply);
+      this.#commandQueue.delete(reply.id);
+    }
   }
 
   async #rpc<T>(method: string, params: Array<any>) {
