@@ -50,7 +50,7 @@ export class Nip46Signer implements EventSigner {
   constructor(config: string, insideSigner?: EventSigner) {
     const u = new URL(config);
     this.#proto = u.protocol;
-    this.#localPubkey = u.pathname.substring(2);
+    this.#localPubkey = u.hostname || u.pathname.substring(2);
 
     if (u.hash.length > 1) {
       this.#token = u.hash.substring(1);
