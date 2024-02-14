@@ -199,8 +199,12 @@ export class Nip46Signer implements EventSigner {
       throw new Error("No pending command found");
     }
 
-    pending.resolve(reply);
-    this.#commandQueue.delete(reply.id);
+    if ("result" in reply && reply.result === "auth_url") {
+      window.open(reply.error, "Snort", "width=600,height=800,popup=yes")
+    } else {
+      pending.resolve(reply);
+      this.#commandQueue.delete(reply.id);
+    }
   }
 
   async #rpc<T>(method: string, params: Array<any>) {
