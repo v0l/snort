@@ -88,7 +88,12 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     }
   }
 
-  async init() {
+  /**
+   * Connect to the bunker relay
+   * @param autoConnect Start connect flow for pubkey
+   * @returns 
+   */
+  async init(autoConnect = true) {
     const isBunker = this.#proto === "bunker:";
     if (isBunker) {
       this.#remotePubkey = this.#localPubkey;
@@ -112,33 +117,24 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
           () => { },
         );
 
-        if (isBunker) {
-          const rsp = await this.#connect(unwrap(this.#remotePubkey));
-          if (rsp.result === "auth_url") {
-            // re-insert the command into queue for result of oAuth flow
-            this.#commandQueue.set(rsp.id, {
-              resolve: async (o: Nip46Response) => {
-                if (o.result === "ack") {
-                  resolve();
-                } else {
-                  reject(o.error);
-                }
-              },
-              reject,
-            });
-            this.emit("oauth", rsp.error);
-          } else if (rsp.result === "ack") {
-            resolve();
+        if (autoConnect) {
+          if (isBunker) {
+            const rsp = await this.#connect(unwrap(this.#remotePubkey));
+            if (rsp.result === "ack") {
+              resolve();
+            } else {
+              reject(rsp.error);
+            }
           } else {
-            reject(rsp.error);
+            this.#commandQueue.set("connect", {
+              reject,
+              resolve: () => {
+                resolve();
+              },
+            });
           }
         } else {
-          this.#commandQueue.set("connect", {
-            reject,
-            resolve: () => {
-              resolve();
-            },
-          });
+          resolve();
         }
       });
       this.#conn.connect();
@@ -162,8 +158,9 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   }
 
   async getPubKey() {
-    const rsp = await this.#rpc("get_public_key", []);
-    return rsp.result as string;
+    //const rsp = await this.#rpc("get_public_key", []);
+    //return rsp.result as string;
+    return this.#remotePubkey!;
   }
 
   async nip4Encrypt(content: string, otherKey: string) {
@@ -173,11 +170,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
 
   async nip4Decrypt(content: string, otherKey: string) {
     const rsp = await this.#rpc("nip04_decrypt", [otherKey, content]);
-    try {
-      return JSON.parse(rsp.result)[0];
-    } catch {
-      return "<error>";
-    }
+    return rsp.result as string;
   }
 
   nip44Encrypt(content: string, key: string): Promise<string> {
@@ -201,21 +194,10 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
    * @returns 
    */
   async createAccount(name: string, domain: string, email?: string) {
+    await this.init(false);
     const rsp = await this.#rpc("create_account", [name, domain, email ?? ""]);
-    if (rsp.result === "auth_url") {
-      return await new Promise<void>((resolve, reject) => {
-        this.#commandQueue.set(rsp.id, {
-          resolve: async (o: Nip46Response) => {
-            if (o.result === "ack") {
-              resolve();
-            } else {
-              reject(o.error);
-            }
-          },
-          reject,
-        });
-        this.emit("oauth", rsp.error);
-      });
+    if (!rsp.error) {
+      this.#remotePubkey = rsp.result as string;
     }
   }
 
@@ -258,8 +240,17 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
       throw new Error("No pending command found");
     }
 
-    pending.resolve(reply as Nip46Response);
-    this.#commandQueue.delete(reply.id);
+    if ("result" in reply && reply.result === "auth_url") {
+      this.emit("oauth", reply.error);
+    } else {
+      const rx = reply as Nip46Response;
+      if (rx.error) {
+        pending.reject(new Error(rx.error));
+      } else {
+        pending.resolve(rx);
+      }
+      this.#commandQueue.delete(reply.id);
+    }
   }
 
   async #rpc(method: string, params: Array<any>) {
