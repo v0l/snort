@@ -193,7 +193,7 @@ export async function fetchNostrAddress(name: string, domain: string, timeout = 
     const res = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`, {
       signal: AbortSignal.timeout(timeout),
     });
-    return await res.json() as NostrJson;
+    return (await res.json()) as NostrJson;
   } catch {
     // ignored
   }
@@ -226,7 +226,7 @@ export function normalizeReaction(content: string) {
   }
 }
 
-export class OfflineError extends Error { }
+export class OfflineError extends Error {}
 
 export function throwIfOffline() {
   if (isOffline()) {

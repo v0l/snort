@@ -55,7 +55,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   /**
    * Start NIP-46 connection
    * @param config bunker/nostrconnect://{npub/hex-pubkey}?relay={websocket-url}#{token-hex}
-   * @param insideSigner 
+   * @param insideSigner
    */
   constructor(config: string, insideSigner?: EventSigner) {
     super();
@@ -91,7 +91,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
   /**
    * Connect to the bunker relay
    * @param autoConnect Start connect flow for pubkey
-   * @returns 
+   * @returns
    */
   async init(autoConnect = true) {
     const isBunker = this.#proto === "bunker:";
@@ -114,7 +114,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
               "#p": [this.#localPubkey],
             },
           ],
-          () => { },
+          () => {},
         );
 
         if (autoConnect) {
@@ -191,7 +191,7 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
    * @param name Desired name
    * @param domain Desired domain
    * @param email Backup email address
-   * @returns 
+   * @returns
    */
   async createAccount(name: string, domain: string, email?: string) {
     await this.init(false);
