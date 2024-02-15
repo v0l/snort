@@ -141,7 +141,7 @@ export class Nip46Signer implements EventSigner {
   async nip4Decrypt(content: string, otherKey: string) {
     const payload = await this.#rpc<string>("nip04_decrypt", [otherKey, content]);
     try {
-      return JSON.parse(payload)[0];
+      return payload;
     } catch {
       return "<error>";
     }
