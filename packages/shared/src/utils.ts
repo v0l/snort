@@ -160,10 +160,13 @@ export function bech32ToText(str: string) {
   return new TextDecoder().decode(Uint8Array.from(buf));
 }
 
+export interface NostrJson {
+  names: Record<string, string>;
+  relays?: Record<string, Array<string>>;
+  nip46?: Record<string, Array<string>>;
+}
+
 export async function fetchNip05Pubkey(name: string, domain: string, timeout = 2_000): Promise<string | undefined> {
-  interface NostrJson {
-    names: Record<string, string>;
-  }
   if (!name || !domain) {
     return undefined;
   }
@@ -176,6 +179,21 @@ export async function fetchNip05Pubkey(name: string, domain: string, timeout = 2
       return n.toLowerCase() === name.toLowerCase();
     });
     return match ? data.names[match] : undefined;
+  } catch {
+    // ignored
+  }
+  return undefined;
+}
+
+export async function fetchNostrAddress(name: string, domain: string, timeout = 2_000): Promise<NostrJson | undefined> {
+  if (!name || !domain) {
+    return undefined;
+  }
+  try {
+    const res = await fetch(`https://${domain}/.well-known/nostr.json?name=${encodeURIComponent(name)}`, {
+      signal: AbortSignal.timeout(timeout),
+    });
+    return await res.json() as NostrJson;
   } catch {
     // ignored
   }
@@ -208,7 +226,7 @@ export function normalizeReaction(content: string) {
   }
 }
 
-export class OfflineError extends Error {}
+export class OfflineError extends Error { }
 
 export function throwIfOffline() {
   if (isOffline()) {

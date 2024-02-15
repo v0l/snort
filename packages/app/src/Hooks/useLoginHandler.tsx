@@ -1,4 +1,4 @@
-import { fetchNip05Pubkey, unwrap } from "@snort/shared";
+import { fetchNostrAddress, unwrap } from "@snort/shared";
 import { KeyStorage, Nip46Signer } from "@snort/system";
 import { useIntl } from "react-intl";
 
@@ -51,11 +51,38 @@ export default function useLoginHandler() {
       LoginStore.loginWithPubkey(hexKey, LoginSessionType.PublicKey);
     } else if (key.match(EmailRegex)) {
       const [name, domain] = key.split("@");
-      const hexKey = await fetchNip05Pubkey(name, domain);
-      if (!hexKey) {
+      const json = await fetchNostrAddress(name, domain);
+      if (!json) {
         throw new Error("Invalid nostr address");
       }
-      LoginStore.loginWithPubkey(hexKey, LoginSessionType.PublicKey);
+      const match = Object.keys(json.names).find(n => {
+        return n.toLowerCase() === name.toLowerCase();
+      });
+      if (!match) {
+        throw new Error("Invalid nostr address");
+      }
+      const pubkey = json.names[match];
+
+      if (json.nip46) {
+        const bunkerRelays = json.nip46[json.names["_"]];
+        const nip46 = new Nip46Signer(`bunker://${pubkey}?relay=${encodeURIComponent(bunkerRelays[0])}`);
+        nip46.on("oauth", url => {
+          window.open(url, CONFIG.appNameCapitalized, "width=600,height=800,popup=yes");
+        });
+        await nip46.init();
+
+        const loginPubkey = await nip46.getPubKey();
+        LoginStore.loginWithPubkey(
+          loginPubkey,
+          LoginSessionType.Nip46,
+          undefined,
+          nip46.relays,
+          await pin(unwrap(nip46.privateKey)),
+        );
+        nip46.close();
+      } else {
+        LoginStore.loginWithPubkey(pubkey, LoginSessionType.PublicKey);
+      }
     } else if (key.startsWith("bunker://")) {
       const nip46 = new Nip46Signer(key);
       await nip46.init();
