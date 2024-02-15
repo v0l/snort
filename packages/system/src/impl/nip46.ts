@@ -193,6 +193,32 @@ export class Nip46Signer extends EventEmitter<Nip46Events> implements EventSigne
     return JSON.parse(rsp.result as string);
   }
 
+  /**
+   * NIP-46 oAuth bunker signup
+   * @param name Desired name
+   * @param domain Desired domain
+   * @param email Backup email address
+   * @returns 
+   */
+  async createAccount(name: string, domain: string, email?: string) {
+    const rsp = await this.#rpc("create_account", [name, domain, email ?? ""]);
+    if (rsp.result === "auth_url") {
+      return await new Promise<void>((resolve, reject) => {
+        this.#commandQueue.set(rsp.id, {
+          resolve: async (o: Nip46Response) => {
+            if (o.result === "ack") {
+              resolve();
+            } else {
+              reject(o.error);
+            }
+          },
+          reject,
+        });
+        this.emit("oauth", rsp.error);
+      });
+    }
+  }
+
   async #disconnect() {
     return await this.#rpc("disconnect", []);
   }
