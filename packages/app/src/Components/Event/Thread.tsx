@@ -225,7 +225,6 @@ export function ThreadRoute({ id }: { id?: string }) {
 
   return (
     <ThreadContextWrapper link={link}>
-      <ScrollToTop />
       <Thread />
     </ThreadContextWrapper>
   );

@@ -74,7 +74,7 @@ const getNavLinkClass = (isActive: boolean, narrow: boolean) => {
   });
 };
 
-export default function NavSidebar({ narrow = false }: { narrow: boolean }) {
+export default function NavSidebar({ narrow = false }: { narrow?: boolean }) {
   const { publicKey, readonly } = useLogin(s => ({
     publicKey: s.publicKey,
     readonly: s.readonly,

@@ -53,7 +53,6 @@ export default function NotificationsPage({ onClick }: { onClick?: (link: NostrL
 
   return (
     <>
-      <ScrollToTop />
       <div className="main-content">
         {CONFIG.features.notificationGraph && (
           <Suspense fallback={<PageSpinner />}>

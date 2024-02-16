@@ -20,6 +20,7 @@ import { LoginStore } from "@/Utils/Login";
 
 import NavSidebar from "./NavSidebar";
 import RightColumn from "./RightColumn";
+import ScrollToTop from "@/Components/ScrollToTop";
 
 export default function Index() {
   const location = useLocation();
@@ -57,6 +58,7 @@ export default function Index() {
 
   return (
     <ErrorBoundary>
+      <ScrollToTop />
       <div className="flex justify-center">
         <div className="w-full max-w-screen-xl">
           <div className="flex flex-row">
