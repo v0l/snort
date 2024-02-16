@@ -3,7 +3,7 @@ import { useLocation, useNavigationType } from "react-router-dom";
 
 export default function ScrollToTop() {
   const { pathname } = useLocation();
-  const navigationType = useNavigationType(); // This hook is available in React Router v6
+  const navigationType = useNavigationType();
 
   useEffect(() => {
     if (navigationType !== "POP") {

@@ -6,6 +6,7 @@ import { useCallback, useMemo, useState } from "react";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import useTimelineFeed, { TimelineFeed, TimelineSubject } from "@/Feed/TimelineFeed";
+import useHistoryState from "@/Hooks/useHistoryState";
 import useLogin from "@/Hooks/useLogin";
 import { dedupeByPubkey } from "@/Utils";
 
@@ -27,13 +28,15 @@ export interface TimelineProps {
  */
 const Timeline = (props: TimelineProps) => {
   const login = useLogin();
-  const feedOptions = useMemo(() => {
-    return {
+  const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt");
+  const feedOptions = useMemo(
+    () => ({
       method: props.method,
       window: props.window,
-      now: props.now,
-    };
-  }, [props]);
+      now: props.now ?? openedAt,
+    }),
+    [props],
+  );
   const feed: TimelineFeed = useTimelineFeed(props.subject, feedOptions);
   const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);

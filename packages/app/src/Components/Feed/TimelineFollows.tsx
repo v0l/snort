@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
+import useHistoryState from "@/Hooks/useHistoryState";
 import useLogin from "@/Hooks/useLogin";
 import { dedupeByPubkey } from "@/Utils";
 
@@ -27,6 +28,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
   const login = useLogin();
   const displayAsInitial = props.displayAs ?? login.feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
+  const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt");
   const subject = useMemo(
     () =>
       ({
@@ -41,7 +43,7 @@ const TimelineFollows = (props: TimelineFollowsProps) => {
       }) as TimelineSubject,
     [login.follows.item, login.tags.item],
   );
-  const feed = useTimelineFeed(subject, { method: "TIME_RANGE" } as TimelineFeedOptions);
+  const feed = useTimelineFeed(subject, { method: "TIME_RANGE", now: openedAt } as TimelineFeedOptions);
 
   // TODO allow reposts:
   const postsOnly = useCallback(

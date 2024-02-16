@@ -1,13 +1,14 @@
 import { EventKind, NostrEvent, RequestBuilder, TaggedNostrEvent } from "@snort/system";
 import { memo, useEffect, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { Link } from "react-router-dom";
+import { Link, useNavigationType } from "react-router-dom";
 
 import { Relay } from "@/Cache";
 import { DisplayAs, DisplayAsSelector } from "@/Components/Feed/DisplayAsSelector";
 import { TimelineRenderer } from "@/Components/Feed/TimelineRenderer";
 import { TaskList } from "@/Components/Tasks/TaskList";
 import useTimelineFeed, { TimelineFeedOptions, TimelineSubject } from "@/Feed/TimelineFeed";
+import useHistoryState from "@/Hooks/useHistoryState";
 import useLogin from "@/Hooks/useLogin";
 import messages from "@/Pages/messages";
 import { System } from "@/system";
@@ -64,9 +65,12 @@ export const ForYouTab = memo(function ForYouTab() {
   const displayAsInitial = feedDisplayAs ?? "list";
   const [displayAs, setDisplayAs] = useState<DisplayAs>(displayAsInitial);
   const { publicKey } = useLogin();
+  const navigationType = useNavigationType();
+  const [openedAt] = useHistoryState(Math.floor(Date.now() / 1000), "openedAt");
 
   if (!reactionsRequested && publicKey) {
     reactionsRequested = true;
+    // on first load, ask relays for reactions to events by follows
     getReactedByFollows(follows.item);
   }
 
@@ -86,11 +90,15 @@ export const ForYouTab = memo(function ForYouTab() {
     [login.follows.item, login.tags.item],
   );
   // also get "follows" feed so data is loaded from relays and there's a fallback if "for you" feed is empty
-  const latestFeed = useTimelineFeed(subject, { method: "TIME_RANGE" } as TimelineFeedOptions);
+  const latestFeed = useTimelineFeed(subject, { method: "TIME_RANGE", now: openedAt } as TimelineFeedOptions);
   const filteredLatestFeed = useMemo(() => {
-    // no replies
-    return latestFeed.main?.filter((ev: NostrEvent) => !ev.tags.some((tag: string[]) => tag[0] === "e")) ?? [];
-  }, [latestFeed.main]);
+    return (
+      latestFeed.main?.filter((ev: NostrEvent) => {
+        // no replies
+        return !ev.tags.some((tag: string[]) => tag[0] === "e");
+      }) ?? []
+    );
+  }, [latestFeed.main, subject]);
 
   const getFeed = () => {
     if (!publicKey) {
@@ -115,7 +123,10 @@ export const ForYouTab = memo(function ForYouTab() {
   };
 
   useEffect(() => {
-    if (forYouFeed.events.length < 10 || Date.now() - forYouFeed.created_at > 1000 * 60 * 2) {
+    if (
+      forYouFeed.events.length < 10 ||
+      (navigationType !== "POP" && Date.now() - forYouFeed.created_at > 1000 * 60 * 2)
+    ) {
       getFeed();
     }
   }, []);
