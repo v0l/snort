@@ -6,6 +6,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import CloseButton from "@/Components/Button/CloseButton";
 import ErrorBoundary from "@/Components/ErrorBoundary";
 import { LoginUnlock } from "@/Components/PinPrompt/PinPrompt";
+import ScrollToTop from "@/Components/ScrollToTop";
 import Toaster from "@/Components/Toaster/Toaster";
 import useLoginFeed from "@/Feed/LoginFeed";
 import { useCommunityLeaders } from "@/Hooks/useCommunityLeaders";
@@ -20,7 +21,6 @@ import { LoginStore } from "@/Utils/Login";
 
 import NavSidebar from "./NavSidebar";
 import RightColumn from "./RightColumn";
-import ScrollToTop from "@/Components/ScrollToTop";
 
 export default function Index() {
   const location = useLocation();

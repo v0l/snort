@@ -46,17 +46,22 @@ export default function HyperText({ link, depth, showLinkPreview, children }: Hy
 
     if (youtubeId) {
       return (
-        <iframe
-          // eslint-disable-next-line react/no-unknown-property
-          credentialless=""
-          className="-mx-4 md:mx-0 w-max my-2"
-          src={`https://www.youtube.com/embed/${youtubeId}`}
-          title="YouTube video player"
-          key={youtubeId}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen={true}
-        />
+        <>
+          <iframe
+            // eslint-disable-next-line react/no-unknown-property
+            credentialless=""
+            className="-mx-4 md:mx-0 w-max my-2"
+            src={`https://www.youtube.com/embed/${youtubeId}`}
+            title="YouTube video player"
+            key={youtubeId}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen={true}
+          />
+          <a href={a} onClick={e => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">
+            {a}
+          </a>
+        </>
       );
     } else if (tidalId) {
       return <TidalEmbed link={a} />;

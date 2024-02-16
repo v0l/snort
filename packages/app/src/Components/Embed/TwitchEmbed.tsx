@@ -3,13 +3,18 @@ const TwitchEmbed = ({ link }: { link: string }) => {
 
   const args = `?channel=${channel}&parent=${window.location.hostname}&muted=true`;
   return (
-    <iframe
-      src={`https://player.twitch.tv/${args}`}
-      className="w-max"
-      allowFullScreen={true}
-      // eslint-disable-next-line react/no-unknown-property
-      credentialless=""
-    />
+    <>
+      <iframe
+        src={`https://player.twitch.tv/${args}`}
+        className="w-max"
+        allowFullScreen={true}
+        // eslint-disable-next-line react/no-unknown-property
+        credentialless=""
+      />
+      <a href={link} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="ext">
+        {link}
+      </a>
+    </>
   );
 };
 

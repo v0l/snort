@@ -10,7 +10,6 @@ import BackButton from "@/Components/Button/BackButton";
 import Collapsed from "@/Components/Collapsed";
 import Note from "@/Components/Event/EventComponent";
 import NoteGhost from "@/Components/Event/Note/NoteGhost";
-import ScrollToTop from "@/Components/ScrollToTop";
 import { chainKey } from "@/Utils/Thread/ChainKey";
 import { ThreadContext } from "@/Utils/Thread/ThreadContext";
 import { ThreadContextWrapper } from "@/Utils/Thread/ThreadContextWrapper";

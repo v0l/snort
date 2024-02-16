@@ -18,6 +18,9 @@ const MixCloudEmbed = ({ link }: { link: string }) => {
         frameBorder="0"
         src={`https://www.mixcloud.com/widget/iframe/?hide_cover=1&${lightParams}&feed=%2F${feedPath}%2F`}
       />
+      <a href={link} target="_blank" rel="noreferrer">
+        {link}
+      </a>
     </>
   );
 };

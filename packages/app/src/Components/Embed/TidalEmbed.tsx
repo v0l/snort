@@ -53,8 +53,18 @@ const TidalEmbed = ({ link }: { link: string }) => {
       </a>
     );
   }
-  // eslint-disable-next-line react/no-unknown-property
-  return <iframe src={source} style={extraStyles} width="100%" title="TIDAL Embed" frameBorder={0} credentialless="" />;
+  const iframe = (
+    // eslint-disable-next-line react/no-unknown-property
+    <iframe src={source} style={extraStyles} width="100%" title="TIDAL Embed" frameBorder={0} credentialless="" />
+  );
+  return (
+    <>
+      {iframe}
+      <a href={link} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="ext">
+        {link}
+      </a>
+    </>
+  );
 };
 
 export default TidalEmbed;

@@ -15,8 +15,6 @@ import { getNotificationContext } from "./getNotificationContext";
 import { NotificationGroup } from "./NotificationGroup";
 const NotificationGraph = lazy(() => import("@/Pages/Notifications/NotificationChart"));
 
-import ScrollToTop from "@/Components/ScrollToTop";
-
 export default function NotificationsPage({ onClick }: { onClick?: (link: NostrLink) => void }) {
   const login = useLogin();
   const { isMuted } = useModeration();
