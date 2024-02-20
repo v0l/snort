@@ -18,13 +18,15 @@ import {
   UsersRelays,
   SnortSystemDb,
   QueryLike,
+  OutboxModel,
 } from ".";
 import { EventsCache } from "./cache/events";
-import { RelayMetadataLoader } from "./outbox-model";
+import { RelayMetadataLoader } from "./outbox";
 import { Optimizer, DefaultOptimizer } from "./query-optimizer";
 import { ConnectionPool, DefaultConnectionPool } from "./connection-pool";
 import { QueryManager } from "./query-manager";
 import { CacheRelay } from "./cache-relay";
+import { RequestRouter } from "request-router";
 
 export interface NostrSystemEvents {
   change: (state: SystemSnapshot) => void;
@@ -33,15 +35,54 @@ export interface NostrSystemEvents {
   request: (subId: string, filter: BuiltRawReqFilter) => void;
 }
 
-export interface NostrsystemProps {
-  relayCache?: CachedTable<UsersRelays>;
-  profileCache?: CachedTable<CachedMetadata>;
-  relayMetrics?: CachedTable<RelayMetrics>;
-  eventsCache?: CachedTable<NostrEvent>;
-  cacheRelay?: CacheRelay;
-  optimizer?: Optimizer;
+export interface SystemConfig {
+  /**
+   * Users configured relays (via kind 3 or kind 10_002)
+   */
+  relays: CachedTable<UsersRelays>;
+
+  /**
+   * Cache of user profiles, (kind 0)
+   */
+  profiles: CachedTable<CachedMetadata>;
+
+  /**
+   * Cache of relay connection stats
+   */
+  relayMetrics: CachedTable<RelayMetrics>;
+
+  /**
+   * Direct reference events cache
+   */
+  events: CachedTable<NostrEvent>;
+
+  /**
+   * Optimized cache relay, usually `@snort/worker-relay`
+   */
+  cachingRelay?: CacheRelay;
+
+  /**
+   * Optimized functions, usually `@snort/system-wasm`
+   */
+  optimizer: Optimizer;
+
+  /**
+   * Dexie database storage, usually `@snort/system-web`
+   */
   db?: SnortSystemDb;
-  checkSigs?: boolean;
+
+  /**
+   * Check event sigs on receive from relays
+   */
+  checkSigs: boolean;
+
+  /**
+   * Automatically handle outbox model
+   *
+   * 1. Fetch relay lists automatically for queried authors
+   * 2. Write to inbox for all `p` tagged users in broadcasting events
+   */
+  automaticOutboxModel: boolean;
 }
 
 /**
@@ -50,60 +91,83 @@ export interface NostrsystemProps {
 export class NostrSystem extends EventEmitter<NostrSystemEvents> implements SystemInterface {
   #log = debug("System");
   #queryManager: QueryManager;
+  #config: SystemConfig;
 
   /**
    * Storage class for user relay lists
    */
-  readonly relayCache: CachedTable<UsersRelays>;
+  get relayCache(): CachedTable<UsersRelays> {
+    return this.#config.relays;
+  }
 
   /**
    * Storage class for user profiles
    */
-  readonly profileCache: CachedTable<CachedMetadata>;
+  get profileCache(): CachedTable<CachedMetadata> {
+    return this.#config.profiles;
+  }
 
   /**
    * Storage class for relay metrics (connects/disconnects)
    */
-  readonly relayMetricsCache: CachedTable<RelayMetrics>;
-
-  /**
-   * Profile loading service
-   */
-  readonly profileLoader: ProfileLoaderService;
-
-  /**
-   * Relay metrics handler cache
-   */
-  readonly relayMetricsHandler: RelayMetricHandler;
+  get relayMetricsCache(): CachedTable<RelayMetrics> {
+    return this.#config.relayMetrics;
+  }
 
   /**
    * Optimizer instance, contains optimized functions for processing data
    */
-  readonly optimizer: Optimizer;
+  get optimizer(): Optimizer {
+    return this.#config.optimizer;
+  }
 
-  readonly pool: ConnectionPool;
-  readonly eventsCache: CachedTable<NostrEvent>;
-  readonly relayLoader: RelayMetadataLoader;
-  readonly cacheRelay: CacheRelay | undefined;
+  get eventsCache(): CachedTable<NostrEvent> {
+    return this.#config.events;
+  }
+
+  get cacheRelay(): CacheRelay | undefined {
+    return this.#config.cachingRelay;
+  }
 
   /**
-   * Check event signatures (reccomended)
+   * Check event signatures (recommended)
    */
-  checkSigs: boolean;
+  get checkSigs(): boolean {
+    return this.#config.checkSigs;
+  }
 
-  constructor(props: NostrsystemProps) {
+  set checkSigs(v: boolean) {
+    this.#config.checkSigs = v;
+  }
+
+  readonly profileLoader: ProfileLoaderService;
+  readonly relayMetricsHandler: RelayMetricHandler;
+  readonly pool: ConnectionPool;
+  readonly relayLoader: RelayMetadataLoader;
+  readonly requestRouter: RequestRouter | undefined;
+
+  constructor(props: Partial<SystemConfig>) {
     super();
-    this.relayCache = props.relayCache ?? new UserRelaysCache(props.db?.userRelays);
-    this.profileCache = props.profileCache ?? new UserProfileCache(props.db?.users);
-    this.relayMetricsCache = props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics);
-    this.eventsCache = props.eventsCache ?? new EventsCache(props.db?.events);
-    this.optimizer = props.optimizer ?? DefaultOptimizer;
-    this.cacheRelay = props.cacheRelay;
+    this.#config = {
+      relays: props.relays ?? new UserRelaysCache(props.db?.userRelays),
+      profiles: props.profiles ?? new UserProfileCache(props.db?.users),
+      relayMetrics: props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics),
+      events: props.events ?? new EventsCache(props.db?.events),
+      optimizer: props.optimizer ?? DefaultOptimizer,
+      checkSigs: props.checkSigs ?? false,
+      cachingRelay: props.cachingRelay,
+      db: props.db,
+      automaticOutboxModel: props.automaticOutboxModel ?? true,
+    };
 
     this.profileLoader = new ProfileLoaderService(this, this.profileCache);
     this.relayMetricsHandler = new RelayMetricHandler(this.relayMetricsCache);
     this.relayLoader = new RelayMetadataLoader(this, this.relayCache);
-    this.checkSigs = props.checkSigs ?? true;
+
+    // if automatic outbox model, setup request router as OutboxModel
+    if (this.#config.automaticOutboxModel) {
+      this.requestRouter = OutboxModel.fromSystem(this);
+    }
 
     this.pool = new DefaultConnectionPool(this);
     this.#queryManager = new QueryManager(this);
@@ -196,7 +260,7 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
 
   async BroadcastEvent(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]> {
     this.HandleEvent("*", { ...ev, relays: [] });
-    return await this.pool.broadcast(this, ev, cb);
+    return await this.pool.broadcast(ev, cb);
   }
 
   async WriteOnceToRelay(address: string, ev: NostrEvent): Promise<OkResponse> {

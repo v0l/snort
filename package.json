@@ -15,7 +15,8 @@
     "printWidth": 120,
     "bracketSameLine": true,
     "arrowParens": "avoid",
-    "trailingComma": "all"
+    "trailingComma": "all",
+    "endOfLine": "lf"
   },
   "packageManager": "yarn@3.6.3",
   "dependencies": {

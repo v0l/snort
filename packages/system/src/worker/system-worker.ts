@@ -9,7 +9,6 @@ import {
   SystemInterface,
   TaggedNostrEvent,
   CachedMetadata,
-  DefaultOptimizer,
   RelayMetadataLoader,
   RelayMetricCache,
   RelayMetrics,
@@ -17,8 +16,10 @@ import {
   UserRelaysCache,
   UsersRelays,
   QueryLike,
+  Optimizer,
+  DefaultOptimizer,
 } from "..";
-import { NostrSystemEvents, NostrsystemProps } from "../nostr-system";
+import { NostrSystemEvents, SystemConfig } from "../nostr-system";
 import { WorkerCommand, WorkerMessage } from ".";
 import { CachedTable } from "@snort/shared";
 import { EventsCache } from "../cache/events";
@@ -31,38 +32,80 @@ export class SystemWorker extends EventEmitter<NostrSystemEvents> implements Sys
   #log = debug("SystemWorker");
   #worker: Worker;
   #commandQueue: Map<string, (v: unknown) => void> = new Map();
-  readonly relayCache: CachedTable<UsersRelays>;
-  readonly profileCache: CachedTable<CachedMetadata>;
-  readonly relayMetricsCache: CachedTable<RelayMetrics>;
-  readonly profileLoader: ProfileLoaderService;
-  readonly relayMetricsHandler: RelayMetricHandler;
-  readonly eventsCache: CachedTable<NostrEvent>;
-  readonly relayLoader: RelayMetadataLoader;
-  readonly cacheRelay: CacheRelay | undefined;
+  #config: SystemConfig;
 
-  get checkSigs() {
-    return true;
+  /**
+   * Storage class for user relay lists
+   */
+  get relayCache(): CachedTable<UsersRelays> {
+    return this.#config.relays;
+  }
+
+  /**
+   * Storage class for user profiles
+   */
+  get profileCache(): CachedTable<CachedMetadata> {
+    return this.#config.profiles;
+  }
+
+  /**
+   * Storage class for relay metrics (connects/disconnects)
+   */
+  get relayMetricsCache(): CachedTable<RelayMetrics> {
+    return this.#config.relayMetrics;
+  }
+
+  /**
+   * Optimizer instance, contains optimized functions for processing data
+   */
+  get optimizer(): Optimizer {
+    return this.#config.optimizer;
+  }
+
+  get eventsCache(): CachedTable<NostrEvent> {
+    return this.#config.events;
+  }
+
+  /**
+   * Check event signatures (recommended)
+   */
+  get checkSigs(): boolean {
+    return this.#config.checkSigs;
   }
 
   set checkSigs(v: boolean) {
-    // not used
+    this.#config.checkSigs = v;
   }
 
-  get optimizer() {
-    return DefaultOptimizer;
+  get requestRouter() {
+    return undefined;
+  }
+
+  get cacheRelay(): CacheRelay | undefined {
+    return this.#config.cachingRelay;
   }
 
   get pool() {
     return {} as ConnectionPool;
   }
 
-  constructor(scriptPath: string, props: NostrsystemProps) {
-    super();
+  readonly relayLoader: RelayMetadataLoader;
+  readonly profileLoader: ProfileLoaderService;
+  readonly relayMetricsHandler: RelayMetricHandler;
 
-    this.relayCache = props.relayCache ?? new UserRelaysCache(props.db?.userRelays);
-    this.profileCache = props.profileCache ?? new UserProfileCache(props.db?.users);
-    this.relayMetricsCache = props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics);
-    this.eventsCache = props.eventsCache ?? new EventsCache(props.db?.events);
+  constructor(scriptPath: string, props: Partial<SystemConfig>) {
+    super();
+    this.#config = {
+      relays: props.relays ?? new UserRelaysCache(props.db?.userRelays),
+      profiles: props.profiles ?? new UserProfileCache(props.db?.users),
+      relayMetrics: props.relayMetrics ?? new RelayMetricCache(props.db?.relayMetrics),
+      events: props.events ?? new EventsCache(props.db?.events),
+      optimizer: props.optimizer ?? DefaultOptimizer,
+      checkSigs: props.checkSigs ?? false,
+      cachingRelay: props.cachingRelay,
+      db: props.db,
+      automaticOutboxModel: props.automaticOutboxModel ?? true,
+    };
 
     this.profileLoader = new ProfileLoaderService(this, this.profileCache);
     this.relayMetricsHandler = new RelayMetricHandler(this.relayMetricsCache);

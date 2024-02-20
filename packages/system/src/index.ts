@@ -2,7 +2,8 @@ import { RelaySettings } from "./connection";
 import { RequestBuilder } from "./request-builder";
 import { NostrEvent, OkResponse, ReqFilter, TaggedNostrEvent } from "./nostr";
 import { ProfileLoaderService } from "./profile-cache";
-import { AuthorsRelaysCache, RelayMetadataLoader } from "./outbox-model";
+import { AuthorsRelaysCache } from "./outbox";
+import { RelayMetadataLoader } from "outbox/relay-loader";
 import { Optimizer } from "./query-optimizer";
 import { base64 } from "@scure/base";
 import { CachedTable } from "@snort/shared";
@@ -10,6 +11,7 @@ import { ConnectionPool } from "./connection-pool";
 import EventEmitter from "eventemitter3";
 import { QueryEvents } from "./query";
 import { CacheRelay } from "./cache-relay";
+import { RequestRouter } from "./request-router";
 
 export { NostrSystem } from "./nostr-system";
 export { default as EventKind } from "./event-kind";
@@ -34,7 +36,7 @@ export * from "./pow";
 export * from "./pow-util";
 export * from "./query-optimizer";
 export * from "./encrypted";
-export * from "./outbox-model";
+export * from "./outbox";
 
 export * from "./impl/nip4";
 export * from "./impl/nip44";
@@ -155,6 +157,11 @@ export interface SystemInterface {
    * Local relay cache service
    */
   get cacheRelay(): CacheRelay | undefined;
+
+  /**
+   * Request router instance
+   */
+  get requestRouter(): RequestRouter | undefined;
 }
 
 export interface SystemSnapshot {

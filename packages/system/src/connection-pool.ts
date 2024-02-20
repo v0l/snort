@@ -4,7 +4,6 @@ import EventEmitter from "eventemitter3";
 
 import { Connection, RelaySettings } from "./connection";
 import { NostrEvent, OkResponse, TaggedNostrEvent } from "./nostr";
-import { pickRelaysForReply } from "./outbox-model";
 import { SystemInterface } from ".";
 import LRUSet from "@snort/shared/src/LRUSet";
 
@@ -22,7 +21,7 @@ export type ConnectionPool = {
   getConnection(id: string): Connection | undefined;
   connect(address: string, options: RelaySettings, ephemeral: boolean): Promise<Connection | undefined>;
   disconnect(address: string): void;
-  broadcast(system: SystemInterface, ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]>;
+  broadcast(ev: NostrEvent, cb?: (rsp: OkResponse) => void): Promise<OkResponse[]>;
   broadcastTo(address: string, ev: NostrEvent): Promise<OkResponse>;
 } & EventEmitter<NostrConnectionPoolEvents> &
   Iterable<[string, Connection]>;
@@ -126,9 +125,9 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
    * Broadcast event to all write relays.
    * @remarks Also write event to read relays of those who are `p` tagged in the event (Inbox model)
    */
-  async broadcast(system: SystemInterface, ev: NostrEvent, cb?: (rsp: OkResponse) => void) {
+  async broadcast(ev: NostrEvent, cb?: (rsp: OkResponse) => void) {
     const writeRelays = [...this.#sockets.values()].filter(a => !a.Ephemeral && a.Settings.write);
-    const replyRelays = await pickRelaysForReply(ev, system);
+    const replyRelays = (await this.#system.requestRouter?.forReply(ev)) ?? [];
     const oks = await Promise.all([
       ...writeRelays.map(async s => {
         try {
@@ -140,7 +139,7 @@ export class DefaultConnectionPool extends EventEmitter<NostrConnectionPoolEvent
         }
         return;
       }),
-      ...replyRelays.filter(a => !this.#sockets.has(unwrap(sanitizeRelayUrl(a)))).map(a => this.broadcastTo(a, ev)),
+      ...replyRelays?.filter(a => !this.#sockets.has(unwrap(sanitizeRelayUrl(a)))).map(a => this.broadcastTo(a, ev)),
     ]);
     return removeUndefined(oks);
   }

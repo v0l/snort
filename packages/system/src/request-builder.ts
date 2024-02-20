@@ -5,7 +5,7 @@ import { appendDedupe, dedupe, sanitizeRelayUrl, unixNowMs, unwrap } from "@snor
 import EventKind from "./event-kind";
 import { NostrLink, NostrPrefix, SystemInterface } from ".";
 import { ReqFilter, u256, HexKey, TaggedNostrEvent } from "./nostr";
-import { AuthorsRelaysCache, splitByWriteRelays, splitFlatByWriteRelays } from "./outbox-model";
+import { RequestRouter } from "./request-router";
 
 /**
  * Which strategy is used when building REQ filters
@@ -133,7 +133,7 @@ export class RequestBuilder {
   }
 
   build(system: SystemInterface): Array<BuiltRawReqFilter> {
-    const expanded = this.#builders.flatMap(a => a.build(system.relayCache, this.#options));
+    const expanded = this.#builders.flatMap(a => a.build(system.requestRouter, this.#options));
     return this.#groupByRelay(system, expanded);
   }
 
@@ -147,14 +147,24 @@ export class RequestBuilder {
     const ts = unixNowMs() - start;
     this.#log("buildDiff %s %d ms +%d", this.id, ts, diff.length);
     if (diff.length > 0) {
-      // todo: fix for explicit relays
-      return splitFlatByWriteRelays(system.relayCache, diff).map(a => {
-        return {
-          strategy: RequestStrategy.AuthorsRelays,
-          filters: system.optimizer.flatMerge(a.filters),
-          relay: a.relay,
-        };
-      });
+      if (system.requestRouter) {
+        // todo: fix for explicit relays
+        return system.requestRouter.forFlatRequest(diff).map(a => {
+          return {
+            strategy: RequestStrategy.AuthorsRelays,
+            filters: system.optimizer.flatMerge(a.filters),
+            relay: a.relay,
+          };
+        });
+      } else {
+        return [
+          {
+            strategy: RequestStrategy.DefaultRelays,
+            filters: system.optimizer.flatMerge(diff),
+            relay: "",
+          },
+        ];
+      }
     }
     return [];
   }
@@ -294,11 +304,11 @@ export class RequestFilterBuilder {
   /**
    * Build/expand this filter into a set of relay specific queries
    */
-  build(relays: AuthorsRelaysCache, options?: RequestBuilderOptions): Array<BuiltRawReqFilter> {
-    return this.#buildFromFilter(relays, this.#filter, options);
+  build(model?: RequestRouter, options?: RequestBuilderOptions): Array<BuiltRawReqFilter> {
+    return this.#buildFromFilter(this.#filter, model, options);
   }
 
-  #buildFromFilter(relays: AuthorsRelaysCache, f: ReqFilter, options?: RequestBuilderOptions) {
+  #buildFromFilter(f: ReqFilter, model?: RequestRouter, options?: RequestBuilderOptions) {
     // use the explicit relay list first
     if (this.#relays.size > 0) {
       return [...this.#relays].map(r => {
@@ -311,8 +321,8 @@ export class RequestFilterBuilder {
     }
 
     // If any authors are set use the gossip model to fetch data for each author
-    if (f.authors) {
-      const split = splitByWriteRelays(relays, f, options?.outboxPickN);
+    if (f.authors && model) {
+      const split = model.forRequest(f, options?.outboxPickN);
       return split.map(a => {
         return {
           filters: [a.filter],

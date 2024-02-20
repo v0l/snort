@@ -1,5 +1,5 @@
 import { dedupe } from "@snort/shared";
-import { pickTopRelays } from "@snort/system";
+import { OutboxModel } from "@snort/system";
 import { SnortContext } from "@snort/system-react";
 import { ReactNode, useContext, useMemo } from "react";
 import { FormattedMessage, FormattedNumber } from "react-intl";
@@ -31,7 +31,8 @@ export function FollowsRelayHealth({
   }, [hasRelays]);
 
   const topWriteRelays = useMemo(() => {
-    return pickTopRelays(system.relayCache, uniqueFollows, 1e31, "write");
+    const outbox = OutboxModel.fromSystem(system);
+    return outbox.pickTopRelays(uniqueFollows, 1e31, "write");
   }, [uniqueFollows]);
 
   return (
