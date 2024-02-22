@@ -68,8 +68,9 @@ export interface SystemInterface {
 
   /**
    * Do some initialization
+   * @param follows A follower list to preload content for
    */
-  Init(): Promise<void>;
+  Init(follows?: Array<string>): Promise<void>;
 
   /**
    * Get an active query by ID

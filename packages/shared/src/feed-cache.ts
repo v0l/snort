@@ -15,7 +15,7 @@ export interface CacheEvents {
 }
 
 export type CachedTable<T> = {
-  preload(): Promise<void>;
+  preload(follows?: Array<string>): Promise<void>;
   keysOnTable(): Array<string>;
   getFromCache(key?: string): T | undefined;
   get(key?: string): Promise<T | undefined>;

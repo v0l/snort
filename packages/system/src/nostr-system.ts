@@ -269,13 +269,13 @@ export class NostrSystem extends EventEmitter<NostrSystemEvents> implements Syst
     this.#queryManager.on("request", (subId: string, f: BuiltRawReqFilter) => this.emit("request", subId, f));
   }
 
-  async Init() {
+  async Init(follows?: Array<string>) {
     const t = [
-      this.relayCache.preload(),
-      this.profileCache.preload(),
-      this.relayMetricsCache.preload(),
-      this.eventsCache.preload(),
-      this.userFollowsCache.preload(),
+      this.relayCache.preload(follows),
+      this.profileCache.preload(follows),
+      this.relayMetricsCache.preload(follows),
+      this.eventsCache.preload(follows),
+      this.userFollowsCache.preload(follows),
     ];
     await Promise.all(t);
     await this.PreloadSocialGraph();
